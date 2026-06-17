@@ -1,51 +1,55 @@
-# TW-Market Live Data Intelligence
+# TW-Market Live Data Intelligence Workbench
 
-AI-native research project for discovering, validating, benchmarking, and documenting feasible methods for AI systems to access Taiwan equity market information with high freshness, legal safety, reproducibility, and maintainability.
+An AI-native research project and workbench for discovering, validating, benchmarking, and documenting feasible methods for AI systems to access Taiwan equity market information with high freshness, legal safety, reproducibility, and maintainability.
 
 ## Mission
 
-Build a Taiwan market live-data acquisition framework that enables ChatGPT, Codex, and future AI agents to reliably access near real-time Taiwan market information through legally available interfaces.
+Build a framework that enables AI agents to reliably access near real-time Taiwan market information through legally available interfaces. This repository evaluates various methods: TWSE MIS, Yahoo Finance, Fugle, FinMind, TWSE/TPEx OpenAPI.
 
-This repository does **not** assume any single implementation. TWSE MIS, Yahoo Finance, Fugle, Fubon Neo, FinMind, TWSE/TPEx OpenAPI, browser automation, MCP, WebSocket, and other methods are all research candidates.
+## Features & Outcomes
+- **Evidence-Based Market Data**: Discovers and probes market data sources reliably.
+- **Data Source Capability Matrix**: Maintains accurate status records of available data capabilities, explicitly distinguishing unsupported asset classes.
+- **AI Context Pack**: Provides AI-ready `json` and `md` summaries of data availability, freshness, and risks.
+- **Local API Layer**: A safe, local-first FastAPI service to run live probes easily.
+- **Workbench Frontend**: A simple HTML interface for visually inspecting source matrices and testing probes.
+- **Configuration-Driven**: Supports a target list of stocks, ETFs, Indices via `config/market_targets.json`.
 
-## Core Principle
+## Quick Start & Installation
 
-This is not a one-off crawler. It is a research and engineering workbench for:
+### 1. Set Up Environment
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
 
-- evidence-based market data source discovery,
-- reproducible probing,
-- protocol and schema analysis,
-- AI integration design,
-- safe long-term maintainability.
+### 2. Run Probes & Generate Reports
+```bash
+python3 scripts/run_all_probes.py
+```
+*This command runs safely bounded queries against official and unofficial sources, generating the AI Context Pack in `research/generated/` and updating the Capability Matrix in `docs/`.*
 
-## What this repo should produce
+### 3. Start the API & Frontend
+Run the minimal FastAPI service locally:
+```bash
+uvicorn server.main:app --host 0.0.0.0 --port 8000
+```
+Open `frontend/public/index.html` in your browser to view the capability matrix and test live API endpoints safely.
 
-1. Architecture survey
-2. Data-source capability matrix
-3. Probe results and failure logs
-4. Protocol/session/header/cookie analysis where applicable
-5. Data contracts and timestamp semantics
-6. AI integration patterns, including ChatGPT, Codex, MCP, and browser automation
-7. Recommended architecture with tradeoffs
+## Testing & Validation
+This project utilizes `pytest`. Network tests are isolated from offline validation.
+```bash
+# Run all tests (including network probes)
+pytest -v
 
-## First milestone
+# Run only offline tests
+pytest -m "not network" -v
+```
 
-Establish a minimal, reproducible source-probe framework for:
+## Security & Constraints
+- **Secrets Management**: Do not hardcode API keys or credentials. Use environment variables (e.g., `FINMIND_TOKEN`).
+- **No Open Proxies**: Unsafe arbitrary fetch logic has been removed. The proxy functions are strictly disabled to prioritize security.
+- **Rate Limiting & Safety**: The probe framework explicitly bounds requests to avoid abusive polling.
 
-- TWSE MIS candidate endpoints
-- Yahoo Finance / Yahoo Taiwan Finance candidates
-- TWSE official OpenAPI / public pages
-- TPEx official OpenAPI / public pages
-- Fugle / Fubon Neo feasibility research, without embedding secrets
-
-## Legal and ethical constraints
-
-- Respect website terms of service.
-- Avoid abusive crawling or excessive polling.
-- Do not bypass authentication or access controls.
-- Do not store API keys in Git.
-- Treat unofficial endpoints as fragile and document their risk clearly.
-
-## Repository status
-
-Initial scaffold for AI Vibe Coding long-task collaboration.
+## Final Deliverable State
+This repository has reached the **Deliverable MVP** stage. Please read `FINAL_DELIVERY_REPORT.md` for a complete status overview.

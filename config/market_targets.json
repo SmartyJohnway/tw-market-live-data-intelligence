@@ -1,0 +1,9 @@
+{
+  "twse_large_caps": ["2330", "2317", "2454", "2881", "1301"],
+  "tpex_stocks": ["3105", "8299", "6488", "5347", "8069"],
+  "etfs": ["0050", "0056", "00878", "00929", "00919"],
+  "thinly_traded_stocks": ["1435", "1436", "1437", "1438", "1439"],
+  "indices": ["TAIEX", "TPEX", "FRMSA"],
+  "futures_candidates": ["TX", "MTX", "TE", "TF"],
+  "fund_candidates": ["T00", "O00"]
+}

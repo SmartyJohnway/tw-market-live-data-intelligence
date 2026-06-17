@@ -56,6 +56,8 @@
                             <th>Contract Status</th>
                             <th>Freshness</th>
                             <th>Staleness (s)</th>
+                            <th>Unsupported</th>
+                            <th>Failed</th>
                         </tr>
                 `;
 
@@ -73,6 +75,9 @@
                         statusIcon = '📝';
                     }
 
+                    const unsupported = Array.isArray(row.unsupported_targets) && row.unsupported_targets.length ? row.unsupported_targets.join(', ') : '-';
+                    const failed = Array.isArray(row.failed_targets) && row.failed_targets.length ? row.failed_targets.join(', ') : '-';
+
                     html += `
                         <tr>
                             <td><strong>${row.source}</strong></td>
@@ -80,6 +85,8 @@
                             <td class="${statusClass}">${statusIcon} <span class="code-inline">${row.contract_status}</span></td>
                             <td>${row.freshness_status || 'N/A'}</td>
                             <td>${row.staleness_seconds !== null ? row.staleness_seconds : 'N/A'}</td>
+                            <td class="note">${unsupported}</td>
+                            <td class="fail">${failed !== '-' ? failed : '-'}</td>
                         </tr>
                     `;
                 });

@@ -27,11 +27,14 @@ def probe():
                   "change": sample.get("Change")
              }
 
+        # TPEx OpenAPI supports OTC stocks. Doesn't support TWSE stocks, futures, etc.
+        unsupported_targets = ["twse_large_caps", "futures_candidates", "fund_candidates"]
+
         return generate_standard_envelope(
              probe_id=probe_id,
              source="TPEx_OpenAPI",
              source_type="official_openapi",
-             contract_status="http_pass" if status == 200 and sample else "failed",
+             contract_status="normalized_pass" if status == 200 and normalized else ("http_pass" if status == 200 and sample else "failed"),
              http_status=status,
              url=url,
              headers_used=headers,
@@ -39,7 +42,8 @@ def probe():
              normalized_sample=normalized,
              freshness_status="eod_batch",
              risk_level="low",
-             ai_suitability="historical_and_eod"
+             ai_suitability="historical_and_eod",
+             unsupported_targets=unsupported_targets
         )
     except Exception as e:
         return generate_standard_envelope(

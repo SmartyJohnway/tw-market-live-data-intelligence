@@ -1,0 +1,124 @@
+{
+  "generated_at_utc": "2026-06-17T09:50:58.530955+00:00",
+  "purpose": "Provides an evidence-based summary of Taiwan equity market data sources for AI agents.",
+  "sources_summary": [
+    {
+      "source": "TWSE_OpenAPI",
+      "type": "official_openapi",
+      "contract_status": "normalized_pass",
+      "is_usable": true,
+      "freshness": "eod_batch",
+      "risk_level": "low",
+      "ai_suitability": "historical_and_eod",
+      "unsupported_targets": [
+        "tpex_stocks",
+        "futures_candidates",
+        "fund_candidates"
+      ],
+      "failed_targets": [],
+      "notes": []
+    },
+    {
+      "source": "TPEx_OpenAPI",
+      "type": "official_openapi",
+      "contract_status": "normalized_pass",
+      "is_usable": true,
+      "freshness": "eod_batch",
+      "risk_level": "low",
+      "ai_suitability": "historical_and_eod",
+      "unsupported_targets": [
+        "twse_large_caps",
+        "futures_candidates",
+        "fund_candidates"
+      ],
+      "failed_targets": [],
+      "notes": []
+    },
+    {
+      "source": "Yahoo_Finance",
+      "type": "public_api",
+      "contract_status": "normalized_pass",
+      "is_usable": true,
+      "freshness": "realtime_candidate",
+      "risk_level": "medium",
+      "ai_suitability": "live_watchlist",
+      "unsupported_targets": [
+        "funds"
+      ],
+      "failed_targets": [],
+      "notes": [
+        "Rate limits apply",
+        "Not an official data source"
+      ]
+    },
+    {
+      "source": "TWSE_MIS",
+      "type": "unofficial_frontend_endpoint",
+      "contract_status": "normalized_pass",
+      "is_usable": true,
+      "freshness": "realtime_candidate",
+      "risk_level": "high",
+      "ai_suitability": "live_watchlist",
+      "unsupported_targets": [
+        "futures",
+        "foreign_funds"
+      ],
+      "failed_targets": [
+        "1435"
+      ],
+      "notes": [
+        "Strict rate limiting",
+        "Requires index.jsp visit for cookies",
+        "Not designed for API use"
+      ]
+    },
+    {
+      "source": "FinMind",
+      "type": "commercial_api",
+      "contract_status": "normalized_pass",
+      "is_usable": true,
+      "freshness": "eod_batch",
+      "risk_level": "low",
+      "ai_suitability": "historical_and_eod",
+      "unsupported_targets": [
+        "funds"
+      ],
+      "failed_targets": [
+        "TX"
+      ],
+      "notes": [
+        "Free tier rate limits apply"
+      ]
+    },
+    {
+      "source": "Fugle_MarketData",
+      "type": "commercial_api",
+      "contract_status": "auth_required",
+      "is_usable": true,
+      "freshness": "unknown",
+      "risk_level": "low",
+      "ai_suitability": "live_streaming_capable",
+      "unsupported_targets": [],
+      "failed_targets": [],
+      "notes": [
+        "Requires personal free tier or paid API key",
+        "Good WebSocket streaming"
+      ]
+    },
+    {
+      "source": "Fubon_Neo_API",
+      "type": "broker_api",
+      "contract_status": "doc_only",
+      "is_usable": true,
+      "freshness": "unknown",
+      "risk_level": "high",
+      "ai_suitability": "execution_capable_but_complex",
+      "unsupported_targets": [],
+      "failed_targets": [],
+      "notes": [
+        "Requires valid brokerage account",
+        "Requires certificate setup"
+      ]
+    }
+  ]
+}
