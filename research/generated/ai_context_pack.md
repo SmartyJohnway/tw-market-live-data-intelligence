@@ -1,6 +1,6 @@
 # AI Context Pack
 
-Generated at: 2026-06-17T12:42:42.144630+00:00
+Generated at: 2026-06-17T14:34:50.915115+00:00
 
 ## Guidelines
 - Never claim an 'unofficial_frontend_endpoint' is an official API.
@@ -9,6 +9,5 @@ Generated at: 2026-06-17T12:42:42.144630+00:00
 
 ## Usable Sources Now
 - **TWSE_OpenAPI** (official_openapi): `normalized_pass`
-- **TPEx_OpenAPI** (official_openapi): `normalized_pass`
 - **Yahoo_Finance** (unofficial_api): `normalized_pass`
 - **TWSE_MIS** (unofficial_frontend_endpoint): `normalized_pass`
