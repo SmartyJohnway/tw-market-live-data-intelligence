@@ -8,7 +8,10 @@ from dotenv import load_dotenv
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from probe_utils import generate_standard_envelope
 
-def probe(datasets=[("TaiwanStockPrice", "2330"), ("TaiwanStockPrice", "1435"), ("TaiwanStockPrice", "0050"), ("TaiwanStockPrice", "00929"), ("TaiwanStockPrice", "TAIEX"), ("TaiwanFutureDaily", "TX")]):
+def probe(datasets=None):
+    if not datasets:
+        datasets = [("TaiwanStockPrice", "2330"), ("TaiwanStockPrice", "0050"), ("TaiwanStockPrice", "TAIEX"), ("TaiwanFutureDaily", "TX")]
+
     print(f"Probing FinMind API for datasets: {datasets}...")
     load_dotenv()
     token = os.getenv("FINMIND_TOKEN", "")
@@ -19,6 +22,8 @@ def probe(datasets=[("TaiwanStockPrice", "2330"), ("TaiwanStockPrice", "1435"), 
     results = []
     raw_sample = None
     normalized_sample = None
+    errors = []
+    failed_targets = []
 
     for dataset, data_id in datasets:
         params = {
@@ -33,24 +38,32 @@ def probe(datasets=[("TaiwanStockPrice", "2330"), ("TaiwanStockPrice", "1435"), 
         try:
             response = requests.get(url, params=params, timeout=10)
             status = response.status_code
+            if status != 200:
+                errors.append(f"HTTP {status} for {dataset}:{data_id}")
+                failed_targets.append(data_id)
+                continue
+
             data = response.json()
-            success = status == 200 and data.get("msg") == "success"
+            success = data.get("msg") == "success"
 
             if success:
                 success_count += 1
                 if not raw_sample and data.get("data") and len(data["data"]) > 0:
-                     raw_sample = data["data"][-1] # get latest
-                     normalized_sample = {
-                          "dataset": dataset,
-                          "symbol": data_id,
-                          "date": raw_sample.get("date"),
-                          "price": raw_sample.get("close") or raw_sample.get("settlement_price"),
-                          "volume": raw_sample.get("Trading_Volume") or raw_sample.get("trading_volume")
-                     }
-
+                    raw_sample = data["data"][-1] # get latest
+                    normalized_sample = {
+                        "dataset": dataset,
+                        "symbol": data_id,
+                        "date": raw_sample.get("date"),
+                        "price": raw_sample.get("close") or raw_sample.get("settlement_price"),
+                        "volume": raw_sample.get("Trading_Volume") or raw_sample.get("trading_volume")
+                    }
+            else:
+                 errors.append(f"API Error message for {dataset}:{data_id}: {data.get('msg')}")
+                 failed_targets.append(data_id)
             results.append({"dataset": dataset, "data_id": data_id, "status": status, "success": bool(success)})
         except Exception as e:
-            results.append({"dataset": dataset, "data_id": data_id, "status": "Error", "success": False, "error": str(e)})
+            errors.append(f"Exception for {dataset}:{data_id}: {str(e)}")
+            failed_targets.append(data_id)
         time.sleep(0.5)
 
     overall_success = success_count > 0
@@ -58,27 +71,38 @@ def probe(datasets=[("TaiwanStockPrice", "2330"), ("TaiwanStockPrice", "1435"), 
     # Calculate staleness based on latest date string if available
     staleness_seconds = None
     if raw_sample and raw_sample.get("date"):
-         try:
-             record_date = datetime.strptime(raw_sample["date"], "%Y-%m-%d").replace(tzinfo=timezone.utc)
-             staleness_seconds = int((datetime.now(timezone.utc) - record_date).total_seconds())
-         except:
-             pass
+        try:
+            record_date = datetime.strptime(raw_sample["date"], "%Y-%m-%d").replace(tzinfo=timezone.utc)
+            staleness_seconds = int((datetime.now(timezone.utc) - record_date).total_seconds())
+        except:
+            pass
+
+    delay_status = "unknown"
+    if staleness_seconds is not None:
+        if staleness_seconds < 86400: # Within 24h
+             delay_status = "eod"
+        else:
+             delay_status = "stale"
 
     return generate_standard_envelope(
-         probe_id=probe_id,
-         source="FinMind",
-         source_type="commercial_api",
-         contract_status="normalized_pass" if overall_success and normalized_sample else ("http_pass" if overall_success else "failed"),
-         http_status=200 if overall_success else "Mixed/Failed",
-         url=url,
-         requires_auth=True, # Optional but expected for reliability
-         raw_sample={"sample": raw_sample, "_details": results},
-         normalized_sample=normalized_sample,
-         freshness_status="eod_batch",
-         staleness_seconds=staleness_seconds,
-         risk_level="low",
-         risk_notes=["Free tier rate limits apply"],
-         ai_suitability="historical_and_eod"
+        probe_id=probe_id,
+        source="FinMind",
+        source_type="commercial_api",
+        contract_status="normalized_pass" if overall_success and normalized_sample else ("http_pass" if overall_success else "failed"),
+        http_status=200 if overall_success else "Mixed/Failed",
+        url=url,
+        requires_auth=True, # Recommended for reliable use
+        raw_sample={"sample": raw_sample, "_details": results} if raw_sample else None,
+        normalized_sample=normalized_sample,
+        freshness_status="eod_batch",
+        staleness_seconds=staleness_seconds,
+        delay_status=delay_status,
+        risk_level="low",
+        risk_notes=["Free tier rate limits apply"],
+        ai_suitability="historical_and_eod",
+        failed_targets=failed_targets,
+        errors=errors,
+        unsupported_targets=["funds"]
     )
 
 if __name__ == "__main__":

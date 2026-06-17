@@ -1,51 +1,67 @@
 # TW-Market Live Data Intelligence
 
-AI-native research project for discovering, validating, benchmarking, and documenting feasible methods for AI systems to access Taiwan equity market information with high freshness, legal safety, reproducibility, and maintainability.
+An AI-native research project and operational workbench for discovering, validating, benchmarking, and documenting feasible methods for AI systems to access Taiwan equity market information safely and reliably.
 
-## Mission
+## Project Purpose
 
-Build a Taiwan market live-data acquisition framework that enables ChatGPT, Codex, and future AI agents to reliably access near real-time Taiwan market information through legally available interfaces.
+This repository provides a testable, reproducible workbench to evaluate various data sources for Taiwan equities (TWSE, TPEx, ETFs, futures, etc.). It determines whether sources are live, delayed, stale, or require authentication, and maps their capabilities into a standardized "data contract" suitable for AI Agents.
 
-This repository does **not** assume any single implementation. TWSE MIS, Yahoo Finance, Fugle, Fubon Neo, FinMind, TWSE/TPEx OpenAPI, browser automation, MCP, WebSocket, and other methods are all research candidates.
+## What this project is NOT
 
-## Core Principle
+- It is **not** a high-frequency trading engine.
+- It is **not** an open, public proxy for bypassing CORS or rate limits.
+- It is **not** a production-ready data feed for commercial applications.
 
-This is not a one-off crawler. It is a research and engineering workbench for:
+## Quick Start & Installation
 
-- evidence-based market data source discovery,
-- reproducible probing,
-- protocol and schema analysis,
-- AI integration design,
-- safe long-term maintainability.
+### Requirements
+- Python 3.10+
+- `pip`
 
-## What this repo should produce
+### Setup
+```bash
+# Clone the repository
+git clone https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git
+cd tw-market-live-data-intelligence
 
-1. Architecture survey
-2. Data-source capability matrix
-3. Probe results and failure logs
-4. Protocol/session/header/cookie analysis where applicable
-5. Data contracts and timestamp semantics
-6. AI integration patterns, including ChatGPT, Codex, MCP, and browser automation
-7. Recommended architecture with tradeoffs
+# Install dependencies
+python -m pip install -r requirements.txt
+```
 
-## First milestone
+### Running Tests (Offline)
+The repository includes offline unit tests that mock network responses to ensure parsing and envelope generation logic remains intact.
 
-Establish a minimal, reproducible source-probe framework for:
+```bash
+pytest -m "not network" -v
+```
 
-- TWSE MIS candidate endpoints
-- Yahoo Finance / Yahoo Taiwan Finance candidates
-- TWSE official OpenAPI / public pages
-- TPEx official OpenAPI / public pages
-- Fugle / Fubon Neo feasibility research, without embedding secrets
+### Report Generation (Network Probes)
+To run the automated probe framework against all defined targets in `config/market_targets.json` and generate capability reports:
 
-## Legal and ethical constraints
+```bash
+python scripts/run_all_probes.py
+```
+*This will generate rich Markdown documentation in `docs/` and `research/`, and JSON matrix data in `frontend/public/`.*
 
-- Respect website terms of service.
-- Avoid abusive crawling or excessive polling.
-- Do not bypass authentication or access controls.
-- Do not store API keys in Git.
-- Treat unofficial endpoints as fragile and document their risk clearly.
+### Local API Usage (Optional)
+A local FastAPI server can be spun up to expose probe endpoints for local frontend or MCP integration.
 
-## Repository status
+```bash
+uvicorn server.main:app --host 127.0.0.1 --port 8000
+```
 
-Initial scaffold for AI Vibe Coding long-task collaboration.
+### Frontend Usage
+The frontend provides a clear UI to view the generated capability matrix and interact with the local API.
+1. Run the local API (`uvicorn server.main:app ...`)
+2. Open `frontend/public/index.html` in your browser.
+
+## Safety Notes & Security Posture
+- **No Open Proxies:** Previous iterations contained serverless proxies. These have been removed. The frontend now interfaces directly with a locally hosted backend on `127.0.0.1`.
+- **Secrets Management:** Do not commit API keys. If utilizing commercial APIs (like FinMind), populate a local `.env` file with `FINMIND_TOKEN=<your_token>`.
+
+## Known Caveats
+1. Unofficial endpoints (like TWSE MIS or Yahoo Finance) are extremely fragile. They are rate-limited, require specific headers (sometimes cookies), and can break without notice.
+2. The concept of "real-time" is strictly bound by the `delay_status` and `staleness_seconds` metrics defined in the data contract envelope. Do not assume data is live unless explicitly proven by these fields.
+
+## Current Status
+`deliverable_mvp_completed_with_caveats` - The MVP framework is operational, heavily documented, tested offline, and generates dynamic evidence-based reports natively.

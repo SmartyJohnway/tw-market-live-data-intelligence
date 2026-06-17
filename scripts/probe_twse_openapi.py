@@ -21,37 +21,39 @@ def probe():
         sample = data[0] if data and isinstance(data, list) else None
         normalized = None
         if sample:
-             normalized = {
-                  "symbol": sample.get("Code"),
-                  "name": sample.get("Name"),
-                  "price": sample.get("ClosingPrice"),
-                  "change": sample.get("Change")
-             }
+            normalized = {
+                "symbol": sample.get("Code"),
+                "name": sample.get("Name"),
+                "price": sample.get("ClosingPrice"),
+                "change": sample.get("Change")
+            }
 
         return generate_standard_envelope(
-             probe_id=probe_id,
-             source="TWSE_OpenAPI",
-             source_type="official_openapi",
-             contract_status="http_pass" if status == 200 and sample else "failed",
-             http_status=status,
-             url=url,
-             headers_used=headers,
-             raw_sample=sample,
-             normalized_sample=normalized,
-             freshness_status="eod_batch",
-             risk_level="low",
-             ai_suitability="historical_and_eod"
+            probe_id=probe_id,
+            source="TWSE_OpenAPI",
+            source_type="official_openapi",
+            contract_status="normalized_pass" if status == 200 and normalized else ("http_pass" if status == 200 else "failed"),
+            http_status=status,
+            url=url,
+            headers_used=headers,
+            raw_sample=sample,
+            normalized_sample=normalized,
+            freshness_status="eod_batch",
+            delay_status="eod",
+            risk_level="low",
+            ai_suitability="historical_and_eod",
+            unsupported_targets=["indices", "futures", "funds"]
         )
     except Exception as e:
         return generate_standard_envelope(
-             probe_id=probe_id,
-             source="TWSE_OpenAPI",
-             source_type="official_openapi",
-             contract_status="failed",
-             http_status="Error",
-             url=url,
-             headers_used=headers,
-             error=str(e)
+            probe_id=probe_id,
+            source="TWSE_OpenAPI",
+            source_type="official_openapi",
+            contract_status="failed",
+            http_status="Error",
+            url=url,
+            headers_used=headers,
+            errors=[str(e)]
         )
 
 if __name__ == "__main__":
