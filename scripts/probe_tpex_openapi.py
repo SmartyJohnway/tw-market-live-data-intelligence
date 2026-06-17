@@ -1,25 +1,58 @@
 import requests
-import json
+from datetime import datetime, timezone
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from probe_utils import generate_standard_envelope
 
 def probe():
     print("Probing TPEx OpenAPI...")
     url = "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
-    headers = {
-        "Accept": "application/json"
-    }
+    headers = {"Accept": "application/json"}
+    probe_id = f"tpex_openapi_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
+
     try:
         response = requests.get(url, headers=headers, timeout=10)
         status = response.status_code
         data = response.json()
-        print(f"Status: {status}")
-        if data and isinstance(data, list) and len(data) > 0:
-             print(f"Success! Sample: {json.dumps(data[0], ensure_ascii=False)}")
-        else:
-             print("No data or unexpected format.")
-        return {"source": "TPEx OpenAPI", "url": url, "status": status, "success": status == 200 and isinstance(data, list) and len(data) > 0}
+
+        sample = data[0] if data and isinstance(data, list) else None
+        normalized = None
+        if sample:
+             normalized = {
+                  "symbol": sample.get("SecuritiesCompanyCode"),
+                  "name": sample.get("CompanyName"),
+                  "price": sample.get("Close"),
+                  "change": sample.get("Change")
+             }
+
+        return generate_standard_envelope(
+             probe_id=probe_id,
+             source="TPEx_OpenAPI",
+             source_type="official_openapi",
+             contract_status="http_pass" if status == 200 and sample else "failed",
+             http_status=status,
+             url=url,
+             headers_used=headers,
+             raw_sample=sample,
+             normalized_sample=normalized,
+             freshness_status="eod_batch",
+             risk_level="low",
+             ai_suitability="historical_and_eod"
+        )
     except Exception as e:
-        print(f"Failed: {e}")
-        return {"source": "TPEx OpenAPI", "url": url, "status": "Error", "success": False, "error": str(e)}
+        return generate_standard_envelope(
+             probe_id=probe_id,
+             source="TPEx_OpenAPI",
+             source_type="official_openapi",
+             contract_status="failed",
+             http_status="Error",
+             url=url,
+             headers_used=headers,
+             error=str(e)
+        )
 
 if __name__ == "__main__":
-    probe()
+    import json
+    print(json.dumps(probe(), indent=2, ensure_ascii=False))

@@ -1,41 +1,44 @@
 # Probe Execution Log
 
-Last Run: 2026-06-17T06:22:54.553312
+Last Run: 2026-06-17T08:43:53.256444+00:00
 
-## TWSE OpenAPI
+## TWSE_OpenAPI (twse_openapi_20260617_084329)
 - URL: https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL
-- Status: 200
-- Success: True
+- Contract Status: `http_pass`
+- HTTP Status: 200
 
-## TPEx OpenAPI
+## TPEx_OpenAPI (tpex_openapi_20260617_084332)
 - URL: https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes
-- Status: 200
-- Success: True
+- Contract Status: `http_pass`
+- HTTP Status: 200
 
-## Yahoo Finance (TW)
+## Yahoo_Finance (yahoo_20260617_084340)
 - URL: https://query1.finance.yahoo.com/v8/finance/chart/
-- Status: 6/6 OK
-- Success: True
-- Details: [{"symbol": "2330.TW", "status": 200, "success": true}, {"symbol": "1435.TW", "status": 200, "success": true}, {"symbol": "0050.TW", "status": 200, "success": true}, {"symbol": "00929.TW", "status": 200, "success": true}, {"symbol": "^TWII", "status": 200, "success": true}, {"symbol": "TWD=X", "status": 200, "success": true}]
+- Contract Status: `normalized_pass`
+- HTTP Status: 200
+- Risks: Rate limits apply, Not an official data source
 
-## TWSE MIS
-- URL: https://mis.twse.com.tw/stock/api/getStockInfo.jsp
-- Status: 200
-- Success: True
+## TWSE_MIS (twse_mis_20260617_084343)
+- URL: https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|tse_0050.tw|tse_00929.tw|tse_t00.tw|otc_o00.tw&json=1&delay=0&_=1781685824640
+- Contract Status: `normalized_pass`
+- HTTP Status: 200
+- Risks: Strict rate limiting, Requires index.jsp visit for cookies, Not designed for API use
 
-## FinMind
+## FinMind (finmind_20260617_084344)
 - URL: https://api.finmindtrade.com/api/v4/data
-- Status: 5/6 OK
-- Success: True
-- Details: [{"dataset": "TaiwanStockPrice", "data_id": "2330", "status": 200, "success": true}, {"dataset": "TaiwanStockPrice", "data_id": "1435", "status": 200, "success": true}, {"dataset": "TaiwanStockPrice", "data_id": "0050", "status": 200, "success": true}, {"dataset": "TaiwanStockPrice", "data_id": "00929", "status": 200, "success": true}, {"dataset": "TaiwanStockPrice", "data_id": "TAIEX", "status": 200, "success": true}, {"dataset": "TaiwanFutureDaily", "data_id": "TX", "status": 422, "success": false}]
+- Contract Status: `normalized_pass`
+- HTTP Status: 200
+- Risks: Free tier rate limits apply
 
-## Fugle MarketData
+## Fugle_MarketData (fugle_20260617_084353)
 - URL: https://developer.fugle.tw/
-- Status: Documentation Checked
-- Success: True
+- Contract Status: `auth_required`
+- HTTP Status: N/A
+- Risks: Requires personal free tier or paid API key, Good WebSocket streaming
 
-## Fubon Neo API
+## Fubon_Neo_API (fubon_20260617_084353)
 - URL: https://developer.fubon.com/
-- Status: Documentation Checked
-- Success: True
+- Contract Status: `doc_only`
+- HTTP Status: N/A
+- Risks: Requires valid brokerage account, Requires certificate setup
 
