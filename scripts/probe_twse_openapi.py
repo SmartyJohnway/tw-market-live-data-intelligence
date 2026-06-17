@@ -28,15 +28,11 @@ def probe():
                   "change": sample.get("Change")
              }
 
-        # For TWSE OpenAPI STOCK_DAY_ALL, it only supports TWSE stocks, some ETFs.
-        # It does not support TPEx stocks, futures, or funds generally.
-        unsupported_targets = ["tpex_stocks", "futures_candidates", "fund_candidates"]
-
         return generate_standard_envelope(
              probe_id=probe_id,
              source="TWSE_OpenAPI",
              source_type="official_openapi",
-             contract_status="normalized_pass" if status == 200 and normalized else ("http_pass" if status == 200 and sample else "failed"),
+             contract_status="http_pass" if status == 200 and sample else "failed",
              http_status=status,
              url=url,
              headers_used=headers,
@@ -44,8 +40,7 @@ def probe():
              normalized_sample=normalized,
              freshness_status="eod_batch",
              risk_level="low",
-             ai_suitability="historical_and_eod",
-             unsupported_targets=unsupported_targets
+             ai_suitability="historical_and_eod"
         )
     except Exception as e:
         return generate_standard_envelope(

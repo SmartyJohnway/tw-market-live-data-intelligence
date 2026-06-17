@@ -16,7 +16,6 @@ def get_abs_path(relative_path):
 def generate_reports(results):
     os.makedirs(get_abs_path("docs"), exist_ok=True)
     os.makedirs(get_abs_path("research"), exist_ok=True)
-    os.makedirs(get_abs_path("research/generated"), exist_ok=True)
     os.makedirs(get_abs_path("frontend/public"), exist_ok=True)
 
     flat_results = []
@@ -63,52 +62,6 @@ def generate_reports(results):
             "last_updated": datetime.now(timezone.utc).isoformat(),
             "results": flat_results
         }, f, ensure_ascii=False, indent=2)
-
-    # Generate AI Context Pack (JSON)
-    context_pack = {
-        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
-        "purpose": "Provides an evidence-based summary of Taiwan equity market data sources for AI agents.",
-        "sources_summary": []
-    }
-
-    for res in flat_results:
-        context_pack["sources_summary"].append({
-            "source": res["source"],
-            "type": res["source_type"],
-            "contract_status": res["contract_status"],
-            "is_usable": res["status"] == "pass",
-            "freshness": res["freshness_status"],
-            "risk_level": res["risk_level"],
-            "ai_suitability": res["ai_suitability"],
-            "unsupported_targets": res.get("unsupported_targets", []),
-            "failed_targets": res.get("failed_targets", []),
-            "notes": res.get("risk_notes", [])
-        })
-
-    with open(get_abs_path("research/generated/ai_context_pack.json"), "w", encoding="utf-8") as f:
-        json.dump(context_pack, f, ensure_ascii=False, indent=2)
-
-    # Generate AI Context Pack (Markdown)
-    with open(get_abs_path("research/generated/ai_context_pack.md"), "w", encoding="utf-8") as f:
-        f.write("# TW-Market AI Context Pack\n\n")
-        f.write(f"**Generated at:** {context_pack['generated_at_utc']}\n\n")
-        f.write("This document provides an evidence-based summary of Taiwan equity market data sources for AI agents.\n\n")
-        f.write("## Source Capabilities\n\n")
-        for src in context_pack["sources_summary"]:
-            usable = "✅ Yes" if src["is_usable"] else "❌ No"
-            f.write(f"### {src['source']}\n")
-            f.write(f"- **Type:** {src['type']}\n")
-            f.write(f"- **Usable Now:** {usable} (Contract Status: `{src['contract_status']}`)\n")
-            f.write(f"- **Freshness:** {src['freshness']}\n")
-            f.write(f"- **Risk Level:** {src['risk_level']}\n")
-            f.write(f"- **AI Suitability:** {src['ai_suitability']}\n")
-            if src["unsupported_targets"]:
-                f.write(f"- **Unsupported Targets:** {', '.join(src['unsupported_targets'])}\n")
-            if src["failed_targets"]:
-                f.write(f"- **Failed Targets:** {', '.join(src['failed_targets'])}\n")
-            if src["notes"]:
-                f.write(f"- **Notes:** {', '.join(src['notes'])}\n")
-            f.write("\n")
 
 if __name__ == "__main__":
     results = []
