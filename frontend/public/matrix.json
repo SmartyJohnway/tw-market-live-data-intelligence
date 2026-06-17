@@ -1,0 +1,117 @@
+{
+  "last_updated": "2026-06-17T06:22:54.553575",
+  "results": [
+    {
+      "source": "TWSE OpenAPI",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+      "status": 200,
+      "success": true
+    },
+    {
+      "source": "TPEx OpenAPI",
+      "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
+      "status": 200,
+      "success": true
+    },
+    {
+      "source": "Yahoo Finance (TW)",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/",
+      "status": "6/6 OK",
+      "success": true,
+      "details": [
+        {
+          "symbol": "2330.TW",
+          "status": 200,
+          "success": true
+        },
+        {
+          "symbol": "1435.TW",
+          "status": 200,
+          "success": true
+        },
+        {
+          "symbol": "0050.TW",
+          "status": 200,
+          "success": true
+        },
+        {
+          "symbol": "00929.TW",
+          "status": 200,
+          "success": true
+        },
+        {
+          "symbol": "^TWII",
+          "status": 200,
+          "success": true
+        },
+        {
+          "symbol": "TWD=X",
+          "status": 200,
+          "success": true
+        }
+      ]
+    },
+    {
+      "source": "TWSE MIS",
+      "url": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp",
+      "status": 200,
+      "success": true
+    },
+    {
+      "source": "FinMind",
+      "url": "https://api.finmindtrade.com/api/v4/data",
+      "status": "5/6 OK",
+      "success": true,
+      "details": [
+        {
+          "dataset": "TaiwanStockPrice",
+          "data_id": "2330",
+          "status": 200,
+          "success": true
+        },
+        {
+          "dataset": "TaiwanStockPrice",
+          "data_id": "1435",
+          "status": 200,
+          "success": true
+        },
+        {
+          "dataset": "TaiwanStockPrice",
+          "data_id": "0050",
+          "status": 200,
+          "success": true
+        },
+        {
+          "dataset": "TaiwanStockPrice",
+          "data_id": "00929",
+          "status": 200,
+          "success": true
+        },
+        {
+          "dataset": "TaiwanStockPrice",
+          "data_id": "TAIEX",
+          "status": 200,
+          "success": true
+        },
+        {
+          "dataset": "TaiwanFutureDaily",
+          "data_id": "TX",
+          "status": 422,
+          "success": false
+        }
+      ]
+    },
+    {
+      "source": "Fugle MarketData",
+      "url": "https://developer.fugle.tw/",
+      "status": "Documentation Checked",
+      "success": true
+    },
+    {
+      "source": "Fubon Neo API",
+      "url": "https://developer.fubon.com/",
+      "status": "Documentation Checked",
+      "success": true
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+[build]
+  publish = "frontend/public"
+  command = "echo 'Deploying static workbench...'"
+
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
