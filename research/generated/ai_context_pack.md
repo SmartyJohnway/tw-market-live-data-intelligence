@@ -1,6 +1,6 @@
 # TW-Market AI Context Pack
 
-**Generated at:** 2026-06-17T10:26:55.245593+00:00
+**Generated at:** 2026-06-17T09:50:58.530955+00:00
 
 This document provides an evidence-based summary of Taiwan equity market data sources for AI agents.
 
