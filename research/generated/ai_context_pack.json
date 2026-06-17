@@ -1,0 +1,1442 @@
+{
+  "generated_at": "2026-06-17T12:42:42.144630+00:00",
+  "purpose": "Provide AI agents with up-to-date facts about available Taiwan equity market data sources.",
+  "usable_sources": [
+    {
+      "probe_id": "twse_openapi_20260617_124216",
+      "source": "TWSE_OpenAPI",
+      "source_type": "official_openapi",
+      "contract_status": "normalized_pass",
+      "retrieved_at_utc": "2026-06-17T12:42:17.779818+00:00",
+      "retrieved_at_taipei": "2026-06-17T20:42:17.779818+00:00",
+      "request": {
+        "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+        "method": "GET",
+        "params": {},
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "http_status": 200,
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "schema_fingerprint": {
+        "type": "dict",
+        "keys": [
+          "change",
+          "name",
+          "price",
+          "symbol"
+        ],
+        "hash": "81d2f4f7ddab6bd8e2f00555d8b9f1b2"
+      },
+      "schema_hash": "81d2f4f7ddab6bd8e2f00555d8b9f1b2",
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": {
+        "Date": "1150616",
+        "Code": "00400A",
+        "Name": "主動國泰動能高息",
+        "TradeVolume": "40073989",
+        "TradeValue": "592738718",
+        "OpeningPrice": "14.83",
+        "HighestPrice": "14.86",
+        "LowestPrice": "14.70",
+        "ClosingPrice": "14.72",
+        "Change": "0.0900",
+        "Transaction": "6219"
+      },
+      "normalized_sample": {
+        "symbol": "00400A",
+        "name": "主動國泰動能高息",
+        "price": "14.72",
+        "change": "0.0900"
+      },
+      "freshness_status": "eod_batch",
+      "staleness_seconds": null,
+      "delay_status": "eod",
+      "requires_auth": false,
+      "requires_session": false,
+      "risk_level": "low",
+      "risk_notes": [],
+      "ai_suitability": "historical_and_eod",
+      "is_usable_now": true,
+      "potentially_usable_with_credentials": false,
+      "unsupported_targets": [
+        "indices",
+        "futures",
+        "funds"
+      ],
+      "failed_targets": [],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "probe_id": "tpex_openapi_20260617_124217",
+      "source": "TPEx_OpenAPI",
+      "source_type": "official_openapi",
+      "contract_status": "normalized_pass",
+      "retrieved_at_utc": "2026-06-17T12:42:25.802233+00:00",
+      "retrieved_at_taipei": "2026-06-17T20:42:25.802233+00:00",
+      "request": {
+        "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
+        "method": "GET",
+        "params": {},
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "http_status": 200,
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "schema_fingerprint": {
+        "type": "dict",
+        "keys": [
+          "change",
+          "name",
+          "price",
+          "symbol"
+        ],
+        "hash": "81d2f4f7ddab6bd8e2f00555d8b9f1b2"
+      },
+      "schema_hash": "81d2f4f7ddab6bd8e2f00555d8b9f1b2",
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": {
+        "Date": "1150617",
+        "SecuritiesCompanyCode": "006201",
+        "CompanyName": "元大富櫃50",
+        "Close": "48.23",
+        "Change": "+0.01",
+        "Open": "47.67",
+        "High": "48.29",
+        "Low": "47.67",
+        "Average": "48.04",
+        "TradingShares": "137244",
+        "TransactionAmount": "6593545",
+        "TransactionNumber": "167",
+        "LatestBidPrice": "48.13",
+        "LatesAskPrice": "48.23",
+        "Capitals": "20446000",
+        "NextReferencePrice": "48.23",
+        "NextLimitUp": "53.05",
+        "NextLimitDown": "43.41"
+      },
+      "normalized_sample": {
+        "symbol": "006201",
+        "name": "元大富櫃50",
+        "price": "48.23",
+        "change": "+0.01"
+      },
+      "freshness_status": "eod_batch",
+      "staleness_seconds": null,
+      "delay_status": "eod",
+      "requires_auth": false,
+      "requires_session": false,
+      "risk_level": "low",
+      "risk_notes": [],
+      "ai_suitability": "historical_and_eod",
+      "is_usable_now": true,
+      "potentially_usable_with_credentials": false,
+      "unsupported_targets": [
+        "indices",
+        "futures",
+        "funds"
+      ],
+      "failed_targets": [],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "probe_id": "yahoo_20260617_124225",
+      "source": "Yahoo_Finance",
+      "source_type": "unofficial_api",
+      "contract_status": "normalized_pass",
+      "retrieved_at_utc": "2026-06-17T12:42:31.320354+00:00",
+      "retrieved_at_taipei": "2026-06-17T20:42:31.320354+00:00",
+      "request": {
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/[symbol]",
+        "method": "GET",
+        "params": {},
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+        }
+      },
+      "http_status": 200,
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "schema_fingerprint": {
+        "type": "dict",
+        "keys": [
+          "exchange",
+          "price",
+          "source_time",
+          "symbol"
+        ],
+        "hash": "da16fdff62889a7f0e09672ece661566"
+      },
+      "schema_hash": "da16fdff62889a7f0e09672ece661566",
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": {
+        "meta": {
+          "currency": "TWD",
+          "symbol": "2330.TW",
+          "exchangeName": "TAI",
+          "fullExchangeName": "Taiwan",
+          "instrumentType": "EQUITY",
+          "firstTradeDate": 946947600,
+          "regularMarketTime": 1781674209,
+          "hasPrePostMarketData": false,
+          "gmtoffset": 28800,
+          "timezone": "CST",
+          "exchangeTimezoneName": "Asia/Taipei",
+          "regularMarketPrice": 2385.0,
+          "fiftyTwoWeekHigh": 2440.0,
+          "fiftyTwoWeekLow": 1015.0,
+          "regularMarketDayHigh": 2385.0,
+          "regularMarketDayLow": 2350.0,
+          "regularMarketVolume": 27979137,
+          "longName": "Taiwan Semiconductor Manufacturing Company Limited",
+          "shortName": "TAIWAN SEMICONDUCTOR MANUFACTUR",
+          "chartPreviousClose": 2400.0,
+          "previousClose": 2400.0,
+          "scale": 3,
+          "priceHint": 2,
+          "currentTradingPeriod": {
+            "pre": {
+              "timezone": "CST",
+              "start": 1781658000,
+              "end": 1781658000,
+              "gmtoffset": 28800
+            },
+            "regular": {
+              "timezone": "CST",
+              "start": 1781658000,
+              "end": 1781674200,
+              "gmtoffset": 28800
+            },
+            "post": {
+              "timezone": "CST",
+              "start": 1781674200,
+              "end": 1781674200,
+              "gmtoffset": 28800
+            }
+          },
+          "tradingPeriods": [
+            [
+              {
+                "timezone": "CST",
+                "start": 1781658000,
+                "end": 1781674200,
+                "gmtoffset": 28800
+              }
+            ]
+          ],
+          "dataGranularity": "1m",
+          "range": "1d",
+          "validRanges": [
+            "1d",
+            "5d",
+            "1mo",
+            "3mo",
+            "6mo",
+            "1y",
+            "2y",
+            "5y",
+            "10y",
+            "ytd",
+            "max"
+          ]
+        },
+        "_details": [
+          {
+            "symbol": "2330.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "1435.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "8069.TWO",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "5347.TWO",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "0050.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "00929.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "9105.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "^TWII",
+            "status": 200,
+            "success": true
+          }
+        ]
+      },
+      "normalized_sample": {
+        "symbol": "2330.TW",
+        "price": 2385.0,
+        "source_time": 1781674209,
+        "exchange": "TAI"
+      },
+      "freshness_status": "realtime_candidate",
+      "staleness_seconds": 25942,
+      "delay_status": "delayed",
+      "requires_auth": false,
+      "requires_session": false,
+      "risk_level": "medium",
+      "risk_notes": [
+        "Rate limits apply",
+        "Not an official data source",
+        "Unofficial endpoint"
+      ],
+      "ai_suitability": "live_watchlist",
+      "is_usable_now": true,
+      "potentially_usable_with_credentials": false,
+      "unsupported_targets": [],
+      "failed_targets": [
+        "TX.TW",
+        "FUNDA.TW"
+      ],
+      "warnings": [],
+      "errors": [
+        "HTTP 404 for TX.TW",
+        "HTTP 404 for FUNDA.TW"
+      ]
+    },
+    {
+      "probe_id": "twse_mis_20260617_124231",
+      "source": "TWSE_MIS",
+      "source_type": "unofficial_frontend_endpoint",
+      "contract_status": "normalized_pass",
+      "retrieved_at_utc": "2026-06-17T12:42:32.230793+00:00",
+      "retrieved_at_taipei": "2026-06-17T20:42:32.230793+00:00",
+      "request": {
+        "url": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781700152058",
+        "method": "GET",
+        "params": {},
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7"
+        }
+      },
+      "http_status": 200,
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "schema_fingerprint": {
+        "type": "dict",
+        "keys": [
+          "exchange",
+          "name",
+          "price",
+          "retrieved_at_taipei",
+          "source_time_ms",
+          "symbol"
+        ],
+        "hash": "3b339533a023cb63a91dbe9d55fff722"
+      },
+      "schema_hash": "3b339533a023cb63a91dbe9d55fff722",
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": {
+        "_total_found": 8,
+        "sample": {
+          "@": "2330.tw",
+          "tv": "6068",
+          "ps": "5985",
+          "pid": "9.tse.tw|13676",
+          "pz": "2385.0000",
+          "bp": "0",
+          "fv": "66",
+          "oa": "2395.0000",
+          "ob": "2390.0000",
+          "m%": "000000",
+          "^": "20260617",
+          "key": "tse_2330.tw_20260617",
+          "a": "2385.0000_2390.0000_2395.0000_2400.0000_2405.0000_",
+          "b": "2380.0000_2375.0000_2370.0000_2365.0000_2360.0000_",
+          "c": "2330",
+          "#": "13.tse.tw|2877",
+          "d": "20260617",
+          "%": "14:30:00",
+          "ch": "2330.tw",
+          "tlong": "1781677800000",
+          "ot": "14:30:00",
+          "f": "89_437_617_680_176_",
+          "g": "613_404_458_518_800_",
+          "ip": "0",
+          "mt": "000000",
+          "ov": "44076",
+          "h": "2385.0000",
+          "i": "24",
+          "it": "12",
+          "oz": "2395.0000",
+          "l": "2350.0000",
+          "n": "台積電",
+          "o": "2355.0000",
+          "p": "0",
+          "ex": "tse",
+          "s": "6068",
+          "t": "13:30:00",
+          "u": "2640.0000",
+          "v": "25400",
+          "w": "2160.0000",
+          "nf": "台灣積體電路製造股份有限公司",
+          "y": "2400.0000",
+          "z": "2385.0000",
+          "ts": "0"
+        }
+      },
+      "normalized_sample": {
+        "symbol": "2330",
+        "name": "台積電",
+        "price": "2385.0000",
+        "exchange": "tse",
+        "source_time_ms": "1781677800000",
+        "retrieved_at_taipei": "20260617 13:30:00"
+      },
+      "freshness_status": "realtime_candidate",
+      "staleness_seconds": 22352,
+      "delay_status": "delayed",
+      "requires_auth": false,
+      "requires_session": true,
+      "risk_level": "high",
+      "risk_notes": [
+        "Strict rate limiting",
+        "Requires index.jsp visit for cookies",
+        "Not designed for API use",
+        "Unofficial endpoint"
+      ],
+      "ai_suitability": "live_watchlist",
+      "is_usable_now": true,
+      "potentially_usable_with_credentials": false,
+      "unsupported_targets": [
+        "futures",
+        "funds"
+      ],
+      "failed_targets": [],
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "official_sources": [
+    {
+      "probe_id": "twse_openapi_20260617_124216",
+      "source": "TWSE_OpenAPI",
+      "source_type": "official_openapi",
+      "contract_status": "normalized_pass",
+      "retrieved_at_utc": "2026-06-17T12:42:17.779818+00:00",
+      "retrieved_at_taipei": "2026-06-17T20:42:17.779818+00:00",
+      "request": {
+        "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+        "method": "GET",
+        "params": {},
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "http_status": 200,
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "schema_fingerprint": {
+        "type": "dict",
+        "keys": [
+          "change",
+          "name",
+          "price",
+          "symbol"
+        ],
+        "hash": "81d2f4f7ddab6bd8e2f00555d8b9f1b2"
+      },
+      "schema_hash": "81d2f4f7ddab6bd8e2f00555d8b9f1b2",
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": {
+        "Date": "1150616",
+        "Code": "00400A",
+        "Name": "主動國泰動能高息",
+        "TradeVolume": "40073989",
+        "TradeValue": "592738718",
+        "OpeningPrice": "14.83",
+        "HighestPrice": "14.86",
+        "LowestPrice": "14.70",
+        "ClosingPrice": "14.72",
+        "Change": "0.0900",
+        "Transaction": "6219"
+      },
+      "normalized_sample": {
+        "symbol": "00400A",
+        "name": "主動國泰動能高息",
+        "price": "14.72",
+        "change": "0.0900"
+      },
+      "freshness_status": "eod_batch",
+      "staleness_seconds": null,
+      "delay_status": "eod",
+      "requires_auth": false,
+      "requires_session": false,
+      "risk_level": "low",
+      "risk_notes": [],
+      "ai_suitability": "historical_and_eod",
+      "is_usable_now": true,
+      "potentially_usable_with_credentials": false,
+      "unsupported_targets": [
+        "indices",
+        "futures",
+        "funds"
+      ],
+      "failed_targets": [],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "probe_id": "tpex_openapi_20260617_124217",
+      "source": "TPEx_OpenAPI",
+      "source_type": "official_openapi",
+      "contract_status": "normalized_pass",
+      "retrieved_at_utc": "2026-06-17T12:42:25.802233+00:00",
+      "retrieved_at_taipei": "2026-06-17T20:42:25.802233+00:00",
+      "request": {
+        "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
+        "method": "GET",
+        "params": {},
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "http_status": 200,
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "schema_fingerprint": {
+        "type": "dict",
+        "keys": [
+          "change",
+          "name",
+          "price",
+          "symbol"
+        ],
+        "hash": "81d2f4f7ddab6bd8e2f00555d8b9f1b2"
+      },
+      "schema_hash": "81d2f4f7ddab6bd8e2f00555d8b9f1b2",
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": {
+        "Date": "1150617",
+        "SecuritiesCompanyCode": "006201",
+        "CompanyName": "元大富櫃50",
+        "Close": "48.23",
+        "Change": "+0.01",
+        "Open": "47.67",
+        "High": "48.29",
+        "Low": "47.67",
+        "Average": "48.04",
+        "TradingShares": "137244",
+        "TransactionAmount": "6593545",
+        "TransactionNumber": "167",
+        "LatestBidPrice": "48.13",
+        "LatesAskPrice": "48.23",
+        "Capitals": "20446000",
+        "NextReferencePrice": "48.23",
+        "NextLimitUp": "53.05",
+        "NextLimitDown": "43.41"
+      },
+      "normalized_sample": {
+        "symbol": "006201",
+        "name": "元大富櫃50",
+        "price": "48.23",
+        "change": "+0.01"
+      },
+      "freshness_status": "eod_batch",
+      "staleness_seconds": null,
+      "delay_status": "eod",
+      "requires_auth": false,
+      "requires_session": false,
+      "risk_level": "low",
+      "risk_notes": [],
+      "ai_suitability": "historical_and_eod",
+      "is_usable_now": true,
+      "potentially_usable_with_credentials": false,
+      "unsupported_targets": [
+        "indices",
+        "futures",
+        "funds"
+      ],
+      "failed_targets": [],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "probe_id": "yahoo_20260617_124225",
+      "source": "Yahoo_Finance",
+      "source_type": "unofficial_api",
+      "contract_status": "normalized_pass",
+      "retrieved_at_utc": "2026-06-17T12:42:31.320354+00:00",
+      "retrieved_at_taipei": "2026-06-17T20:42:31.320354+00:00",
+      "request": {
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/[symbol]",
+        "method": "GET",
+        "params": {},
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+        }
+      },
+      "http_status": 200,
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "schema_fingerprint": {
+        "type": "dict",
+        "keys": [
+          "exchange",
+          "price",
+          "source_time",
+          "symbol"
+        ],
+        "hash": "da16fdff62889a7f0e09672ece661566"
+      },
+      "schema_hash": "da16fdff62889a7f0e09672ece661566",
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": {
+        "meta": {
+          "currency": "TWD",
+          "symbol": "2330.TW",
+          "exchangeName": "TAI",
+          "fullExchangeName": "Taiwan",
+          "instrumentType": "EQUITY",
+          "firstTradeDate": 946947600,
+          "regularMarketTime": 1781674209,
+          "hasPrePostMarketData": false,
+          "gmtoffset": 28800,
+          "timezone": "CST",
+          "exchangeTimezoneName": "Asia/Taipei",
+          "regularMarketPrice": 2385.0,
+          "fiftyTwoWeekHigh": 2440.0,
+          "fiftyTwoWeekLow": 1015.0,
+          "regularMarketDayHigh": 2385.0,
+          "regularMarketDayLow": 2350.0,
+          "regularMarketVolume": 27979137,
+          "longName": "Taiwan Semiconductor Manufacturing Company Limited",
+          "shortName": "TAIWAN SEMICONDUCTOR MANUFACTUR",
+          "chartPreviousClose": 2400.0,
+          "previousClose": 2400.0,
+          "scale": 3,
+          "priceHint": 2,
+          "currentTradingPeriod": {
+            "pre": {
+              "timezone": "CST",
+              "start": 1781658000,
+              "end": 1781658000,
+              "gmtoffset": 28800
+            },
+            "regular": {
+              "timezone": "CST",
+              "start": 1781658000,
+              "end": 1781674200,
+              "gmtoffset": 28800
+            },
+            "post": {
+              "timezone": "CST",
+              "start": 1781674200,
+              "end": 1781674200,
+              "gmtoffset": 28800
+            }
+          },
+          "tradingPeriods": [
+            [
+              {
+                "timezone": "CST",
+                "start": 1781658000,
+                "end": 1781674200,
+                "gmtoffset": 28800
+              }
+            ]
+          ],
+          "dataGranularity": "1m",
+          "range": "1d",
+          "validRanges": [
+            "1d",
+            "5d",
+            "1mo",
+            "3mo",
+            "6mo",
+            "1y",
+            "2y",
+            "5y",
+            "10y",
+            "ytd",
+            "max"
+          ]
+        },
+        "_details": [
+          {
+            "symbol": "2330.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "1435.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "8069.TWO",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "5347.TWO",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "0050.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "00929.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "9105.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "^TWII",
+            "status": 200,
+            "success": true
+          }
+        ]
+      },
+      "normalized_sample": {
+        "symbol": "2330.TW",
+        "price": 2385.0,
+        "source_time": 1781674209,
+        "exchange": "TAI"
+      },
+      "freshness_status": "realtime_candidate",
+      "staleness_seconds": 25942,
+      "delay_status": "delayed",
+      "requires_auth": false,
+      "requires_session": false,
+      "risk_level": "medium",
+      "risk_notes": [
+        "Rate limits apply",
+        "Not an official data source",
+        "Unofficial endpoint"
+      ],
+      "ai_suitability": "live_watchlist",
+      "is_usable_now": true,
+      "potentially_usable_with_credentials": false,
+      "unsupported_targets": [],
+      "failed_targets": [
+        "TX.TW",
+        "FUNDA.TW"
+      ],
+      "warnings": [],
+      "errors": [
+        "HTTP 404 for TX.TW",
+        "HTTP 404 for FUNDA.TW"
+      ]
+    },
+    {
+      "probe_id": "twse_mis_20260617_124231",
+      "source": "TWSE_MIS",
+      "source_type": "unofficial_frontend_endpoint",
+      "contract_status": "normalized_pass",
+      "retrieved_at_utc": "2026-06-17T12:42:32.230793+00:00",
+      "retrieved_at_taipei": "2026-06-17T20:42:32.230793+00:00",
+      "request": {
+        "url": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781700152058",
+        "method": "GET",
+        "params": {},
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7"
+        }
+      },
+      "http_status": 200,
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "schema_fingerprint": {
+        "type": "dict",
+        "keys": [
+          "exchange",
+          "name",
+          "price",
+          "retrieved_at_taipei",
+          "source_time_ms",
+          "symbol"
+        ],
+        "hash": "3b339533a023cb63a91dbe9d55fff722"
+      },
+      "schema_hash": "3b339533a023cb63a91dbe9d55fff722",
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": {
+        "_total_found": 8,
+        "sample": {
+          "@": "2330.tw",
+          "tv": "6068",
+          "ps": "5985",
+          "pid": "9.tse.tw|13676",
+          "pz": "2385.0000",
+          "bp": "0",
+          "fv": "66",
+          "oa": "2395.0000",
+          "ob": "2390.0000",
+          "m%": "000000",
+          "^": "20260617",
+          "key": "tse_2330.tw_20260617",
+          "a": "2385.0000_2390.0000_2395.0000_2400.0000_2405.0000_",
+          "b": "2380.0000_2375.0000_2370.0000_2365.0000_2360.0000_",
+          "c": "2330",
+          "#": "13.tse.tw|2877",
+          "d": "20260617",
+          "%": "14:30:00",
+          "ch": "2330.tw",
+          "tlong": "1781677800000",
+          "ot": "14:30:00",
+          "f": "89_437_617_680_176_",
+          "g": "613_404_458_518_800_",
+          "ip": "0",
+          "mt": "000000",
+          "ov": "44076",
+          "h": "2385.0000",
+          "i": "24",
+          "it": "12",
+          "oz": "2395.0000",
+          "l": "2350.0000",
+          "n": "台積電",
+          "o": "2355.0000",
+          "p": "0",
+          "ex": "tse",
+          "s": "6068",
+          "t": "13:30:00",
+          "u": "2640.0000",
+          "v": "25400",
+          "w": "2160.0000",
+          "nf": "台灣積體電路製造股份有限公司",
+          "y": "2400.0000",
+          "z": "2385.0000",
+          "ts": "0"
+        }
+      },
+      "normalized_sample": {
+        "symbol": "2330",
+        "name": "台積電",
+        "price": "2385.0000",
+        "exchange": "tse",
+        "source_time_ms": "1781677800000",
+        "retrieved_at_taipei": "20260617 13:30:00"
+      },
+      "freshness_status": "realtime_candidate",
+      "staleness_seconds": 22352,
+      "delay_status": "delayed",
+      "requires_auth": false,
+      "requires_session": true,
+      "risk_level": "high",
+      "risk_notes": [
+        "Strict rate limiting",
+        "Requires index.jsp visit for cookies",
+        "Not designed for API use",
+        "Unofficial endpoint"
+      ],
+      "ai_suitability": "live_watchlist",
+      "is_usable_now": true,
+      "potentially_usable_with_credentials": false,
+      "unsupported_targets": [
+        "futures",
+        "funds"
+      ],
+      "failed_targets": [],
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "unofficial_sources": [
+    {
+      "probe_id": "yahoo_20260617_124225",
+      "source": "Yahoo_Finance",
+      "source_type": "unofficial_api",
+      "contract_status": "normalized_pass",
+      "retrieved_at_utc": "2026-06-17T12:42:31.320354+00:00",
+      "retrieved_at_taipei": "2026-06-17T20:42:31.320354+00:00",
+      "request": {
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/[symbol]",
+        "method": "GET",
+        "params": {},
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+        }
+      },
+      "http_status": 200,
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "schema_fingerprint": {
+        "type": "dict",
+        "keys": [
+          "exchange",
+          "price",
+          "source_time",
+          "symbol"
+        ],
+        "hash": "da16fdff62889a7f0e09672ece661566"
+      },
+      "schema_hash": "da16fdff62889a7f0e09672ece661566",
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": {
+        "meta": {
+          "currency": "TWD",
+          "symbol": "2330.TW",
+          "exchangeName": "TAI",
+          "fullExchangeName": "Taiwan",
+          "instrumentType": "EQUITY",
+          "firstTradeDate": 946947600,
+          "regularMarketTime": 1781674209,
+          "hasPrePostMarketData": false,
+          "gmtoffset": 28800,
+          "timezone": "CST",
+          "exchangeTimezoneName": "Asia/Taipei",
+          "regularMarketPrice": 2385.0,
+          "fiftyTwoWeekHigh": 2440.0,
+          "fiftyTwoWeekLow": 1015.0,
+          "regularMarketDayHigh": 2385.0,
+          "regularMarketDayLow": 2350.0,
+          "regularMarketVolume": 27979137,
+          "longName": "Taiwan Semiconductor Manufacturing Company Limited",
+          "shortName": "TAIWAN SEMICONDUCTOR MANUFACTUR",
+          "chartPreviousClose": 2400.0,
+          "previousClose": 2400.0,
+          "scale": 3,
+          "priceHint": 2,
+          "currentTradingPeriod": {
+            "pre": {
+              "timezone": "CST",
+              "start": 1781658000,
+              "end": 1781658000,
+              "gmtoffset": 28800
+            },
+            "regular": {
+              "timezone": "CST",
+              "start": 1781658000,
+              "end": 1781674200,
+              "gmtoffset": 28800
+            },
+            "post": {
+              "timezone": "CST",
+              "start": 1781674200,
+              "end": 1781674200,
+              "gmtoffset": 28800
+            }
+          },
+          "tradingPeriods": [
+            [
+              {
+                "timezone": "CST",
+                "start": 1781658000,
+                "end": 1781674200,
+                "gmtoffset": 28800
+              }
+            ]
+          ],
+          "dataGranularity": "1m",
+          "range": "1d",
+          "validRanges": [
+            "1d",
+            "5d",
+            "1mo",
+            "3mo",
+            "6mo",
+            "1y",
+            "2y",
+            "5y",
+            "10y",
+            "ytd",
+            "max"
+          ]
+        },
+        "_details": [
+          {
+            "symbol": "2330.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "1435.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "8069.TWO",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "5347.TWO",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "0050.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "00929.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "9105.TW",
+            "status": 200,
+            "success": true
+          },
+          {
+            "symbol": "^TWII",
+            "status": 200,
+            "success": true
+          }
+        ]
+      },
+      "normalized_sample": {
+        "symbol": "2330.TW",
+        "price": 2385.0,
+        "source_time": 1781674209,
+        "exchange": "TAI"
+      },
+      "freshness_status": "realtime_candidate",
+      "staleness_seconds": 25942,
+      "delay_status": "delayed",
+      "requires_auth": false,
+      "requires_session": false,
+      "risk_level": "medium",
+      "risk_notes": [
+        "Rate limits apply",
+        "Not an official data source",
+        "Unofficial endpoint"
+      ],
+      "ai_suitability": "live_watchlist",
+      "is_usable_now": true,
+      "potentially_usable_with_credentials": false,
+      "unsupported_targets": [],
+      "failed_targets": [
+        "TX.TW",
+        "FUNDA.TW"
+      ],
+      "warnings": [],
+      "errors": [
+        "HTTP 404 for TX.TW",
+        "HTTP 404 for FUNDA.TW"
+      ]
+    },
+    {
+      "probe_id": "twse_mis_20260617_124231",
+      "source": "TWSE_MIS",
+      "source_type": "unofficial_frontend_endpoint",
+      "contract_status": "normalized_pass",
+      "retrieved_at_utc": "2026-06-17T12:42:32.230793+00:00",
+      "retrieved_at_taipei": "2026-06-17T20:42:32.230793+00:00",
+      "request": {
+        "url": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781700152058",
+        "method": "GET",
+        "params": {},
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7"
+        }
+      },
+      "http_status": 200,
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "schema_fingerprint": {
+        "type": "dict",
+        "keys": [
+          "exchange",
+          "name",
+          "price",
+          "retrieved_at_taipei",
+          "source_time_ms",
+          "symbol"
+        ],
+        "hash": "3b339533a023cb63a91dbe9d55fff722"
+      },
+      "schema_hash": "3b339533a023cb63a91dbe9d55fff722",
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": {
+        "_total_found": 8,
+        "sample": {
+          "@": "2330.tw",
+          "tv": "6068",
+          "ps": "5985",
+          "pid": "9.tse.tw|13676",
+          "pz": "2385.0000",
+          "bp": "0",
+          "fv": "66",
+          "oa": "2395.0000",
+          "ob": "2390.0000",
+          "m%": "000000",
+          "^": "20260617",
+          "key": "tse_2330.tw_20260617",
+          "a": "2385.0000_2390.0000_2395.0000_2400.0000_2405.0000_",
+          "b": "2380.0000_2375.0000_2370.0000_2365.0000_2360.0000_",
+          "c": "2330",
+          "#": "13.tse.tw|2877",
+          "d": "20260617",
+          "%": "14:30:00",
+          "ch": "2330.tw",
+          "tlong": "1781677800000",
+          "ot": "14:30:00",
+          "f": "89_437_617_680_176_",
+          "g": "613_404_458_518_800_",
+          "ip": "0",
+          "mt": "000000",
+          "ov": "44076",
+          "h": "2385.0000",
+          "i": "24",
+          "it": "12",
+          "oz": "2395.0000",
+          "l": "2350.0000",
+          "n": "台積電",
+          "o": "2355.0000",
+          "p": "0",
+          "ex": "tse",
+          "s": "6068",
+          "t": "13:30:00",
+          "u": "2640.0000",
+          "v": "25400",
+          "w": "2160.0000",
+          "nf": "台灣積體電路製造股份有限公司",
+          "y": "2400.0000",
+          "z": "2385.0000",
+          "ts": "0"
+        }
+      },
+      "normalized_sample": {
+        "symbol": "2330",
+        "name": "台積電",
+        "price": "2385.0000",
+        "exchange": "tse",
+        "source_time_ms": "1781677800000",
+        "retrieved_at_taipei": "20260617 13:30:00"
+      },
+      "freshness_status": "realtime_candidate",
+      "staleness_seconds": 22352,
+      "delay_status": "delayed",
+      "requires_auth": false,
+      "requires_session": true,
+      "risk_level": "high",
+      "risk_notes": [
+        "Strict rate limiting",
+        "Requires index.jsp visit for cookies",
+        "Not designed for API use",
+        "Unofficial endpoint"
+      ],
+      "ai_suitability": "live_watchlist",
+      "is_usable_now": true,
+      "potentially_usable_with_credentials": false,
+      "unsupported_targets": [
+        "futures",
+        "funds"
+      ],
+      "failed_targets": [],
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "auth_required_sources": [
+    {
+      "probe_id": "finmind_20260617_124232",
+      "source": "FinMind",
+      "source_type": "commercial_api",
+      "contract_status": "normalized_pass",
+      "retrieved_at_utc": "2026-06-17T12:42:42.140457+00:00",
+      "retrieved_at_taipei": "2026-06-17T20:42:42.140457+00:00",
+      "request": {
+        "url": "https://api.finmindtrade.com/api/v4/data",
+        "method": "GET",
+        "params": {},
+        "headers": {}
+      },
+      "http_status": 200,
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "schema_fingerprint": {
+        "type": "dict",
+        "keys": [
+          "dataset",
+          "date",
+          "price",
+          "symbol",
+          "volume"
+        ],
+        "hash": "37015eb23e8ff83643f920d748e1fbab"
+      },
+      "schema_hash": "37015eb23e8ff83643f920d748e1fbab",
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": {
+        "sample": {
+          "date": "2026-06-17",
+          "stock_id": "2330",
+          "Trading_Volume": 30059393,
+          "Trading_money": 71151958866,
+          "open": 2355.0,
+          "max": 2385.0,
+          "min": 2350.0,
+          "close": 2385.0,
+          "spread": -15.0,
+          "Trading_turnover": 143625
+        },
+        "_details": [
+          {
+            "dataset": "TaiwanStockPrice",
+            "data_id": "2330",
+            "status": 200,
+            "success": true
+          },
+          {
+            "dataset": "TaiwanStockPrice",
+            "data_id": "1435",
+            "status": 200,
+            "success": true
+          },
+          {
+            "dataset": "TaiwanStockPrice",
+            "data_id": "8069",
+            "status": 200,
+            "success": true
+          },
+          {
+            "dataset": "TaiwanStockPrice",
+            "data_id": "5347",
+            "status": 200,
+            "success": true
+          },
+          {
+            "dataset": "TaiwanStockPrice",
+            "data_id": "0050",
+            "status": 200,
+            "success": true
+          },
+          {
+            "dataset": "TaiwanStockPrice",
+            "data_id": "00929",
+            "status": 200,
+            "success": true
+          },
+          {
+            "dataset": "TaiwanStockPrice",
+            "data_id": "9105",
+            "status": 200,
+            "success": true
+          },
+          {
+            "dataset": "TaiwanStockPrice",
+            "data_id": "TAIEX",
+            "status": 200,
+            "success": true
+          }
+        ]
+      },
+      "normalized_sample": {
+        "dataset": "TaiwanStockPrice",
+        "symbol": "2330",
+        "date": "2026-06-17",
+        "price": 2385.0,
+        "volume": 30059393
+      },
+      "freshness_status": "eod_batch",
+      "staleness_seconds": 45762,
+      "delay_status": "eod",
+      "requires_auth": true,
+      "requires_session": false,
+      "risk_level": "low",
+      "risk_notes": [
+        "Free tier rate limits apply"
+      ],
+      "ai_suitability": "historical_and_eod",
+      "is_usable_now": false,
+      "potentially_usable_with_credentials": true,
+      "unsupported_targets": [
+        "funds"
+      ],
+      "failed_targets": [
+        "TX"
+      ],
+      "warnings": [],
+      "errors": [
+        "HTTP 422 for TaiwanFutureDaily:TX"
+      ]
+    },
+    {
+      "probe_id": "fugle_20260617_124242",
+      "source": "Fugle_MarketData",
+      "source_type": "commercial_api",
+      "contract_status": "auth_required",
+      "retrieved_at_utc": "2026-06-17T12:42:42.142419+00:00",
+      "retrieved_at_taipei": "2026-06-17T20:42:42.142419+00:00",
+      "request": {
+        "url": "https://developer.fugle.tw/",
+        "method": "GET",
+        "params": {},
+        "headers": {}
+      },
+      "http_status": "N/A",
+      "http_ok": false,
+      "parse_status": "unknown",
+      "normalization_status": "unknown",
+      "schema_fingerprint": null,
+      "schema_hash": null,
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": null,
+      "normalized_sample": null,
+      "freshness_status": "unknown",
+      "staleness_seconds": null,
+      "delay_status": "unknown",
+      "requires_auth": true,
+      "requires_session": false,
+      "risk_level": "low",
+      "risk_notes": [
+        "Requires personal API key"
+      ],
+      "ai_suitability": "live_streaming_capable",
+      "is_usable_now": false,
+      "potentially_usable_with_credentials": true,
+      "unsupported_targets": [],
+      "failed_targets": [],
+      "warnings": [
+        "Not probed live due to missing configured credentials."
+      ],
+      "errors": []
+    },
+    {
+      "probe_id": "fubon_20260617_124242",
+      "source": "Fubon_Neo_API",
+      "source_type": "broker_api",
+      "contract_status": "doc_only",
+      "retrieved_at_utc": "2026-06-17T12:42:42.142450+00:00",
+      "retrieved_at_taipei": "2026-06-17T20:42:42.142450+00:00",
+      "request": {
+        "url": "https://developer.fubon.com/",
+        "method": "GET",
+        "params": {},
+        "headers": {}
+      },
+      "http_status": "N/A",
+      "http_ok": false,
+      "parse_status": "unknown",
+      "normalization_status": "unknown",
+      "schema_fingerprint": null,
+      "schema_hash": null,
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": null,
+      "normalized_sample": null,
+      "freshness_status": "unknown",
+      "staleness_seconds": null,
+      "delay_status": "unknown",
+      "requires_auth": true,
+      "requires_session": false,
+      "risk_level": "high",
+      "risk_notes": [
+        "Requires valid brokerage account",
+        "Requires certificate setup"
+      ],
+      "ai_suitability": "execution_capable_but_complex",
+      "is_usable_now": false,
+      "potentially_usable_with_credentials": true,
+      "unsupported_targets": [],
+      "failed_targets": [],
+      "warnings": [
+        "Not probed live. Complex auth requirements."
+      ],
+      "errors": []
+    }
+  ],
+  "failed_or_doc_only_sources": [
+    {
+      "probe_id": "fubon_20260617_124242",
+      "source": "Fubon_Neo_API",
+      "source_type": "broker_api",
+      "contract_status": "doc_only",
+      "retrieved_at_utc": "2026-06-17T12:42:42.142450+00:00",
+      "retrieved_at_taipei": "2026-06-17T20:42:42.142450+00:00",
+      "request": {
+        "url": "https://developer.fubon.com/",
+        "method": "GET",
+        "params": {},
+        "headers": {}
+      },
+      "http_status": "N/A",
+      "http_ok": false,
+      "parse_status": "unknown",
+      "normalization_status": "unknown",
+      "schema_fingerprint": null,
+      "schema_hash": null,
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": null,
+      "normalized_sample": null,
+      "freshness_status": "unknown",
+      "staleness_seconds": null,
+      "delay_status": "unknown",
+      "requires_auth": true,
+      "requires_session": false,
+      "risk_level": "high",
+      "risk_notes": [
+        "Requires valid brokerage account",
+        "Requires certificate setup"
+      ],
+      "ai_suitability": "execution_capable_but_complex",
+      "is_usable_now": false,
+      "potentially_usable_with_credentials": true,
+      "unsupported_targets": [],
+      "failed_targets": [],
+      "warnings": [
+        "Not probed live. Complex auth requirements."
+      ],
+      "errors": []
+    }
+  ],
+  "guidelines": [
+    "Never claim an 'unofficial_frontend_endpoint' is an official API.",
+    "Do not hallucinate real-time capabilities if the delay_status is 'eod' or 'stale'.",
+    "A source marked 'doc_only' or 'auth_required' without provided credentials cannot be used to fetch live data."
+  ]
+}

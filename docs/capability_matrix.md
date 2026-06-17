@@ -1,11 +1,11 @@
 # Data Source Capability Matrix
 
-| Source | Type | Endpoint/URL | Contract Status | AI Suitability |
-|---|---|---|---|---|
-| TWSE_OpenAPI | official_openapi | https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL | `http_pass` | historical_and_eod |
-| TPEx_OpenAPI | official_openapi | https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes | `http_pass` | historical_and_eod |
-| Yahoo_Finance | public_api | https://query1.finance.yahoo.com/v8/finance/chart/ | `normalized_pass` | live_watchlist |
-| TWSE_MIS | unofficial_frontend_endpoint | https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|tse_0050.tw|tse_00929.tw|tse_t00.tw|otc_o00.tw&json=1&delay=0&_=1781685824640 | `normalized_pass` | live_watchlist |
-| FinMind | commercial_api | https://api.finmindtrade.com/api/v4/data | `normalized_pass` | historical_and_eod |
-| Fugle_MarketData | commercial_api | https://developer.fugle.tw/ | `auth_required` | live_streaming_capable |
-| Fubon_Neo_API | broker_api | https://developer.fubon.com/ | `doc_only` | execution_capable_but_complex |
+| Source | Source Type | URL/Endpoint | Auth | Session | Probe Status | HTTP | Parse | Norm | Freshness | Delay | Risk | AI Suitability | Usable Now | Unsupported | Failed | Notes | Last Verified |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| TWSE_OpenAPI | official_openapi | https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL | No | No | `normalized_pass` | 200 | success | success | eod_batch | eod | low | historical_and_eod | **Yes** | 3 | 0 |  | 2026-06-17T12:42:17.779818+00:00 |
+| TPEx_OpenAPI | official_openapi | https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes | No | No | `normalized_pass` | 200 | success | success | eod_batch | eod | low | historical_and_eod | **Yes** | 3 | 0 |  | 2026-06-17T12:42:25.802233+00:00 |
+| Yahoo_Finance | unofficial_api | https://query1.finance.yahoo.com/v8/finance/chart/[symbol] | No | No | `normalized_pass` | 200 | success | success | realtime_candidate | delayed | medium | live_watchlist | **Yes** | 0 | 2 | Rate limits apply, Not an official data source, Unofficial endpoint | 2026-06-17T12:42:31.320354+00:00 |
+| TWSE_MIS | unofficial_frontend_endpoint | https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781700152058 | No | Yes | `normalized_pass` | 200 | success | success | realtime_candidate | delayed | high | live_watchlist | **Yes** | 2 | 0 | Strict rate limiting, Requires index.jsp visit for cookies, Not designed for API use, Unofficial endpoint | 2026-06-17T12:42:32.230793+00:00 |
+| FinMind | commercial_api | https://api.finmindtrade.com/api/v4/data | Yes | No | `normalized_pass` | 200 | success | success | eod_batch | eod | low | historical_and_eod | **No** | 1 | 1 | Free tier rate limits apply | 2026-06-17T12:42:42.140457+00:00 |
+| Fugle_MarketData | commercial_api | https://developer.fugle.tw/ | Yes | No | `auth_required` | N/A | unknown | unknown | unknown | unknown | low | live_streaming_capable | **No** | 0 | 0 | Requires personal API key | 2026-06-17T12:42:42.142419+00:00 |
+| Fubon_Neo_API | broker_api | https://developer.fubon.com/ | Yes | No | `doc_only` | N/A | unknown | unknown | unknown | unknown | high | execution_capable_but_complex | **No** | 0 | 0 | Requires valid brokerage account, Requires certificate setup | 2026-06-17T12:42:42.142450+00:00 |

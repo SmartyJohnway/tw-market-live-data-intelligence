@@ -1,0 +1,58 @@
+{
+  "twse_large_caps": {
+    "description": "TWSE Large Cap Equities",
+    "symbols": {
+      "standard": ["2330", "1435"],
+      "yahoo": ["2330.TW", "1435.TW"],
+      "twse_mis": ["tse_2330.tw", "tse_1435.tw"]
+    }
+  },
+  "tpex_stocks": {
+    "description": "TPEx Mid/Small Cap Equities",
+    "symbols": {
+      "standard": ["8069", "5347"],
+      "yahoo": ["8069.TWO", "5347.TWO"],
+      "twse_mis": ["otc_8069.tw", "otc_5347.tw"]
+    }
+  },
+  "etfs": {
+    "description": "Exchange Traded Funds",
+    "symbols": {
+      "standard": ["0050", "00929"],
+      "yahoo": ["0050.TW", "00929.TW"],
+      "twse_mis": ["tse_0050.tw", "tse_00929.tw"]
+    }
+  },
+  "thinly_traded": {
+    "description": "Thinly Traded / Illiquid Stocks",
+    "symbols": {
+      "standard": ["9105"],
+      "yahoo": ["9105.TW"],
+      "twse_mis": ["tse_9105.tw"]
+    }
+  },
+  "indices": {
+    "description": "Market Indices",
+    "symbols": {
+      "standard": ["TAIEX"],
+      "yahoo": ["^TWII"],
+      "twse_mis": ["tse_t00.tw"]
+    }
+  },
+  "futures": {
+    "description": "Futures Contracts",
+    "symbols": {
+      "standard": ["TX"],
+      "yahoo": ["TX.TW"],
+      "twse_mis": []
+    }
+  },
+  "funds": {
+    "description": "Mutual Funds",
+    "symbols": {
+      "standard": ["FUNDA"],
+      "yahoo": ["FUNDA.TW"],
+      "twse_mis": []
+    }
+  }
+}

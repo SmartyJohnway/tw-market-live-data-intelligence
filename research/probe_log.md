@@ -1,44 +1,34 @@
 # Probe Execution Log
 
-Last Run: 2026-06-17T08:43:53.256444+00:00
+Last Run: 2026-06-17T12:42:42.143252+00:00
 
-## TWSE_OpenAPI (twse_openapi_20260617_084329)
-- URL: https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL
-- Contract Status: `http_pass`
-- HTTP Status: 200
-
-## TPEx_OpenAPI (tpex_openapi_20260617_084332)
-- URL: https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes
-- Contract Status: `http_pass`
-- HTTP Status: 200
-
-## Yahoo_Finance (yahoo_20260617_084340)
-- URL: https://query1.finance.yahoo.com/v8/finance/chart/
+## TWSE_OpenAPI (twse_openapi_20260617_124216)
 - Contract Status: `normalized_pass`
 - HTTP Status: 200
-- Risks: Rate limits apply, Not an official data source
 
-## TWSE_MIS (twse_mis_20260617_084343)
-- URL: https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|tse_0050.tw|tse_00929.tw|tse_t00.tw|otc_o00.tw&json=1&delay=0&_=1781685824640
+## TPEx_OpenAPI (tpex_openapi_20260617_124217)
 - Contract Status: `normalized_pass`
 - HTTP Status: 200
-- Risks: Strict rate limiting, Requires index.jsp visit for cookies, Not designed for API use
 
-## FinMind (finmind_20260617_084344)
-- URL: https://api.finmindtrade.com/api/v4/data
+## Yahoo_Finance (yahoo_20260617_124225)
 - Contract Status: `normalized_pass`
 - HTTP Status: 200
-- Risks: Free tier rate limits apply
+- Errors: HTTP 404 for TX.TW, HTTP 404 for FUNDA.TW
 
-## Fugle_MarketData (fugle_20260617_084353)
-- URL: https://developer.fugle.tw/
+## TWSE_MIS (twse_mis_20260617_124231)
+- Contract Status: `normalized_pass`
+- HTTP Status: 200
+
+## FinMind (finmind_20260617_124232)
+- Contract Status: `normalized_pass`
+- HTTP Status: 200
+- Errors: HTTP 422 for TaiwanFutureDaily:TX
+
+## Fugle_MarketData (fugle_20260617_124242)
 - Contract Status: `auth_required`
 - HTTP Status: N/A
-- Risks: Requires personal free tier or paid API key, Good WebSocket streaming
 
-## Fubon_Neo_API (fubon_20260617_084353)
-- URL: https://developer.fubon.com/
+## Fubon_Neo_API (fubon_20260617_124242)
 - Contract Status: `doc_only`
 - HTTP Status: N/A
-- Risks: Requires valid brokerage account, Requires certificate setup
 
