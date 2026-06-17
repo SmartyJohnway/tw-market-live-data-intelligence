@@ -8,7 +8,16 @@ from dotenv import load_dotenv
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from probe_utils import generate_standard_envelope
 
-def probe(datasets=[("TaiwanStockPrice", "2330"), ("TaiwanStockPrice", "1435"), ("TaiwanStockPrice", "0050"), ("TaiwanStockPrice", "00929"), ("TaiwanStockPrice", "TAIEX"), ("TaiwanFutureDaily", "TX")]):
+def probe(datasets=None):
+    from probe_utils import load_targets
+    if datasets is None:
+        targets = load_targets()
+        datasets = [("TaiwanStockPrice", s) for s in targets.get("twse_large_caps", [])[:2]] + \
+                   [("TaiwanStockPrice", s) for s in targets.get("thinly_traded_stocks", [])[:1]] + \
+                   [("TaiwanStockPrice", s) for s in targets.get("etfs", [])[:2]] + \
+                   [("TaiwanStockPrice", "TAIEX")] + \
+                   [("TaiwanFutureDaily", s) for s in targets.get("futures_candidates", [])[:1]]
+
     print(f"Probing FinMind API for datasets: {datasets}...")
     load_dotenv()
     token = os.getenv("FINMIND_TOKEN", "")
@@ -64,6 +73,9 @@ def probe(datasets=[("TaiwanStockPrice", "2330"), ("TaiwanStockPrice", "1435"), 
          except:
              pass
 
+    failed_targets = [r["data_id"] for r in results if not r["success"]]
+    unsupported_targets = ["funds"] # Finmind has limited fund support in free api usually
+
     return generate_standard_envelope(
          probe_id=probe_id,
          source="FinMind",
@@ -78,7 +90,9 @@ def probe(datasets=[("TaiwanStockPrice", "2330"), ("TaiwanStockPrice", "1435"), 
          staleness_seconds=staleness_seconds,
          risk_level="low",
          risk_notes=["Free tier rate limits apply"],
-         ai_suitability="historical_and_eod"
+         ai_suitability="historical_and_eod",
+         failed_targets=failed_targets,
+         unsupported_targets=unsupported_targets
     )
 
 if __name__ == "__main__":

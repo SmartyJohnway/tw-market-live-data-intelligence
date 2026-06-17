@@ -1,6 +1,17 @@
 import json
 import hashlib
 from datetime import datetime, timezone
+import os
+
+def load_targets():
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    target_path = os.path.join(base_dir, 'config', 'market_targets.json')
+    try:
+        with open(target_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Warning: Failed to load targets: {e}")
+        return {}
 
 def generate_standard_envelope(
     probe_id,
@@ -21,7 +32,9 @@ def generate_standard_envelope(
     risk_level="low",
     risk_notes=None,
     ai_suitability="unknown",
-    error=None
+    error=None,
+    unsupported_targets=None,
+    failed_targets=None
 ):
     now_utc = datetime.now(timezone.utc)
 
@@ -38,7 +51,7 @@ def generate_standard_envelope(
         "source_type": source_type,
         "contract_status": contract_status,
         "retrieved_at_utc": now_utc.isoformat(),
-        "status": "pass" if error is None else "failed",
+        "status": "pass" if error is None and contract_status != "failed" and contract_status != "blocked" else "failed",
         "http_status": http_status,
         "url": url,
         "method": method,
@@ -53,7 +66,9 @@ def generate_standard_envelope(
         "staleness_seconds": staleness_seconds,
         "risk_level": risk_level,
         "risk_notes": risk_notes or [],
-        "ai_suitability": ai_suitability
+        "ai_suitability": ai_suitability,
+        "unsupported_targets": unsupported_targets or [],
+        "failed_targets": failed_targets or []
     }
 
     if error:
