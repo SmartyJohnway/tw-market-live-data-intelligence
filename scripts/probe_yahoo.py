@@ -7,15 +7,7 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from probe_utils import generate_standard_envelope
 
-def probe(symbols=None):
-    from probe_utils import load_targets
-    if symbols is None:
-        targets = load_targets()
-        # Yahoo supports stocks (needs .TW or .TWO suffix usually, but we'll try basic ones + .TW), indices, etc.
-        symbols = [f"{s}.TW" for s in targets.get("twse_large_caps", [])[:2]] + \
-                  [f"{s}.TW" for s in targets.get("etfs", [])[:2]] + \
-                  ["^TWII", "TWD=X"]
-
+def probe(symbols=["2330.TW", "1435.TW", "0050.TW", "00929.TW", "^TWII", "TWD=X"]):
     print(f"Probing Yahoo Finance for {symbols}...")
     headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
@@ -56,9 +48,6 @@ def probe(symbols=None):
     if raw_sample and raw_sample.get("regularMarketTime"):
          staleness_seconds = int(time.time()) - raw_sample.get("regularMarketTime")
 
-    failed_targets = [r["symbol"] for r in results if not r["success"]]
-    unsupported_targets = ["funds"] # Yahoo doesn't support local Taiwan mutual funds natively easily
-
     return generate_standard_envelope(
          probe_id=probe_id,
          source="Yahoo_Finance",
@@ -73,9 +62,7 @@ def probe(symbols=None):
          staleness_seconds=staleness_seconds,
          risk_level="medium",
          risk_notes=["Rate limits apply", "Not an official data source"],
-         ai_suitability="live_watchlist",
-         failed_targets=failed_targets,
-         unsupported_targets=unsupported_targets
+         ai_suitability="live_watchlist"
     )
 
 if __name__ == "__main__":

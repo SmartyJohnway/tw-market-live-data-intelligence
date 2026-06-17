@@ -7,16 +7,7 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from probe_utils import generate_standard_envelope
 
-def probe(symbols=None):
-    from probe_utils import load_targets
-    if symbols is None:
-        targets = load_targets()
-        # TWSE MIS expects format tse_1234.tw or otc_1234.tw
-        symbols = [f"tse_{s}.tw" for s in targets.get("twse_large_caps", [])[:2]] + \
-                  [f"otc_{s}.tw" for s in targets.get("tpex_stocks", [])[:2]] + \
-                  [f"tse_{s}.tw" for s in targets.get("etfs", [])[:2]] + \
-                  ["tse_t00.tw", "otc_o00.tw"] # Indices
-
+def probe(symbols=["tse_2330.tw", "tse_1435.tw", "tse_0050.tw", "tse_00929.tw", "tse_t00.tw", "otc_o00.tw"]):
     print(f"Probing TWSE MIS for {symbols}...")
 
     probe_id = f"twse_mis_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
@@ -40,9 +31,7 @@ def probe(symbols=None):
              http_status="Session Error",
              url="https://mis.twse.com.tw",
              requires_session=True,
-             error=str(e),
-             failed_targets=symbols,
-             unsupported_targets=["futures", "foreign_funds"]
+             error=str(e)
         )
 
     # 2. Query data for multiple asset classes
@@ -75,16 +64,6 @@ def probe(symbols=None):
                   "retrieved_at_taipei": raw_sample.get("d") + " " + raw_sample.get("t")
              }
 
-        failed_targets = []
-        if success:
-             found_symbols = [item.get("c") for item in data.get("msgArray", [])]
-             expected_symbols = [s.split('_')[1].split('.')[0] for s in symbols if '_' in s and '.' in s]
-             failed_targets = [s for s in expected_symbols if s not in found_symbols and s.lower() not in [f.lower() for f in found_symbols]]
-        else:
-             failed_targets = symbols
-
-        unsupported_targets = ["futures", "foreign_funds"]
-
         return generate_standard_envelope(
              probe_id=probe_id,
              source="TWSE_MIS",
@@ -100,9 +79,7 @@ def probe(symbols=None):
              staleness_seconds=staleness_seconds,
              risk_level="high",
              risk_notes=["Strict rate limiting", "Requires index.jsp visit for cookies", "Not designed for API use"],
-             ai_suitability="live_watchlist",
-             failed_targets=failed_targets,
-             unsupported_targets=unsupported_targets
+             ai_suitability="live_watchlist"
         )
     except Exception as e:
         return generate_standard_envelope(
