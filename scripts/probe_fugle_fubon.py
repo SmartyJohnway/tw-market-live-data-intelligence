@@ -1,18 +1,44 @@
+from datetime import datetime, timezone
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from probe_utils import generate_standard_envelope
+
 def probe():
     print("Documenting Fugle and Fubon feasibility...")
-    # These typically require specific API keys and library setups, or strong authentication.
-    # For a general feasibility check without embedding secrets, we summarize the research.
 
-    # Fugle: Provides REST and WebSocket. Requires an API key (Personal/Free tier available).
-    # Fubon Neo: Often requires a valid trading account and specific certificate setup.
+    probe_id_fugle = f"fugle_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
+    probe_id_fubon = f"fubon_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
 
-    print("Fugle MarketData API: Feasible with a free API key. Provides good WebSocket streaming and REST. (Placeholder check)")
-    print("Fubon Neo API: Feasible but requires a brokerage account and certificate. (Placeholder check)")
+    res_fugle = generate_standard_envelope(
+         probe_id=probe_id_fugle,
+         source="Fugle_MarketData",
+         source_type="commercial_api",
+         contract_status="auth_required",
+         http_status="N/A",
+         url="https://developer.fugle.tw/",
+         requires_auth=True,
+         risk_level="low",
+         risk_notes=["Requires personal free tier or paid API key", "Good WebSocket streaming"],
+         ai_suitability="live_streaming_capable"
+    )
 
-    return [
-        {"source": "Fugle MarketData", "url": "https://developer.fugle.tw/", "status": "Documentation Checked", "success": True},
-        {"source": "Fubon Neo API", "url": "https://developer.fubon.com/", "status": "Documentation Checked", "success": True}
-    ]
+    res_fubon = generate_standard_envelope(
+         probe_id=probe_id_fubon,
+         source="Fubon_Neo_API",
+         source_type="broker_api",
+         contract_status="doc_only",
+         http_status="N/A",
+         url="https://developer.fubon.com/",
+         requires_auth=True,
+         risk_level="high",
+         risk_notes=["Requires valid brokerage account", "Requires certificate setup"],
+         ai_suitability="execution_capable_but_complex"
+    )
+
+    return [res_fugle, res_fubon]
 
 if __name__ == "__main__":
-    probe()
+    import json
+    print(json.dumps(probe(), indent=2, ensure_ascii=False))

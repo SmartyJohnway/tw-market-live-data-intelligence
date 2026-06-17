@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 from probe_twse_openapi import probe as probe_twse
 from probe_tpex_openapi import probe as probe_tpex
@@ -25,40 +25,41 @@ def generate_reports(results):
         else:
             flat_results.append(r)
 
+    # Re-write capability matrix to match the new standardization
     with open(get_abs_path("docs/capability_matrix.md"), "w", encoding="utf-8") as f:
         f.write("# Data Source Capability Matrix\n\n")
-        f.write("| Source | Type | Endpoint/URL | Success | Note |\n")
+        f.write("| Source | Type | Endpoint/URL | Contract Status | AI Suitability |\n")
         f.write("|---|---|---|---|---|\n")
         for res in flat_results:
-            success_mark = "✅" if res.get("success") else "❌"
-            f.write(f"| {res['source']} | API/Doc | {res['url']} | {success_mark} | Status: {res['status']} |\n")
+            c_stat = res.get('contract_status', 'unknown')
+            f.write(f"| {res['source']} | {res['source_type']} | {res['url']} | `{c_stat}` | {res.get('ai_suitability', '')} |\n")
 
     with open(get_abs_path("docs/source_catalog.md"), "w", encoding="utf-8") as f:
         f.write("# Data Source Catalog\n\n")
         f.write("Generated automatically by probes.\n\n")
-        f.write("| Source | URL | Status | Success |\n")
-        f.write("|---|---|---|---|\n")
+        f.write("| Source | Contract Status | HTTP Status | Freshness | Staleness (s) |\n")
+        f.write("|---|---|---|---|---|\n")
         for res in flat_results:
-            success_mark = "✅" if res.get("success") else "❌"
-            f.write(f"| {res['source']} | {res['url']} | {res['status']} | {success_mark} |\n")
+            staleness = str(res.get('staleness_seconds', 'N/A'))
+            f.write(f"| {res['source']} | `{res['contract_status']}` | {res['http_status']} | {res.get('freshness_status')} | {staleness} |\n")
 
     with open(get_abs_path("research/probe_log.md"), "w", encoding="utf-8") as f:
         f.write("# Probe Execution Log\n\n")
-        f.write(f"Last Run: {datetime.now().isoformat()}\n\n")
+        f.write(f"Last Run: {datetime.now(timezone.utc).isoformat()}\n\n")
         for res in flat_results:
-            f.write(f"## {res['source']}\n")
+            f.write(f"## {res['source']} ({res['probe_id']})\n")
             f.write(f"- URL: {res['url']}\n")
-            f.write(f"- Status: {res['status']}\n")
-            f.write(f"- Success: {res.get('success')}\n")
-            if "details" in res:
-                f.write(f"- Details: {json.dumps(res['details'], ensure_ascii=False)}\n")
+            f.write(f"- Contract Status: `{res['contract_status']}`\n")
+            f.write(f"- HTTP Status: {res['http_status']}\n")
             if "error" in res:
                 f.write(f"- Error: {res['error']}\n")
+            if res.get("risk_notes"):
+                f.write(f"- Risks: {', '.join(res['risk_notes'])}\n")
             f.write("\n")
 
     with open(get_abs_path("frontend/public/matrix.json"), "w", encoding="utf-8") as f:
         json.dump({
-            "last_updated": datetime.now().isoformat(),
+            "last_updated": datetime.now(timezone.utc).isoformat(),
             "results": flat_results
         }, f, ensure_ascii=False, indent=2)
 
