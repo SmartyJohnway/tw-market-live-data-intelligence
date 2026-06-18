@@ -1,7 +1,7 @@
 # Data Source Catalog
 
-**Generated at (UTC):** `2026-06-18T08:34:19.075822+00:00`
-**Generated at (Taipei):** `2026-06-18T16:34:19.075831+08:00`
+**Generated at (UTC):** `2026-06-18T10:54:28.896380+00:00`
+**Generated at (Taipei):** `2026-06-18T18:54:28.896389+08:00`
 Generated automatically by probes. Details specific source capabilities.
 
 ## TWSE_OpenAPI
@@ -35,22 +35,20 @@ Generated automatically by probes. Details specific source capabilities.
 - **Potentially Usable (Creds):** False
 - **AI Suitability:** live_watchlist
 - **Delay Status:** delayed
-- **Staleness:** 11040 seconds
+- **Staleness:** 19449 seconds
 - **Errors:** HTTP 404 for TX.TW, HTTP 404 for FUNDA.TW
 - **Failed targets:** TX.TW, FUNDA.TW
 
 ## TWSE_MIS
 
-*(See also: [TWSE MIS Protocol](protocol/TWSE_MIS_PROTOCOL.md) and [Field Dictionary](protocol/TWSE_MIS_FIELD_DICTIONARY.md))*
-
 - **Type:** unofficial_frontend_endpoint
-- **URL:** https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781771649033
+- **URL:** https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781780058799
 - **Contract Status:** `normalized_pass`
 - **Usable Now:** True
 - **Potentially Usable (Creds):** False
 - **AI Suitability:** live_watchlist
 - **Delay Status:** delayed
-- **Staleness:** 7449 seconds
+- **Staleness:** 15857 seconds
 - **Unsupported targets:** futures, funds
 
 ## FinMind
@@ -62,7 +60,7 @@ Generated automatically by probes. Details specific source capabilities.
 - **Potentially Usable (Creds):** True
 - **AI Suitability:** historical_and_eod
 - **Delay Status:** eod
-- **Staleness:** 30859 seconds
+- **Staleness:** 39268 seconds
 - **Errors:** HTTP 422 for TaiwanFutureDaily:TX
 - **Unsupported targets:** funds
 - **Failed targets:** TX
