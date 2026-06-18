@@ -62,6 +62,7 @@ The frontend provides a clear UI to view the generated capability matrix and int
 
 ## Known Caveats
 1. Unofficial endpoints (like TWSE MIS or Yahoo Finance) are extremely fragile. They are rate-limited, require specific headers (sometimes cookies), and can break without notice.
+   - For detailed risk and protocol documentation regarding TWSE MIS, see [TWSE MIS Protocol](docs/protocol/TWSE_MIS_PROTOCOL.md) and the [TWSE MIS Field Dictionary](docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md).
 2. The concept of "real-time" is strictly bound by the `delay_status` and `staleness_seconds` metrics defined in the data contract envelope. Do not assume data is live unless explicitly proven by these fields.
 
 ## Current Status

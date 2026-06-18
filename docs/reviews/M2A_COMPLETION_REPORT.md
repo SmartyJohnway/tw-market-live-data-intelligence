@@ -40,3 +40,8 @@ All scopes for M2B (TWSE MIS dictionary), M3 (AI Context Pack v2), and M4 (deplo
 
 ## Next Milestone Recommendation
 Proceed to `M2B-01-TWSE-MIS-PROTOCOL-AND-FIELD-DICTIONARY`.
+
+---
+
+## Addendum: M2B-01 Updates
+The TWSE MIS Protocol and Field Dictionary have been added in milestone M2B-01. Please see [docs/protocol/TWSE_MIS_PROTOCOL.md](../protocol/TWSE_MIS_PROTOCOL.md) and [docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md](../protocol/TWSE_MIS_FIELD_DICTIONARY.md) for the latest documentation.
