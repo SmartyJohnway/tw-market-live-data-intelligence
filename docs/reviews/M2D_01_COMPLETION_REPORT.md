@@ -9,7 +9,7 @@
 - **Upstream Branch/Commit:** `eb86bee6b3f1688a6663852b0748a29a9053fa10` (HEAD of default branch, cloned with depth=1)
 - **Files Inspected:** `README.md`, `index.html`.
 - **Reconciliation Outcome:**
-  - The upstream repo did *not* contain identical probe scripts like `scripts/probe_twse_openapi.py`. Instead, it functions as a Netlify-ready HTML/JS workbench that tracks source governance matrices dynamically inside `index.html`.
+  - The upstream repo did *not* contain identical probe scripts like `scripts/probe_twse_openapi.py`. Instead, it functions as a Netlify-ready HTML/JS workbench that tracks source governance matrices dynamically inside `index.html`. No `scripts/` or `docs/` protocol files were present in the inspected upstream checkout.
   - The upstream workbench provided critical context on source classifications: classifying `TWSE OpenAPI` and `TPEx OpenAPI` as `authoritative_candidate` for contract scouting, but explicitly warning that it is for EOD/contract preview, not production execution.
   - The current repository implementation (where probes output standardized envelopes) successfully supersedes the upstream HTML-based approach. We carry forward the caveat that these are "official candidate sources" but remain strict EOD feeds.
 
