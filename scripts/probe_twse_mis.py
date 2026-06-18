@@ -94,7 +94,10 @@ def _classify_asset(row):
 
     return "unknown"
 
-def normalize_twse_mis_row(raw_row, retrieved_at_utc_dt):
+def normalize_twse_mis_row(raw_row, retrieved_at_utc_dt, top_level_telemetry=None):
+    if top_level_telemetry is None:
+        top_level_telemetry = {}
+
     data_quality_flags = []
 
     # Asset type
@@ -146,7 +149,8 @@ def normalize_twse_mis_row(raw_row, retrieved_at_utc_dt):
         if len(source_date) == 8:
             source_datetime_taipei = f"{source_date[:4]}-{source_date[4:6]}-{source_date[6:]} {source_time}"
 
-    query_sys_time = raw_row.get("queryTime", {}).get("sysTime") if isinstance(raw_row.get("queryTime"), dict) else None
+    # Parse query_sys_time from top level telemetry
+    query_sys_time = top_level_telemetry.get("queryTime", {}).get("sysTime") if isinstance(top_level_telemetry.get("queryTime"), dict) else None
 
     # Calculate staleness
     staleness_seconds = None
@@ -239,7 +243,7 @@ def normalize_twse_mis_row(raw_row, retrieved_at_utc_dt):
     # Track unmapped fields
     mapped_keys = {
         "c", "ex", "n", "ch", "z", "y", "o", "h", "l", "v", "tv",
-        "b", "g", "a", "f", "u", "w", "d", "t", "tlong", "queryTime",
+        "b", "g", "a", "f", "u", "w", "d", "t", "tlong",
         "ot", "%"
     }
     unmapped_raw_fields = {k: v for k, v in raw_row.items() if k not in mapped_keys}
@@ -307,14 +311,31 @@ def probe(symbols=None):
         delay_status = "unknown"
 
         if success:
+            top_level_telemetry = {
+                "queryTime": data.get("queryTime"),
+                "userDelay": data.get("userDelay"),
+                "cachedAlive": data.get("cachedAlive"),
+                "rtcode": data.get("rtcode"),
+                "rtmessage": data.get("rtmessage"),
+                "exKey": data.get("exKey"),
+                "referer": data.get("referer"),
+            }
+
             raw_sample = data["msgArray"]
-            normalized_rows = [normalize_twse_mis_row(row, retrieved_at_utc_dt) for row in raw_sample]
+            normalized_rows = [normalize_twse_mis_row(row, retrieved_at_utc_dt, top_level_telemetry=top_level_telemetry) for row in raw_sample]
             normalized_sample = normalized_rows
 
             # Use the first row's staleness for the envelope level staleness metric to match older behavior
             first_row = normalized_rows[0]
             staleness_seconds = first_row.get("staleness_seconds")
             delay_status = first_row.get("delay_status")
+
+            # Form raw evidence
+            raw_evidence = {
+                "_total_found": len(data.get("msgArray", [])),
+                "sample": raw_sample,
+                "telemetry": top_level_telemetry
+            }
 
         return generate_standard_envelope(
             probe_id=probe_id,
@@ -325,7 +346,7 @@ def probe(symbols=None):
             url=url,
             headers_used=headers,
             requires_session=True,
-            raw_sample={"_total_found": len(data.get("msgArray", [])), "sample": raw_sample} if success else None,
+            raw_sample=raw_evidence if success else None,
             normalized_sample=normalized_sample,
             freshness_status="realtime_candidate",
             staleness_seconds=staleness_seconds,

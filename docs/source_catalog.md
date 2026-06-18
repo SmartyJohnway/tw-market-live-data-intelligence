@@ -1,7 +1,7 @@
 # Data Source Catalog
 
-**Generated at (UTC):** `2026-06-18T10:54:28.896380+00:00`
-**Generated at (Taipei):** `2026-06-18T18:54:28.896389+08:00`
+**Generated at (UTC):** `2026-06-18T11:11:35.007802+00:00`
+**Generated at (Taipei):** `2026-06-18T19:11:35.007810+08:00`
 Generated automatically by probes. Details specific source capabilities.
 
 ## TWSE_OpenAPI
@@ -19,12 +19,12 @@ Generated automatically by probes. Details specific source capabilities.
 
 - **Type:** official_openapi
 - **URL:** https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes
-- **Contract Status:** `failed`
-- **Usable Now:** False
+- **Contract Status:** `normalized_pass`
+- **Usable Now:** True
 - **Potentially Usable (Creds):** False
-- **AI Suitability:** unknown
-- **Delay Status:** unknown
-- **Errors:** Response ended prematurely
+- **AI Suitability:** historical_and_eod
+- **Delay Status:** eod
+- **Unsupported targets:** indices, futures, funds
 
 ## Yahoo_Finance
 
@@ -35,20 +35,20 @@ Generated automatically by probes. Details specific source capabilities.
 - **Potentially Usable (Creds):** False
 - **AI Suitability:** live_watchlist
 - **Delay Status:** delayed
-- **Staleness:** 19449 seconds
+- **Staleness:** 20476 seconds
 - **Errors:** HTTP 404 for TX.TW, HTTP 404 for FUNDA.TW
 - **Failed targets:** TX.TW, FUNDA.TW
 
 ## TWSE_MIS
 
 - **Type:** unofficial_frontend_endpoint
-- **URL:** https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781780058799
+- **URL:** https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781781084917
 - **Contract Status:** `normalized_pass`
 - **Usable Now:** True
 - **Potentially Usable (Creds):** False
 - **AI Suitability:** live_watchlist
 - **Delay Status:** delayed
-- **Staleness:** 15857 seconds
+- **Staleness:** 16884 seconds
 - **Unsupported targets:** futures, funds
 
 ## FinMind
@@ -60,7 +60,7 @@ Generated automatically by probes. Details specific source capabilities.
 - **Potentially Usable (Creds):** True
 - **AI Suitability:** historical_and_eod
 - **Delay Status:** eod
-- **Staleness:** 39268 seconds
+- **Staleness:** 40295 seconds
 - **Errors:** HTTP 422 for TaiwanFutureDaily:TX
 - **Unsupported targets:** funds
 - **Failed targets:** TX

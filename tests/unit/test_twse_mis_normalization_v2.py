@@ -200,3 +200,21 @@ def test_malformed_numeric_values(mock_retrieved_at_utc):
     assert normalized["cumulative_volume"] is None
     assert "malformed_last_price" in normalized["data_quality_flags"]
     assert "malformed_cumulative_volume" in normalized["data_quality_flags"]
+
+def test_top_level_telemetry_incorporation(mock_retrieved_at_utc):
+    raw_row = {
+        "c": "2330",
+        "ex": "tse",
+        "z": "100.0"
+    }
+
+    top_level_telemetry = {
+        "queryTime": {
+            "sysTime": "13:30:05"
+        },
+        "userDelay": 5000,
+        "cachedAlive": 30000
+    }
+
+    normalized = normalize_twse_mis_row(raw_row, mock_retrieved_at_utc, top_level_telemetry=top_level_telemetry)
+    assert normalized["query_sys_time"] == "13:30:05"
