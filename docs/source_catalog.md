@@ -1,7 +1,7 @@
 # Data Source Catalog
 
-**Generated at (UTC):** `2026-06-18T15:19:52.498992+00:00`
-**Generated at (Taipei):** `2026-06-18T23:19:52.499001+08:00`
+**Generated at (UTC):** `2026-06-18T15:36:34.841118+00:00`
+**Generated at (Taipei):** `2026-06-18T23:36:34.841140+08:00`
 Generated automatically by probes. Details specific source capabilities.
 
 ## TWSE_OpenAPI
@@ -19,8 +19,8 @@ Generated automatically by probes. Details specific source capabilities.
 
 - **Type:** official_openapi
 - **URL:** https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes
-- **Contract Status:** `failed`
-- **Usable Now:** False
+- **Contract Status:** `normalized_pass`
+- **Usable Now:** True
 - **Potentially Usable (Creds):** False
 - **AI Suitability:** historical_and_eod
 - **Delay Status:** eod
@@ -35,20 +35,20 @@ Generated automatically by probes. Details specific source capabilities.
 - **Potentially Usable (Creds):** False
 - **AI Suitability:** live_watchlist
 - **Delay Status:** delayed
-- **Staleness:** 35368 seconds
+- **Staleness:** 36370 seconds
 - **Warnings:** HTTP 404 for known unsupported placeholder TX.TW, HTTP 404 for known unsupported placeholder FUNDA.TW
 - **Unsupported targets:** TX.TW, FUNDA.TW
 
 ## TWSE_MIS
 
 - **Type:** unofficial_frontend_endpoint
-- **URL:** https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781795982410
+- **URL:** https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781796984529
 - **Contract Status:** `normalized_pass`
 - **Usable Now:** True
 - **Potentially Usable (Creds):** False
 - **AI Suitability:** live_watchlist
 - **Delay Status:** delayed
-- **Staleness:** 31781 seconds
+- **Staleness:** 32783 seconds
 - **Unsupported targets:** futures, funds
 
 ## FinMind
@@ -60,7 +60,7 @@ Generated automatically by probes. Details specific source capabilities.
 - **Potentially Usable (Creds):** True
 - **AI Suitability:** historical_and_eod
 - **Delay Status:** eod
-- **Staleness:** 55192 seconds
+- **Staleness:** 56194 seconds
 - **Errors:** HTTP 422 for TaiwanFutureDaily:TX
 - **Unsupported targets:** funds
 - **Failed targets:** TX

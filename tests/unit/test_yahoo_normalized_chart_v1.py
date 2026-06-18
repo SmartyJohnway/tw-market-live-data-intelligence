@@ -1,6 +1,10 @@
 import pytest
+import sys
+import os
 from datetime import datetime, timezone, timedelta
-from scripts.probe_yahoo import normalize_yahoo_chart_result
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../scripts')))
+from probe_yahoo import normalize_yahoo_chart_result
 
 def test_valid_chart_normalization():
     # Mock retrieved_at time
