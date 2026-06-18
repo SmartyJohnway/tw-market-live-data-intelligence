@@ -141,5 +141,6 @@ def test_network_exception_is_classified_as_error():
     result = probe(symbols=symbols)
 
     assert result["contract_status"] == "failed"
+    assert "TIMEOUT.TW" in result["failed_targets"]
     assert "TIMEOUT.TW" not in result["unsupported_targets"]
     assert any("Network exception for TIMEOUT.TW" in e for e in result["errors"])
