@@ -119,9 +119,11 @@ def normalize_yahoo_chart_result(result_data, requested_symbol, retrieved_at_utc
             except Exception:
                 timestamps_utc.append(None)
                 timestamps_local.append(None)
+                data_quality_flags.append("malformed_timestamp")
         else:
             timestamps_utc.append(None)
             timestamps_local.append(None)
+            data_quality_flags.append("malformed_timestamp")
 
     if not gmtoffset and timestamps and "missing_gmtoffset_for_local_time" not in data_quality_flags:
          data_quality_flags.append("missing_gmtoffset_for_local_time")
@@ -175,7 +177,7 @@ def normalize_yahoo_chart_result(result_data, requested_symbol, retrieved_at_utc
 
     raw_meta = meta.copy()
 
-    mapped_keys = {"symbol", "regularMarketPrice", "regularMarketTime", "exchangeName", "timezone", "currency", "gmtoffset", "chartPreviousClose", "previousClose", "scale", "priceHint", "currentTradingPeriod", "tradingPeriods", "dataGranularity", "range", "validRanges", "firstTradeDate"}
+    mapped_keys = {"symbol", "regularMarketPrice", "regularMarketTime", "exchangeName", "exchangeTimezoneName", "timezone", "currency", "gmtoffset", "chartPreviousClose", "previousClose", "scale", "priceHint", "currentTradingPeriod", "tradingPeriods", "dataGranularity", "range", "validRanges", "firstTradeDate"}
     unmapped_meta_fields = {k: v for k, v in meta.items() if k not in mapped_keys}
 
     return {
@@ -185,7 +187,7 @@ def normalize_yahoo_chart_result(result_data, requested_symbol, retrieved_at_utc
         "source_type": "unofficial_api",
         "currency": meta.get("currency"),
         "exchange_name": meta.get("exchangeName"),
-        "exchange_timezone_name": meta.get("timezone"),
+        "exchange_timezone_name": meta.get("exchangeTimezoneName") or meta.get("timezone"),
         "gmtoffset": gmtoffset,
         "regular_market_price": meta.get("regularMarketPrice"),
         "regular_market_time": regular_market_time,

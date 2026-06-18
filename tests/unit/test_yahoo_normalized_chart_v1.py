@@ -179,3 +179,44 @@ def test_empty_chart_result():
     normalized = normalize_yahoo_chart_result({}, "EMPTY.TW", retrieved_dt)
     assert normalized["symbol"] == "EMPTY.TW"
     assert "empty_chart_result" in normalized["data_quality_flags"]
+
+def test_exchange_timezone_name_preference():
+    retrieved_dt = datetime(2026, 6, 18, 13, 14, 0, tzinfo=timezone.utc)
+
+    result_data = {
+        "meta": {
+            "symbol": "TZ.TW",
+            "timezone": "CST",
+            "exchangeTimezoneName": "Asia/Taipei",
+            "regularMarketTime": 1781760608
+        }
+    }
+    normalized = normalize_yahoo_chart_result(result_data, "TZ.TW", retrieved_dt)
+    assert normalized["exchange_timezone_name"] == "Asia/Taipei"
+
+def test_malformed_timestamp_flag():
+    retrieved_dt = datetime(2026, 6, 18, 13, 14, 0, tzinfo=timezone.utc)
+
+    result_data = {
+        "meta": {
+            "symbol": "MALFORMED.TW",
+            "gmtoffset": 28800,
+            "regularMarketTime": 1781760608
+        },
+        "timestamp": [1781744400, "invalid"],
+        "indicators": {
+            "quote": [
+                {
+                    "open": [945.0, 946.0],
+                    "high": [948.0, 946.0],
+                    "low": [945.0, 945.0],
+                    "close": [948.0, 945.0],
+                    "volume": [123000, 50000]
+                }
+            ]
+        }
+    }
+
+    normalized = normalize_yahoo_chart_result(result_data, "MALFORMED.TW", retrieved_dt)
+    assert "malformed_timestamp" in normalized["data_quality_flags"]
+    assert normalized["series"]["timestamps_utc"][1] is None
