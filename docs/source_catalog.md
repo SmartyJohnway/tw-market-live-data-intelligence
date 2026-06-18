@@ -1,5 +1,7 @@
 # Data Source Catalog
 
+**Generated at (UTC):** `2026-06-18T08:34:19.075822+00:00`
+**Generated at (Taipei):** `2026-06-18T16:34:19.075831+08:00`
 Generated automatically by probes. Details specific source capabilities.
 
 ## TWSE_OpenAPI
@@ -17,12 +19,12 @@ Generated automatically by probes. Details specific source capabilities.
 
 - **Type:** official_openapi
 - **URL:** https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes
-- **Contract Status:** `normalized_pass`
-- **Usable Now:** True
+- **Contract Status:** `failed`
+- **Usable Now:** False
 - **Potentially Usable (Creds):** False
-- **AI Suitability:** historical_and_eod
-- **Delay Status:** eod
-- **Unsupported targets:** indices, futures, funds
+- **AI Suitability:** unknown
+- **Delay Status:** unknown
+- **Errors:** Response ended prematurely
 
 ## Yahoo_Finance
 
@@ -33,20 +35,20 @@ Generated automatically by probes. Details specific source capabilities.
 - **Potentially Usable (Creds):** False
 - **AI Suitability:** live_watchlist
 - **Delay Status:** delayed
-- **Staleness:** 1208 seconds
+- **Staleness:** 11040 seconds
 - **Errors:** HTTP 404 for TX.TW, HTTP 404 for FUNDA.TW
 - **Failed targets:** TX.TW, FUNDA.TW
 
 ## TWSE_MIS
 
 - **Type:** unofficial_frontend_endpoint
-- **URL:** https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781754416918
+- **URL:** https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781771649033
 - **Contract Status:** `normalized_pass`
 - **Usable Now:** True
 - **Potentially Usable (Creds):** False
 - **AI Suitability:** live_watchlist
-- **Delay Status:** realtime
-- **Staleness:** 12 seconds
+- **Delay Status:** delayed
+- **Staleness:** 7449 seconds
 - **Unsupported targets:** futures, funds
 
 ## FinMind
@@ -57,8 +59,8 @@ Generated automatically by probes. Details specific source capabilities.
 - **Usable Now:** False
 - **Potentially Usable (Creds):** True
 - **AI Suitability:** historical_and_eod
-- **Delay Status:** stale
-- **Staleness:** 100027 seconds
+- **Delay Status:** eod
+- **Staleness:** 30859 seconds
 - **Errors:** HTTP 422 for TaiwanFutureDaily:TX
 - **Unsupported targets:** funds
 - **Failed targets:** TX

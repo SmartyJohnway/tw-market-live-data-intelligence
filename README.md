@@ -57,6 +57,7 @@ The frontend provides a clear UI to view the generated capability matrix and int
 
 ## Safety Notes & Security Posture
 - **No Open Proxies:** Previous iterations contained serverless proxies. These have been removed. The frontend now interfaces directly with a locally hosted backend on `127.0.0.1`.
+- **No Netlify / Pass-through Functions:** The deployment no longer requires or supports Netlify edge functions or serverless pass-through proxy architecture. All local network routing is explicitly restricted to `127.0.0.1`.
 - **Secrets Management:** Do not commit API keys. If utilizing commercial APIs (like FinMind), populate a local `.env` file with `FINMIND_TOKEN=<your_token>`.
 
 ## Known Caveats
