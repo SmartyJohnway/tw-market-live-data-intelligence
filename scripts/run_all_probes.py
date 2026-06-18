@@ -51,6 +51,7 @@ def extract_finmind_datasets(targets):
     return datasets
 
 def generate_reports(results):
+    import datetime
     os.makedirs(get_abs_path("docs"), exist_ok=True)
     os.makedirs(get_abs_path("research/generated"), exist_ok=True)
     os.makedirs(get_abs_path("frontend/public"), exist_ok=True)
@@ -62,9 +63,16 @@ def generate_reports(results):
         else:
             flat_results.append(r)
 
+    now_utc = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    # Simple taipei time approximation for generator
+    now_taipei = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat()
+
     # 1. Capability Matrix (Markdown)
     with open(get_abs_path("docs/capability_matrix.md"), "w", encoding="utf-8") as f:
         f.write("# Data Source Capability Matrix\n\n")
+        f.write(f"**Generated at (UTC):** `{now_utc}`  \n")
+        f.write(f"**Generated at (Taipei):** `{now_taipei}`  \n")
+        f.write("*Note: This report is automatically generated and displays live network probe results. Real-world target constraints and current API conditions apply.*\n\n")
         f.write("| Source | Source Type | URL/Endpoint | Auth | Session | Probe Status | HTTP | Parse | Norm | Freshness | Delay | Risk | AI Suitability | Usable Now | Unsupported | Failed | Notes | Last Verified |\n")
         f.write("|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n")
         for res in flat_results:
@@ -75,11 +83,16 @@ def generate_reports(results):
             failed = len(res.get('failed_targets', []))
             usable = "Yes" if res.get('is_usable_now') else "No"
 
-            f.write(f"| {res['source']} | {res['source_type']} | {res['request']['url']} | {auth} | {sess} | `{c_stat}` | {res.get('http_status')} | {res.get('parse_status')} | {res.get('normalization_status')} | {res.get('freshness_status')} | {res.get('delay_status')} | {res.get('risk_level')} | {res.get('ai_suitability')} | **{usable}** | {unsupported} | {failed} | {', '.join(res.get('risk_notes', []))} | {res.get('retrieved_at_utc')} |\n")
+            # Escape pipe characters to avoid breaking the markdown table
+            safe_url = str(res['request']['url']).replace("|", "&#124;")
+
+            f.write(f"| {res['source']} | {res['source_type']} | {safe_url} | {auth} | {sess} | `{c_stat}` | {res.get('http_status')} | {res.get('parse_status')} | {res.get('normalization_status')} | {res.get('freshness_status')} | {res.get('delay_status')} | {res.get('risk_level')} | {res.get('ai_suitability')} | **{usable}** | {unsupported} | {failed} | {', '.join(res.get('risk_notes', []))} | {res.get('retrieved_at_utc')} |\n")
 
     # 2. Source Catalog (Markdown)
     with open(get_abs_path("docs/source_catalog.md"), "w", encoding="utf-8") as f:
         f.write("# Data Source Catalog\n\n")
+        f.write(f"**Generated at (UTC):** `{now_utc}`  \n")
+        f.write(f"**Generated at (Taipei):** `{now_taipei}`  \n")
         f.write("Generated automatically by probes. Details specific source capabilities.\n\n")
         for res in flat_results:
             f.write(f"## {res['source']}\n\n")
@@ -105,7 +118,8 @@ def generate_reports(results):
     # 3. Probe Log (Markdown)
     with open(get_abs_path("research/probe_log.md"), "w", encoding="utf-8") as f:
         f.write("# Probe Execution Log\n\n")
-        f.write(f"Last Run: {datetime.now(timezone.utc).isoformat()}\n\n")
+        f.write(f"**Generated at (UTC):** `{now_utc}`  \n")
+        f.write(f"**Generated at (Taipei):** `{now_taipei}`  \n\n")
         for res in flat_results:
             f.write(f"## {res['source']} ({res['probe_id']})\n")
             f.write(f"- Contract Status: `{res['contract_status']}`\n")
@@ -117,13 +131,16 @@ def generate_reports(results):
     # 4. Frontend Matrix (JSON)
     with open(get_abs_path("frontend/public/matrix.json"), "w", encoding="utf-8") as f:
         json.dump({
-            "last_updated": datetime.now(timezone.utc).isoformat(),
+            "last_updated": now_utc,
+            "generated_at_utc": now_utc,
+            "generated_at_taipei": now_taipei,
             "results": flat_results
         }, f, ensure_ascii=False, indent=2)
 
     # 5. AI Context Pack
     ai_context = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at_utc": now_utc,
+        "generated_at_taipei": now_taipei,
         "purpose": "Provide AI agents with up-to-date facts about available Taiwan equity market data sources.",
         "usable_sources": [r for r in flat_results if r.get('is_usable_now')],
         "official_sources": [r for r in flat_results if 'official' in r.get('source_type', '')],
@@ -142,7 +159,8 @@ def generate_reports(results):
 
     with open(get_abs_path("research/generated/ai_context_pack.md"), "w", encoding="utf-8") as f:
         f.write("# AI Context Pack\n\n")
-        f.write(f"Generated at: {ai_context['generated_at']}\n\n")
+        f.write(f"**Generated at (UTC):** `{ai_context['generated_at_utc']}`  \n")
+        f.write(f"**Generated at (Taipei):** `{ai_context['generated_at_taipei']}`  \n\n")
         f.write("## Guidelines\n")
         for g in ai_context['guidelines']:
             f.write(f"- {g}\n")

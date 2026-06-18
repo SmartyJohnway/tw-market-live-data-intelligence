@@ -19,6 +19,6 @@ We recommend a **Hybrid Python Backend + Static Frontend** approach:
    - Exposes `OpenAPI` spec to standard AI Chatbots (e.g. Custom GPTs).
    - Exposes `MCP (Model Context Protocol)` interface locally or via standard transports for Agentic coding tools (like Cursor, VSCode, Claude Desktop).
 
-2. **Frontend Layer (Netlify Static)**
+2. **Frontend Layer (Static Workbench)**
    - A static dashboard providing visual evidence of source capabilities (`capability_matrix.md` and `probe_log.md` compiled to JSON).
-   - Serverless Edge Functions (`netlify/functions`) can act as simple pass-through proxies to circumvent CORS for browser-based, client-side exploration without needing the heavy Python server running.
+   - **No Netlify / Serverless Pass-throughs**: The architecture explicitly avoids public open proxies or serverless edge functions. It relies completely on the local backend and CORS restricted to localhost.
