@@ -1,6 +1,11 @@
 import pytest
+import sys
+import os
 from datetime import datetime, timezone, timedelta
-from scripts.probe_twse_mis import normalize_twse_mis_row, _parse_ladder, _safe_float
+
+# Add scripts directory to path to fix module resolution in GitHub Actions CI
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../scripts')))
+from probe_twse_mis import normalize_twse_mis_row, _parse_ladder, _safe_float
 
 @pytest.fixture
 def mock_retrieved_at_utc():
