@@ -38,7 +38,8 @@ def test_valid_chart_response_parses_successfully():
 
     assert result["contract_status"] == "normalized_pass"
     assert result["normalized_sample"]["symbol"] == "2330.TW"
-    assert result["normalized_sample"]["price"] == 2410.0
+    assert result["normalized_sample"]["regular_market_price"] == 2410.0
+    assert result["normalized_sample"]["series"]["close"] == [2410.0]
     assert len(result["failed_targets"]) == 0
     assert len(result["unsupported_targets"]) == 0
     assert len(result["errors"]) == 0
