@@ -41,6 +41,8 @@ Generated automatically by probes. Details specific source capabilities.
 
 ## TWSE_MIS
 
+*(See also: [TWSE MIS Protocol](protocol/TWSE_MIS_PROTOCOL.md) and [Field Dictionary](protocol/TWSE_MIS_FIELD_DICTIONARY.md))*
+
 - **Type:** unofficial_frontend_endpoint
 - **URL:** https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781771649033
 - **Contract Status:** `normalized_pass`
