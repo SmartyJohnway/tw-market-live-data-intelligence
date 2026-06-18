@@ -1,6 +1,11 @@
 import pytest
 import responses
-from scripts.probe_yahoo import probe, KNOWN_UNSUPPORTED_YAHOO_PLACEHOLDERS
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../scripts')))
+
+from probe_yahoo import probe, KNOWN_UNSUPPORTED_YAHOO_PLACEHOLDERS
 
 @responses.activate
 def test_valid_chart_response_parses_successfully():
