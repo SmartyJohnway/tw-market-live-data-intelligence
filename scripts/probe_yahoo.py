@@ -7,6 +7,11 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from probe_utils import generate_standard_envelope
 
+KNOWN_UNSUPPORTED_YAHOO_PLACEHOLDERS = {
+    "TX.TW",
+    "FUNDA.TW",
+}
+
 def probe(symbols=None):
     if not symbols:
         symbols = ["2330.TW", "0050.TW", "^TWII", "TX.TW"]
@@ -23,6 +28,8 @@ def probe(symbols=None):
     normalized_sample = None
     errors = []
     failed_targets = []
+    unsupported_targets = []
+    warnings = []
 
     for sym in symbols:
         url = f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}"
@@ -30,16 +37,26 @@ def probe(symbols=None):
             response = requests.get(url, headers=headers, timeout=10)
             status = response.status_code
             if status != 200:
-                errors.append(f"HTTP {status} for {sym}")
-                failed_targets.append(sym)
+                if status == 404 and sym in KNOWN_UNSUPPORTED_YAHOO_PLACEHOLDERS:
+                    unsupported_targets.append(sym)
+                    warnings.append(f"HTTP 404 for known unsupported placeholder {sym}")
+                else:
+                    errors.append(f"HTTP {status} for {sym}")
+                    failed_targets.append(sym)
                 continue
 
             data = response.json()
-            success = "chart" in data and data["chart"].get("result")
+            # More robust check for success and non-empty result
+            if "chart" in data and isinstance(data["chart"].get("result"), list) and len(data["chart"]["result"]) > 0:
+                success = True
+                result_data = data["chart"]["result"][0]
+            else:
+                success = False
+
             if success:
                 success_count += 1
-                if not raw_sample:
-                    raw_sample = data["chart"]["result"][0]["meta"]
+                if not raw_sample and "meta" in result_data:
+                    raw_sample = result_data["meta"]
                     normalized_sample = {
                         "symbol": raw_sample.get("symbol"),
                         "price": raw_sample.get("regularMarketPrice"),
@@ -47,9 +64,11 @@ def probe(symbols=None):
                         "exchange": raw_sample.get("exchangeName")
                     }
             else:
-                errors.append(f"Parse failed for {sym}")
+                errors.append(f"Parse failed or empty result for {sym}")
                 failed_targets.append(sym)
             results.append({"symbol": sym, "status": status, "success": bool(success)})
+        except requests.exceptions.RequestException as e:
+            errors.append(f"Network exception for {sym}: {str(e)}")
         except Exception as e:
             failed_targets.append(sym)
             errors.append(f"Exception for {sym}: {str(e)}")
@@ -88,6 +107,8 @@ def probe(symbols=None):
         risk_notes=["Rate limits apply", "Not an official data source", "Unofficial endpoint"],
         ai_suitability="live_watchlist",
         failed_targets=failed_targets,
+        unsupported_targets=unsupported_targets,
+        warnings=warnings,
         errors=errors
     )
 
