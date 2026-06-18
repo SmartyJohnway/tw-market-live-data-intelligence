@@ -38,7 +38,8 @@ def test_valid_chart_response_parses_successfully():
 
     assert result["contract_status"] == "normalized_pass"
     assert result["normalized_sample"]["symbol"] == "2330.TW"
-    assert result["normalized_sample"]["price"] == 2410.0
+    assert result["normalized_sample"]["regular_market_price"] == 2410.0
+    assert result["normalized_sample"]["series"]["close"] == [2410.0]
     assert len(result["failed_targets"]) == 0
     assert len(result["unsupported_targets"]) == 0
     assert len(result["errors"]) == 0
@@ -140,5 +141,6 @@ def test_network_exception_is_classified_as_error():
     result = probe(symbols=symbols)
 
     assert result["contract_status"] == "failed"
+    assert "TIMEOUT.TW" in result["failed_targets"]
     assert "TIMEOUT.TW" not in result["unsupported_targets"]
     assert any("Network exception for TIMEOUT.TW" in e for e in result["errors"])

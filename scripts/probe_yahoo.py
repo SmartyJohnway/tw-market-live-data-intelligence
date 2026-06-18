@@ -5,12 +5,223 @@ import sys
 import os
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from datetime import timedelta
 from probe_utils import generate_standard_envelope
 
 KNOWN_UNSUPPORTED_YAHOO_PLACEHOLDERS = {
     "TX.TW",
     "FUNDA.TW",
 }
+
+def normalize_yahoo_chart_result(result_data, requested_symbol, retrieved_at_utc_dt):
+    data_quality_flags = []
+
+    if not result_data:
+        return {
+            "symbol": requested_symbol,
+            "requested_symbol": requested_symbol,
+            "source": "Yahoo_Finance",
+            "source_type": "unofficial_api",
+            "currency": None,
+            "exchange_name": None,
+            "exchange_timezone_name": None,
+            "gmtoffset": None,
+            "regular_market_price": None,
+            "regular_market_time": None,
+            "regular_market_time_utc": None,
+            "regular_market_time_local": None,
+            "chart_range": None,
+            "data_granularity": None,
+            "valid_ranges": [],
+            "first_trade_date": None,
+            "retrieved_at_utc": retrieved_at_utc_dt.isoformat(),
+            "staleness_seconds": None,
+            "freshness_status": "unknown",
+            "delay_status": "unknown",
+            "source_risk_flags": [
+                "unofficial_source",
+                "rate_limits_apply",
+                "no_execution_guarantees"
+            ],
+            "data_quality_flags": ["empty_chart_result"],
+            "coverage_status": "unknown",
+            "series": {
+                "timestamps": [],
+                "timestamps_utc": [],
+                "timestamps_local": [],
+                "open": [],
+                "high": [],
+                "low": [],
+                "close": [],
+                "volume": [],
+                "adjclose": []
+            },
+            "raw_meta": {},
+            "unmapped_meta_fields": {}
+        }
+
+    meta = result_data.get("meta", {})
+    if not meta:
+        data_quality_flags.append("missing_meta")
+
+    gmtoffset = meta.get("gmtoffset")
+
+    regular_market_time = meta.get("regularMarketTime")
+    if regular_market_time is None:
+        data_quality_flags.append("missing_regular_market_time")
+        regular_market_time_utc = None
+        regular_market_time_local = None
+        staleness_seconds = None
+        delay_status = "unknown"
+    else:
+        try:
+            dt_utc = datetime.fromtimestamp(regular_market_time, tz=timezone.utc)
+            regular_market_time_utc = dt_utc.isoformat()
+            staleness_seconds = max(0, int((retrieved_at_utc_dt - dt_utc).total_seconds()))
+
+            if staleness_seconds < 300:
+                delay_status = "realtime"
+            elif staleness_seconds < 86400:
+                delay_status = "delayed"
+            else:
+                delay_status = "stale"
+
+            if gmtoffset is not None:
+                dt_local = datetime.fromtimestamp(regular_market_time, tz=timezone(timedelta(seconds=gmtoffset)))
+                regular_market_time_local = dt_local.isoformat()
+            else:
+                regular_market_time_local = regular_market_time_utc
+                data_quality_flags.append("missing_gmtoffset_for_local_time")
+        except Exception:
+            data_quality_flags.append("malformed_regular_market_time")
+            regular_market_time_utc = None
+            regular_market_time_local = None
+            staleness_seconds = None
+            delay_status = "unknown"
+
+    timestamps = result_data.get("timestamp", [])
+    if not timestamps:
+        data_quality_flags.append("missing_timestamp_array")
+
+    timestamps_utc = []
+    timestamps_local = []
+
+    for ts in timestamps:
+        if ts is not None:
+            try:
+                dt_utc = datetime.fromtimestamp(ts, tz=timezone.utc)
+                timestamps_utc.append(dt_utc.isoformat())
+                if gmtoffset is not None:
+                    dt_local = datetime.fromtimestamp(ts, tz=timezone(timedelta(seconds=gmtoffset)))
+                    timestamps_local.append(dt_local.isoformat())
+                else:
+                    timestamps_local.append(dt_utc.isoformat())
+            except Exception:
+                timestamps_utc.append(None)
+                timestamps_local.append(None)
+                data_quality_flags.append("malformed_timestamp")
+        else:
+            timestamps_utc.append(None)
+            timestamps_local.append(None)
+            data_quality_flags.append("malformed_timestamp")
+
+    if not gmtoffset and timestamps and "missing_gmtoffset_for_local_time" not in data_quality_flags:
+         data_quality_flags.append("missing_gmtoffset_for_local_time")
+
+    indicators = result_data.get("indicators", {})
+    quote_blocks = indicators.get("quote", [])
+    if not quote_blocks or not isinstance(quote_blocks, list):
+        data_quality_flags.append("missing_quote_block")
+        quote = {}
+    else:
+        quote = quote_blocks[0]
+
+    open_arr = quote.get("open", [])
+    high_arr = quote.get("high", [])
+    low_arr = quote.get("low", [])
+    close_arr = quote.get("close", [])
+    volume_arr = quote.get("volume", [])
+
+    if open_arr is None or not isinstance(open_arr, list):
+        open_arr = []
+    if high_arr is None or not isinstance(high_arr, list):
+        high_arr = []
+    if low_arr is None or not isinstance(low_arr, list):
+        low_arr = []
+    if close_arr is None or not isinstance(close_arr, list):
+        close_arr = []
+    if volume_arr is None or not isinstance(volume_arr, list):
+        volume_arr = []
+
+    if not open_arr: data_quality_flags.append("missing_open_array")
+    if not high_arr: data_quality_flags.append("missing_high_array")
+    if not low_arr: data_quality_flags.append("missing_low_array")
+    if not close_arr: data_quality_flags.append("missing_close_array")
+    if not volume_arr: data_quality_flags.append("missing_volume_array")
+
+    # check array mismatches
+    quote_lens = [len(x) for x in [open_arr, high_arr, low_arr, close_arr, volume_arr] if x]
+    if quote_lens and any(l != len(timestamps) for l in quote_lens):
+        data_quality_flags.append("timestamp_quote_length_mismatch")
+
+    adjclose_blocks = indicators.get("adjclose", [])
+    if not adjclose_blocks or not isinstance(adjclose_blocks, list):
+        data_quality_flags.append("missing_adjclose_array")
+        adjclose_arr = []
+    else:
+        adjclose_arr = adjclose_blocks[0].get("adjclose", [])
+        if adjclose_arr is None or not isinstance(adjclose_arr, list):
+            adjclose_arr = []
+        if adjclose_arr and len(adjclose_arr) != len(timestamps):
+            data_quality_flags.append("timestamp_adjclose_length_mismatch")
+
+    raw_meta = meta.copy()
+
+    mapped_keys = {"symbol", "regularMarketPrice", "regularMarketTime", "exchangeName", "exchangeTimezoneName", "timezone", "currency", "gmtoffset", "chartPreviousClose", "previousClose", "scale", "priceHint", "currentTradingPeriod", "tradingPeriods", "dataGranularity", "range", "validRanges", "firstTradeDate"}
+    unmapped_meta_fields = {k: v for k, v in meta.items() if k not in mapped_keys}
+
+    return {
+        "symbol": meta.get("symbol", requested_symbol),
+        "requested_symbol": requested_symbol,
+        "source": "Yahoo_Finance",
+        "source_type": "unofficial_api",
+        "currency": meta.get("currency"),
+        "exchange_name": meta.get("exchangeName"),
+        "exchange_timezone_name": meta.get("exchangeTimezoneName") or meta.get("timezone"),
+        "gmtoffset": gmtoffset,
+        "regular_market_price": meta.get("regularMarketPrice"),
+        "regular_market_time": regular_market_time,
+        "regular_market_time_utc": regular_market_time_utc,
+        "regular_market_time_local": regular_market_time_local,
+        "chart_range": meta.get("range"),
+        "data_granularity": meta.get("dataGranularity"),
+        "valid_ranges": meta.get("validRanges", []),
+        "first_trade_date": meta.get("firstTradeDate"),
+        "retrieved_at_utc": retrieved_at_utc_dt.isoformat(),
+        "staleness_seconds": staleness_seconds,
+        "freshness_status": "realtime_candidate",
+        "delay_status": delay_status,
+        "source_risk_flags": [
+            "unofficial_source",
+            "rate_limits_apply",
+            "no_execution_guarantees"
+        ],
+        "data_quality_flags": data_quality_flags,
+        "coverage_status": "observed_supported",
+        "series": {
+            "timestamps": timestamps,
+            "timestamps_utc": timestamps_utc,
+            "timestamps_local": timestamps_local,
+            "open": open_arr,
+            "high": high_arr,
+            "low": low_arr,
+            "close": close_arr,
+            "volume": volume_arr,
+            "adjclose": adjclose_arr
+        },
+        "raw_meta": raw_meta,
+        "unmapped_meta_fields": unmapped_meta_fields
+    }
 
 def probe(symbols=None):
     if not symbols:
@@ -31,6 +242,7 @@ def probe(symbols=None):
     unsupported_targets = []
     warnings = []
 
+    retrieved_at_utc_dt = datetime.now(timezone.utc)
     for sym in symbols:
         url = f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}"
         try:
@@ -55,19 +267,16 @@ def probe(symbols=None):
 
             if success:
                 success_count += 1
-                if not raw_sample and "meta" in result_data:
-                    raw_sample = result_data["meta"]
-                    normalized_sample = {
-                        "symbol": raw_sample.get("symbol"),
-                        "price": raw_sample.get("regularMarketPrice"),
-                        "source_time": raw_sample.get("regularMarketTime"),
-                        "exchange": raw_sample.get("exchangeName")
-                    }
+                if not normalized_sample:
+                    normalized_sample = normalize_yahoo_chart_result(result_data, sym, retrieved_at_utc_dt)
+                    if "meta" in result_data:
+                        raw_sample = result_data["meta"]
             else:
                 errors.append(f"Parse failed or empty result for {sym}")
                 failed_targets.append(sym)
             results.append({"symbol": sym, "status": status, "success": bool(success)})
         except requests.exceptions.RequestException as e:
+            failed_targets.append(sym)
             errors.append(f"Network exception for {sym}: {str(e)}")
         except Exception as e:
             failed_targets.append(sym)
@@ -76,19 +285,11 @@ def probe(symbols=None):
 
     overall_success = success_count > 0
 
-    # Calculate staleness for the first successful item
     staleness_seconds = None
-    if raw_sample and raw_sample.get("regularMarketTime"):
-        staleness_seconds = int(time.time()) - raw_sample.get("regularMarketTime")
-
     delay_status = "unknown"
-    if staleness_seconds is not None:
-        if staleness_seconds < 300:
-            delay_status = "realtime"
-        elif staleness_seconds < 86400:
-            delay_status = "delayed"
-        else:
-            delay_status = "stale"
+    if normalized_sample:
+        staleness_seconds = normalized_sample.get("staleness_seconds")
+        delay_status = normalized_sample.get("delay_status", "unknown")
 
     return generate_standard_envelope(
         probe_id=probe_id,
