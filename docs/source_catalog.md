@@ -17,8 +17,8 @@ Generated automatically by probes. Details specific source capabilities.
 
 - **Type:** official_openapi
 - **URL:** https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes
-- **Contract Status:** `failed`
-- **Usable Now:** False
+- **Contract Status:** `normalized_pass`
+- **Usable Now:** True
 - **Potentially Usable (Creds):** False
 - **AI Suitability:** historical_and_eod
 - **Delay Status:** eod
@@ -33,20 +33,20 @@ Generated automatically by probes. Details specific source capabilities.
 - **Potentially Usable (Creds):** False
 - **AI Suitability:** live_watchlist
 - **Delay Status:** delayed
-- **Staleness:** 32671 seconds
+- **Staleness:** 1208 seconds
 - **Errors:** HTTP 404 for TX.TW, HTTP 404 for FUNDA.TW
 - **Failed targets:** TX.TW, FUNDA.TW
 
 ## TWSE_MIS
 
 - **Type:** unofficial_frontend_endpoint
-- **URL:** https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781706880744
+- **URL:** https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781754416918
 - **Contract Status:** `normalized_pass`
 - **Usable Now:** True
 - **Potentially Usable (Creds):** False
 - **AI Suitability:** live_watchlist
-- **Delay Status:** delayed
-- **Staleness:** 29080 seconds
+- **Delay Status:** realtime
+- **Staleness:** 12 seconds
 - **Unsupported targets:** futures, funds
 
 ## FinMind
@@ -57,8 +57,8 @@ Generated automatically by probes. Details specific source capabilities.
 - **Usable Now:** False
 - **Potentially Usable (Creds):** True
 - **AI Suitability:** historical_and_eod
-- **Delay Status:** eod
-- **Staleness:** 52490 seconds
+- **Delay Status:** stale
+- **Staleness:** 100027 seconds
 - **Errors:** HTTP 422 for TaiwanFutureDaily:TX
 - **Unsupported targets:** funds
 - **Failed targets:** TX
