@@ -41,15 +41,17 @@ Observed responses heavily depend on the market session context:
 
 ## 8. Asset-Type Differences
 The schema of the returned objects in `msgArray` varies depending on the asset class:
-- **Stocks / ETFs:** Typically include detailed bid/ask ladders (`a`, `b`, `f`, `g`) and explicit trade volumes (`tv`, `v`). ETF rows may include specific fields like `nu`.
-- **Indices:** Rows like `tse_t00.tw` (TAIEX) have a fundamentally different shape. They do not have bid/ask ladders and may omit several stock-specific fields.
+- **Stocks / ETFs / TDRs:** Typically stock-like quote rows. They include detailed bid/ask ladders (`a`, `b`, `f`, `g`), limit up/down fields (`u`, `w`), and explicit trade volumes (`tv`, `v`).
+- **Indices:** Rows representing market indices (like `tse_t00.tw` for the TAIEX) have a fundamentally different shape. They should not be forced into stock-like schemas. They do not have bid/ask ladders, often lack limit up/down metrics, and do not use company-name fields similarly. Do not assume all rows share identical schemas.
 
 ## 9. Timestamp Semantics
 TWSE MIS provides multiple timestamp fields that must be interpreted carefully:
 - **`d` (Date):** The trading date (e.g., `"20231025"`).
-- **`t` (Time):** The source-reported time of the quote, usually reflecting the market session time.
+- **`t` (Time):** The source-reported time of the quote. Intraday, this aligns closely with the ongoing session time. Post-market, `t` may reflect the regular session close time (e.g., `13:30:00`).
+- **`%` / `ot`**: Additional timing fields. Intraday, `%` may align closely with `t`. Post-market, `%` or `ot` may reflect post-market or alternate-session timing.
 - **`tlong` (Source Time MS):** An epoch timestamp (in milliseconds) representing the time the data was generated or last updated by the exchange system.
-- **`queryTime.sysTime` / `userDelay` / `cachedAlive`:** Internal system telemetry fields indicating when the server processed the request and how long it was cached.
+- **`queryTime.sysTime` / `userDelay` / `cachedAlive`:** Internal server processing telemetry indicating when the server processed the request and how long it was cached.
+- **Timestamp Design Warning:** Parser design should not collapse all these diverse timings (`t`, `%`, `tlong`, `queryTime.sysTime`) into a single ambiguous `time` field, as they carry distinct market phase and telemetry contexts.
 - **Derived Real-time Context:** The project derives `staleness_seconds` by comparing `tlong` to the `retrieved_at_utc` time. A classification of "realtime_candidate" or a specific `delay_status` relies on this derived calculation, not a guarantee from the source. **Data is not guaranteed to be real-time.**
 
 ## 10. Risk and Suitability

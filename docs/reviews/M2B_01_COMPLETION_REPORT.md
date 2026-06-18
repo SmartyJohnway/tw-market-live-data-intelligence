@@ -40,7 +40,14 @@ Explicitly documented observed differences:
 - Adding specific unit tests for successfully parsing underscore-separated bid/ask arrays.
 - Implementing safe parsing logic to handle index rows (e.g., `t00.tw`) that omit bid/ask ladders entirely.
 
-## 10. Remaining Caveats and Next Milestone Recommendation
+## 10. Addendum (Post-Review Update)
+Following review, the protocol docs and field dictionary were specifically updated with new observed evidence regarding intraday versus post-market sessions:
+- Corrected semantics for `ch` to reflect it is solely the quote channel suffix.
+- Added a full section for Optional & Internal Fields (such as `@`, `key`, `pid`, `#`, `%`, `nu`).
+- Expanded session behavior caveats, specifically noting that `pid` and `#` act as sequence fields that mutate across market phases.
+- Enhanced timestamp caveats to warn against collapsing the varied timings (`t`, `%`, `tlong`, `queryTime`) into a single ambiguous property.
+
+## 11. Remaining Caveats and Next Milestone Recommendation
 **Remaining Caveats:** The current implementation of TWSE MIS is still using the v1 payload. It remains highly susceptible to blockades, rate-limiting, and schema alterations without notice.
 
 **Next Milestone Recommendation:**

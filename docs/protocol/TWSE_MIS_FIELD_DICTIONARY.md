@@ -9,7 +9,7 @@ This dictionary documents the observed response fields from the TWSE MIS endpoin
 | `c` | Symbol Code | String | `"2330"` | `symbol` | confirmed | The core ticker symbol. |
 | `n` | Symbol Name (Short) | String | `"台積電"` | `name` | confirmed | Typically the Chinese short name. |
 | `ex` | Exchange Identifier | String | `"tse"`, `"otc"` | `exchange` | confirmed | Distinguishes TWSE (`tse`) from TPEx (`otc`). |
-| `ch` | Channel Identifier | String | `"tse_2330.tw"` | `channel` | confirmed | The composite string used in the `ex_ch` request parameter. |
+| `ch` | Quote Channel Suffix | String | `"2330.tw"` | `channel_suffix` | confirmed | The suffix used for the channel. The request `ex_ch` parameter is constructed as `ex` + "_" + `ch` (e.g., `"tse_2330.tw"`). |
 
 ## Price & Trade Data
 | Raw Field | Observed Meaning | Data Type | Example | Normalized Candidate | Confidence | Caveats |
@@ -48,20 +48,29 @@ This dictionary documents the observed response fields from the TWSE MIS endpoin
 | `userDelay` | System User Delay | String/Int | `"0"` | N/A | unknown | Internal telemetry, meaning unclear. |
 | `cachedAlive` | Cache Lifetime | String/Int | `"30000"` | N/A | candidate | Internal telemetry, likely related to server-side cache duration. |
 
-## Post-Market & Specialized Fields
+## Optional & Internal Fields (Intraday & Post-Market)
 | Raw Field | Observed Meaning | Data Type | Example | Normalized Candidate | Confidence | Caveats |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `oa` / `ob` / `oz` / `ov` / `fv` | Post-market Metrics | String | Varied | N/A | candidate | Frequently appear in post-market responses. Likely relate to odd-lot or after-hours trading. |
-| `nu` | Unknown ETF Metric | String | Varied | N/A | unknown | Observed in some ETF rows. |
+| `@` / `key` | Feed/System Routing | String | Varied | N/A | unknown_or_internal | Internal routing or feed keys. |
+| `^` | Unknown Metric | String | Varied | N/A | unknown | Usage unclear. |
+| `%` | Session/Timing Metric | String | `"13:30:00"`, `"-"` | N/A | candidate | Intraday, aligns closely with `t`. Post-market, may reflect post-market or alternate-session timing. |
+| `nf` / `it` / `i` | Company/Listing Info | String | Varied | N/A | candidate | Likely related to listing references or identifiers. |
+| `nu` | ETF Reference/NAV URL | String | URL | N/A | observed | ETF-specific reference or NAV-related URL. |
+| `s` / `ps` / `pz` | Trading Phase/State | String | `"-"` | N/A | candidate | Intraday, these may be `"-"`. Post-market, they often populate, likely representing matching phases or pricing state. |
+| `pid` / `#` | Feed Sequence Info | String | Varied | N/A | unknown_or_internal | May change across market phases. Treat as internal feed/channel/sequence fields, not asset identity. |
+| `bp` / `mt` / `m%` / `p` / `ts` | Pricing/Calculated | String | Varied | N/A | candidate | Likely relate to mid-prices, matching calculations, or tick states. |
+| `oa` / `ob` / `oz` / `ov` / `ot` / `fv` | Post-market Metrics | String | Varied | N/A | candidate | Populate during post-market responses. Likely relate to odd-lot, after-hours trading, and specific closing times (`ot`). |
 
 ---
 
 ## Important Session-Dependent Caveats
 
 ### Intraday vs. Post-Market Value Behavior
-1. **Missing Data (`"-"`)**: During intraday trading, especially before the first match or during specific auction phases, fields like `z`, `tv`, `s`, `pz`, `ps` may be returned as the literal string `"-"`.
-2. **Post-Market Population**: After market close, these `"-"` values often become populated with final closing metrics, and new fields (e.g., `oa`, `ob`) may appear.
-3. **Timestamp Reflection**: Intraday, `t`, `tlong`, and `queryTime.sysTime` reflect ongoing session time. Post-market, `t` often freezes at the regular session close (e.g., `13:30:00` or `14:30:00`), while other telemetry fields may continue to update or reflect the post-close processing time.
+1. **Missing Data (`"-"`)**: During intraday trading, especially before the first match or during specific auction phases, fields like `z`, `tv`, `s`, `ps`, `pz` may be returned as the literal string `"-"`.
+2. **Post-Market Population**: After market close, these `"-"` values often become populated with final closing metrics.
+3. **Post-Market Additional Fields**: Post-market responses may include new fields such as `oa`, `ob`, `oz`, `ov`, `ot`, and `fv`.
+4. **Timestamp Reflection**: Intraday, `t`, `%`, and `tlong` may align closely to the ongoing session time. Post-market, `t` may reflect regular session close time, while `%` or `ot` may reflect post-market or alternate-session timing.
+5. **Sequence Fields**: Fields like `pid` and `#` may change across market phases and should be treated as internal feed/channel/sequence fields, not asset identity.
 
 ### Asset Class Differences
 - **Index Rows**: Rows representing market indices (like `tse_t00.tw` for the TAIEX) have a different structural shape. They generally **do not include bid/ask fields** (`a`, `b`, `f`, `g`) and may omit volume fields that don't apply to a calculated index. Do not assume all rows share identical schemas.
