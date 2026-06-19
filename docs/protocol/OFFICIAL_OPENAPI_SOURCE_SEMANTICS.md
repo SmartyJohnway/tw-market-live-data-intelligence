@@ -18,4 +18,9 @@ This document clarifies the semantic boundaries, usage intents, and constraints 
 
 1. **Official Does Not Mean Live:** The designation `official_openapi` implies the source is the authoritative exchange (TWSE or TPEx). However, their public OpenAPI endpoints are explicitly built for batch, End-of-Day (EOD) data distribution. They **do not** provide intraday real-time market data.
 2. **Unofficial Endpoints Have Live Risks:** Endpoints like TWSE MIS provide delayed intraday data but are unofficial frontend endpoints. They are suitable for bounded watchlists but carry extremely high risk for automated ingestion due to unpredictable rate limiting and schema changes.
+
+## Schema Contracts
+For exact field mappings and data structures for the official OpenAPI endpoints, refer to:
+- [TWSE OpenAPI Field Dictionary](TWSE_OPENAPI_FIELD_DICTIONARY.md) and [TWSE OpenAPI Normalized EOD Quote Contract v1](../contracts/twse_openapi_normalized_eod_quote_v1.md)
+- [TPEx OpenAPI Field Dictionary](TPEX_OPENAPI_FIELD_DICTIONARY.md) and [TPEx OpenAPI Normalized EOD Quote Contract v1](../contracts/tpex_openapi_normalized_eod_quote_v1.md)
 3. **No Execution-Grade Data in Free Public APIs:** Real-time, execution-grade tick data is strictly the domain of authenticated Broker APIs or paid direct-market-access (DMA) lines. Official OpenAPIs must never be framed or utilized as execution feeds.

@@ -61,7 +61,7 @@ The response is a top-level JSON array of objects. Each object represents the da
 | `Low` | Lowest price | (Low) | `observed` |
 | `TradingVolume` | Total trading volume | (Volume) | `observed` |
 
-*(Note: Full standalone field dictionaries and complete schema normalization contracts are deferred to M2D-02).*
+*(Note: For full field dictionaries, see [TPEx OpenAPI Field Dictionary](TPEX_OPENAPI_FIELD_DICTIONARY.md). For schema normalization, see [TPEx OpenAPI Normalized EOD Quote Contract v1](../contracts/tpex_openapi_normalized_eod_quote_v1.md)).*
 
 ## Known Failure Modes
 - **HTTP 404/5xx / Network Timeout:** Temporary unavailability of the TPEx OpenAPI servers.

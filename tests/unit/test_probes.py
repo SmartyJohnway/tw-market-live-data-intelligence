@@ -19,7 +19,7 @@ def test_twse_openapi_offline(mocker):
     assert result["is_usable_now"] is True
     assert result["contract_status"] == "normalized_pass"
     assert result["normalized_sample"]["symbol"] == "2330"
-    assert result["normalized_sample"]["price"] == "1000"
+    assert result["normalized_sample"]["close"] == 1000.0
 
 def test_twse_openapi_failure(mocker):
     # Mock requests.get to throw exception
