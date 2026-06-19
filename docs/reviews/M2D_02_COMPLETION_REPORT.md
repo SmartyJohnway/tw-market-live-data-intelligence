@@ -40,7 +40,7 @@ pytest -m "not network" -v
 python scripts/run_all_probes.py
 ```
 
-All 49 offline tests pass. Running `run_all_probes.py` securely populated reports and the frontend matrix without incident. A minor legacy `pytest` module referencing `price` instead of `close` from the previous envelope spec was seamlessly updated.
+All 49 offline tests pass. `run_all_probes.py` completed and regenerated reports. The TPEx live endpoint returned a transient/source failure (`Response ended prematurely`) in this run and was captured accurately in the generated reports; this does not represent an offline parser/test failure, but rather expected upstream fragility from the free official API.
 
 ## Files Changed/Added
 - **Created**: `docs/protocol/TWSE_OPENAPI_FIELD_DICTIONARY.md`

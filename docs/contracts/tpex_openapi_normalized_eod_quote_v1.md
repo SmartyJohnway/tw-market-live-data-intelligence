@@ -30,9 +30,9 @@ The normalized object is embedded within the `normalized_sample` block of the st
 | `low` | `Low` | Float / `None` | Parse via safe numeric helper. |
 | `close` | `Close` | Float / `None` | Parse via safe numeric helper. Add `missing_close` / `malformed_close` flags if parsing yields `None`. |
 | `change` | `Change` | Float / `None` | Parse via safe numeric helper. TPEx explicit signs (e.g., `+9.00`) should parse correctly to floats. |
-| `trade_volume` | `TradingShares` | Integer / `None` | Parse via safe numeric helper. |
-| `trade_value` | `TransactionAmount` | Float / `None` | Parse via safe numeric helper. |
-| `transaction_count` | `TransactionNumber` | Integer / `None` | Parse via safe numeric helper. |
+| `trade_volume` | `TradingShares` or `TradingVolume` | Integer / `None` | Parse via safe numeric helper, checking both field variants. |
+| `trade_value` | `TransactionAmount` or `TradingAmount` | Float / `None` | Parse via safe numeric helper, checking both field variants. |
+| `transaction_count` | `TransactionNumber` or `Transaction` | Integer / `None` | Parse via safe numeric helper, checking both field variants. |
 
 ### Data Quality & Risk Flags
 

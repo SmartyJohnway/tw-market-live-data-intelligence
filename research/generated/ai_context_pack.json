@@ -1,15 +1,15 @@
 {
-  "generated_at_utc": "2026-06-19T11:06:30.486477+00:00",
-  "generated_at_taipei": "2026-06-19T19:06:30.486485+08:00",
+  "generated_at_utc": "2026-06-19T16:05:57.104304+00:00",
+  "generated_at_taipei": "2026-06-20T00:05:57.104322+08:00",
   "purpose": "Provide AI agents with up-to-date facts about available Taiwan equity market data sources.",
   "usable_sources": [
     {
-      "probe_id": "twse_openapi_20260619_110605",
+      "probe_id": "twse_openapi_20260619_160526",
       "source": "TWSE_OpenAPI",
       "source_type": "official_openapi",
       "contract_status": "normalized_pass",
-      "retrieved_at_utc": "2026-06-19T11:06:06.724188+00:00",
-      "retrieved_at_taipei": "2026-06-19T19:06:06.724188+00:00",
+      "retrieved_at_utc": "2026-06-19T16:05:27.755212+00:00",
+      "retrieved_at_taipei": "2026-06-20T00:05:27.755212+00:00",
       "request": {
         "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
         "method": "GET",
@@ -112,7 +112,7 @@
           "Transaction": "7634"
         },
         "unmapped_raw_fields": {},
-        "retrieved_at_utc": "2026-06-19T11:06:06.724076+00:00"
+        "retrieved_at_utc": "2026-06-19T16:05:27.755130+00:00"
       },
       "freshness_status": "eod_batch",
       "staleness_seconds": null,
@@ -134,12 +134,164 @@
       "errors": []
     },
     {
-      "probe_id": "yahoo_20260619_110614",
+      "probe_id": "tpex_openapi_20260619_160527",
+      "source": "TPEx_OpenAPI",
+      "source_type": "official_openapi",
+      "contract_status": "normalized_pass",
+      "retrieved_at_utc": "2026-06-19T16:05:40.146990+00:00",
+      "retrieved_at_taipei": "2026-06-20T00:05:40.146990+00:00",
+      "request": {
+        "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
+        "method": "GET",
+        "params": {},
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "http_status": 200,
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "schema_fingerprint": {
+        "type": "dict",
+        "keys": [
+          "change",
+          "close",
+          "coverage_status",
+          "currency",
+          "data_quality_flags",
+          "delay_status",
+          "exchange",
+          "freshness_status",
+          "high",
+          "low",
+          "market",
+          "name",
+          "official_status",
+          "open",
+          "raw_row",
+          "retrieved_at_utc",
+          "source",
+          "source_risk_flags",
+          "source_type",
+          "symbol",
+          "trade_date",
+          "trade_value",
+          "trade_volume",
+          "transaction_count",
+          "unmapped_raw_fields"
+        ],
+        "hash": "80eed8c8f9f203b7984d875d18025c73"
+      },
+      "schema_hash": "80eed8c8f9f203b7984d875d18025c73",
+      "raw_sample_path": null,
+      "normalized_sample_path": null,
+      "raw_sample": {
+        "Date": "1150618",
+        "SecuritiesCompanyCode": "006201",
+        "CompanyName": "元大富櫃50",
+        "Close": "50.25",
+        "Change": "+2.02",
+        "Open": "49.25",
+        "High": "50.25",
+        "Low": "48.96",
+        "Average": "49.75",
+        "TradingShares": "256157",
+        "TransactionAmount": "12744461",
+        "TransactionNumber": "360",
+        "LatestBidPrice": "50.25",
+        "LatesAskPrice": "50.30",
+        "Capitals": "20446000",
+        "NextReferencePrice": "50.25",
+        "NextLimitUp": "55.25",
+        "NextLimitDown": "45.23"
+      },
+      "normalized_sample": {
+        "source": "TPEx_OpenAPI",
+        "source_type": "official_openapi",
+        "official_status": "official_public_openapi",
+        "market": "TPEx",
+        "exchange": "TPEx",
+        "symbol": "006201",
+        "name": "元大富櫃50",
+        "trade_date": "1150618",
+        "open": 49.25,
+        "high": 50.25,
+        "low": 48.96,
+        "close": 50.25,
+        "change": 2.02,
+        "trade_volume": 256157,
+        "trade_value": 12744461.0,
+        "transaction_count": 360,
+        "currency": "TWD",
+        "freshness_status": "eod_batch",
+        "delay_status": "eod",
+        "coverage_status": "observed_supported",
+        "source_risk_flags": [
+          "official_eod_reference_source",
+          "not_intraday_live_feed",
+          "not_execution_grade",
+          "public_endpoint_rate_limits_apply",
+          "schema_drift_possible"
+        ],
+        "data_quality_flags": [],
+        "raw_row": {
+          "Date": "1150618",
+          "SecuritiesCompanyCode": "006201",
+          "CompanyName": "元大富櫃50",
+          "Close": "50.25",
+          "Change": "+2.02",
+          "Open": "49.25",
+          "High": "50.25",
+          "Low": "48.96",
+          "Average": "49.75",
+          "TradingShares": "256157",
+          "TransactionAmount": "12744461",
+          "TransactionNumber": "360",
+          "LatestBidPrice": "50.25",
+          "LatesAskPrice": "50.30",
+          "Capitals": "20446000",
+          "NextReferencePrice": "50.25",
+          "NextLimitUp": "55.25",
+          "NextLimitDown": "45.23"
+        },
+        "unmapped_raw_fields": {
+          "Average": "49.75",
+          "LatestBidPrice": "50.25",
+          "LatesAskPrice": "50.30",
+          "Capitals": "20446000",
+          "NextReferencePrice": "50.25",
+          "NextLimitUp": "55.25",
+          "NextLimitDown": "45.23"
+        },
+        "retrieved_at_utc": "2026-06-19T16:05:40.146903+00:00"
+      },
+      "freshness_status": "eod_batch",
+      "staleness_seconds": null,
+      "delay_status": "eod",
+      "requires_auth": false,
+      "requires_session": false,
+      "risk_level": "low",
+      "risk_notes": [],
+      "ai_suitability": "historical_and_eod",
+      "is_usable_now": true,
+      "potentially_usable_with_credentials": false,
+      "unsupported_targets": [
+        "indices",
+        "futures",
+        "funds"
+      ],
+      "failed_targets": [],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "probe_id": "yahoo_20260619_160540",
       "source": "Yahoo_Finance",
       "source_type": "unofficial_api",
       "contract_status": "normalized_pass",
-      "retrieved_at_utc": "2026-06-19T11:06:19.657903+00:00",
-      "retrieved_at_taipei": "2026-06-19T19:06:19.657903+00:00",
+      "retrieved_at_utc": "2026-06-19T16:05:46.212415+00:00",
+      "retrieved_at_taipei": "2026-06-20T00:05:46.212415+00:00",
       "request": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/[symbol]",
         "method": "GET",
@@ -215,20 +367,20 @@
           "currentTradingPeriod": {
             "pre": {
               "timezone": "CST",
-              "start": 1781744400,
               "end": 1781744400,
+              "start": 1781744400,
               "gmtoffset": 28800
             },
             "regular": {
               "timezone": "CST",
-              "start": 1781744400,
               "end": 1781760600,
+              "start": 1781744400,
               "gmtoffset": 28800
             },
             "post": {
               "timezone": "CST",
-              "start": 1781760600,
               "end": 1781760600,
+              "start": 1781760600,
               "gmtoffset": 28800
             }
           },
@@ -236,8 +388,8 @@
             [
               {
                 "timezone": "CST",
-                "start": 1781744400,
                 "end": 1781760600,
+                "start": 1781744400,
                 "gmtoffset": 28800
               }
             ]
@@ -330,8 +482,8 @@
           "max"
         ],
         "first_trade_date": 946947600,
-        "retrieved_at_utc": "2026-06-19T11:06:14.142565+00:00",
-        "staleness_seconds": 106566,
+        "retrieved_at_utc": "2026-06-19T16:05:40.153858+00:00",
+        "staleness_seconds": 124532,
         "freshness_status": "realtime_candidate",
         "delay_status": "stale",
         "source_risk_flags": [
@@ -2557,20 +2709,20 @@
           "currentTradingPeriod": {
             "pre": {
               "timezone": "CST",
-              "start": 1781744400,
               "end": 1781744400,
+              "start": 1781744400,
               "gmtoffset": 28800
             },
             "regular": {
               "timezone": "CST",
-              "start": 1781744400,
               "end": 1781760600,
+              "start": 1781744400,
               "gmtoffset": 28800
             },
             "post": {
               "timezone": "CST",
-              "start": 1781760600,
               "end": 1781760600,
+              "start": 1781760600,
               "gmtoffset": 28800
             }
           },
@@ -2578,8 +2730,8 @@
             [
               {
                 "timezone": "CST",
-                "start": 1781744400,
                 "end": 1781760600,
+                "start": 1781744400,
                 "gmtoffset": 28800
               }
             ]
@@ -2614,7 +2766,7 @@
         }
       },
       "freshness_status": "realtime_candidate",
-      "staleness_seconds": 106566,
+      "staleness_seconds": 124532,
       "delay_status": "stale",
       "requires_auth": false,
       "requires_session": false,
@@ -2639,14 +2791,14 @@
       "errors": []
     },
     {
-      "probe_id": "twse_mis_20260619_110619",
+      "probe_id": "twse_mis_20260619_160546",
       "source": "TWSE_MIS",
       "source_type": "unofficial_frontend_endpoint",
       "contract_status": "normalized_pass",
-      "retrieved_at_utc": "2026-06-19T11:06:20.546356+00:00",
-      "retrieved_at_taipei": "2026-06-19T19:06:20.546356+00:00",
+      "retrieved_at_utc": "2026-06-19T16:05:47.135804+00:00",
+      "retrieved_at_taipei": "2026-06-20T00:05:47.135804+00:00",
       "request": {
-        "url": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781867180371",
+        "url": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781885146959",
         "method": "GET",
         "params": {},
         "headers": {
@@ -3056,11 +3208,11 @@
         ],
         "telemetry": {
           "queryTime": {
-            "sysDate": "20260619",
-            "stockInfoItem": 18668,
-            "stockInfo": 1572,
+            "sysDate": "20260620",
+            "stockInfoItem": 36948,
+            "stockInfo": 1337,
             "sessionStr": "UserSession",
-            "sysTime": "19:06:20",
+            "sysTime": "00:05:47",
             "showChart": false,
             "sessionFromTime": -1,
             "sessionLatestTime": -1
@@ -3127,10 +3279,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -3210,10 +3362,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [
@@ -3304,10 +3456,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -3395,10 +3547,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -3486,10 +3638,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -3577,10 +3729,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -3668,10 +3820,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -3734,10 +3886,10 @@
           "regular_trade_time": "13:33:00",
           "snapshot_time": "13:33:00",
           "alternate_session_time": null,
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 106399,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 124366,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -3761,7 +3913,7 @@
         }
       ],
       "freshness_status": "realtime_candidate",
-      "staleness_seconds": 102979,
+      "staleness_seconds": 120946,
       "delay_status": "stale",
       "requires_auth": false,
       "requires_session": true,
@@ -3786,12 +3938,12 @@
   ],
   "official_sources": [
     {
-      "probe_id": "twse_openapi_20260619_110605",
+      "probe_id": "twse_openapi_20260619_160526",
       "source": "TWSE_OpenAPI",
       "source_type": "official_openapi",
       "contract_status": "normalized_pass",
-      "retrieved_at_utc": "2026-06-19T11:06:06.724188+00:00",
-      "retrieved_at_taipei": "2026-06-19T19:06:06.724188+00:00",
+      "retrieved_at_utc": "2026-06-19T16:05:27.755212+00:00",
+      "retrieved_at_taipei": "2026-06-20T00:05:27.755212+00:00",
       "request": {
         "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
         "method": "GET",
@@ -3894,7 +4046,7 @@
           "Transaction": "7634"
         },
         "unmapped_raw_fields": {},
-        "retrieved_at_utc": "2026-06-19T11:06:06.724076+00:00"
+        "retrieved_at_utc": "2026-06-19T16:05:27.755130+00:00"
       },
       "freshness_status": "eod_batch",
       "staleness_seconds": null,
@@ -3916,12 +4068,12 @@
       "errors": []
     },
     {
-      "probe_id": "tpex_openapi_20260619_110606",
+      "probe_id": "tpex_openapi_20260619_160527",
       "source": "TPEx_OpenAPI",
       "source_type": "official_openapi",
-      "contract_status": "failed",
-      "retrieved_at_utc": "2026-06-19T11:06:14.142315+00:00",
-      "retrieved_at_taipei": "2026-06-19T19:06:14.142315+00:00",
+      "contract_status": "normalized_pass",
+      "retrieved_at_utc": "2026-06-19T16:05:40.146990+00:00",
+      "retrieved_at_taipei": "2026-06-20T00:05:40.146990+00:00",
       "request": {
         "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
         "method": "GET",
@@ -3930,40 +4082,150 @@
           "Accept": "application/json"
         }
       },
-      "http_status": "Error",
-      "http_ok": false,
-      "parse_status": "failed",
-      "normalization_status": "failed",
-      "schema_fingerprint": null,
-      "schema_hash": null,
+      "http_status": 200,
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "schema_fingerprint": {
+        "type": "dict",
+        "keys": [
+          "change",
+          "close",
+          "coverage_status",
+          "currency",
+          "data_quality_flags",
+          "delay_status",
+          "exchange",
+          "freshness_status",
+          "high",
+          "low",
+          "market",
+          "name",
+          "official_status",
+          "open",
+          "raw_row",
+          "retrieved_at_utc",
+          "source",
+          "source_risk_flags",
+          "source_type",
+          "symbol",
+          "trade_date",
+          "trade_value",
+          "trade_volume",
+          "transaction_count",
+          "unmapped_raw_fields"
+        ],
+        "hash": "80eed8c8f9f203b7984d875d18025c73"
+      },
+      "schema_hash": "80eed8c8f9f203b7984d875d18025c73",
       "raw_sample_path": null,
       "normalized_sample_path": null,
-      "raw_sample": null,
-      "normalized_sample": null,
-      "freshness_status": "unknown",
+      "raw_sample": {
+        "Date": "1150618",
+        "SecuritiesCompanyCode": "006201",
+        "CompanyName": "元大富櫃50",
+        "Close": "50.25",
+        "Change": "+2.02",
+        "Open": "49.25",
+        "High": "50.25",
+        "Low": "48.96",
+        "Average": "49.75",
+        "TradingShares": "256157",
+        "TransactionAmount": "12744461",
+        "TransactionNumber": "360",
+        "LatestBidPrice": "50.25",
+        "LatesAskPrice": "50.30",
+        "Capitals": "20446000",
+        "NextReferencePrice": "50.25",
+        "NextLimitUp": "55.25",
+        "NextLimitDown": "45.23"
+      },
+      "normalized_sample": {
+        "source": "TPEx_OpenAPI",
+        "source_type": "official_openapi",
+        "official_status": "official_public_openapi",
+        "market": "TPEx",
+        "exchange": "TPEx",
+        "symbol": "006201",
+        "name": "元大富櫃50",
+        "trade_date": "1150618",
+        "open": 49.25,
+        "high": 50.25,
+        "low": 48.96,
+        "close": 50.25,
+        "change": 2.02,
+        "trade_volume": 256157,
+        "trade_value": 12744461.0,
+        "transaction_count": 360,
+        "currency": "TWD",
+        "freshness_status": "eod_batch",
+        "delay_status": "eod",
+        "coverage_status": "observed_supported",
+        "source_risk_flags": [
+          "official_eod_reference_source",
+          "not_intraday_live_feed",
+          "not_execution_grade",
+          "public_endpoint_rate_limits_apply",
+          "schema_drift_possible"
+        ],
+        "data_quality_flags": [],
+        "raw_row": {
+          "Date": "1150618",
+          "SecuritiesCompanyCode": "006201",
+          "CompanyName": "元大富櫃50",
+          "Close": "50.25",
+          "Change": "+2.02",
+          "Open": "49.25",
+          "High": "50.25",
+          "Low": "48.96",
+          "Average": "49.75",
+          "TradingShares": "256157",
+          "TransactionAmount": "12744461",
+          "TransactionNumber": "360",
+          "LatestBidPrice": "50.25",
+          "LatesAskPrice": "50.30",
+          "Capitals": "20446000",
+          "NextReferencePrice": "50.25",
+          "NextLimitUp": "55.25",
+          "NextLimitDown": "45.23"
+        },
+        "unmapped_raw_fields": {
+          "Average": "49.75",
+          "LatestBidPrice": "50.25",
+          "LatesAskPrice": "50.30",
+          "Capitals": "20446000",
+          "NextReferencePrice": "50.25",
+          "NextLimitUp": "55.25",
+          "NextLimitDown": "45.23"
+        },
+        "retrieved_at_utc": "2026-06-19T16:05:40.146903+00:00"
+      },
+      "freshness_status": "eod_batch",
       "staleness_seconds": null,
-      "delay_status": "unknown",
+      "delay_status": "eod",
       "requires_auth": false,
       "requires_session": false,
       "risk_level": "low",
       "risk_notes": [],
-      "ai_suitability": "unknown",
-      "is_usable_now": false,
+      "ai_suitability": "historical_and_eod",
+      "is_usable_now": true,
       "potentially_usable_with_credentials": false,
-      "unsupported_targets": [],
+      "unsupported_targets": [
+        "indices",
+        "futures",
+        "funds"
+      ],
       "failed_targets": [],
       "warnings": [],
-      "errors": [
-        "Response ended prematurely"
-      ]
+      "errors": []
     },
     {
-      "probe_id": "yahoo_20260619_110614",
+      "probe_id": "yahoo_20260619_160540",
       "source": "Yahoo_Finance",
       "source_type": "unofficial_api",
       "contract_status": "normalized_pass",
-      "retrieved_at_utc": "2026-06-19T11:06:19.657903+00:00",
-      "retrieved_at_taipei": "2026-06-19T19:06:19.657903+00:00",
+      "retrieved_at_utc": "2026-06-19T16:05:46.212415+00:00",
+      "retrieved_at_taipei": "2026-06-20T00:05:46.212415+00:00",
       "request": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/[symbol]",
         "method": "GET",
@@ -4039,20 +4301,20 @@
           "currentTradingPeriod": {
             "pre": {
               "timezone": "CST",
-              "start": 1781744400,
               "end": 1781744400,
+              "start": 1781744400,
               "gmtoffset": 28800
             },
             "regular": {
               "timezone": "CST",
-              "start": 1781744400,
               "end": 1781760600,
+              "start": 1781744400,
               "gmtoffset": 28800
             },
             "post": {
               "timezone": "CST",
-              "start": 1781760600,
               "end": 1781760600,
+              "start": 1781760600,
               "gmtoffset": 28800
             }
           },
@@ -4060,8 +4322,8 @@
             [
               {
                 "timezone": "CST",
-                "start": 1781744400,
                 "end": 1781760600,
+                "start": 1781744400,
                 "gmtoffset": 28800
               }
             ]
@@ -4154,8 +4416,8 @@
           "max"
         ],
         "first_trade_date": 946947600,
-        "retrieved_at_utc": "2026-06-19T11:06:14.142565+00:00",
-        "staleness_seconds": 106566,
+        "retrieved_at_utc": "2026-06-19T16:05:40.153858+00:00",
+        "staleness_seconds": 124532,
         "freshness_status": "realtime_candidate",
         "delay_status": "stale",
         "source_risk_flags": [
@@ -6381,20 +6643,20 @@
           "currentTradingPeriod": {
             "pre": {
               "timezone": "CST",
-              "start": 1781744400,
               "end": 1781744400,
+              "start": 1781744400,
               "gmtoffset": 28800
             },
             "regular": {
               "timezone": "CST",
-              "start": 1781744400,
               "end": 1781760600,
+              "start": 1781744400,
               "gmtoffset": 28800
             },
             "post": {
               "timezone": "CST",
-              "start": 1781760600,
               "end": 1781760600,
+              "start": 1781760600,
               "gmtoffset": 28800
             }
           },
@@ -6402,8 +6664,8 @@
             [
               {
                 "timezone": "CST",
-                "start": 1781744400,
                 "end": 1781760600,
+                "start": 1781744400,
                 "gmtoffset": 28800
               }
             ]
@@ -6438,7 +6700,7 @@
         }
       },
       "freshness_status": "realtime_candidate",
-      "staleness_seconds": 106566,
+      "staleness_seconds": 124532,
       "delay_status": "stale",
       "requires_auth": false,
       "requires_session": false,
@@ -6463,14 +6725,14 @@
       "errors": []
     },
     {
-      "probe_id": "twse_mis_20260619_110619",
+      "probe_id": "twse_mis_20260619_160546",
       "source": "TWSE_MIS",
       "source_type": "unofficial_frontend_endpoint",
       "contract_status": "normalized_pass",
-      "retrieved_at_utc": "2026-06-19T11:06:20.546356+00:00",
-      "retrieved_at_taipei": "2026-06-19T19:06:20.546356+00:00",
+      "retrieved_at_utc": "2026-06-19T16:05:47.135804+00:00",
+      "retrieved_at_taipei": "2026-06-20T00:05:47.135804+00:00",
       "request": {
-        "url": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781867180371",
+        "url": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781885146959",
         "method": "GET",
         "params": {},
         "headers": {
@@ -6880,11 +7142,11 @@
         ],
         "telemetry": {
           "queryTime": {
-            "sysDate": "20260619",
-            "stockInfoItem": 18668,
-            "stockInfo": 1572,
+            "sysDate": "20260620",
+            "stockInfoItem": 36948,
+            "stockInfo": 1337,
             "sessionStr": "UserSession",
-            "sysTime": "19:06:20",
+            "sysTime": "00:05:47",
             "showChart": false,
             "sessionFromTime": -1,
             "sessionLatestTime": -1
@@ -6951,10 +7213,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -7034,10 +7296,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [
@@ -7128,10 +7390,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -7219,10 +7481,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -7310,10 +7572,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -7401,10 +7663,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -7492,10 +7754,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -7558,10 +7820,10 @@
           "regular_trade_time": "13:33:00",
           "snapshot_time": "13:33:00",
           "alternate_session_time": null,
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 106399,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 124366,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -7585,7 +7847,7 @@
         }
       ],
       "freshness_status": "realtime_candidate",
-      "staleness_seconds": 102979,
+      "staleness_seconds": 120946,
       "delay_status": "stale",
       "requires_auth": false,
       "requires_session": true,
@@ -7610,12 +7872,12 @@
   ],
   "unofficial_sources": [
     {
-      "probe_id": "yahoo_20260619_110614",
+      "probe_id": "yahoo_20260619_160540",
       "source": "Yahoo_Finance",
       "source_type": "unofficial_api",
       "contract_status": "normalized_pass",
-      "retrieved_at_utc": "2026-06-19T11:06:19.657903+00:00",
-      "retrieved_at_taipei": "2026-06-19T19:06:19.657903+00:00",
+      "retrieved_at_utc": "2026-06-19T16:05:46.212415+00:00",
+      "retrieved_at_taipei": "2026-06-20T00:05:46.212415+00:00",
       "request": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/[symbol]",
         "method": "GET",
@@ -7691,20 +7953,20 @@
           "currentTradingPeriod": {
             "pre": {
               "timezone": "CST",
-              "start": 1781744400,
               "end": 1781744400,
+              "start": 1781744400,
               "gmtoffset": 28800
             },
             "regular": {
               "timezone": "CST",
-              "start": 1781744400,
               "end": 1781760600,
+              "start": 1781744400,
               "gmtoffset": 28800
             },
             "post": {
               "timezone": "CST",
-              "start": 1781760600,
               "end": 1781760600,
+              "start": 1781760600,
               "gmtoffset": 28800
             }
           },
@@ -7712,8 +7974,8 @@
             [
               {
                 "timezone": "CST",
-                "start": 1781744400,
                 "end": 1781760600,
+                "start": 1781744400,
                 "gmtoffset": 28800
               }
             ]
@@ -7806,8 +8068,8 @@
           "max"
         ],
         "first_trade_date": 946947600,
-        "retrieved_at_utc": "2026-06-19T11:06:14.142565+00:00",
-        "staleness_seconds": 106566,
+        "retrieved_at_utc": "2026-06-19T16:05:40.153858+00:00",
+        "staleness_seconds": 124532,
         "freshness_status": "realtime_candidate",
         "delay_status": "stale",
         "source_risk_flags": [
@@ -10033,20 +10295,20 @@
           "currentTradingPeriod": {
             "pre": {
               "timezone": "CST",
-              "start": 1781744400,
               "end": 1781744400,
+              "start": 1781744400,
               "gmtoffset": 28800
             },
             "regular": {
               "timezone": "CST",
-              "start": 1781744400,
               "end": 1781760600,
+              "start": 1781744400,
               "gmtoffset": 28800
             },
             "post": {
               "timezone": "CST",
-              "start": 1781760600,
               "end": 1781760600,
+              "start": 1781760600,
               "gmtoffset": 28800
             }
           },
@@ -10054,8 +10316,8 @@
             [
               {
                 "timezone": "CST",
-                "start": 1781744400,
                 "end": 1781760600,
+                "start": 1781744400,
                 "gmtoffset": 28800
               }
             ]
@@ -10090,7 +10352,7 @@
         }
       },
       "freshness_status": "realtime_candidate",
-      "staleness_seconds": 106566,
+      "staleness_seconds": 124532,
       "delay_status": "stale",
       "requires_auth": false,
       "requires_session": false,
@@ -10115,14 +10377,14 @@
       "errors": []
     },
     {
-      "probe_id": "twse_mis_20260619_110619",
+      "probe_id": "twse_mis_20260619_160546",
       "source": "TWSE_MIS",
       "source_type": "unofficial_frontend_endpoint",
       "contract_status": "normalized_pass",
-      "retrieved_at_utc": "2026-06-19T11:06:20.546356+00:00",
-      "retrieved_at_taipei": "2026-06-19T19:06:20.546356+00:00",
+      "retrieved_at_utc": "2026-06-19T16:05:47.135804+00:00",
+      "retrieved_at_taipei": "2026-06-20T00:05:47.135804+00:00",
       "request": {
-        "url": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781867180371",
+        "url": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781885146959",
         "method": "GET",
         "params": {},
         "headers": {
@@ -10532,11 +10794,11 @@
         ],
         "telemetry": {
           "queryTime": {
-            "sysDate": "20260619",
-            "stockInfoItem": 18668,
-            "stockInfo": 1572,
+            "sysDate": "20260620",
+            "stockInfoItem": 36948,
+            "stockInfo": 1337,
             "sessionStr": "UserSession",
-            "sysTime": "19:06:20",
+            "sysTime": "00:05:47",
             "showChart": false,
             "sessionFromTime": -1,
             "sessionLatestTime": -1
@@ -10603,10 +10865,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -10686,10 +10948,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [
@@ -10780,10 +11042,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -10871,10 +11133,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -10962,10 +11224,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -11053,10 +11315,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -11144,10 +11406,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 102979,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 120946,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -11210,10 +11472,10 @@
           "regular_trade_time": "13:33:00",
           "snapshot_time": "13:33:00",
           "alternate_session_time": null,
-          "query_sys_time": "19:06:20",
-          "retrieved_at_utc": "2026-06-19T11:06:19Z",
-          "retrieved_at_taipei": "2026-06-19T19:06:19+08:00",
-          "staleness_seconds": 106399,
+          "query_sys_time": "00:05:47",
+          "retrieved_at_utc": "2026-06-19T16:05:46Z",
+          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
+          "staleness_seconds": 124366,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -11237,7 +11499,7 @@
         }
       ],
       "freshness_status": "realtime_candidate",
-      "staleness_seconds": 102979,
+      "staleness_seconds": 120946,
       "delay_status": "stale",
       "requires_auth": false,
       "requires_session": true,
@@ -11262,12 +11524,12 @@
   ],
   "auth_required_sources": [
     {
-      "probe_id": "finmind_20260619_110620",
+      "probe_id": "finmind_20260619_160547",
       "source": "FinMind",
       "source_type": "commercial_api",
       "contract_status": "normalized_pass",
-      "retrieved_at_utc": "2026-06-19T11:06:30.484284+00:00",
-      "retrieved_at_taipei": "2026-06-19T19:06:30.484284+00:00",
+      "retrieved_at_utc": "2026-06-19T16:05:57.101694+00:00",
+      "retrieved_at_taipei": "2026-06-20T00:05:57.101694+00:00",
       "request": {
         "url": "https://api.finmindtrade.com/api/v4/data",
         "method": "GET",
@@ -11364,7 +11626,7 @@
         "volume": 49982610
       },
       "freshness_status": "eod_batch",
-      "staleness_seconds": 126390,
+      "staleness_seconds": 144357,
       "delay_status": "stale",
       "requires_auth": true,
       "requires_session": false,
@@ -11387,12 +11649,12 @@
       ]
     },
     {
-      "probe_id": "fugle_20260619_110630",
+      "probe_id": "fugle_20260619_160557",
       "source": "Fugle_MarketData",
       "source_type": "commercial_api",
       "contract_status": "auth_required",
-      "retrieved_at_utc": "2026-06-19T11:06:30.486304+00:00",
-      "retrieved_at_taipei": "2026-06-19T19:06:30.486304+00:00",
+      "retrieved_at_utc": "2026-06-19T16:05:57.104034+00:00",
+      "retrieved_at_taipei": "2026-06-20T00:05:57.104034+00:00",
       "request": {
         "url": "https://developer.fugle.tw/",
         "method": "GET",
@@ -11429,12 +11691,12 @@
       "errors": []
     },
     {
-      "probe_id": "fubon_20260619_110630",
+      "probe_id": "fubon_20260619_160557",
       "source": "Fubon_Neo_API",
       "source_type": "broker_api",
       "contract_status": "doc_only",
-      "retrieved_at_utc": "2026-06-19T11:06:30.486334+00:00",
-      "retrieved_at_taipei": "2026-06-19T19:06:30.486334+00:00",
+      "retrieved_at_utc": "2026-06-19T16:05:57.104090+00:00",
+      "retrieved_at_taipei": "2026-06-20T00:05:57.104090+00:00",
       "request": {
         "url": "https://developer.fubon.com/",
         "method": "GET",
@@ -11474,54 +11736,12 @@
   ],
   "failed_or_doc_only_sources": [
     {
-      "probe_id": "tpex_openapi_20260619_110606",
-      "source": "TPEx_OpenAPI",
-      "source_type": "official_openapi",
-      "contract_status": "failed",
-      "retrieved_at_utc": "2026-06-19T11:06:14.142315+00:00",
-      "retrieved_at_taipei": "2026-06-19T19:06:14.142315+00:00",
-      "request": {
-        "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
-        "method": "GET",
-        "params": {},
-        "headers": {
-          "Accept": "application/json"
-        }
-      },
-      "http_status": "Error",
-      "http_ok": false,
-      "parse_status": "failed",
-      "normalization_status": "failed",
-      "schema_fingerprint": null,
-      "schema_hash": null,
-      "raw_sample_path": null,
-      "normalized_sample_path": null,
-      "raw_sample": null,
-      "normalized_sample": null,
-      "freshness_status": "unknown",
-      "staleness_seconds": null,
-      "delay_status": "unknown",
-      "requires_auth": false,
-      "requires_session": false,
-      "risk_level": "low",
-      "risk_notes": [],
-      "ai_suitability": "unknown",
-      "is_usable_now": false,
-      "potentially_usable_with_credentials": false,
-      "unsupported_targets": [],
-      "failed_targets": [],
-      "warnings": [],
-      "errors": [
-        "Response ended prematurely"
-      ]
-    },
-    {
-      "probe_id": "fubon_20260619_110630",
+      "probe_id": "fubon_20260619_160557",
       "source": "Fubon_Neo_API",
       "source_type": "broker_api",
       "contract_status": "doc_only",
-      "retrieved_at_utc": "2026-06-19T11:06:30.486334+00:00",
-      "retrieved_at_taipei": "2026-06-19T19:06:30.486334+00:00",
+      "retrieved_at_utc": "2026-06-19T16:05:57.104090+00:00",
+      "retrieved_at_taipei": "2026-06-20T00:05:57.104090+00:00",
       "request": {
         "url": "https://developer.fubon.com/",
         "method": "GET",

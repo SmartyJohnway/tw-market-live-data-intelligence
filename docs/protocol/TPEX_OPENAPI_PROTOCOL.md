@@ -59,7 +59,9 @@ The response is a top-level JSON array of objects. Each object represents the da
 | `Open` | Opening price | (Open) | `observed` |
 | `High` | Highest price | (High) | `observed` |
 | `Low` | Lowest price | (Low) | `observed` |
-| `TradingVolume` | Total trading volume | (Volume) | `observed` |
+| `TradingShares` | Total trading volume (may also appear as `TradingVolume` historically) | (Volume) | `observed` |
+| `TransactionAmount` | Total trading value (may also appear as `TradingAmount` historically) | (Value) | `observed` |
+| `TransactionNumber` | Transaction count (may also appear as `Transaction` historically) | (Count) | `observed` |
 
 *(Note: For full field dictionaries, see [TPEx OpenAPI Field Dictionary](TPEX_OPENAPI_FIELD_DICTIONARY.md). For schema normalization, see [TPEx OpenAPI Normalized EOD Quote Contract v1](../contracts/tpex_openapi_normalized_eod_quote_v1.md)).*
 

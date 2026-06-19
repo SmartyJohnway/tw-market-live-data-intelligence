@@ -15,9 +15,9 @@ This document provides a field dictionary for the official TPEx OpenAPI End-of-D
 | `High` | Highest price | `high` | `557.00` | Numeric (parsed) | optional | official_documented | EOD high price. |
 | `Low` | Lowest price | `low` | `521.00` | Numeric (parsed) | optional | official_documented | EOD low price. |
 | `Average` | Average trade price | `average_price` | `538.47` | Numeric (parsed) | optional | observed | Average price. Will be in `unmapped_raw_fields` in draft v1. |
-| `TradingShares` | Total trading volume (shares) | `trade_volume` | `40139349` | Numeric (parsed) | optional | official_documented | Total shares traded in the session. |
-| `TransactionAmount` | Total trading value (TWD) | `trade_value` | `21613642453` | Numeric (parsed) | optional | official_documented | Total turnover in TWD. |
-| `TransactionNumber` | Number of transactions | `transaction_count` | `47240` | Numeric (parsed) | optional | official_documented | Total number of trades executed. |
+| `TradingShares` | Total trading volume (shares) | `trade_volume` | `40139349` | Numeric (parsed) | optional | official_documented | Total shares traded in the session. (Alias: `TradingVolume`) |
+| `TransactionAmount` | Total trading value (TWD) | `trade_value` | `21613642453` | Numeric (parsed) | optional | official_documented | Total turnover in TWD. (Alias: `TradingAmount`) |
+| `TransactionNumber` | Number of transactions | `transaction_count` | `47240` | Numeric (parsed) | optional | official_documented | Total number of trades executed. (Alias: `Transaction`) |
 | `LatestBidPrice` | Latest bid price | (unmapped) | `528.00` | Numeric | optional | observed | Preserved in `unmapped_raw_fields`. |
 | `LatesAskPrice` | Latest ask price | (unmapped) | `529.00` | Numeric | optional | observed | Preserved in `unmapped_raw_fields`. |
 | `Capitals` | Outstanding shares / Capital | (unmapped) | `423940384` | Numeric | optional | observed | Preserved in `unmapped_raw_fields`. |

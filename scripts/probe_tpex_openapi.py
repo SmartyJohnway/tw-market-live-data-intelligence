@@ -46,9 +46,9 @@ def normalize_tpex_openapi_row(row, retrieved_at_utc_dt):
         "low": safe_parse_float(row.get("Low"), flags, "low"),
         "close": close_parsed,
         "change": safe_parse_float(row.get("Change"), flags, "change"),
-        "trade_volume": safe_parse_int(row.get("TradingShares"), flags, "trade_volume"),
-        "trade_value": safe_parse_float(row.get("TransactionAmount"), flags, "trade_value"),
-        "transaction_count": safe_parse_int(row.get("TransactionNumber"), flags, "transaction_count"),
+        "trade_volume": safe_parse_int(row.get("TradingShares", row.get("TradingVolume")), flags, "trade_volume"),
+        "trade_value": safe_parse_float(row.get("TransactionAmount", row.get("TradingAmount")), flags, "trade_value"),
+        "transaction_count": safe_parse_int(row.get("TransactionNumber", row.get("Transaction")), flags, "transaction_count"),
         "currency": "TWD",
         "freshness_status": "eod_batch",
         "delay_status": "eod",
@@ -66,7 +66,10 @@ def normalize_tpex_openapi_row(row, retrieved_at_utc_dt):
         "retrieved_at_utc": retrieved_at_utc_dt.isoformat()
     }
 
-    mapped_keys = {"SecuritiesCompanyCode", "CompanyName", "Date", "Open", "High", "Low", "Close", "Change", "TradingShares", "TransactionAmount", "TransactionNumber"}
+    mapped_keys = {
+        "SecuritiesCompanyCode", "CompanyName", "Date", "Open", "High", "Low", "Close", "Change",
+        "TradingShares", "TradingVolume", "TransactionAmount", "TradingAmount", "TransactionNumber", "Transaction"
+    }
     for k, v in row.items():
         if k not in mapped_keys:
             normalized["unmapped_raw_fields"][k] = v

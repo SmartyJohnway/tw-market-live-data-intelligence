@@ -67,6 +67,26 @@ def test_malformed_close_does_not_crash():
     assert norm["close"] is None
     assert "malformed_close" in norm["data_quality_flags"]
 
+def test_tpex_legacy_aliases():
+    dt = datetime(2023, 10, 25, 12, 0, 0, tzinfo=timezone.utc)
+    raw_row = {
+        "Date": "1150618",
+        "SecuritiesCompanyCode": "3105",
+        "CompanyName": "穩懋",
+        "Close": "528.00",
+        "TradingVolume": "50000",
+        "TradingAmount": "250000",
+        "Transaction": "123"
+    }
+
+    norm = normalize_tpex_openapi_row(raw_row, dt)
+
+    assert norm["trade_volume"] == 50000
+    assert norm["trade_value"] == 250000.0
+    assert norm["transaction_count"] == 123
+    assert norm["unmapped_raw_fields"] == {}
+
+
 def test_missing_trade_date():
     dt = datetime.now(timezone.utc)
     raw_row = {
