@@ -40,9 +40,9 @@ The response is a top-level JSON array of objects. Each object represents the da
     "Open": "74.00",
     "High": "75.50",
     "Low": "73.80",
-    "TradingVolume": "5000000",
-    "TradingAmount": "375000000",
-    "Transaction": "2500"
+    "TradingShares": "5000000",
+    "TransactionAmount": "375000000",
+    "TransactionNumber": "2500"
   }
 ]
 ```
