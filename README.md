@@ -83,6 +83,13 @@ The system relies heavily on established protocols and taxonomy documentation to
   - [M3 Readiness Gate](docs/protocol/M3_READINESS_GATE.md)
   - [M2 Closure Review](docs/reviews/M2_CLOSURE_01_SOURCE_CONTRACT_BASELINE_AND_M3_READINESS.md)
 
+- **M3 AI Context Pack Design:**
+  - [M3 AI Context Pack Contract](docs/protocol/M3_AI_CONTEXT_PACK_CONTRACT.md)
+  - [M3 AI Context Pack Section Schema](docs/protocol/M3_AI_CONTEXT_PACK_SECTION_SCHEMA.md)
+  - [M3 AI Context Guardrails](docs/protocol/M3_AI_CONTEXT_GUARDRAILS.md)
+  - [M3 AI Context Pack Generator Requirements](docs/protocol/M3_AI_CONTEXT_PACK_GENERATOR_REQUIREMENTS.md)
+  - [M3-01 AI Market Context Pack Design Review](docs/reviews/M3_01_AI_MARKET_CONTEXT_PACK_DESIGN.md)
+
 ## Known Caveats
 1. Unofficial endpoints (like TWSE MIS or Yahoo Finance) are extremely fragile. They are rate-limited, require specific headers (sometimes cookies), and can break without notice.
 2. The concept of "real-time" is strictly bound by the `delay_status` and `staleness_seconds` metrics defined in the data contract envelope. Do not assume data is live unless explicitly proven by these fields.
