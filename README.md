@@ -60,9 +60,25 @@ The frontend provides a clear UI to view the generated capability matrix and int
 - **No Netlify / Pass-through Functions:** The deployment no longer requires or supports Netlify edge functions or serverless pass-through proxy architecture. All local network routing is explicitly restricted to `127.0.0.1`.
 - **Secrets Management:** Do not commit API keys. If utilizing commercial APIs (like FinMind), populate a local `.env` file with `FINMIND_TOKEN=<your_token>`.
 
+## Documentation & Protocols
+The system relies heavily on established protocols and taxonomy documentation to accurately categorize assets and data sources. Please refer to the following documents for comprehensive details:
+
+- **Target Taxonomy & Configuration:**
+  - [Target Taxonomy](docs/protocol/TARGET_TAXONOMY.md): Defines the canonical asset classes supported by the project.
+  - [Target Config Schema Draft](docs/protocol/TARGET_CONFIG_SCHEMA_DRAFT.md): Proposed future structure for `config/market_targets.json`.
+- **Symbols & Capabilities:**
+  - [Symbol Format Registry](docs/protocol/SYMBOL_FORMAT_REGISTRY.md): Rules for translating internal taxonomy to source-specific formats.
+  - [Support Status Semantics](docs/protocol/SUPPORT_STATUS_SEMANTICS.md): Strict definitions for capability matrix statuses (e.g., `supported_observed`, `doc_only`).
+  - [Source Target Support Matrix](docs/protocol/SOURCE_TARGET_SUPPORT_MATRIX.md): Detailed capability matrix cross-referencing sources against target classes.
+- **Source Specific Protocols:**
+  - [TWSE MIS Protocol](docs/protocol/TWSE_MIS_PROTOCOL.md) & [Dictionary](docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md)
+  - [Yahoo Finance Protocol](docs/protocol/YAHOO_FINANCE_CHART_PROTOCOL.md) & [Coverage](docs/protocol/YAHOO_FINANCE_SYMBOL_COVERAGE.md)
+  - [TWSE OpenAPI Protocol](docs/protocol/TWSE_OPENAPI_PROTOCOL.md) & [Dictionary](docs/protocol/TWSE_OPENAPI_FIELD_DICTIONARY.md)
+  - [TPEx OpenAPI Protocol](docs/protocol/TPEX_OPENAPI_PROTOCOL.md) & [Dictionary](docs/protocol/TPEX_OPENAPI_FIELD_DICTIONARY.md)
+  - [Official OpenAPI Source Semantics](docs/protocol/OFFICIAL_OPENAPI_SOURCE_SEMANTICS.md)
+
 ## Known Caveats
 1. Unofficial endpoints (like TWSE MIS or Yahoo Finance) are extremely fragile. They are rate-limited, require specific headers (sometimes cookies), and can break without notice.
-   - For detailed risk and protocol documentation regarding TWSE MIS, see [TWSE MIS Protocol](docs/protocol/TWSE_MIS_PROTOCOL.md) and the [TWSE MIS Field Dictionary](docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md).
 2. The concept of "real-time" is strictly bound by the `delay_status` and `staleness_seconds` metrics defined in the data contract envelope. Do not assume data is live unless explicitly proven by these fields.
 
 ## Current Status

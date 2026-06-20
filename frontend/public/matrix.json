@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-06-19T16:05:57.104304+00:00",
-  "generated_at_utc": "2026-06-19T16:05:57.104304+00:00",
-  "generated_at_taipei": "2026-06-20T00:05:57.104322+08:00",
+  "last_updated": "2026-06-20T11:04:07.251419+00:00",
+  "generated_at_utc": "2026-06-20T11:04:07.251419+00:00",
+  "generated_at_taipei": "2026-06-20T19:04:07.251428+08:00",
   "results": [
     {
-      "probe_id": "twse_openapi_20260619_160526",
+      "probe_id": "twse_openapi_20260620_110341",
       "source": "TWSE_OpenAPI",
       "source_type": "official_openapi",
       "contract_status": "normalized_pass",
-      "retrieved_at_utc": "2026-06-19T16:05:27.755212+00:00",
-      "retrieved_at_taipei": "2026-06-20T00:05:27.755212+00:00",
+      "retrieved_at_utc": "2026-06-20T11:03:42.595387+00:00",
+      "retrieved_at_taipei": "2026-06-20T19:03:42.595387+00:00",
       "request": {
         "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
         "method": "GET",
@@ -112,7 +112,7 @@
           "Transaction": "7634"
         },
         "unmapped_raw_fields": {},
-        "retrieved_at_utc": "2026-06-19T16:05:27.755130+00:00"
+        "retrieved_at_utc": "2026-06-20T11:03:42.595310+00:00"
       },
       "freshness_status": "eod_batch",
       "staleness_seconds": null,
@@ -134,12 +134,12 @@
       "errors": []
     },
     {
-      "probe_id": "tpex_openapi_20260619_160527",
+      "probe_id": "tpex_openapi_20260620_110342",
       "source": "TPEx_OpenAPI",
       "source_type": "official_openapi",
       "contract_status": "normalized_pass",
-      "retrieved_at_utc": "2026-06-19T16:05:40.146990+00:00",
-      "retrieved_at_taipei": "2026-06-20T00:05:40.146990+00:00",
+      "retrieved_at_utc": "2026-06-20T11:03:50.779079+00:00",
+      "retrieved_at_taipei": "2026-06-20T19:03:50.779079+00:00",
       "request": {
         "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
         "method": "GET",
@@ -264,7 +264,7 @@
           "NextLimitUp": "55.25",
           "NextLimitDown": "45.23"
         },
-        "retrieved_at_utc": "2026-06-19T16:05:40.146903+00:00"
+        "retrieved_at_utc": "2026-06-20T11:03:50.779006+00:00"
       },
       "freshness_status": "eod_batch",
       "staleness_seconds": null,
@@ -286,12 +286,12 @@
       "errors": []
     },
     {
-      "probe_id": "yahoo_20260619_160540",
+      "probe_id": "yahoo_20260620_110350",
       "source": "Yahoo_Finance",
       "source_type": "unofficial_api",
       "contract_status": "normalized_pass",
-      "retrieved_at_utc": "2026-06-19T16:05:46.212415+00:00",
-      "retrieved_at_taipei": "2026-06-20T00:05:46.212415+00:00",
+      "retrieved_at_utc": "2026-06-20T11:03:56.384642+00:00",
+      "retrieved_at_taipei": "2026-06-20T19:03:56.384642+00:00",
       "request": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/[symbol]",
         "method": "GET",
@@ -367,20 +367,20 @@
           "currentTradingPeriod": {
             "pre": {
               "timezone": "CST",
-              "end": 1781744400,
               "start": 1781744400,
+              "end": 1781744400,
               "gmtoffset": 28800
             },
             "regular": {
               "timezone": "CST",
-              "end": 1781760600,
               "start": 1781744400,
+              "end": 1781760600,
               "gmtoffset": 28800
             },
             "post": {
               "timezone": "CST",
-              "end": 1781760600,
               "start": 1781760600,
+              "end": 1781760600,
               "gmtoffset": 28800
             }
           },
@@ -388,8 +388,8 @@
             [
               {
                 "timezone": "CST",
-                "end": 1781760600,
                 "start": 1781744400,
+                "end": 1781760600,
                 "gmtoffset": 28800
               }
             ]
@@ -482,8 +482,8 @@
           "max"
         ],
         "first_trade_date": 946947600,
-        "retrieved_at_utc": "2026-06-19T16:05:40.153858+00:00",
-        "staleness_seconds": 124532,
+        "retrieved_at_utc": "2026-06-20T11:03:50.785398+00:00",
+        "staleness_seconds": 192822,
         "freshness_status": "realtime_candidate",
         "delay_status": "stale",
         "source_risk_flags": [
@@ -2709,20 +2709,20 @@
           "currentTradingPeriod": {
             "pre": {
               "timezone": "CST",
-              "end": 1781744400,
               "start": 1781744400,
+              "end": 1781744400,
               "gmtoffset": 28800
             },
             "regular": {
               "timezone": "CST",
-              "end": 1781760600,
               "start": 1781744400,
+              "end": 1781760600,
               "gmtoffset": 28800
             },
             "post": {
               "timezone": "CST",
-              "end": 1781760600,
               "start": 1781760600,
+              "end": 1781760600,
               "gmtoffset": 28800
             }
           },
@@ -2730,8 +2730,8 @@
             [
               {
                 "timezone": "CST",
-                "end": 1781760600,
                 "start": 1781744400,
+                "end": 1781760600,
                 "gmtoffset": 28800
               }
             ]
@@ -2766,7 +2766,7 @@
         }
       },
       "freshness_status": "realtime_candidate",
-      "staleness_seconds": 124532,
+      "staleness_seconds": 192822,
       "delay_status": "stale",
       "requires_auth": false,
       "requires_session": false,
@@ -2791,14 +2791,14 @@
       "errors": []
     },
     {
-      "probe_id": "twse_mis_20260619_160546",
+      "probe_id": "twse_mis_20260620_110356",
       "source": "TWSE_MIS",
       "source_type": "unofficial_frontend_endpoint",
       "contract_status": "normalized_pass",
-      "retrieved_at_utc": "2026-06-19T16:05:47.135804+00:00",
-      "retrieved_at_taipei": "2026-06-20T00:05:47.135804+00:00",
+      "retrieved_at_utc": "2026-06-20T11:03:57.311587+00:00",
+      "retrieved_at_taipei": "2026-06-20T19:03:57.311587+00:00",
       "request": {
-        "url": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781885146959",
+        "url": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw|tse_1435.tw|otc_8069.tw|otc_5347.tw|tse_0050.tw|tse_00929.tw|tse_9105.tw|tse_t00.tw&json=1&delay=0&_=1781953437131",
         "method": "GET",
         "params": {},
         "headers": {
@@ -3209,10 +3209,10 @@
         "telemetry": {
           "queryTime": {
             "sysDate": "20260620",
-            "stockInfoItem": 36948,
-            "stockInfo": 1337,
+            "stockInfoItem": 9988,
+            "stockInfo": 942,
             "sessionStr": "UserSession",
-            "sysTime": "00:05:47",
+            "sysTime": "19:03:57",
             "showChart": false,
             "sessionFromTime": -1,
             "sessionLatestTime": -1
@@ -3279,10 +3279,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "00:05:47",
-          "retrieved_at_utc": "2026-06-19T16:05:46Z",
-          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
-          "staleness_seconds": 120946,
+          "query_sys_time": "19:03:57",
+          "retrieved_at_utc": "2026-06-20T11:03:56Z",
+          "retrieved_at_taipei": "2026-06-20T19:03:56+08:00",
+          "staleness_seconds": 189236,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -3362,10 +3362,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "00:05:47",
-          "retrieved_at_utc": "2026-06-19T16:05:46Z",
-          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
-          "staleness_seconds": 120946,
+          "query_sys_time": "19:03:57",
+          "retrieved_at_utc": "2026-06-20T11:03:56Z",
+          "retrieved_at_taipei": "2026-06-20T19:03:56+08:00",
+          "staleness_seconds": 189236,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [
@@ -3456,10 +3456,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "00:05:47",
-          "retrieved_at_utc": "2026-06-19T16:05:46Z",
-          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
-          "staleness_seconds": 120946,
+          "query_sys_time": "19:03:57",
+          "retrieved_at_utc": "2026-06-20T11:03:56Z",
+          "retrieved_at_taipei": "2026-06-20T19:03:56+08:00",
+          "staleness_seconds": 189236,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -3547,10 +3547,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "00:05:47",
-          "retrieved_at_utc": "2026-06-19T16:05:46Z",
-          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
-          "staleness_seconds": 120946,
+          "query_sys_time": "19:03:57",
+          "retrieved_at_utc": "2026-06-20T11:03:56Z",
+          "retrieved_at_taipei": "2026-06-20T19:03:56+08:00",
+          "staleness_seconds": 189236,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -3638,10 +3638,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "00:05:47",
-          "retrieved_at_utc": "2026-06-19T16:05:46Z",
-          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
-          "staleness_seconds": 120946,
+          "query_sys_time": "19:03:57",
+          "retrieved_at_utc": "2026-06-20T11:03:56Z",
+          "retrieved_at_taipei": "2026-06-20T19:03:56+08:00",
+          "staleness_seconds": 189236,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -3729,10 +3729,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "00:05:47",
-          "retrieved_at_utc": "2026-06-19T16:05:46Z",
-          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
-          "staleness_seconds": 120946,
+          "query_sys_time": "19:03:57",
+          "retrieved_at_utc": "2026-06-20T11:03:56Z",
+          "retrieved_at_taipei": "2026-06-20T19:03:56+08:00",
+          "staleness_seconds": 189236,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -3820,10 +3820,10 @@
           "regular_trade_time": "13:30:00",
           "snapshot_time": "14:30:00",
           "alternate_session_time": "14:30:00",
-          "query_sys_time": "00:05:47",
-          "retrieved_at_utc": "2026-06-19T16:05:46Z",
-          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
-          "staleness_seconds": 120946,
+          "query_sys_time": "19:03:57",
+          "retrieved_at_utc": "2026-06-20T11:03:56Z",
+          "retrieved_at_taipei": "2026-06-20T19:03:56+08:00",
+          "staleness_seconds": 189236,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -3886,10 +3886,10 @@
           "regular_trade_time": "13:33:00",
           "snapshot_time": "13:33:00",
           "alternate_session_time": null,
-          "query_sys_time": "00:05:47",
-          "retrieved_at_utc": "2026-06-19T16:05:46Z",
-          "retrieved_at_taipei": "2026-06-20T00:05:46+08:00",
-          "staleness_seconds": 124366,
+          "query_sys_time": "19:03:57",
+          "retrieved_at_utc": "2026-06-20T11:03:56Z",
+          "retrieved_at_taipei": "2026-06-20T19:03:56+08:00",
+          "staleness_seconds": 192656,
           "freshness_status": "stale",
           "delay_status": "stale",
           "data_quality_flags": [],
@@ -3913,7 +3913,7 @@
         }
       ],
       "freshness_status": "realtime_candidate",
-      "staleness_seconds": 120946,
+      "staleness_seconds": 189236,
       "delay_status": "stale",
       "requires_auth": false,
       "requires_session": true,
@@ -3936,12 +3936,12 @@
       "errors": []
     },
     {
-      "probe_id": "finmind_20260619_160547",
+      "probe_id": "finmind_20260620_110357",
       "source": "FinMind",
       "source_type": "commercial_api",
       "contract_status": "normalized_pass",
-      "retrieved_at_utc": "2026-06-19T16:05:57.101694+00:00",
-      "retrieved_at_taipei": "2026-06-20T00:05:57.101694+00:00",
+      "retrieved_at_utc": "2026-06-20T11:04:07.249370+00:00",
+      "retrieved_at_taipei": "2026-06-20T19:04:07.249370+00:00",
       "request": {
         "url": "https://api.finmindtrade.com/api/v4/data",
         "method": "GET",
@@ -4038,7 +4038,7 @@
         "volume": 49982610
       },
       "freshness_status": "eod_batch",
-      "staleness_seconds": 144357,
+      "staleness_seconds": 212647,
       "delay_status": "stale",
       "requires_auth": true,
       "requires_session": false,
@@ -4061,12 +4061,12 @@
       ]
     },
     {
-      "probe_id": "fugle_20260619_160557",
+      "probe_id": "fugle_20260620_110407",
       "source": "Fugle_MarketData",
       "source_type": "commercial_api",
       "contract_status": "auth_required",
-      "retrieved_at_utc": "2026-06-19T16:05:57.104034+00:00",
-      "retrieved_at_taipei": "2026-06-20T00:05:57.104034+00:00",
+      "retrieved_at_utc": "2026-06-20T11:04:07.251236+00:00",
+      "retrieved_at_taipei": "2026-06-20T19:04:07.251236+00:00",
       "request": {
         "url": "https://developer.fugle.tw/",
         "method": "GET",
@@ -4103,12 +4103,12 @@
       "errors": []
     },
     {
-      "probe_id": "fubon_20260619_160557",
+      "probe_id": "fubon_20260620_110407",
       "source": "Fubon_Neo_API",
       "source_type": "broker_api",
       "contract_status": "doc_only",
-      "retrieved_at_utc": "2026-06-19T16:05:57.104090+00:00",
-      "retrieved_at_taipei": "2026-06-20T00:05:57.104090+00:00",
+      "retrieved_at_utc": "2026-06-20T11:04:07.251265+00:00",
+      "retrieved_at_taipei": "2026-06-20T19:04:07.251265+00:00",
       "request": {
         "url": "https://developer.fubon.com/",
         "method": "GET",
