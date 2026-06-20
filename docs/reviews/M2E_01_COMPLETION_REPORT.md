@@ -41,10 +41,10 @@ Created a comprehensive matrix mapped against the new taxonomy. Official OpenAPI
 Defined a rigorous vocabulary for the support matrix: `supported_observed`, `supported_candidate`, `observed_unsupported`, `unsupported`, `auth_required`, `doc_only`, `unknown`, and `deferred`. These explicitly prevent AI hallucination or the creation of unverified API capabilities.
 
 ## Config Change Summary
-**Rationale:** M2E-01 intentionally leaves `config/market_targets.json` unchanged to avoid changing probe behavior during a documentation-first taxonomy milestone. A backward-compatible target config schema is proposed in `TARGET_CONFIG_SCHEMA_DRAFT.md` for a future M2E-02 implementation task.
+**Rationale:** M2E-01 intentionally leaves `config/market_targets.json` unchanged to avoid changing probe behavior during a documentation-first taxonomy milestone. No new target classes were added to `config/market_targets.json` for probing. A backward-compatible target config schema is proposed in `TARGET_CONFIG_SCHEMA_DRAFT.md` for a future M2E-02 implementation task.
 
 ## Tests Added
-**Rationale:** No code or config behavior changed in M2E-01, so no new offline tests were added. Existing validation commands were still executed.
+**Rationale:** No code or config behavior changed in M2E-01 (documentation-first), so no new offline tests were added. Existing validation commands were still executed. Generated reports were refreshed for validation only; no new target-class probing or config migration was introduced.
 
 ## Remaining Caveats
 * Symbol formats for broker APIs remain largely documentation-only / candidate-level without valid authenticated access.
