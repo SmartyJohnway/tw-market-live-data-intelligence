@@ -33,7 +33,7 @@ This document details the normalized contracts established during the M2 milesto
 - **Scope:** Official End-of-Day (EOD) market data for TWSE targets.
 - **Input source:** TWSE OpenAPI (`official_openapi`)
 - **Normalized output location:** Output within the `normalized_sample` block of the TWSE OpenAPI probe report.
-- **Key fields:** `symbol`, `name`, `trade_volume`, `transaction_count`, `trade_value`, `open_price`, `high_price`, `low_price`, `close_price`, `change`.
+- **Key fields:** `symbol`, `name`, `trade_date`, `open`, `high`, `low`, `close`, `change`, `trade_volume`, `trade_value`, `transaction_count`, `currency`, `freshness_status`, `delay_status`, `coverage_status`, `source_risk_flags`, `data_quality_flags`, `raw_row`, `unmapped_raw_fields`, `retrieved_at_utc`.
 - **Required metadata:** `trade_date`.
 - **Data quality flags:** `missing_trade_date` (mapped to `None`), `malformed_numerics`.
 - **Source risk flags:** EOD only. Cannot be used for live quotes.
@@ -45,7 +45,7 @@ This document details the normalized contracts established during the M2 milesto
 - **Scope:** Official End-of-Day (EOD) market data for TPEx targets.
 - **Input source:** TPEx OpenAPI (`official_openapi`)
 - **Normalized output location:** Output within the `normalized_sample` block of the TPEx OpenAPI probe report.
-- **Key fields:** `symbol`, `name`, `close_price`, `change`, `open_price`, `high_price`, `low_price`, `trade_volume`, `trade_value`, `transaction_count`.
+- **Key fields:** `symbol`, `name`, `trade_date`, `open`, `high`, `low`, `close`, `change`, `trade_volume`, `trade_value`, `transaction_count`, `currency`, `freshness_status`, `delay_status`, `coverage_status`, `source_risk_flags`, `data_quality_flags`, `raw_row`, `unmapped_raw_fields`, `retrieved_at_utc`.
 - **Required metadata:** `trade_date`.
 - **Data quality flags:** `missing_trade_date`, `malformed_numerics`.
 - **Source risk flags:** EOD only.
