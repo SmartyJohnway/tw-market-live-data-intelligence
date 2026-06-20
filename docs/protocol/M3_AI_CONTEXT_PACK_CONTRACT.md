@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-The purpose of the AI Market Context Pack is to provide a standardized, AI-readable, offline-generated snapshot of Taiwan equity market data capabilities. It bridges the gap between raw source protocol documentation (e.g., TWSE, TPEx, Yahoo Finance) and AI agents (e.g., ChatGPT, Claude) that need to answer user queries safely and reliably without hallcuinating capabilities, data freshness, or source authority.
+The purpose of the AI Market Context Pack is to provide a standardized, AI-readable, offline-generated snapshot of Taiwan equity market data capabilities. It bridges the gap between raw source protocol documentation (e.g., TWSE, TPEx, Yahoo Finance) and AI agents (e.g., ChatGPT, Claude) that need to answer user queries safely and reliably without hallucinating capabilities, data freshness, or source authority.
 
 This contract defines the structured format that the future context pack generator must produce and that AI agents must strictly consume as a trusted baseline.
 
@@ -61,9 +61,8 @@ The context pack must explicitly state the temporal reliability of the data:
 
 ## 7. Target Taxonomy Requirements
 
-Target markets and assets must be explicitly modeled based on `docs/protocol/TARGET_TAXONOMY.md`:
-- Distinguish between explicit target classes (e.g., TWSE large caps, TPEx stocks, ETFs, Options).
-- Use canonical taxonomy keys (e.g., `twse_stock`, `tpex_stock`, `twse_etf`).
+Target markets and assets must be explicitly modeled based on `docs/protocol/TARGET_TAXONOMY.md`.
+The context pack must preserve canonical target class keys exactly, such as `twse_common_stock`, `tpex_common_stock`, `twse_etf`, `tpex_etf`, `twse_tdr`, `twse_index`, `tpex_index`, `taifex_index_future`, `taifex_stock_future`, `mutual_fund`, `foreign_stock_or_adr`, `broker_account_target`, and `unknown_or_unsupported`.
 
 ## 8. Support Status Requirements
 

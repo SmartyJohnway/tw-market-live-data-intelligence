@@ -22,10 +22,12 @@ This document defines the detailed schema for each major section of the AI Marke
 ## `source_summaries`
 - **Purpose**: Details capabilities, authority, and safety rules for each individual source.
 - **Required fields**: `source_id`, `source_type`, `authority_level`, `freshness_status`, `delay_status`, `m3_eligibility`, `ai_safe_usage`, `must_show_caveats`, `prohibited_interpretations`.
+- **Optional fields**: `access_status` (public, auth_required, doc_only) to provide finer granularity on current usability.
 - **Allowed values**:
-  - `source_type`: `official_openapi`, `unofficial_frontend_endpoint`, `unofficial_api`, `third_party_api`.
-  - `authority_level`: `official_public_exchange_eod`, `unofficial`.
+  - `source_type`: `official_openapi`, `unofficial_frontend_endpoint`, `unofficial_api`, `third_party_api`, `commercial_api`, `broker_api`, `doc_only`, `auth_required`.
+  - `authority_level`: `official_public_exchange_eod`, `unofficial_frontend`, `third_party`, `third_party_commercial`, `authenticated_provider`, `broker_authenticated`, `doc_only`, `unknown`.
   - `freshness_status`: `eod_batch`, `realtime_candidate_or_stale`, `delayed`.
+  - `m3_eligibility`: `allowed_as_official_eod_reference`, `allowed_only_with_caveats`, `not_eligible_current_repo`.
 - **Source documents**: Protocol documents (e.g., `TWSE_MIS_PROTOCOL.md`), `docs/source_catalog.md`.
 - **Future generator handling**: Populated by mapping source registry definitions.
 - **AI Agent treatment**: **Authoritative.** AI agents must strictly obey `prohibited_interpretations` and surface `must_show_caveats`.
