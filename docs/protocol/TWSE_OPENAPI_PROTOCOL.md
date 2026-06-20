@@ -59,7 +59,7 @@ The response is a top-level JSON array of objects. Each object represents the da
 | `HighestPrice` | Highest price | (High) | `observed` |
 | `LowestPrice` | Lowest price | (Low) | `observed` |
 
-*(Note: Full standalone field dictionaries and complete schema normalization contracts are deferred to M2D-02).*
+*(Note: For full field dictionaries, see [TWSE OpenAPI Field Dictionary](TWSE_OPENAPI_FIELD_DICTIONARY.md). For schema normalization, see [TWSE OpenAPI Normalized EOD Quote Contract v1](../contracts/twse_openapi_normalized_eod_quote_v1.md)).*
 
 ## Known Failure Modes
 - **HTTP 404/5xx / Network Timeout:** Temporary unavailability of the TWSE OpenAPI servers.

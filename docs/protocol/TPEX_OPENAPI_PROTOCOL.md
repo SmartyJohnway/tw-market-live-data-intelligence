@@ -40,9 +40,9 @@ The response is a top-level JSON array of objects. Each object represents the da
     "Open": "74.00",
     "High": "75.50",
     "Low": "73.80",
-    "TradingVolume": "5000000",
-    "TradingAmount": "375000000",
-    "Transaction": "2500"
+    "TradingShares": "5000000",
+    "TransactionAmount": "375000000",
+    "TransactionNumber": "2500"
   }
 ]
 ```
@@ -59,9 +59,11 @@ The response is a top-level JSON array of objects. Each object represents the da
 | `Open` | Opening price | (Open) | `observed` |
 | `High` | Highest price | (High) | `observed` |
 | `Low` | Lowest price | (Low) | `observed` |
-| `TradingVolume` | Total trading volume | (Volume) | `observed` |
+| `TradingShares` | Total trading volume (may also appear as `TradingVolume` historically) | (Volume) | `observed` |
+| `TransactionAmount` | Total trading value (may also appear as `TradingAmount` historically) | (Value) | `observed` |
+| `TransactionNumber` | Transaction count (may also appear as `Transaction` historically) | (Count) | `observed` |
 
-*(Note: Full standalone field dictionaries and complete schema normalization contracts are deferred to M2D-02).*
+*(Note: For full field dictionaries, see [TPEx OpenAPI Field Dictionary](TPEX_OPENAPI_FIELD_DICTIONARY.md). For schema normalization, see [TPEx OpenAPI Normalized EOD Quote Contract v1](../contracts/tpex_openapi_normalized_eod_quote_v1.md)).*
 
 ## Known Failure Modes
 - **HTTP 404/5xx / Network Timeout:** Temporary unavailability of the TPEx OpenAPI servers.
