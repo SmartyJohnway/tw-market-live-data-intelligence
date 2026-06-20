@@ -77,6 +77,12 @@ The system relies heavily on established protocols and taxonomy documentation to
   - [TPEx OpenAPI Protocol](docs/protocol/TPEX_OPENAPI_PROTOCOL.md) & [Dictionary](docs/protocol/TPEX_OPENAPI_FIELD_DICTIONARY.md)
   - [Official OpenAPI Source Semantics](docs/protocol/OFFICIAL_OPENAPI_SOURCE_SEMANTICS.md)
 
+- **M2 Source-Contract Baseline:**
+  - [M2 Source-Contract Baseline](docs/protocol/M2_SOURCE_CONTRACT_BASELINE.md)
+  - [M2 Normalized Schema Inventory](docs/protocol/M2_NORMALIZED_SCHEMA_INVENTORY.md)
+  - [M3 Readiness Gate](docs/protocol/M3_READINESS_GATE.md)
+  - [M2 Closure Review](docs/reviews/M2_CLOSURE_01_SOURCE_CONTRACT_BASELINE_AND_M3_READINESS.md)
+
 ## Known Caveats
 1. Unofficial endpoints (like TWSE MIS or Yahoo Finance) are extremely fragile. They are rate-limited, require specific headers (sometimes cookies), and can break without notice.
 2. The concept of "real-time" is strictly bound by the `delay_status` and `staleness_seconds` metrics defined in the data contract envelope. Do not assume data is live unless explicitly proven by these fields.
