@@ -74,12 +74,12 @@ This matrix details the capability of various data sources to provide intelligen
 * **TWSE index:** `supported_candidate` (Via index-specific datasets).
 * **TPEx index:** `supported_candidate`.
 * **TAIFEX futures:** `supported_candidate` (Requires distinct dataset parameters; current TX probes may fail without them).
-* **Mutual fund:** `unknown` / `auth_required` (Depending on dataset availability).
-* **Foreign stock/ADR:** `unsupported` / `unknown`.
+* **Mutual fund:** `unknown` (dataset availability and authentication requirements require future verification).
+* **Foreign stock/ADR:** `unknown` (outside current Taiwan-focused repo evidence; may require separate datasets or sources).
 * **Broker account target:** `unsupported`.
 * **Caveats:** Not a live watchlist source; subject to free-tier limits or auth requirements.
 
 ### Fugle MarketData / Fubon Neo API (Broker APIs)
 *Authenticated execution-capable sources.*
-* **All Target Classes:** `doc_only` / `auth_required`.
-* **Caveats:** Execution-capable only with account credentials. Included in this repo for architectural documentation only unless credentials exist.
+* **All Target Classes:** `auth_required`.
+* **Caveats:** Documented only in this repo; no live probing or execution behavior is authorized without credentials and explicit future scope.
