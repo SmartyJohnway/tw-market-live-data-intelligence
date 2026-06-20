@@ -1,7 +1,7 @@
 # AI Context Pack
 
-**Generated at (UTC):** `2026-06-19T16:05:57.104304+00:00`
-**Generated at (Taipei):** `2026-06-20T00:05:57.104322+08:00`
+**Generated at (UTC):** `2026-06-20T11:04:07.251419+00:00`
+**Generated at (Taipei):** `2026-06-20T19:04:07.251428+08:00`
 
 ## Guidelines
 - Never claim an 'unofficial_frontend_endpoint' is an official API.
