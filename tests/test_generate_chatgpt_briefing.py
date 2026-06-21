@@ -86,6 +86,7 @@ def test_bounded_scope_and_market_coverage(valid_pack):
 def test_failed_sources_and_targets_counts(valid_pack):
     md = render_chatgpt_briefing(valid_pack)
     assert "Failed/Unavailable Source Count: 0" in md
+    assert "Failed/Unavailable Sources: None" in md
     assert "Failed Target Count**: 0" in md
 
 def test_source_authority_distinctions(valid_pack):
@@ -180,3 +181,13 @@ def test_empty_lists_render_none(valid_pack):
     valid_pack["target_support_summary"]["target_support_caveats"] = []
     md = render_chatgpt_briefing(valid_pack)
     assert "Target Classes Observed**: None" in md
+
+def test_source_health_list_and_count_match(valid_pack):
+    valid_pack["source_health_summary"]["offline_not_attempted_sources"] = ["TWSE_MIS", "Yahoo_Finance", "TWSE_OpenAPI", "TPEx_OpenAPI", "FinMind"]
+    valid_pack["source_health_summary"]["unavailable_or_failed_sources"] = []
+
+    md = render_chatgpt_briefing(valid_pack)
+    assert "Offline Not Attempted Source Count: 5" in md
+    assert "Offline Not Attempted Sources: TWSE_MIS, Yahoo_Finance, TWSE_OpenAPI, TPEx_OpenAPI, FinMind" in md
+    assert "['" not in md
+    assert "']" not in md

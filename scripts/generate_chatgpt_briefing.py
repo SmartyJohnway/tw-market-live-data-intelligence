@@ -92,27 +92,30 @@ Full market coverage: {format_bool(summary.get("full_market_coverage", False))}.
 def render_source_health(pack):
     summary = pack["source_health_summary"]
 
-    # Safely extract arrays or default them
-    failed_sources_list = summary.get("failed_sources", []) # some packs use unavailable_or_failed_sources
-    if not failed_sources_list:
-        failed_sources_list = [s.get("source_id") for s in pack.get("failed_sources", [])]
+    failed_or_unavailable = summary.get("unavailable_or_failed_sources", [])
+    if not isinstance(failed_or_unavailable, list):
+        failed_or_unavailable = []
 
-    offline_sources = summary.get("offline_not_attempted_sources_list", [])
-    if not offline_sources:
-        # Fallback to failed if they match the count roughly, or just empty
-        offline_sources = [s.get("source_id") for s in pack.get("failed_sources", []) if s.get("error_type") == "offline_mode_no_local_input"]
+    offline_not_attempted = summary.get("offline_not_attempted_sources", [])
+    if not isinstance(offline_not_attempted, list):
+        offline_not_attempted = []
 
-    auth_req = summary.get("auth_required_sources_list", ["Fugle", "Fubon"]) # Placeholder for demo if unavailable
-    doc_only = summary.get("doc_only_sources_list", ["Fugle", "Fubon"])
+    auth_required = summary.get("auth_required_sources", [])
+    if not isinstance(auth_required, list):
+        auth_required = []
+
+    doc_only = summary.get("doc_only_sources", [])
+    if not isinstance(doc_only, list):
+        doc_only = []
 
     return f"""## Source Health
 
 - Total Sources: {summary.get("total_sources", 0)}
-- Failed/Unavailable Source Count: {len(summary.get("unavailable_or_failed_sources", [])) if isinstance(summary.get("unavailable_or_failed_sources", []), list) else summary.get("unavailable_or_failed_sources", 0)}
-- Failed/Unavailable Sources: {format_inline_list(failed_sources_list)}
-- Offline Not Attempted Source Count: {len(summary.get("offline_not_attempted_sources", [])) if isinstance(summary.get("offline_not_attempted_sources", []), list) else summary.get("offline_not_attempted_sources", 0)}
-- Offline Not Attempted Sources: {format_inline_list(offline_sources)}
-- Auth Required Sources: {format_inline_list(auth_req)}
+- Failed/Unavailable Source Count: {len(failed_or_unavailable)}
+- Failed/Unavailable Sources: {format_inline_list(failed_or_unavailable)}
+- Offline Not Attempted Source Count: {len(offline_not_attempted)}
+- Offline Not Attempted Sources: {format_inline_list(offline_not_attempted)}
+- Auth Required Sources: {format_inline_list(auth_required)}
 - Doc Only Sources: {format_inline_list(doc_only)}
 
 **Source Health Caveats**:

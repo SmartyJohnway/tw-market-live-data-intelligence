@@ -2,7 +2,7 @@
 
 ## Generated Metadata
 
-- **Briefing Generated At (UTC)**: 2026-06-21T14:15:12.775455+00:00
+- **Briefing Generated At (UTC)**: 2026-06-21T14:21:30.439732+00:00
 - **Context Pack Version**: m3_ai_context_pack_v2_draft
 - **Context Pack Generated At (UTC)**: 2026-06-21T12:16:59.525128+00:00
 - **Context Pack Generated At (Taipei)**: 2026-06-21T20:16:59.525128+08:00
@@ -36,7 +36,7 @@ No live market movement summary can be safely produced from this artifact.
 - Failed/Unavailable Source Count: 7
 - Failed/Unavailable Sources: TWSE_MIS, Yahoo_Finance, TWSE_OpenAPI, TPEx_OpenAPI, FinMind, Fugle, Fubon
 - Offline Not Attempted Source Count: 5
-- Offline Not Attempted Sources: TWSE_MIS, Yahoo_Finance, TWSE_OpenAPI, TPEx_OpenAPI
+- Offline Not Attempted Sources: TWSE_MIS, Yahoo_Finance, TWSE_OpenAPI, TPEx_OpenAPI, FinMind
 - Auth Required Sources: Fugle, Fubon
 - Doc Only Sources: Fugle, Fubon
 
