@@ -1,0 +1,238 @@
+{
+  "observation_version": "watchlist_observations_v1",
+  "generated_at_utc": "2026-06-21T10:16:34.458868+00:00",
+  "generated_at_taipei": "2026-06-21T18:16:34.458868+00:00",
+  "source_snapshot_ref": "research/generated/latest_market_snapshot.json",
+  "generation_mode": "offline_snapshot_read",
+  "watchlist_scope": {
+    "target_count": 10,
+    "full_market_scan": false
+  },
+  "observations": [],
+  "failed_observations": [
+    {
+      "symbol": "2330",
+      "exchange": "unknown",
+      "target_class": "twse_common_stock",
+      "source_used": "unknown",
+      "source_authority": "unknown",
+      "freshness_status": "unknown",
+      "delay_status": "unknown",
+      "price_semantics": "unknown",
+      "observation_type": "source_failed",
+      "observation_label": "source failed to return data",
+      "observation_value": true,
+      "evidence": {
+        "failure_reason": "all_sources_failed"
+      },
+      "severity": "failed",
+      "caveats": [
+        "offline_mode"
+      ],
+      "ai_safe_summary": "Data source failed for this target."
+    },
+    {
+      "symbol": "1435",
+      "exchange": "unknown",
+      "target_class": "twse_common_stock",
+      "source_used": "unknown",
+      "source_authority": "unknown",
+      "freshness_status": "unknown",
+      "delay_status": "unknown",
+      "price_semantics": "unknown",
+      "observation_type": "source_failed",
+      "observation_label": "source failed to return data",
+      "observation_value": true,
+      "evidence": {
+        "failure_reason": "all_sources_failed"
+      },
+      "severity": "failed",
+      "caveats": [
+        "offline_mode"
+      ],
+      "ai_safe_summary": "Data source failed for this target."
+    },
+    {
+      "symbol": "8069",
+      "exchange": "unknown",
+      "target_class": "tpex_common_stock",
+      "source_used": "unknown",
+      "source_authority": "unknown",
+      "freshness_status": "unknown",
+      "delay_status": "unknown",
+      "price_semantics": "unknown",
+      "observation_type": "source_failed",
+      "observation_label": "source failed to return data",
+      "observation_value": true,
+      "evidence": {
+        "failure_reason": "all_sources_failed"
+      },
+      "severity": "failed",
+      "caveats": [
+        "offline_mode"
+      ],
+      "ai_safe_summary": "Data source failed for this target."
+    },
+    {
+      "symbol": "5347",
+      "exchange": "unknown",
+      "target_class": "tpex_common_stock",
+      "source_used": "unknown",
+      "source_authority": "unknown",
+      "freshness_status": "unknown",
+      "delay_status": "unknown",
+      "price_semantics": "unknown",
+      "observation_type": "source_failed",
+      "observation_label": "source failed to return data",
+      "observation_value": true,
+      "evidence": {
+        "failure_reason": "all_sources_failed"
+      },
+      "severity": "failed",
+      "caveats": [
+        "offline_mode"
+      ],
+      "ai_safe_summary": "Data source failed for this target."
+    },
+    {
+      "symbol": "0050",
+      "exchange": "unknown",
+      "target_class": "twse_etf",
+      "source_used": "unknown",
+      "source_authority": "unknown",
+      "freshness_status": "unknown",
+      "delay_status": "unknown",
+      "price_semantics": "unknown",
+      "observation_type": "source_failed",
+      "observation_label": "source failed to return data",
+      "observation_value": true,
+      "evidence": {
+        "failure_reason": "all_sources_failed"
+      },
+      "severity": "failed",
+      "caveats": [
+        "offline_mode"
+      ],
+      "ai_safe_summary": "Data source failed for this target."
+    },
+    {
+      "symbol": "00929",
+      "exchange": "unknown",
+      "target_class": "twse_etf",
+      "source_used": "unknown",
+      "source_authority": "unknown",
+      "freshness_status": "unknown",
+      "delay_status": "unknown",
+      "price_semantics": "unknown",
+      "observation_type": "source_failed",
+      "observation_label": "source failed to return data",
+      "observation_value": true,
+      "evidence": {
+        "failure_reason": "all_sources_failed"
+      },
+      "severity": "failed",
+      "caveats": [
+        "offline_mode"
+      ],
+      "ai_safe_summary": "Data source failed for this target."
+    },
+    {
+      "symbol": "9105",
+      "exchange": "unknown",
+      "target_class": "twse_tdr",
+      "source_used": "unknown",
+      "source_authority": "unknown",
+      "freshness_status": "unknown",
+      "delay_status": "unknown",
+      "price_semantics": "unknown",
+      "observation_type": "source_failed",
+      "observation_label": "source failed to return data",
+      "observation_value": true,
+      "evidence": {
+        "failure_reason": "all_sources_failed"
+      },
+      "severity": "failed",
+      "caveats": [
+        "offline_mode"
+      ],
+      "ai_safe_summary": "Data source failed for this target."
+    },
+    {
+      "symbol": "TAIEX",
+      "exchange": "unknown",
+      "target_class": "twse_index",
+      "source_used": "unknown",
+      "source_authority": "unknown",
+      "freshness_status": "unknown",
+      "delay_status": "unknown",
+      "price_semantics": "unknown",
+      "observation_type": "source_failed",
+      "observation_label": "source failed to return data",
+      "observation_value": true,
+      "evidence": {
+        "failure_reason": "all_sources_failed"
+      },
+      "severity": "failed",
+      "caveats": [
+        "offline_mode"
+      ],
+      "ai_safe_summary": "Data source failed for this target."
+    },
+    {
+      "symbol": "TX",
+      "exchange": "unknown",
+      "target_class": "taifex_index_future",
+      "source_used": "unknown",
+      "source_authority": "unknown",
+      "freshness_status": "unknown",
+      "delay_status": "unknown",
+      "price_semantics": "unknown",
+      "observation_type": "source_failed",
+      "observation_label": "source failed to return data",
+      "observation_value": true,
+      "evidence": {
+        "failure_reason": "all_sources_failed"
+      },
+      "severity": "failed",
+      "caveats": [
+        "offline_mode"
+      ],
+      "ai_safe_summary": "Data source failed for this target."
+    },
+    {
+      "symbol": "FUNDA",
+      "exchange": "unknown",
+      "target_class": "mutual_fund",
+      "source_used": "unknown",
+      "source_authority": "unknown",
+      "freshness_status": "unknown",
+      "delay_status": "unknown",
+      "price_semantics": "unknown",
+      "observation_type": "source_failed",
+      "observation_label": "source failed to return data",
+      "observation_value": true,
+      "evidence": {
+        "failure_reason": "all_sources_failed"
+      },
+      "severity": "failed",
+      "caveats": [
+        "offline_mode"
+      ],
+      "ai_safe_summary": "Data source failed for this target."
+    }
+  ],
+  "global_caveats": [
+    "This snapshot is not a live execution feed.",
+    "Do not use for automated trading."
+  ],
+  "prohibited_interpretations": [
+    "buy",
+    "sell",
+    "hold",
+    "target_price",
+    "profit_prediction",
+    "guaranteed_reversal",
+    "automated_trade_signal",
+    "trading_signal"
+  ]
+}

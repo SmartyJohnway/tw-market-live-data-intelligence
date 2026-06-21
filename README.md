@@ -99,6 +99,11 @@ The system relies heavily on established protocols and taxonomy documentation to
   - [M3A-02 Completion Report](docs/reviews/M3A_02_LATEST_MARKET_SNAPSHOT_GENERATOR.md)
   - A bounded snapshot generator script exists at `scripts/generate_latest_market_snapshot.py` which strictly executes in offline mode to generate `research/generated/latest_market_snapshot.json`.
 
+- **M3D Watchlist Observation Semantics:**
+  - [Watchlist Observation Semantics](docs/protocol/WATCHLIST_OBSERVATION_SEMANTICS.md)
+  - [M3D-01 Completion Report](docs/reviews/M3D_01_WATCHLIST_OBSERVATION_SEMANTICS.md)
+  - A watchlist observation generator script exists at `scripts/generate_watchlist_observations.py` which processes `latest_market_snapshot.json` to generate AI-readable observations in `research/generated/watchlist_observations.json`.
+
 ## Known Caveats
 1. Unofficial endpoints (like TWSE MIS or Yahoo Finance) are extremely fragile. They are rate-limited, require specific headers (sometimes cookies), and can break without notice.
 2. The concept of "real-time" is strictly bound by the `delay_status` and `staleness_seconds` metrics defined in the data contract envelope. Do not assume data is live unless explicitly proven by these fields.
