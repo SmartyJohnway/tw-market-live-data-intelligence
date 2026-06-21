@@ -33,41 +33,51 @@ The frontend must parse, handle, and display the following data groups mapping d
 
 | Source Artifact | Source Field Path | Frontend Display Name | Required / Optional | Fallback Behavior | Caveat Visibility | Prohibited Interpretation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `ai_context_pack.json` | `generated_metadata.briefing_generated_at_utc` | Briefing Generated At (UTC) | Required | Display 'Unknown' | Must show note about generation time vs. market freshness | Assuming timestamp guarantees live market freshness |
-| `ai_context_pack.json` | `generated_metadata.context_pack_version` | Context Pack Version | Required | Display 'Unknown' | None | Claiming final/production version if draft |
-| `ai_context_pack.json` | `generated_metadata.generation_mode` | Generation Mode | Required | Display 'Unknown' | None | Claiming live API fetch if offline |
+| `ai_context_pack.json` | `pack_version` | Context Pack Version | Required | Display 'Unknown' | None | Claiming final/production version if draft |
+| `ai_context_pack.json` | `generated_at_utc` | Generated At (UTC) | Required | Display 'Unknown' | Must show note about generation time vs. market freshness | Assuming timestamp guarantees live market freshness |
+| `ai_context_pack.json` | `generated_at_taipei` | Generated At (Taipei) | Required | Display 'Unknown' | None | N/A |
+| `ai_context_pack.json` | `generation_mode` | Generation Mode | Required | Display 'Unknown' | None | Claiming live API fetch if offline |
 
 ### 2. Current Scope
 
 | Source Artifact | Source Field Path | Frontend Display Name | Required / Optional | Fallback Behavior | Caveat Visibility | Prohibited Interpretation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `ai_context_pack.json` | `current_scope.bounded_watchlist_only` | Bounded Watchlist Only | Required | Display 'Unknown' | Must display prominently | Claiming full market context |
-| `ai_context_pack.json` | `current_scope.full_market_coverage` | Full Market Coverage | Required | Display `true` / 'Unknown' | Critical warning if true or missing | Claiming full market scans or ranking |
-| `ai_context_pack.json` | `current_scope.target_count` | Target Count | Required | Display 0 | None | Claiming comprehensive coverage |
-| `ai_context_pack.json` | `current_scope.failed_target_count` | Failed Target Count | Required | Display 0 | High visibility if > 0 | Ignoring failed targets |
+| `ai_context_pack.json` | `target_support_summary.bounded_watchlist_only` | Bounded Watchlist Only | Required | Display 'Unknown' | Must display prominently | Claiming full market context |
+| `ai_context_pack.json` | `target_support_summary.full_market_coverage` | Full Market Coverage | Required | Stop Render (Critical) if missing, or Display Unknown + Critical warning. | Critical warning if true or missing | Claiming full market scans or ranking |
+| `ai_context_pack.json` | `target_support_summary.target_count` | Target Count | Required | Display 0 | None | Claiming comprehensive coverage |
+| `ai_context_pack.json` | `target_support_summary.failed_target_count` | Failed Target Count | Required | Display 0 | High visibility if > 0 | Ignoring failed targets |
 
 ### 3. Source Health
 
 | Source Artifact | Source Field Path | Frontend Display Name | Required / Optional | Fallback Behavior | Caveat Visibility | Prohibited Interpretation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `ai_context_pack.json` | `source_health.total_sources` | Total Sources | Required | Display 0 | None | N/A |
-| `ai_context_pack.json` | `source_health.failed_or_unavailable_sources_count` | Failed/Unavailable Source Count | Required | Display 0 | Must warn if > 0 | Hiding failing infrastructure |
-| `ai_context_pack.json` | `source_health.failed_or_unavailable_sources` | Failed/Unavailable Sources | Required | Display `[]` | None | N/A |
+| `ai_context_pack.json` | `source_health_summary.total_sources` | Total Sources | Required | Display 0 | None | N/A |
+| `ai_context_pack.json` | `source_health_summary.source_ids` | Source IDs | Required | Display `[]` | None | N/A |
+| `ai_context_pack.json` | `source_health_summary.unavailable_or_failed_sources` | Failed/Unavailable Sources | Required | Display `[]` | Must warn if not empty | Hiding failing infrastructure |
+| `ai_context_pack.json` | `source_health_summary.auth_required_sources` | Auth Required Sources | Required | Display `[]` | None | N/A |
+| `ai_context_pack.json` | `source_health_summary.doc_only_sources` | Doc Only Sources | Required | Display `[]` | None | N/A |
+| `ai_context_pack.json` | `source_health_summary.offline_not_attempted_sources` | Offline / Not Attempted Sources | Required | Display `[]` | Must note offline mode | N/A |
 
 ### 4. Source Authority
 
 | Source Artifact | Source Field Path | Frontend Display Name | Required / Optional | Fallback Behavior | Caveat Visibility | Prohibited Interpretation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `ai_context_pack.json` | `source_authority.official_reference_eod` | Official Reference (EOD) | Required | Display `[]` | Must note EOD nature | Claiming EOD is live intraday |
-| `ai_context_pack.json` | `source_authority.unofficial_frontend` | Unofficial Frontend | Required | Display `[]` | Must note unofficial risk | Claiming unofficial is guaranteed |
-| `ai_context_pack.json` | `source_authority.third_party` | Third Party | Required | Display `[]` | Must note third-party status | Claiming official exchange data |
+| `ai_context_pack.json` | `source_authority_summary.official_reference` | Official Reference (EOD) | Required | Display `[]` | Must note EOD nature | Claiming EOD is live intraday |
+| `ai_context_pack.json` | `source_authority_summary.unofficial_frontend` | Unofficial Frontend | Required | Display `[]` | Must note unofficial risk | Claiming unofficial is guaranteed |
+| `ai_context_pack.json` | `source_authority_summary.third_party` | Third Party | Required | Display `[]` | Must note third-party status | Claiming official exchange data |
+| `ai_context_pack.json` | `source_authority_summary.broker_authenticated` | Broker Authenticated | Required | Display `[]` | None | Claiming auth data without credentials |
+| `ai_context_pack.json` | `source_authority_summary.usable_live_sources` | Usable Live Sources | Required | Display `[]` | None | Claiming usable live sources if empty |
+| `ai_context_pack.json` | `source_authority_summary.usable_eod_sources` | Usable EOD Sources | Required | Display `[]` | None | N/A |
 
 ### 5. Market Session Status
 
 | Source Artifact | Source Field Path | Frontend Display Name | Required / Optional | Fallback Behavior | Caveat Visibility | Prohibited Interpretation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `ai_context_pack.json` | `market_session_status.status` | Status | Required | Display 'unknown' | Note if unknown | Inferring market open/closed status |
-| `ai_context_pack.json` | `market_session_status.evidence` | Evidence | Optional | Omit | None | N/A |
+| `ai_context_pack.json` | `latest_snapshot_summary.market_session_status.status` | Status | Required | Display 'unknown' | Note if unknown | Inferring market open/closed status |
+| `ai_context_pack.json` | `latest_snapshot_summary.market_session_status.as_of_taipei` | As Of (Taipei) | Optional | Omit | None | N/A |
+| `ai_context_pack.json` | `latest_snapshot_summary.market_session_status.source` | Source | Optional | Omit | None | N/A |
+| `ai_context_pack.json` | `latest_snapshot_summary.market_session_status.evidence` | Evidence | Optional | Omit | None | N/A |
+| `ai_context_pack.json` | `latest_snapshot_summary.market_session_status.caveats` | Caveats | Optional | Omit | None | N/A |
 
 ### 6. Latest Snapshot Summary
 
@@ -89,21 +99,21 @@ The frontend must parse, handle, and display the following data groups mapping d
 
 | Source Artifact | Source Field Path | Frontend Display Name | Required / Optional | Fallback Behavior | Caveat Visibility | Prohibited Interpretation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `latest_market_snapshot.json` | `failed_sources` | Failed Sources | Required | Display `[]` | Must note offline/local state | Claiming production live source failure |
+| `ai_context_pack.json` | `failed_sources` | Failed Sources | Required | Display `[]` | Must note offline/local state | Claiming production live source failure |
 
 ### 9. Failed Targets
 
 | Source Artifact | Source Field Path | Frontend Display Name | Required / Optional | Fallback Behavior | Caveat Visibility | Prohibited Interpretation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `latest_market_snapshot.json` | `failed_symbols` | Failed Targets | Required | Display `[]` | None | N/A |
+| `ai_context_pack.json` | `failed_targets` | Failed Targets | Required | Display `[]` | None | N/A |
 
 ### 10. Freshness / Delay / Staleness
 
 | Source Artifact | Source Field Path | Frontend Display Name | Required / Optional | Fallback Behavior | Caveat Visibility | Prohibited Interpretation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `ai_context_pack.json` | `freshness_delay_staleness.stale_count` | Stale Count | Required | Display 0 | Note stale data | N/A |
-| `ai_context_pack.json` | `freshness_delay_staleness.unknown_freshness_count` | Unknown Freshness Count | Required | Display 0 | Note unknown limits | Claiming unknown is fresh |
-| `ai_context_pack.json` | `freshness_delay_staleness.live_candidate_count` | Live Candidate Count | Required | Display 0 | Note candidates are not guaranteed | Claiming official realtime |
+| `ai_context_pack.json` | `freshness_and_delay_summary.stale_count` | Stale Count | Required | Display 0 | Note stale data | N/A |
+| `ai_context_pack.json` | `freshness_and_delay_summary.unknown_freshness_count` | Unknown Freshness Count | Required | Display 0 | Note unknown limits | Claiming unknown is fresh |
+| `ai_context_pack.json` | `freshness_and_delay_summary.live_candidate_count` | Live Candidate Count | Required | Display 0 | Note candidates are not guaranteed | Claiming official realtime |
 
 ### 11. AI May Say
 

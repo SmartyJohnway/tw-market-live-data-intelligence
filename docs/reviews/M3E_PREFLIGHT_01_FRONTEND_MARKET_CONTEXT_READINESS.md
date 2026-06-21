@@ -72,9 +72,19 @@ Session state interpretation (`session_detection_not_implemented_in_m3a_02`) rem
 
 ## 11. Fields Safe for M3E Frontend
 
-All top-level metadata structures (`generated_metadata`, `current_scope`, `source_health`, `market_session_status`, `latest_snapshot_summary`, `freshness_delay_staleness`, `ai_may_say`, `ai_must_not_claim`, `mandatory_caveats`) within `ai_context_pack.json` are safe to bind.
-Failed arrays (`failed_sources`, `failed_symbols`) from `latest_market_snapshot.json` and `failed_observations` from `watchlist_observations.json` are safe.
-The raw rendering of `chatgpt_briefing.md` is safe.
+The following field paths within `ai_context_pack.json` are safe to bind to the frontend:
+- `pack_version`, `generated_at_utc`, `generated_at_taipei`, `generation_mode`
+- `target_support_summary.*` (including `bounded_watchlist_only`, `full_market_coverage`, `target_count`, `failed_target_count`)
+- `source_health_summary.*` (including `total_sources`, `source_ids`, `unavailable_or_failed_sources`, `auth_required_sources`, `doc_only_sources`, `offline_not_attempted_sources`)
+- `source_authority_summary.*` (including `official_reference`, `unofficial_frontend`, `third_party`, `broker_authenticated`, `usable_live_sources`, `usable_eod_sources`)
+- `latest_snapshot_summary.market_session_status.*`
+- `latest_snapshot_summary.*` (including `symbol_count`, `failed_symbol_count`, `failed_source_count`)
+- `watchlist_observation_summary.*`
+- `failed_sources` and `failed_targets`
+- `freshness_and_delay_summary.*`
+- `ai_may_say`, `ai_must_not_claim`, `mandatory_caveats`
+
+The raw rendering of `chatgpt_briefing.md` is also safe.
 
 ## 12. Fields Unsafe or Unavailable for M3E Frontend
 
