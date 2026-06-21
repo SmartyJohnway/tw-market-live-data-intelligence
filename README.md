@@ -90,6 +90,13 @@ The system relies heavily on established protocols and taxonomy documentation to
   - [M3 AI Context Pack Generator Requirements](docs/protocol/M3_AI_CONTEXT_PACK_GENERATOR_REQUIREMENTS.md)
   - [M3-01 AI Market Context Pack Design Review](docs/reviews/M3_01_AI_MARKET_CONTEXT_PACK_DESIGN.md)
 
+- **M3B AI Context Pack v2 Contract:**
+  - [M3 AI Context Pack v2 Contract](docs/protocol/M3_AI_CONTEXT_PACK_V2_CONTRACT.md)
+  - [M3 AI Context Pack v2 Section Schema](docs/protocol/M3_AI_CONTEXT_PACK_V2_SECTION_SCHEMA.md)
+  - [M3 AI Context Pack v2 Policy](docs/protocol/M3_AI_CONTEXT_PACK_V2_POLICY.md)
+  - [M3 AI Context Pack v2 Generator Requirements](docs/protocol/M3_AI_CONTEXT_PACK_V2_GENERATOR_REQUIREMENTS.md)
+  - [M3B-01 Completion Report](docs/reviews/M3B_01_AI_CONTEXT_PACK_V2_CONTRACT.md)
+
 - **M3 Latest Market Snapshot Design & Generator:**
   - [Latest Market Snapshot Contract](docs/contracts/latest_market_snapshot_contract.md)
   - [Source Priority & Freshness Policy](docs/protocol/LATEST_MARKET_SNAPSHOT_SOURCE_PRIORITY_AND_FRESHNESS_POLICY.md)
