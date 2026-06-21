@@ -34,6 +34,8 @@ pytest -m "not network" -v
 6. No generated artifacts modified.
 7. No code/config/frontend/MCP/runtime behavior changed.
 
+Final cleanup added concrete draft output shapes for `source_contract_baseline` and `target_support_summary` to make M3B-02 generator implementation less ambiguous.
+
 ## M3B-01 Deliverable Summaries
 
 ### v2 Contract Summary

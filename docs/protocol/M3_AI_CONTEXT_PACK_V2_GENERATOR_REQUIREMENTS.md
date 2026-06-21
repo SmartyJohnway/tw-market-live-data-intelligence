@@ -40,12 +40,16 @@ The M3B-02 implementation will be validated against these criteria:
 1. Required top-level keys exist in the generated JSON.
 2. Required section keys exist in the generated JSON.
 3. Snapshot reference and observation reference pointers exist and are accurate.
-4. `usable_live_sources` strictly excludes `TWSE_OpenAPI` and `TPEx_OpenAPI`.
-5. `usable_live_sources` strictly excludes `Fugle`/`Fubon` when marked as `auth_required` or `doc_only`.
-6. Failed source counts are preserved or explainably summarized.
-7. Failed target counts are preserved or explainably summarized.
-8. Watchlist observation counts match `watchlist_observations.json`.
-9. Unofficial sources preserve their necessary caveats.
-10. Prohibited vocabulary is absent outside the `prohibited_interpretations` section.
-11. No unsupported average-volume, momentum, ranking, or trend-strength language is generated unless future artifacts explicitly support it.
-12. The script demonstrates full offline CI compatibility.
+4. `source_contract_baseline` includes all seven canonical M2/M3 sources.
+5. `official_eod_sources` includes `TWSE_OpenAPI` and `TPEx_OpenAPI` but they are excluded from `usable_live_sources`.
+6. `auth_required_sources` / `doc_only_sources` include `Fugle` and `Fubon` and are excluded from `usable_live_sources`.
+7. `target_support_summary` sets `bounded_watchlist_only = true`.
+8. `target_support_summary` sets `full_market_coverage = false` unless a future explicit full-market milestone changes this.
+9. `target_support_summary` does not contain ranking, investment-quality, or signal semantics.
+10. Failed source counts are preserved or explainably summarized.
+11. Failed target counts are preserved or explainably summarized.
+12. Watchlist observation counts match `watchlist_observations.json`.
+13. Unofficial sources preserve their necessary caveats.
+14. Prohibited vocabulary is absent outside the `prohibited_interpretations` section.
+15. No unsupported average-volume, momentum, ranking, or trend-strength language is generated unless future artifacts explicitly support it.
+16. The script demonstrates full offline CI compatibility.

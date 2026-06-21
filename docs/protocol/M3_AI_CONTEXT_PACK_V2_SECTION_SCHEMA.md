@@ -14,11 +14,52 @@ This document defines the schema and purpose of each section within the AI Conte
 
 ## `source_contract_baseline`
 1. **Purpose:** Informs AI about current canonical sources mapped in the system.
-2. **Required fields:** List of supported source contracts and baseline capabilities.
+2. **Required fields:** `canonical_sources`, `official_eod_sources`, `unofficial_live_candidate_sources`, `third_party_context_sources`, `auth_required_sources`, `doc_only_sources`, `unsupported_or_deferred_sources`, `source_contract_caveats`.
 3. **Optional fields:** None.
-4. **Allowed values:** Mapped sources (e.g., `TWSE_MIS`, `Yahoo_Finance`).
+4. **Allowed values:** Example shape:
+```json
+{
+  "source_contract_baseline": {
+    "canonical_sources": [
+      "TWSE_MIS",
+      "Yahoo_Finance",
+      "TWSE_OpenAPI",
+      "TPEx_OpenAPI",
+      "FinMind",
+      "Fugle",
+      "Fubon"
+    ],
+    "official_eod_sources": [
+      "TWSE_OpenAPI",
+      "TPEx_OpenAPI"
+    ],
+    "unofficial_live_candidate_sources": [
+      "TWSE_MIS"
+    ],
+    "third_party_context_sources": [
+      "Yahoo_Finance",
+      "FinMind"
+    ],
+    "auth_required_sources": [
+      "Fugle",
+      "Fubon"
+    ],
+    "doc_only_sources": [
+      "Fugle",
+      "Fubon"
+    ],
+    "unsupported_or_deferred_sources": [],
+    "source_contract_caveats": [
+      "official_openapi_sources_are_eod_reference_only",
+      "twse_mis_is_unofficial_frontend_candidate",
+      "third_party_sources_require_caveats",
+      "broker_sources_are_auth_required_or_doc_only"
+    ]
+  }
+}
+```
 5. **Source documents:** Derived from M2/M3 source contract documents.
-6. **Future M3B-02 Behavior:** Will pull statically from source protocols.
+6. **Future M3B-02 Behavior:** Will pull statically and summarize this from existing source-contract documents, not from live probes.
 7. **AI agent treatment:** Used to understand system capability scope.
 8. **Caveats:** Must not imply that sources currently blocked or requiring authentication are accessible.
 
@@ -43,10 +84,35 @@ This document defines the schema and purpose of each section within the AI Conte
 8. **Caveats:** Must carry caveats when dealing with unofficial APIs like TWSE MIS.
 
 ## `target_support_summary`
-1. **Purpose:** Describes support coverage for specific target classes.
-2. **Required fields:** `supported_observed`, `supported_candidate`, `unsupported`.
+1. **Purpose:** Describes support coverage and scope for specific target classes. It must describe support and scope, not market movement and not investment quality.
+2. **Required fields:** `target_classes_observed`, `target_classes_supported_candidate`, `target_classes_unsupported`, `target_classes_unknown`, `bounded_watchlist_only`, `full_market_coverage`, `target_support_caveats`.
 3. **Optional fields:** None.
-4. **Allowed values:** Standard taxonomy keys (e.g. `twse_common_stock`, `twse_etf`).
+4. **Allowed values:** Example shape:
+```json
+{
+  "target_support_summary": {
+    "target_classes_observed": [
+      "twse_common_stock",
+      "tpex_common_stock",
+      "twse_etf",
+      "twse_tdr",
+      "twse_index",
+      "taifex_index_future",
+      "mutual_fund"
+    ],
+    "target_classes_supported_candidate": [],
+    "target_classes_unsupported": [],
+    "target_classes_unknown": [],
+    "bounded_watchlist_only": true,
+    "full_market_coverage": false,
+    "target_support_caveats": [
+      "support_summary_describes_configured_watchlist_scope_only",
+      "does_not_claim_full_market_coverage",
+      "some_target_classes_may_have_failed_or_offline_observations"
+    ]
+  }
+}
+```
 5. **Source documents:** TARGET_TAXONOMY.md and SOURCE_TARGET_SUPPORT_MATRIX.md.
 6. **Future M3B-02 Behavior:** Extracted directly from protocol docs.
 7. **AI agent treatment:** Sets the context of what asset types the AI can speak about safely.

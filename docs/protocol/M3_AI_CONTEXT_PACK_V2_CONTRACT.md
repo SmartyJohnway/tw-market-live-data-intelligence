@@ -63,6 +63,11 @@ The canonical draft structure for the M3 AI Context Pack v2 is as follows:
 9. Failed sources and failed targets must remain visible.
 10. Bounded watchlist scope must be explicit; do not claim full-market coverage.
 11. Mandatory caveats must not be hidden or dropped.
+12. `source_contract_baseline` must classify sources by authority and usability, not by investment quality.
+13. `source_contract_baseline` must not imply live availability from EOD, doc_only, or auth_required sources.
+14. `target_support_summary` must be bounded to configured watchlist scope unless future evidence proves broader coverage.
+15. `target_support_summary` must not claim full-market coverage.
+16. `target_support_summary` must not rank target classes or securities.
 
 ## 7. Source Contract Baseline Section
 References the M2 baseline contract information mapping current source integrations.
