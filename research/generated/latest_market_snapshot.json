@@ -1,0 +1,312 @@
+{
+  "snapshot_version": "latest_market_snapshot_v1_draft",
+  "generated_at_utc": "2026-06-21T09:33:45.202981+00:00",
+  "generated_at_taipei": "2026-06-21T17:33:45.202981+00:00",
+  "generation_mode": "bounded_watchlist_generation",
+  "market_session_status": {
+    "status": "unknown",
+    "as_of_taipei": null,
+    "source": "generator_default",
+    "evidence": [],
+    "caveats": [
+      "session_detection_not_implemented_in_m3a_02"
+    ]
+  },
+  "source_health": [
+    {
+      "source_id": "Fugle",
+      "source_type": "broker_api",
+      "authority_level": "broker_authenticated",
+      "http_ok": null,
+      "parse_ok": null,
+      "normalization_ok": null,
+      "latency_ms": null,
+      "retrieved_time": null,
+      "error_type": "auth_required_doc_only_skipped",
+      "caveats": [
+        "broker_api_not_eligible_current_repo",
+        "auth_required",
+        "doc_only"
+      ]
+    },
+    {
+      "source_id": "TWSE_MIS",
+      "source_type": "unofficial_frontend_endpoint",
+      "authority_level": "unofficial_frontend",
+      "http_ok": false,
+      "parse_ok": false,
+      "normalization_ok": false,
+      "latency_ms": null,
+      "retrieved_time": "2026-06-21T09:33:45.202981+00:00",
+      "error_type": "offline_mode_no_data",
+      "caveats": [
+        "offline_mode"
+      ]
+    }
+  ],
+  "source_priority": [
+    "TWSE_MIS (live_candidate)",
+    "Yahoo Finance (third_party_context)",
+    "TWSE_OpenAPI (eod_reference)",
+    "TPEx_OpenAPI (eod_reference)"
+  ],
+  "watchlist_scope": {
+    "scope_type": "bounded_config_watchlist",
+    "target_count": 10,
+    "target_source": "config/market_targets.json",
+    "full_market_scan": false
+  },
+  "symbols": [],
+  "failed_symbols": [
+    {
+      "symbol": "2330",
+      "exchange": "unknown",
+      "target_class": "twse_large_caps",
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
+      "failure_reason": "all_sources_failed",
+      "retrieved_time": "2026-06-21T09:33:45.202981+00:00",
+      "data_quality_flags": [
+        "offline_mode_no_data"
+      ],
+      "caveats": [
+        "offline_mode"
+      ]
+    },
+    {
+      "symbol": "1435",
+      "exchange": "unknown",
+      "target_class": "twse_large_caps",
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
+      "failure_reason": "all_sources_failed",
+      "retrieved_time": "2026-06-21T09:33:45.202981+00:00",
+      "data_quality_flags": [
+        "offline_mode_no_data"
+      ],
+      "caveats": [
+        "offline_mode"
+      ]
+    },
+    {
+      "symbol": "8069",
+      "exchange": "unknown",
+      "target_class": "tpex_stocks",
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
+      "failure_reason": "all_sources_failed",
+      "retrieved_time": "2026-06-21T09:33:45.202981+00:00",
+      "data_quality_flags": [
+        "offline_mode_no_data"
+      ],
+      "caveats": [
+        "offline_mode"
+      ]
+    },
+    {
+      "symbol": "5347",
+      "exchange": "unknown",
+      "target_class": "tpex_stocks",
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
+      "failure_reason": "all_sources_failed",
+      "retrieved_time": "2026-06-21T09:33:45.202981+00:00",
+      "data_quality_flags": [
+        "offline_mode_no_data"
+      ],
+      "caveats": [
+        "offline_mode"
+      ]
+    },
+    {
+      "symbol": "0050",
+      "exchange": "unknown",
+      "target_class": "etfs",
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
+      "failure_reason": "all_sources_failed",
+      "retrieved_time": "2026-06-21T09:33:45.202981+00:00",
+      "data_quality_flags": [
+        "offline_mode_no_data"
+      ],
+      "caveats": [
+        "offline_mode"
+      ]
+    },
+    {
+      "symbol": "00929",
+      "exchange": "unknown",
+      "target_class": "etfs",
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
+      "failure_reason": "all_sources_failed",
+      "retrieved_time": "2026-06-21T09:33:45.202981+00:00",
+      "data_quality_flags": [
+        "offline_mode_no_data"
+      ],
+      "caveats": [
+        "offline_mode"
+      ]
+    },
+    {
+      "symbol": "9105",
+      "exchange": "unknown",
+      "target_class": "thinly_traded",
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
+      "failure_reason": "all_sources_failed",
+      "retrieved_time": "2026-06-21T09:33:45.202981+00:00",
+      "data_quality_flags": [
+        "offline_mode_no_data"
+      ],
+      "caveats": [
+        "offline_mode"
+      ]
+    },
+    {
+      "symbol": "TAIEX",
+      "exchange": "unknown",
+      "target_class": "indices",
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
+      "failure_reason": "all_sources_failed",
+      "retrieved_time": "2026-06-21T09:33:45.202981+00:00",
+      "data_quality_flags": [
+        "offline_mode_no_data"
+      ],
+      "caveats": [
+        "offline_mode"
+      ]
+    },
+    {
+      "symbol": "TX",
+      "exchange": "unknown",
+      "target_class": "futures",
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
+      "failure_reason": "all_sources_failed",
+      "retrieved_time": "2026-06-21T09:33:45.202981+00:00",
+      "data_quality_flags": [
+        "offline_mode_no_data"
+      ],
+      "caveats": [
+        "offline_mode"
+      ]
+    },
+    {
+      "symbol": "FUNDA",
+      "exchange": "unknown",
+      "target_class": "funds",
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
+      "failure_reason": "all_sources_failed",
+      "retrieved_time": "2026-06-21T09:33:45.202981+00:00",
+      "data_quality_flags": [
+        "offline_mode_no_data"
+      ],
+      "caveats": [
+        "offline_mode"
+      ]
+    }
+  ],
+  "failed_sources": [
+    {
+      "source_id": "TWSE_MIS",
+      "source_type": "unofficial_frontend_endpoint",
+      "http_ok": false,
+      "error_type": "offline_mode_no_data",
+      "retrieved_time": "2026-06-21T09:33:45.202981+00:00",
+      "affected_symbols": [
+        "2330",
+        "1435",
+        "8069",
+        "5347",
+        "0050",
+        "00929",
+        "9105",
+        "TAIEX",
+        "TX",
+        "FUNDA"
+      ],
+      "caveats": [
+        "offline_mode"
+      ]
+    },
+    {
+      "source_id": "Yahoo_Finance",
+      "source_type": "third_party",
+      "http_ok": false,
+      "error_type": "offline_mode_no_data",
+      "retrieved_time": "2026-06-21T09:33:45.202981+00:00",
+      "affected_symbols": [
+        "2330",
+        "1435",
+        "8069",
+        "5347",
+        "0050",
+        "00929",
+        "9105",
+        "TAIEX",
+        "TX",
+        "FUNDA"
+      ],
+      "caveats": [
+        "offline_mode"
+      ]
+    }
+  ],
+  "global_caveats": [
+    "This snapshot is not a live execution feed.",
+    "Do not use for automated trading."
+  ],
+  "prohibited_interpretations": [
+    "buy",
+    "sell",
+    "hold",
+    "target_price",
+    "profit_prediction",
+    "guaranteed_reversal",
+    "automated_trade_signal",
+    "trading_signal"
+  ]
+}

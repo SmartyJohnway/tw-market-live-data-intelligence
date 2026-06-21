@@ -90,12 +90,14 @@ The system relies heavily on established protocols and taxonomy documentation to
   - [M3 AI Context Pack Generator Requirements](docs/protocol/M3_AI_CONTEXT_PACK_GENERATOR_REQUIREMENTS.md)
   - [M3-01 AI Market Context Pack Design Review](docs/reviews/M3_01_AI_MARKET_CONTEXT_PACK_DESIGN.md)
 
-- **M3 Latest Market Snapshot Design:**
+- **M3 Latest Market Snapshot Design & Generator:**
   - [Latest Market Snapshot Contract](docs/contracts/latest_market_snapshot_contract.md)
   - [Source Priority & Freshness Policy](docs/protocol/LATEST_MARKET_SNAPSHOT_SOURCE_PRIORITY_AND_FRESHNESS_POLICY.md)
   - [Market Session Status Semantics](docs/protocol/MARKET_SESSION_STATUS_SEMANTICS.md)
   - [Latest Market Snapshot Generator Requirements](docs/protocol/LATEST_MARKET_SNAPSHOT_GENERATOR_REQUIREMENTS.md)
   - [M3A-01 Completion Report](docs/reviews/M3A_01_LATEST_MARKET_SNAPSHOT_CONTRACT_AND_GENERATOR_DESIGN.md)
+  - [M3A-02 Completion Report](docs/reviews/M3A_02_LATEST_MARKET_SNAPSHOT_GENERATOR.md)
+  - A bounded snapshot generator script exists at `scripts/generate_latest_market_snapshot.py` which strictly executes in offline mode to generate `research/generated/latest_market_snapshot.json`.
 
 ## Known Caveats
 1. Unofficial endpoints (like TWSE MIS or Yahoo Finance) are extremely fragile. They are rate-limited, require specific headers (sometimes cookies), and can break without notice.
