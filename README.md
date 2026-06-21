@@ -96,6 +96,8 @@ The system relies heavily on established protocols and taxonomy documentation to
   - [M3 AI Context Pack v2 Policy](docs/protocol/M3_AI_CONTEXT_PACK_V2_POLICY.md)
   - [M3 AI Context Pack v2 Generator Requirements](docs/protocol/M3_AI_CONTEXT_PACK_V2_GENERATOR_REQUIREMENTS.md)
   - [M3B-01 Completion Report](docs/reviews/M3B_01_AI_CONTEXT_PACK_V2_CONTRACT.md)
+  - [M3B-02 Completion Report](docs/reviews/M3B_02_AI_CONTEXT_PACK_V2_GENERATOR.md)
+  - An offline generator script exists at `scripts/generate_ai_context_pack.py` to synthesize AI-readable contexts into `research/generated/ai_context_pack.json` and `.md`.
 
 - **M3 Latest Market Snapshot Design & Generator:**
   - [Latest Market Snapshot Contract](docs/contracts/latest_market_snapshot_contract.md)
