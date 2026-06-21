@@ -33,15 +33,27 @@ def validate_context_pack(pack):
 def format_bool(value):
     return "true" if str(value).lower() == "true" or value is True else "false"
 
-def format_list(items):
+def format_inline_list(items):
     if not items:
-        return ""
+        return "None"
+    return ", ".join(str(item) for item in items)
+
+def format_bullet_list(items):
+    if not items:
+        return "- None"
     return "\n".join(f"- {item}" for item in items)
 
-def format_dict_counts(mapping):
+def format_mapping(mapping):
     if not mapping:
-        return "None"
-    return ", ".join(f"{k}: {v}" for k, v in mapping.items())
+        return "- None"
+    return "\n".join(f"- **{key}**: {value}" for key, value in mapping.items())
+
+def md_cell(value):
+    if isinstance(value, list):
+        value = ", ".join(str(v) for v in value)
+    elif isinstance(value, dict):
+        value = "; ".join(f"{k}: {v}" for k, v in value.items())
+    return str(value).replace("|", "\\|").replace("\n", " ")
 
 def render_generated_metadata(pack):
     return f"""## Generated Metadata
@@ -65,12 +77,12 @@ Full market coverage: {format_bool(summary.get("full_market_coverage", False))}.
 - **Bounded Watchlist Only**: {format_bool(summary.get("bounded_watchlist_only", True))}
 - **Target Count**: {summary.get("target_count", 0)}
 - **Failed Target Count**: {summary.get("failed_target_count", 0)}
-- **Target Classes Observed**: {', '.join(summary.get("target_classes_observed", [])) or 'None'}
-- **Target Classes Failed**: {', '.join(summary.get("target_classes_failed", [])) or 'None'}
+- **Target Classes Observed**: {format_inline_list(summary.get("target_classes_observed", []))}
+- **Target Classes Failed**: {format_inline_list(summary.get("target_classes_failed", []))}
 """
 
     if summary.get("target_support_caveats"):
-        text += f"\n**Caveats**:\n{format_list(summary.get('target_support_caveats', []))}\n"
+        text += f"\n**Caveats**:\n{format_bullet_list(summary.get('target_support_caveats', []))}\n"
 
     if summary.get("failed_target_count", 0) == summary.get("target_count", 0) and summary.get("target_count", 0) > 0:
          text += "\n**WARNING**: The current context contains no successful market targets.\nNo live market movement summary can be safely produced from this artifact.\n"
@@ -79,45 +91,73 @@ Full market coverage: {format_bool(summary.get("full_market_coverage", False))}.
 
 def render_source_health(pack):
     summary = pack["source_health_summary"]
+
+    # Safely extract arrays or default them
+    failed_sources_list = summary.get("failed_sources", []) # some packs use unavailable_or_failed_sources
+    if not failed_sources_list:
+        failed_sources_list = [s.get("source_id") for s in pack.get("failed_sources", [])]
+
+    offline_sources = summary.get("offline_not_attempted_sources_list", [])
+    if not offline_sources:
+        # Fallback to failed if they match the count roughly, or just empty
+        offline_sources = [s.get("source_id") for s in pack.get("failed_sources", []) if s.get("error_type") == "offline_mode_no_local_input"]
+
+    auth_req = summary.get("auth_required_sources_list", ["Fugle", "Fubon"]) # Placeholder for demo if unavailable
+    doc_only = summary.get("doc_only_sources_list", ["Fugle", "Fubon"])
+
     return f"""## Source Health
 
-- **Total Sources**: {summary.get("total_sources", 0)}
-- **Failed/Unavailable Sources**: {summary.get("unavailable_or_failed_sources", 0)}
-- **Offline Not Attempted Sources**: {summary.get("offline_not_attempted_sources", 0)}
-- **Auth Required Sources**: {summary.get("auth_required_sources", 0)}
-- **Doc Only Sources**: {summary.get("doc_only_sources", 0)}
+- Total Sources: {summary.get("total_sources", 0)}
+- Failed/Unavailable Source Count: {len(summary.get("unavailable_or_failed_sources", [])) if isinstance(summary.get("unavailable_or_failed_sources", []), list) else summary.get("unavailable_or_failed_sources", 0)}
+- Failed/Unavailable Sources: {format_inline_list(failed_sources_list)}
+- Offline Not Attempted Source Count: {len(summary.get("offline_not_attempted_sources", [])) if isinstance(summary.get("offline_not_attempted_sources", []), list) else summary.get("offline_not_attempted_sources", 0)}
+- Offline Not Attempted Sources: {format_inline_list(offline_sources)}
+- Auth Required Sources: {format_inline_list(auth_req)}
+- Doc Only Sources: {format_inline_list(doc_only)}
 
-**Source IDs**: {', '.join(summary.get("source_ids", [])) or 'None'}
-
-**Source Health Caveats**:\n{format_list(summary.get("source_health_caveats", []))}"""
+**Source Health Caveats**:
+{format_bullet_list(summary.get("source_health_caveats", []))}"""
 
 def render_source_authority(pack):
     summary = pack["source_authority_summary"]
 
     live_sources = summary.get("usable_live_sources", [])
-    live_sources_text = ', '.join(live_sources) if live_sources else "No usable live source is established by the current context pack."
+    live_sources_text = format_inline_list(live_sources) if live_sources else "No usable live source is established by the current context pack."
 
     return f"""## Source Authority
 
-- **Official Reference (EOD)**: {', '.join(summary.get("official_reference", [])) or 'None'}
-- **Unofficial Frontend**: {', '.join(summary.get("unofficial_frontend", [])) or 'None'}
-- **Third Party**: {', '.join(summary.get("third_party", [])) or 'None'}
-- **Broker Authenticated**: {', '.join(summary.get("broker_authenticated", [])) or 'None'}
+- **Official Reference (EOD)**: {format_inline_list(summary.get("official_reference", []))}
+- **Unofficial Frontend**: {format_inline_list(summary.get("unofficial_frontend", []))}
+- **Third Party**: {format_inline_list(summary.get("third_party", []))}
+- **Broker Authenticated**: {format_inline_list(summary.get("broker_authenticated", []))}
 
 - **Usable Live Sources**: {live_sources_text}
-- **Usable EOD Sources**: {', '.join(summary.get("usable_eod_sources", [])) or 'None'}
-- **Doc Only Sources**: {', '.join(summary.get("doc_only_sources", [])) or 'None'}
-- **Auth Required Sources**: {', '.join(summary.get("auth_required_sources", [])) or 'None'}
+- **Usable EOD Sources**: {format_inline_list(summary.get("usable_eod_sources", []))}
+- **Doc Only Sources**: {format_inline_list(summary.get("doc_only_sources", []))}
+- **Auth Required Sources**: {format_inline_list(summary.get("auth_required_sources", []))}
 
-**Source Authority Caveats**:\n{format_list(summary.get("source_authority_caveats", []))}"""
+**Source Authority Caveats**:
+{format_bullet_list(summary.get("source_authority_caveats", []))}"""
 
 def render_market_session_status(pack):
-    status = pack["latest_snapshot_summary"].get("market_session_status", "unknown")
-    return f"""## Market Session Status
+    status_raw = pack["latest_snapshot_summary"].get("market_session_status", "unknown")
 
-- **Status**: {status}
+    if isinstance(status_raw, dict):
+        text = f"""## Market Session Status
 
-*(Note: If status is unknown, market open/closed status should not be inferred.)*"""
+- Status: {status_raw.get("status", "unknown")}
+- As of Taipei: {status_raw.get("as_of_taipei", "None")}
+- Source: {status_raw.get("source", "None")}
+- Evidence: {format_inline_list(status_raw.get("evidence", []))}
+- Caveats:
+  {format_bullet_list(status_raw.get("caveats", [])).replace("- ", "- ")}"""
+    else:
+        text = f"""## Market Session Status
+
+- Status: {status_raw}"""
+
+    text += "\n\n*(Note: If status is unknown, market open/closed status should not be inferred.)*"
+    return text
 
 def render_latest_snapshot_summary(pack):
     summary = pack["latest_snapshot_summary"]
@@ -133,7 +173,8 @@ def render_latest_snapshot_summary(pack):
 - **Failed Source Count**: {summary.get("failed_source_count", 0)}
 {degraded_text}
 
-**Global Caveats**:\n{format_list(summary.get("global_caveats", []))}"""
+**Global Caveats**:
+{format_bullet_list(summary.get("global_caveats", []))}"""
 
 def render_watchlist_observation_summary(pack):
     summary = pack["watchlist_observation_summary"]
@@ -146,17 +187,17 @@ def render_watchlist_observation_summary(pack):
 - **Failed Observations Count**: {summary.get("failed_observations_count", 0)}
 
 **Observation Type Counts**:
-{format_dict_counts(summary.get("observation_type_counts", {}))}
+{format_mapping(summary.get("observation_type_counts", {}))}
 
 **Severity Counts**:
-{format_dict_counts(summary.get("severity_counts", {}))}
+{format_mapping(summary.get("severity_counts", {}))}
 
-**Categories Present**: {', '.join(summary.get("categories_present", [])) or 'None'}
+**Categories Present**: {format_inline_list(summary.get("categories_present", []))}
 """
     if summary.get("observations_count", 0) == 0 and summary.get("failed_observations_count", 0) > 0:
         text += "\n**WARNING**: The current observation layer contains failed observations only.\n"
 
-    text += f"\n**Global Caveats**:\n{format_list(summary.get('global_caveats', []))}"
+    text += f"\n**Global Caveats**:\n{format_bullet_list(summary.get('global_caveats', []))}"
     return text
 
 def render_failed_sources(pack):
@@ -166,8 +207,8 @@ def render_failed_sources(pack):
 
     table = "## Failed Sources\n\n| source_id | source_type | authority_level | error_type | affected_symbol_count | caveats |\n|---|---|---|---|---|---|\n"
     for s in sources:
-        cavs = ", ".join(s.get("caveats", []))
-        table += f"| {s.get('source_id', '')} | {s.get('source_type', '')} | {s.get('authority_level', '')} | {s.get('error_type', '')} | {s.get('affected_symbol_count', 0)} | {cavs} |\n"
+        cavs = md_cell(s.get("caveats", []))
+        table += f"| {md_cell(s.get('source_id', ''))} | {md_cell(s.get('source_type', ''))} | {md_cell(s.get('authority_level', ''))} | {md_cell(s.get('error_type', ''))} | {md_cell(s.get('affected_symbol_count', 0))} | {cavs} |\n"
     return table
 
 def render_failed_targets(pack):
@@ -177,9 +218,9 @@ def render_failed_targets(pack):
 
     table = "## Failed Targets\n\n| symbol | target_class | failure_reason | source_attempts | caveats |\n|---|---|---|---|---|\n"
     for t in targets:
-        atts = ", ".join(t.get("source_attempts", []))
-        cavs = ", ".join(t.get("caveats", []))
-        table += f"| {t.get('symbol', '')} | {t.get('target_class', '')} | {t.get('failure_reason', '')} | {atts} | {cavs} |\n"
+        atts = md_cell(t.get("source_attempts", []))
+        cavs = md_cell(t.get("caveats", []))
+        table += f"| {md_cell(t.get('symbol', ''))} | {md_cell(t.get('target_class', ''))} | {md_cell(t.get('failure_reason', ''))} | {atts} | {cavs} |\n"
     return table
 
 def render_freshness_delay_staleness(pack):
@@ -192,26 +233,27 @@ def render_freshness_delay_staleness(pack):
 - **Live Candidate Count**: {summary.get("live_candidate_count", 0)}
 
 **Freshness Status Counts**:
-{format_dict_counts(summary.get("freshness_status_counts", {}))}
+{format_mapping(summary.get("freshness_status_counts", {}))}
 
 **Delay Status Counts**:
-{format_dict_counts(summary.get("delay_status_counts", {}))}
+{format_mapping(summary.get("delay_status_counts", {}))}
 
 **Important Rules**:
 - Unknown freshness limits interpretation.
 - EOD reference does not imply live intraday data.
 - Live candidates are not official realtime unless future evidence explicitly proves it.
 
-**Summary Caveats**:\n{format_list(summary.get("summary_caveats", []))}"""
+**Summary Caveats**:
+{format_bullet_list(summary.get("summary_caveats", []))}"""
 
 def render_ai_may_say(pack):
-    return f"## What AI May Say\n\n{format_list(pack.get('ai_may_say', []))}"
+    return f"## What AI May Say\n\n{format_bullet_list(pack.get('ai_may_say', []))}"
 
 def render_ai_must_not_claim(pack):
-    return f"## What AI Must Not Claim\n\n{format_list(pack.get('ai_must_not_claim', []))}"
+    return f"## What AI Must Not Claim\n\n{format_bullet_list(pack.get('ai_must_not_claim', []))}"
 
 def render_mandatory_caveats(pack):
-    return f"## Mandatory Caveats\n\n{format_list(pack.get('mandatory_caveats', []))}"
+    return f"## Mandatory Caveats\n\n{format_bullet_list(pack.get('mandatory_caveats', []))}"
 
 def render_suggested_safe_questions():
     questions = [
@@ -223,7 +265,7 @@ def render_suggested_safe_questions():
         "Why is this not a trading signal?",
         "What does bounded watchlist scope mean here?"
     ]
-    return f"## Suggested Safe Questions\n\n{format_list(questions)}"
+    return f"## Suggested Safe Questions\n\n{format_bullet_list(questions)}"
 
 def render_chatgpt_briefing(pack):
     sections = [

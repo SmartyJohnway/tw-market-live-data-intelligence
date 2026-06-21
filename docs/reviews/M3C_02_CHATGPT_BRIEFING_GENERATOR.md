@@ -4,10 +4,10 @@
 `M3C_02_COMPLETED_WITH_CAVEATS_READY_FOR_M3E_PREFLIGHT_01`
 
 ## 2. Files Changed
-- `scripts/generate_chatgpt_briefing.py` (created)
-- `tests/test_generate_chatgpt_briefing.py` (created)
+- `scripts/generate_chatgpt_briefing.py` (created/updated)
+- `tests/test_generate_chatgpt_briefing.py` (created/updated)
 - `research/generated/chatgpt_briefing.md` (created/updated)
-- `docs/reviews/M3C_02_CHATGPT_BRIEFING_GENERATOR.md` (created)
+- `docs/reviews/M3C_02_CHATGPT_BRIEFING_GENERATOR.md` (created/updated)
 - `README.md` (updated)
 
 ## 3. Validation Commands Executed
@@ -18,7 +18,7 @@ python scripts/generate_chatgpt_briefing.py
 ```
 
 ## 4. Terminal Output Summary
-- `pytest` executed 12 tests successfully (all passed).
+- `pytest` executed 17 tests successfully (all passed).
 - Generator executed locally and correctly read `ai_context_pack.json` offline.
 - Compilation checks passed without syntax errors.
 
@@ -35,6 +35,9 @@ python scripts/generate_chatgpt_briefing.py
 - Preserves offline and stale context nuances.
 - Strictly bounds "May Say" and "Must Not Claim" lists.
 - Implements tables for `Failed Sources` and `Failed Targets`.
+- **REPAIRED**: Source Health raw list rendering removed.
+- **REPAIRED**: Market Session Status raw dict rendering replaced with structured output strings.
+- **REPAIRED**: Table cell escaping gracefully replaces array breaks like `|` or newlines safely.
 
 ## 7. Input Contract Validation Summary
 - Checks exactly 15 required sections top-level keys before rendering to ensure `chatgpt_briefing.md` isn't generated with incomplete context packs.
@@ -58,7 +61,8 @@ python scripts/generate_chatgpt_briefing.py
 - Trading, signal, and executable advice prohibited through section bindings.
 
 ## 13. Tests Summary
-- 12 comprehensive unit tests verify data boundaries, file loading bounds, and prohibited string assertions using `tmp_pack`.
+- 17 comprehensive unit tests verify data boundaries, file loading bounds, and prohibited string assertions using `tmp_pack`.
+- Includes assertions preventing `['` and `{'` and `']` rendering to markdown layers.
 
 ## 14. Confirmation that no live probes were run
 Confirmed. No HTTP or Requests are initialized in this generator or test base.
