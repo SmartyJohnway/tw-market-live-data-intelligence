@@ -21,10 +21,18 @@
 * Running `scripts/generate_latest_market_snapshot.py` locally executed and wrote the generated artifact JSON correctly.
 
 ## 5. Generator Summary
-The generator at `scripts/generate_latest_market_snapshot.py` is implemented according to the required specifications. By default, it operates completely in an offline deterministic mode, using local state, preserving failed symbols, skipping auth/broker APIs cleanly, adhering strictly to the contract constraints from M3A-01, and bounding execution exclusively to the configured scopes in `config/market_targets.json`.
+The generator at `scripts/generate_latest_market_snapshot.py` is implemented according to the required specifications.
+1. **Default generator mode is offline and deterministic.**
+2. **No live network calls are made by default.**
+3. **Local/mock input pathway is implemented and tested.**
+4. **All generated target_class values are canonical or explicitly unknown_or_unsupported.**
+5. **Source health coverage is complete for the M3A canonical sources.**
+6. **No trading semantics were introduced.**
+
+It operates completely in an offline deterministic mode, using local state via `mock_inputs` (with proper fallback semantics mapping), preserving failed symbols, skipping auth/broker APIs cleanly, adhering strictly to the contract constraints from M3A-01, and bounding execution exclusively to the configured scopes in `config/market_targets.json`.
 
 ## 6. Snapshot Artifact Summary
-The generated snapshot artifact, located at `research/generated/latest_market_snapshot.json`, mirrors a complete and conservative interpretation of the contract parameters, explicitly including `latest_market_snapshot_v1_draft`, all top level and per-symbol nested keys, defaulting missing data properly to `null` instead of stripping the keys entirely, and successfully retaining all required elements like `staleness_seconds`, `delay_status`, `price_semantics` and `caveats`.
+The generated snapshot artifact, located at `research/generated/latest_market_snapshot.json`, mirrors a complete and conservative interpretation of the contract parameters, explicitly including `latest_market_snapshot_v1_draft`, all top level and per-symbol nested keys, defaulting missing data properly to `null` instead of stripping the keys entirely, and successfully retaining all required elements like `staleness_seconds`, `delay_status`, `price_semantics` and `caveats`. It now canonicalizes all target class classifications to standard mappings.
 
 ## 7. Source Priority / Freshness Behavior
 The script implements source priority guidelines per the documentation. While operating offline for M3A-02, it properly categorizes the semantics correctly. Official EOD references are automatically configured to use `eod_batch` for freshness and `eod` for delay; they will never be confused for `live_candidate`. Similarly, `staleness_seconds` uses exact time subtraction based on strict ISO-8601 timestamps, or evaluates to `null` dynamically alongside explicit warnings under data quality flags.

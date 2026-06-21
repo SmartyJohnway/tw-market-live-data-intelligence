@@ -108,7 +108,8 @@ def test_failed_source_schema():
         "retrieved_time", "affected_symbols", "caveats"
     }
     assert set(fsrc.keys()) == expected_keys
-    assert fsrc["http_ok"] is False
+    assert fsrc["http_ok"] is None
+    assert fsrc["error_type"] == "offline_mode_no_local_input"
 
 def test_source_health_schema():
     targets = {}
@@ -124,32 +125,66 @@ def test_source_health_schema():
     }
     assert set(sh.keys()) == expected_keys
 
+    # Check that all 7 sources are covered
+    sources = set([sh["source_id"] for sh in snapshot["source_health"]])
+    assert sources == {"TWSE_MIS", "Yahoo_Finance", "TWSE_OpenAPI", "TPEx_OpenAPI", "FinMind", "Fugle", "Fubon"}
+
+
 def test_official_eod_not_live_candidate():
-    # Construct a mock symbol processed as EOD
-    target = {"symbol": "2330", "target_class": "twse_common_stock"}
-    sym = build_empty_symbol(target)
-    sym["source_used"] = "TWSE_OpenAPI"
-    sym["price_semantics"] = "eod_reference"
+    targets = {
+        "twse_large_caps": {
+            "symbols": {
+                "standard": ["2330"]
+            }
+        }
+    }
+    mock_inputs = {
+        "TWSE_OpenAPI": {
+            "2330": {
+                "name": "TSMC",
+                "last_price": 100,
+                "volume": 1000,
+                "source_time": None,
+                "retrieved_time": "2023-01-01T12:00:00+00:00",
+                "exchange": "TWSE"
+            }
+        }
+    }
+    snapshot = build_snapshot(targets, mock_inputs)
+    sym = snapshot["symbols"][0]
 
-    # Process freshness
-    sym = apply_freshness_policy(sym)
-
+    assert sym["price_semantics"] == "eod_reference"
     assert sym["freshness_status"] == "eod_batch"
     assert sym["delay_status"] == "eod"
-    assert sym["price_semantics"] == "eod_reference"
-    assert sym["price_semantics"] != "live_candidate"
+    assert sym["source_authority"] == "official_public_exchange_eod"
+    assert sym["source_used"] == "TWSE_OpenAPI"
 
 def test_unofficial_live_candidate_preserves_caveats():
-    target = {"symbol": "2330", "target_class": "twse_common_stock"}
-    sym = build_empty_symbol(target)
-    sym["source_used"] = "TWSE_MIS"
-    sym["price_semantics"] = "live_candidate"
+    targets = {
+        "twse_large_caps": {
+            "symbols": {
+                "standard": ["2330"]
+            }
+        }
+    }
+    mock_inputs = {
+        "TWSE_MIS": {
+            "2330": {
+                "name": "TSMC",
+                "last_price": 101,
+                "source_time": "2023-01-01T12:00:00+00:00",
+                "retrieved_time": "2023-01-01T12:00:01+00:00",
+                "exchange": "TWSE"
+            }
+        }
+    }
+    snapshot = build_snapshot(targets, mock_inputs)
+    sym = snapshot["symbols"][0]
 
-    sym = apply_source_priority_policy(sym, {"TWSE_MIS": {"last_price": 100}})
-
-    # Even with mock data processing, if we pretend to have live data, it should be caveated.
-    # The default build_snapshot doesn't do complex mock data merging yet, so we test the contract constraint manually
-    assert "no_data_available" not in sym["data_quality_flags"]
+    assert sym["price_semantics"] == "live_candidate"
+    assert sym["source_authority"] == "unofficial_frontend"
+    assert "unofficial_source_risk" in sym["caveats"]
+    assert sym["source_used"] == "TWSE_MIS"
 
 def test_broker_sources_skipped():
     targets = {}
@@ -163,6 +198,20 @@ def test_broker_sources_skipped():
             assert "broker_api_not_eligible_current_repo" in sh["caveats"]
 
     assert broker_found, "Broker API was not found in source_health as skipped"
+
+def test_canonical_target_class_mapping():
+    targets = {
+        "twse_large_caps": {"symbols": {"standard": ["2330"]}},
+        "random_unknown_group": {"symbols": {"standard": ["1234"]}}
+    }
+    snapshot = build_snapshot(targets)
+
+    target_classes = {fs["target_class"] for fs in snapshot["failed_symbols"]}
+    assert "twse_common_stock" in target_classes
+    assert "unknown_or_unsupported" in target_classes
+
+    unknown_sym = next(fs for fs in snapshot["failed_symbols"] if fs["target_class"] == "unknown_or_unsupported")
+    assert "target_class_mapping_unknown" in unknown_sym["data_quality_flags"]
 
 def test_watchlist_scope_not_full_market():
     targets = {}

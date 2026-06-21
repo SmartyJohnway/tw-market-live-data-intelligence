@@ -16,14 +16,27 @@ def load_targets():
         print(f"Warning: Failed to load targets from {targets_path}. Error: {e}")
         return {}
 
+def canonicalize_target_class(group_name: str, symbol: str) -> str:
+    mapping = {
+        "twse_large_caps": "twse_common_stock",
+        "tpex_stocks": "tpex_common_stock",
+        "etfs": "twse_etf",
+        "thinly_traded": "twse_tdr",
+        "indices": "twse_index",
+        "futures": "taifex_index_future",
+        "funds": "mutual_fund"
+    }
+    return mapping.get(group_name, "unknown_or_unsupported")
+
+
 def extract_all_targets(targets_config):
     all_targets = []
-    for class_name, group_data in targets_config.items():
+    for group_name, group_data in targets_config.items():
         standard_symbols = group_data.get("symbols", {}).get("standard", [])
         for sym in standard_symbols:
             all_targets.append({
                 "symbol": sym,
-                "target_class": class_name,
+                "target_class": canonicalize_target_class(group_name, sym),
             })
     return all_targets
 
@@ -67,16 +80,50 @@ def build_empty_symbol(target):
     }
 
 def apply_source_priority_policy(symbol_obj, source_data):
-    # This function would take the available data for a symbol from multiple sources
-    # and decide which to use based on LATEST_MARKET_SNAPSHOT_SOURCE_PRIORITY_AND_FRESHNESS_POLICY.md
+    # Determine source order based on LATEST_MARKET_SNAPSHOT_SOURCE_PRIORITY_AND_FRESHNESS_POLICY.md
+    priority_order = ["TWSE_MIS", "Yahoo_Finance", "TWSE_OpenAPI", "TPEx_OpenAPI"]
 
-    # If no data is available from any source:
-    if not source_data:
+    selected_source = None
+    for src in priority_order:
+        if src in source_data:
+            selected_source = src
+            break
+
+    if not selected_source:
         symbol_obj["data_quality_flags"].append("no_data_available")
         symbol_obj["caveats"].append("all_sources_failed")
         return symbol_obj
 
-    # Implement mock evaluation for now
+    data = source_data[selected_source]
+
+    # Populate fields
+    symbol_obj["source_used"] = selected_source
+    symbol_obj["source_candidates"] = list(source_data.keys())
+
+    for key in ["name", "last_price", "change", "change_pct", "open", "high", "low", "previous_close", "volume", "source_time", "retrieved_time", "price_semantics", "exchange"]:
+        if key in data:
+            symbol_obj[key] = data[key]
+
+    if "bid_ask" in data:
+        symbol_obj["bid_ask"].update(data["bid_ask"])
+
+    # Determine authority and semantics
+    if selected_source in ["TWSE_OpenAPI", "TPEx_OpenAPI"]:
+        symbol_obj["source_authority"] = "official_public_exchange_eod"
+        symbol_obj["price_semantics"] = "eod_reference"
+        symbol_obj["official_eod_reference_available"] = True
+    elif selected_source == "TWSE_MIS":
+        symbol_obj["source_authority"] = "unofficial_frontend"
+        if symbol_obj.get("price_semantics") != "stale_quote":
+            symbol_obj["price_semantics"] = "live_candidate"
+        symbol_obj["live_candidate_available"] = True
+        symbol_obj["caveats"].append("unofficial_source_risk")
+    elif selected_source == "Yahoo_Finance":
+        symbol_obj["source_authority"] = "third_party"
+        if symbol_obj.get("price_semantics") != "stale_quote":
+            symbol_obj["price_semantics"] = "live_candidate"
+        symbol_obj["caveats"].append("third_party_coverage_caveats")
+
     return symbol_obj
 
 def apply_freshness_policy(symbol_obj):
@@ -92,13 +139,22 @@ def apply_freshness_policy(symbol_obj):
             symbol_obj["data_quality_flags"].append("source_time_unavailable")
     else:
         symbol_obj["staleness_seconds"] = None
-        if symbol_obj["price_semantics"] != "eod_reference":
+        if symbol_obj["price_semantics"] != "eod_reference" and symbol_obj["price_semantics"] != "unknown":
              symbol_obj["data_quality_flags"].append("source_time_unavailable")
 
     # Enforce EOD restrictions
     if symbol_obj["price_semantics"] == "eod_reference":
         symbol_obj["freshness_status"] = "eod_batch"
         symbol_obj["delay_status"] = "eod"
+    elif symbol_obj["price_semantics"] in ["live_candidate", "delayed_quote", "stale_quote"]:
+        # Mark as stale if staleness is more than 300 seconds (5 minutes)
+        if symbol_obj["staleness_seconds"] is not None and symbol_obj["staleness_seconds"] > 300:
+            symbol_obj["freshness_status"] = "stale"
+            symbol_obj["delay_status"] = "stale"
+            symbol_obj["price_semantics"] = "stale_quote"
+        else:
+            symbol_obj["freshness_status"] = "realtime_candidate"
+            symbol_obj["delay_status"] = "realtime_candidate"
 
     return symbol_obj
 
@@ -123,7 +179,7 @@ def build_snapshot(targets_config, mock_inputs=None):
         "source_health": [],
         "source_priority": [
             "TWSE_MIS (live_candidate)",
-            "Yahoo Finance (third_party_context)",
+            "Yahoo_Finance (third_party_context)",
             "TWSE_OpenAPI (eod_reference)",
             "TPEx_OpenAPI (eod_reference)"
         ],
@@ -149,71 +205,94 @@ def build_snapshot(targets_config, mock_inputs=None):
     all_targets = extract_all_targets(targets_config)
     snapshot["watchlist_scope"]["target_count"] = len(all_targets)
 
-    # Process inputs (mocked offline inputs for M3A-02)
-    # If no inputs, all sources fail
+    all_canonical_sources = ["TWSE_MIS", "Yahoo_Finance", "TWSE_OpenAPI", "TPEx_OpenAPI", "FinMind", "Fugle", "Fubon"]
 
-    if mock_inputs:
-        # Evaluate sources and targets based on inputs
-        # For this test, we just pass the mock inputs if provided appropriately
-        pass
-    else:
-        # Default Offline mode: All sources fail, all symbols fail
-        # Record failed sources
-        snapshot["failed_sources"] = [
-            {
-                "source_id": "TWSE_MIS",
-                "source_type": "unofficial_frontend_endpoint",
-                "http_ok": False,
-                "error_type": "offline_mode_no_data",
-                "retrieved_time": now_utc.isoformat(),
-                "affected_symbols": [t["symbol"] for t in all_targets],
-                "caveats": ["offline_mode"]
-            },
-            {
-                "source_id": "Yahoo_Finance",
-                "source_type": "third_party",
-                "http_ok": False,
-                "error_type": "offline_mode_no_data",
-                "retrieved_time": now_utc.isoformat(),
-                "affected_symbols": [t["symbol"] for t in all_targets],
-                "caveats": ["offline_mode"]
-            }
-        ]
-
-        # Add broker API skipped to source_health
-        snapshot["source_health"].append({
-            "source_id": "Fugle",
-            "source_type": "broker_api",
-            "authority_level": "broker_authenticated",
-            "http_ok": None,
-            "parse_ok": None,
-            "normalization_ok": None,
-            "latency_ms": None,
-            "retrieved_time": None,
-            "error_type": "auth_required_doc_only_skipped",
-            "caveats": [
-                "broker_api_not_eligible_current_repo",
-                "auth_required",
-                "doc_only"
-            ]
-        })
-
-        snapshot["source_health"].extend([
-            {
-                "source_id": "TWSE_MIS",
+    # 1. Build initial source health entries
+    for src in all_canonical_sources:
+        if src in ["Fugle", "Fubon"]:
+            snapshot["source_health"].append({
+                "source_id": src,
+                "source_type": "broker_api",
+                "authority_level": "broker_authenticated",
+                "http_ok": None,
+                "parse_ok": None,
+                "normalization_ok": None,
+                "latency_ms": None,
+                "retrieved_time": None,
+                "error_type": "auth_required_doc_only_skipped",
+                "caveats": ["broker_api_not_eligible_current_repo", "auth_required", "doc_only"]
+            })
+        elif src in ["TWSE_OpenAPI", "TPEx_OpenAPI"]:
+            snapshot["source_health"].append({
+                "source_id": src,
+                "source_type": "official_openapi",
+                "authority_level": "official_public_exchange_eod",
+                "http_ok": None,
+                "parse_ok": None,
+                "normalization_ok": None,
+                "latency_ms": None,
+                "retrieved_time": None,
+                "error_type": "not_attempted_offline_default",
+                "caveats": ["offline_mode", "official_eod_reference_only", "not_live_intraday"]
+            })
+        elif src == "TWSE_MIS":
+            snapshot["source_health"].append({
+                "source_id": src,
                 "source_type": "unofficial_frontend_endpoint",
                 "authority_level": "unofficial_frontend",
-                "http_ok": False,
-                "parse_ok": False,
-                "normalization_ok": False,
+                "http_ok": None,
+                "parse_ok": None,
+                "normalization_ok": None,
                 "latency_ms": None,
-                "retrieved_time": now_utc.isoformat(),
-                "error_type": "offline_mode_no_data",
-                "caveats": ["offline_mode"]
-            }
-        ])
+                "retrieved_time": None,
+                "error_type": "not_attempted_offline_default",
+                "caveats": ["offline_mode", "unofficial_source_risk", "no_live_network_default"]
+            })
+        elif src == "Yahoo_Finance":
+            snapshot["source_health"].append({
+                "source_id": src,
+                "source_type": "third_party_api",
+                "authority_level": "third_party",
+                "http_ok": None,
+                "parse_ok": None,
+                "normalization_ok": None,
+                "latency_ms": None,
+                "retrieved_time": None,
+                "error_type": "not_attempted_offline_default",
+                "caveats": ["offline_mode", "third_party_coverage_caveats"]
+            })
+        elif src == "FinMind":
+            snapshot["source_health"].append({
+                "source_id": src,
+                "source_type": "third_party_api",
+                "authority_level": "third_party",
+                "http_ok": None,
+                "parse_ok": None,
+                "normalization_ok": None,
+                "latency_ms": None,
+                "retrieved_time": None,
+                "error_type": "not_attempted_offline_default",
+                "caveats": ["offline_mode", "historical_or_eod_candidate_with_auth_caveats"]
+            })
 
-        for target in all_targets:
+    # 2. Process targets using mock inputs
+    for target in all_targets:
+        sym_obj = build_empty_symbol(target)
+        if target["target_class"] == "unknown_or_unsupported":
+             sym_obj["data_quality_flags"].append("target_class_mapping_unknown")
+
+        source_data_for_sym = {}
+        if mock_inputs:
+            for src in all_canonical_sources:
+                if src in mock_inputs and target["symbol"] in mock_inputs[src]:
+                    source_data_for_sym[src] = mock_inputs[src][target["symbol"]]
+
+        sym_obj = apply_source_priority_policy(sym_obj, source_data_for_sym)
+        sym_obj = apply_freshness_policy(sym_obj)
+
+        if sym_obj["source_used"]:
+            snapshot["symbols"].append(sym_obj)
+        else:
             failed_sym = {
                 "symbol": target["symbol"],
                 "exchange": "unknown",
@@ -224,7 +303,28 @@ def build_snapshot(targets_config, mock_inputs=None):
                 "data_quality_flags": ["offline_mode_no_data"],
                 "caveats": ["offline_mode"]
             }
+            if target["target_class"] == "unknown_or_unsupported":
+                failed_sym["data_quality_flags"].append("target_class_mapping_unknown")
             snapshot["failed_symbols"].append(failed_sym)
+
+    # 3. Mark sources without mock input as failed_sources offline if no inputs
+    if not mock_inputs:
+        for src in ["TWSE_MIS", "Yahoo_Finance", "TWSE_OpenAPI", "TPEx_OpenAPI"]:
+            # Update source health error_type for missing local input
+            for sh in snapshot["source_health"]:
+                if sh["source_id"] == src:
+                    sh["error_type"] = "offline_mode_no_local_input"
+                    sh["retrieved_time"] = now_utc.isoformat()
+
+            snapshot["failed_sources"].append({
+                "source_id": src,
+                "source_type": next((sh["source_type"] for sh in snapshot["source_health"] if sh["source_id"] == src), "unknown"),
+                "http_ok": None,
+                "error_type": "offline_mode_no_local_input",
+                "retrieved_time": now_utc.isoformat(),
+                "affected_symbols": [t["symbol"] for t in all_targets],
+                "caveats": ["offline_mode", "no_live_network_default"]
+            })
 
     return snapshot
 
