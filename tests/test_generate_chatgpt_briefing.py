@@ -1,6 +1,8 @@
 import json
 import os
 import pytest
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from scripts.generate_chatgpt_briefing import (
     load_json,
     validate_context_pack,
