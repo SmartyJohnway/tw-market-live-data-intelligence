@@ -14,7 +14,7 @@
 ## Validation Commands Executed
 ```bash
 python -m compileall scripts server tests
-python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt && pytest -m "not network" -v
+pytest -m "not network" -v
 ```
 
 ## Terminal Output Summary
@@ -23,6 +23,9 @@ python3 -m venv venv && source venv/bin/activate && pip install -r requirements.
 - No generated artifacts were modified.
 - No scripts, tests, config, frontend, MCP, or runtime behavior were modified.
 - No live probes were run.
+
+## Repair Notes
+- Section schema input paths were aligned to the actual M3B-02 `ai_context_pack.json` top-level structure to make M3C-02 generator implementation unambiguous.
 
 ## Briefing Contract Summary
 Created `CHATGPT_BRIEFING_CONTRACT.md` to establish the intent of the future `chatgpt_briefing.md`. It explicitly defines that the briefing must safely project the `ai_context_pack.json` to make it AI-copyable while bounding claims, preserving caveats, and prohibiting trading advice.

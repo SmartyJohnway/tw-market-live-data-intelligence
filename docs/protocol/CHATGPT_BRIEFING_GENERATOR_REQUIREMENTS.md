@@ -9,6 +9,8 @@ The future generator must use the following generated artifacts as its source of
 - **Mandatory Input:** `research/generated/ai_context_pack.json`
 - **Optional Reference Input:** `research/generated/ai_context_pack.md`
 
+The future M3C-02 generator must treat the M3B-02 AI Context Pack v2 top-level structure as the source of truth. It must not assume alternative wrapper objects such as `metadata.*` or `scope.*` unless a future contract revision introduces them.
+
 ## 2. Required Outputs
 The future generator must output exactly one artifact:
 - `research/generated/chatgpt_briefing.md`
@@ -43,3 +45,10 @@ The future PR that implements this generator must pass the following checks:
 10. The briefing contains absolutely no prohibited trading language outside of explicitly labeled prohibited examples.
 11. The briefing does not falsely claim the market is live or that there is official realtime full-market coverage unless explicit future system configuration supports it.
 12. The generator passes existing offline CI pipelines flawlessly without causing network-dependent test regressions.
+
+**Strict Schema Parsing Validation:**
+1. Generator reads top-level `pack_version`, `generated_at_utc`, `generated_at_taipei`, and `generation_mode` from `ai_context_pack.json`.
+2. Generator reads scope from `target_support_summary`, not from a non-existent `scope` object.
+3. Generator reads source health from `source_health_summary`, not from a non-existent `source_health` object.
+4. Generator reads market session status from `latest_snapshot_summary.market_session_status`.
+5. Generator fails clearly if required M3B-02 top-level sections are missing.

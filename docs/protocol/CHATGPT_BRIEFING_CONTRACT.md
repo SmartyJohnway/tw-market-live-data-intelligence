@@ -26,6 +26,8 @@ The future generator must strictly rely on the following existing artifacts:
 - **Mandatory Input:** `research/generated/ai_context_pack.json`
 - **Optional Reference Input:** `research/generated/ai_context_pack.md`
 
+The future M3C-02 generator must treat the M3B-02 AI Context Pack v2 top-level structure as the source of truth. It must not assume alternative wrapper objects such as `metadata.*` or `scope.*` unless a future contract revision introduces them.
+
 The generator must **not** parse raw endpoints, run live network calls, or fetch any raw payloads. It relies solely on the context pack.
 
 ## 6. Required Output Artifact
