@@ -2,8 +2,8 @@
 
 ## Generated Metadata
 - **Pack version:** m3_ai_context_pack_v2_draft
-- **Generated at UTC:** 2026-06-21T11:59:57.055670+00:00
-- **Generated at Taipei:** 2026-06-21T19:59:57.055670+08:00
+- **Generated at UTC:** 2026-06-21T12:16:59.525128+00:00
+- **Generated at Taipei:** 2026-06-21T20:16:59.525128+08:00
 - **Generation mode:** offline_snapshot_and_observation_read
 
 ## Source Contract Baseline
@@ -43,6 +43,7 @@
 - **Target support caveats:**
   - target_support_summary_describes_support_and_scope_not_market_movement
   - target_support_summary_must_not_rank_target_classes_or_securities
+  - target_classes_include_failed_bounded_watchlist_targets
 
 ## Latest Snapshot Summary
 - **Snapshot version:** latest_market_snapshot_v1_draft
@@ -54,21 +55,21 @@
 - **Observation version:** watchlist_observations_v1
 - **Observations count:** 0
 - **Failed observations count:** 10
-- **Categories present:**
+- **Categories present:** source_failed
 
 ## Failed Sources
 - **TWSE_MIS** (unofficial_frontend)
   - Error type: offline_mode_no_local_input
-  - Affected symbol count: 0
+  - Affected symbol count: 10
 - **Yahoo_Finance** (third_party)
   - Error type: offline_mode_no_local_input
-  - Affected symbol count: 0
+  - Affected symbol count: 10
 - **TWSE_OpenAPI** (official_public_exchange_eod)
   - Error type: offline_mode_no_local_input
-  - Affected symbol count: 0
+  - Affected symbol count: 10
 - **TPEx_OpenAPI** (official_public_exchange_eod)
   - Error type: offline_mode_no_local_input
-  - Affected symbol count: 0
+  - Affected symbol count: 10
 - **FinMind** (third_party)
   - Error type: not_attempted_offline_default
   - Affected symbol count: 0

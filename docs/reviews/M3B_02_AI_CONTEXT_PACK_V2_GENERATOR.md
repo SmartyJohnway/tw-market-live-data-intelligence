@@ -59,5 +59,12 @@ Confirmed. Outputs serve as an abstraction layer (AI context payload / MD metada
 ## 16. Remaining Caveats
 The offline nature of this step preserves a significant number of failure cascades natively present in offline snapshot envelopes. The AI must properly relay these limitations when prompted.
 
-## 17. Recommended Next Milestone
+## 17. Repair Summary
+1. failed source affected_symbol_count preservation repaired.
+2. failed target source_attempts preservation repaired.
+3. target support summary now includes failed bounded watchlist target classes.
+4. observation summary now counts failed observation type/severity.
+5. freshness/delay counting hardened for future successful symbols.
+
+## 18. Recommended Next Milestone
 **M3C-01-CHATGPT-BRIEFING-CONTRACT**

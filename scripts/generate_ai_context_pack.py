@@ -293,17 +293,33 @@ def build_source_authority_summary(snapshot: dict) -> dict:
 
 def build_target_support_summary(snapshot: dict) -> dict:
     targets = snapshot.get("symbols", [])
+    failed_targets = snapshot.get("failed_symbols", [])
     target_classes_observed = set()
+    target_classes_failed = set()
+
     target_count = len(targets)
     for sym in targets:
         cls = sym.get("target_class")
         if cls:
             target_classes_observed.add(cls)
 
-    failed_target_count = len(snapshot.get("failed_symbols", []))
+    failed_target_count = len(failed_targets)
+    for sym in failed_targets:
+        cls = sym.get("target_class")
+        if cls:
+            target_classes_failed.add(cls)
+            target_classes_observed.add(cls)
+
+    target_support_caveats = [
+        "target_support_summary_describes_support_and_scope_not_market_movement",
+        "target_support_summary_must_not_rank_target_classes_or_securities"
+    ]
+    if failed_target_count > 0:
+        target_support_caveats.append("target_classes_include_failed_bounded_watchlist_targets")
 
     return {
         "target_classes_observed": list(target_classes_observed),
+        "target_classes_failed": list(target_classes_failed),
         "target_classes_supported_candidate": [],
         "target_classes_unsupported": [],
         "target_classes_unknown": [],
@@ -311,10 +327,7 @@ def build_target_support_summary(snapshot: dict) -> dict:
         "full_market_coverage": False,
         "target_count": target_count + failed_target_count,
         "failed_target_count": failed_target_count,
-        "target_support_caveats": [
-            "target_support_summary_describes_support_and_scope_not_market_movement",
-            "target_support_summary_must_not_rank_target_classes_or_securities"
-        ]
+        "target_support_caveats": target_support_caveats
     }
 
 def build_latest_snapshot_summary(snapshot: dict) -> dict:
@@ -334,17 +347,29 @@ def build_latest_snapshot_summary(snapshot: dict) -> dict:
 def build_watchlist_observation_summary(observations: dict) -> dict:
     obs = observations.get("observations", [])
     failed_obs = observations.get("failed_observations", [])
+
+    all_obs = obs + failed_obs
+
     categories_present = set()
-    for o in obs:
-        if "observation_type" in o:
-            categories_present.add(o["observation_type"])
+    observation_type_counts = {}
+    severity_counts = {}
+
+    for o in all_obs:
+        obs_type = o.get("observation_type")
+        if obs_type:
+            categories_present.add(obs_type)
+            observation_type_counts[obs_type] = observation_type_counts.get(obs_type, 0) + 1
+
+        sev = o.get("severity")
+        if sev:
+            severity_counts[sev] = severity_counts.get(sev, 0) + 1
 
     return {
         "observation_version": observations.get("observation_version"),
         "observations_count": len(obs),
         "failed_observations_count": len(failed_obs),
-        "observation_type_counts": {c: len([o for o in obs if o.get("observation_type") == c]) for c in categories_present},
-        "severity_counts": {},
+        "observation_type_counts": observation_type_counts,
+        "severity_counts": severity_counts,
         "categories_present": list(categories_present),
         "global_caveats": [
             "observations_are_descriptive_only",
@@ -354,12 +379,19 @@ def build_watchlist_observation_summary(observations: dict) -> dict:
 
 def build_failed_sources(snapshot: dict) -> list:
     failed_sources = []
+
+    # Lookup from snapshot.failed_sources
+    failed_sources_dict = {}
+    for fs in snapshot.get("failed_sources", []):
+        failed_sources_dict[fs.get("source_id")] = fs
+
     for sh in snapshot.get("source_health", []):
         if sh.get("error_type"):
             authority_level = sh.get("authority_level")
+            sid = sh.get("source_id")
+
             # Derive conservatively if not present
             if not authority_level:
-                sid = sh.get("source_id")
                 if sid in SOURCE_CONTRACT_BASELINE["official_eod_sources"]:
                     authority_level = "official_reference"
                 elif sid in SOURCE_CONTRACT_BASELINE["unofficial_live_candidate_sources"]:
@@ -369,13 +401,20 @@ def build_failed_sources(snapshot: dict) -> list:
                 else:
                     authority_level = "unknown"
 
+            fs_lookup = failed_sources_dict.get(sid, {})
+            affected_symbols = fs_lookup.get("affected_symbols", [])
+            affected_symbol_count = len(affected_symbols) if affected_symbols else 0
+
+            caveats = set(sh.get("caveats", []))
+            caveats.update(fs_lookup.get("caveats", []))
+
             failed_sources.append({
-                "source_id": sh.get("source_id"),
+                "source_id": sid,
                 "source_type": sh.get("source_type", "unknown"),
                 "authority_level": authority_level,
                 "error_type": sh.get("error_type"),
-                "affected_symbol_count": 0, # Cannot accurately determine from source_health alone
-                "caveats": sh.get("caveats", [])
+                "affected_symbol_count": affected_symbol_count,
+                "caveats": list(caveats)
             })
     return failed_sources
 
@@ -386,13 +425,17 @@ def build_failed_targets(snapshot: dict) -> list:
             "symbol": f.get("symbol"),
             "target_class": f.get("target_class", "unknown"),
             "failure_reason": f.get("failure_reason", "unknown"),
-            "source_attempts": [],
+            "source_attempts": f.get("source_attempts", []),
             "caveats": f.get("caveats", [])
         })
     return failed_targets
 
 def build_freshness_and_delay_summary(snapshot: dict) -> dict:
     symbols = snapshot.get("symbols", [])
+
+    freshness_status_counts = {}
+    delay_status_counts = {}
+
     stale_count = 0
     unknown_count = 0
     eod_count = 0
@@ -400,24 +443,27 @@ def build_freshness_and_delay_summary(snapshot: dict) -> dict:
 
     for sym in symbols:
         freshness = sym.get("freshness_status")
-        if freshness == "stale": stale_count += 1
-        elif freshness == "unknown": unknown_count += 1
-        elif freshness == "eod_batch": eod_count += 1
-        elif freshness == "realtime_candidate_or_stale" or freshness == "live": live_count += 1
+        if freshness:
+            freshness_status_counts[freshness] = freshness_status_counts.get(freshness, 0) + 1
+            if freshness == "stale": stale_count += 1
+            elif freshness == "unknown": unknown_count += 1
+            elif freshness == "eod_batch": eod_count += 1
+            elif freshness == "realtime_candidate" or freshness == "live": live_count += 1
+
+        delay = sym.get("delay_status")
+        if delay:
+            delay_status_counts[delay] = delay_status_counts.get(delay, 0) + 1
 
     summary_caveats = []
     if not symbols and snapshot.get("failed_symbols"):
         summary_caveats.append("latest_snapshot_contains_no_successful_symbols")
         unknown_count = len(snapshot.get("failed_symbols"))
+        freshness_status_counts["unknown"] = unknown_count
+        delay_status_counts["unknown"] = unknown_count
 
     return {
-        "freshness_status_counts": {
-            "stale": stale_count,
-            "unknown": unknown_count,
-            "eod_batch": eod_count,
-            "live_candidate": live_count
-        },
-        "delay_status_counts": {},
+        "freshness_status_counts": freshness_status_counts,
+        "delay_status_counts": delay_status_counts,
         "stale_count": stale_count,
         "unknown_freshness_count": unknown_count,
         "eod_reference_count": eod_count,

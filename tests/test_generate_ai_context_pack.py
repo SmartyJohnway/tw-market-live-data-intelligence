@@ -20,13 +20,27 @@ def mock_snapshot():
         "generated_at_utc": "2026-06-21T09:44:55.792347+00:00",
         "generated_at_taipei": "2026-06-21T17:44:55.792347+00:00",
         "generation_mode": "bounded_watchlist_generation",
-        "symbols": [],
+        "symbols": [
+            {
+                "symbol": "0050",
+                "target_class": "twse_etf",
+                "freshness_status": "realtime_candidate",
+                "delay_status": "realtime_candidate"
+            }
+        ],
         "failed_symbols": [
             {
                 "symbol": "2330",
                 "target_class": "twse_common_stock",
                 "failure_reason": "offline_mode",
+                "source_attempts": [{"source_id": "TWSE_MIS", "error": "failed"}],
                 "caveats": ["offline_mode"]
+            }
+        ],
+        "failed_sources": [
+            {
+                "source_id": "TWSE_MIS",
+                "affected_symbols": ["2330", "2317"]
             }
         ],
         "source_health": [
@@ -43,11 +57,18 @@ def mock_snapshot():
 def mock_observations():
     return {
         "observation_version": "watchlist_observations_v1",
-        "observations": [],
+        "observations": [
+            {
+                "symbol": "0050",
+                "observation_type": "volume_active",
+                "severity": "info"
+            }
+        ],
         "failed_observations": [
             {
                 "symbol": "2330",
-                "observation_type": "source_failed"
+                "observation_type": "source_failed",
+                "severity": "failed"
             }
         ]
     }
@@ -94,6 +115,10 @@ def test_target_support_summary_bounded_and_non_full_market(mock_snapshot, mock_
 
     assert tss["bounded_watchlist_only"] is True
     assert tss["full_market_coverage"] is False
+    assert "twse_etf" in tss["target_classes_observed"]
+    assert "twse_common_stock" in tss["target_classes_failed"]
+    assert "twse_common_stock" in tss["target_classes_observed"]
+    assert "target_classes_include_failed_bounded_watchlist_targets" in tss["target_support_caveats"]
 
 def test_latest_snapshot_summary_preserves_failed_symbol_count(mock_snapshot, mock_observations):
     pack = build_ai_context_pack(mock_snapshot, mock_observations)
@@ -107,23 +132,51 @@ def test_watchlist_observation_summary_preserves_failed_observation_count(mock_s
 
     assert wos["failed_observations_count"] == 1
 
+def test_watchlist_observation_summary_preserves_failed_observation_count(mock_snapshot, mock_observations):
+    pack = build_ai_context_pack(mock_snapshot, mock_observations)
+    wos = pack["watchlist_observation_summary"]
+
+    assert wos["failed_observations_count"] == 1
+    assert wos["observations_count"] == 1
+    assert wos["observation_type_counts"].get("source_failed") == 1
+    assert wos["observation_type_counts"].get("volume_active") == 1
+    assert wos["severity_counts"].get("failed") == 1
+    assert wos["severity_counts"].get("info") == 1
+    assert "source_failed" in wos["categories_present"]
+    assert "volume_active" in wos["categories_present"]
+
 def test_failed_sources_and_targets_preserved(mock_snapshot, mock_observations):
     pack = build_ai_context_pack(mock_snapshot, mock_observations)
 
     fs = pack["failed_sources"]
     assert len(fs) == 1
     assert fs[0]["source_id"] == "TWSE_MIS"
+    assert fs[0]["affected_symbol_count"] == 2  # Pulled from failed_sources in snapshot
 
     ft = pack["failed_targets"]
     assert len(ft) == 1
     assert ft[0]["symbol"] == "2330"
+    assert len(ft[0]["source_attempts"]) == 1
 
 def test_freshness_and_delay_summary_handles_empty_successful_symbols_conservatively(mock_snapshot, mock_observations):
+    # Empty symbols to test caveat path
+    mock_snapshot["symbols"] = []
+
     pack = build_ai_context_pack(mock_snapshot, mock_observations)
     fds = pack["freshness_and_delay_summary"]
 
     assert "latest_snapshot_contains_no_successful_symbols" in fds["summary_caveats"]
     assert fds["unknown_freshness_count"] == 1
+    assert fds["freshness_status_counts"].get("unknown") == 1
+    assert fds["delay_status_counts"].get("unknown") == 1
+
+def test_freshness_and_delay_summary_counts_successful_symbols(mock_snapshot, mock_observations):
+    pack = build_ai_context_pack(mock_snapshot, mock_observations)
+    fds = pack["freshness_and_delay_summary"]
+
+    assert fds["freshness_status_counts"].get("realtime_candidate") == 1
+    assert fds["delay_status_counts"].get("realtime_candidate") == 1
+    assert fds["live_candidate_count"] == 1
 
 def test_ai_may_say_and_must_not_claim_exist_and_non_empty(mock_snapshot, mock_observations):
     pack = build_ai_context_pack(mock_snapshot, mock_observations)

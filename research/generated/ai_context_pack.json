@@ -1,7 +1,7 @@
 {
   "pack_version": "m3_ai_context_pack_v2_draft",
-  "generated_at_utc": "2026-06-21T11:59:57.055670+00:00",
-  "generated_at_taipei": "2026-06-21T19:59:57.055670+08:00",
+  "generated_at_utc": "2026-06-21T12:16:59.525128+00:00",
+  "generated_at_taipei": "2026-06-21T20:16:59.525128+08:00",
   "generation_mode": "offline_snapshot_and_observation_read",
   "source_contract_baseline": {
     "canonical_sources": [
@@ -116,7 +116,24 @@
     ]
   },
   "target_support_summary": {
-    "target_classes_observed": [],
+    "target_classes_observed": [
+      "twse_index",
+      "twse_common_stock",
+      "mutual_fund",
+      "twse_tdr",
+      "twse_etf",
+      "taifex_index_future",
+      "tpex_common_stock"
+    ],
+    "target_classes_failed": [
+      "twse_index",
+      "twse_common_stock",
+      "mutual_fund",
+      "twse_tdr",
+      "twse_etf",
+      "taifex_index_future",
+      "tpex_common_stock"
+    ],
     "target_classes_supported_candidate": [],
     "target_classes_unsupported": [],
     "target_classes_unknown": [],
@@ -126,7 +143,8 @@
     "failed_target_count": 10,
     "target_support_caveats": [
       "target_support_summary_describes_support_and_scope_not_market_movement",
-      "target_support_summary_must_not_rank_target_classes_or_securities"
+      "target_support_summary_must_not_rank_target_classes_or_securities",
+      "target_classes_include_failed_bounded_watchlist_targets"
     ]
   },
   "latest_snapshot_ref": "research/generated/latest_market_snapshot.json",
@@ -157,9 +175,15 @@
     "observation_version": "watchlist_observations_v1",
     "observations_count": 0,
     "failed_observations_count": 10,
-    "observation_type_counts": {},
-    "severity_counts": {},
-    "categories_present": [],
+    "observation_type_counts": {
+      "source_failed": 10
+    },
+    "severity_counts": {
+      "failed": 10
+    },
+    "categories_present": [
+      "source_failed"
+    ],
     "global_caveats": [
       "observations_are_descriptive_only",
       "observations_are_not_trading_signals"
@@ -171,11 +195,11 @@
       "source_type": "unofficial_frontend_endpoint",
       "authority_level": "unofficial_frontend",
       "error_type": "offline_mode_no_local_input",
-      "affected_symbol_count": 0,
+      "affected_symbol_count": 10,
       "caveats": [
+        "no_live_network_default",
         "offline_mode",
-        "unofficial_source_risk",
-        "no_live_network_default"
+        "unofficial_source_risk"
       ]
     },
     {
@@ -183,10 +207,11 @@
       "source_type": "third_party_api",
       "authority_level": "third_party",
       "error_type": "offline_mode_no_local_input",
-      "affected_symbol_count": 0,
+      "affected_symbol_count": 10,
       "caveats": [
         "offline_mode",
-        "third_party_coverage_caveats"
+        "third_party_coverage_caveats",
+        "no_live_network_default"
       ]
     },
     {
@@ -194,8 +219,9 @@
       "source_type": "official_openapi",
       "authority_level": "official_public_exchange_eod",
       "error_type": "offline_mode_no_local_input",
-      "affected_symbol_count": 0,
+      "affected_symbol_count": 10,
       "caveats": [
+        "no_live_network_default",
         "offline_mode",
         "official_eod_reference_only",
         "not_live_intraday"
@@ -206,8 +232,9 @@
       "source_type": "official_openapi",
       "authority_level": "official_public_exchange_eod",
       "error_type": "offline_mode_no_local_input",
-      "affected_symbol_count": 0,
+      "affected_symbol_count": 10,
       "caveats": [
+        "no_live_network_default",
         "offline_mode",
         "official_eod_reference_only",
         "not_live_intraday"
@@ -254,7 +281,12 @@
       "symbol": "2330",
       "target_class": "twse_common_stock",
       "failure_reason": "all_sources_failed",
-      "source_attempts": [],
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
       "caveats": [
         "offline_mode"
       ]
@@ -263,7 +295,12 @@
       "symbol": "1435",
       "target_class": "twse_common_stock",
       "failure_reason": "all_sources_failed",
-      "source_attempts": [],
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
       "caveats": [
         "offline_mode"
       ]
@@ -272,7 +309,12 @@
       "symbol": "8069",
       "target_class": "tpex_common_stock",
       "failure_reason": "all_sources_failed",
-      "source_attempts": [],
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
       "caveats": [
         "offline_mode"
       ]
@@ -281,7 +323,12 @@
       "symbol": "5347",
       "target_class": "tpex_common_stock",
       "failure_reason": "all_sources_failed",
-      "source_attempts": [],
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
       "caveats": [
         "offline_mode"
       ]
@@ -290,7 +337,12 @@
       "symbol": "0050",
       "target_class": "twse_etf",
       "failure_reason": "all_sources_failed",
-      "source_attempts": [],
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
       "caveats": [
         "offline_mode"
       ]
@@ -299,7 +351,12 @@
       "symbol": "00929",
       "target_class": "twse_etf",
       "failure_reason": "all_sources_failed",
-      "source_attempts": [],
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
       "caveats": [
         "offline_mode"
       ]
@@ -308,7 +365,12 @@
       "symbol": "9105",
       "target_class": "twse_tdr",
       "failure_reason": "all_sources_failed",
-      "source_attempts": [],
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
       "caveats": [
         "offline_mode"
       ]
@@ -317,7 +379,12 @@
       "symbol": "TAIEX",
       "target_class": "twse_index",
       "failure_reason": "all_sources_failed",
-      "source_attempts": [],
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
       "caveats": [
         "offline_mode"
       ]
@@ -326,7 +393,12 @@
       "symbol": "TX",
       "target_class": "taifex_index_future",
       "failure_reason": "all_sources_failed",
-      "source_attempts": [],
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
       "caveats": [
         "offline_mode"
       ]
@@ -335,7 +407,12 @@
       "symbol": "FUNDA",
       "target_class": "mutual_fund",
       "failure_reason": "all_sources_failed",
-      "source_attempts": [],
+      "source_attempts": [
+        "TWSE_MIS",
+        "Yahoo_Finance",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ],
       "caveats": [
         "offline_mode"
       ]
@@ -343,12 +420,11 @@
   ],
   "freshness_and_delay_summary": {
     "freshness_status_counts": {
-      "stale": 0,
-      "unknown": 10,
-      "eod_batch": 0,
-      "live_candidate": 0
+      "unknown": 10
     },
-    "delay_status_counts": {},
+    "delay_status_counts": {
+      "unknown": 10
+    },
     "stale_count": 0,
     "unknown_freshness_count": 10,
     "eod_reference_count": 0,
