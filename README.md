@@ -108,6 +108,13 @@ The system relies heavily on established protocols and taxonomy documentation to
   - [M3A-02 Completion Report](docs/reviews/M3A_02_LATEST_MARKET_SNAPSHOT_GENERATOR.md)
   - A bounded snapshot generator script exists at `scripts/generate_latest_market_snapshot.py` which strictly executes in offline mode to generate `research/generated/latest_market_snapshot.json`.
 
+- **M3C ChatGPT Briefing Contract:**
+  - [ChatGPT Briefing Contract](docs/protocol/CHATGPT_BRIEFING_CONTRACT.md)
+  - [ChatGPT Briefing Section Schema](docs/protocol/CHATGPT_BRIEFING_SECTION_SCHEMA.md)
+  - [ChatGPT Briefing Policy](docs/protocol/CHATGPT_BRIEFING_POLICY.md)
+  - [ChatGPT Briefing Generator Requirements](docs/protocol/CHATGPT_BRIEFING_GENERATOR_REQUIREMENTS.md)
+  - [M3C-01 Completion Report](docs/reviews/M3C_01_CHATGPT_BRIEFING_CONTRACT.md)
+
 - **M3D Watchlist Observation Semantics:**
   - [Watchlist Observation Semantics](docs/protocol/WATCHLIST_OBSERVATION_SEMANTICS.md)
   - [M3D-01 Completion Report](docs/reviews/M3D_01_WATCHLIST_OBSERVATION_SEMANTICS.md)
