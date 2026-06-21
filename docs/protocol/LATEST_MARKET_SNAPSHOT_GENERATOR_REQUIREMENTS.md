@@ -28,7 +28,12 @@ The generator must strictly adhere to the `LATEST_MARKET_SNAPSHOT_SOURCE_PRIORIT
 
 ## 7. Freshness and Staleness Calculation Requirements
 1. **Timestamping:** Every fetched symbol must capture `source_time` (from the API payload, if available) and `retrieved_time` (the local system execution time).
-2. **Staleness Metric:** The generator must calculate `staleness_seconds` = `retrieved_time` - `source_time`.
+2. **Staleness Metric Calculation:** `staleness_seconds` is mandatory as a field but may be `null` when a source lacks a reliable `source_time`. The generator MUST adhere to these rules:
+   * If `source_time` exists, `staleness_seconds` = `retrieved_time` - `source_time`.
+   * If `source_time` is unavailable, malformed, or only a trade date is available, `staleness_seconds` may be `null`.
+   * For official EOD references, use `freshness_status = eod_batch`, `delay_status = eod`, and `price_semantics = eod_reference`.
+   * Do not force intraday staleness calculations onto EOD batch rows.
+   * Missing `staleness_seconds` must add a caveat or data quality flag such as `source_time_unavailable` when relevant (especially for live candidates).
 3. **Thresholding:** Based on `staleness_seconds` and the source authority, the generator must correctly categorize `freshness_status` (e.g., `realtime_candidate`, `stale`, `eod_batch`).
 
 ## 8. Source Failure Behavior
