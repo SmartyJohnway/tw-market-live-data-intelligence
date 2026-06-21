@@ -34,7 +34,7 @@ The AI must distinguish between `official_reference` (e.g., EOD OpenAPI), `unoff
 The AI must examine the `delay_status` and `staleness_seconds` metrics. If data is stale, delayed, or missing trade dates, the AI must explicitly mention these conditions when summarizing the context.
 
 ## 5. Observation-to-Language Rules
-Watchlist observations (from `watchlist_observations.json`) must be translated into purely descriptive language. For example, "Volume for 2330 exceeded its average" is acceptable. "2330 has strong upward momentum and is a buy" is prohibited.
+Watchlist observations (from `watchlist_observations.json`) must be translated into purely descriptive language. For example, "The observation layer reports volume_active for 2330, which only means volume is greater than zero in the available data. This is not a liquidity guarantee and not a trading signal." is acceptable. "2330 has strong upward momentum and is a buy" is prohibited. Do not introduce any unsupported average, moving-average, momentum, ranking, or trend-strength language.
 
 ## 6. Failure-to-Language Rules
 When sources or targets fail (as listed in `failed_sources` or `failed_targets`), the AI must not attempt to impute, forward-fill, or guess the missing data. It must explicitly state that the data is unavailable for those items.

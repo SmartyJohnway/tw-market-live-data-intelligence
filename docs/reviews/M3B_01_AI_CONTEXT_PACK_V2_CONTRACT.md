@@ -25,6 +25,15 @@ pytest -m "not network" -v
 * No generated artifacts were refreshed.
 * No live probes were run.
 
+## Repair Actions Applied
+1. Policy wording repaired to avoid unsupported average-volume claims.
+2. Section schema expanded for M3B-02 implementation readiness.
+3. v2 contract rules added explicitly avoiding raw endpoint payloads and strictly segregating live capabilities.
+4. Future generator validation strengthened to include explicitly barring unsupported terms and specific live exclusion rules.
+5. Still docs-only.
+6. No generated artifacts modified.
+7. No code/config/frontend/MCP/runtime behavior changed.
+
 ## M3B-01 Deliverable Summaries
 
 ### v2 Contract Summary

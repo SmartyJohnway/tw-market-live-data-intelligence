@@ -40,10 +40,12 @@ The M3B-02 implementation will be validated against these criteria:
 1. Required top-level keys exist in the generated JSON.
 2. Required section keys exist in the generated JSON.
 3. Snapshot reference and observation reference pointers exist and are accurate.
-4. Failed source counts match the source snapshot or are explainably summarized.
-5. Observation counts match watchlist observations or are explainably summarized.
-6. EOD sources are never listed as usable live sources.
-7. `doc_only` / `auth_required` sources are not listed as usable live sources.
-8. Unofficial sources preserve their necessary caveats.
-9. Prohibited trading vocabulary does not appear outside the `prohibited_interpretations` section.
-10. The script demonstrates full offline CI compatibility.
+4. `usable_live_sources` strictly excludes `TWSE_OpenAPI` and `TPEx_OpenAPI`.
+5. `usable_live_sources` strictly excludes `Fugle`/`Fubon` when marked as `auth_required` or `doc_only`.
+6. Failed source counts are preserved or explainably summarized.
+7. Failed target counts are preserved or explainably summarized.
+8. Watchlist observation counts match `watchlist_observations.json`.
+9. Unofficial sources preserve their necessary caveats.
+10. Prohibited vocabulary is absent outside the `prohibited_interpretations` section.
+11. No unsupported average-volume, momentum, ranking, or trend-strength language is generated unless future artifacts explicitly support it.
+12. The script demonstrates full offline CI compatibility.

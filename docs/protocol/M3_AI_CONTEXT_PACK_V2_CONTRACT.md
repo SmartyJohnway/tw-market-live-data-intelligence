@@ -51,34 +51,59 @@ The canonical draft structure for the M3 AI Context Pack v2 is as follows:
 }
 ```
 
-## 6. Source Contract Baseline Section
+## 6. Contract Rules
+1. AI Context Pack v2 must not include raw endpoint payloads.
+2. `latest_snapshot_summary` must be derived from `latest_market_snapshot.json`.
+3. `watchlist_observation_summary` must be derived from `watchlist_observations.json`.
+4. EOD-only OpenAPI sources must never be listed as usable live sources.
+5. doc_only / auth_required sources must never be listed as usable live sources.
+6. TWSE MIS must remain `unofficial_frontend` and must carry caveats.
+7. Yahoo Finance must remain `third_party` and must carry caveats.
+8. Watchlist observations must not be converted into signals.
+9. Failed sources and failed targets must remain visible.
+10. Bounded watchlist scope must be explicit; do not claim full-market coverage.
+11. Mandatory caveats must not be hidden or dropped.
+
+## 7. Source Contract Baseline Section
 References the M2 baseline contract information mapping current source integrations.
 
-## 7. Source Health Summary Section
+## 8. Source Health Summary Section
 Tracks whether a given source is passing offline capability checks, failing, or requires authentication/is blocked.
 
-## 8. Latest Market Snapshot Reference & Summary
+## 9. Source Authority Summary Section
+Explicitly designates sources as `official_reference`, `unofficial_frontend`, or `third_party` to prevent AI from inflating the authority or reliability of the data retrieved from unofficial channels.
+
+## 10. Target Support Summary Section
+Summarizes system support for requested target classes (e.g. `twse_common_stock`, `twse_etf`) to provide boundaries on what asset types are included.
+
+## 11. Latest Market Snapshot Reference & Summary
 - `latest_snapshot_ref`: Points to `research/generated/latest_market_snapshot.json`.
 - `latest_snapshot_summary`: A safe aggregation of market status without regurgitating raw data payloads.
 
-## 9. Watchlist Observation Reference & Summary
+## 12. Watchlist Observation Reference & Summary
 - `watchlist_observations_ref`: Points to `research/generated/watchlist_observations.json`.
 - `watchlist_observation_summary`: High-level count of observations derived from watchlist targets without generating new trading signals.
 
-## 10. Failed Sources / Failed Targets Section
+## 13. Failed Sources / Failed Targets Section
 Maintains visibility of offline or inaccessible sources and target arrays. Prevents AI from hallucinating data for items that failed.
 
-## 11. Freshness / Delay / Staleness Summary Section
+## 14. Freshness / Delay / Staleness Summary Section
 Surfaces metadata surrounding source timeliness to accurately contextualize constraints on "real-time" data claims.
 
-## 12. AI May-Say Section
+## 15. AI May-Say Section
 Strict list of approved vocabulary for AI agents conveying market conditions.
 
-## 13. AI Must-Not-Claim Section
+## 16. AI Must-Not-Claim Section
 Strict list prohibiting full-market coverage claims, signal generation, or assumptions regarding unstructured real-time updates.
 
-## 14. Caveats Section
-Required reading for AI, conveying limitations of unofficial APIs and delays in data sourcing.
+## 17. Mandatory Caveats Section
+Lists fundamental warnings about unofficial APIs, third-party data, and data staleness. These mandatory reading items convey strict system limitations and must be displayed by the AI when summarizing data, unable to be hidden in footnotes.
 
-## 15. Future Generator Notes
+## 18. Prohibited Interpretations Section
+Provides explicit examples of bad interpretations of data to ensure AI understands what constitutes a signal violation or hallucination.
+
+## 19. Next Actions Section
+Outlines recommended next tasks for the agent or user, such as verifying source endpoints or investigating failing sources.
+
+## 20. Future Generator Notes
 The v2 generator implementation (M3B-02) must maintain these strict structures deterministically and must operate entirely offline without conducting any live endpoint scans.
