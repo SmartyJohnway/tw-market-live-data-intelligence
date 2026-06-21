@@ -121,6 +121,12 @@ The system relies heavily on established protocols and taxonomy documentation to
   - [M3D-01 Completion Report](docs/reviews/M3D_01_WATCHLIST_OBSERVATION_SEMANTICS.md)
   - A watchlist observation generator script exists at `scripts/generate_watchlist_observations.py` which processes `latest_market_snapshot.json` to generate AI-readable observations in `research/generated/watchlist_observations.json`.
 
+- **M3E Frontend Market Context Preflight:**
+  - [Frontend Market Context Input Contract](docs/protocol/M3E_FRONTEND_MARKET_CONTEXT_INPUT_CONTRACT.md)
+  - [Frontend Caveat Register](docs/protocol/M3E_FRONTEND_CAVEAT_REGISTER.md)
+  - [Frontend Display Rules](docs/protocol/M3E_FRONTEND_DISPLAY_RULES.md)
+  - [M3E-01 Preflight Readiness Report](docs/reviews/M3E_PREFLIGHT_01_FRONTEND_MARKET_CONTEXT_READINESS.md)
+
 ## Known Caveats
 1. Unofficial endpoints (like TWSE MIS or Yahoo Finance) are extremely fragile. They are rate-limited, require specific headers (sometimes cookies), and can break without notice.
 2. The concept of "real-time" is strictly bound by the `delay_status` and `staleness_seconds` metrics defined in the data contract envelope. Do not assume data is live unless explicitly proven by these fields.
