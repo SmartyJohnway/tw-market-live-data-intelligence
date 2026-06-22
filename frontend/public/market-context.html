@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M3E Read-Only Market Context Viewer</title>
+    <style>
+        :root {
+            --color-text: #24292e;
+            --color-bg: #ffffff;
+            --color-border: #e1e4e8;
+            --color-bg-alt: #f6f8fa;
+            --color-warning-bg: #fffbdd;
+            --color-warning-border: #d3c23f;
+            --color-warning-text: #735c0f;
+            --color-critical-bg: #ffeef0;
+            --color-critical-border: #f1aeb5;
+            --color-critical-text: #cb2431;
+            --color-success-bg: #dcffe4;
+            --color-success-text: #22863a;
+            --color-link: #0366d6;
+            --color-info-text: #586069;
+            --spacing: 20px;
+            --border-radius: 6px;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Consolas, monospace;
+        }
+
+        body {
+            font-family: var(--font-family);
+            color: var(--color-text);
+            background-color: var(--color-bg);
+            line-height: 1.6;
+            margin: 0;
+            padding: var(--spacing);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1, h2, h3, h4 { margin-top: 0; }
+
+        a {
+            color: var(--color-link);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .nav-link {
+            display: inline-block;
+            margin-bottom: var(--spacing);
+        }
+
+        .panel {
+            background-color: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: var(--spacing);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .panel h2 {
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 1.25em;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing);
+            border: 1px solid transparent;
+        }
+
+        .alert-critical {
+            background-color: var(--color-critical-bg);
+            border-color: var(--color-critical-border);
+            color: var(--color-critical-text);
+            font-weight: bold;
+        }
+
+        .alert-warning {
+            background-color: var(--color-warning-bg);
+            border-color: var(--color-warning-border);
+            color: var(--color-warning-text);
+            font-weight: bold;
+        }
+
+        .alert-info {
+            background-color: var(--color-bg-alt);
+            border-color: var(--color-border);
+            color: var(--color-info-text);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        th, td {
+            border: 1px solid var(--color-border);
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: var(--color-bg-alt);
+            font-weight: 600;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing);
+        }
+
+        @media (max-width: 768px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .key-value {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--color-bg-alt);
+        }
+
+        .key-value:last-child {
+            border-bottom: none;
+        }
+
+        .key {
+            font-weight: 600;
+            color: var(--color-info-text);
+        }
+
+        pre {
+            background-color: var(--color-bg-alt);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .code-inline {
+            background-color: var(--color-bg-alt);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+            border: 1px solid var(--color-border);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .badge-critical { background-color: var(--color-critical-bg); color: var(--color-critical-text); }
+        .badge-warning { background-color: var(--color-warning-bg); color: var(--color-warning-text); }
+        .badge-success { background-color: var(--color-success-bg); color: var(--color-success-text); }
+        .badge-info { background-color: #e1e4e8; color: #586069; }
+
+        .muted { color: var(--color-info-text); font-style: italic; }
+
+        #error-container { display: none; }
+        #main-content { display: none; }
+        #degraded-banner { display: none; }
+
+        ul.no-bullets {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 0;
+        }
+
+        ul.no-bullets li {
+            padding: 4px 0;
+            border-bottom: 1px solid var(--color-bg-alt);
+        }
+
+        ul.no-bullets li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="nav-link">Back to Workbench Index</a>
+
+    <div id="error-container" class="alert alert-critical panel">
+        <h2>Critical Error</h2>
+        <p>Context artifacts are missing or unavailable.</p>
+        <p>This read-only viewer requires <code>research/generated/ai_context_pack.json</code>.</p>
+        <p>Serve the repository root with a local static server and regenerate artifacts only through authorized upstream milestones.</p>
+        <pre id="error-details"></pre>
+    </div>
+
+    <div id="main-content">
+        <!-- 2. Scope Banner (Top Banner Language) -->
+        <div class="alert alert-warning">
+            <strong>CRITICAL SCOPE & CAVEATS:</strong>
+            <ul style="margin-bottom: 0;">
+                <li>This context is bounded to the configured watchlist.</li>
+                <li>This is not full-market coverage.</li>
+                <li>This is not investment advice.</li>
+                <li>No official realtime quote guarantee is established.</li>
+                <li>Observations are descriptive only and not trading signals.</li>
+                <li id="banner-session-status" style="display: none;">Session Status: Unknown Session</li>
+            </ul>
+        </div>
+
+        <div id="degraded-banner" class="alert alert-critical">
+            <strong>DEGRADED STATE:</strong> The latest market snapshot contains 0 successful symbols or all targeted symbols failed. Artifact data relies on fallback or failed offline states.
+        </div>
+
+        <!-- 1. Context Status Header -->
+        <section class="panel">
+            <h2>Context Status Header</h2>
+            <div class="grid-2col">
+                <div>
+                    <div class="key-value"><span class="key">Pack Version</span><span id="pack-version" class="code-inline"></span></div>
+                    <div class="key-value"><span class="key">Generation Mode</span><span id="generation-mode" class="code-inline"></span></div>
+                </div>
+                <div>
+                    <div class="key-value"><span class="key">Generated At (UTC)</span><span id="generated-utc"></span></div>
+                    <div class="key-value"><span class="key">Generated At (Taipei)</span><span id="generated-taipei"></span></div>
+                    <p class="muted" style="margin-top: 5px; font-size: 0.85em;">Note: Generation time does not guarantee live market freshness.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 15px; border-top: 1px solid var(--color-border); padding-top: 15px;">
+                <div class="key-value"><span class="key">Bounded Watchlist Only</span><span id="bounded-watchlist"></span></div>
+                <div class="key-value"><span class="key">Full Market Coverage</span><span id="full-market"></span></div>
+                <div class="key-value"><span class="key">Target Count</span><span id="target-count"></span></div>
+                <div class="key-value"><span class="key">Failed Target Count</span><span id="failed-target-count"></span></div>
+            </div>
+        </section>
+
+        <div class="grid-2col">
+            <!-- 3. Source Health & Authority Panel -->
+            <section class="panel">
+                <h2>Source Health & Authority</h2>
+                <p class="muted" style="font-size: 0.85em; margin-bottom: 10px;">Source health describes local generated offline state, not live production source availability.</p>
+
+                <div class="key-value"><span class="key">Total Sources</span><span id="total-sources"></span></div>
+
+                <h4 style="margin: 15px 0 5px 0;">Source Categories</h4>
+                <div class="key-value"><span class="key">Official Reference (EOD)</span><span id="official-reference"></span></div>
+                <div class="key-value"><span class="key">Unofficial Frontend</span><span id="unofficial-frontend"></span></div>
+                <div class="key-value"><span class="key">Third Party</span><span id="third-party"></span></div>
+                <div class="key-value"><span class="key">Broker Authenticated</span><span id="broker-auth"></span></div>
+
+                <h4 style="margin: 15px 0 5px 0;">Status</h4>
+                <div class="key-value"><span class="key">Usable Live Sources</span><span id="usable-live"></span></div>
+                <div class="key-value"><span class="key">Usable EOD Sources</span><span id="usable-eod"></span></div>
+                <div class="key-value"><span class="key">Unavailable/Failed</span><span id="unavailable-sources"></span></div>
+                <div class="key-value"><span class="key">Auth Required</span><span id="auth-sources"></span></div>
+                <div class="key-value"><span class="key">Doc Only</span><span id="doc-sources"></span></div>
+                <div class="key-value"><span class="key">Offline/Not Attempted</span><span id="offline-sources"></span></div>
+            </section>
+
+            <div>
+                <!-- 4. Latest Snapshot Summary Panel -->
+                <section class="panel">
+                    <h2>Latest Snapshot Summary</h2>
+                    <div class="key-value"><span class="key">Symbol Count</span><span id="snapshot-symbol-count"></span></div>
+                    <div class="key-value"><span class="key">Failed Symbol Count</span><span id="snapshot-failed-symbols"></span></div>
+                    <div class="key-value"><span class="key">Failed Source Count</span><span id="snapshot-failed-sources"></span></div>
+
+                    <h4 style="margin: 15px 0 5px 0;">Market Session Status</h4>
+                    <div class="key-value"><span class="key">Status</span><span id="session-status"></span></div>
+                    <div class="key-value"><span class="key">As Of (Taipei)</span><span id="session-asof"></span></div>
+                </section>
+
+                <!-- 8. Freshness / Delay / Staleness Panel -->
+                <section class="panel">
+                    <h2>Freshness & Delay</h2>
+                    <div class="key-value"><span class="key">Live Candidate Count</span><span id="fresh-live"></span></div>
+                    <div class="key-value"><span class="key">Stale Count</span><span id="fresh-stale"></span></div>
+                    <div class="key-value"><span class="key">Unknown Freshness Count</span><span id="fresh-unknown"></span></div>
+                    <p class="muted" style="margin-top: 10px; font-size: 0.85em;">Note: Live candidates are unofficial and not guaranteed.</p>
+                </section>
+            </div>
+        </div>
+
+        <div class="grid-2col">
+            <!-- 5. Watchlist Observation Summary Panel -->
+            <section class="panel">
+                <h2>Watchlist Observation Summary</h2>
+                <div class="key-value"><span class="key">Observations Count</span><span id="obs-count"></span></div>
+                <div class="key-value"><span class="key">Failed Observations Count</span><span id="obs-failed-count"></span></div>
+
+                <h4 style="margin: 15px 0 5px 0;">By Type</h4>
+                <div id="obs-types" style="font-size: 0.9em;"></div>
+            </section>
+
+            <!-- 10. AI Safety / Must-Not-Claim Panel -->
+            <section class="panel alert-warning" style="border: 1px solid var(--color-warning-border);">
+                <h2>AI Safety Policy</h2>
+                <h4 style="margin-top: 0;">What AI Must Not Claim (Prohibited Claims)</h4>
+                <ul id="ai-must-not-claim" class="no-bullets" style="color: var(--color-critical-text); font-weight: 500;"></ul>
+
+                <h4 style="margin-top: 15px;">What AI May Say</h4>
+                <ul id="ai-may-say" class="no-bullets" style="color: var(--color-success-text);"></ul>
+            </section>
+        </div>
+
+        <!-- 6. Failed Sources Table -->
+        <section class="panel">
+            <h2>Failed Sources</h2>
+            <div id="failed-sources-container"></div>
+        </section>
+
+        <!-- 7. Failed Targets Table -->
+        <section class="panel">
+            <h2>Failed Targets</h2>
+            <div id="failed-targets-container"></div>
+        </section>
+
+        <!-- 9. AI Briefing Preview -->
+        <section class="panel">
+            <h2>AI Briefing Preview</h2>
+            <p class="muted" style="font-size: 0.85em; margin-bottom: 10px;">This briefing is for context only. It is not investment advice.</p>
+            <pre id="briefing-content">Loading...</pre>
+        </section>
+
+        <section class="panel">
+            <h2>Mandatory Caveats</h2>
+            <ul id="mandatory-caveats" style="font-size: 0.9em; color: var(--color-info-text);"></ul>
+        </section>
+
+    </div>
+
+    <script>
+        const clearChildren = (node) => {
+            while (node.firstChild) {
+                node.removeChild(node.firstChild);
+            }
+        };
+
+        const setText = (id, value) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            clearChildren(el);
+
+            let displayVal = value;
+            if (value === null || value === undefined) {
+                setMutedText(id, 'Unavailable');
+                return;
+            } else if (Array.isArray(value)) {
+                if (value.length === 0) {
+                    setMutedText(id, 'None');
+                    return;
+                }
+                displayVal = value.join(', ');
+            } else if (typeof value === 'object') {
+                if (Object.keys(value).length === 0) {
+                    setMutedText(id, 'None');
+                    return;
+                }
+                displayVal = JSON.stringify(value);
+            } else if (value === '') {
+                setMutedText(id, 'None');
+                return;
+            }
+
+            el.textContent = String(displayVal);
+        };
+
+        const setMutedText = (id, value) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            clearChildren(el);
+            const span = document.createElement('span');
+            span.className = 'muted';
+            span.textContent = String(value);
+            el.appendChild(span);
+        };
+
+        const setBadge = (id, value, type) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            clearChildren(el);
+            const span = document.createElement('span');
+            span.className = `badge badge-${type}`;
+            span.textContent = String(value);
+            el.appendChild(span);
+        };
+
+        const appendListItems = (listId, items) => {
+            const el = document.getElementById(listId);
+            if (!el) return;
+            clearChildren(el);
+            if (!items || items.length === 0) {
+                const li = document.createElement('li');
+                const span = document.createElement('span');
+                span.className = 'muted';
+                span.textContent = 'None';
+                li.appendChild(span);
+                el.appendChild(li);
+                return;
+            }
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                el.appendChild(li);
+            });
+        };
+
+        const renderTable = (dataArray, containerId, columns) => {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            clearChildren(container);
+
+            if (!dataArray || dataArray.length === 0) {
+                const p = document.createElement('p');
+                p.className = 'muted';
+                p.textContent = 'None';
+                container.appendChild(p);
+                return;
+            }
+
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const trHead = document.createElement('tr');
+
+            columns.forEach(col => {
+                const th = document.createElement('th');
+                th.textContent = col.header;
+                trHead.appendChild(th);
+            });
+            thead.appendChild(trHead);
+            table.appendChild(thead);
+
+            const tbody = document.createElement('tbody');
+            dataArray.forEach(item => {
+                const tr = document.createElement('tr');
+                columns.forEach(col => {
+                    const td = document.createElement('td');
+                    let val = item[col.key];
+                    if (Array.isArray(val)) {
+                        td.textContent = val.length > 0 ? val.join(', ') : 'None';
+                    } else if (typeof val === 'object' && val !== null) {
+                        td.textContent = JSON.stringify(val);
+                    } else {
+                        td.textContent = (val !== undefined && val !== null) ? val : 'None';
+                    }
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+
+            container.appendChild(table);
+        };
+
+        const appendKeyValue = (containerId, key, value) => {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const div = document.createElement('div');
+            div.className = 'key-value';
+
+            const s1 = document.createElement('span');
+            s1.className = 'key';
+            s1.textContent = key;
+
+            const s2 = document.createElement('span');
+            if (value === null || value === undefined || value === '') {
+                const spanMuted = document.createElement('span');
+                spanMuted.className = 'muted';
+                spanMuted.textContent = (value === null || value === undefined) ? 'Unavailable' : 'None';
+                s2.appendChild(spanMuted);
+            } else if (Array.isArray(value) && value.length === 0) {
+                 const spanMuted = document.createElement('span');
+                 spanMuted.className = 'muted';
+                 spanMuted.textContent = 'None';
+                 s2.appendChild(spanMuted);
+            } else {
+                s2.textContent = Array.isArray(value) ? value.join(', ') : String(value);
+            }
+
+            div.appendChild(s1);
+            div.appendChild(s2);
+            container.appendChild(div);
+        };
+
+        async function init() {
+            try {
+                const packRes = await fetch('../../research/generated/ai_context_pack.json');
+                if (!packRes.ok) {
+                    throw new Error(`Failed to fetch ai_context_pack.json: HTTP ${packRes.status}`);
+                }
+                const pack = await packRes.json();
+
+                document.getElementById('main-content').style.display = 'block';
+
+                // 1. Context Status
+                setText('pack-version', pack.pack_version);
+                setText('generation-mode', pack.generation_mode);
+                setText('generated-utc', pack.generated_at_utc);
+                setText('generated-taipei', pack.generated_at_taipei);
+
+                // Scope & Constraints
+                const support = pack.target_support_summary || {};
+
+                const boundedWatchlist = support.bounded_watchlist_only;
+                if (boundedWatchlist === true) setBadge('bounded-watchlist', 'Yes', 'warning');
+                else setBadge('bounded-watchlist', 'No', 'critical');
+
+                const fullMarket = support.full_market_coverage;
+                if (fullMarket === undefined) {
+                    setBadge('full-market', 'Missing required field', 'critical');
+                } else if (fullMarket === true) {
+                    setBadge('full-market', 'Yes (Critical Warning)', 'critical');
+                } else {
+                    setBadge('full-market', 'No', 'success');
+                }
+
+                setText('target-count', support.target_count ?? 0);
+
+                const failedTargets = support.failed_target_count ?? 0;
+                if (failedTargets > 0) setBadge('failed-target-count', failedTargets, 'warning');
+                else setText('failed-target-count', failedTargets);
+
+                // 3. Source Health
+                const health = pack.source_health_summary || {};
+                setText('total-sources', health.total_sources ?? 0);
+
+                const sourceIdsContainer = document.getElementById('total-sources').parentNode;
+                const sourceIdsDiv = document.createElement('div');
+                sourceIdsDiv.className = 'key-value';
+                const sourceIdsKey = document.createElement('span');
+                sourceIdsKey.className = 'key';
+                sourceIdsKey.textContent = 'Source IDs';
+                const sourceIdsVal = document.createElement('span');
+                sourceIdsVal.id = 'source-ids';
+                sourceIdsDiv.appendChild(sourceIdsKey);
+                sourceIdsDiv.appendChild(sourceIdsVal);
+                sourceIdsContainer.parentNode.insertBefore(sourceIdsDiv, sourceIdsContainer.nextSibling);
+
+                const sourceIds = health.source_ids || [];
+                if (sourceIds.length > 0) {
+                     document.getElementById('source-ids').textContent = sourceIds.join(', ');
+                } else {
+                     setMutedText('source-ids', 'None');
+                }
+
+                const unavail = health.unavailable_or_failed_sources || [];
+                if (unavail.length > 0) setBadge('unavailable-sources', unavail.join(', '), 'warning');
+                else setText('unavailable-sources', unavail);
+
+                setText('auth-sources', health.auth_required_sources);
+                setText('doc-sources', health.doc_only_sources);
+                setText('offline-sources', health.offline_not_attempted_sources);
+
+                // Source Authority
+                const auth = pack.source_authority_summary || {};
+                setText('official-reference', auth.official_reference);
+                setText('unofficial-frontend', auth.unofficial_frontend);
+                setText('third-party', auth.third_party);
+                setText('broker-auth', auth.broker_authenticated);
+                setText('usable-live', auth.usable_live_sources);
+                setText('usable-eod', auth.usable_eod_sources);
+
+                // 4. Latest Snapshot Summary
+                const snap = pack.latest_snapshot_summary || {};
+                const symCount = snap.symbol_count ?? 0;
+                const failedSymCount = snap.failed_symbol_count ?? 0;
+                const targetCount = snap.target_count ?? 0;
+
+                const snapshotSymCountContainer = document.getElementById('snapshot-symbol-count').parentNode;
+                const snapshotTargetCountDiv = document.createElement('div');
+                snapshotTargetCountDiv.className = 'key-value';
+                const snapshotTargetCountKey = document.createElement('span');
+                snapshotTargetCountKey.className = 'key';
+                snapshotTargetCountKey.textContent = 'Target Count';
+                const snapshotTargetCountVal = document.createElement('span');
+                snapshotTargetCountVal.id = 'snapshot-target-count';
+                snapshotTargetCountDiv.appendChild(snapshotTargetCountKey);
+                snapshotTargetCountDiv.appendChild(snapshotTargetCountVal);
+                snapshotSymCountContainer.parentNode.insertBefore(snapshotTargetCountDiv, snapshotSymCountContainer);
+
+                setText('snapshot-target-count', targetCount);
+
+                if (symCount === 0) setBadge('snapshot-symbol-count', '0', 'warning');
+                else setText('snapshot-symbol-count', symCount);
+
+                if (failedSymCount > 0) setBadge('snapshot-failed-symbols', failedSymCount, 'warning');
+                else setText('snapshot-failed-symbols', failedSymCount);
+
+                const failedSourceCount = snap.failed_source_count ?? 0;
+                if (failedSourceCount > 0) setBadge('snapshot-failed-sources', failedSourceCount, 'warning');
+                else setText('snapshot-failed-sources', failedSourceCount);
+
+                // Degraded State Check
+                if (symCount === 0 || (targetCount > 0 && failedSymCount === targetCount)) {
+                    document.getElementById('degraded-banner').style.display = 'block';
+                }
+
+                // Market Session Status
+                const session = snap.market_session_status || {};
+                const sessionStatus = session.status || 'unknown';
+                if (sessionStatus === 'unknown') setBadge('session-status', 'Unknown', 'warning');
+                else setText('session-status', sessionStatus);
+
+                setText('session-asof', session.as_of_taipei);
+
+                if (sessionStatus === 'unknown') {
+                    document.getElementById('banner-session-status').style.display = 'list-item';
+                }
+
+                // 8. Freshness
+                const fresh = pack.freshness_and_delay_summary || {};
+                setText('fresh-live', fresh.live_candidate_count ?? 0);
+
+                const staleCount = fresh.stale_count ?? 0;
+                if (staleCount > 0) setBadge('fresh-stale', staleCount, 'warning');
+                else setText('fresh-stale', staleCount);
+
+                const unkFreshCount = fresh.unknown_freshness_count ?? 0;
+                if (unkFreshCount > 0) setBadge('fresh-unknown', unkFreshCount, 'warning');
+                else setText('fresh-unknown', unkFreshCount);
+
+                const freshContainer = document.getElementById('fresh-unknown').parentNode.parentNode;
+
+                const freshStatusCounts = fresh.freshness_status_counts || {};
+                if (Object.keys(freshStatusCounts).length > 0) {
+                     const h4 = document.createElement('h4');
+                     h4.style.margin = '15px 0 5px 0';
+                     h4.textContent = 'By Freshness Status';
+                     freshContainer.insertBefore(h4, freshContainer.querySelector('.muted'));
+                     for (const [k, v] of Object.entries(freshStatusCounts)) {
+                          const div = document.createElement('div');
+                          div.className = 'key-value';
+                          const s1 = document.createElement('span');
+                          s1.className = 'key';
+                          s1.textContent = k;
+                          const s2 = document.createElement('span');
+                          s2.textContent = v;
+                          div.appendChild(s1);
+                          div.appendChild(s2);
+                          freshContainer.insertBefore(div, freshContainer.querySelector('.muted'));
+                     }
+                }
+
+                const delayStatusCounts = fresh.delay_status_counts || {};
+                if (Object.keys(delayStatusCounts).length > 0) {
+                     const h4 = document.createElement('h4');
+                     h4.style.margin = '15px 0 5px 0';
+                     h4.textContent = 'By Delay Status';
+                     freshContainer.insertBefore(h4, freshContainer.querySelector('.muted'));
+                     for (const [k, v] of Object.entries(delayStatusCounts)) {
+                          const div = document.createElement('div');
+                          div.className = 'key-value';
+                          const s1 = document.createElement('span');
+                          s1.className = 'key';
+                          s1.textContent = k;
+                          const s2 = document.createElement('span');
+                          s2.textContent = v;
+                          div.appendChild(s1);
+                          div.appendChild(s2);
+                          freshContainer.insertBefore(div, freshContainer.querySelector('.muted'));
+                     }
+                }
+
+                // 5. Watchlist Observation
+                const obs = pack.watchlist_observation_summary || {};
+                setText('obs-count', obs.observations_count ?? 0);
+
+                const obsFail = obs.failed_observations_count ?? 0;
+                if (obsFail > 0) setBadge('obs-failed-count', obsFail, 'warning');
+                else setText('obs-failed-count', obsFail);
+
+                const obsTypesContainer = document.getElementById('obs-types');
+                if (obsTypesContainer) {
+                    clearChildren(obsTypesContainer);
+                    const obsTypes = obs.observation_type_counts || {};
+                    if (Object.keys(obsTypes).length === 0) {
+                        setMutedText('obs-types', 'None');
+                    } else {
+                        for (const [k, v] of Object.entries(obsTypes)) {
+                            appendKeyValue('obs-types', k, v);
+                        }
+                    }
+
+                    const severities = obs.severity_counts || {};
+                    if (Object.keys(severities).length > 0) {
+                         const h4 = document.createElement('h4');
+                         h4.style.margin = '15px 0 5px 0';
+                         h4.textContent = 'By Severity';
+                         obsTypesContainer.appendChild(h4);
+                         for (const [k, v] of Object.entries(severities)) {
+                            appendKeyValue('obs-types', k, v);
+                         }
+                    }
+
+                    const categories = obs.categories_present || [];
+                    if (categories.length > 0) {
+                         const h4 = document.createElement('h4');
+                         h4.style.margin = '15px 0 5px 0';
+                         h4.textContent = 'Categories Present';
+                         obsTypesContainer.appendChild(h4);
+                         const div = document.createElement('div');
+                         div.textContent = categories.join(', ');
+                         obsTypesContainer.appendChild(div);
+                    }
+                }
+
+                // 10. AI Safety
+                appendListItems('ai-must-not-claim', pack.ai_must_not_claim);
+                appendListItems('ai-may-say', pack.ai_may_say);
+                appendListItems('mandatory-caveats', pack.mandatory_caveats);
+
+                // 6 & 7. Tables
+                renderTable(pack.failed_sources, 'failed-sources-container', [
+                    {key: 'source_id', header: 'Source ID'},
+                    {key: 'error_type', header: 'Error Type'},
+                    {key: 'affected_symbol_count', header: 'Affected Symbols'},
+                    {key: 'caveats', header: 'Caveats'}
+                ]);
+
+                renderTable(pack.failed_targets, 'failed-targets-container', [
+                    {key: 'symbol', header: 'Symbol'},
+                    {key: 'target_class', header: 'Target Class'},
+                    {key: 'failure_reason', header: 'Failure Reason'},
+                    {key: 'source_attempts', header: 'Source Attempts'},
+                    {key: 'caveats', header: 'Caveats'}
+                ]);
+
+            } catch (err) {
+                document.getElementById('error-container').style.display = 'block';
+                document.getElementById('error-details').textContent = err.message;
+            }
+
+            // 9. AI Briefing Fetch
+            try {
+                const mdRes = await fetch('../../research/generated/chatgpt_briefing.md');
+                if (!mdRes.ok) {
+                    throw new Error(`HTTP ${mdRes.status}`);
+                }
+                const mdText = await mdRes.text();
+                document.getElementById('briefing-content').textContent = mdText;
+            } catch (err) {
+                const bc = document.getElementById('briefing-content');
+                if (bc) {
+                    clearChildren(bc);
+                    const span = document.createElement('span');
+                    span.className = 'muted';
+                    span.textContent = `Unavailable (${err.message})`;
+                    bc.appendChild(span);
+                }
+            }
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
