@@ -203,7 +203,7 @@
 </head>
 <body>
 
-    <a href="index.html" class="nav-link">⬅ Back to Workbench Index</a>
+    <a href="index.html" class="nav-link">Back to Workbench Index</a>
 
     <div id="error-container" class="alert alert-critical panel">
         <h2>Critical Error</h2>
@@ -350,28 +350,91 @@
     </div>
 
     <script>
-        const formatValue = (val) => {
-            if (val === null || val === undefined) return '<span class="muted">Unavailable</span>';
-            if (Array.isArray(val)) {
-                if (val.length === 0) return '<span class="muted">None</span>';
-                return val.join(', ');
+        const clearChildren = (node) => {
+            while (node.firstChild) {
+                node.removeChild(node.firstChild);
             }
-            if (typeof val === 'object') {
-                if (Object.keys(val).length === 0) return '<span class="muted">None</span>';
-                return JSON.stringify(val);
-            }
-            if (val === '') return '<span class="muted">None</span>';
-            return String(val);
         };
 
-        const renderBadge = (val, type) => {
-            return `<span class="badge badge-${type}">${val}</span>`;
+        const setText = (id, value) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            clearChildren(el);
+
+            let displayVal = value;
+            if (value === null || value === undefined) {
+                setMutedText(id, 'Unavailable');
+                return;
+            } else if (Array.isArray(value)) {
+                if (value.length === 0) {
+                    setMutedText(id, 'None');
+                    return;
+                }
+                displayVal = value.join(', ');
+            } else if (typeof value === 'object') {
+                if (Object.keys(value).length === 0) {
+                    setMutedText(id, 'None');
+                    return;
+                }
+                displayVal = JSON.stringify(value);
+            } else if (value === '') {
+                setMutedText(id, 'None');
+                return;
+            }
+
+            el.textContent = String(displayVal);
+        };
+
+        const setMutedText = (id, value) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            clearChildren(el);
+            const span = document.createElement('span');
+            span.className = 'muted';
+            span.textContent = String(value);
+            el.appendChild(span);
+        };
+
+        const setBadge = (id, value, type) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            clearChildren(el);
+            const span = document.createElement('span');
+            span.className = `badge badge-${type}`;
+            span.textContent = String(value);
+            el.appendChild(span);
+        };
+
+        const appendListItems = (listId, items) => {
+            const el = document.getElementById(listId);
+            if (!el) return;
+            clearChildren(el);
+            if (!items || items.length === 0) {
+                const li = document.createElement('li');
+                const span = document.createElement('span');
+                span.className = 'muted';
+                span.textContent = 'None';
+                li.appendChild(span);
+                el.appendChild(li);
+                return;
+            }
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                el.appendChild(li);
+            });
         };
 
         const renderTable = (dataArray, containerId, columns) => {
             const container = document.getElementById(containerId);
+            if (!container) return;
+            clearChildren(container);
+
             if (!dataArray || dataArray.length === 0) {
-                container.innerHTML = '<p class="muted">None</p>';
+                const p = document.createElement('p');
+                p.className = 'muted';
+                p.textContent = 'None';
+                container.appendChild(p);
                 return;
             }
 
@@ -406,22 +469,37 @@
             });
             table.appendChild(tbody);
 
-            container.innerHTML = '';
             container.appendChild(table);
         };
 
-        const renderList = (dataArray, elementId) => {
-            const el = document.getElementById(elementId);
-            el.innerHTML = '';
-            if (!dataArray || dataArray.length === 0) {
-                el.innerHTML = '<li><span class="muted">None</span></li>';
-                return;
+        const appendKeyValue = (containerId, key, value) => {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const div = document.createElement('div');
+            div.className = 'key-value';
+
+            const s1 = document.createElement('span');
+            s1.className = 'key';
+            s1.textContent = key;
+
+            const s2 = document.createElement('span');
+            if (value === null || value === undefined || value === '') {
+                const spanMuted = document.createElement('span');
+                spanMuted.className = 'muted';
+                spanMuted.textContent = (value === null || value === undefined) ? 'Unavailable' : 'None';
+                s2.appendChild(spanMuted);
+            } else if (Array.isArray(value) && value.length === 0) {
+                 const spanMuted = document.createElement('span');
+                 spanMuted.className = 'muted';
+                 spanMuted.textContent = 'None';
+                 s2.appendChild(spanMuted);
+            } else {
+                s2.textContent = Array.isArray(value) ? value.join(', ') : String(value);
             }
-            dataArray.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = item;
-                el.appendChild(li);
-            });
+
+            div.appendChild(s1);
+            div.appendChild(s2);
+            container.appendChild(div);
         };
 
         async function init() {
@@ -435,56 +513,53 @@
                 document.getElementById('main-content').style.display = 'block';
 
                 // 1. Context Status
-                document.getElementById('pack-version').innerHTML = formatValue(pack.pack_version);
-                document.getElementById('generation-mode').innerHTML = formatValue(pack.generation_mode);
-                document.getElementById('generated-utc').innerHTML = formatValue(pack.generated_at_utc);
-                document.getElementById('generated-taipei').innerHTML = formatValue(pack.generated_at_taipei);
+                setText('pack-version', pack.pack_version);
+                setText('generation-mode', pack.generation_mode);
+                setText('generated-utc', pack.generated_at_utc);
+                setText('generated-taipei', pack.generated_at_taipei);
 
                 // Scope & Constraints
                 const support = pack.target_support_summary || {};
 
                 const boundedWatchlist = support.bounded_watchlist_only;
-                document.getElementById('bounded-watchlist').innerHTML = boundedWatchlist === true
-                    ? renderBadge('Yes', 'warning')
-                    : renderBadge('No', 'critical');
+                if (boundedWatchlist === true) setBadge('bounded-watchlist', 'Yes', 'warning');
+                else setBadge('bounded-watchlist', 'No', 'critical');
 
                 const fullMarket = support.full_market_coverage;
                 if (fullMarket === undefined) {
-                    document.getElementById('full-market').innerHTML = renderBadge('Missing required field', 'critical');
+                    setBadge('full-market', 'Missing required field', 'critical');
+                } else if (fullMarket === true) {
+                    setBadge('full-market', 'Yes (Critical Warning)', 'critical');
                 } else {
-                    document.getElementById('full-market').innerHTML = fullMarket === true
-                        ? renderBadge('Yes (Critical Warning)', 'critical')
-                        : renderBadge('No', 'success');
+                    setBadge('full-market', 'No', 'success');
                 }
 
-                document.getElementById('target-count').innerHTML = formatValue(support.target_count ?? 0);
+                setText('target-count', support.target_count ?? 0);
 
                 const failedTargets = support.failed_target_count ?? 0;
-                document.getElementById('failed-target-count').innerHTML = failedTargets > 0
-                    ? renderBadge(failedTargets, 'warning')
-                    : failedTargets;
+                if (failedTargets > 0) setBadge('failed-target-count', failedTargets, 'warning');
+                else setText('failed-target-count', failedTargets);
 
                 // 3. Source Health
                 const health = pack.source_health_summary || {};
-                document.getElementById('total-sources').innerHTML = formatValue(health.total_sources ?? 0);
+                setText('total-sources', health.total_sources ?? 0);
 
                 const unavail = health.unavailable_or_failed_sources || [];
-                document.getElementById('unavailable-sources').innerHTML = unavail.length > 0
-                    ? renderBadge(unavail.join(', '), 'warning')
-                    : formatValue(unavail);
+                if (unavail.length > 0) setBadge('unavailable-sources', unavail.join(', '), 'warning');
+                else setText('unavailable-sources', unavail);
 
-                document.getElementById('auth-sources').innerHTML = formatValue(health.auth_required_sources);
-                document.getElementById('doc-sources').innerHTML = formatValue(health.doc_only_sources);
-                document.getElementById('offline-sources').innerHTML = formatValue(health.offline_not_attempted_sources);
+                setText('auth-sources', health.auth_required_sources);
+                setText('doc-sources', health.doc_only_sources);
+                setText('offline-sources', health.offline_not_attempted_sources);
 
                 // Source Authority
                 const auth = pack.source_authority_summary || {};
-                document.getElementById('official-reference').innerHTML = formatValue(auth.official_reference);
-                document.getElementById('unofficial-frontend').innerHTML = formatValue(auth.unofficial_frontend);
-                document.getElementById('third-party').innerHTML = formatValue(auth.third_party);
-                document.getElementById('broker-auth').innerHTML = formatValue(auth.broker_authenticated);
-                document.getElementById('usable-live').innerHTML = formatValue(auth.usable_live_sources);
-                document.getElementById('usable-eod').innerHTML = formatValue(auth.usable_eod_sources);
+                setText('official-reference', auth.official_reference);
+                setText('unofficial-frontend', auth.unofficial_frontend);
+                setText('third-party', auth.third_party);
+                setText('broker-auth', auth.broker_authenticated);
+                setText('usable-live', auth.usable_live_sources);
+                setText('usable-eod', auth.usable_eod_sources);
 
                 // 4. Latest Snapshot Summary
                 const snap = pack.latest_snapshot_summary || {};
@@ -492,18 +567,15 @@
                 const failedSymCount = snap.failed_symbol_count ?? 0;
                 const targetCount = snap.target_count ?? 0;
 
-                document.getElementById('snapshot-symbol-count').innerHTML = symCount === 0
-                    ? renderBadge('0', 'warning')
-                    : symCount;
+                if (symCount === 0) setBadge('snapshot-symbol-count', '0', 'warning');
+                else setText('snapshot-symbol-count', symCount);
 
-                document.getElementById('snapshot-failed-symbols').innerHTML = failedSymCount > 0
-                    ? renderBadge(failedSymCount, 'warning')
-                    : failedSymCount;
+                if (failedSymCount > 0) setBadge('snapshot-failed-symbols', failedSymCount, 'warning');
+                else setText('snapshot-failed-symbols', failedSymCount);
 
                 const failedSourceCount = snap.failed_source_count ?? 0;
-                document.getElementById('snapshot-failed-sources').innerHTML = failedSourceCount > 0
-                    ? renderBadge(failedSourceCount, 'warning')
-                    : failedSourceCount;
+                if (failedSourceCount > 0) setBadge('snapshot-failed-sources', failedSourceCount, 'warning');
+                else setText('snapshot-failed-sources', failedSourceCount);
 
                 // Degraded State Check
                 if (symCount === 0 || (targetCount > 0 && failedSymCount === targetCount)) {
@@ -513,10 +585,10 @@
                 // Market Session Status
                 const session = snap.market_session_status || {};
                 const sessionStatus = session.status || 'unknown';
-                document.getElementById('session-status').innerHTML = sessionStatus === 'unknown'
-                    ? renderBadge('Unknown', 'warning')
-                    : sessionStatus;
-                document.getElementById('session-asof').innerHTML = formatValue(session.as_of_taipei);
+                if (sessionStatus === 'unknown') setBadge('session-status', 'Unknown', 'warning');
+                else setText('session-status', sessionStatus);
+
+                setText('session-asof', session.as_of_taipei);
 
                 if (sessionStatus === 'unknown') {
                     document.getElementById('banner-session-status').style.display = 'list-item';
@@ -524,54 +596,63 @@
 
                 // 8. Freshness
                 const fresh = pack.freshness_and_delay_summary || {};
-                document.getElementById('fresh-live').innerHTML = formatValue(fresh.live_candidate_count ?? 0);
+                setText('fresh-live', fresh.live_candidate_count ?? 0);
 
                 const staleCount = fresh.stale_count ?? 0;
-                document.getElementById('fresh-stale').innerHTML = staleCount > 0
-                    ? renderBadge(staleCount, 'warning')
-                    : staleCount;
+                if (staleCount > 0) setBadge('fresh-stale', staleCount, 'warning');
+                else setText('fresh-stale', staleCount);
 
                 const unkFreshCount = fresh.unknown_freshness_count ?? 0;
-                document.getElementById('fresh-unknown').innerHTML = unkFreshCount > 0
-                    ? renderBadge(unkFreshCount, 'warning')
-                    : unkFreshCount;
+                if (unkFreshCount > 0) setBadge('fresh-unknown', unkFreshCount, 'warning');
+                else setText('fresh-unknown', unkFreshCount);
 
                 // 5. Watchlist Observation
                 const obs = pack.watchlist_observation_summary || {};
-                document.getElementById('obs-count').innerHTML = formatValue(obs.observations_count ?? 0);
+                setText('obs-count', obs.observations_count ?? 0);
 
                 const obsFail = obs.failed_observations_count ?? 0;
-                document.getElementById('obs-failed-count').innerHTML = obsFail > 0
-                    ? renderBadge(obsFail, 'warning')
-                    : obsFail;
+                if (obsFail > 0) setBadge('obs-failed-count', obsFail, 'warning');
+                else setText('obs-failed-count', obsFail);
 
                 const obsTypesContainer = document.getElementById('obs-types');
-                const obsTypes = obs.observation_type_counts || {};
-                if (Object.keys(obsTypes).length === 0) {
-                    obsTypesContainer.innerHTML = '<span class="muted">None</span>';
-                } else {
-                    obsTypesContainer.innerHTML = '';
-                    for (const [k, v] of Object.entries(obsTypes)) {
-                        const div = document.createElement('div');
-                        div.className = 'key-value';
+                if (obsTypesContainer) {
+                    clearChildren(obsTypesContainer);
+                    const obsTypes = obs.observation_type_counts || {};
+                    if (Object.keys(obsTypes).length === 0) {
+                        setMutedText('obs-types', 'None');
+                    } else {
+                        for (const [k, v] of Object.entries(obsTypes)) {
+                            appendKeyValue('obs-types', k, v);
+                        }
+                    }
 
-                        const s1 = document.createElement('span');
-                        s1.className = 'key';
-                        s1.textContent = k;
+                    const severities = obs.severity_counts || {};
+                    if (Object.keys(severities).length > 0) {
+                         const h4 = document.createElement('h4');
+                         h4.style.margin = '15px 0 5px 0';
+                         h4.textContent = 'By Severity';
+                         obsTypesContainer.appendChild(h4);
+                         for (const [k, v] of Object.entries(severities)) {
+                            appendKeyValue('obs-types', k, v);
+                         }
+                    }
 
-                        const s2 = document.createElement('span');
-                        s2.textContent = v;
-
-                        div.appendChild(s1);
-                        div.appendChild(s2);
-                        obsTypesContainer.appendChild(div);
+                    const categories = obs.categories_present || [];
+                    if (categories.length > 0) {
+                         const h4 = document.createElement('h4');
+                         h4.style.margin = '15px 0 5px 0';
+                         h4.textContent = 'Categories Present';
+                         obsTypesContainer.appendChild(h4);
+                         const div = document.createElement('div');
+                         div.textContent = categories.join(', ');
+                         obsTypesContainer.appendChild(div);
                     }
                 }
 
                 // 10. AI Safety
-                renderList(pack.ai_must_not_claim, 'ai-must-not-claim');
-                renderList(pack.ai_may_say, 'ai-may-say');
-                renderList(pack.mandatory_caveats, 'mandatory-caveats');
+                appendListItems('ai-must-not-claim', pack.ai_must_not_claim);
+                appendListItems('ai-may-say', pack.ai_may_say);
+                appendListItems('mandatory-caveats', pack.mandatory_caveats);
 
                 // 6 & 7. Tables
                 renderTable(pack.failed_sources, 'failed-sources-container', [
@@ -583,9 +664,10 @@
 
                 renderTable(pack.failed_targets, 'failed-targets-container', [
                     {key: 'symbol', header: 'Symbol'},
-                    {key: 'asset_type', header: 'Asset Type'},
-                    {key: 'error_type', header: 'Error Type'},
-                    {key: 'failed_sources', header: 'Failed Sources'}
+                    {key: 'target_class', header: 'Target Class'},
+                    {key: 'failure_reason', header: 'Failure Reason'},
+                    {key: 'source_attempts', header: 'Source Attempts'},
+                    {key: 'caveats', header: 'Caveats'}
                 ]);
 
             } catch (err) {
@@ -602,7 +684,14 @@
                 const mdText = await mdRes.text();
                 document.getElementById('briefing-content').textContent = mdText;
             } catch (err) {
-                document.getElementById('briefing-content').innerHTML = `<span class="muted">Unavailable (${err.message})</span>`;
+                const bc = document.getElementById('briefing-content');
+                if (bc) {
+                    clearChildren(bc);
+                    const span = document.createElement('span');
+                    span.className = 'muted';
+                    span.textContent = `Unavailable (${err.message})`;
+                    bc.appendChild(span);
+                }
             }
         }
 

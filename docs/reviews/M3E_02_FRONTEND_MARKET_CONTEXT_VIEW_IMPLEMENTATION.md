@@ -64,9 +64,10 @@ If `chatgpt_briefing.md` fails to load:
 
 ## 9. Security / Escaping Approach
 
-*   **No `innerHTML` usage for untrusted strings:** Values from `ai_context_pack.json` are rendered primarily using safe mapping functions, badge generation, or DOM element APIs (`document.createElement`, `textContent`).
-*   **Plain text Briefing:** `chatgpt_briefing.md` is piped directly into the `textContent` of a `<pre>` element. No Markdown parser library is invoked, eliminating XSS risks.
-*   **No CDNs or External Links:** The page uses system fonts and avoids pulling external CSS, scripts, or fonts.
+*   Artifact strings are rendered with `textContent` or DOM APIs.
+*   `innerHTML` is not used for artifact-derived content.
+*   `chatgpt_briefing.md` is rendered as escaped plaintext via `textContent`.
+*   No CDN or external dependency is used.
 
 ## 10. Confirmation of No Live Calls
 
