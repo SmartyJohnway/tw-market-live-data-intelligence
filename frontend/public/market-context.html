@@ -544,6 +544,25 @@
                 const health = pack.source_health_summary || {};
                 setText('total-sources', health.total_sources ?? 0);
 
+                const sourceIdsContainer = document.getElementById('total-sources').parentNode;
+                const sourceIdsDiv = document.createElement('div');
+                sourceIdsDiv.className = 'key-value';
+                const sourceIdsKey = document.createElement('span');
+                sourceIdsKey.className = 'key';
+                sourceIdsKey.textContent = 'Source IDs';
+                const sourceIdsVal = document.createElement('span');
+                sourceIdsVal.id = 'source-ids';
+                sourceIdsDiv.appendChild(sourceIdsKey);
+                sourceIdsDiv.appendChild(sourceIdsVal);
+                sourceIdsContainer.parentNode.insertBefore(sourceIdsDiv, sourceIdsContainer.nextSibling);
+
+                const sourceIds = health.source_ids || [];
+                if (sourceIds.length > 0) {
+                     document.getElementById('source-ids').textContent = sourceIds.join(', ');
+                } else {
+                     setMutedText('source-ids', 'None');
+                }
+
                 const unavail = health.unavailable_or_failed_sources || [];
                 if (unavail.length > 0) setBadge('unavailable-sources', unavail.join(', '), 'warning');
                 else setText('unavailable-sources', unavail);
@@ -566,6 +585,20 @@
                 const symCount = snap.symbol_count ?? 0;
                 const failedSymCount = snap.failed_symbol_count ?? 0;
                 const targetCount = snap.target_count ?? 0;
+
+                const snapshotSymCountContainer = document.getElementById('snapshot-symbol-count').parentNode;
+                const snapshotTargetCountDiv = document.createElement('div');
+                snapshotTargetCountDiv.className = 'key-value';
+                const snapshotTargetCountKey = document.createElement('span');
+                snapshotTargetCountKey.className = 'key';
+                snapshotTargetCountKey.textContent = 'Target Count';
+                const snapshotTargetCountVal = document.createElement('span');
+                snapshotTargetCountVal.id = 'snapshot-target-count';
+                snapshotTargetCountDiv.appendChild(snapshotTargetCountKey);
+                snapshotTargetCountDiv.appendChild(snapshotTargetCountVal);
+                snapshotSymCountContainer.parentNode.insertBefore(snapshotTargetCountDiv, snapshotSymCountContainer);
+
+                setText('snapshot-target-count', targetCount);
 
                 if (symCount === 0) setBadge('snapshot-symbol-count', '0', 'warning');
                 else setText('snapshot-symbol-count', symCount);
@@ -605,6 +638,48 @@
                 const unkFreshCount = fresh.unknown_freshness_count ?? 0;
                 if (unkFreshCount > 0) setBadge('fresh-unknown', unkFreshCount, 'warning');
                 else setText('fresh-unknown', unkFreshCount);
+
+                const freshContainer = document.getElementById('fresh-unknown').parentNode.parentNode;
+
+                const freshStatusCounts = fresh.freshness_status_counts || {};
+                if (Object.keys(freshStatusCounts).length > 0) {
+                     const h4 = document.createElement('h4');
+                     h4.style.margin = '15px 0 5px 0';
+                     h4.textContent = 'By Freshness Status';
+                     freshContainer.insertBefore(h4, freshContainer.querySelector('.muted'));
+                     for (const [k, v] of Object.entries(freshStatusCounts)) {
+                          const div = document.createElement('div');
+                          div.className = 'key-value';
+                          const s1 = document.createElement('span');
+                          s1.className = 'key';
+                          s1.textContent = k;
+                          const s2 = document.createElement('span');
+                          s2.textContent = v;
+                          div.appendChild(s1);
+                          div.appendChild(s2);
+                          freshContainer.insertBefore(div, freshContainer.querySelector('.muted'));
+                     }
+                }
+
+                const delayStatusCounts = fresh.delay_status_counts || {};
+                if (Object.keys(delayStatusCounts).length > 0) {
+                     const h4 = document.createElement('h4');
+                     h4.style.margin = '15px 0 5px 0';
+                     h4.textContent = 'By Delay Status';
+                     freshContainer.insertBefore(h4, freshContainer.querySelector('.muted'));
+                     for (const [k, v] of Object.entries(delayStatusCounts)) {
+                          const div = document.createElement('div');
+                          div.className = 'key-value';
+                          const s1 = document.createElement('span');
+                          s1.className = 'key';
+                          s1.textContent = k;
+                          const s2 = document.createElement('span');
+                          s2.textContent = v;
+                          div.appendChild(s1);
+                          div.appendChild(s2);
+                          freshContainer.insertBefore(div, freshContainer.querySelector('.muted'));
+                     }
+                }
 
                 // 5. Watchlist Observation
                 const obs = pack.watchlist_observation_summary || {};

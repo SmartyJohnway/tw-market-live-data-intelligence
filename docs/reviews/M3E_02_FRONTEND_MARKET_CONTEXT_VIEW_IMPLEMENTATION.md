@@ -26,12 +26,12 @@ The view fetches only these local static artifacts:
 
 1. Context Status Header (Generated time, mode, version)
 2. Scope Banner (Watchlist constraints)
-3. Source Health & Authority Panel (7 canonical sources, EOD/Live states)
-4. Latest Snapshot Summary Panel (Symbol failure tracking)
-5. Watchlist Observation Summary Panel (Type and failure count)
+3. Source Health & Authority Panel (7 canonical sources, EOD/Live states, Source IDs)
+4. Latest Snapshot Summary Panel (Symbol failure tracking, Target Count)
+5. Watchlist Observation Summary Panel (Type and failure count, Severity Counts, Categories Present)
 6. Failed Sources Table (Source failure reasons and caveats)
-7. Failed Targets Table (Failed target symbols)
-8. Freshness / Delay / Staleness Panel (Timeliness and decay metrics)
+7. Failed Targets Table (Failed target symbols mapped directly to source schema)
+8. Freshness / Delay / Staleness Panel (Timeliness and decay metrics, Freshness Status Counts, Delay Status Counts)
 9. AI Briefing Preview (Raw rendered briefing)
 10. AI Safety / Must-Not-Claim Panel (Policy arrays explicitly rendered)
 
