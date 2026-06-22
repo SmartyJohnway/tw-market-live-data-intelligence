@@ -41,6 +41,11 @@ The layout rendered gracefully, with panels aligning nicely under standard DOM c
 Screenshots demonstrate that all required artifact sections (Artifact Load Status, Health, Snapshot, Failed Sources/Targets, and AI Briefing) are visible without breaking out of bounds.
 
 ## 10. Functional QA Summary
+- **index.html Navigation Smoke Test:**
+  - `index.html` was opened successfully from the static server at `http://localhost:8000/frontend/public/index.html`.
+  - The navigation displayed the required links: "Capability Matrix (current)" and "Market Context Artifacts".
+  - The "Market Context Artifacts" link correctly resolved and navigated to `http://localhost:8000/frontend/public/market-context.html`.
+  - No external runtime requests were observed from `index.html`.
 - The `<details open>` help panel is open by default and can be closed/reopened.
 - Copy AI Briefing button: Works locally with clipboard permissions, successfully updates status to "Copied." However, note that in restricted headless environments without granted clipboard permissions, it degrades safely with an internal error handler.
 - Table layout: Failed sources and targets wrap gracefully, overflowing horizontally without clipping screen edges.
