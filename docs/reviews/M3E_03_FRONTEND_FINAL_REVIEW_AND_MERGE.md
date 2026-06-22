@@ -16,18 +16,20 @@ Baseline merge SHA from PR #27: `6b148d433f859767f5790ace5b5bd599d77f6203`
 *   `docs/protocol/M3E_FRONTEND_MARKET_CONTEXT_INPUT_CONTRACT.md`
 *   `docs/protocol/M3E_FRONTEND_CAVEAT_REGISTER.md`
 *   `docs/protocol/M3E_FRONTEND_DISPLAY_RULES.md`
-*   `docs/protocol/M3E_FRONTEND_MARKET_CONTEXT_VIEW_DESIGN.md`
+*   `docs/design/M3E_01_FRONTEND_MARKET_CONTEXT_VIEW_DESIGN.md`
+*   `research/generated/ai_context_pack.json`
+*   `research/generated/chatgpt_briefing.md`
 
 ## 4. Validation Commands Executed
 
 *   `python -m compileall scripts server tests`
-*   `pytest -m "not network" -v`
+*   `python -m pytest -m "not network" -v`
 *   Static grep checks for prohibited dependencies and live calls.
 
 ## 5. Terminal Output Summary
 
 *   The `compileall` command passed with no syntax errors.
-*   The `pytest` command passed 102 tests with 0 failures when run in an environment with properly resolved dependencies (`python -m pytest`).
+*   The `python -m pytest -m "not network" -v` command passed 102 tests with 0 failures.
 *   The static grep checks confirmed the absence of React, Vue, Vite, Tailwind, CDN links, live probes, and external API fetches.
 
 ## 6. Static Safety Check Summary
