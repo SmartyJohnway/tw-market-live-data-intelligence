@@ -91,13 +91,13 @@ The UI must handle and persistently render the following caveats highlighted in 
 - **Panel Level Warnings:**
   - `source_health_summary_describes_local_generated_source_state_only`: Note near source health that state is local/generated/offline.
   - `does_not_claim_current_live_production_source_availability`: Emphasize source health is not live production health.
-  - `latest_snapshot_contains_no_successful_symbols`: Major warning fallback state if successful symbols == 0.
+  - `latest_snapshot_contains_no_successful_symbols`: Major warning fallback state if `latest_snapshot_summary.symbol_count == 0`.
   - `failed_sources_and_failed_targets_limit_summary`: Warning if failures > 0.
 
 ## 9. Empty / Missing / Failed-State Behavior
 
 - If `ai_context_pack.json` fails to load (e.g. 404), the UI must display a critical full-page error indicating that "Context Artifacts are Missing. Run generator scripts to produce artifacts."
-- Given the expected offline preflight state, the UI must gracefully render when `successful_symbols` is 0 and `failed_targets` is 10. The tables for Failed Targets and Sources must remain visible and prominently styled to indicate degradation.
+- Given the expected offline preflight state, the UI must gracefully render when `latest_snapshot_summary.symbol_count == 0` and `latest_snapshot_summary.failed_symbol_count == latest_snapshot_summary.target_count` (e.g., all 10 failed). The tables for Failed Targets and Sources must remain visible and prominently styled to indicate degradation.
 - Empty arrays (e.g., `[]` for usable sources) must render as "None" or "0" without JS exceptions.
 
 ## 10. Styling and Layout Guidance
@@ -126,8 +126,8 @@ The UI must strictly avoid and ensure the text does NOT contain concepts related
 
 - **File Fetching CORS / Paths:** Accessing files in `research/generated/` from `frontend/public/` via fetch might run into path resolution or CORS issues depending on how the frontend is locally served (e.g., direct `file://` vs `python -m http.server`).
   - *Mitigation:* Document the expected local server execution command for viewing the frontend (e.g., run `python -m http.server` from the repository root).
-- **Markdown Parsing:** Rendering `chatgpt_briefing.md` requires a Markdown to HTML parser in Vanilla JS.
-  - *Mitigation:* Include a lightweight, secure library like `marked.js` via CDN in M3E-02, or explicitly state that it will be rendered as plain text within a `<pre>` block if external dependencies are forbidden.
+- **Markdown Parsing:** Rendering `chatgpt_briefing.md` safely without external network calls.
+  - *Mitigation:* Render `chatgpt_briefing.md` as escaped plaintext inside a `<pre>` block by default. If Markdown rendering is later required, use only a repo-local / vendored parser or an already-existing local dependency, and require explicit authorization before adding it. Do not load Markdown libraries from CDN.
 
 ## 14. Recommended M3E-02 Implementation Milestone
 
