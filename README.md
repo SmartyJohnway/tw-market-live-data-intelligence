@@ -127,6 +127,7 @@ The system relies heavily on established protocols and taxonomy documentation to
   - [Frontend Display Rules](docs/protocol/M3E_FRONTEND_DISPLAY_RULES.md)
   - [M3E-01 Preflight Readiness Report](docs/reviews/M3E_PREFLIGHT_01_FRONTEND_MARKET_CONTEXT_READINESS.md)
   - [M3E-01 Frontend Market Context View Design](docs/design/M3E_01_FRONTEND_MARKET_CONTEXT_VIEW_DESIGN.md)
+  - [M3E-03 Final Review and Merge](docs/reviews/M3E_03_FRONTEND_FINAL_REVIEW_AND_MERGE.md)
 
 ## Known Caveats
 1. Unofficial endpoints (like TWSE MIS or Yahoo Finance) are extremely fragile. They are rate-limited, require specific headers (sometimes cookies), and can break without notice.
