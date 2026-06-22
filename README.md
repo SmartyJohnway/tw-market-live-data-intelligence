@@ -129,6 +129,21 @@ The system relies heavily on established protocols and taxonomy documentation to
   - [M3E-01 Frontend Market Context View Design](docs/design/M3E_01_FRONTEND_MARKET_CONTEXT_VIEW_DESIGN.md)
   - [M3E-03 Final Review and Merge](docs/reviews/M3E_03_FRONTEND_FINAL_REVIEW_AND_MERGE.md)
 
+- **M3F Frontend Usability:**
+  - [M3F Frontend Static Serving Guide](docs/protocol/M3F_FRONTEND_STATIC_SERVING_GUIDE.md)
+  - [M3F-01 Completion Report](docs/reviews/M3F_01_FRONTEND_USABILITY_STATIC_SERVING_AND_DOCS_HARDENING.md)
+
+## Frontend Static Serving
+
+```bash
+python -m http.server 8000
+```
+
+Open:
+```text
+http://localhost:8000/frontend/public/market-context.html
+```
+
 ## Known Caveats
 1. Unofficial endpoints (like TWSE MIS or Yahoo Finance) are extremely fragile. They are rate-limited, require specific headers (sometimes cookies), and can break without notice.
 2. The concept of "real-time" is strictly bound by the `delay_status` and `staleness_seconds` metrics defined in the data contract envelope. Do not assume data is live unless explicitly proven by these fields.

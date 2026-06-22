@@ -208,12 +208,32 @@
     <div id="error-container" class="alert alert-critical panel">
         <h2>Critical Error</h2>
         <p>Context artifacts are missing or unavailable.</p>
-        <p>This read-only viewer requires <code>research/generated/ai_context_pack.json</code>.</p>
-        <p>Serve the repository root with a local static server and regenerate artifacts only through authorized upstream milestones.</p>
+        <p>This read-only viewer requires the AI Context Pack to be present.</p>
+        <p><strong>Attempted relative path:</strong> <code>../../research/generated/ai_context_pack.json</code></p>
+        <p><strong>Repo-root path:</strong> <code>research/generated/ai_context_pack.json</code></p>
+        <p>Please ensure you are serving the repository root with a local static server:</p>
+        <pre>python -m http.server 8000</pre>
+        <p>Regenerate artifacts only through authorized upstream milestones.</p>
         <pre id="error-details"></pre>
     </div>
 
     <div id="main-content">
+        <details open class="panel" style="background-color: var(--color-bg-alt); margin-bottom: var(--spacing);">
+            <summary style="font-weight: 600; cursor: pointer; padding-bottom: 5px; font-size: 1.1em;">How to open this page</summary>
+            <div style="margin-top: 10px;">
+                <p style="margin-top: 0;"><strong>Start from repo root</strong> and run a local static server:</p>
+                <pre class="code-inline" style="display: block; padding: 10px;">python -m http.server 8000</pre>
+                <p>Then open the following URL in your browser:</p>
+                <pre class="code-inline" style="display: block; padding: 10px;"><a href="http://localhost:8000/frontend/public/market-context.html">http://localhost:8000/frontend/public/market-context.html</a></pre>
+                <p><strong>Warning:</strong> Opening this file directly via <code>file://</code> mode may not load artifacts correctly due to browser security restrictions on the <code>fetch()</code> API.</p>
+                <p><strong>Required Artifact Paths:</strong></p>
+                <ul class="no-bullets">
+                    <li><code>../../research/generated/ai_context_pack.json</code></li>
+                    <li><code>../../research/generated/chatgpt_briefing.md</code></li>
+                </ul>
+            </div>
+        </details>
+
         <!-- 2. Scope Banner (Top Banner Language) -->
         <div class="alert alert-warning">
             <strong>CRITICAL SCOPE & CAVEATS:</strong>
@@ -230,6 +250,15 @@
         <div id="degraded-banner" class="alert alert-critical">
             <strong>DEGRADED STATE:</strong> The latest market snapshot contains 0 successful symbols or all targeted symbols failed. Artifact data relies on fallback or failed offline states.
         </div>
+
+        <!-- Artifact Load Status Panel -->
+        <section class="panel">
+            <h2>Artifact Load Status</h2>
+            <div class="key-value"><span class="key"><code>ai_context_pack.json</code></span><span id="status-context-pack"></span></div>
+            <div class="key-value"><span class="key"><code>chatgpt_briefing.md</code></span><span id="status-briefing"></span></div>
+            <div class="key-value"><span class="key">Last rendered at</span><span id="status-render-time"></span></div>
+            <p class="muted" style="margin-top: 5px; font-size: 0.85em;">Note: Browser render time does not reflect market freshness or artifact generation time.</p>
+        </section>
 
         <!-- 1. Context Status Header -->
         <section class="panel">
@@ -324,20 +353,26 @@
         </div>
 
         <!-- 6. Failed Sources Table -->
-        <section class="panel">
+        <section class="panel" style="overflow-x: auto;">
             <h2>Failed Sources</h2>
             <div id="failed-sources-container"></div>
         </section>
 
         <!-- 7. Failed Targets Table -->
-        <section class="panel">
+        <section class="panel" style="overflow-x: auto;">
             <h2>Failed Targets</h2>
             <div id="failed-targets-container"></div>
         </section>
 
         <!-- 9. AI Briefing Preview -->
         <section class="panel">
-            <h2>AI Briefing Preview</h2>
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <h2>AI Briefing Preview</h2>
+                <div>
+                    <span id="copy-briefing-status" style="font-size: 0.85em; margin-right: 10px; font-weight: 500;"></span>
+                    <button id="copy-briefing-btn" style="padding: 4px 8px; cursor: pointer;">Copy AI Briefing</button>
+                </div>
+            </div>
             <p class="muted" style="font-size: 0.85em; margin-bottom: 10px;">This briefing is for context only. It is not investment advice.</p>
             <pre id="briefing-content">Loading...</pre>
         </section>
@@ -503,6 +538,9 @@
         };
 
         async function init() {
+            const renderTime = new Date().toLocaleString();
+            setText('status-render-time', renderTime);
+
             try {
                 const packRes = await fetch('../../research/generated/ai_context_pack.json');
                 if (!packRes.ok) {
@@ -510,6 +548,7 @@
                 }
                 const pack = await packRes.json();
 
+                setBadge('status-context-pack', 'loaded', 'success');
                 document.getElementById('main-content').style.display = 'block';
 
                 // 1. Context Status
@@ -758,15 +797,52 @@
                 }
                 const mdText = await mdRes.text();
                 document.getElementById('briefing-content').textContent = mdText;
+                setBadge('status-briefing', 'loaded', 'success');
             } catch (err) {
+                setBadge('status-briefing', 'unavailable', 'critical');
                 const bc = document.getElementById('briefing-content');
                 if (bc) {
                     clearChildren(bc);
                     const span = document.createElement('span');
                     span.className = 'muted';
-                    span.textContent = `Unavailable (${err.message})`;
+                    span.textContent = `Unavailable (../../research/generated/chatgpt_briefing.md failed: ${err.message})`;
                     bc.appendChild(span);
                 }
+                const copyStatus = document.getElementById('copy-briefing-status');
+                if (copyStatus) {
+                    copyStatus.textContent = 'Briefing unavailable.';
+                    copyStatus.style.color = 'var(--color-critical-text)';
+                }
+            }
+
+            // Clipboard Copy Setup
+            const copyBtn = document.getElementById('copy-briefing-btn');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', async () => {
+                    const content = document.getElementById('briefing-content').textContent;
+                    const statusEl = document.getElementById('copy-briefing-status');
+
+                    if (content.startsWith('Unavailable') || content === 'Loading...') {
+                        statusEl.textContent = 'Briefing unavailable.';
+                        statusEl.style.color = 'var(--color-warning-text)';
+                        return;
+                    }
+
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        try {
+                            await navigator.clipboard.writeText(content);
+                            statusEl.textContent = 'Copied.';
+                            statusEl.style.color = 'var(--color-success-text)';
+                            setTimeout(() => { statusEl.textContent = ''; }, 3000);
+                        } catch (err) {
+                            statusEl.textContent = 'Copy failed: clipboard unavailable.';
+                            statusEl.style.color = 'var(--color-critical-text)';
+                        }
+                    } else {
+                        statusEl.textContent = 'Copy failed: clipboard unavailable.';
+                        statusEl.style.color = 'var(--color-critical-text)';
+                    }
+                });
             }
         }
 
