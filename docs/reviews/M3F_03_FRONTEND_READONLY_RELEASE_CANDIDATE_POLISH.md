@@ -11,6 +11,7 @@
 - `frontend/public/index.html`
 - `docs/protocol/M3F_FRONTEND_STATIC_SERVING_GUIDE.md`
 - `README.md`
+- `docs/reviews/M3F_03_FRONTEND_READONLY_RELEASE_CANDIDATE_POLISH.md`
 
 ## UI Polish Summary
 1. Updated `market-context.html` tables to be wrapped in `.table-wrapper` elements with CSS `overflow-x: auto` that provide horizontal scrolling, preserving table readability on narrow screens without hiding columns.
