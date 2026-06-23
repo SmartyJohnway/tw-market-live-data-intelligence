@@ -135,10 +135,12 @@ The system relies heavily on established protocols and taxonomy documentation to
   - [M3F-03 Release Candidate Polish Report](docs/reviews/M3F_03_FRONTEND_READONLY_RELEASE_CANDIDATE_POLISH.md)
   - [M3F-04 Final Acceptance Report](docs/reviews/M3F_04_FRONTEND_READONLY_FINAL_ACCEPTANCE_AND_TAGGING.md)
 
-- **M3G Frontend Revalidation:**
+- **M3G Frontend Revalidation & Source Recovery:**
   - [M3G-01 Artifact Refresh and Revalidation](docs/reviews/M3G_01_RELEASE_TAG_ARTIFACT_REFRESH_AND_FRONTEND_REVALIDATION.md)
+  - [M3G-02 Market Source Recovery Preflight](docs/reviews/M3G_02_MARKET_SOURCE_RECOVERY_PREFLIGHT.md)
+  - [M3G Source Recovery Plan](docs/protocol/M3G_SOURCE_RECOVERY_PLAN.md)
 
-Recommended frontend RC tag: m3f-readonly-frontend-rc1 (Next milestone: M3G-02-MARKET-SOURCE-RECOVERY-PREFLIGHT)
+Recommended frontend RC tag: m3f-readonly-frontend-rc1 (Next milestone: M3G-03-CONTROLLED-MARKET-SOURCE-PROBE-REPAIR)
 
 ## Frontend Static Serving
 
