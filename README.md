@@ -133,6 +133,9 @@ The system relies heavily on established protocols and taxonomy documentation to
   - [M3F Frontend Static Serving Guide](docs/protocol/M3F_FRONTEND_STATIC_SERVING_GUIDE.md)
   - [M3F-01 Completion Report](docs/reviews/M3F_01_FRONTEND_USABILITY_STATIC_SERVING_AND_DOCS_HARDENING.md)
   - [M3F-03 Release Candidate Polish Report](docs/reviews/M3F_03_FRONTEND_READONLY_RELEASE_CANDIDATE_POLISH.md)
+  - [M3F-04 Final Acceptance Report](docs/reviews/M3F_04_FRONTEND_READONLY_FINAL_ACCEPTANCE_AND_TAGGING.md)
+
+Recommended frontend RC tag: m3f-readonly-frontend-rc1
 
 ## Frontend Static Serving
 
