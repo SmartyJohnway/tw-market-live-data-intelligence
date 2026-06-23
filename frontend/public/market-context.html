@@ -98,6 +98,11 @@
             color: var(--color-info-text);
         }
 
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -204,6 +209,11 @@
         ul.no-bullets li:last-child {
             border-bottom: none;
         }
+
+        a:focus, button:focus, summary:focus {
+            outline: 2px solid var(--color-link);
+            outline-offset: 2px;
+        }
     </style>
 </head>
 <body>
@@ -259,15 +269,15 @@
         <!-- Artifact Load Status Panel -->
         <section class="panel">
             <h2>Artifact Load Status</h2>
-            <div class="key-value"><span class="key"><code>ai_context_pack.json</code></span><span id="status-context-pack"></span></div>
-            <div class="key-value"><span class="key"><code>chatgpt_briefing.md</code></span><span id="status-briefing"></span></div>
+            <div class="key-value"><span class="key"><code>ai_context_pack.json</code></span><span id="status-context-pack" aria-live="polite"></span></div>
+            <div class="key-value"><span class="key"><code>chatgpt_briefing.md</code></span><span id="status-briefing" aria-live="polite"></span></div>
             <div class="key-value"><span class="key">Last rendered at</span><span id="status-render-time"></span></div>
             <p class="muted" style="margin-top: 5px; font-size: 0.85em;">Note: Browser render time does not reflect market freshness or artifact generation time.</p>
         </section>
 
         <!-- 1. Context Status Header -->
         <section class="panel">
-            <h2>Context Status Header</h2>
+            <h2>Context Status Header <span style="font-size: 0.7em; font-weight: normal; color: var(--color-info-text); margin-left: 10px;">(Artifact generation time; browser render time is not market freshness)</span></h2>
             <div class="grid-2col">
                 <div>
                     <div class="key-value"><span class="key">Pack Version</span><span id="pack-version" class="code-inline"></span></div>
@@ -276,7 +286,7 @@
                 <div>
                     <div class="key-value"><span class="key">Generated At (UTC)</span><span id="generated-utc"></span></div>
                     <div class="key-value"><span class="key">Generated At (Taipei)</span><span id="generated-taipei"></span></div>
-                    <p class="muted" style="margin-top: 5px; font-size: 0.85em;">Note: Generation time does not guarantee live market freshness.</p>
+                    <p class="muted" style="margin-top: 5px; font-size: 0.85em;">Note: Generation time and browser render time do not guarantee live market freshness.</p>
                 </div>
             </div>
 
@@ -291,7 +301,7 @@
         <div class="grid-2col">
             <!-- 3. Source Health & Authority Panel -->
             <section class="panel">
-                <h2>Source Health & Authority</h2>
+                <h2>Source Health & Authority <span style="font-size: 0.7em; font-weight: normal; color: var(--color-info-text); margin-left: 10px;">(Local artifact state, not live source uptime)</span></h2>
                 <p class="muted" style="font-size: 0.85em; margin-bottom: 10px;">Source health describes local generated offline state, not live production source availability.</p>
 
                 <div class="key-value"><span class="key">Total Sources</span><span id="total-sources"></span></div>
@@ -374,7 +384,7 @@
             <div style="display: flex; justify-content: space-between; align-items: baseline;">
                 <h2>AI Briefing Preview</h2>
                 <div>
-                    <span id="copy-briefing-status" style="font-size: 0.85em; margin-right: 10px; font-weight: 500;"></span>
+                    <span id="copy-briefing-status" aria-live="polite" style="font-size: 0.85em; margin-right: 10px;"></span>
                     <button id="copy-briefing-btn" style="padding: 4px 8px; cursor: pointer;">Copy AI Briefing</button>
                 </div>
             </div>
@@ -478,6 +488,8 @@
                 return;
             }
 
+            const wrapper = document.createElement('div');
+            wrapper.className = 'table-wrapper';
             const table = document.createElement('table');
             const thead = document.createElement('thead');
             const trHead = document.createElement('tr');
@@ -509,7 +521,8 @@
             });
             table.appendChild(tbody);
 
-            container.appendChild(table);
+            wrapper.appendChild(table);
+            container.appendChild(wrapper);
         };
 
         const appendKeyValue = (containerId, key, value) => {
@@ -817,6 +830,12 @@
                 if (copyStatus) {
                     copyStatus.textContent = 'Briefing unavailable.';
                     copyStatus.style.color = 'var(--color-critical-text)';
+                }
+                const copyBtn = document.getElementById('copy-briefing-btn');
+                if (copyBtn) {
+                    copyBtn.disabled = true;
+                    copyBtn.style.cursor = 'not-allowed';
+                    copyBtn.style.opacity = '0.5';
                 }
             }
 

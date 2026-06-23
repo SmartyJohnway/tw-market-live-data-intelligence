@@ -54,5 +54,7 @@ This frontend viewer is strictly an AI research workbench artifact viewer. It is
 - Investment advice
 - Full-market coverage
 - A trading signal UI
+- A recommendation engine
+- A trading dashboard
 
 Observations provided in the UI are descriptive only and are not trading signals. No official realtime quote guarantee is established.
