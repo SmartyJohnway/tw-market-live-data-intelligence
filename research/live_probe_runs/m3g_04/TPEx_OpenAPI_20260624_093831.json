@@ -1,10 +1,10 @@
 {
-  "probe_id": "tpex_openapi_20260624_081854",
+  "probe_id": "tpex_openapi_20260624_093832",
   "source": "TPEx_OpenAPI",
   "source_type": "official_openapi",
   "contract_status": "failed",
-  "retrieved_at_utc": "2026-06-24T08:19:20.148177+00:00",
-  "retrieved_at_taipei": "2026-06-24T16:19:20.148177+00:00",
+  "retrieved_at_utc": "2026-06-24T09:38:40.000842+00:00",
+  "retrieved_at_taipei": "2026-06-24T17:38:40.000842+00:00",
   "request": {
     "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
     "method": "GET",

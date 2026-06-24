@@ -64,6 +64,14 @@ def normalize_yahoo_chart_result(result_data, requested_symbol, retrieved_at_utc
     if not meta:
         data_quality_flags.append("missing_meta")
 
+    # Target Identity Validation
+    exchange_name = meta.get("exchangeName", "")
+    exchange_tz = meta.get("exchangeTimezoneName", "")
+    returned_symbol = meta.get("symbol", "")
+
+    if (exchange_name and "Japan" in exchange_name) or (exchange_tz and "Tokyo" in exchange_tz):
+        data_quality_flags.append("identity_mismatch_japan_otc")
+
     gmtoffset = meta.get("gmtoffset")
 
     regular_market_time = meta.get("regularMarketTime")
@@ -287,15 +295,27 @@ def probe(symbols=None):
 
     staleness_seconds = None
     delay_status = "unknown"
+    contract_status = "failed"
+    is_usable_now = False
+
     if normalized_sample:
         staleness_seconds = normalized_sample.get("staleness_seconds")
         delay_status = normalized_sample.get("delay_status", "unknown")
 
-    return generate_standard_envelope(
+        contract_status = "normalized_pass" if overall_success else "failed"
+        is_usable_now = True
+
+        if normalized_sample and "identity_mismatch_japan_otc" in normalized_sample.get("data_quality_flags", []):
+            contract_status = "identity_mismatch"
+            is_usable_now = False
+            failed_targets.append(normalized_sample.get("requested_symbol"))
+            errors.append(f"Identity mismatch: returned {normalized_sample.get('symbol')} on {normalized_sample.get('exchange_name')} for {normalized_sample.get('requested_symbol')}")
+
+    envelope = generate_standard_envelope(
         probe_id=probe_id,
         source="Yahoo_Finance",
         source_type="unofficial_api",
-        contract_status="normalized_pass" if overall_success and normalized_sample else ("http_pass" if overall_success else "failed"),
+        contract_status=contract_status,
         http_status=200 if overall_success else "Mixed/Failed",
         url="https://query1.finance.yahoo.com/v8/finance/chart/[symbol]",
         headers_used=headers,
@@ -312,6 +332,11 @@ def probe(symbols=None):
         warnings=warnings,
         errors=errors
     )
+
+    if not is_usable_now:
+        envelope["is_usable_now"] = False
+
+    return envelope
 
 if __name__ == "__main__":
     import json

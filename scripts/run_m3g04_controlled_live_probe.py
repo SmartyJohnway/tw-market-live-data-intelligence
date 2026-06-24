@@ -78,14 +78,50 @@ def main():
     for source in sources:
         logger.info(f"Running probe for {source} with timeout=10s...")
         probe_func = PROBE_FUNCTIONS.get(source)
-        try:
-            result = probe_func(symbols=targets)
 
-            summary["results"][source] = {
-                "status": "completed"
-            }
+        # 1. Source-specific target mapping
+        mapped_targets = []
+        for t in targets:
+            if source == "Yahoo_Finance":
+                if t == "TAIEX" or t.lower() == "t00":
+                    mapped_targets.append("^TWII")
+                elif t in ["8069", "5347"]: # typically TPEx
+                    mapped_targets.append(f"{t}.TWO")
+                else: # typically TWSE
+                    mapped_targets.append(f"{t}.TW")
+            elif source == "TWSE_MIS":
+                if t == "TAIEX" or t.lower() == "t00":
+                    mapped_targets.append("tse_t00.tw")
+                elif t in ["8069", "5347"]: # typically TPEx
+                    mapped_targets.append(f"otc_{t}.tw")
+                else: # typically TWSE
+                    mapped_targets.append(f"tse_{t}.tw")
+            else:
+                mapped_targets.append(t) # Keep raw code for OpenAPI
+
+        try:
+            result = probe_func(symbols=mapped_targets)
+
+            contract_status = result.get("contract_status", "unknown")
+            http_ok = result.get("http_ok", False)
+            parse_status = result.get("parse_status", "unknown")
+            normalization_status = result.get("normalization_status", "unknown")
+            failed_targets = result.get("failed_targets", [])
+            errors = result.get("errors", [])
 
             out_file = output_dir / f"{source}_{timestamp}.json"
+
+            summary["results"][source] = {
+                "status": contract_status,
+                "contract_status": contract_status,
+                "http_ok": http_ok,
+                "parse_status": parse_status,
+                "normalization_status": normalization_status,
+                "failed_targets": failed_targets,
+                "errors": errors,
+                "output_file": str(out_file.name)
+            }
+
             with open(out_file, "w") as f:
                 json.dump(result, f, indent=2, ensure_ascii=False)
 
@@ -95,7 +131,12 @@ def main():
             logger.error(f"{source} failed: {e}")
             summary["results"][source] = {
                 "status": "failed",
-                "error": str(e)
+                "contract_status": "failed",
+                "http_ok": False,
+                "parse_status": "failed",
+                "normalization_status": "failed",
+                "failed_targets": targets,
+                "errors": [str(e)]
             }
 
     summary_file = output_dir / f"run_summary_{timestamp}.json"

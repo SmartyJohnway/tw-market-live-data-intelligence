@@ -1,0 +1,60 @@
+{
+  "timestamp": "2026-06-24T09:38:31.033773+00:00",
+  "targets": [
+    "2330",
+    "0050",
+    "00929",
+    "8069",
+    "TAIEX"
+  ],
+  "sources_requested": [
+    "TWSE_OpenAPI",
+    "TPEx_OpenAPI",
+    "TWSE_MIS",
+    "Yahoo_Finance"
+  ],
+  "results": {
+    "TWSE_OpenAPI": {
+      "status": "normalized_pass",
+      "contract_status": "normalized_pass",
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "failed_targets": [],
+      "errors": [],
+      "output_file": "TWSE_OpenAPI_20260624_093831.json"
+    },
+    "TPEx_OpenAPI": {
+      "status": "failed",
+      "contract_status": "failed",
+      "http_ok": false,
+      "parse_status": "failed",
+      "normalization_status": "failed",
+      "failed_targets": [],
+      "errors": [
+        "Response ended prematurely"
+      ],
+      "output_file": "TPEx_OpenAPI_20260624_093831.json"
+    },
+    "TWSE_MIS": {
+      "status": "normalized_pass",
+      "contract_status": "normalized_pass",
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "failed_targets": [],
+      "errors": [],
+      "output_file": "TWSE_MIS_20260624_093831.json"
+    },
+    "Yahoo_Finance": {
+      "status": "normalized_pass",
+      "contract_status": "normalized_pass",
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "failed_targets": [],
+      "errors": [],
+      "output_file": "Yahoo_Finance_20260624_093831.json"
+    }
+  }
+}

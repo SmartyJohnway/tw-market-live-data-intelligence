@@ -26,13 +26,14 @@ merge_sha = 11e23c3486ff9e175f408d0932380e7bd57792a2
 - `tests/test_m3g04_controlled_live_probe.py` (added)
 - `scripts/probe_twse_openapi.py`
 - `scripts/probe_tpex_openapi.py`
+- `scripts/probe_yahoo.py` (identity mismatch validation added)
 - `README.md` (will be updated)
 
 ## 5. Preflight Result
 Passed. Checked out baseline, loaded `config/market_targets.json`, and confirmed safe parameters for targets and scopes.
 
 ## 6. Offline Validation Result
-Passed. Compiled scripts/server/tests. `pytest -m "not network" -v` executed and 109/109 tests passed without errors.
+Passed. Compiled scripts/server/tests. `pytest -m "not network" -v` executed and 112/112 tests passed without errors.
 
 ## 7. Controlled Live Probe Authorization Decision
 Authorized. Bounded parameters were determined based on requested bounds (max 5 targets).
@@ -59,18 +60,18 @@ Selected from `config/market_targets.json` meeting priority list constraints.
 `research/live_probe_runs/m3g_04/`
 
 ## 12. Per-Source Result Summary
-- `TWSE_OpenAPI`: Completed, output normalized sample for 0050.
-- `TPEx_OpenAPI`: Completed, output normalized sample for 8069.
-- `TWSE_MIS`: Completed but HTTP parse failed for one or more requested symbols. Handled safely.
-- `Yahoo_Finance`: Completed, normalized chart payload.
+- `TWSE_OpenAPI`: `normalized_pass`, output normalized sample for 0050.
+- `TPEx_OpenAPI`: `failed`, encountered "Response ended prematurely". Documented accurately in summary.
+- `TWSE_MIS`: `normalized_pass`, mapped inputs using `tse_*.tw` and `otc_*.tw` logic.
+- `Yahoo_Finance`: `normalized_pass`, mapped inputs using `.TW` logic preventing Japan OTC identity mismatch.
 
 ## 13. Per-Target Result Summary
-- EOD OpenAPI successfully normalized specific matched symbols from batch payloads.
-- Yahoo successfully returned for the batch.
-- TWSE MIS failed on HTTP processing of the bounded batch shape but failure was properly caught, localized and written out without breaking scope.
+- EOD OpenAPI successfully normalized specific matched symbols from batch payloads (except when TPEx network timed out).
+- Yahoo successfully returned for the `.TW` mapped batch.
+- TWSE MIS successfully processed correctly mapped inputs (`tse_*.tw`).
 
 ## 14. Failure Classification
-`TWSE_MIS` partial failure classified as `http_ok: false / parse_status: failed`. Documented as expected API format drift / payload issues within controlled bounds. No unlimited retries.
+`TPEx_OpenAPI` failure classified as `http_ok: false / parse_status: failed`. Documented as expected API network latency issues within controlled bounds. No unlimited retries.
 
 ## 15. Raw Payload Redaction Confirmation
 Confirmed. Outputs under `research/live_probe_runs/m3g_04/` contain no secrets, tokens, or auth headers.
@@ -100,7 +101,7 @@ Confirmed. No broker APIs touched.
 Confirmed. Outputs remain pure technical observations.
 
 ## 24. Remaining Caveats
-- TWSE MIS API parse failures when handling subset arrays locally.
+- TPEx OpenAPI experiences network timeouts frequently without broad retry logic.
 - Live probe raw output files are correctly written but not natively consumed by the main generator script without further bridging logic.
 
 ## 25. Recommended Next Milestone

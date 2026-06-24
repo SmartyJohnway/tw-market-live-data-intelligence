@@ -129,6 +129,35 @@ def test_missing_quote_arrays_does_not_crash():
     assert result["normalized_sample"]["symbol"] == "NOQUOTE.TW"
 
 @responses.activate
+def test_identity_mismatch_is_rejected():
+    symbols = ["2330.TW"]
+    responses.add(
+        responses.GET,
+        "https://query1.finance.yahoo.com/v8/finance/chart/2330.TW",
+        json={
+            "chart": {
+                "result": [
+                    {
+                        "meta": {
+                            "symbol": "2330",
+                            "exchangeName": "JSD",
+                            "exchangeTimezoneName": "Asia/Tokyo"
+                        }
+                    }
+                ]
+            }
+        },
+        status=200
+    )
+
+    result = probe(symbols=symbols)
+
+    assert result["contract_status"] == "identity_mismatch"
+    assert "2330.TW" in result["failed_targets"]
+    assert any("Identity mismatch" in e for e in result["errors"])
+
+
+@responses.activate
 def test_network_exception_is_classified_as_error():
     symbols = ["TIMEOUT.TW"]
     import requests

@@ -1,10 +1,10 @@
 {
-  "probe_id": "twse_openapi_20260624_081850",
+  "probe_id": "twse_openapi_20260624_093831",
   "source": "TWSE_OpenAPI",
   "source_type": "official_openapi",
   "contract_status": "normalized_pass",
-  "retrieved_at_utc": "2026-06-24T08:18:54.312385+00:00",
-  "retrieved_at_taipei": "2026-06-24T16:18:54.312385+00:00",
+  "retrieved_at_utc": "2026-06-24T09:38:32.146803+00:00",
+  "retrieved_at_taipei": "2026-06-24T17:38:32.146803+00:00",
   "request": {
     "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
     "method": "GET",
@@ -107,7 +107,7 @@
       "Transaction": "178179"
     },
     "unmapped_raw_fields": {},
-    "retrieved_at_utc": "2026-06-24T08:18:54.312320+00:00"
+    "retrieved_at_utc": "2026-06-24T09:38:32.146741+00:00"
   },
   "freshness_status": "eod_batch",
   "staleness_seconds": null,
