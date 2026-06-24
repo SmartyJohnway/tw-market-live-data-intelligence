@@ -1,0 +1,16 @@
+{
+  "msgArray": [],
+  "referer": "",
+  "userDelay": 5000,
+  "rtcode": "0000",
+  "queryTime": {
+    "sysDate": "20240621",
+    "stockInfoItem": 2516,
+    "stockInfo": 204910,
+    "sessionStr": "UserSession",
+    "sysTime": "13:30:00"
+  },
+  "rtmessage": "OK",
+  "exKey": "msgArray",
+  "cachedAlive": 15024
+}
