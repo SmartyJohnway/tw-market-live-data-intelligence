@@ -1,0 +1,42 @@
+{
+  "probe_id": "tpex_openapi_20260624_093832",
+  "source": "TPEx_OpenAPI",
+  "source_type": "official_openapi",
+  "contract_status": "failed",
+  "retrieved_at_utc": "2026-06-24T09:38:40.000842+00:00",
+  "retrieved_at_taipei": "2026-06-24T17:38:40.000842+00:00",
+  "request": {
+    "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
+    "method": "GET",
+    "params": {},
+    "headers": {
+      "Accept": "application/json"
+    }
+  },
+  "http_status": "Error",
+  "http_ok": false,
+  "parse_status": "failed",
+  "normalization_status": "failed",
+  "schema_fingerprint": null,
+  "schema_hash": null,
+  "raw_sample_path": null,
+  "normalized_sample_path": null,
+  "raw_sample": null,
+  "normalized_sample": null,
+  "freshness_status": "unknown",
+  "staleness_seconds": null,
+  "delay_status": "unknown",
+  "requires_auth": false,
+  "requires_session": false,
+  "risk_level": "low",
+  "risk_notes": [],
+  "ai_suitability": "unknown",
+  "is_usable_now": false,
+  "potentially_usable_with_credentials": false,
+  "unsupported_targets": [],
+  "failed_targets": [],
+  "warnings": [],
+  "errors": [
+    "Response ended prematurely"
+  ]
+}

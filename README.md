@@ -139,9 +139,11 @@ The system relies heavily on established protocols and taxonomy documentation to
 - **M3G Frontend Revalidation & Source Recovery:**
   - [M3G-01 Artifact Refresh and Revalidation](docs/reviews/M3G_01_RELEASE_TAG_ARTIFACT_REFRESH_AND_FRONTEND_REVALIDATION.md)
   - [M3G-02 Market Source Recovery Preflight](docs/reviews/M3G_02_MARKET_SOURCE_RECOVERY_PREFLIGHT.md)
+  - [M3G-03 Controlled Market Source Probe Repair](docs/reviews/M3G_03_CONTROLLED_MARKET_SOURCE_PROBE_REPAIR.md)
+  - [M3G-04 Controlled Live Probe Authorization Execution and Revalidation](docs/reviews/M3G_04_CONTROLLED_LIVE_PROBE_AUTHORIZATION_EXECUTION_AND_REVALIDATION.md)
   - [M3G Source Recovery Plan](docs/protocol/M3G_SOURCE_RECOVERY_PLAN.md)
 
-Recommended frontend RC tag: m3f-readonly-frontend-rc1 (Next milestone: M3G-03-CONTROLLED-MARKET-SOURCE-PROBE-REPAIR)
+Recommended frontend RC tag: m3f-readonly-frontend-rc1 (Next milestone: M3G-05-CONTROLLED-SOURCE-REFRESH-HARDENING-AND-AUTOMATION-PREFLIGHT)
 
 ## Frontend Static Serving
 

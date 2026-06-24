@@ -76,7 +76,7 @@ def normalize_tpex_openapi_row(row, retrieved_at_utc_dt):
 
     return normalized
 
-def probe():
+def probe(symbols=None):
     print("Probing TPEx OpenAPI...")
     url = "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
     headers = {"Accept": "application/json"}
@@ -87,7 +87,16 @@ def probe():
         status = response.status_code
         data = response.json()
 
-        sample = data[0] if data and isinstance(data, list) else None
+        sample = None
+        if data and isinstance(data, list):
+            if symbols:
+                for row in data:
+                    if row.get("SecuritiesCompanyCode", "").strip() in symbols:
+                        sample = row
+                        break
+            if not sample and len(data) > 0:
+                sample = data[0]
+
         normalized = None
         if sample:
             retrieved_at_utc_dt = datetime.now(timezone.utc)
