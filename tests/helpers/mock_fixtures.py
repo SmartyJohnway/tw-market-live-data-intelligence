@@ -74,6 +74,28 @@ def build_mock_inputs_from_fixtures(retrieved_at_utc_dt=None):
         # map yahoo symbol back to standard config symbol if needed (e.g., 2330.TW -> 2330)
         symbol = sym_raw.replace(".TW", "").replace(".TWO", "").replace("^TWII", "TAIEX") if sym_raw else "2330"
         norm = normalize_yahoo_chart_result(result_data, sym_raw, retrieved_at_utc_dt)
+
+        # Test-only mapping to bridge Yahoo_Finance payload to build_snapshot expectations
+        mapped_norm = {
+            "last_price": norm.get("regular_market_price"),
+            "previous_close": norm.get("raw_meta", {}).get("previousClose"),
+            "source_time": norm.get("regular_market_time_utc"),
+            "retrieved_time": norm.get("retrieved_at_utc"),
+            "open": norm.get("series", {}).get("open", [None])[0] if norm.get("series", {}).get("open") else None,
+            "high": norm.get("series", {}).get("high", [None])[0] if norm.get("series", {}).get("high") else None,
+            "low": norm.get("series", {}).get("low", [None])[0] if norm.get("series", {}).get("low") else None,
+            "volume": norm.get("series", {}).get("volume", [None])[0] if norm.get("series", {}).get("volume") else None,
+            "exchange": norm.get("exchange_name"),
+            "price_semantics": "live_candidate" # This is mapped by apply_source_priority_policy usually, but we help it out
+        }
+
+        if mapped_norm["last_price"] is not None and mapped_norm["previous_close"] is not None and mapped_norm["previous_close"] > 0:
+            mapped_norm["change"] = mapped_norm["last_price"] - mapped_norm["previous_close"]
+            mapped_norm["change_pct"] = (mapped_norm["change"] / mapped_norm["previous_close"]) * 100
+
+        # Merge back in so the norm structure has expected generator keys
+        norm.update(mapped_norm)
+
         if symbol:
             mock_inputs["Yahoo_Finance"][symbol] = norm
 

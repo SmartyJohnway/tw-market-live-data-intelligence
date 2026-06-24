@@ -73,10 +73,12 @@ Confirmed. Prohibited interpretation guarantees were asserted explicitly in test
 The test offline snapshot successfully produced entries such as `2330` using `TWSE_MIS` as the primary live candidate (`last_price`: `1015.0`) and `8069` using `TPEx_OpenAPI` as an EOD reference (`close`: `250.0`), all correctly stamped with freshness status and caveats.
 
 ## 16. Remaining source recovery caveats
-Broker sources (FinMind, Fugle, Fubon) remain deferred and untested offline. `TWSE_MIS` requires parsing out the cookie authentication flow if moved into true live integration. Timezone normalizations for non-standard EOD endpoints remain slightly sensitive to local time states.
+FinMind remains deferred as a third-party source.
+Fugle and Fubon remain deferred as auth-required broker sources.
+`TWSE_MIS` requires parsing out the cookie authentication flow if moved into true live integration. Timezone normalizations for non-standard EOD endpoints remain slightly sensitive to local time states.
 
 ## 17. Readiness for LEVEL_2
-The parser, normalization, and generator logic are stable when fed deterministic inputs. The pipeline guarantees boundaries natively. It is ready for LEVEL_2 live probes.
+The parser, normalization, and generator logic are stable when fed deterministic inputs. The pipeline guarantees boundaries natively. Ready for M3G-04 controlled live probe authorization preflight. LEVEL_2 live probes are not authorized by this milestone.
 
 ## 18. Validation commands and results
 ```bash

@@ -113,6 +113,32 @@ def test_build_snapshot_with_mock_success():
     assert "recommendation" not in snapshot_str
 
 @pytest.mark.offline
+def test_build_snapshot_with_yahoo_only():
+    retrieved_at_utc_dt = datetime.now(timezone.utc)
+    mock_inputs = build_mock_inputs_from_fixtures(retrieved_at_utc_dt)
+
+    # Isolate Yahoo Finance as the only available source
+    yahoo_only_inputs = {
+        "TWSE_MIS": {},
+        "TWSE_OpenAPI": {},
+        "TPEx_OpenAPI": {},
+        "Yahoo_Finance": {"2330": mock_inputs["Yahoo_Finance"]["2330"]}
+    }
+
+    snapshot = build_snapshot(MOCK_TARGETS_CONFIG, mock_inputs=yahoo_only_inputs)
+
+    symbols_map = {s["symbol"]: s for s in snapshot["symbols"]}
+    assert "2330" in symbols_map
+
+    sym_2330 = symbols_map["2330"]
+
+    assert sym_2330["source_used"] == "Yahoo_Finance"
+    assert sym_2330["source_authority"] == "third_party"
+    assert "third_party_coverage_caveats" in sym_2330["caveats"]
+    assert sym_2330["price_semantics"] in ["live_candidate", "stale_quote"]
+    assert snapshot["watchlist_scope"]["full_market_scan"] is False
+
+@pytest.mark.offline
 def test_build_snapshot_with_mock_empty():
     # 10. Mock inputs preserve failed-symbol handling for unsupported or missing targets.
     empty_mock_inputs = {
