@@ -129,7 +129,7 @@ def test_missing_quote_arrays_does_not_crash():
     assert result["normalized_sample"]["symbol"] == "NOQUOTE.TW"
 
 @responses.activate
-def test_identity_mismatch_is_rejected():
+def test_identity_mismatch_japan_otc_is_rejected():
     symbols = ["2330.TW"]
     responses.add(
         responses.GET,
@@ -153,9 +153,95 @@ def test_identity_mismatch_is_rejected():
     result = probe(symbols=symbols)
 
     assert result["contract_status"] == "identity_mismatch"
+    assert result["is_usable_now"] is False
+    assert "2330.TW" in result["failed_targets"]
+    assert any("Identity mismatch for 2330.TW" in e and "Exchange is JSD" in e for e in result["errors"])
+
+
+@responses.activate
+def test_identity_mismatch_suffix_drop_is_rejected():
+    symbols = ["0050.TW"]
+    responses.add(
+        responses.GET,
+        "https://query1.finance.yahoo.com/v8/finance/chart/0050.TW",
+        json={
+            "chart": {
+                "result": [
+                    {
+                        "meta": {
+                            "symbol": "0050",
+                            "exchangeName": "TAI",
+                            "exchangeTimezoneName": "Asia/Taipei"
+                        }
+                    }
+                ]
+            }
+        },
+        status=200
+    )
+
+    result = probe(symbols=symbols)
+
+    assert result["contract_status"] == "identity_mismatch"
+    assert result["is_usable_now"] is False
+    assert "0050.TW" in result["failed_targets"]
+    assert any("Identity mismatch for 0050.TW" in e and "dropped requested suffix" in e for e in result["errors"])
+
+
+@responses.activate
+def test_identity_mismatch_forside_name_is_rejected():
+    symbols = ["2330.TW"]
+    responses.add(
+        responses.GET,
+        "https://query1.finance.yahoo.com/v8/finance/chart/2330.TW",
+        json={
+            "chart": {
+                "result": [
+                    {
+                        "meta": {
+                            "symbol": "2330",
+                            "longName": "For-side.com Co., Ltd.",
+                            "exchangeName": "JSD"
+                        }
+                    }
+                ]
+            }
+        },
+        status=200
+    )
+
+    result = probe(symbols=symbols)
+
+    assert result["contract_status"] == "identity_mismatch"
+    assert result["is_usable_now"] is False
     assert "2330.TW" in result["failed_targets"]
     assert any("Identity mismatch" in e for e in result["errors"])
 
+def test_detect_yahoo_identity_mismatch_helper():
+    from scripts.probe_yahoo import detect_yahoo_identity_mismatch
+
+    # 1. Japan indicator
+    is_mismatch, reason = detect_yahoo_identity_mismatch("2330.TW", {"exchangeName": "JSD"})
+    assert is_mismatch is True
+    assert "Japan" in reason or "JSD" in reason
+
+    # 2. For-side name
+    is_mismatch, reason = detect_yahoo_identity_mismatch("2330.TW", {"longName": "For-side.com Corp"})
+    assert is_mismatch is True
+    assert "For-side" in reason
+
+    # 3. Suffix drop
+    is_mismatch, reason = detect_yahoo_identity_mismatch("2330.TW", {"symbol": "2330"})
+    assert is_mismatch is True
+    assert "dropped requested suffix" in reason
+
+    # 4. Valid case
+    is_mismatch, reason = detect_yahoo_identity_mismatch("2330.TW", {"symbol": "2330.TW", "exchangeName": "TAI", "timezone": "Asia/Taipei"})
+    assert is_mismatch is False
+
+    # 5. Index case (should not drop suffix)
+    is_mismatch, reason = detect_yahoo_identity_mismatch("^TWII", {"symbol": "^TWII"})
+    assert is_mismatch is False
 
 @responses.activate
 def test_network_exception_is_classified_as_error():

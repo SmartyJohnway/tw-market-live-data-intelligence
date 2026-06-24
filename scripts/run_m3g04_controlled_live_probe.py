@@ -25,6 +25,72 @@ PROBE_FUNCTIONS = {
 }
 
 
+def validate_targets(targets):
+    if not targets:
+        raise ValueError("Error: Target list cannot be empty.")
+    if len(targets) > MAX_TARGETS:
+        raise ValueError(f"Error: Maximum of {MAX_TARGETS} targets allowed. Provided: {len(targets)}")
+
+def validate_sources(sources):
+    for source in sources:
+        if source in PROHIBITED_SOURCES:
+            raise ValueError(f"Error: {source} is strictly prohibited.")
+        if source not in ALLOWED_SOURCES:
+            raise ValueError(f"Error: {source} is not in the allowed sources list.")
+
+def map_targets_for_source(source, targets):
+    mapped_targets = []
+    for t in targets:
+        if source == "Yahoo_Finance":
+            if t == "TAIEX" or t.lower() == "t00":
+                mapped_targets.append("^TWII")
+            elif t in ["8069", "5347"]: # typically TPEx
+                mapped_targets.append(f"{t}.TWO")
+            else: # typically TWSE
+                mapped_targets.append(f"{t}.TW")
+        elif source == "TWSE_MIS":
+            if t == "TAIEX" or t.lower() == "t00":
+                mapped_targets.append("tse_t00.tw")
+            elif t in ["8069", "5347"]: # typically TPEx
+                mapped_targets.append(f"otc_{t}.tw")
+            else: # typically TWSE
+                mapped_targets.append(f"tse_{t}.tw")
+        else:
+            mapped_targets.append(t) # Keep raw code for OpenAPI
+    return mapped_targets
+
+def build_summary_entry(source, result, output_file, original_targets):
+    if result is None:
+        return {
+            "status": "failed",
+            "contract_status": "failed",
+            "http_ok": False,
+            "parse_status": "failed",
+            "normalization_status": "failed",
+            "failed_targets": original_targets,
+            "errors": ["Result is None"],
+            "output_file": str(output_file.name) if output_file else None
+        }
+
+    contract_status = result.get("contract_status", "unknown")
+    http_ok = result.get("http_ok", False)
+    parse_status = result.get("parse_status", "unknown")
+    normalization_status = result.get("normalization_status", "unknown")
+    failed_targets = result.get("failed_targets", [])
+    errors = result.get("errors", [])
+
+    return {
+        "status": contract_status,
+        "contract_status": contract_status,
+        "http_ok": http_ok,
+        "parse_status": parse_status,
+        "normalization_status": normalization_status,
+        "failed_targets": failed_targets,
+        "errors": errors,
+        "output_file": str(output_file.name) if output_file else None
+    }
+
+
 def print_caveats():
     logger.info("=========================================")
     logger.info("CAVEATS & WARNINGS:")
@@ -46,21 +112,12 @@ def main():
     targets = args.targets
     sources = args.sources
 
-    if not targets:
-        logger.error("Error: Target list cannot be empty.")
+    try:
+        validate_targets(targets)
+        validate_sources(sources)
+    except ValueError as e:
+        logger.error(str(e))
         exit(1)
-
-    if len(targets) > MAX_TARGETS:
-        logger.error(f"Error: Maximum of {MAX_TARGETS} targets allowed. Provided: {len(targets)}")
-        exit(1)
-
-    for source in sources:
-        if source in PROHIBITED_SOURCES:
-            logger.error(f"Error: {source} is strictly prohibited.")
-            exit(1)
-        if source not in ALLOWED_SOURCES:
-            logger.error(f"Error: {source} is not in the allowed sources list.")
-            exit(1)
 
     print_caveats()
 
@@ -80,47 +137,14 @@ def main():
         probe_func = PROBE_FUNCTIONS.get(source)
 
         # 1. Source-specific target mapping
-        mapped_targets = []
-        for t in targets:
-            if source == "Yahoo_Finance":
-                if t == "TAIEX" or t.lower() == "t00":
-                    mapped_targets.append("^TWII")
-                elif t in ["8069", "5347"]: # typically TPEx
-                    mapped_targets.append(f"{t}.TWO")
-                else: # typically TWSE
-                    mapped_targets.append(f"{t}.TW")
-            elif source == "TWSE_MIS":
-                if t == "TAIEX" or t.lower() == "t00":
-                    mapped_targets.append("tse_t00.tw")
-                elif t in ["8069", "5347"]: # typically TPEx
-                    mapped_targets.append(f"otc_{t}.tw")
-                else: # typically TWSE
-                    mapped_targets.append(f"tse_{t}.tw")
-            else:
-                mapped_targets.append(t) # Keep raw code for OpenAPI
+        mapped_targets = map_targets_for_source(source, targets)
 
         try:
             result = probe_func(symbols=mapped_targets)
 
-            contract_status = result.get("contract_status", "unknown")
-            http_ok = result.get("http_ok", False)
-            parse_status = result.get("parse_status", "unknown")
-            normalization_status = result.get("normalization_status", "unknown")
-            failed_targets = result.get("failed_targets", [])
-            errors = result.get("errors", [])
-
             out_file = output_dir / f"{source}_{timestamp}.json"
 
-            summary["results"][source] = {
-                "status": contract_status,
-                "contract_status": contract_status,
-                "http_ok": http_ok,
-                "parse_status": parse_status,
-                "normalization_status": normalization_status,
-                "failed_targets": failed_targets,
-                "errors": errors,
-                "output_file": str(out_file.name)
-            }
+            summary["results"][source] = build_summary_entry(source, result, out_file, targets)
 
             with open(out_file, "w") as f:
                 json.dump(result, f, indent=2, ensure_ascii=False)
