@@ -42,6 +42,7 @@ To run the automated probe framework against all defined targets in `config/mark
 python scripts/run_all_probes.py
 ```
 *This will generate rich Markdown documentation in `docs/` and `research/`, and JSON matrix data in `frontend/public/`.*
+*See [M3G-03 Controlled Market Source Probe Repair Review](docs/reviews/M3G_03_CONTROLLED_MARKET_SOURCE_PROBE_REPAIR.md) for recent milestone validation details.*
 
 ### Local API Usage (Optional)
 A local FastAPI server can be spun up to expose probe endpoints for local frontend or MCP integration.

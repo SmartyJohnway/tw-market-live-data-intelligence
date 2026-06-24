@@ -1,0 +1,41 @@
+[
+  {
+    "Code": "2330",
+    "Name": "台積電",
+    "TradeVolume": "45678901",
+    "Transaction": "12345",
+    "TradeValue": "45000000000",
+    "OpeningPrice": "1000.00",
+    "HighestPrice": "1010.00",
+    "LowestPrice": "990.00",
+    "ClosingPrice": "1005.00",
+    "Change": "+5.00",
+    "Date": "20240621"
+  },
+  {
+    "Code": "0050",
+    "Name": "元大台灣50",
+    "TradeVolume": "12345678",
+    "Transaction": "4567",
+    "TradeValue": "2400000000",
+    "OpeningPrice": "200.00",
+    "HighestPrice": "201.00",
+    "LowestPrice": "199.00",
+    "ClosingPrice": "200.50",
+    "Change": "+0.50",
+    "Date": "20240621"
+  },
+  {
+    "Code": "00929",
+    "Name": "復華台灣科技優息",
+    "TradeVolume": "200000000",
+    "Transaction": "15000",
+    "TradeValue": "4000000000",
+    "OpeningPrice": "20.00",
+    "HighestPrice": "20.10",
+    "LowestPrice": "19.90",
+    "ClosingPrice": "20.05",
+    "Change": "+0.05",
+    "Date": "20240621"
+  }
+]

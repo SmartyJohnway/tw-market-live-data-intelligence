@@ -1,0 +1,108 @@
+{
+  "chart": {
+    "result": [
+      {
+        "meta": {
+          "currency": "TWD",
+          "symbol": "2330.TW",
+          "exchangeName": "TAI",
+          "fullExchangeName": "Taiwan",
+          "instrumentType": "EQUITY",
+          "firstTradeDate": 946944000,
+          "regularMarketTime": 1718951400,
+          "hasPrePostMarketData": false,
+          "gmtoffset": 28800,
+          "timezone": "CST",
+          "exchangeTimezoneName": "Asia/Taipei",
+          "regularMarketPrice": 1015.0,
+          "fiftyTwoWeekHigh": 1025.0,
+          "fiftyTwoWeekLow": 510.0,
+          "regularMarketDayHigh": 1025.0,
+          "regularMarketDayLow": 1000.0,
+          "regularMarketVolume": 30141000,
+          "chartPreviousClose": 981.0,
+          "previousClose": 981.0,
+          "scale": 3,
+          "priceHint": 2,
+          "currentTradingPeriod": {
+            "pre": {
+              "timezone": "CST",
+              "start": 1718931600,
+              "end": 1718931600,
+              "gmtoffset": 28800
+            },
+            "regular": {
+              "timezone": "CST",
+              "start": 1718931600,
+              "end": 1718947800,
+              "gmtoffset": 28800
+            },
+            "post": {
+              "timezone": "CST",
+              "start": 1718947800,
+              "end": 1718947800,
+              "gmtoffset": 28800
+            }
+          },
+          "tradingPeriods": [
+            [
+              {
+                "timezone": "CST",
+                "start": 1718931600,
+                "end": 1718947800,
+                "gmtoffset": 28800
+              }
+            ]
+          ],
+          "dataGranularity": "1d",
+          "range": "1d",
+          "validRanges": [
+            "1d",
+            "5d",
+            "1mo",
+            "3mo",
+            "6mo",
+            "1y",
+            "2y",
+            "5y",
+            "10y",
+            "ytd",
+            "max"
+          ]
+        },
+        "timestamp": [
+          1718951400
+        ],
+        "indicators": {
+          "quote": [
+            {
+              "low": [
+                1000.0
+              ],
+              "high": [
+                1025.0
+              ],
+              "volume": [
+                30141000
+              ],
+              "open": [
+                1025.0
+              ],
+              "close": [
+                1015.0
+              ]
+            }
+          ],
+          "adjclose": [
+            {
+              "adjclose": [
+                1015.0
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "error": null
+  }
+}
