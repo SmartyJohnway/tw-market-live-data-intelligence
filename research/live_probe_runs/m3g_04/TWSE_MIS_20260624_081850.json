@@ -1,0 +1,43 @@
+{
+  "probe_id": "twse_mis_20260624_081920",
+  "source": "TWSE_MIS",
+  "source_type": "unofficial_frontend_endpoint",
+  "contract_status": "failed",
+  "retrieved_at_utc": "2026-06-24T08:19:21.089990+00:00",
+  "retrieved_at_taipei": "2026-06-24T16:19:21.089990+00:00",
+  "request": {
+    "url": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=2330|0050|00929|8069|TAIEX&json=1&delay=0&_=1782289160922",
+    "method": "GET",
+    "params": {},
+    "headers": {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7"
+    }
+  },
+  "http_status": "Error",
+  "http_ok": false,
+  "parse_status": "failed",
+  "normalization_status": "failed",
+  "schema_fingerprint": null,
+  "schema_hash": null,
+  "raw_sample_path": null,
+  "normalized_sample_path": null,
+  "raw_sample": null,
+  "normalized_sample": null,
+  "freshness_status": "unknown",
+  "staleness_seconds": null,
+  "delay_status": "unknown",
+  "requires_auth": false,
+  "requires_session": true,
+  "risk_level": "low",
+  "risk_notes": [],
+  "ai_suitability": "unknown",
+  "is_usable_now": false,
+  "potentially_usable_with_credentials": false,
+  "unsupported_targets": [],
+  "failed_targets": [],
+  "warnings": [],
+  "errors": [
+    "Expecting value: line 22 column 1 (char 21)"
+  ]
+}

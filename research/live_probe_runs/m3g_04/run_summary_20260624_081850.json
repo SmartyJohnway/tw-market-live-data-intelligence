@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-06-24T08:18:50.855794+00:00",
+  "targets": [
+    "2330",
+    "0050",
+    "00929",
+    "8069",
+    "TAIEX"
+  ],
+  "sources_requested": [
+    "TWSE_OpenAPI",
+    "TPEx_OpenAPI",
+    "TWSE_MIS",
+    "Yahoo_Finance"
+  ],
+  "results": {
+    "TWSE_OpenAPI": {
+      "status": "completed"
+    },
+    "TPEx_OpenAPI": {
+      "status": "completed"
+    },
+    "TWSE_MIS": {
+      "status": "completed"
+    },
+    "Yahoo_Finance": {
+      "status": "completed"
+    }
+  }
+}

@@ -74,7 +74,7 @@ def normalize_twse_openapi_row(row, retrieved_at_utc_dt):
 
     return normalized
 
-def probe():
+def probe(symbols=None):
     print("Probing TWSE OpenAPI...")
     url = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
     headers = {"Accept": "application/json"}
@@ -85,7 +85,16 @@ def probe():
         status = response.status_code
         data = response.json()
 
-        sample = data[0] if data and isinstance(data, list) else None
+        sample = None
+        if data and isinstance(data, list):
+            if symbols:
+                for row in data:
+                    if row.get("Code", "").strip() in symbols:
+                        sample = row
+                        break
+            if not sample and len(data) > 0:
+                sample = data[0]
+
         normalized = None
         if sample:
             retrieved_at_utc_dt = datetime.now(timezone.utc)
