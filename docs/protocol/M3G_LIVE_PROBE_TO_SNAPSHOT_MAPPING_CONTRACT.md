@@ -37,7 +37,7 @@ The `output_file` points to a JSON file containing detailed, per-symbol evidence
     *   `http_ok`: (boolean)
     *   `parse_status`: (string)
     *   `normalization_status`: (string)
-    *   `normalized_sample`: (dict) The standard symbol map containing extracted data.
+    *   `normalized_sample`: (dict or list) Can be a symbol-indexed map, a list of objects, or a single normalized object (as emitted by current probes like Yahoo).
     *   `failed_targets`: (list of strings)
     *   `unsupported_targets`: (list of strings)
     *   `warnings`: (list of strings)
@@ -49,9 +49,10 @@ The `output_file` points to a JSON file containing detailed, per-symbol evidence
 
 ## C. Desired Output Shape
 
-The adapter logic must produce an in-memory dictionary matching the `mock_inputs` parameter expected by `build_snapshot()`.
+The adapter standardizes the varied internal `normalized_sample` shapes into an internal symbol map shape, and ultimately produces an in-memory dictionary matching the `mock_inputs` parameter expected by `build_snapshot()`.
 
-*   **Shape**: `mock_inputs: dict[source_id][standard_symbol] -> snapshot_source_data`
+*   **Adapter-internal symbol map shape**: `dict[standard_symbol] -> normalized_data_object`
+*   **Final Output Shape**: `mock_inputs: dict[source_id][standard_symbol] -> snapshot_source_data`
 
 Each `snapshot_source_data` dictionary may include the following fields (mapped from the `normalized_sample` and envelope metadata):
 

@@ -1,0 +1,29 @@
+{
+  "source": "Yahoo_Finance",
+  "source_type": "third_party",
+  "contract_status": "normalized_pass",
+  "http_ok": true,
+  "parse_status": "success",
+  "normalization_status": "success",
+  "failed_targets": [],
+  "unsupported_targets": [],
+  "warnings": ["third_party_coverage_caveats"],
+  "errors": [],
+  "freshness_status": "live",
+  "delay_status": "delayed",
+  "staleness_seconds": 1200,
+  "is_usable_now": true,
+  "price_semantics": "live_candidate",
+  "normalized_sample": {
+    "symbol": "2330.TW",
+    "requested_symbol": "2330.TW",
+    "regular_market_price": 500.0,
+    "regular_market_time_utc": "2023-10-27T09:40:00Z",
+    "retrieved_at_utc": "2023-10-27T10:00:05Z",
+    "freshness_status": "live",
+    "delay_status": "delayed",
+    "staleness_seconds": 1200,
+    "data_quality_flags": [],
+    "source_risk_flags": ["unofficial_source"]
+  }
+}

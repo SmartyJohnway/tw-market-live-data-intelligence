@@ -45,7 +45,7 @@ def standardize_symbol(source_id: str, source_symbol: str) -> Optional[str]:
             return source_symbol[:-3]
         if source_symbol.endswith(".TWO"):
             return source_symbol[:-4]
-        return source_symbol
+        return None
 
     elif source_id == "TWSE_MIS":
         # e.g., tse_2330.tw -> 2330, otc_8069.tw -> 8069, tse_t00.tw -> TAIEX
@@ -76,16 +76,49 @@ def map_source_evidence_to_snapshot_input(source_id: str, envelope: dict, summar
     if contract_status == "identity_mismatch" or not summary_entry.get("http_ok", False):
         return {}
 
-    normalized_sample = envelope.get("normalized_sample", {})
+    normalized_sample = envelope.get("normalized_sample")
     if not normalized_sample:
         return {}
 
     snapshot_inputs = {}
 
-    for raw_symbol, source_data in normalized_sample.items():
+    # Handle if normalized_sample is a single object or a dict/list
+    items_to_process = []
+    if isinstance(normalized_sample, dict):
+        if "symbol" in normalized_sample or "requested_symbol" in normalized_sample:
+            # It's a single object map
+            items_to_process.append((normalized_sample.get("symbol") or normalized_sample.get("requested_symbol", ""), normalized_sample))
+        else:
+            # It's a symbol-indexed map
+            for raw_symbol, source_data in normalized_sample.items():
+                items_to_process.append((raw_symbol, source_data))
+    elif isinstance(normalized_sample, list):
+        for source_data in normalized_sample:
+            if isinstance(source_data, dict):
+                sym = source_data.get("symbol") or source_data.get("requested_symbol", "")
+                items_to_process.append((sym, source_data))
+
+    for raw_symbol, source_data in items_to_process:
+        if not raw_symbol:
+             continue
         std_symbol = standardize_symbol(source_id, raw_symbol)
         if not std_symbol:
             continue
+
+        delay_status = envelope.get("delay_status") or source_data.get("delay_status")
+        freshness_status = envelope.get("freshness_status") or source_data.get("freshness_status")
+
+        # Determine price_semantics based on source and delay status
+        price_semantics = envelope.get("price_semantics")
+        if source_id in ["TWSE_OpenAPI", "TPEx_OpenAPI"]:
+            price_semantics = "eod_reference"
+        elif source_id in ["TWSE_MIS", "Yahoo_Finance"]:
+            if delay_status == "delayed":
+                price_semantics = "delayed_quote"
+            elif freshness_status == "stale" or delay_status == "stale":
+                price_semantics = "stale_quote"
+            else:
+                price_semantics = "live_candidate"
 
         mapped_data = {
             "name": source_data.get("name"),
@@ -99,33 +132,27 @@ def map_source_evidence_to_snapshot_input(source_id: str, envelope: dict, summar
             "previous_close": source_data.get("previous_close"),
             "volume": source_data.get("volume"),
             "bid_ask": source_data.get("bid_ask"),
-            "source_time": source_data.get("source_time"),
-            "retrieved_time": source_data.get("retrieved_time"),
-            "price_semantics": envelope.get("price_semantics"),
-            "freshness_status": envelope.get("freshness_status"),
-            "delay_status": envelope.get("delay_status"),
-            "staleness_seconds": envelope.get("staleness_seconds"),
+            "source_time": source_data.get("source_time") or source_data.get("regular_market_time_utc"),
+            "retrieved_time": source_data.get("retrieved_time") or source_data.get("retrieved_at_utc"),
+            "price_semantics": price_semantics,
+            "freshness_status": freshness_status,
+            "delay_status": delay_status,
+            "staleness_seconds": envelope.get("staleness_seconds") or source_data.get("staleness_seconds"),
             "data_quality_flags": source_data.get("data_quality_flags", []),
-            "caveats": envelope.get("warnings", []),
+            "caveats": envelope.get("warnings", []) + source_data.get("source_risk_flags", []),
             "raw_payload_ref": source_data.get("raw_payload_ref")
         }
 
         # Apply source-specific mapping rules and caveats
         if source_id == "TWSE_MIS":
-            mapped_data["price_semantics"] = "live_candidate"
             if "unofficial_source_risk" not in mapped_data["caveats"]:
                 mapped_data["caveats"].append("unofficial_source_risk")
 
         elif source_id == "Yahoo_Finance":
-            if mapped_data["delay_status"] == "delayed":
-                mapped_data["price_semantics"] = "stale_candidate"
-            else:
-                mapped_data["price_semantics"] = "live_candidate"
             if "third_party_coverage_caveats" not in mapped_data["caveats"]:
                 mapped_data["caveats"].append("third_party_coverage_caveats")
 
         elif source_id in ["TWSE_OpenAPI", "TPEx_OpenAPI"]:
-            mapped_data["price_semantics"] = "official_eod_reference_only"
             if "official_eod_reference_only" not in mapped_data["caveats"]:
                 mapped_data["caveats"].append("official_eod_reference_only")
 

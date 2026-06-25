@@ -17,7 +17,7 @@ def test_standardize_symbol():
     assert standardize_symbol("TWSE_MIS", "otc_8069.tw") == "8069"
     assert standardize_symbol("TWSE_MIS", "tse_t00.tw") == "TAIEX"
     assert standardize_symbol("TWSE_OpenAPI", "2330") == "2330"
-    assert standardize_symbol("Yahoo_Finance", "invalid_format") == "invalid_format"
+    assert standardize_symbol("Yahoo_Finance", "invalid_format") is None
     assert standardize_symbol("TWSE_MIS", "invalid_format") is None
 
 @pytest.mark.not_network
@@ -39,8 +39,24 @@ def test_valid_run_summary_mapping():
     assert "Yahoo_Finance" in mock_inputs
     assert "2330" in mock_inputs["Yahoo_Finance"]
     assert mock_inputs["Yahoo_Finance"]["2330"]["last_price"] == 500.0
-    assert mock_inputs["Yahoo_Finance"]["2330"]["price_semantics"] == "stale_candidate"
+    assert mock_inputs["Yahoo_Finance"]["2330"]["price_semantics"] == "delayed_quote"
     assert "third_party_coverage_caveats" in mock_inputs["Yahoo_Finance"]["2330"]["caveats"]
+
+@pytest.mark.not_network
+def test_yahoo_single_object_normalized_sample_mapping():
+    summary_path = FIXTURE_DIR / "run_summary_yahoo_single.json"
+    report = build_adapter_report(summary_path)
+
+    assert report["adapter_status"] == "mapping_pass"
+    assert "Yahoo_Finance" in report["sources_mapped"]
+
+    mock_inputs = report["mock_inputs_preview"]
+    assert "Yahoo_Finance" in mock_inputs
+    assert "2330" in mock_inputs["Yahoo_Finance"]
+    assert mock_inputs["Yahoo_Finance"]["2330"]["last_price"] == 500.0
+    assert mock_inputs["Yahoo_Finance"]["2330"]["price_semantics"] == "delayed_quote"
+    assert "third_party_coverage_caveats" in mock_inputs["Yahoo_Finance"]["2330"]["caveats"]
+    assert "unofficial_source" in mock_inputs["Yahoo_Finance"]["2330"]["caveats"]
 
 @pytest.mark.not_network
 def test_yahoo_identity_mismatch_blocks_mapping():
@@ -61,7 +77,7 @@ def test_official_openapi_mapping():
     mock_inputs = report["mock_inputs_preview"]
     assert "TWSE_OpenAPI" in mock_inputs
     assert "2330" in mock_inputs["TWSE_OpenAPI"]
-    assert mock_inputs["TWSE_OpenAPI"]["2330"]["price_semantics"] == "official_eod_reference_only"
+    assert mock_inputs["TWSE_OpenAPI"]["2330"]["price_semantics"] == "eod_reference"
     assert "official_eod_reference_only" in mock_inputs["TWSE_OpenAPI"]["2330"]["caveats"]
 
 @pytest.mark.not_network
