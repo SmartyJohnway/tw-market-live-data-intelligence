@@ -71,3 +71,12 @@ Future implementation must:
 ## 9. Required Caveat Propagation Rules
 - Maintain global boundary caveats (e.g. `offline_mode` or `unofficial_source_risk`).
 - Ensure all caveats from `contract_status` (like `identity_mismatch`) flow through to the snapshot `caveats` array.
+
+## 10. M3G-09 Status (Adapter Preflight)
+During the M3G-09 milestone:
+* A strict mapping contract was created (`M3G_LIVE_PROBE_TO_SNAPSHOT_MAPPING_CONTRACT.md`).
+* An offline, read-only adapter module was implemented (`scripts/m3g_live_probe_to_snapshot_adapter.py`) with deterministic synthetic fixtures.
+* The bridge implementation remains blocked until explicit future authorization allows generated artifact writes. No production refresh is active.
+
+## 11. Recommended Next Steps
+The next milestone (`M3G-10-CONTROLLED-SOURCE-REFRESH-BRIDGE-DRY-RUN-NO-WRITE`) should focus on performing an end-to-end dry run of the bridge logic using the new adapter, ensuring all fail-closed and fail-open states behave correctly without writing any production artifacts.

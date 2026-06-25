@@ -1,0 +1,35 @@
+{
+  "source": "TWSE_OpenAPI",
+  "source_type": "official_eod",
+  "contract_status": "normalized_pass",
+  "http_ok": true,
+  "parse_status": "success",
+  "normalization_status": "success",
+  "failed_targets": [],
+  "unsupported_targets": ["8069"],
+  "warnings": ["official_eod_reference_only"],
+  "errors": [],
+  "freshness_status": "eod",
+  "delay_status": "eod",
+  "staleness_seconds": 86400,
+  "is_usable_now": true,
+  "price_semantics": "official_eod_reference_only",
+  "normalized_sample": {
+    "2330": {
+      "name": "TSMC",
+      "exchange": "TWSE",
+      "last_price": 500.0,
+      "change": 5.0,
+      "change_pct": 1.01,
+      "open": 495.0,
+      "high": 505.0,
+      "low": 490.0,
+      "previous_close": 495.0,
+      "volume": 10000,
+      "source_time": "2023-10-26T13:30:00Z",
+      "retrieved_time": "2023-10-27T10:00:05Z",
+      "data_quality_flags": [],
+      "raw_payload_ref": "payload"
+    }
+  }
+}

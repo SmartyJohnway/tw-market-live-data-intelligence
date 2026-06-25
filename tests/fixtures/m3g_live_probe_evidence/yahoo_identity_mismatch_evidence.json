@@ -1,0 +1,17 @@
+{
+  "source": "Yahoo_Finance",
+  "source_type": "third_party",
+  "contract_status": "identity_mismatch",
+  "http_ok": true,
+  "parse_status": "success",
+  "normalization_status": "failed",
+  "failed_targets": ["2330", "8069"],
+  "unsupported_targets": [],
+  "warnings": [],
+  "errors": ["Identity validation failed for requested symbols."],
+  "freshness_status": "unknown",
+  "delay_status": "unknown",
+  "staleness_seconds": null,
+  "is_usable_now": false,
+  "normalized_sample": {}
+}

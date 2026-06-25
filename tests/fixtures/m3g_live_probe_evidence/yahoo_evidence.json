@@ -1,0 +1,51 @@
+{
+  "source": "Yahoo_Finance",
+  "source_type": "third_party",
+  "contract_status": "normalized_pass",
+  "http_ok": true,
+  "parse_status": "success",
+  "normalization_status": "success",
+  "failed_targets": [],
+  "unsupported_targets": [],
+  "warnings": ["third_party_coverage_caveats"],
+  "errors": [],
+  "freshness_status": "live",
+  "delay_status": "delayed",
+  "staleness_seconds": 1200,
+  "is_usable_now": true,
+  "price_semantics": "live_candidate",
+  "normalized_sample": {
+    "2330.TW": {
+      "name": "TSMC",
+      "exchange": "TWSE",
+      "regular_market_price": 500.0,
+      "change": 5.0,
+      "change_pct": 1.01,
+      "open": 495.0,
+      "high": 505.0,
+      "low": 490.0,
+      "previous_close": 495.0,
+      "volume": 10000,
+      "source_time": "2023-10-27T09:40:00Z",
+      "retrieved_time": "2023-10-27T10:00:05Z",
+      "data_quality_flags": [],
+      "raw_payload_ref": "payload"
+    },
+    "8069.TWO": {
+      "name": "E Ink",
+      "exchange": "TPEx",
+      "regular_market_price": 200.0,
+      "change": 2.0,
+      "change_pct": 1.01,
+      "open": 198.0,
+      "high": 202.0,
+      "low": 195.0,
+      "previous_close": 198.0,
+      "volume": 5000,
+      "source_time": "2023-10-27T09:40:00Z",
+      "retrieved_time": "2023-10-27T10:00:05Z",
+      "data_quality_flags": [],
+      "raw_payload_ref": "payload"
+    }
+  }
+}
