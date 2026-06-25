@@ -72,7 +72,7 @@ The recovery of active network probes follows a strict authorization ladder:
 
 *The current next step is LEVEL_2.5 (M3G-07 Governance Repair and M3G-08 Bridge Preflight).*
 
-## 8. Per-Source Recovery Table
+## 9. Per-Source Recovery Table
 
 | Source ID | Source Type | Authority Level | Current Artifact Status | Error Type | Caveats | Attempted | Live Probe Needed | Local Mock Supports | Priority | Risk | Action |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -80,9 +80,9 @@ The recovery of active network probes follows a strict authorization ladder:
 | Yahoo_Finance | third_party_api | third_party | active (in controlled probes) | none (unless mismatch) | offline_mode, third_party_coverage_caveats | true | no (done in LEVEL_2) | yes | P2 | low | Completed in M3G-06 |
 | TWSE_OpenAPI | official_openapi | official_public_exchange_eod | active (in controlled probes) | none | offline_mode, official_eod_reference_only | true | no (done in LEVEL_2) | yes | P1 | low | Completed in M3G-06 |
 | TPEx_OpenAPI | official_openapi | official_public_exchange_eod | active (in controlled probes) | none | offline_mode, official_eod_reference_only | true | no (done in LEVEL_2) | yes | P1 | low | Completed in M3G-06 |
-| FinMind | third_party_api | third_party | deferred | not_attempted_offline_default | offline_mode | false | yes | no | deferred | blocked | Keep deferred |
-| Fugle | broker_api | broker_authenticated | skipped | auth_required_doc_only_skipped | broker_api_not_eligible | false | yes | no | deferred | blocked | Out of scope. Maintain doc-only |
-| Fubon | broker_api | broker_authenticated | skipped | auth_required_doc_only_skipped | broker_api_not_eligible | false | yes | no | deferred | blocked | Out of scope. Maintain doc-only |
+| FinMind | third_party_api | third_party | deferred | not_attempted_offline_default | offline_mode | false | no | no | deferred | blocked | Keep deferred |
+| Fugle | broker_api | broker_authenticated | skipped | auth_required_doc_only_skipped | broker_api_not_eligible | false | no | no | deferred | blocked | Out of scope. Maintain doc-only |
+| Fubon | broker_api | broker_authenticated | skipped | auth_required_doc_only_skipped | broker_api_not_eligible | false | no | no | deferred | blocked | Out of scope. Maintain doc-only |
 
 ## 10. Completed Items (Through M3G-06)
 - Mock fixture parser repair (M3G-03)
@@ -93,7 +93,7 @@ The recovery of active network probes follows a strict authorization ladder:
 ## 10.1 Next Steps
 The next required steps involve ensuring safety and governance documentation are strictly up to date before any automated artifact refresh is implemented.
 
-1. **M3G-07**: Caveat register and controlled refresh governance repair. (This does not implement production refresh automation).
+1. **M3G-07**: Caveat register and controlled refresh governance repair. (Completed)
 2. **M3G-08**: Controlled Source Refresh Bridge Preflight.
 
 ## 11. Stop Conditions
