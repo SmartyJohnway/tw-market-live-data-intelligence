@@ -5,8 +5,8 @@ Based on our feasibility research and probes into various Taiwan Equity market d
 ## Findings
 
 1. **TWSE / TPEx OpenAPI**: Free, high fidelity end-of-day data. Good for historical analysis and end-of-day reports. No live intraday data.
-2. **TWSE MIS**: Usable for real-time probing but requires careful handling of request parameters (`ex_ch`, `delay`, `timestamp`) and headers. High risk of being blocked if accessed too frequently.
-3. **Yahoo Finance**: Highly reliable REST endpoint (`query1.finance.yahoo.com`). Provides intraday minute bars and metadata without strict authentication. Excellent candidate for low-frequency polling.
+2. **TWSE MIS**: Unofficial fragile live candidate for real-time probing. It requires careful handling of request parameters (`ex_ch`, `delay`, `timestamp`) and headers, and carries a high risk of being blocked if accessed too frequently.
+3. **Yahoo Finance**: Unofficial third-party REST endpoint (`query1.finance.yahoo.com`). Provides intraday minute bars and metadata without strict authentication. It is a bounded low-frequency candidate that requires strict identity validation, must preserve caveats, and must fail closed on mismatch. It is not an official exchange authority.
 4. **FinMind**: Great structural API for historical quotes and statements. Rate limits apply to free tier. Good for data aggregation but not sub-second realtime.
 5. **Fugle / Fubon Neo**: Best for high-frequency trading or true realtime websocket feeds. Requires keys/certificates which limits "zero-config" broad deployment.
 

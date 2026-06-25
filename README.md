@@ -35,16 +35,15 @@ The repository includes offline unit tests that mock network responses to ensure
 pytest -m "not network" -v
 ```
 
-### Report Generation (Network Probes)
-To run the automated probe framework against all defined targets in `config/market_targets.json` and generate capability reports:
 
-```bash
-python scripts/run_all_probes.py
-```
-*This will generate rich Markdown documentation in `docs/` and `research/`, and JSON matrix data in `frontend/public/`.*
-*See [M3G-03 Controlled Market Source Probe Repair Review](docs/reviews/M3G_03_CONTROLLED_MARKET_SOURCE_PROBE_REPAIR.md) for recent milestone validation details.*
+### M3G Project Status
+- **Bounded Watchlist Only:** Market data retrieval is strictly bounded to the configured watchlist.
+- **No Full-Market Coverage:** Full-market sweeps are prohibited.
+- **No Investment Advice:** Generated outputs are evidence artifacts, not trading signals.
+- **No Official Realtime Guarantee:** All sources must clearly articulate their `freshness_status` and `delay_status`.
+- **Readonly Artifacts:** Generated artifacts in `research/generated/` and `frontend/public/` are readonly/static unless explicitly refreshed under a controlled milestone.
 
-### Local API Usage (Optional)
+## Local API Usage (Optional)
 A local FastAPI server can be spun up to expose probe endpoints for local frontend or MCP integration.
 
 ```bash
@@ -55,6 +54,19 @@ uvicorn server.main:app --host 127.0.0.1 --port 8000
 The frontend provides a clear UI to view the generated capability matrix and interact with the local API.
 1. Run the local API (`uvicorn server.main:app ...`)
 2. Open `frontend/public/index.html` in your browser.
+
+## Legacy / Manual Research Operations
+
+### Report Generation (Network Probes - LEGACY)
+**⚠️ WARNING: This is not the current M3G controlled refresh path.**
+This script may run broad network probes and write generated/report artifacts. It must not be used unless a future milestone explicitly authorizes it.
+
+To run the legacy automated probe framework against all defined targets in `config/market_targets.json` and generate capability reports:
+
+```bash
+python scripts/run_all_probes.py
+```
+*This will generate rich Markdown documentation in `docs/` and `research/`, and JSON matrix data in `frontend/public/`.*
 
 ## Safety Notes & Security Posture
 - **No Open Proxies:** Previous iterations contained serverless proxies. These have been removed. The frontend now interfaces directly with a locally hosted backend on `127.0.0.1`.
@@ -141,9 +153,14 @@ The system relies heavily on established protocols and taxonomy documentation to
   - [M3G-02 Market Source Recovery Preflight](docs/reviews/M3G_02_MARKET_SOURCE_RECOVERY_PREFLIGHT.md)
   - [M3G-03 Controlled Market Source Probe Repair](docs/reviews/M3G_03_CONTROLLED_MARKET_SOURCE_PROBE_REPAIR.md)
   - [M3G-04 Controlled Live Probe Authorization Execution and Revalidation](docs/reviews/M3G_04_CONTROLLED_LIVE_PROBE_AUTHORIZATION_EXECUTION_AND_REVALIDATION.md)
+  - **M3G Source Recovery & Governance:**
   - [M3G Source Recovery Plan](docs/protocol/M3G_SOURCE_RECOVERY_PLAN.md)
+  - [M3G Controlled Live Probe Output Contract](docs/protocol/M3G_CONTROLLED_LIVE_PROBE_OUTPUT_CONTRACT.md)
+  - [M3G Controlled Source Refresh Bridge Design](docs/protocol/M3G_CONTROLLED_SOURCE_REFRESH_BRIDGE_DESIGN.md)
+  - [M3G Current Caveats Register](docs/protocol/M3G_CURRENT_CAVEATS_REGISTER.md)
 
-Recommended frontend RC tag: m3f-readonly-frontend-rc1 (Next milestone: M3G-05-CONTROLLED-SOURCE-REFRESH-HARDENING-AND-AUTOMATION-PREFLIGHT)
+
+Recommended frontend RC tag: m3f-readonly-frontend-rc1 (Next milestone: M3G-08-CONTROLLED-SOURCE-REFRESH-BRIDGE-PREFLIGHT. *Note: M3G-08 is strictly preflight/design/validation, not production refresh automation.*)
 
 ## Frontend Static Serving
 
