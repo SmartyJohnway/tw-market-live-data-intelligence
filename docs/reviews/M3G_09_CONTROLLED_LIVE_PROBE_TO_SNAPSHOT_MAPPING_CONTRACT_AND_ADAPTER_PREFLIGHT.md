@@ -40,7 +40,7 @@ Ran the following validation commands to ensure purely offline success:
 PYTHONPATH="${PYTHONPATH}:/app/scripts:/app/server" python -m compileall scripts server tests
 PYTHONPATH="${PYTHONPATH}:/app/scripts:/app/server" pytest -m "not network" -v tests/unit/test_m3g_live_probe_to_snapshot_adapter.py
 ```
-**Results:** All files compiled successfully. All 8 offline tests passed in ~0.18s. No network requests or file writes occurred during execution.
+**Results:** All files compiled successfully. All 9 offline tests passed in ~0.18s. No network requests or file writes occurred during execution.
 
 ## 6. Explicit Confirmations
 As strictly required by the boundaries of this preflight:
