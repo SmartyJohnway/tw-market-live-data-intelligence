@@ -1,4 +1,4 @@
-# M3G Source Recovery Plan
+# M3G Source Recovery Plan (Updated Post-M3G-06)
 
 ## 1. Source Recovery Principles
 
@@ -63,35 +63,38 @@ For future controlled live probes, the following policies apply to the candidate
 
 The recovery of active network probes follows a strict authorization ladder:
 
-- **LEVEL_0**: Preflight planning only. (Current milestone: M3G-02)
-- **LEVEL_1**: Mock fixture creation and parser contract repair. Tests run entirely locally.
-- **LEVEL_2**: Bounded controlled live probes for selected watchlist targets only.
-- **LEVEL_3**: Broader source recovery, expanding source coverage but staying within the bounded watchlist.
+- **LEVEL_0**: Preflight planning only. (Completed in M3G-02)
+- **LEVEL_1**: Mock fixture creation and parser contract repair. Tests run entirely locally. (Completed in M3G-03)
+- **LEVEL_2**: Bounded controlled live probes and hardening for selected watchlist targets only. (Completed through M3G-06)
+- **LEVEL_2.5**: Governance repair and refresh bridge preflight. (Current milestones: M3G-07 and M3G-08)
+- **LEVEL_3**: Controlled refresh bridge implementation and broader source recovery (within bounded watchlist).
 - **LEVEL_4**: Production refresh automation and scheduled CI/CD runs.
 
-*The next milestone, M3G-03, is explicitly restricted to LEVEL_1.*
+*The current next step is LEVEL_2.5 (M3G-07 Governance Repair and M3G-08 Bridge Preflight).*
 
 ## 8. Per-Source Recovery Table
 
 | Source ID | Source Type | Authority Level | Current Artifact Status | Error Type | Caveats | Attempted | Live Probe Needed | Local Mock Supports | Priority | Risk | Action |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| TWSE_MIS | unofficial_frontend_endpoint | unofficial_frontend | offline_mode_no_data | offline_mode_no_local_input | offline_mode, unofficial_source_risk | false | yes (in LEVEL_2) | yes | P1 | medium | Recover via mock fixtures in LEVEL_1 |
-| Yahoo_Finance | third_party_api | third_party | offline_mode_no_data | offline_mode_no_local_input | offline_mode, third_party_coverage_caveats | false | yes (in LEVEL_2) | yes | P2 | low | Recover via mock fixtures in LEVEL_1 |
-| TWSE_OpenAPI | official_openapi | official_public_exchange_eod | offline_mode_no_data | offline_mode_no_local_input | offline_mode, official_eod_reference_only | false | yes (in LEVEL_2) | yes | P1 | low | Recover via mock fixtures in LEVEL_1 |
-| TPEx_OpenAPI | official_openapi | official_public_exchange_eod | offline_mode_no_data | offline_mode_no_local_input | offline_mode, official_eod_reference_only | false | yes (in LEVEL_2) | yes | P1 | low | Recover via mock fixtures in LEVEL_1 |
-| FinMind | third_party_api | third_party | not_attempted | not_attempted_offline_default | offline_mode | false | yes | no | deferred | blocked | Keep deferred until M3G-04 or later |
+| TWSE_MIS | unofficial_frontend_endpoint | unofficial_frontend | active (in controlled probes) | none | offline_mode, unofficial_source_risk | true | no (done in LEVEL_2) | yes | P1 | medium | Completed in M3G-06 |
+| Yahoo_Finance | third_party_api | third_party | active (in controlled probes) | none (unless mismatch) | offline_mode, third_party_coverage_caveats | true | no (done in LEVEL_2) | yes | P2 | low | Completed in M3G-06 |
+| TWSE_OpenAPI | official_openapi | official_public_exchange_eod | active (in controlled probes) | none | offline_mode, official_eod_reference_only | true | no (done in LEVEL_2) | yes | P1 | low | Completed in M3G-06 |
+| TPEx_OpenAPI | official_openapi | official_public_exchange_eod | active (in controlled probes) | none | offline_mode, official_eod_reference_only | true | no (done in LEVEL_2) | yes | P1 | low | Completed in M3G-06 |
+| FinMind | third_party_api | third_party | deferred | not_attempted_offline_default | offline_mode | false | yes | no | deferred | blocked | Keep deferred |
 | Fugle | broker_api | broker_authenticated | skipped | auth_required_doc_only_skipped | broker_api_not_eligible | false | yes | no | deferred | blocked | Out of scope. Maintain doc-only |
 | Fubon | broker_api | broker_authenticated | skipped | auth_required_doc_only_skipped | broker_api_not_eligible | false | yes | no | deferred | blocked | Out of scope. Maintain doc-only |
 
-## 10. M3G-03 Recommended Sequence
+## 10. Completed Items (Through M3G-06)
+- Mock fixture parser repair (M3G-03)
+- Bounded controlled live probes (M3G-04)
+- Controlled probe hardening (M3G-05)
+- Yahoo structured identity mismatch cleanup (M3G-06)
 
-The recommended execution for the next milestone (M3G-03-CONTROLLED-MARKET-SOURCE-PROBE-REPAIR) is strictly **LEVEL_1 mock fixture and parser contract repair first**.
+## 10.1 Next Steps
+The next required steps involve ensuring safety and governance documentation are strictly up to date before any automated artifact refresh is implemented.
 
-1. Create static JSON/HTML mock files for `TWSE_MIS`, `TWSE_OpenAPI`, `TPEx_OpenAPI`, and `Yahoo_Finance` in `tests/fixtures/market_sources/`.
-2. Ensure the mocks cover the required minimum bounded symbols (`2330`, `0050`, `00929`, `8069`, `TAIEX`/`t00`).
-3. Update unit tests to patch generators/probes to use these local fixtures instead of making live network calls.
-4. Verify that generator scripts produce non-empty valid artifacts (`latest_market_snapshot.json`, etc.) using these mocks.
-5. Do not run any live probes or enable network traffic.
+1. **M3G-07**: Caveat register and controlled refresh governance repair. (This does not implement production refresh automation).
+2. **M3G-08**: Controlled Source Refresh Bridge Preflight.
 
 ## 11. Stop Conditions
 
@@ -103,7 +106,7 @@ The recovery process must halt immediately if:
 
 ## 12. What Must Remain Deferred
 
-- **Live Probes**: Deferred until LEVEL_2 authorization.
+- **Live Refresh Automation**: The bridge from controlled probes to production artifacts is deferred until LEVEL_3.
 - **Broker Auth**: `Fugle` and `Fubon` remain deferred indefinitely.
 - **Full Market Scans**: Strictly deferred. All processing must adhere to the bounded watchlist.
-- **FinMind Integration**: Deferred until primary sources are fully validated.
+- **FinMind Integration**: Deferred until primary sources are fully validated in production refresh.
