@@ -48,3 +48,6 @@ The bridge must preserve all caveats defined in the caveat register (`M3G_CURREN
 
 ## Non-Mutation Rule
 The bridge **must not write** to `research/generated/*` or `frontend/public/*` unless a future milestone explicitly authorizes its implementation and execution. Currently, it exists solely as a conceptual design to inform that future milestone.
+
+## M3G-08 Preflight Clarifications
+During the M3G-08 preflight, it was determined that implementing the bridge is **blocked** until mappings between the controlled live probe evidence schemas and the snapshot generator input assumptions are resolved. Current artifact generators expect legacy mock dictionaries, not structured evidence outputs. The bridge must safely map source statuses to health blocks, unwrap symbol evidence files, and preserve caveat propagation without risking data degradation. Implementation remains strictly deferred.
