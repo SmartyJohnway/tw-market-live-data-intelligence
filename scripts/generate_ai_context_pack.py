@@ -440,6 +440,7 @@ def build_freshness_and_delay_summary(snapshot: dict) -> dict:
     unknown_count = 0
     eod_count = 0
     live_count = 0
+    delayed_count = 0
 
     for sym in symbols:
         freshness = sym.get("freshness_status")
@@ -448,6 +449,7 @@ def build_freshness_and_delay_summary(snapshot: dict) -> dict:
             if freshness == "stale": stale_count += 1
             elif freshness == "unknown": unknown_count += 1
             elif freshness == "eod_batch": eod_count += 1
+            elif freshness == "delayed": delayed_count += 1
             elif freshness == "realtime_candidate" or freshness == "live": live_count += 1
 
         delay = sym.get("delay_status")
@@ -468,6 +470,7 @@ def build_freshness_and_delay_summary(snapshot: dict) -> dict:
         "unknown_freshness_count": unknown_count,
         "eod_reference_count": eod_count,
         "live_candidate_count": live_count,
+        "delayed_quote_count": delayed_count,
         "summary_caveats": summary_caveats
     }
 

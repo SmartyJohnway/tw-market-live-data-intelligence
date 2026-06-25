@@ -2,6 +2,14 @@ import json
 from pathlib import Path
 from typing import Dict, Any, Optional
 
+
+def first_non_none(*values):
+    """Return the first value that is explicitly not None, preserving falsy evidence values."""
+    for value in values:
+        if value is not None:
+            return value
+    return None
+
 def load_run_summary(summary_path: str | Path) -> dict:
     """Loads and parses the run summary file."""
     path = Path(summary_path)
@@ -123,7 +131,7 @@ def map_source_evidence_to_snapshot_input(source_id: str, envelope: dict, summar
         mapped_data = {
             "name": source_data.get("name"),
             "exchange": source_data.get("exchange"),
-            "last_price": source_data.get("last_price") or source_data.get("regular_market_price"),
+            "last_price": first_non_none(source_data.get("last_price"), source_data.get("regular_market_price")),
             "change": source_data.get("change"),
             "change_pct": source_data.get("change_pct"),
             "open": source_data.get("open"),
@@ -132,12 +140,12 @@ def map_source_evidence_to_snapshot_input(source_id: str, envelope: dict, summar
             "previous_close": source_data.get("previous_close"),
             "volume": source_data.get("volume"),
             "bid_ask": source_data.get("bid_ask"),
-            "source_time": source_data.get("source_time") or source_data.get("regular_market_time_utc"),
-            "retrieved_time": source_data.get("retrieved_time") or source_data.get("retrieved_at_utc"),
+            "source_time": first_non_none(source_data.get("source_time"), source_data.get("regular_market_time_utc")),
+            "retrieved_time": first_non_none(source_data.get("retrieved_time"), source_data.get("retrieved_at_utc")),
             "price_semantics": price_semantics,
             "freshness_status": freshness_status,
             "delay_status": delay_status,
-            "staleness_seconds": envelope.get("staleness_seconds") or source_data.get("staleness_seconds"),
+            "staleness_seconds": first_non_none(envelope.get("staleness_seconds"), source_data.get("staleness_seconds")),
             "data_quality_flags": source_data.get("data_quality_flags", []),
             "caveats": envelope.get("warnings", []) + source_data.get("source_risk_flags", []),
             "raw_payload_ref": source_data.get("raw_payload_ref")

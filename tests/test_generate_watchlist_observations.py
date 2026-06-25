@@ -131,3 +131,13 @@ def test_build_watchlist_observations_structure():
     assert len(artifact["failed_observations"]) == 1
     assert artifact["global_caveats"] == ["test_caveat"]
     assert artifact["prohibited_interpretations"] == ["buy", "sell"]
+
+def test_generate_symbol_observations_delayed_quote():
+    sym = {
+        "symbol": "2330",
+        "price_semantics": "delayed_quote",
+        "delay_status": "delayed",
+    }
+    obs = generate_symbol_observations(sym)
+    obs_types = [o["observation_type"] for o in obs]
+    assert "delayed_quote_available" in obs_types

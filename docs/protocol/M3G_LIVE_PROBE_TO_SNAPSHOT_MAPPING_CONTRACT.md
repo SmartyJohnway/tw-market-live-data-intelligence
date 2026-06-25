@@ -16,6 +16,8 @@ The primary entrypoint for the mapping is a run summary file:
     *   `sources_requested`: (list of strings) The sources attempted.
     *   `results`: (dict) A mapping of `source_id` to a source summary object.
 
+*   **Compatibility Note**: This contract intentionally follows the canonical post-M3G-09 dict shape emitted by `scripts/run_m3g04_controlled_live_probe.py`. Earlier array-shaped draft summaries are legacy and must be normalized before use or rejected as malformed input.
+
 *   **Per-Source Summary Fields** (inside `results[source_id]`):
     *   `status`: (string) e.g., 'success', 'failed'.
     *   `contract_status`: (string) e.g., 'normalized_pass', 'identity_mismatch', 'offline_mode'.
