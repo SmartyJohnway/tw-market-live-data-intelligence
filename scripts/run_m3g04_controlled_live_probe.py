@@ -153,8 +153,8 @@ def main():
 
         except Exception as e:
             logger.error(f"{source} failed: {e}")
-            summary["results"][source] = {
-                "status": "failed",
+
+            failed_result = {
                 "contract_status": "failed",
                 "http_ok": False,
                 "parse_status": "failed",
@@ -162,6 +162,7 @@ def main():
                 "failed_targets": targets,
                 "errors": [str(e)]
             }
+            summary["results"][source] = build_summary_entry(source, failed_result, None, targets)
 
     summary_file = output_dir / f"run_summary_{timestamp}.json"
     with open(summary_file, "w") as f:

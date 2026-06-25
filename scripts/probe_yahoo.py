@@ -309,6 +309,14 @@ def probe(symbols=None):
 
             if success:
                 success_count += 1
+
+                # Check identity mismatch for EVERY successful symbol, not just the first one
+                is_mismatch, mismatch_reason = detect_yahoo_identity_mismatch(sym, result_data.get("meta", {}))
+                if is_mismatch:
+                    if sym not in failed_targets:
+                        failed_targets.append(sym)
+                    errors.append(f"Identity mismatch for {sym}: {mismatch_reason}")
+
                 if not normalized_sample:
                     normalized_sample = normalize_yahoo_chart_result(result_data, sym, retrieved_at_utc_dt)
                     if "meta" in result_data:
@@ -339,16 +347,13 @@ def probe(symbols=None):
         contract_status = "normalized_pass" if overall_success else "failed"
         is_usable_now = True
 
-        if normalized_sample and "identity_mismatch" in normalized_sample.get("data_quality_flags", []):
+        # If ANY target failed due to mismatch (even if it wasn't the first normalized sample),
+        # the overall contract status becomes identity_mismatch.
+        has_identity_mismatch = any("Identity mismatch for" in err for err in errors)
+
+        if has_identity_mismatch:
             contract_status = "identity_mismatch"
             is_usable_now = False
-            req_sym = normalized_sample.get("requested_symbol")
-            if req_sym not in failed_targets:
-                failed_targets.append(req_sym)
-
-            # Re-run detect to get the specific reason for the error message
-            _, mismatch_reason = detect_yahoo_identity_mismatch(req_sym, normalized_sample.get("raw_meta", {}))
-            errors.append(f"Identity mismatch for {req_sym}: {mismatch_reason}")
 
     envelope = generate_standard_envelope(
         probe_id=probe_id,

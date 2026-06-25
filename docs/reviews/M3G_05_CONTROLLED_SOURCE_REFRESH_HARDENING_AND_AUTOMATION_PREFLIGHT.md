@@ -12,7 +12,7 @@
 ## 3. Tests Run and Results
 The following test suites were successfully run completely offline (`pytest -m "not network" -v`):
 - `tests/test_m3g04_controlled_live_probe.py`: All 10 tests passed.
-- `tests/unit/test_yahoo_probe_classification.py`: All 10 tests passed.
+- `tests/unit/test_yahoo_probe_classification.py`: All 11 tests passed.
 
 ## 4. Mapping Contract Table
 The explicit target bounded mapping was successfully extracted into the testable `map_targets_for_source` helper.
@@ -37,10 +37,12 @@ The Yahoo mismatch detection logic was successfully fortified and rigorously uni
 - Test: Suffix drop detection (e.g. `0050.TW` matched to `0050`).
 - Test: Japan OTC exchange detection (e.g. `JSD` exchange).
 - Test: Specific known mismatch names (e.g. "For-side.com").
-All scenarios now accurately generate a strict `identity_mismatch` contract_status, blocking execution-grade outputs.
+- Test: Batch symbol detection (if symbol 1 is valid, but symbol 2 has an identity mismatch, the entire batch correctly receives `identity_mismatch`).
+All scenarios now accurately generate a strict `identity_mismatch` contract_status, blocking execution-grade outputs for all affected targets.
 
 ## 6. Summary Semantics Contract Result
 The output of bounded probes per source was standardized into the testable `build_summary_entry` pure helper, preserving explicitly failure states (`contract_status`, `http_ok`, `parse_status`, `normalization_status`, `failed_targets`, `errors`) and blocking generic "completed" reporting when sources internally fail.
+Additionally, the wrapper exception logic ensures that `output_file` remains explicitly represented (`None`) adhering to the required schema payload even during unexpected crashes.
 
 ## 7. Explicit Confirmations
 I explicitly confirm that the following were **not modified** during this task:

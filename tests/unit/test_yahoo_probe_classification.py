@@ -244,6 +244,64 @@ def test_detect_yahoo_identity_mismatch_helper():
     assert is_mismatch is False
 
 @responses.activate
+def test_batch_identity_mismatch_fails_whole_batch():
+    symbols = ["0050.TW", "2330.TW"]
+
+    # First symbol is valid
+    responses.add(
+        responses.GET,
+        "https://query1.finance.yahoo.com/v8/finance/chart/0050.TW",
+        json={
+            "chart": {
+                "result": [
+                    {
+                        "meta": {
+                            "symbol": "0050.TW",
+                            "exchangeName": "TAI",
+                            "exchangeTimezoneName": "Asia/Taipei",
+                            "regularMarketPrice": 150.0,
+                            "regularMarketTime": 1781760608
+                        },
+                        "timestamp": [1781744400],
+                        "indicators": {
+                            "quote": [{"close": [150.0]}]
+                        }
+                    }
+                ]
+            }
+        },
+        status=200
+    )
+
+    # Second symbol has identity mismatch (suffix drop + Japan OTC)
+    responses.add(
+        responses.GET,
+        "https://query1.finance.yahoo.com/v8/finance/chart/2330.TW",
+        json={
+            "chart": {
+                "result": [
+                    {
+                        "meta": {
+                            "symbol": "2330",
+                            "exchangeName": "JSD",
+                            "exchangeTimezoneName": "Asia/Tokyo"
+                        }
+                    }
+                ]
+            }
+        },
+        status=200
+    )
+
+    result = probe(symbols=symbols)
+
+    assert result["contract_status"] == "identity_mismatch"
+    assert result["is_usable_now"] is False
+    assert "2330.TW" in result["failed_targets"]
+    assert "0050.TW" not in result["failed_targets"]
+    assert any("Identity mismatch for 2330.TW" in e for e in result["errors"])
+
+@responses.activate
 def test_network_exception_is_classified_as_error():
     symbols = ["TIMEOUT.TW"]
     import requests
