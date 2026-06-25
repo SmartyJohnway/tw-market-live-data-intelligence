@@ -283,6 +283,8 @@ def probe(symbols=None):
     failed_targets = []
     unsupported_targets = []
     warnings = []
+    identity_mismatch_targets = []
+    identity_mismatch_reasons = {}
 
     retrieved_at_utc_dt = datetime.now(timezone.utc)
     for sym in symbols:
@@ -313,6 +315,8 @@ def probe(symbols=None):
                 # Check identity mismatch for EVERY successful symbol, not just the first one
                 is_mismatch, mismatch_reason = detect_yahoo_identity_mismatch(sym, result_data.get("meta", {}))
                 if is_mismatch:
+                    identity_mismatch_targets.append(sym)
+                    identity_mismatch_reasons[sym] = mismatch_reason
                     if sym not in failed_targets:
                         failed_targets.append(sym)
                     errors.append(f"Identity mismatch for {sym}: {mismatch_reason}")
@@ -349,7 +353,7 @@ def probe(symbols=None):
 
         # If ANY target failed due to mismatch (even if it wasn't the first normalized sample),
         # the overall contract status becomes identity_mismatch.
-        has_identity_mismatch = any("Identity mismatch for" in err for err in errors)
+        has_identity_mismatch = bool(identity_mismatch_targets)
 
         if has_identity_mismatch:
             contract_status = "identity_mismatch"
