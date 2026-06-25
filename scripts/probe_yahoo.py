@@ -13,6 +13,43 @@ KNOWN_UNSUPPORTED_YAHOO_PLACEHOLDERS = {
     "FUNDA.TW",
 }
 
+def detect_yahoo_identity_mismatch(requested_symbol, raw_meta):
+    """
+    Pure helper to detect if Yahoo returned a completely different asset.
+    Returns (bool, str) -> (is_mismatch, reason)
+    """
+    exchange_name = raw_meta.get("exchangeName", "")
+    exchange_tz = raw_meta.get("exchangeTimezoneName", "") or raw_meta.get("timezone", "")
+    returned_symbol = raw_meta.get("symbol", "")
+
+    # 1. Check Japan OTC / Tokyo indicators
+    if exchange_name == "JSD" or "Japan" in exchange_name:
+        return True, f"Exchange is {exchange_name} (Japan OTC indicator)"
+    if "Tokyo" in exchange_tz or "Japan" in exchange_tz:
+        return True, f"Timezone is {exchange_tz} (Japan indicator)"
+
+    # 2. Check name metadata for known mismatches
+    name_fields = [
+        raw_meta.get("shortName", ""),
+        raw_meta.get("longName", ""),
+        raw_meta.get("displayName", ""),
+        raw_meta.get("name", ""),
+        raw_meta.get("fullName", ""),
+        raw_meta.get("fullExchangeName", "")
+    ]
+    for name_val in name_fields:
+        if name_val and isinstance(name_val, str) and "For-side.com" in name_val:
+            return True, "Name contains For-side.com (Japan OTC indicator)"
+
+    # 3. Check suffix drop (e.g. requested 2330.TW but got 2330)
+    # Don't apply to indices like ^TWII
+    if requested_symbol.endswith(".TW") or requested_symbol.endswith(".TWO"):
+        expected_base = requested_symbol.split(".")[0]
+        if returned_symbol == expected_base:
+            return True, f"Returned symbol {returned_symbol} dropped requested suffix from {requested_symbol}"
+
+    return False, ""
+
 def normalize_yahoo_chart_result(result_data, requested_symbol, retrieved_at_utc_dt):
     data_quality_flags = []
 
@@ -65,12 +102,9 @@ def normalize_yahoo_chart_result(result_data, requested_symbol, retrieved_at_utc
         data_quality_flags.append("missing_meta")
 
     # Target Identity Validation
-    exchange_name = meta.get("exchangeName", "")
-    exchange_tz = meta.get("exchangeTimezoneName", "")
-    returned_symbol = meta.get("symbol", "")
-
-    if (exchange_name and "Japan" in exchange_name) or (exchange_tz and "Tokyo" in exchange_tz):
-        data_quality_flags.append("identity_mismatch_japan_otc")
+    is_mismatch, mismatch_reason = detect_yahoo_identity_mismatch(requested_symbol, meta)
+    if is_mismatch:
+        data_quality_flags.append("identity_mismatch")
 
     gmtoffset = meta.get("gmtoffset")
 
@@ -275,6 +309,14 @@ def probe(symbols=None):
 
             if success:
                 success_count += 1
+
+                # Check identity mismatch for EVERY successful symbol, not just the first one
+                is_mismatch, mismatch_reason = detect_yahoo_identity_mismatch(sym, result_data.get("meta", {}))
+                if is_mismatch:
+                    if sym not in failed_targets:
+                        failed_targets.append(sym)
+                    errors.append(f"Identity mismatch for {sym}: {mismatch_reason}")
+
                 if not normalized_sample:
                     normalized_sample = normalize_yahoo_chart_result(result_data, sym, retrieved_at_utc_dt)
                     if "meta" in result_data:
@@ -305,11 +347,13 @@ def probe(symbols=None):
         contract_status = "normalized_pass" if overall_success else "failed"
         is_usable_now = True
 
-        if normalized_sample and "identity_mismatch_japan_otc" in normalized_sample.get("data_quality_flags", []):
+        # If ANY target failed due to mismatch (even if it wasn't the first normalized sample),
+        # the overall contract status becomes identity_mismatch.
+        has_identity_mismatch = any("Identity mismatch for" in err for err in errors)
+
+        if has_identity_mismatch:
             contract_status = "identity_mismatch"
             is_usable_now = False
-            failed_targets.append(normalized_sample.get("requested_symbol"))
-            errors.append(f"Identity mismatch: returned {normalized_sample.get('symbol')} on {normalized_sample.get('exchange_name')} for {normalized_sample.get('requested_symbol')}")
 
     envelope = generate_standard_envelope(
         probe_id=probe_id,
