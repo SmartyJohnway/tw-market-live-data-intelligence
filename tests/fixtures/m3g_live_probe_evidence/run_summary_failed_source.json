@@ -1,0 +1,27 @@
+{
+  "timestamp": "2023-10-27T10:00:00Z",
+  "targets": ["2330", "8069"],
+  "sources_requested": ["TWSE_MIS", "Yahoo_Finance"],
+  "results": {
+    "TWSE_MIS": {
+      "status": "success",
+      "contract_status": "normalized_pass",
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "failed_targets": [],
+      "errors": [],
+      "output_file": "twse_mis_evidence.json"
+    },
+    "Yahoo_Finance": {
+      "status": "failed",
+      "contract_status": "offline_mode",
+      "http_ok": false,
+      "parse_status": "none",
+      "normalization_status": "none",
+      "failed_targets": ["2330", "8069"],
+      "errors": ["Connection timeout"],
+      "output_file": "yahoo_failed_evidence.json"
+    }
+  }
+}

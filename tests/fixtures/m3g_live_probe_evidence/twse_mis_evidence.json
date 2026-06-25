@@ -1,0 +1,36 @@
+{
+  "source": "TWSE_MIS",
+  "source_type": "official_live",
+  "contract_status": "normalized_pass",
+  "http_ok": true,
+  "parse_status": "success",
+  "normalization_status": "success",
+  "failed_targets": [],
+  "unsupported_targets": ["8069"],
+  "warnings": ["unofficial_source_risk"],
+  "errors": [],
+  "freshness_status": "live",
+  "delay_status": "realtime",
+  "staleness_seconds": 5,
+  "is_usable_now": true,
+  "price_semantics": "live_candidate",
+  "normalized_sample": {
+    "tse_2330.tw": {
+      "name": "TSMC",
+      "exchange": "TWSE",
+      "last_price": 500.0,
+      "change": 5.0,
+      "change_pct": 1.01,
+      "open": 495.0,
+      "high": 505.0,
+      "low": 490.0,
+      "previous_close": 495.0,
+      "volume": 10000,
+      "bid_ask": {"bid": 499.5, "ask": 500.5},
+      "source_time": "2023-10-27T10:00:00Z",
+      "retrieved_time": "2023-10-27T10:00:05Z",
+      "data_quality_flags": [],
+      "raw_payload_ref": "payload"
+    }
+  }
+}

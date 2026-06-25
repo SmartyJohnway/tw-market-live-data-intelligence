@@ -10,14 +10,14 @@ This document outlines the **design** for a future automated bridge that will sa
 When attempting to refresh generated artifacts, the system must respect the following source of truth hierarchy, prioritizing safety and predefined constraints over newly discovered data:
 
 1. **Protocol Docs and Caveat Register**: Absolute constraints (e.g., prohibited sources, required caveats, boundaries).
-2. **Controlled Live Probe Outputs**: Recent, validated evidence artifacts stored in `research/controlled_live_probe_outputs/`.
+2. **Controlled Live Probe Outputs**: Recent, validated evidence artifacts stored in the current canonical evidence path: `research/live_probe_runs/m3g_04/`. (Note: References to generic paths like `research/controlled_live_probe_outputs/` represent future migrations requiring separate explicit milestones and are not active now.)
 3. **Reviewed Generated Artifacts**: The previous stable state in `research/generated/`.
 4. **Frontend Readonly Artifacts**: Display-layer artifacts in `frontend/public/`.
 
 ## Preconditions for Artifact Refresh
 Before the bridge can execute a refresh of production artifacts, all of the following preconditions must be met:
 - The refresh is explicitly authorized under an active, controlled milestone.
-- Valid, non-stale evidence artifacts exist in the controlled output directory.
+- Valid, non-stale evidence artifacts exist in the canonical controlled output directory (`research/live_probe_runs/m3g_04/`).
 - The `contract_status` for the source to be promoted must be `normalized_pass` (or explicitly authorized for promotion despite warnings).
 - Target symbols must strictly fall within the bounded watchlist in `config/market_targets.json`.
 

@@ -1,0 +1,17 @@
+{
+  "timestamp": "2023-10-27T10:00:00Z",
+  "targets": ["2330", "8069"],
+  "sources_requested": ["TWSE_OpenAPI"],
+  "results": {
+    "TWSE_OpenAPI": {
+      "status": "success",
+      "contract_status": "normalized_pass",
+      "http_ok": true,
+      "parse_status": "success",
+      "normalization_status": "success",
+      "failed_targets": [],
+      "errors": [],
+      "output_file": "twse_openapi_evidence.json"
+    }
+  }
+}
