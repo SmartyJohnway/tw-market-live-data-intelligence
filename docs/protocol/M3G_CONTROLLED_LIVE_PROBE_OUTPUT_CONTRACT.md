@@ -10,7 +10,7 @@ This document defines the strict data contract for the output of bounded, contro
 
 ## Allowed Output Location
 All controlled live probe outputs must be written to:
-- `research/controlled_live_probe_outputs/` (or a similarly explicit non-production evidence directory).
+- `research/live_probe_runs/m3g_04/` (Current canonical path. Future milestones migrating to generic `research/controlled_live_probe_outputs/` must be explicitly authorized).
 
 ## Run Summary Schema
 
@@ -18,20 +18,30 @@ This top-level schema summarizes the execution of a bounded live probe run.
 
 | Field | Type | Description |
 | :--- | :--- | :--- |
-| `run_id` | string | Unique identifier for the probe run (e.g., ISO-8601 timestamp or UUID). |
 | `timestamp` | string | ISO-8601 timestamp of the run. |
-| `bounded_watchlist_targets` | array | The specific subset of symbols probed (must adhere to M3G watchlist boundaries). |
-| `sources_probed` | array | List of source IDs attempted during the run. |
-| `overall_status` | string | The overall health of the run (e.g., `completed`, `partial_failure`, `failed`). |
+| `targets` | array | The specific subset of symbols probed (must adhere to M3G watchlist boundaries). |
+| `sources_requested` | array | List of source IDs attempted during the run. |
+| `results` | array | List of per-source output summary objects. |
 
 **Example:**
 ```json
 {
-  "run_id": "2024-05-20T10:00:00Z",
   "timestamp": "2024-05-20T10:00:00Z",
-  "bounded_watchlist_targets": ["2330", "0050"],
-  "sources_probed": ["TWSE_MIS", "Yahoo_Finance"],
-  "overall_status": "completed"
+  "targets": ["2330", "0050"],
+  "sources_requested": ["TWSE_MIS", "Yahoo_Finance"],
+  "results": [
+    {
+       "source_id": "Yahoo_Finance",
+       "status": "completed",
+       "contract_status": "identity_mismatch",
+       "http_ok": true,
+       "parse_status": "success",
+       "normalization_status": "failure",
+       "failed_targets": ["2330"],
+       "errors": ["Structured identity mismatch"],
+       "output_file": "research/live_probe_runs/m3g_04/Yahoo_Finance_1715000000.json"
+    }
+  ]
 }
 ```
 
@@ -42,33 +52,27 @@ This schema defines the structured health and payload data expected from each in
 | Field | Type | Description |
 | :--- | :--- | :--- |
 | `source_id` | string | The identifier of the source (e.g., `TWSE_MIS`, `Yahoo_Finance`). |
+| `status` | string | The overall probe attempt status for the source. |
 | `contract_status` | string | The definitive status of the source's data contract compliance. |
 | `http_ok` | boolean | Indicates if the HTTP network request(s) returned a 2xx success status. |
 | `parse_status` | string | Indicates if the raw payload was successfully parsed (e.g., `success`, `failure`). |
 | `normalization_status` | string | Indicates if the parsed payload was successfully normalized to M2 schemas. |
 | `failed_targets` | array | List of target symbols that failed to retrieve or parse correctly. |
-| `unsupported_targets` | array | (Optional) List of target symbols explicitly unsupported by the source. |
 | `errors` | array | List of explicit error messages encountered. |
-| `warnings` | array | List of warnings (e.g., identity mismatches, stale data). |
 | `output_file` | string | Path to the raw or detailed output evidence file for this source. |
-| `retrieved_timestamps` | object | (Optional) Key-value pairs of target symbols to their retrieved data timestamps. |
 
 **Example:**
 ```json
 {
   "source_id": "Yahoo_Finance",
+  "status": "completed",
   "contract_status": "identity_mismatch",
   "http_ok": true,
   "parse_status": "success",
   "normalization_status": "failure",
-  "failed_targets": ["2330.TW"],
-  "unsupported_targets": [],
-  "errors": ["Structured identity mismatch for 2330.TW: Expected 'Taiwan Semiconductor Manufacturing', got 'TSMC'"],
-  "warnings": ["Low-frequency polling warning"],
-  "output_file": "research/controlled_live_probe_outputs/yahoo_finance_20240520.json",
-  "retrieved_timestamps": {
-    "2330.TW": "2024-05-20T09:55:00Z"
-  }
+  "failed_targets": ["2330"],
+  "errors": ["Structured identity mismatch for 2330"],
+  "output_file": "research/live_probe_runs/m3g_04/Yahoo_Finance_1715000000.json"
 }
 ```
 

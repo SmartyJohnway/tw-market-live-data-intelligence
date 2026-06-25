@@ -76,11 +76,11 @@ The recovery of active network probes follows a strict authorization ladder:
 
 | Source ID | Source Type | Authority Level | Current Artifact Status | Error Type | Caveats | Attempted | Live Probe Needed | Local Mock Supports | Priority | Risk | Action |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| TWSE_MIS | unofficial_frontend_endpoint | unofficial_frontend | offline_mode_no_data | offline_mode_no_local_input | offline_mode, unofficial_source_risk | false | yes (in LEVEL_2) | yes | P1 | medium | Recover via mock fixtures in LEVEL_1 |
-| Yahoo_Finance | third_party_api | third_party | offline_mode_no_data | offline_mode_no_local_input | offline_mode, third_party_coverage_caveats | false | yes (in LEVEL_2) | yes | P2 | low | Recover via mock fixtures in LEVEL_1 |
-| TWSE_OpenAPI | official_openapi | official_public_exchange_eod | offline_mode_no_data | offline_mode_no_local_input | offline_mode, official_eod_reference_only | false | yes (in LEVEL_2) | yes | P1 | low | Recover via mock fixtures in LEVEL_1 |
-| TPEx_OpenAPI | official_openapi | official_public_exchange_eod | offline_mode_no_data | offline_mode_no_local_input | offline_mode, official_eod_reference_only | false | yes (in LEVEL_2) | yes | P1 | low | Recover via mock fixtures in LEVEL_1 |
-| FinMind | third_party_api | third_party | not_attempted | not_attempted_offline_default | offline_mode | false | yes | no | deferred | blocked | Keep deferred until M3G-04 or later |
+| TWSE_MIS | unofficial_frontend_endpoint | unofficial_frontend | active (in controlled probes) | none | offline_mode, unofficial_source_risk | true | no (done in LEVEL_2) | yes | P1 | medium | Completed in M3G-06 |
+| Yahoo_Finance | third_party_api | third_party | active (in controlled probes) | none (unless mismatch) | offline_mode, third_party_coverage_caveats | true | no (done in LEVEL_2) | yes | P2 | low | Completed in M3G-06 |
+| TWSE_OpenAPI | official_openapi | official_public_exchange_eod | active (in controlled probes) | none | offline_mode, official_eod_reference_only | true | no (done in LEVEL_2) | yes | P1 | low | Completed in M3G-06 |
+| TPEx_OpenAPI | official_openapi | official_public_exchange_eod | active (in controlled probes) | none | offline_mode, official_eod_reference_only | true | no (done in LEVEL_2) | yes | P1 | low | Completed in M3G-06 |
+| FinMind | third_party_api | third_party | deferred | not_attempted_offline_default | offline_mode | false | yes | no | deferred | blocked | Keep deferred |
 | Fugle | broker_api | broker_authenticated | skipped | auth_required_doc_only_skipped | broker_api_not_eligible | false | yes | no | deferred | blocked | Out of scope. Maintain doc-only |
 | Fubon | broker_api | broker_authenticated | skipped | auth_required_doc_only_skipped | broker_api_not_eligible | false | yes | no | deferred | blocked | Out of scope. Maintain doc-only |
 
@@ -106,7 +106,7 @@ The recovery process must halt immediately if:
 
 ## 12. What Must Remain Deferred
 
-- **Live Probes**: Deferred until LEVEL_2 authorization.
+- **Live Refresh Automation**: The bridge from controlled probes to production artifacts is deferred until LEVEL_3.
 - **Broker Auth**: `Fugle` and `Fubon` remain deferred indefinitely.
 - **Full Market Scans**: Strictly deferred. All processing must adhere to the bounded watchlist.
-- **FinMind Integration**: Deferred until primary sources are fully validated.
+- **FinMind Integration**: Deferred until primary sources are fully validated in production refresh.

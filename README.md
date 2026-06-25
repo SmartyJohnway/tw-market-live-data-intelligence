@@ -58,7 +58,7 @@ The frontend provides a clear UI to view the generated capability matrix and int
 ## Legacy / Manual Research Operations
 
 ### Report Generation (Network Probes - LEGACY)
-**⚠️ WARNING: This is not the current M3G controlled refresh path.**
+**WARNING: This is not the current M3G controlled refresh path.**
 This script may run broad network probes and write generated/report artifacts. It must not be used unless a future milestone explicitly authorizes it.
 
 To run the legacy automated probe framework against all defined targets in `config/market_targets.json` and generate capability reports:

@@ -27,3 +27,8 @@ I confirm that no generated AI context packs, matrix artifacts, or frontend disp
 - The automated refresh bridge (`M3G_CONTROLLED_SOURCE_REFRESH_BRIDGE_DESIGN.md`) remains purely conceptual and un-implemented.
 - Stale generated artifacts remain in the repository as readonly historical context.
 - **Recommended Next Milestone**: `M3G-08-CONTROLLED-SOURCE-REFRESH-BRIDGE-PREFLIGHT` (Strictly Preflight/Design Validation, not production activation).
+
+## PR Repair Updates (Post-Review)
+- Aligned `M3G_CONTROLLED_LIVE_PROBE_OUTPUT_CONTRACT.md` schema and output path exactly with the existing M3G-04 controlled runner logic.
+- Updated `M3G_SOURCE_RECOVERY_PLAN.md` to consistently show FinMind as deferred, live probes as completed (no longer deferred), and properly updated table rows to post-M3G-06 status.
+- Replaced non-essential Unicode warnings (`⚠️`) with ASCII (`WARNING:`) across all governance docs.
