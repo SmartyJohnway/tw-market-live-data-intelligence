@@ -92,16 +92,29 @@ def _load_allowed_targets() -> set[str]:
     return allowed
 
 
-def controlled_probe_governance(executed: bool) -> dict[str, Any]:
-    """Governance metadata for the explicit MCP-02 controlled probe surface."""
+def controlled_probe_governance(
+    executed: bool,
+    *,
+    runner_started: bool = False,
+    network_calls_may_have_occurred: bool = False,
+) -> dict[str, Any]:
+    """Governance metadata for the explicit MCP-02 controlled probe surface.
+
+    `executed=False` is reserved for validation failures or missing runner path
+    before subprocess launch. Once the controlled runner has started or may have
+    started, MCP-02 must not claim that network calls/live execution did not
+    happen, even if the runner later fails or times out.
+    """
     return {
         "surface": "MCP explicit controlled live probe tool",
         "execution_mode": "explicit_confirmed_controlled_probe",
         "network_calls": bool(executed),
+        "network_calls_may_have_occurred": bool(network_calls_may_have_occurred),
         "production_refresh": False,
         "frontend_refresh": False,
         "artifact_writes": False,
         "live_probe_execution": bool(executed),
+        "runner_started": bool(runner_started),
         "full_market_scan": False,
         "trading_signal": False,
         "caveats": [
@@ -133,6 +146,26 @@ def _controlled_failure(arguments: dict[str, Any], reason: str, detail: str | No
     }
     if detail:
         payload["detail"] = detail
+    return payload
+
+
+
+def _controlled_runner_failure_after_launch(
+    arguments: dict[str, Any], reason: str, detail: str | None = None
+) -> dict[str, Any]:
+    payload = _controlled_failure(arguments, reason, detail)
+    payload["status"] = reason
+    payload["governance"] = controlled_probe_governance(
+        executed=True,
+        runner_started=True,
+        network_calls_may_have_occurred=True,
+    )
+    payload["executed_scope"] = {
+        "requested_sources": arguments.get("requested_sources", []),
+        "requested_targets": arguments.get("requested_targets", []),
+    }
+    payload["runner_started"] = True
+    payload["network_calls_may_have_occurred"] = True
     return payload
 
 
@@ -186,22 +219,50 @@ def run_controlled_probe_runner(sources: list[str], targets: list[str]) -> dict[
     existing_pythonpath = env.get("PYTHONPATH")
     env["PYTHONPATH"] = str(REPO_ROOT) if not existing_pythonpath else f"{REPO_ROOT}{os.pathsep}{existing_pythonpath}"
     with tempfile.TemporaryDirectory(prefix="mcp_controlled_probe_") as tmpdir:
-        completed = subprocess.run(
-            [
-                sys.executable,
-                str(runner_path),
-                "--targets",
-                *targets,
-                "--sources",
-                *sources,
-            ],
-            cwd=tmpdir,
-            env=env,
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=CONTROLLED_RUNNER_TIMEOUT_SECONDS,
-        )
+        command = [
+            sys.executable,
+            str(runner_path),
+            "--targets",
+            *targets,
+            "--sources",
+            *sources,
+        ]
+        try:
+            completed = subprocess.run(
+                command,
+                cwd=tmpdir,
+                env=env,
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=CONTROLLED_RUNNER_TIMEOUT_SECONDS,
+            )
+        except subprocess.TimeoutExpired as exc:
+            return {
+                "status": "controlled_runner_timeout",
+                "returncode": None,
+                "stdout_tail": (exc.stdout or "")[-CONTROLLED_OUTPUT_TAIL_CHARS:],
+                "stderr_tail": (exc.stderr or "")[-CONTROLLED_OUTPUT_TAIL_CHARS:],
+                "controlled_summary": None,
+                "runner_started": True,
+                "network_calls_may_have_occurred": True,
+                "repo_artifacts_updated": False,
+                "temporary_evidence_directory_removed": True,
+                "error": f"Controlled runner timed out after {CONTROLLED_RUNNER_TIMEOUT_SECONDS} seconds",
+            }
+        except Exception as exc:
+            return {
+                "status": "controlled_runner_error_after_launch",
+                "returncode": None,
+                "stdout_tail": "",
+                "stderr_tail": "",
+                "controlled_summary": None,
+                "runner_started": True,
+                "network_calls_may_have_occurred": True,
+                "repo_artifacts_updated": False,
+                "temporary_evidence_directory_removed": True,
+                "error": str(exc),
+            }
         evidence_dir = Path(tmpdir) / "research" / "live_probe_runs" / "m3g_04"
         summaries = sorted(evidence_dir.glob("run_summary_*.json"))
         summary: dict[str, Any] | None = None
@@ -212,10 +273,13 @@ def run_controlled_probe_runner(sources: list[str], targets: list[str]) -> dict[
                 summary = {"parse_error": f"Controlled runner summary is not valid JSON: {exc.msg}"}
 
         return {
+            "status": "ok" if completed.returncode == 0 else "runner_failed",
             "returncode": completed.returncode,
             "stdout_tail": completed.stdout[-CONTROLLED_OUTPUT_TAIL_CHARS:],
             "stderr_tail": completed.stderr[-CONTROLLED_OUTPUT_TAIL_CHARS:],
             "controlled_summary": summary,
+            "runner_started": True,
+            "network_calls_may_have_occurred": True,
             "repo_artifacts_updated": False,
             "temporary_evidence_directory_removed": True,
         }
@@ -234,13 +298,19 @@ def run_controlled_live_probe_evidence(arguments: dict[str, Any] | None) -> dict
     except FileNotFoundError as exc:
         return _controlled_failure(args, "controlled_runner_missing", str(exc))
     except Exception as exc:
-        return _controlled_failure(args, "controlled_runner_error", str(exc))
+        return _controlled_runner_failure_after_launch(args, "controlled_runner_error_after_launch", str(exc))
 
-    status = "ok" if result.get("returncode") == 0 else "runner_failed"
+    status = result.get("status") or ("ok" if result.get("returncode") == 0 else "runner_failed")
+    runner_started = bool(result.get("runner_started"))
+    network_calls_may_have_occurred = bool(result.get("network_calls_may_have_occurred"))
     return {
         "tool": CONTROLLED_LIVE_PROBE_TOOL,
         "status": status,
-        "governance": controlled_probe_governance(executed=True),
+        "governance": controlled_probe_governance(
+            executed=runner_started or network_calls_may_have_occurred,
+            runner_started=runner_started,
+            network_calls_may_have_occurred=network_calls_may_have_occurred,
+        ),
         "requested_scope": {
             "requested_sources": sources,
             "requested_targets": targets,
@@ -256,6 +326,8 @@ def run_controlled_live_probe_evidence(arguments: dict[str, Any] | None) -> dict
         "generated_artifacts_updated": False,
         "frontend_artifacts_updated": False,
         "production_refreshed": False,
+        "runner_started": runner_started,
+        "network_calls_may_have_occurred": network_calls_may_have_occurred,
         "statement": "Generated artifacts, frontend artifacts, and production snapshots were not updated; this is not realtime-guaranteed data and not a trading signal.",
     }
 

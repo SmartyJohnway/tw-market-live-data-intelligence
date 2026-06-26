@@ -62,7 +62,7 @@ The MCP tool response includes governance metadata with:
 
 Confirmed execution is routed only through the bounded controlled runner wrapper for `scripts/run_m3g04_controlled_live_probe.py`. The MCP module does not import the legacy individual probe modules and does not directly expose broad legacy probe functions.
 
-The wrapper executes the runner with the repository on `PYTHONPATH` but with an isolated temporary working directory. This preserves runner compatibility while preventing repository `research/generated/*`, `frontend/public/*`, or production artifact writes from the MCP surface. If the runner produces a temporary `run_summary_*.json`, the MCP response includes that summary before the temporary directory is removed.
+The wrapper executes the runner with the repository on `PYTHONPATH` but with an isolated temporary working directory. This preserves runner compatibility while preventing repository `research/generated/*`, `frontend/public/*`, or production artifact writes from the MCP surface. If the runner produces a temporary `run_summary_*.json`, the MCP response includes that summary before the temporary directory is removed. MCP-02 does not persist controlled evidence into the repository; durable evidence readback or persistence is deferred to MCP-03 or another explicit milestone.
 
 The wrapper is injectable so unit tests can monkeypatch it. The unit tests do not perform live network calls.
 
@@ -74,10 +74,11 @@ The controlled tool fails closed without executing the runner when:
 - requested source scope is empty, malformed, duplicated, or outside the allowlist;
 - requested target scope is empty, malformed, duplicated, outside `config/market_targets.json`, or above bounds;
 - write/refresh prohibitions are not explicitly set to true;
-- the controlled runner path is missing;
-- the controlled runner raises an error.
+- the controlled runner path is missing before subprocess launch;
+- the controlled runner times out after subprocess launch;
+- the controlled runner raises an error after subprocess launch.
 
-Failure responses preserve structured governance metadata and state that generated artifacts, frontend artifacts, and production snapshots were not updated.
+Validation and missing-runner failures preserve `network_calls: false`, `live_probe_execution: false`, and `runner_started: false`. Post-launch timeout or runner-error responses do not claim no network/live execution; they include `runner_started: true` and `network_calls_may_have_occurred: true` while still stating that generated artifacts, frontend artifacts, and production snapshots were not updated.
 
 ## Non-goals
 

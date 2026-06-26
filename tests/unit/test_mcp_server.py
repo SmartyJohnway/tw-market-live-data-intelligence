@@ -189,6 +189,8 @@ def test_controlled_tool_valid_confirmation_calls_only_runner_wrapper(monkeypatc
             "stdout_tail": "controlled ok",
             "stderr_tail": "",
             "controlled_summary": {"timestamp": "2026-06-26T00:00:00+00:00"},
+            "runner_started": True,
+            "network_calls_may_have_occurred": True,
             "repo_artifacts_updated": False,
             "temporary_evidence_directory_removed": True,
         }
@@ -206,6 +208,8 @@ def test_controlled_tool_valid_confirmation_calls_only_runner_wrapper(monkeypatc
     assert data["governance"]["artifact_writes"] is False
     assert data["governance"]["full_market_scan"] is False
     assert data["governance"]["trading_signal"] is False
+    assert data["governance"]["runner_started"] is True
+    assert data["governance"]["network_calls_may_have_occurred"] is True
     assert data["generated_artifacts_updated"] is False
     assert data["frontend_artifacts_updated"] is False
     assert data["production_refreshed"] is False
@@ -260,8 +264,11 @@ def test_controlled_runner_wrapper_uses_temp_cwd_and_returns_summary(monkeypatch
 
     result = mcp_server.run_controlled_probe_runner(["TWSE_OpenAPI"], ["2330"])
 
+    assert result["status"] == "ok"
     assert result["returncode"] == 0
     assert result["controlled_summary"] == {"timestamp": "2026-06-26T00:00:00+00:00", "results": {}}
+    assert result["runner_started"] is True
+    assert result["network_calls_may_have_occurred"] is True
     assert result["repo_artifacts_updated"] is False
     assert result["temporary_evidence_directory_removed"] is True
     assert calls[0]["command"][0] == sys.executable
@@ -285,15 +292,74 @@ def test_controlled_tool_missing_runner_path_returns_structured_failure(monkeypa
     assert data["executed_scope"] == {"requested_sources": [], "requested_targets": []}
 
 
-def test_controlled_tool_runner_error_returns_structured_failure(monkeypatch):
+def test_controlled_tool_timeout_result_does_not_claim_no_network(monkeypatch):
+    def fake_timeout_runner(sources, targets):
+        return {
+            "status": "controlled_runner_timeout",
+            "returncode": None,
+            "stdout_tail": "partial out",
+            "stderr_tail": "partial err",
+            "controlled_summary": None,
+            "runner_started": True,
+            "network_calls_may_have_occurred": True,
+            "repo_artifacts_updated": False,
+            "temporary_evidence_directory_removed": True,
+            "error": "Controlled runner timed out",
+        }
+
+    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fake_timeout_runner)
+
+    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
+
+    assert data["status"] == "controlled_runner_timeout"
+    assert data["runner_started"] is True
+    assert data["network_calls_may_have_occurred"] is True
+    assert data["governance"]["runner_started"] is True
+    assert data["governance"]["network_calls_may_have_occurred"] is True
+    assert data["governance"]["network_calls"] is True
+    assert data["governance"]["live_probe_execution"] is True
+    assert data["generated_artifacts_updated"] is False
+    assert data["frontend_artifacts_updated"] is False
+    assert data["production_refreshed"] is False
+
+
+def test_controlled_runner_timeout_does_not_claim_no_network(monkeypatch, tmp_path):
+    runner_path = tmp_path / mcp_server.CONTROLLED_RUNNER_RELATIVE_PATH
+    runner_path.parent.mkdir(parents=True)
+    runner_path.write_text("# fake runner path for timeout test\n", encoding="utf-8")
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    def fake_timeout(command, cwd, env, **kwargs):
+        raise subprocess.TimeoutExpired(command, timeout=kwargs["timeout"], output="partial out", stderr="partial err")
+
+    monkeypatch.setattr(mcp_server.subprocess, "run", fake_timeout)
+
+    result = mcp_server.run_controlled_probe_runner(["TWSE_OpenAPI"], ["2330"])
+
+    assert result["status"] == "controlled_runner_timeout"
+    assert result["returncode"] is None
+    assert result["runner_started"] is True
+    assert result["network_calls_may_have_occurred"] is True
+    assert result["repo_artifacts_updated"] is False
+
+
+def test_controlled_tool_runner_error_after_launch_does_not_claim_no_network(monkeypatch):
     def fake_error_runner(sources, targets):
-        raise RuntimeError("runner failed")
+        raise RuntimeError("runner failed after launch")
 
     monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fake_error_runner)
 
     data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
 
-    assert data["status"] == "failed_closed"
-    assert data["failure_reason"] == "controlled_runner_error"
-    assert data["detail"] == "runner failed"
-    assert data["governance"]["network_calls"] is False
+    assert data["status"] == "controlled_runner_error_after_launch"
+    assert data["failure_reason"] == "controlled_runner_error_after_launch"
+    assert data["detail"] == "runner failed after launch"
+    assert data["runner_started"] is True
+    assert data["network_calls_may_have_occurred"] is True
+    assert data["governance"]["runner_started"] is True
+    assert data["governance"]["network_calls_may_have_occurred"] is True
+    assert data["governance"]["network_calls"] is True
+    assert data["governance"]["live_probe_execution"] is True
+    assert data["generated_artifacts_updated"] is False
+    assert data["frontend_artifacts_updated"] is False
+    assert data["production_refreshed"] is False
