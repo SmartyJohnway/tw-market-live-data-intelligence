@@ -8,6 +8,8 @@ DELAY = {"not_delayed_candidate", "delayed_candidate", "stale", "eod", "unknown"
 TOP = {"schema_version", "generated_at_utc", "staging_only", "operator_confirmations", "target_universe", "source_runs", "validation"}
 RUN = {"source_id", "source_type", "authority_level", "request_method", "url_or_fixture", "http_status", "contract_status", "retrieved_at_utc", "source_timestamp", "freshness_status", "delay_status", "staleness_seconds", "normalization_status", "data_quality_flags", "source_risk_flags", "normalized_sample_preview", "raw_evidence_ref", "errors"}
 FALSE_FLAGS = {"network_authorized", "production_write", "frontend_write", "generated_artifact_write", "full_market_scan", "trading_signal"}
+FULL_MARKET_TARGET_VALUES = {"full_market", "all", "*"}
+TWSE_MIS_UNOFFICIAL_RISK_ALIASES = {"unofficial_source_risk", "unofficial_endpoint", "unofficial_frontend_endpoint"}
 
 
 def _walk(obj, path="$"):
@@ -40,8 +42,10 @@ def validate_controlled_refresh_staging_payload(payload: dict) -> list[dict]:
         if validation.get(flag) is not False:
             errors.append(validation_error("governance_flag_must_be_false", f"$.validation.{flag}", f"{flag} must be false"))
     target = payload.get("target_universe", {})
-    if isinstance(target, dict) and target.get("scope") in {"full_market", "all", "*"}:
-        errors.append(validation_error("full_market_target_forbidden", "$.target_universe.scope", "full-market target universe is forbidden"))
+    if isinstance(target, dict):
+        for field in ("scope", "mode"):
+            if target.get(field) in FULL_MARKET_TARGET_VALUES:
+                errors.append(validation_error("full_market_target_forbidden", f"$.target_universe.{field}", "full-market target universe is forbidden"))
     if isinstance(target, dict) and target.get("full_market_scan") is True:
         errors.append(validation_error("full_market_target_forbidden", "$.target_universe.full_market_scan", "full-market scan is forbidden"))
     runs = payload.get("source_runs", [])
@@ -60,8 +64,8 @@ def validate_controlled_refresh_staging_payload(payload: dict) -> list[dict]:
             errors.append(validation_error("invalid_freshness_status", f"$.source_runs[{i}].freshness_status", "invalid freshness_status"))
         if run.get("delay_status") not in DELAY:
             errors.append(validation_error("invalid_delay_status", f"$.source_runs[{i}].delay_status", "invalid delay_status"))
-        if run.get("source_id") == "TWSE_MIS" and "unofficial_endpoint" not in run.get("source_risk_flags", []):
-            errors.append(validation_error("missing_unofficial_source_risk", f"$.source_runs[{i}].source_risk_flags", "TWSE_MIS unofficial source risk must be preserved"))
+        if run.get("source_id") == "TWSE_MIS" and TWSE_MIS_UNOFFICIAL_RISK_ALIASES.isdisjoint(set(run.get("source_risk_flags", []))):
+            errors.append(validation_error("missing_unofficial_source_risk", f"$.source_runs[{i}].source_risk_flags", "TWSE_MIS must preserve an unofficial-source risk flag"))
     for path, key, _ in _walk(payload):
         if str(key).lower() in FORBIDDEN_KEYS:
             errors.append(validation_error("forbidden_field", f"{path}.{key}", "trading signal or realtime guarantee field is forbidden"))

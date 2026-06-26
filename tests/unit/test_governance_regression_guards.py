@@ -16,7 +16,17 @@ def test_frontend_builder_requires_confirmations(): assert "REQUIRED_CONFIRMATIO
 def test_run_all_probes_remains_gated_or_forbidden():
     text=read("scripts/run_all_probes.py").lower(); assert "run_all_probes_i_understand_this_is_live" in text or "forbidden" in text or "legacy" in text
 def test_no_test_uses_network():
-    for p in (ROOT/"tests/unit").glob("test_*m3k*.py"): assert "requests." not in p.read_text(encoding="utf-8")
+    forbidden = ("requests.", "urllib.request", "httpx.", "socket.create_connection")
+    files = [
+        "test_controlled_refresh_staging_writer.py",
+        "test_controlled_refresh_staging_validator.py",
+        "test_frontend_readonly_context_package.py",
+        "test_local_delivery_acceptance.py",
+    ]
+    for name in files:
+        p = ROOT / "tests/unit" / name
+        text = p.read_text(encoding="utf-8")
+        assert not any(token in text for token in forbidden), f"network-looking token found in {p}"
 def test_no_new_production_refresh_without_confirmations():
     for p in (ROOT/"scripts").glob("*.py"):
         text=p.read_text(encoding="utf-8").lower()

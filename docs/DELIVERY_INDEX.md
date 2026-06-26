@@ -59,7 +59,7 @@ Allowlisted staging source identifiers are `TWSE_OpenAPI`, `TPEx_OpenAPI`, `TWSE
 
 ## TWSE MIS caveats
 
-`TWSE_MIS` is treated as an unofficial endpoint. Its source risk flags must preserve `unofficial_endpoint`; `live_candidate` values are not realtime guarantees.
+`TWSE_MIS` is treated as an unofficial endpoint. It must preserve an unofficial-source risk flag, preferably `unofficial_source_risk`; the legacy alias `unofficial_endpoint` remains accepted. `live_candidate` values are not realtime guarantees.
 
 ## Staging writer status
 

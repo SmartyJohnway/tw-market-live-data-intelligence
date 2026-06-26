@@ -19,3 +19,25 @@ def test_trading_signal_true_fail(): p=payload(); p["validation"]["trading_signa
 def test_source_id_outside_allowlist_fail(): assert payload(source_id="FinMind")["validation"]["errors"]
 def test_buy_sell_hold_nested_field_fail(): assert payload(normalized_sample_preview={"symbol":"2330","hold":True})["validation"]["errors"]
 def test_realtime_guarantee_nested_field_fail(): assert payload(normalized_sample_preview={"official_realtime":True})["validation"]["errors"]
+
+
+def test_target_universe_mode_full_market_fails():
+    p=payload(); p["target_universe"]={"mode":"full_market"}; assert errs(p)
+
+def test_target_universe_mode_all_fails():
+    p=payload(); p["target_universe"]={"mode":"all"}; assert errs(p)
+
+def test_target_universe_mode_star_fails():
+    p=payload(); p["target_universe"]={"mode":"*"}; assert errs(p)
+
+def test_target_universe_bounded_mode_passes():
+    p=payload(); p["target_universe"]={"mode":"bounded","symbols":["2330"]}; assert errs(p) == []
+
+def test_twse_mis_unofficial_source_risk_passes():
+    assert payload(source_risk_flags=["unofficial_source_risk"])["validation"]["errors"] == []
+
+def test_twse_mis_unofficial_endpoint_legacy_alias_passes():
+    assert payload(source_risk_flags=["unofficial_endpoint"])["validation"]["errors"] == []
+
+def test_twse_mis_without_unofficial_source_risk_fails():
+    assert payload(source_risk_flags=["fragile_frontend_contract"])["validation"]["errors"]
