@@ -7,6 +7,7 @@ from scripts.run_m4_local_validation import run_local_validation
 from scripts.validate_source_registry import validate_source_registry
 from scripts.run_fixture_replay_scenarios import run_scenarios
 from scripts.validate_authorization_ladder import validate_authorization_ladder
+from scripts.json_schema_validation import validate_json_schema_subset
 
 
 def _load(path: Path) -> dict:
@@ -22,18 +23,14 @@ def _check(name: str, errors: list[dict] | None = None, ok: bool | None = None, 
 def validate_evidence_ledger(repo_root: Path, ledger_path: Path | None = None) -> list[dict]:
     ledger_path = ledger_path or repo_root / "tests/fixtures/evidence/fixture_evidence_ledger.json"
     schema = _load(repo_root / "docs/evidence/evidence_ledger_schema.json")
-    required = set(schema.get("required", schema.get("required_fields", [])))
     errors = []
     try:
         ledger = _load(ledger_path)
     except Exception as exc:
         return [{"code": "ledger_unreadable", "path": str(ledger_path), "message": str(exc)}]
     for idx, entry in enumerate(ledger.get("evidence", [])):
-        missing = sorted(required - set(entry))
-        if missing:
-            errors.append({"code": "missing_evidence_fields", "path": f"$.evidence[{idx}]", "fields": missing})
-        if entry.get("retrieval_mode") != "fixture_only" or entry.get("forbidden_for_production") is not True:
-            errors.append({"code": "fixture_evidence_must_be_forbidden_for_production", "path": f"$.evidence[{idx}]"})
+        for error in validate_json_schema_subset(entry, schema, f"$.evidence[{idx}]"):
+            errors.append(error)
         fixture_path = repo_root / entry.get("fixture_path", "")
         if not fixture_path.exists():
             errors.append({"code": "missing_fixture", "path": str(fixture_path)})
@@ -69,8 +66,17 @@ def run_readiness_check(repo_root: str | Path = ".", scenarios_path: str | Path 
         _load(root / "docs/source_registry/source_family_coverage_matrix.json"),
     )))
     checks.append(_check("evidence_ledger", validate_evidence_ledger(root)))
-    replay = run_scenarios(scenarios_path or root / "tests/fixtures/replay_scenarios/valid_replay_scenarios.json")
-    checks.append(_check("fixture_replay", ok=replay["failed"] == 0, detail=replay))
+    replay_paths = [Path(scenarios_path)] if scenarios_path else [
+        root / "tests/fixtures/replay_scenarios/valid_replay_scenarios.json",
+        root / "tests/fixtures/replay_scenarios/failure_injection_scenarios.json",
+    ]
+    replay_details = []
+    replay_ok = True
+    for replay_path in replay_paths:
+        replay = run_scenarios(replay_path)
+        replay_details.append({"path": str(replay_path), "result": replay})
+        replay_ok = replay_ok and replay["failed"] == 0
+    checks.append(_check("fixture_replay", ok=replay_ok, detail=replay_details))
     checks.append(_check("authorization_ladder", validate_authorization_ladder({})))
     checks.append(_check("release_gate_matrix", validate_release_gate_matrix(root)))
     return {"ok": all(c["ok"] for c in checks), "checks": checks, "network_used": False, "writes": False, "production_ready": False}

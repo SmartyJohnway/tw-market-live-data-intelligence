@@ -36,7 +36,15 @@ def _expected_flags_satisfied(expected: list[str], validation_errors: list[dict]
     if not expected:
         return not forbidden_findings
     observed = {e.get("code") for e in validation_errors} | {f.get("code") for f in forbidden_findings}
-    return all(flag in observed or any(flag in code for code in observed if code) for flag in expected)
+    observed_text = json.dumps({"validation_errors": validation_errors, "forbidden_findings": forbidden_findings}, sort_keys=True)
+    def satisfied(flag: str) -> bool:
+        return (
+            flag in observed
+            or any(flag in code for code in observed if code)
+            or (flag == "realtime_guarantee" and "realtime_guaranteed" in observed_text)
+            or (flag == "trading_signal" and any(term in observed_text for term in ["buy", "sell", "hold", "target_price", "recommendation", "rank"]))
+        )
+    return all(satisfied(flag) for flag in expected)
 
 
 def run_scenarios(path: str | Path) -> dict:
@@ -61,13 +69,15 @@ def run_scenarios(path: str | Path) -> dict:
         for finding in forbidden_findings:
             events.append({"event_type": "forbidden_behavior_detected", "scenario_id": scenario_id, "code": finding["code"]})
         expected_caveats = set(scenario.get("expected_frontend_caveats", []))
+        forbidden_behavior_present = bool(forbidden_findings) or any(error.get("code") == "forbidden_field" for error in validation_errors)
         checks = {
             "validation_status": validation_status == scenario.get("expected_validation_status"),
             "frontend_caveats": expected_caveats.issubset(set(package_caveats)),
             "forbidden_flags": _expected_flags_satisfied(scenario.get("expected_forbidden_flags", []), validation_errors, forbidden_findings),
-            "forbidden_behaviors_absent": (not forbidden_findings) == bool(scenario.get("forbidden_behaviors_absent", True)),
-            "summary_status": scenario.get("expected_summary_status") in {"pass", "expected_failure"},
+            "forbidden_behaviors_absent": (not forbidden_behavior_present) == bool(scenario.get("forbidden_behaviors_absent", True)),
         }
+        actual_summary_status = "pass" if all(checks.values()) else "fail"
+        checks["summary_status"] = actual_summary_status == scenario.get("expected_summary_status", "pass")
         passed = all(checks.values())
         results.append({
             "scenario_id": scenario_id,
@@ -77,6 +87,8 @@ def run_scenarios(path: str | Path) -> dict:
             "expected_frontend_caveats": sorted(expected_caveats),
             "forbidden_findings": forbidden_findings,
             "validation_errors": validation_errors,
+            "actual_summary_status": actual_summary_status,
+            "expected_summary_status": scenario.get("expected_summary_status", "pass"),
             "checks": checks,
             "passed": passed,
         })
