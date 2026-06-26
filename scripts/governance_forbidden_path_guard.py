@@ -32,3 +32,13 @@ def assert_not_forbidden_repo_write_path(path: str | Path) -> None:
     reason = is_forbidden_repo_write_path(path)
     if reason:
         raise ValueError(reason)
+
+
+def frontend_public_changed_files(changed_files: list[str]) -> list[str]:
+    """Return changed files under frontend/public without consulting git remotes."""
+    return [path for path in changed_files if _parts(path)[:2] == ("frontend", "public")]
+
+
+def has_frontend_public_changed_file(changed_files: list[str]) -> bool:
+    """Pure check used by unit tests and check-only tooling."""
+    return bool(frontend_public_changed_files(changed_files))
