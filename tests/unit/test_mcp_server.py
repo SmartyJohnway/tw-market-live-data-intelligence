@@ -52,6 +52,14 @@ def write_target_config(repo_root):
     )
 
 
+def valid_run_summary(targets=None, sources=None, results=None):
+    return {
+        "targets": targets or ["2330"],
+        "sources_requested": sources or ["TWSE_OpenAPI"],
+        "results": results if results is not None else {"TWSE_OpenAPI": {"2330": {"status": "ok"}}},
+    }
+
+
 def test_list_tools_includes_readonly_context_and_one_controlled_tool_only():
     tools = asyncio.run(mcp_server.list_tools())
     tool_names = {tool.name for tool in tools}
@@ -419,9 +427,11 @@ def test_evidence_readback_empty_directory_returns_no_evidence(monkeypatch, tmp_
 def test_evidence_readback_latest_valid_run_summary_is_returned(monkeypatch, tmp_path):
     evidence_dir = tmp_path / mcp_server.CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH
     evidence_dir.mkdir(parents=True)
-    (evidence_dir / "run_summary_20260624_000000.json").write_text(json.dumps({"run": "old"}), encoding="utf-8")
+    (evidence_dir / "run_summary_20260624_000000.json").write_text(
+        json.dumps(valid_run_summary(results={"old": True})), encoding="utf-8"
+    )
     (evidence_dir / "run_summary_20260624_010000.json").write_text(
-        json.dumps({"run": "latest", "freshness": "not realtime"}), encoding="utf-8"
+        json.dumps(valid_run_summary(results={"latest": True, "freshness": "not realtime"})), encoding="utf-8"
     )
     write_target_config(tmp_path)
     monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
@@ -437,7 +447,7 @@ def test_evidence_readback_latest_valid_run_summary_is_returned(monkeypatch, tmp
 
     assert data["status"] == "ok"
     assert data["selected_runs"] == ["research/live_probe_runs/m3g_04/run_summary_20260624_010000.json"]
-    assert data["run_summaries"][0]["content"]["run"] == "latest"
+    assert data["run_summaries"][0]["content"]["results"]["latest"] is True
     assert data["source_filters_applied"] == ["TWSE_OpenAPI"]
     assert data["target_filters_applied"] == ["2330"]
 
@@ -512,6 +522,98 @@ def test_evidence_readback_invalid_json_returns_structured_error(monkeypatch, tm
     assert "line" in data["parse_error"]
 
 
+def test_evidence_readback_missing_required_shape_returns_structured_error(monkeypatch, tmp_path):
+    evidence_dir = tmp_path / mcp_server.CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "run_summary_20260624_010000.json").write_text(json.dumps({"run": "latest"}), encoding="utf-8")
+    write_target_config(tmp_path)
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL, {})))
+
+    assert data["status"] == "invalid_evidence_shape"
+    assert data["invalid_evidence_path"] == "research/live_probe_runs/m3g_04/run_summary_20260624_010000.json"
+    assert data["shape_error"]["error"] == "missing_required_fields"
+    assert data["shape_error"]["missing_fields"] == ["targets", "sources_requested", "results"]
+
+
+def test_evidence_readback_requested_sources_filter_nonmatching_summaries(monkeypatch, tmp_path):
+    evidence_dir = tmp_path / mcp_server.CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "run_summary_20260624_020000.json").write_text(
+        json.dumps(valid_run_summary(sources=["Yahoo_Finance"], results={"source": "yahoo"})), encoding="utf-8"
+    )
+    (evidence_dir / "run_summary_20260624_010000.json").write_text(
+        json.dumps(valid_run_summary(sources=["TWSE_OpenAPI"], results={"source": "twse"})), encoding="utf-8"
+    )
+    write_target_config(tmp_path)
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    data = decode_text_response(
+        asyncio.run(
+            mcp_server.call_tool(
+                mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL,
+                {"requested_sources": ["TWSE_OpenAPI"]},
+            )
+        )
+    )
+
+    assert data["status"] == "ok"
+    assert data["selected_runs"] == ["research/live_probe_runs/m3g_04/run_summary_20260624_010000.json"]
+    assert data["run_summaries"][0]["content"]["results"]["source"] == "twse"
+    assert data["source_filters_applied"] == ["TWSE_OpenAPI"]
+
+
+def test_evidence_readback_requested_targets_filter_nonmatching_summaries(monkeypatch, tmp_path):
+    evidence_dir = tmp_path / mcp_server.CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "run_summary_20260624_020000.json").write_text(
+        json.dumps(valid_run_summary(targets=["8069"], results={"target": "8069"})), encoding="utf-8"
+    )
+    (evidence_dir / "run_summary_20260624_010000.json").write_text(
+        json.dumps(valid_run_summary(targets=["2330"], results={"target": "2330"})), encoding="utf-8"
+    )
+    write_target_config(tmp_path)
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    data = decode_text_response(
+        asyncio.run(
+            mcp_server.call_tool(
+                mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL,
+                {"requested_targets": ["2330"]},
+            )
+        )
+    )
+
+    assert data["status"] == "ok"
+    assert data["selected_runs"] == ["research/live_probe_runs/m3g_04/run_summary_20260624_010000.json"]
+    assert data["run_summaries"][0]["content"]["results"]["target"] == "2330"
+    assert data["target_filters_applied"] == ["2330"]
+
+
+def test_evidence_readback_valid_summaries_but_no_filter_match_returns_no_matching(monkeypatch, tmp_path):
+    evidence_dir = tmp_path / mcp_server.CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "run_summary_20260624_010000.json").write_text(
+        json.dumps(valid_run_summary(sources=["Yahoo_Finance"], targets=["8069"])), encoding="utf-8"
+    )
+    write_target_config(tmp_path)
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    data = decode_text_response(
+        asyncio.run(
+            mcp_server.call_tool(
+                mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL,
+                {"requested_sources": ["TWSE_OpenAPI"], "requested_targets": ["2330"]},
+            )
+        )
+    )
+
+    assert data["status"] == "no_matching_evidence_available"
+    assert data["selected_runs"] == []
+    assert data["run_summaries"] == []
+
+
 def test_evidence_readback_rejects_path_traversal_or_arbitrary_path_input():
     data = decode_text_response(
         asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL, {"path": "../../secret"}))
@@ -524,7 +626,7 @@ def test_evidence_readback_rejects_path_traversal_or_arbitrary_path_input():
 def test_evidence_readback_valid_response_includes_governance_and_no_realtime_claim(monkeypatch, tmp_path):
     evidence_dir = tmp_path / mcp_server.CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH
     evidence_dir.mkdir(parents=True)
-    (evidence_dir / "run_summary_20260624_010000.json").write_text(json.dumps({"result": "ok"}), encoding="utf-8")
+    (evidence_dir / "run_summary_20260624_010000.json").write_text(json.dumps(valid_run_summary()), encoding="utf-8")
     write_target_config(tmp_path)
     monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
 

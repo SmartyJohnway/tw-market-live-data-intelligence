@@ -433,6 +433,7 @@ def _validate_evidence_readback_arguments(arguments: dict[str, Any]) -> tuple[bo
         )
 
     sources = arguments.get("requested_sources")
+    source_filter_requested = sources is not None
     if sources is None:
         resolved_sources = list(CONTROLLED_ALLOWED_SOURCES)
     elif not isinstance(sources, list) or not all(isinstance(item, str) for item in sources):
@@ -448,6 +449,7 @@ def _validate_evidence_readback_arguments(arguments: dict[str, Any]) -> tuple[bo
     allowed_targets = _load_allowed_targets()
     if not allowed_targets:
         return False, "target_allowlist_unavailable", "config/market_targets.json could not be loaded", {}
+    target_filter_requested = targets is not None
     if targets is None:
         resolved_targets = sorted(allowed_targets)
     elif not isinstance(targets, list) or not all(isinstance(item, str) for item in targets):
@@ -459,7 +461,58 @@ def _validate_evidence_readback_arguments(arguments: dict[str, Any]) -> tuple[bo
             return False, "target_outside_allowlist", "requested_targets must stay within config/market_targets.json standard symbols", {}
         resolved_targets = list(targets)
 
-    return True, None, None, {"requested_sources": resolved_sources, "requested_targets": resolved_targets, "max_runs": max_runs}
+    return (
+        True,
+        None,
+        None,
+        {
+            "requested_sources": resolved_sources,
+            "requested_targets": resolved_targets,
+            "max_runs": max_runs,
+            "source_filter_requested": source_filter_requested,
+            "target_filter_requested": target_filter_requested,
+        },
+    )
+
+
+def validate_run_summary_shape(summary: Any) -> dict[str, Any] | None:
+    """Validate the canonical controlled run summary shape before readback."""
+    if not isinstance(summary, dict):
+        return {"field": "<root>", "error": "run summary must be a JSON object"}
+
+    required_fields = ("targets", "sources_requested", "results")
+    missing_fields = [field for field in required_fields if field not in summary]
+    if missing_fields:
+        return {"field": "<root>", "error": "missing_required_fields", "missing_fields": missing_fields}
+
+    targets = summary["targets"]
+    if not isinstance(targets, list) or not all(isinstance(item, str) for item in targets):
+        return {"field": "targets", "error": "targets must be a string list"}
+
+    sources_requested = summary["sources_requested"]
+    if not isinstance(sources_requested, list) or not all(isinstance(item, str) for item in sources_requested):
+        return {"field": "sources_requested", "error": "sources_requested must be a string list"}
+
+    results = summary["results"]
+    if not isinstance(results, (dict, list)):
+        return {"field": "results", "error": "results must be an object or array"}
+
+    return None
+
+
+def _run_summary_matches_requested_filters(summary: dict[str, Any], resolved_scope: dict[str, Any]) -> bool:
+    """Return true only when explicit requested filters match summary content."""
+    if resolved_scope.get("source_filter_requested"):
+        summary_sources = set(summary["sources_requested"])
+        if not set(resolved_scope["requested_sources"]).issubset(summary_sources):
+            return False
+
+    if resolved_scope.get("target_filter_requested"):
+        summary_targets = set(summary["targets"])
+        if not set(resolved_scope["requested_targets"]).issubset(summary_targets):
+            return False
+
+    return True
 
 
 def read_controlled_probe_evidence(arguments: dict[str, Any] | None) -> dict[str, Any]:
@@ -484,8 +537,8 @@ def read_controlled_probe_evidence(arguments: dict[str, Any] | None) -> dict[str
         },
         "resolved_scope": resolved_scope,
         "evidence_directory": CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH,
-        "source_filters_applied": resolved_scope["requested_sources"],
-        "target_filters_applied": resolved_scope["requested_targets"],
+        "source_filters_applied": resolved_scope["requested_sources"] if resolved_scope["source_filter_requested"] else [],
+        "target_filters_applied": resolved_scope["requested_targets"] if resolved_scope["target_filter_requested"] else [],
         "freshness": {
             "assessment": "Existing controlled evidence summary read from local disk only; not a live market guarantee.",
             "delay_caveat": "source-dependent historical evidence; not realtime-guaranteed",
@@ -500,26 +553,65 @@ def read_controlled_probe_evidence(arguments: dict[str, Any] | None) -> dict[str
     if not summaries:
         return {**base_payload, "status": "no_evidence_available", "selected_runs": [], "run_summaries": []}
 
-    selected_paths = summaries[: resolved_scope["max_runs"]]
-    run_summaries = []
-    selected_runs = []
-    for path in selected_paths:
+    matching_summaries = []
+    scanned_runs = []
+    for path in summaries:
         relative_path = path.relative_to(REPO_ROOT).as_posix()
-        selected_runs.append(relative_path)
+        scanned_runs.append(relative_path)
         try:
             summary = json.loads(path.read_text(encoding="utf-8"))
         except json.JSONDecodeError as exc:
             return {
                 **base_payload,
                 "status": "invalid_evidence_json",
-                "selected_runs": selected_runs,
+                "selected_runs": [],
+                "scanned_runs": scanned_runs,
                 "run_summaries": [],
                 "invalid_evidence_path": relative_path,
                 "parse_error": f"{exc.msg} at line {exc.lineno} column {exc.colno}",
             }
+
+        shape_error = validate_run_summary_shape(summary)
+        if shape_error is not None:
+            return {
+                **base_payload,
+                "status": "invalid_evidence_shape",
+                "selected_runs": [],
+                "scanned_runs": scanned_runs,
+                "run_summaries": [],
+                "invalid_evidence_path": relative_path,
+                "shape_error": shape_error,
+            }
+
+        if _run_summary_matches_requested_filters(summary, resolved_scope):
+            matching_summaries.append((path, summary))
+            if len(matching_summaries) >= resolved_scope["max_runs"]:
+                break
+
+    if not matching_summaries:
+        return {
+            **base_payload,
+            "status": "no_matching_evidence_available",
+            "selected_runs": [],
+            "scanned_runs": scanned_runs,
+            "run_summaries": [],
+        }
+
+    selected_paths = matching_summaries
+    run_summaries = []
+    selected_runs = []
+    for path, summary in selected_paths:
+        relative_path = path.relative_to(REPO_ROOT).as_posix()
+        selected_runs.append(relative_path)
         run_summaries.append({"path": relative_path, "content": summary})
 
-    return {**base_payload, "status": "ok", "selected_runs": selected_runs, "run_summaries": run_summaries}
+    return {
+        **base_payload,
+        "status": "ok",
+        "selected_runs": selected_runs,
+        "scanned_runs": scanned_runs,
+        "run_summaries": run_summaries,
+    }
 
 
 def _json_text(payload: dict[str, Any]) -> list[TextContent]:

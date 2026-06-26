@@ -28,7 +28,13 @@ The tool accepts optional bounded filters:
 - `requested_targets`: optional target allowlist filter restricted to standard symbols in `config/market_targets.json`.
 - `max_runs`: optional bounded integer from 1 to 5, defaulting to 1.
 
-When valid evidence exists, the latest `run_summary_*.json` files are selected by filename in descending order up to `max_runs`, parsed as JSON, and returned with governance metadata, requested scope, resolved scope, selected run paths, filter metadata, and freshness/delay caveats.
+When evidence exists, candidate `run_summary_*.json` files are parsed in descending filename order. A summary is accepted only if it has the canonical controlled run summary fields:
+
+- `targets`
+- `sources_requested`
+- `results`
+
+Requested source and target filters are applied to the parsed summary content before evidence is selected for return. Returned summaries are therefore limited to summaries whose `sources_requested` and `targets` include the explicitly requested filters. If valid summaries exist but none match the requested filters, the tool returns `status: no_matching_evidence_available`.
 
 ## Governance controls
 
@@ -78,6 +84,8 @@ The tool fails closed for:
 - target outside `config/market_targets.json`: `status: failed_closed`, `failure_reason: target_outside_allowlist`
 - duplicate targets: `status: failed_closed`, `failure_reason: duplicate_target_scope`
 - invalid evidence JSON: `status: invalid_evidence_json` with the evidence file path relative to the repo and parse error
+- invalid evidence shape: `status: invalid_evidence_shape` with the evidence file path relative to the repo and structured shape error
+- valid evidence exists but requested filters do not match: `status: no_matching_evidence_available`
 
 In all fail-closed cases, the tool does not invoke the controlled probe runner and does not attempt to repair or infer evidence.
 
