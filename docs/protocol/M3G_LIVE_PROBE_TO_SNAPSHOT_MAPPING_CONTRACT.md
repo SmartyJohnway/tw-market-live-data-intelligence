@@ -106,7 +106,7 @@ Each `snapshot_source_data` dictionary may include the following fields (mapped 
 *   **Identity Mismatch**: Any `identity_mismatch` must completely block the creation of successful `mock_inputs` for the affected source/target.
 *   **Failed Summaries**: Failed source summaries must be translated into source health/failed source evidence in the adapter result; they do not yield valid `mock_inputs`.
 *   **Target Preservation**: `failed_targets` and `unsupported_targets` must be explicitly preserved in the adapter output.
-*   **Semantics**: Stale, EOD, and live candidate semantics must remain transparent and must not be hidden during the mapping.
+*   **Semantics**: Stale, EOD, and live candidate semantics must remain transparent and must not be hidden during the mapping. If downstream freshness policy computes staleness beyond its threshold, `stale_quote` may conservatively override `delayed_quote`; this must remain explicit in `freshness_status`, `delay_status`, and `price_semantics` rather than being presented as realtime.
 
 ## F. Fail-Closed Rules
 

@@ -45,7 +45,8 @@ The dry-run report records whether these source governance semantics survive the
 
 * `identity_mismatch` blocks source propagation.
 * `failed_targets` and `unsupported_targets` remain visible in the adapter report.
-* `delayed_quote`, `stale_quote`, and `eod_reference` are not collapsed into generic live language.
+* `delayed_quote`, `stale_quote`, and `eod_reference` are not collapsed into generic live language. If a delayed quote exceeds the stale threshold, the dry-run accepts conservative promotion to `stale_quote`.
+* `has_any_non_empty_failed_targets` and `has_any_non_empty_unsupported_targets` only pass when at least one source reports a non-empty target list, avoiding truthy-empty-dict governance checks.
 * Official OpenAPI sources remain `eod_reference` only.
 * TWSE MIS remains `unofficial_frontend` with `unofficial_source_risk` caveats.
 * Yahoo Finance remains `third_party` with `third_party_coverage_caveats`.
@@ -55,6 +56,7 @@ The dry-run report records whether these source governance semantics survive the
 ```bash
 python -m compileall scripts tests
 pytest -m "not network" tests/unit/test_m3g_live_probe_to_snapshot_adapter.py tests/unit/test_m3g10_bridge_dry_run.py tests/test_generate_latest_market_snapshot.py tests/test_generate_watchlist_observations.py tests/test_generate_ai_context_pack.py tests/test_generate_chatgpt_briefing.py
+# Use `pytest -m "not network"` for full offline coverage; `not_network` remains only a legacy marker alias.
 python scripts/run_m3g10_bridge_dry_run.py tests/fixtures/m3g_live_probe_evidence/run_summary_valid.json --targets-config config/market_targets.json
 ```
 

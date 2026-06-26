@@ -37,8 +37,8 @@ def test_m3g10_valid_fixture_builds_full_pipeline_in_memory():
     assert report["artifact_metrics"]["briefing_characters"] > 0
     assert report["semantic_checks"]["twse_mis_caveats_preserved"] is True
     assert report["semantic_checks"]["yahoo_caveats_preserved"] is True
-    assert report["semantic_checks"]["failed_targets_preserved"] is True
-    assert report["semantic_checks"]["unsupported_targets_preserved"] is True
+    assert report["semantic_checks"]["has_any_non_empty_failed_targets"] is False
+    assert report["semantic_checks"]["has_any_non_empty_unsupported_targets"] is True
 
 
 @pytest.mark.not_network
@@ -64,3 +64,13 @@ def test_m3g10_official_eod_fixture_preserves_eod_semantics():
     assert semantics["freshness_status"] == "eod_batch"
     assert semantics["delay_status"] == "eod"
     assert report["semantic_checks"]["official_openapi_eod_only"] is True
+
+
+@pytest.mark.not_network
+def test_m3g10_failed_source_fixture_reports_non_empty_failed_targets():
+    report = build_m3g10_dry_run_report(FIXTURE_DIR / "run_summary_failed_source.json", _targets(["2330", "8069"]))
+
+    assert report["dry_run_status"] == "partial"
+    assert "Yahoo_Finance" in report["sources_blocked"]
+    assert report["semantic_checks"]["has_any_non_empty_failed_targets"] is True
+    assert report["semantic_checks"]["has_any_non_empty_unsupported_targets"] is True

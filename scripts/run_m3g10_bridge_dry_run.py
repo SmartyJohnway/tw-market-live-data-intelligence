@@ -31,6 +31,11 @@ def load_targets_config(path: str | Path) -> dict:
         return json.load(f)
 
 
+def _has_any_non_empty_target_list(targets_by_source: dict) -> bool:
+    """Return True only when at least one source has at least one explicit target entry."""
+    return any(bool(targets) for targets in targets_by_source.values())
+
+
 def _symbol_semantics(snapshot: dict) -> Dict[str, Dict[str, Any]]:
     return {
         sym.get("symbol", "unknown"): {
@@ -72,10 +77,13 @@ def _semantic_checks(adapter_report: dict, snapshot: dict) -> dict:
         if item.get("source_used") == "Yahoo_Finance"
     )
 
+    failed_targets = adapter_report.get("failed_targets", {})
+    unsupported_targets = adapter_report.get("unsupported_targets", {})
+
     return {
         "identity_mismatch_blocked": "Yahoo_Finance" not in mapped_sources if "Yahoo_Finance" in blocked_sources else True,
-        "failed_targets_preserved": bool(adapter_report.get("failed_targets")),
-        "unsupported_targets_preserved": bool(adapter_report.get("unsupported_targets")),
+        "has_any_non_empty_failed_targets": _has_any_non_empty_target_list(failed_targets),
+        "has_any_non_empty_unsupported_targets": _has_any_non_empty_target_list(unsupported_targets),
         "delayed_quote_or_stale_preserved": bool(price_semantics.intersection({"delayed_quote", "stale_quote"})) or not all_symbols,
         "eod_reference_preserved": "eod_reference" in price_semantics or not mapped_sources.intersection({"TWSE_OpenAPI", "TPEx_OpenAPI"}),
         "official_openapi_eod_only": official_ok,
