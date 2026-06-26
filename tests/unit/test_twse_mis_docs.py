@@ -1,52 +1,48 @@
-import os
-import pytest
+from pathlib import Path
 
-DOCS_DIR = os.path.join(os.path.dirname(__file__), '../../docs')
-PROTOCOL_FILE = os.path.join(DOCS_DIR, 'protocol', 'TWSE_MIS_PROTOCOL.md')
-FIELD_DICT_FILE = os.path.join(DOCS_DIR, 'protocol', 'TWSE_MIS_FIELD_DICTIONARY.md')
+ROOT = Path(__file__).resolve().parents[2]
+PROTOCOL = ROOT / "docs/protocol/TWSE_MIS_PROTOCOL.md"
+FIELD_DICT = ROOT / "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md"
+CONTRACT = ROOT / "docs/contracts/twse_mis_normalized_snapshot_v2_draft.md"
 
-def test_protocol_doc_exists_and_contains_safety_phrases():
-    assert os.path.exists(PROTOCOL_FILE), "TWSE_MIS_PROTOCOL.md does not exist"
 
-    with open(PROTOCOL_FILE, 'r', encoding='utf-8') as f:
-        content = f.read()
+def read(path):
+    return path.read_text(encoding="utf-8").lower()
 
-    content_lower = content.lower()
 
-    # Check for required safety phrases
-    assert "unofficial" in content_lower, "Protocol doc must mention it is unofficial"
-    assert "not an officially documented" in content_lower or "not an official" in content_lower, "Protocol doc must clarify it is not an official API"
-    assert "low-frequency" in content_lower, "Protocol doc must mention low-frequency usage"
-    assert "high-frequency" in content_lower and ("unsuitable" in content_lower or "prohibit" in content_lower), "Protocol doc must prohibit high-frequency usage"
-    assert "risk" in content_lower, "Protocol doc must discuss risks"
+def test_docs_exist():
+    assert PROTOCOL.exists()
+    assert FIELD_DICT.exists()
+    assert CONTRACT.exists()
 
-def test_field_dictionary_contains_required_fields():
-    assert os.path.exists(FIELD_DICT_FILE), "TWSE_MIS_FIELD_DICTIONARY.md does not exist"
 
-    with open(FIELD_DICT_FILE, 'r', encoding='utf-8') as f:
-        content = f.read()
+def test_docs_mention_governance_boundaries():
+    combined = "\n".join(read(p) for p in [PROTOCOL, FIELD_DICT, CONTRACT])
+    for phrase in [
+        "unofficial", "fragile", "no official realtime guarantee", "not production current market state",
+        "not be used as a trading signal", "no full-market scan", "no production refresh",
+    ]:
+        assert phrase in combined
 
-    # List of required raw fields that must be documented
-    required_fields = ['c', 'n', 'ex', 'ch', 'z', 'y', 'o', 'h', 'l', 'v', 'tv', 'a', 'f', 'b', 'g', 'u', 'w', 'd', 't', 'tlong', 'queryTime', 'userDelay', 'cachedAlive']
 
-    for field in required_fields:
-        # Looking for `field` in the markdown table structure
-        assert f"`{field}`" in content, f"Required field `{field}` is missing from the Field Dictionary"
+def test_field_dictionary_contains_required_fields_and_flags():
+    content = read(FIELD_DICT)
+    for field in ["c", "n", "ex", "ch", "z", "y", "o", "h", "l", "v", "tv", "a", "f", "b", "g", "u", "w", "d", "t", "tlong", "querytime", "userdelay", "cachedalive"]:
+        assert f"`{field}`" in content
+    assert "data_quality_flags" in content
+    assert "source_risk_flags" in content
+    assert "unofficial_source_risk" in content
+    assert "unknown_or_unverified_semantics" in content
 
-def test_field_dictionary_contains_caveats():
-    with open(FIELD_DICT_FILE, 'r', encoding='utf-8') as f:
-        content = f.read().lower()
 
-    assert "observed" in content, "Field Dictionary must mention it is an observed contract"
-    assert "intraday" in content and "post-market" in content, "Field Dictionary must mention intraday vs post-market behavior"
-    assert "official" in content and ("not an official" in content or "not official" in content), "Field Dictionary must state it is not an official API"
+def test_contract_contains_v2_fields():
+    content = read(CONTRACT)
+    for field in ["source_id", "source_authority", "source_risk_flags", "symbol", "exchange", "instrument_type", "name", "price", "open", "high", "low", "previous_close", "volume", "bid_ladder", "ask_ladder", "source_date", "source_time", "source_timestamp", "retrieved_at", "staleness_seconds", "delay_status", "freshness_status", "price_semantics", "raw_fields_present", "data_quality_flags", "normalization_version", "normalization_status", "errors"]:
+        assert f"`{field}`" in content
 
-def test_no_claims_of_official_api():
-    # Double check that we don't accidentally claim it IS an official API
-    with open(PROTOCOL_FILE, 'r', encoding='utf-8') as f:
-        content = f.read()
-        assert "is an official API" not in content, "Protocol doc must not claim TWSE MIS is an official API"
 
-    with open(FIELD_DICT_FILE, 'r', encoding='utf-8') as f:
-        content = f.read()
-        assert "is an official API" not in content, "Field Dictionary must not claim TWSE MIS is an official API"
+def test_no_claims_of_official_realtime():
+    combined = "\n".join(read(p) for p in [PROTOCOL, FIELD_DICT, CONTRACT])
+    forbidden = ["is an official api", "official realtime guarantee applies", "is realtime-guaranteed"]
+    for phrase in forbidden:
+        assert phrase not in combined

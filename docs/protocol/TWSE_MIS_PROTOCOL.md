@@ -1,67 +1,47 @@
-# TWSE MIS Protocol Documentation
+# TWSE MIS Protocol
 
-## 1. Source Classification
-- **Source Name:** TWSE MIS (Market Information System)
-- **Source Type:** `unofficial_frontend_endpoint`
-- **Classification Rationale:** The endpoint (`mis.twse.com.tw/stock/api/getStockInfo.jsp`) is designed to power the official web-based market information dashboard for human viewing. It is not an officially documented or officially supported public API. Access requires specific browser-like behavior and is subject to strict, undocumented rate limits and blocking mechanisms.
+## Source classification
 
-## 2. Endpoint and Request Flow
-The typical request flow for probing this endpoint consists of two steps:
-1. **Session Initialization:** Visiting the main `index.jsp` page to acquire session cookies.
-2. **Data Query:** Requesting `getStockInfo.jsp` with a pipeline-separated list of symbols.
+TWSE MIS is classified in this project as an `unofficial_frontend_source`: a fragile browser-facing market information system endpoint, not an officially documented public realtime API. It has no official realtime guarantee, is not production current market state by itself, and must not be used as a trading signal.
 
-## 3. Session Initialization
-- **Role of `index.jsp` / Session Cookies:** The TWSE MIS endpoint actively rejects or throttles requests that lack valid session cookies or present as headless bots. A preliminary GET request to `https://mis.twse.com.tw/stock/index.jsp` is observed to be strictly required to establish a JSESSIONID and pass basic bot mitigation checks before querying the data endpoint.
+## Frontend/session fragility
 
-## 4. Request Parameters
-The endpoint is queried using a URL structure similar to:
-`https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=[channels]&json=1&delay=0&_=[timestamp]`
+Observed browser flow uses a frontend page/session before data requests. Cookies, headers, session state, cache behavior, bot controls, and response shape are undocumented and can change without notice. Any session / cookie requirement is part of frontend fragility, not a stable API contract.
 
-- **`ex_ch`:** The target parameter, structured as a pipe-separated (`|`) list of symbol channels (e.g., `tse_2330.tw|otc_8069.tw`).
-- **`json=1`:** Instructs the endpoint to return the response payload in JSON format.
-- **`delay=0`:** Historically observed to request real-time data or bypass delayed caching, though the actual delay behavior is dictated by the server and market session rules regardless of this parameter.
-- **`_` (Timestamp / Cache-busting):** A Unix timestamp in milliseconds (`int(time.time() * 1000)`). Used to prevent browser caching and ensure fresh data is fetched from the server.
+## Bounded-use protocol
 
-## 5. Symbol Channel Format
-TWSE MIS requires a specific composite format for querying assets, combining the exchange segment, symbol, and `.tw` suffix:
-- **TWSE (Large caps/ETFs):** Prefixed with `tse_` (e.g., `tse_2330.tw` for TSMC, `tse_0050.tw` for Yuanta Taiwan 50).
-- **TPEx (OTC/Small caps):** Prefixed with `otc_` (e.g., `otc_8069.tw` for E Ink).
-- **Indices:** Often use specific identifiers (e.g., `tse_t00.tw` for the TAIEX index).
-- **Multiple Symbols:** Joined using the pipe character `|` in a single request to reduce HTTP overhead.
+- Use only for low-frequency, bounded evidence checks when governance explicitly permits live probing.
+- Do not perform full-market scans.
+- Do not use high-frequency polling.
+- Apply conservative timeout, retry, and rate-limit behavior; retries must be bounded and should not amplify load.
+- Do not bypass authentication, cookies, bot controls, blocks, or access restrictions.
+- This milestone performs no live probe, no production refresh, and no staging write.
 
-## 6. Response Structure
-The endpoint returns a JSON object. The most critical component is the `msgArray`, which contains a list of objects representing the current quote/snapshot for each requested channel.
-- **High-level shape:** The array elements are flat JSON objects with highly abbreviated, single-letter or short-string keys (e.g., `c`, `z`, `v`, `tlong`).
-- A successful response will typically have `"rtmessage": "OK"` and a populated `msgArray`.
+## Request/response shape
 
-## 7. Intraday vs. Post-Market Behavior
-Observed responses heavily depend on the market session context:
-- **Intraday:** Certain fields representing the "last trade" or current volume (like `z`, `tv`, `s`) may appear as `"-"` if no trade has occurred recently or during specific matching phases. Bid/ask ladders are generally populated.
-- **Post-Market:** Fields that were `"-"` intraday are typically populated with final closing data. Additionally, post-market specific fields (such as `oa`, `ob`, `oz`, `ov`, `fv`) may appear, indicating after-hours trading metrics.
+The observed frontend JSON payload contains `msgArray` rows with abbreviated raw fields such as `c`, `ex`, `n`, `z`, `a`, `b`, `f`, `g`, `d`, `t`, and `tlong`. Top-level telemetry may include `queryTime`, `userDelay`, `cachedAlive`, `rtcode`, and `rtmessage`. These fields are observed evidence, not an official specification.
 
-## 8. Asset-Type Differences
-The schema of the returned objects in `msgArray` varies depending on the asset class:
-- **Stocks / ETFs / TDRs:** Typically stock-like quote rows. They include detailed bid/ask ladders (`a`, `b`, `f`, `g`), limit up/down fields (`u`, `w`), and explicit trade volumes (`tv`, `v`).
-- **Indices:** Rows representing market indices (like `tse_t00.tw` for the TAIEX) have a fundamentally different shape. They should not be forced into stock-like schemas. They do not have bid/ask ladders, often lack limit up/down metrics, and do not use company-name fields similarly. Do not assume all rows share identical schemas.
+## Timestamp semantics
 
-## 9. Timestamp Semantics
-TWSE MIS provides multiple timestamp fields that must be interpreted carefully:
-- **`d` (Date):** The trading date (e.g., `"20231025"`).
-- **`t` (Time):** The source-reported time of the quote. Intraday, this aligns closely with the ongoing session time. Post-market, `t` may reflect the regular session close time (e.g., `13:30:00`).
-- **`%` / `ot`**: Additional timing fields. Intraday, `%` may align closely with `t`. Post-market, `%` or `ot` may reflect post-market or alternate-session timing.
-- **`tlong` (Source Time MS):** An epoch timestamp (in milliseconds) representing the time the data was generated or last updated by the exchange system.
-- **`queryTime.sysTime` / `userDelay` / `cachedAlive`:** Internal server processing telemetry indicating when the server processed the request and how long it was cached.
-- **Timestamp Design Warning:** Parser design should not collapse all these diverse timings (`t`, `%`, `tlong`, `queryTime.sysTime`) into a single ambiguous `time` field, as they carry distinct market phase and telemetry contexts.
-- **Derived Real-time Context:** The project derives `staleness_seconds` by comparing `tlong` to the `retrieved_at_utc` time. A classification of "realtime_candidate" or a specific `delay_status` relies on this derived calculation, not a guarantee from the source. **Data is not guaranteed to be real-time.**
+- `source_time` comes from raw row `t` when present.
+- `source_date` comes from raw row `d` when present.
+- `source_timestamp` should prefer raw `tlong` epoch milliseconds; if unavailable, derive from `d` + `t` as Taipei time.
+- `retrieved_at` is caller telemetry recording when the row was normalized/retrieved.
+- `staleness_seconds` compares source time to retrieval time.
+- Top-level `queryTime.sysTime` is server telemetry and must not be collapsed into exchange/source time.
 
-## 10. Risk and Suitability
-- **Known Fragility & Blocking Risk:** As an unofficial frontend endpoint, TWSE MIS enforces strict rate limiting. Requests without proper headers, cookies, or that are issued too frequently will result in IP blocks or CAPTCHA redirects.
-- **Bounded Low-Frequency Usage:** It is **only suitable** for bounded, low-frequency, watchlist-style AI market discussion contexts where freshness and caveats are explicitly validated.
-- **Not an Official Feed:** It **must not** be treated as an official production real-time API. It is fundamentally unsuitable for high-frequency trading, automated execution, or large-scale full-market scraping.
+## Freshness classification
 
-## 11. Non-Goals and Prohibited Uses
-This repository's implementation of TWSE MIS probing explicitly prohibits:
-- High-frequency polling or scheduled full-market scans.
-- Use in automated trading, strategy execution, or for generating definitive buy/sell signals.
-- Claiming or representing the data as officially sourced API guarantees.
-- Bypassing security measures via public proxies, serverless pass-throughs, or credential sharing.
+Rows may be classified as `live_candidate`, `delayed`, `stale`, or `unknown` based on derived staleness. `live_candidate` means only that the observed timestamp is close to retrieval time under this project's threshold. It does not mean official realtime, official source authority, or production-grade current market state.
+
+## Identity validation
+
+Normalizers must validate at least `symbol` (`c`) and `exchange` (`ex`). Missing identity should fail soft with `normalization_status = invalid`, explicit `errors`, and data-quality flags. Asset type is only an observed/heuristic classification and unknown semantics must remain marked as `unknown_or_unverified_semantics`.
+
+## Malformed payload handling
+
+Malformed rows, missing optional fields, placeholder values (`-`, empty strings, zero ladder placeholders), and mismatched bid/ask ladder lengths must return structured nulls, flags, and errors where appropriate. Parsers must not silently misclassify or throw uncaught exceptions for row-level quality issues.
+
+## Prohibited uses
+
+No full-market scan, no production refresh, no staging write, no generated artifact write, no frontend artifact write, no automated trading, no buy/sell/hold output, and no claim that TWSE MIS is official or realtime-guaranteed.

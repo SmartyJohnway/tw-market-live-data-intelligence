@@ -7,38 +7,43 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from probe_utils import generate_standard_envelope
 
+def _is_missing_placeholder(val):
+    return val is None or str(val).strip() in {"", "-", "--", "N/A", "null", "None"}
+
+
 def _safe_float(val, data_quality_flags, field_name):
-    if val is None or val == "" or val == "-":
+    if _is_missing_placeholder(val):
         return None
     try:
-        return float(val)
-    except ValueError:
+        return float(str(val).replace(",", ""))
+    except (TypeError, ValueError):
         data_quality_flags.append(f"malformed_{field_name}")
         return None
 
+
 def _safe_int(val, data_quality_flags, field_name):
-    if val is None or val == "" or val == "-":
+    if _is_missing_placeholder(val):
         return None
     try:
-        return int(val)
-    except ValueError:
+        return int(float(str(val).replace(",", "")))
+    except (TypeError, ValueError):
         data_quality_flags.append(f"malformed_{field_name}")
         return None
+
 
 def _parse_ladder(price_str, vol_str, data_quality_flags, ladder_type):
     prices = []
     volumes = []
 
-    if price_str is None and vol_str is None:
+    if _is_missing_placeholder(price_str) and _is_missing_placeholder(vol_str):
         return prices, volumes
 
-    p_tokens = price_str.split("_") if price_str else []
-    v_tokens = vol_str.split("_") if vol_str else []
+    p_tokens = [] if _is_missing_placeholder(price_str) else str(price_str).split("_")
+    v_tokens = [] if _is_missing_placeholder(vol_str) else str(vol_str).split("_")
 
-    # Remove trailing empty tokens caused by final underscore
-    if p_tokens and p_tokens[-1] == "":
+    while p_tokens and p_tokens[-1] == "":
         p_tokens.pop()
-    if v_tokens and v_tokens[-1] == "":
+    while v_tokens and v_tokens[-1] == "":
         v_tokens.pop()
 
     length = max(len(p_tokens), len(v_tokens))
@@ -48,208 +53,254 @@ def _parse_ladder(price_str, vol_str, data_quality_flags, ladder_type):
     for i in range(length):
         p_tok = p_tokens[i] if i < len(p_tokens) else None
         v_tok = v_tokens[i] if i < len(v_tokens) else None
+        level = {"level": i + 1, "price": None, "volume": None}
 
-        if p_tok in ("-", "", "0", "0.0000", None):
-            prices.append(None)
-            volumes.append(None)
+        if _is_missing_placeholder(p_tok) or str(p_tok).strip() in {"0", "0.0", "0.00", "0.0000"}:
             if p_tok is not None:
                 data_quality_flags.append(f"invalid_{ladder_type}_price_level")
         else:
             try:
-                price_val = float(p_tok)
-                prices.append(price_val)
-            except ValueError:
-                prices.append(None)
-                volumes.append(None)
+                level["price"] = float(str(p_tok).replace(",", ""))
+            except (TypeError, ValueError):
                 data_quality_flags.append(f"malformed_{ladder_type}_price_level")
-                continue
 
-            if v_tok in ("-", "", None):
-                volumes.append(None)
-            else:
-                try:
-                    vol_val = int(v_tok)
-                    volumes.append(vol_val)
-                except ValueError:
-                    volumes.append(None)
-                    data_quality_flags.append(f"malformed_{ladder_type}_volume_level")
+        if _is_missing_placeholder(v_tok):
+            pass
+        else:
+            try:
+                level["volume"] = int(float(str(v_tok).replace(",", "")))
+            except (TypeError, ValueError):
+                data_quality_flags.append(f"malformed_{ladder_type}_volume_level")
+
+        prices.append(level["price"])
+        volumes.append(level["volume"])
 
     return prices, volumes
+
+
+def _build_ladder(prices, volumes):
+    return [
+        {"level": i + 1, "price": price, "volume": volumes[i] if i < len(volumes) else None}
+        for i, price in enumerate(prices)
+    ]
+
 
 def _classify_asset(row):
     it = row.get("it", "")
     c = row.get("c", "")
     ex = row.get("ex", "")
+    ch = row.get("ch", "")
 
     if it == "02":
         return "etf"
     if it == "13":
         return "tdr"
-    if it == "t" or c == "t00":
+    if it == "t" or c == "t00" or ch == "t00.tw":
         return "index"
-
-    # Heuristic for stock_like
-    if c.isdigit() and ex in {"tse", "otc"}:
+    if c and str(c).isdigit() and ex in {"tse", "otc"}:
         return "stock_like"
-
     return "unknown"
+
+
+def _parse_source_timestamp(source_date, source_time, source_time_ms, retrieved_at_utc_dt, data_quality_flags):
+    if source_time_ms is not None:
+        try:
+            return datetime.fromtimestamp(source_time_ms / 1000, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        except (OSError, OverflowError, ValueError):
+            data_quality_flags.append("malformed_source_timestamp")
+            return None
+    if source_date and source_time and len(str(source_date)) == 8 and not _is_missing_placeholder(source_time):
+        try:
+            taipei = timezone(timedelta(hours=8))
+            dt = datetime.strptime(f"{source_date} {source_time}", "%Y%m%d %H:%M:%S").replace(tzinfo=taipei)
+            return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        except ValueError:
+            data_quality_flags.append("malformed_source_date_time")
+    elif _is_missing_placeholder(source_time):
+        data_quality_flags.append("source_time_unavailable")
+    return None
+
+
+def _classify_freshness(staleness_seconds):
+    if staleness_seconds is None:
+        return "unknown", "unknown"
+    if staleness_seconds <= 300:
+        return "not_delayed_candidate", "live_candidate"
+    if staleness_seconds <= 1200:
+        return "delayed_candidate", "delayed"
+    return "stale", "stale"
+
 
 def normalize_twse_mis_row(raw_row, retrieved_at_utc_dt, top_level_telemetry=None):
     if top_level_telemetry is None:
         top_level_telemetry = {}
+    if raw_row is None or not isinstance(raw_row, dict):
+        return {
+            "source_id": "twse_mis",
+            "source_authority": "unofficial_frontend_source",
+            "source_risk_flags": ["unofficial_source_risk", "fragile_frontend_contract", "not_official_realtime_api"],
+            "symbol": None,
+            "exchange": None,
+            "instrument_type": "unknown",
+            "name": None,
+            "price": None,
+            "open": None,
+            "high": None,
+            "low": None,
+            "previous_close": None,
+            "volume": None,
+            "bid_ladder": [],
+            "ask_ladder": [],
+            "source_date": None,
+            "source_time": None,
+            "source_timestamp": None,
+            "retrieved_at": retrieved_at_utc_dt.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "staleness_seconds": None,
+            "delay_status": "unknown",
+            "freshness_status": "unknown",
+            "price_semantics": "last_trade_price_when_available_else_null",
+            "raw_fields_present": [],
+            "data_quality_flags": ["malformed_row"],
+            "normalization_version": "twse_mis_snapshot_v2_draft",
+            "normalization_status": "invalid",
+            "errors": ["raw_row_not_object"],
+        }
 
     data_quality_flags = []
+    errors = []
+    instrument_type = _classify_asset(raw_row)
 
-    # Asset type
-    asset_type = _classify_asset(raw_row)
-
-    # Parse core fields
     symbol = raw_row.get("c")
     exchange = raw_row.get("ex")
     name = raw_row.get("n")
     channel_suffix = raw_row.get("ch")
     channel = f"{exchange}_{channel_suffix}" if exchange and channel_suffix else None
+    if not symbol:
+        data_quality_flags.append("missing_symbol")
+        errors.append("missing_critical_symbol")
+    if not exchange:
+        data_quality_flags.append("missing_exchange")
+        errors.append("missing_critical_exchange")
 
-    last_price = _safe_float(raw_row.get("z"), data_quality_flags, "last_price")
-    if last_price is None and raw_row.get("z") == "-":
-        data_quality_flags.append("missing_last_price")
-
+    price = _safe_float(raw_row.get("z"), data_quality_flags, "price")
+    if price is None and _is_missing_placeholder(raw_row.get("z")):
+        data_quality_flags.append("missing_price")
     previous_close = _safe_float(raw_row.get("y"), data_quality_flags, "previous_close")
     open_price = _safe_float(raw_row.get("o"), data_quality_flags, "open")
     high = _safe_float(raw_row.get("h"), data_quality_flags, "high")
     low = _safe_float(raw_row.get("l"), data_quality_flags, "low")
-
-    change = None
-    change_pct = None
-    if last_price is not None and previous_close is not None and previous_close != 0:
-        change = round(last_price - previous_close, 4)
-        change_pct = round((change / previous_close) * 100, 4)
-
-    cumulative_volume = _safe_int(raw_row.get("v"), data_quality_flags, "cumulative_volume")
+    volume = _safe_int(raw_row.get("v"), data_quality_flags, "volume")
     current_volume = _safe_int(raw_row.get("tv"), data_quality_flags, "current_volume")
 
     bid_prices, bid_volumes = _parse_ladder(raw_row.get("b"), raw_row.get("g"), data_quality_flags, "bid")
     ask_prices, ask_volumes = _parse_ladder(raw_row.get("a"), raw_row.get("f"), data_quality_flags, "ask")
-
-    # Index rows typically lack bid/ask, don't flag if it's an index
-    if asset_type != "index" and not bid_prices and not ask_prices:
+    if instrument_type != "index" and not bid_prices and not ask_prices:
         data_quality_flags.append("missing_bid_ask")
 
     limit_up = _safe_float(raw_row.get("u"), data_quality_flags, "limit_up")
     limit_down = _safe_float(raw_row.get("w"), data_quality_flags, "limit_down")
-
-    # Timestamps
     source_date = raw_row.get("d")
     source_time = raw_row.get("t")
-    source_time_ms_str = raw_row.get("tlong")
-    source_time_ms = _safe_int(source_time_ms_str, data_quality_flags, "source_time_ms")
+    source_time_ms = _safe_int(raw_row.get("tlong"), data_quality_flags, "source_time_ms")
+    source_timestamp = _parse_source_timestamp(source_date, source_time, source_time_ms, retrieved_at_utc_dt, data_quality_flags)
 
-    source_datetime_taipei = None
-    if source_date and source_time:
-        if len(source_date) == 8:
-            source_datetime_taipei = f"{source_date[:4]}-{source_date[4:6]}-{source_date[6:]} {source_time}"
-
-    # Parse query_sys_time from top level telemetry
-    query_sys_time = top_level_telemetry.get("queryTime", {}).get("sysTime") if isinstance(top_level_telemetry.get("queryTime"), dict) else None
-
-    # Calculate staleness
     staleness_seconds = None
-    if source_time_ms is not None:
-        source_ts_sec = source_time_ms // 1000
-        current_ts_sec = int(retrieved_at_utc_dt.timestamp())
-        staleness_seconds = current_ts_sec - source_ts_sec
-        if staleness_seconds < 0:
-            staleness_seconds = 0
+    if source_timestamp:
+        parsed_source_dt = datetime.strptime(source_timestamp, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+        staleness_seconds = max(0, int(retrieved_at_utc_dt.timestamp()) - int(parsed_source_dt.timestamp()))
+    delay_status, freshness_status = _classify_freshness(staleness_seconds)
+    if freshness_status == "stale":
+        data_quality_flags.append("stale_source_timestamp")
+    elif freshness_status == "delayed":
+        data_quality_flags.append("delayed_source_timestamp")
 
-    freshness_status = "realtime_candidate"
-    delay_status = "unknown"
-    if staleness_seconds is not None:
-        if staleness_seconds < 300:
-            delay_status = "realtime"
-        elif staleness_seconds < 86400:
-            delay_status = "delayed"
-        else:
-            delay_status = "stale"
-            freshness_status = "stale"
+    if freshness_status == "stale":
+        price_semantics = "stale_quote"
+    elif freshness_status == "delayed":
+        price_semantics = "delayed_quote"
+    elif freshness_status == "live_candidate":
+        price_semantics = "live_candidate"
+    else:
+        price_semantics = "unknown"
 
-    retrieved_at_utc = retrieved_at_utc_dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+    retrieved_at = retrieved_at_utc_dt.strftime("%Y-%m-%dT%H:%M:%SZ")
     retrieved_at_taipei = (retrieved_at_utc_dt + timedelta(hours=8)).strftime("%Y-%m-%dT%H:%M:%S+08:00")
+    source_datetime_taipei = None
+    if source_date and source_time and len(str(source_date)) == 8 and not _is_missing_placeholder(source_time):
+        source_datetime_taipei = f"{str(source_date)[:4]}-{str(source_date)[4:6]}-{str(source_date)[6:]} {source_time}"
 
-    source_risk_flags = [
-        "unofficial_endpoint",
-        "observed_contract",
-        "not_official_realtime_api"
-    ]
+    change = None
+    change_pct = None
+    if price is not None and previous_close not in (None, 0):
+        change = round(price - previous_close, 4)
+        change_pct = round((change / previous_close) * 100, 4)
 
-    # Optional fields mapping
-    alternate_session_time = raw_row.get("ot")
-    regular_trade_time = raw_row.get("t")
-    snapshot_time = raw_row.get("%")
+    if errors:
+        normalization_status = "invalid"
+    elif data_quality_flags:
+        normalization_status = "partial"
+    else:
+        normalization_status = "ok"
 
-    # Map normalized fields
+    mapped_keys = {"c", "ex", "n", "ch", "z", "y", "o", "h", "l", "v", "tv", "b", "g", "a", "f", "u", "w", "d", "t", "tlong", "ot", "%"}
+    source_risk_flags = ["unofficial_source_risk", "fragile_frontend_contract", "not_official_realtime_api", "not_production_current_market_state_by_itself"]
+
     normalized_row = {
+        "source_id": "twse_mis",
+        "source_authority": "unofficial_frontend_source",
+        "source_risk_flags": source_risk_flags,
         "symbol": symbol,
         "exchange": exchange,
+        "instrument_type": instrument_type,
         "name": name,
-        "channel": channel,
-        "channel_suffix": channel_suffix,
-        "asset_type_candidate": asset_type,
-        "last_price": last_price,
-        "previous_close": previous_close,
+        "price": price,
         "open": open_price,
         "high": high,
         "low": low,
-        "change": change,
-        "change_pct": change_pct,
-        "cumulative_volume": cumulative_volume,
+        "previous_close": previous_close,
+        "volume": volume,
+        "bid_ladder": _build_ladder(bid_prices, bid_volumes),
+        "ask_ladder": _build_ladder(ask_prices, ask_volumes),
+        "source_date": source_date,
+        "source_time": source_time,
+        "source_timestamp": source_timestamp,
+        "retrieved_at": retrieved_at,
+        "staleness_seconds": staleness_seconds,
+        "delay_status": delay_status,
+        "freshness_status": freshness_status,
+        "price_semantics": price_semantics,
+        "price_semantics_detail": "last_trade_price_when_available_else_null; unofficial frontend field z observed only",
+        "raw_fields_present": sorted(raw_row.keys()),
+        "data_quality_flags": sorted(set(data_quality_flags)),
+        "normalization_version": "twse_mis_snapshot_v2_draft",
+        "normalization_status": normalization_status,
+        "errors": errors,
+        # Backward-compatible v1 names retained for existing reports/tests.
+        "channel": channel,
+        "channel_suffix": channel_suffix,
+        "asset_type_candidate": instrument_type,
+        "last_price": price,
+        "cumulative_volume": volume,
         "current_volume": current_volume,
         "bid_prices": bid_prices,
         "bid_volumes": bid_volumes,
         "ask_prices": ask_prices,
         "ask_volumes": ask_volumes,
-        "limit_up": limit_up,
-        "limit_down": limit_down,
-        "source_date": source_date,
-        "source_time": source_time,
+        "limit_up": None if instrument_type == "index" else limit_up,
+        "limit_down": None if instrument_type == "index" else limit_down,
         "source_time_ms": source_time_ms,
         "source_datetime_taipei": source_datetime_taipei,
-        "regular_trade_time": regular_trade_time,
-        "snapshot_time": snapshot_time,
-        "alternate_session_time": alternate_session_time,
-        "query_sys_time": query_sys_time,
-        "retrieved_at_utc": retrieved_at_utc,
+        "regular_trade_time": source_time,
+        "snapshot_time": raw_row.get("%"),
+        "alternate_session_time": raw_row.get("ot"),
+        "query_sys_time": top_level_telemetry.get("queryTime", {}).get("sysTime") if isinstance(top_level_telemetry.get("queryTime"), dict) else None,
+        "retrieved_at_utc": retrieved_at,
         "retrieved_at_taipei": retrieved_at_taipei,
-        "staleness_seconds": staleness_seconds,
-        "freshness_status": freshness_status,
-        "delay_status": delay_status,
-        "data_quality_flags": data_quality_flags,
-        "source_risk_flags": source_risk_flags,
-        "raw_identity": f"{exchange}_{symbol}" if exchange and symbol else None
+        "raw_identity": f"{exchange}_{symbol}" if exchange and symbol else None,
+        "unmapped_raw_fields": {k: v for k, v in raw_row.items() if k not in mapped_keys},
     }
-
-    # Strip some specific fields for index type as per requirements if they are empty
-    if asset_type == "index":
-        if not bid_prices:
-            normalized_row["bid_prices"] = []
-        if not bid_volumes:
-            normalized_row["bid_volumes"] = []
-        if not ask_prices:
-            normalized_row["ask_prices"] = []
-        if not ask_volumes:
-            normalized_row["ask_volumes"] = []
-        normalized_row["limit_up"] = None
-        normalized_row["limit_down"] = None
-
-    # Track unmapped fields
-    mapped_keys = {
-        "c", "ex", "n", "ch", "z", "y", "o", "h", "l", "v", "tv",
-        "b", "g", "a", "f", "u", "w", "d", "t", "tlong",
-        "ot", "%"
-    }
-    unmapped_raw_fields = {k: v for k, v in raw_row.items() if k not in mapped_keys}
-    normalized_row["unmapped_raw_fields"] = unmapped_raw_fields
-
     return normalized_row
+
 
 def probe(symbols=None):
     if not symbols:
@@ -309,6 +360,7 @@ def probe(symbols=None):
         normalized_sample = None
         staleness_seconds = None
         delay_status = "unknown"
+        freshness_status = "unknown"
 
         if success:
             top_level_telemetry = {
@@ -329,6 +381,7 @@ def probe(symbols=None):
             first_row = normalized_rows[0]
             staleness_seconds = first_row.get("staleness_seconds")
             delay_status = first_row.get("delay_status")
+            freshness_status = first_row.get("freshness_status", "unknown")
 
             # Form raw evidence
             raw_evidence = {
@@ -348,7 +401,7 @@ def probe(symbols=None):
             requires_session=True,
             raw_sample=raw_evidence if success else None,
             normalized_sample=normalized_sample,
-            freshness_status="realtime_candidate",
+            freshness_status=freshness_status,
             staleness_seconds=staleness_seconds,
             delay_status=delay_status,
             risk_level="high",

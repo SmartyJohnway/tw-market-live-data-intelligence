@@ -1,220 +1,205 @@
-import pytest
-import sys
 import os
-from datetime import datetime, timezone, timedelta
+import sys
+from datetime import datetime, timedelta, timezone
 
-# Add scripts directory to path to fix module resolution in GitHub Actions CI
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../scripts')))
-from probe_twse_mis import normalize_twse_mis_row, _parse_ladder, _safe_float
+import pytest
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../scripts")))
+import probe_twse_mis
+from probe_twse_mis import _parse_ladder, _safe_float, normalize_twse_mis_row
+
 
 @pytest.fixture
-def mock_retrieved_at_utc():
-    return datetime(2024, 10, 25, 5, 30, 5, tzinfo=timezone.utc)
+def retrieved_at():
+    return datetime(2024, 6, 21, 5, 30, 5, tzinfo=timezone.utc)
 
-def test_safe_float_dash_handling():
-    flags = []
-    assert _safe_float("-", flags, "test_field") is None
-    assert len(flags) == 0
 
-def test_safe_float_empty_handling():
-    flags = []
-    assert _safe_float("", flags, "test_field") is None
-    assert len(flags) == 0
-
-def test_parse_ladder_trailing_underscore():
-    flags = []
-    prices, volumes = _parse_ladder("10.5_10.4_10.3_10.2_10.1_", "100_200_300_400_500_", flags, "bid")
-    assert prices == [10.5, 10.4, 10.3, 10.2, 10.1]
-    assert volumes == [100, 200, 300, 400, 500]
-    assert len(flags) == 0
-
-def test_parse_ladder_invalid_placeholders():
-    flags = []
-    prices, volumes = _parse_ladder("10.5_0.0000_10.3_0_-_", "100_200_300_400_500_", flags, "bid")
-    assert prices == [10.5, None, 10.3, None, None]
-    assert volumes == [100, None, 300, None, None]
-    assert "invalid_bid_price_level" in flags
-
-def test_parse_ladder_mismatched_length():
-    flags = []
-    prices, volumes = _parse_ladder("10.5_10.4_", "100_", flags, "ask")
-    assert prices == [10.5, 10.4]
-    assert volumes == [100, None]
-    assert "mismatched_ask_ladder_length" in flags
-
-def test_intraday_stock_like_row(mock_retrieved_at_utc):
-    raw_row = {
-        "c": "2330",
-        "ex": "tse",
-        "n": "台積電",
-        "ch": "2330.tw",
-        "z": "-",
-        "y": "1040.00",
-        "o": "-",
-        "h": "-",
-        "l": "-",
-        "v": "15000",
-        "tv": "-",
-        "s": "-",
-        "a": "1055.00_1060.00_1065.00_1070.00_1075.00_",
-        "f": "100_200_300_400_500_",
-        "b": "1050.00_1045.00_1040.00_1035.00_1030.00_",
-        "g": "150_250_350_450_550_",
-        "u": "1140.00",
-        "w": "936.00",
-        "d": "20241025",
-        "t": "09:00:00",
-        "tlong": "1729818000000"
+def normal_row(**overrides):
+    row = {
+        "c": "2330", "ex": "tse", "n": "台積電", "ch": "2330.tw",
+        "z": "1015.0000", "y": "981.0000", "o": "1025.0000", "h": "1025.0000", "l": "1000.0000",
+        "v": "30141", "tv": "1468", "a": "1020.0000_1025.0000_", "f": "2816_4021_",
+        "b": "1015.0000_1010.0000_", "g": "40_183_", "u": "1079.0000", "w": "884.0000",
+        "d": "20240621", "t": "13:30:00", "tlong": "1718951400000",
     }
+    row.update(overrides)
+    return row
 
-    normalized = normalize_twse_mis_row(raw_row, mock_retrieved_at_utc)
 
+def test_safe_numeric_parsing_zero_dash_empty_and_malformed():
+    flags = []
+    assert _safe_float("1,234.5", flags, "price") == 1234.5
+    assert _safe_float("0", flags, "price") == 0.0
+    assert _safe_float("-", flags, "price") is None
+    assert _safe_float("", flags, "price") is None
+    assert _safe_float("abc", flags, "price") is None
+    assert "malformed_price" in flags
+
+
+def test_bid_ladder_and_ask_ladder_parsing():
+    flags = []
+    bid_prices, bid_volumes = _parse_ladder("10.5_10.4_", "100_200_", flags, "bid")
+    ask_prices, ask_volumes = _parse_ladder("10.6_10.7_", "110_220_", flags, "ask")
+    assert bid_prices == [10.5, 10.4]
+    assert bid_volumes == [100, 200]
+    assert ask_prices == [10.6, 10.7]
+    assert ask_volumes == [110, 220]
+    assert flags == []
+
+
+def test_normal_stock_row_contains_v2_contract(retrieved_at):
+    normalized = normalize_twse_mis_row(normal_row(), retrieved_at)
+    assert normalized["source_id"] == "twse_mis"
+    assert normalized["source_authority"] == "unofficial_frontend_source"
     assert normalized["symbol"] == "2330"
     assert normalized["exchange"] == "tse"
-    assert normalized["asset_type_candidate"] == "stock_like"
-    assert normalized["last_price"] is None
+    assert normalized["instrument_type"] == "stock_like"
+    assert normalized["price"] == 1015.0
+    assert normalized["volume"] == 30141
+    assert normalized["bid_ladder"][0] == {"level": 1, "price": 1015.0, "volume": 40}
+    assert normalized["ask_ladder"][0] == {"level": 1, "price": 1020.0, "volume": 2816}
+    assert normalized["normalization_version"] == "twse_mis_snapshot_v2_draft"
+    assert "data_quality_flags" in normalized
+    assert "source_risk_flags" in normalized
+    assert "unofficial_source_risk" in normalized["source_risk_flags"]
+    assert normalized["normalization_status"] == "ok"
+
+
+def test_tpex_row(retrieved_at):
+    normalized = normalize_twse_mis_row(normal_row(c="8069", ex="otc", n="元太", ch="8069.tw"), retrieved_at)
+    assert normalized["exchange"] == "otc"
+    assert normalized["instrument_type"] == "stock_like"
+
+
+def test_index_row_no_fake_bid_ask(retrieved_at):
+    normalized = normalize_twse_mis_row(normal_row(c="t00", ch="t00.tw", n="發行量加權股價指數", a="-", b="-", f="-", g="-", u="-", w="-"), retrieved_at)
+    assert normalized["instrument_type"] == "index"
+    assert normalized["bid_ladder"] == []
+    assert normalized["ask_ladder"] == []
+    assert "missing_bid_ask" not in normalized["data_quality_flags"]
+
+
+def test_missing_price_flags_partial(retrieved_at):
+    normalized = normalize_twse_mis_row(normal_row(z="-"), retrieved_at)
+    assert normalized["price"] is None
+    assert "missing_price" in normalized["data_quality_flags"]
+    assert normalized["normalization_status"] == "partial"
+
+
+def test_malformed_bid_ask_flags_not_exception(retrieved_at):
+    normalized = normalize_twse_mis_row(normal_row(a="bad_0.0000_", f="x_2_", b="10_11_", g="1_"), retrieved_at)
+    assert "malformed_ask_price_level" in normalized["data_quality_flags"]
+    assert "invalid_ask_price_level" in normalized["data_quality_flags"]
+    assert "mismatched_bid_ladder_length" in normalized["data_quality_flags"]
+    assert normalized["normalization_status"] == "partial"
+
+
+def test_stale_and_delayed_timestamp_classification(retrieved_at):
+    stale = normalize_twse_mis_row(normal_row(tlong=str(int((retrieved_at - timedelta(hours=1)).timestamp() * 1000))), retrieved_at)
+    delayed = normalize_twse_mis_row(normal_row(tlong=str(int((retrieved_at - timedelta(minutes=10)).timestamp() * 1000))), retrieved_at)
+    assert stale["freshness_status"] == "stale"
+    assert stale["delay_status"] == "stale"
+    assert "stale_source_timestamp" in stale["data_quality_flags"]
+    assert delayed["freshness_status"] == "delayed"
+    assert delayed["delay_status"] == "delayed_candidate"
+
+
+def test_zero_dash_empty_strings_row(retrieved_at):
+    normalized = normalize_twse_mis_row(normal_row(z="0", o="", h="-", l="--", a="0.0000__", f="0__"), retrieved_at)
+    assert normalized["price"] == 0.0
     assert normalized["open"] is None
     assert normalized["high"] is None
     assert normalized["low"] is None
-    assert normalized["current_volume"] is None
-    assert normalized["change"] is None
-    assert normalized["change_pct"] is None
-    assert "missing_last_price" in normalized["data_quality_flags"]
-    assert "s" in normalized["unmapped_raw_fields"]
-    assert normalized["unmapped_raw_fields"]["s"] == "-"
+    assert "invalid_ask_price_level" in normalized["data_quality_flags"]
 
-def test_post_market_stock_like_row(mock_retrieved_at_utc):
-    raw_row = {
-        "c": "2330",
-        "ex": "tse",
-        "n": "台積電",
-        "ch": "2330.tw",
-        "z": "1050.00",
-        "y": "1040.00",
-        "o": "1045.00",
-        "h": "1055.00",
-        "l": "1040.00",
-        "v": "20000",
-        "tv": "500",
-        "oa": "1055.00",
-        "ob": "1050.00",
-        "oz": "1050.00",
-        "ov": "1000",
-        "ot": "14:30:00",
-        "fv": "50",
-        "a": "1055.00_1060.00_1065.00_1070.00_1075.00_",
-        "f": "100_200_300_400_500_",
-        "b": "1050.00_1045.00_1040.00_1035.00_1030.00_",
-        "g": "150_250_350_450_550_",
-        "u": "1140.00",
-        "w": "936.00",
-        "d": "20241025",
-        "t": "13:30:00",
-        "tlong": "1729834200000"
-    }
 
-    normalized = normalize_twse_mis_row(raw_row, mock_retrieved_at_utc)
+def test_source_time_unavailable(retrieved_at):
+    normalized = normalize_twse_mis_row(normal_row(t="-", tlong="-"), retrieved_at)
+    assert normalized["source_timestamp"] is None
+    assert normalized["staleness_seconds"] is None
+    assert "source_time_unavailable" in normalized["data_quality_flags"]
 
-    assert normalized["last_price"] == 1050.0
-    assert normalized["current_volume"] == 500
-    assert normalized["alternate_session_time"] == "14:30:00"
-    assert normalized["change"] == 10.0
 
-    # Check post market fields preserved
-    unmapped = normalized["unmapped_raw_fields"]
-    assert "oa" in unmapped
-    assert "ob" in unmapped
-    assert "oz" in unmapped
-    assert "ov" in unmapped
-    assert "fv" in unmapped
+def test_malformed_and_partial_rows_return_structured_errors(retrieved_at):
+    malformed = normalize_twse_mis_row(None, retrieved_at)
+    partial = normalize_twse_mis_row({"z": "abc"}, retrieved_at)
+    assert malformed["normalization_status"] == "invalid"
+    assert "raw_row_not_object" in malformed["errors"]
+    assert partial["normalization_status"] == "invalid"
+    assert "missing_critical_symbol" in partial["errors"]
+    assert "missing_critical_exchange" in partial["errors"]
+    assert "malformed_price" in partial["data_quality_flags"]
 
-def test_etf_row(mock_retrieved_at_utc):
-    raw_row = {
-        "c": "0050",
-        "ex": "tse",
-        "it": "02",
-        "nu": "http://example.com/nav",
-        "a": "100.00_",
-        "f": "10_",
-        "b": "99.00_",
-        "g": "20_"
-    }
 
-    normalized = normalize_twse_mis_row(raw_row, mock_retrieved_at_utc)
+def test_no_official_realtime_claim_in_risk_flags(retrieved_at):
+    normalized = normalize_twse_mis_row(normal_row(), retrieved_at)
+    assert "not_official_realtime_api" in normalized["source_risk_flags"]
+    assert normalized["freshness_status"] in {"live_candidate", "delayed", "stale", "unknown"}
 
-    assert normalized["asset_type_candidate"] == "etf"
-    assert "nu" in normalized["unmapped_raw_fields"]
-    assert normalized["bid_prices"] == [99.0]
 
-def test_tdr_row(mock_retrieved_at_utc):
-    raw_row = {
-        "c": "9103",
-        "ex": "tse",
-        "it": "13",
-        "a": "10.00_",
-        "f": "10_",
-        "b": "9.00_",
-        "g": "20_"
-    }
+class _FakeResponse:
+    status_code = 200
 
-    normalized = normalize_twse_mis_row(raw_row, mock_retrieved_at_utc)
+    def __init__(self, payload=None):
+        self._payload = payload or {}
 
-    assert normalized["asset_type_candidate"] == "tdr"
+    def json(self):
+        return self._payload
 
-def test_index_row_no_crash_and_no_fake_bid_ask(mock_retrieved_at_utc):
-    raw_row = {
-        "c": "t00",
-        "ex": "tse",
-        "it": "t",
-        "n": "發行量加權股價指數",
-        "ch": "t00.tw",
-        "z": "23300.00",
-        "y": "23200.00",
-        "d": "20241025",
-        "t": "13:30:00"
-    }
 
-    normalized = normalize_twse_mis_row(raw_row, mock_retrieved_at_utc)
+class _FakeSession:
+    def __init__(self, payload):
+        self.headers = {}
+        self._payload = payload
+        self.urls = []
 
-    assert normalized["asset_type_candidate"] == "index"
-    assert normalized["bid_prices"] == []
-    assert normalized["ask_prices"] == []
-    assert normalized["bid_volumes"] == []
-    assert normalized["ask_volumes"] == []
-    assert normalized["limit_up"] is None
-    assert normalized["limit_down"] is None
+    def get(self, url, timeout):
+        self.urls.append(url)
+        if url.endswith("index.jsp"):
+            return _FakeResponse({})
+        return _FakeResponse(self._payload)
 
-    # Verify no flag generated for missing bid/ask on index
-    assert "missing_bid_ask" not in normalized["data_quality_flags"]
 
-def test_malformed_numeric_values(mock_retrieved_at_utc):
-    raw_row = {
-        "c": "2330",
-        "ex": "tse",
-        "z": "abc",
-        "v": "def"
-    }
-
-    normalized = normalize_twse_mis_row(raw_row, mock_retrieved_at_utc)
-    assert normalized["last_price"] is None
-    assert normalized["cumulative_volume"] is None
-    assert "malformed_last_price" in normalized["data_quality_flags"]
-    assert "malformed_cumulative_volume" in normalized["data_quality_flags"]
-
-def test_top_level_telemetry_incorporation(mock_retrieved_at_utc):
-    raw_row = {
-        "c": "2330",
-        "ex": "tse",
-        "z": "100.0"
-    }
-
-    top_level_telemetry = {
-        "queryTime": {
-            "sysTime": "13:30:05"
-        },
+def _assert_probe_envelope_first_row_freshness(monkeypatch, freshness_status, delay_status, staleness_seconds):
+    payload = {
+        "msgArray": [{"c": "2330", "ex": "tse"}],
+        "queryTime": {"sysTime": "13:30:00"},
         "userDelay": 5000,
-        "cachedAlive": 30000
+        "cachedAlive": 15024,
+        "rtcode": "0000",
+        "rtmessage": "OK",
+        "exKey": "msgArray",
+        "referer": "",
     }
 
-    normalized = normalize_twse_mis_row(raw_row, mock_retrieved_at_utc, top_level_telemetry=top_level_telemetry)
-    assert normalized["query_sys_time"] == "13:30:05"
+    monkeypatch.setattr(probe_twse_mis.requests, "Session", lambda: _FakeSession(payload))
+
+    def fake_normalize(row, retrieved_at_utc_dt, top_level_telemetry=None):
+        return {
+            "symbol": row["c"],
+            "exchange": row["ex"],
+            "freshness_status": freshness_status,
+            "delay_status": delay_status,
+            "staleness_seconds": staleness_seconds,
+            "normalization_version": "twse_mis_snapshot_v2_draft",
+            "data_quality_flags": [],
+            "source_risk_flags": ["unofficial_source_risk", "not_official_realtime_api"],
+        }
+
+    monkeypatch.setattr(probe_twse_mis, "normalize_twse_mis_row", fake_normalize)
+    envelope = probe_twse_mis.probe(symbols=["tse_2330.tw"])
+    assert envelope["freshness_status"] == freshness_status
+    assert envelope["delay_status"] == delay_status
+    assert envelope["staleness_seconds"] == staleness_seconds
+
+
+def test_probe_envelope_uses_first_row_stale_freshness_without_network(monkeypatch):
+    _assert_probe_envelope_first_row_freshness(monkeypatch, "stale", "stale", 3600)
+
+
+def test_probe_envelope_uses_first_row_delayed_freshness_without_network(monkeypatch):
+    _assert_probe_envelope_first_row_freshness(monkeypatch, "delayed", "delayed_candidate", 600)
+
+
+def test_probe_envelope_uses_first_row_live_candidate_freshness_without_network(monkeypatch):
+    _assert_probe_envelope_first_row_freshness(monkeypatch, "live_candidate", "not_delayed_candidate", 5)
