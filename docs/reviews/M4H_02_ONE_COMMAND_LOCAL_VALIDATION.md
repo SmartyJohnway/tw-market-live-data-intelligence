@@ -1,5 +1,9 @@
 # M4H-02-ONE-COMMAND-LOCAL-VALIDATION
 
-Status: completed.
+Status: completed with validation coverage.
 
-Review: M4 Omega local-only fixture-only governed platform skeleton artifact created. No live probe, production refresh, frontend/public write, generated market artifact, broker/auth activation, or trading signal is authorized.
+Artifacts: see the corresponding M4 M4H docs, scripts, fixtures, frontend preview files, and unit tests introduced for this milestone.
+
+Validation: covered by non-network pytest, compileall, local delivery acceptance, M4 local validation, fixture replay, and readiness checks as applicable. Negative mutation tests now verify failure propagation for readiness, manifest validation, fixture hashes, output path policy, scanner behavior, and replay caveat expectations.
+
+Boundaries: local-only, fixture-only, non-network, design-and-simulation-only. This milestone does not authorize live probes, production refresh, frontend/public publication, generated market artifacts, broker/auth activation, full-market scans, or trading output.
