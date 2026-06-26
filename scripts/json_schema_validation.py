@@ -1,29 +1,56 @@
-"""Small local JSON-schema subset validator for M4 contracts (no network, no dependencies)."""
+"""Standards-based Draft 2020-12 JSON Schema validation helpers for M4 contracts."""
 from __future__ import annotations
-import re
+from collections.abc import Iterable
+from jsonschema import Draft202012Validator, FormatChecker, SchemaError
 from datetime import datetime
 
-_TYPE_MAP = {
-    "object": dict,
-    "array": list,
-    "string": str,
-    "boolean": bool,
-    "integer": int,
-    "number": (int, float),
-}
+
+def _json_path(parts: Iterable) -> str:
+    path = "$"
+    for part in parts:
+        if isinstance(part, int):
+            path += f"[{part}]"
+        else:
+            path += f".{part}"
+    return path
 
 
-def _type_ok(value, expected: str) -> bool:
-    if expected == "boolean":
-        return isinstance(value, bool)
-    if expected == "integer":
-        return isinstance(value, int) and not isinstance(value, bool)
-    if expected == "number":
-        return isinstance(value, (int, float)) and not isinstance(value, bool)
-    return isinstance(value, _TYPE_MAP[expected])
+def _schema_path(parts: Iterable) -> str:
+    return "/" + "/".join(str(part) for part in parts)
 
 
-def _valid_datetime(value: str) -> bool:
+def _error_code(error) -> str:
+    return f"schema_{error.validator}"
+
+
+def _normalize_error(error) -> dict:
+    result = {
+        "code": _error_code(error),
+        "path": _json_path(error.absolute_path),
+        "message": error.message,
+        "schema_path": _schema_path(error.absolute_schema_path),
+    }
+    if error.validator == "required":
+        result["code"] = "schema_required_missing"
+    elif error.validator == "additionalProperties":
+        result["code"] = "schema_additional_property"
+    elif error.validator == "type":
+        result["code"] = "schema_type_mismatch"
+    elif error.validator == "enum":
+        result["code"] = "schema_enum_mismatch"
+    elif error.validator == "const":
+        result["code"] = "schema_const_mismatch"
+    elif error.validator == "pattern":
+        result["code"] = "schema_pattern_mismatch"
+    elif error.validator == "format":
+        result["code"] = "schema_format"
+    elif error.validator == "contains":
+        result["code"] = "schema_contains_missing"
+    return result
+
+
+
+def _is_date_time(value: str) -> bool:
     try:
         datetime.fromisoformat(value.replace("Z", "+00:00"))
         return True
@@ -31,40 +58,47 @@ def _valid_datetime(value: str) -> bool:
         return False
 
 
-def validate_json_schema_subset(instance, schema: dict, path: str = "$") -> list[dict]:
+def _custom_format_errors(instance, schema: dict, path: str = "$") -> list[dict]:
     errors: list[dict] = []
-    if "const" in schema and instance != schema["const"]:
-        errors.append({"code": "schema_const_mismatch", "path": path, "expected": schema["const"], "actual": instance})
-    if "enum" in schema and instance not in schema["enum"]:
-        errors.append({"code": "schema_enum_mismatch", "path": path, "allowed": schema["enum"], "actual": instance})
-    expected_type = schema.get("type")
-    if expected_type:
-        allowed = expected_type if isinstance(expected_type, list) else [expected_type]
-        if not any(_type_ok(instance, t) for t in allowed):
-            errors.append({"code": "schema_type_mismatch", "path": path, "expected": allowed, "actual_type": type(instance).__name__})
-            return errors
-    if isinstance(instance, str):
-        if schema.get("minLength") is not None and len(instance) < schema["minLength"]:
-            errors.append({"code": "schema_min_length", "path": path})
-        if "pattern" in schema and not re.search(schema["pattern"], instance):
-            errors.append({"code": "schema_pattern_mismatch", "path": path, "pattern": schema["pattern"]})
-        if schema.get("format") == "date-time" and not _valid_datetime(instance):
-            errors.append({"code": "schema_datetime_format", "path": path})
-    if isinstance(instance, dict):
-        required = set(schema.get("required", []))
-        for key in sorted(required - set(instance)):
-            errors.append({"code": "schema_required_missing", "path": f"{path}.{key}"})
-        properties = schema.get("properties", {})
-        if schema.get("additionalProperties") is False:
-            for key in sorted(set(instance) - set(properties)):
-                errors.append({"code": "schema_additional_property", "path": f"{path}.{key}"})
-        for key, subschema in properties.items():
+    if isinstance(schema, dict) and schema.get("format") == "date-time" and isinstance(instance, str) and not _is_date_time(instance):
+        errors.append({"code": "schema_format", "path": path, "message": f"{instance!r} is not a 'date-time'", "schema_path": "/format"})
+    if isinstance(instance, dict) and isinstance(schema, dict):
+        for key, subschema in schema.get("properties", {}).items():
             if key in instance:
-                errors.extend(validate_json_schema_subset(instance[key], subschema, f"{path}.{key}"))
-    if isinstance(instance, list):
-        if "items" in schema:
-            for idx, item in enumerate(instance):
-                errors.extend(validate_json_schema_subset(item, schema["items"], f"{path}[{idx}]"))
-        if "contains" in schema and not any(not validate_json_schema_subset(item, schema["contains"], f"{path}[]") for item in instance):
-            errors.append({"code": "schema_contains_missing", "path": path})
+                errors.extend(_custom_format_errors(instance[key], subschema, f"{path}.{key}"))
+    if isinstance(instance, list) and isinstance(schema, dict) and "items" in schema:
+        for idx, item in enumerate(instance):
+            errors.extend(_custom_format_errors(item, schema["items"], f"{path}[{idx}]"))
     return errors
+
+def validate_json_schema(instance, schema: dict, path: str = "$") -> list[dict]:
+    """Validate an instance with Draft 2020-12 + FormatChecker and return stable JSON errors."""
+    try:
+        Draft202012Validator.check_schema(schema)
+    except SchemaError as exc:
+        return [{
+            "code": "invalid_schema",
+            "path": path,
+            "message": exc.message,
+            "schema_path": _schema_path(exc.absolute_schema_path),
+        }]
+    validator = Draft202012Validator(schema, format_checker=FormatChecker())
+    errors = [_normalize_error(error) for error in validator.iter_errors(instance)]
+    errors.extend(_custom_format_errors(instance, schema, "$"))
+    for error in errors:
+        if path != "$" and error["path"].startswith("$"):
+            error["path"] = path + error["path"][1:]
+    return sorted(errors, key=lambda e: (e["path"], e["code"], e["message"], e.get("schema_path", "")))
+
+
+# Backwards-compatible alias for older M4 call sites/tests.
+def validate_json_schema_subset(instance, schema: dict, path: str = "$") -> list[dict]:
+    return validate_json_schema(instance, schema, path)
+
+
+def check_schema(schema: dict) -> list[dict]:
+    try:
+        Draft202012Validator.check_schema(schema)
+    except SchemaError as exc:
+        return [{"code": "invalid_schema", "path": "$", "message": exc.message, "schema_path": _schema_path(exc.absolute_schema_path)}]
+    return []

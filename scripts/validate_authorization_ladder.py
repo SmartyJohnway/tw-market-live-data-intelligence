@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from scripts.json_schema_validation import validate_json_schema_subset
+from scripts.json_schema_validation import validate_json_schema
 
 FORBIDDEN_ACTIONS = {"live_probe", "production_refresh", "frontend_publication", "trading_signal", "full_market_scan", "broker_auth"}
 AUTHORIZED_LEVEL_ACTIONS = {
@@ -24,7 +24,7 @@ def _parse_dt(value: str):
 
 def validate_authorization_token(token: dict, schema_path: str | Path = "docs/authorization/authorization_token_schema.json", now: datetime | None = None) -> list[dict]:
     schema = json.loads(Path(schema_path).read_text(encoding="utf-8"))
-    errors = validate_json_schema_subset(token, schema)
+    errors = validate_json_schema(token, schema)
     now = now or datetime.now(timezone.utc)
     try:
         if _parse_dt(token.get("expires_at", "1970-01-01T00:00:00Z")) <= now:

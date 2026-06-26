@@ -25,6 +25,13 @@ def test_source_registry_requires_six_core_sources():
     errors=validate_source_registry(*registry_args(reg))
     assert any(e['code']=='required_sources_missing' and 'TWSE_MIS' in e['source_ids'] for e in errors)
 
+def test_source_registry_rejects_duplicate_source_id():
+    reg=load('docs/source_registry/source_authority_registry.json')
+    twse_mis=copy.deepcopy(next(s for s in reg['sources'] if s['source_id']=='TWSE_MIS'))
+    reg['sources'].append(twse_mis)
+    errors=validate_source_registry(*registry_args(reg))
+    assert any(e['code']=='duplicate_source_id' and e['source_id']=='TWSE_MIS' for e in errors)
+
 def test_source_registry_runs_schema_validator_for_array_boolean_and_contains():
     reg=load('docs/source_registry/source_authority_registry.json')
     bad=copy.deepcopy(reg['sources'][0])
@@ -35,3 +42,9 @@ def test_source_registry_runs_schema_validator_for_array_boolean_and_contains():
     reg['sources'][0]=bad
     codes={e['code'] for e in validate_source_registry(*registry_args(reg))}
     assert {'schema_type_mismatch','schema_contains_missing'} <= codes
+
+def test_source_registry_malformed_entry_structured_no_traceback():
+    reg=load('docs/source_registry/source_authority_registry.json')
+    reg['sources'].append('not-object')
+    errors=validate_source_registry(*registry_args(reg))
+    assert any(e['code']=='source_entry_not_object' for e in errors)

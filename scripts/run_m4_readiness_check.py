@@ -7,7 +7,7 @@ from scripts.run_m4_local_validation import run_local_validation
 from scripts.validate_source_registry import validate_source_registry
 from scripts.run_fixture_replay_scenarios import run_scenarios
 from scripts.validate_authorization_ladder import validate_authorization_ladder
-from scripts.json_schema_validation import validate_json_schema_subset
+from scripts.json_schema_validation import validate_json_schema
 
 
 def _load(path: Path) -> dict:
@@ -34,7 +34,10 @@ def validate_evidence_ledger(repo_root: Path, ledger_path: Path | None = None) -
     if not evidence_entries:
         errors.append({"code": "evidence_empty", "path": "$.evidence"})
     for idx, entry in enumerate(evidence_entries):
-        for error in validate_json_schema_subset(entry, schema, f"$.evidence[{idx}]"):
+        if not isinstance(entry, dict):
+            errors.append({"code": "evidence_entry_not_object", "path": f"$.evidence[{idx}]", "message": "evidence entry must be an object"})
+            continue
+        for error in validate_json_schema(entry, schema, f"$.evidence[{idx}]"):
             errors.append(error)
         fixture_path = repo_root / entry.get("fixture_path", "")
         if not fixture_path.exists():

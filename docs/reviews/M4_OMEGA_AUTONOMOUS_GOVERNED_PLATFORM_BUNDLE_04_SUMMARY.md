@@ -3,13 +3,17 @@
 ## Status by track
 
 - M4A Repo governance hardening: completed; includes preflight, policy manifest validation, scanner, workflow policy matrix, test-suite segmentation, and repo-wide governance regression tests.
-- M4B Source authority registry: completed; includes registry, risk flags, JSON-schema-style source contract, taxonomy, coverage matrix, deprecation policy, validator, and docs.
-- M4C Evidence ledger and provenance: completed; includes JSON-schema-style evidence contract, fixture ledger, hash manifest builder/validator, lineage model, retention policy, and tamper regression tests.
-- M4D Fixture replay simulator: completed; runner now validates staging status, expected caveats, expected forbidden flags, audit events, readonly package construction, and summary status using differentiated stale/delayed/live/invalid scenarios.
+- M4B Source authority registry: completed; source entries are validated with standards-based Draft 2020-12 JSON Schema validation, duplicate `source_id` values fail closed, malformed entries return structured errors, and the six required core source IDs must be present.
+- M4C Evidence ledger and provenance: completed; evidence entries are validated with standards-based Draft 2020-12 JSON Schema validation, empty/missing evidence containers fail closed, malformed evidence entries return structured errors without traceback, and fixture existence plus SHA-256 checks remain enforced.
+- M4D Fixture replay simulator: completed; runner validates staging status, expected caveats, expected forbidden flags, audit events, readonly package construction, and actual summary status using differentiated stale/delayed/live/invalid scenarios plus failure-injection scenarios.
 - M4E Frontend observability preview: completed; readonly local console renders source status, evidence lineage, replay summary, and release readiness panels under `frontend/readonly-preview/` only.
 - M4F Release gate governance: completed; current level remains local-only/fixture-only and future live/public/prod gates remain blocked.
-- M4G Authorization ladder design: completed; token schema, ladder validator, and dry-run simulator remain design-only and deny production/live/public/trading elevation by default.
-- M4H Operator console and one-command checks: completed; local validation, fixture replay, and readiness checks now fail closed when child validations fail.
+- M4G Authorization ladder design: completed; authorization token validation uses standards-based Draft 2020-12 JSON Schema validation plus expiry, forbidden-action, bounded-target, output-policy, and safety-flag checks.
+- M4H Operator console and one-command checks: completed; local validation, fixture replay, and readiness checks fail closed when child validations fail.
+
+## Validation standard
+
+M4 schema validation now uses `jsonschema.Draft202012Validator`, `Draft202012Validator.check_schema`, and `FormatChecker`. The source contract schema, evidence ledger schema, and authorization token schema are meta-validated as legal Draft 2020-12 schemas in unit tests.
 
 ## Files changed
 
@@ -20,19 +24,23 @@ Major changed categories: `.github/workflows/non-network-ci.yml`, `scripts/*m4*`
 - `python -m compileall scripts tests`
 - `pytest -m "not network"`
 - Required focused M4 pytest files
-- `python scripts/run_local_delivery_acceptance.py --check-only`
-- `python scripts/run_ci_delivery_acceptance.py --check-only`
+- `python scripts/validate_source_registry.py`
+- `python scripts/validate_authorization_ladder.py`
 - `python scripts/run_m4_local_validation.py --check-only`
 - `python scripts/run_m4_fixture_replay.py --check-only`
 - `python scripts/run_m4_readiness_check.py --check-only`
 
-## Blocked items
+## Boundaries retained
 
-None for the local-only M4 scope. Live probe execution, staging promotion, frontend publication, production refresh, broker/auth activation, generated market artifact writes, and trading output remain explicitly unauthorized.
+This bundle remains local-only, fixture-only, non-network, not realtime, and not trading. It does not authorize live probes, production refresh, frontend/public publication, generated market artifacts, broker/auth activation, full-market scans, or trading output.
 
-## Remaining caveats
+## Production readiness
 
-This bundle is a governed platform skeleton, not a production market-data system. It uses fixture-only evidence and replay simulation only. It must not be used to claim current production market state or realtime behavior.
+M4 Omega is a governed platform skeleton and is not production-ready. It must not be used to claim production current market state or realtime behavior.
+
+## Remaining engineering review caveats
+
+None, after all required M4 Omega validation commands pass.
 
 ## Next recommended bundle
 

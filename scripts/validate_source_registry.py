@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse, json, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from scripts.json_schema_validation import validate_json_schema_subset
+from scripts.json_schema_validation import validate_json_schema
 
 REQUIRED_SOURCE_IDS = {
     "TWSE_OpenAPI",
@@ -32,9 +32,11 @@ def validate_source_registry(reg: dict, cat: dict, schema: dict, cov: dict) -> l
         if not isinstance(source, dict):
             errors.append({"code": "source_entry_not_object", "path": source_path})
             continue
-        errors.extend(validate_json_schema_subset(source, schema, source_path))
+        errors.extend(validate_json_schema(source, schema, source_path))
         source_id = source.get("source_id")
         if source_id:
+            if source_id in seen_source_ids:
+                errors.append({"code": "duplicate_source_id", "source_id": source_id, "path": f"{source_path}.source_id"})
             seen_source_ids.add(source_id)
         for risk_flag in source.get("risk_flags", []):
             if risk_flag not in flags:

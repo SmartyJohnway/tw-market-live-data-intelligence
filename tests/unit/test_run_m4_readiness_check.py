@@ -22,3 +22,16 @@ def test_evidence_ledger_empty_or_missing_fails(tmp_path):
  assert validate_evidence_ledger(ROOT, p)[0]['code']=='evidence_empty'
  p2=tmp_path/'missing_ledger.json'; p2.write_text(json.dumps({}))
  assert validate_evidence_ledger(ROOT, p2)[0]['code']=='evidence_missing_or_not_array'
+
+def test_evidence_ledger_malformed_entries_structured_no_traceback(tmp_path):
+ for bad_entry in ['bad', ['bad'], None]:
+  p=tmp_path/'malformed_ledger.json'; p.write_text(json.dumps({'evidence': [bad_entry]}))
+  errors=validate_evidence_ledger(ROOT, p)
+  assert errors[0]['code']=='evidence_entry_not_object'
+
+def test_evidence_ledger_schema_failures_are_structured(tmp_path):
+ entry=load('tests/fixtures/evidence/fixture_evidence_ledger.json')['evidence'][0]
+ bad=dict(entry); bad['created_at']='not-a-date'; bad['source_authority']='bad'; bad['caveats']=['not_production_current_state']; bad['extra']='bad'
+ p=tmp_path/'bad_ledger.json'; p.write_text(json.dumps({'evidence': [bad]}))
+ codes={e['code'] for e in validate_evidence_ledger(ROOT, p)}
+ assert {'schema_format','schema_enum_mismatch','schema_contains_missing','schema_additional_property'} <= codes
