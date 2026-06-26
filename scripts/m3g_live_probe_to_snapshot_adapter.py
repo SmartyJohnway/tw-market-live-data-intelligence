@@ -131,17 +131,22 @@ def map_source_evidence_to_snapshot_input(source_id: str, envelope: dict, summar
         mapped_data = {
             "name": source_data.get("name"),
             "exchange": source_data.get("exchange"),
-            "last_price": first_non_none(source_data.get("last_price"), source_data.get("regular_market_price")),
+            "last_price": first_non_none(source_data.get("last_price"), source_data.get("price"), source_data.get("regular_market_price")),
             "change": source_data.get("change"),
             "change_pct": source_data.get("change_pct"),
             "open": source_data.get("open"),
             "high": source_data.get("high"),
             "low": source_data.get("low"),
             "previous_close": source_data.get("previous_close"),
-            "volume": source_data.get("volume"),
-            "bid_ask": source_data.get("bid_ask"),
-            "source_time": first_non_none(source_data.get("source_time"), source_data.get("regular_market_time_utc")),
-            "retrieved_time": first_non_none(source_data.get("retrieved_time"), source_data.get("retrieved_at_utc")),
+            "volume": first_non_none(source_data.get("volume"), source_data.get("cumulative_volume")),
+            "bid_ask": first_non_none(
+                source_data.get("bid_ask"),
+                {"bid_ladder": source_data.get("bid_ladder", []), "ask_ladder": source_data.get("ask_ladder", [])}
+                if source_data.get("bid_ladder") is not None or source_data.get("ask_ladder") is not None
+                else None,
+            ),
+            "source_time": first_non_none(source_data.get("source_time"), source_data.get("source_timestamp"), source_data.get("regular_market_time_utc")),
+            "retrieved_time": first_non_none(source_data.get("retrieved_time"), source_data.get("retrieved_at"), source_data.get("retrieved_at_utc")),
             "price_semantics": price_semantics,
             "freshness_status": freshness_status,
             "delay_status": delay_status,

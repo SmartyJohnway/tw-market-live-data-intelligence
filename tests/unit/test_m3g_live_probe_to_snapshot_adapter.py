@@ -175,3 +175,43 @@ def test_none_aware_fallback_preserves_zero_values():
 
     assert mapped["0000"]["last_price"] == 0.0
     assert mapped["0000"]["staleness_seconds"] == 0
+
+@pytest.mark.not_network
+def test_twse_mis_v2_fields_map_without_removing_v1_aliases():
+    envelope = {
+        "freshness_status": "delayed",
+        "delay_status": "delayed",
+        "staleness_seconds": 601,
+        "normalized_sample": [
+            {
+                "symbol": "tse_2330.tw",
+                "name": "台積電",
+                "exchange": "TWSE",
+                "price": 1000.0,
+                "volume": 12345,
+                "cumulative_volume": 99999,
+                "source_timestamp": "2026-06-24T01:30:00Z",
+                "retrieved_at": "2026-06-24T01:40:01Z",
+                "bid_ladder": [{"level": 1, "price": 999.0, "volume": 10}],
+                "ask_ladder": [{"level": 1, "price": 1000.0, "volume": 20}],
+                "data_quality_flags": [],
+                "source_risk_flags": ["unofficial_frontend_endpoint"],
+                "normalization_version": "twse_mis_snapshot_v2_draft",
+            }
+        ],
+    }
+    summary_entry = {"contract_status": "normalized_pass", "http_ok": True}
+
+    from scripts.m3g_live_probe_to_snapshot_adapter import map_source_evidence_to_snapshot_input
+
+    mapped = map_source_evidence_to_snapshot_input("TWSE_MIS", envelope, summary_entry)
+
+    assert mapped["2330"]["last_price"] == 1000.0
+    assert mapped["2330"]["volume"] == 12345
+    assert mapped["2330"]["source_time"] == "2026-06-24T01:30:00Z"
+    assert mapped["2330"]["retrieved_time"] == "2026-06-24T01:40:01Z"
+    assert mapped["2330"]["bid_ask"] == {
+        "bid_ladder": [{"level": 1, "price": 999.0, "volume": 10}],
+        "ask_ladder": [{"level": 1, "price": 1000.0, "volume": 20}],
+    }
+    assert mapped["2330"]["price_semantics"] == "delayed_quote"
