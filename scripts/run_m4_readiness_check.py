@@ -28,7 +28,12 @@ def validate_evidence_ledger(repo_root: Path, ledger_path: Path | None = None) -
         ledger = _load(ledger_path)
     except Exception as exc:
         return [{"code": "ledger_unreadable", "path": str(ledger_path), "message": str(exc)}]
-    for idx, entry in enumerate(ledger.get("evidence", [])):
+    evidence_entries = ledger.get("evidence") if isinstance(ledger, dict) else None
+    if not isinstance(evidence_entries, list):
+        return [{"code": "evidence_missing_or_not_array", "path": "$.evidence"}]
+    if not evidence_entries:
+        errors.append({"code": "evidence_empty", "path": "$.evidence"})
+    for idx, entry in enumerate(evidence_entries):
         for error in validate_json_schema_subset(entry, schema, f"$.evidence[{idx}]"):
             errors.append(error)
         fixture_path = repo_root / entry.get("fixture_path", "")

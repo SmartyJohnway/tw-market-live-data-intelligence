@@ -1,37 +1,49 @@
 """Validate source registry, schema, risk catalog, and coverage matrix consistency."""
 from __future__ import annotations
-import argparse, json
+import argparse, json, sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from scripts.json_schema_validation import validate_json_schema_subset
 
-
-def _required_fields(schema: dict) -> set[str]:
-    return set(schema.get("required", schema.get("required_source_fields", [])))
+REQUIRED_SOURCE_IDS = {
+    "TWSE_OpenAPI",
+    "TPEx_OpenAPI",
+    "TWSE_MIS",
+    "Yahoo_Finance",
+    "Fixture_Synthetic",
+    "Manual_Operator_Input",
+}
 
 
 def validate_source_registry(reg: dict, cat: dict, schema: dict, cov: dict) -> list[dict]:
-    errors = []
-    flags = {x["risk_flag"] for x in cat.get("risk_flags", [])}
-    fields = _required_fields(schema)
-    allowed_enums = {k: set(v.get("enum", [])) for k, v in schema.get("properties", {}).items() if "enum" in v}
-    families = cov.get("families", {})
-    for source in reg.get("sources", []):
+    errors: list[dict] = []
+    if not isinstance(reg, dict):
+        return [{"code": "registry_not_object", "path": "$"}]
+    sources = reg.get("sources")
+    if not isinstance(sources, list):
+        return [{"code": "registry_sources_missing_or_not_array", "path": "$.sources"}]
+    if not sources:
+        errors.append({"code": "registry_sources_empty", "path": "$.sources"})
+    flags = {x.get("risk_flag") for x in cat.get("risk_flags", []) if isinstance(x, dict)}
+    families = cov.get("families", {}) if isinstance(cov, dict) else {}
+    seen_source_ids: set[str] = set()
+    for idx, source in enumerate(sources):
+        source_path = f"$.sources[{idx}]"
+        if not isinstance(source, dict):
+            errors.append({"code": "source_entry_not_object", "path": source_path})
+            continue
+        errors.extend(validate_json_schema_subset(source, schema, source_path))
         source_id = source.get("source_id")
-        missing = fields - set(source)
-        if missing:
-            errors.append({"code": "missing_source_fields", "source_id": source_id, "fields": sorted(missing)})
-        extra = set(source) - fields
-        if schema.get("additionalProperties") is False and extra:
-            errors.append({"code": "unexpected_source_fields", "source_id": source_id, "fields": sorted(extra)})
-        for field, allowed in allowed_enums.items():
-            if field in source and source[field] not in allowed:
-                errors.append({"code": "invalid_source_enum", "source_id": source_id, "field": field, "value": source[field]})
+        if source_id:
+            seen_source_ids.add(source_id)
         for risk_flag in source.get("risk_flags", []):
             if risk_flag not in flags:
-                errors.append({"code": "unknown_risk_flag", "source_id": source_id, "flag": risk_flag})
-        if source.get("production_current_state_allowed") is not False:
-            errors.append({"code": "production_not_allowed", "source_id": source_id})
+                errors.append({"code": "unknown_risk_flag", "source_id": source_id, "flag": risk_flag, "path": f"{source_path}.risk_flags"})
         if source.get("source_family") not in families:
-            errors.append({"code": "missing_family_coverage", "source_id": source_id, "family": source.get("source_family")})
+            errors.append({"code": "missing_family_coverage", "source_id": source_id, "family": source.get("source_family"), "path": f"{source_path}.source_family"})
+    missing_required = sorted(REQUIRED_SOURCE_IDS - seen_source_ids)
+    if missing_required:
+        errors.append({"code": "required_sources_missing", "path": "$.sources", "source_ids": missing_required})
     return errors
 
 
