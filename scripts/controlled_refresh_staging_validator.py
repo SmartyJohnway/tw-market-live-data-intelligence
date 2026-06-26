@@ -22,6 +22,10 @@ def _walk(obj, path="$"):
             yield from _walk(v, f"{path}[{i}]")
 
 
+def _normalized_text(value) -> str:
+    return str(value).strip().lower()
+
+
 def validation_error(code: str, path: str, message: str) -> dict:
     return {"code": code, "path": path, "message": message}
 
@@ -44,7 +48,7 @@ def validate_controlled_refresh_staging_payload(payload: dict) -> list[dict]:
     target = payload.get("target_universe", {})
     if isinstance(target, dict):
         for field in ("scope", "mode"):
-            if target.get(field) in FULL_MARKET_TARGET_VALUES:
+            if _normalized_text(target.get(field)) in FULL_MARKET_TARGET_VALUES:
                 errors.append(validation_error("full_market_target_forbidden", f"$.target_universe.{field}", "full-market target universe is forbidden"))
     if isinstance(target, dict) and target.get("full_market_scan") is True:
         errors.append(validation_error("full_market_target_forbidden", "$.target_universe.full_market_scan", "full-market scan is forbidden"))

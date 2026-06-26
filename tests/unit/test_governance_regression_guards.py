@@ -15,18 +15,38 @@ def test_staging_writer_requires_confirmations(): assert "REQUIRED_CONFIRMATIONS
 def test_frontend_builder_requires_confirmations(): assert "REQUIRED_CONFIRMATIONS" in read("scripts/build_frontend_readonly_context_package.py")
 def test_run_all_probes_remains_gated_or_forbidden():
     text=read("scripts/run_all_probes.py").lower(); assert "run_all_probes_i_understand_this_is_live" in text or "forbidden" in text or "legacy" in text
+def _network_scan_lines(path):
+    for line in path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if path.name == "test_governance_regression_guards.py" and (
+            stripped.startswith("forbidden = (")
+            or stripped.startswith('"')
+            or stripped.startswith("assert not any(token in line")
+            or "network-looking token found" in stripped
+        ):
+            continue
+        yield line
+
 def test_no_test_uses_network():
-    forbidden = ("requests.", "urllib.request", "httpx.", "socket.create_connection")
+    forbidden = (
+        "requests.",
+        "urllib.request",
+        "httpx.",
+        "aiohttp.",
+        "socket.create_connection",
+        "websocket",
+    )
     files = [
         "test_controlled_refresh_staging_writer.py",
         "test_controlled_refresh_staging_validator.py",
         "test_frontend_readonly_context_package.py",
         "test_local_delivery_acceptance.py",
+        "test_governance_regression_guards.py",
     ]
     for name in files:
         p = ROOT / "tests/unit" / name
-        text = p.read_text(encoding="utf-8")
-        assert not any(token in text for token in forbidden), f"network-looking token found in {p}"
+        for line_number, line in enumerate(_network_scan_lines(p), start=1):
+            assert not any(token in line for token in forbidden), f"network-looking token found in {p}:{line_number}"
 def test_no_new_production_refresh_without_confirmations():
     for p in (ROOT/"scripts").glob("*.py"):
         text=p.read_text(encoding="utf-8").lower()

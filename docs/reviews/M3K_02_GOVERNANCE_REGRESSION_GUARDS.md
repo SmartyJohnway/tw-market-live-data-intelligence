@@ -20,3 +20,8 @@ Completed in M3K-AUTONOMOUS-DELIVERY-BUNDLE-02 as a local-first, fixture-backed,
 ## Files
 
 See `docs/DELIVERY_INDEX.md` for the complete delivery map and current limitations.
+
+## M3K-02R caveat repair
+
+- Full-market target checks are case-insensitive for both `target_universe.scope` and `target_universe.mode`.
+- Governance regression network guard scans all M3K-added unit test files, including the guard test file itself with declaration-line exclusions.

@@ -41,3 +41,19 @@ def test_twse_mis_unofficial_endpoint_legacy_alias_passes():
 
 def test_twse_mis_without_unofficial_source_risk_fails():
     assert payload(source_risk_flags=["fragile_frontend_contract"])["validation"]["errors"]
+
+
+def test_target_universe_mode_full_market_case_insensitive_fails():
+    p=payload(); p["target_universe"]={"mode":"Full_Market"}; assert errs(p)
+
+def test_target_universe_mode_all_case_insensitive_fails():
+    p=payload(); p["target_universe"]={"mode":"ALL"}; assert errs(p)
+
+def test_target_universe_scope_full_market_case_insensitive_fails():
+    p=payload(); p["target_universe"]={"scope":"Full_Market"}; assert errs(p)
+
+def test_target_universe_bounded_mode_with_spaces_passes():
+    p=payload(); p["target_universe"]={"mode":" bounded ","symbols":["2330"]}; assert errs(p) == []
+
+def test_target_universe_none_mode_does_not_crash():
+    p=payload(); p["target_universe"]={"mode":None,"symbols":["2330"]}; assert errs(p) == []
