@@ -41,6 +41,7 @@ The controlled MCP tool requires all of the following before execution:
   - `TWSE_MIS`
   - `Yahoo_Finance`
 - `requested_targets` within `config/market_targets.json` standard-symbol allowlist;
+- duplicate sources or targets are rejected before execution;
 - `max_targets` between 1 and 5, with requested target count at or below the bound;
 - `no_artifact_writes: true`
 - `no_frontend_writes: true`
@@ -61,6 +62,8 @@ The MCP tool response includes governance metadata with:
 
 Confirmed execution is routed only through the bounded controlled runner wrapper for `scripts/run_m3g04_controlled_live_probe.py`. The MCP module does not import the legacy individual probe modules and does not directly expose broad legacy probe functions.
 
+The wrapper executes the runner with the repository on `PYTHONPATH` but with an isolated temporary working directory. This preserves runner compatibility while preventing repository `research/generated/*`, `frontend/public/*`, or production artifact writes from the MCP surface. If the runner produces a temporary `run_summary_*.json`, the MCP response includes that summary before the temporary directory is removed.
+
 The wrapper is injectable so unit tests can monkeypatch it. The unit tests do not perform live network calls.
 
 ## Fail-closed cases
@@ -68,8 +71,8 @@ The wrapper is injectable so unit tests can monkeypatch it. The unit tests do no
 The controlled tool fails closed without executing the runner when:
 
 - explicit confirmation is missing or false;
-- requested source scope is empty, malformed, or outside the allowlist;
-- requested target scope is empty, malformed, outside `config/market_targets.json`, or above bounds;
+- requested source scope is empty, malformed, duplicated, or outside the allowlist;
+- requested target scope is empty, malformed, duplicated, outside `config/market_targets.json`, or above bounds;
 - write/refresh prohibitions are not explicitly set to true;
 - the controlled runner path is missing;
 - the controlled runner raises an error.

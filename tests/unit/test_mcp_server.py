@@ -1,7 +1,9 @@
 import asyncio
 import json
 import os
+import subprocess
 import sys
+from pathlib import Path
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
 
@@ -182,7 +184,14 @@ def test_controlled_tool_valid_confirmation_calls_only_runner_wrapper(monkeypatc
 
     def fake_runner(sources, targets):
         calls.append((sources, targets))
-        return {"returncode": 0, "stdout_tail": "controlled ok", "stderr_tail": ""}
+        return {
+            "returncode": 0,
+            "stdout_tail": "controlled ok",
+            "stderr_tail": "",
+            "controlled_summary": {"timestamp": "2026-06-26T00:00:00+00:00"},
+            "repo_artifacts_updated": False,
+            "temporary_evidence_directory_removed": True,
+        }
 
     monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fake_runner)
 
@@ -203,6 +212,62 @@ def test_controlled_tool_valid_confirmation_calls_only_runner_wrapper(monkeypatc
     assert "not realtime-guaranteed" in data["statement"]
     assert "not a trading signal" in data["statement"]
     assert data["retrieval_metadata"]["delay_status"] == "source-dependent and not guaranteed realtime"
+    assert data["result"]["controlled_summary"]["timestamp"] == "2026-06-26T00:00:00+00:00"
+    assert data["result"]["repo_artifacts_updated"] is False
+    assert data["result"]["temporary_evidence_directory_removed"] is True
+
+
+def test_controlled_tool_duplicate_scope_fails_closed_without_runner(monkeypatch):
+    def fail_if_called(*args, **kwargs):
+        raise AssertionError("controlled runner should not execute")
+
+    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
+
+    duplicate_sources = dict(VALID_CONTROLLED_ARGS, requested_sources=["TWSE_OpenAPI", "TWSE_OpenAPI"])
+    source_data = decode_text_response(
+        asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, duplicate_sources))
+    )
+    assert source_data["status"] == "failed_closed"
+    assert source_data["failure_reason"] == "duplicate_source_scope"
+
+    duplicate_targets = dict(VALID_CONTROLLED_ARGS, requested_targets=["2330", "2330"], max_targets=2)
+    target_data = decode_text_response(
+        asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, duplicate_targets))
+    )
+    assert target_data["status"] == "failed_closed"
+    assert target_data["failure_reason"] == "duplicate_target_scope"
+
+
+def test_controlled_runner_wrapper_uses_temp_cwd_and_returns_summary(monkeypatch, tmp_path):
+    runner_path = tmp_path / mcp_server.CONTROLLED_RUNNER_RELATIVE_PATH
+    runner_path.parent.mkdir(parents=True)
+    runner_path.write_text("# fake runner path for wrapper test\n", encoding="utf-8")
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    calls = []
+
+    def fake_subprocess_run(command, cwd, env, **kwargs):
+        calls.append({"command": command, "cwd": Path(cwd), "env": env, "kwargs": kwargs})
+        evidence_dir = Path(cwd) / "research" / "live_probe_runs" / "m3g_04"
+        evidence_dir.mkdir(parents=True)
+        (evidence_dir / "run_summary_20260626_000000.json").write_text(
+            json.dumps({"timestamp": "2026-06-26T00:00:00+00:00", "results": {}}),
+            encoding="utf-8",
+        )
+        return subprocess.CompletedProcess(command, 0, stdout="wrapper ok", stderr="")
+
+    monkeypatch.setattr(mcp_server.subprocess, "run", fake_subprocess_run)
+
+    result = mcp_server.run_controlled_probe_runner(["TWSE_OpenAPI"], ["2330"])
+
+    assert result["returncode"] == 0
+    assert result["controlled_summary"] == {"timestamp": "2026-06-26T00:00:00+00:00", "results": {}}
+    assert result["repo_artifacts_updated"] is False
+    assert result["temporary_evidence_directory_removed"] is True
+    assert calls[0]["command"][0] == sys.executable
+    assert calls[0]["cwd"] != tmp_path
+    assert calls[0]["kwargs"]["timeout"] == mcp_server.CONTROLLED_RUNNER_TIMEOUT_SECONDS
+    assert str(tmp_path) in calls[0]["env"]["PYTHONPATH"]
 
 
 def test_controlled_tool_missing_runner_path_returns_structured_failure(monkeypatch):

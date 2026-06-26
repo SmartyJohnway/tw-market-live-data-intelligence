@@ -11,6 +11,7 @@ import asyncio
 import json
 import os
 import subprocess
+import sys
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -67,8 +68,11 @@ LEGACY_LIVE_PROBE_TOOLS = {
 
 CONTROLLED_LIVE_PROBE_TOOL = "run_m3g04_controlled_live_probe_evidence"
 CONTROLLED_RUNNER_RELATIVE_PATH = "scripts/run_m3g04_controlled_live_probe.py"
-CONTROLLED_ALLOWED_SOURCES = {"TWSE_OpenAPI", "TPEx_OpenAPI", "TWSE_MIS", "Yahoo_Finance"}
+CONTROLLED_ALLOWED_SOURCES = ("TWSE_OpenAPI", "TPEx_OpenAPI", "TWSE_MIS", "Yahoo_Finance")
+CONTROLLED_ALLOWED_SOURCE_SET = set(CONTROLLED_ALLOWED_SOURCES)
 CONTROLLED_MAX_TARGETS = 5
+CONTROLLED_RUNNER_TIMEOUT_SECONDS = 60
+CONTROLLED_OUTPUT_TAIL_CHARS = 4000
 
 
 def _load_allowed_targets() -> set[str]:
@@ -145,7 +149,9 @@ def _validate_controlled_probe_arguments(arguments: dict[str, Any]) -> tuple[boo
         return False, "invalid_source_scope", "requested_sources must be a non-empty string list"
     if not isinstance(targets, list) or not targets or not all(isinstance(item, str) for item in targets):
         return False, "invalid_target_scope", "requested_targets must be a non-empty string list"
-    if any(source not in CONTROLLED_ALLOWED_SOURCES for source in sources):
+    if len(set(sources)) != len(sources):
+        return False, "duplicate_source_scope", "requested_sources must not contain duplicates"
+    if any(source not in CONTROLLED_ALLOWED_SOURCE_SET for source in sources):
         return False, "source_outside_allowlist", "requested_sources must stay within the controlled source allowlist"
 
     max_targets = arguments.get("max_targets")
@@ -153,6 +159,8 @@ def _validate_controlled_probe_arguments(arguments: dict[str, Any]) -> tuple[boo
         return False, "invalid_max_targets", f"max_targets must be an integer from 1 to {CONTROLLED_MAX_TARGETS}"
     if len(targets) > max_targets or len(targets) > CONTROLLED_MAX_TARGETS:
         return False, "target_count_exceeds_bound", "requested_targets exceeds max_targets or controlled maximum"
+    if len(set(targets)) != len(targets):
+        return False, "duplicate_target_scope", "requested_targets must not contain duplicates"
 
     allowed_targets = _load_allowed_targets()
     if not allowed_targets:
@@ -180,7 +188,7 @@ def run_controlled_probe_runner(sources: list[str], targets: list[str]) -> dict[
     with tempfile.TemporaryDirectory(prefix="mcp_controlled_probe_") as tmpdir:
         completed = subprocess.run(
             [
-                "python",
+                sys.executable,
                 str(runner_path),
                 "--targets",
                 *targets,
@@ -192,13 +200,24 @@ def run_controlled_probe_runner(sources: list[str], targets: list[str]) -> dict[
             check=False,
             capture_output=True,
             text=True,
-            timeout=60,
+            timeout=CONTROLLED_RUNNER_TIMEOUT_SECONDS,
         )
+        evidence_dir = Path(tmpdir) / "research" / "live_probe_runs" / "m3g_04"
+        summaries = sorted(evidence_dir.glob("run_summary_*.json"))
+        summary: dict[str, Any] | None = None
+        if summaries:
+            try:
+                summary = json.loads(summaries[-1].read_text(encoding="utf-8"))
+            except json.JSONDecodeError as exc:
+                summary = {"parse_error": f"Controlled runner summary is not valid JSON: {exc.msg}"}
+
         return {
             "returncode": completed.returncode,
-            "stdout_tail": completed.stdout[-4000:],
-            "stderr_tail": completed.stderr[-4000:],
+            "stdout_tail": completed.stdout[-CONTROLLED_OUTPUT_TAIL_CHARS:],
+            "stderr_tail": completed.stderr[-CONTROLLED_OUTPUT_TAIL_CHARS:],
+            "controlled_summary": summary,
             "repo_artifacts_updated": False,
+            "temporary_evidence_directory_removed": True,
         }
 
 
@@ -344,7 +363,7 @@ async def list_tools() -> list[Tool]:
                 "confirm_controlled_live_probe": {"type": "boolean"},
                 "requested_sources": {
                     "type": "array",
-                    "items": {"type": "string", "enum": sorted(CONTROLLED_ALLOWED_SOURCES)},
+                    "items": {"type": "string", "enum": list(CONTROLLED_ALLOWED_SOURCES)},
                     "minItems": 1,
                     "maxItems": len(CONTROLLED_ALLOWED_SOURCES),
                 },
