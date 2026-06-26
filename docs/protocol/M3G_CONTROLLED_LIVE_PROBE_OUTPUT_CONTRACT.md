@@ -21,7 +21,7 @@ This top-level schema summarizes the execution of a bounded live probe run.
 | `timestamp` | string | ISO-8601 timestamp of the run. |
 | `targets` | array | The specific subset of symbols probed (must adhere to M3G watchlist boundaries). |
 | `sources_requested` | array | List of source IDs attempted during the run. |
-| `results` | array | List of per-source output summary objects. |
+| `results` | object | Mapping of `source_id` to per-source output summary objects, matching the dict shape emitted by `scripts/run_m3g04_controlled_live_probe.py`. |
 
 **Example:**
 ```json
@@ -29,19 +29,18 @@ This top-level schema summarizes the execution of a bounded live probe run.
   "timestamp": "2024-05-20T10:00:00Z",
   "targets": ["2330", "0050"],
   "sources_requested": ["TWSE_MIS", "Yahoo_Finance"],
-  "results": [
-    {
-       "source_id": "Yahoo_Finance",
-       "status": "completed",
+  "results": {
+    "Yahoo_Finance": {
+       "status": "identity_mismatch",
        "contract_status": "identity_mismatch",
        "http_ok": true,
        "parse_status": "success",
        "normalization_status": "failure",
        "failed_targets": ["2330"],
        "errors": ["Structured identity mismatch"],
-       "output_file": "research/live_probe_runs/m3g_04/Yahoo_Finance_1715000000.json"
+       "output_file": "Yahoo_Finance_1715000000.json"
     }
-  ]
+  }
 }
 ```
 
@@ -64,15 +63,14 @@ This schema defines the structured health and payload data expected from each in
 **Example:**
 ```json
 {
-  "source_id": "Yahoo_Finance",
-  "status": "completed",
+  "status": "identity_mismatch",
   "contract_status": "identity_mismatch",
   "http_ok": true,
   "parse_status": "success",
   "normalization_status": "failure",
   "failed_targets": ["2330"],
   "errors": ["Structured identity mismatch for 2330"],
-  "output_file": "research/live_probe_runs/m3g_04/Yahoo_Finance_1715000000.json"
+  "output_file": "Yahoo_Finance_1715000000.json"
 }
 ```
 
@@ -89,3 +87,8 @@ All per-source normalized data must continue to populate standard delay semantic
 - `freshness_status`: Explicitly state whether the data is `eod`, `live_candidate`, or `delayed`.
 - **EOD Warning**: `TWSE_OpenAPI` and `TPEx_OpenAPI` must strictly be classified as `eod` and never marked as realtime.
 - **Stale Data Handling**: Stale outputs must be preserved as evidence but not treated as current market state in subsequent automation logic.
+
+
+## Compatibility Note
+
+Earlier draft examples described `results` as an array of summary objects with a nested `source_id`. The canonical post-M3G-09 shape is now the dict form emitted by `scripts/run_m3g04_controlled_live_probe.py` and consumed by `scripts/m3g_live_probe_to_snapshot_adapter.py`. Legacy array-shaped summaries must be normalized before adapter use or treated as malformed input.

@@ -247,3 +247,34 @@ def test_stale_source_marked_stale():
     sym = apply_freshness_policy(sym)
 
     assert sym["staleness_seconds"] == 300
+
+def test_delayed_quote_semantics_preserved_when_not_stale():
+    targets = {
+        "twse_large_caps": {
+            "symbols": {
+                "standard": ["2330"]
+            }
+        }
+    }
+    mock_inputs = {
+        "Yahoo_Finance": {
+            "2330": {
+                "name": "TSMC",
+                "last_price": 100,
+                "source_time": "2023-01-01T12:00:00+00:00",
+                "retrieved_time": "2023-01-01T12:02:00+00:00",
+                "price_semantics": "delayed_quote",
+                "freshness_status": "delayed",
+                "delay_status": "delayed",
+                "exchange": "TWSE"
+            }
+        }
+    }
+    snapshot = build_snapshot(targets, mock_inputs)
+    sym = snapshot["symbols"][0]
+
+    assert sym["source_used"] == "Yahoo_Finance"
+    assert sym["price_semantics"] == "delayed_quote"
+    assert sym["freshness_status"] == "delayed"
+    assert sym["delay_status"] == "delayed"
+    assert sym["source_authority"] == "third_party"
