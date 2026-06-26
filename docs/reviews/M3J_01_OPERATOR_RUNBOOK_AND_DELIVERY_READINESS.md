@@ -33,6 +33,19 @@ The repository is ready for local-first review, non-network validation, fixture-
 - Remaining non-production-ready areas.
 - Next recommended production-authorization ladder.
 
+
+## Bundle Alignment
+
+This PR now contains the local-first completion artifacts for:
+
+- M3H-02 TWSE MIS adapter contract alignment.
+- M3H-03 TWSE MIS static fixture matrix.
+- M3G-11 controlled refresh staging-write design.
+- M3I-01 frontend readonly caveat/staleness display design.
+- M3J-01 operator runbook and delivery readiness.
+
+The M3J runbook remains the operator-facing summary of the same boundaries: local validation is allowed, while live probes, production refresh, staging writes, generated/frontend artifact writes, full-market scans, broker/auth activation, trading signals, and realtime guarantees remain forbidden.
+
 ## Validation
 
 - `python -m compileall scripts tests`

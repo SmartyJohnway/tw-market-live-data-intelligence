@@ -203,3 +203,43 @@ def test_probe_envelope_uses_first_row_delayed_freshness_without_network(monkeyp
 
 def test_probe_envelope_uses_first_row_live_candidate_freshness_without_network(monkeypatch):
     _assert_probe_envelope_first_row_freshness(monkeypatch, "live_candidate", "not_delayed_candidate", 5)
+
+
+def _load_static_matrix_fixture():
+    import json
+    from pathlib import Path
+
+    fixture_path = Path(__file__).parents[1] / "fixtures" / "market_sources" / "twse_mis" / "normalization_v2_matrix.json"
+    with fixture_path.open("r", encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+@pytest.mark.not_network
+@pytest.mark.parametrize("case", _load_static_matrix_fixture()["cases"], ids=lambda case: case["name"])
+def test_twse_mis_normalization_v2_static_fixture_matrix(case):
+    retrieved_at = datetime.fromisoformat(_load_static_matrix_fixture()["retrieved_at_utc"].replace("Z", "+00:00"))
+
+    normalized = normalize_twse_mis_row(case["row"], retrieved_at)
+    expected = case["expect"]
+
+    assert normalized["normalization_status"] == expected["normalization_status"]
+    assert normalized["instrument_type"] == expected["instrument_type"]
+    assert normalized["freshness_status"] == expected["freshness_status"]
+    assert normalized["delay_status"] == expected["delay_status"]
+    assert normalized["normalization_version"] == "twse_mis_snapshot_v2_draft"
+    assert "unofficial_source_risk" in normalized["source_risk_flags"]
+    assert "not_official_realtime_api" in normalized["source_risk_flags"]
+
+    for flag in expected["data_quality_flags"]:
+        assert flag in normalized["data_quality_flags"]
+
+    for key, expected_value in expected.items():
+        if key in {
+            "normalization_status",
+            "instrument_type",
+            "freshness_status",
+            "delay_status",
+            "data_quality_flags",
+        }:
+            continue
+        assert normalized[key] == expected_value
