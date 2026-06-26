@@ -488,10 +488,14 @@ def validate_run_summary_shape(summary: Any) -> dict[str, Any] | None:
     targets = summary["targets"]
     if not isinstance(targets, list) or not all(isinstance(item, str) for item in targets):
         return {"field": "targets", "error": "targets must be a string list"}
+    if len(set(targets)) != len(targets):
+        return {"field": "targets", "error": "targets must not contain duplicates"}
 
     sources_requested = summary["sources_requested"]
     if not isinstance(sources_requested, list) or not all(isinstance(item, str) for item in sources_requested):
         return {"field": "sources_requested", "error": "sources_requested must be a string list"}
+    if len(set(sources_requested)) != len(sources_requested):
+        return {"field": "sources_requested", "error": "sources_requested must not contain duplicates"}
 
     results = summary["results"]
     if not isinstance(results, (dict, list)):

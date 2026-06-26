@@ -452,6 +452,68 @@ def test_evidence_readback_latest_valid_run_summary_is_returned(monkeypatch, tmp
     assert data["target_filters_applied"] == ["2330"]
 
 
+def test_evidence_readback_without_explicit_filters_reports_empty_applied_filters(monkeypatch, tmp_path):
+    evidence_dir = tmp_path / mcp_server.CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "run_summary_20260624_010000.json").write_text(json.dumps(valid_run_summary()), encoding="utf-8")
+    write_target_config(tmp_path)
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL, {})))
+
+    assert data["status"] == "ok"
+    assert data["source_filters_applied"] == []
+    assert data["target_filters_applied"] == []
+
+
+def test_evidence_readback_invalid_latest_candidate_is_not_silently_skipped(monkeypatch, tmp_path):
+    evidence_dir = tmp_path / mcp_server.CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "run_summary_20260624_020000.json").write_text("{bad json", encoding="utf-8")
+    (evidence_dir / "run_summary_20260624_010000.json").write_text(json.dumps(valid_run_summary()), encoding="utf-8")
+    write_target_config(tmp_path)
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL, {})))
+
+    assert data["status"] == "invalid_evidence_json"
+    assert data["selected_runs"] == []
+    assert data["invalid_evidence_path"] == "research/live_probe_runs/m3g_04/run_summary_20260624_020000.json"
+
+
+def test_evidence_readback_max_runs_applies_after_matching(monkeypatch, tmp_path):
+    evidence_dir = tmp_path / mcp_server.CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "run_summary_20260624_030000.json").write_text(
+        json.dumps(valid_run_summary(sources=["Yahoo_Finance"], results={"source": "yahoo"})), encoding="utf-8"
+    )
+    (evidence_dir / "run_summary_20260624_020000.json").write_text(
+        json.dumps(valid_run_summary(sources=["TWSE_OpenAPI"], results={"source": "twse-new"})), encoding="utf-8"
+    )
+    (evidence_dir / "run_summary_20260624_010000.json").write_text(
+        json.dumps(valid_run_summary(sources=["TWSE_OpenAPI"], results={"source": "twse-old"})), encoding="utf-8"
+    )
+    write_target_config(tmp_path)
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    data = decode_text_response(
+        asyncio.run(
+            mcp_server.call_tool(
+                mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL,
+                {"requested_sources": ["TWSE_OpenAPI"], "max_runs": 1},
+            )
+        )
+    )
+
+    assert data["status"] == "ok"
+    assert data["selected_runs"] == ["research/live_probe_runs/m3g_04/run_summary_20260624_020000.json"]
+    assert data["run_summaries"][0]["content"]["results"]["source"] == "twse-new"
+    assert data["scanned_runs"] == [
+        "research/live_probe_runs/m3g_04/run_summary_20260624_030000.json",
+        "research/live_probe_runs/m3g_04/run_summary_20260624_020000.json",
+    ]
+
+
 def test_evidence_readback_max_runs_bound_is_enforced():
     data = decode_text_response(
         asyncio.run(
@@ -535,6 +597,33 @@ def test_evidence_readback_missing_required_shape_returns_structured_error(monke
     assert data["invalid_evidence_path"] == "research/live_probe_runs/m3g_04/run_summary_20260624_010000.json"
     assert data["shape_error"]["error"] == "missing_required_fields"
     assert data["shape_error"]["missing_fields"] == ["targets", "sources_requested", "results"]
+
+
+def test_evidence_readback_duplicate_sources_or_targets_in_evidence_fail_closed(monkeypatch, tmp_path):
+    evidence_dir = tmp_path / mcp_server.CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "run_summary_20260624_020000.json").write_text(
+        json.dumps(valid_run_summary(targets=["2330", "2330"])), encoding="utf-8"
+    )
+    write_target_config(tmp_path)
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    duplicate_targets = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL, {})))
+
+    assert duplicate_targets["status"] == "invalid_evidence_shape"
+    assert duplicate_targets["shape_error"] == {"field": "targets", "error": "targets must not contain duplicates"}
+
+    (evidence_dir / "run_summary_20260624_030000.json").write_text(
+        json.dumps(valid_run_summary(sources=["TWSE_OpenAPI", "TWSE_OpenAPI"])), encoding="utf-8"
+    )
+
+    duplicate_sources = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL, {})))
+
+    assert duplicate_sources["status"] == "invalid_evidence_shape"
+    assert duplicate_sources["shape_error"] == {
+        "field": "sources_requested",
+        "error": "sources_requested must not contain duplicates",
+    }
 
 
 def test_evidence_readback_requested_sources_filter_nonmatching_summaries(monkeypatch, tmp_path):
