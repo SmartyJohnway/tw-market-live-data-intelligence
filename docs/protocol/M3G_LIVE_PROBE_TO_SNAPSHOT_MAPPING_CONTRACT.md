@@ -16,6 +16,8 @@ The primary entrypoint for the mapping is a run summary file:
     *   `sources_requested`: (list of strings) The sources attempted.
     *   `results`: (dict) A mapping of `source_id` to a source summary object.
 
+*   **Compatibility Note**: This contract intentionally follows the canonical post-M3G-09 dict shape emitted by `scripts/run_m3g04_controlled_live_probe.py`. Earlier array-shaped draft summaries are legacy and must be normalized before use or rejected as malformed input.
+
 *   **Per-Source Summary Fields** (inside `results[source_id]`):
     *   `status`: (string) e.g., 'success', 'failed'.
     *   `contract_status`: (string) e.g., 'normalized_pass', 'identity_mismatch', 'offline_mode'.
@@ -104,7 +106,7 @@ Each `snapshot_source_data` dictionary may include the following fields (mapped 
 *   **Identity Mismatch**: Any `identity_mismatch` must completely block the creation of successful `mock_inputs` for the affected source/target.
 *   **Failed Summaries**: Failed source summaries must be translated into source health/failed source evidence in the adapter result; they do not yield valid `mock_inputs`.
 *   **Target Preservation**: `failed_targets` and `unsupported_targets` must be explicitly preserved in the adapter output.
-*   **Semantics**: Stale, EOD, and live candidate semantics must remain transparent and must not be hidden during the mapping.
+*   **Semantics**: Stale, EOD, and live candidate semantics must remain transparent and must not be hidden during the mapping. If downstream freshness policy computes staleness beyond its threshold, `stale_quote` may conservatively override `delayed_quote`; this must remain explicit in `freshness_status`, `delay_status`, and `price_semantics` rather than being presented as realtime.
 
 ## F. Fail-Closed Rules
 

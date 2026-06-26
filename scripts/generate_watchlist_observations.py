@@ -54,6 +54,11 @@ def generate_symbol_observations(sym_obj):
             sym_obj, "eod_reference_only", "data is EOD reference", True, {"price_semantics": "eod_reference"}, "info",
             "Data is End-of-Day reference. Do not treat as live intraday data."
         ))
+    elif price_sem == "delayed_quote":
+        observations.append(build_observation(
+            sym_obj, "delayed_quote_available", "delayed quote available", True, {"price_semantics": "delayed_quote"}, "source_risk",
+            "Available quote is explicitly delayed. Do not treat as realtime."
+        ))
     elif price_sem == "live_candidate":
         observations.append(build_observation(
             sym_obj, "live_candidate_available", "live data candidate available", True, {"price_semantics": "live_candidate"}, "info",

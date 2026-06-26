@@ -1,4 +1,9 @@
+import os
+import sys
+
 import pytest
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from pathlib import Path
 from scripts.m3g_live_probe_to_snapshot_adapter import (
     build_adapter_report,
@@ -145,3 +150,28 @@ def test_snapshot_generator_integration_in_memory():
 
     eink_target = next(t for t in symbols if t["symbol"] == "8069")
     assert "Yahoo_Finance" in eink_target["source_candidates"]
+
+@pytest.mark.not_network
+def test_none_aware_fallback_preserves_zero_values():
+    envelope = {
+        "freshness_status": "live",
+        "delay_status": "realtime",
+        "staleness_seconds": 0,
+        "normalized_sample": {
+            "tse_0000.tw": {
+                "symbol": "tse_0000.tw",
+                "last_price": 0.0,
+                "regular_market_price": 99.0,
+                "source_time": "2023-10-27T10:00:00Z",
+                "retrieved_time": "2023-10-27T10:00:00Z",
+            }
+        },
+    }
+    summary_entry = {"contract_status": "normalized_pass", "http_ok": True}
+
+    from scripts.m3g_live_probe_to_snapshot_adapter import map_source_evidence_to_snapshot_input
+
+    mapped = map_source_evidence_to_snapshot_input("TWSE_MIS", envelope, summary_entry)
+
+    assert mapped["0000"]["last_price"] == 0.0
+    assert mapped["0000"]["staleness_seconds"] == 0

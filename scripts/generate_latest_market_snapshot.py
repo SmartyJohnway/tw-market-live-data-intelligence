@@ -100,7 +100,7 @@ def apply_source_priority_policy(symbol_obj, source_data):
     symbol_obj["source_used"] = selected_source
     symbol_obj["source_candidates"] = list(source_data.keys())
 
-    for key in ["name", "last_price", "change", "change_pct", "open", "high", "low", "previous_close", "volume", "source_time", "retrieved_time", "price_semantics", "exchange"]:
+    for key in ["name", "last_price", "change", "change_pct", "open", "high", "low", "previous_close", "volume", "source_time", "retrieved_time", "price_semantics", "freshness_status", "delay_status", "staleness_seconds", "exchange"]:
         if key in data:
             symbol_obj[key] = data[key]
 
@@ -114,14 +114,15 @@ def apply_source_priority_policy(symbol_obj, source_data):
         symbol_obj["official_eod_reference_available"] = True
     elif selected_source == "TWSE_MIS":
         symbol_obj["source_authority"] = "unofficial_frontend"
-        if symbol_obj.get("price_semantics") != "stale_quote":
+        if symbol_obj.get("price_semantics") in [None, "unknown"]:
             symbol_obj["price_semantics"] = "live_candidate"
-        symbol_obj["live_candidate_available"] = True
+        symbol_obj["live_candidate_available"] = symbol_obj.get("price_semantics") in ["live_candidate", "delayed_quote", "stale_quote"]
         symbol_obj["caveats"].append("unofficial_source_risk")
     elif selected_source == "Yahoo_Finance":
         symbol_obj["source_authority"] = "third_party"
-        if symbol_obj.get("price_semantics") != "stale_quote":
+        if symbol_obj.get("price_semantics") in [None, "unknown"]:
             symbol_obj["price_semantics"] = "live_candidate"
+        symbol_obj["live_candidate_available"] = symbol_obj.get("price_semantics") in ["live_candidate", "delayed_quote", "stale_quote"]
         symbol_obj["caveats"].append("third_party_coverage_caveats")
 
     return symbol_obj
@@ -147,8 +148,17 @@ def apply_freshness_policy(symbol_obj):
         symbol_obj["freshness_status"] = "eod_batch"
         symbol_obj["delay_status"] = "eod"
     elif symbol_obj["price_semantics"] in ["live_candidate", "delayed_quote", "stale_quote"]:
-        # Mark as stale if staleness is more than 300 seconds (5 minutes)
+        # Mark as stale if staleness is more than 300 seconds (5 minutes).
+        # Otherwise preserve explicit delayed semantics supplied by the source adapter.
         if symbol_obj["staleness_seconds"] is not None and symbol_obj["staleness_seconds"] > 300:
+            symbol_obj["freshness_status"] = "stale"
+            symbol_obj["delay_status"] = "stale"
+            symbol_obj["price_semantics"] = "stale_quote"
+        elif symbol_obj["price_semantics"] == "delayed_quote" or symbol_obj.get("delay_status") == "delayed":
+            symbol_obj["freshness_status"] = "delayed"
+            symbol_obj["delay_status"] = "delayed"
+            symbol_obj["price_semantics"] = "delayed_quote"
+        elif symbol_obj["price_semantics"] == "stale_quote" or symbol_obj.get("delay_status") == "stale":
             symbol_obj["freshness_status"] = "stale"
             symbol_obj["delay_status"] = "stale"
             symbol_obj["price_semantics"] = "stale_quote"

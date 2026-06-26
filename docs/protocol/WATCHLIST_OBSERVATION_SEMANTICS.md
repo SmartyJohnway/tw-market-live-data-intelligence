@@ -45,6 +45,7 @@ An observation is a descriptive statement about available data quality or value 
 | `source_unavailable` | Source is unavailable | `failed_sources` | Target depends on failed source | `failed` | Failure reason | "Required data source is currently unavailable." |
 | `eod_reference_only` | Data is EOD reference | `price_semantics` | `price_semantics` is `eod_reference` | `info` | `official_eod_reference_only` | "Data is End-of-Day reference. Do not treat as live intraday data." |
 | `live_candidate_available` | Live data candidate exists | `price_semantics` | `price_semantics` is `live_candidate` | `info` | Preserve snapshot caveats | "Live data candidate observed. Not guaranteed to be authoritative." |
+| `delayed_quote_available` | Delayed quote exists | `price_semantics` | `price_semantics` is `delayed_quote` | `source_risk` | Preserve snapshot caveats | "Available quote is explicitly delayed. Do not treat as realtime." |
 | `data_incomplete` | Missing required fields | Various | Cannot compute required metrics | `data_quality` | Preserve snapshot caveats | "Required data fields are missing or incomplete." |
 
 *Note: The near-threshold for M3D-01 is deterministically hardcoded at 0.5% (e.g., `NEAR_THRESHOLD_PCT = 0.005`). Future milestones may make this configurable if there is a concrete need.*
