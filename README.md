@@ -44,11 +44,16 @@ pytest -m "not network" -v
 - **Readonly Artifacts:** Generated artifacts in `research/generated/` and `frontend/public/` are readonly/static unless explicitly refreshed under a controlled milestone.
 
 ## Local API Usage (Optional)
-A local FastAPI server can be spun up to expose probe endpoints for local frontend or MCP integration.
+A local FastAPI server can be spun up for local readonly context access and explicitly confirmed manual probe endpoints. Probe endpoints are legacy/manual surfaces and do not refresh production artifacts or frontend state.
 
 ```bash
 uvicorn server.main:app --host 127.0.0.1 --port 8000
 ```
+
+### FastAPI Governance
+- `GET /api/governance` describes the local API boundaries.
+- `GET /api/matrix` remains a readonly static-artifact endpoint.
+- `GET /api/probe/*` endpoints require `?confirm_manual_probe=true` and return governance caveats with probe results. They are not the M3G controlled refresh bridge.
 
 ### Frontend Usage
 The frontend provides a clear UI to view the generated capability matrix and interact with the local API.
