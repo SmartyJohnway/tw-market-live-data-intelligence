@@ -1,0 +1,17 @@
+{
+  "delay_status": [
+    "not_delayed_candidate",
+    "delayed_candidate",
+    "stale",
+    "eod",
+    "unknown"
+  ],
+  "freshness_status": [
+    "live_candidate",
+    "delayed",
+    "stale",
+    "eod_batch",
+    "unknown"
+  ],
+  "note": "live_candidate is not a realtime guarantee"
+}

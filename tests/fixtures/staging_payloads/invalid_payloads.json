@@ -1,0 +1,771 @@
+[
+  {
+    "name": "missing_top_level_field",
+    "payload": {
+      "generated_at_utc": "2026-06-26T00:00:00Z",
+      "operator_confirmations": {
+        "confirm_fixture_backed": true,
+        "confirm_no_live_probe": true
+      },
+      "source_runs": [
+        {
+          "authority_level": "unofficial_frontend_endpoint",
+          "contract_status": "validation_only",
+          "data_quality_flags": [],
+          "delay_status": "stale",
+          "errors": [],
+          "freshness_status": "stale",
+          "http_status": 200,
+          "normalization_status": "normalized_fixture_preview",
+          "normalized_sample_preview": {
+            "price": 100.0,
+            "symbol": "2330"
+          },
+          "raw_evidence_ref": "local fixture only",
+          "request_method": "LOCAL_FIXTURE",
+          "retrieved_at_utc": "2026-06-26T00:00:00Z",
+          "source_id": "TWSE_MIS",
+          "source_risk_flags": [
+            "unofficial_source_risk",
+            "fragile_frontend_contract"
+          ],
+          "source_timestamp": "2026-06-25T05:00:00Z",
+          "source_type": "fixture",
+          "staleness_seconds": 86400,
+          "url_or_fixture": "tests/fixtures/staging_payloads/TWSE_MIS.json"
+        }
+      ],
+      "staging_only": true,
+      "target_universe": {
+        "mode": "bounded",
+        "scope": "watchlist",
+        "symbols": [
+          "2330"
+        ]
+      },
+      "validation": {
+        "frontend_write": false,
+        "full_market_scan": false,
+        "generated_artifact_write": false,
+        "network_authorized": false,
+        "production_write": false,
+        "trading_signal": false
+      }
+    }
+  },
+  {
+    "name": "missing_source_run_field",
+    "payload": {
+      "generated_at_utc": "2026-06-26T00:00:00Z",
+      "operator_confirmations": {
+        "confirm_fixture_backed": true,
+        "confirm_no_live_probe": true
+      },
+      "schema_version": "controlled_refresh_staging_payload.v1",
+      "source_runs": [
+        {
+          "authority_level": "unofficial_frontend_endpoint",
+          "contract_status": "validation_only",
+          "data_quality_flags": [],
+          "delay_status": "stale",
+          "errors": [],
+          "freshness_status": "stale",
+          "http_status": 200,
+          "normalization_status": "normalized_fixture_preview",
+          "normalized_sample_preview": {
+            "price": 100.0,
+            "symbol": "2330"
+          },
+          "raw_evidence_ref": "local fixture only",
+          "request_method": "LOCAL_FIXTURE",
+          "retrieved_at_utc": "2026-06-26T00:00:00Z",
+          "source_risk_flags": [
+            "unofficial_source_risk",
+            "fragile_frontend_contract"
+          ],
+          "source_timestamp": "2026-06-25T05:00:00Z",
+          "source_type": "fixture",
+          "staleness_seconds": 86400,
+          "url_or_fixture": "tests/fixtures/staging_payloads/TWSE_MIS.json"
+        }
+      ],
+      "staging_only": true,
+      "target_universe": {
+        "mode": "bounded",
+        "scope": "watchlist",
+        "symbols": [
+          "2330"
+        ]
+      },
+      "validation": {
+        "frontend_write": false,
+        "full_market_scan": false,
+        "generated_artifact_write": false,
+        "network_authorized": false,
+        "production_write": false,
+        "trading_signal": false
+      }
+    }
+  },
+  {
+    "name": "source_id_not_allowlisted",
+    "payload": {
+      "generated_at_utc": "2026-06-26T00:00:00Z",
+      "operator_confirmations": {
+        "confirm_fixture_backed": true,
+        "confirm_no_live_probe": true
+      },
+      "schema_version": "controlled_refresh_staging_payload.v1",
+      "source_runs": [
+        {
+          "authority_level": "unofficial_frontend_endpoint",
+          "contract_status": "validation_only",
+          "data_quality_flags": [],
+          "delay_status": "stale",
+          "errors": [],
+          "freshness_status": "stale",
+          "http_status": 200,
+          "normalization_status": "normalized_fixture_preview",
+          "normalized_sample_preview": {
+            "price": 100.0,
+            "symbol": "2330"
+          },
+          "raw_evidence_ref": "local fixture only",
+          "request_method": "LOCAL_FIXTURE",
+          "retrieved_at_utc": "2026-06-26T00:00:00Z",
+          "source_id": "FinMind",
+          "source_risk_flags": [
+            "unofficial_source_risk",
+            "fragile_frontend_contract"
+          ],
+          "source_timestamp": "2026-06-25T05:00:00Z",
+          "source_type": "fixture",
+          "staleness_seconds": 86400,
+          "url_or_fixture": "tests/fixtures/staging_payloads/TWSE_MIS.json"
+        }
+      ],
+      "staging_only": true,
+      "target_universe": {
+        "mode": "bounded",
+        "scope": "watchlist",
+        "symbols": [
+          "2330"
+        ]
+      },
+      "validation": {
+        "frontend_write": false,
+        "full_market_scan": false,
+        "generated_artifact_write": false,
+        "network_authorized": false,
+        "production_write": false,
+        "trading_signal": false
+      }
+    }
+  },
+  {
+    "name": "production_write_true",
+    "payload": {
+      "generated_at_utc": "2026-06-26T00:00:00Z",
+      "operator_confirmations": {
+        "confirm_fixture_backed": true,
+        "confirm_no_live_probe": true
+      },
+      "schema_version": "controlled_refresh_staging_payload.v1",
+      "source_runs": [
+        {
+          "authority_level": "unofficial_frontend_endpoint",
+          "contract_status": "validation_only",
+          "data_quality_flags": [],
+          "delay_status": "stale",
+          "errors": [],
+          "freshness_status": "stale",
+          "http_status": 200,
+          "normalization_status": "normalized_fixture_preview",
+          "normalized_sample_preview": {
+            "price": 100.0,
+            "symbol": "2330"
+          },
+          "raw_evidence_ref": "local fixture only",
+          "request_method": "LOCAL_FIXTURE",
+          "retrieved_at_utc": "2026-06-26T00:00:00Z",
+          "source_id": "TWSE_MIS",
+          "source_risk_flags": [
+            "unofficial_source_risk",
+            "fragile_frontend_contract"
+          ],
+          "source_timestamp": "2026-06-25T05:00:00Z",
+          "source_type": "fixture",
+          "staleness_seconds": 86400,
+          "url_or_fixture": "tests/fixtures/staging_payloads/TWSE_MIS.json"
+        }
+      ],
+      "staging_only": true,
+      "target_universe": {
+        "mode": "bounded",
+        "scope": "watchlist",
+        "symbols": [
+          "2330"
+        ]
+      },
+      "validation": {
+        "frontend_write": false,
+        "full_market_scan": false,
+        "generated_artifact_write": false,
+        "network_authorized": false,
+        "production_write": true,
+        "trading_signal": false
+      }
+    }
+  },
+  {
+    "name": "frontend_write_true",
+    "payload": {
+      "generated_at_utc": "2026-06-26T00:00:00Z",
+      "operator_confirmations": {
+        "confirm_fixture_backed": true,
+        "confirm_no_live_probe": true
+      },
+      "schema_version": "controlled_refresh_staging_payload.v1",
+      "source_runs": [
+        {
+          "authority_level": "unofficial_frontend_endpoint",
+          "contract_status": "validation_only",
+          "data_quality_flags": [],
+          "delay_status": "stale",
+          "errors": [],
+          "freshness_status": "stale",
+          "http_status": 200,
+          "normalization_status": "normalized_fixture_preview",
+          "normalized_sample_preview": {
+            "price": 100.0,
+            "symbol": "2330"
+          },
+          "raw_evidence_ref": "local fixture only",
+          "request_method": "LOCAL_FIXTURE",
+          "retrieved_at_utc": "2026-06-26T00:00:00Z",
+          "source_id": "TWSE_MIS",
+          "source_risk_flags": [
+            "unofficial_source_risk",
+            "fragile_frontend_contract"
+          ],
+          "source_timestamp": "2026-06-25T05:00:00Z",
+          "source_type": "fixture",
+          "staleness_seconds": 86400,
+          "url_or_fixture": "tests/fixtures/staging_payloads/TWSE_MIS.json"
+        }
+      ],
+      "staging_only": true,
+      "target_universe": {
+        "mode": "bounded",
+        "scope": "watchlist",
+        "symbols": [
+          "2330"
+        ]
+      },
+      "validation": {
+        "frontend_write": true,
+        "full_market_scan": false,
+        "generated_artifact_write": false,
+        "network_authorized": false,
+        "production_write": false,
+        "trading_signal": false
+      }
+    }
+  },
+  {
+    "name": "generated_artifact_write_true",
+    "payload": {
+      "generated_at_utc": "2026-06-26T00:00:00Z",
+      "operator_confirmations": {
+        "confirm_fixture_backed": true,
+        "confirm_no_live_probe": true
+      },
+      "schema_version": "controlled_refresh_staging_payload.v1",
+      "source_runs": [
+        {
+          "authority_level": "unofficial_frontend_endpoint",
+          "contract_status": "validation_only",
+          "data_quality_flags": [],
+          "delay_status": "stale",
+          "errors": [],
+          "freshness_status": "stale",
+          "http_status": 200,
+          "normalization_status": "normalized_fixture_preview",
+          "normalized_sample_preview": {
+            "price": 100.0,
+            "symbol": "2330"
+          },
+          "raw_evidence_ref": "local fixture only",
+          "request_method": "LOCAL_FIXTURE",
+          "retrieved_at_utc": "2026-06-26T00:00:00Z",
+          "source_id": "TWSE_MIS",
+          "source_risk_flags": [
+            "unofficial_source_risk",
+            "fragile_frontend_contract"
+          ],
+          "source_timestamp": "2026-06-25T05:00:00Z",
+          "source_type": "fixture",
+          "staleness_seconds": 86400,
+          "url_or_fixture": "tests/fixtures/staging_payloads/TWSE_MIS.json"
+        }
+      ],
+      "staging_only": true,
+      "target_universe": {
+        "mode": "bounded",
+        "scope": "watchlist",
+        "symbols": [
+          "2330"
+        ]
+      },
+      "validation": {
+        "frontend_write": false,
+        "full_market_scan": false,
+        "generated_artifact_write": true,
+        "network_authorized": false,
+        "production_write": false,
+        "trading_signal": false
+      }
+    }
+  },
+  {
+    "name": "full_market_scan_true",
+    "payload": {
+      "generated_at_utc": "2026-06-26T00:00:00Z",
+      "operator_confirmations": {
+        "confirm_fixture_backed": true,
+        "confirm_no_live_probe": true
+      },
+      "schema_version": "controlled_refresh_staging_payload.v1",
+      "source_runs": [
+        {
+          "authority_level": "unofficial_frontend_endpoint",
+          "contract_status": "validation_only",
+          "data_quality_flags": [],
+          "delay_status": "stale",
+          "errors": [],
+          "freshness_status": "stale",
+          "http_status": 200,
+          "normalization_status": "normalized_fixture_preview",
+          "normalized_sample_preview": {
+            "price": 100.0,
+            "symbol": "2330"
+          },
+          "raw_evidence_ref": "local fixture only",
+          "request_method": "LOCAL_FIXTURE",
+          "retrieved_at_utc": "2026-06-26T00:00:00Z",
+          "source_id": "TWSE_MIS",
+          "source_risk_flags": [
+            "unofficial_source_risk",
+            "fragile_frontend_contract"
+          ],
+          "source_timestamp": "2026-06-25T05:00:00Z",
+          "source_type": "fixture",
+          "staleness_seconds": 86400,
+          "url_or_fixture": "tests/fixtures/staging_payloads/TWSE_MIS.json"
+        }
+      ],
+      "staging_only": true,
+      "target_universe": {
+        "mode": "bounded",
+        "scope": "watchlist",
+        "symbols": [
+          "2330"
+        ]
+      },
+      "validation": {
+        "frontend_write": false,
+        "full_market_scan": true,
+        "generated_artifact_write": false,
+        "network_authorized": false,
+        "production_write": false,
+        "trading_signal": false
+      }
+    }
+  },
+  {
+    "name": "trading_signal_true",
+    "payload": {
+      "generated_at_utc": "2026-06-26T00:00:00Z",
+      "operator_confirmations": {
+        "confirm_fixture_backed": true,
+        "confirm_no_live_probe": true
+      },
+      "schema_version": "controlled_refresh_staging_payload.v1",
+      "source_runs": [
+        {
+          "authority_level": "unofficial_frontend_endpoint",
+          "contract_status": "validation_only",
+          "data_quality_flags": [],
+          "delay_status": "stale",
+          "errors": [],
+          "freshness_status": "stale",
+          "http_status": 200,
+          "normalization_status": "normalized_fixture_preview",
+          "normalized_sample_preview": {
+            "price": 100.0,
+            "symbol": "2330"
+          },
+          "raw_evidence_ref": "local fixture only",
+          "request_method": "LOCAL_FIXTURE",
+          "retrieved_at_utc": "2026-06-26T00:00:00Z",
+          "source_id": "TWSE_MIS",
+          "source_risk_flags": [
+            "unofficial_source_risk",
+            "fragile_frontend_contract"
+          ],
+          "source_timestamp": "2026-06-25T05:00:00Z",
+          "source_type": "fixture",
+          "staleness_seconds": 86400,
+          "url_or_fixture": "tests/fixtures/staging_payloads/TWSE_MIS.json"
+        }
+      ],
+      "staging_only": true,
+      "target_universe": {
+        "mode": "bounded",
+        "scope": "watchlist",
+        "symbols": [
+          "2330"
+        ]
+      },
+      "validation": {
+        "frontend_write": false,
+        "full_market_scan": false,
+        "generated_artifact_write": false,
+        "network_authorized": false,
+        "production_write": false,
+        "trading_signal": true
+      }
+    }
+  },
+  {
+    "name": "target_universe_mode_Full_Market",
+    "payload": {
+      "generated_at_utc": "2026-06-26T00:00:00Z",
+      "operator_confirmations": {
+        "confirm_fixture_backed": true,
+        "confirm_no_live_probe": true
+      },
+      "schema_version": "controlled_refresh_staging_payload.v1",
+      "source_runs": [
+        {
+          "authority_level": "unofficial_frontend_endpoint",
+          "contract_status": "validation_only",
+          "data_quality_flags": [],
+          "delay_status": "stale",
+          "errors": [],
+          "freshness_status": "stale",
+          "http_status": 200,
+          "normalization_status": "normalized_fixture_preview",
+          "normalized_sample_preview": {
+            "price": 100.0,
+            "symbol": "2330"
+          },
+          "raw_evidence_ref": "local fixture only",
+          "request_method": "LOCAL_FIXTURE",
+          "retrieved_at_utc": "2026-06-26T00:00:00Z",
+          "source_id": "TWSE_MIS",
+          "source_risk_flags": [
+            "unofficial_source_risk",
+            "fragile_frontend_contract"
+          ],
+          "source_timestamp": "2026-06-25T05:00:00Z",
+          "source_type": "fixture",
+          "staleness_seconds": 86400,
+          "url_or_fixture": "tests/fixtures/staging_payloads/TWSE_MIS.json"
+        }
+      ],
+      "staging_only": true,
+      "target_universe": {
+        "mode": "Full_Market",
+        "scope": "watchlist",
+        "symbols": [
+          "2330"
+        ]
+      },
+      "validation": {
+        "frontend_write": false,
+        "full_market_scan": false,
+        "generated_artifact_write": false,
+        "network_authorized": false,
+        "production_write": false,
+        "trading_signal": false
+      }
+    }
+  },
+  {
+    "name": "nested_buy_sell_hold",
+    "payload": {
+      "generated_at_utc": "2026-06-26T00:00:00Z",
+      "operator_confirmations": {
+        "confirm_fixture_backed": true,
+        "confirm_no_live_probe": true
+      },
+      "schema_version": "controlled_refresh_staging_payload.v1",
+      "source_runs": [
+        {
+          "authority_level": "unofficial_frontend_endpoint",
+          "contract_status": "validation_only",
+          "data_quality_flags": [],
+          "delay_status": "stale",
+          "errors": [],
+          "freshness_status": "stale",
+          "http_status": 200,
+          "normalization_status": "normalized_fixture_preview",
+          "normalized_sample_preview": {
+            "buy": true,
+            "price": 100.0,
+            "symbol": "2330"
+          },
+          "raw_evidence_ref": "local fixture only",
+          "request_method": "LOCAL_FIXTURE",
+          "retrieved_at_utc": "2026-06-26T00:00:00Z",
+          "source_id": "TWSE_MIS",
+          "source_risk_flags": [
+            "unofficial_source_risk",
+            "fragile_frontend_contract"
+          ],
+          "source_timestamp": "2026-06-25T05:00:00Z",
+          "source_type": "fixture",
+          "staleness_seconds": 86400,
+          "url_or_fixture": "tests/fixtures/staging_payloads/TWSE_MIS.json"
+        }
+      ],
+      "staging_only": true,
+      "target_universe": {
+        "mode": "bounded",
+        "scope": "watchlist",
+        "symbols": [
+          "2330"
+        ]
+      },
+      "validation": {
+        "frontend_write": false,
+        "full_market_scan": false,
+        "generated_artifact_write": false,
+        "network_authorized": false,
+        "production_write": false,
+        "trading_signal": false
+      }
+    }
+  },
+  {
+    "name": "realtime_guaranteed_true",
+    "payload": {
+      "generated_at_utc": "2026-06-26T00:00:00Z",
+      "operator_confirmations": {
+        "confirm_fixture_backed": true,
+        "confirm_no_live_probe": true
+      },
+      "schema_version": "controlled_refresh_staging_payload.v1",
+      "source_runs": [
+        {
+          "authority_level": "unofficial_frontend_endpoint",
+          "contract_status": "validation_only",
+          "data_quality_flags": [],
+          "delay_status": "stale",
+          "errors": [],
+          "freshness_status": "stale",
+          "http_status": 200,
+          "normalization_status": "normalized_fixture_preview",
+          "normalized_sample_preview": {
+            "price": 100.0,
+            "realtime_guaranteed": true,
+            "symbol": "2330"
+          },
+          "raw_evidence_ref": "local fixture only",
+          "request_method": "LOCAL_FIXTURE",
+          "retrieved_at_utc": "2026-06-26T00:00:00Z",
+          "source_id": "TWSE_MIS",
+          "source_risk_flags": [
+            "unofficial_source_risk",
+            "fragile_frontend_contract"
+          ],
+          "source_timestamp": "2026-06-25T05:00:00Z",
+          "source_type": "fixture",
+          "staleness_seconds": 86400,
+          "url_or_fixture": "tests/fixtures/staging_payloads/TWSE_MIS.json"
+        }
+      ],
+      "staging_only": true,
+      "target_universe": {
+        "mode": "bounded",
+        "scope": "watchlist",
+        "symbols": [
+          "2330"
+        ]
+      },
+      "validation": {
+        "frontend_write": false,
+        "full_market_scan": false,
+        "generated_artifact_write": false,
+        "network_authorized": false,
+        "production_write": false,
+        "trading_signal": false
+      }
+    }
+  },
+  {
+    "name": "twse_mis_missing_unofficial_risk",
+    "payload": {
+      "generated_at_utc": "2026-06-26T00:00:00Z",
+      "operator_confirmations": {
+        "confirm_fixture_backed": true,
+        "confirm_no_live_probe": true
+      },
+      "schema_version": "controlled_refresh_staging_payload.v1",
+      "source_runs": [
+        {
+          "authority_level": "unofficial_frontend_endpoint",
+          "contract_status": "validation_only",
+          "data_quality_flags": [],
+          "delay_status": "stale",
+          "errors": [],
+          "freshness_status": "stale",
+          "http_status": 200,
+          "normalization_status": "normalized_fixture_preview",
+          "normalized_sample_preview": {
+            "price": 100.0,
+            "symbol": "2330"
+          },
+          "raw_evidence_ref": "local fixture only",
+          "request_method": "LOCAL_FIXTURE",
+          "retrieved_at_utc": "2026-06-26T00:00:00Z",
+          "source_id": "TWSE_MIS",
+          "source_risk_flags": [
+            "fragile_frontend_contract"
+          ],
+          "source_timestamp": "2026-06-25T05:00:00Z",
+          "source_type": "fixture",
+          "staleness_seconds": 86400,
+          "url_or_fixture": "tests/fixtures/staging_payloads/TWSE_MIS.json"
+        }
+      ],
+      "staging_only": true,
+      "target_universe": {
+        "mode": "bounded",
+        "scope": "watchlist",
+        "symbols": [
+          "2330"
+        ]
+      },
+      "validation": {
+        "frontend_write": false,
+        "full_market_scan": false,
+        "generated_artifact_write": false,
+        "network_authorized": false,
+        "production_write": false,
+        "trading_signal": false
+      }
+    }
+  },
+  {
+    "name": "invalid_freshness_enum",
+    "payload": {
+      "generated_at_utc": "2026-06-26T00:00:00Z",
+      "operator_confirmations": {
+        "confirm_fixture_backed": true,
+        "confirm_no_live_probe": true
+      },
+      "schema_version": "controlled_refresh_staging_payload.v1",
+      "source_runs": [
+        {
+          "authority_level": "unofficial_frontend_endpoint",
+          "contract_status": "validation_only",
+          "data_quality_flags": [],
+          "delay_status": "stale",
+          "errors": [],
+          "freshness_status": "fresh",
+          "http_status": 200,
+          "normalization_status": "normalized_fixture_preview",
+          "normalized_sample_preview": {
+            "price": 100.0,
+            "symbol": "2330"
+          },
+          "raw_evidence_ref": "local fixture only",
+          "request_method": "LOCAL_FIXTURE",
+          "retrieved_at_utc": "2026-06-26T00:00:00Z",
+          "source_id": "TWSE_MIS",
+          "source_risk_flags": [
+            "unofficial_source_risk",
+            "fragile_frontend_contract"
+          ],
+          "source_timestamp": "2026-06-25T05:00:00Z",
+          "source_type": "fixture",
+          "staleness_seconds": 86400,
+          "url_or_fixture": "tests/fixtures/staging_payloads/TWSE_MIS.json"
+        }
+      ],
+      "staging_only": true,
+      "target_universe": {
+        "mode": "bounded",
+        "scope": "watchlist",
+        "symbols": [
+          "2330"
+        ]
+      },
+      "validation": {
+        "frontend_write": false,
+        "full_market_scan": false,
+        "generated_artifact_write": false,
+        "network_authorized": false,
+        "production_write": false,
+        "trading_signal": false
+      }
+    }
+  },
+  {
+    "name": "invalid_delay_enum",
+    "payload": {
+      "generated_at_utc": "2026-06-26T00:00:00Z",
+      "operator_confirmations": {
+        "confirm_fixture_backed": true,
+        "confirm_no_live_probe": true
+      },
+      "schema_version": "controlled_refresh_staging_payload.v1",
+      "source_runs": [
+        {
+          "authority_level": "unofficial_frontend_endpoint",
+          "contract_status": "validation_only",
+          "data_quality_flags": [],
+          "delay_status": "now",
+          "errors": [],
+          "freshness_status": "stale",
+          "http_status": 200,
+          "normalization_status": "normalized_fixture_preview",
+          "normalized_sample_preview": {
+            "price": 100.0,
+            "symbol": "2330"
+          },
+          "raw_evidence_ref": "local fixture only",
+          "request_method": "LOCAL_FIXTURE",
+          "retrieved_at_utc": "2026-06-26T00:00:00Z",
+          "source_id": "TWSE_MIS",
+          "source_risk_flags": [
+            "unofficial_source_risk",
+            "fragile_frontend_contract"
+          ],
+          "source_timestamp": "2026-06-25T05:00:00Z",
+          "source_type": "fixture",
+          "staleness_seconds": 86400,
+          "url_or_fixture": "tests/fixtures/staging_payloads/TWSE_MIS.json"
+        }
+      ],
+      "staging_only": true,
+      "target_universe": {
+        "mode": "bounded",
+        "scope": "watchlist",
+        "symbols": [
+          "2330"
+        ]
+      },
+      "validation": {
+        "frontend_write": false,
+        "full_market_scan": false,
+        "generated_artifact_write": false,
+        "network_authorized": false,
+        "production_write": false,
+        "trading_signal": false
+      }
+    }
+  }
+]

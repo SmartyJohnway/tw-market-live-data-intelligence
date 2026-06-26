@@ -91,3 +91,7 @@ Implemented in check-only default mode. Optional reports may be written only to 
 3. Authorize staging-only write from fresh evidence.
 4. Review package caveats manually.
 5. Separately authorize frontend/public publication only after production-readiness blockers are resolved.
+
+## M3MNOP Bundle 03
+
+Adds non-network CI, fixture/golden corpus, operator manuals, docs index, release readiness, and a local readonly frontend preview outside frontend/public. No live probes, no production refresh, no generated artifacts, no frontend public publication, no trading signals, and no realtime guarantee.

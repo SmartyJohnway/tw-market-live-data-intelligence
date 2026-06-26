@@ -186,3 +186,6 @@ http://localhost:8000/frontend/public/market-context.html
 
 ## Current Status
 `deliverable_mvp_completed_with_caveats` - The MVP framework is operational, heavily documented, tested offline, and generates dynamic evidence-based reports natively.
+## M3MNOP local-first delivery bundle
+
+Safe commands: `python -m compileall scripts tests`, `pytest -m "not network"`, `python scripts/run_local_delivery_acceptance.py --check-only`, and `python scripts/run_ci_delivery_acceptance.py --check-only`. See [docs index](docs/INDEX.md), [delivery index](docs/DELIVERY_INDEX.md), [release readiness](docs/RELEASE_READINESS.md), and manuals under `docs/manuals/`. Boundaries remain: no live probes, no production refresh, no frontend/public publication, no trading signals, and no realtime guarantee.
