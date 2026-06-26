@@ -64,8 +64,10 @@ This script may run broad network probes and write generated/report artifacts. I
 To run the legacy automated probe framework against all defined targets in `config/market_targets.json` and generate capability reports:
 
 ```bash
-python scripts/run_all_probes.py
+I_UNDERSTAND_RUN_ALL_PROBES_IS_LEGACY=1 python scripts/run_all_probes.py
 ```
+Without the explicit `I_UNDERSTAND_RUN_ALL_PROBES_IS_LEGACY=1` acknowledgement, the script exits before running probes.
+
 *This will generate rich Markdown documentation in `docs/` and `research/`, and JSON matrix data in `frontend/public/`.*
 
 ## Safety Notes & Security Posture

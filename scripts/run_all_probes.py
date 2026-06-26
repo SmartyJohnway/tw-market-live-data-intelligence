@@ -2,12 +2,20 @@ import json
 import os
 from datetime import datetime, timezone
 
-from probe_twse_openapi import probe as probe_twse
-from probe_tpex_openapi import probe as probe_tpex
-from probe_yahoo import probe as probe_yahoo
-from probe_twse_mis import probe as probe_mis
-from probe_finmind import probe as probe_finmind
-from probe_fugle_fubon import probe as probe_fugle_fubon
+LEGACY_ACK_ENV_VAR = "I_UNDERSTAND_RUN_ALL_PROBES_IS_LEGACY"
+LEGACY_ACK_VALUE = "1"
+
+
+def legacy_run_all_probes_acknowledged() -> bool:
+    return os.environ.get(LEGACY_ACK_ENV_VAR) == LEGACY_ACK_VALUE
+
+
+def legacy_gate_message() -> str:
+    return (
+        "scripts/run_all_probes.py is a legacy/manual network runner and is not the M3G controlled refresh path. "
+        f"Set {LEGACY_ACK_ENV_VAR}={LEGACY_ACK_VALUE} only when a future milestone explicitly authorizes this legacy run."
+    )
+
 
 def get_abs_path(relative_path):
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -168,7 +176,14 @@ def generate_reports(results):
         for s in ai_context['usable_sources']:
              f.write(f"- **{s['source']}** ({s['source_type']}): `{s['contract_status']}`\n")
 
-if __name__ == "__main__":
+def run_legacy_probe_framework():
+    from probe_twse_openapi import probe as probe_twse
+    from probe_tpex_openapi import probe as probe_tpex
+    from probe_yahoo import probe as probe_yahoo
+    from probe_twse_mis import probe as probe_mis
+    from probe_finmind import probe as probe_finmind
+    from probe_fugle_fubon import probe as probe_fugle_fubon
+
     targets = load_targets()
 
     yahoo_symbols = extract_symbols(targets, "yahoo")
@@ -214,3 +229,11 @@ if __name__ == "__main__":
     print("Generating reports...")
     generate_reports(results)
     print("Done.")
+
+
+if __name__ == "__main__":
+    if not legacy_run_all_probes_acknowledged():
+        print(legacy_gate_message())
+        raise SystemExit(2)
+
+    run_legacy_probe_framework()
