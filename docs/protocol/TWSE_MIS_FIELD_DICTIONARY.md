@@ -1,76 +1,52 @@
 # TWSE MIS Field Dictionary
 
-This dictionary documents the observed response fields from the TWSE MIS endpoint (`getStockInfo.jsp`).
-**Important:** This dictionary is an *observed contract* based on sample responses (both intraday and post-market), not an official TWSE API specification.
+This dictionary documents fields observed in repository fixtures and probe code for TWSE MIS `msgArray` rows. It is an observed contract only. TWSE MIS is unofficial / fragile, has no official realtime guarantee, is not production current market state by itself, and must not be used as a trading signal.
 
-## Core Asset Identity
-| Raw Field | Observed Meaning | Data Type | Example | Normalized Candidate | Confidence | Caveats |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `c` | Symbol Code | String | `"2330"` | `symbol` | confirmed | The core ticker symbol. |
-| `n` | Symbol Name (Short) | String | `"台積電"` | `name` | confirmed | Typically the Chinese short name. |
-| `ex` | Exchange Identifier | String | `"tse"`, `"otc"` | `exchange` | confirmed | Distinguishes TWSE (`tse`) from TPEx (`otc`). |
-| `ch` | Quote Channel Suffix | String | `"2330.tw"` | `channel_suffix` | confirmed | The suffix used for the channel. The request `ex_ch` parameter is constructed as `ex` + "_" + `ch` (e.g., `"tse_2330.tw"`). |
+## Raw field to normalized mapping
 
-## Price & Trade Data
-| Raw Field | Observed Meaning | Data Type | Example | Normalized Candidate | Confidence | Caveats |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `z` | Last Trade Price | String | `"1050.00"`, `"-"` | `last_price` | observed | Intraday, this may be `"-"` if no trade has occurred or during pre-market/matching. Post-market, it is typically populated with the final closing price. |
-| `y` | Previous Close Price | String | `"1040.00"` | `previous_close` | observed | Usually populated consistently across sessions. |
-| `o` | Open Price | String | `"1045.00"`, `"-"` | `open` | observed | Can be `"-"` before the first trade. |
-| `h` | High Price | String | `"1055.00"`, `"-"` | `high` | observed | Can be `"-"` before the first trade. |
-| `l` | Low Price | String | `"1040.00"`, `"-"` | `low` | observed | Can be `"-"` before the first trade. |
-| `v` | Cumulative Volume | String | `"15000"` | `cumulative_volume` | observed | Total volume traded so far in the session. |
-| `tv` | Current/Last Trade Volume | String | `"5"`, `"-"` | `current_volume` | observed | Intraday, this may be `"-"`. Often populated post-market. |
+| Raw field | Normalized field | Observed semantics | Caveats |
+| --- | --- | --- | --- |
+| `c` | `symbol` | Symbol code, e.g. `2330`, `0050`, `t00`. | Critical identity. |
+| `ex` | `exchange` | Observed exchange key such as `tse` or `otc`. | Critical identity; exact authority is frontend-specific. |
+| `n` | `name` | Display name. | Optional in partial rows. |
+| `ch` | `channel_suffix` / `channel` | Channel suffix such as `2330.tw`. | Request channel construction is frontend-specific. |
+| `z` | `price` / `last_price` | Observed price-like last/current quote field. | May be `-`; price semantics are not official realtime. |
+| `y` | `previous_close` | Previous close-like field. | Semantics observed, not official. |
+| `o` | `open` | Open price-like field. | May be placeholder before/without trades. |
+| `h` | `high` | High price-like field. | May be placeholder. |
+| `l` | `low` | Low price-like field. | May be placeholder. |
+| `v` | `volume` / `cumulative_volume` | Observed cumulative volume-like field. | Unit semantics are `unknown_or_unverified_semantics`. |
+| `tv` | `current_volume` | Observed current/last trade volume-like field. | May be placeholder. |
+| `b` | `bid_ladder[].price` | Underscore-delimited bid prices. | Missing/`-` for index rows; zero placeholders are invalid levels. |
+| `g` | `bid_ladder[].volume` | Underscore-delimited bid volumes. | Paired by level with `b`. |
+| `a` | `ask_ladder[].price` | Underscore-delimited ask prices. | Missing/`-` for index rows; zero placeholders are invalid levels. |
+| `f` | `ask_ladder[].volume` | Underscore-delimited ask volumes. | Paired by level with `a`. |
+| `u` | `limit_up` | Limit-up-like field. | Missing for some rows; index semantics not applied. |
+| `w` | `limit_down` | Limit-down-like field. | Missing for some rows; index semantics not applied. |
+| `d` | `source_date` | Source/trading date string, observed as `YYYYMMDD`. | Combine cautiously with `t`. |
+| `t` | `source_time` | Source row time string, observed as `HH:MM:SS`. | Can be unavailable; not retrieval time. |
+| `tlong` | `source_timestamp` | Epoch milliseconds-like source timestamp. | Preferred for staleness when valid. |
+| `%`, `ot` | `snapshot_time`, `alternate_session_time` | Additional timing/session fields. | `unknown_or_unverified_semantics`. |
+| `queryTime` | telemetry only | Top-level server query telemetry. | Not exchange/source row time. |
+| `userDelay` | telemetry only | Top-level delay-like value. | `unknown_or_unverified_semantics`. |
+| `cachedAlive` | telemetry only | Top-level cache telemetry. | `unknown_or_unverified_semantics`. |
 
-## Bid/Ask Data (Stocks & ETFs primarily)
-*Note: Indices like `tse_t00.tw` typically do not include bid/ask fields.*
+## Price and volume handling
 
-| Raw Field | Observed Meaning | Data Type | Example | Normalized Candidate | Confidence | Caveats |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `a` | Ask Price List | String | `"1055.00_1056.00_1057.00_1058.00_1059.00_"` | `ask_prices` | observed | Underscore-separated string of the top 5 ask levels. Often ends with a trailing underscore. |
-| `f` | Ask Volume List | String | `"100_200_300_400_500_"` | `ask_volumes` | observed | Underscore-separated string of volumes corresponding to the ask prices (`a`). |
-| `b` | Bid Price List | String | `"1050.00_1049.00_1048.00_1047.00_1046.00_"` | `bid_prices` | observed | Underscore-separated string of the top 5 bid levels. |
-| `g` | Bid Volume List | String | `"150_250_350_450_550_"` | `bid_volumes` | observed | Underscore-separated string of volumes corresponding to the bid prices (`b`). |
+Numeric fields parse commas, integer-like strings, and float-like strings. Missing placeholders (`null`, empty string, `-`, `--`, `N/A`) normalize to `null`. Malformed numeric values normalize to `null` and add `malformed_<field>` to `data_quality_flags`. Do not substitute yesterday's close or any fallback as current price.
 
-## Market Limits
-| Raw Field | Observed Meaning | Data Type | Example | Normalized Candidate | Confidence | Caveats |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `u` | Limit Up Price | String | `"1140.00"` | `limit_up` | observed | The maximum allowed price for the session (typically +10%). |
-| `w` | Limit Down Price | String | `"936.00"` | `limit_down` | observed | The minimum allowed price for the session (typically -10%). |
+## Bid/ask ladder handling
 
-## Timestamps & Telemetry
-| Raw Field | Observed Meaning | Data Type | Example | Normalized Candidate | Confidence | Caveats |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `d` | Trading Date | String | `"20241025"` | `source_date` | observed | Format is YYYYMMDD. |
-| `t` | Source Time | String | `"13:30:00"` | `source_time` | observed | Intraday, this is close to query time. Post-market, it may reflect regular session time. |
-| `tlong` | Source Time (MS) | String (Numeric) | `"1729834200000"` | `source_time_ms` | observed | Epoch timestamp in milliseconds. Used to derive staleness. |
-| `queryTime` | Server Query Time | JSON Object | `{"sysTime": "13:30:05", ...}` | N/A | candidate | Internal telemetry indicating when the server processed the request. |
-| `userDelay` | System User Delay | String/Int | `"0"` | N/A | unknown | Internal telemetry, meaning unclear. |
-| `cachedAlive` | Cache Lifetime | String/Int | `"30000"` | N/A | candidate | Internal telemetry, likely related to server-side cache duration. |
+Bid ladder uses `b` prices with `g` volumes. Ask ladder uses `a` prices with `f` volumes. Values are underscore-delimited, often with a trailing underscore. Mismatched lengths add `mismatched_<side>_ladder_length`; malformed tokens add level flags; missing stock-like ladders add `missing_bid_ask`. Index rows may legitimately lack bid/ask fields.
 
-## Optional & Internal Fields (Intraday & Post-Market)
-| Raw Field | Observed Meaning | Data Type | Example | Normalized Candidate | Confidence | Caveats |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `@` / `key` | Feed/System Routing | String | Varied | N/A | unknown_or_internal | Internal routing or feed keys. |
-| `^` | Unknown Metric | String | Varied | N/A | unknown | Usage unclear. |
-| `%` | Session/Timing Metric | String | `"13:30:00"`, `"-"` | N/A | candidate | Intraday, aligns closely with `t`. Post-market, may reflect post-market or alternate-session timing. |
-| `nf` / `it` / `i` | Company/Listing Info | String | Varied | N/A | candidate | Likely related to listing references or identifiers. |
-| `nu` | ETF Reference/NAV URL | String | URL | N/A | observed | ETF-specific reference or NAV-related URL. |
-| `s` / `ps` / `pz` | Trading Phase/State | String | `"-"` | N/A | candidate | Intraday, these may be `"-"`. Post-market, they often populate, likely representing matching phases or pricing state. |
-| `pid` / `#` | Feed Sequence Info | String | Varied | N/A | unknown_or_internal | May change across market phases. Treat as internal feed/channel/sequence fields, not asset identity. |
-| `bp` / `mt` / `m%` / `p` / `ts` | Pricing/Calculated | String | Varied | N/A | candidate | Likely relate to mid-prices, matching calculations, or tick states. |
-| `oa` / `ob` / `oz` / `ov` / `ot` / `fv` | Post-market Metrics | String | Varied | N/A | candidate | Populate during post-market responses. Likely relate to odd-lot, after-hours trading, and specific closing times (`ot`). |
+## Timestamp, delay, freshness, and staleness
 
----
+`source_date`, `source_time`, and `source_timestamp` describe source-row time. `retrieved_at` is normalization/probe telemetry supplied by the caller. `staleness_seconds` is derived from source timestamp versus retrieved time. Freshness labels (`live_candidate`, `delayed`, `stale`, `unknown`) are evidence classifications only; `live_candidate` is not an official realtime claim.
 
-## Important Session-Dependent Caveats
+## Flags and risk
 
-### Intraday vs. Post-Market Value Behavior
-1. **Missing Data (`"-"`)**: During intraday trading, especially before the first match or during specific auction phases, fields like `z`, `tv`, `s`, `ps`, `pz` may be returned as the literal string `"-"`.
-2. **Post-Market Population**: After market close, these `"-"` values often become populated with final closing metrics.
-3. **Post-Market Additional Fields**: Post-market responses may include new fields such as `oa`, `ob`, `oz`, `ov`, `ot`, and `fv`.
-4. **Timestamp Reflection**: Intraday, `t`, `%`, and `tlong` may align closely to the ongoing session time. Post-market, `t` may reflect regular session close time, while `%` or `ot` may reflect post-market or alternate-session timing.
-5. **Sequence Fields**: Fields like `pid` and `#` may change across market phases and should be treated as internal feed/channel/sequence fields, not asset identity.
+`data_quality_flags` record missing price, malformed numbers, malformed ladders, unavailable source time, delayed timestamps, stale timestamps, and partial/invalid rows. `source_risk_flags` must include `unofficial_source_risk`, `fragile_frontend_contract`, and `not_official_realtime_api`.
 
-### Asset Class Differences
-- **Index Rows**: Rows representing market indices (like `tse_t00.tw` for the TAIEX) have a different structural shape. They generally **do not include bid/ask fields** (`a`, `b`, `f`, `g`) and may omit volume fields that don't apply to a calculated index. Do not assume all rows share identical schemas.
+## Caveats
+
+TWSE MIS remains an unofficial / fragile frontend source. It is suitable only as low-frequency bounded evidence candidate under governance. It is not official realtime, not production current market state by itself, and not a source for trading signals.
