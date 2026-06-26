@@ -64,7 +64,8 @@ Sources must be explicitly labeled with an authority level reflecting their stan
 ## 7. Staleness Policy
 1. Data freshness must be explicitly tracked using `staleness_seconds`, calculated as the difference between `retrieved_time` and `source_time`.
 2. If a live candidate source is deemed stale (e.g., crossing a pre-defined threshold), mark the symbol's `freshness_status` as `stale` or `delayed` and `price_semantics` as `stale_quote`.
-3. **Do not silently replace** a stale live candidate with EOD official data while presenting it as a live price. Stale quotes must remain visible as stale.
+3. If a source is both explicitly delayed and exceeds the stale threshold, staleness takes precedence: classify it as `stale_quote` with `freshness_status = stale` and `delay_status = stale`, because conservative degradation is safer than preserving a merely delayed label.
+4. **Do not silently replace** a stale live candidate with EOD official data while presenting it as a live price. Stale quotes must remain visible as stale.
 
 ## 8. Fallback Policy
 1. If the primary live candidate source fails or is excessively stale, the generator may fall back to the secondary source in the priority list (e.g., Yahoo Finance).
