@@ -1,0 +1,18 @@
+{
+  "required_fields": [
+    "evidence_id",
+    "evidence_type",
+    "source_id",
+    "source_authority",
+    "source_risk_flags",
+    "retrieval_mode",
+    "fixture_path",
+    "hash_sha256",
+    "created_at",
+    "produced_by",
+    "promotion_status",
+    "caveats",
+    "forbidden_for_production",
+    "notes"
+  ]
+}

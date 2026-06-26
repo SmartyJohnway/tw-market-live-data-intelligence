@@ -20,3 +20,9 @@ jobs:
         run: python scripts/run_local_delivery_acceptance.py --check-only
       - name: Run CI delivery acceptance check-only
         run: python scripts/run_ci_delivery_acceptance.py --check-only
+
+      - name: M4 check
+        run: python scripts/run_m4_local_validation.py --check-only
+
+      - name: M4 check
+        run: python scripts/run_m4_readiness_check.py --check-only

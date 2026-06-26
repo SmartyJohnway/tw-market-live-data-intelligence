@@ -95,3 +95,8 @@ Implemented in check-only default mode. Optional reports may be written only to 
 ## M3MNOP Bundle 03
 
 Adds non-network CI, fixture/golden corpus, operator manuals, docs index, release readiness, and a local readonly frontend preview outside frontend/public. No live probes, no production refresh, no generated artifacts, no frontend public publication, no trading signals, and no realtime guarantee.
+
+
+## M4 Omega
+
+Adds local-only fixture-only governed platform skeleton: governance policy, source registry, evidence ledger, fixture replay, readonly observability, release gates, authorization ladder, and operator checks.

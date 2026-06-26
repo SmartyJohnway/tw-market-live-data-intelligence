@@ -1,0 +1,71 @@
+{
+  "forbidden_paths": [
+    "frontend/public/",
+    "research/generated/",
+    ".env",
+    "credentials/",
+    "cookies/",
+    "tokens/",
+    "broker/",
+    "production/",
+    "prod/",
+    "current_market_state/"
+  ],
+  "forbidden_behaviors": [
+    "live_probe_execution",
+    "production_write",
+    "frontend_public_write",
+    "research_generated_write",
+    "broker_auth_activation",
+    "trading_signal",
+    "realtime_guarantee",
+    "target_price_ranking_recommendation"
+  ],
+  "allowed_local_paths": [
+    "docs/",
+    "scripts/",
+    "tests/",
+    "frontend/readonly-preview/"
+  ],
+  "allowed_fixture_paths": [
+    "tests/fixtures/"
+  ],
+  "required_caveats": [
+    "not_realtime_guaranteed",
+    "not_trading_signal",
+    "not_production_current_state",
+    "fixture_only"
+  ],
+  "required_false_flags": [
+    "network_authorized",
+    "production_write",
+    "frontend_write",
+    "generated_artifact_write",
+    "full_market_scan",
+    "trading_signal"
+  ],
+  "source_risk_required_sources": [
+    "TWSE_MIS",
+    "Yahoo_Finance"
+  ],
+  "no_trading_terms": [
+    "buy",
+    "sell",
+    "hold",
+    "target price",
+    "ranking",
+    "recommendation"
+  ],
+  "no_realtime_claim_terms": [
+    "realtime guaranteed",
+    "official realtime"
+  ],
+  "authorization_levels": [
+    "local_only",
+    "fixture_replay",
+    "staging_write_authorized",
+    "controlled_live_probe_authorized",
+    "frontend_publication_authorized",
+    "production_refresh_authorized"
+  ]
+}

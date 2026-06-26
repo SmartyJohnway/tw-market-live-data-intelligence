@@ -1,0 +1,11 @@
+{
+  "event_types": [
+    "scenario_loaded",
+    "staging_validated",
+    "staging_rejected",
+    "frontend_package_built",
+    "caveat_emitted",
+    "forbidden_behavior_detected",
+    "summary_completed"
+  ]
+}

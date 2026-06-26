@@ -1,0 +1,105 @@
+{
+  "scenarios": [
+    {
+      "scenario_id": "valid_twse_mis_single_source",
+      "description": "valid_twse_mis_single_source",
+      "input_fixture": "tests/fixtures/staging_payloads/valid_single_source_twse_mis.json",
+      "expected_validation_status": "valid",
+      "expected_frontend_caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal"
+      ],
+      "expected_forbidden_flags": [],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": true
+    },
+    {
+      "scenario_id": "valid_multi_source",
+      "description": "valid_multi_source",
+      "input_fixture": "tests/fixtures/staging_payloads/valid_multi_source_mixed.json",
+      "expected_validation_status": "valid",
+      "expected_frontend_caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal"
+      ],
+      "expected_forbidden_flags": [],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": true
+    },
+    {
+      "scenario_id": "stale_payload",
+      "description": "stale_payload",
+      "input_fixture": "tests/fixtures/staging_payloads/valid_single_source_twse_mis.json",
+      "expected_validation_status": "valid",
+      "expected_frontend_caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal"
+      ],
+      "expected_forbidden_flags": [],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": true
+    },
+    {
+      "scenario_id": "delayed_payload",
+      "description": "delayed_payload",
+      "input_fixture": "tests/fixtures/staging_payloads/valid_single_source_twse_mis.json",
+      "expected_validation_status": "valid",
+      "expected_frontend_caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal"
+      ],
+      "expected_forbidden_flags": [],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": true
+    },
+    {
+      "scenario_id": "live_candidate_not_realtime_guaranteed",
+      "description": "live_candidate_not_realtime_guaranteed",
+      "input_fixture": "tests/fixtures/staging_payloads/valid_single_source_twse_mis.json",
+      "expected_validation_status": "valid",
+      "expected_frontend_caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal"
+      ],
+      "expected_forbidden_flags": [],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": true
+    },
+    {
+      "scenario_id": "invalid_full_market",
+      "description": "invalid_full_market",
+      "input_fixture": "tests/fixtures/staging_payloads/invalid_payloads.json",
+      "expected_validation_status": "invalid",
+      "expected_frontend_caveats": [],
+      "expected_forbidden_flags": [
+        "invalid_payload"
+      ],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": true
+    },
+    {
+      "scenario_id": "invalid_trading_signal",
+      "description": "invalid_trading_signal",
+      "input_fixture": "tests/fixtures/staging_payloads/invalid_payloads.json",
+      "expected_validation_status": "invalid",
+      "expected_frontend_caveats": [],
+      "expected_forbidden_flags": [
+        "invalid_payload"
+      ],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": true
+    },
+    {
+      "scenario_id": "invalid_twse_mis_missing_risk",
+      "description": "invalid_twse_mis_missing_risk",
+      "input_fixture": "tests/fixtures/staging_payloads/invalid_payloads.json",
+      "expected_validation_status": "invalid",
+      "expected_frontend_caveats": [],
+      "expected_forbidden_flags": [
+        "invalid_payload"
+      ],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": true
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "current_allowed_level": "local_only_fixture_only",
+  "gates": [
+    {
+      "gate": "local-only development",
+      "allowed": true
+    },
+    {
+      "gate": "fixture replay",
+      "allowed": true
+    },
+    {
+      "gate": "staging write authorization",
+      "allowed": false
+    },
+    {
+      "gate": "controlled live probe authorization",
+      "allowed": false
+    },
+    {
+      "gate": "frontend publication authorization",
+      "allowed": false
+    },
+    {
+      "gate": "production refresh authorization",
+      "allowed": false
+    }
+  ]
+}

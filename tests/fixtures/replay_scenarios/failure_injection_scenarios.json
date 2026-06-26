@@ -1,0 +1,88 @@
+{
+  "scenarios": [
+    {
+      "scenario_id": "missing_source_run_field",
+      "description": "missing_source_run_field",
+      "input_fixture": "tests/fixtures/staging_payloads/invalid_payloads.json",
+      "expected_validation_status": "invalid",
+      "expected_frontend_caveats": [],
+      "expected_forbidden_flags": [
+        "missing_source_run_field"
+      ],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": false
+    },
+    {
+      "scenario_id": "invalid_freshness_enum",
+      "description": "invalid_freshness_enum",
+      "input_fixture": "tests/fixtures/staging_payloads/invalid_payloads.json",
+      "expected_validation_status": "invalid",
+      "expected_frontend_caveats": [],
+      "expected_forbidden_flags": [
+        "invalid_freshness_enum"
+      ],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": false
+    },
+    {
+      "scenario_id": "invalid_delay_enum",
+      "description": "invalid_delay_enum",
+      "input_fixture": "tests/fixtures/staging_payloads/invalid_payloads.json",
+      "expected_validation_status": "invalid",
+      "expected_frontend_caveats": [],
+      "expected_forbidden_flags": [
+        "invalid_delay_enum"
+      ],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": false
+    },
+    {
+      "scenario_id": "forbidden_frontend_write_flag",
+      "description": "forbidden_frontend_write_flag",
+      "input_fixture": "tests/fixtures/staging_payloads/invalid_payloads.json",
+      "expected_validation_status": "invalid",
+      "expected_frontend_caveats": [],
+      "expected_forbidden_flags": [
+        "forbidden_frontend_write_flag"
+      ],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": false
+    },
+    {
+      "scenario_id": "forbidden_generated_artifact_write_flag",
+      "description": "forbidden_generated_artifact_write_flag",
+      "input_fixture": "tests/fixtures/staging_payloads/invalid_payloads.json",
+      "expected_validation_status": "invalid",
+      "expected_frontend_caveats": [],
+      "expected_forbidden_flags": [
+        "forbidden_generated_artifact_write_flag"
+      ],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": false
+    },
+    {
+      "scenario_id": "forbidden_realtime_guarantee",
+      "description": "forbidden_realtime_guarantee",
+      "input_fixture": "tests/fixtures/staging_payloads/invalid_payloads.json",
+      "expected_validation_status": "invalid",
+      "expected_frontend_caveats": [],
+      "expected_forbidden_flags": [
+        "forbidden_realtime_guarantee"
+      ],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": false
+    },
+    {
+      "scenario_id": "nested_buy_sell_hold",
+      "description": "nested_buy_sell_hold",
+      "input_fixture": "tests/fixtures/staging_payloads/invalid_payloads.json",
+      "expected_validation_status": "invalid",
+      "expected_frontend_caveats": [],
+      "expected_forbidden_flags": [
+        "nested_buy_sell_hold"
+      ],
+      "expected_summary_status": "pass",
+      "forbidden_behaviors_absent": false
+    }
+  ]
+}

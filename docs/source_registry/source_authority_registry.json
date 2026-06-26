@@ -1,0 +1,159 @@
+{
+  "sources": [
+    {
+      "source_id": "TWSE_OpenAPI",
+      "source_family": "official_exchange",
+      "authority_level": "official",
+      "official_status": "official",
+      "allowed_roles": [
+        "documentation",
+        "fixture_validation",
+        "readonly_preview"
+      ],
+      "forbidden_roles": [
+        "production_current_market_state",
+        "trading_signal"
+      ],
+      "risk_flags": [
+        "delayed_possible"
+      ],
+      "required_caveats": [
+        "not_realtime_guaranteed",
+        "not_production_current_state"
+      ],
+      "production_current_state_allowed": false,
+      "live_probe_authorization_required": true,
+      "notes": "M4 design-only registry entry."
+    },
+    {
+      "source_id": "TPEx_OpenAPI",
+      "source_family": "official_exchange",
+      "authority_level": "official",
+      "official_status": "official",
+      "allowed_roles": [
+        "documentation",
+        "fixture_validation",
+        "readonly_preview"
+      ],
+      "forbidden_roles": [
+        "production_current_market_state",
+        "trading_signal"
+      ],
+      "risk_flags": [
+        "delayed_possible"
+      ],
+      "required_caveats": [
+        "not_realtime_guaranteed",
+        "not_production_current_state"
+      ],
+      "production_current_state_allowed": false,
+      "live_probe_authorization_required": true,
+      "notes": "M4 design-only registry entry."
+    },
+    {
+      "source_id": "TWSE_MIS",
+      "source_family": "exchange_frontend",
+      "authority_level": "candidate",
+      "official_status": "unofficial",
+      "allowed_roles": [
+        "documentation",
+        "fixture_validation",
+        "readonly_preview"
+      ],
+      "forbidden_roles": [
+        "production_current_market_state",
+        "trading_signal"
+      ],
+      "risk_flags": [
+        "unofficial_source_risk",
+        "fragile_frontend_contract",
+        "not_official_realtime_api"
+      ],
+      "required_caveats": [
+        "not_realtime_guaranteed",
+        "not_production_current_state"
+      ],
+      "production_current_state_allowed": false,
+      "live_probe_authorization_required": true,
+      "notes": "M4 design-only registry entry."
+    },
+    {
+      "source_id": "Yahoo_Finance",
+      "source_family": "third_party",
+      "authority_level": "third_party",
+      "official_status": "third_party",
+      "allowed_roles": [
+        "documentation",
+        "fixture_validation",
+        "readonly_preview"
+      ],
+      "forbidden_roles": [
+        "production_current_market_state",
+        "trading_signal"
+      ],
+      "risk_flags": [
+        "third_party_source_risk",
+        "delayed_possible"
+      ],
+      "required_caveats": [
+        "not_realtime_guaranteed",
+        "not_production_current_state"
+      ],
+      "production_current_state_allowed": false,
+      "live_probe_authorization_required": true,
+      "notes": "M4 design-only registry entry."
+    },
+    {
+      "source_id": "Fixture_Synthetic",
+      "source_family": "fixture",
+      "authority_level": "fixture",
+      "official_status": "fixture",
+      "allowed_roles": [
+        "documentation",
+        "fixture_validation",
+        "readonly_preview"
+      ],
+      "forbidden_roles": [
+        "production_current_market_state",
+        "trading_signal"
+      ],
+      "risk_flags": [
+        "fixture_only",
+        "validation_only"
+      ],
+      "required_caveats": [
+        "not_realtime_guaranteed",
+        "not_production_current_state"
+      ],
+      "production_current_state_allowed": false,
+      "live_probe_authorization_required": false,
+      "notes": "M4 design-only registry entry."
+    },
+    {
+      "source_id": "Manual_Operator_Input",
+      "source_family": "manual",
+      "authority_level": "manual",
+      "official_status": "manual",
+      "allowed_roles": [
+        "documentation",
+        "fixture_validation",
+        "readonly_preview"
+      ],
+      "forbidden_roles": [
+        "production_current_market_state",
+        "trading_signal"
+      ],
+      "risk_flags": [
+        "manual_operator_input",
+        "validation_only"
+      ],
+      "required_caveats": [
+        "not_realtime_guaranteed",
+        "not_production_current_state"
+      ],
+      "production_current_state_allowed": false,
+      "live_probe_authorization_required": false,
+      "notes": "M4 design-only registry entry."
+    }
+  ]
+}

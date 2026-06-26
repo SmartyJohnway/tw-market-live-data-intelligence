@@ -17,3 +17,8 @@
 - not_production_current_market_state_by_itself: cannot be treated as current state alone.
 - validation-only: used for validation, not promotion.
 - fixture-backed: backed by local fixture data.
+
+
+## M4 Omega
+
+Adds local-only fixture-only governed platform skeleton: governance policy, source registry, evidence ledger, fixture replay, readonly observability, release gates, authorization ladder, and operator checks.

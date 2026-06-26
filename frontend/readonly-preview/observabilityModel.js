@@ -1,0 +1,1 @@
+export const observabilityModel={sourceStatus:[],evidenceLineage:[],replayScenarioSummary:{},releaseReadiness:{productionReady:false},caveatSeverity:['info','warning','blocked'],flags:{tradingSignal:false,realtimeGuaranteed:false,productionCurrentState:false}};

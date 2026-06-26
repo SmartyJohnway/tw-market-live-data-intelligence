@@ -10,3 +10,8 @@
 - [Local-First Architecture](architecture/LOCAL_FIRST_MARKET_CONTEXT_ARCHITECTURE.md)
 
 Safe commands: `python -m compileall scripts tests`, `pytest -m "not network"`, and `python scripts/run_local_delivery_acceptance.py --check-only`. Boundaries: no live probes, no production refresh, no frontend/public writes, no trading signals, no realtime guarantee.
+
+
+## M4 Omega
+
+Adds local-only fixture-only governed platform skeleton: governance policy, source registry, evidence ledger, fixture replay, readonly observability, release gates, authorization ladder, and operator checks.

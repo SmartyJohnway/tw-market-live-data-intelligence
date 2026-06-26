@@ -1,0 +1,15 @@
+{
+  "required_source_fields": [
+    "source_id",
+    "source_family",
+    "authority_level",
+    "official_status",
+    "allowed_roles",
+    "forbidden_roles",
+    "risk_flags",
+    "required_caveats",
+    "production_current_state_allowed",
+    "live_probe_authorization_required",
+    "notes"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "lineage_steps": [
+    "source fixture",
+    "staging payload",
+    "validator result",
+    "frontend readonly package",
+    "golden snapshot",
+    "CI acceptance result"
+  ]
+}

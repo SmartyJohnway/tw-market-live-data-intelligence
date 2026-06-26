@@ -1,0 +1,17 @@
+{
+  "required_fields": [
+    "token_id",
+    "authorization_level",
+    "authorized_by",
+    "authorized_at",
+    "expires_at",
+    "allowed_actions",
+    "forbidden_actions",
+    "allowed_sources",
+    "allowed_target_universe",
+    "output_path_policy",
+    "no_trading_signal",
+    "no_realtime_guarantee",
+    "no_production_write"
+  ]
+}

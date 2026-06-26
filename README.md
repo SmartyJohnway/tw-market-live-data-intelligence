@@ -189,3 +189,8 @@ http://localhost:8000/frontend/public/market-context.html
 ## M3MNOP local-first delivery bundle
 
 Safe commands: `python -m compileall scripts tests`, `pytest -m "not network"`, `python scripts/run_local_delivery_acceptance.py --check-only`, and `python scripts/run_ci_delivery_acceptance.py --check-only`. See [docs index](docs/INDEX.md), [delivery index](docs/DELIVERY_INDEX.md), [release readiness](docs/RELEASE_READINESS.md), and manuals under `docs/manuals/`. Boundaries remain: no live probes, no production refresh, no frontend/public publication, no trading signals, and no realtime guarantee.
+
+
+## M4 Omega
+
+Adds local-only fixture-only governed platform skeleton: governance policy, source registry, evidence ledger, fixture replay, readonly observability, release gates, authorization ladder, and operator checks.
