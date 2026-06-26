@@ -1,0 +1,7 @@
+{
+  "current_level": "local_first_fixture_governed",
+  "production_ready": false,
+  "live_probe_authorized": false,
+  "frontend_publication_authorized": false,
+  "trading_signal_allowed": false
+}

@@ -17,3 +17,8 @@ Not live-ready blockers: no live probes, not realtime guaranteed, no source fres
 Not frontend/public-ready blockers: no frontend/public publication is authorized.
 
 Next authorization ladder: approve limited fixture refresh, then controlled single-source live probe, then explicit durable promotion review.
+
+
+## M4 Omega
+
+Adds local-only fixture-only governed platform skeleton: governance policy, source registry, evidence ledger, fixture replay, readonly observability, release gates, authorization ladder, and operator checks.

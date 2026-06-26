@@ -1,0 +1,32 @@
+{
+  "workflow": "non-network-ci",
+  "allowed_commands": [
+    "python -m compileall scripts tests",
+    "pytest -m \"not network\"",
+    "python scripts/run_local_delivery_acceptance.py --check-only",
+    "python scripts/run_ci_delivery_acceptance.py --check-only",
+    "python scripts/run_m4_local_validation.py --check-only",
+    "python scripts/run_m4_readiness_check.py --check-only"
+  ],
+  "forbidden_commands": [
+    "scripts/run_all_probes.py",
+    "live probe",
+    "production refresh",
+    "broker/auth"
+  ],
+  "required_safe_commands": [
+    "python scripts/run_m4_local_validation.py --check-only",
+    "python scripts/run_m4_readiness_check.py --check-only"
+  ],
+  "forbidden_paths": [
+    "frontend/public/",
+    "research/generated/"
+  ],
+  "boundaries": [
+    "no live",
+    "no prod",
+    "no generated",
+    "no frontend-public",
+    "no trading"
+  ]
+}

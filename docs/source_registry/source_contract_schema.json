@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "M4 Source Authority Registry Entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["source_id", "source_family", "authority_level", "official_status", "allowed_roles", "forbidden_roles", "risk_flags", "required_caveats", "production_current_state_allowed", "live_probe_authorization_required", "notes"],
+  "properties": {
+    "source_id": {"type": "string", "minLength": 1},
+    "source_family": {"type": "string", "minLength": 1},
+    "authority_level": {"type": "string", "enum": ["official", "candidate", "third_party", "fixture", "manual"]},
+    "official_status": {"type": "string", "enum": ["official", "unofficial", "third_party", "fixture", "manual"]},
+    "allowed_roles": {"type": "array", "items": {"type": "string"}},
+    "forbidden_roles": {"type": "array", "items": {"type": "string"}, "contains": {"const": "production_current_market_state"}},
+    "risk_flags": {"type": "array", "items": {"type": "string"}},
+    "required_caveats": {"type": "array", "items": {"type": "string"}, "contains": {"const": "not_realtime_guaranteed"}},
+    "production_current_state_allowed": {"const": false},
+    "live_probe_authorization_required": {"type": "boolean"},
+    "notes": {"type": "string"}
+  }
+}

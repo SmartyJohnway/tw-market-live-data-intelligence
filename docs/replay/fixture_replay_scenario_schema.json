@@ -1,0 +1,12 @@
+{
+  "required_fields": [
+    "scenario_id",
+    "description",
+    "input_fixture",
+    "expected_validation_status",
+    "expected_frontend_caveats",
+    "expected_forbidden_flags",
+    "expected_summary_status",
+    "forbidden_behaviors_absent"
+  ]
+}

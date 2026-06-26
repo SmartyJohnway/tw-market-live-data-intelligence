@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "M4 Authorization Token",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["token_id", "authorization_level", "authorized_by", "authorized_at", "expires_at", "allowed_actions", "forbidden_actions", "allowed_sources", "allowed_target_universe", "output_path_policy", "no_trading_signal", "no_realtime_guarantee", "no_production_write"],
+  "properties": {
+    "token_id": {"type": "string", "minLength": 1},
+    "authorization_level": {"type": "string", "enum": ["local_only", "fixture_replay", "staging_write_authorized", "controlled_live_probe_authorized", "frontend_publication_authorized", "production_refresh_authorized"]},
+    "authorized_by": {"type": "string", "minLength": 1},
+    "authorized_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "allowed_actions": {"type": "array", "items": {"type": "string"}},
+    "forbidden_actions": {"type": "array", "items": {"type": "string"}, "contains": {"const": "production_refresh"}},
+    "allowed_sources": {"type": "array", "items": {"type": "string"}},
+    "allowed_target_universe": {"type": "object", "required": ["mode", "full_market_scan"], "properties": {"mode": {"enum": ["bounded", "fixture"]}, "full_market_scan": {"const": false}}, "additionalProperties": true},
+    "output_path_policy": {"type": "string", "enum": ["safe_tmp_only", "operator_safe_path_only"]},
+    "no_trading_signal": {"const": true},
+    "no_realtime_guarantee": {"const": true},
+    "no_production_write": {"const": true}
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "families": {
+    "official_exchange": {
+      "realtime_candidate": false,
+      "eod_batch": true,
+      "validation_only": true,
+      "frontend_readonly": true,
+      "fixture_available": true,
+      "production_allowed": false,
+      "live_probe_authorization_required": true
+    },
+    "exchange_frontend": {
+      "realtime_candidate": true,
+      "eod_batch": false,
+      "validation_only": true,
+      "frontend_readonly": true,
+      "fixture_available": true,
+      "production_allowed": false,
+      "live_probe_authorization_required": true
+    },
+    "third_party": {
+      "realtime_candidate": false,
+      "eod_batch": false,
+      "validation_only": true,
+      "frontend_readonly": true,
+      "fixture_available": true,
+      "production_allowed": false,
+      "live_probe_authorization_required": true
+    },
+    "fixture": {
+      "realtime_candidate": false,
+      "eod_batch": false,
+      "validation_only": true,
+      "frontend_readonly": true,
+      "fixture_available": true,
+      "production_allowed": false,
+      "live_probe_authorization_required": false
+    },
+    "manual": {
+      "realtime_candidate": false,
+      "eod_batch": false,
+      "validation_only": true,
+      "frontend_readonly": true,
+      "fixture_available": true,
+      "production_allowed": false,
+      "live_probe_authorization_required": false
+    }
+  }
+}

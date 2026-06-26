@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "M4 Fixture Evidence Ledger Entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["evidence_id", "evidence_type", "source_id", "source_authority", "source_risk_flags", "retrieval_mode", "fixture_path", "hash_sha256", "created_at", "produced_by", "promotion_status", "caveats", "forbidden_for_production", "notes"],
+  "properties": {
+    "evidence_id": {"type": "string", "minLength": 1},
+    "evidence_type": {"type": "string", "enum": ["fixture", "validator_result", "readonly_package", "replay_summary"]},
+    "source_id": {"type": "string", "minLength": 1},
+    "source_authority": {"type": "string", "enum": ["official", "candidate", "third_party", "fixture", "manual"]},
+    "source_risk_flags": {"type": "array", "items": {"type": "string"}},
+    "retrieval_mode": {"type": "string", "enum": ["fixture_only"]},
+    "fixture_path": {"type": "string", "pattern": "^tests/fixtures/"},
+    "hash_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "produced_by": {"type": "string", "minLength": 1},
+    "promotion_status": {"type": "string", "enum": ["not_promoted", "rejected", "simulation_only"]},
+    "caveats": {"type": "array", "items": {"type": "string"}, "contains": {"const": "fixture_only"}},
+    "forbidden_for_production": {"const": true},
+    "notes": {"type": "string"}
+  }
+}

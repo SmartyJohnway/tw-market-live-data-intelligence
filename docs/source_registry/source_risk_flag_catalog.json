@@ -1,0 +1,54 @@
+{
+  "risk_flags": [
+    {
+      "risk_flag": "unofficial_source_risk",
+      "description": "unofficial source risk",
+      "required_caveat": true
+    },
+    {
+      "risk_flag": "fragile_frontend_contract",
+      "description": "fragile frontend contract",
+      "required_caveat": true
+    },
+    {
+      "risk_flag": "not_official_realtime_api",
+      "description": "not official realtime api",
+      "required_caveat": true
+    },
+    {
+      "risk_flag": "not_production_current_market_state_by_itself",
+      "description": "not production current market state by itself",
+      "required_caveat": true
+    },
+    {
+      "risk_flag": "third_party_source_risk",
+      "description": "third party source risk",
+      "required_caveat": true
+    },
+    {
+      "risk_flag": "fixture_only",
+      "description": "fixture only",
+      "required_caveat": true
+    },
+    {
+      "risk_flag": "manual_operator_input",
+      "description": "manual operator input",
+      "required_caveat": true
+    },
+    {
+      "risk_flag": "validation_only",
+      "description": "validation only",
+      "required_caveat": true
+    },
+    {
+      "risk_flag": "stale_possible",
+      "description": "stale possible",
+      "required_caveat": true
+    },
+    {
+      "risk_flag": "delayed_possible",
+      "description": "delayed possible",
+      "required_caveat": true
+    }
+  ]
+}
