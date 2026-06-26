@@ -18,3 +18,5 @@ jobs:
         run: pytest -m "not network"
       - name: Run local delivery acceptance check-only
         run: python scripts/run_local_delivery_acceptance.py --check-only
+      - name: Run CI delivery acceptance check-only
+        run: python scripts/run_ci_delivery_acceptance.py --check-only
