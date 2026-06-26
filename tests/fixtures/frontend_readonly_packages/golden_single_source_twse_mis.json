@@ -1,0 +1,58 @@
+{
+  "frontend_public_artifact": false,
+  "generated_at_utc": "2026-06-26T00:00:00Z",
+  "global_caveats": [
+    "not_realtime_guaranteed",
+    "not_trading_signal",
+    "not_production_current_state",
+    "source_risk_present",
+    "freshness_must_be_displayed"
+  ],
+  "production_current_state": false,
+  "readonly_only": true,
+  "realtime_guaranteed": false,
+  "schema_version": "frontend_readonly_context_package.v1",
+  "sources": [
+    {
+      "source_authority": "unofficial_frontend_endpoint",
+      "source_id": "TWSE_MIS",
+      "source_risk_flags": [
+        "unofficial_source_risk",
+        "fragile_frontend_contract"
+      ]
+    }
+  ],
+  "symbols": [
+    {
+      "data_quality_flags": [],
+      "delay_status": "stale",
+      "display_caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal",
+        "not_production_current_state",
+        "source_risk_present",
+        "freshness_must_be_displayed",
+        "stale_source_row"
+      ],
+      "freshness_status": "stale",
+      "normalization_status": "normalized_fixture_preview",
+      "price_like_value": 100.0,
+      "price_semantics": "source_normalized_preview_only",
+      "retrieved_at": "2026-06-26T00:00:00Z",
+      "source_authority": "unofficial_frontend_endpoint",
+      "source_id": "TWSE_MIS",
+      "source_risk_flags": [
+        "unofficial_source_risk",
+        "fragile_frontend_contract"
+      ],
+      "source_timestamp": "2026-06-25T05:00:00Z",
+      "staleness_seconds": 86400,
+      "symbol": "2330"
+    }
+  ],
+  "trading_signal": false,
+  "validation": {
+    "required_caveats_present": true,
+    "staging_payload_valid": true
+  }
+}

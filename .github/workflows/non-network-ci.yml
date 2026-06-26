@@ -1,0 +1,22 @@
+name: M3MNOP non-network CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  non-network-acceptance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Install test dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Compile scripts and tests
+        run: python -m compileall scripts tests
+      - name: Run non-network tests
+        run: pytest -m "not network"
+      - name: Run local delivery acceptance check-only
+        run: python scripts/run_local_delivery_acceptance.py --check-only
+      - name: Run CI delivery acceptance check-only
+        run: python scripts/run_ci_delivery_acceptance.py --check-only
