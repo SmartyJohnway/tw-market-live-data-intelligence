@@ -13,7 +13,7 @@ This milestone governs `server/main.py` only. MCP live probe tools remain deferr
 ## Behavior
 
 * `GET /api/governance` reports API boundaries and probe endpoint requirements.
-* `GET /api/probe/*` without `confirm_manual_probe=true` returns `403` with `manual_probe_confirmation_required` and caveats.
+* `GET /api/probe/*` without `confirm_manual_probe=true` returns `403` with `manual_probe_confirmation_required` and caveats; parametrized tests cover TWSE, TPEx, Yahoo, TWSE MIS, FinMind, and feasibility endpoints.
 * Confirmed probe responses are wrapped in a `governance` block stating that production and frontend refresh are false.
 * No endpoint writes `research/generated/*` or `frontend/public/*`.
 

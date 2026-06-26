@@ -45,15 +45,26 @@ def test_governance_endpoint_describes_manual_probe_boundary():
     assert "manual_legacy_probe_surface" in data["probe_endpoints"]["caveats"]
 
 
-def test_probe_endpoint_requires_manual_confirmation_without_executing_probe(monkeypatch):
+@pytest.mark.parametrize(
+    ("path", "probe_attr"),
+    [
+        ("/api/probe/twse", "probe_twse"),
+        ("/api/probe/tpex", "probe_tpex"),
+        ("/api/probe/yahoo", "probe_yahoo"),
+        ("/api/probe/twse_mis", "probe_mis"),
+        ("/api/probe/finmind", "probe_finmind"),
+        ("/api/probe/feasibility", "probe_fugle_fubon"),
+    ],
+)
+def test_probe_endpoints_require_manual_confirmation_without_executing_probe(monkeypatch, path, probe_attr):
     called = {"value": False}
 
-    def fake_probe():
+    def fake_probe(*args, **kwargs):
         called["value"] = True
-        return {"source": "TWSE_OpenAPI"}
+        return {"source": "mock"}
 
-    monkeypatch.setattr("main.probe_twse", fake_probe)
-    response = client.get("/api/probe/twse")
+    monkeypatch.setattr(f"main.{probe_attr}", fake_probe)
+    response = client.get(path)
 
     assert response.status_code == 403
     assert response.json()["detail"]["error"] == "manual_probe_confirmation_required"
