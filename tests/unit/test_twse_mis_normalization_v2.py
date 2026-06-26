@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, timezone
 import pytest
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../scripts")))
+import probe_twse_mis
 from probe_twse_mis import _parse_ladder, _safe_float, normalize_twse_mis_row
 
 
@@ -134,3 +135,71 @@ def test_no_official_realtime_claim_in_risk_flags(retrieved_at):
     normalized = normalize_twse_mis_row(normal_row(), retrieved_at)
     assert "not_official_realtime_api" in normalized["source_risk_flags"]
     assert normalized["freshness_status"] in {"live_candidate", "delayed", "stale", "unknown"}
+
+
+class _FakeResponse:
+    status_code = 200
+
+    def __init__(self, payload=None):
+        self._payload = payload or {}
+
+    def json(self):
+        return self._payload
+
+
+class _FakeSession:
+    def __init__(self, payload):
+        self.headers = {}
+        self._payload = payload
+        self.urls = []
+
+    def get(self, url, timeout):
+        self.urls.append(url)
+        if url.endswith("index.jsp"):
+            return _FakeResponse({})
+        return _FakeResponse(self._payload)
+
+
+def _assert_probe_envelope_first_row_freshness(monkeypatch, freshness_status, delay_status, staleness_seconds):
+    payload = {
+        "msgArray": [{"c": "2330", "ex": "tse"}],
+        "queryTime": {"sysTime": "13:30:00"},
+        "userDelay": 5000,
+        "cachedAlive": 15024,
+        "rtcode": "0000",
+        "rtmessage": "OK",
+        "exKey": "msgArray",
+        "referer": "",
+    }
+
+    monkeypatch.setattr(probe_twse_mis.requests, "Session", lambda: _FakeSession(payload))
+
+    def fake_normalize(row, retrieved_at_utc_dt, top_level_telemetry=None):
+        return {
+            "symbol": row["c"],
+            "exchange": row["ex"],
+            "freshness_status": freshness_status,
+            "delay_status": delay_status,
+            "staleness_seconds": staleness_seconds,
+            "normalization_version": "twse_mis_snapshot_v2_draft",
+            "data_quality_flags": [],
+            "source_risk_flags": ["unofficial_source_risk", "not_official_realtime_api"],
+        }
+
+    monkeypatch.setattr(probe_twse_mis, "normalize_twse_mis_row", fake_normalize)
+    envelope = probe_twse_mis.probe(symbols=["tse_2330.tw"])
+    assert envelope["freshness_status"] == freshness_status
+    assert envelope["delay_status"] == delay_status
+    assert envelope["staleness_seconds"] == staleness_seconds
+
+
+def test_probe_envelope_uses_first_row_stale_freshness_without_network(monkeypatch):
+    _assert_probe_envelope_first_row_freshness(monkeypatch, "stale", "stale", 3600)
+
+
+def test_probe_envelope_uses_first_row_delayed_freshness_without_network(monkeypatch):
+    _assert_probe_envelope_first_row_freshness(monkeypatch, "delayed", "delayed_candidate", 600)
+
+
+def test_probe_envelope_uses_first_row_live_candidate_freshness_without_network(monkeypatch):
+    _assert_probe_envelope_first_row_freshness(monkeypatch, "live_candidate", "not_delayed_candidate", 5)

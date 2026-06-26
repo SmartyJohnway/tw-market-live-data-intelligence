@@ -360,6 +360,7 @@ def probe(symbols=None):
         normalized_sample = None
         staleness_seconds = None
         delay_status = "unknown"
+        freshness_status = "unknown"
 
         if success:
             top_level_telemetry = {
@@ -380,6 +381,7 @@ def probe(symbols=None):
             first_row = normalized_rows[0]
             staleness_seconds = first_row.get("staleness_seconds")
             delay_status = first_row.get("delay_status")
+            freshness_status = first_row.get("freshness_status", "unknown")
 
             # Form raw evidence
             raw_evidence = {
@@ -399,7 +401,7 @@ def probe(symbols=None):
             requires_session=True,
             raw_sample=raw_evidence if success else None,
             normalized_sample=normalized_sample,
-            freshness_status="realtime_candidate",
+            freshness_status=freshness_status,
             staleness_seconds=staleness_seconds,
             delay_status=delay_status,
             risk_level="high",
