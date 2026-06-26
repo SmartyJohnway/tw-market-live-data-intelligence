@@ -67,10 +67,13 @@ LEGACY_LIVE_PROBE_TOOLS = {
 }
 
 CONTROLLED_LIVE_PROBE_TOOL = "run_m3g04_controlled_live_probe_evidence"
+CONTROLLED_EVIDENCE_READBACK_TOOL = "read_m3g04_latest_controlled_probe_evidence"
 CONTROLLED_RUNNER_RELATIVE_PATH = "scripts/run_m3g04_controlled_live_probe.py"
+CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH = "research/live_probe_runs/m3g_04"
 CONTROLLED_ALLOWED_SOURCES = ("TWSE_OpenAPI", "TPEx_OpenAPI", "TWSE_MIS", "Yahoo_Finance")
 CONTROLLED_ALLOWED_SOURCE_SET = set(CONTROLLED_ALLOWED_SOURCES)
 CONTROLLED_MAX_TARGETS = 5
+CONTROLLED_EVIDENCE_READBACK_MAX_RUNS = 5
 CONTROLLED_RUNNER_TIMEOUT_SECONDS = 60
 CONTROLLED_OUTPUT_TAIL_CHARS = 4000
 
@@ -350,6 +353,175 @@ def readonly_governance() -> dict[str, Any]:
     }
 
 
+def evidence_readback_governance() -> dict[str, Any]:
+    """Governance metadata for MCP-03 readonly controlled evidence readback."""
+    return {
+        "surface": "MCP controlled evidence readonly readback tool",
+        "execution_mode": "readonly_local_controlled_evidence_read",
+        "network_calls": False,
+        "live_probe_execution": False,
+        "production_refresh": False,
+        "frontend_refresh": False,
+        "generated_artifact_writes": False,
+        "evidence_readback_only": True,
+        "full_market_scan": False,
+        "trading_signal": False,
+        "caveats": [
+            "controlled_evidence_readback_only",
+            "not_live_probe_execution",
+            "not_production_refresh",
+            "not_frontend_refresh",
+            "not_generated_artifact_refresh",
+            "not_live_market_guarantee",
+            "no_trading_signal",
+        ],
+    }
+
+
+def _evidence_readback_statement() -> str:
+    return (
+        "No network calls were made; no live probe was executed; generated artifacts were not updated; "
+        "frontend artifacts were not updated; production snapshots were not updated. This is controlled "
+        "local evidence readback only, not a realtime guarantee, not production current market state, "
+        "and not a trading signal."
+    )
+
+
+def _controlled_evidence_readback_failure(
+    arguments: dict[str, Any],
+    reason: str,
+    detail: str | None = None,
+) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "tool": CONTROLLED_EVIDENCE_READBACK_TOOL,
+        "status": "failed_closed",
+        "governance": evidence_readback_governance(),
+        "requested_scope": {
+            "requested_sources": arguments.get("requested_sources"),
+            "requested_targets": arguments.get("requested_targets"),
+            "max_runs": arguments.get("max_runs", 1),
+        },
+        "resolved_scope": {"requested_sources": [], "requested_targets": [], "max_runs": None},
+        "evidence_directory": CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH,
+        "selected_runs": [],
+        "failure_reason": reason,
+        "freshness": {
+            "assessment": "No freshness can be inferred from rejected readback arguments.",
+            "delay_caveat": "not_live_market_guarantee",
+        },
+        "statement": _evidence_readback_statement(),
+    }
+    if detail:
+        payload["detail"] = detail
+    return payload
+
+
+def _validate_evidence_readback_arguments(arguments: dict[str, Any]) -> tuple[bool, str | None, str | None, dict[str, Any]]:
+    if not isinstance(arguments, dict):
+        return False, "invalid_arguments", "arguments must be an object", {}
+    unexpected = sorted(set(arguments) - {"requested_sources", "requested_targets", "max_runs"})
+    if unexpected:
+        return False, "unsupported_argument", f"unsupported arguments: {', '.join(unexpected)}", {}
+
+    max_runs = arguments.get("max_runs", 1)
+    if not isinstance(max_runs, int) or max_runs < 1 or max_runs > CONTROLLED_EVIDENCE_READBACK_MAX_RUNS:
+        return (
+            False,
+            "invalid_max_runs",
+            f"max_runs must be an integer from 1 to {CONTROLLED_EVIDENCE_READBACK_MAX_RUNS}",
+            {},
+        )
+
+    sources = arguments.get("requested_sources")
+    if sources is None:
+        resolved_sources = list(CONTROLLED_ALLOWED_SOURCES)
+    elif not isinstance(sources, list) or not all(isinstance(item, str) for item in sources):
+        return False, "invalid_source_scope", "requested_sources must be a string list when provided", {}
+    else:
+        if len(set(sources)) != len(sources):
+            return False, "duplicate_source_scope", "requested_sources must not contain duplicates", {}
+        if any(source not in CONTROLLED_ALLOWED_SOURCE_SET for source in sources):
+            return False, "source_outside_allowlist", "requested_sources must stay within the controlled source allowlist", {}
+        resolved_sources = list(sources)
+
+    targets = arguments.get("requested_targets")
+    allowed_targets = _load_allowed_targets()
+    if not allowed_targets:
+        return False, "target_allowlist_unavailable", "config/market_targets.json could not be loaded", {}
+    if targets is None:
+        resolved_targets = sorted(allowed_targets)
+    elif not isinstance(targets, list) or not all(isinstance(item, str) for item in targets):
+        return False, "invalid_target_scope", "requested_targets must be a string list when provided", {}
+    else:
+        if len(set(targets)) != len(targets):
+            return False, "duplicate_target_scope", "requested_targets must not contain duplicates", {}
+        if any(target not in allowed_targets for target in targets):
+            return False, "target_outside_allowlist", "requested_targets must stay within config/market_targets.json standard symbols", {}
+        resolved_targets = list(targets)
+
+    return True, None, None, {"requested_sources": resolved_sources, "requested_targets": resolved_targets, "max_runs": max_runs}
+
+
+def read_controlled_probe_evidence(arguments: dict[str, Any] | None) -> dict[str, Any]:
+    """Read existing local M3G-04 controlled probe evidence summaries only."""
+    args = arguments or {}
+    valid, reason, detail, resolved_scope = _validate_evidence_readback_arguments(args)
+    if not valid:
+        return _controlled_evidence_readback_failure(args if isinstance(args, dict) else {}, reason or "invalid_arguments", detail)
+
+    evidence_dir = (REPO_ROOT / CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH).resolve()
+    allowed_dir = (REPO_ROOT / CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH).resolve()
+    if evidence_dir != allowed_dir or not evidence_dir.is_relative_to(REPO_ROOT.resolve()):
+        return _controlled_evidence_readback_failure(args, "invalid_evidence_directory", "evidence directory resolved outside repo")
+
+    base_payload: dict[str, Any] = {
+        "tool": CONTROLLED_EVIDENCE_READBACK_TOOL,
+        "governance": evidence_readback_governance(),
+        "requested_scope": {
+            "requested_sources": args.get("requested_sources"),
+            "requested_targets": args.get("requested_targets"),
+            "max_runs": args.get("max_runs", 1),
+        },
+        "resolved_scope": resolved_scope,
+        "evidence_directory": CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH,
+        "source_filters_applied": resolved_scope["requested_sources"],
+        "target_filters_applied": resolved_scope["requested_targets"],
+        "freshness": {
+            "assessment": "Existing controlled evidence summary read from local disk only; not a live market guarantee.",
+            "delay_caveat": "source-dependent historical evidence; not realtime-guaranteed",
+        },
+        "statement": _evidence_readback_statement(),
+    }
+
+    if not evidence_dir.is_dir():
+        return {**base_payload, "status": "no_evidence_available", "selected_runs": [], "run_summaries": []}
+
+    summaries = sorted(evidence_dir.glob("run_summary_*.json"), key=lambda path: path.name, reverse=True)
+    if not summaries:
+        return {**base_payload, "status": "no_evidence_available", "selected_runs": [], "run_summaries": []}
+
+    selected_paths = summaries[: resolved_scope["max_runs"]]
+    run_summaries = []
+    selected_runs = []
+    for path in selected_paths:
+        relative_path = path.relative_to(REPO_ROOT).as_posix()
+        selected_runs.append(relative_path)
+        try:
+            summary = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            return {
+                **base_payload,
+                "status": "invalid_evidence_json",
+                "selected_runs": selected_runs,
+                "run_summaries": [],
+                "invalid_evidence_path": relative_path,
+                "parse_error": f"{exc.msg} at line {exc.lineno} column {exc.colno}",
+            }
+        run_summaries.append({"path": relative_path, "content": summary})
+
+    return {**base_payload, "status": "ok", "selected_runs": selected_runs, "run_summaries": run_summaries}
+
+
 def _json_text(payload: dict[str, Any]) -> list[TextContent]:
     return [TextContent(type="text", text=json.dumps(payload, ensure_ascii=False, indent=2))]
 
@@ -417,7 +589,7 @@ def unavailable_tool_response(tool_name: str) -> dict[str, Any]:
 
 @app.list_tools()
 async def list_tools() -> list[Tool]:
-    """List readonly local context tools plus one explicit controlled probe tool."""
+    """List readonly local context tools plus explicit controlled MCP-02/MCP-03 tools."""
     readonly_tools = [
         Tool(
             name=name,
@@ -462,7 +634,35 @@ async def list_tools() -> list[Tool]:
             "additionalProperties": False,
         },
     )
-    return [*readonly_tools, controlled_tool]
+    evidence_readback_tool = Tool(
+        name=CONTROLLED_EVIDENCE_READBACK_TOOL,
+        description="Read existing local M3G-04 controlled live-probe evidence summaries without network calls, live probe execution, or artifact refresh.",
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "requested_sources": {
+                    "type": "array",
+                    "items": {"type": "string", "enum": list(CONTROLLED_ALLOWED_SOURCES)},
+                    "minItems": 1,
+                    "maxItems": len(CONTROLLED_ALLOWED_SOURCES),
+                },
+                "requested_targets": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "minItems": 1,
+                    "maxItems": CONTROLLED_MAX_TARGETS,
+                },
+                "max_runs": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": CONTROLLED_EVIDENCE_READBACK_MAX_RUNS,
+                    "default": 1,
+                },
+            },
+            "additionalProperties": False,
+        },
+    )
+    return [*readonly_tools, controlled_tool, evidence_readback_tool]
 
 
 @app.call_tool()
@@ -472,6 +672,8 @@ async def call_tool(name: str, arguments: dict[str, Any] | None) -> list[TextCon
         return _json_text(read_local_context_tool(name))
     if name == CONTROLLED_LIVE_PROBE_TOOL:
         return _json_text(run_controlled_live_probe_evidence(arguments))
+    if name == CONTROLLED_EVIDENCE_READBACK_TOOL:
+        return _json_text(read_controlled_probe_evidence(arguments))
     return _json_text(unavailable_tool_response(name))
 
 

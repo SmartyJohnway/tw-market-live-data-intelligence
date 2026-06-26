@@ -43,13 +43,25 @@ def decode_text_response(response):
     return json.loads(response[0].text)
 
 
+def write_target_config(repo_root):
+    config_dir = repo_root / "config"
+    config_dir.mkdir(parents=True, exist_ok=True)
+    (config_dir / "market_targets.json").write_text(
+        json.dumps({"test": {"symbols": {"standard": ["2330", "8069"]}}}),
+        encoding="utf-8",
+    )
+
+
 def test_list_tools_includes_readonly_context_and_one_controlled_tool_only():
     tools = asyncio.run(mcp_server.list_tools())
     tool_names = {tool.name for tool in tools}
 
     assert READONLY_TOOLS.issubset(tool_names)
     assert mcp_server.CONTROLLED_LIVE_PROBE_TOOL in tool_names
-    assert tool_names == READONLY_TOOLS | {mcp_server.CONTROLLED_LIVE_PROBE_TOOL}
+    assert mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL in tool_names
+    evidence_tools = {name for name in tool_names if "evidence" in name and name.startswith("read_m3g04")}
+    assert evidence_tools == {mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL}
+    assert tool_names == READONLY_TOOLS | {mcp_server.CONTROLLED_LIVE_PROBE_TOOL, mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL}
     assert tool_names.isdisjoint(LIVE_PROBE_TOOLS)
 
 
@@ -363,3 +375,172 @@ def test_controlled_tool_runner_error_after_launch_does_not_claim_no_network(mon
     assert data["generated_artifacts_updated"] is False
     assert data["frontend_artifacts_updated"] is False
     assert data["production_refreshed"] is False
+
+
+def test_evidence_readback_tool_does_not_execute_controlled_runner(monkeypatch, tmp_path):
+    def fail_if_called(*args, **kwargs):
+        raise AssertionError("controlled runner must not execute during evidence readback")
+
+    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
+    write_target_config(tmp_path)
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL, {})))
+
+    assert data["status"] == "no_evidence_available"
+    assert data["governance"]["network_calls"] is False
+    assert data["governance"]["live_probe_execution"] is False
+
+
+def test_evidence_readback_missing_directory_returns_no_evidence(monkeypatch, tmp_path):
+    write_target_config(tmp_path)
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL, {})))
+
+    assert data["status"] == "no_evidence_available"
+    assert data["selected_runs"] == []
+    assert data["governance"]["network_calls"] is False
+    assert data["governance"]["live_probe_execution"] is False
+
+
+def test_evidence_readback_empty_directory_returns_no_evidence(monkeypatch, tmp_path):
+    evidence_dir = tmp_path / mcp_server.CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH
+    evidence_dir.mkdir(parents=True)
+    write_target_config(tmp_path)
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL, {})))
+
+    assert data["status"] == "no_evidence_available"
+    assert data["selected_runs"] == []
+
+
+def test_evidence_readback_latest_valid_run_summary_is_returned(monkeypatch, tmp_path):
+    evidence_dir = tmp_path / mcp_server.CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "run_summary_20260624_000000.json").write_text(json.dumps({"run": "old"}), encoding="utf-8")
+    (evidence_dir / "run_summary_20260624_010000.json").write_text(
+        json.dumps({"run": "latest", "freshness": "not realtime"}), encoding="utf-8"
+    )
+    write_target_config(tmp_path)
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    data = decode_text_response(
+        asyncio.run(
+            mcp_server.call_tool(
+                mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL,
+                {"requested_sources": ["TWSE_OpenAPI"], "requested_targets": ["2330"]},
+            )
+        )
+    )
+
+    assert data["status"] == "ok"
+    assert data["selected_runs"] == ["research/live_probe_runs/m3g_04/run_summary_20260624_010000.json"]
+    assert data["run_summaries"][0]["content"]["run"] == "latest"
+    assert data["source_filters_applied"] == ["TWSE_OpenAPI"]
+    assert data["target_filters_applied"] == ["2330"]
+
+
+def test_evidence_readback_max_runs_bound_is_enforced():
+    data = decode_text_response(
+        asyncio.run(
+            mcp_server.call_tool(
+                mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL,
+                {"max_runs": mcp_server.CONTROLLED_EVIDENCE_READBACK_MAX_RUNS + 1},
+            )
+        )
+    )
+
+    assert data["status"] == "failed_closed"
+    assert data["failure_reason"] == "invalid_max_runs"
+
+
+def test_evidence_readback_invalid_requested_sources_fail_closed():
+    data = decode_text_response(
+        asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL, {"requested_sources": ["FinMind"]}))
+    )
+
+    assert data["status"] == "failed_closed"
+    assert data["failure_reason"] == "source_outside_allowlist"
+
+
+def test_evidence_readback_invalid_requested_targets_fail_closed():
+    data = decode_text_response(
+        asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL, {"requested_targets": ["999999"]}))
+    )
+
+    assert data["status"] == "failed_closed"
+    assert data["failure_reason"] == "target_outside_allowlist"
+
+
+def test_evidence_readback_duplicate_source_or_target_filters_fail_closed():
+    duplicate_sources = decode_text_response(
+        asyncio.run(
+            mcp_server.call_tool(
+                mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL,
+                {"requested_sources": ["TWSE_OpenAPI", "TWSE_OpenAPI"]},
+            )
+        )
+    )
+    duplicate_targets = decode_text_response(
+        asyncio.run(
+            mcp_server.call_tool(
+                mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL,
+                {"requested_targets": ["2330", "2330"]},
+            )
+        )
+    )
+
+    assert duplicate_sources["status"] == "failed_closed"
+    assert duplicate_sources["failure_reason"] == "duplicate_source_scope"
+    assert duplicate_targets["status"] == "failed_closed"
+    assert duplicate_targets["failure_reason"] == "duplicate_target_scope"
+
+
+def test_evidence_readback_invalid_json_returns_structured_error(monkeypatch, tmp_path):
+    evidence_dir = tmp_path / mcp_server.CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "run_summary_20260624_010000.json").write_text("{bad json", encoding="utf-8")
+    write_target_config(tmp_path)
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL, {})))
+
+    assert data["status"] == "invalid_evidence_json"
+    assert data["invalid_evidence_path"] == "research/live_probe_runs/m3g_04/run_summary_20260624_010000.json"
+    assert "line" in data["parse_error"]
+
+
+def test_evidence_readback_rejects_path_traversal_or_arbitrary_path_input():
+    data = decode_text_response(
+        asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL, {"path": "../../secret"}))
+    )
+
+    assert data["status"] == "failed_closed"
+    assert data["failure_reason"] == "unsupported_argument"
+
+
+def test_evidence_readback_valid_response_includes_governance_and_no_realtime_claim(monkeypatch, tmp_path):
+    evidence_dir = tmp_path / mcp_server.CONTROLLED_EVIDENCE_DIRECTORY_RELATIVE_PATH
+    evidence_dir.mkdir(parents=True)
+    (evidence_dir / "run_summary_20260624_010000.json").write_text(json.dumps({"result": "ok"}), encoding="utf-8")
+    write_target_config(tmp_path)
+    monkeypatch.setattr(mcp_server, "REPO_ROOT", tmp_path)
+
+    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL, {})))
+    governance = data["governance"]
+
+    assert data["status"] == "ok"
+    assert governance["production_refresh"] is False
+    assert governance["frontend_refresh"] is False
+    assert governance["generated_artifact_writes"] is False
+    assert governance["network_calls"] is False
+    assert governance["live_probe_execution"] is False
+    assert governance["evidence_readback_only"] is True
+    assert governance["full_market_scan"] is False
+    assert governance["trading_signal"] is False
+    assert "not a realtime guarantee" in data["statement"]
+    assert "generated artifacts were not updated" in data["statement"]
+    assert "frontend artifacts were not updated" in data["statement"]
+    assert "production snapshots were not updated" in data["statement"]
