@@ -1,0 +1,1 @@
+from tests.unit.test_m5c_staging_promotion import test_one_command_preflight_shape
