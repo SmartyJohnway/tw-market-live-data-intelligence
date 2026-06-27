@@ -64,6 +64,17 @@ def validate_execution_scope(source: str, targets: list[str], output_dir: str) -
         path.relative_to(ROOT)
     except ValueError:
         errors.append({"code": "output_outside_m5b", "path": "$.output_dir"})
+    if path == ROOT:
+        errors.append({"code": "output_root_forbidden", "path": "$.output_dir"})
+    if path.parent != ROOT:
+        errors.append({"code": "output_must_be_direct_m5b_child", "path": "$.output_dir"})
+    if path.name == "authorization_consumption":
+        errors.append({"code": "output_reserved_dir", "path": "$.output_dir"})
+    import re
+    if not re.fullmatch(r"m5b_twse_openapi_\d{8}T\d{6}Z|preflight", path.name):
+        errors.append({"code": "output_run_id_format", "path": "$.output_dir"})
+    if path.exists():
+        errors.append({"code": "output_already_exists", "path": "$.output_dir"})
     return errors
 
 

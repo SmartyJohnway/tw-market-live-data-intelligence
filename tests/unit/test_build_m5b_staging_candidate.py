@@ -119,3 +119,14 @@ def test_malformed_manifest_still_rejects_refinalization(tmp_path):
     (tmp_path / 'sha256_manifest.json').write_text('{not-json')
     with pytest.raises(ValueError, match='final manifest already exists'):
         build(tmp_path)
+
+
+def test_finalizer_rejects_missing_required_artifact(tmp_path):
+    write_minimal_run(tmp_path, base_result())
+    (tmp_path / 'execution_receipt.json').unlink()
+    with pytest.raises(ValueError, match='missing required evidence artifacts'):
+        build(tmp_path)
+
+
+def test_committed_m5b_manifest_verifies():
+    assert verify('research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z') == []

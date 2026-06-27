@@ -10,3 +10,22 @@ def test_attempt_count_rejects_zero(capsys):
     captured = capsys.readouterr().out
     assert rc == 1
     assert 'attempt_count_out_of_range' in captured
+
+
+def test_output_root_rejected_before_network():
+    errors = validate_execution_scope('TWSE_OpenAPI', ['2330', '0050', '00929'], 'research/live_probe_runs/m5b')
+    assert any(error['code'] == 'output_root_forbidden' for error in errors)
+
+
+def test_output_reserved_consumption_dir_rejected_before_network():
+    errors = validate_execution_scope('TWSE_OpenAPI', ['2330', '0050', '00929'], 'research/live_probe_runs/m5b/authorization_consumption')
+    assert any(error['code'] == 'output_reserved_dir' for error in errors)
+
+
+def test_existing_output_dir_rejected_before_network(tmp_path, monkeypatch):
+    import scripts.run_m5b_controlled_live_probe as runner
+    monkeypatch.setattr(runner, 'ROOT', tmp_path / 'm5b')
+    existing = tmp_path / 'm5b' / 'm5b_twse_openapi_20260627T010203Z'
+    existing.mkdir(parents=True)
+    errors = runner.validate_execution_scope('TWSE_OpenAPI', ['2330', '0050', '00929'], str(existing))
+    assert any(error['code'] == 'output_already_exists' for error in errors)

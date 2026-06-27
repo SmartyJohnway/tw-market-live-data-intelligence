@@ -15,6 +15,18 @@ ARTIFACT_TYPES = {
     "run_summary.json": "run_summary",
     "staging_candidate.json": "staging_candidate",
 }
+
+REQUIRED_EVIDENCE_ARTIFACTS = {
+    "authorization_snapshot.json",
+    "request_snapshot.json",
+    "execution_receipt.json",
+    "bounded_probe_result.json",
+    "bounded_normalized_rows.json",
+    "source_contract_assessment.json",
+    "freshness_delay_assessment.json",
+    "run_summary.json",
+}
+
 RUNNER_PRODUCED = {
     "authorization_snapshot.json",
     "request_snapshot.json",
@@ -99,6 +111,10 @@ def _validate_rows_for_candidate(result: dict) -> list[dict]:
     return rows
 
 
+def _missing_required_artifacts(run_path: Path) -> list[str]:
+    return sorted(name for name in REQUIRED_EVIDENCE_ARTIFACTS if not (run_path / name).exists())
+
+
 def _base_from_result(result: dict) -> dict:
     return {k: result.get(k) for k in [
         "run_id", "source_id", "requested_targets", "retained_targets", "retrieved_at_utc", "source_timestamp",
@@ -112,6 +128,9 @@ def finalize(run_dir: str | Path, *, create_candidate: bool) -> dict:
     run_path = Path(run_dir)
     if _existing_manifest(run_path):
         raise ValueError("final manifest already exists; refusing to re-finalize")
+    missing = _missing_required_artifacts(run_path)
+    if missing:
+        raise ValueError(f"missing required evidence artifacts: {missing}")
     result = _load(run_path / "bounded_probe_result.json")
     contract_status = result.get("contract_status")
     if create_candidate and contract_status not in SUCCESS_CONTRACT_STATUSES:

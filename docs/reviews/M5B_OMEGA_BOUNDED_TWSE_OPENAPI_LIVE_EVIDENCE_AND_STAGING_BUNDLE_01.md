@@ -57,7 +57,7 @@ M5C staging promotion, frontend publication, production refresh, and any trading
 ## Second repair follow-up
 
 - Failure finalization no longer creates `staging_candidate.json`; candidate creation is restricted to `normalized_pass` and `partial_pass` contract statuses.
-- Final manifests are immutable by default: rerunning the staging builder against a finalized run now fails unless an explicit maintenance override is provided.
+- Final manifests are immutable by default: rerunning the staging builder against any directory with an existing manifest is refused; existing manifests are never overwritten.
 - Added `scripts/verify_m5b_manifest.py` to recalculate artifact SHA-256 values and detect tampered, missing, or untracked artifacts.
 - Added mocked full `execute()` flow tests for HTTP 400 failure and consumed-authorization reuse, confirming non-zero return and zero network calls on reuse.
 - Evidence ledger entries now distinguish `produced_by` from `cataloged_by` so runner-produced artifacts are not misattributed to the finalizer.
@@ -74,3 +74,9 @@ M5C staging promotion, frontend publication, production refresh, and any trading
 - Finalization now refuses to run whenever `sha256_manifest.json` exists, even if the manifest is malformed or has `manifest_final=false`; verifier reports damage instead of builder overwriting evidence.
 - Authorization validity now uses half-open windows: `authorized_at <= now < expires_at` for preflight and `authorized_at <= executed_at < expires_at` for receipt audit.
 - Fixed the remaining current-clock authorization test by injecting a deterministic `now`.
+
+## Fifth repair follow-up
+
+- Runner output directories must now be a non-existing direct child of `research/live_probe_runs/m5b/`, cannot be the M5B root, cannot be `authorization_consumption`, and must use the M5B run-id format or `preflight` for check-only validation.
+- Finalization now validates the required evidence artifact set before creating ledger or manifest; missing core evidence rejects finalization instead of producing `manifest_status=pass`.
+- Offline regression tests cover root output, reserved output, existing output, missing required artifacts, and committed-run manifest verification.
