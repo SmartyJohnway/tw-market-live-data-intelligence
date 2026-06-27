@@ -1,3 +1,4 @@
+from pathlib import Path
 from scripts.run_m5b_controlled_live_probe import validate_execution_scope, map_authorized_targets
 
 def test_check_scope_valid(): assert validate_execution_scope('TWSE_OpenAPI',['2330','0050','00929'],'research/live_probe_runs/m5b/preflight')==[]
@@ -29,3 +30,28 @@ def test_existing_output_dir_rejected_before_network(tmp_path, monkeypatch):
     existing.mkdir(parents=True)
     errors = runner.validate_execution_scope('TWSE_OpenAPI', ['2330', '0050', '00929'], str(existing))
     assert any(error['code'] == 'output_already_exists' for error in errors)
+
+
+def test_execute_live_rejects_preflight_output_before_network(monkeypatch, tmp_path, capsys):
+    import scripts.run_m5b_controlled_live_probe as runner
+    calls = {'count': 0}
+    def fail_get(*args, **kwargs):
+        calls['count'] += 1
+        raise AssertionError('network must not be called for preflight live output')
+    monkeypatch.setattr(runner.requests, 'get', fail_get)
+    monkeypatch.setattr(runner, 'CONSUMPTION_ROOT', tmp_path / 'authorization_consumption')
+    rc = runner.main([
+        '--execute-live',
+        '--acknowledge-bounded-live-probe',
+        '--authorization', 'docs/authorization/decisions/M5B_TWSE_OPENAPI_2330_0050_00929_AUTHORIZATION.json',
+        '--request', 'tests/fixtures/authorization/valid_m5a_live_probe_request.json',
+        '--source', 'TWSE_OpenAPI',
+        '--targets', '2330', '0050', '00929',
+        '--output-dir', 'research/live_probe_runs/m5b/preflight',
+    ])
+    output = capsys.readouterr().out
+    assert rc == 1
+    assert 'preflight_output_not_allowed_for_live_execution' in output
+    assert calls['count'] == 0
+    assert not (tmp_path / 'authorization_consumption').exists()
+    assert not Path('research/live_probe_runs/m5b/preflight').exists()

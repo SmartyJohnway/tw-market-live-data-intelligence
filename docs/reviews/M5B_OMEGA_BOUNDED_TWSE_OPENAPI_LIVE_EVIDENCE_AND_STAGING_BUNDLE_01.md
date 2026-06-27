@@ -80,3 +80,7 @@ M5C staging promotion, frontend publication, production refresh, and any trading
 - Runner output directories must now be a non-existing direct child of `research/live_probe_runs/m5b/`, cannot be the M5B root, cannot be `authorization_consumption`, and must use the M5B run-id format or `preflight` for check-only validation.
 - Finalization now validates the required evidence artifact set before creating ledger or manifest; missing core evidence rejects finalization instead of producing `manifest_status=pass`.
 - Offline regression tests cover root output, reserved output, existing output, missing required artifacts, and committed-run manifest verification.
+
+## Sixth repair follow-up
+
+- `preflight` output is now explicitly check-only; `--execute-live --output-dir research/live_probe_runs/m5b/preflight` fails closed before authorization consumption or network access.

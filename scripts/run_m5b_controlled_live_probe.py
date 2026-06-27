@@ -438,6 +438,8 @@ def main(argv=None) -> int:
         errors += validate_authorization(args.authorization, args.request)
     if args.execute_live and not args.acknowledge_bounded_live_probe:
         errors.append({"code": "missing_acknowledgement", "path": "$.acknowledgement"})
+    if args.execute_live and Path(args.output_dir).name == "preflight":
+        errors.append({"code": "preflight_output_not_allowed_for_live_execution", "path": "$.output_dir"})
     if Path(args.output_dir, "execution_receipt.json").exists():
         errors.append({"code": "reused_output_receipt", "path": "$.output_dir"})
     if args.execute_live and args.authorization:
