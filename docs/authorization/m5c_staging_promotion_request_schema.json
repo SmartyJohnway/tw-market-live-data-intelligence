@@ -1,61 +1,54 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "not": {
-    "anyOf": [
-      {
-        "required": [
-          "approval_token"
-        ]
-      },
-      {
-        "required": [
-          "authorization_decision"
-        ]
-      }
-    ]
-  },
+  "additionalProperties": false,
   "properties": {
-    "actual_promotion_authorized": {
-      "const": false
-    },
-    "dry_run_only": {
-      "const": true
-    },
-    "frontend_public_write": {
-      "const": false
-    },
-    "generated_artifact_write": {
-      "const": false
-    },
-    "production_write": {
-      "const": false
-    },
-    "source_id": {
-      "const": "TWSE_OpenAPI"
-    },
+    "actual_promotion_authorized": {"const": false},
+    "authorization_request_only": {"const": true},
+    "classification": {"const": "historical_evidence_snapshot"},
+    "dry_run_only": {"const": true},
+    "freshness_classification": {"const": "eod_batch_not_current_realtime"},
+    "frontend_public_write": {"const": false},
+    "generated_artifact_write": {"const": false},
+    "merge_commit": {"const": "3b4f616f9d87856b61a16b52e5f84009b7f5fb92"},
+    "production_write": {"const": false},
+    "request_id": {"const": "M5C_TWSE_OPENAPI_STAGING_PROMOTION_REQUEST"},
+    "schema_version": {"const": "m5c_staging_promotion_request.v1"},
+    "source_id": {"const": "TWSE_OpenAPI"},
+    "source_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_run_dir": {"const": "research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z"},
+    "source_run_id": {"const": "m5b_twse_openapi_20260627T015136Z"},
+    "staging_candidate_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "targets": {
-      "items": {
-        "enum": [
-          "2330",
-          "0050",
-          "00929"
-        ]
-      },
-      "type": "array"
+      "type": "array",
+      "prefixItems": [{"const": "2330"}, {"const": "0050"}, {"const": "00929"}],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true
     },
-    "trading_output": {
-      "const": false
-    }
+    "trading_output": {"const": false}
   },
   "required": [
-    "source_run_id",
-    "source_manifest_sha256",
-    "staging_candidate_sha256",
-    "source_id",
-    "targets",
+    "actual_promotion_authorized",
+    "authorization_request_only",
+    "classification",
     "dry_run_only",
-    "actual_promotion_authorized"
+    "freshness_classification",
+    "frontend_public_write",
+    "generated_artifact_write",
+    "merge_commit",
+    "production_write",
+    "request_id",
+    "schema_version",
+    "source_id",
+    "source_manifest_sha256",
+    "source_run_dir",
+    "source_run_id",
+    "staging_candidate_sha256",
+    "targets",
+    "trading_output"
   ],
   "title": "M5C staging promotion request",
-  "type": "object"
+  "type": "object",
+  "not": {"anyOf": [{"required": ["approval_token"]}, {"required": ["authorization_decision"]}]}
 }

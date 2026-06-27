@@ -12,3 +12,11 @@
 
 ## Boundaries
 No live probe, network probe, M5B replay, new authorization consumption, actual promotion, generated write, frontend-public write, production write, broker/auth, or trading output is authorized or performed.
+
+## Review hardening follow-up
+- Evidence integrity now delegates to `scripts.verify_m5b_manifest.verify` and adds required-artifact/manifest-contract checks including `evidence_ledger.json`.
+- Receipt audit now delegates to `validate_m5b_execution_authorization.validate_authorization(..., mode="receipt_audit")` instead of checking only `authorization_consumed`.
+- Request validation now runs Draft 2020-12 schema validation with `additionalProperties:false`, exact ordered targets, canonical M5B run directory, required request-only field set, and strict false safety flags.
+- Rollback simulation now copies M5B evidence into temporary directories, injects tamper/missing/target/contract/flag/partial-write scenarios, calls the evidence gate, and reports observed error codes without deleting or overwriting repository files.
+- Blocked assessment/planning CLI outcomes now return non-zero.
+- Forbidden path checks now cover `production/`, `prod/`, absolute paths, Windows separators, and traversal normalization.

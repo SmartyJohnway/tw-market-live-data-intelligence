@@ -10,5 +10,5 @@ def assess(run_dir=RUN_DIR):
     return {'status':status,'evidence_integrity':v,'historical_evidence_snapshot':True,'current_realtime':False,'actual_promotion_authorized':False,'dry_run_only':True}
 def main(argv=None):
     ap=argparse.ArgumentParser(); ap.add_argument('--run-dir',default=str(RUN_DIR)); ap.add_argument('--check-only',action='store_true',default=True)
-    a=ap.parse_args(argv); print(json.dumps(assess(a.run_dir),indent=2,sort_keys=True)); return 0
+    a=ap.parse_args(argv); r=assess(a.run_dir); print(json.dumps(r,indent=2,sort_keys=True)); return 0 if r['status']=='eligible_for_user_authorization' else 1
 if __name__=='__main__': raise SystemExit(main())

@@ -1,1 +1,1 @@
-from tests.unit.test_m5c_staging_promotion import *  # re-export M5C coverage for required track filename
+from tests.unit.test_m5c_staging_promotion import test_default_plan_no_write_and_forbidden_paths, test_forbidden_paths_absolute_windows_and_traversal

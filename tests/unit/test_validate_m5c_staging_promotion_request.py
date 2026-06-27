@@ -1,1 +1,1 @@
-from tests.unit.test_m5c_staging_promotion import *  # re-export M5C coverage for required track filename
+from tests.unit.test_m5c_staging_promotion import test_exact_binding_request_and_schema, test_request_rejects_duplicate_targets_and_noncanonical_run_dir, test_no_decision_or_token
