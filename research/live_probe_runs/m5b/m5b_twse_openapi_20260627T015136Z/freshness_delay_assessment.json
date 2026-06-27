@@ -1,0 +1,40 @@
+{
+  "caveats": [
+    "official_eod_reference_source",
+    "not_realtime_guaranteed",
+    "not_production_current_state",
+    "no_full_raw_payload_retained"
+  ],
+  "contract_status": "normalized_pass",
+  "delay_status": "eod_not_realtime_guaranteed",
+  "errors": [],
+  "failed_targets": [],
+  "freshness_status": "eod_reference",
+  "frontend_published": false,
+  "generated_artifact_promoted": false,
+  "http_status": 200,
+  "normalization_status": "normalized",
+  "official_realtime_claim": false,
+  "parse_status": "parsed",
+  "production_current_state": false,
+  "realtime_guaranteed": false,
+  "requested_targets": [
+    "2330",
+    "0050",
+    "00929"
+  ],
+  "retained_targets": [
+    "0050",
+    "00929",
+    "2330"
+  ],
+  "retrieval_to_source_date_age_days": 1,
+  "retrieved_at_utc": "2026-06-27T01:51:38.637952+00:00",
+  "run_id": "m5b_twse_openapi_20260627T015136Z",
+  "source_id": "TWSE_OpenAPI",
+  "source_timestamp": "2026-06-26",
+  "source_trade_dates": [
+    "2026-06-26"
+  ],
+  "trading_signal": false
+}

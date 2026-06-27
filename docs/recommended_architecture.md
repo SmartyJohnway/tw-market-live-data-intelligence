@@ -22,3 +22,7 @@ We recommend a **Hybrid Python Backend + Static Frontend** approach:
 2. **Frontend Layer (Static Workbench)**
    - A static dashboard providing visual evidence of source capabilities (`capability_matrix.md` and `probe_log.md` compiled to JSON).
    - **No Netlify / Serverless Pass-throughs**: The architecture explicitly avoids public open proxies or serverless edge functions. It relies completely on the local backend and CORS restricted to localhost.
+
+## M5B staging-only evidence flow
+
+M5B confirms the architecture should keep live execution behind a single-use authorization validator, retain only bounded target rows, and emit a staging candidate that cannot promote itself to production. M5C or any frontend/publication path requires a separate explicit authorization.

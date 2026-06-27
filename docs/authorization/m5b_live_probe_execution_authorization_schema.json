@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/m5b_live_probe_execution_authorization_schema.json",
+  "type": "object",
+  "required": ["authorization_id","authorization_basis","authorized_by","authorized_at_utc","expires_at_utc","single_use","allowed_source","allowed_targets","max_targets","max_network_attempts","allowed_runner","allowed_output_root","request_sha256","network_authorized","bounded_live_probe_authorized","production_write","frontend_publication","generated_artifact_write","full_market_scan","trading_signal","source_fallback_allowed","raw_full_response_retention"],
+  "additionalProperties": false,
+  "properties": {
+    "authorization_id": {"type":"string","minLength":1},
+    "authorization_basis": {"type":"string","minLength":1},
+    "authorized_by": {"const":"user"},
+    "authorized_at_utc": {"type":"string","format":"date-time"},
+    "expires_at_utc": {"type":"string","format":"date-time"},
+    "single_use": {"const":true},
+    "allowed_source": {"const":"TWSE_OpenAPI"},
+    "allowed_targets": {"type":"array","prefixItems":[{"const":"2330"},{"const":"0050"},{"const":"00929"}],"minItems":3,"maxItems":3},
+    "max_targets": {"const":3},
+    "max_network_attempts": {"const":2},
+    "allowed_runner": {"const":"scripts/run_m5b_controlled_live_probe.py"},
+    "allowed_output_root": {"const":"research/live_probe_runs/m5b/"},
+    "request_sha256": {"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "network_authorized": {"const":true},
+    "bounded_live_probe_authorized": {"const":true},
+    "production_write": {"const":false},
+    "frontend_publication": {"const":false},
+    "generated_artifact_write": {"const":false},
+    "full_market_scan": {"const":false},
+    "trading_signal": {"const":false},
+    "source_fallback_allowed": {"const":false},
+    "raw_full_response_retention": {"const":false}
+  }
+}

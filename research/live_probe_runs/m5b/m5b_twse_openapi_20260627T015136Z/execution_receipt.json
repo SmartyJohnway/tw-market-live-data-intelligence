@@ -1,0 +1,27 @@
+{
+  "attempt_count": 1,
+  "authorization_consumed": true,
+  "authorization_id": "m5b-twse-openapi-2330-0050-00929-20260627-user-bounded-01",
+  "contract_status": "normalized_pass",
+  "frontend_published": false,
+  "generated_artifact_promoted": false,
+  "http_status": 200,
+  "production_current_state": false,
+  "realtime_guaranteed": false,
+  "requested_targets": [
+    "2330",
+    "0050",
+    "00929"
+  ],
+  "retained_targets": [
+    "0050",
+    "00929",
+    "2330"
+  ],
+  "retrieved_at_utc": "2026-06-27T01:51:38.637749+00:00",
+  "retry_reason": null,
+  "run_id": "m5b_twse_openapi_20260627T015136Z",
+  "source_id": "TWSE_OpenAPI",
+  "success": true,
+  "trading_signal": false
+}

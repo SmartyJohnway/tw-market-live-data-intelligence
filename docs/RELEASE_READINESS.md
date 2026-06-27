@@ -26,3 +26,7 @@ Adds local-only fixture-only governed platform skeleton: governance policy, sour
 ## M5A readiness note
 
 M5A adds a check-only authorization request schema and validator for a future bounded single-source M5B live probe. A passing M5A request means `ready_for_user_authorization_review`; it does not authorize live probing, token issuance, production writes, frontend publication, generated artifact writes, full-market scans, or trading outputs.
+
+## M5B bounded live evidence gate
+
+M5B adds a single-use bounded TWSE_OpenAPI evidence gate. It is staging-only and does not authorize production promotion, generated artifact refresh, frontend publication, or trading signals.

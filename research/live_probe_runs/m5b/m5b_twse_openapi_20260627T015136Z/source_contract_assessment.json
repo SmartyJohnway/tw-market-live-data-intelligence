@@ -1,0 +1,42 @@
+{
+  "ai_integration_suitability": "bounded EOD/reference integration only",
+  "caveats": [
+    "official_eod_reference_source",
+    "not_realtime_guaranteed",
+    "not_production_current_state",
+    "no_full_raw_payload_retained"
+  ],
+  "contract_status": "normalized_pass",
+  "endpoint": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+  "errors": [],
+  "failed_targets": [],
+  "frontend_published": false,
+  "generated_artifact_promoted": false,
+  "http_status": 200,
+  "legal_maintenance_risk": "official public OpenAPI; schema drift/rate limits possible",
+  "normalization_status": "normalized",
+  "parse_status": "parsed",
+  "production_current_state": false,
+  "raw_full_response_retention": false,
+  "realtime_guaranteed": false,
+  "request_method": "GET",
+  "requested_targets": [
+    "2330",
+    "0050",
+    "00929"
+  ],
+  "required_cookies_or_session": false,
+  "required_headers": {
+    "Accept": "application/json"
+  },
+  "retained_targets": [
+    "0050",
+    "00929",
+    "2330"
+  ],
+  "retrieved_at_utc": "2026-06-27T01:51:38.637952+00:00",
+  "run_id": "m5b_twse_openapi_20260627T015136Z",
+  "source_id": "TWSE_OpenAPI",
+  "source_timestamp": "2026-06-26",
+  "trading_signal": false
+}

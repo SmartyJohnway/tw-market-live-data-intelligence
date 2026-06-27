@@ -87,3 +87,7 @@ Generated automatically by probes. Details specific source capabilities.
 - **Delay Status:** unknown
 - **Warnings:** Not probed live. Complex auth requirements.
 
+
+## M5B bounded TWSE_OpenAPI execution evidence (2026-06-27)
+
+TWSE_OpenAPI was probed once through the bounded M5B runner for targets 2330, 0050, and 00929 only. The official endpoint used was `https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL`; no credentials, cookies, fallback source, or full-market retention were used. The retained evidence is staging-only under `research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z/` and preserves EOD/reference semantics without any realtime guarantee.
