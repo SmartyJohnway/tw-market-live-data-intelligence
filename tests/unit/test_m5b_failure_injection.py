@@ -1,5 +1,6 @@
 import json
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -25,7 +26,7 @@ def codes(errors):
 
 
 def test_expired_authorization():
-    assert 'authorization_expired' in codes(validate_authorization(copy_auth(expires_at_utc='2026-06-26T00:00:00Z'), REQ))
+    assert 'authorization_expired' in codes(validate_authorization(copy_auth(expires_at_utc='2026-06-26T00:00:00Z'), REQ, now=datetime(2026, 6, 27, tzinfo=timezone.utc)))
 
 
 def test_wrong_hash():

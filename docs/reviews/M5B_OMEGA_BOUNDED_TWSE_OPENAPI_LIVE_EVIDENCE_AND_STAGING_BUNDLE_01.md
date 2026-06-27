@@ -68,3 +68,9 @@ M5C staging promotion, frontend publication, production refresh, and any trading
 - Removed the manifest refinalization override from the staging builder CLI and API; finalized live evidence must be repaired through supplemental records rather than overwriting the final manifest.
 - Runner bookkeeping failures after successful finalization now preserve the finalized package and do not enter the failure-package overwrite path.
 - `--attempt-count` is constrained to `1..2`.
+
+## Fourth repair follow-up
+
+- Finalization now refuses to run whenever `sha256_manifest.json` exists, even if the manifest is malformed or has `manifest_final=false`; verifier reports damage instead of builder overwriting evidence.
+- Authorization validity now uses half-open windows: `authorized_at <= now < expires_at` for preflight and `authorized_at <= executed_at < expires_at` for receipt audit.
+- Fixed the remaining current-clock authorization test by injecting a deterministic `now`.

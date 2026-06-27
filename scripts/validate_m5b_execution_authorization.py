@@ -65,7 +65,9 @@ def validate_authorization(authorization, request, receipt=None, now=None, mode:
             errors.append({'code': 'invalid_24h_expiry', 'path': '$.expires_at_utc'})
         if mode == 'execution_preflight':
             comparison_now = now or datetime.now(timezone.utc)
-            if comparison_now > expires_at:
+            if comparison_now < authorized_at:
+                errors.append({'code': 'authorization_not_yet_valid', 'path': '$.authorized_at_utc'})
+            if comparison_now >= expires_at:
                 errors.append({'code': 'authorization_expired', 'path': '$.expires_at_utc'})
         else:
             if receipt_doc is None:
@@ -74,7 +76,7 @@ def validate_authorization(authorization, request, receipt=None, now=None, mode:
                 executed_at = _receipt_time(receipt_doc)
                 if executed_at is None:
                     errors.append({'code': 'receipt_timestamp_missing', 'path': '$.receipt'})
-                elif not (authorized_at <= executed_at <= expires_at):
+                elif not (authorized_at <= executed_at < expires_at):
                     errors.append({'code': 'receipt_outside_authorization_window', 'path': '$.receipt.retrieved_at_utc'})
     except Exception as exc:
         errors.append({'code': 'timestamp_parse_failed', 'detail': str(exc), 'path': '$.authorized_at_utc'})

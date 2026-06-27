@@ -39,14 +39,8 @@ def _load(path: Path) -> dict:
     return json.loads(path.read_text())
 
 
-def _existing_final_manifest(run_path: Path) -> bool:
-    manifest_path = run_path / "sha256_manifest.json"
-    if not manifest_path.exists():
-        return False
-    try:
-        return _load(manifest_path).get("manifest_final") is True
-    except Exception:
-        return False
+def _existing_manifest(run_path: Path) -> bool:
+    return (run_path / "sha256_manifest.json").exists()
 
 
 def _artifact_entry(run_dir: Path, file_name: str) -> dict:
@@ -116,7 +110,7 @@ def _base_from_result(result: dict) -> dict:
 
 def finalize(run_dir: str | Path, *, create_candidate: bool) -> dict:
     run_path = Path(run_dir)
-    if _existing_final_manifest(run_path):
+    if _existing_manifest(run_path):
         raise ValueError("final manifest already exists; refusing to re-finalize")
     result = _load(run_path / "bounded_probe_result.json")
     contract_status = result.get("contract_status")

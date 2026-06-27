@@ -101,3 +101,21 @@ def test_manifest_verifier_detects_missing_artifact(tmp_path):
     (tmp_path / 'request_snapshot.json').unlink()
     errors = verify(tmp_path)
     assert any(error['code'] == 'manifest_artifact_missing' for error in errors)
+
+
+def test_manifest_final_false_still_rejects_refinalization(tmp_path):
+    write_minimal_run(tmp_path, base_result())
+    build(tmp_path)
+    manifest = json.loads((tmp_path / 'sha256_manifest.json').read_text())
+    manifest['manifest_final'] = False
+    (tmp_path / 'sha256_manifest.json').write_text(json.dumps(manifest))
+    with pytest.raises(ValueError, match='final manifest already exists'):
+        build(tmp_path)
+
+
+def test_malformed_manifest_still_rejects_refinalization(tmp_path):
+    write_minimal_run(tmp_path, base_result())
+    build(tmp_path)
+    (tmp_path / 'sha256_manifest.json').write_text('{not-json')
+    with pytest.raises(ValueError, match='final manifest already exists'):
+        build(tmp_path)
