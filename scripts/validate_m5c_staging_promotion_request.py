@@ -2,10 +2,12 @@ from __future__ import annotations
 import argparse,json,sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from m5c_common import RUN_ID,TARGETS,SOURCE,MERGE_COMMIT,RUN_DIR,CANONICAL_RUN_DIR,verify_evidence,candidate_hash,manifest_hash,validate_schema
+from m5c_common import RUN_ID,TARGETS,SOURCE,MERGE_COMMIT,RUN_DIR,CANONICAL_RUN_DIR,verify_evidence,candidate_hash,manifest_hash,validate_schema,safe_load
 
 def validate_request(path):
-    req=json.loads(Path(path).read_text()); errs=[]
+    req, read_err = safe_load(path); errs=[]
+    if read_err:
+        return {'status':'blocked','errors':[read_err],'request_path':str(path)}
     errs += validate_schema(path)
     if req.get('source_run_dir') != CANONICAL_RUN_DIR:
         errs.append({'code':'canonical_run_dir_mismatch','field':'source_run_dir'})

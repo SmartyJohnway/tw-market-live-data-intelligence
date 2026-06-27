@@ -18,8 +18,14 @@ MERGE_COMMIT='3b4f616f9d87856b61a16b52e5f84009b7f5fb92'
 CANONICAL_RUN_DIR=str(RUN_DIR)
 REQ_ART=['authorization_snapshot.json','request_snapshot.json','execution_receipt.json','bounded_probe_result.json','bounded_normalized_rows.json','source_contract_assessment.json','freshness_delay_assessment.json','run_summary.json','staging_candidate.json','evidence_ledger.json','sha256_manifest.json']
 FORBID_PREFIX=('research/generated/','frontend/public/','production/','prod/')
+SUCCESS_CONTRACT_STATUSES={'normalized_pass','partial_pass'}
 FORBID_FLAGS=['production_current_state','realtime_guaranteed','trading_signal','generated_artifact_promoted','frontend_published','production_ready','promotion_authorized','frontend_publication_authorized','generated_artifact_write']
 def load(p): return json.loads(Path(p).read_text())
+def safe_load(p):
+    try:
+        return load(p), None
+    except Exception as exc:
+        return None, {'code':'json_read_failed','path':str(p),'detail':str(exc)}
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def candidate_hash(run_dir=RUN_DIR): return sha(Path(run_dir)/'staging_candidate.json')
 def manifest_hash(run_dir=RUN_DIR): return sha(Path(run_dir)/'sha256_manifest.json')
@@ -27,18 +33,26 @@ def _contract_errors(rd:Path):
     errs=[]; missing=[a for a in REQ_ART if not (rd/a).exists()]
     if missing: errs.append({'code':'missing_required_artifact','items':missing})
     if missing: return errs
-    man=load(rd/'sha256_manifest.json')
+    docs={}
+    for name in ['sha256_manifest.json','staging_candidate.json','run_summary.json','execution_receipt.json']:
+        doc, err = safe_load(rd/name)
+        if err: errs.append(err)
+        else: docs[name]=doc
+    if errs: return errs
+    man=docs['sha256_manifest.json']; cand=docs['staging_candidate.json']; summ=docs['run_summary.json']; rec=docs['execution_receipt.json']
     if set(man.get('manifest',{})) != set(a for a in REQ_ART if a!='sha256_manifest.json'):
         errs.append({'code':'manifest_contract_mismatch','expected':sorted(a for a in REQ_ART if a!='sha256_manifest.json'),'actual':sorted(man.get('manifest',{}))})
-    cand=load(rd/'staging_candidate.json'); summ=load(rd/'run_summary.json'); rec=load(rd/'execution_receipt.json')
+    statuses={'candidate':cand.get('contract_status'),'summary':summ.get('contract_status'),'receipt':rec.get('contract_status'),'manifest':man.get('contract_status')}
+    if len(set(statuses.values())) != 1 or next(iter(statuses.values())) not in SUCCESS_CONTRACT_STATUSES:
+        errs.append({'code':'contract_status_blocked','statuses':statuses,'allowed':sorted(SUCCESS_CONTRACT_STATUSES)})
     for objname,obj in [('candidate',cand),('summary',summ),('receipt',rec),('manifest',man)]:
         if obj.get('source_id')!=SOURCE: errs.append({'code':'source_mismatch','object':objname})
         if set(map(str,obj.get('requested_targets',[])))!=set(TARGETS): errs.append({'code':'target_drift','object':objname})
         for f in FORBID_FLAGS:
             if obj.get(f) is True: errs.append({'code':'forbidden_flag','object':objname,'flag':f})
-    rows=cand.get('rows',[]); row_targets=[str(r.get('symbol')) for r in rows]
+    rows=cand.get('rows',[]); row_targets=[str(r.get('symbol')) for r in rows if isinstance(r,dict)]
     if len(row_targets)!=len(set(row_targets)) or set(row_targets)!=set(TARGETS): errs.append({'code':'target_drift','object':'candidate.rows'})
-    if cand.get('source_id')!=SOURCE or not all(r.get('source')==SOURCE for r in rows): errs.append({'code':'source_mismatch','object':'candidate.rows'})
+    if cand.get('source_id')!=SOURCE or not all(isinstance(r,dict) and r.get('source')==SOURCE for r in rows): errs.append({'code':'source_mismatch','object':'candidate.rows'})
     return errs
 def verify_evidence(run_dir=RUN_DIR, authorization=AUTH, request=AUTH_REQ):
     rd=Path(run_dir); errs=[]

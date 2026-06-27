@@ -20,6 +20,19 @@ def test_untracked_json_artifact_blocked(tmp_path):
     d=copy_run(tmp_path); (d/'extra.json').write_text('{}'); codes={e['code'] for e in verify_evidence(d)['errors']}; assert 'manifest_untracked_artifact' in codes
 def test_receipt_audit_uses_authorization_validator(tmp_path):
     d=copy_run(tmp_path); r=load(d/'execution_receipt.json'); r['authorization_id']='wrong'; write_json(d/'execution_receipt.json',r); codes={e['code'] for e in verify_evidence(d)['errors']}; assert 'receipt_authorization_mismatch' in codes
+def test_contract_status_failed_is_semantic_block(tmp_path):
+    d=copy_run(tmp_path)
+    for fn in ['staging_candidate.json','run_summary.json','execution_receipt.json','sha256_manifest.json']:
+        obj=load(d/fn); obj['contract_status']='failed'; write_json(d/fn,obj)
+    codes={e['code'] for e in verify_evidence(d)['errors']}
+    assert 'contract_status_blocked' in codes
+def test_malformed_json_returns_structured_blocked(tmp_path):
+    d=copy_run(tmp_path); (d/'staging_candidate.json').write_text('{bad')
+    codes={e['code'] for e in verify_evidence(d)['errors']}
+    assert 'json_read_failed' in codes
+    req=tmp_path/'bad_request.json'; req.write_text('{bad')
+    assert validate_request(req)['status']=='blocked'
+    assert validate_request(req)['errors'][0]['code']=='json_read_failed'
 def test_exact_binding_request_and_schema():
     r=validate_request(REQ); assert r['status']=='pass'
     q=json.loads(Path(REQ).read_text()); assert q['source_manifest_sha256']==manifest_hash(); assert q['staging_candidate_sha256']==candidate_hash(); assert q['targets']==TARGETS
@@ -38,7 +51,10 @@ def test_blocked_cli_returns_nonzero(tmp_path):
     r=subprocess.run([sys.executable,'scripts/plan_m5c_staging_promotion.py','--destination','production/out.json','--check-only'],capture_output=True,text=True); assert r.returncode != 0
 def test_rollback_failure_injection_no_mutation(tmp_path):
     r=rollback(str(tmp_path)); assert r['write_performed'] is False and r['delete_performed'] is False and r['overwrite_performed'] is False
-    results={s['scenario']:s for s in r['scenarios']}; assert 'manifest_sha256_mismatch' in results['tampered_manifest']['observed_error_codes']; assert 'manifest_artifact_missing' in results['missing_artifact']['observed_error_codes']; assert 'target_drift' in results['unauthorized_target']['observed_error_codes']; assert 'forbidden_flag' in results['forbidden_realtime_trading_flag']['observed_error_codes']
+    results={s['scenario']:s for s in r['scenarios']}; assert r['status']=='rollback_ready_check_only'; assert 'manifest_sha256_mismatch' in results['tampered_manifest']['observed_error_codes']; assert 'manifest_artifact_missing' in results['missing_artifact']['observed_error_codes']; assert 'target_drift' in results['unauthorized_target']['observed_error_codes']; assert 'contract_status_blocked' in results['contract_failure']['observed_error_codes']; assert 'forbidden_flag' in results['forbidden_realtime_trading_flag']['observed_error_codes']; assert 'partial_write_detected' in results['partial_write_simulation']['observed_error_codes']
+def test_rollback_rejects_forbidden_tmp_roots(tmp_path):
+    for bad in ['frontend/public/test','research/generated/test','production/test','prod/test','research/live_probe_runs/m5b/test']:
+        r=rollback(bad); assert r['status']=='blocked'; assert r['errors'][0]['code']=='forbidden_tmp_root'
 def test_one_command_preflight_shape():
     out=run();
     for k in ['evidence_integrity','receipt_audit','candidate_eligibility','request_validation','simulation_status','rollback_readiness','readonly_compatibility','actual_promotion_performed','next_required_action']: assert k in out

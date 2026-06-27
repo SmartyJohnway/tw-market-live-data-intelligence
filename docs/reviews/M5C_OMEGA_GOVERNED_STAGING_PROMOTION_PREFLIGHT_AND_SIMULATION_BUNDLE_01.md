@@ -20,3 +20,10 @@ No live probe, network probe, M5B replay, new authorization consumption, actual 
 - Rollback simulation now copies M5B evidence into temporary directories, injects tamper/missing/target/contract/flag/partial-write scenarios, calls the evidence gate, and reports observed error codes without deleting or overwriting repository files.
 - Blocked assessment/planning CLI outcomes now return non-zero.
 - Forbidden path checks now cover `production/`, `prod/`, absolute paths, Windows separators, and traversal normalization.
+
+## Second review rollback hardening
+- Rollback CLI no longer accepts `--tmp-root`; formal CLI execution always uses an internal `TemporaryDirectory`.
+- The Python-only rollback test interface rejects forbidden/durable tmp roots including `frontend/public`, `research/generated`, `production`, `prod`, and `research/live_probe_runs/m5b`.
+- Evidence contract validation now requires `contract_status` consistency across candidate, summary, receipt, and manifest, and blocks statuses outside `normalized_pass`/`partial_pass` with `contract_status_blocked`.
+- Rollback simulation now marks the overall status `simulation_failed` if any scenario does not observe its expected error code; partial write simulation is explicitly detected as `partial_write_detected`.
+- Malformed request/evidence JSON is converted to structured blocked errors instead of tracebacks.
