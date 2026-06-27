@@ -127,7 +127,7 @@
   ],
   "run_id": "m5b_twse_openapi_20260627T015136Z",
   "source_id": "TWSE_OpenAPI",
-  "source_timestamp": null,
+  "source_timestamp": "2026-06-26",
   "staging_only": true,
   "trading_signal": false
 }

@@ -44,3 +44,12 @@ The SHA-256 manifest status is `pass`. No full raw exchange payload and no non-t
 ## Remaining blockers
 
 M5C staging promotion, frontend publication, production refresh, and any trading/recommendation workflows remain unauthorized and blocked pending a separate authorization.
+
+## Repair follow-up
+
+- Added global single-use authorization consumption at `research/live_probe_runs/m5b/authorization_consumption/<authorization_id>.json`; changing `--output-dir` can no longer reuse the same authorization.
+- Added structured failure handling so post-network JSON, normalization, HTTP, and artifact failures emit consumed failure receipts and return non-zero for failed contract statuses.
+- Added deterministic staging finalization: staging candidate, run summary, evidence ledger, and SHA-256 manifest are now produced by `scripts/build_m5b_staging_candidate.py` without manual artifact edits.
+- Populated evidence ledger entries with artifact path, type, SHA-256, lineage, producer, and promotion status.
+- Replaced empty failure-injection tests with assertions for malformed payloads, unauthorized symbols, raw full-payload retention, trading fields, realtime guarantees, and single-use authorization reuse.
+- Computed `source_timestamp=2026-06-26` from ROC trade date `1150626`, with retrieval-to-source date age of 1 day.
