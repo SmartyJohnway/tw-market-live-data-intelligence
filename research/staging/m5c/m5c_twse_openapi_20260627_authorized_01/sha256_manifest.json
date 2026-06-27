@@ -1,0 +1,34 @@
+{
+  "authorization_id": "M5C_TWSE_OPENAPI_STAGING_PROMOTION_AUTHORIZATION_20260627_AUTHORIZED_01",
+  "created_at_utc": "2026-06-27T11:39:12.754651+00:00",
+  "current_realtime": false,
+  "frontend_publication_authorized": false,
+  "generated_artifact_write": false,
+  "historical_evidence_snapshot": true,
+  "immutable": true,
+  "manifest": {
+    "authorization_snapshot.json": "d3aba25d8e27585be0728a46868b1e1fcd0a2ff129af8f45ded2d3eb777f6834",
+    "evidence_ledger.json": "96f5fe5c4a410e664d8a1c7d829e7c88cb2b623ac83daac08a7c2260b88b5de4",
+    "frontend_readonly_context_package.json": "a21c0436c11481cd452fbe42e71ae944d4d76ec422e45924fab6428fab030048",
+    "lineage.json": "3339ea46cd93f757eedce7c23b6b0d759e3fc6fadd0301b151ae3e049079aae7",
+    "promotion_receipt.json": "52d789dd492f5008916952e851e6a0f93922ab2e5f349e9f8c7035dcc2045741",
+    "request_snapshot.json": "6e2787c863d6cd4c6fe2ac0a315134dac9e21cf92578cc425d75119dd86ee9b4",
+    "rollback_plan.json": "9281f4a7dc545af1911bd3b893e430e4cbf3fea0f0ac8555c0fd19ef13f2a476",
+    "run_summary.json": "f0add44861a16ffc9a2a1bf2ac411034f8d19373dfeea66d8a3f605d0849b49d",
+    "source_binding.json": "53edd32a0eddb6967d6882485e6827a771026b9cdce5441af97567ef29d307cf",
+    "staging_payload.json": "04a3f3dafa74f8c3d749ea4950f29c1b42687b47b96826506d20ea6b9faa3f40",
+    "validation_report.json": "03a714c2b104f69d41c03d8d78b32310c770c1926ca128437a3cf50fb1095ac3"
+  },
+  "manifest_final": true,
+  "production_ready": false,
+  "realtime_guaranteed": false,
+  "schema_version": "m5c_promoted_staging_package.v1",
+  "source_run_dir": "research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z",
+  "staging_only": true,
+  "targets": [
+    "2330",
+    "0050",
+    "00929"
+  ],
+  "trading_signal": false
+}

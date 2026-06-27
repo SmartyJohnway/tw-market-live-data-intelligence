@@ -30,3 +30,8 @@ M5A adds a check-only authorization request schema and validator for a future bo
 ## M5B bounded live evidence gate
 
 M5B adds a single-use bounded TWSE_OpenAPI evidence gate. It is staging-only and does not authorize production promotion, generated artifact refresh, frontend publication, or trading signals.
+
+## M5C/M5D bundle 01
+
+- M5C durable staging promotion is local-only, single-use, historical evidence only, and not production-ready.
+- M5D frontend publication remains request-only; the next action is separate user authorization.

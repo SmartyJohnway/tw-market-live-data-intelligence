@@ -1,0 +1,61 @@
+{
+  "authorization": {
+    "actual_frontend_publication_authorized": false,
+    "authorization_id": "M5C_TWSE_OPENAPI_STAGING_PROMOTION_AUTHORIZATION_20260627_AUTHORIZED_01",
+    "authorized_at_utc": "2026-06-27T00:00:00Z",
+    "current_realtime": false,
+    "destination": "research/staging/m5c/m5c_twse_openapi_20260627_authorized_01",
+    "forbidden_paths": [
+      "research/live_probe_runs/m5b/*",
+      "frontend/public/*",
+      "research/generated/*",
+      "production/*",
+      "prod/*"
+    ],
+    "frontend_public_write": false,
+    "frontend_publication_authorized": false,
+    "generated_artifact_write": false,
+    "m5c_request_path": "docs/authorization/requests/M5C_TWSE_OPENAPI_STAGING_PROMOTION_REQUEST.json",
+    "m5c_request_sha256": "2e7ceb4c4ced1e26045cb3b34838d831e24e464b101e219e261e14ccb8c558c2",
+    "merge_sha": "11711eacf7795f3074350a0db68b3227b7986215",
+    "network_probe_authorized": false,
+    "pr_number": 56,
+    "production_ready": false,
+    "production_write": false,
+    "realtime_claim_authorized": false,
+    "realtime_guaranteed": false,
+    "required_acknowledgement": "--acknowledge-bounded-staging-promotion",
+    "schema_version": "m5c_staging_promotion_execution_authorization.v1",
+    "single_use": true,
+    "source_id": "TWSE_OpenAPI",
+    "source_manifest_sha256": "4d583775abf061901f270fd6e7df5aa49fd6bf480da496dafb3eb28ea0654543",
+    "source_run_dir": "research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z",
+    "source_run_id": "m5b_twse_openapi_20260627T015136Z",
+    "staging_candidate_sha256": "5533b6c0df8416c1ca2dce2dd0a4cb3728f77f78dabb81b39072866dcf9a0b04",
+    "staging_promotion_authorized": true,
+    "targets": [
+      "2330",
+      "0050",
+      "00929"
+    ],
+    "trading_output": false,
+    "user_authorization_basis": "PR #56 post-merge bounded local-only authorization: \u6388\u6b0a\u4e0b\u4e00\u8f2a\uff0c\u591a\u505a\u4e00\u4e9b\u4e8b\u60c5\u4e0d\u8981\u4e00\u76f4\u4e2d\u65b7"
+  },
+  "authorization_id": "M5C_TWSE_OPENAPI_STAGING_PROMOTION_AUTHORIZATION_20260627_AUTHORIZED_01",
+  "created_at_utc": "2026-06-27T11:39:12.754651+00:00",
+  "current_realtime": false,
+  "frontend_publication_authorized": false,
+  "generated_artifact_write": false,
+  "historical_evidence_snapshot": true,
+  "production_ready": false,
+  "realtime_guaranteed": false,
+  "schema_version": "m5c_promoted_staging_package.v1",
+  "source_run_dir": "research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z",
+  "staging_only": true,
+  "targets": [
+    "2330",
+    "0050",
+    "00929"
+  ],
+  "trading_signal": false
+}

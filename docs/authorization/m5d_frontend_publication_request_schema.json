@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {},
+  "required": [
+    "request_id",
+    "m5c_staging_package_dir",
+    "m5c_staging_manifest_sha256",
+    "actual_frontend_publication_authorized",
+    "publication_performed",
+    "next_required_action"
+  ],
+  "type": "object"
+}

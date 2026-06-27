@@ -1,0 +1,23 @@
+{
+  "authorization_id": "M5C_TWSE_OPENAPI_STAGING_PROMOTION_AUTHORIZATION_20260627_AUTHORIZED_01",
+  "created_at_utc": "2026-06-27T11:39:12.754651+00:00",
+  "current_realtime": false,
+  "frontend_publication_authorized": false,
+  "generated_artifact_write": false,
+  "historical_evidence_snapshot": true,
+  "m5b_candidate_sha256": "5533b6c0df8416c1ca2dce2dd0a4cb3728f77f78dabb81b39072866dcf9a0b04",
+  "m5b_manifest_sha256": "4d583775abf061901f270fd6e7df5aa49fd6bf480da496dafb3eb28ea0654543",
+  "m5c_authorization_sha256": "5a6e3075aec7cde4fe5b8ead9c2637dc1e56d8045ef6a67297e3ae12e8354e8d",
+  "m5c_request_sha256": "2e7ceb4c4ced1e26045cb3b34838d831e24e464b101e219e261e14ccb8c558c2",
+  "production_ready": false,
+  "realtime_guaranteed": false,
+  "schema_version": "m5c_promoted_staging_package.v1",
+  "source_run_dir": "research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z",
+  "staging_only": true,
+  "targets": [
+    "2330",
+    "0050",
+    "00929"
+  ],
+  "trading_signal": false
+}

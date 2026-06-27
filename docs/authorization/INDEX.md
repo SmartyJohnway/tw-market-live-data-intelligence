@@ -15,3 +15,8 @@ M5A is preflight-only. It keeps `live_probe_authorized=false`, `authorization_to
 - Execution authorization schema: `docs/authorization/m5b_live_probe_execution_authorization_schema.json`
 - Decision: `docs/authorization/decisions/M5B_TWSE_OPENAPI_2330_0050_00929_AUTHORIZATION.json`
 - Operator runbook: `docs/authorization/M5B_OPERATOR_RUNBOOK.md`
+
+## M5C/M5D bundle 01
+
+- M5C staging promotion execution authorization: `docs/authorization/decisions/M5C_TWSE_OPENAPI_STAGING_PROMOTION_AUTHORIZATION.json`.
+- M5D frontend publication request: `docs/authorization/requests/M5D_FRONTEND_PUBLICATION_REQUEST.json`.
