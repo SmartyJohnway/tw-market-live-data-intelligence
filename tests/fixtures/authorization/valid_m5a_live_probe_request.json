@@ -7,7 +7,7 @@
   "targets": ["2330", "0050", "00929"],
   "target_mode": "bounded",
   "max_targets": 5,
-  "proposed_probe_script": "scripts/run_m3g04_controlled_live_probe.py",
+  "proposed_probe_script": "scripts/run_m5b_controlled_live_probe.py",
   "proposed_output_directory": "research/live_probe_runs/m5b/twse_openapi_preflight_fixture",
   "purpose": "Prepare a bounded single-source M5B live probe authorization review package without authorizing or executing network access.",
   "required_caveats": ["not_realtime_guaranteed", "not_production_current_state"],

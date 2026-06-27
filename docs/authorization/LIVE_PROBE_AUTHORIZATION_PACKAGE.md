@@ -44,7 +44,9 @@ Wildcard, empty, full-market, and unknown targets are invalid. Source-specific t
 
 - Proposed output directory must be under `research/live_probe_runs/m5b/`.
 - Proposed output directory must not be under `frontend/public/`, `research/generated/`, `production/`, or `prod/`.
-- Proposed script must be an existing controlled runner.
+- Proposed script must be an existing controlled runner that can honor the requested `--output-dir`.
+- `scripts/run_m3g04_controlled_live_probe.py` is not M5B-ready because it writes to `research/live_probe_runs/m3g_04/`; requests that pair it with `research/live_probe_runs/m5b/` are `repair_required`.
+- `scripts/run_m5b_controlled_live_probe.py` is currently an interface/preflight runner only; it validates arguments and output-directory semantics without network execution or writes.
 - `scripts/run_all_probes.py` is explicitly forbidden.
 
 ## Validation command

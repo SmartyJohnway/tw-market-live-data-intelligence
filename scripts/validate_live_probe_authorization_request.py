@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -33,7 +34,8 @@ FORBIDDEN_FLAGS = (
     "authorization_token_issued",
 )
 CONTROLLED_RUNNERS = {
-    "scripts/run_m3g04_controlled_live_probe.py",
+    "scripts/run_m5b_controlled_live_probe.py": {"supports_output_dir": True, "output_root": "research/live_probe_runs/m5b"},
+    "scripts/run_m3g04_controlled_live_probe.py": {"supports_output_dir": False, "output_root": "research/live_probe_runs/m3g_04"},
 }
 FORBIDDEN_SCRIPTS = {
     "scripts/run_all_probes.py",
@@ -87,7 +89,31 @@ def _registry_source(source_id: Any, registry: dict[str, Any]) -> dict[str, Any]
 
 def _is_relative_safe(path_text: str) -> bool:
     path = Path(path_text)
-    return not path.is_absolute() and ".." not in path.parts
+    drive = getattr(path, "drive", "")
+    return not path.is_absolute() and not drive and not re.match(r"^[A-Za-z]:[\\/]", path_text) and ".." not in path.parts and not path_text.startswith(("/", "\\"))
+
+
+def _normalize_script_path(script: str) -> str | None:
+    raw = script.strip()
+    path = Path(raw)
+    if path.is_absolute() or getattr(path, "drive", "") or re.match(r"^[A-Za-z]:[\\/]", raw) or ".." in path.parts or raw.startswith(("/", "\\")):
+        return None
+    if raw.startswith("./"):
+        raw = raw[2:]
+    return raw
+
+
+def _result_envelope(errors: list[dict[str, Any]], result: str) -> dict[str, Any]:
+    return {
+        "ok": not errors and result == "ready_for_user_authorization_review",
+        "errors": errors,
+        "result": result,
+        "live_probe_authorized": False,
+        "authorization_token_issued": False,
+        "execution_performed": False,
+        "writes": False,
+        "network_used": False,
+    }
 
 
 def validate_request(request: Any, schema: dict[str, Any], registry: dict[str, Any], now: datetime | None = None) -> list[dict[str, Any]]:
@@ -152,35 +178,36 @@ def validate_request(request: Any, schema: dict[str, Any], registry: dict[str, A
 
     script = request.get("proposed_probe_script")
     if isinstance(script, str):
-        normalized_script = script.strip().lstrip("./")
-        if normalized_script in FORBIDDEN_SCRIPTS:
+        normalized_script = _normalize_script_path(script)
+        if normalized_script is None:
+            errors.append(_json_error("probe_script_path_not_relative_safe", "$.proposed_probe_script", "proposed script path must be a safe relative path"))
+        elif normalized_script in FORBIDDEN_SCRIPTS:
             errors.append(_json_error("forbidden_probe_script", "$.proposed_probe_script", "scripts/run_all_probes.py is forbidden"))
-        if normalized_script not in CONTROLLED_RUNNERS:
+        elif normalized_script not in CONTROLLED_RUNNERS:
             errors.append(_json_error("probe_script_not_controlled_runner", "$.proposed_probe_script", "proposed script must be an existing controlled runner"))
         elif not (ROOT / normalized_script).is_file():
             errors.append(_json_error("probe_script_missing", "$.proposed_probe_script", "controlled runner file does not exist"))
+        else:
+            runner = CONTROLLED_RUNNERS[normalized_script]
+            if runner.get("supports_output_dir") is not True:
+                errors.append(_json_error("probe_script_output_dir_unsupported", "$.proposed_probe_script", "proposed runner cannot honor proposed_output_directory", runner_output_root=runner.get("output_root")))
     return errors
 
 
 def validate_request_file(request_path: Path, schema_path: Path = SCHEMA_PATH, registry_path: Path = REGISTRY_PATH, now: datetime | None = None) -> dict[str, Any]:
     request, load_errors = _load_json(request_path)
     if load_errors:
-        return {"ok": False, "errors": load_errors, "execution_performed": False, "writes": False, "network_used": False}
+        return _result_envelope(load_errors, "repair_required")
     schema, schema_errors = _load_json(schema_path)
     registry, registry_errors = _load_json(registry_path)
     if schema_errors or registry_errors:
-        return {"ok": False, "errors": schema_errors + registry_errors, "execution_performed": False, "writes": False, "network_used": False}
+        return _result_envelope(schema_errors + registry_errors, "blocked")
     errors = validate_request(request, schema, registry, now=now)
-    return {
-        "ok": not errors,
-        "errors": errors,
-        "result": "ready_for_user_authorization_review" if not errors else "repair_required",
-        "live_probe_authorized": False,
-        "authorization_token_issued": False,
-        "execution_performed": False,
-        "writes": False,
-        "network_used": False,
-    }
+    dependency_codes = {"probe_script_missing"}
+    result = "blocked" if any(error["code"] in dependency_codes for error in errors) else "repair_required"
+    if not errors:
+        result = "ready_for_user_authorization_review"
+    return _result_envelope(errors, result)
 
 
 def main(argv: list[str] | None = None) -> int:

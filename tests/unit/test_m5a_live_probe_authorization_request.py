@@ -104,3 +104,54 @@ def test_cli_malformed_request_fails_without_traceback(tmp_path):
     assert "Traceback" not in completed.stderr
     payload = json.loads(completed.stdout)
     assert payload["errors"][0]["code"] == "malformed_json"
+
+
+def test_m3g04_runner_cannot_be_marked_ready_for_m5b_output_path():
+    request = load_valid()
+    request["proposed_probe_script"] = "scripts/run_m3g04_controlled_live_probe.py"
+    errors = validate_request(request, SCHEMA, REGISTRY, now=NOW)
+    assert any(error["code"] == "probe_script_output_dir_unsupported" for error in errors)
+
+
+def test_absolute_and_traversal_script_paths_are_rejected_before_normalization():
+    for script_path in ["/scripts/run_m5b_controlled_live_probe.py", "../scripts/run_m5b_controlled_live_probe.py", "C:/scripts/run_m5b_controlled_live_probe.py"]:
+        request = load_valid()
+        request["proposed_probe_script"] = script_path
+        errors = validate_request(request, SCHEMA, REGISTRY, now=NOW)
+        assert any(error["code"] == "probe_script_path_not_relative_safe" for error in errors), script_path
+
+
+def test_file_level_errors_have_complete_result_envelope(tmp_path):
+    missing_schema = tmp_path / "missing_schema.json"
+    result = validate_request_file(VALID_FIXTURE, schema_path=missing_schema, now=NOW)
+    assert result["ok"] is False
+    assert result["result"] == "blocked"
+    assert result["live_probe_authorized"] is False
+    assert result["authorization_token_issued"] is False
+    assert result["execution_performed"] is False
+    assert result["writes"] is False
+    assert result["network_used"] is False
+
+
+def test_malformed_request_result_is_repair_required_with_complete_envelope(tmp_path):
+    malformed = tmp_path / "malformed.json"
+    malformed.write_text("{", encoding="utf-8")
+    result = validate_request_file(malformed, now=NOW)
+    assert result["ok"] is False
+    assert result["result"] == "repair_required"
+    assert result["live_probe_authorized"] is False
+    assert result["authorization_token_issued"] is False
+    assert result["execution_performed"] is False
+    assert result["writes"] is False
+    assert result["network_used"] is False
+
+
+def test_bounded_mapping_consistency_with_existing_controlled_runner_for_mis_and_yahoo():
+    from scripts.run_m3g04_controlled_live_probe import map_targets_for_source
+    from scripts.validate_live_probe_authorization_request import SOURCE_TARGET_MAP
+
+    targets = ["2330", "0050", "00929", "8069", "TAIEX"]
+    assert set(targets).issubset(SOURCE_TARGET_MAP["TWSE_MIS"])
+    assert map_targets_for_source("TWSE_MIS", targets) == ["tse_2330.tw", "tse_0050.tw", "tse_00929.tw", "otc_8069.tw", "tse_t00.tw"]
+    assert set(targets).issubset(SOURCE_TARGET_MAP["Yahoo_Finance"])
+    assert map_targets_for_source("Yahoo_Finance", targets) == ["2330.TW", "0050.TW", "00929.TW", "8069.TWO", "^TWII"]

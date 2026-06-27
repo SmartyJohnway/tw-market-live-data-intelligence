@@ -203,4 +203,4 @@ M5A adds a machine-verifiable, check-only authorization request package for a fu
 python scripts/validate_live_probe_authorization_request.py --request tests/fixtures/authorization/valid_m5a_live_probe_request.json
 ```
 
-A passing M5A request is only `ready_for_user_authorization_review`; it keeps live probe authorization, token issuance, production writes, frontend publication, generated artifact writes, full-market scans, and trading outputs disabled.
+A passing M5A request is only `ready_for_user_authorization_review`; it keeps live probe authorization, token issuance, production writes, frontend publication, generated artifact writes, full-market scans, and trading outputs disabled. M5A also verifies that the proposed M5B runner interface can honor the requested `research/live_probe_runs/m5b/` output directory before any separate M5B authorization.

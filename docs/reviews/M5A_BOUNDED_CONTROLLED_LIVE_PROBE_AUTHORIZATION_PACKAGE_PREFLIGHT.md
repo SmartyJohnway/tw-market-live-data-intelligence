@@ -30,9 +30,13 @@ This review adds a machine-verifiable request schema, validator, fixture simulat
 
 ## Validator guarantees
 
-The validator checks JSON Schema Draft 2020-12 with `FormatChecker`, request/expiry dates, source registry presence, `live_probe_authorization_required=true`, registry-aligned caveats and risk flags, source-specific target mapping, uniqueness and bounded target count, forbidden flags, safe M5B output path, and controlled-runner script selection.
+The validator checks JSON Schema Draft 2020-12 with `FormatChecker`, request/expiry dates, source registry presence, `live_probe_authorization_required=true`, registry-aligned caveats and risk flags, source-specific target mapping, uniqueness and bounded target count, forbidden flags, safe M5B output path, absolute/traversal script path rejection, and controlled-runner script selection. It also rejects runners that cannot honor the requested M5B output directory.
 
 Malformed JSON returns structured errors and does not traceback.
+
+## Repair addressed
+
+The M5A request now proposes `scripts/run_m5b_controlled_live_probe.py`, an interface/preflight runner that explicitly accepts `--output-dir` under `research/live_probe_runs/m5b/` and performs no network execution or writes. The older M3G04 runner remains detectable as incompatible because it writes under `research/live_probe_runs/m3g_04/`.
 
 ## Recommended first M5B candidate
 
