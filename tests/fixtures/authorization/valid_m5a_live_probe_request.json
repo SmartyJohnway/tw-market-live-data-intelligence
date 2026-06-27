@@ -1,0 +1,23 @@
+{
+  "request_id": "m5a-twse-openapi-2330-0050-00929-preflight",
+  "requested_by": "fixture_operator",
+  "requested_at": "2026-06-27T00:00:00Z",
+  "expires_at": "2099-01-01T00:00:00Z",
+  "source_id": "TWSE_OpenAPI",
+  "targets": ["2330", "0050", "00929"],
+  "target_mode": "bounded",
+  "max_targets": 5,
+  "proposed_probe_script": "scripts/run_m3g04_controlled_live_probe.py",
+  "proposed_output_directory": "research/live_probe_runs/m5b/twse_openapi_preflight_fixture",
+  "purpose": "Prepare a bounded single-source M5B live probe authorization review package without authorizing or executing network access.",
+  "required_caveats": ["not_realtime_guaranteed", "not_production_current_state"],
+  "source_risk_flags": ["delayed_possible"],
+  "network_authorized": false,
+  "live_probe_authorized": false,
+  "production_write": false,
+  "frontend_publication": false,
+  "generated_artifact_write": false,
+  "full_market_scan": false,
+  "trading_signal": false,
+  "authorization_token_issued": false
+}

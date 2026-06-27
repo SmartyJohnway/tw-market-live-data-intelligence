@@ -1,0 +1,83 @@
+[
+  {
+    "case_id": "wildcard_full_market_rejected",
+    "request": {
+      "request_id": "m5a-invalid-wildcard",
+      "requested_by": "fixture_operator",
+      "requested_at": "2026-06-27T00:00:00Z",
+      "expires_at": "2099-01-01T00:00:00Z",
+      "source_id": "TWSE_MIS",
+      "targets": ["*"],
+      "target_mode": "bounded",
+      "max_targets": 5,
+      "proposed_probe_script": "scripts/run_m3g04_controlled_live_probe.py",
+      "proposed_output_directory": "research/live_probe_runs/m5b/invalid",
+      "purpose": "Invalid wildcard target fixture for bounded authorization validation.",
+      "required_caveats": ["not_realtime_guaranteed", "not_production_current_state"],
+      "source_risk_flags": ["unofficial_source_risk", "fragile_frontend_contract", "not_official_realtime_api"],
+      "network_authorized": false,
+      "live_probe_authorized": false,
+      "production_write": false,
+      "frontend_publication": false,
+      "generated_artifact_write": false,
+      "full_market_scan": false,
+      "trading_signal": false,
+      "authorization_token_issued": false
+    },
+    "expected_codes": ["schema_validation_failed", "wildcard_target_forbidden", "source_target_mapping_unresolved"]
+  },
+  {
+    "case_id": "forbidden_flags_and_paths_rejected",
+    "request": {
+      "request_id": "m5a-invalid-flags-paths",
+      "requested_by": "fixture_operator",
+      "requested_at": "2026-06-27T00:00:00Z",
+      "expires_at": "2099-01-01T00:00:00Z",
+      "source_id": "Yahoo_Finance",
+      "targets": ["2330"],
+      "target_mode": "bounded",
+      "max_targets": 5,
+      "proposed_probe_script": "scripts/run_all_probes.py",
+      "proposed_output_directory": "frontend/public/m5b",
+      "purpose": "Invalid authorization fixture with forbidden flags, script, and output path.",
+      "required_caveats": ["not_realtime_guaranteed", "not_production_current_state"],
+      "source_risk_flags": ["third_party_source_risk", "delayed_possible"],
+      "network_authorized": true,
+      "live_probe_authorized": true,
+      "production_write": true,
+      "frontend_publication": true,
+      "generated_artifact_write": true,
+      "full_market_scan": true,
+      "trading_signal": true,
+      "authorization_token_issued": true
+    },
+    "expected_codes": ["schema_validation_failed", "forbidden_flag_must_be_false", "forbidden_output_path", "output_path_not_m5b", "forbidden_probe_script", "probe_script_not_controlled_runner"]
+  },
+  {
+    "case_id": "source_mapping_and_registry_mismatch_rejected",
+    "request": {
+      "request_id": "m5a-invalid-source-mapping",
+      "requested_by": "fixture_operator",
+      "requested_at": "2026-06-27T00:00:00Z",
+      "expires_at": "2026-06-26T00:00:00Z",
+      "source_id": "TPEx_OpenAPI",
+      "targets": ["2330", "8069", "8069"],
+      "target_mode": "bounded",
+      "max_targets": 5,
+      "proposed_probe_script": "scripts/run_m3g04_controlled_live_probe.py",
+      "proposed_output_directory": "research/live_probe_runs/m5b/tpex_invalid",
+      "purpose": "Invalid authorization fixture with duplicate targets and mismatched registry values.",
+      "required_caveats": ["not_realtime_guaranteed"],
+      "source_risk_flags": ["third_party_source_risk"],
+      "network_authorized": false,
+      "live_probe_authorized": false,
+      "production_write": false,
+      "frontend_publication": false,
+      "generated_artifact_write": false,
+      "full_market_scan": false,
+      "trading_signal": false,
+      "authorization_token_issued": false
+    },
+    "expected_codes": ["schema_validation_failed", "request_expired", "duplicate_targets", "source_target_mapping_unresolved", "source_risk_flags_mismatch", "required_caveats_mismatch"]
+  }
+]

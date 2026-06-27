@@ -194,3 +194,13 @@ Safe commands: `python -m compileall scripts tests`, `pytest -m "not network"`, 
 ## M4 Omega
 
 Adds local-only fixture-only governed platform skeleton: governance policy, source registry, evidence ledger, fixture replay, readonly observability, release gates, authorization ladder, and operator checks.
+
+## M5A bounded live probe authorization preflight
+
+M5A adds a machine-verifiable, check-only authorization request package for a future M5B bounded single-source live probe. Validate the fixture request with:
+
+```bash
+python scripts/validate_live_probe_authorization_request.py --request tests/fixtures/authorization/valid_m5a_live_probe_request.json
+```
+
+A passing M5A request is only `ready_for_user_authorization_review`; it keeps live probe authorization, token issuance, production writes, frontend publication, generated artifact writes, full-market scans, and trading outputs disabled.

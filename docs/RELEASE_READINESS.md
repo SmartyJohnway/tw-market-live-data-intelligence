@@ -22,3 +22,7 @@ Next authorization ladder: approve limited fixture refresh, then controlled sing
 ## M4 Omega
 
 Adds local-only fixture-only governed platform skeleton: governance policy, source registry, evidence ledger, fixture replay, readonly observability, release gates, authorization ladder, and operator checks.
+
+## M5A readiness note
+
+M5A adds a check-only authorization request schema and validator for a future bounded single-source M5B live probe. A passing M5A request means `ready_for_user_authorization_review`; it does not authorize live probing, token issuance, production writes, frontend publication, generated artifact writes, full-market scans, or trading outputs.
