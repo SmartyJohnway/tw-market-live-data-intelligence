@@ -27,3 +27,9 @@ No live probe, network probe, M5B replay, new authorization consumption, actual 
 - Evidence contract validation now requires `contract_status` consistency across candidate, summary, receipt, and manifest, and blocks statuses outside `normalized_pass`/`partial_pass` with `contract_status_blocked`.
 - Rollback simulation now marks the overall status `simulation_failed` if any scenario does not observe its expected error code; partial write simulation is explicitly detected as `partial_write_detected`.
 - Malformed request/evidence JSON is converted to structured blocked errors instead of tracebacks.
+
+## Third review fail-closed hardening
+- Rollback CLI now exits non-zero unless status is exactly `rollback_ready_check_only`.
+- One-command preflight now uses explicit success-status allowlists; `simulation_failed` and any other non-success state fail closed.
+- Python rollback tmp-root injection now rejects every path inside the repository root, not only selected durable directories.
+- Preflight now short-circuits after evidence failure and returns a structured blocked summary instead of loading malformed/missing candidate artifacts.

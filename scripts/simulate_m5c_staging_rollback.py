@@ -13,7 +13,11 @@ def _is_forbidden_tmp_root(path: Path) -> bool:
     except Exception:
         rel=raw
     if forbid_path(raw) or forbid_path(rel): return True
-    if rel.startswith('research/live_probe_runs/m5b') or '/research/live_probe_runs/m5b/' in ('/'+rel+'/'): return True
+    try:
+        path.resolve().relative_to(_repo_root())
+        return True
+    except Exception:
+        pass
     return False
 def _copy(base:Path, name:str):
     d=base/name; shutil.copytree(RUN_DIR,d); return d
@@ -49,5 +53,5 @@ def simulate(tmp_root: str | Path | None = None):
         with tempfile.TemporaryDirectory() as td: scenarios, failed=_run_scenarios(Path(td))
     return {'status':'simulation_failed' if failed else 'rollback_ready_check_only','write_performed':False,'delete_performed':False,'overwrite_performed':False,'scenarios':scenarios}
 def main(argv=None):
-    ap=argparse.ArgumentParser(); ap.parse_args(argv); print(json.dumps(simulate(),indent=2,sort_keys=True)); return 0
+    ap=argparse.ArgumentParser(); ap.parse_args(argv); out=simulate(); print(json.dumps(out,indent=2,sort_keys=True)); return 0 if out.get('status')=='rollback_ready_check_only' else 1
 if __name__=='__main__': raise SystemExit(main())

@@ -59,3 +59,20 @@ def test_one_command_preflight_shape():
     out=run();
     for k in ['evidence_integrity','receipt_audit','candidate_eligibility','request_validation','simulation_status','rollback_readiness','readonly_compatibility','actual_promotion_performed','next_required_action']: assert k in out
     assert out['actual_promotion_performed'] is False and out['next_required_action']=='user_authorization'
+def test_rollback_rejects_any_repo_internal_tmp_root():
+    for bad in ['docs/rollback-test','scripts/tmp','.']:
+        r=rollback(bad); assert r['status']=='blocked'; assert r['errors'][0]['code']=='forbidden_tmp_root'
+def test_rollback_main_nonzero_on_simulation_failed(monkeypatch, capsys):
+    import scripts.simulate_m5c_staging_rollback as rb
+    monkeypatch.setattr(rb, 'simulate', lambda: {'status':'simulation_failed','write_performed':False,'delete_performed':False,'overwrite_performed':False,'scenarios':[]})
+    assert rb.main([]) == 1
+def test_preflight_success_whitelist_rejects_simulation_failed(monkeypatch):
+    import scripts.run_m5c_staging_promotion_preflight as pf
+    out={'evidence_integrity':'pass','receipt_audit':'pass','candidate_eligibility':'eligible_for_user_authorization','request_validation':'pass','simulation_status':'simulation_failed','rollback_readiness':'rollback_ready_check_only','readonly_compatibility':'pass','actual_promotion_performed':False,'next_required_action':'user_authorization'}
+    assert pf.is_success(out) is False
+def test_preflight_malformed_candidate_returns_structured_blocked(tmp_path):
+    d=copy_run(tmp_path); (d/'staging_candidate.json').write_text('{bad')
+    out=run(d)
+    assert out['evidence_integrity']=='blocked'
+    assert out['actual_promotion_performed'] is False
+    assert 'errors' in out
