@@ -114,10 +114,10 @@ def _base_from_result(result: dict) -> dict:
     ]}
 
 
-def finalize(run_dir: str | Path, *, create_candidate: bool, allow_refinalize: bool = False) -> dict:
+def finalize(run_dir: str | Path, *, create_candidate: bool) -> dict:
     run_path = Path(run_dir)
-    if _existing_final_manifest(run_path) and not allow_refinalize:
-        raise ValueError("final manifest already exists; refusing to re-finalize without explicit override")
+    if _existing_final_manifest(run_path):
+        raise ValueError("final manifest already exists; refusing to re-finalize")
     result = _load(run_path / "bounded_probe_result.json")
     contract_status = result.get("contract_status")
     if create_candidate and contract_status not in SUCCESS_CONTRACT_STATUSES:
@@ -170,17 +170,16 @@ def finalize(run_dir: str | Path, *, create_candidate: bool, allow_refinalize: b
     return candidate or {"staging_only": False, "retained_targets": result.get("retained_targets", [])}
 
 
-def build(run_dir: str | Path, *, allow_refinalize: bool = False) -> dict:
-    return finalize(run_dir, create_candidate=True, allow_refinalize=allow_refinalize)
+def build(run_dir: str | Path) -> dict:
+    return finalize(run_dir, create_candidate=True)
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-dir", required=True)
-    ap.add_argument("--allow-refinalize", action="store_true", help="Explicitly replace an existing final manifest; default refuses immutable finalization")
     args = ap.parse_args(argv)
     try:
-        candidate = build(args.run_dir, allow_refinalize=args.allow_refinalize)
+        candidate = build(args.run_dir)
         print(json.dumps({
             "ok": True,
             "path": str(Path(args.run_dir) / "staging_candidate.json"),

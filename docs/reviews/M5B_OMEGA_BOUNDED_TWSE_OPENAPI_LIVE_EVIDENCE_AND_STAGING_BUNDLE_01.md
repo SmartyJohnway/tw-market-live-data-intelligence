@@ -61,3 +61,10 @@ M5C staging promotion, frontend publication, production refresh, and any trading
 - Added `scripts/verify_m5b_manifest.py` to recalculate artifact SHA-256 values and detect tampered, missing, or untracked artifacts.
 - Added mocked full `execute()` flow tests for HTTP 400 failure and consumed-authorization reuse, confirming non-zero return and zero network calls on reuse.
 - Evidence ledger entries now distinguish `produced_by` from `cataloged_by` so runner-produced artifacts are not misattributed to the finalizer.
+
+## Third repair follow-up
+
+- Authorization validation now separates `execution_preflight` from `receipt_audit`; historical receipt audit checks the receipt execution timestamp against the authorization window instead of the current wall clock.
+- Removed the manifest refinalization override from the staging builder CLI and API; finalized live evidence must be repaired through supplemental records rather than overwriting the final manifest.
+- Runner bookkeeping failures after successful finalization now preserve the finalized package and do not enter the failure-package overwrite path.
+- `--attempt-count` is constrained to `1..2`.

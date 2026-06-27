@@ -379,11 +379,24 @@ def execute(args: argparse.Namespace) -> int:
             errors.append({"code": "network_or_http_failed", "detail": f"HTTP {last_status}"})
         contract_status = write_artifacts(Path(args.output_dir), args.authorization, args.request, attempts, retry_reason, last_status, rows, errors, parse_ok, retrieved_at_utc)
         ok = contract_status in SUCCESS_CONTRACT_STATUSES
-        _update_consumption_record(consumption_path, status="succeeded" if ok else "failed", network_attempted=True, attempt_count=attempts, http_status=last_status, contract_status=contract_status, receipt_path=str(Path(args.output_dir) / "execution_receipt.json"), errors=errors)
+        try:
+            _update_consumption_record(consumption_path, status="succeeded" if ok else "failed", network_attempted=True, attempt_count=attempts, http_status=last_status, contract_status=contract_status, receipt_path=str(Path(args.output_dir) / "execution_receipt.json"), errors=errors)
+        except Exception as exc:
+            print(json.dumps({"ok": False, "errors": [{"code": "consumption_update_failed_after_finalization", "detail": str(exc), "finalized_package_preserved": True}], "network_used": True}, indent=2, sort_keys=True))
+            return 1
         print(json.dumps({"ok": ok, "run_id": Path(args.output_dir).name, "attempt_count": attempts, "retry_reason": retry_reason, "http_status": last_status, "contract_status": contract_status, "retained_targets": [row["symbol"] for row in rows], "network_used": True}, indent=2, sort_keys=True))
         return 0 if ok else 1
     except Exception as exc:
         errors.append({"code": "execution_exception", "detail": str(exc)})
+        manifest_path = Path(args.output_dir) / "sha256_manifest.json"
+        if manifest_path.exists():
+            try:
+                manifest_doc = json.loads(manifest_path.read_text())
+            except Exception:
+                manifest_doc = {}
+            if manifest_doc.get("manifest_final") is True:
+                print(json.dumps({"ok": False, "errors": errors + [{"code": "finalized_package_preserved", "path": str(manifest_path)}], "network_used": attempts > 0}, indent=2, sort_keys=True))
+                return 1
         try:
             _write_failure_package(args, consumption_path, attempts, retry_reason, last_status, "execution_failed", "parse_failed" if not parse_ok else "parsed", errors, retrieved_at_utc)
         finally:
@@ -404,8 +417,8 @@ def main(argv=None) -> int:
     parser.add_argument("--attempt-count", type=int, default=2)
     args = parser.parse_args(argv)
     errors = validate_execution_scope(args.source, args.targets, args.output_dir)
-    if args.attempt_count > 2:
-        errors.append({"code": "attempt_count_too_high", "path": "$.attempt_count"})
+    if not (1 <= args.attempt_count <= 2):
+        errors.append({"code": "attempt_count_out_of_range", "path": "$.attempt_count"})
     if not args.authorization:
         errors.append({"code": "missing_authorization", "path": "$.authorization"})
     if not args.request:

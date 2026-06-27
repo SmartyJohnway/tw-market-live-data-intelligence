@@ -166,3 +166,35 @@ def test_execute_reuse_rejects_before_network(monkeypatch, tmp_path):
     })()
     assert runner.execute(args) == 1
     assert not (tmp_path / 'second').exists()
+
+
+def test_consumption_update_failure_after_finalization_preserves_package(monkeypatch, tmp_path):
+    auth_path = copy_auth(authorization_id='m5b-test-bookkeeping-failure')
+    monkeypatch.setattr(runner, 'CONSUMPTION_ROOT', tmp_path / 'consumption')
+
+    def fake_write_artifacts(out, *args, **kwargs):
+        out.mkdir(parents=True, exist_ok=True)
+        (out / 'sha256_manifest.json').write_text(json.dumps({'manifest_final': True, 'sentinel': 'preserve'}))
+        return 'normalized_pass'
+
+    update_calls = {'count': 0}
+    def fake_update(path, **updates):
+        update_calls['count'] += 1
+        if update_calls['count'] > 1:
+            raise OSError('bookkeeping disk failure')
+
+    class Response:
+        status_code = 200
+        def json(self):
+            return []
+
+    monkeypatch.setattr(runner, 'write_artifacts', fake_write_artifacts)
+    monkeypatch.setattr(runner, '_update_consumption_record', fake_update)
+    monkeypatch.setattr(runner.requests, 'get', lambda *args, **kwargs: Response())
+    args = type('Args', (), {
+        'authorization': auth_path, 'request': REQ, 'output_dir': str(tmp_path / 'run'), 'attempt_count': 1,
+    })()
+    assert runner.execute(args) == 1
+    manifest = json.loads((tmp_path / 'run' / 'sha256_manifest.json').read_text())
+    assert manifest == {'manifest_final': True, 'sentinel': 'preserve'}
+    assert not (tmp_path / 'run' / 'bounded_probe_result.json').exists()
