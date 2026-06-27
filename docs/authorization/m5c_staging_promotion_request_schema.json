@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "not": {
+    "anyOf": [
+      {
+        "required": [
+          "approval_token"
+        ]
+      },
+      {
+        "required": [
+          "authorization_decision"
+        ]
+      }
+    ]
+  },
+  "properties": {
+    "actual_promotion_authorized": {
+      "const": false
+    },
+    "dry_run_only": {
+      "const": true
+    },
+    "frontend_public_write": {
+      "const": false
+    },
+    "generated_artifact_write": {
+      "const": false
+    },
+    "production_write": {
+      "const": false
+    },
+    "source_id": {
+      "const": "TWSE_OpenAPI"
+    },
+    "targets": {
+      "items": {
+        "enum": [
+          "2330",
+          "0050",
+          "00929"
+        ]
+      },
+      "type": "array"
+    },
+    "trading_output": {
+      "const": false
+    }
+  },
+  "required": [
+    "source_run_id",
+    "source_manifest_sha256",
+    "staging_candidate_sha256",
+    "source_id",
+    "targets",
+    "dry_run_only",
+    "actual_promotion_authorized"
+  ],
+  "title": "M5C staging promotion request",
+  "type": "object"
+}

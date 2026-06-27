@@ -26,3 +26,5 @@ jobs:
 
       - name: M4 check
         run: python scripts/run_m4_readiness_check.py --check-only
+      - name: M5C staging promotion preflight check-only
+        run: python scripts/run_m5c_staging_promotion_preflight.py --check-only
