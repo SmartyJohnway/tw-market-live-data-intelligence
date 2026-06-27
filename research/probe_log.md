@@ -32,3 +32,19 @@
 - Contract Status: `doc_only`
 - HTTP Status: N/A
 
+
+
+## M5B bounded TWSE_OpenAPI live probe — 2026-06-27T01:51:36Z
+
+- Source name: TWSE_OpenAPI
+- Source type: official_openapi
+- URL: https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL
+- Request method: GET
+- Required headers/cookies/session: Accept: application/json; no cookies/session/credentials used
+- Status code: 200
+- Retained sample scope: only 0050, 00929, 2330 normalized rows retained under research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z/
+- Parsed fields: symbol, name, trade_date, OHLC, change, trade_volume, trade_value, transaction_count, currency, freshness/delay flags
+- Timestamp fields: retrieved_at_utc recorded per artifact; source trade_date retained when present
+- Freshness assessment: EOD/reference, realtime not guaranteed
+- Legal/maintenance risk: official public endpoint; schema drift and public rate limits possible
+- AI integration suitability: bounded staging-only EOD/reference evidence; no production promotion or trading signal

@@ -1,0 +1,39 @@
+{
+  "contract_status": "normalized_pass",
+  "failed_targets": [],
+  "fixture_kind": "m5b_bounded_contract_replay_minimal",
+  "http_status": 200,
+  "normalization_status": "normalized",
+  "parse_status": "parsed",
+  "requested_targets": [
+    "2330",
+    "0050",
+    "00929"
+  ],
+  "retained_targets": [
+    "0050",
+    "00929",
+    "2330"
+  ],
+  "rows": [
+    {
+      "close_type": "float",
+      "source": "TWSE_OpenAPI",
+      "symbol": "0050",
+      "trade_date_present": true
+    },
+    {
+      "close_type": "float",
+      "source": "TWSE_OpenAPI",
+      "symbol": "00929",
+      "trade_date_present": true
+    },
+    {
+      "close_type": "float",
+      "source": "TWSE_OpenAPI",
+      "symbol": "2330",
+      "trade_date_present": true
+    }
+  ],
+  "source_id": "TWSE_OpenAPI"
+}

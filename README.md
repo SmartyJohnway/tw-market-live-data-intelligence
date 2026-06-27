@@ -204,3 +204,7 @@ python scripts/validate_live_probe_authorization_request.py --request tests/fixt
 ```
 
 A passing M5A request is only `ready_for_user_authorization_review`; it keeps live probe authorization, token issuance, production writes, frontend publication, generated artifact writes, full-market scans, and trading outputs disabled. M5A also verifies that the proposed M5B runner interface can honor the requested `research/live_probe_runs/m5b/` output directory before any separate M5B authorization.
+
+## M5B bounded TWSE OpenAPI evidence bundle
+
+The M5B bundle validates one single-source, three-target TWSE_OpenAPI live evidence run with bounded retention under `research/live_probe_runs/m5b/`. It explicitly excludes production promotion, generated artifact refresh, frontend publication, and trading recommendations.

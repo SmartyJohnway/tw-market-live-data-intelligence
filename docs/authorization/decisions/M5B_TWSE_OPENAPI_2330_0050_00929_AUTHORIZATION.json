@@ -1,0 +1,28 @@
+{
+  "authorization_id": "m5b-twse-openapi-2330-0050-00929-20260627-user-bounded-01",
+  "authorization_basis": "User authorization in task M5B-OMEGA-BOUNDED-TWSE-OPENAPI-LIVE-EVIDENCE-AND-STAGING-BUNDLE-01 on 2026-06-27 for one bounded TWSE_OpenAPI execution.",
+  "authorized_by": "user",
+  "authorized_at_utc": "2026-06-27T00:00:00Z",
+  "expires_at_utc": "2026-06-28T00:00:00Z",
+  "single_use": true,
+  "allowed_source": "TWSE_OpenAPI",
+  "allowed_targets": [
+    "2330",
+    "0050",
+    "00929"
+  ],
+  "max_targets": 3,
+  "max_network_attempts": 2,
+  "allowed_runner": "scripts/run_m5b_controlled_live_probe.py",
+  "allowed_output_root": "research/live_probe_runs/m5b/",
+  "request_sha256": "82e500c376270fcf917233ab5abc0c01046ad925573f0928669b516fba07b29f",
+  "network_authorized": true,
+  "bounded_live_probe_authorized": true,
+  "production_write": false,
+  "frontend_publication": false,
+  "generated_artifact_write": false,
+  "full_market_scan": false,
+  "trading_signal": false,
+  "source_fallback_allowed": false,
+  "raw_full_response_retention": false
+}

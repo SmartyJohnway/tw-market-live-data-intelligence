@@ -13,3 +13,9 @@
 | FinMind | commercial_api | https://api.finmindtrade.com/api/v4/data | Yes | No | `normalized_pass` | 200 | success | success | eod_batch | stale | low | historical_and_eod | **No** | 1 | 1 | Free tier rate limits apply | 2026-06-20T11:04:07.249370+00:00 |
 | Fugle_MarketData | commercial_api | https://developer.fugle.tw/ | Yes | No | `auth_required` | N/A | unknown | unknown | unknown | unknown | low | live_streaming_capable | **No** | 0 | 0 | Requires personal API key | 2026-06-20T11:04:07.251236+00:00 |
 | Fubon_Neo_API | broker_api | https://developer.fubon.com/ | Yes | No | `doc_only` | N/A | unknown | unknown | unknown | unknown | high | execution_capable_but_complex | **No** | 0 | 0 | Requires valid brokerage account, Requires certificate setup | 2026-06-20T11:04:07.251265+00:00 |
+
+## M5B bounded live evidence capability note
+
+| Source | Bounded targets | Live execution | Contract status | Freshness/delay | Production promotion | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| TWSE_OpenAPI | 2330, 0050, 00929 | Executed once | normalized_pass | EOD/reference; realtime not guaranteed | false | Staging-only evidence package; no non-target rows retained. |
