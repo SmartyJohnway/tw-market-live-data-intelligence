@@ -11,10 +11,10 @@ from typing import Any
 import requests
 
 try:
-    from scripts.build_m5b_staging_candidate import build as finalize_m5b_run
+    from scripts.build_m5b_staging_candidate import build as build_m5b_candidate, finalize as finalize_m5b_run
     from scripts.validate_m5b_execution_authorization import validate_authorization
 except ModuleNotFoundError:
-    from build_m5b_staging_candidate import build as finalize_m5b_run
+    from build_m5b_staging_candidate import build as build_m5b_candidate, finalize as finalize_m5b_run
     from validate_m5b_execution_authorization import validate_authorization
 try:
     from scripts.probe_twse_openapi import normalize_twse_openapi_row
@@ -285,7 +285,7 @@ def _write_failure_package(args: argparse.Namespace, consumption_path: Path | No
     _write_json(out / "freshness_delay_assessment.json", {**base, **freshness})
     _write_json(out / "run_summary.json", {**base, "live_probe_executed": True, "live_probe_succeeded": False, "staging_candidate_created": False, "production_promotion_performed": False, "generated_artifacts_refreshed": False, "frontend_published": False, "trading_output_produced": False, "authorization_consumed": True, "retry_count": max(0, attempts - 1), "endpoint": URL})
     try:
-        finalize_m5b_run(out)
+        finalize_m5b_run(out, create_candidate=False)
     except Exception as exc:
         _write_json(out / "evidence_ledger.json", {**base, "artifacts": [], "finalization_error": str(exc)})
     if consumption_path:
@@ -310,7 +310,10 @@ def write_artifacts(out: Path, auth: str, req: str, attempts: int, retry_reason:
     _write_json(out / "source_contract_assessment.json", {**base, "endpoint": URL, "request_method": "GET", "required_headers": {"Accept": "application/json"}, "required_cookies_or_session": False, "raw_full_response_retention": False, "legal_maintenance_risk": "official public OpenAPI; schema drift/rate limits possible", "ai_integration_suitability": "bounded EOD/reference integration only"})
     _write_json(out / "freshness_delay_assessment.json", {**base, **freshness})
     _write_json(out / "run_summary.json", {**base, "live_probe_executed": True, "live_probe_succeeded": contract_status in SUCCESS_CONTRACT_STATUSES, "staging_candidate_created": False, "production_promotion_performed": False, "generated_artifacts_refreshed": False, "frontend_published": False, "trading_output_produced": False, "authorization_consumed": True, "retry_count": max(0, attempts - 1), "endpoint": URL})
-    finalize_m5b_run(out)
+    if contract_status in SUCCESS_CONTRACT_STATUSES:
+        build_m5b_candidate(out)
+    else:
+        finalize_m5b_run(out, create_candidate=False)
     return contract_status
 
 
@@ -331,7 +334,7 @@ def execute(args: argparse.Namespace) -> int:
         return 1
 
     try:
-        while attempts < 2:
+        while attempts < args.attempt_count:
             attempts += 1
             _update_consumption_record(consumption_path, status="network_attempt_started", network_attempted=True, attempt_count=attempts)
             try:

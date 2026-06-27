@@ -3,12 +3,13 @@
     {
       "artifact_path": "research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z/authorization_snapshot.json",
       "artifact_type": "authorization_snapshot",
+      "cataloged_by": "scripts/build_m5b_staging_candidate.py",
       "lineage": {
         "derived_from": "bounded M5B controlled live-probe evidence",
         "run_id": "m5b_twse_openapi_20260627T015136Z",
         "source_id": "TWSE_OpenAPI"
       },
-      "produced_by": "m5b_finalizer",
+      "produced_by": "scripts/run_m5b_controlled_live_probe.py",
       "promotion_status": {
         "frontend_published": false,
         "generated_artifact_promoted": false,
@@ -21,12 +22,13 @@
     {
       "artifact_path": "research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z/bounded_normalized_rows.json",
       "artifact_type": "bounded_normalized_rows",
+      "cataloged_by": "scripts/build_m5b_staging_candidate.py",
       "lineage": {
         "derived_from": "bounded M5B controlled live-probe evidence",
         "run_id": "m5b_twse_openapi_20260627T015136Z",
         "source_id": "TWSE_OpenAPI"
       },
-      "produced_by": "m5b_finalizer",
+      "produced_by": "scripts/run_m5b_controlled_live_probe.py",
       "promotion_status": {
         "frontend_published": false,
         "generated_artifact_promoted": false,
@@ -39,12 +41,13 @@
     {
       "artifact_path": "research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z/bounded_probe_result.json",
       "artifact_type": "bounded_probe_result",
+      "cataloged_by": "scripts/build_m5b_staging_candidate.py",
       "lineage": {
         "derived_from": "bounded M5B controlled live-probe evidence",
         "run_id": "m5b_twse_openapi_20260627T015136Z",
         "source_id": "TWSE_OpenAPI"
       },
-      "produced_by": "m5b_finalizer",
+      "produced_by": "scripts/run_m5b_controlled_live_probe.py",
       "promotion_status": {
         "frontend_published": false,
         "generated_artifact_promoted": false,
@@ -57,12 +60,13 @@
     {
       "artifact_path": "research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z/execution_receipt.json",
       "artifact_type": "execution_receipt",
+      "cataloged_by": "scripts/build_m5b_staging_candidate.py",
       "lineage": {
         "derived_from": "bounded M5B controlled live-probe evidence",
         "run_id": "m5b_twse_openapi_20260627T015136Z",
         "source_id": "TWSE_OpenAPI"
       },
-      "produced_by": "m5b_finalizer",
+      "produced_by": "scripts/run_m5b_controlled_live_probe.py",
       "promotion_status": {
         "frontend_published": false,
         "generated_artifact_promoted": false,
@@ -75,12 +79,13 @@
     {
       "artifact_path": "research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z/freshness_delay_assessment.json",
       "artifact_type": "freshness_delay_assessment",
+      "cataloged_by": "scripts/build_m5b_staging_candidate.py",
       "lineage": {
         "derived_from": "bounded M5B controlled live-probe evidence",
         "run_id": "m5b_twse_openapi_20260627T015136Z",
         "source_id": "TWSE_OpenAPI"
       },
-      "produced_by": "m5b_finalizer",
+      "produced_by": "scripts/run_m5b_controlled_live_probe.py",
       "promotion_status": {
         "frontend_published": false,
         "generated_artifact_promoted": false,
@@ -93,12 +98,13 @@
     {
       "artifact_path": "research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z/request_snapshot.json",
       "artifact_type": "request_snapshot",
+      "cataloged_by": "scripts/build_m5b_staging_candidate.py",
       "lineage": {
         "derived_from": "bounded M5B controlled live-probe evidence",
         "run_id": "m5b_twse_openapi_20260627T015136Z",
         "source_id": "TWSE_OpenAPI"
       },
-      "produced_by": "m5b_finalizer",
+      "produced_by": "scripts/run_m5b_controlled_live_probe.py",
       "promotion_status": {
         "frontend_published": false,
         "generated_artifact_promoted": false,
@@ -111,12 +117,13 @@
     {
       "artifact_path": "research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z/run_summary.json",
       "artifact_type": "run_summary",
+      "cataloged_by": "scripts/build_m5b_staging_candidate.py",
       "lineage": {
         "derived_from": "bounded M5B controlled live-probe evidence",
         "run_id": "m5b_twse_openapi_20260627T015136Z",
         "source_id": "TWSE_OpenAPI"
       },
-      "produced_by": "m5b_finalizer",
+      "produced_by": "scripts/run_m5b_controlled_live_probe.py",
       "promotion_status": {
         "frontend_published": false,
         "generated_artifact_promoted": false,
@@ -129,12 +136,13 @@
     {
       "artifact_path": "research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z/source_contract_assessment.json",
       "artifact_type": "source_contract_assessment",
+      "cataloged_by": "scripts/build_m5b_staging_candidate.py",
       "lineage": {
         "derived_from": "bounded M5B controlled live-probe evidence",
         "run_id": "m5b_twse_openapi_20260627T015136Z",
         "source_id": "TWSE_OpenAPI"
       },
-      "produced_by": "m5b_finalizer",
+      "produced_by": "scripts/run_m5b_controlled_live_probe.py",
       "promotion_status": {
         "frontend_published": false,
         "generated_artifact_promoted": false,
@@ -147,12 +155,13 @@
     {
       "artifact_path": "research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z/staging_candidate.json",
       "artifact_type": "staging_candidate",
+      "cataloged_by": "scripts/build_m5b_staging_candidate.py",
       "lineage": {
         "derived_from": "bounded M5B controlled live-probe evidence",
         "run_id": "m5b_twse_openapi_20260627T015136Z",
         "source_id": "TWSE_OpenAPI"
       },
-      "produced_by": "m5b_finalizer",
+      "produced_by": "scripts/build_m5b_staging_candidate.py",
       "promotion_status": {
         "frontend_published": false,
         "generated_artifact_promoted": false,

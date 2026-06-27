@@ -53,3 +53,11 @@ M5C staging promotion, frontend publication, production refresh, and any trading
 - Populated evidence ledger entries with artifact path, type, SHA-256, lineage, producer, and promotion status.
 - Replaced empty failure-injection tests with assertions for malformed payloads, unauthorized symbols, raw full-payload retention, trading fields, realtime guarantees, and single-use authorization reuse.
 - Computed `source_timestamp=2026-06-26` from ROC trade date `1150626`, with retrieval-to-source date age of 1 day.
+
+## Second repair follow-up
+
+- Failure finalization no longer creates `staging_candidate.json`; candidate creation is restricted to `normalized_pass` and `partial_pass` contract statuses.
+- Final manifests are immutable by default: rerunning the staging builder against a finalized run now fails unless an explicit maintenance override is provided.
+- Added `scripts/verify_m5b_manifest.py` to recalculate artifact SHA-256 values and detect tampered, missing, or untracked artifacts.
+- Added mocked full `execute()` flow tests for HTTP 400 failure and consumed-authorization reuse, confirming non-zero return and zero network calls on reuse.
+- Evidence ledger entries now distinguish `produced_by` from `cataloged_by` so runner-produced artifacts are not misattributed to the finalizer.

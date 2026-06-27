@@ -3,14 +3,15 @@ from pathlib import Path
 
 import pytest
 
-from scripts.build_m5b_staging_candidate import build
+from scripts.build_m5b_staging_candidate import build, finalize
+from scripts.verify_m5b_manifest import verify
 
 
-def base_result():
+def base_result(contract_status='partial_pass'):
     return {
         'run_id': 'x', 'source_id': 'TWSE_OpenAPI', 'requested_targets': ['2330', '0050', '00929'],
         'retained_targets': ['2330'], 'retrieved_at_utc': '2026-06-27T00:00:00+00:00',
-        'source_timestamp': '2026-06-26', 'http_status': 200, 'contract_status': 'partial_pass',
+        'source_timestamp': '2026-06-26', 'http_status': 200, 'contract_status': contract_status,
         'parse_status': 'parsed', 'normalization_status': 'normalized', 'failed_targets': ['0050', '00929'],
         'errors': [], 'caveats': [], 'production_current_state': False, 'realtime_guaranteed': False,
         'trading_signal': False, 'generated_artifact_promoted': False, 'frontend_published': False,
@@ -38,8 +39,11 @@ def test_build_staging_candidate_finalizes_manifest_and_ledger(tmp_path):
     manifest = json.loads((tmp_path / 'sha256_manifest.json').read_text())
     assert summary['staging_candidate_created'] is True
     assert ledger['artifacts']
+    assert any(entry['produced_by'] == 'scripts/run_m5b_controlled_live_probe.py' for entry in ledger['artifacts'])
+    assert any(entry['cataloged_by'] == 'scripts/build_m5b_staging_candidate.py' for entry in ledger['artifacts'])
     assert 'staging_candidate.json' in manifest['manifest']
     assert manifest['manifest_final'] is True
+    assert verify(tmp_path) == []
 
 
 def test_build_staging_candidate_rejects_unauthorized_symbol(tmp_path):
@@ -56,3 +60,44 @@ def test_build_staging_candidate_rejects_forbidden_trading_field(tmp_path):
     write_minimal_run(tmp_path, result)
     with pytest.raises(ValueError, match='forbidden'):
         build(tmp_path)
+
+
+def test_failure_contract_does_not_create_staging_candidate(tmp_path):
+    write_minimal_run(tmp_path, base_result(contract_status='http_failed'))
+    final = finalize(tmp_path, create_candidate=False)
+    summary = json.loads((tmp_path / 'run_summary.json').read_text())
+    assert final['staging_only'] is False
+    assert summary['staging_candidate_created'] is False
+    assert not (tmp_path / 'staging_candidate.json').exists()
+    assert verify(tmp_path) == []
+
+
+def test_failure_contract_rejects_candidate_creation(tmp_path):
+    write_minimal_run(tmp_path, base_result(contract_status='parse_failed'))
+    with pytest.raises(ValueError, match='requires successful contract status'):
+        build(tmp_path)
+
+
+def test_duplicate_finalization_rejected_by_default(tmp_path):
+    write_minimal_run(tmp_path, base_result())
+    build(tmp_path)
+    with pytest.raises(ValueError, match='final manifest already exists'):
+        build(tmp_path)
+
+
+def test_manifest_verifier_detects_tamper(tmp_path):
+    write_minimal_run(tmp_path, base_result())
+    build(tmp_path)
+    data = json.loads((tmp_path / 'bounded_probe_result.json').read_text())
+    data['retained_targets'] = ['2330', '2317']
+    (tmp_path / 'bounded_probe_result.json').write_text(json.dumps(data))
+    errors = verify(tmp_path)
+    assert any(error['code'] == 'manifest_sha256_mismatch' for error in errors)
+
+
+def test_manifest_verifier_detects_missing_artifact(tmp_path):
+    write_minimal_run(tmp_path, base_result())
+    build(tmp_path)
+    (tmp_path / 'request_snapshot.json').unlink()
+    errors = verify(tmp_path)
+    assert any(error['code'] == 'manifest_artifact_missing' for error in errors)

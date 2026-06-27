@@ -92,8 +92,21 @@ def test_result_contains_unauthorized_symbols_guard():
 def test_attempted_full_raw_payload_retention_guard(tmp_path):
     run_dir = tmp_path / 'run'
     run_dir.mkdir()
-    result = {'rows': [{'symbol': '2330', 'raw_full_response': {'unexpected': 'payload'}}]}
+    result = {
+        'run_id': 'run', 'source_id': 'TWSE_OpenAPI', 'requested_targets': ['2330', '0050', '00929'],
+        'retained_targets': ['2330'], 'retrieved_at_utc': '2026-06-27T00:00:00+00:00',
+        'source_timestamp': '2026-06-26', 'http_status': 200, 'contract_status': 'normalized_pass',
+        'parse_status': 'parsed', 'normalization_status': 'normalized', 'failed_targets': [],
+        'errors': [], 'caveats': [], 'production_current_state': False, 'realtime_guaranteed': False,
+        'trading_signal': False, 'generated_artifact_promoted': False, 'frontend_published': False,
+        'rows': [{'symbol': '2330', 'raw_full_response': {'unexpected': 'payload'}}],
+    }
+    for name in ['authorization_snapshot.json', 'request_snapshot.json', 'execution_receipt.json']:
+        (run_dir / name).write_text(json.dumps({'name': name}))
     (run_dir / 'bounded_probe_result.json').write_text(json.dumps(result))
+    (run_dir / 'bounded_normalized_rows.json').write_text(json.dumps(result))
+    (run_dir / 'source_contract_assessment.json').write_text(json.dumps({'x': 1}))
+    (run_dir / 'freshness_delay_assessment.json').write_text(json.dumps({'x': 1}))
     (run_dir / 'run_summary.json').write_text(json.dumps({'run_id': 'run'}))
     with pytest.raises(ValueError, match='forbidden'):
         build(run_dir)
@@ -113,3 +126,43 @@ def test_forbidden_realtime_guarantee_guard():
 
 def test_non_retryable_http_400_fails_contract():
     assert runner._contract_status([], 400, False, [{'code': 'http_failed'}]) == 'http_failed'
+
+
+def test_execute_http_400_returns_nonzero_and_no_staging_candidate(monkeypatch, tmp_path):
+    auth_path = copy_auth(authorization_id='m5b-test-http-400-flow')
+    monkeypatch.setattr(runner, 'CONSUMPTION_ROOT', tmp_path / 'consumption')
+
+    class Response:
+        status_code = 400
+        def json(self):
+            raise AssertionError('json should not be parsed for HTTP 400')
+
+    calls = {'count': 0}
+    def fake_get(*args, **kwargs):
+        calls['count'] += 1
+        return Response()
+
+    monkeypatch.setattr(runner.requests, 'get', fake_get)
+    args = type('Args', (), {
+        'authorization': auth_path, 'request': REQ, 'output_dir': str(tmp_path / 'run'), 'attempt_count': 2,
+    })()
+    assert runner.execute(args) == 1
+    assert calls['count'] == 1
+    assert not (tmp_path / 'run' / 'staging_candidate.json').exists()
+    receipt = json.loads((tmp_path / 'run' / 'execution_receipt.json').read_text())
+    assert receipt['authorization_consumed'] is True
+    assert receipt['contract_status'] == 'http_failed'
+
+
+def test_execute_reuse_rejects_before_network(monkeypatch, tmp_path):
+    auth_path = copy_auth(authorization_id='m5b-test-reuse-flow')
+    monkeypatch.setattr(runner, 'CONSUMPTION_ROOT', tmp_path / 'consumption')
+    runner._create_consumption_record(auth_path, REQ, str(tmp_path / 'prior'))
+    def fail_get(*args, **kwargs):
+        raise AssertionError('network must not be called after consumption')
+    monkeypatch.setattr(runner.requests, 'get', fail_get)
+    args = type('Args', (), {
+        'authorization': auth_path, 'request': REQ, 'output_dir': str(tmp_path / 'second'), 'attempt_count': 2,
+    })()
+    assert runner.execute(args) == 1
+    assert not (tmp_path / 'second').exists()
