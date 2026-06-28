@@ -6,6 +6,7 @@ from validate_m5c_staging_promotion_authorization import validate as validate_au
 from run_m5c_staging_promotion_preflight import run as preflight_run, is_success
 from build_frontend_readonly_context_package import build_frontend_readonly_context_package
 from m5c_common import load, readonly_payload_from_candidate
+from validate_m5c_promoted_staging_package import validate as validate_promoted_package
 CONSUME_DIR=Path('research/staging/m5c/authorization_consumption')
 REQUIRED=['authorization_snapshot.json','request_snapshot.json','source_binding.json','staging_payload.json','promotion_receipt.json','validation_report.json','lineage.json','evidence_ledger.json','rollback_plan.json','frontend_readonly_context_package.json','run_summary.json']
 def _common_flags():
@@ -32,10 +33,19 @@ def _build(dst:Path, consumption_path:str):
 def check():
     errs=validate_auth(); pf=preflight_run();
     if not is_success(pf): errs.append({'code':'preflight_blocked','preflight':pf})
+    dest=Path(DEST)
+    if dest.exists():
+        package_errors=validate_promoted_package(dest)
+        if package_errors:
+            errs.append({'code':'existing_destination_invalid','path':DEST,'errors':package_errors})
+    return errs
+def _execute_preconditions():
+    errs=validate_auth(); pf=preflight_run();
+    if not is_success(pf): errs.append({'code':'preflight_blocked','preflight':pf})
     if Path(DEST).exists(): errs.append({'code':'destination_exists','path':DEST})
     return errs
 def execute():
-    errs=check();
+    errs=_execute_preconditions();
     if errs: return {'status':'blocked','errors':errs}
     auth=load(AUTH); CONSUME_DIR.mkdir(parents=True,exist_ok=True); cp=CONSUME_DIR/(auth['authorization_id']+'.json')
     try: fd=os.open(cp, os.O_CREAT|os.O_EXCL|os.O_WRONLY)
