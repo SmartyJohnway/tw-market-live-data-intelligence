@@ -41,3 +41,6 @@ jobs:
         run: python scripts/simulate_m5d_frontend_publication_transaction.py --check-only
       - name: M5D rollback simulation check-only
         run: python scripts/simulate_m5d_frontend_publication_rollback.py --check-only
+
+      - name: M5E controlled frontend publication release gate check-only
+        run: python scripts/run_m5e_controlled_frontend_publication.py --check-only

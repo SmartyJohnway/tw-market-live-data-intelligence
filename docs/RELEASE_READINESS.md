@@ -45,3 +45,7 @@ M5B adds a single-use bounded TWSE_OpenAPI evidence gate. It is staging-only and
 - Candidate directory: `research/staging/m5d/m5d_frontend_publication_candidate_01`
 - Proposed destination for a future authorization only: `frontend/public/market-context.json`
 - No frontend/public write is authorized or performed by this bundle.
+
+## M5E controlled frontend publication gate
+
+M5E adds a check-only, fail-closed release gate for a future explicitly authorized frontend publication. Required status is `ready_for_explicit_user_authorization_review=true`, `frontend_publication_authorized=false`, `publication_performed=false`, `execute_mode_available=false`, and `production_ready=false`. No actual authorization, token, or frontend/public write is included.
