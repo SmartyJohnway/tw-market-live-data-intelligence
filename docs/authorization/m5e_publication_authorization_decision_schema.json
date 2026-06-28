@@ -100,6 +100,10 @@
     "single_use_id": {
       "pattern": "^[A-Za-z0-9_.:-]+$",
       "type": "string"
+    },
+    "token_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
     }
   },
   "required": [
@@ -114,7 +118,8 @@
     "single_use_id",
     "acknowledgement_required",
     "operator_acknowledged",
-    "forbidden_behaviors"
+    "forbidden_behaviors",
+    "token_sha256"
   ],
   "type": "object"
 }

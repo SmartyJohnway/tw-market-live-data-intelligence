@@ -30,7 +30,8 @@
         "safe_no_publication_or_temp_only",
         "rolled_back_replacement",
         "rolled_back_new_target",
-        "manual_recovery_required"
+        "manual_recovery_required",
+        "publication_completed"
       ]
     }
   },
