@@ -362,3 +362,17 @@ def generate_snapshot():
 
 if __name__ == "__main__":
     generate_snapshot()
+
+
+def build_snapshot_from_m5f_canonical(canonical):
+    """Pure M5F convergence path: derive latest reviewed bounded evidence snapshot."""
+    return {
+        "schema_version": "m5f_latest_market_snapshot.v1",
+        "snapshot_semantics": "latest reviewed bounded evidence",
+        "source": canonical["source"],
+        "source_date": canonical["source_date"],
+        "symbols": [dict(s) for s in canonical.get("symbols", [])],
+        "failed_targets": list(canonical.get("failed_targets", [])),
+        "global_caveats": list(canonical.get("global_caveats", [])),
+        "governance": dict(canonical.get("governance", {})),
+    }

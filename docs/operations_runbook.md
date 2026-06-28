@@ -1,19 +1,37 @@
-# M5FGH local market context closure
+# M5FGH Operations Runbook
 
-This document supports the North Star: a local-first, bounded-watchlist, explicit manual-refresh Taiwan market context center shared by browser UI and AI Agents.
+## Purpose
+Operate the local-first, bounded-watchlist Taiwan market context center without live probes, publication, generated artifact refresh, or trading outputs.
 
-Canonical package: `research/staging/m5f/m5f_canonical_market_context_01/`. Read `canonical_market_context.json` first, then derived snapshot, observations, AI context pack, briefing, source health, capability summary, lineage, validation report, and manifest.
+## Install and validation
+1. Install project test dependencies as usual for the repository.
+2. Validate the canonical package: `python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01`.
+3. Run consumer alignment: `python scripts/run_m5fgh_local_product_demo.py --check-only`.
+4. Run non-network tests before release: `pytest -m "not network" -v`.
 
-Safety rules: no investment advice, no trading signal, no target price/ranking, no full-market claim, no realtime guarantee, no production-current-state claim. Always quote source `TWSE_OpenAPI`, source date `2026-06-26`, `historical/stale` badge, and caveats `not_realtime_guaranteed`, `not_trading_signal`, `not_production_current_state`, `source_risk_present`, `freshness_must_be_displayed`.
+## Target config updates
+Target changes belong to a future authorized refresh bundle. Do not edit the M5F package manually. For a future target change, update `config/market_targets.json`, document the bounded symbols, then run only check-only validation until an explicit M5I authorization exists.
 
-Safe local workflows: validate with `python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01`; run local demo with `python scripts/run_m5fgh_local_product_demo.py --check-only`; preview via `frontend/readonly-preview/M5EMarketContextPreview.html`; start FastAPI with `uvicorn server.main:app`; start MCP with `python server/mcp_server.py`.
+## Canonical package rebuild
+Use `python scripts/build_m5f_canonical_market_context_package.py --check-only` for validation. A repository write is allowed only to `research/staging/m5f/m5f_canonical_market_context_01`; temporary rebuilds must be under `/tmp`. Never pass `scripts`, `server`, `docs`, `frontend/public`, or `research/generated` as output directories.
 
-Readonly tools/endpoints: FastAPI `/api/context/canonical`, `/api/context/snapshot`, `/api/context/source-health`, `/api/context/capability-summary`, `/api/context/briefing`; MCP `get_canonical_market_context`, `get_source_health`, `get_capability_matrix`, `get_source_catalog`, `get_latest_market_snapshot`, `get_watchlist_observations`, `get_ai_context_pack`, `get_chatgpt_briefing`. `check_bounded_market_refresh_readiness` is check-only and does not use network or writes.
+## Safe local preview
+Serve from the repo root so browser `fetch()` can read the package: `python -m http.server 8000`, then open `http://127.0.0.1:8000/frontend/readonly-preview/M5EMarketContextPreview.html`. Opening by `file://` may be blocked by browser origin rules.
 
-Network use requires future explicit M5I authorization. Do not reuse consumed M5B authorization. Do not run live probes, production refresh, generated artifact refresh, frontend publication, broker/auth activation, full-market scans, or polling loops in this closure.
+## FastAPI startup
+Run `uvicorn server.main:app --reload`. Use only readonly context endpoints under `/api/context/*` for M5F product consumption.
 
-Agent handoff for Codex/Jules/Claude/Cursor/VS Code: cite package path, exact symbols 0050/00929/2330, source date, manifest hash, validation command, changed files, and forbidden-path check. Missing artifacts fail closed. Preserve last-known-good canonical package on source failure.
+## MCP startup
+Run `python server/mcp_server.py` over stdio. Use M5F readonly tools first. The old M3G live evidence tool is disabled for M5F product refresh pending M5I.
 
-Failure playbook: malformed/missing TWSE OpenAPI rows, TPEx failures, TWSE MIS block/cookie/rate-limit/session issues, Yahoo suffix/identity/Japan OTC mismatch, stale/delayed data, partial targets, malformed evidence, manifest mismatch, missing canonical package, or consumer disagreement are release blockers until documented and repaired.
+## Rollback/recovery
+Preserve the last-known-good M5F directory and manifest. If validation fails, do not partially edit artifacts; rebuild into `/tmp`, compare hashes, then replace only through the builder.
 
-Release checklist: compile/tests, deterministic rebuild, manifest verification, exact symbols/source/date/value checks, frontend/API/MCP consistency, no forbidden paths, no network behavior, no frontend/public or research/generated writes, no M5B/M5C/M5D mutation, safety language, docs consistency, no PR merge.
+## Adding a source or target
+Requires source catalog update, bounded scope, evidence validation, lineage capture, and explicit future authorization for any network execution. Do not consume prior M5B authorization.
+
+## Explicit authorization required
+Any live probe, market-data network call, frontend/public publication, production refresh, broker/auth activation, credential use, or generated artifact refresh requires future explicit authorization.
+
+## Forbidden
+No live probes, no full-market scans, no polling loop, no trading signal, no target price/ranking, no realtime guarantee, no production-current-state claim.

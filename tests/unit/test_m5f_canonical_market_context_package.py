@@ -17,3 +17,11 @@ def test_extra_file_rejected(tmp_path):
  with pytest.raises(ValueError): validate_package(out)
 def test_builder_rejects_forbidden_output():
  with pytest.raises(ValueError): write_package(Path('research/generated/m5f_bad'), build_package())
+
+
+def test_builder_rejects_repo_directories():
+    import pytest
+    from scripts.build_m5f_canonical_market_context_package import build_package, write_package
+    for bad in [Path('scripts'), Path('server'), Path('docs')]:
+        with pytest.raises(ValueError):
+            write_package(bad, build_package())

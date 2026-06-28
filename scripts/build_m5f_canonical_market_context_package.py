@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 import argparse, hashlib, json, os, shutil, tempfile
+from generate_latest_market_snapshot import build_snapshot_from_m5f_canonical
+from generate_watchlist_observations import build_watchlist_observations_from_m5f_canonical
+from generate_ai_context_pack import build_ai_context_pack_from_m5f_canonical, render_m5f_ai_context_pack_markdown
+from generate_chatgpt_briefing import render_chatgpt_briefing_from_m5f_canonical
 from pathlib import Path
 
 REPO=Path(__file__).resolve().parents[1]
@@ -18,11 +22,17 @@ def load(p): return json.loads(Path(p).read_text(encoding='utf-8'))
 
 def check_output_dir(path:Path):
     r=path.resolve()
-    if path.is_symlink() or any(part=='..' for part in path.parts): raise ValueError('unsafe output path')
-    if not (str(r).startswith(str(REPO.resolve())) or str(r).startswith('/tmp/')): raise ValueError('output outside repo')
-    if str(r).startswith(str(REPO.resolve())):
-        rr=rel(r)
-        if any(rr==x or rr.startswith(x+'/') for x in FORBIDDEN_PREFIXES): raise ValueError('forbidden output path')
+    if path.is_symlink() or any(part=='..' for part in path.parts):
+        raise ValueError('unsafe output path')
+    default = DEFAULT_OUTPUT.resolve()
+    # Production writes are intentionally constrained to the single M5F package
+    # directory. Tests may write only under /tmp; no other repository directory
+    # may ever be recursively replaced.
+    if r == default:
+        return
+    if str(r).startswith('/tmp/'):
+        return
+    raise ValueError('output path must be the fixed M5F package path or an explicit /tmp test path')
 
 def verify_input(candidate_path:Path):
     if candidate_path.is_symlink(): raise ValueError('candidate symlink rejected')
@@ -53,11 +63,11 @@ def build_package(candidate_path=DEFAULT_INPUT):
     symbols=sorted(c['symbols'], key=lambda s:s['symbol'])
     base_gov={k:c[k] for k in ['historical_evidence_snapshot','current_realtime','production_current_state','production_ready','realtime_guaranteed','trading_signal','readonly_only','stale_status','badge']}
     canonical={'schema_version':'m5f_canonical_market_context.v1','package_id':'m5f_canonical_market_context_01','derived_from':rel(candidate_path),'generated_at_utc':c['generated_at_utc'],'source':'TWSE_OpenAPI','source_date':'2026-06-26','symbols':symbols,'failed_targets':[],'global_caveats':REQ_CAVEATS,'governance':base_gov,'lineage_hashes':{'m5d_market_context_sha256':m5d_manifest['files']['market-context.json'],'m5d_manifest_sha256':sha(Path(candidate_path).parent/'sha256_manifest.json'),'m5d_source_binding_sha256':m5d_manifest['files']['source_binding.json'],'m5c_frontend_readonly_context_package_sha256':binding['m5c_frontend_readonly_context_package_sha256'],'m5c_manifest_sha256':binding['m5c_manifest_sha256'],'m5c_supplemental_audit_sha256':binding['m5c_supplemental_audit_sha256'],'m5c_run_summary_destination_correction_sha256':binding['m5c_run_summary_destination_correction_sha256']},'notes':['latest reviewed bounded evidence','not current realtime market state','not a trading signal']}
-    snapshot={'schema_version':'m5f_latest_market_snapshot.v1','snapshot_semantics':'latest reviewed bounded evidence','source':'TWSE_OpenAPI','source_date':'2026-06-26','symbols':symbols,'failed_targets':[],'global_caveats':REQ_CAVEATS,'governance':base_gov}
-    obs={'schema_version':'m5f_watchlist_observations.v1','observations':[{'symbol':s['symbol'],'observation':f"{s['symbol']} has reviewed historical TWSE_OpenAPI price-like value {s['price_like_value']} from 2026-06-26; stale/historical only.",'caveats':s['display_caveats']} for s in symbols],'failed_targets':[],'governance':base_gov}
-    ai={'schema_version':'m5f_ai_context_pack.v1','context_summary':'Bounded watchlist context from reviewed historical/stale TWSE_OpenAPI evidence. No realtime guarantee and no trading signal.','symbols':symbols,'global_caveats':REQ_CAVEATS,'governance':base_gov,'source_health_path':'source_health.json'}
-    ai_md='# M5F AI Context Pack\n\nReviewed historical/stale TWSE_OpenAPI bounded-watchlist evidence only. Not realtime, not production current state, and not a trading signal.\n\n'+'\n'.join(f"- {s['symbol']}: {s['price_like_value']} ({s['source_timestamp']}, {s['freshness_status']})" for s in symbols)+"\n"
-    briefing='# ChatGPT Briefing\n\nUse this package as local readonly market context for 0050, 00929, and 2330. Quote source date 2026-06-26 and caveats: not_realtime_guaranteed, not_trading_signal, not_production_current_state, source_risk_present, freshness_must_be_displayed.\n\nDo not provide trading recommendations, target prices, rankings, or realtime claims.\n'
+    snapshot=build_snapshot_from_m5f_canonical(canonical)
+    obs=build_watchlist_observations_from_m5f_canonical(canonical)
+    ai=build_ai_context_pack_from_m5f_canonical(canonical)
+    ai_md=render_m5f_ai_context_pack_markdown(ai)
+    briefing=render_chatgpt_briefing_from_m5f_canonical(canonical)
     health={'schema_version':'m5f_source_health.v1','source_id':'TWSE_OpenAPI','source_authority':'official','status':'available_as_reviewed_historical_evidence','stale_status':'stale','source_date':'2026-06-26','source_risk_flags':symbols[0]['source_risk_flags'],'failed_targets':[],'governance':base_gov}
     cap={'schema_version':'m5f_capability_summary.v1','canonical_context':'available','bounded_watchlist':True,'symbol_count':3,'source':'TWSE_OpenAPI','source_date':'2026-06-26','realtime_supported':False,'production_ready':False,'readonly_only':True,'governance':base_gov}
     lineage={'schema_version':'m5f_lineage.v1','upstream_chain':['M5D candidate manifest','M5C frontend readonly context package','M5C manifest/audit/correction','M5B bounded TWSE_OpenAPI evidence'],'hashes':canonical['lineage_hashes'],'source_binding':binding,'governance':base_gov}

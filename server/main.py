@@ -164,6 +164,7 @@ def get_matrix():
 # M5FGH readonly canonical market context endpoints.
 from pathlib import Path
 from copy import deepcopy
+from scripts.validate_m5f_canonical_market_context_package import validate_package as _validate_m5f_package
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 M5F_PACKAGE_DIR = REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01"
@@ -196,6 +197,10 @@ def _m5f_governance():
 
 
 def _read_m5f_artifact(filename: str, *, text: bool = False):
+    try:
+        _validate_m5f_package(M5F_PACKAGE_DIR)
+    except Exception as exc:
+        raise HTTPException(status_code=409, detail={"error": "m5f_package_validation_failed", "message": str(exc), "governance": _m5f_governance()})
     path = M5F_PACKAGE_DIR / filename
     if not path.is_file():
         raise HTTPException(status_code=404, detail={"error": "m5f_artifact_missing", "source_path": str(path.relative_to(REPO_ROOT)), "governance": _m5f_governance()})

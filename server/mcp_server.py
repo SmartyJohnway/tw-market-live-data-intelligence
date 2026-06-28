@@ -17,6 +17,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from scripts.validate_m5f_canonical_market_context_package import validate_package as _validate_m5f_package
+
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import TextContent, Tool
@@ -663,6 +665,11 @@ def read_local_context_tool(tool_name: str) -> dict[str, Any]:
 
     source_path = spec["path"]
     content_type = spec["content_type"]
+    if source_path.startswith("research/staging/m5f/"):
+        try:
+            _validate_m5f_package(REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01")
+        except Exception as exc:
+            return {"governance": readonly_governance(), "tool": tool_name, "source_path": source_path, "content_type": content_type, "status": "package_validation_failed", "error": str(exc)}
     payload: dict[str, Any] = {
         "governance": readonly_governance(),
         "tool": tool_name,
@@ -788,7 +795,7 @@ async def list_tools() -> list[Tool]:
         },
     )
     readiness_tool = Tool(name="check_bounded_market_refresh_readiness", description="Check M5 bounded refresh readiness without network calls, writes, or authorization consumption.", inputSchema={"type":"object","properties":{},"additionalProperties":False})
-    return [*readonly_tools, controlled_tool, evidence_readback_tool, readiness_tool]
+    return [*readonly_tools, evidence_readback_tool, readiness_tool]
 
 
 @app.call_tool()
@@ -797,11 +804,11 @@ async def call_tool(name: str, arguments: dict[str, Any] | None) -> list[TextCon
     if name in READONLY_TOOL_SPECS or name in M5F_TOOL_SPECS:
         return _json_text(read_local_context_tool(name))
     if name == CONTROLLED_LIVE_PROBE_TOOL:
-        return _json_text(run_controlled_live_probe_evidence(arguments))
+        return _json_text({"tool": name, "status": "legacy_live_tool_disabled_pending_m5i", "governance": readonly_governance(), "network_calls": False, "artifact_writes": False, "m5i_required_for_actual_execution": True})
     if name == CONTROLLED_EVIDENCE_READBACK_TOOL:
         return _json_text(read_controlled_probe_evidence(arguments))
     if name == "check_bounded_market_refresh_readiness":
-        return _json_text({"tool": name, "status": "authorization_required", "network_calls": False, "artifact_writes": False, "intended_source": "TWSE_OpenAPI", "intended_targets": ["0050", "00929", "2330"], "authorization_model": "M5 explicit future authorization", "m5i_required_for_actual_execution": True, "m5b_authorization_consumed": False, "statement": "Readiness check only; no live probe, no writes, no M5B authorization reuse."})
+        return _json_text({"tool": name, "status": "authorization_required", "network_calls": False, "artifact_writes": False, "intended_source": "TWSE_OpenAPI", "intended_targets": ["0050", "00929", "2330"], "authorization_model": "M5 explicit future authorization", "m5i_required_for_actual_execution": True, "m5b_authorization_already_consumed": True, "statement": "Readiness check only; no live probe, no writes, no M5B authorization reuse."})
     return _json_text(unavailable_tool_response(name))
 
 

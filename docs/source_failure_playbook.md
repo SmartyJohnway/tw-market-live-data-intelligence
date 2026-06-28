@@ -1,19 +1,31 @@
-# M5FGH local market context closure
+# Source Failure Playbook
 
-This document supports the North Star: a local-first, bounded-watchlist, explicit manual-refresh Taiwan market context center shared by browser UI and AI Agents.
+## TWSE OpenAPI malformed or missing rows
+Record missing symbol, row shape, status code, retrieval timestamp, and parser error. Preserve last-known-good M5F package. Do not substitute yesterday close as current data.
 
-Canonical package: `research/staging/m5f/m5f_canonical_market_context_01/`. Read `canonical_market_context.json` first, then derived snapshot, observations, AI context pack, briefing, source health, capability summary, lineage, validation report, and manifest.
+## TPEx OpenAPI failures
+Classify as source failure or unsupported target. Record URL, method, status, body sample, and parsed fields if available. Do not promote partial TPEx data without caveats.
 
-Safety rules: no investment advice, no trading signal, no target price/ranking, no full-market claim, no realtime guarantee, no production-current-state claim. Always quote source `TWSE_OpenAPI`, source date `2026-06-26`, `historical/stale` badge, and caveats `not_realtime_guaranteed`, `not_trading_signal`, `not_production_current_state`, `source_risk_present`, `freshness_must_be_displayed`.
+## TWSE MIS block/cookie/rate-limit/session issues
+Treat as unofficial browser-rendered endpoint risk. Do not bypass cookies, sessions, or rate limits. Do not use MIS as canonical product refresh without future authorization.
 
-Safe local workflows: validate with `python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01`; run local demo with `python scripts/run_m5fgh_local_product_demo.py --check-only`; preview via `frontend/readonly-preview/M5EMarketContextPreview.html`; start FastAPI with `uvicorn server.main:app`; start MCP with `python server/mcp_server.py`.
+## Yahoo identity and suffix mismatch
+Reject suffix-drop, Japan OTC, or name/identity mismatch. Record symbol requested, symbol returned, exchange, timezone, and mismatch reason.
 
-Readonly tools/endpoints: FastAPI `/api/context/canonical`, `/api/context/snapshot`, `/api/context/source-health`, `/api/context/capability-summary`, `/api/context/briefing`; MCP `get_canonical_market_context`, `get_source_health`, `get_capability_matrix`, `get_source_catalog`, `get_latest_market_snapshot`, `get_watchlist_observations`, `get_ai_context_pack`, `get_chatgpt_briefing`. `check_bounded_market_refresh_readiness` is check-only and does not use network or writes.
+## Stale or delayed data
+Display source date, retrieval timestamp, stale/delay status, and caveats. Never relabel stale data as realtime.
 
-Network use requires future explicit M5I authorization. Do not reuse consumed M5B authorization. Do not run live probes, production refresh, generated artifact refresh, frontend publication, broker/auth activation, full-market scans, or polling loops in this closure.
+## Partial target failure
+Keep successful targets descriptive and disclose failed targets separately. Do not fabricate missing symbols.
 
-Agent handoff for Codex/Jules/Claude/Cursor/VS Code: cite package path, exact symbols 0050/00929/2330, source date, manifest hash, validation command, changed files, and forbidden-path check. Missing artifacts fail closed. Preserve last-known-good canonical package on source failure.
+## Malformed evidence or manifest/hash mismatch
+Fail closed. Recompute hashes from immutable upstream artifacts. If mismatch persists, block release and preserve last-known-good package.
 
-Failure playbook: malformed/missing TWSE OpenAPI rows, TPEx failures, TWSE MIS block/cookie/rate-limit/session issues, Yahoo suffix/identity/Japan OTC mismatch, stale/delayed data, partial targets, malformed evidence, manifest mismatch, missing canonical package, or consumer disagreement are release blockers until documented and repaired.
+## Missing canonical package
+FastAPI and MCP must return structured errors. Operators should rebuild in `/tmp`, validate, then write only to the fixed M5F path.
 
-Release checklist: compile/tests, deterministic rebuild, manifest verification, exact symbols/source/date/value checks, frontend/API/MCP consistency, no forbidden paths, no network behavior, no frontend/public or research/generated writes, no M5B/M5C/M5D mutation, safety language, docs consistency, no PR merge.
+## Consumer disagreement
+If frontend/API/MCP symbols, source date, hashes, or caveats diverge, block release. Canonical payload wins; regenerate derivatives from it.
+
+## Last-known-good preservation
+Never delete prior validated evidence while investigating. Do not write into M5B/M5C/M5D, `research/generated`, or `frontend/public` during M5FGH repair.
