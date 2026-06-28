@@ -1,0 +1,13 @@
+{
+  "applies_to_manifest_sha256": "9956b27850f2561f3738ebacda350b1685d54e1947910191605be637ad7dd203",
+  "artifact": "run_summary.json",
+  "artifact_sha256": "f0add44861a16ffc9a2a1bf2ac411034f8d19373dfeea66d8a3f605d0849b49d",
+  "canonical_effective_value": "research/staging/m5c/m5c_twse_openapi_20260627_authorized_01",
+  "correction_id": "M5C_RUN_SUMMARY_DESTINATION_CORRECTION_20260627_01",
+  "field": "destination",
+  "immutable_artifact_rewritten": false,
+  "package_dir": "research/staging/m5c/m5c_twse_openapi_20260627_authorized_01",
+  "reason": "Immutable run_summary.json captured the temporary build directory during original atomic promotion; this correction records the canonical effective destination without rewriting the immutable artifact.",
+  "recorded_value": "/workspace/tw-market-live-data-intelligence/research/staging/m5c/.m5c_tmp_zf6jmfy0",
+  "schema_version": "m5c_run_summary_destination_correction.v1"
+}

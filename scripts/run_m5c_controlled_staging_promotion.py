@@ -119,12 +119,18 @@ def execute():
         errors=[{'code':'execution_failed','stage':'atomic_rename','detail':str(e),'consumption_record':str(cp)}]
         if outcome_error: errors.append(outcome_error)
         return {'status':'blocked','errors':errors}
-    outcome_error=_try_record_outcome(cp, 'succeeded', 'atomic_rename_completed')
+    finalizing_error=_try_record_outcome(cp, 'finalizing', 'atomic_rename_completed')
+    if finalizing_error:
+        return {'status':'blocked','actual_staging_promotion_performed':True,'destination':DEST,'destination_preserved':Path(DEST).exists(),'retry_allowed':False,'stage':'outcome_finalization','next_action':'manual_evidence_repair','errors':[finalizing_error]}
+    final_errors=validate_promoted_package(Path(DEST), allowed_consumption_statuses={'finalizing'})
+    if final_errors:
+        outcome_error=_try_record_outcome(cp, 'failed', 'promotion_performed_validation_failed', json.dumps(final_errors, sort_keys=True), Path(DEST), 'destination_preserved')
+        errors=list(final_errors)
+        if outcome_error: errors.append(outcome_error)
+        return {'status':'blocked','actual_staging_promotion_performed':True,'destination':DEST,'destination_preserved':Path(DEST).exists(),'retry_allowed':False,'stage':'final_validation','next_action':'manual_evidence_repair','errors':errors}
+    outcome_error=_try_record_outcome(cp, 'succeeded', 'final_validation_passed')
     if outcome_error:
         return {'status':'blocked','actual_staging_promotion_performed':True,'destination':DEST,'destination_preserved':Path(DEST).exists(),'retry_allowed':False,'stage':'outcome_finalization','next_action':'manual_evidence_repair','errors':[outcome_error]}
-    final_errors=validate_promoted_package(Path(DEST))
-    if final_errors:
-        return {'status':'blocked','actual_staging_promotion_performed':True,'destination':DEST,'destination_preserved':Path(DEST).exists(),'retry_allowed':False,'stage':'final_validation','next_action':'manual_evidence_repair','errors':final_errors}
     return {'status':'pass','destination':DEST,'consumption_record':str(cp),'actual_staging_promotion_performed':True}
 def main(argv=None):
     ap=argparse.ArgumentParser(); ap.add_argument('--check-only',action='store_true'); ap.add_argument('--execute-promotion',action='store_true'); ap.add_argument('--acknowledge-bounded-staging-promotion',action='store_true'); ns=ap.parse_args(argv)

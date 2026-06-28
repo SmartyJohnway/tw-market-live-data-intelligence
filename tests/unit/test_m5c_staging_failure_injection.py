@@ -110,7 +110,7 @@ def test_success_outcome_persistence_failure_does_not_retry_or_delete_destinatio
     monkeypatch.setattr(runner, 'is_success', lambda _: True)
     monkeypatch.setattr(runner, '_build', lambda dst, _: (dst/'artifact.json').write_text('{}'))
     monkeypatch.setattr(runner, '_validate_built_package_at', lambda _: [])
-    monkeypatch.setattr(runner, 'validate_promoted_package', lambda _: [])
+    monkeypatch.setattr(runner, 'validate_promoted_package', lambda *_args, **_kwargs: [])
     real_try=runner._try_record_outcome
     def flaky(path, status, stage, detail=None, tmp=None, cleanup_result=None):
         if status == 'succeeded':
@@ -152,7 +152,7 @@ def test_consumed_at_is_preserved_across_outcome_updates(monkeypatch, tmp_path):
     monkeypatch.setattr(runner, 'is_success', lambda _: True)
     monkeypatch.setattr(runner, '_build', lambda dst, _: (dst/'artifact.json').write_text('{}'))
     monkeypatch.setattr(runner, '_validate_built_package_at', lambda _: [])
-    monkeypatch.setattr(runner, 'validate_promoted_package', lambda _: [])
+    monkeypatch.setattr(runner, 'validate_promoted_package', lambda *_args, **_kwargs: [])
     out=runner.execute()
     record=Path(out['consumption_record'])
     data=json.loads(record.read_text())
@@ -171,3 +171,20 @@ def test_build_writes_canonical_destination_not_temporary_path(tmp_path):
     assert '.m5c_tmp_' not in json.dumps(receipt)
     assert '.m5c_tmp_' not in json.dumps(summary)
     assert runner._validate_built_package_at(tmp)==[]
+
+def test_final_validation_failure_marks_failed_not_succeeded(monkeypatch, tmp_path):
+    monkeypatch.setattr(runner, 'DEST', str(tmp_path/'dest'))
+    monkeypatch.setattr(runner, 'CONSUME_DIR', tmp_path/'consumption')
+    monkeypatch.setattr(runner, 'validate_auth', lambda: [])
+    monkeypatch.setattr(runner, 'preflight_run', lambda: {'ok': True})
+    monkeypatch.setattr(runner, 'is_success', lambda _: True)
+    monkeypatch.setattr(runner, '_build', lambda dst, _: (dst/'artifact.json').write_text('{}'))
+    monkeypatch.setattr(runner, '_validate_built_package_at', lambda _: [])
+    monkeypatch.setattr(runner, 'validate_promoted_package', lambda *_args, **_kwargs: [{'code':'final_bad'}])
+    out=runner.execute()
+    data=json.loads(Path(out['errors'][0].get('consumption_record', out.get('consumption_record','/nonexistent'))).read_text()) if out.get('consumption_record') else json.loads(next((tmp_path/'consumption').glob('*.json')).read_text())
+    assert out['status']=='blocked'
+    assert out['stage']=='final_validation'
+    assert data['status']=='failed'
+    assert data['stage']=='promotion_performed_validation_failed'
+    assert out['retry_allowed'] is False

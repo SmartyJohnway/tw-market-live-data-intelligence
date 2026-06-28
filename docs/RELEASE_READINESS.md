@@ -10,9 +10,9 @@ Fixture readiness: local-only fixtures and golden readonly packages are validati
 
 Frontend readonly local preview readiness: source files exist outside frontend/public and display caveats.
 
-Not production-ready blockers: no production refresh authorization, no durable evidence promotion, no production current state.
+Not production-ready blockers: no production refresh authorization, no production/generated/frontend publication promotion, no production current state.
 
-Not live-ready blockers: no live probes, not realtime guaranteed, no source freshness verified by this bundle.
+Not live-ready blockers: no additional live probe authorization in this bundle, not realtime guaranteed, no current-market-state claim.
 
 Not frontend/public-ready blockers: no frontend/public publication is authorized.
 

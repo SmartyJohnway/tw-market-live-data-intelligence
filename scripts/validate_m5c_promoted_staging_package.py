@@ -4,9 +4,11 @@ from pathlib import Path
 try:
     from verify_m5c_staging_manifest import verify as verify_manifest
     from validate_m5c_supplemental_audit import validate as validate_audit, AUDIT as AUDIT_PATH
+    from validate_m5c_run_summary_destination_correction import validate as validate_destination_correction, CORRECTION as CORRECTION_PATH
 except ModuleNotFoundError:
     from scripts.verify_m5c_staging_manifest import verify as verify_manifest
     from scripts.validate_m5c_supplemental_audit import validate as validate_audit, AUDIT as AUDIT_PATH
+    from scripts.validate_m5c_run_summary_destination_correction import validate as validate_destination_correction, CORRECTION as CORRECTION_PATH
 REQ=['authorization_snapshot.json','request_snapshot.json','source_binding.json','staging_payload.json','promotion_receipt.json','validation_report.json','lineage.json','evidence_ledger.json','rollback_plan.json','frontend_readonly_context_package.json','run_summary.json','sha256_manifest.json']
 TARGETS=['2330','0050','00929']; TARGET_SET=set(TARGETS)
 RUN='research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z'; DEST='research/staging/m5c/m5c_twse_openapi_20260627_authorized_01'; AUTH_ID='M5C_TWSE_OPENAPI_STAGING_PROMOTION_AUTHORIZATION_20260627_AUTHORIZED_01'
@@ -21,13 +23,14 @@ def _flag_errors(name,obj):
 def _require(obj,name,field,expected,errs):
     if field not in obj: errs.append({'code':'required_binding_missing','object':name,'field':field})
     elif obj.get(field)!=expected: errs.append({'code':'binding_value_mismatch','object':name,'field':field,'expected':expected,'actual':obj.get(field)})
-def validate(d):
+def validate(d, allowed_consumption_statuses=None):
     d=Path(d); errs=[]
     for n in REQ:
         if not (d/n).exists(): errs.append({'code':'missing_artifact','path':n})
     if errs: return errs
     errs += verify_manifest(d)
     errs += validate_audit(AUDIT_PATH, d)
+    errs += validate_destination_correction(CORRECTION_PATH, d)
     docs={n:load(d/n) for n in REQ}
     for n,o in docs.items(): errs += _flag_errors(n,o)
     auth_snap=docs['authorization_snapshot.json']; req_snap=docs['request_snapshot.json']; auth=auth_snap.get('authorization',{}); req=req_snap.get('request',{})
@@ -46,6 +49,11 @@ def validate(d):
     if auth.get('targets')!=TARGETS: errs.append({'code':'authorization_targets_mismatch'})
     _require(req,'request','source_run_dir',RUN,errs); _require(req,'request','source_id','TWSE_OpenAPI',errs)
     if req.get('targets')!=TARGETS: errs.append({'code':'request_targets_mismatch','actual':req.get('targets')})
+    run_destination=docs['run_summary.json'].get('destination')
+    if run_destination != DEST:
+        correction_errors=validate_destination_correction(CORRECTION_PATH, d)
+        if correction_errors:
+            errs.append({'code':'run_summary_destination_mismatch_without_valid_correction','actual':run_destination,'errors':correction_errors})
     _require(bind,'source_binding','source_run_dir',RUN,errs); _require(bind,'source_binding','source_run_id','m5b_twse_openapi_20260627T015136Z',errs)
     # source_id was absent in the already-finalized immutable artifact; require supplemental audit to bind it instead of rewriting the package.
     audit=load(AUDIT_PATH)
@@ -65,7 +73,7 @@ def validate(d):
         if status is None:
             audit=load(AUDIT_PATH)
             if audit.get('promotion_status')!='already_performed_once_not_refinalized': errs.append({'code':'legacy_consumption_status_missing_without_audit_exemption'})
-        elif status!='succeeded':
+        elif status not in (allowed_consumption_statuses or {'succeeded'}):
             errs.append({'code':'consumption_status_not_succeeded','actual':status})
     payload=docs['staging_payload.json']; rows=payload.get('rows',[]); syms=[str(r.get('symbol')) for r in rows]
     if set(syms)!=TARGET_SET or len(syms)!=len(set(syms)): errs.append({'code':'target_uniqueness_failed'})
