@@ -1,0 +1,25 @@
+{
+  "failed_targets": [],
+  "governance": {
+    "badge": "historical/stale",
+    "current_realtime": false,
+    "historical_evidence_snapshot": true,
+    "production_current_state": false,
+    "production_ready": false,
+    "readonly_only": true,
+    "realtime_guaranteed": false,
+    "stale_status": "stale",
+    "trading_signal": false
+  },
+  "schema_version": "m5f_source_health.v1",
+  "source_authority": "official",
+  "source_date": "2026-06-26",
+  "source_id": "TWSE_OpenAPI",
+  "source_risk_flags": [
+    "official_eod_reference_source",
+    "not_intraday_live_feed",
+    "not_realtime_guaranteed"
+  ],
+  "stale_status": "stale",
+  "status": "available_as_reviewed_historical_evidence"
+}

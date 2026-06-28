@@ -66,6 +66,26 @@ LEGACY_LIVE_PROBE_TOOLS = {
     "probe_finmind",
 }
 
+
+M5F_TOOL_SPECS: dict[str, dict[str, str]] = {
+    "get_canonical_market_context": {"path": "research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json", "content_type": "json", "description": "Read the M5F canonical market context package payload."},
+    "get_source_health": {"path": "research/staging/m5f/m5f_canonical_market_context_01/source_health.json", "content_type": "json", "description": "Read M5F source health."},
+    "get_capability_matrix": {"path": "research/staging/m5f/m5f_canonical_market_context_01/capability_summary.json", "content_type": "json", "description": "Read M5F capability summary for canonical market context."},
+    "get_source_catalog": {"path": "docs/source_catalog.md", "content_type": "markdown", "description": "Read legacy governed source catalog; not canonical market context."},
+    "get_latest_market_snapshot": {"path": "research/staging/m5f/m5f_canonical_market_context_01/latest_market_snapshot.json", "content_type": "json", "description": "Read M5F latest reviewed bounded evidence snapshot."},
+    "get_watchlist_observations": {"path": "research/staging/m5f/m5f_canonical_market_context_01/watchlist_observations.json", "content_type": "json", "description": "Read M5F descriptive watchlist observations."},
+    "get_ai_context_pack": {"path": "research/staging/m5f/m5f_canonical_market_context_01/ai_context_pack.json", "content_type": "json", "description": "Read M5F AI context pack."},
+    "get_chatgpt_briefing": {"path": "research/staging/m5f/m5f_canonical_market_context_01/chatgpt_briefing.md", "content_type": "markdown", "description": "Read M5F ChatGPT briefing."},
+}
+
+# Backward compatible read_* aliases now resolve to M5F canonical package artifacts.
+READONLY_TOOL_SPECS.update({
+    "read_latest_market_snapshot": M5F_TOOL_SPECS["get_latest_market_snapshot"],
+    "read_watchlist_observations": M5F_TOOL_SPECS["get_watchlist_observations"],
+    "read_ai_context_pack": M5F_TOOL_SPECS["get_ai_context_pack"],
+    "read_chatgpt_briefing": M5F_TOOL_SPECS["get_chatgpt_briefing"],
+})
+
 CONTROLLED_LIVE_PROBE_TOOL = "run_m3g04_controlled_live_probe_evidence"
 CONTROLLED_EVIDENCE_READBACK_TOOL = "read_m3g04_latest_controlled_probe_evidence"
 CONTROLLED_RUNNER_RELATIVE_PATH = "scripts/run_m3g04_controlled_live_probe.py"
@@ -344,10 +364,19 @@ def readonly_governance() -> dict[str, Any]:
         "production_refresh": False,
         "frontend_refresh": False,
         "live_probe_execution": False,
+        "historical_evidence_snapshot": True,
+        "stale_status": "stale",
+        "badge": "historical/stale",
+        "current_realtime": False,
+        "production_current_state": False,
+        "realtime_guaranteed": False,
+        "trading_signal": False,
         "caveats": [
             "readonly_local_context",
-            "not_live_market_data",
+            "not_realtime_guaranteed",
             "not_trading_signal",
+            "not_production_current_state",
+            "freshness_must_be_displayed",
             "no_artifact_refresh",
         ],
     }
@@ -628,7 +657,7 @@ def _resolve_source_path(source_path: str) -> Path:
 
 def read_local_context_tool(tool_name: str) -> dict[str, Any]:
     """Read a configured local context artifact with fail-closed semantics."""
-    spec = READONLY_TOOL_SPECS.get(tool_name)
+    spec = M5F_TOOL_SPECS.get(tool_name) or READONLY_TOOL_SPECS.get(tool_name)
     if spec is None:
         return unavailable_tool_response(tool_name)
 
@@ -692,7 +721,7 @@ async def list_tools() -> list[Tool]:
             description=spec["description"],
             inputSchema={"type": "object", "properties": {}, "additionalProperties": False},
         )
-        for name, spec in READONLY_TOOL_SPECS.items()
+        for name, spec in {**READONLY_TOOL_SPECS, **M5F_TOOL_SPECS}.items()
     ]
     controlled_tool = Tool(
         name=CONTROLLED_LIVE_PROBE_TOOL,
@@ -758,18 +787,21 @@ async def list_tools() -> list[Tool]:
             "additionalProperties": False,
         },
     )
-    return [*readonly_tools, controlled_tool, evidence_readback_tool]
+    readiness_tool = Tool(name="check_bounded_market_refresh_readiness", description="Check M5 bounded refresh readiness without network calls, writes, or authorization consumption.", inputSchema={"type":"object","properties":{},"additionalProperties":False})
+    return [*readonly_tools, controlled_tool, evidence_readback_tool, readiness_tool]
 
 
 @app.call_tool()
 async def call_tool(name: str, arguments: dict[str, Any] | None) -> list[TextContent]:
     """Handle readonly MCP tool requests without executing live probes."""
-    if name in READONLY_TOOL_SPECS:
+    if name in READONLY_TOOL_SPECS or name in M5F_TOOL_SPECS:
         return _json_text(read_local_context_tool(name))
     if name == CONTROLLED_LIVE_PROBE_TOOL:
         return _json_text(run_controlled_live_probe_evidence(arguments))
     if name == CONTROLLED_EVIDENCE_READBACK_TOOL:
         return _json_text(read_controlled_probe_evidence(arguments))
+    if name == "check_bounded_market_refresh_readiness":
+        return _json_text({"tool": name, "status": "authorization_required", "network_calls": False, "artifact_writes": False, "intended_source": "TWSE_OpenAPI", "intended_targets": ["0050", "00929", "2330"], "authorization_model": "M5 explicit future authorization", "m5i_required_for_actual_execution": True, "m5b_authorization_consumed": False, "statement": "Readiness check only; no live probe, no writes, no M5B authorization reuse."})
     return _json_text(unavailable_tool_response(name))
 
 

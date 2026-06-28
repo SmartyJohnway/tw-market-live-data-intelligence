@@ -18,6 +18,17 @@ READONLY_TOOLS = {
     "read_m3g_caveats_register",
     "read_source_contract_baseline",
 }
+M5F_TOOLS = {
+    "get_canonical_market_context",
+    "get_source_health",
+    "get_capability_matrix",
+    "get_source_catalog",
+    "get_latest_market_snapshot",
+    "get_watchlist_observations",
+    "get_ai_context_pack",
+    "get_chatgpt_briefing",
+    "check_bounded_market_refresh_readiness",
+}
 
 LIVE_PROBE_TOOLS = {
     "probe_twse_openapi",
@@ -69,7 +80,8 @@ def test_list_tools_includes_readonly_context_and_one_controlled_tool_only():
     assert mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL in tool_names
     evidence_tools = {name for name in tool_names if "evidence" in name and name.startswith("read_m3g04")}
     assert evidence_tools == {mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL}
-    assert tool_names == READONLY_TOOLS | {mcp_server.CONTROLLED_LIVE_PROBE_TOOL, mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL}
+    assert M5F_TOOLS.issubset(tool_names)
+    assert tool_names == READONLY_TOOLS | M5F_TOOLS | {mcp_server.CONTROLLED_LIVE_PROBE_TOOL, mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL}
     assert tool_names.isdisjoint(LIVE_PROBE_TOOLS)
 
 
@@ -94,7 +106,7 @@ def test_json_local_artifact_read_works():
     assert data["status"] == "ok"
     assert data["content_type"] == "json"
     assert isinstance(data["content"], dict)
-    assert data["source_path"] == "research/generated/ai_context_pack.json"
+    assert data["source_path"] == "research/staging/m5f/m5f_canonical_market_context_01/ai_context_pack.json"
 
 
 def test_markdown_local_artifact_read_works():

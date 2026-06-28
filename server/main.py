@@ -160,3 +160,74 @@ def get_matrix():
         with open(matrix_path, "r", encoding="utf-8") as f:
             return json.load(f)
     raise HTTPException(status_code=404, detail="matrix.json not found. Run probe scripts first.")
+
+# M5FGH readonly canonical market context endpoints.
+from pathlib import Path
+from copy import deepcopy
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+M5F_PACKAGE_DIR = REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01"
+
+
+def _m5f_governance():
+    return {
+        "surface": "FastAPI readonly M5F canonical market context",
+        "execution_mode": "readonly_local_artifact_read",
+        "network_calls": False,
+        "artifact_writes": False,
+        "live_probe_execution": False,
+        "historical_evidence_snapshot": True,
+        "stale_status": "stale",
+        "badge": "historical/stale",
+        "current_realtime": False,
+        "production_current_state": False,
+        "production_ready": False,
+        "realtime_guaranteed": False,
+        "trading_signal": False,
+        "readonly_only": True,
+        "caveats": [
+            "not_realtime_guaranteed",
+            "not_trading_signal",
+            "not_production_current_state",
+            "source_risk_present",
+            "freshness_must_be_displayed",
+        ],
+    }
+
+
+def _read_m5f_artifact(filename: str, *, text: bool = False):
+    path = M5F_PACKAGE_DIR / filename
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail={"error": "m5f_artifact_missing", "source_path": str(path.relative_to(REPO_ROOT)), "governance": _m5f_governance()})
+    try:
+        if text:
+            return {"source_path": str(path.relative_to(REPO_ROOT)), "content": path.read_text(encoding="utf-8"), "governance": _m5f_governance()}
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise HTTPException(status_code=422, detail={"error": "m5f_artifact_malformed", "source_path": str(path.relative_to(REPO_ROOT)), "message": exc.msg, "governance": _m5f_governance()})
+    return {"source_path": str(path.relative_to(REPO_ROOT)), "content": deepcopy(data), "governance": _m5f_governance()}
+
+
+@app.get("/api/context/canonical")
+def get_context_canonical():
+    return _read_m5f_artifact("canonical_market_context.json")
+
+
+@app.get("/api/context/snapshot")
+def get_context_snapshot():
+    return _read_m5f_artifact("latest_market_snapshot.json")
+
+
+@app.get("/api/context/source-health")
+def get_context_source_health():
+    return _read_m5f_artifact("source_health.json")
+
+
+@app.get("/api/context/capability-summary")
+def get_context_capability_summary():
+    return _read_m5f_artifact("capability_summary.json")
+
+
+@app.get("/api/context/briefing")
+def get_context_briefing():
+    return _read_m5f_artifact("chatgpt_briefing.md", text=True)

@@ -1,0 +1,53 @@
+{
+  "failed_targets": [],
+  "governance": {
+    "badge": "historical/stale",
+    "current_realtime": false,
+    "historical_evidence_snapshot": true,
+    "production_current_state": false,
+    "production_ready": false,
+    "readonly_only": true,
+    "realtime_guaranteed": false,
+    "stale_status": "stale",
+    "trading_signal": false
+  },
+  "observations": [
+    {
+      "caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal",
+        "not_production_current_state",
+        "source_risk_present",
+        "freshness_must_be_displayed",
+        "stale_source_row"
+      ],
+      "observation": "0050 has reviewed historical TWSE_OpenAPI price-like value 103.1 from 2026-06-26; stale/historical only.",
+      "symbol": "0050"
+    },
+    {
+      "caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal",
+        "not_production_current_state",
+        "source_risk_present",
+        "freshness_must_be_displayed",
+        "stale_source_row"
+      ],
+      "observation": "00929 has reviewed historical TWSE_OpenAPI price-like value 29.96 from 2026-06-26; stale/historical only.",
+      "symbol": "00929"
+    },
+    {
+      "caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal",
+        "not_production_current_state",
+        "source_risk_present",
+        "freshness_must_be_displayed",
+        "stale_source_row"
+      ],
+      "observation": "2330 has reviewed historical TWSE_OpenAPI price-like value 2340.0 from 2026-06-26; stale/historical only.",
+      "symbol": "2330"
+    }
+  ],
+  "schema_version": "m5f_watchlist_observations.v1"
+}
