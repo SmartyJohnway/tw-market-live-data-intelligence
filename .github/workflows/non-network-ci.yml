@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
       - name: Install test dependencies
@@ -32,3 +34,10 @@ jobs:
         run: python scripts/validate_m5c_supplemental_audit.py
       - name: M5D frontend publication preflight check-only
         run: python scripts/run_m5d_frontend_publication_preflight.py --check-only
+
+      - name: M5D publication candidate validation
+        run: python scripts/validate_m5d_publication_candidate.py --candidate-dir research/staging/m5d/m5d_frontend_publication_candidate_01
+      - name: M5D transaction simulation check-only
+        run: python scripts/simulate_m5d_frontend_publication_transaction.py --check-only
+      - name: M5D rollback simulation check-only
+        run: python scripts/simulate_m5d_frontend_publication_rollback.py --check-only

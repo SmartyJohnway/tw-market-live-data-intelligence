@@ -1,0 +1,171 @@
+{
+  "actual_frontend_publication_authorized": false,
+  "badge": "historical/stale",
+  "bindings": {
+    "m5c_frontend_readonly_context_package_sha256": "a21c0436c11481cd452fbe42e71ae944d4d76ec422e45924fab6428fab030048",
+    "m5c_manifest_sha256": "9956b27850f2561f3738ebacda350b1685d54e1947910191605be637ad7dd203",
+    "m5c_package_dir": "research/staging/m5c/m5c_twse_openapi_20260627_authorized_01",
+    "m5c_run_summary_destination_correction_sha256": "c8cbfebacbeabf530f50a7abaed3fe51ec597e329f7eb64b94bdcbab1aa6f306",
+    "m5c_supplemental_audit_sha256": "447e5b2435c885c1fae8744224551ab1efa675cbebee5ea15e41d95b855dea0a",
+    "pr57_merge_sha": "3931f19564698926a96a3022c5c3b40b07de6081",
+    "source": "TWSE_OpenAPI",
+    "targets": [
+      "2330",
+      "0050",
+      "00929"
+    ]
+  },
+  "candidate_dir": "research/staging/m5d/m5d_frontend_publication_candidate_01",
+  "current_realtime": false,
+  "derived_from": "reviewed_m5c_frontend_readonly_context_package",
+  "frontend_public_artifact": false,
+  "frontend_public_write": false,
+  "frontend_publication_authorized": false,
+  "generated_artifact_write": false,
+  "generated_at_utc": "2026-06-27T01:51:38.637952+00:00",
+  "global_caveats": [
+    "not_realtime_guaranteed",
+    "not_trading_signal",
+    "not_production_current_state",
+    "source_risk_present",
+    "freshness_must_be_displayed"
+  ],
+  "historical_evidence_snapshot": true,
+  "no_temporary_paths": true,
+  "production_current_state": false,
+  "production_ready": false,
+  "proposed_destination": "frontend/public/market-context.json",
+  "publication_performed": false,
+  "readonly_only": true,
+  "realtime_guaranteed": false,
+  "schema_version": "m5d_market_context.v1",
+  "sources": [
+    {
+      "source_authority": "official",
+      "source_id": "TWSE_OpenAPI",
+      "source_risk_flags": [
+        "official_eod_reference_source",
+        "not_intraday_live_feed",
+        "not_realtime_guaranteed"
+      ]
+    },
+    {
+      "source_authority": "official",
+      "source_id": "TWSE_OpenAPI",
+      "source_risk_flags": [
+        "official_eod_reference_source",
+        "not_intraday_live_feed",
+        "not_realtime_guaranteed"
+      ]
+    },
+    {
+      "source_authority": "official",
+      "source_id": "TWSE_OpenAPI",
+      "source_risk_flags": [
+        "official_eod_reference_source",
+        "not_intraday_live_feed",
+        "not_realtime_guaranteed"
+      ]
+    }
+  ],
+  "staging_only": true,
+  "stale_badge": true,
+  "stale_status": "stale",
+  "symbols": [
+    {
+      "data_quality_flags": [
+        "historical_evidence_snapshot",
+        "not_current_realtime"
+      ],
+      "delay_status": "stale",
+      "display_caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal",
+        "not_production_current_state",
+        "source_risk_present",
+        "freshness_must_be_displayed",
+        "stale_source_row"
+      ],
+      "freshness_status": "stale",
+      "normalization_status": "normalized",
+      "price_like_value": 103.1,
+      "price_semantics": "source_normalized_preview_only",
+      "retrieved_at": "2026-06-27T01:51:38.636613+00:00",
+      "source_authority": "official",
+      "source_id": "TWSE_OpenAPI",
+      "source_risk_flags": [
+        "official_eod_reference_source",
+        "not_intraday_live_feed",
+        "not_realtime_guaranteed"
+      ],
+      "source_timestamp": "2026-06-26",
+      "staleness_seconds": 86400,
+      "symbol": "0050"
+    },
+    {
+      "data_quality_flags": [
+        "historical_evidence_snapshot",
+        "not_current_realtime"
+      ],
+      "delay_status": "stale",
+      "display_caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal",
+        "not_production_current_state",
+        "source_risk_present",
+        "freshness_must_be_displayed",
+        "stale_source_row"
+      ],
+      "freshness_status": "stale",
+      "normalization_status": "normalized",
+      "price_like_value": 29.96,
+      "price_semantics": "source_normalized_preview_only",
+      "retrieved_at": "2026-06-27T01:51:38.636613+00:00",
+      "source_authority": "official",
+      "source_id": "TWSE_OpenAPI",
+      "source_risk_flags": [
+        "official_eod_reference_source",
+        "not_intraday_live_feed",
+        "not_realtime_guaranteed"
+      ],
+      "source_timestamp": "2026-06-26",
+      "staleness_seconds": 86400,
+      "symbol": "00929"
+    },
+    {
+      "data_quality_flags": [
+        "historical_evidence_snapshot",
+        "not_current_realtime"
+      ],
+      "delay_status": "stale",
+      "display_caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal",
+        "not_production_current_state",
+        "source_risk_present",
+        "freshness_must_be_displayed",
+        "stale_source_row"
+      ],
+      "freshness_status": "stale",
+      "normalization_status": "normalized",
+      "price_like_value": 2340.0,
+      "price_semantics": "source_normalized_preview_only",
+      "retrieved_at": "2026-06-27T01:51:38.636613+00:00",
+      "source_authority": "official",
+      "source_id": "TWSE_OpenAPI",
+      "source_risk_flags": [
+        "official_eod_reference_source",
+        "not_intraday_live_feed",
+        "not_realtime_guaranteed"
+      ],
+      "source_timestamp": "2026-06-26",
+      "staleness_seconds": 86400,
+      "symbol": "2330"
+    }
+  ],
+  "trading_signal": false,
+  "validation": {
+    "required_caveats_present": true,
+    "staging_payload_valid": true
+  }
+}

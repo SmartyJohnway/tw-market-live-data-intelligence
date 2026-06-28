@@ -1,60 +1,21 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
   "additionalProperties": false,
   "properties": {
-    "actual_frontend_publication_authorized": {
-      "const": false
-    },
-    "frontend_public_write_blocked": {
-      "const": true
-    },
-    "m5c_staging_manifest_sha256": {
-      "const": "9956b27850f2561f3738ebacda350b1685d54e1947910191605be637ad7dd203",
-      "pattern": "^[a-f0-9]{64}$",
-      "type": "string"
-    },
-    "m5c_staging_package_dir": {
-      "const": "research/staging/m5c/m5c_twse_openapi_20260627_authorized_01",
-      "type": "string"
-    },
-    "next_required_action": {
-      "const": "user_authorization",
-      "type": "string"
-    },
-    "proposed_destination": {
-      "const": "frontend/public/market-context.json",
-      "type": "string"
-    },
-    "publication_performed": {
-      "const": false
-    },
-    "request_id": {
-      "const": "M5D_FRONTEND_PUBLICATION_REQUEST",
-      "type": "string"
-    },
-    "request_only": {
-      "const": true
-    },
-    "schema_version": {
-      "const": "m5d_frontend_publication_request.v1",
-      "type": "string"
-    },
-    "simulation_only": {
-      "const": true
-    }
+    "schema_version": {"const": "m5d_frontend_publication_request.v2"},
+    "request_id": {"const": "M5D_FRONTEND_PUBLICATION_REQUEST"},
+    "candidate_dir": {"const": "research/staging/m5d/m5d_frontend_publication_candidate_01"},
+    "candidate_manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "proposed_destination": {"const": "frontend/public/market-context.json"},
+    "m5c_staging_package_dir": {"const": "research/staging/m5c/m5c_twse_openapi_20260627_authorized_01"},
+    "m5c_staging_manifest_sha256": {"const": "9956b27850f2561f3738ebacda350b1685d54e1947910191605be637ad7dd203"},
+    "single_use": {"const": true},
+    "request_only": {"const": true},
+    "authorization_token_issued": {"const": false},
+    "actual_frontend_publication_authorized": {"const": false},
+    "publication_performed": {"const": false},
+    "next_required_action": {"const": "user_authorization"}
   },
-  "required": [
-    "actual_frontend_publication_authorized",
-    "frontend_public_write_blocked",
-    "m5c_staging_manifest_sha256",
-    "m5c_staging_package_dir",
-    "next_required_action",
-    "proposed_destination",
-    "publication_performed",
-    "request_id",
-    "request_only",
-    "schema_version",
-    "simulation_only"
-  ],
-  "type": "object"
+  "required": ["schema_version","request_id","candidate_dir","candidate_manifest_sha256","proposed_destination","m5c_staging_package_dir","m5c_staging_manifest_sha256","single_use","request_only","authorization_token_issued","actual_frontend_publication_authorized","publication_performed","next_required_action"]
 }

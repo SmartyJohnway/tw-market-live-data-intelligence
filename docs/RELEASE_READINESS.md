@@ -35,3 +35,13 @@ M5B adds a single-use bounded TWSE_OpenAPI evidence gate. It is staging-only and
 
 - M5C durable staging promotion is local-only, single-use, historical evidence only, and not production-ready.
 - M5D frontend publication remains request-only; the next action is separate user authorization.
+
+## M5D frontend publication authorization readiness bundle 02
+
+- `ready_for_user_authorization_review=true`
+- `frontend_publication_authorized=false`
+- `publication_performed=false`
+- `production_ready=false`
+- Candidate directory: `research/staging/m5d/m5d_frontend_publication_candidate_01`
+- Proposed destination for a future authorization only: `frontend/public/market-context.json`
+- No frontend/public write is authorized or performed by this bundle.

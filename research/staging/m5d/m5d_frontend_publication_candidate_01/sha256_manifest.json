@@ -1,0 +1,38 @@
+{
+  "actual_frontend_publication_authorized": false,
+  "badge": "historical/stale",
+  "candidate_dir": "research/staging/m5d/m5d_frontend_publication_candidate_01",
+  "files": {
+    "candidate_summary.json": "5a0d693c34c197bd2f674ae2adab9295e9b30056200938e646dbb0011aea61db",
+    "frontend_public_baseline.json": "d9abd3d0158b61ccf980b415fc60672acccdd9021cf7797c24c6abf7c0f2f10d",
+    "market-context.json": "6af7d93bee04a1dde10672ead0958c2c7aa68c2d90e1bd9be877f769560ff581",
+    "publication_plan.json": "1e289eceab9f85a4d36137628a9cf144bdcace767a94fd1cbca708b193735a98",
+    "rollback_plan.json": "9884299dc18437472a118e9bbbc0bd87325292322201322b5406921283b512cc",
+    "source_binding.json": "cf2f0e90d805afdd831781e0ca6a673ac26f746e71f3b5596252caf8ad0069c5",
+    "validation_report.json": "513fcdc2c3aa5c6887af55b44da1d78f7cb40c057d0844204be6cec42092f0b1"
+  },
+  "frontend_public_write": false,
+  "historical_evidence_snapshot": true,
+  "m5c_frontend_readonly_context_package_sha256": "a21c0436c11481cd452fbe42e71ae944d4d76ec422e45924fab6428fab030048",
+  "m5c_manifest_sha256": "9956b27850f2561f3738ebacda350b1685d54e1947910191605be637ad7dd203",
+  "m5c_package_dir": "research/staging/m5c/m5c_twse_openapi_20260627_authorized_01",
+  "m5c_run_summary_destination_correction_sha256": "c8cbfebacbeabf530f50a7abaed3fe51ec597e329f7eb64b94bdcbab1aa6f306",
+  "m5c_supplemental_audit_sha256": "447e5b2435c885c1fae8744224551ab1efa675cbebee5ea15e41d95b855dea0a",
+  "manifest_final": true,
+  "no_temporary_paths": true,
+  "pr57_merge_sha": "3931f19564698926a96a3022c5c3b40b07de6081",
+  "production_ready": false,
+  "proposed_destination": "frontend/public/market-context.json",
+  "publication_performed": false,
+  "readonly_only": true,
+  "realtime_guaranteed": false,
+  "schema_version": "m5d_frontend_publication_candidate.v1",
+  "source": "TWSE_OpenAPI",
+  "stale_status": "stale",
+  "targets": [
+    "2330",
+    "0050",
+    "00929"
+  ],
+  "trading_signal": false
+}
