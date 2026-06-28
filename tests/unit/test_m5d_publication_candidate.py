@@ -91,3 +91,60 @@ def test_source_package_changed_detection(tmp_path):
     assert 'source_package_changed_after_candidate_build' in validate_candidate(d)
 
 def test_pr57_sha_constant_is_bound(): assert PR57_MERGE_SHA == '3931f19564698926a96a3022c5c3b40b07de6081'
+
+def test_shallow_checkout_missing_pr57_commit_does_not_block(monkeypatch):
+    monkeypatch.setattr('scripts.m5d_publication_common._git_commit_exists', lambda commit: False)
+    assert validate_candidate(CAND) == []
+
+def test_activation_semantics_publication_plan_rehashed_still_blocked(tmp_path):
+    d = copy_candidate(tmp_path)
+    plan_path = d / 'publication_plan.json'
+    plan = json.loads(plan_path.read_text())
+    plan['execution_available'] = True
+    plan['request_only'] = False
+    plan['next_required_action'] = 'publish'
+    write_json(plan_path, plan)
+    manifest_path = d / 'sha256_manifest.json'
+    manifest = json.loads(manifest_path.read_text())
+    manifest['files']['publication_plan.json'] = __import__('hashlib').sha256(plan_path.read_bytes()).hexdigest()
+    write_json(manifest_path, manifest)
+    errs = validate_candidate(d)
+    assert 'execution_available_must_be_false' in errs
+    assert 'publication_plan_request_only_must_be_true' in errs
+    assert 'next_required_action_must_be_user_authorization' in errs
+
+def test_candidate_summary_activation_semantics_rehashed_still_blocked(tmp_path):
+    d = copy_candidate(tmp_path)
+    summary_path = d / 'candidate_summary.json'
+    summary = json.loads(summary_path.read_text())
+    summary['ready_for_user_authorization_review'] = False
+    summary['frontend_publication_authorized'] = True
+    write_json(summary_path, summary)
+    manifest_path = d / 'sha256_manifest.json'
+    manifest = json.loads(manifest_path.read_text())
+    manifest['files']['candidate_summary.json'] = __import__('hashlib').sha256(summary_path.read_bytes()).hexdigest()
+    write_json(manifest_path, manifest)
+    errs = validate_candidate(d)
+    assert 'ready_for_user_authorization_review_must_be_true' in errs
+    assert 'frontend_publication_authorized_must_be_false' in errs
+
+def test_rollback_plan_and_authorization_material_rehashed_still_blocked(tmp_path):
+    d = copy_candidate(tmp_path)
+    rollback_path = d / 'rollback_plan.json'
+    rollback = json.loads(rollback_path.read_text())
+    rollback['simulation_only'] = False
+    rollback['authorization_token'] = 'fake'
+    write_json(rollback_path, rollback)
+    manifest_path = d / 'sha256_manifest.json'
+    manifest = json.loads(manifest_path.read_text())
+    manifest['files']['rollback_plan.json'] = __import__('hashlib').sha256(rollback_path.read_bytes()).hexdigest()
+    write_json(manifest_path, manifest)
+    errs = validate_candidate(d)
+    assert 'rollback_plan_simulation_only_must_be_true' in errs
+    assert any(e.startswith('authorization_material_forbidden') for e in errs)
+
+def test_rollback_simulator_validates_candidate_before_simulation(monkeypatch):
+    monkeypatch.setattr('scripts.simulate_m5d_frontend_publication_rollback.validate_candidate', lambda c: ['tampered'])
+    out = rollback_sim(existing=False)
+    assert out['status'] == 'blocked'
+    assert out['errors'] == ['tampered']

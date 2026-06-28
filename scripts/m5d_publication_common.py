@@ -29,6 +29,9 @@ FORBIDDEN_FALSE_FLAGS = [
     'realtime_guaranteed', 'trading_signal', 'production_ready', 'publication_performed',
     'frontend_public_write', 'actual_frontend_publication_authorized'
 ]
+FORBIDDEN_AUTHORIZATION_KEYS = {
+    'authorization_decision', 'authorization_token', 'approval_token', 'publication_authorization_token'
+}
 
 def sha(p: Path) -> str:
     return hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
@@ -41,8 +44,11 @@ def dump(p: Path, d):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(d, indent=2, sort_keys=True) + "\n")
 
+def _git_commit_exists(commit: str) -> bool:
+    return subprocess.run(['git', 'cat-file', '-e', f'{commit}^{{commit}}'], cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0
+
 def _git_is_ancestor(commit: str) -> bool:
-    return subprocess.run(['git', 'merge-base', '--is-ancestor', commit, 'HEAD'], cwd=ROOT).returncode == 0
+    return subprocess.run(['git', 'merge-base', '--is-ancestor', commit, 'HEAD'], cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0
 
 def frontend_inventory():
     base = ROOT / 'frontend/public'
@@ -76,7 +82,7 @@ def _current_artifact_hashes(c: Path) -> dict[str, str]:
 
 def verify_upstream():
     errs = []
-    if not _git_is_ancestor(PR57_MERGE_SHA):
+    if _git_commit_exists(PR57_MERGE_SHA) and not _git_is_ancestor(PR57_MERGE_SHA):
         errs.append('pr57_merge_sha_not_head_ancestor')
     if sha(M5C / 'sha256_manifest.json') != M5C_MANIFEST_SHA:
         errs.append('m5c_manifest_sha_mismatch')
@@ -95,10 +101,7 @@ def verify_upstream():
     errs.extend(validate_m5c_package(M5C))
     return errs
 
-def build():
-    errs = verify_upstream()
-    if errs:
-        raise SystemExit('upstream integrity failed: ' + ','.join(map(str, errs)))
+def _materialize_candidate(out_dir: Path):
     src = load(M5C / 'frontend_readonly_context_package.json')
     bindings = {
         'm5c_package_dir': str(M5C),
@@ -126,23 +129,48 @@ def build():
         'badge': 'historical/stale',
         'no_temporary_paths': True,
     }
-    dump(CAND / 'market-context.json', {**src, **common, 'schema_version': 'm5d_market_context.v1', 'derived_from': 'reviewed_m5c_frontend_readonly_context_package', 'bindings': bindings})
-    dump(CAND / 'source_binding.json', {**common, **bindings})
-    dump(CAND / 'frontend_public_baseline.json', frontend_inventory())
-    dump(CAND / 'candidate_summary.json', {**common, 'ready_for_user_authorization_review': True, 'frontend_publication_authorized': False, 'symbols': TARGETS, 'authority': 'TWSE_OpenAPI', 'caveats': src.get('global_caveats', [])})
-    dump(CAND / 'validation_report.json', {**common, 'status': 'pass', 'checks': ['upstream_integrity', 'baseline_hash_only', 'readonly_stale_caveats', 'no_temp_paths', 'forbidden_flags', 'frontend_public_baseline_drift']})
-    dump(CAND / 'rollback_plan.json', {**common, 'simulation_only': True, 'rollback_required': (ROOT / DEST).exists(), 'steps': ['restore previous destination hash from baseline if overwritten in future authorized execution', 'remove newly created destination if no baseline existed']})
-    dump(CAND / 'publication_plan.json', {**common, 'request_only': True, 'next_required_action': 'user_authorization', 'execution_available': False, 'fail_closed_reason': 'no authorization decision or token exists'})
-    manifest = {'schema_version': 'm5d_sha256_manifest.v1', 'candidate_dir': str(CAND), 'manifest_final': True, 'files': _current_artifact_hashes(CAND), **common, **bindings}
-    dump(CAND / 'sha256_manifest.json', manifest)
+    def write(name, obj):
+        (out_dir / name).write_text(json.dumps(obj, indent=2, sort_keys=True) + "\n")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    write('market-context.json', {**src, **common, 'schema_version': 'm5d_market_context.v1', 'derived_from': 'reviewed_m5c_frontend_readonly_context_package', 'bindings': bindings})
+    write('source_binding.json', {**common, **bindings})
+    write('frontend_public_baseline.json', frontend_inventory())
+    write('candidate_summary.json', {**common, 'ready_for_user_authorization_review': True, 'frontend_publication_authorized': False, 'symbols': TARGETS, 'authority': 'TWSE_OpenAPI', 'caveats': src.get('global_caveats', [])})
+    write('validation_report.json', {**common, 'status': 'pass', 'checks': ['upstream_integrity', 'baseline_hash_only', 'readonly_stale_caveats', 'activation_semantics', 'no_temp_paths', 'forbidden_flags', 'frontend_public_baseline_drift']})
+    write('rollback_plan.json', {**common, 'simulation_only': True, 'rollback_required': (ROOT / DEST).exists(), 'steps': ['restore previous destination hash from baseline if overwritten in future authorized execution', 'remove newly created destination if no baseline existed']})
+    write('publication_plan.json', {**common, 'request_only': True, 'next_required_action': 'user_authorization', 'execution_available': False, 'fail_closed_reason': 'no authorization decision or token exists'})
+    files = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(out_dir.glob('*.json')) if p.name != 'sha256_manifest.json'}
+    write('sha256_manifest.json', {'schema_version': 'm5d_sha256_manifest.v1', 'candidate_dir': str(CAND), 'manifest_final': True, 'files': files, **common, **bindings})
+
+
+def build():
+    errs = verify_upstream()
+    if errs:
+        raise SystemExit('upstream integrity failed: ' + ','.join(map(str, errs)))
+    parent = ROOT / CAND.parent
+    parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix='.m5d_tmp_', dir=parent) as td:
+        tmp = Path(td)
+        _materialize_candidate(tmp)
+        if {p.name for p in tmp.glob('*.json')} != REQUIRED_ARTIFACTS:
+            raise SystemExit('candidate build failed: artifact_set_mismatch')
+        final = ROOT / CAND
+        if final.exists():
+            shutil.rmtree(final)
+        tmp.replace(final)
+    validation_errors = validate_candidate(CAND)
+    if validation_errors:
+        raise SystemExit('candidate validation failed: ' + ','.join(map(str, validation_errors)))
     req = {'schema_version': 'm5d_frontend_publication_request.v2', 'request_id': 'M5D_FRONTEND_PUBLICATION_REQUEST', 'candidate_dir': str(CAND), 'candidate_manifest_sha256': sha(CAND / 'sha256_manifest.json'), 'proposed_destination': str(DEST), 'm5c_staging_package_dir': str(M5C), 'm5c_staging_manifest_sha256': M5C_MANIFEST_SHA, 'single_use': True, 'request_only': True, 'authorization_token_issued': False, 'actual_frontend_publication_authorized': False, 'publication_performed': False, 'next_required_action': 'user_authorization'}
     dump(REQ, req)
-    return manifest
+    return load(CAND / 'sha256_manifest.json')
 
 def _scan_forbidden_flags(obj, path='$'):
     errs = []
     if isinstance(obj, dict):
         for k, v in obj.items():
+            if k in FORBIDDEN_AUTHORIZATION_KEYS:
+                errs.append(f'authorization_material_forbidden:{path}/{k}')
             if k in FORBIDDEN_FALSE_FLAGS and v is not False:
                 errs.append(f'forbidden_flag:{path}/{k}')
             errs.extend(_scan_forbidden_flags(v, f'{path}/{k}'))
@@ -199,6 +227,24 @@ def validate_candidate(cdir=CAND):
         errs.append('temporary_path_leakage')
     for artifact in sorted(artifact_names):
         errs.extend(_scan_forbidden_flags(load(c / artifact), '$/' + artifact))
+    publication_plan = load(c / 'publication_plan.json')
+    if publication_plan.get('execution_available') is not False:
+        errs.append('execution_available_must_be_false')
+    if publication_plan.get('request_only') is not True:
+        errs.append('publication_plan_request_only_must_be_true')
+    if publication_plan.get('next_required_action') != 'user_authorization':
+        errs.append('next_required_action_must_be_user_authorization')
+    candidate_summary = load(c / 'candidate_summary.json')
+    if candidate_summary.get('ready_for_user_authorization_review') is not True:
+        errs.append('ready_for_user_authorization_review_must_be_true')
+    if candidate_summary.get('frontend_publication_authorized') is not False:
+        errs.append('frontend_publication_authorized_must_be_false')
+    rollback_plan = load(c / 'rollback_plan.json')
+    if rollback_plan.get('simulation_only') is not True:
+        errs.append('rollback_plan_simulation_only_must_be_true')
+    for artifact in sorted(artifact_names):
+        if load(c / artifact).get('readonly_only') is False:
+            errs.append(f'readonly_only_must_not_be_false:{artifact}')
     if sha(M5C / 'frontend_readonly_context_package.json') != man.get('m5c_frontend_readonly_context_package_sha256'):
         errs.append('source_package_changed_after_candidate_build')
     if frontend_inventory() != load(c / 'frontend_public_baseline.json'):

@@ -1,13 +1,16 @@
 import argparse, json, tempfile, hashlib
 from pathlib import Path
 try:
-    from m5d_publication_common import DEST, CAND, ROOT, load
+    from m5d_publication_common import DEST, CAND, ROOT, load, validate_candidate
 except ModuleNotFoundError:
-    from scripts.m5d_publication_common import DEST, CAND, ROOT, load
+    from scripts.m5d_publication_common import DEST, CAND, ROOT, load, validate_candidate
 
 def h(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
 def sim(fail=False, existing=None):
+    candidate_errors = validate_candidate(CAND)
+    if candidate_errors:
+        return {'status': 'blocked', 'errors': candidate_errors, 'publication_performed': False}
     baseline = load(CAND / 'frontend_public_baseline.json')
     if existing is None:
         existing = bool(baseline.get('target_path_exists'))
