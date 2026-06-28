@@ -10,13 +10,13 @@ Fixture readiness: local-only fixtures and golden readonly packages are validati
 
 Frontend readonly local preview readiness: source files exist outside frontend/public and display caveats.
 
-Not production-ready blockers: no production refresh authorization, no durable evidence promotion, no production current state.
+Not production-ready blockers: no production refresh authorization, no production/generated/frontend publication promotion, no production current state.
 
-Not live-ready blockers: no live probes, not realtime guaranteed, no source freshness verified by this bundle.
+Not live-ready blockers: no additional live probe authorization in this bundle, not realtime guaranteed, no current-market-state claim.
 
 Not frontend/public-ready blockers: no frontend/public publication is authorized.
 
-Next authorization ladder: approve limited fixture refresh, then controlled single-source live probe, then explicit durable promotion review.
+Next authorization ladder: review the M5C staging package, then issue a separate M5D frontend-publication authorization only if frontend/public publication is desired.
 
 
 ## M4 Omega
@@ -30,3 +30,8 @@ M5A adds a check-only authorization request schema and validator for a future bo
 ## M5B bounded live evidence gate
 
 M5B adds a single-use bounded TWSE_OpenAPI evidence gate. It is staging-only and does not authorize production promotion, generated artifact refresh, frontend publication, or trading signals.
+
+## M5C/M5D bundle 01
+
+- M5C durable staging promotion is local-only, single-use, historical evidence only, and not production-ready.
+- M5D frontend publication remains request-only; the next action is separate user authorization.

@@ -1,0 +1,149 @@
+{
+  "badge": "historical/stale",
+  "current_realtime": false,
+  "frontend_public_artifact": false,
+  "frontend_publication_authorized": false,
+  "generated_artifact_write": false,
+  "generated_at_utc": "2026-06-27T01:51:38.637952+00:00",
+  "global_caveats": [
+    "not_realtime_guaranteed",
+    "not_trading_signal",
+    "not_production_current_state",
+    "source_risk_present",
+    "freshness_must_be_displayed"
+  ],
+  "historical_evidence_snapshot": true,
+  "production_current_state": false,
+  "production_ready": false,
+  "readonly_only": true,
+  "realtime_guaranteed": false,
+  "schema_version": "frontend_readonly_context_package.v1",
+  "sources": [
+    {
+      "source_authority": "official",
+      "source_id": "TWSE_OpenAPI",
+      "source_risk_flags": [
+        "official_eod_reference_source",
+        "not_intraday_live_feed",
+        "not_realtime_guaranteed"
+      ]
+    },
+    {
+      "source_authority": "official",
+      "source_id": "TWSE_OpenAPI",
+      "source_risk_flags": [
+        "official_eod_reference_source",
+        "not_intraday_live_feed",
+        "not_realtime_guaranteed"
+      ]
+    },
+    {
+      "source_authority": "official",
+      "source_id": "TWSE_OpenAPI",
+      "source_risk_flags": [
+        "official_eod_reference_source",
+        "not_intraday_live_feed",
+        "not_realtime_guaranteed"
+      ]
+    }
+  ],
+  "staging_only": true,
+  "stale_badge": true,
+  "symbols": [
+    {
+      "data_quality_flags": [
+        "historical_evidence_snapshot",
+        "not_current_realtime"
+      ],
+      "delay_status": "stale",
+      "display_caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal",
+        "not_production_current_state",
+        "source_risk_present",
+        "freshness_must_be_displayed",
+        "stale_source_row"
+      ],
+      "freshness_status": "stale",
+      "normalization_status": "normalized",
+      "price_like_value": 103.1,
+      "price_semantics": "source_normalized_preview_only",
+      "retrieved_at": "2026-06-27T01:51:38.636613+00:00",
+      "source_authority": "official",
+      "source_id": "TWSE_OpenAPI",
+      "source_risk_flags": [
+        "official_eod_reference_source",
+        "not_intraday_live_feed",
+        "not_realtime_guaranteed"
+      ],
+      "source_timestamp": "2026-06-26",
+      "staleness_seconds": 86400,
+      "symbol": "0050"
+    },
+    {
+      "data_quality_flags": [
+        "historical_evidence_snapshot",
+        "not_current_realtime"
+      ],
+      "delay_status": "stale",
+      "display_caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal",
+        "not_production_current_state",
+        "source_risk_present",
+        "freshness_must_be_displayed",
+        "stale_source_row"
+      ],
+      "freshness_status": "stale",
+      "normalization_status": "normalized",
+      "price_like_value": 29.96,
+      "price_semantics": "source_normalized_preview_only",
+      "retrieved_at": "2026-06-27T01:51:38.636613+00:00",
+      "source_authority": "official",
+      "source_id": "TWSE_OpenAPI",
+      "source_risk_flags": [
+        "official_eod_reference_source",
+        "not_intraday_live_feed",
+        "not_realtime_guaranteed"
+      ],
+      "source_timestamp": "2026-06-26",
+      "staleness_seconds": 86400,
+      "symbol": "00929"
+    },
+    {
+      "data_quality_flags": [
+        "historical_evidence_snapshot",
+        "not_current_realtime"
+      ],
+      "delay_status": "stale",
+      "display_caveats": [
+        "not_realtime_guaranteed",
+        "not_trading_signal",
+        "not_production_current_state",
+        "source_risk_present",
+        "freshness_must_be_displayed",
+        "stale_source_row"
+      ],
+      "freshness_status": "stale",
+      "normalization_status": "normalized",
+      "price_like_value": 2340.0,
+      "price_semantics": "source_normalized_preview_only",
+      "retrieved_at": "2026-06-27T01:51:38.636613+00:00",
+      "source_authority": "official",
+      "source_id": "TWSE_OpenAPI",
+      "source_risk_flags": [
+        "official_eod_reference_source",
+        "not_intraday_live_feed",
+        "not_realtime_guaranteed"
+      ],
+      "source_timestamp": "2026-06-26",
+      "staleness_seconds": 86400,
+      "symbol": "2330"
+    }
+  ],
+  "trading_signal": false,
+  "validation": {
+    "required_caveats_present": true,
+    "staging_payload_valid": true
+  }
+}

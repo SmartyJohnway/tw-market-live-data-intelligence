@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "package_dir", "package_manifest_sha256", "producer", "promotion_status", "canonical_source_id", "immutable_package_not_refinalized", "artifacts"],
+  "properties": {
+    "schema_version": {"const": "m5c_supplemental_audit_record.v1"},
+    "package_dir": {"const": "research/staging/m5c/m5c_twse_openapi_20260627_authorized_01"},
+    "package_manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "producer": {"const": "post-review-validator-hardening"},
+    "promotion_status": {"const": "already_performed_once_not_refinalized"},
+    "canonical_source_id": {"const": "TWSE_OpenAPI"},
+    "immutable_package_not_refinalized": {"const": true},
+    "artifacts": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256", "producer", "lineage", "artifact_type", "promotion_status"],
+        "properties": {
+          "path": {"type": "string"},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "producer": {"const": "m5c_controlled_staging_promotion"},
+          "lineage": {"const": "M5B immutable evidence -> M5C staging"},
+          "artifact_type": {"enum": ["package_artifact", "package_manifest"]},
+          "promotion_status": {"const": "promoted_in_original_single_use_execution"}
+        }
+      }
+    }
+  }
+}

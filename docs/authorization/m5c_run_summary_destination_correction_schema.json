@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "correction_id", "package_dir", "artifact", "artifact_sha256", "field", "recorded_value", "canonical_effective_value", "reason", "immutable_artifact_rewritten", "applies_to_manifest_sha256"],
+  "properties": {
+    "schema_version": {"const": "m5c_run_summary_destination_correction.v1"},
+    "correction_id": {"const": "M5C_RUN_SUMMARY_DESTINATION_CORRECTION_20260627_01"},
+    "package_dir": {"const": "research/staging/m5c/m5c_twse_openapi_20260627_authorized_01"},
+    "artifact": {"const": "run_summary.json"},
+    "artifact_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "field": {"const": "destination"},
+    "recorded_value": {"type": "string", "pattern": "\\.m5c_tmp_"},
+    "canonical_effective_value": {"const": "research/staging/m5c/m5c_twse_openapi_20260627_authorized_01"},
+    "reason": {"type": "string", "minLength": 20},
+    "immutable_artifact_rewritten": {"const": false},
+    "applies_to_manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}
