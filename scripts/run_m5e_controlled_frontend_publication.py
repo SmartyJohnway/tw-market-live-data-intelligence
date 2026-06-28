@@ -54,12 +54,11 @@ def candidate_market_context_sha(cdir: Path = CAND) -> str:
     return load(ROOT / cdir / "sha256_manifest.json")["files"]["market-context.json"]
 
 def _fsync_dir(path: Path) -> None:
+    fd = os.open(path, os.O_RDONLY)
     try:
-        fd = os.open(path, os.O_RDONLY)
-        try: os.fsync(fd)
-        finally: os.close(fd)
-    except OSError:
-        pass
+        os.fsync(fd)
+    finally:
+        os.close(fd)
 
 def durable_json_replace(path: Path, obj: dict) -> str:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -129,6 +128,14 @@ def validate_auth(decision, token, *, now=None):
     scan(d); scan(t)
     return errs
 
+def _has_symlink_component(path: Path) -> bool:
+    probe = Path(path.anchor) if path.is_absolute() else Path()
+    for part in path.parts[1:] if path.is_absolute() else path.parts:
+        probe = probe / part
+        if probe.exists() and probe.is_symlink():
+            return True
+    return False
+
 def safe_dest(dest):
     raw = ROOT / dest
     if raw.exists() and raw.is_symlink(): raise ValueError("symlink_target_forbidden")
@@ -148,8 +155,8 @@ def claim_once(claim_dir, auth_id):
     _fsync_dir(claim_dir)
     return path
 
-def _journal_state(auth_id, dest, candidate_manifest_sha256, new_sha256, state="started"):
-    return {"schema_version":"m5e_transaction_journal.v1","state":state,"auth_id":auth_id,"destination":str(dest),"candidate_sha256":candidate_manifest_sha256,"new_sha256":new_sha256,"publication_performed":False}
+def _journal_state(auth_id, dest, candidate_manifest_sha256, new_sha256, *, simulation_mode, state="started"):
+    return {"schema_version":"m5e_transaction_journal.v1","state":state,"auth_id":auth_id,"destination":str(dest),"candidate_sha256":candidate_manifest_sha256,"new_sha256":new_sha256,"publication_performed":False,"simulation_mode":simulation_mode,"destination_write_simulated":False}
 
 def publish_transaction(src, dest, journal_dir, *, auth_id, claim_dir=None, expected_src_sha256=None, candidate_manifest_sha256=None, crash_at=None, simulation_mode=False):
     if claim_dir is None: raise ValueError("claim_dir_required")
@@ -166,13 +173,18 @@ def publish_transaction(src, dest, journal_dir, *, auth_id, claim_dir=None, expe
         if not str(resolved_dest).startswith(str(simulation_root) + os.sep):
             raise ValueError("simulation_destination_outside_temporary_root")
     else:
-        if dest.resolve() != safe_dest(DEST):
+        lexical_dest = dest if dest.is_absolute() else ROOT / dest
+        expected_lexical = ROOT / DEST
+        if lexical_dest.absolute() != expected_lexical.absolute():
             raise ValueError("production_destination_mismatch")
+        if _has_symlink_component(lexical_dest):
+            raise ValueError("symlink_target_forbidden")
+        safe_dest(DEST)
     expected_src_sha256 = expected_src_sha256 if simulation_mode and expected_src_sha256 else candidate_market_context_sha()
     candidate_manifest_sha256 = candidate_manifest_sha256 if simulation_mode and candidate_manifest_sha256 else manifest_sha()
     data = src.read_bytes(); new_hash = hashlib.sha256(data).hexdigest()
     if new_hash != expected_src_sha256: raise ValueError("source_hash_mismatch")
-    state = _journal_state(auth_id, dest, candidate_manifest_sha256, new_hash)
+    state = _journal_state(auth_id, dest, candidate_manifest_sha256, new_hash, simulation_mode=simulation_mode)
     _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
     claim_path = claim_once(claim_dir, auth_id); state.update(state="claimed", single_use_claim=str(claim_path)); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
     if crash_at == "before_temp_write": raise RuntimeError("crash:before_temp_write")
@@ -190,7 +202,7 @@ def publish_transaction(src, dest, journal_dir, *, auth_id, claim_dir=None, expe
         state.update(state="after_backup", backup=str(backup), previous_sha256=fsha(backup)); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
     if crash_at == "after_backup": raise RuntimeError("crash:after_backup")
     os.replace(tmp, dest); _fsync_dir(dest.parent)
-    state.update(state="after_replace", publication_performed=True); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
+    state.update(state="after_replace", publication_performed=False if simulation_mode else True, destination_write_simulated=True if simulation_mode else False); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
     if crash_at in {"after_replace", "before_receipt"}: raise RuntimeError("crash:" + crash_at)
     out = {"schema_version":"m5e_publication_receipt.v1","status":"simulated" if simulation_mode else "published","authorization_id":auth_id,"destination":str(dest),"sha256":fsha(dest),"candidate_manifest_sha256":candidate_manifest_sha256,"publication_performed":False if simulation_mode else True,"single_use_claim":state.get("single_use_claim")}
     if simulation_mode: out["simulation_mode"] = True
@@ -208,7 +220,7 @@ def rollback(dest, journal_dir):
         else:
             durable_copy(Path(st["backup"]), dest)
             out = {"schema_version":"m5e_rollback_receipt.v1","status":"rolled_back_replacement","destination":str(dest),"rollback_performed":True,"sha256":fsha(dest)}
-    elif st.get("publication_performed") and dest.exists() and fsha(dest) == st.get("new_sha256"):
+    elif (st.get("publication_performed") or st.get("destination_write_simulated")) and dest.exists() and fsha(dest) == st.get("new_sha256"):
         dest.unlink(); _fsync_dir(dest.parent)
         out = {"schema_version":"m5e_rollback_receipt.v1","status":"rolled_back_new_target","destination":str(dest),"rollback_performed":True}
     else:

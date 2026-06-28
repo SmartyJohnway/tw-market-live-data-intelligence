@@ -16,6 +16,9 @@
     "destination": {
       "type": "string"
     },
+    "destination_write_simulated": {
+      "type": "boolean"
+    },
     "new_sha256": {
       "pattern": "^[0-9a-f]{64}$",
       "type": "string"
@@ -32,6 +35,9 @@
     },
     "schema_version": {
       "const": "m5e_transaction_journal.v1"
+    },
+    "simulation_mode": {
+      "type": "boolean"
     },
     "single_use_claim": {
       "type": "string"
@@ -59,7 +65,9 @@
     "destination",
     "candidate_sha256",
     "new_sha256",
-    "publication_performed"
+    "publication_performed",
+    "simulation_mode",
+    "destination_write_simulated"
   ],
   "type": "object"
 }

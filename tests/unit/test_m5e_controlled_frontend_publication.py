@@ -161,3 +161,41 @@ def test_after_receipt_recovery_rejects_wrong_authorization_binding(tmp_path):
     receipt=json.loads(receipt_path.read_text()); receipt['authorization_id']='other-auth'; receipt_path.write_text(json.dumps(receipt))
     rec=m5e.recover(dest,journal)
     assert rec['status']=='manual_recovery_required'
+
+def test_simulation_journal_and_receipt_do_not_claim_publication(tmp_path):
+    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; journal=tmp_path/'j'
+    receipt=m5e.publish_transaction(src,dest,journal,**tx_kwargs(tmp_path, src, 'sim-governance'))
+    journal_payload=m5e.load(journal/'journal.json')
+    assert receipt['status']=='simulated'
+    assert receipt['publication_performed'] is False
+    assert journal_payload['simulation_mode'] is True
+    assert journal_payload['publication_performed'] is False
+    assert journal_payload['destination_write_simulated'] is True
+    bad={**receipt, 'status':'published', 'publication_performed':False}
+    assert m5e._schema_errors('publication_receipt', bad)
+
+def test_production_rejects_symlink_alias_destination(tmp_path, monkeypatch):
+    monkeypatch.setattr(m5e, 'ROOT', tmp_path)
+    public=tmp_path/'frontend'/'public'; public.mkdir(parents=True)
+    target=public/'market-context.json'; target.write_text('old')
+    alias=tmp_path/'alias.json'; alias.symlink_to(target)
+    src=tmp_path/'src'; src.write_text('new')
+    with pytest.raises(ValueError, match='production_destination_mismatch'):
+        m5e.publish_transaction(src,alias,tmp_path/'j',auth_id='prod-alias',claim_dir=tmp_path/'claims')
+
+def test_io_failure_injection_for_write_fsync_replace_and_backup(tmp_path, monkeypatch):
+    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; journal=tmp_path/'j'
+    def fail_write(fd, data): raise OSError('short_write')
+    monkeypatch.setattr(m5e, '_write_all', fail_write)
+    with pytest.raises(OSError, match='short_write'):
+        m5e.publish_transaction(src,dest,journal,**tx_kwargs(tmp_path, src, 'fail-write'))
+    monkeypatch.setattr(m5e, '_write_all', lambda fd, data: None)
+    def fail_fsync(fd): raise OSError('fsync_failed')
+    monkeypatch.setattr(m5e.os, 'fsync', fail_fsync)
+    with pytest.raises(OSError, match='fsync_failed'):
+        m5e.publish_transaction(src,tmp_path/'dest2',tmp_path/'j2',**tx_kwargs(tmp_path, src, 'fail-fsync'))
+    monkeypatch.undo()
+    def fail_replace(a,b): raise OSError('replace_failed')
+    monkeypatch.setattr(m5e.os, 'replace', fail_replace)
+    with pytest.raises(OSError, match='replace_failed'):
+        m5e.publish_transaction(src,tmp_path/'dest3',tmp_path/'j3',**tx_kwargs(tmp_path, src, 'fail-replace'))

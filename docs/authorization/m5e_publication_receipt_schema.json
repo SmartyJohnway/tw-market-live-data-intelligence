@@ -1,6 +1,45 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
+  "oneOf": [
+    {
+      "not": {
+        "required": [
+          "simulation_mode"
+        ]
+      },
+      "properties": {
+        "publication_performed": {
+          "const": true
+        },
+        "status": {
+          "const": "published"
+        }
+      },
+      "required": [
+        "status",
+        "publication_performed"
+      ]
+    },
+    {
+      "properties": {
+        "publication_performed": {
+          "const": false
+        },
+        "simulation_mode": {
+          "const": true
+        },
+        "status": {
+          "const": "simulated"
+        }
+      },
+      "required": [
+        "status",
+        "publication_performed",
+        "simulation_mode"
+      ]
+    }
+  ],
   "properties": {
     "authorization_id": {
       "type": "string"
