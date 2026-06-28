@@ -34,7 +34,7 @@ def validate(path=REQ):
         if d.get('m5c_staging_manifest_sha256')!=actual: errs.append({'code':'staging_manifest_sha_mismatch','expected':actual,'actual':d.get('m5c_staging_manifest_sha256')})
         errs += verify_manifest(pkg)
         errs += validate_package(pkg)
-        errs += validate_audit()
+        errs += validate_audit(package_dir=pkg)
     return errs
 def main(argv=None):
     p=argparse.ArgumentParser(); p.add_argument('--request',default=str(REQ)); ns=p.parse_args(argv); errs=validate(ns.request)

@@ -9,15 +9,30 @@ from m5c_common import load, readonly_payload_from_candidate
 from validate_m5c_promoted_staging_package import validate as validate_promoted_package
 CONSUME_DIR=Path('research/staging/m5c/authorization_consumption')
 
-def _write_json(path: Path, data: dict):
-    path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
+def _atomic_write_json(path: Path, data: dict):
+    tmp=path.with_name(path.name + '.tmp')
+    tmp.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
+    os.replace(tmp, path)
 def _destination_state():
     dest=Path(DEST)
     return {'exists': dest.exists(), 'is_dir': dest.is_dir(), 'file_count': len(list(dest.iterdir())) if dest.is_dir() else 0}
+def _existing_consumed_at(path: Path, fallback: str):
+    try:
+        existing=json.loads(path.read_text())
+        return existing.get('consumed_at_utc') or fallback
+    except Exception:
+        return fallback
 def _record_outcome(path: Path, status: str, stage: str, detail: str | None = None, tmp: Path | None = None, cleanup_result: str | None = None):
+    now=datetime.now(timezone.utc).isoformat()
     auth=load(AUTH)
-    data={'authorization_id':auth['authorization_id'],'consumed_at_utc':datetime.now(timezone.utc).isoformat(),'destination':DEST,'status':status,'stage':stage,'failure_reason':detail,'temporary_directory':str(tmp) if tmp else None,'temporary_directory_cleanup_result':cleanup_result,'destination_state':_destination_state(),'failure_receipt_persisted': status == 'failed'}
-    _write_json(path, data)
+    data={'authorization_id':auth['authorization_id'],'consumed_at_utc':_existing_consumed_at(path, now),'updated_at_utc':now,'completed_at_utc':now if status in {'succeeded','failed'} else None,'destination':DEST,'status':status,'stage':stage,'failure_reason':detail,'temporary_directory':str(tmp) if tmp else None,'temporary_directory_cleanup_result':cleanup_result,'destination_state':_destination_state(),'failure_receipt_persisted': status == 'failed'}
+    _atomic_write_json(path, data)
+def _try_record_outcome(path: Path, status: str, stage: str, detail: str | None = None, tmp: Path | None = None, cleanup_result: str | None = None):
+    try:
+        _record_outcome(path, status, stage, detail, tmp, cleanup_result)
+        return None
+    except Exception as exc:
+        return {'code':'outcome_persistence_failed','status':status,'stage':stage,'detail':str(exc),'destination_state':_destination_state()}
 
 REQUIRED=['authorization_snapshot.json','request_snapshot.json','source_binding.json','staging_payload.json','promotion_receipt.json','validation_report.json','lineage.json','evidence_ledger.json','rollback_plan.json','frontend_readonly_context_package.json','run_summary.json']
 def _common_flags():
@@ -62,22 +77,31 @@ def execute():
     try: fd=os.open(cp, os.O_CREAT|os.O_EXCL|os.O_WRONLY)
     except FileExistsError: return {'status':'blocked','errors':[{'code':'authorization_already_consumed','path':str(cp)}]}
     os.close(fd)
-    _record_outcome(cp, 'pending', 'consumption_record_created')
+    pending_error=_try_record_outcome(cp, 'pending', 'consumption_record_created')
+    if pending_error:
+        return {'status':'blocked','errors':[pending_error]}
     parent=Path(DEST).parent; parent.mkdir(parents=True,exist_ok=True); tmp=Path(tempfile.mkdtemp(prefix='.m5c_tmp_',dir=parent))
     try:
         _build(tmp, str(cp))
     except Exception as e:
         shutil.rmtree(tmp,ignore_errors=True); cleanup='removed' if not tmp.exists() else 'cleanup_failed'
-        _record_outcome(cp, 'failed', 'build', str(e), tmp, cleanup)
-        return {'status':'blocked','errors':[{'code':'execution_failed','stage':'build','detail':str(e),'consumption_record':str(cp)}]}
+        outcome_error=_try_record_outcome(cp, 'failed', 'build', str(e), tmp, cleanup)
+        errors=[{'code':'execution_failed','stage':'build','detail':str(e),'consumption_record':str(cp)}]
+        if outcome_error: errors.append(outcome_error)
+        return {'status':'blocked','errors':errors}
     try:
         os.rename(tmp, DEST)
     except Exception as e:
         shutil.rmtree(tmp,ignore_errors=True); cleanup='removed' if not tmp.exists() else 'cleanup_failed'
-        _record_outcome(cp, 'failed', 'atomic_rename', str(e), tmp, cleanup)
-        return {'status':'blocked','errors':[{'code':'execution_failed','stage':'atomic_rename','detail':str(e),'consumption_record':str(cp)}]}
-    _record_outcome(cp, 'succeeded', 'atomic_rename_completed')
-    return {'status':'pass','destination':DEST,'consumption_record':str(cp),'actual_staging_promotion_performed':True}
+        outcome_error=_try_record_outcome(cp, 'failed', 'atomic_rename', str(e), tmp, cleanup)
+        errors=[{'code':'execution_failed','stage':'atomic_rename','detail':str(e),'consumption_record':str(cp)}]
+        if outcome_error: errors.append(outcome_error)
+        return {'status':'blocked','errors':errors}
+    outcome_error=_try_record_outcome(cp, 'succeeded', 'atomic_rename_completed')
+    out={'status':'pass','destination':DEST,'consumption_record':str(cp),'actual_staging_promotion_performed':True}
+    if outcome_error:
+        out['outcome_persistence_warning']=outcome_error
+    return out
 def main(argv=None):
     ap=argparse.ArgumentParser(); ap.add_argument('--check-only',action='store_true'); ap.add_argument('--execute-promotion',action='store_true'); ap.add_argument('--acknowledge-bounded-staging-promotion',action='store_true'); ns=ap.parse_args(argv)
     if ns.check_only: out={'status':'pass' if not check() else 'blocked','errors':check()}

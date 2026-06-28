@@ -27,7 +27,7 @@ def validate(d):
         if not (d/n).exists(): errs.append({'code':'missing_artifact','path':n})
     if errs: return errs
     errs += verify_manifest(d)
-    errs += validate_audit(AUDIT_PATH)
+    errs += validate_audit(AUDIT_PATH, d)
     docs={n:load(d/n) for n in REQ}
     for n,o in docs.items(): errs += _flag_errors(n,o)
     auth_snap=docs['authorization_snapshot.json']; req_snap=docs['request_snapshot.json']; auth=auth_snap.get('authorization',{}); req=req_snap.get('request',{})

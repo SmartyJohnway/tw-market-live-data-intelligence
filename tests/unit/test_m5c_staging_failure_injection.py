@@ -100,3 +100,53 @@ def test_supplemental_audit_missing_or_tampered_blocked(tmp_path):
     audit['artifacts'][0]['sha256']='0'*64
     p.write_text(json.dumps(audit))
     assert any(e['code']=='audit_artifact_hash_mismatch' for e in validate_audit(p))
+
+def test_success_outcome_persistence_failure_does_not_retry_or_delete_destination(monkeypatch, tmp_path):
+    monkeypatch.setattr(runner, 'DEST', str(tmp_path/'dest'))
+    monkeypatch.setattr(runner, 'CONSUME_DIR', tmp_path/'consumption')
+    monkeypatch.setattr(runner, 'validate_auth', lambda: [])
+    monkeypatch.setattr(runner, 'preflight_run', lambda: {'ok': True})
+    monkeypatch.setattr(runner, 'is_success', lambda _: True)
+    monkeypatch.setattr(runner, '_build', lambda dst, _: (dst/'artifact.json').write_text('{}'))
+    real_try=runner._try_record_outcome
+    def flaky(path, status, stage, detail=None, tmp=None, cleanup_result=None):
+        if status == 'succeeded':
+            return {'code':'outcome_persistence_failed','status':status,'stage':stage,'detail':'disk full','destination_state':runner._destination_state()}
+        return real_try(path,status,stage,detail,tmp,cleanup_result)
+    monkeypatch.setattr(runner, '_try_record_outcome', flaky)
+    out=runner.execute()
+    assert out['status']=='pass'
+    assert out['outcome_persistence_warning']['code']=='outcome_persistence_failed'
+    assert (tmp_path/'dest').exists()
+    assert (tmp_path/'dest'/'artifact.json').exists()
+
+def test_failed_outcome_persistence_failure_is_reported(monkeypatch, tmp_path):
+    monkeypatch.setattr(runner, 'DEST', str(tmp_path/'dest'))
+    monkeypatch.setattr(runner, 'CONSUME_DIR', tmp_path/'consumption')
+    monkeypatch.setattr(runner, 'validate_auth', lambda: [])
+    monkeypatch.setattr(runner, 'preflight_run', lambda: {'ok': True})
+    monkeypatch.setattr(runner, 'is_success', lambda _: True)
+    monkeypatch.setattr(runner, '_build', lambda *_: (_ for _ in ()).throw(RuntimeError('boom-build')))
+    real_try=runner._try_record_outcome
+    def flaky(path, status, stage, detail=None, tmp=None, cleanup_result=None):
+        if status == 'failed':
+            return {'code':'outcome_persistence_failed','status':status,'stage':stage,'detail':'disk full','destination_state':runner._destination_state()}
+        return real_try(path,status,stage,detail,tmp,cleanup_result)
+    monkeypatch.setattr(runner, '_try_record_outcome', flaky)
+    out=runner.execute()
+    assert out['status']=='blocked'
+    assert any(e['code']=='outcome_persistence_failed' for e in out['errors'])
+
+def test_consumed_at_is_preserved_across_outcome_updates(monkeypatch, tmp_path):
+    monkeypatch.setattr(runner, 'DEST', str(tmp_path/'dest'))
+    monkeypatch.setattr(runner, 'CONSUME_DIR', tmp_path/'consumption')
+    monkeypatch.setattr(runner, 'validate_auth', lambda: [])
+    monkeypatch.setattr(runner, 'preflight_run', lambda: {'ok': True})
+    monkeypatch.setattr(runner, 'is_success', lambda _: True)
+    monkeypatch.setattr(runner, '_build', lambda dst, _: (dst/'artifact.json').write_text('{}'))
+    out=runner.execute()
+    record=Path(out['consumption_record'])
+    data=json.loads(record.read_text())
+    assert data['status']=='succeeded'
+    assert data['consumed_at_utc'] <= data['updated_at_utc']
+    assert data['completed_at_utc'] == data['updated_at_utc']
