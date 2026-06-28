@@ -199,3 +199,71 @@ def test_io_failure_injection_for_write_fsync_replace_and_backup(tmp_path, monke
     monkeypatch.setattr(m5e.os, 'replace', fail_replace)
     with pytest.raises(OSError, match='replace_failed'):
         m5e.publish_transaction(src,tmp_path/'dest3',tmp_path/'j3',**tx_kwargs(tmp_path, src, 'fail-replace'))
+
+def test_duplicate_single_use_same_journal_preserves_existing_evidence(tmp_path):
+    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; dest.write_text('old'); journal=tmp_path/'j'; claims=tmp_path/'claims'
+    m5e.publish_transaction(src,dest,journal,auth_id='same-journal',claim_dir=claims,expected_src_sha256=m5e.fsha(src),candidate_manifest_sha256=m5e.fsha(src),simulation_mode=True)
+    before={p.name:p.read_bytes() for p in journal.iterdir() if p.is_file()}
+    dest_before=dest.read_bytes()
+    with pytest.raises(FileExistsError):
+        m5e.publish_transaction(src,dest,journal,auth_id='same-journal',claim_dir=claims,expected_src_sha256=m5e.fsha(src),candidate_manifest_sha256=m5e.fsha(src),simulation_mode=True)
+    after={p.name:p.read_bytes() for p in journal.iterdir() if p.is_file()}
+    assert after == before
+    assert dest.read_bytes() == dest_before
+
+
+def test_failure_injection_late_transaction_and_receipt_stages(tmp_path, monkeypatch):
+    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; dest.write_text('old')
+    # Backup copy failure after temp write but before replace.
+    def fail_copy(a,b): raise OSError('backup_failed')
+    monkeypatch.setattr(m5e, 'durable_copy', fail_copy)
+    with pytest.raises(OSError, match='backup_failed'):
+        m5e.publish_transaction(src,dest,tmp_path/'j-backup',**tx_kwargs(tmp_path, src, 'fail-backup'))
+    monkeypatch.undo()
+    # Destination replace failure: allow journal/temp replaces, fail specifically for final dest path.
+    real_replace=m5e.os.replace
+    def fail_dest_replace(a,b):
+        if str(b) == str(tmp_path/'dest-replace'):
+            raise OSError('destination_replace_failed')
+        return real_replace(a,b)
+    monkeypatch.setattr(m5e.os, 'replace', fail_dest_replace)
+    with pytest.raises(OSError, match='destination_replace_failed'):
+        m5e.publish_transaction(src,tmp_path/'dest-replace',tmp_path/'j-dest-replace',**tx_kwargs(tmp_path, src, 'fail-dest-replace'))
+    monkeypatch.undo()
+    # Journal after-replace failure.
+    real_durable=m5e.durable_json_replace
+    def fail_after_replace(path,obj):
+        if obj.get('state') == 'after_replace':
+            raise OSError('journal_after_replace_failed')
+        return real_durable(path,obj)
+    monkeypatch.setattr(m5e, 'durable_json_replace', fail_after_replace)
+    with pytest.raises(OSError, match='journal_after_replace_failed'):
+        m5e.publish_transaction(src,tmp_path/'dest-after-replace',tmp_path/'j-after-replace',**tx_kwargs(tmp_path, src, 'fail-after-replace'))
+    monkeypatch.undo()
+    # Publication receipt write failure.
+    def fail_receipt(path,obj):
+        if obj.get('schema_version') == 'm5e_publication_receipt.v1':
+            raise OSError('receipt_write_failed')
+        return real_durable(path,obj)
+    monkeypatch.setattr(m5e, 'durable_json_replace', fail_receipt)
+    with pytest.raises(OSError, match='receipt_write_failed'):
+        m5e.publish_transaction(src,tmp_path/'dest-receipt',tmp_path/'j-receipt',**tx_kwargs(tmp_path, src, 'fail-receipt'))
+    monkeypatch.undo()
+
+
+def test_failure_injection_rollback_receipt_and_directory_fsync(tmp_path, monkeypatch):
+    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; journal=tmp_path/'j'
+    m5e.publish_transaction(src,dest,journal,**tx_kwargs(tmp_path, src, 'rollback-fail'))
+    real_durable=m5e.durable_json_replace
+    def fail_rollback_receipt(path,obj):
+        if obj.get('schema_version') == 'm5e_rollback_receipt.v1':
+            raise OSError('rollback_receipt_failed')
+        return real_durable(path,obj)
+    monkeypatch.setattr(m5e, 'durable_json_replace', fail_rollback_receipt)
+    with pytest.raises(OSError, match='rollback_receipt_failed'):
+        m5e.rollback(dest,journal)
+    monkeypatch.undo()
+    def fail_dir(path): raise OSError('dir_fsync_failed')
+    monkeypatch.setattr(m5e, '_fsync_dir', fail_dir)
+    with pytest.raises(OSError, match='dir_fsync_failed'):
+        m5e.publish_transaction(src,tmp_path/'dest-dir-fsync',tmp_path/'j-dir-fsync',**tx_kwargs(tmp_path, src, 'fail-dir-fsync'))
