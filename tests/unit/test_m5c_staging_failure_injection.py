@@ -59,6 +59,7 @@ def test_rename_failure_persists_failed_consumption_outcome(monkeypatch, tmp_pat
     monkeypatch.setattr(runner, 'preflight_run', lambda: {'ok': True})
     monkeypatch.setattr(runner, 'is_success', lambda _: True)
     monkeypatch.setattr(runner, '_build', lambda dst, _: (dst/'artifact.json').write_text('{}'))
+    monkeypatch.setattr(runner, '_validate_built_package_at', lambda _: [])
     monkeypatch.setattr(runner.os, 'rename', lambda *_: (_ for _ in ()).throw(RuntimeError('boom-rename')))
     out=runner.execute()
     record=next((tmp_path/'consumption').glob('*.json'))
@@ -108,6 +109,8 @@ def test_success_outcome_persistence_failure_does_not_retry_or_delete_destinatio
     monkeypatch.setattr(runner, 'preflight_run', lambda: {'ok': True})
     monkeypatch.setattr(runner, 'is_success', lambda _: True)
     monkeypatch.setattr(runner, '_build', lambda dst, _: (dst/'artifact.json').write_text('{}'))
+    monkeypatch.setattr(runner, '_validate_built_package_at', lambda _: [])
+    monkeypatch.setattr(runner, 'validate_promoted_package', lambda _: [])
     real_try=runner._try_record_outcome
     def flaky(path, status, stage, detail=None, tmp=None, cleanup_result=None):
         if status == 'succeeded':
@@ -115,8 +118,12 @@ def test_success_outcome_persistence_failure_does_not_retry_or_delete_destinatio
         return real_try(path,status,stage,detail,tmp,cleanup_result)
     monkeypatch.setattr(runner, '_try_record_outcome', flaky)
     out=runner.execute()
-    assert out['status']=='pass'
-    assert out['outcome_persistence_warning']['code']=='outcome_persistence_failed'
+    assert out['status']=='blocked'
+    assert out['actual_staging_promotion_performed'] is True
+    assert out['retry_allowed'] is False
+    assert out['stage']=='outcome_finalization'
+    assert out['next_action']=='manual_evidence_repair'
+    assert out['errors'][0]['code']=='outcome_persistence_failed'
     assert (tmp_path/'dest').exists()
     assert (tmp_path/'dest'/'artifact.json').exists()
 
@@ -144,9 +151,23 @@ def test_consumed_at_is_preserved_across_outcome_updates(monkeypatch, tmp_path):
     monkeypatch.setattr(runner, 'preflight_run', lambda: {'ok': True})
     monkeypatch.setattr(runner, 'is_success', lambda _: True)
     monkeypatch.setattr(runner, '_build', lambda dst, _: (dst/'artifact.json').write_text('{}'))
+    monkeypatch.setattr(runner, '_validate_built_package_at', lambda _: [])
+    monkeypatch.setattr(runner, 'validate_promoted_package', lambda _: [])
     out=runner.execute()
     record=Path(out['consumption_record'])
     data=json.loads(record.read_text())
     assert data['status']=='succeeded'
     assert data['consumed_at_utc'] <= data['updated_at_utc']
     assert data['completed_at_utc'] == data['updated_at_utc']
+
+def test_build_writes_canonical_destination_not_temporary_path(tmp_path):
+    tmp=tmp_path/'.m5c_tmp_unit'
+    tmp.mkdir()
+    runner._build(tmp, str(tmp_path/'consumption.json'))
+    receipt=json.loads((tmp/'promotion_receipt.json').read_text())
+    summary=json.loads((tmp/'run_summary.json').read_text())
+    assert receipt['destination']==runner.DEST
+    assert summary['destination']==runner.DEST
+    assert '.m5c_tmp_' not in json.dumps(receipt)
+    assert '.m5c_tmp_' not in json.dumps(summary)
+    assert runner._validate_built_package_at(tmp)==[]

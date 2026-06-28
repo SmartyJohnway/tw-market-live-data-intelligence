@@ -46,16 +46,35 @@ def _build(dst:Path, consumption_path:str):
       'request_snapshot.json':{**base,'request':req},
       'source_binding.json':{**base,'source_manifest_sha256':sha(RUN/'sha256_manifest.json'),'staging_candidate_sha256':sha(RUN/'staging_candidate.json'),'source_run_id':'m5b_twse_openapi_20260627T015136Z'},
       'staging_payload.json':{**base,'rows':rows,'row_count':len(rows),'full_market_payload_retained':False},
-      'promotion_receipt.json':{**base,'actual_staging_promotion_performed':True,'consumption_record':consumption_path,'destination':str(dst)},
+      'promotion_receipt.json':{**base,'actual_staging_promotion_performed':True,'consumption_record':consumption_path,'destination':DEST},
       'validation_report.json':{**base,'status':'pass','checks':['exact_target_source_row_uniqueness','lineage_hashes','forbidden_flags','no_raw_full_market_payload']},
       'lineage.json':{**base,'m5b_manifest_sha256':sha(RUN/'sha256_manifest.json'),'m5b_candidate_sha256':sha(RUN/'staging_candidate.json'),'m5c_request_sha256':sha(REQ),'m5c_authorization_sha256':sha(AUTH)},
       'evidence_ledger.json':{**base,'entries':[{'source':'M5B','path':str(RUN/'staging_candidate.json'),'sha256':sha(RUN/'staging_candidate.json')}]},
       'rollback_plan.json':{**base,'rollback_mode':'tmp_path_simulation_only','committed_package_delete_allowed':False},
       'frontend_readonly_context_package.json':{**build_frontend_readonly_context_package(readonly_payload_from_candidate(cand)), **flags, 'badge':'historical/stale','stale_badge':True},
-      'run_summary.json':{**base,'status':'pass','destination':str(dst),'artifact_count':12},
+      'run_summary.json':{**base,'status':'pass','destination':DEST,'artifact_count':12},
     }
     for n,d in docs.items(): (dst/n).write_text(json.dumps(d,indent=2,sort_keys=True)+'\n')
     manifest={n:sha(dst/n) for n in REQUIRED}; (dst/'sha256_manifest.json').write_text(json.dumps({**base,'manifest_final':True,'immutable':True,'manifest':manifest},indent=2,sort_keys=True)+'\n')
+def _validate_built_package_at(path: Path):
+    errors=[]
+    try:
+        from verify_m5c_staging_manifest import verify as verify_manifest
+    except ModuleNotFoundError:
+        from scripts.verify_m5c_staging_manifest import verify as verify_manifest
+    errors += verify_manifest(path)
+    for name in ('promotion_receipt.json','run_summary.json'):
+        try:
+            doc=json.loads((path/name).read_text())
+        except Exception as exc:
+            errors.append({'code':'built_artifact_read_failed','path':name,'detail':str(exc)})
+            continue
+        if doc.get('destination') != DEST:
+            errors.append({'code':'built_artifact_destination_mismatch','path':name,'expected':DEST,'actual':doc.get('destination')})
+        if '.m5c_tmp_' in json.dumps(doc):
+            errors.append({'code':'temporary_path_leaked_into_artifact','path':name})
+    return errors
+
 def check():
     errs=validate_auth(); pf=preflight_run();
     if not is_success(pf): errs.append({'code':'preflight_blocked','preflight':pf})
@@ -83,6 +102,9 @@ def execute():
     parent=Path(DEST).parent; parent.mkdir(parents=True,exist_ok=True); tmp=Path(tempfile.mkdtemp(prefix='.m5c_tmp_',dir=parent))
     try:
         _build(tmp, str(cp))
+        built_errors=_validate_built_package_at(tmp)
+        if built_errors:
+            raise RuntimeError('built package validation failed: '+json.dumps(built_errors, sort_keys=True))
     except Exception as e:
         shutil.rmtree(tmp,ignore_errors=True); cleanup='removed' if not tmp.exists() else 'cleanup_failed'
         outcome_error=_try_record_outcome(cp, 'failed', 'build', str(e), tmp, cleanup)
@@ -98,10 +120,12 @@ def execute():
         if outcome_error: errors.append(outcome_error)
         return {'status':'blocked','errors':errors}
     outcome_error=_try_record_outcome(cp, 'succeeded', 'atomic_rename_completed')
-    out={'status':'pass','destination':DEST,'consumption_record':str(cp),'actual_staging_promotion_performed':True}
     if outcome_error:
-        out['outcome_persistence_warning']=outcome_error
-    return out
+        return {'status':'blocked','actual_staging_promotion_performed':True,'destination':DEST,'destination_preserved':Path(DEST).exists(),'retry_allowed':False,'stage':'outcome_finalization','next_action':'manual_evidence_repair','errors':[outcome_error]}
+    final_errors=validate_promoted_package(Path(DEST))
+    if final_errors:
+        return {'status':'blocked','actual_staging_promotion_performed':True,'destination':DEST,'destination_preserved':Path(DEST).exists(),'retry_allowed':False,'stage':'final_validation','next_action':'manual_evidence_repair','errors':final_errors}
+    return {'status':'pass','destination':DEST,'consumption_record':str(cp),'actual_staging_promotion_performed':True}
 def main(argv=None):
     ap=argparse.ArgumentParser(); ap.add_argument('--check-only',action='store_true'); ap.add_argument('--execute-promotion',action='store_true'); ap.add_argument('--acknowledge-bounded-staging-promotion',action='store_true'); ns=ap.parse_args(argv)
     if ns.check_only: out={'status':'pass' if not check() else 'blocked','errors':check()}

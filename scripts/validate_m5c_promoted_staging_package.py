@@ -61,6 +61,12 @@ def validate(d):
     else:
         c=load(cp)
         if c.get('authorization_id')!=AUTH_ID or c.get('destination')!=DEST: errs.append({'code':'consumption_record_mismatch'})
+        status=c.get('status')
+        if status is None:
+            audit=load(AUDIT_PATH)
+            if audit.get('promotion_status')!='already_performed_once_not_refinalized': errs.append({'code':'legacy_consumption_status_missing_without_audit_exemption'})
+        elif status!='succeeded':
+            errs.append({'code':'consumption_status_not_succeeded','actual':status})
     payload=docs['staging_payload.json']; rows=payload.get('rows',[]); syms=[str(r.get('symbol')) for r in rows]
     if set(syms)!=TARGET_SET or len(syms)!=len(set(syms)): errs.append({'code':'target_uniqueness_failed'})
     if any(r.get('source')!='TWSE_OpenAPI' for r in rows): errs.append({'code':'source_mismatch'})
