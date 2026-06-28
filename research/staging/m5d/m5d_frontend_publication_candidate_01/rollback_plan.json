@@ -1,0 +1,22 @@
+{
+  "actual_frontend_publication_authorized": false,
+  "badge": "historical/stale",
+  "candidate_dir": "research/staging/m5d/m5d_frontend_publication_candidate_01",
+  "frontend_public_write": false,
+  "historical_evidence_snapshot": true,
+  "no_temporary_paths": true,
+  "production_ready": false,
+  "proposed_destination": "frontend/public/market-context.json",
+  "publication_performed": false,
+  "readonly_only": true,
+  "realtime_guaranteed": false,
+  "rollback_required": false,
+  "schema_version": "m5d_frontend_publication_candidate.v1",
+  "simulation_only": true,
+  "stale_status": "stale",
+  "steps": [
+    "restore previous destination hash from baseline if overwritten in future authorized execution",
+    "remove newly created destination if no baseline existed"
+  ],
+  "trading_signal": false
+}

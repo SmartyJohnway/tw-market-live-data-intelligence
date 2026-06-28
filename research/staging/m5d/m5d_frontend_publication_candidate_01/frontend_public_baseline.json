@@ -1,0 +1,35 @@
+{
+  "baseline_root": "frontend/public",
+  "files": [
+    {
+      "overwrite_required": false,
+      "relative_path": "index.html",
+      "rollback_required": false,
+      "sha256": "b23233bb013742bda6959f627aee15abb58090385bf0216da4187ed83304068a",
+      "size_bytes": 8560,
+      "target_path_exists": false
+    },
+    {
+      "overwrite_required": false,
+      "relative_path": "market-context.html",
+      "rollback_required": false,
+      "sha256": "68643063e34b9336fb4cb1c3100401f33de4ba72b05ae260dc3a8206eb5c3d7f",
+      "size_bytes": 40442,
+      "target_path_exists": false
+    },
+    {
+      "overwrite_required": false,
+      "relative_path": "matrix.json",
+      "rollback_required": false,
+      "sha256": "c9cc346341650680295c51290290a7337c1a717226c5e0f1d196fa4cfa323234",
+      "size_bytes": 113738,
+      "target_path_exists": false
+    }
+  ],
+  "hash_only": true,
+  "overwrite_required": false,
+  "rollback_required": false,
+  "schema_version": "m5d_frontend_public_baseline.v1",
+  "target_path": "frontend/public/market-context.json",
+  "target_path_exists": false
+}

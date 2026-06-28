@@ -1,0 +1,31 @@
+{
+  "actual_frontend_publication_authorized": false,
+  "authority": "TWSE_OpenAPI",
+  "badge": "historical/stale",
+  "candidate_dir": "research/staging/m5d/m5d_frontend_publication_candidate_01",
+  "caveats": [
+    "not_realtime_guaranteed",
+    "not_trading_signal",
+    "not_production_current_state",
+    "source_risk_present",
+    "freshness_must_be_displayed"
+  ],
+  "frontend_public_write": false,
+  "frontend_publication_authorized": false,
+  "historical_evidence_snapshot": true,
+  "no_temporary_paths": true,
+  "production_ready": false,
+  "proposed_destination": "frontend/public/market-context.json",
+  "publication_performed": false,
+  "readonly_only": true,
+  "ready_for_user_authorization_review": true,
+  "realtime_guaranteed": false,
+  "schema_version": "m5d_frontend_publication_candidate.v1",
+  "stale_status": "stale",
+  "symbols": [
+    "2330",
+    "0050",
+    "00929"
+  ],
+  "trading_signal": false
+}

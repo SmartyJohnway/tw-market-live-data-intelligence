@@ -1,0 +1,24 @@
+{
+  "actual_frontend_publication_authorized": false,
+  "badge": "historical/stale",
+  "candidate_dir": "research/staging/m5d/m5d_frontend_publication_candidate_01",
+  "checks": [
+    "upstream_integrity",
+    "baseline_hash_only",
+    "readonly_stale_caveats",
+    "no_temp_paths",
+    "forbidden_flags"
+  ],
+  "frontend_public_write": false,
+  "historical_evidence_snapshot": true,
+  "no_temporary_paths": true,
+  "production_ready": false,
+  "proposed_destination": "frontend/public/market-context.json",
+  "publication_performed": false,
+  "readonly_only": true,
+  "realtime_guaranteed": false,
+  "schema_version": "m5d_frontend_publication_candidate.v1",
+  "stale_status": "stale",
+  "status": "pass",
+  "trading_signal": false
+}

@@ -21,12 +21,16 @@ def validate(path=REQ):
     errs += [{'code':'schema_error','path':'$' + ''.join(f'/{x}' for x in e.path),'detail':e.message} for e in Draft202012Validator(schema).iter_errors(d)]
     for k in ['actual_frontend_publication_authorized','publication_performed']:
         if d.get(k) is not False: errs.append({'code':'must_be_false','field':k})
-    for k in ['request_only','simulation_only','frontend_public_write_blocked']:
+    for k in ['request_only','single_use']:
         if d.get(k) is not True: errs.append({'code':'must_be_true','field':k})
+    if d.get('authorization_token_issued') is not False: errs.append({'code':'token_must_not_be_issued'})
     if d.get('next_required_action')!='user_authorization': errs.append({'code':'next_action_must_be_user_authorization'})
     if d.get('m5c_staging_package_dir')!=CANONICAL: errs.append({'code':'package_dir_mismatch'})
     if d.get('proposed_destination')!='frontend/public/market-context.json': errs.append({'code':'proposed_destination_mismatch'})
-    if 'approval_token' in d or 'authorization_decision' in d: errs.append({'code':'approval_material_forbidden'})
+    if 'approval_token' in d or 'authorization_decision' in d or 'authorization_token' in d: errs.append({'code':'approval_material_forbidden'})
+    cman=Path(d.get('candidate_dir',''))/'sha256_manifest.json'
+    if not cman.exists(): errs.append({'code':'candidate_manifest_missing'})
+    elif d.get('candidate_manifest_sha256') != sha(cman): errs.append({'code':'candidate_manifest_sha_mismatch','expected':sha(cman),'actual':d.get('candidate_manifest_sha256')})
     pkg=Path(d.get('m5c_staging_package_dir',''))
     if not (pkg/'sha256_manifest.json').exists(): errs.append({'code':'package_manifest_missing'})
     else:
