@@ -99,6 +99,7 @@ def validate_auth(decision, token, *, now=None):
     try: d = load(decision); t = load(token)
     except Exception as e: return [f"malformed_json:{e}"]
     errs += _schema_errors("decision", d) + _schema_errors("token", t)
+    if errs: return errs
     computed_token_sha = canonical_hash(t, omit={"token_sha256"})
     if t.get("token_sha256") != computed_token_sha: errs.append("token_sha256_mismatch")
     if d.get("token_sha256") != computed_token_sha: errs.append("decision_token_sha256_binding_mismatch")
@@ -145,6 +146,7 @@ def claim_once(claim_dir, auth_id):
     finally:
         os.close(fd)
     _fsync_dir(claim_dir)
+    return path
 
 def _journal_state(auth_id, dest, candidate_manifest_sha256, new_sha256, state="started"):
     return {"schema_version":"m5e_transaction_journal.v1","state":state,"auth_id":auth_id,"destination":str(dest),"candidate_sha256":candidate_manifest_sha256,"new_sha256":new_sha256,"publication_performed":False}
@@ -155,13 +157,24 @@ def publish_transaction(src, dest, journal_dir, *, auth_id, claim_dir=None, expe
     if not simulation_mode and (expected_src_sha256 is not None or candidate_manifest_sha256 is not None):
         raise ValueError("candidate_lineage_override_forbidden")
     src = Path(src); dest = Path(dest); journal_dir = Path(journal_dir); journal_dir.mkdir(parents=True, exist_ok=True)
+    if simulation_mode:
+        simulation_root = Path(journal_dir).resolve().parent
+        resolved_dest = dest.resolve()
+        repo_root = ROOT.resolve()
+        if str(resolved_dest).startswith(str(repo_root) + os.sep):
+            raise ValueError("simulation_destination_in_repo_forbidden")
+        if not str(resolved_dest).startswith(str(simulation_root) + os.sep):
+            raise ValueError("simulation_destination_outside_temporary_root")
+    else:
+        if dest.resolve() != safe_dest(DEST):
+            raise ValueError("production_destination_mismatch")
     expected_src_sha256 = expected_src_sha256 if simulation_mode and expected_src_sha256 else candidate_market_context_sha()
     candidate_manifest_sha256 = candidate_manifest_sha256 if simulation_mode and candidate_manifest_sha256 else manifest_sha()
     data = src.read_bytes(); new_hash = hashlib.sha256(data).hexdigest()
     if new_hash != expected_src_sha256: raise ValueError("source_hash_mismatch")
     state = _journal_state(auth_id, dest, candidate_manifest_sha256, new_hash)
     _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
-    claim_once(claim_dir, auth_id); state.update(state="claimed"); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
+    claim_path = claim_once(claim_dir, auth_id); state.update(state="claimed", single_use_claim=str(claim_path)); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
     if crash_at == "before_temp_write": raise RuntimeError("crash:before_temp_write")
     tmp = dest.with_name("." + dest.name + ".tmp")
     fd = os.open(tmp, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
@@ -179,7 +192,8 @@ def publish_transaction(src, dest, journal_dir, *, auth_id, claim_dir=None, expe
     os.replace(tmp, dest); _fsync_dir(dest.parent)
     state.update(state="after_replace", publication_performed=True); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
     if crash_at in {"after_replace", "before_receipt"}: raise RuntimeError("crash:" + crash_at)
-    out = {"schema_version":"m5e_publication_receipt.v1","status":"published","authorization_id":auth_id,"destination":str(dest),"sha256":fsha(dest),"candidate_manifest_sha256":candidate_manifest_sha256,"publication_performed":True}
+    out = {"schema_version":"m5e_publication_receipt.v1","status":"simulated" if simulation_mode else "published","authorization_id":auth_id,"destination":str(dest),"sha256":fsha(dest),"candidate_manifest_sha256":candidate_manifest_sha256,"publication_performed":False if simulation_mode else True,"single_use_claim":state.get("single_use_claim")}
+    if simulation_mode: out["simulation_mode"] = True
     if state.get("previous_sha256"): out["previous_sha256"] = state["previous_sha256"]
     _assert_schema("publication_receipt", out); durable_json_replace(journal_dir / "publication_receipt.json", out)
     state.update(state="after_receipt", receipt=str(journal_dir / "publication_receipt.json")); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
@@ -217,8 +231,9 @@ def recover(dest, journal_dir):
             receipt = load(receipt_path)
             receipt_ok = not _schema_errors("publication_receipt", receipt)
             dest_ok = Path(dest).exists() and fsha(dest) == st.get("new_sha256") == receipt.get("sha256")
-            binding_ok = receipt.get("candidate_manifest_sha256") == st.get("candidate_sha256")
-            out = {"schema_version":"m5e_crash_recovery_state.v1","status":"publication_completed" if (receipt_ok and dest_ok and binding_ok) else "manual_recovery_required","state":st}
+            binding_ok = (receipt.get("candidate_manifest_sha256") == st.get("candidate_sha256") and receipt.get("authorization_id") == st.get("auth_id") and receipt.get("destination") == st.get("destination") == str(dest) and receipt.get("single_use_claim") == st.get("single_use_claim"))
+            completed = "simulation_completed" if receipt.get("simulation_mode") is True else "publication_completed"
+            out = {"schema_version":"m5e_crash_recovery_state.v1","status":completed if (receipt_ok and dest_ok and binding_ok) else "manual_recovery_required","state":st}
         else:
             out = {"schema_version":"m5e_crash_recovery_state.v1","status":"manual_recovery_required","state":st}
     else:
@@ -241,12 +256,12 @@ def validate_schemas_and_outputs() -> bool:
     if any(check_schema(load(p)) for p in SCHEMAS.values()): return False
     with tempfile.TemporaryDirectory() as td:
         t = Path(td); src = ROOT / CAND / "market-context.json"; dest = t / "dest.json"; j = t / "journal"; claims = t / "claims"
-        receipt = publish_transaction(src, dest, j, auth_id="schema-gate", claim_dir=claims)
+        receipt = publish_transaction(src, dest, j, auth_id="schema-gate", claim_dir=claims, simulation_mode=True, expected_src_sha256=candidate_market_context_sha(), candidate_manifest_sha256=manifest_sha())
         if _schema_errors("publication_receipt", receipt): return False
         rb = rollback(dest, j)
         if _schema_errors("rollback_receipt", rb): return False
         dest.write_text("old"); j2 = t / "journal2"
-        try: publish_transaction(src, dest, j2, auth_id="schema-gate2", claim_dir=claims, crash_at="after_backup")
+        try: publish_transaction(src, dest, j2, auth_id="schema-gate2", claim_dir=claims, crash_at="after_backup", simulation_mode=True, expected_src_sha256=candidate_market_context_sha(), candidate_manifest_sha256=manifest_sha())
         except RuntimeError: pass
         rec = recover(dest, j2)
         if _schema_errors("recovery_state", rec): return False
@@ -261,10 +276,10 @@ def check_only():
     checks["authorization_absence"] = not (ROOT / "docs/authorization/decisions/M5E_FRONTEND_PUBLICATION_AUTHORIZATION.json").exists() and not (ROOT / "docs/authorization/tokens").exists()
     with tempfile.TemporaryDirectory() as td:
         t = Path(td); src = ROOT / CAND / "market-context.json"; dest = t / "dest"; dest.write_text("old"); j = t / "j"; claims = t / "claims"
-        publish_transaction(src, dest, j, auth_id="gate", claim_dir=claims); checks["transaction_simulation"] = fsha(dest) == candidate_market_context_sha()
+        publish_transaction(src, dest, j, auth_id="gate", claim_dir=claims, simulation_mode=True, expected_src_sha256=candidate_market_context_sha(), candidate_manifest_sha256=manifest_sha()); checks["transaction_simulation"] = fsha(dest) == candidate_market_context_sha()
         checks["rollback_simulation"] = rollback(dest, j).get("status") == "rolled_back_replacement" and dest.read_text() == "old"
         dest.write_text("old2"); j2 = t / "j2"
-        try: publish_transaction(src, dest, j2, auth_id="gate2", claim_dir=claims, crash_at="after_backup")
+        try: publish_transaction(src, dest, j2, auth_id="gate2", claim_dir=claims, crash_at="after_backup", simulation_mode=True, expected_src_sha256=candidate_market_context_sha(), candidate_manifest_sha256=manifest_sha())
         except RuntimeError: pass
         checks["crash_recovery_simulation"] = recover(dest, j2).get("status") == "safe_no_publication_or_temp_only"
     forbidden_prefixes = ("frontend/public", "research/generated", "research/live_probe_runs/m5b", "research/staging/m5c", "production", "prod", "broker", "credentials", "tokens", ".env")

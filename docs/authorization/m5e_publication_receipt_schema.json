@@ -17,7 +17,7 @@
       "type": "string"
     },
     "publication_performed": {
-      "const": true
+      "type": "boolean"
     },
     "schema_version": {
       "const": "m5e_publication_receipt.v1"
@@ -26,8 +26,17 @@
       "pattern": "^[0-9a-f]{64}$",
       "type": "string"
     },
+    "simulation_mode": {
+      "type": "boolean"
+    },
+    "single_use_claim": {
+      "type": "string"
+    },
     "status": {
-      "const": "published"
+      "enum": [
+        "published",
+        "simulated"
+      ]
     }
   },
   "required": [
@@ -37,7 +46,8 @@
     "destination",
     "sha256",
     "candidate_manifest_sha256",
-    "publication_performed"
+    "publication_performed",
+    "single_use_claim"
   ],
   "type": "object"
 }

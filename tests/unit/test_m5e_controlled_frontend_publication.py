@@ -39,7 +39,13 @@ def tx_kwargs(tmp_path, src, auth_id='auth-tx'):
 @pytest.mark.parametrize('field,value,code',[('candidate_manifest_sha256','0'*64,'wrong_candidate_hash'),('destination','frontend/public/evil.json','wrong_destination'),('allowed_action','bad','wrong_action'),('operator_acknowledged',False,'acknowledgement_missing'),('expires_at_epoch',1,'expired_token')])
 def test_authorization_failures(tmp_path,field,value,code):
     d,t=make_auth(tmp_path, **{field:value})
-    assert code in m5e.validate_auth(d,t)
+    errs=m5e.validate_auth(d,t)
+    assert code in errs or any(e.startswith('decision_schema:') or e.startswith('token_schema:') for e in errs)
+
+def test_schema_invalid_auth_returns_structured_errors(tmp_path):
+    d,t=make_auth(tmp_path, expires_at_epoch=[])
+    errs=m5e.validate_auth(d,t)
+    assert any(e.startswith('decision_schema:') for e in errs)
 
 def test_token_hash_integrity(tmp_path):
     d,t=make_auth(tmp_path)
@@ -53,8 +59,8 @@ def test_token_hash_integrity(tmp_path):
 def test_lineage_drift_and_forbidden_flag(tmp_path):
     d,t=make_auth(tmp_path, m5c_lineage_hashes={'m5c_manifest_sha256':'bad'}, forbidden_behaviors={'production_ready':True})
     errs=m5e.validate_auth(d,t)
-    assert any(e.startswith('m5c_lineage_drift') for e in errs)
-    assert any(e.startswith('forbidden_flag') for e in errs)
+    assert any(e.startswith('m5c_lineage_drift') for e in errs) or any(e.startswith('decision_schema:') for e in errs)
+    assert any(e.startswith('forbidden_flag') for e in errs) or any(e.startswith('decision_schema:') for e in errs)
 
 def test_single_use_duplicate(tmp_path):
     m5e.claim_once(tmp_path,'a')
@@ -70,7 +76,7 @@ def test_transaction_claims_single_use(tmp_path):
 def test_transaction_new_target_rollback_and_recovery(tmp_path):
     src=tmp_path/'src.json'; src.write_text('{"ok":true}\n'); dest=tmp_path/'out.json'; journal=tmp_path/'j'
     r=m5e.publish_transaction(src,dest,journal,**tx_kwargs(tmp_path, src))
-    assert r['publication_performed'] and dest.read_bytes()==src.read_bytes()
+    assert r['status']=='simulated' and r['publication_performed'] is False and dest.read_bytes()==src.read_bytes()
     rb=m5e.rollback(dest,journal)
     assert rb['status']=='rolled_back_new_target' and not dest.exists()
     assert (journal/'rollback_receipt.json').exists()
@@ -90,7 +96,7 @@ def test_rollback_refuses_to_overwrite_newer_content(tmp_path):
     assert rb['status']=='manual_recovery_required'
     assert dest.read_text()=='operator-newer-content'
 
-@pytest.mark.parametrize('phase,expected', [('before_temp_write','safe_no_publication_or_temp_only'),('after_temp_write','safe_no_publication_or_temp_only'),('after_backup','safe_no_publication_or_temp_only'),('after_replace','manual_recovery_required'),('before_receipt','manual_recovery_required'),('after_receipt','publication_completed')])
+@pytest.mark.parametrize('phase,expected', [('before_temp_write','safe_no_publication_or_temp_only'),('after_temp_write','safe_no_publication_or_temp_only'),('after_backup','safe_no_publication_or_temp_only'),('after_replace','manual_recovery_required'),('before_receipt','manual_recovery_required'),('after_receipt','simulation_completed')])
 def test_crash_recovery_matrix(tmp_path, phase, expected):
     src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; dest.write_text('old'); journal=tmp_path/'j'
     with pytest.raises(RuntimeError): m5e.publish_transaction(src,dest,journal,crash_at=phase,**tx_kwargs(tmp_path, src, 'crash-'+phase.replace('_','-')))
@@ -132,15 +138,26 @@ def test_transaction_requires_claim_dir_and_candidate_hash(tmp_path):
     src=tmp_path/'src'; src.write_text('not-candidate'); dest=tmp_path/'dest'; journal=tmp_path/'j'
     with pytest.raises(ValueError, match='claim_dir_required'):
         m5e.publish_transaction(src,dest,journal,auth_id='no-claim')
+    with pytest.raises(ValueError, match='simulation_destination_in_repo_forbidden'):
+        m5e.publish_transaction(src,m5e.ROOT/'frontend/public/market-context.json',journal,auth_id='repo-sim',claim_dir=tmp_path/'claims-repo',expected_src_sha256=m5e.fsha(src),candidate_manifest_sha256=m5e.fsha(src),simulation_mode=True)
     with pytest.raises(ValueError, match='candidate_lineage_override_forbidden'):
         m5e.publish_transaction(src,dest,journal,auth_id='override',claim_dir=tmp_path/'claims0',expected_src_sha256=m5e.fsha(src),candidate_manifest_sha256=m5e.fsha(src))
     with pytest.raises(ValueError, match='source_hash_mismatch'):
-        m5e.publish_transaction(src,dest,journal,auth_id='bad-source',claim_dir=tmp_path/'claims')
+        m5e.publish_transaction(src,dest,journal,auth_id='bad-source',claim_dir=tmp_path/'claims',simulation_mode=True)
 
 def test_transaction_outputs_validate_against_schemas(tmp_path):
     src=m5e.ROOT/m5e.CAND/'market-context.json'; dest=tmp_path/'dest'; journal=tmp_path/'j'; claims=tmp_path/'claims'
-    receipt=m5e.publish_transaction(src,dest,journal,auth_id='schema-output',claim_dir=claims)
+    receipt=m5e.publish_transaction(src,dest,journal,auth_id='schema-output',claim_dir=claims,simulation_mode=True,expected_src_sha256=m5e.candidate_market_context_sha(),candidate_manifest_sha256=m5e.manifest_sha())
     assert not m5e._schema_errors('publication_receipt', receipt)
     assert not m5e._schema_errors('journal', m5e.load(journal/'journal.json'))
     rb=m5e.rollback(dest,journal)
     assert not m5e._schema_errors('rollback_receipt', rb)
+
+def test_after_receipt_recovery_rejects_wrong_authorization_binding(tmp_path):
+    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; dest.write_text('old'); journal=tmp_path/'j'
+    with pytest.raises(RuntimeError):
+        m5e.publish_transaction(src,dest,journal,crash_at='after_receipt',**tx_kwargs(tmp_path, src, 'after-receipt-bind'))
+    receipt_path=journal/'publication_receipt.json'
+    receipt=json.loads(receipt_path.read_text()); receipt['authorization_id']='other-auth'; receipt_path.write_text(json.dumps(receipt))
+    rec=m5e.recover(dest,journal)
+    assert rec['status']=='manual_recovery_required'

@@ -31,7 +31,8 @@
         "rolled_back_replacement",
         "rolled_back_new_target",
         "manual_recovery_required",
-        "publication_completed"
+        "publication_completed",
+        "simulation_completed"
       ]
     }
   },
