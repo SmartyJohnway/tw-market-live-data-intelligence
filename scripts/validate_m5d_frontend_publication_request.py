@@ -5,9 +5,11 @@ from jsonschema import Draft202012Validator
 try:
     from verify_m5c_staging_manifest import verify as verify_manifest
     from validate_m5c_promoted_staging_package import validate as validate_package
+    from validate_m5c_supplemental_audit import validate as validate_audit
 except ModuleNotFoundError:
     from scripts.verify_m5c_staging_manifest import verify as verify_manifest
     from scripts.validate_m5c_promoted_staging_package import validate as validate_package
+    from scripts.validate_m5c_supplemental_audit import validate as validate_audit
 REQ=Path('docs/authorization/requests/M5D_FRONTEND_PUBLICATION_REQUEST.json')
 SCHEMA=Path('docs/authorization/m5d_frontend_publication_request_schema.json')
 CANONICAL='research/staging/m5c/m5c_twse_openapi_20260627_authorized_01'
@@ -32,6 +34,7 @@ def validate(path=REQ):
         if d.get('m5c_staging_manifest_sha256')!=actual: errs.append({'code':'staging_manifest_sha_mismatch','expected':actual,'actual':d.get('m5c_staging_manifest_sha256')})
         errs += verify_manifest(pkg)
         errs += validate_package(pkg)
+        errs += validate_audit()
     return errs
 def main(argv=None):
     p=argparse.ArgumentParser(); p.add_argument('--request',default=str(REQ)); ns=p.parse_args(argv); errs=validate(ns.request)

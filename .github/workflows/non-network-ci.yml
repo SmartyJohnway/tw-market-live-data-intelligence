@@ -28,5 +28,7 @@ jobs:
         run: python scripts/run_m4_readiness_check.py --check-only
       - name: M5C staging promotion preflight check-only
         run: python scripts/run_m5c_staging_promotion_preflight.py --check-only
+      - name: M5C supplemental audit validation
+        run: python scripts/validate_m5c_supplemental_audit.py
       - name: M5D frontend publication preflight check-only
         run: python scripts/run_m5d_frontend_publication_preflight.py --check-only
