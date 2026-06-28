@@ -10,7 +10,7 @@
       "type": "string"
     },
     "destination": {
-      "const": "frontend/public/market-context.json"
+      "type": "string"
     },
     "previous_sha256": {
       "pattern": "^[0-9a-f]{64}$",
