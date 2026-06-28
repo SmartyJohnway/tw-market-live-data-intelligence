@@ -1,1 +1,43 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["schema_version","status"],"properties":{"schema_version":{"type":"string"},"status":{"type":"string"}},"additionalProperties":true}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "authorization_id": {
+      "type": "string"
+    },
+    "candidate_manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "destination": {
+      "const": "frontend/public/market-context.json"
+    },
+    "previous_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "publication_performed": {
+      "const": true
+    },
+    "schema_version": {
+      "const": "m5e_publication_receipt.v1"
+    },
+    "sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "status": {
+      "const": "published"
+    }
+  },
+  "required": [
+    "schema_version",
+    "status",
+    "authorization_id",
+    "destination",
+    "sha256",
+    "candidate_manifest_sha256",
+    "publication_performed"
+  ],
+  "type": "object"
+}

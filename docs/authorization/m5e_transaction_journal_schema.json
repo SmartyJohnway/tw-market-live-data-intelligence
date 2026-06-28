@@ -1,1 +1,62 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["schema_version","status"],"properties":{"schema_version":{"type":"string"},"status":{"type":"string"}},"additionalProperties":true}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "auth_id": {
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "type": "string"
+    },
+    "backup": {
+      "type": "string"
+    },
+    "candidate_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "destination": {
+      "type": "string"
+    },
+    "new_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "previous_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "publication_performed": {
+      "type": "boolean"
+    },
+    "receipt": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "m5e_transaction_journal.v1"
+    },
+    "state": {
+      "enum": [
+        "started",
+        "claimed",
+        "after_temp_write",
+        "after_backup",
+        "after_replace",
+        "after_receipt",
+        "rolled_back",
+        "manual_recovery_required"
+      ]
+    },
+    "temp": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "state",
+    "auth_id",
+    "destination",
+    "candidate_sha256",
+    "new_sha256",
+    "publication_performed"
+  ],
+  "type": "object"
+}

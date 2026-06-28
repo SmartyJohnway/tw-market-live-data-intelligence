@@ -1,1 +1,36 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["schema_version","status"],"properties":{"schema_version":{"type":"string"},"status":{"type":"string"}},"additionalProperties":true}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "destination": {
+      "type": "string"
+    },
+    "rollback_performed": {
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "m5e_rollback_receipt.v1"
+    },
+    "sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "state": {
+      "type": "object"
+    },
+    "status": {
+      "enum": [
+        "rolled_back_replacement",
+        "rolled_back_new_target",
+        "manual_recovery_required"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "status",
+    "destination",
+    "rollback_performed"
+  ],
+  "type": "object"
+}

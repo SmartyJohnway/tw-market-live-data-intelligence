@@ -1,1 +1,43 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["schema_version","status"],"properties":{"schema_version":{"type":"string"},"status":{"type":"string"}},"additionalProperties":true}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "m5e_crash_recovery_state.v1"
+    },
+    "state": {
+      "additionalProperties": true,
+      "properties": {
+        "auth_id": {
+          "type": "string"
+        },
+        "publication_performed": {
+          "type": "boolean"
+        },
+        "state": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "state",
+        "auth_id",
+        "publication_performed"
+      ],
+      "type": "object"
+    },
+    "status": {
+      "enum": [
+        "safe_no_publication_or_temp_only",
+        "rolled_back_replacement",
+        "rolled_back_new_target",
+        "manual_recovery_required"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "status",
+    "state"
+  ],
+  "type": "object"
+}
