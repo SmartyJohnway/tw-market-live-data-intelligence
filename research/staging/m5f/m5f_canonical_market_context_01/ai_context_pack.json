@@ -1,5 +1,5 @@
 {
-  "context_summary": "Bounded watchlist context from reviewed historical/stale TWSE_OpenAPI evidence. No realtime guarantee and no trading signal.",
+  "context_summary": "Bounded watchlist context from reviewed historical/stale TWSE_OpenAPI evidence dated 2026-06-26. No realtime guarantee and no trading signal.",
   "global_caveats": [
     "not_realtime_guaranteed",
     "not_trading_signal",
@@ -19,6 +19,8 @@
     "trading_signal": false
   },
   "schema_version": "m5f_ai_context_pack.v1",
+  "source": "TWSE_OpenAPI",
+  "source_date": "2026-06-26",
   "source_health_path": "source_health.json",
   "symbols": [
     {

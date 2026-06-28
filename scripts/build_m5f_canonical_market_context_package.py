@@ -62,14 +62,17 @@ def build_package(candidate_path=DEFAULT_INPUT):
     c,binding,m5d_manifest,m5c_manifest=verify_input(Path(candidate_path))
     symbols=sorted(c['symbols'], key=lambda s:s['symbol'])
     base_gov={k:c[k] for k in ['historical_evidence_snapshot','current_realtime','production_current_state','production_ready','realtime_guaranteed','trading_signal','readonly_only','stale_status','badge']}
-    canonical={'schema_version':'m5f_canonical_market_context.v1','package_id':'m5f_canonical_market_context_01','derived_from':rel(candidate_path),'generated_at_utc':c['generated_at_utc'],'source':'TWSE_OpenAPI','source_date':'2026-06-26','symbols':symbols,'failed_targets':[],'global_caveats':REQ_CAVEATS,'governance':base_gov,'lineage_hashes':{'m5d_market_context_sha256':m5d_manifest['files']['market-context.json'],'m5d_manifest_sha256':sha(Path(candidate_path).parent/'sha256_manifest.json'),'m5d_source_binding_sha256':m5d_manifest['files']['source_binding.json'],'m5c_frontend_readonly_context_package_sha256':binding['m5c_frontend_readonly_context_package_sha256'],'m5c_manifest_sha256':binding['m5c_manifest_sha256'],'m5c_supplemental_audit_sha256':binding['m5c_supplemental_audit_sha256'],'m5c_run_summary_destination_correction_sha256':binding['m5c_run_summary_destination_correction_sha256']},'notes':['latest reviewed bounded evidence','not current realtime market state','not a trading signal']}
+    source_ids=sorted({s['source_id'] for s in symbols})
+    source_dates=sorted({s['source_timestamp'] for s in symbols})
+    if len(source_ids)!=1 or len(source_dates)!=1: raise ValueError('canonical source/date must be unique')
+    canonical={'schema_version':'m5f_canonical_market_context.v1','package_id':'m5f_canonical_market_context_01','derived_from':rel(candidate_path),'generated_at_utc':c['generated_at_utc'],'source':source_ids[0],'source_date':source_dates[0],'symbols':symbols,'failed_targets':[],'global_caveats':list(c.get('global_caveats', REQ_CAVEATS)),'governance':base_gov,'lineage_hashes':{'m5d_market_context_sha256':m5d_manifest['files']['market-context.json'],'m5d_manifest_sha256':sha(Path(candidate_path).parent/'sha256_manifest.json'),'m5d_source_binding_sha256':m5d_manifest['files']['source_binding.json'],'m5c_frontend_readonly_context_package_sha256':binding['m5c_frontend_readonly_context_package_sha256'],'m5c_manifest_sha256':binding['m5c_manifest_sha256'],'m5c_supplemental_audit_sha256':binding['m5c_supplemental_audit_sha256'],'m5c_run_summary_destination_correction_sha256':binding['m5c_run_summary_destination_correction_sha256']},'notes':['latest reviewed bounded evidence','not current realtime market state','not a trading signal']}
     snapshot=build_snapshot_from_m5f_canonical(canonical)
     obs=build_watchlist_observations_from_m5f_canonical(canonical)
     ai=build_ai_context_pack_from_m5f_canonical(canonical)
     ai_md=render_m5f_ai_context_pack_markdown(ai)
     briefing=render_chatgpt_briefing_from_m5f_canonical(canonical)
-    health={'schema_version':'m5f_source_health.v1','source_id':'TWSE_OpenAPI','source_authority':'official','status':'available_as_reviewed_historical_evidence','stale_status':'stale','source_date':'2026-06-26','source_risk_flags':symbols[0]['source_risk_flags'],'failed_targets':[],'governance':base_gov}
-    cap={'schema_version':'m5f_capability_summary.v1','canonical_context':'available','bounded_watchlist':True,'symbol_count':3,'source':'TWSE_OpenAPI','source_date':'2026-06-26','realtime_supported':False,'production_ready':False,'readonly_only':True,'governance':base_gov}
+    health={'schema_version':'m5f_source_health.v1','source_id':canonical['source'],'source_authority':symbols[0].get('source_authority','unknown'),'status':'available_as_reviewed_historical_evidence','stale_status':base_gov['stale_status'],'source_date':canonical['source_date'],'source_risk_flags':symbols[0]['source_risk_flags'],'failed_targets':[],'governance':base_gov}
+    cap={'schema_version':'m5f_capability_summary.v1','canonical_context':'available','bounded_watchlist':True,'symbol_count':len(symbols),'source':canonical['source'],'source_date':canonical['source_date'],'realtime_supported':False,'production_ready':False,'readonly_only':True,'governance':base_gov}
     lineage={'schema_version':'m5f_lineage.v1','upstream_chain':['M5D candidate manifest','M5C frontend readonly context package','M5C manifest/audit/correction','M5B bounded TWSE_OpenAPI evidence'],'hashes':canonical['lineage_hashes'],'source_binding':binding,'governance':base_gov}
     val={'schema_version':'m5f_validation_report.v1','status':'passed','checks':['exact_file_set','manifest_hashes','symbols_source_date_values','lineage_hashes','required_caveats','required_false_flags','no_trading_recommendation_fields','no_endpoint_payload_leakage'],'governance':base_gov}
     return {'canonical_market_context.json':canonical,'latest_market_snapshot.json':snapshot,'watchlist_observations.json':obs,'ai_context_pack.json':ai,'ai_context_pack.md':ai_md,'chatgpt_briefing.md':briefing,'source_health.json':health,'capability_summary.json':cap,'lineage.json':lineage,'validation_report.json':val}
@@ -78,17 +81,27 @@ def write_package(out:Path, artifacts:dict):
     check_output_dir(out)
     parent=out.parent; parent.mkdir(parents=True,exist_ok=True)
     tmp=Path(tempfile.mkdtemp(prefix='.m5f_tmp_',dir=parent))
+    backup=None
     try:
         for name,obj in artifacts.items(): (tmp/name).write_text(obj if isinstance(obj,str) else dump(obj),encoding='utf-8')
         manifest={'schema_version':'m5f_sha256_manifest.v1','package_id':'m5f_canonical_market_context_01','manifest_final':True,'no_artifact_modification_after_manifest':True,'files':{name:sha(tmp/name) for name in FILES},'lineage_hashes':artifacts['canonical_market_context.json']['lineage_hashes'],'governance':artifacts['canonical_market_context.json']['governance']}
         (tmp/'sha256_manifest.json').write_text(dump(manifest),encoding='utf-8')
-        if out.exists(): shutil.rmtree(out)
-        os.replace(tmp,out)
+        if out.exists():
+            backup=parent/(out.name+'.previous')
+            if backup.exists(): shutil.rmtree(backup)
+            os.replace(out, backup)
+        try:
+            os.replace(tmp,out)
+        except Exception:
+            if backup and backup.exists() and not out.exists():
+                os.replace(backup,out)
+            raise
+        if backup and backup.exists(): shutil.rmtree(backup)
     except Exception:
         shutil.rmtree(tmp,ignore_errors=True); raise
 
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument('--candidate-path',default=str(DEFAULT_INPUT)); ap.add_argument('--output-dir',default=str(DEFAULT_OUTPUT)); ap.add_argument('--write-package',action='store_true'); ap.add_argument('--check-only',action='store_true')
+    ap=argparse.ArgumentParser(); mode=ap.add_mutually_exclusive_group(); ap.add_argument('--candidate-path',default=str(DEFAULT_INPUT)); ap.add_argument('--output-dir',default=str(DEFAULT_OUTPUT)); mode.add_argument('--write-package',action='store_true'); mode.add_argument('--check-only',action='store_true')
     a=ap.parse_args(); arts=build_package(Path(a.candidate_path));
     if a.write_package: write_package(Path(a.output_dir),arts)
     print(dump({'status':'ok','write_package':a.write_package,'output_dir':a.output_dir,'files':FILES+(['sha256_manifest.json'] if a.write_package else [])}))

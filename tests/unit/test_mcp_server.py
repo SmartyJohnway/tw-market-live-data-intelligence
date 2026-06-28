@@ -648,3 +648,18 @@ def test_evidence_readback_valid_response_includes_governance_and_no_realtime_cl
     assert "generated artifacts were not updated" in data["statement"]
     assert "frontend artifacts were not updated" in data["statement"]
     assert "production snapshots were not updated" in data["statement"]
+
+def test_mcp_server_cli_startup_imports_validator_without_repo_pythonpath():
+    import subprocess, sys, os, time
+    env = dict(os.environ)
+    env.pop('PYTHONPATH', None)
+    proc = subprocess.Popen([sys.executable, 'server/mcp_server.py'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=env)
+    try:
+        time.sleep(0.8)
+        assert proc.poll() is None, proc.stderr.read()
+    finally:
+        proc.terminate()
+        try:
+            proc.wait(timeout=3)
+        except subprocess.TimeoutExpired:
+            proc.kill()

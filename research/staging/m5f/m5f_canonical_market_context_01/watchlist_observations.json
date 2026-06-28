@@ -21,7 +21,10 @@
         "freshness_must_be_displayed",
         "stale_source_row"
       ],
+      "freshness_status": "stale",
       "observation": "0050 has reviewed historical TWSE_OpenAPI price-like value 103.1 from 2026-06-26; stale/historical only.",
+      "source": "TWSE_OpenAPI",
+      "source_date": "2026-06-26",
       "symbol": "0050"
     },
     {
@@ -33,7 +36,10 @@
         "freshness_must_be_displayed",
         "stale_source_row"
       ],
+      "freshness_status": "stale",
       "observation": "00929 has reviewed historical TWSE_OpenAPI price-like value 29.96 from 2026-06-26; stale/historical only.",
+      "source": "TWSE_OpenAPI",
+      "source_date": "2026-06-26",
       "symbol": "00929"
     },
     {
@@ -45,7 +51,10 @@
         "freshness_must_be_displayed",
         "stale_source_row"
       ],
+      "freshness_status": "stale",
       "observation": "2330 has reviewed historical TWSE_OpenAPI price-like value 2340.0 from 2026-06-26; stale/historical only.",
+      "source": "TWSE_OpenAPI",
+      "source_date": "2026-06-26",
       "symbol": "2330"
     }
   ],

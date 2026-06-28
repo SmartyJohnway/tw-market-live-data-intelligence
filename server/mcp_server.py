@@ -17,15 +17,16 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from scripts.validate_m5f_canonical_market_context_package import validate_package as _validate_m5f_package
-
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import TextContent, Tool
 
-app = Server("tw-market-mcp")
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+from scripts.validate_m5f_canonical_market_context_package import validate_package as _validate_m5f_package
+
+app = Server("tw-market-mcp")
 
 READONLY_TOOL_SPECS: dict[str, dict[str, str]] = {
     "read_latest_market_snapshot": {
@@ -73,7 +74,7 @@ M5F_TOOL_SPECS: dict[str, dict[str, str]] = {
     "get_canonical_market_context": {"path": "research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json", "content_type": "json", "description": "Read the M5F canonical market context package payload."},
     "get_source_health": {"path": "research/staging/m5f/m5f_canonical_market_context_01/source_health.json", "content_type": "json", "description": "Read M5F source health."},
     "get_capability_matrix": {"path": "research/staging/m5f/m5f_canonical_market_context_01/capability_summary.json", "content_type": "json", "description": "Read M5F capability summary for canonical market context."},
-    "get_source_catalog": {"path": "docs/source_catalog.md", "content_type": "markdown", "description": "Read legacy governed source catalog; not canonical market context."},
+    "get_source_catalog": {"path": "docs/source_registry/source_authority_registry.json", "content_type": "json", "description": "Read governed source authority registry; legacy/source-capability information, not canonical market context."},
     "get_latest_market_snapshot": {"path": "research/staging/m5f/m5f_canonical_market_context_01/latest_market_snapshot.json", "content_type": "json", "description": "Read M5F latest reviewed bounded evidence snapshot."},
     "get_watchlist_observations": {"path": "research/staging/m5f/m5f_canonical_market_context_01/watchlist_observations.json", "content_type": "json", "description": "Read M5F descriptive watchlist observations."},
     "get_ai_context_pack": {"path": "research/staging/m5f/m5f_canonical_market_context_01/ai_context_pack.json", "content_type": "json", "description": "Read M5F AI context pack."},

@@ -25,3 +25,31 @@ def test_builder_rejects_repo_directories():
     for bad in [Path('scripts'), Path('server'), Path('docs')]:
         with pytest.raises(ValueError):
             write_package(bad, build_package())
+
+def test_write_package_rolls_back_on_final_replace_failure(tmp_path, monkeypatch):
+    import os, json
+    from scripts.build_m5f_canonical_market_context_package import build_package, write_package
+    out = tmp_path / 'pkg'
+    write_package(out, build_package())
+    original = (out / 'canonical_market_context.json').read_bytes()
+    real_replace = os.replace
+    calls = {'count': 0}
+    def flaky_replace(src, dst):
+        if str(dst) == str(out):
+            calls['count'] += 1
+            if calls['count'] == 1:
+                raise OSError('injected final replace failure')
+        return real_replace(src, dst)
+    monkeypatch.setattr(os, 'replace', flaky_replace)
+    try:
+        write_package(out, build_package())
+    except OSError:
+        pass
+    assert (out / 'canonical_market_context.json').read_bytes() == original
+
+
+def test_cli_check_only_and_write_package_mutually_exclusive():
+    import subprocess, sys
+    cp = subprocess.run([sys.executable, 'scripts/build_m5f_canonical_market_context_package.py', '--check-only', '--write-package'], capture_output=True, text=True)
+    assert cp.returncode != 0
+    assert 'not allowed with argument' in cp.stderr

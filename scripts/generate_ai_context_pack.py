@@ -532,16 +532,35 @@ if __name__ == "__main__":
 
 def build_ai_context_pack_from_m5f_canonical(canonical):
     """Pure M5F convergence path: AI context without recommendations."""
+    source = canonical.get("source", "unknown")
+    source_date = canonical.get("source_date", "unknown")
+    symbols = [dict(s) for s in canonical.get("symbols", [])]
+    caveats = list(canonical.get("global_caveats", []))
     return {
         "schema_version": "m5f_ai_context_pack.v1",
-        "context_summary": "Bounded watchlist context from reviewed historical/stale TWSE_OpenAPI evidence. No realtime guarantee and no trading signal.",
-        "symbols": [dict(s) for s in canonical.get("symbols", [])],
-        "global_caveats": list(canonical.get("global_caveats", [])),
+        "context_summary": (
+            f"Bounded watchlist context from reviewed historical/stale {source} evidence "
+            f"dated {source_date}. No realtime guarantee and no trading signal."
+        ),
+        "source": source,
+        "source_date": source_date,
+        "symbols": symbols,
+        "global_caveats": caveats,
         "governance": dict(canonical.get("governance", {})),
         "source_health_path": "source_health.json",
     }
 
 def render_m5f_ai_context_pack_markdown(pack):
-    lines = ["# M5F AI Context Pack", "", "Reviewed historical/stale TWSE_OpenAPI bounded-watchlist evidence only. Not realtime, not production current state, and not a trading signal.", ""]
-    lines.extend(f"- {s['symbol']}: {s['price_like_value']} ({s['source_timestamp']}, {s['freshness_status']})" for s in pack.get("symbols", []))
+    source = pack.get("source", "unknown")
+    source_date = pack.get("source_date", "unknown")
+    lines = [
+        "# M5F AI Context Pack",
+        "",
+        f"Reviewed historical/stale {source} bounded-watchlist evidence dated {source_date} only. Not realtime, not production current state, and not a trading signal.",
+        "",
+    ]
+    lines.extend(
+        f"- {s['symbol']}: {s['price_like_value']} ({s.get('source_timestamp', source_date)}, {s.get('freshness_status', 'unknown')})"
+        for s in pack.get("symbols", [])
+    )
     return "\n".join(lines) + "\n"
