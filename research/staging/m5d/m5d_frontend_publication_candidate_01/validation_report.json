@@ -6,8 +6,10 @@
     "upstream_integrity",
     "baseline_hash_only",
     "readonly_stale_caveats",
+    "activation_semantics",
     "no_temp_paths",
-    "forbidden_flags"
+    "forbidden_flags",
+    "frontend_public_baseline_drift"
   ],
   "frontend_public_write": false,
   "historical_evidence_snapshot": true,

@@ -148,3 +148,35 @@ def test_rollback_simulator_validates_candidate_before_simulation(monkeypatch):
     out = rollback_sim(existing=False)
     assert out['status'] == 'blocked'
     assert out['errors'] == ['tampered']
+
+def test_non_json_extra_file_rejected(tmp_path):
+    d = copy_candidate(tmp_path)
+    (d / 'authorization_token.txt').write_text('fake-token\n')
+    errs = validate_candidate(d)
+    assert 'artifact_set_mismatch' in errs
+
+def test_readonly_only_missing_or_wrong_type_rejected_after_rehash(tmp_path):
+    d = copy_candidate(tmp_path)
+    summary_path = d / 'candidate_summary.json'
+    summary = json.loads(summary_path.read_text())
+    summary['readonly_only'] = None
+    write_json(summary_path, summary)
+    manifest_path = d / 'sha256_manifest.json'
+    manifest = json.loads(manifest_path.read_text())
+    manifest['files']['candidate_summary.json'] = __import__('hashlib').sha256(summary_path.read_bytes()).hexdigest()
+    write_json(manifest_path, manifest)
+    assert 'readonly_only_must_be_true:candidate_summary.json' in validate_candidate(d)
+
+def test_recursive_frontend_publication_authorized_and_token_issued_flags_rejected(tmp_path):
+    d = copy_candidate(tmp_path)
+    plan_path = d / 'publication_plan.json'
+    plan = json.loads(plan_path.read_text())
+    plan['nested'] = {'frontend_publication_authorized': True, 'authorization_token_issued': True}
+    write_json(plan_path, plan)
+    manifest_path = d / 'sha256_manifest.json'
+    manifest = json.loads(manifest_path.read_text())
+    manifest['files']['publication_plan.json'] = __import__('hashlib').sha256(plan_path.read_bytes()).hexdigest()
+    write_json(manifest_path, manifest)
+    errs = validate_candidate(d)
+    assert any('frontend_publication_authorized' in e for e in errs)
+    assert any('authorization_token_issued' in e for e in errs)

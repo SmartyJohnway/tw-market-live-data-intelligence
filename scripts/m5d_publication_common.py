@@ -27,11 +27,13 @@ REQUIRED_ARTIFACTS = {
 }
 FORBIDDEN_FALSE_FLAGS = [
     'realtime_guaranteed', 'trading_signal', 'production_ready', 'publication_performed',
-    'frontend_public_write', 'actual_frontend_publication_authorized'
+    'frontend_public_write', 'actual_frontend_publication_authorized',
+    'frontend_publication_authorized', 'authorization_token_issued'
 ]
 FORBIDDEN_AUTHORIZATION_KEYS = {
     'authorization_decision', 'authorization_token', 'approval_token', 'publication_authorization_token'
 }
+READONLY_REQUIRED_ARTIFACTS = REQUIRED_ARTIFACTS - {'frontend_public_baseline.json'}
 
 def sha(p: Path) -> str:
     return hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
@@ -149,18 +151,36 @@ def build():
         raise SystemExit('upstream integrity failed: ' + ','.join(map(str, errs)))
     parent = ROOT / CAND.parent
     parent.mkdir(parents=True, exist_ok=True)
+    final = ROOT / CAND
+    backup = parent / f'.m5d_backup_{next(tempfile._get_candidate_names())}'
     with tempfile.TemporaryDirectory(prefix='.m5d_tmp_', dir=parent) as td:
         tmp = Path(td)
         _materialize_candidate(tmp)
-        if {p.name for p in tmp.glob('*.json')} != REQUIRED_ARTIFACTS:
-            raise SystemExit('candidate build failed: artifact_set_mismatch')
-        final = ROOT / CAND
-        if final.exists():
-            shutil.rmtree(final)
-        tmp.replace(final)
-    validation_errors = validate_candidate(CAND)
-    if validation_errors:
-        raise SystemExit('candidate validation failed: ' + ','.join(map(str, validation_errors)))
+        validation_errors = validate_candidate(tmp)
+        if validation_errors:
+            raise SystemExit('candidate validation failed before replace: ' + ','.join(map(str, validation_errors)))
+        try:
+            if final.exists():
+                final.rename(backup)
+            tmp.rename(final)
+        except Exception:
+            if final.exists():
+                shutil.rmtree(final)
+            if backup.exists():
+                backup.rename(final)
+            raise
+        try:
+            validation_errors = validate_candidate(CAND)
+            if validation_errors:
+                raise RuntimeError('candidate validation failed after replace: ' + ','.join(map(str, validation_errors)))
+        except Exception:
+            if final.exists():
+                shutil.rmtree(final)
+            if backup.exists():
+                backup.rename(final)
+            raise
+        if backup.exists():
+            shutil.rmtree(backup)
     req = {'schema_version': 'm5d_frontend_publication_request.v2', 'request_id': 'M5D_FRONTEND_PUBLICATION_REQUEST', 'candidate_dir': str(CAND), 'candidate_manifest_sha256': sha(CAND / 'sha256_manifest.json'), 'proposed_destination': str(DEST), 'm5c_staging_package_dir': str(M5C), 'm5c_staging_manifest_sha256': M5C_MANIFEST_SHA, 'single_use': True, 'request_only': True, 'authorization_token_issued': False, 'actual_frontend_publication_authorized': False, 'publication_performed': False, 'next_required_action': 'user_authorization'}
     dump(REQ, req)
     return load(CAND / 'sha256_manifest.json')
@@ -185,9 +205,12 @@ def validate_candidate(cdir=CAND):
     c_abs = ROOT / c
     if not c_abs.exists():
         return ['candidate_dir_missing']
+    file_names = {p.relative_to(c_abs).as_posix() for p in c_abs.rglob('*') if p.is_file()}
     artifact_names = {p.name for p in c_abs.glob('*.json')}
-    if artifact_names != REQUIRED_ARTIFACTS:
+    if file_names != REQUIRED_ARTIFACTS:
         errs.append('artifact_set_mismatch')
+    if artifact_names != REQUIRED_ARTIFACTS:
+        errs.append('json_artifact_set_mismatch')
     man = load(c / 'sha256_manifest.json')
     if man.get('manifest_final') is not True:
         errs.append('manifest_final_not_true')
@@ -242,9 +265,9 @@ def validate_candidate(cdir=CAND):
     rollback_plan = load(c / 'rollback_plan.json')
     if rollback_plan.get('simulation_only') is not True:
         errs.append('rollback_plan_simulation_only_must_be_true')
-    for artifact in sorted(artifact_names):
-        if load(c / artifact).get('readonly_only') is False:
-            errs.append(f'readonly_only_must_not_be_false:{artifact}')
+    for artifact in sorted(READONLY_REQUIRED_ARTIFACTS):
+        if artifact in artifact_names and load(c / artifact).get('readonly_only') is not True:
+            errs.append(f'readonly_only_must_be_true:{artifact}')
     if sha(M5C / 'frontend_readonly_context_package.json') != man.get('m5c_frontend_readonly_context_package_sha256'):
         errs.append('source_package_changed_after_candidate_build')
     if frontend_inventory() != load(c / 'frontend_public_baseline.json'):

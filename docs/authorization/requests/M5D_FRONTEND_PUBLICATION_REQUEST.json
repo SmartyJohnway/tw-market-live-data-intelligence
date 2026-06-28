@@ -2,7 +2,7 @@
   "actual_frontend_publication_authorized": false,
   "authorization_token_issued": false,
   "candidate_dir": "research/staging/m5d/m5d_frontend_publication_candidate_01",
-  "candidate_manifest_sha256": "0202bf9cb217dfc9519e380cd74023c685b59a2d43170e46539d3a6c9e6808b2",
+  "candidate_manifest_sha256": "cfec0b000cae2cfff36b4c1afee77ce1a59d90347bb85ec86bff3be4faf9be4e",
   "m5c_staging_manifest_sha256": "9956b27850f2561f3738ebacda350b1685d54e1947910191605be637ad7dd203",
   "m5c_staging_package_dir": "research/staging/m5c/m5c_twse_openapi_20260627_authorized_01",
   "next_required_action": "user_authorization",
