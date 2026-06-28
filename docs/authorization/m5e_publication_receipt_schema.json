@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "oneOf": [
+    {
+      "not": {
+        "required": [
+          "simulation_mode"
+        ]
+      },
+      "properties": {
+        "publication_performed": {
+          "const": true
+        },
+        "status": {
+          "const": "published"
+        }
+      },
+      "required": [
+        "status",
+        "publication_performed"
+      ]
+    },
+    {
+      "properties": {
+        "publication_performed": {
+          "const": false
+        },
+        "simulation_mode": {
+          "const": true
+        },
+        "status": {
+          "const": "simulated"
+        }
+      },
+      "required": [
+        "status",
+        "publication_performed",
+        "simulation_mode"
+      ]
+    }
+  ],
+  "properties": {
+    "authorization_id": {
+      "type": "string"
+    },
+    "candidate_manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "destination": {
+      "type": "string"
+    },
+    "previous_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "publication_performed": {
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "m5e_publication_receipt.v1"
+    },
+    "sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "simulation_mode": {
+      "type": "boolean"
+    },
+    "single_use_claim": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "published",
+        "simulated"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "status",
+    "authorization_id",
+    "destination",
+    "sha256",
+    "candidate_manifest_sha256",
+    "publication_performed",
+    "single_use_claim"
+  ],
+  "type": "object"
+}

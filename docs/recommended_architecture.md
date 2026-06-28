@@ -26,3 +26,7 @@ We recommend a **Hybrid Python Backend + Static Frontend** approach:
 ## M5B staging-only evidence flow
 
 M5B confirms the architecture should keep live execution behind a single-use authorization validator, retain only bounded target rows, and emit a staging candidate that cannot promote itself to production. M5C or any frontend/publication path requires a separate explicit authorization.
+
+## M5E controlled publication architecture
+
+Use a three-layer flow: (1) immutable M5D candidate and runtime compatibility audit, (2) explicit future authorization decision plus single-use token validated against Draft 2020-12 schemas, and (3) injectable atomic publisher transactions that can be fully tested under temporary directories. The repository release gate remains check-only and reports authorization absence until a human supplies a future explicit authorization.

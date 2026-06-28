@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "auth_id": {
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "type": "string"
+    },
+    "backup": {
+      "type": "string"
+    },
+    "candidate_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "destination": {
+      "type": "string"
+    },
+    "destination_write_simulated": {
+      "type": "boolean"
+    },
+    "new_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "previous_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "publication_performed": {
+      "type": "boolean"
+    },
+    "receipt": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "m5e_transaction_journal.v1"
+    },
+    "simulation_mode": {
+      "type": "boolean"
+    },
+    "single_use_claim": {
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "started",
+        "claimed",
+        "after_temp_write",
+        "after_backup",
+        "after_replace",
+        "after_receipt",
+        "rolled_back",
+        "manual_recovery_required"
+      ]
+    },
+    "temp": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "state",
+    "auth_id",
+    "destination",
+    "candidate_sha256",
+    "new_sha256",
+    "publication_performed",
+    "simulation_mode",
+    "destination_write_simulated"
+  ],
+  "type": "object"
+}

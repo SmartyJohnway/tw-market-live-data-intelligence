@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "allowed_action": {
+      "const": "publish_frontend_market_context"
+    },
+    "authorization_id": {
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "type": "string"
+    },
+    "candidate_dir": {
+      "const": "research/staging/m5d/m5d_frontend_publication_candidate_01"
+    },
+    "candidate_manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "destination": {
+      "const": "frontend/public/market-context.json"
+    },
+    "expires_at_epoch": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "frontend_baseline_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "m5c_lineage_hashes": {
+      "additionalProperties": false,
+      "properties": {
+        "m5c_frontend_readonly_context_package_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "m5c_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "m5c_run_summary_destination_correction_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "m5c_supplemental_audit_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "m5c_manifest_sha256",
+        "m5c_frontend_readonly_context_package_sha256",
+        "m5c_supplemental_audit_sha256",
+        "m5c_run_summary_destination_correction_sha256"
+      ],
+      "type": "object"
+    },
+    "single_use": {
+      "const": true
+    },
+    "single_use_id": {
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "type": "string"
+    },
+    "token_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "authorization_id",
+    "allowed_action",
+    "single_use",
+    "single_use_id",
+    "candidate_dir",
+    "candidate_manifest_sha256",
+    "destination",
+    "frontend_baseline_sha256",
+    "m5c_lineage_hashes",
+    "expires_at_epoch",
+    "token_sha256"
+  ],
+  "type": "object"
+}
