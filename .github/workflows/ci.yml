@@ -29,3 +29,6 @@ jobs:
     - name: Test with pytest (offline)
       run: |
         pytest -m "not network" -v
+
+      - name: M5E controlled frontend publication release gate check-only
+        run: python scripts/run_m5e_controlled_frontend_publication.py --check-only
