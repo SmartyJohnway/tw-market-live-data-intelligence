@@ -40,7 +40,7 @@ MANUAL_PROBE_CONFIRMATION_DESCRIPTION = (
 
 def governance_caveats():
     return [
-        "manual_legacy_probe_surface",
+        "legacy_probe_surface_disabled_pending_m5i",
         "not_controlled_refresh_bridge",
         "no_production_artifact_refresh",
         "no_frontend_artifact_refresh",
@@ -50,15 +50,15 @@ def governance_caveats():
 
 
 def require_manual_probe_confirmation(confirm_manual_probe: bool) -> None:
-    if not confirm_manual_probe:
-        raise HTTPException(
-            status_code=403,
-            detail={
-                "error": "manual_probe_confirmation_required",
-                "required_query": "confirm_manual_probe=true",
-                "caveats": governance_caveats(),
-            },
-        )
+    raise HTTPException(
+        status_code=410,
+        detail={
+            "error": "legacy_probe_endpoint_disabled_pending_m5i_authorization",
+            "message": "FastAPI product server does not execute live probes; future refresh requires M5I authorization.",
+            "required_query": None,
+            "caveats": governance_caveats(),
+        },
+    )
 
 
 def governed_probe_response(source_id: str, result: dict) -> dict:
@@ -89,8 +89,8 @@ def read_governance():
     return {
         "api_mode": "local_first_governed_workbench",
         "probe_endpoints": {
-            "status": "manual_legacy_surface",
-            "requires_query": "confirm_manual_probe=true",
+            "status": "disabled_pending_m5i_authorization",
+            "requires_query": None,
             "production_refresh": False,
             "frontend_refresh": False,
             "caveats": governance_caveats(),

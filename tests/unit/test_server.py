@@ -40,9 +40,9 @@ def test_governance_endpoint_describes_manual_probe_boundary():
     assert response.status_code == 200
     data = response.json()
     assert data["api_mode"] == "local_first_governed_workbench"
-    assert data["probe_endpoints"]["requires_query"] == "confirm_manual_probe=true"
+    assert data["probe_endpoints"]["requires_query"] is None
     assert data["probe_endpoints"]["production_refresh"] is False
-    assert "manual_legacy_probe_surface" in data["probe_endpoints"]["caveats"]
+    assert "legacy_probe_surface_disabled_pending_m5i" in data["probe_endpoints"]["caveats"]
 
 
 @pytest.mark.parametrize(
@@ -66,24 +66,22 @@ def test_probe_endpoints_require_manual_confirmation_without_executing_probe(mon
     monkeypatch.setattr(f"main.{probe_attr}", fake_probe)
     response = client.get(path)
 
-    assert response.status_code == 403
-    assert response.json()["detail"]["error"] == "manual_probe_confirmation_required"
-    assert response.json()["detail"]["required_query"] == "confirm_manual_probe=true"
+    assert response.status_code == 410
+    assert response.json()["detail"]["error"] == "legacy_probe_endpoint_disabled_pending_m5i_authorization"
+    assert response.json()["detail"]["required_query"] is None
     assert "no_production_artifact_refresh" in response.json()["detail"]["caveats"]
     assert called["value"] is False
 
 
-def test_probe_endpoint_with_manual_confirmation_wraps_governance(monkeypatch):
+def test_probe_endpoint_with_manual_confirmation_still_disabled(monkeypatch):
+    called = {"value": False}
     def fake_probe():
+        called["value"] = True
         return {"source": "TWSE_OpenAPI", "contract_status": "normalized_pass"}
 
     monkeypatch.setattr("main.probe_twse", fake_probe)
     response = client.get("/api/probe/twse?confirm_manual_probe=true")
 
-    assert response.status_code == 200
-    data = response.json()
-    assert data["governance"]["execution_mode"] == "manual_explicit_probe"
-    assert data["governance"]["production_refresh"] is False
-    assert data["governance"]["frontend_refresh"] is False
-    assert data["governance"]["source_id"] == "TWSE_OpenAPI"
-    assert data["result"]["contract_status"] == "normalized_pass"
+    assert response.status_code == 410
+    assert response.json()["detail"]["error"] == "legacy_probe_endpoint_disabled_pending_m5i_authorization"
+    assert called["value"] is False

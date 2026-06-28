@@ -12,13 +12,34 @@ DEFAULT_INPUT=REPO/'research/staging/m5d/m5d_frontend_publication_candidate_01/m
 DEFAULT_OUTPUT=REPO/'research/staging/m5f/m5f_canonical_market_context_01'
 FILES=['canonical_market_context.json','latest_market_snapshot.json','watchlist_observations.json','ai_context_pack.json','ai_context_pack.md','chatgpt_briefing.md','source_health.json','capability_summary.json','lineage.json','validation_report.json']
 REQ_CAVEATS=['not_realtime_guaranteed','not_trading_signal','not_production_current_state','source_risk_present','freshness_must_be_displayed']
-EXPECTED={'0050':103.1,'00929':29.96,'2330':2340.0}
+BASELINE_EXPECTED={'0050':103.1,'00929':29.96,'2330':2340.0}
+SYMBOL_ALLOWLIST={'symbol','price_like_value','source_id','source_authority','source_timestamp','retrieved_at','freshness_status','delay_status','display_caveats','source_risk_flags','data_quality_flags','normalization_status','price_semantics','staleness_seconds'}
+FORBIDDEN_KEYS={'buy','sell','hold','target_price','target price','ranking','rank','recommendation','raw_payload','raw_full_response','full_raw_payload','response_body','raw_endpoint_payload'}
 FORBIDDEN_PREFIXES=('research/generated','frontend/public','research/staging/m5c','research/staging/m5d','research/live_probe_runs/m5b')
 
 def dump(obj): return json.dumps(obj,ensure_ascii=False,indent=2,sort_keys=True)+"\n"
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def rel(p): return Path(p).resolve().relative_to(REPO).as_posix()
 def load(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+
+
+def reject_forbidden_nested(obj, path='<root>'):
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            kl=str(k).lower()
+            if kl in FORBIDDEN_KEYS:
+                raise ValueError(f'forbidden nested field: {path}.{k}')
+            reject_forbidden_nested(v, f'{path}.{k}')
+    elif isinstance(obj, list):
+        for i, v in enumerate(obj):
+            reject_forbidden_nested(v, f'{path}[{i}]')
+
+def project_symbol(symbol: dict) -> dict:
+    reject_forbidden_nested(symbol, 'symbol')
+    missing={'symbol','price_like_value','source_id','source_timestamp'}-set(symbol)
+    if missing:
+        raise ValueError(f'symbol missing required fields: {sorted(missing)}')
+    return {k: symbol[k] for k in sorted(SYMBOL_ALLOWLIST) if k in symbol}
 
 def check_output_dir(path:Path):
     r=path.resolve()
@@ -30,7 +51,8 @@ def check_output_dir(path:Path):
     # may ever be recursively replaced.
     if r == default:
         return
-    if str(r).startswith('/tmp/'):
+    tmp_root = Path(tempfile.gettempdir()).resolve()
+    if r == tmp_root or r.is_relative_to(tmp_root):
         return
     raise ValueError('output path must be the fixed M5F package path or an explicit /tmp test path')
 
@@ -48,10 +70,14 @@ def verify_input(candidate_path:Path):
     if sha(m5c_manifest_path)!=binding['m5c_manifest_sha256']: raise ValueError('m5c manifest hash mismatch')
     if sha(m5c_pkg)!=binding['m5c_frontend_readonly_context_package_sha256']: raise ValueError('m5c package hash mismatch')
     syms={s['symbol']:s for s in c.get('symbols',[])}
-    if set(syms)!=set(EXPECTED): raise ValueError('unexpected symbols')
-    for sym,val in EXPECTED.items():
-        s=syms[sym]
-        if s.get('source_id')!='TWSE_OpenAPI' or s.get('source_timestamp')!='2026-06-26' or float(s.get('price_like_value'))!=val: raise ValueError('unexpected symbol data')
+    if not syms: raise ValueError('no symbols in candidate')
+    if len(syms)!=len(c.get('symbols',[])): raise ValueError('duplicate symbols in candidate')
+    source_ids={s.get('source_id') for s in syms.values()}
+    source_dates={s.get('source_timestamp') for s in syms.values()}
+    if None in source_ids or None in source_dates or len(source_ids)!=1 or len(source_dates)!=1:
+        raise ValueError('candidate must have one explicit source and source date')
+    for s in syms.values():
+        reject_forbidden_nested(s, 'candidate.symbol')
     for k,v in {'historical_evidence_snapshot':True,'current_realtime':False,'production_current_state':False,'production_ready':False,'realtime_guaranteed':False,'trading_signal':False,'readonly_only':True}.items():
         if c.get(k)!=v: raise ValueError(f'bad flag {k}')
     if c.get('stale_status')!='stale' or c.get('badge')!='historical/stale': raise ValueError('bad stale badge')
@@ -60,7 +86,7 @@ def verify_input(candidate_path:Path):
 
 def build_package(candidate_path=DEFAULT_INPUT):
     c,binding,m5d_manifest,m5c_manifest=verify_input(Path(candidate_path))
-    symbols=sorted(c['symbols'], key=lambda s:s['symbol'])
+    symbols=sorted((project_symbol(s) for s in c['symbols']), key=lambda s:s['symbol'])
     base_gov={k:c[k] for k in ['historical_evidence_snapshot','current_realtime','production_current_state','production_ready','realtime_guaranteed','trading_signal','readonly_only','stale_status','badge']}
     source_ids=sorted({s['source_id'] for s in symbols})
     source_dates=sorted({s['source_timestamp'] for s in symbols})

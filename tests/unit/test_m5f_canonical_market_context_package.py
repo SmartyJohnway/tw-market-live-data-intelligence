@@ -53,3 +53,15 @@ def test_cli_check_only_and_write_package_mutually_exclusive():
     cp = subprocess.run([sys.executable, 'scripts/build_m5f_canonical_market_context_package.py', '--check-only', '--write-package'], capture_output=True, text=True)
     assert cp.returncode != 0
     assert 'not allowed with argument' in cp.stderr
+
+def test_recursive_forbidden_symbol_field_rejected(tmp_path):
+    out=tmp_path/'pkg'; shutil.copytree(PKG,out)
+    data=json.loads((out/'canonical_market_context.json').read_text())
+    data['symbols'][0]['target_price']=999
+    (out/'canonical_market_context.json').write_text(json.dumps(data, ensure_ascii=False, indent=2))
+    manifest=json.loads((out/'sha256_manifest.json').read_text())
+    import hashlib
+    manifest['files']['canonical_market_context.json']=hashlib.sha256((out/'canonical_market_context.json').read_bytes()).hexdigest()
+    (out/'sha256_manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
+    with pytest.raises(ValueError, match='forbidden'):
+        validate_package(out)

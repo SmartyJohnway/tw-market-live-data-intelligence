@@ -6,7 +6,9 @@ from scripts import run_m5e_controlled_frontend_publication as m5e
 
 def test_check_only_fail_closed():
     r=m5e.check_only()
-    assert r['ready_for_explicit_user_authorization_review'] is True
+    assert r['ready_for_explicit_user_authorization_review'] is False
+    assert r['status'] == 'superseded_by_m5f'
+    assert r['superseded_by_m5f'] is True
     assert r['frontend_publication_authorized'] is False
     assert r['publication_performed'] is False
     assert r['execute_mode_available'] is False
