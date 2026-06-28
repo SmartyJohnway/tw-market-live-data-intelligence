@@ -16,7 +16,7 @@ Not live-ready blockers: no additional live probe authorization in this bundle, 
 
 Not frontend/public-ready blockers: no frontend/public publication is authorized.
 
-Next authorization ladder: approve limited fixture refresh, then controlled single-source live probe, then explicit durable promotion review.
+Next authorization ladder: review the M5C staging package, then issue a separate M5D frontend-publication authorization only if frontend/public publication is desired.
 
 
 ## M4 Omega

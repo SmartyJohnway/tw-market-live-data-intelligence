@@ -111,6 +111,7 @@ def test_success_outcome_persistence_failure_does_not_retry_or_delete_destinatio
     monkeypatch.setattr(runner, '_build', lambda dst, _: (dst/'artifact.json').write_text('{}'))
     monkeypatch.setattr(runner, '_validate_built_package_at', lambda _: [])
     monkeypatch.setattr(runner, 'validate_promoted_package', lambda *_args, **_kwargs: [])
+    monkeypatch.setattr(runner, 'validate_core_package', lambda *_args, **_kwargs: [])
     real_try=runner._try_record_outcome
     def flaky(path, status, stage, detail=None, tmp=None, cleanup_result=None):
         if status == 'succeeded':
@@ -153,6 +154,7 @@ def test_consumed_at_is_preserved_across_outcome_updates(monkeypatch, tmp_path):
     monkeypatch.setattr(runner, '_build', lambda dst, _: (dst/'artifact.json').write_text('{}'))
     monkeypatch.setattr(runner, '_validate_built_package_at', lambda _: [])
     monkeypatch.setattr(runner, 'validate_promoted_package', lambda *_args, **_kwargs: [])
+    monkeypatch.setattr(runner, 'validate_core_package', lambda *_args, **_kwargs: [])
     out=runner.execute()
     record=Path(out['consumption_record'])
     data=json.loads(record.read_text())

@@ -6,7 +6,7 @@ from validate_m5c_staging_promotion_authorization import validate as validate_au
 from run_m5c_staging_promotion_preflight import run as preflight_run, is_success
 from build_frontend_readonly_context_package import build_frontend_readonly_context_package
 from m5c_common import load, readonly_payload_from_candidate
-from validate_m5c_promoted_staging_package import validate as validate_promoted_package
+from validate_m5c_promoted_staging_package import validate as validate_promoted_package, validate_core_package
 CONSUME_DIR=Path('research/staging/m5c/authorization_consumption')
 
 def _atomic_write_json(path: Path, data: dict):
@@ -122,7 +122,7 @@ def execute():
     finalizing_error=_try_record_outcome(cp, 'finalizing', 'atomic_rename_completed')
     if finalizing_error:
         return {'status':'blocked','actual_staging_promotion_performed':True,'destination':DEST,'destination_preserved':Path(DEST).exists(),'retry_allowed':False,'stage':'outcome_finalization','next_action':'manual_evidence_repair','errors':[finalizing_error]}
-    final_errors=validate_promoted_package(Path(DEST), allowed_consumption_statuses={'finalizing'})
+    final_errors=validate_core_package(Path(DEST), allowed_consumption_statuses={'finalizing'})
     if final_errors:
         outcome_error=_try_record_outcome(cp, 'failed', 'promotion_performed_validation_failed', json.dumps(final_errors, sort_keys=True), Path(DEST), 'destination_preserved')
         errors=list(final_errors)
