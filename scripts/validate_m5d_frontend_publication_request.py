@@ -12,6 +12,12 @@ except ModuleNotFoundError:
     from scripts.validate_m5c_supplemental_audit import validate as validate_audit
 REQ=Path('docs/authorization/requests/M5D_FRONTEND_PUBLICATION_REQUEST.json')
 SCHEMA=Path('docs/authorization/m5d_frontend_publication_request_schema.json')
+
+try:
+    from m5d_publication_common import validate_candidate
+except ModuleNotFoundError:
+    from scripts.m5d_publication_common import validate_candidate
+
 CANONICAL='research/staging/m5c/m5c_twse_openapi_20260627_authorized_01'
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def load(p): return json.loads(Path(p).read_text())
@@ -28,9 +34,12 @@ def validate(path=REQ):
     if d.get('m5c_staging_package_dir')!=CANONICAL: errs.append({'code':'package_dir_mismatch'})
     if d.get('proposed_destination')!='frontend/public/market-context.json': errs.append({'code':'proposed_destination_mismatch'})
     if 'approval_token' in d or 'authorization_decision' in d or 'authorization_token' in d: errs.append({'code':'approval_material_forbidden'})
-    cman=Path(d.get('candidate_dir',''))/'sha256_manifest.json'
+    cdir=Path(d.get('candidate_dir',''))
+    cman=cdir/'sha256_manifest.json'
     if not cman.exists(): errs.append({'code':'candidate_manifest_missing'})
     elif d.get('candidate_manifest_sha256') != sha(cman): errs.append({'code':'candidate_manifest_sha_mismatch','expected':sha(cman),'actual':d.get('candidate_manifest_sha256')})
+    for candidate_error in validate_candidate(cdir):
+        errs.append({'code':'candidate_validation_failed','detail':candidate_error})
     pkg=Path(d.get('m5c_staging_package_dir',''))
     if not (pkg/'sha256_manifest.json').exists(): errs.append({'code':'package_manifest_missing'})
     else:

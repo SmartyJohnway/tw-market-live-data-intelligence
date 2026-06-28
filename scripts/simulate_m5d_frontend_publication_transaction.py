@@ -1,6 +1,9 @@
 import argparse,json,hashlib,shutil,tempfile
 from pathlib import Path
-from m5d_publication_common import CAND,DEST,validate_candidate,ROOT
+try:
+    from m5d_publication_common import CAND, DEST, validate_candidate, ROOT
+except ModuleNotFoundError:
+    from scripts.m5d_publication_common import CAND, DEST, validate_candidate, ROOT
 
 def h(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def simulate(existing=False, fail_replace=False):
