@@ -18,7 +18,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost", "http://localhost:8000", "http://127.0.0.1", "http://127.0.0.1:8000"],
     allow_credentials=True,
-    allow_methods=["GET"],
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
 
@@ -204,3 +204,47 @@ def get_context_capability_summary():
 @app.get("/api/context/briefing")
 def get_context_briefing():
     return _read_m5f_artifact("chatgpt_briefing.md", text=True)
+
+# M5K Level 2 watchlist and bounded live observation endpoints.
+from scripts.m5k_common import (
+    DEFAULT_WATCHLIST_PATH as M5K_DEFAULT_WATCHLIST_PATH,
+    conversation_handoff_from_watchlist as _m5k_conversation_handoff,
+    execute_live_observation as _m5k_execute_live_observation,
+    load_json as _m5k_load_json,
+    read_latest_observation as _m5k_read_latest_observation,
+    validate_watchlist as _m5k_validate_watchlist,
+    plan_live_observation as _m5k_plan_live_observation,
+)
+
+
+@app.get("/api/m5k/watchlist/default")
+def get_m5k_default_watchlist():
+    watchlist = _m5k_load_json(M5K_DEFAULT_WATCHLIST_PATH)
+    return {"source_path": M5K_DEFAULT_WATCHLIST_PATH.relative_to(REPO_ROOT).as_posix(), "content": watchlist, "validation": _m5k_validate_watchlist(watchlist), "governance": _canonical_governance() | {"layer": "M5K", "canonical": False}}
+
+
+@app.post("/api/m5k/watchlist/validate")
+def post_m5k_validate_watchlist(watchlist: dict):
+    return {"validation": _m5k_validate_watchlist(watchlist), "governance": _canonical_governance() | {"layer": "M5K", "canonical": False}}
+
+
+@app.post("/api/m5k/conversation/handoff")
+def post_m5k_conversation_handoff(watchlist: dict):
+    return _m5k_conversation_handoff(watchlist)
+
+
+@app.get("/api/m5k/live-observation/latest")
+def get_m5k_latest_live_observation():
+    return _m5k_read_latest_observation()
+
+
+@app.post("/api/m5k/live-observation/plan")
+def post_m5k_plan_live_observation(watchlist: dict):
+    return _m5k_plan_live_observation(watchlist)
+
+
+@app.post("/api/m5k/live-observation/execute")
+def post_m5k_execute_live_observation(watchlist: dict, confirm_live_observation: bool = False):
+    if confirm_live_observation is not True:
+        raise HTTPException(status_code=400, detail={"error": "missing_explicit_confirmation", "required_query": "confirm_live_observation=true"})
+    return _m5k_execute_live_observation(watchlist, write_latest=True)
