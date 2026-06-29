@@ -15,9 +15,14 @@ def parse_twse_rows(data, targets, retrieved_at):
         r=by.get(t)
         if not r:
             failures.append({'symbol':t,'status':'missing_from_source'}); continue
-        price=r.get('ClosingPrice') or r.get('收盤價') or r.get('close') or r.get('TradeVolume') or 0
-        try: price=float(str(price).replace(',',''))
-        except Exception: price=0.0
+        price_raw=r.get('ClosingPrice') or r.get('收盤價') or r.get('close')
+        if price_raw is None or str(price_raw).strip() == '':
+            failures.append({'symbol':t,'status':'missing_close_price'}); continue
+        try:
+            price=float(str(price_raw).replace(',',''))
+        except Exception:
+            failures.append({'symbol':t,'status':'unparsable_close_price'}); continue
+
         date=str(r.get('Date') or r.get('date') or retrieved_at[:10])
         rows.append({'symbol':t,'price_like_value':price,'source_id':SOURCE,'source_authority':'official','source_timestamp':date,'retrieved_at':retrieved_at,'freshness_status':'stale','delay_status':'eod_batch','display_caveats':['official_eod_reference_source','not_realtime_guaranteed','freshness_must_be_displayed'],'source_risk_flags':['official_eod_reference_source','not_intraday_live_feed','not_realtime_guaranteed'],'data_quality_flags':['reviewed_refresh_snapshot','not_current_realtime'],'normalization_status':'ok','price_semantics':'official_eod_close','staleness_seconds':0})
     return rows, failures

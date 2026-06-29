@@ -17,8 +17,12 @@ def validate_candidate(candidate_dir: Path):
     reject_forbidden(c); reject_forbidden(b)
     if c.get('schema_version')!='m5i_refresh_candidate.v1': raise ValueError('bad schema')
     rows=c.get('symbols',[]); syms=[r.get('symbol') for r in rows]
-    if sorted(syms)!=sorted(b.get('targets',[])): raise ValueError('candidate/binding target mismatch')
-    if len(syms)!=len(set(syms)) or set(syms)-ALLOWED_BOUNDED: raise ValueError('unbounded or duplicate targets')
+    failed_targets=[f.get('symbol') for f in c.get('failed_targets', [])]
+    combined_targets=syms + failed_targets
+
+    if sorted(combined_targets)!=sorted(b.get('targets',[])): raise ValueError('candidate symbols and failed_targets do not match binding targets')
+    if len(combined_targets)!=len(set(combined_targets)): raise ValueError('duplicate targets between symbols and failed_targets')
+    if set(combined_targets)-ALLOWED_BOUNDED: raise ValueError('unbounded target encountered')
     if c.get('source')!=SOURCE or b.get('source')!=SOURCE: raise ValueError('bad source')
     for flag, val in {'current_realtime':False,'production_current_state':False,'production_ready':False,'realtime_guaranteed':False,'trading_signal':False,'readonly_only':True}.items():
         if c.get(flag)!=val: raise ValueError(f'bad flag {flag}')

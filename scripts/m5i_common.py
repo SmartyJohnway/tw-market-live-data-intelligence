@@ -130,4 +130,5 @@ def promote_m5i_candidate_to_m5f(candidate_dir: Path):
     shutil.rmtree(temp_dir)
     shutil.rmtree(backup_dir)
     res['status'] = 'promoted'
+    res['promotion_mode'] = 'rollback_protected_non_atomic_directory_replace'
     return res

@@ -46,7 +46,7 @@ jobs:
         run: python scripts/run_m5ij_end_to_end_acceptance.py --check-only
       - name: Validate M5F package
         run: python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01
-      - name: M5IJ Windows acceptance
+      - name: M5IJ acceptance check-only
         run: python scripts/run_m5ij_end_to_end_acceptance.py --check-only
       - name: M5E controlled frontend publication release gate check-only
         run: python scripts/run_m5e_controlled_frontend_publication.py --check-only

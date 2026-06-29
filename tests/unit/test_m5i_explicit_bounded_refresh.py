@@ -35,6 +35,39 @@ def test_execute_requires_authorization():
     r=subprocess.run([sys.executable, str(REPO/'scripts/run_m5i_explicit_bounded_refresh.py'), '--execute-refresh', '--source', 'TWSE_OpenAPI', '--targets', '0050'], cwd=REPO, text=True, capture_output=True)
     assert r.returncode != 0
 
+def test_parse_twse_rows_price_semantics():
+    import scripts.run_m5i_explicit_bounded_refresh as ref
+    targets = ['0050', '00929', '2330', '8069']
+
+    # 0050 valid
+    # 00929 missing close price but has TradeVolume (should fail target)
+    # 2330 unparsable close
+    # 8069 completely missing
+
+    data = [
+        {'Code': '0050', 'ClosingPrice': '150.0'},
+        {'Code': '00929', 'TradeVolume': '5000'},
+        {'Code': '2330', 'ClosingPrice': 'NOT_A_NUMBER'}
+    ]
+
+    rows, failures = ref.parse_twse_rows(data, targets, '2026-06-29T00:00:00Z')
+
+    # Only 0050 should be parsed successfully
+    assert len(rows) == 1
+    assert rows[0]['symbol'] == '0050'
+    assert rows[0]['price_like_value'] == 150.0
+
+    # 3 failures should occur
+    failed_syms = {f['symbol']: f['status'] for f in failures}
+    assert '00929' in failed_syms
+    assert failed_syms['00929'] == 'missing_close_price'
+
+    assert '2330' in failed_syms
+    assert failed_syms['2330'] == 'unparsable_close_price'
+
+    assert '8069' in failed_syms
+    assert failed_syms['8069'] == 'missing_from_source'
+
 def test_single_use_claim_atomic(tmp_path, monkeypatch):
     import scripts.m5i_common as c
     monkeypatch.setattr(c,'REPO',tmp_path)
