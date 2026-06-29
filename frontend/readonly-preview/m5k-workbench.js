@@ -131,9 +131,9 @@ function renderObservation() {
   const payload = state.observation?.content || state.observation || {};
   byId('observationJson').textContent = JSON.stringify(state.observation || { status: 'no observation loaded' }, null, 2);
   byId('layerSeparation').textContent = 'M5F canonical context is Level 1 read-only local context. M5K live observation is Level 2 explicit, bounded, non-canonical observation.';
-  renderRows('routePlanRows', payload.planned_routes || [], [['Symbol', 'symbol'], ['Market', 'market'], ['Type', 'instrument_type'], ['Source', 'source'], ['Status', 'status'], ['Route', (r) => r.ex_ch || r.reason || '']]);
-  renderRows('observationRows', payload.observations || [], [['Symbol', 'symbol'], ['Source', 'source'], ['Value', 'price_like_value'], ['Retrieved UTC', 'retrieved_at_utc'], ['Source timestamp', 'source_timestamp'], ['Freshness', 'freshness_assessment'], ['Delay', 'delay_status']]);
-  renderRows('failureRows', payload.failures || [], [['Symbol', 'symbol'], ['Source', 'source'], ['Status', 'status'], ['Reason', (r) => r.reason || r.ex_ch || '']]);
+  renderRows('routePlanRows', payload.planned_routes || [], [['Symbol', 'symbol'], ['Market', 'market'], ['Type', 'instrument_type'], ['Source', 'source'], ['Status', 'status'], ['Route', (r) => r.ex_ch || r.route || r.reason || '']]);
+  renderRows('observationRows', payload.observations || [], [['Symbol', 'symbol'], ['Contract month', 'contract_month'], ['Source', 'source'], ['Value', (r) => r.value ?? r.price_like_value ?? ''], ['Retrieved UTC', 'retrieved_at_utc'], ['Source timestamp', 'source_timestamp'], ['Freshness', 'freshness_assessment'], ['Delay', (r) => r.delay_seconds != null ? `${r.delay_status} (${r.delay_seconds}s)` : r.delay_status], ['Route', (r) => r.normalization?.source_contract_symbol || r.contract || '']]);
+  renderRows('failureRows', payload.failures || [], [['Symbol', 'symbol'], ['Source', 'source'], ['Status', 'status'], ['Reason', (r) => r.reason || r.ex_ch || ''], ['Investigation', (r) => r.investigation_summary ? JSON.stringify(r.investigation_summary) : ''], ['Recommended next step', 'recommended_next_step']]);
   const rows = payload.observations || [];
   byId('freshness').textContent = rows.length ? rows.map((row) => `${row.symbol}: ${row.source} retrieved ${row.retrieved_at_utc}; source ${row.source_timestamp}; ${row.delay_status}`).join('\n') : 'No observation rows. M5F canonical context remains separate.';
 }

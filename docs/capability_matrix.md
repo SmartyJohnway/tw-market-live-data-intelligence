@@ -32,3 +32,10 @@
 | Frontend publication | Governed M5D/M5F only | Never writes `frontend/public` |
 | Promotion | Reviewed package promotion | Never automatic |
 | Trading signals | Prohibited | Prohibited |
+
+## M5L addition — TAIFEX TX live observation
+
+| Source | Instrument | Capability | Status | Caveat |
+| --- | --- | --- | --- | --- |
+| TAIFEX MIS getQuoteList | TX / TXF front month | Bounded Level 2 live observation | Supported in M5K | Official browser endpoint; no verified real-time SLA; freshness/delay must be displayed. |
+| TAIFEX OpenAPI DailyMarketReportFut | TX futures EOD/reference | Daily report/reference | Rejected for M5K live | No intraday live quote timestamp for current observation. |

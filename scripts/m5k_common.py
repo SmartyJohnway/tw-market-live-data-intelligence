@@ -143,7 +143,9 @@ def source_plan_for_instrument(instrument: dict[str, Any]) -> dict[str, Any]:
         "category_label": instrument.get("category_label"),
     }
     if typ == "futures" or market == "taifex" or symbol == "TX":
-        return {**base, "source": "TAIFEX", "status": "unsupported_in_m5k_initial", "reason": "TAIFEX futures quote endpoint requires separate contract mapping and was not adopted for initial M5K execution"}
+        contract_code = instrument.get("contract_code", "TXF")
+        contract_selector = instrument.get("contract_selector", "front_month")
+        return {**base, "source": "TAIFEX", "source_type": "official_browser_json_endpoint", "status": "planned", "route": "taifex_mis_getQuoteList", "url": "https://mis.taifex.com.tw/futures/api/getQuoteList", "method": "POST", "contract_code": contract_code, "contract_selector": contract_selector, "request_body": {"MarketType": "0", "SymbolType": "F", "KindID": "1", "CID": contract_code}}
     if typ == "index" or symbol == "TAIEX":
         return {**base, "source": "TWSE_MIS", "source_type": "official_browser_json_endpoint_candidate", "ex_ch": "tse_t00.tw", "status": "planned"}
     if market in {"tpex", "otc"}:
@@ -172,6 +174,104 @@ def plan_live_observation(watchlist: dict[str, Any]) -> dict[str, Any]:
         },
     }
 
+
+
+def _parse_taifex_price(value: Any) -> float | None:
+    if value in (None, "", "NULL", "-"):
+        return None
+    try:
+        return float(str(value).replace(",", ""))
+    except ValueError:
+        return None
+
+
+def _taifex_timestamp(date_text: str, time_text: str) -> str:
+    if len(date_text) == 8 and len(time_text) == 6:
+        return f"{date_text[:4]}-{date_text[4:6]}-{date_text[6:8]}T{time_text[:2]}:{time_text[2:4]}:{time_text[4:6]}+08:00"
+    return " ".join(part for part in [date_text, time_text] if part)
+
+
+def _taifex_contract_month(item: dict[str, Any]) -> str | None:
+    display = str(item.get("DispEName") or "")
+    # TAIFEX MIS displays TX076 as July 2026 on 2026-06-29: TX + MM + Y.
+    if display.startswith("TX") and len(display) >= 5 and display[2:5].isdigit():
+        month = int(display[2:4])
+        year = 2020 + int(display[4])
+        if 1 <= month <= 12:
+            return f"{year:04d}{month:02d}"
+    cname = str(item.get("DispCName") or "")
+    digits = "".join(ch for ch in cname if ch.isdigit())
+    if len(digits) >= 3:
+        month = int(digits[-3:-1])
+        year = 2020 + int(digits[-1])
+        if 1 <= month <= 12:
+            return f"{year:04d}{month:02d}"
+    return None
+
+
+def _select_taifex_tx_contract(quote_list: list[dict[str, Any]], selector: str = "front_month") -> dict[str, Any] | None:
+    contracts = [q for q in quote_list if str(q.get("SymbolID", "")).startswith("TXF") and str(q.get("SymbolID", "")).endswith("-F") and _taifex_contract_month(q)]
+    if not contracts:
+        return None
+    if selector not in {"front_month", "nearest_month"}:
+        return None
+    return sorted(contracts, key=lambda q: (_taifex_contract_month(q) or "999999", str(q.get("SymbolID", ""))))[0]
+
+
+def _parse_taifex_tx_item(item: dict[str, Any], instrument: dict[str, Any], retrieved_at: str) -> dict[str, Any]:
+    symbol = instrument["symbol"]
+    value = _parse_taifex_price(item.get("CLastPrice") or item.get("SettlementPrice") or item.get("CRefPrice"))
+    source_ts = _taifex_timestamp(str(item.get("CDate") or ""), str(item.get("CTime") or ""))
+    retrieved_dt = datetime.fromisoformat(retrieved_at.replace("Z", "+00:00"))
+    freshness = "unknown"
+    delay_seconds = None
+    if source_ts and "+08:00" in source_ts:
+        source_dt = datetime.fromisoformat(source_ts).astimezone(timezone.utc)
+        delay_seconds = max(0, int((retrieved_dt - source_dt).total_seconds()))
+        freshness = "fresh" if delay_seconds <= 900 else "stale_or_closed_session"
+    return {
+        "symbol": symbol,
+        "display_symbol": instrument.get("display_symbol", symbol),
+        "contract": item.get("SymbolID"),
+        "contract_month": _taifex_contract_month(item),
+        "contract_selector": instrument.get("contract_selector", "front_month"),
+        "category_id": instrument.get("category_id"),
+        "instrument_type": instrument.get("instrument_type"),
+        "status": "ok" if value is not None else "missing_value",
+        "source": "TAIFEX",
+        "source_type": "official_browser_json_endpoint",
+        "price_like_value": value,
+        "value": value,
+        "price_semantics": "last_trade_price_or_settlement_fallback_as_reported_by_taifex_mis",
+        "source_timestamp": source_ts,
+        "retrieved_at_utc": retrieved_at,
+        "freshness_assessment": freshness,
+        "delay_status": "delay_seconds_measured_from_source_timestamp_not_exchange_realtime_sla",
+        "delay_seconds": delay_seconds,
+        "source_status": item.get("Status"),
+        "normalization": {"product_code": "TXF", "selector": "front_month", "source_contract_symbol": item.get("SymbolID"), "source_display_name": item.get("DispEName")},
+        "caveats": governance()["caveats"] + ["official_browser_endpoint_not_openapi_contract", "no_realtime_sla_verified"],
+    }
+
+
+def fetch_taifex_tx_observation(instrument: dict[str, Any], retrieved_at: str, *, timeout: int = 12) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
+    body = {"MarketType": "0", "SymbolType": "F", "KindID": "1", "CID": instrument.get("contract_code", "TXF")}
+    url = "https://mis.taifex.com.tw/futures/api/getQuoteList"
+    headers = {"User-Agent": "Mozilla/5.0 tw-market-m5k-live-observation/1.0", "Accept": "application/json", "Content-Type": "application/json;charset=UTF-8", "Referer": "https://mis.taifex.com.tw/futures/RegularSession/EquityIndices/FuturesDomestic", "Origin": "https://mis.taifex.com.tw"}
+    req = urllib.request.Request(url, data=json.dumps(body).encode("utf-8"), headers=headers, method="POST")
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            raw = resp.read().decode("utf-8", "replace")
+            status_code = resp.status
+        data = json.loads(raw)
+        quote_list = data.get("RtData", {}).get("QuoteList", [])
+        item = _select_taifex_tx_contract([q for q in quote_list if isinstance(q, dict)], instrument.get("contract_selector", "front_month"))
+        evidence = {"source": "TAIFEX", "url": url, "method": "POST", "request_body": body, "headers_required": list(headers), "status_code": status_code, "response_format": "application/json", "quote_count": data.get("RtData", {}).get("QuoteCount"), "rt_code": data.get("RtCode"), "sample_symbols": [q.get("SymbolID") for q in quote_list[:4] if isinstance(q, dict)], "selected_symbol": item.get("SymbolID") if item else None}
+        if not item:
+            return None, evidence | {"status": "no_tx_contract_selected"}
+        return _parse_taifex_tx_item(item, instrument, retrieved_at), evidence | {"status": "accepted_for_bounded_observation"}
+    except Exception as exc:
+        return None, {"source": "TAIFEX", "url": url, "method": "POST", "request_body": body, "status": "request_failed", "reason": str(exc)}
 
 def _parse_mis_item(item: dict[str, Any], instrument: dict[str, Any], retrieved_at: str) -> dict[str, Any]:
     symbol = instrument["symbol"]
@@ -222,6 +322,16 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
     plans = [source_plan_for_instrument(i) | {"instrument": i} for i in instruments]
     payload["planned_routes"] = [{k: v for k, v in p.items() if k != "instrument"} for p in plans]
     payload["request"]["bounded_symbols"] = [p["symbol"] for p in plans]
+    taifex_plans = [p for p in plans if p.get("source") == "TAIFEX"]
+    for plan in taifex_plans:
+        obs, evidence = fetch_taifex_tx_observation(plan["instrument"], retrieved_at, timeout=timeout)
+        if evidence:
+            payload["source_investigation_notes"].append(evidence)
+        if obs and obs.get("status") == "ok":
+            payload["observations"].append(obs)
+        else:
+            payload["failures"].append({"symbol": plan["symbol"], "source": "TAIFEX", "status": "unsupported" if not evidence else evidence.get("status", "failed"), "reason": (evidence or {}).get("reason", "no_supported_tx_observation"), "investigation_summary": evidence, "recommended_next_step": "Use TAIFEX MIS getQuoteList with TXF and front-month normalization, or apply for licensed TAIFEX market data for SLA-backed production usage."})
+
     mis_channels = [p["ex_ch"] for p in plans if p.get("source") == "TWSE_MIS" and p.get("ex_ch")]
     mis_by_channel: dict[str, dict[str, Any]] = {}
     if mis_channels:
@@ -256,6 +366,8 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
                     continue
     for plan in plans:
         instrument = plan["instrument"]
+        if plan.get("source") == "TAIFEX":
+            continue
         if plan.get("status") == "unsupported_in_m5k_initial":
             payload["failures"].append({"symbol": instrument["symbol"], **{k: v for k, v in plan.items() if k != "instrument"}})
             continue

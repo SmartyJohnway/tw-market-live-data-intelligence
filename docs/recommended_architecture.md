@@ -62,3 +62,7 @@ Endpoints investigated for M5K:
 5. **Yahoo/third-party/commercial APIs** — not adopted for default M5K because official or semi-official sources are preferred and credentialed APIs must not be hardcoded.
 
 Future recommendations: add a dedicated TAIFEX futures adapter with explicit contract-month semantics; add a verified TPEx live quote route if a stable official endpoint is confirmed; keep source routing per instrument category rather than assuming one source fits all instruments.
+
+## M5L Live Sources Validation extension
+
+M5K Level 2 now treats live sources as adapters below the canonical M5F layer. TWSE MIS and TAIFEX MIS remain Level 2 observation sources only. TAIFEX TX support is implemented as a bounded `TX -> TXF front_month` adapter with contract-month normalization and explicit freshness/delay output. This must not alter M5F canonical semantics or promotion logic.

@@ -74,3 +74,7 @@
 - Observation result after metadata fix: 18 observations, 1 failure.
 - Newly recovered sample rows: 3483 observed via TWSE_MIS route `otc_3483.tw` at source timestamp `20260629 13:30:00`; 3543 observed via TWSE_MIS route `tse_3543.tw` at source timestamp `20260629 13:30:00`.
 - Remaining failure: TX futures only, because TAIFEX contract-month mapping and endpoint semantics are not implemented in M5K initial execution.
+
+## 2026-06-29 M5L TAIFEX TX live source validation
+
+Performed low-frequency official TAIFEX probing for TX futures. Accepted bounded M5K source: `POST https://mis.taifex.com.tw/futures/api/getQuoteList` with `CID=TXF`. Live run selected `TXFG6-F`, contract month `202607`, value `45550.0`, source timestamp `2026-06-29T13:44:59+08:00`, retrieved at `2026-06-29T17:06:49Z`, freshness `stale_or_closed_session`, source status `TC`. Full evidence: `research/live_observation_runs/m5k/m5l_taifex_tx_live_observation_evidence.json`; full validation: `docs/m5l_taifex_live_source_validation.md`.
