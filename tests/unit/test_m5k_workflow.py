@@ -105,3 +105,29 @@ def test_disabled_watchlist_rows_validate_but_are_not_planned():
     plan = plan_live_observation(watchlist)
     assert disabled_symbol not in [route["symbol"] for route in plan["planned_routes"]]
     assert disabled_symbol not in plan["request_plan"]["bounded_symbols"]
+
+
+def test_frontend_observation_tables_and_no_unsafe_innerhtml_model():
+    html = Path("frontend/readonly-preview/M5KLocalAIWorkbench.html").read_text(encoding="utf-8")
+    js = Path("frontend/readonly-preview/m5k-workbench.js").read_text(encoding="utf-8")
+    for token in ["routePlanRows", "observationRows", "failureRows", "layerSeparation"]:
+        assert token in html + js
+    assert "replaceChildren" in js
+    assert ".textContent" in js
+    assert ".innerHTML" not in js
+    assert "Raw observation JSON" in html
+
+
+def test_m5k_postmerge_validation_script_exists_and_is_check_only():
+    script = Path("scripts/run_m5k_postmerge_validation.py").read_text(encoding="utf-8")
+    assert "--check-only" in script
+    assert "network_calls\": False" in script
+    assert "execute_live_observation" in script
+
+
+def test_tx_preflight_doc_keeps_execution_fail_closed():
+    doc = Path("docs/m5k_taifex_tx_futures_preflight.md").read_text(encoding="utf-8")
+    assert "implemented execution: false" in doc
+    assert "kept fail-closed: true" in doc
+    assert "contract_month" in doc
+    assert "https://www.taifex.com.tw/enl/eng2/tX" in doc
