@@ -22,7 +22,7 @@ Keep successful targets descriptive and disclose failed targets separately. Do n
 Fail closed. Recompute hashes from immutable upstream artifacts. If mismatch persists, block release and preserve last-known-good package.
 
 ## Missing canonical package
-FastAPI and MCP must return structured errors. Operators should rebuild in `/tmp`, validate, then write only to the fixed M5F path.
+FastAPI and MCP must return structured errors. Operators should rebuild in the platform temp directory, validate, then write only to the fixed M5F path.
 
 ## Consumer disagreement
 If frontend/API/MCP symbols, source date, hashes, or caveats diverge, block release. Canonical payload wins; regenerate derivatives from it.

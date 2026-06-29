@@ -8,7 +8,7 @@
 ## Package reproducibility
 - [ ] `build_m5f... --check-only` passes.
 - [ ] `validate_m5f... --package-dir research/staging/m5f/m5f_canonical_market_context_01` passes.
-- [ ] Rebuild under `/tmp` is byte-identical.
+- [ ] Rebuild under the platform temp directory, for example `/tmp` on Linux/macOS or `%TEMP%` on Windows is byte-identical.
 
 ## Manifest and lineage
 - [ ] Exact file set is listed except manifest itself.

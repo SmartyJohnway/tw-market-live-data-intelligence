@@ -65,3 +65,45 @@ def test_recursive_forbidden_symbol_field_rejected(tmp_path):
     (out/'sha256_manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
     with pytest.raises(ValueError, match='forbidden'):
         validate_package(out)
+
+
+def _write_candidate_fixture(tmp_path, mutate):
+    src=Path('research/staging/m5d/m5d_frontend_publication_candidate_01')
+    out=tmp_path/f'candidate_{len(list(tmp_path.iterdir()))}'; shutil.copytree(src,out)
+    data=json.loads((out/'market-context.json').read_text())
+    mutate(data)
+    (out/'market-context.json').write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False)+'\n')
+    manifest=json.loads((out/'sha256_manifest.json').read_text())
+    import hashlib
+    manifest['files']['market-context.json']=hashlib.sha256((out/'market-context.json').read_bytes()).hexdigest()
+    (out/'sha256_manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True)+'\n')
+    return out/'market-context.json'
+
+
+def test_candidate_source_must_match_source_binding(tmp_path):
+    candidate=_write_candidate_fixture(tmp_path, lambda data: [row.update({'source_id':'Yahoo_Finance'}) for row in data['symbols']])
+    with pytest.raises(ValueError, match='source binding'):
+        build_package(candidate)
+
+
+def test_candidate_targets_must_match_source_binding(tmp_path):
+    def mutate(data):
+        row=dict(data['symbols'][0]); row['symbol']='9999'; data['symbols'].append(row)
+    candidate=_write_candidate_fixture(tmp_path, mutate)
+    with pytest.raises(ValueError, match='source binding targets|bounded target'):
+        build_package(candidate)
+
+
+def test_full_market_candidate_rejected(tmp_path):
+    candidate=_write_candidate_fixture(tmp_path, lambda data: data.update({'target_universe_mode':'full_market'}))
+    with pytest.raises(ValueError, match='full-market'):
+        build_package(candidate)
+
+
+def test_symbol_type_validation_rejects_bool_nan_and_bad_lists(tmp_path):
+    candidate=_write_candidate_fixture(tmp_path, lambda data: data['symbols'][0].update({'price_like_value': True}))
+    with pytest.raises(ValueError, match='finite number'):
+        build_package(candidate)
+    candidate=_write_candidate_fixture(tmp_path, lambda data: data['symbols'][0].update({'display_caveats': [{'bad':'shape'}]}))
+    with pytest.raises(ValueError, match='list of non-empty strings'):
+        build_package(candidate)

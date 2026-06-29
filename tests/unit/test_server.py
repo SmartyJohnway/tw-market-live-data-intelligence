@@ -20,20 +20,13 @@ def test_root_endpoint():
     assert response.status_code == 200
     assert "running locally" in response.json()["message"]
 
-def test_matrix_endpoint_error_if_not_run():
-    # If matrix.json doesn't exist, it should return 404
-    # We rename it temporarily if it exists to test the 404 path
-    matrix_path = os.path.join(os.path.dirname(__file__), '..', '..', 'frontend', 'public', 'matrix.json')
-    temp_path = matrix_path + ".bak"
-    if os.path.exists(matrix_path):
-        os.rename(matrix_path, temp_path)
-
-    try:
-        response = client.get("/api/matrix")
-        assert response.status_code == 404
-    finally:
-        if os.path.exists(temp_path):
-            os.rename(temp_path, matrix_path)
+def test_matrix_endpoint_returns_validated_m5f_capability_summary():
+    response = client.get("/api/matrix")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["source_path"] == "research/staging/m5f/m5f_canonical_market_context_01/capability_summary.json"
+    assert data["content"]["canonical_context"] == "available"
+    assert data["content"]["symbol_count"] == 3
 
 def test_governance_endpoint_describes_manual_probe_boundary():
     response = client.get("/api/governance")
@@ -46,42 +39,30 @@ def test_governance_endpoint_describes_manual_probe_boundary():
 
 
 @pytest.mark.parametrize(
-    ("path", "probe_attr"),
+    "path",
     [
-        ("/api/probe/twse", "probe_twse"),
-        ("/api/probe/tpex", "probe_tpex"),
-        ("/api/probe/yahoo", "probe_yahoo"),
-        ("/api/probe/twse_mis", "probe_mis"),
-        ("/api/probe/finmind", "probe_finmind"),
-        ("/api/probe/feasibility", "probe_fugle_fubon"),
+        "/api/probe/twse",
+        "/api/probe/tpex",
+        "/api/probe/yahoo",
+        "/api/probe/twse_mis",
+        "/api/probe/finmind",
+        "/api/probe/feasibility",
     ],
 )
-def test_probe_endpoints_require_manual_confirmation_without_executing_probe(monkeypatch, path, probe_attr):
-    called = {"value": False}
-
-    def fake_probe(*args, **kwargs):
-        called["value"] = True
-        return {"source": "mock"}
-
-    monkeypatch.setattr(f"main.{probe_attr}", fake_probe)
+def test_probe_endpoints_disabled_without_live_imports(path):
+    import main
+    for attr in ["probe_twse", "probe_tpex", "probe_yahoo", "probe_mis", "probe_finmind", "probe_fugle_fubon"]:
+        assert not hasattr(main, attr)
     response = client.get(path)
 
     assert response.status_code == 410
     assert response.json()["detail"]["error"] == "legacy_probe_endpoint_disabled_pending_m5i_authorization"
     assert response.json()["detail"]["required_query"] is None
     assert "no_production_artifact_refresh" in response.json()["detail"]["caveats"]
-    assert called["value"] is False
 
 
-def test_probe_endpoint_with_manual_confirmation_still_disabled(monkeypatch):
-    called = {"value": False}
-    def fake_probe():
-        called["value"] = True
-        return {"source": "TWSE_OpenAPI", "contract_status": "normalized_pass"}
-
-    monkeypatch.setattr("main.probe_twse", fake_probe)
+def test_probe_endpoint_with_manual_confirmation_still_disabled():
     response = client.get("/api/probe/twse?confirm_manual_probe=true")
 
     assert response.status_code == 410
     assert response.json()["detail"]["error"] == "legacy_probe_endpoint_disabled_pending_m5i_authorization"
-    assert called["value"] is False

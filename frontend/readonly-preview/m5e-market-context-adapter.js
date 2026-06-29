@@ -1,6 +1,8 @@
+export const DEFAULT_API_CONTEXT_URL = '/api/context/canonical';
 export const DEFAULT_PACKAGE_BASE_URL = '../../research/staging/m5f/m5f_canonical_market_context_01/';
 export const DEFAULT_CONTEXT_URL = `${DEFAULT_PACKAGE_BASE_URL}canonical_market_context.json`;
 export const DEFAULT_MANIFEST_URL = `${DEFAULT_PACKAGE_BASE_URL}sha256_manifest.json`;
+export const PINNED_MANIFEST_SHA256 = '93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209';
 
 export function buildDisplayModel(context) {
   if (!context || typeof context !== 'object') return { state: 'empty', symbols: [], caveats: [] };
@@ -26,7 +28,22 @@ export async function sha256Hex(text) {
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-export async function fetchValidatedCanonical(packageBaseUrl = DEFAULT_PACKAGE_BASE_URL) {
+function validateCanonicalSchema(context) {
+  if (context?.schema_version !== 'm5f_canonical_market_context.v1') throw new Error('unsupported canonical schema');
+  if (!Array.isArray(context.symbols) || context.symbols.length === 0) throw new Error('canonical symbols missing');
+  if (context.governance?.realtime_guaranteed !== false) throw new Error('realtime guarantee flag must be false');
+  return context;
+}
+
+export async function fetchValidatedCanonicalFromApi(apiUrl = DEFAULT_API_CONTEXT_URL) {
+  const response = await fetch(apiUrl, { cache: 'no-store' });
+  if (!response.ok) throw new Error(`validated API HTTP ${response.status}`);
+  const envelope = await response.json();
+  if (envelope?.governance?.live_probe_execution !== false) throw new Error('API governance missing readonly guarantee');
+  return validateCanonicalSchema(envelope.content);
+}
+
+export async function fetchValidatedCanonicalStatic(packageBaseUrl = DEFAULT_PACKAGE_BASE_URL) {
   const manifestUrl = new URL('sha256_manifest.json', new URL(packageBaseUrl, window.location.href));
   const canonicalUrl = new URL('canonical_market_context.json', manifestUrl);
   const [manifestResponse, canonicalResponse] = await Promise.all([
@@ -34,16 +51,21 @@ export async function fetchValidatedCanonical(packageBaseUrl = DEFAULT_PACKAGE_B
   ]);
   if (!manifestResponse.ok) throw new Error(`manifest HTTP ${manifestResponse.status}`);
   if (!canonicalResponse.ok) throw new Error(`canonical HTTP ${canonicalResponse.status}`);
-  const manifest = await manifestResponse.json();
+  const manifestText = await manifestResponse.text();
+  const manifestHash = await sha256Hex(manifestText);
+  if (manifestHash !== PINNED_MANIFEST_SHA256) throw new Error('pinned manifest hash mismatch');
+  const manifest = JSON.parse(manifestText);
   const canonicalText = await canonicalResponse.text();
   const expectedHash = manifest?.files?.['canonical_market_context.json'];
   if (!expectedHash) throw new Error('manifest missing canonical_market_context.json hash');
   const actualHash = await sha256Hex(canonicalText);
   if (actualHash !== expectedHash) throw new Error('canonical manifest hash mismatch');
-  const context = JSON.parse(canonicalText);
-  if (context?.schema_version !== 'm5f_canonical_market_context.v1') throw new Error('unsupported canonical schema');
-  if (!Array.isArray(context.symbols) || context.symbols.length === 0) throw new Error('canonical symbols missing');
-  return context;
+  return validateCanonicalSchema(JSON.parse(canonicalText));
+}
+
+export async function fetchValidatedCanonical(source = DEFAULT_API_CONTEXT_URL) {
+  if (source.startsWith('http') || source.startsWith('/api/')) return fetchValidatedCanonicalFromApi(source);
+  return fetchValidatedCanonicalStatic(source);
 }
 
 export function renderMarketContext(root, model) {
@@ -57,8 +79,8 @@ export function renderMarketContext(root, model) {
   appendText(root, 'h3', 'Global caveats'); list(root, model.caveats); appendText(root, 'h3', 'Per-symbol caveats and source risk flags'); model.symbols.forEach(s => { appendText(root, 'h4', s.symbol); list(root, [...s.riskFlags, ...s.caveats]); }); appendText(root, 'h3', 'Failed targets'); list(root, model.failedTargets.length ? model.failedTargets : ['None']); appendText(root, 'h3', 'Source-health summary'); appendText(root, 'p', JSON.stringify(model.sourceHealth)); appendText(root, 'h3', 'Lineage'); appendText(root, 'p', JSON.stringify(model.lineage));
 }
 
-export async function loadAndRender(root, packageBaseUrl = DEFAULT_PACKAGE_BASE_URL) {
+export async function loadAndRender(root, source = DEFAULT_API_CONTEXT_URL) {
   renderMarketContext(root, { state: 'loading' });
-  try { renderMarketContext(root, buildDisplayModel(await fetchValidatedCanonical(packageBaseUrl))); }
+  try { renderMarketContext(root, buildDisplayModel(await fetchValidatedCanonical(source))); }
   catch (err) { renderMarketContext(root, { state: 'error', message: err.message }); }
 }

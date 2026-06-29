@@ -44,3 +44,20 @@ jobs:
 
       - name: M5E controlled frontend publication release gate check-only
         run: python scripts/run_m5e_controlled_frontend_publication.py --check-only
+
+  windows-m5f-smoke:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Install test dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Compile M5F/FastAPI/MCP surfaces
+        run: python -m compileall scripts server tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py
+      - name: Run Windows M5F non-network smoke tests
+        run: pytest -m "not network" tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py -q
+      - name: Validate M5F package
+        run: python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01

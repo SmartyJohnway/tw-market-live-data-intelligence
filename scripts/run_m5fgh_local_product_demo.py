@@ -26,6 +26,30 @@ def main():
         return out
     mcp=asyncio.run(mcp_calls())
     if _symbols(mcp['get_canonical_market_context']['content']) != _symbols(c): raise SystemExit('MCP canonical mismatch')
-    summary={'status':'ok','check_only':True,'symbols':_symbols(c),'source':c['source'],'source_date':c['source_date'],'freshness':c['governance']['stale_status'],'caveats':c['global_caveats'],'manifest_verification':v,'consumer_checks':{'fastapi_paths':list(api),'fastapi_legacy_probe_disabled':True,'mcp_tools':list(mcp),'frontend_manifest_validation':'adapter validates sha256_manifest before rendering'}}
+    frontend_status='not_run_node_unavailable'
+    try:
+        import subprocess, tempfile
+        adapter_text=(REPO/'frontend/readonly-preview/m5e-market-context-adapter.js').read_text()
+        with tempfile.NamedTemporaryFile('w', suffix='.mjs', delete=False) as ah:
+            ah.write(adapter_text); adapter_path=ah.name
+        js = f'''
+import {{ webcrypto }} from 'node:crypto';
+if (!globalThis.crypto) Object.defineProperty(globalThis, 'crypto', {{ value: webcrypto }});
+globalThis.window = {{ location: {{ href: 'http://127.0.0.1:8000/frontend/readonly-preview/M5EMarketContextPreview.html' }} }};
+const mod = await import('file://' + {json.dumps(adapter_path)});
+globalThis.fetch = async () => ({{ ok: true, json: async () => ({json.dumps(api['/api/context/canonical'])}) }});
+const context = await mod.fetchValidatedCanonicalFromApi('/api/context/canonical');
+const model = mod.buildDisplayModel(context);
+if (model.symbols.length !== 3 || model.source !== 'TWSE_OpenAPI') throw new Error('frontend model mismatch');
+console.log(JSON.stringify({{status:'ok', symbols:model.symbols.map(s=>s.symbol)}}));
+'''
+        with tempfile.NamedTemporaryFile('w', suffix='.mjs', delete=False) as fh:
+            fh.write(js); path=fh.name
+        cp=subprocess.run(['node', path], capture_output=True, text=True, timeout=10)
+        if cp.returncode != 0: raise RuntimeError(cp.stderr or cp.stdout)
+        frontend_status=json.loads(cp.stdout)['status']
+    except FileNotFoundError:
+        frontend_status='not_run_node_unavailable'
+    summary={'status':'ok','check_only':True,'symbols':_symbols(c),'source':c['source'],'source_date':c['source_date'],'freshness':c['governance']['stale_status'],'caveats':c['global_caveats'],'manifest_verification':v,'consumer_checks':{'fastapi_paths':list(api),'fastapi_legacy_probe_disabled':True,'mcp_tools':list(mcp),'frontend_adapter_execution':frontend_status}}
     print(json.dumps(summary,ensure_ascii=False,sort_keys=True))
 if __name__=='__main__': main()

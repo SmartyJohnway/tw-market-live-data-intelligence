@@ -1,23 +1,15 @@
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import sys
 import json
 
-# Ensure scripts directory can be imported
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'scripts'))
-
-from run_all_probes import load_targets, extract_symbols, extract_finmind_datasets
-from probe_twse_openapi import probe as probe_twse
-from probe_tpex_openapi import probe as probe_tpex
-from probe_yahoo import probe as probe_yahoo
-from probe_twse_mis import probe as probe_mis
-from probe_finmind import probe as probe_finmind
-from probe_fugle_fubon import probe as probe_fugle_fubon
+# Product server intentionally avoids importing live probe modules.
+# Future market-data execution belongs behind M5I authorization in a separate legacy/refresh app.
 
 app = FastAPI(
-    title="TW-Market Live Data Intelligence API",
-    description="API for probing Taiwan equity market data sources locally. Not intended for public exposure.",
+    title="TW-Market Readonly Context API",
+    description="Readonly local M5F market-context API. Legacy live probes are disabled pending M5I authorization.",
     version="1.0.0"
 )
 
@@ -29,8 +21,6 @@ app.add_middleware(
     allow_methods=["GET"],
     allow_headers=["*"],
 )
-
-targets = load_targets()
 
 MANUAL_PROBE_CONFIRMATION_DESCRIPTION = (
     "Set to true to acknowledge this is a manual legacy probe surface. "
@@ -101,65 +91,34 @@ def read_governance():
         },
     }
 
-@app.get("/api/probe/twse")
-def get_twse_probe(confirm_manual_probe: bool = Query(False, description=MANUAL_PROBE_CONFIRMATION_DESCRIPTION)):
-    require_manual_probe_confirmation(confirm_manual_probe)
-    try:
-        return governed_probe_response("TWSE_OpenAPI", probe_twse())
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Probe failed: {e}")
+@app.get("/api/probe/twse", include_in_schema=False)
+def get_twse_probe():
+    require_manual_probe_confirmation(False)
 
-@app.get("/api/probe/tpex")
-def get_tpex_probe(confirm_manual_probe: bool = Query(False, description=MANUAL_PROBE_CONFIRMATION_DESCRIPTION)):
-    require_manual_probe_confirmation(confirm_manual_probe)
-    try:
-        return governed_probe_response("TPEx_OpenAPI", probe_tpex())
-    except Exception as e:
-         raise HTTPException(status_code=500, detail=f"Probe failed: {e}")
+@app.get("/api/probe/tpex", include_in_schema=False)
+def get_tpex_probe():
+    require_manual_probe_confirmation(False)
 
-@app.get("/api/probe/yahoo")
-def get_yahoo_probe(confirm_manual_probe: bool = Query(False, description=MANUAL_PROBE_CONFIRMATION_DESCRIPTION)):
-    require_manual_probe_confirmation(confirm_manual_probe)
-    try:
-        yahoo_symbols = extract_symbols(targets, "yahoo")
-        return governed_probe_response("Yahoo_Finance", probe_yahoo(symbols=yahoo_symbols))
-    except Exception as e:
-         raise HTTPException(status_code=500, detail=f"Probe failed: {e}")
+@app.get("/api/probe/yahoo", include_in_schema=False)
+def get_yahoo_probe():
+    require_manual_probe_confirmation(False)
 
-@app.get("/api/probe/twse_mis")
-def get_twse_mis_probe(confirm_manual_probe: bool = Query(False, description=MANUAL_PROBE_CONFIRMATION_DESCRIPTION)):
-    require_manual_probe_confirmation(confirm_manual_probe)
-    try:
-        mis_symbols = extract_symbols(targets, "twse_mis")
-        return governed_probe_response("TWSE_MIS", probe_mis(symbols=mis_symbols))
-    except Exception as e:
-         raise HTTPException(status_code=500, detail=f"Probe failed: {e}")
+@app.get("/api/probe/twse_mis", include_in_schema=False)
+def get_twse_mis_probe():
+    require_manual_probe_confirmation(False)
 
-@app.get("/api/probe/finmind")
-def get_finmind_probe(confirm_manual_probe: bool = Query(False, description=MANUAL_PROBE_CONFIRMATION_DESCRIPTION)):
-    require_manual_probe_confirmation(confirm_manual_probe)
-    try:
-        finmind_datasets = extract_finmind_datasets(targets)
-        return governed_probe_response("FinMind", probe_finmind(datasets=finmind_datasets))
-    except Exception as e:
-         raise HTTPException(status_code=500, detail=f"Probe failed: {e}")
+@app.get("/api/probe/finmind", include_in_schema=False)
+def get_finmind_probe():
+    require_manual_probe_confirmation(False)
 
-@app.get("/api/probe/feasibility")
-def get_feasibility_probe(confirm_manual_probe: bool = Query(False, description=MANUAL_PROBE_CONFIRMATION_DESCRIPTION)):
-    require_manual_probe_confirmation(confirm_manual_probe)
-    try:
-        return governed_probe_response("Fugle_Fubon_Feasibility", probe_fugle_fubon())
-    except Exception as e:
-         raise HTTPException(status_code=500, detail=f"Probe failed: {e}")
+@app.get("/api/probe/feasibility", include_in_schema=False)
+def get_feasibility_probe():
+    require_manual_probe_confirmation(False)
 
 @app.get("/api/matrix")
 def get_matrix():
-    # Returns the statically generated matrix json
-    matrix_path = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'public', 'matrix.json')
-    if os.path.exists(matrix_path):
-        with open(matrix_path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    raise HTTPException(status_code=404, detail="matrix.json not found. Run probe scripts first.")
+    # Backward-compatible path now returns the validated M5F capability summary.
+    return _read_m5f_artifact("capability_summary.json")
 
 # M5FGH readonly canonical market context endpoints.
 from pathlib import Path
