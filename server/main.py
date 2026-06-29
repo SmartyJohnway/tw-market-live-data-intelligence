@@ -213,6 +213,7 @@ from scripts.m5k_common import (
     load_json as _m5k_load_json,
     read_latest_observation as _m5k_read_latest_observation,
     validate_watchlist as _m5k_validate_watchlist,
+    plan_live_observation as _m5k_plan_live_observation,
 )
 
 
@@ -235,6 +236,11 @@ def post_m5k_conversation_handoff(watchlist: dict):
 @app.get("/api/m5k/live-observation/latest")
 def get_m5k_latest_live_observation():
     return _m5k_read_latest_observation()
+
+
+@app.post("/api/m5k/live-observation/plan")
+def post_m5k_plan_live_observation(watchlist: dict):
+    return _m5k_plan_live_observation(watchlist)
 
 
 @app.post("/api/m5k/live-observation/execute")

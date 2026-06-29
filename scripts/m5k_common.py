@@ -13,7 +13,8 @@ DEFAULT_WATCHLIST_PATH = REPO_ROOT / "config/m5k_default_watchlist.json"
 STATE_DIR = REPO_ROOT / "research/live_observation_runs/m5k"
 LATEST_OBSERVATION_PATH = STATE_DIR / "latest_observation.json"
 MAX_M5K_TARGETS = 25
-FORBIDDEN_KEYS = {"buy", "sell", "hold", "target_price", "target price", "recommendation", "ranking", "rank", "broker", "order"}
+FORBIDDEN_KEYS = {"buy", "sell", "hold", "target_price", "target price", "recommendation", "ranking", "rank", "broker", "order", "raw_fields_sample", "raw_payload", "response_sample"}
+SUPPORTED_MARKETS = {"twse", "tpex", "otc", "taifex"}
 
 
 def utc_now() -> str:
@@ -103,6 +104,9 @@ def validate_watchlist(watchlist: dict[str, Any], *, max_targets: int = MAX_M5K_
         seen.add(symbol)
         if not isinstance(item.get("preferred_sources", []), list) or not item.get("preferred_sources"):
             warnings.append(f"missing_preferred_sources:{symbol}")
+        market = item.get("market")
+        if market not in SUPPORTED_MARKETS:
+            errors.append(f"invalid_or_missing_market:{symbol}")
     errors.extend(_reject_forbidden_keys(watchlist))
     return {"valid": not errors, "errors": errors, "warnings": warnings, "target_count": len(instruments), "symbols": [i.get("symbol") for i in instruments]}
 
@@ -120,14 +124,48 @@ def conversation_handoff_from_watchlist(watchlist: dict[str, Any]) -> dict[str, 
     }
 
 
-def _source_plan(instrument: dict[str, Any]) -> dict[str, Any]:
+def source_plan_for_instrument(instrument: dict[str, Any]) -> dict[str, Any]:
+    """Return the no-network M5K source route for one instrument."""
     symbol = instrument["symbol"]
     typ = instrument.get("instrument_type", "unknown")
-    if typ == "futures" or symbol == "TX":
-        return {"source": "TAIFEX", "status": "unsupported_in_m5k_initial", "reason": "TAIFEX futures quote endpoint requires separate contract mapping; documented for future work"}
+    market = instrument.get("market")
+    base = {
+        "symbol": symbol,
+        "display_symbol": instrument.get("display_symbol", symbol),
+        "instrument_type": typ,
+        "market": market,
+        "category_id": instrument.get("category_id"),
+        "category_label": instrument.get("category_label"),
+    }
+    if typ == "futures" or market == "taifex" or symbol == "TX":
+        return {**base, "source": "TAIFEX", "status": "unsupported_in_m5k_initial", "reason": "TAIFEX futures quote endpoint requires separate contract mapping and was not adopted for initial M5K execution"}
     if typ == "index" or symbol == "TAIEX":
-        return {"source": "TWSE_MIS", "ex_ch": "t00.tw", "status": "planned"}
-    return {"source": "TWSE_MIS", "ex_ch": f"tse_{symbol}.tw", "status": "planned"}
+        return {**base, "source": "TWSE_MIS", "source_type": "official_browser_json_endpoint_candidate", "ex_ch": "tse_t00.tw", "status": "planned"}
+    if market in {"tpex", "otc"}:
+        return {**base, "source": "TWSE_MIS", "source_type": "official_browser_json_endpoint_candidate", "ex_ch": f"otc_{symbol}.tw", "status": "planned"}
+    if market == "twse":
+        return {**base, "source": "TWSE_MIS", "source_type": "official_browser_json_endpoint_candidate", "ex_ch": f"tse_{symbol}.tw", "status": "planned"}
+    return {**base, "source": None, "status": "unsupported_market", "reason": "instrument market must be one of twse, tpex, otc, taifex"}
+
+
+def plan_live_observation(watchlist: dict[str, Any]) -> dict[str, Any]:
+    validation = validate_watchlist(watchlist)
+    instruments = iter_instruments(watchlist) if isinstance(watchlist, dict) else []
+    plans = [source_plan_for_instrument(i) for i in instruments if isinstance(i, dict) and isinstance(i.get("symbol"), str)]
+    return {
+        "schema_version": "m5k_live_observation_plan.v1",
+        "generated_at_utc": utc_now(),
+        "watchlist_id": watchlist.get("watchlist_id") if isinstance(watchlist, dict) else None,
+        "validation": validation,
+        "governance": governance() | {"network_calls": False, "artifact_writes": False, "plan_only": True},
+        "planned_routes": plans,
+        "request_plan": {
+            "method": "GET",
+            "bounded_symbols": validation.get("symbols", []),
+            "max_targets": MAX_M5K_TARGETS,
+            "network_calls": False,
+        },
+    }
 
 
 def _parse_mis_item(item: dict[str, Any], instrument: dict[str, Any], retrieved_at: str) -> dict[str, Any]:
@@ -153,7 +191,6 @@ def _parse_mis_item(item: dict[str, Any], instrument: dict[str, Any], retrieved_
         "retrieved_at_utc": retrieved_at,
         "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
         "delay_status": "not_realtime_guaranteed",
-        "raw_fields_sample": {k: item.get(k) for k in ["c", "n", "z", "y", "d", "t", "ex", "ch"] if k in item},
         "caveats": governance()["caveats"],
     }
 
@@ -177,7 +214,8 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
         return payload
 
     instruments = iter_instruments(watchlist)
-    plans = [_source_plan(i) | {"instrument": i} for i in instruments]
+    plans = [source_plan_for_instrument(i) | {"instrument": i} for i in instruments]
+    payload["planned_routes"] = [{k: v for k, v in p.items() if k != "instrument"} for p in plans]
     mis_channels = [p["ex_ch"] for p in plans if p.get("source") == "TWSE_MIS" and p.get("ex_ch")]
     mis_by_channel: dict[str, dict[str, Any]] = {}
     if mis_channels:
@@ -194,7 +232,7 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
                 if isinstance(item, dict):
                     mis_key = str(item.get("key") or "").rsplit("_", 1)[0] or str(item.get("ch") or "")
                     mis_by_channel[mis_key] = item
-            payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "accepted_for_bounded_observation", "response_sample": body[:500]})
+            payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "accepted_for_bounded_observation", "sample_retained": False})
         except Exception as exc:
             payload["failures"].append({"source": "TWSE_MIS", "status": "batch_request_failed", "reason": str(exc)})
             for ch in mis_channels:

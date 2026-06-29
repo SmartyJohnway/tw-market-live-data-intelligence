@@ -23,7 +23,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 from scripts.validate_m5f_canonical_market_context_package import validate_package as _validate_m5f_package
-from scripts.m5k_common import DEFAULT_WATCHLIST_PATH as M5K_DEFAULT_WATCHLIST_PATH, conversation_handoff_from_watchlist as _m5k_conversation_handoff, execute_live_observation as _m5k_execute_live_observation, load_json as _m5k_load_json, read_latest_observation as _m5k_read_latest_observation, validate_watchlist as _m5k_validate_watchlist
+from scripts.m5k_common import DEFAULT_WATCHLIST_PATH as M5K_DEFAULT_WATCHLIST_PATH, conversation_handoff_from_watchlist as _m5k_conversation_handoff, execute_live_observation as _m5k_execute_live_observation, load_json as _m5k_load_json, read_latest_observation as _m5k_read_latest_observation, validate_watchlist as _m5k_validate_watchlist, plan_live_observation as _m5k_plan_live_observation
 
 app = Server("tw-market-mcp")
 M5F_PACKAGE_DIR = REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01"
@@ -100,6 +100,7 @@ CONTROLLED_EVIDENCE_READBACK_MAX_RUNS = 5
 CONTROLLED_RUNNER_TIMEOUT_SECONDS = 60
 CONTROLLED_OUTPUT_TAIL_CHARS = 4000
 M5K_LIVE_OBSERVATION_TOOL = "run_m5k_bounded_live_observation"
+M5K_PLAN_TOOL = "plan_m5k_bounded_live_observation"
 M5K_READ_LATEST_TOOL = "read_m5k_latest_live_observation"
 M5K_WATCHLIST_TOOL = "get_m5k_default_watchlist"
 M5K_HANDOFF_TOOL = "create_m5k_conversation_handoff"
@@ -740,6 +741,14 @@ def read_m5k_default_watchlist_tool() -> dict[str, Any]:
     return {"tool": M5K_WATCHLIST_TOOL, "status": "ok", "source_path": M5K_DEFAULT_WATCHLIST_PATH.relative_to(REPO_ROOT).as_posix(), "content": watchlist, "validation": _m5k_validate_watchlist(watchlist), "governance": readonly_governance() | {"layer": "M5K", "canonical": False}}
 
 
+
+def plan_m5k_live_observation_tool(arguments: dict[str, Any] | None) -> dict[str, Any]:
+    args = arguments or {}
+    watchlist = args.get("watchlist") if isinstance(args, dict) else None
+    if not isinstance(watchlist, dict):
+        return {"tool": M5K_PLAN_TOOL, "status": "failed_closed", "failure_reason": "watchlist_required", "network_calls": False, "artifact_writes": False, "governance": readonly_governance() | {"layer": "M5K", "canonical": False}}
+    return {"tool": M5K_PLAN_TOOL, "status": "ok", "content": _m5k_plan_live_observation(watchlist)}
+
 def run_m5k_live_observation_tool(arguments: dict[str, Any] | None) -> dict[str, Any]:
     args = arguments or {}
     if args.get("confirm_live_observation") is not True:
@@ -837,6 +846,7 @@ async def list_tools() -> list[Tool]:
     m5k_tools = [
         Tool(name=M5K_WATCHLIST_TOOL, description="Read the default M5K watchlist without network calls.", inputSchema={"type":"object","properties":{},"additionalProperties":False}),
         Tool(name=M5K_HANDOFF_TOOL, description="Create a machine-readable M5K AI conversation watchlist handoff.", inputSchema={"type":"object","properties":{"watchlist":{"type":"object"}},"required":["watchlist"],"additionalProperties":False}),
+        Tool(name=M5K_PLAN_TOOL, description="Plan/validate one bounded M5K live observation without network calls or writes.", inputSchema={"type":"object","properties":{"watchlist":{"type":"object"}},"required":["watchlist"],"additionalProperties":False}),
         Tool(name=M5K_READ_LATEST_TOOL, description="Read the latest local M5K live observation artifact without network calls.", inputSchema={"type":"object","properties":{},"additionalProperties":False}),
         Tool(name=M5K_LIVE_OBSERVATION_TOOL, description="Execute one explicit bounded M5K live observation for the supplied watchlist; never promotes to M5F.", inputSchema={"type":"object","properties":{"confirm_live_observation":{"type":"boolean"},"watchlist":{"type":"object"}},"required":["confirm_live_observation","watchlist"],"additionalProperties":False}),
     ]
@@ -858,6 +868,8 @@ async def call_tool(name: str, arguments: dict[str, Any] | None) -> list[TextCon
         return _json_text(read_m5k_default_watchlist_tool())
     if name == M5K_HANDOFF_TOOL:
         return _json_text(create_m5k_handoff_tool(arguments))
+    if name == M5K_PLAN_TOOL:
+        return _json_text(plan_m5k_live_observation_tool(arguments))
     if name == M5K_READ_LATEST_TOOL:
         return _json_text({"tool": name, **_m5k_read_latest_observation()})
     if name == M5K_LIVE_OBSERVATION_TOOL:
