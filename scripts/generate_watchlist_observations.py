@@ -178,3 +178,30 @@ def generate_observations():
 
 if __name__ == "__main__":
     generate_observations()
+
+
+def build_watchlist_observations_from_m5f_canonical(canonical):
+    """Pure M5F convergence path: descriptive observations only."""
+    gov = dict(canonical.get("governance", {}))
+    source = canonical.get("source", "unknown")
+    source_date = canonical.get("source_date", "unknown")
+    return {
+        "schema_version": "m5f_watchlist_observations.v1",
+        "observations": [
+            {
+                "symbol": s["symbol"],
+                "observation": (
+                    f"{s['symbol']} has reviewed historical {source} price-like value "
+                    f"{s['price_like_value']} from {source_date}; "
+                    f"{s.get('freshness_status', gov.get('stale_status', 'unknown'))}/historical only."
+                ),
+                "source": source,
+                "source_date": source_date,
+                "freshness_status": s.get("freshness_status"),
+                "caveats": list(s.get("display_caveats", [])),
+            }
+            for s in canonical.get("symbols", [])
+        ],
+        "failed_targets": list(canonical.get("failed_targets", [])),
+        "governance": gov,
+    }

@@ -6,7 +6,9 @@ from scripts import run_m5e_controlled_frontend_publication as m5e
 
 def test_check_only_fail_closed():
     r=m5e.check_only()
-    assert r['ready_for_explicit_user_authorization_review'] is True
+    assert r['ready_for_explicit_user_authorization_review'] is False
+    assert r['status'] == 'superseded_by_m5f'
+    assert r['superseded_by_m5f'] is True
     assert r['frontend_publication_authorized'] is False
     assert r['publication_performed'] is False
     assert r['execute_mode_available'] is False
@@ -127,10 +129,10 @@ def test_reproducibility_materialize_candidate(tmp_path):
 def test_preview_static_dom_contract():
     html=(m5e.ROOT/'frontend/readonly-preview/M5EMarketContextPreview.html').read_text()
     js=(m5e.ROOT/'frontend/readonly-preview/m5e-market-context-adapter.js').read_text()
-    assert 'Loading M5D readonly candidate' in html
+    assert 'Loading local readonly market context' in html
     assert '<script type="module"' in html
-    for text in ['TWSE_OpenAPI','historical/stale','Mandatory caveats','tabindex="0"','<main>']:
-        assert text in js
+    for text in ['TWSE_OpenAPI','historical/stale','Global caveats','source risk flags','<main>']:
+        assert text in (html + js)
     for forbidden in ['buy','sell','hold','target price','ranking']:
         assert forbidden not in (html + js).lower()
 

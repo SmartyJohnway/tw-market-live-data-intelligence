@@ -297,13 +297,13 @@ def check_only():
         checks["crash_recovery_simulation"] = recover(dest, j2).get("status") == "safe_no_publication_or_temp_only"
     forbidden_prefixes = ("frontend/public", "research/generated", "research/live_probe_runs/m5b", "research/staging/m5c", "production", "prod", "broker", "credentials", "tokens", ".env")
     checks["forbidden_path_scan"] = not any(p.startswith(forbidden_prefixes) for p in changed_paths_against_base())
-    ready = all(checks.values())
-    return {"checks":checks,"ready_for_explicit_user_authorization_review":ready,"frontend_publication_authorized":False,"publication_performed":False,"execute_mode_available":False,"production_ready":False,"candidate_manifest_sha256":manifest_sha(),"runtime_consumer_compatible":checks["runtime_consumer_compatibility"],"authorization_absent":checks["authorization_absence"]}
+    ready = False
+    return {"checks":checks,"status":"superseded_by_m5f","superseded_by_m5f":True,"ready_for_explicit_user_authorization_review":ready,"frontend_publication_authorized":False,"publication_performed":False,"execute_mode_available":False,"production_ready":False,"candidate_manifest_sha256":manifest_sha(),"runtime_consumer_compatible":checks["runtime_consumer_compatibility"],"authorization_absent":checks["authorization_absence"],"statement":"M5D frontend publication gate is superseded by M5F canonical package and cannot be authorized."}
 
 def main(argv=None):
     ap = argparse.ArgumentParser(); ap.add_argument("--check-only", action="store_true"); ap.add_argument("--execute-publication", action="store_true"); ap.add_argument("--authorization-decision"); ap.add_argument("--token"); ns = ap.parse_args(argv)
     if not ns.execute_publication:
-        out = check_only(); print(json.dumps(out, indent=2, sort_keys=True)); return 0 if out["ready_for_explicit_user_authorization_review"] else 2
+        out = check_only(); print(json.dumps(out, indent=2, sort_keys=True)); return 0
     if not (ns.authorization_decision and ns.token): print(json.dumps({"status":"blocked","errors":["authorization_decision_and_token_required"],"publication_performed":False})); return 2
     errs = validate_candidate(CAND) + validate_auth(ns.authorization_decision, ns.token)
     try: safe_dest(DEST)

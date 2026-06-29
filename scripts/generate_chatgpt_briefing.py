@@ -318,3 +318,17 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+def render_chatgpt_briefing_from_m5f_canonical(canonical):
+    """Pure M5F convergence path: safe briefing from canonical payload."""
+    symbols = ", ".join(s["symbol"] for s in canonical.get("symbols", [])) or "the bounded watchlist"
+    source = canonical.get("source", "unknown")
+    source_date = canonical.get("source_date", "unknown")
+    caveats = ", ".join(canonical.get("global_caveats", [])) or "required caveats unavailable"
+    return (
+        "# ChatGPT Briefing\n\n"
+        f"Use this package as local readonly market context for {symbols}. "
+        f"Quote source {source}, source date {source_date}, and caveats: {caveats}.\n\n"
+        "Do not provide trading recommendations, target prices, rankings, or realtime claims.\n"
+    )

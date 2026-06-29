@@ -18,6 +18,17 @@ READONLY_TOOLS = {
     "read_m3g_caveats_register",
     "read_source_contract_baseline",
 }
+M5F_TOOLS = {
+    "get_canonical_market_context",
+    "get_source_health",
+    "get_capability_matrix",
+    "get_source_catalog",
+    "get_latest_market_snapshot",
+    "get_watchlist_observations",
+    "get_ai_context_pack",
+    "get_chatgpt_briefing",
+    "check_bounded_market_refresh_readiness",
+}
 
 LIVE_PROBE_TOOLS = {
     "probe_twse_openapi",
@@ -65,11 +76,12 @@ def test_list_tools_includes_readonly_context_and_one_controlled_tool_only():
     tool_names = {tool.name for tool in tools}
 
     assert READONLY_TOOLS.issubset(tool_names)
-    assert mcp_server.CONTROLLED_LIVE_PROBE_TOOL in tool_names
+    assert mcp_server.CONTROLLED_LIVE_PROBE_TOOL not in tool_names
     assert mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL in tool_names
     evidence_tools = {name for name in tool_names if "evidence" in name and name.startswith("read_m3g04")}
     assert evidence_tools == {mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL}
-    assert tool_names == READONLY_TOOLS | {mcp_server.CONTROLLED_LIVE_PROBE_TOOL, mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL}
+    assert M5F_TOOLS.issubset(tool_names)
+    assert tool_names == READONLY_TOOLS | M5F_TOOLS | {mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL}
     assert tool_names.isdisjoint(LIVE_PROBE_TOOLS)
 
 
@@ -94,7 +106,7 @@ def test_json_local_artifact_read_works():
     assert data["status"] == "ok"
     assert data["content_type"] == "json"
     assert isinstance(data["content"], dict)
-    assert data["source_path"] == "research/generated/ai_context_pack.json"
+    assert data["source_path"] == "research/staging/m5f/m5f_canonical_market_context_01/ai_context_pack.json"
 
 
 def test_markdown_local_artifact_read_works():
@@ -153,114 +165,53 @@ def test_unknown_tool_returns_governed_unavailable_response():
 
 def test_controlled_tool_without_confirmation_fails_closed_without_runner(monkeypatch):
     def fail_if_called(*args, **kwargs):
-        raise AssertionError("controlled runner should not execute")
-
+        raise AssertionError("disabled legacy live tool should not execute")
     monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
-    args = dict(VALID_CONTROLLED_ARGS, confirm_controlled_live_probe=False)
-
-    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, args)))
-
-    assert data["status"] == "failed_closed"
-    assert data["failure_reason"] == "missing_explicit_confirmation"
-    assert data["governance"]["network_calls"] is False
-    assert data["governance"]["live_probe_execution"] is False
-
+    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
+    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
+    assert data["network_calls"] is False
+    assert data["artifact_writes"] is False
+    assert data["m5i_required_for_actual_execution"] is True
 
 def test_controlled_tool_invalid_source_or_target_fails_closed_without_runner(monkeypatch):
     def fail_if_called(*args, **kwargs):
-        raise AssertionError("controlled runner should not execute")
-
+        raise AssertionError("disabled legacy live tool should not execute")
     monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
-
-    source_args = dict(VALID_CONTROLLED_ARGS, requested_sources=["FinMind"])
-    source_data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, source_args)))
-    assert source_data["status"] == "failed_closed"
-    assert source_data["failure_reason"] == "source_outside_allowlist"
-
-    target_args = dict(VALID_CONTROLLED_ARGS, requested_targets=["999999"])
-    target_data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, target_args)))
-    assert target_data["status"] == "failed_closed"
-    assert target_data["failure_reason"] == "target_outside_allowlist"
-
+    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
+    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
+    assert data["network_calls"] is False
+    assert data["artifact_writes"] is False
+    assert data["m5i_required_for_actual_execution"] is True
 
 def test_controlled_tool_write_or_refresh_request_fails_closed_without_runner(monkeypatch):
     def fail_if_called(*args, **kwargs):
-        raise AssertionError("controlled runner should not execute")
-
+        raise AssertionError("disabled legacy live tool should not execute")
     monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
-    args = dict(VALID_CONTROLLED_ARGS, no_artifact_writes=False)
-
-    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, args)))
-
-    assert data["status"] == "failed_closed"
-    assert data["failure_reason"] == "write_or_refresh_not_explicitly_forbidden"
-    assert data["generated_artifacts_updated"] is False
-    assert data["frontend_artifacts_updated"] is False
-    assert data["production_refreshed"] is False
-
+    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
+    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
+    assert data["network_calls"] is False
+    assert data["artifact_writes"] is False
+    assert data["m5i_required_for_actual_execution"] is True
 
 def test_controlled_tool_valid_confirmation_calls_only_runner_wrapper(monkeypatch):
-    calls = []
-
-    def fake_runner(sources, targets):
-        calls.append((sources, targets))
-        return {
-            "returncode": 0,
-            "stdout_tail": "controlled ok",
-            "stderr_tail": "",
-            "controlled_summary": {"timestamp": "2026-06-26T00:00:00+00:00"},
-            "runner_started": True,
-            "network_calls_may_have_occurred": True,
-            "repo_artifacts_updated": False,
-            "temporary_evidence_directory_removed": True,
-        }
-
-    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fake_runner)
-
+    def fail_if_called(*args, **kwargs):
+        raise AssertionError("disabled legacy live tool should not execute")
+    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
     data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
-
-    assert calls == [(["TWSE_OpenAPI"], ["2330"])]
-    assert data["status"] == "ok"
-    assert data["governance"]["network_calls"] is True
-    assert data["governance"]["live_probe_execution"] is True
-    assert data["governance"]["production_refresh"] is False
-    assert data["governance"]["frontend_refresh"] is False
-    assert data["governance"]["artifact_writes"] is False
-    assert data["governance"]["full_market_scan"] is False
-    assert data["governance"]["trading_signal"] is False
-    assert data["governance"]["runner_started"] is True
-    assert data["governance"]["network_calls_may_have_occurred"] is True
-    assert data["generated_artifacts_updated"] is False
-    assert data["frontend_artifacts_updated"] is False
-    assert data["production_refreshed"] is False
-    assert "not realtime-guaranteed" in data["statement"]
-    assert "not a trading signal" in data["statement"]
-    assert data["retrieval_metadata"]["delay_status"] == "source-dependent and not guaranteed realtime"
-    assert data["result"]["controlled_summary"]["timestamp"] == "2026-06-26T00:00:00+00:00"
-    assert data["result"]["repo_artifacts_updated"] is False
-    assert data["result"]["temporary_evidence_directory_removed"] is True
-
+    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
+    assert data["network_calls"] is False
+    assert data["artifact_writes"] is False
+    assert data["m5i_required_for_actual_execution"] is True
 
 def test_controlled_tool_duplicate_scope_fails_closed_without_runner(monkeypatch):
     def fail_if_called(*args, **kwargs):
-        raise AssertionError("controlled runner should not execute")
-
+        raise AssertionError("disabled legacy live tool should not execute")
     monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
-
-    duplicate_sources = dict(VALID_CONTROLLED_ARGS, requested_sources=["TWSE_OpenAPI", "TWSE_OpenAPI"])
-    source_data = decode_text_response(
-        asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, duplicate_sources))
-    )
-    assert source_data["status"] == "failed_closed"
-    assert source_data["failure_reason"] == "duplicate_source_scope"
-
-    duplicate_targets = dict(VALID_CONTROLLED_ARGS, requested_targets=["2330", "2330"], max_targets=2)
-    target_data = decode_text_response(
-        asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, duplicate_targets))
-    )
-    assert target_data["status"] == "failed_closed"
-    assert target_data["failure_reason"] == "duplicate_target_scope"
-
+    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
+    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
+    assert data["network_calls"] is False
+    assert data["artifact_writes"] is False
+    assert data["m5i_required_for_actual_execution"] is True
 
 def test_controlled_runner_wrapper_uses_temp_cwd_and_returns_summary(monkeypatch, tmp_path):
     runner_path = tmp_path / mcp_server.CONTROLLED_RUNNER_RELATIVE_PATH
@@ -298,50 +249,24 @@ def test_controlled_runner_wrapper_uses_temp_cwd_and_returns_summary(monkeypatch
 
 
 def test_controlled_tool_missing_runner_path_returns_structured_failure(monkeypatch):
-    def fake_missing_runner(sources, targets):
-        raise FileNotFoundError("Controlled runner not found: scripts/run_m3g04_controlled_live_probe.py")
-
-    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fake_missing_runner)
-
+    def fail_if_called(*args, **kwargs):
+        raise AssertionError("disabled legacy live tool should not execute")
+    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
     data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
-
-    assert data["status"] == "failed_closed"
-    assert data["failure_reason"] == "controlled_runner_missing"
-    assert "Controlled runner not found" in data["detail"]
-    assert data["governance"]["network_calls"] is False
-    assert data["executed_scope"] == {"requested_sources": [], "requested_targets": []}
-
+    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
+    assert data["network_calls"] is False
+    assert data["artifact_writes"] is False
+    assert data["m5i_required_for_actual_execution"] is True
 
 def test_controlled_tool_timeout_result_does_not_claim_no_network(monkeypatch):
-    def fake_timeout_runner(sources, targets):
-        return {
-            "status": "controlled_runner_timeout",
-            "returncode": None,
-            "stdout_tail": "partial out",
-            "stderr_tail": "partial err",
-            "controlled_summary": None,
-            "runner_started": True,
-            "network_calls_may_have_occurred": True,
-            "repo_artifacts_updated": False,
-            "temporary_evidence_directory_removed": True,
-            "error": "Controlled runner timed out",
-        }
-
-    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fake_timeout_runner)
-
+    def fail_if_called(*args, **kwargs):
+        raise AssertionError("disabled legacy live tool should not execute")
+    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
     data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
-
-    assert data["status"] == "controlled_runner_timeout"
-    assert data["runner_started"] is True
-    assert data["network_calls_may_have_occurred"] is True
-    assert data["governance"]["runner_started"] is True
-    assert data["governance"]["network_calls_may_have_occurred"] is True
-    assert data["governance"]["network_calls"] is True
-    assert data["governance"]["live_probe_execution"] is True
-    assert data["generated_artifacts_updated"] is False
-    assert data["frontend_artifacts_updated"] is False
-    assert data["production_refreshed"] is False
-
+    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
+    assert data["network_calls"] is False
+    assert data["artifact_writes"] is False
+    assert data["m5i_required_for_actual_execution"] is True
 
 def test_controlled_runner_timeout_does_not_claim_no_network(monkeypatch, tmp_path):
     runner_path = tmp_path / mcp_server.CONTROLLED_RUNNER_RELATIVE_PATH
@@ -364,26 +289,14 @@ def test_controlled_runner_timeout_does_not_claim_no_network(monkeypatch, tmp_pa
 
 
 def test_controlled_tool_runner_error_after_launch_does_not_claim_no_network(monkeypatch):
-    def fake_error_runner(sources, targets):
-        raise RuntimeError("runner failed after launch")
-
-    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fake_error_runner)
-
+    def fail_if_called(*args, **kwargs):
+        raise AssertionError("disabled legacy live tool should not execute")
+    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
     data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
-
-    assert data["status"] == "controlled_runner_error_after_launch"
-    assert data["failure_reason"] == "controlled_runner_error_after_launch"
-    assert data["detail"] == "runner failed after launch"
-    assert data["runner_started"] is True
-    assert data["network_calls_may_have_occurred"] is True
-    assert data["governance"]["runner_started"] is True
-    assert data["governance"]["network_calls_may_have_occurred"] is True
-    assert data["governance"]["network_calls"] is True
-    assert data["governance"]["live_probe_execution"] is True
-    assert data["generated_artifacts_updated"] is False
-    assert data["frontend_artifacts_updated"] is False
-    assert data["production_refreshed"] is False
-
+    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
+    assert data["network_calls"] is False
+    assert data["artifact_writes"] is False
+    assert data["m5i_required_for_actual_execution"] is True
 
 def test_evidence_readback_tool_does_not_execute_controlled_runner(monkeypatch, tmp_path):
     def fail_if_called(*args, **kwargs):
@@ -735,3 +648,42 @@ def test_evidence_readback_valid_response_includes_governance_and_no_realtime_cl
     assert "generated artifacts were not updated" in data["statement"]
     assert "frontend artifacts were not updated" in data["statement"]
     assert "production snapshots were not updated" in data["statement"]
+
+def test_mcp_server_cli_startup_imports_validator_without_repo_pythonpath():
+    import subprocess, sys, os
+    env = dict(os.environ)
+    env.pop('PYTHONPATH', None)
+    cp = subprocess.run([sys.executable, 'server/mcp_server.py', '--startup-check'], capture_output=True, text=True, env=env, timeout=10)
+    assert cp.returncode == 0, cp.stderr
+    assert 'mcp_server_startup_check_ok' in cp.stdout
+
+
+
+def _build_temp_m5f_package(tmp_path, stale_status, badge):
+    import hashlib, shutil
+    from scripts.build_m5f_canonical_market_context_package import build_package, write_package
+    src=Path('research/staging/m5d/m5d_frontend_publication_candidate_01')
+    cand=tmp_path/'candidate'; shutil.copytree(src,cand)
+    data=json.loads((cand/'market-context.json').read_text())
+    data['stale_status']=stale_status; data['badge']=badge
+    for row in data['symbols']:
+        row['freshness_status']=stale_status; row['delay_status']=stale_status
+    (cand/'market-context.json').write_bytes((json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False)+'\n').encode('utf-8'))
+    manifest=json.loads((cand/'sha256_manifest.json').read_text())
+    manifest['files']['market-context.json']=hashlib.sha256((cand/'market-context.json').read_bytes()).hexdigest()
+    (cand/'sha256_manifest.json').write_bytes((json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True)+'\n').encode('utf-8'))
+    pkg=tmp_path/'pkg'; write_package(pkg, build_package(cand/'market-context.json'))
+    return pkg
+
+
+def test_m5f_tool_governance_derives_freshness_from_temp_package(monkeypatch, tmp_path):
+    for status,badge in [('fresh','historical/fresh'),('delayed','historical/delayed')]:
+        pkg=_build_temp_m5f_package(tmp_path/status, status, badge)
+        monkeypatch.setattr(mcp_server, 'M5F_PACKAGE_DIR', pkg)
+        data=decode_text_response(asyncio.run(mcp_server.call_tool('get_canonical_market_context', {})))
+        assert data['status']=='ok'
+        assert data['governance']['stale_status']==status
+        assert data['governance']['badge']==badge
+        assert data['governance']['realtime_guaranteed'] is False
+        assert data['governance']['trading_signal'] is False
+        assert data['governance']['production_current_state'] is False

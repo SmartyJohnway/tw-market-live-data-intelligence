@@ -30,3 +30,11 @@ M5B confirms the architecture should keep live execution behind a single-use aut
 ## M5E controlled publication architecture
 
 Use a three-layer flow: (1) immutable M5D candidate and runtime compatibility audit, (2) explicit future authorization decision plus single-use token validated against Draft 2020-12 schemas, and (3) injectable atomic publisher transactions that can be fully tested under temporary directories. The repository release gate remains check-only and reports authorization absence until a human supplies a future explicit authorization.
+
+## M5FGH product convergence status
+
+PR #59 / M5E is treated as merged upstream. M5FGH converges the reviewed M5C/M5D historical evidence into the current canonical local product line: `research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json` is the only source-of-truth payload for browser preview, FastAPI readonly endpoints, MCP readonly tools, and AI briefing artifacts.
+
+North Star: a local-first, bounded-watchlist, explicit manual-refresh Taiwan market context center shared by browser and AI Agents. The package is historical/stale reviewed evidence for 0050, 00929, and 2330 from TWSE_OpenAPI source date 2026-06-26; it is not realtime, not production current state, not full-market coverage, and not a trading signal.
+
+Historical M3 generated artifacts under `research/generated/` remain legacy generated artifacts. M5F is the current canonical consumer package. Bounded live evidence exists in prior governed evidence, so the repo is not fixture-only, but M5FGH does not run new live probes. The only remaining main bundle after this closure is M5IJ for future explicitly authorized refresh execution and final release hardening.

@@ -21,9 +21,13 @@ from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import TextContent, Tool
 
-app = Server("tw-market-mcp")
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+from scripts.validate_m5f_canonical_market_context_package import validate_package as _validate_m5f_package
+
+app = Server("tw-market-mcp")
+M5F_PACKAGE_DIR = REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01"
 
 READONLY_TOOL_SPECS: dict[str, dict[str, str]] = {
     "read_latest_market_snapshot": {
@@ -65,6 +69,26 @@ LEGACY_LIVE_PROBE_TOOLS = {
     "probe_twse_mis",
     "probe_finmind",
 }
+
+
+M5F_TOOL_SPECS: dict[str, dict[str, str]] = {
+    "get_canonical_market_context": {"path": "research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json", "content_type": "json", "description": "Read the M5F canonical market context package payload."},
+    "get_source_health": {"path": "research/staging/m5f/m5f_canonical_market_context_01/source_health.json", "content_type": "json", "description": "Read M5F source health."},
+    "get_capability_matrix": {"path": "research/staging/m5f/m5f_canonical_market_context_01/capability_summary.json", "content_type": "json", "description": "Read M5F capability summary for canonical market context."},
+    "get_source_catalog": {"path": "docs/source_registry/source_authority_registry.json", "content_type": "json", "description": "Read governed source authority registry; legacy/source-capability information, not canonical market context."},
+    "get_latest_market_snapshot": {"path": "research/staging/m5f/m5f_canonical_market_context_01/latest_market_snapshot.json", "content_type": "json", "description": "Read M5F latest reviewed bounded evidence snapshot."},
+    "get_watchlist_observations": {"path": "research/staging/m5f/m5f_canonical_market_context_01/watchlist_observations.json", "content_type": "json", "description": "Read M5F descriptive watchlist observations."},
+    "get_ai_context_pack": {"path": "research/staging/m5f/m5f_canonical_market_context_01/ai_context_pack.json", "content_type": "json", "description": "Read M5F AI context pack."},
+    "get_chatgpt_briefing": {"path": "research/staging/m5f/m5f_canonical_market_context_01/chatgpt_briefing.md", "content_type": "markdown", "description": "Read M5F ChatGPT briefing."},
+}
+
+# Backward compatible read_* aliases now resolve to M5F canonical package artifacts.
+READONLY_TOOL_SPECS.update({
+    "read_latest_market_snapshot": M5F_TOOL_SPECS["get_latest_market_snapshot"],
+    "read_watchlist_observations": M5F_TOOL_SPECS["get_watchlist_observations"],
+    "read_ai_context_pack": M5F_TOOL_SPECS["get_ai_context_pack"],
+    "read_chatgpt_briefing": M5F_TOOL_SPECS["get_chatgpt_briefing"],
+})
 
 CONTROLLED_LIVE_PROBE_TOOL = "run_m3g04_controlled_live_probe_evidence"
 CONTROLLED_EVIDENCE_READBACK_TOOL = "read_m3g04_latest_controlled_probe_evidence"
@@ -335,8 +359,10 @@ def run_controlled_live_probe_evidence(arguments: dict[str, Any] | None) -> dict
     }
 
 
-def readonly_governance() -> dict[str, Any]:
-    """Governance metadata shared by all MCP-01 readonly tool responses."""
+def readonly_governance(canonical: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Governance metadata shared by MCP readonly tool responses."""
+    gov = canonical.get("governance", {}) if isinstance(canonical, dict) else {}
+    caveats = canonical.get("global_caveats") if isinstance(canonical, dict) else None
     return {
         "surface": "MCP readonly context tool",
         "execution_mode": "readonly_local_artifact_read",
@@ -344,14 +370,29 @@ def readonly_governance() -> dict[str, Any]:
         "production_refresh": False,
         "frontend_refresh": False,
         "live_probe_execution": False,
-        "caveats": [
+        "historical_evidence_snapshot": gov.get("historical_evidence_snapshot", True),
+        "stale_status": gov.get("stale_status", "unknown"),
+        "badge": gov.get("badge", "historical/unknown"),
+        "current_realtime": gov.get("current_realtime", False),
+        "production_current_state": gov.get("production_current_state", False),
+        "production_ready": gov.get("production_ready", False),
+        "readonly_only": gov.get("readonly_only", True),
+        "realtime_guaranteed": gov.get("realtime_guaranteed", False),
+        "trading_signal": gov.get("trading_signal", False),
+        "caveats": list(caveats or [
             "readonly_local_context",
-            "not_live_market_data",
+            "not_realtime_guaranteed",
             "not_trading_signal",
+            "not_production_current_state",
+            "freshness_must_be_displayed",
             "no_artifact_refresh",
-        ],
+        ]),
     }
 
+
+def _load_m5f_canonical(package_dir: Path) -> dict[str, Any]:
+    _validate_m5f_package(package_dir)
+    return json.loads((package_dir / "canonical_market_context.json").read_text(encoding="utf-8"))
 
 def evidence_readback_governance() -> dict[str, Any]:
     """Governance metadata for MCP-03 readonly controlled evidence readback."""
@@ -628,20 +669,27 @@ def _resolve_source_path(source_path: str) -> Path:
 
 def read_local_context_tool(tool_name: str) -> dict[str, Any]:
     """Read a configured local context artifact with fail-closed semantics."""
-    spec = READONLY_TOOL_SPECS.get(tool_name)
+    spec = M5F_TOOL_SPECS.get(tool_name) or READONLY_TOOL_SPECS.get(tool_name)
     if spec is None:
         return unavailable_tool_response(tool_name)
 
     source_path = spec["path"]
     content_type = spec["content_type"]
+    canonical: dict[str, Any] | None = None
+    resolved_path = _resolve_source_path(source_path)
+    if source_path.startswith("research/staging/m5f/"):
+        try:
+            canonical = _load_m5f_canonical(M5F_PACKAGE_DIR)
+            resolved_path = M5F_PACKAGE_DIR / Path(source_path).name
+        except Exception as exc:
+            return {"governance": readonly_governance(), "tool": tool_name, "source_path": source_path, "content_type": content_type, "status": "package_validation_failed", "error": str(exc)}
     payload: dict[str, Any] = {
-        "governance": readonly_governance(),
+        "governance": readonly_governance(canonical),
         "tool": tool_name,
         "source_path": source_path,
         "content_type": content_type,
     }
 
-    resolved_path = _resolve_source_path(source_path)
     if not resolved_path.is_file():
         payload.update(
             {
@@ -692,7 +740,7 @@ async def list_tools() -> list[Tool]:
             description=spec["description"],
             inputSchema={"type": "object", "properties": {}, "additionalProperties": False},
         )
-        for name, spec in READONLY_TOOL_SPECS.items()
+        for name, spec in {**READONLY_TOOL_SPECS, **M5F_TOOL_SPECS}.items()
     ]
     controlled_tool = Tool(
         name=CONTROLLED_LIVE_PROBE_TOOL,
@@ -758,18 +806,21 @@ async def list_tools() -> list[Tool]:
             "additionalProperties": False,
         },
     )
-    return [*readonly_tools, controlled_tool, evidence_readback_tool]
+    readiness_tool = Tool(name="check_bounded_market_refresh_readiness", description="Check M5 bounded refresh readiness without network calls, writes, or authorization consumption.", inputSchema={"type":"object","properties":{},"additionalProperties":False})
+    return [*readonly_tools, evidence_readback_tool, readiness_tool]
 
 
 @app.call_tool()
 async def call_tool(name: str, arguments: dict[str, Any] | None) -> list[TextContent]:
     """Handle readonly MCP tool requests without executing live probes."""
-    if name in READONLY_TOOL_SPECS:
+    if name in READONLY_TOOL_SPECS or name in M5F_TOOL_SPECS:
         return _json_text(read_local_context_tool(name))
     if name == CONTROLLED_LIVE_PROBE_TOOL:
-        return _json_text(run_controlled_live_probe_evidence(arguments))
+        return _json_text({"tool": name, "status": "legacy_live_tool_disabled_pending_m5i", "governance": readonly_governance(), "network_calls": False, "artifact_writes": False, "m5i_required_for_actual_execution": True})
     if name == CONTROLLED_EVIDENCE_READBACK_TOOL:
         return _json_text(read_controlled_probe_evidence(arguments))
+    if name == "check_bounded_market_refresh_readiness":
+        return _json_text({"tool": name, "status": "authorization_required", "network_calls": False, "artifact_writes": False, "intended_source": "TWSE_OpenAPI", "intended_targets": ["0050", "00929", "2330"], "authorization_model": "M5 explicit future authorization", "m5i_required_for_actual_execution": True, "m5b_authorization_already_consumed": True, "statement": "Readiness check only; no live probe, no writes, no M5B authorization reuse."})
     return _json_text(unavailable_tool_response(name))
 
 
@@ -779,4 +830,8 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    if "--startup-check" in sys.argv:
+        _validate_m5f_package(M5F_PACKAGE_DIR)
+        print("mcp_server_startup_check_ok")
+    else:
+        asyncio.run(main())
