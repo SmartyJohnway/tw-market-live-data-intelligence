@@ -157,6 +157,37 @@ def test_validate_candidate_failed_targets_schema(tmp_path, monkeypatch):
     res = val.validate_candidate(candidate_dir)
     assert res['status'] == 'passed'
 
+def test_partial_failure_direct_wrapper_call_blocks(tmp_path, monkeypatch):
+    import scripts.m5i_common as c
+    monkeypatch.setattr(c, 'REPO', tmp_path)
+
+    canonical = tmp_path/'research/staging/m5f/m5f_canonical_market_context_01'
+    canonical.mkdir(parents=True)
+    (canonical/'test.txt').write_text('original')
+
+    candidate = tmp_path/'cand'
+    candidate.mkdir()
+
+    c_doc = {
+        'schema_version': 'm5i_refresh_candidate.v1',
+        'failed_targets': [{'symbol': '0050', 'status': 'missing_close_price'}]
+    }
+    import json
+    (candidate / 'market-context.json').write_text(json.dumps(c_doc))
+
+    res = c.promote_m5i_candidate_to_m5f(candidate)
+
+    assert res['status'] == 'blocked'
+    assert res['stage'] == 'pre_promotion_policy'
+    assert res['reason'] == 'failed_targets_present'
+    assert res['promotion_performed'] is False
+
+    # Assert canonical remains untouched
+    assert (canonical/'test.txt').read_text() == 'original'
+
+    # Assert no temp promotion attempted (no m5i_promote_* or backup paths remain/were successfully created because it short circuits)
+    assert len(list(tmp_path.glob("m5i_promote_*"))) == 0
+
 def test_partial_failure_blocks_promotion(tmp_path, monkeypatch):
     import scripts.run_m5i_explicit_bounded_refresh as ref
     targets = ['0050']

@@ -72,6 +72,17 @@ def claim_authorization(auth):
     return path
 
 def promote_m5i_candidate_to_m5f(candidate_dir: Path):
+    c_path = candidate_dir / 'market-context.json'
+    if c_path.exists():
+        c_data = load(c_path)
+        if c_data.get('failed_targets'):
+            return {
+                'status': 'blocked',
+                'stage': 'pre_promotion_policy',
+                'reason': 'failed_targets_present',
+                'promotion_performed': False
+            }
+
     import sys
     scripts_dir = str(Path(__file__).resolve().parents[0])
     if scripts_dir not in sys.path:
