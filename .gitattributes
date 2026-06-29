@@ -1,0 +1,5 @@
+# Hash-bound market-context artifacts must remain byte-stable across platforms.
+research/staging/m5f/**/*.json text eol=lf
+research/staging/m5f/**/*.md text eol=lf
+research/staging/m5d/**/*.json text eol=lf
+research/staging/m5c/**/*.json text eol=lf
