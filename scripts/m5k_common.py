@@ -53,11 +53,14 @@ def governance() -> dict[str, Any]:
     }
 
 
-def iter_instruments(watchlist: dict[str, Any]) -> list[dict[str, Any]]:
+def iter_instruments(watchlist: dict[str, Any], *, include_disabled: bool = False) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     for category in watchlist.get("categories", []):
         for item in category.get("instruments", []):
+            if item.get("enabled", True) is False and not include_disabled:
+                continue
             merged = dict(item)
+            merged.setdefault("enabled", True)
             merged.setdefault("category_id", category.get("category_id"))
             merged.setdefault("category_label", category.get("label"))
             out.append(merged)
@@ -87,7 +90,7 @@ def validate_watchlist(watchlist: dict[str, Any], *, max_targets: int = MAX_M5K_
     categories = watchlist.get("categories")
     if not isinstance(categories, list) or not categories:
         errors.append("categories_required")
-    instruments = iter_instruments(watchlist)
+    instruments = iter_instruments(watchlist, include_disabled=True)
     if not instruments:
         errors.append("instruments_required")
     if len(instruments) > max_targets:
@@ -102,6 +105,8 @@ def validate_watchlist(watchlist: dict[str, Any], *, max_targets: int = MAX_M5K_
         if symbol in seen:
             errors.append(f"duplicate_symbol:{symbol}")
         seen.add(symbol)
+        if item.get("enabled", True) not in {True, False}:
+            errors.append(f"invalid_enabled_flag:{symbol}")
         if not isinstance(item.get("preferred_sources", []), list) or not item.get("preferred_sources"):
             warnings.append(f"missing_preferred_sources:{symbol}")
         market = item.get("market")
@@ -161,7 +166,7 @@ def plan_live_observation(watchlist: dict[str, Any]) -> dict[str, Any]:
         "planned_routes": plans,
         "request_plan": {
             "method": "GET",
-            "bounded_symbols": validation.get("symbols", []),
+            "bounded_symbols": [plan["symbol"] for plan in plans],
             "max_targets": MAX_M5K_TARGETS,
             "network_calls": False,
         },
@@ -204,7 +209,7 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
         "watchlist_id": watchlist.get("watchlist_id"),
         "validation": validation,
         "governance": governance(),
-        "request": {"method": "GET", "bounded_symbols": validation.get("symbols", []), "max_targets": MAX_M5K_TARGETS},
+        "request": {"method": "GET", "bounded_symbols": [], "max_targets": MAX_M5K_TARGETS},
         "observations": [],
         "failures": [],
         "source_investigation_notes": [],
@@ -216,6 +221,7 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
     instruments = iter_instruments(watchlist)
     plans = [source_plan_for_instrument(i) | {"instrument": i} for i in instruments]
     payload["planned_routes"] = [{k: v for k, v in p.items() if k != "instrument"} for p in plans]
+    payload["request"]["bounded_symbols"] = [p["symbol"] for p in plans]
     mis_channels = [p["ex_ch"] for p in plans if p.get("source") == "TWSE_MIS" and p.get("ex_ch")]
     mis_by_channel: dict[str, dict[str, Any]] = {}
     if mis_channels:

@@ -23,7 +23,7 @@ M5K is a Level 2 layer for bounded, temporary, conversational market observation
 - Plan-only observation path: `/api/m5k/live-observation/plan` and `scripts/run_m5k_live_observation.py --plan-only`; this validates and routes the watchlist without network calls or writes.
 - FastAPI endpoints: `/api/m5k/watchlist/default`, `/api/m5k/watchlist/validate`, `/api/m5k/conversation/handoff`, `/api/m5k/live-observation/latest`, `/api/m5k/live-observation/execute?confirm_live_observation=true`.
 - MCP tools: `get_m5k_default_watchlist`, `create_m5k_conversation_handoff`, `read_m5k_latest_live_observation`, `run_m5k_bounded_live_observation`.
-- Frontend: `frontend/readonly-preview/M5KLocalAIWorkbench.html`.
+- Frontend: `frontend/readonly-preview/M5KLocalAIWorkbench.html`; the workbench provides a table editor for enabled/disabled state, symbol, display name, market, instrument type, preferred sources, category, add/remove rows, JSON import/export, plan-only, and explicit execution.
 
 ## Current support limitations
 

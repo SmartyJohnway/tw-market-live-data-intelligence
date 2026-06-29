@@ -55,7 +55,9 @@ def test_frontend_model_uses_m5k_endpoints_not_public_publication():
     js = Path("frontend/readonly-preview/m5k-workbench.js").read_text(encoding="utf-8")
     assert "/api/m5k/watchlist/default" in js
     assert "confirm_live_observation=true" in js
-    assert "/api/m5k/live-observation/plan" not in html or "frontend/public" not in html + js
+    assert "/api/m5k/live-observation/plan" in js
+    assert "watchlistRows" in html
+    assert "Enabled" in html and "Market" in html and "Preferred sources" in html
     assert "frontend/public" not in html + js
 
 def test_source_routing_plans_listed_otc_index_and_futures():
@@ -86,3 +88,16 @@ def test_observation_payload_does_not_expose_raw_field_sample():
     encoded = json.dumps(result, ensure_ascii=False)
     assert "raw_fields_sample" not in encoded
     assert "response_sample" not in encoded
+
+
+def test_disabled_watchlist_rows_validate_but_are_not_planned():
+    from scripts.m5k_common import plan_live_observation
+    watchlist = load_json(DEFAULT)
+    watchlist["categories"][0]["instruments"][0]["enabled"] = False
+    disabled_symbol = watchlist["categories"][0]["instruments"][0]["symbol"]
+    validation = validate_watchlist(watchlist)
+    assert validation["valid"] is True
+    assert disabled_symbol in validation["symbols"]
+    plan = plan_live_observation(watchlist)
+    assert disabled_symbol not in [route["symbol"] for route in plan["planned_routes"]]
+    assert disabled_symbol not in plan["request_plan"]["bounded_symbols"]

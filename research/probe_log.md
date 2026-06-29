@@ -55,3 +55,13 @@
 - TWSE OpenAPI `STOCK_DAY_ALL` remains an official EOD endpoint and is documented as a fallback preference, but rejected as the primary M5K live observation feed because it does not provide an intraday live guarantee.
 - TPEx OpenAPI remains a documented future route for OTC-like instruments; initial M5K avoids unverified automatic routing.
 - TAIFEX is required for TX futures, but rejected for initial execution until a contract-month mapping and endpoint contract are validated. TX futures therefore appears as an explicit unsupported observation failure rather than fabricated data.
+
+## M5K live observation probe — 2026-06-29T14:43:25Z
+
+- Command: `python scripts/run_m5k_live_observation.py --execute-live-observation --no-write-latest --watchlist config/m5k_default_watchlist.json`
+- Endpoint used: TWSE MIS bounded request only, `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?...&json=1&delay=0`; no endpoint/source outside current repository assumptions was used.
+- Route plan summary: TWSE instruments used `tse_<symbol>.tw`; TPEx/OTC instruments used `otc_<symbol>.tw`; TAIEX used `tse_t00.tw`; TX futures remained unsupported through TAIFEX pending contract mapping.
+- Observation result: 16 observations, 3 failures.
+- Sample rows: 2330 observed via TWSE_MIS at source timestamp `20260629 13:30:00`; 0050 observed via TWSE_MIS at source timestamp `20260629 13:30:00`; TAIEX observed via TWSE_MIS route `tse_t00.tw` at source timestamp `20260629 13:33:00`; TPEx/OTC sample 1569 observed via TWSE_MIS route `otc_1569.tw` at source timestamp `20260629 13:30:00`.
+- Failures: 3483 missing from `tse_3483.tw`; 3543 missing from `otc_3543.tw`; TX futures returned `unsupported_in_m5k_initial` because TAIFEX contract-month mapping is not yet implemented.
+- Governance: no M5F write, no `frontend/public` write, no `research/generated` write, no trading recommendation/ranking/target price/order content, and no raw response sample retained in consumer payload.
