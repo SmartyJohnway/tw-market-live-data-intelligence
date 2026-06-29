@@ -65,3 +65,12 @@
 - Sample rows: 2330 observed via TWSE_MIS at source timestamp `20260629 13:30:00`; 0050 observed via TWSE_MIS at source timestamp `20260629 13:30:00`; TAIEX observed via TWSE_MIS route `tse_t00.tw` at source timestamp `20260629 13:33:00`; TPEx/OTC sample 1569 observed via TWSE_MIS route `otc_1569.tw` at source timestamp `20260629 13:30:00`.
 - Failures: 3483 missing from `tse_3483.tw`; 3543 missing from `otc_3543.tw`; TX futures returned `unsupported_in_m5k_initial` because TAIFEX contract-month mapping is not yet implemented.
 - Governance: no M5F write, no `frontend/public` write, no `research/generated` write, no trading recommendation/ranking/target price/order content, and no raw response sample retained in consumer payload.
+
+## M5K routing correction live observation probe — 2026-06-29T15:01:36Z
+
+- Command: `python scripts/run_m5k_live_observation.py --execute-live-observation --no-write-latest --watchlist config/m5k_default_watchlist.json`
+- Endpoint used: TWSE MIS bounded request only, `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?...&json=1&delay=0`; no endpoint/source outside current repository assumptions was used.
+- Corrected route assertions: 3483 力致 used `otc_3483.tw` and no longer requested `tse_3483.tw`; 3543 州巧 used `tse_3543.tw` and no longer requested `otc_3543.tw`; TX futures remained `unsupported_in_m5k_initial`.
+- Observation result after metadata fix: 18 observations, 1 failure.
+- Newly recovered sample rows: 3483 observed via TWSE_MIS route `otc_3483.tw` at source timestamp `20260629 13:30:00`; 3543 observed via TWSE_MIS route `tse_3543.tw` at source timestamp `20260629 13:30:00`.
+- Remaining failure: TX futures only, because TAIFEX contract-month mapping and endpoint semantics are not implemented in M5K initial execution.

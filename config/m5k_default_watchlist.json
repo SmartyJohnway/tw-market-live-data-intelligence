@@ -170,10 +170,11 @@
         {
           "symbol": "3483",
           "name": "3483",
-          "instrument_type": "listed_equity",
-          "market": "twse",
+          "instrument_type": "listed_or_otc_equity",
+          "market": "tpex",
           "preferred_sources": [
             "TWSE_MIS",
+            "TPEx_OpenAPI",
             "TWSE_OpenAPI"
           ],
           "enabled": true
@@ -181,11 +182,10 @@
         {
           "symbol": "3543",
           "name": "3543",
-          "instrument_type": "listed_or_otc_equity",
-          "market": "tpex",
+          "instrument_type": "listed_equity",
+          "market": "twse",
           "preferred_sources": [
             "TWSE_MIS",
-            "TPEx_OpenAPI",
             "TWSE_OpenAPI"
           ],
           "enabled": true

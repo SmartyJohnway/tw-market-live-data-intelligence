@@ -65,6 +65,8 @@ def test_source_routing_plans_listed_otc_index_and_futures():
     assert source_plan_for_instrument({"symbol": "2330", "instrument_type": "listed_equity", "market": "twse"})["ex_ch"] == "tse_2330.tw"
     assert source_plan_for_instrument({"symbol": "3293", "instrument_type": "listed_or_otc_equity", "market": "tpex"})["ex_ch"] == "otc_3293.tw"
     assert source_plan_for_instrument({"symbol": "TAIEX", "instrument_type": "index", "market": "twse"})["ex_ch"] == "tse_t00.tw"
+    assert source_plan_for_instrument({"symbol": "3483", "instrument_type": "listed_or_otc_equity", "market": "tpex"})["ex_ch"] == "otc_3483.tw"
+    assert source_plan_for_instrument({"symbol": "3543", "instrument_type": "listed_equity", "market": "twse"})["ex_ch"] == "tse_3543.tw"
     tx = source_plan_for_instrument({"symbol": "TX", "instrument_type": "futures", "market": "taifex"})
     assert tx["source"] == "TAIFEX"
     assert tx["status"] == "unsupported_in_m5k_initial"
@@ -80,6 +82,8 @@ def test_plan_live_observation_has_no_network_or_write_and_uses_routes():
     routes = {route["symbol"]: route for route in plan["planned_routes"]}
     assert routes["TAIEX"]["ex_ch"] == "tse_t00.tw"
     assert routes["1569"]["ex_ch"].startswith("otc_")
+    assert routes["3483"]["ex_ch"] == "otc_3483.tw"
+    assert routes["3543"]["ex_ch"] == "tse_3543.tw"
     assert routes["TX"]["status"] == "unsupported_in_m5k_initial"
 
 
