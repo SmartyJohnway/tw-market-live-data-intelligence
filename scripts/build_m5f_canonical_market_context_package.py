@@ -23,6 +23,7 @@ FORBIDDEN_PREFIXES=('research/generated','frontend/public','research/staging/m5c
 
 def dump(obj): return json.dumps(obj,ensure_ascii=False,indent=2,sort_keys=True,allow_nan=False)+"\n"
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def write_lf(path:Path, text:str): Path(path).write_bytes(text.encode('utf-8'))
 def rel(p):
     rp=Path(p).resolve()
     try: return rp.relative_to(REPO).as_posix()
@@ -168,9 +169,9 @@ def write_package(out:Path, artifacts:dict):
     tmp=Path(tempfile.mkdtemp(prefix='.m5f_tmp_',dir=parent))
     backup=None
     try:
-        for name,obj in artifacts.items(): (tmp/name).write_text(obj if isinstance(obj,str) else dump(obj),encoding='utf-8')
+        for name,obj in artifacts.items(): write_lf(tmp/name, obj if isinstance(obj,str) else dump(obj))
         manifest={'schema_version':'m5f_sha256_manifest.v1','package_id':'m5f_canonical_market_context_01','manifest_final':True,'no_artifact_modification_after_manifest':True,'files':{name:sha(tmp/name) for name in FILES},'lineage_hashes':artifacts['canonical_market_context.json']['lineage_hashes'],'governance':artifacts['canonical_market_context.json']['governance']}
-        (tmp/'sha256_manifest.json').write_text(dump(manifest),encoding='utf-8')
+        write_lf(tmp/'sha256_manifest.json', dump(manifest))
         if out.exists():
             backup=parent/(out.name+'.previous')
             if backup.exists(): shutil.rmtree(backup)

@@ -668,10 +668,10 @@ def _build_temp_m5f_package(tmp_path, stale_status, badge):
     data['stale_status']=stale_status; data['badge']=badge
     for row in data['symbols']:
         row['freshness_status']=stale_status; row['delay_status']=stale_status
-    (cand/'market-context.json').write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False)+'\n')
+    (cand/'market-context.json').write_bytes((json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False)+'\n').encode('utf-8'))
     manifest=json.loads((cand/'sha256_manifest.json').read_text())
     manifest['files']['market-context.json']=hashlib.sha256((cand/'market-context.json').read_bytes()).hexdigest()
-    (cand/'sha256_manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True)+'\n')
+    (cand/'sha256_manifest.json').write_bytes((json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True)+'\n').encode('utf-8'))
     pkg=tmp_path/'pkg'; write_package(pkg, build_package(cand/'market-context.json'))
     return pkg
 

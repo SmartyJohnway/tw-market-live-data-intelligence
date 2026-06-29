@@ -9,6 +9,13 @@ def test_validate_package_exact_values():
 def test_deterministic_rebuild(tmp_path):
  out=tmp_path/'pkg'; write_package(out, build_package());
  for p in PKG.iterdir(): assert p.read_bytes()==(out/p.name).read_bytes()
+
+def test_write_package_uses_lf_bytes_for_hash_bound_artifacts(tmp_path):
+ out=tmp_path/'pkg'; write_package(out, build_package()); validate_package(out)
+ for p in out.iterdir():
+  if p.suffix in {'.json', '.md'}:
+   assert b'\r\n' not in p.read_bytes()
+
 def test_manifest_tampering_rejected(tmp_path):
  out=tmp_path/'pkg'; shutil.copytree(PKG,out); data=json.loads((out/'canonical_market_context.json').read_text()); data['symbols'][0]['price_like_value']=1; (out/'canonical_market_context.json').write_text(json.dumps(data));
  with pytest.raises(ValueError): validate_package(out)
@@ -39,6 +46,17 @@ def test_extra_non_json_file_rejected(tmp_path):
 
 def test_committed_package_still_validates():
     assert validate_package(PKG)['status']=='passed'
+
+
+def test_hash_bound_artifacts_are_lf_pinned_by_gitattributes():
+    attrs = Path('.gitattributes').read_text(encoding='utf-8')
+    for pattern in [
+        'research/staging/m5f/**/*.json text eol=lf',
+        'research/staging/m5f/**/*.md text eol=lf',
+        'research/staging/m5d/**/*.json text eol=lf',
+        'research/staging/m5c/**/*.json text eol=lf',
+    ]:
+        assert pattern in attrs
 
 
 def test_builder_rejects_repo_directories():
@@ -94,11 +112,11 @@ def _write_candidate_fixture(tmp_path, mutate):
     out=tmp_path/f'candidate_{len(list(tmp_path.iterdir()))}'; shutil.copytree(src,out)
     data=json.loads((out/'market-context.json').read_text())
     mutate(data)
-    (out/'market-context.json').write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False)+'\n')
+    (out/'market-context.json').write_bytes((json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False)+'\n').encode('utf-8'))
     manifest=json.loads((out/'sha256_manifest.json').read_text())
     import hashlib
     manifest['files']['market-context.json']=hashlib.sha256((out/'market-context.json').read_bytes()).hexdigest()
-    (out/'sha256_manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True)+'\n')
+    (out/'sha256_manifest.json').write_bytes((json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True)+'\n').encode('utf-8'))
     return out/'market-context.json'
 
 
