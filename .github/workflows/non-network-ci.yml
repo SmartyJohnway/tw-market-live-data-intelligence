@@ -15,7 +15,7 @@ jobs:
       - name: Install test dependencies
         run: python -m pip install -r requirements.txt
       - name: Compile scripts and tests
-        run: python -m compileall scripts tests
+        run: python -m compileall scripts server tests
       - name: Run non-network tests
         run: pytest -m "not network"
       - name: Run local delivery acceptance check-only
@@ -42,6 +42,12 @@ jobs:
       - name: M5D rollback simulation check-only
         run: python scripts/simulate_m5d_frontend_publication_rollback.py --check-only
 
+      - name: M5IJ end-to-end acceptance check-only
+        run: python scripts/run_m5ij_end_to_end_acceptance.py --check-only
+      - name: Validate M5F package
+        run: python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01
+      - name: M5IJ acceptance check-only
+        run: python scripts/run_m5ij_end_to_end_acceptance.py --check-only
       - name: M5E controlled frontend publication release gate check-only
         run: python scripts/run_m5e_controlled_frontend_publication.py --check-only
 
@@ -56,8 +62,10 @@ jobs:
       - name: Install test dependencies
         run: python -m pip install -r requirements.txt
       - name: Compile M5F/FastAPI/MCP surfaces
-        run: python -m compileall scripts server tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py
+        run: python -m compileall scripts server tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_end_to_end_acceptance.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py
       - name: Run Windows M5F non-network smoke tests
-        run: pytest -m "not network" tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py -q
+        run: pytest -m "not network" tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_end_to_end_acceptance.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py -q
       - name: Validate M5F package
         run: python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01
+      - name: M5IJ Windows acceptance
+        run: python scripts/run_m5ij_end_to_end_acceptance.py --check-only
