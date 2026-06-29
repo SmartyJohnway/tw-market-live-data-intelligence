@@ -2,6 +2,8 @@ from __future__ import annotations
 import json, subprocess, sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[2]
 import pytest
 from scripts.m5i_common import validate_authorization, claim_authorization, SOURCE
 
@@ -26,11 +28,11 @@ def test_authorization_rejects_invalid_contracts(override, targets, code):
     assert code in validate_authorization(a, targets)
 
 def test_check_only_no_network_no_writes():
-    r=subprocess.run([sys.executable,'scripts/run_m5i_explicit_bounded_refresh.py','--check-only'],text=True,capture_output=True,check=True)
+    r=subprocess.run([sys.executable, str(REPO/'scripts/run_m5i_explicit_bounded_refresh.py'), '--check-only'], cwd=REPO, text=True, capture_output=True, check=True)
     data=json.loads(r.stdout); assert data['network_calls'] is False and data['artifact_writes'] is False
 
 def test_execute_requires_authorization():
-    r=subprocess.run([sys.executable,'scripts/run_m5i_explicit_bounded_refresh.py','--execute-refresh','--source','TWSE_OpenAPI','--targets','0050'],text=True,capture_output=True)
+    r=subprocess.run([sys.executable, str(REPO/'scripts/run_m5i_explicit_bounded_refresh.py'), '--execute-refresh', '--source', 'TWSE_OpenAPI', '--targets', '0050'], cwd=REPO, text=True, capture_output=True)
     assert r.returncode != 0
 
 def test_single_use_claim_atomic(tmp_path, monkeypatch):

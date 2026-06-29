@@ -90,6 +90,8 @@ def check_output_dir(path:Path):
     # may ever be recursively replaced.
     if r == default:
         return
+    if r == REPO or r.is_relative_to(REPO):
+        raise ValueError('output path must be the fixed M5F package path or an explicit system temp test path')
     tmp_root = Path(tempfile.gettempdir()).resolve()
     if r == tmp_root or r.is_relative_to(tmp_root):
         return
