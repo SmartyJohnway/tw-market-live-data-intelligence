@@ -1,8 +1,6 @@
 """MCP server for readonly Taiwan market context artifacts.
 
-MCP-01 exposes local readonly context tools first. MCP-02 adds one explicit,
-confirmed, bounded controlled live-probe evidence entrypoint. The module still
-does not import or expose legacy individual live probe functions.
+MCP exposes local readonly M5F context tools. Legacy live execution helpers are fail-closed pending M5I authorization and are not listed as available tools.
 """
 
 from __future__ import annotations
@@ -733,7 +731,7 @@ def unavailable_tool_response(tool_name: str) -> dict[str, Any]:
 
 @app.list_tools()
 async def list_tools() -> list[Tool]:
-    """List readonly local context tools plus explicit controlled MCP-02/MCP-03 tools."""
+    """List readonly local context tools and readonly evidence/readiness tools only."""
     readonly_tools = [
         Tool(
             name=name,
