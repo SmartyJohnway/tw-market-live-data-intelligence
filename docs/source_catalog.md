@@ -91,3 +91,10 @@ Generated automatically by probes. Details specific source capabilities.
 ## M5B bounded TWSE_OpenAPI execution evidence (2026-06-27)
 
 TWSE_OpenAPI was probed once through the bounded M5B runner for targets 2330, 0050, and 00929 only. The official endpoint used was `https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL`; no credentials, cookies, fallback source, or full-market retention were used. The retained evidence is staging-only under `research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z/` and preserves EOD/reference semantics without any realtime guarantee.
+
+## M5K source catalog additions
+
+- **TWSE MIS**: official browser JSON endpoint candidate used only for explicit bounded M5K observation. Request method: GET. Required headers: a local User-Agent only; no cookies or credentials are required by the implementation. Status code and response sample are recorded in each observation payload when execution occurs. Parsed fields include symbol, source timestamp, price-like value, retrieval time, source, freshness assessment, delay status, and raw field sample. Maintenance risk: browser-oriented endpoint. AI suitability: good for bounded conversational observation with strong caveats; not canonical and not realtime-guaranteed.
+- **TWSE OpenAPI STOCK_DAY_ALL**: official EOD/reference endpoint retained as a fallback preference for equities/ETFs. It is not used as M5K's primary current observation source because its semantics are EOD/batch.
+- **TPEx OpenAPI**: official OTC source family retained as a future route for OTC-like instruments; not silently adopted for initial M5K live execution.
+- **TAIFEX**: official futures source family required for TX futures, but initial M5K does not execute it until futures contract mapping and timestamp semantics are validated.

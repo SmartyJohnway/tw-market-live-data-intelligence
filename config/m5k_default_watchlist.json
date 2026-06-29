@@ -1,0 +1,53 @@
+{
+  "schema_version": "m5k_watchlist.v1",
+  "watchlist_id": "m5k_default_taiwan_ai_watchlist",
+  "name": "M5K Default Taiwan AI Watchlist",
+  "description": "Default bounded watchlist for local AI-assisted Taiwan market observation. Instruments may use different sources and must not be treated as trading recommendations.",
+  "created_by": "repository_default",
+  "governance": {
+    "canonical": false,
+    "promote_to_m5f": false,
+    "trading_signal": false,
+    "investment_advice": false,
+    "bounded_observation_only": true
+  },
+  "categories": [
+    {
+      "category_id": "taiwan_etf",
+      "label": "Taiwan ETFs",
+      "instruments": [
+        {"symbol": "00878", "name": "00878", "instrument_type": "listed_etf", "preferred_sources": ["TWSE_MIS", "TWSE_OpenAPI"]},
+        {"symbol": "00919", "name": "00919", "instrument_type": "listed_etf", "preferred_sources": ["TWSE_MIS", "TWSE_OpenAPI"]},
+        {"symbol": "00929", "name": "00929", "instrument_type": "listed_etf", "preferred_sources": ["TWSE_MIS", "TWSE_OpenAPI"]},
+        {"symbol": "00934", "name": "00934", "instrument_type": "listed_etf", "preferred_sources": ["TWSE_MIS", "TWSE_OpenAPI"]},
+        {"symbol": "00939", "name": "00939", "instrument_type": "listed_etf", "preferred_sources": ["TWSE_MIS", "TWSE_OpenAPI"]},
+        {"symbol": "00940", "name": "00940", "instrument_type": "listed_etf", "preferred_sources": ["TWSE_MIS", "TWSE_OpenAPI"]},
+        {"symbol": "00981A", "name": "00981A", "instrument_type": "listed_etf", "preferred_sources": ["TWSE_MIS", "TWSE_OpenAPI"]},
+        {"symbol": "0050", "name": "0050", "instrument_type": "listed_etf", "preferred_sources": ["TWSE_MIS", "TWSE_OpenAPI"]}
+      ]
+    },
+    {
+      "category_id": "taiwan_equity",
+      "label": "Taiwan Equities",
+      "instruments": [
+        {"symbol": "1569", "name": "1569", "instrument_type": "listed_or_otc_equity", "preferred_sources": ["TWSE_MIS", "TPEx_OpenAPI", "TWSE_OpenAPI"]},
+        {"symbol": "2324", "name": "2324", "instrument_type": "listed_equity", "preferred_sources": ["TWSE_MIS", "TWSE_OpenAPI"]},
+        {"symbol": "2603", "name": "2603", "instrument_type": "listed_equity", "preferred_sources": ["TWSE_MIS", "TWSE_OpenAPI"]},
+        {"symbol": "2609", "name": "2609", "instrument_type": "listed_equity", "preferred_sources": ["TWSE_MIS", "TWSE_OpenAPI"]},
+        {"symbol": "3293", "name": "3293", "instrument_type": "listed_or_otc_equity", "preferred_sources": ["TWSE_MIS", "TPEx_OpenAPI", "TWSE_OpenAPI"]},
+        {"symbol": "3483", "name": "3483", "instrument_type": "listed_equity", "preferred_sources": ["TWSE_MIS", "TWSE_OpenAPI"]},
+        {"symbol": "3543", "name": "3543", "instrument_type": "listed_or_otc_equity", "preferred_sources": ["TWSE_MIS", "TPEx_OpenAPI", "TWSE_OpenAPI"]},
+        {"symbol": "2317", "name": "2317", "instrument_type": "listed_equity", "preferred_sources": ["TWSE_MIS", "TWSE_OpenAPI"]},
+        {"symbol": "2330", "name": "2330", "instrument_type": "listed_equity", "preferred_sources": ["TWSE_MIS", "TWSE_OpenAPI"]}
+      ]
+    },
+    {
+      "category_id": "index_and_futures",
+      "label": "Index and Futures",
+      "instruments": [
+        {"symbol": "TAIEX", "name": "TAIEX", "instrument_type": "index", "preferred_sources": ["TWSE_MIS"]},
+        {"symbol": "TX", "display_symbol": "TX futures", "name": "TX futures", "instrument_type": "futures", "preferred_sources": ["TAIFEX"]}
+      ]
+    }
+  ]
+}

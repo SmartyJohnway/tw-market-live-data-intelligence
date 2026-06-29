@@ -38,3 +38,27 @@ PR #59 / M5E is treated as merged upstream. M5FGH converges the reviewed M5C/M5D
 North Star: a local-first, bounded-watchlist, explicit manual-refresh Taiwan market context center shared by browser and AI Agents. The package is historical/stale reviewed evidence for 0050, 00929, and 2330 from TWSE_OpenAPI source date 2026-06-26; it is not realtime, not production current state, not full-market coverage, and not a trading signal.
 
 Historical M3 generated artifacts under `research/generated/` remain legacy generated artifacts. M5F is the current canonical consumer package. Bounded live evidence exists in prior governed evidence, so the repo is not fixture-only, but M5FGH does not run new live probes. The only remaining main bundle after this closure is M5IJ for future explicitly authorized refresh execution and final release hardening.
+
+## M5K Level 2 Live Observation Layer
+
+M5K is the Level 2 layer beside, not inside, M5F. M5F remains the Level 1 canonical product context: reviewed, validated, reproducible, historical/EOD, deterministic, promotion-based, and package-oriented. FastAPI, MCP, and the readonly frontend continue to read M5F by default and startup remains network-free.
+
+M5K adds a bounded local AI workflow:
+
+- **Mode A — Canonical Discussion:** AI reads only M5F artifacts for historical, reviewed, deterministic context.
+- **Mode B — Manual Live Observation:** a user explicitly executes one bounded observation from a watchlist; the result is written only under `research/live_observation_runs/m5k/latest_observation.json` and never overwrites M5F.
+- **Mode C — Conversational Watchlist Workflow:** AI and user create or modify an `m5k_watchlist.v1` artifact, the frontend imports/edits/exports it, the frontend executes one bounded observation, and MCP/FastAPI can read the resulting observation back into the same conversation.
+
+The machine-readable handoff is `m5k_conversation_handoff.v1`. It contains the watchlist, validation result, frontend actions, and governance caveats. M5K prohibits full-market scans, polling, scheduling, automatic startup refresh, trading recommendations, target prices, ranking, broker integration, authentication, and automatic orders.
+
+### Source Investigation
+
+Endpoints investigated for M5K:
+
+1. **TWSE MIS** — `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=...&json=1&delay=0`. Accepted for bounded observation candidates for TWSE-listed equities, ETFs, and TAIEX because the existing repository already investigates TWSE MIS and the endpoint supports compact symbol-bounded requests. Limitations: browser-oriented JSON endpoint, realtime status is not guaranteed by M5K, exchange/source timestamp must be displayed, missing symbols are recorded as failures, and the source is not canonical.
+2. **TWSE OpenAPI STOCK_DAY_ALL** — `https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL`. Retained as an official EOD/reference fallback in source preference metadata, but not used as the primary M5K observation source because M5K is for current bounded observation while this endpoint is EOD/batch oriented.
+3. **TPEx OpenAPI** — retained in watchlist source preferences for OTC-like instruments. Initial M5K implementation records source preference but does not silently route unverified OTC live observation through an undocumented endpoint.
+4. **TAIFEX** — identified for TX futures. Rejected for initial automatic execution because futures contract mapping and endpoint semantics require a separate verified contract. M5K records TX futures as unsupported in the initial live observation result rather than fabricating data.
+5. **Yahoo/third-party/commercial APIs** — not adopted for default M5K because official or semi-official sources are preferred and credentialed APIs must not be hardcoded.
+
+Future recommendations: add a dedicated TAIFEX futures adapter with explicit contract-month semantics; add a verified TPEx live quote route if a stable official endpoint is confirmed; keep source routing per instrument category rather than assuming one source fits all instruments.

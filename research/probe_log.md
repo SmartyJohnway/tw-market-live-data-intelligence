@@ -48,3 +48,10 @@
 - Freshness assessment: EOD/reference, realtime not guaranteed
 - Legal/maintenance risk: official public endpoint; schema drift and public rate limits possible
 - AI integration suitability: bounded staging-only EOD/reference evidence; no production promotion or trading signal
+
+## M5K source investigation log
+
+- TWSE MIS bounded quote endpoint was selected as the initial M5K current-observation candidate for listed equities, ETFs, and TAIEX. Probe execution is explicit only through M5K APIs/CLI, records URL, status code when available, response sample, parsed fields, source timestamp, retrieval timestamp, freshness caveat, maintenance risk, and AI suitability in the observation payload.
+- TWSE OpenAPI `STOCK_DAY_ALL` remains an official EOD endpoint and is documented as a fallback preference, but rejected as the primary M5K live observation feed because it does not provide an intraday live guarantee.
+- TPEx OpenAPI remains a documented future route for OTC-like instruments; initial M5K avoids unverified automatic routing.
+- TAIFEX is required for TX futures, but rejected for initial execution until a contract-month mapping and endpoint contract are validated. TX futures therefore appears as an explicit unsupported observation failure rather than fabricated data.

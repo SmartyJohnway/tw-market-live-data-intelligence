@@ -19,3 +19,16 @@
 | Source | Bounded targets | Live execution | Contract status | Freshness/delay | Production promotion | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | TWSE_OpenAPI | 2330, 0050, 00929 | Executed once | normalized_pass | EOD/reference; realtime not guaranteed | false | Staging-only evidence package; no non-target rows retained. |
+
+## M5K capability matrix
+
+| Capability | M5F Level 1 | M5K Level 2 |
+| --- | --- | --- |
+| Canonical context | Yes | No |
+| Default startup network access | No | No |
+| Explicit bounded observation | No | Yes |
+| Watchlist import/export/edit | No | Yes |
+| Conversation handoff | Stable context only | `m5k_conversation_handoff.v1` |
+| Frontend publication | Governed M5D/M5F only | Never writes `frontend/public` |
+| Promotion | Reviewed package promotion | Never automatic |
+| Trading signals | Prohibited | Prohibited |

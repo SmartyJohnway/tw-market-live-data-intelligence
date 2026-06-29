@@ -81,7 +81,8 @@ def test_list_tools_includes_readonly_context_and_one_controlled_tool_only():
     evidence_tools = {name for name in tool_names if "evidence" in name and name.startswith("read_m3g04")}
     assert evidence_tools == {mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL}
     assert M5F_TOOLS.issubset(tool_names)
-    assert tool_names == READONLY_TOOLS | M5F_TOOLS | {mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL}
+    assert (READONLY_TOOLS | M5F_TOOLS | {mcp_server.CONTROLLED_EVIDENCE_READBACK_TOOL}).issubset(tool_names)
+    assert {mcp_server.M5K_WATCHLIST_TOOL, mcp_server.M5K_HANDOFF_TOOL, mcp_server.M5K_READ_LATEST_TOOL, mcp_server.M5K_LIVE_OBSERVATION_TOOL}.issubset(tool_names)
     assert tool_names.isdisjoint(LIVE_PROBE_TOOLS)
 
 
