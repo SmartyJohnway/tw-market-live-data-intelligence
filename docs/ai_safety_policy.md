@@ -17,3 +17,25 @@ Only discuss the symbols present in the canonical payload. Do not infer market-w
 
 ## Failure behavior
 If package validation fails or a consumer reports malformed/missing artifacts, refuse market summarization and ask the operator to restore or rebuild the canonical package through the validator and builder.
+
+
+## M5IJ local product release
+
+M5F is the canonical product context. M5I is explicit bounded refresh only; M5J is final local release hardening. Default startup makes no market-data network calls. Refresh requires explicit single-use authorization and is bounded to the configured watchlist and product scope. Failed refresh preserves last-known-good M5F. No full-market scan, polling, frontend/public publication, research/generated refresh, production/prod write, broker/auth, automatic order, trading signal, target price, ranking, or recommendation is allowed. FastAPI `/api/probe/*` is disabled pending M5I and returns 410.
+
+Required commands:
+
+```bash
+python -m pip install -r requirements.txt
+pytest -m "not network" -v
+python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01
+python scripts/run_m5ij_end_to_end_acceptance.py --check-only
+uvicorn server.main:app --host 127.0.0.1 --port 8000
+python server/mcp_server.py --startup-check
+```
+
+Explicit authorization refresh command, if supported by the operator environment:
+
+```bash
+python scripts/run_m5i_explicit_bounded_refresh.py --execute-refresh --authorization-token <authorization.json> --source TWSE_OpenAPI --targets 0050 00929 2330 --no-frontend-publication --no-production-refresh --no-generated-refresh --no-trading-output
+```

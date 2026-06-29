@@ -115,13 +115,18 @@ def verify_input(candidate_path:Path):
     if sha(candidate_path)!=m5d_manifest['files']['market-context.json']: raise ValueError('candidate hash mismatch')
     binding=load(m5d_dir/'source_binding.json')
     if sha(m5d_dir/'source_binding.json')!=m5d_manifest['files']['source_binding.json']: raise ValueError('source binding hash mismatch')
-    m5c_dir=REPO/binding['m5c_package_dir']
-    m5c_manifest_path=m5c_dir/'sha256_manifest.json'
-    m5c_pkg=m5c_dir/'frontend_readonly_context_package.json'
-    if sha(m5c_manifest_path)!=binding['m5c_manifest_sha256']: raise ValueError('m5c manifest hash mismatch')
-    if sha(m5c_pkg)!=binding['m5c_frontend_readonly_context_package_sha256']: raise ValueError('m5c package hash mismatch')
-    _find_file_by_sha(REPO/'research/staging/m5c', binding['m5c_supplemental_audit_sha256'], 'm5c supplemental audit')
-    _find_file_by_sha(REPO/'research/staging/m5c', binding['m5c_run_summary_destination_correction_sha256'], 'm5c destination correction')
+    is_m5i = str(c.get('schema_version','')).startswith('m5i_refresh_candidate') or str(binding.get('schema_version','')).startswith('m5i_source_binding')
+    if is_m5i:
+        m5c_manifest={'files':{}}
+    else:
+        m5c_dir=REPO/binding['m5c_package_dir']
+        m5c_manifest_path=m5c_dir/'sha256_manifest.json'
+        m5c_pkg=m5c_dir/'frontend_readonly_context_package.json'
+        m5c_manifest=load(m5c_manifest_path)
+        if sha(m5c_manifest_path)!=binding['m5c_manifest_sha256']: raise ValueError('m5c manifest hash mismatch')
+        if sha(m5c_pkg)!=binding['m5c_frontend_readonly_context_package_sha256']: raise ValueError('m5c package hash mismatch')
+        _find_file_by_sha(REPO/'research/staging/m5c', binding['m5c_supplemental_audit_sha256'], 'm5c supplemental audit')
+        _find_file_by_sha(REPO/'research/staging/m5c', binding['m5c_run_summary_destination_correction_sha256'], 'm5c destination correction')
     rows=c.get('symbols',[])
     syms={s.get('symbol'):s for s in rows if isinstance(s, dict)}
     if not syms: raise ValueError('no symbols in candidate')
@@ -138,11 +143,13 @@ def verify_input(candidate_path:Path):
     for s in syms.values():
         validate_symbol_shape(s)
     for k,v in {'historical_evidence_snapshot':True,'current_realtime':False,'production_current_state':False,'production_ready':False,'realtime_guaranteed':False,'trading_signal':False,'readonly_only':True}.items():
-        if c.get(k)!=v: raise ValueError(f'bad flag {k}')
+        if c.get(k)!=v:
+            if not (k == 'historical_evidence_snapshot' and c.get('reviewed_refresh_snapshot') is True):
+                raise ValueError(f'bad flag {k}')
     if c.get('stale_status') not in ALLOWED_FRESHNESS or c.get('badge') not in ALLOWED_BADGES:
         raise ValueError('bad freshness badge')
     if not set(REQ_CAVEATS).issubset(c.get('global_caveats',[])): raise ValueError('missing caveat')
-    return c,binding,m5d_manifest,load(m5c_manifest_path)
+    return c,binding,m5d_manifest,m5c_manifest
 
 def build_package(candidate_path=DEFAULT_INPUT):
     c,binding,m5d_manifest,m5c_manifest=verify_input(Path(candidate_path))
@@ -151,7 +158,7 @@ def build_package(candidate_path=DEFAULT_INPUT):
     source_ids=sorted({s['source_id'] for s in symbols})
     source_dates=sorted({s['source_timestamp'] for s in symbols})
     if len(source_ids)!=1 or len(source_dates)!=1: raise ValueError('canonical source/date must be unique')
-    canonical={'schema_version':'m5f_canonical_market_context.v1','package_id':'m5f_canonical_market_context_01','derived_from':rel(candidate_path),'generated_at_utc':c['generated_at_utc'],'source':source_ids[0],'source_date':source_dates[0],'symbols':symbols,'failed_targets':[],'global_caveats':list(c.get('global_caveats', REQ_CAVEATS)),'governance':base_gov,'lineage_hashes':{'m5d_market_context_sha256':m5d_manifest['files']['market-context.json'],'m5d_manifest_sha256':sha(Path(candidate_path).parent/'sha256_manifest.json'),'m5d_source_binding_sha256':m5d_manifest['files']['source_binding.json'],'m5c_frontend_readonly_context_package_sha256':binding['m5c_frontend_readonly_context_package_sha256'],'m5c_manifest_sha256':binding['m5c_manifest_sha256'],'m5c_supplemental_audit_sha256':binding['m5c_supplemental_audit_sha256'],'m5c_run_summary_destination_correction_sha256':binding['m5c_run_summary_destination_correction_sha256']},'notes':['latest reviewed bounded evidence','not current realtime market state','not a trading signal']}
+    canonical={'schema_version':'m5f_canonical_market_context.v1','package_id':'m5f_canonical_market_context_01','derived_from':rel(candidate_path),'generated_at_utc':c['generated_at_utc'],'source':source_ids[0],'source_date':source_dates[0],'symbols':symbols,'failed_targets':[],'global_caveats':list(c.get('global_caveats', REQ_CAVEATS)),'governance':base_gov,'lineage_hashes':{'m5d_market_context_sha256':m5d_manifest['files']['market-context.json'],'m5d_manifest_sha256':sha(Path(candidate_path).parent/'sha256_manifest.json'),'m5d_source_binding_sha256':m5d_manifest['files']['source_binding.json'],'m5c_frontend_readonly_context_package_sha256':binding.get('m5c_frontend_readonly_context_package_sha256','not_applicable_m5i_refresh'),'m5c_manifest_sha256':binding.get('m5c_manifest_sha256','not_applicable_m5i_refresh'),'m5c_supplemental_audit_sha256':binding.get('m5c_supplemental_audit_sha256','not_applicable_m5i_refresh'),'m5c_run_summary_destination_correction_sha256':binding.get('m5c_run_summary_destination_correction_sha256','not_applicable_m5i_refresh')},'notes':['latest reviewed bounded evidence','not current realtime market state','not a trading signal']}
     snapshot=build_snapshot_from_m5f_canonical(canonical)
     obs=build_watchlist_observations_from_m5f_canonical(canonical)
     ai=build_ai_context_pack_from_m5f_canonical(canonical)
@@ -159,7 +166,7 @@ def build_package(candidate_path=DEFAULT_INPUT):
     briefing=render_chatgpt_briefing_from_m5f_canonical(canonical)
     health={'schema_version':'m5f_source_health.v1','source_id':canonical['source'],'source_authority':symbols[0].get('source_authority','unknown'),'status':'available_as_reviewed_historical_evidence','stale_status':base_gov['stale_status'],'source_date':canonical['source_date'],'source_risk_flags':symbols[0]['source_risk_flags'],'failed_targets':[],'governance':base_gov}
     cap={'schema_version':'m5f_capability_summary.v1','canonical_context':'available','bounded_watchlist':True,'symbol_count':len(symbols),'source':canonical['source'],'source_date':canonical['source_date'],'realtime_supported':False,'production_ready':False,'readonly_only':True,'governance':base_gov}
-    lineage={'schema_version':'m5f_lineage.v1','upstream_chain':['M5D candidate manifest','M5C frontend readonly context package','M5C manifest/audit/correction','M5B bounded TWSE_OpenAPI evidence'],'hashes':canonical['lineage_hashes'],'source_binding':binding,'governance':base_gov}
+    lineage={'schema_version':'m5f_lineage.v1','upstream_chain':(['M5I explicit bounded refresh candidate','M5I source binding','M5I bounded TWSE_OpenAPI refresh evidence'] if str(c.get('schema_version','')).startswith('m5i_refresh_candidate') else ['M5D candidate manifest','M5C frontend readonly context package','M5C manifest/audit/correction','M5B bounded TWSE_OpenAPI evidence']),'hashes':canonical['lineage_hashes'],'source_binding':binding,'governance':base_gov}
     val={'schema_version':'m5f_validation_report.v1','status':'passed','checks':['exact_file_set','manifest_hashes','symbols_source_date_values','lineage_hashes','required_caveats','required_false_flags','no_trading_recommendation_fields','no_endpoint_payload_leakage'],'governance':base_gov}
     return {'canonical_market_context.json':canonical,'latest_market_snapshot.json':snapshot,'watchlist_observations.json':obs,'ai_context_pack.json':ai,'ai_context_pack.md':ai_md,'chatgpt_briefing.md':briefing,'source_health.json':health,'capability_summary.json':cap,'lineage.json':lineage,'validation_report.json':val}
 
