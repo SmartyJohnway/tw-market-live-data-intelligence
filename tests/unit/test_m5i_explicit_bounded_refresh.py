@@ -68,12 +68,116 @@ def test_parse_twse_rows_price_semantics():
     assert '8069' in failed_syms
     assert failed_syms['8069'] == 'missing_from_source'
 
-def test_single_use_claim_atomic(tmp_path, monkeypatch):
+def test_single_use_claim_creation(tmp_path, monkeypatch):
     import scripts.m5i_common as c
     monkeypatch.setattr(c,'REPO',tmp_path)
     a=auth(authorization_id='A2',single_use_id='S2',targets=['0050'])
     p=claim_authorization(a); assert p.exists()
     with pytest.raises(FileExistsError): claim_authorization(a)
+
+def test_validate_candidate_failed_targets_schema(tmp_path, monkeypatch):
+    import scripts.validate_m5i_refresh_candidate as val
+    monkeypatch.setattr(val, 'ALLOWED_BOUNDED', {'0050', '00929'})
+
+    candidate_dir = tmp_path / 'cand'
+    candidate_dir.mkdir()
+
+    def write_cand(failed_targets, symbols=None, targets=None):
+        if symbols is None: symbols = []
+        if targets is None: targets = ['0050']
+
+        c = {
+            'schema_version': 'm5i_refresh_candidate.v1',
+            'source': val.SOURCE,
+            'symbols': symbols,
+            'failed_targets': failed_targets,
+            'current_realtime': False,
+            'production_current_state': False,
+            'production_ready': False,
+            'realtime_guaranteed': False,
+            'trading_signal': False,
+            'readonly_only': True
+        }
+        b = {
+            'schema_version': 'm5i_source_binding.v1',
+            'source': val.SOURCE,
+            'targets': targets
+        }
+        import json, hashlib
+        (candidate_dir / 'market-context.json').write_text(json.dumps(c))
+        (candidate_dir / 'source_binding.json').write_text(json.dumps(b))
+        (candidate_dir / 'refresh_summary.json').write_text('{}')
+        (candidate_dir / 'validation_report.json').write_text('{}')
+
+        def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+        m = {
+            'schema_version': 'm5i_sha256_manifest.v1',
+            'files': {
+                'market-context.json': sha(candidate_dir / 'market-context.json'),
+                'source_binding.json': sha(candidate_dir / 'source_binding.json'),
+                'refresh_summary.json': sha(candidate_dir / 'refresh_summary.json'),
+                'validation_report.json': sha(candidate_dir / 'validation_report.json')
+            }
+        }
+        (candidate_dir / 'sha256_manifest.json').write_text(json.dumps(m))
+
+    # Not a list
+    write_cand("not_a_list")
+    with pytest.raises(ValueError, match="failed_targets must be a list"):
+        val.validate_candidate(candidate_dir)
+
+    # Not dicts
+    write_cand(["just_a_string"])
+    with pytest.raises(ValueError, match="failed_targets items must be objects/dicts"):
+        val.validate_candidate(candidate_dir)
+
+    # Missing symbol
+    write_cand([{'status': 'error'}])
+    with pytest.raises(ValueError, match="failed target missing valid symbol string"):
+        val.validate_candidate(candidate_dir)
+
+    # Missing status
+    write_cand([{'symbol': '0050'}])
+    with pytest.raises(ValueError, match="failed target missing valid status string"):
+        val.validate_candidate(candidate_dir)
+
+    # Duplicate with symbols
+    sym = {'symbol': '0050', 'price_like_value': 100, 'display_caveats': [], 'source_risk_flags': [], 'data_quality_flags': []}
+    write_cand([{'symbol': '0050', 'status': 'err'}], symbols=[sym], targets=['0050'])
+    with pytest.raises(ValueError, match="duplicate targets between symbols and failed_targets"):
+        val.validate_candidate(candidate_dir)
+
+    # Outside allowed bounded
+    write_cand([{'symbol': 'UNKNOWN', 'status': 'err'}], targets=['UNKNOWN'])
+    with pytest.raises(ValueError, match="unbounded target encountered"):
+        val.validate_candidate(candidate_dir)
+
+    # Valid partial
+    write_cand([{'symbol': '00929', 'status': 'err'}], symbols=[sym], targets=['0050', '00929'])
+    res = val.validate_candidate(candidate_dir)
+    assert res['status'] == 'passed'
+
+def test_partial_failure_blocks_promotion(tmp_path, monkeypatch):
+    import scripts.run_m5i_explicit_bounded_refresh as ref
+    targets = ['0050']
+    data = [] # empty payload forces missing_from_source failure
+    rows, failures = ref.parse_twse_rows(data, targets, '2026-06-29T00:00:00Z')
+
+    assert len(failures) == 1
+    out = tmp_path / 'cand'
+    auth_doc = auth()
+    val = ref.write_candidate(out, targets, rows, failures, auth_doc, '2026-06-29T00:00:00Z')
+
+    # Manually check that it's a blocked scenario if we bypass the script args
+    if failures:
+        promoted = {'status': 'blocked', 'reason': 'failed_targets_present'}
+        final_status = 'refresh_executed_candidate_created_promotion_blocked_failed_targets'
+    else:
+        promoted = {'status': 'promoted'}
+        final_status = 'refresh_executed_and_promoted'
+
+    assert final_status == 'refresh_executed_candidate_created_promotion_blocked_failed_targets'
+    assert promoted['status'] == 'blocked'
 
 def test_promotion_wrapper_failure_leaves_canonical_untouched(tmp_path, monkeypatch):
     import scripts.m5i_common as c

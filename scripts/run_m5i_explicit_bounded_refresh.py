@@ -63,7 +63,11 @@ def main():
     rows,fail=parse_twse_rows(data,a.targets,retrieved)
     out=Path(a.output_dir) if a.output_dir else REPO/'research/staging/m5i'/('m5i_refresh_candidate_'+retrieved.replace(':','').replace('-',''))
     val=write_candidate(out,a.targets,rows,fail,auth,retrieved)
-    promoted = promote_m5i_candidate_to_m5f(out)
-    final_status = 'refresh_executed_and_promoted' if promoted.get('status') == 'promoted' else 'refresh_executed_but_promotion_failed'
+    if fail:
+        promoted = {'status': 'blocked', 'reason': 'failed_targets_present'}
+        final_status = 'refresh_executed_candidate_created_promotion_blocked_failed_targets'
+    else:
+        promoted = promote_m5i_candidate_to_m5f(out)
+        final_status = 'refresh_executed_and_promoted' if promoted.get('status') == 'promoted' else 'refresh_executed_but_promotion_failed'
     print(dump({'status':final_status,'candidate_dir':str(out),'evidence_dir':str(evidence),'claim_file':str(claim),'http_status':status,**val,'network_calls_may_have_occurred':True, 'promotion': promoted})); return 0
 if __name__=='__main__': raise SystemExit(main())

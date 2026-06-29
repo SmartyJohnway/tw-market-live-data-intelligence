@@ -85,7 +85,13 @@ def run_checks():
     return checks, res
 
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument('--check-only',action='store_true'); ap.add_argument('--execute-refresh',action='store_true'); ap.add_argument('--authorization'); a=ap.parse_args()
+    ap=argparse.ArgumentParser()
+    group = ap.add_mutually_exclusive_group(required=True)
+    group.add_argument('--check-only',action='store_true')
+    group.add_argument('--execute-refresh',action='store_true')
+    ap.add_argument('--authorization')
+    a=ap.parse_args()
+
     if a.execute_refresh:
         if not a.authorization: print('authorization required',file=sys.stderr); return 2
         cmd=[sys.executable,'scripts/run_m5i_explicit_bounded_refresh.py','--execute-refresh','--authorization-token',a.authorization,'--source','TWSE_OpenAPI','--targets','0050','00929','2330','--no-frontend-publication','--no-production-refresh','--no-generated-refresh','--no-trading-output']

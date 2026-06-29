@@ -16,12 +16,26 @@ def validate_candidate(candidate_dir: Path):
     c=load(candidate_dir/'market-context.json'); b=load(candidate_dir/'source_binding.json')
     reject_forbidden(c); reject_forbidden(b)
     if c.get('schema_version')!='m5i_refresh_candidate.v1': raise ValueError('bad schema')
-    rows=c.get('symbols',[]); syms=[r.get('symbol') for r in rows]
-    failed_targets=[f.get('symbol') for f in c.get('failed_targets', [])]
+
+    rows=c.get('symbols',[])
+    syms=[r.get('symbol') for r in rows]
+
+    failed_targets_list=c.get('failed_targets', [])
+    if not isinstance(failed_targets_list, list): raise ValueError('failed_targets must be a list')
+
+    failed_targets = []
+    for f in failed_targets_list:
+        if not isinstance(f, dict): raise ValueError('failed_targets items must be objects/dicts')
+        sym = f.get('symbol')
+        status = f.get('status')
+        if not sym or not isinstance(sym, str): raise ValueError('failed target missing valid symbol string')
+        if not status or not isinstance(status, str): raise ValueError('failed target missing valid status string')
+        failed_targets.append(sym)
+
     combined_targets=syms + failed_targets
 
-    if sorted(combined_targets)!=sorted(b.get('targets',[])): raise ValueError('candidate symbols and failed_targets do not match binding targets')
     if len(combined_targets)!=len(set(combined_targets)): raise ValueError('duplicate targets between symbols and failed_targets')
+    if sorted(combined_targets)!=sorted(b.get('targets',[])): raise ValueError('candidate symbols and failed_targets do not match binding targets')
     if set(combined_targets)-ALLOWED_BOUNDED: raise ValueError('unbounded target encountered')
     if c.get('source')!=SOURCE or b.get('source')!=SOURCE: raise ValueError('bad source')
     for flag, val in {'current_realtime':False,'production_current_state':False,'production_ready':False,'realtime_guaranteed':False,'trading_signal':False,'readonly_only':True}.items():
