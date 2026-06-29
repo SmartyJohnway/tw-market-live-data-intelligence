@@ -33,8 +33,19 @@ def main():
     out=asyncio.run(mcp.call_tool('run_m3g04_controlled_live_probe_evidence',{}))[0].text
     check('disabled_pending_m5i' in out,'legacy_mcp_live_tool_disabled_direct_call',checks)
     check(asyncio.run(mcp.call_tool('get_canonical_market_context',{}))[0].text.find('canonical_market_context')>=0,'mcp_readonly_canonical',checks)
-    demo=subprocess.run([sys.executable,'scripts/run_m5e_controlled_frontend_publication.py','--check-only'],cwd=REPO,text=True,capture_output=True)
-    check(demo.returncode==0 and 'superseded_by_m5f' in demo.stdout,'m5e_superseded_by_m5f',checks)
+    try:
+        from scripts.run_m5e_controlled_frontend_publication import check_only as m5e_check_only
+        m5e = m5e_check_only()
+        m5e_ok = (
+            m5e.get('status') == 'superseded_by_m5f'
+            and m5e.get('superseded_by_m5f') is True
+            and m5e.get('publication_performed') is False
+            and m5e.get('frontend_publication_authorized') is False
+        )
+    except Exception as exc:
+        m5e = {'error': str(exc)}
+        m5e_ok = False
+    check(m5e_ok,'m5e_superseded_by_m5f',checks)
     readme=(REPO/'README.md').read_text(encoding='utf-8')
     check('M3G-08' not in readme and 'disabled pending M5I' in readme,'readme_stale_wording_removed',checks)
     git=subprocess.run(['git','diff','--name-only','origin/main...HEAD'],cwd=REPO,text=True,capture_output=True)
