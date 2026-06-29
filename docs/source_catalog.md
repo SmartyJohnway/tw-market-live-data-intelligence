@@ -98,3 +98,11 @@ TWSE_OpenAPI was probed once through the bounded M5B runner for targets 2330, 00
 - **TWSE OpenAPI STOCK_DAY_ALL**: official EOD/reference endpoint retained as a fallback preference for equities/ETFs. It is not used as M5K's primary current observation source because its semantics are EOD/batch.
 - **TPEx OpenAPI**: official OTC source family retained as a future route for OTC-like instruments; not silently adopted for initial M5K live execution.
 - **TAIFEX**: official futures source family required for TX futures, but initial M5K does not execute it until futures contract mapping and timestamp semantics are validated.
+
+## TAIFEX MIS TXF browser JSON endpoint (M5L validated)
+
+- Source type: official TAIFEX browser JSON endpoint, not TAIFEX OpenAPI.
+- Endpoint: `POST https://mis.taifex.com.tw/futures/api/getQuoteList`.
+- Accepted M5K use: bounded TX (`TXF` front-month) live observation with visible freshness/delay caveats.
+- Rejected use: M5F canonical promotion or SLA-backed real-time claim.
+- Evidence: `docs/m5l_taifex_live_source_validation.md` and `research/live_observation_runs/m5k/m5l_taifex_tx_live_observation_evidence.json`.

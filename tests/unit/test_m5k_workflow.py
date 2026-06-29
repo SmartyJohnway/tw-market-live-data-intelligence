@@ -69,7 +69,8 @@ def test_source_routing_plans_listed_otc_index_and_futures():
     assert source_plan_for_instrument({"symbol": "3543", "instrument_type": "listed_equity", "market": "twse"})["ex_ch"] == "tse_3543.tw"
     tx = source_plan_for_instrument({"symbol": "TX", "instrument_type": "futures", "market": "taifex"})
     assert tx["source"] == "TAIFEX"
-    assert tx["status"] == "unsupported_in_m5k_initial"
+    assert tx["status"] == "planned"
+    assert tx["contract_code"] == "TXF"
 
 
 def test_plan_live_observation_has_no_network_or_write_and_uses_routes():
@@ -84,7 +85,8 @@ def test_plan_live_observation_has_no_network_or_write_and_uses_routes():
     assert routes["1569"]["ex_ch"].startswith("otc_")
     assert routes["3483"]["ex_ch"] == "otc_3483.tw"
     assert routes["3543"]["ex_ch"] == "tse_3543.tw"
-    assert routes["TX"]["status"] == "unsupported_in_m5k_initial"
+    assert routes["TX"]["status"] == "planned"
+    assert routes["TX"]["route"] == "taifex_mis_getQuoteList"
 
 
 def test_observation_payload_does_not_expose_raw_field_sample():
@@ -125,9 +127,28 @@ def test_m5k_postmerge_validation_script_exists_and_is_check_only():
     assert "execute_live_observation" in script
 
 
-def test_tx_preflight_doc_keeps_execution_fail_closed():
-    doc = Path("docs/m5k_taifex_tx_futures_preflight.md").read_text(encoding="utf-8")
-    assert "implemented execution: false" in doc
-    assert "kept fail-closed: true" in doc
+def test_tx_validation_doc_and_evidence_capture_live_execution():
+    doc = Path("docs/m5l_taifex_live_source_validation.md").read_text(encoding="utf-8")
+    evidence = json.loads(Path("research/live_observation_runs/m5k/m5l_taifex_tx_live_observation_evidence.json").read_text(encoding="utf-8"))
+    assert "POST https://mis.taifex.com.tw/futures/api/getQuoteList" in doc
+    assert "CID=TXF" in doc
     assert "contract_month" in doc
-    assert "https://www.taifex.com.tw/enl/eng2/tX" in doc
+    tx_obs = next(obs for obs in evidence["observations"] if obs["symbol"] == "TX")
+    assert tx_obs["source"] == "TAIFEX"
+    assert tx_obs["contract_month"]
+    assert tx_obs["value"] is not None
+
+
+def test_taifex_contract_selection_and_normalization_fixture():
+    from scripts.m5k_common import _select_taifex_tx_contract, _parse_taifex_tx_item
+    rows = [
+        {"SymbolID": "TXF-S", "DispEName": "TXF", "CLastPrice": "44999.90", "CDate": "20260629", "CTime": "133325"},
+        {"SymbolID": "TXFH6-F", "DispEName": "TX086", "CLastPrice": "45803.00", "CDate": "20260629", "CTime": "134420"},
+        {"SymbolID": "TXFG6-F", "DispEName": "TX076", "CLastPrice": "45550.00", "CDate": "20260629", "CTime": "134459"},
+    ]
+    item = _select_taifex_tx_contract(rows)
+    assert item["SymbolID"] == "TXFG6-F"
+    obs = _parse_taifex_tx_item(item, {"symbol": "TX", "instrument_type": "futures"}, "2026-06-29T06:00:00Z")
+    assert obs["contract_month"] == "202607"
+    assert obs["value"] == 45550.0
+    assert obs["source_timestamp"] == "2026-06-29T13:44:59+08:00"
