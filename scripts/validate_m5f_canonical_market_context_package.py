@@ -31,7 +31,10 @@ def _canonical_checks(c):
 def validate_package(package_dir:Path):
     package_dir=package_dir.resolve()
     if not package_dir.is_dir(): raise ValueError('missing package dir')
-    names={p.name for p in package_dir.iterdir() if p.is_file()}
+    entries=list(package_dir.iterdir())
+    dirs=[p.name for p in entries if p.is_dir()]
+    if dirs: raise ValueError(f'unexpected package directory: {sorted(dirs)}')
+    names={p.name for p in entries if p.is_file()}
     if names!=FILES: raise ValueError(f'exact file set mismatch: {sorted(names)}')
     m=load(package_dir/'sha256_manifest.json')
     if m.get('manifest_final') is not True or m.get('no_artifact_modification_after_manifest') is not True: raise ValueError('manifest final flags missing')

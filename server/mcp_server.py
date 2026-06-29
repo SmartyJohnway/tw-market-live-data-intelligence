@@ -819,4 +819,8 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    if "--startup-check" in sys.argv:
+        _validate_m5f_package(REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01")
+        print("mcp_server_startup_check_ok")
+    else:
+        asyncio.run(main())

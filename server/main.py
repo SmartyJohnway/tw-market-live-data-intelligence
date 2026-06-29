@@ -162,14 +162,14 @@ def _read_m5f_artifact(filename: str, *, text: bool = False):
         raise HTTPException(status_code=409, detail={"error": "m5f_package_validation_failed", "message": str(exc), "governance": _m5f_governance()})
     path = M5F_PACKAGE_DIR / filename
     if not path.is_file():
-        raise HTTPException(status_code=404, detail={"error": "m5f_artifact_missing", "source_path": str(path.relative_to(REPO_ROOT)), "governance": _m5f_governance()})
+        raise HTTPException(status_code=404, detail={"error": "m5f_artifact_missing", "source_path": path.relative_to(REPO_ROOT).as_posix(), "governance": _m5f_governance()})
     try:
         if text:
-            return {"source_path": str(path.relative_to(REPO_ROOT)), "content": path.read_text(encoding="utf-8"), "governance": _m5f_governance()}
+            return {"source_path": path.relative_to(REPO_ROOT).as_posix(), "content": path.read_text(encoding="utf-8"), "governance": _m5f_governance()}
         data = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
-        raise HTTPException(status_code=422, detail={"error": "m5f_artifact_malformed", "source_path": str(path.relative_to(REPO_ROOT)), "message": exc.msg, "governance": _m5f_governance()})
-    return {"source_path": str(path.relative_to(REPO_ROOT)), "content": deepcopy(data), "governance": _m5f_governance()}
+        raise HTTPException(status_code=422, detail={"error": "m5f_artifact_malformed", "source_path": path.relative_to(REPO_ROOT).as_posix(), "message": exc.msg, "governance": _m5f_governance()})
+    return {"source_path": path.relative_to(REPO_ROOT).as_posix(), "content": deepcopy(data), "governance": _m5f_governance()}
 
 
 @app.get("/api/context/canonical")

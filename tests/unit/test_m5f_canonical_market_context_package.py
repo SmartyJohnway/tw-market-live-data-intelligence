@@ -19,6 +19,28 @@ def test_builder_rejects_forbidden_output():
  with pytest.raises(ValueError): write_package(Path('research/generated/m5f_bad'), build_package())
 
 
+def test_extra_directory_rejected(tmp_path):
+    out=tmp_path/'pkg'; shutil.copytree(PKG,out); (out/'unexpected_dir').mkdir()
+    with pytest.raises(ValueError, match='unexpected package directory'):
+        validate_package(out)
+
+
+def test_nested_unexpected_file_rejected(tmp_path):
+    out=tmp_path/'pkg'; shutil.copytree(PKG,out); nested=out/'unexpected_dir'; nested.mkdir(); (nested/'extra.json').write_text('{}')
+    with pytest.raises(ValueError, match='unexpected package directory'):
+        validate_package(out)
+
+
+def test_extra_non_json_file_rejected(tmp_path):
+    out=tmp_path/'pkg'; shutil.copytree(PKG,out); (out/'extra.bin').write_bytes(b'x')
+    with pytest.raises(ValueError, match='exact file set mismatch'):
+        validate_package(out)
+
+
+def test_committed_package_still_validates():
+    assert validate_package(PKG)['status']=='passed'
+
+
 def test_builder_rejects_repo_directories():
     import pytest
     from scripts.build_m5f_canonical_market_context_package import build_package, write_package
