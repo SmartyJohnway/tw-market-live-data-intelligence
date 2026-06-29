@@ -656,3 +656,34 @@ def test_mcp_server_cli_startup_imports_validator_without_repo_pythonpath():
     cp = subprocess.run([sys.executable, 'server/mcp_server.py', '--startup-check'], capture_output=True, text=True, env=env, timeout=10)
     assert cp.returncode == 0, cp.stderr
     assert 'mcp_server_startup_check_ok' in cp.stdout
+
+
+
+def _build_temp_m5f_package(tmp_path, stale_status, badge):
+    import hashlib, shutil
+    from scripts.build_m5f_canonical_market_context_package import build_package, write_package
+    src=Path('research/staging/m5d/m5d_frontend_publication_candidate_01')
+    cand=tmp_path/'candidate'; shutil.copytree(src,cand)
+    data=json.loads((cand/'market-context.json').read_text())
+    data['stale_status']=stale_status; data['badge']=badge
+    for row in data['symbols']:
+        row['freshness_status']=stale_status; row['delay_status']=stale_status
+    (cand/'market-context.json').write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False)+'\n')
+    manifest=json.loads((cand/'sha256_manifest.json').read_text())
+    manifest['files']['market-context.json']=hashlib.sha256((cand/'market-context.json').read_bytes()).hexdigest()
+    (cand/'sha256_manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True)+'\n')
+    pkg=tmp_path/'pkg'; write_package(pkg, build_package(cand/'market-context.json'))
+    return pkg
+
+
+def test_m5f_tool_governance_derives_freshness_from_temp_package(monkeypatch, tmp_path):
+    for status,badge in [('fresh','historical/fresh'),('delayed','historical/delayed')]:
+        pkg=_build_temp_m5f_package(tmp_path/status, status, badge)
+        monkeypatch.setattr(mcp_server, 'M5F_PACKAGE_DIR', pkg)
+        data=decode_text_response(asyncio.run(mcp_server.call_tool('get_canonical_market_context', {})))
+        assert data['status']=='ok'
+        assert data['governance']['stale_status']==status
+        assert data['governance']['badge']==badge
+        assert data['governance']['realtime_guaranteed'] is False
+        assert data['governance']['trading_signal'] is False
+        assert data['governance']['production_current_state'] is False

@@ -43,7 +43,8 @@ def validate_package(package_dir:Path):
         if sha(package_dir/n)!=h: raise ValueError(f'hash mismatch {n}')
     c=load(package_dir/'canonical_market_context.json')
     _canonical_checks(c)
-    expected_artifacts=build_package(REPO/c['derived_from'])
+    derived=Path(c['derived_from'])
+    expected_artifacts=build_package(derived if derived.is_absolute() else REPO/derived)
     for n,obj in expected_artifacts.items():
         expected = obj if isinstance(obj,str) else json.dumps(obj,ensure_ascii=False,indent=2,sort_keys=True,allow_nan=False)+'\n'
         actual=(package_dir/n).read_text(encoding='utf-8')

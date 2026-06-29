@@ -129,47 +129,56 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 M5F_PACKAGE_DIR = REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01"
 
 
-def _m5f_governance():
+def _canonical_governance(canonical: dict | None = None):
+    canonical = canonical or {}
+    gov = canonical.get("governance", {}) if isinstance(canonical, dict) else {}
+    caveats = canonical.get("global_caveats") if isinstance(canonical, dict) else None
     return {
         "surface": "FastAPI readonly M5F canonical market context",
         "execution_mode": "readonly_local_artifact_read",
         "network_calls": False,
         "artifact_writes": False,
         "live_probe_execution": False,
-        "historical_evidence_snapshot": True,
-        "stale_status": "stale",
-        "badge": "historical/stale",
-        "current_realtime": False,
-        "production_current_state": False,
-        "production_ready": False,
-        "realtime_guaranteed": False,
-        "trading_signal": False,
-        "readonly_only": True,
-        "caveats": [
+        "historical_evidence_snapshot": gov.get("historical_evidence_snapshot", True),
+        "stale_status": gov.get("stale_status", "unknown"),
+        "badge": gov.get("badge", "historical/unknown"),
+        "current_realtime": gov.get("current_realtime", False),
+        "production_current_state": gov.get("production_current_state", False),
+        "production_ready": gov.get("production_ready", False),
+        "realtime_guaranteed": gov.get("realtime_guaranteed", False),
+        "trading_signal": gov.get("trading_signal", False),
+        "readonly_only": gov.get("readonly_only", True),
+        "caveats": list(caveats or [
             "not_realtime_guaranteed",
             "not_trading_signal",
             "not_production_current_state",
             "source_risk_present",
             "freshness_must_be_displayed",
-        ],
+        ]),
     }
 
 
+def _load_validated_canonical(package_dir: Path) -> dict:
+    _validate_m5f_package(package_dir)
+    return json.loads((package_dir / "canonical_market_context.json").read_text(encoding="utf-8"))
+
 def _read_m5f_artifact(filename: str, *, text: bool = False):
     try:
-        _validate_m5f_package(M5F_PACKAGE_DIR)
+        canonical = _load_validated_canonical(M5F_PACKAGE_DIR)
     except Exception as exc:
-        raise HTTPException(status_code=409, detail={"error": "m5f_package_validation_failed", "message": str(exc), "governance": _m5f_governance()})
+        raise HTTPException(status_code=409, detail={"error": "m5f_package_validation_failed", "message": str(exc), "governance": _canonical_governance()})
+    governance = _canonical_governance(canonical)
     path = M5F_PACKAGE_DIR / filename
+    source_path = path.relative_to(REPO_ROOT).as_posix() if path.is_relative_to(REPO_ROOT) else path.as_posix()
     if not path.is_file():
-        raise HTTPException(status_code=404, detail={"error": "m5f_artifact_missing", "source_path": path.relative_to(REPO_ROOT).as_posix(), "governance": _m5f_governance()})
+        raise HTTPException(status_code=404, detail={"error": "m5f_artifact_missing", "source_path": source_path, "governance": governance})
     try:
         if text:
-            return {"source_path": path.relative_to(REPO_ROOT).as_posix(), "content": path.read_text(encoding="utf-8"), "governance": _m5f_governance()}
+            return {"source_path": source_path, "content": path.read_text(encoding="utf-8"), "governance": governance}
         data = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
-        raise HTTPException(status_code=422, detail={"error": "m5f_artifact_malformed", "source_path": path.relative_to(REPO_ROOT).as_posix(), "message": exc.msg, "governance": _m5f_governance()})
-    return {"source_path": path.relative_to(REPO_ROOT).as_posix(), "content": deepcopy(data), "governance": _m5f_governance()}
+        raise HTTPException(status_code=422, detail={"error": "m5f_artifact_malformed", "source_path": source_path, "message": exc.msg, "governance": governance})
+    return {"source_path": source_path, "content": deepcopy(data), "governance": governance}
 
 
 @app.get("/api/context/canonical")

@@ -23,7 +23,10 @@ FORBIDDEN_PREFIXES=('research/generated','frontend/public','research/staging/m5c
 
 def dump(obj): return json.dumps(obj,ensure_ascii=False,indent=2,sort_keys=True,allow_nan=False)+"\n"
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
-def rel(p): return Path(p).resolve().relative_to(REPO).as_posix()
+def rel(p):
+    rp=Path(p).resolve()
+    try: return rp.relative_to(REPO).as_posix()
+    except ValueError: return rp.as_posix()
 def load(p): return json.loads(Path(p).read_text(encoding='utf-8'))
 
 

@@ -27,6 +27,7 @@ if str(REPO_ROOT) not in sys.path:
 from scripts.validate_m5f_canonical_market_context_package import validate_package as _validate_m5f_package
 
 app = Server("tw-market-mcp")
+M5F_PACKAGE_DIR = REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01"
 
 READONLY_TOOL_SPECS: dict[str, dict[str, str]] = {
     "read_latest_market_snapshot": {
@@ -358,8 +359,10 @@ def run_controlled_live_probe_evidence(arguments: dict[str, Any] | None) -> dict
     }
 
 
-def readonly_governance() -> dict[str, Any]:
-    """Governance metadata shared by all MCP-01 readonly tool responses."""
+def readonly_governance(canonical: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Governance metadata shared by MCP readonly tool responses."""
+    gov = canonical.get("governance", {}) if isinstance(canonical, dict) else {}
+    caveats = canonical.get("global_caveats") if isinstance(canonical, dict) else None
     return {
         "surface": "MCP readonly context tool",
         "execution_mode": "readonly_local_artifact_read",
@@ -367,23 +370,29 @@ def readonly_governance() -> dict[str, Any]:
         "production_refresh": False,
         "frontend_refresh": False,
         "live_probe_execution": False,
-        "historical_evidence_snapshot": True,
-        "stale_status": "stale",
-        "badge": "historical/stale",
-        "current_realtime": False,
-        "production_current_state": False,
-        "realtime_guaranteed": False,
-        "trading_signal": False,
-        "caveats": [
+        "historical_evidence_snapshot": gov.get("historical_evidence_snapshot", True),
+        "stale_status": gov.get("stale_status", "unknown"),
+        "badge": gov.get("badge", "historical/unknown"),
+        "current_realtime": gov.get("current_realtime", False),
+        "production_current_state": gov.get("production_current_state", False),
+        "production_ready": gov.get("production_ready", False),
+        "readonly_only": gov.get("readonly_only", True),
+        "realtime_guaranteed": gov.get("realtime_guaranteed", False),
+        "trading_signal": gov.get("trading_signal", False),
+        "caveats": list(caveats or [
             "readonly_local_context",
             "not_realtime_guaranteed",
             "not_trading_signal",
             "not_production_current_state",
             "freshness_must_be_displayed",
             "no_artifact_refresh",
-        ],
+        ]),
     }
 
+
+def _load_m5f_canonical(package_dir: Path) -> dict[str, Any]:
+    _validate_m5f_package(package_dir)
+    return json.loads((package_dir / "canonical_market_context.json").read_text(encoding="utf-8"))
 
 def evidence_readback_governance() -> dict[str, Any]:
     """Governance metadata for MCP-03 readonly controlled evidence readback."""
@@ -666,19 +675,21 @@ def read_local_context_tool(tool_name: str) -> dict[str, Any]:
 
     source_path = spec["path"]
     content_type = spec["content_type"]
+    canonical: dict[str, Any] | None = None
+    resolved_path = _resolve_source_path(source_path)
     if source_path.startswith("research/staging/m5f/"):
         try:
-            _validate_m5f_package(REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01")
+            canonical = _load_m5f_canonical(M5F_PACKAGE_DIR)
+            resolved_path = M5F_PACKAGE_DIR / Path(source_path).name
         except Exception as exc:
             return {"governance": readonly_governance(), "tool": tool_name, "source_path": source_path, "content_type": content_type, "status": "package_validation_failed", "error": str(exc)}
     payload: dict[str, Any] = {
-        "governance": readonly_governance(),
+        "governance": readonly_governance(canonical),
         "tool": tool_name,
         "source_path": source_path,
         "content_type": content_type,
     }
 
-    resolved_path = _resolve_source_path(source_path)
     if not resolved_path.is_file():
         payload.update(
             {
@@ -820,7 +831,7 @@ async def main() -> None:
 
 if __name__ == "__main__":
     if "--startup-check" in sys.argv:
-        _validate_m5f_package(REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01")
+        _validate_m5f_package(M5F_PACKAGE_DIR)
         print("mcp_server_startup_check_ok")
     else:
         asyncio.run(main())
