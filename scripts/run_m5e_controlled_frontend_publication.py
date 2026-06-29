@@ -54,6 +54,8 @@ def candidate_market_context_sha(cdir: Path = CAND) -> str:
     return load(ROOT / cdir / "sha256_manifest.json")["files"]["market-context.json"]
 
 def _fsync_dir(path: Path) -> None:
+    if os.name == "nt":
+        return
     fd = os.open(path, os.O_RDONLY)
     try:
         os.fsync(fd)
