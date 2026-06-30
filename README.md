@@ -84,7 +84,7 @@ Then connect your MCP client to `python server/mcp_server.py`. Current tools are
 Bounded live observation is explicit/manual only. It may perform network calls only after the operator intentionally executes the command and remains limited to the supplied watchlist.
 
 ```bash
-python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation --confirm-live-observation
+python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation
 ```
 
 Do not schedule it, poll it, expand it to a full-market scan, or promote it to M5F.

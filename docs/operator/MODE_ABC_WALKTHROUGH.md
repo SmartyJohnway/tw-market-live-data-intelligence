@@ -21,7 +21,7 @@ python scripts/run_m5q_source_health_probe.py --check-only
 Optional explicit bounded observation:
 
 ```bash
-python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation --confirm-live-observation
+python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation
 ```
 
 Interpretation terms: `current observation candidate` means a bounded Level 2 value candidate that still needs caveats; `not_realtime_guaranteed` means do not call it realtime; `not canonical` means it must not overwrite M5F.
