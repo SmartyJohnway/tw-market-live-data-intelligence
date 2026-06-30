@@ -70,3 +70,27 @@ def test_mcp_m5l_capability_tools_exposed_without_network():
     assert caps["tool"] == "get_m5l_source_capabilities"
     assert matrix["validation"]["valid"] is True
     assert caps["content"]["governance"]["network_free_startup"] is True
+
+
+def test_twse_mis_price_falls_back_to_y_when_z_missing_dash():
+    from scripts.m5k_common import _parse_mis_item
+    obs = _parse_mis_item({"z":"-", "y":"2370.0000", "d":"20260630", "t":"09:31:15"}, {"symbol":"2330", "market":"twse", "instrument_type":"listed_equity"}, "2026-06-30T01:31:16Z")
+    assert obs["price_like_value"] == 2370.0
+    assert obs["price_source_field"] == "y"
+    assert obs["status"] == "ok"
+
+
+def test_twse_mis_price_unavailable_when_z_and_y_missing_dash():
+    from scripts.m5k_common import _parse_mis_item
+    obs = _parse_mis_item({"z":"-", "y":"-", "d":"20260630", "t":"09:31:15"}, {"symbol":"0050", "market":"twse", "instrument_type":"listed_etf"}, "2026-06-30T01:31:16Z")
+    assert obs["price_like_value"] is None
+    assert obs["price_source_field"] is None
+    assert obs["status"] == "value_unavailable"
+
+
+def test_twse_mis_price_prefers_numeric_z_over_y():
+    from scripts.m5k_common import _parse_mis_item
+    obs = _parse_mis_item({"z":"2460.0000", "y":"2370.0000", "d":"20260630", "t":"09:31:15"}, {"symbol":"2330", "market":"twse", "instrument_type":"listed_equity"}, "2026-06-30T01:31:16Z")
+    assert obs["price_like_value"] == 2460.0
+    assert obs["price_source_field"] == "z"
+    assert obs["status"] == "ok"

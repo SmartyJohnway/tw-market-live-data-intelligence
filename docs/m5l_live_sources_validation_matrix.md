@@ -23,8 +23,8 @@ The machine-readable matrix is `config/m5l_live_source_adapter_matrix.json`.
 - Listed stock route: `tse_2330.tw`.
 - ETF route: `tse_0050.tw`.
 - TPEx/OTC route: `otc_3483.tw`.
-- Response format: JSON object with `msgArray` quote records when accepted.
-- Parsed fields: symbol/channel, last/reference value, `d`, `t`, retrieval UTC, source caveats.
+- Response format: JSON object with `msgArray` quote records when accepted. Batch requests join bounded `ex_ch` values with `|` before URL encoding; if the endpoint returns `rtcode=9999` or malformed `msgArray`, the adapter records `batch_request_failed` and falls back to individual bounded requests.
+- Parsed fields: symbol/channel, numeric `z` last price when available, numeric `y` fallback only when `z` is missing or non-numeric, `d`, `t`, retrieval UTC, source caveats.
 - Raw payload retention: investigation-only during probe; product outputs retain normalized envelopes and bounded evidence metadata only.
 - Freshness semantics: source date/time are displayed as source timestamp; retrieval time is UTC; no realtime claim is made.
 - Legal/maintenance risk: medium because it is a browser endpoint and may change or be blocked.

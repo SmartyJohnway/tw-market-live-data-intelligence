@@ -275,13 +275,29 @@ def fetch_taifex_tx_observation(instrument: dict[str, Any], retrieved_at: str, *
     except Exception as exc:
         return None, {"source": "TAIFEX", "url": url, "method": "POST", "request_body": body, "status": "request_failed", "reason": str(exc)}
 
+def _parse_mis_numeric(value: Any) -> float | None:
+    if value in (None, "", "-"):
+        return None
+    try:
+        return float(str(value).replace(",", ""))
+    except (TypeError, ValueError):
+        return None
+
+
+def _select_mis_price(item: dict[str, Any]) -> tuple[float | None, str | None]:
+    """Prefer numeric last price z, then numeric reference/previous value y."""
+    z_price = _parse_mis_numeric(item.get("z"))
+    if z_price is not None:
+        return z_price, "z"
+    y_price = _parse_mis_numeric(item.get("y"))
+    if y_price is not None:
+        return y_price, "y"
+    return None, None
+
+
 def _parse_mis_item(item: dict[str, Any], instrument: dict[str, Any], retrieved_at: str) -> dict[str, Any]:
     symbol = instrument["symbol"]
-    raw_price = item.get("z") or item.get("y") or "-"
-    try:
-        price = None if raw_price in ("-", "", None) else float(str(raw_price).replace(",", ""))
-    except ValueError:
-        price = None
+    price, price_source_field = _select_mis_price(item)
     source_date = str(item.get("d") or "")
     source_time = str(item.get("t") or "")
     return {
@@ -289,13 +305,14 @@ def _parse_mis_item(item: dict[str, Any], instrument: dict[str, Any], retrieved_
         "display_symbol": instrument.get("display_symbol", symbol),
         "category_id": instrument.get("category_id"),
         "instrument_type": instrument.get("instrument_type"),
-        "status": "ok" if item else "missing",
+        "status": "ok" if price is not None else "value_unavailable",
         "source": "TWSE_MIS",
         "adapter_id": instrument.get("adapter_id") or ("twse_mis_taiex_index_quote" if symbol == "TAIEX" or instrument.get("instrument_type") == "index" else "twse_mis_equity_etf_quote"),
         "market": instrument.get("market"),
         "source_type": "official_browser_json_endpoint_candidate",
         "price_like_value": price,
-        "price_semantics": "last_or_reference_value_as_reported_by_source",
+        "price_source_field": price_source_field,
+        "price_semantics": "last_trade_price_z_or_reference_y_as_reported_by_source",
         "source_timestamp": f"{source_date} {source_time}".strip(),
         "retrieved_at_utc": retrieved_at,
         "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
@@ -349,13 +366,17 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
                 body = resp.read().decode("utf-8", "replace")
                 payload["request"]["status_code"] = resp.status
             data = json.loads(body.strip())
-            for item in data.get("msgArray", []):
+            msg_array = data.get("msgArray", [])
+            rtcode = str(data.get("rtcode") or data.get("rtCode") or "")
+            if rtcode == "9999" or not isinstance(msg_array, list):
+                raise ValueError(f"batch_request_failed:rtcode={rtcode or 'missing'}")
+            for item in msg_array:
                 if isinstance(item, dict):
                     mis_key = str(item.get("key") or "").rsplit("_", 1)[0] or str(item.get("ch") or "")
                     mis_by_channel[mis_key] = item
-            payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "accepted_for_bounded_observation", "sample_retained": False})
+            payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "accepted_for_bounded_observation", "batch_request_status": "accepted", "sample_retained": False})
         except Exception as exc:
-            payload["failures"].append({"symbol": "TWSE_MIS_BATCH", "source": "TWSE_MIS", "adapter_id": "twse_mis_equity_etf_quote", "status": "failed", "reason": str(exc), "recommended_next_step": "Retry a bounded explicit observation later; source may be blocked or unavailable."})
+            payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "batch_request_failed", "reason": str(exc), "fallback": "individual_bounded_requests", "sample_retained": False})
             for ch in mis_channels:
                 single_url = f"https://mis.twse.com.tw/stock/api/getStockInfo.jsp?{urllib.parse.urlencode({'ex_ch': ch, 'json': '1', 'delay': '0'})}"
                 try:
@@ -378,7 +399,11 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
             continue
         item = mis_by_channel.get(plan.get("ex_ch", ""))
         if item:
-            payload["observations"].append(_parse_mis_item(item, instrument | {"adapter_id": plan.get("adapter_id")}, retrieved_at))
+            parsed = _parse_mis_item(item, instrument | {"adapter_id": plan.get("adapter_id")}, retrieved_at)
+            if parsed.get("status") == "ok":
+                payload["observations"].append(parsed)
+            else:
+                payload["failures"].append({"symbol": instrument["symbol"], "source": plan.get("source"), "adapter_id": plan.get("adapter_id"), "status": "failed", "reason": "value_unavailable", "observation": parsed, "recommended_next_step": "Do not infer a current value; retry a bounded explicit observation later or inspect source availability."})
         else:
             payload["failures"].append({"symbol": instrument["symbol"], "source": plan.get("source"), "adapter_id": plan.get("adapter_id"), "status": "failed", "reason": "missing_from_source_response:" + str(plan.get("ex_ch")), "recommended_next_step": "Verify symbol market route and retry a bounded explicit observation later."})
     payload["status"] = "ok" if payload["observations"] else "completed_with_no_observations"

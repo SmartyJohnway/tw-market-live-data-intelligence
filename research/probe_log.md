@@ -102,3 +102,21 @@ Performed low-frequency official TAIFEX probing for TX futures. Accepted bounded
   - `TAIEX` via `twse_mis_taiex_index_quote`: value `46284.81`, source timestamp `20260630 09:08:25`, retrieved `2026-06-30T01:08:31Z`, freshness `current observation candidate; realtime status not guaranteed by M5K`, delay `not_realtime_guaranteed`.
   - `3483` via `twse_mis_equity_etf_quote`: value `None`, source timestamp `20260630 09:08:30`, retrieved `2026-06-30T01:08:31Z`, freshness `current observation candidate; realtime status not guaranteed by M5K`, delay `not_realtime_guaranteed`.
 - Limitations: observed values are Level 2 bounded observations only; MIS browser endpoint and TAIFEX browser JSON endpoint are not asserted as realtime SLA feeds.
+
+## M5L MIS fallback correction live validation 2026-06-30
+
+- Reason: PR #67 review found MIS `z="-"` is truthy in Python and blocked fallback to numeric `y`.
+- Command: `python scripts/run_m5k_live_observation.py --execute-live-observation --watchlist /tmp/m5l_probe_watchlist.json --no-write-latest`.
+- Timestamp: `2026-06-30T01:39:20Z`.
+- Endpoint families: TWSE MIS `getStockInfo.jsp`; TAIFEX MIS `getQuoteList`.
+- Request mode: explicit, bounded, one-shot; no full-market scan; no polling; no scheduler.
+- Observations count: `5`.
+- Failures count: `0`.
+- Parsed observations after MIS fallback fix:
+  - `TX` via `taifex_mis_tx_futures_quote`: value `46400.0`, source timestamp `2026-06-30T09:39:20+08:00`, retrieved `2026-06-30T01:39:20Z`, freshness `fresh`, delay `delay_seconds_measured_from_source_timestamp_not_exchange_realtime_sla`.
+  - `2330` via `twse_mis_equity_etf_quote`: value `2370.0`, price source `y`, source timestamp `20260630 09:38:55`, retrieved `2026-06-30T01:39:20Z`, freshness `current observation candidate; realtime status not guaranteed by M5K`, delay `not_realtime_guaranteed`.
+  - `0050` via `twse_mis_equity_etf_quote`: value `104.45`, price source `y`, source timestamp `20260630 09:39:14`, retrieved `2026-06-30T01:39:20Z`, freshness `current observation candidate; realtime status not guaranteed by M5K`, delay `not_realtime_guaranteed`.
+  - `TAIEX` via `twse_mis_taiex_index_quote`: value `46338.25`, price source `z`, source timestamp `20260630 09:39:00`, retrieved `2026-06-30T01:39:20Z`, freshness `current observation candidate; realtime status not guaranteed by M5K`, delay `not_realtime_guaranteed`.
+  - `3483` via `twse_mis_equity_etf_quote`: value `87.8`, price source `y`, source timestamp `20260630 09:39:00`, retrieved `2026-06-30T01:39:20Z`, freshness `current observation candidate; realtime status not guaranteed by M5K`, delay `not_realtime_guaranteed`.
+- Batch behavior: TWSE MIS batch request returned accepted status in this run; adapter now treats `rtcode=9999` or malformed `msgArray` as `batch_request_failed` and falls back to individual bounded requests.
+- Value policy: observations with `price_like_value=None` are no longer counted as successful observations; they become `value_unavailable` failures.
