@@ -1,5 +1,5 @@
 # Changelog
 
-## M4 Omega
+## v0.1.0
 
-- Added governed platform skeleton for local-only fixture-only validation.
+Initial Local-first Preview
