@@ -12,6 +12,8 @@ from scripts.observation_contract import normalize_failure, normalize_taifex_row
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_WATCHLIST_PATH = REPO_ROOT / "config/m5k_default_watchlist.json"
+WATCHLIST_SCHEMA_VERSION = "m5n_watchlist.v1"
+LEGACY_WATCHLIST_SCHEMA_VERSION = "m5k_watchlist.v1"
 STATE_DIR = REPO_ROOT / "research/live_observation_runs/m5k"
 LATEST_OBSERVATION_PATH = STATE_DIR / "latest_observation.json"
 MAX_M5K_TARGETS = 25
@@ -55,17 +57,72 @@ def governance() -> dict[str, Any]:
     }
 
 
+def watchlist_schema() -> dict[str, Any]:
+    return {
+        "schema_version": WATCHLIST_SCHEMA_VERSION,
+        "format": "json",
+        "future_formats": ["csv"],
+        "required_item_fields": ["id", "symbol", "display_name", "market", "instrument_type", "adapter", "category", "enabled", "display_order", "tags", "notes"],
+        "readonly_consumers": ["FastAPI", "MCP", "frontend", "AI conversation context builder"],
+        "governance": governance() | {"network_calls": False, "writes": False},
+    }
+
+
+def normalize_watchlist(watchlist: dict[str, Any]) -> dict[str, Any]:
+    """Return the single M5N watchlist shape while accepting the M5K category shape."""
+    if not isinstance(watchlist, dict):
+        return watchlist
+    if watchlist.get("schema_version") == WATCHLIST_SCHEMA_VERSION and isinstance(watchlist.get("items"), list) and not isinstance(watchlist.get("categories"), list):
+        return watchlist
+    items: list[dict[str, Any]] = []
+    order = 0
+    for category in watchlist.get("categories", []):
+        cat = category.get("category_id") or category.get("label") or "uncategorized"
+        for item in category.get("instruments", []):
+            order += 1
+            sources = item.get("preferred_sources") or []
+            adapter = item.get("adapter") or item.get("adapter_id") or (sources[0] if sources else "unplanned")
+            symbol = item.get("symbol")
+            items.append({
+                "id": item.get("id") or f"{cat}:{symbol}",
+                "symbol": symbol,
+                "display_name": item.get("display_name") or item.get("name") or item.get("display_symbol") or symbol,
+                "market": item.get("market"),
+                "instrument_type": item.get("instrument_type"),
+                "adapter": adapter,
+                "preferred_sources": sources or ([adapter] if adapter != "unplanned" else []),
+                "category": item.get("category") or cat,
+                "enabled": item.get("enabled", True),
+                "display_order": item.get("display_order", order),
+                "tags": item.get("tags", []),
+                "notes": item.get("notes", ""),
+                **({"contract_code": item["contract_code"]} if "contract_code" in item else {}),
+                **({"contract_selector": item["contract_selector"]} if "contract_selector" in item else {}),
+            })
+    return {
+        "schema_version": WATCHLIST_SCHEMA_VERSION,
+        "watchlist_id": watchlist.get("watchlist_id", "watchlist"),
+        "name": watchlist.get("name", "Watchlist"),
+        "description": watchlist.get("description", ""),
+        "import_export": {"json": True, "csv_future": True},
+        "governance": watchlist.get("governance", {}) | {"trading_signal": False, "recommendations_allowed": False},
+        "items": sorted(items, key=lambda x: (x.get("display_order", 999999), str(x.get("symbol"))))
+    }
+
+
 def iter_instruments(watchlist: dict[str, Any], *, include_disabled: bool = False) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
-    for category in watchlist.get("categories", []):
-        for item in category.get("instruments", []):
-            if item.get("enabled", True) is False and not include_disabled:
-                continue
-            merged = dict(item)
-            merged.setdefault("enabled", True)
-            merged.setdefault("category_id", category.get("category_id"))
-            merged.setdefault("category_label", category.get("label"))
-            out.append(merged)
+    normalized = normalize_watchlist(watchlist)
+    for item in normalized.get("items", []):
+        if item.get("enabled", True) is False and not include_disabled:
+            continue
+        merged = dict(item)
+        merged.setdefault("enabled", True)
+        merged.setdefault("category_id", item.get("category"))
+        merged.setdefault("category_label", item.get("category"))
+        merged.setdefault("name", item.get("display_name"))
+        merged.setdefault("preferred_sources", [item.get("adapter")] if item.get("adapter") else [])
+        out.append(merged)
     return out
 
 
@@ -73,7 +130,9 @@ def _reject_forbidden_keys(value: Any, path: str = "<root>") -> list[str]:
     errors: list[str] = []
     if isinstance(value, dict):
         for key, child in value.items():
-            if str(key).lower() in FORBIDDEN_KEYS:
+            key_l = str(key).lower()
+            safety_recommendation_assertion = path == "<root>.governance" and key_l == "recommendation" and child is False
+            if key_l in FORBIDDEN_KEYS and not safety_recommendation_assertion:
                 errors.append(f"forbidden_field:{path}.{key}")
             errors.extend(_reject_forbidden_keys(child, f"{path}.{key}"))
     elif isinstance(value, list):
@@ -87,12 +146,12 @@ def validate_watchlist(watchlist: dict[str, Any], *, max_targets: int = MAX_M5K_
     warnings: list[str] = []
     if not isinstance(watchlist, dict):
         return {"valid": False, "errors": ["watchlist_must_be_object"], "warnings": []}
-    if watchlist.get("schema_version") != "m5k_watchlist.v1":
-        errors.append("schema_version_must_be_m5k_watchlist_v1")
-    categories = watchlist.get("categories")
-    if not isinstance(categories, list) or not categories:
-        errors.append("categories_required")
-    instruments = iter_instruments(watchlist, include_disabled=True)
+    if watchlist.get("schema_version") not in {WATCHLIST_SCHEMA_VERSION, LEGACY_WATCHLIST_SCHEMA_VERSION}:
+        errors.append("schema_version_must_be_m5n_watchlist_v1")
+    normalized = normalize_watchlist(watchlist)
+    if not isinstance(normalized.get("items"), list) or not normalized.get("items"):
+        errors.append("items_required")
+    instruments = iter_instruments(normalized, include_disabled=True)
     if not instruments:
         errors.append("instruments_required")
     if len(instruments) > max_targets:
@@ -109,6 +168,11 @@ def validate_watchlist(watchlist: dict[str, Any], *, max_targets: int = MAX_M5K_
         seen.add(symbol)
         if item.get("enabled", True) not in {True, False}:
             errors.append(f"invalid_enabled_flag:{symbol}")
+        for field in ("id", "display_name", "adapter", "category", "display_order", "tags", "notes"):
+            if field not in item:
+                errors.append(f"missing_required_field:{symbol}:{field}")
+        if not isinstance(item.get("tags"), list):
+            errors.append(f"invalid_tags:{symbol}")
         if not isinstance(item.get("preferred_sources", []), list) or not item.get("preferred_sources"):
             warnings.append(f"missing_preferred_sources:{symbol}")
         market = item.get("market")
@@ -164,7 +228,7 @@ def plan_live_observation(watchlist: dict[str, Any]) -> dict[str, Any]:
     return {
         "schema_version": "m5k_live_observation_plan.v1",
         "generated_at_utc": utc_now(),
-        "watchlist_id": watchlist.get("watchlist_id") if isinstance(watchlist, dict) else None,
+        "watchlist_id": normalize_watchlist(watchlist).get("watchlist_id") if isinstance(watchlist, dict) else None,
         "validation": validation,
         "governance": governance() | {"network_calls": False, "artifact_writes": False, "plan_only": True},
         "planned_routes": plans,
@@ -444,3 +508,82 @@ def validate_source_adapter_matrix(matrix: dict[str, Any] | None = None) -> dict
             if adapter.get(forbidden) is not False:
                 errors.append(f"forbidden_true:{adapter_id}:{forbidden}")
     return {"valid": not errors, "errors": errors, "adapter_count": len(matrix.get("adapters", []))}
+
+
+def watchlist_summary(watchlist: dict[str, Any]) -> dict[str, Any]:
+    normalized = normalize_watchlist(watchlist)
+    validation = validate_watchlist(normalized)
+    items = iter_instruments(normalized, include_disabled=True)
+    enabled = [i for i in items if i.get("enabled", True)]
+    by_category: dict[str, int] = {}
+    by_adapter: dict[str, int] = {}
+    for item in enabled:
+        by_category[item.get("category", "uncategorized")] = by_category.get(item.get("category", "uncategorized"), 0) + 1
+        by_adapter[item.get("adapter", "unplanned")] = by_adapter.get(item.get("adapter", "unplanned"), 0) + 1
+    return {
+        "schema_version": "m5n_watchlist_summary.v1",
+        "watchlist_id": normalized.get("watchlist_id"),
+        "name": normalized.get("name"),
+        "total_items": len(items),
+        "enabled_items": len(enabled),
+        "disabled_items": len(items) - len(enabled),
+        "symbols": [i.get("symbol") for i in enabled],
+        "by_category": by_category,
+        "by_adapter": by_adapter,
+        "validation": validation,
+        "governance": governance() | {"network_calls": False, "artifact_writes": False},
+    }
+
+
+def _observation_by_symbol(latest_observation: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    return {str(o.get("symbol")): o for o in latest_observation.get("observations", []) if isinstance(o, dict)}
+
+
+def build_watchlist_rows(watchlist: dict[str, Any], latest_observation: dict[str, Any] | None = None) -> list[dict[str, Any]]:
+    obs_by_symbol = _observation_by_symbol(latest_observation or {})
+    rows = []
+    for item in iter_instruments(normalize_watchlist(watchlist), include_disabled=True):
+        obs = obs_by_symbol.get(str(item.get("symbol")))
+        rows.append({
+            "symbol": item.get("symbol"),
+            "display_name": item.get("display_name") or item.get("name"),
+            "market": item.get("market"),
+            "category": item.get("category"),
+            "adapter": item.get("adapter"),
+            "enabled": item.get("enabled", True),
+            "display_order": item.get("display_order"),
+            "last_observation": None if not obs else (obs.get("value") or obs.get("price_like_value") or obs.get("status")),
+            "source": None if not obs else obs.get("source"),
+            "freshness": None if not obs else (obs.get("freshness_assessment") or obs.get("delay_status")),
+            "status": "observed" if obs else "no_observation_loaded",
+        })
+    return rows
+
+
+def build_conversation_context(watchlist: dict[str, Any], latest_observation: dict[str, Any] | None = None) -> dict[str, Any]:
+    latest_observation = latest_observation or read_latest_observation()
+    failures = latest_observation.get("failures", []) if isinstance(latest_observation, dict) else []
+    return {
+        "schema_version": "m5n_conversation_context.v1",
+        "created_at_utc": utc_now(),
+        "purpose": "Temporary AI conversation package for watchlist observation discussion; not canonical M5F and not raw endpoint payload.",
+        "watchlist_summary": watchlist_summary(watchlist),
+        "watchlist_rows": build_watchlist_rows(watchlist, latest_observation),
+        "successful_observations": len(latest_observation.get("observations", [])) if isinstance(latest_observation, dict) else 0,
+        "failed_observations": len(failures),
+        "failures": [{"symbol": f.get("symbol"), "source": f.get("source"), "reason": f.get("reason"), "status": f.get("status")} for f in failures if isinstance(f, dict)],
+        "freshness": latest_observation.get("retrieved_at_utc") or latest_observation.get("generated_at_utc") if isinstance(latest_observation, dict) else None,
+        "source_health": latest_observation.get("source_investigation_notes", []) if isinstance(latest_observation, dict) else [],
+        "risk": ["not_realtime_guaranteed", "source_may_be_delayed_or_unavailable", "not_trading_signal", "no_automatic_refresh"],
+        "caveats": governance()["caveats"],
+        "governance": governance() | {"raw_endpoint_payload_included": False},
+    }
+
+
+def conversation_context_markdown(context: dict[str, Any]) -> str:
+    lines = ["# M5N Conversation Context", "", context.get("purpose", ""), "", "## Watchlist"]
+    for row in context.get("watchlist_rows", []):
+        lines.append(f"- {row.get('symbol')} ({row.get('market')}, {row.get('category')}, {row.get('adapter')}): {row.get('status')}; freshness={row.get('freshness')}")
+    lines += ["", "## Observation Summary", f"- Successful observations: {context.get('successful_observations')}", f"- Failed observations: {context.get('failed_observations')}", "", "## Caveats"]
+    lines.extend(f"- {c}" for c in context.get("caveats", []))
+    return "\n".join(lines) + "\n"

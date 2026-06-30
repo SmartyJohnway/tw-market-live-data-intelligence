@@ -35,6 +35,10 @@ Level 2 is a bounded observation layer for current-source checks. It is explicit
 
 Key contract: [`docs/architecture/level2_live_observation.md`](docs/architecture/level2_live_observation.md).
 
+## AI Watchlist Workflow
+
+M5N introduces a formal Watchlist Workspace centered on `config/m5k_default_watchlist.json`. The same importable/exportable JSON watchlist is consumed by FastAPI, MCP, frontend preview, adapter planning, explicit live observation, and the temporary AI conversation context builder. See [`docs/architecture/ai_watchlist_workflow.md`](docs/architecture/ai_watchlist_workflow.md) and [`docs/operator/AI_WATCHLIST_OPERATOR_GUIDE.md`](docs/operator/AI_WATCHLIST_OPERATOR_GUIDE.md).
+
 ## Mode A / Mode B / Mode C
 
 - **Mode A — Readonly canonical context:** consume M5F artifacts only.
@@ -69,6 +73,10 @@ Useful local endpoints:
 - `GET /api/context/canonical`
 - `GET /api/context/snapshot`
 - `GET /api/m5l/source-capabilities`
+- `GET /api/watchlist`
+- `GET /api/watchlist/summary`
+- `GET /api/watchlist/schema`
+- `GET /api/conversation/context`
 - `GET /api/m5k/watchlist/default`
 - `POST /api/m5k/live-observation/plan`
 - `POST /api/m5k/live-observation/execute?confirm_live_observation=true`
@@ -108,6 +116,8 @@ Start with [`docs/INDEX.md`](docs/INDEX.md). Key entry points:
 - Architecture overview: [`docs/architecture/architecture_overview.md`](docs/architecture/architecture_overview.md)
 - Source adapter architecture: [`docs/architecture/source_adapter_architecture.md`](docs/architecture/source_adapter_architecture.md)
 - Data contract: [`docs/data_contract.md`](docs/data_contract.md)
+- AI watchlist workflow: [`docs/architecture/ai_watchlist_workflow.md`](docs/architecture/ai_watchlist_workflow.md)
+- AI watchlist operator guide: [`docs/operator/AI_WATCHLIST_OPERATOR_GUIDE.md`](docs/operator/AI_WATCHLIST_OPERATOR_GUIDE.md)
 - MCP usage: [`docs/mcp_usage_guide.md`](docs/mcp_usage_guide.md)
 - Operations runbook: [`docs/operations_runbook.md`](docs/operations_runbook.md)
 - README archive: [`docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md`](docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md)

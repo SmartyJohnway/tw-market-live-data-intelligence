@@ -23,7 +23,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 from scripts.validate_m5f_canonical_market_context_package import validate_package as _validate_m5f_package
-from scripts.m5k_common import DEFAULT_WATCHLIST_PATH as M5K_DEFAULT_WATCHLIST_PATH, conversation_handoff_from_watchlist as _m5k_conversation_handoff, execute_live_observation as _m5k_execute_live_observation, load_json as _m5k_load_json, read_latest_observation as _m5k_read_latest_observation, validate_watchlist as _m5k_validate_watchlist, plan_live_observation as _m5k_plan_live_observation, load_source_adapter_matrix as _m5l_load_source_adapter_matrix, source_capabilities as _m5l_source_capabilities, validate_source_adapter_matrix as _m5l_validate_source_adapter_matrix
+from scripts.m5k_common import DEFAULT_WATCHLIST_PATH as M5K_DEFAULT_WATCHLIST_PATH, conversation_handoff_from_watchlist as _m5k_conversation_handoff, execute_live_observation as _m5k_execute_live_observation, load_json as _m5k_load_json, read_latest_observation as _m5k_read_latest_observation, validate_watchlist as _m5k_validate_watchlist, plan_live_observation as _m5k_plan_live_observation, load_source_adapter_matrix as _m5l_load_source_adapter_matrix, source_capabilities as _m5l_source_capabilities, validate_source_adapter_matrix as _m5l_validate_source_adapter_matrix, normalize_watchlist as _m5n_normalize_watchlist, watchlist_summary as _m5n_watchlist_summary
 
 app = Server("tw-market-mcp")
 M5F_PACKAGE_DIR = REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01"
@@ -103,6 +103,9 @@ M5K_LIVE_OBSERVATION_TOOL = "run_m5k_bounded_live_observation"
 M5K_PLAN_TOOL = "plan_m5k_bounded_live_observation"
 M5K_READ_LATEST_TOOL = "read_m5k_latest_live_observation"
 M5K_WATCHLIST_TOOL = "get_m5k_default_watchlist"
+M5N_GET_WATCHLIST_TOOL = "get_watchlist"
+M5N_GET_WATCHLIST_SUMMARY_TOOL = "get_watchlist_summary"
+M5N_VALIDATE_WATCHLIST_TOOL = "validate_watchlist"
 M5K_HANDOFF_TOOL = "create_m5k_conversation_handoff"
 M5L_MATRIX_TOOL = "get_m5l_source_adapter_matrix"
 M5L_CAPABILITIES_TOOL = "get_m5l_source_capabilities"
@@ -740,9 +743,23 @@ def unavailable_tool_response(tool_name: str) -> dict[str, Any]:
 
 def read_m5k_default_watchlist_tool() -> dict[str, Any]:
     watchlist = _m5k_load_json(M5K_DEFAULT_WATCHLIST_PATH)
-    return {"tool": M5K_WATCHLIST_TOOL, "status": "ok", "source_path": M5K_DEFAULT_WATCHLIST_PATH.relative_to(REPO_ROOT).as_posix(), "content": watchlist, "validation": _m5k_validate_watchlist(watchlist), "governance": readonly_governance() | {"layer": "M5K", "canonical": False}}
+    return {"tool": M5K_WATCHLIST_TOOL, "status": "ok", "source_path": M5K_DEFAULT_WATCHLIST_PATH.relative_to(REPO_ROOT).as_posix(), "content": _m5n_normalize_watchlist(watchlist), "validation": _m5k_validate_watchlist(_m5n_normalize_watchlist(watchlist)), "governance": readonly_governance() | {"layer": "M5N", "canonical": False}}
 
 
+
+
+def get_watchlist_summary_tool() -> dict[str, Any]:
+    watchlist = _m5n_normalize_watchlist(_m5k_load_json(M5K_DEFAULT_WATCHLIST_PATH))
+    return {"tool": M5N_GET_WATCHLIST_SUMMARY_TOOL, "status": "ok", "content": _m5n_watchlist_summary(watchlist), "governance": readonly_governance() | {"layer": "M5N", "canonical": False}}
+
+
+def validate_watchlist_tool(arguments: dict[str, Any] | None) -> dict[str, Any]:
+    args = arguments or {}
+    watchlist = args.get("watchlist") if isinstance(args, dict) else None
+    if watchlist is None:
+        watchlist = _m5k_load_json(M5K_DEFAULT_WATCHLIST_PATH)
+    normalized = _m5n_normalize_watchlist(watchlist)
+    return {"tool": M5N_VALIDATE_WATCHLIST_TOOL, "status": "ok", "validation": _m5k_validate_watchlist(normalized), "governance": readonly_governance() | {"layer": "M5N", "canonical": False}}
 
 def plan_m5k_live_observation_tool(arguments: dict[str, Any] | None) -> dict[str, Any]:
     args = arguments or {}
@@ -859,7 +876,10 @@ async def list_tools() -> list[Tool]:
         Tool(name=M5L_CAPABILITIES_TOOL, description="Read summarized M5L source capabilities without network calls.", inputSchema={"type":"object","properties":{},"additionalProperties":False}),
     ]
     m5k_tools = [
-        Tool(name=M5K_WATCHLIST_TOOL, description="Read the default M5K watchlist without network calls.", inputSchema={"type":"object","properties":{},"additionalProperties":False}),
+        Tool(name=M5N_GET_WATCHLIST_TOOL, description="Read the formal M5N watchlist workspace without network calls.", inputSchema={"type":"object","properties":{},"additionalProperties":False}),
+        Tool(name=M5N_GET_WATCHLIST_SUMMARY_TOOL, description="Read the formal M5N watchlist summary without network calls.", inputSchema={"type":"object","properties":{},"additionalProperties":False}),
+        Tool(name=M5N_VALIDATE_WATCHLIST_TOOL, description="Validate a supplied M5N watchlist or the default watchlist without network calls or writes.", inputSchema={"type":"object","properties":{"watchlist":{"type":"object"}},"additionalProperties":False}),
+        Tool(name=M5K_WATCHLIST_TOOL, description="Backward-compatible alias for get_watchlist.", inputSchema={"type":"object","properties":{},"additionalProperties":False}),
         Tool(name=M5K_HANDOFF_TOOL, description="Create a machine-readable M5K AI conversation watchlist handoff.", inputSchema={"type":"object","properties":{"watchlist":{"type":"object"}},"required":["watchlist"],"additionalProperties":False}),
         Tool(name=M5K_PLAN_TOOL, description="Plan/validate one bounded M5K live observation without network calls or writes.", inputSchema={"type":"object","properties":{"watchlist":{"type":"object"}},"required":["watchlist"],"additionalProperties":False}),
         Tool(name=M5K_READ_LATEST_TOOL, description="Read the latest local M5K live observation artifact without network calls.", inputSchema={"type":"object","properties":{},"additionalProperties":False}),
@@ -883,8 +903,12 @@ async def call_tool(name: str, arguments: dict[str, Any] | None) -> list[TextCon
         return _json_text(get_m5l_source_adapter_matrix_tool())
     if name == M5L_CAPABILITIES_TOOL:
         return _json_text(get_m5l_source_capabilities_tool())
-    if name == M5K_WATCHLIST_TOOL:
-        return _json_text(read_m5k_default_watchlist_tool())
+    if name in {M5K_WATCHLIST_TOOL, M5N_GET_WATCHLIST_TOOL}:
+        payload = read_m5k_default_watchlist_tool(); payload["tool"] = name; return _json_text(payload)
+    if name == M5N_GET_WATCHLIST_SUMMARY_TOOL:
+        return _json_text(get_watchlist_summary_tool())
+    if name == M5N_VALIDATE_WATCHLIST_TOOL:
+        return _json_text(validate_watchlist_tool(arguments))
     if name == M5K_HANDOFF_TOOL:
         return _json_text(create_m5k_handoff_tool(arguments))
     if name == M5K_PLAN_TOOL:
