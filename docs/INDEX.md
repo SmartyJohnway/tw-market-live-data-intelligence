@@ -8,6 +8,7 @@ This index is the product documentation entry point after M5LRM architecture con
 - [Level 1 Canonical Context](architecture/level1_canonical.md)
 - [Level 2 Live Observation](architecture/level2_live_observation.md)
 - [Mode A / Mode B / Mode C](architecture/mode_abc.md)
+- [AI Watchlist Workflow and Conversation Context](architecture/ai_watchlist_workflow.md)
 - [Source Adapter Architecture](architecture/source_adapter_architecture.md)
 - [Local-First Market Context Architecture](architecture/LOCAL_FIRST_MARKET_CONTEXT_ARCHITECTURE.md)
 
@@ -33,6 +34,7 @@ This index is the product documentation entry point after M5LRM architecture con
 ## Operations
 
 - [Operations Runbook](operations_runbook.md)
+- [AI Watchlist Operator Guide](operator/AI_WATCHLIST_OPERATOR_GUIDE.md)
 - [MCP Usage Guide](mcp_usage_guide.md)
 - [Agent Usage Guide](agent_usage_guide.md)
 - [Source Authority Manual](manuals/SOURCE_AUTHORITY_MANUAL.md)

@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>M5N Watchlist Workspace</title><style>body{font-family:system-ui;margin:2rem}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:.4rem}th{background:#f3f4f6}.badge{padding:.25rem .5rem;background:#fff7ed;border:1px solid #fed7aa}</style></head><body>
+<h1>M5N Watchlist Workspace</h1><p class="badge">Readonly local-first AI workflow. No automatic refresh, no trade advice, no background polling.</p>
+<button id="load">Load watchlist</button><button id="export">Export JSON</button><input id="import" type="file" accept="application/json"><span id="summary"></span>
+<table><thead><tr><th>Symbol</th><th>Market</th><th>Category</th><th>Adapter</th><th>Last observation</th><th>Source</th><th>Freshness</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table>
+<h2>Conversation context</h2><pre id="context"></pre>
+<script>
+let watchlist=null; const $=id=>document.getElementById(id);
+async function api(path){const r=await fetch(path); if(!r.ok) throw new Error(`${r.status} ${path}`); return r.json();}
+function renderRows(rows){$('rows').innerHTML=''; for(const row of rows){const tr=document.createElement('tr'); for(const key of ['symbol','market','category','adapter','last_observation','source','freshness','status']){const td=document.createElement('td'); td.textContent=row[key]??''; tr.appendChild(td)} $('rows').appendChild(tr)}}
+async function load(){const data=await api('/api/watchlist'); watchlist=data.content; renderRows(data.rows); const s=await api('/api/watchlist/summary'); $('summary').textContent=` ${s.content.enabled_items}/${s.content.total_items} enabled`; const c=await api('/api/conversation/context'); $('context').textContent=JSON.stringify(c.content,null,2)}
+$('load').onclick=load; $('export').onclick=()=>{if(!watchlist)return; const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(watchlist,null,2)+'\n'],{type:'application/json'})); a.download=(watchlist.watchlist_id||'watchlist')+'.json'; a.click(); URL.revokeObjectURL(a.href)};
+$('import').onchange=e=>{const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=()=>{watchlist=JSON.parse(r.result); renderRows((watchlist.items||[]).map(i=>({...i,status:'imported_not_validated'}))); $('summary').textContent=' imported locally; validate through FastAPI/MCP before observation';}; r.readAsText(f)};
+load().catch(err=>$('summary').textContent=err.message);
+</script></body></html>

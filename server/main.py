@@ -214,11 +214,40 @@ from scripts.m5k_common import (
     read_latest_observation as _m5k_read_latest_observation,
     validate_watchlist as _m5k_validate_watchlist,
     plan_live_observation as _m5k_plan_live_observation,
+    normalize_watchlist as _m5n_normalize_watchlist,
+    watchlist_schema as _m5n_watchlist_schema,
+    watchlist_summary as _m5n_watchlist_summary,
+    build_watchlist_rows as _m5n_build_watchlist_rows,
+    build_conversation_context as _m5n_build_conversation_context,
     load_source_adapter_matrix as _m5l_load_source_adapter_matrix,
     source_capabilities as _m5l_source_capabilities,
     validate_source_adapter_matrix as _m5l_validate_source_adapter_matrix,
 )
 
+
+
+@app.get("/api/watchlist")
+def get_watchlist():
+    watchlist = _m5n_normalize_watchlist(_m5k_load_json(M5K_DEFAULT_WATCHLIST_PATH))
+    latest = _m5k_read_latest_observation()
+    return {"source_path": M5K_DEFAULT_WATCHLIST_PATH.relative_to(REPO_ROOT).as_posix(), "content": watchlist, "rows": _m5n_build_watchlist_rows(watchlist, latest), "validation": _m5k_validate_watchlist(watchlist), "governance": _canonical_governance() | {"layer": "M5N", "network_calls": False, "readonly": True}}
+
+
+@app.get("/api/watchlist/summary")
+def get_watchlist_summary():
+    watchlist = _m5n_normalize_watchlist(_m5k_load_json(M5K_DEFAULT_WATCHLIST_PATH))
+    return {"content": _m5n_watchlist_summary(watchlist), "governance": _canonical_governance() | {"layer": "M5N", "network_calls": False, "readonly": True}}
+
+
+@app.get("/api/watchlist/schema")
+def get_watchlist_schema():
+    return {"content": _m5n_watchlist_schema(), "governance": _canonical_governance() | {"layer": "M5N", "network_calls": False, "readonly": True}}
+
+
+@app.get("/api/conversation/context")
+def get_conversation_context():
+    watchlist = _m5n_normalize_watchlist(_m5k_load_json(M5K_DEFAULT_WATCHLIST_PATH))
+    return {"content": _m5n_build_conversation_context(watchlist, _m5k_read_latest_observation()), "governance": _canonical_governance() | {"layer": "M5N", "network_calls": False, "readonly": True}}
 
 
 @app.get("/api/m5l/source-adapter-matrix")
