@@ -39,3 +39,9 @@
 | --- | --- | --- | --- | --- |
 | TAIFEX MIS getQuoteList | TX / TXF front month | Bounded Level 2 live observation | Supported in M5K | Official browser endpoint; no verified real-time SLA; freshness/delay must be displayed. |
 | TAIFEX OpenAPI DailyMarketReportFut | TX futures EOD/reference | Daily report/reference | Rejected for M5K live | No intraday live quote timestamp for current observation. |
+
+## M5Q source-health regression capability
+
+- Capability: manual bounded source-health regression report for representative TWSE MIS listed stock, TWSE MIS listed ETF, TWSE MIS TPEx/OTC, TWSE MIS TAIEX, and TAIFEX TX routes.
+- Runner: `python scripts/run_m5q_source_health_probe.py --check-only` performs no network calls and no writes; `python scripts/run_m5q_source_health_probe.py --execute-health-probe` performs explicit bounded calls and writes normalized reports only under `research/live_observation_runs/source_health/`.
+- Boundaries: no M5F mutation, no `frontend/public` write, no `research/generated` write, no polling, no scheduler, no full-market scan, no trading logic, and no raw endpoint payload in product-facing reports.

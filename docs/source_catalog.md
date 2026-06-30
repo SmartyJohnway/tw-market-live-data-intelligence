@@ -106,3 +106,7 @@ TWSE_OpenAPI was probed once through the bounded M5B runner for targets 2330, 00
 - Accepted M5K use: bounded TX (`TXF` front-month) live observation with visible freshness/delay caveats.
 - Rejected use: M5F canonical promotion or SLA-backed real-time claim.
 - Evidence: `docs/m5l_taifex_live_source_validation.md` and `research/live_observation_runs/m5k/m5l_taifex_tx_live_observation_evidence.json`.
+
+## M5Q source-health regression layer
+
+M5Q does not add a new market source. It reuses the M5K/M5L accepted Level 2 observation routes for a manual health regression probe over five bounded representative targets: `2330`, `0050`, `3483`, `TAIEX`, and `TX`. Reports use schema `m5q_source_health_report.v1` and are written only under `research/live_observation_runs/source_health/` during explicit execution.

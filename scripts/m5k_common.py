@@ -560,6 +560,35 @@ def build_watchlist_rows(watchlist: dict[str, Any], latest_observation: dict[str
     return rows
 
 
+def _conversation_source_health_summary() -> dict[str, Any]:
+    try:
+        from scripts.m5q_source_health import read_latest_source_health
+        latest = read_latest_source_health()
+    except Exception:
+        return {"source_health_status": "not_available"}
+    if latest.get("status") != "ok":
+        return {"source_health_status": "not_available"}
+    report = latest.get("content", {})
+    checks = [c for c in report.get("checks", []) if isinstance(c, dict)]
+    per_family: dict[str, dict[str, int]] = {}
+    for c in checks:
+        fam = c.get("source_family") or "unknown"
+        status = c.get("status") or "unknown"
+        per_family.setdefault(fam, {})[status] = per_family.setdefault(fam, {}).get(status, 0) + 1
+    return {
+        "source_health_status": "available",
+        "generated_at_utc": report.get("generated_at_utc"),
+        "summary": report.get("summary", {}),
+        "per_source_family_status": per_family,
+        "degraded_or_failed_targets": [
+            {"target": c.get("target"), "source_family": c.get("source_family"), "status": c.get("status"), "observation_status": c.get("observation_status"), "freshness_assessment": c.get("freshness_assessment")}
+            for c in checks if c.get("status") in {"degraded", "failed"}
+        ],
+        "caveats": report.get("caveats", []),
+        "raw_endpoint_payload_included": False,
+    }
+
+
 def build_conversation_context(watchlist: dict[str, Any], latest_observation: dict[str, Any] | None = None) -> dict[str, Any]:
     latest_observation = latest_observation or read_latest_observation()
     failures = latest_observation.get("failures", []) if isinstance(latest_observation, dict) else []
@@ -573,7 +602,8 @@ def build_conversation_context(watchlist: dict[str, Any], latest_observation: di
         "failed_observations": len(failures),
         "failures": [{"symbol": f.get("symbol"), "source": f.get("source"), "reason": f.get("reason"), "status": f.get("status")} for f in failures if isinstance(f, dict)],
         "freshness": latest_observation.get("retrieved_at_utc") or latest_observation.get("generated_at_utc") if isinstance(latest_observation, dict) else None,
-        "source_health": latest_observation.get("source_investigation_notes", []) if isinstance(latest_observation, dict) else [],
+        "source_investigation_notes": latest_observation.get("source_investigation_notes", []) if isinstance(latest_observation, dict) else [],
+        "source_health": _conversation_source_health_summary(),
         "risk": ["not_realtime_guaranteed", "source_may_be_delayed_or_unavailable", "not_trading_signal", "no_automatic_refresh"],
         "caveats": governance()["caveats"],
         "governance": governance() | {"raw_endpoint_payload_included": False},

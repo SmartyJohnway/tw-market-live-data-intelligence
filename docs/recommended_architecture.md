@@ -66,3 +66,7 @@ Future recommendations: add a dedicated TAIFEX futures adapter with explicit con
 ## M5L Live Sources Validation extension
 
 M5K Level 2 now treats live sources as adapters below the canonical M5F layer. TWSE MIS and TAIFEX MIS remain Level 2 observation sources only. TAIFEX TX support is implemented as a bounded `TX -> TXF front_month` adapter with contract-month normalization and explicit freshness/delay output. This must not alter M5F canonical semantics or promotion logic.
+
+## M5Q source-health evidence layer
+
+Add M5Q as an operator-triggered evidence layer beside M5K/M5L live observation: the operator first runs check-only for route and governance validation, then optionally runs the explicit bounded health probe. FastAPI, MCP, frontend, and conversation-context integrations read the latest normalized report only; none of those surfaces execute health probes or perform network calls.
