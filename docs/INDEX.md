@@ -1,47 +1,69 @@
 # Documentation Index
 
-- [Delivery Index](DELIVERY_INDEX.md)
+This index is the product documentation entry point after M5LRM architecture convergence. Historical milestone reports remain under `docs/reviews/`; product-oriented references live in the sections below.
+
+## Architecture
+
+- [Architecture Overview](architecture/architecture_overview.md)
+- [Level 1 Canonical Context](architecture/level1_canonical.md)
+- [Level 2 Live Observation](architecture/level2_live_observation.md)
+- [Mode A / Mode B / Mode C](architecture/mode_abc.md)
+- [Source Adapter Architecture](architecture/source_adapter_architecture.md)
+- [Local-First Market Context Architecture](architecture/LOCAL_FIRST_MARKET_CONTEXT_ARCHITECTURE.md)
+
+## Protocol and Contracts
+
+- [Data Contract](data_contract.md)
+- [M2 Source Contract Baseline](protocol/M2_SOURCE_CONTRACT_BASELINE.md)
+- [M2 Normalized Schema Inventory](protocol/M2_NORMALIZED_SCHEMA_INVENTORY.md)
+- [TWSE MIS Protocol](protocol/TWSE_MIS_PROTOCOL.md)
+- [TAI/TW source target support matrix](protocol/SOURCE_TARGET_SUPPORT_MATRIX.md)
+- [Watchlist Observation Semantics](protocol/WATCHLIST_OBSERVATION_SEMANTICS.md)
+- [M3G Controlled Live Probe Output Contract](protocol/M3G_CONTROLLED_LIVE_PROBE_OUTPUT_CONTRACT.md)
+- [M5C Staging Promotion Contract](protocol/M5C_STAGING_PROMOTION_CONTRACT.md)
+- [M5D Frontend Publication Contract](protocol/M5D_FRONTEND_PUBLICATION_CONTRACT.md)
+
+## Validation
+
+- [Test Suite Segmentation](testing/TEST_SUITE_SEGMENTATION.md)
 - [Release Readiness](RELEASE_READINESS.md)
-- [Glossary](GLOSSARY.md)
+- [M5L Live Sources Validation Matrix](m5l_live_sources_validation_matrix.md)
+- [M5L TAIFEX Live Source Validation](m5l_taifex_live_source_validation.md)
+
+## Operations
+
+- [Operations Runbook](operations_runbook.md)
+- [MCP Usage Guide](mcp_usage_guide.md)
+- [Agent Usage Guide](agent_usage_guide.md)
 - [Source Authority Manual](manuals/SOURCE_AUTHORITY_MANUAL.md)
 - [Operator Staging Workflow Manual](manuals/OPERATOR_STAGING_WORKFLOW_MANUAL.md)
 - [Frontend Caveat Display Manual](manuals/FRONTEND_CAVEAT_DISPLAY_MANUAL.md)
 - [Troubleshooting Guide](manuals/TROUBLESHOOTING_GUIDE.md)
-- [Local-First Architecture](architecture/LOCAL_FIRST_MARKET_CONTEXT_ARCHITECTURE.md)
 
-Safe commands: `python -m compileall scripts tests`, `pytest -m "not network"`, and `python scripts/run_local_delivery_acceptance.py --check-only`. Boundaries: no live probes, no production refresh, no frontend/public writes, no trading signals, no realtime guarantee.
+## Governance and Source Registry
 
+- [Governance Index](governance/INDEX.md)
+- [Source Failure Playbook](source_failure_playbook.md)
+- [Recommended Architecture](recommended_architecture.md)
+- [Capability Matrix](capability_matrix.md)
 
-## M4 Omega
+## Archive and Reviews
 
-Adds local-only fixture-only governed platform skeleton: governance policy, source registry, evidence ledger, fixture replay, readonly observability, release gates, authorization ladder, and operator checks.
+- [Archived pre-M5LRM README](archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md)
+- [Reviews directory](reviews/)
+- [Release directory](release/)
 
-## M5FGH product convergence status
-
-PR #59 / M5E is treated as merged upstream. M5FGH converges the reviewed M5C/M5D historical evidence into the current canonical local product line: `research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json` is the only source-of-truth payload for browser preview, FastAPI readonly endpoints, MCP readonly tools, and AI briefing artifacts.
-
-North Star: a local-first, bounded-watchlist, explicit manual-refresh Taiwan market context center shared by browser and AI Agents. The package is historical/stale reviewed evidence for 0050, 00929, and 2330 from TWSE_OpenAPI source date 2026-06-26; it is not realtime, not production current state, not full-market coverage, and not a trading signal.
-
-Historical M3 generated artifacts under `research/generated/` remain legacy generated artifacts. M5F is the current canonical consumer package. Bounded live evidence exists in prior governed evidence, so the repo is not fixture-only, but M5FGH does not run new live probes. The only remaining main bundle after this closure is M5IJ for future explicitly authorized refresh execution and final release hardening.
-
-
-## M5IJ local product release
-
-M5F is the canonical product context. M5I is explicit bounded refresh only; M5J is final local release hardening. Default startup makes no market-data network calls. Refresh requires explicit single-use authorization and is bounded to the configured watchlist and product scope. Failed refresh preserves last-known-good M5F. No full-market scan, polling, frontend/public publication, research/generated refresh, production/prod write, broker/auth, automatic order, trading signal, target price, ranking, or recommendation is allowed. FastAPI `/api/probe/*` is disabled pending M5I and returns 410.
-
-Required commands:
+## Safe local validation commands
 
 ```bash
-python -m pip install -r requirements.txt
+python -m compileall scripts server tests
 pytest -m "not network" -v
 python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01
 python scripts/run_m5ij_end_to_end_acceptance.py --check-only
-uvicorn server.main:app --host 127.0.0.1 --port 8000
-python server/mcp_server.py --startup-check
+python scripts/run_m5k_postmerge_validation.py --check-only
+python scripts/governance_forbidden_path_guard.py
+python scripts/forbidden_behavior_scanner.py
+git diff --check
 ```
 
-Explicit authorization refresh command, if supported by the operator environment:
-
-```bash
-python scripts/run_m5i_explicit_bounded_refresh.py --execute-refresh --authorization-token <authorization.json> --source TWSE_OpenAPI --targets 0050 00929 2330 --no-frontend-publication --no-production-refresh --no-generated-refresh --no-trading-output
-```
+Boundaries remain: no live probes by default, no production refresh, no `frontend/public` writes, no `research/generated` writes, no `production/prod` writes, no broker/auth credentials, no trading signals, and no realtime guarantee.

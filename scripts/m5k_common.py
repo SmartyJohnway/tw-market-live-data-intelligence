@@ -8,6 +8,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+from scripts.observation_contract import normalize_failure, normalize_taifex_row, normalize_twse_mis_row
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_WATCHLIST_PATH = REPO_ROOT / "config/m5k_default_watchlist.json"
 STATE_DIR = REPO_ROOT / "research/live_observation_runs/m5k"
@@ -219,41 +221,12 @@ def _select_taifex_tx_contract(quote_list: list[dict[str, Any]], selector: str =
 
 
 def _parse_taifex_tx_item(item: dict[str, Any], instrument: dict[str, Any], retrieved_at: str) -> dict[str, Any]:
-    symbol = instrument["symbol"]
-    value = _parse_taifex_price(item.get("CLastPrice") or item.get("SettlementPrice") or item.get("CRefPrice"))
-    source_ts = _taifex_timestamp(str(item.get("CDate") or ""), str(item.get("CTime") or ""))
-    retrieved_dt = datetime.fromisoformat(retrieved_at.replace("Z", "+00:00"))
-    freshness = "unknown"
-    delay_seconds = None
-    if source_ts and "+08:00" in source_ts:
-        source_dt = datetime.fromisoformat(source_ts).astimezone(timezone.utc)
-        delay_seconds = max(0, int((retrieved_dt - source_dt).total_seconds()))
-        freshness = "fresh" if delay_seconds <= 900 else "stale_or_closed_session"
-    return {
-        "symbol": symbol,
-        "display_symbol": instrument.get("display_symbol", symbol),
-        "contract": item.get("SymbolID"),
-        "contract_month": _taifex_contract_month(item),
-        "contract_selector": instrument.get("contract_selector", "front_month"),
-        "category_id": instrument.get("category_id"),
-        "instrument_type": instrument.get("instrument_type"),
-        "status": "ok" if value is not None else "missing_value",
-        "source": "TAIFEX",
-        "adapter_id": "taifex_mis_tx_futures_quote",
-        "market": "taifex",
-        "source_type": "official_browser_json_endpoint",
-        "price_like_value": value,
-        "value": value,
-        "price_semantics": "last_trade_price_or_settlement_fallback_as_reported_by_taifex_mis",
-        "source_timestamp": source_ts,
-        "retrieved_at_utc": retrieved_at,
-        "freshness_assessment": freshness,
-        "delay_status": "delay_seconds_measured_from_source_timestamp_not_exchange_realtime_sla",
-        "delay_seconds": delay_seconds,
-        "source_status": item.get("Status"),
-        "normalization": {"product_code": "TXF", "selector": "front_month", "source_contract_symbol": item.get("SymbolID"), "source_display_name": item.get("DispEName")},
-        "caveats": governance()["caveats"] + ["official_browser_endpoint_not_openapi_contract", "no_realtime_sla_verified"],
-    }
+    return normalize_taifex_row(
+        item,
+        instrument,
+        retrieved_at,
+        caveats=governance()["caveats"] + ["official_browser_endpoint_not_openapi_contract", "no_realtime_sla_verified"],
+    )
 
 
 def fetch_taifex_tx_observation(instrument: dict[str, Any], retrieved_at: str, *, timeout: int = 12) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
@@ -321,47 +294,15 @@ def _parse_mis_source_timestamp(item: dict[str, Any], retrieved_at: str) -> tupl
 
 
 def _parse_mis_item(item: dict[str, Any], instrument: dict[str, Any], retrieved_at: str) -> dict[str, Any]:
-    symbol = instrument["symbol"]
-    price, price_source_field = _select_mis_price(item)
-    source_timestamp, delay_seconds, timestamp_flags = _parse_mis_source_timestamp(item, retrieved_at)
-    data_quality_flags = list(timestamp_flags)
-    caveats = governance()["caveats"] + ["unofficial_source_risk", "fragile_frontend_contract", "not_official_realtime_api"]
-    if price_source_field == "z":
-        status = "ok"
-        price_semantics = "last_or_current_quote_as_reported_by_source"
-    elif price_source_field == "y":
-        status = "reference_value_only"
-        price_semantics = "previous_close_or_reference_fallback_not_current_trade"
-        data_quality_flags.append("current_z_unavailable_used_y_reference")
-        caveats.append("current_z_unavailable_y_reference_fallback_not_current_trade")
-    else:
-        status = "value_unavailable"
-        price_semantics = "value_unavailable_no_numeric_z_or_y"
-        data_quality_flags.append("missing_price")
-    source_risk_flags = ["unofficial_source_risk", "fragile_frontend_contract", "not_official_realtime_api"]
-    return {
-        "symbol": symbol,
-        "display_symbol": instrument.get("display_symbol", symbol),
-        "category_id": instrument.get("category_id"),
-        "instrument_type": instrument.get("instrument_type"),
-        "status": status,
-        "source": "TWSE_MIS",
-        "adapter_id": instrument.get("adapter_id") or ("twse_mis_taiex_index_quote" if symbol == "TAIEX" or instrument.get("instrument_type") == "index" else "twse_mis_equity_etf_quote"),
-        "market": instrument.get("market"),
-        "source_type": "official_browser_json_endpoint_candidate",
-        "price_like_value": price,
-        "price_source_field": price_source_field,
-        "price_semantics": price_semantics,
-        "source_timestamp": source_timestamp,
-        "retrieved_at_utc": retrieved_at,
-        "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
-        "delay_status": "not_realtime_guaranteed",
-        "delay_seconds": delay_seconds,
-        "staleness_seconds": delay_seconds,
-        "data_quality_flags": sorted(set(data_quality_flags)),
-        "source_risk_flags": source_risk_flags,
-        "caveats": sorted(set(caveats)),
-    }
+    parsed = normalize_twse_mis_row(
+        item,
+        instrument,
+        retrieved_at,
+        caveats=governance()["caveats"] + ["unofficial_source_risk", "fragile_frontend_contract", "not_official_realtime_api"],
+    )
+    if parsed.get("status") == "reference_value_only":
+        parsed["caveats"] = sorted(set(parsed.get("caveats", []) + ["current_z_unavailable_y_reference_fallback_not_current_trade"]))
+    return parsed
 
 
 def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = True, timeout: int = 12) -> dict[str, Any]:
@@ -394,7 +335,7 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
         if obs and obs.get("status") == "ok":
             payload["observations"].append(obs)
         else:
-            payload["failures"].append({"symbol": plan["symbol"], "source": "TAIFEX", "adapter_id": "taifex_mis_tx_futures_quote", "status": "failed" if not evidence else evidence.get("status", "failed"), "reason": (evidence or {}).get("reason", "no_supported_tx_observation"), "investigation_summary": evidence, "recommended_next_step": "Use TAIFEX MIS getQuoteList with TXF and front-month normalization, or apply for licensed TAIFEX market data for SLA-backed production usage."})
+            payload["failures"].append(normalize_failure(symbol=plan["symbol"], source="TAIFEX", adapter_id="taifex_mis_tx_futures_quote", status="failed" if not evidence else evidence.get("status", "failed"), reason=(evidence or {}).get("reason", "no_supported_tx_observation"), investigation_summary=evidence, recommended_next_step="Use TAIFEX MIS getQuoteList with TXF and front-month normalization, or apply for licensed TAIFEX market data for SLA-backed production usage.", caveats=governance()["caveats"]))
 
     mis_channels = [p["ex_ch"] for p in plans if p.get("source") == "TWSE_MIS" and p.get("ex_ch")]
     mis_by_channel: dict[str, dict[str, Any]] = {}
@@ -437,7 +378,7 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
         if plan.get("adapter_id") == "taifex_mis_tx_futures_quote":
             continue
         if plan.get("status") == "unsupported_in_m5k_initial":
-            payload["failures"].append({"symbol": instrument["symbol"], **{k: v for k, v in plan.items() if k != "instrument"}})
+            payload["failures"].append(normalize_failure(symbol=instrument["symbol"], source=plan.get("source"), adapter_id=plan.get("adapter_id"), status=plan.get("status", "failed"), reason=plan.get("reason", "unsupported_route"), extra={k: v for k, v in plan.items() if k not in {"instrument", "symbol", "source", "adapter_id", "status", "reason"}}, caveats=governance()["caveats"]))
             continue
         item = mis_by_channel.get(plan.get("ex_ch", ""))
         if item:
@@ -445,9 +386,9 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
             if parsed.get("status") == "ok":
                 payload["observations"].append(parsed)
             else:
-                payload["failures"].append({"symbol": instrument["symbol"], "source": plan.get("source"), "adapter_id": plan.get("adapter_id"), "status": "failed", "reason": parsed.get("status", "value_unavailable"), "observation": parsed, "recommended_next_step": "Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability."})
+                payload["failures"].append(normalize_failure(symbol=instrument["symbol"], source=plan.get("source"), adapter_id=plan.get("adapter_id"), reason=parsed.get("status", "value_unavailable"), investigation_summary={"observation": parsed}, recommended_next_step="Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability.", caveats=governance()["caveats"]))
         else:
-            payload["failures"].append({"symbol": instrument["symbol"], "source": plan.get("source"), "adapter_id": plan.get("adapter_id"), "status": "failed", "reason": "missing_from_source_response:" + str(plan.get("ex_ch")), "recommended_next_step": "Verify symbol market route and retry a bounded explicit observation later."})
+            payload["failures"].append(normalize_failure(symbol=instrument["symbol"], source=plan.get("source"), adapter_id=plan.get("adapter_id"), reason="missing_from_source_response:" + str(plan.get("ex_ch")), recommended_next_step="Verify symbol market route and retry a bounded explicit observation later.", caveats=governance()["caveats"]))
     payload["status"] = "ok" if payload["observations"] else "completed_with_no_observations"
     if write_latest:
         STATE_DIR.mkdir(parents=True, exist_ok=True)
