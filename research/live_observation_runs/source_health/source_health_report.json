@@ -1,0 +1,221 @@
+{
+  "bounded": true,
+  "caveats": [
+    "manual_bounded_regression_probe",
+    "not_realtime_guaranteed",
+    "not_live_scanner",
+    "no_polling_or_scheduler",
+    "raw_endpoint_payload_excluded"
+  ],
+  "checks": [
+    {
+      "adapter_id": "twse_mis_equity_etf_quote",
+      "caveats": [
+        "freshness_must_be_displayed",
+        "live_observation_not_canonical",
+        "no_trading_signal",
+        "not_realtime_guaranteed",
+        "source_may_be_delayed_or_unavailable"
+      ],
+      "delay_seconds": null,
+      "failure_reason": "reference_value_only",
+      "freshness_assessment": "source request failed or value unavailable",
+      "instrument_type": "listed_equity",
+      "market": "twse",
+      "observation_status": "reference_value_only",
+      "raw_endpoint_payload_included": false,
+      "recommended_next_step": "Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-30T04:09:41Z",
+      "route": "tse_2330.tw",
+      "source_family": "TWSE_MIS listed stock route",
+      "source_timestamp": null,
+      "status": "degraded",
+      "target": "2330",
+      "value_present": false
+    },
+    {
+      "adapter_id": "twse_mis_equity_etf_quote",
+      "caveats": [
+        "fragile_frontend_contract",
+        "freshness_must_be_displayed",
+        "live_observation_not_canonical",
+        "no_trading_signal",
+        "not_official_realtime_api",
+        "not_realtime_guaranteed",
+        "source_may_be_delayed_or_unavailable",
+        "unofficial_source_risk"
+      ],
+      "delay_seconds": 28,
+      "failure_reason": null,
+      "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_etf",
+      "market": "twse",
+      "observation_status": "ok",
+      "raw_endpoint_payload_included": false,
+      "recommended_next_step": "Source route usable for bounded observation; continue to display caveats and avoid realtime claims.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-30T04:09:37Z",
+      "route": "tse_0050.tw",
+      "source_family": "TWSE_MIS listed ETF route",
+      "source_timestamp": "2026-06-30T04:09:09Z",
+      "status": "healthy",
+      "target": "0050",
+      "value_present": true
+    },
+    {
+      "adapter_id": "twse_mis_equity_etf_quote",
+      "caveats": [
+        "freshness_must_be_displayed",
+        "live_observation_not_canonical",
+        "no_trading_signal",
+        "not_realtime_guaranteed",
+        "source_may_be_delayed_or_unavailable"
+      ],
+      "delay_seconds": null,
+      "failure_reason": "reference_value_only",
+      "freshness_assessment": "source request failed or value unavailable",
+      "instrument_type": "listed_or_otc_equity",
+      "market": "tpex",
+      "observation_status": "reference_value_only",
+      "raw_endpoint_payload_included": false,
+      "recommended_next_step": "Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-30T04:09:41Z",
+      "route": "otc_3483.tw",
+      "source_family": "TWSE_MIS TPEx / OTC route",
+      "source_timestamp": null,
+      "status": "degraded",
+      "target": "3483",
+      "value_present": false
+    },
+    {
+      "adapter_id": "twse_mis_taiex_index_quote",
+      "caveats": [
+        "fragile_frontend_contract",
+        "freshness_must_be_displayed",
+        "live_observation_not_canonical",
+        "no_trading_signal",
+        "not_official_realtime_api",
+        "not_realtime_guaranteed",
+        "source_may_be_delayed_or_unavailable",
+        "unofficial_source_risk"
+      ],
+      "delay_seconds": 22,
+      "failure_reason": null,
+      "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "index",
+      "market": "twse",
+      "observation_status": "ok",
+      "raw_endpoint_payload_included": false,
+      "recommended_next_step": "Source route usable for bounded observation; continue to display caveats and avoid realtime claims.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-30T04:09:37Z",
+      "route": "tse_t00.tw",
+      "source_family": "TWSE_MIS TAIEX route",
+      "source_timestamp": "2026-06-30T04:09:15Z",
+      "status": "healthy",
+      "target": "TAIEX",
+      "value_present": true
+    },
+    {
+      "adapter_id": "taifex_mis_tx_futures_quote",
+      "caveats": [
+        "freshness_must_be_displayed",
+        "live_observation_not_canonical",
+        "no_realtime_sla_verified",
+        "no_trading_signal",
+        "not_realtime_guaranteed",
+        "official_browser_endpoint_not_openapi_contract",
+        "source_may_be_delayed_or_unavailable"
+      ],
+      "delay_seconds": 0,
+      "failure_reason": null,
+      "freshness_assessment": "fresh",
+      "instrument_type": "futures",
+      "market": "taifex",
+      "observation_status": "ok",
+      "raw_endpoint_payload_included": false,
+      "recommended_next_step": "Source route usable for bounded observation; continue to display caveats and avoid realtime claims.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-30T04:09:37Z",
+      "route": "taifex_mis_getQuoteList",
+      "source_family": "TAIFEX TX route",
+      "source_timestamp": "2026-06-30T12:09:40+08:00",
+      "status": "healthy",
+      "target": "TX",
+      "value_present": true
+    }
+  ],
+  "execution_mode": "explicit_health_probe",
+  "full_market_scan": false,
+  "generated_at_utc": "2026-06-30T04:09:41Z",
+  "governance": {
+    "adapter_matrix_validation": {
+      "adapter_count": 5,
+      "errors": [],
+      "valid": true
+    },
+    "bounded_watchlist_only": true,
+    "canonical": false,
+    "caveats": [
+      "live_observation_not_canonical",
+      "not_realtime_guaranteed",
+      "freshness_must_be_displayed",
+      "source_may_be_delayed_or_unavailable",
+      "no_trading_signal"
+    ],
+    "explicit_execution_only": true,
+    "full_market_scan": false,
+    "layer": "M5K Level 2 Live Observation Layer",
+    "m5f_modified": false,
+    "m5q_source_health": true,
+    "network_free_startup": true,
+    "polling": false,
+    "promote_to_m5f": false,
+    "raw_endpoint_payload_included": false,
+    "recommendation": false,
+    "scheduler": false,
+    "trading_signal": false,
+    "validation": {
+      "errors": [],
+      "symbols": [
+        "2330",
+        "0050",
+        "3483",
+        "TAIEX",
+        "TX"
+      ],
+      "target_count": 5,
+      "valid": true,
+      "warnings": []
+    },
+    "writes_frontend_public": false,
+    "writes_m5f": false,
+    "writes_research_generated": false
+  },
+  "network_calls_may_have_occurred": true,
+  "polling": false,
+  "scheduler": false,
+  "schema_version": "m5q_source_health_report.v1",
+  "source_families": [
+    "TWSE_MIS listed stock route",
+    "TWSE_MIS listed ETF route",
+    "TWSE_MIS TPEx / OTC route",
+    "TWSE_MIS TAIEX route",
+    "TAIFEX TX route"
+  ],
+  "summary": {
+    "degraded": 2,
+    "failed": 0,
+    "healthy": 3,
+    "unsupported": 0
+  },
+  "targets": [
+    "2330",
+    "0050",
+    "3483",
+    "TAIEX",
+    "TX"
+  ]
+}

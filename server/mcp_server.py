@@ -23,6 +23,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 from scripts.validate_m5f_canonical_market_context_package import validate_package as _validate_m5f_package
+from scripts.m5q_source_health import read_latest_source_health as _m5q_read_latest_source_health, source_health_schema as _m5q_source_health_schema
 from scripts.m5k_common import DEFAULT_WATCHLIST_PATH as M5K_DEFAULT_WATCHLIST_PATH, conversation_handoff_from_watchlist as _m5k_conversation_handoff, execute_live_observation as _m5k_execute_live_observation, load_json as _m5k_load_json, read_latest_observation as _m5k_read_latest_observation, validate_watchlist as _m5k_validate_watchlist, plan_live_observation as _m5k_plan_live_observation, load_source_adapter_matrix as _m5l_load_source_adapter_matrix, source_capabilities as _m5l_source_capabilities, validate_source_adapter_matrix as _m5l_validate_source_adapter_matrix, normalize_watchlist as _m5n_normalize_watchlist, watchlist_summary as _m5n_watchlist_summary
 
 app = Server("tw-market-mcp")
@@ -109,6 +110,8 @@ M5N_VALIDATE_WATCHLIST_TOOL = "validate_watchlist"
 M5K_HANDOFF_TOOL = "create_m5k_conversation_handoff"
 M5L_MATRIX_TOOL = "get_m5l_source_adapter_matrix"
 M5L_CAPABILITIES_TOOL = "get_m5l_source_capabilities"
+M5Q_SOURCE_HEALTH_LATEST_TOOL = "get_source_health_latest"
+M5Q_SOURCE_HEALTH_SCHEMA_TOOL = "get_source_health_schema"
 
 
 def _load_allowed_targets() -> set[str]:
@@ -788,6 +791,14 @@ def get_m5l_source_capabilities_tool() -> dict[str, Any]:
     return {"tool": M5L_CAPABILITIES_TOOL, "status": "ok", "content": _m5l_source_capabilities(), "governance": readonly_governance() | {"layer": "M5L", "canonical": False}}
 
 
+def get_source_health_latest_tool() -> dict[str, Any]:
+    return {"tool": M5Q_SOURCE_HEALTH_LATEST_TOOL, **_m5q_read_latest_source_health()}
+
+
+def get_source_health_schema_tool() -> dict[str, Any]:
+    return {"tool": M5Q_SOURCE_HEALTH_SCHEMA_TOOL, "status": "ok", "content": _m5q_source_health_schema(), "governance": readonly_governance() | {"layer": "M5Q", "network_calls": False, "artifact_writes": False}}
+
+
 def create_m5k_handoff_tool(arguments: dict[str, Any] | None) -> dict[str, Any]:
     args = arguments or {}
     watchlist = args.get("watchlist") if isinstance(args, dict) else None
@@ -885,7 +896,11 @@ async def list_tools() -> list[Tool]:
         Tool(name=M5K_READ_LATEST_TOOL, description="Read the latest local M5K live observation artifact without network calls.", inputSchema={"type":"object","properties":{},"additionalProperties":False}),
         Tool(name=M5K_LIVE_OBSERVATION_TOOL, description="Execute one explicit bounded M5K live observation for the supplied watchlist; never promotes to M5F.", inputSchema={"type":"object","properties":{"confirm_live_observation":{"type":"boolean"},"watchlist":{"type":"object"}},"required":["confirm_live_observation","watchlist"],"additionalProperties":False}),
     ]
-    return [*readonly_tools, evidence_readback_tool, readiness_tool, *m5l_tools, *m5k_tools]
+    m5q_tools = [
+        Tool(name=M5Q_SOURCE_HEALTH_LATEST_TOOL, description="Read the latest M5Q source-health report without network calls or writes.", inputSchema={"type":"object","properties":{},"additionalProperties":False}),
+        Tool(name=M5Q_SOURCE_HEALTH_SCHEMA_TOOL, description="Read the M5Q source-health report schema without network calls or writes.", inputSchema={"type":"object","properties":{},"additionalProperties":False}),
+    ]
+    return [*readonly_tools, evidence_readback_tool, readiness_tool, *m5l_tools, *m5k_tools, *m5q_tools]
 
 
 @app.call_tool()
@@ -899,6 +914,10 @@ async def call_tool(name: str, arguments: dict[str, Any] | None) -> list[TextCon
         return _json_text(read_controlled_probe_evidence(arguments))
     if name == "check_bounded_market_refresh_readiness":
         return _json_text({"tool": name, "status": "authorization_required", "network_calls": False, "artifact_writes": False, "intended_source": "TWSE_OpenAPI", "intended_targets": ["0050", "00929", "2330"], "authorization_model": "M5 explicit future authorization", "m5i_required_for_actual_execution": True, "m5b_authorization_already_consumed": True, "statement": "Readiness check only; no live probe, no writes, no M5B authorization reuse."})
+    if name == M5Q_SOURCE_HEALTH_LATEST_TOOL:
+        return _json_text(get_source_health_latest_tool())
+    if name == M5Q_SOURCE_HEALTH_SCHEMA_TOOL:
+        return _json_text(get_source_health_schema_tool())
     if name == M5L_MATRIX_TOOL:
         return _json_text(get_m5l_source_adapter_matrix_tool())
     if name == M5L_CAPABILITIES_TOOL:

@@ -138,3 +138,10 @@ Performed low-frequency official TAIFEX probing for TX futures. Accepted bounded
   - `3483` via `twse_mis_equity_etf_quote`: value `87.8`, status `reference_value_only`, semantics `previous_close_or_reference_fallback_not_current_trade`, price source `y`, source timestamp `2026-06-30T01:56:01Z`, retrieved `2026-06-30T01:56:16Z`.
 - Timestamp policy: M5K now prefers MIS `tlong` when present and falls back to `d` + `t` as Taipei exchange-local time.
 - Value policy: numeric `y` fallback is retained as evidence in the failure envelope with `reference_value_only`; it is not labeled current/live and is not counted as a successful observation.
+
+## M5Q source-health regression probe layer
+
+- Added a manual bounded source-health runner, `python scripts/run_m5q_source_health_probe.py --check-only` and `python scripts/run_m5q_source_health_probe.py --execute-health-probe`.
+- Check-only validates the default watchlist, M5L adapter matrix, selected targets (`2330`, `0050`, `3483`, `TAIEX`, `TX`), route plan, and governance boundaries without network calls or writes.
+- Explicit execution reuses the M5K/M5L live observation contracts for TWSE MIS listed stock, listed ETF, TPEx/OTC, TAIEX, and TAIFEX TX representative routes and writes only normalized reports under `research/live_observation_runs/source_health/`.
+- Product-facing source-health reports exclude raw endpoint payload and do not mutate M5F, `frontend/public`, or `research/generated`.
