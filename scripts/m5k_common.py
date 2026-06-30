@@ -4,7 +4,7 @@ import json
 import re
 import urllib.parse
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -295,30 +295,72 @@ def _select_mis_price(item: dict[str, Any]) -> tuple[float | None, str | None]:
     return None, None
 
 
+def _parse_mis_source_timestamp(item: dict[str, Any], retrieved_at: str) -> tuple[str | None, int | None, list[str]]:
+    flags: list[str] = []
+    tlong = item.get("tlong")
+    if tlong not in (None, "", "-"):
+        try:
+            source_dt = datetime.fromtimestamp(int(str(tlong)) / 1000, tz=timezone.utc)
+            retrieved_dt = datetime.fromisoformat(retrieved_at.replace("Z", "+00:00"))
+            return source_dt.strftime("%Y-%m-%dT%H:%M:%SZ"), max(0, int((retrieved_dt - source_dt).total_seconds())), flags
+        except (TypeError, ValueError, OSError):
+            flags.append("malformed_source_timestamp")
+    source_date = str(item.get("d") or "")
+    source_time = str(item.get("t") or "")
+    if source_date and source_time and source_date != "-" and source_time != "-":
+        try:
+            source_dt = datetime.strptime(f"{source_date} {source_time}", "%Y%m%d %H:%M:%S").replace(tzinfo=timezone.utc)
+            # raw d+t are Taipei exchange-local time; convert to UTC by attaching +08 manually.
+            source_dt = source_dt.replace(tzinfo=timezone(timedelta(hours=8))).astimezone(timezone.utc)
+            retrieved_dt = datetime.fromisoformat(retrieved_at.replace("Z", "+00:00"))
+            return source_dt.strftime("%Y-%m-%dT%H:%M:%SZ"), max(0, int((retrieved_dt - source_dt).total_seconds())), flags
+        except ValueError:
+            flags.append("malformed_source_date_time")
+    flags.append("source_time_unavailable")
+    return None, None, flags
+
+
 def _parse_mis_item(item: dict[str, Any], instrument: dict[str, Any], retrieved_at: str) -> dict[str, Any]:
     symbol = instrument["symbol"]
     price, price_source_field = _select_mis_price(item)
-    source_date = str(item.get("d") or "")
-    source_time = str(item.get("t") or "")
+    source_timestamp, delay_seconds, timestamp_flags = _parse_mis_source_timestamp(item, retrieved_at)
+    data_quality_flags = list(timestamp_flags)
+    caveats = governance()["caveats"] + ["unofficial_source_risk", "fragile_frontend_contract", "not_official_realtime_api"]
+    if price_source_field == "z":
+        status = "ok"
+        price_semantics = "last_or_current_quote_as_reported_by_source"
+    elif price_source_field == "y":
+        status = "reference_value_only"
+        price_semantics = "previous_close_or_reference_fallback_not_current_trade"
+        data_quality_flags.append("current_z_unavailable_used_y_reference")
+        caveats.append("current_z_unavailable_y_reference_fallback_not_current_trade")
+    else:
+        status = "value_unavailable"
+        price_semantics = "value_unavailable_no_numeric_z_or_y"
+        data_quality_flags.append("missing_price")
+    source_risk_flags = ["unofficial_source_risk", "fragile_frontend_contract", "not_official_realtime_api"]
     return {
         "symbol": symbol,
         "display_symbol": instrument.get("display_symbol", symbol),
         "category_id": instrument.get("category_id"),
         "instrument_type": instrument.get("instrument_type"),
-        "status": "ok" if price is not None else "value_unavailable",
+        "status": status,
         "source": "TWSE_MIS",
         "adapter_id": instrument.get("adapter_id") or ("twse_mis_taiex_index_quote" if symbol == "TAIEX" or instrument.get("instrument_type") == "index" else "twse_mis_equity_etf_quote"),
         "market": instrument.get("market"),
         "source_type": "official_browser_json_endpoint_candidate",
         "price_like_value": price,
         "price_source_field": price_source_field,
-        "price_semantics": "last_trade_price_z_or_reference_y_as_reported_by_source",
-        "source_timestamp": f"{source_date} {source_time}".strip(),
+        "price_semantics": price_semantics,
+        "source_timestamp": source_timestamp,
         "retrieved_at_utc": retrieved_at,
         "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
         "delay_status": "not_realtime_guaranteed",
-        "delay_seconds": None,
-        "caveats": governance()["caveats"],
+        "delay_seconds": delay_seconds,
+        "staleness_seconds": delay_seconds,
+        "data_quality_flags": sorted(set(data_quality_flags)),
+        "source_risk_flags": source_risk_flags,
+        "caveats": sorted(set(caveats)),
     }
 
 
@@ -403,7 +445,7 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
             if parsed.get("status") == "ok":
                 payload["observations"].append(parsed)
             else:
-                payload["failures"].append({"symbol": instrument["symbol"], "source": plan.get("source"), "adapter_id": plan.get("adapter_id"), "status": "failed", "reason": "value_unavailable", "observation": parsed, "recommended_next_step": "Do not infer a current value; retry a bounded explicit observation later or inspect source availability."})
+                payload["failures"].append({"symbol": instrument["symbol"], "source": plan.get("source"), "adapter_id": plan.get("adapter_id"), "status": "failed", "reason": parsed.get("status", "value_unavailable"), "observation": parsed, "recommended_next_step": "Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability."})
         else:
             payload["failures"].append({"symbol": instrument["symbol"], "source": plan.get("source"), "adapter_id": plan.get("adapter_id"), "status": "failed", "reason": "missing_from_source_response:" + str(plan.get("ex_ch")), "recommended_next_step": "Verify symbol market route and retry a bounded explicit observation later."})
     payload["status"] = "ok" if payload["observations"] else "completed_with_no_observations"

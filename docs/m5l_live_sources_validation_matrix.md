@@ -24,7 +24,7 @@ The machine-readable matrix is `config/m5l_live_source_adapter_matrix.json`.
 - ETF route: `tse_0050.tw`.
 - TPEx/OTC route: `otc_3483.tw`.
 - Response format: JSON object with `msgArray` quote records when accepted. Batch requests join bounded `ex_ch` values with `|` before URL encoding; if the endpoint returns `rtcode=9999` or malformed `msgArray`, the adapter records `batch_request_failed` and falls back to individual bounded requests.
-- Parsed fields: symbol/channel, numeric `z` last price when available, numeric `y` fallback only when `z` is missing or non-numeric, `d`, `t`, retrieval UTC, source caveats.
+- Parsed fields: symbol/channel, numeric `z` last/current quote when available, numeric `y` reference fallback only when `z` is missing or non-numeric, `tlong`-preferred source timestamp with `d` + `t` Taipei-time fallback, retrieval UTC, source caveats. Numeric `y` fallback is `reference_value_only`, not a successful current trade observation.
 - Raw payload retention: investigation-only during probe; product outputs retain normalized envelopes and bounded evidence metadata only.
 - Freshness semantics: source date/time are displayed as source timestamp; retrieval time is UTC; no realtime claim is made.
 - Legal/maintenance risk: medium because it is a browser endpoint and may change or be blocked.
@@ -68,7 +68,7 @@ The probe scope was exactly `2330`, `0050`, `TAIEX`, `3483`, and `TX`. Endpoint 
 
 ## Endpoint acceptance/rejection rationale
 
-Accepted-with-caveats endpoints are accepted because they returned parseable bounded observations and expose source timestamps or source status. They remain caveated because browser endpoints can change, may be delayed, and do not provide a verified realtime SLA.
+Accepted-with-caveats endpoints are accepted because they can return parseable bounded observations and expose source timestamps or source status. Rows whose only numeric price-like field is MIS `y` are retained as reference-only evidence, not successful current trade observations. They remain caveated because browser endpoints can change, may be delayed, and do not provide a verified realtime SLA.
 
 Rejected-for-live endpoints are rejected when they are EOD/reference sources rather than live observation sources. Future candidates require credentials, licensing, and read-only separation from broker/order functionality.
 
