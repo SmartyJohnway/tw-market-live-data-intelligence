@@ -35,6 +35,7 @@ This index is the product documentation entry point after M5LRM architecture con
 
 - [Operations Runbook](operations_runbook.md)
 - [AI Watchlist Operator Guide](operator/AI_WATCHLIST_OPERATOR_GUIDE.md)
+- [M5OP Operator Workflow](operator/M5OP_OPERATOR_WORKFLOW.md)
 - [MCP Usage Guide](mcp_usage_guide.md)
 - [Agent Usage Guide](agent_usage_guide.md)
 - [Source Authority Manual](manuals/SOURCE_AUTHORITY_MANUAL.md)

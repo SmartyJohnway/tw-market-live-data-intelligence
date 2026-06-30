@@ -37,7 +37,7 @@ Key contract: [`docs/architecture/level2_live_observation.md`](docs/architecture
 
 ## AI Watchlist Workflow
 
-M5N introduces a formal Watchlist Workspace centered on `config/m5k_default_watchlist.json`. The same importable/exportable JSON watchlist is consumed by FastAPI, MCP, frontend preview, adapter planning, explicit live observation, and the temporary AI conversation context builder. See [`docs/architecture/ai_watchlist_workflow.md`](docs/architecture/ai_watchlist_workflow.md) and [`docs/operator/AI_WATCHLIST_OPERATOR_GUIDE.md`](docs/operator/AI_WATCHLIST_OPERATOR_GUIDE.md).
+M5N introduces a formal Watchlist Workspace centered on `config/m5k_default_watchlist.json`. The same importable/exportable JSON watchlist is consumed by FastAPI, MCP, frontend preview, adapter planning, explicit live observation, and the temporary AI conversation context builder. See [`docs/architecture/ai_watchlist_workflow.md`](docs/architecture/ai_watchlist_workflow.md), [`docs/operator/AI_WATCHLIST_OPERATOR_GUIDE.md`](docs/operator/AI_WATCHLIST_OPERATOR_GUIDE.md), and the M5OP operator runbook at [`docs/operator/M5OP_OPERATOR_WORKFLOW.md`](docs/operator/M5OP_OPERATOR_WORKFLOW.md).
 
 ## Mode A / Mode B / Mode C
 
@@ -77,6 +77,7 @@ Useful local endpoints:
 - `GET /api/watchlist/summary`
 - `GET /api/watchlist/schema`
 - `GET /api/conversation/context`
+- Frontend workspace: `frontend/readonly-preview/M5KLocalAIWorkbench.html`
 - `GET /api/m5k/watchlist/default`
 - `POST /api/m5k/live-observation/plan`
 - `POST /api/m5k/live-observation/execute?confirm_live_observation=true`
@@ -118,6 +119,7 @@ Start with [`docs/INDEX.md`](docs/INDEX.md). Key entry points:
 - Data contract: [`docs/data_contract.md`](docs/data_contract.md)
 - AI watchlist workflow: [`docs/architecture/ai_watchlist_workflow.md`](docs/architecture/ai_watchlist_workflow.md)
 - AI watchlist operator guide: [`docs/operator/AI_WATCHLIST_OPERATOR_GUIDE.md`](docs/operator/AI_WATCHLIST_OPERATOR_GUIDE.md)
+- M5OP operator workflow: [`docs/operator/M5OP_OPERATOR_WORKFLOW.md`](docs/operator/M5OP_OPERATOR_WORKFLOW.md)
 - MCP usage: [`docs/mcp_usage_guide.md`](docs/mcp_usage_guide.md)
 - Operations runbook: [`docs/operations_runbook.md`](docs/operations_runbook.md)
 - README archive: [`docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md`](docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md)
