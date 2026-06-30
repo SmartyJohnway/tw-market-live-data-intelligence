@@ -1,4 +1,87 @@
 {
+  "ai_guidance_summary": {
+    "canonical_package_covers": [
+      "0050",
+      "00929",
+      "2330"
+    ],
+    "current_limitations": [
+      "freshness_must_be_displayed",
+      "live_observation_not_canonical",
+      "manual_bounded_regression_probe",
+      "no_polling_or_scheduler",
+      "no_trading_signal",
+      "not_live_scanner",
+      "not_production_current_state",
+      "not_realtime_guaranteed",
+      "not_trading_signal",
+      "raw_endpoint_payload_excluded",
+      "source_may_be_delayed_or_unavailable",
+      "source_risk_present"
+    ],
+    "current_observations_available": [
+      "00878",
+      "00919",
+      "00929",
+      "00934",
+      "00939",
+      "00940",
+      "00981A",
+      "1569",
+      "2317",
+      "2324",
+      "2603",
+      "2609",
+      "3293",
+      "3543",
+      "TAIEX"
+    ],
+    "degraded_observations": [
+      "0050",
+      "2330",
+      "3483",
+      "TX"
+    ],
+    "descriptive_only": true,
+    "recommended_operator_workflow": [
+      "Review Conversation Context JSON/Markdown as the AI handoff package.",
+      "Treat Canonical Summary as Level 1 historical context, not Latest Observation.",
+      "Treat reference-only or unavailable observations as not current price.",
+      "If freshness is insufficient, run only the existing bounded explicit observation runner later."
+    ],
+    "reference_only_observations": [
+      "0050",
+      "2330",
+      "3483"
+    ],
+    "stale_or_closed_session_observations": [
+      "TX"
+    ],
+    "trading_recommendation": false,
+    "unavailable_observations": []
+  },
+  "canonical_summary": {
+    "canonical_caveats": [
+      "not_realtime_guaranteed",
+      "not_trading_signal",
+      "not_production_current_state",
+      "source_risk_present",
+      "freshness_must_be_displayed"
+    ],
+    "canonical_source": "TWSE_OpenAPI",
+    "canonical_source_date": "2026-06-26",
+    "canonical_symbols": [
+      "0050",
+      "00929",
+      "2330"
+    ],
+    "distinction": "Canonical is reviewed Level 1 context and is not the same as Latest Observation Level 2 output.",
+    "generated_at_utc": "2026-06-27T01:51:38.637952+00:00",
+    "package_id": "m5f_canonical_market_context_01",
+    "raw_endpoint_payload_included": false,
+    "schema_version": "m5f_canonical_market_context.v1",
+    "status": "available"
+  },
   "caveats": [
     "live_observation_not_canonical",
     "not_realtime_guaranteed",
@@ -6,12 +89,13 @@
     "source_may_be_delayed_or_unavailable",
     "no_trading_signal"
   ],
-  "created_at_utc": "2026-06-30T02:49:29Z",
+  "created_at_utc": "2026-06-30T05:43:42Z",
   "failed_observations": 0,
   "failures": [],
-  "freshness": null,
+  "freshness": "2026-06-29T17:08:37Z",
   "governance": {
     "bounded_watchlist_only": true,
+    "buy_sell_hold": false,
     "canonical": false,
     "caveats": [
       "live_observation_not_canonical",
@@ -27,12 +111,559 @@
     "network_free_startup": true,
     "polling": false,
     "promote_to_m5f": false,
+    "ranking": false,
     "raw_endpoint_payload_included": false,
     "recommendation": false,
     "scheduler": false,
+    "target_price": false,
     "trading_signal": false
   },
-  "purpose": "Temporary AI conversation package for watchlist observation discussion; not canonical M5F and not raw endpoint payload.",
+  "latest_observation_summary": {
+    "failure_count": 0,
+    "generated_at_utc": "2026-06-29T17:08:37Z",
+    "observation_count": 19,
+    "raw_endpoint_payload_included": false,
+    "schema_version": "m5k_live_observation.v1",
+    "status": "ok",
+    "watchlist_id": "m5k_default_taiwan_ai_watchlist"
+  },
+  "observation_summary": {
+    "degraded": 4,
+    "failed": 0,
+    "healthy": 15,
+    "reference_only": 3,
+    "unsupported": 0
+  },
+  "per_symbol_observations": [
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "current_z_unavailable_y_reference_fallback_not_current_trade",
+        "fragile_frontend_contract",
+        "freshness_must_be_displayed",
+        "live_observation_not_canonical",
+        "no_trading_signal",
+        "not_official_realtime_api",
+        "not_realtime_guaranteed",
+        "source_may_be_delayed_or_unavailable",
+        "unofficial_source_risk"
+      ],
+      "display_name": "0050",
+      "failure_reason": "reference_value_only",
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_etf",
+      "market": "twse",
+      "observation_status": "reference_value_only",
+      "price_like_value": 104.45,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability.",
+      "reference_only": true,
+      "retrieved_at_utc": "2026-06-30T04:23:34Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "2026-06-30T04:23:24Z",
+      "status": "reference_value_only",
+      "symbol": "0050",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "00878",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_etf",
+      "market": "twse",
+      "observation_status": "ok",
+      "price_like_value": 32.9,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:30:00",
+      "status": "ok",
+      "symbol": "00878",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "00919",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_etf",
+      "market": "twse",
+      "observation_status": "ok",
+      "price_like_value": 29.46,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:30:00",
+      "status": "ok",
+      "symbol": "00919",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "00929",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_etf",
+      "market": "twse",
+      "observation_status": "ok",
+      "price_like_value": 29.99,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:30:00",
+      "status": "ok",
+      "symbol": "00929",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "00934",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_etf",
+      "market": "twse",
+      "observation_status": "ok",
+      "price_like_value": 27.78,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:30:00",
+      "status": "ok",
+      "symbol": "00934",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "00939",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_etf",
+      "market": "twse",
+      "observation_status": "ok",
+      "price_like_value": 21.26,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:30:00",
+      "status": "ok",
+      "symbol": "00939",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "00940",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_etf",
+      "market": "twse",
+      "observation_status": "ok",
+      "price_like_value": 12.48,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:30:00",
+      "status": "ok",
+      "symbol": "00940",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "00981A",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_etf",
+      "market": "twse",
+      "observation_status": "ok",
+      "price_like_value": 29.94,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:30:00",
+      "status": "ok",
+      "symbol": "00981A",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "1569",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_or_otc_equity",
+      "market": "tpex",
+      "observation_status": "ok",
+      "price_like_value": 44.9,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:30:00",
+      "status": "ok",
+      "symbol": "1569",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "2317",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_equity",
+      "market": "twse",
+      "observation_status": "ok",
+      "price_like_value": 246.5,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:30:00",
+      "status": "ok",
+      "symbol": "2317",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "2324",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_equity",
+      "market": "twse",
+      "observation_status": "ok",
+      "price_like_value": 34.2,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:30:00",
+      "status": "ok",
+      "symbol": "2324",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "current_z_unavailable_y_reference_fallback_not_current_trade",
+        "fragile_frontend_contract",
+        "freshness_must_be_displayed",
+        "live_observation_not_canonical",
+        "no_trading_signal",
+        "not_official_realtime_api",
+        "not_realtime_guaranteed",
+        "source_may_be_delayed_or_unavailable",
+        "unofficial_source_risk"
+      ],
+      "display_name": "2330",
+      "failure_reason": "reference_value_only",
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_equity",
+      "market": "twse",
+      "observation_status": "reference_value_only",
+      "price_like_value": 2370.0,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability.",
+      "reference_only": true,
+      "retrieved_at_utc": "2026-06-30T04:23:34Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "2026-06-30T04:23:24Z",
+      "status": "reference_value_only",
+      "symbol": "2330",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "2603",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_equity",
+      "market": "twse",
+      "observation_status": "ok",
+      "price_like_value": 184.0,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:30:00",
+      "status": "ok",
+      "symbol": "2603",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "2609",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_equity",
+      "market": "twse",
+      "observation_status": "ok",
+      "price_like_value": 51.4,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:30:00",
+      "status": "ok",
+      "symbol": "2609",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "3293",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_or_otc_equity",
+      "market": "tpex",
+      "observation_status": "ok",
+      "price_like_value": 769.0,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:30:00",
+      "status": "ok",
+      "symbol": "3293",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "current_z_unavailable_y_reference_fallback_not_current_trade",
+        "fragile_frontend_contract",
+        "freshness_must_be_displayed",
+        "live_observation_not_canonical",
+        "no_trading_signal",
+        "not_official_realtime_api",
+        "not_realtime_guaranteed",
+        "source_may_be_delayed_or_unavailable",
+        "unofficial_source_risk"
+      ],
+      "display_name": "3483",
+      "failure_reason": "reference_value_only",
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_or_otc_equity",
+      "market": "tpex",
+      "observation_status": "reference_value_only",
+      "price_like_value": 87.8,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability.",
+      "reference_only": true,
+      "retrieved_at_utc": "2026-06-30T04:23:34Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "2026-06-30T04:20:17Z",
+      "status": "reference_value_only",
+      "symbol": "3483",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "3543",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "listed_equity",
+      "market": "twse",
+      "observation_status": "ok",
+      "price_like_value": 28.6,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:30:00",
+      "status": "ok",
+      "symbol": "3543",
+      "value_present": true
+    },
+    {
+      "adapter": "TWSE_MIS",
+      "delay": "not_realtime_guaranteed",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal"
+      ],
+      "display_name": "TAIEX",
+      "failure_reason": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "instrument_type": "index",
+      "market": "twse",
+      "observation_status": "ok",
+      "price_like_value": 44999.9,
+      "price_semantics": "last_or_reference_value_as_reported_by_source",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TWSE_MIS",
+      "source_timestamp": "20260629 13:33:00",
+      "status": "ok",
+      "symbol": "TAIEX",
+      "value_present": true
+    },
+    {
+      "adapter": "TAIFEX",
+      "delay": "delay_seconds_measured_from_source_timestamp_not_exchange_realtime_sla",
+      "display_caveats": [
+        "live_observation_not_canonical",
+        "not_realtime_guaranteed",
+        "freshness_must_be_displayed",
+        "source_may_be_delayed_or_unavailable",
+        "no_trading_signal",
+        "official_browser_endpoint_not_openapi_contract",
+        "no_realtime_sla_verified"
+      ],
+      "display_name": "TX futures",
+      "failure_reason": null,
+      "freshness": "stale_or_closed_session",
+      "instrument_type": "futures",
+      "market": "taifex",
+      "observation_status": "ok",
+      "price_like_value": 45550.0,
+      "price_semantics": "last_trade_price_or_settlement_fallback_as_reported_by_taifex_mis",
+      "recommended_next_step": "Review caveats before AI discussion.",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-06-29T17:08:37Z",
+      "source": "TAIFEX",
+      "source_timestamp": "2026-06-29T13:44:59+08:00",
+      "status": "ok",
+      "symbol": "TX",
+      "value_present": true
+    }
+  ],
+  "purpose": "Single governed AI conversation package for watchlist observation discussion; not canonical M5F and not raw endpoint payload.",
   "risk": [
     "not_realtime_guaranteed",
     "source_may_be_delayed_or_unavailable",
@@ -40,8 +671,218 @@
     "no_automatic_refresh"
   ],
   "schema_version": "m5n_conversation_context.v1",
-  "source_health": [],
-  "successful_observations": 0,
+  "source_health": {
+    "caveats": [
+      "manual_bounded_regression_probe",
+      "not_realtime_guaranteed",
+      "not_live_scanner",
+      "no_polling_or_scheduler",
+      "raw_endpoint_payload_excluded"
+    ],
+    "degraded_or_failed_targets": [
+      {
+        "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
+        "observation_status": "reference_value_only",
+        "source_family": "TWSE_MIS listed stock route",
+        "status": "degraded",
+        "target": "2330"
+      },
+      {
+        "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
+        "observation_status": "reference_value_only",
+        "source_family": "TWSE_MIS listed ETF route",
+        "status": "degraded",
+        "target": "0050"
+      },
+      {
+        "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
+        "observation_status": "reference_value_only",
+        "source_family": "TWSE_MIS TPEx / OTC route",
+        "status": "degraded",
+        "target": "3483"
+      }
+    ],
+    "degraded_source_families": [
+      "TWSE_MIS TPEx / OTC route",
+      "TWSE_MIS listed ETF route",
+      "TWSE_MIS listed stock route"
+    ],
+    "failed_source_families": [],
+    "generated_at_utc": "2026-06-30T04:23:40Z",
+    "overall_summary": {
+      "degraded": 3,
+      "failed": 0,
+      "healthy": 2,
+      "unsupported": 0
+    },
+    "per_source_family_status": {
+      "TAIFEX TX route": {
+        "healthy": 1
+      },
+      "TWSE_MIS TAIEX route": {
+        "healthy": 1
+      },
+      "TWSE_MIS TPEx / OTC route": {
+        "degraded": 1
+      },
+      "TWSE_MIS listed ETF route": {
+        "degraded": 1
+      },
+      "TWSE_MIS listed stock route": {
+        "degraded": 1
+      }
+    },
+    "per_source_family_summary": {
+      "TAIFEX TX route": {
+        "healthy": 1
+      },
+      "TWSE_MIS TAIEX route": {
+        "healthy": 1
+      },
+      "TWSE_MIS TPEx / OTC route": {
+        "degraded": 1
+      },
+      "TWSE_MIS listed ETF route": {
+        "degraded": 1
+      },
+      "TWSE_MIS listed stock route": {
+        "degraded": 1
+      }
+    },
+    "raw_endpoint_payload_included": false,
+    "source_health_status": "available",
+    "summary": {
+      "degraded": 3,
+      "failed": 0,
+      "healthy": 2,
+      "unsupported": 0
+    }
+  },
+  "source_health_summary": {
+    "caveats": [
+      "manual_bounded_regression_probe",
+      "not_realtime_guaranteed",
+      "not_live_scanner",
+      "no_polling_or_scheduler",
+      "raw_endpoint_payload_excluded"
+    ],
+    "degraded_or_failed_targets": [
+      {
+        "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
+        "observation_status": "reference_value_only",
+        "source_family": "TWSE_MIS listed stock route",
+        "status": "degraded",
+        "target": "2330"
+      },
+      {
+        "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
+        "observation_status": "reference_value_only",
+        "source_family": "TWSE_MIS listed ETF route",
+        "status": "degraded",
+        "target": "0050"
+      },
+      {
+        "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
+        "observation_status": "reference_value_only",
+        "source_family": "TWSE_MIS TPEx / OTC route",
+        "status": "degraded",
+        "target": "3483"
+      }
+    ],
+    "degraded_source_families": [
+      "TWSE_MIS TPEx / OTC route",
+      "TWSE_MIS listed ETF route",
+      "TWSE_MIS listed stock route"
+    ],
+    "failed_source_families": [],
+    "generated_at_utc": "2026-06-30T04:23:40Z",
+    "overall_summary": {
+      "degraded": 3,
+      "failed": 0,
+      "healthy": 2,
+      "unsupported": 0
+    },
+    "per_source_family_status": {
+      "TAIFEX TX route": {
+        "healthy": 1
+      },
+      "TWSE_MIS TAIEX route": {
+        "healthy": 1
+      },
+      "TWSE_MIS TPEx / OTC route": {
+        "degraded": 1
+      },
+      "TWSE_MIS listed ETF route": {
+        "degraded": 1
+      },
+      "TWSE_MIS listed stock route": {
+        "degraded": 1
+      }
+    },
+    "per_source_family_summary": {
+      "TAIFEX TX route": {
+        "healthy": 1
+      },
+      "TWSE_MIS TAIEX route": {
+        "healthy": 1
+      },
+      "TWSE_MIS TPEx / OTC route": {
+        "degraded": 1
+      },
+      "TWSE_MIS listed ETF route": {
+        "degraded": 1
+      },
+      "TWSE_MIS listed stock route": {
+        "degraded": 1
+      }
+    },
+    "raw_endpoint_payload_included": false,
+    "source_health_status": "available",
+    "summary": {
+      "degraded": 3,
+      "failed": 0,
+      "healthy": 2,
+      "unsupported": 0
+    }
+  },
+  "source_investigation_notes": [
+    {
+      "headers_required": [
+        "User-Agent",
+        "Accept",
+        "Content-Type",
+        "Referer",
+        "Origin"
+      ],
+      "method": "POST",
+      "quote_count": "7",
+      "request_body": {
+        "CID": "TXF",
+        "KindID": "1",
+        "MarketType": "0",
+        "SymbolType": "F"
+      },
+      "response_format": "application/json",
+      "rt_code": "0",
+      "sample_symbols": [
+        "TXF-S",
+        "TXFG6-F",
+        "TXFH6-F",
+        "TXFI6-F"
+      ],
+      "selected_symbol": "TXFG6-F",
+      "source": "TAIFEX",
+      "status": "accepted_for_bounded_observation",
+      "status_code": 200,
+      "url": "https://mis.taifex.com.tw/futures/api/getQuoteList"
+    },
+    {
+      "sample_retained": false,
+      "source": "TWSE_MIS",
+      "status": "accepted_for_bounded_observation"
+    }
+  ],
+  "successful_observations": 19,
   "watchlist_rows": [
     {
       "adapter": "TWSE_MIS",
@@ -49,11 +890,11 @@
       "display_name": "0050",
       "display_order": 1,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 104.45,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "0050"
     },
     {
@@ -62,11 +903,11 @@
       "display_name": "00878",
       "display_order": 2,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 32.9,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "00878"
     },
     {
@@ -75,11 +916,11 @@
       "display_name": "00919",
       "display_order": 3,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 29.46,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "00919"
     },
     {
@@ -88,11 +929,11 @@
       "display_name": "00929",
       "display_order": 4,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 29.99,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "00929"
     },
     {
@@ -101,11 +942,11 @@
       "display_name": "00934",
       "display_order": 5,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 27.78,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "00934"
     },
     {
@@ -114,11 +955,11 @@
       "display_name": "00939",
       "display_order": 6,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 21.26,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "00939"
     },
     {
@@ -127,11 +968,11 @@
       "display_name": "00940",
       "display_order": 7,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 12.48,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "00940"
     },
     {
@@ -140,11 +981,11 @@
       "display_name": "00981A",
       "display_order": 8,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 29.94,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "00981A"
     },
     {
@@ -153,11 +994,11 @@
       "display_name": "1569",
       "display_order": 9,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 44.9,
       "market": "tpex",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "1569"
     },
     {
@@ -166,11 +1007,11 @@
       "display_name": "2317",
       "display_order": 10,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 246.5,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "2317"
     },
     {
@@ -179,11 +1020,11 @@
       "display_name": "2324",
       "display_order": 11,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 34.2,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "2324"
     },
     {
@@ -192,11 +1033,11 @@
       "display_name": "2330",
       "display_order": 12,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 2370.0,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "2330"
     },
     {
@@ -205,11 +1046,11 @@
       "display_name": "2603",
       "display_order": 13,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 184.0,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "2603"
     },
     {
@@ -218,11 +1059,11 @@
       "display_name": "2609",
       "display_order": 14,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 51.4,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "2609"
     },
     {
@@ -231,11 +1072,11 @@
       "display_name": "3293",
       "display_order": 15,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 769.0,
       "market": "tpex",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "3293"
     },
     {
@@ -244,11 +1085,11 @@
       "display_name": "3483",
       "display_order": 16,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 87.8,
       "market": "tpex",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "3483"
     },
     {
@@ -257,11 +1098,11 @@
       "display_name": "3543",
       "display_order": 17,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 28.6,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "3543"
     },
     {
@@ -270,11 +1111,11 @@
       "display_name": "TAIEX",
       "display_order": 18,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "current observation candidate; realtime status not guaranteed by M5K",
+      "last_observation": 44999.9,
       "market": "twse",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TWSE_MIS",
+      "status": "observed",
       "symbol": "TAIEX"
     },
     {
@@ -283,11 +1124,11 @@
       "display_name": "TX futures",
       "display_order": 19,
       "enabled": true,
-      "freshness": null,
-      "last_observation": null,
+      "freshness": "stale_or_closed_session",
+      "last_observation": 45550.0,
       "market": "taifex",
-      "source": null,
-      "status": "no_observation_loaded",
+      "source": "TAIFEX",
+      "status": "observed",
       "symbol": "TX"
     }
   ],
@@ -351,9 +1192,7 @@
     ],
     "total_items": 19,
     "validation": {
-      "errors": [
-        "forbidden_field:<root>.governance.recommendation"
-      ],
+      "errors": [],
       "symbols": [
         "0050",
         "00878",
@@ -376,7 +1215,7 @@
         "TX"
       ],
       "target_count": 19,
-      "valid": false,
+      "valid": true,
       "warnings": []
     },
     "watchlist_id": "m5k_default_taiwan_ai_watchlist"
