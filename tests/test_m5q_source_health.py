@@ -44,6 +44,49 @@ def test_health_classification_cases():
     assert m5q.classify_observation(None, {"status": "unsupported", "reason": "unsupported_route"}) == "unsupported"
 
 
+def test_reference_failure_embedded_observation_preserves_detail():
+    embedded = normalize_observation(
+        symbol="2330",
+        source="TWSE_MIS",
+        adapter_id="twse_mis_equity_etf_quote",
+        status="reference_value_only",
+        retrieved_at_utc="2026-06-30T01:02:03Z",
+        value=123.5,
+        reference_only=True,
+        source_timestamp="2026-06-30T01:01:30Z",
+        freshness_assessment="current observation candidate; realtime status not guaranteed by M5K",
+        delay_seconds=33,
+        caveats=["current_z_unavailable_y_reference_fallback_not_current_trade"],
+    )
+    failure = {
+        "symbol": "2330",
+        "source": "TWSE_MIS",
+        "adapter_id": "twse_mis_equity_etf_quote",
+        "reason": "reference_value_only",
+        "investigation_summary": {"observation": embedded},
+        "caveats": ["not_realtime_guaranteed"],
+    }
+    plan = {
+        "symbol": "2330",
+        "instrument_type": "listed_equity",
+        "market": "twse",
+        "source": "TWSE_MIS",
+        "adapter_id": "twse_mis_equity_etf_quote",
+        "ex_ch": "tse_2330.tw",
+        "status": "planned",
+    }
+    check = m5q._check_from_plan(plan, None, failure, "2026-06-30T01:02:04Z")
+    assert check["status"] == "degraded"
+    assert check["observation_status"] == "reference_value_only"
+    assert check["reference_only"] is True
+    assert check["value_present"] is True
+    assert check["source_timestamp"] == "2026-06-30T01:01:30Z"
+    assert check["delay_seconds"] == 33
+    assert check["freshness_assessment"] == "current observation candidate; realtime status not guaranteed by M5K"
+    assert "current_z_unavailable_y_reference_fallback_not_current_trade" in check["caveats"]
+    assert check["failure_reason"] == "reference_value_only"
+
+
 def test_read_latest_source_health_unavailable_and_available(monkeypatch, tmp_path):
     path = tmp_path / "latest_source_health_report.json"
     monkeypatch.setattr(m5q, "LATEST_JSON", path)

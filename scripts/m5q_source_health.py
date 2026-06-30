@@ -66,10 +66,21 @@ def _obs_status(obs: dict[str, Any] | None, failure: dict[str, Any] | None, stat
     return "reference_value_only" if failure and failure.get("reason") == "reference_value_only" else ("value_unavailable" if failure and failure.get("reason") in {"value_unavailable", "missing_value"} else ("failed" if failure else "value_unavailable"))
 
 
+def _embedded_failure_observation(failure: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not isinstance(failure, dict):
+        return None
+    summary = failure.get("investigation_summary")
+    if not isinstance(summary, dict):
+        return None
+    embedded = summary.get("observation")
+    return embedded if isinstance(embedded, dict) else None
+
+
 def _check_from_plan(plan: dict[str, Any], obs: dict[str, Any] | None, failure: dict[str, Any] | None, retrieved_at: str) -> dict[str, Any]:
     planned_supported = plan.get("status") not in {"unsupported_market", "unsupported_in_m5k_initial"}
-    status = classify_observation(obs, failure, planned_supported=planned_supported)
-    value = None if not obs else (obs.get("value") if obs.get("value") is not None else obs.get("price_like_value"))
+    obs_detail = obs or _embedded_failure_observation(failure)
+    status = classify_observation(obs_detail, failure, planned_supported=planned_supported)
+    value = None if not obs_detail else (obs_detail.get("value") if obs_detail.get("value") is not None else obs_detail.get("price_like_value"))
     return {
         "target": plan.get("symbol"),
         "instrument_type": plan.get("instrument_type"),
@@ -78,17 +89,17 @@ def _check_from_plan(plan: dict[str, Any], obs: dict[str, Any] | None, failure: 
         "adapter_id": plan.get("adapter_id"),
         "route": plan.get("route") or plan.get("ex_ch") or plan.get("url"),
         "status": status,
-        "observation_status": _obs_status(obs, failure, status),
+        "observation_status": _obs_status(obs_detail, failure, status),
         "value_present": value is not None,
-        "reference_only": bool(obs and obs.get("reference_only") is True),
-        "source_timestamp": None if not obs else obs.get("source_timestamp"),
-        "retrieved_at_utc": (obs or {}).get("retrieved_at_utc") or retrieved_at,
-        "freshness_assessment": (obs or {}).get("freshness_assessment") or ("route unsupported" if status == "unsupported" else "source request failed or value unavailable"),
-        "delay_seconds": None if not obs else obs.get("delay_seconds"),
+        "reference_only": bool(obs_detail and obs_detail.get("reference_only") is True),
+        "source_timestamp": None if not obs_detail else obs_detail.get("source_timestamp"),
+        "retrieved_at_utc": (obs_detail or {}).get("retrieved_at_utc") or retrieved_at,
+        "freshness_assessment": (obs_detail or {}).get("freshness_assessment") or ("route unsupported" if status == "unsupported" else "source request failed or value unavailable"),
+        "delay_seconds": None if not obs_detail else obs_detail.get("delay_seconds"),
         "failure_reason": None if not failure else failure.get("reason"),
         "recommended_next_step": (failure or {}).get("recommended_next_step") or ("Review caveats and rerun manually later if market/session freshness is important." if status != "healthy" else "Source route usable for bounded observation; continue to display caveats and avoid realtime claims."),
         "raw_endpoint_payload_included": False,
-        "caveats": sorted(set((obs or {}).get("caveats", []) + (failure or {}).get("caveats", []))),
+        "caveats": sorted(set((obs_detail or {}).get("caveats", []) + (failure or {}).get("caveats", []))),
     }
 
 
