@@ -1,4 +1,4 @@
-const state = { watchlist: null, observation: null };
+const state = { watchlist: null, observation: null, matrix: null };
 const byId = (id) => document.getElementById(id);
 const marketOptions = ['twse', 'tpex', 'taifex'];
 const typeOptions = ['listed_etf', 'listed_equity', 'listed_or_otc_equity', 'index', 'futures'];
@@ -106,6 +106,14 @@ function updateSummary() {
   byId('watchlistSummary').textContent = `${rows.length} rows; ${enabled} enabled. Plan before explicit execution.`;
 }
 
+async function loadAdapterMatrix() {
+  state.matrix = await api('/api/m5l/source-adapter-matrix');
+  const adapters = state.matrix.content?.adapters || [];
+  renderRows('adapterRows', adapters, [['Adapter', 'adapter_id'], ['Source', 'source'], ['Classes', (r) => (r.instrument_classes || []).join(', ')], ['Markets', (r) => (r.supported_markets || []).join(', ')], ['Status', 'verification_status'], ['Limitations', (r) => (r.known_limitations || []).join('; ')]]);
+  const capabilities = await api('/api/m5l/source-capabilities');
+  byId('capabilitiesJson').textContent = JSON.stringify(capabilities, null, 2);
+}
+
 async function loadDefaultWatchlist() { state.watchlist = (await api('/api/m5k/watchlist/default')).content; renderWatchlist(); }
 async function validateWatchlist() { watchlistFromRows(); const data = await api('/api/m5k/watchlist/validate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(state.watchlist) }); byId('validation').textContent = JSON.stringify(data.validation, null, 2); }
 function exportWatchlist() { watchlistFromRows(); const blob = new Blob([JSON.stringify(state.watchlist, null, 2) + '\n'], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${state.watchlist.watchlist_id || 'm5k-watchlist'}.json`; a.click(); URL.revokeObjectURL(a.href); }
@@ -132,8 +140,8 @@ function renderObservation() {
   byId('observationJson').textContent = JSON.stringify(state.observation || { status: 'no observation loaded' }, null, 2);
   byId('layerSeparation').textContent = 'M5F canonical context is Level 1 read-only local context. M5K live observation is Level 2 explicit, bounded, non-canonical observation.';
   renderRows('routePlanRows', payload.planned_routes || [], [['Symbol', 'symbol'], ['Market', 'market'], ['Type', 'instrument_type'], ['Source', 'source'], ['Status', 'status'], ['Route', (r) => r.ex_ch || r.route || r.reason || '']]);
-  renderRows('observationRows', payload.observations || [], [['Symbol', 'symbol'], ['Contract month', 'contract_month'], ['Source', 'source'], ['Value', (r) => r.value ?? r.price_like_value ?? ''], ['Retrieved UTC', 'retrieved_at_utc'], ['Source timestamp', 'source_timestamp'], ['Freshness', 'freshness_assessment'], ['Delay', (r) => r.delay_seconds != null ? `${r.delay_status} (${r.delay_seconds}s)` : r.delay_status], ['Route', (r) => r.normalization?.source_contract_symbol || r.contract || '']]);
-  renderRows('failureRows', payload.failures || [], [['Symbol', 'symbol'], ['Source', 'source'], ['Status', 'status'], ['Reason', (r) => r.reason || r.ex_ch || ''], ['Investigation', (r) => r.investigation_summary ? JSON.stringify(r.investigation_summary) : ''], ['Recommended next step', 'recommended_next_step']]);
+  renderRows('observationRows', payload.observations || [], [['Symbol', 'symbol'], ['Adapter', 'adapter_id'], ['Contract month', 'contract_month'], ['Source', 'source'], ['Value', (r) => r.value ?? r.price_like_value ?? ''], ['Retrieved UTC', 'retrieved_at_utc'], ['Source timestamp', 'source_timestamp'], ['Freshness', 'freshness_assessment'], ['Delay', (r) => r.delay_seconds != null ? `${r.delay_status} (${r.delay_seconds}s)` : r.delay_status], ['Route', (r) => r.normalization?.source_contract_symbol || r.contract || '']]);
+  renderRows('failureRows', payload.failures || [], [['Symbol', 'symbol'], ['Adapter', 'adapter_id'], ['Source', 'source'], ['Status', 'status'], ['Reason', (r) => r.reason || r.ex_ch || ''], ['Investigation', (r) => r.investigation_summary ? JSON.stringify(r.investigation_summary) : ''], ['Recommended next step', 'recommended_next_step']]);
   const rows = payload.observations || [];
   byId('freshness').textContent = rows.length ? rows.map((row) => `${row.symbol}: ${row.source} retrieved ${row.retrieved_at_utc}; source ${row.source_timestamp}; ${row.delay_status}`).join('\n') : 'No observation rows. M5F canonical context remains separate.';
 }
@@ -143,7 +151,7 @@ async function executeObservation() { watchlistFromRows(); await planObservation
 async function readLatestObservation() { state.observation = await api('/api/m5k/live-observation/latest'); renderObservation(); }
 
 window.addEventListener('DOMContentLoaded', () => {
-  byId('loadDefault').onclick = loadDefaultWatchlist; byId('addRow').onclick = addRow; byId('validate').onclick = validateWatchlist; byId('export').onclick = exportWatchlist; byId('import').onchange = (event) => importWatchlist(event.target.files[0]); byId('handoff').onclick = createHandoff; byId('planObservation').onclick = planObservation; byId('observe').onclick = executeObservation; byId('readLatest').onclick = readLatestObservation;
+  byId('loadMatrix').onclick = loadAdapterMatrix; byId('loadDefault').onclick = loadDefaultWatchlist; byId('addRow').onclick = addRow; byId('validate').onclick = validateWatchlist; byId('export').onclick = exportWatchlist; byId('import').onchange = (event) => importWatchlist(event.target.files[0]); byId('handoff').onclick = createHandoff; byId('planObservation').onclick = planObservation; byId('observe').onclick = executeObservation; byId('readLatest').onclick = readLatestObservation;
   byId('watchlistRows').addEventListener('input', () => { watchlistFromRows(); updateSummary(); });
-  loadDefaultWatchlist(); readLatestObservation();
+  loadAdapterMatrix(); loadDefaultWatchlist(); readLatestObservation();
 });

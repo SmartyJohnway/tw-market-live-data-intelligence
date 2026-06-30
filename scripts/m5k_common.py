@@ -145,13 +145,13 @@ def source_plan_for_instrument(instrument: dict[str, Any]) -> dict[str, Any]:
     if typ == "futures" or market == "taifex" or symbol == "TX":
         contract_code = instrument.get("contract_code", "TXF")
         contract_selector = instrument.get("contract_selector", "front_month")
-        return {**base, "source": "TAIFEX", "source_type": "official_browser_json_endpoint", "status": "planned", "route": "taifex_mis_getQuoteList", "url": "https://mis.taifex.com.tw/futures/api/getQuoteList", "method": "POST", "contract_code": contract_code, "contract_selector": contract_selector, "request_body": {"MarketType": "0", "SymbolType": "F", "KindID": "1", "CID": contract_code}}
+        return {**base, "source": "TAIFEX", "adapter_id": "taifex_mis_tx_futures_quote", "source_type": "official_browser_json_endpoint", "status": "planned", "route": "taifex_mis_getQuoteList", "url": "https://mis.taifex.com.tw/futures/api/getQuoteList", "method": "POST", "contract_code": contract_code, "contract_selector": contract_selector, "request_body": {"MarketType": "0", "SymbolType": "F", "KindID": "1", "CID": contract_code}}
     if typ == "index" or symbol == "TAIEX":
-        return {**base, "source": "TWSE_MIS", "source_type": "official_browser_json_endpoint_candidate", "ex_ch": "tse_t00.tw", "status": "planned"}
+        return {**base, "source": "TWSE_MIS", "adapter_id": "twse_mis_taiex_index_quote", "source_type": "official_browser_json_endpoint_candidate", "ex_ch": "tse_t00.tw", "status": "planned"}
     if market in {"tpex", "otc"}:
-        return {**base, "source": "TWSE_MIS", "source_type": "official_browser_json_endpoint_candidate", "ex_ch": f"otc_{symbol}.tw", "status": "planned"}
+        return {**base, "source": "TWSE_MIS", "adapter_id": "twse_mis_equity_etf_quote", "source_type": "official_browser_json_endpoint_candidate", "ex_ch": f"otc_{symbol}.tw", "status": "planned"}
     if market == "twse":
-        return {**base, "source": "TWSE_MIS", "source_type": "official_browser_json_endpoint_candidate", "ex_ch": f"tse_{symbol}.tw", "status": "planned"}
+        return {**base, "source": "TWSE_MIS", "adapter_id": "twse_mis_equity_etf_quote", "source_type": "official_browser_json_endpoint_candidate", "ex_ch": f"tse_{symbol}.tw", "status": "planned"}
     return {**base, "source": None, "status": "unsupported_market", "reason": "instrument market must be one of twse, tpex, otc, taifex"}
 
 
@@ -239,6 +239,8 @@ def _parse_taifex_tx_item(item: dict[str, Any], instrument: dict[str, Any], retr
         "instrument_type": instrument.get("instrument_type"),
         "status": "ok" if value is not None else "missing_value",
         "source": "TAIFEX",
+        "adapter_id": "taifex_mis_tx_futures_quote",
+        "market": "taifex",
         "source_type": "official_browser_json_endpoint",
         "price_like_value": value,
         "value": value,
@@ -289,6 +291,8 @@ def _parse_mis_item(item: dict[str, Any], instrument: dict[str, Any], retrieved_
         "instrument_type": instrument.get("instrument_type"),
         "status": "ok" if item else "missing",
         "source": "TWSE_MIS",
+        "adapter_id": instrument.get("adapter_id") or ("twse_mis_taiex_index_quote" if symbol == "TAIEX" or instrument.get("instrument_type") == "index" else "twse_mis_equity_etf_quote"),
+        "market": instrument.get("market"),
         "source_type": "official_browser_json_endpoint_candidate",
         "price_like_value": price,
         "price_semantics": "last_or_reference_value_as_reported_by_source",
@@ -296,6 +300,7 @@ def _parse_mis_item(item: dict[str, Any], instrument: dict[str, Any], retrieved_
         "retrieved_at_utc": retrieved_at,
         "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
         "delay_status": "not_realtime_guaranteed",
+        "delay_seconds": None,
         "caveats": governance()["caveats"],
     }
 
@@ -322,15 +327,15 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
     plans = [source_plan_for_instrument(i) | {"instrument": i} for i in instruments]
     payload["planned_routes"] = [{k: v for k, v in p.items() if k != "instrument"} for p in plans]
     payload["request"]["bounded_symbols"] = [p["symbol"] for p in plans]
-    taifex_plans = [p for p in plans if p.get("source") == "TAIFEX"]
+    taifex_plans = [p for p in plans if p.get("adapter_id") == "taifex_mis_tx_futures_quote"]
     for plan in taifex_plans:
-        obs, evidence = fetch_taifex_tx_observation(plan["instrument"], retrieved_at, timeout=timeout)
+        obs, evidence = fetch_taifex_tx_observation(plan["instrument"] | {"adapter_id": plan.get("adapter_id")}, retrieved_at, timeout=timeout)
         if evidence:
             payload["source_investigation_notes"].append(evidence)
         if obs and obs.get("status") == "ok":
             payload["observations"].append(obs)
         else:
-            payload["failures"].append({"symbol": plan["symbol"], "source": "TAIFEX", "status": "unsupported" if not evidence else evidence.get("status", "failed"), "reason": (evidence or {}).get("reason", "no_supported_tx_observation"), "investigation_summary": evidence, "recommended_next_step": "Use TAIFEX MIS getQuoteList with TXF and front-month normalization, or apply for licensed TAIFEX market data for SLA-backed production usage."})
+            payload["failures"].append({"symbol": plan["symbol"], "source": "TAIFEX", "adapter_id": "taifex_mis_tx_futures_quote", "status": "failed" if not evidence else evidence.get("status", "failed"), "reason": (evidence or {}).get("reason", "no_supported_tx_observation"), "investigation_summary": evidence, "recommended_next_step": "Use TAIFEX MIS getQuoteList with TXF and front-month normalization, or apply for licensed TAIFEX market data for SLA-backed production usage."})
 
     mis_channels = [p["ex_ch"] for p in plans if p.get("source") == "TWSE_MIS" and p.get("ex_ch")]
     mis_by_channel: dict[str, dict[str, Any]] = {}
@@ -350,7 +355,7 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
                     mis_by_channel[mis_key] = item
             payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "accepted_for_bounded_observation", "sample_retained": False})
         except Exception as exc:
-            payload["failures"].append({"source": "TWSE_MIS", "status": "batch_request_failed", "reason": str(exc)})
+            payload["failures"].append({"symbol": "TWSE_MIS_BATCH", "source": "TWSE_MIS", "adapter_id": "twse_mis_equity_etf_quote", "status": "failed", "reason": str(exc), "recommended_next_step": "Retry a bounded explicit observation later; source may be blocked or unavailable."})
             for ch in mis_channels:
                 single_url = f"https://mis.twse.com.tw/stock/api/getStockInfo.jsp?{urllib.parse.urlencode({'ex_ch': ch, 'json': '1', 'delay': '0'})}"
                 try:
@@ -366,16 +371,16 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
                     continue
     for plan in plans:
         instrument = plan["instrument"]
-        if plan.get("source") == "TAIFEX":
+        if plan.get("adapter_id") == "taifex_mis_tx_futures_quote":
             continue
         if plan.get("status") == "unsupported_in_m5k_initial":
             payload["failures"].append({"symbol": instrument["symbol"], **{k: v for k, v in plan.items() if k != "instrument"}})
             continue
         item = mis_by_channel.get(plan.get("ex_ch", ""))
         if item:
-            payload["observations"].append(_parse_mis_item(item, instrument, retrieved_at))
+            payload["observations"].append(_parse_mis_item(item, instrument | {"adapter_id": plan.get("adapter_id")}, retrieved_at))
         else:
-            payload["failures"].append({"symbol": instrument["symbol"], "source": plan.get("source"), "status": "missing_from_source_response", "ex_ch": plan.get("ex_ch")})
+            payload["failures"].append({"symbol": instrument["symbol"], "source": plan.get("source"), "adapter_id": plan.get("adapter_id"), "status": "failed", "reason": "missing_from_source_response:" + str(plan.get("ex_ch")), "recommended_next_step": "Verify symbol market route and retry a bounded explicit observation later."})
     payload["status"] = "ok" if payload["observations"] else "completed_with_no_observations"
     if write_latest:
         STATE_DIR.mkdir(parents=True, exist_ok=True)
@@ -387,3 +392,47 @@ def read_latest_observation() -> dict[str, Any]:
     if not LATEST_OBSERVATION_PATH.exists():
         return {"status": "no_observation_available", "governance": governance(), "source_path": LATEST_OBSERVATION_PATH.relative_to(REPO_ROOT).as_posix()}
     return {"status": "ok", "source_path": LATEST_OBSERVATION_PATH.relative_to(REPO_ROOT).as_posix(), "content": load_json(LATEST_OBSERVATION_PATH), "governance": governance()}
+
+ADAPTER_MATRIX_PATH = REPO_ROOT / "config/m5l_live_source_adapter_matrix.json"
+
+def load_source_adapter_matrix() -> dict[str, Any]:
+    return load_json(ADAPTER_MATRIX_PATH)
+
+
+def source_capabilities() -> dict[str, Any]:
+    matrix = load_source_adapter_matrix()
+    capabilities = []
+    for adapter in matrix.get("adapters", []):
+        capabilities.append({
+            "adapter_id": adapter.get("adapter_id"),
+            "source": adapter.get("source"),
+            "instrument_classes": adapter.get("instrument_classes", []),
+            "supported_markets": adapter.get("supported_markets", []),
+            "supports_live_observation": adapter.get("supports_live_observation"),
+            "verification_status": adapter.get("verification_status"),
+            "known_limitations": adapter.get("known_limitations", []),
+            "freshness_semantics": adapter.get("freshness_semantics"),
+            "delay_semantics": adapter.get("delay_semantics"),
+        })
+    return {"schema_version": "m5l_source_capabilities.v1", "generated_at_utc": utc_now(), "capabilities": capabilities, "governance": governance() | matrix.get("governance", {})}
+
+
+def validate_source_adapter_matrix(matrix: dict[str, Any] | None = None) -> dict[str, Any]:
+    matrix = matrix or load_source_adapter_matrix()
+    required = {"adapter_id", "source", "instrument_classes", "supported_markets", "endpoint_family", "execution_mode", "bounded", "startup_network", "writes_m5f", "writes_frontend_public", "writes_research_generated", "supports_live_observation", "freshness_semantics", "delay_semantics", "raw_payload_policy", "known_limitations", "verification_status", "evidence_refs"}
+    errors = []
+    seen = set()
+    for idx, adapter in enumerate(matrix.get("adapters", [])):
+        missing = sorted(required - set(adapter))
+        if missing:
+            errors.append(f"adapter_{idx}_missing:{','.join(missing)}")
+        adapter_id = adapter.get("adapter_id")
+        if adapter_id in seen:
+            errors.append(f"duplicate_adapter_id:{adapter_id}")
+        seen.add(adapter_id)
+        if adapter.get("execution_mode") != "explicit_only":
+            errors.append(f"adapter_not_explicit_only:{adapter_id}")
+        for forbidden in ("startup_network", "writes_m5f", "writes_frontend_public", "writes_research_generated"):
+            if adapter.get(forbidden) is not False:
+                errors.append(f"forbidden_true:{adapter_id}:{forbidden}")
+    return {"valid": not errors, "errors": errors, "adapter_count": len(matrix.get("adapters", []))}

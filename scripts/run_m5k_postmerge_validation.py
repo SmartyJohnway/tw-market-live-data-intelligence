@@ -36,7 +36,7 @@ def main(argv=None) -> int:
     check("live_observation_explicit_only", invalid["status"] == "failed_closed_invalid_watchlist")
     routes={r["symbol"]:r for r in plan["planned_routes"]}
     check("mode_a_b_c_documented", (ROOT/"docs/m5k_local_ai_workflow.md").read_text(encoding="utf-8").count("Mode ") >= 3)
-    check("tx_futures_fail_closed", routes.get("TX",{}).get("status") in {"unsupported_in_m5k_initial","unsupported_taifex_tx_preflight"}, routes.get("TX"))
+    check("tx_futures_adapter_planned", routes.get("TX",{}).get("adapter_id") == "taifex_mis_tx_futures_quote" and routes.get("TX",{}).get("status") == "planned", routes.get("TX"))
     result={"ok": not failures, "check_only": args.check_only, "network_calls": False, "failures": failures}
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if not failures else 1

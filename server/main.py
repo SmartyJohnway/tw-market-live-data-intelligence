@@ -214,8 +214,22 @@ from scripts.m5k_common import (
     read_latest_observation as _m5k_read_latest_observation,
     validate_watchlist as _m5k_validate_watchlist,
     plan_live_observation as _m5k_plan_live_observation,
+    load_source_adapter_matrix as _m5l_load_source_adapter_matrix,
+    source_capabilities as _m5l_source_capabilities,
+    validate_source_adapter_matrix as _m5l_validate_source_adapter_matrix,
 )
 
+
+
+@app.get("/api/m5l/source-adapter-matrix")
+def get_m5l_source_adapter_matrix():
+    matrix = _m5l_load_source_adapter_matrix()
+    return {"source_path": "config/m5l_live_source_adapter_matrix.json", "content": matrix, "validation": _m5l_validate_source_adapter_matrix(matrix), "governance": _canonical_governance() | {"layer": "M5L", "canonical": False, "network_calls": False}}
+
+
+@app.get("/api/m5l/source-capabilities")
+def get_m5l_source_capabilities():
+    return _m5l_source_capabilities()
 
 @app.get("/api/m5k/watchlist/default")
 def get_m5k_default_watchlist():
