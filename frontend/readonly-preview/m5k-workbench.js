@@ -1,157 +1,68 @@
-const state = { watchlist: null, observation: null, matrix: null };
+const state = { watchlist: null, observation: null, matrix: null, context: null, markdown: '' };
 const byId = (id) => document.getElementById(id);
 const marketOptions = ['twse', 'tpex', 'taifex'];
 const typeOptions = ['listed_etf', 'listed_equity', 'listed_or_otc_equity', 'index', 'futures'];
 
-async function api(path, options = {}) {
-  const response = await fetch(path, options);
-  const payload = await response.json();
-  if (!response.ok) throw new Error(JSON.stringify(payload));
-  return payload;
-}
+async function api(path, options = {}) { const r = await fetch(path, options); const p = await r.json(); if (!r.ok) throw new Error(JSON.stringify(p)); return p; }
+const asText = (v) => v == null ? '' : Array.isArray(v) ? v.join(', ') : String(v);
+function download(name, text, type) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text + '\n'], { type })); a.download = name; a.click(); URL.revokeObjectURL(a.href); }
 
 function rowsFromWatchlist() {
   const rows = [];
-  for (const category of state.watchlist?.categories || []) {
-    for (const instrument of category.instruments || []) {
-      rows.push({
-        category_id: category.category_id || 'custom',
-        category_label: category.label || category.category_id || 'Custom',
-        enabled: instrument.enabled !== false,
-        symbol: instrument.symbol || '',
-        display_symbol: instrument.display_symbol || instrument.name || instrument.symbol || '',
-        market: instrument.market || 'twse',
-        instrument_type: instrument.instrument_type || 'listed_equity',
-        preferred_sources: (instrument.preferred_sources || []).join(', '),
-      });
-    }
-  }
-  return rows;
+  const items = state.watchlist?.items || [];
+  if (items.length) return [...items].sort((a,b)=>(a.category||'').localeCompare(b.category||'') || (a.display_order??999)-(b.display_order??999));
+  for (const category of state.watchlist?.categories || []) for (const instrument of category.instruments || []) rows.push({ ...instrument, category: category.category_id || category.label || 'custom' });
+  return rows.sort((a,b)=>(a.category||'').localeCompare(b.category||'') || (a.display_order??999)-(b.display_order??999));
 }
-
+function latestBySymbol() { const m = new Map(); for (const o of state.observation?.observations || state.observation?.content?.observations || []) m.set(String(o.symbol), o); return m; }
 function watchlistFromRows() {
-  const existing = state.watchlist || { schema_version: 'm5k_watchlist.v1', watchlist_id: 'm5k_frontend_watchlist', name: 'M5K Frontend Watchlist' };
-  const categories = new Map();
-  for (const tr of byId('watchlistRows').querySelectorAll('tr')) {
-    const row = {
-      enabled: tr.querySelector('[data-field="enabled"]').checked,
-      symbol: tr.querySelector('[data-field="symbol"]').value.trim().toUpperCase(),
-      display_symbol: tr.querySelector('[data-field="display_symbol"]').value.trim(),
-      market: tr.querySelector('[data-field="market"]').value,
-      instrument_type: tr.querySelector('[data-field="instrument_type"]').value,
-      preferred_sources: tr.querySelector('[data-field="preferred_sources"]').value.split(',').map((s) => s.trim()).filter(Boolean),
-    };
-    row.name = row.display_symbol || row.symbol;
-    const category_id = tr.querySelector('[data-field="category_id"]').value.trim() || 'custom';
-    if (!categories.has(category_id)) categories.set(category_id, { category_id, label: category_id, instruments: [] });
-    categories.get(category_id).instruments.push(row);
-  }
-  state.watchlist = { ...existing, schema_version: 'm5k_watchlist.v1', categories: [...categories.values()] };
+  const existing = state.watchlist || { schema_version: 'm5n_watchlist.v1', watchlist_id: 'm5op_frontend_watchlist', name: 'M5OP Frontend Watchlist' };
+  const items = [...byId('watchlistRows').querySelectorAll('tr[data-item-row="true"]')].map((tr) => ({
+    category: tr.querySelector('[data-field="category"]').value.trim() || 'custom',
+    display_order: Number(tr.querySelector('[data-field="display_order"]').value || 999),
+    enabled: tr.querySelector('[data-field="enabled"]').checked,
+    symbol: tr.querySelector('[data-field="symbol"]').value.trim().toUpperCase(),
+    display_name: tr.querySelector('[data-field="display_name"]').value.trim(),
+    market: tr.querySelector('[data-field="market"]').value,
+    instrument_type: tr.querySelector('[data-field="instrument_type"]').value,
+    adapter: tr.querySelector('[data-field="adapter"]').value.trim(),
+    preferred_sources: tr.querySelector('[data-field="adapter"]').value.split(',').map((s) => s.trim()).filter(Boolean),
+    tags: tr.querySelector('[data-field="tags"]').value.split(',').map((s) => s.trim()).filter(Boolean),
+    notes: tr.querySelector('[data-field="notes"]').value.trim(),
+  }));
+  state.watchlist = { ...existing, schema_version: 'm5n_watchlist.v1', items, categories: undefined };
   byId('watchlistJson').value = JSON.stringify(state.watchlist, null, 2);
   return state.watchlist;
 }
-
-function appendInputCell(tr, field, value, type = 'text') {
-  const td = tr.insertCell();
-  const input = document.createElement('input');
-  input.dataset.field = field;
-  input.type = type;
-  if (type === 'checkbox') input.checked = Boolean(value); else input.value = value || '';
-  td.appendChild(input);
-}
-
-function appendSelectCell(tr, field, value, options) {
-  const td = tr.insertCell();
-  const select = document.createElement('select');
-  select.dataset.field = field;
-  for (const opt of options) {
-    const option = document.createElement('option');
-    option.value = opt;
-    option.textContent = opt;
-    option.selected = opt === value;
-    select.appendChild(option);
-  }
-  td.appendChild(select);
-}
-
+function inputCell(tr, field, value, type = 'text') { const td = tr.insertCell(); const i = document.createElement('input'); i.dataset.field = field; i.type = type; if (type === 'checkbox') i.checked = Boolean(value); else i.value = asText(value); td.appendChild(i); }
+function selectCell(tr, field, value, options) { const td = tr.insertCell(); const s = document.createElement('select'); s.dataset.field = field; for (const opt of options) { const o = document.createElement('option'); o.value = opt; o.textContent = opt; o.selected = opt === value; s.appendChild(o); } td.appendChild(s); }
 function renderWatchlist() {
-  const tbody = byId('watchlistRows');
-  tbody.replaceChildren();
-  rowsFromWatchlist().forEach((row, index) => {
-    const tr = tbody.insertRow();
-    tr.dataset.index = String(index);
-    appendInputCell(tr, 'enabled', row.enabled, 'checkbox');
-    appendInputCell(tr, 'symbol', row.symbol);
-    appendInputCell(tr, 'display_symbol', row.display_symbol);
-    appendSelectCell(tr, 'market', row.market, marketOptions);
-    appendSelectCell(tr, 'instrument_type', row.instrument_type, typeOptions);
-    appendInputCell(tr, 'preferred_sources', row.preferred_sources);
-    appendInputCell(tr, 'category_id', row.category_id);
-    const td = tr.insertCell();
-    td.className = 'row-actions';
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.dataset.action = 'remove';
-    button.textContent = 'Remove';
-    button.onclick = () => { tr.remove(); watchlistFromRows(); updateSummary(); };
-    td.appendChild(button);
-  });
-  byId('watchlistJson').value = JSON.stringify(state.watchlist, null, 2);
-  updateSummary();
-}
-
-function updateSummary() {
-  const rows = byId('watchlistRows').querySelectorAll('tr');
-  const enabled = [...rows].filter((tr) => tr.querySelector('[data-field="enabled"]').checked).length;
-  byId('watchlistSummary').textContent = `${rows.length} rows; ${enabled} enabled. Plan before explicit execution.`;
-}
-
-async function loadAdapterMatrix() {
-  state.matrix = await api('/api/m5l/source-adapter-matrix');
-  const adapters = state.matrix.content?.adapters || [];
-  renderRows('adapterRows', adapters, [['Adapter', 'adapter_id'], ['Source', 'source'], ['Classes', (r) => (r.instrument_classes || []).join(', ')], ['Markets', (r) => (r.supported_markets || []).join(', ')], ['Status', 'verification_status'], ['Limitations', (r) => (r.known_limitations || []).join('; ')]]);
-  const capabilities = await api('/api/m5l/source-capabilities');
-  byId('capabilitiesJson').textContent = JSON.stringify(capabilities, null, 2);
-}
-
-async function loadDefaultWatchlist() { state.watchlist = (await api('/api/m5k/watchlist/default')).content; renderWatchlist(); }
-async function validateWatchlist() { watchlistFromRows(); const data = await api('/api/m5k/watchlist/validate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(state.watchlist) }); byId('validation').textContent = JSON.stringify(data.validation, null, 2); }
-function exportWatchlist() { watchlistFromRows(); const blob = new Blob([JSON.stringify(state.watchlist, null, 2) + '\n'], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${state.watchlist.watchlist_id || 'm5k-watchlist'}.json`; a.click(); URL.revokeObjectURL(a.href); }
-function importWatchlist(file) { const reader = new FileReader(); reader.onload = () => { state.watchlist = JSON.parse(reader.result); renderWatchlist(); validateWatchlist(); }; reader.readAsText(file); }
-function addRow() { watchlistFromRows(); const category = state.watchlist.categories[0] || { category_id: 'custom', label: 'Custom', instruments: [] }; if (!state.watchlist.categories.length) state.watchlist.categories.push(category); category.instruments.push({ enabled: true, symbol: '', name: '', market: 'twse', instrument_type: 'listed_equity', preferred_sources: ['TWSE_MIS'] }); renderWatchlist(); }
-async function createHandoff() { watchlistFromRows(); byId('handoffJson').textContent = JSON.stringify(await api('/api/m5k/conversation/handoff', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(state.watchlist) }), null, 2); }
-
-function renderRows(tableId, rows, columns) {
-  const tbody = byId(tableId);
-  tbody.replaceChildren();
-  for (const row of rows || []) {
-    const tr = tbody.insertRow();
-    for (const [label, getter] of columns) {
-      const td = tr.insertCell();
-      td.dataset.label = label;
-      const value = typeof getter === 'function' ? getter(row) : row[getter];
-      td.textContent = value == null ? '' : String(value);
-    }
+  const tbody = byId('watchlistRows'); tbody.replaceChildren(); const obs = latestBySymbol(); let current = null;
+  for (const row of rowsFromWatchlist()) {
+    if (byId('showEnabledOnly').checked && row.enabled === false) continue;
+    if (row.category !== current) { current = row.category; const h = tbody.insertRow(); const td = h.insertCell(); td.colSpan = 13; td.textContent = `Category: ${current}`; td.className = 'badge'; }
+    const tr = tbody.insertRow(); tr.dataset.itemRow = 'true'; const o = obs.get(String(row.symbol));
+    inputCell(tr, 'category', row.category); inputCell(tr, 'display_order', row.display_order, 'number'); inputCell(tr, 'enabled', row.enabled !== false, 'checkbox'); inputCell(tr, 'symbol', row.symbol); inputCell(tr, 'display_name', row.display_name || row.name || row.symbol); selectCell(tr, 'market', row.market || 'twse', marketOptions); selectCell(tr, 'instrument_type', row.instrument_type || 'listed_equity', typeOptions); inputCell(tr, 'adapter', row.adapter || (row.preferred_sources || []).join(', ')); inputCell(tr, 'tags', row.tags || []); inputCell(tr, 'notes', row.notes || '');
+    const status = tr.insertCell(); status.textContent = o ? (o.status || (o.reference_only ? 'reference_only' : 'observed')) : 'no_observation_loaded';
+    const fresh = tr.insertCell(); fresh.textContent = o ? `${o.source || ''} / ${o.freshness_assessment || o.delay_status || ''}` : '';
+    const td = tr.insertCell(); const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Remove'; b.onclick = () => { tr.remove(); watchlistFromRows(); updateSummary(); }; td.appendChild(b);
   }
+  byId('watchlistJson').value = JSON.stringify(state.watchlist, null, 2); updateSummary();
 }
-
-function renderObservation() {
-  const payload = state.observation?.content || state.observation || {};
-  byId('observationJson').textContent = JSON.stringify(state.observation || { status: 'no observation loaded' }, null, 2);
-  byId('layerSeparation').textContent = 'M5F canonical context is Level 1 read-only local context. M5K live observation is Level 2 explicit, bounded, non-canonical observation.';
-  renderRows('routePlanRows', payload.planned_routes || [], [['Symbol', 'symbol'], ['Market', 'market'], ['Type', 'instrument_type'], ['Source', 'source'], ['Status', 'status'], ['Route', (r) => r.ex_ch || r.route || r.reason || '']]);
-  renderRows('observationRows', payload.observations || [], [['Symbol', 'symbol'], ['Adapter', 'adapter_id'], ['Contract month', 'contract_month'], ['Source', 'source'], ['Value', (r) => r.value ?? r.price_like_value ?? ''], ['Retrieved UTC', 'retrieved_at_utc'], ['Source timestamp', 'source_timestamp'], ['Freshness', 'freshness_assessment'], ['Delay', (r) => r.delay_seconds != null ? `${r.delay_status} (${r.delay_seconds}s)` : r.delay_status], ['Route', (r) => r.normalization?.source_contract_symbol || r.contract || '']]);
-  renderRows('failureRows', payload.failures || [], [['Symbol', 'symbol'], ['Adapter', 'adapter_id'], ['Source', 'source'], ['Status', 'status'], ['Reason', (r) => r.reason || r.ex_ch || ''], ['Investigation', (r) => r.investigation_summary ? JSON.stringify(r.investigation_summary) : ''], ['Recommended next step', 'recommended_next_step']]);
-  const rows = payload.observations || [];
-  byId('freshness').textContent = rows.length ? rows.map((row) => `${row.symbol}: ${row.source} retrieved ${row.retrieved_at_utc}; source ${row.source_timestamp}; ${row.delay_status}`).join('\n') : 'No observation rows. M5F canonical context remains separate.';
-}
-
-async function planObservation() { watchlistFromRows(); await validateWatchlist(); state.observation = await api('/api/m5k/live-observation/plan', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(state.watchlist) }); renderObservation(); }
-async function executeObservation() { watchlistFromRows(); await planObservation(); state.observation = await api('/api/m5k/live-observation/execute?confirm_live_observation=true', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(state.watchlist) }); renderObservation(); }
+function updateSummary() { const rows = [...byId('watchlistRows').querySelectorAll('tr[data-item-row="true"]')]; const enabled = rows.filter((tr) => tr.querySelector('[data-field="enabled"]').checked).length; byId('watchlistSummary').textContent = `${rows.length} rows; ${enabled} enabled; display order respected within categories. Latest observation status shown when available.`; }
+// CSS contract includes status-reference_only for reference_only fallback rows.
+function renderRows(tableId, rows, columns) { const tbody = byId(tableId); tbody.replaceChildren(); for (const row of rows || []) { const tr = tbody.insertRow(); const cls = row.reference_only ? 'reference_only' : (row.status || row.freshness_assessment || '').replace(/[^a-z0-9_-]/gi, '_'); if (cls) tr.className = `status-${cls}`; for (const [, getter] of columns) { const td = tr.insertCell(); td.textContent = asText(typeof getter === 'function' ? getter(row) : row[getter]); } } }
+async function loadCanonical() { const data = await api('/api/context/canonical'); const c = data.content || {}; byId('canonicalSummary').textContent = `Source ${data.source_path}; canonical=${c.schema_version || 'M5F'}; not live / rt_guarantee=${c.governance?.realtime_guaranteed === true}`; renderRows('canonicalRows', [{ source: data.source_path, date: c.source_date || c.as_of_date || c.generated_at_utc, symbols: (c.symbols || []).map((s) => s.symbol || s).join(', '), caveats: c.global_caveats || data.governance?.caveats || [] }], [['M5F source','source'],['Source date','date'],['Symbols','symbols'],['Caveats','caveats']]); byId('canonicalJson').textContent = JSON.stringify({ source_path: data.source_path, governance: data.governance, symbols: c.symbols, caveats: c.global_caveats }, null, 2); }
+async function loadAdapterMatrix() { state.matrix = await api('/api/m5l/source-adapter-matrix'); renderRows('adapterRows', state.matrix.content?.adapters || [], [['Adapter','adapter_id'],['Source','source'],['Classes',(r)=>(r.instrument_classes||[]).join(', ')],['Markets',(r)=>(r.supported_markets||[]).join(', ')],['Status','verification_status'],['Limitations',(r)=>(r.known_limitations||r.caveats||[]).join('; ')]]); byId('capabilitiesJson').textContent = JSON.stringify(await api('/api/m5l/source-capabilities'), null, 2); }
+async function loadDefaultWatchlist() { const data = await api('/api/m5k/watchlist/default'); state.watchlist = data.content; renderWatchlist(); }
+async function validateWatchlist() { watchlistFromRows(); byId('validation').textContent = JSON.stringify(await api('/api/m5k/watchlist/validate', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(state.watchlist)}), null, 2); }
+function exportWatchlist() { watchlistFromRows(); download(`${state.watchlist.watchlist_id || 'm5n-watchlist'}.json`, JSON.stringify(state.watchlist, null, 2), 'application/json'); }
+function importWatchlist(file) { if (!file) return; const r = new FileReader(); r.onload = () => { state.watchlist = JSON.parse(r.result); renderWatchlist(); validateWatchlist(); }; r.readAsText(file); }
+function addRow() { watchlistFromRows(); state.watchlist.items.push({ category:'custom', display_order:999, enabled:true, symbol:'', display_name:'', market:'twse', instrument_type:'listed_equity', adapter:'TWSE_MIS', tags:[], notes:'Local-only row; export JSON if needed.' }); renderWatchlist(); }
+function renderObservation() { const p = state.observation?.content || state.observation || {}; byId('observationJson').textContent = JSON.stringify(p.raw_payload ? { warning:'raw_payload_hidden' } : p, null, 2); byId('layerSeparation').textContent = 'M5F canonical context is Level 1 read-only local context. M5K/M5L/M5N live observation is Level 2 explicit, bounded, non-canonical observation.'; byId('observationStatus').textContent = `Observation status: ${p.status || 'no latest observation available'}; current-like rows require ok/non-reference, fresh source timestamp, and non-stale delay fields.`; renderRows('routePlanRows', p.planned_routes || [], [['Symbol','symbol'],['Market','market'],['Type','instrument_type'],['Source','source'],['Adapter','adapter_id'],['Status','status'],['Route',(r)=>r.ex_ch || r.route || r.reason || (r.capability||'')]]); renderRows('observationRows', p.observations || [], [['Symbol','symbol'],['Status',(r)=>r.status || (r.reference_only ? 'reference_only' : 'ok')],['Source','source'],['Adapter','adapter_id'],['Value',(r)=>r.value ?? r.price_like_value ?? 'value_unavailable'],['Price semantics',(r)=>r.price_semantics || r.value_semantics || 'price_like_observation_not_realtime_guaranteed'],['reference_only',(r)=>r.reference_only === true],['Source timestamp','source_timestamp'],['Retrieved at',(r)=>r.retrieved_at_utc || r.retrieved_at],['Freshness','freshness_assessment'],['Delay',(r)=>r.delay_seconds != null ? `${r.delay_status} (${r.delay_seconds}s)` : r.delay_status],['Caveats',(r)=>(r.caveats||[]).join('; ')],['Recommended next step',(r)=>r.recommended_next_step || (r.reference_only ? 'treat_as_reference_only' : 'review_caveats_before_ai_discussion')]]); renderRows('failureRows', p.failures || [], [['Symbol','symbol'],['Adapter','adapter_id'],['Source','source'],['Status','status'],['Failure reason',(r)=>r.reason || r.failure_reason || r.ex_ch || ''],['Investigation',(r)=>r.investigation_summary ? JSON.stringify(r.investigation_summary) : ''],['Recommended next step','recommended_next_step']]); byId('freshness').textContent = (p.observations || []).length ? (p.observations || []).map((r)=>`${r.symbol}: ${r.status || 'ok'}; reference_only=${r.reference_only === true}; source=${r.source}; source_timestamp=${r.source_timestamp}; retrieved_at=${r.retrieved_at_utc || r.retrieved_at}; freshness=${r.freshness_assessment}; delay=${r.delay_status}; caveats=${(r.caveats||[]).join('|')}`).join('\n') : 'No latest observation available. Run Mode B plan, then Mode C explicit bounded observation if appropriate.'; renderWatchlist(); }
+async function planObservation() { watchlistFromRows(); await validateWatchlist(); state.observation = await api('/api/m5k/live-observation/plan', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(state.watchlist)}); renderObservation(); }
+async function executeObservation() { watchlistFromRows(); state.observation = await api('/api/m5k/live-observation/execute?confirm_live_observation=true', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(state.watchlist)}); renderObservation(); }
 async function readLatestObservation() { state.observation = await api('/api/m5k/live-observation/latest'); renderObservation(); }
-
-window.addEventListener('DOMContentLoaded', () => {
-  byId('loadMatrix').onclick = loadAdapterMatrix; byId('loadDefault').onclick = loadDefaultWatchlist; byId('addRow').onclick = addRow; byId('validate').onclick = validateWatchlist; byId('export').onclick = exportWatchlist; byId('import').onchange = (event) => importWatchlist(event.target.files[0]); byId('handoff').onclick = createHandoff; byId('planObservation').onclick = planObservation; byId('observe').onclick = executeObservation; byId('readLatest').onclick = readLatestObservation;
-  byId('watchlistRows').addEventListener('input', () => { watchlistFromRows(); updateSummary(); });
-  loadAdapterMatrix(); loadDefaultWatchlist(); readLatestObservation();
-});
+function markdownFromContext(c) { const lines = ['# M5OP Conversation Context', '', c.purpose || 'Temporary AI conversation context.', '', '## Watchlist']; for (const r of c.watchlist_rows || []) lines.push(`- ${r.symbol} (${r.market}, ${r.category}, ${r.adapter}): ${r.status}; source=${r.source || ''}; freshness=${r.freshness || ''}`); lines.push('', '## Observation Summary', `- Successful observations: ${c.successful_observations}`, `- Failed observations: ${c.failed_observations}`, '', '## Failures'); for (const f of c.failures || []) lines.push(`- ${f.symbol}: ${f.status}; ${f.reason || ''}`); lines.push('', '## Caveats'); for (const x of c.caveats || []) lines.push(`- ${x}`); return lines.join('\n') + '\n'; }
+async function buildContext() { const data = await api('/api/conversation/context'); state.context = data.content; state.markdown = markdownFromContext(state.context); byId('contextSummary').textContent = JSON.stringify({ schema_version: state.context.schema_version, successful_observations: state.context.successful_observations, failed_observations: state.context.failed_observations, raw_endpoint_payload_included: state.context.governance?.raw_endpoint_payload_included }, null, 2); byId('contextJson').textContent = JSON.stringify(state.context, null, 2); byId('markdownPreview').textContent = state.markdown; }
+window.addEventListener('DOMContentLoaded', () => { byId('loadCanonical').onclick=loadCanonical; byId('loadMatrix').onclick=loadAdapterMatrix; byId('loadDefault').onclick=loadDefaultWatchlist; byId('addRow').onclick=addRow; byId('validate').onclick=validateWatchlist; byId('export').onclick=exportWatchlist; byId('import').onchange=(e)=>importWatchlist(e.target.files[0]); byId('planObservation').onclick=planObservation; byId('observe').onclick=executeObservation; byId('readLatest').onclick=readLatestObservation; byId('showEnabledOnly').onchange=renderWatchlist; byId('buildContext').onclick=buildContext; byId('copyJson').onclick=()=>navigator.clipboard.writeText(byId('contextJson').textContent); byId('copyMarkdown').onclick=()=>navigator.clipboard.writeText(byId('markdownPreview').textContent); byId('downloadJson').onclick=()=>download('m5op-conversation-context.json', byId('contextJson').textContent, 'application/json'); byId('downloadMarkdown').onclick=()=>download('m5op-conversation-context.md', byId('markdownPreview').textContent, 'text/markdown'); byId('watchlistRows').addEventListener('input', () => { watchlistFromRows(); updateSummary(); }); loadCanonical(); loadAdapterMatrix(); loadDefaultWatchlist(); readLatestObservation(); });
