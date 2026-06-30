@@ -655,21 +655,43 @@ def _conversation_per_symbol_observations(watchlist: dict[str, Any], latest_obse
     return rows
 
 
+def _conversation_observation_bucket(row: dict[str, Any]) -> str:
+    status = str(row.get("status") or "").lower()
+    observation_status = str(row.get("observation_status") or "").lower()
+    freshness = str(row.get("freshness") or "").lower()
+    if status == "unsupported" or observation_status == "unsupported":
+        return "unsupported"
+    if status in {"failed", "error", "unavailable"}:
+        return "failed"
+    if (
+        row.get("reference_only")
+        or "reference" in status
+        or "reference" in observation_status
+        or status in {"degraded", "value_unavailable"}
+        or observation_status == "value_unavailable"
+        or freshness == "stale_or_closed_session"
+    ):
+        return "degraded"
+    if status in {"ok", "healthy", "observed"}:
+        return "healthy"
+    return "failed"
+
+
+def _is_reference_only_row(row: dict[str, Any]) -> bool:
+    return bool(row.get("reference_only")) or "reference" in str(row.get("status", "")).lower() or "reference" in str(row.get("observation_status", "")).lower()
+
+
+def _is_stale_or_closed_session_row(row: dict[str, Any]) -> bool:
+    return str(row.get("freshness") or "").lower() == "stale_or_closed_session"
+
+
 def _conversation_observation_summary(rows: list[dict[str, Any]]) -> dict[str, int]:
     counts = {"healthy": 0, "degraded": 0, "failed": 0, "unsupported": 0, "reference_only": 0}
     for r in rows:
-        status = str(r.get("status") or "").lower()
-        if r.get("reference_only") or "reference" in status:
+        bucket = _conversation_observation_bucket(r)
+        counts[bucket] += 1
+        if _is_reference_only_row(r):
             counts["reference_only"] += 1
-            counts["degraded"] += 1
-        elif status in {"ok", "healthy", "observed"}:
-            counts["healthy"] += 1
-        elif status in {"failed", "error"}:
-            counts["failed"] += 1
-        elif status in {"unsupported"}:
-            counts["unsupported"] += 1
-        else:
-            counts["failed"] += 1
     return counts
 
 def _conversation_source_health_summary() -> dict[str, Any]:
@@ -714,9 +736,11 @@ def build_conversation_context(watchlist: dict[str, Any], latest_observation: di
     obs_summary = _conversation_observation_summary(per_symbol)
     canonical_summary = _load_canonical_summary()
     source_health = _conversation_source_health_summary()
-    unavailable = [r["symbol"] for r in per_symbol if r.get("status") in {"failed", "unavailable", "unsupported"}]
-    reference_only = [r["symbol"] for r in per_symbol if r.get("reference_only") is True or "reference" in str(r.get("status", ""))]
-    healthy = [r["symbol"] for r in per_symbol if r.get("status") in {"ok", "healthy", "observed"} and not r.get("reference_only")]
+    unavailable = [r["symbol"] for r in per_symbol if _conversation_observation_bucket(r) in {"failed", "unsupported"}]
+    reference_only = [r["symbol"] for r in per_symbol if _is_reference_only_row(r)]
+    stale_or_closed = [r["symbol"] for r in per_symbol if _is_stale_or_closed_session_row(r)]
+    degraded = [r["symbol"] for r in per_symbol if _conversation_observation_bucket(r) == "degraded"]
+    healthy = [r["symbol"] for r in per_symbol if _conversation_observation_bucket(r) == "healthy"]
     return {
         "schema_version": "m5n_conversation_context.v1",
         "created_at_utc": utc_now(),
@@ -745,6 +769,8 @@ def build_conversation_context(watchlist: dict[str, Any], latest_observation: di
         "ai_guidance_summary": {
             "current_observations_available": healthy,
             "reference_only_observations": reference_only,
+            "degraded_observations": degraded,
+            "stale_or_closed_session_observations": stale_or_closed,
             "unavailable_observations": unavailable,
             "canonical_package_covers": canonical_summary.get("canonical_symbols", []),
             "current_limitations": sorted(set(governance()["caveats"] + _safe_list(canonical_summary.get("canonical_caveats")) + _safe_list(source_health.get("caveats")))),
@@ -790,15 +816,20 @@ def conversation_context_markdown(context: dict[str, Any]) -> str:
         "## Healthy Observations",
     ]
     for r in rows:
-        if r.get("status") in {"ok", "healthy", "observed"} and not r.get("reference_only"):
+        if _conversation_observation_bucket(r) == "healthy":
             lines.append(f"- {r.get('symbol')} {r.get('display_name')}: {r.get('price_like_value')} ({r.get('price_semantics')}); source={r.get('source')}; freshness={r.get('freshness')}; delay={r.get('delay')}")
+    lines += ["", "## Degraded Observations"]
+    for r in rows:
+        if _conversation_observation_bucket(r) == "degraded":
+            reason = r.get('failure_reason') or r.get('observation_status') or r.get('freshness')
+            lines.append(f"- {r.get('symbol')} {r.get('display_name')}: status={r.get('status')}; observation_status={r.get('observation_status')}; freshness={r.get('freshness')}; reason={reason}; next={r.get('recommended_next_step')}")
     lines += ["", "## Reference-only Observations"]
     for r in rows:
-        if r.get("reference_only") or "reference" in str(r.get("status", "")):
+        if _is_reference_only_row(r):
             lines.append(f"- {r.get('symbol')} {r.get('display_name')}: value_present={r.get('value_present')}; reason={r.get('failure_reason')}; next={r.get('recommended_next_step')}")
     lines += ["", "## Failed Observations"]
     for r in rows:
-        if r.get("status") in {"failed", "unavailable", "unsupported"}:
+        if _conversation_observation_bucket(r) in {"failed", "unsupported"}:
             lines.append(f"- {r.get('symbol')} {r.get('display_name')}: status={r.get('status')}; reason={r.get('failure_reason')}; next={r.get('recommended_next_step')}")
     lines += [
         "",

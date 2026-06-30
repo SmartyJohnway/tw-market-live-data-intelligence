@@ -18,7 +18,7 @@ Canonical Summary is Level 1 reviewed context. Latest Observation Summary is Lev
 - Caveats: not_realtime_guaranteed, not_trading_signal, not_production_current_state, source_risk_present, freshness_must_be_displayed
 
 ## Latest Observation Summary
-- healthy=16 degraded=3 failed=0 unsupported=0 reference_only=3
+- healthy=15 degraded=4 failed=0 unsupported=0 reference_only=3
 
 ## Healthy Observations
 - 00878 00878: 32.9 (last_or_reference_value_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
@@ -36,7 +36,12 @@ Canonical Summary is Level 1 reviewed context. Latest Observation Summary is Lev
 - 3293 3293: 769.0 (last_or_reference_value_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
 - 3543 3543: 28.6 (last_or_reference_value_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
 - TAIEX TAIEX: 44999.9 (last_or_reference_value_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
-- TX TX futures: 45550.0 (last_trade_price_or_settlement_fallback_as_reported_by_taifex_mis); source=TAIFEX; freshness=stale_or_closed_session; delay=delay_seconds_measured_from_source_timestamp_not_exchange_realtime_sla
+
+## Degraded Observations
+- 0050 0050: status=reference_value_only; observation_status=reference_value_only; freshness=current observation candidate; realtime status not guaranteed by M5K; reason=reference_value_only; next=Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability.
+- 2330 2330: status=reference_value_only; observation_status=reference_value_only; freshness=current observation candidate; realtime status not guaranteed by M5K; reason=reference_value_only; next=Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability.
+- 3483 3483: status=reference_value_only; observation_status=reference_value_only; freshness=current observation candidate; realtime status not guaranteed by M5K; reason=reference_value_only; next=Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability.
+- TX TX futures: status=ok; observation_status=ok; freshness=stale_or_closed_session; reason=ok; next=Review caveats before AI discussion.
 
 ## Reference-only Observations
 - 0050 0050: value_present=True; reason=reference_value_only; next=Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability.

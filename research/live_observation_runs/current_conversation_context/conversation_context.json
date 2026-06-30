@@ -34,7 +34,12 @@
       "2609",
       "3293",
       "3543",
-      "TAIEX",
+      "TAIEX"
+    ],
+    "degraded_observations": [
+      "0050",
+      "2330",
+      "3483",
       "TX"
     ],
     "descriptive_only": true,
@@ -48,6 +53,9 @@
       "0050",
       "2330",
       "3483"
+    ],
+    "stale_or_closed_session_observations": [
+      "TX"
     ],
     "trading_recommendation": false,
     "unavailable_observations": []
@@ -81,7 +89,7 @@
     "source_may_be_delayed_or_unavailable",
     "no_trading_signal"
   ],
-  "created_at_utc": "2026-06-30T05:28:24Z",
+  "created_at_utc": "2026-06-30T05:43:42Z",
   "failed_observations": 0,
   "failures": [],
   "freshness": "2026-06-29T17:08:37Z",
@@ -120,9 +128,9 @@
     "watchlist_id": "m5k_default_taiwan_ai_watchlist"
   },
   "observation_summary": {
-    "degraded": 3,
+    "degraded": 4,
     "failed": 0,
-    "healthy": 16,
+    "healthy": 15,
     "reference_only": 3,
     "unsupported": 0
   },

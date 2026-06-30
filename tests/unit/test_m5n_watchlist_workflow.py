@@ -105,6 +105,35 @@ def test_repaired_conversation_context_governance_no_leakage_or_trading_fields()
 def test_repaired_conversation_markdown_sections():
     context = build_conversation_context(load_json(DEFAULT_WATCHLIST_PATH))
     md = __import__("scripts.m5k_common", fromlist=["conversation_context_markdown"]).conversation_context_markdown(context)
-    for section in ["Executive Summary", "Watchlist Summary", "Canonical Summary", "Latest Observation Summary", "Healthy Observations", "Reference-only Observations", "Failed Observations", "Source Health", "Current Caveats", "Suggested Questions For AI"]:
+    for section in ["Executive Summary", "Watchlist Summary", "Canonical Summary", "Latest Observation Summary", "Healthy Observations", "Degraded Observations", "Reference-only Observations", "Failed Observations", "Source Health", "Current Caveats", "Suggested Questions For AI"]:
         assert section in md
     assert "Canonical Summary is Level 1" in md
+
+
+def test_stale_or_closed_session_ok_row_is_degraded_not_healthy():
+    wl = load_json(DEFAULT_WATCHLIST_PATH)
+    latest = {
+        "schema_version": "m5k_live_observation.v1",
+        "status": "ok",
+        "generated_at_utc": "2026-06-30T00:00:00Z",
+        "watchlist_id": "test",
+        "observations": [
+            {"symbol": "TX", "status": "ok", "source": "TAIFEX", "adapter_id": "taifex_mis_tx_futures_quote", "price_like_value": 45550.0, "price_semantics": "last_trade_price_or_settlement_fallback_as_reported_by_taifex_mis", "freshness_assessment": "stale_or_closed_session", "delay_status": "delay_seconds_measured_from_source_timestamp_not_exchange_realtime_sla", "caveats": ["not_realtime_guaranteed"]},
+        ],
+        "failures": [],
+    }
+    context = build_conversation_context(wl, latest)
+    row = next(r for r in context["per_symbol_observations"] if r["symbol"] == "TX")
+    assert row["status"] == "ok"
+    assert row["freshness"] == "stale_or_closed_session"
+    assert "TX" not in context["ai_guidance_summary"]["current_observations_available"]
+    assert "TX" in context["ai_guidance_summary"]["degraded_observations"]
+    assert "TX" in context["ai_guidance_summary"]["stale_or_closed_session_observations"]
+    assert context["observation_summary"]["degraded"] >= 1
+    assert context["observation_summary"]["healthy"] == 0
+    md = __import__("scripts.m5k_common", fromlist=["conversation_context_markdown"]).conversation_context_markdown(context)
+    assert "## Degraded Observations" in md
+    degraded = md.split("## Degraded Observations", 1)[1].split("## Reference-only Observations", 1)[0]
+    healthy = md.split("## Healthy Observations", 1)[1].split("## Degraded Observations", 1)[0]
+    assert "TX TX futures" in degraded
+    assert "TX TX futures" not in healthy
