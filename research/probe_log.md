@@ -78,3 +78,63 @@
 ## 2026-06-29 M5L TAIFEX TX live source validation
 
 Performed low-frequency official TAIFEX probing for TX futures. Accepted bounded M5K source: `POST https://mis.taifex.com.tw/futures/api/getQuoteList` with `CID=TXF`. Live run selected `TXFG6-F`, contract month `202607`, value `45550.0`, source timestamp `2026-06-29T13:44:59+08:00`, retrieved at `2026-06-29T17:06:49Z`, freshness `stale_or_closed_session`, source status `TC`. Full evidence: `research/live_observation_runs/m5k/m5l_taifex_tx_live_observation_evidence.json`; full validation: `docs/m5l_taifex_live_source_validation.md`.
+
+## M5L live source validation 2026-06-30
+
+- Task: M5L-LIVE-SOURCES-VALIDATION-AND-ADAPTER-MATRIX.
+- Command: `python scripts/run_m5k_live_observation.py --execute-live-observation --watchlist /tmp/m5l_probe_watchlist.json --no-write-latest`.
+- Requested symbols: `2330`, `0050`, `TAIEX`, `3483`, `TX`.
+- Endpoint families: TWSE MIS `getStockInfo.jsp`; TAIFEX MIS `getQuoteList`.
+- Request mode: explicit, bounded, one-shot; no full-market scan; no polling; no scheduler.
+- Raw payload policy: raw endpoint bodies were not committed; product output contains normalized envelopes and bounded investigation metadata only.
+- Decision summary: TWSE listed stock, ETF, TPEx/OTC, TAIEX, and TAIFEX TX routes are accepted with caveats for Level 2 observation only.
+- Freshness interpretation: source timestamps are displayed where available; delay is not a realtime SLA; M5F was not mutated.
+
+### M5L bounded probe result details
+
+- Timestamp: `2026-06-30T01:08:31Z`.
+- Observations count: `5`.
+- Failures count: `0`.
+- Parsed observations:
+  - `TX` via `taifex_mis_tx_futures_quote`: value `46390.0`, source timestamp `2026-06-30T09:08:35+08:00`, retrieved `2026-06-30T01:08:31Z`, freshness `fresh`, delay `delay_seconds_measured_from_source_timestamp_not_exchange_realtime_sla`.
+  - `2330` via `twse_mis_equity_etf_quote`: value `2470.0`, source timestamp `20260630 09:08:30`, retrieved `2026-06-30T01:08:31Z`, freshness `current observation candidate; realtime status not guaranteed by M5K`, delay `not_realtime_guaranteed`.
+  - `0050` via `twse_mis_equity_etf_quote`: value `None`, source timestamp `20260630 09:08:29`, retrieved `2026-06-30T01:08:31Z`, freshness `current observation candidate; realtime status not guaranteed by M5K`, delay `not_realtime_guaranteed`.
+  - `TAIEX` via `twse_mis_taiex_index_quote`: value `46284.81`, source timestamp `20260630 09:08:25`, retrieved `2026-06-30T01:08:31Z`, freshness `current observation candidate; realtime status not guaranteed by M5K`, delay `not_realtime_guaranteed`.
+  - `3483` via `twse_mis_equity_etf_quote`: value `None`, source timestamp `20260630 09:08:30`, retrieved `2026-06-30T01:08:31Z`, freshness `current observation candidate; realtime status not guaranteed by M5K`, delay `not_realtime_guaranteed`.
+- Limitations: observed values are Level 2 bounded observations only; MIS browser endpoint and TAIFEX browser JSON endpoint are not asserted as realtime SLA feeds.
+
+## M5L MIS fallback correction live validation 2026-06-30
+
+- Reason: PR #67 review found MIS `z="-"` is truthy in Python and blocked fallback to numeric `y`.
+- Command: `python scripts/run_m5k_live_observation.py --execute-live-observation --watchlist /tmp/m5l_probe_watchlist.json --no-write-latest`.
+- Timestamp: `2026-06-30T01:39:20Z`.
+- Endpoint families: TWSE MIS `getStockInfo.jsp`; TAIFEX MIS `getQuoteList`.
+- Request mode: explicit, bounded, one-shot; no full-market scan; no polling; no scheduler.
+- Observations count: `5`.
+- Failures count: `0`.
+- Parsed observations after MIS fallback fix:
+  - `TX` via `taifex_mis_tx_futures_quote`: value `46400.0`, source timestamp `2026-06-30T09:39:20+08:00`, retrieved `2026-06-30T01:39:20Z`, freshness `fresh`, delay `delay_seconds_measured_from_source_timestamp_not_exchange_realtime_sla`.
+  - `2330` via `twse_mis_equity_etf_quote`: value `2370.0`, price source `y`, source timestamp `20260630 09:38:55`, retrieved `2026-06-30T01:39:20Z`, freshness `current observation candidate; realtime status not guaranteed by M5K`, delay `not_realtime_guaranteed`.
+  - `0050` via `twse_mis_equity_etf_quote`: value `104.45`, price source `y`, source timestamp `20260630 09:39:14`, retrieved `2026-06-30T01:39:20Z`, freshness `current observation candidate; realtime status not guaranteed by M5K`, delay `not_realtime_guaranteed`.
+  - `TAIEX` via `twse_mis_taiex_index_quote`: value `46338.25`, price source `z`, source timestamp `20260630 09:39:00`, retrieved `2026-06-30T01:39:20Z`, freshness `current observation candidate; realtime status not guaranteed by M5K`, delay `not_realtime_guaranteed`.
+  - `3483` via `twse_mis_equity_etf_quote`: value `87.8`, price source `y`, source timestamp `20260630 09:39:00`, retrieved `2026-06-30T01:39:20Z`, freshness `current observation candidate; realtime status not guaranteed by M5K`, delay `not_realtime_guaranteed`.
+- Batch behavior: TWSE MIS batch request returned accepted status in this run; adapter now treats `rtcode=9999` or malformed `msgArray` as `batch_request_failed` and falls back to individual bounded requests.
+- Value policy: observations with `price_like_value=None` are no longer counted as successful observations; they become `value_unavailable` failures.
+
+## M5L MIS protocol alignment live validation 2026-06-30
+
+- Reason: align M5K MIS parsing with TWSE_MIS_PROTOCOL and field dictionary: `y` is previous-close/reference fallback, not current trade.
+- Command: `python scripts/run_m5k_live_observation.py --execute-live-observation --watchlist /tmp/m5l_probe_watchlist.json --no-write-latest`.
+- Timestamp: `2026-06-30T01:56:16Z`.
+- Endpoint families: TWSE MIS `getStockInfo.jsp`; TAIFEX MIS `getQuoteList`.
+- Successful current/live-like observations count: `2`.
+- Reference-only/unavailable failures count: `3`.
+- Successful observations:
+  - `TX` via `taifex_mis_tx_futures_quote`: value `46527.0`, semantics `last_trade_price_or_settlement_fallback_as_reported_by_taifex_mis`, source timestamp `2026-06-30T09:56:15+08:00`, retrieved `2026-06-30T01:56:16Z`.
+  - `TAIEX` via `twse_mis_taiex_index_quote`: value `46365.77`, semantics `last_or_current_quote_as_reported_by_source`, source timestamp `2026-06-30T01:56:05Z`, retrieved `2026-06-30T01:56:16Z`.
+- Reference-only failures from numeric `y` fallback (not counted as current trade observations):
+  - `2330` via `twse_mis_equity_etf_quote`: value `2370.0`, status `reference_value_only`, semantics `previous_close_or_reference_fallback_not_current_trade`, price source `y`, source timestamp `2026-06-30T01:56:00Z`, retrieved `2026-06-30T01:56:16Z`.
+  - `0050` via `twse_mis_equity_etf_quote`: value `104.45`, status `reference_value_only`, semantics `previous_close_or_reference_fallback_not_current_trade`, price source `y`, source timestamp `2026-06-30T01:56:14Z`, retrieved `2026-06-30T01:56:16Z`.
+  - `3483` via `twse_mis_equity_etf_quote`: value `87.8`, status `reference_value_only`, semantics `previous_close_or_reference_fallback_not_current_trade`, price source `y`, source timestamp `2026-06-30T01:56:01Z`, retrieved `2026-06-30T01:56:16Z`.
+- Timestamp policy: M5K now prefers MIS `tlong` when present and falls back to `d` + `t` as Taipei exchange-local time.
+- Value policy: numeric `y` fallback is retained as evidence in the failure envelope with `reference_value_only`; it is not labeled current/live and is not counted as a successful observation.
