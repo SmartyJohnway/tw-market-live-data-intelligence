@@ -12,6 +12,8 @@ def test_m5n_watchlist_schema_and_default_symbols():
     watchlist = load_json(DEFAULT_WATCHLIST_PATH)
     validation = validate_watchlist(watchlist)
     assert validation["valid"] is True
+    assert "watchlist_summary" not in watchlist
+    assert "items" not in watchlist
     assert watchlist_schema()["required_item_fields"] == ["id", "symbol", "display_name", "market", "instrument_type", "adapter", "category", "enabled", "display_order", "tags", "notes"]
     assert watchlist_summary(watchlist)["symbols"] == ["0050", "00878", "00919", "00929", "00934", "00939", "00940", "00981A", "1569", "2317", "2324", "2330", "2603", "2609", "3293", "3483", "3543", "TAIEX", "TX"]
 
@@ -48,3 +50,9 @@ def test_frontend_watchlist_workspace_static_contract():
     assert "/api/watchlist" in html
     assert "Last observation" in html
     assert "Export JSON" in html
+
+
+def test_watchlist_governance_safety_recommendation_assertion_allowed():
+    watchlist = load_json(DEFAULT_WATCHLIST_PATH)
+    watchlist["governance"]["recommendation"] = False
+    assert validate_watchlist(watchlist)["valid"] is True

@@ -105,7 +105,7 @@ def normalize_watchlist(watchlist: dict[str, Any]) -> dict[str, Any]:
         "name": watchlist.get("name", "Watchlist"),
         "description": watchlist.get("description", ""),
         "import_export": {"json": True, "csv_future": True},
-        "governance": watchlist.get("governance", {}) | {"trading_signal": False, "recommendation": False},
+        "governance": watchlist.get("governance", {}) | {"trading_signal": False, "recommendations_allowed": False},
         "items": sorted(items, key=lambda x: (x.get("display_order", 999999), str(x.get("symbol"))))
     }
 
@@ -130,7 +130,9 @@ def _reject_forbidden_keys(value: Any, path: str = "<root>") -> list[str]:
     errors: list[str] = []
     if isinstance(value, dict):
         for key, child in value.items():
-            if str(key).lower() in FORBIDDEN_KEYS:
+            key_l = str(key).lower()
+            safety_recommendation_assertion = path == "<root>.governance" and key_l == "recommendation" and child is False
+            if key_l in FORBIDDEN_KEYS and not safety_recommendation_assertion:
                 errors.append(f"forbidden_field:{path}.{key}")
             errors.extend(_reject_forbidden_keys(child, f"{path}.{key}"))
     elif isinstance(value, list):
