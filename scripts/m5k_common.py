@@ -560,6 +560,118 @@ def build_watchlist_rows(watchlist: dict[str, Any], latest_observation: dict[str
     return rows
 
 
+
+def _safe_list(value: Any) -> list[Any]:
+    return value if isinstance(value, list) else []
+
+
+def _load_canonical_summary() -> dict[str, Any]:
+    path = REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json"
+    try:
+        canonical = load_json(path)
+    except Exception as exc:
+        return {"status": "not_available", "reason": str(exc), "raw_endpoint_payload_included": False}
+    symbols = _safe_list(canonical.get("symbols"))
+    return {
+        "status": "available",
+        "distinction": "Canonical is reviewed Level 1 context and is not the same as Latest Observation Level 2 output.",
+        "canonical_source": canonical.get("source"),
+        "canonical_source_date": canonical.get("source_date"),
+        "canonical_symbols": [s.get("symbol") for s in symbols if isinstance(s, dict)],
+        "canonical_caveats": canonical.get("global_caveats", []),
+        "package_id": canonical.get("package_id"),
+        "schema_version": canonical.get("schema_version"),
+        "generated_at_utc": canonical.get("generated_at_utc"),
+        "raw_endpoint_payload_included": False,
+    }
+
+
+def _observation_status(row: dict[str, Any] | None, failure: dict[str, Any] | None) -> str:
+    if failure:
+        return failure.get("status") or "failed"
+    if not row:
+        return "unavailable"
+    if row.get("reference_only") is True:
+        return row.get("observation_status") or "reference_only"
+    return row.get("status") or row.get("observation_status") or "ok"
+
+
+def _source_health_checks_by_target() -> dict[str, dict[str, Any]]:
+    try:
+        from scripts.m5q_source_health import read_latest_source_health
+        latest = read_latest_source_health()
+    except Exception:
+        return {}
+    if latest.get("status") != "ok":
+        return {}
+    return {str(c.get("target")): c for c in _safe_list(latest.get("content", {}).get("checks")) if isinstance(c, dict)}
+
+
+def _conversation_per_symbol_observations(watchlist: dict[str, Any], latest_observation: dict[str, Any]) -> list[dict[str, Any]]:
+    obs_by_symbol = _observation_by_symbol(latest_observation)
+    health_by_symbol = _source_health_checks_by_target()
+    failures_by_symbol = {str(f.get("symbol")): f for f in _safe_list(latest_observation.get("failures")) if isinstance(f, dict)}
+    rows = []
+    for item in iter_instruments(normalize_watchlist(watchlist), include_disabled=True):
+        symbol = str(item.get("symbol"))
+        obs = obs_by_symbol.get(symbol)
+        health = health_by_symbol.get(symbol)
+        # If a newer M5Q source-health check exists for this symbol, surface its
+        # normalized status/failure fields while retaining the M5K observation value
+        # fields only when M5Q did not provide them. This aggregates governed outputs;
+        # it does not execute or create observations.
+        source_row = dict(obs or {})
+        if health and health.get("status") in {"degraded", "failed", "unsupported"}:
+            source_row.update({k: v for k, v in health.items() if v is not None})
+            source_row.setdefault("source", (obs or {}).get("source"))
+            source_row.setdefault("price_like_value", (obs or {}).get("price_like_value", (obs or {}).get("value")))
+            source_row.setdefault("price_semantics", (obs or {}).get("price_semantics"))
+        obs = source_row or None
+        failure = failures_by_symbol.get(symbol)
+        caveats = _safe_list((obs or {}).get("display_caveats")) or _safe_list((obs or {}).get("caveats"))
+        failure_reason = (failure or {}).get("reason") or (failure or {}).get("failure_reason") or (obs or {}).get("failure_reason")
+        value = (obs or {}).get("price_like_value", (obs or {}).get("value"))
+        rows.append({
+            "symbol": symbol,
+            "display_name": item.get("display_name") or (obs or {}).get("display_symbol") or symbol,
+            "market": item.get("market") or (obs or {}).get("market"),
+            "instrument_type": item.get("instrument_type") or (obs or {}).get("instrument_type"),
+            "status": _observation_status(obs, failure),
+            "observation_status": (obs or {}).get("observation_status") or _observation_status(obs, failure),
+            "adapter": item.get("adapter") or (obs or {}).get("adapter_id") or (failure or {}).get("adapter_id"),
+            "source": (obs or {}).get("source") or (obs or {}).get("source_family") or (failure or {}).get("source"),
+            "price_like_value": value,
+            "price_semantics": (obs or {}).get("price_semantics") or (obs or {}).get("value_semantics"),
+            "reference_only": bool((obs or {}).get("reference_only")),
+            "value_present": value is not None,
+            "source_timestamp": (obs or {}).get("source_timestamp"),
+            "retrieved_at_utc": (obs or {}).get("retrieved_at_utc") or (obs or {}).get("retrieved_at") or (failure or {}).get("retrieved_at_utc"),
+            "freshness": (obs or {}).get("freshness_assessment") or (obs or {}).get("freshness_status"),
+            "delay": (obs or {}).get("delay_status") or (obs or {}).get("delay"),
+            "failure_reason": failure_reason,
+            "recommended_next_step": (obs or {}).get("recommended_next_step") or (failure or {}).get("recommended_next_step") or ("Inspect latest observation/source health or rerun a bounded explicit observation later." if not obs else "Review caveats before AI discussion."),
+            "display_caveats": caveats,
+        })
+    return rows
+
+
+def _conversation_observation_summary(rows: list[dict[str, Any]]) -> dict[str, int]:
+    counts = {"healthy": 0, "degraded": 0, "failed": 0, "unsupported": 0, "reference_only": 0}
+    for r in rows:
+        status = str(r.get("status") or "").lower()
+        if r.get("reference_only") or "reference" in status:
+            counts["reference_only"] += 1
+            counts["degraded"] += 1
+        elif status in {"ok", "healthy", "observed"}:
+            counts["healthy"] += 1
+        elif status in {"failed", "error"}:
+            counts["failed"] += 1
+        elif status in {"unsupported"}:
+            counts["unsupported"] += 1
+        else:
+            counts["failed"] += 1
+    return counts
+
 def _conversation_source_health_summary() -> dict[str, Any]:
     try:
         from scripts.m5q_source_health import read_latest_source_health
@@ -580,6 +692,10 @@ def _conversation_source_health_summary() -> dict[str, Any]:
         "generated_at_utc": report.get("generated_at_utc"),
         "summary": report.get("summary", {}),
         "per_source_family_status": per_family,
+        "degraded_source_families": sorted([fam for fam, counts in per_family.items() if counts.get("degraded", 0) > 0]),
+        "failed_source_families": sorted([fam for fam, counts in per_family.items() if counts.get("failed", 0) > 0]),
+        "overall_summary": report.get("summary", {}),
+        "per_source_family_summary": per_family,
         "degraded_or_failed_targets": [
             {"target": c.get("target"), "source_family": c.get("source_family"), "status": c.get("status"), "observation_status": c.get("observation_status"), "freshness_assessment": c.get("freshness_assessment")}
             for c in checks if c.get("status") in {"degraded", "failed"}
@@ -591,29 +707,120 @@ def _conversation_source_health_summary() -> dict[str, Any]:
 
 def build_conversation_context(watchlist: dict[str, Any], latest_observation: dict[str, Any] | None = None) -> dict[str, Any]:
     latest_observation = latest_observation or read_latest_observation()
-    failures = latest_observation.get("failures", []) if isinstance(latest_observation, dict) else []
+    if isinstance(latest_observation, dict) and isinstance(latest_observation.get("content"), dict) and "observations" not in latest_observation:
+        latest_observation = latest_observation["content"]
+    failures = _safe_list(latest_observation.get("failures")) if isinstance(latest_observation, dict) else []
+    per_symbol = _conversation_per_symbol_observations(watchlist, latest_observation if isinstance(latest_observation, dict) else {})
+    obs_summary = _conversation_observation_summary(per_symbol)
+    canonical_summary = _load_canonical_summary()
+    source_health = _conversation_source_health_summary()
+    unavailable = [r["symbol"] for r in per_symbol if r.get("status") in {"failed", "unavailable", "unsupported"}]
+    reference_only = [r["symbol"] for r in per_symbol if r.get("reference_only") is True or "reference" in str(r.get("status", ""))]
+    healthy = [r["symbol"] for r in per_symbol if r.get("status") in {"ok", "healthy", "observed"} and not r.get("reference_only")]
     return {
         "schema_version": "m5n_conversation_context.v1",
         "created_at_utc": utc_now(),
-        "purpose": "Temporary AI conversation package for watchlist observation discussion; not canonical M5F and not raw endpoint payload.",
+        "purpose": "Single governed AI conversation package for watchlist observation discussion; not canonical M5F and not raw endpoint payload.",
         "watchlist_summary": watchlist_summary(watchlist),
-        "watchlist_rows": build_watchlist_rows(watchlist, latest_observation),
-        "successful_observations": len(latest_observation.get("observations", [])) if isinstance(latest_observation, dict) else 0,
+        "watchlist_rows": build_watchlist_rows(watchlist, latest_observation if isinstance(latest_observation, dict) else {}),
+        "observation_summary": obs_summary,
+        "per_symbol_observations": per_symbol,
+        "successful_observations": len(_safe_list(latest_observation.get("observations"))) if isinstance(latest_observation, dict) else 0,
         "failed_observations": len(failures),
-        "failures": [{"symbol": f.get("symbol"), "source": f.get("source"), "reason": f.get("reason"), "status": f.get("status")} for f in failures if isinstance(f, dict)],
+        "failures": [{"symbol": f.get("symbol"), "source": f.get("source"), "reason": f.get("reason") or f.get("failure_reason"), "status": f.get("status"), "recommended_next_step": f.get("recommended_next_step")} for f in failures if isinstance(f, dict)],
+        "latest_observation_summary": {
+            "schema_version": latest_observation.get("schema_version") if isinstance(latest_observation, dict) else None,
+            "status": latest_observation.get("status") if isinstance(latest_observation, dict) else "not_available",
+            "generated_at_utc": latest_observation.get("generated_at_utc") if isinstance(latest_observation, dict) else None,
+            "watchlist_id": latest_observation.get("watchlist_id") if isinstance(latest_observation, dict) else None,
+            "observation_count": len(_safe_list(latest_observation.get("observations"))) if isinstance(latest_observation, dict) else 0,
+            "failure_count": len(failures),
+            "raw_endpoint_payload_included": False,
+        },
         "freshness": latest_observation.get("retrieved_at_utc") or latest_observation.get("generated_at_utc") if isinstance(latest_observation, dict) else None,
         "source_investigation_notes": latest_observation.get("source_investigation_notes", []) if isinstance(latest_observation, dict) else [],
-        "source_health": _conversation_source_health_summary(),
+        "source_health_summary": source_health,
+        "source_health": source_health,
+        "canonical_summary": canonical_summary,
+        "ai_guidance_summary": {
+            "current_observations_available": healthy,
+            "reference_only_observations": reference_only,
+            "unavailable_observations": unavailable,
+            "canonical_package_covers": canonical_summary.get("canonical_symbols", []),
+            "current_limitations": sorted(set(governance()["caveats"] + _safe_list(canonical_summary.get("canonical_caveats")) + _safe_list(source_health.get("caveats")))),
+            "recommended_operator_workflow": ["Review Conversation Context JSON/Markdown as the AI handoff package.", "Treat Canonical Summary as Level 1 historical context, not Latest Observation.", "Treat reference-only or unavailable observations as not current price.", "If freshness is insufficient, run only the existing bounded explicit observation runner later."],
+            "descriptive_only": True,
+            "trading_recommendation": False,
+        },
         "risk": ["not_realtime_guaranteed", "source_may_be_delayed_or_unavailable", "not_trading_signal", "no_automatic_refresh"],
         "caveats": governance()["caveats"],
-        "governance": governance() | {"raw_endpoint_payload_included": False},
+        "governance": governance() | {"raw_endpoint_payload_included": False, "recommendation": False, "target_price": False, "ranking": False, "buy_sell_hold": False},
     }
 
 
 def conversation_context_markdown(context: dict[str, Any]) -> str:
-    lines = ["# M5N Conversation Context", "", context.get("purpose", ""), "", "## Watchlist"]
-    for row in context.get("watchlist_rows", []):
-        lines.append(f"- {row.get('symbol')} ({row.get('market')}, {row.get('category')}, {row.get('adapter')}): {row.get('status')}; freshness={row.get('freshness')}")
-    lines += ["", "## Observation Summary", f"- Successful observations: {context.get('successful_observations')}", f"- Failed observations: {context.get('failed_observations')}", "", "## Caveats"]
-    lines.extend(f"- {c}" for c in context.get("caveats", []))
+    wl = context.get("watchlist_summary", {})
+    obs = context.get("observation_summary", {})
+    canon = context.get("canonical_summary", {})
+    health = context.get("source_health_summary", context.get("source_health", {}))
+    rows = context.get("per_symbol_observations", [])
+    lines = [
+        "# M5N Conversation Context",
+        "",
+        "## Executive Summary",
+        context.get("purpose", ""),
+        "",
+        "Canonical Summary is Level 1 reviewed context. Latest Observation Summary is Level 2 bounded observation state. They are not the same.",
+        "",
+        "## Watchlist Summary",
+        f"- Watchlist: {wl.get('name')} ({wl.get('watchlist_id')})",
+        f"- Total symbols: {wl.get('total_items')}",
+        f"- Enabled symbols: {wl.get('enabled_items')}",
+        f"- Categories: {', '.join((wl.get('by_category') or {}).keys())}",
+        "",
+        "## Canonical Summary",
+        f"- Canonical source: {canon.get('canonical_source')}",
+        f"- Canonical source date: {canon.get('canonical_source_date')}",
+        f"- Canonical symbols: {', '.join(canon.get('canonical_symbols') or [])}",
+        f"- Caveats: {', '.join(canon.get('canonical_caveats') or [])}",
+        "",
+        "## Latest Observation Summary",
+        f"- healthy={obs.get('healthy', 0)} degraded={obs.get('degraded', 0)} failed={obs.get('failed', 0)} unsupported={obs.get('unsupported', 0)} reference_only={obs.get('reference_only', 0)}",
+        "",
+        "## Healthy Observations",
+    ]
+    for r in rows:
+        if r.get("status") in {"ok", "healthy", "observed"} and not r.get("reference_only"):
+            lines.append(f"- {r.get('symbol')} {r.get('display_name')}: {r.get('price_like_value')} ({r.get('price_semantics')}); source={r.get('source')}; freshness={r.get('freshness')}; delay={r.get('delay')}")
+    lines += ["", "## Reference-only Observations"]
+    for r in rows:
+        if r.get("reference_only") or "reference" in str(r.get("status", "")):
+            lines.append(f"- {r.get('symbol')} {r.get('display_name')}: value_present={r.get('value_present')}; reason={r.get('failure_reason')}; next={r.get('recommended_next_step')}")
+    lines += ["", "## Failed Observations"]
+    for r in rows:
+        if r.get("status") in {"failed", "unavailable", "unsupported"}:
+            lines.append(f"- {r.get('symbol')} {r.get('display_name')}: status={r.get('status')}; reason={r.get('failure_reason')}; next={r.get('recommended_next_step')}")
+    lines += [
+        "",
+        "## Source Health",
+        f"- Status: {health.get('source_health_status')}",
+        f"- Summary: {health.get('summary')}",
+        f"- Degraded source families: {', '.join(health.get('degraded_source_families') or []) or 'none'}",
+        f"- Failed source families: {', '.join(health.get('failed_source_families') or []) or 'none'}",
+        "",
+        "## Current Caveats",
+    ]
+    lines.extend(f"- {c}" for c in context.get("ai_guidance_summary", {}).get("current_limitations", context.get("caveats", [])))
+    lines += ["", "## Suggested Questions For AI"]
+    lines.extend([
+        "- 哪些資料目前可信？",
+        "- 哪些 observation 是 reference-only？",
+        "- 哪些 observation 不可視為 current price？",
+        "- 哪些來源 degraded？",
+        "- 哪些標的是 unavailable？",
+        "- Canonical Package 包含哪些內容？",
+        "- Latest Observation 包含哪些內容？",
+        "- 目前最大的資料限制是什麼？",
+        "- 下一步建議人工做什麼？",
+    ])
     return "\n".join(lines) + "\n"
