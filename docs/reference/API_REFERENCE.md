@@ -30,3 +30,12 @@ uvicorn server.main:app --host 127.0.0.1 --port 8000
 ## Disabled / deprecated
 
 `/api/probe/*` routes are excluded from the public schema and fail closed. Do not document or use them as current product endpoints.
+
+## M6A local UX summary endpoints
+
+- `GET /api/m5k/live-observation/history` — readonly summary of local M5K observation artifacts under `research/live_observation_runs/m5k/`; no network calls, no raw endpoint payload exposure.
+- `GET /api/source-health/history` — readonly summary of local M5Q source-health artifacts under `research/live_observation_runs/source_health/`; no network calls, no raw endpoint payload exposure.
+
+## M6A local CORS policy
+
+FastAPI permits local browser origins matching `http://localhost:<port>` or `http://127.0.0.1:<port>` for `GET` and `POST` only. Credentials are disabled. The `file://` double-click workflow is handled by frontend API-base detection, which targets `http://127.0.0.1:8000` rather than trusting remote origins.

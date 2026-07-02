@@ -10,3 +10,7 @@
 | FastAPI outputs | `server/main.py` responses | `uvicorn server.main:app --host 127.0.0.1 --port 8000` | Frontend/operator | Startup none; explicit endpoints only on command | Local responses; no product artifact writes except explicit bounded execution | Mixed Level 1/2 | Contracts expose caveats |
 | MCP outputs | `server/mcp_server.py` tool responses | `python server/mcp_server.py` | MCP clients/AI | Startup none; explicit bounded tool only on confirmation | Tool responses; explicit bounded tool can write Level 2 | Mixed Level 1/2 | JSON/Markdown summaries |
 | Frontend readonly workbench | `frontend/readonly-preview/M5KLocalAIWorkbench.html` | Open local file or static server | Operator | Calls local API if configured | No `frontend/public` writes | UI consumer | Displays caveats/status |
+
+## M6A frontend-read summaries
+
+The M6A workbench reads, but does not create, observation history and source-health history summaries from existing local Level 2 artifacts. These summaries are derived from `research/live_observation_runs/m5k/*.json` and `research/live_observation_runs/source_health/*.json`, exclude raw endpoint payloads, and remain non-canonical temporary context.

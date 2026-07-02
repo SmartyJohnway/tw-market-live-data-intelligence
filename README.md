@@ -138,3 +138,7 @@ Start at [`docs/INDEX.md`](docs/INDEX.md). Fast paths: [`docs/operator/QUICK_STA
 ## 18. Roadmap
 
 M5 is closed by this release-hardening PR. Future work should begin after merge, avoid parallel contracts, preserve governance tests, and continue evidence-based source evaluation without adding trading behavior.
+
+## M6A local frontend compatibility note
+
+The readonly workbench can be opened by double-clicking `frontend/readonly-preview/M5KLocalAIWorkbench.html` or by serving the folder from a local static server. When opened from `file://`, `localhost`, or `127.0.0.1` on a non-8000 port, it defaults to the local FastAPI base `http://127.0.0.1:8000` and displays the operator command `uvicorn server.main:app --host 127.0.0.1 --port 8000` if the API is unavailable. It does not use hosted endpoints, polling, or automatic observation execution.
