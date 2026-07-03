@@ -5,6 +5,7 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 ## Start here
 
 - [Repository README](../README.md)
+- [Local Workbench](operator/LOCAL_WORKBENCH.md)
 - [Operator Quick Start](operator/QUICK_START.md)
 - [Mode A/B/C Walkthrough](operator/MODE_ABC_WALKTHROUGH.md)
 - [M5 Local Release Candidate](release/M5_LOCAL_RELEASE_CANDIDATE.md)
@@ -21,6 +22,7 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 ## Operator guides
 
 - [Operator README](operator/README.md)
+- [Local Workbench](operator/LOCAL_WORKBENCH.md)
 - [Quick Start](operator/QUICK_START.md)
 - [Mode A/B/C Walkthrough](operator/MODE_ABC_WALKTHROUGH.md)
 - [Conversation Package Guide](operator/CONVERSATION_PACKAGE_GUIDE.md)
