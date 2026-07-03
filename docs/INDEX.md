@@ -56,6 +56,7 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 
 - [Reviews README](reviews/README.md)
 - [M5XR Final Mode ABC Level 1/2 Release Acceptance](reviews/M5XR_FINAL_MODE_ABC_LEVEL12_RELEASE_ACCEPTANCE.md)
+- [M6A Observation UX and Local Frontend Compatibility](reviews/M6A_OBSERVATION_UX_AND_LOCAL_FRONTEND_COMPATIBILITY.md)
 
 ## Archive
 

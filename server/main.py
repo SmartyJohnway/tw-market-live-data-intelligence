@@ -16,8 +16,9 @@ app = FastAPI(
 # Local-first CORS setup
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost", "http://localhost:8000", "http://127.0.0.1", "http://127.0.0.1:8000"],
-    allow_credentials=True,
+    allow_origins=["null"],
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
+    allow_credentials=False,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
@@ -181,6 +182,87 @@ def _read_m5f_artifact(filename: str, *, text: bool = False):
     return {"source_path": source_path, "content": deepcopy(data), "governance": governance}
 
 
+
+def _safe_json_file(path: Path) -> dict | None:
+    if not path.is_file():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {"status": "malformed", "source_path": path.relative_to(REPO_ROOT).as_posix()}
+    if isinstance(data, dict):
+        return deepcopy(data)
+    return {"status": "unsupported_json_shape", "source_path": path.relative_to(REPO_ROOT).as_posix()}
+
+
+def _observation_counts(payload: dict) -> dict:
+    observations = payload.get("observations") or payload.get("content", {}).get("observations") or []
+    failures = payload.get("failures") or payload.get("content", {}).get("failures") or []
+    counts = {"target_count": len(observations) + len(failures), "healthy": 0, "degraded": 0, "failed": 0, "unsupported": 0, "reference_only": 0}
+    for row in observations:
+        status = str(row.get("observation_status") or row.get("status") or "").lower()
+        freshness = str(row.get("freshness_assessment") or "").lower()
+        caveats = " ".join(str(c).lower() for c in (row.get("caveats") or []))
+        stale_or_closed = "stale_or_closed_session" in freshness or "closed-session" in caveats or "closed_session" in caveats
+        if row.get("reference_only") is True or "reference" in status:
+            counts["reference_only"] += 1
+            counts["degraded"] += 1
+        elif stale_or_closed:
+            counts["degraded"] += 1
+        elif status in {"ok", "healthy", "observed"}:
+            counts["healthy"] += 1
+        elif status == "unsupported":
+            counts["unsupported"] += 1
+        elif status in {"failed", "error"}:
+            counts["failed"] += 1
+        else:
+            counts["degraded"] += 1
+    for row in failures:
+        if str(row.get("status") or row.get("reason") or "").lower() == "unsupported":
+            counts["unsupported"] += 1
+        else:
+            counts["failed"] += 1
+    return counts
+
+
+def _observation_summary(path: Path) -> dict | None:
+    payload = _safe_json_file(path)
+    if not payload:
+        return None
+    observations = payload.get("observations") or []
+    return {
+        "source_path": path.relative_to(REPO_ROOT).as_posix(),
+        "generated_at_utc": payload.get("generated_at_utc") or payload.get("retrieved_at_utc"),
+        "counts": _observation_counts(payload),
+        "per_symbol": [
+            {k: row.get(k) for k in ["symbol", "status", "observation_status", "reference_only", "price_like_value", "value", "freshness_assessment", "delay_status", "source_timestamp", "retrieved_at", "retrieved_at_utc", "caveats", "failure_reason"]}
+            for row in observations
+        ],
+        "governance": {"canonical": False, "layer": "M5K Level 2", "raw_endpoint_payload_included": False},
+    }
+
+
+def _history_summaries(root: Path, pattern: str, summarizer) -> list[dict]:
+    rows = []
+    for path in sorted(root.glob(pattern)):
+        item = summarizer(path)
+        if item:
+            rows.append(item)
+    return sorted(rows, key=lambda x: x.get("generated_at_utc") or x.get("source_path") or "")
+
+
+def _source_health_summary(path: Path) -> dict | None:
+    payload = _safe_json_file(path)
+    if not payload:
+        return None
+    return {
+        "source_path": path.relative_to(REPO_ROOT).as_posix(),
+        "generated_at_utc": payload.get("generated_at_utc"),
+        "summary": payload.get("summary") or {},
+        "checks": [{k: row.get(k) for k in ["source_family", "target", "status", "health_status", "observation_status", "freshness_assessment", "delay_seconds", "caveats", "recommended_next_step"]} for row in payload.get("checks", [])],
+        "governance": {"canonical": False, "layer": "M5Q", "raw_endpoint_payload_included": False, "network_calls": False},
+    }
+
 @app.get("/api/context/canonical")
 def get_context_canonical():
     return _read_m5f_artifact("canonical_market_context.json")
@@ -304,3 +386,17 @@ def get_source_health_latest():
 @app.get("/api/source-health/schema")
 def get_source_health_schema():
     return {"content": _m5q_source_health_schema(), "governance": _canonical_governance() | {"layer": "M5Q", "network_calls": False, "artifact_writes": False}}
+
+
+@app.get("/api/m5k/live-observation/history")
+def get_m5k_live_observation_history():
+    root = REPO_ROOT / "research/live_observation_runs/m5k"
+    rows = _history_summaries(root, "*.json", _observation_summary)
+    return {"content": {"runs": rows, "latest": rows[-1] if rows else None, "previous": rows[-2] if len(rows) > 1 else None}, "governance": _canonical_governance() | {"layer": "M5K", "canonical": False, "network_calls": False, "raw_endpoint_payload_included": False}}
+
+
+@app.get("/api/source-health/history")
+def get_source_health_history():
+    root = REPO_ROOT / "research/live_observation_runs/source_health"
+    rows = _history_summaries(root, "*.json", _source_health_summary)
+    return {"content": {"runs": rows, "latest": rows[-1] if rows else None, "previous": rows[-2] if len(rows) > 1 else None}, "governance": _canonical_governance() | {"layer": "M5Q", "canonical": False, "network_calls": False, "raw_endpoint_payload_included": False}}

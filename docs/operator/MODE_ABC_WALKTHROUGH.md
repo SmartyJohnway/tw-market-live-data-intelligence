@@ -33,3 +33,7 @@ python scripts/build_m5n_conversation_context.py
 ```
 
 Paste the generated JSON/Markdown into an AI chat and keep the safety text intact: no trading advice, no ranking, no target price, and no buy/sell/hold.
+
+## M6A observation UX additions
+
+Mode B/C operators can use the readonly workbench to inspect the latest local observation, observation history summaries, one-point or multi-run timelines, and latest/previous field comparisons. These displays are observation comparison only, not trading signals, and not current-price guarantees. Source-health history and Conversation Package previews are also local-read surfaces and do not execute probes.
