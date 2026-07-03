@@ -114,3 +114,35 @@ python scripts/run_m6g_browser_operator_e2e.py --check-only
 ```
 
 The command is non-network in check-only mode, may start local FastAPI, and writes only the M6G acceptance report folder. Install optional browser tooling with `python -m pip install playwright` and `python -m playwright install chromium`. Explicit bounded live mode is manual only and must preserve M5K observation semantics.
+
+## Optional browser/operator E2E bootstrap
+
+The core local workbench uses `requirements.txt`. Real browser/operator E2E uses the optional browser dependency file:
+
+```bash
+python -m pip install -r requirements-browser-e2e.txt
+```
+
+Then install Chromium. On Windows/macOS use:
+
+```bash
+python -m playwright install chromium
+```
+
+On Linux/Codex/CI-like environments use:
+
+```bash
+python -m playwright install --with-deps chromium
+```
+
+If Chromium already exists but OS browser dependencies are missing, use:
+
+```bash
+python -m playwright install-deps chromium
+```
+
+Run browser/operator check-only acceptance with:
+
+```bash
+python scripts/run_m6g_browser_operator_e2e.py --check-only
+```

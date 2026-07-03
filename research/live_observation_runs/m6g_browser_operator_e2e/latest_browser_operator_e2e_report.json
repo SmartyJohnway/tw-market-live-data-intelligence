@@ -3,18 +3,15 @@
     "research/live_observation_runs/m6g_browser_operator_e2e/latest_browser_operator_e2e_report.json",
     "research/live_observation_runs/m6g_browser_operator_e2e/latest_browser_operator_e2e_report.md"
   ],
-  "browser_engine": null,
-  "browser_execute_ssl_policy_source": "default",
-  "caveats": [
-    "Python Playwright is not importable: No module named 'playwright'",
-    "Check-only mode skipped browser automation; install Playwright and Chromium, then rerun."
-  ],
-  "effective_server_env_ssl_policy": null,
-  "execute_request_status": "not_executed",
-  "fastapi_started": false,
-  "final_status": "skipped_with_caveats",
-  "frontend_loaded": false,
-  "generated_at_utc": "2026-07-03T11:51:09Z",
+  "browser_engine": "chromium",
+  "browser_execute_ssl_policy_source": "env",
+  "caveats": [],
+  "effective_server_env_ssl_policy": "compatibility",
+  "execute_request_status": "executed",
+  "fastapi_started": true,
+  "final_status": "pass",
+  "frontend_loaded": true,
+  "generated_at_utc": "2026-07-03T12:53:18Z",
   "governance": {
     "no_full_market_scan": true,
     "no_m5f_mutation": true,
@@ -24,13 +21,14 @@
     "no_startup_network_calls": true,
     "no_trading_output": true
   },
-  "id_generation_status": "not_checked",
+  "id_generation_status": "pass",
   "live_execution": {
     "bounded": true,
-    "executed": false,
-    "explicit": false
+    "executed": true,
+    "explicit": true,
+    "fallback": null
   },
-  "mode": "check-only",
+  "mode": "execute-bounded-live-check",
   "mode_a_reference": {
     "m5f_canonical": true,
     "mutated": false
@@ -64,25 +62,42 @@
     "contract": "M5N conversation package",
     "parallel_contract_created": false
   },
-  "network_calls_may_have_occurred": false,
-  "plan_request_status": "not_checked",
-  "playwright_available": false,
+  "network_calls_may_have_occurred": true,
+  "operator_status_text": "Observation status: no latest observation available; current-like rows require ok/non-reference, fresh source timestamp, and non-stale delay fields.",
+  "plan_request_status": "pass",
+  "playwright_available": true,
   "polling_detected": false,
   "recommended_next_steps": [
     "python -m pip install playwright",
     "python -m playwright install chromium",
     "python scripts/run_m6g_browser_operator_e2e.py --check-only"
   ],
-  "requested_ssl_policy": "strict",
+  "requested_ssl_policy": "compatibility",
   "schema_version": "m6g_browser_operator_e2e.v1",
-  "ssl_policy": "strict",
+  "ssl_policy": "compatibility",
   "targets": [
     "0050",
+    "00878",
+    "00919",
+    "00929",
+    "00934",
+    "00939",
+    "00940",
+    "00981A",
+    "1569",
+    "2317",
+    "2324",
     "2330",
+    "2603",
+    "2609",
+    "3293",
+    "3483",
+    "3543",
+    "TAIEX",
     "TX"
   ],
   "unexpected_execute_requests": 0,
-  "validate_request_status": "not_checked",
-  "watchlist_items_checked": 0,
-  "watchlist_payload_checked": false
+  "validate_request_status": "pass",
+  "watchlist_items_checked": 19,
+  "watchlist_payload_checked": true
 }

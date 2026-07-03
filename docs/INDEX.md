@@ -61,6 +61,7 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 - [M6A Observation UX and Local Frontend Compatibility](reviews/M6A_OBSERVATION_UX_AND_LOCAL_FRONTEND_COMPATIBILITY.md)
 - [M6B Test Strategy and Source Contract Hardening](reviews/M6B_TEST_STRATEGY_AND_SOURCE_CONTRACT_HARDENING.md)
 - [M6D Compatibility Hardening Windows Python 3.13 TLS and Local Networking](reviews/M6D_COMPATIBILITY_HARDENING_WINDOWS_PYTHON313_TLS_AND_LOCAL_NETWORKING.md)
+- [M6H Test Portfolio Rationalization and E2E Prioritization](reviews/M6H_TEST_PORTFOLIO_RATIONALIZATION_AND_E2E_PRIORITIZATION.md)
 
 ## Archive
 
