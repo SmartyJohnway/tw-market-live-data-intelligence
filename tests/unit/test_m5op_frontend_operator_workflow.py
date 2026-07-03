@@ -37,3 +37,40 @@ def test_no_forbidden_static_writes_or_startup_execution_contract():
     assert "research/generated" not in HTML + JS
     assert "executeObservation();" not in JS.split("DOMContentLoaded", 1)[-1]
     assert "confirm_live_observation=true" in JS
+
+
+def test_watchlist_from_rows_generates_required_id_contract_and_backend_validates():
+    from scripts.m5k_common import validate_watchlist
+
+    assert "id: `${category}:${symbol}`" in JS
+    assert "const category = field('category').value.trim() || 'custom';" in JS
+    assert "const symbol = field('symbol').value.trim().toUpperCase();" in JS
+
+    frontend_equivalent_payload = {
+        "schema_version": "m5n_watchlist.v1",
+        "watchlist_id": "m5op_frontend_watchlist",
+        "name": "M5OP Frontend Watchlist",
+        "items": [
+            {
+                "id": "custom:2330",
+                "category": "custom",
+                "display_order": 999,
+                "symbol": "2330",
+                "display_name": "台積電",
+                "market": "twse",
+                "instrument_type": "listed_equity",
+                "adapter": "TWSE_MIS",
+                "preferred_sources": ["TWSE_MIS"],
+                "enabled": True,
+                "tags": [],
+                "notes": "frontend-generated equivalent payload",
+            }
+        ],
+    }
+
+    validation = validate_watchlist(frontend_equivalent_payload)
+    assert frontend_equivalent_payload["items"][0]["id"] == "custom:2330"
+    assert frontend_equivalent_payload["items"][0]["symbol"] == "2330"
+    assert frontend_equivalent_payload["items"][0]["category"] == "custom"
+    assert validation["valid"] is True
+    assert validation["errors"] == []
