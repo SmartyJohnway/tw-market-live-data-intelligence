@@ -91,3 +91,12 @@ The preflight aggregates existing validators wherever possible and reports `PASS
 ## Governance Boundaries
 
 No polling, no scheduler, no startup network, no trading, no recommendation, no ranking, no target price, no buy/sell/hold, no broker/auth, no parallel contracts, and no M5F mutation.
+
+
+## M6D Windows/Python 3.13 TLS compatibility diagnostics
+
+`python scripts/run_local_workbench.py`, `python scripts/run_environment_diagnostics.py`, and `python scripts/run_operator_preflight.py` report OS platform, Python version, Python 3.13 detection, Windows detection, SSL default verify paths, configured `TW_MARKET_SSL_POLICY`, and the effective SSL policy. These diagnostics do not run network calls.
+
+Strict remains default. If TWSE MIS TLS fails on Windows/Python 3.13, retry only the explicit bounded live command with `--ssl-policy compatibility`. Compatibility mode is explicit and diagnostic. Do not use `unsafe-explicit` unless you understand TLS verification is disabled. No silent TLS fallback exists.
+
+The local frontend API-base detection remains local-first: `file://` falls back to `http://127.0.0.1:8000`, and localhost/127.0.0.1 static-server origins continue to target the local API.

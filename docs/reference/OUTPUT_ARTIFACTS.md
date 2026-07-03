@@ -22,3 +22,8 @@ The M6A workbench reads, but does not create, observation history and source-hea
 | M6B source-contract preflight summary | `research/live_observation_runs/m6b_source_contract/latest_summary.json` | `python scripts/run_m6b_source_contract_preflight.py --execute-live-contract-check` | Release operator diagnostics | Explicit manual bounded network only | Writes only after explicit execution | Temporary Level 2 diagnostic | Raw endpoint payload excluded |
 
 `python scripts/run_m6b_source_contract_preflight.py --check-only` prints the planned contract report, performs no network calls, and writes nothing.
+
+
+## M6D SSL/TLS diagnostics in artifacts
+
+Explicit M5K live observation outputs and M6B source-contract execute outputs include SSL diagnostics: `ssl_policy`, `tls_verification_mode`, `strict_default`, `compatibility_mode_used`, `unsafe_mode_used`, `silent_tls_fallback=false`, and `network_calls_may_have_occurred`. Check-only outputs may report the selected/default policy for operator clarity but do not imply network execution. Strict remains default, compatibility is explicit and diagnostic, and unsafe-explicit must not be used unless the operator understands TLS verification is disabled.

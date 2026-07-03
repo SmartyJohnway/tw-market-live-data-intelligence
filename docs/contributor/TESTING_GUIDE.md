@@ -44,3 +44,14 @@ No-network source-contract preflight is safe for default validation and performs
 ```bash
 python scripts/run_m6b_source_contract_preflight.py --check-only
 ```
+
+
+## M6D compatibility hardening tests
+
+M6D adds non-network tests for SSL policy selection, CLI/env precedence, invalid-policy fail-closed behavior, strict mode avoiding unverified TLS contexts, explicit compatibility/unsafe diagnostics, mocked network context passing, M5K/M6B artifact diagnostics, Windows/Python 3.13 operator hints, and local CORS/frontend compatibility. Default test runs must not perform live network calls.
+
+Run:
+
+```bash
+pytest -m "not network" -v
+```

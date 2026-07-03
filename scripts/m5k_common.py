@@ -4,11 +4,13 @@ import json
 import re
 import urllib.parse
 import urllib.request
+import ssl
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
 from scripts.observation_contract import normalize_failure, normalize_taifex_row, normalize_twse_mis_row
+from scripts.ssl_policy import build_ssl_context, resolve_ssl_policy, ssl_policy_diagnostics
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_WATCHLIST_PATH = REPO_ROOT / "config/m5k_default_watchlist.json"
@@ -302,13 +304,13 @@ def _parse_taifex_tx_item(item: dict[str, Any], instrument: dict[str, Any], retr
     )
 
 
-def fetch_taifex_tx_observation(instrument: dict[str, Any], retrieved_at: str, *, timeout: int = 12) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
+def fetch_taifex_tx_observation(instrument: dict[str, Any], retrieved_at: str, *, timeout: int = 12, ssl_policy: str = "strict", ssl_context: ssl.SSLContext | None = None) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
     body = {"MarketType": "0", "SymbolType": "F", "KindID": "1", "CID": instrument.get("contract_code", "TXF")}
     url = "https://mis.taifex.com.tw/futures/api/getQuoteList"
     headers = {"User-Agent": "Mozilla/5.0 tw-market-m5k-live-observation/1.0", "Accept": "application/json", "Content-Type": "application/json;charset=UTF-8", "Referer": "https://mis.taifex.com.tw/futures/RegularSession/EquityIndices/FuturesDomestic", "Origin": "https://mis.taifex.com.tw"}
     req = urllib.request.Request(url, data=json.dumps(body).encode("utf-8"), headers=headers, method="POST")
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with urllib.request.urlopen(req, timeout=timeout, context=ssl_context) as resp:
             raw = resp.read().decode("utf-8", "replace")
             status_code = resp.status
         data = json.loads(raw)
@@ -378,7 +380,9 @@ def _parse_mis_item(item: dict[str, Any], instrument: dict[str, Any], retrieved_
     return parsed
 
 
-def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = True, timeout: int = 12) -> dict[str, Any]:
+def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = True, timeout: int = 12, ssl_policy: str | None = None) -> dict[str, Any]:
+    selected_ssl_policy = resolve_ssl_policy(ssl_policy)
+    ssl_context = build_ssl_context(selected_ssl_policy)
     validation = validate_watchlist(watchlist)
     retrieved_at = utc_now()
     payload: dict[str, Any] = {
@@ -386,7 +390,8 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
         "generated_at_utc": retrieved_at,
         "watchlist_id": watchlist.get("watchlist_id"),
         "validation": validation,
-        "governance": governance(),
+        "governance": governance() | {"ssl_policy": ssl_policy_diagnostics(selected_ssl_policy, network_calls_may_have_occurred=validation.get("valid") is True)},
+        "diagnostics": {"ssl_policy": ssl_policy_diagnostics(selected_ssl_policy, network_calls_may_have_occurred=validation.get("valid") is True)},
         "request": {"method": "GET", "bounded_symbols": [], "max_targets": MAX_M5K_TARGETS},
         "observations": [],
         "failures": [],
@@ -402,7 +407,7 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
     payload["request"]["bounded_symbols"] = [p["symbol"] for p in plans]
     taifex_plans = [p for p in plans if p.get("adapter_id") == "taifex_mis_tx_futures_quote"]
     for plan in taifex_plans:
-        obs, evidence = fetch_taifex_tx_observation(plan["instrument"] | {"adapter_id": plan.get("adapter_id")}, retrieved_at, timeout=timeout)
+        obs, evidence = fetch_taifex_tx_observation(plan["instrument"] | {"adapter_id": plan.get("adapter_id")}, retrieved_at, timeout=timeout, ssl_policy=selected_ssl_policy, ssl_context=ssl_context)
         if evidence:
             payload["source_investigation_notes"].append(evidence)
         if obs and obs.get("status") == "ok":
@@ -418,7 +423,7 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
         payload["request"].update({"url": url, "headers": {"User-Agent": "Mozilla/5.0 tw-market-m5k-live-observation/1.0", "Referer": "https://mis.twse.com.tw/stock/fibest.jsp"}})
         try:
             req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 tw-market-m5k-live-observation/1.0", "Referer": "https://mis.twse.com.tw/stock/fibest.jsp"})
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
+            with urllib.request.urlopen(req, timeout=timeout, context=ssl_context) as resp:
                 body = resp.read().decode("utf-8", "replace")
                 payload["request"]["status_code"] = resp.status
             data = json.loads(body.strip())
@@ -437,7 +442,7 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
                 single_url = f"https://mis.twse.com.tw/stock/api/getStockInfo.jsp?{urllib.parse.urlencode({'ex_ch': ch, 'json': '1', 'delay': '0'})}"
                 try:
                     req = urllib.request.Request(single_url, headers={"User-Agent": "Mozilla/5.0 tw-market-m5k-live-observation/1.0", "Referer": "https://mis.twse.com.tw/stock/fibest.jsp"})
-                    with urllib.request.urlopen(req, timeout=timeout) as resp:
+                    with urllib.request.urlopen(req, timeout=timeout, context=ssl_context) as resp:
                         body = resp.read().decode("utf-8", "replace")
                     data = json.loads(body.strip())
                     for item in data.get("msgArray", []):

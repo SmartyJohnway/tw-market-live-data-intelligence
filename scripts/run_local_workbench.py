@@ -19,6 +19,6 @@ def main() -> int:
         print_dashboard(report)
         if args.execute_live_observation:
             print("\nLive observation remains explicit and bounded. Run manually:")
-            print("python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation")
+            print("python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation --ssl-policy strict")
     return 0
 if __name__ == "__main__": raise SystemExit(main())

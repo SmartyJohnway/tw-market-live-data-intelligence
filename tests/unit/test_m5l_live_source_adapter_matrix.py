@@ -34,7 +34,7 @@ def test_source_routes_are_adapter_driven():
 
 
 def test_observation_and_failure_envelope_consistency(monkeypatch):
-    def fake_taifex(instrument, retrieved_at, timeout=12):
+    def fake_taifex(instrument, retrieved_at, timeout=12, **kwargs):
         return ({"symbol":"TX","display_symbol":"TX","instrument_type":"futures","market":"taifex","source":"TAIFEX_MIS","adapter_id":"taifex_mis_tx_futures_quote","status":"ok","price_like_value":1.0,"source_timestamp":"2026-06-30T01:00:00+08:00","retrieved_at_utc":retrieved_at,"freshness_assessment":"fresh","delay_status":"measured","delay_seconds":1,"caveats":[],"contract":"TXF-F","contract_month":"202607","contract_selector":"front_month"}, {"status":"accepted_for_bounded_observation"})
     monkeypatch.setattr("scripts.m5k_common.fetch_taifex_tx_observation", fake_taifex)
     payload = execute_live_observation(_watchlist("TX", "taifex", "futures"), write_latest=False)
