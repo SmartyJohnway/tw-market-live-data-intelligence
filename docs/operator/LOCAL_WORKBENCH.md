@@ -100,3 +100,7 @@ No polling, no scheduler, no startup network, no trading, no recommendation, no 
 Strict remains default. If TWSE MIS TLS fails on Windows/Python 3.13, retry only the explicit bounded live command with `--ssl-policy compatibility`. Compatibility mode is explicit and diagnostic. Do not use `unsafe-explicit` unless you understand TLS verification is disabled. No silent TLS fallback exists.
 
 The local frontend API-base detection remains local-first: `file://` falls back to `http://127.0.0.1:8000`, and localhost/127.0.0.1 static-server origins continue to target the local API.
+
+## M6E operator acceptance
+
+After the daily workbench and before release handoff, run `python scripts/run_m6e_operator_acceptance.py --check-only`. This remains non-network and writes only the M6E acceptance report folder.

@@ -57,3 +57,7 @@ python scripts/run_m6b_source_contract_preflight.py --execute-live-contract-chec
 ```
 
 Do not use `unsafe-explicit` unless you understand TLS verification is disabled. `unsafe-explicit` is never default, must be explicitly requested by CLI or `TW_MARKET_SSL_POLICY`, and is reported in output diagnostics.
+
+## M6E acceptance troubleshooting
+
+If `python scripts/run_m6e_operator_acceptance.py --check-only` fails, inspect `research/live_observation_runs/m6e_operator_acceptance/latest_operator_acceptance_report.md` first, then rerun the failing child command shown in the JSON report.

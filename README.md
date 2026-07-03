@@ -135,3 +135,7 @@ python scripts/run_m6b_source_contract_preflight.py --execute-live-contract-chec
 ```
 
 Diagnostics and workbench commands remain no-network unless an explicit live command is run.
+
+## M6E operator acceptance
+
+Run `python scripts/run_m6e_operator_acceptance.py --check-only` for the M6E operator acceptance layer. It is non-network by default, aggregates existing diagnostics/validators, verifies readonly FastAPI/MCP/frontend contracts, and writes reports under `research/live_observation_runs/m6e_operator_acceptance/`.
