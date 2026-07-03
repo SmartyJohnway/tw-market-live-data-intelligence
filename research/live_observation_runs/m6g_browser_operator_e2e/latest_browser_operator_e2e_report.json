@@ -1,0 +1,88 @@
+{
+  "artifacts_written": [
+    "research/live_observation_runs/m6g_browser_operator_e2e/latest_browser_operator_e2e_report.json",
+    "research/live_observation_runs/m6g_browser_operator_e2e/latest_browser_operator_e2e_report.md"
+  ],
+  "browser_engine": null,
+  "browser_execute_ssl_policy_source": "default",
+  "caveats": [
+    "Python Playwright is not importable: No module named 'playwright'",
+    "Check-only mode skipped browser automation; install Playwright and Chromium, then rerun."
+  ],
+  "effective_server_env_ssl_policy": null,
+  "execute_request_status": "not_executed",
+  "fastapi_started": false,
+  "final_status": "skipped_with_caveats",
+  "frontend_loaded": false,
+  "generated_at_utc": "2026-07-03T11:51:09Z",
+  "governance": {
+    "no_full_market_scan": true,
+    "no_m5f_mutation": true,
+    "no_polling": true,
+    "no_scheduler": true,
+    "no_silent_tls_fallback": true,
+    "no_startup_network_calls": true,
+    "no_trading_output": true
+  },
+  "id_generation_status": "not_checked",
+  "live_execution": {
+    "bounded": true,
+    "executed": false,
+    "explicit": false
+  },
+  "mode": "check-only",
+  "mode_a_reference": {
+    "m5f_canonical": true,
+    "mutated": false
+  },
+  "mode_b_observation": {
+    "canonical": false,
+    "reference_only_is_not_current_price": true,
+    "ssl_policy_api_checks": {
+      "env_override": true,
+      "execution_calls": [
+        {
+          "ssl_policy": "compatibility",
+          "watchlist": {
+            "items": [],
+            "schema_version": "m5n_watchlist.v1"
+          }
+        },
+        {
+          "ssl_policy": "strict",
+          "watchlist": {
+            "items": [],
+            "schema_version": "m5n_watchlist.v1"
+          }
+        }
+      ],
+      "invalid_policy_fail_closed": true,
+      "query_override": true
+    }
+  },
+  "mode_c_conversation": {
+    "contract": "M5N conversation package",
+    "parallel_contract_created": false
+  },
+  "network_calls_may_have_occurred": false,
+  "plan_request_status": "not_checked",
+  "playwright_available": false,
+  "polling_detected": false,
+  "recommended_next_steps": [
+    "python -m pip install playwright",
+    "python -m playwright install chromium",
+    "python scripts/run_m6g_browser_operator_e2e.py --check-only"
+  ],
+  "requested_ssl_policy": "strict",
+  "schema_version": "m6g_browser_operator_e2e.v1",
+  "ssl_policy": "strict",
+  "targets": [
+    "0050",
+    "2330",
+    "TX"
+  ],
+  "unexpected_execute_requests": 0,
+  "validate_request_status": "not_checked",
+  "watchlist_items_checked": 0,
+  "watchlist_payload_checked": false
+}

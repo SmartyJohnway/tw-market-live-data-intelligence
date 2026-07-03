@@ -33,3 +33,9 @@ Explicit M5K live observation outputs and M6B source-contract execute outputs in
 | Artifact | Path | Producer command | Consumer | Network behavior | Write behavior | Canonical or temporary | Raw payload policy |
 |---|---|---|---|---|---|---|---|
 | M6E operator acceptance report | `research/live_observation_runs/m6e_operator_acceptance/` | `python scripts/run_m6e_operator_acceptance.py --check-only` | Operators/release reviewers | None in check-only | Writes only M6E report JSON/Markdown | Temporary release evidence | Raw endpoint payload excluded |
+
+## M6G browser/operator E2E artifact
+
+| Artifact | Path | Producer command | Consumer | Network behavior | Write behavior | Canonical or temporary | Raw payload policy |
+|---|---|---|---|---|---|---|---|
+| M6G browser/operator E2E report | `research/live_observation_runs/m6g_browser_operator_e2e/` | `python scripts/run_m6g_browser_operator_e2e.py --check-only` | Operators/release reviewers | None in check-only; explicit bounded live mode may make one bounded observation call | Writes only M6G report JSON/Markdown | Temporary release evidence | Raw endpoint payload excluded from product/AI surfaces |

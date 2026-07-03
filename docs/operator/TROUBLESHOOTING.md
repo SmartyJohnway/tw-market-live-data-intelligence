@@ -61,3 +61,15 @@ Do not use `unsafe-explicit` unless you understand TLS verification is disabled.
 ## M6E acceptance troubleshooting
 
 If `python scripts/run_m6e_operator_acceptance.py --check-only` fails, inspect `research/live_observation_runs/m6e_operator_acceptance/latest_operator_acceptance_report.md` first, then rerun the failing child command shown in the JSON report.
+
+## M6G browser/operator E2E troubleshooting
+
+If `python scripts/run_m6g_browser_operator_e2e.py --check-only` reports `skipped_with_caveats`, install browser tooling and rerun:
+
+```bash
+python -m pip install playwright
+python -m playwright install chromium
+python scripts/run_m6g_browser_operator_e2e.py --check-only
+```
+
+A skip is acceptable for environments without browser binaries. A failure after browser startup should be investigated as an operator-path regression: frontend payload generation, local FastAPI availability, check-only no-execute guarantees, or SSL policy propagation.

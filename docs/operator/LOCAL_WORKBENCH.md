@@ -104,3 +104,13 @@ The local frontend API-base detection remains local-first: `file://` falls back 
 ## M6E operator acceptance
 
 After the daily workbench and before release handoff, run `python scripts/run_m6e_operator_acceptance.py --check-only`. This remains non-network and writes only the M6E acceptance report folder.
+
+## M6G browser/operator E2E acceptance
+
+Use M6G when you need to prove a real browser/operator workflow rather than only script/static checks:
+
+```bash
+python scripts/run_m6g_browser_operator_e2e.py --check-only
+```
+
+The command is non-network in check-only mode, may start local FastAPI, and writes only the M6G acceptance report folder. Install optional browser tooling with `python -m pip install playwright` and `python -m playwright install chromium`. Explicit bounded live mode is manual only and must preserve M5K observation semantics.
