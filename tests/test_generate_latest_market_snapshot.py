@@ -15,7 +15,7 @@ from generate_latest_market_snapshot import (
     validate_snapshot_contract
 )
 
-def test_snapshot_top_level_keys():
+def test_snapshot_symbol_failure_and_source_health_schema_contracts():
     targets = {
         "twse_large_caps": {
             "symbols": {
@@ -24,26 +24,20 @@ def test_snapshot_top_level_keys():
         }
     }
     snapshot = build_snapshot(targets)
+    sym = build_empty_symbol({"symbol": "2330", "target_class": "twse_common_stock"})
 
-    expected_keys = {
+    assert set(snapshot.keys()) == {
         "snapshot_version", "generated_at_utc", "generated_at_taipei",
         "generation_mode", "market_session_status", "source_health",
         "source_priority", "watchlist_scope", "symbols",
         "failed_symbols", "failed_sources", "global_caveats",
         "prohibited_interpretations"
     }
-    assert set(snapshot.keys()) == expected_keys
-
-    # Contract constraint checks
     assert snapshot["generation_mode"] == "bounded_watchlist_generation"
     assert snapshot["watchlist_scope"]["scope_type"] == "bounded_config_watchlist"
     assert snapshot["watchlist_scope"]["full_market_scan"] is False
 
-def test_symbol_required_keys():
-    target = {"symbol": "2330", "target_class": "twse_common_stock"}
-    sym = build_empty_symbol(target)
-
-    expected_keys = {
+    assert set(sym.keys()) == {
         "symbol", "exchange", "target_class", "name", "last_price",
         "change", "change_pct", "open", "high", "low", "previous_close",
         "volume", "bid_ask", "source_used", "source_candidates",
@@ -53,82 +47,39 @@ def test_symbol_required_keys():
         "official_eod_reference_available", "live_candidate_available",
         "data_quality_flags", "caveats", "raw_payload_ref"
     }
-
-    assert set(sym.keys()) == expected_keys
     assert sym["symbol"] == "2330"
-    assert sym["last_price"] is None # Must explicitly be None if unavailable, not omitted.
-
-def test_bid_ask_required_keys():
-    target = {"symbol": "2330", "target_class": "twse_common_stock"}
-    sym = build_empty_symbol(target)
-
-    expected_keys = {
+    assert sym["last_price"] is None
+    assert set(sym["bid_ask"].keys()) == {
         "best_bid_price", "best_bid_volume", "best_ask_price",
         "best_ask_volume", "spread", "bid_ask_status"
     }
 
-    assert set(sym["bid_ask"].keys()) == expected_keys
-
-def test_failed_symbol_schema():
-    targets = {
-        "twse_large_caps": {
-            "symbols": {
-                "standard": ["2330"]
-            }
-        }
-    }
-    # With no mock inputs, all fail
-    snapshot = build_snapshot(targets)
-
     assert len(snapshot["failed_symbols"]) == 1
     fs = snapshot["failed_symbols"][0]
-
-    expected_keys = {
+    assert set(fs.keys()) == {
         "symbol", "exchange", "target_class", "source_attempts",
         "failure_reason", "retrieved_time", "data_quality_flags", "caveats"
     }
-    assert set(fs.keys()) == expected_keys
     assert fs["symbol"] == "2330"
-
-def test_failed_source_schema():
-    targets = {
-        "twse_large_caps": {
-            "symbols": {
-                "standard": ["2330"]
-            }
-        }
-    }
-    snapshot = build_snapshot(targets)
 
     assert len(snapshot["failed_sources"]) > 0
     fsrc = snapshot["failed_sources"][0]
-
-    expected_keys = {
+    assert set(fsrc.keys()) == {
         "source_id", "source_type", "http_ok", "error_type",
         "retrieved_time", "affected_symbols", "caveats"
     }
-    assert set(fsrc.keys()) == expected_keys
     assert fsrc["http_ok"] is None
     assert fsrc["error_type"] == "offline_mode_no_local_input"
 
-def test_source_health_schema():
-    targets = {}
-    snapshot = build_snapshot(targets)
-
     assert len(snapshot["source_health"]) > 0
     sh = snapshot["source_health"][0]
-
-    expected_keys = {
+    assert set(sh.keys()) == {
         "source_id", "source_type", "authority_level", "http_ok",
         "parse_ok", "normalization_ok", "latency_ms", "retrieved_time",
         "error_type", "caveats"
     }
-    assert set(sh.keys()) == expected_keys
-
-    # Check that all 7 sources are covered
-    sources = set([sh["source_id"] for sh in snapshot["source_health"]])
+    sources = {source_health["source_id"] for source_health in snapshot["source_health"]}
     assert sources == {"TWSE_MIS", "Yahoo_Finance", "TWSE_OpenAPI", "TPEx_OpenAPI", "FinMind", "Fugle", "Fubon"}
-
 
 def test_official_eod_not_live_candidate():
     targets = {
@@ -212,11 +163,6 @@ def test_canonical_target_class_mapping():
 
     unknown_sym = next(fs for fs in snapshot["failed_symbols"] if fs["target_class"] == "unknown_or_unsupported")
     assert "target_class_mapping_unknown" in unknown_sym["data_quality_flags"]
-
-def test_watchlist_scope_not_full_market():
-    targets = {}
-    snapshot = build_snapshot(targets)
-    assert snapshot["watchlist_scope"]["full_market_scan"] is False
 
 def test_no_trading_signal_semantics_outside_prohibited_interpretations():
     targets = {}

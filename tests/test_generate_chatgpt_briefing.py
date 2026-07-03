@@ -57,7 +57,7 @@ def test_missing_required_section(valid_pack):
     with pytest.raises(ValueError, match="Required top-level section 'pack_version' is missing"):
         validate_context_pack(valid_pack)
 
-def test_generated_briefing_includes_all_headings(valid_pack):
+def test_generated_briefing_static_contract(valid_pack):
     md = render_chatgpt_briefing(valid_pack)
     headings = [
         "## Generated Metadata",
@@ -75,47 +75,28 @@ def test_generated_briefing_includes_all_headings(valid_pack):
         "## Mandatory Caveats",
         "## Suggested Safe Questions"
     ]
-    for h in headings:
-        assert h in md
+    for heading in headings:
+        assert heading in md
 
-def test_bounded_scope_and_market_coverage(valid_pack):
-    md = render_chatgpt_briefing(valid_pack)
     assert "Bounded Watchlist Only**: true" in md
     assert "Full market coverage: false" in md
-
-def test_failed_sources_and_targets_counts(valid_pack):
-    md = render_chatgpt_briefing(valid_pack)
     assert "Failed/Unavailable Source Count: 0" in md
     assert "Failed/Unavailable Sources: None" in md
     assert "Failed Target Count**: 0" in md
-
-def test_source_authority_distinctions(valid_pack):
-    md = render_chatgpt_briefing(valid_pack)
     assert "Usable Live Sources**: TWSE_MIS" in md
-
-def test_freshness_delay_staleness(valid_pack):
-    md = render_chatgpt_briefing(valid_pack)
     assert "Stale Count**: 0" in md
     assert "Unknown freshness limits interpretation." in md
     assert "EOD reference does not imply live intraday data." in md
     assert "Live candidates are not official realtime" in md
-
-def test_ai_boundaries_inclusion(valid_pack):
-    md = render_chatgpt_briefing(valid_pack)
     assert "May describe market." in md
     assert "Must not say buy or sell." in md
     assert "Data is delayed." in md
-
-def test_safe_questions(valid_pack):
-    md = render_chatgpt_briefing(valid_pack)
     assert "Which sources failed in the generated context pack?" in md
     assert "Which target has the strongest signal?" not in md
-
-def test_prohibited_language(valid_pack):
-    md = render_chatgpt_briefing(valid_pack)
     assert "buy" not in md.lower() or "must not say buy" in md.lower()
 
-def test_failed_sources_table_rendering(valid_pack):
+
+def test_failed_sources_and_targets_table_rendering(valid_pack):
     valid_pack["failed_sources"] = [{
         "source_id": "bad_src",
         "source_type": "api",
@@ -124,10 +105,6 @@ def test_failed_sources_table_rendering(valid_pack):
         "affected_symbol_count": 2,
         "caveats": ["c1", "c2"]
     }]
-    table = render_failed_sources(valid_pack)
-    assert "| bad_src | api | low | timeout | 2 | c1, c2 |" in table
-
-def test_failed_targets_table_rendering(valid_pack):
     valid_pack["failed_targets"] = [{
         "symbol": "1234",
         "target_class": "stock",
@@ -135,16 +112,13 @@ def test_failed_targets_table_rendering(valid_pack):
         "source_attempts": ["src1"],
         "caveats": ["c3"]
     }]
-    table = render_failed_targets(valid_pack)
-    assert "| 1234 | stock | 404 | src1 | c3 |" in table
+    assert "| bad_src | api | low | timeout | 2 | c1, c2 |" in render_failed_sources(valid_pack)
+    assert "| 1234 | stock | 404 | src1 | c3 |" in render_failed_targets(valid_pack)
 
-def test_no_raw_python_lists(valid_pack):
+def test_no_raw_python_collection_repr(valid_pack):
     md = render_chatgpt_briefing(valid_pack)
     assert "['" not in md
     assert "']" not in md
-
-def test_no_raw_python_dicts(valid_pack):
-    md = render_chatgpt_briefing(valid_pack)
     assert "{'" not in md
     assert "'}" not in md
 

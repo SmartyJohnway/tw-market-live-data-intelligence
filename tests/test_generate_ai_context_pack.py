@@ -131,12 +131,6 @@ def test_watchlist_observation_summary_preserves_failed_observation_count(mock_s
     wos = pack["watchlist_observation_summary"]
 
     assert wos["failed_observations_count"] == 1
-
-def test_watchlist_observation_summary_preserves_failed_observation_count(mock_snapshot, mock_observations):
-    pack = build_ai_context_pack(mock_snapshot, mock_observations)
-    wos = pack["watchlist_observation_summary"]
-
-    assert wos["failed_observations_count"] == 1
     assert wos["observations_count"] == 1
     assert wos["observation_type_counts"].get("source_failed") == 1
     assert wos["observation_type_counts"].get("volume_active") == 1
