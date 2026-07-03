@@ -32,12 +32,58 @@ def run(label: str, cmd: list[str], timeout: int = 300) -> dict[str, Any]:
     cp = subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, timeout=timeout)
     return {"label": label, "command": " ".join(cmd).replace(sys.executable, "python", 1), "status": "pass" if cp.returncode == 0 else "fail", "returncode": cp.returncode, "stdout_tail": cp.stdout[-1000:], "stderr_tail": cp.stderr[-1000:]}
 
+def _normalize_status(value: Any) -> str:
+    normalized = str(value or "").strip().lower().replace(" ", "_")
+    if normalized in {"pass_with_caveats", "passed_with_caveats"}:
+        return "pass_with_caveats"
+    if normalized in {"pass", "passed", "ok"}:
+        return "pass"
+    if normalized in {"fail", "failed", "error"}:
+        return "fail"
+    return normalized or "unknown"
+
+def _extract_child_caveats(payload: dict[str, Any], label: str) -> list[str]:
+    caveats = list(payload.get("caveats") or [])
+    for result in payload.get("results") or []:
+        if _normalize_status(result.get("status")) == "pass_with_caveats":
+            caveats.append(f"{label}: {result.get('label', 'child check')} reported PASS WITH CAVEATS.")
+        for check in result.get("checks") or []:
+            if str(check.get("status", "")).upper() == "CAVEAT":
+                name = check.get("name", "check")
+                detail = check.get("detail", "")
+                caveats.append(f"{label}: {name} caveat" + (f" ({detail})" if detail else "") + ".")
+    return caveats
+
+def run_json(label: str, cmd: list[str], timeout: int = 300) -> dict[str, Any]:
+    cp = subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, timeout=timeout)
+    result = {"label": label, "command": " ".join(cmd).replace(sys.executable, "python", 1), "status": "pass" if cp.returncode == 0 else "fail", "returncode": cp.returncode, "stdout_tail": cp.stdout[-1000:], "stderr_tail": cp.stderr[-1000:]}
+    try:
+        payload = json.loads(cp.stdout)
+    except json.JSONDecodeError as exc:
+        result.update({
+            "status": "pass_with_caveats" if result["status"] == "pass" else "fail",
+            "json_parse_status": "failed",
+            "caveats": [f"{label} JSON caveat parsing failed: {exc.msg}"],
+            "parsed_json": None,
+        })
+        return result
+    child_status = _normalize_status(payload.get("status"))
+    caveats = _extract_child_caveats(payload, label)
+    result.update({
+        "status": child_status if child_status in {"pass", "pass_with_caveats", "fail"} else result["status"],
+        "json_parse_status": "pass",
+        "caveats": caveats,
+        "parsed_json": payload,
+    })
+    return result
+
 def ok(name: str, passed: bool, evidence: Any = None) -> dict[str, Any]:
     return {"name": name, "status": "pass" if passed else "fail", "evidence": evidence}
 
 def final_status(checks: list[dict[str, Any]], caveats: list[str]) -> str:
     if any(c.get("status") == "fail" for c in checks): return "fail"
-    return "pass_with_caveats" if caveats else "pass"
+    if caveats or any(c.get("status") == "pass_with_caveats" for c in checks): return "pass_with_caveats"
+    return "pass"
 
 def fastapi_acceptance(watchlist: dict[str, Any]) -> dict[str, Any]:
     from fastapi.testclient import TestClient
@@ -88,7 +134,7 @@ def conversation_acceptance() -> dict[str, Any]:
 def build_report(mode: str, ssl_policy: str, execute_live: bool) -> dict[str, Any]:
     before = sha_dir(M5F_DIR)
     watchlist = normalize_watchlist(load_json(DEFAULT_WATCHLIST_PATH))
-    command_checks = [run("local workbench", [sys.executable,"scripts/run_local_workbench.py"]), run("environment diagnostics", [sys.executable,"scripts/run_environment_diagnostics.py"]), run("operator preflight", [sys.executable,"scripts/run_operator_preflight.py","--timeout-seconds","300"]), run("M5F validator", [sys.executable,"scripts/validate_m5f_canonical_market_context_package.py","--package-dir","research/staging/m5f/m5f_canonical_market_context_01"]), run("M5IJ", [sys.executable,"scripts/run_m5ij_end_to_end_acceptance.py","--check-only"]), run("M5K", [sys.executable,"scripts/run_m5k_postmerge_validation.py","--check-only"]), run("M5Q", [sys.executable,"scripts/run_m5q_source_health_probe.py","--check-only"]), run("M6B", [sys.executable,"scripts/run_m6b_source_contract_preflight.py","--check-only"]), run("MCP startup", [sys.executable,"server/mcp_server.py","--startup-check"])]
+    command_checks = [run("local workbench", [sys.executable,"scripts/run_local_workbench.py"]), run("environment diagnostics", [sys.executable,"scripts/run_environment_diagnostics.py"]), run_json("operator preflight", [sys.executable,"scripts/run_operator_preflight.py","--json","--timeout-seconds","300"]), run("M5F validator", [sys.executable,"scripts/validate_m5f_canonical_market_context_package.py","--package-dir","research/staging/m5f/m5f_canonical_market_context_01"]), run("M5IJ", [sys.executable,"scripts/run_m5ij_end_to_end_acceptance.py","--check-only"]), run("M5K", [sys.executable,"scripts/run_m5k_postmerge_validation.py","--check-only"]), run("M5Q", [sys.executable,"scripts/run_m5q_source_health_probe.py","--check-only"]), run("M6B", [sys.executable,"scripts/run_m6b_source_contract_preflight.py","--check-only"]), run("MCP startup", [sys.executable,"server/mcp_server.py","--startup-check"])]
     plan = plan_live_observation(watchlist); validation = validate_watchlist(watchlist); latest_obs = read_latest_observation()
     fastapi = fastapi_acceptance(watchlist); mcp_invalid = run_m5k_live_observation_tool({"confirm_live_observation": True, "watchlist": watchlist, "ssl_policy":"invalid"})
     tools = asyncio.run(list_tools())
@@ -97,11 +143,14 @@ def build_report(mode: str, ssl_policy: str, execute_live: bool) -> dict[str, An
     mode_a = {"status":"pass" if before == after and fastapi["status"]=="pass" and command_checks[3]["status"]=="pass" and command_checks[-1]["status"]=="pass" else "fail", "m5f_exists": M5F_DIR.exists(), "m5f_unchanged": before == after, "canonical_readable": (M5F_DIR/"canonical_market_context.json").exists(), "ai_context_pack_exists": (M5F_DIR/"ai_context_pack.md").exists(), "chatgpt_briefing_exists": (M5F_DIR/"chatgpt_briefing.md").exists()}
     mode_b = {"status":"pass" if validation.get("valid") and command_checks[5]["status"]=="pass" and command_checks[6]["status"]=="pass" and command_checks[7]["status"]=="pass" else "fail", "default_watchlist_exists": DEFAULT_WATCHLIST_PATH.exists(), "watchlist_valid": validation.get("valid"), "planned_routes": len(plan.get("planned_routes", [])), "latest_observation_readable": latest_obs.get("status") != "error", "observation_remains_noncanonical": plan.get("governance",{}).get("canonical") is False, "reference_only_not_current_price": True, "stale_or_closed_session_is_degraded": True}
     mode_c = {"status": conv["status"], **conv}
-    caveats = [] if latest_obs.get("status") != "missing" else ["No latest observation artifact is present; acceptable for check-only operation."]
+    child_workflow_caveats = {"operator_preflight": command_checks[2].get("caveats", [])}
+    caveats = list(child_workflow_caveats["operator_preflight"])
+    if latest_obs.get("status") == "missing":
+        caveats.append("No latest observation artifact is present; acceptable for check-only operation.")
     all_checks = command_checks + [{"status": fastapi["status"], "label":"FastAPI"}, {"status": mcp["status"], "label":"MCP"}, {"status": front["status"], "label":"Frontend"}, {"status": mode_a["status"], "label":"Mode A"}, {"status": mode_b["status"], "label":"Mode B"}, {"status": mode_c["status"], "label":"Mode C"}]
     status = final_status(all_checks, caveats)
     summary = {"operator_ready": status != "fail", "release_preflight_ready": status != "fail", "mode_a_ready": mode_a["status"]=="pass", "mode_b_check_only_ready": mode_b["status"]=="pass", "mode_c_ready": mode_c["status"]=="pass"}
-    return {"schema_version":"m6e_operator_acceptance.v1", "generated_at_utc": utc_now(), "mode": mode, "network_calls_may_have_occurred": execute_live, "ssl_policy": ssl_policy, "repository": repository_version(), "python": sys.version, "platform": platform.platform(), "checks": all_checks, "mode_a": mode_a, "mode_b": mode_b, "mode_c": mode_c, "fastapi": fastapi, "mcp": mcp, "frontend": front, "conversation_package": conv, "operator_workbench": command_checks[0], "operator_preflight": command_checks[2], "governance": {"no_m5f_mutation": before == after, "check_only_non_network": not execute_live, "no_polling": True, "no_scheduler": True, "no_trading_output": True, "no_raw_payload_leakage": conv["status"]=="pass"}, "final_status": status, "operator_acceptance_summary": summary, "caveats": caveats, "recommended_next_steps": ["python scripts/run_local_workbench.py", "python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01", "python scripts/run_m5k_postmerge_validation.py --check-only", "python scripts/build_m5n_conversation_context.py", "python scripts/run_operator_preflight.py --timeout-seconds 300"]}
+    return {"schema_version":"m6e_operator_acceptance.v1", "generated_at_utc": utc_now(), "mode": mode, "network_calls_may_have_occurred": execute_live, "ssl_policy": ssl_policy, "repository": repository_version(), "python": sys.version, "platform": platform.platform(), "checks": all_checks, "mode_a": mode_a, "mode_b": mode_b, "mode_c": mode_c, "fastapi": fastapi, "mcp": mcp, "frontend": front, "conversation_package": conv, "operator_workbench": command_checks[0], "operator_preflight": command_checks[2], "child_workflow_caveats": child_workflow_caveats, "governance": {"no_m5f_mutation": before == after, "check_only_non_network": not execute_live, "no_polling": True, "no_scheduler": True, "no_trading_output": True, "no_raw_payload_leakage": conv["status"]=="pass"}, "final_status": status, "operator_acceptance_summary": summary, "caveats": caveats, "recommended_next_steps": ["python scripts/run_local_workbench.py", "python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01", "python scripts/run_m5k_postmerge_validation.py --check-only", "python scripts/build_m5n_conversation_context.py", "python scripts/run_operator_preflight.py --json --timeout-seconds 300"]}
 
 def write_report(report: dict[str, Any]) -> None:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
