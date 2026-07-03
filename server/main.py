@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from scripts.ssl_policy import validate_ssl_policy
+from scripts.ssl_policy import resolve_ssl_policy
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import sys
@@ -374,7 +374,7 @@ def post_m5k_execute_live_observation(watchlist: dict, confirm_live_observation:
     if confirm_live_observation is not True:
         raise HTTPException(status_code=400, detail={"error": "missing_explicit_confirmation", "required_query": "confirm_live_observation=true"})
     try:
-        selected_ssl_policy = validate_ssl_policy(ssl_policy)
+        selected_ssl_policy = resolve_ssl_policy(ssl_policy)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail={"error": "invalid_ssl_policy", "message": str(exc)}) from exc
     return _m5k_execute_live_observation(watchlist, write_latest=True, ssl_policy=selected_ssl_policy)

@@ -31,19 +31,26 @@ function rowsFromWatchlist() {
 function latestBySymbol() { const m = new Map(); for (const o of state.observation?.observations || state.observation?.content?.observations || []) m.set(String(o.symbol), o); return m; }
 function watchlistFromRows() {
   const existing = state.watchlist || { schema_version: 'm5n_watchlist.v1', watchlist_id: 'm5op_frontend_watchlist', name: 'M5OP Frontend Watchlist' };
-  const items = [...byId('watchlistRows').querySelectorAll('tr[data-item-row="true"]')].map((tr) => ({
-    category: tr.querySelector('[data-field="category"]').value.trim() || 'custom',
-    display_order: Number(tr.querySelector('[data-field="display_order"]').value || 999),
-    enabled: tr.querySelector('[data-field="enabled"]').checked,
-    symbol: tr.querySelector('[data-field="symbol"]').value.trim().toUpperCase(),
-    display_name: tr.querySelector('[data-field="display_name"]').value.trim(),
-    market: tr.querySelector('[data-field="market"]').value,
-    instrument_type: tr.querySelector('[data-field="instrument_type"]').value,
-    adapter: tr.querySelector('[data-field="adapter"]').value.trim(),
-    preferred_sources: tr.querySelector('[data-field="adapter"]').value.split(',').map((s) => s.trim()).filter(Boolean),
-    tags: tr.querySelector('[data-field="tags"]').value.split(',').map((s) => s.trim()).filter(Boolean),
-    notes: tr.querySelector('[data-field="notes"]').value.trim(),
-  }));
+  const items = [...byId('watchlistRows').querySelectorAll('tr[data-item-row="true"]')].map((tr) => {
+    const field = (name) => tr.querySelector(`[data-field="${name}"]`);
+    const category = field('category').value.trim() || 'custom';
+    const symbol = field('symbol').value.trim().toUpperCase();
+    const adapter = field('adapter').value.trim();
+    return {
+      id: `${category}:${symbol}`,
+      category,
+      display_order: Number(field('display_order').value || 999),
+      enabled: field('enabled').checked,
+      symbol,
+      display_name: field('display_name').value.trim(),
+      market: field('market').value,
+      instrument_type: field('instrument_type').value,
+      adapter,
+      preferred_sources: adapter.split(',').map((s) => s.trim()).filter(Boolean),
+      tags: field('tags').value.split(',').map((s) => s.trim()).filter(Boolean),
+      notes: field('notes').value.trim(),
+    };
+  });
   state.watchlist = { ...existing, schema_version: 'm5n_watchlist.v1', items, categories: undefined };
   byId('watchlistJson').value = JSON.stringify(state.watchlist, null, 2);
   return state.watchlist;

@@ -66,3 +66,62 @@ def test_probe_endpoint_with_manual_confirmation_still_disabled():
 
     assert response.status_code == 410
     assert response.json()["detail"]["error"] == "legacy_probe_endpoint_disabled_pending_m5i_authorization"
+
+@pytest.mark.parametrize(
+    ("env_policy", "query_policy", "expected"),
+    [
+        (None, None, "strict"),
+        ("compatibility", None, "compatibility"),
+        ("unsafe-explicit", None, "unsafe-explicit"),
+        ("compatibility", "strict", "strict"),
+        ("strict", "compatibility", "compatibility"),
+        ("not-a-policy", "unsafe-explicit", "unsafe-explicit"),
+    ],
+)
+def test_fastapi_live_observation_resolves_ssl_policy_env_and_query(monkeypatch, env_policy, query_policy, expected):
+    import main
+
+    calls = []
+
+    def fake_execute(watchlist, write_latest=True, ssl_policy="strict"):
+        calls.append({"watchlist": watchlist, "write_latest": write_latest, "ssl_policy": ssl_policy})
+        return {"status": "ok", "diagnostics": {"ssl_policy": {"selected": ssl_policy}}}
+
+    if env_policy is None:
+        monkeypatch.delenv("TW_MARKET_SSL_POLICY", raising=False)
+    else:
+        monkeypatch.setenv("TW_MARKET_SSL_POLICY", env_policy)
+    monkeypatch.setattr(main, "_m5k_execute_live_observation", fake_execute)
+
+    url = "/api/m5k/live-observation/execute?confirm_live_observation=true"
+    if query_policy is not None:
+        url += f"&ssl_policy={query_policy}"
+    response = client.post(url, json={"schema_version": "m5n_watchlist.v1", "items": []})
+
+    assert response.status_code == 200
+    assert calls == [{"watchlist": {"schema_version": "m5n_watchlist.v1", "items": []}, "write_latest": True, "ssl_policy": expected}]
+    assert response.json()["diagnostics"]["ssl_policy"]["selected"] == expected
+
+
+@pytest.mark.parametrize(
+    ("env_policy", "query_policy"),
+    [
+        ("strict", "invalid"),
+        ("invalid", None),
+    ],
+)
+def test_fastapi_live_observation_invalid_ssl_policy_fails_before_execution(monkeypatch, env_policy, query_policy):
+    import main
+
+    calls = []
+    monkeypatch.setenv("TW_MARKET_SSL_POLICY", env_policy)
+    monkeypatch.setattr(main, "_m5k_execute_live_observation", lambda *args, **kwargs: calls.append((args, kwargs)))
+
+    url = "/api/m5k/live-observation/execute?confirm_live_observation=true"
+    if query_policy is not None:
+        url += f"&ssl_policy={query_policy}"
+    response = client.post(url, json={"schema_version": "m5n_watchlist.v1", "items": []})
+
+    assert response.status_code == 400
+    assert response.json()["detail"]["error"] == "invalid_ssl_policy"
+    assert calls == []
