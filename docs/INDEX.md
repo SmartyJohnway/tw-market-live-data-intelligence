@@ -84,3 +84,4 @@ git diff --check
 ```
 
 - [M6E Operator Acceptance Test and Release Preflight](reviews/M6E_OPERATOR_ACCEPTANCE_TEST_AND_RELEASE_PREFLIGHT.md)
+- [M6G Browser Operator E2E Acceptance](reviews/M6G_BROWSER_OPERATOR_E2E_ACCEPTANCE.md)

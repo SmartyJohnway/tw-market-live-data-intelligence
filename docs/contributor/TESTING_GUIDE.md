@@ -59,3 +59,19 @@ pytest -m "not network" -v
 ## M6E tests
 
 M6E is covered by `tests/test_m6e_operator_acceptance.py`. Default tests do not run live observation or browser E2E; they verify report schema, non-network check-only behavior, FastAPI/MCP fail-closed SSL policy handling, frontend static contracts, and forbidden-field scans.
+
+## M6G browser/operator E2E tests
+
+Default non-network tests do not require browser binaries:
+
+```bash
+pytest -m "not network" -v
+```
+
+The optional browser/operator acceptance command is:
+
+```bash
+python scripts/run_m6g_browser_operator_e2e.py --check-only
+```
+
+For full browser automation, install Playwright and Chromium first. Browser, E2E, and live tests are marked `browser`, `e2e`, and `live` so default CI can remain independent of browser installation and explicit network checks.
