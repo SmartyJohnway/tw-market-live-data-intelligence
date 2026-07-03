@@ -10,20 +10,17 @@ Preserved semantics: M5F is canonical Level 1; M5K/M5L are bounded Level 2 obser
 
 Full inventory is in [`m6h_test_inventory.csv`](m6h_test_inventory.csv). It classifies 116 Python test files and approximately 682 direct `test_*` functions. The reported historical count above 700 is credible because parametrized tests and generated case matrices expand the direct function count at runtime. The portfolio grew because prior milestones added milestone-specific regression tests, source-contract tests, governance scans, artifact-schema checks, FastAPI/MCP checks, frontend static-contract checks, and operator acceptance tests without a formal consolidation gate.
 
-Approximate classification by observed markers/file content:
+The inventory classification method follows actual execution requirements, not keyword mentions. A deterministic non-network test is not Tier 3 merely because it validates live-related fields, mocks a live source, or contains the word `live`. Tier 3 is reserved for real browser/Playwright execution requirements, actual external network or bounded live execution, OS/runtime-specific validation, real TLS handshakes, and cold-clone acceptance. Tier 2 covers operator acceptance, release preflight, cross-component integration, artifact/package validation, FastAPI TestClient/MCP/operator workflow checks, and check-only acceptance workflows. Tier 1 covers deterministic default-CI-suitable unit/mock/contract/governance/static safety tests.
 
-| Class | Approximate coverage signal |
-|---|---|
-| Unit/default local logic | 151 direct functions |
-| Mock/source-failure simulation | 108 direct functions |
-| Contract/schema/artifact/API | 374 direct functions |
-| Static frontend/HTML/JS | 103 direct functions |
-| Integration/release/operator | 12 direct functions plus scripts |
-| Browser E2E | 11 direct functions plus M6G runner |
-| Live/bounded source semantics | 400 direct functions mention live/source behavior; network-marked live remains excluded from default CI |
-| Governance/forbidden behavior | 178 direct functions plus scanners |
+Repaired approximate distribution by actual execution requirement:
 
-These counts intentionally overlap because a test may be both contract and governance, or static frontend and live-safety.
+| Tier | Files | Direct `test_*` functions | Execution requirement |
+|---|---:|---:|---|
+| Tier 1 | 97 | 525 | deterministic, default-CI-suitable, non-network, no real browser |
+| Tier 2 | 17 | 145 | operator/release, cross-component, artifact/package, FastAPI TestClient/MCP/check-only workflow |
+| Tier 3 | 2 | 12 | real browser marker/Playwright path or network-marked bounded live integration |
+
+The repaired inventory reclassified 43 files that were previously false Tier 3 candidates due to keyword heuristics. Corrected examples include `tests/test_generate_ai_context_pack.py`, `tests/test_generate_chatgpt_briefing.py`, `tests/test_generate_latest_market_snapshot.py`, `tests/test_generate_watchlist_observations.py`, and `tests/unit/test_forbidden_behavior_scanner.py` as Tier 1 deterministic non-network tests; `tests/test_m5q_source_health.py` and `tests/test_m6e_operator_acceptance.py` as Tier 2 check-only/cross-component acceptance tests; and only `tests/test_m6g_browser_operator_e2e.py` plus `tests/integration/test_m6b_live_source_contract.py` as Tier 3 based on actual browser/network execution requirements.
 
 ## Formal three-tier test portfolio
 

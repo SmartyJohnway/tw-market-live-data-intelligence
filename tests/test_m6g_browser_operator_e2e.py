@@ -58,6 +58,8 @@ def test_report_schema_and_final_status_skip(tmp_path, monkeypatch):
     assert data["requested_ssl_policy"] == "strict"
     assert data["effective_server_env_ssl_policy"] is None
     assert data["browser_execute_ssl_policy_source"] == "default"
+    assert any("requirements-browser-e2e.txt" in step for step in data["recommended_next_steps"])
+    assert any("playwright install" in step for step in data["recommended_next_steps"])
 
 
 def test_final_status_logic_pass_and_fail():
@@ -74,6 +76,30 @@ def test_final_status_logic_pass_and_fail():
     assert m6g.final_status(report) == "pass"
     report["unexpected_execute_requests"] = 1
     assert m6g.final_status(report) == "fail"
+
+
+def test_recommended_next_steps_for_pass_check_only_omit_dependency_install():
+    report = {
+        "playwright_available": True,
+        "final_status": "pass",
+        "mode": "check-only",
+    }
+    steps = m6g.recommended_next_steps(report)
+    assert not any("pip install" in step for step in steps)
+    assert not any("playwright install" in step for step in steps)
+    assert any("check-only evidence" in step for step in steps)
+
+
+def test_recommended_next_steps_for_pass_bounded_live_omit_dependency_install():
+    report = {
+        "playwright_available": True,
+        "final_status": "pass",
+        "mode": "execute-bounded-live-check",
+    }
+    steps = m6g.recommended_next_steps(report)
+    assert not any("pip install" in step for step in steps)
+    assert not any("playwright install" in step for step in steps)
+    assert any("bounded-live evidence" in step for step in steps)
 
 
 def test_server_env_policy_preserves_strict_default():

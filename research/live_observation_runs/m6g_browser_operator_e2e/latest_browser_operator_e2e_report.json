@@ -11,7 +11,7 @@
   "fastapi_started": true,
   "final_status": "pass",
   "frontend_loaded": true,
-  "generated_at_utc": "2026-07-03T12:53:18Z",
+  "generated_at_utc": "2026-07-03T13:07:41Z",
   "governance": {
     "no_full_market_scan": true,
     "no_m5f_mutation": true,
@@ -68,9 +68,9 @@
   "playwright_available": true,
   "polling_detected": false,
   "recommended_next_steps": [
-    "python -m pip install playwright",
-    "python -m playwright install chromium",
-    "python scripts/run_m6g_browser_operator_e2e.py --check-only"
+    "Review the committed M6G bounded-live evidence artifact.",
+    "Treat the updated M5K latest observation as non-canonical observation evidence.",
+    "Build or review the M5N Conversation Package only if operator handoff is needed."
   ],
   "requested_ssl_policy": "compatibility",
   "schema_version": "m6g_browser_operator_e2e.v1",

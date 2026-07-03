@@ -1,6 +1,6 @@
 # M6G Browser/Operator E2E Acceptance
 
-Generated: 2026-07-03T12:53:18Z
+Generated: 2026-07-03T13:07:41Z
 Mode: `execute-bounded-live-check`
 Final status: `pass`
 
@@ -25,6 +25,6 @@ Final status: `pass`
 - None
 
 ## Recommended next steps
-- `python -m pip install playwright`
-- `python -m playwright install chromium`
-- `python scripts/run_m6g_browser_operator_e2e.py --check-only`
+- `Review the committed M6G bounded-live evidence artifact.`
+- `Treat the updated M5K latest observation as non-canonical observation evidence.`
+- `Build or review the M5N Conversation Package only if operator handoff is needed.`
