@@ -31,3 +31,7 @@ Use [Mode A/B/C Walkthrough](../operator/MODE_ABC_WALKTHROUGH.md).
 ## How to verify release status
 
 Confirm [M5XR acceptance evidence](../reviews/M5XR_FINAL_MODE_ABC_LEVEL12_RELEASE_ACCEPTANCE.md), this M5R documentation audit, and a clean forbidden path scan.
+
+## M6E release preflight
+
+M6E adds an operator-facing acceptance report: `python scripts/run_m6e_operator_acceptance.py --check-only`. Treat `pass` as ready, `pass_with_caveats` as ready with documented operator caveats, and `fail` as not release-preflight ready.

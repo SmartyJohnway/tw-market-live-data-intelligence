@@ -27,3 +27,9 @@ The M6A workbench reads, but does not create, observation history and source-hea
 ## M6D SSL/TLS diagnostics in artifacts
 
 Explicit M5K live observation outputs and M6B source-contract execute outputs include SSL diagnostics: `ssl_policy`, `tls_verification_mode`, `strict_default`, `compatibility_mode_used`, `unsafe_mode_used`, `silent_tls_fallback=false`, and `network_calls_may_have_occurred`. Check-only outputs may report the selected/default policy for operator clarity but do not imply network execution. Strict remains default, compatibility is explicit and diagnostic, and unsafe-explicit must not be used unless the operator understands TLS verification is disabled.
+
+## M6E operator acceptance artifact
+
+| Artifact | Path | Producer command | Consumer | Network behavior | Write behavior | Canonical or temporary | Raw payload policy |
+|---|---|---|---|---|---|---|---|
+| M6E operator acceptance report | `research/live_observation_runs/m6e_operator_acceptance/` | `python scripts/run_m6e_operator_acceptance.py --check-only` | Operators/release reviewers | None in check-only | Writes only M6E report JSON/Markdown | Temporary release evidence | Raw endpoint payload excluded |

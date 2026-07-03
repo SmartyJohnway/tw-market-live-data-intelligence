@@ -82,3 +82,5 @@ python scripts/governance_forbidden_path_guard.py
 python scripts/forbidden_behavior_scanner.py
 git diff --check
 ```
+
+- [M6E Operator Acceptance Test and Release Preflight](reviews/M6E_OPERATOR_ACCEPTANCE_TEST_AND_RELEASE_PREFLIGHT.md)

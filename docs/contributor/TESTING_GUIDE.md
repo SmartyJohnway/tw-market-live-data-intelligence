@@ -55,3 +55,7 @@ Run:
 ```bash
 pytest -m "not network" -v
 ```
+
+## M6E tests
+
+M6E is covered by `tests/test_m6e_operator_acceptance.py`. Default tests do not run live observation or browser E2E; they verify report schema, non-network check-only behavior, FastAPI/MCP fail-closed SSL policy handling, frontend static contracts, and forbidden-field scans.
