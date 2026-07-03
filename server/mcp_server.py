@@ -779,7 +779,7 @@ def run_m5k_live_observation_tool(arguments: dict[str, Any] | None) -> dict[str,
     watchlist = args.get("watchlist")
     if not isinstance(watchlist, dict):
         return {"tool": M5K_LIVE_OBSERVATION_TOOL, "status": "failed_closed", "failure_reason": "watchlist_required", "network_calls": False, "artifact_writes": False, "governance": readonly_governance() | {"layer": "M5K", "canonical": False}}
-    result = _m5k_execute_live_observation(watchlist, write_latest=True)
+    result = _m5k_execute_live_observation(watchlist, write_latest=True, ssl_policy=args.get("ssl_policy"))
     return {"tool": M5K_LIVE_OBSERVATION_TOOL, "status": result.get("status"), "content": result, "governance": result.get("governance", {})}
 
 
@@ -901,7 +901,7 @@ async def list_tools() -> list[Tool]:
         Tool(name=M5K_HANDOFF_TOOL, description="Create a machine-readable M5K AI conversation watchlist handoff.", inputSchema={"type":"object","properties":{"watchlist":{"type":"object"}},"required":["watchlist"],"additionalProperties":False}),
         Tool(name=M5K_PLAN_TOOL, description="Plan/validate one bounded M5K live observation without network calls or writes.", inputSchema={"type":"object","properties":{"watchlist":{"type":"object"}},"required":["watchlist"],"additionalProperties":False}),
         Tool(name=M5K_READ_LATEST_TOOL, description="Read the latest local M5K live observation artifact without network calls.", inputSchema={"type":"object","properties":{},"additionalProperties":False}),
-        Tool(name=M5K_LIVE_OBSERVATION_TOOL, description="Execute one explicit bounded M5K live observation for the supplied watchlist; never promotes to M5F.", inputSchema={"type":"object","properties":{"confirm_live_observation":{"type":"boolean"},"watchlist":{"type":"object"}},"required":["confirm_live_observation","watchlist"],"additionalProperties":False}),
+        Tool(name=M5K_LIVE_OBSERVATION_TOOL, description="Execute one explicit bounded M5K live observation for the supplied watchlist; never promotes to M5F.", inputSchema={"type":"object","properties":{"confirm_live_observation":{"type":"boolean"},"watchlist":{"type":"object"},"ssl_policy":{"type":"string","enum":["strict","compatibility","unsafe-explicit"]}},"required":["confirm_live_observation","watchlist"],"additionalProperties":False}),
     ]
     m5q_tools = [
         Tool(name=M5Q_SOURCE_HEALTH_LATEST_TOOL, description="Read the latest M5Q source-health report without network calls or writes.", inputSchema={"type":"object","properties":{},"additionalProperties":False}),

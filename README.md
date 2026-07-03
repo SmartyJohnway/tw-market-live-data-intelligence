@@ -120,3 +120,18 @@ scripts/                        Validators, builders, diagnostics, bounded runne
 server/                         FastAPI and MCP local surfaces
 tests/                          Non-network regression tests and fixtures
 ```
+
+
+## M6D SSL/TLS compatibility policy
+
+Strict TLS verification remains the default for explicit live observation and source-contract preflight. Operators may select `--ssl-policy strict`, `--ssl-policy compatibility`, or `--ssl-policy unsafe-explicit`; the CLI flag takes precedence over `TW_MARKET_SSL_POLICY`, which takes precedence over the strict default. Compatibility mode is explicit and diagnostic for known Windows/Python 3.13 certificate compatibility failures. No silent TLS fallback exists. Do not use unsafe-explicit unless you understand TLS verification is disabled.
+
+Example bounded commands:
+
+```bash
+python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation --ssl-policy strict
+python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation --ssl-policy compatibility
+python scripts/run_m6b_source_contract_preflight.py --execute-live-contract-check --ssl-policy strict
+```
+
+Diagnostics and workbench commands remain no-network unless an explicit live command is run.

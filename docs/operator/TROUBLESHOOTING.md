@@ -21,7 +21,7 @@ For `file://` and localhost static-server usage, the frontend intentionally targ
 
 ## Windows / Python 3.13 TWSE MIS TLS compatibility
 
-M6A does not introduce SSL compatibility or unsafe TLS behavior. Strict TLS verification remains the only implemented behavior. A future M6B task may add an explicit compatibility policy, but it must not silently disable verification or install a global unverified SSL context.
+M6D introduces explicit `strict`, `compatibility`, and `unsafe-explicit` SSL policy modes for bounded live commands. Strict remains default; compatibility is explicit and diagnostic; unsafe-explicit must not be used unless you understand TLS verification is disabled. The repository still must not silently disable verification or install a global unverified SSL context.
 
 ## M6B source-contract preflight troubleshooting
 
@@ -38,3 +38,22 @@ python scripts/run_m6b_source_contract_preflight.py --execute-live-contract-chec
 ```
 
 Live output is written only under `research/live_observation_runs/m6b_source_contract/` and excludes raw endpoint payloads. TLS remains strict by default; M6B does not silently disable certificate verification or install a global unverified SSL context. TLS/certificate failures should be treated as governed diagnostics, not bypassed.
+
+
+## Windows + Python 3.13 TWSE MIS TLS failures
+
+Symptom: an explicit bounded live observation or M6B source-contract execute run fails with an SSL/certificate verification diagnostic when calling TWSE MIS.
+
+Policy: strict TLS verification is the default and there is no silent fallback. First confirm you are running an explicit bounded live command, not a check-only command. Then retry with compatibility mode only for that bounded command:
+
+```bash
+python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation --ssl-policy compatibility
+```
+
+or:
+
+```bash
+python scripts/run_m6b_source_contract_preflight.py --execute-live-contract-check --ssl-policy compatibility
+```
+
+Do not use `unsafe-explicit` unless you understand TLS verification is disabled. `unsafe-explicit` is never default, must be explicitly requested by CLI or `TW_MARKET_SSL_POLICY`, and is reported in output diagnostics.

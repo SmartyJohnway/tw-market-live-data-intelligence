@@ -10,6 +10,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from scripts.ssl_policy import platform_ssl_diagnostics, resolve_ssl_policy
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 M5F_DIR = REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01"
 OBS_PATH = REPO_ROOT / "research/live_observation_runs/m5k/latest_observation.json"
@@ -98,6 +100,13 @@ def environment_checks() -> list[Check]:
     checks: list[Check] = []
     py_ok = sys.version_info >= (3, 10)
     checks.append(Check("Python version", "PASS" if py_ok else "FAIL", platform.python_version(), "Use Python 3.10 or newer."))
+    ssl_diag = platform_ssl_diagnostics()
+    checks.append(Check("OS platform", "PASS", ssl_diag["os_platform"]))
+    checks.append(Check("Python 3.13 detection", "CAVEAT" if ssl_diag["python_313_detected"] else "PASS", str(ssl_diag["python_313_detected"]), ssl_diag["operator_hint"] if ssl_diag["python_313_detected"] and ssl_diag["windows_detected"] else ""))
+    checks.append(Check("Windows detection", "CAVEAT" if ssl_diag["windows_detected"] and ssl_diag["python_313_detected"] else "PASS", str(ssl_diag["windows_detected"]), ssl_diag["operator_hint"] if ssl_diag["windows_detected"] and ssl_diag["python_313_detected"] else ""))
+    checks.append(Check("SSL default verify paths", "PASS", json.dumps(ssl_diag["ssl_default_verify_paths"], sort_keys=True)))
+    checks.append(Check("Configured TW_MARKET_SSL_POLICY", "PASS", str(ssl_diag["configured_tw_market_ssl_policy"])))
+    checks.append(Check("Effective SSL policy", "PASS" if ssl_diag["effective_ssl_policy"] != "unsafe-explicit" else "CAVEAT", ssl_diag["effective_ssl_policy"], ssl_diag["operator_hint"]))
     checks.append(Check("Virtual environment", "PASS" if sys.prefix != sys.base_prefix or os.environ.get("VIRTUAL_ENV") else "CAVEAT", os.environ.get("VIRTUAL_ENV") or "not detected", "Create and activate a virtual environment if dependency imports fail."))
     required = ["fastapi", "pytest", "pydantic"]
     missing = [pkg for pkg in required if importlib.util.find_spec(pkg) is None]
@@ -129,7 +138,7 @@ def status_report() -> dict[str, Any]:
         action = "Run source-health probe if preparing release diagnostics."
     else:
         action = "Conversation package already available; review it and send to ChatGPT."
-    return {"repository": repository_version(), "watchlist": watchlist_symbols(), "checks": checks, "latest_observation": latest_artifact_time(OBS_PATH) if obs_exists else "missing", "latest_source_health": latest_artifact_time(SOURCE_HEALTH_JSON) if SOURCE_HEALTH_JSON.exists() else file_summary(SOURCE_HEALTH_MD), "latest_conversation_package": file_summary(CONVERSATION_DIR / "conversation_context.md"), "fastapi_command": "uvicorn server.main:app --host 127.0.0.1 --port 8000", "frontend_location": rel(FRONTEND_WORKBENCH), "mcp_command": "python server/mcp_server.py --startup-check", "recommended_next_action": action}
+    return {"repository": repository_version(), "watchlist": watchlist_symbols(), "ssl_diagnostics": platform_ssl_diagnostics(), "checks": checks, "latest_observation": latest_artifact_time(OBS_PATH) if obs_exists else "missing", "latest_source_health": latest_artifact_time(SOURCE_HEALTH_JSON) if SOURCE_HEALTH_JSON.exists() else file_summary(SOURCE_HEALTH_MD), "latest_conversation_package": file_summary(CONVERSATION_DIR / "conversation_context.md"), "fastapi_command": "uvicorn server.main:app --host 127.0.0.1 --port 8000", "frontend_location": rel(FRONTEND_WORKBENCH), "mcp_command": "python server/mcp_server.py --startup-check", "recommended_next_action": action}
 
 
 def print_dashboard(report: dict[str, Any]) -> None:
@@ -140,6 +149,9 @@ def print_dashboard(report: dict[str, Any]) -> None:
     print(f"Version: {repo['version']}  Release: {repo['release']}")
     print(f"Branch: {repo['branch']}  Commit: {repo['commit']}")
     print(f"Current watchlist: {', '.join(report['watchlist']) or 'none'}")
+    ssl_diag = report.get("ssl_diagnostics", {})
+    print(f"SSL policy: effective={ssl_diag.get('effective_ssl_policy')} configured={ssl_diag.get('configured_tw_market_ssl_policy')}")
+    print(f"Platform: {ssl_diag.get('os_platform')}  Python: {ssl_diag.get('python_version')}")
     print("\nDashboard")
     print(f"- Latest observation: {report['latest_observation']}")
     print(f"- Latest source health: {report['latest_source_health']}")

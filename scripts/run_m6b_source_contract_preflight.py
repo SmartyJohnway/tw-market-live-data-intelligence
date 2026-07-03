@@ -9,6 +9,7 @@ if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.m5k_common import dump_json, execute_live_observation, governance, plan_live_observation, utc_now, validate_watchlist
+from scripts.ssl_policy import VALID_SSL_POLICIES, resolve_ssl_policy, ssl_policy_diagnostics
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = REPO_ROOT / "research/live_observation_runs/m6b_source_contract"
@@ -52,7 +53,8 @@ def _status_from_evidence(evidence: dict[str, Any] | None, key: str) -> str:
     return key
 
 
-def build_report(*, mode: str, live_result: dict[str, Any] | None = None) -> dict[str, Any]:
+def build_report(*, mode: str, live_result: dict[str, Any] | None = None, ssl_policy: str | None = None) -> dict[str, Any]:
+    selected_ssl_policy = resolve_ssl_policy(ssl_policy)
     watchlist = bounded_watchlist()
     plan = plan_live_observation(watchlist)
     validation = validate_watchlist(watchlist, max_targets=len(TARGETS))
@@ -87,7 +89,7 @@ def build_report(*, mode: str, live_result: dict[str, Any] | None = None) -> dic
         "mode": mode,
         "targets": TARGETS,
         "checks": checks,
-        "ssl_policy": {"selected": "strict", "strict_default": True, "compatibility_policy": "not_implemented_m6c_follow_up", "unsafe_policy": "not_implemented_and_not_used", "silent_tls_disable": False},
+        "ssl_policy": ssl_policy_diagnostics(selected_ssl_policy, network_calls_may_have_occurred=mode == "execute_live_contract_check"),
         "raw_payload_included": False,
         "network_calls_may_have_occurred": mode == "execute_live_contract_check",
         "governance": governance() | {"m6b_source_contract_preflight": True, "writes_m5f": False, "writes_frontend_public": False, "writes_research_generated": False, "raw_endpoint_payload_included": False, "default_ci": False, "manual_explicit_only": True, "no_polling": True, "no_scheduler": True, "no_full_market_scan": True, "no_trading_output": True, "watchlist_validation": validation},
@@ -99,12 +101,17 @@ def main() -> int:
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--check-only", action="store_true", help="Validate plan only; no network and no writes.")
     group.add_argument("--execute-live-contract-check", action="store_true", help="Explicit bounded live checks for 2330, 0050, and TX.")
+    parser.add_argument("--ssl-policy", choices=sorted(VALID_SSL_POLICIES), default=None, help="TLS policy for explicit live contract checks. CLI overrides TW_MARKET_SSL_POLICY; default is strict.")
     args = parser.parse_args()
+    try:
+        selected_ssl_policy = resolve_ssl_policy(args.ssl_policy)
+    except ValueError as exc:
+        parser.error(str(exc))
     if args.check_only:
-        print(dump_json(build_report(mode="check_only")), end="")
+        print(dump_json(build_report(mode="check_only", ssl_policy=selected_ssl_policy)), end="")
         return 0
-    live = execute_live_observation(bounded_watchlist(), write_latest=False)
-    report = build_report(mode="execute_live_contract_check", live_result=live)
+    live = execute_live_observation(bounded_watchlist(), write_latest=False, ssl_policy=selected_ssl_policy)
+    report = build_report(mode="execute_live_contract_check", live_result=live, ssl_policy=selected_ssl_policy)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     path = OUTPUT_DIR / "latest_summary.json"
     path.write_text(dump_json(report), encoding="utf-8", newline="\n")

@@ -369,10 +369,10 @@ def post_m5k_plan_live_observation(watchlist: dict):
 
 
 @app.post("/api/m5k/live-observation/execute")
-def post_m5k_execute_live_observation(watchlist: dict, confirm_live_observation: bool = False):
+def post_m5k_execute_live_observation(watchlist: dict, confirm_live_observation: bool = False, ssl_policy: str | None = None):
     if confirm_live_observation is not True:
         raise HTTPException(status_code=400, detail={"error": "missing_explicit_confirmation", "required_query": "confirm_live_observation=true"})
-    return _m5k_execute_live_observation(watchlist, write_latest=True)
+    return _m5k_execute_live_observation(watchlist, write_latest=True, ssl_policy=ssl_policy)
 
 # M5Q readonly source-health endpoints. These read local source-health artifacts only; they do not execute probes.
 from scripts.m5q_source_health import read_latest_source_health as _m5q_read_latest_source_health, source_health_schema as _m5q_source_health_schema
