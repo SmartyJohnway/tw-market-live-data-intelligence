@@ -25,6 +25,7 @@ if str(REPO_ROOT) not in sys.path:
 from scripts.validate_m5f_canonical_market_context_package import validate_package as _validate_m5f_package
 from scripts.m5q_source_health import read_latest_source_health as _m5q_read_latest_source_health, source_health_schema as _m5q_source_health_schema
 from scripts.m5k_common import DEFAULT_WATCHLIST_PATH as M5K_DEFAULT_WATCHLIST_PATH, conversation_handoff_from_watchlist as _m5k_conversation_handoff, execute_live_observation as _m5k_execute_live_observation, load_json as _m5k_load_json, read_latest_observation as _m5k_read_latest_observation, validate_watchlist as _m5k_validate_watchlist, plan_live_observation as _m5k_plan_live_observation, load_source_adapter_matrix as _m5l_load_source_adapter_matrix, source_capabilities as _m5l_source_capabilities, validate_source_adapter_matrix as _m5l_validate_source_adapter_matrix, normalize_watchlist as _m5n_normalize_watchlist, watchlist_summary as _m5n_watchlist_summary, build_conversation_context as _m5n_build_conversation_context
+from scripts.ssl_policy import validate_ssl_policy
 
 app = Server("tw-market-mcp")
 M5F_PACKAGE_DIR = REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01"
@@ -779,7 +780,11 @@ def run_m5k_live_observation_tool(arguments: dict[str, Any] | None) -> dict[str,
     watchlist = args.get("watchlist")
     if not isinstance(watchlist, dict):
         return {"tool": M5K_LIVE_OBSERVATION_TOOL, "status": "failed_closed", "failure_reason": "watchlist_required", "network_calls": False, "artifact_writes": False, "governance": readonly_governance() | {"layer": "M5K", "canonical": False}}
-    result = _m5k_execute_live_observation(watchlist, write_latest=True, ssl_policy=args.get("ssl_policy"))
+    try:
+        selected_ssl_policy = validate_ssl_policy(args.get("ssl_policy"))
+    except ValueError as exc:
+        return {"tool": M5K_LIVE_OBSERVATION_TOOL, "status": "failed_closed", "failure_reason": "invalid_ssl_policy", "message": str(exc), "network_calls": False, "artifact_writes": False, "governance": readonly_governance() | {"layer": "M5K", "canonical": False}}
+    result = _m5k_execute_live_observation(watchlist, write_latest=True, ssl_policy=selected_ssl_policy)
     return {"tool": M5K_LIVE_OBSERVATION_TOOL, "status": result.get("status"), "content": result, "governance": result.get("governance", {})}
 
 
