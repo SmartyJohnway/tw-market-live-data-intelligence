@@ -32,8 +32,6 @@ def test_run_json_propagates_operator_preflight_caveats(monkeypatch):
     assert result["caveats"] == ["Virtual environment not detected."]
     assert m6e.final_status([result], result["caveats"]) == "pass_with_caveats"
 
-
-def test_run_json_extracts_nested_operator_preflight_caveats(monkeypatch):
     class Completed:
         returncode = 0
         stdout = json.dumps({
@@ -94,15 +92,11 @@ def test_check_only_writes_only_m6e_report_folder(tmp_path):
     assert m6e.MD_REPORT.resolve().is_relative_to(allowed.resolve())
 
 
-def test_fastapi_invalid_ssl_policy_acceptance():
+def test_invalid_ssl_policy_acceptance_surfaces_fail_closed():
     client = TestClient(app)
     watchlist = json.loads((ROOT / "config/m5k_default_watchlist.json").read_text(encoding="utf-8"))
     assert client.post("/api/m5k/live-observation/execute?confirm_live_observation=true&ssl_policy=invalid", json=watchlist).status_code == 400
     assert client.post("/api/m5k/live-observation/execute", json=watchlist).status_code == 400
-
-
-def test_mcp_invalid_ssl_policy_acceptance():
-    watchlist = json.loads((ROOT / "config/m5k_default_watchlist.json").read_text(encoding="utf-8"))
     result = run_m5k_live_observation_tool({"confirm_live_observation": True, "watchlist": watchlist, "ssl_policy": "invalid"})
     assert result["status"] == "failed_closed"
     assert result["failure_reason"] == "invalid_ssl_policy"

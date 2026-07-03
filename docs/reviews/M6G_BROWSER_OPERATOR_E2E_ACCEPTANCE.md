@@ -76,3 +76,22 @@ M6G writes only:
 ## Forbidden behavior boundaries
 
 M6G must not mutate M5F, change M5F schema, change observation/source-health/conversation semantics, create parallel contracts, write `frontend/public`, write `research/generated`, write production/prod paths, add broker/auth/orders, add polling/scheduler/startup network calls, perform full-market scans, expose raw endpoint payloads in product/AI surfaces, silently disable TLS verification, or produce trading outputs.
+
+## M6H browser dependency bootstrap clarification
+
+M6G browser/operator E2E readiness requires three layers: Python Playwright, a Chromium browser binary, and OS/system browser dependencies. An initial missing Playwright or Chromium dependency is not by itself a terminal `skipped_with_caveats` condition.
+
+Supported explicit bootstrap:
+
+```bash
+python -m pip install -r requirements-browser-e2e.txt
+python -m playwright install --with-deps chromium
+```
+
+If browser binaries already exist but Linux OS dependencies are missing:
+
+```bash
+python -m playwright install-deps chromium
+```
+
+M6G itself remains an acceptance runner and must not auto-install Python packages, Chromium, or OS dependencies. A skip should record the dependency command attempted, blocking error, environment limitation, and recommended next action.

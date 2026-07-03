@@ -75,3 +75,87 @@ python scripts/run_m6g_browser_operator_e2e.py --check-only
 ```
 
 For full browser automation, install Playwright and Chromium first. Browser, E2E, and live tests are marked `browser`, `e2e`, and `live` so default CI can remain independent of browser installation and explicit network checks.
+
+## M6H three-tier portfolio and test-growth policy
+
+Do not optimize for test count. Optimize for operator journey coverage and risk coverage.
+
+### Tier 1 — default CI
+
+Tier 1 is fast, deterministic, non-network validation for core safety, normalization, schemas, dirty-data handling, watchlist validation, fail-closed behavior, forbidden behavior, canonical contracts, critical API contracts, critical SSL policy resolution, and governance boundaries.
+
+Default CI remains:
+
+```bash
+pytest -m "not network" -v
+```
+
+Tier 1 protects against schema corruption, unsafe behavior, bad normalization, invalid watchlist acceptance, silent TLS policy downgrade, canonical mutation, raw payload leakage, and trading semantic leakage. Tier 1 does not prove real browser DOM behavior, real FastAPI process communication, Chromium fetch behavior, exchange TLS handshakes, real source availability, or cold-clone usability.
+
+### Tier 2 — operator acceptance and release preflight
+
+Tier 2 covers cross-component validation, operator workflow validation, artifact validation, release readiness, M6B source-contract preflight, M6E operator acceptance, M5F validation, M5IJ acceptance, M5K postmerge validation, M5Q check-only, M5N Conversation Package build, FastAPI TestClient integration, MCP startup checks, and operator preflight.
+
+### Tier 3 — browser, bounded live, OS-specific, cold clone
+
+Tier 3 proves real operator journeys, actual browser behavior, actual local-process integration, external source compatibility, TLS/runtime compatibility, and cold-clone usability. This tier includes Playwright browser E2E, M6G check-only, M6G explicit bounded live, Windows/Python 3.13 compatibility validation, real TLS handshake validation, release-time bounded source checks, and cold-clone operator acceptance.
+
+Tier 3 is the preferred evidence for defects such as frontend DOM payloads missing required `id`, browser fetch/CORS failures, frontend/API mismatches, local FastAPI connectivity failures, real Chromium behavior, TLS certificate/runtime compatibility, environment-specific failures, and operator bootstrap failures.
+
+### High-value operator journeys
+
+1. Workbench Boot E2E: FastAPI starts, frontend loads, frontend connects to local API, and the operator sees usable workbench state.
+2. Watchlist Validate / Plan E2E: default watchlist loads, DOM rows are reconstructed, frontend generates watchlist payload, required `id` exists, validate succeeds, and plan succeeds.
+3. Explicit Bounded Live Observation E2E: operator explicitly requests live observation, confirmation is required, bounded watchlist is used, observation executes, result renders, no polling occurs, and no unexpected execute occurs.
+4. TLS Compatibility E2E: strict default remains intact, compatibility is explicit, the real environment can perform required source TLS handshake when compatibility is explicitly selected, and no silent fallback occurs.
+5. Conversation Package E2E: observation evidence exists, M5N Conversation Package builds, canonical and observation semantics remain separated, AI handoff is readable, and no raw payload leakage occurs.
+6. Cold Clone Operator Acceptance: fresh clone, dependency installation, environment diagnostics, local workbench start, browser load, validate/plan, optional explicit bounded live, and Conversation Package generation.
+
+### Before adding a new test
+
+Contributors should determine:
+
+1. What unique risk does this test protect?
+2. Is the risk already covered by an existing test?
+3. Is this an exact or near duplicate?
+4. Is a unit/mock test the correct level?
+5. Would integration testing provide stronger evidence?
+6. Would browser E2E provide stronger evidence?
+7. Does the test belong in Tier 1, Tier 2, or Tier 3?
+8. Should the test run on every CI execution?
+9. Does the test rely on external source behavior?
+10. Does this test increase operator journey coverage?
+
+Prefer one high-signal regression test over multiple near-identical assertions across several files when the same risk boundary is already protected. Do not weaken critical governance or fail-closed coverage merely to reduce test count.
+
+## Browser/E2E dependency bootstrap
+
+Browser readiness has three layers: the Python Playwright package, the Chromium browser binary, and OS/system browser dependencies. A successful `pip install playwright` alone does not prove browser E2E readiness.
+
+Install browser E2E dependencies explicitly:
+
+```bash
+python -m pip install -r requirements-browser-e2e.txt
+```
+
+Windows/macOS Chromium install:
+
+```bash
+python -m playwright install chromium
+```
+
+Linux/Codex/CI-like preferred install:
+
+```bash
+python -m playwright install --with-deps chromium
+```
+
+If browser binaries already exist but Linux OS dependencies are missing:
+
+```bash
+python -m playwright install-deps chromium
+```
+
+Do not immediately accept `skipped_with_caveats` merely because Playwright or Chromium is initially unavailable. First investigate or attempt Python Playwright dependency availability, Chromium browser binary availability, required OS/system browser dependencies, and a supported installation path. Only report `skipped_with_caveats` after installation/bootstrap was attempted or proven unavailable, and record the dependency step attempted, command attempted, blocking error, environment limitation, and recommended next action.
+
+`scripts/run_m6g_browser_operator_e2e.py` is an acceptance runner, not a package installer. It must not automatically pip install packages, install Chromium, install OS dependencies, invoke apt/sudo, or mutate system dependency state.

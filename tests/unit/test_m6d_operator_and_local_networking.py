@@ -54,7 +54,7 @@ def _minimal_watchlist():
     }
 
 
-def test_fastapi_invalid_ssl_policy_returns_400_without_execution(monkeypatch):
+def test_fastapi_ssl_policy_fail_closed_and_valid_values(monkeypatch):
     executed = False
     def fake_execute(*args, **kwargs):
         nonlocal executed
@@ -71,9 +71,6 @@ def test_fastapi_invalid_ssl_policy_returns_400_without_execution(monkeypatch):
     assert response.status_code == 400
     assert response.json()["detail"]["error"] == "invalid_ssl_policy"
     assert executed is False
-
-
-def test_fastapi_valid_ssl_policy_values_are_accepted(monkeypatch):
     calls = []
     def fake_execute(watchlist, write_latest=True, ssl_policy=None):
         calls.append(ssl_policy)
@@ -91,7 +88,7 @@ def test_fastapi_valid_ssl_policy_values_are_accepted(monkeypatch):
     assert calls == ["strict", "compatibility", "unsafe-explicit"]
 
 
-def test_mcp_invalid_ssl_policy_fails_closed_without_network_or_writes(monkeypatch):
+def test_mcp_ssl_policy_fail_closed_and_valid_values(monkeypatch):
     executed = False
     def fake_execute(*args, **kwargs):
         nonlocal executed
@@ -106,9 +103,6 @@ def test_mcp_invalid_ssl_policy_fails_closed_without_network_or_writes(monkeypat
     assert result["network_calls"] is False
     assert result["artifact_writes"] is False
     assert executed is False
-
-
-def test_mcp_valid_ssl_policy_values_are_accepted(monkeypatch):
     calls = []
     def fake_execute(watchlist, write_latest=True, ssl_policy=None):
         calls.append(ssl_policy)

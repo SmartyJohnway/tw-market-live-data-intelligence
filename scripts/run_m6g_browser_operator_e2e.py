@@ -210,9 +210,40 @@ def final_status(report: dict[str, Any]) -> str:
     return "fail" if any(failures) else ("pass_with_caveats" if report["caveats"] else "pass")
 
 
+def recommended_next_steps(report: dict[str, Any]) -> list[str]:
+    """Return status-aware operator next steps.
+
+    Dependency bootstrap guidance is useful when Playwright/browser execution did
+    not run, but it is misleading after a successful browser pass because the
+    report itself proves Playwright and Chromium were available.
+    """
+    if not report.get("playwright_available"):
+        return [
+            "python -m pip install -r requirements-browser-e2e.txt",
+            "python -m playwright install --with-deps chromium",
+            "python scripts/run_m6g_browser_operator_e2e.py --check-only",
+        ]
+    if report.get("final_status") in {"pass", "pass_with_caveats"}:
+        if report.get("mode") == "execute-bounded-live-check":
+            return [
+                "Review the committed M6G bounded-live evidence artifact.",
+                "Treat the updated M5K latest observation as non-canonical observation evidence.",
+                "Build or review the M5N Conversation Package only if operator handoff is needed.",
+            ]
+        return [
+            "Review the M6G check-only evidence artifact.",
+            "Run explicit bounded live only if release validation requires fresh live evidence.",
+        ]
+    return [
+        "Review caveats and failed result fields in the M6G report.",
+        "Rerun check-only after addressing the reported failure.",
+    ]
+
+
 def write_report(report: dict[str, Any]) -> None:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     report["final_status"] = final_status(report)
+    report["recommended_next_steps"] = recommended_next_steps(report)
     JSON_REPORT.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     md = ["# M6G Browser/Operator E2E Acceptance", "", f"Generated: {report['generated_at_utc']}", f"Mode: `{report['mode']}`", f"Final status: `{report['final_status']}`", "", "## Results"]
     for key in ["playwright_available", "fastapi_started", "frontend_loaded", "watchlist_payload_checked", "id_generation_status", "validate_request_status", "plan_request_status", "execute_request_status", "unexpected_execute_requests", "polling_detected", "network_calls_may_have_occurred", "ssl_policy", "requested_ssl_policy", "effective_server_env_ssl_policy", "browser_execute_ssl_policy_source"]:
@@ -255,7 +286,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "mode_c_conversation": {"contract": "M5N conversation package", "parallel_contract_created": False},
         "governance": {"no_m5f_mutation": True, "no_polling": True, "no_scheduler": True, "no_startup_network_calls": True, "no_full_market_scan": True, "no_trading_output": True, "no_silent_tls_fallback": True},
         "caveats": caveats,
-        "recommended_next_steps": ["python -m pip install playwright", "python -m playwright install chromium", "python scripts/run_m6g_browser_operator_e2e.py --check-only"],
+        "recommended_next_steps": [],
     }
     server_env_policy, browser_policy_source = server_env_policy_for_mode(execute_live=execute_live, selected_ssl_policy=selected_ssl_policy)
     base["effective_server_env_ssl_policy"] = server_env_policy

@@ -76,6 +76,11 @@ flowchart LR
 
 Mode semantics are fixed: **Mode A = Canonical Context**, **Mode B = Bounded Observation**, and **Mode C = Conversation Package**. M5F is canonical; M5K is bounded observation; M5Q is source health; M5N is conversation package. Observation is not canonical, reference-only is not current price, and `stale_or_closed_session` is degraded.
 
+
+## Test portfolio principle
+
+Do not optimize for test count. Optimize for operator journey coverage and risk coverage. Default CI remains `pytest -m "not network" -v`; operator/release preflight and browser/live/cold-clone validation are documented as separate tiers in [`docs/contributor/TESTING_GUIDE.md`](docs/contributor/TESTING_GUIDE.md) and [`docs/reviews/M6H_TEST_PORTFOLIO_RATIONALIZATION_AND_E2E_PRIORITIZATION.md`](docs/reviews/M6H_TEST_PORTFOLIO_RATIONALIZATION_AND_E2E_PRIORITIZATION.md). Optional browser E2E dependencies are installed with `requirements-browser-e2e.txt`; the M6G runner does not auto-install Playwright, Chromium, or OS dependencies.
+
 ## Local services
 
 FastAPI:

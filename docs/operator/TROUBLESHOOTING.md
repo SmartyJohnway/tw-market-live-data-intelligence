@@ -73,3 +73,22 @@ python scripts/run_m6g_browser_operator_e2e.py --check-only
 ```
 
 A skip is acceptable for environments without browser binaries. A failure after browser startup should be investigated as an operator-path regression: frontend payload generation, local FastAPI availability, check-only no-execute guarantees, or SSL policy propagation.
+
+## Browser/operator E2E initially reports missing Playwright or Chromium
+
+Do not treat initial missing browser dependencies as proof that M6G is unsupported. Browser E2E readiness has three layers: Python Playwright package, Chromium browser binary, and OS/system browser dependencies.
+
+Try the explicit browser bootstrap:
+
+```bash
+python -m pip install -r requirements-browser-e2e.txt
+python -m playwright install --with-deps chromium
+```
+
+If Chromium exists but Linux system dependencies are missing:
+
+```bash
+python -m playwright install-deps chromium
+```
+
+Only keep `skipped_with_caveats` after recording the dependency command attempted, exact blocking error, environment limitation, and recommended next action. The M6G runner does not install dependencies automatically.

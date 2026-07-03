@@ -8,21 +8,15 @@ JS = Path("frontend/readonly-preview/m5k-workbench.js").read_text(encoding="utf-
 HTML = Path("frontend/readonly-preview/M5KLocalAIWorkbench.html").read_text(encoding="utf-8")
 
 
-def test_frontend_local_api_detection_contract_strings():
+def test_frontend_static_operator_contract_strings():
     assert "file:" in JS
     assert "http://127.0.0.1:8000" in JS
     assert "localhost" in JS
     assert "loc.port !== '8000'" in JS
     assert "return loc.origin" in JS
     assert "uvicorn server.main:app --host 127.0.0.1 --port 8000" in JS + HTML
-
-
-def test_frontend_watchlist_import_export_multiple_slots_contract():
     for token in ["watchlistSlots", "duplicateWatchlist", "importWatchlist", "exportWatchlist", "Watchlist import validation error"]:
         assert token in JS + HTML
-
-
-def test_frontend_history_diff_timeline_source_health_conversation_contract():
     for token in [
         "/api/m5k/live-observation/history",
         "Observation comparison only. Not a trading signal. Not current price guarantee.",
@@ -37,16 +31,10 @@ def test_frontend_history_diff_timeline_source_health_conversation_contract():
         "AI safety reminder",
     ]:
         assert token in JS + HTML
-
-
-def test_frontend_no_startup_observation_execution_or_polling_loop():
     dom_handler = JS.split("window.addEventListener('DOMContentLoaded'", 1)[1]
     assert "executeObservation()" not in dom_handler
     assert "setInterval" not in JS
     assert "setTimeout" not in JS
-
-
-def test_frontend_no_forbidden_trading_language_or_raw_payload_leakage():
     forbidden = ["buy/sell/hold", "target price", "ranking"]
     lowered = (JS + HTML).lower()
     for token in forbidden:
@@ -79,13 +67,10 @@ def test_fastapi_history_endpoints_are_readonly_summaries():
     assert health.json()["governance"]["raw_endpoint_payload_included"] is False
 
 
-def test_observation_counts_treat_stale_or_closed_session_ok_rows_as_degraded():
+def test_observation_counts_treat_closed_session_rows_as_degraded():
     counts = _observation_counts({"observations": [{"status": "ok", "freshness_assessment": "stale_or_closed_session"}]})
     assert counts["healthy"] == 0
     assert counts["degraded"] == 1
-
-
-def test_observation_counts_treat_closed_session_caveat_as_degraded():
     counts = _observation_counts({"observations": [{"status": "ok", "caveats": ["closed-session data must be treated as degraded"]}]})
     assert counts["healthy"] == 0
     assert counts["degraded"] == 1
