@@ -7,3 +7,9 @@ Every source-derived artifact must preserve source identity, source time where a
 ## M6A local frontend compatibility boundary
 
 M6A improves local operator UX only. Opening the readonly workbench via `file://`, a localhost static server, or the FastAPI origin does not start observations, polling, schedulers, startup network calls, source rewrites, or canonical updates. Watchlist slots are in-memory browser state unless the operator exports JSON locally.
+
+## M6B test and source-contract boundary
+
+M6B adds test strategy and manual source-contract checks only. It does not change M5F canonical semantics, M5K/M5L observation semantics, M5Q source-health semantics, or M5N conversation semantics. Live integration checks are manual, bounded to `2330`, `0050`, and `TX`, excluded from default CI with the `network` marker, and must not write M5F, `frontend/public`, `research/generated`, or production paths.
+
+TLS policy is strict by default. Compatibility or unsafe TLS policies are not implemented in M6B; no silent TLS disable or global unverified SSL context is allowed.

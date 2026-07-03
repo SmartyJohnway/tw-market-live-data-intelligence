@@ -22,3 +22,19 @@ For `file://` and localhost static-server usage, the frontend intentionally targ
 ## Windows / Python 3.13 TWSE MIS TLS compatibility
 
 M6A does not introduce SSL compatibility or unsafe TLS behavior. Strict TLS verification remains the only implemented behavior. A future M6B task may add an explicit compatibility policy, but it must not silently disable verification or install a global unverified SSL context.
+
+## M6B source-contract preflight troubleshooting
+
+Use check-only first when diagnosing source-contract readiness:
+
+```bash
+python scripts/run_m6b_source_contract_preflight.py --check-only
+```
+
+`--check-only` does not perform network calls and does not write artifacts. If an operator explicitly runs live checks, the bounded command is:
+
+```bash
+python scripts/run_m6b_source_contract_preflight.py --execute-live-contract-check
+```
+
+Live output is written only under `research/live_observation_runs/m6b_source_contract/` and excludes raw endpoint payloads. TLS remains strict by default; M6B does not silently disable certificate verification or install a global unverified SSL context. TLS/certificate failures should be treated as governed diagnostics, not bypassed.
