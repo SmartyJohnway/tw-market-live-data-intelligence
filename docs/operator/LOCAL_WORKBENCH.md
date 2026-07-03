@@ -86,7 +86,7 @@ Common guided fixes:
 python scripts/run_operator_preflight.py
 ```
 
-The preflight aggregates existing validators wherever possible and reports `PASS`, `PASS WITH CAVEATS`, or `FAIL`. It does not perform live observation and does not duplicate M5F, M5K, M5Q, M5N, or M6B validation logic.
+The preflight aggregates existing validators wherever possible and reports `PASS`, `PASS WITH CAVEATS`, or `FAIL`. It does not perform live observation and does not duplicate M5F, M5K, M5Q, M5N, or M6B validation logic. Each child command defaults to a 300-second timeout; override it with `--timeout-seconds <int>` or `TW_MARKET_OPERATOR_PREFLIGHT_TIMEOUT_SECONDS`, with the CLI option taking precedence.
 
 ## Governance Boundaries
 
