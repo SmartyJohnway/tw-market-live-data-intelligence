@@ -2,7 +2,7 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from server.main import app
+from server.main import app, _observation_counts
 
 JS = Path("frontend/readonly-preview/m5k-workbench.js").read_text(encoding="utf-8")
 HTML = Path("frontend/readonly-preview/M5KLocalAIWorkbench.html").read_text(encoding="utf-8")
@@ -55,15 +55,16 @@ def test_frontend_no_forbidden_trading_language_or_raw_payload_leakage():
     assert "raw endpoint payload is excluded" in HTML.lower()
 
 
-def test_fastapi_local_cors_policy_allows_local_without_credentials():
+def test_fastapi_local_cors_policy_allows_localhost_127_and_file_null_without_credentials():
     client = TestClient(app)
-    r = client.options(
-        "/api/health",
-        headers={"Origin": "http://localhost:5173", "Access-Control-Request-Method": "GET"},
-    )
-    assert r.status_code == 200
-    assert r.headers["access-control-allow-origin"] == "http://localhost:5173"
-    assert "access-control-allow-credentials" not in r.headers
+    for origin in ["http://localhost:5173", "http://127.0.0.1:5173", "null"]:
+        r = client.options(
+            "/api/health",
+            headers={"Origin": origin, "Access-Control-Request-Method": "GET"},
+        )
+        assert r.status_code == 200
+        assert r.headers["access-control-allow-origin"] == origin
+        assert "access-control-allow-credentials" not in r.headers
 
 
 def test_fastapi_history_endpoints_are_readonly_summaries():
@@ -76,3 +77,15 @@ def test_fastapi_history_endpoints_are_readonly_summaries():
     assert health.json()["governance"]["network_calls"] is False
     assert obs.json()["governance"]["raw_endpoint_payload_included"] is False
     assert health.json()["governance"]["raw_endpoint_payload_included"] is False
+
+
+def test_observation_counts_treat_stale_or_closed_session_ok_rows_as_degraded():
+    counts = _observation_counts({"observations": [{"status": "ok", "freshness_assessment": "stale_or_closed_session"}]})
+    assert counts["healthy"] == 0
+    assert counts["degraded"] == 1
+
+
+def test_observation_counts_treat_closed_session_caveat_as_degraded():
+    counts = _observation_counts({"observations": [{"status": "ok", "caveats": ["closed-session data must be treated as degraded"]}]})
+    assert counts["healthy"] == 0
+    assert counts["degraded"] == 1

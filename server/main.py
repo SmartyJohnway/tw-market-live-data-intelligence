@@ -16,6 +16,7 @@ app = FastAPI(
 # Local-first CORS setup
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=["null"],
     allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
     allow_credentials=False,
     allow_methods=["GET", "POST"],
@@ -200,8 +201,13 @@ def _observation_counts(payload: dict) -> dict:
     counts = {"target_count": len(observations) + len(failures), "healthy": 0, "degraded": 0, "failed": 0, "unsupported": 0, "reference_only": 0}
     for row in observations:
         status = str(row.get("observation_status") or row.get("status") or "").lower()
+        freshness = str(row.get("freshness_assessment") or "").lower()
+        caveats = " ".join(str(c).lower() for c in (row.get("caveats") or []))
+        stale_or_closed = "stale_or_closed_session" in freshness or "closed-session" in caveats or "closed_session" in caveats
         if row.get("reference_only") is True or "reference" in status:
             counts["reference_only"] += 1
+            counts["degraded"] += 1
+        elif stale_or_closed:
             counts["degraded"] += 1
         elif status in {"ok", "healthy", "observed"}:
             counts["healthy"] += 1
