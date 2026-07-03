@@ -119,6 +119,21 @@ def ssl_policy_api_checks() -> dict[str, Any]:
     }
 
 
+def server_env_policy_for_mode(*, execute_live: bool, selected_ssl_policy: str) -> tuple[str | None, str]:
+    """Return temporary FastAPI env override and how browser execute policy is applied.
+
+    The readonly frontend execute button does not include an ssl_policy query parameter.
+    Therefore explicit non-strict browser-live policy is applied to the temporary
+    FastAPI process environment. Strict uses the server default with no override.
+    Check-only never executes and starts the server with no TLS env override.
+    """
+    if not execute_live:
+        return None, "default"
+    if selected_ssl_policy == "strict":
+        return None, "default"
+    return selected_ssl_policy, "env"
+
+
 def run_browser_check(port: int, execute_live: bool, ssl_policy: str) -> dict[str, Any]:
     from playwright.sync_api import sync_playwright
 
@@ -200,7 +215,7 @@ def write_report(report: dict[str, Any]) -> None:
     report["final_status"] = final_status(report)
     JSON_REPORT.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     md = ["# M6G Browser/Operator E2E Acceptance", "", f"Generated: {report['generated_at_utc']}", f"Mode: `{report['mode']}`", f"Final status: `{report['final_status']}`", "", "## Results"]
-    for key in ["playwright_available", "fastapi_started", "frontend_loaded", "watchlist_payload_checked", "id_generation_status", "validate_request_status", "plan_request_status", "execute_request_status", "unexpected_execute_requests", "polling_detected", "network_calls_may_have_occurred", "ssl_policy"]:
+    for key in ["playwright_available", "fastapi_started", "frontend_loaded", "watchlist_payload_checked", "id_generation_status", "validate_request_status", "plan_request_status", "execute_request_status", "unexpected_execute_requests", "polling_detected", "network_calls_may_have_occurred", "ssl_policy", "requested_ssl_policy", "effective_server_env_ssl_policy", "browser_execute_ssl_policy_source"]:
         md.append(f"- {key}: `{report.get(key)}`")
     md += ["", "## Caveats", *(f"- {c}" for c in report.get("caveats") or ["None"]), "", "## Recommended next steps", *(f"- `{c}`" for c in report["recommended_next_steps"])]
     MD_REPORT.write_text("\n".join(md) + "\n", encoding="utf-8")
@@ -229,6 +244,9 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "polling_detected": False,
         "network_calls_may_have_occurred": execute_live,
         "ssl_policy": selected_ssl_policy,
+        "requested_ssl_policy": selected_ssl_policy,
+        "effective_server_env_ssl_policy": None,
+        "browser_execute_ssl_policy_source": "default",
         "live_execution": {"executed": False, "explicit": execute_live, "bounded": True},
         "targets": DEFAULT_TARGETS,
         "artifacts_written": [display_path(JSON_REPORT), display_path(MD_REPORT)],
@@ -239,11 +257,14 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "caveats": caveats,
         "recommended_next_steps": ["python -m pip install playwright", "python -m playwright install chromium", "python scripts/run_m6g_browser_operator_e2e.py --check-only"],
     }
+    server_env_policy, browser_policy_source = server_env_policy_for_mode(execute_live=execute_live, selected_ssl_policy=selected_ssl_policy)
+    base["effective_server_env_ssl_policy"] = server_env_policy
+    base["browser_execute_ssl_policy_source"] = browser_policy_source
     if not available:
         caveats.append(missing_reason or "Playwright/browser dependency unavailable.")
         caveats.append("Check-only mode skipped browser automation; install Playwright and Chromium, then rerun.")
         return base
-    proc, port, started = start_fastapi(env_policy="compatibility")
+    proc, port, started = start_fastapi(env_policy=server_env_policy)
     base["fastapi_started"] = started
     try:
         if not started:

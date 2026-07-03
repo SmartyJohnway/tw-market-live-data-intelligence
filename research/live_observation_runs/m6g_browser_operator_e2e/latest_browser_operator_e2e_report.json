@@ -4,15 +4,17 @@
     "research/live_observation_runs/m6g_browser_operator_e2e/latest_browser_operator_e2e_report.md"
   ],
   "browser_engine": null,
+  "browser_execute_ssl_policy_source": "default",
   "caveats": [
     "Python Playwright is not importable: No module named 'playwright'",
     "Check-only mode skipped browser automation; install Playwright and Chromium, then rerun."
   ],
+  "effective_server_env_ssl_policy": null,
   "execute_request_status": "not_executed",
   "fastapi_started": false,
   "final_status": "skipped_with_caveats",
   "frontend_loaded": false,
-  "generated_at_utc": "2026-07-03T11:26:58Z",
+  "generated_at_utc": "2026-07-03T11:51:09Z",
   "governance": {
     "no_full_market_scan": true,
     "no_m5f_mutation": true,
@@ -71,6 +73,7 @@
     "python -m playwright install chromium",
     "python scripts/run_m6g_browser_operator_e2e.py --check-only"
   ],
+  "requested_ssl_policy": "strict",
   "schema_version": "m6g_browser_operator_e2e.v1",
   "ssl_policy": "strict",
   "targets": [

@@ -64,7 +64,7 @@ This preserves strict TLS as default, explicit compatibility opt-in, explicit un
 
 ## Scenario C: optional explicit live check
 
-If an operator runs live mode, the report records the exact mode, timestamp, `ssl_policy`, targets, whether network calls may have occurred, output artifacts, and caveats. It does not assert exact price, market direction, recommendation, ranking, target price, or buy/sell/hold.
+If an operator runs live mode, the report records the exact mode, timestamp, requested SSL policy, effective temporary server environment SSL policy, browser execute SSL policy source (`env` or `default`), targets, whether network calls may have occurred, output artifacts, and caveats. The frontend execute button does not currently append an `ssl_policy` query parameter, so non-strict browser live policy is applied explicitly through the temporary FastAPI process environment; strict uses the server default with no compatibility override. It does not assert exact price, market direction, recommendation, ranking, target price, or buy/sell/hold.
 
 ## Report artifacts
 

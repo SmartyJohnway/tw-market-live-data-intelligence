@@ -1,6 +1,6 @@
 # M6G Browser/Operator E2E Acceptance
 
-Generated: 2026-07-03T11:26:58Z
+Generated: 2026-07-03T11:51:09Z
 Mode: `check-only`
 Final status: `skipped_with_caveats`
 
@@ -17,6 +17,9 @@ Final status: `skipped_with_caveats`
 - polling_detected: `False`
 - network_calls_may_have_occurred: `False`
 - ssl_policy: `strict`
+- requested_ssl_policy: `strict`
+- effective_server_env_ssl_policy: `None`
+- browser_execute_ssl_policy_source: `default`
 
 ## Caveats
 - Python Playwright is not importable: No module named 'playwright'

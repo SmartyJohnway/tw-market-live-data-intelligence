@@ -37,6 +37,9 @@ def test_report_schema_and_final_status_skip(tmp_path, monkeypatch):
         "polling_detected",
         "network_calls_may_have_occurred",
         "ssl_policy",
+        "requested_ssl_policy",
+        "effective_server_env_ssl_policy",
+        "browser_execute_ssl_policy_source",
         "live_execution",
         "targets",
         "artifacts_written",
@@ -52,6 +55,9 @@ def test_report_schema_and_final_status_skip(tmp_path, monkeypatch):
     assert data["final_status"] == "skipped_with_caveats"
     assert data["network_calls_may_have_occurred"] is False
     assert data["execute_request_status"] == "not_executed"
+    assert data["requested_ssl_policy"] == "strict"
+    assert data["effective_server_env_ssl_policy"] is None
+    assert data["browser_execute_ssl_policy_source"] == "default"
 
 
 def test_final_status_logic_pass_and_fail():
@@ -68,6 +74,63 @@ def test_final_status_logic_pass_and_fail():
     assert m6g.final_status(report) == "pass"
     report["unexpected_execute_requests"] = 1
     assert m6g.final_status(report) == "fail"
+
+
+def test_server_env_policy_preserves_strict_default():
+    assert m6g.server_env_policy_for_mode(execute_live=False, selected_ssl_policy="strict") == (None, "default")
+    assert m6g.server_env_policy_for_mode(execute_live=True, selected_ssl_policy="strict") == (None, "default")
+    assert m6g.server_env_policy_for_mode(execute_live=True, selected_ssl_policy="compatibility") == ("compatibility", "env")
+    assert m6g.server_env_policy_for_mode(execute_live=True, selected_ssl_policy="unsafe-explicit") == ("unsafe-explicit", "env")
+
+
+def test_check_only_starts_fastapi_without_ssl_env_override_for_strict(monkeypatch):
+    calls = []
+    monkeypatch.setattr(m6g, "playwright_state", lambda: (True, None))
+    monkeypatch.setattr(m6g, "start_fastapi", lambda env_policy=None: (type("Proc", (), {"terminate": lambda self: None, "wait": lambda self, timeout=None: None})(), 12345, True))
+
+    def capture_browser(port, execute_live, ssl_policy):
+        calls.append({"port": port, "execute_live": execute_live, "ssl_policy": ssl_policy})
+        return {"frontend_loaded": True, "watchlist_payload_checked": True, "watchlist_items_checked": 1, "id_generation_status": "pass", "validate_request_status": "pass", "plan_request_status": "pass", "execute_request_status": "not_executed", "unexpected_execute_requests": 0, "polling_detected": False, "targets": ["0050"]}
+
+    start_calls = []
+    def start(env_policy=None):
+        start_calls.append(env_policy)
+        return (type("Proc", (), {"terminate": lambda self: None, "wait": lambda self, timeout=None: None})(), 12345, True)
+
+    monkeypatch.setattr(m6g, "start_fastapi", start)
+    monkeypatch.setattr(m6g, "run_browser_check", capture_browser)
+    args = type("Args", (), {"check_only": True, "execute_bounded_live_check": False, "ssl_policy": "strict"})()
+    report = m6g.build_report(args)
+    assert start_calls == [None]
+    assert report["requested_ssl_policy"] == "strict"
+    assert report["effective_server_env_ssl_policy"] is None
+    assert report["browser_execute_ssl_policy_source"] == "default"
+    assert calls[0]["execute_live"] is False
+
+
+def test_live_strict_does_not_set_compatibility_env(monkeypatch):
+    start_calls = []
+    monkeypatch.setattr(m6g, "playwright_state", lambda: (True, None))
+    monkeypatch.setattr(m6g, "start_fastapi", lambda env_policy=None: (start_calls.append(env_policy) or (type("Proc", (), {"terminate": lambda self: None, "wait": lambda self, timeout=None: None})(), 12345, True)))
+    monkeypatch.setattr(m6g, "run_browser_check", lambda port, execute_live, ssl_policy: {"frontend_loaded": True, "watchlist_payload_checked": True, "watchlist_items_checked": 1, "id_generation_status": "pass", "validate_request_status": "pass", "plan_request_status": "pass", "execute_request_status": "executed", "unexpected_execute_requests": 0, "polling_detected": False, "targets": ["0050"]})
+    args = type("Args", (), {"check_only": False, "execute_bounded_live_check": True, "ssl_policy": "strict"})()
+    report = m6g.build_report(args)
+    assert start_calls == [None]
+    assert report["effective_server_env_ssl_policy"] is None
+    assert report["browser_execute_ssl_policy_source"] == "default"
+
+
+def test_live_compatibility_sets_explicit_env(monkeypatch):
+    start_calls = []
+    monkeypatch.setattr(m6g, "playwright_state", lambda: (True, None))
+    monkeypatch.setattr(m6g, "start_fastapi", lambda env_policy=None: (start_calls.append(env_policy) or (type("Proc", (), {"terminate": lambda self: None, "wait": lambda self, timeout=None: None})(), 12345, True)))
+    monkeypatch.setattr(m6g, "run_browser_check", lambda port, execute_live, ssl_policy: {"frontend_loaded": True, "watchlist_payload_checked": True, "watchlist_items_checked": 1, "id_generation_status": "pass", "validate_request_status": "pass", "plan_request_status": "pass", "execute_request_status": "executed", "unexpected_execute_requests": 0, "polling_detected": False, "targets": ["0050"]})
+    args = type("Args", (), {"check_only": False, "execute_bounded_live_check": True, "ssl_policy": "compatibility"})()
+    report = m6g.build_report(args)
+    assert start_calls == ["compatibility"]
+    assert report["requested_ssl_policy"] == "compatibility"
+    assert report["effective_server_env_ssl_policy"] == "compatibility"
+    assert report["browser_execute_ssl_policy_source"] == "env"
 
 
 def test_no_execution_in_check_only_when_playwright_missing(monkeypatch):
