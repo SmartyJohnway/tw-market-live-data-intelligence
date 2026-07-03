@@ -140,6 +140,12 @@ def normalize_twse_mis_row(item: dict[str, Any], instrument: dict[str, Any], ret
     raw_ts = item.get("tlong") or (f"{item.get('d')} {item.get('t')}" if item.get("d") and item.get("t") else None)
     ts = normalize_timestamp(raw_ts, retrieved_at_utc=retrieved_at_utc, source_timezone=timezone(timedelta(hours=8)))
     flags = list(ts["flags"])
+    if item.get("z") in (None, "", "-"):
+        flags.append("missing_z")
+    if item.get("t") in (None, "", "-") and item.get("tlong") in (None, "", "-"):
+        flags.append("missing_t")
+    if item.get("d") in (None, "", "-") and item.get("tlong") in (None, "", "-"):
+        flags.append("missing_d")
     if price_source_field == "z":
         status = "ok"
         price_semantics = "last_or_current_quote_as_reported_by_source"
@@ -183,9 +189,22 @@ def normalize_twse_mis_row(item: dict[str, Any], instrument: dict[str, Any], ret
 def normalize_taifex_row(item: dict[str, Any], instrument: dict[str, Any], retrieved_at_utc: str, *, caveats: list[str] | None = None) -> dict[str, Any]:
     from scripts.m5k_common import _parse_taifex_price, _taifex_contract_month, _taifex_timestamp
 
-    value = _parse_taifex_price(item.get("CLastPrice") or item.get("SettlementPrice") or item.get("CRefPrice"))
+    raw_price = item.get("CLastPrice") or item.get("SettlementPrice") or item.get("CRefPrice")
+    value = _parse_taifex_price(raw_price)
     source_ts = _taifex_timestamp(str(item.get("CDate") or ""), str(item.get("CTime") or ""))
     normalized_ts = normalize_timestamp(source_ts, retrieved_at_utc=retrieved_at_utc) if source_ts else {"source_timestamp": None, "delay_seconds": None, "flags": ["source_time_unavailable"]}
+    flags = list(normalized_ts["flags"])
+    if item.get("CLastPrice") in (None, "", "-"):
+        flags.append("missing_last_price")
+    if raw_price not in (None, "", "-") and value is None:
+        flags.append("invalid_numeric_field")
+    if item.get("CDate") in (None, "", "-") or item.get("CTime") in (None, "", "-"):
+        flags.append("source_time_unavailable")
+    status_text = str(item.get("Status") or "").lower()
+    freshness = normalize_freshness(normalized_ts["delay_seconds"])
+    if "close" in status_text or "closed" in status_text:
+        freshness = "stale_or_closed_session"
+        flags.append("stale_or_closed_session")
     return normalize_observation(
         symbol=instrument["symbol"],
         display_symbol=instrument.get("display_symbol", instrument["symbol"]),
@@ -200,13 +219,13 @@ def normalize_taifex_row(item: dict[str, Any], instrument: dict[str, Any], retri
         price_semantics="last_trade_price_or_settlement_fallback_as_reported_by_taifex_mis",
         source_timestamp=source_ts or normalized_ts["source_timestamp"],
         retrieved_at_utc=retrieved_at_utc,
-        freshness_assessment=normalize_freshness(normalized_ts["delay_seconds"]),
+        freshness_assessment=freshness,
         delay_status="delay_seconds_measured_from_source_timestamp_not_exchange_realtime_sla",
         delay_seconds=normalized_ts["delay_seconds"],
         contract=item.get("SymbolID"),
         contract_month=_taifex_contract_month(item),
         contract_selector=instrument.get("contract_selector", "front_month"),
-        data_quality_flags=normalized_ts["flags"],
+        data_quality_flags=flags,
         caveats=caveats or [],
         extra={"source_status": item.get("Status"), "normalization": {"product_code": "TXF", "selector": "front_month", "source_contract_symbol": item.get("SymbolID"), "source_display_name": item.get("DispEName")}},
     )

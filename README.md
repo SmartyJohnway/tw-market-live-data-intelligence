@@ -142,3 +142,21 @@ M5 is closed by this release-hardening PR. Future work should begin after merge,
 ## M6A local frontend compatibility note
 
 The readonly workbench can be opened by double-clicking `frontend/readonly-preview/M5KLocalAIWorkbench.html` or by serving the folder from a local static server. When opened from `file://`, `localhost`, or `127.0.0.1` on a non-8000 port, it defaults to the local FastAPI base `http://127.0.0.1:8000` and displays the operator command `uvicorn server.main:app --host 127.0.0.1 --port 8000` if the API is unavailable. It does not use hosted endpoints, polling, or automatic observation execution.
+
+## M6B test strategy note
+
+Default validation remains no-network:
+
+```bash
+pytest -m "not network" -v
+python scripts/run_m6b_source_contract_preflight.py --check-only
+```
+
+Manual live source-contract tests are explicit and bounded to `2330`, `0050`, and `TX`:
+
+```bash
+pytest -m integration -v
+python scripts/run_m6b_source_contract_preflight.py --execute-live-contract-check
+```
+
+These checks are diagnostic only: no M5F mutation, no frontend/public or research/generated writes, no polling/scheduler, no full-market scan, no raw payload exposure, and no trading output.

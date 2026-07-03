@@ -18,6 +18,7 @@ STATE_DIR = REPO_ROOT / "research/live_observation_runs/m5k"
 LATEST_OBSERVATION_PATH = STATE_DIR / "latest_observation.json"
 MAX_M5K_TARGETS = 25
 FORBIDDEN_KEYS = {"buy", "sell", "hold", "target_price", "target price", "recommendation", "ranking", "rank", "broker", "order", "raw_fields_sample", "raw_payload", "response_sample"}
+FORBIDDEN_SEMANTIC_PHRASES = {"buy", "sell", "hold", "target_price", "target price", "ranking", "rank", "recommendation", "entry", "exit", "stop loss", "take profit", "broker", "order", "position"}
 SUPPORTED_MARKETS = {"twse", "tpex", "otc", "taifex"}
 
 
@@ -138,6 +139,14 @@ def _reject_forbidden_keys(value: Any, path: str = "<root>") -> list[str]:
     elif isinstance(value, list):
         for idx, child in enumerate(value):
             errors.extend(_reject_forbidden_keys(child, f"{path}[{idx}]"))
+    elif isinstance(value, str):
+        text = value.lower().replace("_", " ")
+        for phrase in FORBIDDEN_SEMANTIC_PHRASES:
+            phrase_text = phrase.lower().replace("_", " ")
+            if re.search(rf"(?<![a-z0-9]){re.escape(phrase_text)}(?![a-z0-9])", text):
+                if re.search(rf"(no|not|without|禁止|非).{{0,24}}{re.escape(phrase_text)}", text):
+                    continue
+                errors.append(f"forbidden_semantics:{path}:{phrase}")
     return errors
 
 

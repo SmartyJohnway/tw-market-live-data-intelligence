@@ -14,3 +14,11 @@
 ## M6A frontend-read summaries
 
 The M6A workbench reads, but does not create, observation history and source-health history summaries from existing local Level 2 artifacts. These summaries are derived from `research/live_observation_runs/m5k/*.json` and `research/live_observation_runs/source_health/*.json`, exclude raw endpoint payloads, and remain non-canonical temporary context.
+
+## M6B source-contract artifact
+
+| Artifact | Path | Producer command | Consumer | Network behavior | Write behavior | Canonical or temporary | Raw payload policy |
+|---|---|---|---|---|---|---|---|
+| M6B source-contract preflight summary | `research/live_observation_runs/m6b_source_contract/latest_summary.json` | `python scripts/run_m6b_source_contract_preflight.py --execute-live-contract-check` | Release operator diagnostics | Explicit manual bounded network only | Writes only after explicit execution | Temporary Level 2 diagnostic | Raw endpoint payload excluded |
+
+`python scripts/run_m6b_source_contract_preflight.py --check-only` prints the planned contract report, performs no network calls, and writes nothing.
