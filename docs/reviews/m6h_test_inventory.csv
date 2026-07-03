@@ -6,7 +6,7 @@ tests/test_generate_latest_market_snapshot.py,14,scripts/artifacts,contract,non-
 tests/test_generate_watchlist_observations.py,9,scripts/artifacts,unit,non-network,no,low,medium,medium,low,Tier 1,preserve
 tests/test_m3g04_controlled_live_probe.py,10,scripts/artifacts,unit,non-network,no,low,medium,medium,low,Tier 1,preserve
 tests/test_m5q_source_health.py,8,server/api,contract+mock+static_frontend,non-network,no,high,medium,high,low,Tier 2,preserve
-tests/test_m6e_operator_acceptance.py,9,server/api,governance+contract+mock,non-network,no,high,high,medium,low,Tier 2,preserve
+tests/test_m6e_operator_acceptance.py,7,server/api,governance+contract+mock,non-network,no,high,high,medium,low,Tier 2,preserve
 tests/test_m6g_browser_operator_e2e.py,11,server/api,browser_e2e+governance+contract+mock,non-network,yes,high,high,medium,low,Tier 3,preserve
 tests/test_market_snapshot_generator.py,6,scripts/artifacts,unit,non-network,no,low,high,medium,low,Tier 1,preserve
 tests/unit/test_assess_m5c_staging_candidate.py,0,scripts/artifacts,unit,non-network,no,low,medium,medium,low,Tier 1,preserve
@@ -68,9 +68,9 @@ tests/unit/test_m5l_live_source_adapter_matrix.py,10,server/api,contract+mock,no
 tests/unit/test_m5lrm_contract_convergence.py,7,scripts/artifacts,governance+contract,non-network,no,low,high,medium,low,Tier 1,preserve
 tests/unit/test_m5n_watchlist_workflow.py,10,server/api,governance+contract+static_frontend,non-network,no,high,high,medium,low,Tier 2,preserve
 tests/unit/test_m5op_frontend_operator_workflow.py,6,frontend,governance+contract+static_frontend,non-network,no,high,high,medium,low,Tier 2,preserve
-tests/unit/test_m6a_observation_ux.py,9,server/api,governance+static_frontend,non-network,no,high,high,medium,low,Tier 2,preserve
+tests/unit/test_m6a_observation_ux.py,4,server/api,governance+static_frontend,non-network,no,high,high,medium,low,Tier 2,preserve
 tests/unit/test_m6b_contract_hardening.py,7,server/api,governance+contract,non-network,no,high,high,high,low,Tier 2,preserve
-tests/unit/test_m6d_operator_and_local_networking.py,6,server/api,contract+mock,non-network,no,high,medium,medium,low,Tier 2,preserve
+tests/unit/test_m6d_operator_and_local_networking.py,4,server/api,contract+mock,non-network,no,high,medium,medium,low,Tier 2,preserve
 tests/unit/test_m6d_ssl_policy.py,8,scripts/artifacts,contract+mock,non-network,no,low,medium,high,medium,Tier 1,preserve_core_cases_only
 tests/unit/test_markdown_escaping.py,1,server/api,mock,non-network,no,medium,medium,medium,low,Tier 1,preserve
 tests/unit/test_mcp_server.py,38,server/api,mock,non-network,no,high,high,medium,low,Tier 2,preserve

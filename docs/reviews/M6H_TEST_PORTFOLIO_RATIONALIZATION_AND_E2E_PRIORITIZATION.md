@@ -8,7 +8,7 @@ Preserved semantics: M5F is canonical Level 1; M5K/M5L are bounded Level 2 obser
 
 ## Test portfolio inventory
 
-Full inventory is in [`m6h_test_inventory.csv`](m6h_test_inventory.csv). It classifies 116 Python test files and approximately 682 direct `test_*` functions. The reported historical count above 700 is credible because parametrized tests and generated case matrices expand the direct function count at runtime. The portfolio grew because prior milestones added milestone-specific regression tests, source-contract tests, governance scans, artifact-schema checks, FastAPI/MCP checks, frontend static-contract checks, and operator acceptance tests without a formal consolidation gate.
+Full inventory is in [`m6h_test_inventory.csv`](m6h_test_inventory.csv). It classifies 116 Python test files and approximately 673 direct `test_*` functions. The reported historical count above 700 is credible because parametrized tests and generated case matrices expand the direct function count at runtime. The portfolio grew because prior milestones added milestone-specific regression tests, source-contract tests, governance scans, artifact-schema checks, FastAPI/MCP checks, frontend static-contract checks, and operator acceptance tests without a formal consolidation gate.
 
 The inventory classification method follows actual execution requirements, not keyword mentions. A deterministic non-network test is not Tier 3 merely because it validates live-related fields, mocks a live source, or contains the word `live`. Tier 3 is reserved for real browser/Playwright execution requirements, actual external network or bounded live execution, OS/runtime-specific validation, real TLS handshakes, and cold-clone acceptance. Tier 2 covers operator acceptance, release preflight, cross-component integration, artifact/package validation, FastAPI TestClient/MCP/operator workflow checks, and check-only acceptance workflows. Tier 1 covers deterministic default-CI-suitable unit/mock/contract/governance/static safety tests.
 
@@ -17,7 +17,7 @@ Repaired approximate distribution by actual execution requirement:
 | Tier | Files | Direct `test_*` functions | Execution requirement |
 |---|---:|---:|---|
 | Tier 1 | 97 | 525 | deterministic, default-CI-suitable, non-network, no real browser |
-| Tier 2 | 17 | 145 | operator/release, cross-component, artifact/package, FastAPI TestClient/MCP/check-only workflow |
+| Tier 2 | 17 | 136 | operator/release, cross-component, artifact/package, FastAPI TestClient/MCP/check-only workflow |
 | Tier 3 | 2 | 12 | real browser marker/Playwright path or network-marked bounded live integration |
 
 The repaired inventory reclassified 43 files that were previously false Tier 3 candidates due to keyword heuristics. Corrected examples include `tests/test_generate_ai_context_pack.py`, `tests/test_generate_chatgpt_briefing.py`, `tests/test_generate_latest_market_snapshot.py`, `tests/test_generate_watchlist_observations.py`, and `tests/unit/test_forbidden_behavior_scanner.py` as Tier 1 deterministic non-network tests; `tests/test_m5q_source_health.py` and `tests/test_m6e_operator_acceptance.py` as Tier 2 check-only/cross-component acceptance tests; and only `tests/test_m6g_browser_operator_e2e.py` plus `tests/integration/test_m6b_live_source_contract.py` as Tier 3 based on actual browser/network execution requirements.
@@ -110,6 +110,45 @@ Bootstrap:
 M6G remains an acceptance runner, not a package installer. `scripts/run_m6g_browser_operator_e2e.py` must not auto-install Python packages, Chromium, OS dependencies, invoke apt/sudo, or otherwise mutate system dependency state.
 
 Do not immediately accept `skipped_with_caveats` merely because Playwright or Chromium is initially unavailable. Before declaring browser E2E unavailable, investigate or attempt Python Playwright availability, Chromium binary availability, OS dependency readiness, and a supported install path. A skip report must record the dependency step attempted, command attempted, blocking error, environment limitation, and recommended next action.
+
+## Commit 3 targeted consolidation
+
+Commit 3 performed a small targeted consolidation after the M6H inventory repair. No product behavior, source adapter, M5F, observation, source-health, conversation, TLS, M6E, or M6G semantics were changed. No mass deletion was performed.
+
+Files changed for consolidation:
+
+- `tests/unit/test_m6a_observation_ux.py`
+- `tests/unit/test_m6d_operator_and_local_networking.py`
+- `tests/test_m6e_operator_acceptance.py`
+- `tests/test_m6g_browser_operator_e2e.py`
+- `docs/reviews/m6h_test_inventory.csv`
+
+Tests removed or merged:
+
+| Area | Previous tests | Consolidated test | Direct-count reduction | Coverage replacement | Why safe |
+|---|---|---|---:|---|---|
+| Static frontend/operator strings and forbidden static assertions | `test_frontend_local_api_detection_contract_strings`, `test_frontend_watchlist_import_export_multiple_slots_contract`, `test_frontend_history_diff_timeline_source_health_conversation_contract`, `test_frontend_no_startup_observation_execution_or_polling_loop`, `test_frontend_no_forbidden_trading_language_or_raw_payload_leakage` | `test_frontend_static_operator_contract_strings` | 4 | All prior string, no-polling, no-startup-execute, raw payload, and forbidden static assertions remain in one grouped frontend contract test. | These were repeated static frontend contract scans over the same JS/HTML strings. |
+| Observation-count degraded closed-session cases | `test_observation_counts_treat_stale_or_closed_session_ok_rows_as_degraded`, `test_observation_counts_treat_closed_session_caveat_as_degraded` | `test_observation_counts_treat_closed_session_rows_as_degraded` | 1 | Both stale/freshness and caveat-driven degraded cases remain asserted. | Same helper and same expected degraded outcome. |
+| FastAPI SSL policy API assertions | `test_fastapi_invalid_ssl_policy_returns_400_without_execution`, `test_fastapi_valid_ssl_policy_values_are_accepted` | `test_fastapi_ssl_policy_fail_closed_and_valid_values` | 1 | Invalid policy fail-closed/no-execute and strict/compatibility/unsafe accepted cases remain asserted. | Same endpoint and same minimal watchlist fixture. |
+| MCP SSL policy assertions | `test_mcp_invalid_ssl_policy_fails_closed_without_network_or_writes`, `test_mcp_valid_ssl_policy_values_are_accepted` | `test_mcp_ssl_policy_fail_closed_and_valid_values` | 1 | Invalid fail-closed/no-network/no-write and strict/compatibility/unsafe accepted cases remain asserted. | Same MCP tool and same minimal watchlist fixture. |
+| M6E operator preflight caveat extraction | `test_run_json_propagates_operator_preflight_caveats`, `test_run_json_extracts_nested_operator_preflight_caveats` | `test_run_json_propagates_operator_preflight_caveats` | 1 | Top-level and nested operator preflight caveat extraction paths remain asserted. | Same `run_json` behavior with two mocked subprocess outputs. |
+| M6E invalid SSL policy acceptance | `test_fastapi_invalid_ssl_policy_acceptance`, `test_mcp_invalid_ssl_policy_acceptance` | `test_invalid_ssl_policy_acceptance_surfaces_fail_closed` | 1 | FastAPI invalid policy 400, missing confirmation 400, and MCP invalid fail-closed/no-network remain asserted. | Same default watchlist and same fail-closed boundary. |
+| M6G successful next-step guidance | `test_recommended_next_steps_for_pass_check_only_omit_dependency_install`, `test_recommended_next_steps_for_pass_bounded_live_omit_dependency_install` | `test_recommended_next_steps_for_successful_browser_runs_omit_dependency_install` | 1 | Check-only and bounded-live success cases both still assert no install guidance and correct evidence guidance. | Same helper and same invariant for successful browser runs. |
+| M6G live SSL env selection | `test_live_strict_does_not_set_compatibility_env`, `test_live_compatibility_sets_explicit_env` | `test_live_ssl_policy_env_selection_for_strict_and_compatibility` | 1 | Strict default/no env override and compatibility env override both remain asserted. | Same mocked browser path and same TLS precedence boundary. |
+
+Approximate direct test count before Commit 3 consolidation was 684 direct `test_*` functions after the previous M6G next-step regression additions. The count after consolidation is 673 direct `test_*` functions, a net reduction of 11 direct tests. Pytest collection remains higher because parametrized tests expand at runtime.
+
+Coverage preserved:
+
+- Governance and forbidden behavior scanners remain intact.
+- No trading semantics and raw payload leakage guards remain asserted.
+- SSL strict/default/env/query precedence and invalid-policy fail-closed coverage remains asserted.
+- FastAPI and MCP invalid `ssl_policy` fail-closed checks remain asserted.
+- M6E operator acceptance remains covered.
+- M6G browser/operator E2E and bounded-live evidence remain covered.
+- M5F canonical validation, M5K observation semantics, and M5N conversation semantics were not weakened or removed.
+
+Remaining future consolidation candidates are unchanged: shared helpers for broader frontend contract scans, report schema validation, artifact-path allowlists, forbidden-field scans already covered by authoritative scanner scripts, and shared SSL policy matrices. Those candidates require separate focused review and were not mass-deleted in Commit 3.
 
 ## M6G evidence preserved
 

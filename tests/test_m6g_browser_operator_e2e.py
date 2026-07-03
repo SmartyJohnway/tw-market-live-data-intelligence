@@ -78,28 +78,20 @@ def test_final_status_logic_pass_and_fail():
     assert m6g.final_status(report) == "fail"
 
 
-def test_recommended_next_steps_for_pass_check_only_omit_dependency_install():
-    report = {
-        "playwright_available": True,
-        "final_status": "pass",
-        "mode": "check-only",
-    }
-    steps = m6g.recommended_next_steps(report)
-    assert not any("pip install" in step for step in steps)
-    assert not any("playwright install" in step for step in steps)
-    assert any("check-only evidence" in step for step in steps)
-
-
-def test_recommended_next_steps_for_pass_bounded_live_omit_dependency_install():
-    report = {
-        "playwright_available": True,
-        "final_status": "pass",
-        "mode": "execute-bounded-live-check",
-    }
-    steps = m6g.recommended_next_steps(report)
-    assert not any("pip install" in step for step in steps)
-    assert not any("playwright install" in step for step in steps)
-    assert any("bounded-live evidence" in step for step in steps)
+def test_recommended_next_steps_for_successful_browser_runs_omit_dependency_install():
+    for mode, expected in [
+        ("check-only", "check-only evidence"),
+        ("execute-bounded-live-check", "bounded-live evidence"),
+    ]:
+        report = {
+            "playwright_available": True,
+            "final_status": "pass",
+            "mode": mode,
+        }
+        steps = m6g.recommended_next_steps(report)
+        assert not any("pip install" in step for step in steps)
+        assert not any("playwright install" in step for step in steps)
+        assert any(expected in step for step in steps)
 
 
 def test_server_env_policy_preserves_strict_default():
@@ -134,26 +126,19 @@ def test_check_only_starts_fastapi_without_ssl_env_override_for_strict(monkeypat
     assert calls[0]["execute_live"] is False
 
 
-def test_live_strict_does_not_set_compatibility_env(monkeypatch):
+def test_live_ssl_policy_env_selection_for_strict_and_compatibility(monkeypatch):
     start_calls = []
     monkeypatch.setattr(m6g, "playwright_state", lambda: (True, None))
     monkeypatch.setattr(m6g, "start_fastapi", lambda env_policy=None: (start_calls.append(env_policy) or (type("Proc", (), {"terminate": lambda self: None, "wait": lambda self, timeout=None: None})(), 12345, True)))
     monkeypatch.setattr(m6g, "run_browser_check", lambda port, execute_live, ssl_policy: {"frontend_loaded": True, "watchlist_payload_checked": True, "watchlist_items_checked": 1, "id_generation_status": "pass", "validate_request_status": "pass", "plan_request_status": "pass", "execute_request_status": "executed", "unexpected_execute_requests": 0, "polling_detected": False, "targets": ["0050"]})
     args = type("Args", (), {"check_only": False, "execute_bounded_live_check": True, "ssl_policy": "strict"})()
     report = m6g.build_report(args)
-    assert start_calls == [None]
     assert report["effective_server_env_ssl_policy"] is None
     assert report["browser_execute_ssl_policy_source"] == "default"
 
-
-def test_live_compatibility_sets_explicit_env(monkeypatch):
-    start_calls = []
-    monkeypatch.setattr(m6g, "playwright_state", lambda: (True, None))
-    monkeypatch.setattr(m6g, "start_fastapi", lambda env_policy=None: (start_calls.append(env_policy) or (type("Proc", (), {"terminate": lambda self: None, "wait": lambda self, timeout=None: None})(), 12345, True)))
-    monkeypatch.setattr(m6g, "run_browser_check", lambda port, execute_live, ssl_policy: {"frontend_loaded": True, "watchlist_payload_checked": True, "watchlist_items_checked": 1, "id_generation_status": "pass", "validate_request_status": "pass", "plan_request_status": "pass", "execute_request_status": "executed", "unexpected_execute_requests": 0, "polling_detected": False, "targets": ["0050"]})
     args = type("Args", (), {"check_only": False, "execute_bounded_live_check": True, "ssl_policy": "compatibility"})()
     report = m6g.build_report(args)
-    assert start_calls == ["compatibility"]
+    assert start_calls == [None, "compatibility"]
     assert report["requested_ssl_policy"] == "compatibility"
     assert report["effective_server_env_ssl_policy"] == "compatibility"
     assert report["browser_execute_ssl_policy_source"] == "env"
