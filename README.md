@@ -77,9 +77,20 @@ flowchart LR
 Mode semantics are fixed: **Mode A = Canonical Context**, **Mode B = Bounded Observation**, and **Mode C = Conversation Package**. M5F is canonical; M5K is bounded observation; M5Q is source health; M5N is conversation package. Observation is not canonical, reference-only is not current price, and `stale_or_closed_session` is degraded.
 
 
-## Test portfolio principle
+## Test execution profiles
 
-Do not optimize for test count. Optimize for operator journey coverage and risk coverage. Default CI remains `pytest -m "not network" -v`; operator/release preflight and browser/live/cold-clone validation are documented as separate tiers in [`docs/contributor/TESTING_GUIDE.md`](docs/contributor/TESTING_GUIDE.md) and [`docs/reviews/M6H_TEST_PORTFOLIO_RATIONALIZATION_AND_E2E_PRIORITIZATION.md`](docs/reviews/M6H_TEST_PORTFOLIO_RATIONALIZATION_AND_E2E_PRIORITIZATION.md). Optional browser E2E dependencies are installed with `requirements-browser-e2e.txt`; the M6G runner does not auto-install Playwright, Chromium, or OS dependencies.
+Do not optimize for test count. Optimize for operator journey coverage, risk coverage, and the correct execution profile for the change. M6K defines explicit profiles in `config/test_execution_profiles.json` and routes them through `scripts/run_test_profile.py`:
+
+```bash
+python scripts/run_test_profile.py fast --json
+python scripts/run_test_profile.py default-ci --json
+python scripts/run_test_profile.py full-non-network --json
+python scripts/run_test_profile.py operator-preflight --json
+python scripts/run_test_profile.py browser-e2e --json
+python scripts/run_test_profile.py bounded-live --confirm-bounded-live --ssl-policy compatibility
+```
+
+Normal PR CI runs DEFAULT_CI, not the entire non-network suite. FULL_NON_NETWORK preserves the broad `pytest -m "not network"` safety net for release preparation and large refactors. Operator preflight, browser E2E, and bounded live checks remain separate. Optional browser E2E dependencies are installed with `requirements-browser-e2e.txt`; normal DEFAULT_CI does not install Playwright, Chromium, or OS browser dependencies. Strict TLS remains default; compatibility TLS is explicit opt-in only for bounded/live operator commands.
 
 ## Local services
 
