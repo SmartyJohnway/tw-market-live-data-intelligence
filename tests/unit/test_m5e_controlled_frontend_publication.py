@@ -38,11 +38,21 @@ def make_auth(tmp_path, **over):
 def tx_kwargs(tmp_path, src, auth_id='auth-tx'):
     return {'auth_id': auth_id, 'claim_dir': tmp_path / ('claims-' + auth_id), 'expected_src_sha256': m5e.fsha(src), 'candidate_manifest_sha256': m5e.fsha(src), 'simulation_mode': True}
 
-@pytest.mark.parametrize('field,value,code',[('candidate_manifest_sha256','0'*64,'wrong_candidate_hash'),('destination','frontend/public/evil.json','wrong_destination'),('allowed_action','bad','wrong_action'),('operator_acknowledged',False,'acknowledgement_missing'),('expires_at_epoch',1,'expired_token')])
-def test_authorization_failures(tmp_path,field,value,code):
-    d,t=make_auth(tmp_path, **{field:value})
-    errs=m5e.validate_auth(d,t)
-    assert code in errs or any(e.startswith('decision_schema:') or e.startswith('token_schema:') for e in errs)
+def test_authorization_failures(tmp_path):
+    cases = [
+        ('candidate_manifest_sha256', '0' * 64, 'wrong_candidate_hash'),
+        ('destination', 'frontend/public/evil.json', 'wrong_destination'),
+        ('allowed_action', 'bad', 'wrong_action'),
+        ('operator_acknowledged', False, 'acknowledgement_missing'),
+        ('expires_at_epoch', 1, 'expired_token'),
+    ]
+    for field, value, code in cases:
+        case_dir = tmp_path / field
+        case_dir.mkdir()
+        d, t = make_auth(case_dir, **{field: value})
+        errs = m5e.validate_auth(d, t)
+        assert code in errs or any(e.startswith('decision_schema:') or e.startswith('token_schema:') for e in errs)
+
 
 def test_schema_invalid_auth_returns_structured_errors(tmp_path):
     d,t=make_auth(tmp_path, expires_at_epoch=[])
@@ -98,15 +108,31 @@ def test_rollback_refuses_to_overwrite_newer_content(tmp_path):
     assert rb['status']=='manual_recovery_required'
     assert dest.read_text()=='operator-newer-content'
 
-@pytest.mark.parametrize('phase,expected', [('before_temp_write','safe_no_publication_or_temp_only'),('after_temp_write','safe_no_publication_or_temp_only'),('after_backup','safe_no_publication_or_temp_only'),('after_replace','manual_recovery_required'),('before_receipt','manual_recovery_required'),('after_receipt','simulation_completed')])
-def test_crash_recovery_matrix(tmp_path, phase, expected):
-    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; dest.write_text('old'); journal=tmp_path/'j'
-    with pytest.raises(RuntimeError): m5e.publish_transaction(src,dest,journal,crash_at=phase,**tx_kwargs(tmp_path, src, 'crash-'+phase.replace('_','-')))
-    rec=m5e.recover(dest,journal)
-    assert rec['status'] == expected
-    assert (journal/'recovery_state.json').exists()
-    if expected == 'safe_no_publication_or_temp_only':
-        assert dest.read_text() == 'old'
+def test_crash_recovery_matrix(tmp_path):
+    cases = [
+        ('before_temp_write', 'safe_no_publication_or_temp_only'),
+        ('after_temp_write', 'safe_no_publication_or_temp_only'),
+        ('after_backup', 'safe_no_publication_or_temp_only'),
+        ('after_replace', 'manual_recovery_required'),
+        ('before_receipt', 'manual_recovery_required'),
+        ('after_receipt', 'simulation_completed'),
+    ]
+    for phase, expected in cases:
+        case_dir = tmp_path / phase
+        case_dir.mkdir()
+        src = case_dir / 'src'
+        src.write_text('new')
+        dest = case_dir / 'dest'
+        dest.write_text('old')
+        journal = case_dir / 'j'
+        with pytest.raises(RuntimeError):
+            m5e.publish_transaction(src, dest, journal, crash_at=phase, **tx_kwargs(case_dir, src, 'crash-' + phase.replace('_', '-')))
+        rec = m5e.recover(dest, journal)
+        assert rec['status'] == expected
+        assert (journal / 'recovery_state.json').exists()
+        if expected == 'safe_no_publication_or_temp_only':
+            assert dest.read_text() == 'old'
+
 
 def test_path_traversal_and_symlink(tmp_path, monkeypatch):
     monkeypatch.setattr(m5e, 'ROOT', tmp_path)
