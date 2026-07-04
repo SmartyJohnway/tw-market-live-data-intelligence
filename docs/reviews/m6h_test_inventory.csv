@@ -29,7 +29,7 @@ tests/unit/test_frontend_observability_static.py,2,frontend,static_frontend,non-
 tests/unit/test_frontend_readonly_context_package.py,10,frontend,static_frontend,non-network,no,medium,high,medium,low,Tier 1,preserve
 tests/unit/test_frontend_readonly_contract_static.py,1,frontend,contract+static_frontend,non-network,no,medium,high,medium,medium,Tier 1,preserve_core_cases_only
 tests/unit/test_frontend_readonly_golden_snapshots.py,2,frontend,governance+static_frontend,non-network,no,medium,high,medium,low,Tier 1,preserve
-tests/unit/test_frontend_readonly_static_contracts.py,3,frontend,governance+contract+static_frontend,non-network,no,medium,high,medium,medium,Tier 1,preserve_core_cases_only
+tests/unit/test_frontend_readonly_static_contracts.py,2,frontend,governance+contract+static_frontend,non-network,no,medium,high,medium,medium,Tier 1,preserve_core_cases_after_m6j
 tests/unit/test_governance_forbidden_path_guard.py,3,scripts/artifacts,governance,non-network,no,low,high,medium,medium,Tier 1,preserve_core_cases_only
 tests/unit/test_governance_policy_manifest.py,2,scripts/artifacts,governance,non-network,no,low,high,medium,low,Tier 1,preserve
 tests/unit/test_governance_regression_guards.py,9,scripts/artifacts,governance+contract,non-network,no,low,high,medium,low,Tier 1,preserve
@@ -43,7 +43,7 @@ tests/unit/test_m5b_ci_static.py,1,scripts/artifacts,unit,non-network,no,low,med
 tests/unit/test_m5b_controlled_live_probe_runner.py,7,scripts/artifacts,governance+mock,non-network,no,low,high,medium,low,Tier 1,preserve
 tests/unit/test_m5b_execution_authorization.py,7,scripts/artifacts,unit,non-network,no,low,medium,medium,low,Tier 1,preserve
 tests/unit/test_m5b_failure_injection.py,14,scripts/artifacts,governance+contract+mock,non-network,no,low,high,medium,low,Tier 1,preserve_parametrized_isolation_m6i
-tests/unit/test_m5c_controlled_staging_promotion.py,1,scripts/artifacts,unit,non-network,no,low,medium,medium,low,Tier 1,preserve
+tests/unit/test_m5c_controlled_staging_promotion.py,0,scripts/artifacts,unit,non-network,no,low,medium,medium,high,Tier 1,retired_duplicate_m6j
 tests/unit/test_m5c_core_package_validation.py,1,scripts/artifacts,unit,non-network,no,low,medium,medium,low,Tier 1,preserve
 tests/unit/test_m5c_promoted_staging_package.py,2,scripts/artifacts,unit,non-network,no,low,medium,medium,low,Tier 1,preserve
 tests/unit/test_m5c_run_summary_destination_correction.py,2,scripts/artifacts,unit,non-network,no,low,medium,medium,low,Tier 1,preserve
@@ -60,7 +60,7 @@ tests/unit/test_m5e_controlled_frontend_publication.py,25,frontend,governance+co
 tests/unit/test_m5f_canonical_market_context_package.py,19,scripts/artifacts,governance+mock,non-network,no,low,high,medium,low,Tier 1,preserve
 tests/unit/test_m5fgh_consumer_consistency.py,2,scripts/artifacts,unit,non-network,no,low,medium,medium,low,Tier 1,preserve
 tests/unit/test_m5fgh_fastapi_context.py,3,server/api,mock,non-network,no,high,high,medium,low,Tier 2,preserve
-tests/unit/test_m5fgh_frontend_static.py,1,frontend,static_frontend,non-network,no,medium,medium,medium,medium,Tier 1,preserve_core_cases_only
+tests/unit/test_m5fgh_frontend_static.py,0,frontend,static_frontend,non-network,no,medium,medium,medium,high,Tier 1,retired_duplicate_m6j
 tests/unit/test_m5i_explicit_bounded_refresh.py,12,scripts/artifacts,contract+mock,non-network,no,low,high,medium,low,Tier 1,preserve
 tests/unit/test_m5ij_end_to_end_acceptance.py,7,scripts/artifacts,mock,non-network,no,high,medium,medium,low,Tier 2,preserve
 tests/unit/test_m5k_workflow.py,14,server/api,governance+contract+static_frontend,non-network,no,high,high,medium,low,Tier 2,preserve
