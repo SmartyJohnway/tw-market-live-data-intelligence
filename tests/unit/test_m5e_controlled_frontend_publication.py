@@ -44,6 +44,7 @@ def test_authorization_failures(tmp_path,field,value,code):
     errs=m5e.validate_auth(d,t)
     assert code in errs or any(e.startswith('decision_schema:') or e.startswith('token_schema:') for e in errs)
 
+
 def test_schema_invalid_auth_returns_structured_errors(tmp_path):
     d,t=make_auth(tmp_path, expires_at_epoch=[])
     errs=m5e.validate_auth(d,t)
@@ -107,6 +108,7 @@ def test_crash_recovery_matrix(tmp_path, phase, expected):
     assert (journal/'recovery_state.json').exists()
     if expected == 'safe_no_publication_or_temp_only':
         assert dest.read_text() == 'old'
+
 
 def test_path_traversal_and_symlink(tmp_path, monkeypatch):
     monkeypatch.setattr(m5e, 'ROOT', tmp_path)

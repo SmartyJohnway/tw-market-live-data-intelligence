@@ -33,28 +33,19 @@ def test_wrong_hash():
     assert 'request_sha256_mismatch' in codes(validate_authorization(copy_auth(request_sha256='0' * 64), REQ))
 
 
-def test_source_mismatch():
-    assert 'source_mismatch' in codes(runner.validate_execution_scope('Yahoo_Finance', ['2330', '0050', '00929'], 'research/live_probe_runs/m5b/x'))
-
-
-def test_extra_target():
-    assert 'target_set_mismatch' in codes(runner.validate_execution_scope('TWSE_OpenAPI', ['2330', '0050', '00929', '2317'], 'research/live_probe_runs/m5b/x'))
-
-
-def test_duplicate_target():
-    assert 'duplicate_targets' in codes(runner.validate_execution_scope('TWSE_OpenAPI', ['2330', '2330', '00929'], 'research/live_probe_runs/m5b/x'))
-
-
-def test_wildcard():
-    assert 'wildcard_target' in codes(runner.validate_execution_scope('TWSE_OpenAPI', ['*'], 'research/live_probe_runs/m5b/x'))
-
-
-def test_output_traversal():
-    assert 'output_path_unsafe' in codes(runner.validate_execution_scope('TWSE_OpenAPI', ['2330', '0050', '00929'], 'research/live_probe_runs/m5b/../x'))
-
-
-def test_absolute_output():
-    assert 'output_path_unsafe' in codes(runner.validate_execution_scope('TWSE_OpenAPI', ['2330', '0050', '00929'], '/tmp/x'))
+@pytest.mark.parametrize(
+    ("source", "targets", "output_dir", "expected_code"),
+    [
+        ("Yahoo_Finance", ["2330", "0050", "00929"], "research/live_probe_runs/m5b/x", "source_mismatch"),
+        ("TWSE_OpenAPI", ["2330", "0050", "00929", "2317"], "research/live_probe_runs/m5b/x", "target_set_mismatch"),
+        ("TWSE_OpenAPI", ["2330", "2330", "00929"], "research/live_probe_runs/m5b/x", "duplicate_targets"),
+        ("TWSE_OpenAPI", ["*"], "research/live_probe_runs/m5b/x", "wildcard_target"),
+        ("TWSE_OpenAPI", ["2330", "0050", "00929"], "research/live_probe_runs/m5b/../x", "output_path_unsafe"),
+        ("TWSE_OpenAPI", ["2330", "0050", "00929"], "/tmp/x", "output_path_unsafe"),
+    ],
+)
+def test_execution_scope_rejects_invalid_source_targets_and_output_paths(source, targets, output_dir, expected_code):
+    assert expected_code in codes(runner.validate_execution_scope(source, targets, output_dir))
 
 
 def test_retry_classification():
@@ -113,16 +104,17 @@ def test_attempted_full_raw_payload_retention_guard(tmp_path):
         build(run_dir)
 
 
-def test_forbidden_trading_field_guard():
-    errors = runner._detect_forbidden_normalized_fields({'symbol': '2330', 'buy': 'yes'}, 0)
-    assert {'code': 'forbidden_trading_field', 'path': '$.rows[0].buy'} in errors
-    assert runner._contract_status([], 200, True, errors) == 'execution_failed'
-
-
-def test_forbidden_realtime_guarantee_guard():
-    errors = runner._detect_forbidden_normalized_fields({'symbol': '2330', 'realtime_guaranteed': True}, 0)
-    assert {'code': 'forbidden_realtime_guarantee', 'path': '$.rows[0].realtime_guaranteed'} in errors
-    assert runner._contract_status([], 200, True, errors) == 'execution_failed'
+@pytest.mark.parametrize(
+    ("row", "expected"),
+    [
+        ({"symbol": "2330", "buy": "yes"}, {"code": "forbidden_trading_field", "path": "$.rows[0].buy"}),
+        ({"symbol": "2330", "realtime_guaranteed": True}, {"code": "forbidden_realtime_guarantee", "path": "$.rows[0].realtime_guaranteed"}),
+    ],
+)
+def test_forbidden_normalized_field_guards_fail_contract(row, expected):
+    errors = runner._detect_forbidden_normalized_fields(row, 0)
+    assert expected in errors
+    assert runner._contract_status([], 200, True, errors) == "execution_failed"
 
 
 def test_non_retryable_http_400_fails_contract():

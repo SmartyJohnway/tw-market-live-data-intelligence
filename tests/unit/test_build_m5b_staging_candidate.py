@@ -46,19 +46,18 @@ def test_build_staging_candidate_finalizes_manifest_and_ledger(tmp_path):
     assert verify(tmp_path) == []
 
 
-def test_build_staging_candidate_rejects_unauthorized_symbol(tmp_path):
+@pytest.mark.parametrize(
+    ("rows", "match"),
+    [
+        ([{"symbol": "2317"}], "unauthorized symbol"),
+        ([{"symbol": "2330", "recommendation": "buy"}], "forbidden"),
+    ],
+)
+def test_build_staging_candidate_rejects_unsafe_rows(tmp_path, rows, match):
     result = base_result()
-    result['rows'] = [{'symbol': '2317'}]
+    result["rows"] = rows
     write_minimal_run(tmp_path, result)
-    with pytest.raises(ValueError, match='unauthorized symbol'):
-        build(tmp_path)
-
-
-def test_build_staging_candidate_rejects_forbidden_trading_field(tmp_path):
-    result = base_result()
-    result['rows'] = [{'symbol': '2330', 'recommendation': 'buy'}]
-    write_minimal_run(tmp_path, result)
-    with pytest.raises(ValueError, match='forbidden'):
+    with pytest.raises(ValueError, match=match):
         build(tmp_path)
 
 
@@ -85,39 +84,34 @@ def test_duplicate_finalization_rejected_by_default(tmp_path):
         build(tmp_path)
 
 
-def test_manifest_verifier_detects_tamper(tmp_path):
+@pytest.mark.parametrize("case", ["tamper", "missing_artifact"])
+def test_manifest_verifier_detects_tamper_and_missing_artifact(tmp_path, case):
     write_minimal_run(tmp_path, base_result())
     build(tmp_path)
-    data = json.loads((tmp_path / 'bounded_probe_result.json').read_text())
-    data['retained_targets'] = ['2330', '2317']
-    (tmp_path / 'bounded_probe_result.json').write_text(json.dumps(data))
+    if case == "tamper":
+        data = json.loads((tmp_path / "bounded_probe_result.json").read_text())
+        data["retained_targets"] = ["2330", "2317"]
+        (tmp_path / "bounded_probe_result.json").write_text(json.dumps(data))
+        expected_code = "manifest_sha256_mismatch"
+    else:
+        (tmp_path / "request_snapshot.json").unlink()
+        expected_code = "manifest_artifact_missing"
     errors = verify(tmp_path)
-    assert any(error['code'] == 'manifest_sha256_mismatch' for error in errors)
+    assert any(error["code"] == expected_code for error in errors)
 
 
-def test_manifest_verifier_detects_missing_artifact(tmp_path):
+@pytest.mark.parametrize("manifest_mutation", ["final_false", "malformed_json"])
+def test_existing_manifest_rejects_refinalization(tmp_path, manifest_mutation):
     write_minimal_run(tmp_path, base_result())
     build(tmp_path)
-    (tmp_path / 'request_snapshot.json').unlink()
-    errors = verify(tmp_path)
-    assert any(error['code'] == 'manifest_artifact_missing' for error in errors)
-
-
-def test_manifest_final_false_still_rejects_refinalization(tmp_path):
-    write_minimal_run(tmp_path, base_result())
-    build(tmp_path)
-    manifest = json.loads((tmp_path / 'sha256_manifest.json').read_text())
-    manifest['manifest_final'] = False
-    (tmp_path / 'sha256_manifest.json').write_text(json.dumps(manifest))
-    with pytest.raises(ValueError, match='final manifest already exists'):
-        build(tmp_path)
-
-
-def test_malformed_manifest_still_rejects_refinalization(tmp_path):
-    write_minimal_run(tmp_path, base_result())
-    build(tmp_path)
-    (tmp_path / 'sha256_manifest.json').write_text('{not-json')
-    with pytest.raises(ValueError, match='final manifest already exists'):
+    manifest_path = tmp_path / "sha256_manifest.json"
+    if manifest_mutation == "final_false":
+        manifest = json.loads(manifest_path.read_text())
+        manifest["manifest_final"] = False
+        manifest_path.write_text(json.dumps(manifest))
+    else:
+        manifest_path.write_text("{not-json")
+    with pytest.raises(ValueError, match="final manifest already exists"):
         build(tmp_path)
 
 
