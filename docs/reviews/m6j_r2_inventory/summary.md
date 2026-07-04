@@ -2,10 +2,14 @@
 
 Static analysis is advisory and does not prove semantic equivalence by itself.
 
-- Test functions detected: 644
+- Test functions detected: 637
 - Duplicate clusters detected: 439
 - safe_to_auto_retire clusters: 0
 - manual_review_required clusters: 101
+- P0 clusters: 11
+- P1 clusters: 47
+- P2 clusters: 23
+- P3 clusters: 358
 
 ## Risk tag distribution
 - unknown: 257
@@ -16,8 +20,8 @@ Static analysis is advisory and does not prove semantic equivalence by itself.
 - research_generated_write: 44
 - m5f_canonical: 43
 - m5c_staging: 43
-- mcp_fail_closed: 40
 - m5b_staging: 36
+- mcp_fail_closed: 33
 - m5e_publication: 29
 - production_prod_write: 27
 - snapshot_schema: 24
@@ -38,7 +42,6 @@ Static analysis is advisory and does not prove semantic equivalence by itself.
 
 ## Largest duplicate-risk clusters
 - mcp_fail_closed:asyncio_run:equals (14): static cluster overlap needs human semantic review
-- mcp_fail_closed:assertionerror:boolean_identity+equals (10): static cluster overlap needs human semantic review
 - unknown:generate_symbol_observations:contains (7): static cluster overlap needs human semantic review
 - unknown:load:equals (7): static cluster overlap needs human semantic review
 - unknown:any:contains+equals (6): static cluster overlap needs human semantic review
@@ -47,3 +50,4 @@ Static analysis is advisory and does not prove semantic equivalence by itself.
 - unknown:datetime_now:contains+truthy (6): static cluster overlap needs human semantic review
 - frontend_static_contract:read_text:contains (5): static cluster overlap needs human semantic review
 - m5b_staging:codes:contains (5): static cluster overlap needs human semantic review
+- research_generated_write:any:equals (5): static cluster overlap needs human semantic review

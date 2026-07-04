@@ -23,6 +23,8 @@ INVENTORY_COLUMNS = [
 CLUSTER_COLUMNS = [
     "risk_cluster_key","risk_tags","cluster_size","candidate_owner","candidate_duplicates",
     "semantic_equivalence_guess","safe_to_auto_retire","reason",
+    "review_priority","review_score","member_files","unique_called_targets",
+    "unique_assertion_shapes","owner_confidence",
 ]
 OWNER_HINTS = {
     "m5f_canonical": "tests/unit/test_m5f_canonical_market_context_package.py",
@@ -276,11 +278,56 @@ def build_clusters(rows: list[TestRow]) -> list[dict[str, str]]:
         else:
             guess, safe, reason = "unclear", "no", "single test or no duplicate evidence"
         sorted_items = sorted(items, key=lambda r: (r.values["test_file"], int(r.values["line_number"])))
+        member_files = {r.values["test_file"] for r in items}
+        called_targets = {r.values["risk_cluster_key"].split(":", 2)[1] if ":" in r.values["risk_cluster_key"] else "" for r in items}
+        assertion_shapes = {r.values["risk_cluster_key"].rsplit(":", 1)[-1] for r in items}
+        risk_tag_sets = {r.values["risk_tags"] for r in items}
+        text_blob = " ".join(
+            [key, tags]
+            + [r.values["test_file"] for r in items]
+            + [r.values["test_function"] for r in items]
+            + [r.values["called_functions"] for r in items]
+            + [r.values["assertion_keyword_summary"] for r in items]
+        ).lower()
+        safety_penalty_terms = [
+            "failure_injection", "rollback", "crash", "tamper", "tls precedence",
+            "browser", "m6g", "m6e", "ssl_policy", "invalid_ssl_fail_closed",
+            "mcp_fail_closed", "governance_path", "forbidden_behavior", "m5f_canonical",
+        ]
+        score = len(items)
+        if len(called_targets) == 1:
+            score += 3
+        if len(assertion_shapes) == 1:
+            score += 3
+        if len(risk_tag_sets) == 1:
+            score += 2
+        if owner:
+            score += 2
+        if any(marker in text_blob for marker in ["m3g", "m4", "m5a", "m5b", "m5c", "m5d", "m5e", "m5f", "m5k", "m5n", "m6a", "m6b", "m6d"]):
+            score += 1
+        if critical or any(term in text_blob for term in safety_penalty_terms):
+            score -= 6
+        if any(term in text_blob for term in ["failure_injection", "rollback", "crash", "tamper", "tls precedence", "browser e2e"]):
+            score -= 4
+        if score >= 13 and len(items) > 1 and not critical:
+            priority = "P0"
+        elif score >= 9 and len(items) > 1 and not critical:
+            priority = "P1"
+        elif score >= 5 and len(items) > 1:
+            priority = "P2"
+        else:
+            priority = "P3"
+        owner_confidence = "high" if owner and len(risk_tag_sets) == 1 else ("medium" if owner else "low")
         out.append({
             "risk_cluster_key": key, "risk_tags": tags, "cluster_size": str(len(items)),
             "candidate_owner": owner or (f"{sorted_items[0].values['test_file']}::{sorted_items[0].values['test_function']}" if sorted_items else ""),
             "candidate_duplicates": csv_join(f"{r.values['test_file']}::{r.values['test_function']}" for r in sorted_items[1:]),
             "semantic_equivalence_guess": guess, "safe_to_auto_retire": safe, "reason": reason,
+            "review_priority": priority, "review_score": str(score),
+            "member_files": csv_join(member_files),
+            "unique_called_targets": csv_join(called_targets),
+            "unique_assertion_shapes": csv_join(assertion_shapes),
+            "owner_confidence": owner_confidence,
         })
     return out
 
@@ -305,7 +352,8 @@ def main() -> int:
     largest = sorted(clusters, key=lambda c: int(c["cluster_size"]), reverse=True)[:10]
     safe = [c for c in clusters if c["safe_to_auto_retire"] == "yes"]
     manual = [c for c in clusters if c["safe_to_auto_retire"] == "manual_review_required"]
-    summary = ["# M6J-R2 Test Risk Inventory Summary", "", "Static analysis is advisory and does not prove semantic equivalence by itself.", "", f"- Test functions detected: {len(rows)}", f"- Duplicate clusters detected: {len(clusters)}", f"- safe_to_auto_retire clusters: {len(safe)}", f"- manual_review_required clusters: {len(manual)}", "", "## Risk tag distribution"]
+    priority_counts = Counter(c["review_priority"] for c in clusters)
+    summary = ["# M6J-R2 Test Risk Inventory Summary", "", "Static analysis is advisory and does not prove semantic equivalence by itself.", "", f"- Test functions detected: {len(rows)}", f"- Duplicate clusters detected: {len(clusters)}", f"- safe_to_auto_retire clusters: {len(safe)}", f"- manual_review_required clusters: {len(manual)}", f"- P0 clusters: {priority_counts['P0']}", f"- P1 clusters: {priority_counts['P1']}", f"- P2 clusters: {priority_counts['P2']}", f"- P3 clusters: {priority_counts['P3']}", "", "## Risk tag distribution"]
     summary += [f"- {k}: {v}" for k,v in tag_counts.most_common()]
     summary += ["", "## Largest duplicate-risk clusters"]
     summary += [f"- {c['risk_cluster_key']} ({c['cluster_size']}): {c['reason']}" for c in largest]

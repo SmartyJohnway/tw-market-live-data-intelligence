@@ -174,46 +174,6 @@ def test_controlled_tool_without_confirmation_fails_closed_without_runner(monkey
     assert data["artifact_writes"] is False
     assert data["m5i_required_for_actual_execution"] is True
 
-def test_controlled_tool_invalid_source_or_target_fails_closed_without_runner(monkeypatch):
-    def fail_if_called(*args, **kwargs):
-        raise AssertionError("disabled legacy live tool should not execute")
-    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
-    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
-    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
-    assert data["network_calls"] is False
-    assert data["artifact_writes"] is False
-    assert data["m5i_required_for_actual_execution"] is True
-
-def test_controlled_tool_write_or_refresh_request_fails_closed_without_runner(monkeypatch):
-    def fail_if_called(*args, **kwargs):
-        raise AssertionError("disabled legacy live tool should not execute")
-    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
-    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
-    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
-    assert data["network_calls"] is False
-    assert data["artifact_writes"] is False
-    assert data["m5i_required_for_actual_execution"] is True
-
-def test_controlled_tool_valid_confirmation_calls_only_runner_wrapper(monkeypatch):
-    def fail_if_called(*args, **kwargs):
-        raise AssertionError("disabled legacy live tool should not execute")
-    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
-    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
-    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
-    assert data["network_calls"] is False
-    assert data["artifact_writes"] is False
-    assert data["m5i_required_for_actual_execution"] is True
-
-def test_controlled_tool_duplicate_scope_fails_closed_without_runner(monkeypatch):
-    def fail_if_called(*args, **kwargs):
-        raise AssertionError("disabled legacy live tool should not execute")
-    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
-    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
-    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
-    assert data["network_calls"] is False
-    assert data["artifact_writes"] is False
-    assert data["m5i_required_for_actual_execution"] is True
-
 def test_controlled_runner_wrapper_uses_temp_cwd_and_returns_summary(monkeypatch, tmp_path):
     runner_path = tmp_path / mcp_server.CONTROLLED_RUNNER_RELATIVE_PATH
     runner_path.parent.mkdir(parents=True)
@@ -249,26 +209,6 @@ def test_controlled_runner_wrapper_uses_temp_cwd_and_returns_summary(monkeypatch
     assert str(tmp_path) in calls[0]["env"]["PYTHONPATH"]
 
 
-def test_controlled_tool_missing_runner_path_returns_structured_failure(monkeypatch):
-    def fail_if_called(*args, **kwargs):
-        raise AssertionError("disabled legacy live tool should not execute")
-    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
-    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
-    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
-    assert data["network_calls"] is False
-    assert data["artifact_writes"] is False
-    assert data["m5i_required_for_actual_execution"] is True
-
-def test_controlled_tool_timeout_result_does_not_claim_no_network(monkeypatch):
-    def fail_if_called(*args, **kwargs):
-        raise AssertionError("disabled legacy live tool should not execute")
-    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
-    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
-    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
-    assert data["network_calls"] is False
-    assert data["artifact_writes"] is False
-    assert data["m5i_required_for_actual_execution"] is True
-
 def test_controlled_runner_timeout_does_not_claim_no_network(monkeypatch, tmp_path):
     runner_path = tmp_path / mcp_server.CONTROLLED_RUNNER_RELATIVE_PATH
     runner_path.parent.mkdir(parents=True)
@@ -288,16 +228,6 @@ def test_controlled_runner_timeout_does_not_claim_no_network(monkeypatch, tmp_pa
     assert result["network_calls_may_have_occurred"] is True
     assert result["repo_artifacts_updated"] is False
 
-
-def test_controlled_tool_runner_error_after_launch_does_not_claim_no_network(monkeypatch):
-    def fail_if_called(*args, **kwargs):
-        raise AssertionError("disabled legacy live tool should not execute")
-    monkeypatch.setattr(mcp_server, "run_controlled_probe_runner", fail_if_called)
-    data = decode_text_response(asyncio.run(mcp_server.call_tool(mcp_server.CONTROLLED_LIVE_PROBE_TOOL, VALID_CONTROLLED_ARGS)))
-    assert data["status"] == "legacy_live_tool_disabled_pending_m5i"
-    assert data["network_calls"] is False
-    assert data["artifact_writes"] is False
-    assert data["m5i_required_for_actual_execution"] is True
 
 def test_evidence_readback_tool_does_not_execute_controlled_runner(monkeypatch, tmp_path):
     def fail_if_called(*args, **kwargs):

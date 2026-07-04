@@ -73,7 +73,7 @@ tests/unit/test_m6b_contract_hardening.py,7,server/api,governance+contract,non-n
 tests/unit/test_m6d_operator_and_local_networking.py,4,server/api,contract+mock,non-network,no,high,medium,medium,low,Tier 2,preserve
 tests/unit/test_m6d_ssl_policy.py,8,scripts/artifacts,contract+mock,non-network,no,low,medium,high,medium,Tier 1,preserve_core_cases_only
 tests/unit/test_markdown_escaping.py,1,server/api,mock,non-network,no,medium,medium,medium,low,Tier 1,preserve
-tests/unit/test_mcp_server.py,38,server/api,mock,non-network,no,high,high,medium,low,Tier 2,preserve
+tests/unit/test_mcp_server.py,31,server/api,mock,non-network,no,high,high,medium,low,Tier 2,preserve
 tests/unit/test_no_frontend_public_write_guard.py,5,frontend,governance+static_frontend,non-network,no,medium,high,medium,low,Tier 1,preserve
 tests/unit/test_no_trading_signal_ui_guard.py,1,scripts/artifacts,governance,non-network,no,low,high,medium,low,Tier 1,preserve
 tests/unit/test_operator_preflight.py,5,scripts/artifacts,mock,non-network,no,high,medium,medium,low,Tier 2,preserve
