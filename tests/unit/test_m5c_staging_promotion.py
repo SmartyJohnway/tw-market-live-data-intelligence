@@ -1,5 +1,6 @@
 import json, shutil, subprocess, sys
 
+import pytest
 from pathlib import Path
 from scripts.m5c_common import RUN_DIR, verify_evidence, candidate_hash, manifest_hash, forbid_path, load, readonly_payload_from_candidate, TARGETS
 from scripts.assess_m5c_staging_candidate import assess
@@ -53,11 +54,11 @@ def test_blocked_cli_returns_nonzero(tmp_path):
 def test_rollback_failure_injection_no_mutation(tmp_path):
     r=rollback(str(tmp_path)); assert r['write_performed'] is False and r['delete_performed'] is False and r['overwrite_performed'] is False
     results={s['scenario']:s for s in r['scenarios']}; assert r['status']=='rollback_ready_check_only'; assert 'manifest_sha256_mismatch' in results['tampered_manifest']['observed_error_codes']; assert 'manifest_artifact_missing' in results['missing_artifact']['observed_error_codes']; assert 'target_drift' in results['unauthorized_target']['observed_error_codes']; assert 'contract_status_blocked' in results['contract_failure']['observed_error_codes']; assert 'forbidden_flag' in results['forbidden_realtime_trading_flag']['observed_error_codes']; assert 'partial_write_detected' in results['partial_write_simulation']['observed_error_codes']
-def test_rollback_rejects_forbidden_tmp_roots():
-    for bad in ["frontend/public/test", "research/generated/test", "production/test", "prod/test", "research/live_probe_runs/m5b/test", "docs/rollback-test", "scripts/tmp", "."]:
-        r = rollback(bad)
-        assert r["status"] == "blocked"
-        assert r["errors"][0]["code"] == "forbidden_tmp_root"
+@pytest.mark.parametrize("bad", ["frontend/public/test", "research/generated/test", "production/test", "prod/test", "research/live_probe_runs/m5b/test", "docs/rollback-test", "scripts/tmp", "."])
+def test_rollback_rejects_forbidden_tmp_roots(bad):
+    r = rollback(bad)
+    assert r["status"] == "blocked"
+    assert r["errors"][0]["code"] == "forbidden_tmp_root"
 
 
 def test_one_command_preflight_shape():

@@ -141,3 +141,45 @@ No file was deleted and no safety-critical owner was demoted behind a marker. Co
 - M6E operator acceptance.
 - M6G browser/operator E2E and prior bounded-live evidence.
 - Source adapter behavior and live observation behavior.
+
+## Commit 3 correction — preserve pytest case isolation
+
+Commit 3 corrects the Commit 2 implementation detail that hid distinct failure modes inside internal `for` loops. The risk ownership matrix remains the accepted direction, but runtime-count reduction must come from true duplicate retirement, not from removing pytest item-level isolation, reporting, failure localization, or continued execution of later independent cases.
+
+### Commit 3 corrected counts
+
+- Direct function count: 630 direct `test_*` functions.
+- Pytest collected count: 712 collected, 711 selected by `pytest -m "not network" -v`, 710 passed, 1 skipped, 1 deselected.
+- Parametrized pytest cases restored from Commit 2 loop conversions: 42 collected cases.
+- True duplicate cases retired by Commit 3: 0.
+- True duplicate direct tests retired by M6I Commit 1: 43 direct test functions, documented in the Commit 1 replacement mapping above.
+
+### Commit 3 restored parametrized cases
+
+The following Commit 2 loop conversions were restored to `@pytest.mark.parametrize(...)` because they represent meaningfully distinct failure modes or state transitions:
+
+- `test_authorization_failures`
+- `test_crash_recovery_matrix`
+- `test_execution_scope_rejects_invalid_source_targets_and_output_paths`
+- `test_forbidden_normalized_field_guards_fail_contract`
+- `test_build_staging_candidate_rejects_unsafe_rows`
+- `test_manifest_verifier_detects_tamper_and_missing_artifact`
+- `test_existing_manifest_rejects_refinalization`
+- `test_rollback_rejects_forbidden_tmp_roots`
+- `test_invalid_payload_mutations_fail`
+- `test_invalid_payload_builder_cases_record_validation_errors`
+- `test_allowed_target_universe_cases_pass`
+
+### Controlled refresh validator reconciliation
+
+| Case | Commit 3 action | Authoritative owner | Rationale |
+|---|---|---|---|
+| `frontend_write=True` | Restored as an independent parametrized case | `tests/unit/test_controlled_refresh_staging_validator.py`; supported by `tests/unit/test_controlled_refresh_staging_writer.py` | This is a distinct fail-closed write-safety mode and should retain pytest item-level isolation. |
+| `generated_artifact_write=True` | Restored as an independent parametrized case | `tests/unit/test_controlled_refresh_staging_validator.py`; supported by governance path tests | This is a distinct generated-artifact write-safety mode and should retain item-level reporting. |
+| `target_universe mode=all` | Restored as an independent parametrized case | `tests/unit/test_controlled_refresh_staging_validator.py`; supported by `tests/unit/test_validator_regression_matrix.py` | This is a distinct no-full-market vocabulary variant. |
+| `target_universe mode=*` | Restored as an independent parametrized case | `tests/unit/test_controlled_refresh_staging_validator.py`; supported by M5B/M5K bounded-scope tests | Wildcard scope is a distinct full-market risk and remains independently collected. |
+| `target_universe mode=ALL` | Restored as an independent parametrized case | `tests/unit/test_controlled_refresh_staging_validator.py`; supported by `tests/unit/test_validator_regression_matrix.py` | Case-insensitive full-market blocking remains independently reported. |
+
+### Commit 3 policy clarification
+
+Internal-loop consolidation is not used solely to reduce pytest collected count. Cases are preserved as independent pytest items when they represent distinct failure modes, distinct state transitions, or distinct governance vocabulary. Future runtime reductions should delete a case only when the risk coverage matrix identifies an authoritative owner that fully covers the same risk, and the retirement is explicitly documented.
