@@ -85,3 +85,74 @@ def test_inventory_script_does_not_mark_partial_or_unknown_clusters_as_safe(tmp_
 
     assert {cluster["safe_to_auto_retire"] for cluster in clusters} <= {"no", "manual_review_required"}
     assert "yes" not in {cluster["safe_to_auto_retire"] for cluster in clusters}
+
+
+def _tags_for_source(tmp_path: Path, source: str) -> set[str]:
+    path = _write_test(tmp_path, source)
+    rows = analyzer.analyze_file(path, tmp_path, include_assertions=True)
+    return set(rows[0].values["risk_tags"].split(";"))
+
+
+def test_precision_keyword_fail_alone_is_not_mcp_fail_closed(tmp_path):
+    tags = _tags_for_source(tmp_path, "def test_plain_failure_word():\n    assert 'this can fail sometimes'\n")
+
+    assert "mcp_fail_closed" not in tags
+
+
+def test_precision_keyword_contract_alone_is_not_frontend_static_contract(tmp_path):
+    tags = _tags_for_source(tmp_path, "def test_contract_word_only():\n    assert 'source contract exists'\n")
+
+    assert "frontend_static_contract" not in tags
+
+
+def test_precision_keyword_public_alone_is_not_frontend_public_write(tmp_path):
+    tags = _tags_for_source(tmp_path, "def test_public_word_only():\n    assert 'public information'\n")
+
+    assert "frontend_public_write" not in tags
+
+
+def test_precision_mcp_invalid_request_fail_closed_is_mcp_fail_closed(tmp_path):
+    tags = _tags_for_source(
+        tmp_path,
+        "def test_mcp_invalid_request_fails_closed():\n    result = call_mcp_tool('invalid')\n    assert result['status'] == 'rejected'\n",
+    )
+
+    assert "mcp_fail_closed" in tags
+
+
+def test_precision_ssl_policy_invalid_http_400_is_invalid_ssl_fail_closed(tmp_path):
+    tags = _tags_for_source(
+        tmp_path,
+        "def test_ssl_policy_invalid_returns_http_400():\n    response = client.post('/api/execute', json={'ssl_policy': 'bad'})\n    assert response.status_code == 400\n",
+    )
+
+    assert "invalid_ssl_fail_closed" in tags
+
+
+def test_precision_frontend_public_exact_path_tags_write(tmp_path):
+    tags = _tags_for_source(
+        tmp_path,
+        "def test_frontend_public_output_rejected():\n    assert 'frontend/public/latest.json'\n",
+    )
+
+    assert "frontend_public_write" in tags
+
+
+def test_precision_frontend_static_requires_frontend_and_static_contract(tmp_path):
+    tags = _tags_for_source(
+        tmp_path,
+        "def test_frontend_static_contract_tokens():\n    assert '<script src=app.js></script>'\n",
+    )
+
+    assert "frontend_static_contract" in tags
+
+
+def test_cluster_key_uses_primary_risk_target_and_assertion_shape(tmp_path):
+    path = _write_test(
+        tmp_path,
+        "def test_mcp_invalid_request_fails_closed():\n    result = call_mcp_tool('invalid')\n    assert result['status'] == 'rejected'\n",
+    )
+
+    row = analyzer.analyze_file(path, tmp_path, include_assertions=True)[0]
+
+    assert row.values["risk_cluster_key"] == "mcp_fail_closed:call_mcp_tool:equals"

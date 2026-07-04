@@ -11,7 +11,6 @@ import ast
 import csv
 from collections import Counter, defaultdict
 from dataclasses import dataclass
-import hashlib
 from pathlib import Path
 from typing import Iterable
 
@@ -59,8 +58,12 @@ def unparse(node: ast.AST) -> str:
         return type(node).__name__
 
 
+def clean_cell(value: object) -> str:
+    return str(value).strip()
+
+
 def csv_join(items: Iterable[str]) -> str:
-    return ";".join(sorted({i for i in items if i}))
+    return ";".join(sorted({clean_cell(i) for i in items if clean_cell(i)}))
 
 
 def decorator_name(dec: ast.AST) -> str:
@@ -100,30 +103,116 @@ def imports(tree: ast.AST) -> list[str]:
     return out
 
 
-def infer_tags(path: Path, name: str, calls: set[str], strings: list[str]) -> list[str]:
-    blob = " ".join([str(path), name, " ".join(calls), " ".join(strings)]).lower()
-    tags = []
-    checks = [
-        ("m5f_canonical", ["m5f", "canonical"]), ("observation_not_canonical", ["observation", "canonical"]),
-        ("bounded_watchlist", ["bounded", "watchlist"]), ("no_full_market_scan", ["full_market_scan", "full-market", "target_universe"]),
-        ("no_trading_semantics", ["buy", "sell", "hold", "recommendation", "target price", "ranking"]),
-        ("raw_payload_leakage", ["raw payload", "raw_payload"]), ("frontend_public_write", ["frontend", "public"]),
-        ("research_generated_write", ["research/generated", "generated"]), ("production_prod_write", ["prod", "production"]),
-        ("ssl_policy", ["ssl_policy", "tls", "compatibility", "unsafe"]), ("invalid_ssl_fail_closed", ["invalid", "ssl_policy", "fail"]),
-        ("fastapi_execute_confirmation", ["fastapi", "execute", "confirmation"]), ("mcp_fail_closed", ["mcp", "fail"]),
-        ("source_health", ["source_health", "m5q"]), ("conversation_context", ["conversation", "m5n", "context pack"]),
-        ("m6e_acceptance", ["m6e"]), ("m6g_browser_e2e", ["m6g", "browser", "playwright"]),
-        ("frontend_static_contract", ["frontend", "static", "contract"]), ("snapshot_schema", ["snapshot", "schema"]),
-        ("briefing_render", ["briefing", "markdown"]), ("ai_context_pack", ["ai context", "context_pack"]),
-        ("m5b_staging", ["m5b", "staging"]), ("m5c_staging", ["m5c", "rollback", "promotion"]),
-        ("m5e_publication", ["m5e", "publication"]), ("governance_path", ["forbidden_path", "governance"]),
-        ("forbidden_behavior", ["forbidden_behavior", "forbidden behavior"]),
-    ]
-    for tag, needles in checks:
-        if any(n in blob for n in needles):
+
+def normalized_tokens(*parts: str) -> set[str]:
+    text = " ".join(parts).lower().replace("-", "_").replace("/", " ")
+    for ch in "()[]{}.,:;='\"|":
+        text = text.replace(ch, " ")
+    return {token for token in text.split() if token}
+
+
+def contains_any(text: str, needles: Iterable[str]) -> bool:
+    lowered = text.lower().replace("-", "_")
+    return any(needle in lowered for needle in needles)
+
+
+def infer_tags(
+    path: Path,
+    name: str,
+    calls: set[str],
+    strings: list[str],
+    assertion_texts: list[str] | None = None,
+) -> list[str]:
+    """Infer risk tags using rule-based evidence scoring.
+
+    Rules require multi-part evidence instead of broad keyword OR matching. This
+    intentionally favors precision over recall because the analyzer feeds human
+    retirement review.
+    """
+    path_text = str(path).lower()
+    name_text = name.lower()
+    calls_text = " ".join(sorted(calls)).lower()
+    strings_text = " ".join(strings).lower()
+    asserts_text = " ".join(assertion_texts or []).lower()
+    identity_text = " ".join([path_text, name_text, calls_text])
+    evidence_text = " ".join([calls_text, strings_text, asserts_text])
+    all_text = " ".join([identity_text, evidence_text]).replace("-", "_")
+    tags: list[str] = []
+
+    def add(tag: str, condition: bool) -> None:
+        if condition:
             tags.append(tag)
+
+    has_mcp = contains_any(identity_text, ["mcp", "mcp_server"])
+    fail_evidence = contains_any(evidence_text, ["fail_closed", "fails_closed", "rejected", "reject", "error", "status", "400", "http_exception", "httpexception"])
+    add("mcp_fail_closed", has_mcp and fail_evidence)
+
+    has_ssl = contains_any(all_text, ["ssl_policy", "tls", "ssl"])
+    invalid_evidence = contains_any(all_text, ["invalid", "unsupported", "bad_ssl", "bad tls"])
+    ssl_fail_evidence = contains_any(evidence_text, ["fail_closed", "fails_closed", "400", "valueerror", "httpexception", "http_exception", "rejected", "reject", "error"])
+    add("invalid_ssl_fail_closed", has_ssl and invalid_evidence and ssl_fail_evidence)
+    add("ssl_policy", has_ssl and not (has_ssl and invalid_evidence and ssl_fail_evidence))
+
+    add("frontend_public_write", "frontend/public" in str(path).lower() or "frontend/public" in strings_text or (contains_any(all_text, ["frontend"]) and contains_any(all_text, ["write", "output", "destination"])))
+    add("frontend_static_contract", contains_any(all_text, ["frontend"]) and contains_any(all_text, ["static", "contract", "html", " js", ".js", "token"]))
+
+    add("m5f_canonical", contains_any(all_text, ["m5f", "canonical_market_context", "canonical package"]))
+    add("observation_not_canonical", contains_any(all_text, ["observation"]) and contains_any(all_text, ["not canonical", "canonical"]))
+    add("bounded_watchlist", contains_any(all_text, ["bounded_watchlist", "bounded watchlist", "watchlist"]) and contains_any(all_text, ["bounded", "default_watchlist", "target_count", "symbols"]))
+    add("no_full_market_scan", contains_any(all_text, ["full_market_scan", "full market", "target_universe"]) and contains_any(all_text, ["false", "reject", "fails", "blocked", "bounded"]))
+    add("no_trading_semantics", contains_any(all_text, ["trading_signal", "buy_sell_hold", "recommendation", "target price", "ranking"]) and contains_any(all_text, ["forbidden", "absent", "reject", "no_trading", "must_not"]))
+    add("raw_payload_leakage", contains_any(all_text, ["raw_payload", "raw payload", "raw_field_sample"]) and contains_any(all_text, ["leak", "omits", "absent", "forbidden", "does_not_expose", "no_raw"]))
+    add("research_generated_write", contains_any(all_text, ["research/generated"]) or (contains_any(all_text, ["research", "generated"]) and contains_any(all_text, ["write", "output", "destination"])))
+    add("production_prod_write", contains_any(all_text, ["production", "prod"]) and contains_any(all_text, ["write", "output", "destination", "forbidden", "reject"]))
+    add("fastapi_execute_confirmation", contains_any(all_text, ["fastapi", "testclient", "api/"]) and contains_any(all_text, ["execute", "confirmation", "confirm_execute"]))
+    add("source_health", contains_any(all_text, ["source_health", "m5q", "health report"]) and contains_any(all_text, ["health", "degraded", "healthy", "failed", "unsupported", "source"]))
+    add("conversation_context", contains_any(all_text, ["conversation", "m5n", "context pack", "context_package"]) and contains_any(all_text, ["context", "handoff", "markdown", "package"]))
+    add("m6e_acceptance", contains_any(all_text, ["m6e", "operator_acceptance"]))
+    add("m6g_browser_e2e", contains_any(all_text, ["m6g", "browser", "playwright", "e2e"]) and contains_any(all_text, ["browser", "playwright", "e2e", "chromium"]))
+    add("snapshot_schema", contains_any(all_text, ["snapshot"]) and contains_any(all_text, ["schema", "symbol", "source_health", "failed_source"]))
+    add("briefing_render", contains_any(all_text, ["briefing"]) and contains_any(all_text, ["render", "markdown", "table", "heading"]))
+    add("ai_context_pack", contains_any(all_text, ["ai_context", "ai context", "context_pack"]) and contains_any(all_text, ["pack", "markdown", "json", "summary"]))
+    add("m5b_staging", contains_any(all_text, ["m5b"]) and contains_any(all_text, ["staging", "authorization", "controlled_live", "execution_scope"]))
+    add("m5c_staging", contains_any(all_text, ["m5c"]) and contains_any(all_text, ["staging", "promotion", "rollback"]))
+    add("m5e_publication", contains_any(all_text, ["m5e"]) and contains_any(all_text, ["publication", "frontend", "candidate", "transaction"]))
+    add("governance_path", contains_any(all_text, ["governance", "forbidden_path", "forbidden path"]) and contains_any(all_text, ["path", "guard", "forbidden", "changed_files"]))
+    add("forbidden_behavior", contains_any(all_text, ["forbidden_behavior", "forbidden behavior"]) or (contains_any(all_text, ["forbidden"]) and contains_any(all_text, ["scanner", "behavior"])))
+
     return tags or ["unknown"]
 
+
+def normalize_called_target(calls: set[str]) -> str:
+    meaningful = sorted(c for c in calls if c and c not in {"str", "len", "bool", "dict", "list", "set"})
+    if not meaningful:
+        return "no_call"
+    preferred = [c for c in meaningful if not c.startswith(("pytest.", "Path", "json."))]
+    target = (preferred or meaningful)[0]
+    return target.lower().replace(".", "_")[:80]
+
+
+def normalize_assertion_shape(assertion_texts: list[str], tautological: bool) -> str:
+    if tautological:
+        return "tautological"
+    if not assertion_texts:
+        return "no_assert"
+    shapes: list[str] = []
+    for text in assertion_texts:
+        lowered = text.lower()
+        if "==" in lowered:
+            shapes.append("equals")
+        elif "!=" in lowered:
+            shapes.append("not_equals")
+        elif " in " in lowered:
+            shapes.append("contains")
+        elif "not in" in lowered:
+            shapes.append("not_contains")
+        elif "raises" in lowered:
+            shapes.append("raises")
+        elif " is false" in lowered or " is true" in lowered:
+            shapes.append("boolean_identity")
+        else:
+            shapes.append("truthy")
+    return "+".join(sorted(set(shapes)))[:80]
 
 def analyze_file(path: Path, root: Path, include_assertions: bool) -> list[TestRow]:
     tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
@@ -143,26 +232,24 @@ def analyze_file(path: Path, root: Path, include_assertions: bool) -> list[TestR
         asserts = [n for n in ast.walk(node) if isinstance(n, ast.Assert)]
         assertion_texts = [unparse(a.test) for a in asserts]
         strings = const_strings(node)
-        tags = infer_tags(path.resolve().relative_to(root.resolve()), node.name, calls, strings)
         fp = "|".join(sorted(assertion_texts))
         taut = any(" or True" in t or t.strip() == "True" for t in assertion_texts)
-        key_base = tags[0]
-        if taut:
-            cluster = f"{key_base}:tautological_assertion"
-        elif fp:
-            cluster = f"{key_base}:assert:{hashlib.sha256(fp.encode()).hexdigest()[:12]}"
-        else:
-            cluster = f"{key_base}:no_assert:{';'.join(sorted(calls))[:80]}"
+        tags = infer_tags(path.resolve().relative_to(root.resolve()), node.name, calls, strings, assertion_texts)
+        primary_risk_id = tags[0]
+        normalized_target = normalize_called_target(calls)
+        assertion_shape = normalize_assertion_shape(assertion_texts, taut)
+        cluster = f"{primary_risk_id}:{normalized_target}:{assertion_shape}"
         owner = next((OWNER_HINTS[t] for t in tags if t in OWNER_HINTS), "")
         action = "preserve_unique" if any(t in SAFETY_CRITICAL for t in tags) else ("candidate_duplicate" if taut else "defer_manual_review")
-        rows.append(TestRow({
+        row_values = {
             "test_file": str(path.resolve().relative_to(root.resolve())), "test_function": node.name, "line_number": str(node.lineno),
             "decorators": csv_join(decs), "pytest_markers": csv_join(markers), "is_parametrized": str(bool(param_decs)).lower(),
             "parametrize_case_count_estimate": str(case_est), "imported_modules": csv_join(imps), "called_functions": csv_join(calls),
             "assert_count": str(len(asserts)), "assertion_keyword_summary": (" | ".join(assertion_texts)[:300] if include_assertions else csv_join([w for w in ["equals" if "==" in fp else "", "contains" if " in " in fp else "", "truthy" if fp else ""]])),
             "string_constant_summary": " | ".join(strings[:8])[:300], "risk_tags": csv_join(tags), "risk_cluster_key": cluster,
             "likely_authoritative_owner": owner, "recommended_review_action": action, "notes": "static_analysis_advisory" + (";tautological_assertion" if taut else ""),
-        }, fp, taut))
+        }
+        rows.append(TestRow({key: clean_cell(value) for key, value in row_values.items()}, fp, taut))
     return rows
 
 
@@ -211,9 +298,9 @@ def main() -> int:
         rows.extend(analyze_file(path, root, args.include_assertion_snippets))
     clusters = build_clusters(rows)
     with (outdir/"test_function_inventory.csv").open("w", newline="", encoding="utf-8") as f:
-        w=csv.DictWriter(f, fieldnames=INVENTORY_COLUMNS); w.writeheader(); w.writerows([r.values for r in rows])
+        w=csv.DictWriter(f, fieldnames=INVENTORY_COLUMNS, lineterminator="\n"); w.writeheader(); w.writerows([r.values for r in rows])
     with (outdir/"duplicate_risk_clusters.csv").open("w", newline="", encoding="utf-8") as f:
-        w=csv.DictWriter(f, fieldnames=CLUSTER_COLUMNS); w.writeheader(); w.writerows(clusters)
+        w=csv.DictWriter(f, fieldnames=CLUSTER_COLUMNS, lineterminator="\n"); w.writeheader(); w.writerows(clusters)
     tag_counts = Counter(t for r in rows for t in r.values["risk_tags"].split(";") if t)
     largest = sorted(clusters, key=lambda c: int(c["cluster_size"]), reverse=True)[:10]
     safe = [c for c in clusters if c["safe_to_auto_retire"] == "yes"]

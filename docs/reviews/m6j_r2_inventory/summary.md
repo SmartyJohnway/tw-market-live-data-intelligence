@@ -2,48 +2,48 @@
 
 Static analysis is advisory and does not prove semantic equivalence by itself.
 
-- Test functions detected: 636
-- Duplicate clusters detected: 620
+- Test functions detected: 644
+- Duplicate clusters detected: 439
 - safe_to_auto_retire clusters: 0
-- manual_review_required clusters: 11
+- manual_review_required clusters: 101
 
 ## Risk tag distribution
-- mcp_fail_closed: 209
-- invalid_ssl_fail_closed: 203
-- frontend_static_contract: 181
-- frontend_public_write: 142
-- m5b_staging: 130
-- snapshot_schema: 112
-- observation_not_canonical: 93
-- unknown: 85
-- bounded_watchlist: 81
-- fastapi_execute_confirmation: 75
-- m5c_staging: 63
-- m5e_publication: 63
+- unknown: 257
+- frontend_static_contract: 79
+- frontend_public_write: 65
 - ai_context_pack: 57
-- production_prod_write: 54
-- governance_path: 53
-- m5f_canonical: 51
-- ssl_policy: 30
-- conversation_context: 27
-- research_generated_write: 26
-- no_trading_semantics: 24
-- briefing_render: 23
-- source_health: 15
-- no_full_market_scan: 15
-- raw_payload_leakage: 12
+- conversation_context: 56
+- research_generated_write: 44
+- m5f_canonical: 43
+- m5c_staging: 43
+- mcp_fail_closed: 40
+- m5b_staging: 36
+- m5e_publication: 29
+- production_prod_write: 27
+- snapshot_schema: 24
+- bounded_watchlist: 21
+- governance_path: 21
+- source_health: 19
+- ssl_policy: 18
+- no_trading_semantics: 16
+- no_full_market_scan: 13
+- fastapi_execute_confirmation: 11
 - m6g_browser_e2e: 11
+- briefing_render: 9
+- raw_payload_leakage: 9
 - m6e_acceptance: 7
+- invalid_ssl_fail_closed: 7
 - forbidden_behavior: 7
+- observation_not_canonical: 3
 
 ## Largest duplicate-risk clusters
-- invalid_ssl_fail_closed:assert:8b0002c9c02c (5): static cluster overlap needs human semantic review
-- fastapi_execute_confirmation:assert:8b0002c9c02c (3): static cluster overlap needs human semantic review
-- unknown:no_assert:_assert_probe_envelope_first_row_freshness (3): static cluster overlap needs human semantic review
-- bounded_watchlist:assert:fce22b4b2569 (2): static cluster overlap needs human semantic review
-- frontend_public_write:assert:40c836ea8217 (2): static cluster overlap needs human semantic review
-- m5c_staging:assert:924bf332c236 (2): static cluster overlap needs human semantic review
-- m5f_canonical:no_assert:Path;build_package;pytest.raises;write_package (2): static cluster overlap needs human semantic review
-- snapshot_schema:no_assert:Draft202012Validator.check_schema;load (2): static cluster overlap needs human semantic review
-- unknown:assert:4c09a7f74a0c (2): static cluster overlap needs human semantic review
-- unknown:assert:4c56f6835c0a (2): static cluster overlap needs human semantic review
+- mcp_fail_closed:asyncio_run:equals (14): static cluster overlap needs human semantic review
+- mcp_fail_closed:assertionerror:boolean_identity+equals (10): static cluster overlap needs human semantic review
+- unknown:generate_symbol_observations:contains (7): static cluster overlap needs human semantic review
+- unknown:load:equals (7): static cluster overlap needs human semantic review
+- unknown:any:contains+equals (6): static cluster overlap needs human semantic review
+- unknown:copy_candidate:contains (6): static cluster overlap needs human semantic review
+- unknown:datetime:contains+equals (6): static cluster overlap needs human semantic review
+- unknown:datetime_now:contains+truthy (6): static cluster overlap needs human semantic review
+- frontend_static_contract:read_text:contains (5): static cluster overlap needs human semantic review
+- m5b_staging:codes:contains (5): static cluster overlap needs human semantic review
