@@ -68,24 +68,114 @@
       "automatic_ci_allowed": true
     },
     "full-non-network": {
-      "purpose": "Broad non-network regression for releases and large refactors; preserves the existing broad safety net.",
+      "purpose": "Broad non-network regression for releases and large refactors; preserves the existing broad pytest safety net plus legacy check-only CI acceptance gates.",
       "execution_type": "pytest",
       "pytest_expression": "not network",
-      "pytest_paths": ["tests"],
+      "pytest_paths": [
+        "tests"
+      ],
       "network_policy": "no network; equivalent to pytest -m 'not network'",
       "browser_policy": "browser-marked tests may run only if they are non-network and self-skip when dependencies are absent",
       "live_policy": "excludes tests marked network; no explicit bounded live execution",
-      "automatic_ci_allowed": false
+      "automatic_ci_allowed": false,
+      "authoritative_runner": [
+        [
+          "python",
+          "scripts/run_local_delivery_acceptance.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/run_ci_delivery_acceptance.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/run_m4_local_validation.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/run_m4_readiness_check.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/run_m5c_staging_promotion_preflight.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/validate_m5c_supplemental_audit.py"
+        ],
+        [
+          "python",
+          "scripts/run_m5d_frontend_publication_preflight.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/validate_m5d_publication_candidate.py",
+          "--candidate-dir",
+          "research/staging/m5d/m5d_frontend_publication_candidate_01"
+        ],
+        [
+          "python",
+          "scripts/simulate_m5d_frontend_publication_transaction.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/simulate_m5d_frontend_publication_rollback.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/run_m5ij_end_to_end_acceptance.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/validate_m5f_canonical_market_context_package.py",
+          "--package-dir",
+          "research/staging/m5f/m5f_canonical_market_context_01"
+        ],
+        [
+          "python",
+          "scripts/run_m5e_controlled_frontend_publication.py",
+          "--check-only"
+        ]
+      ]
     },
     "operator-preflight": {
       "purpose": "Operator/release readiness through authoritative existing runners.",
       "execution_type": "authoritative_runner",
       "authoritative_runner": [
-        ["python", "scripts/run_m6e_operator_acceptance.py", "--check-only"],
-        ["python", "scripts/run_operator_preflight.py", "--json", "--timeout-seconds", "300"],
-        ["python", "server/mcp_server.py", "--startup-check"],
-        ["python", "scripts/governance_forbidden_path_guard.py"],
-        ["python", "scripts/forbidden_behavior_scanner.py"]
+        [
+          "python",
+          "scripts/run_m6e_operator_acceptance.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/run_operator_preflight.py",
+          "--json",
+          "--timeout-seconds",
+          "300"
+        ],
+        [
+          "python",
+          "server/mcp_server.py",
+          "--startup-check"
+        ],
+        [
+          "python",
+          "scripts/governance_forbidden_path_guard.py"
+        ],
+        [
+          "python",
+          "scripts/forbidden_behavior_scanner.py"
+        ]
       ],
       "network_policy": "no intentional live network execution",
       "browser_policy": "not required",
@@ -95,7 +185,13 @@
     "browser-e2e": {
       "purpose": "Actual browser/operator frontend validation via M6G check-only.",
       "execution_type": "authoritative_runner",
-      "authoritative_runner": [["python", "scripts/run_m6g_browser_operator_e2e.py", "--check-only"]],
+      "authoritative_runner": [
+        [
+          "python",
+          "scripts/run_m6g_browser_operator_e2e.py",
+          "--check-only"
+        ]
+      ],
       "network_policy": "local FastAPI/browser only; no bounded live unless separately confirmed",
       "browser_policy": "requires Playwright Python package and Chromium for full execution",
       "live_policy": "check-only; no bounded live execution",
@@ -104,7 +200,15 @@
     "bounded-live": {
       "purpose": "Explicit operator-approved bounded live observation acceptance.",
       "execution_type": "authoritative_runner",
-      "authoritative_runner": [["python", "scripts/run_m6g_browser_operator_e2e.py", "--execute-bounded-live-check", "--ssl-policy", "{ssl_policy}"]],
+      "authoritative_runner": [
+        [
+          "python",
+          "scripts/run_m6g_browser_operator_e2e.py",
+          "--execute-bounded-live-check",
+          "--ssl-policy",
+          "{ssl_policy}"
+        ]
+      ],
       "network_policy": "explicit bounded live network may occur after confirmation only",
       "browser_policy": "requires browser E2E dependencies for full browser path",
       "live_policy": "requires --confirm-bounded-live; bounded watchlist; no polling, scheduler, startup network, or full-market scan",

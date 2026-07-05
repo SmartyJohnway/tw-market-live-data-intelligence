@@ -180,3 +180,9 @@ Profile semantics:
 - `operator`: operator/preflight validation routed through authoritative scripts rather than duplicated in pytest.
 - `browser`: optional browser automation tests and BROWSER_E2E routing.
 - `network` and `live`: explicit external or bounded-live checks excluded from normal DEFAULT_CI.
+
+### M6K Commit 2 CI gate preservation
+
+FULL_NON_NETWORK now has two phases: broad `pytest -m "not network"` regression and the legacy check-only CI acceptance gates inventoried in `docs/reviews/m6k_ci_gate_migration_matrix.csv`. Do not assume pytest coverage replaces a standalone acceptance runner. Normal DEFAULT_CI intentionally remains smaller and does not run all legacy acceptance gates on every PR.
+
+Windows compatibility smoke is preserved in the `Windows Compatibility Smoke` workflow. It is manual or `windows-smoke` label gated, uses strict defaults, performs no real network execution, and covers M5F canonical validation, M5I bounded refresh contracts, M5IJ acceptance, FastAPI context, MCP startup/fail-closed behavior, SSL policy, and local networking compatibility.

@@ -53,6 +53,18 @@ def test_browser_and_bounded_live_resolve_m6g_modes():
     assert 'run_m6g_browser_operator_e2e.py --execute-bounded-live-check --ssl-policy compatibility' in bounded
 
 
+def test_full_non_network_preserves_legacy_acceptance_gates():
+    rendered = [rtp.command_to_display(cmd) for cmd in rtp.resolve_profile('full-non-network')]
+    joined = '\n'.join(rendered)
+    assert rendered[0].endswith('-m pytest -m not network tests')
+    assert 'run_local_delivery_acceptance.py --check-only' in joined
+    assert 'run_ci_delivery_acceptance.py --check-only' in joined
+    assert 'run_m4_readiness_check.py --check-only' in joined
+    assert 'run_m5ij_end_to_end_acceptance.py --check-only' in joined
+    assert 'validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01' in joined
+    assert 'run_m5e_controlled_frontend_publication.py --check-only' in joined
+
+
 def test_json_output_contract(monkeypatch, capsys):
     def fake_run(cmd, cwd, text, stdout, stderr):
         return subprocess.CompletedProcess(cmd, 0, '============================= test session starts ==============================\ncollected 3 items\n\ntests/unit/test_x.py ...\n============================== 3 passed in 0.01s ===============================\n')

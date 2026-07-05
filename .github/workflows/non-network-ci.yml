@@ -22,6 +22,5 @@ jobs:
       - name: Compile Python files
         run: python -m compileall scripts server tests
       - name: Run FULL_NON_NETWORK profile
+        # Legacy gate routed through the profile: python scripts/run_m4_local_validation.py --check-only
         run: python scripts/run_test_profile.py full-non-network --json
-      - name: M4 local validation check-only
-        run: python scripts/run_m4_local_validation.py --check-only

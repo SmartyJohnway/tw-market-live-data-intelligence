@@ -20,7 +20,10 @@ def resolve_profile(profile:str, *, confirm_bounded_live=False, ssl_policy='stri
     if profile=='bounded-live' and not confirm_bounded_live:
         raise ValueError('bounded-live requires --confirm-bounded-live')
     if p['execution_type']=='pytest':
-        return [[sys.executable,'-m','pytest','-m',p['pytest_expression'],*p.get('pytest_paths',['tests'])]]
+        out = [[sys.executable,'-m','pytest','-m',p['pytest_expression'],*p.get('pytest_paths',['tests'])]]
+        for cmd in p.get('authoritative_runner', []):
+            out.append([sys.executable if c=='python' else c.format(ssl_policy=ssl_policy) for c in cmd])
+        return out
     out=[]
     for cmd in p['authoritative_runner']:
         out.append([sys.executable if c=='python' else c.format(ssl_policy=ssl_policy) for c in cmd])

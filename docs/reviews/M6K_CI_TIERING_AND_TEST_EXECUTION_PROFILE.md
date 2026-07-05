@@ -38,3 +38,17 @@ DEFAULT_CI retains the core merge-protection owners in [`m6k_default_ci_risk_own
 ## Operator trial path
 
 After M6K, the expected operator path is: fresh clone, install documented dependencies, run operator preflight, start FastAPI/frontend, use Mode A/B/C interactively, and run bounded live only by explicit operator choice.
+
+## Commit 2 CI gate reconciliation
+
+Commit 2 compared the pre-M6K `.github/workflows/ci.yml` and `.github/workflows/non-network-ci.yml` against the M6K workflows and inventoried every removed command/job in [`m6k_ci_gate_migration_matrix.csv`](m6k_ci_gate_migration_matrix.csv).
+
+Answers:
+
+- Legacy CI gates before M6K: broad non-network pytest, M5E controlled frontend publication check-only, local/CI delivery acceptance, M4 local validation/readiness, M5C staging/audit gates, M5D frontend publication preflight/candidate/transaction/rollback gates, M5IJ check-only, M5F canonical validation, and Windows M5F smoke.
+- Gates remaining normal merge protection: compileall and DEFAULT_CI profile only, keeping normal PR runtime materially smaller than FULL_NON_NETWORK.
+- Gates moved to FULL_NON_NETWORK: legacy standalone acceptance/check-only runners from the old Linux non-network CI are preserved as authoritative runner steps in the FULL_NON_NETWORK profile.
+- Gates moved to OPERATOR_PREFLIGHT: existing M6E/operator/MCP/governance/forbidden-scanner preflight remains routed through OPERATOR_PREFLIGHT; the legacy CI gates are not assumed to be replaced by OPERATOR_PREFLIGHT unless listed there.
+- Gates moved to BROWSER_E2E: none of the removed legacy gates required Playwright/Chromium; browser E2E remains separate.
+- Retired gates: none. Duplicate legacy M5IJ/M5E entries are preserved once in the FULL_NON_NETWORK profile; no gate is retired without authorization.
+- Windows compatibility smoke: restored as `Windows Compatibility Smoke`, a manual or label-gated workflow that compiles and runs non-network M5F, M5I, M5IJ, FastAPI context, MCP, SSL policy, and local networking compatibility tests, plus M5F validation, M5IJ acceptance, and MCP startup check. It performs no real network or bounded live execution and uses strict TLS defaults.
