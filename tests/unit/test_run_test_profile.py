@@ -65,6 +65,30 @@ def test_full_non_network_preserves_legacy_acceptance_gates():
     assert 'run_m5e_controlled_frontend_publication.py --check-only' in joined
 
 
+def test_composite_profile_metrics_ignore_authoritative_runner_output(monkeypatch, capsys):
+    outputs = iter([
+        '============================= test session starts ==============================\ncollected 3 items\n\ntests/unit/test_x.py ...\n============================== 3 passed in 0.01s ===============================\n',
+        'authoritative runner says collected 999 items and 999 failed\n',
+    ])
+
+    def fake_run(cmd, cwd, text, stdout, stderr):
+        return subprocess.CompletedProcess(cmd, 0, next(outputs))
+
+    monkeypatch.setattr(rtp.subprocess, 'run', fake_run)
+    monkeypatch.setattr(rtp, 'resolve_profile_plan', lambda *a, **k: [
+        {'command': ['python', '-m', 'pytest', 'tests/unit/test_x.py'], 'execution_kind': 'pytest'},
+        {'command': ['python', 'scripts/fake_authoritative.py'], 'execution_kind': 'authoritative_runner'},
+    ])
+    assert rtp.main(['full-non-network', '--json']) == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert payload['collected'] == 3
+    assert payload['selected'] == 3
+    assert payload['passed'] == 3
+    assert payload['failed'] != 999
+    assert [r['execution_kind'] for r in payload['command_results']] == ['pytest', 'authoritative_runner']
+    assert all('_output' not in r for r in payload['command_results'])
+
+
 def test_json_output_contract(monkeypatch, capsys):
     def fake_run(cmd, cwd, text, stdout, stderr):
         return subprocess.CompletedProcess(cmd, 0, '============================= test session starts ==============================\ncollected 3 items\n\ntests/unit/test_x.py ...\n============================== 3 passed in 0.01s ===============================\n')
@@ -81,3 +105,5 @@ def test_json_output_contract(monkeypatch, capsys):
     assert payload['collected'] == 3
     assert payload['selected'] == 3
     assert payload['passed'] == 3
+    assert payload['command_results'][0]['execution_kind'] == 'pytest'
+    assert '_output' not in payload['command_results'][0]
