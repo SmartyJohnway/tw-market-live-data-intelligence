@@ -1,0 +1,31 @@
+name: Windows Compatibility Smoke
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: ["main"]
+    types: [labeled]
+
+jobs:
+  windows-compatibility-smoke:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'windows-smoke')
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install test dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Compile Windows compatibility surfaces
+        run: python -m compileall scripts server tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_end_to_end_acceptance.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py tests/unit/test_m6d_ssl_policy.py tests/unit/test_m6d_operator_and_local_networking.py
+      - name: Run Windows non-network compatibility smoke tests
+        run: pytest -m "not network" tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_end_to_end_acceptance.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py tests/unit/test_m6d_ssl_policy.py tests/unit/test_m6d_operator_and_local_networking.py -q
+      - name: Validate M5F package
+        run: python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01
+      - name: M5IJ Windows acceptance
+        run: python scripts/run_m5ij_end_to_end_acceptance.py --check-only
+      - name: MCP startup check
+        run: python server/mcp_server.py --startup-check

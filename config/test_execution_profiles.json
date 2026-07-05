@@ -1,0 +1,218 @@
+{
+  "schema_version": "1.0",
+  "profiles": {
+    "fast": {
+      "purpose": "Developer/Codex inner feedback loop for high-signal deterministic safety contracts.",
+      "execution_type": "pytest",
+      "pytest_expression": "not network",
+      "pytest_paths": [
+        "tests/unit/test_m5k_workflow.py",
+        "tests/unit/test_m5n_watchlist_workflow.py",
+        "tests/unit/test_m6d_ssl_policy.py",
+        "tests/unit/test_server.py",
+        "tests/unit/test_mcp_server.py",
+        "tests/unit/test_governance_forbidden_path_guard.py",
+        "tests/unit/test_forbidden_behavior_scanner.py",
+        "tests/unit/test_no_frontend_public_write_guard.py",
+        "tests/unit/test_no_trading_signal_ui_guard.py",
+        "tests/unit/test_m6d_operator_and_local_networking.py",
+        "tests/unit/test_run_test_profile.py"
+      ],
+      "network_policy": "no network; excludes tests marked network",
+      "browser_policy": "not required",
+      "live_policy": "never executes live checks",
+      "automatic_ci_allowed": true
+    },
+    "default-ci": {
+      "purpose": "Normal PR/push merge protection: FAST plus representative integration, source, frontend, canonical, observation, and source-health contracts.",
+      "execution_type": "pytest",
+      "pytest_expression": "not network and not browser and not live and not release_preflight",
+      "pytest_paths": [
+        "tests/unit/test_m5k_workflow.py",
+        "tests/unit/test_m5n_watchlist_workflow.py",
+        "tests/unit/test_m6d_ssl_policy.py",
+        "tests/unit/test_server.py",
+        "tests/unit/test_mcp_server.py",
+        "tests/unit/test_governance_forbidden_path_guard.py",
+        "tests/unit/test_forbidden_behavior_scanner.py",
+        "tests/unit/test_no_frontend_public_write_guard.py",
+        "tests/unit/test_no_trading_signal_ui_guard.py",
+        "tests/unit/test_m6d_operator_and_local_networking.py",
+        "tests/unit/test_run_test_profile.py",
+        "tests/unit/test_m5f_canonical_market_context_package.py",
+        "tests/unit/test_m5fgh_consumer_consistency.py",
+        "tests/unit/test_m5fgh_fastapi_context.py",
+        "tests/unit/test_m5fgh_frontend_static.py",
+        "tests/unit/test_m5i_explicit_bounded_refresh.py",
+        "tests/unit/test_m5op_frontend_operator_workflow.py",
+        "tests/unit/test_m6a_observation_ux.py",
+        "tests/unit/test_m6b_contract_hardening.py",
+        "tests/test_m5q_source_health.py",
+        "tests/test_m6e_operator_acceptance.py",
+        "tests/unit/test_frontend_readonly_static_contracts.py",
+        "tests/unit/test_frontend_readonly_contract_static.py",
+        "tests/unit/test_frontend_readonly_context_package.py",
+        "tests/unit/test_frontend_accessibility_static.py",
+        "tests/unit/test_frontend_observability_static.py",
+        "tests/unit/test_twse_mis_normalization_v2.py",
+        "tests/unit/test_twse_openapi_normalization_v1.py",
+        "tests/unit/test_tpex_openapi_normalization_v1.py",
+        "tests/unit/test_yahoo_normalized_chart_v1.py",
+        "tests/unit/test_source_contract_schema.py",
+        "tests/unit/test_source_authority_registry.py",
+        "tests/unit/test_source_family_coverage_matrix.py"
+      ],
+      "network_policy": "no network; excludes tests marked network",
+      "browser_policy": "does not install or require Playwright/Chromium",
+      "live_policy": "never executes bounded live checks",
+      "automatic_ci_allowed": true
+    },
+    "full-non-network": {
+      "purpose": "Broad non-network regression for releases and large refactors; preserves the existing broad pytest safety net plus legacy check-only CI acceptance gates.",
+      "execution_type": "pytest",
+      "pytest_expression": "not network",
+      "pytest_paths": [
+        "tests"
+      ],
+      "network_policy": "no network; equivalent to pytest -m 'not network'",
+      "browser_policy": "browser-marked tests may run only if they are non-network and self-skip when dependencies are absent",
+      "live_policy": "excludes tests marked network; no explicit bounded live execution",
+      "automatic_ci_allowed": false,
+      "authoritative_runner": [
+        [
+          "python",
+          "scripts/run_local_delivery_acceptance.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/run_ci_delivery_acceptance.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/run_m4_local_validation.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/run_m4_readiness_check.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/run_m5c_staging_promotion_preflight.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/validate_m5c_supplemental_audit.py"
+        ],
+        [
+          "python",
+          "scripts/run_m5d_frontend_publication_preflight.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/validate_m5d_publication_candidate.py",
+          "--candidate-dir",
+          "research/staging/m5d/m5d_frontend_publication_candidate_01"
+        ],
+        [
+          "python",
+          "scripts/simulate_m5d_frontend_publication_transaction.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/simulate_m5d_frontend_publication_rollback.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/run_m5ij_end_to_end_acceptance.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/validate_m5f_canonical_market_context_package.py",
+          "--package-dir",
+          "research/staging/m5f/m5f_canonical_market_context_01"
+        ],
+        [
+          "python",
+          "scripts/run_m5e_controlled_frontend_publication.py",
+          "--check-only"
+        ]
+      ]
+    },
+    "operator-preflight": {
+      "purpose": "Operator/release readiness through authoritative existing runners.",
+      "execution_type": "authoritative_runner",
+      "authoritative_runner": [
+        [
+          "python",
+          "scripts/run_m6e_operator_acceptance.py",
+          "--check-only"
+        ],
+        [
+          "python",
+          "scripts/run_operator_preflight.py",
+          "--json",
+          "--timeout-seconds",
+          "300"
+        ],
+        [
+          "python",
+          "server/mcp_server.py",
+          "--startup-check"
+        ],
+        [
+          "python",
+          "scripts/governance_forbidden_path_guard.py"
+        ],
+        [
+          "python",
+          "scripts/forbidden_behavior_scanner.py"
+        ]
+      ],
+      "network_policy": "no intentional live network execution",
+      "browser_policy": "not required",
+      "live_policy": "never executes bounded live checks",
+      "automatic_ci_allowed": false
+    },
+    "browser-e2e": {
+      "purpose": "Actual browser/operator frontend validation via M6G check-only.",
+      "execution_type": "authoritative_runner",
+      "authoritative_runner": [
+        [
+          "python",
+          "scripts/run_m6g_browser_operator_e2e.py",
+          "--check-only"
+        ]
+      ],
+      "network_policy": "local FastAPI/browser only; no bounded live unless separately confirmed",
+      "browser_policy": "requires Playwright Python package and Chromium for full execution",
+      "live_policy": "check-only; no bounded live execution",
+      "automatic_ci_allowed": false
+    },
+    "bounded-live": {
+      "purpose": "Explicit operator-approved bounded live observation acceptance.",
+      "execution_type": "authoritative_runner",
+      "authoritative_runner": [
+        [
+          "python",
+          "scripts/run_m6g_browser_operator_e2e.py",
+          "--execute-bounded-live-check",
+          "--ssl-policy",
+          "{ssl_policy}"
+        ]
+      ],
+      "network_policy": "explicit bounded live network may occur after confirmation only",
+      "browser_policy": "requires browser E2E dependencies for full browser path",
+      "live_policy": "requires --confirm-bounded-live; bounded watchlist; no polling, scheduler, startup network, or full-market scan",
+      "automatic_ci_allowed": false
+    }
+  }
+}

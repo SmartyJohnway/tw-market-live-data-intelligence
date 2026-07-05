@@ -1,71 +1,26 @@
-name: M3MNOP non-network CI
+name: Full Non-Network Regression
+
 on:
+  workflow_dispatch:
   pull_request:
-  push:
-    branches: [main]
+    branches: ["main"]
+    types: [labeled]
+
 jobs:
-  non-network-acceptance:
+  full-non-network:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'full-non-network')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: actions/setup-python@v5
-        with: {python-version: '3.11'}
-      - name: Install test dependencies
-        run: python -m pip install -r requirements.txt
-      - name: Compile scripts and tests
-        run: python -m compileall scripts server tests
-      - name: Run non-network tests
-        run: pytest -m "not network"
-      - name: Run local delivery acceptance check-only
-        run: python scripts/run_local_delivery_acceptance.py --check-only
-      - name: Run CI delivery acceptance check-only
-        run: python scripts/run_ci_delivery_acceptance.py --check-only
-
-      - name: M4 check
-        run: python scripts/run_m4_local_validation.py --check-only
-
-      - name: M4 check
-        run: python scripts/run_m4_readiness_check.py --check-only
-      - name: M5C staging promotion preflight check-only
-        run: python scripts/run_m5c_staging_promotion_preflight.py --check-only
-      - name: M5C supplemental audit validation
-        run: python scripts/validate_m5c_supplemental_audit.py
-      - name: M5D frontend publication preflight check-only
-        run: python scripts/run_m5d_frontend_publication_preflight.py --check-only
-
-      - name: M5D publication candidate validation
-        run: python scripts/validate_m5d_publication_candidate.py --candidate-dir research/staging/m5d/m5d_frontend_publication_candidate_01
-      - name: M5D transaction simulation check-only
-        run: python scripts/simulate_m5d_frontend_publication_transaction.py --check-only
-      - name: M5D rollback simulation check-only
-        run: python scripts/simulate_m5d_frontend_publication_rollback.py --check-only
-
-      - name: M5IJ end-to-end acceptance check-only
-        run: python scripts/run_m5ij_end_to_end_acceptance.py --check-only
-      - name: Validate M5F package
-        run: python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01
-      - name: M5IJ acceptance check-only
-        run: python scripts/run_m5ij_end_to_end_acceptance.py --check-only
-      - name: M5E controlled frontend publication release gate check-only
-        run: python scripts/run_m5e_controlled_frontend_publication.py --check-only
-
-  windows-m5f-smoke:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v5
-        with: {python-version: '3.11'}
-      - name: Install test dependencies
+          python-version: "3.11"
+      - name: Install dependencies
         run: python -m pip install -r requirements.txt
-      - name: Compile M5F/FastAPI/MCP surfaces
-        run: python -m compileall scripts server tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_end_to_end_acceptance.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py
-      - name: Run Windows M5F non-network smoke tests
-        run: pytest -m "not network" tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_end_to_end_acceptance.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py -q
-      - name: Validate M5F package
-        run: python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01
-      - name: M5IJ Windows acceptance
-        run: python scripts/run_m5ij_end_to_end_acceptance.py --check-only
+      - name: Compile Python files
+        run: python -m compileall scripts server tests
+      - name: Run FULL_NON_NETWORK profile
+        # Legacy gate routed through the profile: python scripts/run_m4_local_validation.py --check-only
+        run: python scripts/run_test_profile.py full-non-network --json
