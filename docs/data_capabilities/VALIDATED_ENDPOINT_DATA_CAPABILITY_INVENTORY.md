@@ -4,7 +4,7 @@
 
 This inventory includes validated runtime sources, validated contracts/probes, validated historical workbench sources, catalogued candidates, and credential-gated providers. Not every listed source family is a validated usable endpoint. The current product works, but the exposed live context remains thin because several raw fields are known while the parser/normalizer/consumers retain only selected facts. This report separates source availability, parser consumption, normalized retention, and consumer exposure before M7A/M7B/M7C/M7D/M7E implementation.
 
-Evidence-status counts: {'validated_runtime_source': 11, 'validated_contract_or_probe': 3, 'validated_historical_workbench': 1, 'credential_gated_provider': 2}
+Evidence-status counts: {'validated_runtime_source': 11, 'validated_contract_or_probe': 4, 'validated_historical_workbench': 1, 'credential_gated_provider': 2}
 
 ## Source-family summary
 
@@ -14,6 +14,7 @@ Evidence-status counts: {'validated_runtime_source': 11, 'validated_contract_or_
 | TAIFEX_MIS | validated_runtime_source | implemented_normalized_now | official_browser_json | live_or_intraday | True | M7A_rich_mis_observation_contract |
 | TWSE_OpenAPI | validated_contract_or_probe | implemented_probe_or_contract_now | official_openapi | end_of_day | False | M7C_official_eod_context_expansion |
 | TPEx_OpenAPI | validated_contract_or_probe | implemented_probe_or_contract_now | official_openapi | end_of_day | False | M7C_official_eod_context_expansion |
+| TAIFEX_OpenAPI | validated_contract_or_probe | implemented_docs_only | official_openapi | official_statistical | False | M7_or_M8_decision_pending |
 | Yahoo_Finance | validated_contract_or_probe | implemented_probe_or_contract_now | unofficial_api | historical | False | M7D_optional_third_party_historical_context |
 | FinMind | validated_historical_workbench | validated_historical_workbench | commercial_api | historical | False | M7D_optional_third_party_historical_context |
 | Fugle_MarketData | credential_gated_provider | credential_gated_not_usable_now | commercial_api | credential_dependent | False | M7E_credential_gated_provider_research |
@@ -33,7 +34,7 @@ Evidence-status counts: {'validated_runtime_source': 11, 'validated_contract_or_
 | category | source_ids |
 |---|---|
 | external_runtime_sources | TWSE_MIS, TAIFEX_MIS |
-| official_eod_contract_sources | TWSE_OpenAPI, TPEx_OpenAPI |
+| official_eod_contract_sources | TWSE_OpenAPI, TPEx_OpenAPI, TAIFEX_OpenAPI |
 | unofficial_or_commercial_contract_sources | Yahoo_Finance, FinMind |
 | credential_gated_providers | Fugle_MarketData, Fubon_Neo_API |
 | local_product_surfaces_or_artifacts | Local_M5F_canonical_context, Local_M5K_latest_observation, Local_M5K_observation_history, M5N_watchlist_conversation_handoff, M5Q_source_health_report, FastAPI_context_endpoints, FastAPI_live_observation_endpoints, FastAPI_conversation_context_endpoint, MCP_server_exposed_resources_tools |
@@ -95,6 +96,17 @@ Evidence-status counts: {'validated_runtime_source': 11, 'validated_contract_or_
 - Evidence claims:
   - `tpex_openapi_contract` (confirmed_from_contract): Official TPEx OpenAPI EOD contract includes close/change/OHLC/volume/value/transaction fields plus additional reference/bid/ask-like fields. Evidence: docs/protocol/TPEX_OPENAPI_FIELD_DICTIONARY.md, docs/contracts/tpex_openapi_normalized_eod_quote_v1.md; symbol/section: field dictionary.
 
+### TAIFEX_OpenAPI
+
+- Evidence status: validated_contract_or_probe
+- Runtime integrated: False; runtime exposure: docs_only, contract_known_but_not_implemented
+- Evidence files: docs/data_capabilities/taifex_openapi_endpoint_inventory.json, docs/protocol/TAIFEX_OPENAPI_PROTOCOL.md, docs/contracts/taifex_openapi_source_family_v1.md
+- Current normalized/retained fields: None.
+- Raw/source fields known: DailyMarketReportFut, DailyMarketReportOpt, PutCallRatio, MarketDataOfMajorInstitutionalTraders*, OpenInterestOfLargeTraders*, DailyForeignExchangeRates, FinalSettlementPrice, TimeAndSalesData, OptionsTimeAndSalesData
+- Dropped-field handling: See top-level dropped_field_decisions and field_inventory lifecycle rows; names alone are insufficient evidence.
+- Evidence claims:
+  - `taifex_openapi_contract_preflight` (confirmed_from_contract): Official TAIFEX OAS metadata exposes derivative daily quote, statistical, reference, and historical/time-and-sales report endpoints; this source family is not runtime integrated and remains distinct from TAIFEX_MIS. Evidence: docs/data_capabilities/taifex_openapi_endpoint_inventory.json, docs/protocol/TAIFEX_OPENAPI_PROTOCOL.md; symbol/section: endpoint inventory.
+
 ### Yahoo_Finance
 
 - Evidence status: validated_contract_or_probe
@@ -111,7 +123,7 @@ Evidence-status counts: {'validated_runtime_source': 11, 'validated_contract_or_
 - Evidence status: validated_historical_workbench
 - Runtime integrated: False; runtime exposure: docs_only, contract_known_but_not_implemented
 - Evidence files: docs/capability_matrix.md, docs/protocol/OFFICIAL_OPENAPI_SOURCE_SEMANTICS.md
-- Current normalized/retained fields: none in runtime
+- Current normalized/retained fields: None.
 - Raw/source fields known: dataset-dependent
 - Dropped-field handling: See top-level dropped_field_decisions and field_inventory lifecycle rows; names alone are insufficient evidence.
 - Evidence claims:
@@ -122,7 +134,7 @@ Evidence-status counts: {'validated_runtime_source': 11, 'validated_contract_or_
 - Evidence status: credential_gated_provider
 - Runtime integrated: False; runtime exposure: docs_only
 - Evidence files: docs/capability_matrix.md, config/m5l_live_source_adapter_matrix.json
-- Current normalized/retained fields: none in runtime
+- Current normalized/retained fields: None.
 - Raw/source fields known: unknown_needs_credentials
 - Dropped-field handling: See top-level dropped_field_decisions and field_inventory lifecycle rows; names alone are insufficient evidence.
 - Evidence claims:
@@ -133,7 +145,7 @@ Evidence-status counts: {'validated_runtime_source': 11, 'validated_contract_or_
 - Evidence status: credential_gated_provider
 - Runtime integrated: False; runtime exposure: docs_only
 - Evidence files: docs/capability_matrix.md, config/m5l_live_source_adapter_matrix.json
-- Current normalized/retained fields: none in runtime
+- Current normalized/retained fields: None.
 - Raw/source fields known: unknown_needs_broker_credentials
 - Dropped-field handling: See top-level dropped_field_decisions and field_inventory lifecycle rows; names alone are insufficient evidence.
 - Evidence claims:

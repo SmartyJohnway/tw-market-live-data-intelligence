@@ -51,6 +51,34 @@
       "notes": "M4 design-only registry entry."
     },
     {
+      "source_id": "TAIFEX_OpenAPI",
+      "source_family": "official_exchange",
+      "authority_level": "official",
+      "official_status": "official",
+      "allowed_roles": [
+        "documentation",
+        "fixture_validation",
+        "contract_preflight"
+      ],
+      "forbidden_roles": [
+        "production_current_market_state",
+        "live_observation",
+        "trading_signal"
+      ],
+      "risk_flags": [
+        "delayed_possible",
+        "not_production_current_market_state_by_itself",
+        "validation_only"
+      ],
+      "required_caveats": [
+        "not_realtime_guaranteed",
+        "not_production_current_state"
+      ],
+      "production_current_state_allowed": false,
+      "live_probe_authorization_required": true,
+      "notes": "M7-01 registration-only TAIFEX OpenAPI/OAS source family; distinct from TAIFEX_MIS and not runtime-integrated."
+    },
+    {
       "source_id": "TWSE_MIS",
       "source_family": "exchange_frontend",
       "authority_level": "candidate",
