@@ -77,6 +77,10 @@ flowchart LR
 Mode semantics are fixed: **Mode A = Canonical Context**, **Mode B = Bounded Observation**, and **Mode C = Conversation Package**. M5F is canonical; M5K is bounded observation; M5Q is source health; M5N is conversation package. Observation is not canonical, reference-only is not current price, and `stale_or_closed_session` is degraded.
 
 
+## Data capability map
+
+This repo includes canonical local context, bounded live observation, conversation context, source health, validated runtime sources, validated contracts/probes, validated historical workbench sources, catalogued candidates, and credential-gated providers. The full source/field/AI-context capability inventory is in [`docs/data_capabilities/VALIDATED_ENDPOINT_DATA_CAPABILITY_INVENTORY.md`](docs/data_capabilities/VALIDATED_ENDPOINT_DATA_CAPABILITY_INVENTORY.md), with machine-readable data in [`docs/data_capabilities/validated_endpoint_data_capability_inventory.json`](docs/data_capabilities/validated_endpoint_data_capability_inventory.json). Not every listed source family is a validated usable endpoint, and raw availability does not mean every field is currently parsed, normalized, retained, or exposed. All AI usage is context-only, caveated, and non-trading.
+
 ## Test execution profiles
 
 Do not optimize for test count. Optimize for operator journey coverage, risk coverage, and the correct execution profile for the change. M6K defines explicit profiles in `config/test_execution_profiles.json` and routes them through `scripts/run_test_profile.py`:
