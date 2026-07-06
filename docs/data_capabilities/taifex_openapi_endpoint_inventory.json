@@ -1,0 +1,616 @@
+{
+  "deferred_or_out_of_scope_summary": {
+    "examples_deferred": [
+      "/CCP_CMLists",
+      "/FCMLists",
+      "/Daily_FUT",
+      "/MonthlyTradingStatisticsFutures",
+      "/va01"
+    ],
+    "included_materially_relevant_endpoints": 13,
+    "reason": "Schema contains many member lists, broker financial statistics, annual/monthly statistics, collateral, margin, and administrative reference endpoints. They are catalogued as official TAIFEX statistical/reference coverage but not individually contracted for M7 runtime.",
+    "total_openapi_paths_inspected": 135
+  },
+  "distinct_from_source_ids": [
+    "TAIFEX_MIS"
+  ],
+  "endpoint_categories": [
+    "futures_daily_quote",
+    "options_daily_quote",
+    "put_call_ratio",
+    "institutional_investor_futures",
+    "institutional_investor_options",
+    "large_trader_open_interest",
+    "settlement_or_reference",
+    "foreign_exchange_reference",
+    "historical_time_and_sales",
+    "margin_or_fee_reference",
+    "member_or_participant_reference",
+    "other_official_derivatives_statistics",
+    "unknown_or_deferred"
+  ],
+  "endpoints": [
+    {
+      "authority_class": "official_openapi",
+      "category": "futures_daily_quote",
+      "endpoint_id": "taifex_openapi_daily_market_report_fut",
+      "evidence_url_or_schema_pointer": "https://openapi.taifex.com.tw/swagger.json#/paths/~1DailyMarketReportFut/get",
+      "expected_data_domain": "derivatives_futures_daily_quote",
+      "implementation_recommendation": "Keep registration/contract-preflight only in M7; require field-level freshness validation before any M8 normalized context.",
+      "known_parameters": [],
+      "m7_relevance": "M7_candidate_if_needed_for_market_context_clock_or_contract_registration",
+      "m8_relevance": "M8_candidate_official_derivatives_eod_context",
+      "m9_relevance": "deferred_not_needed_for_current_project",
+      "method": "GET",
+      "path": "/DailyMarketReportFut",
+      "possible_normalized_context": "future_derivatives_eod_or_reference_context_only",
+      "requires_parameters": false,
+      "response_schema_summary": {
+        "content_types": [
+          "application/json",
+          "text/csv"
+        ],
+        "fields_excerpt": [
+          "Date",
+          "Contract",
+          "ContractMonth(Week)",
+          "Open",
+          "High",
+          "Low",
+          "Last",
+          "Change",
+          "%",
+          "Volume",
+          "SettlementPrice",
+          "OpenInterest"
+        ],
+        "schema_ref": "#/components/schemas/DailyMarketReportFut"
+      },
+      "runtime_candidate": false,
+      "semantic_risk": "May be overinterpreted as live signal or trading prediction; must remain descriptive and caveated.",
+      "source_id": "TAIFEX_OpenAPI",
+      "summary_or_description": "期貨每日交易行情",
+      "timing_class": "official_daily"
+    },
+    {
+      "authority_class": "official_openapi",
+      "category": "options_daily_quote",
+      "endpoint_id": "taifex_openapi_daily_market_report_opt",
+      "evidence_url_or_schema_pointer": "https://openapi.taifex.com.tw/swagger.json#/paths/~1DailyMarketReportOpt/get",
+      "expected_data_domain": "derivatives_options_daily_quote",
+      "implementation_recommendation": "Keep registration/contract-preflight only in M7; require field-level freshness validation before any M8 normalized context.",
+      "known_parameters": [],
+      "m7_relevance": "M7_candidate_if_needed_for_market_context_clock_or_contract_registration",
+      "m8_relevance": "M8_candidate_official_derivatives_eod_context",
+      "m9_relevance": "deferred_not_needed_for_current_project",
+      "method": "GET",
+      "path": "/DailyMarketReportOpt",
+      "possible_normalized_context": "future_derivatives_eod_or_reference_context_only",
+      "requires_parameters": false,
+      "response_schema_summary": {
+        "content_types": [
+          "application/json",
+          "text/csv"
+        ],
+        "fields_excerpt": [
+          "Date",
+          "Contract",
+          "ContractMonth(Week)",
+          "StrikePrice",
+          "CallPut",
+          "Open",
+          "High",
+          "Low",
+          "Close",
+          "Volume",
+          "SettlementPrice",
+          "OpenInterest"
+        ],
+        "schema_ref": "#/components/schemas/DailyMarketReportOpt"
+      },
+      "runtime_candidate": false,
+      "semantic_risk": "May be overinterpreted as live signal or trading prediction; must remain descriptive and caveated.",
+      "source_id": "TAIFEX_OpenAPI",
+      "summary_or_description": "選擇權每日交易行情",
+      "timing_class": "official_daily"
+    },
+    {
+      "authority_class": "official_openapi",
+      "category": "put_call_ratio",
+      "endpoint_id": "taifex_openapi_put_call_ratio",
+      "evidence_url_or_schema_pointer": "https://openapi.taifex.com.tw/swagger.json#/paths/~1PutCallRatio/get",
+      "expected_data_domain": "txo_put_call_ratio",
+      "implementation_recommendation": "Keep registration/contract-preflight only in M7; require field-level freshness validation before any M8 normalized context.",
+      "known_parameters": [],
+      "m7_relevance": "unknown_needs_validation",
+      "m8_relevance": "M8_candidate_official_derivatives_eod_context",
+      "m9_relevance": "M9_candidate_research_context",
+      "method": "GET",
+      "path": "/PutCallRatio",
+      "possible_normalized_context": "future_derivatives_eod_or_reference_context_only",
+      "requires_parameters": false,
+      "response_schema_summary": {
+        "content_types": [
+          "application/json",
+          "text/csv"
+        ],
+        "fields_excerpt": [
+          "Date",
+          "PutVolume",
+          "CallVolume",
+          "PutCallVolumeRatio%",
+          "PutOI",
+          "CallOI",
+          "PutCallOIRatio%"
+        ],
+        "schema_ref": "#/components/schemas/PutCallRatio"
+      },
+      "runtime_candidate": false,
+      "semantic_risk": "May be overinterpreted as live signal or trading prediction; must remain descriptive and caveated.",
+      "source_id": "TAIFEX_OpenAPI",
+      "summary_or_description": "臺指選擇權Put/Call比",
+      "timing_class": "official_statistical"
+    },
+    {
+      "authority_class": "official_openapi",
+      "category": "institutional_investor_futures",
+      "endpoint_id": "taifex_openapi_institutional_futures_by_date",
+      "evidence_url_or_schema_pointer": "https://openapi.taifex.com.tw/swagger.json#/paths/~1MarketDataOfMajorInstitutionalTradersDetailsOfFuturesContractsBytheDate/get",
+      "expected_data_domain": "institutional_futures_positions",
+      "implementation_recommendation": "Keep registration/contract-preflight only in M7; require field-level freshness validation before any M8 normalized context.",
+      "known_parameters": [],
+      "m7_relevance": "unknown_needs_validation",
+      "m8_relevance": "M8_candidate_official_derivatives_eod_context",
+      "m9_relevance": "M9_candidate_research_context",
+      "method": "GET",
+      "path": "/MarketDataOfMajorInstitutionalTradersDetailsOfFuturesContractsBytheDate",
+      "possible_normalized_context": "future_derivatives_eod_or_reference_context_only",
+      "requires_parameters": false,
+      "response_schema_summary": {
+        "content_types": [
+          "application/json",
+          "text/csv"
+        ],
+        "fields_excerpt": [
+          "Date",
+          "ContractCode",
+          "Item",
+          "TradingVolume(Long)",
+          "TradingValue(Long)(Thousands)",
+          "TradingVolume(Short)",
+          "TradingValue(Short)(Thousands)",
+          "TradingVolume(Net)",
+          "TradingValue(Net)(Thousands)",
+          "OpenInterest(Long)",
+          "ContractValueofOpenInterest(Long)(Thousands)",
+          "OpenInterest(Short)"
+        ],
+        "schema_ref": "#/components/schemas/MarketDataOfMajorInstitutionalTradersDetailsOfFuturesContractsBytheDate"
+      },
+      "runtime_candidate": false,
+      "semantic_risk": "May be overinterpreted as live signal or trading prediction; must remain descriptive and caveated.",
+      "source_id": "TAIFEX_OpenAPI",
+      "summary_or_description": "三大法人-區分各期貨契約-依日期",
+      "timing_class": "official_statistical"
+    },
+    {
+      "authority_class": "official_openapi",
+      "category": "institutional_investor_options",
+      "endpoint_id": "taifex_openapi_institutional_options_by_date",
+      "evidence_url_or_schema_pointer": "https://openapi.taifex.com.tw/swagger.json#/paths/~1MarketDataOfMajorInstitutionalTradersDetailsOfOptionsContractsBytheDate/get",
+      "expected_data_domain": "institutional_options_positions",
+      "implementation_recommendation": "Keep registration/contract-preflight only in M7; require field-level freshness validation before any M8 normalized context.",
+      "known_parameters": [],
+      "m7_relevance": "unknown_needs_validation",
+      "m8_relevance": "M8_candidate_official_derivatives_eod_context",
+      "m9_relevance": "M9_candidate_research_context",
+      "method": "GET",
+      "path": "/MarketDataOfMajorInstitutionalTradersDetailsOfOptionsContractsBytheDate",
+      "possible_normalized_context": "future_derivatives_eod_or_reference_context_only",
+      "requires_parameters": false,
+      "response_schema_summary": {
+        "content_types": [
+          "application/json",
+          "text/csv"
+        ],
+        "fields_excerpt": [
+          "Date",
+          "ContractCode",
+          "Item",
+          "TradingVolume(Long)",
+          "TradingValue(Long)(Thousands)",
+          "TradingVolume(Short)",
+          "TradingValue(Short)(Thousands)",
+          "TradingVolume(Net)",
+          "TradingValue(Net)(Thousands)",
+          "OpenInterest(Long)",
+          "ContractValueofOpenInterest(Long)(Thousands)",
+          "OpenInterest(Short)"
+        ],
+        "schema_ref": "#/components/schemas/MarketDataOfMajorInstitutionalTradersDetailsOfOptionsContractsBytheDate"
+      },
+      "runtime_candidate": false,
+      "semantic_risk": "May be overinterpreted as live signal or trading prediction; must remain descriptive and caveated.",
+      "source_id": "TAIFEX_OpenAPI",
+      "summary_or_description": "三大法人-區分各選擇權契約-依日期",
+      "timing_class": "official_statistical"
+    },
+    {
+      "authority_class": "official_openapi",
+      "category": "institutional_investor_options",
+      "endpoint_id": "taifex_openapi_institutional_options_calls_puts_by_date",
+      "evidence_url_or_schema_pointer": "https://openapi.taifex.com.tw/swagger.json#/paths/~1MarketDataOfMajorInstitutionalTradersDetailsOfCallsAndPutsBytheDate/get",
+      "expected_data_domain": "institutional_options_call_put_breakdown",
+      "implementation_recommendation": "Keep registration/contract-preflight only in M7; require field-level freshness validation before any M8 normalized context.",
+      "known_parameters": [],
+      "m7_relevance": "unknown_needs_validation",
+      "m8_relevance": "M9_candidate_research_context",
+      "m9_relevance": "M9_candidate_research_context",
+      "method": "GET",
+      "path": "/MarketDataOfMajorInstitutionalTradersDetailsOfCallsAndPutsBytheDate",
+      "possible_normalized_context": "future_derivatives_eod_or_reference_context_only",
+      "requires_parameters": false,
+      "response_schema_summary": {
+        "content_types": [
+          "application/json",
+          "text/csv"
+        ],
+        "fields_excerpt": [
+          "Date",
+          "ContractCode",
+          "CallPut",
+          "Item",
+          "TradingVolume(Long)",
+          "TradingValue(Long)(Thousands)",
+          "TradingVolume(Short)",
+          "TradingValue(Short)(Thousands)",
+          "TradingVolume(Net)",
+          "TradingValue(Net)(Thousands)",
+          "OpenInterest(Long)",
+          "ContractValueofOpenInterest(Long)(Thousands)"
+        ],
+        "schema_ref": "#/components/schemas/MarketDataOfMajorInstitutionalTradersDetailsOfCallsAndPutsBytheDate"
+      },
+      "runtime_candidate": false,
+      "semantic_risk": "May be overinterpreted as live signal or trading prediction; must remain descriptive and caveated.",
+      "source_id": "TAIFEX_OpenAPI",
+      "summary_or_description": "三大法人-選擇權買賣權分計-依日期",
+      "timing_class": "official_statistical"
+    },
+    {
+      "authority_class": "official_openapi",
+      "category": "large_trader_open_interest",
+      "endpoint_id": "taifex_openapi_large_trader_oi_futures",
+      "evidence_url_or_schema_pointer": "https://openapi.taifex.com.tw/swagger.json#/paths/~1OpenInterestOfLargeTradersFutures/get",
+      "expected_data_domain": "large_trader_futures_open_interest",
+      "implementation_recommendation": "Keep registration/contract-preflight only in M7; require field-level freshness validation before any M8 normalized context.",
+      "known_parameters": [],
+      "m7_relevance": "unknown_needs_validation",
+      "m8_relevance": "M8_candidate_official_derivatives_eod_context",
+      "m9_relevance": "M9_candidate_research_context",
+      "method": "GET",
+      "path": "/OpenInterestOfLargeTradersFutures",
+      "possible_normalized_context": "future_derivatives_eod_or_reference_context_only",
+      "requires_parameters": false,
+      "response_schema_summary": {
+        "content_types": [
+          "application/json",
+          "text/csv"
+        ],
+        "fields_excerpt": [
+          "Date",
+          "Contract",
+          "ContractName",
+          "SettlementMonth",
+          "TypeOfTraders",
+          "Top5Buy",
+          "Top5Sell",
+          "Top10Buy",
+          "Top10Sell",
+          "OIOfMarket"
+        ],
+        "schema_ref": "#/components/schemas/OpenInterestOfLargeTradersFutures"
+      },
+      "runtime_candidate": false,
+      "semantic_risk": "May be overinterpreted as live signal or trading prediction; must remain descriptive and caveated.",
+      "source_id": "TAIFEX_OpenAPI",
+      "summary_or_description": "期貨大額交易人未沖銷部位資料",
+      "timing_class": "official_statistical"
+    },
+    {
+      "authority_class": "official_openapi",
+      "category": "large_trader_open_interest",
+      "endpoint_id": "taifex_openapi_large_trader_oi_options",
+      "evidence_url_or_schema_pointer": "https://openapi.taifex.com.tw/swagger.json#/paths/~1OpenInterestOfLargeTradersOptions/get",
+      "expected_data_domain": "large_trader_options_open_interest",
+      "implementation_recommendation": "Keep registration/contract-preflight only in M7; require field-level freshness validation before any M8 normalized context.",
+      "known_parameters": [],
+      "m7_relevance": "unknown_needs_validation",
+      "m8_relevance": "M8_candidate_official_derivatives_eod_context",
+      "m9_relevance": "M9_candidate_research_context",
+      "method": "GET",
+      "path": "/OpenInterestOfLargeTradersOptions",
+      "possible_normalized_context": "future_derivatives_eod_or_reference_context_only",
+      "requires_parameters": false,
+      "response_schema_summary": {
+        "content_types": [
+          "application/json",
+          "text/csv"
+        ],
+        "fields_excerpt": [
+          "Date",
+          "Contract",
+          "ContractName",
+          "CallPut",
+          "SettlementMonth",
+          "TypeOfTraders",
+          "Top5Buy",
+          "Top5Sell",
+          "Top10Buy",
+          "Top10Sell",
+          "OIOfMarket"
+        ],
+        "schema_ref": "#/components/schemas/OpenInterestOfLargeTradersOptions"
+      },
+      "runtime_candidate": false,
+      "semantic_risk": "May be overinterpreted as live signal or trading prediction; must remain descriptive and caveated.",
+      "source_id": "TAIFEX_OpenAPI",
+      "summary_or_description": "選擇權大額交易人未沖銷部位資料",
+      "timing_class": "official_statistical"
+    },
+    {
+      "authority_class": "official_openapi",
+      "category": "foreign_exchange_reference",
+      "endpoint_id": "taifex_openapi_daily_fx_rates",
+      "evidence_url_or_schema_pointer": "https://openapi.taifex.com.tw/swagger.json#/paths/~1DailyForeignExchangeRates/get",
+      "expected_data_domain": "official_fx_reference_rates",
+      "implementation_recommendation": "Keep registration/contract-preflight only in M7; require field-level freshness validation before any M8 normalized context.",
+      "known_parameters": [],
+      "m7_relevance": "unknown_needs_validation",
+      "m8_relevance": "M8_candidate_official_reference_context",
+      "m9_relevance": "deferred_not_needed_for_current_project",
+      "method": "GET",
+      "path": "/DailyForeignExchangeRates",
+      "possible_normalized_context": "future_derivatives_eod_or_reference_context_only",
+      "requires_parameters": false,
+      "response_schema_summary": {
+        "content_types": [
+          "application/json",
+          "text/csv"
+        ],
+        "fields_excerpt": [
+          "Date",
+          "USD/NTD",
+          "RMB/NTD",
+          "EUR/USD",
+          "USD/JPY",
+          "GBP/USD",
+          "AUD/USD",
+          "USD/HKD",
+          "USD/RMB",
+          "USD/ZAR",
+          "NZD/USD"
+        ],
+        "schema_ref": "#/components/schemas/DailyForeignExchangeRates"
+      },
+      "runtime_candidate": false,
+      "semantic_risk": "May be overinterpreted as live signal or trading prediction; must remain descriptive and caveated.",
+      "source_id": "TAIFEX_OpenAPI",
+      "summary_or_description": "每日外幣參考匯率",
+      "timing_class": "official_reference"
+    },
+    {
+      "authority_class": "official_openapi",
+      "category": "settlement_or_reference",
+      "endpoint_id": "taifex_openapi_final_settlement_price",
+      "evidence_url_or_schema_pointer": "https://openapi.taifex.com.tw/swagger.json#/paths/~1FinalSettlementPrice/get",
+      "expected_data_domain": "final_settlement_prices",
+      "implementation_recommendation": "Keep registration/contract-preflight only in M7; require field-level freshness validation before any M8 normalized context.",
+      "known_parameters": [],
+      "m7_relevance": "M7_candidate_if_needed_for_market_context_clock_or_contract_registration",
+      "m8_relevance": "M8_candidate_official_reference_context",
+      "m9_relevance": "deferred_not_needed_for_current_project",
+      "method": "GET",
+      "path": "/FinalSettlementPrice",
+      "possible_normalized_context": "future_derivatives_eod_or_reference_context_only",
+      "requires_parameters": false,
+      "response_schema_summary": {
+        "content_types": [
+          "application/json",
+          "text/csv"
+        ],
+        "fields_excerpt": [
+          "TheFinalSettlementDay",
+          "DeliveryMonth",
+          "Contract",
+          "ContractName",
+          "TheFinalSettlementPrice"
+        ],
+        "schema_ref": "#/components/schemas/FinalSettlementPrice"
+      },
+      "runtime_candidate": false,
+      "semantic_risk": "May be overinterpreted as live signal or trading prediction; must remain descriptive and caveated.",
+      "source_id": "TAIFEX_OpenAPI",
+      "summary_or_description": "最後結算價",
+      "timing_class": "official_reference"
+    },
+    {
+      "authority_class": "official_openapi",
+      "category": "historical_time_and_sales",
+      "endpoint_id": "taifex_openapi_futures_time_and_sales",
+      "evidence_url_or_schema_pointer": "https://openapi.taifex.com.tw/swagger.json#/paths/~1TimeAndSalesData/get",
+      "expected_data_domain": "historical_futures_time_and_sales",
+      "implementation_recommendation": "Keep registration/contract-preflight only in M7; require field-level freshness validation before any M8 normalized context.",
+      "known_parameters": [],
+      "m7_relevance": "unknown_needs_validation",
+      "m8_relevance": "M9_candidate_research_context",
+      "m9_relevance": "M9_candidate_research_context",
+      "method": "GET",
+      "path": "/TimeAndSalesData",
+      "possible_normalized_context": "future_derivatives_eod_or_reference_context_only",
+      "requires_parameters": false,
+      "response_schema_summary": {
+        "content_types": [
+          "application/json",
+          "text/csv"
+        ],
+        "fields_excerpt": [
+          "Date",
+          "ProductCode",
+          "ContractMonth(Week)",
+          "TimeOfTrades",
+          "TradePrice",
+          "Volume(Buy+Sell)",
+          "PriceforNearerDeliveryMonthContract",
+          "PriceforFurtherDeliveryMonthContract",
+          "OpeningCallAuction"
+        ],
+        "schema_ref": "#/components/schemas/TimeAndSalesData"
+      },
+      "runtime_candidate": false,
+      "semantic_risk": "May be overinterpreted as live signal or trading prediction; must remain descriptive and caveated.",
+      "source_id": "TAIFEX_OpenAPI",
+      "summary_or_description": "每日期貨每筆成交資料",
+      "timing_class": "historical"
+    },
+    {
+      "authority_class": "official_openapi",
+      "category": "historical_time_and_sales",
+      "endpoint_id": "taifex_openapi_options_time_and_sales",
+      "evidence_url_or_schema_pointer": "https://openapi.taifex.com.tw/swagger.json#/paths/~1OptionsTimeAndSalesData/get",
+      "expected_data_domain": "historical_options_time_and_sales",
+      "implementation_recommendation": "Keep registration/contract-preflight only in M7; require field-level freshness validation before any M8 normalized context.",
+      "known_parameters": [],
+      "m7_relevance": "unknown_needs_validation",
+      "m8_relevance": "M9_candidate_research_context",
+      "m9_relevance": "M9_candidate_research_context",
+      "method": "GET",
+      "path": "/OptionsTimeAndSalesData",
+      "possible_normalized_context": "future_derivatives_eod_or_reference_context_only",
+      "requires_parameters": false,
+      "response_schema_summary": {
+        "content_types": [
+          "application/json",
+          "text/csv"
+        ],
+        "fields_excerpt": [
+          "Date",
+          "ProductCode",
+          "StrikePrice",
+          "ContractMonth(Week)",
+          "CallPut",
+          "TimeOfTrades",
+          "TradePrice",
+          "Volume(BorS)",
+          "OpeningCallAuction"
+        ],
+        "schema_ref": "#/components/schemas/OptionsTimeAndSalesData"
+      },
+      "runtime_candidate": false,
+      "semantic_risk": "May be overinterpreted as live signal or trading prediction; must remain descriptive and caveated.",
+      "source_id": "TAIFEX_OpenAPI",
+      "summary_or_description": "每日選擇權每筆成交資料",
+      "timing_class": "historical"
+    },
+    {
+      "authority_class": "official_openapi",
+      "category": "margin_or_fee_reference",
+      "endpoint_id": "taifex_openapi_index_margining",
+      "evidence_url_or_schema_pointer": "https://openapi.taifex.com.tw/swagger.json#/paths/~1IndexFuturesAndOptionsMargining/get",
+      "expected_data_domain": "margin_reference",
+      "implementation_recommendation": "Keep registration/contract-preflight only in M7; require field-level freshness validation before any M8 normalized context.",
+      "known_parameters": [],
+      "m7_relevance": "unknown_needs_validation",
+      "m8_relevance": "M8_candidate_official_reference_context",
+      "m9_relevance": "deferred_not_needed_for_current_project",
+      "method": "GET",
+      "path": "/IndexFuturesAndOptionsMargining",
+      "possible_normalized_context": "future_derivatives_eod_or_reference_context_only",
+      "requires_parameters": false,
+      "response_schema_summary": {
+        "content_types": [
+          "application/json",
+          "text/csv"
+        ],
+        "fields_excerpt": [
+          "Contract",
+          "ClearingMargin",
+          "MaintenanceMargin",
+          "InitialMargin",
+          "Date"
+        ],
+        "schema_ref": "#/components/schemas/IndexFuturesAndOptionsMargining"
+      },
+      "runtime_candidate": false,
+      "semantic_risk": "May be overinterpreted as live signal or trading prediction; must remain descriptive and caveated.",
+      "source_id": "TAIFEX_OpenAPI",
+      "summary_or_description": "保證金一覽表-股價指數類",
+      "timing_class": "official_reference"
+    }
+  ],
+  "evidence": [
+    {
+      "description_excerpt": "臺灣期貨交易所 OAS 資訊服務",
+      "observed_openapi_version": "3.0.0",
+      "paths_count": 135,
+      "servers": [
+        {
+          "url": "https://openapi.taifex.com.tw/v1"
+        }
+      ],
+      "title": "臺灣期貨交易所 OAS",
+      "type": "official_oas_metadata",
+      "url": "https://openapi.taifex.com.tw/swagger.json"
+    },
+    {
+      "files": [
+        "docs/m5l_taifex_live_source_validation.md",
+        "config/m5l_live_source_adapter_matrix.json",
+        "scripts/build_data_capability_inventory.py"
+      ],
+      "summary": "Existing runtime TAIFEX source is TAIFEX_MIS; this inventory keeps TAIFEX_OpenAPI separate and non-runtime.",
+      "type": "repo_evidence"
+    }
+  ],
+  "generated_at_utc": "2026-07-06T09:52:55Z",
+  "live_observation_enabled": false,
+  "m7_m8_m9_recommendation": {
+    "m7": "Register source family, endpoint inventory, timing/authority semantics, and source-family contract only; no runtime integration.",
+    "m8": "Consider official derivatives EOD/statistical/reference context after field-level freshness validation and normalized contract design.",
+    "m9": "Reserve interpretation-heavy derivatives sentiment or cross-market narrative usage for research-only context with strict no-trading-signal guardrails."
+  },
+  "network_calls_in_runtime": false,
+  "official_openapi_url": "https://openapi.taifex.com.tw/swagger.json",
+  "overall_classification": {
+    "authority_class": "official_openapi",
+    "candidate_milestone": "M7_or_M8_decision_pending",
+    "timing_class": "official_statistical"
+  },
+  "runtime_integrated": false,
+  "schema_version": "m7_01_taifex_openapi_endpoint_inventory.v1",
+  "semantic_guardrails": {
+    "allowed_language": [
+      "official TAIFEX OpenAPI / OAS source",
+      "official derivatives EOD/statistical context",
+      "official reference context",
+      "descriptive derivatives statistics",
+      "not current live observation",
+      "not trading signal",
+      "not realtime SLA"
+    ],
+    "forbidden_language": [
+      "leading indicator",
+      "contrarian indicator",
+      "support/resistance",
+      "buy signal",
+      "sell signal",
+      "hold",
+      "target price",
+      "foreign investors are definitely suppressing the market",
+      "retail traders are definitely wrong",
+      "Put/Call Ratio proves support or pressure",
+      "institutional positions predict tomorrow’s market"
+    ]
+  },
+  "source_id": "TAIFEX_OpenAPI"
+}

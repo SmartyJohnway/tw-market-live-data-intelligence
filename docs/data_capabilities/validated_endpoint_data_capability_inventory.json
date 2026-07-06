@@ -1959,7 +1959,7 @@
       "source_id": "Fubon_Neo_API"
     }
   ],
-  "generated_at_utc": "2026-07-06T05:50:48Z",
+  "generated_at_utc": "2026-07-06T09:54:29Z",
   "governance": {
     "live_observation": false,
     "network_calls": false,
@@ -2404,6 +2404,81 @@
       "stability_notes": "Official EOD contract/probe source; not live runtime observation.",
       "tests_covering_source": [],
       "timing_class": "end_of_day"
+    },
+    {
+      "authority_class": "official_openapi",
+      "candidate_milestone": "M7_or_M8_decision_pending",
+      "credential_or_access_requirements": "None observed in repo.",
+      "current_ai_context_usage": "Official TAIFEX OpenAPI/OAS inventory and contract preflight only; no runtime fetch, no live observation, no trading signal.",
+      "current_normalized_fields": [
+        "Date",
+        "Contract",
+        "ContractMonth(Week)",
+        "Open",
+        "High",
+        "Low",
+        "Last",
+        "Close",
+        "SettlementPrice",
+        "OpenInterest",
+        "PutCallVolumeRatio%",
+        "PutCallOIRatio%"
+      ],
+      "deterministic_metrics_possible": [],
+      "display_name": "TAIFEX official OpenAPI/OAS derivatives endpoint inventory",
+      "evidence_claims": [
+        {
+          "claim": "Official TAIFEX OAS metadata exposes derivative daily quote, statistical, reference, and historical/time-and-sales report endpoints; this source family is not runtime integrated and remains distinct from TAIFEX_MIS.",
+          "claim_id": "taifex_openapi_contract_preflight",
+          "confidence": "confirmed_from_contract",
+          "evidence_files": [
+            "docs/data_capabilities/taifex_openapi_endpoint_inventory.json",
+            "docs/protocol/TAIFEX_OPENAPI_PROTOCOL.md"
+          ],
+          "evidence_symbol_or_section": "endpoint inventory",
+          "evidence_type": "contract_doc"
+        }
+      ],
+      "evidence_status": "validated_contract_or_probe",
+      "fields_currently_dropped": "See top-level dropped_field_decisions and field_inventory lifecycle rows; names alone are insufficient evidence.",
+      "implementation_files": [
+        "docs/data_capabilities/taifex_openapi_endpoint_inventory.json"
+      ],
+      "potential_ai_context_usage": "Official TAIFEX OpenAPI/OAS inventory and contract preflight only; no runtime fetch, no live observation, no trading signal.",
+      "raw_or_source_fields_available": [
+        "DailyMarketReportFut",
+        "DailyMarketReportOpt",
+        "PutCallRatio",
+        "MarketDataOfMajorInstitutionalTraders*",
+        "OpenInterestOfLargeTraders*",
+        "DailyForeignExchangeRates",
+        "FinalSettlementPrice",
+        "TimeAndSalesData",
+        "OptionsTimeAndSalesData"
+      ],
+      "recommended_near_term_action": "M7_or_M8_decision_pending",
+      "repo_evidence": {
+        "docs": [
+          "docs/protocol/TAIFEX_OPENAPI_PROTOCOL.md",
+          "docs/contracts/taifex_openapi_source_family_v1.md"
+        ],
+        "files": [
+          "docs/data_capabilities/taifex_openapi_endpoint_inventory.json"
+        ],
+        "tests": []
+      },
+      "runtime_exposure_status": [
+        "docs_only",
+        "contract_known_but_not_implemented"
+      ],
+      "runtime_integrated": false,
+      "semantic_risks": [],
+      "source_availability_status": "implemented_docs_only",
+      "source_id": "TAIFEX_OpenAPI",
+      "source_url_template_or_artifact_path": "https://openapi.taifex.com.tw/swagger.json",
+      "stability_notes": "Official TAIFEX OpenAPI/OAS inventory and contract preflight only; no runtime fetch, no live observation, no trading signal.",
+      "tests_covering_source": [],
+      "timing_class": "official_statistical"
     },
     {
       "authority_class": "unofficial_api",
@@ -3219,7 +3294,8 @@
     ],
     "official_eod_contract_sources": [
       "TWSE_OpenAPI",
-      "TPEx_OpenAPI"
+      "TPEx_OpenAPI",
+      "TAIFEX_OpenAPI"
     ],
     "unofficial_or_commercial_contract_sources": [
       "Yahoo_Finance",
