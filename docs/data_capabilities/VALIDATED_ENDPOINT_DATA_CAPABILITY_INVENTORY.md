@@ -101,7 +101,7 @@ Evidence-status counts: {'validated_runtime_source': 11, 'validated_contract_or_
 - Evidence status: validated_contract_or_probe
 - Runtime integrated: False; runtime exposure: docs_only, contract_known_but_not_implemented
 - Evidence files: docs/data_capabilities/taifex_openapi_endpoint_inventory.json, docs/protocol/TAIFEX_OPENAPI_PROTOCOL.md, docs/contracts/taifex_openapi_source_family_v1.md
-- Current normalized/retained fields: Date, Contract, ContractMonth(Week), Open, High, Low, Last, Close, SettlementPrice, OpenInterest, PutCallVolumeRatio%, PutCallOIRatio%
+- Current normalized/retained fields: None.
 - Raw/source fields known: DailyMarketReportFut, DailyMarketReportOpt, PutCallRatio, MarketDataOfMajorInstitutionalTraders*, OpenInterestOfLargeTraders*, DailyForeignExchangeRates, FinalSettlementPrice, TimeAndSalesData, OptionsTimeAndSalesData
 - Dropped-field handling: See top-level dropped_field_decisions and field_inventory lifecycle rows; names alone are insufficient evidence.
 - Evidence claims:
@@ -123,7 +123,7 @@ Evidence-status counts: {'validated_runtime_source': 11, 'validated_contract_or_
 - Evidence status: validated_historical_workbench
 - Runtime integrated: False; runtime exposure: docs_only, contract_known_but_not_implemented
 - Evidence files: docs/capability_matrix.md, docs/protocol/OFFICIAL_OPENAPI_SOURCE_SEMANTICS.md
-- Current normalized/retained fields: none in runtime
+- Current normalized/retained fields: None.
 - Raw/source fields known: dataset-dependent
 - Dropped-field handling: See top-level dropped_field_decisions and field_inventory lifecycle rows; names alone are insufficient evidence.
 - Evidence claims:
@@ -134,7 +134,7 @@ Evidence-status counts: {'validated_runtime_source': 11, 'validated_contract_or_
 - Evidence status: credential_gated_provider
 - Runtime integrated: False; runtime exposure: docs_only
 - Evidence files: docs/capability_matrix.md, config/m5l_live_source_adapter_matrix.json
-- Current normalized/retained fields: none in runtime
+- Current normalized/retained fields: None.
 - Raw/source fields known: unknown_needs_credentials
 - Dropped-field handling: See top-level dropped_field_decisions and field_inventory lifecycle rows; names alone are insufficient evidence.
 - Evidence claims:
@@ -145,7 +145,7 @@ Evidence-status counts: {'validated_runtime_source': 11, 'validated_contract_or_
 - Evidence status: credential_gated_provider
 - Runtime integrated: False; runtime exposure: docs_only
 - Evidence files: docs/capability_matrix.md, config/m5l_live_source_adapter_matrix.json
-- Current normalized/retained fields: none in runtime
+- Current normalized/retained fields: None.
 - Raw/source fields known: unknown_needs_broker_credentials
 - Dropped-field handling: See top-level dropped_field_decisions and field_inventory lifecycle rows; names alone are insufficient evidence.
 - Evidence claims:

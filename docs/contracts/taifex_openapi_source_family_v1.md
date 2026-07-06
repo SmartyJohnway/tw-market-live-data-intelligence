@@ -30,7 +30,7 @@ No FastAPI endpoint, MCP tool, frontend fetch, scheduler, startup network call, 
 
 ## Candidate normalized contexts
 
-Future normalized contexts may include futures/options daily report rows, settlement/reference rows, daily FX reference rows, Put/Call Ratio rows, institutional trader rows, large-trader open-interest rows, and historical time-and-sales rows. Any future implementation must define source time, exchange time, retrieval time, delay/freshness status, units, field lifecycle, and semantic caveats before exposure.
+TAIFEX_OpenAPI currently has no normalized retained fields in this repository; the endpoint inventory records source/OAS field excerpts only. Future normalized contexts may include futures/options daily report rows, settlement/reference rows, daily FX reference rows, Put/Call Ratio rows, institutional trader rows, large-trader open-interest rows, and historical time-and-sales rows. Any future implementation must define source time, exchange time, retrieval time, delay/freshness status, units, field lifecycle, and semantic caveats before exposure.
 
 ## Semantic guardrails
 

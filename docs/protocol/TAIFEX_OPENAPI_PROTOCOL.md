@@ -32,7 +32,7 @@ Overall timing class is `official_statistical` with endpoint-level classes of `o
 
 ## Endpoint inventory summary
 
-The machine-readable inventory is maintained in `docs/data_capabilities/taifex_openapi_endpoint_inventory.json`. Materially relevant endpoint categories inventoried are:
+The machine-readable inventory is maintained in `docs/data_capabilities/taifex_openapi_endpoint_inventory.json`. `TAIFEX_OpenAPI` currently has no normalized retained fields in this repository; the endpoint inventory records source/OAS field excerpts only. Materially relevant endpoint categories inventoried are:
 
 - `futures_daily_quote`
 - `options_daily_quote`

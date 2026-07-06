@@ -24,6 +24,22 @@ def test_taifex_openapi_endpoint_inventory_schema_and_guardrails():
     assert len(inv["endpoints"]) >= 10
     assert all(endpoint["source_id"] == "TAIFEX_OpenAPI" for endpoint in inv["endpoints"])
     assert all(endpoint["runtime_candidate"] is False for endpoint in inv["endpoints"])
+    allowed_m8_relevance = {
+        "M8_candidate_official_derivatives_eod_context",
+        "M8_candidate_official_reference_context",
+        "deferred_to_M9_research_context",
+        "deferred_not_needed_for_current_project",
+        "out_of_scope",
+        "unknown_needs_validation",
+    }
+    assert all(
+        not endpoint["m8_relevance"].startswith("M9_")
+        for endpoint in inv["endpoints"]
+    )
+    assert all(
+        endpoint["m8_relevance"] in allowed_m8_relevance
+        for endpoint in inv["endpoints"]
+    )
 
 
 def test_taifex_openapi_separate_source_family_in_generated_inventory():
@@ -32,10 +48,15 @@ def test_taifex_openapi_separate_source_family_in_generated_inventory():
     assert "TAIFEX_OpenAPI" in families
     assert "TAIFEX_MIS" in families
     assert families["TAIFEX_OpenAPI"] is not families["TAIFEX_MIS"]
-    assert families["TAIFEX_OpenAPI"]["authority_class"] == "official_openapi"
-    assert families["TAIFEX_OpenAPI"]["runtime_integrated"] is False
+    taifex_openapi = families["TAIFEX_OpenAPI"]
+    assert taifex_openapi["authority_class"] == "official_openapi"
+    assert taifex_openapi["runtime_integrated"] is False
+    assert taifex_openapi["current_normalized_fields"] == []
+    assert "docs_only" in taifex_openapi["runtime_exposure_status"]
+    assert "contract_known_but_not_implemented" in taifex_openapi["runtime_exposure_status"]
+    assert "normalized_but_not_exposed" not in taifex_openapi["runtime_exposure_status"]
     assert families["TAIFEX_MIS"]["runtime_integrated"] is True
-    assert families["TAIFEX_OpenAPI"]["timing_class"] != "live_or_intraday"
+    assert taifex_openapi["timing_class"] != "live_or_intraday"
     assert "TAIFEX_OpenAPI" in data["source_taxonomy_summary"]["official_eod_contract_sources"]
     assert "TAIFEX_MIS" in data["source_taxonomy_summary"]["external_runtime_sources"]
 
