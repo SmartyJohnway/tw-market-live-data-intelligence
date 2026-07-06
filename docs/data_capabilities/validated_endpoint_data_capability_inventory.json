@@ -1,0 +1,1760 @@
+{
+  "deterministic_metrics": [
+    {
+      "ai_phrasing_allowed": "price difference",
+      "ai_phrasing_forbidden": "signal/recommendation",
+      "current_availability": "not_currently_available_for_live",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "last minus previous close; descriptive only",
+      "metric_id": "change",
+      "required_fields": [
+        "last_price",
+        "previous_close"
+      ],
+      "semantic_risk": "medium_delayed_or_reference_only",
+      "source_family_compatibility": [
+        "TWSE_MIS",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "percentage move versus reference",
+      "ai_phrasing_forbidden": "momentum call",
+      "current_availability": "not_currently_available_for_live",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "change / previous close",
+      "metric_id": "change_percent",
+      "required_fields": [
+        "last_price",
+        "previous_close"
+      ],
+      "semantic_risk": "medium_delayed_or_reference_only",
+      "source_family_compatibility": [
+        "TWSE_MIS"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "observed range",
+      "ai_phrasing_forbidden": "support/resistance as fact",
+      "current_availability": "available_eod_not_live_exposed",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "high minus low",
+      "metric_id": "range",
+      "required_fields": [
+        "high",
+        "low"
+      ],
+      "semantic_risk": "medium_delayed_or_reference_only",
+      "source_family_compatibility": [
+        "TWSE_MIS",
+        "TWSE_OpenAPI",
+        "TPEx_OpenAPI",
+        "Yahoo_Finance"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "range relative to reference",
+      "ai_phrasing_forbidden": "volatility prediction",
+      "current_availability": "not_currently_available_for_live",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "range / previous close",
+      "metric_id": "range_percent",
+      "required_fields": [
+        "high",
+        "low",
+        "previous_close"
+      ],
+      "semantic_risk": "medium_delayed_or_reference_only",
+      "source_family_compatibility": [
+        "TWSE_MIS"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "location within observed day range",
+      "ai_phrasing_forbidden": "entry/exit",
+      "current_availability": "not_currently_available_for_live",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "(last-low)/(high-low)",
+      "metric_id": "position_in_day_range",
+      "required_fields": [
+        "last_price",
+        "high",
+        "low"
+      ],
+      "semantic_risk": "medium_delayed_or_reference_only",
+      "source_family_compatibility": [
+        "TWSE_MIS"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "distance from observed high",
+      "ai_phrasing_forbidden": "resistance",
+      "current_availability": "not_currently_available_for_live",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "(last-high)/high",
+      "metric_id": "distance_from_high_percent",
+      "required_fields": [
+        "last_price",
+        "high"
+      ],
+      "semantic_risk": "medium_delayed_or_reference_only",
+      "source_family_compatibility": [
+        "TWSE_MIS"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "distance from observed low",
+      "ai_phrasing_forbidden": "support",
+      "current_availability": "not_currently_available_for_live",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "(last-low)/low",
+      "metric_id": "distance_from_low_percent",
+      "required_fields": [
+        "last_price",
+        "low"
+      ],
+      "semantic_risk": "medium_delayed_or_reference_only",
+      "source_family_compatibility": [
+        "TWSE_MIS"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "change from open",
+      "ai_phrasing_forbidden": "trade setup",
+      "current_availability": "not_currently_available_for_live",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "(last-open)/open",
+      "metric_id": "change_from_open_percent",
+      "required_fields": [
+        "last_price",
+        "open"
+      ],
+      "semantic_risk": "medium_delayed_or_reference_only",
+      "source_family_compatibility": [
+        "TWSE_MIS"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "displayed spread snapshot",
+      "ai_phrasing_forbidden": "liquidity guarantee",
+      "current_availability": "not_currently_available_for_live",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "best ask minus best bid",
+      "metric_id": "spread",
+      "required_fields": [
+        "best_ask",
+        "best_bid"
+      ],
+      "semantic_risk": "high_trading_interpretation_risk",
+      "source_family_compatibility": [
+        "TWSE_MIS"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "displayed spread percent",
+      "ai_phrasing_forbidden": "execution cost guarantee",
+      "current_availability": "not_currently_available_for_live",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "spread / last",
+      "metric_id": "spread_percent",
+      "required_fields": [
+        "best_ask",
+        "best_bid",
+        "last_price"
+      ],
+      "semantic_risk": "high_trading_interpretation_risk",
+      "source_family_compatibility": [
+        "TWSE_MIS"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "observed displayed bid depth",
+      "ai_phrasing_forbidden": "institutional flow",
+      "current_availability": "not_currently_available_for_live",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "sum displayed bid volumes",
+      "metric_id": "top5_bid_volume",
+      "required_fields": [
+        "bid_volumes"
+      ],
+      "semantic_risk": "high_trading_interpretation_risk",
+      "source_family_compatibility": [
+        "TWSE_MIS"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "observed displayed ask depth",
+      "ai_phrasing_forbidden": "institutional flow",
+      "current_availability": "not_currently_available_for_live",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "sum displayed ask volumes",
+      "metric_id": "top5_ask_volume",
+      "required_fields": [
+        "ask_volumes"
+      ],
+      "semantic_risk": "high_trading_interpretation_risk",
+      "source_family_compatibility": [
+        "TWSE_MIS"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "displayed depth balance",
+      "ai_phrasing_forbidden": "chip flow",
+      "current_availability": "not_currently_available_for_live",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "top bid volume / top ask volume",
+      "metric_id": "top5_displayed_bid_ask_ratio",
+      "required_fields": [
+        "bid_volumes",
+        "ask_volumes"
+      ],
+      "semantic_risk": "high_trading_interpretation_risk",
+      "source_family_compatibility": [
+        "TWSE_MIS"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "bounded watchlist advancers",
+      "ai_phrasing_forbidden": "ranking",
+      "current_availability": "candidate_after_M7A",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "count change > 0",
+      "metric_id": "watchlist_advancers_count",
+      "required_fields": [
+        "change"
+      ],
+      "semantic_risk": "medium_delayed_or_reference_only",
+      "source_family_compatibility": [
+        "M5N_watchlist_conversation_handoff"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "bounded watchlist decliners",
+      "ai_phrasing_forbidden": "ranking",
+      "current_availability": "candidate_after_M7A",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "count change < 0",
+      "metric_id": "watchlist_decliners_count",
+      "required_fields": [
+        "change"
+      ],
+      "semantic_risk": "medium_delayed_or_reference_only",
+      "source_family_compatibility": [
+        "M5N_watchlist_conversation_handoff"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "bounded watchlist unchanged",
+      "ai_phrasing_forbidden": "ranking",
+      "current_availability": "candidate_after_M7A",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "count change == 0",
+      "metric_id": "watchlist_unchanged_count",
+      "required_fields": [
+        "change"
+      ],
+      "semantic_risk": "medium_delayed_or_reference_only",
+      "source_family_compatibility": [
+        "M5N_watchlist_conversation_handoff"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "unavailable observations",
+      "ai_phrasing_forbidden": "quality hidden",
+      "current_availability": "currently_possible",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "count unavailable rows",
+      "metric_id": "watchlist_unavailable_count",
+      "required_fields": [
+        "status"
+      ],
+      "semantic_risk": "medium_delayed_or_reference_only",
+      "source_family_compatibility": [
+        "M5N_watchlist_conversation_handoff"
+      ]
+    },
+    {
+      "ai_phrasing_allowed": "bounded cross-instrument difference",
+      "ai_phrasing_forbidden": "relative value recommendation",
+      "current_availability": "candidate_after_M7A",
+      "determinism": "deterministic_arithmetic",
+      "formula_or_description": "difference between two observed changes",
+      "metric_id": "cross_instrument_change_diff",
+      "required_fields": [
+        "change_percent"
+      ],
+      "semantic_risk": "medium_delayed_or_reference_only",
+      "source_family_compatibility": [
+        "TWSE_MIS",
+        "TAIFEX_MIS"
+      ]
+    }
+  ],
+  "field_inventory": [
+    {
+      "deterministic_metric_enabled": "change/change_percent/range_position",
+      "exposed_today": "yes",
+      "normalized_today": "yes",
+      "proposed_normalized_field_name": "last_price",
+      "raw_field_name": "z",
+      "semantic_caveat": "not official realtime; may be '-'",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "change/change_percent",
+      "exposed_today": "yes",
+      "normalized_today": "yes",
+      "proposed_normalized_field_name": "previous_close",
+      "raw_field_name": "y",
+      "semantic_caveat": "reference fallback is not current price",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "change_from_open_percent",
+      "exposed_today": "no",
+      "normalized_today": "no",
+      "proposed_normalized_field_name": "open",
+      "raw_field_name": "o",
+      "semantic_caveat": "may be placeholder",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "range/position",
+      "exposed_today": "no",
+      "normalized_today": "no",
+      "proposed_normalized_field_name": "high",
+      "raw_field_name": "h",
+      "semantic_caveat": "observed day high only",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "range/position",
+      "exposed_today": "no",
+      "normalized_today": "no",
+      "proposed_normalized_field_name": "low",
+      "raw_field_name": "l",
+      "semantic_caveat": "observed day low only",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "volume summaries",
+      "exposed_today": "no",
+      "normalized_today": "no",
+      "proposed_normalized_field_name": "cumulative_volume",
+      "raw_field_name": "v",
+      "semantic_caveat": "unit semantics need validation",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "last-trade context",
+      "exposed_today": "no",
+      "normalized_today": "no",
+      "proposed_normalized_field_name": "latest_trade_volume",
+      "raw_field_name": "tv",
+      "semantic_caveat": "may be placeholder",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "spread/top5_depth",
+      "exposed_today": "no",
+      "normalized_today": "no",
+      "proposed_normalized_field_name": "bid_prices",
+      "raw_field_name": "b",
+      "semantic_caveat": "displayed depth snapshot only",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "top5_bid_volume",
+      "exposed_today": "no",
+      "normalized_today": "no",
+      "proposed_normalized_field_name": "bid_volumes",
+      "raw_field_name": "g",
+      "semantic_caveat": "displayed depth snapshot only",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "spread/top5_depth",
+      "exposed_today": "no",
+      "normalized_today": "no",
+      "proposed_normalized_field_name": "ask_prices",
+      "raw_field_name": "a",
+      "semantic_caveat": "displayed depth snapshot only",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "top5_ask_volume",
+      "exposed_today": "no",
+      "normalized_today": "no",
+      "proposed_normalized_field_name": "ask_volumes",
+      "raw_field_name": "f",
+      "semantic_caveat": "displayed depth snapshot only",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "freshness",
+      "exposed_today": "yes",
+      "normalized_today": "yes",
+      "proposed_normalized_field_name": "source_time",
+      "raw_field_name": "t",
+      "semantic_caveat": "source-local time",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "freshness",
+      "exposed_today": "yes",
+      "normalized_today": "yes",
+      "proposed_normalized_field_name": "source_date",
+      "raw_field_name": "d",
+      "semantic_caveat": "source-local date",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "freshness",
+      "exposed_today": "yes",
+      "normalized_today": "yes",
+      "proposed_normalized_field_name": "source_timestamp",
+      "raw_field_name": "tlong",
+      "semantic_caveat": "preferred timestamp if valid",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "route audit",
+      "exposed_today": "no",
+      "normalized_today": "no",
+      "proposed_normalized_field_name": "channel",
+      "raw_field_name": "ch",
+      "semantic_caveat": "frontend channel",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "identity",
+      "exposed_today": "no",
+      "normalized_today": "no",
+      "proposed_normalized_field_name": "exchange",
+      "raw_field_name": "ex",
+      "semantic_caveat": "channel semantics",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "labeling",
+      "exposed_today": "no",
+      "normalized_today": "no",
+      "proposed_normalized_field_name": "display_name",
+      "raw_field_name": "n",
+      "semantic_caveat": "optional",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "quality",
+      "exposed_today": "no",
+      "normalized_today": "no",
+      "proposed_normalized_field_name": "quote_state",
+      "raw_field_name": "status/quote_state",
+      "semantic_caveat": "only if observed in source rows",
+      "source_id": "TWSE_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "limited_current_value_or_freshness",
+      "exposed_today": "yes",
+      "normalized_today": "yes",
+      "proposed_normalized_field_name": "clastprice",
+      "raw_field_name": "CLastPrice",
+      "semantic_caveat": "Current parser evidence does not prove OHLC/volume/depth fields beyond listed names.",
+      "source_id": "TAIFEX_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "limited_current_value_or_freshness",
+      "exposed_today": "yes",
+      "normalized_today": "yes",
+      "proposed_normalized_field_name": "settlementprice",
+      "raw_field_name": "SettlementPrice",
+      "semantic_caveat": "Current parser evidence does not prove OHLC/volume/depth fields beyond listed names.",
+      "source_id": "TAIFEX_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "limited_current_value_or_freshness",
+      "exposed_today": "yes",
+      "normalized_today": "yes",
+      "proposed_normalized_field_name": "crefprice",
+      "raw_field_name": "CRefPrice",
+      "semantic_caveat": "Current parser evidence does not prove OHLC/volume/depth fields beyond listed names.",
+      "source_id": "TAIFEX_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "limited_current_value_or_freshness",
+      "exposed_today": "yes",
+      "normalized_today": "yes",
+      "proposed_normalized_field_name": "cdate",
+      "raw_field_name": "CDate",
+      "semantic_caveat": "Current parser evidence does not prove OHLC/volume/depth fields beyond listed names.",
+      "source_id": "TAIFEX_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "limited_current_value_or_freshness",
+      "exposed_today": "yes",
+      "normalized_today": "yes",
+      "proposed_normalized_field_name": "ctime",
+      "raw_field_name": "CTime",
+      "semantic_caveat": "Current parser evidence does not prove OHLC/volume/depth fields beyond listed names.",
+      "source_id": "TAIFEX_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "limited_current_value_or_freshness",
+      "exposed_today": "yes",
+      "normalized_today": "yes",
+      "proposed_normalized_field_name": "status",
+      "raw_field_name": "Status",
+      "semantic_caveat": "Current parser evidence does not prove OHLC/volume/depth fields beyond listed names.",
+      "source_id": "TAIFEX_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "limited_current_value_or_freshness",
+      "exposed_today": "yes",
+      "normalized_today": "yes",
+      "proposed_normalized_field_name": "symbolid",
+      "raw_field_name": "SymbolID",
+      "semantic_caveat": "Current parser evidence does not prove OHLC/volume/depth fields beyond listed names.",
+      "source_id": "TAIFEX_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "limited_current_value_or_freshness",
+      "exposed_today": "yes",
+      "normalized_today": "yes",
+      "proposed_normalized_field_name": "dispename",
+      "raw_field_name": "DispEName",
+      "semantic_caveat": "Current parser evidence does not prove OHLC/volume/depth fields beyond listed names.",
+      "source_id": "TAIFEX_MIS"
+    },
+    {
+      "deterministic_metric_enabled": "limited_current_value_or_freshness",
+      "exposed_today": "yes",
+      "normalized_today": "yes",
+      "proposed_normalized_field_name": "dispcname",
+      "raw_field_name": "DispCName",
+      "semantic_caveat": "Current parser evidence does not prove OHLC/volume/depth fields beyond listed names.",
+      "source_id": "TAIFEX_MIS"
+    }
+  ],
+  "generated_at_utc": "2026-07-06T03:56:05Z",
+  "governance": {
+    "live_observation": false,
+    "network_calls": false,
+    "product_behavior_changed": false,
+    "recommendation": false,
+    "trading_signal": false
+  },
+  "m7_candidate_roadmap": [
+    {
+      "milestone": "M7A_rich_mis_observation_contract",
+      "scope": "Rich TWSE MIS / TAIFEX observation contract expansion; no new source; expose richer quote snapshot facts."
+    },
+    {
+      "milestone": "M7B_market_context_package_and_ai_markdown",
+      "scope": "Market Context Package plus richer AI Markdown/MCP context and bounded cross-instrument summaries."
+    },
+    {
+      "milestone": "M7C_official_eod_context_expansion",
+      "scope": "Official TWSE/TPEx EOD context expansion and canonical/recent daily baseline."
+    },
+    {
+      "milestone": "M7D_optional_third_party_historical_context",
+      "scope": "Optional Yahoo/FinMind historical context with coverage and delay caveats."
+    },
+    {
+      "milestone": "M7E_credential_gated_provider_research",
+      "scope": "Fugle/Fubon credential-gated provider research only; no implementation until compliance decisions exist."
+    }
+  ],
+  "schema_version": "m7_00_data_capability_inventory.v1",
+  "source_families": [
+    {
+      "authority_class": "official_browser_json_candidate",
+      "candidate_milestone": "M7A_rich_mis_observation_contract",
+      "credential_or_access_requirements": "No credentials; may require browser-like headers/cookie behavior and low-frequency usage.",
+      "current_ai_context_usage": "Only one price-like value plus timestamp/freshness/caveats is surfaced for successful rows.",
+      "current_normalized_fields": [
+        "schema_version",
+        "symbol",
+        "display_symbol",
+        "category_id",
+        "instrument_type",
+        "status",
+        "source",
+        "adapter_id",
+        "market",
+        "source_type",
+        "price_like_value",
+        "value",
+        "price_semantics",
+        "source_timestamp",
+        "retrieved_at_utc",
+        "freshness_assessment",
+        "delay_status",
+        "delay_seconds",
+        "staleness_seconds",
+        "reference_only",
+        "contract",
+        "contract_month",
+        "contract_selector",
+        "data_quality_flags",
+        "source_risk_flags",
+        "caveats",
+        "price_source_field"
+      ],
+      "deterministic_metrics_possible": [
+        "change",
+        "change_percent",
+        "range",
+        "range_percent",
+        "position_in_day_range",
+        "spread",
+        "top5_bid_volume",
+        "top5_ask_volume",
+        "top5_displayed_bid_ask_ratio"
+      ],
+      "display_name": "TWSE MIS browser JSON stock/index quotes",
+      "fields_currently_dropped": [
+        "previous_close",
+        "open",
+        "high",
+        "low",
+        "cumulative_volume",
+        "latest_trade_volume",
+        "bid_ladder",
+        "ask_ladder",
+        "limit_up",
+        "limit_down",
+        "display_name",
+        "exchange",
+        "channel"
+      ],
+      "implementation_files": [
+        "scripts/m5k_common.py",
+        "scripts/observation_contract.py"
+      ],
+      "potential_ai_context_usage": "Richer quote snapshot facts, displayed depth snapshot, day range, and bounded watchlist aggregates without trading interpretation.",
+      "raw_or_source_fields_available": [
+        "c",
+        "ex",
+        "n",
+        "ch",
+        "z",
+        "y",
+        "o",
+        "h",
+        "l",
+        "v",
+        "tv",
+        "b",
+        "g",
+        "a",
+        "f",
+        "u",
+        "w",
+        "d",
+        "t",
+        "tlong",
+        "%",
+        "ot"
+      ],
+      "recommended_near_term_action": "M7A expand normalized observation contract using already-known TWSE MIS fields; do not add a new source.",
+      "repo_evidence": {
+        "docs": [
+          "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md",
+          "docs/protocol/TWSE_MIS_PROTOCOL.md",
+          "docs/m5l_live_sources_validation_matrix.md"
+        ],
+        "files": [
+          "scripts/m5k_common.py",
+          "scripts/observation_contract.py",
+          "config/m5l_live_source_adapter_matrix.json"
+        ],
+        "tests": [
+          "tests/test_m5k_live_observation.py",
+          "tests/test_m5n_conversation_context.py"
+        ]
+      },
+      "runtime_exposure_status": [
+        "exposed_in_fastapi",
+        "exposed_in_mcp",
+        "exposed_in_frontend",
+        "exposed_in_conversation_context",
+        "fetched_but_dropped"
+      ],
+      "semantic_risks": [
+        "medium_unofficial_contract_fragility",
+        "high_realtime_claim_risk",
+        "high_trading_interpretation_risk"
+      ],
+      "source_availability_status": "implemented_normalized_now",
+      "source_id": "TWSE_MIS",
+      "source_url_template_or_artifact_path": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch={tse|otc}_{symbol}.tw&json=1&delay=0",
+      "stability_notes": "Implemented but fragile browser JSON contract; no official realtime SLA is asserted.",
+      "tests_covering_source": [
+        "tests/test_m5k_live_observation.py",
+        "tests/test_m5q_source_health.py"
+      ],
+      "timing_class": "live_or_intraday"
+    },
+    {
+      "authority_class": "official_browser_json",
+      "candidate_milestone": "M7A_rich_mis_observation_contract",
+      "credential_or_access_requirements": "No credentials observed for bounded probe; licensed data may be needed for SLA-backed use.",
+      "current_ai_context_usage": "Front-month TX value with contract metadata, timestamp, status, and caveats.",
+      "current_normalized_fields": [
+        "schema_version",
+        "symbol",
+        "display_symbol",
+        "category_id",
+        "instrument_type",
+        "status",
+        "source",
+        "adapter_id",
+        "market",
+        "source_type",
+        "price_like_value",
+        "value",
+        "price_semantics",
+        "source_timestamp",
+        "retrieved_at_utc",
+        "freshness_assessment",
+        "delay_status",
+        "delay_seconds",
+        "staleness_seconds",
+        "reference_only",
+        "contract",
+        "contract_month",
+        "contract_selector",
+        "data_quality_flags",
+        "source_risk_flags",
+        "caveats",
+        "source_status",
+        "normalization"
+      ],
+      "deterministic_metrics_possible": [
+        "change if CRefPrice and CLastPrice retained",
+        "cross_instrument_change_diff when normalized"
+      ],
+      "display_name": "TAIFEX MIS TX futures QuoteList",
+      "fields_currently_dropped": [
+        "other_quote_list_contracts",
+        "raw_quote_count",
+        "open/high/low/reference/volume/bid/ask fields if present are not evident in current parser"
+      ],
+      "implementation_files": [
+        "scripts/m5k_common.py",
+        "scripts/observation_contract.py"
+      ],
+      "potential_ai_context_usage": "TX context adjacent to TAIEX/watchlist if richer fields are validated.",
+      "raw_or_source_fields_available": [
+        "CLastPrice",
+        "SettlementPrice",
+        "CRefPrice",
+        "CDate",
+        "CTime",
+        "Status",
+        "SymbolID",
+        "DispEName",
+        "DispCName"
+      ],
+      "recommended_near_term_action": "M7A inspect fixture/evidence before adding richer fields; mark missing OHLC/depth as unknown until proven.",
+      "repo_evidence": {
+        "docs": [
+          "docs/m5l_taifex_live_source_validation.md",
+          "docs/m5k_taifex_tx_futures_preflight.md"
+        ],
+        "files": [
+          "scripts/m5k_common.py",
+          "scripts/observation_contract.py",
+          "config/m5l_live_source_adapter_matrix.json"
+        ],
+        "tests": [
+          "tests/test_m5l_taifex_live_source.py",
+          "tests/test_m5q_source_health.py"
+        ]
+      },
+      "runtime_exposure_status": [
+        "exposed_in_fastapi",
+        "exposed_in_mcp",
+        "exposed_in_frontend",
+        "exposed_in_conversation_context",
+        "fetched_but_dropped"
+      ],
+      "semantic_risks": [
+        "high_realtime_claim_risk",
+        "high_trading_interpretation_risk"
+      ],
+      "source_availability_status": "implemented_normalized_now",
+      "source_id": "TAIFEX_MIS",
+      "source_url_template_or_artifact_path": "POST https://mis.taifex.com.tw/futures/api/getQuoteList body CID=TXF",
+      "stability_notes": "Official browser endpoint but not a licensed feed contract; current parser only proves selected fields.",
+      "tests_covering_source": [
+        "tests/test_m5l_taifex_live_source.py",
+        "tests/test_m5k_live_observation.py"
+      ],
+      "timing_class": "live_or_intraday"
+    },
+    {
+      "authority_class": "official_openapi",
+      "candidate_milestone": "M7C_official_eod_context_expansion",
+      "credential_or_access_requirements": "No credentials.",
+      "current_ai_context_usage": "Canonical/EOD reference context, not current observation.",
+      "current_normalized_fields": [
+        "trade_date",
+        "symbol",
+        "name",
+        "trade_volume",
+        "trade_value",
+        "open",
+        "high",
+        "low",
+        "close",
+        "change",
+        "transaction_count"
+      ],
+      "deterministic_metrics_possible": [
+        "range",
+        "range_percent",
+        "change_from_open_percent"
+      ],
+      "display_name": "TWSE official OpenAPI EOD daily quote",
+      "fields_currently_dropped": [],
+      "implementation_files": [
+        "scripts/run_m3g04_controlled_live_probe.py"
+      ],
+      "potential_ai_context_usage": "Official EOD baseline for daily context and stale/reference comparisons.",
+      "raw_or_source_fields_available": [
+        "Date",
+        "Code",
+        "Name",
+        "TradeVolume",
+        "TradeValue",
+        "OpeningPrice",
+        "HighestPrice",
+        "LowestPrice",
+        "ClosingPrice",
+        "Change",
+        "Transaction"
+      ],
+      "recommended_near_term_action": "M7C expand official EOD context after live snapshot expansion.",
+      "repo_evidence": {
+        "docs": [
+          "docs/protocol/TWSE_OPENAPI_FIELD_DICTIONARY.md",
+          "docs/protocol/OFFICIAL_OPENAPI_SOURCE_SEMANTICS.md"
+        ],
+        "files": [
+          "docs/contracts/twse_openapi_normalized_eod_quote_v1.md"
+        ],
+        "tests": [
+          "tests/test_source_contracts.py"
+        ]
+      },
+      "runtime_exposure_status": [
+        "docs_only",
+        "contract_known_but_not_implemented",
+        "normalized_but_not_exposed"
+      ],
+      "semantic_risks": [
+        "medium_delayed_or_reference_only"
+      ],
+      "source_availability_status": "implemented_probe_or_contract_now",
+      "source_id": "TWSE_OpenAPI",
+      "source_url_template_or_artifact_path": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+      "stability_notes": "Official EOD endpoint; not intraday.",
+      "tests_covering_source": [
+        "tests/test_source_contracts.py"
+      ],
+      "timing_class": "end_of_day"
+    },
+    {
+      "authority_class": "official_openapi",
+      "candidate_milestone": "M7C_official_eod_context_expansion",
+      "credential_or_access_requirements": "No credentials.",
+      "current_ai_context_usage": "Official OTC EOD reference context.",
+      "current_normalized_fields": [
+        "trade_date",
+        "symbol",
+        "name",
+        "close",
+        "change",
+        "open",
+        "high",
+        "low",
+        "trade_volume",
+        "trade_value",
+        "transaction_count"
+      ],
+      "deterministic_metrics_possible": [
+        "range",
+        "range_percent",
+        "change_from_open_percent"
+      ],
+      "display_name": "TPEx official OpenAPI EOD daily close quotes",
+      "fields_currently_dropped": [
+        "Average",
+        "LatestBidPrice",
+        "LatesAskPrice",
+        "Capitals",
+        "NextReferencePrice",
+        "NextLimitUp",
+        "NextLimitDown"
+      ],
+      "implementation_files": [
+        "scripts/run_m3g04_controlled_live_probe.py"
+      ],
+      "potential_ai_context_usage": "Official TPEx daily baseline and next-day reference context.",
+      "raw_or_source_fields_available": [
+        "Date",
+        "SecuritiesCompanyCode",
+        "CompanyName",
+        "Close",
+        "Change",
+        "Open",
+        "High",
+        "Low",
+        "Average",
+        "TradingShares",
+        "TransactionAmount",
+        "TransactionNumber",
+        "LatestBidPrice",
+        "LatesAskPrice",
+        "Capitals",
+        "NextReferencePrice",
+        "NextLimitUp",
+        "NextLimitDown"
+      ],
+      "recommended_near_term_action": "M7C expand official EOD context and preserve unmapped official fields.",
+      "repo_evidence": {
+        "docs": [
+          "docs/protocol/TPEX_OPENAPI_FIELD_DICTIONARY.md",
+          "docs/protocol/OFFICIAL_OPENAPI_SOURCE_SEMANTICS.md"
+        ],
+        "files": [
+          "docs/contracts/tpex_openapi_normalized_eod_quote_v1.md"
+        ],
+        "tests": [
+          "tests/test_source_contracts.py"
+        ]
+      },
+      "runtime_exposure_status": [
+        "docs_only",
+        "contract_known_but_not_implemented",
+        "normalized_but_not_exposed"
+      ],
+      "semantic_risks": [
+        "medium_delayed_or_reference_only"
+      ],
+      "source_availability_status": "implemented_probe_or_contract_now",
+      "source_id": "TPEx_OpenAPI",
+      "source_url_template_or_artifact_path": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
+      "stability_notes": "Official EOD endpoint; one raw typo-like field name LatesAskPrice must be preserved exactly.",
+      "tests_covering_source": [
+        "tests/test_source_contracts.py"
+      ],
+      "timing_class": "end_of_day"
+    },
+    {
+      "authority_class": "unofficial_api",
+      "candidate_milestone": "M7D_optional_third_party_historical_context",
+      "credential_or_access_requirements": "No credentials, but rate-limited.",
+      "current_ai_context_usage": "Offline/not attempted or contract context; not a current normalized runtime source.",
+      "current_normalized_fields": [
+        "symbol",
+        "regular_market_price",
+        "regular_market_time",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume"
+      ],
+      "deterministic_metrics_possible": [
+        "range",
+        "change_percent if previous close is present",
+        "historical trend summaries"
+      ],
+      "display_name": "Yahoo Finance chart endpoint",
+      "fields_currently_dropped": [
+        "full_intraday_series",
+        "timezone_metadata",
+        "currency",
+        "exchangeName"
+      ],
+      "implementation_files": [
+        "scripts/run_m3g04_controlled_live_probe.py"
+      ],
+      "potential_ai_context_usage": "Optional historical/chart context if coverage and delay are displayed.",
+      "raw_or_source_fields_available": [
+        "meta",
+        "timestamp",
+        "indicators.quote.open/high/low/close/volume",
+        "adjclose",
+        "chart.error"
+      ],
+      "recommended_near_term_action": "M7D optional historical context only after explicit coverage validation.",
+      "repo_evidence": {
+        "docs": [
+          "docs/protocol/YAHOO_FINANCE_CHART_PROTOCOL.md",
+          "docs/capability_matrix.md"
+        ],
+        "files": [
+          "docs/contracts/yahoo_finance_normalized_chart_v1.md"
+        ],
+        "tests": [
+          "tests/test_generate_chatgpt_briefing.py"
+        ]
+      },
+      "runtime_exposure_status": [
+        "docs_only",
+        "contract_known_but_not_implemented"
+      ],
+      "semantic_risks": [
+        "medium_unofficial_contract_fragility",
+        "medium_delayed_or_reference_only"
+      ],
+      "source_availability_status": "implemented_probe_or_contract_now",
+      "source_id": "Yahoo_Finance",
+      "source_url_template_or_artifact_path": "https://query1.finance.yahoo.com/v8/finance/chart/{symbol}",
+      "stability_notes": "Unofficial endpoint with rate limits and coverage gaps.",
+      "tests_covering_source": [
+        "tests/test_generate_chatgpt_briefing.py"
+      ],
+      "timing_class": "historical"
+    },
+    {
+      "authority_class": "commercial_api",
+      "candidate_milestone": "M7D_optional_third_party_historical_context",
+      "credential_or_access_requirements": "Token may be needed depending on dataset/tier.",
+      "current_ai_context_usage": "Listed as historical/EOD candidate; not exposed in runtime context.",
+      "current_normalized_fields": [
+        "historical/eod sample fields in prior capability matrix only"
+      ],
+      "deterministic_metrics_possible": [
+        "historical returns/ranges if dataset validated"
+      ],
+      "display_name": "FinMind data API",
+      "fields_currently_dropped": [
+        "not integrated into runtime observation"
+      ],
+      "implementation_files": [
+        "scripts/run_m3g04_controlled_live_probe.py"
+      ],
+      "potential_ai_context_usage": "Optional historical context package.",
+      "raw_or_source_fields_available": [
+        "dataset-dependent"
+      ],
+      "recommended_near_term_action": "M7D only; no credential assumptions.",
+      "repo_evidence": {
+        "docs": [
+          "docs/protocol/OFFICIAL_OPENAPI_SOURCE_SEMANTICS.md"
+        ],
+        "files": [
+          "docs/capability_matrix.md"
+        ],
+        "tests": []
+      },
+      "runtime_exposure_status": [
+        "docs_only",
+        "contract_known_but_not_implemented"
+      ],
+      "semantic_risks": [
+        "medium_delayed_or_reference_only",
+        "high_credential_or_compliance_risk"
+      ],
+      "source_availability_status": "validated_historical_workbench",
+      "source_id": "FinMind",
+      "source_url_template_or_artifact_path": "https://api.finmindtrade.com/api/v4/data",
+      "stability_notes": "Commercial/API terms and tier limits apply.",
+      "tests_covering_source": [],
+      "timing_class": "historical"
+    },
+    {
+      "authority_class": "commercial_api",
+      "candidate_milestone": "M7E_credential_gated_provider_research",
+      "credential_or_access_requirements": "Personal API key/subscription required; do not commit credentials.",
+      "current_ai_context_usage": "Credential-gated future candidate only.",
+      "current_normalized_fields": [],
+      "deterministic_metrics_possible": [
+        "unknown until provider contract validated"
+      ],
+      "display_name": "Fugle MarketData API",
+      "fields_currently_dropped": [
+        "all provider fields; no integration"
+      ],
+      "implementation_files": [],
+      "potential_ai_context_usage": "Licensed read-only live provider if terms and credentials allow.",
+      "raw_or_source_fields_available": [
+        "unknown_needs_credentials"
+      ],
+      "recommended_near_term_action": "M7E provider research only.",
+      "repo_evidence": {
+        "docs": [
+          "docs/protocol/OFFICIAL_OPENAPI_SOURCE_SEMANTICS.md"
+        ],
+        "files": [
+          "config/m5l_live_source_adapter_matrix.json",
+          "docs/capability_matrix.md"
+        ],
+        "tests": []
+      },
+      "runtime_exposure_status": [
+        "docs_only"
+      ],
+      "semantic_risks": [
+        "high_credential_or_compliance_risk",
+        "high_realtime_claim_risk"
+      ],
+      "source_availability_status": "credential_gated_not_usable_now",
+      "source_id": "Fugle_MarketData",
+      "source_url_template_or_artifact_path": "https://developer.fugle.tw/",
+      "stability_notes": "Requires credentials and compliance review.",
+      "tests_covering_source": [],
+      "timing_class": "credential_dependent"
+    },
+    {
+      "authority_class": "broker_api",
+      "candidate_milestone": "M7E_credential_gated_provider_research",
+      "credential_or_access_requirements": "Brokerage account/certificate likely required; no credentials in repo.",
+      "current_ai_context_usage": "Credential-gated future candidate only.",
+      "current_normalized_fields": [],
+      "deterministic_metrics_possible": [
+        "unknown until non-trading read-only contract validated"
+      ],
+      "display_name": "Fubon Neo API",
+      "fields_currently_dropped": [
+        "all provider fields; no integration"
+      ],
+      "implementation_files": [],
+      "potential_ai_context_usage": "Possible read-only broker data after strict separation from order/execution features.",
+      "raw_or_source_fields_available": [
+        "unknown_needs_broker_credentials"
+      ],
+      "recommended_near_term_action": "M7E research only; no implementation until governance decision.",
+      "repo_evidence": {
+        "docs": [
+          "docs/protocol/OFFICIAL_OPENAPI_SOURCE_SEMANTICS.md"
+        ],
+        "files": [
+          "config/m5l_live_source_adapter_matrix.json",
+          "docs/capability_matrix.md"
+        ],
+        "tests": []
+      },
+      "runtime_exposure_status": [
+        "docs_only"
+      ],
+      "semantic_risks": [
+        "high_credential_or_compliance_risk",
+        "high_trading_interpretation_risk"
+      ],
+      "source_availability_status": "credential_gated_not_usable_now",
+      "source_id": "Fubon_Neo_API",
+      "source_url_template_or_artifact_path": "https://developer.fubon.com/",
+      "stability_notes": "Broker/account/certificate proximity raises compliance and safety risk.",
+      "tests_covering_source": [],
+      "timing_class": "credential_dependent"
+    },
+    {
+      "authority_class": "local_canonical_artifact",
+      "candidate_milestone": "M7C_official_eod_context_expansion",
+      "credential_or_access_requirements": "None.",
+      "current_ai_context_usage": "Provides local context to API/frontend/MCP/Conversation Package.",
+      "current_normalized_fields": [
+        "governance",
+        "summary",
+        "content",
+        "caveats"
+      ],
+      "deterministic_metrics_possible": [
+        "watchlist counts",
+        "freshness summaries",
+        "source-health counts"
+      ],
+      "display_name": "Local M5F canonical context",
+      "fields_currently_dropped": [
+        "raw endpoint payloads are intentionally excluded"
+      ],
+      "implementation_files": [
+        "server/main.py",
+        "server/mcp_server.py",
+        "scripts/validate_m5f_canonical_market_context_package.py"
+      ],
+      "potential_ai_context_usage": "Richer bounded summaries once source rows expose more facts.",
+      "raw_or_source_fields_available": [
+        "local artifact fields"
+      ],
+      "recommended_near_term_action": "Compose richer facts without changing runtime behavior in this PR.",
+      "repo_evidence": {
+        "docs": [
+          "README.md",
+          "docs/operator/LOCAL_WORKBENCH.md"
+        ],
+        "files": [
+          "server/main.py",
+          "server/mcp_server.py",
+          "scripts/validate_m5f_canonical_market_context_package.py"
+        ],
+        "tests": [
+          "tests/"
+        ]
+      },
+      "runtime_exposure_status": [
+        "exposed_in_fastapi",
+        "exposed_in_mcp",
+        "exposed_in_frontend",
+        "exposed_in_conversation_context"
+      ],
+      "semantic_risks": [
+        "low_reference_context"
+      ],
+      "source_availability_status": "implemented_normalized_now",
+      "source_id": "Local_M5F_canonical_context",
+      "source_url_template_or_artifact_path": "research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json",
+      "stability_notes": "Local repo artifact or endpoint; no external network when reading.",
+      "tests_covering_source": [
+        "tests/"
+      ],
+      "timing_class": "local_static_context"
+    },
+    {
+      "authority_class": "local_generated_artifact",
+      "candidate_milestone": "M7A_rich_mis_observation_contract",
+      "credential_or_access_requirements": "None.",
+      "current_ai_context_usage": "Provides local context to API/frontend/MCP/Conversation Package.",
+      "current_normalized_fields": [
+        "schema_version",
+        "symbol",
+        "display_symbol",
+        "category_id",
+        "instrument_type",
+        "status",
+        "source",
+        "adapter_id",
+        "market",
+        "source_type",
+        "price_like_value",
+        "value",
+        "price_semantics",
+        "source_timestamp",
+        "retrieved_at_utc",
+        "freshness_assessment",
+        "delay_status",
+        "delay_seconds",
+        "staleness_seconds",
+        "reference_only",
+        "contract",
+        "contract_month",
+        "contract_selector",
+        "data_quality_flags",
+        "source_risk_flags",
+        "caveats"
+      ],
+      "deterministic_metrics_possible": [
+        "watchlist counts",
+        "freshness summaries",
+        "source-health counts"
+      ],
+      "display_name": "Local M5K latest observation",
+      "fields_currently_dropped": [
+        "raw endpoint payloads are intentionally excluded"
+      ],
+      "implementation_files": [
+        "scripts/m5k_common.py",
+        "server/main.py",
+        "server/mcp_server.py"
+      ],
+      "potential_ai_context_usage": "Richer bounded summaries once source rows expose more facts.",
+      "raw_or_source_fields_available": [
+        "local artifact fields"
+      ],
+      "recommended_near_term_action": "Compose richer facts without changing runtime behavior in this PR.",
+      "repo_evidence": {
+        "docs": [
+          "README.md",
+          "docs/operator/LOCAL_WORKBENCH.md"
+        ],
+        "files": [
+          "scripts/m5k_common.py",
+          "server/main.py",
+          "server/mcp_server.py"
+        ],
+        "tests": [
+          "tests/"
+        ]
+      },
+      "runtime_exposure_status": [
+        "exposed_in_fastapi",
+        "exposed_in_mcp",
+        "exposed_in_frontend",
+        "exposed_in_conversation_context"
+      ],
+      "semantic_risks": [
+        "medium_delayed_or_reference_only"
+      ],
+      "source_availability_status": "implemented_normalized_now",
+      "source_id": "Local_M5K_latest_observation",
+      "source_url_template_or_artifact_path": "research/live_observation_runs/m5k/latest_observation.json",
+      "stability_notes": "Local repo artifact or endpoint; no external network when reading.",
+      "tests_covering_source": [
+        "tests/"
+      ],
+      "timing_class": "live_or_intraday"
+    },
+    {
+      "authority_class": "local_generated_artifact",
+      "candidate_milestone": "M7B_market_context_package_and_ai_markdown",
+      "credential_or_access_requirements": "None.",
+      "current_ai_context_usage": "Provides local context to API/frontend/MCP/Conversation Package.",
+      "current_normalized_fields": [
+        "schema_version",
+        "symbol",
+        "display_symbol",
+        "category_id",
+        "instrument_type",
+        "status",
+        "source",
+        "adapter_id",
+        "market",
+        "source_type",
+        "price_like_value",
+        "value",
+        "price_semantics",
+        "source_timestamp",
+        "retrieved_at_utc",
+        "freshness_assessment",
+        "delay_status",
+        "delay_seconds",
+        "staleness_seconds",
+        "reference_only",
+        "contract",
+        "contract_month",
+        "contract_selector",
+        "data_quality_flags",
+        "source_risk_flags",
+        "caveats"
+      ],
+      "deterministic_metrics_possible": [
+        "watchlist counts",
+        "freshness summaries",
+        "source-health counts"
+      ],
+      "display_name": "Local M5K observation history",
+      "fields_currently_dropped": [
+        "raw endpoint payloads are intentionally excluded"
+      ],
+      "implementation_files": [
+        "server/main.py"
+      ],
+      "potential_ai_context_usage": "Richer bounded summaries once source rows expose more facts.",
+      "raw_or_source_fields_available": [
+        "local artifact fields"
+      ],
+      "recommended_near_term_action": "Compose richer facts without changing runtime behavior in this PR.",
+      "repo_evidence": {
+        "docs": [
+          "README.md",
+          "docs/operator/LOCAL_WORKBENCH.md"
+        ],
+        "files": [
+          "server/main.py"
+        ],
+        "tests": [
+          "tests/"
+        ]
+      },
+      "runtime_exposure_status": [
+        "exposed_in_fastapi",
+        "normalized_but_not_exposed"
+      ],
+      "semantic_risks": [
+        "medium_delayed_or_reference_only"
+      ],
+      "source_availability_status": "implemented_probe_or_contract_now",
+      "source_id": "Local_M5K_observation_history",
+      "source_url_template_or_artifact_path": "research/live_observation_runs/m5k/*.json",
+      "stability_notes": "Local repo artifact or endpoint; no external network when reading.",
+      "tests_covering_source": [
+        "tests/"
+      ],
+      "timing_class": "historical"
+    },
+    {
+      "authority_class": "local_generated_artifact",
+      "candidate_milestone": "M7B_market_context_package_and_ai_markdown",
+      "credential_or_access_requirements": "None.",
+      "current_ai_context_usage": "Provides local context to API/frontend/MCP/Conversation Package.",
+      "current_normalized_fields": [
+        "governance",
+        "summary",
+        "content",
+        "caveats"
+      ],
+      "deterministic_metrics_possible": [
+        "watchlist counts",
+        "freshness summaries",
+        "source-health counts"
+      ],
+      "display_name": "M5N watchlist / conversation handoff",
+      "fields_currently_dropped": [
+        "raw endpoint payloads are intentionally excluded"
+      ],
+      "implementation_files": [
+        "scripts/m5k_common.py",
+        "scripts/build_m5n_conversation_context.py",
+        "server/main.py",
+        "server/mcp_server.py"
+      ],
+      "potential_ai_context_usage": "Richer bounded summaries once source rows expose more facts.",
+      "raw_or_source_fields_available": [
+        "local artifact fields"
+      ],
+      "recommended_near_term_action": "Compose richer facts without changing runtime behavior in this PR.",
+      "repo_evidence": {
+        "docs": [
+          "README.md",
+          "docs/operator/LOCAL_WORKBENCH.md"
+        ],
+        "files": [
+          "scripts/m5k_common.py",
+          "scripts/build_m5n_conversation_context.py",
+          "server/main.py",
+          "server/mcp_server.py"
+        ],
+        "tests": [
+          "tests/"
+        ]
+      },
+      "runtime_exposure_status": [
+        "exposed_in_fastapi",
+        "exposed_in_mcp",
+        "exposed_in_frontend",
+        "exposed_in_conversation_context"
+      ],
+      "semantic_risks": [
+        "low_reference_context"
+      ],
+      "source_availability_status": "implemented_normalized_now",
+      "source_id": "M5N_watchlist_conversation_handoff",
+      "source_url_template_or_artifact_path": "config/m5k_default_watchlist.json",
+      "stability_notes": "Local repo artifact or endpoint; no external network when reading.",
+      "tests_covering_source": [
+        "tests/"
+      ],
+      "timing_class": "local_static_context"
+    },
+    {
+      "authority_class": "local_generated_artifact",
+      "candidate_milestone": "M7B_market_context_package_and_ai_markdown",
+      "credential_or_access_requirements": "None.",
+      "current_ai_context_usage": "Provides local context to API/frontend/MCP/Conversation Package.",
+      "current_normalized_fields": [
+        "governance",
+        "summary",
+        "content",
+        "caveats"
+      ],
+      "deterministic_metrics_possible": [
+        "watchlist counts",
+        "freshness summaries",
+        "source-health counts"
+      ],
+      "display_name": "M5Q source-health report",
+      "fields_currently_dropped": [
+        "raw endpoint payloads are intentionally excluded"
+      ],
+      "implementation_files": [
+        "scripts/m5q_source_health.py",
+        "scripts/run_m5q_source_health_probe.py",
+        "server/main.py",
+        "server/mcp_server.py"
+      ],
+      "potential_ai_context_usage": "Richer bounded summaries once source rows expose more facts.",
+      "raw_or_source_fields_available": [
+        "local artifact fields"
+      ],
+      "recommended_near_term_action": "Compose richer facts without changing runtime behavior in this PR.",
+      "repo_evidence": {
+        "docs": [
+          "README.md",
+          "docs/operator/LOCAL_WORKBENCH.md"
+        ],
+        "files": [
+          "scripts/m5q_source_health.py",
+          "scripts/run_m5q_source_health_probe.py",
+          "server/main.py",
+          "server/mcp_server.py"
+        ],
+        "tests": [
+          "tests/"
+        ]
+      },
+      "runtime_exposure_status": [
+        "exposed_in_fastapi",
+        "exposed_in_mcp",
+        "exposed_in_frontend",
+        "exposed_in_conversation_context"
+      ],
+      "semantic_risks": [
+        "medium_delayed_or_reference_only"
+      ],
+      "source_availability_status": "implemented_probe_or_contract_now",
+      "source_id": "M5Q_source_health_report",
+      "source_url_template_or_artifact_path": "research/live_observation_runs/source_health/latest_source_health_report.json",
+      "stability_notes": "Local repo artifact or endpoint; no external network when reading.",
+      "tests_covering_source": [
+        "tests/"
+      ],
+      "timing_class": "source_health_probe"
+    },
+    {
+      "authority_class": "local_generated_artifact",
+      "candidate_milestone": "M7B_market_context_package_and_ai_markdown",
+      "credential_or_access_requirements": "None.",
+      "current_ai_context_usage": "Provides local context to API/frontend/MCP/Conversation Package.",
+      "current_normalized_fields": [
+        "governance",
+        "summary",
+        "content",
+        "caveats"
+      ],
+      "deterministic_metrics_possible": [
+        "watchlist counts",
+        "freshness summaries",
+        "source-health counts"
+      ],
+      "display_name": "FastAPI readonly context endpoints",
+      "fields_currently_dropped": [
+        "raw endpoint payloads are intentionally excluded"
+      ],
+      "implementation_files": [
+        "server/main.py"
+      ],
+      "potential_ai_context_usage": "Richer bounded summaries once source rows expose more facts.",
+      "raw_or_source_fields_available": [
+        "local artifact fields"
+      ],
+      "recommended_near_term_action": "Compose richer facts without changing runtime behavior in this PR.",
+      "repo_evidence": {
+        "docs": [
+          "README.md",
+          "docs/operator/LOCAL_WORKBENCH.md"
+        ],
+        "files": [
+          "server/main.py"
+        ],
+        "tests": [
+          "tests/"
+        ]
+      },
+      "runtime_exposure_status": [
+        "exposed_in_fastapi",
+        "exposed_in_frontend"
+      ],
+      "semantic_risks": [
+        "low_reference_context"
+      ],
+      "source_availability_status": "implemented_normalized_now",
+      "source_id": "FastAPI_context_endpoints",
+      "source_url_template_or_artifact_path": "/api/context/*",
+      "stability_notes": "Local repo artifact or endpoint; no external network when reading.",
+      "tests_covering_source": [
+        "tests/"
+      ],
+      "timing_class": "local_static_context"
+    },
+    {
+      "authority_class": "local_generated_artifact",
+      "candidate_milestone": "M7A_rich_mis_observation_contract",
+      "credential_or_access_requirements": "None.",
+      "current_ai_context_usage": "Provides local context to API/frontend/MCP/Conversation Package.",
+      "current_normalized_fields": [
+        "schema_version",
+        "symbol",
+        "display_symbol",
+        "category_id",
+        "instrument_type",
+        "status",
+        "source",
+        "adapter_id",
+        "market",
+        "source_type",
+        "price_like_value",
+        "value",
+        "price_semantics",
+        "source_timestamp",
+        "retrieved_at_utc",
+        "freshness_assessment",
+        "delay_status",
+        "delay_seconds",
+        "staleness_seconds",
+        "reference_only",
+        "contract",
+        "contract_month",
+        "contract_selector",
+        "data_quality_flags",
+        "source_risk_flags",
+        "caveats"
+      ],
+      "deterministic_metrics_possible": [
+        "watchlist counts",
+        "freshness summaries",
+        "source-health counts"
+      ],
+      "display_name": "FastAPI live observation read/plan endpoints",
+      "fields_currently_dropped": [
+        "raw endpoint payloads are intentionally excluded"
+      ],
+      "implementation_files": [
+        "server/main.py"
+      ],
+      "potential_ai_context_usage": "Richer bounded summaries once source rows expose more facts.",
+      "raw_or_source_fields_available": [
+        "local artifact fields"
+      ],
+      "recommended_near_term_action": "Compose richer facts without changing runtime behavior in this PR.",
+      "repo_evidence": {
+        "docs": [
+          "README.md",
+          "docs/operator/LOCAL_WORKBENCH.md"
+        ],
+        "files": [
+          "server/main.py"
+        ],
+        "tests": [
+          "tests/"
+        ]
+      },
+      "runtime_exposure_status": [
+        "exposed_in_fastapi",
+        "exposed_in_frontend"
+      ],
+      "semantic_risks": [
+        "medium_delayed_or_reference_only"
+      ],
+      "source_availability_status": "implemented_normalized_now",
+      "source_id": "FastAPI_live_observation_endpoints",
+      "source_url_template_or_artifact_path": "/api/m5k/live-observation/latest",
+      "stability_notes": "Local repo artifact or endpoint; no external network when reading.",
+      "tests_covering_source": [
+        "tests/"
+      ],
+      "timing_class": "live_or_intraday"
+    },
+    {
+      "authority_class": "local_generated_artifact",
+      "candidate_milestone": "M7B_market_context_package_and_ai_markdown",
+      "credential_or_access_requirements": "None.",
+      "current_ai_context_usage": "Provides local context to API/frontend/MCP/Conversation Package.",
+      "current_normalized_fields": [
+        "governance",
+        "summary",
+        "content",
+        "caveats"
+      ],
+      "deterministic_metrics_possible": [
+        "watchlist counts",
+        "freshness summaries",
+        "source-health counts"
+      ],
+      "display_name": "FastAPI conversation context endpoint",
+      "fields_currently_dropped": [
+        "raw endpoint payloads are intentionally excluded"
+      ],
+      "implementation_files": [
+        "server/main.py",
+        "scripts/m5k_common.py"
+      ],
+      "potential_ai_context_usage": "Richer bounded summaries once source rows expose more facts.",
+      "raw_or_source_fields_available": [
+        "local artifact fields"
+      ],
+      "recommended_near_term_action": "Compose richer facts without changing runtime behavior in this PR.",
+      "repo_evidence": {
+        "docs": [
+          "README.md",
+          "docs/operator/LOCAL_WORKBENCH.md"
+        ],
+        "files": [
+          "server/main.py",
+          "scripts/m5k_common.py"
+        ],
+        "tests": [
+          "tests/"
+        ]
+      },
+      "runtime_exposure_status": [
+        "exposed_in_fastapi",
+        "exposed_in_frontend",
+        "exposed_in_conversation_context"
+      ],
+      "semantic_risks": [
+        "low_reference_context"
+      ],
+      "source_availability_status": "implemented_normalized_now",
+      "source_id": "FastAPI_conversation_context_endpoint",
+      "source_url_template_or_artifact_path": "/api/conversation/context",
+      "stability_notes": "Local repo artifact or endpoint; no external network when reading.",
+      "tests_covering_source": [
+        "tests/"
+      ],
+      "timing_class": "local_static_context"
+    },
+    {
+      "authority_class": "local_generated_artifact",
+      "candidate_milestone": "M7B_market_context_package_and_ai_markdown",
+      "credential_or_access_requirements": "None.",
+      "current_ai_context_usage": "Provides local context to API/frontend/MCP/Conversation Package.",
+      "current_normalized_fields": [
+        "governance",
+        "summary",
+        "content",
+        "caveats"
+      ],
+      "deterministic_metrics_possible": [
+        "watchlist counts",
+        "freshness summaries",
+        "source-health counts"
+      ],
+      "display_name": "MCP server exposed resources/tools",
+      "fields_currently_dropped": [
+        "raw endpoint payloads are intentionally excluded"
+      ],
+      "implementation_files": [
+        "server/mcp_server.py"
+      ],
+      "potential_ai_context_usage": "Richer bounded summaries once source rows expose more facts.",
+      "raw_or_source_fields_available": [
+        "local artifact fields"
+      ],
+      "recommended_near_term_action": "Compose richer facts without changing runtime behavior in this PR.",
+      "repo_evidence": {
+        "docs": [
+          "README.md",
+          "docs/operator/LOCAL_WORKBENCH.md"
+        ],
+        "files": [
+          "server/mcp_server.py"
+        ],
+        "tests": [
+          "tests/"
+        ]
+      },
+      "runtime_exposure_status": [
+        "exposed_in_mcp",
+        "exposed_in_conversation_context"
+      ],
+      "semantic_risks": [
+        "low_reference_context"
+      ],
+      "source_availability_status": "implemented_normalized_now",
+      "source_id": "MCP_server_exposed_resources_tools",
+      "source_url_template_or_artifact_path": "server/mcp_server.py tools",
+      "stability_notes": "Local repo artifact or endpoint; no external network when reading.",
+      "tests_covering_source": [
+        "tests/"
+      ],
+      "timing_class": "local_static_context"
+    }
+  ]
+}
