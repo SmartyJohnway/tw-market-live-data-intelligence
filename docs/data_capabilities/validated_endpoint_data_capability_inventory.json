@@ -566,11 +566,11 @@
       "source_id": "TAIFEX_MIS"
     },
     {
-      "current_lifecycle": "parsed_but_not_exposed",
+      "current_lifecycle": "parsed_retained_partially_exposed",
       "dropped_decision_status": "implicit_from_current_code",
       "dropped_reason_category": "consumer_not_ready",
       "dropped_reason_detail": "Current TAIFEX parser usage: session/quote status used for freshness flags and source_status extra; retention/exposure follows current normalized row and consumer renderers.",
-      "dropped_status": "parsed_but_not_exposed",
+      "dropped_status": "parsed_retained_partially_exposed",
       "evidence_files": [
         "scripts/m5k_common.py",
         "scripts/observation_contract.py"
@@ -584,11 +584,11 @@
       "source_id": "TAIFEX_MIS"
     },
     {
-      "current_lifecycle": "parsed_but_not_exposed",
+      "current_lifecycle": "parsed_retained_partially_exposed",
       "dropped_decision_status": "implicit_from_current_code",
       "dropped_reason_category": "consumer_not_ready",
       "dropped_reason_detail": "Current TAIFEX parser usage: selected contract identity and extra normalization metadata; retention/exposure follows current normalized row and consumer renderers.",
-      "dropped_status": "parsed_but_not_exposed",
+      "dropped_status": "parsed_retained_partially_exposed",
       "evidence_files": [
         "scripts/m5k_common.py",
         "scripts/observation_contract.py"
@@ -602,11 +602,11 @@
       "source_id": "TAIFEX_MIS"
     },
     {
-      "current_lifecycle": "parsed_but_not_exposed",
+      "current_lifecycle": "parsed_retained_partially_exposed",
       "dropped_decision_status": "implicit_from_current_code",
       "dropped_reason_category": "consumer_not_ready",
       "dropped_reason_detail": "Current TAIFEX parser usage: contract month derivation and source_display_name metadata; retention/exposure follows current normalized row and consumer renderers.",
-      "dropped_status": "parsed_but_not_exposed",
+      "dropped_status": "parsed_retained_partially_exposed",
       "evidence_files": [
         "scripts/m5k_common.py",
         "scripts/observation_contract.py"
@@ -640,7 +640,7 @@
     {
       "current_lifecycle": "known_from_contract_not_runtime_fetched",
       "dropped_decision_status": "inferred_from_docs",
-      "dropped_reason_category": "intentionally_deferred",
+      "dropped_reason_category": "timing_class_not_runtime_compatible",
       "dropped_reason_detail": "Source family is not integrated as current runtime observation; fields are contract/candidate/provider research items, not fetched-and-dropped runtime data.",
       "dropped_status": "known_from_contract_not_runtime_fetched",
       "evidence_files": [
@@ -658,7 +658,7 @@
     {
       "current_lifecycle": "known_from_contract_not_runtime_fetched",
       "dropped_decision_status": "inferred_from_docs",
-      "dropped_reason_category": "intentionally_deferred",
+      "dropped_reason_category": "timing_class_not_runtime_compatible",
       "dropped_reason_detail": "Source family is not integrated as current runtime observation; fields are contract/candidate/provider research items, not fetched-and-dropped runtime data.",
       "dropped_status": "known_from_contract_not_runtime_fetched",
       "evidence_files": [
@@ -676,7 +676,7 @@
     {
       "current_lifecycle": "known_from_contract_not_runtime_fetched",
       "dropped_decision_status": "inferred_from_docs",
-      "dropped_reason_category": "intentionally_deferred",
+      "dropped_reason_category": "timing_class_not_runtime_compatible",
       "dropped_reason_detail": "Source family is not integrated as current runtime observation; fields are contract/candidate/provider research items, not fetched-and-dropped runtime data.",
       "dropped_status": "known_from_contract_not_runtime_fetched",
       "evidence_files": [
@@ -694,7 +694,7 @@
     {
       "current_lifecycle": "known_from_contract_not_runtime_fetched",
       "dropped_decision_status": "inferred_from_docs",
-      "dropped_reason_category": "intentionally_deferred",
+      "dropped_reason_category": "timing_class_not_runtime_compatible",
       "dropped_reason_detail": "Source family is not integrated as current runtime observation; fields are contract/candidate/provider research items, not fetched-and-dropped runtime data.",
       "dropped_status": "known_from_contract_not_runtime_fetched",
       "evidence_files": [
@@ -768,6 +768,7 @@
     {
       "current_parser_reads_field": "yes",
       "current_parser_usage": "preferred current/last price candidate via _select_mis_price",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "change/change_percent after previous_close retained",
       "dropped_decision_evidence": "scripts/m5k_common.py; scripts/observation_contract.py; docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; _select_mis_price; normalize_twse_mis_row",
       "dropped_decision_status": "implicit_from_current_code",
@@ -798,6 +799,7 @@
     {
       "current_parser_reads_field": "yes",
       "current_parser_usage": "fallback price_like_value when z unavailable; reference_value_only status",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "change/change_percent",
       "dropped_decision_evidence": "scripts/m5k_common.py; scripts/observation_contract.py; docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; _select_mis_price; normalize_twse_mis_row",
       "dropped_decision_status": "implicit_from_current_code",
@@ -831,6 +833,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "change_from_open_percent",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "implicit_from_current_code",
@@ -863,6 +866,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "range/position_in_day_range",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "implicit_from_current_code",
@@ -895,6 +899,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "range/position_in_day_range",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "implicit_from_current_code",
@@ -927,6 +932,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "volume context",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "no_clear_decision_found",
@@ -958,6 +964,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "latest trade volume context",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "no_clear_decision_found",
@@ -989,6 +996,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "spread/displayed_depth",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "no_clear_decision_found",
@@ -1021,6 +1029,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "top5_bid_volume",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "no_clear_decision_found",
@@ -1053,6 +1062,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "spread/displayed_depth",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "no_clear_decision_found",
@@ -1085,6 +1095,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "top5_ask_volume",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "no_clear_decision_found",
@@ -1117,6 +1128,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "reference context",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "no_clear_decision_found",
@@ -1148,6 +1160,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "reference context",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "no_clear_decision_found",
@@ -1179,6 +1192,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "route audit",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "implicit_from_current_code",
@@ -1210,6 +1224,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "identity",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "implicit_from_current_code",
@@ -1241,6 +1256,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "labeling",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "implicit_from_current_code",
@@ -1272,6 +1288,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "freshness",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "no_clear_decision_found",
@@ -1303,6 +1320,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "not read by current parser",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "freshness",
       "dropped_decision_evidence": "docs/protocol/TWSE_MIS_FIELD_DICTIONARY.md; scripts/observation_contract.py; Raw field dictionary; normalize_twse_mis_row",
       "dropped_decision_status": "no_clear_decision_found",
@@ -1334,6 +1352,10 @@
     {
       "current_parser_reads_field": "yes",
       "current_parser_usage": "used to build normalized source_timestamp/delay flags",
+      "derived_normalized_fields": [
+        "source_timestamp",
+        "delay_seconds"
+      ],
       "deterministic_metric_enabled": "freshness",
       "dropped_decision_evidence": "scripts/observation_contract.py; scripts/m5k_common.py; normalize_twse_mis_row; normalize_timestamp",
       "dropped_decision_status": "implicit_from_current_code",
@@ -1350,7 +1372,7 @@
       "exposed_fastapi": "yes",
       "exposed_frontend": "yes",
       "exposed_mcp": "yes",
-      "normalized_field_name": "source_timestamp/delay_seconds derived",
+      "normalized_field_name": "",
       "proposed_normalized_field_name": "source_time",
       "raw_field_known": "yes",
       "raw_field_name": "t",
@@ -1363,6 +1385,10 @@
     {
       "current_parser_reads_field": "yes",
       "current_parser_usage": "used to build normalized source_timestamp/delay flags",
+      "derived_normalized_fields": [
+        "source_timestamp",
+        "delay_seconds"
+      ],
       "deterministic_metric_enabled": "freshness",
       "dropped_decision_evidence": "scripts/observation_contract.py; scripts/m5k_common.py; normalize_twse_mis_row; normalize_timestamp",
       "dropped_decision_status": "implicit_from_current_code",
@@ -1379,7 +1405,7 @@
       "exposed_fastapi": "yes",
       "exposed_frontend": "yes",
       "exposed_mcp": "yes",
-      "normalized_field_name": "source_timestamp/delay_seconds derived",
+      "normalized_field_name": "",
       "proposed_normalized_field_name": "source_date",
       "raw_field_known": "yes",
       "raw_field_name": "d",
@@ -1392,6 +1418,10 @@
     {
       "current_parser_reads_field": "yes",
       "current_parser_usage": "used to build normalized source_timestamp/delay flags",
+      "derived_normalized_fields": [
+        "source_timestamp",
+        "delay_seconds"
+      ],
       "deterministic_metric_enabled": "freshness",
       "dropped_decision_evidence": "scripts/observation_contract.py; scripts/m5k_common.py; normalize_twse_mis_row; normalize_timestamp",
       "dropped_decision_status": "implicit_from_current_code",
@@ -1408,7 +1438,7 @@
       "exposed_fastapi": "yes",
       "exposed_frontend": "yes",
       "exposed_mcp": "yes",
-      "normalized_field_name": "source_timestamp/delay_seconds derived",
+      "normalized_field_name": "",
       "proposed_normalized_field_name": "source_timestamp_raw",
       "raw_field_known": "yes",
       "raw_field_name": "tlong",
@@ -1421,6 +1451,7 @@
     {
       "current_parser_reads_field": "yes",
       "current_parser_usage": "preferred last price input",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "limited TX context",
       "dropped_decision_evidence": "scripts/m5k_common.py; scripts/observation_contract.py; fetch_taifex_tx_observation; normalize_taifex_row",
       "dropped_decision_status": "implicit_from_current_code",
@@ -1450,6 +1481,7 @@
     {
       "current_parser_reads_field": "yes",
       "current_parser_usage": "fallback price input when CLastPrice unavailable",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "limited TX context",
       "dropped_decision_evidence": "scripts/m5k_common.py; scripts/observation_contract.py; fetch_taifex_tx_observation; normalize_taifex_row",
       "dropped_decision_status": "implicit_from_current_code",
@@ -1481,6 +1513,7 @@
     {
       "current_parser_reads_field": "yes",
       "current_parser_usage": "fallback price input after CLastPrice/SettlementPrice",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "limited TX context",
       "dropped_decision_evidence": "scripts/m5k_common.py; scripts/observation_contract.py; fetch_taifex_tx_observation; normalize_taifex_row",
       "dropped_decision_status": "implicit_from_current_code",
@@ -1512,6 +1545,9 @@
     {
       "current_parser_reads_field": "yes",
       "current_parser_usage": "source timestamp date input",
+      "derived_normalized_fields": [
+        "source_timestamp"
+      ],
       "deterministic_metric_enabled": "limited TX context",
       "dropped_decision_evidence": "scripts/m5k_common.py; scripts/observation_contract.py; fetch_taifex_tx_observation; normalize_taifex_row",
       "dropped_decision_status": "implicit_from_current_code",
@@ -1528,7 +1564,7 @@
       "exposed_fastapi": "yes",
       "exposed_frontend": "yes",
       "exposed_mcp": "yes",
-      "normalized_field_name": "source_timestamp derived",
+      "normalized_field_name": "",
       "proposed_normalized_field_name": "cdate",
       "raw_field_known": "yes",
       "raw_field_name": "CDate",
@@ -1541,6 +1577,9 @@
     {
       "current_parser_reads_field": "yes",
       "current_parser_usage": "source timestamp time input",
+      "derived_normalized_fields": [
+        "source_timestamp"
+      ],
       "deterministic_metric_enabled": "limited TX context",
       "dropped_decision_evidence": "scripts/m5k_common.py; scripts/observation_contract.py; fetch_taifex_tx_observation; normalize_taifex_row",
       "dropped_decision_status": "implicit_from_current_code",
@@ -1557,7 +1596,7 @@
       "exposed_fastapi": "yes",
       "exposed_frontend": "yes",
       "exposed_mcp": "yes",
-      "normalized_field_name": "source_timestamp derived",
+      "normalized_field_name": "",
       "proposed_normalized_field_name": "ctime",
       "raw_field_known": "yes",
       "raw_field_name": "CTime",
@@ -1570,19 +1609,20 @@
     {
       "current_parser_reads_field": "yes",
       "current_parser_usage": "session/quote status used for freshness flags and source_status extra",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "limited TX context",
       "dropped_decision_evidence": "scripts/m5k_common.py; scripts/observation_contract.py; fetch_taifex_tx_observation; normalize_taifex_row",
       "dropped_decision_status": "implicit_from_current_code",
       "dropped_reason_category": "consumer_not_ready",
       "dropped_reason_detail": "Current TAIFEX parser usage: session/quote status used for freshness flags and source_status extra; retention/exposure follows current normalized row and consumer renderers.",
-      "dropped_status": "parsed_but_not_exposed",
+      "dropped_status": "parsed_retained_partially_exposed",
       "evidence_confidence": "confirmed_from_code",
       "evidence_files": [
         "scripts/m5k_common.py",
         "scripts/observation_contract.py"
       ],
       "evidence_symbol_or_function": "fetch_taifex_tx_observation; normalize_taifex_row",
-      "exposed_conversation_context": "yes",
+      "exposed_conversation_context": "no",
       "exposed_fastapi": "yes",
       "exposed_frontend": "no",
       "exposed_mcp": "yes",
@@ -1601,19 +1641,20 @@
     {
       "current_parser_reads_field": "yes",
       "current_parser_usage": "selected contract identity and extra normalization metadata",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "limited TX context",
       "dropped_decision_evidence": "scripts/m5k_common.py; scripts/observation_contract.py; fetch_taifex_tx_observation; normalize_taifex_row",
       "dropped_decision_status": "implicit_from_current_code",
       "dropped_reason_category": "consumer_not_ready",
       "dropped_reason_detail": "Current TAIFEX parser usage: selected contract identity and extra normalization metadata; retention/exposure follows current normalized row and consumer renderers.",
-      "dropped_status": "parsed_but_not_exposed",
+      "dropped_status": "parsed_retained_partially_exposed",
       "evidence_confidence": "confirmed_from_code",
       "evidence_files": [
         "scripts/m5k_common.py",
         "scripts/observation_contract.py"
       ],
       "evidence_symbol_or_function": "fetch_taifex_tx_observation; normalize_taifex_row",
-      "exposed_conversation_context": "yes",
+      "exposed_conversation_context": "no",
       "exposed_fastapi": "yes",
       "exposed_frontend": "no",
       "exposed_mcp": "yes",
@@ -1632,19 +1673,20 @@
     {
       "current_parser_reads_field": "yes",
       "current_parser_usage": "contract month derivation and source_display_name metadata",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "limited TX context",
       "dropped_decision_evidence": "scripts/m5k_common.py; scripts/observation_contract.py; fetch_taifex_tx_observation; normalize_taifex_row",
       "dropped_decision_status": "implicit_from_current_code",
       "dropped_reason_category": "consumer_not_ready",
       "dropped_reason_detail": "Current TAIFEX parser usage: contract month derivation and source_display_name metadata; retention/exposure follows current normalized row and consumer renderers.",
-      "dropped_status": "parsed_but_not_exposed",
+      "dropped_status": "parsed_retained_partially_exposed",
       "evidence_confidence": "confirmed_from_code",
       "evidence_files": [
         "scripts/m5k_common.py",
         "scripts/observation_contract.py"
       ],
       "evidence_symbol_or_function": "fetch_taifex_tx_observation; normalize_taifex_row",
-      "exposed_conversation_context": "yes",
+      "exposed_conversation_context": "no",
       "exposed_fastapi": "yes",
       "exposed_frontend": "no",
       "exposed_mcp": "yes",
@@ -1663,6 +1705,7 @@
     {
       "current_parser_reads_field": "yes",
       "current_parser_usage": "contract month fallback derivation",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "limited TX context",
       "dropped_decision_evidence": "scripts/m5k_common.py; scripts/observation_contract.py; fetch_taifex_tx_observation; normalize_taifex_row",
       "dropped_decision_status": "implicit_from_current_code",
@@ -1694,10 +1737,11 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "source is not current runtime integrated",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "future context",
       "dropped_decision_evidence": "docs/protocol/TPEX_OPENAPI_FIELD_DICTIONARY.md; field dictionary/status row",
       "dropped_decision_status": "inferred_from_docs",
-      "dropped_reason_category": "intentionally_deferred",
+      "dropped_reason_category": "timing_class_not_runtime_compatible",
       "dropped_reason_detail": "Source family is not integrated as current runtime observation; fields are contract/candidate/provider research items, not fetched-and-dropped runtime data.",
       "dropped_status": "known_from_contract_not_runtime_fetched",
       "evidence_confidence": "confirmed_from_contract",
@@ -1725,10 +1769,11 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "source is not current runtime integrated",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "future context",
       "dropped_decision_evidence": "docs/protocol/TPEX_OPENAPI_FIELD_DICTIONARY.md; field dictionary/status row",
       "dropped_decision_status": "inferred_from_docs",
-      "dropped_reason_category": "intentionally_deferred",
+      "dropped_reason_category": "timing_class_not_runtime_compatible",
       "dropped_reason_detail": "Source family is not integrated as current runtime observation; fields are contract/candidate/provider research items, not fetched-and-dropped runtime data.",
       "dropped_status": "known_from_contract_not_runtime_fetched",
       "evidence_confidence": "confirmed_from_contract",
@@ -1756,10 +1801,11 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "source is not current runtime integrated",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "future context",
       "dropped_decision_evidence": "docs/protocol/TPEX_OPENAPI_FIELD_DICTIONARY.md; field dictionary/status row",
       "dropped_decision_status": "inferred_from_docs",
-      "dropped_reason_category": "intentionally_deferred",
+      "dropped_reason_category": "timing_class_not_runtime_compatible",
       "dropped_reason_detail": "Source family is not integrated as current runtime observation; fields are contract/candidate/provider research items, not fetched-and-dropped runtime data.",
       "dropped_status": "known_from_contract_not_runtime_fetched",
       "evidence_confidence": "confirmed_from_contract",
@@ -1787,10 +1833,11 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "source is not current runtime integrated",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "future context",
       "dropped_decision_evidence": "docs/protocol/TPEX_OPENAPI_FIELD_DICTIONARY.md; field dictionary/status row",
       "dropped_decision_status": "inferred_from_docs",
-      "dropped_reason_category": "intentionally_deferred",
+      "dropped_reason_category": "timing_class_not_runtime_compatible",
       "dropped_reason_detail": "Source family is not integrated as current runtime observation; fields are contract/candidate/provider research items, not fetched-and-dropped runtime data.",
       "dropped_status": "known_from_contract_not_runtime_fetched",
       "evidence_confidence": "confirmed_from_contract",
@@ -1818,6 +1865,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "source is not current runtime integrated",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "future context",
       "dropped_decision_evidence": "docs/capability_matrix.md; field dictionary/status row",
       "dropped_decision_status": "inferred_from_docs",
@@ -1849,6 +1897,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "source is not current runtime integrated",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "future context",
       "dropped_decision_evidence": "docs/capability_matrix.md; field dictionary/status row",
       "dropped_decision_status": "inferred_from_docs",
@@ -1880,6 +1929,7 @@
     {
       "current_parser_reads_field": "no",
       "current_parser_usage": "source is not current runtime integrated",
+      "derived_normalized_fields": [],
       "deterministic_metric_enabled": "future context",
       "dropped_decision_evidence": "docs/capability_matrix.md; field dictionary/status row",
       "dropped_decision_status": "inferred_from_docs",
@@ -1909,7 +1959,7 @@
       "source_id": "Fubon_Neo_API"
     }
   ],
-  "generated_at_utc": "2026-07-06T04:40:56Z",
+  "generated_at_utc": "2026-07-06T05:50:48Z",
   "governance": {
     "live_observation": false,
     "network_calls": false,
@@ -3146,5 +3196,34 @@
       "tests_covering_source": [],
       "timing_class": "local_static_context"
     }
-  ]
+  ],
+  "source_taxonomy_summary": {
+    "credential_gated_providers": [
+      "Fugle_MarketData",
+      "Fubon_Neo_API"
+    ],
+    "external_runtime_sources": [
+      "TWSE_MIS",
+      "TAIFEX_MIS"
+    ],
+    "local_product_surfaces_or_artifacts": [
+      "Local_M5F_canonical_context",
+      "Local_M5K_latest_observation",
+      "Local_M5K_observation_history",
+      "M5N_watchlist_conversation_handoff",
+      "M5Q_source_health_report",
+      "FastAPI_context_endpoints",
+      "FastAPI_live_observation_endpoints",
+      "FastAPI_conversation_context_endpoint",
+      "MCP_server_exposed_resources_tools"
+    ],
+    "official_eod_contract_sources": [
+      "TWSE_OpenAPI",
+      "TPEx_OpenAPI"
+    ],
+    "unofficial_or_commercial_contract_sources": [
+      "Yahoo_Finance",
+      "FinMind"
+    ]
+  }
 }

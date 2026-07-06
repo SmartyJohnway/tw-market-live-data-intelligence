@@ -28,6 +28,16 @@ Evidence-status counts: {'validated_runtime_source': 11, 'validated_contract_or_
 | FastAPI_conversation_context_endpoint | validated_runtime_source | implemented_normalized_now | local_generated_artifact | local_static_context | True | M7B_market_context_package_and_ai_markdown |
 | MCP_server_exposed_resources_tools | validated_runtime_source | implemented_normalized_now | local_generated_artifact | local_static_context | True | M7B_market_context_package_and_ai_markdown |
 
+## Source taxonomy summary
+
+| category | source_ids |
+|---|---|
+| external_runtime_sources | TWSE_MIS, TAIFEX_MIS |
+| official_eod_contract_sources | TWSE_OpenAPI, TPEx_OpenAPI |
+| unofficial_or_commercial_contract_sources | Yahoo_Finance, FinMind |
+| credential_gated_providers | Fugle_MarketData, Fubon_Neo_API |
+| local_product_surfaces_or_artifacts | Local_M5F_canonical_context, Local_M5K_latest_observation, Local_M5K_observation_history, M5N_watchlist_conversation_handoff, M5Q_source_health_report, FastAPI_context_endpoints, FastAPI_live_observation_endpoints, FastAPI_conversation_context_endpoint, MCP_server_exposed_resources_tools |
+
 ## Current architecture map
 
 - Local canonical context: M5F local artifacts are read through FastAPI, frontend, MCP, and conversation context.
@@ -232,45 +242,45 @@ Evidence-status counts: {'validated_runtime_source': 11, 'validated_contract_or_
 
 This table answers what raw data is known, what the current parser reads, what normalization independently retains, and what reaches FastAPI/MCP/frontend/conversation context. A `yes` exposure means the current code path returns or renders that field; it is not inferred from artifact presence alone.
 
-| source_id | raw_field_name | raw_field_known | current_parser_reads_field | current_parser_usage | retained_as_independent_normalized_field | normalized_field_name | exposed_fastapi | exposed_mcp | exposed_frontend | exposed_conversation_context | dropped_status | dropped_reason_category | reintroduction_priority |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| TWSE_MIS | z | yes | yes | preferred current/last price candidate via _select_mis_price | yes | price_like_value/value when selected | yes | yes | yes | yes | not_dropped | not_applicable | defer |
-| TWSE_MIS | y | yes | yes | fallback price_like_value when z unavailable; reference_value_only status | no |  | no | no | no | no | consumed_not_retained | original_scope_minimal_price_only | M7A_high |
-| TWSE_MIS | o | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | original_scope_minimal_price_only | M7A_high |
-| TWSE_MIS | h | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | original_scope_minimal_price_only | M7A_high |
-| TWSE_MIS | l | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | original_scope_minimal_price_only | M7A_high |
-| TWSE_MIS | v | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | unit_not_verified | M7A_high |
-| TWSE_MIS | tv | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | unit_not_verified | M7A_high |
-| TWSE_MIS | b | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | semantic_not_verified | M7A_high |
-| TWSE_MIS | g | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | semantic_not_verified | M7A_high |
-| TWSE_MIS | a | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | semantic_not_verified | M7A_high |
-| TWSE_MIS | f | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | semantic_not_verified | M7A_high |
-| TWSE_MIS | u | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | semantic_not_verified | M7B_medium |
-| TWSE_MIS | w | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | semantic_not_verified | M7B_medium |
-| TWSE_MIS | ch | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | replaced_by_existing_field | defer |
-| TWSE_MIS | ex | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | replaced_by_existing_field | defer |
-| TWSE_MIS | n | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | consumer_not_ready | M7B_medium |
-| TWSE_MIS | % | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | freshness_or_timestamp_unclear | defer |
-| TWSE_MIS | ot | yes | no | not read by current parser | no |  | no | no | no | no | fetched_but_not_parsed | freshness_or_timestamp_unclear | defer |
-| TWSE_MIS | t | yes | yes | used to build normalized source_timestamp/delay flags | no | source_timestamp/delay_seconds derived | yes | yes | yes | yes | consumed_not_retained | replaced_by_existing_field | defer |
-| TWSE_MIS | d | yes | yes | used to build normalized source_timestamp/delay flags | no | source_timestamp/delay_seconds derived | yes | yes | yes | yes | consumed_not_retained | replaced_by_existing_field | defer |
-| TWSE_MIS | tlong | yes | yes | used to build normalized source_timestamp/delay flags | no | source_timestamp/delay_seconds derived | yes | yes | yes | yes | consumed_not_retained | replaced_by_existing_field | defer |
-| TAIFEX_MIS | CLastPrice | yes | yes | preferred last price input | yes | price_like_value/value when selected | yes | yes | yes | yes | not_dropped | not_applicable | defer |
-| TAIFEX_MIS | SettlementPrice | yes | yes | fallback price input when CLastPrice unavailable | no |  | no | no | no | no | consumed_not_retained | original_scope_minimal_price_only | M7A_high |
-| TAIFEX_MIS | CRefPrice | yes | yes | fallback price input after CLastPrice/SettlementPrice | no |  | no | no | no | no | consumed_not_retained | original_scope_minimal_price_only | M7A_high |
-| TAIFEX_MIS | CDate | yes | yes | source timestamp date input | no | source_timestamp derived | yes | yes | yes | yes | consumed_not_retained | replaced_by_existing_field | defer |
-| TAIFEX_MIS | CTime | yes | yes | source timestamp time input | no | source_timestamp derived | yes | yes | yes | yes | consumed_not_retained | replaced_by_existing_field | defer |
-| TAIFEX_MIS | Status | yes | yes | session/quote status used for freshness flags and source_status extra | yes | source_status | yes | yes | no | yes | parsed_but_not_exposed | consumer_not_ready | M7B_medium |
-| TAIFEX_MIS | SymbolID | yes | yes | selected contract identity and extra normalization metadata | yes | contract/source_contract_symbol | yes | yes | no | yes | parsed_but_not_exposed | consumer_not_ready | M7B_medium |
-| TAIFEX_MIS | DispEName | yes | yes | contract month derivation and source_display_name metadata | yes | normalization.source_display_name | yes | yes | no | yes | parsed_but_not_exposed | consumer_not_ready | M7B_medium |
-| TAIFEX_MIS | DispCName | yes | yes | contract month fallback derivation | no |  | no | no | no | no | consumed_not_retained | original_scope_minimal_price_only | M7A_high |
-| TPEx_OpenAPI | Average | yes | no | source is not current runtime integrated | no |  | no | no | no | no | known_from_contract_not_runtime_fetched | intentionally_deferred | M7C_official_eod |
-| TPEx_OpenAPI | LatestBidPrice | yes | no | source is not current runtime integrated | no |  | no | no | no | no | known_from_contract_not_runtime_fetched | intentionally_deferred | M7C_official_eod |
-| TPEx_OpenAPI | LatesAskPrice | yes | no | source is not current runtime integrated | no |  | no | no | no | no | known_from_contract_not_runtime_fetched | intentionally_deferred | M7C_official_eod |
-| TPEx_OpenAPI | NextReferencePrice | yes | no | source is not current runtime integrated | no |  | no | no | no | no | known_from_contract_not_runtime_fetched | intentionally_deferred | M7C_official_eod |
-| Yahoo_Finance | full_intraday_series | yes | no | source is not current runtime integrated | no |  | no | no | no | no | known_from_contract_not_runtime_fetched | intentionally_deferred | M7D_optional |
-| Fugle_MarketData | provider_fields_unknown | unknown | no | source is not current runtime integrated | no |  | no | no | no | no | unknown_needs_validation | credential_or_access_limited | M7E_provider_research |
-| Fubon_Neo_API | provider_fields_unknown | unknown | no | source is not current runtime integrated | no |  | no | no | no | no | unknown_needs_validation | credential_or_access_limited | M7E_provider_research |
+| source_id | raw_field_name | raw_field_known | current_parser_reads_field | current_parser_usage | retained_as_independent_normalized_field | normalized_field_name | derived_normalized_fields | exposed_fastapi | exposed_mcp | exposed_frontend | exposed_conversation_context | dropped_status | dropped_reason_category | reintroduction_priority |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| TWSE_MIS | z | yes | yes | preferred current/last price candidate via _select_mis_price | yes | price_like_value/value when selected | [] | yes | yes | yes | yes | not_dropped | not_applicable | defer |
+| TWSE_MIS | y | yes | yes | fallback price_like_value when z unavailable; reference_value_only status | no |  | [] | no | no | no | no | consumed_not_retained | original_scope_minimal_price_only | M7A_high |
+| TWSE_MIS | o | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | original_scope_minimal_price_only | M7A_high |
+| TWSE_MIS | h | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | original_scope_minimal_price_only | M7A_high |
+| TWSE_MIS | l | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | original_scope_minimal_price_only | M7A_high |
+| TWSE_MIS | v | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | unit_not_verified | M7A_high |
+| TWSE_MIS | tv | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | unit_not_verified | M7A_high |
+| TWSE_MIS | b | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | semantic_not_verified | M7A_high |
+| TWSE_MIS | g | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | semantic_not_verified | M7A_high |
+| TWSE_MIS | a | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | semantic_not_verified | M7A_high |
+| TWSE_MIS | f | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | semantic_not_verified | M7A_high |
+| TWSE_MIS | u | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | semantic_not_verified | M7B_medium |
+| TWSE_MIS | w | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | semantic_not_verified | M7B_medium |
+| TWSE_MIS | ch | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | replaced_by_existing_field | defer |
+| TWSE_MIS | ex | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | replaced_by_existing_field | defer |
+| TWSE_MIS | n | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | consumer_not_ready | M7B_medium |
+| TWSE_MIS | % | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | freshness_or_timestamp_unclear | defer |
+| TWSE_MIS | ot | yes | no | not read by current parser | no |  | [] | no | no | no | no | fetched_but_not_parsed | freshness_or_timestamp_unclear | defer |
+| TWSE_MIS | t | yes | yes | used to build normalized source_timestamp/delay flags | no |  | ['source_timestamp', 'delay_seconds'] | yes | yes | yes | yes | consumed_not_retained | replaced_by_existing_field | defer |
+| TWSE_MIS | d | yes | yes | used to build normalized source_timestamp/delay flags | no |  | ['source_timestamp', 'delay_seconds'] | yes | yes | yes | yes | consumed_not_retained | replaced_by_existing_field | defer |
+| TWSE_MIS | tlong | yes | yes | used to build normalized source_timestamp/delay flags | no |  | ['source_timestamp', 'delay_seconds'] | yes | yes | yes | yes | consumed_not_retained | replaced_by_existing_field | defer |
+| TAIFEX_MIS | CLastPrice | yes | yes | preferred last price input | yes | price_like_value/value when selected | [] | yes | yes | yes | yes | not_dropped | not_applicable | defer |
+| TAIFEX_MIS | SettlementPrice | yes | yes | fallback price input when CLastPrice unavailable | no |  | [] | no | no | no | no | consumed_not_retained | original_scope_minimal_price_only | M7A_high |
+| TAIFEX_MIS | CRefPrice | yes | yes | fallback price input after CLastPrice/SettlementPrice | no |  | [] | no | no | no | no | consumed_not_retained | original_scope_minimal_price_only | M7A_high |
+| TAIFEX_MIS | CDate | yes | yes | source timestamp date input | no |  | ['source_timestamp'] | yes | yes | yes | yes | consumed_not_retained | replaced_by_existing_field | defer |
+| TAIFEX_MIS | CTime | yes | yes | source timestamp time input | no |  | ['source_timestamp'] | yes | yes | yes | yes | consumed_not_retained | replaced_by_existing_field | defer |
+| TAIFEX_MIS | Status | yes | yes | session/quote status used for freshness flags and source_status extra | yes | source_status | [] | yes | yes | no | no | parsed_retained_partially_exposed | consumer_not_ready | M7B_medium |
+| TAIFEX_MIS | SymbolID | yes | yes | selected contract identity and extra normalization metadata | yes | contract/source_contract_symbol | [] | yes | yes | no | no | parsed_retained_partially_exposed | consumer_not_ready | M7B_medium |
+| TAIFEX_MIS | DispEName | yes | yes | contract month derivation and source_display_name metadata | yes | normalization.source_display_name | [] | yes | yes | no | no | parsed_retained_partially_exposed | consumer_not_ready | M7B_medium |
+| TAIFEX_MIS | DispCName | yes | yes | contract month fallback derivation | no |  | [] | no | no | no | no | consumed_not_retained | original_scope_minimal_price_only | M7A_high |
+| TPEx_OpenAPI | Average | yes | no | source is not current runtime integrated | no |  | [] | no | no | no | no | known_from_contract_not_runtime_fetched | timing_class_not_runtime_compatible | M7C_official_eod |
+| TPEx_OpenAPI | LatestBidPrice | yes | no | source is not current runtime integrated | no |  | [] | no | no | no | no | known_from_contract_not_runtime_fetched | timing_class_not_runtime_compatible | M7C_official_eod |
+| TPEx_OpenAPI | LatesAskPrice | yes | no | source is not current runtime integrated | no |  | [] | no | no | no | no | known_from_contract_not_runtime_fetched | timing_class_not_runtime_compatible | M7C_official_eod |
+| TPEx_OpenAPI | NextReferencePrice | yes | no | source is not current runtime integrated | no |  | [] | no | no | no | no | known_from_contract_not_runtime_fetched | timing_class_not_runtime_compatible | M7C_official_eod |
+| Yahoo_Finance | full_intraday_series | yes | no | source is not current runtime integrated | no |  | [] | no | no | no | no | known_from_contract_not_runtime_fetched | intentionally_deferred | M7D_optional |
+| Fugle_MarketData | provider_fields_unknown | unknown | no | source is not current runtime integrated | no |  | [] | no | no | no | no | unknown_needs_validation | credential_or_access_limited | M7E_provider_research |
+| Fubon_Neo_API | provider_fields_unknown | unknown | no | source is not current runtime integrated | no |  | [] | no | no | no | no | unknown_needs_validation | credential_or_access_limited | M7E_provider_research |
 
 ## Dropped field decision analysis
 
@@ -302,14 +312,14 @@ This table answers what raw data is known, what the current parser reads, what n
 | TAIFEX_MIS | CRefPrice | consumed_not_retained | original_scope_minimal_price_only | implicit_from_current_code | M7A_high | ['decide if reference should be independently retained'] |
 | TAIFEX_MIS | CDate | consumed_not_retained | replaced_by_existing_field | implicit_from_current_code | defer | [] |
 | TAIFEX_MIS | CTime | consumed_not_retained | replaced_by_existing_field | implicit_from_current_code | defer | [] |
-| TAIFEX_MIS | Status | parsed_but_not_exposed | consumer_not_ready | implicit_from_current_code | M7B_medium | ['frontend/conversation may need compact status display'] |
-| TAIFEX_MIS | SymbolID | parsed_but_not_exposed | consumer_not_ready | implicit_from_current_code | M7B_medium | ['frontend currently renders contract sparsely'] |
-| TAIFEX_MIS | DispEName | parsed_but_not_exposed | consumer_not_ready | implicit_from_current_code | M7B_medium | ['decide whether UI should show source display name'] |
+| TAIFEX_MIS | Status | parsed_retained_partially_exposed | consumer_not_ready | implicit_from_current_code | M7B_medium | ['frontend/conversation may need compact status display'] |
+| TAIFEX_MIS | SymbolID | parsed_retained_partially_exposed | consumer_not_ready | implicit_from_current_code | M7B_medium | ['frontend currently renders contract sparsely'] |
+| TAIFEX_MIS | DispEName | parsed_retained_partially_exposed | consumer_not_ready | implicit_from_current_code | M7B_medium | ['decide whether UI should show source display name'] |
 | TAIFEX_MIS | DispCName | consumed_not_retained | original_scope_minimal_price_only | implicit_from_current_code | M7A_high | ['add tests if retained'] |
-| TPEx_OpenAPI | Average | known_from_contract_not_runtime_fetched | intentionally_deferred | inferred_from_docs | M7C_official_eod | ['runtime integration not in scope', 'validate source contract before exposure'] |
-| TPEx_OpenAPI | LatestBidPrice | known_from_contract_not_runtime_fetched | intentionally_deferred | inferred_from_docs | M7C_official_eod | ['runtime integration not in scope', 'validate source contract before exposure'] |
-| TPEx_OpenAPI | LatesAskPrice | known_from_contract_not_runtime_fetched | intentionally_deferred | inferred_from_docs | M7C_official_eod | ['runtime integration not in scope', 'validate source contract before exposure'] |
-| TPEx_OpenAPI | NextReferencePrice | known_from_contract_not_runtime_fetched | intentionally_deferred | inferred_from_docs | M7C_official_eod | ['runtime integration not in scope', 'validate source contract before exposure'] |
+| TPEx_OpenAPI | Average | known_from_contract_not_runtime_fetched | timing_class_not_runtime_compatible | inferred_from_docs | M7C_official_eod | ['runtime integration not in scope', 'validate source contract before exposure'] |
+| TPEx_OpenAPI | LatestBidPrice | known_from_contract_not_runtime_fetched | timing_class_not_runtime_compatible | inferred_from_docs | M7C_official_eod | ['runtime integration not in scope', 'validate source contract before exposure'] |
+| TPEx_OpenAPI | LatesAskPrice | known_from_contract_not_runtime_fetched | timing_class_not_runtime_compatible | inferred_from_docs | M7C_official_eod | ['runtime integration not in scope', 'validate source contract before exposure'] |
+| TPEx_OpenAPI | NextReferencePrice | known_from_contract_not_runtime_fetched | timing_class_not_runtime_compatible | inferred_from_docs | M7C_official_eod | ['runtime integration not in scope', 'validate source contract before exposure'] |
 | Yahoo_Finance | full_intraday_series | known_from_contract_not_runtime_fetched | intentionally_deferred | inferred_from_docs | M7D_optional | ['runtime integration not in scope', 'validate source contract before exposure'] |
 | Fugle_MarketData | provider_fields_unknown | unknown_needs_validation | credential_or_access_limited | inferred_from_docs | M7E_provider_research | ['runtime integration not in scope', 'validate source contract before exposure'] |
 | Fubon_Neo_API | provider_fields_unknown | unknown_needs_validation | credential_or_access_limited | inferred_from_docs | M7E_provider_research | ['runtime integration not in scope', 'validate source contract before exposure'] |
