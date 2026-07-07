@@ -340,6 +340,175 @@ def attach_empty_ai_safe_market_context_projection(observation: Mapping[str, Any
     return projected
 
 
+
+def _m7b_meaningful(value: Any) -> bool:
+    return value not in (None, "", "-")
+
+
+def _m7b_direction(last_value: Any, previous_close: Any) -> str:
+    if isinstance(last_value, (int, float)) and isinstance(previous_close, (int, float)):
+        if last_value > previous_close:
+            return "up"
+        if last_value < previous_close:
+            return "down"
+        return "flat"
+    return "unknown"
+
+
+def _m7b_copy_list(value: Any) -> list[Any]:
+    return list(value) if isinstance(value, list) else []
+
+
+def build_ai_safe_market_context_projection_from_observation(
+    observation: Mapping[str, Any],
+) -> dict[str, object]:
+    """Build a pure M7B projection from a normalized TWSE MIS observation.
+
+    The builder is intentionally side-effect free: it performs no I/O, does not
+    mutate the input observation, and keeps runtime exposure disabled.
+    """
+    projection = build_empty_ai_safe_market_context_projection()
+
+    if observation.get("source") != "TWSE_MIS":
+        projection["projection_status"] = "blocked_missing_required_input"
+        projection["exposure_status"] = "blocked"
+        projection["safe_for_ai_context"] = False
+        projection["blocked_reason"] = "non_twse_mis_source"
+        return projection
+
+    rich = observation.get("twse_mis_rich_facts")
+    if not isinstance(rich, Mapping):
+        projection["projection_status"] = "blocked_missing_required_input"
+        projection["exposure_status"] = "blocked"
+        projection["safe_for_ai_context"] = False
+        projection["blocked_reason"] = "missing_twse_mis_rich_facts"
+        return projection
+
+    market_mode = rich.get("market_mode_facts") if isinstance(rich.get("market_mode_facts"), Mapping) else {}
+    instrument = rich.get("instrument_facts") if isinstance(rich.get("instrument_facts"), Mapping) else {}
+    session = rich.get("session_state_candidate_facts") if isinstance(rich.get("session_state_candidate_facts"), Mapping) else {}
+    price = rich.get("price_facts") if isinstance(rich.get("price_facts"), Mapping) else {}
+    auction = rich.get("auction_or_reference_facts") if isinstance(rich.get("auction_or_reference_facts"), Mapping) else {}
+    index = rich.get("index_market_facts") if isinstance(rich.get("index_market_facts"), Mapping) else {}
+    depth = rich.get("displayed_depth_facts") if isinstance(rich.get("displayed_depth_facts"), Mapping) else {}
+    quality = rich.get("quality_facts") if isinstance(rich.get("quality_facts"), Mapping) else {}
+
+    projection["projection_status"] = "runtime_projected_candidate"
+    projection["exposure_status"] = "ai_safe_projection_candidate"
+    projection["safe_for_ai_context"] = False
+
+    projection["instrument_context"].update({
+        "instrument_kind": instrument.get("instrument_kind_candidate"),
+        "price_domain": instrument.get("price_domain"),
+        "market_mode": market_mode.get("market_mode_candidate"),
+        "source_symbol": instrument.get("raw_c") or observation.get("symbol"),
+        "display_name": instrument.get("raw_name") or observation.get("display_symbol"),
+        "semantic_status": "runtime_projected_candidate",
+    })
+    projection["market_session_context"].update({
+        "session_state_candidate": session.get("session_state_candidate"),
+        "closing_auction_candidate": auction.get("observed_in_closing_auction_window") is True,
+        "post_close_candidate": auction.get("observed_in_post_close_snapshot") is True,
+        "odd_lot_mode_supported": False,
+        "semantic_status": "runtime_projected_candidate",
+    })
+
+    last_value = price.get("last_value")
+    previous_close = price.get("previous_close")
+    projection["price_snapshot_context"].update({
+        "last_value_available": last_value is not None,
+        "last_value": last_value,
+        "previous_close": previous_close,
+        "open": price.get("open"),
+        "high": price.get("high"),
+        "low": price.get("low"),
+        "direction_vs_previous_close": _m7b_direction(last_value, previous_close),
+        "descriptive_only": True,
+        "not_recommendation": True,
+        "semantic_status": "runtime_projected_candidate",
+    })
+    projection["reference_context"].update({
+        "fallback_reference_field": price.get("fallback_reference_field"),
+        "reference_only": observation.get("reference_only"),
+        "auction_or_reference_price_available": _m7b_meaningful(auction.get("raw_pz")),
+        "auction_or_reference_volume_available": _m7b_meaningful(auction.get("raw_ps")),
+        "pz_does_not_override_last_value": True,
+        "ps_does_not_override_current_volume": True,
+        "semantic_status": "runtime_projected_candidate",
+    })
+
+    index_applicable = index.get("applicable") is True
+    projection["index_market_context"].update({
+        "applicable": index_applicable,
+        "traded_quantity_candidate_available": index_applicable and _m7b_meaningful(index.get("raw_m")),
+        "trade_count_candidate_available": index_applicable and _m7b_meaningful(index.get("raw_r")),
+        "quantity_unit_verified": False,
+        "evidence_level": "official_mis_ui_cross_checked_not_field_dictionary",
+        "semantic_status": "runtime_projected_candidate",
+    })
+
+    ladder_flags = _m7b_copy_list(depth.get("ladder_mismatch_flags")) or _m7b_copy_list(quality.get("ladder_mismatch_flags"))
+    projection["displayed_depth_context"].update({
+        "available": depth.get("applicable") is True,
+        "best_bid_available": depth.get("best_bid") is not None,
+        "best_ask_available": depth.get("best_ask") is not None,
+        "full_ladder_exposed": False,
+        "interpretation_policy": "displayed_depth_snapshot_only",
+        "not_support_resistance": True,
+        "not_true_liquidity": True,
+        "not_full_order_book": True,
+        "not_trading_signal": True,
+        "ladder_quality_warnings": ladder_flags,
+        "semantic_status": "runtime_projected_candidate",
+    })
+
+    quality_warnings = sorted(set(_m7b_copy_list(observation.get("data_quality_flags")) + _m7b_copy_list(observation.get("source_risk_flags")) + _m7b_copy_list(quality.get("malformed_fields")) + ladder_flags))
+    projection["data_quality_context"].update({
+        "placeholder_fields": _m7b_copy_list(quality.get("placeholder_fields")),
+        "malformed_fields": _m7b_copy_list(quality.get("malformed_fields")),
+        "ladder_mismatch_flags": ladder_flags,
+        "quality_warnings": quality_warnings,
+        "semantic_status": "runtime_projected_candidate",
+    })
+    projection["freshness_context"].update({
+        "source_timestamp": observation.get("source_timestamp"),
+        "retrieved_at_utc": observation.get("retrieved_at_utc"),
+        "delay_seconds": observation.get("delay_seconds"),
+        "freshness_assessment": observation.get("freshness_assessment"),
+        "not_realtime_guaranteed": True,
+        "semantic_status": "runtime_projected_candidate",
+    })
+
+    dynamic_caveats = []
+    if observation.get("reference_only") is True:
+        dynamic_caveats.append("reference_only_value")
+    if last_value is None:
+        dynamic_caveats.append("current_last_value_unavailable")
+    if quality.get("malformed_fields"):
+        dynamic_caveats.append("malformed_fields_present")
+    if ladder_flags:
+        dynamic_caveats.append("ladder_mismatch_present")
+    dynamic_caveats.append("index_row_candidate_fields" if index_applicable else "non_index_security_row")
+    projection["caveat_context"].update({
+        "dynamic_caveats": sorted(set(dynamic_caveats)),
+        "semantic_status": "runtime_projected_candidate",
+    })
+    projection["evidence_context"].update({
+        "official_documented": False,
+        "unit_verified": False,
+        "semantic_status": "runtime_projected_candidate",
+    })
+    return projection
+
+
+def attach_ai_safe_market_context_projection_from_observation(
+    observation: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Return a copy with the pure M7B projection attached without mutating input."""
+    projected = dict(observation)
+    projected["ai_safe_market_context_projection"] = build_ai_safe_market_context_projection_from_observation(observation)
+    return projected
+
 def _twse_mis_is_placeholder(value: Any) -> bool:
     return value in (None, "", "-")
 
