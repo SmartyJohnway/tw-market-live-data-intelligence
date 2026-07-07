@@ -159,3 +159,17 @@ Do not mark M7C complete yet.
 - M7C-02: pure metrics builder
 - M7C-03: fixtures and safety tests
 - M7C-04: controlled integration / compatibility / closure
+
+## M7C-04 final status
+
+M7C-04 enables controlled exposure of deterministic metrics through conversation context only.
+The pure builder output remains a runtime_computed_candidate and is not directly AI-safe.
+Only the promoted controlled metrics context may set safe_for_ai_context=true.
+M7C remains descriptive only:
+- not trading signal
+- not recommendation
+- not support/resistance
+- not true liquidity
+- not full order book
+M7C is complete as pass_with_caveats.
+The next track is M7D-BOUNDED-WATCHLIST-CROSS-CONTEXT.

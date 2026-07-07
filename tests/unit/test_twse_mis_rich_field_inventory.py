@@ -155,30 +155,35 @@ def test_m7b_ai_safe_market_context_projection_registered_final_controlled_expos
     assert m7b["next_task"] == "M7C-DETERMINISTIC-METRICS-LAYER"
 
 
-def test_m7c_deterministic_metrics_registered_schema_only_not_runtime_populated():
+def test_m7c_deterministic_metrics_registered_final_controlled_exposure():
     inv = load_inventory()
     m7c = inv["rich_observation_contract"]["m7c_deterministic_metrics"]
     assert m7c["schema_version"] == "m7c_deterministic_metrics.v1"
-    assert m7c["status"] == "schema_defined_policy_defined_not_runtime_populated"
     assert m7c["m7b_dependency_status"] == "pass_with_caveats"
     assert m7c["policy_doc"] == "docs/protocol/M7C_DETERMINISTIC_METRICS_POLICY.md"
     assert m7c["schema_helper"] == "scripts/observation_contract.py::build_empty_deterministic_metrics_context"
-    assert m7c["runtime_populated"] is False
-    assert m7c["runtime_behavior_changed"] is False
-    assert m7c["conversation_context_changed"] is False
-    assert m7c["fastapi_changed"] is False
-    assert m7c["mcp_changed"] is False
+    assert m7c["runtime_populated"] is True
+    assert m7c["runtime_behavior_changed"] is True
+    assert m7c["conversation_context_changed"] is True
+    assert m7c["fastapi_changed"] == "shared_conversation_context_only"
+    assert m7c["mcp_changed"] == "shared_conversation_context_only"
     assert m7c["frontend_changed"] is False
     assert m7c["source_health_changed"] is False
     assert m7c["latest_observation_changed"] is False
-    assert m7c["safe_for_ai_context"] is False
+    assert m7c["safe_for_ai_context"] is True
+    assert m7c["builder_output_safe_for_ai_context"] is False
     assert m7c["metrics_are_signals"] is False
     assert m7c["trading_signal"] is False
     assert m7c["recommendation"] is False
-    assert m7c["completed_tasks"] == ["M7C-00", "M7C-01", "M7C-02", "M7C-03"]
+    assert m7c["raw_rich_facts_exposed"] is False
+    assert m7c["raw_full_ladder_exposed"] is False
+    assert m7c["completed_tasks"] == ["M7C-00", "M7C-01", "M7C-02", "M7C-03", "M7C-04"]
     assert m7c["pure_builder_defined"] is True
     assert m7c["metrics_builder"] == "scripts/observation_contract.py::build_deterministic_metrics_context_from_observation"
     assert m7c["metrics_attach_helper"] == "scripts/observation_contract.py::attach_deterministic_metrics_context_from_observation"
+    assert m7c["controlled_promotion_helper"] == "scripts/observation_contract.py::promote_deterministic_metrics_context_for_controlled_context"
+    assert m7c["controlled_metrics_collection_helper"] == "scripts/m5k_common.py::build_deterministic_metrics_context_collection"
     assert m7c["fixture_safety_tests_added"] is True
     assert m7c["builder_output_metric_status"] == "runtime_computed_candidate"
-    assert m7c["next_task"] == "M7C-04-CONTROLLED-INTEGRATION-COMPATIBILITY-AND-CLOSURE"
+    assert m7c["final_acceptance_status"] == "pass_with_caveats"
+    assert m7c["next_task"] == "M7D-BOUNDED-WATCHLIST-CROSS-CONTEXT"

@@ -147,14 +147,16 @@ def test_m7c_quality_gate_status_values_exist():
     } <= values
 
 
-def test_m7c_inventory_registration_exists_and_preserves_disabled_runtime_flags():
+def test_m7c_inventory_registration_exists_and_preserves_controlled_runtime_flags():
     inv = json.loads(INVENTORY_PATH.read_text(encoding="utf-8"))
     m7c = inv["rich_observation_contract"]["m7c_deterministic_metrics"]
     assert m7c["schema_version"] == "m7c_deterministic_metrics.v1"
-    assert m7c["runtime_populated"] is False
-    assert m7c["safe_for_ai_context"] is False
+    assert m7c["runtime_populated"] is True
+    assert m7c["safe_for_ai_context"] is True
+    assert m7c["builder_output_safe_for_ai_context"] is False
     assert m7c["metrics_are_signals"] is False
-    assert m7c["next_task"] == "M7C-04-CONTROLLED-INTEGRATION-COMPATIBILITY-AND-CLOSURE"
+    assert m7c["controlled_exposure_enabled"] is True
+    assert m7c["next_task"] == "M7D-BOUNDED-WATCHLIST-CROSS-CONTEXT"
     assert m7c["pure_builder_defined"] is True
     assert m7c["fixture_safety_tests_added"] is True
     assert m7c["builder_output_metric_status"] == "runtime_computed_candidate"
