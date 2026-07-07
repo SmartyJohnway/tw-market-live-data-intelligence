@@ -54,7 +54,7 @@ FIELD_CANDIDATE_SEMANTICS = {
 KNOWN_FORENSIC_FIELDS = [
     "@", "tv", "ps", "pid", "pz", "bp", "m%", "^", "key", "a", "b", "c", "#", "d", "%", "ch",
     "tlong", "f", "g", "mt", "h", "i", "ip", "it", "l", "n", "o", "p", "ex", "s", "t", "u",
-    "v", "w", "nf", "y", "z", "ts", "q", "r", "oa", "ob", "ot",
+    "v", "w", "nf", "y", "z", "ts", "q", "r", "m", "nu", "oa", "ob", "ot",
 ]
 
 LADDER_FIELDS = {"a", "b", "f", "g"}

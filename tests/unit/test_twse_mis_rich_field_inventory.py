@@ -83,3 +83,18 @@ def test_twse_mis_forbidden_language_guardrails_are_explicit():
         "買賣建議",
     ]:
         assert phrase in forbidden
+
+
+def test_twse_mis_rich_observation_contract_registered_schema_only():
+    inv = load_inventory()
+    contract = inv["rich_observation_contract"]
+    assert contract["schema_version"] == "m7a_twse_mis_rich_facts.v1"
+    assert contract["schema_defined"] is True
+    assert contract["runtime_populated"] is False
+    assert contract["parser_populated"] is False
+    assert contract["runtime_behavior_changed"] is False
+    assert contract["normalization_changed"] is False
+    assert contract["contract_doc"] == "docs/protocol/TWSE_MIS_RICH_OBSERVATION_CONTRACT.md"
+    assert contract["contract_helper"] == "scripts/observation_contract.py::build_empty_twse_mis_rich_facts"
+    assert contract["attach_helper"] == "scripts/observation_contract.py::attach_empty_twse_mis_rich_facts"
+    assert contract["next_parser_task"] == "M7A-03-TWSE-MIS-RICH-FIELD-PARSER-EXTENSION"

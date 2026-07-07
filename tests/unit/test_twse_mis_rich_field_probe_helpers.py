@@ -7,6 +7,7 @@ from scripts.probe_twse_mis_rich_fields import (
     summarize_ladder_shapes,
     validate_symbols,
     fetch_twse_mis_rows,
+    KNOWN_FORENSIC_FIELDS,
 )
 
 
@@ -164,3 +165,11 @@ def test_fetch_twse_mis_rows_all_failed():
     assert len(failures) == 1
     assert failures[0]["stage"] == "request"
     assert telemetry["successful_strategy"] == "none"
+
+
+def test_known_forensic_fields_include_m_and_nu_as_raw_only_unknowns():
+    assert "m" in KNOWN_FORENSIC_FIELDS
+    assert "nu" in KNOWN_FORENSIC_FIELDS
+    summary = summarize_field_presence([])
+    assert summary["m"]["candidate_semantic"] == "unknown_semantics_preserve_raw"
+    assert summary["nu"]["candidate_semantic"] == "unknown_semantics_preserve_raw"

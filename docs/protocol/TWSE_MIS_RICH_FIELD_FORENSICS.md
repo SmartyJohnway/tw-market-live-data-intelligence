@@ -210,7 +210,7 @@ Field validation statuses may be updated in a later evidence-review commit only 
 - **M7A-01B**: Attempted bounded manual probe; session bootstrap failed before field evidence was available, so no semantics were upgraded.
 - **M7A-01D**: Repaired the manual probe harness with session fallback. A successful operator-run bounded probe obtained 6 rows and compact field evidence using bootstrap_then_api. Parser/schema normalization remains deferred until this evidence is reviewed and encoded into M7A-02.
 - **M7A-02**: Observation contract schema extension after successful evidence review.
-- **M7A-03**: TWSE MIS parser extension. Parse `y`/`o`/`h`/`l`, `v`/`tv`, `b`/`g`/`a`/`f`, `u`/w with candidate semantics and quality flags.
+- **M7A-03**: TWSE MIS parser extension. Parse `y`/`o`/`h`/`l`, `v`/`tv`, `b`/`g`/`a`/`f`, `u`/`w` with candidate semantics and quality flags.
 - **M7A-04**: Fixture expansion and normalization tests. Cover normal, reference-only, placeholder, malformed, missing, and ladder mismatch cases.
 - **M7A-05**: Compatibility checks. Confirm FastAPI/MCP/frontend/conversation context existing behavior remains backward compatible.
 - **M7A-06**: Generated inventory/docs sync and final M7A acceptance report.
