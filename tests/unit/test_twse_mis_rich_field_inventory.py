@@ -105,4 +105,17 @@ def test_twse_mis_rich_observation_contract_registered_runtime_populated():
     assert contract["runtime_attach_helper"] == "scripts/observation_contract.py::attach_twse_mis_rich_facts_from_row"
     assert contract["completed_parser_task"] == "M7A-03-TWSE-MIS-RICH-FIELD-PARSER-EXTENSION"
     assert contract["completed_fixture_task"] == "M7A-04-FIXTURE-EXPANSION-AND-NORMALIZATION-TESTS"
-    assert contract["next_compatibility_task"] == "M7A-05-M7A-06-COMPATIBILITY-CHECKS-AND-FINAL-ACCEPTANCE"
+    assert contract["next_compatibility_task"] == "completed_by_M7A-05-M7A-06"
+    acceptance = contract["m7a_final_acceptance"]
+    assert acceptance["status"] == "pass_with_caveats"
+    assert acceptance["completed"] is True
+    assert acceptance["downstream_compatibility_checked"] is True
+    assert acceptance["fastapi_checked"] is True
+    assert acceptance["mcp_checked"] is True
+    assert acceptance["frontend_watchlist_checked"] is True
+    assert acceptance["conversation_context_checked"] is True
+    assert acceptance["source_health_checked"] is True
+    assert acceptance["non_twse_mis_checked"] is True
+    assert acceptance["ai_exposure_safe_for_context"] is False
+    assert acceptance["live_probe_executed_in_m7a_05_06"] is False
+    assert acceptance["new_probe_output_committed_in_m7a_05_06"] is False
