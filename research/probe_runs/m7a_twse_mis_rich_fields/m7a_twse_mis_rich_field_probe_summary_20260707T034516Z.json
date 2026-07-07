@@ -1,0 +1,1509 @@
+{
+  "api_attempts": [
+    {
+      "endpoint_family": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp",
+      "http_status": 200,
+      "status": "success",
+      "strategy": "bootstrap_then_api"
+    }
+  ],
+  "ci_network_required": false,
+  "failures": [],
+  "field_presence_summary": {
+    "#": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "text"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "%": {
+      "candidate_semantic": "snapshot_or_session_time_candidate",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "text"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "@": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "text"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "^": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "a": {
+      "candidate_semantic": "displayed_ask_price_ladder_candidate",
+      "dash_status": true,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [
+        "-"
+      ],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "dash_placeholder",
+        "underscore_ladder"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "b": {
+      "candidate_semantic": "displayed_bid_price_ladder_candidate",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "underscore_ladder"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "bp": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "c": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "mixed_numeric_and_non_numeric",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "integer_string",
+        "text"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "ch": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "text"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "d": {
+      "candidate_semantic": "source_date_candidate",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "ex": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "text"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "f": {
+      "candidate_semantic": "displayed_ask_quantity_ladder_candidate_unit_unverified",
+      "dash_status": true,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [
+        "-"
+      ],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "dash_placeholder",
+        "underscore_ladder"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "g": {
+      "candidate_semantic": "displayed_bid_quantity_ladder_candidate_unit_unverified",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "underscore_ladder"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "h": {
+      "candidate_semantic": "high_price_candidate",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "decimal_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "i": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "mixed_numeric_and_non_numeric",
+      "placeholder_examples": [],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "integer_string",
+        "text"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "ip": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "it": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "mixed_numeric_and_non_numeric",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "integer_string",
+        "text"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "key": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "underscore_ladder"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "l": {
+      "candidate_semantic": "low_price_candidate",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "decimal_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "m": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 5,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 1,
+      "sample_value_shapes": [
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "m%": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "mt": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "n": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "text"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "nf": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "text"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "nu": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 5,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [],
+      "present_count": 1,
+      "sample_value_shapes": [
+        "text"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "o": {
+      "candidate_semantic": "open_price_candidate",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "decimal_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "oa": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 6,
+      "numeric_parse_status": "no_non_placeholder_values",
+      "placeholder_examples": [],
+      "present_count": 0,
+      "sample_value_shapes": [],
+      "validation_status_update_recommendation": "not_observed_preserve_inventory"
+    },
+    "ob": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 6,
+      "numeric_parse_status": "no_non_placeholder_values",
+      "placeholder_examples": [],
+      "present_count": 0,
+      "sample_value_shapes": [],
+      "validation_status_update_recommendation": "not_observed_preserve_inventory"
+    },
+    "ot": {
+      "candidate_semantic": "alternate_session_time_candidate",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 6,
+      "numeric_parse_status": "no_non_placeholder_values",
+      "placeholder_examples": [],
+      "present_count": 0,
+      "sample_value_shapes": [],
+      "validation_status_update_recommendation": "not_observed_preserve_inventory"
+    },
+    "p": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "pid": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "text"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "ps": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": true,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [
+        "-"
+      ],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "dash_placeholder",
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "pz": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": true,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [
+        "-"
+      ],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "dash_placeholder",
+        "decimal_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "q": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 6,
+      "numeric_parse_status": "no_non_placeholder_values",
+      "placeholder_examples": [],
+      "present_count": 0,
+      "sample_value_shapes": [],
+      "validation_status_update_recommendation": "not_observed_preserve_inventory"
+    },
+    "r": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 5,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 1,
+      "sample_value_shapes": [
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "s": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": true,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [
+        "-"
+      ],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "dash_placeholder",
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "t": {
+      "candidate_semantic": "source_time_candidate",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "no_numeric_values_observed",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "text"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "tlong": {
+      "candidate_semantic": "source_epoch_milliseconds_candidate",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "ts": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "tv": {
+      "candidate_semantic": "current_or_transaction_volume_candidate_unit_unverified",
+      "dash_status": true,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [
+        "-"
+      ],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "dash_placeholder",
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "u": {
+      "candidate_semantic": "limit_up_price_candidate",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "decimal_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "v": {
+      "candidate_semantic": "volume_candidate_unit_unverified",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "integer_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "w": {
+      "candidate_semantic": "limit_down_price_candidate",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 1,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 5,
+      "sample_value_shapes": [
+        "decimal_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "y": {
+      "candidate_semantic": "previous_close_candidate_and_reference_fallback",
+      "dash_status": false,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "decimal_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    },
+    "z": {
+      "candidate_semantic": "last_price_or_current_price_like_value",
+      "dash_status": true,
+      "empty_string_status": false,
+      "missing_count": 0,
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "placeholder_examples": [
+        "-"
+      ],
+      "present_count": 6,
+      "sample_value_shapes": [
+        "dash_placeholder",
+        "decimal_string"
+      ],
+      "validation_status_update_recommendation": "requires_probe_evidence_review"
+    }
+  },
+  "field_shape_summary": {
+    "#": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "text"
+      ]
+    },
+    "%": {
+      "candidate_semantic": "snapshot_or_session_time_candidate",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "text"
+      ]
+    },
+    "@": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "text"
+      ]
+    },
+    "^": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "integer_string"
+      ]
+    },
+    "a": {
+      "candidate_semantic": "displayed_ask_price_ladder_candidate",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "dash_placeholder",
+        "underscore_ladder"
+      ]
+    },
+    "b": {
+      "candidate_semantic": "displayed_bid_price_ladder_candidate",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "underscore_ladder"
+      ]
+    },
+    "bp": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "integer_string"
+      ]
+    },
+    "c": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "mixed_numeric_and_non_numeric",
+      "sample_value_shapes": [
+        "integer_string",
+        "text"
+      ]
+    },
+    "ch": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "text"
+      ]
+    },
+    "d": {
+      "candidate_semantic": "source_date_candidate",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "integer_string"
+      ]
+    },
+    "ex": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "text"
+      ]
+    },
+    "f": {
+      "candidate_semantic": "displayed_ask_quantity_ladder_candidate_unit_unverified",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "dash_placeholder",
+        "underscore_ladder"
+      ]
+    },
+    "g": {
+      "candidate_semantic": "displayed_bid_quantity_ladder_candidate_unit_unverified",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "underscore_ladder"
+      ]
+    },
+    "h": {
+      "candidate_semantic": "high_price_candidate",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "decimal_string"
+      ]
+    },
+    "i": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "mixed_numeric_and_non_numeric",
+      "sample_value_shapes": [
+        "integer_string",
+        "text"
+      ]
+    },
+    "ip": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "integer_string"
+      ]
+    },
+    "it": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "mixed_numeric_and_non_numeric",
+      "sample_value_shapes": [
+        "integer_string",
+        "text"
+      ]
+    },
+    "key": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "underscore_ladder"
+      ]
+    },
+    "l": {
+      "candidate_semantic": "low_price_candidate",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "decimal_string"
+      ]
+    },
+    "m": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "integer_string"
+      ]
+    },
+    "m%": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "integer_string"
+      ]
+    },
+    "mt": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "integer_string"
+      ]
+    },
+    "n": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "text"
+      ]
+    },
+    "nf": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "text"
+      ]
+    },
+    "nu": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "text"
+      ]
+    },
+    "o": {
+      "candidate_semantic": "open_price_candidate",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "decimal_string"
+      ]
+    },
+    "oa": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "no_non_placeholder_values",
+      "sample_value_shapes": []
+    },
+    "ob": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "no_non_placeholder_values",
+      "sample_value_shapes": []
+    },
+    "ot": {
+      "candidate_semantic": "alternate_session_time_candidate",
+      "numeric_parse_status": "no_non_placeholder_values",
+      "sample_value_shapes": []
+    },
+    "p": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "integer_string"
+      ]
+    },
+    "pid": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "text"
+      ]
+    },
+    "ps": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "dash_placeholder",
+        "integer_string"
+      ]
+    },
+    "pz": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "dash_placeholder",
+        "decimal_string"
+      ]
+    },
+    "q": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "no_non_placeholder_values",
+      "sample_value_shapes": []
+    },
+    "r": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "integer_string"
+      ]
+    },
+    "s": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "dash_placeholder",
+        "integer_string"
+      ]
+    },
+    "t": {
+      "candidate_semantic": "source_time_candidate",
+      "numeric_parse_status": "no_numeric_values_observed",
+      "sample_value_shapes": [
+        "text"
+      ]
+    },
+    "tlong": {
+      "candidate_semantic": "source_epoch_milliseconds_candidate",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "integer_string"
+      ]
+    },
+    "ts": {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "integer_string"
+      ]
+    },
+    "tv": {
+      "candidate_semantic": "current_or_transaction_volume_candidate_unit_unverified",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "dash_placeholder",
+        "integer_string"
+      ]
+    },
+    "u": {
+      "candidate_semantic": "limit_up_price_candidate",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "decimal_string"
+      ]
+    },
+    "v": {
+      "candidate_semantic": "volume_candidate_unit_unverified",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "integer_string"
+      ]
+    },
+    "w": {
+      "candidate_semantic": "limit_down_price_candidate",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "decimal_string"
+      ]
+    },
+    "y": {
+      "candidate_semantic": "previous_close_candidate_and_reference_fallback",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "decimal_string"
+      ]
+    },
+    "z": {
+      "candidate_semantic": "last_price_or_current_price_like_value",
+      "numeric_parse_status": "all_observed_non_placeholder_values_numeric",
+      "sample_value_shapes": [
+        "dash_placeholder",
+        "decimal_string"
+      ]
+    }
+  },
+  "field_validation_updates": [
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "#",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "snapshot_or_session_time_candidate",
+      "raw_field": "%",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "@",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "^",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "displayed_ask_price_ladder_candidate",
+      "raw_field": "a",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "displayed_bid_price_ladder_candidate",
+      "raw_field": "b",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "bp",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "c",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "ch",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "source_date_candidate",
+      "raw_field": "d",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "ex",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "displayed_ask_quantity_ladder_candidate_unit_unverified",
+      "raw_field": "f",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "displayed_bid_quantity_ladder_candidate_unit_unverified",
+      "raw_field": "g",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "high_price_candidate",
+      "raw_field": "h",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "i",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "ip",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "it",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "key",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "low_price_candidate",
+      "raw_field": "l",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "m",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "m%",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "mt",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "n",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "nf",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "nu",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "open_price_candidate",
+      "raw_field": "o",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "oa",
+      "recommendation": "not_observed_preserve_inventory"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "ob",
+      "recommendation": "not_observed_preserve_inventory"
+    },
+    {
+      "candidate_semantic": "alternate_session_time_candidate",
+      "raw_field": "ot",
+      "recommendation": "not_observed_preserve_inventory"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "p",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "pid",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "ps",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "pz",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "q",
+      "recommendation": "not_observed_preserve_inventory"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "r",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "s",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "source_time_candidate",
+      "raw_field": "t",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "source_epoch_milliseconds_candidate",
+      "raw_field": "tlong",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "unknown_semantics_preserve_raw",
+      "raw_field": "ts",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "current_or_transaction_volume_candidate_unit_unverified",
+      "raw_field": "tv",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "limit_up_price_candidate",
+      "raw_field": "u",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "volume_candidate_unit_unverified",
+      "raw_field": "v",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "limit_down_price_candidate",
+      "raw_field": "w",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "previous_close_candidate_and_reference_fallback",
+      "raw_field": "y",
+      "recommendation": "requires_probe_evidence_review"
+    },
+    {
+      "candidate_semantic": "last_price_or_current_price_like_value",
+      "raw_field": "z",
+      "recommendation": "requires_probe_evidence_review"
+    }
+  ],
+  "full_market_scan": false,
+  "ladder_shape_summary": {
+    "mismatch_candidates": [],
+    "per_field": {
+      "a": {
+        "lengths_observed": [
+          0,
+          5
+        ],
+        "placeholder_count": 1,
+        "present_count": 5,
+        "underscore_delimited_count": 4
+      },
+      "b": {
+        "lengths_observed": [
+          5
+        ],
+        "placeholder_count": 0,
+        "present_count": 5,
+        "underscore_delimited_count": 5
+      },
+      "f": {
+        "lengths_observed": [
+          0,
+          5
+        ],
+        "placeholder_count": 1,
+        "present_count": 5,
+        "underscore_delimited_count": 4
+      },
+      "g": {
+        "lengths_observed": [
+          5
+        ],
+        "placeholder_count": 0,
+        "present_count": 5,
+        "underscore_delimited_count": 5
+      }
+    }
+  },
+  "normalization_changed": false,
+  "notes": [
+    "operator_invoked_manual_bounded_probe",
+    "telemetry_status=ok",
+    "manual_only_bounded_probe_summary",
+    "compact_field_shape_evidence_only",
+    "no_runtime_integration",
+    "no_raw_payload_dump",
+    "unit_semantics_remain_unverified_for_volume_and_quantity_candidates"
+  ],
+  "placeholder_summary": {
+    "#": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "%": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "@": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "^": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "a": {
+      "dash_status": true,
+      "empty_string_status": false,
+      "placeholder_examples": [
+        "-"
+      ]
+    },
+    "b": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "bp": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "c": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "ch": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "d": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "ex": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "f": {
+      "dash_status": true,
+      "empty_string_status": false,
+      "placeholder_examples": [
+        "-"
+      ]
+    },
+    "g": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "h": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "i": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "ip": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "it": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "key": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "l": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "m": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "m%": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "mt": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "n": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "nf": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "nu": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "o": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "oa": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "ob": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "ot": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "p": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "pid": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "ps": {
+      "dash_status": true,
+      "empty_string_status": false,
+      "placeholder_examples": [
+        "-"
+      ]
+    },
+    "pz": {
+      "dash_status": true,
+      "empty_string_status": false,
+      "placeholder_examples": [
+        "-"
+      ]
+    },
+    "q": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "r": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "s": {
+      "dash_status": true,
+      "empty_string_status": false,
+      "placeholder_examples": [
+        "-"
+      ]
+    },
+    "t": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "tlong": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "ts": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "tv": {
+      "dash_status": true,
+      "empty_string_status": false,
+      "placeholder_examples": [
+        "-"
+      ]
+    },
+    "u": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "v": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "w": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "y": {
+      "dash_status": false,
+      "empty_string_status": false,
+      "placeholder_examples": []
+    },
+    "z": {
+      "dash_status": true,
+      "empty_string_status": false,
+      "placeholder_examples": [
+        "-"
+      ]
+    }
+  },
+  "polling": false,
+  "probe_type": "manual_bounded_probe",
+  "raw_payload_committed": false,
+  "request_evidence": {
+    "cookies_committed": false,
+    "endpoint_family": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp",
+    "headers_committed": false,
+    "method": "GET",
+    "raw_payload_committed": false,
+    "raw_response_body_committed": false,
+    "requires_session": true,
+    "session_tokens_committed": false
+  },
+  "retrieved_at_utc": "2026-07-07T03:45:16Z",
+  "runtime_behavior_changed": false,
+  "scheduler": false,
+  "schema_version": "m7a_twse_mis_rich_field_probe_summary.v1",
+  "session_bootstrap_attempts": [
+    {
+      "error_class": "HTTPError",
+      "http_status": 404,
+      "status": "failed",
+      "url_family": "https://mis.twse.com.tw/stock/fibest.jsp"
+    },
+    {
+      "error_class": "HTTPError",
+      "http_status": 404,
+      "status": "failed",
+      "url_family": "https://mis.twse.com.tw/stock/index.jsp"
+    },
+    {
+      "error_class": null,
+      "http_status": 200,
+      "status": "success",
+      "url_family": "https://mis.twse.com.tw/stock/"
+    }
+  ],
+  "source_id": "TWSE_MIS",
+  "startup_network": false,
+  "successful_strategy": "bootstrap_then_api",
+  "symbols_failed": [],
+  "symbols_observed": [
+    "otc_5347.tw_20260707",
+    "otc_8069.tw_20260707",
+    "tse_0050.tw_20260707",
+    "tse_1435.tw_20260707",
+    "tse_2330.tw_20260707",
+    "tse_t00.tw_20260707"
+  ],
+  "symbols_requested": [
+    "tse_t00.tw",
+    "tse_2330.tw",
+    "tse_0050.tw",
+    "otc_8069.tw",
+    "otc_5347.tw",
+    "tse_1435.tw"
+  ]
+}
