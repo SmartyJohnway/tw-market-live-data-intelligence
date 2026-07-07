@@ -68,4 +68,8 @@ Final decision:
 - M7B accepted as pass_with_caveats
 
 Recommended next track:
-- M7C-AI-MARKET-CONTEXT-MULTISOURCE-EXPANSION-OR-SOURCE-FRESHNESS-GOVERNANCE
+- M7C-DETERMINISTIC-METRICS-LAYER
+- Scope: deterministic calculations such as change, change_percent, intraday_range, displayed_spread, and displayed bid/ask depth ratios.
+
+Note:
+- Future source timing / authority governance belongs to a later M8 preflight or M8 official-reference-source workstream, not immediate M7C.

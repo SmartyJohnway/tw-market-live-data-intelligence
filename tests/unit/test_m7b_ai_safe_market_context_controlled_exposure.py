@@ -77,8 +77,10 @@ def test_invalid_projection_is_not_promoted():
     invalid = {"schema_version": "m7a_twse_mis_rich_facts.v1", "projection_status": "runtime_projected_candidate", "exposure_status": "ai_safe_projection_candidate"}
     promoted = promote_ai_safe_market_context_projection_for_controlled_context(invalid)
     assert promoted["safe_for_ai_context"] is False
-    assert promoted["exposure_status"] == "ai_safe_projection_candidate"
+    assert promoted["exposure_status"] == "blocked"
+    assert promoted["blocked_reason"] == "not_valid_m7b_projection_candidate"
     assert promoted["raw_rich_facts_exposed"] is False
+    assert promoted["full_ladder_exposed"] is False
 
 
 def test_conversation_context_includes_controlled_projection_without_raw_rich_facts():

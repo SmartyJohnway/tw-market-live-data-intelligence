@@ -125,7 +125,7 @@ def test_inventory_has_m7b_schema_only_registration():
     assert m7b["pure_builder_defined"] is True
     assert m7b["fixture_safety_tests_added"] is True
     assert m7b["runtime_exposure_enabled"] is True
-    assert m7b["next_task"] == "M7C-AI-MARKET-CONTEXT-MULTISOURCE-EXPANSION-OR-SOURCE-FRESHNESS-GOVERNANCE"
+    assert m7b["next_task"] == "M7C-DETERMINISTIC-METRICS-LAYER"
 
 
 def test_new_m7b_docs_and_metadata_avoid_positive_forbidden_language():

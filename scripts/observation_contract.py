@@ -523,8 +523,8 @@ def promote_ai_safe_market_context_projection_for_controlled_context(
     )
     if not valid_candidate:
         promoted["safe_for_ai_context"] = False
-        promoted.setdefault("exposure_status", "blocked")
-        promoted.setdefault("blocked_reason", "not_valid_m7b_projection_candidate")
+        promoted["exposure_status"] = "blocked"
+        promoted["blocked_reason"] = "not_valid_m7b_projection_candidate"
         promoted["controlled_exposure_policy"] = "m7b_controlled_context_projection_v1"
         promoted["exposure_scope"] = "blocked_not_exposed"
         promoted["raw_rich_facts_exposed"] = False

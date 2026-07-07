@@ -1115,7 +1115,7 @@
         "M7B-05",
         "M7B-06"
       ],
-      "next_task": "M7C-AI-MARKET-CONTEXT-MULTISOURCE-EXPANSION-OR-SOURCE-FRESHNESS-GOVERNANCE",
+      "next_task": "M7C-DETERMINISTIC-METRICS-LAYER",
       "pure_builder_defined": true,
       "projection_builder": "scripts/observation_contract.py::build_ai_safe_market_context_projection_from_observation",
       "projection_attach_helper": "scripts/observation_contract.py::attach_ai_safe_market_context_projection_from_observation",

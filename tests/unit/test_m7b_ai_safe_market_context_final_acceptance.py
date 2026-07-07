@@ -43,7 +43,11 @@ def test_final_acceptance_doc_exists_status_caveats_and_no_go_confirmations():
         assert caveat in text
     for phrase in ["no live probe", "no new probe output committed", "no latest_summary.json committed", "no cookies/headers/session tokens committed"]:
         assert phrase in text
-    assert "M7C-AI-MARKET-CONTEXT-MULTISOURCE-EXPANSION-OR-SOURCE-FRESHNESS-GOVERNANCE" in text
+    assert "M7C-DETERMINISTIC-METRICS-LAYER" in text
+    assert "change_percent" in text
+    assert "displayed_spread" in text
+    assert "later M8 preflight" in text
+    assert "M7C-AI-MARKET-CONTEXT-MULTISOURCE-EXPANSION-OR-SOURCE-FRESHNESS-GOVERNANCE" not in text
 
 
 def test_forbidden_positive_language_absent_from_m7b_artifacts():

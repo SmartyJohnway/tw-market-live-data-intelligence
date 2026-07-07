@@ -152,4 +152,4 @@ def test_m7b_ai_safe_market_context_projection_registered_final_controlled_expos
     assert m7b["trading_signal"] is False
     assert m7b["recommendation"] is False
     assert m7b["final_acceptance_status"] == "pass_with_caveats"
-    assert m7b["next_task"] == "M7C-AI-MARKET-CONTEXT-MULTISOURCE-EXPANSION-OR-SOURCE-FRESHNESS-GOVERNANCE"
+    assert m7b["next_task"] == "M7C-DETERMINISTIC-METRICS-LAYER"
