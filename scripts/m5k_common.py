@@ -9,7 +9,13 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
-from scripts.observation_contract import normalize_failure, normalize_taifex_row, normalize_twse_mis_row
+from scripts.observation_contract import (
+    build_ai_safe_market_context_projection_from_observation,
+    normalize_failure,
+    normalize_taifex_row,
+    normalize_twse_mis_row,
+    promote_ai_safe_market_context_projection_for_controlled_context,
+)
 from scripts.ssl_policy import build_ssl_context, resolve_ssl_policy, ssl_policy_diagnostics
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -741,6 +747,49 @@ def _conversation_source_health_summary() -> dict[str, Any]:
     }
 
 
+
+def build_ai_safe_market_context_projections_for_latest_observations(
+    latest_observation_payload: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Build controlled M7B projections for conversation context only.
+
+    This helper reads the latest-observation payload but never mutates it and
+    never returns M7A ``twse_mis_rich_facts`` or displayed ladder arrays.
+    """
+    projections: list[dict[str, Any]] = []
+    if not isinstance(latest_observation_payload, dict):
+        return projections
+    payload = latest_observation_payload.get("content") if isinstance(latest_observation_payload.get("content"), dict) and "observations" not in latest_observation_payload else latest_observation_payload
+    if not isinstance(payload, dict):
+        return projections
+    for observation in _safe_list(payload.get("observations")):
+        if not isinstance(observation, dict):
+            continue
+        if observation.get("source") != "TWSE_MIS" or not isinstance(observation.get("twse_mis_rich_facts"), dict):
+            continue
+        candidate = build_ai_safe_market_context_projection_from_observation(observation)
+        promoted = promote_ai_safe_market_context_projection_for_controlled_context(candidate)
+        if promoted.get("safe_for_ai_context") is True and promoted.get("exposure_status") == "ai_safe_context_enabled":
+            projections.append(promoted)
+    return projections
+
+
+def build_ai_safe_market_context_projection_collection(
+    latest_observation_payload: dict[str, Any],
+) -> dict[str, Any]:
+    projections = build_ai_safe_market_context_projections_for_latest_observations(latest_observation_payload)
+    return {
+        "schema_version": "m7b_ai_safe_market_context_collection.v1",
+        "enabled": True,
+        "safe_for_ai_context": True,
+        "projection_count": len(projections),
+        "projections": projections,
+        "raw_rich_facts_exposed": False,
+        "full_ladder_exposed": False,
+        "not_trading_signal": True,
+        "not_recommendation": True,
+    }
+
 def build_conversation_context(watchlist: dict[str, Any], latest_observation: dict[str, Any] | None = None) -> dict[str, Any]:
     latest_observation = latest_observation or read_latest_observation()
     if isinstance(latest_observation, dict) and isinstance(latest_observation.get("content"), dict) and "observations" not in latest_observation:
@@ -763,6 +812,7 @@ def build_conversation_context(watchlist: dict[str, Any], latest_observation: di
         "watchlist_rows": build_watchlist_rows(watchlist, latest_observation if isinstance(latest_observation, dict) else {}),
         "observation_summary": obs_summary,
         "per_symbol_observations": per_symbol,
+        "ai_safe_market_context_projection": build_ai_safe_market_context_projection_collection(latest_observation if isinstance(latest_observation, dict) else {}),
         "successful_observations": len(_safe_list(latest_observation.get("observations"))) if isinstance(latest_observation, dict) else 0,
         "failed_observations": len(failures),
         "failures": [{"symbol": f.get("symbol"), "source": f.get("source"), "reason": f.get("reason") or f.get("failure_reason"), "status": f.get("status"), "recommended_next_step": f.get("recommended_next_step")} for f in failures if isinstance(f, dict)],

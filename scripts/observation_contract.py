@@ -501,6 +501,52 @@ def build_ai_safe_market_context_projection_from_observation(
     return projection
 
 
+
+def promote_ai_safe_market_context_projection_for_controlled_context(
+    projection: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Return a controlled-conversation copy of a valid M7B projection.
+
+    The pure M7B builder remains a non-exposed candidate.  This promotion
+    layer is the only place that may mark the projection safe for AI context,
+    and it only does so for the M7B projection schema -- never for M7A rich
+    facts or raw source payloads.
+    """
+    promoted = dict(projection)
+    promoted.setdefault("raw_rich_facts_exposed", False)
+    promoted.setdefault("full_ladder_exposed", False)
+
+    valid_candidate = (
+        promoted.get("schema_version") == AI_SAFE_MARKET_CONTEXT_PROJECTION_SCHEMA_VERSION
+        and promoted.get("projection_status") == "runtime_projected_candidate"
+        and promoted.get("exposure_status") == "ai_safe_projection_candidate"
+    )
+    if not valid_candidate:
+        promoted["safe_for_ai_context"] = False
+        promoted["exposure_status"] = "blocked"
+        promoted["blocked_reason"] = "not_valid_m7b_projection_candidate"
+        promoted["controlled_exposure_policy"] = "m7b_controlled_context_projection_v1"
+        promoted["exposure_scope"] = "blocked_not_exposed"
+        promoted["raw_rich_facts_exposed"] = False
+        promoted["full_ladder_exposed"] = False
+        return promoted
+
+    promoted.pop("future_builder_requirements", None)
+    source_policy = promoted.get("source_policy")
+    if isinstance(source_policy, dict):
+        source_policy = dict(source_policy)
+        source_policy.pop("m7a_dependency", None)
+        promoted["source_policy"] = source_policy
+    promoted["safe_for_ai_context"] = True
+    promoted["exposure_status"] = "ai_safe_context_enabled"
+    promoted["controlled_exposure_policy"] = "m7b_controlled_context_projection_v1"
+    promoted["exposure_scope"] = "conversation_context_only"
+    promoted["raw_rich_facts_exposed"] = False
+    promoted["full_ladder_exposed"] = False
+    promoted["not_trading_signal"] = True
+    promoted["not_recommendation"] = True
+    return promoted
+
 def attach_ai_safe_market_context_projection_from_observation(
     observation: Mapping[str, Any],
 ) -> dict[str, Any]:

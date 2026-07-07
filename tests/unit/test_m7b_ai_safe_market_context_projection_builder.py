@@ -211,12 +211,14 @@ def test_full_ladder_arrays_are_not_exposed_but_blocked_interpretations_remain()
     assert {"buy_signal", "target_price", "support_resistance", "true_liquidity"}.issubset(blocked)
 
 
-def test_runtime_fastapi_mcp_frontend_and_source_health_do_not_call_projection_builder():
+def test_runtime_projection_builder_reference_remains_controlled_to_conversation_context():
     checked_roots = ["server", "frontend", "scripts"]
     references = []
     allowed = {
         "scripts/observation_contract.py",
+        "scripts/m5k_common.py",
         "tests/unit/test_m7b_ai_safe_market_context_projection_builder.py",
+        "tests/unit/test_m7b_ai_safe_market_context_controlled_exposure.py",
     }
     for root in checked_roots:
         base = ROOT / root
