@@ -165,3 +165,15 @@ The builder output may be an `ai_safe_projection_candidate`, but runtime exposur
 `safe_for_ai_context` remains false until M7B-04 controlled exposure explicitly changes downstream integration policy.
 
 M7B is not complete yet; the next task is `M7B-04-M7B-05-CONTROLLED-EXPOSURE-INTEGRATION-AND-COMPATIBILITY-HARDENING`.
+
+## M7B-04 through M7B-06 final status
+
+M7B-04 enables controlled exposure of M7B projection through conversation context only.
+M7B-05 verifies compatibility for FastAPI, MCP, frontend/watchlist, source-health, latest observation, and non-TWSE sources.
+M7B-06 closes M7B as pass_with_caveats.
+
+The controlled projection may be safe_for_ai_context=true only after promotion.
+Raw M7A twse_mis_rich_facts remain safe_for_ai_context=false.
+Raw rich facts are not exposed to AI context.
+Full ladder arrays are not exposed.
+The projection remains non-signal and non-recommendation.
