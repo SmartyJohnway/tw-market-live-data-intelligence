@@ -1,10 +1,195 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
-from typing import Any
+from typing import Any, Mapping
 
 OBSERVATION_SCHEMA_VERSION = "m5_live_observation.normalized.v1"
 FAILURE_SCHEMA_VERSION = "m5_live_observation.failure.v1"
+
+
+TWSE_MIS_RICH_FACTS_SCHEMA_VERSION = "m7a_twse_mis_rich_facts.v1"
+
+
+def _twse_mis_quantity_unit_policy() -> dict[str, object]:
+    return {
+        "official_mis_ui_unit_label": "交易單位",
+        "api_field_dictionary_available": False,
+        "market_mode_required": True,
+        "unit_verified_for_runtime_normalization": False,
+    }
+
+
+def build_empty_twse_mis_rich_facts() -> dict[str, object]:
+    """Build the schema-only TWSE MIS rich facts contract without parsing rows.
+
+    M7A-02 defines the contract shape only. Runtime parsers must not treat this
+    helper as evidence that any rich MIS field has been populated or validated.
+    """
+    quantity_unit_policy = _twse_mis_quantity_unit_policy()
+    return {
+        "schema_version": TWSE_MIS_RICH_FACTS_SCHEMA_VERSION,
+        "source_id": "TWSE_MIS",
+        "schema_status": "defined_not_populated_by_runtime_parser",
+        "quantity_unit_policy": dict(quantity_unit_policy),
+        "market_mode_facts": {
+            "market_mode_candidate": None,
+            "source_context": None,
+            "known_modes": ["regular_board", "intraday_odd_lot", "index", "unknown"],
+            "semantic_status": "schema_defined_not_runtime_populated",
+        },
+        "instrument_facts": {
+            "raw_c": None,
+            "raw_ch": None,
+            "raw_at": None,
+            "raw_key": None,
+            "raw_ex": None,
+            "raw_name": None,
+            "raw_full_name": None,
+            "instrument_kind_candidate": None,
+            "price_domain": None,
+            "semantic_status": "schema_defined_candidate_fields",
+            "evidence_policy": {"official_documented": False, "requires_row_context": True},
+        },
+        "price_facts": {
+            "last_value": None,
+            "previous_close": None,
+            "open": None,
+            "high": None,
+            "low": None,
+            "price_domain": None,
+            "source_fields": ["z", "y", "o", "h", "l"],
+            "last_value_source_field": None,
+            "last_value_placeholder": False,
+            "fallback_reference_field": None,
+            "semantic_status": "schema_defined_candidate_fields",
+            "evidence_level": "schema_only_not_runtime_populated",
+        },
+        "volume_facts": {
+            "raw_v": None,
+            "raw_tv": None,
+            "raw_ps": None,
+            "unit_status": "market_context_required",
+            "unit_verified": False,
+            "community_default_unit_candidate": "non_authoritative_regular_board_quantity_candidate",
+            "quantity_unit_policy": dict(quantity_unit_policy),
+            "source_fields": ["v", "tv", "ps"],
+            "semantic_status": "schema_defined_candidate_fields",
+        },
+        "displayed_depth_facts": {
+            "applicable": None,
+            "applicability_reason": None,
+            "bid_prices": [],
+            "bid_quantities_raw": [],
+            "ask_prices": [],
+            "ask_quantities_raw": [],
+            "best_bid": None,
+            "best_ask": None,
+            "ladder_source_fields": ["b", "g", "a", "f"],
+            "quantity_unit_policy": dict(quantity_unit_policy),
+            "quantity_unit_status": "market_context_required",
+            "quantity_unit_verified": False,
+            "semantic_status": "displayed_depth_snapshot_only_schema",
+            "forbidden_interpretations": ["support_resistance", "true_liquidity", "order_book_truth", "main_force", "trading_signal"],
+        },
+        "limit_or_reference_facts": {
+            "limit_up": None,
+            "limit_down": None,
+            "raw_pz": None,
+            "raw_bp": None,
+            "raw_ps": None,
+            "applicable": None,
+            "applicability_reason": None,
+            "source_fields": ["u", "w", "pz", "bp", "ps"],
+            "semantic_status": "schema_defined_candidate_fields",
+        },
+        "auction_or_reference_facts": {
+            "raw_ps": None,
+            "raw_pz": None,
+            "raw_bp": None,
+            "raw_s": None,
+            "raw_ts": None,
+            "observed_in_closing_auction_window": False,
+            "observed_in_post_close_snapshot": False,
+            "ps_candidate_semantic": "state_dependent_reference_or_match_volume_candidate",
+            "pz_candidate_semantic": "state_dependent_reference_or_match_price_candidate",
+            "s_candidate_semantic": "match_volume_shadow_candidate",
+            "ts_candidate_semantic": "session_or_trial_state_flag_candidate",
+            "semantic_status": "operator_evidence_supported_not_official_dictionary",
+            "unit_policy": dict(quantity_unit_policy),
+        },
+        "session_state_candidate_facts": {
+            "raw_ip": None,
+            "raw_p": None,
+            "raw_s": None,
+            "raw_ts": None,
+            "ts_candidate_semantic": "session_or_trial_state_flag_candidate",
+            "known_operator_evidence": "ts=1 observed during closing-auction trial window; ts=0 observed after final match",
+            "semantic_status": "candidate_only_not_official_dictionary",
+        },
+        "index_market_facts": {
+            "raw_m": None,
+            "raw_r": None,
+            "m_candidate_semantic": "index_market_traded_quantity_candidate",
+            "r_candidate_semantic": "index_market_trade_count_candidate",
+            "evidence_level": "official_mis_ui_cross_checked_not_field_dictionary",
+            "unit_status": "market_context_required_not_field_dictionary_validated",
+            "quantity_unit_policy": dict(quantity_unit_policy),
+            "applicable": None,
+            "applicability_reason": None,
+            "source_fields": ["m", "r"],
+            "semantic_status": "schema_defined_index_candidate_fields",
+        },
+        "timestamp_facts": {
+            "raw_d": None,
+            "raw_t": None,
+            "raw_tlong": None,
+            "raw_percent": None,
+            "raw_caret": None,
+            "raw_ot": None,
+            "source_fields": ["d", "t", "tlong", "%", "^", "ot"],
+            "semantic_status": "schema_defined_candidate_fields",
+        },
+        "raw_unknown_facts": {
+            "raw_pid": None, "raw_hash": None, "raw_m_percent": None, "raw_mt": None, "raw_ip": None,
+            "raw_i": None, "raw_it": None, "raw_p": None, "raw_q": None,
+            "raw_oa": None, "raw_ob": None, "raw_ot": None, "raw_nu": None,
+            "semantic_status": "unknown_preserve_raw_only",
+        },
+        "quality_facts": {
+            "field_presence": {},
+            "placeholder_fields": [],
+            "malformed_fields": [],
+            "ladder_mismatch_flags": [],
+            "unit_unverified_fields": ["v", "tv", "ps", "s", "g", "f", "m", "r"],
+            "unknown_or_raw_only_fields": ["pid", "#", "m%", "mt", "ip", "i", "it", "p", "q", "oa", "ob", "ot", "nu"],
+            "not_observed_in_m7a_01d_fields": ["q", "oa", "ob", "ot"],
+            "semantic_status": "schema_defined_quality_flags",
+        },
+        "semantic_confidence": {
+            "official_documented": False,
+            "probe_observed": False,
+            "ui_cross_checked": False,
+            "community_supported": False,
+            "runtime_validated": False,
+            "unit_verified": False,
+            "evidence_level": "schema_only",
+        },
+        "ai_exposure_policy": {
+            "safe_for_ai_context": False,
+            "reason": "schema_defined_not_runtime_populated",
+            "forbidden_interpretations": [
+                "buy_signal", "sell_signal", "hold", "target_price", "support_resistance", "main_force",
+                "true_liquidity", "order_book_truth", "realtime_guarantee", "execution_feed",
+            ],
+        },
+    }
+
+
+def attach_empty_twse_mis_rich_facts(observation: Mapping[str, Any]) -> dict[str, Any]:
+    """Return a copy of an observation with schema-only empty TWSE MIS rich facts."""
+    attached = dict(observation)
+    attached["twse_mis_rich_facts"] = build_empty_twse_mis_rich_facts()
+    return attached
 
 
 def normalize_timestamp(value: Any, *, retrieved_at_utc: str | None = None, source_timezone: timezone = timezone.utc) -> dict[str, Any]:
