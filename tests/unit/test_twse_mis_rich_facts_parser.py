@@ -87,6 +87,7 @@ def test_post_close_fixture_populates_z_tv_s_ps_pz_and_match_heuristic():
     assert facts["price_facts"]["last_value"] == 2440.0
     assert facts["price_facts"]["last_value_source_field"] == "z"
     assert facts["price_facts"]["last_value_placeholder"] is False
+    assert facts["price_facts"]["fallback_reference_field"] is None
     assert facts["volume_facts"]["raw_v"] == "27734"
     assert facts["volume_facts"]["raw_tv"] == "3721"
     assert facts["volume_facts"]["raw_ps"] == "3721"
@@ -119,6 +120,7 @@ def test_placeholder_fixture_does_not_infer_rich_last_value_from_pz_midpoint_or_
     assert facts["price_facts"]["last_value"] is None
     assert facts["price_facts"]["last_value_placeholder"] is True
     assert facts["price_facts"]["previous_close"] == 2460.0
+    assert facts["price_facts"]["fallback_reference_field"] == "y"
     assert facts["auction_or_reference_facts"]["raw_pz"] == "-"
     obs = _parse_mis_item(PLACEHOLDER_ROW, INSTRUMENT, RETRIEVED)
     assert obs["price_source_field"] == "y"
@@ -138,6 +140,7 @@ def test_ladder_mismatch_fixture_records_quality_flags_without_throwing():
 def test_malformed_numeric_fixture_records_fields_without_throwing():
     facts = build_twse_mis_rich_facts_from_row(MALFORMED_ROW)
     assert {"z", "o", "l", "u"}.issubset(set(facts["quality_facts"]["malformed_fields"]))
+    assert facts["price_facts"]["fallback_reference_field"] == "y"
     assert facts["price_facts"]["last_value"] is None
     assert facts["price_facts"]["open"] is None
     assert facts["price_facts"]["low"] is None

@@ -267,17 +267,19 @@ def build_twse_mis_rich_facts_from_row(row: Mapping[str, Any]) -> dict[str, obje
     })
 
     z_value = _parse_twse_mis_decimal(row, "z", malformed_fields)
+    y_value = _parse_twse_mis_decimal(row, "y", malformed_fields)
+    fallback_reference_field = "y" if z_value is None and y_value is not None else None
     price_facts = facts["price_facts"]
     price_facts.update({
         "last_value": z_value,
         "last_value_source_field": "z" if z_value is not None else None,
         "last_value_placeholder": row.get("z") in (None, "", "-"),
-        "previous_close": _parse_twse_mis_decimal(row, "y", malformed_fields),
+        "previous_close": y_value,
         "open": _parse_twse_mis_decimal(row, "o", malformed_fields),
         "high": _parse_twse_mis_decimal(row, "h", malformed_fields),
         "low": _parse_twse_mis_decimal(row, "l", malformed_fields),
         "price_domain": price_domain,
-        "fallback_reference_field": "y",
+        "fallback_reference_field": fallback_reference_field,
         "semantic_status": "runtime_parsed_candidate",
         "evidence_level": "runtime_parsed_candidate",
     })

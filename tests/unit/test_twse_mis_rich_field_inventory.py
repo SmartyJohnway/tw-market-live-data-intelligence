@@ -85,16 +85,24 @@ def test_twse_mis_forbidden_language_guardrails_are_explicit():
         assert phrase in forbidden
 
 
-def test_twse_mis_rich_observation_contract_registered_schema_only():
+def test_twse_mis_rich_observation_contract_registered_runtime_populated():
     inv = load_inventory()
     contract = inv["rich_observation_contract"]
     assert contract["schema_version"] == "m7a_twse_mis_rich_facts.v1"
     assert contract["schema_defined"] is True
-    assert contract["runtime_populated"] is False
-    assert contract["parser_populated"] is False
-    assert contract["runtime_behavior_changed"] is False
-    assert contract["normalization_changed"] is False
+    assert contract["runtime_populated"] is True
+    assert contract["parser_populated"] is True
+    assert contract["runtime_behavior_changed"] is True
+    assert contract["normalization_changed"] is True
+    assert contract["rich_facts_normalization_added"] is True
+    assert contract["top_level_normalization_changed"] is False
+    assert contract["top_level_observation_behavior_preserved"] is True
+    assert contract["ai_exposure_safe_for_context"] is False
     assert contract["contract_doc"] == "docs/protocol/TWSE_MIS_RICH_OBSERVATION_CONTRACT.md"
     assert contract["contract_helper"] == "scripts/observation_contract.py::build_empty_twse_mis_rich_facts"
     assert contract["attach_helper"] == "scripts/observation_contract.py::attach_empty_twse_mis_rich_facts"
-    assert contract["next_parser_task"] == "M7A-03-TWSE-MIS-RICH-FIELD-PARSER-EXTENSION"
+    assert contract["runtime_parser_helper"] == "scripts/observation_contract.py::build_twse_mis_rich_facts_from_row"
+    assert contract["runtime_attach_helper"] == "scripts/observation_contract.py::attach_twse_mis_rich_facts_from_row"
+    assert contract["completed_parser_task"] == "M7A-03-TWSE-MIS-RICH-FIELD-PARSER-EXTENSION"
+    assert contract["completed_fixture_task"] == "M7A-04-FIXTURE-EXPANSION-AND-NORMALIZATION-TESTS"
+    assert contract["next_compatibility_task"] == "M7A-05-M7A-06-COMPATIBILITY-CHECKS-AND-FINAL-ACCEPTANCE"
