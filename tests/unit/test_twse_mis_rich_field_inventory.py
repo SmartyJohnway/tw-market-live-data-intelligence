@@ -175,5 +175,10 @@ def test_m7c_deterministic_metrics_registered_schema_only_not_runtime_populated(
     assert m7c["metrics_are_signals"] is False
     assert m7c["trading_signal"] is False
     assert m7c["recommendation"] is False
-    assert m7c["completed_tasks"] == ["M7C-00", "M7C-01"]
-    assert m7c["next_task"] == "M7C-02-M7C-03-DETERMINISTIC-METRICS-BUILDER-AND-SAFETY-TESTS"
+    assert m7c["completed_tasks"] == ["M7C-00", "M7C-01", "M7C-02", "M7C-03"]
+    assert m7c["pure_builder_defined"] is True
+    assert m7c["metrics_builder"] == "scripts/observation_contract.py::build_deterministic_metrics_context_from_observation"
+    assert m7c["metrics_attach_helper"] == "scripts/observation_contract.py::attach_deterministic_metrics_context_from_observation"
+    assert m7c["fixture_safety_tests_added"] is True
+    assert m7c["builder_output_metric_status"] == "runtime_computed_candidate"
+    assert m7c["next_task"] == "M7C-04-CONTROLLED-INTEGRATION-COMPATIBILITY-AND-CLOSURE"

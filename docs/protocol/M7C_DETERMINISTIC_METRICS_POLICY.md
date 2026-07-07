@@ -64,7 +64,7 @@ Displayed spread metrics require:
 - `best_bid`
 - `best_ask`
 
-Displayed depth balance metrics require displayed bid quantities and displayed ask quantities, or safe M7B/M7A equivalent fields that pass quality gates.
+Displayed depth balance metrics require `sanitized_top5_bid_quantities` and `sanitized_top5_ask_quantities`, or safe local builder inputs derived from M7A/M7B displayed-depth snapshot facts that pass quality gates. The builder must not expose raw `bid_prices`, `ask_prices`, `bid_quantities_raw`, `ask_quantities_raw`, or full ladder arrays in the M7C output.
 
 Quality flags must be checked before metrics are considered available.
 
@@ -141,6 +141,16 @@ Strict naming policy: metric names must not include:
 - `liquidity_signal`
 
 Allowed names should be factual and deterministic. `position_in_day_range`, `distance_from_high_percent`, and `distance_from_low_percent` are descriptive only. `displayed_spread` is displayed quote spread, not full-market liquidity. `top5_displayed_bid_volume` and `top5_displayed_ask_volume` are displayed depth sums only, not true order-book depth.
+
+## M7C-02/M7C-03 status
+
+M7C-02 defines a pure deterministic metrics builder but does not integrate it with runtime consumers. M7C-03 adds fixture and safety tests.
+
+The builder output may contain `runtime_computed_candidate` metric values, but repository runtime exposure remains disabled. `safe_for_ai_context` remains false until M7C-04 controlled integration explicitly changes downstream policy.
+
+Displayed-depth balance metrics consume sanitized top-5 displayed quantity inputs derived from M7A/M7B displayed-depth snapshot facts. The builder must not expose raw `bid_prices`, `ask_prices`, `bid_quantities_raw`, `ask_quantities_raw`, or full ladder arrays in the M7C output.
+
+Do not mark M7C complete yet.
 
 ## 10. M7C planned sequence
 

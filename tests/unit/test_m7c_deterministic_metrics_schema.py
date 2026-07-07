@@ -154,7 +154,10 @@ def test_m7c_inventory_registration_exists_and_preserves_disabled_runtime_flags(
     assert m7c["runtime_populated"] is False
     assert m7c["safe_for_ai_context"] is False
     assert m7c["metrics_are_signals"] is False
-    assert m7c["next_task"] == "M7C-02-M7C-03-DETERMINISTIC-METRICS-BUILDER-AND-SAFETY-TESTS"
+    assert m7c["next_task"] == "M7C-04-CONTROLLED-INTEGRATION-COMPATIBILITY-AND-CLOSURE"
+    assert m7c["pure_builder_defined"] is True
+    assert m7c["fixture_safety_tests_added"] is True
+    assert m7c["builder_output_metric_status"] == "runtime_computed_candidate"
 
 
 def test_m7c_artifacts_do_not_use_forbidden_positive_language():
@@ -167,3 +170,17 @@ def test_m7c_artifacts_do_not_use_forbidden_positive_language():
     ]).lower()
     for phrase in FORBIDDEN_POSITIVE_PHRASES:
         assert phrase not in combined
+
+
+def test_m7c_displayed_depth_inputs_are_sanitized_top5_and_raw_ladders_forbidden():
+    ctx = build_empty_deterministic_metrics_context()
+    required = ctx["input_requirements"]["displayed_depth_balance_required_fields"]
+    assert required == ["sanitized_top5_bid_quantities", "sanitized_top5_ask_quantities"]
+    for entry in ctx["displayed_depth_balance_metrics"].values():
+        assert "sanitized_top5_bid_quantities" in entry["required_fields"] or "sanitized_top5_ask_quantities" in entry["required_fields"]
+        assert "bid_quantities" not in entry["required_fields"]
+        assert "ask_quantities" not in entry["required_fields"]
+    text = POLICY_PATH.read_text(encoding="utf-8")
+    assert "sanitized top-5" in text.lower()
+    assert "must not expose raw" in text.lower()
+    assert "full ladder arrays" in text.lower()

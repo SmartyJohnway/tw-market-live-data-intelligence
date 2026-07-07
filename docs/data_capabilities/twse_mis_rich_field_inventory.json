@@ -1158,9 +1158,16 @@
       "recommendation": false,
       "completed_tasks": [
         "M7C-00",
-        "M7C-01"
+        "M7C-01",
+        "M7C-02",
+        "M7C-03"
       ],
-      "next_task": "M7C-02-M7C-03-DETERMINISTIC-METRICS-BUILDER-AND-SAFETY-TESTS"
+      "next_task": "M7C-04-CONTROLLED-INTEGRATION-COMPATIBILITY-AND-CLOSURE",
+      "pure_builder_defined": true,
+      "metrics_builder": "scripts/observation_contract.py::build_deterministic_metrics_context_from_observation",
+      "metrics_attach_helper": "scripts/observation_contract.py::attach_deterministic_metrics_context_from_observation",
+      "fixture_safety_tests_added": true,
+      "builder_output_metric_status": "runtime_computed_candidate"
     }
   },
   "runtime_behavior_changed": false,
