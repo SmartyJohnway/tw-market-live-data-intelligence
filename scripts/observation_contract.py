@@ -186,6 +186,138 @@ def build_empty_twse_mis_rich_facts() -> dict[str, object]:
 
 
 
+M7C_DETERMINISTIC_METRICS_SCHEMA_VERSION = "m7c_deterministic_metrics.v1"
+
+
+def _m7c_metric(formula: str, required_fields: list[str], unit: str, **caveats: object) -> dict[str, object]:
+    metric = {
+        "formula": formula,
+        "required_fields": required_fields,
+        "status": "schema_only",
+        "value": None,
+        "unit": unit,
+        "descriptive_only": True,
+        "not_signal": True,
+    }
+    metric.update(caveats)
+    return metric
+
+
+def build_empty_deterministic_metrics_context() -> dict[str, object]:
+    """Build the schema-only M7C deterministic metrics context.
+
+    M7C-00/M7C-01 define policy and schema only. This helper does not
+    calculate, populate, expose, or integrate metrics into runtime AI context.
+    """
+    displayed_spread_caveats = {"not_true_liquidity": True, "not_full_order_book": True}
+    displayed_depth_caveats = {
+        "displayed_depth_snapshot_only": True,
+        "not_true_liquidity": True,
+        "not_full_order_book": True,
+        "not_support_resistance": True,
+    }
+    return {
+        "schema_version": M7C_DETERMINISTIC_METRICS_SCHEMA_VERSION,
+        "context_id": "M7C_DETERMINISTIC_METRICS",
+        "metric_status": "schema_defined_not_computed",
+        "runtime_populated": False,
+        "safe_for_ai_context": False,
+        "not_trading_signal": True,
+        "not_recommendation": True,
+        "source_policy": {
+            "depends_on": "M7B_AI_SAFE_MARKET_CONTEXT",
+            "m7b_final_status": "pass_with_caveats",
+            "source_discovery_required": False,
+            "live_probe_required": False,
+            "official_api_field_dictionary_required": False,
+            "realtime_sla_required": False,
+            "semantic_status": "schema_only",
+        },
+        "input_requirements": {
+            "price_metrics_required_fields": ["last_value", "previous_close", "open", "high", "low"],
+            "displayed_spread_required_fields": ["best_bid", "best_ask"],
+            "displayed_depth_balance_required_fields": ["bid_quantities", "ask_quantities"],
+            "quality_inputs": ["reference_only", "malformed_fields", "placeholder_fields", "ladder_mismatch_flags"],
+            "semantic_status": "schema_only",
+        },
+        "quality_gate_policy": {
+            "metric_status_values": [
+                "schema_only",
+                "not_computed",
+                "computed",
+                "blocked_missing_required_fields",
+                "blocked_quality_flags",
+                "blocked_zero_denominator",
+                "blocked_non_numeric",
+            ],
+            "block_reference_only_last_value_metrics": True,
+            "block_malformed_required_fields": True,
+            "block_ladder_mismatch_depth_metrics": True,
+            "block_zero_denominator": True,
+            "semantic_status": "schema_only",
+        },
+        "price_change_metrics": {
+            "change": _m7c_metric("last_value - previous_close", ["last_value", "previous_close"], "price_points"),
+            "change_percent": _m7c_metric("change / previous_close", ["last_value", "previous_close"], "ratio"),
+        },
+        "intraday_range_metrics": {
+            "intraday_range": _m7c_metric("high - low", ["high", "low"], "price_points"),
+        },
+        "open_high_low_position_metrics": {
+            "position_in_day_range": _m7c_metric("(last_value - low) / (high - low)", ["last_value", "high", "low"], "ratio"),
+            "distance_from_high_percent": _m7c_metric("(last_value - high) / high", ["last_value", "high"], "ratio"),
+            "distance_from_low_percent": _m7c_metric("(last_value - low) / low", ["last_value", "low"], "ratio"),
+            "change_from_open_percent": _m7c_metric("(last_value - open) / open", ["last_value", "open"], "ratio"),
+        },
+        "displayed_quote_spread_metrics": {
+            "displayed_spread": _m7c_metric("best_ask - best_bid", ["best_bid", "best_ask"], "price_points", **displayed_spread_caveats),
+            "displayed_spread_percent": _m7c_metric("displayed_spread / mid_price", ["best_bid", "best_ask"], "ratio", **displayed_spread_caveats),
+        },
+        "displayed_depth_balance_metrics": {
+            "top5_displayed_bid_volume": _m7c_metric("sum(top_5_bid_quantities)", ["bid_quantities"], "displayed_quantity", **displayed_depth_caveats),
+            "top5_displayed_ask_volume": _m7c_metric("sum(top_5_ask_quantities)", ["ask_quantities"], "displayed_quantity", **displayed_depth_caveats),
+            "displayed_bid_ask_depth_ratio": _m7c_metric("top5_displayed_bid_volume / top5_displayed_ask_volume", ["bid_quantities", "ask_quantities"], "ratio", **displayed_depth_caveats),
+        },
+        "metric_availability": {
+            "all_metrics_schema_defined": True,
+            "computed_metrics_count": 0,
+            "blocked_metrics_count": 0,
+            "not_computed_metrics_count": 0,
+            "runtime_populated": False,
+            "semantic_status": "schema_only",
+        },
+        "caveat_context": {
+            "global_caveats": [
+                "schema_only_not_computed",
+                "not_trading_signal",
+                "not_recommendation",
+                "displayed_depth_snapshot_only",
+                "not_true_liquidity",
+                "not_full_order_book",
+                "quality_gated_metrics_required",
+            ],
+            "semantic_status": "schema_only",
+        },
+        "blocked_interpretations": [
+            "trading_signal", "buy_signal", "sell_signal", "recommendation", "buy_sell_hold",
+            "target_price", "support", "resistance", "breakout", "breakdown", "pressure",
+            "main_force", "true_liquidity", "full_order_book", "execution_liquidity",
+            "predictive_label", "trend_confirmation",
+        ],
+        "future_builder_requirements": {
+            "required_input": "m7b_ai_safe_market_context_projection_or_normalized_observation",
+            "must_check_required_fields": True,
+            "must_check_quality_flags": True,
+            "must_block_zero_denominator": True,
+            "must_block_non_numeric": True,
+            "must_not_emit_signal_names": True,
+            "must_not_emit_recommendations": True,
+            "must_keep_safe_for_ai_context_false_until_controlled_integration": True,
+            "next_task": "M7C-02-M7C-03-DETERMINISTIC-METRICS-BUILDER-AND-SAFETY-TESTS",
+        },
+    }
+
+
 AI_SAFE_MARKET_CONTEXT_PROJECTION_SCHEMA_VERSION = "m7b_ai_safe_market_context_projection.v1"
 
 

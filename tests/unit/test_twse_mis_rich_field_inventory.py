@@ -153,3 +153,27 @@ def test_m7b_ai_safe_market_context_projection_registered_final_controlled_expos
     assert m7b["recommendation"] is False
     assert m7b["final_acceptance_status"] == "pass_with_caveats"
     assert m7b["next_task"] == "M7C-DETERMINISTIC-METRICS-LAYER"
+
+
+def test_m7c_deterministic_metrics_registered_schema_only_not_runtime_populated():
+    inv = load_inventory()
+    m7c = inv["rich_observation_contract"]["m7c_deterministic_metrics"]
+    assert m7c["schema_version"] == "m7c_deterministic_metrics.v1"
+    assert m7c["status"] == "schema_defined_policy_defined_not_runtime_populated"
+    assert m7c["m7b_dependency_status"] == "pass_with_caveats"
+    assert m7c["policy_doc"] == "docs/protocol/M7C_DETERMINISTIC_METRICS_POLICY.md"
+    assert m7c["schema_helper"] == "scripts/observation_contract.py::build_empty_deterministic_metrics_context"
+    assert m7c["runtime_populated"] is False
+    assert m7c["runtime_behavior_changed"] is False
+    assert m7c["conversation_context_changed"] is False
+    assert m7c["fastapi_changed"] is False
+    assert m7c["mcp_changed"] is False
+    assert m7c["frontend_changed"] is False
+    assert m7c["source_health_changed"] is False
+    assert m7c["latest_observation_changed"] is False
+    assert m7c["safe_for_ai_context"] is False
+    assert m7c["metrics_are_signals"] is False
+    assert m7c["trading_signal"] is False
+    assert m7c["recommendation"] is False
+    assert m7c["completed_tasks"] == ["M7C-00", "M7C-01"]
+    assert m7c["next_task"] == "M7C-02-M7C-03-DETERMINISTIC-METRICS-BUILDER-AND-SAFETY-TESTS"
