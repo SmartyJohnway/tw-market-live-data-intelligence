@@ -119,3 +119,24 @@ def test_twse_mis_rich_observation_contract_registered_runtime_populated():
     assert acceptance["ai_exposure_safe_for_context"] is False
     assert acceptance["live_probe_executed_in_m7a_05_06"] is False
     assert acceptance["new_probe_output_committed_in_m7a_05_06"] is False
+
+
+def test_m7b_ai_safe_market_context_projection_registered_schema_only():
+    inv = load_inventory()
+    m7b = inv["rich_observation_contract"]["m7b_ai_safe_market_context_projection"]
+    assert m7b["schema_version"] == "m7b_ai_safe_market_context_projection.v1"
+    assert m7b["status"] == "schema_defined_policy_defined_not_runtime_populated"
+    assert m7b["m7a_dependency_status"] == "pass_with_caveats"
+    assert m7b["policy_doc"] == "docs/protocol/M7B_AI_SAFE_MARKET_CONTEXT_PROJECTION_POLICY.md"
+    assert m7b["schema_helper"] == "scripts/observation_contract.py::build_empty_ai_safe_market_context_projection"
+    assert m7b["attach_helper"] == "scripts/observation_contract.py::attach_empty_ai_safe_market_context_projection"
+    assert m7b["runtime_populated"] is False
+    assert m7b["runtime_behavior_changed"] is False
+    assert m7b["fastapi_changed"] is False
+    assert m7b["mcp_changed"] is False
+    assert m7b["frontend_changed"] is False
+    assert m7b["conversation_context_changed"] is False
+    assert m7b["safe_for_ai_context"] is False
+    assert m7b["exposure_status"] == "projection_candidate_not_exposed"
+    assert m7b["completed_tasks"] == ["M7B-00", "M7B-01"]
+    assert m7b["next_task"] == "M7B-02-M7B-03-PURE-PROJECTION-BUILDER-AND-SAFETY-TESTS"
