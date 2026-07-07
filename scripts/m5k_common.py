@@ -11,10 +11,12 @@ from typing import Any
 
 from scripts.observation_contract import (
     build_ai_safe_market_context_projection_from_observation,
+    build_deterministic_metrics_context_from_observation,
     normalize_failure,
     normalize_taifex_row,
     normalize_twse_mis_row,
     promote_ai_safe_market_context_projection_for_controlled_context,
+    promote_deterministic_metrics_context_for_controlled_context,
 )
 from scripts.ssl_policy import build_ssl_context, resolve_ssl_policy, ssl_policy_diagnostics
 
@@ -790,6 +792,49 @@ def build_ai_safe_market_context_projection_collection(
         "not_recommendation": True,
     }
 
+def build_deterministic_metrics_contexts_for_latest_observations(
+    latest_observation_payload: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Build promoted M7C deterministic metrics for conversation context only."""
+    contexts: list[dict[str, Any]] = []
+    if not isinstance(latest_observation_payload, dict):
+        return contexts
+    payload = latest_observation_payload.get("content") if isinstance(latest_observation_payload.get("content"), dict) and "observations" not in latest_observation_payload else latest_observation_payload
+    if not isinstance(payload, dict):
+        return contexts
+    for observation in _safe_list(payload.get("observations")):
+        if not isinstance(observation, dict):
+            continue
+        if observation.get("source") != "TWSE_MIS" or not isinstance(observation.get("twse_mis_rich_facts"), dict):
+            continue
+        try:
+            candidate = build_deterministic_metrics_context_from_observation(observation)
+            promoted = promote_deterministic_metrics_context_for_controlled_context(candidate)
+        except Exception:
+            continue
+        if promoted.get("safe_for_ai_context") is True and promoted.get("exposure_status") == "ai_safe_context_enabled":
+            contexts.append(promoted)
+    return contexts
+
+
+def build_deterministic_metrics_context_collection(
+    latest_observation_payload: dict[str, Any],
+) -> dict[str, Any]:
+    contexts = build_deterministic_metrics_contexts_for_latest_observations(latest_observation_payload)
+    return {
+        "schema_version": "m7c_deterministic_metrics_collection.v1",
+        "enabled": True,
+        "safe_for_ai_context": True,
+        "metrics_context_count": len(contexts),
+        "contexts": contexts,
+        "raw_rich_facts_exposed": False,
+        "raw_full_ladder_exposed": False,
+        "metrics_are_signals": False,
+        "not_trading_signal": True,
+        "not_recommendation": True,
+    }
+
+
 def build_conversation_context(watchlist: dict[str, Any], latest_observation: dict[str, Any] | None = None) -> dict[str, Any]:
     latest_observation = latest_observation or read_latest_observation()
     if isinstance(latest_observation, dict) and isinstance(latest_observation.get("content"), dict) and "observations" not in latest_observation:
@@ -813,6 +858,7 @@ def build_conversation_context(watchlist: dict[str, Any], latest_observation: di
         "observation_summary": obs_summary,
         "per_symbol_observations": per_symbol,
         "ai_safe_market_context_projection": build_ai_safe_market_context_projection_collection(latest_observation if isinstance(latest_observation, dict) else {}),
+        "deterministic_metrics_context": build_deterministic_metrics_context_collection(latest_observation if isinstance(latest_observation, dict) else {}),
         "successful_observations": len(_safe_list(latest_observation.get("observations"))) if isinstance(latest_observation, dict) else 0,
         "failed_observations": len(failures),
         "failures": [{"symbol": f.get("symbol"), "source": f.get("source"), "reason": f.get("reason") or f.get("failure_reason"), "status": f.get("status"), "recommended_next_step": f.get("recommended_next_step")} for f in failures if isinstance(f, dict)],

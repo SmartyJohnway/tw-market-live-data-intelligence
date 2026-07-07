@@ -213,6 +213,9 @@ def test_runtime_code_does_not_call_builder_or_attach_helper():
         "tests/unit/test_m7c_deterministic_metrics_builder.py",
         "tests/unit/test_m7c_deterministic_metrics_schema.py",
         "tests/unit/test_twse_mis_rich_field_inventory.py",
+        "scripts/m5k_common.py",
+        "tests/unit/test_m7c_deterministic_metrics_controlled_exposure.py",
+        "tests/unit/test_m7c_deterministic_metrics_final_acceptance.py",
     }
     names = ["build_deterministic_metrics_context_from_observation", "attach_deterministic_metrics_context_from_observation"]
     for base in ["server", "frontend", "scripts", "tests/unit"]:

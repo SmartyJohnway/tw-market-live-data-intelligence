@@ -542,6 +542,54 @@ def build_deterministic_metrics_context_from_observation(observation: Mapping[st
     return ctx
 
 
+def promote_deterministic_metrics_context_for_controlled_context(
+    metrics_context: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Promote a valid M7C candidate for controlled conversation context only.
+
+    Invalid candidates are returned as blocked copies instead of raising so
+    callers can safely skip them without changing runtime payload behavior.
+    """
+    policy = "m7c_controlled_deterministic_metrics_context_v1"
+    candidate = dict(metrics_context) if isinstance(metrics_context, Mapping) else {}
+    valid = (
+        candidate.get("schema_version") == M7C_DETERMINISTIC_METRICS_SCHEMA_VERSION
+        and candidate.get("metric_status") == "runtime_computed_candidate"
+        and candidate.get("runtime_populated") is True
+        and candidate.get("safe_for_ai_context") is False
+        and candidate.get("not_trading_signal") is True
+        and candidate.get("not_recommendation") is True
+    )
+    if not valid:
+        blocked = dict(candidate)
+        blocked.update({
+            "safe_for_ai_context": False,
+            "exposure_status": "blocked",
+            "blocked_reason": "not_valid_m7c_deterministic_metrics_candidate",
+            "controlled_exposure_policy": policy,
+            "exposure_scope": "blocked_not_exposed",
+            "raw_rich_facts_exposed": False,
+            "raw_full_ladder_exposed": False,
+            "metrics_are_signals": False,
+        })
+        return blocked
+
+    promoted = dict(candidate)
+    promoted.pop("future_builder_requirements", None)
+    promoted.update({
+        "safe_for_ai_context": True,
+        "exposure_status": "ai_safe_context_enabled",
+        "controlled_exposure_policy": policy,
+        "exposure_scope": "conversation_context_only",
+        "raw_rich_facts_exposed": False,
+        "raw_full_ladder_exposed": False,
+        "metrics_are_signals": False,
+        "not_trading_signal": True,
+        "not_recommendation": True,
+    })
+    return promoted
+
+
 def attach_deterministic_metrics_context_from_observation(observation: Mapping[str, Any]) -> dict[str, Any]:
     """Return a copy of observation with a candidate M7C metrics context attached."""
     attached = dict(observation)
