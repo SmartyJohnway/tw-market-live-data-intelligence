@@ -190,11 +190,20 @@ The helper functions are intentionally pure and unit-tested without network acce
 
 Field validation statuses may be updated in a later evidence-review commit only after a real bounded manual run is inspected. Adding this harness does not validate unknown fields, does not declare `v`/`tv`/`g`/`f` units, does not authorize parser normalization, and does not change `z`/`y` fallback or `reference_only` behavior. Parser/schema work remains deferred until evidence is reviewed.
 
+
+## M7A-01B Probe execution and evidence review
+
+- Bounded probe result: failed at session bootstrap with `HTTP Error 404: Not Found`; no field evidence was available.
+- Attempt report: `research/probe_runs/m7a_twse_mis_rich_fields/m7a_twse_mis_rich_field_probe_attempt_20260707T030255Z.json`.
+- Evidence review document: `docs/protocol/TWSE_MIS_RICH_FIELD_PROBE_EVIDENCE_REVIEW.md`.
+- Parser normalization remains deferred until successful bounded evidence is reviewed.
+- Runtime behavior remains unchanged; this commit does not alter M5K/M5N parsing, output shape, FastAPI, MCP, frontend, source-health, polling, scheduler, or startup behavior.
+
 ## 18. Proposed next commits
 
 - **M7A-01**: Implemented manual bounded probe harness and compact evidence summary schema; no live probe evidence committed in this commit.
-- **M7A-01B**: Optional manual bounded probe execution / evidence review if network evidence is still needed.
-- **M7A-02**: Observation contract schema extension after evidence review. Add nested rich fact groups while preserving existing top-level fields.
+- **M7A-01B**: Attempted bounded manual probe; session bootstrap failed before field evidence was available, so no semantics were upgraded.
+- **Next**: Rerun bounded probe where TWSE MIS session access succeeds, or provide operator-run compact evidence before M7A-02 schema work.
 - **M7A-03**: TWSE MIS parser extension. Parse `y`/`o`/`h`/`l`, `v`/`tv`, `b`/`g`/`a`/`f`, `u`/`w` with candidate semantics and quality flags.
 - **M7A-04**: Fixture expansion and normalization tests. Cover normal, reference-only, placeholder, malformed, missing, and ladder mismatch cases.
 - **M7A-05**: Compatibility checks. Confirm FastAPI/MCP/frontend/conversation context existing behavior remains backward compatible.
