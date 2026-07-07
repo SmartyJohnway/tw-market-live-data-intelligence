@@ -1090,7 +1090,28 @@
     "schema_defined": true,
     "schema_version": "m7a_twse_mis_rich_facts.v1",
     "top_level_normalization_changed": false,
-    "top_level_observation_behavior_preserved": true
+    "top_level_observation_behavior_preserved": true,
+    "m7b_ai_safe_market_context_projection": {
+      "schema_version": "m7b_ai_safe_market_context_projection.v1",
+      "status": "schema_defined_policy_defined_not_runtime_populated",
+      "m7a_dependency_status": "pass_with_caveats",
+      "policy_doc": "docs/protocol/M7B_AI_SAFE_MARKET_CONTEXT_PROJECTION_POLICY.md",
+      "schema_helper": "scripts/observation_contract.py::build_empty_ai_safe_market_context_projection",
+      "attach_helper": "scripts/observation_contract.py::attach_empty_ai_safe_market_context_projection",
+      "runtime_populated": false,
+      "runtime_behavior_changed": false,
+      "fastapi_changed": false,
+      "mcp_changed": false,
+      "frontend_changed": false,
+      "conversation_context_changed": false,
+      "safe_for_ai_context": false,
+      "exposure_status": "projection_candidate_not_exposed",
+      "completed_tasks": [
+        "M7B-00",
+        "M7B-01"
+      ],
+      "next_task": "M7B-02-M7B-03-PURE-PROJECTION-BUILDER-AND-SAFETY-TESTS"
+    }
   },
   "runtime_behavior_changed": false,
   "scheduler": false,

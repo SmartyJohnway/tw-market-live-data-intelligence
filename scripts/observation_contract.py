@@ -186,6 +186,160 @@ def build_empty_twse_mis_rich_facts() -> dict[str, object]:
 
 
 
+AI_SAFE_MARKET_CONTEXT_PROJECTION_SCHEMA_VERSION = "m7b_ai_safe_market_context_projection.v1"
+
+
+def build_empty_ai_safe_market_context_projection() -> dict[str, object]:
+    """Build the schema-only M7B AI-safe market context projection.
+
+    M7B-00/M7B-01 define policy and schema only. This helper does not parse,
+    project, expose, or enable runtime AI context from M7A rich facts.
+    """
+    return {
+        "schema_version": AI_SAFE_MARKET_CONTEXT_PROJECTION_SCHEMA_VERSION,
+        "projection_id": "TWSE_MIS_AI_SAFE_MARKET_CONTEXT",
+        "source_family": "TWSE_MIS",
+        "projection_status": "schema_defined_not_runtime_populated",
+        "exposure_status": "projection_candidate_not_exposed",
+        "safe_for_ai_context": False,
+        "source_policy": {
+            "official_api_field_dictionary_available": False,
+            "realtime_sla_verified": False,
+            "unit_verified_for_runtime_normalization": False,
+            "source_may_be_delayed_or_unavailable": True,
+            "m7a_status": "pass_with_caveats",
+            "m7a_dependency": "docs/protocol/M7A_TWSE_MIS_RICH_FACTS_FINAL_ACCEPTANCE.md",
+        },
+        "instrument_context": {
+            "instrument_kind": None,
+            "price_domain": None,
+            "market_mode": None,
+            "source_symbol": None,
+            "display_name": None,
+            "semantic_status": "schema_only",
+        },
+        "market_session_context": {
+            "session_state_candidate": None,
+            "session_state_confidence": "candidate_only",
+            "closing_auction_candidate": False,
+            "post_close_candidate": False,
+            "odd_lot_mode_supported": False,
+            "semantic_status": "schema_only",
+        },
+        "price_snapshot_context": {
+            "last_value_available": None,
+            "last_value": None,
+            "previous_close": None,
+            "open": None,
+            "high": None,
+            "low": None,
+            "direction_vs_previous_close": "unknown",
+            "descriptive_only": True,
+            "not_recommendation": True,
+            "semantic_status": "schema_only",
+        },
+        "reference_context": {
+            "fallback_reference_field": None,
+            "reference_only": None,
+            "auction_or_reference_price_available": None,
+            "auction_or_reference_volume_available": None,
+            "pz_does_not_override_last_value": True,
+            "ps_does_not_override_current_volume": True,
+            "semantic_status": "schema_only",
+        },
+        "index_market_context": {
+            "applicable": None,
+            "traded_quantity_candidate_available": None,
+            "trade_count_candidate_available": None,
+            "quantity_unit_verified": False,
+            "evidence_level": "official_mis_ui_cross_checked_not_field_dictionary",
+            "semantic_status": "schema_only",
+        },
+        "displayed_depth_context": {
+            "available": None,
+            "best_bid_available": None,
+            "best_ask_available": None,
+            "full_ladder_exposed": False,
+            "interpretation_policy": "displayed_depth_snapshot_only",
+            "not_support_resistance": True,
+            "not_true_liquidity": True,
+            "not_full_order_book": True,
+            "not_trading_signal": True,
+            "semantic_status": "schema_only",
+        },
+        "data_quality_context": {
+            "placeholder_fields": [],
+            "malformed_fields": [],
+            "ladder_mismatch_flags": [],
+            "quality_warnings": [],
+            "semantic_status": "schema_only",
+        },
+        "freshness_context": {
+            "source_timestamp": None,
+            "retrieved_at_utc": None,
+            "delay_seconds": None,
+            "freshness_assessment": None,
+            "not_realtime_guaranteed": True,
+            "semantic_status": "schema_only",
+        },
+        "caveat_context": {
+            "global_caveats": [
+                "no_official_twse_mis_api_field_dictionary",
+                "not_realtime_guaranteed",
+                "unit_verification_unavailable",
+                "displayed_depth_snapshot_only",
+                "not_trading_signal",
+                "ai_projection_not_enabled",
+            ],
+            "semantic_status": "schema_only",
+        },
+        "evidence_context": {
+            "allowed_evidence_levels": [
+                "runtime_parsed_candidate",
+                "operator_evidence_supported_not_official_dictionary",
+                "official_mis_ui_cross_checked_not_field_dictionary",
+                "probe_observed",
+                "market_context_required",
+            ],
+            "official_documented": False,
+            "unit_verified": False,
+            "semantic_status": "schema_only",
+        },
+        "blocked_interpretations": [
+            "buy_signal",
+            "sell_signal",
+            "hold",
+            "recommendation",
+            "target_price",
+            "support_resistance",
+            "main_force",
+            "true_liquidity",
+            "order_book_truth",
+            "realtime_guarantee",
+            "execution_feed",
+            "official_api_definition",
+            "verified_quantity_unit",
+        ],
+        "future_builder_requirements": {
+            "required_input": "normalized_observation_with_twse_mis_rich_facts",
+            "must_preserve_top_level_z_y_fallback": True,
+            "must_preserve_reference_only": True,
+            "must_not_use_pz_as_last_value": True,
+            "must_not_use_ps_as_current_volume": True,
+            "must_not_expose_full_ladder_by_default": True,
+            "must_keep_safe_for_ai_context_false_until_policy_enabled": True,
+            "next_task": "M7B-02-M7B-03-PURE-PROJECTION-BUILDER-AND-SAFETY-TESTS",
+        },
+    }
+
+
+def attach_empty_ai_safe_market_context_projection(observation: Mapping[str, Any]) -> dict[str, Any]:
+    """Return a copy with the empty M7B schema attached without mutating input."""
+    projected = dict(observation)
+    projected["ai_safe_market_context_projection"] = build_empty_ai_safe_market_context_projection()
+    return projected
+
+
 def _twse_mis_is_placeholder(value: Any) -> bool:
     return value in (None, "", "-")
 
