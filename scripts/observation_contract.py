@@ -236,7 +236,7 @@ def build_empty_deterministic_metrics_context() -> dict[str, object]:
         "input_requirements": {
             "price_metrics_required_fields": ["last_value", "previous_close", "open", "high", "low"],
             "displayed_spread_required_fields": ["best_bid", "best_ask"],
-            "displayed_depth_balance_required_fields": ["bid_quantities", "ask_quantities"],
+            "displayed_depth_balance_required_fields": ["sanitized_top5_bid_quantities", "sanitized_top5_ask_quantities"],
             "quality_inputs": ["reference_only", "malformed_fields", "placeholder_fields", "ladder_mismatch_flags"],
             "semantic_status": "schema_only",
         },
@@ -274,9 +274,9 @@ def build_empty_deterministic_metrics_context() -> dict[str, object]:
             "displayed_spread_percent": _m7c_metric("displayed_spread / mid_price", ["best_bid", "best_ask"], "ratio", **displayed_spread_caveats),
         },
         "displayed_depth_balance_metrics": {
-            "top5_displayed_bid_volume": _m7c_metric("sum(top_5_bid_quantities)", ["bid_quantities"], "displayed_quantity", **displayed_depth_caveats),
-            "top5_displayed_ask_volume": _m7c_metric("sum(top_5_ask_quantities)", ["ask_quantities"], "displayed_quantity", **displayed_depth_caveats),
-            "displayed_bid_ask_depth_ratio": _m7c_metric("top5_displayed_bid_volume / top5_displayed_ask_volume", ["bid_quantities", "ask_quantities"], "ratio", **displayed_depth_caveats),
+            "top5_displayed_bid_volume": _m7c_metric("sum(sanitized_top5_bid_quantities)", ["sanitized_top5_bid_quantities"], "displayed_quantity", **displayed_depth_caveats),
+            "top5_displayed_ask_volume": _m7c_metric("sum(sanitized_top5_ask_quantities)", ["sanitized_top5_ask_quantities"], "displayed_quantity", **displayed_depth_caveats),
+            "displayed_bid_ask_depth_ratio": _m7c_metric("top5_displayed_bid_volume / top5_displayed_ask_volume", ["sanitized_top5_bid_quantities", "sanitized_top5_ask_quantities"], "ratio", **displayed_depth_caveats),
         },
         "metric_availability": {
             "all_metrics_schema_defined": True,
@@ -289,6 +289,7 @@ def build_empty_deterministic_metrics_context() -> dict[str, object]:
         "caveat_context": {
             "global_caveats": [
                 "schema_only_not_computed",
+                "raw_full_ladder_exposure_forbidden",
                 "not_trading_signal",
                 "not_recommendation",
                 "displayed_depth_snapshot_only",
@@ -316,6 +317,236 @@ def build_empty_deterministic_metrics_context() -> dict[str, object]:
             "next_task": "M7C-02-M7C-03-DETERMINISTIC-METRICS-BUILDER-AND-SAFETY-TESTS",
         },
     }
+
+
+def _m7c_is_number(value: Any) -> bool:
+    return _m7c_to_float(value) is not None
+
+
+def _m7c_to_float(value: Any) -> float | None:
+    if isinstance(value, bool) or value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, str):
+        stripped = value.strip()
+        if stripped in {"", "-"}:
+            return None
+        try:
+            return float(stripped)
+        except ValueError:
+            return None
+    return None
+
+
+def _m7c_safe_divide(numerator: float, denominator: float) -> tuple[float | None, str | None]:
+    if denominator == 0:
+        return None, "zero_denominator"
+    return numerator / denominator, None
+
+
+def _m7c_metric_groups(ctx: Mapping[str, Any]) -> list[str]:
+    return [
+        "price_change_metrics",
+        "intraday_range_metrics",
+        "open_high_low_position_metrics",
+        "displayed_quote_spread_metrics",
+        "displayed_depth_balance_metrics",
+    ]
+
+
+def _m7c_block_metric(entry: dict[str, object], status: str, reason: str) -> None:
+    entry["status"] = status
+    entry["value"] = None
+    entry["blocked_reason"] = reason
+
+
+def _m7c_compute_metric(entry: dict[str, object], value: float) -> None:
+    entry["status"] = "computed"
+    entry["value"] = value
+    entry.pop("blocked_reason", None)
+
+
+def _m7c_quality_blocked(required: list[str], malformed: set[str], placeholders: set[str]) -> str | None:
+    if any(field in malformed for field in required):
+        return "malformed_required_fields"
+    if any(field in placeholders for field in required):
+        return "placeholder_required_fields"
+    return None
+
+
+def _m7c_numeric_values(fields: Mapping[str, Any], required: list[str]) -> tuple[dict[str, float], str | None, str | None]:
+    missing = [field for field in required if field not in fields or fields[field] is None]
+    if missing:
+        return {}, "blocked_missing_required_fields", "missing_required_fields"
+    values: dict[str, float] = {}
+    for field in required:
+        converted = _m7c_to_float(fields[field])
+        if converted is None:
+            return {}, "blocked_non_numeric", "non_numeric_required_fields"
+        values[field] = converted
+    return values, None, None
+
+
+def _m7c_sanitized_top5(values: Any) -> list[float] | None:
+    if not isinstance(values, list):
+        return None
+    sanitized: list[float] = []
+    for value in values[:5]:
+        converted = _m7c_to_float(value)
+        if converted is None:
+            return None
+        sanitized.append(converted)
+    return sanitized
+
+
+def _m7c_block_or_compute(
+    ctx: dict[str, object],
+    group: str,
+    name: str,
+    fields: Mapping[str, Any],
+    malformed: set[str],
+    placeholders: set[str],
+    reference_only: bool,
+    calculator: Any,
+    *,
+    reference_blocks: bool = False,
+    denominator_reason: str | None = None,
+) -> None:
+    entry = ctx[group][name]  # type: ignore[index]
+    required = list(entry["required_fields"])  # type: ignore[index]
+    if reference_only and reference_blocks:
+        _m7c_block_metric(entry, "blocked_quality_flags", "reference_only_blocks_last_value_metrics")
+        return
+    quality_reason = _m7c_quality_blocked(required, malformed, placeholders)
+    if quality_reason:
+        _m7c_block_metric(entry, "blocked_quality_flags", quality_reason)
+        return
+    values, status, reason = _m7c_numeric_values(fields, required)
+    if status:
+        _m7c_block_metric(entry, status, reason or status)
+        return
+    value, zero_reason = calculator(values)
+    if zero_reason:
+        _m7c_block_metric(entry, "blocked_zero_denominator", denominator_reason or zero_reason)
+        return
+    _m7c_compute_metric(entry, value)  # type: ignore[arg-type]
+
+
+def build_deterministic_metrics_context_from_observation(observation: Mapping[str, Any]) -> dict[str, object]:
+    """Compute M7C deterministic metrics from normalized rich facts without I/O.
+
+    The builder is a pure candidate helper only. It does not expose raw rich facts,
+    does not alter runtime behavior, and keeps AI-context exposure disabled.
+    """
+    ctx = build_empty_deterministic_metrics_context()
+    if not isinstance(observation, Mapping):
+        ctx["metric_status"] = "blocked_missing_required_input"
+        ctx["blocked_reason"] = "missing_required_observation"
+        return ctx
+
+    rich = observation.get("twse_mis_rich_facts")
+    if not isinstance(rich, Mapping):
+        ctx["metric_status"] = "blocked_missing_required_input"
+        ctx["blocked_reason"] = "missing_required_observation"
+        return ctx
+
+    price = rich.get("price_facts") if isinstance(rich.get("price_facts"), Mapping) else {}
+    depth = rich.get("displayed_depth_facts") if isinstance(rich.get("displayed_depth_facts"), Mapping) else {}
+    quality = rich.get("quality_facts") if isinstance(rich.get("quality_facts"), Mapping) else {}
+    malformed = set(quality.get("malformed_fields", []) if isinstance(quality, Mapping) else []) | set(observation.get("data_quality_flags", []) or [])
+    placeholders = set(quality.get("placeholder_fields", []) if isinstance(quality, Mapping) else [])
+    ladder_mismatch = list(quality.get("ladder_mismatch_flags", []) if isinstance(quality, Mapping) else [])
+    source_risk = set(observation.get("source_risk_flags", []) or [])
+    reference_only = bool(observation.get("reference_only")) or "reference_only" in source_risk
+
+    fields: dict[str, Any] = {}
+    if isinstance(price, Mapping):
+        fields.update({k: price.get(k) for k in ["last_value", "previous_close", "open", "high", "low"]})
+    if isinstance(depth, Mapping):
+        fields.update({k: depth.get(k) for k in ["best_bid", "best_ask", "sanitized_top5_bid_quantities", "sanitized_top5_ask_quantities"]})
+        if fields.get("sanitized_top5_bid_quantities") is None and isinstance(depth.get("bid_quantities"), list):
+            fields["sanitized_top5_bid_quantities"] = _m7c_sanitized_top5(depth.get("bid_quantities"))
+        if fields.get("sanitized_top5_ask_quantities") is None and isinstance(depth.get("ask_quantities"), list):
+            fields["sanitized_top5_ask_quantities"] = _m7c_sanitized_top5(depth.get("ask_quantities"))
+        if fields.get("sanitized_top5_bid_quantities") is None and isinstance(depth.get("bid_quantities_raw"), list):
+            fields["sanitized_top5_bid_quantities"] = _m7c_sanitized_top5(depth.get("bid_quantities_raw"))
+        if fields.get("sanitized_top5_ask_quantities") is None and isinstance(depth.get("ask_quantities_raw"), list):
+            fields["sanitized_top5_ask_quantities"] = _m7c_sanitized_top5(depth.get("ask_quantities_raw"))
+
+    _m7c_block_or_compute(ctx, "price_change_metrics", "change", fields, malformed, placeholders, reference_only, lambda v: (v["last_value"] - v["previous_close"], None), reference_blocks=True)
+    _m7c_block_or_compute(ctx, "price_change_metrics", "change_percent", fields, malformed, placeholders, reference_only, lambda v: _m7c_safe_divide(v["last_value"] - v["previous_close"], v["previous_close"]), reference_blocks=True)
+    _m7c_block_or_compute(ctx, "intraday_range_metrics", "intraday_range", fields, malformed, placeholders, reference_only, lambda v: (v["high"] - v["low"], None))
+    _m7c_block_or_compute(ctx, "open_high_low_position_metrics", "position_in_day_range", fields, malformed, placeholders, reference_only, lambda v: _m7c_safe_divide(v["last_value"] - v["low"], v["high"] - v["low"]), reference_blocks=True)
+    _m7c_block_or_compute(ctx, "open_high_low_position_metrics", "distance_from_high_percent", fields, malformed, placeholders, reference_only, lambda v: _m7c_safe_divide(v["last_value"] - v["high"], v["high"]), reference_blocks=True)
+    _m7c_block_or_compute(ctx, "open_high_low_position_metrics", "distance_from_low_percent", fields, malformed, placeholders, reference_only, lambda v: _m7c_safe_divide(v["last_value"] - v["low"], v["low"]), reference_blocks=True)
+    _m7c_block_or_compute(ctx, "open_high_low_position_metrics", "change_from_open_percent", fields, malformed, placeholders, reference_only, lambda v: _m7c_safe_divide(v["last_value"] - v["open"], v["open"]), reference_blocks=True)
+    _m7c_block_or_compute(ctx, "displayed_quote_spread_metrics", "displayed_spread", fields, malformed, placeholders, reference_only, lambda v: (v["best_ask"] - v["best_bid"], None))
+    _m7c_block_or_compute(ctx, "displayed_quote_spread_metrics", "displayed_spread_percent", fields, malformed, placeholders, reference_only, lambda v: _m7c_safe_divide(v["best_ask"] - v["best_bid"], (v["best_bid"] + v["best_ask"]) / 2))
+
+    depth_names = ["top5_displayed_bid_volume", "top5_displayed_ask_volume", "displayed_bid_ask_depth_ratio"]
+    if ladder_mismatch:
+        for name in depth_names:
+            _m7c_block_metric(ctx["displayed_depth_balance_metrics"][name], "blocked_quality_flags", "ladder_mismatch_blocks_depth_metrics")  # type: ignore[index]
+    else:
+        bids = _m7c_sanitized_top5(fields.get("sanitized_top5_bid_quantities"))
+        asks = _m7c_sanitized_top5(fields.get("sanitized_top5_ask_quantities"))
+        if bids is None:
+            _m7c_block_metric(ctx["displayed_depth_balance_metrics"]["top5_displayed_bid_volume"], "blocked_missing_required_fields", "missing_required_fields")  # type: ignore[index]
+        else:
+            _m7c_compute_metric(ctx["displayed_depth_balance_metrics"]["top5_displayed_bid_volume"], sum(bids))  # type: ignore[index]
+        if asks is None:
+            _m7c_block_metric(ctx["displayed_depth_balance_metrics"]["top5_displayed_ask_volume"], "blocked_missing_required_fields", "missing_required_fields")  # type: ignore[index]
+        else:
+            _m7c_compute_metric(ctx["displayed_depth_balance_metrics"]["top5_displayed_ask_volume"], sum(asks))  # type: ignore[index]
+        ratio_entry = ctx["displayed_depth_balance_metrics"]["displayed_bid_ask_depth_ratio"]  # type: ignore[index]
+        if bids is None or asks is None:
+            _m7c_block_metric(ratio_entry, "blocked_missing_required_fields", "missing_required_fields")
+        else:
+            ratio, reason = _m7c_safe_divide(sum(bids), sum(asks))
+            if reason:
+                _m7c_block_metric(ratio_entry, "blocked_zero_denominator", "zero_denominator")
+            else:
+                _m7c_compute_metric(ratio_entry, ratio)  # type: ignore[arg-type]
+
+    computed: list[str] = []
+    blocked: list[str] = []
+    not_computed = 0
+    caveats = set(ctx["caveat_context"]["global_caveats"])  # type: ignore[index]
+    for group in _m7c_metric_groups(ctx):
+        for name, entry in ctx[group].items():  # type: ignore[index,union-attr]
+            if entry["status"] == "computed":
+                computed.append(name)
+            elif str(entry["status"]).startswith("blocked_"):
+                blocked.append(name)
+                if entry.get("blocked_reason"):
+                    caveats.add(str(entry["blocked_reason"]))
+            else:
+                not_computed += 1
+    caveats.update({"displayed_depth_snapshot_only", "not_true_liquidity", "not_full_order_book", "not_trading_signal", "not_recommendation"})
+    ctx["metric_status"] = "runtime_computed_candidate"
+    ctx["runtime_populated"] = True
+    ctx["safe_for_ai_context"] = False
+    ctx["metric_availability"] = {
+        "all_metrics_schema_defined": True,
+        "computed_metrics_count": len(computed),
+        "blocked_metrics_count": len(blocked),
+        "not_computed_metrics_count": not_computed,
+        "runtime_populated": True,
+        "semantic_status": "runtime_computed_candidate",
+        "computed_metric_names": computed,
+        "blocked_metric_names": blocked,
+    }
+    ctx["caveat_context"]["global_caveats"] = sorted(caveats)  # type: ignore[index]
+    ctx["caveat_context"]["semantic_status"] = "runtime_computed_candidate"  # type: ignore[index]
+    return ctx
+
+
+def attach_deterministic_metrics_context_from_observation(observation: Mapping[str, Any]) -> dict[str, Any]:
+    """Return a copy of observation with a candidate M7C metrics context attached."""
+    attached = dict(observation)
+    attached["deterministic_metrics_context"] = build_deterministic_metrics_context_from_observation(observation)
+    return attached
 
 
 AI_SAFE_MARKET_CONTEXT_PROJECTION_SCHEMA_VERSION = "m7b_ai_safe_market_context_projection.v1"
