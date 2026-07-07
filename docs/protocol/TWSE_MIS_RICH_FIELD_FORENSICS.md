@@ -161,10 +161,40 @@ Future rich fields must not cause a `y` fallback row to appear current. A row th
 
 `v`, `tv`, `g`, and `f` are unit-unverified candidates. Future parser work must use labels such as `volume candidate` or `quantity candidate` until bounded live evidence and documentation prove unit semantics.
 
+
+## M7A-01 Manual bounded probe evidence plan
+
+M7A-01 adds `scripts/probe_twse_mis_rich_fields.py` as a manual-only, bounded-symbol evidence harness. It is not runtime integration, not CI, not a server startup path, not source-health runtime, not a scheduler, and not a production observation writer. It must not write `research/live_observation_runs/m5k/latest_observation.json` or alter current M5K/M5N normalized rows.
+
+Manual invocation requires explicit symbols and a bounded maximum of 10 symbols. The recommended validation set is:
+
+- `tse_t00.tw` broad TWSE index candidate
+- `tse_2330.tw` high-liquidity listed equity
+- `tse_0050.tw` ETF
+- `otc_8069.tw` OTC equity
+- `otc_5347.tw` OTC / different liquidity pattern
+- `tse_1435.tw` lower-price / different liquidity candidate
+
+Recommended command shape:
+
+```bash
+python scripts/probe_twse_mis_rich_fields.py \
+  --symbols tse_t00.tw tse_2330.tw tse_0050.tw otc_8069.tw otc_5347.tw tse_1435.tw \
+  --output-dir research/probe_runs/m7a_twse_mis_rich_fields \
+  --max-symbols 10
+```
+
+The evidence summary schema is `m7a_twse_mis_rich_field_probe_summary.v1`. A successful manual run writes compact JSON summaries under `research/probe_runs/m7a_twse_mis_rich_fields/`, including boundary flags, requested/observed/failed symbols, field presence counts, value-shape summaries, placeholder summaries, displayed bid/ask ladder shape summaries, validation-update recommendations, and explicit `raw_payload_committed = false`. Raw endpoint payloads, cookies, session tokens, and production observation rows must not be committed.
+
+The helper functions are intentionally pure and unit-tested without network access: ladder parsing, placeholder detection, value-shape classification, field-presence summarization, ladder-shape mismatch detection, and compact summary construction. Tests do not invoke the network path and do not require CI network access.
+
+Field validation statuses may be updated in a later evidence-review commit only after a real bounded manual run is inspected. Adding this harness does not validate unknown fields, does not declare `v`/`tv`/`g`/`f` units, does not authorize parser normalization, and does not change `z`/`y` fallback or `reference_only` behavior. Parser/schema work remains deferred until evidence is reviewed.
+
 ## 18. Proposed next commits
 
-- **M7A-01**: Manual bounded probe execution / evidence review. Validate field presence, placeholder patterns, and value shapes.
-- **M7A-02**: Observation contract schema extension. Add nested rich fact groups while preserving existing top-level fields.
+- **M7A-01**: Implemented manual bounded probe harness and compact evidence summary schema; no live probe evidence committed in this commit.
+- **M7A-01B**: Optional manual bounded probe execution / evidence review if network evidence is still needed.
+- **M7A-02**: Observation contract schema extension after evidence review. Add nested rich fact groups while preserving existing top-level fields.
 - **M7A-03**: TWSE MIS parser extension. Parse `y`/`o`/`h`/`l`, `v`/`tv`, `b`/`g`/`a`/`f`, `u`/`w` with candidate semantics and quality flags.
 - **M7A-04**: Fixture expansion and normalization tests. Cover normal, reference-only, placeholder, malformed, missing, and ladder mismatch cases.
 - **M7A-05**: Compatibility checks. Confirm FastAPI/MCP/frontend/conversation context existing behavior remains backward compatible.

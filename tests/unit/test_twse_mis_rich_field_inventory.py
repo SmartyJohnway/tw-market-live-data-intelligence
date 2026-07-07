@@ -19,6 +19,17 @@ def test_twse_mis_rich_inventory_boundary_flags():
     assert inv["polling"] is False
     assert inv["scheduler"] is False
     assert inv["probe_executed"] is False
+    assert inv["manual_probe_harness_added"] is True
+    assert inv["probe_evidence_available"] is False
+    assert inv["ci_network_required"] is False
+    harness = inv["manual_probe_harness"]
+    assert harness["script"] == "scripts/probe_twse_mis_rich_fields.py"
+    assert harness["execution_mode"] == "manual_explicit_only"
+    assert harness["max_symbols_limit"] <= 10
+    assert harness["writes_runtime_artifacts"] is False
+    assert harness["writes_m5k_latest_observation"] is False
+    assert harness["raw_payload_committed"] is False
+    assert harness["ci_invoked"] is False
 
 
 def test_twse_mis_required_fields_are_inventoried_and_not_discarded():

@@ -1,4 +1,5 @@
 {
+  "ci_network_required": false,
   "field_groups": {
     "displayed_depth_facts": [
       "b",
@@ -963,9 +964,21 @@
   ],
   "full_market_scan": false,
   "generated_at_utc": "2026-07-06T00:00:00Z",
+  "manual_probe_harness": {
+    "ci_invoked": false,
+    "default_output_dir": "research/probe_runs/m7a_twse_mis_rich_fields",
+    "evidence_schema_version": "m7a_twse_mis_rich_field_probe_summary.v1",
+    "execution_mode": "manual_explicit_only",
+    "max_symbols_limit": 10,
+    "raw_payload_committed": false,
+    "script": "scripts/probe_twse_mis_rich_fields.py",
+    "writes_m5k_latest_observation": false,
+    "writes_runtime_artifacts": false
+  },
+  "manual_probe_harness_added": true,
   "next_commit_recommendations": [
-    "M7A-01 manual bounded probe execution / evidence review",
-    "M7A-02 observation contract schema extension",
+    "M7A-01B manual bounded probe execution / evidence review if network evidence is still needed",
+    "M7A-02 observation contract schema extension after evidence review",
     "M7A-03 TWSE MIS parser extension",
     "M7A-04 fixture expansion and normalization tests",
     "M7A-05 compatibility checks",
@@ -973,6 +986,7 @@
   ],
   "normalization_changed": false,
   "polling": false,
+  "probe_evidence_available": false,
   "probe_executed": false,
   "runtime_behavior_changed": false,
   "scheduler": false,
