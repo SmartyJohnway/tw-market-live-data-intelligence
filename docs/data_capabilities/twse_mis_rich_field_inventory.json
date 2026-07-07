@@ -1137,6 +1137,30 @@
       "controlled_exposure_policy": "m7b_controlled_context_projection_v1",
       "final_acceptance_status": "pass_with_caveats",
       "final_acceptance_doc": "docs/protocol/M7B_AI_SAFE_MARKET_CONTEXT_FINAL_ACCEPTANCE.md"
+    },
+    "m7c_deterministic_metrics": {
+      "schema_version": "m7c_deterministic_metrics.v1",
+      "status": "schema_defined_policy_defined_not_runtime_populated",
+      "m7b_dependency_status": "pass_with_caveats",
+      "policy_doc": "docs/protocol/M7C_DETERMINISTIC_METRICS_POLICY.md",
+      "schema_helper": "scripts/observation_contract.py::build_empty_deterministic_metrics_context",
+      "runtime_populated": false,
+      "runtime_behavior_changed": false,
+      "conversation_context_changed": false,
+      "fastapi_changed": false,
+      "mcp_changed": false,
+      "frontend_changed": false,
+      "source_health_changed": false,
+      "latest_observation_changed": false,
+      "safe_for_ai_context": false,
+      "metrics_are_signals": false,
+      "trading_signal": false,
+      "recommendation": false,
+      "completed_tasks": [
+        "M7C-00",
+        "M7C-01"
+      ],
+      "next_task": "M7C-02-M7C-03-DETERMINISTIC-METRICS-BUILDER-AND-SAFETY-TESTS"
     }
   },
   "runtime_behavior_changed": false,
