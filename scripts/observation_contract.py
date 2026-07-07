@@ -185,6 +185,211 @@ def build_empty_twse_mis_rich_facts() -> dict[str, object]:
     }
 
 
+
+def _twse_mis_is_placeholder(value: Any) -> bool:
+    return value in (None, "", "-")
+
+
+def _parse_twse_mis_decimal(
+    row: Mapping[str, Any],
+    field: str,
+    malformed_fields: list[str],
+    *,
+    placeholder_is_malformed: bool = False,
+) -> float | None:
+    value = row.get(field)
+    if _twse_mis_is_placeholder(value):
+        if placeholder_is_malformed and value not in (None, ""):
+            malformed_fields.append(field)
+        return None
+    try:
+        return float(str(value).replace(",", ""))
+    except (TypeError, ValueError):
+        malformed_fields.append(field)
+        return None
+
+
+def _parse_twse_mis_ladder_prices(raw: Any, field: str, malformed_fields: list[str]) -> list[float]:
+    if _twse_mis_is_placeholder(raw):
+        return []
+    values: list[float] = []
+    for part in str(raw).split("_"):
+        if part == "":
+            continue
+        try:
+            values.append(float(part.replace(",", "")))
+        except ValueError:
+            malformed_fields.append(field)
+    return values
+
+
+def _parse_twse_mis_ladder_raw(raw: Any) -> list[str]:
+    if _twse_mis_is_placeholder(raw):
+        return []
+    return [part for part in str(raw).split("_") if part != ""]
+
+
+def _twse_mis_instrument_kind(row: Mapping[str, Any]) -> tuple[str, str, str]:
+    c = str(row.get("c") or "")
+    ch = str(row.get("ch") or "")
+    i = str(row.get("i") or "")
+    ex = str(row.get("ex") or "")
+    if c == "t00" or ch == "t00.tw" or i == "tidx.tw":
+        return "index", "index", "index_level"
+    if ex in {"tse", "otc"} and c.isdigit():
+        return "security", "regular_board", "equity_price"
+    return "unknown", "unknown", "unknown"
+
+
+def build_twse_mis_rich_facts_from_row(row: Mapping[str, Any]) -> dict[str, object]:
+    """Build conservative runtime-parsed TWSE MIS rich facts from one raw MIS row.
+
+    This parser preserves raw/candidate semantics only; it does not claim an
+    official API field dictionary, realtime guarantee, or verified quantity unit.
+    """
+    facts = build_empty_twse_mis_rich_facts()
+    malformed_fields: list[str] = []
+    placeholder_fields = sorted(str(k) for k, v in row.items() if v == "-")
+    instrument_kind, market_mode, price_domain = _twse_mis_instrument_kind(row)
+    is_index = instrument_kind == "index"
+
+    facts["schema_status"] = "runtime_parsed_candidate"
+    facts["market_mode_facts"].update({
+        "market_mode_candidate": market_mode,
+        "source_context": "runtime_parsed_candidate",
+        "semantic_status": "runtime_parsed_candidate",
+    })
+    facts["instrument_facts"].update({
+        "raw_c": row.get("c"), "raw_ch": row.get("ch"), "raw_at": row.get("@"),
+        "raw_key": row.get("key"), "raw_ex": row.get("ex"), "raw_name": row.get("n"),
+        "raw_full_name": row.get("nf"), "instrument_kind_candidate": instrument_kind,
+        "price_domain": price_domain, "semantic_status": "runtime_parsed_candidate",
+    })
+
+    z_value = _parse_twse_mis_decimal(row, "z", malformed_fields)
+    y_value = _parse_twse_mis_decimal(row, "y", malformed_fields)
+    fallback_reference_field = "y" if z_value is None and y_value is not None else None
+    price_facts = facts["price_facts"]
+    price_facts.update({
+        "last_value": z_value,
+        "last_value_source_field": "z" if z_value is not None else None,
+        "last_value_placeholder": row.get("z") in (None, "", "-"),
+        "previous_close": y_value,
+        "open": _parse_twse_mis_decimal(row, "o", malformed_fields),
+        "high": _parse_twse_mis_decimal(row, "h", malformed_fields),
+        "low": _parse_twse_mis_decimal(row, "l", malformed_fields),
+        "price_domain": price_domain,
+        "fallback_reference_field": fallback_reference_field,
+        "semantic_status": "runtime_parsed_candidate",
+        "evidence_level": "runtime_parsed_candidate",
+    })
+
+    facts["volume_facts"].update({
+        "raw_v": row.get("v"), "raw_tv": row.get("tv"), "raw_ps": row.get("ps"),
+        "semantic_status": "runtime_parsed_candidate",
+    })
+
+    depth = facts["displayed_depth_facts"]
+    if is_index:
+        depth.update({"applicable": False, "applicability_reason": "index_observation_has_no_displayed_depth_fields"})
+    else:
+        bid_prices = _parse_twse_mis_ladder_prices(row.get("b"), "b", malformed_fields)
+        ask_prices = _parse_twse_mis_ladder_prices(row.get("a"), "a", malformed_fields)
+        bid_qty = _parse_twse_mis_ladder_raw(row.get("g"))
+        ask_qty = _parse_twse_mis_ladder_raw(row.get("f"))
+        depth.update({
+            "applicable": any(k in row for k in ("a", "b", "f", "g")),
+            "applicability_reason": None,
+            "bid_prices": bid_prices, "bid_quantities_raw": bid_qty,
+            "ask_prices": ask_prices, "ask_quantities_raw": ask_qty,
+            "best_bid": bid_prices[0] if bid_prices else None,
+            "best_ask": ask_prices[0] if ask_prices else None,
+            "semantic_status": "runtime_parsed_candidate_displayed_depth_snapshot_only",
+        })
+
+    limit = facts["limit_or_reference_facts"]
+    if is_index:
+        limit.update({"applicable": False, "applicability_reason": "index_observation_has_no_limit_up_down_fields"})
+    else:
+        limit.update({
+            "applicable": True, "applicability_reason": None,
+            "limit_up": _parse_twse_mis_decimal(row, "u", malformed_fields),
+            "limit_down": _parse_twse_mis_decimal(row, "w", malformed_fields),
+            "raw_pz": row.get("pz"), "raw_bp": row.get("bp"), "raw_ps": row.get("ps"),
+            "semantic_status": "runtime_parsed_candidate",
+        })
+
+    z_numeric = z_value is not None
+    tv_numeric = _parse_twse_mis_decimal(row, "tv", malformed_fields) is not None
+    auction = facts["auction_or_reference_facts"]
+    post_close = row.get("ts") == "0" and z_numeric and tv_numeric and row.get("ps") == row.get("tv") and row.get("pz") == row.get("z")
+    auction.update({
+        "raw_ps": row.get("ps"), "raw_pz": row.get("pz"), "raw_bp": row.get("bp"),
+        "raw_s": row.get("s"), "raw_ts": row.get("ts"),
+        "observed_in_closing_auction_window": row.get("ts") == "1",
+        "observed_in_post_close_snapshot": post_close,
+    })
+
+    session = facts["session_state_candidate_facts"]
+    session.update({
+        "raw_ip": row.get("ip"), "raw_p": row.get("p"), "raw_s": row.get("s"), "raw_ts": row.get("ts"),
+        "session_state_candidate": "closing_auction_candidate" if row.get("ts") == "1" else ("regular_or_post_close_candidate" if row.get("ts") == "0" and z_numeric else None),
+    })
+
+    index_facts = facts["index_market_facts"]
+    if is_index:
+        index_facts.update({
+            "applicable": True, "applicability_reason": None, "raw_m": row.get("m"), "raw_r": row.get("r"),
+            "m_candidate_semantic": "index_market_traded_quantity_candidate",
+            "r_candidate_semantic": "index_market_trade_count_candidate",
+            "evidence_level": "official_mis_ui_cross_checked_not_field_dictionary",
+            "semantic_status": "runtime_parsed_candidate",
+        })
+    else:
+        index_facts.update({"applicable": False, "applicability_reason": "non_index_security_row"})
+
+    facts["timestamp_facts"].update({
+        "raw_d": row.get("d"), "raw_t": row.get("t"), "raw_tlong": row.get("tlong"),
+        "raw_percent": row.get("%"), "raw_caret": row.get("^"), "raw_ot": row.get("ot"),
+        "semantic_status": "runtime_parsed_candidate",
+    })
+    facts["raw_unknown_facts"].update({
+        "raw_pid": row.get("pid"), "raw_hash": row.get("#"), "raw_m_percent": row.get("m%"),
+        "raw_mt": row.get("mt"), "raw_ip": row.get("ip"), "raw_i": row.get("i"),
+        "raw_it": row.get("it"), "raw_p": row.get("p"), "raw_q": row.get("q"),
+        "raw_oa": row.get("oa"), "raw_ob": row.get("ob"), "raw_ot": row.get("ot"), "raw_nu": row.get("nu"),
+        **({"raw_m": row.get("m")} if not is_index and "m" in row else {}),
+    })
+
+    ladder_flags: list[str] = []
+    if not is_index:
+        if len(depth["bid_prices"]) != len(depth["bid_quantities_raw"]):
+            ladder_flags.append("bid_ladder_length_mismatch")
+        if len(depth["ask_prices"]) != len(depth["ask_quantities_raw"]):
+            ladder_flags.append("ask_ladder_length_mismatch")
+    facts["quality_facts"].update({
+        "field_presence": {str(k): v not in (None, "") for k, v in row.items()},
+        "placeholder_fields": placeholder_fields,
+        "malformed_fields": sorted(set(malformed_fields)),
+        "ladder_mismatch_flags": ladder_flags,
+        "semantic_status": "runtime_parsed_candidate",
+    })
+    facts["semantic_confidence"].update({
+        "official_documented": False, "runtime_validated": True, "unit_verified": False,
+        "evidence_level": "runtime_parsed_candidate",
+    })
+    facts["ai_exposure_policy"].update({
+        "safe_for_ai_context": False,
+        "reason": "runtime_parsed_candidate_not_exposed_pending_m7a_05",
+    })
+    return facts
+
+
+def attach_twse_mis_rich_facts_from_row(observation: Mapping[str, Any], row: Mapping[str, Any]) -> dict[str, Any]:
+    attached = dict(observation)
+    attached["twse_mis_rich_facts"] = build_twse_mis_rich_facts_from_row(row)
+    return attached
+
 def attach_empty_twse_mis_rich_facts(observation: Mapping[str, Any]) -> dict[str, Any]:
     """Return a copy of an observation with schema-only empty TWSE MIS rich facts."""
     attached = dict(observation)
@@ -346,7 +551,7 @@ def normalize_twse_mis_row(item: dict[str, Any], instrument: dict[str, Any], ret
         reference_only = False
         flags.append("missing_price")
     risk = ["unofficial_source_risk", "fragile_frontend_contract", "not_official_realtime_api"]
-    return normalize_observation(
+    observation = normalize_observation(
         symbol=symbol,
         display_symbol=instrument.get("display_symbol", symbol),
         category_id=instrument.get("category_id"),
@@ -369,6 +574,7 @@ def normalize_twse_mis_row(item: dict[str, Any], instrument: dict[str, Any], ret
         caveats=(caveats or []) + risk,
         extra={"price_source_field": price_source_field},
     )
+    return attach_twse_mis_rich_facts_from_row(observation, item)
 
 
 def normalize_taifex_row(item: dict[str, Any], instrument: dict[str, Any], retrieved_at_utc: str, *, caveats: list[str] | None = None) -> dict[str, Any]:

@@ -2,13 +2,31 @@
 
 ## Purpose
 
-M7A-02 defines a backward-compatible, schema-only contract for future TWSE MIS rich observation facts. M7A-02A aligns that schema with operator-observed closing-auction, post-close, market-mode, and index evidence. The contract gives later parser work a stable place to put raw MIS field values, candidate normalized facts, evidence status, and AI exposure guardrails without changing the current normalized observation shape.
+M7A-02 defined a backward-compatible, schema-only contract for future TWSE MIS rich observation facts. M7A-02A aligned that schema with operator-observed closing-auction, post-close, market-mode, and index evidence. M7A-03/M7A-04 now populate that contract from TWSE MIS runtime rows while preserving the existing top-level normalized observation shape.
 
 ## Scope and runtime status
 
-This document and `scripts/observation_contract.py::build_empty_twse_mis_rich_facts` define the contract only. M7A-02/M7A-02A does not populate rich facts from live MIS rows, does not call the optional attach helper from runtime parser code, and does not change FastAPI, MCP, frontend, source-health, scheduler, startup, conversation context, or `scripts/m5k_common.py` behavior.
+Historically, M7A-02/M7A-02A and `scripts/observation_contract.py::build_empty_twse_mis_rich_facts` defined the contract only. Those tasks did not populate rich facts from live MIS rows and did not call the optional attach helper from runtime parser code. After M7A-03/M7A-04, TWSE MIS runtime normalization attaches populated candidate rich facts for TWSE MIS rows only; FastAPI, MCP, frontend, source-health, scheduler, startup, and conversation-context exposure remain unchanged.
 
 The backward compatibility rule is: existing top-level observation fields remain authoritative for current runtime output until a later task explicitly changes parser behavior. In particular, `price_like_value`, `price_source_field`, `source_timestamp`, `reference_only`, `data_quality_flags`, `source_risk_flags`, and `caveats` must be preserved by any optional copy-and-attach workflow.
+
+
+## M7A-03/M7A-04 runtime parser and fixture status
+
+M7A-03 attaches `twse_mis_rich_facts` in the TWSE MIS runtime normalization path. The attachment is source-scoped to `TWSE_MIS` observations and is performed after existing top-level fields are normalized.
+
+The M7A-03 parser preserves existing top-level observation behavior:
+
+- Existing `z`/`y` fallback is preserved.
+- Existing `reference_only` semantics are preserved.
+- `pz` does not override the top-level last price or `price_like_value`.
+- `ps` does not override top-level current volume behavior.
+- Rich facts remain conservative runtime-parsed candidates and do not claim official API field-dictionary validation.
+- `safe_for_ai_context` remains `false`.
+
+M7A-04 added network-free fixtures and tests for closing auction, post-close, index, placeholder, malformed numeric, regular-session, missing-field, and ladder-mismatch cases.
+
+M7A-05/M7A-06 remain responsible for downstream FastAPI/MCP/frontend/conversation compatibility checks and final acceptance closure.
 
 ## Evidence and official-documentation policy
 
@@ -79,7 +97,7 @@ The contract therefore includes `market_mode_facts`, `instrument_facts.instrumen
 
 `price_facts` reserves `last_value`, `previous_close`, `open`, `high`, and `low` with source fields `z`, `y`, `o`, `h`, and `l`. For security rows these are equity-price candidates. For index rows such as `tse_t00.tw`, they are index-level candidates.
 
-M7A-02/M7A-02A does not change the existing `z`/`y` parser fallback. If `z` is a placeholder such as `-`, the parser must not infer a current last price from bid/ask midpoint, previous close, `ps`, `pz`, or any other field. Existing `y` fallback and `reference_only` behavior are preserved until a later parser task explicitly changes them.
+M7A-02/M7A-02A did not change the existing `z`/`y` parser fallback. M7A-03 preserves that existing top-level fallback: if `z` is unavailable, existing top-level normalization may still use numeric `y` as a reference value with `reference_only`, but rich `price_facts.last_value` does not infer a current last price from bid/ask midpoint, previous close, `ps`, `pz`, or any other field. Rich `price_facts.fallback_reference_field` records `y` only as fallback metadata when `z` is placeholder or malformed and `y` parses numeric.
 
 ## Displayed depth snapshot policy
 
@@ -127,12 +145,12 @@ Fields `q`, `oa`, `ob`, and `ot` were not observed in the M7A-01D successful pro
 
 ## Semantic confidence model
 
-`semantic_confidence` defaults to schema-only values: `official_documented: false`, `probe_observed: false`, `ui_cross_checked: false`, `community_supported: false`, `runtime_validated: false`, `unit_verified: false`, and `evidence_level: schema_only`. M7A-03 may populate field-specific confidence from parser evidence, but M7A-02/M7A-02A does not.
+`semantic_confidence` defaults to schema-only values in the empty M7A-02/M7A-02A helper: `official_documented: false`, `probe_observed: false`, `ui_cross_checked: false`, `community_supported: false`, `runtime_validated: false`, `unit_verified: false`, and `evidence_level: schema_only`. M7A-03 populated runtime-parsed candidate confidence for attached rich facts while keeping `official_documented: false` and `unit_verified: false`.
 
 ## AI exposure policy and forbidden interpretations
 
-The empty rich facts contract is not safe for AI context because it is defined but not runtime-populated. Forbidden interpretations include buy signal, sell signal, hold, target price, support/resistance, main force, true liquidity, order-book truth, realtime guarantee, and execution feed.
+The empty rich facts contract is not safe for AI context, and the M7A-03 runtime-populated candidate rich facts also remain not safe for AI context pending downstream compatibility and exposure decisions. Forbidden interpretations include buy signal, sell signal, hold, target price, support/resistance, main force, true liquidity, order-book truth, realtime guarantee, and execution feed.
 
-## Future M7A-03 work
+## Future compatibility and acceptance work
 
-M7A-03 may populate this contract from MIS rows, set row-context applicability for security versus index rows, carry raw values into the proper groups, record placeholder/malformed fields, add field-specific evidence confidence, and handle market-mode-dependent quantity normalization. M7A-03 must still preserve the no-official-API-dictionary policy unless official TWSE API field documentation is found.
+M7A-03 populated this contract from MIS rows, set row-context applicability for security versus index rows, carried raw values into the proper groups, recorded placeholder/malformed fields, and added conservative runtime-parsed candidate confidence. M7A-05/M7A-06 must verify downstream compatibility and final acceptance while preserving the no-official-API-dictionary policy unless official TWSE API field documentation is found.
