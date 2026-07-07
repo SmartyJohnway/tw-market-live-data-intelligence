@@ -138,5 +138,11 @@ def test_m7b_ai_safe_market_context_projection_registered_schema_only():
     assert m7b["conversation_context_changed"] is False
     assert m7b["safe_for_ai_context"] is False
     assert m7b["exposure_status"] == "projection_candidate_not_exposed"
-    assert m7b["completed_tasks"] == ["M7B-00", "M7B-01"]
-    assert m7b["next_task"] == "M7B-02-M7B-03-PURE-PROJECTION-BUILDER-AND-SAFETY-TESTS"
+    assert m7b["completed_tasks"] == ["M7B-00", "M7B-01", "M7B-02", "M7B-03"]
+    assert m7b["pure_builder_defined"] is True
+    assert m7b["projection_builder"] == "scripts/observation_contract.py::build_ai_safe_market_context_projection_from_observation"
+    assert m7b["projection_attach_helper"] == "scripts/observation_contract.py::attach_ai_safe_market_context_projection_from_observation"
+    assert m7b["fixture_safety_tests_added"] is True
+    assert m7b["runtime_exposure_enabled"] is False
+    assert m7b["builder_output_exposure_status"] == "ai_safe_projection_candidate"
+    assert m7b["next_task"] == "M7B-04-M7B-05-CONTROLLED-EXPOSURE-INTEGRATION-AND-COMPATIBILITY-HARDENING"

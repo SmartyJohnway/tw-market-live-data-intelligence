@@ -155,3 +155,13 @@ Planned sequence:
 - M7B-04: controlled exposure integration
 - M7B-05: compatibility hardening
 - M7B-06: final acceptance / closure
+
+
+## M7B-02/M7B-03 status
+
+M7B-02 defines a pure projection builder but does not integrate it with runtime consumers.
+M7B-03 adds fixture and safety tests.
+The builder output may be an `ai_safe_projection_candidate`, but runtime exposure remains disabled.
+`safe_for_ai_context` remains false until M7B-04 controlled exposure explicitly changes downstream integration policy.
+
+M7B is not complete yet; the next task is `M7B-04-M7B-05-CONTROLLED-EXPOSURE-INTEGRATION-AND-COMPATIBILITY-HARDENING`.
