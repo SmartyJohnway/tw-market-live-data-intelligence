@@ -13,6 +13,7 @@ import argparse
 import json
 import sys
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
@@ -20,6 +21,9 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.ssl_policy import resolve_ssl_policy, build_ssl_context
 DEFAULT_OUTPUT_DIR = REPO_ROOT / "research/probe_runs/m7a_twse_mis_rich_fields"
 DEFAULT_MAX_SYMBOLS = 10
 MAX_ALLOWED_SYMBOLS = 10
@@ -242,7 +246,12 @@ def build_probe_summary(rows: list[dict[str, Any]], failures: list[dict[str, Any
             "headers_committed": False,
             "cookies_committed": False,
             "raw_payload_committed": False,
+            "session_tokens_committed": False,
+            "raw_response_body_committed": False,
         },
+        "session_bootstrap_attempts": metadata.get("session_bootstrap_attempts", []),
+        "api_attempts": metadata.get("api_attempts", []),
+        "successful_strategy": metadata.get("successful_strategy", "none"),
         "failures": failures,
     }
 
@@ -261,43 +270,118 @@ def validate_symbols(symbols: list[str], max_symbols: int) -> None:
             raise ValueError("symbols must be supplied as separate bounded arguments, not combined routes")
 
 
-def fetch_twse_mis_rows(symbols: list[str], *, timeout: int = 10) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+def fetch_twse_mis_rows(symbols: list[str], *, timeout: int = 10, ssl_policy: str | None = None) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
     """Manual network probe. Not called by tests or runtime code."""
     headers = {
         "User-Agent": "Mozilla/5.0 tw-market-m7a-rich-field-manual-probe/1.0",
         "Accept": "application/json,text/plain,*/*",
         "Referer": "https://mis.twse.com.tw/stock/fibest.jsp",
     }
-    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor())
-    try:
-        opener.open(urllib.request.Request("https://mis.twse.com.tw/stock/index.jsp", headers=headers), timeout=timeout).read()
-    except Exception as exc:  # pragma: no cover - manual network path
-        failures = [{"symbol": symbol, "stage": "session", "reason": str(exc)} for symbol in symbols]
-        return [], failures, {"status": "session_failed"}
+    ssl_context = build_ssl_context(ssl_policy)
+    opener = urllib.request.build_opener(
+        urllib.request.HTTPCookieProcessor(),
+        urllib.request.HTTPSHandler(context=ssl_context)
+    )
+
+    bootstrap_candidates = [
+        "https://mis.twse.com.tw/stock/fibest.jsp",
+        "https://mis.twse.com.tw/stock/index.jsp",
+        "https://mis.twse.com.tw/stock/",
+        "https://mis.twse.com.tw/stock/index.jsp?lang=zh_tw",
+        "https://mis.twse.com.tw/stock/fibest.jsp?lang=zh_tw",
+    ]
+
+    session_bootstrap_attempts = []
+    bootstrap_succeeded = False
+
+    for candidate in bootstrap_candidates:
+        attempt = {
+            "url_family": candidate.split("?")[0],
+            "status": "failed",
+            "error_class": None,
+            "http_status": None,
+        }
+        try:
+            req = urllib.request.Request(candidate, headers=headers)
+            res = opener.open(req, timeout=timeout)
+            status_code = getattr(res, "status", None) or getattr(res, "code", None) or 200
+            res.read()
+            attempt["status"] = "success"
+            attempt["http_status"] = status_code
+            session_bootstrap_attempts.append(attempt)
+            bootstrap_succeeded = True
+            break
+        except Exception as exc:
+            error_class = exc.__class__.__name__
+            http_status = None
+            if isinstance(exc, urllib.error.HTTPError):
+                http_status = exc.code
+            elif hasattr(exc, "code"):
+                http_status = getattr(exc, "code")
+
+            attempt["status"] = "failed"
+            attempt["error_class"] = error_class
+            attempt["http_status"] = http_status
+            session_bootstrap_attempts.append(attempt)
+
+    api_attempts = []
+    successful_strategy = "none"
+    rows = []
+    failures = []
+    telemetry_status = "session_failed" if not bootstrap_succeeded else "request_failed"
+    api_status_code = None
+    rtcode = None
+
+    # Attempt the API
+    api_strategy = "bootstrap_then_api" if bootstrap_succeeded else "direct_after_bootstrap_failure"
+    api_attempt = {
+        "strategy": api_strategy,
+        "endpoint_family": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp",
+        "status": "failed",
+        "http_status": None,
+    }
+    api_attempts.append(api_attempt)
 
     query = urllib.parse.urlencode({"ex_ch": "|".join(symbols), "json": "1", "delay": "0", "_": str(int(time.time() * 1000))})
     url = f"https://mis.twse.com.tw/stock/api/getStockInfo.jsp?{query}"
+
     try:
         response = opener.open(urllib.request.Request(url, headers=headers), timeout=timeout)
-        status_code = getattr(response, "status", None)
+        api_status_code = getattr(response, "status", None) or getattr(response, "code", None) or 200
+        api_attempt["http_status"] = api_status_code
         body = response.read().decode("utf-8", "replace")
         data = json.loads(body.strip())
-    except Exception as exc:  # pragma: no cover - manual network path
-        failures = [{"symbol": symbol, "stage": "request", "reason": str(exc)} for symbol in symbols]
-        return [], failures, {"status": "request_failed", "status_code": None}
 
-    rows = [row for row in data.get("msgArray", []) if isinstance(row, dict)]
-    observed_keys = {str(row.get("key") or row.get("ch") or "") for row in rows}
-    failures = []
-    for symbol in symbols:
-        if symbol not in observed_keys and not any(symbol.endswith(str(row.get("ch") or "")) for row in rows):
-            failures.append({"symbol": symbol, "stage": "response", "reason": "missing_from_msgArray"})
+        rows = [row for row in data.get("msgArray", []) if isinstance(row, dict)]
+        observed_keys = {str(row.get("key") or row.get("ch") or "") for row in rows}
+
+        for symbol in symbols:
+            if symbol not in observed_keys and not any(symbol.endswith(str(row.get("ch") or "")) for row in rows):
+                failures.append({"symbol": symbol, "stage": "response", "reason": "missing_from_msgArray"})
+
+        api_attempt["status"] = "success"
+        successful_strategy = "bootstrap_then_api" if bootstrap_succeeded else "direct_api_without_session"
+        telemetry_status = "ok"
+        rtcode = data.get("rtcode") or data.get("rtCode")
+    except Exception as exc:
+        error_class = exc.__class__.__name__
+        http_status = None
+        if isinstance(exc, urllib.error.HTTPError):
+            http_status = exc.code
+        elif hasattr(exc, "code"):
+            http_status = getattr(exc, "code")
+        api_attempt["http_status"] = http_status
+        failures = [{"symbol": symbol, "stage": "request", "reason": f"{error_class}: {str(exc)}"} for symbol in symbols]
+
     telemetry = {
-        "status": "ok",
-        "status_code": status_code,
-        "rtcode": data.get("rtcode") or data.get("rtCode"),
+        "status": telemetry_status,
+        "status_code": api_status_code,
+        "rtcode": rtcode,
         "row_count": len(rows),
         "raw_payload_committed": False,
+        "session_bootstrap_attempts": session_bootstrap_attempts,
+        "api_attempts": api_attempts,
+        "successful_strategy": successful_strategy,
     }
     return rows, failures, telemetry
 
@@ -319,6 +403,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR, help="Dedicated M7A evidence output directory.")
     parser.add_argument("--max-symbols", type=int, default=DEFAULT_MAX_SYMBOLS, help="Maximum explicit symbols; must be <= 10.")
     parser.add_argument("--timeout", type=int, default=10, help="Manual request timeout in seconds.")
+    parser.add_argument("--ssl-policy", type=str, default=None, help="SSL policy: strict, compatibility, unsafe-explicit.")
     return parser.parse_args(argv)
 
 
@@ -329,8 +414,10 @@ def main(argv: list[str] | None = None) -> int:
     except ValueError as exc:
         print(f"refusing manual probe: {exc}", file=sys.stderr)
         return 2
+
+    resolved_policy = resolve_ssl_policy(args.ssl_policy)
     retrieved_at = utc_now()
-    rows, failures, telemetry = fetch_twse_mis_rows(args.symbols, timeout=args.timeout)
+    rows, failures, telemetry = fetch_twse_mis_rows(args.symbols, timeout=args.timeout, ssl_policy=resolved_policy)
     summary = build_probe_summary(
         rows,
         failures,
@@ -338,6 +425,9 @@ def main(argv: list[str] | None = None) -> int:
             "symbols_requested": args.symbols,
             "retrieved_at_utc": retrieved_at,
             "notes": ["operator_invoked_manual_bounded_probe", f"telemetry_status={telemetry.get('status')}"],
+            "session_bootstrap_attempts": telemetry.get("session_bootstrap_attempts", []),
+            "api_attempts": telemetry.get("api_attempts", []),
+            "successful_strategy": telemetry.get("successful_strategy", "none"),
         },
     )
     path = write_summary(summary, args.output_dir)

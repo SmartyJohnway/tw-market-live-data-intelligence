@@ -6,6 +6,7 @@ from scripts.probe_twse_mis_rich_fields import (
     summarize_field_presence,
     summarize_ladder_shapes,
     validate_symbols,
+    fetch_twse_mis_rows,
 )
 
 
@@ -83,3 +84,83 @@ def test_validate_symbols_rejects_empty_and_excessive_bounds():
         assert "<= 10" in str(exc)
     else:
         raise AssertionError("max-symbols > 10 should fail")
+
+
+def test_build_probe_summary_includes_new_telemetry_fields():
+    summary = build_probe_summary(
+        [{"z": "100.0", "y": "99.0", "key": "tse_2330.tw"}],
+        [],
+        {
+            "symbols_requested": ["tse_2330.tw"],
+            "retrieved_at_utc": "2026-07-07T00:00:00Z",
+            "session_bootstrap_attempts": [
+                {"url_family": "https://mis.twse.com.tw/stock/fibest.jsp", "status": "failed", "error_class": "HTTPError", "http_status": 404}
+            ],
+            "api_attempts": [
+                {"strategy": "direct_after_bootstrap_failure", "endpoint_family": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp", "status": "success", "http_status": 200}
+            ],
+            "successful_strategy": "direct_api_without_session"
+        },
+    )
+    assert summary["session_bootstrap_attempts"] == [
+        {"url_family": "https://mis.twse.com.tw/stock/fibest.jsp", "status": "failed", "error_class": "HTTPError", "http_status": 404}
+    ]
+    assert summary["api_attempts"] == [
+        {"strategy": "direct_after_bootstrap_failure", "endpoint_family": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp", "status": "success", "http_status": 200}
+    ]
+    assert summary["successful_strategy"] == "direct_api_without_session"
+    assert summary["request_evidence"]["session_tokens_committed"] is False
+    assert summary["request_evidence"]["raw_response_body_committed"] is False
+
+
+from unittest.mock import MagicMock, patch
+import urllib.error
+
+def test_fetch_twse_mis_rows_direct_api_fallback():
+    mock_opener = MagicMock()
+
+    def mock_open(req, timeout=10):
+        url = req.full_url if hasattr(req, "full_url") else str(req)
+        if "/stock/api/getStockInfo.jsp" in url:
+            mock_res = MagicMock()
+            mock_res.status = 200
+            mock_res.code = 200
+            mock_res.read.return_value = b'{"msgArray": [{"z": "100.0", "y": "99.0", "key": "tse_2330.tw"}]}'
+            return mock_res
+        else:
+            fp = MagicMock()
+            raise urllib.error.HTTPError(url, 404, "Not Found", {}, fp)
+
+    mock_opener.open = mock_open
+
+    with patch("urllib.request.build_opener", return_value=mock_opener):
+        rows, failures, telemetry = fetch_twse_mis_rows(["tse_2330.tw"])
+
+    assert len(rows) == 1
+    assert rows[0]["z"] == "100.0"
+    assert len(failures) == 0
+    assert telemetry["successful_strategy"] == "direct_api_without_session"
+    assert len(telemetry["session_bootstrap_attempts"]) == 5
+    assert all(a["status"] == "failed" for a in telemetry["session_bootstrap_attempts"])
+    assert len(telemetry["api_attempts"]) == 1
+    assert telemetry["api_attempts"][0]["status"] == "success"
+    assert telemetry["api_attempts"][0]["strategy"] == "direct_after_bootstrap_failure"
+
+
+def test_fetch_twse_mis_rows_all_failed():
+    mock_opener = MagicMock()
+
+    def mock_open(req, timeout=10):
+        url = req.full_url if hasattr(req, "full_url") else str(req)
+        fp = MagicMock()
+        raise urllib.error.HTTPError(url, 404, "Not Found", {}, fp)
+
+    mock_opener.open = mock_open
+
+    with patch("urllib.request.build_opener", return_value=mock_opener):
+        rows, failures, telemetry = fetch_twse_mis_rows(["tse_2330.tw"])
+
+    assert len(rows) == 0
+    assert len(failures) == 1
+    assert failures[0]["stage"] == "request"
+    assert telemetry["successful_strategy"] == "none"

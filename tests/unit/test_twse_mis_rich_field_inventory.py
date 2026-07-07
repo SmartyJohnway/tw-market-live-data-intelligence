@@ -18,10 +18,11 @@ def test_twse_mis_rich_inventory_boundary_flags():
     assert inv["full_market_scan"] is False
     assert inv["polling"] is False
     assert inv["scheduler"] is False
-    assert inv["probe_executed"] is False
+    assert inv["probe_executed"] is True
     assert inv["manual_probe_harness_added"] is True
-    assert inv["probe_evidence_available"] is False
+    assert inv["probe_evidence_available"] is True
     assert inv["ci_network_required"] is False
+    assert inv["last_successful_probe_summary_path"] == "research/probe_runs/m7a_twse_mis_rich_fields/m7a_twse_mis_rich_field_probe_summary_20260707T034516Z.json"
     harness = inv["manual_probe_harness"]
     assert harness["script"] == "scripts/probe_twse_mis_rich_fields.py"
     assert harness["execution_mode"] == "manual_explicit_only"
@@ -61,7 +62,8 @@ def test_twse_mis_required_fields_are_inventoried_and_not_discarded():
 def test_twse_mis_unknown_fields_are_preserved_raw_only():
     inv = load_inventory()
     fields = {row["raw_field"]: row for row in inv["field_inventory"]}
-    for raw_field in ["@", "ps", "pid", "pz", "bp", "m%", "^", "#", "mt", "i", "ip", "p", "s", "nf", "ts", "q", "r", "oa", "ob"]:
+    unknown_fields = ["@", "ps", "pid", "pz", "bp", "m%", "^", "#", "mt", "i", "ip", "p", "s", "nf", "ts", "q", "r", "oa", "ob", "m", "nu"]
+    for raw_field in unknown_fields:
         row = fields[raw_field]
         assert row["semantic_status"] == "unknown" or row["ai_exposure_status"] == "not_safe_yet"
         assert row["normalization_status"] == "preserve_raw_only" or row["ai_exposure_status"] == "not_safe_yet"

@@ -199,12 +199,18 @@ Field validation statuses may be updated in a later evidence-review commit only 
 - Parser normalization remains deferred until successful bounded evidence is reviewed.
 - Runtime behavior remains unchanged; this commit does not alter M5K/M5N parsing, output shape, FastAPI, MCP, frontend, source-health, polling, scheduler, or startup behavior.
 
+## M7A-01D Probe repair and successful fallback evidence
+
+- M7A-01D repaired the manual probe harness with session fallback. A successful operator-run bounded probe obtained 6 rows and compact field evidence using bootstrap_then_api. Parser/schema normalization remains deferred until this evidence is reviewed and encoded into M7A-02.
+- Summary report: `research/probe_runs/m7a_twse_mis_rich_fields/m7a_twse_mis_rich_field_probe_summary_20260707T034516Z.json`.
+
 ## 18. Proposed next commits
 
 - **M7A-01**: Implemented manual bounded probe harness and compact evidence summary schema; no live probe evidence committed in this commit.
 - **M7A-01B**: Attempted bounded manual probe; session bootstrap failed before field evidence was available, so no semantics were upgraded.
-- **Next**: Rerun bounded probe where TWSE MIS session access succeeds, or provide operator-run compact evidence before M7A-02 schema work.
-- **M7A-03**: TWSE MIS parser extension. Parse `y`/`o`/`h`/`l`, `v`/`tv`, `b`/`g`/`a`/`f`, `u`/`w` with candidate semantics and quality flags.
+- **M7A-01D**: Repaired the manual probe harness with session fallback. A successful operator-run bounded probe obtained 6 rows and compact field evidence using bootstrap_then_api. Parser/schema normalization remains deferred until this evidence is reviewed and encoded into M7A-02.
+- **M7A-02**: Observation contract schema extension after successful evidence review.
+- **M7A-03**: TWSE MIS parser extension. Parse `y`/`o`/`h`/`l`, `v`/`tv`, `b`/`g`/`a`/`f`, `u`/w with candidate semantics and quality flags.
 - **M7A-04**: Fixture expansion and normalization tests. Cover normal, reference-only, placeholder, malformed, missing, and ladder mismatch cases.
 - **M7A-05**: Compatibility checks. Confirm FastAPI/MCP/frontend/conversation context existing behavior remains backward compatible.
 - **M7A-06**: Generated inventory/docs sync and final M7A acceptance report.
