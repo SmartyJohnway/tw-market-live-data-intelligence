@@ -1,0 +1,50 @@
+{
+  "schema_version": "m7a_twse_mis_rich_field_probe_attempt.v1",
+  "source_id": "TWSE_MIS",
+  "probe_type": "manual_bounded_probe_attempt",
+  "probe_executed": false,
+  "probe_evidence_available": false,
+  "network_available": false,
+  "runtime_behavior_changed": false,
+  "normalization_changed": false,
+  "full_market_scan": false,
+  "polling": false,
+  "scheduler": false,
+  "startup_network": false,
+  "ci_network_required": false,
+  "raw_payload_committed": false,
+  "headers_committed": false,
+  "cookies_committed": false,
+  "session_tokens_committed": false,
+  "raw_response_body_committed": false,
+  "symbols_requested": [
+    "tse_t00.tw",
+    "tse_2330.tw",
+    "tse_0050.tw",
+    "otc_8069.tw",
+    "otc_5347.tw",
+    "tse_1435.tw"
+  ],
+  "symbols_observed": [],
+  "symbols_failed": [
+    "tse_t00.tw",
+    "tse_2330.tw",
+    "tse_0050.tw",
+    "otc_8069.tw",
+    "otc_5347.tw",
+    "tse_1435.tw"
+  ],
+  "attempted_at_utc": "2026-07-07T03:02:55Z",
+  "command": "python scripts/probe_twse_mis_rich_fields.py --symbols tse_t00.tw tse_2330.tw tse_0050.tw otc_8069.tw otc_5347.tw tse_1435.tw --output-dir research/probe_runs/m7a_twse_mis_rich_fields --max-symbols 10",
+  "exit_code": 1,
+  "failure_stage": "session",
+  "failure_reason": "TWSE MIS session bootstrap returned HTTP Error 404: Not Found before any msgArray field evidence was available.",
+  "field_semantics_upgraded": false,
+  "observed_in_probe_updated": false,
+  "notes": [
+    "Exactly one manual bounded probe attempt was executed with the approved symbol set.",
+    "No field semantics were upgraded because no successful probe evidence was available.",
+    "No raw endpoint payload, cookies, headers, session tokens, or raw response body were committed.",
+    "The probe harness remains manual-only and is not wired into runtime, CI, startup, source-health, polling, or scheduler paths."
+  ]
+}

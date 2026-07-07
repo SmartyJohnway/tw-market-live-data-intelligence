@@ -1,10 +1,114 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
-from typing import Any
+from typing import Any, Mapping
 
 OBSERVATION_SCHEMA_VERSION = "m5_live_observation.normalized.v1"
 FAILURE_SCHEMA_VERSION = "m5_live_observation.failure.v1"
+
+
+TWSE_MIS_RICH_FACTS_SCHEMA_VERSION = "m7a_twse_mis_rich_facts.v1"
+
+
+def build_empty_twse_mis_rich_facts() -> dict[str, Any]:
+    """Return the M7A TWSE MIS rich-facts schema without runtime population.
+
+    M7A-02 defines the optional nested contract shape only. Runtime parsers do
+    not call this helper yet, so existing M5K/M5N observation output stays
+    backward compatible until a later parser task explicitly populates fields.
+    """
+    return {
+        "schema_version": TWSE_MIS_RICH_FACTS_SCHEMA_VERSION,
+        "source_id": "TWSE_MIS",
+        "schema_status": "defined_not_populated_by_runtime_parser",
+        "price_facts": {
+            "last_price": None,
+            "previous_close": None,
+            "open": None,
+            "high": None,
+            "low": None,
+            "price_source_fields": [],
+            "semantic_status": "schema_defined_candidate_fields",
+        },
+        "volume_facts": {
+            "raw_v": None,
+            "raw_tv": None,
+            "unit_status": "unverified",
+            "semantic_status": "schema_defined_candidate_fields",
+        },
+        "displayed_depth_facts": {
+            "bid_prices": [],
+            "bid_quantities_raw": [],
+            "ask_prices": [],
+            "ask_quantities_raw": [],
+            "best_bid": None,
+            "best_ask": None,
+            "ladder_source_fields": ["b", "g", "a", "f"],
+            "quantity_unit_status": "unverified",
+            "semantic_status": "displayed_depth_snapshot_only_schema",
+        },
+        "limit_or_reference_facts": {
+            "limit_up": None,
+            "limit_down": None,
+            "raw_pz": None,
+            "raw_bp": None,
+            "raw_ps": None,
+            "semantic_status": "schema_defined_candidate_fields",
+        },
+        "identity_facts": {
+            "raw_c": None,
+            "raw_ch": None,
+            "raw_ex": None,
+            "raw_name": None,
+            "raw_nf": None,
+            "unknown_identity_fields": {"m": None, "nu": None},
+            "semantic_status": "schema_defined_candidate_fields",
+        },
+        "timestamp_facts": {
+            "raw_d": None,
+            "raw_t": None,
+            "raw_tlong": None,
+            "raw_percent": None,
+            "raw_ot": None,
+            "semantic_status": "schema_defined_candidate_fields",
+        },
+        "quality_facts": {
+            "field_presence": {},
+            "placeholder_fields": [],
+            "malformed_fields": [],
+            "ladder_mismatch_flags": [],
+            "unit_unverified_fields": ["v", "tv", "g", "f"],
+            "unknown_or_raw_only_fields": ["m", "nu"],
+            "semantic_status": "schema_defined_quality_flags",
+        },
+        "ai_exposure_policy": {
+            "safe_for_ai_context": False,
+            "reason": "schema_defined_not_runtime_populated",
+            "forbidden_interpretations": [
+                "buy_signal",
+                "sell_signal",
+                "hold",
+                "target_price",
+                "support_resistance",
+                "main_force",
+                "true_liquidity",
+                "order_book_truth",
+                "realtime_guarantee",
+            ],
+        },
+    }
+
+
+def attach_empty_twse_mis_rich_facts(observation: Mapping[str, Any]) -> dict[str, Any]:
+    """Return an observation copy with empty TWSE MIS rich facts attached.
+
+    This opt-in helper is intentionally not called by the runtime parser in
+    M7A-02. It preserves existing top-level observation fields by copying the
+    input mapping before adding `twse_mis_rich_facts`.
+    """
+    copied = dict(observation)
+    copied["twse_mis_rich_facts"] = build_empty_twse_mis_rich_facts()
+    return copied
 
 
 def normalize_timestamp(value: Any, *, retrieved_at_utc: str | None = None, source_timezone: timezone = timezone.utc) -> dict[str, Any]:
