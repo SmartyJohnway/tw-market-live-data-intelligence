@@ -44,14 +44,14 @@ def map_targets_for_source(source, targets):
         if source == "Yahoo_Finance":
             if t == "TAIEX" or t.lower() == "t00":
                 mapped_targets.append("^TWII")
-            elif t in ["8069", "5347"]: # typically TPEx
+            elif t in {"8069", "5347"}: # typically TPEx
                 mapped_targets.append(f"{t}.TWO")
             else: # typically TWSE
                 mapped_targets.append(f"{t}.TW")
         elif source == "TWSE_MIS":
             if t == "TAIEX" or t.lower() == "t00":
                 mapped_targets.append("tse_t00.tw")
-            elif t in ["8069", "5347"]: # typically TPEx
+            elif t in {"8069", "5347"}: # typically TPEx
                 mapped_targets.append(f"otc_{t}.tw")
             else: # typically TWSE
                 mapped_targets.append(f"tse_{t}.tw")

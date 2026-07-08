@@ -219,7 +219,7 @@ def build_snapshot(targets_config, mock_inputs=None):
 
     # 1. Build initial source health entries
     for src in all_canonical_sources:
-        if src in ["Fugle", "Fubon"]:
+        if src in {"Fugle", "Fubon"}:
             snapshot["source_health"].append({
                 "source_id": src,
                 "source_type": "broker_api",

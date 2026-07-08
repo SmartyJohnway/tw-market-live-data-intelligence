@@ -125,3 +125,44 @@ def test_fastapi_live_observation_invalid_ssl_policy_fails_before_execution(monk
     assert response.status_code == 400
     assert response.json()["detail"]["error"] == "invalid_ssl_policy"
     assert calls == []
+
+
+def test_m5k_default_watchlist_endpoint_uses_readonly_loader(monkeypatch):
+    import main
+
+    watchlist = {"schema_version": "m5n_watchlist.v1", "items": []}
+    monkeypatch.setattr(main, "_m5k_load_json", lambda path: watchlist)
+    monkeypatch.setattr(main, "_m5k_validate_watchlist", lambda payload: {"valid": True, "count": len(payload["items"])})
+
+    data = main.get_m5k_default_watchlist()
+    assert data["content"] == watchlist
+    assert data["validation"] == {"valid": True, "count": 0}
+    assert data["governance"]["layer"] == "M5K"
+
+
+def test_m5k_live_observation_history_uses_local_history_summaries(monkeypatch):
+    import main
+
+    rows = [{"run_id": "old"}, {"run_id": "new"}]
+    monkeypatch.setattr(main, "_history_summaries", lambda root, pattern, summarizer: rows)
+
+    data = main.get_m5k_live_observation_history()
+    assert data["content"]["runs"] == rows
+    assert data["content"]["latest"] == {"run_id": "new"}
+    assert data["content"]["previous"] == {"run_id": "old"}
+    assert data["governance"]["network_calls"] is False
+    assert data["governance"]["raw_endpoint_payload_included"] is False
+
+
+def test_source_health_history_uses_local_history_summaries(monkeypatch):
+    import main
+
+    rows = [{"run_id": "health-1"}]
+    monkeypatch.setattr(main, "_history_summaries", lambda root, pattern, summarizer: rows)
+
+    data = main.get_source_health_history()
+    assert data["content"]["runs"] == rows
+    assert data["content"]["latest"] == {"run_id": "health-1"}
+    assert data["content"]["previous"] is None
+    assert data["governance"]["layer"] == "M5Q"
+    assert data["governance"]["network_calls"] is False

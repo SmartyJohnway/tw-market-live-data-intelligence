@@ -688,3 +688,43 @@ def test_m5f_tool_governance_derives_freshness_from_temp_package(monkeypatch, tm
         assert data['governance']['realtime_guaranteed'] is False
         assert data['governance']['trading_signal'] is False
         assert data['governance']['production_current_state'] is False
+
+
+def test_m5k_default_watchlist_tool_uses_readonly_loader(monkeypatch):
+    watchlist = {"schema_version": "m5n_watchlist.v1", "items": []}
+    monkeypatch.setattr(mcp_server, "_m5k_load_json", lambda path: watchlist)
+    monkeypatch.setattr(mcp_server, "_m5n_normalize_watchlist", lambda payload: payload | {"normalized": True})
+    monkeypatch.setattr(mcp_server, "_m5k_validate_watchlist", lambda payload: {"valid": True, "normalized": payload["normalized"]})
+
+    data = mcp_server.read_m5k_default_watchlist_tool()
+    assert data["tool"] == mcp_server.M5K_WATCHLIST_TOOL
+    assert data["status"] == "ok"
+    assert data["content"]["normalized"] is True
+    assert data["validation"] == {"valid": True, "normalized": True}
+    assert data["governance"]["network_calls"] is False
+
+
+def test_watchlist_summary_tool_returns_summary_without_network(monkeypatch):
+    watchlist = {"schema_version": "m5n_watchlist.v1", "items": []}
+    monkeypatch.setattr(mcp_server, "_m5k_load_json", lambda path: watchlist)
+    monkeypatch.setattr(mcp_server, "_m5n_normalize_watchlist", lambda payload: payload)
+    monkeypatch.setattr(mcp_server, "_m5n_watchlist_summary", lambda payload: {"item_count": len(payload["items"])})
+
+    data = mcp_server.get_watchlist_summary_tool()
+    assert data["tool"] == mcp_server.M5N_GET_WATCHLIST_SUMMARY_TOOL
+    assert data["status"] == "ok"
+    assert data["content"] == {"item_count": 0}
+    assert data["governance"]["network_calls"] is False
+
+
+def test_create_m5k_handoff_tool_requires_watchlist_and_delegates(monkeypatch):
+    missing = mcp_server.create_m5k_handoff_tool({})
+    assert missing["status"] == "failed_closed"
+    assert missing["failure_reason"] == "watchlist_required"
+
+    watchlist = {"schema_version": "m5n_watchlist.v1", "items": []}
+    monkeypatch.setattr(mcp_server, "_m5k_conversation_handoff", lambda payload: {"accepted": payload is watchlist})
+    ok = mcp_server.create_m5k_handoff_tool({"watchlist": watchlist})
+    assert ok["tool"] == mcp_server.M5K_HANDOFF_TOOL
+    assert ok["status"] == "ok"
+    assert ok["content"] == {"accepted": True}
