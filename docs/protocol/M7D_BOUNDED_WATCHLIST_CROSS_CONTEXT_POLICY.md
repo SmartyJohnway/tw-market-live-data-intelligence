@@ -171,3 +171,23 @@ Use bounded names:
 - M7D-02: pure bounded cross-context builder
 - M7D-03: fixtures and safety tests
 - M7D-04: controlled integration / compatibility / closure
+
+## M7D-02/M7D-03/M7D-04 final status
+
+M7D-02 defines a pure bounded watchlist cross-context builder.
+M7D-03 adds fixture and safety tests.
+M7D-04 enables controlled exposure through shared conversation context only.
+
+The pure builder output remains a runtime_computed_candidate and is not directly AI-safe.
+Only the promoted controlled bounded watchlist cross-context may set safe_for_ai_context=true.
+
+M7D remains bounded to the configured watchlist and latest observation payload:
+- not full-market breadth
+- not market-wide trend
+- not sector rotation
+- not capital flow
+- not trading signal
+- not recommendation
+
+M7D is complete as pass_with_caveats.
+The next track is M7E-MARKET-CLOCK-AND-SESSION-STATE.
