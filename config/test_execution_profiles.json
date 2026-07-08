@@ -44,6 +44,7 @@
         "tests/unit/test_m5fgh_fastapi_context.py",
         "tests/unit/test_m5fgh_frontend_static.py",
         "tests/unit/test_m5i_explicit_bounded_refresh.py",
+        "tests/unit/test_m5ij_forbidden_path_policy.py",
         "tests/unit/test_m5op_frontend_operator_workflow.py",
         "tests/unit/test_m6a_observation_ux.py",
         "tests/unit/test_m6b_contract_hardening.py",

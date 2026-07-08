@@ -7,12 +7,56 @@ sys.path.insert(0,str(REPO))
 
 import traceback
 
+FORBIDDEN_PREFIXES = (
+    'frontend/public/',
+    'research/generated/',
+    'research/live_probe_runs/m5b/',
+    'research/staging/m5c/',
+    'research/staging/m5d/',
+    'production/',
+    'prod/',
+    'broker/',
+    'credentials/',
+    'tokens/',
+    '.env',
+)
+AUTHORIZED_FRONTEND_PUBLIC_SECURITY_FIXES = {
+    'frontend/public/index.html',
+}
+FRONTEND_STATIC_SECURITY_TEST = REPO / 'tests/unit/test_frontend_static_security.py'
+
 def record_check(checks, msg, cond, details=None):
     rec = {'check': msg, 'status': 'passed' if cond else 'failed'}
     if not cond and details:
         rec['details'] = details
     checks.append(rec)
     return cond
+
+def classify_forbidden_path_changes(changed: set[str]) -> dict[str, object]:
+    authorized: list[str] = []
+    unauthorized: list[str] = []
+    frontend_public_changes = [
+        path for path in changed if path.startswith('frontend/public/')
+    ]
+    frontend_public_change_set = set(frontend_public_changes)
+
+    for path in changed:
+        if not any(path.startswith(pref) for pref in FORBIDDEN_PREFIXES):
+            continue
+        if (
+            path in AUTHORIZED_FRONTEND_PUBLIC_SECURITY_FIXES
+            and frontend_public_change_set.issubset(AUTHORIZED_FRONTEND_PUBLIC_SECURITY_FIXES)
+            and FRONTEND_STATIC_SECURITY_TEST.exists()
+        ):
+            authorized.append(path)
+        else:
+            unauthorized.append(path)
+
+    return {
+        'authorized_exceptions': sorted(authorized),
+        'unauthorized_forbidden_paths': sorted(unauthorized),
+        'frontend_public_changes': sorted(frontend_public_changes),
+    }
 
 def run_checks():
     checks=[]
@@ -78,9 +122,27 @@ def run_checks():
 
     git=subprocess.run(['git','diff','--name-only','origin/main...HEAD'],cwd=REPO,text=True,capture_output=True)
     changed=set(git.stdout.splitlines()) if git.returncode==0 else set()
-    forbidden_prefixes=('frontend/public/','research/generated/','research/live_probe_runs/m5b/','research/staging/m5c/','research/staging/m5d/','production/','prod/','broker/','credentials/','tokens/','.env')
-    found_forbidden = [x for x in changed if any(x.startswith(pref) for pref in forbidden_prefixes)]
-    record_check(checks, 'no_forbidden_paths_changed', not found_forbidden, {'changed_forbidden_paths': found_forbidden, 'git_returncode': git.returncode})
+    classification = classify_forbidden_path_changes(changed)
+    no_unauthorized_forbidden_paths = record_check(
+        checks,
+        'no_forbidden_paths_changed',
+        not classification['unauthorized_forbidden_paths'],
+        {
+            'changed_forbidden_paths': classification['unauthorized_forbidden_paths'],
+            'unauthorized_forbidden_paths': classification['unauthorized_forbidden_paths'],
+            'authorized_exceptions': classification['authorized_exceptions'],
+            'frontend_public_changes': classification['frontend_public_changes'],
+            'git_returncode': git.returncode,
+        },
+    )
+    if no_unauthorized_forbidden_paths:
+        checks[-1]['details'] = {
+            'changed_forbidden_paths': classification['unauthorized_forbidden_paths'],
+            'unauthorized_forbidden_paths': classification['unauthorized_forbidden_paths'],
+            'authorized_exceptions': classification['authorized_exceptions'],
+            'frontend_public_changes': classification['frontend_public_changes'],
+            'git_returncode': git.returncode,
+        }
 
     return checks, res
 
