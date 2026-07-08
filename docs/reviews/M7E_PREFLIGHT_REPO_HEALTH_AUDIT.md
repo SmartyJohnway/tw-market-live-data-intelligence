@@ -93,6 +93,14 @@ Migration policy:
 - tests before/after extraction
 - do not combine with M7E implementation
 
+## CI repair note for PR #103
+
+- GitHub Actions job `85840781933` reported a failure in `python scripts/run_test_profile.py default-ci --json` on the earlier PR run.
+- The public job page did not expose the detailed pytest failure without authentication, so the CI repair re-ran the exact default-ci command locally on this branch.
+- Local reproduction result after this repair pass: default-ci passed with 268 selected tests.
+- No M7E implementation, live probes, semantic contract changes, frontend behavior changes beyond the existing XSS-safe rendering, or AI exposure policy changes were made.
+- GitHub Actions should be re-run after this commit; merge remains recommended only after Actions are green.
+
 ## M7E readiness
 
 - Ready to proceed to `M7E-MARKET-CLOCK-AND-SESSION-STATE` after merge.
