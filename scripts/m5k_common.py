@@ -11,11 +11,13 @@ from typing import Any
 
 from scripts.observation_contract import (
     build_ai_safe_market_context_projection_from_observation,
+    build_bounded_watchlist_cross_context,
     build_deterministic_metrics_context_from_observation,
     normalize_failure,
     normalize_taifex_row,
     normalize_twse_mis_row,
     promote_ai_safe_market_context_projection_for_controlled_context,
+    promote_bounded_watchlist_cross_context_for_controlled_context,
     promote_deterministic_metrics_context_for_controlled_context,
 )
 from scripts.ssl_policy import build_ssl_context, resolve_ssl_policy, ssl_policy_diagnostics
@@ -772,6 +774,11 @@ def build_ai_safe_market_context_projections_for_latest_observations(
         candidate = build_ai_safe_market_context_projection_from_observation(observation)
         promoted = promote_ai_safe_market_context_projection_for_controlled_context(candidate)
         if promoted.get("safe_for_ai_context") is True and promoted.get("exposure_status") == "ai_safe_context_enabled":
+            promoted = dict(promoted)
+            promoted.setdefault("symbol", observation.get("symbol"))
+            promoted.setdefault("display_name", observation.get("display_symbol") or observation.get("symbol"))
+            promoted.setdefault("market", observation.get("market"))
+            promoted.setdefault("instrument_type", observation.get("instrument_type"))
             projections.append(promoted)
     return projections
 
@@ -813,6 +820,11 @@ def build_deterministic_metrics_contexts_for_latest_observations(
         except Exception:
             continue
         if promoted.get("safe_for_ai_context") is True and promoted.get("exposure_status") == "ai_safe_context_enabled":
+            promoted = dict(promoted)
+            promoted.setdefault("symbol", observation.get("symbol"))
+            promoted.setdefault("display_name", observation.get("display_symbol") or observation.get("symbol"))
+            promoted.setdefault("market", observation.get("market"))
+            promoted.setdefault("instrument_type", observation.get("instrument_type"))
             contexts.append(promoted)
     return contexts
 
@@ -833,6 +845,40 @@ def build_deterministic_metrics_context_collection(
         "not_trading_signal": True,
         "not_recommendation": True,
     }
+
+
+def build_bounded_watchlist_cross_context_collection(
+    watchlist: dict[str, Any],
+    latest_observation_payload: dict[str, Any],
+) -> dict[str, Any]:
+    """Build promoted M7D bounded watchlist cross-context for conversation context only."""
+    collection = {
+        "schema_version": "m7d_bounded_watchlist_cross_context_collection.v1",
+        "enabled": True,
+        "safe_for_ai_context": True,
+        "context_count": 0,
+        "contexts": [],
+        "bounded_watchlist_only": True,
+        "not_full_market_breadth": True,
+        "cross_context_is_signal": False,
+        "not_trading_signal": True,
+        "not_recommendation": True,
+        "raw_rich_facts_exposed": False,
+        "raw_full_ladder_exposed": False,
+    }
+    if not isinstance(watchlist, dict) or not isinstance(latest_observation_payload, dict):
+        return collection
+    payload = latest_observation_payload.get("content") if isinstance(latest_observation_payload.get("content"), dict) and "observations" not in latest_observation_payload else latest_observation_payload
+    if not isinstance(payload, dict):
+        return collection
+    m7b_collection = build_ai_safe_market_context_projection_collection(payload)
+    m7c_collection = build_deterministic_metrics_context_collection(payload)
+    candidate = build_bounded_watchlist_cross_context(watchlist, payload, m7b_collection, m7c_collection)
+    promoted = promote_bounded_watchlist_cross_context_for_controlled_context(candidate)
+    if promoted.get("safe_for_ai_context") is True and promoted.get("exposure_status") == "ai_safe_context_enabled":
+        collection["contexts"] = [promoted]
+        collection["context_count"] = 1
+    return collection
 
 
 def build_conversation_context(watchlist: dict[str, Any], latest_observation: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -859,6 +905,7 @@ def build_conversation_context(watchlist: dict[str, Any], latest_observation: di
         "per_symbol_observations": per_symbol,
         "ai_safe_market_context_projection": build_ai_safe_market_context_projection_collection(latest_observation if isinstance(latest_observation, dict) else {}),
         "deterministic_metrics_context": build_deterministic_metrics_context_collection(latest_observation if isinstance(latest_observation, dict) else {}),
+        "bounded_watchlist_cross_context": build_bounded_watchlist_cross_context_collection(watchlist, latest_observation if isinstance(latest_observation, dict) else {}),
         "successful_observations": len(_safe_list(latest_observation.get("observations"))) if isinstance(latest_observation, dict) else 0,
         "failed_observations": len(failures),
         "failures": [{"symbol": f.get("symbol"), "source": f.get("source"), "reason": f.get("reason") or f.get("failure_reason"), "status": f.get("status"), "recommended_next_step": f.get("recommended_next_step")} for f in failures if isinstance(f, dict)],

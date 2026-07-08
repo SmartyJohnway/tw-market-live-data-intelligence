@@ -138,12 +138,17 @@ def test_m7d_schema_field_names_do_not_use_unbounded_positive_names():
 def test_m7d_inventory_registration():
     m7d = _inventory()["rich_observation_contract"]["m7d_bounded_watchlist_cross_context"]
     assert m7d["coverage_catalog_items"] == 19
-    assert m7d["runtime_populated"] is False
-    assert m7d["safe_for_ai_context"] is False
+    assert m7d["completed_tasks"] == ["M7D-00", "M7D-01", "M7D-02", "M7D-03", "M7D-04"]
+    assert m7d["pure_builder_defined"] is True
+    assert m7d["controlled_exposure_enabled"] is True
+    assert m7d["runtime_exposure_enabled"] is True
+    assert m7d["safe_for_ai_context"] is True
+    assert m7d["builder_output_safe_for_ai_context"] is False
+    assert m7d["next_task"] == "M7E-MARKET-CLOCK-AND-SESSION-STATE"
+    assert m7d["runtime_populated"] is True
     assert m7d["bounded_watchlist_only"] is True
     assert m7d["not_full_market_breadth"] is True
     assert m7d["cross_context_is_signal"] is False
-    assert m7d["next_task"] == "M7D-02-M7D-03-BOUNDED-WATCHLIST-CROSS-CONTEXT-BUILDER-AND-SAFETY-TESTS"
 
 
 def test_m7d_no_forbidden_positive_language_in_new_artifacts():

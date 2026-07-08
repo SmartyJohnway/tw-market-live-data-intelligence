@@ -1459,3 +1459,221 @@ def build_empty_bounded_watchlist_cross_context() -> dict[str, object]:
         "blocked_interpretations": ["full_market_breadth", "market_wide_trend", "sector_rotation", "capital_flow", "main_force", "trading_signal", "buy_signal", "sell_signal", "recommendation", "buy_sell_hold", "target_price", "support", "resistance", "breakout", "breakdown", "true_liquidity", "full_order_book", "prediction", "confirmation"],
         "future_builder_requirements": {"required_input": "watchlist_config_and_latest_observation_with_m7b_m7c_context", "must_not_use_raw_twse_mis_payload": True, "must_not_use_unbounded_market_universe": True, "must_not_emit_signal_names": True, "must_not_emit_recommendations": True, "must_label_all_breadth_as_bounded_watchlist_only": True, "must_keep_safe_for_ai_context_false_until_controlled_integration": True, "next_task": "M7D-02-M7D-03-BOUNDED-WATCHLIST-CROSS-CONTEXT-BUILDER-AND-SAFETY-TESTS"},
     }
+
+
+def _m7d_payload(payload: Mapping[str, Any] | None) -> Mapping[str, Any]:
+    if not isinstance(payload, Mapping):
+        return {}
+    content = payload.get("content")
+    if isinstance(content, Mapping) and "observations" not in payload:
+        return content
+    return payload
+
+
+def _m7d_items(watchlist_config: Mapping[str, Any]) -> list[dict[str, Any]]:
+    raw_items = watchlist_config.get("items") if isinstance(watchlist_config, Mapping) else None
+    if not isinstance(raw_items, list):
+        raw_items = []
+        for category in watchlist_config.get("categories", []) if isinstance(watchlist_config, Mapping) else []:
+            if isinstance(category, Mapping):
+                for item in category.get("instruments", []) if isinstance(category.get("instruments"), list) else []:
+                    if isinstance(item, Mapping):
+                        merged = dict(item)
+                        merged.setdefault("category", category.get("category_id") or category.get("label"))
+                        raw_items.append(merged)
+    return [dict(item) for item in raw_items if isinstance(item, Mapping) and item.get("enabled", True) is not False and item.get("symbol")]
+
+
+def _m7d_symbol(value: Mapping[str, Any]) -> str:
+    return str(value.get("symbol") or value.get("display_symbol") or value.get("id") or "")
+
+
+def _m7d_safe_item(item: Mapping[str, Any], reason: str | None = None) -> dict[str, Any]:
+    out = {
+        "symbol": _m7d_symbol(item),
+        "display_name": item.get("display_name") or item.get("name") or item.get("display_symbol") or _m7d_symbol(item),
+    }
+    if reason:
+        out["reason"] = reason
+    return out
+
+
+def _m7d_find_by_symbol(collection: Mapping[str, Any] | None, list_keys: tuple[str, ...]) -> dict[str, Mapping[str, Any]]:
+    out: dict[str, Mapping[str, Any]] = {}
+    if not isinstance(collection, Mapping):
+        return out
+    for key in list_keys:
+        values = collection.get(key)
+        if isinstance(values, list):
+            for entry in values:
+                if isinstance(entry, Mapping):
+                    symbol = _m7d_symbol(entry)
+                    if symbol:
+                        out[symbol] = entry
+    return out
+
+
+def _m7d_metric_value(metrics: Mapping[str, Any] | None, name: str) -> float | None:
+    if not isinstance(metrics, Mapping):
+        return None
+    for group in ("price_change_metrics",):
+        entry = metrics.get(group)
+        if isinstance(entry, Mapping) and isinstance(entry.get(name), Mapping):
+            metric = entry[name]
+            if metric.get("status") == "computed" and isinstance(metric.get("value"), (int, float)):
+                return float(metric["value"])
+    if isinstance(metrics.get(name), (int, float)):
+        return float(metrics[name])
+    return None
+
+
+def _m7d_is_degraded(obs: Mapping[str, Any] | None, failure: Mapping[str, Any] | None) -> bool:
+    if failure:
+        return True
+    if not isinstance(obs, Mapping):
+        return False
+    text = " ".join(str(obs.get(k) or "") for k in ("status", "observation_status", "freshness_assessment", "delay_status")) .lower()
+    return bool(obs.get("reference_only")) or any(token in text for token in ("degraded", "blocked", "stale", "reference", "unavailable", "failed")) or bool(obs.get("data_quality_flags"))
+
+
+def _m7d_direction_relation(a: float | None, b: float | None) -> str:
+    if a is None or b is None or a == 0 or b == 0:
+        return "flat_or_unavailable"
+    return "same_direction" if (a > 0 and b > 0) or (a < 0 and b < 0) else "opposite_direction"
+
+
+def _m7d_is_index(item: Mapping[str, Any]) -> bool:
+    symbol = str(item.get("symbol") or item.get("display_symbol") or "")
+    item_id = str(item.get("id") or "").lower()
+    return str(item.get("instrument_type") or "").lower() == "index" or str(item.get("category") or "").lower() == "index" or symbol in {"TAIEX", "T00", "t00", "tse_t00"} or "taiex" in item_id or "t00" in item_id
+
+
+def _m7d_is_futures(item: Mapping[str, Any]) -> bool:
+    symbol = str(item.get("symbol") or "").upper()
+    return str(item.get("market") or "").lower() == "taifex" or "future" in str(item.get("instrument_type") or "").lower() or str(item.get("category") or "").lower() == "futures" or symbol in {"TX", "TXF", "TAIEX_FUTURES"}
+
+
+def _m7d_is_etf(item: Mapping[str, Any]) -> bool:
+    return str(item.get("instrument_type") or "").lower() == "etf" or str(item.get("category") or "").lower() == "etf"
+
+
+def build_bounded_watchlist_cross_context(
+    watchlist_config: Mapping[str, Any],
+    latest_observation_payload: Mapping[str, Any],
+    ai_safe_market_context_projection_collection: Mapping[str, Any] | None = None,
+    deterministic_metrics_context_collection: Mapping[str, Any] | None = None,
+) -> dict[str, object]:
+    """Build a pure M7D bounded watchlist cross-context candidate without I/O."""
+    ctx = build_empty_bounded_watchlist_cross_context()
+    if not isinstance(watchlist_config, Mapping) or not _m7d_items(watchlist_config):
+        ctx.update({"context_status": "blocked_missing_watchlist", "blocked_reason": "missing_required_watchlist_config", "runtime_populated": False, "safe_for_ai_context": False})
+        return ctx
+    payload = _m7d_payload(latest_observation_payload)
+    if not isinstance(latest_observation_payload, Mapping) or not isinstance(payload, Mapping):
+        ctx.update({"context_status": "blocked_missing_latest_observation", "blocked_reason": "missing_required_latest_observation_payload", "runtime_populated": False, "safe_for_ai_context": False})
+        return ctx
+
+    items = _m7d_items(watchlist_config)
+    observations = [o for o in payload.get("observations", []) if isinstance(o, Mapping)] if isinstance(payload.get("observations"), list) else []
+    failures = [f for f in payload.get("failures", []) if isinstance(f, Mapping)] if isinstance(payload.get("failures"), list) else []
+    obs_by_symbol = {_m7d_symbol(o): o for o in observations if _m7d_symbol(o)}
+    fail_by_symbol = {_m7d_symbol(f): f for f in failures if _m7d_symbol(f)}
+    projections_by_symbol = _m7d_find_by_symbol(ai_safe_market_context_projection_collection, ("projections", "contexts"))
+    metrics_by_symbol = _m7d_find_by_symbol(deterministic_metrics_context_collection, ("contexts", "metrics"))
+
+    safe_rows: list[dict[str, Any]] = []
+    positive: list[dict[str, Any]] = []
+    negative: list[dict[str, Any]] = []
+    flat = unavailable = 0
+    fresh = stale = unknown_fresh = failed_source = 0
+    degraded_items: list[dict[str, Any]] = []
+    reference_items: list[dict[str, Any]] = []
+    blocked_items: list[dict[str, Any]] = []
+    source_names: set[str] = set(); adapter_ids: set[str] = set(); retrieved: set[str] = set()
+
+    for item in items:
+        symbol = _m7d_symbol(item)
+        obs = obs_by_symbol.get(symbol)
+        failure = fail_by_symbol.get(symbol)
+        m7b = projections_by_symbol.get(symbol)
+        m7c = metrics_by_symbol.get(symbol)
+        change_percent = _m7d_metric_value(m7c, "change_percent")
+        change = _m7d_metric_value(m7c, "change")
+        row = {
+            "symbol": symbol,
+            "display_name": item.get("display_name") or item.get("name") or (obs or {}).get("display_symbol") or symbol,
+            "market": item.get("market") or (obs or {}).get("market"),
+            "instrument_type": item.get("instrument_type") or (obs or {}).get("instrument_type"),
+            "category": item.get("category") or item.get("category_id"),
+            "change_percent": change_percent,
+            "change": change,
+            "observation_status": (failure or {}).get("status") or (obs or {}).get("status") or ("missing" if obs is None else "ok"),
+            "has_m7b_projection": symbol in projections_by_symbol,
+            "has_m7c_metrics": change_percent is not None,
+        }
+        safe_rows.append(row)
+        if change_percent is None:
+            unavailable += 1
+        elif change_percent > 0:
+            positive.append(row)
+        elif change_percent < 0:
+            negative.append(row)
+        else:
+            flat += 1
+        if failure:
+            failed_source += 1
+        freshness = str((obs or {}).get("freshness_assessment") or (obs or {}).get("freshness_status") or "").lower()
+        if not obs and not failure:
+            unknown_fresh += 1
+        elif "fresh" in freshness and "stale" not in freshness:
+            fresh += 1
+        elif "stale" in freshness:
+            stale += 1
+        else:
+            unknown_fresh += 1
+        if _m7d_is_degraded(obs, failure):
+            degraded_items.append(_m7d_safe_item(item, "degraded_or_failed_observation"))
+        if obs and obs.get("reference_only") is True:
+            reference_items.append(_m7d_safe_item(item, "reference_only"))
+        if failure or str((obs or {}).get("status") or "").lower().startswith("blocked"):
+            blocked_items.append(_m7d_safe_item(item, "blocked_or_failed"))
+        for val, target in (((obs or {}).get("source") or (failure or {}).get("source"), source_names), ((obs or {}).get("adapter_id") or (failure or {}).get("adapter_id"), adapter_ids), ((obs or {}).get("retrieved_at_utc") or (obs or {}).get("retrieved_at") or (failure or {}).get("retrieved_at_utc"), retrieved)):
+            if val:
+                target.add(str(val))
+
+    observed_count = sum(1 for item in items if _m7d_symbol(item) in obs_by_symbol and _m7d_symbol(item) not in fail_by_symbol and not _m7d_is_degraded(obs_by_symbol.get(_m7d_symbol(item)), None) and str(obs_by_symbol[_m7d_symbol(item)].get("status") or "ok").lower() not in {"failed", "error"})
+    ctx.update({"context_status": "runtime_computed_candidate", "runtime_populated": True, "safe_for_ai_context": False, "bounded_watchlist_only": True, "not_full_market_breadth": True, "not_trading_signal": True, "not_recommendation": True})
+    ctx.pop("future_builder_requirements", None)
+    ctx.pop("input_requirements", None)
+    ctx["watchlist_observation_coverage"] = {"watchlist_item_count": len(items), "observed_item_count": observed_count, "missing_observation_count": sum(1 for item in items if _m7d_symbol(item) not in obs_by_symbol and _m7d_symbol(item) not in fail_by_symbol), "degraded_observation_count": len(degraded_items), "failed_observation_count": sum(1 for item in items if _m7d_symbol(item) in fail_by_symbol), "reference_only_count": len(reference_items), "has_m7b_projection_count": sum(1 for item in items if _m7d_symbol(item) in projections_by_symbol), "has_m7c_metrics_count": sum(1 for row in safe_rows if row["has_m7c_metrics"]), "status": "computed"}
+    ctx["bounded_breadth_summary"] = {"bounded_positive_change_count": len(positive), "bounded_negative_change_count": len(negative), "bounded_flat_change_count": flat, "bounded_unavailable_change_count": unavailable, "bounded_watchlist_only": True, "not_full_market_breadth": True, "status": "computed"}
+    ctx["bounded_relative_change_summary"] = {"top_positive_change_percent_items": sorted(positive, key=lambda r: r["change_percent"], reverse=True)[:5], "top_negative_change_percent_items": sorted(negative, key=lambda r: r["change_percent"])[:5], "comparison_metric": "change_percent", "bounded_watchlist_only": True, "not_recommendation": True, "status": "computed"}
+    index_items = [r for r in safe_rows if _m7d_is_index(next((i for i in items if _m7d_symbol(i) == r["symbol"]), {})) and r["change_percent"] is not None]
+    idx_pairs = [{"index_symbol": idx["symbol"], "comparison_symbol": r["symbol"], "index_change_percent": idx["change_percent"], "comparison_change_percent": r["change_percent"], "direction_relation": _m7d_direction_relation(idx["change_percent"], r["change_percent"]), "bounded_watchlist_only": True, "not_market_prediction": True} for idx in index_items for r in safe_rows if r["symbol"] != idx["symbol"] and r["change_percent"] is not None and not _m7d_is_index(next((i for i in items if _m7d_symbol(i) == r["symbol"]), {}))]
+    ctx["index_relative_context"] = {"index_like_items": index_items, "index_comparison_pairs": idx_pairs, "bounded_watchlist_only": True, "requires_index_item_in_watchlist": True, "not_market_prediction": True, "status": "computed" if index_items else "not_computed"}
+    fut_items = [r for r in safe_rows if _m7d_is_futures(next((i for i in items if _m7d_symbol(i) == r["symbol"]), {})) and r["change_percent"] is not None]
+    fut_pairs = [{"futures_symbol": fut["symbol"], "comparison_symbol": r["symbol"], "futures_change_percent": fut["change_percent"], "comparison_change_percent": r["change_percent"], "direction_relation": _m7d_direction_relation(fut["change_percent"], r["change_percent"]), "bounded_watchlist_only": True, "not_futures_lead_signal": True} for fut in fut_items for r in safe_rows if r["symbol"] != fut["symbol"] and r["change_percent"] is not None]
+    ctx["futures_relative_context"] = {"futures_like_items": fut_items, "futures_comparison_pairs": fut_pairs, "bounded_watchlist_only": True, "requires_futures_item_in_watchlist": True, "not_futures_lead_signal": True, "status": "computed" if fut_items else "not_computed"}
+    etf_items = [r for r in safe_rows if _m7d_is_etf(next((i for i in items if _m7d_symbol(i) == r["symbol"]), {}))]
+    ctx["etf_group_context"] = {"etf_like_items": etf_items, "etf_comparison_pairs": [{"symbol_a": a["symbol"], "symbol_b": b["symbol"], "bounded_watchlist_only": True, "not_sector_rotation": True, "not_capital_flow": True} for i, a in enumerate(etf_items) for b in etf_items[i + 1:]], "bounded_watchlist_only": True, "not_sector_rotation": True, "not_capital_flow": True, "status": "computed" if etf_items else "not_computed"}
+    ctx["source_freshness_summary"] = {"fresh_item_count": fresh, "stale_item_count": stale, "unknown_freshness_count": unknown_fresh, "failed_source_count": failed_source, "bounded_watchlist_only": True, "status": "computed"}
+    ctx["missing_context_summary"] = {"missing_m7b_projection_items": [_m7d_safe_item(i, "missing_m7b_projection") for i in items if _m7d_symbol(i) not in projections_by_symbol], "missing_m7c_metrics_items": [_m7d_safe_item(i, "missing_m7c_metrics") for i in items if _m7d_symbol(i) not in metrics_by_symbol or _m7d_metric_value(metrics_by_symbol.get(_m7d_symbol(i)), "change_percent") is None], "missing_required_observation_items": [_m7d_safe_item(i, "missing_observation") for i in items if _m7d_symbol(i) not in obs_by_symbol and _m7d_symbol(i) not in fail_by_symbol], "bounded_watchlist_only": True, "status": "computed"}
+    ctx["degraded_context_summary"] = {"degraded_items": degraded_items, "reference_only_items": reference_items, "blocked_items": blocked_items, "bounded_watchlist_only": True, "status": "computed"}
+    ctx["provenance_summary"] = {"source_names": sorted(source_names), "adapter_ids": sorted(adapter_ids), "retrieved_at_values": sorted(retrieved), "provenance_available": bool(source_names or adapter_ids or retrieved), "status": "computed"}
+    ctx["semantic_limitations"] = {"bounded_watchlist_only": True, "not_full_market_breadth": True, "not_market_wide_trend": True, "not_sector_rotation": True, "not_capital_flow": True, "not_trading_signal": True, "not_recommendation": True, "not_support_resistance": True, "not_true_liquidity": True, "not_full_order_book": True, "status": "computed"}
+    return ctx
+
+
+def promote_bounded_watchlist_cross_context_for_controlled_context(bounded_context: Mapping[str, Any]) -> dict[str, Any]:
+    """Promote a valid M7D bounded candidate for controlled conversation context only."""
+    policy = "m7d_controlled_bounded_watchlist_cross_context_v1"
+    candidate = dict(bounded_context) if isinstance(bounded_context, Mapping) else {}
+    valid = candidate.get("schema_version") == M7D_BOUNDED_WATCHLIST_CROSS_CONTEXT_SCHEMA_VERSION and candidate.get("context_status") == "runtime_computed_candidate" and candidate.get("runtime_populated") is True and candidate.get("safe_for_ai_context") is False and candidate.get("bounded_watchlist_only") is True and candidate.get("not_full_market_breadth") is True and candidate.get("not_trading_signal") is True and candidate.get("not_recommendation") is True
+    if not valid:
+        blocked = dict(candidate)
+        blocked.update({"safe_for_ai_context": False, "exposure_status": "blocked", "blocked_reason": "not_valid_m7d_bounded_watchlist_cross_context_candidate", "controlled_exposure_policy": policy, "exposure_scope": "blocked_not_exposed", "bounded_watchlist_only": True, "not_full_market_breadth": True, "cross_context_is_signal": False, "raw_rich_facts_exposed": False, "raw_full_ladder_exposed": False})
+        return blocked
+    promoted = dict(candidate)
+    promoted.pop("future_builder_requirements", None)
+    promoted.update({"safe_for_ai_context": True, "exposure_status": "ai_safe_context_enabled", "controlled_exposure_policy": policy, "exposure_scope": "conversation_context_only", "bounded_watchlist_only": True, "not_full_market_breadth": True, "cross_context_is_signal": False, "not_trading_signal": True, "not_recommendation": True, "raw_rich_facts_exposed": False, "raw_full_ladder_exposed": False})
+    return promoted
