@@ -1180,7 +1180,36 @@
     "schema_defined": true,
     "schema_version": "m7a_twse_mis_rich_facts.v1",
     "top_level_normalization_changed": false,
-    "top_level_observation_behavior_preserved": true
+    "top_level_observation_behavior_preserved": true,
+    "m7d_bounded_watchlist_cross_context": {
+      "schema_version": "m7d_bounded_watchlist_cross_context.v1",
+      "status": "schema_defined_policy_defined_not_runtime_populated",
+      "m7a_dependency_status": "pass_with_caveats",
+      "m7b_dependency_status": "pass_with_caveats",
+      "m7c_dependency_status": "pass_with_caveats",
+      "policy_doc": "docs/protocol/M7D_BOUNDED_WATCHLIST_CROSS_CONTEXT_POLICY.md",
+      "schema_helper": "scripts/observation_contract.py::build_empty_bounded_watchlist_cross_context",
+      "coverage_catalog_items": 19,
+      "runtime_populated": false,
+      "runtime_behavior_changed": false,
+      "conversation_context_changed": false,
+      "fastapi_changed": false,
+      "mcp_changed": false,
+      "frontend_changed": false,
+      "source_health_changed": false,
+      "latest_observation_changed": false,
+      "safe_for_ai_context": false,
+      "bounded_watchlist_only": true,
+      "not_full_market_breadth": true,
+      "cross_context_is_signal": false,
+      "trading_signal": false,
+      "recommendation": false,
+      "completed_tasks": [
+        "M7D-00",
+        "M7D-01"
+      ],
+      "next_task": "M7D-02-M7D-03-BOUNDED-WATCHLIST-CROSS-CONTEXT-BUILDER-AND-SAFETY-TESTS"
+    }
   },
   "runtime_behavior_changed": false,
   "scheduler": false,

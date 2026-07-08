@@ -187,3 +187,32 @@ def test_m7c_deterministic_metrics_registered_final_controlled_exposure():
     assert m7c["builder_output_metric_status"] == "runtime_computed_candidate"
     assert m7c["final_acceptance_status"] == "pass_with_caveats"
     assert m7c["next_task"] == "M7D-BOUNDED-WATCHLIST-CROSS-CONTEXT"
+
+
+def test_m7d_bounded_watchlist_cross_context_registered_schema_only():
+    inv = load_inventory()
+    m7d = inv["rich_observation_contract"]["m7d_bounded_watchlist_cross_context"]
+    assert m7d["schema_version"] == "m7d_bounded_watchlist_cross_context.v1"
+    assert m7d["status"] == "schema_defined_policy_defined_not_runtime_populated"
+    assert m7d["m7a_dependency_status"] == "pass_with_caveats"
+    assert m7d["m7b_dependency_status"] == "pass_with_caveats"
+    assert m7d["m7c_dependency_status"] == "pass_with_caveats"
+    assert m7d["policy_doc"] == "docs/protocol/M7D_BOUNDED_WATCHLIST_CROSS_CONTEXT_POLICY.md"
+    assert m7d["schema_helper"] == "scripts/observation_contract.py::build_empty_bounded_watchlist_cross_context"
+    assert m7d["coverage_catalog_items"] == 19
+    assert m7d["runtime_populated"] is False
+    assert m7d["runtime_behavior_changed"] is False
+    assert m7d["conversation_context_changed"] is False
+    assert m7d["fastapi_changed"] is False
+    assert m7d["mcp_changed"] is False
+    assert m7d["frontend_changed"] is False
+    assert m7d["source_health_changed"] is False
+    assert m7d["latest_observation_changed"] is False
+    assert m7d["safe_for_ai_context"] is False
+    assert m7d["bounded_watchlist_only"] is True
+    assert m7d["not_full_market_breadth"] is True
+    assert m7d["cross_context_is_signal"] is False
+    assert m7d["trading_signal"] is False
+    assert m7d["recommendation"] is False
+    assert m7d["completed_tasks"] == ["M7D-00", "M7D-01"]
+    assert m7d["next_task"] == "M7D-02-M7D-03-BOUNDED-WATCHLIST-CROSS-CONTEXT-BUILDER-AND-SAFETY-TESTS"
