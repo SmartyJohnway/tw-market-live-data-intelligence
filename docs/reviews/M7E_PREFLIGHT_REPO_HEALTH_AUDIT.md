@@ -95,11 +95,22 @@ Migration policy:
 
 ## CI repair note for PR #103
 
-- GitHub Actions job `85840781933` reported a failure in `python scripts/run_test_profile.py default-ci --json` on the earlier PR run.
-- The public job page did not expose the detailed pytest failure without authentication, so the CI repair re-ran the exact default-ci command locally on this branch.
-- Local reproduction result after this repair pass: default-ci passed with 268 selected tests.
-- No M7E implementation, live probes, semantic contract changes, frontend behavior changes beyond the existing XSS-safe rendering, or AI exposure policy changes were made.
-- GitHub Actions should be re-run after this commit; merge remains recommended only after Actions are green.
+- Earlier GitHub Actions runs failed in `python scripts/run_test_profile.py default-ci --json`.
+- Commit 3 added bounded `failure_output_tail` diagnostics to `scripts/run_test_profile.py`.
+- The diagnostics identified the actual failure chain:
+  - `tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only`
+  - `scripts/run_m5ij_end_to_end_acceptance.py --check-only`
+  - `no_forbidden_paths_changed` blocked `frontend/public/index.html`
+- Root cause:
+  - the M5IJ forbidden path policy treated all `frontend/public/` changes as unauthorized publication artifacts.
+  - PR #103 intentionally changed `frontend/public/index.html` for reviewed DOM XSS remediation.
+- Resolution:
+  - M5IJ now distinguishes authorized frontend security remediation from unauthorized frontend publication/artifact writes.
+  - `frontend/public/index.html` is allowed only as a narrow reviewed security exception.
+  - other `frontend/public/*`, generated, staging, production, credential, token, and `.env` paths remain blocked.
+- Validation:
+  - Default CI passed on PR head `42a8d8a8391291cdc5b96add96d9b3db504c8f71`.
+- No M7E implementation, live probes, M7A/M7B/M7C/M7D semantic changes, frontend behavior changes beyond XSS-safe rendering, or AI exposure policy weakening were introduced.
 
 ## M7E readiness
 
