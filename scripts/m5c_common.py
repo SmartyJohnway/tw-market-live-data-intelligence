@@ -40,7 +40,7 @@ def _contract_errors(rd:Path):
         else: docs[name]=doc
     if errs: return errs
     man=docs['sha256_manifest.json']; cand=docs['staging_candidate.json']; summ=docs['run_summary.json']; rec=docs['execution_receipt.json']
-    if set(man.get('manifest',{})) != set(a for a in REQ_ART if a!='sha256_manifest.json'):
+    if set(man.get('manifest',{})) != {a for a in REQ_ART if a!='sha256_manifest.json'}:
         errs.append({'code':'manifest_contract_mismatch','expected':sorted(a for a in REQ_ART if a!='sha256_manifest.json'),'actual':sorted(man.get('manifest',{}))})
     statuses={'candidate':cand.get('contract_status'),'summary':summ.get('contract_status'),'receipt':rec.get('contract_status'),'manifest':man.get('contract_status')}
     if len(set(statuses.values())) != 1 or next(iter(statuses.values())) not in SUCCESS_CONTRACT_STATUSES:

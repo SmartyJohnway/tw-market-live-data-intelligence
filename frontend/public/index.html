@@ -72,30 +72,48 @@
                 const data = await response.json();
                 renderMatrix(data);
             } catch (e) {
-                document.getElementById('matrix-container').innerHTML = `
-                    <div style="padding: 15px; background: #fffbdd; border: 1px solid #d3c23f; border-radius: 4px; margin-bottom: 20px;">
-                        <strong>Note:</strong> Could not load static <code>matrix.json</code>. Ensure you have run <code>python scripts/run_all_probes.py</code> first to generate the report.<br><br>
-                        Error details: ${e.message}
-                    </div>
-                `;
+                renderMatrixLoadError(e);
             }
         }
 
+        function appendText(parent, tagName, text, options = {}) {
+            const element = document.createElement(tagName);
+            if (options.className) element.className = options.className;
+            if (options.style) element.setAttribute('style', options.style);
+            element.textContent = text;
+            parent.appendChild(element);
+            return element;
+        }
+
+        function renderMatrixLoadError(error) {
+            const container = document.getElementById('matrix-container');
+            container.replaceChildren();
+            const box = document.createElement('div');
+            box.setAttribute('style', 'padding: 15px; background: #fffbdd; border: 1px solid #d3c23f; border-radius: 4px; margin-bottom: 20px;');
+            const strong = appendText(box, 'strong', 'Note:');
+            strong.insertAdjacentText('afterend', ' Could not load static ');
+            appendText(box, 'code', 'matrix.json');
+            box.appendChild(document.createTextNode(' Ensure you have run '));
+            appendText(box, 'code', 'python scripts/run_all_probes.py');
+            box.appendChild(document.createTextNode(' first to generate the report.'));
+            box.appendChild(document.createElement('br'));
+            box.appendChild(document.createElement('br'));
+            box.appendChild(document.createTextNode('Error details: '));
+            appendText(box, 'span', error.message);
+            container.appendChild(box);
+        }
+
         function renderMatrix(data) {
-            let html = `
-                <p class="note">Last updated: ${new Date(data.last_updated).toLocaleString()}</p>
-                <table>
-                    <tr>
-                        <th>Source</th>
-                        <th>Type</th>
-                        <th>Contract Status</th>
-                        <th>Usable Now?</th>
-                        <th>Auth Req?</th>
-                        <th>Delay Status</th>
-                        <th>Risk Level</th>
-                        <th>Unsupported/Failed</th>
-                    </tr>
-            `;
+            const container = document.getElementById('matrix-container');
+            container.replaceChildren();
+            appendText(container, 'p', `Last updated: ${new Date(data.last_updated).toLocaleString()}`, { className: 'note' });
+
+            const table = document.createElement('table');
+            const header = document.createElement('tr');
+            ['Source', 'Type', 'Contract Status', 'Usable Now?', 'Auth Req?', 'Delay Status', 'Risk Level', 'Unsupported/Failed'].forEach(label => {
+                appendText(header, 'th', label);
+            });
+            table.appendChild(header);
 
             data.results.forEach(row => {
                 let statusClass = 'warning';
@@ -111,34 +129,40 @@
                     statusIcon = '📝';
                 }
 
+                const tr = document.createElement('tr');
+                const sourceCell = document.createElement('td');
+                appendText(sourceCell, 'strong', row.source || '');
+                tr.appendChild(sourceCell);
+
+                const typeCell = document.createElement('td');
+                appendText(typeCell, 'span', row.source_type || '', { className: 'code-inline' });
+                tr.appendChild(typeCell);
+
+                appendText(tr, 'td', `${statusIcon} ${row.contract_status || ''}`, { className: statusClass });
+
                 const usableBadge = row.is_usable_now ? 'badge-true' : 'badge-false';
-                const usableText = row.is_usable_now ? 'Yes' : 'No';
+                const usableCell = document.createElement('td');
+                appendText(usableCell, 'span', row.is_usable_now ? 'Yes' : 'No', { className: `badge ${usableBadge}` });
+                tr.appendChild(usableCell);
 
                 const authBadge = row.requires_auth ? 'badge-false' : 'badge-true';
-                const authText = row.requires_auth ? 'Yes' : 'No';
+                const authCell = document.createElement('td');
+                appendText(authCell, 'span', row.requires_auth ? 'Yes' : 'No', { className: `badge ${authBadge}` });
+                tr.appendChild(authCell);
 
-                const riskClass = 'risk-' + (row.risk_level || 'unknown').toLowerCase();
+                appendText(tr, 'td', row.delay_status || 'N/A');
+                appendText(tr, 'td', row.risk_level || 'N/A', { className: 'risk-' + (row.risk_level || 'unknown').toLowerCase() });
 
                 const unsupported = (row.unsupported_targets && row.unsupported_targets.length > 0) ? row.unsupported_targets.length : 0;
                 const failed = (row.failed_targets && row.failed_targets.length > 0) ? row.failed_targets.length : 0;
+                appendText(tr, 'td', `${unsupported} unsup / ${failed} fail`, { className: 'note' });
 
-                html += `
-                    <tr>
-                        <td><strong>${row.source}</strong></td>
-                        <td><span class="code-inline">${row.source_type}</span></td>
-                        <td class="${statusClass}">${statusIcon} ${row.contract_status}</td>
-                        <td><span class="badge ${usableBadge}">${usableText}</span></td>
-                        <td><span class="badge ${authBadge}">${authText}</span></td>
-                        <td>${row.delay_status || 'N/A'}</td>
-                        <td class="${riskClass}">${row.risk_level || 'N/A'}</td>
-                        <td class="note">${unsupported} unsup / ${failed} fail</td>
-                    </tr>
-                `;
+                table.appendChild(tr);
             });
 
-            html += `</table>`;
-            document.getElementById('matrix-container').innerHTML = html;
+            container.appendChild(table);
         }
+
 
         async function testProbe(endpoint) {
             const resultBox = document.getElementById('probe-result');

@@ -1,0 +1,197 @@
+{
+  "schema_version": "m7e_preflight_remediation_backlog.v1",
+  "status": "pass_with_caveats",
+  "generated_after_pr": 102,
+  "generated_after_merge_commit": "25699487474d54c4e2ccd6d9d494916d723fbdad",
+  "next_task": "M7E-MARKET-CLOCK-AND-SESSION-STATE",
+  "jules_suggestions_total": 39,
+  "fixed_now": [
+    {
+      "id": 1,
+      "title": "Untested MCP tool: get_watchlist_summary_tool in server/mcp_server.py"
+    },
+    {
+      "id": 2,
+      "title": "Untested API endpoint: get_m5k_default_watchlist in server/main.py"
+    },
+    {
+      "id": 3,
+      "title": "Untested MCP tool: create_m5k_handoff_tool in server/mcp_server.py"
+    },
+    {
+      "id": 4,
+      "title": "Untested API endpoint: get_m5k_live_observation_history in server/main.py"
+    },
+    {
+      "id": 5,
+      "title": "Untested MCP tool: read_m5k_default_watchlist_tool in server/mcp_server.py"
+    },
+    {
+      "id": 6,
+      "title": "Untested API endpoint: get_source_health_history in server/main.py"
+    },
+    {
+      "id": 7,
+      "title": "DOM-based XSS via innerHTML in Error Handling"
+    },
+    {
+      "id": 8,
+      "title": "DOM-based XSS via innerHTML when Rendering Matrix"
+    },
+    {
+      "id": 9,
+      "title": "Inefficient List Containment Check (run_m3g04_controlled_live_probe.py)"
+    },
+    {
+      "id": 10,
+      "title": "Inefficient List Containment Check (generate_latest_market_snapshot.py)"
+    },
+    {
+      "id": 11,
+      "title": "Unnecessary List Comprehension Generator"
+    },
+    {
+      "id": 21,
+      "title": "Fix module resolution in GitHub Actions CI"
+    }
+  ],
+  "deferred": [
+    {
+      "id": 12,
+      "title": "Reduce Function Parameters: _common_artifact"
+    },
+    {
+      "id": 13,
+      "title": "Missing unit test for validate_m5c_promoted_staging_package.py"
+    },
+    {
+      "id": 14,
+      "title": "Reduce Function Parameters: _write_failure_package"
+    },
+    {
+      "id": 15,
+      "title": "Missing unit test for generate_latest_market_snapshot.py"
+    },
+    {
+      "id": 16,
+      "title": "Refactor Complex Function: _validate_evidence_readback_arguments"
+    },
+    {
+      "id": 17,
+      "title": "Reduce Function Parameters: build_execution_receipt"
+    },
+    {
+      "id": 18,
+      "title": "Reduce Function Parameters: flaky (line 139)"
+    },
+    {
+      "id": 19,
+      "title": "Reduce Function Parameters: build_bounded_probe_result"
+    },
+    {
+      "id": 20,
+      "title": "Reduce Function Parameters: write_artifacts"
+    },
+    {
+      "id": 22,
+      "title": "Reduce Function Parameters: source (16 args)"
+    },
+    {
+      "id": 23,
+      "title": "Reduce Function Parameters: build_observation"
+    },
+    {
+      "id": 24,
+      "title": "Reduce Function Parameters: field (23 args)"
+    },
+    {
+      "id": 25,
+      "title": "Reduce Function Parameters: write_candidate"
+    },
+    {
+      "id": 26,
+      "title": "Reduce Function Parameters: generate_standard_envelope (23 args)"
+    },
+    {
+      "id": 27,
+      "title": "Missing unit test for generate_ai_context_pack.py"
+    },
+    {
+      "id": 28,
+      "title": "Reduce Function Parameters: build_payload"
+    },
+    {
+      "id": 29,
+      "title": "Missing unit test for simulate_m5d_frontend_publication.py"
+    },
+    {
+      "id": 30,
+      "title": "Reduce Function Parameters: _record_outcome"
+    },
+    {
+      "id": 31,
+      "title": "Missing unit test for run_m6g_browser_operator_e2e.py"
+    },
+    {
+      "id": 32,
+      "title": "Reduce Function Parameters: flaky (line 116)"
+    },
+    {
+      "id": 33,
+      "title": "Missing unit test for run_m3g04_controlled_live_probe.py"
+    },
+    {
+      "id": 34,
+      "title": "Reduce Function Parameters: _try_record_outcome"
+    },
+    {
+      "id": 35,
+      "title": "Missing unit test for simulate_m5c_staging_rollback.py"
+    },
+    {
+      "id": 36,
+      "title": "Reduce Function Parameters: claim"
+    },
+    {
+      "id": 37,
+      "title": "Refactor Complex Function: read_controlled_probe_evidence"
+    },
+    {
+      "id": 38,
+      "title": "Refactor Complex Function: finalize"
+    },
+    {
+      "id": 39,
+      "title": "Refactor Complex Function: run_controlled_probe_runner"
+    }
+  ],
+  "stale_or_already_resolved": [],
+  "rejected_non_issue": [],
+  "needs_followup": [],
+  "moduleization_plan": {
+    "current_issue": "scripts/observation_contract.py contains M7A, M7B, M7C, M7D contracts/builders/promotion helpers and normalization helpers.",
+    "recommended_future_extraction": [
+      "scripts/twse_mis_rich_facts_contract.py",
+      "scripts/ai_safe_market_context_contract.py",
+      "scripts/deterministic_metrics_contract.py",
+      "scripts/bounded_watchlist_cross_context.py",
+      "scripts/market_clock_session_state.py"
+    ],
+    "migration_policy": [
+      "preserve compatibility re-exports from scripts/observation_contract.py",
+      "mechanical extraction only",
+      "no semantic behavior changes",
+      "tests before/after extraction",
+      "do not combine with M7E implementation"
+    ]
+  },
+  "m7e_readiness": {
+    "ready_for_m7e": true,
+    "market_clock_implemented": false,
+    "live_probes_run": false,
+    "caveats": [
+      "Large module extraction deferred.",
+      "Remaining Jules code-health and broader test suggestions deferred."
+    ]
+  }
+}

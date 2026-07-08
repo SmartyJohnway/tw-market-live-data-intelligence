@@ -85,6 +85,18 @@ def final_status(checks: list[dict[str, Any]], caveats: list[str]) -> str:
     if caveats or any(c.get("status") == "pass_with_caveats" for c in checks): return "pass_with_caveats"
     return "pass"
 
+def compact_check_diagnostic(check: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "label": check.get("label"),
+        "name": check.get("name"),
+        "status": check.get("status"),
+        "command": check.get("command"),
+        "returncode": check.get("returncode"),
+        "stdout_tail": check.get("stdout_tail"),
+        "stderr_tail": check.get("stderr_tail"),
+        "evidence": check.get("evidence"),
+    }
+
 def fastapi_acceptance(watchlist: dict[str, Any]) -> dict[str, Any]:
     from fastapi.testclient import TestClient
     from server.main import app
@@ -149,8 +161,9 @@ def build_report(mode: str, ssl_policy: str, execute_live: bool) -> dict[str, An
         caveats.append("No latest observation artifact is present; acceptable for check-only operation.")
     all_checks = command_checks + [{"status": fastapi["status"], "label":"FastAPI"}, {"status": mcp["status"], "label":"MCP"}, {"status": front["status"], "label":"Frontend"}, {"status": mode_a["status"], "label":"Mode A"}, {"status": mode_b["status"], "label":"Mode B"}, {"status": mode_c["status"], "label":"Mode C"}]
     status = final_status(all_checks, caveats)
+    failed_checks = [compact_check_diagnostic(check) for check in all_checks if check.get("status") == "fail"]
     summary = {"operator_ready": status != "fail", "release_preflight_ready": status != "fail", "mode_a_ready": mode_a["status"]=="pass", "mode_b_check_only_ready": mode_b["status"]=="pass", "mode_c_ready": mode_c["status"]=="pass"}
-    return {"schema_version":"m6e_operator_acceptance.v1", "generated_at_utc": utc_now(), "mode": mode, "network_calls_may_have_occurred": execute_live, "ssl_policy": ssl_policy, "repository": repository_version(), "python": sys.version, "platform": platform.platform(), "checks": all_checks, "mode_a": mode_a, "mode_b": mode_b, "mode_c": mode_c, "fastapi": fastapi, "mcp": mcp, "frontend": front, "conversation_package": conv, "operator_workbench": command_checks[0], "operator_preflight": command_checks[2], "child_workflow_caveats": child_workflow_caveats, "governance": {"no_m5f_mutation": before == after, "check_only_non_network": not execute_live, "no_polling": True, "no_scheduler": True, "no_trading_output": True, "no_raw_payload_leakage": conv["status"]=="pass"}, "final_status": status, "operator_acceptance_summary": summary, "caveats": caveats, "recommended_next_steps": ["python scripts/run_local_workbench.py", "python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01", "python scripts/run_m5k_postmerge_validation.py --check-only", "python scripts/build_m5n_conversation_context.py", "python scripts/run_operator_preflight.py --json --timeout-seconds 300"]}
+    return {"schema_version":"m6e_operator_acceptance.v1", "generated_at_utc": utc_now(), "mode": mode, "network_calls_may_have_occurred": execute_live, "ssl_policy": ssl_policy, "repository": repository_version(), "python": sys.version, "platform": platform.platform(), "checks": all_checks, "failed_checks": failed_checks, "mode_a": mode_a, "mode_b": mode_b, "mode_c": mode_c, "fastapi": fastapi, "mcp": mcp, "frontend": front, "conversation_package": conv, "operator_workbench": command_checks[0], "operator_preflight": command_checks[2], "child_workflow_caveats": child_workflow_caveats, "governance": {"no_m5f_mutation": before == after, "check_only_non_network": not execute_live, "no_polling": True, "no_scheduler": True, "no_trading_output": True, "no_raw_payload_leakage": conv["status"]=="pass"}, "final_status": status, "operator_acceptance_summary": summary, "caveats": caveats, "recommended_next_steps": ["python scripts/run_local_workbench.py", "python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01", "python scripts/run_m5k_postmerge_validation.py --check-only", "python scripts/build_m5n_conversation_context.py", "python scripts/run_operator_preflight.py --json --timeout-seconds 300"]}
 
 def write_report(report: dict[str, Any]) -> None:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)

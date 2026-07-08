@@ -1,12 +1,9 @@
-import os
-import sys
 from datetime import datetime, timedelta, timezone
 
 import pytest
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../scripts")))
-import probe_twse_mis
-from probe_twse_mis import _parse_ladder, _safe_float, normalize_twse_mis_row
+from scripts import probe_twse_mis
+from scripts.probe_twse_mis import _parse_ladder, _safe_float, normalize_twse_mis_row
 
 
 @pytest.fixture

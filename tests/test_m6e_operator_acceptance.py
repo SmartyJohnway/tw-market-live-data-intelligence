@@ -13,6 +13,26 @@ from server.mcp_server import run_m5k_live_observation_tool
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def m6e_failure_diagnostic(report: dict) -> str:
+    failed_checks = [
+        m6e.compact_check_diagnostic(c)
+        for c in report.get("checks", [])
+        if c.get("status") == "fail"
+    ]
+    return json.dumps(
+        {
+            "final_status": report.get("final_status"),
+            "failed_checks": failed_checks,
+            "mode_a": report.get("mode_a"),
+            "mode_b": report.get("mode_b"),
+            "mode_c": report.get("mode_c"),
+            "caveats": report.get("caveats"),
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
+
+
 def test_final_status_logic():
     assert m6e.final_status([{"status": "pass"}], []) == "pass"
     assert m6e.final_status([{"status": "pass"}], ["caveat"]) == "pass_with_caveats"
@@ -70,10 +90,11 @@ def test_report_schema_and_mode_fields_from_check_only(monkeypatch):
         raise AssertionError("M6E check-only test attempted network socket creation")
     monkeypatch.setattr(socket, "create_connection", deny_network)
     report = m6e.build_report("check-only", "strict", False)
-    for key in ["schema_version", "generated_at_utc", "mode", "network_calls_may_have_occurred", "ssl_policy", "repository", "python", "platform", "checks", "mode_a", "mode_b", "mode_c", "fastapi", "mcp", "frontend", "conversation_package", "operator_workbench", "operator_preflight", "child_workflow_caveats", "governance", "final_status", "caveats", "recommended_next_steps"]:
+    for key in ["schema_version", "generated_at_utc", "mode", "network_calls_may_have_occurred", "ssl_policy", "repository", "python", "platform", "checks", "failed_checks", "mode_a", "mode_b", "mode_c", "fastapi", "mcp", "frontend", "conversation_package", "operator_workbench", "operator_preflight", "child_workflow_caveats", "governance", "final_status", "caveats", "recommended_next_steps"]:
         assert key in report
     assert report["network_calls_may_have_occurred"] is False
-    assert report["final_status"] == "pass_with_caveats"
+    assert report["final_status"] == "pass_with_caveats", m6e_failure_diagnostic(report)
+    assert report["failed_checks"] == []
     assert report["operator_preflight"]["status"] == "pass_with_caveats"
     assert report["child_workflow_caveats"]["operator_preflight"]
     assert report["caveats"]
