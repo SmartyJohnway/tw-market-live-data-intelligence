@@ -7,6 +7,7 @@ from typing import Any
 ROOT=Path(__file__).resolve().parents[1]
 CONFIG=ROOT/'config/test_execution_profiles.json'
 VALID_SSL={'strict','compatibility','unsafe-explicit'}
+FAILURE_OUTPUT_TAIL_CHARS=12000
 
 CommandPlan = dict[str, Any]
 CommandResult = dict[str, Any]
@@ -68,7 +69,16 @@ def run_commands(command_plan:list[CommandPlan], *, capture:bool)->list[CommandR
     return results
 
 def _public_command_results(results:list[CommandResult])->list[dict[str, Any]]:
-    return [{k:v for k,v in result.items() if k != '_output'} for result in results]
+    public=[]
+    for result in results:
+        item={k:v for k,v in result.items() if k != '_output'}
+        if result.get('return_code') != 0:
+            item['failure_output_tail']=str(result.get('_output') or '')[-FAILURE_OUTPUT_TAIL_CHARS:]
+        public.append(item)
+    return public
+
+def _failed_result(results:list[CommandResult])->CommandResult|None:
+    return next((result for result in results if result.get('return_code') != 0), None)
 
 def _pytest_output(results:list[CommandResult])->str:
     for result in results:
@@ -91,6 +101,13 @@ def build_payload(profile, command_plan, results, started, finished, args):
       'ssl_policy': args.ssl_policy,
     }
     if cfg['execution_type']=='pytest': payload.update(parse_pytest_counts(_pytest_output(results)))
+    failed=_failed_result(results)
+    if failed is not None:
+        payload.update({
+          'failed_command': failed['command'],
+          'failed_return_code': failed['return_code'],
+          'failure_output_tail': str(failed.get('_output') or '')[-FAILURE_OUTPUT_TAIL_CHARS:],
+        })
     return payload
 
 def main(argv=None):

@@ -107,3 +107,46 @@ def test_json_output_contract(monkeypatch, capsys):
     assert payload['passed'] == 3
     assert payload['command_results'][0]['execution_kind'] == 'pytest'
     assert '_output' not in payload['command_results'][0]
+
+
+def test_json_failure_includes_bounded_output_tail(monkeypatch, capsys):
+    long_output = 'start-' + ('x' * (rtp.FAILURE_OUTPUT_TAIL_CHARS + 100)) + '-pytest failure details'
+
+    def fake_run(cmd, cwd, text, stdout, stderr):
+        return subprocess.CompletedProcess(cmd, 1, long_output)
+
+    monkeypatch.setattr(rtp.subprocess, 'run', fake_run)
+
+    assert rtp.main(['fast', '--json']) == 1
+    payload = json.loads(capsys.readouterr().out)
+
+    assert payload['status'] == 'fail'
+    assert payload['failed_return_code'] == 1
+    assert payload['failed_command'] == payload['command_results'][0]['command']
+    assert payload['failure_output_tail'].endswith('-pytest failure details')
+    assert len(payload['failure_output_tail']) == rtp.FAILURE_OUTPUT_TAIL_CHARS
+    assert payload['command_results'][0]['failure_output_tail'] == payload['failure_output_tail']
+    assert '_output' not in payload['command_results'][0]
+
+
+def test_json_success_omits_failure_output_tail(monkeypatch, capsys):
+    def fake_run(cmd, cwd, text, stdout, stderr):
+        return subprocess.CompletedProcess(
+            cmd,
+            0,
+            '============================= test session starts ==============================\n'
+            'collected 1 item\n\n'
+            'tests/unit/test_x.py .\n'
+            '============================== 1 passed in 0.01s ===============================\n',
+        )
+
+    monkeypatch.setattr(rtp.subprocess, 'run', fake_run)
+
+    assert rtp.main(['fast', '--json']) == 0
+    payload = json.loads(capsys.readouterr().out)
+
+    assert payload['status'] == 'pass'
+    assert 'failed_command' not in payload
+    assert 'failed_return_code' not in payload
+    assert 'failure_output_tail' not in payload
+    assert 'failure_output_tail' not in payload['command_results'][0]
