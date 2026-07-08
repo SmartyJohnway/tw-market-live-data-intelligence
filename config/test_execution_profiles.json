@@ -61,7 +61,11 @@
         "tests/unit/test_yahoo_normalized_chart_v1.py",
         "tests/unit/test_source_contract_schema.py",
         "tests/unit/test_source_authority_registry.py",
-        "tests/unit/test_source_family_coverage_matrix.py"
+        "tests/unit/test_source_family_coverage_matrix.py",
+        "tests/unit/test_m7e_market_clock_session_state_schema.py",
+        "tests/unit/test_m7e_market_clock_session_state_builder.py",
+        "tests/unit/test_m7e_twse_holiday_schedule_classifier.py",
+        "tests/unit/test_m7e_market_clock_session_state_inventory.py"
       ],
       "network_policy": "no network; excludes tests marked network",
       "browser_policy": "does not install or require Playwright/Chromium",
