@@ -1309,13 +1309,15 @@
       "next_task": "M7F-FRONTEND-OPERATOR-PRESENTATION-AND-CONTEXT-WORKBENCH"
     },
     "m7f_rich_fact_browser_operator_workbench": {
-      "status": "field_badges_currentness_calendar_integrated",
+      "status": "ai_handoff_selection_search_filters_defined",
       "completed_tasks": [
         "M7F-00",
         "M7F-01",
         "M7F-02",
         "M7F-03",
-        "M7F-04"
+        "M7F-04",
+        "M7F-05",
+        "M7F-06"
       ],
       "track_name": "M7F-FRONTEND-RICH-FACT-BROWSER-OPERATOR-WORKBENCH-AND-AI-DISCUSSION-HANDOFF",
       "policy_doc": "docs/protocol/M7F_RICH_FACT_BROWSER_POLICY.md",
@@ -1348,7 +1350,7 @@
       "not_full_market_breadth": true,
       "depends_on_m7e_market_clock": true,
       "depends_on_m7e05_trading_calendar_authority": true,
-      "next_task": "M7F-05-06-AI-DISCUSSION-HANDOFF-RICH-FACT-SELECTION-SEARCH-AND-FILTERS",
+      "next_task": "M7F-07-08-FRONTEND-SECURITY-SEMANTIC-REGRESSION-AND-FINAL-ACCEPTANCE",
       "base_ui_doc": "docs/protocol/M7F_FRONTEND_RICH_FACT_BROWSER_BASE_UI.md",
       "safe_dom_rendering_required": true,
       "unsafe_inner_html_allowed": false,
@@ -1370,7 +1372,27 @@
       "auto_refresh_added": false,
       "frontend_side_trading_day_inference_added": false,
       "badges_are_not_trading_signals": true,
-      "badges_are_not_recommendations": true
+      "badges_are_not_recommendations": true,
+      "ai_handoff_filtering_doc": "docs/protocol/M7F_AI_DISCUSSION_HANDOFF_AND_FILTERING.md",
+      "ai_handoff_selection_added": true,
+      "safe_markdown_handoff_preview_added": true,
+      "safe_json_projection_preview_added": true,
+      "explicit_copy_buttons_added": true,
+      "search_added": true,
+      "field_group_filter_added": true,
+      "confidence_filter_added": true,
+      "exposure_filter_added": true,
+      "currentness_filter_added": true,
+      "show_hide_caveated_fields_toggle_added": true,
+      "field_grouping_added": true,
+      "ai_handoff_allowed_gate_enforced": true,
+      "raw_forbidden_fields_selectable": false,
+      "raw_forbidden_values_copied": false,
+      "automatic_clipboard_write_added": false,
+      "ai_model_call_added": false,
+      "real_artifact_loading_added": false,
+      "handoff_is_not_trading_signal": true,
+      "handoff_is_not_recommendation": true
     }
   },
   "runtime_behavior_changed": false,

@@ -40,6 +40,12 @@
         .m7f-badge-calendar { background: #dafbe1; color: #116329; border-color: #aceebb; }
         .m7f-badge-caveat { background: #fff1e5; color: #9a6700; border-color: #ffd8b5; }
         .m7f-badge-guardrail { background: #f6f8fa; color: #57606a; border-color: #d0d7de; }
+        .m7f-controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin: 12px 0; }
+        .m7f-control { display: flex; flex-direction: column; gap: 4px; }
+        .m7f-control input, .m7f-control select, .m7f-handoff-preview { border: 1px solid #d0d7de; border-radius: 6px; padding: 8px; font: inherit; }
+        .m7f-field-group { border: 1px solid #e1e4e8; border-radius: 6px; padding: 8px; margin: 8px 0; background: #f6f8fa; }
+        .m7f-selection-row { display: flex; gap: 8px; align-items: flex-start; margin: 4px 0; }
+        .m7f-handoff-preview { width: 100%; min-height: 180px; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; box-sizing: border-box; }
 
         a:focus, button:focus {
             outline: 2px solid #0366d6;
@@ -66,7 +72,9 @@
         <p class="note">Static sample: Demo safe projection / static sample. Not live data. Not trading advice.</p>
         <p>This is a governed rich fact browser, not a trading dashboard. It is not summary-only and displays parsed/project-validated/source-observed facts with provenance, confidence, and caveats. It does not provide trading advice and it does not expose raw payloads.</p>
         <div id="m7f-operator-status" aria-label="Operator status"></div>
+        <div id="m7f-controls" aria-label="Rich fact search filters selection controls"></div>
         <div id="m7f-browser-table" aria-label="Observed Rich Facts"></div>
+        <div id="m7f-handoff" aria-label="AI Discussion Handoff Preview"></div>
         <div id="m7f-governance" aria-label="Governance"></div>
     </section>
 
@@ -109,29 +117,30 @@
 
 
         const M7F_DISPLAY_CATALOG = {
-            symbol: { label: 'Symbol', group: 'identity', confidence: 'official_source_field', exposure: 'operator_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Identifier only; not a recommendation.'] },
-            display_name: { label: 'Name', group: 'identity', confidence: 'official_source_field', exposure: 'operator_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Display label from safe projection.'] },
-            market: { label: 'Market', group: 'identity', confidence: 'official_source_field', exposure: 'operator_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Market venue label only.'] },
-            source: { label: 'Source', group: 'source', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Source family label; not a live probe.'] },
-            retrieved_at_utc: { label: 'Retrieved at UTC', group: 'timestamp', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Static sample timestamp; no realtime SLA.'] },
-            price_like_value: { label: 'Price-like value', group: 'price_quote', confidence: 'source_observed', exposure: 'operator_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Descriptive parsed value; not advice.'] },
-            change_percent: { label: 'Change percent', group: 'price_change', confidence: 'source_observed', exposure: 'operator_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Descriptive parsed value only.'] },
-            volume_candidate: { label: 'Volume candidate', group: 'volume_trading', confidence: 'semantic_inferred', exposure: 'caveated_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Candidate field label; confirm source semantics before metrics use.'] },
-            best_bid_candidate: { label: 'Best bid candidate', group: 'rich_observation', confidence: 'semantic_inferred', exposure: 'caveated_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Candidate field; no ladder exposed.'] },
-            best_ask_candidate: { label: 'Best ask candidate', group: 'rich_observation', confidence: 'semantic_inferred', exposure: 'caveated_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Candidate field; no ladder exposed.'] },
-            session_state: { label: 'Session state', group: 'market_clock_currentness', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Depends on market-clock integration.'] },
-            freshness_state: { label: 'Freshness state', group: 'market_clock_currentness', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Currentness label only; no realtime guarantee.'] },
-            currentness_label: { label: 'Currentness label', group: 'market_clock_currentness', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Static preview currentness.'] },
-            calendar_confidence: { label: 'Calendar confidence', group: 'trading_calendar_authority', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Calendar dependency shown for operator review.'] },
-            trading_day_status: { label: 'Trading-day status', group: 'trading_calendar_authority', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Trading calendar status label.'] },
-            not_trading_signal: { label: 'not_trading_signal', group: 'caveats_governance', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Governance flag must remain true.'] },
-            not_recommendation: { label: 'not_recommendation', group: 'caveats_governance', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, raw_forbidden: false, caveats: ['Governance flag must remain true.'] },
-            raw_payload: { label: 'raw_payload', group: 'raw_forbidden', confidence: 'raw_forbidden', exposure: 'raw_forbidden', display_allowed: false, raw_forbidden: true, caveats: ['Raw endpoint payload values are omitted.'] },
-            twse_mis_rich_facts: { label: 'twse_mis_rich_facts', group: 'raw_forbidden', confidence: 'raw_forbidden', exposure: 'raw_forbidden', display_allowed: false, raw_forbidden: true, caveats: ['Raw rich facts object values are omitted.'] },
-            full_ladder: { label: 'full_ladder', group: 'raw_forbidden', confidence: 'raw_forbidden', exposure: 'raw_forbidden', display_allowed: false, raw_forbidden: true, caveats: ['Full ladder values are omitted.'] },
-            bid_prices: { label: 'bid_prices', group: 'raw_forbidden', confidence: 'raw_forbidden', exposure: 'raw_forbidden', display_allowed: false, raw_forbidden: true, caveats: ['Bid price arrays are omitted.'] },
-            ask_prices: { label: 'ask_prices', group: 'raw_forbidden', confidence: 'raw_forbidden', exposure: 'raw_forbidden', display_allowed: false, raw_forbidden: true, caveats: ['Ask price arrays are omitted.'] },
-            source_investigation_notes: { label: 'source_investigation_notes', group: 'raw_forbidden', confidence: 'raw_forbidden', exposure: 'raw_forbidden', display_allowed: false, raw_forbidden: true, caveats: ['Investigation note values are omitted.'] }
+            symbol: { label: 'Symbol', group: 'identity', confidence: 'official_source_field', exposure: 'operator_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Identifier only; not a recommendation.'] },
+            display_name: { label: 'Name', group: 'identity', confidence: 'official_source_field', exposure: 'operator_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Display label from safe projection.'] },
+            market: { label: 'Market', group: 'identity', confidence: 'official_source_field', exposure: 'operator_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Market venue label only.'] },
+            source: { label: 'Source', group: 'source', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Source family label; not a live probe.'] },
+            retrieved_at_utc: { label: 'Retrieved at UTC', group: 'timestamp', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Static sample timestamp; no realtime SLA.'] },
+            price_like_value: { label: 'Price-like value', group: 'price_quote', confidence: 'source_observed', exposure: 'operator_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Descriptive parsed value; not advice.'] },
+            change_percent: { label: 'Change percent', group: 'price_change', confidence: 'source_observed', exposure: 'operator_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Descriptive parsed value only.'] },
+            volume_candidate: { label: 'Volume candidate', group: 'volume_trading', confidence: 'semantic_inferred', exposure: 'caveated_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Candidate field label; confirm source semantics before metrics use.'] },
+            best_bid_candidate: { label: 'Best bid candidate', group: 'rich_observation', confidence: 'semantic_inferred', exposure: 'caveated_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Candidate field; no ladder exposed.'] },
+            best_ask_candidate: { label: 'Best ask candidate', group: 'rich_observation', confidence: 'semantic_inferred', exposure: 'caveated_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Candidate field; no ladder exposed.'] },
+            session_state: { label: 'Session state', group: 'market_clock_currentness', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Depends on market-clock integration.'] },
+            freshness_state: { label: 'Freshness state', group: 'market_clock_currentness', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Currentness label only; no realtime guarantee.'] },
+            currentness_label: { label: 'Currentness label', group: 'market_clock_currentness', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Static preview currentness.'] },
+            calendar_confidence: { label: 'Calendar confidence', group: 'trading_calendar_authority', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Calendar dependency shown for operator review.'] },
+            trading_day_status: { label: 'Trading-day status', group: 'trading_calendar_authority', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Trading calendar status label.'] },
+            not_trading_signal: { label: 'not_trading_signal', group: 'caveats_governance', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Governance flag must remain true.'] },
+            not_recommendation: { label: 'not_recommendation', group: 'caveats_governance', confidence: 'project_validated', exposure: 'operator_display_allowed', display_allowed: true, ai_handoff_allowed: true, raw_forbidden: false, caveats: ['Governance flag must remain true.'] },
+            raw_payload: { label: 'raw_payload', group: 'raw_forbidden', confidence: 'raw_forbidden', exposure: 'raw_forbidden', display_allowed: false, ai_handoff_allowed: false, raw_forbidden: true, caveats: ['Raw endpoint payload values are omitted.'] },
+            twse_mis_rich_facts: { label: 'twse_mis_rich_facts', group: 'raw_forbidden', confidence: 'raw_forbidden', exposure: 'raw_forbidden', display_allowed: false, ai_handoff_allowed: false, raw_forbidden: true, caveats: ['Raw rich facts object values are omitted.'] },
+            full_ladder: { label: 'full_ladder', group: 'raw_forbidden', confidence: 'raw_forbidden', exposure: 'raw_forbidden', display_allowed: false, ai_handoff_allowed: false, raw_forbidden: true, caveats: ['Full ladder values are omitted.'] },
+            bid_prices: { label: 'bid_prices', group: 'raw_forbidden', confidence: 'raw_forbidden', exposure: 'raw_forbidden', display_allowed: false, ai_handoff_allowed: false, raw_forbidden: true, caveats: ['Bid price arrays are omitted.'] },
+            ask_prices: { label: 'ask_prices', group: 'raw_forbidden', confidence: 'raw_forbidden', exposure: 'raw_forbidden', display_allowed: false, ai_handoff_allowed: false, raw_forbidden: true, caveats: ['Ask price arrays are omitted.'] },
+            source_investigation_notes: { label: 'source_investigation_notes', group: 'raw_forbidden', confidence: 'raw_forbidden', exposure: 'raw_forbidden', display_allowed: false, ai_handoff_allowed: false, raw_forbidden: true, caveats: ['Investigation note values are omitted.'] },
+            raw_unknown_facts: { label: 'raw_unknown_facts', group: 'raw_forbidden', confidence: 'raw_forbidden', exposure: 'raw_forbidden', display_allowed: false, ai_handoff_allowed: false, raw_forbidden: true, caveats: ['Raw unknown fact values are omitted.'] }
         };
 
         const M7F_DEMO_RICH_CONTEXT = {
@@ -151,9 +160,9 @@
                 not_recommendation: true,
                 not_market_prediction: true,
                 not_capital_flow: true,
-                raw_payload_exposed: false,
-                raw_rich_facts_exposed: false,
-                raw_full_ladder_exposed: false
+                endpoint_payload_exposed: false,
+                rich_facts_exposed: false,
+                raw_ladder_exposed: false
             },
             observations: [
                 {
@@ -185,10 +194,48 @@
             ]
         };
 
+        const M7F_DEFAULT_HANDOFF_FIELDS = ['symbol', 'display_name', 'market', 'source', 'retrieved_at_utc', 'price_like_value', 'change_percent', 'volume_candidate', 'best_bid_candidate', 'best_ask_candidate', 'currentness_label', 'calendar_confidence', 'trading_day_status', 'not_trading_signal', 'not_recommendation'];
+        let m7fFilters = { search: '', group: 'all', confidence: 'all', exposure: 'all', currentness: 'all', showCaveated: true };
+        let m7fSelectedFieldKeys = M7F_DEFAULT_HANDOFF_FIELDS.slice();
+
         function getM7FDisplayableFields(observation) {
             return Object.keys(observation).filter(key => {
                 const meta = M7F_DISPLAY_CATALOG[key];
                 return meta && meta.display_allowed === true && meta.raw_forbidden === false;
+            });
+        }
+
+        function getM7FHandoffAllowedFields(observation) {
+            return Object.keys(observation).filter(key => {
+                const meta = M7F_DISPLAY_CATALOG[key];
+                return meta && meta.display_allowed === true && meta.ai_handoff_allowed === true && meta.raw_forbidden === false;
+            });
+        }
+
+        function getM7FSelectedFieldKeys() {
+            return m7fSelectedFieldKeys.filter(key => {
+                const meta = M7F_DISPLAY_CATALOG[key];
+                return meta && meta.display_allowed === true && meta.ai_handoff_allowed === true && meta.raw_forbidden === false;
+            });
+        }
+
+        function m7fFieldMatchesFilters(key) {
+            const meta = M7F_DISPLAY_CATALOG[key];
+            if (!meta) return false;
+            if (m7fFilters.group !== 'all' && meta.group !== m7fFilters.group) return false;
+            if (m7fFilters.confidence !== 'all' && meta.confidence !== m7fFilters.confidence) return false;
+            if (m7fFilters.exposure !== 'all' && meta.exposure !== m7fFilters.exposure) return false;
+            if (!m7fFilters.showCaveated && meta.caveats.length > 0) return false;
+            return true;
+        }
+
+        function getM7FFilteredObservations(context) {
+            const search = m7fFilters.search.trim().toLowerCase();
+            const currentness = context.market_clock_session_state.currentness_label;
+            if (m7fFilters.currentness !== 'all' && m7fFilters.currentness !== currentness) return [];
+            return context.observations.filter(observation => {
+                if (!search) return true;
+                return [observation.symbol, observation.display_name, observation.market, observation.source].some(value => String(value).toLowerCase().includes(search));
             });
         }
 
@@ -271,7 +318,7 @@
                 ['Calendar confidence', status.calendar_confidence],
                 ['Trading-day status', status.trading_day_status],
                 ['Not trading advice', String(context.governance.not_trading_signal && context.governance.not_recommendation)],
-                ['Raw payload exposed', String(context.governance.raw_payload_exposed)]
+                ['Raw endpoint payload exposed', String(context.governance.endpoint_payload_exposed)]
             ];
             items.forEach(([label, value]) => {
                 const item = document.createElement('div');
@@ -286,26 +333,51 @@
             container.appendChild(grid);
         }
 
-        function renderM7FFieldDetails(parent, observation) {
+        function renderM7FFieldDetails(parent, observation, context) {
             const details = document.createElement('details');
-            const summary = appendText(details, 'summary', 'View governed rich fields');
+            const summary = appendText(details, 'summary', 'View governed rich fields with Field grouping and selected fields');
             summary.setAttribute('aria-label', `View governed rich fields for ${observation.symbol}`);
-            const table = document.createElement('table');
-            const header = document.createElement('tr');
-            ['Field', 'Value', 'Group', 'Confidence', 'Exposure', 'Caveats'].forEach(label => appendM7FTableCell(header, label, 'th'));
-            table.appendChild(header);
-            getM7FDisplayableFields(observation).forEach(key => {
-                const meta = M7F_DISPLAY_CATALOG[key];
-                const row = document.createElement('tr');
-                appendM7FTableCell(row, key);
-                appendM7FTableCell(row, observation[key]);
-                appendM7FBadgeCell(row, [meta.group], 'm7f-badge m7f-badge-guardrail');
-                appendM7FBadgeCell(row, [meta.confidence], 'm7f-badge m7f-badge-confidence');
-                appendM7FBadgeCell(row, [meta.exposure], 'm7f-badge m7f-badge-exposure');
-                appendM7FBadgeCell(row, meta.caveats, 'm7f-badge m7f-badge-caveat');
-                table.appendChild(row);
+            const grouped = {};
+            getM7FDisplayableFields(observation).filter(m7fFieldMatchesFilters).forEach(key => {
+                const group = M7F_DISPLAY_CATALOG[key].group;
+                if (!grouped[group]) grouped[group] = [];
+                grouped[group].push(key);
             });
-            details.appendChild(table);
+            Object.keys(grouped).forEach(group => {
+                const groupBox = document.createElement('div');
+                groupBox.className = 'm7f-field-group';
+                appendText(groupBox, 'h4', `Field grouping: ${group}`);
+                const table = document.createElement('table');
+                const header = document.createElement('tr');
+                ['Select for AI handoff', 'Field', 'Value', 'Group', 'Confidence', 'Exposure', 'Caveats'].forEach(label => appendM7FTableCell(header, label, 'th'));
+                table.appendChild(header);
+                grouped[group].forEach(key => {
+                    const meta = M7F_DISPLAY_CATALOG[key];
+                    const row = document.createElement('tr');
+                    const selectCell = document.createElement('td');
+                    const checkbox = document.createElement('input');
+                    checkbox.setAttribute('type', 'checkbox');
+                    checkbox.setAttribute('aria-label', `Select ${key} for safe AI handoff`);
+                    checkbox.checked = getM7FSelectedFieldKeys().includes(key);
+                    checkbox.disabled = !(meta.display_allowed === true && meta.ai_handoff_allowed === true && meta.raw_forbidden === false);
+                    checkbox.addEventListener('change', () => {
+                        if (checkbox.checked && !m7fSelectedFieldKeys.includes(key)) m7fSelectedFieldKeys.push(key);
+                        if (!checkbox.checked) m7fSelectedFieldKeys = m7fSelectedFieldKeys.filter(item => item !== key);
+                        renderM7FHandoffPanel(context);
+                    });
+                    selectCell.appendChild(checkbox);
+                    row.appendChild(selectCell);
+                    appendM7FTableCell(row, key);
+                    appendM7FTableCell(row, observation[key]);
+                    appendM7FBadgeCell(row, [meta.group], 'm7f-badge m7f-badge-guardrail');
+                    appendM7FBadgeCell(row, [meta.confidence], 'm7f-badge m7f-badge-confidence');
+                    appendM7FBadgeCell(row, [meta.exposure], 'm7f-badge m7f-badge-exposure');
+                    appendM7FBadgeCell(row, meta.caveats, 'm7f-badge m7f-badge-caveat');
+                    table.appendChild(row);
+                });
+                groupBox.appendChild(table);
+                details.appendChild(groupBox);
+            });
             const omitted = Object.keys(M7F_DISPLAY_CATALOG).filter(key => M7F_DISPLAY_CATALOG[key].raw_forbidden === true);
             const notice = document.createElement('div');
             notice.className = 'm7f-omitted';
@@ -316,6 +388,61 @@
             parent.appendChild(details);
         }
 
+        function appendM7FOptions(select, values) {
+            values.forEach(value => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = value === 'all' ? 'All' : value;
+                select.appendChild(option);
+            });
+        }
+
+        function renderM7FControls(context) {
+            const container = document.getElementById('m7f-controls');
+            container.replaceChildren();
+            appendText(container, 'h3', 'Search, filters, Field grouping, and selected fields');
+            const grid = document.createElement('div');
+            grid.className = 'm7f-controls-grid';
+            const configs = [
+                ['search', 'Symbol/name search', 'input', []],
+                ['group', 'Field group filter', 'select', ['all', 'identity', 'source', 'timestamp', 'price_quote', 'price_change', 'volume_trading', 'rich_observation', 'market_clock_currentness', 'trading_calendar_authority', 'caveats_governance', 'raw_forbidden']],
+                ['confidence', 'Confidence filter', 'select', ['all', 'official_source_field', 'project_validated', 'source_observed', 'semantic_inferred', 'raw_forbidden']],
+                ['exposure', 'Exposure filter', 'select', ['all', 'operator_display_allowed', 'caveated_display_allowed', 'raw_forbidden']],
+                ['currentness', 'Currentness filter', 'select', ['all', context.market_clock_session_state.currentness_label]],
+                ['showCaveated', 'Show caveated fields', 'checkbox', []]
+            ];
+            configs.forEach(([key, label, type, values]) => {
+                const wrap = document.createElement('label');
+                wrap.className = 'm7f-control';
+                appendText(wrap, 'span', label);
+                let control;
+                if (type === 'select') {
+                    control = document.createElement('select');
+                    appendM7FOptions(control, values);
+                    control.value = m7fFilters[key];
+                } else {
+                    control = document.createElement('input');
+                    control.setAttribute('type', type === 'checkbox' ? 'checkbox' : 'search');
+                    if (type === 'checkbox') control.checked = m7fFilters[key];
+                    if (type === 'input') control.value = m7fFilters[key];
+                }
+                control.addEventListener('input', () => {
+                    m7fFilters[key] = type === 'checkbox' ? control.checked : control.value;
+                    renderM7FBrowserTable(context);
+                    renderM7FHandoffPanel(context);
+                });
+                control.addEventListener('change', () => {
+                    m7fFilters[key] = type === 'checkbox' ? control.checked : control.value;
+                    renderM7FBrowserTable(context);
+                    renderM7FHandoffPanel(context);
+                });
+                wrap.appendChild(control);
+                grid.appendChild(wrap);
+            });
+            container.appendChild(grid);
+            appendText(container, 'p', 'Filters operate only on static safe demo context and catalog metadata. No hidden fetch. No AI/model call.', { className: 'note' });
+        }
+
         function renderM7FBrowserTable(context) {
             const container = document.getElementById('m7f-browser-table');
             container.replaceChildren();
@@ -324,7 +451,7 @@
             const header = document.createElement('tr');
             ['Symbol', 'Name', 'Market', 'Source', 'Currentness', 'Price-like value', 'Change percent', 'Volume candidate', 'Field count', 'Caveats'].forEach(label => appendM7FTableCell(header, label, 'th'));
             table.appendChild(header);
-            context.observations.forEach(observation => {
+            getM7FFilteredObservations(context).forEach(observation => {
                 const row = document.createElement('tr');
                 appendM7FTableCell(row, observation.symbol);
                 appendM7FTableCell(row, observation.display_name);
@@ -340,11 +467,95 @@
                 const detailRow = document.createElement('tr');
                 const detailCell = document.createElement('td');
                 detailCell.setAttribute('colspan', '10');
-                renderM7FFieldDetails(detailCell, observation);
+                renderM7FFieldDetails(detailCell, observation, context);
                 detailRow.appendChild(detailCell);
                 table.appendChild(detailRow);
             });
             container.appendChild(table);
+        }
+
+        function buildM7FSafeHandoffProjection(context, selectedFieldKeys) {
+            const safeKeys = selectedFieldKeys.filter(key => {
+                const meta = M7F_DISPLAY_CATALOG[key];
+                return meta && meta.display_allowed === true && meta.ai_handoff_allowed === true && meta.raw_forbidden === false;
+            });
+            const observations = getM7FFilteredObservations(context).map(observation => {
+                const fields = {};
+                safeKeys.forEach(key => {
+                    if (Object.prototype.hasOwnProperty.call(observation, key)) {
+                        const meta = M7F_DISPLAY_CATALOG[key];
+                        fields[key] = { value: observation[key], group: meta.group, confidence: meta.confidence, exposure: meta.exposure, caveats: meta.caveats };
+                    }
+                });
+                return { symbol: observation.symbol, display_name: observation.display_name, market: observation.market, source: observation.source, semantic_caveats: observation.semantic_caveats, fields };
+            });
+            const status = context.market_clock_session_state;
+            return {
+                title: 'AI Discussion Handoff Preview',
+                policy: ['Static safe projection.', 'Not live data.', 'No realtime SLA.', 'Not trading advice.', 'Not a recommendation.', 'Not a trading signal.', 'Not market prediction.'],
+                selected_fields: safeKeys,
+                selected_symbols: observations.map(item => item.symbol),
+                currentness: { currentness_label: status.currentness_label, calendar_confidence: status.calendar_confidence, trading_day_status: status.trading_day_status, caveats: status.calendar_authority_caveats.concat(status.semantic_caveats) },
+                governance_guardrails: { not_trading_signal: context.governance.not_trading_signal, not_recommendation: context.governance.not_recommendation, not_market_prediction: context.governance.not_market_prediction, raw_payload_exposed: false },
+                raw_forbidden_omission_notice: 'Raw forbidden values are omitted and are not selectable or copied.',
+                observations
+            };
+        }
+
+        function renderM7FMarkdownHandoff(projection) {
+            const lines = ['# AI Discussion Handoff Preview', '', 'Static safe projection.', 'Not live data.', 'No realtime SLA.', 'Not trading advice.', 'Not a recommendation.', 'Not a trading signal.', '', `Selected symbols: ${projection.selected_symbols.join(', ') || 'none'}`, `Selected fields: ${projection.selected_fields.join(', ') || 'none'}`, `Currentness label: ${projection.currentness.currentness_label}`, `Calendar confidence: ${projection.currentness.calendar_confidence}`, `Trading-day status: ${projection.currentness.trading_day_status}`, '', 'Governance guardrails:', `- not_trading_signal: ${projection.governance_guardrails.not_trading_signal}`, `- not_recommendation: ${projection.governance_guardrails.not_recommendation}`, `- not_market_prediction: ${projection.governance_guardrails.not_market_prediction}`, `- raw_payload_exposed: ${projection.governance_guardrails.raw_payload_exposed}`, '', `Raw forbidden omission notice: ${projection.raw_forbidden_omission_notice}`, '', 'Observations:'];
+            projection.observations.forEach(observation => {
+                lines.push(`- ${observation.symbol} ${observation.display_name} (${observation.market}/${observation.source})`);
+                Object.keys(observation.fields).forEach(key => {
+                    const field = observation.fields[key];
+                    lines.push(`  - ${key}: ${field.value} [group=${field.group}; confidence=${field.confidence}; exposure=${field.exposure}; caveats=${field.caveats.join(' | ')}]`);
+                });
+                lines.push(`  - semantic caveats: ${observation.semantic_caveats.join(' | ')}`);
+            });
+            return lines.join('\n');
+        }
+
+        function renderM7FJsonHandoff(projection) {
+            return JSON.stringify(projection, null, 2);
+        }
+
+        function copyM7FPreviewText(targetId, statusId) {
+            const target = document.getElementById(targetId);
+            const status = document.getElementById(statusId);
+            const text = target.value || target.textContent;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => { status.textContent = 'Copied by explicit operator action.'; }).catch(() => { target.focus(); status.textContent = 'Clipboard unavailable; preview remains visible for manual copy.'; });
+            } else {
+                target.focus();
+                status.textContent = 'Clipboard unavailable; preview remains visible for manual copy.';
+            }
+        }
+
+        function renderM7FHandoffPanel(context) {
+            const container = document.getElementById('m7f-handoff');
+            container.replaceChildren();
+            appendText(container, 'h3', 'AI Discussion Handoff Preview');
+            appendText(container, 'p', 'Static safe projection. Not live data. No realtime SLA. Not trading advice. Not a recommendation. Not a trading signal.', { className: 'm7f-caveat' });
+            const projection = buildM7FSafeHandoffProjection(context, getM7FSelectedFieldKeys());
+            appendText(container, 'h4', 'Safe Markdown handoff preview');
+            const markdown = document.createElement('textarea');
+            markdown.id = 'm7f-safe-markdown-preview';
+            markdown.className = 'm7f-handoff-preview';
+            markdown.value = renderM7FMarkdownHandoff(projection);
+            container.appendChild(markdown);
+            const markdownButton = appendText(container, 'button', 'Copy Safe Markdown', { className: 'btn' });
+            markdownButton.addEventListener('click', () => copyM7FPreviewText('m7f-safe-markdown-preview', 'm7f-copy-status'));
+            appendText(container, 'h4', 'Safe JSON projection preview');
+            const json = document.createElement('pre');
+            json.id = 'm7f-safe-json-preview';
+            json.className = 'm7f-handoff-preview';
+            json.textContent = renderM7FJsonHandoff(projection);
+            container.appendChild(json);
+            const jsonButton = appendText(container, 'button', 'Copy Safe JSON', { className: 'btn' });
+            jsonButton.addEventListener('click', () => copyM7FPreviewText('m7f-safe-json-preview', 'm7f-copy-status'));
+            appendText(container, 'p', 'safe markdown and safe JSON are generated from selected fields only.', { className: 'note' });
+            const copyStatus = appendText(container, 'p', '', { className: 'note' });
+            copyStatus.id = 'm7f-copy-status';
         }
 
         function renderM7FGovernance(context) {
@@ -371,7 +582,9 @@
 
         function renderM7FRichFactBrowser(context) {
             renderM7FOperatorStatus(context);
+            renderM7FControls(context);
             renderM7FBrowserTable(context);
+            renderM7FHandoffPanel(context);
             renderM7FGovernance(context);
             renderM7FBadgeLegend(document.getElementById('m7f-governance'));
         }
