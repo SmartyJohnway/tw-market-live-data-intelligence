@@ -32,6 +32,14 @@
         .m7f-status-item { background: #f6f8fa; border: 1px solid #e1e4e8; border-radius: 6px; padding: 10px; }
         .m7f-caveat { background: #fff8c5; border-left: 4px solid #d4a72c; padding: 10px; margin: 10px 0; }
         .m7f-omitted { background: #f6f8fa; border: 1px dashed #8c959f; border-radius: 6px; padding: 10px; }
+        .m7f-badge-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+        .m7f-badge { display: inline-block; border: 1px solid #d0d7de; border-radius: 999px; padding: 2px 8px; margin: 2px; font-size: 0.78em; font-weight: 600; background: #f6f8fa; color: #57606a; }
+        .m7f-badge-confidence { background: #ddf4ff; color: #0969da; border-color: #b6e3ff; }
+        .m7f-badge-exposure { background: #fbefff; color: #8250df; border-color: #ecd8ff; }
+        .m7f-badge-currentness { background: #fff8c5; color: #7d4e00; border-color: #f0d98c; }
+        .m7f-badge-calendar { background: #dafbe1; color: #116329; border-color: #aceebb; }
+        .m7f-badge-caveat { background: #fff1e5; color: #9a6700; border-color: #ffd8b5; }
+        .m7f-badge-guardrail { background: #f6f8fa; color: #57606a; border-color: #d0d7de; }
 
         a:focus, button:focus {
             outline: 2px solid #0366d6;
@@ -133,6 +141,9 @@
                 currentness_label: 'live_candidate',
                 calendar_confidence: 'controlled_twse_holiday_schedule_artifact',
                 trading_day_status: 'trading_day',
+                calendar_authority_caveats: ['not_full_exchange_calendar_engine', 'no_realtime_sla', 'not_trading_advice'],
+                recognized_currentness_labels: ['live_candidate', 'recent_but_unverified', 'reference_only', 'not_current', 'degraded_unknown'],
+                recognized_calendar_authority_labels: ['controlled_twse_holiday_schedule_artifact', 'weekday_heuristic_only', 'artifact_missing_date', 'trading_day', 'non_trading_day', 'unknown'],
                 semantic_caveats: ['Latest observed context only; no realtime SLA.', 'Not trading advice.']
             },
             governance: {
@@ -185,6 +196,65 @@
             return appendText(row, tagName, String(text));
         }
 
+        function normalizeM7FBadgeLabel(value) {
+            return String(value).replace(/_/g, ' ').toUpperCase();
+        }
+
+        function appendM7FBadge(parent, text, className = 'm7f-badge') {
+            const badge = document.createElement('span');
+            badge.className = className;
+            badge.textContent = normalizeM7FBadgeLabel(text);
+            parent.appendChild(badge);
+            return badge;
+        }
+
+        function appendM7FBadgeCell(row, values, className) {
+            const cell = document.createElement('td');
+            const wrap = document.createElement('div');
+            wrap.className = 'm7f-badge-row';
+            values.forEach(value => appendM7FBadge(wrap, value, className));
+            cell.appendChild(wrap);
+            row.appendChild(cell);
+            return cell;
+        }
+
+        function renderM7FCurrentnessPanel(parent, status) {
+            const panel = document.createElement('div');
+            panel.className = 'm7f-status-item';
+            appendText(panel, 'strong', 'Currentness');
+            appendText(panel, 'p', 'Latest observed context. No realtime SLA. Badges are not trading signals. Badges are not recommendations.');
+            const badges = document.createElement('div');
+            badges.className = 'm7f-badge-row';
+            ['session_state', status.session_state, 'freshness_state', status.freshness_state, 'currentness_label', status.currentness_label].forEach(value => appendM7FBadge(badges, value, 'm7f-badge m7f-badge-currentness'));
+            panel.appendChild(badges);
+            appendText(panel, 'p', 'Recognized currentness labels: live_candidate, recent_but_unverified, reference_only, not_current, degraded_unknown.', { className: 'note' });
+            parent.appendChild(panel);
+        }
+
+        function renderM7FCalendarAuthorityPanel(parent, status) {
+            const panel = document.createElement('div');
+            panel.className = 'm7f-status-item';
+            appendText(panel, 'strong', 'Calendar authority');
+            appendText(panel, 'p', 'Trading-calendar authority status is displayed from context only: not full exchange calendar engine, no realtime SLA, not trading advice.');
+            const badges = document.createElement('div');
+            badges.className = 'm7f-badge-row';
+            ['calendar_confidence', status.calendar_confidence, 'trading_day_status', status.trading_day_status].forEach(value => appendM7FBadge(badges, value, 'm7f-badge m7f-badge-calendar'));
+            status.calendar_authority_caveats.forEach(value => appendM7FBadge(badges, value, 'm7f-badge m7f-badge-caveat'));
+            panel.appendChild(badges);
+            appendText(panel, 'p', 'Recognized calendar authority labels: controlled_twse_holiday_schedule_artifact, weekday_heuristic_only, artifact_missing_date, trading_day, non_trading_day, unknown.', { className: 'note' });
+            parent.appendChild(panel);
+        }
+
+        function renderM7FBadgeLegend(parent) {
+            const panel = document.createElement('div');
+            panel.className = 'm7f-caveat';
+            appendText(panel, 'h3', 'Badge legend');
+            const list = document.createElement('ul');
+            ['Confidence badges describe field semantic confidence.', 'Exposure class badges describe operator display eligibility.', 'Caveat badges describe field-level data limitations.', 'Currentness badges describe observation/currentness state.', 'Calendar badges describe trading-calendar authority status.', 'Badges are not trading signals.', 'Badges are not recommendations.'].forEach(item => appendText(list, 'li', item));
+            panel.appendChild(list);
+            parent.appendChild(panel);
+        }
+
         function renderM7FOperatorStatus(context) {
             const container = document.getElementById('m7f-operator-status');
             container.replaceChildren();
@@ -195,6 +265,8 @@
             const items = [
                 ['Track', 'M7F Rich Fact Browser'],
                 ['Mode', 'read-only static preview'],
+                ['Session state', status.session_state],
+                ['Freshness state', status.freshness_state],
                 ['Currentness label', status.currentness_label],
                 ['Calendar confidence', status.calendar_confidence],
                 ['Trading-day status', status.trading_day_status],
@@ -209,6 +281,8 @@
                 appendText(item, 'span', value);
                 grid.appendChild(item);
             });
+            renderM7FCurrentnessPanel(grid, status);
+            renderM7FCalendarAuthorityPanel(grid, status);
             container.appendChild(grid);
         }
 
@@ -225,10 +299,10 @@
                 const row = document.createElement('tr');
                 appendM7FTableCell(row, key);
                 appendM7FTableCell(row, observation[key]);
-                appendM7FTableCell(row, meta.group);
-                appendM7FTableCell(row, meta.confidence);
-                appendM7FTableCell(row, meta.exposure);
-                appendM7FTableCell(row, meta.caveats.join('; '));
+                appendM7FBadgeCell(row, [meta.group], 'm7f-badge m7f-badge-guardrail');
+                appendM7FBadgeCell(row, [meta.confidence], 'm7f-badge m7f-badge-confidence');
+                appendM7FBadgeCell(row, [meta.exposure], 'm7f-badge m7f-badge-exposure');
+                appendM7FBadgeCell(row, meta.caveats, 'm7f-badge m7f-badge-caveat');
                 table.appendChild(row);
             });
             details.appendChild(table);
@@ -256,7 +330,7 @@
                 appendM7FTableCell(row, observation.display_name);
                 appendM7FTableCell(row, observation.market);
                 appendM7FTableCell(row, observation.source);
-                appendM7FTableCell(row, context.market_clock_session_state.currentness_label);
+                appendM7FBadgeCell(row, [context.market_clock_session_state.currentness_label], 'm7f-badge m7f-badge-currentness');
                 appendM7FTableCell(row, observation.price_like_value);
                 appendM7FTableCell(row, observation.change_percent);
                 appendM7FTableCell(row, observation.volume_candidate);
@@ -299,6 +373,7 @@
             renderM7FOperatorStatus(context);
             renderM7FBrowserTable(context);
             renderM7FGovernance(context);
+            renderM7FBadgeLegend(document.getElementById('m7f-governance'));
         }
 
         function renderMatrixLoadError(error) {
