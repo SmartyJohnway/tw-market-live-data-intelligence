@@ -94,8 +94,8 @@ def test_m7f_currentness_and_calendar_dependencies():
 def test_m7f_inventory_status_entry():
     inv = json.loads(INVENTORY.read_text(encoding="utf-8"))
     entry = inv["rich_observation_contract"]["m7f_rich_fact_browser_operator_workbench"]
-    assert entry["status"] == "policy_exposure_contract_and_field_catalog_defined"
-    assert entry["completed_tasks"] == ["M7F-00", "M7F-01"]
+    assert entry["status"] == "base_ui_defined"
+    assert entry["completed_tasks"] == ["M7F-00", "M7F-01", "M7F-02"]
     assert entry["track_name"] == "M7F-FRONTEND-RICH-FACT-BROWSER-OPERATOR-WORKBENCH-AND-AI-DISCUSSION-HANDOFF"
     assert entry["not_summary_only"] is True
     assert entry["raw_payload_exposure_allowed"] is False
@@ -105,4 +105,8 @@ def test_m7f_inventory_status_entry():
     assert entry["field_level_confidence_required"] is True
     assert entry["field_level_caveats_required"] is True
     assert entry["trading_advice_allowed"] is False
-    assert entry["next_task"] == "M7F-02-FRONTEND-RICH-FACT-BROWSER-BASE-UI"
+    assert entry["frontend_changed"] is True
+    assert entry["runtime_behavior_changed"] is False
+    assert entry["raw_forbidden_values_rendered"] is False
+    assert entry["base_ui_doc"] == "docs/protocol/M7F_FRONTEND_RICH_FACT_BROWSER_BASE_UI.md"
+    assert entry["next_task"] == "M7F-03-04-FIELD-BADGES-CURRENTNESS-AND-CALENDAR-INTEGRATION"

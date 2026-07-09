@@ -74,7 +74,8 @@
         "tests/unit/test_m7e_twse_trading_calendar_artifact.py",
         "tests/unit/test_m7e_twse_trading_calendar_mode_contract.py",
         "tests/unit/test_m7f_rich_fact_browser_policy.py",
-        "tests/unit/test_m7f_rich_fact_display_catalog.py"
+        "tests/unit/test_m7f_rich_fact_display_catalog.py",
+        "tests/unit/test_m7f_frontend_rich_fact_browser_base_ui.py"
       ],
       "network_policy": "no network; excludes tests marked network",
       "browser_policy": "does not install or require Playwright/Chromium",
