@@ -1309,11 +1309,13 @@
       "next_task": "M7F-FRONTEND-OPERATOR-PRESENTATION-AND-CONTEXT-WORKBENCH"
     },
     "m7f_rich_fact_browser_operator_workbench": {
-      "status": "base_ui_defined",
+      "status": "field_badges_currentness_calendar_integrated",
       "completed_tasks": [
         "M7F-00",
         "M7F-01",
-        "M7F-02"
+        "M7F-02",
+        "M7F-03",
+        "M7F-04"
       ],
       "track_name": "M7F-FRONTEND-RICH-FACT-BROWSER-OPERATOR-WORKBENCH-AND-AI-DISCUSSION-HANDOFF",
       "policy_doc": "docs/protocol/M7F_RICH_FACT_BROWSER_POLICY.md",
@@ -1346,7 +1348,7 @@
       "not_full_market_breadth": true,
       "depends_on_m7e_market_clock": true,
       "depends_on_m7e05_trading_calendar_authority": true,
-      "next_task": "M7F-03-04-FIELD-BADGES-CURRENTNESS-AND-CALENDAR-INTEGRATION",
+      "next_task": "M7F-05-06-AI-DISCUSSION-HANDOFF-RICH-FACT-SELECTION-SEARCH-AND-FILTERS",
       "base_ui_doc": "docs/protocol/M7F_FRONTEND_RICH_FACT_BROWSER_BASE_UI.md",
       "safe_dom_rendering_required": true,
       "unsafe_inner_html_allowed": false,
@@ -1357,7 +1359,18 @@
         "per_symbol_governed_field_details",
         "governance_caveat_panel",
         "raw_forbidden_omission_notice"
-      ]
+      ],
+      "field_badges_doc": "docs/protocol/M7F_FIELD_BADGES_CURRENTNESS_CALENDAR_INTEGRATION.md",
+      "field_confidence_badges_added": true,
+      "field_exposure_badges_added": true,
+      "field_caveat_badges_added": true,
+      "currentness_panel_added": true,
+      "calendar_authority_panel_added": true,
+      "badge_legend_added": true,
+      "auto_refresh_added": false,
+      "frontend_side_trading_day_inference_added": false,
+      "badges_are_not_trading_signals": true,
+      "badges_are_not_recommendations": true
     }
   },
   "runtime_behavior_changed": false,
