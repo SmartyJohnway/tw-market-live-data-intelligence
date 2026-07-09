@@ -54,3 +54,7 @@ Final decision:
 
 Next recommended task:
 - M7F-FRONTEND-OPERATOR-PRESENTATION-AND-CONTEXT-WORKBENCH
+
+## Post-acceptance M7E-05 insertion
+
+After M7E-04 final acceptance, M7E-05 was inserted before M7F to establish a formal TWSE trading-calendar authority. This does not invalidate M7E-04; it strengthens the calendar-confidence layer before frontend/operator presentation.

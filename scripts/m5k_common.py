@@ -898,6 +898,7 @@ def build_market_clock_session_state_controlled_context(
     *,
     now_utc: str | datetime | None = None,
     holiday_schedule_records: list[dict[str, object]] | None = None,
+    trading_calendar_artifact: dict[str, object] | None = None,
 ) -> dict[str, Any]:
     """Build promoted M7E market-clock context without exposing raw observations."""
     payload = _unwrap_latest_observation_payload(latest_observation_payload)
@@ -920,6 +921,7 @@ def build_market_clock_session_state_controlled_context(
         now_utc=now_utc or utc_now(),
         latest_observation=observation_for_clock or None,
         holiday_schedule_records=holiday_schedule_records,
+        trading_calendar_artifact=trading_calendar_artifact,
     )
     promoted = promote_market_clock_session_state_for_controlled_context(candidate)
     return dict(promoted)
@@ -931,11 +933,12 @@ def build_conversation_context(
     *,
     now_utc: str | datetime | None = None,
     holiday_schedule_records: list[dict[str, object]] | None = None,
+    trading_calendar_artifact: dict[str, object] | None = None,
 ) -> dict[str, Any]:
     latest_observation = latest_observation or read_latest_observation()
     if isinstance(latest_observation, dict) and isinstance(latest_observation.get("content"), dict) and "observations" not in latest_observation:
         latest_observation = latest_observation["content"]
-    market_clock = build_market_clock_session_state_controlled_context(latest_observation if isinstance(latest_observation, dict) else {}, now_utc=now_utc, holiday_schedule_records=holiday_schedule_records)
+    market_clock = build_market_clock_session_state_controlled_context(latest_observation if isinstance(latest_observation, dict) else {}, now_utc=now_utc, holiday_schedule_records=holiday_schedule_records, trading_calendar_artifact=trading_calendar_artifact)
     failures = _safe_list(latest_observation.get("failures")) if isinstance(latest_observation, dict) else []
     per_symbol = _conversation_per_symbol_observations(watchlist, latest_observation if isinstance(latest_observation, dict) else {})
     obs_summary = _conversation_observation_summary(per_symbol)

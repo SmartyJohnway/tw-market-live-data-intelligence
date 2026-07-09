@@ -10,6 +10,8 @@ from datetime import date, datetime, timezone
 from typing import Any
 from zoneinfo import ZoneInfo
 
+from scripts.twse_trading_calendar import resolve_twse_trading_day
+
 M7E_MARKET_CLOCK_SESSION_STATE_SCHEMA_VERSION = "m7e_market_clock_session_state.v1"
 HOLIDAY_CLASSIFICATION_SCHEMA_VERSION = "m7e_twse_holiday_schedule_classification.v1"
 _ALLOWED_LANGUAGE = [
@@ -156,18 +158,34 @@ def _freshness(now: datetime, obs: dict[str, object] | None) -> tuple[str, str |
     return "stale", ts.isoformat(), age
 
 
-def build_market_clock_session_state(*, now_utc: datetime | str, latest_observation: dict[str, object] | None = None, holiday_schedule_records: list[dict[str, object]] | None = None, timezone_name: str = "Asia/Taipei") -> dict[str, object]:
+def build_market_clock_session_state(*, now_utc: datetime | str, latest_observation: dict[str, object] | None = None, holiday_schedule_records: list[dict[str, object]] | None = None, trading_calendar_artifact: dict[str, object] | None = None, timezone_name: str = "Asia/Taipei") -> dict[str, object]:
     now = _parse_dt(now_utc)
     local = now.astimezone(ZoneInfo(timezone_name))
     result = build_empty_market_clock_session_state()
     result.update({"context_status": "computed_candidate_not_runtime_integrated", "timezone": timezone_name, "trade_date": local.date().isoformat(), "source_provenance": ["now_utc_input", "latest_observation_timestamp_only"]})
     is_weekend = local.weekday() >= 5
     result["is_weekend"] = is_weekend
-    classification = classify_twse_holiday_schedule_records(holiday_schedule_records) if holiday_schedule_records is not None else None
+    classification = classify_twse_holiday_schedule_records(holiday_schedule_records) if holiday_schedule_records is not None and trading_calendar_artifact is None else None
+    trading_day_resolution = resolve_twse_trading_day(target_date=local.date(), calendar_artifact=trading_calendar_artifact) if trading_calendar_artifact is not None else None
     non = {r["gregorian_date"] for r in classification["endpoint_non_trading_dates"]} if classification else set()
     explicit = {r["gregorian_date"] for r in classification["explicit_endpoint_trading_dates"]} if classification else set()
     d = local.date().isoformat()
-    if is_weekend:
+    if trading_day_resolution and trading_day_resolution.get("is_trading_day") is False:
+        holiday_status = str(trading_day_resolution.get("reason"))
+        state, phase, trading = ("weekend_closed" if is_weekend else "holiday_closed"), "non_trading_day", False
+    elif trading_day_resolution and trading_day_resolution.get("is_trading_day") is True:
+        holiday_status = str(trading_day_resolution.get("reason"))
+        trading = True
+        t = local.time()
+        if t >= datetime.strptime("09:00", "%H:%M").time() and t < datetime.strptime("13:30", "%H:%M").time():
+            state, phase = "regular_open", "regular_session"
+        elif t >= datetime.strptime("08:00", "%H:%M").time() and t < datetime.strptime("09:00", "%H:%M").time():
+            state, phase = "preopen", "before_regular_session"
+        elif t >= datetime.strptime("13:30", "%H:%M").time() and t < datetime.strptime("14:30", "%H:%M").time():
+            state, phase = "postclose", "after_regular_session"
+        else:
+            state, phase = "closed", "after_regular_session"
+    elif is_weekend:
         holiday_status, state, phase, trading = "weekend", "weekend_closed", "non_trading_day", False
     elif d in non:
         holiday_status, state, phase, trading = "endpoint_non_trading_date", "holiday_closed", "non_trading_day", False
@@ -195,7 +213,12 @@ def build_market_clock_session_state(*, now_utc: datetime | str, latest_observat
     else:
         currentness = "reference_only"
     caveats = ["Builder output is not safe for direct AI context until controlled promotion is implemented."]
-    if classification:
+    if trading_day_resolution:
+        conf = str(trading_day_resolution.get("calendar_confidence"))
+        result["source_provenance"].append("supplied_twse_trading_calendar_artifact")
+        caveats.extend([c for c in trading_day_resolution.get("caveats", []) if isinstance(c, str)])
+        caveats.append("TWSE trading calendar artifact was supplied and resolved locally without network fetch.")
+    elif classification:
         conf = "official_holiday_schedule_records_supplied"
         caveats.append("TWSE holiday schedule records were supplied and classified locally without network fetch.")
         result["source_provenance"].append("supplied_twse_holiday_schedule_records")

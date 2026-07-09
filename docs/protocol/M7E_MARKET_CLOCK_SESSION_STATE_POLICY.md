@@ -162,3 +162,7 @@ M7E final acceptance is recorded in:
 Final status: `pass_with_caveats`.
 
 M7E is accepted as a governed market-clock/session-state semantic layer for AI conversation context. It remains descriptive only and does not implement trading signals, recommendations, official full exchange-calendar coverage, live probes, runtime holidaySchedule fetching, FastAPI/MCP/frontend changes, or M7F operator UI.
+
+## M7E-05 TWSE Trading Calendar Authority
+
+M7E-05 establishes a shared TWSE trading-calendar authority based on controlled normalization of TWSE OpenAPI holidaySchedule records. Runtime M7E consumers must not fetch holidaySchedule implicitly. Mode A / Mode B / Mode C should use the shared resolver for TWSE trading-day checks.
