@@ -51,6 +51,31 @@ def test_m7f02_frontend_uses_safe_dom_rendering():
     assert "document.createElement" in m7f
 
 
+def test_m7f02_frontend_catalog_uses_official_enum_values():
+    text = FRONTEND.read_text(encoding="utf-8")
+    m7f_catalog = text[text.index("const M7F_DISPLAY_CATALOG") : text.index("const M7F_DEMO_RICH_CONTEXT")]
+    for drift_enum in [
+        "group: 'provenance'",
+        "group: 'observed_value'",
+        "group: 'order_context'",
+        "group: 'calendar'",
+        "exposure: 'display'",
+        "confidence: 'forbidden'",
+    ]:
+        assert drift_enum not in m7f_catalog
+
+    for key in [
+        "raw_payload",
+        "twse_mis_rich_facts",
+        "full_ladder",
+        "bid_prices",
+        "ask_prices",
+        "source_investigation_notes",
+    ]:
+        pattern = rf"{key}: \{{[^}}]*group: 'raw_forbidden'[^}}]*confidence: 'raw_forbidden'[^}}]*exposure: 'raw_forbidden'"
+        assert re.search(pattern, m7f_catalog, flags=re.DOTALL), key
+
+
 def test_raw_forbidden_keys_are_classified_but_not_present_in_demo_observations():
     text = FRONTEND.read_text(encoding="utf-8")
     for key in [
