@@ -65,6 +65,9 @@
         "tests/unit/test_m7e_market_clock_session_state_schema.py",
         "tests/unit/test_m7e_market_clock_session_state_builder.py",
         "tests/unit/test_m7e_twse_holiday_schedule_classifier.py",
+        "tests/unit/test_m7e_market_clock_session_state_controlled_promotion.py",
+        "tests/unit/test_m7e_market_clock_session_state_context_integration.py",
+        "tests/unit/test_m7e_market_clock_session_state_markdown.py",
         "tests/unit/test_m7e_market_clock_session_state_inventory.py"
       ],
       "network_policy": "no network; excludes tests marked network",

@@ -20,6 +20,10 @@ from scripts.observation_contract import (
     promote_bounded_watchlist_cross_context_for_controlled_context,
     promote_deterministic_metrics_context_for_controlled_context,
 )
+from scripts.market_clock_session_state import (
+    build_market_clock_session_state,
+    promote_market_clock_session_state_for_controlled_context,
+)
 from scripts.ssl_policy import build_ssl_context, resolve_ssl_policy, ssl_policy_diagnostics
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -881,10 +885,57 @@ def build_bounded_watchlist_cross_context_collection(
     return collection
 
 
-def build_conversation_context(watchlist: dict[str, Any], latest_observation: dict[str, Any] | None = None) -> dict[str, Any]:
+def _unwrap_latest_observation_payload(latest_observation_payload: dict[str, Any] | None) -> dict[str, Any]:
+    if not isinstance(latest_observation_payload, dict):
+        return {}
+    if isinstance(latest_observation_payload.get("content"), dict) and "observations" not in latest_observation_payload:
+        return latest_observation_payload["content"]
+    return latest_observation_payload
+
+
+def build_market_clock_session_state_controlled_context(
+    latest_observation_payload: dict[str, Any],
+    *,
+    now_utc: str | datetime | None = None,
+    holiday_schedule_records: list[dict[str, object]] | None = None,
+) -> dict[str, Any]:
+    """Build promoted M7E market-clock context without exposing raw observations."""
+    payload = _unwrap_latest_observation_payload(latest_observation_payload)
+    observation_for_clock: dict[str, Any] | None = None
+    if payload:
+        observation_for_clock = {
+            k: payload[k]
+            for k in ("retrieved_at_utc", "retrieved_at", "observation_time_utc", "generated_at_utc", "created_at_utc")
+            if k in payload
+        }
+        observations = _safe_list(payload.get("observations"))
+        if not observation_for_clock and observations:
+            first = next((o for o in observations if isinstance(o, dict)), {})
+            observation_for_clock = {
+                k: first[k]
+                for k in ("retrieved_at_utc", "retrieved_at", "observation_time_utc", "generated_at_utc", "created_at_utc")
+                if k in first
+            }
+    candidate = build_market_clock_session_state(
+        now_utc=now_utc or utc_now(),
+        latest_observation=observation_for_clock or None,
+        holiday_schedule_records=holiday_schedule_records,
+    )
+    promoted = promote_market_clock_session_state_for_controlled_context(candidate)
+    return dict(promoted)
+
+
+def build_conversation_context(
+    watchlist: dict[str, Any],
+    latest_observation: dict[str, Any] | None = None,
+    *,
+    now_utc: str | datetime | None = None,
+    holiday_schedule_records: list[dict[str, object]] | None = None,
+) -> dict[str, Any]:
     latest_observation = latest_observation or read_latest_observation()
     if isinstance(latest_observation, dict) and isinstance(latest_observation.get("content"), dict) and "observations" not in latest_observation:
         latest_observation = latest_observation["content"]
+    market_clock = build_market_clock_session_state_controlled_context(latest_observation if isinstance(latest_observation, dict) else {}, now_utc=now_utc, holiday_schedule_records=holiday_schedule_records)
     failures = _safe_list(latest_observation.get("failures")) if isinstance(latest_observation, dict) else []
     per_symbol = _conversation_per_symbol_observations(watchlist, latest_observation if isinstance(latest_observation, dict) else {})
     obs_summary = _conversation_observation_summary(per_symbol)
@@ -895,6 +946,12 @@ def build_conversation_context(watchlist: dict[str, Any], latest_observation: di
     stale_or_closed = [r["symbol"] for r in per_symbol if _is_stale_or_closed_session_row(r)]
     degraded = [r["symbol"] for r in per_symbol if _conversation_observation_bucket(r) == "degraded"]
     healthy = [r["symbol"] for r in per_symbol if _conversation_observation_bucket(r) == "healthy"]
+    current_limitations = sorted(set(governance()["caveats"] + _safe_list(canonical_summary.get("canonical_caveats")) + _safe_list(source_health.get("caveats"))))
+    if market_clock.get("currentness_label") in {"reference_only", "not_current", "degraded_unknown"}:
+        current_limitations.append("M7E indicates latest observation must not be described as current intraday movement.")
+    if market_clock.get("calendar_confidence") == "weekday_heuristic_only":
+        current_limitations.append("holiday schedule records missing; weekday heuristic only")
+    current_limitations = sorted(set(current_limitations))
     return {
         "schema_version": "m5n_conversation_context.v1",
         "created_at_utc": utc_now(),
@@ -906,6 +963,7 @@ def build_conversation_context(watchlist: dict[str, Any], latest_observation: di
         "ai_safe_market_context_projection": build_ai_safe_market_context_projection_collection(latest_observation if isinstance(latest_observation, dict) else {}),
         "deterministic_metrics_context": build_deterministic_metrics_context_collection(latest_observation if isinstance(latest_observation, dict) else {}),
         "bounded_watchlist_cross_context": build_bounded_watchlist_cross_context_collection(watchlist, latest_observation if isinstance(latest_observation, dict) else {}),
+        "market_clock_session_state": market_clock,
         "successful_observations": len(_safe_list(latest_observation.get("observations"))) if isinstance(latest_observation, dict) else 0,
         "failed_observations": len(failures),
         "failures": [{"symbol": f.get("symbol"), "source": f.get("source"), "reason": f.get("reason") or f.get("failure_reason"), "status": f.get("status"), "recommended_next_step": f.get("recommended_next_step")} for f in failures if isinstance(f, dict)],
@@ -919,7 +977,6 @@ def build_conversation_context(watchlist: dict[str, Any], latest_observation: di
             "raw_endpoint_payload_included": False,
         },
         "freshness": latest_observation.get("retrieved_at_utc") or latest_observation.get("generated_at_utc") if isinstance(latest_observation, dict) else None,
-        "source_investigation_notes": latest_observation.get("source_investigation_notes", []) if isinstance(latest_observation, dict) else [],
         "source_health_summary": source_health,
         "source_health": source_health,
         "canonical_summary": canonical_summary,
@@ -930,7 +987,15 @@ def build_conversation_context(watchlist: dict[str, Any], latest_observation: di
             "stale_or_closed_session_observations": stale_or_closed,
             "unavailable_observations": unavailable,
             "canonical_package_covers": canonical_summary.get("canonical_symbols", []),
-            "current_limitations": sorted(set(governance()["caveats"] + _safe_list(canonical_summary.get("canonical_caveats")) + _safe_list(source_health.get("caveats")))),
+            "current_limitations": current_limitations,
+            "market_clock_session_state": {
+                "session_state": market_clock.get("session_state"),
+                "freshness_state": market_clock.get("freshness_state"),
+                "currentness_label": market_clock.get("currentness_label"),
+                "calendar_confidence": market_clock.get("calendar_confidence"),
+                "ai_currentness_summary": market_clock.get("ai_currentness_summary"),
+            },
+            "currentness_language_guardrail": "Use M7E currentness_label before describing whether latest observations are live/current; never convert observations into trading signals or recommendations.",
             "recommended_operator_workflow": ["Review Conversation Context JSON/Markdown as the AI handoff package.", "Treat Canonical Summary as Level 1 historical context, not Latest Observation.", "Treat reference-only or unavailable observations as not current price.", "If freshness is insufficient, run only the existing bounded explicit observation runner later."],
             "descriptive_only": True,
             "trading_recommendation": False,
@@ -946,6 +1011,7 @@ def conversation_context_markdown(context: dict[str, Any]) -> str:
     obs = context.get("observation_summary", {})
     canon = context.get("canonical_summary", {})
     health = context.get("source_health_summary", context.get("source_health", {}))
+    clock = context.get("market_clock_session_state", {}) if isinstance(context.get("market_clock_session_state"), dict) else {}
     rows = context.get("per_symbol_observations", [])
     lines = [
         "# M5N Conversation Context",
@@ -966,6 +1032,14 @@ def conversation_context_markdown(context: dict[str, Any]) -> str:
         f"- Canonical source date: {canon.get('canonical_source_date')}",
         f"- Canonical symbols: {', '.join(canon.get('canonical_symbols') or [])}",
         f"- Caveats: {', '.join(canon.get('canonical_caveats') or [])}",
+        "",
+        "## Market Clock / Currentness",
+        f"- Session state: {clock.get('session_state')}",
+        f"- Freshness state: {clock.get('freshness_state')}",
+        f"- Currentness label: {clock.get('currentness_label')}",
+        f"- Calendar confidence: {clock.get('calendar_confidence')}",
+        f"- AI currentness summary: {clock.get('ai_currentness_summary')}",
+        f"- Caveats: {', '.join(clock.get('semantic_caveats') or [])}",
         "",
         "## Latest Observation Summary",
         f"- healthy={obs.get('healthy', 0)} degraded={obs.get('degraded', 0)} failed={obs.get('failed', 0)} unsupported={obs.get('unsupported', 0)} reference_only={obs.get('reference_only', 0)}",

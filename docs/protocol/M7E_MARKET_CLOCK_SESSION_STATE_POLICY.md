@@ -136,3 +136,21 @@ Blocked language examples:
 - full-market breadth
 
 M7E-00/01 builder output remains `safe_for_ai_context = false` and `builder_output_safe_for_ai_context = false`. Controlled AI-safe promotion is deferred to M7E-02.
+
+## M7E-02 Controlled Promotion
+
+M7E-02 adds a controlled projection layer for market-clock/session-state output. The pure builder output remains **not** safe for direct AI conversation context: `safe_for_ai_context` remains `false` in the builder candidate and `builder_output_safe_for_ai_context` remains `false` in both builder and promoted outputs.
+
+Only `promote_market_clock_session_state_for_controlled_context(...)` may convert a valid `m7e_market_clock_session_state.v1` candidate into the AI-safe `m7e_market_clock_session_state_controlled_context.v1` shape. The promoted shape includes bounded session/currentness semantics such as session state, freshness state, calendar confidence, currentness label, semantic caveats, and an AI currentness summary. It does not include raw market payloads, TWSE MIS rich facts, unknown raw facts, source response samples, bid/ask ladder arrays, or investigation notes.
+
+Malformed candidates fail closed with `safe_for_ai_context=false`, `exposure_status=ai_safe_context_disabled`, and explicit non-exposure flags. Controlled promotion is descriptive governance context only; it does not create a trading signal, recommendation, market prediction, capital-flow claim, full-market breadth claim, target price, support/resistance level, or sector-rotation claim.
+
+## M7E-03 Shared Context Integration
+
+M7E-03 integrates only the promoted M7E controlled context into the shared M5N conversation package under `market_clock_session_state`. The conversation builder derives a pure M7E candidate from the latest observation timestamp fields already supplied to the package builder, then immediately promotes it and returns only the promoted safe projection.
+
+The integration is pure and performs no network requests, no runtime TWSE `holidaySchedule` fetch, no live probe, no scheduler/polling, and no file writes from the helper. Supplied holiday-schedule records may be passed in by tests or deterministic callers; when absent, M7E preserves the weekday-heuristic caveat and does not claim official holiday correctness.
+
+The shared `ai_guidance_summary` includes M7E currentness fields and a currentness-language guardrail so downstream AI can distinguish live-candidate, recent-but-unverified, reference-only, not-current, and degraded-unknown cases. Markdown handoff renders a Market Clock / Currentness section before the latest observation summary. M7E contextualizes whether latest observations may be discussed as live/current, but it never converts observations into trading signals or recommendations.
+
+M7E-04 final acceptance remains future work.
