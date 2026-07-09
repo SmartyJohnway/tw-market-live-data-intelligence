@@ -153,4 +153,12 @@ The integration is pure and performs no network requests, no runtime TWSE `holid
 
 The shared `ai_guidance_summary` includes M7E currentness fields and a currentness-language guardrail so downstream AI can distinguish live-candidate, recent-but-unverified, reference-only, not-current, and degraded-unknown cases. Markdown handoff renders a Market Clock / Currentness section before the latest observation summary. M7E contextualizes whether latest observations may be discussed as live/current, but it never converts observations into trading signals or recommendations.
 
-M7E-04 final acceptance remains future work.
+## M7E-04 Final Acceptance
+
+M7E final acceptance is recorded in:
+
+`docs/protocol/M7E_MARKET_CLOCK_SESSION_STATE_FINAL_ACCEPTANCE.md`
+
+Final status: `pass_with_caveats`.
+
+M7E is accepted as a governed market-clock/session-state semantic layer for AI conversation context. It remains descriptive only and does not implement trading signals, recommendations, official full exchange-calendar coverage, live probes, runtime holidaySchedule fetching, FastAPI/MCP/frontend changes, or M7F operator UI.
