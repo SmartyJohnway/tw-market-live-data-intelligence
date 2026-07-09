@@ -160,6 +160,9 @@
                 not_recommendation: true,
                 not_market_prediction: true,
                 not_capital_flow: true,
+                raw_payload_exposed: false,
+                raw_rich_facts_exposed: false,
+                raw_full_ladder_exposed: false,
                 endpoint_payload_exposed: false,
                 rich_facts_exposed: false,
                 raw_ladder_exposed: false
@@ -318,7 +321,7 @@
                 ['Calendar confidence', status.calendar_confidence],
                 ['Trading-day status', status.trading_day_status],
                 ['Not trading advice', String(context.governance.not_trading_signal && context.governance.not_recommendation)],
-                ['Raw endpoint payload exposed', String(context.governance.endpoint_payload_exposed)]
+                ['Raw endpoint payload exposed', String(context.governance.raw_payload_exposed)]
             ];
             items.forEach(([label, value]) => {
                 const item = document.createElement('div');
@@ -496,14 +499,14 @@
                 selected_fields: safeKeys,
                 selected_symbols: observations.map(item => item.symbol),
                 currentness: { currentness_label: status.currentness_label, calendar_confidence: status.calendar_confidence, trading_day_status: status.trading_day_status, caveats: status.calendar_authority_caveats.concat(status.semantic_caveats) },
-                governance_guardrails: { not_trading_signal: context.governance.not_trading_signal, not_recommendation: context.governance.not_recommendation, not_market_prediction: context.governance.not_market_prediction, raw_payload_exposed: false },
+                governance_guardrails: { not_trading_signal: context.governance.not_trading_signal, not_recommendation: context.governance.not_recommendation, not_market_prediction: context.governance.not_market_prediction, raw_payload_exposed: context.governance.raw_payload_exposed, raw_rich_facts_exposed: context.governance.raw_rich_facts_exposed, raw_full_ladder_exposed: context.governance.raw_full_ladder_exposed },
                 raw_forbidden_omission_notice: 'Raw forbidden values are omitted and are not selectable or copied.',
                 observations
             };
         }
 
         function renderM7FMarkdownHandoff(projection) {
-            const lines = ['# AI Discussion Handoff Preview', '', 'Static safe projection.', 'Not live data.', 'No realtime SLA.', 'Not trading advice.', 'Not a recommendation.', 'Not a trading signal.', '', `Selected symbols: ${projection.selected_symbols.join(', ') || 'none'}`, `Selected fields: ${projection.selected_fields.join(', ') || 'none'}`, `Currentness label: ${projection.currentness.currentness_label}`, `Calendar confidence: ${projection.currentness.calendar_confidence}`, `Trading-day status: ${projection.currentness.trading_day_status}`, '', 'Governance guardrails:', `- not_trading_signal: ${projection.governance_guardrails.not_trading_signal}`, `- not_recommendation: ${projection.governance_guardrails.not_recommendation}`, `- not_market_prediction: ${projection.governance_guardrails.not_market_prediction}`, `- raw_payload_exposed: ${projection.governance_guardrails.raw_payload_exposed}`, '', `Raw forbidden omission notice: ${projection.raw_forbidden_omission_notice}`, '', 'Observations:'];
+            const lines = ['# AI Discussion Handoff Preview', '', 'Static safe projection.', 'Not live data.', 'No realtime SLA.', 'Not trading advice.', 'Not a recommendation.', 'Not a trading signal.', '', `Selected symbols: ${projection.selected_symbols.join(', ') || 'none'}`, `Selected fields: ${projection.selected_fields.join(', ') || 'none'}`, `Currentness label: ${projection.currentness.currentness_label}`, `Calendar confidence: ${projection.currentness.calendar_confidence}`, `Trading-day status: ${projection.currentness.trading_day_status}`, '', 'Governance guardrails:', `- not_trading_signal: ${projection.governance_guardrails.not_trading_signal}`, `- not_recommendation: ${projection.governance_guardrails.not_recommendation}`, `- not_market_prediction: ${projection.governance_guardrails.not_market_prediction}`, `- raw_payload_exposed: ${projection.governance_guardrails.raw_payload_exposed}`, `- raw_rich_facts_exposed: ${projection.governance_guardrails.raw_rich_facts_exposed}`, `- raw_full_ladder_exposed: ${projection.governance_guardrails.raw_full_ladder_exposed}`, '', `Raw forbidden omission notice: ${projection.raw_forbidden_omission_notice}`, '', 'Observations:'];
             projection.observations.forEach(observation => {
                 lines.push(`- ${observation.symbol} ${observation.display_name} (${observation.market}/${observation.source})`);
                 Object.keys(observation.fields).forEach(key => {

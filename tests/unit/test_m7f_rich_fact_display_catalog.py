@@ -94,8 +94,8 @@ def test_m7f_currentness_and_calendar_dependencies():
 def test_m7f_inventory_status_entry():
     inv = json.loads(INVENTORY.read_text(encoding="utf-8"))
     entry = inv["rich_observation_contract"]["m7f_rich_fact_browser_operator_workbench"]
-    assert entry["status"] in {"base_ui_defined", "field_badges_currentness_calendar_integrated", "ai_handoff_selection_search_filters_defined"}
-    assert entry["completed_tasks"] in (["M7F-00", "M7F-01", "M7F-02"], ["M7F-00", "M7F-01", "M7F-02", "M7F-03", "M7F-04"], ["M7F-00", "M7F-01", "M7F-02", "M7F-03", "M7F-04", "M7F-05", "M7F-06"])
+    assert entry["status"] in {"base_ui_defined", "field_badges_currentness_calendar_integrated", "ai_handoff_selection_search_filters_defined", "final_acceptance_pass_with_caveats"}
+    assert entry["completed_tasks"] in (["M7F-00", "M7F-01", "M7F-02"], ["M7F-00", "M7F-01", "M7F-02", "M7F-03", "M7F-04"], ["M7F-00", "M7F-01", "M7F-02", "M7F-03", "M7F-04", "M7F-05", "M7F-06"], ["M7F-00", "M7F-01", "M7F-02", "M7F-03", "M7F-04", "M7F-05", "M7F-06", "M7F-07", "M7F-08"])
     assert entry["track_name"] == "M7F-FRONTEND-RICH-FACT-BROWSER-OPERATOR-WORKBENCH-AND-AI-DISCUSSION-HANDOFF"
     assert entry["not_summary_only"] is True
     assert entry["raw_payload_exposure_allowed"] is False
@@ -109,4 +109,4 @@ def test_m7f_inventory_status_entry():
     assert entry["runtime_behavior_changed"] is False
     assert entry["raw_forbidden_values_rendered"] is False
     assert entry["base_ui_doc"] == "docs/protocol/M7F_FRONTEND_RICH_FACT_BROWSER_BASE_UI.md"
-    assert entry["next_task"] in {"M7F-03-04-FIELD-BADGES-CURRENTNESS-AND-CALENDAR-INTEGRATION", "M7F-05-06-AI-DISCUSSION-HANDOFF-RICH-FACT-SELECTION-SEARCH-AND-FILTERS", "M7F-07-08-FRONTEND-SECURITY-SEMANTIC-REGRESSION-AND-FINAL-ACCEPTANCE"}
+    assert entry["next_task"] in {"M7F-03-04-FIELD-BADGES-CURRENTNESS-AND-CALENDAR-INTEGRATION", "M7F-05-06-AI-DISCUSSION-HANDOFF-RICH-FACT-SELECTION-SEARCH-AND-FILTERS", "M7F-07-08-FRONTEND-SECURITY-SEMANTIC-REGRESSION-AND-FINAL-ACCEPTANCE", "M7G-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-AND-OPERATOR-REFRESH-WORKFLOW"}
