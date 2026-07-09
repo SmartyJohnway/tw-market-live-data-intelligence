@@ -1309,10 +1309,11 @@
       "next_task": "M7F-FRONTEND-OPERATOR-PRESENTATION-AND-CONTEXT-WORKBENCH"
     },
     "m7f_rich_fact_browser_operator_workbench": {
-      "status": "policy_exposure_contract_and_field_catalog_defined",
+      "status": "base_ui_defined",
       "completed_tasks": [
         "M7F-00",
-        "M7F-01"
+        "M7F-01",
+        "M7F-02"
       ],
       "track_name": "M7F-FRONTEND-RICH-FACT-BROWSER-OPERATOR-WORKBENCH-AND-AI-DISCUSSION-HANDOFF",
       "policy_doc": "docs/protocol/M7F_RICH_FACT_BROWSER_POLICY.md",
@@ -1323,7 +1324,7 @@
       "rich_fact_browser": true,
       "operator_workbench": true,
       "ai_discussion_handoff_planned": true,
-      "frontend_changed": false,
+      "frontend_changed": true,
       "runtime_behavior_changed": false,
       "fastapi_changed": false,
       "mcp_changed": false,
@@ -1345,7 +1346,18 @@
       "not_full_market_breadth": true,
       "depends_on_m7e_market_clock": true,
       "depends_on_m7e05_trading_calendar_authority": true,
-      "next_task": "M7F-02-FRONTEND-RICH-FACT-BROWSER-BASE-UI"
+      "next_task": "M7F-03-04-FIELD-BADGES-CURRENTNESS-AND-CALENDAR-INTEGRATION",
+      "base_ui_doc": "docs/protocol/M7F_FRONTEND_RICH_FACT_BROWSER_BASE_UI.md",
+      "safe_dom_rendering_required": true,
+      "unsafe_inner_html_allowed": false,
+      "raw_forbidden_values_rendered": false,
+      "base_ui_sections": [
+        "operator_status_header",
+        "rich_fact_browser_table",
+        "per_symbol_governed_field_details",
+        "governance_caveat_panel",
+        "raw_forbidden_omission_notice"
+      ]
     }
   },
   "runtime_behavior_changed": false,
