@@ -1309,7 +1309,7 @@
       "next_task": "M7F-FRONTEND-OPERATOR-PRESENTATION-AND-CONTEXT-WORKBENCH"
     },
     "m7f_rich_fact_browser_operator_workbench": {
-      "status": "ai_handoff_selection_search_filters_defined",
+      "status": "final_acceptance_pass_with_caveats",
       "completed_tasks": [
         "M7F-00",
         "M7F-01",
@@ -1317,7 +1317,9 @@
         "M7F-03",
         "M7F-04",
         "M7F-05",
-        "M7F-06"
+        "M7F-06",
+        "M7F-07",
+        "M7F-08"
       ],
       "track_name": "M7F-FRONTEND-RICH-FACT-BROWSER-OPERATOR-WORKBENCH-AND-AI-DISCUSSION-HANDOFF",
       "policy_doc": "docs/protocol/M7F_RICH_FACT_BROWSER_POLICY.md",
@@ -1350,7 +1352,7 @@
       "not_full_market_breadth": true,
       "depends_on_m7e_market_clock": true,
       "depends_on_m7e05_trading_calendar_authority": true,
-      "next_task": "M7F-07-08-FRONTEND-SECURITY-SEMANTIC-REGRESSION-AND-FINAL-ACCEPTANCE",
+      "next_task": "M7G-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-AND-OPERATOR-REFRESH-WORKFLOW",
       "base_ui_doc": "docs/protocol/M7F_FRONTEND_RICH_FACT_BROWSER_BASE_UI.md",
       "safe_dom_rendering_required": true,
       "unsafe_inner_html_allowed": false,
@@ -1392,7 +1394,27 @@
       "ai_model_call_added": false,
       "real_artifact_loading_added": false,
       "handoff_is_not_trading_signal": true,
-      "handoff_is_not_recommendation": true
+      "handoff_is_not_recommendation": true,
+      "final_acceptance_status": "pass_with_caveats",
+      "frontend_security_semantic_regression_doc": "docs/protocol/M7F_FRONTEND_SECURITY_SEMANTIC_REGRESSION.md",
+      "final_acceptance_doc": "docs/protocol/M7F_RICH_FACT_BROWSER_OPERATOR_WORKBENCH_FINAL_ACCEPTANCE.md",
+      "frontend_security_regression_completed": true,
+      "semantic_regression_completed": true,
+      "final_acceptance_completed": true,
+      "rich_fact_browser_final_accepted": true,
+      "operator_workbench_final_accepted": true,
+      "ai_discussion_handoff_final_accepted": true,
+      "manual_refresh_added": false,
+      "canonical_raw_payload_guardrail_keys_preserved": true,
+      "browser_e2e_screenshot_captured": false,
+      "browser_e2e_screenshot_caveat": "Browser/Playwright tooling was not available in the execution environment; static DOM/security/unit regression coverage was used instead.",
+      "known_caveats": [
+        "static_safe_demo_projection_only",
+        "no_real_artifact_loading",
+        "no_manual_refresh_workflow",
+        "no_production_context_source_integration",
+        "no_browser_e2e_screenshot_in_current_environment"
+      ]
     }
   },
   "runtime_behavior_changed": false,

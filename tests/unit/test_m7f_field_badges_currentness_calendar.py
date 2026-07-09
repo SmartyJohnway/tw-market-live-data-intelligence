@@ -171,13 +171,13 @@ def test_inventory_status_for_m7f0304():
         "frontend_side_trading_day_inference_added", "raw_payload_exposure_allowed",
         "raw_forbidden_values_rendered", "trading_advice_allowed",
     ]
-    assert entry["status"] in {"field_badges_currentness_calendar_integrated", "ai_handoff_selection_search_filters_defined"}
-    assert entry["completed_tasks"] == ["M7F-00", "M7F-01", "M7F-02", "M7F-03", "M7F-04", "M7F-05", "M7F-06"]
+    assert entry["status"] in {"field_badges_currentness_calendar_integrated", "ai_handoff_selection_search_filters_defined", "final_acceptance_pass_with_caveats"}
+    assert entry["completed_tasks"] in (["M7F-00", "M7F-01", "M7F-02", "M7F-03", "M7F-04", "M7F-05", "M7F-06"], ["M7F-00", "M7F-01", "M7F-02", "M7F-03", "M7F-04", "M7F-05", "M7F-06", "M7F-07", "M7F-08"])
     for key in expected_true:
         assert entry[key] is True
     for key in expected_false:
         assert entry[key] is False
-    assert entry["next_task"] == "M7F-07-08-FRONTEND-SECURITY-SEMANTIC-REGRESSION-AND-FINAL-ACCEPTANCE"
+    assert entry["next_task"] in {"M7F-07-08-FRONTEND-SECURITY-SEMANTIC-REGRESSION-AND-FINAL-ACCEPTANCE", "M7G-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-AND-OPERATOR-REFRESH-WORKFLOW"}
 
 
 def test_default_ci_includes_m7f0304_test():
