@@ -204,3 +204,105 @@ def build_market_clock_session_state(*, now_utc: datetime | str, latest_observat
         caveats.append("Holiday records missing; weekday heuristic only and official holiday correctness is unknown.")
     result.update({"session_state": state, "session_phase": phase, "calendar_confidence": conf, "holiday_status": holiday_status, "is_trading_day_candidate": trading, "latest_observation_time": ts, "latest_observation_age_seconds": age, "freshness_state": freshness, "currentness_label": currentness, "semantic_caveats": caveats})
     return result
+
+
+M7E_CONTROLLED_CONTEXT_SCHEMA_VERSION = "m7e_market_clock_session_state_controlled_context.v1"
+_SAFE_PROMOTION_FIELDS = [
+    "market",
+    "timezone",
+    "trade_date",
+    "session_state",
+    "session_phase",
+    "calendar_policy",
+    "calendar_confidence",
+    "holiday_status",
+    "is_weekend",
+    "is_trading_day_candidate",
+    "latest_observation_time",
+    "latest_observation_age_seconds",
+    "freshness_state",
+    "currentness_label",
+    "semantic_caveats",
+]
+
+
+def _controlled_rejection(reason: str) -> dict[str, object]:
+    return {
+        "schema_version": M7E_CONTROLLED_CONTEXT_SCHEMA_VERSION,
+        "context_id": "M7E_MARKET_CLOCK_SESSION_STATE",
+        "context_status": "controlled_context_rejected",
+        "exposure_status": "ai_safe_context_disabled",
+        "safe_for_ai_context": False,
+        "builder_output_safe_for_ai_context": False,
+        "failure_reason": reason,
+        "raw_payload_exposed": False,
+        "raw_rich_facts_exposed": False,
+        "raw_full_ladder_exposed": False,
+        "not_trading_signal": True,
+        "not_recommendation": True,
+    }
+
+
+def _ai_currentness_summary(label: object) -> str:
+    if label == "live_candidate":
+        return "Latest observation is a regular-session live candidate, but it remains non-SLA and not a trading signal."
+    if label == "recent_but_unverified":
+        return "Latest observation is recent but not verified as live; discuss as recent observed context, not as guaranteed current market movement."
+    if label == "reference_only":
+        return "Latest observation is reference-only for AI discussion; do not describe it as current intraday movement."
+    if label == "not_current":
+        return "Market session is not current for live discussion; treat observations as not-current reference context."
+    return "Market clock/currentness evidence is degraded or unknown; avoid current/live language."
+
+
+def promote_market_clock_session_state_for_controlled_context(
+    candidate: dict[str, object],
+) -> dict[str, object]:
+    """Project M7E builder output into bounded AI-safe conversation context.
+
+    The raw builder candidate remains unsafe for direct AI context; this function
+    fail-closes unless the expected M7E schema and safety gates are present, and
+    returns only semantic currentness/session fields.
+    """
+    if not isinstance(candidate, dict):
+        return _controlled_rejection("candidate_must_be_object")
+    if candidate.get("schema_version") != M7E_MARKET_CLOCK_SESSION_STATE_SCHEMA_VERSION:
+        return _controlled_rejection("invalid_candidate_schema")
+    if candidate.get("builder_output_safe_for_ai_context") is not False:
+        return _controlled_rejection("builder_output_safety_flag_not_false")
+    if candidate.get("context_id") != "M7E_MARKET_CLOCK_SESSION_STATE":
+        return _controlled_rejection("invalid_context_id")
+    required = ["session_state", "freshness_state", "currentness_label", "calendar_confidence"]
+    if any(k not in candidate for k in required):
+        return _controlled_rejection("missing_required_semantic_fields")
+
+    promoted: dict[str, object] = {
+        "schema_version": M7E_CONTROLLED_CONTEXT_SCHEMA_VERSION,
+        "source_schema_version": M7E_MARKET_CLOCK_SESSION_STATE_SCHEMA_VERSION,
+        "context_id": "M7E_MARKET_CLOCK_SESSION_STATE",
+        "context_status": "controlled_context_promoted",
+        "exposure_status": "ai_safe_context_enabled",
+        "safe_for_ai_context": True,
+        "builder_output_safe_for_ai_context": False,
+    }
+    for field in _SAFE_PROMOTION_FIELDS:
+        value = candidate.get(field)
+        if field == "semantic_caveats":
+            promoted[field] = [str(v) for v in value] if isinstance(value, list) else []
+        else:
+            promoted[field] = value
+    promoted.update({
+        "ai_currentness_summary": _ai_currentness_summary(candidate.get("currentness_label")),
+        "allowed_language": list(_ALLOWED_LANGUAGE),
+        "blocked_language": list(_BLOCKED_LANGUAGE),
+        "raw_payload_exposed": False,
+        "raw_rich_facts_exposed": False,
+        "raw_full_ladder_exposed": False,
+        "not_trading_signal": True,
+        "not_recommendation": True,
+        "not_market_prediction": True,
+        "not_capital_flow": True,
+        "not_full_market_breadth": True,
+        "bounded_watchlist_only": True,
+    })
+    return promoted

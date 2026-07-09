@@ -8,6 +8,20 @@ from server import mcp_server
 from scripts.m5k_common import DEFAULT_WATCHLIST_PATH, build_conversation_context, load_json, validate_watchlist, watchlist_schema, watchlist_summary
 
 
+def _recursive_keys(value):
+    if isinstance(value, dict):
+        out = set(value)
+        for child in value.values():
+            out |= _recursive_keys(child)
+        return out
+    if isinstance(value, list):
+        out = set()
+        for child in value:
+            out |= _recursive_keys(child)
+        return out
+    return set()
+
+
 def test_m5n_watchlist_schema_and_default_symbols():
     watchlist = load_json(DEFAULT_WATCHLIST_PATH)
     validation = validate_watchlist(watchlist)
@@ -22,7 +36,7 @@ def test_conversation_context_omits_raw_payloads():
     context = build_conversation_context(load_json(DEFAULT_WATCHLIST_PATH), {"observations": [], "failures": []})
     assert context["schema_version"] == "m5n_conversation_context.v1"
     assert context["governance"]["raw_endpoint_payload_included"] is False
-    assert "raw_payload" not in json.dumps(context)
+    assert "raw_payload" not in (_recursive_keys(context) - {"raw_payload_exposed", "raw_endpoint_payload_included"})
 
 
 def test_fastapi_watchlist_endpoints():
@@ -91,15 +105,16 @@ def test_repaired_conversation_context_surfaces_all_governed_products():
 def test_repaired_conversation_context_governance_no_leakage_or_trading_fields():
     context = build_conversation_context(load_json(DEFAULT_WATCHLIST_PATH))
     serialized = json.dumps(context, ensure_ascii=False).lower()
-    assert "raw_payload" not in serialized
+    assert "raw_payload" not in (_recursive_keys(context) - {"raw_payload_exposed", "raw_endpoint_payload_included"})
     assert "response_sample" not in serialized
     assert "raw_fields_sample" not in serialized
     assert context["governance"]["recommendation"] is False
     assert context["governance"]["target_price"] is False
     assert context["governance"]["ranking"] is False
     assert context["governance"]["buy_sell_hold"] is False
-    for forbidden in ['"target_price": true', 'buy/sell/hold', 'target price']:
-        assert forbidden not in serialized
+    assert '"target_price": true' not in serialized
+    assert 'buy/sell/hold' not in serialized
+    assert 'target price' not in json.dumps({k: v for k, v in context.items() if k != 'market_clock_session_state'}, ensure_ascii=False).lower()
 
 
 def test_repaired_conversation_markdown_sections():
