@@ -134,8 +134,8 @@ def test_m7f02_displays_multiple_rich_fields_not_summary_only():
 def test_m7f02_inventory_status():
     inv = json.loads(INV.read_text(encoding="utf-8"))
     entry = inv["rich_observation_contract"]["m7f_rich_fact_browser_operator_workbench"]
-    assert entry["status"] in {"base_ui_defined", "field_badges_currentness_calendar_integrated"}
-    assert entry["completed_tasks"] in (["M7F-00", "M7F-01", "M7F-02"], ["M7F-00", "M7F-01", "M7F-02", "M7F-03", "M7F-04"])
+    assert entry["status"] in {"base_ui_defined", "field_badges_currentness_calendar_integrated", "ai_handoff_selection_search_filters_defined"}
+    assert entry["completed_tasks"] in (["M7F-00", "M7F-01", "M7F-02"], ["M7F-00", "M7F-01", "M7F-02", "M7F-03", "M7F-04", "M7F-05", "M7F-06"])
     for key in ["frontend_changed"]:
         assert entry[key] is True
     for key in [
@@ -150,7 +150,7 @@ def test_m7f02_inventory_status():
         "raw_forbidden_values_rendered",
     ]:
         assert entry[key] is False
-    assert entry["next_task"] in {"M7F-03-04-FIELD-BADGES-CURRENTNESS-AND-CALENDAR-INTEGRATION", "M7F-05-06-AI-DISCUSSION-HANDOFF-RICH-FACT-SELECTION-SEARCH-AND-FILTERS"}
+    assert entry["next_task"] in {"M7F-03-04-FIELD-BADGES-CURRENTNESS-AND-CALENDAR-INTEGRATION", "M7F-07-08-FRONTEND-SECURITY-SEMANTIC-REGRESSION-AND-FINAL-ACCEPTANCE"}
 
 
 def test_m7f02_default_ci_inclusion():
