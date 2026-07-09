@@ -185,6 +185,9 @@ def build_market_clock_session_state(*, now_utc: datetime | str, latest_observat
             state, phase = "postclose", "after_regular_session"
         else:
             state, phase = "closed", "after_regular_session"
+    elif trading_day_resolution and trading_day_resolution.get("is_trading_day") is None:
+        holiday_status = str(trading_day_resolution.get("reason") or "artifact_missing_date")
+        state, phase, trading = "unknown", "unknown", False
     elif is_weekend:
         holiday_status, state, phase, trading = "weekend", "weekend_closed", "non_trading_day", False
     elif d in non:
@@ -202,7 +205,7 @@ def build_market_clock_session_state(*, now_utc: datetime | str, latest_observat
         else:
             state, phase = "closed", "after_regular_session"
     freshness, ts, age = _freshness(now, latest_observation)
-    if freshness in {"no_observation", "invalid_timestamp", "future_timestamp", "unknown"}:
+    if state == "unknown" or freshness in {"no_observation", "invalid_timestamp", "future_timestamp", "unknown"}:
         currentness = "degraded_unknown"
     elif state == "regular_open" and trading and freshness == "fresh":
         currentness = "live_candidate"

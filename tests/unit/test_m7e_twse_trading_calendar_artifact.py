@@ -45,3 +45,20 @@ def test_market_clock_builder_uses_calendar_artifact_without_missing_records_cav
     assert state["holiday_status"] == "endpoint_non_trading_date"
     assert state["is_trading_day_candidate"] is False
     assert not any("Holiday records missing" in c for c in state["semantic_caveats"])
+
+
+def test_market_clock_builder_fails_closed_when_calendar_artifact_missing_date():
+    cal = build_twse_trading_calendar_from_holiday_schedule(year=2026, holiday_schedule_records=RECORDS, generated_at_utc="2026-01-01T00:00:00Z")
+    cal["dates"] = [d for d in cal["dates"] if d["date"] != "2026-01-05"]
+
+    state = build_market_clock_session_state(
+        now_utc="2026-01-05T01:10:00+00:00",
+        latest_observation={"retrieved_at_utc": "2026-01-05T01:09:00+00:00"},
+        trading_calendar_artifact=cal,
+    )
+
+    assert state["calendar_confidence"] == "artifact_missing_date"
+    assert state["is_trading_day_candidate"] is False
+    assert state["currentness_label"] == "degraded_unknown"
+    assert state["holiday_status"] == "date_not_found_in_artifact"
+    assert "Date not found in supplied TWSE trading calendar artifact." in state["semantic_caveats"]
