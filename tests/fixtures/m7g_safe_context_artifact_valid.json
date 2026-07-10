@@ -1,0 +1,58 @@
+{
+  "schema_version": "m7g_safe_context_artifact.v1",
+  "artifact_id": "safe-context-demo-20260709",
+  "artifact_type": "safe_context_projection",
+  "created_at_utc": "2026-07-09T01:30:00Z",
+  "generated_by": "local_safe_projection_builder",
+  "source_scope": "bounded_watchlist",
+  "market": "TW",
+  "timezone": "Asia/Taipei",
+  "safe_for_frontend": true,
+  "safe_for_ai_handoff": true,
+  "raw_payload_exposed": false,
+  "raw_rich_facts_exposed": false,
+  "raw_full_ladder_exposed": false,
+  "raw_forbidden_values_present": false,
+  "artifact_manifest": {
+    "schema_version": "m7g_safe_context_manifest.v1",
+    "source": "local_file",
+    "operator_selected": true,
+    "loaded_at_utc": null,
+    "validation_status": "not_loaded",
+    "validation_errors": []
+  },
+  "market_clock_session_state": {
+    "session_state": "regular_open",
+    "freshness_state": "fresh",
+    "currentness_label": "live_candidate",
+    "calendar_confidence": "controlled_twse_holiday_schedule_artifact",
+    "trading_day_status": "trading_day",
+    "calendar_authority_caveats": ["not_full_exchange_calendar_engine", "no_realtime_sla", "not_trading_advice"],
+    "semantic_caveats": ["Latest observed context only; no realtime SLA.", "Not trading advice."]
+  },
+  "governance": {
+    "not_trading_signal": true,
+    "not_recommendation": true,
+    "not_market_prediction": true,
+    "not_capital_flow": true,
+    "not_full_market_breadth": true,
+    "raw_payload_exposed": false,
+    "raw_rich_facts_exposed": false,
+    "raw_full_ladder_exposed": false
+  },
+  "observations": [
+    {
+      "symbol": "2330",
+      "display_name": "台積電",
+      "market": "TWSE",
+      "source": "TWSE_MIS",
+      "retrieved_at_utc": "2026-07-09T01:30:00Z",
+      "price_like_value": 1000,
+      "change_percent": 1.2,
+      "volume_candidate": 123456,
+      "best_bid_candidate": 999,
+      "best_ask_candidate": 1000,
+      "semantic_caveats": ["Safe projected observation; not trading advice."]
+    }
+  ]
+}

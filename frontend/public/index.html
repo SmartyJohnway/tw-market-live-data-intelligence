@@ -76,6 +76,28 @@
         <div id="m7f-browser-table" aria-label="Observed Rich Facts"></div>
         <div id="m7f-handoff" aria-label="AI Discussion Handoff Preview"></div>
         <div id="m7f-governance" aria-label="Governance"></div>
+
+        <section id="m7g-local-safe-artifact-load" class="m7f-panel" aria-labelledby="m7g-heading">
+            <h3 id="m7g-heading">Local Safe Context Artifact Load</h3>
+            <p class="note">Manual local artifact load only. Operator-selected safe JSON must validate before it can render in the rich fact browser.</p>
+            <div class="m7f-controls-grid">
+                <label class="m7f-control">Manual local artifact load
+                    <input id="m7g-artifact-file" type="file" accept="application/json,.json">
+                </label>
+                <label class="m7f-control">Paste safe JSON artifact
+                    <textarea id="m7g-artifact-paste" rows="8" placeholder="Paste safe context artifact JSON here"></textarea>
+                </label>
+            </div>
+            <div class="controls">
+                <button id="m7g-validate-artifact" class="btn" type="button">Validate artifact</button>
+                <button id="m7g-load-validated-artifact" class="btn" type="button">Load validated artifact</button>
+                <button id="m7g-reset-static-demo" class="btn" type="button">Reset to static demo</button>
+            </div>
+            <div id="m7g-validation-result" aria-label="Validation result"></div>
+            <div id="m7g-loaded-artifact-manifest" aria-label="Loaded artifact manifest"></div>
+            <div id="m7g-loaded-artifact-provenance" aria-label="Loaded artifact provenance currentness"></div>
+            <div id="m7g-rejection-summary" aria-label="Rejection summary"></div>
+        </section>
     </section>
 
     <h2>Local API Tools</h2>
@@ -200,11 +222,199 @@
         const M7F_DEFAULT_HANDOFF_FIELDS = ['symbol', 'display_name', 'market', 'source', 'retrieved_at_utc', 'price_like_value', 'change_percent', 'volume_candidate', 'best_bid_candidate', 'best_ask_candidate', 'currentness_label', 'calendar_confidence', 'trading_day_status', 'not_trading_signal', 'not_recommendation'];
         let m7fFilters = { search: '', group: 'all', confidence: 'all', exposure: 'all', currentness: 'all', showCaveated: true };
         let m7fSelectedFieldKeys = M7F_DEFAULT_HANDOFF_FIELDS.slice();
-
         function getM7FDisplayableFields(observation) {
             return Object.keys(observation).filter(key => {
                 const meta = M7F_DISPLAY_CATALOG[key];
                 return meta && meta.display_allowed === true && meta.raw_forbidden === false;
+            });
+        }
+
+        let m7gPendingArtifactText = '';
+        let m7gValidatedArtifact = null;
+        let m7gValidationResult = null;
+
+        const M7G_RAW_FORBIDDEN_KEYS = [
+            'raw_payload',
+            'twse_mis_rich_facts',
+            'raw_rich_facts',
+            'raw_unknown_facts',
+            'full_ladder',
+            'bid_prices',
+            'ask_prices',
+            'source_investigation_notes',
+            'response_sample',
+            'raw_fields_sample'
+        ];
+
+        function detectM7GRawForbiddenKeys(value) {
+            const detected = new Set();
+            function walk(node) {
+                if (Array.isArray(node)) {
+                    node.forEach(item => walk(item));
+                    return;
+                }
+                if (node && typeof node === 'object') {
+                    Object.keys(node).forEach(key => {
+                        if (M7G_RAW_FORBIDDEN_KEYS.includes(key)) detected.add(key);
+                        walk(node[key]);
+                    });
+                }
+            }
+            walk(value);
+            return Array.from(detected).sort();
+        }
+
+        function validateM7GSafeContextArtifact(artifact) {
+            const errors = [];
+            function reject(code, reason) {
+                errors.push({ code, reason });
+            }
+            if (!artifact || typeof artifact !== 'object' || Array.isArray(artifact)) reject('artifact_not_object', 'Artifact must be a JSON object.');
+            const candidate = artifact || {};
+            if (candidate.schema_version !== 'm7g_safe_context_artifact.v1') reject('invalid_schema_version', 'schema_version must be m7g_safe_context_artifact.v1.');
+            if (candidate.safe_for_frontend !== true) reject('safe_for_frontend_not_true', 'safe_for_frontend must be true.');
+            if (candidate.safe_for_ai_handoff !== true) reject('safe_for_ai_handoff_not_true', 'safe_for_ai_handoff must be true.');
+            ['raw_payload_exposed', 'raw_rich_facts_exposed', 'raw_full_ladder_exposed', 'raw_forbidden_values_present'].forEach(key => {
+                if (candidate[key] !== false) reject(`${key}_not_false`, `${key} must be false.`);
+            });
+            const governance = candidate.governance || {};
+            ['not_trading_signal', 'not_recommendation', 'not_market_prediction'].forEach(key => {
+                if (governance[key] !== true) reject(`governance_${key}_not_true`, `governance.${key} must be true.`);
+            });
+            const clock = candidate.market_clock_session_state || {};
+            if (!clock.currentness_label) reject('missing_currentness_label', 'market_clock_session_state.currentness_label is required.');
+            if (!clock.calendar_confidence) reject('missing_calendar_confidence', 'market_clock_session_state.calendar_confidence is required.');
+            if (!Array.isArray(candidate.observations)) reject('observations_not_array', 'observations is array required.');
+            const rawKeys = detectM7GRawForbiddenKeys(candidate);
+            if (rawKeys.length > 0) reject('raw_forbidden_keys_detected', 'Raw forbidden keys detected; raw values are not shown.');
+            const accepted = errors.length === 0;
+            return {
+                schema_version: 'm7g_safe_artifact_validation_result.v1',
+                validation_status: accepted ? 'accepted' : 'rejected',
+                safe_to_render: accepted,
+                safe_for_ai_handoff: accepted,
+                errors,
+                warnings: [],
+                artifact_id: candidate.artifact_id || null,
+                artifact_schema_version: candidate.schema_version || null,
+                observation_count: Array.isArray(candidate.observations) ? candidate.observations.length : 0,
+                raw_forbidden_keys_detected: rawKeys,
+                raw_payload_exposed: candidate.raw_payload_exposed === true,
+                raw_rich_facts_exposed: candidate.raw_rich_facts_exposed === true,
+                raw_full_ladder_exposed: candidate.raw_full_ladder_exposed === true
+            };
+        }
+
+        function buildM7GRejectionSummary(result) {
+            return {
+                validation_status: result.validation_status,
+                safe_to_render: false,
+                safe_for_ai_handoff: false,
+                error_codes: result.errors.map(error => error.code),
+                reasons: result.errors.map(error => error.reason),
+                raw_forbidden_keys_detected: result.raw_forbidden_keys_detected
+            };
+        }
+
+        function renderM7GPanelObject(containerId, heading, objectValue) {
+            const container = document.getElementById(containerId);
+            container.replaceChildren();
+            appendText(container, 'h4', heading);
+            const pre = document.createElement('pre');
+            pre.textContent = JSON.stringify(objectValue, null, 2);
+            container.appendChild(pre);
+        }
+
+        function updateM7GLoadedPanels(artifact, result) {
+            const manifest = Object.assign({}, artifact.artifact_manifest || {}, {
+                loaded_at_utc: 'operator_action_runtime',
+                validation_status: result.validation_status,
+                validation_errors: result.errors.map(error => error.code)
+            });
+            renderM7GPanelObject('m7g-loaded-artifact-manifest', 'Loaded artifact manifest', manifest);
+            renderM7GPanelObject('m7g-loaded-artifact-provenance', 'Loaded artifact provenance/currentness', {
+                artifact_id: artifact.artifact_id,
+                artifact_type: artifact.artifact_type,
+                source_scope: artifact.source_scope,
+                market: artifact.market,
+                timezone: artifact.timezone,
+                market_clock_session_state: artifact.market_clock_session_state
+            });
+        }
+
+        function setupM7GManualSafeArtifactLoadUI() {
+            const fileInput = document.getElementById('m7g-artifact-file');
+            const pasteArea = document.getElementById('m7g-artifact-paste');
+            const validateButton = document.getElementById('m7g-validate-artifact');
+            const loadButton = document.getElementById('m7g-load-validated-artifact');
+            const resetButton = document.getElementById('m7g-reset-static-demo');
+
+            fileInput.addEventListener('change', function () {
+                const file = fileInput.files && fileInput.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.addEventListener('load', function () {
+                    m7gPendingArtifactText = String(reader.result || '');
+                    pasteArea.value = m7gPendingArtifactText;
+                    m7gValidatedArtifact = null;
+                    m7gValidationResult = null;
+                });
+                reader.readAsText(file);
+            });
+
+            validateButton.addEventListener('click', function () {
+                const rawText = pasteArea.value || m7gPendingArtifactText;
+                let artifact = null;
+                try {
+                    artifact = JSON.parse(rawText);
+                    m7gValidationResult = validateM7GSafeContextArtifact(artifact);
+                } catch (error) {
+                    m7gValidationResult = {
+                        schema_version: 'm7g_safe_artifact_validation_result.v1',
+                        validation_status: 'rejected',
+                        safe_to_render: false,
+                        safe_for_ai_handoff: false,
+                        errors: [{ code: 'json_parse_error', reason: 'Artifact JSON could not parse.' }],
+                        warnings: [],
+                        artifact_id: null,
+                        artifact_schema_version: null,
+                        observation_count: 0,
+                        raw_forbidden_keys_detected: [],
+                        raw_payload_exposed: false,
+                        raw_rich_facts_exposed: false,
+                        raw_full_ladder_exposed: false
+                    };
+                }
+                if (m7gValidationResult.validation_status === 'accepted' && m7gValidationResult.safe_to_render === true) {
+                    m7gValidatedArtifact = artifact;
+                } else {
+                    m7gValidatedArtifact = null;
+                }
+                renderM7GPanelObject('m7g-validation-result', 'Validation result', m7gValidationResult);
+                renderM7GPanelObject('m7g-rejection-summary', 'Rejection summary', buildM7GRejectionSummary(m7gValidationResult));
+            });
+
+            loadButton.addEventListener('click', function () {
+                if (
+                    m7gValidatedArtifact &&
+                    m7gValidationResult &&
+                    m7gValidationResult.validation_status === 'accepted' &&
+                    m7gValidationResult.safe_to_render === true
+                ) {
+                    updateM7GLoadedPanels(m7gValidatedArtifact, m7gValidationResult);
+                    renderM7FRichFactBrowser(m7gValidatedArtifact);
+                }
+            });
+
+            resetButton.addEventListener('click', function () {
+                m7gValidatedArtifact = null;
+                m7gValidationResult = null;
+                pasteArea.value = '';
+                renderM7GPanelObject('m7g-validation-result', 'Validation result', { validation_status: 'reset_to_static_demo' });
+                renderM7GPanelObject('m7g-rejection-summary', 'Rejection summary', { validation_status: 'none' });
+                renderM7GPanelObject('m7g-loaded-artifact-manifest', 'Loaded artifact manifest', { source: 'static_demo' });
+                renderM7GPanelObject('m7g-loaded-artifact-provenance', 'Loaded artifact provenance/currentness', { currentness: 'static_demo' });
+                renderM7FRichFactBrowser(M7F_DEMO_RICH_CONTEXT);
             });
         }
 
@@ -691,6 +901,7 @@
         window.onload = function () {
             loadMatrix();
             renderM7FRichFactBrowser(M7F_DEMO_RICH_CONTEXT);
+            setupM7GManualSafeArtifactLoadUI();
         };
     </script>
 </body>
