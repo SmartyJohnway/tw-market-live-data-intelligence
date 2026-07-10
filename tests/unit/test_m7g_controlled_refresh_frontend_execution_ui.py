@@ -28,3 +28,27 @@ def test_rejected_execution_cannot_render_and_no_automatic_load():
     assert 'safe_to_render === true' in load_fn
     execute_fn = HTML[HTML.index('async function executeM7GControlledRefreshOnce'):HTML.index('function loadM7GRefreshedSafeArtifact')]
     assert 'renderM7FRichFactBrowser' not in execute_fn
+
+
+def test_m7g_execute_slice_does_not_auto_render_or_update_active_context():
+    execute_fn = HTML[HTML.index('async function executeM7GControlledRefreshOnce'):HTML.index('function loadM7GRefreshedSafeArtifact')]
+    for forbidden in ['renderM7FRichFactBrowser', 'renderM7FHandoffPanel', 'updateM7GLoadedPanels']:
+        assert forbidden not in execute_fn
+    assert "fetch('/api/m7g/controlled-refresh/execute'" in execute_fn
+
+
+def test_load_refreshed_artifact_is_only_refresh_execution_renderer_gate():
+    refresh_slice = HTML[HTML.index('function getM7GRefreshPreflightContext'):HTML.index('function renderM7FRichFactBrowser')]
+    load_fn = HTML[HTML.index('function loadM7GRefreshedSafeArtifact'):HTML.index('function renderM7FRichFactBrowser')]
+    assert refresh_slice.count('renderM7FRichFactBrowser') == 1
+    assert 'renderM7FRichFactBrowser(m7gActiveSafeArtifact)' in load_fn
+    for required in ["execution_status === 'executed_safe_artifact_ready'", 'safe_artifact_returned === true', "validation_status === 'accepted'", 'safe_to_render === true']:
+        assert required in load_fn
+
+
+def test_refresh_execution_slice_has_no_auto_refresh_hidden_behavior():
+    refresh_slice = HTML[HTML.index('function getM7GRefreshPreflightContext'):HTML.index('function renderM7FRichFactBrowser')]
+    for forbidden in ['setInterval', 'setTimeout', 'WebSocket', 'EventSource', 'navigator.sendBeacon']:
+        assert forbidden not in refresh_slice
+    for forbidden in ['scheduler', 'polling', 'startup']:
+        assert forbidden not in refresh_slice.lower()

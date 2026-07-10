@@ -1417,7 +1417,7 @@
       ]
     },
     "m7g_local_safe_context_artifact_load": {
-      "status": "controlled_manual_refresh_execution_gate_defined",
+      "status": "loaded_artifact_and_refresh_workflow_security_regression_defined",
       "completed_tasks": [
         "M7G-00",
         "M7G-01",
@@ -1428,7 +1428,8 @@
         "M7G-06",
         "M7G-07",
         "M7G-08",
-        "M7G-09"
+        "M7G-09",
+        "M7G-10"
       ],
       "track_name": "M7G-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-AND-OPERATOR-REFRESH-WORKFLOW",
       "policy_doc": "docs/protocol/M7G_LOCAL_SAFE_CONTEXT_ARTIFACT_LOAD_POLICY.md",
@@ -1474,7 +1475,7 @@
       "not_full_market_breadth": true,
       "m7g09_controlled_manual_refresh_execution_required": true,
       "m7g09_earliest_refresh_execution_gate": true,
-      "next_task": "M7G-10-LOADED-ARTIFACT-AND-REFRESH-WORKFLOW-SECURITY-REGRESSION",
+      "next_task": "M7G-11-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-FINAL-ACCEPTANCE",
       "real_safe_artifact_rendering_doc": "docs/protocol/M7G_RICH_FACT_BROWSER_REAL_SAFE_ARTIFACT_RENDERING.md",
       "provenance_currentness_source_health_doc": "docs/protocol/M7G_ARTIFACT_PROVENANCE_CURRENTNESS_SOURCE_HEALTH_PANEL.md",
       "active_context_mode_added": true,
@@ -1596,7 +1597,37 @@
         "TAIFEX_MIS"
       ],
       "mixed_supported_and_unsupported_source_families_fail_closed": true,
-      "partial_source_family_execution_allowed": false
+      "partial_source_family_execution_allowed": false,
+      "refresh_workflow_security_regression_doc": "docs/protocol/M7G_REFRESH_WORKFLOW_SECURITY_REGRESSION.md",
+      "twse_mis_market_route_semantics_doc": "docs/protocol/M7G_TWSE_MIS_MARKET_ROUTE_SEMANTICS.md",
+      "refresh_workflow_security_regression_added": true,
+      "runner_exception_fail_closed_added": true,
+      "runner_exception_returns_safe_structured_result": true,
+      "runner_exception_returns_http_500": false,
+      "raw_forbidden_injection_regression_added": true,
+      "raw_forbidden_injection_reaches_execution_result": false,
+      "raw_forbidden_injection_reaches_safe_artifact": false,
+      "frontend_auto_load_regression_added": true,
+      "frontend_auto_execution_regression_added": true,
+      "frontend_rejected_result_render_regression_added": true,
+      "frontend_rejected_artifact_handoff_regression_added": true,
+      "twse_mis_market_route_semantics_added": true,
+      "twse_mis_twse_listed_route": "tse_{symbol}.tw",
+      "twse_mis_tpex_otc_listed_route": "otc_{symbol}.tw",
+      "tpex_live_quote_source_family": "TWSE_MIS",
+      "tpex_live_quote_separate_source_family_added": false,
+      "tpex_mis_declared": false,
+      "tpex_mis_executable": false,
+      "tpex_openapi_level1_reference_only": true,
+      "tpex_openapi_level2_live_family": false,
+      "taifex_mis_level2_live_family": true,
+      "taifex_mis_executable_in_m7g10": false,
+      "twse_openapi_level1_reference_only": true,
+      "taifex_openapi_level1_reference_only": true,
+      "emerging_stock_live_route_supported": false,
+      "rotc_route_declared": false,
+      "rotc_candidate_added": false,
+      "new_source_execution_support_added": false
     }
   },
   "runtime_behavior_changed": false,
