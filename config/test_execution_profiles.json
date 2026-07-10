@@ -79,7 +79,11 @@
         "tests/unit/test_m7f_field_badges_currentness_calendar.py",
         "tests/unit/test_m7f_frontend_rich_fact_browser_base_ui.py",
         "tests/unit/test_m7f_frontend_security_semantic_regression.py",
-        "tests/unit/test_m7f_rich_fact_browser_final_acceptance.py"
+        "tests/unit/test_m7f_rich_fact_browser_final_acceptance.py",
+        "tests/unit/test_m7g_safe_context_artifact_schema.py",
+        "tests/unit/test_m7g_safe_artifact_validator.py",
+        "tests/unit/test_m7g_frontend_manual_artifact_load_ui.py",
+        "tests/unit/test_m7g_inventory_policy.py"
       ],
       "network_policy": "no network; excludes tests marked network",
       "browser_policy": "does not install or require Playwright/Chromium",
