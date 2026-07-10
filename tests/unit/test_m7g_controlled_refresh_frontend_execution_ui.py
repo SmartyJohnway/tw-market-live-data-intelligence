@@ -1,0 +1,30 @@
+from pathlib import Path
+
+HTML = Path('frontend/public/index.html').read_text(encoding='utf-8')
+
+def test_frontend_controlled_execution_labels_present():
+    for text in ['Controlled Manual Refresh Execution','Execute controlled refresh once','Execution confirmation phrase','EXECUTE_CONTROLLED_REFRESH_ONCE','Refresh execution result','Load refreshed safe artifact','Rejected execution result','No auto refresh','No scheduler','No hidden fetch','Mode A/B/C unchanged','Level 1/2 unchanged','Level 2 safe artifact only','M5F not mutated']:
+        assert text in HTML
+
+
+def test_frontend_execution_behavior_is_explicit_click_and_validated():
+    for text in ['POST', '/api/m7g/controlled-refresh/execute', 'EXECUTE_CONTROLLED_REFRESH_ONCE', 'validateM7GSafeContextArtifact', 'renderM7FRichFactBrowser(m7gActiveSafeArtifact)', 'updateM7GLoadedPanels']:
+        assert text in HTML
+    controlled = HTML[HTML.index('async function executeM7GControlledRefreshOnce'):HTML.index('function loadM7GRefreshedSafeArtifact')]
+    assert "addEventListener('click', executeM7GControlledRefreshOnce)" in HTML
+    assert 'setInterval' not in controlled
+    assert 'setTimeout' not in controlled
+    assert 'WebSocket' not in controlled
+    assert 'EventSource' not in controlled
+    assert 'scheduler' not in controlled.lower()
+    assert 'polling' not in controlled.lower()
+
+
+def test_rejected_execution_cannot_render_and_no_automatic_load():
+    load_fn = HTML[HTML.index('function loadM7GRefreshedSafeArtifact'):HTML.index('function renderM7FRichFactBrowser')]
+    assert "execution_status === 'executed_safe_artifact_ready'" in load_fn
+    assert 'safe_artifact_returned === true' in load_fn
+    assert "validation_status === 'accepted'" in load_fn
+    assert 'safe_to_render === true' in load_fn
+    execute_fn = HTML[HTML.index('async function executeM7GControlledRefreshOnce'):HTML.index('function loadM7GRefreshedSafeArtifact')]
+    assert 'renderM7FRichFactBrowser' not in execute_fn

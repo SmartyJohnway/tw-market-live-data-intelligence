@@ -30,7 +30,7 @@ def refresh_js_slice():
 
 def test_frontend_refresh_workflow_ui_exists():
     text = FRONTEND.read_text(encoding='utf-8')
-    for token in ['Operator Refresh Workflow Preflight','Controlled Refresh Request Package','Refresh workflow policy notice','Active context mode','Refresh request eligibility','Requested symbols','Requested source families','Operator confirmation phrase','Build refresh request package','Reset refresh request package','Safe refresh request JSON preview','Safe refresh request Markdown preview','Copy Safe Refresh Request JSON','Copy Safe Refresh Request Markdown','No refresh execution in M7G-07/08','M7G-09 required for execution','PREPARE_REFRESH_REQUEST_ONLY']:
+    for token in ['Operator Refresh Workflow Preflight','Controlled Refresh Request Package','Refresh workflow policy notice','Active context mode','Refresh request eligibility','Requested symbols','Requested source families','Operator confirmation phrase','Build refresh request package','Reset refresh request package','Safe refresh request JSON preview','Safe refresh request Markdown preview','Copy Safe Refresh Request JSON','Copy Safe Refresh Request Markdown','Controlled execution requires EXECUTE_CONTROLLED_REFRESH_ONCE','M7G-09 executes once only after explicit operator click','PREPARE_REFRESH_REQUEST_ONLY']:
         assert token in text
 
 
@@ -46,10 +46,11 @@ def test_frontend_package_helpers_and_shape_fields_exist():
         assert token in js
 
 
-def test_frontend_no_network_backend_or_timer_in_refresh_js_slice_and_script():
+def test_frontend_no_uncontrolled_timer_or_ai_in_refresh_js_slice_and_script():
     combined = (refresh_js_slice() + SCRIPT.read_text(encoding='utf-8')).lower()
-    for token in ['fetch(', 'xmlhttprequest', 'websocket', 'eventsource', 'setinterval', 'settimeout', 'navigator.sendbeacon', '/api/', 'localhost', '127.0.0.1', 'openai', 'chatgpt', 'requests', 'urllib', 'httpx', 'open(', 'path(', 'sqlite', 'psycopg', 'sqlalchemy', 'subprocess', 'socket', 'fastapi']:
+    for token in ['xmlhttprequest', 'websocket', 'eventsource', 'setinterval', 'settimeout', 'navigator.sendbeacon', 'localhost', '127.0.0.1', 'openai', 'chatgpt', 'requests', 'httpx', 'sqlite', 'psycopg', 'sqlalchemy', 'subprocess', 'socket']:
         assert token not in combined
+    assert '/api/m7g/controlled-refresh/execute' in combined
 
 
 def test_handoff_direct_call_hardening_tokens_exist():
@@ -60,13 +61,15 @@ def test_handoff_direct_call_hardening_tokens_exist():
 
 def test_inventory_status_and_default_ci_inclusion():
     entry = json.loads(INV.read_text(encoding='utf-8'))['rich_observation_contract']['m7g_local_safe_context_artifact_load']
-    assert entry['status'] == 'refresh_workflow_policy_and_request_package_defined'
-    assert entry['completed_tasks'] == ['M7G-00','M7G-01','M7G-02','M7G-03','M7G-04','M7G-05','M7G-06','M7G-07','M7G-08']
+    assert entry['status'] == 'controlled_manual_refresh_execution_gate_defined'
+    assert entry['completed_tasks'] == ['M7G-00','M7G-01','M7G-02','M7G-03','M7G-04','M7G-05','M7G-06','M7G-07','M7G-08','M7G-09']
     for key in ['operator_refresh_workflow_policy_added','refresh_preflight_ui_added','controlled_refresh_request_package_added','safe_refresh_request_json_preview_added','safe_refresh_request_markdown_preview_added','explicit_refresh_request_copy_buttons_added','operator_confirmation_phrase_required','requested_symbols_bounded_to_active_context','requested_source_families_fixed_allowlist','handoff_direct_call_hardening_added','arbitrary_validation_result_cannot_bypass_active_context_gate','m7g09_controlled_manual_refresh_execution_required']:
         assert entry[key] is True
-    for key in ['refresh_execution_added','manual_refresh_execution_added','runtime_network_fetch_added','hidden_fetch_added','backend_api_changed','ai_model_call_added','db_write_added','raw_payload_requested','raw_forbidden_values_requested','trading_advice_requested']:
+    for key in ['refresh_execution_added','manual_refresh_execution_added','runtime_network_fetch_added','backend_api_changed']:
+        assert entry[key] is True
+    for key in ['hidden_fetch_added','ai_model_call_added','db_write_added','raw_payload_requested','raw_forbidden_values_requested','trading_advice_requested']:
         assert entry[key] is False
-    assert entry['next_task'] == 'M7G-09-CONTROLLED-MANUAL-REFRESH-EXECUTION-INTEGRATION-GATE'
+    assert entry['next_task'] == 'M7G-10-LOADED-ARTIFACT-AND-REFRESH-WORKFLOW-SECURITY-REGRESSION'
     paths = json.loads(PROFILE.read_text(encoding='utf-8'))['profiles']['default-ci']['pytest_paths']
     assert 'tests/unit/test_m7g_refresh_workflow_policy_request_package.py' in paths
     assert 'tests/unit/test_m7g_refresh_request_package_builder.py' in paths

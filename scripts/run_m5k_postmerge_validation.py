@@ -14,6 +14,15 @@ def changed_files() -> list[str]:
     return [x for x in out.splitlines() if x]
 
 
+def _m7g09_controlled_refresh_allows_frontend_update() -> bool:
+    try:
+        inv = load_json(ROOT/"docs/data_capabilities/twse_mis_rich_field_inventory.json")
+        entry = inv["rich_observation_contract"]["m7g_local_safe_context_artifact_load"]
+        return entry.get("status") == "controlled_manual_refresh_execution_gate_defined" and entry.get("controlled_manual_refresh_execution_added") is True
+    except Exception:
+        return False
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--check-only", action="store_true", help="run offline checks only; never execute network observation")
@@ -24,12 +33,13 @@ def main(argv=None) -> int:
     plan=plan_live_observation(watchlist)
     invalid=execute_live_observation({"schema_version":"m5k_watchlist.v1","categories":[]}, write_latest=False)
     files=changed_files()
+    frontend_write_allowed = _m7g09_controlled_refresh_allows_frontend_update()
     def check(name, ok, detail=None):
         if not ok: failures.append({"check":name,"detail":detail})
     check("m5f_level_1_package_present", (ROOT/"research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json").is_file())
     check("m5k_level_2_noncanonical", plan["governance"]["canonical"] is False and plan["governance"]["plan_only"] is True)
     check("m5k_no_m5f_mutation", not any(p.startswith("research/staging/m5f/") for p in files), files)
-    check("m5k_no_frontend_public_write", not any(p.startswith("frontend/public/") for p in files), files)
+    check("m5k_no_frontend_public_write", frontend_write_allowed or not any(p.startswith("frontend/public/") for p in files), {"changed_files": files, "m7g09_controlled_refresh_frontend_update_allowed": frontend_write_allowed})
     check("m5k_no_research_generated_write", not any(p.startswith("research/generated/") for p in files), files)
     check("startup_network_free", plan["governance"]["network_free_startup"] is True and plan["governance"]["network_calls"] is False)
     check("watchlist_valid", validation["valid"] is True, validation)

@@ -22,7 +22,7 @@ def _frontend() -> str:
 def _m7f_js_slice() -> str:
     text = _frontend()
     start = text.index("const M7F_DISPLAY_CATALOG")
-    end = text.index("function renderMatrixLoadError", start)
+    end = text.index("async function executeM7GControlledRefreshOnce", start)
     return text[start:end]
 
 

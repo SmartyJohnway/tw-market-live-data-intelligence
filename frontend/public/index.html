@@ -106,7 +106,7 @@
         <section id="m7g-refresh-workflow" class="m7f-panel" aria-labelledby="m7g-refresh-heading">
             <h3 id="m7g-refresh-heading">Operator Refresh Workflow Preflight</h3>
             <h4>Controlled Refresh Request Package</h4>
-            <p class="m7f-caveat">Refresh workflow policy notice: No refresh execution in M7G-07/08. M7G-09 required for execution. This panel prepares a local safe request package only.</p>
+            <p class="m7f-caveat">Refresh workflow policy notice: M7G-09 permits controlled manual execution only after package preparation and a distinct execution confirmation. No auto refresh. No scheduler. No hidden fetch.</p>
             <div id="m7g-refresh-preflight-summary" aria-label="Refresh workflow preflight summary"></div>
             <div class="m7f-controls-grid">
                 <label class="m7f-control">Requested source families
@@ -132,6 +132,19 @@
             <pre id="m7g-refresh-json-preview" class="m7f-handoff-preview">No controlled refresh request package prepared.</pre>
             <button id="m7g-copy-refresh-json" class="btn" type="button">Copy Safe Refresh Request JSON</button>
             <p id="m7g-refresh-copy-status" class="note"></p>
+            <div id="m7g-controlled-refresh-execution" class="m7f-panel" aria-label="Controlled Manual Refresh Execution">
+                <h4>Controlled Manual Refresh Execution</h4>
+                <p class="m7f-caveat">Execute controlled refresh once. No auto refresh. No scheduler. No hidden fetch. Mode A/B/C unchanged. Level 1/2 unchanged. Level 2 safe artifact only. M5F not mutated.</p>
+                <label>Execution confirmation phrase
+                    <input id="m7g-execution-confirmation" type="text" placeholder="EXECUTE_CONTROLLED_REFRESH_ONCE">
+                </label>
+                <p class="note">Required phrase: EXECUTE_CONTROLLED_REFRESH_ONCE</p>
+                <button id="m7g-execute-controlled-refresh" class="btn" type="button">Execute controlled refresh once</button>
+                <h4>Refresh execution result</h4>
+                <pre id="m7g-refresh-execution-result" class="m7f-handoff-preview">No execution performed.</pre>
+                <div id="m7g-rejected-execution-result" aria-label="Rejected execution result">Rejected execution result: none</div>
+                <button id="m7g-load-refreshed-safe-artifact" class="btn" type="button" disabled>Load refreshed safe artifact</button>
+            </div>
         </section>
     </section>
 
@@ -276,8 +289,12 @@
 
         const M7G_REFRESH_REQUEST_PACKAGE_SCHEMA_VERSION = 'm7g_controlled_refresh_request_package.v1';
         const M7G_REFRESH_CONFIRMATION_PHRASE = 'PREPARE_REFRESH_REQUEST_ONLY';
+        const M7G_EXECUTION_CONFIRMATION_PHRASE = 'EXECUTE_CONTROLLED_REFRESH_ONCE';
         const M7G_REFRESH_ALLOWED_SOURCE_FAMILIES = ['TWSE_MIS', 'TWSE_OPENAPI', 'TAIFEX_OPENAPI'];
         let m7gPreparedRefreshRequestPackage = null;
+        let m7gRefreshExecutionResult = null;
+        let m7gRefreshReturnedArtifact = null;
+        let m7gRefreshReturnedValidationResult = null;
 
         const M7G_SOURCE_HEALTH_ALLOWED_STATUSES = ['artifact_reported', 'unknown', 'stale', 'degraded', 'unavailable'];
         const M7G_SOURCE_HEALTH_DEFAULT_MODE = 'local_safe_artifact';
@@ -1082,7 +1099,7 @@
 
         function renderM7GRefreshRequestMarkdown(packageValue) {
             if (!packageValue) return 'No controlled refresh request package prepared.';
-            return ['# Controlled Refresh Request Package', '', `schema_version: ${packageValue.schema_version}`, `package_status: ${packageValue.package_status}`, `active_context_mode: ${packageValue.active_context_mode}`, `source_artifact_id: ${packageValue.source_artifact_id}`, `source_validation_status: ${packageValue.source_validation_status}`, `requested_symbols: ${packageValue.requested_symbols.join(', ')}`, `requested_source_families: ${packageValue.requested_source_families.join(', ')}`, `refresh_scope: ${packageValue.refresh_scope}`, `execution_eligible_for_m7g09: ${packageValue.execution_eligible_for_m7g09}`, `execution_authorized: ${packageValue.execution_authorized}`, `execution_performed: ${packageValue.execution_performed}`, `requires_m7g09_execution_gate: ${packageValue.requires_m7g09_execution_gate}`, `network_intent: ${packageValue.network_intent}`, `raw_payload_requested: ${packageValue.raw_payload_requested}`, `raw_forbidden_values_requested: ${packageValue.raw_forbidden_values_requested}`, `ai_model_call_requested: ${packageValue.ai_model_call_requested}`, `trading_advice_requested: ${packageValue.trading_advice_requested}`, '', 'Governance guardrails:', '- not trading signal', '- not recommendation', '- not market prediction', '', 'No refresh execution in M7G-07/08. M7G-09 required for execution.'].join('\n');
+            return ['# Controlled Refresh Request Package', '', `schema_version: ${packageValue.schema_version}`, `package_status: ${packageValue.package_status}`, `active_context_mode: ${packageValue.active_context_mode}`, `source_artifact_id: ${packageValue.source_artifact_id}`, `source_validation_status: ${packageValue.source_validation_status}`, `requested_symbols: ${packageValue.requested_symbols.join(', ')}`, `requested_source_families: ${packageValue.requested_source_families.join(', ')}`, `refresh_scope: ${packageValue.refresh_scope}`, `execution_eligible_for_m7g09: ${packageValue.execution_eligible_for_m7g09}`, `execution_authorized: ${packageValue.execution_authorized}`, `execution_performed: ${packageValue.execution_performed}`, `requires_m7g09_execution_gate: ${packageValue.requires_m7g09_execution_gate}`, `network_intent: ${packageValue.network_intent}`, `raw_payload_requested: ${packageValue.raw_payload_requested}`, `raw_forbidden_values_requested: ${packageValue.raw_forbidden_values_requested}`, `ai_model_call_requested: ${packageValue.ai_model_call_requested}`, `trading_advice_requested: ${packageValue.trading_advice_requested}`, '', 'Governance guardrails:', '- not trading signal', '- not recommendation', '- not market prediction', '', 'Controlled execution requires EXECUTE_CONTROLLED_REFRESH_ONCE. M7G-09 executes once only after explicit operator click.'].join('\n');
         }
 
         function renderM7GRefreshWorkflowPanel() {
@@ -1116,11 +1133,84 @@
                 validateM7GControlledRefreshRequestPackage(m7gPreparedRefreshRequestPackage);
                 renderM7GRefreshWorkflowPanel();
             });
-            resetButton.addEventListener('click', function () { m7gPreparedRefreshRequestPackage = null; confirmationInput.value = ''; renderM7GRefreshWorkflowPanel(); });
+            resetButton.addEventListener('click', function () { m7gPreparedRefreshRequestPackage = null; m7gRefreshExecutionResult = null; m7gRefreshReturnedArtifact = null; m7gRefreshReturnedValidationResult = null; confirmationInput.value = ''; const executionInput = document.getElementById('m7g-execution-confirmation'); if (executionInput) executionInput.value = ''; renderM7GRefreshWorkflowPanel(); renderM7GRefreshExecutionResult(); });
             familySelect.addEventListener('change', renderM7GRefreshWorkflowPanel);
             document.getElementById('m7g-copy-refresh-json').addEventListener('click', () => copyM7FPreviewText('m7g-refresh-json-preview', 'm7g-refresh-copy-status'));
             document.getElementById('m7g-copy-refresh-markdown').addEventListener('click', () => copyM7FPreviewText('m7g-refresh-markdown-preview', 'm7g-refresh-copy-status'));
+            document.getElementById('m7g-execute-controlled-refresh').addEventListener('click', executeM7GControlledRefreshOnce);
+            document.getElementById('m7g-load-refreshed-safe-artifact').addEventListener('click', loadM7GRefreshedSafeArtifact);
             renderM7GRefreshWorkflowPanel();
+            renderM7GRefreshExecutionResult();
+        }
+
+
+        function renderM7GRefreshExecutionResult() {
+            const resultBox = document.getElementById('m7g-refresh-execution-result');
+            const rejectedBox = document.getElementById('m7g-rejected-execution-result');
+            const loadButton = document.getElementById('m7g-load-refreshed-safe-artifact');
+            if (!resultBox || !loadButton || !rejectedBox) return;
+            resultBox.textContent = m7gRefreshExecutionResult ? JSON.stringify(m7gRefreshExecutionResult, null, 2) : 'No execution performed.';
+            const accepted = m7gRefreshExecutionResult &&
+                m7gRefreshExecutionResult.execution_status === 'executed_safe_artifact_ready' &&
+                m7gRefreshExecutionResult.safe_artifact_returned === true &&
+                m7gRefreshReturnedValidationResult &&
+                m7gRefreshReturnedValidationResult.validation_status === 'accepted' &&
+                m7gRefreshReturnedValidationResult.safe_to_render === true;
+            loadButton.disabled = !accepted;
+            rejectedBox.textContent = accepted ? 'Rejected execution result: none' : `Rejected execution result: ${m7gRefreshExecutionResult ? m7gRefreshExecutionResult.execution_status : 'none'}`;
+        }
+
+        async function executeM7GControlledRefreshOnce() {
+            const confirmationInput = document.getElementById('m7g-execution-confirmation');
+            m7gRefreshExecutionResult = null;
+            m7gRefreshReturnedArtifact = null;
+            m7gRefreshReturnedValidationResult = null;
+            if (!m7gPreparedRefreshRequestPackage) {
+                m7gRefreshExecutionResult = { execution_status: 'rejected_invalid_request_package', safe_artifact_returned: false, errors: ['Build a valid refresh request package first.'] };
+                renderM7GRefreshExecutionResult();
+                return;
+            }
+            if (!confirmationInput || confirmationInput.value !== M7G_EXECUTION_CONFIRMATION_PHRASE) {
+                m7gRefreshExecutionResult = { execution_status: 'rejected_missing_execution_confirmation', safe_artifact_returned: false, execution_authorized: false, execution_performed: false };
+                renderM7GRefreshExecutionResult();
+                return;
+            }
+            const response = await fetch('/api/m7g/controlled-refresh/execute', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ request_package: m7gPreparedRefreshRequestPackage, operator_execution_confirmation_phrase: M7G_EXECUTION_CONFIRMATION_PHRASE })
+            });
+            m7gRefreshExecutionResult = await response.json();
+            if (m7gRefreshExecutionResult && m7gRefreshExecutionResult.execution_status === 'executed_safe_artifact_ready' && m7gRefreshExecutionResult.safe_artifact_returned === true) {
+                const artifact = m7gRefreshExecutionResult.safe_context_artifact;
+                const validation = validateM7GSafeContextArtifact(artifact);
+                if (validation.validation_status === 'accepted' && validation.safe_to_render === true) {
+                    m7gRefreshReturnedArtifact = artifact;
+                    m7gRefreshReturnedValidationResult = validation;
+                } else {
+                    m7gRefreshReturnedArtifact = null;
+                    m7gRefreshReturnedValidationResult = validation;
+                }
+            }
+            renderM7GRefreshExecutionResult();
+        }
+
+        function loadM7GRefreshedSafeArtifact() {
+            if (
+                m7gRefreshExecutionResult &&
+                m7gRefreshExecutionResult.execution_status === 'executed_safe_artifact_ready' &&
+                m7gRefreshExecutionResult.safe_artifact_returned === true &&
+                m7gRefreshReturnedArtifact &&
+                m7gRefreshReturnedValidationResult &&
+                m7gRefreshReturnedValidationResult.validation_status === 'accepted' &&
+                m7gRefreshReturnedValidationResult.safe_to_render === true
+            ) {
+                m7gActiveContextMode = M7G_CONTEXT_MODE_LOADED_SAFE_ARTIFACT;
+                m7gActiveSafeArtifact = m7gRefreshReturnedArtifact;
+                m7gActiveValidationResult = m7gRefreshReturnedValidationResult;
+                updateM7GLoadedPanels(m7gActiveSafeArtifact, m7gActiveValidationResult);
+                renderM7FRichFactBrowser(m7gActiveSafeArtifact);
+            }
         }
 
         function renderM7FRichFactBrowser(context) {

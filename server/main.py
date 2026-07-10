@@ -405,3 +405,16 @@ def get_source_health_history():
     root = REPO_ROOT / "research/live_observation_runs/source_health"
     rows = _history_summaries(root, "*.json", _source_health_summary)
     return {"content": {"runs": rows, "latest": rows[-1] if rows else None, "previous": rows[-2] if len(rows) > 1 else None}, "governance": _canonical_governance() | {"layer": "M5Q", "canonical": False, "network_calls": False, "raw_endpoint_payload_included": False}}
+
+# M7G-09 controlled manual refresh execution endpoint.
+from scripts.m7g_controlled_refresh_executor import execute_m7g_controlled_manual_refresh as _m7g09_execute_controlled_refresh
+
+
+@app.post("/api/m7g/controlled-refresh/execute")
+def post_m7g_controlled_refresh_execute(payload: dict):
+    if not isinstance(payload, dict) or "request_package" not in payload:
+        return _m7g09_execute_controlled_refresh(request_package={}, operator_execution_confirmation_phrase="") | {"execution_status": "rejected_invalid_request_package", "errors": ["request_package_missing"]}
+    return _m7g09_execute_controlled_refresh(
+        request_package=payload.get("request_package"),
+        operator_execution_confirmation_phrase=str(payload.get("operator_execution_confirmation_phrase") or ""),
+    )
