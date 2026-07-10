@@ -66,16 +66,6 @@
   ],
   "source_health": {
     "schema_version": "m7g_source_health.v1",
-    "source_family": "TWSE_MIS",
-    "health_status": "artifact_reported",
-    "source_mode": "local_safe_artifact",
-    "last_success_at_utc": "2026-07-09T01:30:00Z",
-    "last_error_at_utc": null,
-    "last_error_code": null,
-    "staleness_status": "artifact_currentness_labeled",
-    "operator_action_required": false,
-    "caveats": [
-      "Source health is artifact-reported metadata, not a live probe."
-    ]
+    "health_status": "bullish"
   }
 }
