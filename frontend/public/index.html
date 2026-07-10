@@ -787,12 +787,66 @@
             container.appendChild(table);
         }
 
-        function buildM7FSafeHandoffProjection(context, selectedFieldKeys) {
+        function getM7GActiveHandoffContext() {
+            if (
+                m7gActiveContextMode === M7G_CONTEXT_MODE_LOADED_SAFE_ARTIFACT &&
+                m7gActiveSafeArtifact &&
+                m7gActiveValidationResult &&
+                m7gActiveValidationResult.validation_status === 'accepted' &&
+                m7gActiveValidationResult.safe_to_render === true
+            ) {
+                return { context: m7gActiveSafeArtifact, validationResult: m7gActiveValidationResult, handoff_source_context_mode: M7G_CONTEXT_MODE_LOADED_SAFE_ARTIFACT };
+            }
+            return {
+                context: M7F_DEMO_RICH_CONTEXT,
+                validationResult: { validation_status: 'static_demo', safe_to_render: true, artifact_id: 'static_demo', artifact_schema_version: 'static_demo', observation_count: M7F_DEMO_RICH_CONTEXT.observations.length, source_health_status: 'static_demo', source_health_schema_version: null, source_health_warnings: [] },
+                handoff_source_context_mode: M7G_CONTEXT_MODE_STATIC_DEMO
+            };
+        }
+
+        function buildM7GHandoffSourceSummary(context, validationResult) {
+            const isLoaded = validationResult && validationResult.validation_status === 'accepted' && context !== M7F_DEMO_RICH_CONTEXT;
+            const status = context.market_clock_session_state || {};
+            const sourceHealth = getM7GSourceHealthSummary(isLoaded ? context : null);
+            return {
+                handoff_source_context_mode: isLoaded ? M7G_CONTEXT_MODE_LOADED_SAFE_ARTIFACT : M7G_CONTEXT_MODE_STATIC_DEMO,
+                handoff_built_from_active_context: true,
+                artifact_id: isLoaded ? context.artifact_id : 'static_demo',
+                artifact_schema_version: isLoaded ? context.schema_version : 'static_demo',
+                artifact_type: isLoaded ? context.artifact_type : 'static_demo',
+                created_at_utc: isLoaded ? context.created_at_utc : null,
+                generated_by: isLoaded ? context.generated_by : 'static_demo',
+                source_scope: isLoaded ? context.source_scope : 'static_demo',
+                market: context.market || 'TW',
+                timezone: context.timezone || 'Asia/Taipei',
+                validation_status: validationResult ? validationResult.validation_status : 'static_demo',
+                observation_count: Array.isArray(context.observations) ? context.observations.length : 0,
+                currentness_label: status.currentness_label || null,
+                calendar_confidence: status.calendar_confidence || null,
+                trading_day_status: status.trading_day_status || null,
+                source_health_status: sourceHealth.health_status || sourceHealth.source_health || 'unknown',
+                source_health_schema_version: sourceHealth.schema_version || null,
+                source_health_warnings: validationResult && validationResult.source_health_warnings ? validationResult.source_health_warnings : [],
+                source_health_caveats: sourceHealth.caveats || ['Source health is artifact-reported metadata only; not a live probe; does not imply realtime SLA.'],
+                not_trading_signal: context.governance.not_trading_signal,
+                not_recommendation: context.governance.not_recommendation,
+                not_market_prediction: context.governance.not_market_prediction,
+                raw_payload_exposed: false,
+                raw_rich_facts_exposed: false,
+                raw_full_ladder_exposed: false,
+                raw_forbidden_omission_notice: 'Raw forbidden values are omitted and are not selectable or copied.'
+            };
+        }
+
+        function buildM7FSafeHandoffProjection(context, selectedFieldKeys, validationResult) {
+            const handoffContext = validationResult ? { context, validationResult } : getM7GActiveHandoffContext();
+            const safeContext = handoffContext.context;
+            const sourceSummary = buildM7GHandoffSourceSummary(safeContext, handoffContext.validationResult);
             const safeKeys = selectedFieldKeys.filter(key => {
                 const meta = M7F_DISPLAY_CATALOG[key];
                 return meta && meta.display_allowed === true && meta.ai_handoff_allowed === true && meta.raw_forbidden === false;
             });
-            const observations = getM7FFilteredObservations(context).map(observation => {
+            const observations = getM7FFilteredObservations(safeContext).map(observation => {
                 const fields = {};
                 safeKeys.forEach(key => {
                     if (Object.prototype.hasOwnProperty.call(observation, key)) {
@@ -802,21 +856,27 @@
                 });
                 return { symbol: observation.symbol, display_name: observation.display_name, market: observation.market, source: observation.source, semantic_caveats: observation.semantic_caveats, fields };
             });
-            const status = context.market_clock_session_state;
+            const status = safeContext.market_clock_session_state;
+            const currentnessCalendar = { currentness_label: status.currentness_label, calendar_confidence: status.calendar_confidence, trading_day_status: status.trading_day_status, caveats: (status.calendar_authority_caveats || []).concat(status.semantic_caveats || []) };
             return {
                 title: 'AI Discussion Handoff Preview',
+                handoff_source: sourceSummary,
+                artifact_provenance: { artifact_id: sourceSummary.artifact_id, artifact_schema_version: sourceSummary.artifact_schema_version, artifact_type: sourceSummary.artifact_type, created_at_utc: sourceSummary.created_at_utc, generated_by: sourceSummary.generated_by, source_scope: sourceSummary.source_scope, market: sourceSummary.market, timezone: sourceSummary.timezone, validation_status: sourceSummary.validation_status, observation_count: sourceSummary.observation_count },
+                currentness_calendar: currentnessCalendar,
+                source_health: { source_health_status: sourceSummary.source_health_status, source_health_schema_version: sourceSummary.source_health_schema_version, source_health_warnings: sourceSummary.source_health_warnings, source_health_caveats: sourceSummary.source_health_caveats },
                 policy: ['Static safe projection.', 'Not live data.', 'No realtime SLA.', 'Not trading advice.', 'Not a recommendation.', 'Not a trading signal.', 'Not market prediction.'],
                 selected_fields: safeKeys,
                 selected_symbols: observations.map(item => item.symbol),
-                currentness: { currentness_label: status.currentness_label, calendar_confidence: status.calendar_confidence, trading_day_status: status.trading_day_status, caveats: status.calendar_authority_caveats.concat(status.semantic_caveats) },
-                governance_guardrails: { not_trading_signal: context.governance.not_trading_signal, not_recommendation: context.governance.not_recommendation, not_market_prediction: context.governance.not_market_prediction, raw_payload_exposed: context.governance.raw_payload_exposed, raw_rich_facts_exposed: context.governance.raw_rich_facts_exposed, raw_full_ladder_exposed: context.governance.raw_full_ladder_exposed },
-                raw_forbidden_omission_notice: 'Raw forbidden values are omitted and are not selectable or copied.',
+                currentness: currentnessCalendar,
+                governance_guardrails: { not_trading_signal: safeContext.governance.not_trading_signal, not_recommendation: safeContext.governance.not_recommendation, not_market_prediction: safeContext.governance.not_market_prediction, raw_payload_exposed: false, raw_rich_facts_exposed: false, raw_full_ladder_exposed: false },
+                raw_forbidden_omission_notice: sourceSummary.raw_forbidden_omission_notice,
                 observations
             };
         }
 
         function renderM7FMarkdownHandoff(projection) {
-            const lines = ['# AI Discussion Handoff Preview', '', 'Static safe projection.', 'Not live data.', 'No realtime SLA.', 'Not trading advice.', 'Not a recommendation.', 'Not a trading signal.', '', `Selected symbols: ${projection.selected_symbols.join(', ') || 'none'}`, `Selected fields: ${projection.selected_fields.join(', ') || 'none'}`, `Currentness label: ${projection.currentness.currentness_label}`, `Calendar confidence: ${projection.currentness.calendar_confidence}`, `Trading-day status: ${projection.currentness.trading_day_status}`, '', 'Governance guardrails:', `- not_trading_signal: ${projection.governance_guardrails.not_trading_signal}`, `- not_recommendation: ${projection.governance_guardrails.not_recommendation}`, `- not_market_prediction: ${projection.governance_guardrails.not_market_prediction}`, `- raw_payload_exposed: ${projection.governance_guardrails.raw_payload_exposed}`, `- raw_rich_facts_exposed: ${projection.governance_guardrails.raw_rich_facts_exposed}`, `- raw_full_ladder_exposed: ${projection.governance_guardrails.raw_full_ladder_exposed}`, '', `Raw forbidden omission notice: ${projection.raw_forbidden_omission_notice}`, '', 'Observations:'];
+            const source = projection.handoff_source;
+            const lines = ['# AI Discussion Handoff Preview', '', 'Static safe projection.', 'Not live data.', 'No realtime SLA.', 'Not trading advice.', 'Not a recommendation.', 'Not a trading signal.', '', '## Handoff Source', '', `- Context mode: ${source.handoff_source_context_mode}`, `- Handoff built from active context: ${source.handoff_built_from_active_context}`, `- Artifact ID: ${source.artifact_id}`, `- Validation status: ${source.validation_status}`, `- Observation count: ${source.observation_count}`, `- Currentness label: ${source.currentness_label}`, `- Calendar confidence: ${source.calendar_confidence}`, `- Source health status: ${source.source_health_status}`, `- Source health caveat: artifact-reported metadata only; not a live probe; no realtime SLA.`, '', `Selected symbols: ${projection.selected_symbols.join(', ') || 'none'}`, `Selected fields: ${projection.selected_fields.join(', ') || 'none'}`, `Currentness label: ${projection.currentness.currentness_label}`, `Calendar confidence: ${projection.currentness.calendar_confidence}`, `Trading-day status: ${projection.currentness.trading_day_status}`, '', 'Governance guardrails:', `- not_trading_signal: ${projection.governance_guardrails.not_trading_signal}`, `- not_recommendation: ${projection.governance_guardrails.not_recommendation}`, `- not_market_prediction: ${projection.governance_guardrails.not_market_prediction}`, `- raw_payload_exposed: ${projection.governance_guardrails.raw_payload_exposed}`, `- raw_rich_facts_exposed: ${projection.governance_guardrails.raw_rich_facts_exposed}`, `- raw_full_ladder_exposed: ${projection.governance_guardrails.raw_full_ladder_exposed}`, '', `Raw forbidden omission notice: ${projection.raw_forbidden_omission_notice}`, '', 'Observations:'];
             projection.observations.forEach(observation => {
                 lines.push(`- ${observation.symbol} ${observation.display_name} (${observation.market}/${observation.source})`);
                 Object.keys(observation.fields).forEach(key => {
@@ -849,7 +909,22 @@
             container.replaceChildren();
             appendText(container, 'h3', 'AI Discussion Handoff Preview');
             appendText(container, 'p', 'Static safe projection. Not live data. No realtime SLA. Not trading advice. Not a recommendation. Not a trading signal.', { className: 'm7f-caveat' });
-            const projection = buildM7FSafeHandoffProjection(context, getM7FSelectedFieldKeys());
+            const activeHandoff = getM7GActiveHandoffContext();
+            const projection = buildM7FSafeHandoffProjection(activeHandoff.context, getM7FSelectedFieldKeys(), activeHandoff.validationResult);
+            const source = projection.handoff_source;
+            appendText(container, 'h4', 'AI Handoff Source');
+            appendText(container, 'p', source.handoff_source_context_mode === M7G_CONTEXT_MODE_LOADED_SAFE_ARTIFACT ? 'Loaded safe artifact handoff active' : 'Static demo handoff active', { className: 'note' });
+            const sourceGrid = document.createElement('div');
+            sourceGrid.className = 'm7f-status-grid';
+            [['Handoff source context', source.handoff_source_context_mode], ['Handoff built from active context', source.handoff_built_from_active_context], ['Operator-selected local safe artifact', source.handoff_source_context_mode === M7G_CONTEXT_MODE_LOADED_SAFE_ARTIFACT], ['active_context_mode', m7gActiveContextMode], ['handoff_source_context_mode', source.handoff_source_context_mode], ['artifact_id', source.artifact_id], ['schema_version', source.artifact_schema_version], ['artifact_type', source.artifact_type], ['validation_status', source.validation_status], ['observation_count', source.observation_count], ['currentness_label', source.currentness_label], ['calendar_confidence', source.calendar_confidence], ['trading_day_status', source.trading_day_status], ['source_health_status', source.source_health_status], ['source_health_schema_version', source.source_health_schema_version], ['source_health_warnings', source.source_health_warnings.join(', ') || 'none'], ['raw_forbidden_omission_notice', source.raw_forbidden_omission_notice], ['not_trading_signal', source.not_trading_signal], ['not_recommendation', source.not_recommendation], ['not_market_prediction', source.not_market_prediction]].forEach(([label, value]) => {
+                const item = document.createElement('div');
+                item.className = 'm7f-status-item';
+                appendText(item, 'strong', String(label));
+                item.appendChild(document.createTextNode(': '));
+                appendText(item, 'span', String(value));
+                sourceGrid.appendChild(item);
+            });
+            container.appendChild(sourceGrid);
             appendText(container, 'h4', 'Safe Markdown handoff preview');
             const markdown = document.createElement('textarea');
             markdown.id = 'm7f-safe-markdown-preview';
