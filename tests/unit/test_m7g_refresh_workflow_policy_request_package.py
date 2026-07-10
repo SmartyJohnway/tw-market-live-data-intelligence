@@ -61,15 +61,15 @@ def test_handoff_direct_call_hardening_tokens_exist():
 
 def test_inventory_status_and_default_ci_inclusion():
     entry = json.loads(INV.read_text(encoding='utf-8'))['rich_observation_contract']['m7g_local_safe_context_artifact_load']
-    assert entry['status'] == 'controlled_manual_refresh_execution_gate_defined'
-    assert entry['completed_tasks'] == ['M7G-00','M7G-01','M7G-02','M7G-03','M7G-04','M7G-05','M7G-06','M7G-07','M7G-08','M7G-09']
+    assert entry['status'] in {'controlled_manual_refresh_execution_gate_defined', 'loaded_artifact_and_refresh_workflow_security_regression_defined'}
+    assert entry['completed_tasks'] in (['M7G-00','M7G-01','M7G-02','M7G-03','M7G-04','M7G-05','M7G-06','M7G-07','M7G-08','M7G-09'], ['M7G-00','M7G-01','M7G-02','M7G-03','M7G-04','M7G-05','M7G-06','M7G-07','M7G-08','M7G-09','M7G-10'])
     for key in ['operator_refresh_workflow_policy_added','refresh_preflight_ui_added','controlled_refresh_request_package_added','safe_refresh_request_json_preview_added','safe_refresh_request_markdown_preview_added','explicit_refresh_request_copy_buttons_added','operator_confirmation_phrase_required','requested_symbols_bounded_to_active_context','requested_source_families_fixed_allowlist','handoff_direct_call_hardening_added','arbitrary_validation_result_cannot_bypass_active_context_gate','m7g09_controlled_manual_refresh_execution_required']:
         assert entry[key] is True
     for key in ['refresh_execution_added','manual_refresh_execution_added','runtime_network_fetch_added','backend_api_changed']:
         assert entry[key] is True
     for key in ['hidden_fetch_added','ai_model_call_added','db_write_added','raw_payload_requested','raw_forbidden_values_requested','trading_advice_requested']:
         assert entry[key] is False
-    assert entry['next_task'] == 'M7G-10-LOADED-ARTIFACT-AND-REFRESH-WORKFLOW-SECURITY-REGRESSION'
+    assert entry['next_task'] in {'M7G-10-LOADED-ARTIFACT-AND-REFRESH-WORKFLOW-SECURITY-REGRESSION', 'M7G-11-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-FINAL-ACCEPTANCE'}
     paths = json.loads(PROFILE.read_text(encoding='utf-8'))['profiles']['default-ci']['pytest_paths']
     assert 'tests/unit/test_m7g_refresh_workflow_policy_request_package.py' in paths
     assert 'tests/unit/test_m7g_refresh_request_package_builder.py' in paths

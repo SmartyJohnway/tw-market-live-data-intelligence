@@ -276,7 +276,25 @@ def execute_m7g_controlled_manual_refresh(*, request_package: dict[str, Any], op
 
     runner = observation_runner or (lambda watchlist: execute_live_observation(watchlist, write_latest=False))
     watchlist = _watchlist_from_package(request_package)
-    observation_result = runner(watchlist)
+    try:
+        observation_result = runner(watchlist)
+    except Exception:
+        result = _base_result("execution_failed_no_safe_artifact", ["runner_exception_or_network_failure"])
+        result.update({
+            "execution_authorized": True,
+            "execution_performed": True,
+            "requested_symbols": requested_symbols,
+            "executed_symbols": [],
+            "requested_source_families": requested_families,
+            "executed_source_families": [],
+            "unsupported_source_families": unsupported,
+            "safe_artifact_validation_status": "not_run",
+            "network_fetch_performed": True,
+            "source_health_after_refresh": _source_health([], _utc_now()),
+        })
+        return result
+    if not isinstance(observation_result, dict):
+        observation_result = {"observations": [], "generated_at_utc": _utc_now()}
     metadata = {"executed_at_utc": observation_result.get("generated_at_utc") or _utc_now()}
     artifact = build_m7g_refreshed_safe_context_artifact(request_package=request_package, observation_result=observation_result, execution_metadata=metadata)
     validation = validate_m7g_safe_context_artifact(artifact)
