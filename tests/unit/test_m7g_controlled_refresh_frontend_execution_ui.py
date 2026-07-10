@@ -3,7 +3,7 @@ from pathlib import Path
 HTML = Path('frontend/public/index.html').read_text(encoding='utf-8')
 
 def test_frontend_controlled_execution_labels_present():
-    for text in ['Controlled Manual Refresh Execution','Execute controlled refresh once','Execution confirmation phrase','EXECUTE_CONTROLLED_REFRESH_ONCE','Refresh execution result','Load refreshed safe artifact','Rejected execution result','No auto refresh','No scheduler','No hidden fetch','Mode A/B/C unchanged','Level 1/2 unchanged','Level 2 safe artifact only','M5F not mutated']:
+    for text in ['Controlled Manual Refresh Execution','Execute controlled refresh once','Execution confirmation phrase','EXECUTE_CONTROLLED_REFRESH_ONCE','Refresh execution result','Load refreshed safe artifact','Rejected execution result','No auto refresh','No scheduler','No hidden fetch','Mode A/B/C unchanged','Level 1/2 unchanged','Level 2 safe artifact only','M5F not mutated', 'TPEX_OPENAPI', 'TAIFEX_MIS', 'TWSE_MIS — executable in M7G-09', 'declared but not executable in M7G-09', 'Unsupported or not-yet-executable families fail closed']:
         assert text in HTML
 
 

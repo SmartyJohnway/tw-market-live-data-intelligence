@@ -9,8 +9,11 @@ from scripts.m7g_safe_artifact_validator import validate_m7g_safe_context_artifa
 
 EXECUTION_RESULT_SCHEMA_VERSION = "m7g_controlled_refresh_execution_result.v1"
 EXECUTION_CONFIRMATION_PHRASE = "EXECUTE_CONTROLLED_REFRESH_ONCE"
+DECLARED_SOURCE_FAMILIES = {"TWSE_MIS", "TAIFEX_MIS", "TWSE_OPENAPI", "TPEX_OPENAPI", "TAIFEX_OPENAPI"}
+LEVEL1_REFERENCE_SOURCE_FAMILIES = {"TWSE_OPENAPI", "TPEX_OPENAPI", "TAIFEX_OPENAPI"}
+LEVEL2_LIVE_OBSERVATION_SOURCE_FAMILIES = {"TWSE_MIS", "TAIFEX_MIS"}
 EXECUTION_SUPPORTED_SOURCE_FAMILIES = {"TWSE_MIS"}
-DECLARED_BUT_NOT_YET_EXECUTABLE_SOURCE_FAMILIES = {"TWSE_OPENAPI", "TAIFEX_OPENAPI"}
+DECLARED_BUT_NOT_YET_EXECUTABLE_SOURCE_FAMILIES = {"TAIFEX_MIS", "TWSE_OPENAPI", "TPEX_OPENAPI", "TAIFEX_OPENAPI"}
 _NETWORK_FETCH_SCOPE = "explicit_operator_controlled_refresh_only"
 
 _FORBIDDEN_RESULT_KEYS = {
@@ -261,7 +264,7 @@ def execute_m7g_controlled_manual_refresh(*, request_package: dict[str, Any], op
         result = _base_result("rejected_missing_execution_confirmation")
         result.update({"requested_symbols": requested_symbols, "requested_source_families": requested_families, "unsupported_source_families": unsupported})
         return result
-    if requested_families and not supported:
+    if unsupported:
         result = _base_result("rejected_unsupported_source_family")
         result.update({"requested_symbols": requested_symbols, "requested_source_families": requested_families, "unsupported_source_families": unsupported})
         return result

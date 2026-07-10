@@ -42,7 +42,10 @@ Status: refreshed_safe_artifact_result_contract_defined
 - Operator must explicitly click Load refreshed safe artifact.
 - EXECUTE_CONTROLLED_REFRESH_ONCE is required for execution.
 - TWSE_MIS execution supported.
-- TWSE_OPENAPI and TAIFEX_OPENAPI declared but not executable.
+- Level 1 / official reference / canonical-adjacent / EOD source families: TWSE_OPENAPI, TPEX_OPENAPI, TAIFEX_OPENAPI.
+- Level 2 / bounded live observation / temporary context source families: TWSE_MIS, TAIFEX_MIS.
+- TAIFEX_MIS, TWSE_OPENAPI, TPEX_OPENAPI, and TAIFEX_OPENAPI declared but not executable in M7G-09.
+- Mixed supported plus unsupported/not-yet-executable source-family requests fail closed with no partial execution.
 - No auto refresh.
 - No scheduler.
 - No polling.

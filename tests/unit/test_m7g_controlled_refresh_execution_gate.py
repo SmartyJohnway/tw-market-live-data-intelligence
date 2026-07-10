@@ -3,7 +3,15 @@ from pathlib import Path
 from fastapi.testclient import TestClient
 
 from server.main import app
-from scripts.m7g_controlled_refresh_executor import EXECUTION_CONFIRMATION_PHRASE, execute_m7g_controlled_manual_refresh
+from scripts.m7g_controlled_refresh_executor import (
+    DECLARED_BUT_NOT_YET_EXECUTABLE_SOURCE_FAMILIES,
+    DECLARED_SOURCE_FAMILIES,
+    EXECUTION_CONFIRMATION_PHRASE,
+    EXECUTION_SUPPORTED_SOURCE_FAMILIES,
+    LEVEL1_REFERENCE_SOURCE_FAMILIES,
+    LEVEL2_LIVE_OBSERVATION_SOURCE_FAMILIES,
+    execute_m7g_controlled_manual_refresh,
+)
 
 
 def package(families=None):
@@ -39,8 +47,16 @@ def test_docs_exist_with_required_policy_terms():
         Path('docs/protocol/M7G_REFRESHED_SAFE_ARTIFACT_RESULT_CONTRACT.md'): 'refreshed_safe_artifact_result_contract_defined',
     }.items():
         text = path.read_text(encoding='utf-8')
-        for term in [status, 'Mode A/B/C unchanged', 'Level 1/2 unchanged', 'Level 2 temporary safe artifact', 'does not mutate M5F', 'does not create Mode D or Level 3', 'EXECUTE_CONTROLLED_REFRESH_ONCE', 'TWSE_MIS execution supported', 'TWSE_OPENAPI and TAIFEX_OPENAPI declared but not executable', 'No auto refresh', 'No scheduler', 'No polling', 'No hidden fetch', 'No raw payload exposure', 'No AI/model call', 'No trading advice']:
+        for term in [status, 'Mode A/B/C unchanged', 'Level 1/2 unchanged', 'Level 2 temporary safe artifact', 'does not mutate M5F', 'does not create Mode D or Level 3', 'EXECUTE_CONTROLLED_REFRESH_ONCE', 'TWSE_MIS execution supported', 'TPEX_OPENAPI', 'TAIFEX_MIS', 'declared but not executable', 'No auto refresh', 'No scheduler', 'No polling', 'No hidden fetch', 'No raw payload exposure', 'No AI/model call', 'No trading advice']:
             assert term in text
+
+
+def test_source_family_taxonomy_contains_tpex_openapi_and_taifex_mis():
+    assert DECLARED_SOURCE_FAMILIES == {"TWSE_MIS", "TAIFEX_MIS", "TWSE_OPENAPI", "TPEX_OPENAPI", "TAIFEX_OPENAPI"}
+    assert LEVEL1_REFERENCE_SOURCE_FAMILIES == {"TWSE_OPENAPI", "TPEX_OPENAPI", "TAIFEX_OPENAPI"}
+    assert LEVEL2_LIVE_OBSERVATION_SOURCE_FAMILIES == {"TWSE_MIS", "TAIFEX_MIS"}
+    assert EXECUTION_SUPPORTED_SOURCE_FAMILIES == {"TWSE_MIS"}
+    assert DECLARED_BUT_NOT_YET_EXECUTABLE_SOURCE_FAMILIES == {"TAIFEX_MIS", "TWSE_OPENAPI", "TPEX_OPENAPI", "TAIFEX_OPENAPI"}
 
 
 def test_endpoint_exists_and_requires_post():
@@ -68,10 +84,34 @@ def test_invalid_request_package_rejected_before_network():
 
 
 def test_unsupported_source_family_fail_closed():
-    result = execute_m7g_controlled_manual_refresh(request_package=package(['TWSE_OPENAPI','TAIFEX_OPENAPI','UNSUPPORTED']), operator_execution_confirmation_phrase=EXECUTION_CONFIRMATION_PHRASE, observation_runner=fake_runner)
-    assert result['execution_status'] == 'rejected_unsupported_source_family'
-    assert result['execution_performed'] is False
-    assert result['safe_artifact_returned'] is False
+    for families in [
+        ['TWSE_OPENAPI'],
+        ['TPEX_OPENAPI'],
+        ['TAIFEX_OPENAPI'],
+        ['TAIFEX_MIS'],
+        ['TWSE_OPENAPI','TAIFEX_OPENAPI','UNSUPPORTED'],
+    ]:
+        result = execute_m7g_controlled_manual_refresh(request_package=package(families), operator_execution_confirmation_phrase=EXECUTION_CONFIRMATION_PHRASE, observation_runner=fake_runner)
+        assert result['execution_status'] == 'rejected_unsupported_source_family'
+        assert result['execution_authorized'] is False
+        assert result['execution_performed'] is False
+        assert result['network_fetch_performed'] is False
+        assert result['safe_artifact_returned'] is False
+
+
+def test_mixed_supported_and_unsupported_source_families_fail_closed_before_network():
+    for families in [
+        ['TWSE_MIS', 'TPEX_OPENAPI'],
+        ['TWSE_MIS', 'TAIFEX_MIS'],
+        ['TWSE_MIS', 'TAIFEX_OPENAPI'],
+        ['TWSE_MIS', 'UNSUPPORTED'],
+    ]:
+        result = execute_m7g_controlled_manual_refresh(request_package=package(families), operator_execution_confirmation_phrase=EXECUTION_CONFIRMATION_PHRASE, observation_runner=fake_runner)
+        assert result['execution_status'] == 'rejected_unsupported_source_family'
+        assert result['execution_authorized'] is False
+        assert result['execution_performed'] is False
+        assert result['network_fetch_performed'] is False
+        assert result['safe_artifact_returned'] is False
 
 
 def test_successful_fake_execution_returns_valid_safe_artifact():

@@ -111,16 +111,18 @@
             <div class="m7f-controls-grid">
                 <label class="m7f-control">Requested source families
                     <select id="m7g-refresh-source-family">
-                        <option value="TWSE_MIS" selected>TWSE_MIS</option>
-                        <option value="TWSE_OPENAPI">TWSE_OPENAPI</option>
-                        <option value="TAIFEX_OPENAPI">TAIFEX_OPENAPI</option>
+                        <option value="TWSE_MIS" selected>TWSE_MIS — executable in M7G-09</option>
+                        <option value="TAIFEX_MIS">TAIFEX_MIS — declared but not executable in M7G-09</option>
+                        <option value="TWSE_OPENAPI">TWSE_OPENAPI — declared but not executable in M7G-09</option>
+                        <option value="TPEX_OPENAPI">TPEX_OPENAPI — declared but not executable in M7G-09</option>
+                        <option value="TAIFEX_OPENAPI">TAIFEX_OPENAPI — declared but not executable in M7G-09</option>
                     </select>
                 </label>
                 <label class="m7f-control">Operator confirmation phrase
                     <input id="m7g-refresh-confirmation" type="text" placeholder="PREPARE_REFRESH_REQUEST_ONLY">
                 </label>
             </div>
-            <p class="note">Requested symbols are bounded to active context observations. Requested source families use a fixed allowlist only.</p>
+            <p class="note">Requested symbols are bounded to active context observations. TWSE_MIS is executable in M7G-09. TPEX_OPENAPI / TWSE_OPENAPI / TAIFEX_OPENAPI / TAIFEX_MIS are declared but not executable in M7G-09. Unsupported or not-yet-executable families fail closed.</p>
             <div class="controls">
                 <button id="m7g-build-refresh-request" class="btn" type="button">Build refresh request package</button>
                 <button id="m7g-reset-refresh-request" class="btn" type="button">Reset refresh request package</button>
@@ -290,7 +292,9 @@
         const M7G_REFRESH_REQUEST_PACKAGE_SCHEMA_VERSION = 'm7g_controlled_refresh_request_package.v1';
         const M7G_REFRESH_CONFIRMATION_PHRASE = 'PREPARE_REFRESH_REQUEST_ONLY';
         const M7G_EXECUTION_CONFIRMATION_PHRASE = 'EXECUTE_CONTROLLED_REFRESH_ONCE';
-        const M7G_REFRESH_ALLOWED_SOURCE_FAMILIES = ['TWSE_MIS', 'TWSE_OPENAPI', 'TAIFEX_OPENAPI'];
+        const M7G_REFRESH_ALLOWED_SOURCE_FAMILIES = ['TWSE_MIS', 'TAIFEX_MIS', 'TWSE_OPENAPI', 'TPEX_OPENAPI', 'TAIFEX_OPENAPI'];
+        const M7G_EXECUTION_SUPPORTED_SOURCE_FAMILIES = ['TWSE_MIS'];
+        const M7G_DECLARED_BUT_NOT_EXECUTABLE_SOURCE_FAMILIES = ['TAIFEX_MIS', 'TWSE_OPENAPI', 'TPEX_OPENAPI', 'TAIFEX_OPENAPI'];
         let m7gPreparedRefreshRequestPackage = null;
         let m7gRefreshExecutionResult = null;
         let m7gRefreshReturnedArtifact = null;
@@ -1109,7 +1113,7 @@
             summary.replaceChildren();
             const grid = document.createElement('div');
             grid.className = 'm7f-status-grid';
-            [['Active context mode', preflight.activeHandoffContext.handoff_source_context_mode], ['Refresh request eligibility', preflight.refreshRequestEligibility], ['Requested symbols', preflight.requestedSymbols.join(', ') || 'none'], ['Requested source families', document.getElementById('m7g-refresh-source-family') ? document.getElementById('m7g-refresh-source-family').value : 'TWSE_MIS'], ['Operator confirmation phrase', M7G_REFRESH_CONFIRMATION_PHRASE]].forEach(([label, value]) => {
+            [['Active context mode', preflight.activeHandoffContext.handoff_source_context_mode], ['Refresh request eligibility', preflight.refreshRequestEligibility], ['Requested symbols', preflight.requestedSymbols.join(', ') || 'none'], ['Requested source families', document.getElementById('m7g-refresh-source-family') ? document.getElementById('m7g-refresh-source-family').value : 'TWSE_MIS'], ['TWSE_MIS execution status', 'executable in M7G-09'], ['Declared not executable', M7G_DECLARED_BUT_NOT_EXECUTABLE_SOURCE_FAMILIES.join(', ')], ['Unsupported/not-yet-executable behavior', 'fail closed; no partial refresh execution'], ['Operator confirmation phrase', M7G_REFRESH_CONFIRMATION_PHRASE]].forEach(([label, value]) => {
                 const item = document.createElement('div');
                 item.className = 'm7f-status-item';
                 appendText(item, 'strong', label);

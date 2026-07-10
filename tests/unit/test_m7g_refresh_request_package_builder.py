@@ -65,7 +65,7 @@ def test_requested_symbols_are_bounded_to_active_context():
 
 
 def test_source_family_allowlist():
-    assert ALLOWED_SOURCE_FAMILIES == {'TWSE_MIS', 'TWSE_OPENAPI', 'TAIFEX_OPENAPI'}
+    assert ALLOWED_SOURCE_FAMILIES == {'TWSE_MIS', 'TAIFEX_MIS', 'TWSE_OPENAPI', 'TPEX_OPENAPI', 'TAIFEX_OPENAPI'}
     with pytest.raises(ValueError):
         build(requested_source_families=['UNSUPPORTED'])
 

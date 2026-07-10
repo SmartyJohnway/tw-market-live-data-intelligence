@@ -1549,7 +1549,9 @@
         "TWSE_MIS"
       ],
       "declared_but_not_yet_executable_source_families": [
+        "TAIFEX_MIS",
         "TWSE_OPENAPI",
+        "TPEX_OPENAPI",
         "TAIFEX_OPENAPI"
       ],
       "unsupported_source_families_fail_closed": true,
@@ -1576,7 +1578,25 @@
       "raw_payload_returned_in_execution_result": false,
       "raw_payload_returned_in_safe_artifact": false,
       "trading_signal_allowed": false,
-      "recommendation_allowed": false
+      "recommendation_allowed": false,
+      "declared_source_families": [
+        "TWSE_MIS",
+        "TAIFEX_MIS",
+        "TWSE_OPENAPI",
+        "TPEX_OPENAPI",
+        "TAIFEX_OPENAPI"
+      ],
+      "level1_reference_source_families": [
+        "TWSE_OPENAPI",
+        "TPEX_OPENAPI",
+        "TAIFEX_OPENAPI"
+      ],
+      "level2_live_observation_source_families": [
+        "TWSE_MIS",
+        "TAIFEX_MIS"
+      ],
+      "mixed_supported_and_unsupported_source_families_fail_closed": true,
+      "partial_source_family_execution_allowed": false
     }
   },
   "runtime_behavior_changed": false,

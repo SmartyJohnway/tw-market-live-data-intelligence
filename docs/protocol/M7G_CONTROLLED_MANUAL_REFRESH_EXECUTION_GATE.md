@@ -34,9 +34,14 @@ Status: controlled_manual_refresh_execution_gate_defined
 
 ## Supported source families
 
+Declared source-family taxonomy:
+
+- Level 1 / official reference / canonical-adjacent / EOD: TWSE_OPENAPI, TPEX_OPENAPI, TAIFEX_OPENAPI.
+- Level 2 / bounded live observation / temporary context: TWSE_MIS, TAIFEX_MIS.
 - TWSE_MIS execution supported in M7G-09.
-- TWSE_OPENAPI and TAIFEX_OPENAPI declared but not executable unless explicitly implemented and tested later.
-- Unsupported source families fail closed.
+- TAIFEX_MIS, TWSE_OPENAPI, TPEX_OPENAPI, and TAIFEX_OPENAPI are declared but not executable in M7G-09 unless explicitly implemented and tested later.
+- Unsupported or not-yet-executable source families fail closed.
+- Mixed supported plus unsupported/not-yet-executable source-family requests fail closed; M7G-09 does not partially execute mixed requests.
 
 ## Safety
 

@@ -11,7 +11,12 @@ def test_m7g_inventory_status_and_boundaries():
     assert entry['controlled_refresh_endpoint_path'] == '/api/m7g/controlled-refresh/execute'
     assert entry['refresh_execution_confirmation_phrase'] == 'EXECUTE_CONTROLLED_REFRESH_ONCE'
     assert entry['execution_supported_source_families'] == ['TWSE_MIS']
-    assert entry['declared_but_not_yet_executable_source_families'] == ['TWSE_OPENAPI','TAIFEX_OPENAPI']
+    assert entry['declared_source_families'] == ['TWSE_MIS','TAIFEX_MIS','TWSE_OPENAPI','TPEX_OPENAPI','TAIFEX_OPENAPI']
+    assert entry['level1_reference_source_families'] == ['TWSE_OPENAPI','TPEX_OPENAPI','TAIFEX_OPENAPI']
+    assert entry['level2_live_observation_source_families'] == ['TWSE_MIS','TAIFEX_MIS']
+    assert entry['declared_but_not_yet_executable_source_families'] == ['TAIFEX_MIS','TWSE_OPENAPI','TPEX_OPENAPI','TAIFEX_OPENAPI']
+    assert entry['mixed_supported_and_unsupported_source_families_fail_closed'] is True
+    assert entry['partial_source_family_execution_allowed'] is False
     assert entry['runtime_network_fetch_scope'] == 'explicit_operator_controlled_refresh_only'
     for key in ['rejected_execution_result_reaches_renderer','rejected_safe_artifact_reaches_renderer','mode_d_added','level_3_added','m5f_mutated','level1_mutated','hidden_fetch_added','auto_refresh_added','scheduler_added','polling_added','startup_fetch_added','ai_model_call_added','db_write_added','raw_payload_exposure_allowed','raw_forbidden_values_rendered','raw_forbidden_values_copied','raw_payload_returned_in_execution_result','raw_payload_returned_in_safe_artifact','trading_advice_allowed','trading_signal_allowed','recommendation_allowed']:
         assert entry[key] is False
