@@ -102,6 +102,37 @@
             <div id="m7g-loaded-artifact-observation-summary" aria-label="Observation summary"></div>
             <div id="m7g-rejection-summary" aria-label="Rejection summary"></div>
         </section>
+
+        <section id="m7g-refresh-workflow" class="m7f-panel" aria-labelledby="m7g-refresh-heading">
+            <h3 id="m7g-refresh-heading">Operator Refresh Workflow Preflight</h3>
+            <h4>Controlled Refresh Request Package</h4>
+            <p class="m7f-caveat">Refresh workflow policy notice: No refresh execution in M7G-07/08. M7G-09 required for execution. This panel prepares a local safe request package only.</p>
+            <div id="m7g-refresh-preflight-summary" aria-label="Refresh workflow preflight summary"></div>
+            <div class="m7f-controls-grid">
+                <label class="m7f-control">Requested source families
+                    <select id="m7g-refresh-source-family">
+                        <option value="TWSE_MIS" selected>TWSE_MIS</option>
+                        <option value="TWSE_OPENAPI">TWSE_OPENAPI</option>
+                        <option value="TAIFEX_OPENAPI">TAIFEX_OPENAPI</option>
+                    </select>
+                </label>
+                <label class="m7f-control">Operator confirmation phrase
+                    <input id="m7g-refresh-confirmation" type="text" placeholder="PREPARE_REFRESH_REQUEST_ONLY">
+                </label>
+            </div>
+            <p class="note">Requested symbols are bounded to active context observations. Requested source families use a fixed allowlist only.</p>
+            <div class="controls">
+                <button id="m7g-build-refresh-request" class="btn" type="button">Build refresh request package</button>
+                <button id="m7g-reset-refresh-request" class="btn" type="button">Reset refresh request package</button>
+            </div>
+            <h4>Safe refresh request Markdown preview</h4>
+            <textarea id="m7g-refresh-markdown-preview" class="m7f-handoff-preview" readonly></textarea>
+            <button id="m7g-copy-refresh-markdown" class="btn" type="button">Copy Safe Refresh Request Markdown</button>
+            <h4>Safe refresh request JSON preview</h4>
+            <pre id="m7g-refresh-json-preview" class="m7f-handoff-preview">No controlled refresh request package prepared.</pre>
+            <button id="m7g-copy-refresh-json" class="btn" type="button">Copy Safe Refresh Request JSON</button>
+            <p id="m7g-refresh-copy-status" class="note"></p>
+        </section>
     </section>
 
     <h2>Local API Tools</h2>
@@ -242,6 +273,11 @@
         let m7gPendingArtifactText = '';
         let m7gValidatedArtifact = null;
         let m7gValidationResult = null;
+
+        const M7G_REFRESH_REQUEST_PACKAGE_SCHEMA_VERSION = 'm7g_controlled_refresh_request_package.v1';
+        const M7G_REFRESH_CONFIRMATION_PHRASE = 'PREPARE_REFRESH_REQUEST_ONLY';
+        const M7G_REFRESH_ALLOWED_SOURCE_FAMILIES = ['TWSE_MIS', 'TWSE_OPENAPI', 'TAIFEX_OPENAPI'];
+        let m7gPreparedRefreshRequestPackage = null;
 
         const M7G_SOURCE_HEALTH_ALLOWED_STATUSES = ['artifact_reported', 'unknown', 'stale', 'degraded', 'unavailable'];
         const M7G_SOURCE_HEALTH_DEFAULT_MODE = 'local_safe_artifact';
@@ -804,6 +840,16 @@
             };
         }
 
+        function normalizeM7GHandoffProjectionContext(context, validationResult) {
+            const active = getM7GActiveHandoffContext();
+            const directStaticDemo = context === M7F_DEMO_RICH_CONTEXT && validationResult && validationResult.validation_status === 'static_demo';
+            const directActiveLoadedArtifact = m7gActiveContextMode === M7G_CONTEXT_MODE_LOADED_SAFE_ARTIFACT && context === m7gActiveSafeArtifact && validationResult === m7gActiveValidationResult && validationResult && validationResult.validation_status === 'accepted' && validationResult.safe_to_render === true;
+            if (directStaticDemo || directActiveLoadedArtifact) {
+                return { context, validationResult };
+            }
+            return active;
+        }
+
         function buildM7GHandoffSourceSummary(context, validationResult) {
             const isLoaded = validationResult && validationResult.validation_status === 'accepted' && context !== M7F_DEMO_RICH_CONTEXT;
             const status = context.market_clock_session_state || {};
@@ -839,7 +885,7 @@
         }
 
         function buildM7FSafeHandoffProjection(context, selectedFieldKeys, validationResult) {
-            const handoffContext = validationResult ? { context, validationResult } : getM7GActiveHandoffContext();
+            const handoffContext = normalizeM7GHandoffProjectionContext(context, validationResult);
             const safeContext = handoffContext.context;
             const sourceSummary = buildM7GHandoffSourceSummary(safeContext, handoffContext.validationResult);
             const safeKeys = selectedFieldKeys.filter(key => {
@@ -946,6 +992,8 @@
             copyStatus.id = 'm7f-copy-status';
         }
 
+
+
         function renderM7FGovernance(context) {
             const container = document.getElementById('m7f-governance');
             container.replaceChildren();
@@ -968,12 +1016,120 @@
             container.appendChild(table);
         }
 
+        function getM7GRefreshPreflightContext() {
+            const active = getM7GActiveHandoffContext();
+            const observations = Array.isArray(active.context.observations) ? active.context.observations : [];
+            const requestedSymbols = observations.map(item => String(item.symbol)).filter(Boolean);
+            const requestedMarkets = Array.from(new Set(observations.map(item => String(item.market || active.context.market || 'TWSE')).filter(Boolean)));
+            const eligible = active.handoff_source_context_mode === M7G_CONTEXT_MODE_LOADED_SAFE_ARTIFACT && active.validationResult && active.validationResult.validation_status === 'accepted' && active.validationResult.safe_to_render === true;
+            return { activeHandoffContext: active, requestedSymbols, requestedMarkets, refreshRequestEligibility: eligible ? 'future_m7g09_eligible_not_executable' : 'preview_only_not_execution_eligible' };
+        }
+
+        function buildM7GControlledRefreshRequestPackage(activeHandoffContext, options) {
+            const context = activeHandoffContext.context;
+            const validationResult = activeHandoffContext.validationResult;
+            const observations = Array.isArray(context.observations) ? context.observations : [];
+            const activeSymbols = observations.map(item => String(item.symbol)).filter(Boolean);
+            const requestedSymbols = (options.requested_symbols || activeSymbols).filter(symbol => activeSymbols.includes(String(symbol)));
+            const sourceFamilies = (options.requested_source_families || ['TWSE_MIS']).filter(family => M7G_REFRESH_ALLOWED_SOURCE_FAMILIES.includes(family));
+            const confirmed = options.operator_confirmation_phrase === M7G_REFRESH_CONFIRMATION_PHRASE;
+            const loadedEligible = activeHandoffContext.handoff_source_context_mode === M7G_CONTEXT_MODE_LOADED_SAFE_ARTIFACT && validationResult && validationResult.validation_status === 'accepted' && validationResult.safe_to_render === true;
+            const clock = context.market_clock_session_state || {};
+            const health = getM7GSourceHealthSummary(loadedEligible ? context : null);
+            return {
+                schema_version: 'm7g_controlled_refresh_request_package.v1',
+                package_type: 'controlled_manual_refresh_request',
+                package_status: confirmed && requestedSymbols.length > 0 && sourceFamilies.length > 0 ? 'prepared_not_executed' : 'preflight_failed',
+                created_at_utc: 'operator_action_runtime',
+                created_by: 'operator_explicit_preflight',
+                active_context_mode: activeHandoffContext.handoff_source_context_mode,
+                source_artifact_id: loadedEligible ? context.artifact_id : 'static_demo',
+                source_artifact_schema_version: loadedEligible ? context.schema_version : 'static_demo',
+                source_validation_status: validationResult ? validationResult.validation_status : 'static_demo',
+                source_observation_count: observations.length,
+                requested_symbols: requestedSymbols,
+                requested_markets: Array.from(new Set(observations.filter(item => requestedSymbols.includes(String(item.symbol))).map(item => item.market || context.market || 'TWSE'))),
+                requested_source_families: sourceFamilies,
+                refresh_scope: 'bounded_watchlist',
+                bounded_watchlist_only: true,
+                execution_eligible_for_m7g09: loadedEligible && confirmed && requestedSymbols.length > 0,
+                execution_authorized: false,
+                execution_performed: false,
+                requires_m7g09_execution_gate: true,
+                network_intent: 'declared_for_future_m7g09_only',
+                raw_payload_requested: false,
+                raw_forbidden_values_requested: false,
+                ai_model_call_requested: false,
+                trading_advice_requested: false,
+                currentness_before_refresh: { currentness_label: clock.currentness_label || null, calendar_confidence: clock.calendar_confidence || null, trading_day_status: clock.trading_day_status || null },
+                source_health_before_refresh: { source_health_status: health.health_status || health.source_health || 'unknown', source_health_schema_version: health.schema_version || null },
+                operator_confirmation: { required: true, confirmation_phrase_required: M7G_REFRESH_CONFIRMATION_PHRASE, confirmed, confirmation_phrase_matched: confirmed },
+                governance_guardrails: { not_trading_signal: true, not_recommendation: true, not_market_prediction: true, not_capital_flow: true, not_full_market_breadth: true, raw_payload_exposed: false, raw_rich_facts_exposed: false, raw_full_ladder_exposed: false }
+            };
+        }
+
+        function validateM7GControlledRefreshRequestPackage(packageValue) {
+            const errors = [];
+            if (!packageValue || packageValue.schema_version !== M7G_REFRESH_REQUEST_PACKAGE_SCHEMA_VERSION) errors.push('invalid_schema_version');
+            ['execution_authorized', 'execution_performed', 'raw_payload_requested', 'raw_forbidden_values_requested', 'ai_model_call_requested', 'trading_advice_requested'].forEach(key => { if (packageValue && packageValue[key] !== false) errors.push(`${key}_must_be_false`); });
+            if (!packageValue || packageValue.requires_m7g09_execution_gate !== true) errors.push('requires_m7g09_execution_gate_required');
+            if (!packageValue || !Array.isArray(packageValue.requested_symbols) || packageValue.requested_symbols.length === 0) errors.push('requested_symbols_required');
+            if (!packageValue || !Array.isArray(packageValue.requested_source_families) || packageValue.requested_source_families.length === 0 || packageValue.requested_source_families.some(family => !M7G_REFRESH_ALLOWED_SOURCE_FAMILIES.includes(family))) errors.push('requested_source_families_invalid');
+            const detectedRawKeys = detectM7GRawForbiddenKeys(packageValue || {});
+            if (detectedRawKeys.length > 0) errors.push('raw_forbidden_keys_detected');
+            return { validation_status: errors.length === 0 ? 'accepted' : 'rejected', safe_to_copy: errors.length === 0, errors, raw_forbidden_keys_detected: detectedRawKeys };
+        }
+
+        function renderM7GRefreshRequestMarkdown(packageValue) {
+            if (!packageValue) return 'No controlled refresh request package prepared.';
+            return ['# Controlled Refresh Request Package', '', `schema_version: ${packageValue.schema_version}`, `package_status: ${packageValue.package_status}`, `active_context_mode: ${packageValue.active_context_mode}`, `source_artifact_id: ${packageValue.source_artifact_id}`, `source_validation_status: ${packageValue.source_validation_status}`, `requested_symbols: ${packageValue.requested_symbols.join(', ')}`, `requested_source_families: ${packageValue.requested_source_families.join(', ')}`, `refresh_scope: ${packageValue.refresh_scope}`, `execution_eligible_for_m7g09: ${packageValue.execution_eligible_for_m7g09}`, `execution_authorized: ${packageValue.execution_authorized}`, `execution_performed: ${packageValue.execution_performed}`, `requires_m7g09_execution_gate: ${packageValue.requires_m7g09_execution_gate}`, `network_intent: ${packageValue.network_intent}`, `raw_payload_requested: ${packageValue.raw_payload_requested}`, `raw_forbidden_values_requested: ${packageValue.raw_forbidden_values_requested}`, `ai_model_call_requested: ${packageValue.ai_model_call_requested}`, `trading_advice_requested: ${packageValue.trading_advice_requested}`, '', 'Governance guardrails:', '- not trading signal', '- not recommendation', '- not market prediction', '', 'No refresh execution in M7G-07/08. M7G-09 required for execution.'].join('\n');
+        }
+
+        function renderM7GRefreshWorkflowPanel() {
+            const preflight = getM7GRefreshPreflightContext();
+            const summary = document.getElementById('m7g-refresh-preflight-summary');
+            if (!summary) return;
+            summary.replaceChildren();
+            const grid = document.createElement('div');
+            grid.className = 'm7f-status-grid';
+            [['Active context mode', preflight.activeHandoffContext.handoff_source_context_mode], ['Refresh request eligibility', preflight.refreshRequestEligibility], ['Requested symbols', preflight.requestedSymbols.join(', ') || 'none'], ['Requested source families', document.getElementById('m7g-refresh-source-family') ? document.getElementById('m7g-refresh-source-family').value : 'TWSE_MIS'], ['Operator confirmation phrase', M7G_REFRESH_CONFIRMATION_PHRASE]].forEach(([label, value]) => {
+                const item = document.createElement('div');
+                item.className = 'm7f-status-item';
+                appendText(item, 'strong', label);
+                item.appendChild(document.createTextNode(': '));
+                appendText(item, 'span', value);
+                grid.appendChild(item);
+            });
+            summary.appendChild(grid);
+            document.getElementById('m7g-refresh-json-preview').textContent = m7gPreparedRefreshRequestPackage ? JSON.stringify(m7gPreparedRefreshRequestPackage, null, 2) : 'No controlled refresh request package prepared.';
+            document.getElementById('m7g-refresh-markdown-preview').value = renderM7GRefreshRequestMarkdown(m7gPreparedRefreshRequestPackage);
+        }
+
+        function setupM7GRefreshWorkflowUI() {
+            const buildButton = document.getElementById('m7g-build-refresh-request');
+            const resetButton = document.getElementById('m7g-reset-refresh-request');
+            const familySelect = document.getElementById('m7g-refresh-source-family');
+            const confirmationInput = document.getElementById('m7g-refresh-confirmation');
+            buildButton.addEventListener('click', function () {
+                const preflight = getM7GRefreshPreflightContext();
+                m7gPreparedRefreshRequestPackage = buildM7GControlledRefreshRequestPackage(preflight.activeHandoffContext, { requested_symbols: preflight.requestedSymbols, requested_source_families: [familySelect.value], operator_confirmation_phrase: confirmationInput.value });
+                validateM7GControlledRefreshRequestPackage(m7gPreparedRefreshRequestPackage);
+                renderM7GRefreshWorkflowPanel();
+            });
+            resetButton.addEventListener('click', function () { m7gPreparedRefreshRequestPackage = null; confirmationInput.value = ''; renderM7GRefreshWorkflowPanel(); });
+            familySelect.addEventListener('change', renderM7GRefreshWorkflowPanel);
+            document.getElementById('m7g-copy-refresh-json').addEventListener('click', () => copyM7FPreviewText('m7g-refresh-json-preview', 'm7g-refresh-copy-status'));
+            document.getElementById('m7g-copy-refresh-markdown').addEventListener('click', () => copyM7FPreviewText('m7g-refresh-markdown-preview', 'm7g-refresh-copy-status'));
+            renderM7GRefreshWorkflowPanel();
+        }
+
         function renderM7FRichFactBrowser(context) {
             renderM7FOperatorStatus(context);
             renderM7FControls(context);
             renderM7FBrowserTable(context);
             renderM7FHandoffPanel(context);
             renderM7FGovernance(context);
+            renderM7GRefreshWorkflowPanel();
             renderM7FBadgeLegend(document.getElementById('m7f-governance'));
         }
 
@@ -1078,6 +1234,7 @@
             renderM7FRichFactBrowser(M7F_DEMO_RICH_CONTEXT);
             updateM7GLoadedPanels(null, null);
             setupM7GManualSafeArtifactLoadUI();
+            setupM7GRefreshWorkflowUI();
         };
     </script>
 </body>
