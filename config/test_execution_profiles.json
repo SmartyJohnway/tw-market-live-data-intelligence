@@ -93,7 +93,8 @@
         "tests/unit/test_m7g_refreshed_safe_artifact_result_contract.py",
         "tests/unit/test_m7g_controlled_refresh_frontend_execution_ui.py",
         "tests/unit/test_m7g_refresh_workflow_security_regression.py",
-        "tests/unit/test_m7g_twse_mis_market_route_semantics.py"
+        "tests/unit/test_m7g_twse_mis_market_route_semantics.py",
+        "tests/unit/test_m7g_final_acceptance.py"
       ],
       "network_policy": "no network; excludes tests marked network",
       "browser_policy": "does not install or require Playwright/Chromium",

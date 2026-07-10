@@ -130,13 +130,25 @@ def test_no_network_backend_refresh_ai_or_positive_trading_terms_in_handoff_slic
 
 def test_inventory_status_and_default_ci():
     entry = json.loads(INV.read_text(encoding='utf-8'))['rich_observation_contract']['m7g_local_safe_context_artifact_load']
-    assert entry['status'] in {'controlled_manual_refresh_execution_gate_defined', 'loaded_artifact_and_refresh_workflow_security_regression_defined'}
-    assert entry['completed_tasks'] in (['M7G-00','M7G-01','M7G-02','M7G-03','M7G-04','M7G-05','M7G-06','M7G-07','M7G-08','M7G-09'], ['M7G-00','M7G-01','M7G-02','M7G-03','M7G-04','M7G-05','M7G-06','M7G-07','M7G-08','M7G-09','M7G-10'])
+    assert entry['status'] in {
+        'controlled_manual_refresh_execution_gate_defined',
+        'loaded_artifact_and_refresh_workflow_security_regression_defined',
+        'final_acceptance_pass_with_caveats'
+    }
+    assert entry['completed_tasks'] in (
+        ['M7G-00','M7G-01','M7G-02','M7G-03','M7G-04','M7G-05','M7G-06','M7G-07','M7G-08','M7G-09'],
+        ['M7G-00','M7G-01','M7G-02','M7G-03','M7G-04','M7G-05','M7G-06','M7G-07','M7G-08','M7G-09','M7G-10'],
+        ['M7G-00','M7G-01','M7G-02','M7G-03','M7G-04','M7G-05','M7G-06','M7G-07','M7G-08','M7G-09','M7G-10','M7G-11']
+    )
     for key in ['active_context_handoff_added','handoff_source_panel_added','static_demo_handoff_mode_supported','loaded_safe_artifact_handoff_mode_supported','handoff_source_context_mode_explicit','handoff_built_from_active_context','loaded_artifact_handoff_requires_accepted_validation','artifact_provenance_in_handoff','validation_status_in_handoff','currentness_calendar_in_handoff','source_health_summary_in_handoff','json_handoff_uses_safe_projection_only','markdown_handoff_uses_safe_projection_only','m7g09_controlled_manual_refresh_execution_required']:
         assert entry[key] is True
     for key in ['rejected_artifact_reaches_handoff','raw_forbidden_fields_copied_to_handoff','raw_payload_values_copied_to_handoff','automatic_clipboard_write_added','rejected_artifact_reaches_handoff','raw_forbidden_fields_copied_to_handoff','raw_payload_values_copied_to_handoff','automatic_clipboard_write_added','hidden_fetch_added','ai_model_call_added']:
         assert entry[key] is False
-    assert entry['next_task'] in {'M7G-10-LOADED-ARTIFACT-AND-REFRESH-WORKFLOW-SECURITY-REGRESSION', 'M7G-11-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-FINAL-ACCEPTANCE'}
+    assert entry['next_task'] in {
+        'M7G-10-LOADED-ARTIFACT-AND-REFRESH-WORKFLOW-SECURITY-REGRESSION',
+        'M7G-11-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-FINAL-ACCEPTANCE',
+        'M7H-SOURCE-FAMILY-ROUTE-GOVERNANCE-AND-CONTROLLED-EXPANSION'
+    }
     assert entry['refresh_execution_added'] is True
     assert entry['runtime_network_fetch_added'] is True
     assert entry['backend_api_changed'] is True

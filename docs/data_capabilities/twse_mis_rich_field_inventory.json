@@ -1417,7 +1417,7 @@
       ]
     },
     "m7g_local_safe_context_artifact_load": {
-      "status": "loaded_artifact_and_refresh_workflow_security_regression_defined",
+      "status": "final_acceptance_pass_with_caveats",
       "completed_tasks": [
         "M7G-00",
         "M7G-01",
@@ -1429,7 +1429,8 @@
         "M7G-07",
         "M7G-08",
         "M7G-09",
-        "M7G-10"
+        "M7G-10",
+        "M7G-11"
       ],
       "track_name": "M7G-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-AND-OPERATOR-REFRESH-WORKFLOW",
       "policy_doc": "docs/protocol/M7G_LOCAL_SAFE_CONTEXT_ARTIFACT_LOAD_POLICY.md",
@@ -1475,7 +1476,7 @@
       "not_full_market_breadth": true,
       "m7g09_controlled_manual_refresh_execution_required": true,
       "m7g09_earliest_refresh_execution_gate": true,
-      "next_task": "M7G-11-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-FINAL-ACCEPTANCE",
+      "next_task": "M7H-SOURCE-FAMILY-ROUTE-GOVERNANCE-AND-CONTROLLED-EXPANSION",
       "real_safe_artifact_rendering_doc": "docs/protocol/M7G_RICH_FACT_BROWSER_REAL_SAFE_ARTIFACT_RENDERING.md",
       "provenance_currentness_source_health_doc": "docs/protocol/M7G_ARTIFACT_PROVENANCE_CURRENTNESS_SOURCE_HEALTH_PANEL.md",
       "active_context_mode_added": true,
@@ -1627,7 +1628,34 @@
       "emerging_stock_live_route_supported": false,
       "rotc_route_declared": false,
       "rotc_candidate_added": false,
-      "new_source_execution_support_added": false
+      "new_source_execution_support_added": false,
+      "final_acceptance_doc": "docs/protocol/M7G_LOCAL_SAFE_CONTEXT_ARTIFACT_LOAD_FINAL_ACCEPTANCE.md",
+      "final_acceptance_status": "pass_with_caveats",
+      "manual_ui_acceptance_completed": true,
+      "manual_ui_acceptance_result": "pass",
+      "bounded_live_smoke_completed": true,
+      "bounded_live_smoke_result": "pass_with_caveats",
+      "windows_utf8_default_ci_supported": true,
+      "windows_path_separator_fix_included": true,
+      "m7g_final_accepted": true,
+      "controlled_refresh_gate_final_accepted": true,
+      "safe_artifact_load_gate_final_accepted": true,
+      "ai_handoff_from_loaded_artifact_final_accepted": true,
+      "source_route_semantics_final_accepted": true,
+      "listed_live_route_final": "TWSE_MIS / tse_{symbol}.tw",
+      "tpex_otc_live_route_final": "TWSE_MIS / otc_{symbol}.tw",
+      "tpex_mis_introduced": false,
+      "rotc_route_introduced": false,
+      "emerging_stock_live_supported": false,
+      "execute_auto_loads_artifact": false,
+      "load_refreshed_safe_artifact_required": true,
+      "rich_fact_browser_updates_only_after_load": true,
+      "ai_handoff_updates_only_after_load": true,
+      "known_caveats": [
+        "Windows default-ci requires PYTHONUTF8=1 or explicit UTF-8 file reads.",
+        "FastAPI root returns JSON status; frontend is opened as frontend/public/index.html.",
+        "Manual UI acceptance directly covered 2330 TWSE route; 8069 TPEx/OTC route was live-smoke validated through controlled API/package execution."
+      ]
     }
   },
   "runtime_behavior_changed": false,
