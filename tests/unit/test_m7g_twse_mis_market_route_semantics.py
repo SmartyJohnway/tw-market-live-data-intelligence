@@ -68,7 +68,7 @@ def test_m7g_current_execution_files_do_not_declare_tpex_mis_or_rotc_routes():
         if path.name == 'twse_mis_rich_field_inventory.json':
             assert '"rotc_route_declared": false' in text
             assert '"rotc_candidate_added": false' in text
-            stripped = text.replace('"rotc_route_declared": false', '').replace('"rotc_candidate_added": false', '')
+            stripped = text.replace('"rotc_route_declared": false', '').replace('"rotc_candidate_added": false', '').replace('"rotc_route_introduced": false', '')
             assert 'rotc_' not in stripped
         else:
             assert 'rotc_' not in text

@@ -80,7 +80,7 @@ def test_inventory_final_closure():
     assert m7e["status"] == "final_acceptance_pass_with_caveats"
     assert m7e["completed_tasks"] == ["M7E-00", "M7E-01", "M7E-02", "M7E-03", "M7E-04"]
     assert m7e["final_acceptance_status"] == "pass_with_caveats"
-    assert m7e["final_acceptance_doc"] == str(FINAL_DOC)
+    assert m7e["final_acceptance_doc"] == FINAL_DOC.as_posix()
     assert m7e["safe_for_ai_context"] is True
     assert m7e["builder_output_safe_for_ai_context"] is False
     assert m7e["controlled_promotion_available"] is True
