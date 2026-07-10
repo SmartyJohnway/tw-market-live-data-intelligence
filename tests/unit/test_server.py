@@ -166,3 +166,30 @@ def test_source_health_history_uses_local_history_summaries(monkeypatch):
     assert data["content"]["previous"] is None
     assert data["governance"]["layer"] == "M5Q"
     assert data["governance"]["network_calls"] is False
+
+def test_m7g_controlled_refresh_execute_endpoint_rejects_missing_confirmation():
+    package = {
+        "schema_version":"m7g_controlled_refresh_request_package.v1",
+        "package_type":"controlled_manual_refresh_request",
+        "package_status":"prepared_not_executed",
+        "active_context_mode":"loaded_safe_artifact",
+        "requested_symbols":["2330"],
+        "requested_source_families":["TWSE_MIS"],
+        "refresh_scope":"bounded_watchlist",
+        "bounded_watchlist_only":True,
+        "execution_eligible_for_m7g09":True,
+        "execution_authorized":False,
+        "execution_performed":False,
+        "requires_m7g09_execution_gate":True,
+        "raw_payload_requested":False,
+        "raw_forbidden_values_requested":False,
+        "ai_model_call_requested":False,
+        "trading_advice_requested":False,
+        "operator_confirmation":{"required":True,"confirmation_phrase_required":"PREPARE_REFRESH_REQUEST_ONLY","confirmed":True,"confirmation_phrase_matched":True},
+    }
+    response = client.post('/api/m7g/controlled-refresh/execute', json={'request_package': package, 'operator_execution_confirmation_phrase': ''})
+    assert response.status_code == 200
+    data = response.json()
+    assert data['execution_status'] == 'rejected_missing_execution_confirmation'
+    assert data['execution_performed'] is False
+    assert data['safe_artifact_returned'] is False

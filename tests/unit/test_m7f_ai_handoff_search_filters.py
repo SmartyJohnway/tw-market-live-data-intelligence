@@ -18,7 +18,7 @@ def html():
 
 def m7f_js():
     text = html()
-    return text[text.index('const M7F_DISPLAY_CATALOG'):text.index('function renderMatrixLoadError')]
+    return text[text.index('const M7F_DISPLAY_CATALOG'):text.index('async function executeM7GControlledRefreshOnce')]
 
 
 def test_doc_exists_and_records_policy():
