@@ -61,6 +61,7 @@ def test_active_handoff_context_helper_and_loaded_gate():
     js = handoff_js()
     for token in [
         'getM7GActiveHandoffContext',
+        'normalizeM7GHandoffProjectionContext',
         'buildM7GHandoffSourceSummary',
         'handoff_source_context_mode',
         'handoff_built_from_active_context',
@@ -129,12 +130,12 @@ def test_no_network_backend_refresh_ai_or_positive_trading_terms_in_handoff_slic
 
 def test_inventory_status_and_default_ci():
     entry = json.loads(INV.read_text(encoding='utf-8'))['rich_observation_contract']['m7g_local_safe_context_artifact_load']
-    assert entry['status'] == 'ai_handoff_from_loaded_safe_artifact_defined'
-    assert entry['completed_tasks'] == ['M7G-00','M7G-01','M7G-02','M7G-03','M7G-04','M7G-05','M7G-06']
+    assert entry['status'] == 'refresh_workflow_policy_and_request_package_defined'
+    assert entry['completed_tasks'] == ['M7G-00','M7G-01','M7G-02','M7G-03','M7G-04','M7G-05','M7G-06','M7G-07','M7G-08']
     for key in ['active_context_handoff_added','handoff_source_panel_added','static_demo_handoff_mode_supported','loaded_safe_artifact_handoff_mode_supported','handoff_source_context_mode_explicit','handoff_built_from_active_context','loaded_artifact_handoff_requires_accepted_validation','artifact_provenance_in_handoff','validation_status_in_handoff','currentness_calendar_in_handoff','source_health_summary_in_handoff','json_handoff_uses_safe_projection_only','markdown_handoff_uses_safe_projection_only','m7g09_controlled_manual_refresh_execution_required']:
         assert entry[key] is True
     for key in ['rejected_artifact_reaches_handoff','raw_forbidden_fields_copied_to_handoff','raw_payload_values_copied_to_handoff','automatic_clipboard_write_added','refresh_execution_added','manual_refresh_added','runtime_network_fetch_added','hidden_fetch_added','backend_api_changed','ai_model_call_added']:
         assert entry[key] is False
-    assert entry['next_task'] == 'M7G-07-08-OPERATOR-REFRESH-WORKFLOW-POLICY-AND-CONTROLLED-REFRESH-REQUEST-PACKAGE'
+    assert entry['next_task'] == 'M7G-09-CONTROLLED-MANUAL-REFRESH-EXECUTION-INTEGRATION-GATE'
     paths = json.loads(PROFILE.read_text(encoding='utf-8'))['profiles']['default-ci']['pytest_paths']
     assert 'tests/unit/test_m7g_ai_handoff_from_loaded_safe_artifact.py' in paths

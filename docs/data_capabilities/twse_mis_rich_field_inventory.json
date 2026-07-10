@@ -1417,7 +1417,7 @@
       ]
     },
     "m7g_local_safe_context_artifact_load": {
-      "status": "ai_handoff_from_loaded_safe_artifact_defined",
+      "status": "refresh_workflow_policy_and_request_package_defined",
       "completed_tasks": [
         "M7G-00",
         "M7G-01",
@@ -1425,7 +1425,9 @@
         "M7G-03",
         "M7G-04",
         "M7G-05",
-        "M7G-06"
+        "M7G-06",
+        "M7G-07",
+        "M7G-08"
       ],
       "track_name": "M7G-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-AND-OPERATOR-REFRESH-WORKFLOW",
       "policy_doc": "docs/protocol/M7G_LOCAL_SAFE_CONTEXT_ARTIFACT_LOAD_POLICY.md",
@@ -1471,7 +1473,7 @@
       "not_full_market_breadth": true,
       "m7g09_controlled_manual_refresh_execution_required": true,
       "m7g09_earliest_refresh_execution_gate": true,
-      "next_task": "M7G-07-08-OPERATOR-REFRESH-WORKFLOW-POLICY-AND-CONTROLLED-REFRESH-REQUEST-PACKAGE",
+      "next_task": "M7G-09-CONTROLLED-MANUAL-REFRESH-EXECUTION-INTEGRATION-GATE",
       "real_safe_artifact_rendering_doc": "docs/protocol/M7G_RICH_FACT_BROWSER_REAL_SAFE_ARTIFACT_RENDERING.md",
       "provenance_currentness_source_health_doc": "docs/protocol/M7G_ARTIFACT_PROVENANCE_CURRENTNESS_SOURCE_HEALTH_PANEL.md",
       "active_context_mode_added": true,
@@ -1505,7 +1507,33 @@
       "raw_payload_values_copied_to_handoff": false,
       "json_handoff_uses_safe_projection_only": true,
       "markdown_handoff_uses_safe_projection_only": true,
-      "automatic_clipboard_write_added": false
+      "automatic_clipboard_write_added": false,
+      "refresh_workflow_policy_doc": "docs/protocol/M7G_OPERATOR_REFRESH_WORKFLOW_POLICY_AND_PREFLIGHT.md",
+      "controlled_refresh_request_package_doc": "docs/protocol/M7G_CONTROLLED_REFRESH_REQUEST_PACKAGE.md",
+      "refresh_request_package_schema_version": "m7g_controlled_refresh_request_package.v1",
+      "operator_refresh_workflow_policy_added": true,
+      "refresh_preflight_ui_added": true,
+      "controlled_refresh_request_package_added": true,
+      "safe_refresh_request_json_preview_added": true,
+      "safe_refresh_request_markdown_preview_added": true,
+      "explicit_refresh_request_copy_buttons_added": true,
+      "operator_confirmation_phrase_required": true,
+      "operator_confirmation_phrase": "PREPARE_REFRESH_REQUEST_ONLY",
+      "requested_symbols_bounded_to_active_context": true,
+      "requested_source_families_fixed_allowlist": true,
+      "static_demo_refresh_request_preview_supported": true,
+      "loaded_safe_artifact_refresh_request_supported": true,
+      "static_demo_execution_eligible_for_m7g09": false,
+      "loaded_safe_artifact_execution_eligible_for_m7g09_after_validation": true,
+      "handoff_direct_call_hardening_added": true,
+      "arbitrary_validation_result_cannot_bypass_active_context_gate": true,
+      "refresh_request_package_execution_authorized": false,
+      "refresh_request_package_execution_performed": false,
+      "manual_refresh_execution_added": false,
+      "manual_refresh_workflow_policy_added": true,
+      "raw_payload_requested": false,
+      "raw_forbidden_values_requested": false,
+      "trading_advice_requested": false
     }
   },
   "runtime_behavior_changed": false,
