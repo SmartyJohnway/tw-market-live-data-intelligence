@@ -1,0 +1,382 @@
+{
+  "schema_version": "m8_source_capability_registry.v1",
+  "status": "m8_00_governance_foundation_defined",
+  "generated_for_task": "M8-00-00-TO-03-SOURCE-TIMING-AUTHORITY-GOVERNANCE-FOUNDATION",
+  "sources": [
+    {
+      "source_id": "TWSE_MIS",
+      "source_family": "TWSE_MIS",
+      "display_name": "TWSE MIS browser quote snapshot",
+      "authority_level": "official_undocumented",
+      "official_documented": false,
+      "endpoint_type": "hidden_browser_json",
+      "timing_class": "liveish_intraday_snapshot",
+      "latency_class": "intraday_snapshot",
+      "freshness_policy": "policy_defined_metadata_only",
+      "market_scope": {
+        "listed": {
+          "route": "tse_{symbol}.tw"
+        },
+        "tpex_otc": {
+          "route": "otc_{symbol}.tw"
+        },
+        "emerging_stock_live_supported": false
+      },
+      "instrument_scope": [],
+      "field_groups": [],
+      "runtime_available": true,
+      "runtime_executable": true,
+      "ai_context_allowed": true,
+      "ai_exposure_level": "caveated_context_allowed",
+      "primary_use": "bounded live-ish listed and TPEx/OTC observation",
+      "allowed_interpretation": [
+        "bounded live-ish observation",
+        "not realtime guaranteed"
+      ],
+      "blocked_interpretation": [
+        "no TPEX_MIS",
+        "no rotc_",
+        "no streaming guarantee",
+        "no trading signal",
+        "no trading advice"
+      ],
+      "caveats": [
+        "Official exchange browser source, but hidden/undocumented endpoint contract in project governance."
+      ],
+      "credential_required": false,
+      "local_first_safe": true,
+      "raw_payload_exposure_allowed": false,
+      "trading_signal_allowed": false,
+      "recommendation_allowed": false,
+      "source_notes": []
+    },
+    {
+      "source_id": "TAIFEX_MIS",
+      "source_family": "TAIFEX_MIS",
+      "display_name": "TAIFEX MIS derivatives snapshot",
+      "authority_level": "unofficial_observed",
+      "official_documented": false,
+      "endpoint_type": "hidden_browser_json",
+      "timing_class": "liveish_intraday_snapshot",
+      "latency_class": "unknown",
+      "freshness_policy": "policy_defined_metadata_only",
+      "market_scope": {
+        "derivatives": "declared future family only"
+      },
+      "instrument_scope": [],
+      "field_groups": [],
+      "runtime_available": false,
+      "runtime_executable": false,
+      "ai_context_allowed": false,
+      "ai_exposure_level": "metadata_only",
+      "primary_use": "declared live derivatives family for future controlled gate",
+      "allowed_interpretation": [
+        "metadata-only declared source family"
+      ],
+      "blocked_interpretation": [
+        "not executable in M8-00",
+        "no trading interpretation",
+        "no trading signal"
+      ],
+      "caveats": [
+        "Declared live derivatives family, not executable in M8-00."
+      ],
+      "credential_required": false,
+      "local_first_safe": true,
+      "raw_payload_exposure_allowed": false,
+      "trading_signal_allowed": false,
+      "recommendation_allowed": false,
+      "source_notes": []
+    },
+    {
+      "source_id": "TWSE_OPENAPI",
+      "source_family": "TWSE_OPENAPI",
+      "display_name": "TWSE OPENAPI official OpenAPI",
+      "authority_level": "official_documented",
+      "official_documented": true,
+      "endpoint_type": "official_openapi",
+      "timing_class": "official_eod",
+      "latency_class": "eod_after_close",
+      "freshness_policy": "official EOD; EOD must not be realtime",
+      "market_scope": {
+        "taiwan_equity": "official EOD/reference"
+      },
+      "instrument_scope": [],
+      "field_groups": [],
+      "runtime_available": false,
+      "runtime_executable": false,
+      "ai_context_allowed": false,
+      "ai_exposure_level": "metadata_only",
+      "primary_use": "listed official EOD/reference context",
+      "allowed_interpretation": [
+        "official EOD reference",
+        "EOD-only source"
+      ],
+      "blocked_interpretation": [
+        "not realtime",
+        "not current price",
+        "no trading signal",
+        "no trading advice"
+      ],
+      "caveats": [
+        "Runtime adapter not added in this PR; future M8A candidate."
+      ],
+      "credential_required": false,
+      "local_first_safe": true,
+      "raw_payload_exposure_allowed": false,
+      "trading_signal_allowed": false,
+      "recommendation_allowed": false,
+      "source_notes": []
+    },
+    {
+      "source_id": "TPEX_OPENAPI",
+      "source_family": "TPEX_OPENAPI",
+      "display_name": "TPEX OPENAPI official OpenAPI",
+      "authority_level": "official_documented",
+      "official_documented": true,
+      "endpoint_type": "official_openapi",
+      "timing_class": "official_eod",
+      "latency_class": "eod_after_close",
+      "freshness_policy": "official EOD; EOD must not be realtime",
+      "market_scope": {
+        "taiwan_equity": "official EOD/reference"
+      },
+      "instrument_scope": [],
+      "field_groups": [],
+      "runtime_available": false,
+      "runtime_executable": false,
+      "ai_context_allowed": false,
+      "ai_exposure_level": "metadata_only",
+      "primary_use": "TPEx official EOD/reference context",
+      "allowed_interpretation": [
+        "official EOD reference",
+        "EOD-only source"
+      ],
+      "blocked_interpretation": [
+        "not realtime",
+        "not current price",
+        "not TPEX_MIS",
+        "no trading signal",
+        "no trading advice"
+      ],
+      "caveats": [
+        "Runtime adapter not added in this PR; future M8A candidate."
+      ],
+      "credential_required": false,
+      "local_first_safe": true,
+      "raw_payload_exposure_allowed": false,
+      "trading_signal_allowed": false,
+      "recommendation_allowed": false,
+      "source_notes": []
+    },
+    {
+      "source_id": "TAIFEX_OPENAPI",
+      "source_family": "TAIFEX_OPENAPI",
+      "display_name": "TAIFEX official OpenAPI statistics",
+      "authority_level": "official_documented",
+      "official_documented": true,
+      "endpoint_type": "official_openapi",
+      "timing_class": "official_statistics_eod",
+      "latency_class": "eod_after_close",
+      "freshness_policy": "official statistics EOD; EOD must not be realtime",
+      "market_scope": {
+        "derivatives": "official EOD/statistical"
+      },
+      "instrument_scope": [],
+      "field_groups": [],
+      "runtime_available": false,
+      "runtime_executable": false,
+      "ai_context_allowed": false,
+      "ai_exposure_level": "metadata_only",
+      "primary_use": "official derivatives EOD/statistical context",
+      "allowed_interpretation": [
+        "official statistics EOD"
+      ],
+      "blocked_interpretation": [
+        "not realtime",
+        "not current price",
+        "not leading indicator",
+        "not reversal signal",
+        "not support/resistance",
+        "no trading signal"
+      ],
+      "caveats": [
+        "Runtime adapter not added in this PR; future M8B candidate."
+      ],
+      "credential_required": false,
+      "local_first_safe": true,
+      "raw_payload_exposure_allowed": false,
+      "trading_signal_allowed": false,
+      "recommendation_allowed": false,
+      "source_notes": []
+    },
+    {
+      "source_id": "MOPS",
+      "source_family": "MOPS",
+      "display_name": "Market Observation Post System",
+      "authority_level": "official_documented",
+      "official_documented": true,
+      "endpoint_type": "official_web_page",
+      "timing_class": "fundamental_reference",
+      "latency_class": "delayed_reference",
+      "freshness_policy": "policy_defined_metadata_only",
+      "market_scope": {
+        "issuer_disclosure": "fundamental and disclosure reference"
+      },
+      "instrument_scope": [],
+      "field_groups": [],
+      "runtime_available": false,
+      "runtime_executable": false,
+      "ai_context_allowed": false,
+      "ai_exposure_level": "metadata_only",
+      "primary_use": "disclosure/fundamental reference",
+      "allowed_interpretation": [
+        "official disclosure reference",
+        "fundamental reference"
+      ],
+      "blocked_interpretation": [
+        "not intraday quote source",
+        "not current price",
+        "no trading signal"
+      ],
+      "caveats": [
+        "Runtime adapter not added in this PR."
+      ],
+      "credential_required": false,
+      "local_first_safe": true,
+      "raw_payload_exposure_allowed": false,
+      "trading_signal_allowed": false,
+      "recommendation_allowed": false,
+      "source_notes": []
+    },
+    {
+      "source_id": "MANUAL_OPERATOR_EVIDENCE",
+      "source_family": "MANUAL_OPERATOR_EVIDENCE",
+      "display_name": "Manual operator evidence",
+      "authority_level": "manual_operator_evidence",
+      "official_documented": false,
+      "endpoint_type": "manual_upload",
+      "timing_class": "manual_snapshot",
+      "latency_class": "manual",
+      "freshness_policy": "policy_defined_metadata_only",
+      "market_scope": {
+        "local_artifact": "uploaded artifact / local operator evidence"
+      },
+      "instrument_scope": [],
+      "field_groups": [],
+      "runtime_available": true,
+      "runtime_executable": false,
+      "ai_context_allowed": true,
+      "ai_exposure_level": "caveated_context_allowed",
+      "primary_use": "operator-provided local evidence with caveats",
+      "allowed_interpretation": [
+        "manual operator snapshot"
+      ],
+      "blocked_interpretation": [
+        "not official source",
+        "cannot override official source",
+        "cannot be treated as runtime feed",
+        "no trading signal"
+      ],
+      "caveats": [
+        "Available only as uploaded artifact / local operator evidence."
+      ],
+      "credential_required": false,
+      "local_first_safe": true,
+      "raw_payload_exposure_allowed": false,
+      "trading_signal_allowed": false,
+      "recommendation_allowed": false,
+      "source_notes": []
+    },
+    {
+      "source_id": "EXTERNAL_VALIDATION_ONLY",
+      "source_family": "EXTERNAL_VALIDATION_ONLY",
+      "display_name": "External validation-only supporting source",
+      "authority_level": "external_validation_only",
+      "official_documented": false,
+      "endpoint_type": "derived_context",
+      "timing_class": "validation_only",
+      "latency_class": "unknown",
+      "freshness_policy": "policy_defined_metadata_only",
+      "market_scope": {
+        "supporting_validation": "validation-only"
+      },
+      "instrument_scope": [],
+      "field_groups": [],
+      "runtime_available": false,
+      "runtime_executable": false,
+      "ai_context_allowed": false,
+      "ai_exposure_level": "validation_only",
+      "primary_use": "validation-only supporting source",
+      "allowed_interpretation": [
+        "validation-only supporting source"
+      ],
+      "blocked_interpretation": [
+        "cannot be promoted to primary source",
+        "cannot be used as trading signal",
+        "not runtime dependency"
+      ],
+      "caveats": [
+        "Supporting source only unless future governance upgrades it."
+      ],
+      "credential_required": false,
+      "local_first_safe": true,
+      "raw_payload_exposure_allowed": false,
+      "trading_signal_allowed": false,
+      "recommendation_allowed": false,
+      "source_notes": []
+    },
+    {
+      "source_id": "CREDENTIAL_GATED_PROVIDER",
+      "source_family": "CREDENTIAL_GATED_PROVIDER",
+      "display_name": "Credential-gated provider research",
+      "authority_level": "credential_gated_provider",
+      "official_documented": false,
+      "endpoint_type": "provider_api",
+      "timing_class": "credential_gated_research",
+      "latency_class": "unknown",
+      "freshness_policy": "policy_defined_metadata_only",
+      "market_scope": {
+        "provider_research": "credential-gated provider metadata"
+      },
+      "instrument_scope": [],
+      "field_groups": [],
+      "runtime_available": false,
+      "runtime_executable": false,
+      "ai_context_allowed": false,
+      "ai_exposure_level": "metadata_only",
+      "primary_use": "credential-gated provider research only",
+      "allowed_interpretation": [
+        "credential-gated provider research only"
+      ],
+      "blocked_interpretation": [
+        "no credentials in repo",
+        "not runtime dependency",
+        "not blocking M8",
+        "cannot be used as trading signal"
+      ],
+      "caveats": [
+        "local_first_safe remains false unless future secrets-handling gate exists."
+      ],
+      "credential_required": true,
+      "local_first_safe": false,
+      "raw_payload_exposure_allowed": false,
+      "trading_signal_allowed": false,
+      "recommendation_allowed": false,
+      "source_notes": []
+    }
+  ],
+  "global_ai_interpretation_policy": {
+    "no_trading_advice": true,
+    "no_recommendation": true,
+    "no_trading_signal": true,
+    "eod_not_realtime": true,
+    "retrieved_at_not_exchange_timestamp": true,
+    "manual_evidence_not_official_source": true,
+    "validation_only_not_primary_source": true,
+    "no_tpex_mis": true,
+    "no_rotc_route": true,
+    "no_emerging_stock_live_route": true
+  },
+  "next_task": "M8-00-04-SOURCE-FRESHNESS-EVALUATOR-PURE-HELPER"
+}
