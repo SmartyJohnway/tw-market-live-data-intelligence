@@ -19,6 +19,9 @@ def test_valid_fixture_passes():
     assert result['raw_payload_exposed'] is False
     assert result['raw_rich_facts_exposed'] is False
     assert result['raw_full_ladder_exposed'] is False
+    assert result['source_health_status'] == 'artifact_reported'
+    assert result['source_health_schema_version'] == 'm7g_source_health.v1'
+    assert result['source_health_warnings'] == []
 
 
 def test_raw_payload_fixture_rejected_without_raw_values():
@@ -46,3 +49,16 @@ def test_validator_module_has_no_network_file_ai_db_behavior():
     text = Path('scripts/m7g_safe_artifact_validator.py').read_text(encoding='utf-8')
     for forbidden in ['requests', 'urllib', 'httpx', 'fetch', 'open(', 'Path(', 'sqlite', 'psycopg', 'sqlalchemy', 'subprocess', 'socket', 'mcp', 'FastAPI']:
         assert forbidden not in text
+
+
+def test_missing_source_health_fixture_passes_with_warning():
+    result = validate_m7g_safe_context_artifact(load_fixture('m7g_safe_context_artifact_valid_missing_source_health.json'))
+    assert result['validation_status'] == 'accepted'
+    assert result['source_health_status'] == 'unknown'
+    assert 'missing_source_health_metadata' in result['source_health_warnings']
+
+
+def test_bad_source_health_fixture_rejected_without_raw_values():
+    result = validate_m7g_safe_context_artifact(load_fixture('m7g_safe_context_artifact_rejected_bad_source_health.json'))
+    assert result['validation_status'] == 'rejected'
+    assert any(error['code'] == 'invalid_source_health' for error in result['errors'])

@@ -94,8 +94,12 @@
                 <button id="m7g-reset-static-demo" class="btn" type="button">Reset to static demo</button>
             </div>
             <div id="m7g-validation-result" aria-label="Validation result"></div>
+            <div id="m7g-loaded-artifact-state" aria-label="Loaded artifact state"></div>
             <div id="m7g-loaded-artifact-manifest" aria-label="Loaded artifact manifest"></div>
-            <div id="m7g-loaded-artifact-provenance" aria-label="Loaded artifact provenance currentness"></div>
+            <div id="m7g-loaded-artifact-provenance" aria-label="Artifact provenance"></div>
+            <div id="m7g-loaded-artifact-currentness" aria-label="Artifact currentness"></div>
+            <div id="m7g-loaded-artifact-source-health" aria-label="Source health"></div>
+            <div id="m7g-loaded-artifact-observation-summary" aria-label="Observation summary"></div>
             <div id="m7g-rejection-summary" aria-label="Rejection summary"></div>
         </section>
     </section>
@@ -229,9 +233,18 @@
             });
         }
 
+        const M7G_CONTEXT_MODE_STATIC_DEMO = 'static_demo';
+        const M7G_CONTEXT_MODE_LOADED_SAFE_ARTIFACT = 'loaded_safe_artifact';
+
+        let m7gActiveContextMode = M7G_CONTEXT_MODE_STATIC_DEMO;
+        let m7gActiveSafeArtifact = null;
+        let m7gActiveValidationResult = null;
         let m7gPendingArtifactText = '';
         let m7gValidatedArtifact = null;
         let m7gValidationResult = null;
+
+        const M7G_SOURCE_HEALTH_ALLOWED_STATUSES = ['artifact_reported', 'unknown', 'stale', 'degraded', 'unavailable'];
+        const M7G_SOURCE_HEALTH_DEFAULT_MODE = 'local_safe_artifact';
 
         const M7G_RAW_FORBIDDEN_KEYS = [
             'raw_payload',
@@ -285,6 +298,23 @@
             if (!clock.currentness_label) reject('missing_currentness_label', 'market_clock_session_state.currentness_label is required.');
             if (!clock.calendar_confidence) reject('missing_calendar_confidence', 'market_clock_session_state.calendar_confidence is required.');
             if (!Array.isArray(candidate.observations)) reject('observations_not_array', 'observations is array required.');
+            let sourceHealthStatus = 'unknown';
+            let sourceHealthSchemaVersion = null;
+            const sourceHealthWarnings = [];
+            if (candidate.source_health === undefined || candidate.source_health === null) {
+                sourceHealthWarnings.push('missing_source_health_metadata');
+            } else if (typeof candidate.source_health !== 'object' || Array.isArray(candidate.source_health)) {
+                reject('invalid_source_health', 'source_health must be an object when provided.');
+            } else {
+                sourceHealthStatus = candidate.source_health.health_status || 'unknown';
+                sourceHealthSchemaVersion = candidate.source_health.schema_version || null;
+                if (sourceHealthSchemaVersion !== 'm7g_source_health.v1') {
+                    reject('invalid_source_health', 'source_health.schema_version must be m7g_source_health.v1 when source_health is provided.');
+                }
+                if (!M7G_SOURCE_HEALTH_ALLOWED_STATUSES.includes(sourceHealthStatus)) {
+                    reject('invalid_source_health', 'source_health.health_status is unsupported.');
+                }
+            }
             const rawKeys = detectM7GRawForbiddenKeys(candidate);
             if (rawKeys.length > 0) reject('raw_forbidden_keys_detected', 'Raw forbidden keys detected; raw values are not shown.');
             const accepted = errors.length === 0;
@@ -295,6 +325,9 @@
                 safe_for_ai_handoff: accepted,
                 errors,
                 warnings: [],
+                source_health_status: sourceHealthStatus,
+                source_health_schema_version: sourceHealthSchemaVersion,
+                source_health_warnings: sourceHealthWarnings,
                 artifact_id: candidate.artifact_id || null,
                 artifact_schema_version: candidate.schema_version || null,
                 observation_count: Array.isArray(candidate.observations) ? candidate.observations.length : 0,
@@ -325,20 +358,79 @@
             container.appendChild(pre);
         }
 
+        function getM7GSourceHealthSummary(artifact) {
+            if (!artifact || !artifact.source_health) {
+                return {
+                    source_health: 'unknown',
+                    health_status: 'unknown',
+                    caveats: ['missing optional source_health metadata in safe artifact', 'Source health is artifact-reported metadata only; not a live probe; does not imply realtime SLA.']
+                };
+            }
+            const sourceHealth = artifact.source_health;
+            return {
+                source_health: sourceHealth.health_status || 'unknown',
+                schema_version: sourceHealth.schema_version,
+                source_family: sourceHealth.source_family,
+                health_status: sourceHealth.health_status,
+                source_mode: sourceHealth.source_mode || M7G_SOURCE_HEALTH_DEFAULT_MODE,
+                last_success_at_utc: sourceHealth.last_success_at_utc,
+                last_error_at_utc: sourceHealth.last_error_at_utc,
+                last_error_code: sourceHealth.last_error_code,
+                staleness_status: sourceHealth.staleness_status,
+                operator_action_required: sourceHealth.operator_action_required,
+                caveats: (sourceHealth.caveats || []).concat(['Source health is artifact-reported metadata only; not a live probe; does not imply realtime SLA.'])
+            };
+        }
+
         function updateM7GLoadedPanels(artifact, result) {
-            const manifest = Object.assign({}, artifact.artifact_manifest || {}, {
-                loaded_at_utc: 'operator_action_runtime',
-                validation_status: result.validation_status,
-                validation_errors: result.errors.map(error => error.code)
+            const activeLabel = m7gActiveContextMode === M7G_CONTEXT_MODE_LOADED_SAFE_ARTIFACT ? 'Loaded artifact active' : 'Static demo active';
+            const manifest = Object.assign({}, artifact && artifact.artifact_manifest ? artifact.artifact_manifest : {}, {
+                loaded_at_utc: artifact ? 'operator_action_runtime' : null,
+                validation_status: result ? result.validation_status : 'none',
+                validation_errors: result ? result.errors.map(error => error.code) : []
+            });
+            const clock = artifact && artifact.market_clock_session_state ? artifact.market_clock_session_state : M7F_DEMO_RICH_CONTEXT.market_clock_session_state;
+            const governance = artifact && artifact.governance ? artifact.governance : M7F_DEMO_RICH_CONTEXT.governance;
+            renderM7GPanelObject('m7g-loaded-artifact-state', 'Loaded artifact state', {
+                'Active context mode': m7gActiveContextMode,
+                active_context_mode: m7gActiveContextMode,
+                active_label: activeLabel,
+                local_artifact_label: artifact ? 'Operator-selected local safe artifact' : 'Static demo active',
+                loaded_artifact_active: m7gActiveContextMode === M7G_CONTEXT_MODE_LOADED_SAFE_ARTIFACT,
+                static_demo_active: m7gActiveContextMode === M7G_CONTEXT_MODE_STATIC_DEMO
             });
             renderM7GPanelObject('m7g-loaded-artifact-manifest', 'Loaded artifact manifest', manifest);
-            renderM7GPanelObject('m7g-loaded-artifact-provenance', 'Loaded artifact provenance/currentness', {
+            renderM7GPanelObject('m7g-loaded-artifact-provenance', 'Artifact provenance', artifact ? {
                 artifact_id: artifact.artifact_id,
+                schema_version: artifact.schema_version,
                 artifact_type: artifact.artifact_type,
+                created_at_utc: artifact.created_at_utc,
+                generated_by: artifact.generated_by,
                 source_scope: artifact.source_scope,
                 market: artifact.market,
                 timezone: artifact.timezone,
-                market_clock_session_state: artifact.market_clock_session_state
+                artifact_manifest: { schema_version: manifest.schema_version, source: manifest.source, operator_selected: manifest.operator_selected },
+                validation_status: result.validation_status,
+                observation_count: result.observation_count
+            } : { artifact_id: null, validation_status: 'static_demo', observation_count: M7F_DEMO_RICH_CONTEXT.observations.length });
+            renderM7GPanelObject('m7g-loaded-artifact-currentness', 'Artifact currentness', {
+                session_state: clock.session_state,
+                freshness_state: clock.freshness_state,
+                currentness_label: clock.currentness_label,
+                calendar_confidence: clock.calendar_confidence,
+                trading_day_status: clock.trading_day_status,
+                calendar_authority_caveats: clock.calendar_authority_caveats || [],
+                semantic_caveats: clock.semantic_caveats || [],
+                no_realtime_sla: true,
+                not_trading_advice: true
+            });
+            renderM7GPanelObject('m7g-loaded-artifact-source-health', 'Source health', getM7GSourceHealthSummary(artifact));
+            renderM7GPanelObject('m7g-loaded-artifact-observation-summary', 'Observation summary', {
+                observation_count: artifact && Array.isArray(artifact.observations) ? artifact.observations.length : M7F_DEMO_RICH_CONTEXT.observations.length,
+                validation_status: result ? result.validation_status : 'static_demo',
+                not_trading_signal: governance.not_trading_signal,
+                not_recommendation: governance.not_recommendation,
+                not_market_prediction: governance.not_market_prediction
             });
         }
 
@@ -382,7 +474,10 @@
                         raw_forbidden_keys_detected: [],
                         raw_payload_exposed: false,
                         raw_rich_facts_exposed: false,
-                        raw_full_ladder_exposed: false
+                        raw_full_ladder_exposed: false,
+                        source_health_status: 'unknown',
+                        source_health_schema_version: null,
+                        source_health_warnings: ['missing_source_health_metadata']
                     };
                 }
                 if (m7gValidationResult.validation_status === 'accepted' && m7gValidationResult.safe_to_render === true) {
@@ -401,19 +496,24 @@
                     m7gValidationResult.validation_status === 'accepted' &&
                     m7gValidationResult.safe_to_render === true
                 ) {
-                    updateM7GLoadedPanels(m7gValidatedArtifact, m7gValidationResult);
-                    renderM7FRichFactBrowser(m7gValidatedArtifact);
+                    m7gActiveContextMode = M7G_CONTEXT_MODE_LOADED_SAFE_ARTIFACT;
+                    m7gActiveSafeArtifact = m7gValidatedArtifact;
+                    m7gActiveValidationResult = m7gValidationResult;
+                    updateM7GLoadedPanels(m7gActiveSafeArtifact, m7gActiveValidationResult);
+                    renderM7FRichFactBrowser(m7gActiveSafeArtifact);
                 }
             });
 
             resetButton.addEventListener('click', function () {
+                m7gActiveContextMode = M7G_CONTEXT_MODE_STATIC_DEMO;
+                m7gActiveSafeArtifact = null;
+                m7gActiveValidationResult = null;
                 m7gValidatedArtifact = null;
                 m7gValidationResult = null;
                 pasteArea.value = '';
                 renderM7GPanelObject('m7g-validation-result', 'Validation result', { validation_status: 'reset_to_static_demo' });
                 renderM7GPanelObject('m7g-rejection-summary', 'Rejection summary', { validation_status: 'none' });
-                renderM7GPanelObject('m7g-loaded-artifact-manifest', 'Loaded artifact manifest', { source: 'static_demo' });
-                renderM7GPanelObject('m7g-loaded-artifact-provenance', 'Loaded artifact provenance/currentness', { currentness: 'static_demo' });
+                updateM7GLoadedPanels(null, null);
                 renderM7FRichFactBrowser(M7F_DEMO_RICH_CONTEXT);
             });
         }
@@ -901,6 +1001,7 @@
         window.onload = function () {
             loadMatrix();
             renderM7FRichFactBrowser(M7F_DEMO_RICH_CONTEXT);
+            updateM7GLoadedPanels(null, null);
             setupM7GManualSafeArtifactLoadUI();
         };
     </script>
