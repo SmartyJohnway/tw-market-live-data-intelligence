@@ -1417,14 +1417,15 @@
       ]
     },
     "m7g_local_safe_context_artifact_load": {
-      "status": "real_safe_artifact_rendering_and_provenance_source_health_defined",
+      "status": "ai_handoff_from_loaded_safe_artifact_defined",
       "completed_tasks": [
         "M7G-00",
         "M7G-01",
         "M7G-02",
         "M7G-03",
         "M7G-04",
-        "M7G-05"
+        "M7G-05",
+        "M7G-06"
       ],
       "track_name": "M7G-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-AND-OPERATOR-REFRESH-WORKFLOW",
       "policy_doc": "docs/protocol/M7G_LOCAL_SAFE_CONTEXT_ARTIFACT_LOAD_POLICY.md",
@@ -1470,7 +1471,7 @@
       "not_full_market_breadth": true,
       "m7g09_controlled_manual_refresh_execution_required": true,
       "m7g09_earliest_refresh_execution_gate": true,
-      "next_task": "M7G-06-AI-HANDOFF-FROM-LOADED-SAFE-ARTIFACT",
+      "next_task": "M7G-07-08-OPERATOR-REFRESH-WORKFLOW-POLICY-AND-CONTROLLED-REFRESH-REQUEST-PACKAGE",
       "real_safe_artifact_rendering_doc": "docs/protocol/M7G_RICH_FACT_BROWSER_REAL_SAFE_ARTIFACT_RENDERING.md",
       "provenance_currentness_source_health_doc": "docs/protocol/M7G_ARTIFACT_PROVENANCE_CURRENTNESS_SOURCE_HEALTH_PANEL.md",
       "active_context_mode_added": true,
@@ -1486,7 +1487,25 @@
       "source_health_live_probe_added": false,
       "source_health_missing_metadata_allowed": true,
       "validated_artifact_renders_rich_fact_browser": true,
-      "reset_to_static_demo_supported": true
+      "reset_to_static_demo_supported": true,
+      "ai_handoff_from_loaded_safe_artifact_doc": "docs/protocol/M7G_AI_HANDOFF_FROM_LOADED_SAFE_ARTIFACT.md",
+      "active_context_handoff_added": true,
+      "handoff_source_panel_added": true,
+      "static_demo_handoff_mode_supported": true,
+      "loaded_safe_artifact_handoff_mode_supported": true,
+      "handoff_source_context_mode_explicit": true,
+      "handoff_built_from_active_context": true,
+      "loaded_artifact_handoff_requires_accepted_validation": true,
+      "rejected_artifact_reaches_handoff": false,
+      "artifact_provenance_in_handoff": true,
+      "validation_status_in_handoff": true,
+      "currentness_calendar_in_handoff": true,
+      "source_health_summary_in_handoff": true,
+      "raw_forbidden_fields_copied_to_handoff": false,
+      "raw_payload_values_copied_to_handoff": false,
+      "json_handoff_uses_safe_projection_only": true,
+      "markdown_handoff_uses_safe_projection_only": true,
+      "automatic_clipboard_write_added": false
     }
   },
   "runtime_behavior_changed": false,

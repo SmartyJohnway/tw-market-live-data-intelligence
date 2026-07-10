@@ -85,7 +85,8 @@
         "tests/unit/test_m7g_frontend_manual_artifact_load_ui.py",
         "tests/unit/test_m7g_inventory_policy.py",
         "tests/unit/test_m7g_real_safe_artifact_rendering.py",
-        "tests/unit/test_m7g_provenance_currentness_source_health_panel.py"
+        "tests/unit/test_m7g_provenance_currentness_source_health_panel.py",
+        "tests/unit/test_m7g_ai_handoff_from_loaded_safe_artifact.py"
       ],
       "network_policy": "no network; excludes tests marked network",
       "browser_policy": "does not install or require Playwright/Chromium",
