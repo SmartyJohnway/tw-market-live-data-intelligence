@@ -30,3 +30,13 @@ def test_loaded_artifact_renderer_gate_and_reset():
 def test_no_new_network_backend_refresh_in_m7g_slice():
     for forbidden in ['fetch(', 'XMLHttpRequest', 'WebSocket', 'EventSource', 'setInterval', 'setTimeout', 'navigator.sendBeacon', '/api/', 'mcp', 'localhost', '127.0.0.1']:
         assert forbidden not in SLICE
+
+
+def test_frontend_source_health_validation_gate_matches_canonical_validator():
+    for expected in ['M7G_SOURCE_HEALTH_ALLOWED_STATUSES.includes', 'invalid_source_health', 'm7g_source_health.v1', 'missing_source_health_metadata']:
+        assert expected in SLICE
+    source_health_gate = SLICE.split('let sourceHealthStatus', 1)[1].split('const rawKeys = detectM7GRawForbiddenKeys', 1)[0]
+    assert "sourceHealthStatus = candidate.source_health.health_status || 'unknown'" in source_health_gate
+    assert "sourceHealthSchemaVersion !== 'm7g_source_health.v1'" in source_health_gate
+    assert '!M7G_SOURCE_HEALTH_ALLOWED_STATUSES.includes(sourceHealthStatus)' in source_health_gate
+    assert "reject('invalid_source_health'" in source_health_gate

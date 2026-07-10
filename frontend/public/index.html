@@ -298,6 +298,23 @@
             if (!clock.currentness_label) reject('missing_currentness_label', 'market_clock_session_state.currentness_label is required.');
             if (!clock.calendar_confidence) reject('missing_calendar_confidence', 'market_clock_session_state.calendar_confidence is required.');
             if (!Array.isArray(candidate.observations)) reject('observations_not_array', 'observations is array required.');
+            let sourceHealthStatus = 'unknown';
+            let sourceHealthSchemaVersion = null;
+            const sourceHealthWarnings = [];
+            if (candidate.source_health === undefined || candidate.source_health === null) {
+                sourceHealthWarnings.push('missing_source_health_metadata');
+            } else if (typeof candidate.source_health !== 'object' || Array.isArray(candidate.source_health)) {
+                reject('invalid_source_health', 'source_health must be an object when provided.');
+            } else {
+                sourceHealthStatus = candidate.source_health.health_status || 'unknown';
+                sourceHealthSchemaVersion = candidate.source_health.schema_version || null;
+                if (sourceHealthSchemaVersion !== 'm7g_source_health.v1') {
+                    reject('invalid_source_health', 'source_health.schema_version must be m7g_source_health.v1 when source_health is provided.');
+                }
+                if (!M7G_SOURCE_HEALTH_ALLOWED_STATUSES.includes(sourceHealthStatus)) {
+                    reject('invalid_source_health', 'source_health.health_status is unsupported.');
+                }
+            }
             const rawKeys = detectM7GRawForbiddenKeys(candidate);
             if (rawKeys.length > 0) reject('raw_forbidden_keys_detected', 'Raw forbidden keys detected; raw values are not shown.');
             const accepted = errors.length === 0;
@@ -308,9 +325,9 @@
                 safe_for_ai_handoff: accepted,
                 errors,
                 warnings: [],
-                source_health_status: candidate.source_health && typeof candidate.source_health === 'object' ? (candidate.source_health.health_status || 'unknown') : 'unknown',
-                source_health_schema_version: candidate.source_health && typeof candidate.source_health === 'object' ? (candidate.source_health.schema_version || null) : null,
-                source_health_warnings: candidate.source_health ? [] : ['missing_source_health_metadata'],
+                source_health_status: sourceHealthStatus,
+                source_health_schema_version: sourceHealthSchemaVersion,
+                source_health_warnings: sourceHealthWarnings,
                 artifact_id: candidate.artifact_id || null,
                 artifact_schema_version: candidate.schema_version || null,
                 observation_count: Array.isArray(candidate.observations) ? candidate.observations.length : 0,
@@ -433,7 +450,6 @@
                     pasteArea.value = m7gPendingArtifactText;
                     m7gValidatedArtifact = null;
                     m7gValidationResult = null;
-                    m7gActiveValidationResult = m7gActiveValidationResult;
                 });
                 reader.readAsText(file);
             });
