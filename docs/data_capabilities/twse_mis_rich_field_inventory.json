@@ -1658,7 +1658,7 @@
       ]
     },
     "m8_source_timing_authority_governance": {
-      "status": "m8_00_controlled_conversation_context_integration_and_compatibility_hardening_defined",
+      "status": "m8_00_final_acceptance_pass_with_caveats",
       "completed_tasks": [
         "M8-00-00",
         "M8-00-01",
@@ -1667,7 +1667,8 @@
         "M8-00-04",
         "M8-00-05",
         "M8-00-06",
-        "M8-00-07"
+        "M8-00-07",
+        "M8-00-08"
       ],
       "track_name": "M8-SOURCE-TIMING-AUTHORITY-GOVERNANCE-AND-MULTI-SOURCE-MARKET-CONTEXT",
       "governance_preflight_doc": "docs/protocol/M8_SOURCE_TIMING_AUTHORITY_GOVERNANCE_PREFLIGHT.md",
@@ -1708,7 +1709,7 @@
       "trading_advice_allowed": false,
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
-      "next_task": "M8-00-08-FINAL-ACCEPTANCE-AND-CLOSURE",
+      "next_task": "M8A-00-OFFICIAL-EOD-ADAPTER-SCOPE-AND-CONTRACT-PREFLIGHT",
       "multi_source_context_builder_doc": "docs/protocol/M8_MULTI_SOURCE_CONTEXT_BUILDER.md",
       "multi_source_context_builder_module": "scripts/m8_multi_source_context_builder.py",
       "multi_source_context_builder_is_pure_helper": true,
@@ -1741,7 +1742,39 @@
       "manual_evidence_not_official_source_policy_enforced_by_conversation_projection": true,
       "validation_only_not_primary_source_policy_enforced_by_conversation_projection": true,
       "stale_not_current_policy_enforced_by_conversation_projection": true,
-      "m8_00_08_final_acceptance_added": false
+      "m8_00_08_final_acceptance_added": true,
+      "final_acceptance_doc": "docs/protocol/M8_00_FINAL_ACCEPTANCE_AND_CLOSURE.md",
+      "final_acceptance_status": "pass_with_caveats",
+      "m8_00_final_accepted": true,
+      "source_governance_final_accepted": true,
+      "source_registry_final_accepted": true,
+      "freshness_semantics_final_accepted": true,
+      "freshness_evaluator_final_accepted": true,
+      "multi_source_context_builder_final_accepted": true,
+      "controlled_conversation_context_projection_final_accepted": true,
+      "compatibility_hardening_final_accepted": true,
+      "m8_00_is_source_context_foundation_not_ai_response_policy_engine": true,
+      "overbroad_forbidden_word_expansion_discouraged": true,
+      "downstream_ai_output_depends_on_model_prompt_and_agent_policy": true,
+      "project_responsibility_is_safe_source_context_projection": true,
+      "no_m8a_started": true,
+      "ai_model_call_added": false,
+      "db_write_added": false,
+      "scheduler_added": false,
+      "polling_added": false,
+      "hidden_fetch_added": false,
+      "startup_fetch_added": false,
+      "mode_d_added": false,
+      "level_3_added": false,
+      "m5f_mutated": false,
+      "level1_mutated": false,
+      "known_caveats": [
+        "M8-00 is schema/helper/projection foundation only; it does not fetch official OpenAPI data.",
+        "M8-00 does not guarantee downstream AI model wording; downstream output depends on model, prompts, agent policy, and product-layer controls.",
+        "M8-00 conversation projection is safe-projective, not a comprehensive financial-advice moderation engine.",
+        "TWSE_MIS remains live-ish/browser-observed and not exchange-guaranteed realtime.",
+        "retrieved_at_utc is retrieval/load time unless source_timestamp proves exchange time."
+      ]
     }
   },
   "runtime_behavior_changed": false,

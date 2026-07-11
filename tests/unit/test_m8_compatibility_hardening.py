@@ -102,14 +102,14 @@ def test_source_taxonomy_remains_clean():
 def test_inventory_m8_00_06_07_metadata():
     inv = json.loads((ROOT / "docs/data_capabilities/twse_mis_rich_field_inventory.json").read_text())
     entry = inv["rich_observation_contract"]["m8_source_timing_authority_governance"]
-    assert entry["status"] == "m8_00_controlled_conversation_context_integration_and_compatibility_hardening_defined"
+    assert entry["status"] == "m8_00_final_acceptance_pass_with_caveats"
     assert "M8-00-06" in entry["completed_tasks"] and "M8-00-07" in entry["completed_tasks"]
     assert (ROOT / entry["controlled_conversation_context_doc"]).exists()
     assert (ROOT / entry["controlled_conversation_context_module"]).exists()
     assert (ROOT / entry["compatibility_hardening_doc"]).exists()
     assert entry["network_fetch_added"] is False and entry["server_changed"] is False and entry["frontend_changed"] is False and entry["mcp_changed"] is False and entry["adapter_added"] is False
     assert entry["m8_00_05_caveats_fixed"] is True
-    assert entry["next_task"] == "M8-00-08-FINAL-ACCEPTANCE-AND-CLOSURE"
+    assert entry["next_task"] == "M8A-00-OFFICIAL-EOD-ADAPTER-SCOPE-AND-CONTRACT-PREFLIGHT"
 
 
 def test_default_ci_includes_hardening_test():
