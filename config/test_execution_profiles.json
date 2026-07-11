@@ -95,7 +95,8 @@
         "tests/unit/test_m7g_refresh_workflow_security_regression.py",
         "tests/unit/test_m7g_twse_mis_market_route_semantics.py",
         "tests/unit/test_m7g_final_acceptance.py",
-        "tests/unit/test_m8_source_governance_foundation.py"
+        "tests/unit/test_m8_source_governance_foundation.py",
+        "tests/unit/test_m8_source_freshness_evaluator.py"
       ],
       "network_policy": "no network; excludes tests marked network",
       "browser_policy": "does not install or require Playwright/Chromium",
