@@ -82,8 +82,10 @@ def test_official_eod_source_semantics():
     assert twse["timing_class"] == "official_eod"
     assert tpex["timing_class"] == "official_eod"
     assert taifex["timing_class"] in {"official_statistics_eod", "official_eod"}
+    assert twse["runtime_executable"] is True
+    assert tpex["runtime_executable"] is True
+    assert taifex["runtime_executable"] is False
     for source in [twse, tpex, taifex]:
-        assert source["runtime_executable"] is False
         assert source["ai_exposure_level"] != "safe_context_allowed"
         blocked = " ".join(source["blocked_interpretation"])
         assert "not realtime" in blocked

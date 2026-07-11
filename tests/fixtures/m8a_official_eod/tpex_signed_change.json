@@ -1,0 +1,42 @@
+[
+  {
+    "Date": "1150709",
+    "SecuritiesCompanyCode": "8069",
+    "CompanyName": "元太",
+    "Close": "100.5",
+    "Change": "+1.5",
+    "Open": "102",
+    "High": "103",
+    "Low": "100",
+    "Average": "101",
+    "TradingShares": "1,000",
+    "TransactionAmount": "100500",
+    "TransactionNumber": "20",
+    "LatestBidPrice": "100",
+    "LatesAskPrice": "101",
+    "Capitals": "1",
+    "NextReferencePrice": "100.5",
+    "NextLimitUp": "110",
+    "NextLimitDown": "90"
+  },
+  {
+    "Date": "1150709",
+    "SecuritiesCompanyCode": "006201",
+    "CompanyName": "元大富櫃50",
+    "Close": "20",
+    "Change": "-0.5",
+    "Open": "19.5",
+    "High": "20",
+    "Low": "19",
+    "Average": "19.8",
+    "TradingShares": "2,000",
+    "TransactionAmount": "40000",
+    "TransactionNumber": "30",
+    "LatestBidPrice": "20",
+    "LatesAskPrice": "20.1",
+    "Capitals": "1",
+    "NextReferencePrice": "20",
+    "NextLimitUp": "22",
+    "NextLimitDown": "18"
+  }
+]

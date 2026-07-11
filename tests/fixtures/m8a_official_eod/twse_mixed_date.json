@@ -1,0 +1,28 @@
+[
+  {
+    "Date": "1150709",
+    "Code": "2330",
+    "Name": "台積電",
+    "TradeVolume": "12,345",
+    "TradeValue": "12345000",
+    "OpeningPrice": "1000.00",
+    "HighestPrice": "1010.00",
+    "LowestPrice": "990.00",
+    "ClosingPrice": "1005.00",
+    "Change": "+5.00",
+    "Transaction": "999"
+  },
+  {
+    "Date": "1150710",
+    "Code": "0050",
+    "Name": "元大台灣50",
+    "TradeVolume": "100",
+    "TradeValue": "10000",
+    "OpeningPrice": "100",
+    "HighestPrice": "101",
+    "LowestPrice": "99",
+    "ClosingPrice": "100",
+    "Change": "0",
+    "Transaction": "10"
+  }
+]

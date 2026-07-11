@@ -1,0 +1,15 @@
+[
+  {
+    "Date": "1150709",
+    "Code": "2330",
+    "Name": "台積電",
+    "TradeVolume": "12,345",
+    "TradeValue": "",
+    "OpeningPrice": "",
+    "HighestPrice": "1010.00",
+    "LowestPrice": "990.00",
+    "ClosingPrice": "1005.00",
+    "Change": "+5.00",
+    "Transaction": "999"
+  }
+]

@@ -222,7 +222,11 @@ def _build_markdown(status: str, summary: dict, sources: list[dict], instruments
         for inst in instruments:
             lines.append(f"  - {inst.get('symbol')} {inst.get('market')} {inst.get('instrument_type')}")
             for ctx in inst.get("contexts", []):
-                lines.append(f"    - {ctx.get('source_id')}: {ctx.get('timing_class')} / {ctx.get('freshness_assessment')} / safe_fields={ctx.get('safe_fields')}")
+
+                if ctx.get('timing_class') == 'official_eod':
+                    lines.append(f"    - Official EOD reference — {ctx.get('source_id')}: market={ctx.get('market')} trade_date={ctx.get('trading_date') or ctx.get('market_date')} currentness={ctx.get('safe_fields', {}).get('currentness_status')} authority={ctx.get('authority_level')} instrument={ctx.get('instrument_type')} safe_fields={ctx.get('safe_fields')}")
+                else:
+                    lines.append(f"    - {ctx.get('source_id')}: {ctx.get('timing_class')} / {ctx.get('freshness_assessment')} / safe_fields={ctx.get('safe_fields')}")
     lines.append(f"- {GUARDRAIL_LINE}")
     return "\n".join(lines)
 

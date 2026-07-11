@@ -1,0 +1,22 @@
+[
+  {
+    "Date": "1150709",
+    "SecuritiesCompanyCode": "8069",
+    "CompanyName": "元太",
+    "Close": "bad",
+    "Change": "-1.5",
+    "Open": "102",
+    "High": "103",
+    "Low": "100",
+    "Average": "101",
+    "TradingShares": "bad",
+    "TransactionAmount": "100500",
+    "TransactionNumber": "20",
+    "LatestBidPrice": "100",
+    "LatesAskPrice": "101",
+    "Capitals": "1",
+    "NextReferencePrice": "100.5",
+    "NextLimitUp": "110",
+    "NextLimitDown": "90"
+  }
+]
