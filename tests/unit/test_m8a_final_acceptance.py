@@ -22,4 +22,5 @@ def test_readme_static_contracts_and_registry_roles():
     src={s['source_id']:s for s in reg['sources']}
     assert src['TWSE_OPENAPI']['adapter_implemented'] is True
     assert src['TPEX_OPENAPI']['instrument_classification_required'] is True
+    assert src['TPEX_OPENAPI']['production_classification_completeness'] == 'incomplete_without_canonical_security_master'
     assert src['NCDR_DGPA_CLOSURE_CAP']['not_market_price_source'] is True

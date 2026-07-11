@@ -1901,6 +1901,8 @@
     "taifex_scope_added": false,
     "mops_adapter_added": false,
     "tpex_mis_introduced": false,
-    "rotc_route_introduced": false
+    "rotc_route_introduced": false,
+    "instrument_classification_coverage_mode": "bounded_seed_only_when_canonical_security_master_absent",
+    "production_classification_completeness": "incomplete_without_canonical_security_master"
   }
 }

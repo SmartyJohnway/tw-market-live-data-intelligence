@@ -1,15 +1,18 @@
 {
-  "schema_version": "m8a_official_eod_security_master.v1",
-  "source": "repository_curated_security_master_for_m8a_official_eod",
+  "schema_version": "m8a_official_eod_bounded_security_seed.v1",
+  "source": "bounded_seed_for_m8a_tests_and_minimal_runtime_fail_closed_classification",
   "generated_for_task": "M8A-01-03-review-blocker-fixes",
-  "classification_policy": "Exact (market, symbol) lookup only; no symbol-length or name heuristics are authoritative.",
+  "coverage_mode": "bounded_seed_only",
+  "production_classification_completeness": "incomplete",
+  "canonical_security_master_available": false,
+  "classification_policy": "Exact (market, symbol) lookup only; no symbol-length, symbol-prefix, or name heuristics are authoritative. This bounded seed is not a complete canonical security master.",
   "instruments": [
     {"market": "listed", "symbol": "0050", "instrument_type": "etf", "provenance": "config/m5k_default_watchlist.json twse:0050 listed_etf"},
     {"market": "listed", "symbol": "00929", "instrument_type": "etf", "provenance": "config/m5k_default_watchlist.json twse:00929 listed_etf"},
-    {"market": "listed", "symbol": "00400A", "instrument_type": "etf", "provenance": "M8A review-required security-master entry for listed ETF-like product; exact identity only"},
+    {"market": "listed", "symbol": "00400A", "instrument_type": "etf", "provenance": "bounded M8A seed entry; exact identity only; not complete master authority"},
     {"market": "listed", "symbol": "2330", "instrument_type": "equity", "provenance": "config/m5k_default_watchlist.json twse:2330 listed_equity"},
-    {"market": "tpex_otc", "symbol": "8069", "instrument_type": "equity", "provenance": "M8A TPEx official EOD adapter fixture/security-master entry"},
-    {"market": "tpex_otc", "symbol": "006201", "instrument_type": "etf", "provenance": "M8A TPEx official EOD adapter fixture/security-master entry"},
-    {"market": "tpex_otc", "symbol": "00687C", "instrument_type": "etn", "provenance": "M8A TPEx official EOD adapter fixture/security-master entry"}
+    {"market": "tpex_otc", "symbol": "8069", "instrument_type": "equity", "provenance": "bounded M8A seed entry for reviewed target; not complete master authority"},
+    {"market": "tpex_otc", "symbol": "006201", "instrument_type": "etf", "provenance": "bounded M8A seed entry for reviewed target; not complete master authority"},
+    {"market": "tpex_otc", "symbol": "00687C", "instrument_type": "etn", "provenance": "bounded M8A seed entry for reviewed suffix preservation target; not complete master authority"}
   ]
 }

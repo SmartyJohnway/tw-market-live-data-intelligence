@@ -69,11 +69,13 @@ def parse_closure_feed(xml_text:str, *, target_date:str|None=None):
         if msg == "Cancel": decision="cancelled"
         ev={"schema_version":SCHEMA_VERSION,"source_id":SOURCE_ID,"entry_id":entry_id,"message_type":msg,"status":status,"area_code":area_code,"area_name":area_name,"area_level":area_level,"target_date":td,"work_status":work,"school_status":school,"decision_status":decision,"closure_scope":scope,"published_at":updated,"effective_at":_first(entry,"effective"),"expires_at":_first(entry,"expires"),"source_cap_url":"","parse_status":"structured","caveats":[]}
         if target_date is None or ev["target_date"]==target_date: events.append(ev)
-    folded={}; rank={"Alert":1,"Update":2,"Cancel":3}
+    folded={}; rank={"Alert":1,"Update":2,"Cancel":3}; scope_rank={"unknown":0,"evening":1,"afternoon":2,"morning":3,"full_day":4}
+    def order(ev):
+        return (1 if ev.get("decision_status")=="cancelled" else 0, scope_rank.get(ev.get("closure_scope"),0), ev.get("published_at") or "", rank.get(ev.get("message_type"),0))
     for ev in events:
-        key=(ev.get("target_date"),ev.get("area_code") or ev.get("area_name"),ev.get("closure_scope"))
+        key=(ev.get("target_date"),ev.get("area_code") or ev.get("area_name"),"work_school_closure")
         old=folded.get(key)
-        if old is None or (ev.get("published_at") or "",rank.get(ev.get("message_type"),0)) >= (old.get("published_at") or "",rank.get(old.get("message_type"),0)): folded[key]=ev
+        if old is None or order(ev) >= order(old): folded[key]=ev
     return {"schema_version":"m8a_emergency_work_closure_parse_result.v1","source_id":SOURCE_ID,"parse_status":"ok","events":list(folded.values()),"raw_xml_retained":False,"closure_query_succeeded":True,"caveats":[]}
 def fetch_closure_feed(*,timeout:int=10):
     req=urllib.request.Request(URL,method="GET",headers={"Accept":"application/atom+xml, application/xml","User-Agent":"tw-market-m8a-currentness/1.0"})

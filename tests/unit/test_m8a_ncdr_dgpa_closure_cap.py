@@ -32,3 +32,21 @@ def test_today_tomorrow_use_entry_updated_timestamp_not_system_date():
     tomorrow=parse_closure_feed(atom('臺北市:明天停止上班、停止上課', updated='2026-07-10T20:00:00+08:00'))['events'][0]
     assert today['target_date']=='2026-07-10' and today['closure_scope']=='afternoon'
     assert tomorrow['target_date']=='2026-07-11'
+
+def test_full_day_update_supersedes_afternoon_alert_scope_mutates():
+    xml='''<feed xmlns="http://www.w3.org/2005/Atom">
+    <entry><id>a1</id><updated>2026-07-09T18:00:00+08:00</updated><summary>臺北市:7/10下午1:00起停止上班</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Alert</msgType></entry>
+    <entry><id>a2</id><updated>2026-07-09T20:00:00+08:00</updated><summary>臺北市:7/10停止上班、停止上課</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Update</msgType></entry>
+    </feed>'''
+    events=parse_closure_feed(xml,target_date='2026-07-10')['events']
+    assert len([e for e in events if e['area_name']=='臺北市']) == 1
+    assert events[0]['closure_scope']=='full_day' and events[0]['entry_id']=='a2'
+
+def test_cancel_supersedes_prior_closure_even_when_scope_changes():
+    xml='''<feed xmlns="http://www.w3.org/2005/Atom">
+    <entry><id>c1</id><updated>2026-07-09T18:00:00+08:00</updated><summary>臺北市:7/10停止上班、停止上課</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Alert</msgType></entry>
+    <entry><id>c2</id><updated>2026-07-09T21:00:00+08:00</updated><summary>臺北市:7/10下午取消停止上班</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Cancel</msgType></entry>
+    </feed>'''
+    events=parse_closure_feed(xml,target_date='2026-07-10')['events']
+    assert len(events)==1
+    assert events[0]['decision_status']=='cancelled'

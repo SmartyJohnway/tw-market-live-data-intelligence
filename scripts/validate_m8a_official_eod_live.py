@@ -27,7 +27,7 @@ def main():
       'requested_sources': result['requested_sources'], 'requested_symbols': result['requested_symbols'],
       'source_statuses': [{'source_id': r.get('source_id'), 'batch_status': r.get('batch_status'), 'reported_trade_dates': r.get('reported_trade_dates'), 'row_count_retained': r.get('row_count_retained')} for r in result.get('source_results',[])],
       'calendar_resolution': result.get('calendar_resolution'),
-      'retained_observations': [{'source_id': o.get('source_id'), 'market': o.get('market'), 'symbol': o.get('symbol'), 'trade_date': o.get('trade_date'), 'observation_status': o.get('observation_status'), 'instrument_type': o.get('instrument_type')} for o in result.get('normalized_observations',[])]
+      'retained_observations': [{'source_id': o.get('source_id'), 'market': o.get('market'), 'symbol': o.get('symbol'), 'trade_date': o.get('trade_date'), 'observation_status': o.get('observation_status'), 'instrument_type': o.get('instrument_type'), 'classification_coverage_mode': ((o.get('field_validation') or {}).get('instrument_classification') or {}).get('coverage_mode'), 'classification_completeness': ((o.get('field_validation') or {}).get('instrument_classification') or {}).get('production_classification_completeness')} for o in result.get('normalized_observations',[])]
     }
     print(json.dumps(compact, ensure_ascii=False, indent=2))
 if __name__ == '__main__': main()

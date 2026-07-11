@@ -25,6 +25,11 @@ def execute_official_eod_refresh(requested_symbols, requested_sources, operator_
     base["calendar_resolution"]=resolve_market_day_currentness(evaluation_time_asia_taipei=evaluation_time_asia_taipei,reported_trade_date=reported,closure_events=closures,closure_query_succeeded=closure_query_succeeded,target_date=requested_trade_date,calendar_artifact=calendar_artifact)
     cur=base["calendar_resolution"].get("currentness_status")
     base["context_observations"]=[observation_to_context_observation(o,currentness_status=cur) for o in base["normalized_observations"]]
+    for ctx in base["context_observations"]:
+        if ctx.get("safe_fields"):
+            ctx["safe_fields"]["currentness_resolution_reason"] = base["calendar_resolution"].get("expected_latest_completed_trade_date_resolution_reason")
+            ctx["safe_fields"]["currentness_resolution_trace"] = base["calendar_resolution"].get("expected_latest_completed_trade_date_resolution_trace", [])
+            ctx["safe_fields"]["emergency_closure_evidence"] = base["calendar_resolution"].get("evidence", [])
     if statuses and all(x=="success" for x in statuses): base["overall_status"]="success"
     elif any(x=="success" for x in statuses): base["overall_status"]="partial_success"
     else: base["overall_status"]="failed"

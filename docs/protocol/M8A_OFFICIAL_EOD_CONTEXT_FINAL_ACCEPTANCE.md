@@ -63,7 +63,7 @@ Deterministic M8A tests and related M8 compatibility tests pass under no-network
 ## 19. Known caveats
 - Selected OpenAPI endpoints are latest-only.
 - No historical backfill is implemented in M8A.
-- Instrument classification depends on the security master.
+- Instrument classification depends on the security master; current repository coverage is bounded_seed_only/incomplete until a complete canonical security master is added.
 - NCDR feed retention/history window is not guaranteed.
 - Emergency closure parsing is bounded to market-currentness needs.
 - No scheduler or polling is added.
@@ -79,3 +79,6 @@ Proceed to the next official reference/EOD context item in the repository roadma
 PR review blocker fixes preserve the squashed GitHub PR shape. The original implementation had been squashed into one GitHub commit before review even though the earlier report described a four-commit local execution structure. This correction does not claim four reviewable GitHub commits; it documents the implemented boundaries and validation state.
 
 Review corrections include realistic NCDR Atom summary date parsing, entry-updated-based yearless/relative date resolution, session-aware expected EOD logic, exact repository security-master classification for TWSE/TPEx, fail-closed unknown classifications, and distinct emergency-closure unknown versus checked-empty states.
+
+## Commit-2 review closure
+The repository currently has no complete canonical production security-master artifact. The classifier therefore reports bounded_seed_only coverage and incomplete production classification completeness when no canonical artifact is found, while preserving exact lookup and fail-closed unknown behavior. Currentness resolution now records skipped-date trace entries and reports matches_expected_latest_trade_date_after_emergency_closure when expected-date resolution crosses an emergency closure.

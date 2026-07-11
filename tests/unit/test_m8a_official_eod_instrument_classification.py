@@ -30,3 +30,10 @@ def test_tpex_production_classification_loads_repository_security_master():
     lookup=build_security_master_lookup()
     assert lookup[('tpex_otc','8069')]['instrument_type']=='equity'
     assert classify_official_eod_instrument('tpex_otc','006201')['instrument_type']=='etf'
+
+def test_bounded_seed_only_status_when_canonical_master_unavailable():
+    result=classify_official_eod_instrument('listed','0050')
+    assert result['coverage_mode'] in {'bounded_seed_only','canonical_security_master'}
+    if result['coverage_mode']=='bounded_seed_only':
+        assert result['production_classification_completeness']=='incomplete'
+        assert result['artifact_path']=='config/m8a_official_eod_security_master.json'

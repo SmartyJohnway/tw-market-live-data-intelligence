@@ -124,7 +124,8 @@
         "no trading advice"
       ],
       "caveats": [
-        "Latest-only official EOD/reference endpoint; not realtime; no full-market raw payload retention."
+        "Latest-only official EOD/reference endpoint; not realtime; no full-market raw payload retention.",
+        "Instrument classification is exact lookup only; current repository lacks a complete canonical security master, so M8A production classification is bounded_seed_only/incomplete until a complete master is added."
       ],
       "credential_required": false,
       "local_first_safe": true,
@@ -139,7 +140,9 @@
       "controlled_runtime_executable": true,
       "official_eod": true,
       "whole_market_network_scope": true,
-      "bounded_retained_scope": true
+      "bounded_retained_scope": true,
+      "instrument_classification_coverage_mode": "bounded_seed_only_when_canonical_security_master_absent",
+      "production_classification_completeness": "incomplete_without_canonical_security_master"
     },
     {
       "source_id": "TPEX_OPENAPI",
@@ -173,7 +176,8 @@
         "no trading advice"
       ],
       "caveats": [
-        "Latest-only official EOD/reference endpoint; not realtime; no full-market raw payload retention."
+        "Latest-only official EOD/reference endpoint; not realtime; no full-market raw payload retention.",
+        "Instrument classification is exact lookup only; current repository lacks a complete canonical security master, so M8A production classification is bounded_seed_only/incomplete until a complete master is added."
       ],
       "credential_required": false,
       "local_first_safe": true,
@@ -190,7 +194,9 @@
       "whole_market_network_scope": true,
       "bounded_retained_scope": true,
       "instrument_classification_required": true,
-      "mixed_instrument_fail_closed": true
+      "mixed_instrument_fail_closed": true,
+      "instrument_classification_coverage_mode": "bounded_seed_only_when_canonical_security_master_absent",
+      "production_classification_completeness": "incomplete_without_canonical_security_master"
     },
     {
       "source_id": "TAIFEX_OPENAPI",
