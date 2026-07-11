@@ -172,7 +172,7 @@ def test_registry_policies_remain_safe():
 def test_inventory_m8_00_04_metadata():
     inventory = json.loads(INVENTORY_PATH.read_text(encoding="utf-8"))
     meta = inventory["rich_observation_contract"]["m8_source_timing_authority_governance"]
-    assert meta["status"] == "m8_00_source_freshness_evaluator_defined"
+    assert meta["status"] in {"m8_00_source_freshness_evaluator_defined", "m8_00_multi_source_context_builder_defined"}
     assert "M8-00-04" in meta["completed_tasks"]
     assert (ROOT / meta["source_freshness_evaluator_doc"]).exists()
     assert (ROOT / meta["source_freshness_evaluator_module"]).exists()
@@ -182,9 +182,8 @@ def test_inventory_m8_00_04_metadata():
     assert meta["runtime_behavior_changed"] is False
     assert meta["network_fetch_added"] is False
     assert meta["adapter_added"] is False
-    assert meta["multi_source_context_builder_added"] is False
     assert meta["conversation_context_integration_added"] is False
-    assert meta["next_task"] == "M8-00-05-MULTI-SOURCE-CONTEXT-BUILDER"
+    assert meta["next_task"] in {"M8-00-05-MULTI-SOURCE-CONTEXT-BUILDER", "M8-00-06-CONTROLLED-CONVERSATION-CONTEXT-INTEGRATION"}
 
 
 def test_default_ci_includes_m8_00_04_test():
