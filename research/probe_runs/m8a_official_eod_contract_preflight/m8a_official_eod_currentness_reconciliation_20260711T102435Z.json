@@ -8,13 +8,40 @@
     "probe_time_asia_taipei": "2026-07-11T18:24:35+08:00",
     "taipei_local_day": "2026-07-11",
     "taipei_local_day_session_state": "weekend_closed",
-    "expected_latest_completed_trade_date": "2026-07-10",
+    "expected_latest_completed_trade_date": "2026-07-09",
     "evidence": [
       "2026-07-11 Asia/Taipei was Saturday after any Friday EOD publication window",
-      "official 2026 TWSE holidaySchedule contains no 1150710 non-trading record",
-      "M7E calendar policy treats weekends as closed and supplied official holiday records as additional closures"
+      "annual TWSE holidaySchedule absence only establishes scheduled_calendar_status=scheduled_trading_day, not actual_market_day_status",
+      "official TWSE closure announcement confirmed 115/7/10 centralized market full-day closure due to Typhoon Bavi and Taipei City full-day work suspension",
+      "official TPEx press release confirmed 115/7/10 OTC securities and derivatives markets closed one day",
+      "therefore 2026-07-10 was emergency_closed and the expected latest completed trading date remained 2026-07-09"
     ],
-    "caveat": "This preflight does not prove whether the OpenAPI publication pipeline had an official delayed publication incident; runtime must reconcile every fetch."
+    "caveat": "Runtime must not infer actual trading days from weekday plus annual holidaySchedule alone; dynamic emergency/special-closure sources are required.",
+    "scheduled_calendar_status": "scheduled_trading_day",
+    "emergency_closure_status": "emergency_closure_confirmed",
+    "actual_market_day_status": "emergency_closed",
+    "dynamic_closure_sources_checked": [
+      {
+        "source": "DGPA natural-disaster suspension announcement/current-history page",
+        "url": "https://www.dgpa.gov.tw/",
+        "finding": "DGPA result showed northern Taiwan disaster suspension context for the typhoon period; use DGPA/current-history as primary natural-disaster suspension authority in runtime design."
+      },
+      {
+        "source": "TWSE official market closure news/PDF",
+        "url": "https://www.twse.com.tw/staticFiles/news/news/tsecnews/8a8216d69ef76943019f46cb86ae0110.pdf",
+        "finding": "TWSE announced 115/7/10 centralized market full-day closure because Taipei City Government announced all public agencies stopped work due to Typhoon Bavi."
+      },
+      {
+        "source": "TPEx official press release",
+        "url": "https://www.tpex.org.tw/zh-tw/about/company/press/detail.html?22926=",
+        "finding": "TPEx announced 115/7/10 OTC securities and derivatives markets closed for one day because Taipei City Government announced full-day work suspension due to Typhoon Bavi."
+      },
+      {
+        "source": "TWSE natural-disaster handling FAQ",
+        "url": "https://www.twse.com.tw/zh/about/suspended_faq.html",
+        "finding": "TWSE states that when Taipei City mayor announces all public agencies stop work for the day or morning, the centralized market is closed all day."
+      }
+    ]
   },
   "source_reconciliations": [
     {
@@ -22,33 +49,41 @@
       "endpoint_contract_id": "twse_openapi_stock_day_all_v1",
       "probe_time_utc": "2026-07-11T10:24:35Z",
       "probe_time_asia_taipei": "2026-07-11T18:24:35+08:00",
-      "expected_latest_completed_trade_date": "2026-07-10",
+      "expected_latest_completed_trade_date": "2026-07-09",
       "reported_trade_date": "2026-07-09",
-      "trading_day_lag": 1,
-      "currentness_reconciliation_status": "delayed_one_trading_day",
+      "trading_day_lag": 0,
+      "currentness_reconciliation_status": "matches_expected_latest_trade_date_after_emergency_closure",
       "currentness_reconciliation_evidence": [
         "bounded probe row Date was 1150709 / 2026-07-09",
-        "expected latest completed TWSE trading date at probe time was 2026-07-10",
-        "1150710 was not present in official holidaySchedule as a non-trading day"
+        "annual holidaySchedule absence only means 2026-07-10 was scheduled_trading_day",
+        "official exchange closure evidence confirms 2026-07-10 emergency_closed due to Typhoon Bavi/Taipei City work suspension",
+        "expected latest completed actual trading date at probe time was therefore 2026-07-09"
       ],
-      "runtime_condition": "Do not label official EOD context current unless reported trade_date matches expected_latest_completed_trade_date."
+      "runtime_condition": "Compute scheduled calendar status and dynamic emergency/special closure status before deriving expected_latest_completed_trade_date.",
+      "scheduled_calendar_status": "scheduled_trading_day",
+      "emergency_closure_status": "emergency_closure_confirmed",
+      "actual_market_day_status": "emergency_closed"
     },
     {
       "source_id": "TPEX_OPENAPI",
       "endpoint_contract_id": "tpex_openapi_mainboard_daily_close_quotes_v1",
       "probe_time_utc": "2026-07-11T10:24:35Z",
       "probe_time_asia_taipei": "2026-07-11T18:24:35+08:00",
-      "expected_latest_completed_trade_date": "2026-07-10",
+      "expected_latest_completed_trade_date": "2026-07-09",
       "reported_trade_date": "2026-07-09",
-      "trading_day_lag": 1,
-      "currentness_reconciliation_status": "delayed_one_trading_day",
+      "trading_day_lag": 0,
+      "currentness_reconciliation_status": "matches_expected_latest_trade_date_after_emergency_closure",
       "currentness_reconciliation_evidence": [
         "bounded probe row Date was 1150709 / 2026-07-09",
-        "expected latest completed Taiwan trading date at probe time was 2026-07-10 using shared TWSE calendar foundation for market-day expectation",
-        "1150710 was not present in official holidaySchedule as a non-trading day"
+        "annual holidaySchedule absence only means 2026-07-10 was scheduled_trading_day",
+        "official exchange closure evidence confirms 2026-07-10 emergency_closed due to Typhoon Bavi/Taipei City work suspension",
+        "expected latest completed actual trading date at probe time was therefore 2026-07-09"
       ],
-      "runtime_condition": "Do not label official EOD context current unless reported trade_date matches expected_latest_completed_trade_date; retain as stale official EOD reference if delayed."
+      "runtime_condition": "Compute scheduled calendar status and dynamic emergency/special closure status before deriving expected_latest_completed_trade_date.",
+      "scheduled_calendar_status": "scheduled_trading_day",
+      "emergency_closure_status": "emergency_closure_confirmed",
+      "actual_market_day_status": "emergency_closed"
     }
   ],
-  "readiness_effect": "Both endpoints remain implementable but readiness is conditional_go until runtime currentness reconciliation is implemented."
+  "readiness_effect": "Both endpoints remain conditional_go until runtime implements scheduled calendar + emergency/special closure currentness reconciliation, but this probe matches the expected latest trade date after confirmed emergency closure."
 }

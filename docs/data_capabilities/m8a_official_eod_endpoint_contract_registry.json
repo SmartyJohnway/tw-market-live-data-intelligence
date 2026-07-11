@@ -53,7 +53,31 @@
         "stale_policy": "compare trade_date against Taiwan calendar/session; never treat retrieval time as trade time",
         "currentness_reconciliation_required": true,
         "currentness_reconciliation_artifact": "research/probe_runs/m8a_official_eod_contract_preflight/m8a_official_eod_currentness_reconciliation_20260711T102435Z.json",
-        "latest_probe_reconciliation_status": "delayed_one_trading_day"
+        "latest_probe_reconciliation_status": "matches_expected_latest_trade_date_after_emergency_closure",
+        "calendar_authority_model": {
+          "scheduled_calendar_status_values": [
+            "scheduled_trading_day",
+            "scheduled_holiday",
+            "weekend"
+          ],
+          "emergency_closure_status_values": [
+            "no_emergency_closure_found",
+            "emergency_closure_confirmed",
+            "emergency_closure_unknown"
+          ],
+          "actual_market_day_status_values": [
+            "actual_trading_day",
+            "emergency_closed",
+            "unresolved"
+          ],
+          "required_inputs": [
+            "weekend",
+            "scheduled holiday",
+            "makeup trading policy",
+            "emergency natural-disaster closure",
+            "exchange-specific special closure"
+          ]
+        }
       },
       "response_contract": {
         "top_level_shape": "array<object>",
@@ -426,16 +450,20 @@
         "endpoint_contract_id": "twse_openapi_stock_day_all_v1",
         "probe_time_utc": "2026-07-11T10:24:35Z",
         "probe_time_asia_taipei": "2026-07-11T18:24:35+08:00",
-        "expected_latest_completed_trade_date": "2026-07-10",
+        "expected_latest_completed_trade_date": "2026-07-09",
         "reported_trade_date": "2026-07-09",
-        "trading_day_lag": 1,
-        "currentness_reconciliation_status": "delayed_one_trading_day",
+        "trading_day_lag": 0,
+        "currentness_reconciliation_status": "matches_expected_latest_trade_date_after_emergency_closure",
         "currentness_reconciliation_evidence": [
           "bounded probe row Date was 1150709 / 2026-07-09",
-          "expected latest completed TWSE trading date at probe time was 2026-07-10",
-          "1150710 was not present in official holidaySchedule as a non-trading day"
+          "annual holidaySchedule absence only means 2026-07-10 was scheduled_trading_day",
+          "official exchange closure evidence confirms 2026-07-10 emergency_closed due to Typhoon Bavi/Taipei City work suspension",
+          "expected latest completed actual trading date at probe time was therefore 2026-07-09"
         ],
-        "runtime_condition": "Do not label official EOD context current unless reported trade_date matches expected_latest_completed_trade_date."
+        "runtime_condition": "Compute scheduled calendar status and dynamic emergency/special closure status before deriving expected_latest_completed_trade_date.",
+        "scheduled_calendar_status": "scheduled_trading_day",
+        "emergency_closure_status": "emergency_closure_confirmed",
+        "actual_market_day_status": "emergency_closed"
       }
     },
     {
@@ -488,7 +516,31 @@
         "stale_policy": "compare trade_date against Taiwan calendar/session; never treat retrieval time as trade time",
         "currentness_reconciliation_required": true,
         "currentness_reconciliation_artifact": "research/probe_runs/m8a_official_eod_contract_preflight/m8a_official_eod_currentness_reconciliation_20260711T102435Z.json",
-        "latest_probe_reconciliation_status": "delayed_one_trading_day"
+        "latest_probe_reconciliation_status": "matches_expected_latest_trade_date_after_emergency_closure",
+        "calendar_authority_model": {
+          "scheduled_calendar_status_values": [
+            "scheduled_trading_day",
+            "scheduled_holiday",
+            "weekend"
+          ],
+          "emergency_closure_status_values": [
+            "no_emergency_closure_found",
+            "emergency_closure_confirmed",
+            "emergency_closure_unknown"
+          ],
+          "actual_market_day_status_values": [
+            "actual_trading_day",
+            "emergency_closed",
+            "unresolved"
+          ],
+          "required_inputs": [
+            "weekend",
+            "scheduled holiday",
+            "makeup trading policy",
+            "emergency natural-disaster closure",
+            "exchange-specific special closure"
+          ]
+        }
       },
       "response_contract": {
         "top_level_shape": "array<object>",
@@ -1065,16 +1117,20 @@
         "endpoint_contract_id": "tpex_openapi_mainboard_daily_close_quotes_v1",
         "probe_time_utc": "2026-07-11T10:24:35Z",
         "probe_time_asia_taipei": "2026-07-11T18:24:35+08:00",
-        "expected_latest_completed_trade_date": "2026-07-10",
+        "expected_latest_completed_trade_date": "2026-07-09",
         "reported_trade_date": "2026-07-09",
-        "trading_day_lag": 1,
-        "currentness_reconciliation_status": "delayed_one_trading_day",
+        "trading_day_lag": 0,
+        "currentness_reconciliation_status": "matches_expected_latest_trade_date_after_emergency_closure",
         "currentness_reconciliation_evidence": [
           "bounded probe row Date was 1150709 / 2026-07-09",
-          "expected latest completed Taiwan trading date at probe time was 2026-07-10 using shared TWSE calendar foundation for market-day expectation",
-          "1150710 was not present in official holidaySchedule as a non-trading day"
+          "annual holidaySchedule absence only means 2026-07-10 was scheduled_trading_day",
+          "official exchange closure evidence confirms 2026-07-10 emergency_closed due to Typhoon Bavi/Taipei City work suspension",
+          "expected latest completed actual trading date at probe time was therefore 2026-07-09"
         ],
-        "runtime_condition": "Do not label official EOD context current unless reported trade_date matches expected_latest_completed_trade_date; retain as stale official EOD reference if delayed."
+        "runtime_condition": "Compute scheduled calendar status and dynamic emergency/special closure status before deriving expected_latest_completed_trade_date.",
+        "scheduled_calendar_status": "scheduled_trading_day",
+        "emergency_closure_status": "emergency_closure_confirmed",
+        "actual_market_day_status": "emergency_closed"
       }
     }
   ],
@@ -1102,7 +1158,8 @@
     "controlled_runtime_design": "accepted",
     "combined_implementation_pr_feasible": "yes",
     "currentness_reconciliation_required": true,
-    "currentness_reconciliation_status": "delayed_one_trading_day"
+    "currentness_reconciliation_status": "matches_expected_latest_trade_date_after_emergency_closure",
+    "calendar_authority_model_required": true
   },
   "probe_evidence": [
     {
@@ -1538,7 +1595,7 @@
   "known_caveats": [
     "selected endpoints are latest official daily arrays, not historical-by-date contracts",
     "TPEx endpoint has mixed instrument coverage; classification/filtering required",
-    "latest probe reported 2026-07-09 while expected latest completed Taiwan trading date was 2026-07-10; runtime currentness reconciliation is required"
+    "latest probe matched 2026-07-09 only after confirmed 2026-07-10 emergency market closure; runtime must not use annual holiday absence alone"
   ],
   "next_task": "M8A-01-03-OFFICIAL-EOD-ADAPTERS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE"
 }

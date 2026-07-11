@@ -162,17 +162,48 @@ def test_currentness_reconciliation_artifact_and_registry_statuses():
     data = load_json(RECONCILIATION)
     assert data["calendar_evidence"]["probe_time_utc"] == "2026-07-11T10:24:35Z"
     assert data["calendar_evidence"]["probe_time_asia_taipei"] == "2026-07-11T18:24:35+08:00"
-    assert data["calendar_evidence"]["expected_latest_completed_trade_date"] == "2026-07-10"
+    assert data["calendar_evidence"]["expected_latest_completed_trade_date"] == "2026-07-09"
+    assert data["calendar_evidence"]["scheduled_calendar_status"] == "scheduled_trading_day"
+    assert data["calendar_evidence"]["emergency_closure_status"] == "emergency_closure_confirmed"
+    assert data["calendar_evidence"]["actual_market_day_status"] == "emergency_closed"
     statuses = {r["source_id"]: r for r in data["source_reconciliations"]}
     assert statuses["TWSE_OPENAPI"]["reported_trade_date"] == "2026-07-09"
     assert statuses["TPEX_OPENAPI"]["reported_trade_date"] == "2026-07-09"
     for reconciliation in statuses.values():
-        assert reconciliation["trading_day_lag"] == 1
-        assert reconciliation["currentness_reconciliation_status"] == "delayed_one_trading_day"
+        assert reconciliation["trading_day_lag"] == 0
+        assert reconciliation["scheduled_calendar_status"] == "scheduled_trading_day"
+        assert reconciliation["emergency_closure_status"] == "emergency_closure_confirmed"
+        assert reconciliation["actual_market_day_status"] == "emergency_closed"
+        assert reconciliation["currentness_reconciliation_status"] == "matches_expected_latest_trade_date_after_emergency_closure"
     registry = load_json(REGISTRY)
     for source in registry["sources"]:
         assert source["readiness"] == "conditional_go"
-        assert source["currentness_reconciliation"]["currentness_reconciliation_status"] == "delayed_one_trading_day"
+        assert source["currentness_reconciliation"]["currentness_reconciliation_status"] == "matches_expected_latest_trade_date_after_emergency_closure"
+
+
+def test_calendar_authority_model_prevents_holiday_absence_shortcut():
+    data = load_json(RECONCILIATION)
+    calendar = data["calendar_evidence"]
+    assert calendar["scheduled_calendar_status"] == "scheduled_trading_day"
+    assert calendar["emergency_closure_status"] == "emergency_closure_confirmed"
+    assert calendar["actual_market_day_status"] == "emergency_closed"
+    assert calendar["expected_latest_completed_trade_date"] == "2026-07-09"
+    assert any("holidaySchedule absence only" in item for item in calendar["evidence"])
+    assert any("TWSE closure announcement" in item for item in calendar["evidence"])
+
+
+def test_emergency_closure_rules_for_future_runtime_are_documented():
+    failure_text = FAILURE_DOC.read_text(encoding="utf-8")
+    blueprint_text = BLUEPRINT.read_text(encoding="utf-8")
+    for token in [
+        "scheduled_calendar_status",
+        "emergency_closure_status",
+        "actual_market_day_status",
+        "Annual holidaySchedule absence must never by itself prove",
+        "unresolved_date_mismatch",
+    ]:
+        assert token in failure_text
+    assert "annual holiday absence alone cannot produce `actual_trading_day`" in blueprint_text
 
 
 def test_field_specific_conversion_and_validation_rules():
@@ -211,7 +242,8 @@ def test_go_no_go_matrix_values():
     assert readiness["controlled_runtime_design"] in {"accepted", "conditional", "blocked"}
     assert readiness["combined_implementation_pr_feasible"] in {"yes", "conditional", "no"}
     assert readiness["currentness_reconciliation_required"] is True
-    assert readiness["currentness_reconciliation_status"] == "delayed_one_trading_day"
+    assert readiness["currentness_reconciliation_status"] == "matches_expected_latest_trade_date_after_emergency_closure"
+    assert readiness["calendar_authority_model_required"] is True
 
 
 def test_boundary_preservation_inventory():
@@ -237,7 +269,8 @@ def test_boundary_preservation_inventory():
     ]:
         assert inv[key] is False
     assert inv["currentness_reconciliation_required"] is True
-    assert inv["latest_probe_currentness_reconciliation_status"] == "delayed_one_trading_day"
+    assert inv["latest_probe_currentness_reconciliation_status"] == "matches_expected_latest_trade_date_after_emergency_closure"
+    assert inv["calendar_authority_model_required"] is True
 
 
 def test_probe_artifacts_compactness():
