@@ -3,14 +3,12 @@ from __future__ import annotations
 import json, urllib.request
 from typing import Any
 from scripts.m8a_official_eod_observation import create_observation, empty_adapter_result, parse_decimal_text, parse_int_text, parse_roc_yyyymmdd, utc_now
+from scripts.m8a_official_eod_instrument_classifier import classify_official_eod_instrument
 SOURCE_ID="TPEX_OPENAPI"; ENDPOINT_CONTRACT_ID="tpex_openapi_mainboard_daily_close_quotes_v1"; URL="https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
 REQUIRED=["Date","SecuritiesCompanyCode","CompanyName","Close","Change","Open","High","Low","Average","TradingShares","TransactionAmount","TransactionNumber","LatestBidPrice","LatesAskPrice","Capitals","NextReferencePrice","NextLimitUp","NextLimitDown"]
 OMITTED=["Average","LatestBidPrice","LatesAskPrice","Capitals","NextReferencePrice","NextLimitUp","NextLimitDown"]
-SECURITY_MASTER={("tpex_otc","8069"):"equity",("tpex_otc","006201"):"etf",("tpex_otc","00687C"):"etn"}
 def classify_instrument(market:str,symbol:str,security_master:dict|None=None)->dict:
-    sm=security_master or SECURITY_MASTER; t=sm.get((market,symbol)) or sm.get(symbol) if isinstance(sm,dict) else None
-    if t: return {"instrument_type":t,"classification_status":"classified","source":"security_master"}
-    return {"instrument_type":"unknown","classification_status":"unclassified","source":"security_master_miss","caveat":"unclassified rows are excluded from deterministic metrics and AI context by default"}
+    return classify_official_eod_instrument(market, symbol, security_master)
 def fetch_tpex_official_eod_json(*,timeout:int=20,url:str=URL)->tuple[list[dict],int,str]:
     req=urllib.request.Request(url,method="GET",headers={"Accept":"application/json","User-Agent":"tw-market-m8a-official-eod/1.0"})
     with urllib.request.urlopen(req,timeout=timeout) as resp: status=resp.status; ctype=resp.headers.get("Content-Type",""); body=resp.read()

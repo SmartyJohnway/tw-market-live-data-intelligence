@@ -4,6 +4,7 @@ import json, urllib.request
 from decimal import Decimal
 from typing import Any
 from scripts.m8a_official_eod_observation import create_observation, empty_adapter_result, parse_decimal_text, parse_int_text, parse_roc_yyyymmdd, utc_now
+from scripts.m8a_official_eod_instrument_classifier import classify_official_eod_instrument
 
 SOURCE_ID="TWSE_OPENAPI"; ENDPOINT_CONTRACT_ID="twse_openapi_stock_day_all_v1"; URL="https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
 REQUIRED=["Date","Code","Name","TradeVolume","TradeValue","OpeningPrice","HighestPrice","LowestPrice","ClosingPrice","Change","Transaction"]
@@ -21,7 +22,7 @@ def fetch_twse_official_eod_json(*, timeout: int=20, url: str=URL) -> tuple[list
 def _reject(i,row,reason,field_validation=None):
     return {"row_index":i,"symbol": row.get("Code") if isinstance(row,dict) else None,"source_field_names": sorted(row.keys()) if isinstance(row,dict) else [],"reason_code":reason,"field_validation":field_validation or {}}
 
-def parse_twse_official_eod_rows(rows: Any, *, requested_symbols: list[str], retrieved_at_utc: str|None=None, http_status:int|None=None) -> dict:
+def parse_twse_official_eod_rows(rows: Any, *, requested_symbols: list[str], retrieved_at_utc: str|None=None, http_status:int|None=None, security_master:dict|None=None) -> dict:
     result=empty_adapter_result(SOURCE_ID,ENDPOINT_CONTRACT_ID,requested_symbols,retrieved_at_utc); result.update(http_status=http_status,source_status="success",batch_status="successful_eod_batch")
     if not isinstance(rows,list): result.update(source_status="error",batch_status="schema_drift"); result["caveats"].append("top-level response was not an array"); return result
     req=set(str(s) for s in requested_symbols); seen=set(); dates=set(); result["row_count_received"]=len(rows)
@@ -41,7 +42,9 @@ def parse_twse_official_eod_rows(rows: Any, *, requested_symbols: list[str], ret
         derived=[]
         if price.get("close") is not None and price.get("change") is not None:
             price["previous_close"]=format(Decimal(price["close"])-Decimal(price["change"]),"f"); derived.append("previous_close=close-change")
-        obs=create_observation(source_id=SOURCE_ID,endpoint_contract_id=ENDPOINT_CONTRACT_ID,market="listed",symbol=sym,name=row.get("Name"),instrument_type="equity",trade_date=trade_date,retrieved_at_utc=retrieved_at_utc,price=price,activity=activity,field_validation=fv,source_fields_present=[k for k in REQUIRED if k in row],derived_fields=derived,caveats=["TradeVolume unit caveated by instrument class"],provenance={"source_url":URL,"request_method":"GET"})
+        cls=classify_official_eod_instrument("listed", sym, security_master); caveats=["TradeVolume unit caveated by instrument class"]
+        if cls.get("classification_status") != "classified": caveats.append(cls.get("caveat") or "instrument classification unavailable; fail closed")
+        obs=create_observation(source_id=SOURCE_ID,endpoint_contract_id=ENDPOINT_CONTRACT_ID,market="listed",symbol=sym,name=row.get("Name"),instrument_type=cls["instrument_type"],trade_date=trade_date,retrieved_at_utc=retrieved_at_utc,price=price,activity=activity,field_validation={**fv,"instrument_classification":cls},source_fields_present=[k for k in REQUIRED if k in row],derived_fields=derived,caveats=caveats,provenance={"source_url":URL,"request_method":"GET"})
         key=(obs["market"],obs["symbol"],obs["trade_date"])
         if key in seen: result["rejected_rows"].append(_reject(i,row,"duplicate_identity",fv)); continue
         seen.add(key); dates.add(trade_date); result["observations"].append(obs)
@@ -51,9 +54,9 @@ def parse_twse_official_eod_rows(rows: Any, *, requested_symbols: list[str], ret
     elif not result["observations"]: result["batch_status"]="source_error" if result["rejected_rows"] else "successful_eod_batch"
     result["completed_at_utc"]=utc_now(); return result
 
-def execute_twse_official_eod_adapter(requested_symbols:list[str], *, timeout:int=20) -> dict:
+def execute_twse_official_eod_adapter(requested_symbols:list[str], *, timeout:int=20, security_master:dict|None=None) -> dict:
     ts=utc_now()
     try: rows,status,ctype=fetch_twse_official_eod_json(timeout=timeout)
     except Exception as exc:
         r=empty_adapter_result(SOURCE_ID,ENDPOINT_CONTRACT_ID,requested_symbols,ts); r.update(source_status="error",batch_status="source_error",completed_at_utc=utc_now()); r["caveats"].append(str(exc).splitlines()[0][:80]); return r
-    r=parse_twse_official_eod_rows(rows,requested_symbols=requested_symbols,retrieved_at_utc=ts,http_status=status); r["provenance"]={"source_url":URL,"content_type":ctype,"request_method":"GET"}; return r
+    r=parse_twse_official_eod_rows(rows,requested_symbols=requested_symbols,retrieved_at_utc=ts,http_status=status,security_master=security_master); r["provenance"]={"source_url":URL,"content_type":ctype,"request_method":"GET"}; return r

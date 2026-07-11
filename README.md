@@ -205,3 +205,5 @@ python scripts/validate_m8a_official_eod_live.py \
 ```
 
 Limitations: M8A endpoints are latest-only, no historical backfill is included, mixed TPEx instruments depend on security-master classification, NCDR is exception/currentness evidence only, no scheduler/polling is added, and the project does not implement an investment recommendation engine.
+
+Review note: PR #126 was reviewed as a squashed single GitHub commit even though the earlier implementation report described a four-commit local execution structure. Current reports should describe the actual GitHub commit shape rather than claiming four reviewable commits.

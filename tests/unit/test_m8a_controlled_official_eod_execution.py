@@ -7,6 +7,7 @@ def fail(symbols): return {'source_id':'TPEX_OPENAPI','source_status':'error','r
 def test_execution_gates_and_partial_success():
     assert execute_official_eod_refresh(['2330'],['TWSE_OPENAPI'],False)['overall_status']=='rejected_not_confirmed'
     assert execute_official_eod_refresh([],['TWSE_OPENAPI'],True)['overall_status']=='rejected_invalid_scope'
+    assert execute_official_eod_refresh(['2330'],[],True)['overall_status']=='rejected_invalid_scope'
     assert execute_official_eod_refresh(['2330'],['BAD'],True)['overall_status']=='rejected_invalid_scope'
     r=execute_official_eod_refresh(['2330'],['TWSE_OPENAPI','TPEX_OPENAPI'],True,twse_adapter=ok,tpex_adapter=fail)
     assert r['overall_status']=='partial_success' and len(r['normalized_observations'])==1
@@ -18,3 +19,9 @@ def test_closure_fetcher_only_on_mismatch():
     assert calls==[]
     execute_official_eod_refresh(['2330'],['TWSE_OPENAPI'],True,twse_adapter=ok,closure_fetcher=closure,evaluation_time_asia_taipei='2026-07-10T16:00:00+08:00')
     assert calls==['2026-07-10']
+
+
+def test_no_hardcoded_production_evaluation_time_default():
+    import inspect
+    from scripts.m8a_official_eod_execution import execute_official_eod_refresh
+    assert inspect.signature(execute_official_eod_refresh).parameters['evaluation_time_asia_taipei'].default is None

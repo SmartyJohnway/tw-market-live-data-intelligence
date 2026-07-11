@@ -74,3 +74,8 @@ Deterministic M8A tests and related M8 compatibility tests pass under no-network
 
 ## 21. Recommended next track
 Proceed to the next official reference/EOD context item in the repository roadmap: corporate action, attention/disposition, or additional official reference context after separate source-contract review.
+
+## Review correction note
+PR review blocker fixes preserve the squashed GitHub PR shape. The original implementation had been squashed into one GitHub commit before review even though the earlier report described a four-commit local execution structure. This correction does not claim four reviewable GitHub commits; it documents the implemented boundaries and validation state.
+
+Review corrections include realistic NCDR Atom summary date parsing, entry-updated-based yearless/relative date resolution, session-aware expected EOD logic, exact repository security-master classification for TWSE/TPEx, fail-closed unknown classifications, and distinct emergency-closure unknown versus checked-empty states.
