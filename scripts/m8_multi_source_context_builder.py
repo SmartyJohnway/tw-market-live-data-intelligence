@@ -90,6 +90,24 @@ def _scrub_safe_fields(observation: dict, caveats: list[str]) -> tuple[dict, lis
     return scrubbed, omitted, found_forbidden
 
 
+
+def _parse_utc_timestamp_for_sort(value: Any) -> tuple[datetime | None, bool]:
+    if not isinstance(value, str) or not value:
+        return None, False
+    text = value
+    if text.endswith("Z"):
+        text = text[:-1] + "+00:00"
+    try:
+        parsed = datetime.fromisoformat(text)
+    except ValueError:
+        return None, False
+    if parsed.tzinfo is None:
+        return None, False
+    utc_value = parsed.astimezone(timezone.utc)
+    if utc_value.utcoffset() != timezone.utc.utcoffset(utc_value):
+        return None, False
+    return utc_value, True
+
 def _unknown_assessment(observation: dict) -> dict:
     return {
         "source_id": observation.get("source_id"),
@@ -243,8 +261,20 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
             _classify_context_flags(ctx, has_official)
 
     assessments = [ctx["freshness_assessment"] for ctx in all_contexts]
-    retrieved_values = sorted([ctx["retrieved_at_utc"] for ctx in all_contexts if ctx.get("retrieved_at_utc")])
+    parsed_retrieved_values = []
+    retrieved_parse_failed = False
+    for ctx in all_contexts:
+        original = ctx.get("retrieved_at_utc")
+        if not original:
+            continue
+        parsed, ok = _parse_utc_timestamp_for_sort(original)
+        if ok and parsed is not None:
+            parsed_retrieved_values.append((parsed, original))
+        else:
+            retrieved_parse_failed = True
+    most_recent_retrieved_at_utc = max(parsed_retrieved_values, key=lambda item: item[0])[1] if parsed_retrieved_values else None
     freshness_summary = {
+        "has_liveish_source_family_observation": any(ctx["timing_class"] == "liveish_intraday_snapshot" for ctx in all_contexts),
         "has_liveish_intraday_snapshot": "fresh_intraday_snapshot" in assessments,
         "has_official_eod_reference": "official_eod_reference" in assessments,
         "has_official_statistics_eod": "official_statistics_eod" in assessments,
@@ -255,11 +285,13 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
         "has_stale_sources": "stale_intraday_snapshot" in assessments,
         "has_unavailable_sources": any(ctx["source_unavailable"] or ctx["freshness_assessment"] == "source_unavailable" for ctx in all_contexts),
         "has_unknown_sources": "unknown" in assessments,
-        "most_recent_retrieved_at_utc": retrieved_values[-1] if retrieved_values else None,
+        "most_recent_retrieved_at_utc": most_recent_retrieved_at_utc,
         "caveated_currentness_label": "empty_context",
     }
     freshness_summary["caveated_currentness_label"] = _label(freshness_summary)
 
+    if retrieved_parse_failed:
+        _append_unique(cross_caveats, "one or more retrieved_at_utc values could not be parsed for most-recent comparison")
     if freshness_summary["has_official_eod_reference"]:
         _append_unique(cross_caveats, "EOD source must not be described as realtime")
     if freshness_summary["has_official_statistics_eod"]:

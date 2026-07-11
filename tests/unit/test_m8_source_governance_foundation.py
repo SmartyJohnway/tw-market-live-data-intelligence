@@ -106,7 +106,7 @@ def test_manual_validation_only_and_credential_gated_semantics():
 def test_inventory_m8_entry():
     inventory = load_json(INVENTORY_PATH)
     entry = inventory["rich_observation_contract"]["m8_source_timing_authority_governance"]
-    assert entry["status"] in {"m8_00_source_freshness_evaluator_defined", "m8_00_multi_source_context_builder_defined"}
+    assert entry["status"] in {"m8_00_source_freshness_evaluator_defined", "m8_00_multi_source_context_builder_defined", "m8_00_controlled_conversation_context_integration_and_compatibility_hardening_defined"}
     assert entry["completed_tasks"][:5] == ["M8-00-00", "M8-00-01", "M8-00-02", "M8-00-03", "M8-00-04"]
     for key in [
         "governance_preflight_doc",
@@ -132,7 +132,7 @@ def test_inventory_m8_entry():
     assert entry["freshness_evaluator_is_pure_helper"] is True
     assert entry["freshness_evaluator_runtime_integration_added"] is False
     assert entry["source_freshness_assessment_schema_version"] == "m8_source_freshness_assessment.v1"
-    assert entry["next_task"] in {"M8-00-05-MULTI-SOURCE-CONTEXT-BUILDER", "M8-00-06-CONTROLLED-CONVERSATION-CONTEXT-INTEGRATION"}
+    assert entry["next_task"] in {"M8-00-05-MULTI-SOURCE-CONTEXT-BUILDER", "M8-00-06-CONTROLLED-CONVERSATION-CONTEXT-INTEGRATION", "M8-00-08-FINAL-ACCEPTANCE-AND-CLOSURE"}
 
 
 def test_default_ci_includes_m8_governance_test():

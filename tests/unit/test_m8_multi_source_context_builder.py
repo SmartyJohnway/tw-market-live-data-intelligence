@@ -140,7 +140,7 @@ def test_raw_field_scrubbing():
 def test_inventory_m8_00_05_metadata():
     inv = json.loads((ROOT / "docs/data_capabilities/twse_mis_rich_field_inventory.json").read_text())
     entry = inv["rich_observation_contract"]["m8_source_timing_authority_governance"]
-    assert entry["status"] == "m8_00_multi_source_context_builder_defined"
+    assert entry["status"] == "m8_00_controlled_conversation_context_integration_and_compatibility_hardening_defined"
     assert "M8-00-05" in entry["completed_tasks"]
     assert (ROOT / entry["multi_source_context_builder_doc"]).exists()
     assert (ROOT / entry["multi_source_context_builder_module"]).exists()
@@ -149,10 +149,34 @@ def test_inventory_m8_00_05_metadata():
     assert entry["multi_source_context_builder_network_access"] is False
     assert entry["runtime_behavior_changed"] is False
     assert entry["adapter_added"] is False
-    assert entry["conversation_context_integration_added"] is False
-    assert entry["next_task"] == "M8-00-06-CONTROLLED-CONVERSATION-CONTEXT-INTEGRATION"
+    assert entry["controlled_conversation_context_integration_added"] is True
+    assert entry["next_task"] == "M8-00-08-FINAL-ACCEPTANCE-AND-CLOSURE"
 
 
 def test_default_ci_includes_builder_test():
     config = json.loads((ROOT / "config/test_execution_profiles.json").read_text())
     assert "tests/unit/test_m8_multi_source_context_builder.py" in config["profiles"]["default-ci"]["pytest_paths"]
+
+
+def test_stale_liveish_source_family_flag_is_preserved():
+    result = build_multi_source_market_context([_obs(retrieved_at_utc="2026-07-10T00:00:00Z")], REGISTRY, now_utc="2026-07-10T01:05:00Z")
+    assert result["freshness_summary"]["has_liveish_source_family_observation"] is True
+    assert result["freshness_summary"]["has_liveish_intraday_snapshot"] is False
+    assert result["freshness_summary"]["has_stale_sources"] is True
+
+
+def test_most_recent_retrieved_at_uses_utc_parsing():
+    result = build_multi_source_market_context([
+        _obs("TWSE_MIS", symbol="2330", retrieved_at_utc="2026-07-10T01:05:00Z"),
+        _obs("TWSE_OPENAPI", symbol="2317", market_date="2026-07-09", retrieved_at_utc="2026-07-10T01:04:00+00:00", safe_fields={"close": 1, "trade_date": "2026-07-09"}),
+    ], REGISTRY, now_utc="2026-07-10T01:06:00Z")
+    assert result["freshness_summary"]["most_recent_retrieved_at_utc"] == "2026-07-10T01:05:00Z"
+
+
+def test_malformed_retrieved_at_does_not_crash_most_recent_comparison():
+    result = build_multi_source_market_context([
+        _obs("TWSE_MIS", retrieved_at_utc="2026-07-10T01:05:00Z"),
+        _obs("TWSE_OPENAPI", symbol="2317", market_date="2026-07-09", retrieved_at_utc="not-a-timestamp", safe_fields={"close": 1, "trade_date": "2026-07-09"}),
+    ], REGISTRY, now_utc="2026-07-10T01:06:00Z")
+    assert result["freshness_summary"]["most_recent_retrieved_at_utc"] == "2026-07-10T01:05:00Z"
+    assert "one or more retrieved_at_utc values could not be parsed for most-recent comparison" in result["cross_source_caveats"]
