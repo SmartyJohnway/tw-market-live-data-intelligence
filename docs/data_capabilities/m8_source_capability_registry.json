@@ -48,7 +48,12 @@
       "raw_payload_exposure_allowed": false,
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
-      "source_notes": []
+      "source_notes": [],
+      "freshness_evaluator_policy": {
+        "max_intraday_age_seconds": 900,
+        "allow_retrieved_at_only_intraday_freshness": true,
+        "requires_exchange_timestamp_for_fresh": false
+      }
     },
     {
       "source_id": "TAIFEX_MIS",
@@ -126,7 +131,10 @@
       "raw_payload_exposure_allowed": false,
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
-      "source_notes": []
+      "source_notes": [],
+      "freshness_evaluator_policy": {
+        "eod_reference_requires_market_date": true
+      }
     },
     {
       "source_id": "TPEX_OPENAPI",
@@ -167,7 +175,10 @@
       "raw_payload_exposure_allowed": false,
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
-      "source_notes": []
+      "source_notes": [],
+      "freshness_evaluator_policy": {
+        "eod_reference_requires_market_date": true
+      }
     },
     {
       "source_id": "TAIFEX_OPENAPI",
@@ -208,7 +219,11 @@
       "raw_payload_exposure_allowed": false,
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
-      "source_notes": []
+      "source_notes": [],
+      "freshness_evaluator_policy": {
+        "eod_reference_requires_market_date": true,
+        "statistics_not_live_signal": true
+      }
     },
     {
       "source_id": "MOPS",
@@ -286,7 +301,10 @@
       "raw_payload_exposure_allowed": false,
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
-      "source_notes": []
+      "source_notes": [],
+      "freshness_evaluator_policy": {
+        "manual_snapshot_not_official": true
+      }
     },
     {
       "source_id": "EXTERNAL_VALIDATION_ONLY",
@@ -324,7 +342,10 @@
       "raw_payload_exposure_allowed": false,
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
-      "source_notes": []
+      "source_notes": [],
+      "freshness_evaluator_policy": {
+        "validation_only_not_primary": true
+      }
     },
     {
       "source_id": "CREDENTIAL_GATED_PROVIDER",
@@ -363,7 +384,11 @@
       "raw_payload_exposure_allowed": false,
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
-      "source_notes": []
+      "source_notes": [],
+      "freshness_evaluator_policy": {
+        "credential_required": true,
+        "not_runtime_dependency": true
+      }
     }
   ],
   "global_ai_interpretation_policy": {

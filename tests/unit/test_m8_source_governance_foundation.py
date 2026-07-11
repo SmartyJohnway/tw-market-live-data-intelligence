@@ -106,8 +106,8 @@ def test_manual_validation_only_and_credential_gated_semantics():
 def test_inventory_m8_entry():
     inventory = load_json(INVENTORY_PATH)
     entry = inventory["rich_observation_contract"]["m8_source_timing_authority_governance"]
-    assert entry["status"] == "m8_00_governance_foundation_defined"
-    assert entry["completed_tasks"] == ["M8-00-00", "M8-00-01", "M8-00-02", "M8-00-03"]
+    assert entry["status"] == "m8_00_source_freshness_evaluator_defined"
+    assert entry["completed_tasks"] == ["M8-00-00", "M8-00-01", "M8-00-02", "M8-00-03", "M8-00-04"]
     for key in [
         "governance_preflight_doc",
         "source_capability_registry_schema_doc",
@@ -122,7 +122,6 @@ def test_inventory_m8_entry():
         "server_changed",
         "network_fetch_added",
         "adapter_added",
-        "freshness_evaluator_added",
         "multi_source_context_builder_added",
         "conversation_context_integration_added",
         "tpex_mis_introduced",
@@ -130,7 +129,11 @@ def test_inventory_m8_entry():
         "trading_advice_allowed",
     ]:
         assert entry[key] is False
-    assert entry["next_task"] == "M8-00-04-SOURCE-FRESHNESS-EVALUATOR-PURE-HELPER"
+    assert entry["freshness_evaluator_added"] is True
+    assert entry["freshness_evaluator_is_pure_helper"] is True
+    assert entry["freshness_evaluator_runtime_integration_added"] is False
+    assert entry["source_freshness_assessment_schema_version"] == "m8_source_freshness_assessment.v1"
+    assert entry["next_task"] == "M8-00-05-MULTI-SOURCE-CONTEXT-BUILDER"
 
 
 def test_default_ci_includes_m8_governance_test():
