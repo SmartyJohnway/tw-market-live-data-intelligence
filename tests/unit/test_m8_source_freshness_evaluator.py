@@ -71,6 +71,23 @@ def test_twse_mis_stale_intraday_snapshot_not_current():
     assert result["requires_caveats"] is True
 
 
+def test_future_retrieved_at_is_unknown_not_fresh():
+    result = build_source_freshness_assessment(
+        {"retrieved_at_utc": "2026-07-10T01:10:00Z"},
+        _source("TWSE_MIS"),
+        now_utc="2026-07-10T01:05:00Z",
+    )
+    assert result["freshness_assessment"] == "unknown"
+    assert result["requires_caveats"] is True
+    assert result["safe_for_ai_context"] is False
+    assert result["not_realtime_guaranteed"] is True
+    assert result["not_trading_signal"] is True
+    assert any(
+        "future retrieval timestamp" in caveat or "after now_utc" in caveat
+        for caveat in result["caveats"]
+    )
+
+
 def test_twse_mis_unavailable_preserves_reason_and_is_not_context_safe():
     result = build_source_freshness_assessment(
         {"source_unavailable": True, "source_unavailable_reason": "network unavailable"},

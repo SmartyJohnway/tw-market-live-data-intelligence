@@ -147,6 +147,8 @@ def build_source_freshness_assessment(
             return _unknown(result, retrieved_error)
         age_seconds = int((now_dt - retrieved_dt).total_seconds())
         result["age_seconds"] = age_seconds
+        if age_seconds < 0:
+            return _unknown(result, "retrieved_at_utc is after now_utc; future retrieval timestamp")
         max_age = int(policy.get("max_intraday_age_seconds", _DEFAULT_INTRADAY_MAX_AGE_SECONDS))
         if age_seconds <= max_age:
             result.update(
