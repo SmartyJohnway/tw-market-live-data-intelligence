@@ -1,0 +1,194 @@
+{
+  "source_id": "TWSE_OPENAPI",
+  "requested_at_utc": "2026-07-11T10:24:35Z",
+  "documentation_url": "https://openapi.twse.com.tw/v1/swagger.json",
+  "endpoint": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+  "probes": [
+    {
+      "probe_id": "twse_stock_day_all_latest",
+      "source_id": "TWSE_OPENAPI",
+      "endpoint_contract_id": "twse_openapi_stock_day_all_v1",
+      "requested_at_utc": "2026-07-11T10:24:35Z",
+      "request_method": "GET",
+      "request_url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+      "request_parameters": {},
+      "http_status": 200,
+      "content_type": "application/json",
+      "response_shape": "array<object>",
+      "row_count": 1369,
+      "reported_trade_date": "1150709",
+      "sample_field_names": [
+        "Date",
+        "Code",
+        "Name",
+        "TradeVolume",
+        "TradeValue",
+        "OpeningPrice",
+        "HighestPrice",
+        "LowestPrice",
+        "ClosingPrice",
+        "Change",
+        "Transaction"
+      ],
+      "representative_rows": [
+        {
+          "Date": "1150709",
+          "Code": "2330",
+          "Name": "台積電",
+          "TradeVolume": "34681018",
+          "TradeValue": "84397735035",
+          "OpeningPrice": "2450.00",
+          "HighestPrice": "2460.00",
+          "LowestPrice": "2415.00",
+          "ClosingPrice": "2415.00",
+          "Change": "-50.0000",
+          "Transaction": "201698"
+        },
+        {
+          "Date": "1150709",
+          "Code": "0050",
+          "Name": "元大台灣50",
+          "TradeVolume": "56650627",
+          "TradeValue": "6014937416",
+          "OpeningPrice": "106.35",
+          "HighestPrice": "107.00",
+          "LowestPrice": "105.45",
+          "ClosingPrice": "105.80",
+          "Change": "-0.2500",
+          "Transaction": "94234"
+        },
+        {
+          "Date": "1150709",
+          "Code": "00929",
+          "Name": "復華台灣科技優息",
+          "TradeVolume": "15938397",
+          "TradeValue": "482663336",
+          "OpeningPrice": "30.24",
+          "HighestPrice": "30.55",
+          "LowestPrice": "30.03",
+          "ClosingPrice": "30.19",
+          "Change": "0.2200",
+          "Transaction": "6348"
+        },
+        {
+          "Date": "1150709",
+          "Code": "00400A",
+          "Name": "主動國泰動能高息",
+          "TradeVolume": "34113465",
+          "TradeValue": "489845382",
+          "OpeningPrice": "14.29",
+          "HighestPrice": "14.51",
+          "LowestPrice": "14.20",
+          "ClosingPrice": "14.25",
+          "Change": "0.0000",
+          "Transaction": "6040"
+        },
+        {
+          "Date": "1150709",
+          "Code": "9958",
+          "Name": "世紀鋼",
+          "TradeVolume": "1510403",
+          "TradeValue": "178822361",
+          "OpeningPrice": "119.50",
+          "HighestPrice": "120.00",
+          "LowestPrice": "117.00",
+          "ClosingPrice": "117.00",
+          "Change": "-1.5000",
+          "Transaction": "1361"
+        }
+      ],
+      "result": "success",
+      "notes": [
+        "latest available official OpenAPI array; no date parameter exposed by selected endpoint"
+      ]
+    },
+    {
+      "probe_id": "twse_openapi_ignored_invalid_query",
+      "source_id": "TWSE_OPENAPI",
+      "endpoint_contract_id": "twse_openapi_stock_day_all_v1",
+      "requested_at_utc": "2026-07-11T10:24:35Z",
+      "request_method": "GET",
+      "request_url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL?date=invalid&response=json",
+      "request_parameters": {
+        "date": "invalid",
+        "response": "json"
+      },
+      "http_status": 200,
+      "content_type": "application/json",
+      "response_shape": "array<object>",
+      "row_count": 1369,
+      "reported_trade_date": "1150709",
+      "sample_field_names": [
+        "Date",
+        "Code",
+        "Name",
+        "TradeVolume",
+        "TradeValue",
+        "OpeningPrice",
+        "HighestPrice",
+        "LowestPrice",
+        "ClosingPrice",
+        "Change",
+        "Transaction"
+      ],
+      "representative_rows": [
+        {
+          "Date": "1150709",
+          "Code": "2330",
+          "Name": "台積電",
+          "TradeVolume": "34681018",
+          "TradeValue": "84397735035",
+          "OpeningPrice": "2450.00",
+          "HighestPrice": "2460.00",
+          "LowestPrice": "2415.00",
+          "ClosingPrice": "2415.00",
+          "Change": "-50.0000",
+          "Transaction": "201698"
+        },
+        {
+          "Date": "1150709",
+          "Code": "00400A",
+          "Name": "主動國泰動能高息",
+          "TradeVolume": "34113465",
+          "TradeValue": "489845382",
+          "OpeningPrice": "14.29",
+          "HighestPrice": "14.51",
+          "LowestPrice": "14.20",
+          "ClosingPrice": "14.25",
+          "Change": "0.0000",
+          "Transaction": "6040"
+        },
+        {
+          "Date": "1150709",
+          "Code": "9958",
+          "Name": "世紀鋼",
+          "TradeVolume": "1510403",
+          "TradeValue": "178822361",
+          "OpeningPrice": "119.50",
+          "HighestPrice": "120.00",
+          "LowestPrice": "117.00",
+          "ClosingPrice": "117.00",
+          "Change": "-1.5000",
+          "Transaction": "1361"
+        },
+        {
+          "Date": "1150709",
+          "Code": "00404A",
+          "Name": "主動聯博動能50",
+          "TradeVolume": "9510671",
+          "TradeValue": "94502511",
+          "OpeningPrice": "9.98",
+          "HighestPrice": "10.04",
+          "LowestPrice": "9.88",
+          "ClosingPrice": "9.89",
+          "Change": "-0.0700",
+          "Transaction": "1641"
+        }
+      ],
+      "result": "success",
+      "notes": [
+        "invalid/extra query parameters were ignored by observed endpoint; selected endpoint has no documented query parameters"
+      ]
+    }
+  ]
+}
