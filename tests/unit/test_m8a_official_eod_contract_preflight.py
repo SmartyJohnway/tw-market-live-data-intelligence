@@ -13,6 +13,7 @@ INVENTORY = ROOT / "docs/data_capabilities/twse_mis_rich_field_inventory.json"
 PROBES = ROOT / "research/probe_runs/m8a_official_eod_contract_preflight"
 
 VALID_READINESS = {"go", "conditional_go", "no_go"}
+RECONCILIATION = ROOT / "research/probe_runs/m8a_official_eod_contract_preflight/m8a_official_eod_currentness_reconciliation_20260711T102435Z.json"
 
 
 def load_json(path):
@@ -157,6 +158,48 @@ def test_implementation_blueprint_commits_and_next_task():
         assert token in text
 
 
+def test_currentness_reconciliation_artifact_and_registry_statuses():
+    data = load_json(RECONCILIATION)
+    assert data["calendar_evidence"]["probe_time_utc"] == "2026-07-11T10:24:35Z"
+    assert data["calendar_evidence"]["probe_time_asia_taipei"] == "2026-07-11T18:24:35+08:00"
+    assert data["calendar_evidence"]["expected_latest_completed_trade_date"] == "2026-07-10"
+    statuses = {r["source_id"]: r for r in data["source_reconciliations"]}
+    assert statuses["TWSE_OPENAPI"]["reported_trade_date"] == "2026-07-09"
+    assert statuses["TPEX_OPENAPI"]["reported_trade_date"] == "2026-07-09"
+    for reconciliation in statuses.values():
+        assert reconciliation["trading_day_lag"] == 1
+        assert reconciliation["currentness_reconciliation_status"] == "delayed_one_trading_day"
+    registry = load_json(REGISTRY)
+    for source in registry["sources"]:
+        assert source["readiness"] == "conditional_go"
+        assert source["currentness_reconciliation"]["currentness_reconciliation_status"] == "delayed_one_trading_day"
+
+
+def test_field_specific_conversion_and_validation_rules():
+    registry = load_json(REGISTRY)
+    fields = {
+        (source["source_id"], field["source_field"]): field
+        for source in registry["sources"]
+        for field in source["field_contract"]
+    }
+    assert "ROC yyyMMdd" in fields[("TWSE_OPENAPI", "Date")]["conversion_rule"]
+    assert "exact trimmed source string" in fields[("TWSE_OPENAPI", "Code")]["conversion_rule"]
+    assert "leading zeroes" in fields[("TWSE_OPENAPI", "Code")]["conversion_rule"]
+    assert "alphabetic suffixes" in fields[("TPEX_OPENAPI", "SecuritiesCompanyCode")]["conversion_rule"]
+    assert "Unicode security name" in fields[("TPEX_OPENAPI", "CompanyName")]["conversion_rule"]
+    assert "do not apply numeric/date conversion" in fields[("TWSE_OPENAPI", "Name")]["conversion_rule"]
+    assert "non-negative Decimal-compatible" in fields[("TWSE_OPENAPI", "OpeningPrice")]["conversion_rule"]
+    assert "reject malformed or negative price" in fields[("TPEX_OPENAPI", "Close")]["validation_rule"]
+    assert "signed Decimal-compatible" in fields[("TPEX_OPENAPI", "Change")]["conversion_rule"]
+    assert "negative values are valid for change only" in fields[("TWSE_OPENAPI", "Change")]["validation_rule"]
+    assert "non-negative integer" in fields[("TWSE_OPENAPI", "TradeVolume")]["conversion_rule"]
+    assert "non-negative integer TWD trade value" in fields[("TPEX_OPENAPI", "TransactionAmount")]["conversion_rule"]
+    assert "non-negative integer transaction count" in fields[("TPEX_OPENAPI", "TransactionNumber")]["conversion_rule"]
+    assert fields[("TPEX_OPENAPI", "LatestBidPrice")]["AI_context_eligible"] is False
+    assert "omit from normalized M8A core" in fields[("TPEX_OPENAPI", "LatestBidPrice")]["partial_row_policy"]
+    assert fields[("TWSE_OPENAPI", "OpeningPrice")]["evidence_status"] in {"directly_observed", "inferred_with_caveat"}
+
+
 def test_go_no_go_matrix_values():
     data = load_json(REGISTRY)
     readiness = data["implementation_readiness"]
@@ -167,6 +210,8 @@ def test_go_no_go_matrix_values():
     assert data["shared_contract_decision"]["shared_normalized_schema"] in {"accepted", "accepted_with_source_extensions", "rejected"}
     assert readiness["controlled_runtime_design"] in {"accepted", "conditional", "blocked"}
     assert readiness["combined_implementation_pr_feasible"] in {"yes", "conditional", "no"}
+    assert readiness["currentness_reconciliation_required"] is True
+    assert readiness["currentness_reconciliation_status"] == "delayed_one_trading_day"
 
 
 def test_boundary_preservation_inventory():
@@ -191,6 +236,8 @@ def test_boundary_preservation_inventory():
         "rotc_route_introduced",
     ]:
         assert inv[key] is False
+    assert inv["currentness_reconciliation_required"] is True
+    assert inv["latest_probe_currentness_reconciliation_status"] == "delayed_one_trading_day"
 
 
 def test_probe_artifacts_compactness():

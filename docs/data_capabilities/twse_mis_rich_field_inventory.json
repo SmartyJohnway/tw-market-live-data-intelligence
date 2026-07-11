@@ -1773,6 +1773,8 @@
       ],
       "context_integration_added": false,
       "conversation_integration_added": false,
+      "currentness_reconciliation_artifact": "research/probe_runs/m8a_official_eod_contract_preflight/m8a_official_eod_currentness_reconciliation_20260711T102435Z.json",
+      "currentness_reconciliation_required": true,
       "db_write_added": false,
       "emerging_stock_live_supported": false,
       "endpoint_contract_registry": "docs/data_capabilities/m8a_official_eod_endpoint_contract_registry.json",
@@ -1783,8 +1785,10 @@
       "hidden_fetch_added": false,
       "known_caveats": [
         "selected endpoints are latest available official EOD arrays, not requested-date historical contracts",
-        "TPEx mixed instrument classification must fail closed until implemented"
+        "TPEx mixed instrument classification must fail closed until implemented",
+        "latest probe reported 2026-07-09 while expected latest completed Taiwan trading date was 2026-07-10; runtime currentness reconciliation is required"
       ],
+      "latest_probe_currentness_reconciliation_status": "delayed_one_trading_day",
       "mcp_changed": false,
       "mops_adapter_added": false,
       "network_runtime_added": false,
@@ -1807,7 +1811,7 @@
       "tpex_endpoint_verified": true,
       "tpex_mis_introduced": false,
       "track_name": "M8A-OFFICIAL-TWSE-TPEX-EOD-CONTEXT",
-      "twse_adapter_readiness": "go",
+      "twse_adapter_readiness": "conditional_go",
       "twse_direct_probe_completed": true,
       "twse_endpoint_verified": true
     },

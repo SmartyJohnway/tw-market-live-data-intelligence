@@ -1,0 +1,54 @@
+{
+  "schema_version": "m8a_official_eod_currentness_reconciliation.v1",
+  "generated_at_utc": "2026-07-11T10:24:35Z",
+  "calendar_evidence": {
+    "authority": "TWSE_TRADING_CALENDAR_AUTHORITY / official TWSE holidaySchedule",
+    "official_holiday_schedule_url": "https://openapi.twse.com.tw/v1/holidaySchedule/holidaySchedule",
+    "probe_time_utc": "2026-07-11T10:24:35Z",
+    "probe_time_asia_taipei": "2026-07-11T18:24:35+08:00",
+    "taipei_local_day": "2026-07-11",
+    "taipei_local_day_session_state": "weekend_closed",
+    "expected_latest_completed_trade_date": "2026-07-10",
+    "evidence": [
+      "2026-07-11 Asia/Taipei was Saturday after any Friday EOD publication window",
+      "official 2026 TWSE holidaySchedule contains no 1150710 non-trading record",
+      "M7E calendar policy treats weekends as closed and supplied official holiday records as additional closures"
+    ],
+    "caveat": "This preflight does not prove whether the OpenAPI publication pipeline had an official delayed publication incident; runtime must reconcile every fetch."
+  },
+  "source_reconciliations": [
+    {
+      "source_id": "TWSE_OPENAPI",
+      "endpoint_contract_id": "twse_openapi_stock_day_all_v1",
+      "probe_time_utc": "2026-07-11T10:24:35Z",
+      "probe_time_asia_taipei": "2026-07-11T18:24:35+08:00",
+      "expected_latest_completed_trade_date": "2026-07-10",
+      "reported_trade_date": "2026-07-09",
+      "trading_day_lag": 1,
+      "currentness_reconciliation_status": "delayed_one_trading_day",
+      "currentness_reconciliation_evidence": [
+        "bounded probe row Date was 1150709 / 2026-07-09",
+        "expected latest completed TWSE trading date at probe time was 2026-07-10",
+        "1150710 was not present in official holidaySchedule as a non-trading day"
+      ],
+      "runtime_condition": "Do not label official EOD context current unless reported trade_date matches expected_latest_completed_trade_date."
+    },
+    {
+      "source_id": "TPEX_OPENAPI",
+      "endpoint_contract_id": "tpex_openapi_mainboard_daily_close_quotes_v1",
+      "probe_time_utc": "2026-07-11T10:24:35Z",
+      "probe_time_asia_taipei": "2026-07-11T18:24:35+08:00",
+      "expected_latest_completed_trade_date": "2026-07-10",
+      "reported_trade_date": "2026-07-09",
+      "trading_day_lag": 1,
+      "currentness_reconciliation_status": "delayed_one_trading_day",
+      "currentness_reconciliation_evidence": [
+        "bounded probe row Date was 1150709 / 2026-07-09",
+        "expected latest completed Taiwan trading date at probe time was 2026-07-10 using shared TWSE calendar foundation for market-day expectation",
+        "1150710 was not present in official holidaySchedule as a non-trading day"
+      ],
+      "runtime_condition": "Do not label official EOD context current unless reported trade_date matches expected_latest_completed_trade_date; retain as stale official EOD reference if delayed."
+    }
+  ],
+  "readiness_effect": "Both endpoints remain implementable but readiness is conditional_go until runtime currentness reconciliation is implemented."
+}

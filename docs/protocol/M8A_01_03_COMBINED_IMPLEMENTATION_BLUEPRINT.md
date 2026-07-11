@@ -34,7 +34,7 @@ Recommendation: Option B now, shaped for later Option C.
 ```
 
 ## Whole-market network response handling
-Selected endpoints return whole-market/latest arrays. It is acceptable to fetch one official whole-market response per source per explicit execution, then immediately filter to bounded requested symbols for retained artifacts/context. Do not call the network request symbol-bounded. Do not retain full response by default.
+Selected endpoints return whole-market/latest arrays. It is acceptable to fetch one official whole-market response per source per explicit execution, then immediately filter to bounded requested symbols for retained artifacts/context. Do not call the network request symbol-bounded. Do not retain full response by default. The execution helper must compute expected latest completed Taiwan trading date from the accepted calendar/session foundation and compare each source reported trade_date before marking official EOD context current; mismatches remain stale/reference context with reconciliation caveats.
 
 ## Context mapping
 Map to M8 fields: source_id, source_family, symbol, name, market, instrument_type, context_type, safe_fields, omitted_fields, source_timestamp, retrieved_at_utc, market_date, trading_date, session_state, source_unavailable, source_unavailable_reason, value_status, validation_status, caveats. Context types: `official_equity_eod_reference`, `official_etf_eod_reference`, `official_market_eod_reference`.
