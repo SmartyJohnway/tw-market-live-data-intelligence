@@ -115,3 +115,21 @@ def test_inventory_m8_00_06_07_metadata():
 def test_default_ci_includes_hardening_test():
     config = json.loads((ROOT / "config/test_execution_profiles.json").read_text())
     assert "tests/unit/test_m8_compatibility_hardening.py" in config["profiles"]["default-ci"]["pytest_paths"]
+
+
+def test_safe_field_text_cannot_inject_trading_advice_terms():
+    proj = _proj([_obs(safe_fields={
+        "price_like_value": 2415,
+        "operator_note": "buy this",
+        "comment": "sell or hold with bullish ranking",
+        "target": "target price 2500 near support/resistance",
+        "relative": "strongest and weakest",
+    })])
+    markdown = proj["sections"][0]["markdown"].lower()
+    guardrail = "this context is not trading advice, not a recommendation, and not a trading signal."
+    assert guardrail in markdown
+    checked = markdown.replace(guardrail, "")
+    for term in ["buy", "sell", "hold", "bullish", "bearish", "target price", "support", "resistance", "ranking", "top movers", "strongest", "weakest"]:
+        assert term not in checked
+    ctx = _ctxs(proj)[0]
+    assert ctx["safe_fields"] == {"price_like_value": 2415}

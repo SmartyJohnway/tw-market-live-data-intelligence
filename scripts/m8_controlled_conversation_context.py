@@ -15,13 +15,16 @@ FORBIDDEN_CONVERSATION_TERMS = {
     "buy",
     "sell",
     "hold",
+    "bullish",
+    "bearish",
     "target price",
     "support",
     "resistance",
+    "support/resistance",
     "ranking",
     "top movers",
-    "bullish",
-    "bearish",
+    "strongest",
+    "weakest",
 }
 
 FORBIDDEN_RAW_KEYS = {
@@ -79,6 +82,47 @@ def _scrub_safe_fields(safe_fields: Any) -> tuple[dict, list[str]]:
     return projected, omitted
 
 
+
+
+def _text_tokens(value: str) -> set[str]:
+    normalized = []
+    for char in value.lower():
+        normalized.append(char if char.isalnum() else " ")
+    return set("".join(normalized).split())
+
+
+def _contains_forbidden_conversation_term(value: Any) -> bool:
+    if isinstance(value, str):
+        lowered = value.lower()
+        tokens = _text_tokens(value)
+        for term in FORBIDDEN_CONVERSATION_TERMS:
+            if " " in term or "/" in term:
+                if term in lowered:
+                    return True
+            elif term in tokens:
+                return True
+        return False
+    if isinstance(value, dict):
+        return any(_contains_forbidden_conversation_term(item) for item in value.values())
+    if isinstance(value, (list, tuple, set)):
+        return any(_contains_forbidden_conversation_term(item) for item in value)
+    return False
+
+
+def _scrub_forbidden_conversation_terms(safe_fields: dict, omitted: list[str], caveats: list[str]) -> dict:
+    projected = {}
+    found_forbidden_term = False
+    for key, value in safe_fields.items():
+        if _contains_forbidden_conversation_term(value):
+            found_forbidden_term = True
+            _append_unique(omitted, key)
+        else:
+            projected[key] = value
+    if found_forbidden_term:
+        _append_unique(caveats, "forbidden trading interpretation term omitted from conversation safe_fields")
+    return projected
+
+
 def _policy_caveats(ctx: dict) -> list[str]:
     caveats: list[str] = []
     freshness = ctx.get("freshness_assessment")
@@ -112,6 +156,7 @@ def _project_context(ctx: dict, top_level_safe: bool) -> dict:
     credential = freshness == "credential_gated_metadata_only" or ctx.get("timing_class") == "credential_gated_research" or source_id == "CREDENTIAL_GATED_PROVIDER"
     allow_fields = top_level_safe and not unknown and not credential
     safe_fields, omitted = _scrub_safe_fields(ctx.get("safe_fields"))
+    safe_fields = _scrub_forbidden_conversation_terms(safe_fields, omitted, caveats)
     if unknown and safe_fields:
         omitted.extend(k for k in safe_fields if k not in omitted)
         safe_fields = {}
@@ -155,6 +200,11 @@ def _contains_raw_key(projected_instruments: list[dict], markdown: str) -> bool:
         if any(key in ctx.get("safe_fields", {}) for key in FORBIDDEN_RAW_KEYS):
             return True
     return False
+
+
+def _markdown_contains_forbidden_conversation_term(markdown: str) -> bool:
+    markdown_without_guardrail = markdown.replace(GUARDRAIL_LINE, "")
+    return _contains_forbidden_conversation_term(markdown_without_guardrail)
 
 
 def _build_markdown(status: str, summary: dict, sources: list[dict], instruments: list[dict], caveats: list[str]) -> str:
@@ -236,6 +286,11 @@ def build_controlled_conversation_context(multi_source_context: dict, *, include
         status = "blocked"
         projected_instruments = []
         _append_unique(caveats, "forbidden raw field detected after projection")
+        markdown = "" if include_markdown else None
+    elif markdown and _markdown_contains_forbidden_conversation_term(markdown):
+        status = "blocked"
+        projected_instruments = []
+        _append_unique(caveats, "forbidden trading interpretation term detected after projection")
         markdown = "" if include_markdown else None
 
     section = {

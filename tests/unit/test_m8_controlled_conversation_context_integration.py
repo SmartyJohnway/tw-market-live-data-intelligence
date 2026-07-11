@@ -103,3 +103,20 @@ def test_wrong_schema_is_blocked():
 def test_default_ci_includes_new_test():
     config = json.loads((ROOT / "config/test_execution_profiles.json").read_text())
     assert "tests/unit/test_m8_controlled_conversation_context_integration.py" in config["profiles"]["default-ci"]["pytest_paths"]
+
+
+def test_forbidden_trading_terms_in_safe_fields_are_withheld():
+    proj = _projection([_obs(safe_fields={
+        "price_like_value": 2415,
+        "operator_note": "buy this",
+        "comment": "bullish breakout",
+        "target": "target price 2500",
+    })])
+    ctx = _contexts(proj)[0]
+    assert ctx["safe_fields"] == {"price_like_value": 2415}
+    assert {"operator_note", "comment", "target"}.issubset(set(ctx["omitted_fields"]))
+    assert "forbidden trading interpretation term omitted from conversation safe_fields" in " ".join(ctx["caveats"] + proj["sections"][0]["caveats"])
+    markdown = proj["sections"][0]["markdown"]
+    assert "buy this" not in markdown
+    assert "bullish breakout" not in markdown
+    assert "target price 2500" not in markdown
