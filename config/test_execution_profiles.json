@@ -97,7 +97,9 @@
         "tests/unit/test_m7g_final_acceptance.py",
         "tests/unit/test_m8_source_governance_foundation.py",
         "tests/unit/test_m8_source_freshness_evaluator.py",
-        "tests/unit/test_m8_multi_source_context_builder.py"
+        "tests/unit/test_m8_multi_source_context_builder.py",
+        "tests/unit/test_m8_controlled_conversation_context_integration.py",
+        "tests/unit/test_m8_compatibility_hardening.py"
       ],
       "network_policy": "no network; excludes tests marked network",
       "browser_policy": "does not install or require Playwright/Chromium",

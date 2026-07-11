@@ -1658,14 +1658,16 @@
       ]
     },
     "m8_source_timing_authority_governance": {
-      "status": "m8_00_multi_source_context_builder_defined",
+      "status": "m8_00_controlled_conversation_context_integration_and_compatibility_hardening_defined",
       "completed_tasks": [
         "M8-00-00",
         "M8-00-01",
         "M8-00-02",
         "M8-00-03",
         "M8-00-04",
-        "M8-00-05"
+        "M8-00-05",
+        "M8-00-06",
+        "M8-00-07"
       ],
       "track_name": "M8-SOURCE-TIMING-AUTHORITY-GOVERNANCE-AND-MULTI-SOURCE-MARKET-CONTEXT",
       "governance_preflight_doc": "docs/protocol/M8_SOURCE_TIMING_AUTHORITY_GOVERNANCE_PREFLIGHT.md",
@@ -1706,7 +1708,7 @@
       "trading_advice_allowed": false,
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
-      "next_task": "M8-00-06-CONTROLLED-CONVERSATION-CONTEXT-INTEGRATION",
+      "next_task": "M8-00-08-FINAL-ACCEPTANCE-AND-CLOSURE",
       "multi_source_context_builder_doc": "docs/protocol/M8_MULTI_SOURCE_CONTEXT_BUILDER.md",
       "multi_source_context_builder_module": "scripts/m8_multi_source_context_builder.py",
       "multi_source_context_builder_is_pure_helper": true,
@@ -1719,7 +1721,27 @@
       "retrieved_at_not_exchange_timestamp_policy_enforced_by_builder": true,
       "manual_evidence_not_official_source_policy_enforced_by_builder": true,
       "validation_only_not_primary_source_policy_enforced_by_builder": true,
-      "stale_not_current_policy_enforced_by_builder": true
+      "stale_not_current_policy_enforced_by_builder": true,
+      "controlled_conversation_context_doc": "docs/protocol/M8_CONTROLLED_CONVERSATION_CONTEXT_INTEGRATION.md",
+      "controlled_conversation_context_module": "scripts/m8_controlled_conversation_context.py",
+      "controlled_conversation_context_schema_version": "m8_controlled_conversation_context.v1",
+      "compatibility_hardening_doc": "docs/protocol/M8_COMPATIBILITY_HARDENING.md",
+      "controlled_conversation_context_integration_added": true,
+      "controlled_conversation_context_integration_is_pure_projection": true,
+      "controlled_conversation_context_network_access": false,
+      "compatibility_hardening_added": true,
+      "m8_00_05_caveats_fixed": true,
+      "has_liveish_source_family_observation_flag_added": true,
+      "unknown_source_safe_fields_withheld_from_conversation_context": true,
+      "most_recent_retrieved_at_utc_uses_utc_parsing": true,
+      "conversation_context_runtime_endpoint_added": false,
+      "forbidden_fields_blocked_from_conversation_context": true,
+      "eod_not_realtime_policy_enforced_by_conversation_projection": true,
+      "retrieved_at_not_exchange_timestamp_policy_enforced_by_conversation_projection": true,
+      "manual_evidence_not_official_source_policy_enforced_by_conversation_projection": true,
+      "validation_only_not_primary_source_policy_enforced_by_conversation_projection": true,
+      "stale_not_current_policy_enforced_by_conversation_projection": true,
+      "m8_00_08_final_acceptance_added": false
     }
   },
   "runtime_behavior_changed": false,
