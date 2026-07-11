@@ -1,0 +1,312 @@
+"""Pure M8-00-05 multi-source market context builder.
+
+Combines caller-provided observations, caller-provided source registry policy,
+and M8-00-04 freshness assessments without filesystem, network, runtime,
+UI, tool-server, or model access.
+"""
+
+from collections import OrderedDict, defaultdict
+from datetime import datetime, timezone
+from typing import Any
+
+from scripts.m8_source_freshness_evaluator import build_source_freshness_assessment
+
+MULTI_SOURCE_CONTEXT_SCHEMA_VERSION = "m8_00_multi_source_market_context.v1"
+
+FORBIDDEN_SAFE_FIELD_KEYS = {
+    "raw_payload",
+    "raw_payload_sample",
+    "source_investigation_notes",
+    "bid_prices",
+    "ask_prices",
+    "bid_volumes",
+    "ask_volumes",
+    "raw_bid_ask_ladder",
+    "order_book_truth",
+}
+
+FORBIDDEN_INTERPRETATIONS = [
+    "trading advice",
+    "trading signal",
+    "recommendation",
+    "target price",
+    "support/resistance",
+    "ranking",
+    "bullish/bearish recommendation",
+    "capital-flow interpretation",
+]
+
+
+def _as_list(value: Any) -> list[Any]:
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return list(value)
+    return [value]
+
+
+def _append_unique(items: list[Any], value: Any) -> None:
+    if value and value not in items:
+        items.append(value)
+
+
+def _extend_unique(items: list[Any], values: list[Any]) -> None:
+    for value in values:
+        _append_unique(items, value)
+
+
+def _utc_now_text(now_utc: str | None) -> str:
+    return now_utc or datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _policy_lookup(source_registry: dict) -> tuple[dict[str, dict], bool]:
+    if not isinstance(source_registry, dict):
+        return {}, False
+    sources = source_registry.get("sources")
+    if not isinstance(sources, list):
+        return {}, False
+    lookup = {}
+    for source in sources:
+        if isinstance(source, dict) and source.get("source_id"):
+            lookup[source["source_id"]] = source
+    return lookup, bool(lookup)
+
+
+def _scrub_safe_fields(observation: dict, caveats: list[str]) -> tuple[dict, list[str], bool]:
+    safe_fields = observation.get("safe_fields") or {}
+    if not isinstance(safe_fields, dict):
+        safe_fields = {}
+    omitted = _as_list(observation.get("omitted_fields"))
+    found_forbidden = False
+    scrubbed = {}
+    for key, value in safe_fields.items():
+        if key in FORBIDDEN_SAFE_FIELD_KEYS:
+            found_forbidden = True
+            _append_unique(omitted, key)
+        else:
+            scrubbed[key] = value
+    if found_forbidden:
+        _append_unique(caveats, "forbidden field omitted from safe_fields")
+    return scrubbed, omitted, found_forbidden
+
+
+def _unknown_assessment(observation: dict) -> dict:
+    return {
+        "source_id": observation.get("source_id"),
+        "source_family": observation.get("source_family"),
+        "authority_level": "unknown",
+        "timing_class": "unknown",
+        "freshness_assessment": "unknown",
+        "ai_exposure_level": "metadata_only",
+        "runtime_executable": False,
+        "requires_caveats": True,
+        "safe_for_ai_context": False,
+        "caveats": ["unknown source_id was included only as caveated metadata"],
+    }
+
+
+def _has_official_same_group(contexts: list[dict]) -> bool:
+    return any(str(ctx.get("authority_level", "")).startswith("official") for ctx in contexts)
+
+
+def _classify_context_flags(ctx: dict, has_official_group_source: bool) -> None:
+    freshness = ctx["freshness_assessment"]
+    timing = ctx["timing_class"]
+    unavailable = bool(ctx["source_unavailable"])
+    primary = False
+    supporting = False
+    metadata = False
+    if freshness == "fresh_intraday_snapshot" and ctx["source_id"] == "TWSE_MIS":
+        primary = True
+    elif freshness == "stale_intraday_snapshot":
+        _append_unique(ctx["caveats"], "stale source must not be described as current market")
+    elif freshness == "official_eod_reference":
+        primary = True
+        _append_unique(ctx["caveats"], "EOD source must not be described as realtime or current price")
+    elif freshness == "official_statistics_eod":
+        primary = True
+        _append_unique(ctx["caveats"], "official statistics EOD must not be described as live derivatives signal or leading indicator")
+    elif freshness == "manual_snapshot":
+        _append_unique(ctx["caveats"], "manual evidence cannot override official source")
+        if has_official_group_source:
+            supporting = True
+    elif freshness == "validation_only":
+        supporting = True
+        _append_unique(ctx["caveats"], "validation-only source cannot be primary context")
+    elif freshness == "credential_gated_metadata_only" or timing == "credential_gated_research":
+        metadata = True
+        _append_unique(ctx["caveats"], "credential-gated source is metadata-only and not runtime dependency")
+    elif freshness == "source_unavailable" or unavailable:
+        metadata = True
+        _append_unique(ctx["caveats"], "source unavailable; context is metadata-only")
+    elif freshness == "unknown":
+        metadata = True
+        _append_unique(ctx["caveats"], "unknown source_id was included only as caveated metadata")
+    if unavailable:
+        primary = False
+        metadata = True
+    if freshness in {"stale_intraday_snapshot", "manual_snapshot", "validation_only", "credential_gated_metadata_only", "unknown", "source_unavailable"}:
+        primary = False
+    ctx["primary_context_allowed"] = primary
+    ctx["supporting_context_only"] = supporting or freshness == "validation_only"
+    ctx["metadata_only"] = metadata
+
+
+def _label(summary: dict) -> str:
+    if summary["has_unknown_sources"]:
+        return "contains_unknown_sources"
+    if summary["has_unavailable_sources"]:
+        return "contains_unavailable_sources"
+    if summary["has_stale_sources"]:
+        return "contains_stale_sources"
+    if summary["has_liveish_intraday_snapshot"] and (summary["has_official_eod_reference"] or summary["has_official_statistics_eod"]):
+        return "mixed_liveish_and_eod_context"
+    if summary["has_liveish_intraday_snapshot"]:
+        return "liveish_intraday_snapshot_only"
+    if summary["has_official_eod_reference"] and not summary["has_official_statistics_eod"]:
+        return "official_eod_reference_only"
+    if summary["has_official_statistics_eod"] and not summary["has_official_eod_reference"]:
+        return "official_statistics_eod_only"
+    if summary["has_official_eod_reference"] or summary["has_official_statistics_eod"] or summary["has_regulatory_reference"]:
+        return "mixed_reference_context"
+    if summary["has_manual_snapshot"] or summary["has_validation_only"]:
+        return "manual_or_validation_only_context"
+    if summary["has_credential_gated_metadata_only"]:
+        return "credential_gated_metadata_only"
+    return "empty_context"
+
+
+def build_multi_source_market_context(observations: list[dict], source_registry: dict, *, now_utc: str | None = None) -> dict:
+    observations = list(observations or [])
+    generated_at = _utc_now_text(now_utc)
+    lookup, registry_valid = _policy_lookup(source_registry)
+    cross_caveats: list[str] = ["retrieved_at_utc is not exchange timestamp"]
+    if not observations:
+        cross_caveats = []
+
+    source_summaries: OrderedDict[str, dict] = OrderedDict()
+    grouped: OrderedDict[tuple[Any, Any, Any], dict] = OrderedDict()
+    all_contexts: list[dict] = []
+    forbidden_scrubbed = False
+
+    for obs in observations:
+        obs = dict(obs or {})
+        sid = obs.get("source_id")
+        policy = lookup.get(sid)
+        known = policy is not None
+        assessment = build_source_freshness_assessment(obs, policy, now_utc=now_utc) if known else _unknown_assessment(obs)
+        caveats = []
+        _extend_unique(caveats, _as_list(obs.get("caveats")))
+        _extend_unique(caveats, _as_list(assessment.get("caveats")))
+        safe_fields, omitted_fields, did_scrub = _scrub_safe_fields(obs, caveats)
+        forbidden_scrubbed = forbidden_scrubbed or did_scrub
+        ctx = {
+            "source_id": sid,
+            "source_family": obs.get("source_family") or (policy or {}).get("source_family"),
+            "context_type": obs.get("context_type"),
+            "authority_level": assessment.get("authority_level") or (policy or {}).get("authority_level") or "unknown",
+            "timing_class": assessment.get("timing_class") or (policy or {}).get("timing_class") or "unknown",
+            "freshness_assessment": assessment.get("freshness_assessment", "unknown"),
+            "ai_exposure_level": assessment.get("ai_exposure_level") or (policy or {}).get("ai_exposure_level") or "metadata_only",
+            "source_timestamp": obs.get("source_timestamp"),
+            "retrieved_at_utc": obs.get("retrieved_at_utc"),
+            "market_date": obs.get("market_date"),
+            "trading_date": obs.get("trading_date"),
+            "session_state": obs.get("session_state"),
+            "safe_fields": safe_fields,
+            "omitted_fields": omitted_fields,
+            "caveats": caveats,
+            "primary_context_allowed": False,
+            "supporting_context_only": False,
+            "metadata_only": False,
+            "source_unavailable": bool(obs.get("source_unavailable")),
+            "not_trading_signal": True,
+            "not_recommendation": True,
+        }
+        if not known:
+            _append_unique(ctx["caveats"], "unknown source_id was included only as caveated metadata")
+        key = (obs.get("symbol"), obs.get("market"), obs.get("instrument_type"))
+        if key not in grouped:
+            grouped[key] = {"symbol": obs.get("symbol"), "name": obs.get("name"), "market": obs.get("market"), "instrument_type": obs.get("instrument_type"), "contexts": []}
+        grouped[key]["contexts"].append(ctx)
+        all_contexts.append(ctx)
+        summary = source_summaries.setdefault(sid, {"source_id": sid, "source_family": ctx["source_family"], "authority_level": ctx["authority_level"], "timing_class": ctx["timing_class"], "freshness_assessments": [], "ai_exposure_level": ctx["ai_exposure_level"], "runtime_executable": bool((policy or {}).get("runtime_executable")), "observation_count": 0, "has_stale_observation": False, "has_unavailable_observation": False, "caveats": []})
+        summary["observation_count"] += 1
+        _append_unique(summary["freshness_assessments"], ctx["freshness_assessment"])
+        summary["has_stale_observation"] |= ctx["freshness_assessment"] == "stale_intraday_snapshot"
+        summary["has_unavailable_observation"] |= ctx["freshness_assessment"] == "source_unavailable" or ctx["source_unavailable"]
+        _extend_unique(summary["caveats"], ctx["caveats"])
+
+    for group in grouped.values():
+        has_official = _has_official_same_group(group["contexts"])
+        for ctx in group["contexts"]:
+            _classify_context_flags(ctx, has_official)
+
+    assessments = [ctx["freshness_assessment"] for ctx in all_contexts]
+    retrieved_values = sorted([ctx["retrieved_at_utc"] for ctx in all_contexts if ctx.get("retrieved_at_utc")])
+    freshness_summary = {
+        "has_liveish_intraday_snapshot": "fresh_intraday_snapshot" in assessments,
+        "has_official_eod_reference": "official_eod_reference" in assessments,
+        "has_official_statistics_eod": "official_statistics_eod" in assessments,
+        "has_regulatory_reference": "regulatory_reference" in assessments,
+        "has_manual_snapshot": "manual_snapshot" in assessments,
+        "has_validation_only": "validation_only" in assessments,
+        "has_credential_gated_metadata_only": "credential_gated_metadata_only" in assessments,
+        "has_stale_sources": "stale_intraday_snapshot" in assessments,
+        "has_unavailable_sources": any(ctx["source_unavailable"] or ctx["freshness_assessment"] == "source_unavailable" for ctx in all_contexts),
+        "has_unknown_sources": "unknown" in assessments,
+        "most_recent_retrieved_at_utc": retrieved_values[-1] if retrieved_values else None,
+        "caveated_currentness_label": "empty_context",
+    }
+    freshness_summary["caveated_currentness_label"] = _label(freshness_summary)
+
+    if freshness_summary["has_official_eod_reference"]:
+        _append_unique(cross_caveats, "EOD source must not be described as realtime")
+    if freshness_summary["has_official_statistics_eod"]:
+        _append_unique(cross_caveats, "official statistics EOD must not be described as live derivatives signal or leading indicator")
+    if freshness_summary["has_stale_sources"]:
+        _append_unique(cross_caveats, "stale source must not be described as current market")
+    if freshness_summary["has_manual_snapshot"]:
+        _append_unique(cross_caveats, "manual evidence cannot override official source")
+    if freshness_summary["has_validation_only"]:
+        _append_unique(cross_caveats, "validation-only source cannot be primary context")
+    if freshness_summary["has_credential_gated_metadata_only"]:
+        _append_unique(cross_caveats, "credential-gated source is metadata-only and not runtime dependency")
+    if freshness_summary["has_liveish_intraday_snapshot"] and (freshness_summary["has_official_eod_reference"] or freshness_summary["has_official_statistics_eod"]):
+        _append_unique(cross_caveats, "mixed live-ish and EOD sources require caveated wording")
+    if freshness_summary["has_unknown_sources"]:
+        _append_unique(cross_caveats, "unknown source_id was included only as caveated metadata")
+    if forbidden_scrubbed:
+        _append_unique(cross_caveats, "forbidden raw fields were omitted from safe_fields")
+
+    usable = any(ctx["safe_fields"] and ctx["freshness_assessment"] not in {"unknown", "source_unavailable", "credential_gated_metadata_only"} for ctx in all_contexts)
+    all_blocked = bool(all_contexts) and all(ctx["freshness_assessment"] in {"unknown", "source_unavailable", "credential_gated_metadata_only"} for ctx in all_contexts)
+    safe_to_include = registry_valid and usable and not all_blocked
+    requires_caveats = bool(cross_caveats) or any(ctx["caveats"] for ctx in all_contexts)
+    status = "empty_context" if not observations else ("candidate_built_with_caveats" if requires_caveats else "candidate_built")
+
+    return {
+        "schema_version": MULTI_SOURCE_CONTEXT_SCHEMA_VERSION,
+        "context_status": status,
+        "generated_at_utc": generated_at,
+        "market_scope": {},
+        "sources": list(source_summaries.values()),
+        "freshness_summary": freshness_summary,
+        "instrument_contexts": list(grouped.values()),
+        "cross_source_caveats": cross_caveats,
+        "ai_exposure_policy": {
+            "safe_to_include_in_conversation_context": safe_to_include,
+            "requires_caveats": requires_caveats,
+            "blocked_fields": sorted(FORBIDDEN_SAFE_FIELD_KEYS),
+            "forbidden_interpretations": FORBIDDEN_INTERPRETATIONS,
+            "not_trading_signal": True,
+            "not_recommendation": True,
+            "not_realtime_unless_source_policy_allows": True,
+            "eod_not_realtime": True,
+            "retrieved_at_not_exchange_timestamp": True,
+            "manual_evidence_not_official_source": True,
+            "validation_only_not_primary_source": True,
+        },
+        "not_trading_signal": True,
+        "not_recommendation": True,
+    }

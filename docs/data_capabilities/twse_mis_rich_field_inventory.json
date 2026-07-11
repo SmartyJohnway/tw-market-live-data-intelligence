@@ -1658,13 +1658,14 @@
       ]
     },
     "m8_source_timing_authority_governance": {
-      "status": "m8_00_source_freshness_evaluator_defined",
+      "status": "m8_00_multi_source_context_builder_defined",
       "completed_tasks": [
         "M8-00-00",
         "M8-00-01",
         "M8-00-02",
         "M8-00-03",
-        "M8-00-04"
+        "M8-00-04",
+        "M8-00-05"
       ],
       "track_name": "M8-SOURCE-TIMING-AUTHORITY-GOVERNANCE-AND-MULTI-SOURCE-MARKET-CONTEXT",
       "governance_preflight_doc": "docs/protocol/M8_SOURCE_TIMING_AUTHORITY_GOVERNANCE_PREFLIGHT.md",
@@ -1681,7 +1682,7 @@
       "freshness_evaluator_is_pure_helper": true,
       "freshness_evaluator_network_access": false,
       "freshness_evaluator_runtime_integration_added": false,
-      "multi_source_context_builder_added": false,
+      "multi_source_context_builder_added": true,
       "conversation_context_integration_added": false,
       "adapter_added": false,
       "network_fetch_added": false,
@@ -1705,7 +1706,20 @@
       "trading_advice_allowed": false,
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
-      "next_task": "M8-00-05-MULTI-SOURCE-CONTEXT-BUILDER"
+      "next_task": "M8-00-06-CONTROLLED-CONVERSATION-CONTEXT-INTEGRATION",
+      "multi_source_context_builder_doc": "docs/protocol/M8_MULTI_SOURCE_CONTEXT_BUILDER.md",
+      "multi_source_context_builder_module": "scripts/m8_multi_source_context_builder.py",
+      "multi_source_context_builder_is_pure_helper": true,
+      "multi_source_context_builder_network_access": false,
+      "multi_source_context_builder_runtime_integration_added": false,
+      "raw_payload_exposure_allowed": false,
+      "forbidden_safe_fields_scrubbed_by_builder": true,
+      "mixed_liveish_and_eod_context_supported_with_caveats": true,
+      "eod_not_realtime_policy_enforced_by_builder": true,
+      "retrieved_at_not_exchange_timestamp_policy_enforced_by_builder": true,
+      "manual_evidence_not_official_source_policy_enforced_by_builder": true,
+      "validation_only_not_primary_source_policy_enforced_by_builder": true,
+      "stale_not_current_policy_enforced_by_builder": true
     }
   },
   "runtime_behavior_changed": false,
