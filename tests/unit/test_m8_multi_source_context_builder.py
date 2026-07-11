@@ -140,7 +140,7 @@ def test_raw_field_scrubbing():
 def test_inventory_m8_00_05_metadata():
     inv = json.loads((ROOT / "docs/data_capabilities/twse_mis_rich_field_inventory.json").read_text())
     entry = inv["rich_observation_contract"]["m8_source_timing_authority_governance"]
-    assert entry["status"] == "m8_00_controlled_conversation_context_integration_and_compatibility_hardening_defined"
+    assert entry["status"] == "m8_00_final_acceptance_pass_with_caveats"
     assert "M8-00-05" in entry["completed_tasks"]
     assert (ROOT / entry["multi_source_context_builder_doc"]).exists()
     assert (ROOT / entry["multi_source_context_builder_module"]).exists()
@@ -150,7 +150,7 @@ def test_inventory_m8_00_05_metadata():
     assert entry["runtime_behavior_changed"] is False
     assert entry["adapter_added"] is False
     assert entry["controlled_conversation_context_integration_added"] is True
-    assert entry["next_task"] == "M8-00-08-FINAL-ACCEPTANCE-AND-CLOSURE"
+    assert entry["next_task"] == "M8A-00-OFFICIAL-EOD-ADAPTER-SCOPE-AND-CONTRACT-PREFLIGHT"
 
 
 def test_default_ci_includes_builder_test():
