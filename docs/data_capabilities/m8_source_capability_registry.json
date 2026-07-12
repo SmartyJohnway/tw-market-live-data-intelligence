@@ -208,10 +208,13 @@
       "timing_class": "official_statistics_eod",
       "latency_class": "eod_after_close",
       "freshness_policy": "official statistics EOD; EOD must not be realtime",
-      "market_scope": {
-        "derivatives": "official EOD/statistical"
-      },
-      "instrument_scope": [],
+      "market_scope": [
+        "taifex"
+      ],
+      "instrument_scope": [
+        "futures",
+        "options"
+      ],
       "field_groups": [],
       "runtime_available": false,
       "runtime_executable": false,
@@ -230,7 +233,8 @@
         "no trading signal"
       ],
       "caveats": [
-        "Runtime adapter not added in this PR; future M8B candidate."
+        "M8B-00 preflight complete; adapters are not implemented until M8B-01.",
+        "Official derivatives EOD is not realtime; retrieved_at is not market freshness."
       ],
       "credential_required": false,
       "local_first_safe": true,
@@ -241,7 +245,10 @@
       "freshness_evaluator_policy": {
         "eod_reference_requires_market_date": true,
         "statistics_not_live_signal": true
-      }
+      },
+      "source_role": "official_derivatives_eod_context",
+      "runtime_status": "preflight_complete_adapter_pending",
+      "currentness_contract": "m8b_taifex_derivatives_currentness_contract"
     },
     {
       "source_id": "MOPS",
