@@ -1,0 +1,1 @@
+{"schema_version":"m8c_probe_summary.v1","status":"directly_reproduced","command":"python scripts/probe_m8c_taifex_mis_sockjs.py --confirm-live-probe","info_status":200,"websocket":true,"cookie_needed":true,"origins":["*:*"],"xhr_open_status":200,"xhr_open_frame":"o","raw_payload_retained":false,"cookies_retained":false,"session_ids_retained":false}

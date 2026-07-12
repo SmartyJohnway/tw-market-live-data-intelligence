@@ -1,0 +1,40 @@
+{
+  "schema_version": "m8c_taifex_mis_transport_registry.v1",
+  "source_id": "TAIFEX_MIS",
+  "official_site": "https://mis.taifex.com.tw/futures/",
+  "endpoint_type": "browser_rest_plus_sockjs",
+  "bootstrap_transport": {
+    "type": "same_origin_rest_json",
+    "base_path": "/futures/api/",
+    "directly_reproduced": true
+  },
+  "push_transport": {
+    "protocol": "sockjs",
+    "client_version_observed": "1.4.0_candidate_from_frontend",
+    "base_path": "/futures/rt",
+    "primary_bounded_candidate": "xhr_polling",
+    "primary_candidate_directly_reproduced": true,
+    "websocket_server_advertised": true,
+    "websocket_runtime_reproduced": false
+  },
+  "session": {
+    "cookie_needed_observed": true,
+    "single_client_session_required_candidate": true,
+    "ephemeral_session_only": true
+  },
+  "messages": {
+    "subscribe_observed": true,
+    "refresh_observed_in_client": true,
+    "unsubscribe_verified": false,
+    "quote_observed": true,
+    "changeDate_observed": false,
+    "changeSource_observed": false
+  },
+  "runtime_readiness": {
+    "snapshot_runtime": "go_with_caveats",
+    "delta_runtime": "conditional_no_go"
+  },
+  "raw_payload_retained": false,
+  "next_task": "M8C-01-TAIFEX-MIS-BOUNDED-REST-SOCKJS-SNAPSHOT-RUNTIME",
+  "preflight_result": "m8c_00_taifex_mis_preflight_pass_with_caveats"
+}

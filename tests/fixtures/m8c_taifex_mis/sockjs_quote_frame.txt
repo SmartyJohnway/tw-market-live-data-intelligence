@@ -1,0 +1,1 @@
+a["{\"type\":\"quote\",\"mode\":1,\"quote\":{\"symbol\":\"TXFTEST-F\",\"values\":{},\"trueValues\":{}}}"]

@@ -59,9 +59,9 @@
       "source_id": "TAIFEX_MIS",
       "source_family": "TAIFEX_MIS",
       "display_name": "TAIFEX MIS derivatives snapshot",
-      "authority_level": "unofficial_observed",
+      "authority_level": "official_undocumented_candidate",
       "official_documented": false,
-      "endpoint_type": "hidden_browser_json",
+      "endpoint_type": "browser_rest_plus_sockjs_observed",
       "timing_class": "liveish_intraday_snapshot",
       "latency_class": "unknown",
       "freshness_policy": "policy_defined_metadata_only",
@@ -91,7 +91,15 @@
       "raw_payload_exposure_allowed": false,
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
-      "source_notes": []
+      "source_notes": [
+        "M8C-00 preflight records transport/identity/currentness contracts only; no runtime execution enabled."
+      ],
+      "adapter_implemented": false,
+      "preflight_transport_reproduced": true,
+      "snapshot_runtime_readiness": "go_with_caveats",
+      "delta_runtime_readiness": "conditional_no_go",
+      "access_use_disposition": "operator_accepted_personal_local_research_only",
+      "controlled_runtime_executable": false
     },
     {
       "source_id": "TWSE_OPENAPI",
