@@ -878,5 +878,56 @@
       "Large-trader OI, put/call ratio, and block-trade references are factual-only; no recommendation or signal projection is allowed.",
       "Derivative price units are product-specific quotation units; settlement_currency and contract_multiplier require product metadata validation before monetary interpretation."
     ]
+  },
+  "m8b_03_bounded_retention_hardening": {
+    "put_call_ratio": {
+      "default_latest_n": 1,
+      "default_max_retained_rows": 20,
+      "hard_max_retained_rows": 60,
+      "precedence": "requested_trade_dates then latest_n then max_retained_rows",
+      "raw_payload_retained": false
+    },
+    "final_settlement": {
+      "default_latest_n_per_product": 1,
+      "default_max_retained_rows": 50,
+      "hard_max_retained_rows": 100,
+      "source_latest_scope": "source/product-specific; retained subset does not redefine source latest",
+      "raw_payload_retained": false
+    },
+    "retention_metadata_fields": [
+      "network_row_count",
+      "schema_valid_row_count",
+      "matching_scope_row_count",
+      "invalid_matching_row_count",
+      "retained_observation_count",
+      "retention_limit",
+      "retention_truncated",
+      "raw_payload_retained"
+    ],
+    "block_trade": {
+      "default_max_retained_rows": 100,
+      "hard_max_retained_rows": 100,
+      "selectors": [
+        "requested_products",
+        "contract_months",
+        "strikes",
+        "option_types",
+        "sessions",
+        "trade_dates"
+      ],
+      "raw_payload_retained": false
+    },
+    "large_trader_oi": {
+      "default_max_retained_rows": 100,
+      "hard_max_retained_rows": 100,
+      "selectors": [
+        "requested_products",
+        "settlement_months",
+        "option_types",
+        "trader_types",
+        "trade_dates"
+      ],
+      "raw_payload_retained": false
+    }
   }
 }

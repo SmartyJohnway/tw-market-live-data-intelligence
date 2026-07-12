@@ -61,6 +61,72 @@ The preflight reuses existing validators and reports `PASS`, `PASS WITH CAVEATS`
 
 Full release validation remains in [`docs/release/RELEASE_CHECKLIST.md`](docs/release/RELEASE_CHECKLIST.md).
 
+
+## Current M8 architecture (M8 through M8B)
+
+M8 adds governed, source-attributed market context on top of the historical M5 local workbench. It is still local-first and operator-controlled: no scheduler, no polling, no startup fetch, no database persistence, no model call, and no trading recommendation.
+
+```mermaid
+flowchart LR
+  TWSE_MIS[TWSE_MIS] --> LIVE[live-ish cash market context]
+  TWSE_OPENAPI[TWSE_OPENAPI] --> CASH[official cash-market EOD context]
+  TPEX_OPENAPI[TPEX_OPENAPI] --> CASH
+  TAIFEX_OPENAPI[TAIFEX_OPENAPI] --> DERIV[official derivatives EOD/statistical/reference context]
+  NCDR[NCDR/DGPA] --> CLOSURE[closure/currentness supporting evidence]
+  LIVE --> BUILDER[M8 multi-source context builder]
+  CASH --> BUILDER
+  DERIV --> BUILDER
+  CLOSURE --> BUILDER
+  BUILDER --> CONVO[controlled conversation context]
+  CONVO --> HANDOFF[safe artifact / AI discussion handoff]
+```
+
+`TAIFEX_MIS` is **not implemented yet**; it is deferred to `M8C-00-TAIFEX-MIS-LIVEISH-DERIVATIVES-CONTEXT-PREFLIGHT`.
+
+### M8 validation examples
+
+M8A bounded official cash-market latest-EOD validation:
+
+```bash
+python scripts/validate_m8a_official_eod_live.py \
+  --sources TWSE_OPENAPI,TPEX_OPENAPI \
+  --symbols 2330,0050,8069,006201 \
+  --confirm
+```
+
+M8B bounded TAIFEX official derivatives validation. The options scope is bounded by product, contract month/week, strike, and option type; Put/Call Ratio and final-settlement retention are bounded by runtime defaults.
+
+```bash
+python scripts/validate_m8b_taifex_openapi_live.py \
+  --contexts futures_eod,options_eod,final_settlement,large_trader_oi_futures,large_trader_oi_options,put_call_ratio,block_trade \
+  --products TX,MTX,TXO \
+  --contract-month 202607 \
+  --strike 23000 \
+  --option-type call \
+  --delivery-month 202607 \
+  --settlement-month 202607 \
+  --trader-type all \
+  --pcr-latest-n 1 \
+  --max-pcr-rows 20 \
+  --final-settlement-latest-n 1 \
+  --max-final-settlement-rows 50 \
+  --max-block-trade-rows 100 \
+  --max-large-trader-oi-rows 100 \
+  --session regular \
+  --confirm
+```
+
+### M8 source capability table
+
+| Source | Role | Timing | Runtime status | Operator gate | Retained scope | Major caveat |
+|---|---|---|---|---|---|---|
+| TWSE_MIS | live-ish cash quote snapshot | intraday snapshot | executable | yes | bounded watchlist | not realtime guaranteed |
+| TWSE_OPENAPI | official listed cash EOD | latest EOD | executable | yes | bounded symbols | no historical backfill |
+| TPEX_OPENAPI | official TPEx cash EOD | latest EOD | executable | yes | bounded symbols | no canonical security master |
+| TAIFEX_OPENAPI | official derivatives EOD/statistical/reference | official EOD/reference | executable | yes | bounded selectors/row limits | product/session metadata caveats |
+| TAIFEX_MIS | future live-ish derivatives candidate | not implemented | not executable | n/a | n/a | deferred to M8C |
+| NCDR_DGPA_CLOSURE_CAP | supporting closure evidence | event/reference | supporting evidence | yes | compact evidence | not TAIFEX-specific confirmation |
+
 ## Architecture overview
 
 ```mermaid

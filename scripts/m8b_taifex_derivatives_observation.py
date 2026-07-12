@@ -39,6 +39,9 @@ FAILURE_STATUSES = {
 def utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
+def _parse_utc(value: str) -> datetime:
+    return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(timezone.utc)
+
 
 def parse_yyyymmdd(value: Any) -> tuple[str | None, dict]:
     text = str(value).strip() if value is not None else ""
@@ -159,13 +162,36 @@ def empty_adapter_result(endpoint_contract_id: str, requested_products: list[str
     ts = utc_now()
     return {"schema_version": ADAPTER_RESULT_SCHEMA_VERSION, "source_id": SOURCE_ID, "endpoint_contract_id": endpoint_contract_id,
             "requested_products": list(requested_products or []), "network_scope": "whole_endpoint", "retained_scope": "bounded_requested_scope",
-            "requested_at_utc": ts, "completed_at_utc": ts, "http_status": None, "source_status": "not_started",
+            "requested_at_utc": ts, "completed_at_utc": None, "duration_ms": None, "http_status": None, "source_status": "not_started",
             "batch_status": "source_unavailable", "reported_trade_dates": [], "row_count_received": 0,
             "row_count_examined": 0, "row_count_retained": 0, "row_count_rejected": 0, "observations": [],
-            "rejected_rows": [], "caveats": [], "provenance": {"raw_payload_retained": False}}
+            "rejected_rows": [], "caveats": [], "retention": {"network_row_count": 0, "schema_valid_row_count": 0, "matching_scope_row_count": 0, "invalid_matching_row_count": 0, "retained_observation_count": 0, "retention_limit": None, "retention_truncated": False, "raw_payload_retained": False}, "provenance": {"raw_payload_retained": False}}
 
 
-def finalize_adapter_result(res: dict, rows: list, *, schema_valid_rows: int, matching_scope_rows: int, invalid_matching_rows: int, dates: set, allow_date_mismatch: bool = False) -> dict:
+def complete_adapter_result(res: dict) -> dict:
+    completed = utc_now()
+    res["completed_at_utc"] = completed
+    requested = res.get("requested_at_utc") or completed
+    res["duration_ms"] = max(0, int((_parse_utc(completed) - _parse_utc(requested)).total_seconds() * 1000))
+    return res
+
+def apply_retention_metadata(res: dict, *, retention_limit: int | None = None, retention_truncated: bool = False) -> dict:
+    res["retention"] = {
+        "network_row_count": res.get("row_count_received", 0),
+        "schema_valid_row_count": res.get("schema_valid_rows", 0),
+        "matching_scope_row_count": res.get("matching_scope_rows", 0),
+        "invalid_matching_row_count": res.get("invalid_matching_rows", 0),
+        "retained_observation_count": len(res.get("observations", [])),
+        "retained_trade_dates": sorted({o.get("trade_date") for o in res.get("observations", []) if o.get("trade_date")}),
+        "retention_limit": retention_limit,
+        "retention_truncated": retention_truncated,
+        "raw_payload_retained": False,
+    }
+    if retention_truncated and "bounded_retention_limit_applied" not in res.setdefault("caveats", []):
+        res["caveats"].append("bounded_retention_limit_applied")
+    return res
+
+def finalize_adapter_result(res: dict, rows: list, *, schema_valid_rows: int, matching_scope_rows: int, invalid_matching_rows: int, dates: set, allow_date_mismatch: bool = False, retention_limit: int | None = None, retention_truncated: bool = False) -> dict:
     res["schema_valid_rows"] = schema_valid_rows
     res["matching_scope_rows"] = matching_scope_rows
     res["invalid_matching_rows"] = invalid_matching_rows
@@ -185,8 +211,11 @@ def finalize_adapter_result(res: dict, rows: list, *, schema_valid_rows: int, ma
         res["batch_status"] = "empty_non_trading_day" if not rows else "no_matching_bounded_scope"
     res["row_count_retained"] = res["retained_observations"]
     res["reported_trade_dates"] = sorted(d for d in dates if d)
+    res["matching_trade_dates"] = sorted(d for d in dates if d)
+    res["retained_trade_dates"] = sorted({o.get("trade_date") for o in res.get("observations", []) if o.get("trade_date")})
     res["source_status"] = "ok" if res["retained_observations"] else res["batch_status"]
-    return res
+    apply_retention_metadata(res, retention_limit=retention_limit, retention_truncated=retention_truncated)
+    return complete_adapter_result(res)
 
 # M8B-01 corrective helpers.
 def validate_required_fields(row: dict, required_fields: list[str]) -> tuple[bool, list[str]]:

@@ -139,7 +139,7 @@ def test_raw_field_scrubbing():
 
 def test_inventory_m8_00_05_metadata():
     inv = json.loads((ROOT / "docs/data_capabilities/twse_mis_rich_field_inventory.json").read_text())
-    entry = inv["rich_observation_contract"]["m8_source_timing_authority_governance"]
+    entry = inv["rich_observation_contract"]["milestone_snapshots"]["state_at_m8_00_acceptance"]
     assert entry["status"] == "m8_00_final_acceptance_pass_with_caveats"
     assert "M8-00-05" in entry["completed_tasks"]
     assert (ROOT / entry["multi_source_context_builder_doc"]).exists()

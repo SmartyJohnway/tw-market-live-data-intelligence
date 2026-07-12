@@ -54,6 +54,19 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 - [M5 Local Release Candidate](release/M5_LOCAL_RELEASE_CANDIDATE.md)
 - [M5R Documentation Audit](release/M5R_DOCUMENTATION_AUDIT.md)
 
+
+## M8 through M8B governance and acceptance
+
+- [M8 consolidated final acceptance](protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md)
+- [M8 full non-network base/head validation](reviews/M8_THROUGH_M8B_FULL_NON_NETWORK_BASE_HEAD_VALIDATION.md)
+- [M8 source capability registry](data_capabilities/m8_source_capability_registry.json)
+- [M8-00 final acceptance](protocol/M8_00_FINAL_ACCEPTANCE_AND_CLOSURE.md)
+- [M8A official EOD final acceptance](protocol/M8A_OFFICIAL_EOD_CONTEXT_FINAL_ACCEPTANCE.md)
+- [M8B TAIFEX OpenAPI final acceptance](protocol/M8B_01_TAIFEX_OPENAPI_OFFICIAL_DERIVATIVES_EOD_FINAL_ACCEPTANCE.md)
+- [M8A live validator](../scripts/validate_m8a_official_eod_live.py)
+- [M8B live validator](../scripts/validate_m8b_taifex_openapi_live.py)
+- Next track: `M8C-00-TAIFEX-MIS-LIVEISH-DERIVATIVES-CONTEXT-PREFLIGHT`
+
 ## Reviews / acceptance
 
 - [Reviews README](reviews/README.md)

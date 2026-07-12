@@ -1,7 +1,7 @@
 {
   "schema_version": "m8_source_capability_registry.v1",
-  "status": "m8_00_governance_foundation_defined",
-  "generated_for_task": "M8-00-00-TO-03-SOURCE-TIMING-AUTHORITY-GOVERNANCE-FOUNDATION",
+  "status": "m8_through_m8b_implemented_with_caveats",
+  "generated_for_task": "M8B-03-M8-THROUGH-M8B-CONSOLIDATED-ACCEPTANCE-AND-CONTRACT-CLEANUP",
   "sources": [
     {
       "source_id": "TWSE_MIS",
@@ -476,5 +476,33 @@
     "no_rotc_route": true,
     "no_emerging_stock_live_route": true
   },
-  "next_task": "M8-00-04-SOURCE-FRESHNESS-EVALUATOR-PURE-HELPER"
+  "next_task": "M8C-00-TAIFEX-MIS-LIVEISH-DERIVATIVES-CONTEXT-PREFLIGHT",
+  "implemented_through_track": "M8B",
+  "active_runtime_source_families": [
+    "TWSE_MIS",
+    "TWSE_OPENAPI",
+    "TPEX_OPENAPI",
+    "TAIFEX_OPENAPI"
+  ],
+  "declared_not_runtime_source_families": [
+    "TAIFEX_MIS",
+    "MOPS"
+  ],
+  "m8_active_consolidated_status": {
+    "status": "m8_through_m8b_consolidated_acceptance_pass_with_caveats",
+    "implemented_through": "M8B",
+    "m8_00_governance_complete": true,
+    "m8a_twse_tpex_official_eod_complete": true,
+    "m8b_taifex_openapi_complete": true,
+    "twse_mis_runtime_executable": true,
+    "twse_openapi_runtime_executable": true,
+    "tpex_openapi_runtime_executable": true,
+    "taifex_openapi_runtime_executable": true,
+    "taifex_mis_runtime_executable": false,
+    "mops_runtime_executable": false,
+    "trading_signal_allowed": false,
+    "recommendation_allowed": false,
+    "raw_payload_exposure_allowed": false,
+    "next_task": "M8C-00-TAIFEX-MIS-LIVEISH-DERIVATIVES-CONTEXT-PREFLIGHT"
+  }
 }

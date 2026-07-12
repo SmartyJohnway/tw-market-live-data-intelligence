@@ -31,3 +31,33 @@ Daily `SettlementPrice` is an official EOD settlement value and is distinct from
 - `unresolved_session_semantics`
 
 HTTP/network failure maps to `source_unavailable` or `source_error`. Schema drift fails closed. Missing identity fields map to `identity_parse_failure`. Missing optional price/activity fields produce partial rows. Duplicate derivative contract identity fails closed for that identity. Mixed dates are `date_mismatch` or `partial_source_success` by severity. Zero volume with valid identity/date is `valid_zero_trade_contract`. Missing session yields unknown session and a caveat, not source error.
+
+## M8B-03 runtime status enum reconciliation
+
+The runtime TAIFEX adapter/execution failure-status set is exactly:
+
+- `successful_derivatives_eod_batch`
+- `empty_non_trading_day`
+- `source_unavailable`
+- `source_error`
+- `schema_drift`
+- `identity_parse_failure`
+- `invalid_required_fields`
+- `date_mismatch`
+- `partial_source_success`
+- `valid_zero_trade_contract`
+- `unresolved_session_semantics`
+- `no_matching_bounded_scope`
+- `rejected_invalid_scope`
+- `operator_confirmation_required`
+
+The TAIFEX derivatives currentness status set is:
+
+- `current_official_derivatives_eod`
+- `matches_expected_latest_trade_date_after_emergency_closure`
+- `delayed_one_trading_day`
+- `stale_official_derivatives_eod`
+- `unresolved_date_mismatch`
+- `session_semantics_unresolved`
+
+Generic equity currentness names such as `current_official_eod` and `stale_official_eod` are upstream resolver inputs only and must not be emitted by TAIFEX observations.

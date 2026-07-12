@@ -247,7 +247,7 @@ def test_go_no_go_matrix_values():
 
 
 def test_boundary_preservation_inventory():
-    inv = load_json(INVENTORY)["rich_observation_contract"]["m8a_official_eod_context"]
+    inv = load_json(INVENTORY)["rich_observation_contract"]["milestone_snapshots"]["state_at_m8a_00_preflight"]
     for key in [
         "adapter_implemented",
         "runtime_fetch_implemented",
@@ -293,7 +293,7 @@ def test_probe_artifacts_compactness():
 
 def test_existing_m8_closure_preserved():
     inv = load_json(INVENTORY)["rich_observation_contract"]
-    m8 = inv["m8_source_timing_authority_governance"]
+    m8 = inv["milestone_snapshots"]["state_at_m8_00_acceptance"]
     assert m8["final_acceptance_status"] == "pass_with_caveats"
     assert m8["completed_tasks"] == ["M8-00-00", "M8-00-01", "M8-00-02", "M8-00-03", "M8-00-04", "M8-00-05", "M8-00-06", "M8-00-07", "M8-00-08"]
     assert m8["final_acceptance_doc"] == "docs/protocol/M8_00_FINAL_ACCEPTANCE_AND_CLOSURE.md"

@@ -3,12 +3,23 @@ from scripts.m8b_taifex_derivatives_observation import *
 from scripts.m8b_taifex_openapi_client import fetch_endpoint, TaifexOpenApiError
 from scripts.m8b_taifex_currentness import final_settlement_currentness
 ENDPOINT="FinalSettlementPrice"; FIELDS=["TheFinalSettlementDay","DeliveryMonth","Contract","ContractName","TheFinalSettlementPrice"]
-def normalize_taifex_final_settlement(*, requested_products, requested_delivery_months=None, retrieved_at=None, fetcher=None):
+MAX_FINAL_SETTLEMENT_ROWS = 100
+
+def _validate_positive_int(value, name, hard_max=None):
+    if not isinstance(value, int) or value <= 0:
+        raise ValueError(f"{name} must be a positive integer")
+    if hard_max is not None and value > hard_max:
+        raise ValueError(f"{name} exceeds hard maximum {hard_max}")
+    return value
+
+def normalize_taifex_final_settlement(*, requested_products, requested_delivery_months=None, latest_n_per_product=1, max_retained_rows=50, retrieved_at=None, fetcher=None):
+    _validate_positive_int(latest_n_per_product, "latest_n_per_product")
+    _validate_positive_int(max_retained_rows, "max_retained_rows", MAX_FINAL_SETTLEMENT_ROWS)
     res=empty_adapter_result(ENDPOINT, requested_products); products=set(requested_products or []); months=set(requested_delivery_months or [])
-    if not products: res.update(batch_status="rejected_invalid_scope", caveats=["requested_products required"]); return res
+    if not products: res.update(batch_status="rejected_invalid_scope", caveats=["requested_products required"]); return complete_adapter_result(res)
     try: data=(fetcher or fetch_endpoint)(ENDPOINT)
-    except TaifexOpenApiError as e: res.update(batch_status=e.status, source_status=e.status, provenance=e.metadata); return res
-    rows=data if isinstance(data,list) else data.get("rows",[]); res["row_count_received"]=len(rows); dates=set(); schema_valid_rows=0; matching_scope_rows=0; invalid_matching_rows=0
+    except TaifexOpenApiError as e: res.update(batch_status=e.status, source_status=e.status, provenance=e.metadata); return complete_adapter_result(res)
+    rows=data if isinstance(data,list) else data.get("rows",[]); res["row_count_received"]=len(rows); dates=set(); schema_valid_rows=0; matching_scope_rows=0; invalid_matching_rows=0; candidates=[]
     source_latest_by_product = {}
     endpoint_latest = None
     for source_row in rows:
@@ -40,5 +51,17 @@ def normalize_taifex_final_settlement(*, requested_products, requested_delivery_
         td,dv=parse_yyyymmdd(row.get("TheFinalSettlementDay")); price,pv=parse_decimal_text(row.get("TheFinalSettlementPrice"),allow_missing=False); present,omitted=source_field_presence(row,FIELDS)
         if not(td and dm and price): invalid_matching_rows += 1; res["row_count_rejected"]+=1; res["rejected_rows"].append({"index":i,"reason":"invalid_required_fields" if td and dm else "identity_parse_failure"}); continue
         dates.add(td); source_latest_reference_date=source_latest_by_product.get(row.get("Contract")) or endpoint_latest; cur=final_settlement_currentness(td, latest_reference_date=source_latest_reference_date)
-        res["observations"].append(create_observation(endpoint_contract_id=ENDPOINT, context_type=CONTEXT_TYPES["final_settlement"], instrument_type="final_settlement", product_id=row.get("Contract"), product_name=row.get("ContractName"), contract_identity={"final_settlement_day":td,"delivery_month":dm,"product_id":row.get("Contract")}, trade_date=td, retrieved_at_utc=retrieved_at, session="not_applicable", currentness_value=cur, field_validation={"TheFinalSettlementDay":dv,"TheFinalSettlementPrice":pv}, source_fields_present=present, omitted_source_fields=omitted, caveats=["official final settlement reference; not latest daily market state"], provenance={"endpoint":ENDPOINT,"raw_payload_retained":False}, payload={"final_settlement":{"delivery_month":dm,"final_settlement_price":price,"source_latest_reference_date":source_latest_reference_date}}))
-    finalize_adapter_result(res, rows, schema_valid_rows=schema_valid_rows, matching_scope_rows=matching_scope_rows, invalid_matching_rows=invalid_matching_rows, dates=dates); return res
+        candidates.append(create_observation(endpoint_contract_id=ENDPOINT, context_type=CONTEXT_TYPES["final_settlement"], instrument_type="final_settlement", product_id=row.get("Contract"), product_name=row.get("ContractName"), contract_identity={"final_settlement_day":td,"delivery_month":dm,"product_id":row.get("Contract")}, trade_date=td, retrieved_at_utc=retrieved_at, session="not_applicable", currentness_value=cur, field_validation={"TheFinalSettlementDay":dv,"TheFinalSettlementPrice":pv}, source_fields_present=present, omitted_source_fields=omitted, caveats=["official final settlement reference; not latest daily market state"], provenance={"endpoint":ENDPOINT,"raw_payload_retained":False}, payload={"final_settlement":{"delivery_month":dm,"final_settlement_price":price,"source_latest_reference_date":source_latest_reference_date}}))
+    if months:
+        candidates.sort(key=lambda o: (o.get("product_id") or "", (o.get("contract_identity") or {}).get("delivery_month") or ""), reverse=True)
+        selected = candidates
+    else:
+        selected = []
+        per_product = {}
+        for obs in sorted(candidates, key=lambda o: ((o.get("contract_identity") or {}).get("final_settlement_day") or "", (o.get("contract_identity") or {}).get("delivery_month") or ""), reverse=True):
+            product = obs.get("product_id")
+            if per_product.get(product, 0) < latest_n_per_product:
+                selected.append(obs); per_product[product] = per_product.get(product, 0) + 1
+    pre_limit=len(selected); res["observations"] = selected[:max_retained_rows]
+    truncated = pre_limit > len(res["observations"])
+    finalize_adapter_result(res, rows, schema_valid_rows=schema_valid_rows, matching_scope_rows=matching_scope_rows, invalid_matching_rows=invalid_matching_rows, dates=dates, retention_limit=max_retained_rows, retention_truncated=truncated); return res

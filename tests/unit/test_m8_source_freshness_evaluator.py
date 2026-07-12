@@ -173,7 +173,7 @@ def test_registry_policies_remain_safe():
 
 def test_inventory_m8_00_04_metadata():
     inventory = json.loads(INVENTORY_PATH.read_text(encoding="utf-8"))
-    meta = inventory["rich_observation_contract"]["m8_source_timing_authority_governance"]
+    meta = inventory["rich_observation_contract"]["milestone_snapshots"]["state_at_m8_00_acceptance"]
     assert meta["status"] in {"m8_00_source_freshness_evaluator_defined", "m8_00_multi_source_context_builder_defined", "m8_00_controlled_conversation_context_integration_and_compatibility_hardening_defined", "m8_00_final_acceptance_pass_with_caveats"}
     assert "M8-00-04" in meta["completed_tasks"]
     assert (ROOT / meta["source_freshness_evaluator_doc"]).exists()

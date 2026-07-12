@@ -82,3 +82,7 @@ Review corrections include realistic NCDR Atom summary date parsing, entry-updat
 
 ## Commit-2 review closure
 The repository currently has no complete canonical production security-master artifact. The classifier therefore reports bounded_seed_only coverage and incomplete production classification completeness when no canonical artifact is found, while preserving exact lookup and fail-closed unknown behavior. Currentness resolution now records skipped-date trace entries and reports matches_expected_latest_trade_date_after_emergency_closure when expected-date resolution crosses an emergency closure.
+
+## M8B-03 consolidation reference
+
+M8A remains accepted with the original security-master caveat. The active repository state is now consolidated in `docs/protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md`; M8A is an implemented official latest-EOD cash-market context and M8C is the next track.

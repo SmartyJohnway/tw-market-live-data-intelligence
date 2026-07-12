@@ -33,7 +33,7 @@ def test_execution_runtime_clock_and_caller_supplied_evaluation_time():
 
 def test_historical_final_settlement_status_reachable_at_runtime():
  rows=[{'TheFinalSettlementDay':'20250716','DeliveryMonth':'202507','Contract':'TX','ContractName':'臺指','TheFinalSettlementPrice':'23000'}, {'TheFinalSettlementDay':'20260715','DeliveryMonth':'202607','Contract':'TX','ContractName':'臺指','TheFinalSettlementPrice':'24000'}]
- r=execute_taifex_openapi_refresh(operator_confirmed=True,requested_contexts=['final_settlement'],requested_products=['TX'],fetchers={'FinalSettlementPrice':lambda e:rows})
+ r=execute_taifex_openapi_refresh(operator_confirmed=True,requested_contexts=['final_settlement'],requested_products=['TX'],requested_delivery_months=['202507','202607'],fetchers={'FinalSettlementPrice':lambda e:rows})
  statuses={o['trade_date']:o['currentness']['status'] for o in r['observations']}
  assert statuses['2025-07-16']=='historical_final_settlement_reference'
  assert statuses['2026-07-15']=='official_final_settlement_reference'
