@@ -2,7 +2,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 from scripts.m8b_taifex_derivatives_observation import utc_now, apply_currentness_to_observation
-from scripts.m8b_taifex_currentness import evaluate_taifex_derivatives_currentness, final_settlement_currentness
+from scripts.m8b_taifex_currentness import evaluate_taifex_derivatives_currentness
 from scripts.m8b_taifex_openapi_futures_adapter import normalize_taifex_futures_eod
 from scripts.m8b_taifex_openapi_options_adapter import normalize_taifex_options_eod
 from scripts.m8b_taifex_openapi_final_settlement_adapter import normalize_taifex_final_settlement
@@ -51,9 +51,6 @@ def _error_result(context: str, endpoint: str, exc: Exception) -> dict:
 
 def _apply_currentness(context: str, result: dict, *, evaluation_time_asia_taipei, calendar_artifact, closure_events, closure_query_succeeded, exchange_special_closures) -> None:
     if context == "final_settlement":
-        latest = max((o.get("trade_date") for o in result.get("observations", []) if o.get("trade_date")), default=None)
-        for obs in result.get("observations", []):
-            apply_currentness_to_observation(obs, final_settlement_currentness(obs.get("trade_date"), latest_reference_date=latest))
         return
     if context not in DAILY_CONTEXTS:
         return

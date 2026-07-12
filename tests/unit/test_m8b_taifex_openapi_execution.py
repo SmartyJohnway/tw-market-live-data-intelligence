@@ -37,3 +37,11 @@ def test_historical_final_settlement_status_reachable_at_runtime():
  statuses={o['trade_date']:o['currentness']['status'] for o in r['observations']}
  assert statuses['2025-07-16']=='historical_final_settlement_reference'
  assert statuses['2026-07-15']=='official_final_settlement_reference'
+
+def test_final_settlement_source_scope_latest_when_requested_subset_is_old_or_latest():
+ rows=[{'TheFinalSettlementDay':'20240717','DeliveryMonth':'202407','Contract':'TX','ContractName':'臺指','TheFinalSettlementPrice':'22000'}, {'TheFinalSettlementDay':'20260715','DeliveryMonth':'202607','Contract':'TX','ContractName':'臺指','TheFinalSettlementPrice':'24000'}]
+ old=execute_taifex_openapi_refresh(operator_confirmed=True,requested_contexts=['final_settlement'],requested_products=['TX'],requested_contracts=[{'delivery_month':'202407'}],fetchers={'FinalSettlementPrice':lambda e:rows})
+ assert old['observations'][0]['currentness']['status']=='historical_final_settlement_reference'
+ assert old['endpoint_results']['final_settlement']['source_latest_reference']['latest_by_product']['TX']=='2026-07-15'
+ latest=execute_taifex_openapi_refresh(operator_confirmed=True,requested_contexts=['final_settlement'],requested_products=['TX'],requested_contracts=[{'delivery_month':'202607'}],fetchers={'FinalSettlementPrice':lambda e:rows})
+ assert latest['observations'][0]['currentness']['status']=='official_final_settlement_reference'
