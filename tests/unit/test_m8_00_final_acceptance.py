@@ -20,7 +20,7 @@ def _doc_text() -> str:
 
 def _m8_inventory() -> dict:
     data = json.loads(INVENTORY.read_text(encoding="utf-8"))
-    return data["rich_observation_contract"]["m8_source_timing_authority_governance"]
+    return data["rich_observation_contract"]["milestone_snapshots"]["state_at_m8_00_acceptance"]
 
 
 def test_final_acceptance_doc_exists_and_contains_required_status():

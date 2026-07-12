@@ -5,10 +5,10 @@ from scripts.m8b_taifex_derivatives_observation import utc_now, apply_currentnes
 from scripts.m8b_taifex_currentness import evaluate_taifex_derivatives_currentness
 from scripts.m8b_taifex_openapi_futures_adapter import normalize_taifex_futures_eod
 from scripts.m8b_taifex_openapi_options_adapter import normalize_taifex_options_eod
-from scripts.m8b_taifex_openapi_final_settlement_adapter import normalize_taifex_final_settlement
-from scripts.m8b_taifex_openapi_large_trader_oi_adapter import normalize_taifex_large_trader_oi
-from scripts.m8b_taifex_openapi_put_call_ratio_adapter import normalize_taifex_put_call_ratio
-from scripts.m8b_taifex_openapi_block_trade_adapter import normalize_taifex_block_trade
+from scripts.m8b_taifex_openapi_final_settlement_adapter import normalize_taifex_final_settlement, MAX_FINAL_SETTLEMENT_ROWS
+from scripts.m8b_taifex_openapi_large_trader_oi_adapter import normalize_taifex_large_trader_oi, MAX_LARGE_TRADER_OI_ROWS
+from scripts.m8b_taifex_openapi_put_call_ratio_adapter import normalize_taifex_put_call_ratio, MAX_PUT_CALL_RATIO_ROWS
+from scripts.m8b_taifex_openapi_block_trade_adapter import normalize_taifex_block_trade, MAX_BLOCK_TRADE_ROWS
 
 ALLOWED = {"futures_eod", "options_eod", "final_settlement", "large_trader_oi_futures", "large_trader_oi_options", "put_call_ratio", "block_trade"}
 DAILY_CONTEXTS = ALLOWED - {"final_settlement"}
@@ -30,6 +30,38 @@ def _parse_utc(value: str) -> datetime:
 
 
 
+
+def _valid_positive_int(value, hard_max):
+    return isinstance(value, int) and value > 0 and value <= hard_max
+
+def _valid_yyyy_mm_dd_list(values):
+    if values is None:
+        return True
+    if not isinstance(values, list):
+        return False
+    import re
+    return all(isinstance(v, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", v) for v in values)
+
+def _valid_yyyymm_list(values):
+    if values is None:
+        return True
+    if not isinstance(values, list):
+        return False
+    import re
+    return all(isinstance(v, str) and re.fullmatch(r"\d{6}(F\d+)?", v) for v in values)
+
+def _invalid_retention_scope(*, put_call_ratio_latest_n, max_put_call_ratio_rows, final_settlement_latest_n_per_product, max_final_settlement_rows, max_block_trade_rows, max_large_trader_oi_rows, requested_trade_dates, requested_delivery_months):
+    return not (
+        _valid_positive_int(put_call_ratio_latest_n, MAX_PUT_CALL_RATIO_ROWS)
+        and _valid_positive_int(max_put_call_ratio_rows, MAX_PUT_CALL_RATIO_ROWS)
+        and _valid_positive_int(final_settlement_latest_n_per_product, MAX_FINAL_SETTLEMENT_ROWS)
+        and _valid_positive_int(max_final_settlement_rows, MAX_FINAL_SETTLEMENT_ROWS)
+        and _valid_positive_int(max_block_trade_rows, MAX_BLOCK_TRADE_ROWS)
+        and _valid_positive_int(max_large_trader_oi_rows, MAX_LARGE_TRADER_OI_ROWS)
+        and _valid_yyyy_mm_dd_list(requested_trade_dates)
+        and _valid_yyyymm_list(requested_delivery_months)
+    )
+
 def _finish_execution_result(result: dict, started: str, overall_status: str) -> dict:
     completed = utc_now()
     result.update(overall_status=overall_status, completed_at_utc=completed, duration_ms=max(0, int((_parse_utc(completed) - _parse_utc(started)).total_seconds() * 1000)))
@@ -44,6 +76,7 @@ def _error_result(context: str, endpoint: str, exc: Exception) -> dict:
         "context": context,
         "requested_at_utc": ts,
         "completed_at_utc": ts,
+        "duration_ms": 0,
         "source_status": "source_error",
         "batch_status": "source_error",
         "row_count_received": 0,
@@ -51,6 +84,7 @@ def _error_result(context: str, endpoint: str, exc: Exception) -> dict:
         "observations": [],
         "rejected_rows": [],
         "caveats": ["unexpected adapter exception captured without raw payload"],
+        "retention": {"network_row_count": 0, "schema_valid_row_count": 0, "matching_scope_row_count": 0, "invalid_matching_row_count": 0, "retained_observation_count": 0, "retention_limit": 0, "retention_truncated": False, "raw_payload_retained": False},
         "provenance": {"error_type": type(exc).__name__, "endpoint": endpoint, "context": context, "raw_payload_retained": False},
     }
 
@@ -73,7 +107,7 @@ def _apply_currentness(context: str, result: dict, *, evaluation_time_asia_taipe
         apply_currentness_to_observation(obs, cur)
 
 
-def execute_taifex_openapi_refresh(*, operator_confirmed: bool, requested_contexts: list[str], requested_products: list[str], requested_contracts: list[dict] | None = None, requested_sessions: list[str] | None = None, evaluation_time_asia_taipei: str | None = None, fetchers: dict | None = None, calendar_artifact: dict | None = None, closure_events: list | None = None, closure_query_succeeded: bool | None = None, exchange_special_closures: list | None = None, requested_trade_dates: list[str] | None = None, put_call_ratio_latest_n: int = 1, max_put_call_ratio_rows: int = 20, requested_delivery_months: list[str] | None = None, final_settlement_latest_n_per_product: int = 1, max_final_settlement_rows: int = 50) -> dict:
+def execute_taifex_openapi_refresh(*, operator_confirmed: bool, requested_contexts: list[str], requested_products: list[str], requested_contracts: list[dict] | None = None, requested_sessions: list[str] | None = None, evaluation_time_asia_taipei: str | None = None, fetchers: dict | None = None, calendar_artifact: dict | None = None, closure_events: list | None = None, closure_query_succeeded: bool | None = None, exchange_special_closures: list | None = None, requested_trade_dates: list[str] | None = None, put_call_ratio_latest_n: int = 1, max_put_call_ratio_rows: int = 20, requested_delivery_months: list[str] | None = None, final_settlement_latest_n_per_product: int = 1, max_final_settlement_rows: int = 50, max_block_trade_rows: int = 100, max_large_trader_oi_rows: int = 100) -> dict:
     started = utc_now()
     evaluation_time_source = "caller_supplied" if evaluation_time_asia_taipei is not None else "runtime_clock"
     if evaluation_time_asia_taipei is None:
@@ -83,6 +117,9 @@ def execute_taifex_openapi_refresh(*, operator_confirmed: bool, requested_contex
         return _finish_execution_result(result, started, "operator_confirmation_required")
     if not requested_contexts or any(c not in ALLOWED for c in requested_contexts):
         return _finish_execution_result(result, started, "rejected_invalid_scope")
+    if _invalid_retention_scope(put_call_ratio_latest_n=put_call_ratio_latest_n, max_put_call_ratio_rows=max_put_call_ratio_rows, final_settlement_latest_n_per_product=final_settlement_latest_n_per_product, max_final_settlement_rows=max_final_settlement_rows, max_block_trade_rows=max_block_trade_rows, max_large_trader_oi_rows=max_large_trader_oi_rows, requested_trade_dates=requested_trade_dates, requested_delivery_months=requested_delivery_months):
+        result.setdefault("caveats", []).append("invalid_retention_or_date_scope")
+        return _finish_execution_result(result, started, "rejected_invalid_scope")
     if not requested_products and any(c != "put_call_ratio" for c in requested_contexts):
         return _finish_execution_result(result, started, "rejected_invalid_scope")
     selectors = _selectors(requested_contracts)
@@ -91,10 +128,10 @@ def execute_taifex_openapi_refresh(*, operator_confirmed: bool, requested_contex
         "futures_eod": ("DailyMarketReportFut", lambda: normalize_taifex_futures_eod(requested_products=requested_products, requested_contract_months=selectors["months"], requested_sessions=requested_sessions, fetcher=fetchers.get("DailyMarketReportFut"))),
         "options_eod": ("DailyMarketReportOpt", lambda: normalize_taifex_options_eod(requested_products=requested_products, requested_contract_months=selectors["months"], requested_strikes=selectors["strikes"], requested_option_types=selectors["option_types"], requested_sessions=requested_sessions, fetcher=fetchers.get("DailyMarketReportOpt"))),
         "final_settlement": ("FinalSettlementPrice", lambda: normalize_taifex_final_settlement(requested_products=requested_products, requested_delivery_months=requested_delivery_months or selectors["delivery_months"] or selectors["months"], latest_n_per_product=final_settlement_latest_n_per_product, max_retained_rows=max_final_settlement_rows, fetcher=fetchers.get("FinalSettlementPrice"))),
-        "large_trader_oi_futures": ("OpenInterestOfLargeTradersFutures", lambda: normalize_taifex_large_trader_oi(endpoint="OpenInterestOfLargeTradersFutures", requested_products=requested_products, requested_settlement_months=selectors["months"], requested_trader_types=selectors["trader_types"], fetcher=fetchers.get("OpenInterestOfLargeTradersFutures"))),
-        "large_trader_oi_options": ("OpenInterestOfLargeTradersOptions", lambda: normalize_taifex_large_trader_oi(endpoint="OpenInterestOfLargeTradersOptions", requested_products=requested_products, requested_settlement_months=selectors["months"], requested_option_types=selectors["option_types"], requested_trader_types=selectors["trader_types"], fetcher=fetchers.get("OpenInterestOfLargeTradersOptions"))),
+        "large_trader_oi_futures": ("OpenInterestOfLargeTradersFutures", lambda: normalize_taifex_large_trader_oi(endpoint="OpenInterestOfLargeTradersFutures", requested_products=requested_products, requested_settlement_months=selectors["months"], requested_trader_types=selectors["trader_types"], requested_trade_dates=requested_trade_dates, max_retained_rows=max_large_trader_oi_rows, fetcher=fetchers.get("OpenInterestOfLargeTradersFutures"))),
+        "large_trader_oi_options": ("OpenInterestOfLargeTradersOptions", lambda: normalize_taifex_large_trader_oi(endpoint="OpenInterestOfLargeTradersOptions", requested_products=requested_products, requested_settlement_months=selectors["months"], requested_option_types=selectors["option_types"], requested_trader_types=selectors["trader_types"], requested_trade_dates=requested_trade_dates, max_retained_rows=max_large_trader_oi_rows, fetcher=fetchers.get("OpenInterestOfLargeTradersOptions"))),
         "put_call_ratio": ("PutCallRatio", lambda: normalize_taifex_put_call_ratio(fetcher=fetchers.get("PutCallRatio"), requested_trade_dates=requested_trade_dates, latest_n=put_call_ratio_latest_n, max_retained_rows=max_put_call_ratio_rows)),
-        "block_trade": ("BlockTrade", lambda: normalize_taifex_block_trade(requested_products=requested_products, requested_contract_months=selectors["months"], requested_strikes=selectors["strikes"], requested_option_types=selectors["option_types"], requested_sessions=requested_sessions, fetcher=fetchers.get("BlockTrade"))),
+        "block_trade": ("BlockTrade", lambda: normalize_taifex_block_trade(requested_products=requested_products, requested_contract_months=selectors["months"], requested_strikes=selectors["strikes"], requested_option_types=selectors["option_types"], requested_sessions=requested_sessions, requested_trade_dates=requested_trade_dates, max_retained_rows=max_block_trade_rows, fetcher=fetchers.get("BlockTrade"))),
     }
     statuses = []
     for context in requested_contexts:

@@ -92,7 +92,7 @@ def test_no_trading_advice_signal_recommendation():
 
 def test_source_taxonomy_remains_clean():
     inv = json.loads((ROOT / "docs/data_capabilities/twse_mis_rich_field_inventory.json").read_text())
-    entry = inv["rich_observation_contract"]["m8_source_timing_authority_governance"]
+    entry = inv["rich_observation_contract"]["milestone_snapshots"]["state_at_m8_00_acceptance"]
     assert entry.get("tpex_mis_introduced") is False
     assert entry.get("rotc_route_introduced") is False
     assert entry.get("taifex_mis_execution_added") is False
@@ -101,7 +101,7 @@ def test_source_taxonomy_remains_clean():
 
 def test_inventory_m8_00_06_07_metadata():
     inv = json.loads((ROOT / "docs/data_capabilities/twse_mis_rich_field_inventory.json").read_text())
-    entry = inv["rich_observation_contract"]["m8_source_timing_authority_governance"]
+    entry = inv["rich_observation_contract"]["milestone_snapshots"]["state_at_m8_00_acceptance"]
     assert entry["status"] == "m8_00_final_acceptance_pass_with_caveats"
     assert "M8-00-06" in entry["completed_tasks"] and "M8-00-07" in entry["completed_tasks"]
     assert (ROOT / entry["controlled_conversation_context_doc"]).exists()

@@ -182,6 +182,7 @@ def apply_retention_metadata(res: dict, *, retention_limit: int | None = None, r
         "matching_scope_row_count": res.get("matching_scope_rows", 0),
         "invalid_matching_row_count": res.get("invalid_matching_rows", 0),
         "retained_observation_count": len(res.get("observations", [])),
+        "retained_trade_dates": sorted({o.get("trade_date") for o in res.get("observations", []) if o.get("trade_date")}),
         "retention_limit": retention_limit,
         "retention_truncated": retention_truncated,
         "raw_payload_retained": False,
@@ -210,6 +211,8 @@ def finalize_adapter_result(res: dict, rows: list, *, schema_valid_rows: int, ma
         res["batch_status"] = "empty_non_trading_day" if not rows else "no_matching_bounded_scope"
     res["row_count_retained"] = res["retained_observations"]
     res["reported_trade_dates"] = sorted(d for d in dates if d)
+    res["matching_trade_dates"] = sorted(d for d in dates if d)
+    res["retained_trade_dates"] = sorted({o.get("trade_date") for o in res.get("observations", []) if o.get("trade_date")})
     res["source_status"] = "ok" if res["retained_observations"] else res["batch_status"]
     apply_retention_metadata(res, retention_limit=retention_limit, retention_truncated=retention_truncated)
     return complete_adapter_result(res)

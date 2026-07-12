@@ -96,3 +96,64 @@ def test_docs_and_boundaries():
     forbidden=['scheduler added','polling added','startup fetch','DB persistence','model call','trading recommendation']
     for token in forbidden:
         assert token in readme or token in (ROOT/'docs/protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md').read_text(encoding='utf-8')
+
+
+def test_inventory_active_state_and_historical_snapshots():
+    inv=load_json('docs/data_capabilities/twse_mis_rich_field_inventory.json')['rich_observation_contract']
+    active=inv['m8_active_consolidated_status']
+    assert active['m8_00_governance_complete'] is True
+    assert active['m8a_twse_tpex_official_eod_complete'] is True
+    assert active['m8b_taifex_openapi_complete'] is True
+    assert active['taifex_mis_runtime_executable'] is False
+    assert active['next_task']=='M8C-00-TAIFEX-MIS-LIVEISH-DERIVATIVES-CONTEXT-PREFLIGHT'
+    assert all(active['m8b_taifex_contexts'].values())
+    assert 'm8_source_timing_authority_governance' not in inv
+    assert 'm8a_official_eod_context' not in inv
+    snaps=inv['milestone_snapshots']
+    assert snaps['state_at_m8_00_acceptance']['snapshot_type']=='historical'
+    assert snaps['state_at_m8a_00_preflight']['snapshot_type']=='historical'
+    assert snaps['state_at_m8_00_acceptance']['no_m8a_started'] is True
+    assert snaps['state_at_m8a_00_preflight']['adapter_implemented'] is False
+
+
+def test_invalid_retention_scope_rejected_before_fetch():
+    from scripts.m8b_taifex_openapi_execution import execute_taifex_openapi_refresh
+    def fail(endpoint):
+        raise AssertionError('fetcher must not be called')
+    fetchers={'PutCallRatio':fail,'FinalSettlementPrice':fail,'BlockTrade':fail,'OpenInterestOfLargeTradersFutures':fail}
+    r=execute_taifex_openapi_refresh(operator_confirmed=True, requested_contexts=['put_call_ratio'], requested_products=[], put_call_ratio_latest_n=0, fetchers=fetchers)
+    assert r['overall_status']=='rejected_invalid_scope'
+    assert r['endpoint_results']=={}
+    r=execute_taifex_openapi_refresh(operator_confirmed=True, requested_contexts=['final_settlement'], requested_products=['TX'], requested_delivery_months=['bad'], fetchers=fetchers)
+    assert r['overall_status']=='rejected_invalid_scope'
+    r=execute_taifex_openapi_refresh(operator_confirmed=True, requested_contexts=['block_trade'], requested_products=['TX'], max_block_trade_rows=101, fetchers=fetchers)
+    assert r['overall_status']=='rejected_invalid_scope'
+
+
+def test_block_trade_and_large_trader_retention_limits_visible():
+    from scripts.m8b_taifex_openapi_block_trade_adapter import normalize_taifex_block_trade
+    from scripts.m8b_taifex_openapi_large_trader_oi_adapter import normalize_taifex_large_trader_oi
+    block_rows=[{'Date':f'202607{d:02d}','Contract':'TX','ContractMonth(Week)':'202607','StrikePrice':'-','CallPut':'-','Volume':'1','HighestPrice':'2','LowestPrice':'1','TradingSession':'一般'} for d in range(1,4)]
+    br=normalize_taifex_block_trade(requested_products=['TX'], max_retained_rows=2, fetcher=lambda e:block_rows)
+    assert len(br['observations'])==2
+    assert br['retention']['retention_limit']==2
+    assert br['retention']['retention_truncated'] is True
+    assert 'bounded_retention_limit_applied' in br['caveats']
+    oi_rows=[{'Date':f'202607{d:02d}','Contract':'TX','ContractName':'臺指','SettlementMonth':'202607','TypeOfTraders':'all','Top5Buy':'1','Top5Sell':'1','Top10Buy':'1','Top10Sell':'1','OIOfMarket':'1'} for d in range(1,4)]
+    lr=normalize_taifex_large_trader_oi(endpoint='OpenInterestOfLargeTradersFutures', requested_products=['TX'], max_retained_rows=2, fetcher=lambda e:oi_rows)
+    assert len(lr['observations'])==2
+    assert lr['retention']['retention_limit']==2
+    assert lr['retention']['retention_truncated'] is True
+
+
+def test_readme_m8b_command_parser_succeeds_without_network():
+    import os, re, subprocess
+    readme=(ROOT/'README.md').read_text(encoding='utf-8')
+    blocks=re.findall(r'```bash\n(.*?)\n```', readme, flags=re.S)
+    cmd=next(b for b in blocks if 'validate_m8b_taifex_openapi_live.py' in b)
+    cmd=' '.join(line.strip().rstrip('\\') for line in cmd.splitlines())
+    env=dict(os.environ, M8B_VALIDATOR_TEST_FIXTURE='1')
+    result=subprocess.run(cmd, shell=True, cwd=ROOT, env=env, text=True, capture_output=True, timeout=30)
+    assert result.returncode == 0, result.stderr
+    payload=json.loads(result.stdout)
+    assert payload['raw_payload_retained'] is False

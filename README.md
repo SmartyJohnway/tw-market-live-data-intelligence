@@ -100,7 +100,18 @@ M8B bounded TAIFEX official derivatives validation. The options scope is bounded
 python scripts/validate_m8b_taifex_openapi_live.py \
   --contexts futures_eod,options_eod,final_settlement,large_trader_oi_futures,large_trader_oi_options,put_call_ratio,block_trade \
   --products TX,MTX,TXO \
-  --contracts '[{"contract_month":"202607"},{"contract_month_or_week":"202607","strike_price":"23000","option_type":"call"},{"delivery_month":"202607"},{"settlement_month":"202607","type_of_traders":"all"}]' \
+  --contract-month 202607 \
+  --strike 23000 \
+  --option-type call \
+  --delivery-month 202607 \
+  --settlement-month 202607 \
+  --trader-type all \
+  --pcr-latest-n 1 \
+  --max-pcr-rows 20 \
+  --final-settlement-latest-n 1 \
+  --max-final-settlement-rows 50 \
+  --max-block-trade-rows 100 \
+  --max-large-trader-oi-rows 100 \
   --session regular \
   --confirm
 ```

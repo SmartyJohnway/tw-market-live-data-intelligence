@@ -107,7 +107,7 @@ def test_manual_validation_only_and_credential_gated_semantics():
 
 def test_inventory_m8_entry():
     inventory = load_json(INVENTORY_PATH)
-    entry = inventory["rich_observation_contract"]["m8_source_timing_authority_governance"]
+    entry = inventory["rich_observation_contract"]["milestone_snapshots"]["state_at_m8_00_acceptance"]
     assert entry["status"] in {"m8_00_source_freshness_evaluator_defined", "m8_00_multi_source_context_builder_defined", "m8_00_controlled_conversation_context_integration_and_compatibility_hardening_defined", "m8_00_final_acceptance_pass_with_caveats"}
     assert entry["completed_tasks"][:5] == ["M8-00-00", "M8-00-01", "M8-00-02", "M8-00-03", "M8-00-04"]
     for key in [

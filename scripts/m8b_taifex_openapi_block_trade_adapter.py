@@ -1,9 +1,11 @@
 from __future__ import annotations
 from scripts.m8b_taifex_derivatives_observation import *
 from scripts.m8b_taifex_openapi_client import fetch_endpoint, TaifexOpenApiError
+MAX_BLOCK_TRADE_ROWS = 100
 ENDPOINT="BlockTrade"; FIELDS=["Date","Contract","ContractMonth(Week)","StrikePrice","CallPut","Volume","HighestPrice","LowestPrice","TradingSession"]
-def normalize_taifex_block_trade(*, requested_products, requested_contract_months=None, requested_strikes=None, requested_option_types=None, requested_sessions=None, retrieved_at=None, fetcher=None):
-    res=empty_adapter_result(ENDPOINT, requested_products); products=set(requested_products or []); months=set(requested_contract_months or []); strikes={str(x) for x in (requested_strikes or [])}; types=set(requested_option_types or []); sessions=set(requested_sessions or [])
+def normalize_taifex_block_trade(*, requested_products, requested_contract_months=None, requested_strikes=None, requested_option_types=None, requested_sessions=None, requested_trade_dates=None, max_retained_rows=100, retrieved_at=None, fetcher=None):
+    if not isinstance(max_retained_rows, int) or max_retained_rows <= 0 or max_retained_rows > MAX_BLOCK_TRADE_ROWS: raise ValueError("max_retained_rows must be a positive bounded integer")
+    res=empty_adapter_result(ENDPOINT, requested_products); products=set(requested_products or []); months=set(requested_contract_months or []); strikes={str(x) for x in (requested_strikes or [])}; types=set(requested_option_types or []); sessions=set(requested_sessions or []); trade_dates=set(requested_trade_dates or [])
     if not products: res.update(batch_status="rejected_invalid_scope", caveats=["requested_products required"]); return complete_adapter_result(res)
     try: data=(fetcher or fetch_endpoint)(ENDPOINT)
     except TaifexOpenApiError as e: res.update(batch_status=e.status, source_status=e.status, provenance=e.metadata); return complete_adapter_result(res)
@@ -16,7 +18,9 @@ def normalize_taifex_block_trade(*, requested_products, requested_contract_month
         else:
             res["row_count_rejected"]+=1; res["rejected_rows"].append({"index":i,"reason":"schema_drift","missing_fields":missing_schema}); continue
         if row.get("Contract") not in products: continue
-        td,dv=parse_yyyymmdd(row.get("Date")); cm,cmv=validate_contract_month(row.get("ContractMonth(Week)")); session,sv,sc=map_session(row.get("TradingSession")); strike_raw=row.get("StrikePrice"); cp_raw=row.get("CallPut"); is_future=str(strike_raw).strip()=="-" and str(cp_raw).strip()=="-"
+        td,dv=parse_yyyymmdd(row.get("Date"));
+        if trade_dates and td not in trade_dates: continue
+        cm,cmv=validate_contract_month(row.get("ContractMonth(Week)")); session,sv,sc=map_session(row.get("TradingSession")); strike_raw=row.get("StrikePrice"); cp_raw=row.get("CallPut"); is_future=str(strike_raw).strip()=="-" and str(cp_raw).strip()=="-"
         strike,stv=("not_applicable",{"valid":True}) if is_future else parse_decimal_text(strike_raw,allow_missing=False); opt,opv=map_call_put(cp_raw, allow_not_applicable=is_future)
         if months and cm not in months: continue
         if strikes and strike not in strikes: continue
@@ -31,4 +35,5 @@ def normalize_taifex_block_trade(*, requested_products, requested_contract_month
         if key in seen: res.update(batch_status="identity_parse_failure"); res["rejected_rows"].append({"index":i,"reason":"duplicate_aggregate_identity"}); return complete_adapter_result(res)
         seen.add(key); dates.add(td); present,omitted=source_field_presence(row,FIELDS)
         res["observations"].append(create_observation(endpoint_contract_id=ENDPOINT, context_type=CONTEXT_TYPES["block_trade"], instrument_type="block_trade", product_id=row.get("Contract"), contract_identity=ident, trade_date=td, retrieved_at_utc=retrieved_at, session=session, source_session_label=row.get("TradingSession"), field_validation={"Date":dv,"ContractMonth(Week)":cmv,"StrikePrice":stv,"CallPut":opv,"Volume":vv,"HighestPrice":hv,"LowestPrice":lv,"TradingSession":sv}, source_fields_present=present, omitted_source_fields=omitted, caveats=sc+["aggregate row identity, not transaction id","block trade activity has no directional inference"], provenance={"endpoint":ENDPOINT,"raw_payload_retained":False}, payload={"block_trade":{"volume":vol,"highest_price":high,"lowest_price":low,"strike_price":strike,"option_type":opt}}))
-    finalize_adapter_result(res, rows, schema_valid_rows=schema_valid_rows, matching_scope_rows=matching_scope_rows, invalid_matching_rows=invalid_matching_rows, dates=dates); return res
+    pre_limit=len(res["observations"]); res["observations"]=sorted(res["observations"], key=lambda o: o.get("trade_date") or "", reverse=True)[:max_retained_rows]; truncated=pre_limit>len(res["observations"])
+    finalize_adapter_result(res, rows, schema_valid_rows=schema_valid_rows, matching_scope_rows=matching_scope_rows, invalid_matching_rows=invalid_matching_rows, dates=dates, retention_limit=max_retained_rows, retention_truncated=truncated); return res

@@ -903,6 +903,31 @@
       "retention_limit",
       "retention_truncated",
       "raw_payload_retained"
-    ]
+    ],
+    "block_trade": {
+      "default_max_retained_rows": 100,
+      "hard_max_retained_rows": 100,
+      "selectors": [
+        "requested_products",
+        "contract_months",
+        "strikes",
+        "option_types",
+        "sessions",
+        "trade_dates"
+      ],
+      "raw_payload_retained": false
+    },
+    "large_trader_oi": {
+      "default_max_retained_rows": 100,
+      "hard_max_retained_rows": 100,
+      "selectors": [
+        "requested_products",
+        "settlement_months",
+        "option_types",
+        "trader_types",
+        "trade_dates"
+      ],
+      "raw_payload_retained": false
+    }
   }
 }

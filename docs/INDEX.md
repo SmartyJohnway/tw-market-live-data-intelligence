@@ -58,6 +58,7 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 ## M8 through M8B governance and acceptance
 
 - [M8 consolidated final acceptance](protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md)
+- [M8 full non-network base/head validation](reviews/M8_THROUGH_M8B_FULL_NON_NETWORK_BASE_HEAD_VALIDATION.md)
 - [M8 source capability registry](data_capabilities/m8_source_capability_registry.json)
 - [M8-00 final acceptance](protocol/M8_00_FINAL_ACCEPTANCE_AND_CLOSURE.md)
 - [M8A official EOD final acceptance](protocol/M8A_OFFICIAL_EOD_CONTEXT_FINAL_ACCEPTANCE.md)

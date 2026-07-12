@@ -81,7 +81,7 @@ No complete canonical production security master is introduced; unknown/unclassi
 README now documents the M8 architecture and bounded validation commands.
 
 ## 27. CI and validation evidence
-Release validation is recorded in the PR/final report; full non-network is required before M8C.
+Release validation is recorded in the PR/final report and in `docs/reviews/M8_THROUGH_M8B_FULL_NON_NETWORK_BASE_HEAD_VALIDATION.md`; full non-network was run on base and head with identical pre-existing M5D failures and passing M8-family tests.
 
 ## 28. Boundary preservation
 No scheduler, polling, startup fetch, DB persistence, persistent cache, model call, recommendation, trading signal, Yahoo, FinMind, MOPS adapter, or TAIFEX_MIS implementation is added.
