@@ -1868,5 +1868,41 @@
       "買賣建議"
     ]
   },
-  "source_id": "TWSE_MIS"
+  "source_id": "TWSE_MIS",
+  "m8a_official_eod_context_status": "m8a_official_eod_context_final_acceptance_pass_with_caveats",
+  "m8a_completed_tasks": [
+    "M8A-00",
+    "M8A-01",
+    "M8A-02",
+    "M8A-03"
+  ],
+  "m8a_flags": {
+    "twse_adapter_implemented": true,
+    "tpex_adapter_implemented": true,
+    "normalized_schema_implemented": true,
+    "fixture_tests_added": true,
+    "controlled_runtime_added": true,
+    "currentness_resolver_added": true,
+    "ncdr_dgpa_closure_source_added": true,
+    "context_integration_added": true,
+    "conversation_integration_added": true,
+    "readme_updated": true,
+    "final_acceptance_completed": true,
+    "scheduler_added": false,
+    "polling_added": false,
+    "startup_fetch_added": false,
+    "hidden_fetch_added": false,
+    "db_write_added": false,
+    "raw_payload_exposure_allowed": false,
+    "full_market_raw_payload_retained": false,
+    "ai_model_call_added": false,
+    "frontend_changed": false,
+    "mcp_changed": false,
+    "taifex_scope_added": false,
+    "mops_adapter_added": false,
+    "tpex_mis_introduced": false,
+    "rotc_route_introduced": false,
+    "instrument_classification_coverage_mode": "bounded_seed_only_when_canonical_security_master_absent",
+    "production_classification_completeness": "incomplete_without_canonical_security_master"
+  }
 }

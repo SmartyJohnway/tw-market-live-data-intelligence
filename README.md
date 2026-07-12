@@ -163,3 +163,47 @@ Run `python scripts/run_m6e_operator_acceptance.py --check-only` for the M6E ope
 ## M6G browser/operator E2E acceptance
 
 Run `python scripts/run_m6g_browser_operator_e2e.py --check-only` to verify the local FastAPI plus actual readonly frontend operator path. Browser dependencies are optional for default CI; if Playwright/Chromium is missing, the script writes `skipped_with_caveats` with install instructions. Full browser execution requires `python -m pip install playwright` and `python -m playwright install chromium`. Explicit bounded live mode is manual only: `python scripts/run_m6g_browser_operator_e2e.py --execute-bounded-live-check --ssl-policy compatibility` or `--ssl-policy strict`.
+
+## M8A official EOD context capability
+
+M8A adds governed official latest EOD context alongside bounded live-ish TWSE_MIS observations. The repository now supports TWSE_MIS bounded live-ish market observation, official TWSE latest EOD context, official TPEx latest EOD context, source authority/provenance, currentness evaluation, emergency-closure-aware market-day resolution, bounded safe artifact generation, and AI-readable multi-source context.
+
+| Source | Role | Timing | Market | Runtime mode | Primary caveat |
+|---|---|---|---|---|---|
+| `TWSE_MIS` | bounded browser-observed market snapshot | live-ish intraday snapshot | listed / TPEx route | controlled bounded refresh | not streaming or realtime guaranteed |
+| `TWSE_OPENAPI` | official latest EOD market data | official EOD | listed | explicit operator-confirmed adapter execution | latest-only; not realtime |
+| `TPEX_OPENAPI` | official latest EOD market data | official EOD | OTC mainboard | explicit operator-confirmed adapter execution | latest-only; mixed instruments require classification |
+| `NCDR_DGPA_CLOSURE_CAP` | emergency closure evidence only | dynamic emergency event | Taiwan work-closure evidence | queried only for mismatch/currentness resolution | not market price data |
+
+Controlled official EOD execution requires explicit operator confirmation and bounded requested symbols. TWSE/TPEx official EOD endpoints are whole-market network fetches, but adapters immediately filter to requested symbols and do not retain raw full-market payloads. There is no automatic polling, background scheduler, startup fetch, hidden fetch, or database write.
+
+Currentness is resolved as:
+
+```text
+scheduled trading calendar
++ emergency closure evidence
++ official source trade date
+= actual expected latest completed trade date
+```
+
+For this project, a confirmed Taipei City full-day or morning work suspension is treated as closing TWSE and TPEx for the full market day. `NCDR_DGPA_CLOSURE_CAP` is used only as exception/currentness evidence and is not a market data or price source.
+
+Example deterministic checks:
+
+```bash
+python -m pytest tests/unit/test_m8a*.py -q
+python scripts/run_test_profile.py default-ci --json
+```
+
+Example explicit bounded live validation:
+
+```bash
+python scripts/validate_m8a_official_eod_live.py \
+  --sources TWSE_OPENAPI,TPEX_OPENAPI \
+  --symbols 2330,0050,8069,006201 \
+  --confirm
+```
+
+Limitations: M8A endpoints are latest-only, no historical backfill is included, mixed TPEx instruments depend on exact security-master classification, NCDR is exception/currentness evidence only, no scheduler/polling is added, and the project does not implement an investment recommendation engine. The current repository does not contain a complete canonical production security master; M8A therefore marks production classification completeness as incomplete and uses a bounded seed only until a complete canonical master is added. Unknown symbols continue to fail closed.
+
+Review note: PR #126 was reviewed as a squashed single GitHub commit even though the earlier implementation report described a four-commit local execution structure. Current reports should describe the actual GitHub commit shape rather than claiming four reviewable commits.

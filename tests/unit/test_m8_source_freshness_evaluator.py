@@ -161,8 +161,10 @@ def test_registry_policies_remain_safe():
     ids = {source["source_id"] for source in sources}
     assert "TPEX_MIS" not in ids
     assert all("rotc_" not in json.dumps(source.get("market_scope", {})) for source in sources)
-    for source_id in ["TWSE_OPENAPI", "TPEX_OPENAPI", "TAIFEX_OPENAPI", "TAIFEX_MIS"]:
+    for source_id in ["TAIFEX_OPENAPI", "TAIFEX_MIS"]:
         assert _source(source_id)["runtime_executable"] is False
+    assert _source("TWSE_OPENAPI")["runtime_executable"] is True
+    assert _source("TPEX_OPENAPI")["runtime_executable"] is True
     for source in sources:
         assert source["recommendation_allowed"] is False
         assert source["trading_signal_allowed"] is False
