@@ -91,6 +91,56 @@ def test_activity_open_interest_and_zero_volume_valid():
     assert int(row['Volume']) == 0 and int(row['OpenInterest']) == 0
     assert 'valid_zero_trade_contract' in doc(CUR)
 
+
+def test_derivatives_quotation_units_not_hardcoded_twd():
+    rows=mapping()
+    tx_settlement=[r for r in rows if r['endpoint_contract_id']=='taifex_openapi_daily_market_report_fut_v1' and r['source_field']=='SettlementPrice'][0]
+    txo_strike=[r for r in rows if r['endpoint_contract_id']=='taifex_openapi_daily_market_report_opt_v1' and r['source_field']=='StrikePrice'][0]
+    assert tx_settlement['unit'] != 'TWD'
+    assert txo_strike['unit'] != 'TWD'
+    assert tx_settlement['unit'] == 'product_specific_quote_unit'
+    assert txo_strike['unit'] == 'product_specific_quote_unit'
+    schema = doc(SCHEMA)
+    assert 'settlement_currency' in schema and 'quotation_unit' in schema and 'contract_multiplier' in schema
+    assert 'TX, MTX, and TXO price/strike/settlement values must not be projected as TWD prices' in schema
+
+def test_put_call_ratio_mapping_complete_and_percent_semantics():
+    rows=[r for r in mapping() if r['endpoint_contract_id']=='taifex_openapi_put_call_ratio_v1']
+    fields={r['source_field']:r for r in rows}
+    assert {'Date','PutVolume','CallVolume','PutCallVolumeRatio%','PutOI','CallOI','PutCallOIRatio%'} <= set(fields)
+    for f in ['PutVolume','CallVolume','PutOI','CallOI']:
+        assert fields[f]['data_type']=='integer'
+        assert 'non-negative integer' in fields[f]['validation_rule']
+    assert fields['PutCallVolumeRatio%']['unit']=='percent'
+    assert '100.89 means 100.89%, not 1.0089' in fields['PutCallVolumeRatio%']['validation_rule']
+    assert 'no bullish/bearish derived output' in fields['PutCallOIRatio%']['caveats']
+
+def test_block_trade_mapping_identity_rules():
+    rows=[r for r in mapping() if r['endpoint_contract_id']=='taifex_openapi_block_trade_v1']
+    fields={r['source_field']:r for r in rows}
+    assert {'Date','Contract','ContractMonth(Week)','StrikePrice','CallPut','Volume','HighestPrice','LowestPrice','TradingSession'} <= set(fields)
+    assert 'futures not_applicable' in fields['StrikePrice']['caveats']
+    assert 'options require valid CallPut' in fields['CallPut']['caveats']
+    assert fields['Volume']['data_type']=='integer'
+    assert fields['HighestPrice']['unit']=='product_specific_quote_unit'
+
+def test_putcall_and_blocktrade_registry_common_shape_and_aggregate_identity():
+    candidates={c['endpoint_contract_id']:c for c in registry()['candidate_endpoints']}
+    required={'source_id','method','evidence_status','timing_class','instrument_scope','network_scope','retained_scope_required','date_parameter_contract','product_parameter_contract','identity_fields','trade_date_fields','price_fields','activity_fields','open_interest_fields','session_fields','caveats'}
+    for cid in ['taifex_openapi_put_call_ratio_v1','taifex_openapi_block_trade_v1']:
+        assert required <= set(candidates[cid])
+        assert candidates[cid]['source_id']=='TAIFEX_OPENAPI'
+        assert candidates[cid]['method']=='GET'
+    assert candidates['taifex_openapi_put_call_ratio_v1']['identity_fields']==[]
+    assert candidates['taifex_openapi_put_call_ratio_v1']['retained_scope_required']=='aggregate_endpoint_defined_no_contract_identity'
+    assert 'Aggregate statistical reference' in ' '.join(candidates['taifex_openapi_put_call_ratio_v1']['caveats'])
+
+def test_large_trader_not_labeled_three_institutional_investor_data():
+    text = REG.read_text(encoding='utf-8') + MAP.read_text(encoding='utf-8') + doc('docs/protocol/M8B_01_TAIFEX_OPENAPI_IMPLEMENTATION_BLUEPRINT.md')
+    banned=['three-institutional','institutional/large-trader','foreign investor net position','dealer net position','investment trust net position']
+    assert not any(term in text for term in banned)
+    assert 'large trader open-interest concentration' in text
+
 def test_currentness_and_session_contract():
     text=doc(CUR)
     for s in ['current_official_derivatives_eod','matches_expected_latest_trade_date_after_emergency_closure','delayed_one_trading_day','stale_official_derivatives_eod','unresolved_date_mismatch','session_semantics_unresolved']:

@@ -281,7 +281,7 @@
       ],
       "readiness": "conditional_go",
       "caveats": [
-        "Factual institutional/large-trader open-interest reference only; no bullish/bearish score, signal, support/resistance, or recommendation.",
+        "Factual large trader open-interest concentration reference only; no bullish/bearish score, signal, support/resistance, or recommendation.",
         "TypeOfTraders code semantics require adapter validation before conversation projection."
       ]
     },
@@ -346,18 +346,51 @@
       ],
       "readiness": "conditional_go",
       "caveats": [
-        "Factual institutional/large-trader open-interest reference only; no bullish/bearish score, signal, support/resistance, or recommendation.",
+        "Factual large trader open-interest concentration reference only; no bullish/bearish score, signal, support/resistance, or recommendation.",
         "TypeOfTraders code semantics require adapter validation before conversation projection."
       ]
     },
     {
+      "source_id": "TAIFEX_OPENAPI",
       "endpoint_contract_id": "taifex_openapi_put_call_ratio_v1",
       "endpoint_url": "https://openapi.taifex.com.tw/v1/PutCallRatio",
+      "method": "GET",
       "official_documented": true,
       "directly_observed": true,
+      "evidence_status": "documented_and_observed",
+      "timing_class": "official_derivatives_eod",
       "context_type": "official_derivatives_put_call_ratio_reference",
-      "readiness": "conditional_go",
       "implementation_recommendation": "implement_in_M8B_01",
+      "instrument_scope": [
+        "options"
+      ],
+      "network_scope": "whole_market_or_endpoint_defined",
+      "retained_scope_required": "aggregate_endpoint_defined_no_contract_identity",
+      "date_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "omitted_behavior": "latest available official dataset",
+        "source_trade_date_field": "Date"
+      },
+      "product_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "filtering": "not_applicable_aggregate_statistical_reference"
+      },
+      "identity_fields": [],
+      "trade_date_fields": [
+        "Date"
+      ],
+      "price_fields": [],
+      "activity_fields": [
+        "PutVolume",
+        "CallVolume"
+      ],
+      "open_interest_fields": [
+        "PutOI",
+        "CallOI"
+      ],
+      "session_fields": [],
       "field_contract": [
         "Date",
         "PutVolume",
@@ -367,17 +400,61 @@
         "CallOI",
         "PutCallOIRatio%"
       ],
-      "decision": "candidate",
-      "reason": "official and observed; factual ratio reference only, not signal"
+      "readiness": "conditional_go",
+      "caveats": [
+        "Aggregate statistical reference, not contract-level identity.",
+        "Source ratio values are percentage numbers such as 100.89 meaning 100.89%, not 1.0089.",
+        "Factual projection only; no bullish/bearish derived output."
+      ]
     },
     {
+      "source_id": "TAIFEX_OPENAPI",
       "endpoint_contract_id": "taifex_openapi_block_trade_v1",
       "endpoint_url": "https://openapi.taifex.com.tw/v1/BlockTrade",
+      "method": "GET",
       "official_documented": true,
       "directly_observed": true,
+      "evidence_status": "documented_and_observed",
+      "timing_class": "official_derivatives_eod",
       "context_type": "official_derivatives_block_trade_reference",
-      "readiness": "conditional_go",
       "implementation_recommendation": "implement_in_M8B_01",
+      "instrument_scope": [
+        "futures",
+        "options"
+      ],
+      "network_scope": "whole_market_or_endpoint_defined",
+      "retained_scope_required": "bounded_requested_contracts_or_products",
+      "date_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "omitted_behavior": "latest available official dataset",
+        "source_trade_date_field": "Date"
+      },
+      "product_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "filtering": "client-side bounded retention after whole-endpoint fetch"
+      },
+      "identity_fields": [
+        "Contract",
+        "ContractMonth(Week)",
+        "StrikePrice",
+        "CallPut"
+      ],
+      "trade_date_fields": [
+        "Date"
+      ],
+      "price_fields": [
+        "HighestPrice",
+        "LowestPrice"
+      ],
+      "activity_fields": [
+        "Volume"
+      ],
+      "open_interest_fields": [],
+      "session_fields": [
+        "TradingSession"
+      ],
       "field_contract": [
         "Date",
         "Contract",
@@ -389,8 +466,12 @@
         "LowestPrice",
         "TradingSession"
       ],
-      "decision": "candidate",
-      "reason": "official and observed; factual block-trade activity reference only"
+      "readiness": "conditional_go",
+      "caveats": [
+        "Futures block trades may report StrikePrice/CallPut as - (not_applicable); options block trades require valid StrikePrice and CallPut.",
+        "Prices use product-specific quotation units, not blanket TWD.",
+        "Factual block-trade activity reference only; no strategy interpretation."
+      ]
     },
     {
       "endpoint_contract_id": "taifex_openapi_contract_adjustment_v1",
@@ -512,7 +593,8 @@
       "readiness": "go",
       "caveats": [
         "Content-Type observed as application/octet-stream even for JSON; request Accept: application/json.",
-        "No scheduler/polling/startup fetch is authorized by this contract."
+        "No scheduler/polling/startup fetch is authorized by this contract.",
+        "Derivative price, strike, settlement, and final settlement values use product-specific quotation units; do not project TX/MTX/TXO as TWD prices without verified product metadata."
       ],
       "implementation_recommendation": "implement_in_M8B_01",
       "context_type": "official_derivatives_futures_eod_reference"
@@ -589,7 +671,8 @@
       "caveats": [
         "Content-Type observed as application/octet-stream even for JSON; request Accept: application/json.",
         "No scheduler/polling/startup fetch is authorized by this contract.",
-        "Option Close semantics are close/close-like until adapter validation; do not map to last without explicit evidence."
+        "Option Close semantics are close/close-like until adapter validation; do not map to last without explicit evidence.",
+        "Derivative price, strike, settlement, and final settlement values use product-specific quotation units; do not project TX/MTX/TXO as TWD prices without verified product metadata."
       ],
       "implementation_recommendation": "implement_in_M8B_01",
       "context_type": "official_derivatives_options_eod_reference"
@@ -643,7 +726,8 @@
       "readiness": "conditional_go",
       "caveats": [
         "FinalSettlementPrice is expiry final settlement only and does not provide daily volume/open-interest/session in the observed contract.",
-        "No scheduler/polling/startup fetch is authorized by this contract."
+        "No scheduler/polling/startup fetch is authorized by this contract.",
+        "Derivative price, strike, settlement, and final settlement values use product-specific quotation units; do not project TX/MTX/TXO as TWD prices without verified product metadata."
       ],
       "implementation_recommendation": "implement_in_M8B_01",
       "context_type": "official_derivatives_final_settlement_reference"
@@ -707,7 +791,7 @@
       ],
       "readiness": "conditional_go",
       "caveats": [
-        "Factual institutional/large-trader open-interest reference only; no bullish/bearish score, signal, support/resistance, or recommendation.",
+        "Factual large trader open-interest concentration reference only; no bullish/bearish score, signal, support/resistance, or recommendation.",
         "TypeOfTraders code semantics require adapter validation before conversation projection."
       ]
     },
@@ -772,7 +856,7 @@
       ],
       "readiness": "conditional_go",
       "caveats": [
-        "Factual institutional/large-trader open-interest reference only; no bullish/bearish score, signal, support/resistance, or recommendation.",
+        "Factual large trader open-interest concentration reference only; no bullish/bearish score, signal, support/resistance, or recommendation.",
         "TypeOfTraders code semantics require adapter validation before conversation projection."
       ]
     }
@@ -791,7 +875,8 @@
       "latest-only daily arrays; no request date/product parameter documented for selected endpoints",
       "session values are source-reported Chinese labels and require mapping validation",
       "FinalSettlementPrice is final expiry settlement, not daily settlement",
-      "Large-trader OI, put/call ratio, and block-trade references are factual-only; no recommendation or signal projection is allowed."
+      "Large-trader OI, put/call ratio, and block-trade references are factual-only; no recommendation or signal projection is allowed.",
+      "Derivative price units are product-specific quotation units; settlement_currency and contract_multiplier require product metadata validation before monetary interpretation."
     ]
   }
 }

@@ -33,7 +33,7 @@ Open/high/low, close, last, settlement, reference, change, and final settlement 
 Daily settlement price is not last price. Final settlement price is expiry settlement. Reference price is not inferred unless source-reported.
 
 ## 11. Activity/open-interest semantics
-Volume and open interest are non-negative integer contract counts; unresolved units must remain caveated. Large-trader Top5/Top10/OIOfMarket values are factual OI references only.
+Price/strike/settlement units are product-specific quotation units, not blanket TWD. Volume and open interest are non-negative integer contract counts; unresolved units must remain caveated. Large-trader Top5/Top10/OIOfMarket values are factual OI references only.
 
 ## 12. Trade-date/currentness contract
 `Date` is market trade date; retrieved time is not freshness.
@@ -54,7 +54,7 @@ Compact sanitized fixtures cover normal, partial, duplicate, mixed-date, invalid
 No production adapter, runtime fetch, scheduler, polling, startup fetch, DB write, server/frontend/MCP change, TAIFEX_MIS, Yahoo, FinMind, model call, recommendation wording, bullish/bearish scoring, support/resistance, or raw payload retention is added.
 
 ## 18. Readiness decision
-Futures daily EOD is `go`; options daily EOD, final settlement, large-trader OI, Put/Call Ratio, and BlockTrade are `conditional_go` pending parser validation and factual-only projection guardrails.
+Futures daily EOD is `go` with product-specific quotation-unit caveats; options daily EOD, final settlement, large-trader OI, Put/Call Ratio, and BlockTrade are `conditional_go` pending parser validation and factual-only projection guardrails.
 
 ## 19. Caveats
 Endpoint semantics depend on observed official fields; options identity requires additional validation; session semantics may be endpoint-specific; no production adapter in M8B-00; no TAIFEX_MIS; no historical backfill; no recommendation engine.
