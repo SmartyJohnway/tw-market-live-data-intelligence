@@ -1,6 +1,6 @@
 from datetime import date
 from scripts.m8a_market_day_currentness_resolver import resolve_market_day_currentness, previous_actual_trading_day, previous_actual_trading_day_resolution
-EV={"source_id":"NCDR_DGPA_CLOSURE_CAP","entry_id":"e","area_name":"臺北市","area_level":"municipality","target_date":"2026-07-10","work_status":"closed","decision_status":"closure_confirmed","closure_scope":"full_day"}
+EV={"source_id":"NCDR_DGPA_CLOSURE_CAP","entry_id":"e","area_name":"臺北市","area_level":"municipality","target_date":"2026-07-10","work_status":"closed","decision_status":"closure_confirmed","closure_scope":"full_day","status":"Actual"}
 def cal(closed):
     return {"dates":[{"date":d,"is_trading_day":False} for d in closed]}
 def test_unknown_empty_and_taipei_closure_states():

@@ -1,9 +1,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <entry><id>taipei-0710-alert</id><updated>2026-07-09T20:10:00+08:00</updated><title>臺北市停班停課</title><summary>臺北市:7/10停止上班、停止上課</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Alert</msgType><status xmlns="urn:oasis:names:tc:emergency:cap:1.2">Actual</status><expires xmlns="urn:oasis:names:tc:emergency:cap:1.2">2026-07-11T00:00:00+08:00</expires></entry>
-  <entry><id>taipei-0711-criteria</id><updated>2026-07-10T21:00:00+08:00</updated><summary>臺北市:7/11已達停止上班及上課標準</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Alert</msgType></entry>
-  <entry><id>taipei-update</id><updated>2026-07-09T21:00:00+08:00</updated><summary>臺北市:7/10停止上班、停止上課</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Update</msgType></entry>
-  <entry><id>today-afternoon</id><updated>2026-07-10T10:00:00+08:00</updated><summary>臺北市:今天下午1:00起停止上班</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Alert</msgType></entry>
-  <entry><id>tomorrow</id><updated>2026-07-10T20:00:00+08:00</updated><summary>臺北市:明天停止上班、停止上課</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Alert</msgType></entry>
-  <entry><id>district</id><updated>2026-07-09T20:00:00+08:00</updated><summary>臺北市信義區:7/10停止上班、停止上課</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Alert</msgType></entry>
-  <entry><id>stale</id><updated>2026-07-08T20:00:00+08:00</updated><summary>臺北市:7/9停止上班、停止上課</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Alert</msgType></entry>
+  <entry><id>taipei-0711-criteria</id><updated>2026-07-10T21:00:00+08:00</updated><summary>臺北市:7/11已達停止上班及上課標準</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Alert</msgType><status xmlns="urn:oasis:names:tc:emergency:cap:1.2">Actual</status></entry>
+  <entry><id>taipei-update</id><updated>2026-07-09T21:00:00+08:00</updated><summary>臺北市:7/10停止上班、停止上課</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Update</msgType><status xmlns="urn:oasis:names:tc:emergency:cap:1.2">Actual</status></entry>
+  <entry><id>today-afternoon</id><updated>2026-07-08T10:00:00+08:00</updated><summary>臺北市:今天下午1:00起停止上班</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Alert</msgType><status xmlns="urn:oasis:names:tc:emergency:cap:1.2">Actual</status></entry>
+  <entry><id>tomorrow</id><updated>2026-07-10T20:00:00+08:00</updated><summary>臺北市:明天停止上班、停止上課</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Alert</msgType><status xmlns="urn:oasis:names:tc:emergency:cap:1.2">Actual</status></entry>
+  <entry><id>district</id><updated>2026-07-09T20:00:00+08:00</updated><summary>臺北市信義區:7/10停止上班、停止上課</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Alert</msgType><status xmlns="urn:oasis:names:tc:emergency:cap:1.2">Actual</status></entry>
+  <entry><id>stale</id><updated>2026-07-08T20:00:00+08:00</updated><summary>臺北市:7/9停止上班、停止上課</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">Alert</msgType><status xmlns="urn:oasis:names:tc:emergency:cap:1.2">Actual</status></entry>
 </feed>

@@ -64,14 +64,17 @@ def parse_closure_feed(xml_text:str, *, target_date:str|None=None):
     events=[]
     for entry in [e for e in root.iter() if _local(e.tag)=="entry"]:
         summary=_first(entry,"summary") or _first(entry,"title")
-        updated=_first(entry,"updated"); entry_id=_first(entry,"id"); msg=_first(entry,"msgType") or ("Cancel" if "取消" in summary else ("Update" if "更新" in summary else "Alert")); status=_first(entry,"status") or "Actual"
+        updated=_first(entry,"updated"); entry_id=_first(entry,"id"); msg=_first(entry,"msgType") or ("Cancel" if "取消" in summary else ("Update" if "更新" in summary else "Alert")); status=_first(entry,"status") or "unknown"
+        references=_first(entry,"references") or _first(entry,"supersedes")
         area_code,area_name,area_level=_area(summary); td=_target_date(summary,updated); work,school,decision,scope=_statuses(summary)
         if msg == "Cancel": decision="cancelled"
-        ev={"schema_version":SCHEMA_VERSION,"source_id":SOURCE_ID,"entry_id":entry_id,"message_type":msg,"status":status,"area_code":area_code,"area_name":area_name,"area_level":area_level,"target_date":td,"work_status":work,"school_status":school,"decision_status":decision,"closure_scope":scope,"published_at":updated,"effective_at":_first(entry,"effective"),"expires_at":_first(entry,"expires"),"source_cap_url":"","parse_status":"structured","caveats":[]}
+        caveats=[] if status == "Actual" else ["non-Actual CAP status is non-actionable for market closure"]
+        ev={"schema_version":SCHEMA_VERSION,"source_id":SOURCE_ID,"entry_id":entry_id,"message_type":msg,"status":status,"references":references,"area_code":area_code,"area_name":area_name,"area_level":area_level,"target_date":td,"work_status":work,"school_status":school,"decision_status":decision,"closure_scope":scope,"published_at":updated,"effective_at":_first(entry,"effective"),"expires_at":_first(entry,"expires"),"source_cap_url":"","parse_status":"structured","caveats":caveats}
         if target_date is None or ev["target_date"]==target_date: events.append(ev)
-    folded={}; rank={"Alert":1,"Update":2,"Cancel":3}; scope_rank={"unknown":0,"evening":1,"afternoon":2,"morning":3,"full_day":4}
+    folded={}; rank={"Alert":1,"Update":2,"Cancel":3}
     def order(ev):
-        return (1 if ev.get("decision_status")=="cancelled" else 0, scope_rank.get(ev.get("closure_scope"),0), ev.get("published_at") or "", rank.get(ev.get("message_type"),0))
+        dt=_updated_dt(ev.get("published_at") or "")
+        return (dt.isoformat() if dt else "", 1 if ev.get("references") else 0, rank.get(ev.get("message_type"),0))
     for ev in events:
         key=(ev.get("target_date"),ev.get("area_code") or ev.get("area_name"),"work_school_closure")
         old=folded.get(key)
@@ -83,4 +86,4 @@ def fetch_closure_feed(*,timeout:int=10):
 def fetch_and_parse_closure_feed(*,target_date:str|None=None,timeout:int=10):
     xml,status,ctype=fetch_closure_feed(timeout=timeout); r=parse_closure_feed(xml,target_date=target_date); r["provenance"]={"source_url":URL,"http_status":status,"content_type":ctype,"retrieved_at_utc":utc_now()}; return r
 def is_taipei_market_closure_event(ev:dict,target_date:str)->bool:
-    return ev.get("area_name")=="臺北市" and ev.get("area_level")=="municipality" and ev.get("work_status")=="closed" and ev.get("closure_scope") in {"full_day","morning"} and ev.get("decision_status")=="closure_confirmed" and ev.get("target_date")==target_date
+    return ev.get("status")=="Actual" and ev.get("area_name")=="臺北市" and ev.get("area_level")=="municipality" and ev.get("work_status")=="closed" and ev.get("closure_scope") in {"full_day","morning"} and ev.get("decision_status")=="closure_confirmed" and ev.get("target_date")==target_date
