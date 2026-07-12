@@ -178,9 +178,9 @@ def test_no_raw_payload_artifact_and_boundaries():
         assert 'representative_compact_rows' in blob
         assert len(blob) < 80000
     forbidden_dirs=[Path('frontend'),Path('server')]
-    # preflight-only boundary is documented and no M8B production script exists yet
-    assert not Path('scripts/m8b_taifex_openapi_futures_adapter.py').exists()
-    assert not Path('scripts/m8b_taifex_openapi_execution.py').exists()
+    # M8B-01 may add controlled production adapters; preflight artifacts still must not retain raw payloads or add UI/server surfaces.
+    assert Path('scripts/m8b_taifex_openapi_futures_adapter.py').exists()
+    assert Path('scripts/m8b_taifex_openapi_execution.py').exists()
     acc=doc('docs/protocol/M8B_TAIFEX_OPENAPI_OFFICIAL_DERIVATIVES_EOD_PREFLIGHT_ACCEPTANCE.md')
     for word in ['No production adapter','scheduler','polling','startup fetch','DB write','TAIFEX_MIS','Yahoo','FinMind','recommendation','bullish/bearish scoring','raw payload retention']:
         assert word in acc

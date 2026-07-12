@@ -201,7 +201,7 @@
     {
       "source_id": "TAIFEX_OPENAPI",
       "source_family": "TAIFEX_OPENAPI",
-      "display_name": "TAIFEX official OpenAPI statistics",
+      "display_name": "TAIFEX official OpenAPI derivatives EOD/statistical/reference context",
       "authority_level": "official_documented",
       "official_documented": true,
       "endpoint_type": "official_openapi",
@@ -216,10 +216,10 @@
         "options"
       ],
       "field_groups": [],
-      "runtime_available": false,
-      "runtime_executable": false,
-      "ai_context_allowed": false,
-      "ai_exposure_level": "metadata_only",
+      "runtime_available": true,
+      "runtime_executable": true,
+      "ai_context_allowed": true,
+      "ai_exposure_level": "caveated_context_allowed",
       "primary_use": "official derivatives EOD/statistical context",
       "allowed_interpretation": [
         "official statistics EOD"
@@ -233,8 +233,8 @@
         "no trading signal"
       ],
       "caveats": [
-        "M8B-00 preflight complete; adapters are not implemented until M8B-01.",
-        "Official derivatives EOD is not realtime; retrieved_at is not market freshness."
+        "M8B-01 controlled adapters implemented for seven TAIFEX OpenAPI endpoint families.",
+        "Official derivatives EOD/statistical/reference context is not realtime."
       ],
       "credential_required": false,
       "local_first_safe": true,
@@ -247,8 +247,21 @@
         "statistics_not_live_signal": true
       },
       "source_role": "official_derivatives_eod_context",
-      "runtime_status": "preflight_complete_adapter_pending",
-      "currentness_contract": "m8b_taifex_derivatives_currentness_contract"
+      "runtime_status": "implemented_controlled",
+      "currentness_contract": "m8b_taifex_derivatives_currentness_contract",
+      "adapter_implemented": true,
+      "controlled_runtime_executable": true,
+      "official_derivatives_eod": true,
+      "whole_market_network_scope": true,
+      "bounded_retained_scope": true,
+      "supported_context_families": [
+        "official_derivatives_futures_eod_reference",
+        "official_derivatives_options_eod_reference",
+        "official_derivatives_final_settlement_reference",
+        "official_derivatives_large_trader_open_interest_reference",
+        "official_derivatives_put_call_ratio_reference",
+        "official_derivatives_block_trade_reference"
+      ]
     },
     {
       "source_id": "MOPS",

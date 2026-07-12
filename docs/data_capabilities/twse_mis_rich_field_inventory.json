@@ -1917,5 +1917,21 @@
     "polling_added": false,
     "db_write_added": false,
     "raw_payload_retention_allowed": false
+  },
+  "m8b_01_taifex_openapi_status": {
+    "m8b_01_taifex_openapi_adapters_implemented": true,
+    "taifex_futures_eod_context": true,
+    "taifex_options_eod_context": true,
+    "taifex_final_settlement_context": true,
+    "taifex_large_trader_oi_context": true,
+    "taifex_put_call_ratio_context": true,
+    "taifex_block_trade_context": true,
+    "taifex_mis_added": false,
+    "yahoo_added": false,
+    "finmind_added": false,
+    "scheduler_added": false,
+    "polling_added": false,
+    "db_write_added": false,
+    "raw_payload_retention_allowed": false
   }
 }
