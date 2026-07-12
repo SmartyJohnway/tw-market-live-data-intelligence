@@ -32,6 +32,7 @@ FAILURE_STATUSES = {
     "source_error", "schema_drift", "identity_parse_failure", "date_mismatch",
     "partial_source_success", "valid_zero_trade_contract", "unresolved_session_semantics",
     "rejected_invalid_scope", "operator_confirmation_required", "no_matching_bounded_scope",
+    "invalid_required_fields",
 }
 
 
@@ -162,6 +163,30 @@ def empty_adapter_result(endpoint_contract_id: str, requested_products: list[str
             "batch_status": "source_unavailable", "reported_trade_dates": [], "row_count_received": 0,
             "row_count_examined": 0, "row_count_retained": 0, "row_count_rejected": 0, "observations": [],
             "rejected_rows": [], "caveats": [], "provenance": {"raw_payload_retained": False}}
+
+
+def finalize_adapter_result(res: dict, rows: list, *, schema_valid_rows: int, matching_scope_rows: int, invalid_matching_rows: int, dates: set, allow_date_mismatch: bool = False) -> dict:
+    res["schema_valid_rows"] = schema_valid_rows
+    res["matching_scope_rows"] = matching_scope_rows
+    res["invalid_matching_rows"] = invalid_matching_rows
+    res["retained_observations"] = len(res.get("observations", []))
+    if rows and schema_valid_rows == 0:
+        res["batch_status"] = "schema_drift"
+    elif allow_date_mismatch and len(dates) > 1:
+        res["batch_status"] = "date_mismatch"
+    elif res["retained_observations"]:
+        res["batch_status"] = "successful_derivatives_eod_batch"
+    elif rows and matching_scope_rows == 0:
+        res["batch_status"] = "no_matching_bounded_scope"
+    elif invalid_matching_rows:
+        reasons = {r.get("reason") for r in res.get("rejected_rows", [])}
+        res["batch_status"] = "identity_parse_failure" if reasons == {"identity_parse_failure"} or "duplicate_identity" in reasons or "duplicate_aggregate_identity" in reasons else "invalid_required_fields"
+    else:
+        res["batch_status"] = "empty_non_trading_day" if not rows else "no_matching_bounded_scope"
+    res["row_count_retained"] = res["retained_observations"]
+    res["reported_trade_dates"] = sorted(d for d in dates if d)
+    res["source_status"] = "ok" if res["retained_observations"] else res["batch_status"]
+    return res
 
 # M8B-01 corrective helpers.
 def validate_required_fields(row: dict, required_fields: list[str]) -> tuple[bool, list[str]]:

@@ -8,7 +8,7 @@ def normalize_taifex_futures_eod(*, requested_products, requested_contract_month
     if not products: res.update(batch_status="rejected_invalid_scope", caveats=["requested_products required"]); return res
     try: data=(fetcher or fetch_endpoint)(ENDPOINT)
     except TaifexOpenApiError as e: res.update(batch_status=e.status, source_status=e.status, provenance=e.metadata); return res
-    rows=data if isinstance(data,list) else data.get("rows",[]); res["http_status"]=(data.get("http_status") if isinstance(data,dict) else 200); res["row_count_received"]=len(rows); seen=set(); dates=set(); schema_valid_rows=0
+    rows=data if isinstance(data,list) else data.get("rows",[]); res["http_status"]=(data.get("http_status") if isinstance(data,dict) else 200); res["row_count_received"]=len(rows); seen=set(); dates=set(); schema_valid_rows=0; matching_scope_rows=0; invalid_matching_rows=0
     for i,row in enumerate(rows):
         res["row_count_examined"]+=1
         if not isinstance(row,dict): res["row_count_rejected"]+=1; continue
@@ -20,8 +20,9 @@ def normalize_taifex_futures_eod(*, requested_products, requested_contract_month
         cm,cmv=validate_contract_month(row.get("ContractMonth(Week)")); session,sv,sc=map_session(row.get("TradingSession")); td,dv=parse_yyyymmdd(row.get("Date")); dates.add(td) if td else None
         if months and cm not in months: continue
         if sessions and session not in sessions: continue
+        matching_scope_rows += 1
         present,omitted=source_field_presence(row,FIELDS); fv={"Date":dv,"ContractMonth(Week)":cmv,"TradingSession":sv}; caveats=sc[:]
-        if not (td and cm and row.get("Contract")): res["row_count_rejected"]+=1; res["rejected_rows"].append({"index":i,"reason":"identity_parse_failure"}); continue
+        if not (td and cm and row.get("Contract")): invalid_matching_rows += 1; res["row_count_rejected"]+=1; res["rejected_rows"].append({"index":i,"reason":"identity_parse_failure"}); continue
         ident=(td,row.get("Contract"),cm,session)
         if ident in seen: res.update(batch_status="identity_parse_failure"); res["rejected_rows"].append({"index":i,"reason":"duplicate_identity"}); return res
         seen.add(ident)
@@ -33,9 +34,4 @@ def normalize_taifex_futures_eod(*, requested_products, requested_contract_month
         status="complete" if all([price.get("settlement") is not None, activity.get("volume") is not None, oi.get("open_interest") is not None]) and not bad_fields else "partial"
         obs=create_observation(endpoint_contract_id=ENDPOINT, context_type=CONTEXT_TYPES["futures"], instrument_type="futures", product_id=row.get("Contract"), contract_identity={"trade_date":td,"product_id":row.get("Contract"),"contract_month_or_week":cm,"session":session}, trade_date=td, retrieved_at_utc=retrieved_at, session=session, source_session_label=row.get("TradingSession"), observation_status=status, field_validation=fv, source_fields_present=present, omitted_source_fields=omitted, caveats=caveats, provenance={"endpoint":ENDPOINT,"raw_payload_retained":False}, payload={"price":price,"activity":activity,"open_interest":oi,"trading_halt":row.get("TradingHalt")})
         res["observations"].append(obs)
-    if rows and schema_valid_rows == 0: res["batch_status"]="schema_drift"; res["caveats"].append("non-empty response had no rows with required identity/date schema")
-    elif len(dates)>1: res["batch_status"]="date_mismatch"; res["caveats"].append("mixed source dates observed")
-    elif res["observations"]: res["batch_status"]="successful_derivatives_eod_batch"
-    elif rows: res["batch_status"]="no_matching_bounded_scope"
-    else: res["batch_status"]="empty_non_trading_day"
-    res["row_count_retained"]=len(res["observations"]); res["reported_trade_dates"]=sorted(d for d in dates if d); res["source_status"]="ok" if res["observations"] else res["batch_status"]; return res
+    finalize_adapter_result(res, rows, schema_valid_rows=schema_valid_rows, matching_scope_rows=matching_scope_rows, invalid_matching_rows=invalid_matching_rows, dates=dates, allow_date_mismatch=True); return res

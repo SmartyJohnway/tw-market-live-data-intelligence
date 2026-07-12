@@ -9,7 +9,7 @@ def normalize_taifex_large_trader_oi(*, endpoint, requested_products, requested_
     if not products: res.update(batch_status="rejected_invalid_scope", caveats=["requested_products required"]); return res
     try: data=(fetcher or fetch_endpoint)(endpoint)
     except TaifexOpenApiError as e: res.update(batch_status=e.status, source_status=e.status, provenance=e.metadata); return res
-    rows=data if isinstance(data,list) else data.get("rows",[]); res["row_count_received"]=len(rows); dates=set(); isopt=endpoint.endswith("Options"); schema_valid_rows=0
+    rows=data if isinstance(data,list) else data.get("rows",[]); res["row_count_received"]=len(rows); dates=set(); isopt=endpoint.endswith("Options"); schema_valid_rows=0; matching_scope_rows=0; invalid_matching_rows=0
     for i,row in enumerate(rows):
         res["row_count_examined"]+=1
         if not isinstance(row,dict): res["row_count_rejected"]+=1; continue
@@ -24,7 +24,8 @@ def normalize_taifex_large_trader_oi(*, endpoint, requested_products, requested_
         if months and sm not in months: continue
         if types and opt not in types: continue
         if traders and trader not in traders: continue
-        if not(td and sm and trader and (not isopt or opt)): res["row_count_rejected"]+=1; res["rejected_rows"].append({"index":i,"reason":"identity_parse_failure"}); continue
+        matching_scope_rows += 1
+        if not(td and sm and trader and (not isopt or opt)): invalid_matching_rows += 1; res["row_count_rejected"]+=1; res["rejected_rows"].append({"index":i,"reason":"identity_parse_failure"}); continue
         vals={}; fv={"Date":dv,"SettlementMonth":smv,"CallPut":opv}
         for f,k in [("Top5Buy","top5_buy"),("Top5Sell","top5_sell"),("Top10Buy","top10_buy"),("Top10Sell","top10_sell"),("OIOfMarket","market_open_interest")]: vals[k],fv[f]=parse_non_negative_int(row.get(f),allow_missing=False)
         core_fields=["Top5Buy","Top5Sell","Top10Buy","Top10Sell","OIOfMarket"]
@@ -34,4 +35,4 @@ def normalize_taifex_large_trader_oi(*, endpoint, requested_products, requested_
         ident={"trade_date":td,"product_id":row.get("Contract"),"settlement_month":sm,"type_of_traders":trader};
         if isopt: ident["option_type"]=opt
         res["observations"].append(create_observation(endpoint_contract_id=endpoint, context_type=CONTEXT_TYPES["large_trader_oi"], instrument_type="options" if isopt else "futures", product_id=row.get("Contract"), product_name=row.get("ContractName"), contract_identity=ident, trade_date=td, retrieved_at_utc=retrieved_at, session="not_applicable", observation_status=("partial" if bad_fields else "complete"), field_validation=fv, source_fields_present=present, omitted_source_fields=omitted, caveats=caveats, provenance={"endpoint":endpoint,"raw_payload_retained":False}, payload={"large_trader_open_interest":dict(vals, type_of_traders=trader, option_type=opt)}))
-    res["batch_status"]="schema_drift" if rows and schema_valid_rows == 0 else ("successful_derivatives_eod_batch" if res["observations"] else ("no_matching_bounded_scope" if rows else "empty_non_trading_day")); res["row_count_retained"]=len(res["observations"]); res["reported_trade_dates"]=sorted(dates); res["source_status"]="ok" if res["observations"] else res["batch_status"]; return res
+    finalize_adapter_result(res, rows, schema_valid_rows=schema_valid_rows, matching_scope_rows=matching_scope_rows, invalid_matching_rows=invalid_matching_rows, dates=dates); return res
