@@ -1,7 +1,8 @@
 from __future__ import annotations
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 from scripts.m8b_taifex_derivatives_observation import utc_now, apply_currentness_to_observation
-from scripts.m8b_taifex_currentness import evaluate_taifex_derivatives_currentness
+from scripts.m8b_taifex_currentness import evaluate_taifex_derivatives_currentness, final_settlement_currentness
 from scripts.m8b_taifex_openapi_futures_adapter import normalize_taifex_futures_eod
 from scripts.m8b_taifex_openapi_options_adapter import normalize_taifex_options_eod
 from scripts.m8b_taifex_openapi_final_settlement_adapter import normalize_taifex_final_settlement
@@ -49,6 +50,11 @@ def _error_result(context: str, endpoint: str, exc: Exception) -> dict:
 
 
 def _apply_currentness(context: str, result: dict, *, evaluation_time_asia_taipei, calendar_artifact, closure_events, closure_query_succeeded, exchange_special_closures) -> None:
+    if context == "final_settlement":
+        latest = max((o.get("trade_date") for o in result.get("observations", []) if o.get("trade_date")), default=None)
+        for obs in result.get("observations", []):
+            apply_currentness_to_observation(obs, final_settlement_currentness(obs.get("trade_date"), latest_reference_date=latest))
+        return
     if context not in DAILY_CONTEXTS:
         return
     for obs in result.get("observations", []):
@@ -66,7 +72,10 @@ def _apply_currentness(context: str, result: dict, *, evaluation_time_asia_taipe
 
 def execute_taifex_openapi_refresh(*, operator_confirmed: bool, requested_contexts: list[str], requested_products: list[str], requested_contracts: list[dict] | None = None, requested_sessions: list[str] | None = None, evaluation_time_asia_taipei: str | None = None, fetchers: dict | None = None, calendar_artifact: dict | None = None, closure_events: list | None = None, closure_query_succeeded: bool | None = None, exchange_special_closures: list | None = None) -> dict:
     started = utc_now()
-    result = {"schema_version": "m8b_taifex_openapi_execution_result.v1", "source_id": "TAIFEX_OPENAPI", "requested_contexts": requested_contexts, "requested_products": requested_products, "requested_contracts": requested_contracts or [], "operator_confirmed": operator_confirmed, "started_at_utc": started, "completed_at_utc": None, "duration_ms": None, "overall_status": "not_started", "endpoint_results": {}, "observations": [], "raw_payload_retained": False, "scheduler_added": False, "polling_added": False, "startup_fetch_added": False, "db_write_added": False}
+    evaluation_time_source = "caller_supplied" if evaluation_time_asia_taipei is not None else "runtime_clock"
+    if evaluation_time_asia_taipei is None:
+        evaluation_time_asia_taipei = datetime.now(ZoneInfo("Asia/Taipei")).replace(microsecond=0).isoformat()
+    result = {"schema_version": "m8b_taifex_openapi_execution_result.v1", "source_id": "TAIFEX_OPENAPI", "requested_contexts": requested_contexts, "requested_products": requested_products, "requested_contracts": requested_contracts or [], "operator_confirmed": operator_confirmed, "started_at_utc": started, "completed_at_utc": None, "duration_ms": None, "overall_status": "not_started", "endpoint_results": {}, "observations": [], "raw_payload_retained": False, "scheduler_added": False, "polling_added": False, "startup_fetch_added": False, "db_write_added": False, "evaluation_time_asia_taipei": evaluation_time_asia_taipei, "evaluation_time_source": evaluation_time_source, "evaluation_timezone": "Asia/Taipei"}
     if not operator_confirmed:
         result.update(overall_status="operator_confirmation_required", completed_at_utc=utc_now(), duration_ms=0)
         return result

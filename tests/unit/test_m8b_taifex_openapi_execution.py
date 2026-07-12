@@ -21,3 +21,19 @@ def test_execution_isolates_unexpected_adapter_exception_and_timestamps():
  assert r['endpoint_results']['futures_eod']['provenance']['raw_payload_retained'] is False
  assert r['endpoint_results']['put_call_ratio']['observations'][0]['currentness']['status'] in {'current_official_derivatives_eod','delayed_one_trading_day','stale_official_derivatives_eod'}
  assert r['completed_at_utc'] >= r['started_at_utc'] and isinstance(r['duration_ms'], int)
+
+
+def test_execution_runtime_clock_and_caller_supplied_evaluation_time():
+ r=execute_taifex_openapi_refresh(operator_confirmed=True,requested_contexts=['put_call_ratio'],requested_products=[],fetchers={'PutCallRatio':lambda e:[P]})
+ assert r['evaluation_time_source']=='runtime_clock' and r['evaluation_timezone']=='Asia/Taipei'
+ assert r['observations'][0]['currentness']['evaluation_time_asia_taipei']
+ supplied='2026-07-10T16:00:00+08:00'
+ s=execute_taifex_openapi_refresh(operator_confirmed=True,requested_contexts=['put_call_ratio'],requested_products=[],evaluation_time_asia_taipei=supplied,fetchers={'PutCallRatio':lambda e:[P]})
+ assert s['evaluation_time_source']=='caller_supplied' and s['evaluation_time_asia_taipei']==supplied
+
+def test_historical_final_settlement_status_reachable_at_runtime():
+ rows=[{'TheFinalSettlementDay':'20250716','DeliveryMonth':'202507','Contract':'TX','ContractName':'臺指','TheFinalSettlementPrice':'23000'}, {'TheFinalSettlementDay':'20260715','DeliveryMonth':'202607','Contract':'TX','ContractName':'臺指','TheFinalSettlementPrice':'24000'}]
+ r=execute_taifex_openapi_refresh(operator_confirmed=True,requested_contexts=['final_settlement'],requested_products=['TX'],fetchers={'FinalSettlementPrice':lambda e:rows})
+ statuses={o['trade_date']:o['currentness']['status'] for o in r['observations']}
+ assert statuses['2025-07-16']=='historical_final_settlement_reference'
+ assert statuses['2026-07-15']=='official_final_settlement_reference'

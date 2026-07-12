@@ -15,6 +15,9 @@ def evaluate_taifex_derivatives_currentness(*, reported_trade_date: str | None, 
     if not evaluation_time_asia_taipei:
         caveats.append("evaluation_time_asia_taipei_missing")
         return {"status": "unresolved_date_mismatch", "trade_date": reported_trade_date, "caveats": caveats, "source_specific": True}
+    calendar_evidence = "complete" if calendar_artifact is not None else "incomplete"
+    currentness_confidence = "authoritative" if calendar_artifact is not None else "provisional"
+    taifex_specific_closure = bool(exchange_special_closures) or any((e or {}).get("source_id") in {"TAIFEX", "TAIFEX_OFFICIAL", "TAIFEX_SPECIAL_CLOSURE"} for e in (closure_events or []))
     if calendar_artifact is None:
         caveats.append("taifex_trading_calendar_evidence_incomplete_weekend_rule_only")
     resolved = resolve_market_day_currentness(
@@ -27,6 +30,10 @@ def evaluate_taifex_derivatives_currentness(*, reported_trade_date: str | None, 
     )
     mapping = {"current_official_eod": "current_official_derivatives_eod"}
     status = mapping.get(resolved.get("currentness_status"), resolved.get("currentness_status") or "unresolved_date_mismatch")
+    if status == "matches_expected_latest_trade_date_after_emergency_closure" and not taifex_specific_closure:
+        status = "unresolved_date_mismatch"
+        currentness_confidence = "provisional"
+        caveats.append("taifex_specific_closure_evidence_missing")
     if session == "unknown" and status != "unresolved_date_mismatch":
         status = "session_semantics_unresolved"
         caveats.append("session_semantics_unresolved")
@@ -39,6 +46,8 @@ def evaluate_taifex_derivatives_currentness(*, reported_trade_date: str | None, 
         "emergency_closure_status": resolved.get("emergency_closure_status"),
         "exchange_market_status": resolved.get("exchange_market_status"),
         "source_specific": True,
+        "calendar_evidence": calendar_evidence,
+        "currentness_confidence": currentness_confidence,
         "caveats": caveats + resolved.get("caveats", []),
     }
 
