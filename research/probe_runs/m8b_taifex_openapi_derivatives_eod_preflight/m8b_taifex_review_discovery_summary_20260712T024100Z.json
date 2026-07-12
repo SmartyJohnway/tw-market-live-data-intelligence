@@ -1,0 +1,103 @@
+{
+  "schema_version": "m8b_taifex_openapi_review_discovery.v1",
+  "probe_time_utc": "2026-07-12T02:41:00Z",
+  "entrypoint": "https://openapi.taifex.com.tw/swagger.json",
+  "discovered_endpoints": [
+    {
+      "path": "/PutCallRatio",
+      "summary": "臺指選擇權Put/Call比",
+      "directly_observed": true,
+      "http_status": 200,
+      "row_count": 18,
+      "field_names": [
+        "Date",
+        "PutVolume",
+        "CallVolume",
+        "PutCallVolumeRatio%",
+        "PutOI",
+        "CallOI",
+        "PutCallOIRatio%"
+      ],
+      "representative_compact_rows": [
+        {
+          "Date": "20260709",
+          "PutVolume": "175220",
+          "CallVolume": "173682",
+          "PutCallVolumeRatio%": "100.89",
+          "PutOI": "96041",
+          "CallOI": "80837",
+          "PutCallOIRatio%": "118.81"
+        }
+      ],
+      "decision": "implement_in_M8B_01 factual reference only"
+    },
+    {
+      "path": "/BlockTrade",
+      "summary": "鉅額交易各商品成交資訊",
+      "directly_observed": true,
+      "http_status": 200,
+      "row_count": 4,
+      "field_names": [
+        "Date",
+        "Contract",
+        "ContractMonth(Week)",
+        "StrikePrice",
+        "CallPut",
+        "Volume",
+        "HighestPrice",
+        "LowestPrice",
+        "TradingSession"
+      ],
+      "representative_compact_rows": [
+        {
+          "Date": "20260709",
+          "Contract": "TX",
+          "ContractMonth(Week)": "202607",
+          "StrikePrice": "-",
+          "CallPut": "-",
+          "Volume": "1578",
+          "HighestPrice": "45755",
+          "LowestPrice": "45450",
+          "TradingSession": "一般"
+        }
+      ],
+      "decision": "implement_in_M8B_01 factual reference only"
+    },
+    {
+      "path": "/ContractAdj",
+      "summary": "股票期貨/選擇權契約調整一覽事項",
+      "directly_observed": true,
+      "http_status": 200,
+      "field_names": [
+        "Contact",
+        "StockName",
+        "StockId",
+        "CorporateAction",
+        "AdjustmentDate"
+      ],
+      "decision": "deferred_with_specific_reason product/contract metadata semantics need separate review"
+    },
+    {
+      "path": "/productsExemptedAH",
+      "summary": "盤後交易時段指定豁免及非豁免代為沖銷商品",
+      "directly_observed": true,
+      "http_status": 200,
+      "field_names": [
+        "Products",
+        "TickerSymbol",
+        "IsProductsExemptedFromLiquidationOnBehalfOfAPrincipalInTheAfterHourSession",
+        "Date"
+      ],
+      "decision": "deferred_with_specific_reason after-hours product/session metadata, not calendar"
+    },
+    {
+      "path": null,
+      "summary": "trading calendar",
+      "directly_observed": false,
+      "http_status": null,
+      "field_names": [],
+      "decision": "unresolved no OpenAPI path identified"
+    }
+  ],
+  "raw_payload_retained": false
+}

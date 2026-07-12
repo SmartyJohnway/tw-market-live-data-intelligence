@@ -27,10 +27,14 @@ Required price object:
 ```json
 {"open":null,"high":null,"low":null,"close":null,"last":null,"settlement":null,"reference":null,"change":null,"change_percent":null,"limit_up":null,"limit_down":null}
 ```
-Rules: `settlement != close`; `reference != last`; `last != close` unless source explicitly defines it. Futures `Last` maps to `price.last`; options source `Close` is documented as final traded price and maps to `price.last`, not generic close. Daily `SettlementPrice` remains `price.settlement`. `TheFinalSettlementPrice` is expiry final settlement, not daily settlement. Use Decimal-compatible strings, never floats. Negative prices are invalid; signed change is allowed when source-reported.
+Rules: `settlement != close`; `reference != last`; `last != close` unless source explicitly defines it. Futures `Last` maps to `price.last`; options source `Close` maps to `price.close` / close-like semantics until explicit official evidence proves it is last traded price; adapter validation must not silently relabel it as `price.last`. Daily `SettlementPrice` remains `price.settlement`. `TheFinalSettlementPrice` is expiry final settlement, not daily settlement. Use Decimal-compatible strings, never floats. Negative prices are invalid; signed change is allowed when source-reported.
 
 ## Activity and open interest
-`activity.volume` is contract count from `Volume`; `trade_value` and `transaction_count` are null unless official fields are selected later. `open_interest.open_interest` is contract count from `OpenInterest`; `open_interest_change` is null unless source-reported. Units remain `contracts` for volume/open interest.
+`activity.volume` is a non-negative integer contract count from `Volume`; `trade_value` and `transaction_count` are null unless official fields are selected later. `open_interest.open_interest` is a non-negative integer contract count from `OpenInterest`; `open_interest_change` is null unless source-reported. Units remain `contracts` for volume/open interest.
 
 ## Validation and raw payload policy
 Identity/date failures reject the row. Optional malformed numeric fields produce partial rows unless required by a selected context. Duplicate derivative contract identity fails closed for that identity. Full raw payload retention is forbidden; compact field names, counts, sample rows, and provenance are allowed in preflight evidence.
+
+
+## Factual reference projections
+Large-trader open-interest, put/call ratio, and block-trade endpoints may project factual reference context only. They must not create bullish/bearish labels, scores, support/resistance, target prices, recommendations, or trading signals.

@@ -28,9 +28,11 @@ def decimal_ok(v, signed=False):
 def test_registry_schema_and_selected_endpoints():
     r=registry(); assert r['schema_version']=='m8b_taifex_openapi_endpoint_contract_registry.v1'
     ids={e['endpoint_contract_id'] for e in r['selected_endpoints']}
-    assert {'taifex_openapi_daily_market_report_fut_v1','taifex_openapi_daily_market_report_opt_v1','taifex_openapi_final_settlement_price_v1'} <= ids
+    assert {'taifex_openapi_daily_market_report_fut_v1','taifex_openapi_daily_market_report_opt_v1','taifex_openapi_final_settlement_price_v1','taifex_openapi_large_trader_oi_futures_v1','taifex_openapi_large_trader_oi_options_v1'} <= ids
     assert selected('taifex_openapi_daily_market_report_fut_v1')['readiness'] in {'go','conditional_go','blocked'}
     assert selected('taifex_openapi_daily_market_report_opt_v1')['readiness'] in {'go','conditional_go','blocked'}
+    assert selected('taifex_openapi_large_trader_oi_futures_v1')['implementation_recommendation'] == 'implement_in_M8B_01'
+    assert selected('taifex_openapi_large_trader_oi_options_v1')['context_type'] == 'official_derivatives_large_trader_open_interest_reference'
 
 def test_field_mapping_columns_and_identity_fields():
     rows=mapping(); assert rows
@@ -41,6 +43,8 @@ def test_field_mapping_columns_and_identity_fields():
     assert ('taifex_openapi_daily_market_report_fut_v1','ContractMonth(Week)') in ident
     assert ('taifex_openapi_daily_market_report_opt_v1','StrikePrice') in ident
     assert ('taifex_openapi_daily_market_report_opt_v1','CallPut') in ident
+    assert ('taifex_openapi_large_trader_oi_futures_v1','TypeOfTraders') in ident
+    assert ('taifex_openapi_large_trader_oi_options_v1','CallPut') in ident
 
 def test_identity_contract_rejects_symbol_only_and_bad_rows():
     assert 'Symbol-only identity is invalid' in doc(SCHEMA)
@@ -64,6 +68,8 @@ def test_price_semantics_decimal_and_no_float_policy():
     assert 'settlement != close' in text and 'reference != last' in text and 'never floats' in text
     fields={r['source_field']:r['normalized_field'] for r in mapping() if r['endpoint_contract_id']=='taifex_openapi_daily_market_report_fut_v1'}
     assert fields['SettlementPrice']=='price.settlement' and fields['Last']=='price.last'
+    opt_fields={r['source_field']:r['normalized_field'] for r in mapping() if r['endpoint_contract_id']=='taifex_openapi_daily_market_report_opt_v1'}
+    assert opt_fields['Close']=='price.close' and opt_fields['SettlementPrice']=='price.settlement'
     assert decimal_ok('45648') and decimal_ok('-1', signed=True)
     try: decimal_ok('-1')
     except Exception: raise
@@ -75,6 +81,12 @@ def test_price_semantics_decimal_and_no_float_policy():
 def test_activity_open_interest_and_zero_volume_valid():
     rows=mapping(); n={r['source_field']:r['normalized_field'] for r in rows}
     assert n['Volume']=='activity.volume'; assert n['OpenInterest']=='open_interest.open_interest'
+    rows=mapping()
+    for source_field in ['Volume','OpenInterest','Top5Buy','Top5Sell','Top10Buy','Top10Sell','OIOfMarket']:
+        typed=[r for r in rows if r['source_field']==source_field]
+        assert typed
+        assert all(r['data_type']=='integer' for r in typed)
+        assert all('non-negative integer' in r['validation_rule'] for r in typed)
     row=load(FIX/'taifex_options_normal_rows.json')[0]
     assert int(row['Volume']) == 0 and int(row['OpenInterest']) == 0
     assert 'valid_zero_trade_contract' in doc(CUR)
@@ -88,6 +100,28 @@ def test_currentness_and_session_contract():
     assert 'do not force TAIFEX to match TWSE/TPEx' in text
     assert 'session to `unknown`' in text
 
+
+def test_final_settlement_contract_has_no_daily_activity_or_session():
+    ep=selected('taifex_openapi_final_settlement_price_v1')
+    assert ep['trade_date_fields']==['TheFinalSettlementDay']
+    assert ep['date_parameter_contract']['source_trade_date_field']=='TheFinalSettlementDay'
+    assert ep['activity_fields']==[]
+    assert ep['open_interest_fields']==[]
+    assert ep['session_fields']==[]
+    assert 'Volume' not in ep['field_contract'] and 'OpenInterest' not in ep['field_contract'] and 'TradingSession' not in ep['field_contract']
+    assert 'expiry final settlement only' in ' '.join(ep['caveats'])
+
+def test_discovered_reference_endpoints_and_blueprint_matrix():
+    candidates={c['endpoint_contract_id']:c for c in registry()['candidate_endpoints']}
+    assert candidates['taifex_openapi_put_call_ratio_v1']['implementation_recommendation']=='implement_in_M8B_01'
+    assert candidates['taifex_openapi_block_trade_v1']['implementation_recommendation']=='implement_in_M8B_01'
+    assert candidates['taifex_openapi_contract_adjustment_v1']['implementation_recommendation']=='deferred_with_specific_reason'
+    assert candidates['taifex_openapi_trading_calendar']['implementation_recommendation']=='unresolved'
+    bp=doc('docs/protocol/M8B_01_TAIFEX_OPENAPI_IMPLEMENTATION_BLUEPRINT.md')
+    for endpoint in ['DailyMarketReportFut','DailyMarketReportOpt','FinalSettlementPrice','OpenInterestOfLargeTradersFutures','OpenInterestOfLargeTradersOptions','PutCallRatio','BlockTrade','ContractAdj','Trading calendar']:
+        assert endpoint in bp
+    assert 'no bullish/bearish signal or recommendation' in bp
+
 def test_no_raw_payload_artifact_and_boundaries():
     for p in Path('research/probe_runs/m8b_taifex_openapi_derivatives_eod_preflight').glob('*.json'):
         data=load(p); blob=json.dumps(data,ensure_ascii=False)
@@ -98,5 +132,5 @@ def test_no_raw_payload_artifact_and_boundaries():
     assert not Path('scripts/m8b_taifex_openapi_futures_adapter.py').exists()
     assert not Path('scripts/m8b_taifex_openapi_execution.py').exists()
     acc=doc('docs/protocol/M8B_TAIFEX_OPENAPI_OFFICIAL_DERIVATIVES_EOD_PREFLIGHT_ACCEPTANCE.md')
-    for word in ['No production adapter','scheduler','polling','startup fetch','DB write','TAIFEX_MIS','Yahoo','FinMind','recommendation']:
+    for word in ['No production adapter','scheduler','polling','startup fetch','DB write','TAIFEX_MIS','Yahoo','FinMind','recommendation','bullish/bearish scoring','raw payload retention']:
         assert word in acc

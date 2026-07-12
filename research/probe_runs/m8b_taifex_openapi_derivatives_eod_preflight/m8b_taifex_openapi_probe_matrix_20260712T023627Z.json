@@ -228,18 +228,15 @@
       "representative_compact_rows": [
         {
           "Date": "20260709",
-          "Contract": "TX",
-          "ContractName": "臺股期貨(TX+MTX/4)"
-        },
-        {
-          "Date": "20260709",
-          "Contract": "TE",
-          "ContractName": "電子期貨"
-        },
-        {
-          "Date": "20260709",
-          "Contract": "TF",
-          "ContractName": "金融期貨"
+          "Contract": "BRF",
+          "ContractName": "布蘭特原油期貨",
+          "SettlementMonth": "202609",
+          "TypeOfTraders": "0",
+          "Top5Buy": "48",
+          "Top5Sell": "72",
+          "Top10Buy": "67",
+          "Top10Sell": "74",
+          "OIOfMarket": "74"
         }
       ]
     },
@@ -275,9 +272,16 @@
       "representative_compact_rows": [
         {
           "Date": "20260709",
-          "Contract": "TXO",
-          "ContractName": "臺指",
-          "CallPut": "買權"
+          "Contract": "CA",
+          "ContractName": "南亞",
+          "CallPut": "買權",
+          "SettlementMonth": "666666",
+          "TypeOfTraders": "0",
+          "Top5Buy": "0",
+          "Top5Sell": "0",
+          "Top10Buy": "0",
+          "Top10Sell": "0",
+          "OIOfMarket": "0"
         }
       ]
     }
