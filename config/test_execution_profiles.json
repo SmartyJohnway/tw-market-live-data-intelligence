@@ -124,7 +124,10 @@
         "tests/unit/test_m8b_taifex_openapi_execution.py",
         "tests/unit/test_m8b_taifex_openapi_context_integration.py",
         "tests/unit/test_m8b_taifex_openapi_conversation_projection.py",
-        "tests/unit/test_m8b_final_acceptance.py"
+        "tests/unit/test_m8b_final_acceptance.py",
+        "tests/unit/test_m8b_taifex_openapi_currentness.py",
+        "tests/unit/test_m8b_taifex_openapi_schema_and_validation.py",
+        "tests/unit/test_m8b_taifex_openapi_projection_families.py"
       ],
       "network_policy": "no network; excludes tests marked network",
       "browser_policy": "does not install or require Playwright/Chromium",

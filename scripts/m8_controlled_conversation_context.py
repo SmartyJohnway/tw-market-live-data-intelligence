@@ -166,6 +166,9 @@ def _project_context(ctx: dict, top_level_safe: bool) -> dict:
         safe_fields = safe_fields if credential and source_id == "CREDENTIAL_GATED_PROVIDER" else {}
     projected = {
         "source_id": source_id,
+        "context_type": ctx.get("context_type"),
+        "endpoint_contract_id": ctx.get("endpoint_contract_id"),
+        "context_group": ctx.get("context_group"),
         "symbol": ctx.get("symbol"),
         "market": ctx.get("market"),
         "instrument_type": ctx.get("instrument_type"),
@@ -204,8 +207,40 @@ def _contains_raw_key(projected_instruments: list[dict], markdown: str) -> bool:
 
 def _markdown_contains_forbidden_conversation_term(markdown: str) -> bool:
     markdown_without_guardrail = markdown.replace(GUARDRAIL_LINE, "")
+    for factual_field in ["top5_buy", "top5_sell", "top10_buy", "top10_sell"]:
+        markdown_without_guardrail = markdown_without_guardrail.replace(factual_field, factual_field.replace("_", ""))
     return _contains_forbidden_conversation_term(markdown_without_guardrail)
 
+
+
+def _format_taifex_context(ctx: dict) -> list[str]:
+    sf = ctx.get("safe_fields") or {}
+    payload = sf.get("payload") or {}
+    ident = sf.get("contract_identity") or sf.get("aggregate_identity") or {}
+    currentness = sf.get("currentness") or {}
+    q = sf.get("quotation_unit")
+    prefix = "    - TAIFEX official"
+    ctype = ctx.get("context_type")
+    lines: list[str] = []
+    if ctype == "official_derivatives_futures_eod_reference":
+        price = payload.get("price") or {}; activity = payload.get("activity") or {}; oi = payload.get("open_interest") or {}
+        lines.append(f"{prefix} futures EOD reference: product={ident.get('product_id')}, contract_month={ident.get('contract_month_or_week')}, trade_date={sf.get('trade_date')}, session={sf.get('session')}, last={price.get('last')}, settlement={price.get('settlement')}, volume={activity.get('volume')}, open_interest={oi.get('open_interest')}, currentness={currentness.get('status')}, quotation_unit={q}.")
+    elif ctype == "official_derivatives_options_eod_reference":
+        price = payload.get("price") or {}; activity = payload.get("activity") or {}; oi = payload.get("open_interest") or {}
+        lines.append(f"{prefix} options EOD reference: product={ident.get('product_id')}, month_week={ident.get('contract_month_or_week')}, strike={ident.get('strike_price')}, option_type={ident.get('option_type')}, trade_date={sf.get('trade_date')}, session={sf.get('session')}, close={price.get('close')}, settlement={price.get('settlement')}, volume={activity.get('volume')}, open_interest={oi.get('open_interest')}, currentness={currentness.get('status')}, quotation_unit={q}.")
+    elif ctype == "official_derivatives_final_settlement_reference":
+        fs = payload.get("final_settlement") or {}
+        lines.append(f"{prefix} final settlement reference: product={ident.get('product_id')}, final_settlement_day={ident.get('final_settlement_day')}, delivery_month={ident.get('delivery_month')}, final_settlement_price={fs.get('final_settlement_price')}, currentness={currentness.get('status')}. This is not a current market price.")
+    elif ctype == "official_derivatives_large_trader_open_interest_reference":
+        oi = payload.get("large_trader_open_interest") or {}
+        lines.append(f"{prefix} large-trader open-interest concentration reference: product={ident.get('product_id')}, settlement_month={ident.get('settlement_month')}, option_type={ident.get('option_type')}, top5_buy={oi.get('top5_buy')}, top5_sell={oi.get('top5_sell')}, top10_buy={oi.get('top10_buy')}, top10_sell={oi.get('top10_sell')}, market_open_interest={oi.get('market_open_interest')}, currentness={currentness.get('status')}.")
+    elif ctype == "official_derivatives_put_call_ratio_reference":
+        pcr = payload.get("put_call_ratio") or {}
+        lines.append(f"{prefix} Put/Call Ratio reference: trade_date={sf.get('trade_date')}, volume_ratio_percent={pcr.get('put_call_volume_ratio_percent')}%, open_interest_ratio_percent={pcr.get('put_call_open_interest_ratio_percent')}%, currentness={currentness.get('status')}. Source-reported percentage values are preserved.")
+    elif ctype == "official_derivatives_block_trade_reference":
+        bt = payload.get("block_trade") or {}
+        lines.append(f"{prefix} block-trade reference: product={ident.get('product_id')}, contract_month={ident.get('contract_month_or_week')}, strike={ident.get('strike_price')}, option_type={ident.get('option_type')}, trade_date={sf.get('trade_date')}, session={sf.get('session')}, volume={bt.get('volume')}, highest_price={bt.get('highest_price')}, lowest_price={bt.get('lowest_price')}, currentness={currentness.get('status')}. Factual activity only; no directional interpretation is generated.")
+    return lines
 
 def _build_markdown(status: str, summary: dict, sources: list[dict], instruments: list[dict], caveats: list[str]) -> str:
     lines = ["### M8 multi-source market context", f"- Status: {status}", f"- Freshness summary: {summary}"]
@@ -223,7 +258,10 @@ def _build_markdown(status: str, summary: dict, sources: list[dict], instruments
             lines.append(f"  - {inst.get('symbol')} {inst.get('market')} {inst.get('instrument_type')}")
             for ctx in inst.get("contexts", []):
 
-                if ctx.get('timing_class') == 'official_eod':
+                if ctx.get("source_id") == "TAIFEX_OPENAPI":
+                    taifex_lines = _format_taifex_context(ctx)
+                    lines.extend(taifex_lines or [f"    - TAIFEX official context: {ctx.get('context_type')}"])
+                elif ctx.get('timing_class') == 'official_eod':
                     lines.append(f"    - Official EOD reference — {ctx.get('source_id')}: market={ctx.get('market')} trade_date={ctx.get('trading_date') or ctx.get('market_date')} currentness={ctx.get('safe_fields', {}).get('currentness_status')} authority={ctx.get('authority_level')} instrument={ctx.get('instrument_type')} safe_fields={ctx.get('safe_fields')}")
                 else:
                     lines.append(f"    - {ctx.get('source_id')}: {ctx.get('timing_class')} / {ctx.get('freshness_assessment')} / safe_fields={ctx.get('safe_fields')}")

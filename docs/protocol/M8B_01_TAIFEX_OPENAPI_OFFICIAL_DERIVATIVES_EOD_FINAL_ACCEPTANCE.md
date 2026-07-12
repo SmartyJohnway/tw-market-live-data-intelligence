@@ -52,7 +52,7 @@ Volume and open-interest values are non-negative integer counts. Zero values may
 Validated `一般` maps to regular. Unknown labels are retained as source labels with `session_semantics_unresolved` caveat.
 
 ## 18. Currentness behavior
-Daily/statistical/reference rows preserve source-specific dates and are not forced to TWSE/TPEX dates. Final settlement records use final-settlement reference currentness.
+Daily/statistical rows now use source-specific TAIFEX derivatives currentness evaluation from the operator-supplied `evaluation_time_asia_taipei`, with weekend/closure-aware expected-date resolution where evidence is valid. TAIFEX dates are not forced to match TWSE/TPEX dates. Final settlement records use final-settlement reference currentness.
 
 ## 19. Emergency closure behavior
 NCDR/DGPA evidence may support expected-date explanation, but the implementation does not assume TAIFEX closures are identical without source-specific evidence.
@@ -67,13 +67,13 @@ Full raw endpoint payloads are not retained or projected.
 TAIFEX_OPENAPI observations coexist with TWSE_MIS, TWSE_OPENAPI, and TPEX_OPENAPI in M8 multi-source context without source ID collision.
 
 ## 23. Conversation projection
-Conversation context preserves source labels and factual fields, prevents realtime wording for official EOD/reference data, and includes no recommendation or trading signal output.
+Conversation context has TAIFEX-family factual projections for futures, options, final settlement, large-trader OI concentration, Put/Call Ratio, and BlockTrade. It preserves source labels and factual fields, prevents realtime wording for official EOD/reference data, and includes no recommendation or trading signal output.
 
 ## 24. Manual live validation
 `scripts/validate_m8b_taifex_openapi_live.py` performs explicit `--confirm` bounded validation and prints compact sanitized summaries.
 
 ## 25. Test coverage
-Deterministic no-network tests cover observation helpers, seven adapter families, execution, context integration, conversation projection, and acceptance.
+Deterministic no-network tests cover observation helpers, seven adapter families, source-specific currentness, schema drift versus no-match behavior, completion rules, exception-safe execution, context integration, conversation projection, and acceptance.
 
 ## 26. Source registry/inventory closure
 TAIFEX_OPENAPI is marked controlled runtime executable with bounded retained scope, no raw payload exposure, and no trading signal/recommendation permission.

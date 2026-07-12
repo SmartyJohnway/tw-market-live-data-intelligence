@@ -1,35 +1,106 @@
 from __future__ import annotations
-from scripts.m8b_taifex_derivatives_observation import utc_now
+from datetime import datetime, timezone
+from scripts.m8b_taifex_derivatives_observation import utc_now, apply_currentness_to_observation
+from scripts.m8b_taifex_currentness import evaluate_taifex_derivatives_currentness
 from scripts.m8b_taifex_openapi_futures_adapter import normalize_taifex_futures_eod
 from scripts.m8b_taifex_openapi_options_adapter import normalize_taifex_options_eod
 from scripts.m8b_taifex_openapi_final_settlement_adapter import normalize_taifex_final_settlement
 from scripts.m8b_taifex_openapi_large_trader_oi_adapter import normalize_taifex_large_trader_oi
 from scripts.m8b_taifex_openapi_put_call_ratio_adapter import normalize_taifex_put_call_ratio
 from scripts.m8b_taifex_openapi_block_trade_adapter import normalize_taifex_block_trade
-ALLOWED={"futures_eod","options_eod","final_settlement","large_trader_oi_futures","large_trader_oi_options","put_call_ratio","block_trade"}
+
+ALLOWED = {"futures_eod", "options_eod", "final_settlement", "large_trader_oi_futures", "large_trader_oi_options", "put_call_ratio", "block_trade"}
+DAILY_CONTEXTS = ALLOWED - {"final_settlement"}
+
+
 def _selectors(requested_contracts):
-    out={"months":[],"strikes":[],"option_types":[],"delivery_months":[],"trader_types":[]}
+    out = {"months": [], "strikes": [], "option_types": [], "delivery_months": [], "trader_types": []}
     for c in requested_contracts or []:
-        if not isinstance(c,dict): continue
-        for src,dst in [("contract_month","months"),("contract_month_or_week","months"),("settlement_month","months"),("delivery_month","delivery_months"),("strike_price","strikes"),("option_type","option_types"),("type_of_traders","trader_types")]:
-            if c.get(src) is not None and c.get(src) not in out[dst]: out[dst].append(str(c.get(src)))
+        if not isinstance(c, dict):
+            continue
+        for src, dst in [("contract_month", "months"), ("contract_month_or_week", "months"), ("settlement_month", "months"), ("delivery_month", "delivery_months"), ("strike_price", "strikes"), ("option_type", "option_types"), ("type_of_traders", "trader_types")]:
+            if c.get(src) is not None and str(c.get(src)) not in out[dst]:
+                out[dst].append(str(c.get(src)))
     return out
-def execute_taifex_openapi_refresh(*, operator_confirmed: bool, requested_contexts: list[str], requested_products: list[str], requested_contracts: list[dict] | None = None, requested_sessions: list[str] | None = None, evaluation_time_asia_taipei: str | None = None, fetchers: dict | None = None) -> dict:
-    ts=utc_now(); result={"schema_version":"m8b_taifex_openapi_execution_result.v1","source_id":"TAIFEX_OPENAPI","requested_contexts":requested_contexts,"requested_products":requested_products,"requested_contracts":requested_contracts or [],"operator_confirmed":operator_confirmed,"started_at_utc":ts,"completed_at_utc":ts,"overall_status":"not_started","endpoint_results":{},"observations":[],"raw_payload_retained":False,"scheduler_added":False,"polling_added":False,"startup_fetch_added":False,"db_write_added":False}
-    if not operator_confirmed: result["overall_status"]="operator_confirmation_required"; return result
-    if not requested_contexts or any(c not in ALLOWED for c in requested_contexts): result["overall_status"]="rejected_invalid_scope"; return result
-    if not requested_products and any(c!="put_call_ratio" for c in requested_contexts): result["overall_status"]="rejected_invalid_scope"; return result
-    s=_selectors(requested_contracts); fetchers=fetchers or {}
-    calls={
-      "futures_eod": lambda: normalize_taifex_futures_eod(requested_products=requested_products, requested_contract_months=s["months"], requested_sessions=requested_sessions, fetcher=fetchers.get("DailyMarketReportFut")),
-      "options_eod": lambda: normalize_taifex_options_eod(requested_products=requested_products, requested_contract_months=s["months"], requested_strikes=s["strikes"], requested_option_types=s["option_types"], requested_sessions=requested_sessions, fetcher=fetchers.get("DailyMarketReportOpt")),
-      "final_settlement": lambda: normalize_taifex_final_settlement(requested_products=requested_products, requested_delivery_months=s["delivery_months"] or s["months"], fetcher=fetchers.get("FinalSettlementPrice")),
-      "large_trader_oi_futures": lambda: normalize_taifex_large_trader_oi(endpoint="OpenInterestOfLargeTradersFutures", requested_products=requested_products, requested_settlement_months=s["months"], requested_trader_types=s["trader_types"], fetcher=fetchers.get("OpenInterestOfLargeTradersFutures")),
-      "large_trader_oi_options": lambda: normalize_taifex_large_trader_oi(endpoint="OpenInterestOfLargeTradersOptions", requested_products=requested_products, requested_settlement_months=s["months"], requested_option_types=s["option_types"], requested_trader_types=s["trader_types"], fetcher=fetchers.get("OpenInterestOfLargeTradersOptions")),
-      "put_call_ratio": lambda: normalize_taifex_put_call_ratio(fetcher=fetchers.get("PutCallRatio")),
-      "block_trade": lambda: normalize_taifex_block_trade(requested_products=requested_products, requested_contract_months=s["months"], requested_strikes=s["strikes"], requested_option_types=s["option_types"], requested_sessions=requested_sessions, fetcher=fetchers.get("BlockTrade")),
+
+
+def _parse_utc(value: str) -> datetime:
+    return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(timezone.utc)
+
+
+def _error_result(context: str, endpoint: str, exc: Exception) -> dict:
+    ts = utc_now()
+    return {
+        "schema_version": "m8b_taifex_openapi_adapter_result.v1",
+        "source_id": "TAIFEX_OPENAPI",
+        "endpoint_contract_id": endpoint,
+        "context": context,
+        "requested_at_utc": ts,
+        "completed_at_utc": ts,
+        "source_status": "source_error",
+        "batch_status": "source_error",
+        "row_count_received": 0,
+        "row_count_retained": 0,
+        "observations": [],
+        "rejected_rows": [],
+        "caveats": ["unexpected adapter exception captured without raw payload"],
+        "provenance": {"error_type": type(exc).__name__, "endpoint": endpoint, "context": context, "raw_payload_retained": False},
     }
-    statuses=[]
-    for c in requested_contexts:
-        r=calls[c](); result["endpoint_results"][c]=r; result["observations"].extend(r.get("observations",[])); statuses.append(r.get("batch_status"))
-    ok={"successful_derivatives_eod_batch","empty_non_trading_day"}; result["overall_status"]="successful_derivatives_eod_batch" if all(x in ok for x in statuses) else ("partial_source_success" if any(x in ok for x in statuses) else statuses[0]); return result
+
+
+def _apply_currentness(context: str, result: dict, *, evaluation_time_asia_taipei, calendar_artifact, closure_events, closure_query_succeeded, exchange_special_closures) -> None:
+    if context not in DAILY_CONTEXTS:
+        return
+    for obs in result.get("observations", []):
+        cur = evaluate_taifex_derivatives_currentness(
+            reported_trade_date=obs.get("trade_date"),
+            evaluation_time_asia_taipei=evaluation_time_asia_taipei,
+            session=obs.get("session"),
+            calendar_artifact=calendar_artifact,
+            closure_events=closure_events,
+            closure_query_succeeded=closure_query_succeeded,
+            exchange_special_closures=exchange_special_closures,
+        )
+        apply_currentness_to_observation(obs, cur)
+
+
+def execute_taifex_openapi_refresh(*, operator_confirmed: bool, requested_contexts: list[str], requested_products: list[str], requested_contracts: list[dict] | None = None, requested_sessions: list[str] | None = None, evaluation_time_asia_taipei: str | None = None, fetchers: dict | None = None, calendar_artifact: dict | None = None, closure_events: list | None = None, closure_query_succeeded: bool | None = None, exchange_special_closures: list | None = None) -> dict:
+    started = utc_now()
+    result = {"schema_version": "m8b_taifex_openapi_execution_result.v1", "source_id": "TAIFEX_OPENAPI", "requested_contexts": requested_contexts, "requested_products": requested_products, "requested_contracts": requested_contracts or [], "operator_confirmed": operator_confirmed, "started_at_utc": started, "completed_at_utc": None, "duration_ms": None, "overall_status": "not_started", "endpoint_results": {}, "observations": [], "raw_payload_retained": False, "scheduler_added": False, "polling_added": False, "startup_fetch_added": False, "db_write_added": False}
+    if not operator_confirmed:
+        result.update(overall_status="operator_confirmation_required", completed_at_utc=utc_now(), duration_ms=0)
+        return result
+    if not requested_contexts or any(c not in ALLOWED for c in requested_contexts):
+        result.update(overall_status="rejected_invalid_scope", completed_at_utc=utc_now(), duration_ms=0)
+        return result
+    if not requested_products and any(c != "put_call_ratio" for c in requested_contexts):
+        result.update(overall_status="rejected_invalid_scope", completed_at_utc=utc_now(), duration_ms=0)
+        return result
+    selectors = _selectors(requested_contracts)
+    fetchers = fetchers or {}
+    calls = {
+        "futures_eod": ("DailyMarketReportFut", lambda: normalize_taifex_futures_eod(requested_products=requested_products, requested_contract_months=selectors["months"], requested_sessions=requested_sessions, fetcher=fetchers.get("DailyMarketReportFut"))),
+        "options_eod": ("DailyMarketReportOpt", lambda: normalize_taifex_options_eod(requested_products=requested_products, requested_contract_months=selectors["months"], requested_strikes=selectors["strikes"], requested_option_types=selectors["option_types"], requested_sessions=requested_sessions, fetcher=fetchers.get("DailyMarketReportOpt"))),
+        "final_settlement": ("FinalSettlementPrice", lambda: normalize_taifex_final_settlement(requested_products=requested_products, requested_delivery_months=selectors["delivery_months"] or selectors["months"], fetcher=fetchers.get("FinalSettlementPrice"))),
+        "large_trader_oi_futures": ("OpenInterestOfLargeTradersFutures", lambda: normalize_taifex_large_trader_oi(endpoint="OpenInterestOfLargeTradersFutures", requested_products=requested_products, requested_settlement_months=selectors["months"], requested_trader_types=selectors["trader_types"], fetcher=fetchers.get("OpenInterestOfLargeTradersFutures"))),
+        "large_trader_oi_options": ("OpenInterestOfLargeTradersOptions", lambda: normalize_taifex_large_trader_oi(endpoint="OpenInterestOfLargeTradersOptions", requested_products=requested_products, requested_settlement_months=selectors["months"], requested_option_types=selectors["option_types"], requested_trader_types=selectors["trader_types"], fetcher=fetchers.get("OpenInterestOfLargeTradersOptions"))),
+        "put_call_ratio": ("PutCallRatio", lambda: normalize_taifex_put_call_ratio(fetcher=fetchers.get("PutCallRatio"))),
+        "block_trade": ("BlockTrade", lambda: normalize_taifex_block_trade(requested_products=requested_products, requested_contract_months=selectors["months"], requested_strikes=selectors["strikes"], requested_option_types=selectors["option_types"], requested_sessions=requested_sessions, fetcher=fetchers.get("BlockTrade"))),
+    }
+    statuses = []
+    for context in requested_contexts:
+        endpoint, call = calls[context]
+        try:
+            endpoint_result = call()
+            _apply_currentness(context, endpoint_result, evaluation_time_asia_taipei=evaluation_time_asia_taipei, calendar_artifact=calendar_artifact, closure_events=closure_events, closure_query_succeeded=closure_query_succeeded, exchange_special_closures=exchange_special_closures)
+        except Exception as exc:  # deliberately compact, endpoint-isolated metadata
+            endpoint_result = _error_result(context, endpoint, exc)
+        result["endpoint_results"][context] = endpoint_result
+        result["observations"].extend(endpoint_result.get("observations", []))
+        statuses.append(endpoint_result.get("batch_status"))
+    ok = {"successful_derivatives_eod_batch", "empty_non_trading_day", "no_matching_bounded_scope"}
+    result["overall_status"] = "successful_derivatives_eod_batch" if all(status in ok for status in statuses) else ("partial_source_success" if any(status in ok for status in statuses) else statuses[0])
+    completed = utc_now()
+    result["completed_at_utc"] = completed
+    result["duration_ms"] = int((_parse_utc(completed) - _parse_utc(started)).total_seconds() * 1000)
+    return result

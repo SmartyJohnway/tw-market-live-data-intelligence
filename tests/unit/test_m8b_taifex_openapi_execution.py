@@ -10,3 +10,14 @@ def test_execution_scope_confirmation_partial_no_hidden_behaviors():
 def test_put_call_ratio_allowed_aggregate_without_products():
  r=execute_taifex_openapi_refresh(operator_confirmed=True,requested_contexts=['put_call_ratio'],requested_products=[],fetchers={'PutCallRatio':lambda e:[P]})
  assert r['observations'][0]['instrument_type']=='aggregate_statistics'
+
+def test_execution_isolates_unexpected_adapter_exception_and_timestamps():
+ def boom(endpoint):
+  raise RuntimeError('parser exploded')
+ r=execute_taifex_openapi_refresh(operator_confirmed=True,requested_contexts=['futures_eod','put_call_ratio'],requested_products=['TX'],evaluation_time_asia_taipei='2026-07-10T16:00:00+08:00',fetchers={'DailyMarketReportFut':boom,'PutCallRatio':lambda e:[P]})
+ assert r['overall_status']=='partial_source_success'
+ assert r['endpoint_results']['futures_eod']['batch_status']=='source_error'
+ assert r['endpoint_results']['futures_eod']['provenance']['error_type']=='RuntimeError'
+ assert r['endpoint_results']['futures_eod']['provenance']['raw_payload_retained'] is False
+ assert r['endpoint_results']['put_call_ratio']['observations'][0]['currentness']['status'] in {'current_official_derivatives_eod','delayed_one_trading_day','stale_official_derivatives_eod'}
+ assert r['completed_at_utc'] >= r['started_at_utc'] and isinstance(r['duration_ms'], int)

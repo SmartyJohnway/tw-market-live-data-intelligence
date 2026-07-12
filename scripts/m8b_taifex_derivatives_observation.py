@@ -9,6 +9,7 @@ from __future__ import annotations
 from datetime import date, datetime, timezone
 from decimal import Decimal, InvalidOperation
 from typing import Any
+import re
 
 SCHEMA_VERSION = "m8b_taifex_derivatives_context_observation.v1"
 ADAPTER_RESULT_SCHEMA_VERSION = "m8b_taifex_openapi_adapter_result.v1"
@@ -30,7 +31,7 @@ FAILURE_STATUSES = {
     "successful_derivatives_eod_batch", "empty_non_trading_day", "source_unavailable",
     "source_error", "schema_drift", "identity_parse_failure", "date_mismatch",
     "partial_source_success", "valid_zero_trade_contract", "unresolved_session_semantics",
-    "rejected_invalid_scope", "operator_confirmation_required",
+    "rejected_invalid_scope", "operator_confirmation_required", "no_matching_bounded_scope",
 }
 
 
@@ -85,7 +86,7 @@ def map_call_put(value: Any, *, allow_not_applicable: bool = False) -> tuple[str
         if allow_not_applicable and str(value).strip() == "-":
             return "not_applicable", {"valid": True, "source_value": value}
         return None, {"valid": False, "reason": "missing_call_put", "source_value": value}
-    mapping = {"買權": "call", "賣權": "put", "call": "call", "put": "put", "C": "call", "P": "put"}
+    mapping = {"買權": "call", "賣權": "put"}
     text = str(value).strip()
     if text in mapping:
         return mapping[text], {"valid": True, "source_value": value}
@@ -96,7 +97,7 @@ def map_session(value: Any) -> tuple[str, dict, list[str]]:
     if is_missing(value):
         return "unknown", {"valid": False, "reason": "missing_session", "source_value": value}, ["session_semantics_unresolved"]
     text = str(value).strip()
-    mapping = {"一般": "regular", "regular": "regular", "盤後": "after_hours", "夜盤": "after_hours"}
+    mapping = {"一般": "regular"}
     if text in mapping:
         return mapping[text], {"valid": True, "source_value": value}, []
     return "unknown", {"valid": False, "reason": "unknown_session_label", "source_value": value}, ["session_semantics_unresolved"]
@@ -106,8 +107,8 @@ def validate_contract_month(value: Any, *, allow_missing: bool = False) -> tuple
     if is_missing(value):
         return None, {"valid": bool(allow_missing), "reason": "missing_contract_month"}
     text = str(value).strip()
-    ok = text.isalnum() and 4 <= len(text) <= 12
-    return (text if ok else None), {"valid": ok, "reason": None if ok else "invalid_contract_month"}
+    ok = bool(re.fullmatch(r"\d{6}(F\d+)?", text))
+    return (text if ok else None), {"valid": ok, "reason": None if ok else "unsupported_contract_month_or_week_format"}
 
 
 def source_field_presence(row: dict, expected_fields: list[str]) -> tuple[list[str], list[str]]:
@@ -144,7 +145,7 @@ def create_observation(*, endpoint_contract_id: str, context_type: str, instrume
         "field_validation": dict(field_validation or {}), "source_fields_present": list(source_fields_present or []),
         "omitted_source_fields": list(omitted_source_fields or []), "derived_fields": list(derived_fields or []),
         "caveats": caveats, "provenance": dict(provenance or {}), "payload": payload,
-        "safe_fields": {"endpoint_contract_id": endpoint_contract_id, "context_type": context_type,
+        "safe_fields": {"endpoint_contract_id": endpoint_contract_id, "context_type": context_type, "provenance": dict(provenance or {}),
             "trade_date": trade_date, "currentness": currentness_value or currentness(trade_date=trade_date),
             "session": session, "source_session_label": source_session_label, "quotation_unit": "product_specific_quote_unit",
             "settlement_currency": None, "contract_multiplier": None, "contract_identity": contract_identity,
@@ -161,3 +162,22 @@ def empty_adapter_result(endpoint_contract_id: str, requested_products: list[str
             "batch_status": "source_unavailable", "reported_trade_dates": [], "row_count_received": 0,
             "row_count_examined": 0, "row_count_retained": 0, "row_count_rejected": 0, "observations": [],
             "rejected_rows": [], "caveats": [], "provenance": {"raw_payload_retained": False}}
+
+# M8B-01 corrective helpers.
+def validate_required_fields(row: dict, required_fields: list[str]) -> tuple[bool, list[str]]:
+    missing = [field for field in required_fields if field not in row]
+    return not missing, missing
+
+
+def validation_has_failures(field_validation: dict, required_fields: list[str]) -> bool:
+    return any((field_validation.get(field) or {}).get("valid") is False for field in required_fields)
+
+
+def apply_currentness_to_observation(obs: dict, currentness_value: dict) -> dict:
+    obs["currentness"] = currentness_value
+    obs.setdefault("safe_fields", {})["currentness"] = currentness_value
+    obs["safe_fields"]["currentness_status"] = currentness_value.get("status")
+    for caveat in currentness_value.get("caveats", []):
+        if caveat not in obs.setdefault("caveats", []):
+            obs["caveats"].append(caveat)
+    return obs

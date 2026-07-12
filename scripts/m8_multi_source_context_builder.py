@@ -108,6 +108,23 @@ def _parse_utc_timestamp_for_sort(value: Any) -> tuple[datetime | None, bool]:
         return None, False
     return utc_value, True
 
+
+def _context_group(obs: dict) -> str | None:
+    context_type = obs.get("context_type")
+    if context_type in {"official_derivatives_futures_eod_reference", "official_derivatives_options_eod_reference"}:
+        return "derivatives_official_eod"
+    if context_type == "official_derivatives_large_trader_open_interest_reference" or context_type == "official_derivatives_put_call_ratio_reference":
+        return "derivatives_statistics"
+    if context_type == "official_derivatives_final_settlement_reference":
+        return "derivatives_final_settlement"
+    if context_type == "official_derivatives_block_trade_reference":
+        return "derivatives_block_trade"
+    if context_type in {"official_equity_eod_reference", "official_etf_eod_reference", "official_market_eod_reference"}:
+        return "cash_market_official_eod"
+    if obs.get("source_id") == "TWSE_MIS":
+        return "cash_market_liveish"
+    return None
+
 def _unknown_assessment(observation: dict) -> dict:
     return {
         "source_id": observation.get("source_id"),
@@ -231,6 +248,12 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
             "market_date": obs.get("market_date"),
             "trading_date": obs.get("trading_date"),
             "session_state": obs.get("session_state"),
+            "endpoint_contract_id": obs.get("endpoint_contract_id"),
+            "trade_date": obs.get("trade_date"),
+            "currentness": obs.get("currentness"),
+            "session": obs.get("session"),
+            "provenance": obs.get("provenance"),
+            "context_group": _context_group(obs),
             "safe_fields": safe_fields,
             "omitted_fields": omitted_fields,
             "caveats": caveats,
@@ -243,9 +266,9 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
         }
         if not known:
             _append_unique(ctx["caveats"], "unknown source_id was included only as caveated metadata")
-        key = (obs.get("symbol"), obs.get("market"), obs.get("instrument_type"))
+        key = (obs.get("symbol") or (obs.get("aggregate_identity") or {}).get("context_type"), obs.get("market"), obs.get("instrument_type"))
         if key not in grouped:
-            grouped[key] = {"symbol": obs.get("symbol"), "name": obs.get("name"), "market": obs.get("market"), "instrument_type": obs.get("instrument_type"), "contexts": []}
+            grouped[key] = {"symbol": obs.get("symbol"), "name": obs.get("name"), "market": obs.get("market"), "instrument_type": obs.get("instrument_type"), "context_group": _context_group(obs), "contexts": []}
         grouped[key]["contexts"].append(ctx)
         all_contexts.append(ctx)
         summary = source_summaries.setdefault(sid, {"source_id": sid, "source_family": ctx["source_family"], "authority_level": ctx["authority_level"], "timing_class": ctx["timing_class"], "freshness_assessments": [], "ai_exposure_level": ctx["ai_exposure_level"], "runtime_executable": bool((policy or {}).get("runtime_executable")), "observation_count": 0, "has_stale_observation": False, "has_unavailable_observation": False, "caveats": []})
