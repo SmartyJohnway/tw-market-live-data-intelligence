@@ -1,0 +1,199 @@
+{
+  "schema_version": "m8b_probe_matrix.v1",
+  "probe_time_utc": "2026-07-12T02:36:27Z",
+  "probe_time_asia_taipei": "2026-07-12T10:36:27+08:00",
+  "entrypoint": "https://openapi.taifex.com.tw/",
+  "probes": [
+    {
+      "endpoint": "https://openapi.taifex.com.tw/v1/DailyMarketReportFut",
+      "path": "DailyMarketReportFut",
+      "method": "GET",
+      "probe_time_utc": "2026-07-12T02:36:27Z",
+      "http_status": 200,
+      "content_type": "application/octet-stream",
+      "content_length": 849199,
+      "top_level_type": "array",
+      "row_count": 2239,
+      "observed_field_names": [
+        "Date",
+        "Contract",
+        "ContractMonth(Week)",
+        "Open",
+        "High",
+        "Low",
+        "Last",
+        "Change",
+        "%",
+        "Volume",
+        "SettlementPrice",
+        "OpenInterest",
+        "BestBid",
+        "BestAsk",
+        "HistoricalHigh",
+        "HistoricalLow",
+        "TradingHalt",
+        "TradingSession",
+        "Volume(ExecutionsAmongSpreadOrderAndSingleOrderOnly)"
+      ],
+      "observed_trade_dates": [
+        "20260709"
+      ],
+      "observed_product_ids": [
+        "MTX",
+        "TE",
+        "TF",
+        "TX"
+      ],
+      "representative_compact_rows": [
+        {
+          "Date": "20260709",
+          "Contract": "TX",
+          "ContractMonth(Week)": "202607",
+          "Open": "46008",
+          "High": "46158",
+          "Low": "45331",
+          "Last": "45678",
+          "SettlementPrice": "45648",
+          "Volume": "73407",
+          "OpenInterest": "91340",
+          "TradingSession": "一般"
+        },
+        {
+          "Date": "20260709",
+          "Contract": "MTX",
+          "ContractMonth(Week)": "202607",
+          "Open": "46016",
+          "High": "46160",
+          "Low": "45330",
+          "Last": "45681",
+          "SettlementPrice": "45648",
+          "Volume": "164977",
+          "OpenInterest": "32252",
+          "TradingSession": "一般"
+        },
+        {
+          "Date": "20260709",
+          "Contract": "TE",
+          "ContractMonth(Week)": "202607",
+          "Open": "2938.55",
+          "High": "2963.65",
+          "Low": "2912.1",
+          "Last": "2930.35",
+          "SettlementPrice": "2928.9",
+          "Volume": "164",
+          "OpenInterest": "470",
+          "TradingSession": "一般"
+        },
+        {
+          "Date": "20260709",
+          "Contract": "TF",
+          "ContractMonth(Week)": "202607",
+          "Open": "3187",
+          "High": "3187",
+          "Low": "3111",
+          "Last": "3138.4",
+          "SettlementPrice": "3138.2",
+          "Volume": "407",
+          "OpenInterest": "387",
+          "TradingSession": "一般"
+        }
+      ]
+    },
+    {
+      "endpoint": "https://openapi.taifex.com.tw/v1/DailyMarketReportOpt",
+      "path": "DailyMarketReportOpt",
+      "method": "GET",
+      "probe_time_utc": "2026-07-12T02:36:27Z",
+      "http_status": 200,
+      "content_type": "application/octet-stream",
+      "content_length": 3790454,
+      "top_level_type": "array",
+      "row_count": 11696,
+      "observed_field_names": [
+        "Date",
+        "Contract",
+        "ContractMonth(Week)",
+        "StrikePrice",
+        "CallPut",
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume",
+        "SettlementPrice",
+        "OpenInterest",
+        "BestBid",
+        "BestAsk",
+        "HistoricalHigh",
+        "HistoricalLow",
+        "TradingHalt",
+        "TradingSession"
+      ],
+      "observed_trade_dates": [
+        "20260709"
+      ],
+      "observed_product_ids": [
+        "TXO"
+      ],
+      "representative_compact_rows": [
+        {
+          "Date": "20260709",
+          "Contract": "TXO",
+          "ContractMonth(Week)": "202607F2",
+          "StrikePrice": "40100",
+          "CallPut": "買權",
+          "Open": "-",
+          "High": "-",
+          "Low": "-",
+          "Close": "-",
+          "SettlementPrice": "5460",
+          "Volume": "0",
+          "OpenInterest": "0",
+          "TradingSession": "一般"
+        }
+      ]
+    },
+    {
+      "endpoint": "https://openapi.taifex.com.tw/v1/FinalSettlementPrice",
+      "path": "FinalSettlementPrice",
+      "method": "GET",
+      "probe_time_utc": "2026-07-12T02:36:27Z",
+      "http_status": 200,
+      "content_type": "application/octet-stream",
+      "content_length": 58133,
+      "top_level_type": "array",
+      "row_count": 392,
+      "observed_field_names": [
+        "TheFinalSettlementDay",
+        "DeliveryMonth",
+        "Contract",
+        "ContractName",
+        "TheFinalSettlementPrice"
+      ],
+      "observed_trade_dates": [
+        "20250711",
+        "20251002",
+        "20251104",
+        "20251105",
+        "20251107",
+        "20251112",
+        "20251114",
+        "20251119",
+        "20251121",
+        "20251126"
+      ],
+      "observed_product_ids": [
+        "TXO"
+      ],
+      "representative_compact_rows": [
+        {
+          "Contract": "TXO",
+          "ContractName": "臺指選擇權",
+          "TheFinalSettlementDay": "20251205",
+          "DeliveryMonth": "202512F1",
+          "TheFinalSettlementPrice": "27892"
+        }
+      ]
+    }
+  ]
+}

@@ -112,7 +112,8 @@
         "tests/unit/test_m8a_controlled_official_eod_execution.py",
         "tests/unit/test_m8a_official_eod_context_integration.py",
         "tests/unit/test_m8a_official_eod_conversation_projection.py",
-        "tests/unit/test_m8a_final_acceptance.py"
+        "tests/unit/test_m8a_final_acceptance.py",
+        "tests/unit/test_m8b_taifex_openapi_contract_preflight.py"
       ],
       "network_policy": "no network; excludes tests marked network",
       "browser_policy": "does not install or require Playwright/Chromium",

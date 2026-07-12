@@ -1,0 +1,463 @@
+{
+  "schema_version": "m8b_taifex_openapi_endpoint_contract_registry.v1",
+  "generated_at_utc": "2026-07-12T02:36:27Z",
+  "track": "M8B-TAIFEX-OPENAPI-OFFICIAL-DERIVATIVES-EOD-CONTEXT",
+  "source_family": "TAIFEX_OPENAPI",
+  "source_role": "official_derivatives_eod_context",
+  "entrypoint": "https://openapi.taifex.com.tw/",
+  "sources": [
+    {
+      "source_id": "TAIFEX_OPENAPI",
+      "authority_level": "official_documented",
+      "documentation_url": "https://openapi.taifex.com.tw/swagger.json",
+      "authentication_required": false,
+      "cookie_or_session_required": false
+    }
+  ],
+  "candidate_endpoints": [
+    {
+      "source_id": "TAIFEX_OPENAPI",
+      "endpoint_contract_id": "taifex_openapi_daily_market_report_fut_v1",
+      "endpoint_url": "https://openapi.taifex.com.tw/v1/DailyMarketReportFut",
+      "method": "GET",
+      "official_documented": true,
+      "directly_observed": true,
+      "evidence_status": "documented_and_observed",
+      "timing_class": "official_derivatives_eod",
+      "instrument_scope": [
+        "futures"
+      ],
+      "network_scope": "whole_market_or_endpoint_defined",
+      "retained_scope_required": "bounded_requested_contracts_or_products",
+      "date_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "omitted_behavior": "latest available official dataset",
+        "source_trade_date_field": "Date"
+      },
+      "product_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "filtering": "client-side bounded retention after whole-endpoint fetch"
+      },
+      "identity_fields": [
+        "Contract",
+        "ContractMonth(Week)"
+      ],
+      "trade_date_fields": [
+        "Date"
+      ],
+      "price_fields": [
+        "Open",
+        "High",
+        "Low",
+        "Last",
+        "Change",
+        "%",
+        "SettlementPrice",
+        "BestBid",
+        "BestAsk"
+      ],
+      "activity_fields": [
+        "Volume"
+      ],
+      "open_interest_fields": [
+        "OpenInterest"
+      ],
+      "session_fields": [
+        "TradingSession"
+      ],
+      "field_contract": [
+        "Contract",
+        "ContractMonth(Week)",
+        "Open",
+        "High",
+        "Low",
+        "Last",
+        "Change",
+        "%",
+        "SettlementPrice",
+        "BestBid",
+        "BestAsk",
+        "Volume",
+        "OpenInterest",
+        "TradingSession"
+      ],
+      "readiness": "go",
+      "caveats": [
+        "Content-Type observed as application/octet-stream even for JSON; request Accept: application/json.",
+        "No scheduler/polling/startup fetch is authorized by this contract."
+      ]
+    },
+    {
+      "source_id": "TAIFEX_OPENAPI",
+      "endpoint_contract_id": "taifex_openapi_daily_market_report_opt_v1",
+      "endpoint_url": "https://openapi.taifex.com.tw/v1/DailyMarketReportOpt",
+      "method": "GET",
+      "official_documented": true,
+      "directly_observed": true,
+      "evidence_status": "documented_and_observed",
+      "timing_class": "official_derivatives_eod",
+      "instrument_scope": [
+        "options"
+      ],
+      "network_scope": "whole_market_or_endpoint_defined",
+      "retained_scope_required": "bounded_requested_contracts_or_products",
+      "date_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "omitted_behavior": "latest available official dataset",
+        "source_trade_date_field": "Date"
+      },
+      "product_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "filtering": "client-side bounded retention after whole-endpoint fetch"
+      },
+      "identity_fields": [
+        "Contract",
+        "ContractMonth(Week)",
+        "StrikePrice",
+        "CallPut"
+      ],
+      "trade_date_fields": [
+        "Date"
+      ],
+      "price_fields": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "SettlementPrice",
+        "BestBid",
+        "BestAsk"
+      ],
+      "activity_fields": [
+        "Volume"
+      ],
+      "open_interest_fields": [
+        "OpenInterest"
+      ],
+      "session_fields": [
+        "TradingSession"
+      ],
+      "field_contract": [
+        "Contract",
+        "ContractMonth(Week)",
+        "StrikePrice",
+        "CallPut",
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "SettlementPrice",
+        "BestBid",
+        "BestAsk",
+        "Volume",
+        "OpenInterest",
+        "TradingSession"
+      ],
+      "readiness": "conditional_go",
+      "caveats": [
+        "Content-Type observed as application/octet-stream even for JSON; request Accept: application/json.",
+        "No scheduler/polling/startup fetch is authorized by this contract."
+      ]
+    },
+    {
+      "source_id": "TAIFEX_OPENAPI",
+      "endpoint_contract_id": "taifex_openapi_final_settlement_price_v1",
+      "endpoint_url": "https://openapi.taifex.com.tw/v1/FinalSettlementPrice",
+      "method": "GET",
+      "official_documented": true,
+      "directly_observed": true,
+      "evidence_status": "documented_and_observed",
+      "timing_class": "official_derivatives_eod",
+      "instrument_scope": [
+        "futures",
+        "options"
+      ],
+      "network_scope": "whole_market_or_endpoint_defined",
+      "retained_scope_required": "bounded_requested_contracts_or_products",
+      "date_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "omitted_behavior": "latest available official dataset",
+        "source_trade_date_field": "Date"
+      },
+      "product_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "filtering": "client-side bounded retention after whole-endpoint fetch"
+      },
+      "identity_fields": [
+        "Contract",
+        "DeliveryMonth"
+      ],
+      "trade_date_fields": [
+        "TheFinalSettlementDay"
+      ],
+      "price_fields": [
+        "TheFinalSettlementPrice"
+      ],
+      "activity_fields": [
+        "Volume"
+      ],
+      "open_interest_fields": [
+        "OpenInterest"
+      ],
+      "session_fields": [
+        "TradingSession"
+      ],
+      "field_contract": [
+        "Contract",
+        "DeliveryMonth",
+        "TheFinalSettlementPrice",
+        "Volume",
+        "OpenInterest",
+        "TradingSession"
+      ],
+      "readiness": "conditional_go",
+      "caveats": [
+        "Content-Type observed as application/octet-stream even for JSON; request Accept: application/json.",
+        "No scheduler/polling/startup fetch is authorized by this contract."
+      ]
+    },
+    {
+      "endpoint_contract_id": "taifex_openapi_open_interest_large_traders_futures_v1",
+      "endpoint_url": "https://openapi.taifex.com.tw/v1/OpenInterestOfLargeTradersFutures",
+      "decision": "deferred",
+      "reason": "large-trader statistics, not contract-level EOD core"
+    },
+    {
+      "endpoint_contract_id": "taifex_openapi_open_interest_large_traders_options_v1",
+      "endpoint_url": "https://openapi.taifex.com.tw/v1/OpenInterestOfLargeTradersOptions",
+      "decision": "deferred",
+      "reason": "large-trader statistics, not option-chain EOD core"
+    }
+  ],
+  "selected_endpoints": [
+    {
+      "source_id": "TAIFEX_OPENAPI",
+      "endpoint_contract_id": "taifex_openapi_daily_market_report_fut_v1",
+      "endpoint_url": "https://openapi.taifex.com.tw/v1/DailyMarketReportFut",
+      "method": "GET",
+      "official_documented": true,
+      "directly_observed": true,
+      "evidence_status": "documented_and_observed",
+      "timing_class": "official_derivatives_eod",
+      "instrument_scope": [
+        "futures"
+      ],
+      "network_scope": "whole_market_or_endpoint_defined",
+      "retained_scope_required": "bounded_requested_contracts_or_products",
+      "date_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "omitted_behavior": "latest available official dataset",
+        "source_trade_date_field": "Date"
+      },
+      "product_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "filtering": "client-side bounded retention after whole-endpoint fetch"
+      },
+      "identity_fields": [
+        "Contract",
+        "ContractMonth(Week)"
+      ],
+      "trade_date_fields": [
+        "Date"
+      ],
+      "price_fields": [
+        "Open",
+        "High",
+        "Low",
+        "Last",
+        "Change",
+        "%",
+        "SettlementPrice",
+        "BestBid",
+        "BestAsk"
+      ],
+      "activity_fields": [
+        "Volume"
+      ],
+      "open_interest_fields": [
+        "OpenInterest"
+      ],
+      "session_fields": [
+        "TradingSession"
+      ],
+      "field_contract": [
+        "Contract",
+        "ContractMonth(Week)",
+        "Open",
+        "High",
+        "Low",
+        "Last",
+        "Change",
+        "%",
+        "SettlementPrice",
+        "BestBid",
+        "BestAsk",
+        "Volume",
+        "OpenInterest",
+        "TradingSession"
+      ],
+      "readiness": "go",
+      "caveats": [
+        "Content-Type observed as application/octet-stream even for JSON; request Accept: application/json.",
+        "No scheduler/polling/startup fetch is authorized by this contract."
+      ]
+    },
+    {
+      "source_id": "TAIFEX_OPENAPI",
+      "endpoint_contract_id": "taifex_openapi_daily_market_report_opt_v1",
+      "endpoint_url": "https://openapi.taifex.com.tw/v1/DailyMarketReportOpt",
+      "method": "GET",
+      "official_documented": true,
+      "directly_observed": true,
+      "evidence_status": "documented_and_observed",
+      "timing_class": "official_derivatives_eod",
+      "instrument_scope": [
+        "options"
+      ],
+      "network_scope": "whole_market_or_endpoint_defined",
+      "retained_scope_required": "bounded_requested_contracts_or_products",
+      "date_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "omitted_behavior": "latest available official dataset",
+        "source_trade_date_field": "Date"
+      },
+      "product_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "filtering": "client-side bounded retention after whole-endpoint fetch"
+      },
+      "identity_fields": [
+        "Contract",
+        "ContractMonth(Week)",
+        "StrikePrice",
+        "CallPut"
+      ],
+      "trade_date_fields": [
+        "Date"
+      ],
+      "price_fields": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "SettlementPrice",
+        "BestBid",
+        "BestAsk"
+      ],
+      "activity_fields": [
+        "Volume"
+      ],
+      "open_interest_fields": [
+        "OpenInterest"
+      ],
+      "session_fields": [
+        "TradingSession"
+      ],
+      "field_contract": [
+        "Contract",
+        "ContractMonth(Week)",
+        "StrikePrice",
+        "CallPut",
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "SettlementPrice",
+        "BestBid",
+        "BestAsk",
+        "Volume",
+        "OpenInterest",
+        "TradingSession"
+      ],
+      "readiness": "conditional_go",
+      "caveats": [
+        "Content-Type observed as application/octet-stream even for JSON; request Accept: application/json.",
+        "No scheduler/polling/startup fetch is authorized by this contract."
+      ]
+    },
+    {
+      "source_id": "TAIFEX_OPENAPI",
+      "endpoint_contract_id": "taifex_openapi_final_settlement_price_v1",
+      "endpoint_url": "https://openapi.taifex.com.tw/v1/FinalSettlementPrice",
+      "method": "GET",
+      "official_documented": true,
+      "directly_observed": true,
+      "evidence_status": "documented_and_observed",
+      "timing_class": "official_derivatives_eod",
+      "instrument_scope": [
+        "futures",
+        "options"
+      ],
+      "network_scope": "whole_market_or_endpoint_defined",
+      "retained_scope_required": "bounded_requested_contracts_or_products",
+      "date_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "omitted_behavior": "latest available official dataset",
+        "source_trade_date_field": "Date"
+      },
+      "product_parameter_contract": {
+        "supported": false,
+        "documented_parameters": [],
+        "filtering": "client-side bounded retention after whole-endpoint fetch"
+      },
+      "identity_fields": [
+        "Contract",
+        "DeliveryMonth"
+      ],
+      "trade_date_fields": [
+        "TheFinalSettlementDay"
+      ],
+      "price_fields": [
+        "TheFinalSettlementPrice"
+      ],
+      "activity_fields": [
+        "Volume"
+      ],
+      "open_interest_fields": [
+        "OpenInterest"
+      ],
+      "session_fields": [
+        "TradingSession"
+      ],
+      "field_contract": [
+        "Contract",
+        "DeliveryMonth",
+        "TheFinalSettlementPrice",
+        "Volume",
+        "OpenInterest",
+        "TradingSession"
+      ],
+      "readiness": "conditional_go",
+      "caveats": [
+        "Content-Type observed as application/octet-stream even for JSON; request Accept: application/json.",
+        "No scheduler/polling/startup fetch is authorized by this contract."
+      ]
+    }
+  ],
+  "rejected_endpoints": [
+    {
+      "endpoint_contract_id": "taifex_openapi_time_and_sales_v1",
+      "reason": "intraday/time-and-sales; outside official EOD context preflight"
+    }
+  ],
+  "implementation_readiness": {
+    "overall": "conditional_go",
+    "adapter_implemented": false,
+    "runtime_fetch_added": false,
+    "caveats": [
+      "latest-only daily arrays; no request date/product parameter documented for selected endpoints",
+      "session values are source-reported Chinese labels and require mapping validation",
+      "FinalSettlementPrice is final expiry settlement, not daily settlement"
+    ]
+  }
+}
