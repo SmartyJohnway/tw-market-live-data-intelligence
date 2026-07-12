@@ -4,11 +4,11 @@ from scripts.m8b_taifex_openapi_client import fetch_endpoint, TaifexOpenApiError
 FIELDS_F=["Date","Contract","ContractName","SettlementMonth","TypeOfTraders","Top5Buy","Top5Sell","Top10Buy","Top10Sell","OIOfMarket"]
 FIELDS_O=FIELDS_F[:3]+["CallPut"]+FIELDS_F[3:]
 def normalize_taifex_large_trader_oi(*, endpoint, requested_products, requested_settlement_months=None, requested_option_types=None, requested_trader_types=None, retrieved_at=None, fetcher=None):
-    if endpoint not in {"OpenInterestOfLargeTradersFutures","OpenInterestOfLargeTradersOptions"}: return dict(empty_adapter_result(endpoint, requested_products), batch_status="rejected_invalid_scope")
+    if endpoint not in {"OpenInterestOfLargeTradersFutures","OpenInterestOfLargeTradersOptions"}: return complete_adapter_result(dict(empty_adapter_result(endpoint, requested_products), batch_status="rejected_invalid_scope"))
     res=empty_adapter_result(endpoint, requested_products); products=set(requested_products or []); months=set(requested_settlement_months or []); types=set(requested_option_types or []); traders=set(requested_trader_types or [])
-    if not products: res.update(batch_status="rejected_invalid_scope", caveats=["requested_products required"]); return res
+    if not products: res.update(batch_status="rejected_invalid_scope", caveats=["requested_products required"]); return complete_adapter_result(res)
     try: data=(fetcher or fetch_endpoint)(endpoint)
-    except TaifexOpenApiError as e: res.update(batch_status=e.status, source_status=e.status, provenance=e.metadata); return res
+    except TaifexOpenApiError as e: res.update(batch_status=e.status, source_status=e.status, provenance=e.metadata); return complete_adapter_result(res)
     rows=data if isinstance(data,list) else data.get("rows",[]); res["row_count_received"]=len(rows); dates=set(); isopt=endpoint.endswith("Options"); schema_valid_rows=0; matching_scope_rows=0; invalid_matching_rows=0
     for i,row in enumerate(rows):
         res["row_count_examined"]+=1

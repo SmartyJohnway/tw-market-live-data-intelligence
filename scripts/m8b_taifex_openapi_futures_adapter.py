@@ -5,9 +5,9 @@ ENDPOINT="DailyMarketReportFut"
 FIELDS=["Date","Contract","ContractMonth(Week)","Open","High","Low","Last","Change","%","Volume","SettlementPrice","OpenInterest","BestBid","BestAsk","TradingSession","TradingHalt"]
 def normalize_taifex_futures_eod(*, requested_products, requested_contract_months=None, requested_sessions=None, retrieved_at=None, fetcher=None):
     res=empty_adapter_result(ENDPOINT, requested_products); res["batch_status"]="not_started"; products=set(requested_products or []); months=set(requested_contract_months or []); sessions=set(requested_sessions or [])
-    if not products: res.update(batch_status="rejected_invalid_scope", caveats=["requested_products required"]); return res
+    if not products: res.update(batch_status="rejected_invalid_scope", caveats=["requested_products required"]); return complete_adapter_result(res)
     try: data=(fetcher or fetch_endpoint)(ENDPOINT)
-    except TaifexOpenApiError as e: res.update(batch_status=e.status, source_status=e.status, provenance=e.metadata); return res
+    except TaifexOpenApiError as e: res.update(batch_status=e.status, source_status=e.status, provenance=e.metadata); return complete_adapter_result(res)
     rows=data if isinstance(data,list) else data.get("rows",[]); res["http_status"]=(data.get("http_status") if isinstance(data,dict) else 200); res["row_count_received"]=len(rows); seen=set(); dates=set(); schema_valid_rows=0; matching_scope_rows=0; invalid_matching_rows=0
     for i,row in enumerate(rows):
         res["row_count_examined"]+=1
@@ -24,7 +24,7 @@ def normalize_taifex_futures_eod(*, requested_products, requested_contract_month
         present,omitted=source_field_presence(row,FIELDS); fv={"Date":dv,"ContractMonth(Week)":cmv,"TradingSession":sv}; caveats=sc[:]
         if not (td and cm and row.get("Contract")): invalid_matching_rows += 1; res["row_count_rejected"]+=1; res["rejected_rows"].append({"index":i,"reason":"identity_parse_failure"}); continue
         ident=(td,row.get("Contract"),cm,session)
-        if ident in seen: res.update(batch_status="identity_parse_failure"); res["rejected_rows"].append({"index":i,"reason":"duplicate_identity"}); return res
+        if ident in seen: res.update(batch_status="identity_parse_failure"); res["rejected_rows"].append({"index":i,"reason":"duplicate_identity"}); return complete_adapter_result(res)
         seen.add(ident)
         price={}; activity={}; oi={}
         for src,dst,neg in [("Open","open",False),("High","high",False),("Low","low",False),("Last","last",False),("Change","change",True),("%","change_percent",True),("SettlementPrice","settlement",False),("BestBid","best_bid",False),("BestAsk","best_ask",False)]: price[dst],fv[src]=parse_decimal_text(row.get(src),allow_negative=neg)

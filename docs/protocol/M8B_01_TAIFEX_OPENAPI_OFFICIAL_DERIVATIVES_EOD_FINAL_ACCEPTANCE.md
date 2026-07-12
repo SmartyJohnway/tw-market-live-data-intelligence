@@ -89,3 +89,17 @@ m8b_01_taifex_openapi_official_derivatives_eod_context_pass_with_caveats
 
 ## 30. Next recommended track
 Add product metadata/quotation-unit validation and TAIFEX-specific trading calendar evidence before expanding currentness precision or derivative product labeling.
+
+## M8B-03 consolidated hardening note
+
+M8B-03 preserves the final M8B result of `m8b_01_taifex_openapi_official_derivatives_eod_context_pass_with_caveats` and adds post-PR #129 contract cleanup:
+
+- Evaluation time may be caller supplied or derived from the runtime Asia/Taipei clock, and result metadata records the evaluation-time provenance.
+- TAIFEX closure handling requires target-date-specific TAIFEX official closure evidence; NCDR/DGPA evidence is supporting evidence only for TAIFEX.
+- Runtime currentness metadata exposes `calendar_evidence` and `currentness_confidence`.
+- Final settlement latest/historical classification is product-specific and based on source scope; a bounded retained subset does not redefine source latest.
+- Options observations with missing core numeric fields remain partial rather than treating Close as Last.
+- Invalid matching rows emit `invalid_required_fields` or identity/schema failures rather than bounded no-match.
+- Put/Call Ratio and FinalSettlementPrice retention are technically bounded after M8B-03.
+- Adapter-level `completed_at_utc` and `duration_ms` are finalized after parsing/filtering, including error, schema-drift, and no-match results.
+- TAIFEX currentness enums map equity EOD resolver states to derivatives-specific states and fail closed on unknown upstream states.

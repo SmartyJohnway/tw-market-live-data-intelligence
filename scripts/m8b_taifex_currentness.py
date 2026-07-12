@@ -39,6 +39,20 @@ def _has_target_specific_taifex_closure_evidence(*, target_date: str, closure_ev
         return True
     return any(_semantically_confirms_taifex_closure(e, target_date) for e in (closure_events or []))
 
+M8A_TO_TAIFEX_CURRENTNESS = {
+    "current_official_eod": "current_official_derivatives_eod",
+    "stale_official_eod": "stale_official_derivatives_eod",
+    "delayed_one_trading_day": "delayed_one_trading_day",
+    "matches_expected_latest_trade_date_after_emergency_closure": "matches_expected_latest_trade_date_after_emergency_closure",
+    "unresolved_date_mismatch": "unresolved_date_mismatch",
+}
+
+def map_m8a_currentness_status(status: str | None) -> tuple[str, str | None]:
+    mapped = M8A_TO_TAIFEX_CURRENTNESS.get(status or "")
+    if mapped:
+        return mapped, None
+    return "unresolved_date_mismatch", "unmapped_upstream_currentness_status"
+
 DAILY_CONTEXTS = {
     "futures_eod", "options_eod", "large_trader_oi_futures",
     "large_trader_oi_options", "put_call_ratio", "block_trade",
@@ -65,8 +79,9 @@ def evaluate_taifex_derivatives_currentness(*, reported_trade_date: str | None, 
         closure_query_succeeded=closure_query_succeeded,
         exchange_special_closures=resolver_exchange_special_closures,
     )
-    mapping = {"current_official_eod": "current_official_derivatives_eod"}
-    status = mapping.get(resolved.get("currentness_status"), resolved.get("currentness_status") or "unresolved_date_mismatch")
+    status, mapping_caveat = map_m8a_currentness_status(resolved.get("currentness_status"))
+    if mapping_caveat:
+        caveats.append(mapping_caveat)
     if status == "matches_expected_latest_trade_date_after_emergency_closure" and not taifex_specific_closure:
         status = "unresolved_date_mismatch"
         currentness_confidence = "provisional"
