@@ -1,5 +1,5 @@
 from __future__ import annotations
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from zoneinfo import ZoneInfo
 from scripts.m8b_taifex_derivatives_observation import utc_now, apply_currentness_to_observation
 from scripts.m8b_taifex_currentness import evaluate_taifex_derivatives_currentness
@@ -39,8 +39,14 @@ def _valid_yyyy_mm_dd_list(values):
         return True
     if not isinstance(values, list):
         return False
-    import re
-    return all(isinstance(v, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", v) for v in values)
+    for value in values:
+        if not isinstance(value, str):
+            return False
+        try:
+            date.fromisoformat(value)
+        except ValueError:
+            return False
+    return True
 
 def _valid_yyyymm_list(values):
     if values is None:
@@ -48,7 +54,16 @@ def _valid_yyyymm_list(values):
     if not isinstance(values, list):
         return False
     import re
-    return all(isinstance(v, str) and re.fullmatch(r"\d{6}(F\d+)?", v) for v in values)
+    for value in values:
+        if not isinstance(value, str):
+            return False
+        match = re.fullmatch(r"(\d{4})(\d{2})(F\d+)?", value)
+        if not match:
+            return False
+        month = int(match.group(2))
+        if month < 1 or month > 12:
+            return False
+    return True
 
 def _invalid_retention_scope(*, put_call_ratio_latest_n, max_put_call_ratio_rows, final_settlement_latest_n_per_product, max_final_settlement_rows, max_block_trade_rows, max_large_trader_oi_rows, requested_trade_dates, requested_delivery_months):
     return not (
@@ -67,16 +82,17 @@ def _finish_execution_result(result: dict, started: str, overall_status: str) ->
     result.update(overall_status=overall_status, completed_at_utc=completed, duration_ms=max(0, int((_parse_utc(completed) - _parse_utc(started)).total_seconds() * 1000)))
     return result
 
-def _error_result(context: str, endpoint: str, exc: Exception) -> dict:
-    ts = utc_now()
+def _error_result(context: str, endpoint: str, exc: Exception, *, requested_at_utc: str) -> dict:
+    completed = utc_now()
+    duration_ms = max(0, int((_parse_utc(completed) - _parse_utc(requested_at_utc)).total_seconds() * 1000))
     return {
         "schema_version": "m8b_taifex_openapi_adapter_result.v1",
         "source_id": "TAIFEX_OPENAPI",
         "endpoint_contract_id": endpoint,
         "context": context,
-        "requested_at_utc": ts,
-        "completed_at_utc": ts,
-        "duration_ms": 0,
+        "requested_at_utc": requested_at_utc,
+        "completed_at_utc": completed,
+        "duration_ms": duration_ms,
         "source_status": "source_error",
         "batch_status": "source_error",
         "row_count_received": 0,
@@ -136,11 +152,12 @@ def execute_taifex_openapi_refresh(*, operator_confirmed: bool, requested_contex
     statuses = []
     for context in requested_contexts:
         endpoint, call = calls[context]
+        endpoint_started_at_utc = utc_now()
         try:
             endpoint_result = call()
             _apply_currentness(context, endpoint_result, evaluation_time_asia_taipei=evaluation_time_asia_taipei, calendar_artifact=calendar_artifact, closure_events=closure_events, closure_query_succeeded=closure_query_succeeded, exchange_special_closures=exchange_special_closures)
         except Exception as exc:  # deliberately compact, endpoint-isolated metadata
-            endpoint_result = _error_result(context, endpoint, exc)
+            endpoint_result = _error_result(context, endpoint, exc, requested_at_utc=endpoint_started_at_utc)
         result["endpoint_results"][context] = endpoint_result
         result["observations"].extend(endpoint_result.get("observations", []))
         statuses.append(endpoint_result.get("batch_status"))

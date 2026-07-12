@@ -9,14 +9,14 @@ Record reproducible evidence for the M8B-03 consolidated acceptance caveat that 
 | Revision | SHA / ref | Command |
 |---|---|---|
 | Clean base | `5353c9817f94e23b078dc107eda147b27c41022d` | `cd /tmp/m8b_base_check && python scripts/run_test_profile.py full-non-network --json` |
-| PR head | working branch head with corrective changes | `python scripts/run_test_profile.py full-non-network --json` |
+| PR head | `ccb1c746e3ac1899cd425cbc1523f7e2d6194bde` | `python scripts/run_test_profile.py full-non-network --json` |
 
 ## Results
 
 | Revision | Status | Passed | Failed | Failed tests |
 |---|---:|---:|---:|---|
 | Clean base | fail | 1221 | 7 | see list below |
-| PR head | fail | 1233 | 7 | same list below |
+| PR head | fail | 1236 | 7 | same list below |
 
 Failed tests on both base and head:
 
@@ -32,8 +32,12 @@ Failed tests on both base and head:
 
 Command: `python -m pytest tests/unit/test_m8*.py -q`
 
-Result: pass, `191 passed`.
+Result after review hardening: pass, `194 passed`.
 
 ## Conclusion
 
 The PR head introduces no new `full-non-network` failures relative to clean base. The consolidated M8-through-M8B status remains `m8_through_m8b_consolidated_acceptance_pass_with_caveats` with the explicit pre-existing M5D full-non-network caveat.
+
+## Windows smoke
+
+Windows UTF-8 smoke was not executed for this corrective commit in the Linux container; it remains a skipped/not-executed environment caveat rather than a claimed pass.

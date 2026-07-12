@@ -93,7 +93,7 @@ TWSE_MIS is live-ish only; TWSE/TPEx are latest EOD only; TAIFEX calendar eviden
 TAIFEX_MIS live-ish derivatives context is deferred to M8C-00.
 
 ## 31. Accepted capabilities matrix
-| Capability | Source | Implemented | Runtime executable | Official/live-ish | Bounded retained scope | AI context allowed | Currentness evaluated | Primary caveat |
+| Capability | Source | Implemented | Runtime executable | Official/live-ish | Bounded retained scope | Direct AI context / compact currentness provenance | Currentness evaluated | Primary caveat |
 |---|---|---:|---:|---|---:|---:|---:|---|
 | TWSE MIS live-ish | TWSE_MIS | yes | yes | live-ish | yes | yes | yes | not realtime guaranteed |
 | TWSE official EOD | TWSE_OPENAPI | yes | yes | official | yes | yes | yes | latest EOD only |
@@ -104,7 +104,7 @@ TAIFEX_MIS live-ish derivatives context is deferred to M8C-00.
 | TAIFEX large-trader OI | TAIFEX_OPENAPI | yes | yes | official statistics | yes | yes | yes | concentration, not investor positioning |
 | TAIFEX Put/Call Ratio | TAIFEX_OPENAPI | yes | yes | official statistics | yes | yes | yes | no sentiment classification |
 | TAIFEX BlockTrade | TAIFEX_OPENAPI | yes | yes | official statistics | yes | yes | yes | no directional inference |
-| NCDR/DGPA closure evidence | NCDR_DGPA_CLOSURE_CAP | yes | yes | supporting evidence | yes | yes | n/a | not TAIFEX-specific confirmation |
+| NCDR/DGPA closure evidence | NCDR_DGPA_CLOSURE_CAP | yes | yes | supporting evidence | yes | direct: no; provenance: yes | n/a | not TAIFEX-specific confirmation |
 | TAIFEX MIS | TAIFEX_MIS | no | no | live-ish candidate | n/a | no | no | deferred to M8C |
 
 ## 32. Final result and next task

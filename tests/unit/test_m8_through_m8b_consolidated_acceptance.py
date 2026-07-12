@@ -157,3 +157,40 @@ def test_readme_m8b_command_parser_succeeds_without_network():
     assert result.returncode == 0, result.stderr
     payload=json.loads(result.stdout)
     assert payload['raw_payload_retained'] is False
+
+
+def test_error_result_uses_endpoint_start_time_and_measured_duration():
+    from scripts.m8b_taifex_openapi_execution import execute_taifex_openapi_refresh
+    import time
+    def boom(endpoint):
+        time.sleep(1.05)
+        raise RuntimeError('delayed parser failure')
+    r=execute_taifex_openapi_refresh(operator_confirmed=True, requested_contexts=['futures_eod','put_call_ratio'], requested_products=['TX'], fetchers={'DailyMarketReportFut':boom,'PutCallRatio':lambda e:[pcr_row('20260709')]})
+    err=r['endpoint_results']['futures_eod']
+    assert r['overall_status']=='partial_source_success'
+    assert err['completed_at_utc'] >= err['requested_at_utc']
+    assert err['duration_ms'] >= 1000
+    assert err['retention']['raw_payload_retained'] is False
+
+
+def test_semantic_date_scope_validation_rejects_impossible_dates_before_fetch():
+    from scripts.m8b_taifex_openapi_execution import execute_taifex_openapi_refresh
+    def fail(endpoint):
+        raise AssertionError('fetcher must not be called')
+    fetchers={'PutCallRatio':fail,'FinalSettlementPrice':fail}
+    for bad_date in ['2026-02-31','2026-99-99']:
+        r=execute_taifex_openapi_refresh(operator_confirmed=True, requested_contexts=['put_call_ratio'], requested_products=[], requested_trade_dates=[bad_date], fetchers=fetchers)
+        assert r['overall_status']=='rejected_invalid_scope'
+        assert r['endpoint_results']=={}
+    r=execute_taifex_openapi_refresh(operator_confirmed=True, requested_contexts=['final_settlement'], requested_products=['TX'], requested_delivery_months=['202613'], fetchers=fetchers)
+    assert r['overall_status']=='rejected_invalid_scope'
+    assert r['endpoint_results']=={}
+
+
+def test_ncdr_closure_cap_registry_ai_exposure_is_provenance_only():
+    reg=load_json('docs/data_capabilities/m8_source_capability_registry.json')
+    src=next(s for s in reg['sources'] if s['source_id']=='NCDR_DGPA_CLOSURE_CAP')
+    assert src['ai_context_allowed'] is False
+    assert src['ai_exposure_level']=='compact_currentness_provenance_only'
+    acceptance=(ROOT/'docs/protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md').read_text(encoding='utf-8')
+    assert '| NCDR/DGPA closure evidence | NCDR_DGPA_CLOSURE_CAP | yes | yes | supporting evidence | yes | direct: no; provenance: yes | n/a | not TAIFEX-specific confirmation |' in acceptance
