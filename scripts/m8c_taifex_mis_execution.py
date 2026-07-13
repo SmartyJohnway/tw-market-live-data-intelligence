@@ -5,7 +5,7 @@ import requests
 from .m8c_taifex_mis_limits import RuntimeBudget, LimitError
 from .m8c_taifex_mis_contracts import validate_selectors, SelectorError
 from .m8c_taifex_mis_rest_client import TaifexMisRestClient
-from .m8c_taifex_mis_identity_resolver import resolve_identities
+from .m8c_taifex_mis_identity_resolver import resolve_identity_results
 from .m8c_taifex_mis_sockjs_xhr_client import collect_initial_states
 from .m8c_taifex_mis_observation import build_observation
 
@@ -19,12 +19,17 @@ def execute_taifex_mis_snapshot(*, operator_confirmed:bool, requested_contracts:
         return {'status':'rejected_invalid_scope','network_performed':False,'observations':[],'caveats':[str(e)]}
     session=(session_factory or requests.Session)(); selector_results=[]; observations=[]; caveats=[]; transport={}
     try:
-        resolved=resolve_identities(selectors, TaifexMisRestClient(session,budget)); symbols=[v['runtime_symbol_id'] for v in resolved.values()]; budget.set_selector_counts(budget.selectors,budget.products,budget.months,budget.strikes,len(symbols))
-        transport=collect_initial_states(session,symbols,budget)
-        for r in resolved.values():
-            sel=r['selector']; mode1=transport['accepted_initial_states'].get(r['runtime_symbol_id']); obs=build_observation(sel,r,mode1_quote=mode1,detail_row=r.get('detail_row'),list_row=r.get('list_row'),evaluation_time_asia_taipei=evaluation_time_asia_taipei,calendar_context=calendar_context); budget.retain_observation(); observations.append(obs); selector_results.append({'selector':sel.key,'status':'ok' if mode1 else 'snapshot_incomplete','runtime_symbol_id':r['runtime_symbol_id']})
-        caveats.extend(transport.get('caveats',[]))
-        status='successful_liveish_snapshot' if len(observations)==len(symbols) and all(o['currentness']['transport_state']=='completed' for o in observations) else 'snapshot_incomplete'
+        successes, failures=resolve_identity_results(selectors, TaifexMisRestClient(session,budget)); selector_results.extend(failures)
+        symbols=[v['runtime_symbol_id'] for v in successes]; budget.set_selector_counts(budget.selectors,budget.products,budget.months,budget.strikes,len(symbols))
+        if symbols:
+            transport=collect_initial_states(session,symbols,budget)
+            for r in successes:
+                sel=r['selector']; mode1=transport['accepted_initial_states'].get(r['runtime_symbol_id']); obs=build_observation(sel,r,mode1_quote=mode1,detail_row=r.get('detail_row'),list_row=r.get('list_row'),evaluation_time_asia_taipei=evaluation_time_asia_taipei,calendar_context=calendar_context); budget.retain_observation(); observations.append(obs); selector_results.append({'selector':sel.key,'status':'ok' if mode1 else 'snapshot_incomplete','runtime_symbol_id':r['runtime_symbol_id']})
+            caveats.extend(transport.get('caveats',[]))
+        if failures and observations: status='partial_source_success'
+        elif failures and not observations: status='source_error'
+        elif observations and len(observations)==len(symbols): status='successful_liveish_snapshot'
+        else: status='snapshot_incomplete'
     except Exception as e:
         status='partial_source_success' if observations else ('transport_connection_failure' if 'sockjs' in str(type(e)).lower() else 'source_error')
         caveats.append(str(e))

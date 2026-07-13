@@ -66,7 +66,7 @@
       "latency_class": "unknown",
       "freshness_policy": "policy_defined_metadata_only",
       "market_scope": {
-        "derivatives": "declared future family only"
+        "derivatives": "regular-session futures/options bounded initial-state runtime"
       },
       "instrument_scope": [],
       "field_groups": [],
@@ -74,9 +74,11 @@
       "runtime_executable": true,
       "ai_context_allowed": false,
       "ai_exposure_level": "metadata_only",
-      "primary_use": "declared live derivatives family for future controlled gate",
+      "primary_use": "controlled bounded regular-session TAIFEX derivatives initial-state observation; AI context disabled until M8C-02",
       "allowed_interpretation": [
-        "metadata-only declared source family"
+        "bounded regular-session initial-state observation",
+        "not realtime guaranteed",
+        "not AI context until integrated later"
       ],
       "blocked_interpretation": [
         "no realtime guarantee",
@@ -95,7 +97,7 @@
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
       "source_notes": [
-        "M8C-00 preflight records transport/identity/currentness contracts only; no runtime execution enabled."
+        "M8C-01 runtime is implemented for controlled bounded execution only; M8C-02 must add currentness-context integration before AI exposure."
       ],
       "adapter_implemented": true,
       "preflight_transport_reproduced": true,
@@ -498,12 +500,12 @@
   "implemented_through_track": "M8B",
   "active_runtime_source_families": [
     "TWSE_MIS",
+    "TAIFEX_MIS",
     "TWSE_OPENAPI",
     "TPEX_OPENAPI",
     "TAIFEX_OPENAPI"
   ],
   "declared_not_runtime_source_families": [
-    "TAIFEX_MIS",
     "MOPS"
   ],
   "m8_active_consolidated_status": {
