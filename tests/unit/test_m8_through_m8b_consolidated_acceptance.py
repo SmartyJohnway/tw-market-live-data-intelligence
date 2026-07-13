@@ -34,7 +34,9 @@ def test_registry_active_state_consolidated():
     assert active['trading_signal_allowed'] is False
     assert active['recommendation_allowed'] is False
     assert active['raw_payload_exposure_allowed'] is False
-    assert active['next_task']=='M8C-00-TAIFEX-MIS-LIVEISH-DERIVATIVES-CONTEXT-PREFLIGHT'
+    assert active['next_task']=='M8C-01-TAIFEX-MIS-BOUNDED-REST-SOCKJS-SNAPSHOT-RUNTIME'
+    assert reg['planning_state']['preflight_completed_through']=='M8C-00'
+    assert reg['planning_state']['m8c_00_preflight_status']=='m8c_00_taifex_mis_preflight_pass_with_caveats'
 
 def test_taifex_currentness_mapping_fails_closed():
     assert map_m8a_currentness_status('current_official_eod') == ('current_official_derivatives_eod', None)
@@ -105,7 +107,9 @@ def test_inventory_active_state_and_historical_snapshots():
     assert active['m8a_twse_tpex_official_eod_complete'] is True
     assert active['m8b_taifex_openapi_complete'] is True
     assert active['taifex_mis_runtime_executable'] is False
-    assert active['next_task']=='M8C-00-TAIFEX-MIS-LIVEISH-DERIVATIVES-CONTEXT-PREFLIGHT'
+    assert active['next_task']=='M8C-01-TAIFEX-MIS-BOUNDED-REST-SOCKJS-SNAPSHOT-RUNTIME'
+    assert active['preflight_completed_through']=='M8C-00'
+    assert active['m8c_00_preflight_status']=='m8c_00_taifex_mis_preflight_pass_with_caveats'
     assert all(active['m8b_taifex_contexts'].values())
     assert 'm8_source_timing_authority_governance' not in inv
     assert 'm8a_official_eod_context' not in inv

@@ -1,0 +1,11 @@
+requested_product_id,mis_cid,market_type,discovered,bootstrap_verified,initial_push_verified,active_session_verified,delta_verified,regular_session_verified,after_hours_verified,cross_midnight_verified,caveats
+TX,TXF,futures,true,true,true,false,false,false,false,false,initial_push_directly_observed_regular_suffix_only
+MTX,MXF,futures,true,true,true,false,false,false,false,false,initial_push_directly_observed_regular_suffix_only
+TXO,TXO,options,true,true,true,false,false,false,false,false,weekly_identity_from_bootstrap_only_initial_push_directly_observed_regular_suffix_only
+TM,TMF,futures,true,false,false,false,false,false,false,false,discovery_only
+TF,FXF,futures,true,false,false,false,false,false,false,false,discovery_only
+TE,EXF,futures,true,false,false,false,false,false,false,false,discovery_only
+ZFF,ZFF,futures,true,false,false,false,false,false,false,false,discovery_only
+ZEF,ZEF,futures,true,false,false,false,false,false,false,false,discovery_only
+SOF,SOF,futures,true,false,false,false,false,false,false,false,discovery_only
+M1F,M1F,futures,true,false,false,false,false,false,false,false,discovery_only
