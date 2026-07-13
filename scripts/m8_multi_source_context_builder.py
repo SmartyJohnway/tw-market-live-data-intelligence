@@ -195,6 +195,8 @@ def _label(summary: dict) -> str:
         return "contains_unknown_sources"
     if summary["has_unavailable_sources"]:
         return "contains_unavailable_sources"
+    if summary.get("has_taifex_mis_stale_liveish"):
+        return "contains_taifex_mis_stale_liveish"
     if summary["has_stale_sources"]:
         return "contains_stale_sources"
     if summary["has_liveish_intraday_snapshot"] and (summary["has_official_eod_reference"] or summary["has_official_statistics_eod"]):
@@ -211,6 +213,10 @@ def _label(summary: dict) -> str:
         return "manual_or_validation_only_context"
     if summary["has_credential_gated_metadata_only"]:
         return "credential_gated_metadata_only"
+    if summary.get("has_taifex_mis_aging_liveish"):
+        return "taifex_mis_aging_liveish_context"
+    if summary.get("has_taifex_mis_phase_caveated"):
+        return "taifex_mis_phase_caveated_context"
     if summary.get("has_taifex_mis_closed_reference"):
         return "taifex_mis_closed_reference_context"
     if summary.get("has_taifex_mis_unresolved"):
@@ -299,7 +305,7 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
         summary = source_summaries.setdefault(sid, {"source_id": sid, "source_family": ctx["source_family"], "authority_level": ctx["authority_level"], "timing_class": ctx["timing_class"], "freshness_assessments": [], "ai_exposure_level": ctx["ai_exposure_level"], "runtime_executable": bool((policy or {}).get("runtime_executable")), "observation_count": 0, "has_stale_observation": False, "has_unavailable_observation": False, "caveats": []})
         summary["observation_count"] += 1
         _append_unique(summary["freshness_assessments"], ctx["freshness_assessment"])
-        summary["has_stale_observation"] |= ctx["freshness_assessment"] in {"stale_intraday_snapshot", "caveated_intraday_snapshot"}
+        summary["has_stale_observation"] |= ctx["freshness_assessment"] == "stale_intraday_snapshot" or ctx.get("taifex_mis_role_detail") == "active_stale"
         summary["has_unavailable_observation"] |= ctx["freshness_assessment"] == "source_unavailable" or ctx["source_unavailable"]
         _extend_unique(summary["caveats"], ctx["caveats"])
 
@@ -335,7 +341,7 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
         "has_manual_snapshot": "manual_snapshot" in assessments,
         "has_validation_only": "validation_only" in assessments,
         "has_credential_gated_metadata_only": "credential_gated_metadata_only" in assessments,
-        "has_stale_sources": any(a in {"stale_intraday_snapshot", "caveated_intraday_snapshot"} for a in assessments),
+        "has_stale_sources": any(ctx["freshness_assessment"] == "stale_intraday_snapshot" or ctx.get("taifex_mis_role_detail") == "active_stale" for ctx in all_contexts),
         "has_taifex_mis_observation": any(ctx["source_id"] == "TAIFEX_MIS" for ctx in all_contexts),
         "has_taifex_mis_primary_current": any(ctx["source_id"] == "TAIFEX_MIS" and ctx.get("primary_context_allowed") for ctx in all_contexts),
         "has_taifex_mis_caveated_liveish": any(ctx["source_id"] == "TAIFEX_MIS" and ctx["freshness_assessment"] == "caveated_intraday_snapshot" for ctx in all_contexts),

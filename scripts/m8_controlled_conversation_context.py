@@ -131,8 +131,10 @@ def _policy_caveats(ctx: dict) -> list[str]:
     source_id = ctx.get("source_id")
     if freshness == "unknown" or source_id not in TRUSTED_SOURCE_IDS:
         _append_unique(caveats, "unknown source safe_fields withheld from conversation context")
-    if freshness in {"stale_intraday_snapshot", "caveated_intraday_snapshot", "closed_session_reference", "source_specific_currentness_unresolved"}:
+    if freshness == "stale_intraday_snapshot" or ctx.get("taifex_mis_role_detail") == "active_stale":
         _append_unique(caveats, "stale source must not be described as current market")
+    elif freshness in {"caveated_intraday_snapshot", "closed_session_reference", "source_specific_currentness_unresolved"}:
+        _append_unique(caveats, "caveated TAIFEX MIS source must not be described as current market")
     if freshness in {"official_eod_reference", "official_statistics_eod"} or timing in {"official_eod", "official_statistics_eod"}:
         _append_unique(caveats, "EOD/reference context is not realtime and not current price")
     if freshness == "manual_snapshot" or source_id == "MANUAL_OPERATOR_EVIDENCE":
@@ -187,6 +189,7 @@ def _project_context(ctx: dict, top_level_safe: bool) -> dict:
         "currentness": ctx.get("currentness"),
         "context_role": ctx.get("context_role"),
         "overall_ai_currentness": ctx.get("overall_ai_currentness"),
+        "taifex_mis_role_detail": ctx.get("taifex_mis_role_detail"),
         "safe_for_ai_context": bool(ctx.get("safe_for_ai_context")),
         "trading_date": ctx.get("trading_date"),
         "safe_fields": safe_fields,
@@ -278,7 +281,11 @@ def _format_taifex_mis_context(ctx: dict) -> list[str]:
     price = sf.get("price") or {}
     activity = sf.get("activity") or {}
     book = sf.get("top_of_book") or {}
-    kind = "options" if ctx.get("context_type") == "official_derivatives_options_liveish_snapshot" else "futures"
+    ctype = ctx.get("context_type")
+    if ctype not in {"official_derivatives_options_liveish_snapshot", "official_derivatives_futures_liveish_snapshot"}:
+        selector = ident.get("selector") or ident.get("runtime_symbol_id") or ctx.get("symbol")
+        return [f"    - TAIFEX MIS metadata-only selector record: selector={selector}, currentness={ctx.get('overall_ai_currentness')}, context_role={ctx.get('context_role')}."]
+    kind = "options" if ctype == "official_derivatives_options_liveish_snapshot" else "futures"
     parts = [f"product={ident.get('requested_product_id')}", f"contract={ident.get('contract_month_or_week')}"]
     if kind == "options":
         parts.extend([f"strike={ident.get('strike_price')}", f"option_type={ident.get('option_type')}"])

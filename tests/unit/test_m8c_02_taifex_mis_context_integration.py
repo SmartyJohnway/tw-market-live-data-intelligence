@@ -103,3 +103,66 @@ def test_imports_are_pure_no_network(monkeypatch):
     monkeypatch.setattr(requests.sessions.Session, "request", boom)
     importlib.reload(importlib.import_module("scripts.m8c_taifex_mis_context_adapter"))
     importlib.reload(importlib.import_module("scripts.m8c_02_taifex_mis_context_integration"))
+
+def test_real_m8c01_txo_option_type_call_is_normalized():
+    obs = build_taifex_mis_m8_observations({"observations":[raw(inst="option", option_type="call", runtime_symbol_id="TXO20260720000C-O")]})[0]
+    assert obs["observation_valid"] is True
+    assert obs["safe_fields"]["contract_identity"]["option_type"] == "call"
+
+
+def test_missing_source_id_and_invalid_month_fail_closed():
+    missing = raw(); missing.pop("source_id")
+    bad_month = raw(contract_month_or_week="202613")
+    observations = build_taifex_mis_m8_observations({"observations":[missing, bad_month]})
+    assert all(o["observation_valid"] is False for o in observations)
+    assert all("price" not in o["safe_fields"] for o in observations)
+
+
+def test_mode1_with_status_or_book_provenance_only_is_accepted():
+    obs = raw(field_provenance={"status":{"source":"sockjs_mode_1","field":"145"}}, normalized_field_candidates={"best_bid":"99","best_ask":"100","canonicalization_status":"candidate_families_agree"})
+    adapted = build_taifex_mis_m8_observations({"observations":[obs]})[0]
+    assert adapted["accepted_mode_1_present"] is True
+    assert adapted["observation_valid"] is True
+
+
+def test_execution_selector_ok_marks_mode1_even_without_value_provenance():
+    obs = raw(field_provenance={})
+    adapted = build_taifex_mis_m8_observations({"observations":[obs], "selector_results":[{"status":"ok", "runtime_symbol_id":"TXF202607-F"}]})[0]
+    assert adapted["accepted_mode_1_present"] is True
+
+
+def test_nested_raw_payload_truevalues_numeric_qid_blocks_values():
+    obs = raw(extra={"raw_payload":{"125":"1"}, "trueValues":[1]})
+    adapted = build_taifex_mis_m8_observations({"observations":[obs]})[0]
+    assert adapted["observation_valid"] is False
+    assert "forbidden_nested_source_field_present" in adapted["adapter_validation"]["errors"]
+    assert "price" not in adapted["safe_fields"]
+
+
+def test_ncdr_dgpa_cannot_establish_taifex_special_closure():
+    currentness = dict(raw()["currentness"], overall_ai_currentness="special_closure_latest_completed", special_closure_evidence={"source_family":"NCDR_DGPA", "authority_level":"official", "target_date_matches":True, "target_date":"2026-07-13"})
+    ctx = built("special_closure_latest_completed", currentness=currentness)["instrument_contexts"][0]["contexts"][0]
+    assert ctx["metadata_only"] is True
+    assert ctx["withhold_market_values_from_conversation"] is True
+
+
+def test_preopen_halted_closed_unresolved_are_not_stale_summary_or_caveat():
+    for status in ["preopen", "halted", "closed_session_latest_completed", "market_phase_unresolved"]:
+        ctx = built(status)
+        assert ctx["freshness_summary"]["has_stale_sources"] is False
+        md = build_controlled_conversation_context(ctx)["sections"][0]["markdown"]
+        assert "stale source must not be described" not in md
+
+
+def test_invalid_instrument_markdown_is_metadata_not_futures():
+    obs = build_taifex_mis_m8_observations({"observations":[raw(instrument_type="weird", runtime_symbol_id="BAD")]})
+    convo = build_controlled_conversation_context(build_multi_source_market_context(obs, REG_TRUE, now_utc="2026-07-13T01:00:05Z"))
+    md = convo["sections"][0]["markdown"]
+    assert "metadata-only selector record" in md
+    assert "bounded futures snapshot" not in md
+
+
+def test_failed_selector_list_identity_is_stable_for_grouping():
+    observations = build_taifex_mis_m8_observations({"observations":[],"selector_results":[{"selector":["TX", "202607"],"status":"snapshot_incomplete"}],"transport_summary":{}})
+    ctx = build_multi_source_market_context(observations, REG_TRUE, now_utc="2026-07-13T01:00:05Z")
+    assert ctx["instrument_contexts"][0]["symbol"] == "TX:202607"

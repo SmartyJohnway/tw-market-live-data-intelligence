@@ -34,8 +34,15 @@ def _valid_active_fresh_axes(obs: dict, cur: dict) -> bool:
 
 
 def _has_official_special_closure_evidence(cur: dict) -> bool:
-    evidence = str(cur.get("calendar_evidence") or "")
-    return evidence not in {"", "not_provided", "unknown"} and ("official" in evidence or "taifex" in evidence.lower() or "closure" in evidence.lower())
+    evidence = cur.get("special_closure_evidence")
+    if not isinstance(evidence, dict):
+        return False
+    return (
+        evidence.get("source_family") == "TAIFEX"
+        and str(evidence.get("authority_level") or "").startswith("official")
+        and evidence.get("target_date_matches") is True
+        and bool(evidence.get("target_date") or evidence.get("closure_date"))
+    )
 
 
 def assess_taifex_mis_currentness(observation: dict, source_policy: dict | None = None, *, now_utc: str | None = None) -> dict:
