@@ -6,8 +6,9 @@ def test_final_acceptance_and_registry_state():
     assert 'M8C-01-TAIFEX-MIS-BOUNDED-REST-SOCKJS-SNAPSHOT-RUNTIME' in text
     reg=json.loads(pathlib.Path('docs/data_capabilities/m8_source_capability_registry.json').read_text())
     s=[x for x in reg['sources'] if x['source_id']=='TAIFEX_MIS'][0]
-    assert s['runtime_executable'] is False
-    assert s['adapter_implemented'] is False
+    assert s['runtime_executable'] is True
+    assert s['adapter_implemented'] is True
+    assert s['runtime_status']=='bounded_initial_state_snapshot_runtime_implemented_pending_m8c_02_integration'
     assert s['ai_context_allowed'] is False
     assert s['preflight_transport_reproduced'] is True
 

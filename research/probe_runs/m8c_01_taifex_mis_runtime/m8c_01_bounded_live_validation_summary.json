@@ -1,0 +1,252 @@
+{
+  "status": "successful_liveish_snapshot",
+  "network_performed": true,
+  "timing": {
+    "evaluation_time_asia_taipei": "2026-07-13T15:46:15.893637+08:00"
+  },
+  "accounting": {
+    "rest_request_payload_bytes": 641,
+    "sockjs_send_payload_bytes": 83,
+    "response_payload_bytes": 417371,
+    "total_accounted_payload_bytes": 418095,
+    "rest_rows": 1357,
+    "frames": 2,
+    "decoded_messages": 3,
+    "selectors": 3,
+    "products": 3,
+    "months": 1,
+    "strikes": 1,
+    "symbols": 3,
+    "retained_observations": 3
+  },
+  "transport_summary": {
+    "reconnect_attempts": 0,
+    "unsubscribe_sent": false,
+    "unsupported_mode_count": 0,
+    "accepted_initial_state_count": 3,
+    "missing_symbols": [],
+    "termination_reason": null,
+    "limit_reached": false
+  },
+  "selector_results": [
+    {
+      "selector": [
+        "future",
+        "TX",
+        "202607",
+        "regular",
+        "None",
+        null
+      ],
+      "status": "ok",
+      "runtime_symbol_id": "TXFG6-F"
+    },
+    {
+      "selector": [
+        "future",
+        "MTX",
+        "202607",
+        "regular",
+        "None",
+        null
+      ],
+      "status": "ok",
+      "runtime_symbol_id": "MXFG6-F"
+    },
+    {
+      "selector": [
+        "option",
+        "TXO",
+        "202607",
+        "regular",
+        "31200",
+        "call"
+      ],
+      "status": "ok",
+      "runtime_symbol_id": "TXO31200G6-O"
+    }
+  ],
+  "observations": [
+    {
+      "source_id": "TAIFEX_MIS",
+      "authority_level": "official_undocumented",
+      "timing_class": "liveish_intraday_snapshot",
+      "requested_product_id": "TX",
+      "mis_cid": "TXF",
+      "runtime_symbol_id": "TXFG6-F",
+      "instrument_type": "future",
+      "session": "regular",
+      "contract_month_or_week": "202607",
+      "strike_price": null,
+      "option_type": null,
+      "raw_CDate": "20260713",
+      "raw_CTime": "134459",
+      "source_timestamp_asia_taipei": "2026-07-13T13:44:59+08:00",
+      "source_status_code": "4",
+      "market_phase": "market_phase_unresolved",
+      "currentness": {
+        "transport_state": "completed",
+        "session_alignment": "aligned",
+        "market_phase": "market_phase_unresolved",
+        "source_timestamp_state": "resolved",
+        "quote_age_state": "outside_regular_session_window",
+        "calendar_evidence": "operator_validator",
+        "currentness_confidence": "bounded_policy_not_exchange_sla",
+        "retrieved_at_freshness_ignored_for_upgrade": true,
+        "overall_ai_currentness": "session_alignment_unresolved"
+      },
+      "network_scope": "exact_contract_month",
+      "retained_scope": "exact_runtime_symbol",
+      "caveats": [],
+      "raw_payload_retained": false,
+      "quote_values_retained": false
+    },
+    {
+      "source_id": "TAIFEX_MIS",
+      "authority_level": "official_undocumented",
+      "timing_class": "liveish_intraday_snapshot",
+      "requested_product_id": "MTX",
+      "mis_cid": "MXF",
+      "runtime_symbol_id": "MXFG6-F",
+      "instrument_type": "future",
+      "session": "regular",
+      "contract_month_or_week": "202607",
+      "strike_price": null,
+      "option_type": null,
+      "raw_CDate": "20260713",
+      "raw_CTime": "134459",
+      "source_timestamp_asia_taipei": "2026-07-13T13:44:59+08:00",
+      "source_status_code": "4",
+      "market_phase": "market_phase_unresolved",
+      "currentness": {
+        "transport_state": "completed",
+        "session_alignment": "aligned",
+        "market_phase": "market_phase_unresolved",
+        "source_timestamp_state": "resolved",
+        "quote_age_state": "outside_regular_session_window",
+        "calendar_evidence": "operator_validator",
+        "currentness_confidence": "bounded_policy_not_exchange_sla",
+        "retrieved_at_freshness_ignored_for_upgrade": true,
+        "overall_ai_currentness": "session_alignment_unresolved"
+      },
+      "network_scope": "exact_contract_month",
+      "retained_scope": "exact_runtime_symbol",
+      "caveats": [],
+      "raw_payload_retained": false,
+      "quote_values_retained": false
+    },
+    {
+      "source_id": "TAIFEX_MIS",
+      "authority_level": "official_undocumented",
+      "timing_class": "liveish_intraday_snapshot",
+      "requested_product_id": "TXO",
+      "mis_cid": "TXO",
+      "runtime_symbol_id": "TXO31200G6-O",
+      "instrument_type": "option",
+      "session": "regular",
+      "contract_month_or_week": "202607",
+      "strike_price": "31200",
+      "option_type": "call",
+      "raw_CDate": "20260713",
+      "raw_CTime": null,
+      "source_timestamp_asia_taipei": null,
+      "source_status_code": "4",
+      "market_phase": "market_phase_unresolved",
+      "currentness": {
+        "transport_state": "completed",
+        "session_alignment": "aligned",
+        "market_phase": "market_phase_unresolved",
+        "source_timestamp_state": "unresolved",
+        "quote_age_state": "unresolved",
+        "calendar_evidence": "operator_validator",
+        "currentness_confidence": "bounded_policy_not_exchange_sla",
+        "retrieved_at_freshness_ignored_for_upgrade": true,
+        "overall_ai_currentness": "source_timestamp_unresolved"
+      },
+      "network_scope": "whole_requested_contract_month_chain",
+      "retained_scope": "exact_requested_strike_and_option_type",
+      "caveats": [],
+      "raw_payload_retained": false,
+      "quote_values_retained": false
+    }
+  ],
+  "caveats": [],
+  "raw_payload_retained": false,
+  "ai_context_allowed": false,
+  "tested_head_sha": "280f9d2b34a14d9b51db2d44cd492c8873e865a0",
+  "auto_smoke_contracts": [
+    {
+      "instrument_type": "future",
+      "requested_product_id": "TX",
+      "contract_month_or_week": "202607",
+      "session": "regular"
+    },
+    {
+      "instrument_type": "future",
+      "requested_product_id": "MTX",
+      "contract_month_or_week": "202607",
+      "session": "regular"
+    },
+    {
+      "instrument_type": "option",
+      "requested_product_id": "TXO",
+      "contract_month_or_week": "202607",
+      "strike_price": "31200",
+      "option_type": "call",
+      "session": "regular"
+    }
+  ],
+  "selector_discovery_accounting": {
+    "rest_request_payload_bytes": 259,
+    "sockjs_send_payload_bytes": 0,
+    "response_payload_bytes": 346350,
+    "total_accounted_payload_bytes": 346609,
+    "rest_rows": 591,
+    "frames": 0,
+    "decoded_messages": 0,
+    "selectors": 0,
+    "products": 0,
+    "months": 0,
+    "strikes": 0,
+    "symbols": 0,
+    "retained_observations": 0
+  },
+  "runtime_execution_accounting": {
+    "rest_request_payload_bytes": 641,
+    "sockjs_send_payload_bytes": 83,
+    "response_payload_bytes": 417371,
+    "total_accounted_payload_bytes": 418095,
+    "rest_rows": 1357,
+    "frames": 2,
+    "decoded_messages": 3,
+    "selectors": 3,
+    "products": 3,
+    "months": 1,
+    "strikes": 1,
+    "symbols": 3,
+    "retained_observations": 3
+  },
+  "combined_validator_accounting": {
+    "rest_request_payload_bytes": 900,
+    "sockjs_send_payload_bytes": 83,
+    "response_payload_bytes": 763721,
+    "total_accounted_payload_bytes": 764704,
+    "rest_rows": 1948,
+    "frames": 2,
+    "decoded_messages": 3,
+    "selectors": 3,
+    "products": 3,
+    "months": 1,
+    "strikes": 1,
+    "symbols": 3,
+    "retained_observations": 3
+  },
+  "combined_validator_hard_bounds": {
+    "max_accounted_payload_bytes": 2000000,
+    "discovery_payload_cap": 1000000,
+    "runtime_payload_cap": 1000000
+  },
+  "cookies_retained": false,
+  "sockjs_session_ids_retained": false,
+  "tested_runtime_sha": "280f9d2b34a14d9b51db2d44cd492c8873e865a0"
+}

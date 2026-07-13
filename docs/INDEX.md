@@ -63,9 +63,13 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 - [M8-00 final acceptance](protocol/M8_00_FINAL_ACCEPTANCE_AND_CLOSURE.md)
 - [M8A official EOD final acceptance](protocol/M8A_OFFICIAL_EOD_CONTEXT_FINAL_ACCEPTANCE.md)
 - [M8B TAIFEX OpenAPI final acceptance](protocol/M8B_01_TAIFEX_OPENAPI_OFFICIAL_DERIVATIVES_EOD_FINAL_ACCEPTANCE.md)
+- [M8C-01 TAIFEX MIS bounded runtime final acceptance](protocol/M8C_01_TAIFEX_MIS_BOUNDED_RUNTIME_FINAL_ACCEPTANCE.md)
+- [M8C TAIFEX MIS runtime selector/execution contract](protocol/M8C_TAIFEX_MIS_RUNTIME_SELECTOR_AND_EXECUTION_CONTRACT.md)
+- [M8C TAIFEX MIS runtime observation schema](protocol/M8C_TAIFEX_MIS_RUNTIME_OBSERVATION_SCHEMA.md)
+- [M8C TAIFEX MIS runtime currentness contract](protocol/M8C_TAIFEX_MIS_RUNTIME_CURRENTNESS_CONTRACT.md)
 - [M8A live validator](../scripts/validate_m8a_official_eod_live.py)
 - [M8B live validator](../scripts/validate_m8b_taifex_openapi_live.py)
-- Next track: `M8C-00-TAIFEX-MIS-LIVEISH-DERIVATIVES-CONTEXT-PREFLIGHT`
+- Next track: `M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE`
 
 ## Reviews / acceptance
 

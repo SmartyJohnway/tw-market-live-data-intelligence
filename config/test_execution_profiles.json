@@ -133,7 +133,8 @@
         "tests/unit/test_m8c_taifex_mis_contract_preflight.py",
         "tests/unit/test_m8c_taifex_mis_currentness_preflight.py",
         "tests/unit/test_m8c_taifex_mis_identity_contract.py",
-        "tests/unit/test_m8c_taifex_mis_probe_parsers.py"
+        "tests/unit/test_m8c_taifex_mis_probe_parsers.py",
+        "tests/unit/test_m8c_01_taifex_mis_runtime.py"
       ],
       "network_policy": "no network; excludes tests marked network",
       "browser_policy": "does not install or require Playwright/Chromium",

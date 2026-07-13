@@ -1,7 +1,7 @@
 {
   "schema_version": "m8_source_capability_registry.v1",
-  "status": "m8_through_m8b_implemented_with_caveats",
-  "generated_for_task": "M8B-03-M8-THROUGH-M8B-CONSOLIDATED-ACCEPTANCE-AND-CONTRACT-CLEANUP",
+  "status": "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats",
+  "generated_for_task": "M8C-01-TAIFEX-MIS-BOUNDED-REST-SOCKJS-SNAPSHOT-RUNTIME",
   "sources": [
     {
       "source_id": "TWSE_MIS",
@@ -59,32 +59,46 @@
       "source_id": "TAIFEX_MIS",
       "source_family": "TAIFEX_MIS",
       "display_name": "TAIFEX MIS derivatives snapshot",
-      "authority_level": "official_undocumented_candidate",
+      "authority_level": "official_undocumented",
       "official_documented": false,
       "endpoint_type": "browser_rest_plus_sockjs_observed",
       "timing_class": "liveish_intraday_snapshot",
       "latency_class": "unknown",
-      "freshness_policy": "policy_defined_metadata_only",
+      "freshness_policy": "taifex_mis_currentness_policy_fail_closed_not_retrieved_at",
       "market_scope": {
-        "derivatives": "declared future family only"
+        "derivatives": "regular-session futures/options bounded initial-state runtime"
       },
-      "instrument_scope": [],
-      "field_groups": [],
-      "runtime_available": false,
-      "runtime_executable": false,
+      "instrument_scope": [
+        "regular_session_monthly_futures",
+        "regular_session_monthly_options",
+        "weekly_options_deferred"
+      ],
+      "field_groups": [
+        "mode_1_qid_initial_state",
+        "exact_detail_named_field_fallback",
+        "quote_list_named_field_fallback",
+        "top_of_book_candidate_families_unresolved"
+      ],
+      "runtime_available": true,
+      "runtime_executable": true,
       "ai_context_allowed": false,
       "ai_exposure_level": "metadata_only",
-      "primary_use": "declared live derivatives family for future controlled gate",
+      "primary_use": "controlled bounded regular-session TAIFEX derivatives initial-state observation; AI context disabled until M8C-02",
       "allowed_interpretation": [
-        "metadata-only declared source family"
+        "bounded regular-session initial-state observation",
+        "not realtime guaranteed",
+        "not AI context until integrated later"
       ],
       "blocked_interpretation": [
-        "not executable in M8-00",
-        "no trading interpretation",
+        "no realtime guarantee",
+        "no streaming runtime guarantee",
+        "no delta support",
+        "no after-hours support without direct evidence",
+        "no AI context integration",
         "no trading signal"
       ],
       "caveats": [
-        "Declared live derivatives family, not executable in M8-00."
+        "M8C-01 implements bounded regular-session initial-state runtime with caveats; after-hours, deltas, reconnect, unsubscribe, raw payload exposure, and AI context remain disabled."
       ],
       "credential_required": false,
       "local_first_safe": true,
@@ -92,16 +106,22 @@
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
       "source_notes": [
-        "M8C-00 preflight records transport/identity/currentness contracts only; no runtime execution enabled."
+        "M8C-01 runtime is implemented for controlled bounded execution only; M8C-02 must add currentness-context integration before AI exposure.",
+        "M8C-01 monthly-only runtime; weekly option formats YYYYMMF1-F5/YYYYMMW1-W5 deferred pending direct validation."
       ],
-      "adapter_implemented": false,
+      "adapter_implemented": true,
       "preflight_transport_reproduced": true,
       "snapshot_runtime_readiness": "go_with_caveats",
       "delta_runtime_readiness": "conditional_no_go",
       "access_use_disposition": "operator_accepted_personal_local_research_only",
-      "controlled_runtime_executable": false,
+      "controlled_runtime_executable": true,
       "m8c_00_preflight_status": "m8c_00_taifex_mis_preflight_pass_with_caveats",
-      "preflight_completed_through": "M8C-00"
+      "preflight_completed_through": "M8C-00",
+      "runtime_status": "bounded_initial_state_snapshot_runtime_implemented_pending_m8c_02_integration",
+      "delta_runtime_executable": false,
+      "context_integration_added": false,
+      "conversation_integration_added": false,
+      "next_task": "M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE"
     },
     {
       "source_id": "TWSE_OPENAPI",
@@ -486,16 +506,16 @@
     "no_rotc_route": true,
     "no_emerging_stock_live_route": true
   },
-  "next_task": "M8C-01-TAIFEX-MIS-BOUNDED-REST-SOCKJS-SNAPSHOT-RUNTIME",
+  "next_task": "M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE",
   "implemented_through_track": "M8B",
   "active_runtime_source_families": [
     "TWSE_MIS",
+    "TAIFEX_MIS",
     "TWSE_OPENAPI",
     "TPEX_OPENAPI",
     "TAIFEX_OPENAPI"
   ],
   "declared_not_runtime_source_families": [
-    "TAIFEX_MIS",
     "MOPS"
   ],
   "m8_active_consolidated_status": {
@@ -508,16 +528,18 @@
     "twse_openapi_runtime_executable": true,
     "tpex_openapi_runtime_executable": true,
     "taifex_openapi_runtime_executable": true,
-    "taifex_mis_runtime_executable": false,
+    "taifex_mis_runtime_executable": true,
     "mops_runtime_executable": false,
     "trading_signal_allowed": false,
     "recommendation_allowed": false,
     "raw_payload_exposure_allowed": false,
-    "next_task": "M8C-01-TAIFEX-MIS-BOUNDED-REST-SOCKJS-SNAPSHOT-RUNTIME"
+    "next_task": "M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE",
+    "m8c_01_status": "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats"
   },
   "planning_state": {
-    "next_task": "M8C-01-TAIFEX-MIS-BOUNDED-REST-SOCKJS-SNAPSHOT-RUNTIME",
+    "next_task": "M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE",
     "preflight_completed_through": "M8C-00",
-    "m8c_00_preflight_status": "m8c_00_taifex_mis_preflight_pass_with_caveats"
+    "m8c_00_preflight_status": "m8c_00_taifex_mis_preflight_pass_with_caveats",
+    "m8c_01_status": "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats"
   }
 }
