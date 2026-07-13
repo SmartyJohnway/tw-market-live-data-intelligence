@@ -81,7 +81,7 @@ flowchart LR
   CONVO --> HANDOFF[safe artifact / AI discussion handoff]
 ```
 
-`TAIFEX_MIS` is **not implemented yet**; it is deferred to `M8C-00-TAIFEX-MIS-LIVEISH-DERIVATIVES-CONTEXT-PREFLIGHT`.
+`TAIFEX_MIS` now has an M8C-01 bounded regular-session initial-state runtime with caveats. It remains excluded from AI context/conversation integration until M8C-02; no realtime guarantee, delta support, after-hours support, reconnect, unsubscribe, public API, or trading signal is enabled.
 
 ### M8 validation examples
 
@@ -124,7 +124,7 @@ python scripts/validate_m8b_taifex_openapi_live.py \
 | TWSE_OPENAPI | official listed cash EOD | latest EOD | executable | yes | bounded symbols | no historical backfill |
 | TPEX_OPENAPI | official TPEx cash EOD | latest EOD | executable | yes | bounded symbols | no canonical security master |
 | TAIFEX_OPENAPI | official derivatives EOD/statistical/reference | official EOD/reference | executable | yes | bounded selectors/row limits | product/session metadata caveats |
-| TAIFEX_MIS | future live-ish derivatives candidate | not implemented | not executable | n/a | n/a | deferred to M8C |
+| TAIFEX_MIS | regular-session futures/options live-ish initial state | M8C-01 bounded adapter implemented | controlled executable only | raw payload retained=false | AI context disabled | pending M8C-02 integration |
 | NCDR_DGPA_CLOSURE_CAP | supporting closure evidence | event/reference | supporting evidence | yes | compact evidence | not TAIFEX-specific confirmation |
 
 ## Architecture overview

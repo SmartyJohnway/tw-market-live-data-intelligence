@@ -1,0 +1,84 @@
+{
+  "status": "successful_liveish_snapshot",
+  "network_performed": true,
+  "timing": {
+    "evaluation_time_asia_taipei": "2026-07-13T12:49:05.742547+08:00"
+  },
+  "accounting": {
+    "rest_request_payload_bytes": 212,
+    "sockjs_send_payload_bytes": 54,
+    "response_payload_bytes": 32193,
+    "total_accounted_payload_bytes": 32459,
+    "rest_rows": 364,
+    "frames": 2,
+    "decoded_messages": 1,
+    "selectors": 1,
+    "products": 1,
+    "months": 1,
+    "strikes": 0,
+    "symbols": 1,
+    "retained_observations": 1
+  },
+  "transport_summary": {
+    "reconnect_attempts": 0,
+    "unsubscribe_sent": false,
+    "unsupported_mode_count": 0,
+    "accepted_initial_state_count": 1
+  },
+  "selector_results": [
+    {
+      "selector": [
+        "future",
+        "TX",
+        "202607",
+        "regular",
+        "None",
+        null
+      ],
+      "status": "ok",
+      "runtime_symbol_id": "TXFG6-F"
+    }
+  ],
+  "observations": [
+    {
+      "source_id": "TAIFEX_MIS",
+      "authority_level": "official_undocumented",
+      "timing_class": "liveish_intraday_snapshot",
+      "requested_product_id": "TX",
+      "mis_cid": "TXF",
+      "runtime_symbol_id": "TXFG6-F",
+      "instrument_type": "future",
+      "session": "regular",
+      "contract_month_or_week": "202607",
+      "strike_price": null,
+      "option_type": null,
+      "raw_CDate": null,
+      "raw_CTime": null,
+      "source_timestamp_asia_taipei": null,
+      "source_status_code": null,
+      "market_phase": "unresolved",
+      "currentness": {
+        "transport_state": "completed",
+        "session_alignment": "aligned",
+        "market_phase": "unresolved",
+        "source_timestamp_state": "unresolved",
+        "quote_age_state": "unresolved",
+        "calendar_evidence": "operator_validator",
+        "currentness_confidence": "bounded_policy_not_exchange_sla",
+        "retrieved_at_freshness_ignored_for_upgrade": true,
+        "overall_ai_currentness": "source_timestamp_unresolved"
+      },
+      "network_scope": "exact_contract_month",
+      "retained_scope": "exact_runtime_symbol",
+      "caveats": [],
+      "raw_payload_retained": false,
+      "quote_values_retained": false
+    }
+  ],
+  "caveats": [],
+  "raw_payload_retained": false,
+  "ai_context_allowed": false,
+  "tested_head_sha": "00760f0a4cb06ac9455d5210da3556863eb691c2",
+  "cookies_retained": false,
+  "sockjs_session_ids_retained": false
+}
