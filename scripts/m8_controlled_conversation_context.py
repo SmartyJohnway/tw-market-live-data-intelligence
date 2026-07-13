@@ -43,6 +43,7 @@ TRUSTED_SOURCE_IDS = {
     "TWSE_OPENAPI",
     "TPEX_OPENAPI",
     "TAIFEX_OPENAPI",
+    "TAIFEX_MIS",
     "MANUAL_OPERATOR_EVIDENCE",
     "EXTERNAL_VALIDATION_ONLY",
     "CREDENTIAL_GATED_PROVIDER",
@@ -130,7 +131,7 @@ def _policy_caveats(ctx: dict) -> list[str]:
     source_id = ctx.get("source_id")
     if freshness == "unknown" or source_id not in TRUSTED_SOURCE_IDS:
         _append_unique(caveats, "unknown source safe_fields withheld from conversation context")
-    if freshness == "stale_intraday_snapshot":
+    if freshness in {"stale_intraday_snapshot", "caveated_intraday_snapshot", "closed_session_reference", "source_specific_currentness_unresolved"}:
         _append_unique(caveats, "stale source must not be described as current market")
     if freshness in {"official_eod_reference", "official_statistics_eod"} or timing in {"official_eod", "official_statistics_eod"}:
         _append_unique(caveats, "EOD/reference context is not realtime and not current price")
@@ -154,12 +155,15 @@ def _project_context(ctx: dict, top_level_safe: bool) -> dict:
     _extend_unique(caveats, _policy_caveats(ctx))
     unknown = freshness == "unknown" or source_id not in TRUSTED_SOURCE_IDS
     credential = freshness == "credential_gated_metadata_only" or ctx.get("timing_class") == "credential_gated_research" or source_id == "CREDENTIAL_GATED_PROVIDER"
+    taifex_mis_metadata_values_withheld = source_id == "TAIFEX_MIS" and (ctx.get("withhold_market_values_from_conversation") or ctx.get("metadata_only"))
     allow_fields = top_level_safe and not unknown and not credential
     safe_fields, omitted = _scrub_safe_fields(ctx.get("safe_fields"))
     safe_fields = _scrub_forbidden_conversation_terms(safe_fields, omitted, caveats)
     if unknown and safe_fields:
         omitted.extend(k for k in safe_fields if k not in omitted)
         safe_fields = {}
+    if source_id == "TAIFEX_MIS":
+        safe_fields = _project_taifex_mis_safe_fields(safe_fields, withhold_values=taifex_mis_metadata_values_withheld)
     if credential:
         safe_fields = {k: v for k, v in safe_fields.items() if k == "provider_name"}
     if not allow_fields:
@@ -178,6 +182,9 @@ def _project_context(ctx: dict, top_level_safe: bool) -> dict:
         "source_timestamp": ctx.get("source_timestamp"),
         "retrieved_at_utc": ctx.get("retrieved_at_utc"),
         "market_date": ctx.get("market_date"),
+        "currentness": ctx.get("currentness"),
+        "context_role": ctx.get("context_role"),
+        "overall_ai_currentness": ctx.get("overall_ai_currentness"),
         "trading_date": ctx.get("trading_date"),
         "safe_fields": safe_fields,
         "omitted_fields": sorted(set(_as_list(ctx.get("omitted_fields")) + omitted)),
@@ -186,7 +193,7 @@ def _project_context(ctx: dict, top_level_safe: bool) -> dict:
         "supporting_context_only": bool(ctx.get("supporting_context_only")) or freshness == "validation_only",
         "metadata_only": bool(ctx.get("metadata_only")) or not allow_fields,
     }
-    if freshness in {"stale_intraday_snapshot", "manual_snapshot", "validation_only", "credential_gated_metadata_only", "unknown"}:
+    if freshness in {"stale_intraday_snapshot", "caveated_intraday_snapshot", "closed_session_reference", "source_specific_currentness_unresolved", "manual_snapshot", "validation_only", "credential_gated_metadata_only", "unknown"}:
         projected["primary_context_allowed"] = False
     return projected
 
@@ -212,6 +219,24 @@ def _markdown_contains_forbidden_conversation_term(markdown: str) -> bool:
     return _contains_forbidden_conversation_term(markdown_without_guardrail)
 
 
+
+
+def _project_taifex_mis_safe_fields(safe_fields: dict, *, withhold_values: bool) -> dict:
+    ident = deepcopy(safe_fields.get("contract_identity") or {})
+    source_time = deepcopy(safe_fields.get("source_time") or {})
+    currentness = deepcopy(safe_fields.get("currentness") or {})
+    projected = {
+        "contract_identity": ident,
+        "source_time": source_time,
+        "source_status_code": safe_fields.get("source_status_code"),
+        "currentness": currentness,
+    }
+    if not withhold_values and source_time.get("source_timestamp"):
+        projected["price"] = deepcopy(safe_fields.get("price") or {})
+        projected["activity"] = deepcopy(safe_fields.get("activity") or {})
+        projected["top_of_book"] = deepcopy(safe_fields.get("top_of_book") or {})
+        projected["field_provenance"] = deepcopy(safe_fields.get("field_provenance") or {})
+    return projected
 
 def _format_taifex_context(ctx: dict) -> list[str]:
     sf = ctx.get("safe_fields") or {}
@@ -242,6 +267,23 @@ def _format_taifex_context(ctx: dict) -> list[str]:
         lines.append(f"{prefix} block-trade reference: product={ident.get('product_id')}, contract_month={ident.get('contract_month_or_week')}, strike={ident.get('strike_price')}, option_type={ident.get('option_type')}, trade_date={sf.get('trade_date')}, session={sf.get('session')}, volume={bt.get('volume')}, highest_price={bt.get('highest_price')}, lowest_price={bt.get('lowest_price')}, currentness={currentness.get('status')}. Factual activity only; no directional interpretation is generated.")
     return lines
 
+
+def _format_taifex_mis_context(ctx: dict) -> list[str]:
+    sf = ctx.get("safe_fields") or {}
+    ident = sf.get("contract_identity") or {}
+    source_time = sf.get("source_time") or {}
+    price = sf.get("price") or {}
+    activity = sf.get("activity") or {}
+    book = sf.get("top_of_book") or {}
+    kind = "options" if ctx.get("context_type") == "official_derivatives_options_liveish_snapshot" else "futures"
+    parts = [f"product={ident.get('requested_product_id')}", f"contract={ident.get('contract_month_or_week')}"]
+    if kind == "options":
+        parts.extend([f"strike={ident.get('strike_price')}", f"option_type={ident.get('option_type')}"])
+    parts.extend([f"source_timestamp={source_time.get('source_timestamp')}", f"currentness={ctx.get('overall_ai_currentness')}", f"context_role={ctx.get('context_role')}"])
+    if price or activity or book:
+        parts.extend([f"last={price.get('last')}", f"reference={price.get('reference')}", f"total_volume={activity.get('total_volume')}", f"best_bid={book.get('best_bid')}", f"best_ask={book.get('best_ask')}", f"book_status={book.get('canonicalization_status')}"])
+    return [f"    - TAIFEX MIS bounded {kind} snapshot: " + ", ".join(parts) + "."]
+
 def _build_markdown(status: str, summary: dict, sources: list[dict], instruments: list[dict], caveats: list[str]) -> str:
     lines = ["### M8 multi-source market context", f"- Status: {status}", f"- Freshness summary: {summary}"]
     if caveats:
@@ -258,7 +300,9 @@ def _build_markdown(status: str, summary: dict, sources: list[dict], instruments
             lines.append(f"  - {inst.get('symbol')} {inst.get('market')} {inst.get('instrument_type')}")
             for ctx in inst.get("contexts", []):
 
-                if ctx.get("source_id") == "TAIFEX_OPENAPI":
+                if ctx.get("source_id") == "TAIFEX_MIS":
+                    lines.extend(_format_taifex_mis_context(ctx))
+                elif ctx.get("source_id") == "TAIFEX_OPENAPI":
                     taifex_lines = _format_taifex_context(ctx)
                     lines.extend(taifex_lines or [f"    - TAIFEX official context: {ctx.get('context_type')}"])
                 elif ctx.get('timing_class') == 'official_eod':

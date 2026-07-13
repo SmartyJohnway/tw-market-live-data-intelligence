@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from scripts.m8_source_freshness_evaluator import build_source_freshness_assessment
+from scripts.m8_taifex_mis_currentness_bridge import assess_taifex_mis_currentness
 
 MULTI_SOURCE_CONTEXT_SCHEMA_VERSION = "m8_00_multi_source_market_context.v1"
 
@@ -111,6 +112,8 @@ def _parse_utc_timestamp_for_sort(value: Any) -> tuple[datetime | None, bool]:
 
 def _context_group(obs: dict) -> str | None:
     context_type = obs.get("context_type")
+    if context_type in {"official_derivatives_futures_liveish_snapshot", "official_derivatives_options_liveish_snapshot"}:
+        return "derivatives_liveish"
     if context_type in {"official_derivatives_futures_eod_reference", "official_derivatives_options_eod_reference"}:
         return "derivatives_official_eod"
     if context_type == "official_derivatives_large_trader_open_interest_reference" or context_type == "official_derivatives_put_call_ratio_reference":
@@ -229,7 +232,10 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
         sid = obs.get("source_id")
         policy = lookup.get(sid)
         known = policy is not None
-        assessment = build_source_freshness_assessment(obs, policy, now_utc=now_utc) if known else _unknown_assessment(obs)
+        if known and sid == "TAIFEX_MIS":
+            assessment = assess_taifex_mis_currentness(obs, policy, now_utc=now_utc)
+        else:
+            assessment = build_source_freshness_assessment(obs, policy, now_utc=now_utc) if known else _unknown_assessment(obs)
         caveats = []
         _extend_unique(caveats, _as_list(obs.get("caveats")))
         _extend_unique(caveats, _as_list(assessment.get("caveats")))
@@ -246,6 +252,12 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
             "source_timestamp": obs.get("source_timestamp"),
             "retrieved_at_utc": obs.get("retrieved_at_utc"),
             "market_date": obs.get("market_date"),
+            "symbol": obs.get("symbol"),
+            "market": obs.get("market"),
+            "instrument_type": obs.get("instrument_type"),
+            "context_role": assessment.get("context_role"),
+            "overall_ai_currentness": assessment.get("overall_ai_currentness"),
+            "withhold_market_values_from_conversation": bool(assessment.get("withhold_market_values_from_conversation")),
             "trading_date": obs.get("trading_date"),
             "session_state": obs.get("session_state"),
             "endpoint_contract_id": obs.get("endpoint_contract_id"),
@@ -274,7 +286,7 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
         summary = source_summaries.setdefault(sid, {"source_id": sid, "source_family": ctx["source_family"], "authority_level": ctx["authority_level"], "timing_class": ctx["timing_class"], "freshness_assessments": [], "ai_exposure_level": ctx["ai_exposure_level"], "runtime_executable": bool((policy or {}).get("runtime_executable")), "observation_count": 0, "has_stale_observation": False, "has_unavailable_observation": False, "caveats": []})
         summary["observation_count"] += 1
         _append_unique(summary["freshness_assessments"], ctx["freshness_assessment"])
-        summary["has_stale_observation"] |= ctx["freshness_assessment"] == "stale_intraday_snapshot"
+        summary["has_stale_observation"] |= ctx["freshness_assessment"] in {"stale_intraday_snapshot", "caveated_intraday_snapshot"}
         summary["has_unavailable_observation"] |= ctx["freshness_assessment"] == "source_unavailable" or ctx["source_unavailable"]
         _extend_unique(summary["caveats"], ctx["caveats"])
 
@@ -282,6 +294,11 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
         has_official = _has_official_same_group(group["contexts"])
         for ctx in group["contexts"]:
             _classify_context_flags(ctx, has_official)
+            if ctx.get("source_id") == "TAIFEX_MIS":
+                role = ctx.get("context_role")
+                ctx["primary_context_allowed"] = role == "primary_current_liveish"
+                ctx["supporting_context_only"] = role in {"supporting_caveated", "supporting_phase_caveated", "supporting_closed_reference", "supporting_historical"}
+                ctx["metadata_only"] = role == "metadata_only" or ctx.get("freshness_assessment") == "source_unavailable"
 
     assessments = [ctx["freshness_assessment"] for ctx in all_contexts]
     parsed_retrieved_values = []
@@ -305,7 +322,13 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
         "has_manual_snapshot": "manual_snapshot" in assessments,
         "has_validation_only": "validation_only" in assessments,
         "has_credential_gated_metadata_only": "credential_gated_metadata_only" in assessments,
-        "has_stale_sources": "stale_intraday_snapshot" in assessments,
+        "has_stale_sources": any(a in {"stale_intraday_snapshot", "caveated_intraday_snapshot"} for a in assessments),
+        "has_taifex_mis_observation": any(ctx["source_id"] == "TAIFEX_MIS" for ctx in all_contexts),
+        "has_taifex_mis_primary_current": any(ctx["source_id"] == "TAIFEX_MIS" and ctx.get("primary_context_allowed") for ctx in all_contexts),
+        "has_taifex_mis_caveated_liveish": any(ctx["source_id"] == "TAIFEX_MIS" and ctx["freshness_assessment"] == "caveated_intraday_snapshot" for ctx in all_contexts),
+        "has_taifex_mis_closed_reference": any(ctx["source_id"] == "TAIFEX_MIS" and ctx["freshness_assessment"] == "closed_session_reference" for ctx in all_contexts),
+        "has_taifex_mis_unresolved": any(ctx["source_id"] == "TAIFEX_MIS" and ctx["freshness_assessment"] == "source_specific_currentness_unresolved" for ctx in all_contexts),
+        "taifex_mis_currentness_statuses": sorted({ctx.get("overall_ai_currentness") for ctx in all_contexts if ctx["source_id"] == "TAIFEX_MIS" and ctx.get("overall_ai_currentness")}),
         "has_unavailable_sources": any(ctx["source_unavailable"] or ctx["freshness_assessment"] == "source_unavailable" for ctx in all_contexts),
         "has_unknown_sources": "unknown" in assessments,
         "most_recent_retrieved_at_utc": most_recent_retrieved_at_utc,
@@ -334,7 +357,7 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
     if forbidden_scrubbed:
         _append_unique(cross_caveats, "forbidden raw fields were omitted from safe_fields")
 
-    usable = any(ctx["safe_fields"] and ctx["freshness_assessment"] not in {"unknown", "source_unavailable", "credential_gated_metadata_only"} for ctx in all_contexts)
+    usable = any(ctx["safe_fields"] and ctx["freshness_assessment"] not in {"unknown", "source_unavailable", "credential_gated_metadata_only"} and not ctx.get("metadata_only") for ctx in all_contexts)
     all_blocked = bool(all_contexts) and all(ctx["freshness_assessment"] in {"unknown", "source_unavailable", "credential_gated_metadata_only"} for ctx in all_contexts)
     safe_to_include = registry_valid and usable and not all_blocked
     requires_caveats = bool(cross_caveats) or any(ctx["caveats"] for ctx in all_contexts)

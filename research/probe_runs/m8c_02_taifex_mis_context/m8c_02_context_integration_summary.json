@@ -1,0 +1,40 @@
+{
+  "artifact": "m8c_02_context_integration_summary",
+  "tested_code_sha": "e647e43d437492e24f99a0ae8538c60009a67419",
+  "runtime_overall_status": "not_executed_in_this_noninteractive_environment",
+  "selector_count": 0,
+  "accepted_initial_state_count": 0,
+  "adapter_observation_count": 0,
+  "source_specific_currentness_statuses": [],
+  "context_roles": [],
+  "projected_safe_field_names": [
+    "contract_identity",
+    "source_time",
+    "source_status_code",
+    "currentness",
+    "price",
+    "activity",
+    "top_of_book",
+    "field_provenance"
+  ],
+  "withheld_field_names": [
+    "numeric_qid_keys",
+    "trueValues",
+    "raw_mode_1_dictionary",
+    "raw_rest_records",
+    "raw_payload",
+    "full_option_chain",
+    "raw_qid_map",
+    "competing_top_of_book_families",
+    "cookies",
+    "session_ids"
+  ],
+  "primary_count": 0,
+  "supporting_count": 0,
+  "metadata_count": 0,
+  "raw_payload_present": false,
+  "raw_qid_present": false,
+  "trueValues_present": false,
+  "recommendation_or_signal_generated": false,
+  "caveat": "Live bounded operator-confirmed execution requires explicit operator action and was not run automatically."
+}
