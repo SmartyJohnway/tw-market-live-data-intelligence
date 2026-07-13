@@ -99,7 +99,11 @@ def assess_taifex_mis_currentness(observation: dict, source_policy: dict | None 
     withhold_values = True
 
     value_prerequisites = _has_value_prerequisites(obs)
-    if not observation_valid:
+    if not observation_valid and status in {"transport_completed_without_valid_snapshot", "no_accepted_mode_1"}:
+        assessment = "source_unavailable"
+        role_detail = status
+        _append_unique(caveats, "TAIFEX MIS trusted metadata indicates no accepted mode=1 snapshot; market values are not exposed")
+    elif not observation_valid:
         _append_unique(caveats, "TAIFEX MIS observation failed adapter validation; fail closed")
     elif status == "active_session_fresh_liveish":
         if _valid_active_fresh_axes(obs, cur):

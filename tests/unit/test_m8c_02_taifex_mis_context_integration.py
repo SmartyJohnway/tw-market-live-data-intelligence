@@ -286,3 +286,67 @@ def test_invalid_canonicalization_status_container_is_unresolved_not_projected_b
     adapted_valid = build_taifex_mis_m8_observations({"observations":[valid]})[0]
     assert adapted_valid["safe_fields"]["top_of_book"]["canonicalization_status"] == "top_of_book_field_family_unresolved"
     assert adapted_valid["safe_fields"]["top_of_book"]["best_bid"] is None
+
+
+def test_real_m8c01_txo_missing_ctime_remains_valid_metadata_only_source_timestamp_unresolved():
+    from types import SimpleNamespace
+    from scripts.m8c_taifex_mis_observation import build_observation
+
+    selector = SimpleNamespace(requested_product_id="TXO", instrument_type="option", session="regular", contract_month_or_week="202607", strike_price="20000", option_type="call")
+    resolved = {"mis_cid":"TXO20260720000C", "runtime_symbol_id":"TXO20260720000C-O", "network_scope":"bounded", "retained_scope":"normalized_only"}
+    mode1 = {"125":"12.3", "129":"12.0", "404":"10", "144":"2026/07/13", "145":"active_regular_trading", "101":"12.2", "102":"12.4", "743":"12.2", "744":"12.4"}
+    actual = build_observation(selector, resolved, mode1_quote=mode1, evaluation_time_asia_taipei="2026-07-13T09:00:05+08:00")
+    assert actual["raw_CTime"] is None
+    assert actual["source_timestamp_asia_taipei"] is None
+    assert actual["currentness"]["overall_ai_currentness"] == "source_timestamp_unresolved"
+
+    adapted = build_taifex_mis_m8_observations({"observations":[actual], "selector_results":[{"status":"ok", "runtime_symbol_id":"TXO20260720000C-O"}]})[0]
+    assert adapted["observation_valid"] is True
+    assert adapted["adapter_validation"]["source_timestamp_valid"] is False
+    assert "source_timestamp_invalid_or_missing" not in adapted["adapter_validation"]["errors"]
+    assert "price" not in adapted["safe_fields"]
+
+    ctx = build_multi_source_market_context([adapted], REG_TRUE, now_utc="2026-07-13T01:00:05Z")
+    item = ctx["instrument_contexts"][0]["contexts"][0]
+    assert item["overall_ai_currentness"] == "source_timestamp_unresolved"
+    assert item["taifex_mis_role_detail"] == "source_timestamp_unresolved"
+    assert item["metadata_only"] is True
+    assert item["withhold_market_values_from_conversation"] is True
+    assert not any("adapter envelope" in c for c in item["caveats"])
+
+
+def test_trusted_invalid_adapter_metadata_is_not_bypass_and_preserves_failure_reason():
+    failure = build_taifex_mis_m8_observations({"status":"partial_source_success", "observations":[], "selector_results":[{"selector":"bad", "status":"snapshot_incomplete", "runtime_symbol_id":"BAD-F"}], "transport_summary":{}})[0]
+    assert failure["observation_valid"] is False
+    ctx = build_multi_source_market_context([failure], REG_TRUE, now_utc="2026-07-13T01:00:05Z")
+    item = ctx["instrument_contexts"][0]["contexts"][0]
+    assert item["source_unavailable"] is True
+    assert item["metadata_only"] is True
+    assert item["freshness_assessment"] == "source_unavailable"
+    assert item["source_unavailable_reason"] == "selector_result_snapshot_incomplete"
+    assert "selector_result_snapshot_incomplete" in item["caveats"]
+    assert not any("adapter envelope" in c for c in item["caveats"])
+
+
+def test_missing_envelope_and_validation_observation_mismatch_are_blocked():
+    direct = {"source_id":"TAIFEX_MIS", "safe_fields":{"contract_identity":{"runtime_symbol_id":"TXF202607-F"}, "price":{"last":"100"}}, "currentness":{"overall_ai_currentness":"active_session_fresh_liveish"}}
+    direct_ctx = build_multi_source_market_context([direct], REG_TRUE, now_utc="2026-07-13T01:00:05Z")["instrument_contexts"][0]["contexts"][0]
+    assert direct_ctx["metadata_only"] is True
+    assert "price" not in direct_ctx["safe_fields"]
+    assert any("adapter envelope" in c for c in direct_ctx["caveats"])
+
+    mismatch = build_taifex_mis_m8_observations({"observations":[raw()]})[0]
+    mismatch["adapter_validation"] = dict(mismatch["adapter_validation"], valid=False)
+    mismatch_ctx = build_multi_source_market_context([mismatch], REG_TRUE, now_utc="2026-07-13T01:00:05Z")["instrument_contexts"][0]["contexts"][0]
+    assert mismatch_ctx["metadata_only"] is True
+    assert "price" not in mismatch_ctx["safe_fields"]
+    assert any("adapter envelope" in c for c in mismatch_ctx["caveats"])
+
+
+def test_numeric_product_and_cid_identity_values_are_rejected():
+    adapted = build_taifex_mis_m8_observations({"observations":[raw(requested_product_id=123, mis_cid=456)]})[0]
+    assert adapted["observation_valid"] is False
+    assert "invalid_bounded_string_requested_product_id" in adapted["adapter_validation"]["errors"]
+    assert "invalid_bounded_string_mis_cid" in adapted["adapter_validation"]["errors"]
+    assert adapted["safe_fields"]["contract_identity"]["requested_product_id"] is None
+    assert adapted["safe_fields"]["contract_identity"]["mis_cid"] is None

@@ -142,10 +142,9 @@ def _taifex_adapter_envelope_valid(observation: dict) -> bool:
         isinstance(provenance, dict)
         and isinstance(validation, dict)
         and provenance.get("adapter_schema_version") == TAIFEX_MIS_ADAPTER_SCHEMA_VERSION
+        and provenance.get("raw_payload_retained") is False
         and validation.get("schema_version") == TAIFEX_MIS_ADAPTER_VALIDATION_SCHEMA_VERSION
-        and validation.get("valid") is True
-        and observation.get("observation_valid") is True
-        and observation.get("accepted_mode_1_present") is True
+        and validation.get("valid") is observation.get("observation_valid")
     )
 
 
@@ -370,6 +369,7 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
             "supporting_context_only": False,
             "metadata_only": False,
             "source_unavailable": bool(obs.get("source_unavailable")),
+            "source_unavailable_reason": obs.get("source_unavailable_reason"),
             "not_trading_signal": True,
             "not_recommendation": True,
         }

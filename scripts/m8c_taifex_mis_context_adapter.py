@@ -101,6 +101,14 @@ def _safe_text(value: Any) -> str | None:
     return text if text else None
 
 
+def _is_bounded_string(value: Any, *, max_length: int = 96) -> bool:
+    return isinstance(value, str) and 0 < len(value) <= max_length
+
+
+def _safe_bounded_text(value: Any, *, max_length: int = 96) -> str | None:
+    return value if _is_bounded_string(value, max_length=max_length) else None
+
+
 def _decimal_text(value: Any, *, non_negative: bool = False, positive: bool = False) -> str | None:
     if not _is_numeric_scalar(value):
         return None
@@ -169,9 +177,11 @@ def _contract_identity_valid(obs: dict) -> bool:
         return False
     if obs.get("session") != "regular" or not _valid_yyyymm(obs.get("contract_month_or_week")):
         return False
-    for field in ("requested_product_id", "mis_cid", "runtime_symbol_id", "contract_month_or_week"):
-        if not obs.get(field) or not _is_identity_scalar(obs.get(field)):
+    for field in ("requested_product_id", "mis_cid", "runtime_symbol_id"):
+        if not _is_bounded_string(obs.get(field)):
             return False
+    if not _valid_yyyymm(obs.get("contract_month_or_week")):
+        return False
     symbol = obs.get("runtime_symbol_id")
     suffix = "-F" if instrument == "future" else "-O"
     if not isinstance(symbol, str) or not symbol.endswith(suffix):
@@ -226,9 +236,9 @@ def _contract_identity(obs: dict) -> dict:
     option_type = _normalize_option_type(obs.get("option_type")) if instrument == "option" else None
     month = obs.get("contract_month_or_week") if _valid_yyyymm(obs.get("contract_month_or_week")) else None
     return {
-        "requested_product_id": _safe_text(obs.get("requested_product_id")),
-        "mis_cid": _safe_text(obs.get("mis_cid")),
-        "runtime_symbol_id": _safe_text(obs.get("runtime_symbol_id")),
+        "requested_product_id": _safe_bounded_text(obs.get("requested_product_id")),
+        "mis_cid": _safe_bounded_text(obs.get("mis_cid")),
+        "runtime_symbol_id": _safe_bounded_text(obs.get("runtime_symbol_id")),
         "contract_month_or_week": month,
         "strike_price": _decimal_text(obs.get("strike_price"), positive=True) if instrument == "option" else None,
         "option_type": option_type,
@@ -276,11 +286,15 @@ def validate_taifex_mis_runtime_observation(observation: dict) -> dict:
     suffix = "-F" if instrument == "future" else "-O" if instrument == "option" else None
     if not isinstance(symbol, str) or not suffix or not symbol.endswith(suffix):
         errors.append("runtime_symbol_suffix_mismatch")
-    for field in ("requested_product_id", "mis_cid", "runtime_symbol_id", "contract_month_or_week"):
+    for field in ("requested_product_id", "mis_cid", "runtime_symbol_id"):
         if not obs.get(field):
             errors.append(f"missing_{field}")
-        if not _is_identity_scalar(obs.get(field)):
-            errors.append(f"non_scalar_{field}")
+        if not _is_bounded_string(obs.get(field)):
+            errors.append(f"invalid_bounded_string_{field}")
+    if not obs.get("contract_month_or_week"):
+        errors.append("missing_contract_month_or_week")
+    if not _is_identity_scalar(obs.get("contract_month_or_week")):
+        errors.append("non_scalar_contract_month_or_week")
     if instrument == "option" and (obs.get("strike_price") in (None, "") or _normalize_option_type(obs.get("option_type")) not in {"call", "put"}):
         errors.append("incomplete_option_identity")
     for field in ("option_type", "session", "raw_CDate", "raw_CTime", "source_timestamp_asia_taipei", "source_status_code"):
@@ -320,8 +334,12 @@ def validate_taifex_mis_runtime_observation(observation: dict) -> dict:
     if not accepted_mode_1:
         errors.append("accepted_mode_1_provenance_missing")
     source_timestamp_valid = _source_timestamp_valid(obs)
-    if not source_timestamp_valid:
-        errors.append("source_timestamp_invalid_or_missing")
+    source_timestamp_raw = obs.get("source_timestamp_asia_taipei")
+    source_timestamp_present = source_timestamp_raw not in (None, "")
+    if source_timestamp_present and not source_timestamp_valid:
+        errors.append("source_timestamp_malformed")
+    if sanitized_currentness.get("source_timestamp_state") == "resolved" and not source_timestamp_valid:
+        errors.append("source_timestamp_axis_resolved_without_valid_timestamp")
     contract_identity_valid = _contract_identity_valid(obs)
     return {
         "schema_version": "m8c_taifex_mis_adapter_validation.v1",
@@ -382,7 +400,7 @@ def adapt_taifex_mis_observation(observation: dict) -> dict:
     elif inst == "option":
         context_type = "official_derivatives_options_liveish_snapshot"
         builder_inst = "options"
-    safe_fields = _valued_safe_fields(obs) if validation["valid"] else _metadata_safe_fields(obs)
+    safe_fields = _valued_safe_fields(obs) if validation["valid"] and validation["source_timestamp_valid"] else _metadata_safe_fields(obs)
     caveats = _as_list(obs.get("caveats"))
     for caveat in [
         "regular session only",
