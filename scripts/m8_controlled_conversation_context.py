@@ -155,8 +155,10 @@ def _project_context(ctx: dict, top_level_safe: bool) -> dict:
     _extend_unique(caveats, _policy_caveats(ctx))
     unknown = freshness == "unknown" or source_id not in TRUSTED_SOURCE_IDS
     credential = freshness == "credential_gated_metadata_only" or ctx.get("timing_class") == "credential_gated_research" or source_id == "CREDENTIAL_GATED_PROVIDER"
-    taifex_mis_metadata_values_withheld = source_id == "TAIFEX_MIS" and (ctx.get("withhold_market_values_from_conversation") or ctx.get("metadata_only"))
+    taifex_mis_metadata_values_withheld = source_id == "TAIFEX_MIS" and (ctx.get("withhold_market_values_from_conversation") or not ctx.get("safe_for_ai_context"))
     allow_fields = top_level_safe and not unknown and not credential
+    if source_id == "TAIFEX_MIS":
+        allow_fields = not unknown and not credential
     safe_fields, omitted = _scrub_safe_fields(ctx.get("safe_fields"))
     safe_fields = _scrub_forbidden_conversation_terms(safe_fields, omitted, caveats)
     if unknown and safe_fields:
@@ -185,13 +187,14 @@ def _project_context(ctx: dict, top_level_safe: bool) -> dict:
         "currentness": ctx.get("currentness"),
         "context_role": ctx.get("context_role"),
         "overall_ai_currentness": ctx.get("overall_ai_currentness"),
+        "safe_for_ai_context": bool(ctx.get("safe_for_ai_context")),
         "trading_date": ctx.get("trading_date"),
         "safe_fields": safe_fields,
         "omitted_fields": sorted(set(_as_list(ctx.get("omitted_fields")) + omitted)),
         "caveats": caveats,
-        "primary_context_allowed": bool(ctx.get("primary_context_allowed")) and allow_fields and freshness != "stale_intraday_snapshot",
+        "primary_context_allowed": bool(ctx.get("primary_context_allowed")) and allow_fields and (source_id != "TAIFEX_MIS" or bool(ctx.get("safe_for_ai_context"))) and freshness != "stale_intraday_snapshot",
         "supporting_context_only": bool(ctx.get("supporting_context_only")) or freshness == "validation_only",
-        "metadata_only": bool(ctx.get("metadata_only")) or not allow_fields,
+        "metadata_only": bool(ctx.get("metadata_only")) or not allow_fields or (source_id == "TAIFEX_MIS" and not ctx.get("safe_for_ai_context")),
     }
     if freshness in {"stale_intraday_snapshot", "caveated_intraday_snapshot", "closed_session_reference", "source_specific_currentness_unresolved", "manual_snapshot", "validation_only", "credential_gated_metadata_only", "unknown"}:
         projected["primary_context_allowed"] = False

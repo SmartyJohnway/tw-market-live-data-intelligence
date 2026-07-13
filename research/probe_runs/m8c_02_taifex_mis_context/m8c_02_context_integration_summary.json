@@ -1,7 +1,7 @@
 {
-  "artifact": "m8c_02_context_integration_summary",
-  "tested_code_sha": "e647e43d437492e24f99a0ae8538c60009a67419",
-  "runtime_overall_status": "not_executed_in_this_noninteractive_environment",
+  "artifact": "m8c_02_context_integration_staged_summary",
+  "tested_code_sha": "pending_remote_commit_2_validation",
+  "runtime_overall_status": "not_executed_for_activation",
   "selector_count": 0,
   "accepted_initial_state_count": 0,
   "adapter_observation_count": 0,
@@ -36,5 +36,9 @@
   "raw_qid_present": false,
   "trueValues_present": false,
   "recommendation_or_signal_generated": false,
-  "caveat": "Live bounded operator-confirmed execution requires explicit operator action and was not run automatically."
+  "caveat": "This artifact is staged only. Live quote-free evidence must be recorded after exact remote-code bounded TX/MTX/monthly-TXO validation before final activation.",
+  "m8c_02_status": "code_staged_pending_remote_validation",
+  "activation_permitted": false,
+  "failed_or_missing_metadata_count": 0,
+  "full_option_chain_present": false
 }

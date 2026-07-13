@@ -47,7 +47,7 @@ def test_governance_docs_exist_and_contain_expected_status_strings():
 def test_registry_json_shape_and_required_source_ids():
     registry = load_json(REGISTRY_PATH)
     assert registry["schema_version"] == "m8_source_capability_registry.v1"
-    assert registry["status"] in {"m8_00_governance_foundation_defined", "m8_through_m8b_implemented_with_caveats", "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats", "m8_through_m8c_consolidated_acceptance_pass_with_caveats"}
+    assert registry["status"] in {"m8_00_governance_foundation_defined", "m8_through_m8b_implemented_with_caveats", "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats", "m8_through_m8c_consolidated_acceptance_pass_with_caveats", "m8c_02_code_staged_pending_remote_validation"}
     source_ids = {source["source_id"] for source in registry["sources"]}
     assert {
         "TWSE_MIS",

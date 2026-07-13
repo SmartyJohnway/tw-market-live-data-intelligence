@@ -1739,7 +1739,7 @@
       "m8b_taifex_openapi_complete": true,
       "m8c_00_preflight_status": "m8c_00_taifex_mis_preflight_pass_with_caveats",
       "mops_runtime_executable": false,
-      "next_task": null,
+      "next_task": "M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE",
       "persistent_cache_added": false,
       "polling_added": false,
       "preflight_completed_through": "M8C-00",
@@ -1747,7 +1747,7 @@
       "recommendation_allowed": false,
       "scheduler_added": false,
       "startup_fetch_added": false,
-      "status": "m8_through_m8c_consolidated_acceptance_pass_with_caveats",
+      "status": "m8c_02_code_staged_pending_remote_validation",
       "taifex_mis_runtime_executable": true,
       "taifex_openapi_runtime_executable": true,
       "tpex_openapi_runtime_executable": true,
@@ -1755,8 +1755,9 @@
       "twse_mis_runtime_executable": true,
       "twse_openapi_runtime_executable": true,
       "m8c_01_status": "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats",
-      "next_task_status": "awaiting_operator_prioritization",
-      "implemented_through_track": "M8C"
+      "next_task_status": "pending_remote_validation",
+      "implemented_through_track": "M8C-02-staged",
+      "m8c_02_status": "code_staged_pending_remote_validation"
     },
     "milestone_snapshots": {
       "state_at_m8_00_acceptance": {
@@ -1948,8 +1949,10 @@
     "top_level_normalization_changed": false,
     "top_level_observation_behavior_preserved": true,
     "m8c_02_taifex_mis_context_integration": {
-      "status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
-      "ai_context_allowed": true,
+      "status": "code_staged_pending_remote_validation",
+      "ai_context_allowed": false,
+      "context_integration_added": false,
+      "conversation_integration_added": false,
       "controlled_safe_fields_only": true,
       "raw_payload_exposure_allowed": false,
       "trading_signal_allowed": false,

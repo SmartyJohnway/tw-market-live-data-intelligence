@@ -211,6 +211,14 @@ def _label(summary: dict) -> str:
         return "manual_or_validation_only_context"
     if summary["has_credential_gated_metadata_only"]:
         return "credential_gated_metadata_only"
+    if summary.get("has_taifex_mis_closed_reference"):
+        return "taifex_mis_closed_reference_context"
+    if summary.get("has_taifex_mis_unresolved"):
+        return "taifex_mis_unresolved_context"
+    if summary.get("has_taifex_mis_metadata_only"):
+        return "taifex_mis_metadata_only_context"
+    if summary.get("has_taifex_mis_observation"):
+        return "taifex_mis_caveated_context"
     return "empty_context"
 
 
@@ -258,6 +266,11 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
             "context_role": assessment.get("context_role"),
             "overall_ai_currentness": assessment.get("overall_ai_currentness"),
             "withhold_market_values_from_conversation": bool(assessment.get("withhold_market_values_from_conversation")),
+            "safe_for_ai_context": bool(assessment.get("safe_for_ai_context")),
+            "policy_ai_context_allowed": bool(assessment.get("policy_ai_context_allowed", (policy or {}).get("ai_context_allowed"))),
+            "state_specific_context_allowed": bool(assessment.get("state_specific_context_allowed", True)),
+            "observation_valid": bool(assessment.get("observation_valid", True)),
+            "taifex_mis_role_detail": assessment.get("taifex_mis_role_detail"),
             "trading_date": obs.get("trading_date"),
             "session_state": obs.get("session_state"),
             "endpoint_contract_id": obs.get("endpoint_contract_id"),
@@ -296,9 +309,9 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
             _classify_context_flags(ctx, has_official)
             if ctx.get("source_id") == "TAIFEX_MIS":
                 role = ctx.get("context_role")
-                ctx["primary_context_allowed"] = role == "primary_current_liveish"
+                ctx["primary_context_allowed"] = role == "primary_current_liveish" and ctx.get("safe_for_ai_context")
                 ctx["supporting_context_only"] = role in {"supporting_caveated", "supporting_phase_caveated", "supporting_closed_reference", "supporting_historical"}
-                ctx["metadata_only"] = role == "metadata_only" or ctx.get("freshness_assessment") == "source_unavailable"
+                ctx["metadata_only"] = role == "metadata_only" or ctx.get("freshness_assessment") == "source_unavailable" or not ctx.get("safe_for_ai_context")
 
     assessments = [ctx["freshness_assessment"] for ctx in all_contexts]
     parsed_retrieved_values = []
@@ -326,8 +339,14 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
         "has_taifex_mis_observation": any(ctx["source_id"] == "TAIFEX_MIS" for ctx in all_contexts),
         "has_taifex_mis_primary_current": any(ctx["source_id"] == "TAIFEX_MIS" and ctx.get("primary_context_allowed") for ctx in all_contexts),
         "has_taifex_mis_caveated_liveish": any(ctx["source_id"] == "TAIFEX_MIS" and ctx["freshness_assessment"] == "caveated_intraday_snapshot" for ctx in all_contexts),
+        "has_taifex_mis_aging_liveish": any(ctx["source_id"] == "TAIFEX_MIS" and ctx.get("taifex_mis_role_detail") == "active_aging" for ctx in all_contexts),
+        "has_taifex_mis_stale_liveish": any(ctx["source_id"] == "TAIFEX_MIS" and ctx.get("taifex_mis_role_detail") == "active_stale" for ctx in all_contexts),
+        "has_taifex_mis_phase_caveated": any(ctx["source_id"] == "TAIFEX_MIS" and ctx.get("taifex_mis_role_detail") in {"preopen", "indicative", "halted", "noncontinuous_phase"} for ctx in all_contexts),
         "has_taifex_mis_closed_reference": any(ctx["source_id"] == "TAIFEX_MIS" and ctx["freshness_assessment"] == "closed_session_reference" for ctx in all_contexts),
         "has_taifex_mis_unresolved": any(ctx["source_id"] == "TAIFEX_MIS" and ctx["freshness_assessment"] == "source_specific_currentness_unresolved" for ctx in all_contexts),
+        "has_taifex_mis_metadata_only": any(ctx["source_id"] == "TAIFEX_MIS" and ctx.get("metadata_only") for ctx in all_contexts),
+        "has_taifex_mis_policy_blocked": any(ctx["source_id"] == "TAIFEX_MIS" and not ctx.get("policy_ai_context_allowed") for ctx in all_contexts),
+        "taifex_mis_role_details": sorted({ctx.get("taifex_mis_role_detail") for ctx in all_contexts if ctx["source_id"] == "TAIFEX_MIS" and ctx.get("taifex_mis_role_detail")}),
         "taifex_mis_currentness_statuses": sorted({ctx.get("overall_ai_currentness") for ctx in all_contexts if ctx["source_id"] == "TAIFEX_MIS" and ctx.get("overall_ai_currentness")}),
         "has_unavailable_sources": any(ctx["source_unavailable"] or ctx["freshness_assessment"] == "source_unavailable" for ctx in all_contexts),
         "has_unknown_sources": "unknown" in assessments,
@@ -357,7 +376,7 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
     if forbidden_scrubbed:
         _append_unique(cross_caveats, "forbidden raw fields were omitted from safe_fields")
 
-    usable = any(ctx["safe_fields"] and ctx["freshness_assessment"] not in {"unknown", "source_unavailable", "credential_gated_metadata_only"} and not ctx.get("metadata_only") for ctx in all_contexts)
+    usable = any(ctx["safe_fields"] and ctx["freshness_assessment"] not in {"unknown", "source_unavailable", "credential_gated_metadata_only"} and not ctx.get("metadata_only") and (ctx.get("source_id") != "TAIFEX_MIS" or ctx.get("safe_for_ai_context")) for ctx in all_contexts)
     all_blocked = bool(all_contexts) and all(ctx["freshness_assessment"] in {"unknown", "source_unavailable", "credential_gated_metadata_only"} for ctx in all_contexts)
     safe_to_include = registry_valid and usable and not all_blocked
     requires_caveats = bool(cross_caveats) or any(ctx["caveats"] for ctx in all_contexts)
