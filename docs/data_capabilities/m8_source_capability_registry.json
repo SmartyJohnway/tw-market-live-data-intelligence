@@ -486,7 +486,7 @@
     "no_rotc_route": true,
     "no_emerging_stock_live_route": true
   },
-  "next_task": "M8C-00-TAIFEX-MIS-LIVEISH-DERIVATIVES-CONTEXT-PREFLIGHT",
+  "next_task": "M8C-01-TAIFEX-MIS-BOUNDED-REST-SOCKJS-SNAPSHOT-RUNTIME",
   "implemented_through_track": "M8B",
   "active_runtime_source_families": [
     "TWSE_MIS",
@@ -513,9 +513,11 @@
     "trading_signal_allowed": false,
     "recommendation_allowed": false,
     "raw_payload_exposure_allowed": false,
-    "next_task": "M8C-00-TAIFEX-MIS-LIVEISH-DERIVATIVES-CONTEXT-PREFLIGHT"
+    "next_task": "M8C-01-TAIFEX-MIS-BOUNDED-REST-SOCKJS-SNAPSHOT-RUNTIME"
   },
   "planning_state": {
-    "next_task": "M8C-01-TAIFEX-MIS-BOUNDED-REST-SOCKJS-SNAPSHOT-RUNTIME"
+    "next_task": "M8C-01-TAIFEX-MIS-BOUNDED-REST-SOCKJS-SNAPSHOT-RUNTIME",
+    "preflight_completed_through": "M8C-00",
+    "m8c_00_preflight_status": "m8c_00_taifex_mis_preflight_pass_with_caveats"
   }
 }

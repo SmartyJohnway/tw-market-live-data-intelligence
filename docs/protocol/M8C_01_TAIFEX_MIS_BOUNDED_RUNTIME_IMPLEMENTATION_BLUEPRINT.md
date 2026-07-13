@@ -35,3 +35,7 @@ Recommended public function: `execute_taifex_mis_snapshot(..., transport_prefere
 ## Executable limits and scoped request contracts
 
 M8C-01 must use the same bounded reader semantics as the preflight tools: reject oversized `Content-Length`, stream with a byte cap before JSON materialization, enforce a monotonic total deadline, row caps, symbol/product/month/strike caps, SockJS frame and decoded-message caps, per-poll timeout, and reconnect cap. REST bootstrap request bodies are JSON objects using `MarketType`, `SymbolType`, `KindID`, `CID`, and `ExpireMonth` for futures/options list endpoints; exact detail uses `{"SymbolID": ["..."]}`. Options discovery is whole requested month/week-chain network scope and exact retained identity scope.
+
+## ProbeBudget requirement
+
+M8C-01 must carry one shared `ProbeBudget` through REST bootstrap, `/rt/info`, XHR open, `xhr_send`, and XHR polling. The budget owns the absolute monotonic deadline, total wire-byte cap, REST row cap, frame cap, decoded-message cap, selector caps, symbol cap, and reconnect cap. Request timeout is `min(single_request_timeout, remaining_total_deadline)`, and every increment is checked immediately after it is added.

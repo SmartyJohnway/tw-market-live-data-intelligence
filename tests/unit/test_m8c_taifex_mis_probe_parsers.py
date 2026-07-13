@@ -39,3 +39,21 @@ def test_bounded_reader_rejects_content_length_and_stream_limit():
 def test_count_and_deadline_limits():
     with pytest.raises(M8CProbeError): enforce_count(MAX_RUNTIME_SYMBOLS+1, MAX_RUNTIME_SYMBOLS, 'symbol_count_limit_reached')
     with pytest.raises(LimitReached): check_deadline(time.monotonic()-100, 1)
+from scripts.m8c_taifex_mis_probe_common import ProbeBudget, read_budgeted_response
+
+def test_probe_budget_counts_after_increments():
+    b=ProbeBudget(total_seconds=10, wire_bytes=10, rest_rows=2, frames=1, decoded_messages=1, symbols=1, products=1, months=1)
+    b.add_wire(10)
+    with pytest.raises(LimitReached): b.add_wire(1)
+    b=ProbeBudget(total_seconds=10, frames=1)
+    b.add_frame()
+    with pytest.raises(LimitReached): b.add_frame()
+    b=ProbeBudget(total_seconds=10, decoded_messages=1)
+    b.add_messages(1)
+    with pytest.raises(LimitReached): b.add_messages(1)
+
+def test_budgeted_reader_accumulates_total_wire():
+    b=ProbeBudget(total_seconds=10, wire_bytes=10)
+    assert read_budgeted_response(FakeResp([b'12345']), budget=b)==b'12345'
+    assert b.wire_bytes==5
+    with pytest.raises(LimitReached): read_budgeted_response(FakeResp([b'123456']), budget=b)
