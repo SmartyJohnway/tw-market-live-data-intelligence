@@ -45,7 +45,8 @@ def _has_value_prerequisites(obs: dict) -> bool:
     return all(
         [
             _parse_tz_timestamp(obs.get("source_timestamp")),
-            obs.get("source_timestamp_valid") is not False,
+            obs.get("source_timestamp_valid") is True,
+            obs.get("contract_identity_valid") is True,
             obs.get("accepted_mode_1_present") is True,
             obs.get("session") == "regular",
         ]

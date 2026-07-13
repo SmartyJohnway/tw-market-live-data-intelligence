@@ -13,6 +13,7 @@ from typing import Any
 
 SCHEMA_VERSION = "m8c_taifex_mis_context_adapter.v1"
 MONTHLY_YYYYMM_RE = re.compile(r"^\d{6}$")
+IDENTIFIER_RE = re.compile(r"^[A-Za-z0-9_.:/=+-]{1,96}$")
 VALID_CURRENTNESS = {
     "active_session_fresh_liveish",
     "active_session_aging_liveish",
@@ -102,7 +103,7 @@ def _safe_text(value: Any) -> str | None:
 
 
 def _is_bounded_string(value: Any, *, max_length: int = 96) -> bool:
-    return isinstance(value, str) and 0 < len(value) <= max_length
+    return isinstance(value, str) and value == value.strip() and 0 < len(value) <= max_length and bool(IDENTIFIER_RE.match(value))
 
 
 def _safe_bounded_text(value: Any, *, max_length: int = 96) -> str | None:
@@ -202,6 +203,10 @@ def _stable_identity(value: Any) -> str | None:
         parts = [f"{k}={_stable_identity(value[k]) or ''}" for k in sorted(value)]
         return ";".join(parts)
     return str(value)
+
+
+def _safe_identifier(value: Any) -> str | None:
+    return _safe_bounded_text(_stable_identity(value))
 
 
 def _contains_forbidden_nested(value: Any) -> bool:
@@ -421,7 +426,7 @@ def adapt_taifex_mis_observation(observation: dict) -> dict:
         "authority_level": "official_undocumented",
         "timing_class": "liveish_intraday_snapshot",
         "market": "taifex",
-        "symbol": _stable_identity(obs.get("runtime_symbol_id") or obs.get("symbol")),
+        "symbol": _safe_identifier(obs.get("runtime_symbol_id") or obs.get("symbol")),
         "instrument_type": builder_inst,
         "context_type": context_type,
         "source_timestamp": _parse_tz_timestamp_text(obs.get("source_timestamp_asia_taipei")),
@@ -442,8 +447,8 @@ def adapt_taifex_mis_observation(observation: dict) -> dict:
 
 
 def _failure_observation(selector_result: dict, execution_result: dict, reason: str) -> dict:
-    selector = _stable_identity(selector_result.get("selector")) if isinstance(selector_result, dict) else None
-    symbol = _stable_identity(selector_result.get("runtime_symbol_id")) if isinstance(selector_result, dict) else None
+    selector = _safe_identifier(selector_result.get("selector")) if isinstance(selector_result, dict) else None
+    symbol = _safe_identifier(selector_result.get("runtime_symbol_id")) if isinstance(selector_result, dict) else None
     currentness = {
         "overall_ai_currentness": "transport_completed_without_valid_snapshot",
         "transport_state": execution_result.get("status"),
@@ -472,9 +477,11 @@ def _failure_observation(selector_result: dict, execution_result: dict, reason: 
         "omitted_fields": OMITTED_FIELDS,
         "caveats": [reason, "metadata-only failed/missing TAIFEX MIS selector; no market values exposed"],
         "provenance": {"adapter_schema_version": SCHEMA_VERSION, "runtime_source": "M8C-01 TAIFEX MIS bounded runtime", "raw_payload_retained": False},
-        "adapter_validation": {"schema_version": "m8c_taifex_mis_adapter_validation.v1", "valid": False, "errors": [reason], "accepted_mode_1_present": False, "currentness_status": "transport_completed_without_valid_snapshot"},
+        "adapter_validation": {"schema_version": "m8c_taifex_mis_adapter_validation.v1", "valid": False, "errors": [reason], "accepted_mode_1_present": False, "currentness_status": "transport_completed_without_valid_snapshot", "source_timestamp_valid": False, "contract_identity_valid": False},
         "observation_valid": False,
         "accepted_mode_1_present": False,
+        "source_timestamp_valid": False,
+        "contract_identity_valid": False,
         "source_unavailable": True,
         "source_unavailable_reason": reason,
         "withhold_market_values_from_conversation": True,

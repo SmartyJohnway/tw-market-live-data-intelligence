@@ -29,6 +29,7 @@ FORBIDDEN_CONVERSATION_TERMS = {
 
 FORBIDDEN_RAW_KEYS = {
     "raw_payload",
+    "raw_payload_sample",
     "bid_prices",
     "ask_prices",
     "bid_volumes",
@@ -36,6 +37,19 @@ FORBIDDEN_RAW_KEYS = {
     "raw_bid_ask_ladder",
     "order_book_truth",
     "source_investigation_notes",
+    "trueValues",
+    "truevalues",
+    "raw_mode_1_dictionary",
+    "raw_rest_records",
+    "rest_rows",
+    "sockjs_frames",
+    "full_option_chain",
+    "option_chain",
+    "raw_qid_map",
+    "cookies",
+    "cookie",
+    "session_ids",
+    "session_id",
 }
 
 TRUSTED_SOURCE_IDS = {
@@ -208,14 +222,24 @@ def _iter_projected_contexts(instruments: list[dict]) -> list[dict]:
     return [ctx for inst in instruments for ctx in inst.get("contexts", [])]
 
 
+def _contains_forbidden_raw_structure(value: Any) -> bool:
+    if isinstance(value, dict):
+        for key, item in value.items():
+            key_text = str(key)
+            if key_text in FORBIDDEN_RAW_KEYS or key_text.isdigit():
+                return True
+            if _contains_forbidden_raw_structure(item):
+                return True
+    elif isinstance(value, (list, tuple, set)):
+        return any(_contains_forbidden_raw_structure(item) for item in value)
+    return False
+
+
 def _contains_raw_key(projected_instruments: list[dict], markdown: str) -> bool:
     lower_markdown = markdown.lower()
-    if any(key in lower_markdown for key in FORBIDDEN_RAW_KEYS):
+    if any(key.lower() in lower_markdown for key in FORBIDDEN_RAW_KEYS):
         return True
-    for ctx in _iter_projected_contexts(projected_instruments):
-        if any(key in ctx.get("safe_fields", {}) for key in FORBIDDEN_RAW_KEYS):
-            return True
-    return False
+    return _contains_forbidden_raw_structure(projected_instruments)
 
 
 def _markdown_contains_forbidden_conversation_term(markdown: str) -> bool:
@@ -378,7 +402,8 @@ def build_controlled_conversation_context(multi_source_context: dict, *, include
             ctx["metadata_only"] = True
 
     markdown = _build_markdown(status, multi_source_context.get("freshness_summary") or {}, multi_source_context.get("sources") or [], projected_instruments, caveats) if include_markdown else None
-    if _contains_raw_key(projected_instruments, markdown or ""):
+    raw_detected = _contains_raw_key(projected_instruments, markdown or "")
+    if raw_detected:
         status = "blocked"
         projected_instruments = []
         _append_unique(caveats, "forbidden raw field detected after projection")
@@ -407,6 +432,6 @@ def build_controlled_conversation_context(multi_source_context: dict, *, include
         "sections": [section],
         "not_trading_signal": True,
         "not_recommendation": True,
-        "no_raw_payload": True,
+        "no_raw_payload": not raw_detected,
         "no_trading_advice": True,
     }

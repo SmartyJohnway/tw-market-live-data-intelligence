@@ -6,6 +6,7 @@ UI, tool-server, or model access.
 """
 
 from collections import OrderedDict, defaultdict
+import re
 from datetime import datetime, timezone
 from typing import Any
 
@@ -42,6 +43,7 @@ FORBIDDEN_SAFE_FIELD_KEYS = {
 TAIFEX_MIS_ADAPTER_SCHEMA_VERSION = "m8c_taifex_mis_context_adapter.v1"
 TAIFEX_MIS_ADAPTER_VALIDATION_SCHEMA_VERSION = "m8c_taifex_mis_adapter_validation.v1"
 TAIFEX_MIS_METADATA_SAFE_FIELD_KEYS = {"contract_identity", "source_time", "source_status_code", "currentness"}
+TAIFEX_MIS_IDENTIFIER_RE = re.compile(r"^[A-Za-z0-9_.:/=+-]{1,96}$")
 
 FORBIDDEN_INTERPRETATIONS = [
     "trading advice",
@@ -88,6 +90,12 @@ def _policy_lookup(source_registry: dict) -> tuple[dict[str, dict], bool]:
         if isinstance(source, dict) and source.get("source_id"):
             lookup[source["source_id"]] = source
     return lookup, bool(lookup)
+
+
+def _safe_taifex_identifier(value: Any) -> str | None:
+    if not isinstance(value, str) or value != value.strip() or not TAIFEX_MIS_IDENTIFIER_RE.match(value):
+        return None
+    return value
 
 
 def _scrub_nested_safe_value(value: Any, omitted: list[str]) -> tuple[Any, bool]:
@@ -138,31 +146,56 @@ def _scrub_safe_fields(observation: dict, caveats: list[str]) -> tuple[dict, lis
 def _taifex_adapter_envelope_valid(observation: dict) -> bool:
     provenance = observation.get("provenance") or {}
     validation = observation.get("adapter_validation") or {}
-    return (
-        isinstance(provenance, dict)
-        and isinstance(validation, dict)
-        and provenance.get("adapter_schema_version") == TAIFEX_MIS_ADAPTER_SCHEMA_VERSION
-        and provenance.get("raw_payload_retained") is False
-        and validation.get("schema_version") == TAIFEX_MIS_ADAPTER_VALIDATION_SCHEMA_VERSION
-        and validation.get("valid") is observation.get("observation_valid")
-    )
+    if not isinstance(provenance, dict) or not isinstance(validation, dict):
+        return False
+    if provenance.get("adapter_schema_version") != TAIFEX_MIS_ADAPTER_SCHEMA_VERSION or provenance.get("raw_payload_retained") is not False:
+        return False
+    if validation.get("schema_version") != TAIFEX_MIS_ADAPTER_VALIDATION_SCHEMA_VERSION:
+        return False
+    bool_pairs = [
+        (validation.get("valid"), observation.get("observation_valid")),
+        (validation.get("accepted_mode_1_present"), observation.get("accepted_mode_1_present")),
+        (validation.get("source_timestamp_valid"), observation.get("source_timestamp_valid")),
+        (validation.get("contract_identity_valid"), observation.get("contract_identity_valid")),
+    ]
+    return all(isinstance(a, bool) and isinstance(b, bool) and a is b for a, b in bool_pairs)
 
 
 def _taifex_fail_closed_bypass(observation: dict, caveats: list[str]) -> dict:
-    obs = dict(observation)
-    safe_fields = obs.get("safe_fields") if isinstance(obs.get("safe_fields"), dict) else {}
-    obs["safe_fields"] = {k: v for k, v in safe_fields.items() if k in TAIFEX_MIS_METADATA_SAFE_FIELD_KEYS}
-    obs["observation_valid"] = False
-    obs["accepted_mode_1_present"] = False
-    obs["safe_for_ai_context"] = False
-    obs["withhold_market_values_from_conversation"] = True
-    validation = dict(obs.get("adapter_validation") or {})
+    safe_fields = observation.get("safe_fields") if isinstance(observation.get("safe_fields"), dict) else {}
+    sanitized_safe_fields = {k: v for k, v in safe_fields.items() if k in TAIFEX_MIS_METADATA_SAFE_FIELD_KEYS}
+    currentness = {"overall_ai_currentness": "source_specific_currentness_unresolved"}
+    validation = dict(observation.get("adapter_validation") or {})
     validation.setdefault("schema_version", TAIFEX_MIS_ADAPTER_VALIDATION_SCHEMA_VERSION)
-    validation["valid"] = False
+    validation.update({"valid": False, "accepted_mode_1_present": False, "source_timestamp_valid": False, "contract_identity_valid": False, "currentness_status": "source_specific_currentness_unresolved"})
     errors = _as_list(validation.get("errors"))
     _append_unique(errors, "taifex_mis_adapter_envelope_missing_or_invalid")
     validation["errors"] = errors
-    obs["adapter_validation"] = validation
+    obs = {
+        "source_id": "TAIFEX_MIS",
+        "source_family": "TAIFEX_MIS",
+        "authority_level": "official_undocumented",
+        "timing_class": "liveish_intraday_snapshot",
+        "market": "taifex" if observation.get("market") == "taifex" else None,
+        "symbol": _safe_taifex_identifier(observation.get("symbol")),
+        "instrument_type": observation.get("instrument_type") if observation.get("instrument_type") in {"futures", "options", None} else None,
+        "context_type": observation.get("context_type") if observation.get("context_type") in {"official_derivatives_futures_liveish_snapshot", "official_derivatives_options_liveish_snapshot", None} else None,
+        "source_timestamp": None,
+        "retrieved_at_utc": None,
+        "session": "regular" if observation.get("session") == "regular" else None,
+        "currentness": currentness,
+        "safe_fields": sanitized_safe_fields,
+        "omitted_fields": _as_list(observation.get("omitted_fields")),
+        "caveats": _as_list(observation.get("caveats")),
+        "provenance": {"adapter_schema_version": TAIFEX_MIS_ADAPTER_SCHEMA_VERSION, "raw_payload_retained": False},
+        "adapter_validation": validation,
+        "observation_valid": False,
+        "accepted_mode_1_present": False,
+        "source_timestamp_valid": False,
+        "contract_identity_valid": False,
+        "safe_for_ai_context": False,
+        "withhold_market_values_from_conversation": True,
+    }
     _append_unique(caveats, "TAIFEX MIS adapter envelope missing or invalid; market values withheld")
     return obs
 
