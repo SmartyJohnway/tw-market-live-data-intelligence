@@ -222,3 +222,67 @@ def test_structured_projection_has_no_recursive_raw_keys():
     projected = convo["sections"][0]["instrument_contexts"][0]["contexts"][0]
     for key in ["raw_payload", "trueValues", "125", "sockjs_frames", "rest_rows"]:
         assert not _contains_key(projected, key)
+
+
+def test_actual_m8c01_decimal_observation_remains_valid_and_precision_preserved():
+    from types import SimpleNamespace
+    from decimal import Decimal
+    from scripts.m8c_taifex_mis_observation import build_observation
+
+    selector = SimpleNamespace(requested_product_id="TXO", instrument_type="option", session="regular", contract_month_or_week="202607", strike_price=Decimal("20000"), option_type="call")
+    resolved = {"mis_cid":"TXO20260720000C", "runtime_symbol_id":"TXO20260720000C-O", "network_scope":"bounded", "retained_scope":"normalized_only"}
+    mode1 = {"125":"12.345678901234567890", "129":"12.0", "404":"10", "143":"09:00:00", "144":"2026/07/13", "145":"active_regular_trading", "101":"12.3", "102":"12.4", "113":"1", "114":"2", "743":"12.3", "744":"12.4", "745":"1", "746":"2"}
+    actual = build_observation(selector, resolved, mode1_quote=mode1, evaluation_time_asia_taipei="2026-07-13T09:00:05+08:00")
+    assert isinstance(actual["normalized_field_candidates"]["last_price"], Decimal)
+    adapted = build_taifex_mis_m8_observations({"observations":[actual], "selector_results":[{"status":"ok", "runtime_symbol_id":"TXO20260720000C-O"}]})[0]
+    assert adapted["observation_valid"] is True
+    assert adapted["adapter_validation"]["source_timestamp_valid"] is True
+    assert adapted["adapter_validation"]["contract_identity_valid"] is True
+    assert adapted["safe_fields"]["price"]["last"] == "12.345678901234567890"
+    assert adapted["safe_fields"]["contract_identity"]["strike_price"] == "20000"
+
+
+def test_malformed_scalar_timestamp_cannot_expose_supporting_values():
+    observations = build_taifex_mis_m8_observations({"observations":[raw("market_phase_unresolved", ts="not-a-time")]})
+    ctx = build_multi_source_market_context(observations, REG_TRUE, now_utc="2026-07-13T01:00:05Z")
+    projected = build_controlled_conversation_context(ctx)["sections"][0]["instrument_contexts"][0]["contexts"][0]
+    assert projected["metadata_only"] is True
+    assert projected["safe_fields"]["source_time"]["source_timestamp"] is None
+    assert "price" not in projected["safe_fields"]
+
+
+def test_invalid_month_and_session_normalize_to_null_in_metadata():
+    adapted = build_taifex_mis_m8_observations({"observations":[raw(contract_month_or_week="202613", session="after_hours")]})[0]
+    ident = adapted["safe_fields"]["contract_identity"]
+    assert adapted["observation_valid"] is False
+    assert adapted["adapter_validation"]["contract_identity_valid"] is False
+    assert ident["contract_month_or_week"] is None
+    assert ident["session"] is None
+
+
+def test_direct_taifex_builder_bypass_fails_closed_and_recursively_scrubs_raw_fields():
+    direct = {
+        "source_id":"TAIFEX_MIS", "source_family":"TAIFEX_MIS", "market":"taifex", "symbol":"TXF202607-F", "instrument_type":"futures",
+        "context_type":"official_derivatives_futures_liveish_snapshot", "source_timestamp":"2026-07-13T09:00:00+08:00", "session":"regular",
+        "currentness":{"overall_ai_currentness":"active_session_fresh_liveish"},
+        "safe_fields":{"contract_identity":{"runtime_symbol_id":"TXF202607-F", "raw_payload":{"125":"100"}}, "source_time":{"source_timestamp":"2026-07-13T09:00:00+08:00"}, "price":{"last":"100"}, "raw_payload":"secret"},
+    }
+    ctx = build_multi_source_market_context([direct], REG_TRUE, now_utc="2026-07-13T01:00:05Z")
+    item = ctx["instrument_contexts"][0]["contexts"][0]
+    assert item["safe_for_ai_context"] is False
+    assert item["metadata_only"] is True
+    assert "price" not in item["safe_fields"]
+    assert not _contains_key(item["safe_fields"], "raw_payload")
+    projected = build_controlled_conversation_context(ctx)["sections"][0]["instrument_contexts"][0]["contexts"][0]
+    assert "price" not in projected["safe_fields"]
+    assert not _contains_key(projected, "raw_payload")
+
+
+def test_invalid_canonicalization_status_container_is_unresolved_not_projected_book():
+    adapted = build_taifex_mis_m8_observations({"observations":[raw(normalized_field_candidates={"last_price":"100", "best_bid":"99", "best_ask":"101", "canonicalization_status":{"bad":"container"}})]})[0]
+    assert adapted["safe_fields"]["top_of_book"]["canonicalization_status"] == "top_of_book_field_family_unresolved"
+    assert adapted["safe_fields"]["top_of_book"]["best_bid"] is None
+    valid = raw(normalized_field_candidates={"last_price":"100", "reference_price":"99", "total_volume":"1", "best_bid":"99", "best_ask":"101", "canonicalization_status":"unknown"})
+    adapted_valid = build_taifex_mis_m8_observations({"observations":[valid]})[0]
+    assert adapted_valid["safe_fields"]["top_of_book"]["canonicalization_status"] == "top_of_book_field_family_unresolved"
+    assert adapted_valid["safe_fields"]["top_of_book"]["best_bid"] is None

@@ -41,16 +41,25 @@ def _valid_iso_date(value: Any) -> bool:
     return True
 
 
-def _valid_active_fresh_axes(obs: dict, cur: dict) -> bool:
+def _has_value_prerequisites(obs: dict) -> bool:
     return all(
         [
             _parse_tz_timestamp(obs.get("source_timestamp")),
+            obs.get("source_timestamp_valid") is not False,
+            obs.get("accepted_mode_1_present") is True,
+            obs.get("session") == "regular",
+        ]
+    )
+
+
+def _valid_active_fresh_axes(obs: dict, cur: dict) -> bool:
+    return all(
+        [
+            _has_value_prerequisites(obs),
             cur.get("source_timestamp_state") == "resolved",
             cur.get("session_alignment") == "aligned",
             cur.get("market_phase") == "active_regular_trading",
             cur.get("quote_age_state") == "fresh",
-            obs.get("session") == "regular",
-            bool(obs.get("accepted_mode_1_present")),
         ]
     )
 
@@ -89,6 +98,7 @@ def assess_taifex_mis_currentness(observation: dict, source_policy: dict | None 
     metadata = True
     withhold_values = True
 
+    value_prerequisites = _has_value_prerequisites(obs)
     if not observation_valid:
         _append_unique(caveats, "TAIFEX MIS observation failed adapter validation; fail closed")
     elif status == "active_session_fresh_liveish":
@@ -106,39 +116,51 @@ def assess_taifex_mis_currentness(observation: dict, source_policy: dict | None 
             role_detail = "inconsistent_active_fresh_axes"
             _append_unique(caveats, "active_session_fresh_liveish axes inconsistent; market values withheld")
     elif status == "active_session_aging_liveish":
-        assessment = "caveated_intraday_snapshot"
-        role = "supporting_caveated"
         role_detail = "active_aging"
-        state_allowed = True
-        metadata = False
-        withhold_values = False
         _append_unique(caveats, "TAIFEX MIS aging live-ish observation must not be described as current")
+        if value_prerequisites:
+            assessment = "caveated_intraday_snapshot"
+            role = "supporting_caveated"
+            state_allowed = True
+            metadata = False
+            withhold_values = False
+        else:
+            _append_unique(caveats, "TAIFEX MIS value prerequisites missing; market values withheld")
     elif status == "active_session_stale_liveish":
-        assessment = "caveated_intraday_snapshot"
-        role = "supporting_caveated"
         role_detail = "active_stale"
-        state_allowed = True
-        metadata = False
-        withhold_values = False
         _append_unique(caveats, "TAIFEX MIS stale live-ish observation must not be described as current")
+        if value_prerequisites:
+            assessment = "caveated_intraday_snapshot"
+            role = "supporting_caveated"
+            state_allowed = True
+            metadata = False
+            withhold_values = False
+        else:
+            _append_unique(caveats, "TAIFEX MIS value prerequisites missing; market values withheld")
     elif status in PHASE_LABELS:
-        assessment = "caveated_intraday_snapshot"
-        role = "supporting_phase_caveated"
         role_detail = status
-        state_allowed = True
-        metadata = False
-        withhold_values = False
         _append_unique(caveats, f"TAIFEX MIS market phase is {status}; do not treat as continuous current trading")
+        if value_prerequisites:
+            assessment = "caveated_intraday_snapshot"
+            role = "supporting_phase_caveated"
+            state_allowed = True
+            metadata = False
+            withhold_values = False
+        else:
+            _append_unique(caveats, "TAIFEX MIS value prerequisites missing; market values withheld")
     elif status == "closed_session_latest_completed":
-        assessment = "closed_session_reference"
-        role = "supporting_closed_reference"
         role_detail = "closed_latest_completed"
-        state_allowed = True
-        metadata = False
-        withhold_values = False
         _append_unique(caveats, "TAIFEX MIS closed-session latest completed snapshot is not current and is not official EOD endpoint data")
+        if value_prerequisites:
+            assessment = "closed_session_reference"
+            role = "supporting_closed_reference"
+            state_allowed = True
+            metadata = False
+            withhold_values = False
+        else:
+            _append_unique(caveats, "TAIFEX MIS value prerequisites missing; market values withheld")
     elif status == "special_closure_latest_completed":
-        if _has_official_special_closure_evidence(cur):
+        if _has_official_special_closure_evidence(cur) and value_prerequisites:
             assessment = "closed_session_reference"
             role = "supporting_closed_reference"
             role_detail = "special_closure_latest_completed"
@@ -150,16 +172,19 @@ def assess_taifex_mis_currentness(observation: dict, source_policy: dict | None 
             role_detail = "special_closure_without_official_evidence"
             _append_unique(caveats, "special closure latest-completed status lacks TAIFEX-specific official closure evidence; fail closed")
     elif status == "closed_session_historical":
-        assessment = "closed_session_reference"
-        role = "supporting_historical"
         role_detail = "closed_historical"
-        state_allowed = True
-        metadata = False
-        withhold_values = False
         _append_unique(caveats, "TAIFEX MIS historical closed-session context only")
+        if value_prerequisites:
+            assessment = "closed_session_reference"
+            role = "supporting_historical"
+            state_allowed = True
+            metadata = False
+            withhold_values = False
+        else:
+            _append_unique(caveats, "TAIFEX MIS value prerequisites missing; market values withheld")
     elif status in {"market_phase_unresolved", "session_alignment_unresolved"}:
         assessment = "source_specific_currentness_unresolved"
-        role = "supporting_caveated" if obs.get("source_timestamp") and obs.get("accepted_mode_1_present") else "metadata_only"
+        role = "supporting_caveated" if value_prerequisites else "metadata_only"
         role_detail = status
         state_allowed = role != "metadata_only"
         metadata = role == "metadata_only"

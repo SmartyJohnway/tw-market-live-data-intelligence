@@ -24,7 +24,24 @@ FORBIDDEN_SAFE_FIELD_KEYS = {
     "ask_volumes",
     "raw_bid_ask_ladder",
     "order_book_truth",
+    "trueValues",
+    "truevalues",
+    "raw_mode_1_dictionary",
+    "raw_rest_records",
+    "rest_rows",
+    "sockjs_frames",
+    "full_option_chain",
+    "option_chain",
+    "raw_qid_map",
+    "cookies",
+    "cookie",
+    "session_ids",
+    "session_id",
 }
+
+TAIFEX_MIS_ADAPTER_SCHEMA_VERSION = "m8c_taifex_mis_context_adapter.v1"
+TAIFEX_MIS_ADAPTER_VALIDATION_SCHEMA_VERSION = "m8c_taifex_mis_adapter_validation.v1"
+TAIFEX_MIS_METADATA_SAFE_FIELD_KEYS = {"contract_identity", "source_time", "source_status_code", "currentness"}
 
 FORBIDDEN_INTERPRETATIONS = [
     "trading advice",
@@ -73,6 +90,30 @@ def _policy_lookup(source_registry: dict) -> tuple[dict[str, dict], bool]:
     return lookup, bool(lookup)
 
 
+def _scrub_nested_safe_value(value: Any, omitted: list[str]) -> tuple[Any, bool]:
+    found_forbidden = False
+    if isinstance(value, dict):
+        out = {}
+        for key, item in value.items():
+            key_text = str(key)
+            if key_text in FORBIDDEN_SAFE_FIELD_KEYS or key_text.isdigit():
+                found_forbidden = True
+                _append_unique(omitted, key_text)
+                continue
+            cleaned, nested_forbidden = _scrub_nested_safe_value(item, omitted)
+            found_forbidden = found_forbidden or nested_forbidden
+            out[key] = cleaned
+        return out, found_forbidden
+    if isinstance(value, (list, tuple)):
+        out = []
+        for item in value:
+            cleaned, nested_forbidden = _scrub_nested_safe_value(item, omitted)
+            found_forbidden = found_forbidden or nested_forbidden
+            out.append(cleaned)
+        return out, found_forbidden
+    return value, False
+
+
 def _scrub_safe_fields(observation: dict, caveats: list[str]) -> tuple[dict, list[str], bool]:
     safe_fields = observation.get("safe_fields") or {}
     if not isinstance(safe_fields, dict):
@@ -81,15 +122,50 @@ def _scrub_safe_fields(observation: dict, caveats: list[str]) -> tuple[dict, lis
     found_forbidden = False
     scrubbed = {}
     for key, value in safe_fields.items():
-        if key in FORBIDDEN_SAFE_FIELD_KEYS:
+        key_text = str(key)
+        if key_text in FORBIDDEN_SAFE_FIELD_KEYS or key_text.isdigit():
             found_forbidden = True
-            _append_unique(omitted, key)
+            _append_unique(omitted, key_text)
         else:
-            scrubbed[key] = value
+            cleaned, nested_forbidden = _scrub_nested_safe_value(value, omitted)
+            found_forbidden = found_forbidden or nested_forbidden
+            scrubbed[key] = cleaned
     if found_forbidden:
         _append_unique(caveats, "forbidden field omitted from safe_fields")
     return scrubbed, omitted, found_forbidden
 
+
+def _taifex_adapter_envelope_valid(observation: dict) -> bool:
+    provenance = observation.get("provenance") or {}
+    validation = observation.get("adapter_validation") or {}
+    return (
+        isinstance(provenance, dict)
+        and isinstance(validation, dict)
+        and provenance.get("adapter_schema_version") == TAIFEX_MIS_ADAPTER_SCHEMA_VERSION
+        and validation.get("schema_version") == TAIFEX_MIS_ADAPTER_VALIDATION_SCHEMA_VERSION
+        and validation.get("valid") is True
+        and observation.get("observation_valid") is True
+        and observation.get("accepted_mode_1_present") is True
+    )
+
+
+def _taifex_fail_closed_bypass(observation: dict, caveats: list[str]) -> dict:
+    obs = dict(observation)
+    safe_fields = obs.get("safe_fields") if isinstance(obs.get("safe_fields"), dict) else {}
+    obs["safe_fields"] = {k: v for k, v in safe_fields.items() if k in TAIFEX_MIS_METADATA_SAFE_FIELD_KEYS}
+    obs["observation_valid"] = False
+    obs["accepted_mode_1_present"] = False
+    obs["safe_for_ai_context"] = False
+    obs["withhold_market_values_from_conversation"] = True
+    validation = dict(obs.get("adapter_validation") or {})
+    validation.setdefault("schema_version", TAIFEX_MIS_ADAPTER_VALIDATION_SCHEMA_VERSION)
+    validation["valid"] = False
+    errors = _as_list(validation.get("errors"))
+    _append_unique(errors, "taifex_mis_adapter_envelope_missing_or_invalid")
+    validation["errors"] = errors
+    obs["adapter_validation"] = validation
+    _append_unique(caveats, "TAIFEX MIS adapter envelope missing or invalid; market values withheld")
+    return obs
 
 
 def _parse_utc_timestamp_for_sort(value: Any) -> tuple[datetime | None, bool]:
@@ -246,12 +322,14 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
         sid = obs.get("source_id")
         policy = lookup.get(sid)
         known = policy is not None
+        caveats = []
+        _extend_unique(caveats, _as_list(obs.get("caveats")))
+        if known and sid == "TAIFEX_MIS" and not _taifex_adapter_envelope_valid(obs):
+            obs = _taifex_fail_closed_bypass(obs, caveats)
         if known and sid == "TAIFEX_MIS":
             assessment = assess_taifex_mis_currentness(obs, policy, now_utc=now_utc)
         else:
             assessment = build_source_freshness_assessment(obs, policy, now_utc=now_utc) if known else _unknown_assessment(obs)
-        caveats = []
-        _extend_unique(caveats, _as_list(obs.get("caveats")))
         _extend_unique(caveats, _as_list(assessment.get("caveats")))
         safe_fields, omitted_fields, did_scrub = _scrub_safe_fields(obs, caveats)
         forbidden_scrubbed = forbidden_scrubbed or did_scrub

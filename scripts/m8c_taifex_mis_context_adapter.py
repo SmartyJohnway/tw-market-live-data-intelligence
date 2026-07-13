@@ -77,12 +77,20 @@ def _provenance_source(prov: Any) -> Any:
     return None
 
 
-def _is_scalar(value: Any) -> bool:
+def _is_identity_scalar(value: Any) -> bool:
     return value is None or isinstance(value, (str, int, float)) and not isinstance(value, bool)
 
 
+def _is_numeric_scalar(value: Any) -> bool:
+    return value is None or isinstance(value, (str, int, float, Decimal)) and not isinstance(value, bool)
+
+
+def _is_scalar(value: Any) -> bool:
+    return _is_identity_scalar(value)
+
+
 def _safe_scalar(value: Any) -> Any:
-    return value if _is_scalar(value) else None
+    return value if _is_identity_scalar(value) else None
 
 
 def _safe_text(value: Any) -> str | None:
@@ -94,10 +102,11 @@ def _safe_text(value: Any) -> str | None:
 
 
 def _decimal_text(value: Any, *, non_negative: bool = False, positive: bool = False) -> str | None:
-    if not _is_scalar(value):
+    if not _is_numeric_scalar(value):
         return None
     try:
-        d = Decimal(str(value).replace(",", "").strip())
+        text = str(value).replace(",", "").strip()
+        d = Decimal(text)
     except Exception:
         return None
     if not d.is_finite():
@@ -127,6 +136,48 @@ def _valid_yyyymm(value: Any) -> bool:
         datetime.strptime(value + "01", "%Y%m%d")
     except ValueError:
         return False
+    return True
+
+
+def _parse_tz_timestamp_text(value: Any) -> str | None:
+    value = _safe_text(value)
+    if not value:
+        return None
+    text = value[:-1] + "+00:00" if value.endswith("Z") else value
+    try:
+        parsed = datetime.fromisoformat(text)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        return None
+    return value
+
+
+def _source_timestamp_valid(obs: dict) -> bool:
+    return _parse_tz_timestamp_text(obs.get("source_timestamp_asia_taipei")) is not None
+
+
+def _canonicalization_status(value: Any) -> str:
+    if isinstance(value, str) and value in {"candidate_families_agree", "top_of_book_field_family_unresolved"}:
+        return value
+    return "top_of_book_field_family_unresolved"
+
+
+def _contract_identity_valid(obs: dict) -> bool:
+    instrument = obs.get("instrument_type")
+    if instrument not in {"future", "option"}:
+        return False
+    if obs.get("session") != "regular" or not _valid_yyyymm(obs.get("contract_month_or_week")):
+        return False
+    for field in ("requested_product_id", "mis_cid", "runtime_symbol_id", "contract_month_or_week"):
+        if not obs.get(field) or not _is_identity_scalar(obs.get(field)):
+            return False
+    symbol = obs.get("runtime_symbol_id")
+    suffix = "-F" if instrument == "future" else "-O"
+    if not isinstance(symbol, str) or not symbol.endswith(suffix):
+        return False
+    if instrument == "option":
+        return _decimal_text(obs.get("strike_price"), positive=True) is not None and _normalize_option_type(obs.get("option_type")) in {"call", "put"}
     return True
 
 
@@ -171,21 +222,23 @@ def _sanitize_currentness(currentness: Any) -> dict:
 
 
 def _contract_identity(obs: dict) -> dict:
-    option_type = _normalize_option_type(obs.get("option_type")) if obs.get("instrument_type") == "option" else None
+    instrument = obs.get("instrument_type")
+    option_type = _normalize_option_type(obs.get("option_type")) if instrument == "option" else None
+    month = obs.get("contract_month_or_week") if _valid_yyyymm(obs.get("contract_month_or_week")) else None
     return {
         "requested_product_id": _safe_text(obs.get("requested_product_id")),
         "mis_cid": _safe_text(obs.get("mis_cid")),
         "runtime_symbol_id": _safe_text(obs.get("runtime_symbol_id")),
-        "contract_month_or_week": _safe_text(obs.get("contract_month_or_week")),
-        "strike_price": _decimal_text(obs.get("strike_price"), positive=True) if obs.get("instrument_type") == "option" else None,
+        "contract_month_or_week": month,
+        "strike_price": _decimal_text(obs.get("strike_price"), positive=True) if instrument == "option" else None,
         "option_type": option_type,
-        "session": "regular" if obs.get("session") == "regular" else _safe_text(obs.get("session")),
+        "session": "regular" if obs.get("session") == "regular" else None,
     }
 
 
 def _source_time(obs: dict) -> dict:
     return {
-        "source_timestamp": _safe_text(obs.get("source_timestamp_asia_taipei")),
+        "source_timestamp": _parse_tz_timestamp_text(obs.get("source_timestamp_asia_taipei")),
         "cdate_raw": _safe_text(obs.get("raw_CDate")),
         "ctime_raw": _safe_text(obs.get("raw_CTime")),
     }
@@ -226,13 +279,15 @@ def validate_taifex_mis_runtime_observation(observation: dict) -> dict:
     for field in ("requested_product_id", "mis_cid", "runtime_symbol_id", "contract_month_or_week"):
         if not obs.get(field):
             errors.append(f"missing_{field}")
-        if not _is_scalar(obs.get(field)):
+        if not _is_identity_scalar(obs.get(field)):
             errors.append(f"non_scalar_{field}")
     if instrument == "option" and (obs.get("strike_price") in (None, "") or _normalize_option_type(obs.get("option_type")) not in {"call", "put"}):
         errors.append("incomplete_option_identity")
-    for field in ("strike_price", "option_type", "session", "raw_CDate", "raw_CTime", "source_timestamp_asia_taipei", "source_status_code"):
-        if not _is_scalar(obs.get(field)):
+    for field in ("option_type", "session", "raw_CDate", "raw_CTime", "source_timestamp_asia_taipei", "source_status_code"):
+        if not _is_identity_scalar(obs.get(field)):
             errors.append(f"non_scalar_{field}")
+    if obs.get("strike_price") is not None and not _is_numeric_scalar(obs.get("strike_price")):
+        errors.append("non_numeric_scalar_strike_price")
     if instrument == "option" and _decimal_text(obs.get("strike_price"), positive=True) is None:
         errors.append("invalid_positive_strike_price")
     candidates = obs.get("normalized_field_candidates") or {}
@@ -264,12 +319,18 @@ def validate_taifex_mis_runtime_observation(observation: dict) -> dict:
     accepted_mode_1 = _accepted_mode_1_present(obs)
     if not accepted_mode_1:
         errors.append("accepted_mode_1_provenance_missing")
+    source_timestamp_valid = _source_timestamp_valid(obs)
+    if not source_timestamp_valid:
+        errors.append("source_timestamp_invalid_or_missing")
+    contract_identity_valid = _contract_identity_valid(obs)
     return {
         "schema_version": "m8c_taifex_mis_adapter_validation.v1",
         "valid": not errors,
         "errors": errors,
         "accepted_mode_1_present": accepted_mode_1,
         "currentness_status": overall,
+        "source_timestamp_valid": source_timestamp_valid,
+        "contract_identity_valid": contract_identity_valid,
     }
 
 
@@ -284,7 +345,7 @@ def _metadata_safe_fields(obs: dict) -> dict:
 
 def _valued_safe_fields(obs: dict) -> dict:
     cands = dict(obs.get("normalized_field_candidates") or {})
-    canon_status = cands.get("canonicalization_status") or "top_of_book_field_family_unresolved"
+    canon_status = _canonicalization_status(cands.get("canonicalization_status"))
     top = {
         "best_bid": _decimal_text(cands.get("best_bid")) if canon_status == "candidate_families_agree" else None,
         "best_ask": _decimal_text(cands.get("best_ask")) if canon_status == "candidate_families_agree" else None,
@@ -345,9 +406,9 @@ def adapt_taifex_mis_observation(observation: dict) -> dict:
         "symbol": _stable_identity(obs.get("runtime_symbol_id") or obs.get("symbol")),
         "instrument_type": builder_inst,
         "context_type": context_type,
-        "source_timestamp": _safe_text(obs.get("source_timestamp_asia_taipei")),
+        "source_timestamp": _parse_tz_timestamp_text(obs.get("source_timestamp_asia_taipei")),
         "retrieved_at_utc": _safe_text(obs.get("retrieved_at_utc")),
-        "session": "regular" if obs.get("session") == "regular" else _safe_text(obs.get("session")),
+        "session": "regular" if obs.get("session") == "regular" else None,
         "currentness": _sanitize_currentness(obs.get("currentness")),
         "safe_fields": safe_fields,
         "omitted_fields": OMITTED_FIELDS,
@@ -356,6 +417,8 @@ def adapt_taifex_mis_observation(observation: dict) -> dict:
         "adapter_validation": validation,
         "observation_valid": validation["valid"],
         "accepted_mode_1_present": validation["accepted_mode_1_present"],
+        "source_timestamp_valid": validation["source_timestamp_valid"],
+        "contract_identity_valid": validation["contract_identity_valid"],
         "withhold_market_values_from_conversation": not validation["valid"],
     }
 
