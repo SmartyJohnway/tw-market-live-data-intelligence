@@ -10,3 +10,9 @@ def test_option_identity_resolution_fail_closed():
     assert resolve_option_identity(rows,cid='TXO',month='202607F2',strike='10000',option_type='C',session_suffix='-O')['status']=='no_symbol_match'
     rows.append({'SymbolID':'TXO10000G6-O','CID':'TXO','ContractMonth':'202607','StrikePrice':'10000','CP':'C'})
     assert resolve_option_identity(rows,cid='TXO',month='202607',strike='10000',option_type='C',session_suffix='-O')['status']=='multiple_symbol_matches'
+from scripts.m8c_taifex_mis_probe_common import resolve_option_identity_exact
+
+def test_exact_option_identity_does_not_use_substrings():
+    rows=[{'SymbolID':'TXO10000G6-O','CID':'TXO','ExpireMonth':'202607','StrikePrice':'10000.0','CP':'C'}, {'SymbolID':'TXO210000G6-O','CID':'TXO','ExpireMonth':'202607','StrikePrice':'210000','CP':'C'}]
+    assert resolve_option_identity_exact(rows,cid='TXO',month='202607',strike='10000.00',option_type='CALL',session_suffix='-O')['runtime_symbol_id']=='TXO10000G6-O'
+    assert resolve_option_identity_exact(rows,cid='TXO',month='202607',strike='10000',option_type='P',session_suffix='-O')['status']=='no_symbol_match'

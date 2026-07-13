@@ -31,3 +31,7 @@ Operator-provided observations were treated as hypotheses. The repository baseli
 operator confirmation -> validate bounded selectors -> create one ephemeral HTTP session -> REST product/month/exact identity resolution -> for options, one bounded whole-requested-month-chain discovery when needed with exact retained strike/type only -> get exact quote detail -> SockJS info/open/send exact subscribe/receive initial quote/stop polling/close -> discard cookies and session IDs -> normalize compact observations -> TAIFEX-MIS currentness.
 
 Recommended public function: `execute_taifex_mis_snapshot(..., transport_preference="xhr_polling", max_reconnect_attempts=0, max_wire_bytes=2000000, max_retained_observations=100)`.
+
+## Executable limits and scoped request contracts
+
+M8C-01 must use the same bounded reader semantics as the preflight tools: reject oversized `Content-Length`, stream with a byte cap before JSON materialization, enforce a monotonic total deadline, row caps, symbol/product/month/strike caps, SockJS frame and decoded-message caps, per-poll timeout, and reconnect cap. REST bootstrap request bodies are JSON objects using `MarketType`, `SymbolType`, `KindID`, `CID`, and `ExpireMonth` for futures/options list endpoints; exact detail uses `{"SymbolID": ["..."]}`. Options discovery is whole requested month/week-chain network scope and exact retained identity scope.

@@ -35,3 +35,7 @@ Readiness fields: transport_reproduced = evidence-captured in compact probe summ
 ## Validation evidence
 
 Focused M8C tests passed in this branch. All M8-family unit tests passed. Default CI passed. Full non-network retained the accepted M5D/M5E frontend publication baseline drift caveat and is not caused by M8C changes. No M8C probe performs network without `--confirm-live-probe`.
+
+## Review-blocker follow-up evidence
+
+The bounded SockJS sequence was reproduced end-to-end: `/info`, XHR open `o`, `xhr_send` subscription with dynamically resolved `TXFG6-F`, `MXFG6-F`, and `TXV40100G6-O`, and array quote frames for all three symbols. Only compact counts and presence flags were retained: mode `1`, 62/62 values/trueValues for TX and MTX, 43/43 for TXO, CDate/CTime/Status present, 6,472 wire bytes, 85 frames, 87 decoded messages, and 3.104 seconds. REST was re-probed with scoped bodies, including product/month DDL, narrowed futures quote lists, a whole requested TXO week/month chain, ineffective RowSize/PageNo/StrikePrice/CP network narrowing, and exact quote detail for futures/options/multiple symbols.

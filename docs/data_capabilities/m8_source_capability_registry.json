@@ -99,7 +99,9 @@
       "snapshot_runtime_readiness": "go_with_caveats",
       "delta_runtime_readiness": "conditional_no_go",
       "access_use_disposition": "operator_accepted_personal_local_research_only",
-      "controlled_runtime_executable": false
+      "controlled_runtime_executable": false,
+      "m8c_00_preflight_status": "m8c_00_taifex_mis_preflight_pass_with_caveats",
+      "preflight_completed_through": "M8C-00"
     },
     {
       "source_id": "TWSE_OPENAPI",
@@ -512,5 +514,8 @@
     "recommendation_allowed": false,
     "raw_payload_exposure_allowed": false,
     "next_task": "M8C-00-TAIFEX-MIS-LIVEISH-DERIVATIVES-CONTEXT-PREFLIGHT"
+  },
+  "planning_state": {
+    "next_task": "M8C-01-TAIFEX-MIS-BOUNDED-REST-SOCKJS-SNAPSHOT-RUNTIME"
   }
 }

@@ -113,3 +113,58 @@ def build_arg_parser(desc:str):
     p=argparse.ArgumentParser(description=desc)
     p.add_argument('--confirm-live-probe', action='store_true')
     return p
+from decimal import Decimal, InvalidOperation
+
+class LimitReached(M8CProbeError):
+    def __init__(self, status: str):
+        super().__init__(status); self.status=status
+
+def check_deadline(start: float, max_seconds: float):
+    if time.monotonic() - start > max_seconds:
+        raise LimitReached('bounded_time_limit_reached')
+
+def read_bounded_response(response, *, max_bytes: int, start: float, max_seconds: float) -> bytes:
+    length=response.headers.get('Content-Length')
+    if length and length.isdigit() and int(length)>max_bytes:
+        raise LimitReached('wire_byte_limit_reached')
+    chunks=[]; total=0
+    for chunk in response.iter_content(chunk_size=16384):
+        check_deadline(start,max_seconds)
+        if not chunk: continue
+        total+=len(chunk)
+        if total>max_bytes: raise LimitReached('wire_byte_limit_reached')
+        chunks.append(chunk)
+    return b''.join(chunks)
+
+def bounded_json_post(session, url: str, *, json_body: dict, headers: dict, max_bytes: int, start: float, max_seconds: float, timeout: float):
+    r=session.post(url,json=json_body,headers=headers,timeout=timeout,stream=True)
+    body=read_bounded_response(r,max_bytes=max_bytes,start=start,max_seconds=max_seconds)
+    try: data=json.loads(body.decode('utf-8'))
+    except Exception as exc: raise M8CProbeError('rest_schema_drift') from exc
+    return r.status_code, r.headers.get('content-type'), body, data
+
+def _norm_dec(v: Any) -> Decimal | None:
+    try: return Decimal(str(v).replace(',','').strip())
+    except (InvalidOperation, AttributeError): return None
+
+def normalize_cp(v: Any) -> str | None:
+    t=str(v or '').strip().upper()
+    if t in {'C','CALL','買權'}: return 'C'
+    if t in {'P','PUT','賣權'}: return 'P'
+    return None
+
+def resolve_option_identity_exact(rows:list[dict], *, cid:str, month:str, strike:str, option_type:str, session_suffix:str)->dict:
+    target_strike=_norm_dec(strike); target_cp=normalize_cp(option_type)
+    if target_strike is None or target_cp is None: return {'status':'ambiguous_option_identity'}
+    matches=[]
+    for r in rows:
+        sym=str(r.get('SymbolID') or '')
+        row_cid=str(r.get('CID') or r.get('CmdyCode') or cid).strip()
+        row_month=str(r.get('ExpireMonth') or r.get('ContractMonth') or month).strip()
+        row_strike=_norm_dec(r.get('StrikePrice'))
+        row_cp=normalize_cp(r.get('CP') or r.get('CallPut'))
+        if row_cid==cid and row_month==month and row_strike==target_strike and row_cp==target_cp and sym.endswith(session_suffix):
+            matches.append(r)
+    if not matches: return {'status':'no_symbol_match'}
+    if len(matches)>1: return {'status':'multiple_symbol_matches'}
+    return {'status':'resolved_from_bootstrap_row','runtime_symbol_id':matches[0].get('SymbolID')}
