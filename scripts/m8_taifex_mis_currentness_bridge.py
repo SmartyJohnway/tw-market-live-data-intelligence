@@ -1,5 +1,6 @@
 """Pure TAIFEX MIS source-specific M8 currentness bridge."""
 from __future__ import annotations
+from datetime import datetime
 from typing import Any
 
 SCHEMA_VERSION = "m8_taifex_mis_currentness_bridge.v1"
@@ -19,10 +20,31 @@ def _append_unique(items: list[Any], value: Any) -> None:
         items.append(value)
 
 
+def _parse_tz_timestamp(value: Any) -> bool:
+    if not isinstance(value, str) or not value:
+        return False
+    text = value[:-1] + "+00:00" if value.endswith("Z") else value
+    try:
+        parsed = datetime.fromisoformat(text)
+    except ValueError:
+        return False
+    return parsed.tzinfo is not None
+
+
+def _valid_iso_date(value: Any) -> bool:
+    if not isinstance(value, str):
+        return False
+    try:
+        datetime.strptime(value, "%Y-%m-%d")
+    except ValueError:
+        return False
+    return True
+
+
 def _valid_active_fresh_axes(obs: dict, cur: dict) -> bool:
     return all(
         [
-            bool(obs.get("source_timestamp")),
+            _parse_tz_timestamp(obs.get("source_timestamp")),
             cur.get("source_timestamp_state") == "resolved",
             cur.get("session_alignment") == "aligned",
             cur.get("market_phase") == "active_regular_trading",
@@ -40,8 +62,9 @@ def _has_official_special_closure_evidence(cur: dict) -> bool:
     return (
         evidence.get("source_family") == "TAIFEX"
         and str(evidence.get("authority_level") or "").startswith("official")
+        and evidence.get("evidence_type") == "market_closure"
         and evidence.get("target_date_matches") is True
-        and bool(evidence.get("target_date") or evidence.get("closure_date"))
+        and _valid_iso_date(evidence.get("target_date"))
     )
 
 

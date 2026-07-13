@@ -31,6 +31,8 @@ VALID_CURRENTNESS = {
     "no_accepted_mode_1",
 }
 FORBIDDEN_RECURSIVE_KEYS = {"raw_payload", "trueValues", "truevalues", "raw_mode_1_dictionary", "raw_rest_records", "rest_rows", "sockjs_frames", "full_option_chain", "option_chain", "raw_qid_map", "cookies", "cookie", "session_ids", "session_id"}
+RECOGNIZED_MODE1_PROVENANCE_KEYS = {"last_price", "reference_price", "total_volume", "status", "source_status_code", "raw_CDate", "raw_CTime", "bid_family_1", "ask_family_1", "bid_size_family_1", "ask_size_family_1", "bid_family_2", "ask_family_2", "bid_size_family_2", "ask_size_family_2"}
+ALLOWED_PROVENANCE_SOURCES = {None, "sockjs_mode_1", "exact_detail_fallback", "quote_list_fallback"}
 CURRENTNESS_ALLOWED_AXES = {"overall_ai_currentness", "transport_state", "session_alignment", "market_phase", "source_timestamp_state", "quote_age_state", "calendar_evidence", "currentness_confidence", "retrieved_at_freshness_ignored_for_upgrade", "special_closure_evidence"}
 OMITTED_FIELDS = [
     "numeric_qid_keys",
@@ -77,6 +79,34 @@ def _provenance_source(prov: Any) -> Any:
 
 def _is_scalar(value: Any) -> bool:
     return value is None or isinstance(value, (str, int, float)) and not isinstance(value, bool)
+
+
+def _safe_scalar(value: Any) -> Any:
+    return value if _is_scalar(value) else None
+
+
+def _safe_text(value: Any) -> str | None:
+    value = _safe_scalar(value)
+    if value is None:
+        return None
+    text = str(value)
+    return text if text else None
+
+
+def _decimal_text(value: Any, *, non_negative: bool = False, positive: bool = False) -> str | None:
+    if not _is_scalar(value):
+        return None
+    try:
+        d = Decimal(str(value).replace(",", "").strip())
+    except Exception:
+        return None
+    if not d.is_finite():
+        return None
+    if positive and d <= 0:
+        return None
+    if non_negative and d < 0:
+        return None
+    return str(d)
 
 
 def _normalize_option_type(value: Any) -> str | None:
@@ -141,22 +171,23 @@ def _sanitize_currentness(currentness: Any) -> dict:
 
 
 def _contract_identity(obs: dict) -> dict:
+    option_type = _normalize_option_type(obs.get("option_type")) if obs.get("instrument_type") == "option" else None
     return {
-        "requested_product_id": obs.get("requested_product_id"),
-        "mis_cid": obs.get("mis_cid"),
-        "runtime_symbol_id": obs.get("runtime_symbol_id"),
-        "contract_month_or_week": obs.get("contract_month_or_week"),
-        "strike_price": obs.get("strike_price"),
-        "option_type": obs.get("option_type"),
-        "session": obs.get("session"),
+        "requested_product_id": _safe_text(obs.get("requested_product_id")),
+        "mis_cid": _safe_text(obs.get("mis_cid")),
+        "runtime_symbol_id": _safe_text(obs.get("runtime_symbol_id")),
+        "contract_month_or_week": _safe_text(obs.get("contract_month_or_week")),
+        "strike_price": _decimal_text(obs.get("strike_price"), positive=True) if obs.get("instrument_type") == "option" else None,
+        "option_type": option_type,
+        "session": "regular" if obs.get("session") == "regular" else _safe_text(obs.get("session")),
     }
 
 
 def _source_time(obs: dict) -> dict:
     return {
-        "source_timestamp": obs.get("source_timestamp_asia_taipei"),
-        "cdate_raw": obs.get("raw_CDate"),
-        "ctime_raw": obs.get("raw_CTime"),
+        "source_timestamp": _safe_text(obs.get("source_timestamp_asia_taipei")),
+        "cdate_raw": _safe_text(obs.get("raw_CDate")),
+        "ctime_raw": _safe_text(obs.get("raw_CTime")),
     }
 
 
@@ -164,15 +195,13 @@ def _accepted_mode_1_present(obs: dict) -> bool:
     if obs.get("_accepted_mode_1_from_execution") is True:
         return True
     provenance = obs.get("field_provenance") or {}
-    def scan(value: Any) -> bool:
-        if isinstance(value, dict):
-            if value.get("source") == "sockjs_mode_1":
-                return True
-            return any(scan(v) for v in value.values())
-        if isinstance(value, (list, tuple)):
-            return any(scan(v) for v in value)
+    if not isinstance(provenance, dict):
         return False
-    return scan(provenance)
+    for key in RECOGNIZED_MODE1_PROVENANCE_KEYS:
+        item = provenance.get(key)
+        if isinstance(item, dict) and item.get("source") == "sockjs_mode_1":
+            return True
+    return False
 
 
 def validate_taifex_mis_runtime_observation(observation: dict) -> dict:
@@ -201,9 +230,28 @@ def validate_taifex_mis_runtime_observation(observation: dict) -> dict:
             errors.append(f"non_scalar_{field}")
     if instrument == "option" and (obs.get("strike_price") in (None, "") or _normalize_option_type(obs.get("option_type")) not in {"call", "put"}):
         errors.append("incomplete_option_identity")
-    for field in ("strike_price", "option_type", "session"):
+    for field in ("strike_price", "option_type", "session", "raw_CDate", "raw_CTime", "source_timestamp_asia_taipei", "source_status_code"):
         if not _is_scalar(obs.get(field)):
             errors.append(f"non_scalar_{field}")
+    if instrument == "option" and _decimal_text(obs.get("strike_price"), positive=True) is None:
+        errors.append("invalid_positive_strike_price")
+    candidates = obs.get("normalized_field_candidates") or {}
+    if not isinstance(candidates, dict):
+        errors.append("normalized_field_candidates_not_dict")
+        candidates = {}
+    for field in ("last_price", "reference_price", "best_bid", "best_ask"):
+        if field in candidates and candidates.get(field) not in (None, "") and _decimal_text(candidates.get(field)) is None:
+            errors.append(f"invalid_decimal_{field}")
+    for field in ("total_volume", "best_bid_size", "best_ask_size"):
+        if field in candidates and candidates.get(field) not in (None, "") and _decimal_text(candidates.get(field), non_negative=True) is None:
+            errors.append(f"invalid_non_negative_{field}")
+    provenance = obs.get("field_provenance") or {}
+    if isinstance(provenance, dict):
+        for key, item in provenance.items():
+            if item is not None and (not isinstance(item, dict) or item.get("source") not in ALLOWED_PROVENANCE_SOURCES):
+                errors.append(f"invalid_provenance_source_{key}")
+    elif provenance not in (None, {}):
+        errors.append("field_provenance_not_dict")
     if obs.get("raw_payload_retained") is not False:
         errors.append("raw_payload_retained_not_false")
     if _contains_forbidden_nested(obs):
@@ -229,7 +277,7 @@ def _metadata_safe_fields(obs: dict) -> dict:
     return {
         "contract_identity": _contract_identity(obs),
         "source_time": _source_time(obs),
-        "source_status_code": obs.get("source_status_code"),
+        "source_status_code": _safe_text(obs.get("source_status_code")),
         "currentness": _sanitize_currentness(obs.get("currentness")),
     }
 
@@ -238,18 +286,18 @@ def _valued_safe_fields(obs: dict) -> dict:
     cands = dict(obs.get("normalized_field_candidates") or {})
     canon_status = cands.get("canonicalization_status") or "top_of_book_field_family_unresolved"
     top = {
-        "best_bid": _json_value(cands.get("best_bid")) if canon_status == "candidate_families_agree" else None,
-        "best_ask": _json_value(cands.get("best_ask")) if canon_status == "candidate_families_agree" else None,
-        "best_bid_size": _json_value(cands.get("best_bid_size")) if canon_status == "candidate_families_agree" else None,
-        "best_ask_size": _json_value(cands.get("best_ask_size")) if canon_status == "candidate_families_agree" else None,
+        "best_bid": _decimal_text(cands.get("best_bid")) if canon_status == "candidate_families_agree" else None,
+        "best_ask": _decimal_text(cands.get("best_ask")) if canon_status == "candidate_families_agree" else None,
+        "best_bid_size": _decimal_text(cands.get("best_bid_size"), non_negative=True) if canon_status == "candidate_families_agree" else None,
+        "best_ask_size": _decimal_text(cands.get("best_ask_size"), non_negative=True) if canon_status == "candidate_families_agree" else None,
         "canonicalization_status": canon_status,
     }
     prov = obs.get("field_provenance") or {}
     fields = _metadata_safe_fields(obs)
     fields.update(
         {
-            "price": {"last": _json_value(cands.get("last_price")), "reference": _json_value(cands.get("reference_price"))},
-            "activity": {"total_volume": _json_value(cands.get("total_volume"))},
+            "price": {"last": _decimal_text(cands.get("last_price")), "reference": _decimal_text(cands.get("reference_price"))},
+            "activity": {"total_volume": _decimal_text(cands.get("total_volume"), non_negative=True)},
             "top_of_book": top,
             "field_provenance": {
                 "last": _provenance_source(prov.get("last_price")),
@@ -297,9 +345,9 @@ def adapt_taifex_mis_observation(observation: dict) -> dict:
         "symbol": _stable_identity(obs.get("runtime_symbol_id") or obs.get("symbol")),
         "instrument_type": builder_inst,
         "context_type": context_type,
-        "source_timestamp": obs.get("source_timestamp_asia_taipei"),
-        "retrieved_at_utc": obs.get("retrieved_at_utc"),
-        "session": obs.get("session"),
+        "source_timestamp": _safe_text(obs.get("source_timestamp_asia_taipei")),
+        "retrieved_at_utc": _safe_text(obs.get("retrieved_at_utc")),
+        "session": "regular" if obs.get("session") == "regular" else _safe_text(obs.get("session")),
         "currentness": _sanitize_currentness(obs.get("currentness")),
         "safe_fields": safe_fields,
         "omitted_fields": OMITTED_FIELDS,

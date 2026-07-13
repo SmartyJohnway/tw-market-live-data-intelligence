@@ -68,7 +68,7 @@ def test_projection_formats_values_when_policy_enabled_and_withholds_missing_cti
     md = convo["sections"][0]["markdown"]
     assert "TAIFEX MIS bounded futures snapshot" in md
     assert "TAIFEX MIS bounded options snapshot" in md
-    assert "strike=20000" in md and "option_type=C" in md
+    assert "strike=20000" in md and "option_type=call" in md
     assert "last=100" in md
     opt = convo["sections"][0]["instrument_contexts"][1]["contexts"][0]
     assert "price" not in opt["safe_fields"]
@@ -166,3 +166,59 @@ def test_failed_selector_list_identity_is_stable_for_grouping():
     observations = build_taifex_mis_m8_observations({"observations":[],"selector_results":[{"selector":["TX", "202607"],"status":"snapshot_incomplete"}],"transport_summary":{}})
     ctx = build_multi_source_market_context(observations, REG_TRUE, now_utc="2026-07-13T01:00:05Z")
     assert ctx["instrument_contexts"][0]["symbol"] == "TX:202607"
+
+def _contains_key(obj, key):
+    if isinstance(obj, dict):
+        return key in obj or any(_contains_key(v, key) for v in obj.values())
+    if isinstance(obj, list):
+        return any(_contains_key(v, key) for v in obj)
+    return False
+
+
+def test_invalid_metadata_contract_identity_containers_are_removed():
+    obs = raw(requested_product_id={"raw_payload":"secret"}, raw_CTime={"bad":"container"}, source_status_code=["bad"])
+    adapted = build_taifex_mis_m8_observations({"observations":[obs]})[0]
+    assert adapted["observation_valid"] is False
+    assert adapted["safe_fields"]["contract_identity"]["requested_product_id"] is None
+    assert adapted["safe_fields"]["source_time"]["ctime_raw"] is None
+    assert adapted["safe_fields"]["source_status_code"] is None
+    assert not _contains_key(adapted["safe_fields"], "raw_payload")
+
+
+def test_invalid_container_timestamp_cannot_become_primary():
+    ctx = built("active_session_fresh_liveish", ts={"bad":"timestamp"})
+    item = ctx["instrument_contexts"][0]["contexts"][0]
+    assert item["primary_context_allowed"] is False
+    assert item["metadata_only"] is True
+
+
+def test_container_market_values_and_nan_negative_strike_are_withheld():
+    obs = raw(inst="option", strike_price="NaN", normalized_field_candidates={"last_price":{"bad":"container"}, "total_volume":-1})
+    adapted = build_taifex_mis_m8_observations({"observations":[obs]})[0]
+    assert adapted["observation_valid"] is False
+    assert "price" not in adapted["safe_fields"]
+    assert adapted["safe_fields"]["contract_identity"]["strike_price"] is None
+
+
+def test_fake_provenance_cannot_establish_mode1_but_status_book_can():
+    fake = build_taifex_mis_m8_observations({"observations":[raw(field_provenance={"fake":{"source":"sockjs_mode_1"}})]})[0]
+    assert fake["accepted_mode_1_present"] is False
+    assert fake["observation_valid"] is False
+    good = build_taifex_mis_m8_observations({"observations":[raw(field_provenance={"status":{"source":"sockjs_mode_1"}, "bid_family_1":{"source":"sockjs_mode_1"}})]})[0]
+    assert good["accepted_mode_1_present"] is True
+    assert good["observation_valid"] is True
+
+
+def test_wrong_special_closure_evidence_type_rejected():
+    currentness = dict(raw()["currentness"], overall_ai_currentness="special_closure_latest_completed", special_closure_evidence={"source_family":"TAIFEX", "authority_level":"official_documented", "evidence_type":"holiday", "target_date_matches":True, "target_date":"2026-07-13"})
+    ctx = built("special_closure_latest_completed", currentness=currentness)["instrument_contexts"][0]["contexts"][0]
+    assert ctx["metadata_only"] is True
+    assert ctx["withhold_market_values_from_conversation"] is True
+
+
+def test_structured_projection_has_no_recursive_raw_keys():
+    obs = build_taifex_mis_m8_observations({"observations":[raw(extra={"safeish":{"trueValues":[1]}, "raw_payload":"x"})]})[0]
+    convo = build_controlled_conversation_context(build_multi_source_market_context([obs], REG_TRUE, now_utc="2026-07-13T01:00:05Z"))
+    projected = convo["sections"][0]["instrument_contexts"][0]["contexts"][0]
+    for key in ["raw_payload", "trueValues", "125", "sockjs_frames", "rest_rows"]:
+        assert not _contains_key(projected, key)
