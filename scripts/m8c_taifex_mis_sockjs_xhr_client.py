@@ -1,6 +1,6 @@
 from __future__ import annotations
 import random
-from .m8c_taifex_mis_limits import MAX_SINGLE_POLL_SECONDS, MAX_RESPONSE_PAYLOAD_BYTES
+from .m8c_taifex_mis_limits import MAX_SINGLE_POLL_SECONDS, MAX_RESPONSE_PAYLOAD_BYTES, LimitError
 from .m8c_taifex_mis_http_client import read_bounded_response
 from .m8c_taifex_mis_sockjs_protocol import decode_sockjs_frame, encode_sockjs_send, SockjsProtocolError
 
@@ -8,6 +8,11 @@ BASE='https://mis.taifex.com.tw/futures/rt'
 
 def _read_text(resp,budget, expected_statuses=(200,)):
     return read_bounded_response(resp,budget,per_response_limit=MAX_RESPONSE_PAYLOAD_BYTES, expected_statuses=expected_statuses).decode()
+
+def _partial_result(symbols, accepted, ignored, caveats, reason, limit_reached):
+    missing=sorted(set(symbols)-set(accepted))
+    out_caveats=sorted(set(caveats + ([reason] if reason else [])))
+    return {'accepted_initial_states':accepted,'unsupported_mode_count':ignored,'caveats':out_caveats,'reconnect_attempts':0,'unsubscribe_sent':False,'missing_symbols':missing,'termination_reason':reason,'limit_reached':limit_reached}
 
 def collect_initial_states(session, symbols, budget, *, base_url=BASE):
     info=session.get(base_url+'/info', timeout=budget.timeout(MAX_SINGLE_POLL_SECONDS), stream=True); _read_text(info,budget)
@@ -18,10 +23,16 @@ def collect_initial_states(session, symbols, budget, *, base_url=BASE):
     send=session.post(prefix+'/xhr_send', data=msg, headers={'Content-Type':'text/plain;charset=UTF-8'}, timeout=budget.timeout(MAX_SINGLE_POLL_SECONDS), stream=True); _read_text(send,budget, expected_statuses=(200,204))
     accepted={}; ignored=0; caveats=[]
     while set(accepted)!=set(symbols):
-        p=session.post(prefix+'/xhr', data=b'', timeout=budget.timeout(MAX_SINGLE_POLL_SECONDS), stream=True); budget.add_frame()
-        frame=decode_sockjs_frame(_read_text(p,budget).strip()); budget.add_messages(len(frame.get('messages',[])))
+        try:
+            p=session.post(prefix+'/xhr', data=b'', timeout=budget.timeout(MAX_SINGLE_POLL_SECONDS), stream=True); budget.add_frame()
+            frame=decode_sockjs_frame(_read_text(p,budget).strip()); budget.add_messages(len(frame.get('messages',[])))
+        except LimitError as exc:
+            if accepted:
+                return _partial_result(symbols, accepted, ignored, caveats, str(exc), True)
+            raise
         if frame['frame_type']=='heartbeat': continue
-        if frame['frame_type']=='close': break
+        if frame['frame_type']=='close':
+            return _partial_result(symbols, accepted, ignored, caveats, 'sockjs_close_frame', False)
         if frame['frame_type']!='array': raise SockjsProtocolError('unexpected_sockjs_frame')
         for m in frame['messages']:
             if m.get('type')!='quote': continue
@@ -31,5 +42,6 @@ def collect_initial_states(session, symbols, budget, *, base_url=BASE):
                 vals=dict(vals); vals.setdefault('SymbolID', sym); accepted[sym]=vals
             elif m.get('mode')!=1:
                 ignored+=1; caveats.append('unsupported_quote_mode_ignored')
-        if budget.frames>=budget.max_frames: break
-    return {'accepted_initial_states':accepted,'unsupported_mode_count':ignored,'caveats':sorted(set(caveats)),'reconnect_attempts':0,'unsubscribe_sent':False}
+        if budget.frames>=budget.max_frames and set(accepted)!=set(symbols):
+            return _partial_result(symbols, accepted, ignored, caveats, 'frame_limit_reached', True)
+    return _partial_result(symbols, accepted, ignored, caveats, None, False)

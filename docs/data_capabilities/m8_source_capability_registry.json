@@ -64,7 +64,7 @@
       "endpoint_type": "browser_rest_plus_sockjs_observed",
       "timing_class": "liveish_intraday_snapshot",
       "latency_class": "unknown",
-      "freshness_policy": "policy_defined_metadata_only",
+      "freshness_policy": "taifex_mis_currentness_policy_fail_closed_not_retrieved_at",
       "market_scope": {
         "derivatives": "regular-session futures/options bounded initial-state runtime"
       },

@@ -88,7 +88,11 @@ def test_partial_quote_receipt_returns_partial_source_success():
     res=execute_taifex_mis_snapshot(operator_confirmed=True, requested_contracts=[{'instrument_type':'future','requested_product_id':'TX','contract_month_or_week':'202607','session':'regular'},{'instrument_type':'future','requested_product_id':'MTX','contract_month_or_week':'202607','session':'regular'}], session_factory=lambda: fs, max_frames=2)
     assert res['status']=='partial_source_success'
     assert res['transport_summary']['accepted_initial_state_count']==1
+    assert res['transport_summary']['missing_symbols']==['MXF202607-F']
+    assert res['transport_summary']['termination_reason']=='frame_limit_reached'
+    assert res['transport_summary']['limit_reached'] is True
     assert len(res['observations'])==2
+    assert 'frame_limit_reached' in res['caveats']
 
 
 def test_global_http_error_not_swallowed_as_selector_failure():

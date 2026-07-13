@@ -2,13 +2,13 @@
   "status": "successful_liveish_snapshot",
   "network_performed": true,
   "timing": {
-    "evaluation_time_asia_taipei": "2026-07-13T14:45:42.958423+08:00"
+    "evaluation_time_asia_taipei": "2026-07-13T15:19:22.499043+08:00"
   },
   "accounting": {
     "rest_request_payload_bytes": 641,
     "sockjs_send_payload_bytes": 83,
-    "response_payload_bytes": 415927,
-    "total_accounted_payload_bytes": 416651,
+    "response_payload_bytes": 417365,
+    "total_accounted_payload_bytes": 418089,
     "rest_rows": 1357,
     "frames": 2,
     "decoded_messages": 3,
@@ -23,7 +23,10 @@
     "reconnect_attempts": 0,
     "unsubscribe_sent": false,
     "unsupported_mode_count": 0,
-    "accepted_initial_state_count": 3
+    "accepted_initial_state_count": 3,
+    "missing_symbols": [],
+    "termination_reason": null,
+    "limit_reached": false
   },
   "selector_results": [
     {
@@ -170,7 +173,7 @@
   "caveats": [],
   "raw_payload_retained": false,
   "ai_context_allowed": false,
-  "tested_head_sha": "9e549fabbc05ebcbe2af5553e0e64f4af1a4662b",
+  "tested_head_sha": "dc4a21d0a3d149f0ffd7f7397daec7c0497d6ca1",
   "auto_smoke_contracts": [
     {
       "instrument_type": "future",
@@ -193,6 +196,56 @@
       "session": "regular"
     }
   ],
+  "selector_discovery_accounting": {
+    "rest_request_payload_bytes": 259,
+    "sockjs_send_payload_bytes": 0,
+    "response_payload_bytes": 346344,
+    "total_accounted_payload_bytes": 346603,
+    "rest_rows": 591,
+    "frames": 0,
+    "decoded_messages": 0,
+    "selectors": 0,
+    "products": 0,
+    "months": 0,
+    "strikes": 0,
+    "symbols": 0,
+    "retained_observations": 0
+  },
+  "runtime_execution_accounting": {
+    "rest_request_payload_bytes": 641,
+    "sockjs_send_payload_bytes": 83,
+    "response_payload_bytes": 417365,
+    "total_accounted_payload_bytes": 418089,
+    "rest_rows": 1357,
+    "frames": 2,
+    "decoded_messages": 3,
+    "selectors": 3,
+    "products": 3,
+    "months": 1,
+    "strikes": 1,
+    "symbols": 3,
+    "retained_observations": 3
+  },
+  "combined_validator_accounting": {
+    "rest_request_payload_bytes": 900,
+    "sockjs_send_payload_bytes": 83,
+    "response_payload_bytes": 763709,
+    "total_accounted_payload_bytes": 764692,
+    "rest_rows": 1948,
+    "frames": 2,
+    "decoded_messages": 3,
+    "selectors": 3,
+    "products": 3,
+    "months": 1,
+    "strikes": 1,
+    "symbols": 3,
+    "retained_observations": 3
+  },
+  "combined_validator_hard_bounds": {
+    "max_accounted_payload_bytes": 2000000,
+    "discovery_payload_cap": 1000000,
+    "runtime_payload_cap": 1000000
+  },
   "cookies_retained": false,
   "sockjs_session_ids_retained": false
 }

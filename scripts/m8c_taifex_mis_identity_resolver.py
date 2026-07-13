@@ -17,9 +17,13 @@ def _cp_enum(v):
     return None
 
 def _validate_detail_set(detail_rows, requested_symbols):
-    returned={str(r.get('SymbolID')) for r in detail_rows if r.get('SymbolID') not in (None,'')}
+    if len(detail_rows) != len(requested_symbols):
+        raise IdentitySelectionError('exact_detail_symbol_set_mismatch')
+    returned=[str(r.get('SymbolID')) for r in detail_rows if r.get('SymbolID') not in (None,'')]
+    if len(returned) != len(set(returned)):
+        raise IdentitySelectionError('exact_detail_duplicate_symbol_rows')
     requested=set(requested_symbols)
-    if returned != requested:
+    if set(returned) != requested:
         raise IdentitySelectionError('exact_detail_symbol_set_mismatch')
 
 def resolve_one_identity(s, rest, option_cache):
