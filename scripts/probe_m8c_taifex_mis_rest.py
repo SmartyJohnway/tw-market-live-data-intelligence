@@ -40,5 +40,5 @@ if __name__=='__main__':
   for syms in [[opt_sym], [tx_symbol, mtx_symbol, opt_sym]]:
    req={'SymbolID':syms}; budget.add_symbols(len(syms)); st,ct,b,d=post(s,budget,'getQuoteDetail',req); budget.add_rows(len(rows(d))); out.append(summarize('getQuoteDetail',req,st,ct,b,d))
   req={'SymbolID':[tx_symbol]}; st,ct,b,d=post(s,budget,'getCalculatedFields',req); rec=summarize('getCalculatedFields',req,st,ct,b,d); rec['status_note']='formally_probed_with_dynamic_tx_symbol'; out.append(rec)
-  print(json.dumps(redact({'status':'rest_scoped_probe_complete','runtime_symbols':{'TX':tx_symbol,'MTX':mtx_symbol,'TXO':opt_sym},'endpoints':out,'wire_bytes':budget.wire_bytes,'rest_rows':budget.rest_rows,'raw_payload_retained':False}),ensure_ascii=False))
+  print(json.dumps(redact({'status':'rest_scoped_probe_complete','runtime_symbols':{'TX':tx_symbol,'MTX':mtx_symbol,'TXO':opt_sym},'endpoints':out,'response_and_send_payload_bytes':budget.wire_bytes,'rest_rows':budget.rest_rows,'raw_payload_retained':False}),ensure_ascii=False))
  finally: s.close()

@@ -57,3 +57,11 @@ def test_budgeted_reader_accumulates_total_wire():
     assert read_budgeted_response(FakeResp([b'12345']), budget=b)==b'12345'
     assert b.wire_bytes==5
     with pytest.raises(LimitReached): read_budgeted_response(FakeResp([b'123456']), budget=b)
+
+def test_budgeted_reader_uses_remaining_total_before_materialization():
+    b=ProbeBudget(total_seconds=10, wire_bytes=10)
+    assert read_budgeted_response(FakeResp([b'1234567']), budget=b, max_response_bytes=100)==b'1234567'
+    assert b.wire_bytes==7
+    with pytest.raises(LimitReached) as e:
+        read_budgeted_response(FakeResp([b'x'], {'Content-Length':'4'}), budget=b, max_response_bytes=100)
+    assert e.value.status=='wire_byte_limit_reached'

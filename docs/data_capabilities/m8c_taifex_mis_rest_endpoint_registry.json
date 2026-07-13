@@ -1,5 +1,5 @@
 {
-  "schema_version": "m8c_taifex_mis_rest_endpoint_registry.v2",
+  "schema_version": "m8c_taifex_mis_rest_endpoint_registry.v3",
   "source_id": "TAIFEX_MIS",
   "base_path": "/futures/api/",
   "records": [
@@ -27,7 +27,8 @@
         "DispEName",
         "CID"
       ],
-      "raw_payload_retained": false
+      "raw_payload_retained": false,
+      "probe_case_id": "getCmdyDDLItemByKind_1"
     },
     {
       "endpoint_id": "getCmdyMonthDDLItemByKind",
@@ -48,7 +49,8 @@
         "item",
         "dispName"
       ],
-      "raw_payload_retained": false
+      "raw_payload_retained": false,
+      "probe_case_id": "getCmdyMonthDDLItemByKind_1"
     },
     {
       "endpoint_id": "getQuoteList",
@@ -64,7 +66,7 @@
       "RtMsg_present": true,
       "RtData_type": "dict",
       "row_count": 1,
-      "byte_count": 717,
+      "byte_count": 716,
       "identity_fields": [
         "SymbolID",
         "DispEName",
@@ -104,6 +106,7 @@
         "CTestVolume"
       ],
       "raw_payload_retained": false,
+      "probe_case_id": "getQuoteList_1",
       "can_narrow_by_contract_month": true
     },
     {
@@ -116,7 +119,7 @@
       "RtMsg_present": true,
       "RtData_type": "dict",
       "row_count": 1,
-      "byte_count": 1191,
+      "byte_count": 1183,
       "identity_fields": [
         "SymbolID",
         "DispEName",
@@ -164,7 +167,8 @@
         "CBidSize5",
         "CAskSize1"
       ],
-      "raw_payload_retained": false
+      "raw_payload_retained": false,
+      "probe_case_id": "getQuoteDetail_1"
     },
     {
       "endpoint_id": "getCmdyDDLItemByKind",
@@ -190,7 +194,8 @@
         "DispEName",
         "CID"
       ],
-      "raw_payload_retained": false
+      "raw_payload_retained": false,
+      "probe_case_id": "getCmdyDDLItemByKind_2"
     },
     {
       "endpoint_id": "getCmdyMonthDDLItemByKind",
@@ -211,7 +216,8 @@
         "item",
         "dispName"
       ],
-      "raw_payload_retained": false
+      "raw_payload_retained": false,
+      "probe_case_id": "getCmdyMonthDDLItemByKind_2"
     },
     {
       "endpoint_id": "getQuoteList",
@@ -227,7 +233,7 @@
       "RtMsg_present": true,
       "RtData_type": "dict",
       "row_count": 1,
-      "byte_count": 721,
+      "byte_count": 720,
       "identity_fields": [
         "SymbolID",
         "DispEName",
@@ -267,6 +273,7 @@
         "CTestVolume"
       ],
       "raw_payload_retained": false,
+      "probe_case_id": "getQuoteList_2",
       "can_narrow_by_contract_month": true
     },
     {
@@ -327,7 +334,8 @@
         "CBidSize5",
         "CAskSize1"
       ],
-      "raw_payload_retained": false
+      "raw_payload_retained": false,
+      "probe_case_id": "getQuoteDetail_2"
     },
     {
       "endpoint_id": "getCmdyMonthDDLItemByKind",
@@ -348,7 +356,8 @@
         "item",
         "dispName"
       ],
-      "raw_payload_retained": false
+      "raw_payload_retained": false,
+      "probe_case_id": "getCmdyMonthDDLItemByKind_3"
     },
     {
       "endpoint_id": "getQuoteListOption",
@@ -364,7 +373,7 @@
       "RtMsg_present": true,
       "RtData_type": "dict",
       "row_count": 340,
-      "byte_count": 206578,
+      "byte_count": 207116,
       "identity_fields": [
         "SymbolID",
         "StrikePrice",
@@ -404,6 +413,7 @@
         "CBestAskSize"
       ],
       "raw_payload_retained": false,
+      "probe_case_id": "getQuoteListOption_1",
       "network_scope": "whole_requested_contract_month_chain",
       "row_size_page_reduced_network_response": false
     },
@@ -423,7 +433,7 @@
       "RtMsg_present": true,
       "RtData_type": "dict",
       "row_count": 340,
-      "byte_count": 206578,
+      "byte_count": 207116,
       "identity_fields": [
         "SymbolID",
         "StrikePrice",
@@ -463,6 +473,7 @@
         "CBestAskSize"
       ],
       "raw_payload_retained": false,
+      "probe_case_id": "getQuoteListOption_2",
       "network_scope": "whole_requested_contract_month_chain",
       "row_size_page_reduced_network_response": false
     },
@@ -482,7 +493,7 @@
       "RtMsg_present": true,
       "RtData_type": "dict",
       "row_count": 340,
-      "byte_count": 206583,
+      "byte_count": 207212,
       "identity_fields": [
         "SymbolID",
         "StrikePrice",
@@ -522,6 +533,7 @@
         "CBestAskSize"
       ],
       "raw_payload_retained": false,
+      "probe_case_id": "getQuoteListOption_3",
       "strike_cp_reduced_network_response": false
     },
     {
@@ -534,7 +546,7 @@
       "RtMsg_present": true,
       "RtData_type": "dict",
       "row_count": 1,
-      "byte_count": 1102,
+      "byte_count": 1096,
       "identity_fields": [
         "SymbolID",
         "DispEName",
@@ -582,7 +594,8 @@
         "CBidSize5",
         "CAskSize1"
       ],
-      "raw_payload_retained": false
+      "raw_payload_retained": false,
+      "probe_case_id": "getQuoteDetail_3"
     },
     {
       "endpoint_id": "getQuoteDetail",
@@ -594,7 +607,7 @@
       "RtMsg_present": true,
       "RtData_type": "dict",
       "row_count": 3,
-      "byte_count": 3372,
+      "byte_count": 3374,
       "identity_fields": [
         "SymbolID",
         "DispEName",
@@ -642,7 +655,8 @@
         "CBidSize5",
         "CAskSize1"
       ],
-      "raw_payload_retained": false
+      "raw_payload_retained": false,
+      "probe_case_id": "getQuoteDetail_4"
     },
     {
       "endpoint_id": "getCalculatedFields",
@@ -654,10 +668,11 @@
       "RtMsg_present": true,
       "RtData_type": "dict",
       "row_count": 0,
-      "byte_count": 113,
+      "byte_count": 116,
       "identity_fields": [],
       "field_names": [],
       "raw_payload_retained": false,
+      "probe_case_id": "getCalculatedFields_1",
       "status_note": "formally_probed_with_dynamic_tx_symbol"
     }
   ],
@@ -668,5 +683,6 @@
     "strike_cp_reduced_network_response": false,
     "raw_payload_retained": false
   },
+  "byte_accounting": "response_and_send_payload_bytes counts response bodies plus SockJS send payload bytes; it does not include HTTP headers and does not include JSON request body bytes for REST requests",
   "raw_payload_retained": false
 }

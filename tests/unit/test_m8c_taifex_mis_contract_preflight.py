@@ -47,3 +47,17 @@ def test_planning_state_has_single_next_task_and_inventory_section():
     assert inv['runtime_adapter_implemented'] is False
     assert inv['runtime_executable'] is False
     assert inv['ai_context_allowed'] is False
+
+def test_final_acceptance_does_not_contain_stale_counter_evidence():
+    text=pathlib.Path('docs/protocol/M8C_00_TAIFEX_MIS_PREFLIGHT_FINAL_ACCEPTANCE.md').read_text()
+    forbidden=['62/62','43/43','6,472','6472','85 frames','87 decoded','frames=85','decoded_messages=87']
+    assert not [token for token in forbidden if token in text]
+    assert '58/58' in text
+    assert '36/36' in text
+    assert 'frame_count=2' in text
+    assert 'decoded_message_count=3' in text
+
+def test_rest_registry_has_probe_case_ids_and_payload_byte_semantics():
+    d=json.loads(pathlib.Path('docs/data_capabilities/m8c_taifex_mis_rest_endpoint_registry.json').read_text())
+    assert 'response_and_send_payload_bytes' in d['byte_accounting']
+    assert all(r.get('probe_case_id') for r in d['records'])

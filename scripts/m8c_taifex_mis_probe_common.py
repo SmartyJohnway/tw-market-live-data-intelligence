@@ -221,7 +221,11 @@ class ProbeBudget:
         if self.reconnect_count > self.max_reconnects: raise LimitReached('reconnect_limit_reached')
 
 def read_budgeted_response(response, *, budget: ProbeBudget, max_response_bytes: int | None = None) -> bytes:
-    limit = max_response_bytes or (budget.max_wire_bytes - budget.wire_bytes)
+    remaining_wire = budget.max_wire_bytes - budget.wire_bytes
+    requested_limit = max_response_bytes if max_response_bytes is not None else remaining_wire
+    limit = min(requested_limit, remaining_wire)
+    if limit < 0:
+        raise LimitReached('wire_byte_limit_reached')
     length=response.headers.get('Content-Length')
     if length and length.isdigit() and int(length)>limit:
         raise LimitReached('wire_byte_limit_reached')
@@ -277,3 +281,35 @@ def resolve_option_identity_exact(rows:list[dict], *, cid:str, month:str, strike
     if not matches: return {'status':'no_symbol_match'}
     if len(matches)>1: return {'status':'multiple_symbol_matches'}
     return {'status':'resolved_from_bootstrap_row','runtime_symbol_id':matches[0].get('SymbolID')}
+
+
+def resolve_option_identity_from_scoped_rows(rows:list[dict], *, scope:dict, strike:str, option_type:str, session_suffix:str)->dict:
+    """Resolve option identity from a validated request scope plus exact row fields.
+
+    getQuoteListOption rows observed in M8C-00 do not carry CID or ExpireMonth.
+    CID/ExpireMonth/MarketType/SymbolType must therefore come from explicit
+    scope provenance, while row matching uses SymbolID/StrikePrice/CP/suffix.
+    """
+    required_scope={'CID','ExpireMonth','MarketType','SymbolType'}
+    missing=[k for k in required_scope if not scope.get(k)]
+    if missing:
+        return {'status':'scope_provenance_missing','missing_scope_fields':missing}
+    if scope.get('SymbolType') != 'O':
+        return {'status':'scope_provenance_inconsistent'}
+    target_strike=_norm_dec(strike); target_cp=normalize_cp(option_type)
+    if target_strike is None or target_cp is None:
+        return {'status':'ambiguous_option_identity'}
+    matches=[]
+    for r in rows:
+        if any(r.get(k) in (None,'') for k in ('SymbolID','StrikePrice','CP')):
+            continue
+        sym=str(r.get('SymbolID')).strip()
+        row_strike=_norm_dec(r.get('StrikePrice'))
+        row_cp=normalize_cp(r.get('CP'))
+        if sym.endswith(session_suffix) and row_strike==target_strike and row_cp==target_cp:
+            matches.append(r)
+    if not matches:
+        return {'status':'no_symbol_match','scope':{k:scope.get(k) for k in sorted(required_scope)}}
+    if len(matches)>1:
+        return {'status':'multiple_symbol_matches','scope':{k:scope.get(k) for k in sorted(required_scope)}}
+    return {'status':'resolved_from_scoped_bootstrap_row','runtime_symbol_id':matches[0].get('SymbolID'),'scope':{k:scope.get(k) for k in sorted(required_scope)}}

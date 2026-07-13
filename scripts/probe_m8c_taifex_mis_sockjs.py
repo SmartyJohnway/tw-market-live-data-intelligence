@@ -78,6 +78,6 @@ if __name__=='__main__':
                 if q['message_type']=='quote' and q.get('symbol') in symbols:
                     quotes[q['symbol']]=quote_summary(m)
         status='successful_initial_state_probe' if set(quotes)==set(symbols) else 'snapshot_incomplete'
-        print(json.dumps(redact({'status':status,'symbols':symbols,'identity':identity,'info':{k:info.get(k) for k in ('websocket','cookie_needed','origins')},'open_frame':'o','send_status':send_status,'quotes':list(quotes.values()),'wire_bytes':budget.wire_bytes,'frame_count':budget.frame_count,'decoded_message_count':budget.decoded_message_count,'duration_seconds':round(time.monotonic()-budget.started,3),'raw_payload_retained':False}),ensure_ascii=False))
+        print(json.dumps(redact({'status':status,'symbols':symbols,'identity':identity,'info':{k:info.get(k) for k in ('websocket','cookie_needed','origins')},'open_frame':'o','send_status':send_status,'quotes':list(quotes.values()),'response_and_send_payload_bytes':budget.wire_bytes,'frame_count':budget.frame_count,'decoded_message_count':budget.decoded_message_count,'duration_seconds':round(time.monotonic()-budget.started,3),'raw_payload_retained':False}),ensure_ascii=False))
     finally:
         s.close()

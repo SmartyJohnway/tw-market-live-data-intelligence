@@ -37,3 +37,8 @@ Weekly option SymbolID must be resolved from official MIS bootstrap rows. Unsupp
 ## Session suffix preflight contract
 
 Candidate suffixes are regular futures `-F`, after-hours futures `-M`, regular options `-O`, and after-hours options `-N`. These suffixes are part of the runtime identity and must be revalidated in M8C-01 for the requested product/month before use.
+
+
+## Scoped option-chain identity rule
+
+Observed option-chain rows may omit `CID` and `ExpireMonth`. The resolver must therefore accept explicit validated request-scope provenance (`CID`, `ExpireMonth`, `MarketType`, `SymbolType`) and match exact row identity only on `SymbolID`, Decimal-normalized `StrikePrice`, normalized `CP`/`CallPut`, and the expected session suffix. Missing or inconsistent scope provenance fails closed; row fields must not be silently filled from target values.

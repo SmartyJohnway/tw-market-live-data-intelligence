@@ -38,4 +38,9 @@ M8C-01 must use the same bounded reader semantics as the preflight tools: reject
 
 ## ProbeBudget requirement
 
-M8C-01 must carry one shared `ProbeBudget` through REST bootstrap, `/rt/info`, XHR open, `xhr_send`, and XHR polling. The budget owns the absolute monotonic deadline, total wire-byte cap, REST row cap, frame cap, decoded-message cap, selector caps, symbol cap, and reconnect cap. Request timeout is `min(single_request_timeout, remaining_total_deadline)`, and every increment is checked immediately after it is added.
+M8C-01 must carry one shared `ProbeBudget` through REST bootstrap, `/rt/info`, XHR open, `xhr_send`, and XHR polling. The budget owns the absolute monotonic deadline, total accounted payload-byte cap (response bodies plus SockJS send payload bytes; HTTP headers excluded), REST row cap, frame cap, decoded-message cap, selector caps, symbol cap, and reconnect cap. Request timeout is `min(single_request_timeout, remaining_total_deadline)`, and every increment is checked immediately after it is added.
+
+
+## Scoped option identity resolution
+
+Because observed `getQuoteListOption` rows do not carry `CID` or `ExpireMonth`, M8C-01 must keep validated request-scope provenance (`CID`, `ExpireMonth`, `MarketType`, `SymbolType`) separate from exact row identity (`SymbolID`, `StrikePrice`, `CP`, session suffix). Option identity resolution must fail closed when scope provenance is absent or inconsistent; it must not substitute target scope values into rows as if those fields were observed.
