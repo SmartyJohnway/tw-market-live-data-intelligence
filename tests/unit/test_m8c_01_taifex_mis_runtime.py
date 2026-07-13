@@ -5,6 +5,8 @@ from scripts.m8c_taifex_mis_limits import RuntimeBudget, LimitError
 from scripts.m8c_taifex_mis_currentness import evaluate_taifex_mis_currentness
 from scripts.m8c_taifex_mis_observation import build_observation
 from scripts.m8c_taifex_mis_http_client import read_bounded_response
+from scripts.m8c_taifex_mis_sockjs_protocol import SockjsProtocolError
+from scripts.m8c_taifex_mis_sockjs_xhr_client import collect_initial_states
 
 class Resp:
     status_code=200
@@ -93,6 +95,51 @@ def test_partial_quote_receipt_returns_partial_source_success():
     assert res['transport_summary']['limit_reached'] is True
     assert len(res['observations'])==2
     assert 'frame_limit_reached' in res['caveats']
+
+
+def test_partial_accepted_states_survive_total_deadline_limit():
+    class DeadlineClock:
+        def __init__(self): self.calls=0
+        def __call__(self):
+            self.calls += 1
+            return 0 if self.calls <= 40 else 2
+    fs=FakeSession(partial_quotes=True)
+    res=execute_taifex_mis_snapshot(operator_confirmed=True, requested_contracts=[{'instrument_type':'future','requested_product_id':'TX','contract_month_or_week':'202607','session':'regular'},{'instrument_type':'future','requested_product_id':'MTX','contract_month_or_week':'202607','session':'regular'}], session_factory=lambda: fs, monotonic_clock=DeadlineClock(), max_total_execution_seconds=1, max_frames=100)
+    assert res['status']=='partial_source_success'
+    assert res['transport_summary']['accepted_initial_state_count']==1
+    assert res['transport_summary']['missing_symbols']==['MXF202607-F']
+    assert res['transport_summary']['termination_reason']=='bounded_time_limit_reached'
+    assert res['transport_summary']['limit_reached'] is True
+    assert [o['runtime_symbol_id'] for o in res['observations'] if o['raw_CTime']=='09:00:20']==['TXF202607-F']
+
+
+def test_partial_accepted_states_survive_decoded_message_limit():
+    fs=FakeSession(partial_quotes=True)
+    res=execute_taifex_mis_snapshot(operator_confirmed=True, requested_contracts=[{'instrument_type':'future','requested_product_id':'TX','contract_month_or_week':'202607','session':'regular'},{'instrument_type':'future','requested_product_id':'MTX','contract_month_or_week':'202607','session':'regular'}], session_factory=lambda: fs, max_decoded_messages=1, max_frames=10)
+    assert res['status']=='partial_source_success'
+    assert res['transport_summary']['accepted_initial_state_count']==1
+    assert res['transport_summary']['missing_symbols']==['MXF202607-F']
+    assert res['transport_summary']['termination_reason']=='decoded_message_limit_reached'
+    assert res['transport_summary']['limit_reached'] is True
+    assert any(o['runtime_symbol_id']=='TXF202607-F' and o['raw_CTime']=='09:00:20' for o in res['observations'])
+
+
+def test_protocol_errors_after_acceptance_are_not_bounded_partial_success():
+    class ProtocolErrorSession(FakeSession):
+        quote_polls=0
+        def post(self,u,**kw):
+            if u.endswith('/xhr') and self.poll>0:
+                self.quote_polls += 1
+                if self.quote_polls > 1:
+                    return Resp(text='x')
+            return super().post(u,**kw)
+    fs=ProtocolErrorSession(partial_quotes=True)
+    budget=RuntimeBudget(max_frames=10)
+    try:
+        collect_initial_states(fs, ['TXF202607-F','MXF202607-F'], budget)
+        assert False
+    except SockjsProtocolError as exc:
+        assert 'sockjs_frame_decode_failure' in str(exc)
 
 
 def test_global_http_error_not_swallowed_as_selector_failure():
