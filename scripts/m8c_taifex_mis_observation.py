@@ -5,7 +5,7 @@ from zoneinfo import ZoneInfo
 from .m8c_taifex_mis_currentness import evaluate_taifex_mis_currentness
 
 QID_MAP={'125':'CLastPrice','129':'CRefPrice','143':'CTime','144':'CDate','145':'Status','404':'CTotalVolume','101':'bid_price_family_1','102':'ask_price_family_1','113':'bid_size_family_1','114':'ask_size_family_1','743':'bid_price_family_2','744':'ask_price_family_2','745':'bid_size_family_2','746':'ask_size_family_2'}
-ACTIVE_STATUS_CODES={'1','trading','active_regular_trading'}
+ACTIVE_STATUS_CODES={'active_regular_trading'}
 
 def dec(v,caveats):
     if v in (None,''): return None

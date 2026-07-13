@@ -2,13 +2,13 @@
   "status": "successful_liveish_snapshot",
   "network_performed": true,
   "timing": {
-    "evaluation_time_asia_taipei": "2026-07-13T13:41:26.992045+08:00"
+    "evaluation_time_asia_taipei": "2026-07-13T14:45:42.958423+08:00"
   },
   "accounting": {
     "rest_request_payload_bytes": 641,
     "sockjs_send_payload_bytes": 83,
-    "response_payload_bytes": 404680,
-    "total_accounted_payload_bytes": 405404,
+    "response_payload_bytes": 415927,
+    "total_accounted_payload_bytes": 416651,
     "rest_rows": 1357,
     "frames": 2,
     "decoded_messages": 3,
@@ -77,20 +77,20 @@
       "strike_price": null,
       "option_type": null,
       "raw_CDate": "20260713",
-      "raw_CTime": "134126",
-      "source_timestamp_asia_taipei": "2026-07-13T13:41:26+08:00",
-      "source_status_code": "0",
+      "raw_CTime": "134459",
+      "source_timestamp_asia_taipei": "2026-07-13T13:44:59+08:00",
+      "source_status_code": "4",
       "market_phase": "market_phase_unresolved",
       "currentness": {
         "transport_state": "completed",
         "session_alignment": "aligned",
         "market_phase": "market_phase_unresolved",
         "source_timestamp_state": "resolved",
-        "quote_age_state": "phase_not_active",
+        "quote_age_state": "outside_regular_session_window",
         "calendar_evidence": "operator_validator",
         "currentness_confidence": "bounded_policy_not_exchange_sla",
         "retrieved_at_freshness_ignored_for_upgrade": true,
-        "overall_ai_currentness": "market_phase_unresolved"
+        "overall_ai_currentness": "session_alignment_unresolved"
       },
       "network_scope": "exact_contract_month",
       "retained_scope": "exact_runtime_symbol",
@@ -111,20 +111,20 @@
       "strike_price": null,
       "option_type": null,
       "raw_CDate": "20260713",
-      "raw_CTime": "134126",
-      "source_timestamp_asia_taipei": "2026-07-13T13:41:26+08:00",
-      "source_status_code": "0",
+      "raw_CTime": "134459",
+      "source_timestamp_asia_taipei": "2026-07-13T13:44:59+08:00",
+      "source_status_code": "4",
       "market_phase": "market_phase_unresolved",
       "currentness": {
         "transport_state": "completed",
         "session_alignment": "aligned",
         "market_phase": "market_phase_unresolved",
         "source_timestamp_state": "resolved",
-        "quote_age_state": "phase_not_active",
+        "quote_age_state": "outside_regular_session_window",
         "calendar_evidence": "operator_validator",
         "currentness_confidence": "bounded_policy_not_exchange_sla",
         "retrieved_at_freshness_ignored_for_upgrade": true,
-        "overall_ai_currentness": "market_phase_unresolved"
+        "overall_ai_currentness": "session_alignment_unresolved"
       },
       "network_scope": "exact_contract_month",
       "retained_scope": "exact_runtime_symbol",
@@ -147,7 +147,7 @@
       "raw_CDate": "20260713",
       "raw_CTime": null,
       "source_timestamp_asia_taipei": null,
-      "source_status_code": "0",
+      "source_status_code": "4",
       "market_phase": "market_phase_unresolved",
       "currentness": {
         "transport_state": "completed",
@@ -170,7 +170,7 @@
   "caveats": [],
   "raw_payload_retained": false,
   "ai_context_allowed": false,
-  "tested_head_sha": "118d4a526495267410fbcfe66dab65ea172e2e9f",
+  "tested_head_sha": "9e549fabbc05ebcbe2af5553e0e64f4af1a4662b",
   "auto_smoke_contracts": [
     {
       "instrument_type": "future",

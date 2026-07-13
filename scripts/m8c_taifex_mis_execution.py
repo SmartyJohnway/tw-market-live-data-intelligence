@@ -26,10 +26,18 @@ def execute_taifex_mis_snapshot(*, operator_confirmed:bool, requested_contracts:
             for r in successes:
                 sel=r['selector']; mode1=transport['accepted_initial_states'].get(r['runtime_symbol_id']); obs=build_observation(sel,r,mode1_quote=mode1,detail_row=r.get('detail_row'),list_row=r.get('list_row'),evaluation_time_asia_taipei=evaluation_time_asia_taipei,calendar_context=calendar_context); budget.retain_observation(); observations.append(obs); selector_results.append({'selector':sel.key,'status':'ok' if mode1 else 'snapshot_incomplete','runtime_symbol_id':r['runtime_symbol_id']})
             caveats.extend(transport.get('caveats',[]))
-        if failures and observations: status='partial_source_success'
-        elif failures and not observations: status='source_error'
-        elif observations and len(observations)==len(symbols): status='successful_liveish_snapshot'
-        else: status='snapshot_incomplete'
+        accepted_count=len(transport.get('accepted_initial_states',{}))
+        resolved_count=len(symbols)
+        if failures and accepted_count > 0:
+            status='partial_source_success'
+        elif failures and accepted_count == 0:
+            status='source_error'
+        elif resolved_count > 0 and accepted_count == resolved_count:
+            status='successful_liveish_snapshot'
+        elif accepted_count > 0:
+            status='partial_source_success'
+        else:
+            status='snapshot_incomplete'
     except Exception as e:
         status='partial_source_success' if observations else ('transport_connection_failure' if 'sockjs' in str(type(e)).lower() else 'source_error')
         caveats.append(str(e))

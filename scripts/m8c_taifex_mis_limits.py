@@ -20,8 +20,20 @@ class RuntimeBudget:
     rest_rows:int=0; frames:int=0; decoded_messages:int=0; selectors:int=0; products:int=0; months:int=0; strikes:int=0; symbols:int=0; retained_observations:int=0
     started:float=field(init=False); deadline:float=field(init=False)
     def __post_init__(self):
-        if self.max_total_execution_seconds>MAX_TOTAL_EXECUTION_SECONDS or self.max_accounted_payload_bytes>MAX_ACCOUNTED_PAYLOAD_BYTES or self.max_bootstrap_rows>MAX_BOOTSTRAP_ROWS or self.max_option_chain_rows>MAX_OPTION_CHAIN_ROWS or self.max_frames>MAX_SOCKJS_FRAMES or self.max_decoded_messages>MAX_DECODED_MESSAGES or self.max_retained_observations>MAX_RETAINED_OBSERVATIONS:
-            raise LimitError('caller_limit_exceeds_hard_maximum')
+        limits={
+            'max_total_execution_seconds': (self.max_total_execution_seconds, MAX_TOTAL_EXECUTION_SECONDS),
+            'max_accounted_payload_bytes': (self.max_accounted_payload_bytes, MAX_ACCOUNTED_PAYLOAD_BYTES),
+            'max_bootstrap_rows': (self.max_bootstrap_rows, MAX_BOOTSTRAP_ROWS),
+            'max_option_chain_rows': (self.max_option_chain_rows, MAX_OPTION_CHAIN_ROWS),
+            'max_frames': (self.max_frames, MAX_SOCKJS_FRAMES),
+            'max_decoded_messages': (self.max_decoded_messages, MAX_DECODED_MESSAGES),
+            'max_retained_observations': (self.max_retained_observations, MAX_RETAINED_OBSERVATIONS),
+        }
+        for name,(value,hard_max) in limits.items():
+            if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+                raise LimitError(f'invalid_caller_limit:{name}')
+            if value > hard_max:
+                raise LimitError('caller_limit_exceeds_hard_maximum')
         clock=self.monotonic_clock or time.monotonic; self.started=clock(); self.deadline=self.started+self.max_total_execution_seconds
     def _clock(self):
         clock = self.monotonic_clock or time.monotonic

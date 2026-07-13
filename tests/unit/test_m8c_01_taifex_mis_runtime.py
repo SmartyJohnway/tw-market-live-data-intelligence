@@ -13,11 +13,12 @@ class Resp:
     def iter_content(self, chunk_size=16384):
         for i in range(0,len(self.content),chunk_size): yield self.content[i:i+chunk_size]
 class FakeSession:
-    def __init__(self, fail_mtx=False): self.posts=[]; self.gets=[]; self.closed=False; self.poll=0; self.fail_mtx=fail_mtx
+    def __init__(self, fail_mtx=False, partial_quotes=False, http_fail_products=False): self.posts=[]; self.gets=[]; self.closed=False; self.poll=0; self.fail_mtx=fail_mtx; self.partial_quotes=partial_quotes; self.http_fail_products=http_fail_products
     def get(self,u,**kw): self.gets.append((u,kw)); return Resp({'websocket':True})
     def post(self,u,**kw):
         self.posts.append((u,kw))
         if 'getCmdyDDLItemByKind' in u:
+            if self.http_fail_products: return Resp({'error':'boom'}, status=500)
             st=kw['json']['SymbolType']; return Resp({'RtCode':'0','RtData':{'QuoteList':[{'CID':'TXF'}] if self.fail_mtx else ([{'CID':'TXF'},{'CID':'MXF'}] if st=='F' else [{'CID':'TXO'}])}})
         if 'getCmdyMonthDDLItemByKind' in u: return Resp({'RtCode':'0','RtData':{'QuoteList':[{'item':'202607'}]}})
         if 'getQuoteListOption' in u: return Resp({'RtCode':'0','RtData':{'QuoteListOption':[{'SymbolID':'TXO20260710000C-O','StrikePrice':'10000.0','CP':'C','CDate':'2026/07/13','CTime':'09:00:10','Status':'1'}]}})
@@ -29,7 +30,8 @@ class FakeSession:
         if u.endswith('/xhr'):
             if self.poll==0: self.poll+=1; return Resp(text='o')
             msgs=[]
-            for sym in ['TXF202607-F','MXF202607-F','TXO20260710000C-O']:
+            symbols = ['TXF202607-F'] if self.partial_quotes else ['TXF202607-F','MXF202607-F','TXO20260710000C-O']
+            for sym in symbols:
                 msgs.append(json.dumps({'type':'quote','mode':1,'quote':{'symbol':sym,'values':{'125':'3','144':'2026/07/13','143':'09:00:20','145':'1','101':'1','102':'2','743':'9'}}}))
             return Resp(text='a'+json.dumps(msgs))
         return Resp({})
@@ -40,8 +42,10 @@ def test_operator_confirmation_no_network():
 
 def test_invalid_scope_and_limits_no_network():
     assert execute_taifex_mis_snapshot(operator_confirmed=True, requested_contracts=[{'instrument_type':'future','requested_product_id':'TX','contract_month_or_week':'202607','session':'after_hours'}])['network_performed'] is False
-    try: RuntimeBudget(max_frames=101); assert False
-    except LimitError: pass
+    for kwargs in ({'max_frames':101},{'max_frames':0},{'max_frames':True},{'max_frames':1.5}):
+        try: RuntimeBudget(**kwargs); assert False
+        except LimitError: pass
+    assert execute_taifex_mis_snapshot(operator_confirmed=True, requested_contracts=[{'instrument_type':'future','requested_product_id':'TX','contract_month_or_week':'202607','session':'regular'}], max_frames=0)['network_performed'] is False
 
 def test_semantic_selector_validation_month_weekly_and_strike():
     s=validate_selectors([{'instrument_type':'option','requested_product_id':'TXO','contract_month_or_week':'202607','strike_price':'10,000.00','option_type':'C','session':'regular'}])
@@ -77,6 +81,21 @@ def test_option_scope_and_identity_not_weekly_synthesized():
     fs=FakeSession(); res=execute_taifex_mis_snapshot(operator_confirmed=True, requested_contracts=[{'instrument_type':'option','requested_product_id':'TXO','contract_month_or_week':'202607','strike_price':'10000','option_type':'call','session':'regular'}], session_factory=lambda: fs)
     assert res['observations'][0]['network_scope']=='whole_requested_contract_month_chain'
     assert res['observations'][0]['retained_scope']=='exact_requested_strike_and_option_type'
+
+
+def test_partial_quote_receipt_returns_partial_source_success():
+    fs=FakeSession(partial_quotes=True)
+    res=execute_taifex_mis_snapshot(operator_confirmed=True, requested_contracts=[{'instrument_type':'future','requested_product_id':'TX','contract_month_or_week':'202607','session':'regular'},{'instrument_type':'future','requested_product_id':'MTX','contract_month_or_week':'202607','session':'regular'}], session_factory=lambda: fs, max_frames=2)
+    assert res['status']=='partial_source_success'
+    assert res['transport_summary']['accepted_initial_state_count']==1
+    assert len(res['observations'])==2
+
+
+def test_global_http_error_not_swallowed_as_selector_failure():
+    fs=FakeSession(http_fail_products=True)
+    res=execute_taifex_mis_snapshot(operator_confirmed=True, requested_contracts=[{'instrument_type':'future','requested_product_id':'TX','contract_month_or_week':'202607','session':'regular'}], session_factory=lambda: fs)
+    assert res['status']=='source_error'
+    assert not any(r.get('status')=='identity_resolution_failed' for r in res['selector_results'])
 
 def test_partial_selector_success_preserves_successful_observation():
     fs=FakeSession(fail_mtx=True); res=execute_taifex_mis_snapshot(operator_confirmed=True, requested_contracts=[{'instrument_type':'future','requested_product_id':'TX','contract_month_or_week':'202607','session':'regular'},{'instrument_type':'future','requested_product_id':'MTX','contract_month_or_week':'202607','session':'regular'}], session_factory=lambda: fs)

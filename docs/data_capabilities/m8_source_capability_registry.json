@@ -68,8 +68,17 @@
       "market_scope": {
         "derivatives": "regular-session futures/options bounded initial-state runtime"
       },
-      "instrument_scope": [],
-      "field_groups": [],
+      "instrument_scope": [
+        "regular_session_monthly_futures",
+        "regular_session_monthly_options",
+        "weekly_options_deferred"
+      ],
+      "field_groups": [
+        "mode_1_qid_initial_state",
+        "exact_detail_named_field_fallback",
+        "quote_list_named_field_fallback",
+        "top_of_book_candidate_families_unresolved"
+      ],
       "runtime_available": true,
       "runtime_executable": true,
       "ai_context_allowed": false,
@@ -97,7 +106,8 @@
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
       "source_notes": [
-        "M8C-01 runtime is implemented for controlled bounded execution only; M8C-02 must add currentness-context integration before AI exposure."
+        "M8C-01 runtime is implemented for controlled bounded execution only; M8C-02 must add currentness-context integration before AI exposure.",
+        "M8C-01 monthly-only runtime; weekly option formats YYYYMMF1-F5/YYYYMMW1-W5 deferred pending direct validation."
       ],
       "adapter_implemented": true,
       "preflight_transport_reproduced": true,

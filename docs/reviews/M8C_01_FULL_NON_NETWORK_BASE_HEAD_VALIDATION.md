@@ -2,7 +2,7 @@
 
 Base SHA: `00760f0a4cb06ac9455d5210da3556863eb691c2`.
 
-PR-head validation on July 13, 2026 ran `python scripts/run_test_profile.py full-non-network --json` against tested code containing the M8C-01 runtime hardening. The run collected 1279 tests, selected 1278, passed 1270, skipped 1, deselected 1, and failed only the known seven M5D/M5E frontend-publication baseline drift tests. No new M8/M8C regression was introduced. M8-family focused tests and default CI passed.
+PR-head validation on July 13, 2026 ran `python scripts/run_test_profile.py full-non-network --json` against tested code containing the M8C-01 runtime hardening. The run collected 1281 tests, selected 1280, passed 1272, skipped 1, deselected 1, and failed only the known seven M5D/M5E frontend-publication baseline drift tests. No new M8/M8C regression was introduced. M8-family focused tests and default CI passed.
 
 Known unchanged failures:
 

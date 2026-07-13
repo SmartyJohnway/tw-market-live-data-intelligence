@@ -9,3 +9,8 @@ Execution uses one ephemeral HTTP session: REST product/month/CID validation, ex
 Options use whole requested contract-month chain as network scope and exact strike/type as retained scope. Weekly SymbolIDs are never synthesized.
 
 Result statuses are `operator_confirmation_required`, `rejected_invalid_scope`, `successful_liveish_snapshot`, `partial_source_success`, `snapshot_incomplete`, `transport_bootstrap_failure`, `transport_connection_failure`, or `source_error`. Results include compact timing, accounting, transport summary, selector results, observations, and caveats; they never include raw REST payloads, raw SockJS frames, full option chains, cookies, SockJS session IDs, `trueValues`, or complete QID maps.
+
+
+## Monthly-only scope
+
+M8C-01 runtime selectors are narrowed to monthly `YYYYMM` contracts only. Weekly option selector formats such as `YYYYMMF1-F5` and `YYYYMMW1-W5` remain deferred until exact DDL validation and row-based SymbolID resolution are separately accepted; weekly SymbolIDs are never synthesized.
