@@ -130,7 +130,10 @@
       "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
       "next_task_status": "awaiting_operator_prioritization",
       "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
-      "m8c_02_evidence_artifact": "research/probe_runs/m8c_02_taifex_mis_context/m8c_02_context_integration_summary.json"
+      "m8c_02_evidence_artifact": "research/probe_runs/m8c_02_taifex_mis_context/m8c_02_context_integration_summary.json",
+      "actual_pr_closure_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
+      "actual_execution_head_sha": "b55cf800561f9997991a82b34013ff0564052710",
+      "execution_sha_matches_tested_remote_sha": true
     },
     {
       "source_id": "TWSE_OPENAPI",
@@ -549,7 +552,8 @@
     "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
     "m8c_02_taifex_mis_context_integration_complete": true,
     "taifex_mis_ai_context_allowed": true,
-    "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710"
+    "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
+    "actual_pr_closure_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6"
   },
   "planning_state": {
     "next_task": null,
@@ -560,10 +564,17 @@
     "implemented_through_track": "M8C",
     "status": "m8_through_m8c_consolidated_acceptance_pass_with_caveats",
     "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
-    "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710"
+    "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
+    "actual_pr_closure_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6"
   },
   "next_task_status": "awaiting_operator_prioritization",
   "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
   "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
-  "base_sha": "0553e48371d90a7cfceea444ee36c36f7fd44db7"
+  "base_sha": "0553e48371d90a7cfceea444ee36c36f7fd44db7",
+  "actual_pr_closure_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
+  "tested_remote_sha": "b55cf800561f9997991a82b34013ff0564052710",
+  "execution_sha_matches_tested_remote_sha": true,
+  "full_non_network_failure_set_identical": true,
+  "new_m8_failures": [],
+  "new_m8c_failures": []
 }

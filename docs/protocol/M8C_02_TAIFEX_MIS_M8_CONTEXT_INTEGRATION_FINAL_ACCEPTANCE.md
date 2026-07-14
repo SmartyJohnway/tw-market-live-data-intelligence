@@ -47,11 +47,13 @@ Evidence artifact: `research/probe_runs/m8c_02_taifex_mis_context/m8c_02_context
 
 - Base SHA: `0553e48371d90a7cfceea444ee36c36f7fd44db7`.
 - Tested remote code SHA: `b55cf800561f9997991a82b34013ff0564052710`.
+- Actual execution head SHA: `b55cf800561f9997991a82b34013ff0564052710`; clean detached checkout: true; execution SHA matched tested remote SHA: true.
+- PR closure head SHA: `e488e7e05a19687fb72b2ad032afda600b2aebb6`.
 - Runtime status: `successful_liveish_snapshot`.
 - Selector count: 3; selector OK count: 3.
 - Accepted mode=1 initial-state count: 3.
 - Adapter observations: 3 valid, 0 invalid.
-- Currentness statuses observed: `market_phase_unresolved`, `source_timestamp_unresolved`.
+- Currentness statuses observed on exact remote validation: `session_alignment_unresolved`, `source_timestamp_unresolved`.
 - Context roles observed: `supporting_caveated`, `metadata_only`.
 - Primary/supporting/metadata counts: 0 / 2 / 3.
 - Monthly TXO with missing `CTime` remained structurally valid and metadata-only under `source_timestamp_unresolved`.
@@ -62,7 +64,7 @@ Evidence artifact: `research/probe_runs/m8c_02_taifex_mis_context/m8c_02_context
 
 ## Validation results
 
-Required M8C/M8/default validations passed. Full non-network validation matched the accepted baseline caveat set: 1321 passed, 1 skipped, 1 deselected, and 7 known unrelated M5D/M5E frontend-publication failures, with no new M8 or M8C failures.
+Required M8C/M8/default validations passed. Full non-network base/head comparison is recorded in the evidence artifact: base `0553e48371d90a7cfceea444ee36c36f7fd44db7` collected 1284, selected 1283, passed 1275, skipped 1, deselected 1, failed 7; tested `b55cf800561f9997991a82b34013ff0564052710` collected 1330, selected 1329, passed 1321, skipped 1, deselected 1, failed 7. The failure set is identical and consists only of the known unrelated M5D/M5E frontend-publication failures; `new_m8_failures=[]` and `new_m8c_failures=[]`.
 
 ## Final registry state
 
