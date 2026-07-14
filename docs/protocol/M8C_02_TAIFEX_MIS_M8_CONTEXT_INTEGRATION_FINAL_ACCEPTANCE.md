@@ -62,7 +62,7 @@ Evidence artifact: `research/probe_runs/m8c_02_taifex_mis_context/m8c_02_context
 - No quote values were committed.
 - No recommendation, signal, or ranking was generated.
 
-- Evidence separates `adapter_safe_field_names`, `builder_safe_field_names`, and `conversation_projected_safe_field_names`; exact remote metadata-only conversation projection lists only selector/currentness/context-role fields while value-bearing price, activity, top-of-book, and field-provenance fields are recorded as withheld.
+- Evidence separates `adapter_safe_field_names`, `builder_safe_field_names`, `conversation_projected_safe_field_names`, and `conversation_markdown_display_field_names`; exact remote metadata-only structured conversation safe fields are `contract_identity`, `source_time`, `source_status_code`, and `currentness`, while markdown display fields are limited to selector/currentness/context-role and value-bearing price, activity, top-of-book, and field-provenance fields are recorded as withheld.
 - Quote-free per-observation traceability is retained for TX, MTX, and TXO with symbol, instrument type, adapter validity, mode=1 evidence, source timestamp validity, currentness, context role, AI-safety flag, metadata-only flag, adapter-bypass caveat flag, conversation projected fields, and conversation withheld value fields.
 
 ## Validation results

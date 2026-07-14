@@ -167,9 +167,10 @@
     "top_of_book.canonicalization_status"
   ],
   "conversation_projected_safe_field_names": [
-    "selector",
-    "currentness",
-    "context_role"
+    "contract_identity",
+    "source_time",
+    "source_status_code",
+    "currentness"
   ],
   "conversation_withheld_value_field_names": [
     "price",
@@ -190,15 +191,21 @@
       "metadata_only": true,
       "has_adapter_bypass_caveat": false,
       "conversation_projected_safe_field_names": [
-        "selector",
-        "currentness",
-        "context_role"
+        "contract_identity",
+        "source_time",
+        "source_status_code",
+        "currentness"
       ],
       "conversation_withheld_value_field_names": [
         "price",
         "activity",
         "top_of_book",
         "field_provenance"
+      ],
+      "conversation_markdown_display_field_names": [
+        "selector",
+        "currentness",
+        "context_role"
       ]
     },
     {
@@ -213,15 +220,21 @@
       "metadata_only": true,
       "has_adapter_bypass_caveat": false,
       "conversation_projected_safe_field_names": [
-        "selector",
-        "currentness",
-        "context_role"
+        "contract_identity",
+        "source_time",
+        "source_status_code",
+        "currentness"
       ],
       "conversation_withheld_value_field_names": [
         "price",
         "activity",
         "top_of_book",
         "field_provenance"
+      ],
+      "conversation_markdown_display_field_names": [
+        "selector",
+        "currentness",
+        "context_role"
       ]
     },
     {
@@ -236,18 +249,29 @@
       "metadata_only": true,
       "has_adapter_bypass_caveat": false,
       "conversation_projected_safe_field_names": [
-        "selector",
-        "currentness",
-        "context_role"
+        "contract_identity",
+        "source_time",
+        "source_status_code",
+        "currentness"
       ],
       "conversation_withheld_value_field_names": [
         "price",
         "activity",
         "top_of_book",
         "field_provenance"
+      ],
+      "conversation_markdown_display_field_names": [
+        "selector",
+        "currentness",
+        "context_role"
       ]
     }
   ],
   "value_bearing_fields_withheld_when_metadata_only": true,
-  "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6"
+  "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
+  "conversation_markdown_display_field_names": [
+    "selector",
+    "currentness",
+    "context_role"
+  ]
 }
