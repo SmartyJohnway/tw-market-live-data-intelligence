@@ -65,6 +65,10 @@ def _as_list(value: Any) -> list[Any]:
     return [value]
 
 
+def _bounded_string_list(value: Any, *, max_length: int = 240) -> list[str]:
+    return [item for item in _as_list(value) if isinstance(item, str) and item == item.strip() and 0 < len(item) <= max_length]
+
+
 def _append_unique(items: list[Any], value: Any) -> None:
     if value and value not in items:
         items.append(value)
@@ -126,7 +130,7 @@ def _scrub_safe_fields(observation: dict, caveats: list[str]) -> tuple[dict, lis
     safe_fields = observation.get("safe_fields") or {}
     if not isinstance(safe_fields, dict):
         safe_fields = {}
-    omitted = _as_list(observation.get("omitted_fields"))
+    omitted = _bounded_string_list(observation.get("omitted_fields"))
     found_forbidden = False
     scrubbed = {}
     for key, value in safe_fields.items():
@@ -143,6 +147,57 @@ def _scrub_safe_fields(observation: dict, caveats: list[str]) -> tuple[dict, lis
     return scrubbed, omitted, found_forbidden
 
 
+def _safe_scalar_or_none(value: Any) -> bool:
+    return value is None or (isinstance(value, (str, int, float)) and not isinstance(value, bool)) or isinstance(value, bool)
+
+
+def _dict_exact_scalar(value: Any, allowed: set[str]) -> bool:
+    return isinstance(value, dict) and set(value).issubset(allowed) and all(_safe_scalar_or_none(v) for v in value.values())
+
+
+def _taifex_currentness_schema_valid(value: Any) -> bool:
+    if not isinstance(value, dict):
+        return False
+    allowed = {"overall_ai_currentness", "transport_state", "session_alignment", "market_phase", "source_timestamp_state", "quote_age_state", "calendar_evidence", "currentness_confidence", "retrieved_at_freshness_ignored_for_upgrade", "special_closure_evidence"}
+    for key, item in value.items():
+        if key not in allowed:
+            return False
+        if key == "special_closure_evidence":
+            if item is not None and not _dict_exact_scalar(item, {"source_family", "authority_level", "target_date", "closure_date", "target_date_matches", "evidence_type"}):
+                return False
+        elif not _safe_scalar_or_none(item):
+            return False
+    return True
+
+
+def _taifex_safe_fields_schema_valid(observation: dict) -> bool:
+    safe_fields = observation.get("safe_fields")
+    if not isinstance(safe_fields, dict):
+        return False
+    metadata_keys = {"contract_identity", "source_time", "source_status_code", "currentness"}
+    value_keys = {"price", "activity", "top_of_book", "field_provenance"}
+    allowed_top = metadata_keys | (value_keys if observation.get("observation_valid") is True and observation.get("source_timestamp_valid") is True else set())
+    if not set(safe_fields).issubset(allowed_top):
+        return False
+    if "contract_identity" in safe_fields and not _dict_exact_scalar(safe_fields.get("contract_identity"), {"requested_product_id", "mis_cid", "runtime_symbol_id", "contract_month_or_week", "strike_price", "option_type", "session", "selector"}):
+        return False
+    if "source_time" in safe_fields and not _dict_exact_scalar(safe_fields.get("source_time"), {"source_timestamp", "cdate_raw", "ctime_raw"}):
+        return False
+    if "currentness" in safe_fields and not _taifex_currentness_schema_valid(safe_fields.get("currentness")):
+        return False
+    if "source_status_code" in safe_fields and not _safe_scalar_or_none(safe_fields.get("source_status_code")):
+        return False
+    if "price" in safe_fields and not _dict_exact_scalar(safe_fields.get("price"), {"last", "reference"}):
+        return False
+    if "activity" in safe_fields and not _dict_exact_scalar(safe_fields.get("activity"), {"total_volume"}):
+        return False
+    if "top_of_book" in safe_fields and not _dict_exact_scalar(safe_fields.get("top_of_book"), {"best_bid", "best_ask", "best_bid_size", "best_ask_size", "canonicalization_status"}):
+        return False
+    if "field_provenance" in safe_fields and not _dict_exact_scalar(safe_fields.get("field_provenance"), {"last", "reference", "total_volume"}):
+        return False
+    return True
+
+
 def _taifex_adapter_envelope_valid(observation: dict) -> bool:
     provenance = observation.get("provenance") or {}
     validation = observation.get("adapter_validation") or {}
@@ -151,6 +206,8 @@ def _taifex_adapter_envelope_valid(observation: dict) -> bool:
     if provenance.get("adapter_schema_version") != TAIFEX_MIS_ADAPTER_SCHEMA_VERSION or provenance.get("raw_payload_retained") is not False:
         return False
     if validation.get("schema_version") != TAIFEX_MIS_ADAPTER_VALIDATION_SCHEMA_VERSION:
+        return False
+    if not _taifex_safe_fields_schema_valid(observation):
         return False
     bool_pairs = [
         (validation.get("valid"), observation.get("observation_valid")),
@@ -162,8 +219,6 @@ def _taifex_adapter_envelope_valid(observation: dict) -> bool:
 
 
 def _taifex_fail_closed_bypass(observation: dict, caveats: list[str]) -> dict:
-    safe_fields = observation.get("safe_fields") if isinstance(observation.get("safe_fields"), dict) else {}
-    sanitized_safe_fields = {k: v for k, v in safe_fields.items() if k in TAIFEX_MIS_METADATA_SAFE_FIELD_KEYS}
     currentness = {"overall_ai_currentness": "source_specific_currentness_unresolved"}
     validation = dict(observation.get("adapter_validation") or {})
     validation.setdefault("schema_version", TAIFEX_MIS_ADAPTER_VALIDATION_SCHEMA_VERSION)
@@ -184,9 +239,9 @@ def _taifex_fail_closed_bypass(observation: dict, caveats: list[str]) -> dict:
         "retrieved_at_utc": None,
         "session": "regular" if observation.get("session") == "regular" else None,
         "currentness": currentness,
-        "safe_fields": sanitized_safe_fields,
-        "omitted_fields": _as_list(observation.get("omitted_fields")),
-        "caveats": _as_list(observation.get("caveats")),
+        "safe_fields": {},
+        "omitted_fields": _bounded_string_list(observation.get("omitted_fields")),
+        "caveats": _bounded_string_list(observation.get("caveats")),
         "provenance": {"adapter_schema_version": TAIFEX_MIS_ADAPTER_SCHEMA_VERSION, "raw_payload_retained": False},
         "adapter_validation": validation,
         "observation_valid": False,
@@ -355,7 +410,7 @@ def build_multi_source_market_context(observations: list[dict], source_registry:
         policy = lookup.get(sid)
         known = policy is not None
         caveats = []
-        _extend_unique(caveats, _as_list(obs.get("caveats")))
+        _extend_unique(caveats, _bounded_string_list(obs.get("caveats")))
         if known and sid == "TAIFEX_MIS" and not _taifex_adapter_envelope_valid(obs):
             obs = _taifex_fail_closed_bypass(obs, caveats)
         if known and sid == "TAIFEX_MIS":

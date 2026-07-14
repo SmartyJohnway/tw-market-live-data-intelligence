@@ -67,8 +67,8 @@ def test_projection_formats_values_when_policy_enabled_and_withholds_missing_cti
     convo = build_controlled_conversation_context(build_multi_source_market_context(observations, REG_TRUE, now_utc="2026-07-13T01:00:05Z"))
     md = convo["sections"][0]["markdown"]
     assert "TAIFEX MIS bounded futures snapshot" in md
-    assert "TAIFEX MIS bounded options snapshot" in md
-    assert "strike=20000" in md and "option_type=call" in md
+    assert "TAIFEX MIS metadata-only selector record" in md
+    assert "bounded options snapshot" not in md
     assert "last=100" in md
     opt = convo["sections"][0]["instrument_contexts"][1]["contexts"][0]
     assert "price" not in opt["safe_fields"]
@@ -413,3 +413,47 @@ def test_identifier_with_newline_control_or_untrimmed_text_is_rejected():
     assert adapted["safe_fields"]["contract_identity"]["requested_product_id"] is None
     assert adapted["safe_fields"]["contract_identity"]["mis_cid"] is None
     assert adapted["safe_fields"]["contract_identity"]["runtime_symbol_id"] is None
+
+
+def test_forged_complete_envelope_with_arbitrary_safe_metadata_fails_closed():
+    forged = build_taifex_mis_m8_observations({"observations":[raw()]})[0]
+    forged["safe_fields"] = {"contract_identity":{"runtime_symbol_id":"TXF202607-F", "nested":{"arbitrary":"container"}}, "source_time":{"source_timestamp":"2026-07-13T09:00:00+08:00"}, "currentness":{"overall_ai_currentness":"active_session_fresh_liveish"}, "price":{"last":"100"}}
+    ctx = build_multi_source_market_context([forged], REG_TRUE, now_utc="2026-07-13T01:00:05Z")["instrument_contexts"][0]["contexts"][0]
+    assert ctx["metadata_only"] is True
+    assert ctx["safe_fields"] == {}
+    assert any("adapter envelope" in c for c in ctx["caveats"])
+
+
+def test_invalid_envelope_safe_fields_omitted_fields_and_caveats_are_sanitized():
+    direct = {"source_id":"TAIFEX_MIS", "symbol":"TXF202607-F", "safe_fields":{"contract_identity":{"runtime_symbol_id":{"container":"bad"}}, "currentness":{"raw_payload":"bad"}}, "omitted_fields":[{"bad":"container"}, "raw_payload"], "caveats":[{"bad":"container"}, ["bad"], "bounded caveat"], "currentness":{"raw_payload":"bad"}}
+    ctx = build_multi_source_market_context([direct], REG_TRUE, now_utc="2026-07-13T01:00:05Z")["instrument_contexts"][0]["contexts"][0]
+    assert ctx["safe_fields"] == {}
+    assert ctx["omitted_fields"] == ["raw_payload"]
+    assert "bounded caveat" in ctx["caveats"]
+    assert not any(isinstance(c, (dict, list)) for c in ctx["caveats"])
+    convo = build_controlled_conversation_context(build_multi_source_market_context([direct], REG_TRUE, now_utc="2026-07-13T01:00:05Z"))
+    assert convo["context_status"] != "blocked"
+
+
+def test_projection_discards_unsafe_sources_and_caveats_when_raw_detected():
+    multi = build_multi_source_market_context([], REG_TRUE, now_utc="2026-07-13T01:00:05Z")
+    multi["sources"] = [{"source_id":"TAIFEX_MIS", "raw_payload":"secret"}]
+    multi["cross_source_caveats"] = ["raw_payload secret"]
+    multi["instrument_contexts"] = []
+    convo = build_controlled_conversation_context(multi)
+    section = convo["sections"][0]
+    assert convo["context_status"] == "blocked"
+    assert section["sources"] == []
+    assert section["instrument_contexts"] == []
+    assert section["summary"] == {}
+    assert section["caveats"] == ["forbidden raw field detected after projection"]
+    assert "raw_payload secret" not in str(section)
+
+
+def test_source_timestamp_unresolved_txo_and_invalid_futures_markdown_are_metadata_only():
+    txo = build_taifex_mis_m8_observations({"observations":[raw("source_timestamp_unresolved", None, inst="option")]})[0]
+    invalid_future = build_taifex_mis_m8_observations({"observations":[raw(requested_product_id="TX\n")]})[0]
+    md = build_controlled_conversation_context(build_multi_source_market_context([txo, invalid_future], REG_TRUE, now_utc="2026-07-13T01:00:05Z"))["sections"][0]["markdown"]
+    assert "metadata-only selector record" in md
+    assert "bounded options snapshot" not in md
+    assert "bounded futures snapshot" not in md
