@@ -72,7 +72,7 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 - [M8C TAIFEX MIS runtime currentness contract](protocol/M8C_TAIFEX_MIS_RUNTIME_CURRENTNESS_CONTRACT.md)
 - [M8A live validator](../scripts/validate_m8a_official_eod_live.py)
 - [M8B live validator](../scripts/validate_m8b_taifex_openapi_live.py)
-- Next task: `null`; next task status: `awaiting_operator_prioritization`
+- Next task: `M8R-01-BOUNDED-MARKET-CONTEXT-REQUEST-CONTRACT`; next task status: `operator_approved_not_started`
 
 ## Reviews / acceptance
 

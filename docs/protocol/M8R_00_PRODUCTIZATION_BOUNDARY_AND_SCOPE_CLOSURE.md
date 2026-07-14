@@ -141,9 +141,9 @@ Current product surfaces either predate full M8 (`M5K/M5N`) or are source/task-s
 
 ## 8. M8R definition
 
-`M8R` is approved as `M8 Runtime Productization / Release Track`, with `R` meaning `Runtime Productization / Release`, not a new architecture generation.
+`M8R` is conditionally approved as `M8 Runtime Productization / Release Track`, with `R` meaning `Runtime Productization / Release`, not a new architecture generation.
 
-M8R is a productization track over the existing canonical M8/M8A/M8B/M8C contracts and implementations. It may orchestrate, package, project, render, and expose existing M8 context.
+M8R is accepted in principle, subject to the stated pre-runtime conditions, as a productization track over the existing canonical M8/M8A/M8B/M8C contracts and implementations. It may orchestrate, package, project, render, and expose existing M8 context.
 
 ## 9. M8R non-definition
 
@@ -306,18 +306,29 @@ Current code has conceptual overlap in older M5 artifacts (`freshness_status`, `
 
 ## 16. Approval-semantics boundary
 
-Future M8R-05 invariant: the executed request must be identical to the explicitly approved plan.
+Future M8R approval invariant: the executed request must be identical to the explicitly approved plan. Approval semantics are defined in M8R-01, enforced by M8R-02, and exposed through operator/UI surfaces in M8R-05.
 
-Required approval model:
+M8R-01 must define, without network execution:
 
-- `plan_id` generated from normalized request;
-- `plan_hash` over normalized targets, source families, network scope, retained scope, output scope, and non-goal flags;
-- approval artifact or UI event that records `plan_hash`;
-- execute request must provide the approved `plan_id` and `plan_hash`;
-- executor must recompute and compare immutable scope before network execution;
-- UI mechanism may be CLI phrase, frontend approval button, MCP confirmation flow, or local API approval artifact.
+- normalized request contract;
+- execution-plan contract;
+- `plan_id` semantics generated from normalized request and plan material;
+- `plan_hash` semantics over normalized targets, source families, network scope, retained scope, output scope, and non-goal flags;
+- `approval_required` flag;
+- approval-artifact schema or abstract approval contract;
+- approved-scope identity;
+- request/plan immutability requirements.
 
-A fixed confirmation phrase may be used by an implementation but is not the long-term approval model by itself.
+M8R-02 must enforce, before any network execution:
+
+- executor accepts only an approved immutable plan artifact;
+- executor recomputes and verifies the plan hash;
+- scope mismatch fails closed before network execution;
+- tests may simulate operator approval through fixtures.
+
+M8R-05 must implement only approval surfaces over the already-defined semantics: CLI confirmation surface, local API approval surface, MCP plan/approve/execute surface, and frontend approval interaction. M8R-05 must not be the first place where approval semantics are defined.
+
+A fixed confirmation phrase may be used by a surface implementation but is not the long-term approval model by itself.
 
 ## 17. M9 and deferred-source exclusion
 
@@ -351,11 +362,11 @@ Do not defer validation until M8R-06.
 
 | Task | Required acceptance |
 |---|---|
-| M8R-01 | request validation fixtures; route compatibility; rejected target semantics; no M9 default source; no second registry/schema |
-| M8R-02 | one-shot execution tests with mocked executors; partial completion; execution receipt; no polling/background/retry/scheduler; no raw payload in product scope |
+| M8R-01 | request validation fixtures; execution-plan and approval-artifact contract fixtures; `plan_id`/`plan_hash` semantics; route compatibility; rejected target semantics; request/plan immutability; no M9 default source; no second registry/schema; no network execution |
+| M8R-02 | one-shot execution tests with mocked executors; approved immutable plan required; plan-hash recomputation; scope mismatch fail-closed before network; partial completion; execution receipt; no polling/background/retry/scheduler; no raw payload in product scope |
 | M8R-03 | `m8_context_core`/derived view consistency; missing-context tests; EOD/live-ish separation; source-health/freshness/currentness separation |
 | M8R-04 | Markdown golden tests; compact/full handoff tests; forbidden wording tests; no current-price overclaim for EOD |
-| M8R-05 | plan immutability; approval-scope; plan-hash; unauthorized execution fail-closed; UI-independent approval artifact |
+| M8R-05 | CLI/API/MCP/frontend approval surface tests over M8R-01/M8R-02 semantics; unauthorized execution fail-closed; approved scope cannot be mutated by any surface |
 | M8R-06 | complete E2E user-scenario closure with no live network requirement by default |
 
 Reusable current tests/scanners: `tests/unit/test_m8_multi_source_context_builder.py`, `tests/unit/test_m8_controlled_conversation_context_integration.py`, M8A/B/C adapter/currentness tests, `tests/test_m5q_source_health.py`, `tests/unit/test_mcp_server.py`, `tests/test_m6e_operator_acceptance.py`, `scripts/governance_forbidden_path_guard.py`, and `scripts/forbidden_behavior_scanner.py`.
@@ -387,11 +398,11 @@ Purpose: lock productization boundaries. User value: prevents scope drift before
 
 ### M8R-01 Bounded Market Context Request Contract
 
-Purpose: define exact request, target identity, source/context selection, route compatibility, and rejected-target semantics. User value: user/AI can request bounded context without ambiguity. Reuses: M5N watchlist, M5K planning, M8 registry. Missing capability: M8-wide request object. Files likely involved: `docs/protocol/`, `config/`, `scripts/`, `tests/unit/`. Tests: validation fixtures, route compatibility, no M9 default source. Network: none. Entry: M8R-00 accepted. Exit: request contract and validator accepted.
+Purpose: define exact normalized request, execution-plan contract, target identity, source/context selection, route compatibility, rejected-target semantics, `plan_id`, `plan_hash`, `approval_required`, approval-artifact/abstract approval contract, approved-scope identity, and request/plan immutability requirements. User value: user/AI can request bounded context without ambiguity and can later approve an exact immutable plan. Reuses: M5N watchlist, M5K planning, M8 registry, M7G approval concepts. Missing capability: M8-wide request and plan object. Files likely involved: `docs/protocol/`, `config/`, `scripts/`, `tests/unit/`. Tests: validation fixtures, route compatibility, plan-hash fixtures, approval-artifact fixtures, no M9 default source. Network: none. Entry: M8R-00 accepted. Exit: request/plan/approval contract and validator accepted.
 
 ### M8R-02 One-shot Market Context Execution Orchestrator
 
-Purpose: compose existing executors once under approved bounded scope. User value: one command produces M8 core inputs. Reuses: M8A/B/C executors, M5K/M7G execution gate concepts. Missing capability: cross-source orchestrator and receipt. Tests: mocked one-shot execution, partial completion, no scheduler/polling/retry. Network: explicit operator-approved only. Entry: M8R-01. Exit: orchestrator creates receipt and M8 context core without product views.
+Purpose: compose existing executors once, accepting only an approved immutable plan artifact from M8R-01. User value: one command produces M8 core inputs only after the exact approved plan is verified. Reuses: M8A/B/C executors, M5K/M7G execution gate concepts. Missing capability: cross-source orchestrator and receipt. Tests: mocked one-shot execution, approved-plan requirement, plan-hash recomputation, scope mismatch fail-closed before network, partial completion, no scheduler/polling/retry. Network: explicit approved-plan execution only. Entry: M8R-01. Exit: orchestrator creates receipt and M8 context core without product views.
 
 ### M8R-03 AI Market Context Product Package
 
@@ -403,7 +414,7 @@ Purpose: compact/full markdown handoff and operator CLI around package generatio
 
 ### M8R-05 Plan / Approval / Execute Surface
 
-Purpose: expose plan/approval/execute semantics through CLI/API/MCP/local surfaces. User value: AI can prepare a plan and user can approve exact scope. Reuses: FastAPI/MCP patterns and M7G approval concepts. Missing capability: immutable plan hash approval. Tests: unauthorized execution fail-closed, plan-hash immutability. Network: execute only after approval. Entry: M8R-04.
+Purpose: implement CLI/API/MCP/frontend approval surfaces over the approval semantics already defined in M8R-01 and enforced in M8R-02. User value: AI can prepare a plan, the user can approve exact scope, and every surface preserves the same immutable approved plan. Reuses: FastAPI/MCP/frontend patterns and M7G approval concepts. Missing capability: operator-facing approval interactions. Tests: unauthorized execution fail-closed, surface cannot mutate approved plan/scope/hash, UI-specific approval artifact handling. Network: execute only through M8R-02 approved immutable plan enforcement. Entry: M8R-04.
 
 ### M8R-06 Final User-scenario Acceptance
 
@@ -454,7 +465,49 @@ Recommended post-MVP bundle: `M8R-E1-OFFICIAL-QUOTE-INTERPRETATION-ENRICHMENT`, 
 | TAIFEX unsupported session/product activation | Preserve M8C fail-closed policy and unsupported session/product missing-context entries |
 | Official EOD becomes current price in AI handoff | EOD/live-ish separation tests and markdown golden tests |
 
-## 25. GO / CONDITIONAL GO / NO-GO conclusion
+## 25. Validation and inspection record
+
+Commands executed for M8R-00 in this PR branch:
+
+| Command | Result | Notes |
+|---|---|---|
+| `git diff --check` | PASS | No whitespace/diff-format errors. |
+| `python scripts/governance_forbidden_path_guard.py` | PASS | Command completed with no forbidden path error. |
+| `python scripts/forbidden_behavior_scanner.py` | PASS | Returned `{"ok": true, "findings": []}`. |
+| `python -m compileall scripts server tests` | PASS | Scripts, server, and tests compiled successfully. |
+| `pytest -m "not network" -v` | FAIL | Full non-network suite was executed on the same effective code state and reported 1321 passed, 1 skipped, 1 deselected, 7 failed. Failure group: existing M5D/frontend-public baseline drift and dependent candidate/materialization assertions. |
+| Representative suite listed below | PASS | 160 passed, 1 warning. |
+
+Full-suite failure detail from `pytest -m "not network" -v`:
+
+- `tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only` failed because candidate validation reported `frontend_public_baseline_drift`.
+- `tests/unit/test_m5d_publication_candidate.py::test_candidate_validates` failed because candidate validation reported `frontend_public_baseline_drift`.
+- `tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current` failed because the committed frontend-public baseline hash for `frontend/public/index.html` did not match the current file hash.
+- `tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation` and `tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file` failed as dependent candidate/simulation assertions after the baseline drift.
+- `tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block` failed because candidate validation still reported `frontend_public_baseline_drift`.
+- `tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate` failed because the generated `frontend_public_baseline.json` hash differed from the committed candidate manifest.
+
+Base-branch reproduction was not performed because this follow-up is constrained to the existing PR branch and the base branch name is not present locally as `main` in this checkout. Causality is therefore classified from unchanged-path evidence and failure scope rather than direct base reproduction: PR #134 changes protocol/index documentation, and this follow-up additionally updates the authoritative M8 source-capability registry plus tests that encoded its active next-task state. It does not modify `frontend/public` artifacts; the failed tests compare existing M5D frontend-public baseline/materialization artifacts against `frontend/public/index.html`. Classification: known pre-existing non-task baseline failure.
+
+Representative suite command:
+
+```bash
+pytest -v \
+  tests/unit/test_m8_multi_source_context_builder.py \
+  tests/unit/test_m8_controlled_conversation_context_integration.py \
+  tests/unit/test_m8_source_freshness_evaluator.py \
+  tests/unit/test_m8_source_governance_foundation.py \
+  tests/unit/test_m8a_official_eod_context_integration.py \
+  tests/unit/test_m8b_taifex_openapi_context_integration.py \
+  tests/unit/test_m8c_02_taifex_mis_context_integration.py \
+  tests/test_m5q_source_health.py \
+  tests/unit/test_mcp_server.py \
+  tests/unit/test_m5k_workflow.py
+```
+
+Result: PASS, `160 passed, 1 warning`.
+
+## 26. GO / CONDITIONAL GO / NO-GO conclusion
 
 `CONDITIONAL_GO` for M8R as `M8 Runtime Productization / Release Track`.
 
@@ -468,13 +521,15 @@ Evidence supports that:
 
 Conditions before M8R-02 runtime implementation:
 
-1. M8R-01 must define and test a bounded request contract with explicit market/symbol/instrument identity and route compatibility.
-2. M8R-01 must add default exclusion tests for M9/research-only sources.
-3. M8R-01/M8R-03 must define machine-readable missing-context semantics.
-4. M8R-03 must enforce `m8_context_core` as canonical and product views as derived.
+1. M8R-01 must define and test a bounded normalized request contract with explicit market/symbol/instrument identity and route compatibility.
+2. M8R-01 must define and test the execution-plan contract, `plan_id`, `plan_hash`, `approval_required`, approval-artifact/abstract approval contract, approved-scope identity, and request/plan immutability requirements without network execution.
+3. M8R-01 must add default exclusion tests for M9/research-only sources.
+4. M8R-01/M8R-03 must define machine-readable missing-context semantics.
+5. M8R-02 must accept only an approved immutable plan artifact, recompute/verify the plan hash, and fail closed on scope mismatch before network execution.
+6. M8R-03 must enforce `m8_context_core` as canonical and product views as derived.
 
-## 26. Exact immediate next task
+## 27. Exact immediate next task
 
 `M8R-01-BOUNDED-MARKET-CONTEXT-REQUEST-CONTRACT`.
 
-M8R-01 must be documentation plus validator/test work only: no live-source expansion, no one-shot orchestrator, no API/MCP/Frontend production surface, and no M9 ingestion.
+M8R-01 must be documentation plus validator/test work only: normalized request contract, execution-plan contract, approval-required/approval-artifact semantics, approved-scope identity, plan immutability, route compatibility, and rejection fixtures; no live-source expansion, no one-shot orchestrator, no network execution, no API/MCP/Frontend production surface, and no M9 ingestion.
