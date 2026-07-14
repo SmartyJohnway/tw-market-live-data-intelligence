@@ -1,52 +1,83 @@
-# M8C-02 TAIFEX MIS M8 context integration staged acceptance
+# M8C-02 TAIFEX MIS M8 context integration final acceptance
 
-Status: `m8c_02_code_staged_pending_remote_validation`.
+Status: `m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats`.
 
-M8C-00 preflight and M8C-01 bounded runtime are accepted upstream. This staged M8C-02 change integrates their operator-confirmed output into pure M8 context infrastructure, but **does not activate TAIFEX MIS AI value context** until exact remote-code bounded TX, MTX, and monthly TXO validation succeeds and an evidence-only closure commit updates the registry.
+## Scope and upstream acceptance
 
-## Adapter schema
+M8C-02 accepts the M8C-00 TAIFEX MIS transport preflight and the M8C-01 bounded regular-session initial-state runtime as upstream inputs. It does not redesign the REST/SockJS runtime and does not add polling, reconnect, delta merge, after-hours execution, weekly-option execution, persistence, public API, frontend, MCP surface, or model call.
 
-`scripts/m8c_taifex_mis_context_adapter.py` converts M8C-01 normalized observations into M8 builder observations with `source_id=TAIFEX_MIS`, `authority_level=official_undocumented`, `timing_class=liveish_intraday_snapshot`, exact `runtime_symbol_id` as `symbol`, and futures/options live-ish context types only after strict validation.
+The accepted pipeline is:
 
-Strict validation requires TAIFEX MIS source identity, instrument type `future` or `option`, regular session, monthly `YYYYMM` contract identity, matching `-F`/`-O` runtime suffix, complete contract identity, `raw_payload_retained=false`, known currentness status, and accepted mode=1 provenance. Unknown values fail closed into metadata-only contexts.
+1. operator-confirmed M8C-01 bounded runtime execution,
+2. pure TAIFEX MIS context adapter,
+3. TAIFEX-MIS-specific currentness bridge,
+4. M8 multi-source context builder,
+5. controlled conversation projection.
 
-Safe fields are limited to contract identity, source time, source status code, currentness, normalized price/activity, canonical top of book, and non-numeric field provenance. Raw payloads, numeric QID maps, raw mode=1 dictionaries, REST records, trueValues, full option chains, cookies, session IDs, and competing top-of-book family dictionaries are omitted. Invalid observations retain only metadata safe fields.
+## Adapter schema and allowlist
 
-## Currentness precedence
+The adapter emits builder-compatible TAIFEX MIS observations with `source_id=TAIFEX_MIS`, `source_family=TAIFEX_MIS`, `authority_level=official_undocumented`, `timing_class=liveish_intraday_snapshot`, `market=taifex`, exact runtime symbol identity, source timestamp metadata, session metadata, currentness metadata, safe fields, omitted fields, caveats, and provenance.
 
-`scripts/m8_taifex_mis_currentness_bridge.py` is the source-specific dispatch for TAIFEX MIS. Its precedence is TAIFEX MIS source-specific currentness, then session/phase/timestamp evidence, then no generic retrieved-at upgrade. Recent `retrieved_at_utc` cannot upgrade closed sessions, unresolved market phase, unresolved session alignment, missing source timestamp, invalid adapter observations, or invalid snapshots.
+Safe fields are limited to normalized contract identity, source time, source status code, source-specific currentness axes, price, activity, canonical top-of-book fields, and field provenance. Raw payloads, numeric QID maps, `trueValues`, raw mode=1 dictionaries, raw REST rows, cookies/session IDs, full option chains, and competing book-family dictionaries remain withheld.
 
-`active_session_fresh_liveish` is primary only when source timestamp exists, `source_timestamp_state=resolved`, `session_alignment=aligned`, `market_phase=active_regular_trading`, `quote_age_state=fresh`, `session=regular`, and accepted mode=1 provenance is present. Inconsistent status/axes become metadata-only with values withheld.
+## Currentness precedence and roles
 
-Mappings:
+TAIFEX MIS uses source-specific currentness before any generic retrieved-at fallback. `retrieved_at_utc` never upgrades a closed, unresolved, or missing-source-timestamp observation.
 
-- `active_session_fresh_liveish` with valid axes -> primary `fresh_intraday_snapshot` with not-realtime caveat.
-- `active_session_aging_liveish` -> supporting `caveated_intraday_snapshot`, role detail `active_aging`.
-- `active_session_stale_liveish` -> supporting `caveated_intraday_snapshot`, role detail `active_stale`.
-- preopen/indicative/halted/noncontinuous phase -> supporting phase-caveated context only.
-- `closed_session_latest_completed` -> supporting `closed_session_reference`, not EOD endpoint data.
-- `special_closure_latest_completed` -> closed reference only with TAIFEX-specific official closure evidence; otherwise unresolved metadata-only.
-- `closed_session_historical` -> supporting historical context only.
-- `market_phase_unresolved` / `session_alignment_unresolved` -> not primary; supporting caveated only when a source timestamp and mode=1 provenance exist.
-- `source_timestamp_unresolved` -> metadata only; market values withheld from conversation projection.
-- no accepted mode=1 / invalid snapshot -> metadata-only or blocked.
+Role mapping remains fail-closed:
+
+- `active_session_fresh_liveish` can become primary only with a valid timezone-aware source timestamp, aligned regular session, active regular-trading phase, fresh quote age, valid contract identity, and accepted mode=1 evidence.
+- Aging or stale live-ish states are supporting only and are not described as current.
+- Preopen, indicative, halted, noncontinuous, closed, historical, unresolved, source-timestamp-unresolved, transport-failure, and missing-initial-state states are supporting or metadata-only according to source evidence.
+- `source_timestamp_unresolved` retains identity/currentness metadata while withholding price, volume, book, and value provenance.
 
 ## Controlled conversation projection
 
-`scripts/m8_controlled_conversation_context.py` trusts TAIFEX MIS only through controlled safe fields and formats compact factual futures/options lines. Known TAIFEX metadata contexts retain contract identity, source time, source status, currentness, and caveats while withholding price, volume, book, and value provenance. A registry with `ai_context_allowed=false` never projects TAIFEX market values.
+TAIFEX MIS conversation projection is metadata-first and source-policy gated. With `ai_context_allowed=true`, only controlled safe fields may be projected. Metadata-only contexts retain contract identity, source time/status, currentness, and caveats, while price, volume, book, and value provenance are withheld.
 
-## Failed/missing selector metadata
+The projection remains factual only. It must not generate recommendations, signals, rankings, directional interpretation, targets, support/resistance language, or automatic market commentary.
 
-The adapter consumes `selector_results`, `transport_summary.missing_symbols`, and overall execution status to generate metadata-only failure contexts for missing or failed symbols. These contexts expose no market values.
+## TAIFEX MIS and TAIFEX OpenAPI coexistence
 
-## TAIFEX MIS + OpenAPI coexistence
+TAIFEX MIS may provide bounded live-ish contract context. TAIFEX OpenAPI remains the official documented EOD/statistical reference. The M8 builder preserves separate source, timing, trade-date, runtime-symbol, and contract provenance; neither source silently overwrites the other.
 
-TAIFEX MIS remains bounded live-ish contract context. TAIFEX OpenAPI remains official EOD/statistical/reference context. The multi-source builder groups them distinctly as `derivatives_liveish` and official EOD/statistical groups; neither overwrites the other and each keeps its source, timing, and trade-date/source-time provenance.
+## Quote-free live integration evidence
+
+Evidence artifact: `research/probe_runs/m8c_02_taifex_mis_context/m8c_02_context_integration_summary.json`.
+
+- Base SHA: `0553e48371d90a7cfceea444ee36c36f7fd44db7`.
+- Tested remote code SHA: `b55cf800561f9997991a82b34013ff0564052710`.
+- Runtime status: `successful_liveish_snapshot`.
+- Selector count: 3; selector OK count: 3.
+- Accepted mode=1 initial-state count: 3.
+- Adapter observations: 3 valid, 0 invalid.
+- Currentness statuses observed: `market_phase_unresolved`, `source_timestamp_unresolved`.
+- Context roles observed: `supporting_caveated`, `metadata_only`.
+- Primary/supporting/metadata counts: 0 / 2 / 3.
+- Monthly TXO with missing `CTime` remained structurally valid and metadata-only under `source_timestamp_unresolved`.
+- No adapter-bypass caveat appeared for the valid TXO metadata context.
+- Raw payload, numeric QIDs, `trueValues`, and full option chain were absent from the projected context.
+- No quote values were committed.
+- No recommendation, signal, or ranking was generated.
+
+## Validation results
+
+Required M8C/M8/default validations passed. Full non-network validation matched the accepted baseline caveat set: 1321 passed, 1 skipped, 1 deselected, and 7 known unrelated M5D/M5E frontend-publication failures, with no new M8 or M8C failures.
+
+## Final registry state
+
+`TAIFEX_MIS` is activated for controlled caveated safe-field AI context with:
+
+- `ai_context_allowed=true`,
+- `ai_exposure_level=controlled_caveated_safe_fields`,
+- `context_integration_added=true`,
+- `conversation_integration_added=true`,
+- `runtime_status=bounded_initial_state_snapshot_runtime_with_controlled_m8_context`,
+- `currentness_integration=taifex_mis_source_specific_fail_closed`,
+- `raw_payload_exposure_allowed=false`,
+- `trading_signal_allowed=false`,
+- `recommendation_allowed=false`.
 
 ## Remaining caveats
 
-Regular session only; monthly YYYYMM contracts only; weekly options deferred; after-hours disabled; cross-midnight semantics unresolved; mode=1 initial state only; no delta merge; no reconnect; no unsubscribe invention; raw numeric status semantics unresolved; TXO may lack CTime; retrieved_at never upgrades source currentness; no raw payload; no full option chain; no raw QID map; no trueValues; no recommendation, signal, ranking, or directional interpretation.
-
-## Validation status
-
-Focused M8C-02 unit coverage verifies currentness precedence, projection allowlisting, raw-field withholding, TAIFEX MIS/OpenAPI coexistence, missing selector metadata, policy gating, and pure imports. Final registry activation remains pending exact remote-code bounded live validation and evidence-only closure.
+Regular session only; monthly `YYYYMM` contracts only; weekly options deferred; after-hours disabled; cross-midnight semantics unresolved; mode=1 initial state only; no delta merge; no reconnect; no unsubscribe invention; raw numeric `Status` semantics unresolved; TXO may lack `CTime`; retrieved-at never upgrades source currentness; no raw payload; no full option chain; no raw QID map; no `trueValues`; no recommendation, signal, ranking, or directional interpretation.

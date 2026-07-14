@@ -1,9 +1,13 @@
-# M8 through M8C consolidated staged acceptance
+# M8 through M8C consolidated acceptance
 
-Status: `m8c_02_code_staged_pending_remote_validation`.
+Status: `m8_through_m8c_consolidated_acceptance_pass_with_caveats`.
 
-Implemented through track: M8C-02 staged code. M8C-00 preflight and M8C-01 bounded runtime remain accepted. M8C-02 adapter, currentness bridge, builder dispatch, and controlled projection code are staged, but consolidated M8-through-M8C final activation is intentionally withheld until exact remote-code bounded TX/MTX/monthly-TXO validation succeeds.
+Implemented through track: `M8C`.
 
-Until that evidence-only closure, TAIFEX MIS `ai_context_allowed=false`, `context_integration_added=false`, and `conversation_integration_added=false` remain in the machine registry. The active next task remains M8C-02 remote validation and final activation.
+M8C-00 TAIFEX MIS transport preflight, M8C-01 bounded TAIFEX MIS initial-state runtime, and M8C-02 TAIFEX MIS M8 context integration are accepted with caveats. The final M8C-02 status is `m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats`.
 
-Consolidated caveats remain: no realtime guarantee, no trading advice, no recommendation, no trading signal, no scheduler, no polling daemon, no startup fetch, no model call, no raw payload exposure, and no persistent market-data cache.
+The consolidated source policy now permits TAIFEX MIS controlled caveated safe-field AI context only through the pure adapter, TAIFEX-specific currentness bridge, M8 multi-source builder, and controlled conversation projection. TAIFEX MIS live-ish contexts coexist with TAIFEX OpenAPI official EOD/statistical reference contexts without overwriting source, timing, or trade-date provenance.
+
+No successor task is operator-approved in this repository state. `next_task=null` and `next_task_status=awaiting_operator_prioritization`.
+
+Remaining consolidated caveats include: no realtime guarantee, no trading recommendations or signals, no raw payload exposure, no persistent polling, no DB/cache writes, no model call, no after-hours/weekly TAIFEX MIS runtime activation, no TAIFEX MIS delta merge, and fail-closed currentness when source timestamp, session, phase, or adapter validation is unresolved.

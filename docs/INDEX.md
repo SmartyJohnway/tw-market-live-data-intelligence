@@ -55,7 +55,7 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 - [M5R Documentation Audit](release/M5R_DOCUMENTATION_AUDIT.md)
 
 
-## M8 through M8B governance and acceptance
+## M8 through M8C governance and acceptance
 
 - [M8 consolidated final acceptance](protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md)
 - [M8 full non-network base/head validation](reviews/M8_THROUGH_M8B_FULL_NON_NETWORK_BASE_HEAD_VALIDATION.md)
@@ -71,7 +71,7 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 - [M8C TAIFEX MIS runtime currentness contract](protocol/M8C_TAIFEX_MIS_RUNTIME_CURRENTNESS_CONTRACT.md)
 - [M8A live validator](../scripts/validate_m8a_official_eod_live.py)
 - [M8B live validator](../scripts/validate_m8b_taifex_openapi_live.py)
-- Next track: `M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE`
+- Next task: `null`; next task status: `awaiting_operator_prioritization`
 
 ## Reviews / acceptance
 

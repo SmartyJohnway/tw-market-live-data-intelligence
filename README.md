@@ -62,7 +62,7 @@ The preflight reuses existing validators and reports `PASS`, `PASS WITH CAVEATS`
 Full release validation remains in [`docs/release/RELEASE_CHECKLIST.md`](docs/release/RELEASE_CHECKLIST.md).
 
 
-## Current M8 architecture (M8 through M8B)
+## Current M8 architecture (M8 through M8C)
 
 M8 adds governed, source-attributed market context on top of the historical M5 local workbench. It is still local-first and operator-controlled: no scheduler, no polling, no startup fetch, no database persistence, no model call, and no trading recommendation.
 
@@ -72,16 +72,18 @@ flowchart LR
   TWSE_OPENAPI[TWSE_OPENAPI] --> CASH[official cash-market EOD context]
   TPEX_OPENAPI[TPEX_OPENAPI] --> CASH
   TAIFEX_OPENAPI[TAIFEX_OPENAPI] --> DERIV[official derivatives EOD/statistical/reference context]
+  TAIFEX_MIS[TAIFEX_MIS] --> LIVE_DERIV[bounded derivatives live-ish/supporting/metadata context]
   NCDR[NCDR/DGPA] --> CLOSURE[closure/currentness supporting evidence]
   LIVE --> BUILDER[M8 multi-source context builder]
   CASH --> BUILDER
   DERIV --> BUILDER
+  LIVE_DERIV --> BUILDER
   CLOSURE --> BUILDER
   BUILDER --> CONVO[controlled conversation context]
   CONVO --> HANDOFF[safe artifact / AI discussion handoff]
 ```
 
-`TAIFEX_MIS` has staged M8C-02 controlled M8 context code pending remote validation. AI value context remains disabled until exact remote-code bounded TX/MTX/monthly-TXO validation closes; it remains not realtime guaranteed, and delta support, after-hours support, weekly options, reconnect, unsubscribe, public API, raw payload exposure, recommendations, rankings, and trading signals remain disabled.
+`TAIFEX_MIS` has accepted M8C-02 controlled M8 context integration after exact remote-code bounded TX/MTX/monthly-TXO validation. AI context is limited to controlled caveated safe fields through the adapter, TAIFEX-specific currentness bridge, M8 builder, and controlled projection; it remains not realtime guaranteed, and delta support, after-hours support, weekly options, reconnect, unsubscribe, public API, raw payload exposure, recommendations, rankings, and trading signals remain disabled.
 
 ### M8 validation examples
 
