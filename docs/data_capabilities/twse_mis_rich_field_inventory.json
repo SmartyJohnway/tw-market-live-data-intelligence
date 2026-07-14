@@ -1761,9 +1761,9 @@
       "m8c_02_taifex_mis_context_integration_complete": true,
       "taifex_mis_ai_context_allowed": true,
       "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
-      "actual_pr_closure_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
       "actual_execution_head_sha": "b55cf800561f9997991a82b34013ff0564052710",
-      "execution_sha_matches_tested_remote_sha": true
+      "execution_sha_matches_tested_remote_sha": true,
+      "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6"
     },
     "milestone_snapshots": {
       "state_at_m8_00_acceptance": {
@@ -1981,9 +1981,9 @@
         "raw numeric Status semantics unresolved",
         "not realtime guaranteed"
       ],
-      "actual_pr_closure_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
       "actual_execution_head_sha": "b55cf800561f9997991a82b34013ff0564052710",
-      "execution_sha_matches_tested_remote_sha": true
+      "execution_sha_matches_tested_remote_sha": true,
+      "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6"
     }
   },
   "runtime_behavior_changed": false,
@@ -2053,8 +2053,8 @@
       "raw numeric Status semantics unresolved",
       "not realtime guaranteed"
     ],
-    "actual_pr_closure_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
     "actual_execution_head_sha": "b55cf800561f9997991a82b34013ff0564052710",
-    "execution_sha_matches_tested_remote_sha": true
+    "execution_sha_matches_tested_remote_sha": true,
+    "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6"
   }
 }

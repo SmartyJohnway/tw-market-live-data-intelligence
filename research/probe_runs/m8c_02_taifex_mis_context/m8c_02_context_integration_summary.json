@@ -59,7 +59,32 @@
   "metadata_count": 3,
   "numeric_qid_present": false,
   "primary_count": 0,
-  "projected_safe_field_names": [
+  "quote_values_committed": false,
+  "raw_payload_committed": false,
+  "raw_payload_present": false,
+  "recommendation_signal_ranking_generated": false,
+  "runtime_overall_status": "successful_liveish_snapshot",
+  "selector_count": 3,
+  "selector_ok_count": 3,
+  "source_specific_currentness_statuses": [
+    "session_alignment_unresolved",
+    "source_timestamp_unresolved"
+  ],
+  "supporting_count": 2,
+  "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
+  "trueValues_present": false,
+  "txo_source_timestamp_unresolved_metadata_only": true,
+  "valid_txo_adapter_bypass_caveat_present": false,
+  "validation_caveat": "live artifact is compact and quote-free; raw runtime values were not committed",
+  "activation_result": "m8c_02_final_activation_closure_pass_with_caveats",
+  "final_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
+  "consolidated_status": "m8_through_m8c_consolidated_acceptance_pass_with_caveats",
+  "tested_remote_sha": "b55cf800561f9997991a82b34013ff0564052710",
+  "actual_execution_head_sha": "b55cf800561f9997991a82b34013ff0564052710",
+  "working_tree_clean": true,
+  "execution_sha_matches_tested_remote_sha": true,
+  "exact_remote_execution_evidence_note": "Exact b55 detached validation summary supersedes earlier local per-observation draft details; no quote values are retained.",
+  "adapter_safe_field_names": [
     "activity",
     "activity.total_volume",
     "contract_identity",
@@ -100,43 +125,129 @@
     "top_of_book.best_bid_size",
     "top_of_book.canonicalization_status"
   ],
-  "quote_values_committed": false,
-  "raw_payload_committed": false,
-  "raw_payload_present": false,
-  "recommendation_signal_ranking_generated": false,
-  "runtime_overall_status": "successful_liveish_snapshot",
-  "selector_count": 3,
-  "selector_ok_count": 3,
-  "source_specific_currentness_statuses": [
-    "session_alignment_unresolved",
-    "source_timestamp_unresolved"
+  "builder_safe_field_names": [
+    "activity",
+    "activity.total_volume",
+    "contract_identity",
+    "contract_identity.contract_month_or_week",
+    "contract_identity.mis_cid",
+    "contract_identity.option_type",
+    "contract_identity.requested_product_id",
+    "contract_identity.runtime_symbol_id",
+    "contract_identity.session",
+    "contract_identity.strike_price",
+    "currentness",
+    "currentness.calendar_evidence",
+    "currentness.currentness_confidence",
+    "currentness.market_phase",
+    "currentness.overall_ai_currentness",
+    "currentness.quote_age_state",
+    "currentness.retrieved_at_freshness_ignored_for_upgrade",
+    "currentness.session_alignment",
+    "currentness.source_timestamp_state",
+    "currentness.special_closure_evidence",
+    "currentness.transport_state",
+    "field_provenance",
+    "field_provenance.last",
+    "field_provenance.reference",
+    "field_provenance.total_volume",
+    "price",
+    "price.last",
+    "price.reference",
+    "source_status_code",
+    "source_time",
+    "source_time.cdate_raw",
+    "source_time.ctime_raw",
+    "source_time.source_timestamp",
+    "top_of_book",
+    "top_of_book.best_ask",
+    "top_of_book.best_ask_size",
+    "top_of_book.best_bid",
+    "top_of_book.best_bid_size",
+    "top_of_book.canonicalization_status"
   ],
-  "supporting_count": 2,
-  "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
-  "trueValues_present": false,
-  "txo_source_timestamp_unresolved_metadata_only": true,
-  "valid_txo_adapter_bypass_caveat_present": false,
-  "validation_caveat": "live artifact is compact and quote-free; raw runtime values were not committed",
-  "withheld_field_names": [
-    "competing_top_of_book_families",
-    "cookies",
-    "full_option_chain",
-    "numeric_qid_keys",
-    "raw_mode_1_dictionary",
-    "raw_payload",
-    "raw_qid_map",
-    "raw_rest_records",
-    "session_ids",
-    "trueValues"
+  "conversation_projected_safe_field_names": [
+    "selector",
+    "currentness",
+    "context_role"
   ],
-  "activation_result": "m8c_02_final_activation_closure_pass_with_caveats",
-  "final_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
-  "consolidated_status": "m8_through_m8c_consolidated_acceptance_pass_with_caveats",
-  "tested_remote_sha": "b55cf800561f9997991a82b34013ff0564052710",
-  "actual_execution_head_sha": "b55cf800561f9997991a82b34013ff0564052710",
-  "working_tree_clean": true,
-  "execution_sha_matches_tested_remote_sha": true,
-  "actual_pr_closure_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
-  "commit_10_pr_head_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
-  "exact_remote_execution_evidence_note": "Exact b55 detached validation summary supersedes earlier local per-observation draft details; no quote values are retained."
+  "conversation_withheld_value_field_names": [
+    "price",
+    "activity",
+    "top_of_book",
+    "field_provenance"
+  ],
+  "per_observation_traceability": [
+    {
+      "symbol": "TXFG6-F",
+      "instrument_type": "futures",
+      "adapter_valid": true,
+      "accepted_mode_1_present": true,
+      "source_timestamp_valid": true,
+      "overall_ai_currentness": "session_alignment_unresolved",
+      "context_role": "supporting_caveated",
+      "safe_for_ai_context": false,
+      "metadata_only": true,
+      "has_adapter_bypass_caveat": false,
+      "conversation_projected_safe_field_names": [
+        "selector",
+        "currentness",
+        "context_role"
+      ],
+      "conversation_withheld_value_field_names": [
+        "price",
+        "activity",
+        "top_of_book",
+        "field_provenance"
+      ]
+    },
+    {
+      "symbol": "MXFG6-F",
+      "instrument_type": "futures",
+      "adapter_valid": true,
+      "accepted_mode_1_present": true,
+      "source_timestamp_valid": true,
+      "overall_ai_currentness": "session_alignment_unresolved",
+      "context_role": "supporting_caveated",
+      "safe_for_ai_context": false,
+      "metadata_only": true,
+      "has_adapter_bypass_caveat": false,
+      "conversation_projected_safe_field_names": [
+        "selector",
+        "currentness",
+        "context_role"
+      ],
+      "conversation_withheld_value_field_names": [
+        "price",
+        "activity",
+        "top_of_book",
+        "field_provenance"
+      ]
+    },
+    {
+      "symbol": "TXO31200G6-O",
+      "instrument_type": "options",
+      "adapter_valid": true,
+      "accepted_mode_1_present": true,
+      "source_timestamp_valid": false,
+      "overall_ai_currentness": "source_timestamp_unresolved",
+      "context_role": "metadata_only",
+      "safe_for_ai_context": false,
+      "metadata_only": true,
+      "has_adapter_bypass_caveat": false,
+      "conversation_projected_safe_field_names": [
+        "selector",
+        "currentness",
+        "context_role"
+      ],
+      "conversation_withheld_value_field_names": [
+        "price",
+        "activity",
+        "top_of_book",
+        "field_provenance"
+      ]
+    }
+  ],
+  "value_bearing_fields_withheld_when_metadata_only": true,
+  "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6"
 }

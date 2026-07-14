@@ -48,7 +48,7 @@ Evidence artifact: `research/probe_runs/m8c_02_taifex_mis_context/m8c_02_context
 - Base SHA: `0553e48371d90a7cfceea444ee36c36f7fd44db7`.
 - Tested remote code SHA: `b55cf800561f9997991a82b34013ff0564052710`.
 - Actual execution head SHA: `b55cf800561f9997991a82b34013ff0564052710`; clean detached checkout: true; execution SHA matched tested remote SHA: true.
-- PR closure head SHA: `e488e7e05a19687fb72b2ad032afda600b2aebb6`.
+- Activation commit SHA: `e488e7e05a19687fb72b2ad032afda600b2aebb6`.
 - Runtime status: `successful_liveish_snapshot`.
 - Selector count: 3; selector OK count: 3.
 - Accepted mode=1 initial-state count: 3.
@@ -61,6 +61,9 @@ Evidence artifact: `research/probe_runs/m8c_02_taifex_mis_context/m8c_02_context
 - Raw payload, numeric QIDs, `trueValues`, and full option chain were absent from the projected context.
 - No quote values were committed.
 - No recommendation, signal, or ranking was generated.
+
+- Evidence separates `adapter_safe_field_names`, `builder_safe_field_names`, and `conversation_projected_safe_field_names`; exact remote metadata-only conversation projection lists only selector/currentness/context-role fields while value-bearing price, activity, top-of-book, and field-provenance fields are recorded as withheld.
+- Quote-free per-observation traceability is retained for TX, MTX, and TXO with symbol, instrument type, adapter validity, mode=1 evidence, source timestamp validity, currentness, context role, AI-safety flag, metadata-only flag, adapter-bypass caveat flag, conversation projected fields, and conversation withheld value fields.
 
 ## Validation results
 
