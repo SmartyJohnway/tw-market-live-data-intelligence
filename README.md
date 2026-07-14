@@ -62,7 +62,7 @@ The preflight reuses existing validators and reports `PASS`, `PASS WITH CAVEATS`
 Full release validation remains in [`docs/release/RELEASE_CHECKLIST.md`](docs/release/RELEASE_CHECKLIST.md).
 
 
-## Current M8 architecture (M8 through M8B)
+## Current M8 architecture (M8 through M8C)
 
 M8 adds governed, source-attributed market context on top of the historical M5 local workbench. It is still local-first and operator-controlled: no scheduler, no polling, no startup fetch, no database persistence, no model call, and no trading recommendation.
 
@@ -72,16 +72,18 @@ flowchart LR
   TWSE_OPENAPI[TWSE_OPENAPI] --> CASH[official cash-market EOD context]
   TPEX_OPENAPI[TPEX_OPENAPI] --> CASH
   TAIFEX_OPENAPI[TAIFEX_OPENAPI] --> DERIV[official derivatives EOD/statistical/reference context]
+  TAIFEX_MIS[TAIFEX_MIS] --> LIVE_DERIV[bounded derivatives live-ish/supporting/metadata context]
   NCDR[NCDR/DGPA] --> CLOSURE[closure/currentness supporting evidence]
   LIVE --> BUILDER[M8 multi-source context builder]
   CASH --> BUILDER
   DERIV --> BUILDER
+  LIVE_DERIV --> BUILDER
   CLOSURE --> BUILDER
   BUILDER --> CONVO[controlled conversation context]
   CONVO --> HANDOFF[safe artifact / AI discussion handoff]
 ```
 
-`TAIFEX_MIS` now has an M8C-01 bounded regular-session initial-state runtime with caveats. It remains excluded from AI context/conversation integration until M8C-02; no realtime guarantee, delta support, after-hours support, reconnect, unsubscribe, public API, or trading signal is enabled.
+`TAIFEX_MIS` has accepted M8C-02 controlled M8 context integration after exact remote-code bounded TX/MTX/monthly-TXO validation. AI context is limited to controlled caveated safe fields through the adapter, TAIFEX-specific currentness bridge, M8 builder, and controlled projection; it remains not realtime guaranteed, and delta support, after-hours support, weekly options, reconnect, unsubscribe, public API, raw payload exposure, recommendations, rankings, and trading signals remain disabled.
 
 ### M8 validation examples
 
@@ -124,7 +126,7 @@ python scripts/validate_m8b_taifex_openapi_live.py \
 | TWSE_OPENAPI | official listed cash EOD | latest EOD | executable | yes | bounded symbols | no historical backfill |
 | TPEX_OPENAPI | official TPEx cash EOD | latest EOD | executable | yes | bounded symbols | no canonical security master |
 | TAIFEX_OPENAPI | official derivatives EOD/statistical/reference | official EOD/reference | executable | yes | bounded selectors/row limits | product/session metadata caveats |
-| TAIFEX_MIS | regular-session futures/options live-ish initial state | M8C-01 bounded adapter implemented | controlled executable only | raw payload retained=false | AI context disabled | pending M8C-02 integration |
+| TAIFEX_MIS | regular-session futures/options live-ish initial state | M8C-02 context code staged pending validation | controlled executable only | raw payload retained=false | AI value context disabled pending validation | staged |
 | NCDR_DGPA_CLOSURE_CAP | supporting closure evidence | event/reference | supporting evidence | yes | compact evidence | not TAIFEX-specific confirmation |
 
 ## Architecture overview

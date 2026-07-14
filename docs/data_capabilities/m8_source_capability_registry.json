@@ -1,7 +1,7 @@
 {
   "schema_version": "m8_source_capability_registry.v1",
-  "status": "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats",
-  "generated_for_task": "M8C-01-TAIFEX-MIS-BOUNDED-REST-SOCKJS-SNAPSHOT-RUNTIME",
+  "status": "m8_through_m8c_consolidated_acceptance_pass_with_caveats",
+  "generated_for_task": "M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE",
   "sources": [
     {
       "source_id": "TWSE_MIS",
@@ -81,24 +81,27 @@
       ],
       "runtime_available": true,
       "runtime_executable": true,
-      "ai_context_allowed": false,
-      "ai_exposure_level": "metadata_only",
-      "primary_use": "controlled bounded regular-session TAIFEX derivatives initial-state observation; AI context disabled until M8C-02",
+      "ai_context_allowed": true,
+      "ai_exposure_level": "controlled_caveated_safe_fields",
+      "primary_use": "controlled bounded regular-session TAIFEX derivatives initial-state observation for source-specific M8 live-ish/supporting/metadata context",
       "allowed_interpretation": [
         "bounded regular-session initial-state observation",
+        "controlled factual safe-field context with explicit currentness caveats",
         "not realtime guaranteed",
-        "not AI context until integrated later"
+        "TAIFEX MIS live-ish context may coexist with TAIFEX OpenAPI EOD/statistical reference"
       ],
       "blocked_interpretation": [
         "no realtime guarantee",
         "no streaming runtime guarantee",
         "no delta support",
         "no after-hours support without direct evidence",
-        "no AI context integration",
-        "no trading signal"
+        "no trading signal",
+        "no recommendation",
+        "no ranking or directional interpretation",
+        "no raw payload exposure"
       ],
       "caveats": [
-        "M8C-01 implements bounded regular-session initial-state runtime with caveats; after-hours, deltas, reconnect, unsubscribe, raw payload exposure, and AI context remain disabled."
+        "M8C-02 accepted after exact remote-code bounded TX/MTX/TXO validation; only controlled safe fields may enter AI context and source-specific currentness remains fail-closed."
       ],
       "credential_required": false,
       "local_first_safe": true,
@@ -106,8 +109,7 @@
       "trading_signal_allowed": false,
       "recommendation_allowed": false,
       "source_notes": [
-        "M8C-01 runtime is implemented for controlled bounded execution only; M8C-02 must add currentness-context integration before AI exposure.",
-        "M8C-01 monthly-only runtime; weekly option formats YYYYMMF1-F5/YYYYMMW1-W5 deferred pending direct validation."
+        "M8C-00 and M8C-01 accepted upstream; M8C-02 accepted after pure adapter, source-specific currentness bridge, builder integration, controlled projection, and quote-free bounded TX/MTX/TXO live validation."
       ],
       "adapter_implemented": true,
       "preflight_transport_reproduced": true,
@@ -117,11 +119,21 @@
       "controlled_runtime_executable": true,
       "m8c_00_preflight_status": "m8c_00_taifex_mis_preflight_pass_with_caveats",
       "preflight_completed_through": "M8C-00",
-      "runtime_status": "bounded_initial_state_snapshot_runtime_implemented_pending_m8c_02_integration",
+      "runtime_status": "bounded_initial_state_snapshot_runtime_with_controlled_m8_context",
       "delta_runtime_executable": false,
-      "context_integration_added": false,
-      "conversation_integration_added": false,
-      "next_task": "M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE"
+      "context_integration_added": true,
+      "conversation_integration_added": true,
+      "next_task": null,
+      "currentness_integration": "taifex_mis_source_specific_fail_closed",
+      "after_hours_runtime_executable": false,
+      "weekly_option_runtime_executable": false,
+      "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
+      "next_task_status": "awaiting_operator_prioritization",
+      "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
+      "m8c_02_evidence_artifact": "research/probe_runs/m8c_02_taifex_mis_context/m8c_02_context_integration_summary.json",
+      "actual_execution_head_sha": "b55cf800561f9997991a82b34013ff0564052710",
+      "execution_sha_matches_tested_remote_sha": true,
+      "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6"
     },
     {
       "source_id": "TWSE_OPENAPI",
@@ -506,8 +518,8 @@
     "no_rotc_route": true,
     "no_emerging_stock_live_route": true
   },
-  "next_task": "M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE",
-  "implemented_through_track": "M8B",
+  "next_task": null,
+  "implemented_through_track": "M8C",
   "active_runtime_source_families": [
     "TWSE_MIS",
     "TAIFEX_MIS",
@@ -519,8 +531,8 @@
     "MOPS"
   ],
   "m8_active_consolidated_status": {
-    "status": "m8_through_m8b_consolidated_acceptance_pass_with_caveats",
-    "implemented_through": "M8B",
+    "status": "m8_through_m8c_consolidated_acceptance_pass_with_caveats",
+    "implemented_through": "M8C",
     "m8_00_governance_complete": true,
     "m8a_twse_tpex_official_eod_complete": true,
     "m8b_taifex_openapi_complete": true,
@@ -533,13 +545,36 @@
     "trading_signal_allowed": false,
     "recommendation_allowed": false,
     "raw_payload_exposure_allowed": false,
-    "next_task": "M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE",
-    "m8c_01_status": "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats"
+    "next_task": null,
+    "m8c_01_status": "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats",
+    "next_task_status": "awaiting_operator_prioritization",
+    "implemented_through_track": "M8C",
+    "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
+    "m8c_02_taifex_mis_context_integration_complete": true,
+    "taifex_mis_ai_context_allowed": true,
+    "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
+    "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6"
   },
   "planning_state": {
-    "next_task": "M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE",
+    "next_task": null,
     "preflight_completed_through": "M8C-00",
     "m8c_00_preflight_status": "m8c_00_taifex_mis_preflight_pass_with_caveats",
-    "m8c_01_status": "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats"
-  }
+    "m8c_01_status": "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats",
+    "next_task_status": "awaiting_operator_prioritization",
+    "implemented_through_track": "M8C",
+    "status": "m8_through_m8c_consolidated_acceptance_pass_with_caveats",
+    "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
+    "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
+    "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6"
+  },
+  "next_task_status": "awaiting_operator_prioritization",
+  "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
+  "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
+  "base_sha": "0553e48371d90a7cfceea444ee36c36f7fd44db7",
+  "tested_remote_sha": "b55cf800561f9997991a82b34013ff0564052710",
+  "execution_sha_matches_tested_remote_sha": true,
+  "full_non_network_failure_set_identical": true,
+  "new_m8_failures": [],
+  "new_m8c_failures": [],
+  "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6"
 }

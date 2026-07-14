@@ -23,7 +23,7 @@ def fs_row(day, month, product='TX'):
 
 def test_registry_active_state_consolidated():
     reg=load_json('docs/data_capabilities/m8_source_capability_registry.json')
-    assert reg['status']=='m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats'
+    assert reg['status']=='m8_through_m8c_consolidated_acceptance_pass_with_caveats'
     active=reg['m8_active_consolidated_status']
     assert active['twse_mis_runtime_executable'] is True
     assert active['twse_openapi_runtime_executable'] is True
@@ -34,7 +34,8 @@ def test_registry_active_state_consolidated():
     assert active['trading_signal_allowed'] is False
     assert active['recommendation_allowed'] is False
     assert active['raw_payload_exposure_allowed'] is False
-    assert active['next_task']=='M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE'
+    assert active['next_task'] is None
+    assert active['next_task_status']=='awaiting_operator_prioritization'
     assert reg['planning_state']['preflight_completed_through']=='M8C-00'
     assert reg['planning_state']['m8c_00_preflight_status']=='m8c_00_taifex_mis_preflight_pass_with_caveats'
 
@@ -90,7 +91,7 @@ def test_docs_and_boundaries():
     assert (ROOT/'docs/protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md').exists()
     readme=(ROOT/'README.md').read_text(encoding='utf-8')
     assert 'Current M8 architecture' in readme
-    assert 'TAIFEX_MIS` now has an M8C-01 bounded regular-session initial-state runtime' in readme
+    assert 'TAIFEX_MIS` has accepted M8C-02 controlled M8 context integration' in readme
     m8b=(ROOT/'docs/protocol/M8B_01_TAIFEX_OPENAPI_OFFICIAL_DERIVATIVES_EOD_FINAL_ACCEPTANCE.md').read_text(encoding='utf-8')
     assert 'PR #129' in m8b and 'bounded retention' in m8b
     index=(ROOT/'docs/INDEX.md').read_text(encoding='utf-8')
@@ -107,7 +108,8 @@ def test_inventory_active_state_and_historical_snapshots():
     assert active['m8a_twse_tpex_official_eod_complete'] is True
     assert active['m8b_taifex_openapi_complete'] is True
     assert active['taifex_mis_runtime_executable'] is True
-    assert active['next_task']=='M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE'
+    assert active['next_task'] is None
+    assert active['next_task_status']=='awaiting_operator_prioritization'
     assert active['preflight_completed_through']=='M8C-00'
     assert active['m8c_00_preflight_status']=='m8c_00_taifex_mis_preflight_pass_with_caveats'
     assert all(active['m8b_taifex_contexts'].values())

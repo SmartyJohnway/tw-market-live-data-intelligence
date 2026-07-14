@@ -162,7 +162,8 @@ def test_registry_policies_remain_safe():
     assert "TPEX_MIS" not in ids
     assert all("rotc_" not in json.dumps(source.get("market_scope", {})) for source in sources)
     assert _source("TAIFEX_MIS")["runtime_executable"] is True
-    assert _source("TAIFEX_MIS")["ai_context_allowed"] is False
+    assert _source("TAIFEX_MIS")["ai_context_allowed"] is True
+    assert _source("TAIFEX_MIS")["ai_exposure_level"] == "controlled_caveated_safe_fields"
     assert _source("TAIFEX_OPENAPI")["runtime_executable"] is True
     assert _source("TWSE_OPENAPI")["runtime_executable"] is True
     assert _source("TPEX_OPENAPI")["runtime_executable"] is True
