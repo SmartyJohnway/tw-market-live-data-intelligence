@@ -66,12 +66,13 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 - [M8C-01 TAIFEX MIS bounded runtime final acceptance](protocol/M8C_01_TAIFEX_MIS_BOUNDED_RUNTIME_FINAL_ACCEPTANCE.md)
 - [M8C-02 TAIFEX MIS M8 context integration final acceptance](protocol/M8C_02_TAIFEX_MIS_M8_CONTEXT_INTEGRATION_FINAL_ACCEPTANCE.md)
 - [M8 through M8C consolidated acceptance](protocol/M8_THROUGH_M8C_CONSOLIDATED_ACCEPTANCE.md)
+- [M8R-00 productization boundary and scope closure](protocol/M8R_00_PRODUCTIZATION_BOUNDARY_AND_SCOPE_CLOSURE.md)
 - [M8C TAIFEX MIS runtime selector/execution contract](protocol/M8C_TAIFEX_MIS_RUNTIME_SELECTOR_AND_EXECUTION_CONTRACT.md)
 - [M8C TAIFEX MIS runtime observation schema](protocol/M8C_TAIFEX_MIS_RUNTIME_OBSERVATION_SCHEMA.md)
 - [M8C TAIFEX MIS runtime currentness contract](protocol/M8C_TAIFEX_MIS_RUNTIME_CURRENTNESS_CONTRACT.md)
 - [M8A live validator](../scripts/validate_m8a_official_eod_live.py)
 - [M8B live validator](../scripts/validate_m8b_taifex_openapi_live.py)
-- Next task: `null`; next task status: `awaiting_operator_prioritization`
+- Next task: `M8R-01-BOUNDED-MARKET-CONTEXT-REQUEST-CONTRACT`; next task status: `operator_approved_not_started`
 
 ## Reviews / acceptance
 
