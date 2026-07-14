@@ -1,0 +1,18 @@
+{
+  "output_policy": {
+    "artifact_root": "research/m8r/planned/fixture-twse"
+  },
+  "request_id": "fixture-tpex",
+  "requested_context_types": [
+    "liveish_observation",
+    "official_eod_reference"
+  ],
+  "schema_version": "m8r_bounded_market_context_request.v1",
+  "targets": [
+    {
+      "instrument_type": "equity",
+      "market": "TPEX",
+      "symbol": "6488"
+    }
+  ]
+}

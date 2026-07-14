@@ -1,0 +1,23 @@
+{
+  "output_policy": {
+    "artifact_root": "research/m8r/planned/fixture-twse"
+  },
+  "request_id": "fixture-weekly",
+  "requested_context_types": [
+    "liveish_observation",
+    "official_eod_reference"
+  ],
+  "schema_version": "m8r_bounded_market_context_request.v1",
+  "targets": [
+    {
+      "call_put": "C",
+      "contract_type": "weekly",
+      "expiry": "202607W1",
+      "instrument_type": "option",
+      "market": "TAIFEX",
+      "strike": "20000",
+      "symbol": "TXO",
+      "underlying": "TX"
+    }
+  ]
+}
