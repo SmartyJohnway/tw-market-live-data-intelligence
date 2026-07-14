@@ -8,6 +8,7 @@ UI, tool-server, or model access.
 from collections import OrderedDict, defaultdict
 import re
 from datetime import datetime, timezone
+from decimal import Decimal
 from typing import Any
 
 from scripts.m8_source_freshness_evaluator import build_source_freshness_assessment
@@ -44,6 +45,11 @@ TAIFEX_MIS_ADAPTER_SCHEMA_VERSION = "m8c_taifex_mis_context_adapter.v1"
 TAIFEX_MIS_ADAPTER_VALIDATION_SCHEMA_VERSION = "m8c_taifex_mis_adapter_validation.v1"
 TAIFEX_MIS_METADATA_SAFE_FIELD_KEYS = {"contract_identity", "source_time", "source_status_code", "currentness"}
 TAIFEX_MIS_IDENTIFIER_RE = re.compile(r"^[A-Za-z0-9_.:/=+-]{1,96}$")
+TAIFEX_MIS_CURRENTNESS_ENUM = {"active_session_fresh_liveish", "active_session_aging_liveish", "active_session_stale_liveish", "preopen", "indicative", "halted", "noncontinuous_phase", "closed_session_latest_completed", "special_closure_latest_completed", "closed_session_historical", "market_phase_unresolved", "session_alignment_unresolved", "source_timestamp_unresolved", "transport_completed_without_valid_snapshot", "no_accepted_mode_1", "source_specific_currentness_unresolved"}
+TAIFEX_MIS_CURRENTNESS_TEXT_AXES = {"overall_ai_currentness", "transport_state", "session_alignment", "market_phase", "source_timestamp_state", "quote_age_state", "calendar_evidence", "currentness_confidence"}
+TAIFEX_MIS_CURRENTNESS_BOOL_AXES = {"retrieved_at_freshness_ignored_for_upgrade"}
+TAIFEX_MIS_PROVENANCE_ENUM = {None, "sockjs_mode_1", "exact_detail_fallback", "quote_list_fallback"}
+TAIFEX_MIS_BOOK_STATUS_ENUM = {"candidate_families_agree", "top_of_book_field_family_unresolved"}
 
 FORBIDDEN_INTERPRETATIONS = [
     "trading advice",
@@ -147,27 +153,133 @@ def _scrub_safe_fields(observation: dict, caveats: list[str]) -> tuple[dict, lis
     return scrubbed, omitted, found_forbidden
 
 
-def _safe_scalar_or_none(value: Any) -> bool:
-    return value is None or (isinstance(value, (str, int, float)) and not isinstance(value, bool)) or isinstance(value, bool)
+def _bounded_text_or_none(value: Any, *, max_length: int = 96) -> bool:
+    return value is None or (isinstance(value, str) and value == value.strip() and 0 < len(value) <= max_length)
 
 
-def _dict_exact_scalar(value: Any, allowed: set[str]) -> bool:
-    return isinstance(value, dict) and set(value).issubset(allowed) and all(_safe_scalar_or_none(v) for v in value.values())
+def _decimal_string_or_none(value: Any, *, non_negative: bool = False, positive: bool = False) -> bool:
+    if value is None:
+        return True
+    if not isinstance(value, str) or value != value.strip() or not value:
+        return False
+    try:
+        parsed = Decimal(value.replace(",", ""))
+    except Exception:
+        return False
+    if not parsed.is_finite():
+        return False
+    if positive and parsed <= 0:
+        return False
+    if non_negative and parsed < 0:
+        return False
+    return True
+
+
+def _tz_iso_or_none(value: Any) -> bool:
+    if value is None:
+        return True
+    if not isinstance(value, str) or value != value.strip() or not value:
+        return False
+    text = value[:-1] + "+00:00" if value.endswith("Z") else value
+    try:
+        parsed = datetime.fromisoformat(text)
+    except ValueError:
+        return False
+    return parsed.tzinfo is not None
+
+
+def _valid_yyyymm_or_none(value: Any) -> bool:
+    if value is None:
+        return True
+    if not isinstance(value, str) or not re.match(r"^\d{6}$", value):
+        return False
+    try:
+        datetime.strptime(value + "01", "%Y%m%d")
+    except ValueError:
+        return False
+    return True
+
+
+def _contract_identity_schema_valid(value: Any) -> bool:
+    if not isinstance(value, dict):
+        return False
+    allowed = {"requested_product_id", "mis_cid", "runtime_symbol_id", "contract_month_or_week", "strike_price", "option_type", "session", "selector"}
+    if not set(value).issubset(allowed):
+        return False
+    runtime_symbol = value.get("runtime_symbol_id")
+    return all([
+        value.get("requested_product_id") is None or _safe_taifex_identifier(value.get("requested_product_id")) is not None,
+        value.get("mis_cid") is None or _safe_taifex_identifier(value.get("mis_cid")) is not None,
+        runtime_symbol is None or (_safe_taifex_identifier(runtime_symbol) is not None and (runtime_symbol.endswith("-F") or runtime_symbol.endswith("-O"))),
+        _valid_yyyymm_or_none(value.get("contract_month_or_week")),
+        _decimal_string_or_none(value.get("strike_price"), positive=True),
+        value.get("option_type") in {None, "call", "put"},
+        value.get("session") in {None, "regular"},
+        value.get("selector") is None or _safe_taifex_identifier(value.get("selector")) is not None,
+    ])
+
+
+def _source_time_schema_valid(value: Any) -> bool:
+    return isinstance(value, dict) and set(value).issubset({"source_timestamp", "cdate_raw", "ctime_raw"}) and _tz_iso_or_none(value.get("source_timestamp")) and _bounded_text_or_none(value.get("cdate_raw")) and _bounded_text_or_none(value.get("ctime_raw"))
+
+
+def _special_closure_evidence_schema_valid(value: Any) -> bool:
+    if value is None:
+        return True
+    if not isinstance(value, dict):
+        return False
+    allowed = {"source_family", "authority_level", "target_date", "closure_date", "target_date_matches", "evidence_type"}
+    if not set(value).issubset(allowed):
+        return False
+    return (
+        value.get("source_family") in {None, "TAIFEX"}
+        and (value.get("authority_level") is None or (isinstance(value.get("authority_level"), str) and value.get("authority_level").startswith("official")))
+        and value.get("evidence_type") in {None, "market_closure"}
+        and (value.get("target_date_matches") is None or isinstance(value.get("target_date_matches"), bool))
+        and _bounded_text_or_none(value.get("target_date"))
+        and _bounded_text_or_none(value.get("closure_date"))
+    )
 
 
 def _taifex_currentness_schema_valid(value: Any) -> bool:
     if not isinstance(value, dict):
         return False
-    allowed = {"overall_ai_currentness", "transport_state", "session_alignment", "market_phase", "source_timestamp_state", "quote_age_state", "calendar_evidence", "currentness_confidence", "retrieved_at_freshness_ignored_for_upgrade", "special_closure_evidence"}
+    allowed = TAIFEX_MIS_CURRENTNESS_TEXT_AXES | TAIFEX_MIS_CURRENTNESS_BOOL_AXES | {"special_closure_evidence"}
+    if not set(value).issubset(allowed):
+        return False
     for key, item in value.items():
-        if key not in allowed:
-            return False
-        if key == "special_closure_evidence":
-            if item is not None and not _dict_exact_scalar(item, {"source_family", "authority_level", "target_date", "closure_date", "target_date_matches", "evidence_type"}):
+        if key == "overall_ai_currentness":
+            if item is not None and item not in TAIFEX_MIS_CURRENTNESS_ENUM:
                 return False
-        elif not _safe_scalar_or_none(item):
+        elif key in TAIFEX_MIS_CURRENTNESS_TEXT_AXES:
+            if not _bounded_text_or_none(item):
+                return False
+        elif key in TAIFEX_MIS_CURRENTNESS_BOOL_AXES:
+            if item is not None and not isinstance(item, bool):
+                return False
+        elif key == "special_closure_evidence" and not _special_closure_evidence_schema_valid(item):
             return False
     return True
+
+
+def _dict_decimal_fields(value: Any, field_policy: dict[str, dict]) -> bool:
+    return isinstance(value, dict) and set(value).issubset(set(field_policy)) and all(_decimal_string_or_none(value.get(k), **field_policy[k]) for k in value)
+
+
+def _top_of_book_schema_valid(value: Any) -> bool:
+    if not isinstance(value, dict) or not set(value).issubset({"best_bid", "best_ask", "best_bid_size", "best_ask_size", "canonicalization_status"}):
+        return False
+    return all([
+        _decimal_string_or_none(value.get("best_bid")),
+        _decimal_string_or_none(value.get("best_ask")),
+        _decimal_string_or_none(value.get("best_bid_size"), non_negative=True),
+        _decimal_string_or_none(value.get("best_ask_size"), non_negative=True),
+        value.get("canonicalization_status") in TAIFEX_MIS_BOOK_STATUS_ENUM,
+    ])
+
+
+def _field_provenance_schema_valid(value: Any) -> bool:
+    return isinstance(value, dict) and set(value).issubset({"last", "reference", "total_volume"}) and all(value.get(k) in TAIFEX_MIS_PROVENANCE_ENUM for k in value)
 
 
 def _taifex_safe_fields_schema_valid(observation: dict) -> bool:
@@ -179,21 +291,21 @@ def _taifex_safe_fields_schema_valid(observation: dict) -> bool:
     allowed_top = metadata_keys | (value_keys if observation.get("observation_valid") is True and observation.get("source_timestamp_valid") is True else set())
     if not set(safe_fields).issubset(allowed_top):
         return False
-    if "contract_identity" in safe_fields and not _dict_exact_scalar(safe_fields.get("contract_identity"), {"requested_product_id", "mis_cid", "runtime_symbol_id", "contract_month_or_week", "strike_price", "option_type", "session", "selector"}):
+    if "contract_identity" in safe_fields and not _contract_identity_schema_valid(safe_fields.get("contract_identity")):
         return False
-    if "source_time" in safe_fields and not _dict_exact_scalar(safe_fields.get("source_time"), {"source_timestamp", "cdate_raw", "ctime_raw"}):
+    if "source_time" in safe_fields and not _source_time_schema_valid(safe_fields.get("source_time")):
         return False
     if "currentness" in safe_fields and not _taifex_currentness_schema_valid(safe_fields.get("currentness")):
         return False
-    if "source_status_code" in safe_fields and not _safe_scalar_or_none(safe_fields.get("source_status_code")):
+    if "source_status_code" in safe_fields and not _bounded_text_or_none(safe_fields.get("source_status_code")):
         return False
-    if "price" in safe_fields and not _dict_exact_scalar(safe_fields.get("price"), {"last", "reference"}):
+    if "price" in safe_fields and not _dict_decimal_fields(safe_fields.get("price"), {"last": {}, "reference": {}}):
         return False
-    if "activity" in safe_fields and not _dict_exact_scalar(safe_fields.get("activity"), {"total_volume"}):
+    if "activity" in safe_fields and not _dict_decimal_fields(safe_fields.get("activity"), {"total_volume": {"non_negative": True}}):
         return False
-    if "top_of_book" in safe_fields and not _dict_exact_scalar(safe_fields.get("top_of_book"), {"best_bid", "best_ask", "best_bid_size", "best_ask_size", "canonicalization_status"}):
+    if "top_of_book" in safe_fields and not _top_of_book_schema_valid(safe_fields.get("top_of_book")):
         return False
-    if "field_provenance" in safe_fields and not _dict_exact_scalar(safe_fields.get("field_provenance"), {"last", "reference", "total_volume"}):
+    if "field_provenance" in safe_fields and not _field_provenance_schema_valid(safe_fields.get("field_provenance")):
         return False
     return True
 

@@ -457,3 +457,43 @@ def test_source_timestamp_unresolved_txo_and_invalid_futures_markdown_are_metada
     assert "metadata-only selector record" in md
     assert "bounded options snapshot" not in md
     assert "bounded futures snapshot" not in md
+
+
+def test_forged_envelope_boolean_int_identity_fields_rejected():
+    forged = build_taifex_mis_m8_observations({"observations":[raw()]})[0]
+    forged["safe_fields"]["contract_identity"]["requested_product_id"] = True
+    forged["safe_fields"]["contract_identity"]["mis_cid"] = 123
+    ctx = build_multi_source_market_context([forged], REG_TRUE, now_utc="2026-07-13T01:00:05Z")["instrument_contexts"][0]["contexts"][0]
+    assert ctx["metadata_only"] is True
+    assert ctx["safe_fields"] == {}
+    assert any("adapter envelope" in c for c in ctx["caveats"])
+
+
+def test_forged_envelope_numeric_month_boolean_timestamp_currentness_and_price_rejected():
+    cases = []
+    month = build_taifex_mis_m8_observations({"observations":[raw()]})[0]
+    month["safe_fields"]["contract_identity"]["contract_month_or_week"] = 202607
+    cases.append(month)
+    timestamp = build_taifex_mis_m8_observations({"observations":[raw()]})[0]
+    timestamp["safe_fields"]["source_time"]["source_timestamp"] = True
+    cases.append(timestamp)
+    currentness = build_taifex_mis_m8_observations({"observations":[raw()]})[0]
+    currentness["safe_fields"]["currentness"]["market_phase"] = True
+    cases.append(currentness)
+    price = build_taifex_mis_m8_observations({"observations":[raw()]})[0]
+    price["safe_fields"]["price"]["last"] = True
+    cases.append(price)
+    for forged in cases:
+        ctx = build_multi_source_market_context([forged], REG_TRUE, now_utc="2026-07-13T01:00:05Z")["instrument_contexts"][0]["contexts"][0]
+        assert ctx["metadata_only"] is True
+        assert ctx["safe_fields"] == {}
+        assert any("adapter envelope" in c for c in ctx["caveats"])
+
+
+def test_valid_adapter_output_still_passes_field_specific_schema_gate():
+    adapted = build_taifex_mis_m8_observations({"observations":[raw()]})[0]
+    ctx = build_multi_source_market_context([adapted], REG_TRUE, now_utc="2026-07-13T01:00:05Z")["instrument_contexts"][0]["contexts"][0]
+    assert ctx["safe_for_ai_context"] is True
+    assert ctx["metadata_only"] is False
+    assert ctx["safe_fields"].get("price", {}).get("last") == "100"
+    assert not any("adapter envelope" in c for c in ctx["caveats"])
