@@ -220,7 +220,7 @@ def test_local_context_identity_preserves_target_market_and_stays_outside_m8_cor
 
 def test_taifex_identity_normalization_and_missing_returned_evidence_fails():
     p=plan_for([option()], sources=["TAIFEX_MIS"]); a=approve(p)
-    good=Fake(returned_identity={"contract_month_or_week":"202607","strike_price":"20000.0","option_type":"CALL","contract_type":"monthly","session":"regular_session"})
+    good=Fake(returned_identity={"underlying":"TX","contract_month_or_week":"202607","strike_price":"20000.0","option_type":"CALL","contract_type":"monthly","session":"regular_session"})
     assert execute_approved_market_context_plan(p,a,executor_registry=registry((("planned_network_fetch","TAIFEX_MIS"),good)),execution_time_utc=NOW,allow_network=True)["execution_status"] in {"ready","ready_with_caveats"}
     for returned in [
         {"contract_month_or_week":"202608","strike_price":"20000.0","option_type":"CALL","contract_type":"monthly","session":"regular"},
@@ -240,3 +240,11 @@ def test_operation_level_blocking_allows_unrelated_operation_to_proceed():
     out=execute_approved_market_context_plan(p,a,executor_registry=registry((("planned_network_fetch","TWSE_MIS"),twse), (("planned_network_fetch","TAIFEX_MIS"),unsupported)),execution_time_utc=NOW,allow_network=True)
     assert out["execution_status"]=="partial" and len(twse.calls)==1
     assert any(r["status"]=="blocked" and r["source_family"]=="TAIFEX_MIS" for r in out["operation_results"])
+
+
+def test_orchestrator_option_identity_requires_underlying_even_if_adapter_claims_success():
+    p=plan_for([option()], sources=["TAIFEX_MIS"]); a=approve(p)
+    no_underlying=Fake(returned_identity={"expiry":"202607","strike":"20000","call_put":"C","contract_type":"monthly","session":"regular"})
+    out=execute_approved_market_context_plan(p,a,executor_registry=registry((("planned_network_fetch","TAIFEX_MIS"),no_underlying)),execution_time_utc=NOW,allow_network=True)
+    assert out["operation_results"][0]["status"]=="failed"
+    assert out["operation_results"][0]["issues"][-1]["code"]=="source_identity_mismatch"

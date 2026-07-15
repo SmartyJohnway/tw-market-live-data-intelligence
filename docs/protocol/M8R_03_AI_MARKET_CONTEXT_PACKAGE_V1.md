@@ -4,7 +4,7 @@ Status: `m8r_03_ai_market_context_package_v1_go`
 
 Decision: `GO`
 
-Recommended immediate successor: `M8R-02A-PRODUCTION-SOURCE-EXECUTOR-ADAPTER-INTEGRATION`
+Recommended immediate successor: `M8R-02B-CONTROLLED-LIVE-EXECUTION-VALIDATION-AND-FINAL-RUNTIME-ACCEPTANCE`
 
 Recommended product successor after M8R-02A: `M8R-04-CONTROLLED-AI-CONVERSATION-HANDOFF`
 
@@ -124,9 +124,10 @@ Required readiness flags remain conservative:
   "package_schema_ready": true,
   "offline_packaging_ready": true,
   "production_orchestrator_contract_ready": true,
-  "production_executor_adapters_ready": false,
+  "production_executor_adapters_ready": true,
   "production_live_execution_ready": false,
-  "m8r_02a_required": true,
+  "m8r_02a_required": false,
+  "m8r_02b_required": true,
   "live_validation_completed": false
 }
 ```
@@ -147,7 +148,7 @@ Validation run for this acceptance used:
 ## Known caveats
 
 - M8R-03 is an offline packaging layer over accepted orchestration outputs; it does not replace M8R-02A.
-- Production network executor adapters remain intentionally not ready until M8R-02A.
+- Production network executor adapters are code-integrated by M8R-02A, but controlled live validation remains intentionally not ready until M8R-02B.
 - Some packages may be `CONDITIONAL_GO` operationally when upstream local/currentness fields are unresolved, but the package layer itself is safe and deterministic.
 
 ## Decision
@@ -160,10 +161,10 @@ Active-state handling:
 M8R-03 status = GO
 next_task = null
 next_task_status = awaiting_operator_acceptance
-recommended_next_task = M8R-02A-PRODUCTION-SOURCE-EXECUTOR-ADAPTER-INTEGRATION
+recommended_next_task = M8R-02B-CONTROLLED-LIVE-EXECUTION-VALIDATION-AND-FINAL-RUNTIME-ACCEPTANCE
 recommended_product_successor_after_m8r02a = M8R-04-CONTROLLED-AI-CONVERSATION-HANDOFF
 production_live_execution_ready = false
-production_executor_adapters_ready = false
+production_executor_adapters_ready = true
 ```
 
 ## Commit 2 hardening notes

@@ -39,15 +39,16 @@ STATUS_ORDER = {"ready": 0, "ready_with_caveats": 1, "partial": 2, "blocked": 3}
 BASE_FORBIDDEN = [
     "not_full_market", "not_trading_signal", "not_prediction", "not_recommendation",
     "not_broker_instruction", "not_guaranteed_realtime",
-    "not_live_production_ready_without_m8r02a", "not_safe_to_infer_missing_values",
+    "not_live_production_ready_without_m8r02b", "not_safe_to_infer_missing_values",
 ]
 PROD = {
     "package_schema_ready": True,
     "offline_packaging_ready": True,
     "production_orchestrator_contract_ready": True,
-    "production_executor_adapters_ready": False,
+    "production_executor_adapters_ready": True,
     "production_live_execution_ready": False,
-    "m8r_02a_required": True,
+    "m8r_02a_required": False,
+    "m8r_02b_required": True,
     "live_validation_completed": False,
 }
 CURRENTNESS_MAP = {
@@ -433,7 +434,6 @@ def build_caveats(package: dict[str, Any], unsafe_reason: str | None = None) -> 
     def add(code: str, severity: str = "warning", scope: str = "package", **extra: Any) -> None:
         caveats.append({"code": code, "severity": severity, "scope": scope, "message": code.replace("_", " "), **{k: v for k, v in extra.items() if v is not None}})
 
-    add("production_executor_adapter_not_ready")
     add("production_live_execution_not_ready")
     if unsafe_reason:
         add(unsafe_reason, "blocking")
