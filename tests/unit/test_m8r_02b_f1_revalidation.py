@@ -7,6 +7,8 @@ from scripts.m8b_taifex_openapi_client import TaifexOpenApiError
 from scripts.m8r_02b_f1_evidence import F1EvidenceConsistencyError, validate_m8r_02b_f1_evidence_consistency
 
 
+REMOTE_SHA = "08d18d9c6c3cfe0f5307c7dfd19afb8ad0d7af49"
+
 def openapi_row(product="TXO", month="202607", strike="40000", call_put="買權", session="一般"):
     return {"Contract": product, "ContractMonth(Week)": month, "StrikePrice": strike, "CallPut": call_put, "TradingSession": session, "Open": "1", "High": "1", "Low": "1", "Close": "1", "Volume": "1", "OpenInterest": "1"}
 
@@ -75,13 +77,14 @@ def test_f1_consistency_validation_accepts_finalized_cross_source_evidence(tmp_p
     root = tmp_path / "run"
     selected = {"product":"TXO","underlying":"TX","expiry":"202607","strike":"40000","call_put":"C","session":"regular"}
     write_json(root / "taifex_option_contract_discovery.json", {"schema_version": SCHEMA_VERSION, "discovery_id":"d1", "completed_at_utc":"2026-07-15T12:00:01Z", "source_results":{"TAIFEX_MIS":{"status":"succeeded"},"TAIFEX_OPENAPI":{"status":"succeeded"}}, "exact_contract_identities":[selected | {"source_evidence":["TAIFEX_MIS","TAIFEX_OPENAPI"]}]})
-    write_json(root / "operator_selected_option_contract.json", {"selected_by_operator": True, "selected_at_utc":"2026-07-15T12:00:02Z", "selected_contract": selected, "discovery_id":"d1"})
+    write_json(root / "operator_selected_option_contract.json", {"selected_by_operator": True, "operator_authorization_reference":"unit_test_authorized_selection", "selected_at_utc":"2026-07-15T12:00:02Z", "selected_contract": selected, "discovery_id":"d1"})
     target = {"symbol":"TXO", "underlying":"TX", "expiry":"202607", "strike":"40000", "call_put":"C", "session":"regular", "derivative_identity": {"underlying":"TX", "expiry":"202607", "strike":"40000", "call_put":"C", "session":"regular"}}
     for cid in ["TAIFEX_MIS_OPTION_EXACT", "TAIFEX_OPENAPI_OPTION_EXACT"]:
         make_case(root, cid, target, selected)
     for cid in ["TPEX_OPENAPI_EOD_6488", "TAIFEX_MIS_FUTURE_EXACT"]:
         write_json(root / "cases" / cid / "validation_case_result.json", {"case_id": cid, "result": "passed_with_caveats", "ai_package_id": "amc-test", "ai_validation": {"valid": True}})
-    write_json(root / "f1_revalidation_manifest.json", {"finalized": True, "f1_network_execution_performed": True, "historical_source_execution_artifacts_unchanged": True, "f1_execution_artifacts_new": True})
+    write_json(root / "f1_revalidation_manifest.json", {"finalized": True, "f1_network_execution_performed": True, "historical_source_execution_artifacts_unchanged": True, "f1_execution_artifacts_new": True, "live_execution_code_base_commit_sha": REMOTE_SHA, "live_execution_patch_commit_sha": REMOTE_SHA})
+    write_json(root / "option_live_execution_manifest.json", {"manifest_role":"option_live_execution_run", "finalized": True, "network_execution_performed": True})
     write_json(root / "f1_revalidation_summary.json", {"retention_audit": {"status":"passed"}})
     assert validate_m8r_02b_f1_evidence_consistency(root)["valid"] is True
 
@@ -90,8 +93,9 @@ def test_f1_consistency_validation_rejects_incomplete_source_evidence(tmp_path):
     root = tmp_path / "run"
     selected = {"product":"TXO","underlying":"TX","expiry":"202607","strike":"40000","call_put":"C","session":"regular"}
     write_json(root / "taifex_option_contract_discovery.json", {"schema_version": SCHEMA_VERSION, "discovery_id":"d1", "completed_at_utc":"2026-07-15T12:00:01Z", "source_results":{"TAIFEX_MIS":{"status":"succeeded"},"TAIFEX_OPENAPI":{"status":"succeeded"}}, "exact_contract_identities":[selected | {"source_evidence":["TAIFEX_MIS"]}]})
-    write_json(root / "operator_selected_option_contract.json", {"selected_by_operator": True, "selected_at_utc":"2026-07-15T12:00:02Z", "selected_contract": selected, "discovery_id":"d1"})
-    write_json(root / "f1_revalidation_manifest.json", {"finalized": True, "f1_network_execution_performed": True, "historical_source_execution_artifacts_unchanged": True, "f1_execution_artifacts_new": True})
+    write_json(root / "operator_selected_option_contract.json", {"selected_by_operator": True, "operator_authorization_reference":"unit_test_authorized_selection", "selected_at_utc":"2026-07-15T12:00:02Z", "selected_contract": selected, "discovery_id":"d1"})
+    write_json(root / "f1_revalidation_manifest.json", {"finalized": True, "f1_network_execution_performed": True, "historical_source_execution_artifacts_unchanged": True, "f1_execution_artifacts_new": True, "live_execution_code_base_commit_sha": REMOTE_SHA, "live_execution_patch_commit_sha": REMOTE_SHA})
+    write_json(root / "option_live_execution_manifest.json", {"manifest_role":"option_live_execution_run", "finalized": True, "network_execution_performed": True})
     with pytest.raises(F1EvidenceConsistencyError) as exc:
         validate_m8r_02b_f1_evidence_consistency(root)
     assert exc.value.reason_code == "f1_selected_contract_source_evidence_incomplete"
@@ -100,3 +104,60 @@ def test_f1_consistency_validation_rejects_incomplete_source_evidence(tmp_path):
 def test_historical_and_new_evidence_separation_contract():
     manifest={'schema_version':'m8r_02b_f1_revalidation_manifest.v1','historical_validation_run_id':'m8r02b-20260715T020000Z','revalidation_run_id':'m8r02b-f1-20260715T120000Z'}
     assert manifest['historical_validation_run_id'] != manifest['revalidation_run_id']
+
+
+def build_valid_root(tmp_path):
+    root = tmp_path / "run_valid"
+    selected = {"product":"TXO","underlying":"TX","expiry":"202607","strike":"40000","call_put":"C","session":"regular"}
+    write_json(root / "taifex_option_contract_discovery.json", {"schema_version": SCHEMA_VERSION, "discovery_id":"d1", "completed_at_utc":"2026-07-15T12:00:01Z", "source_results":{"TAIFEX_MIS":{"status":"succeeded"},"TAIFEX_OPENAPI":{"status":"succeeded"}}, "exact_contract_identities":[selected | {"source_evidence":["TAIFEX_MIS","TAIFEX_OPENAPI"]}]})
+    write_json(root / "operator_selected_option_contract.json", {"selected_by_operator": True, "operator_authorization_reference":"unit_test_authorized_selection", "selected_at_utc":"2026-07-15T12:00:02Z", "selected_contract": selected, "discovery_id":"d1"})
+    target = {"symbol":"TXO", "underlying":"TX", "expiry":"202607", "strike":"40000", "call_put":"C", "session":"regular", "derivative_identity": {"underlying":"TX", "expiry":"202607", "strike":"40000", "call_put":"C", "session":"regular"}}
+    for cid in ["TAIFEX_MIS_OPTION_EXACT", "TAIFEX_OPENAPI_OPTION_EXACT"]:
+        make_case(root, cid, target, selected)
+    for cid in ["TPEX_OPENAPI_EOD_6488", "TAIFEX_MIS_FUTURE_EXACT"]:
+        write_json(root / "cases" / cid / "validation_case_result.json", {"case_id": cid, "result": "passed_with_caveats", "ai_package_id": "amc-test", "ai_validation": {"valid": True}})
+    write_json(root / "f1_revalidation_manifest.json", {"finalized": True, "f1_network_execution_performed": True, "historical_source_execution_artifacts_unchanged": True, "f1_execution_artifacts_new": True, "live_execution_code_base_commit_sha": REMOTE_SHA, "live_execution_patch_commit_sha": REMOTE_SHA})
+    write_json(root / "option_live_execution_manifest.json", {"manifest_role":"option_live_execution_run", "finalized": True, "network_execution_performed": True})
+    write_json(root / "f1_revalidation_summary.json", {"retention_audit": {"status":"passed"}})
+    return root
+
+
+def test_selection_without_operator_authorization_rejected(tmp_path):
+    root = build_valid_root(tmp_path)
+    selection = json.loads((root / "operator_selected_option_contract.json").read_text())
+    selection.pop("operator_authorization_reference")
+    write_json(root / "operator_selected_option_contract.json", selection)
+    with pytest.raises(F1EvidenceConsistencyError) as exc:
+        validate_m8r_02b_f1_evidence_consistency(root)
+    assert exc.value.reason_code == "f1_operator_selection_not_authorized"
+
+
+def test_unresolvable_execution_sha_rejected(tmp_path):
+    root = build_valid_root(tmp_path)
+    manifest = json.loads((root / "f1_revalidation_manifest.json").read_text())
+    manifest["live_execution_patch_commit_sha"] = "0" * 40
+    write_json(root / "f1_revalidation_manifest.json", manifest)
+    with pytest.raises(F1EvidenceConsistencyError) as exc:
+        validate_m8r_02b_f1_evidence_consistency(root)
+    assert exc.value.reason_code == "f1_execution_commit_not_resolvable"
+
+
+def test_remote_ancestor_execution_sha_accepted(tmp_path):
+    root = build_valid_root(tmp_path)
+    assert validate_m8r_02b_f1_evidence_consistency(root)["valid"] is True
+
+
+def test_option_subrun_finalized_false_rejected(tmp_path):
+    root = build_valid_root(tmp_path)
+    write_json(root / "option_live_execution_manifest.json", {"manifest_role":"option_live_execution_run", "finalized": False, "network_execution_performed": True})
+    with pytest.raises(F1EvidenceConsistencyError) as exc:
+        validate_m8r_02b_f1_evidence_consistency(root)
+    assert exc.value.reason_code == "f1_option_run_manifest_not_finalized"
+
+
+def test_option_subrun_network_execution_false_rejected(tmp_path):
+    root = build_valid_root(tmp_path)
+    write_json(root / "option_live_execution_manifest.json", {"manifest_role":"option_live_execution_run", "finalized": True, "network_execution_performed": False})
+    with pytest.raises(F1EvidenceConsistencyError) as exc:
+        validate_m8r_02b_f1_evidence_consistency(root)
+    assert exc.value.reason_code == "f1_option_run_network_provenance_invalid"

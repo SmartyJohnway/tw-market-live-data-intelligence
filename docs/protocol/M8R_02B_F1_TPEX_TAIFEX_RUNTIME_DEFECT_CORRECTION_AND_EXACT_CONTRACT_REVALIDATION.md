@@ -4,7 +4,7 @@ Status: `m8r_02b_f1_go`
 
 Decision: `GO`
 
-Revalidation run ID: `m8r02b-f1-20260715T150001Z`.
+Revalidation run ID: `m8r02b-f1-20260715T170000Z`.
 
 Historical validation run ID: `m8r02b-20260715T020000Z` remains `NO_GO`; its artifacts were not rewritten.
 
@@ -16,7 +16,7 @@ Historical validation run ID: `m8r02b-20260715T020000Z` remains `NO_GO`; its art
 
 ## Bounded option discovery
 
-Discovery artifact: `research/m8r/live_validation/m8r02b-f1-20260715T150001Z/taifex_option_contract_discovery.json`. Discovery run `m8r02b-f1-discovery-20260715T150001Z` found the selected `TXO/TX 202607 40000 C` identity in both `TAIFEX_MIS` and `TAIFEX_OPENAPI` bounded identity evidence before operator selection.
+Discovery artifact: `research/m8r/live_validation/m8r02b-f1-20260715T170000Z/taifex_option_contract_discovery.json`. Discovery run `m8r02b-f1-discovery-20260715T150001Z` found the selected `TXO/TX 202607 40000 C` identity in both `TAIFEX_MIS` and `TAIFEX_OPENAPI` bounded identity evidence before operator selection.
 
 Selected operator identity for revalidation:
 
@@ -32,11 +32,11 @@ Selected operator identity for revalidation:
 }
 ```
 
-The discovery artifact retained only bounded identity metadata, per-source counts, and status/reason codes; it did not retain raw option-chain rows, SockJS frames, cookies, headers, tokens, prices, volume, open interest, bid/ask ladders, or full-chain payloads. Operator selection is recorded separately in `operator_selected_option_contract.json`.
+The discovery artifact retained only bounded identity metadata, per-source counts, and status/reason codes; it did not retain raw option-chain rows, SockJS frames, cookies, headers, tokens, prices, volume, open interest, bid/ask ladders, or full-chain payloads. Operator selection is recorded separately in `operator_selected_option_contract.json` with authorization reference `user_prompt_PR141_NEXT_COMMIT_explicit_selection_TXO_TX_202607_40000_C_monthly_regular`.
 
 ## Revalidated cases
 
-The F1 evidence set contains the two previously corrected non-option cases from the prior F1 attempt plus a new option revalidation attempt sequenced after corrected cross-source discovery and operator selection:
+The F1 evidence set preserves the two previously corrected non-option cases by explicit prior F1 receipt reference and contains a new option live execution subrun sequenced after corrected cross-source discovery and authorized operator selection:
 
 | Case | Result | Notes |
 |---|---|---|
@@ -62,6 +62,9 @@ Historical accepted cases inherited by reference from immutable M8R-02B evidence
   "f1_network_execution_performed": true,
   "historical_source_execution_artifacts_unchanged": true,
   "f1_execution_artifacts_new": true,
+  "live_execution_code_base_commit_sha": "08d18d9c6c3cfe0f5307c7dfd19afb8ad0d7af49",
+  "live_execution_worktree_dirty": true,
+  "live_execution_patch_commit_sha": "38e3d5f0ceb4e6a32dc43293f9f4259668287140",
   "m8r_02b_final_disposition": "GO_AFTER_CORRECTIVE_REVALIDATION",
   "production_executor_adapters_ready": true,
   "production_live_execution_ready": true,

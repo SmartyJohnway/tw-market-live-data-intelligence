@@ -1,5 +1,6 @@
 from __future__ import annotations
 import json
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -17,6 +18,16 @@ class F1EvidenceConsistencyError(RuntimeError):
     def __init__(self, reason_code: str):
         super().__init__(reason_code)
         self.reason_code = reason_code
+
+
+def require_resolvable_ancestor(sha: Any) -> None:
+    if not isinstance(sha, str) or not sha:
+        raise F1EvidenceConsistencyError("f1_execution_commit_not_resolvable")
+    try:
+        subprocess.check_call(["git", "cat-file", "-e", f"{sha}^{{commit}}"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.check_call(["git", "merge-base", "--is-ancestor", sha, "HEAD"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception as exc:
+        raise F1EvidenceConsistencyError("f1_execution_commit_not_resolvable") from exc
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
@@ -101,6 +112,8 @@ def validate_m8r_02b_f1_evidence_consistency(root: str | Path, *, require_finali
     if any((source_results.get(src) or {}).get("status") != "succeeded" for src in REQUIRED_OPTION_SOURCE_EVIDENCE):
         raise F1EvidenceConsistencyError("f1_discovery_status_invalid")
     selection = load_json(selection_path)
+    if not selection.get("operator_authorization_reference"):
+        raise F1EvidenceConsistencyError("f1_operator_selection_not_authorized")
     if selection.get("selected_by_operator") is not True or selection.get("discovery_id") != discovery.get("discovery_id"):
         raise F1EvidenceConsistencyError("f1_selected_contract_not_discovered")
     selected = selected_identity(selection)
@@ -137,6 +150,16 @@ def validate_m8r_02b_f1_evidence_consistency(root: str | Path, *, require_finali
         if not result.get("ai_package_id") or (result.get("ai_validation") or {}).get("valid") is not True:
             raise F1EvidenceConsistencyError("f1_manifest_not_finalized")
     manifest = load_json(manifest_path)
+    require_resolvable_ancestor(manifest.get("live_execution_code_base_commit_sha") or manifest.get("starting_commit_sha"))
+    require_resolvable_ancestor(manifest.get("live_execution_patch_commit_sha") or manifest.get("starting_commit_sha"))
+    option_manifest_path = root / "option_live_execution_manifest.json"
+    if not option_manifest_path.exists():
+        raise F1EvidenceConsistencyError("f1_option_run_manifest_not_finalized")
+    option_manifest = load_json(option_manifest_path)
+    if option_manifest.get("finalized") is not True or option_manifest.get("manifest_role") != "option_live_execution_run":
+        raise F1EvidenceConsistencyError("f1_option_run_manifest_not_finalized")
+    if option_manifest.get("network_execution_performed") is not True:
+        raise F1EvidenceConsistencyError("f1_option_run_network_provenance_invalid")
     if manifest.get("f1_network_execution_performed") is not True or manifest.get("historical_source_execution_artifacts_unchanged") is not True or manifest.get("f1_execution_artifacts_new") is not True:
         raise F1EvidenceConsistencyError("f1_network_execution_provenance_invalid")
     if require_finalized and manifest.get("finalized") is not True:
@@ -159,6 +182,9 @@ def build_f1_manifest_and_summary(root: str | Path, *, historical_validation_run
         "schema_version": "m8r_02b_f1_revalidation_manifest.v2",
         "revalidation_run_id": root.name,
         "starting_commit_sha": old_manifest.get("starting_commit_sha"),
+        "live_execution_code_base_commit_sha": old_manifest.get("live_execution_code_base_commit_sha") or old_manifest.get("starting_commit_sha"),
+        "live_execution_worktree_dirty": bool(old_manifest.get("live_execution_worktree_dirty")),
+        "live_execution_patch_commit_sha": old_manifest.get("live_execution_patch_commit_sha") or old_manifest.get("starting_commit_sha"),
         "historical_validation_run_id": historical_validation_run_id,
         "historical_decision": "NO_GO",
         "historical_source_execution_artifacts_unchanged": True,

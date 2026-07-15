@@ -1,0 +1,75 @@
+{
+  "aggregate_manifest_role": "f1_corrective_revalidation_aggregate",
+  "discovery_artifact": "research/m8r/live_validation/m8r02b-f1-20260715T170000Z/taifex_option_contract_discovery.json",
+  "discovery_completed_at_utc": "2026-07-15T15:09:01Z",
+  "discovery_id": "m8r02b-f1-discovery-20260715T150001Z",
+  "f1_execution_artifacts_new": true,
+  "f1_network_execution_performed": true,
+  "finalized": true,
+  "historical_decision": "NO_GO",
+  "historical_source_execution_artifacts_unchanged": true,
+  "historical_validation_run_id": "m8r02b-20260715T020000Z",
+  "live_execution_code_base_commit_sha": "08d18d9c6c3cfe0f5307c7dfd19afb8ad0d7af49",
+  "live_execution_patch_commit_sha": "38e3d5f0ceb4e6a32dc43293f9f4259668287140",
+  "live_execution_worktree_dirty": true,
+  "new_option_live_execution_start_times": {
+    "TAIFEX_MIS_OPTION_EXACT": "2026-07-15T15:33:13Z",
+    "TAIFEX_OPENAPI_OPTION_EXACT": "2026-07-15T15:33:21Z"
+  },
+  "newly_executed_option_cases": [
+    "TAIFEX_MIS_OPTION_EXACT",
+    "TAIFEX_OPENAPI_OPTION_EXACT"
+  ],
+  "operator_selection": {
+    "discovery_id": "m8r02b-f1-discovery-20260715T150001Z",
+    "operator_authorization_reference": "user_prompt_PR141_NEXT_COMMIT_explicit_selection_TXO_TX_202607_40000_C_monthly_regular",
+    "schema_version": "m8r_02b_f1_operator_option_selection.v2",
+    "selected_at_utc": "2026-07-15T15:33:10Z",
+    "selected_by_operator": true,
+    "selected_contract": {
+      "call_put": "C",
+      "contract_type": "monthly",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "strike": "40000",
+      "underlying": "TX"
+    },
+    "selection_policy": "operator_explicit_exact_identity_from_cross_source_discovery_no_nearest_strike"
+  },
+  "option_live_execution_manifest": "research/m8r/live_validation/m8r02b-f1-20260715T170000Z/option_live_execution_manifest.json",
+  "preserved_prior_f1_cases": {
+    "TAIFEX_MIS_FUTURE_EXACT": {
+      "receipt": "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TAIFEX_MIS_FUTURE_EXACT/m8r-receipt-8f2b6bc1d6c5ed32/execution_receipt.json",
+      "source_run_id": "m8r02b-f1-20260715T150001Z",
+      "validation_case_result": "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TAIFEX_MIS_FUTURE_EXACT/validation_case_result.json"
+    },
+    "TPEX_OPENAPI_EOD_6488": {
+      "receipt": "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TPEX_OPENAPI_EOD_6488/m8r-receipt-f2f473063c64cdb3/execution_receipt.json",
+      "source_run_id": "m8r02b-f1-20260715T150001Z",
+      "validation_case_result": "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TPEX_OPENAPI_EOD_6488/validation_case_result.json"
+    }
+  },
+  "remote_provenance_checks": {
+    "github_ref_checked": "refs/pull/141/head",
+    "github_ref_observed_commit": "38e3d5f0ceb4e6a32dc43293f9f4259668287140",
+    "local_cat_file_base_commit": true,
+    "local_cat_file_patch_commit": true,
+    "local_merge_base_base_is_ancestor": true,
+    "local_merge_base_patch_is_ancestor": true
+  },
+  "revalidation_run_id": "m8r02b-f1-20260715T170000Z",
+  "schema_version": "m8r_02b_f1_revalidation_manifest.v3",
+  "selected_option_contract": {
+    "call_put": "C",
+    "contract_type": "monthly",
+    "expiry": "202607",
+    "product": "TXO",
+    "session": "regular",
+    "strike": "40000",
+    "underlying": "TX"
+  },
+  "timing_semantics": {
+    "ordering_scope": "corrected discovery precedes authorized operator selection; authorized selection precedes new option approvals and executions; non-option F1 cases are preserved by explicit receipt reference and were not rerun"
+  }
+}
