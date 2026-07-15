@@ -24,7 +24,8 @@ def test_e2e_twse_openapi_fake_production_adapter_to_ai_package(monkeypatch):
 
 def test_e2e_taifex_openapi_fake_production_adapter_to_ai_package(monkeypatch):
     from scripts import m8r_production_source_adapters as adapters
-    monkeypatch.setattr(adapters,"execute_taifex_openapi_refresh",lambda **kw:{"observations":[{"source_id":"TAIFEX_OPENAPI","source_family":"TAIFEX_OPENAPI","symbol":"TX","instrument_type":"future","context_type":"official_derivatives_futures_eod","market":"TAIFEX","safe_fields":{},"timing_class":"official_statistics_eod","authority_level":"official_documented","retrieved_at_utc":NOW,"caveats":[]}]})
+    identity={"product_id":"TX","contract_month_or_week":"202607","session":"regular"}
+    monkeypatch.setattr(adapters,"execute_taifex_openapi_refresh",lambda **kw:{"observations":[{"source_id":"TAIFEX_OPENAPI","source_family":"TAIFEX_OPENAPI","product_id":"TX","symbol":"TX","instrument_type":"future","contract_identity":identity,"context_type":"official_derivatives_futures_eod","market":"TAIFEX","safe_fields":{"contract_identity":identity},"timing_class":"official_statistics_eod","authority_level":"official_documented","retrieved_at_utc":NOW,"caveats":[]}]})
     target={"market":"TAIFEX","instrument_type":"future","symbol":"TX","expiry":"202607","contract_type":"monthly","session":"regular"}
     p=make_plan("TAIFEX_OPENAPI", target, ["official_eod_reference"])
     out=execute_approved_market_context_plan(p, build_approval_artifact(p, approved_at_utc=NOW, single_use=False), execution_time_utc=NOW, allow_network=True)

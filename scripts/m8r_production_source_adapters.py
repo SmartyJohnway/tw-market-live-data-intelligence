@@ -83,19 +83,26 @@ def _openapi_result(source: str, target: dict[str, Any], executor: Callable[[lis
     except Exception as exc:
         out = _exception_result(exc); out["grouping"] = grouping; return out
     observations = result.get("observations") or []
-    match = next((o for o in observations if str(o.get("symbol")) == str(target.get("symbol"))), None)
-    if not match:
+    symbol_matches = [o for o in observations if str(o.get("symbol")) == str(target.get("symbol"))]
+    if not symbol_matches:
         return _failed("target_not_present_in_source_result", grouping=grouping)
-    ctx = observation_to_context_observation(match, currentness_status="official_eod_reference")
-    ctx["context_type"] = "official_eod_reference"
-    ctx["source_family"] = source
-    ctx["source_id"] = source
-    ctx.setdefault("timing_class", "official_eod")
-    ctx.setdefault("authority_level", "official_documented")
-    ctx["currentness"] = {"currentness_status": "official_eod_reference"}
-    ctx.setdefault("caveats", []).append("official EOD/reference; not intraday")
-    return _ok(ctx, identity={"symbol": target.get("symbol"), "market": target.get("market")}, grouping=grouping)
-
+    expected_market = "listed" if source == "TWSE_OPENAPI" else "tpex_otc"
+    expected_target_market = "TWSE" if source == "TWSE_OPENAPI" else "TPEX"
+    for match in symbol_matches:
+        if match.get("source_id") != source:
+            return _failed("source_identity_mismatch", grouping=grouping)
+        if match.get("market") not in {expected_market, expected_target_market}:
+            return _failed("source_market_mismatch", grouping=grouping)
+        if match.get("instrument_type") != target.get("instrument_type"):
+            return _failed("source_instrument_type_mismatch", grouping=grouping)
+        ctx = observation_to_context_observation(match, currentness_status="official_eod_reference")
+        ctx["context_type"] = "official_eod_reference"
+        ctx.setdefault("timing_class", "official_eod")
+        ctx.setdefault("authority_level", "official_documented")
+        ctx["currentness"] = {"currentness_status": "official_eod_reference"}
+        ctx.setdefault("caveats", []).append("official EOD/reference; not intraday")
+        return _ok(ctx, identity={"symbol": target.get("symbol"), "market": target.get("market"), "source_id": source}, grouping=grouping)
+    return _failed("source_identity_mismatch", grouping=grouping)
 
 def execute_twse_openapi_operation(*, operation, target, plan, execution_time_utc, allow_network):
     if (gate := _require_network(allow_network)):
@@ -118,6 +125,77 @@ def _strike(v: Any) -> str | None:
     except (InvalidOperation, ValueError): return None
 
 
+
+TAIFEX_OPTION_UNDERLYING_BY_PRODUCT = {"TXO": "TX"}
+
+
+def _norm_call_put(value: Any) -> str | None:
+    text = str(value or "").strip().lower()
+    if text in {"c", "call", "買權"}:
+        return "C"
+    if text in {"p", "put", "賣權"}:
+        return "P"
+    return None
+
+
+def _obs_contract_identity(obs: dict[str, Any]) -> dict[str, Any]:
+    safe = obs.get("safe_fields") if isinstance(obs.get("safe_fields"), dict) else {}
+    ci = obs.get("contract_identity") if isinstance(obs.get("contract_identity"), dict) else None
+    if ci is None:
+        ci = safe.get("contract_identity") if isinstance(safe.get("contract_identity"), dict) else {}
+    return dict(ci or {})
+
+
+def _obs_aggregate_identity(obs: dict[str, Any]) -> dict[str, Any]:
+    safe = obs.get("safe_fields") if isinstance(obs.get("safe_fields"), dict) else {}
+    ai = obs.get("aggregate_identity") if isinstance(obs.get("aggregate_identity"), dict) else None
+    if ai is None:
+        ai = safe.get("aggregate_identity") if isinstance(safe.get("aggregate_identity"), dict) else {}
+    return dict(ai or {})
+
+
+def _taifex_product(obs: dict[str, Any], ci: dict[str, Any], ai: dict[str, Any]) -> str | None:
+    for value in (ci.get("product_id"), obs.get("product_id"), obs.get("symbol"), obs.get("product"), ai.get("product_id")):
+        if value:
+            return str(value)
+    return None
+
+
+def _taifex_returned_contract_identity(obs: dict[str, Any], instrument_type: str) -> tuple[str, dict[str, Any], str]:
+    ci = _obs_contract_identity(obs)
+    ai = _obs_aggregate_identity(obs)
+    product = _taifex_product(obs, ci, ai)
+    if ci:
+        expiry = ci.get("contract_month_or_week") or ci.get("contract_month") or ci.get("delivery_month") or ci.get("settlement_month")
+        session = ci.get("session") or obs.get("session")
+        returned = {"product": product, "expiry": expiry, "contract_type": "monthly" if expiry and str(expiry).isdigit() and len(str(expiry)) == 6 else None}
+        if session and session != "not_applicable":
+            returned["session"] = session
+        if instrument_type == "option":
+            returned.update({"strike": _strike(ci.get("strike_price")), "call_put": _norm_call_put(ci.get("option_type")), "underlying": ci.get("underlying") or ci.get("series")})
+        return "contract_level", {k: v for k, v in returned.items() if v is not None}, "contract_identity_returned"
+    if product or ai:
+        returned = {"product": product or ai.get("product_id")}
+        return "aggregate_level" if ai and not product else "product_level", {k: v for k, v in returned.items() if v is not None}, "product_or_aggregate_identity_returned"
+    return "missing", {}, "identity_not_returned"
+
+
+def _approved_identity(target: dict[str, Any]) -> dict[str, Any]:
+    di = target.get("derivative_identity") or {}
+    out = {"product": target.get("symbol"), "expiry": di.get("expiry"), "contract_type": di.get("contract_type"), "session": di.get("session")}
+    if target.get("instrument_type") == "option":
+        out.update({"underlying": di.get("underlying"), "strike": _strike(di.get("strike")), "call_put": _norm_call_put(di.get("call_put"))})
+    return out
+
+
+def _identity_matches_approved(returned: dict[str, Any], approved: dict[str, Any], required: tuple[str, ...]) -> bool:
+    for key in required:
+        rv = _strike(returned.get(key)) if key == "strike" else returned.get(key)
+        av = _strike(approved.get(key)) if key == "strike" else approved.get(key)
+        if rv != av:
+            return False
+    return True
+
 def _taifex_selector(target: dict[str, Any]) -> dict[str, Any] | None:
     di = target.get("derivative_identity") or {}
     if target.get("market") != "TAIFEX" or di.get("contract_type") != "monthly" or di.get("session") != "regular":
@@ -130,13 +208,34 @@ def _taifex_selector(target: dict[str, Any]) -> dict[str, Any] | None:
     return None
 
 
-def _returned_identity(ctx: dict[str, Any], instrument: str) -> dict[str, Any]:
+def _m8c_returned_identity(ctx: dict[str, Any], target: dict[str, Any]) -> tuple[dict[str, Any], str | None]:
     ci = ((ctx.get("safe_fields") or {}).get("contract_identity") or {})
-    out = {"expiry": ci.get("contract_month_or_week"), "contract_type": "monthly" if ci.get("contract_month_or_week") else None, "session": ci.get("session")}
-    if instrument == "option":
-        out.update({"underlying": None, "strike": ci.get("strike_price"), "call_put": {"call": "C", "put": "P"}.get(ci.get("option_type"))})
-    return {k: v for k, v in out.items() if v is not None}
-
+    product = ci.get("requested_product_id")
+    expiry = ci.get("contract_month_or_week")
+    session = ci.get("session")
+    runtime_symbol = ci.get("runtime_symbol_id")
+    returned = {"product": product, "expiry": expiry, "contract_type": "monthly" if expiry else None, "session": session}
+    approved = _approved_identity(target)
+    if target.get("instrument_type") == "option":
+        call_put = _norm_call_put(ci.get("option_type"))
+        strike = _strike(ci.get("strike_price"))
+        underlying = TAIFEX_OPTION_UNDERLYING_BY_PRODUCT.get(str(product or "").upper())
+        returned.update({"strike": strike, "call_put": call_put})
+        if underlying:
+            returned["underlying"] = underlying
+        if not (isinstance(runtime_symbol, str) and runtime_symbol.startswith(str(product or "")) and str(expiry or "") in runtime_symbol):
+            return {}, "source_identity_mismatch"
+        required = ("product", "expiry", "strike", "call_put", "session")
+        cleaned = {k: v for k, v in returned.items() if v is not None}
+        if not _identity_matches_approved(cleaned, approved, required):
+            return {}, "source_identity_mismatch"
+        if cleaned.get("underlying") != approved.get("underlying"):
+            return {}, "exact_option_underlying_not_returned"
+        return cleaned, None
+    cleaned = {k: v for k, v in returned.items() if v is not None}
+    if not _identity_matches_approved(cleaned, approved, ("product", "expiry", "session")):
+        return {}, "source_identity_mismatch"
+    return cleaned, None
 
 def execute_taifex_mis_operation(*, operation, target, plan, execution_time_utc, allow_network):
     if (gate := _require_network(allow_network)):
@@ -151,11 +250,10 @@ def execute_taifex_mis_operation(*, operation, target, plan, execution_time_utc,
     if result.get("status") not in {"successful_liveish_snapshot", "partial_source_success"} or not result.get("observations"):
         return _failed("source_payload_invalid", count=2)
     ctx = adapt_taifex_mis_observation(result["observations"][0])
-    identity = _returned_identity(ctx, target.get("instrument_type"))
-    if not identity.get("expiry") or identity.get("session") != "regular":
-        return _failed("source_identity_mismatch", count=2)
-    if target.get("instrument_type") == "option":
-        identity["underlying"] = (target.get("derivative_identity") or {}).get("underlying") if identity.get("strike") and identity.get("call_put") else None
+    identity, issue = _m8c_returned_identity(ctx, target)
+    if issue:
+        return _failed(issue, count=2)
+    ctx.setdefault("safe_fields", {})["contract_identity"] = identity
     return _ok(ctx, identity=identity, count=2)
 
 
@@ -173,13 +271,43 @@ def execute_taifex_openapi_operation(*, operation, target, plan, execution_time_
         result = execute_taifex_openapi_refresh(operator_confirmed=True, requested_contexts=[context], requested_products=[target.get("symbol")], requested_contracts=[selector], requested_sessions=["regular"])
     except Exception as exc:
         return _exception_result(exc)
-    obs = next((o for o in result.get("observations", []) if str(o.get("symbol") or o.get("product_id") or o.get("product")) in {str(target.get("symbol")), "None"}), None)
-    if not obs:
+    observations = result.get("observations", [])
+    candidates = []
+    for item in observations:
+        if not isinstance(item, dict):
+            continue
+        ci = _obs_contract_identity(item)
+        ai = _obs_aggregate_identity(item)
+        product = _taifex_product(item, ci, ai)
+        if product == target.get("symbol"):
+            candidates.append(item)
+    if not candidates:
         return _failed("target_not_present_in_source_result")
-    obs = dict(obs); obs.setdefault("source_id", "TAIFEX_OPENAPI"); obs.setdefault("source_family", "TAIFEX_OPENAPI"); obs["context_type"] = operation.get("context_type") or obs.get("context_type"); obs.setdefault("timing_class", "official_statistics_eod"); obs.setdefault("authority_level", "official_documented"); obs.setdefault("currentness", {"currentness_status": "official_statistics_eod"}); obs.setdefault("safe_fields", {})["identity_level"] = "contract_level" if selector.get("contract_month_or_week") else "product_level"
-    identity = {"expiry": selector.get("contract_month_or_week"), "contract_type": "monthly", "session": "regular"}
-    if target.get("instrument_type") == "option": identity.update({"strike": selector.get("strike_price"), "call_put": "C" if selector.get("option_type") == "call" else "P"})
-    return _ok(obs, identity=identity)
+    obs = dict(candidates[0])
+    identity_level, returned_identity, verification = _taifex_returned_contract_identity(obs, target.get("instrument_type"))
+    exact_required = operation.get("context_type") in {"official_eod_reference", "liveish_observation"}
+    if identity_level != "contract_level":
+        obs.setdefault("safe_fields", {})["identity_level"] = identity_level if identity_level != "missing" else "missing"
+        obs["safe_fields"]["identity_verification_status"] = verification
+        obs["safe_fields"]["requested_identity"] = _approved_identity(target)
+        if exact_required:
+            return _failed("exact_contract_identity_not_returned")
+        obs.setdefault("source_id", "TAIFEX_OPENAPI"); obs.setdefault("source_family", "TAIFEX_OPENAPI"); obs["context_type"] = operation.get("context_type") or obs.get("context_type"); obs.setdefault("timing_class", "official_statistics_eod"); obs.setdefault("authority_level", "official_documented"); obs.setdefault("currentness", {"currentness_status": "official_statistics_eod"})
+        return _ok(obs, identity=returned_identity)
+    approved = _approved_identity(target)
+    required = ("product", "expiry", "contract_type")
+    if target.get("instrument_type") == "option":
+        required = ("product", "expiry", "strike", "call_put", "contract_type")
+    if returned_identity.get("session") or approved.get("session"):
+        required = tuple(list(required) + ["session"])
+    if not _identity_matches_approved(returned_identity, approved, required):
+        return _failed("source_identity_mismatch")
+    obs.setdefault("source_id", "TAIFEX_OPENAPI"); obs.setdefault("source_family", "TAIFEX_OPENAPI"); obs["context_type"] = operation.get("context_type") or obs.get("context_type"); obs.setdefault("timing_class", "official_statistics_eod"); obs.setdefault("authority_level", "official_documented"); obs.setdefault("currentness", {"currentness_status": "official_statistics_eod"})
+    obs.setdefault("safe_fields", {})["identity_level"] = "contract_level"
+    obs["safe_fields"]["identity_verification_status"] = "matched_approved_target"
+    obs["safe_fields"]["requested_identity"] = approved
+    obs["safe_fields"]["contract_identity"] = returned_identity
+    return _ok(obs, identity=returned_identity)
 
 
 setattr(execute_taifex_openapi_operation, "supports_exact_derivative_identity", True)
