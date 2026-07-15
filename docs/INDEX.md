@@ -74,7 +74,7 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 - [M8C TAIFEX MIS runtime currentness contract](protocol/M8C_TAIFEX_MIS_RUNTIME_CURRENTNESS_CONTRACT.md)
 - [M8A live validator](../scripts/validate_m8a_official_eod_live.py)
 - [M8B live validator](../scripts/validate_m8b_taifex_openapi_live.py)
-- M8R-01 status = `GO_WITH_REQUIRED_FOLLOW_UP_FIX`; required pre-M8R-02 corrective gate = `M8R-01F-CANONICAL-REQUEST-HASH-AND-SEMANTIC-DUPLICATE-CORRECTION`; next_task = `M8R-01F-CANONICAL-REQUEST-HASH-AND-SEMANTIC-DUPLICATE-CORRECTION`; next_task_status = `operator_approved_not_started`; recommended_next_task_after_fix = `M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR`
+- M8R-01F status = `m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go`; next_task = `null`; next_task_status = `awaiting_operator_acceptance`; recommended_next_task = `M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR`
 
 ## Reviews / acceptance
 

@@ -225,3 +225,11 @@ Additional supported internal API functions:
 
 - `build_target_semantic_scope(...)`
 - `build_normalized_request_hash_scope(...)`
+
+### M8R-01F follow-up closure
+
+M8R-01F is complete with status `m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go`. M8R-02 remains inactive and awaits separate operator acceptance; the active state is `next_task=null`, `next_task_status=awaiting_operator_acceptance`, and `recommended_next_task=M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR`.
+
+The semantic request hash uses effective target scope. Request-level `requested_context_types` and `requested_source_families` are normalization defaults or allowlists only; they do not independently enter `normalized_request_hash` when accepted targets have already resolved effective target contexts, sources, source-selection mode, and planned mappings. If a request-level default actually changes a target's effective context/source/mapping scope, the target semantic scope changes and therefore both `normalized_request_hash` and `plan_hash` change.
+
+TAIFEX futures use Model A exact contract identity for M8R-01F. A future target requires exact `expiry`, `contract_type=monthly`, and `session=regular`; the canonical identity includes expiry and contract type, for example `TAIFEX:future:TX:202607:monthly`. Implicit front-month selection is forbidden. Explicit selector identity such as `contract_selector=front_month` is rejected until a later contract defines selector binding, dynamic-resolution caveats, and execution-receipt recording semantics.

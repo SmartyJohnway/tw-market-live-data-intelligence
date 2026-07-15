@@ -26,7 +26,7 @@ def test_valid_twse_tpex_taiex_taifex_future_and_mixed_plan():
         {"symbol":"2330","market":"TWSE","instrument_type":"equity"},
         {"symbol":"6488","market":"TPEX","instrument_type":"equity"},
         {"symbol":"TAIEX","market":"TWSE","instrument_type":"index","requested_context_types":["liveish_observation"]},
-        {"symbol":"TX","market":"TAIFEX","instrument_type":"future","requested_context_types":["liveish_observation","official_statistical_reference"],"session":"regular"},
+        {"symbol":"TX","market":"TAIFEX","instrument_type":"future","expiry":"202607","contract_type":"monthly","requested_context_types":["liveish_observation","official_statistical_reference"],"session":"regular"},
     ])
     p=plan(req)
     assert p["plan_id"].startswith("m8r-plan-")
@@ -70,11 +70,11 @@ def test_scope_changes_change_hash():
     ({"symbol":"TX","market":"TWSE","instrument_type":"future"}, "instrument_type_market_incompatible"),
     ({"symbol":"TAIEX","market":"TPEX","instrument_type":"index"}, "market_symbol_incompatible"),
     ({"symbol":"2330","market":"TWSE","instrument_type":"index"}, "unresolved_identity"),
-    ({"symbol":"TX","market":"TAIFEX","instrument_type":"future","requested_source_families":["TWSE_MIS"]}, "source_target_incompatible"),
+    ({"symbol":"TX","market":"TAIFEX","instrument_type":"future","expiry":"202607","contract_type":"monthly","requested_source_families":["TWSE_MIS"]}, "source_target_incompatible"),
     ({"symbol":"2330","market":"TWSE","instrument_type":"equity","requested_source_families":["TAIFEX_MIS"]}, "source_target_incompatible"),
     ({"symbol":"TXO","market":"TAIFEX","instrument_type":"option"}, "ambiguous_identity"),
     ({"symbol":"TXO","market":"TAIFEX","instrument_type":"option","underlying":"TX","expiry":"202607W1","strike":"20000","call_put":"P","contract_type":"weekly"}, "unsupported_product_scope"),
-    ({"symbol":"TX","market":"TAIFEX","instrument_type":"future","session":"after_hours"}, "unsupported_session_scope"),
+    ({"symbol":"TX","market":"TAIFEX","instrument_type":"future","expiry":"202607","contract_type":"monthly","session":"after_hours"}, "unsupported_session_scope"),
 ])
 def test_invalid_identity_target_rejections(target, expected):
     req=dict(BASE, targets=[target])
@@ -124,19 +124,19 @@ def test_request_allowlist_filters_effective_sources_per_target():
     req=dict(BASE, requested_source_families=["TWSE_MIS","TWSE_OPENAPI","TPEX_OPENAPI","TAIFEX_MIS","TAIFEX_OPENAPI"], targets=[
         {"symbol":"2330","market":"TWSE","instrument_type":"equity"},
         {"symbol":"6488","market":"TPEX","instrument_type":"equity"},
-        {"symbol":"TX","market":"TAIFEX","instrument_type":"future","requested_context_types":["liveish_observation","official_statistical_reference"]},
+        {"symbol":"TX","market":"TAIFEX","instrument_type":"future","expiry":"202607","contract_type":"monthly","requested_context_types":["liveish_observation","official_statistical_reference"]},
     ])
     p=plan(req)
     by_target={t["target_id"]: set(t["requested_source_families"]) for t in p["targets"]}
     assert by_target["TWSE:equity:2330"] == {"TWSE_MIS","TWSE_OPENAPI"}
     assert by_target["TPEX:equity:6488"] == {"TWSE_MIS","TPEX_OPENAPI"}
-    assert by_target["TAIFEX:future:TX"] == {"TAIFEX_MIS","TAIFEX_OPENAPI"}
+    assert by_target["TAIFEX:future:TX:202607:monthly"] == {"TAIFEX_MIS","TAIFEX_OPENAPI"}
     assert not any(m.get("source_family") == "TAIFEX_MIS" and m["target_id"].startswith("TWSE:") for m in p["source_to_target_context_mapping"])
 
 @pytest.mark.parametrize("target", [
     {"symbol":"2330","market":"TWSE","instrument_type":"equity","requested_source_families":["TWSE_MIS","TWSE_OPENAPI","TAIFEX_MIS"]},
     {"symbol":"6488","market":"TPEX","instrument_type":"equity","requested_source_families":["TWSE_MIS","TPEX_OPENAPI","TWSE_OPENAPI"]},
-    {"symbol":"TX","market":"TAIFEX","instrument_type":"future","requested_context_types":["liveish_observation","official_statistical_reference"],"requested_source_families":["TAIFEX_MIS","TAIFEX_OPENAPI","TWSE_MIS"]},
+    {"symbol":"TX","market":"TAIFEX","instrument_type":"future","expiry":"202607","contract_type":"monthly","requested_context_types":["liveish_observation","official_statistical_reference"],"requested_source_families":["TAIFEX_MIS","TAIFEX_OPENAPI","TWSE_MIS"]},
 ])
 def test_target_level_extra_incompatible_sources_reject(target):
     n=m8r.normalize_market_context_request(dict(BASE, targets=[target]))
@@ -258,11 +258,11 @@ def test_alias_equivalence_and_duplicate_collapse_without_conflict():
         {"symbol":"2330","market":"TWSE","instrument_type":"equity","notes":"B","comments":"C"},
         {"symbol":"6488","market":"OTC","instrument_type":"stock"},
         {"symbol":"6488","market":"tpex","instrument_type":"equity","display_name":"ignored"},
-        {"symbol":"TX","market":"TAIFEX","instrument_type":"futures","requested_context_types":["liveish_observation"],"session":"regular_session"},
-        {"symbol":" tx ","market":"taifex","instrument_type":"future","requested_context_types":[" LIVEISH_OBSERVATION "],"session":"regular"},
+        {"symbol":"TX","market":"TAIFEX","instrument_type":"futures","expiry":"202607","contract_type":"monthly","requested_context_types":["liveish_observation"],"session":"regular_session"},
+        {"symbol":" tx ","market":"taifex","instrument_type":"future","expiry":" 202607 ","contract_type":"MONTHLY","requested_context_types":[" LIVEISH_OBSERVATION "],"session":"regular"},
     ])
     n = m8r.normalize_market_context_request(req)
-    assert [t["target_id"] for t in n["targets"]] == ["TAIFEX:future:TX", "TPEX:equity:6488", "TWSE:equity:2330"]
+    assert [t["target_id"] for t in n["targets"]] == ["TAIFEX:future:TX:202607:monthly", "TPEX:equity:6488", "TWSE:equity:2330"]
     assert not any(i["code"] == "duplicate_target_conflict" for t in n["rejected_targets"] for i in t["issues"])
 
 
@@ -319,3 +319,50 @@ def test_rejected_targets_do_not_enter_semantic_hash_or_plan_mapping():
     pc = _plan_for_hash(dict(BASE, targets=BASE["targets"] + [different_rejected]))
     assert pc["plan_hash"] == clean["plan_hash"]
     assert pc["rejected_targets"]
+
+
+def test_unused_request_level_defaults_do_not_affect_hash_when_targets_override():
+    target = {"symbol":"2330","market":"TWSE","instrument_type":"equity","requested_context_types":["liveish_observation"],"requested_source_families":["TWSE_MIS"]}
+    a = _plan_for_hash(dict(BASE, requested_context_types=["liveish_observation"], requested_source_families=["TWSE_MIS"], targets=[target]))
+    b = _plan_for_hash(dict(BASE, requested_context_types=["official_eod_reference", "market_session_state"], requested_source_families=["TWSE_OPENAPI", "TPEX_OPENAPI", "TAIFEX_OPENAPI"], targets=[target]))
+    assert a["normalized_request_hash"] == b["normalized_request_hash"]
+    assert a["plan_hash"] == b["plan_hash"]
+
+
+def test_request_level_defaults_that_affect_target_change_hashes():
+    target = {"symbol":"2330","market":"TWSE","instrument_type":"equity"}
+    a = _plan_for_hash(dict(BASE, requested_context_types=["liveish_observation"], requested_source_families=["TWSE_MIS"], targets=[target]))
+    b = _plan_for_hash(dict(BASE, requested_context_types=["official_eod_reference"], requested_source_families=["TWSE_OPENAPI"], targets=[target]))
+    assert a["normalized_request_hash"] != b["normalized_request_hash"]
+    assert a["plan_hash"] != b["plan_hash"]
+
+
+def test_future_requires_exact_monthly_contract_identity_no_implicit_selector():
+    n = m8r.normalize_market_context_request(dict(BASE, targets=[{"symbol":"TX","market":"TAIFEX","instrument_type":"future"}]))
+    assert any(i["code"] == "ambiguous_identity" for t in n["rejected_targets"] for i in t["issues"])
+    with pytest.raises(m8r.M8RValidationError):
+        m8r.compile_market_context_execution_plan(n)
+
+
+def test_future_exact_expiry_stable_identity_and_hash_sensitivity():
+    base_target = {"symbol":"TX","market":"TAIFEX","instrument_type":"future","expiry":"202607","contract_type":"monthly","requested_context_types":["liveish_observation"]}
+    same = dict(base_target, expiry=" 202607 ", contract_type="MONTHLY", display_name="ignored")
+    changed_expiry = dict(base_target, expiry="202608")
+    pa = _plan_for_hash(dict(BASE, targets=[base_target]))
+    pb = _plan_for_hash(dict(BASE, targets=[same]))
+    pc = _plan_for_hash(dict(BASE, targets=[changed_expiry]))
+    assert pa["targets"][0]["target_id"] == "TAIFEX:future:TX:202607:monthly"
+    assert pa["plan_hash"] == pb["plan_hash"]
+    assert pa["plan_hash"] != pc["plan_hash"]
+
+
+def test_future_selector_is_explicitly_unsupported_until_modeled():
+    n = m8r.normalize_market_context_request(dict(BASE, targets=[{"symbol":"TX","market":"TAIFEX","instrument_type":"future","contract_selector":"front_month","contract_type":"monthly"}]))
+    assert any(i["code"] == "unsupported_product_scope" for t in n["rejected_targets"] for i in t["issues"])
+
+
+def test_duplicate_future_with_different_expiry_conflicts():
+    first = {"symbol":"TX","market":"TAIFEX","instrument_type":"future","expiry":"202607","contract_type":"monthly","requested_context_types":["liveish_observation"]}
+    second = dict(first, expiry="202608")
+    n = m8r.normalize_market_context_request(dict(BASE, targets=[first, second]))
+    assert any(i["code"] == "duplicate_target_conflict" for t in n["rejected_targets"] for i in t["issues"])

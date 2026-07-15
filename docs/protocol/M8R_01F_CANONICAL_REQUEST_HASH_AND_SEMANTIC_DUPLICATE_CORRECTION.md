@@ -6,7 +6,11 @@ Decision: `GO`
 
 Corrective gate: `M8R-01F-CANONICAL-REQUEST-HASH-AND-SEMANTIC-DUPLICATE-CORRECTION`
 
-Recommended successor after this fix: `M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR`
+Completion state: `complete`
+
+Recommended successor: `M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR`
+
+Next task state after this fix: `next_task=null`, `next_task_status=awaiting_operator_acceptance`
 
 ## Verified baseline
 
@@ -40,9 +44,13 @@ Duplicate handling uses normalized execution semantics:
 - conflicts fail closed with `duplicate_target_conflict` when the same canonical target duplicate key has different effective contexts, exact target-level sources, derivative identity, session, mappings, or other target-scoped execution behavior;
 - request-level source families remain an upper-bound allowlist, while target-level source families remain exact target selection.
 
+## Effective request hash treatment
+
+The semantic request hash uses effective target scope. It includes accepted target semantic scopes, effective target contexts, effective target sources, source-selection mode, execution policy, output policy, and non-goal execution guards. It does not separately include request-level context/source defaults after those defaults have already been resolved into target-level effective semantics. Unused request defaults therefore cannot change `normalized_request_hash` or `plan_hash`; defaults that actually change a target mapping still change both hashes through the target semantic scope.
+
 ## Derivative identity treatment
 
-Options include normalized market, instrument type, symbol/product, underlying, expiry, strike, call/put, contract type, and session in the semantic scope. Call/put and contract type are case-normalized; strike is normalized through decimal formatting where possible; expiry is stripped and uppercased. Futures include the current bounded regular-session identity fields. M8R-01F does not add weekly-option, after-hours, continuous-contract, or broader exchange contract identifier support.
+Options include normalized market, instrument type, symbol/product, underlying, expiry, strike, call/put, contract type, and session in the semantic scope. Call/put and contract type are case-normalized; strike is normalized through decimal formatting where possible; expiry is stripped and uppercased. Futures use Model A exact contract identity: `expiry`, `contract_type=monthly`, and `session=regular` are required and the target ID includes expiry and contract type, for example `TAIFEX:future:TX:202607:monthly`. A bare `TAIFEX` future such as `symbol=TX` without expiry is rejected as `ambiguous_identity`; `contract_selector=front_month` is explicitly rejected until a later selector contract defines dynamic approval and execution-receipt semantics. M8R-01F does not add weekly-option, after-hours, continuous-contract, front-month selector, or broader exchange contract identifier support.
 
 ## Non-scope
 
@@ -50,4 +58,4 @@ This corrective gate adds no network execution, source adapter invocation, one-s
 
 ## Acceptance
 
-M8R-01F is `GO` because deterministic semantic request identity is established, lifecycle/presentation metadata is excluded from executable identity, semantic aliases collapse, true duplicate conflicts fail closed, rejected targets do not alter executable plan identity, executable-scope changes still alter plan hashes, and M8R-02 remains inactive pending operator acceptance after this fix.
+M8R-01F is `GO` and complete because deterministic semantic request identity is established, lifecycle/presentation metadata is excluded from executable identity, semantic aliases collapse, true duplicate conflicts fail closed, rejected targets do not alter executable plan identity, executable-scope changes still alter plan hashes, and M8R-02 remains inactive pending separate operator acceptance.

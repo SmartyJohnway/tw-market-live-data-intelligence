@@ -105,6 +105,9 @@ def _norm_session(v):
 def _norm_expiry(v):
     return v.strip().upper() if isinstance(v, str) else v
 
+def _norm_contract_selector(v):
+    return v.strip().lower() if isinstance(v, str) else v
+
 def _norm_strike(v):
     if v is None:
         return None
@@ -177,6 +180,14 @@ def resolve_target_identity(target: dict[str, Any], *, request_context_types=(),
     if market == "TAIFEX" and typ in {"equity","etf","index"}: issues.append(_issue("instrument_type_market_incompatible","TAIFEX target must be derivative","target",raw_id))
     if symbol == "TAIEX" and not (market == "TWSE" and typ == "index"): issues.append(_issue("market_symbol_incompatible","TAIEX must be TWSE index","target",raw_id))
     if typ == "index" and symbol != "TAIEX": issues.append(_issue("unresolved_identity","only TAIEX index route is supported in M8R-01","target",raw_id))
+    if typ == "future":
+        if target.get("contract_selector"):
+            issues.append(_issue("unsupported_product_scope","future contract_selector is not supported in M8R-01F; use exact expiry and monthly contract_type","target",raw_id,"contract_selector"))
+        missing=[k for k in ("expiry","contract_type") if not target.get(k)]
+        if missing:
+            issues.append(_issue("ambiguous_identity","future identity requires exact expiry and contract_type=monthly; implicit front-month selection is not allowed","target",raw_id))
+        elif _norm_contract_type(target.get("contract_type")) != "monthly":
+            issues.append(_issue("unsupported_product_scope","only monthly TAIFEX futures are supported in M8R-01F","target",raw_id,"contract_type"))
     if typ == "option":
         required=("underlying","expiry","strike","call_put","contract_type")
         missing=[k for k in required if not target.get(k)]
@@ -205,7 +216,12 @@ def resolve_target_identity(target: dict[str, Any], *, request_context_types=(),
     target_id=f"{market}:{typ}:{symbol}"
     derivative_identity={}
     if typ=="future":
-        derivative_identity={"session": session}
+        derivative_identity={
+            "expiry": _norm_expiry(target.get("expiry")),
+            "contract_type": _norm_contract_type(target.get("contract_type")),
+            "session": session,
+        }
+        target_id += f":{derivative_identity['expiry']}:{derivative_identity['contract_type']}"
     if typ=="option":
         derivative_identity={
             "underlying": _norm_symbol(target.get("underlying")),
@@ -298,8 +314,6 @@ def build_normalized_request_hash_scope(normalized_request: dict[str, Any]) -> d
         raise M8RValidationError([_issue("invalid_schema_version", "normalized request object required")])
     return {
         "schema_version": normalized_request.get("schema_version"),
-        "requested_context_types": sorted(normalized_request.get("requested_context_types", [])),
-        "requested_source_families": sorted(normalized_request.get("requested_source_families", [])),
         "execution_policy": normalized_request.get("execution_policy", {}),
         "output_policy": normalized_request.get("output_policy", {}),
         "targets": sorted((build_target_semantic_scope(t) for t in normalized_request.get("targets", [])), key=lambda x: canonical_json(x)),
@@ -316,7 +330,6 @@ def build_plan_hash_scope(plan: dict[str, Any]) -> dict[str, Any]:
             build_target_semantic_scope(t)
             for t in plan.get("targets", [])
         ],
-        "requested_context_types": plan.get("requested_context_types", []),
         "planned_source_families": plan.get("planned_source_families", []),
         "source_to_target_context_mapping": plan.get("source_to_target_context_mapping", []),
         "network_scope": plan.get("network_scope", {}),
