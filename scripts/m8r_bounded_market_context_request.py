@@ -3,7 +3,6 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import PurePosixPath
 from typing import Any
@@ -106,9 +105,25 @@ def validate_output_scope(output_policy: dict[str, Any] | None) -> tuple[dict[st
 def _target_contexts(target, request_contexts):
     return tuple(sorted(target.get("requested_context_types") or request_contexts or DEFAULT_CONTEXT_TYPES))
 
-def _target_sources(target, request_sources, source_registry):
-    requested = target.get("requested_source_families") or request_sources
-    return tuple(sorted(requested or accepted_source_families(source_registry)))
+def _requested_sources_for_target(target, request_sources, source_registry):
+    explicit = "requested_source_families" in target
+    requested = target.get("requested_source_families") if explicit else request_sources
+    if requested is None or requested == []:
+        requested = accepted_source_families(source_registry)
+    return tuple(sorted(requested)), explicit
+
+def _local_context_mapping(target_id: str, context_type: str) -> dict[str, Any] | None:
+    if context_type == "source_health":
+        return {"target_id": target_id, "context_type": context_type, "source_family": None, "operation_class": "local_source_health_read", "route": "local_source_health", "network_required": False}
+    if context_type == "market_session_state":
+        return {"target_id": target_id, "context_type": context_type, "source_family": None, "operation_class": "local_market_clock_evaluation", "route": "local_market_clock", "network_required": False}
+    return None
+
+def _is_plan_object(value: dict[str, Any]) -> bool:
+    return isinstance(value, dict) and value.get("schema_version") == PLAN_SCHEMA_VERSION and "plan_hash" in value and "targets" in value
+
+def _is_hash_scope_object(value: dict[str, Any]) -> bool:
+    return isinstance(value, dict) and value.get("schema_version") == PLAN_SCHEMA_VERSION and "targets" in value and "network_scope" in value and "plan_hash" not in value
 
 def _allowed_for_identity(market, typ, target):
     if market == "TWSE" and typ in {"equity","etf"}: return {"liveish_observation":"TWSE_MIS","official_eod_reference":"TWSE_OPENAPI"}, {"TWSE_MIS":"tse_{symbol}.tw","TWSE_OPENAPI":"TWSE_OPENAPI"}
@@ -138,7 +153,7 @@ def resolve_target_identity(target: dict[str, Any], *, request_context_types=(),
     if market == "TAIFEX" and str(target.get("session","regular")).lower() not in {"regular","regular_session"}: issues.append(_issue("unsupported_session_scope","TAIFEX after-hours runtime is not accepted","target",raw_id))
     allowed_by_context, routes = _allowed_for_identity(market, typ, target)
     contexts=_target_contexts(target, request_context_types)
-    sources=_target_sources(target, request_source_families, source_registry)
+    sources, explicit_target_sources=_requested_sources_for_target(target, request_source_families, source_registry)
     source_policies=_source_map(source_registry)
     eligible=set(accepted_source_families(source_registry))
     for c in contexts:
@@ -148,19 +163,26 @@ def resolve_target_identity(target: dict[str, Any], *, request_context_types=(),
         if s not in source_policies: issues.append(_issue("unsupported_source_family",f"unsupported source family {s}","target",raw_id))
         elif pol.get("credential_required") is True: issues.append(_issue("credential_gated_source_forbidden",f"credential-gated source forbidden {s}","target",raw_id))
         elif s not in eligible: issues.append(_issue("source_not_runtime_eligible",f"source is not M8R runtime/AI eligible {s}","target",raw_id))
+    if explicit_target_sources:
+        incompatible = sorted(set(sources) - set(allowed_by_context.values()))
+        if incompatible:
+            issues.append(_issue("source_target_incompatible",f"target-level source selection includes incompatible sources: {','.join(incompatible)}","target",raw_id))
+    effective_sources = tuple(sorted(set(sources) & set(allowed_by_context.values())))
     mappings=[]
-    for c in contexts:
-        required=allowed_by_context.get(c)
-        if c in {"source_health","market_session_state"}: continue
-        if not required:
-            issues.append(_issue("unsupported_context_type",f"context {c} unsupported for target identity","target",raw_id)); continue
-        if required not in sources:
-            issues.append(_issue("source_target_incompatible",f"required source {required} not selected for {c}","target",raw_id)); continue
-        route=routes[required].replace("{symbol}",symbol.lower() if required=="TWSE_MIS" else symbol)
-        mappings.append({"context_type":c,"source_family":required,"operation_class":"planned_network_fetch","route":route})
     target_id=f"{market}:{typ}:{symbol}"
     if typ=="option": target_id += f":{target.get('underlying')}:{target.get('expiry')}:{target.get('strike')}:{str(target.get('call_put')).upper()}:{str(target.get('contract_type')).lower()}"
-    return {"input_identity":target,"target_id":target_id,"symbol":symbol,"market":market,"instrument_type":typ,"identity_resolution_status":"rejected" if issues else "resolved","requested_context_types":list(contexts),"requested_source_families":list(sources),"allowed_source_families":sorted(set(allowed_by_context.values())),"runtime_routes":routes,"planned_mappings":mappings,"issues":issues}
+    for c in contexts:
+        local_mapping = _local_context_mapping(target_id, c)
+        if local_mapping is not None:
+            mappings.append(local_mapping); continue
+        required=allowed_by_context.get(c)
+        if not required:
+            issues.append(_issue("unsupported_context_type",f"context {c} unsupported for target identity","target",raw_id)); continue
+        if required not in effective_sources:
+            issues.append(_issue("source_target_incompatible",f"required source {required} not selected for {c}","target",raw_id)); continue
+        route=routes[required].replace("{symbol}",symbol.lower() if required=="TWSE_MIS" else symbol)
+        mappings.append({"target_id": target_id, "context_type":c,"source_family":required,"operation_class":"planned_network_fetch","route":route,"network_required": True})
+    return {"input_identity":target,"target_id":target_id,"symbol":symbol,"market":market,"instrument_type":typ,"identity_resolution_status":"rejected" if issues else "resolved","requested_context_types":list(contexts),"requested_source_families":list(effective_sources),"requested_source_selection_mode":"target_exact" if explicit_target_sources else "request_allowlist","allowed_source_families":sorted(set(allowed_by_context.values())),"runtime_routes":routes,"planned_mappings":mappings,"issues":issues}
 
 def normalize_market_context_request(request: dict[str, Any], *, source_registry=None) -> dict[str, Any]:
     issues=[]
@@ -205,19 +227,79 @@ def validate_market_context_request(request: dict[str, Any], *, source_registry=
     except M8RValidationError as e:
         return {"valid": False, "issues": e.issues, "normalized_request": None}
 
-def compute_plan_hash(plan_or_scope: dict[str, Any]) -> str:
-    scope=plan_or_scope.get("hash_scope") if isinstance(plan_or_scope,dict) and "hash_scope" in plan_or_scope else plan_or_scope
+def build_plan_hash_scope(plan: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(plan, dict) or not _is_plan_object(plan):
+        raise M8RValidationError([_issue("invalid_plan", "complete plan object required for plan hash computation")])
+    return {
+        "schema_version": plan.get("schema_version"),
+        "normalized_request_hash": plan.get("normalized_request_hash"),
+        "targets": [
+            {"target_id": t.get("target_id"), "market": t.get("market"), "symbol": t.get("symbol"), "instrument_type": t.get("instrument_type")}
+            for t in plan.get("targets", [])
+        ],
+        "requested_context_types": plan.get("requested_context_types", []),
+        "planned_source_families": plan.get("planned_source_families", []),
+        "source_to_target_context_mapping": plan.get("source_to_target_context_mapping", []),
+        "network_scope": plan.get("network_scope", {}),
+        "retained_scope": plan.get("bounded_retained_scope", {}),
+        "output_scope": plan.get("output_scope", {}),
+        "approval_required": plan.get("approval_required"),
+        "non_goal_flags": plan.get("non_goal_flags", {}),
+    }
+
+def validate_plan_internal_consistency(plan: dict[str, Any]) -> dict[str, Any]:
+    issues=[]
+    try:
+        rebuilt = build_plan_hash_scope(plan)
+    except M8RValidationError as exc:
+        return {"valid": False, "issues": exc.issues, "rebuilt_hash": None}
+    rebuilt_hash = sha256_json(rebuilt)
+    if plan.get("plan_hash") != rebuilt_hash:
+        issues.append(_issue("plan_hash_mismatch", "plan.plan_hash does not match rebuilt plan scope"))
+    if "hash_scope" in plan and plan.get("hash_scope") != rebuilt:
+        issues.append(_issue("plan_internal_scope_mismatch", "embedded hash_scope does not match rebuilt plan scope"))
+    return {"valid": not issues, "issues": issues, "rebuilt_hash": rebuilt_hash, "rebuilt_scope": rebuilt}
+
+def compute_scope_hash(scope: dict[str, Any]) -> str:
+    if not _is_hash_scope_object(scope):
+        raise M8RValidationError([_issue("invalid_plan_hash_scope", "explicit hash scope object is required")])
     return sha256_json(scope)
+
+def compute_plan_hash(plan: dict[str, Any]) -> str:
+    return sha256_json(build_plan_hash_scope(plan))
 
 def compile_market_context_execution_plan(request_or_normalized: dict[str, Any], *, source_registry=None, created_at_utc: str | None = None) -> dict[str, Any]:
     n = request_or_normalized if request_or_normalized.get("schema_version")==NORMALIZED_SCHEMA_VERSION else normalize_market_context_request(request_or_normalized, source_registry=source_registry)
     if not n["targets"]: raise M8RValidationError([_issue("unresolved_identity","at least one resolved target is required")])
     source_to_target=[]
     for t in n["targets"]:
-        for m in t["planned_mappings"]: source_to_target.append({"target_id":t["target_id"], **m})
-    scope={"schema_version":PLAN_SCHEMA_VERSION,"normalized_request_hash":sha256_json(n),"targets":[{"target_id":t["target_id"],"market":t["market"],"symbol":t["symbol"],"instrument_type":t["instrument_type"]} for t in n["targets"]],"requested_context_types":n["requested_context_types"],"planned_source_families":sorted({m["source_family"] for m in source_to_target}),"source_to_target_context_mapping":sorted(source_to_target,key=lambda x:(x["target_id"],x["context_type"],x["source_family"])),"network_scope":{"network_required":True,"operation_classes":["planned_network_fetch"],"network_execution_in_m8r01":False},"retained_scope":{"bounded_targets_only":True,"full_market_retained_output":False,"raw_payload_retention":False},"output_scope":n["output_policy"],"approval_required":True,"non_goal_flags":n["non_goal_flags"]}
-    h=sha256_json(scope)
-    return {"schema_version":PLAN_SCHEMA_VERSION,"plan_id":"m8r-plan-"+h[:16],"plan_hash":h,"normalized_request_hash":scope["normalized_request_hash"],"request_id":n["request_id"],"created_at_utc":created_at_utc or utc_now(),"targets":n["targets"],"rejected_targets":n["rejected_targets"],"requested_context_types":n["requested_context_types"],"planned_source_families":scope["planned_source_families"],"source_to_target_context_mapping":scope["source_to_target_context_mapping"],"network_required":True,"approval_required":True,"bounded_retained_scope":scope["retained_scope"],"output_scope":scope["output_scope"],"non_goal_flags":scope["non_goal_flags"],"hash_scope":scope}
+        for m in t["planned_mappings"]: source_to_target.append(dict(m))
+    source_to_target = sorted(source_to_target, key=lambda x:(x.get("target_id") or "", x["context_type"], x.get("source_family") or "", x["operation_class"]))
+    operation_classes=sorted({m["operation_class"] for m in source_to_target})
+    network_required=any(bool(m.get("network_required")) for m in source_to_target)
+    planned_source_families=sorted({m["source_family"] for m in source_to_target if m.get("source_family")})
+    plan={"schema_version":PLAN_SCHEMA_VERSION,"plan_id":None,"plan_hash":None,"normalized_request_hash":sha256_json(n),"request_id":n["request_id"],"created_at_utc":created_at_utc or utc_now(),"targets":n["targets"],"rejected_targets":n["rejected_targets"],"requested_context_types":n["requested_context_types"],"planned_source_families":planned_source_families,"source_to_target_context_mapping":source_to_target,"network_required":network_required,"network_scope":{"network_required":network_required,"operation_classes":operation_classes,"network_execution_in_m8r01":False},"approval_required":True,"bounded_retained_scope":{"bounded_targets_only":True,"full_market_retained_output":False,"raw_payload_retention":False},"output_scope":n["output_policy"],"non_goal_flags":n["non_goal_flags"]}
+    h=compute_plan_hash(plan)
+    plan["plan_hash"]=h
+    plan["plan_id"]="m8r-plan-"+h[:16]
+    plan["hash_scope"]=build_plan_hash_scope(plan)
+    return plan
+
+def _parse_utc_timestamp(value: Any) -> datetime | None:
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        raise M8RValidationError([_issue("invalid_approval_timestamp", "timestamp must be RFC3339 UTC string")])
+    try:
+        if value.endswith("Z"):
+            dt = datetime.fromisoformat(value[:-1] + "+00:00")
+        else:
+            dt = datetime.fromisoformat(value)
+    except ValueError as exc:
+        raise M8RValidationError([_issue("invalid_approval_timestamp", "timestamp must be valid RFC3339 UTC")]) from exc
+    if dt.tzinfo is None or dt.utcoffset() != timezone.utc.utcoffset(dt):
+        raise M8RValidationError([_issue("invalid_approval_timestamp", "timestamp must be timezone-aware UTC")])
+    return dt
 
 def build_approval_artifact(plan: dict[str, Any], *, approval_status="approved", approved_by="operator", approved_at_utc: str | None = None, expires_at_utc: str | None = None, single_use=True) -> dict[str, Any]:
     h=compute_plan_hash(plan)
@@ -225,9 +307,19 @@ def build_approval_artifact(plan: dict[str, Any], *, approval_status="approved",
 
 def validate_approval_for_plan(approval: dict[str, Any], plan: dict[str, Any], *, now_utc: str | None = None) -> dict[str, Any]:
     issues=[]
+    consistency = validate_plan_internal_consistency(plan)
+    issues.extend(consistency.get("issues", []))
+    rebuilt_hash = consistency.get("rebuilt_hash")
     if approval.get("schema_version") != APPROVAL_SCHEMA_VERSION: issues.append(_issue("invalid_schema_version","approval schema mismatch"))
     if approval.get("approval_status") != "approved": issues.append(_issue("approval_not_approved","approval status is not approved"))
     if approval.get("plan_id") != plan.get("plan_id"): issues.append(_issue("approval_plan_mismatch","approval plan_id mismatch"))
-    if approval.get("plan_hash") != compute_plan_hash(plan): issues.append(_issue("approval_plan_hash_mismatch","approval plan_hash mismatch"))
-    if approval.get("expires_at_utc") and (now_utc or utc_now()) > approval["expires_at_utc"]: issues.append(_issue("approval_expired","approval expired"))
+    if approval.get("plan_hash") != rebuilt_hash: issues.append(_issue("approval_plan_hash_mismatch","approval plan_hash mismatch"))
+    try:
+        _parse_utc_timestamp(approval.get("approved_at_utc"))
+        expires = _parse_utc_timestamp(approval.get("expires_at_utc"))
+        now = _parse_utc_timestamp(now_utc) if now_utc is not None else datetime.now(timezone.utc)
+        if expires is not None and now >= expires:
+            issues.append(_issue("approval_expired","approval expired"))
+    except M8RValidationError as exc:
+        issues.extend(exc.issues)
     return {"valid": not issues, "issues": issues}

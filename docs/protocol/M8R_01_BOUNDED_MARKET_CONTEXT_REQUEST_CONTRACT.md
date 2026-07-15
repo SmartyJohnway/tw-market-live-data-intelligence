@@ -2,8 +2,10 @@
 
 Status: `m8r_01_bounded_market_context_request_contract_go`
 Decision: `GO`
-Recommended successor: `M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR`
-Successor state handling: not activated; awaiting operator review.
+recommended_next_task = `M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR`
+next_task = `null`
+next_task_status = `awaiting_operator_acceptance`
+Successor state handling: M8R-02 is recommended but not activated or approved.
 
 ## 1. Verified baseline
 
@@ -55,10 +57,10 @@ M8R-01 reuses these current authorities instead of redefining source semantics:
 | Omitted `instrument_type` | Not allowed. Instrument type must be explicit and valid. |
 | Incorrect market/symbol pairing | Rejected as target-level identity/source compatibility issue where M8R can prove route incompatibility; no cross-market guessing. |
 | Duplicates | Identical duplicate target IDs collapse deterministically; conflicting duplicate definitions are target-level rejections. |
-| Target order and hash | Target and mapping arrays are sorted by identity/context/source, so input order does not affect hash. |
+| Target order and hash | Target and mapping arrays are sorted by identity/context/source, so input order does not affect hash. Hash validation rebuilds scope from actual top-level plan fields; embedded `hash_scope` is audit-only and non-authoritative. |
 | Immutable plan fields | Normalized target identities, context types, planned source families, source-to-target mappings, network scope, retained scope, output scope, approval flag, non-goal flags. |
 | Excluded presentation metadata | `created_at_utc`, display labels, notes, comments, approval timestamps, and execution results. |
-| Approval expiry/single-use | Approval artifact carries `single_use` and optional `expires_at_utc`; non-approved/expired/consumed statuses are invalid. |
+| Approval expiry/single-use | Approval artifact carries `single_use` and optional `expires_at_utc`; non-approved/expired/consumed statuses are invalid. Approval timestamps must be parsed RFC3339 UTC values; `now >= expires_at_utc` is expired. |
 | Output scope | Relative repository path only; no absolute path, traversal, `frontend/public`, `research/generated`, `.env`, secrets, or credentials paths. |
 | Limits vs network estimates | Request limits block before plan creation; planned network scope records operation classes only and does not estimate live availability. |
 | Unsupported context types | Unknown context types are request-blocking validation errors; context unsupported for a target is target-level rejection. |
@@ -83,7 +85,7 @@ Required shape:
 }
 ```
 
-`targets[]` require explicit `symbol`, `market`, and `instrument_type`. Optional target-level `requested_context_types` and `requested_source_families` override request-level lists.
+`targets[]` require explicit `symbol`, `market`, and `instrument_type`. Optional target-level `requested_context_types` overrides request-level context lists. Request-level `requested_source_families` is an upper-bound allowlist available to all targets; target-level `requested_source_families` is an exact explicit source selection and any extra incompatible source rejects that target.
 
 ### 5.2 Normalized request
 
@@ -95,7 +97,7 @@ Normalization performs case normalization, market aliases, instrument aliases, s
 
 Schema version: `m8r_market_context_execution_plan.v1`.
 
-The plan contains `plan_id`, `plan_hash`, `normalized_request_hash`, resolved targets, rejected targets, requested context types, planned source families, source-to-target/context mapping, planned operation classes, bounded retained scope, `network_required=true`, `approval_required=true`, output scope, non-goal flags, and `created_at_utc`. It contains no live results.
+The plan contains `plan_id`, `plan_hash`, `normalized_request_hash`, resolved targets, rejected targets, requested context types, planned source families, source-to-target/context mapping, planned operation classes, bounded retained scope, derived `network_required`, `approval_required=true`, output scope, non-goal flags, and `created_at_utc`. It contains no live results. `source_health` maps to `local_source_health_read` and `market_session_state` maps to `local_market_clock_evaluation`; both are local operations with `network_required=false`, while market source observations use `planned_network_fetch`. Local-only plans still require approval in M8R-01 for contract consistency.
 
 ### 5.4 Approval artifact
 
@@ -149,7 +151,7 @@ Requests exceeding request-level limits fail before plan creation.
 
 M8R-01 uses canonical JSON (`sort_keys=true`, compact separators, UTF-8, no incidental whitespace, no NaN) and SHA-256.
 
-Hash scope includes schema version, normalized request hash, normalized target identities, requested context types, planned source families, source-to-target/context mapping, network scope, retained scope, output scope, approval-required flag, and non-goal flags.
+Hash scope is rebuilt from actual top-level plan fields and includes schema version, normalized request hash, normalized target identities, requested context types, planned source families, source-to-target/context mapping, network scope, retained scope, output scope, approval-required flag, and non-goal flags. Stored `hash_scope` may remain for audit/debugging, but approval validation treats it as non-authoritative and emits `plan_internal_scope_mismatch` if it differs from the rebuilt scope.
 
 Hash scope excludes `created_at_utc`, display labels, operator notes, comments, approval timestamps, and execution results.
 
@@ -157,7 +159,7 @@ Hash scope excludes `created_at_utc`, display labels, operator notes, comments, 
 
 ## 11. Validation and rejection model
 
-Stable issue codes include: `invalid_schema_version`, `missing_required_field`, `invalid_market`, `invalid_symbol`, `invalid_instrument_type`, `market_symbol_incompatible`, `instrument_type_market_incompatible`, `unsupported_context_type`, `unsupported_source_family`, `source_not_runtime_eligible`, `research_only_source_forbidden`, `credential_gated_source_forbidden`, `source_target_incompatible`, `duplicate_target_conflict`, `target_limit_exceeded`, `context_limit_exceeded`, `source_limit_exceeded`, `unsafe_output_scope`, `unresolved_identity`, `ambiguous_identity`, `unsupported_session_scope`, `unsupported_product_scope`, `identifier_too_long`, `approval_plan_hash_mismatch`, `approval_not_approved`, and `approval_expired`.
+Stable issue codes include: `invalid_schema_version`, `missing_required_field`, `invalid_market`, `invalid_symbol`, `invalid_instrument_type`, `market_symbol_incompatible`, `instrument_type_market_incompatible`, `unsupported_context_type`, `unsupported_source_family`, `source_not_runtime_eligible`, `research_only_source_forbidden`, `credential_gated_source_forbidden`, `source_target_incompatible`, `duplicate_target_conflict`, `target_limit_exceeded`, `context_limit_exceeded`, `source_limit_exceeded`, `unsafe_output_scope`, `unresolved_identity`, `ambiguous_identity`, `unsupported_session_scope`, `unsupported_product_scope`, `identifier_too_long`, `approval_plan_hash_mismatch`, `approval_not_approved`, `approval_expired`, `invalid_approval_timestamp`, `plan_hash_mismatch`, and `plan_internal_scope_mismatch`.
 
 Schema, policy, source eligibility, limit, and output-safety errors block the request. Individual identity/source compatibility errors are target-level rejections. A plan requires at least one resolved target.
 
@@ -185,7 +187,7 @@ Representative fixtures live under `tests/fixtures/m8r_request/`. Unit tests liv
 - M8R-01 does not introduce a complete security master and therefore does not claim comprehensive symbol ownership validation.
 - TAIEX official EOD index context remains unsupported unless a later accepted adapter/source contract implements it.
 - TAIFEX after-hours, weekly options, delta runtime, and continuous-contract semantics remain deferred.
-- Source health and market session state are vocabulary entries for future composition; M8R-01 does not fetch or compute them.
+- Source health and market session state are planned as local non-market-source operations only; M8R-01 does not fetch, compute, or read live source-health/session artifacts.
 - Approval artifacts are semantic records only; CLI/API/MCP/frontend approval surfaces are future work.
 
 ## 15. M8R-02 entry conditions
