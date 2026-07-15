@@ -108,3 +108,5 @@ git diff --check
 
 - [M6E Operator Acceptance Test and Release Preflight](reviews/M6E_OPERATOR_ACCEPTANCE_TEST_AND_RELEASE_PREFLIGHT.md)
 - [M6G Browser Operator E2E Acceptance](reviews/M6G_BROWSER_OPERATOR_E2E_ACCEPTANCE.md)
+
+- M8R-02 status = `CONDITIONAL_GO`; next_task = `null`; next_task_status = `awaiting_operator_acceptance`; recommended_next_task = `M8R-02A-PRODUCTION-SOURCE-EXECUTOR-ADAPTER-INTEGRATION`

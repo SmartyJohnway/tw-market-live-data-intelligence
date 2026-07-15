@@ -556,7 +556,7 @@
     "taifex_mis_ai_context_allowed": true,
     "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
     "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
-    "recommended_next_task": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR",
+    "recommended_next_task": "M8R-02A-PRODUCTION-SOURCE-EXECUTOR-ADAPTER-INTEGRATION",
     "m8r_01_status": "GO_WITH_COMPLETED_FOLLOW_UP_FIX",
     "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go"
   },
@@ -571,7 +571,7 @@
     "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
     "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
     "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
-    "recommended_next_task": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR",
+    "recommended_next_task": "M8R-02A-PRODUCTION-SOURCE-EXECUTOR-ADAPTER-INTEGRATION",
     "m8r_01_status": "GO_WITH_COMPLETED_FOLLOW_UP_FIX",
     "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go"
   },
@@ -585,7 +585,7 @@
   "new_m8_failures": [],
   "new_m8c_failures": [],
   "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
-  "recommended_next_task": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR",
+  "recommended_next_task": "M8R-02A-PRODUCTION-SOURCE-EXECUTOR-ADAPTER-INTEGRATION",
   "m8r_01_status": "GO_WITH_COMPLETED_FOLLOW_UP_FIX",
   "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go"
 }
