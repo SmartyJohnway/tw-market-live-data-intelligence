@@ -1,0 +1,13 @@
+[
+  {
+    "context_type": "official_eod_reference",
+    "forbidden_interpretations": [],
+    "missing_context_status": "missing",
+    "operation_status": "failed",
+    "planned_source_family": "TAIFEX_OPENAPI",
+    "reason_code": "target_not_present_in_source_result",
+    "schema_version": "m8r_market_context_missing_context.v1",
+    "target_id": "TAIFEX:option:TXO:TX:202607:20000:C:monthly",
+    "usable_fallback": null
+  }
+]

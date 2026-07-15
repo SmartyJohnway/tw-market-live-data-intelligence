@@ -1,0 +1,131 @@
+[
+  {
+    "adapter_invocation_count": 1,
+    "context_type": "official_eod_reference",
+    "currentness": {
+      "currentness_status": "official_eod_reference"
+    },
+    "finished_at_utc": "2026-07-15T09:30:17Z",
+    "grouping": {
+      "grouped": true,
+      "network_scope": "whole_market_endpoint",
+      "retention_scope": "approved_targets_only"
+    },
+    "issues": [],
+    "network_attempted": true,
+    "network_request_count": 1,
+    "operation_class": "planned_network_fetch",
+    "operation_id": "m8r-op-60e39e410f36a656",
+    "retained_artifacts": [],
+    "returned_identity": {
+      "market": "TWSE",
+      "source_id": "TWSE_OPENAPI",
+      "symbol": "2330"
+    },
+    "route": "TWSE_OPENAPI",
+    "schema_version": "m8r_market_context_operation_result.v1",
+    "source_family": "TWSE_OPENAPI",
+    "source_health": {},
+    "source_observation": {
+      "authority_level": "official_documented",
+      "caveats": [
+        "TradeVolume unit caveated by instrument class",
+        "official EOD/reference; not intraday"
+      ],
+      "context_type": "official_eod_reference",
+      "currentness": {
+        "currentness_status": "official_eod_reference"
+      },
+      "instrument_type": "equity",
+      "market": "listed",
+      "market_date": "2026-07-14",
+      "name": "台積電",
+      "omitted_fields": [],
+      "retrieved_at_utc": "2026-07-15T09:30:10Z",
+      "safe_fields": {
+        "activity": {
+          "trade_value": 103370532441,
+          "trade_volume": 42857055,
+          "transaction_count": 275423
+        },
+        "currentness_status": "official_eod_reference",
+        "derived_fields": [
+          "previous_close=close-change"
+        ],
+        "field_validation": {
+          "Change": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "ClosingPrice": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "Date": {
+            "source_format": "ROC_YYYMMDD",
+            "valid": true
+          },
+          "HighestPrice": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "LowestPrice": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "OpeningPrice": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "TradeValue": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "TradeVolume": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "Transaction": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "identity": {
+            "market": "listed",
+            "symbol_present": true,
+            "valid": true
+          },
+          "instrument_classification": {
+            "artifact_path": "config/m8a_official_eod_security_master.json",
+            "classification_status": "classified",
+            "coverage_mode": "bounded_seed_only",
+            "instrument_type": "equity",
+            "production_classification_completeness": "incomplete",
+            "provenance": "config/m5k_default_watchlist.json twse:2330 listed_equity",
+            "source": "repository_bounded_security_seed"
+          },
+          "trade_date": {
+            "valid": true
+          }
+        },
+        "price": {
+          "change": "-20.0000",
+          "change_percent": null,
+          "close": "2420.00",
+          "high": "2430.00",
+          "low": "2390.00",
+          "open": "2410.00",
+          "previous_close": "2440.0000"
+        },
+        "trade_date": "2026-07-14"
+      },
+      "source_family": "TWSE_OPENAPI",
+      "source_id": "TWSE_OPENAPI",
+      "symbol": "2330",
+      "timing_class": "official_eod",
+      "trading_date": "2026-07-14"
+    },
+    "started_at_utc": "2026-07-15T09:30:10Z",
+    "status": "succeeded",
+    "target_id": "TWSE:equity:2330"
+  }
+]

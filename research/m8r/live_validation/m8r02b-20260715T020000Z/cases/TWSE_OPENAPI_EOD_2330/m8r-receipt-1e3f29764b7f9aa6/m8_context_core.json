@@ -1,0 +1,243 @@
+{
+  "ai_exposure_policy": {
+    "blocked_fields": [
+      "ask_prices",
+      "ask_volumes",
+      "bid_prices",
+      "bid_volumes",
+      "cookie",
+      "cookies",
+      "full_option_chain",
+      "option_chain",
+      "order_book_truth",
+      "raw_bid_ask_ladder",
+      "raw_mode_1_dictionary",
+      "raw_payload",
+      "raw_payload_sample",
+      "raw_qid_map",
+      "raw_rest_records",
+      "rest_rows",
+      "session_id",
+      "session_ids",
+      "sockjs_frames",
+      "source_investigation_notes",
+      "trueValues",
+      "truevalues"
+    ],
+    "eod_not_realtime": true,
+    "forbidden_interpretations": [
+      "trading advice",
+      "trading signal",
+      "recommendation",
+      "target price",
+      "support/resistance",
+      "ranking",
+      "bullish/bearish recommendation",
+      "capital-flow interpretation"
+    ],
+    "manual_evidence_not_official_source": true,
+    "not_realtime_unless_source_policy_allows": true,
+    "not_recommendation": true,
+    "not_trading_signal": true,
+    "requires_caveats": true,
+    "retrieved_at_not_exchange_timestamp": true,
+    "safe_to_include_in_conversation_context": true,
+    "validation_only_not_primary_source": true
+  },
+  "context_status": "candidate_built_with_caveats",
+  "cross_source_caveats": [
+    "retrieved_at_utc is not exchange timestamp",
+    "EOD source must not be described as realtime"
+  ],
+  "freshness_summary": {
+    "caveated_currentness_label": "official_eod_reference_only",
+    "has_credential_gated_metadata_only": false,
+    "has_liveish_intraday_snapshot": false,
+    "has_liveish_source_family_observation": false,
+    "has_manual_snapshot": false,
+    "has_official_eod_reference": true,
+    "has_official_statistics_eod": false,
+    "has_regulatory_reference": false,
+    "has_stale_sources": false,
+    "has_taifex_mis_aging_liveish": false,
+    "has_taifex_mis_caveated_liveish": false,
+    "has_taifex_mis_closed_reference": false,
+    "has_taifex_mis_metadata_only": false,
+    "has_taifex_mis_observation": false,
+    "has_taifex_mis_phase_caveated": false,
+    "has_taifex_mis_policy_blocked": false,
+    "has_taifex_mis_primary_current": false,
+    "has_taifex_mis_stale_liveish": false,
+    "has_taifex_mis_unresolved": false,
+    "has_unavailable_sources": false,
+    "has_unknown_sources": false,
+    "has_validation_only": false,
+    "most_recent_retrieved_at_utc": "2026-07-15T09:30:10Z",
+    "taifex_mis_currentness_statuses": [],
+    "taifex_mis_role_details": []
+  },
+  "generated_at_utc": "2026-07-15T02:00:00Z",
+  "instrument_contexts": [
+    {
+      "context_group": null,
+      "contexts": [
+        {
+          "ai_exposure_level": "caveated_context_allowed",
+          "authority_level": "official_documented",
+          "caveats": [
+            "TradeVolume unit caveated by instrument class",
+            "official EOD/reference; not intraday",
+            "Latest-only official EOD/reference endpoint; not realtime; no full-market raw payload retention.",
+            "Instrument classification is exact lookup only; current repository lacks a complete canonical security master, so M8A production classification is bounded_seed_only/incomplete until a complete master is added.",
+            "EOD must not be described as current price or realtime",
+            "EOD source must not be described as realtime or current price"
+          ],
+          "context_group": null,
+          "context_role": null,
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "currentness_status": "official_eod_reference"
+          },
+          "endpoint_contract_id": null,
+          "freshness_assessment": "official_eod_reference",
+          "instrument_type": "equity",
+          "market": "listed",
+          "market_date": "2026-07-14",
+          "metadata_only": false,
+          "not_recommendation": true,
+          "not_trading_signal": true,
+          "observation_valid": true,
+          "omitted_fields": [],
+          "overall_ai_currentness": null,
+          "policy_ai_context_allowed": true,
+          "primary_context_allowed": true,
+          "provenance": null,
+          "retrieved_at_utc": "2026-07-15T09:30:10Z",
+          "safe_fields": {
+            "activity": {
+              "trade_value": 103370532441,
+              "trade_volume": 42857055,
+              "transaction_count": 275423
+            },
+            "currentness_status": "official_eod_reference",
+            "derived_fields": [
+              "previous_close=close-change"
+            ],
+            "field_validation": {
+              "Change": {
+                "numeric_type": "decimal_string",
+                "valid": true
+              },
+              "ClosingPrice": {
+                "numeric_type": "decimal_string",
+                "valid": true
+              },
+              "Date": {
+                "source_format": "ROC_YYYMMDD",
+                "valid": true
+              },
+              "HighestPrice": {
+                "numeric_type": "decimal_string",
+                "valid": true
+              },
+              "LowestPrice": {
+                "numeric_type": "decimal_string",
+                "valid": true
+              },
+              "OpeningPrice": {
+                "numeric_type": "decimal_string",
+                "valid": true
+              },
+              "TradeValue": {
+                "numeric_type": "integer",
+                "valid": true
+              },
+              "TradeVolume": {
+                "numeric_type": "integer",
+                "valid": true
+              },
+              "Transaction": {
+                "numeric_type": "integer",
+                "valid": true
+              },
+              "identity": {
+                "market": "listed",
+                "symbol_present": true,
+                "valid": true
+              },
+              "instrument_classification": {
+                "artifact_path": "config/m8a_official_eod_security_master.json",
+                "classification_status": "classified",
+                "coverage_mode": "bounded_seed_only",
+                "instrument_type": "equity",
+                "production_classification_completeness": "incomplete",
+                "provenance": "config/m5k_default_watchlist.json twse:2330 listed_equity",
+                "source": "repository_bounded_security_seed"
+              },
+              "trade_date": {
+                "valid": true
+              }
+            },
+            "price": {
+              "change": "-20.0000",
+              "change_percent": null,
+              "close": "2420.00",
+              "high": "2430.00",
+              "low": "2390.00",
+              "open": "2410.00",
+              "previous_close": "2440.0000"
+            },
+            "trade_date": "2026-07-14"
+          },
+          "safe_for_ai_context": true,
+          "session": null,
+          "session_state": null,
+          "source_family": "TWSE_OPENAPI",
+          "source_id": "TWSE_OPENAPI",
+          "source_timestamp": null,
+          "source_unavailable": false,
+          "source_unavailable_reason": null,
+          "state_specific_context_allowed": true,
+          "supporting_context_only": false,
+          "symbol": "2330",
+          "taifex_mis_role_detail": null,
+          "timing_class": "official_eod",
+          "trade_date": null,
+          "trading_date": "2026-07-14",
+          "withhold_market_values_from_conversation": false
+        }
+      ],
+      "instrument_type": "equity",
+      "market": "listed",
+      "name": "台積電",
+      "symbol": "2330"
+    }
+  ],
+  "market_scope": {},
+  "not_recommendation": true,
+  "not_trading_signal": true,
+  "schema_version": "m8_00_multi_source_market_context.v1",
+  "sources": [
+    {
+      "ai_exposure_level": "caveated_context_allowed",
+      "authority_level": "official_documented",
+      "caveats": [
+        "TradeVolume unit caveated by instrument class",
+        "official EOD/reference; not intraday",
+        "Latest-only official EOD/reference endpoint; not realtime; no full-market raw payload retention.",
+        "Instrument classification is exact lookup only; current repository lacks a complete canonical security master, so M8A production classification is bounded_seed_only/incomplete until a complete master is added.",
+        "EOD must not be described as current price or realtime"
+      ],
+      "freshness_assessments": [
+        "official_eod_reference"
+      ],
+      "has_stale_observation": false,
+      "has_unavailable_observation": false,
+      "observation_count": 1,
+      "runtime_executable": true,
+      "source_family": "TWSE_OPENAPI",
+      "source_id": "TWSE_OPENAPI",
+      "timing_class": "official_eod"
+    }
+  ]
+}

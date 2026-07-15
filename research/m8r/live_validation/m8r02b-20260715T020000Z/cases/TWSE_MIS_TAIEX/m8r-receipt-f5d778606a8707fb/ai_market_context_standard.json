@@ -1,0 +1,124 @@
+{
+  "caveats": [
+    {
+      "code": "approved_target_scope_not_fully_available",
+      "message": "approved target scope not fully available",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "currentness_unknown",
+      "message": "currentness unknown",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "liveish_not_exchange_official_realtime",
+      "message": "liveish not exchange official realtime",
+      "scope": "package",
+      "severity": "warning",
+      "source_family": "TWSE_MIS"
+    },
+    {
+      "code": "production_live_execution_not_ready",
+      "message": "production live execution not ready",
+      "scope": "package",
+      "severity": "warning"
+    }
+  ],
+  "currentness": {
+    "by_source_family": {
+      "TWSE_MIS": [
+        "unknown"
+      ]
+    },
+    "by_target": {
+      "TWSE:index:TAIEX": [
+        "unknown"
+      ]
+    },
+    "current_count": 0,
+    "not_applicable_count": 0,
+    "overall_status": "unknown",
+    "stale_count": 0,
+    "unknown_count": 1
+  },
+  "forbidden_interpretations": [
+    "liveish_not_official_realtime",
+    "not_all_sources_current",
+    "not_broker_instruction",
+    "not_complete_when_partial",
+    "not_full_market",
+    "not_guaranteed_realtime",
+    "not_live_production_ready_without_m8r02b",
+    "not_prediction",
+    "not_recommendation",
+    "not_safe_to_infer_missing_values",
+    "not_trading_signal"
+  ],
+  "missing_context": [],
+  "package_id": "amc-2ae78a0c624a15da",
+  "source_provenance": [
+    {
+      "authority_level": "official_undocumented",
+      "caveats": [
+        {
+          "code": "source_warning",
+          "message": "source_warning",
+          "severity": "warning",
+          "source": "observation_caveat"
+        }
+      ],
+      "context_type": "liveish_observation",
+      "currentness": {
+        "currentness_status": "source_specific_currentness_unresolved"
+      },
+      "instrument_type": "index",
+      "market": "TWSE",
+      "operation_id": "m8r-op-29e0d8ac193a636b",
+      "retrieved_at_utc": "2026-07-15T02:00:00Z",
+      "safe_fields": {
+        "high": "45881.91",
+        "last_price": "45631.59",
+        "low": "44850.69",
+        "open": "44850.69",
+        "previous_close": "44737.95",
+        "query_id": "tse_t00.tw",
+        "volume": null
+      },
+      "source_context_id": "amc-src-3fc85f10331f48eb",
+      "source_family": "TWSE_MIS",
+      "source_id": "TWSE_MIS",
+      "source_timestamp": "20260715 13:33:00",
+      "symbol": "TAIEX",
+      "target_id": "TWSE:index:TAIEX",
+      "timing_class": "liveish_intraday_snapshot"
+    }
+  ],
+  "targets": [
+    {
+      "available_context_types": [
+        "liveish_observation"
+      ],
+      "caveats": [],
+      "derivative_identity": {
+        "market": "TWSE",
+        "query_id": "tse_t00.tw",
+        "symbol": "TAIEX"
+      },
+      "forbidden_interpretations": [],
+      "instrument_type": "index",
+      "market": "TWSE",
+      "missing_context_types": [],
+      "requested_context_types": [
+        "liveish_observation"
+      ],
+      "source_context_refs": [
+        "amc-src-3fc85f10331f48eb"
+      ],
+      "symbol": "TAIEX",
+      "target_id": "TWSE:index:TAIEX",
+      "target_status": "ready_with_caveats"
+    }
+  ]
+}

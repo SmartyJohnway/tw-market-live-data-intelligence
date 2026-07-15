@@ -1,0 +1,47 @@
+{
+  "currentness": {
+    "by_source_family": {},
+    "by_target": {},
+    "current_count": 0,
+    "not_applicable_count": 0,
+    "overall_status": "not_applicable",
+    "stale_count": 0,
+    "unknown_count": 0
+  },
+  "highest_severity_caveats": [
+    {
+      "code": "approved_target_scope_not_fully_available",
+      "message": "approved target scope not fully available",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "missing_context",
+      "message": "missing context",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "partial_context",
+      "message": "partial context",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "production_live_execution_not_ready",
+      "message": "production live execution not ready",
+      "scope": "package",
+      "severity": "warning"
+    }
+  ],
+  "latest_usable_observations": [],
+  "missing_context_count": 1,
+  "package_id": "amc-182253eb7bf7b293",
+  "package_status": "blocked",
+  "targets": [
+    {
+      "status": "partial",
+      "target_id": "TPEX:equity:6488"
+    }
+  ]
+}

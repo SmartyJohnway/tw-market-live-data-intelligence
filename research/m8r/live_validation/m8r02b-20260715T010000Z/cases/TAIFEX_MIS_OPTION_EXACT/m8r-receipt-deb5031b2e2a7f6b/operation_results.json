@@ -1,0 +1,30 @@
+[
+  {
+    "adapter_invocation_count": 1,
+    "context_type": "liveish_observation",
+    "currentness": {},
+    "finished_at_utc": "2026-07-15T09:28:45Z",
+    "grouping": {
+      "grouped": false
+    },
+    "issues": [
+      {
+        "code": "source_payload_invalid",
+        "severity": "warning"
+      }
+    ],
+    "network_attempted": true,
+    "operation_class": "planned_network_fetch",
+    "operation_id": "m8r-op-b765c47565682515",
+    "retained_artifacts": [],
+    "returned_identity": {},
+    "route": "regular_session_monthly_option_selector",
+    "schema_version": "m8r_market_context_operation_result.v1",
+    "source_family": "TAIFEX_MIS",
+    "source_health": {},
+    "source_observation": {},
+    "started_at_utc": "2026-07-15T09:28:44Z",
+    "status": "failed",
+    "target_id": "TAIFEX:option:TXO:TX:202607:20000:C:monthly"
+  }
+]

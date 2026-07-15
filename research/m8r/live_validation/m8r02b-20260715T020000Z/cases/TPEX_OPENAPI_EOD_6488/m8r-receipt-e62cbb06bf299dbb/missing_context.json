@@ -1,0 +1,13 @@
+[
+  {
+    "context_type": "official_eod_reference",
+    "forbidden_interpretations": [],
+    "missing_context_status": "missing",
+    "operation_status": "failed",
+    "planned_source_family": "TPEX_OPENAPI",
+    "reason_code": "target_not_present_in_source_result",
+    "schema_version": "m8r_market_context_missing_context.v1",
+    "target_id": "TPEX:equity:6488",
+    "usable_fallback": null
+  }
+]

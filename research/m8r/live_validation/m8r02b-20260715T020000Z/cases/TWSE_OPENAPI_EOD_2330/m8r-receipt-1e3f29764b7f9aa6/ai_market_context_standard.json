@@ -1,0 +1,191 @@
+{
+  "caveats": [
+    {
+      "code": "approved_target_scope_not_fully_available",
+      "message": "approved target scope not fully available",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "currentness_unknown",
+      "message": "currentness unknown",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "official_eod_not_intraday",
+      "message": "official eod not intraday",
+      "scope": "package",
+      "severity": "warning",
+      "source_family": "TWSE_OPENAPI"
+    },
+    {
+      "code": "production_live_execution_not_ready",
+      "message": "production live execution not ready",
+      "scope": "package",
+      "severity": "warning"
+    }
+  ],
+  "currentness": {
+    "by_source_family": {
+      "TWSE_OPENAPI": [
+        "unknown"
+      ]
+    },
+    "by_target": {
+      "TWSE:equity:2330": [
+        "unknown"
+      ]
+    },
+    "current_count": 0,
+    "not_applicable_count": 0,
+    "overall_status": "unknown",
+    "stale_count": 0,
+    "unknown_count": 1
+  },
+  "forbidden_interpretations": [
+    "not_all_sources_current",
+    "not_broker_instruction",
+    "not_complete_when_partial",
+    "not_full_market",
+    "not_guaranteed_realtime",
+    "not_live_production_ready_without_m8r02b",
+    "not_prediction",
+    "not_recommendation",
+    "not_safe_to_infer_missing_values",
+    "not_trading_signal",
+    "official_eod_not_live"
+  ],
+  "missing_context": [],
+  "package_id": "amc-aac71da4c519e422",
+  "source_provenance": [
+    {
+      "authority_level": "official_documented",
+      "caveats": [
+        {
+          "code": "source_warning",
+          "message": "source_warning",
+          "severity": "warning",
+          "source": "observation_caveat"
+        }
+      ],
+      "context_type": "official_eod_reference",
+      "currentness": {
+        "currentness_status": "official_eod_reference"
+      },
+      "instrument_type": "equity",
+      "market": "listed",
+      "operation_id": "m8r-op-60e39e410f36a656",
+      "retrieved_at_utc": "2026-07-15T09:30:10Z",
+      "safe_fields": {
+        "activity": {
+          "trade_value": 103370532441,
+          "trade_volume": 42857055,
+          "transaction_count": 275423
+        },
+        "currentness_status": "official_eod_reference",
+        "derived_fields": [
+          "previous_close=close-change"
+        ],
+        "field_validation": {
+          "Change": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "ClosingPrice": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "Date": {
+            "source_format": "ROC_YYYMMDD",
+            "valid": true
+          },
+          "HighestPrice": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "LowestPrice": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "OpeningPrice": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "TradeValue": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "TradeVolume": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "Transaction": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "identity": {
+            "market": "listed",
+            "symbol_present": true,
+            "valid": true
+          },
+          "instrument_classification": {
+            "artifact_path": "config/m8a_official_eod_security_master.json",
+            "classification_status": "classified",
+            "coverage_mode": "bounded_seed_only",
+            "instrument_type": "equity",
+            "production_classification_completeness": "incomplete",
+            "provenance": "config/m5k_default_watchlist.json twse:2330 listed_equity",
+            "source": "repository_bounded_security_seed"
+          },
+          "trade_date": {
+            "valid": true
+          }
+        },
+        "price": {
+          "change": "-20.0000",
+          "change_percent": null,
+          "close": "2420.00",
+          "high": "2430.00",
+          "low": "2390.00",
+          "open": "2410.00",
+          "previous_close": "2440.0000"
+        },
+        "trade_date": "2026-07-14"
+      },
+      "source_context_id": "amc-src-f5fe1447bc9a9c5a",
+      "source_family": "TWSE_OPENAPI",
+      "source_id": "TWSE_OPENAPI",
+      "source_timestamp": null,
+      "symbol": "2330",
+      "target_id": "TWSE:equity:2330",
+      "timing_class": "official_eod"
+    }
+  ],
+  "targets": [
+    {
+      "available_context_types": [
+        "official_eod_reference"
+      ],
+      "caveats": [],
+      "derivative_identity": {
+        "market": "TWSE",
+        "source_id": "TWSE_OPENAPI",
+        "symbol": "2330"
+      },
+      "forbidden_interpretations": [],
+      "instrument_type": "equity",
+      "market": "listed",
+      "missing_context_types": [],
+      "requested_context_types": [
+        "official_eod_reference"
+      ],
+      "source_context_refs": [
+        "amc-src-f5fe1447bc9a9c5a"
+      ],
+      "symbol": "2330",
+      "target_id": "TWSE:equity:2330",
+      "target_status": "ready_with_caveats"
+    }
+  ]
+}

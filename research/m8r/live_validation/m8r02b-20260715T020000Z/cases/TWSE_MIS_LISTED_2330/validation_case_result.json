@@ -1,0 +1,144 @@
+{
+  "adapter_invocation_count": 1,
+  "ai_package_id": "amc-97efae4d072438a9",
+  "ai_package_status": "partial",
+  "ai_validation": {
+    "status": "valid"
+  },
+  "approval_consumed": true,
+  "approval_id": "m8r-approval-a7cbce74fd8c63d2",
+  "artifact_paths": [
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/execution_plan.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/approval_record.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/execution_receipt.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/operation_results.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/missing_context.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/m8_context_core.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/ai_market_context_v1.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/ai_market_context_compact.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/ai_market_context_standard.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/ai_market_context_diagnostic.json"
+  ],
+  "authority_level": "official_undocumented",
+  "case_id": "TWSE_MIS_LISTED_2330",
+  "caveats": [
+    {
+      "code": "approved_target_scope_not_fully_available",
+      "message": "approved target scope not fully available",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "currentness_unknown",
+      "message": "currentness unknown",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "liveish_not_exchange_official_realtime",
+      "message": "liveish not exchange official realtime",
+      "scope": "package",
+      "severity": "warning",
+      "source_family": "TWSE_MIS"
+    },
+    {
+      "code": "production_live_execution_not_ready",
+      "message": "production live execution not ready",
+      "scope": "package",
+      "severity": "warning"
+    }
+  ],
+  "currentness": {
+    "currentness_status": "source_specific_currentness_unresolved"
+  },
+  "execution_status": "ready_with_caveats",
+  "forbidden_interpretations": [
+    "liveish_not_official_realtime",
+    "not_all_sources_current",
+    "not_broker_instruction",
+    "not_complete_when_partial",
+    "not_full_market",
+    "not_guaranteed_realtime",
+    "not_live_production_ready_without_m8r02b",
+    "not_prediction",
+    "not_recommendation",
+    "not_safe_to_infer_missing_values",
+    "not_trading_signal"
+  ],
+  "grouping": {
+    "grouped": false
+  },
+  "identity_verification_result": "matched_or_not_applicable",
+  "missing_context": [],
+  "network_attempted": true,
+  "network_request_count": 1,
+  "operation_status": "succeeded",
+  "plan_hash": "6ddf7ee684dbef24a84598403743dde2959a17026eaa92f25fe1d92025e7bf95",
+  "plan_id": "m8r-plan-6ddf7ee684dbef24",
+  "planned_source_family": "TWSE_MIS",
+  "receipt_id": "m8r-receipt-fbf27efe8befdf74",
+  "requested_context": [
+    "liveish_observation"
+  ],
+  "result": "passed_with_caveats",
+  "retention_audit": {
+    "forbidden_key_hits": [],
+    "status": "passed"
+  },
+  "retrieved_at_utc": "2026-07-15T02:00:00Z",
+  "returned_identity": {
+    "market": "TWSE",
+    "query_id": "tse_2330.tw",
+    "symbol": "2330"
+  },
+  "schema_version": "m8r_controlled_live_validation_case_result.v1",
+  "source_id": "TWSE_MIS",
+  "source_timestamp": "20260715 13:30:00",
+  "target": [
+    {
+      "allowed_source_families": [
+        "TWSE_MIS",
+        "TWSE_OPENAPI"
+      ],
+      "derivative_identity": {},
+      "duplicate_identity_key": "TWSE:equity:2330",
+      "identity_resolution_status": "resolved",
+      "input_identity": {
+        "instrument_type": "equity",
+        "market": "TWSE",
+        "requested_source_families": [
+          "TWSE_MIS"
+        ],
+        "symbol": "2330"
+      },
+      "instrument_type": "equity",
+      "issues": [],
+      "market": "TWSE",
+      "planned_mappings": [
+        {
+          "context_type": "liveish_observation",
+          "network_required": true,
+          "operation_class": "planned_network_fetch",
+          "route": "tse_2330.tw",
+          "source_family": "TWSE_MIS",
+          "target_id": "TWSE:equity:2330"
+        }
+      ],
+      "requested_context_types": [
+        "liveish_observation"
+      ],
+      "requested_source_families": [
+        "TWSE_MIS"
+      ],
+      "requested_source_selection_mode": "target_exact",
+      "runtime_routes": {
+        "TWSE_MIS": "tse_{symbol}.tw",
+        "TWSE_OPENAPI": "TWSE_OPENAPI"
+      },
+      "session": null,
+      "symbol": "2330",
+      "target_id": "TWSE:equity:2330"
+    }
+  ],
+  "timing_class": "liveish_intraday_snapshot"
+}
