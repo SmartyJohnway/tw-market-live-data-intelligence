@@ -1,0 +1,7 @@
+{
+  "fixture_name": "unsafe_retention",
+  "full_market_retained_output": false,
+  "note": "small bounded fixture; unit tests use Python builders for live shape",
+  "raw_payload_retained": false,
+  "schema_version": "m8r_market_context_orchestration_result.v1"
+}
