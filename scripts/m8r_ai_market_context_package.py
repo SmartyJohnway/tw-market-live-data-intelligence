@@ -19,12 +19,18 @@ from scripts.m8r_one_shot_market_context_orchestrator import (
 SCHEMA_VERSION = "ai_market_context.v1"
 HASH_SCOPE_SCHEMA_VERSION = "ai_market_context_hash_scope.v1"
 ALLOWED_EXECUTION_STATUSES = {"ready", "ready_with_caveats", "partial", "blocked"}
+TERMINAL_OPERATION_STATUSES = {"succeeded", "failed", "blocked", "skipped_due_to_dependency"}
 FORBIDDEN_KEYS = {
     "raw_payload", "response_body", "html", "cookies", "cookie", "authorization",
     "api_key", "access_token", "refresh_token", "secret", "password",
     "full_market_rows", "full_market_data",
 }
-SENSITIVE_DIAGNOSTIC_KEYS = FORBIDDEN_KEYS | {"error", "exception", "detail", "traceback", "message_detail"}
+SAFE_CAVEAT_CODES = {
+    "source_stale", "currentness_unknown", "source_unavailable", "partial_context",
+    "official_eod_not_intraday", "liveish_not_exchange_official_realtime",
+    "market_session_unresolved", "source_health_not_live_probe", "missing_context",
+    "source_warning", "operation_issue", "source_execution_failed",
+}
 ALLOWED_SOURCES = {
     "TWSE_MIS", "TWSE_OPENAPI", "TPEX_OPENAPI", "TAIFEX_MIS", "TAIFEX_OPENAPI",
     "LOCAL_CONTEXT", "LOCAL_SOURCE_HEALTH", "LOCAL_MARKET_CLOCK",
@@ -226,28 +232,23 @@ def _provenance(orchestration: dict[str, Any], target_identity_provenance: str) 
     }
 
 
+def _safe_caveat_code(value: Any) -> str:
+    text = str(value or "source_warning").strip()
+    return text if text in SAFE_CAVEAT_CODES else "source_warning"
+
+
 def normalize_context_caveats(observation_caveats: Any, operation_issues: Any) -> list[dict[str, Any]]:
     normalized: list[dict[str, Any]] = []
     for item in _as_list(observation_caveats):
-        if isinstance(item, str):
-            code = item.strip() or "source_warning"
-            normalized.append({"code": code, "severity": "warning", "message": code, "source": "observation_caveat"})
-        elif isinstance(item, dict):
-            code = str(item.get("code") or "source_warning")
-            message = str(item.get("message") or code)
-            normalized.append({"code": code, "severity": str(item.get("severity") or "warning"), "message": message, "source": "observation_caveat"})
-    for item in _as_list(operation_issues):
-        if isinstance(item, str):
-            code = item.strip() or "operation_issue"
-            message = code
-        elif isinstance(item, dict):
-            code = str(item.get("code") or "operation_issue")
-            message = str(item.get("message") or code)
+        if isinstance(item, dict):
+            code = _safe_caveat_code(item.get("code"))
         else:
-            code = "operation_issue"
-            message = code
-        # Keep stable code/message only. Do not copy exception text or diagnostic fields.
-        normalized.append({"code": code, "severity": "warning", "message": message, "source": "operation_issue"})
+            code = _safe_caveat_code(item)
+        normalized.append({"code": code, "severity": "warning", "message": code, "source": "observation_caveat"})
+    for item in _as_list(operation_issues):
+        code = _safe_caveat_code(item.get("code") if isinstance(item, dict) else item)
+        # Preserve only stable code as message. Do not copy message/detail/error/path/URL/header excerpts.
+        normalized.append({"code": code, "severity": "warning", "message": code, "source": "operation_issue"})
     return _dedupe_dicts(normalized)
 
 
@@ -378,6 +379,23 @@ def build_missing_context_views(orchestration: dict[str, Any]) -> list[dict[str,
     ])
 
 
+def build_operation_outcomes(orchestration: dict[str, Any]) -> list[dict[str, Any]]:
+    outcomes = []
+    for result in orchestration.get("operation_results", []):
+        status = result.get("status")
+        source_family = result.get("source_family")
+        operation_class = result.get("operation_class")
+        outcomes.append({
+            "operation_id": result.get("operation_id"),
+            "target_id": result.get("target_id"),
+            "status": status,
+            "source_family": source_family,
+            "context_type": result.get("context_type"),
+            "operation_class": operation_class,
+        })
+    return _sorted(outcomes)
+
+
 def build_target_views(approved_targets: list[dict[str, Any]], source_contexts: list[dict[str, Any]], missing: list[dict[str, Any]]) -> list[dict[str, Any]]:
     refs: dict[str, list[str]] = {}
     available: dict[str, set[str]] = {}
@@ -490,7 +508,7 @@ def build_ai_market_context_hash_scope(package: dict[str, Any]) -> dict[str, Any
         for key in [
             "schema_version", "package_status", "scope", "provenance", "targets",
             "source_contexts", "market_session_context", "source_health_context",
-            "missing_context", "currentness_summary", "caveats",
+            "missing_context", "operation_outcomes", "currentness_summary", "caveats",
             "forbidden_interpretations", "production_readiness",
         ]
     }
@@ -532,7 +550,7 @@ def build_conversation_views(package: dict[str, Any]) -> dict[str, Any]:
     diagnostic = {
         "package_id": package["package_id"],
         "provenance": deepcopy(package["provenance"]),
-        "operation_outcomes": package.get("_operation_outcomes", []),
+        "operation_outcomes": deepcopy(package["operation_outcomes"]),
         "source_mappings": [
             {"target_id": c["target_id"], "operation_id": c["operation_id"], "source_context_id": c["source_context_id"]}
             for c in package["source_contexts"]
@@ -567,6 +585,7 @@ def build_ai_market_context_package(
         "market_session_context": sessions,
         "source_health_context": health,
         "missing_context": missing,
+        "operation_outcomes": build_operation_outcomes(orchestration_result),
         "currentness_summary": build_currentness_summary(source_contexts),
         "caveats": [],
         "forbidden_interpretations": [],
@@ -597,12 +616,7 @@ def build_ai_market_context_package(
     package["forbidden_interpretations"] = build_forbidden_interpretations(package)
     package["integrity"] = {"package_hash": compute_ai_market_context_hash(build_ai_market_context_hash_scope(package)), "hash_scope_schema": HASH_SCOPE_SCHEMA_VERSION}
     package["package_id"] = "amc-" + package["integrity"]["package_hash"][:16]
-    package["_operation_outcomes"] = [
-        {"operation_id": r.get("operation_id"), "target_id": r.get("target_id"), "status": r.get("status"), "source_family": r.get("source_family"), "context_type": r.get("context_type")}
-        for r in orchestration_result.get("operation_results", [])
-    ]
     package["conversation_views"] = build_conversation_views(package)
-    package.pop("_operation_outcomes", None)
     validate_ai_market_context_package(package)
     return package
 
@@ -610,7 +624,6 @@ def build_ai_market_context_package(
 def _validate_view_integrity(package: dict[str, Any]) -> None:
     working = deepcopy(package)
     stored = working.pop("conversation_views", None)
-    working["_operation_outcomes"] = (stored or {}).get("diagnostic", {}).get("operation_outcomes", [])
     expected = build_conversation_views(working)
     if stored != expected:
         _err("conversation_view_mismatch")
@@ -641,9 +654,12 @@ def validate_ai_market_context_package(package: dict[str, Any]) -> dict[str, str
         _err("duplicate_ids")
     if package.get("scope", {}).get("approved_target_count") != len(targets):
         _err("approved_target_count_mismatch")
-    diagnostic_ops = package.get("conversation_views", {}).get("diagnostic", {}).get("operation_outcomes", [])
-    if package.get("scope", {}).get("approved_operation_count") != len(diagnostic_ops):
+    operation_outcomes = package.get("operation_outcomes", [])
+    if package.get("scope", {}).get("approved_operation_count") != len(operation_outcomes):
         _err("approved_operation_count_mismatch")
+    operation_ids = [outcome.get("operation_id") for outcome in operation_outcomes]
+    if any(not item for item in operation_ids) or len(operation_ids) != len(set(operation_ids)):
+        _err("invalid_operation_outcome_ids")
     by_target_available: dict[str, set[str]] = {tid: set() for tid in target_ids}
     by_target_missing: dict[str, set[str]] = {tid: set() for tid in target_ids}
     for source in package.get("source_contexts", []):
@@ -656,6 +672,27 @@ def validate_ai_market_context_package(package: dict[str, Any]) -> dict[str, str
         if item.get("target_id") not in target_ids:
             _err("dangling_missing_context_target_ref")
         by_target_missing.setdefault(item.get("target_id"), set()).add(item.get("context_type"))
+    source_by_op = {source.get("operation_id"): source for source in package.get("source_contexts", [])}
+    missing_keys = {(item.get("target_id"), item.get("context_type"), item.get("planned_source_family")) for item in package.get("missing_context", [])}
+    for outcome in operation_outcomes:
+        if outcome.get("target_id") not in target_ids:
+            _err("dangling_operation_outcome_target_ref")
+        if outcome.get("status") not in TERMINAL_OPERATION_STATUSES:
+            _err("invalid_operation_outcome_status")
+        source_family = outcome.get("source_family")
+        operation_class = outcome.get("operation_class")
+        if source_family is None and operation_class not in LOCAL_CLASSES:
+            _err("invalid_operation_outcome_source_family")
+        if source_family is not None and source_family not in ALLOWED_SOURCES:
+            _err("invalid_operation_outcome_source_family")
+        if outcome.get("status") == "succeeded" and operation_class not in LOCAL_CLASSES:
+            source = source_by_op.get(outcome.get("operation_id"))
+            if not source or source.get("source_family") != source_family or source.get("context_type") != outcome.get("context_type"):
+                _err("operation_outcome_source_context_mismatch")
+        if outcome.get("status") != "succeeded" and operation_class not in LOCAL_CLASSES:
+            key = (outcome.get("target_id"), outcome.get("context_type"), source_family)
+            if key not in missing_keys:
+                _err("operation_outcome_missing_context_mismatch")
     for target in targets:
         refs = target.get("source_context_refs", [])
         if len(refs) != len(set(refs)):

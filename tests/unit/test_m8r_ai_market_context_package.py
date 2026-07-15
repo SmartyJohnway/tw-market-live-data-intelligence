@@ -93,7 +93,7 @@ def test_conversation_view_integrity_tampering_fails(mutator):
 
 
 def test_status_input_validation_and_unsafe_retention():
-    miss = [missing()]
+    miss = [missing(ctx="liveish_observation", source="TWSE_MIS")]
     assert build(result(status="partial", missing_context=miss, operations=[op(), op(operation_id="op2", status="failed")]))["package_status"] == "partial"
     assert build(result(status="blocked", operations=[], missing_context=miss, targets=[stock_target()]))["package_status"] == "blocked"
     unsafe = build(result(retention=False))
@@ -123,7 +123,7 @@ def test_source_semantics_structured_caveats_and_currentness():
     timing = {c["source_family"]: c["timing_class"] for c in pkg["source_contexts"]}
     assert timing == {"TWSE_MIS": "liveish_intraday_snapshot", "TWSE_OPENAPI": "official_eod", "TPEX_OPENAPI": "official_eod", "TAIFEX_MIS": "liveish_intraday_snapshot", "TAIFEX_OPENAPI": "official_statistics_eod"}
     twse = next(c for c in pkg["source_contexts"] if c["source_family"] == "TWSE_MIS")
-    assert {c["code"] for c in twse["caveats"]} == {"source_warning", "string_warning"}
+    assert {c["code"] for c in twse["caveats"]} == {"source_warning"}
     assert "secret-token" not in json.dumps(twse)
     assert pkg["currentness_summary"]["overall_status"] == "mixed"
     assert normalize_currentness_status({"status": "not_current"}) != "current"
@@ -131,13 +131,46 @@ def test_source_semantics_structured_caveats_and_currentness():
 
 
 def test_caveat_determinism_dedup_and_hash_ordering():
-    issues1 = [{"code": "warn", "message": "same"}, {"code": "warn", "message": "same"}]
+    issues1 = [{"code": "source_execution_failed", "message": "same"}, {"code": "source_execution_failed", "message": "same"}]
     issues2 = list(reversed(issues1))
     p1 = build(result(operations=[op(issues=issues1, caveats=["a", "b"])]))
     p2 = build(result(operations=[op(issues=issues2, caveats=["b", "a"])]))
     assert p1["package_id"] == p2["package_id"]
     ctx = p1["source_contexts"][0]
-    assert len([c for c in ctx["caveats"] if c["code"] == "warn"]) == 1
+    assert json.dumps(p1).find("same") == -1
+
+
+def test_operation_outcomes_are_authoritative_and_hash_bound():
+    pkg = build(result(operations=[op("op1"), op("op2", stock_target("6488", "TPEX"), "TWSE_MIS")], targets=[stock_target(), stock_target("6488", "TPEX")]))
+    assert pkg["operation_outcomes"] == pkg["conversation_views"]["diagnostic"]["operation_outcomes"]
+    reordered = build(result(operations=list(reversed([op("op1"), op("op2", stock_target("6488", "TPEX"), "TWSE_MIS")])), targets=[stock_target(), stock_target("6488", "TPEX")]))
+    assert reordered["package_id"] == pkg["package_id"]
+    for mutator in [
+        lambda p: p["operation_outcomes"][0].__setitem__("status", "failed"),
+        lambda p: p["operation_outcomes"][0].__setitem__("source_family", "TPEX_OPENAPI"),
+        lambda p: p["operation_outcomes"][0].__setitem__("target_id", "TWSE:equity:9999"),
+        lambda p: p["operation_outcomes"][0].__setitem__("operation_id", "replacement"),
+    ]:
+        bad = deepcopy(pkg); mutator(bad); rehash(bad); bad["conversation_views"] = build_conversation_views(bad)
+        with pytest.raises(AIMarketContextPackageError):
+            validate_ai_market_context_package(bad)
+    duplicate = deepcopy(pkg); duplicate["operation_outcomes"][1]["operation_id"] = duplicate["operation_outcomes"][0]["operation_id"]; rehash(duplicate); duplicate["conversation_views"] = build_conversation_views(duplicate)
+    with pytest.raises(AIMarketContextPackageError):
+        validate_ai_market_context_package(duplicate)
+    view_only = deepcopy(pkg); view_only["conversation_views"]["diagnostic"]["operation_outcomes"] = view_only["conversation_views"]["diagnostic"]["operation_outcomes"][:1]
+    with pytest.raises(AIMarketContextPackageError, match="conversation_view_mismatch"):
+        validate_ai_market_context_package(view_only)
+
+
+def test_issue_and_observation_messages_are_sanitized():
+    marker_values = ["API_TOKEN_123", "/tmp/secret/path", "https://example.test?q=credential", "hidden-secret"]
+    issues = [{"code": "source_execution_failed", "message": marker_values[0], "detail": marker_values[1], "error": marker_values[3]}]
+    pkg = build(result(operations=[op(issues=issues, caveats=[marker_values[2]])]))
+    text = json.dumps(pkg, ensure_ascii=False)
+    assert "source_execution_failed" in text
+    for marker in marker_values:
+        assert marker not in text
+    assert {c["message"] for c in pkg["source_contexts"][0]["caveats"]} <= {"source_execution_failed", "source_warning"}
 
 
 def test_taifex_identity_future_option_and_missing_only_preserved():

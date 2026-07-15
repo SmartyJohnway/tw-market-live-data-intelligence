@@ -191,4 +191,12 @@ Target provenance is explicit. Approved target projections are preferred. When M
 
 Currentness classification now uses an explicit vocabulary map rather than substring matching. Known fresh statuses map to `current`, known stale statuses to `stale`, EOD/reference statuses to `not_applicable`, and unresolved or unknown vocabulary to `unknown`; retrieval time alone does not create currentness.
 
-Additional integrity validation checks approved target count, approved operation count against diagnostic outcomes, target available/missing context consistency, unique target source references, missing-context target references, status conservatism against upstream status, required base prohibitions, exact production-readiness flags, and deterministic conversation-view derivation.
+Additional integrity validation checks approved target count, approved operation count against authoritative operation_outcomes, target available/missing context consistency, unique target source references, missing-context target references, status conservatism against upstream status, required base prohibitions, exact production-readiness flags, and deterministic conversation-view derivation.
+
+## Commit 3 hardening notes
+
+`operation_outcomes` are now authoritative, hash-bound package evidence derived directly from validated upstream `operation_results`. Each outcome records operation ID, target ID, terminal status, source family, context type, and operation class; the list is deterministic and is included in `build_ai_market_context_hash_scope`. Diagnostic conversation views only project `package.operation_outcomes` and are never used as an evidence source during validation.
+
+Validation now checks operation-outcome IDs, terminal status vocabulary, target references, source-family allowlist/null-local semantics, and consistency with source contexts for successful non-local operations or missing-context records for failed/blocked non-local operations. Recomputing the package hash after operation-outcome tampering cannot bypass these semantic checks.
+
+Operation issue messages are not trusted and are not copied into source contexts or AI views. For operation-issue dictionaries, only stable code, fixed severity, fixed source, and `message = code` enter the package. Fields such as upstream `message`, `detail`, `error`, exception text, paths, URLs, tokens, headers, and response excerpts are omitted. Observation caveat strings/dicts are also bounded by a safe caveat-code vocabulary; unknown prose is normalized to `source_warning` so unbounded upstream text cannot enter artifacts through a caveat field.
