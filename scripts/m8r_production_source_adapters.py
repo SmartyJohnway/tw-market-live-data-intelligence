@@ -129,6 +129,13 @@ def _strike(v: Any) -> str | None:
 TAIFEX_OPTION_UNDERLYING_BY_PRODUCT = {"TXO": "TX"}
 
 
+def derive_taifex_option_underlying(product_id: Any) -> str | None:
+    """Return bounded MVP TAIFEX option underlying from returned product evidence only."""
+    if product_id is None:
+        return None
+    return TAIFEX_OPTION_UNDERLYING_BY_PRODUCT.get(str(product_id).strip().upper())
+
+
 def _norm_call_put(value: Any) -> str | None:
     text = str(value or "").strip().lower()
     if text in {"c", "call", "買權"}:
@@ -172,7 +179,10 @@ def _taifex_returned_contract_identity(obs: dict[str, Any], instrument_type: str
         if session and session != "not_applicable":
             returned["session"] = session
         if instrument_type == "option":
-            returned.update({"strike": _strike(ci.get("strike_price")), "call_put": _norm_call_put(ci.get("option_type")), "underlying": ci.get("underlying") or ci.get("series")})
+            returned.update({"strike": _strike(ci.get("strike_price")), "call_put": _norm_call_put(ci.get("option_type"))})
+            underlying = derive_taifex_option_underlying(product)
+            if underlying:
+                returned["underlying"] = underlying
         return "contract_level", {k: v for k, v in returned.items() if v is not None}, "contract_identity_returned"
     if product or ai:
         returned = {"product": product or ai.get("product_id")}
@@ -219,7 +229,7 @@ def _m8c_returned_identity(ctx: dict[str, Any], target: dict[str, Any]) -> tuple
     if target.get("instrument_type") == "option":
         call_put = _norm_call_put(ci.get("option_type"))
         strike = _strike(ci.get("strike_price"))
-        underlying = TAIFEX_OPTION_UNDERLYING_BY_PRODUCT.get(str(product or "").upper())
+        underlying = derive_taifex_option_underlying(product)
         returned.update({"strike": strike, "call_put": call_put})
         if underlying:
             returned["underlying"] = underlying
@@ -297,9 +307,11 @@ def execute_taifex_openapi_operation(*, operation, target, plan, execution_time_
     approved = _approved_identity(target)
     required = ("product", "expiry", "contract_type")
     if target.get("instrument_type") == "option":
-        required = ("product", "expiry", "strike", "call_put", "contract_type")
+        required = ("product", "underlying", "expiry", "strike", "call_put", "contract_type")
     if returned_identity.get("session") or approved.get("session"):
         required = tuple(list(required) + ["session"])
+    if target.get("instrument_type") == "option" and not returned_identity.get("underlying"):
+        return _failed("exact_option_underlying_not_returned")
     if not _identity_matches_approved(returned_identity, approved, required):
         return _failed("source_identity_mismatch")
     obs.setdefault("source_id", "TAIFEX_OPENAPI"); obs.setdefault("source_family", "TAIFEX_OPENAPI"); obs["context_type"] = operation.get("context_type") or obs.get("context_type"); obs.setdefault("timing_class", "official_statistics_eod"); obs.setdefault("authority_level", "official_documented"); obs.setdefault("currentness", {"currentness_status": "official_statistics_eod"})

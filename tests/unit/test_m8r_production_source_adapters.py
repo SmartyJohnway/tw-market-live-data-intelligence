@@ -76,6 +76,7 @@ def test_taifex_mis_option_identity_mismatches_and_underlying(monkeypatch):
         return a.execute_taifex_mis_operation(operation=op("TAIFEX_MIS"),target=option(),plan={},execution_time_utc=NOW,allow_network=True)
     base={"instrument_type":"option","requested_product_id":"TXO","runtime_symbol_id":"TXO202607C20000","contract_month_or_week":"202607","strike_price":"20000","option_type":"call","session":"regular","source_timestamp_asia_taipei":"2026-07-15T09:01:00+08:00","currentness":{},"field_provenance":{"last_price":{"source":"sockjs_mode_1"}},"normalized_field_candidates":{"last_price":"1"}}
     out=run(base); assert out["status"]=="succeeded" and out["returned_identity"]["underlying"]=="TX"
+    assert a.derive_taifex_option_underlying("txo") == "TX"
     assert run(dict(base, requested_product_id="ABC", runtime_symbol_id="ABC202607C20000"))["issues"][0]["code"]=="source_identity_mismatch"
     assert run(dict(base, contract_month_or_week="202608", runtime_symbol_id="TXO202608C20000"))["issues"][0]["code"]=="source_identity_mismatch"
     assert run(dict(base, strike_price="21000", runtime_symbol_id="TXO202607C21000"))["issues"][0]["code"]=="source_identity_mismatch"
@@ -98,7 +99,12 @@ def test_taifex_openapi_identity_evidence_levels(monkeypatch):
     out=run(m8b_future_obs())
     assert out["status"]=="succeeded" and out["returned_identity"]=={"product":"TX","expiry":"202607","contract_type":"monthly","session":"regular"}
     opt_out=run(m8b_option_obs(), target=option())
-    assert opt_out["status"]=="succeeded" and {k: opt_out["returned_identity"].get(k) for k in ["product","expiry","strike","call_put","contract_type","session"]} == {"product":"TXO","expiry":"202607","strike":"20000","call_put":"C","contract_type":"monthly","session":"regular"}
+    assert opt_out["status"]=="succeeded" and {k: opt_out["returned_identity"].get(k) for k in ["product","underlying","expiry","strike","call_put","contract_type","session"]} == {"product":"TXO","underlying":"TX","expiry":"202607","strike":"20000","call_put":"C","contract_type":"monthly","session":"regular"}
+    bad_underlying=option(); bad_underlying["derivative_identity"]["underlying"]="MTX"
+    assert run(m8b_option_obs(), target=bad_underlying)["issues"][0]["code"]=="source_identity_mismatch"
+    unknown=option(); unknown["symbol"]="ZZO"; unknown["derivative_identity"]["underlying"]="ZZ"
+    assert run(m8b_option_obs(product_id="ZZO"), target=unknown)["issues"][0]["code"]=="exact_option_underlying_not_returned"
+    assert a.derive_taifex_option_underlying("ZZO") is None
     missing_product={"source_id":"TAIFEX_OPENAPI","source_family":"TAIFEX_OPENAPI","contract_identity":{"contract_month_or_week":"202607","session":"regular"},"safe_fields":{"contract_identity":{"contract_month_or_week":"202607","session":"regular"}}}
     assert run(missing_product)["issues"][0]["code"]=="target_not_present_in_source_result"
 

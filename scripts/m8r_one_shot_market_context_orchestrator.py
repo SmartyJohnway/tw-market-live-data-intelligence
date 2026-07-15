@@ -168,6 +168,7 @@ def _identity_matches(target: dict[str, Any], result: dict[str, Any]) -> bool:
             _returned_value(returned, "expiry", "contract_month_or_week") == ident.get("expiry"),
             _returned_value(returned, "contract_type") == ident.get("contract_type"),
             _norm_session(_returned_value(returned, "session")) == ident.get("session"),
+            _returned_value(returned, "underlying") == ident.get("underlying"),
             _norm_decimal(_returned_value(returned, "strike", "strike_price")) == _norm_decimal(ident.get("strike")),
             _norm_call_put(_returned_value(returned, "call_put", "option_type")) == _norm_call_put(ident.get("call_put")),
         ])

@@ -144,7 +144,14 @@
       "m8r_02a_exact_identity_required": true,
       "production_executor_adapters_ready": true,
       "production_live_execution_ready": false,
-      "live_validation_completed": false
+      "live_validation_completed": false,
+      "m8r_02a_option_underlying_mapping_scope": {
+        "supported_products": {
+          "TXO": "TX"
+        },
+        "coverage": "bounded_mvp_only",
+        "unsupported_products": "fail_closed_exact_option_underlying_not_returned"
+      }
     },
     {
       "source_id": "TWSE_OPENAPI",
@@ -331,7 +338,14 @@
       "m8r_02a_exact_identity_required": true,
       "production_executor_adapters_ready": true,
       "production_live_execution_ready": false,
-      "live_validation_completed": false
+      "live_validation_completed": false,
+      "m8r_02a_option_underlying_mapping_scope": {
+        "supported_products": {
+          "TXO": "TX"
+        },
+        "coverage": "bounded_mvp_only",
+        "unsupported_products": "fail_closed_exact_option_underlying_not_returned"
+      }
     },
     {
       "source_id": "MOPS",
