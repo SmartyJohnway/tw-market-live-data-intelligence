@@ -165,3 +165,30 @@ recommended_product_successor_after_m8r02a = M8R-04-CONTROLLED-AI-CONVERSATION-H
 production_live_execution_ready = false
 production_executor_adapters_ready = false
 ```
+
+## Commit 2 hardening notes
+
+PR #138 commit 2 hardens the accepted M8R-03 package contract without changing the sequencing boundary. Conversation views remain deterministic derivatives, not main-hash inputs; validation now rebuilds compact, standard, and diagnostic views from the authoritative package-without-views and fails closed with `conversation_view_mismatch` if any stored AI-facing view diverges, omits required prohibitions, carries mismatched `package_id`, or adds unsupported investment language.
+
+Artifact writing is now bound to `package.provenance.approved_output_scope.artifact_root` and `package.provenance.receipt_id`. Optional test overrides are accepted only when they exactly equal approved provenance; otherwise the writer fails with `approved_output_scope_mismatch` or `receipt_identity_mismatch`. Relative path safety remains a second guard and still rejects absolute, traversal, `frontend/public`, and `research/generated` roots.
+
+Source-context caveats are normalized into one structured representation:
+
+```json
+{
+  "code": "source_warning",
+  "severity": "warning",
+  "message": "source_warning",
+  "source": "observation_caveat|operation_issue"
+}
+```
+
+The normalizer accepts strings and dictionaries, preserves stable issue codes, deduplicates by canonical JSON, sorts deterministically, and does not copy sensitive exception detail fields.
+
+Package construction now begins with `validate_orchestration_result_for_ai_package`. Malformed orchestration schemas, receipt schemas, missing receipt provenance, unsafe output scope, non-list operation/missing-context fields, incompatible receipt status, and incorrect receipt counts fail construction with `AIMarketContextPackageError`. Structurally valid unsafe-retention inputs may still produce a blocked package carrying `unsafe_upstream_retention_contract`.
+
+Target provenance is explicit. Approved target projections are preferred. When M8R-02 output omits target projection but operation results contain bounded evidence, the package is labeled `target_identity_provenance = inferred_from_operation_result`, receives `approved_target_scope_not_fully_available`, and cannot become `ready`. Missing-only and globally blocked packages require approved target scope so approved targets and exact TAIFEX identities remain visible.
+
+Currentness classification now uses an explicit vocabulary map rather than substring matching. Known fresh statuses map to `current`, known stale statuses to `stale`, EOD/reference statuses to `not_applicable`, and unresolved or unknown vocabulary to `unknown`; retrieval time alone does not create currentness.
+
+Additional integrity validation checks approved target count, approved operation count against diagnostic outcomes, target available/missing context consistency, unique target source references, missing-context target references, status conservatism against upstream status, required base prohibitions, exact production-readiness flags, and deterministic conversation-view derivation.
