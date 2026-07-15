@@ -10,7 +10,7 @@
   "historical_source_execution_artifacts_unchanged": true,
   "historical_validation_run_id": "m8r02b-20260715T020000Z",
   "live_execution_code_base_commit_sha": "08d18d9c6c3cfe0f5307c7dfd19afb8ad0d7af49",
-  "live_execution_patch_commit_sha": "38e3d5f0ceb4e6a32dc43293f9f4259668287140",
+  "live_execution_patch_commit_sha": "fd41cdc0adc272a63e99e09c7d34978461e33fe9",
   "live_execution_worktree_dirty": true,
   "new_option_live_execution_start_times": {
     "TAIFEX_MIS_OPTION_EXACT": "2026-07-15T15:33:13Z",
@@ -52,7 +52,7 @@
   },
   "remote_provenance_checks": {
     "github_ref_checked": "refs/pull/141/head",
-    "github_ref_observed_commit": "38e3d5f0ceb4e6a32dc43293f9f4259668287140",
+    "github_ref_observed_commit": "fd41cdc0adc272a63e99e09c7d34978461e33fe9",
     "local_cat_file_base_commit": true,
     "local_cat_file_patch_commit": true,
     "local_merge_base_base_is_ancestor": true,

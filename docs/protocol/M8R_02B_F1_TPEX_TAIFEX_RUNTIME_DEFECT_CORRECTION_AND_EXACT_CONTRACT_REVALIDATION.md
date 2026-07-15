@@ -64,7 +64,7 @@ Historical accepted cases inherited by reference from immutable M8R-02B evidence
   "f1_execution_artifacts_new": true,
   "live_execution_code_base_commit_sha": "08d18d9c6c3cfe0f5307c7dfd19afb8ad0d7af49",
   "live_execution_worktree_dirty": true,
-  "live_execution_patch_commit_sha": "38e3d5f0ceb4e6a32dc43293f9f4259668287140",
+  "live_execution_patch_commit_sha": "fd41cdc0adc272a63e99e09c7d34978461e33fe9",
   "m8r_02b_final_disposition": "GO_AFTER_CORRECTIVE_REVALIDATION",
   "production_executor_adapters_ready": true,
   "production_live_execution_ready": true,
