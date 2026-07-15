@@ -11,7 +11,8 @@ from scripts.m8c_taifex_mis_contracts import validate_selectors
 from scripts.m8c_taifex_mis_limits import RuntimeBudget
 from scripts.m8c_taifex_mis_rest_client import TaifexMisRestClient
 from scripts.m8c_taifex_mis_identity_resolver import resolve_identity_results, _cp_enum, _dec
-from scripts.m8b_taifex_openapi_execution import execute_taifex_openapi_refresh
+from scripts.m8b_taifex_openapi_client import fetch_endpoint, TaifexOpenApiError
+from scripts.m8b_taifex_derivatives_observation import validate_required_fields, validate_contract_month, map_call_put, map_session
 
 SCHEMA_VERSION="m8r_taifex_option_contract_discovery.v1"
 RUN_ID_RE=re.compile(r"^[A-Za-z0-9_.=-]+$")
@@ -50,22 +51,54 @@ def discover_mis(product:str, underlying:str, expiry:str, session:str)->dict[str
         s=norm_strike(row.get('StrikePrice'))
         c=_cp_enum(row.get('CP')) or cp(row.get('CP'))
         if s and c: ids.append(identity(s,c,product,underlying,expiry,session,'TAIFEX_MIS'))
-    return {'status':'succeeded','contract_count':len(ids),'exact_contract_identities':ids,'network_request_count':1}
+    status='succeeded' if ids else 'no_matching_scope'
+    return _source_result(status, contract_count=len(ids), reason_code=None if ids else 'no_matching_contract_identity') | {'exact_contract_identities':ids}
 
-def discover_openapi(product:str, underlying:str, expiry:str, session:str)->dict[str,Any]:
-    selector={'instrument_type':'option','requested_product_id':product,'contract_month_or_week':expiry,'session':session}
-    result=execute_taifex_openapi_refresh(operator_confirmed=True, requested_contexts=['options_eod'], requested_products=[product], requested_contracts=[selector], requested_sessions=[session])
-    ids=[]
-    for obs in result.get('observations') or []:
-        ci=obs.get('contract_identity') or (obs.get('safe_fields') or {}).get('contract_identity') or {}
-        prod=ci.get('product_id') or obs.get('product_id') or obs.get('symbol')
-        exp=ci.get('contract_month_or_week') or ci.get('contract_month')
-        if prod!=product or str(exp)!=expiry: continue
-        s=norm_strike(ci.get('strike_price'))
-        c=cp(ci.get('option_type'))
-        sess=ci.get('session') or session
-        if s and c and sess==session: ids.append(identity(s,c,product,underlying,expiry,session,'TAIFEX_OPENAPI'))
-    return {'status':'succeeded' if result.get('status')!='blocked' else 'blocked','contract_count':len(ids),'exact_contract_identities':ids,'network_request_count':result.get('network_request_count')}
+def _source_result(status: str, *, network_request_count: int = 1, contract_count: int = 0, reason_code: str | None = None, **extra) -> dict[str, Any]:
+    return {"status": status, "network_request_count": network_request_count, "contract_count": contract_count, "reason_code": reason_code, **extra}
+
+
+def discover_openapi(product:str, underlying:str, expiry:str, session:str, *, fetcher=None)->dict[str,Any]:
+    # Direct bounded identity discovery over one official options EOD endpoint call.
+    # Retains only normalized contract identities and aggregate counts; no prices, volume, OI, bid/ask, headers, cookies, tokens, or raw rows.
+    try:
+        data=(fetcher or fetch_endpoint)("DailyMarketReportOpt")
+    except TaifexOpenApiError as exc:
+        status = "source_unavailable" if exc.status in {"source_unavailable", "source_error"} else "failed"
+        return _source_result(status, reason_code=exc.status) | {"exact_contract_identities": []}
+    except Exception as exc:
+        return _source_result("source_unavailable", reason_code=type(exc).__name__) | {"exact_contract_identities": []}
+    rows=data if isinstance(data,list) else data.get("rows",[]) if isinstance(data,dict) else []
+    if not isinstance(rows, list):
+        return _source_result("failed", reason_code="schema_drift", row_count_received=0, schema_valid_row_count=0, matching_product_month_row_count=0, matching_exact_identity_row_count=0) | {"exact_contract_identities": []}
+    row_count_received=len(rows); schema_valid=0; matching_product_month=0; ids=[]; seen=set()
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        ok, _missing = validate_required_fields(row, ["Contract", "ContractMonth(Week)", "StrikePrice", "CallPut", "TradingSession"])
+        if not ok:
+            continue
+        schema_valid += 1
+        if str(row.get("Contract") or "").strip().upper() != product:
+            continue
+        cm, _cmv = validate_contract_month(row.get("ContractMonth(Week)"))
+        sess, _sv, _sc = map_session(row.get("TradingSession"))
+        if cm != expiry or sess != session:
+            continue
+        matching_product_month += 1
+        strike, _stv = norm_strike(row.get("StrikePrice")), None
+        opt, _opv = map_call_put(row.get("CallPut"))
+        call_put = cp(opt)
+        if not strike or call_put not in {"C", "P"}:
+            continue
+        key=(product, underlying, expiry, strike, call_put, session)
+        if key in seen:
+            continue
+        seen.add(key)
+        ids.append(identity(strike,call_put,product,underlying,expiry,session,'TAIFEX_OPENAPI'))
+    status = "succeeded" if ids else "no_matching_scope"
+    reason = None if ids else "no_matching_contract_identity"
+    return _source_result(status, contract_count=len(ids), reason_code=reason, row_count_received=row_count_received, schema_valid_row_count=schema_valid, matching_product_month_row_count=matching_product_month, matching_exact_identity_row_count=len(ids)) | {"exact_contract_identities": ids}
 
 def merge_identities(results):
     merged={}
@@ -82,14 +115,16 @@ def build_discovery(*, discovery_id, product, underlying, expiry, session, sourc
     if 'TAIFEX_MIS' in source_families:
         attempted.append('TAIFEX_MIS')
         try: results['TAIFEX_MIS']=discover_mis(product,underlying,expiry,session)
-        except Exception as exc: results['TAIFEX_MIS']={'status':'failed','failure_reason':type(exc).__name__,'contract_count':0,'exact_contract_identities':[]}
+        except Exception as exc: results['TAIFEX_MIS']=_source_result('failed', contract_count=0, reason_code=type(exc).__name__) | {'exact_contract_identities':[]}
     if 'TAIFEX_OPENAPI' in source_families:
         attempted.append('TAIFEX_OPENAPI')
         try: results['TAIFEX_OPENAPI']=discover_openapi(product,underlying,expiry,session)
-        except Exception as exc: results['TAIFEX_OPENAPI']={'status':'failed','failure_reason':type(exc).__name__,'contract_count':0,'exact_contract_identities':[]}
+        except Exception as exc: results['TAIFEX_OPENAPI']=_source_result('failed', contract_count=0, reason_code=type(exc).__name__) | {'exact_contract_identities':[]}
     exact=merge_identities(results)
     strikes=[Decimal(x['strike']) for x in exact]
-    return {'schema_version':SCHEMA_VERSION,'discovery_id':discovery_id,'created_at_utc':now(),'product':product,'underlying':underlying,'expiry':expiry,'session':session,'sources_attempted':attempted,'source_results':{k:{kk:vv for kk,vv in v.items() if kk!='exact_contract_identities'} for k,v in results.items()},'exact_contract_identities':exact,'contract_count':len(exact),'strike_min':format(min(strikes),'f') if strikes else None,'strike_max':format(max(strikes),'f') if strikes else None,'raw_payload_retained':False,'operator_selection_required':True}
+    created=now()
+    completed=created
+    return {'schema_version':SCHEMA_VERSION,'discovery_id':discovery_id,'created_at_utc':created,'completed_at_utc':completed,'product':product,'underlying':underlying,'expiry':expiry,'session':session,'sources_attempted':attempted,'source_results':{k:{kk:vv for kk,vv in v.items() if kk!='exact_contract_identities'} for k,v in results.items()},'exact_contract_identities':exact,'contract_count':len(exact),'strike_min':format(min(strikes),'f') if strikes else None,'strike_max':format(max(strikes),'f') if strikes else None,'raw_payload_retained':False,'operator_selection_required':True}
 
 def main(argv=None):
     ap=argparse.ArgumentParser()

@@ -1,6 +1,49 @@
-from scripts.discover_m8r_taifex_option_contracts import SCHEMA_VERSION, merge_identities
+from pathlib import Path
+import json
+import pytest
 
-def test_bounded_discovery_schema_no_auto_selection_and_no_raw_retention():
+from scripts.discover_m8r_taifex_option_contracts import SCHEMA_VERSION, discover_openapi, merge_identities
+from scripts.m8b_taifex_openapi_client import TaifexOpenApiError
+from scripts.m8r_02b_f1_evidence import F1EvidenceConsistencyError, validate_m8r_02b_f1_evidence_consistency
+
+
+def openapi_row(product="TXO", month="202607", strike="40000", call_put="買權", session="一般"):
+    return {"Contract": product, "ContractMonth(Week)": month, "StrikePrice": strike, "CallPut": call_put, "TradingSession": session, "Open": "1", "High": "1", "Low": "1", "Close": "1", "Volume": "1", "OpenInterest": "1"}
+
+
+def test_openapi_monthly_identity_discovery_returns_exact_identities_no_raw_values():
+    result = discover_openapi("TXO", "TX", "202607", "regular", fetcher=lambda endpoint: {"rows": [openapi_row(), openapi_row(strike="41000", call_put="賣權")]})
+    assert result["status"] == "succeeded"
+    assert result["network_request_count"] == 1
+    assert result["contract_count"] == 2
+    assert result["row_count_received"] == 2
+    assert result["schema_valid_row_count"] == 2
+    assert result["matching_product_month_row_count"] == 2
+    assert {i["call_put"] for i in result["exact_contract_identities"]} == {"C", "P"}
+    serialized = json.dumps(result, ensure_ascii=False).lower()
+    for forbidden in ["open_interest", "volume", "bestbid", "bestask", "headers", "cookies", "raw_payload"]:
+        assert forbidden not in serialized
+
+
+def test_openapi_missing_product_month_session_and_zero_rows_fail_closed():
+    assert discover_openapi("TXO", "TX", "202607", "regular", fetcher=lambda endpoint: {"rows": [openapi_row(product="ABC")]})["status"] == "no_matching_scope"
+    assert discover_openapi("TXO", "TX", "202607", "regular", fetcher=lambda endpoint: {"rows": [openapi_row(month="202608")]})["status"] == "no_matching_scope"
+    assert discover_openapi("TXO", "TX", "202607", "regular", fetcher=lambda endpoint: {"rows": [openapi_row(session="盤後")]})["status"] == "no_matching_scope"
+    zero = discover_openapi("TXO", "TX", "202607", "regular", fetcher=lambda endpoint: {"rows": []})
+    assert zero["status"] == "no_matching_scope"
+    assert zero["reason_code"] == "no_matching_contract_identity"
+
+
+def test_openapi_overall_unavailable_interpreted_correctly():
+    def unavailable(endpoint):
+        raise TaifexOpenApiError("source_unavailable", {"raw_payload_retained": False})
+    result = discover_openapi("TXO", "TX", "202607", "regular", fetcher=unavailable)
+    assert result["status"] == "source_unavailable"
+    assert result["contract_count"] == 0
+    assert result["reason_code"] == "source_unavailable"
+
+
+def test_bounded_discovery_schema_no_auto_selection_and_cross_source_merge():
     results={
         'TAIFEX_MIS': {'exact_contract_identities':[{'strike':'40000','call_put':'C','product':'TXO','underlying':'TX','expiry':'202607','session':'regular','source_evidence':['TAIFEX_MIS']}]},
         'TAIFEX_OPENAPI': {'exact_contract_identities':[{'strike':'40000','call_put':'C','product':'TXO','underlying':'TX','expiry':'202607','session':'regular','source_evidence':['TAIFEX_OPENAPI']}]} }
@@ -11,6 +54,48 @@ def test_bounded_discovery_schema_no_auto_selection_and_no_raw_retention():
     assert artifact['raw_payload_retained'] is False
     assert exact[0]['source_evidence']==['TAIFEX_MIS','TAIFEX_OPENAPI']
     assert 'selected' not in str(artifact).lower()
+
+
+def write_json(path: Path, value):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
+
+
+def make_case(root: Path, case_id: str, target, returned, result="passed_with_caveats"):
+    receipt = root / "cases" / case_id / f"receipt-{case_id}"
+    write_json(receipt / "execution_plan.json", {"targets": [target]})
+    target_id = f"TAIFEX:option:{target['symbol']}:{target['underlying']}:{target['expiry']}:{target['strike']}:{target['call_put']}:monthly"
+    write_json(receipt / "approval_record.json", {"approved_scope": {"target_ids": [target_id]}, "approved_at_utc": "2026-07-15T12:00:02Z"})
+    write_json(receipt / "execution_receipt.json", {"execution_started_at_utc": "2026-07-15T12:00:03Z"})
+    write_json(receipt / "operation_results.json", [{"returned_identity": returned}])
+    write_json(root / "cases" / case_id / "validation_case_result.json", {"case_id": case_id, "result": result, "ai_package_id": "amc-test", "ai_validation": {"valid": True}})
+
+
+def test_f1_consistency_validation_accepts_finalized_cross_source_evidence(tmp_path):
+    root = tmp_path / "run"
+    selected = {"product":"TXO","underlying":"TX","expiry":"202607","strike":"40000","call_put":"C","session":"regular"}
+    write_json(root / "taifex_option_contract_discovery.json", {"schema_version": SCHEMA_VERSION, "discovery_id":"d1", "completed_at_utc":"2026-07-15T12:00:01Z", "source_results":{"TAIFEX_MIS":{"status":"succeeded"},"TAIFEX_OPENAPI":{"status":"succeeded"}}, "exact_contract_identities":[selected | {"source_evidence":["TAIFEX_MIS","TAIFEX_OPENAPI"]}]})
+    write_json(root / "operator_selected_option_contract.json", {"selected_by_operator": True, "selected_at_utc":"2026-07-15T12:00:02Z", "selected_contract": selected, "discovery_id":"d1"})
+    target = {"symbol":"TXO", "underlying":"TX", "expiry":"202607", "strike":"40000", "call_put":"C", "session":"regular", "derivative_identity": {"underlying":"TX", "expiry":"202607", "strike":"40000", "call_put":"C", "session":"regular"}}
+    for cid in ["TAIFEX_MIS_OPTION_EXACT", "TAIFEX_OPENAPI_OPTION_EXACT"]:
+        make_case(root, cid, target, selected)
+    for cid in ["TPEX_OPENAPI_EOD_6488", "TAIFEX_MIS_FUTURE_EXACT"]:
+        write_json(root / "cases" / cid / "validation_case_result.json", {"case_id": cid, "result": "passed_with_caveats", "ai_package_id": "amc-test", "ai_validation": {"valid": True}})
+    write_json(root / "f1_revalidation_manifest.json", {"finalized": True, "f1_network_execution_performed": True, "historical_source_execution_artifacts_unchanged": True, "f1_execution_artifacts_new": True})
+    write_json(root / "f1_revalidation_summary.json", {"retention_audit": {"status":"passed"}})
+    assert validate_m8r_02b_f1_evidence_consistency(root)["valid"] is True
+
+
+def test_f1_consistency_validation_rejects_incomplete_source_evidence(tmp_path):
+    root = tmp_path / "run"
+    selected = {"product":"TXO","underlying":"TX","expiry":"202607","strike":"40000","call_put":"C","session":"regular"}
+    write_json(root / "taifex_option_contract_discovery.json", {"schema_version": SCHEMA_VERSION, "discovery_id":"d1", "completed_at_utc":"2026-07-15T12:00:01Z", "source_results":{"TAIFEX_MIS":{"status":"succeeded"},"TAIFEX_OPENAPI":{"status":"succeeded"}}, "exact_contract_identities":[selected | {"source_evidence":["TAIFEX_MIS"]}]})
+    write_json(root / "operator_selected_option_contract.json", {"selected_by_operator": True, "selected_at_utc":"2026-07-15T12:00:02Z", "selected_contract": selected, "discovery_id":"d1"})
+    write_json(root / "f1_revalidation_manifest.json", {"finalized": True, "f1_network_execution_performed": True, "historical_source_execution_artifacts_unchanged": True, "f1_execution_artifacts_new": True})
+    with pytest.raises(F1EvidenceConsistencyError) as exc:
+        validate_m8r_02b_f1_evidence_consistency(root)
+    assert exc.value.reason_code == "f1_selected_contract_source_evidence_incomplete"
+
 
 def test_historical_and_new_evidence_separation_contract():
     manifest={'schema_version':'m8r_02b_f1_revalidation_manifest.v1','historical_validation_run_id':'m8r02b-20260715T020000Z','revalidation_run_id':'m8r02b-f1-20260715T120000Z'}
