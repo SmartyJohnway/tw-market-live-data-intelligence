@@ -109,7 +109,7 @@ def test_inventory_active_state_and_historical_snapshots():
     assert active['m8b_taifex_openapi_complete'] is True
     assert active['taifex_mis_runtime_executable'] is True
     assert active['next_task'] is None
-    assert active['next_task_status']=='awaiting_operator_prioritization'
+    assert active['next_task_status']=='awaiting_operator_acceptance'
     assert active['preflight_completed_through']=='M8C-00'
     assert active['m8c_00_preflight_status']=='m8c_00_taifex_mis_preflight_pass_with_caveats'
     assert all(active['m8b_taifex_contexts'].values())
