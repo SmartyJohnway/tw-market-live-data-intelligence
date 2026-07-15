@@ -105,8 +105,9 @@ Authoritative provenance now distinguishes the original live execution baseline 
 
 - `live_execution_starting_commit_sha`: `751ad3a1102cb6fd432410717355c35bea08365c`
 - `starting_commit_sha`: retained as the live execution SHA for backward compatibility
-- `classification_code_commit_sha`: `f6097d83a4256eb3d17fac59728234b85d92377f`, a repository-resolvable PR-branch commit used as the classification/reconstruction implementation base
-- `classification_revision`: `m8r02b_commit4_resolvable_provenance`
+- `classification_code_commit_sha`: `c06e32da958ca767982888a6956c9a1bffffaa8e`, a PR-branch ancestor commit used as the classification/reconstruction implementation base
+- `classification_remote_resolution_status`: `verified_in_pushed_pr_history`
+- `classification_revision`: `m8r02b_commit5_remote_resolvable_provenance`
 - `manifest_provenance.mode`: `reconstructed_from_immutable_case_execution_artifacts`
 - `source_execution_artifacts_unchanged`: `true`
 - `network_reexecution_performed`: `false`

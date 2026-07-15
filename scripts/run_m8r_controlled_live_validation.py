@@ -14,7 +14,7 @@ from scripts.m8r_ai_market_context_package import build_ai_market_context_packag
 MANIFEST_SCHEMA_VERSION="m8r_controlled_live_validation_manifest.v1"
 SUMMARY_SCHEMA_VERSION="m8r_controlled_live_validation_summary.v1"
 HISTORICAL_M8R02B_LIVE_EXECUTION_SHA="751ad3a1102cb6fd432410717355c35bea08365c"
-CLASSIFICATION_REVISION="m8r02b_commit4_resolvable_provenance"
+CLASSIFICATION_REVISION="m8r02b_commit5_remote_resolvable_provenance"
 RUN_ID_RE=re.compile(r"^[A-Za-z0-9_.=-]+$")
 FORBIDDEN_KEYS={"raw_payload","response_body","html","cookies","authorization","headers","api_key","access_token","refresh_token","sockjs_frames","full_option_chain","raw_rest_records","rest_rows","whole_market_rows"}
 
@@ -37,7 +37,7 @@ def git_sha():
 def git_worktree_dirty() -> bool:
     return bool(subprocess.check_output(["git","status","--short"], text=True).strip())
 
-def validate_commit_sha_resolvable(sha: str | None) -> bool:
+def validate_local_commit_object(sha: str | None) -> bool:
     if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
         raise RuntimeError("validation_provenance_sha_mismatch")
     try:
@@ -45,6 +45,18 @@ def validate_commit_sha_resolvable(sha: str | None) -> bool:
     except Exception as exc:
         raise RuntimeError("validation_provenance_sha_mismatch") from exc
     return True
+
+def validate_commit_is_ancestor_of_head(sha: str | None) -> bool:
+    validate_local_commit_object(sha)
+    try:
+        subprocess.check_call(["git", "merge-base", "--is-ancestor", str(sha), "HEAD"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception as exc:
+        raise RuntimeError("validation_provenance_sha_mismatch") from exc
+    return True
+
+def validate_commit_sha_resolvable(sha: str | None) -> bool:
+    # Backward-compatible local validation name; do not use this as proof of remote/GitHub resolution.
+    return validate_commit_is_ancestor_of_head(sha)
 def safe_root(root:str)->str:
     if not root: raise SystemExit("artifact-root required")
     p=PurePosixPath(root)
@@ -111,13 +123,13 @@ def _case_manifest_entry(case_id: str, case: dict[str, Any], args, root: str) ->
 def _classification_provenance(base_sha: str | None = None, patch_sha: str | None = None, dirty: bool | None = None) -> dict[str, Any]:
     base = base_sha or git_sha()
     patch = patch_sha or base
-    validate_commit_sha_resolvable(base)
-    validate_commit_sha_resolvable(patch)
+    validate_commit_is_ancestor_of_head(base)
+    validate_commit_is_ancestor_of_head(patch)
     is_dirty = git_worktree_dirty() if dirty is None else bool(dirty)
     return {"classification_code_commit_sha": patch, "classification_code_base_commit_sha": base, "classification_patch_commit_sha": patch, "classification_worktree_dirty": is_dirty}
 
 def _manifest_payload(root: str, args, ids: list[str], *, live_sha: str, provenance: dict[str, Any], finalized: bool, classification_revision: str | None, source_unchanged: bool) -> dict[str, Any]:
-    validate_commit_sha_resolvable(live_sha)
+    validate_commit_is_ancestor_of_head(live_sha)
     created = args.execution_time_utc or now()
     cprov = _classification_provenance(getattr(args, "classification_code_base_commit_sha", None), getattr(args, "classification_patch_commit_sha", None), getattr(args, "classification_worktree_dirty", None))
     return {"schema_version":MANIFEST_SCHEMA_VERSION,"validation_run_id":Path(root).name,"created_at_utc":created,"starting_commit_sha":live_sha,"live_execution_starting_commit_sha":live_sha,**cprov,"classification_revision":classification_revision,"operator_confirmed":bool(args.operator_confirmed),"allow_network":bool(args.allow_network),"cases":[_case_manifest_entry(cid, CASES[cid], args, root) for cid in ids],"required_cases":[cid for cid in ids if CASES[cid]["required"]],"optional_cases":[],"artifact_root":root,"acceptance_policy":{"runtime_critical_all_required":True,"go_requires_all_source_families":True},"runtime_environment":{"python":sys.version.split()[0],"platform":platform.platform(),"cwd":os.getcwd()},"taifex_exact_identities":{"future":{"symbol":getattr(args,"taifex_future_product",None),"expiry":getattr(args,"taifex_future_expiry",None),"contract_type":"monthly","session":"regular"},"option":{"symbol":getattr(args,"taifex_option_product",None),"underlying":getattr(args,"taifex_option_underlying",None),"expiry":getattr(args,"taifex_option_expiry",None),"strike":getattr(args,"taifex_option_strike",None),"call_put":getattr(args,"taifex_option_call_put",None),"contract_type":"monthly","session":"regular"}},"finalized": finalized,"manifest_provenance":{**provenance,"source_execution_artifacts_unchanged":source_unchanged,"network_reexecution_performed":False}}
@@ -304,10 +316,10 @@ def validate_live_validation_evidence_consistency(root: str | Path, summary_payl
     live_sha=manifest_payload.get("live_execution_starting_commit_sha")
     if manifest_payload.get("starting_commit_sha") != live_sha or summary_payload.get("live_execution_starting_commit_sha") != live_sha or summary_payload.get("starting_commit_sha") != live_sha:
         raise RuntimeError("validation_provenance_sha_mismatch")
-    validate_commit_sha_resolvable(live_sha)
+    validate_commit_is_ancestor_of_head(live_sha)
     for field in ["classification_code_commit_sha", "classification_code_base_commit_sha", "classification_patch_commit_sha"]:
-        if manifest_payload.get(field): validate_commit_sha_resolvable(manifest_payload.get(field))
-        if summary_payload.get(field): validate_commit_sha_resolvable(summary_payload.get(field))
+        if manifest_payload.get(field): validate_commit_is_ancestor_of_head(manifest_payload.get(field))
+        if summary_payload.get(field): validate_commit_is_ancestor_of_head(summary_payload.get(field))
     receipt_ids=[]; approval_ids=[]
     for cid, case_entry in manifest_cases.items():
         case_manifest_path=root/"cases"/cid/"validation_case_manifest.json"

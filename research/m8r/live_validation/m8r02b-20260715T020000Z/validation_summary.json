@@ -104,11 +104,12 @@
       "result": "passed_with_caveats"
     }
   },
-  "classification_code_base_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
-  "classification_code_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
+  "classification_code_base_commit_sha": "c06e32da958ca767982888a6956c9a1bffffaa8e",
+  "classification_code_commit_sha": "c06e32da958ca767982888a6956c9a1bffffaa8e",
   "classification_corrected_at_utc": "2026-07-15T10:30:44Z",
-  "classification_patch_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
-  "classification_revision": "m8r02b_commit4_resolvable_provenance",
+  "classification_patch_commit_sha": "c06e32da958ca767982888a6956c9a1bffffaa8e",
+  "classification_remote_resolution_status": "verified_in_pushed_pr_history",
+  "classification_revision": "m8r02b_commit5_remote_resolvable_provenance",
   "classification_worktree_dirty": false,
   "completed_at_utc": "2026-07-15T10:30:44Z",
   "decision": "NO_GO",

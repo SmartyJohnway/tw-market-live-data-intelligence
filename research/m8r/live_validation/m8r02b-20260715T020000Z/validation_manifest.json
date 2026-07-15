@@ -558,11 +558,12 @@
       }
     }
   ],
-  "classification_code_base_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
-  "classification_code_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
+  "classification_code_base_commit_sha": "c06e32da958ca767982888a6956c9a1bffffaa8e",
+  "classification_code_commit_sha": "c06e32da958ca767982888a6956c9a1bffffaa8e",
   "classification_corrected_at_utc": "2026-07-15T10:30:44Z",
-  "classification_patch_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
-  "classification_revision": "m8r02b_commit4_resolvable_provenance",
+  "classification_patch_commit_sha": "c06e32da958ca767982888a6956c9a1bffffaa8e",
+  "classification_remote_resolution_status": "verified_in_pushed_pr_history",
+  "classification_revision": "m8r02b_commit5_remote_resolvable_provenance",
   "classification_worktree_dirty": false,
   "created_at_utc": "2026-07-15T02:00:00Z",
   "finalized": true,
@@ -572,6 +573,7 @@
     "network_reexecution_performed": false,
     "source_execution_artifacts_unchanged": true
   },
+  "network_reexecution_performed": false,
   "operator_confirmed": true,
   "optional_cases": [],
   "required_cases": [
@@ -591,6 +593,7 @@
     "python": "3.13.13"
   },
   "schema_version": "m8r_controlled_live_validation_manifest.v1",
+  "source_execution_artifacts_unchanged": true,
   "starting_commit_sha": "751ad3a1102cb6fd432410717355c35bea08365c",
   "taifex_exact_identities": {
     "future": {

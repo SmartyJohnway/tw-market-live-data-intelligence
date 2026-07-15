@@ -51,7 +51,7 @@ def test_case_definitions_and_manifest(monkeypatch):
     monkeypatch.setattr(live, "git_sha", lambda: "abc")
     root="research/m8r/live_validation/unit"
     a=args(taifex_future_product="TX", taifex_future_expiry="202607", taifex_option_product="TXO", taifex_option_underlying="TX", taifex_option_expiry="202607", taifex_option_strike="20000", taifex_option_call_put="C")
-    monkeypatch.setattr(live, "validate_commit_sha_resolvable", lambda sha: True)
+    monkeypatch.setattr(live, "validate_commit_is_ancestor_of_head", lambda sha: True)
     m=live.build_new_run_manifest(root,a,list(live.CASES))
     assert m["schema_version"]==live.MANIFEST_SCHEMA_VERSION
     assert len(m["cases"])==9
@@ -103,7 +103,7 @@ def test_placeholder_package_cannot_pass():
 
 def test_summary_preserves_multiple_cases_per_source_and_go_requires_all(monkeypatch):
     monkeypatch.setattr(live, "git_sha", lambda: "abc")
-    monkeypatch.setattr(live, "validate_commit_sha_resolvable", lambda sha: True)
+    monkeypatch.setattr(live, "validate_commit_is_ancestor_of_head", lambda sha: True)
     root="research/m8r/live_validation/run"; shutil.rmtree(root, ignore_errors=True)
     s=live.summary(root, args(), all_pass_cases(), controls())
     assert set(s["source_family_results"]["TWSE_MIS"]) == {"TWSE_MIS_LISTED_2330","TWSE_MIS_OTC_6488","TWSE_MIS_TAIEX"}
@@ -116,7 +116,7 @@ def test_summary_preserves_multiple_cases_per_source_and_go_requires_all(monkeyp
 
 def test_runtime_critical_fails_when_replay_or_ai_writer_evidence_absent(monkeypatch):
     monkeypatch.setattr(live, "git_sha", lambda: "abc")
-    monkeypatch.setattr(live, "validate_commit_sha_resolvable", lambda sha: True)
+    monkeypatch.setattr(live, "validate_commit_is_ancestor_of_head", lambda sha: True)
     bad_controls=controls(APPROVAL_REPLAY={"passed":False})
     s=live.summary("research/m8r/live_validation/run", args(), all_pass_cases(), bad_controls)
     assert s["runtime_critical_status"]=="failed" and s["decision"]=="NO_GO"
@@ -162,7 +162,7 @@ def test_manual_ai_artifact_fallback_absent():
 
 def test_individual_case_does_not_overwrite_run_manifest_and_duplicate_rejected(monkeypatch):
     monkeypatch.setattr(live, "git_sha", lambda: "abc")
-    monkeypatch.setattr(live, "validate_commit_sha_resolvable", lambda sha: True)
+    monkeypatch.setattr(live, "validate_commit_is_ancestor_of_head", lambda sha: True)
     root="research/m8r/live_validation/unit-manifest"; shutil.rmtree(root, ignore_errors=True)
     a=args(taifex_future_product="TX", taifex_future_expiry="202607", taifex_option_product="TXO", taifex_option_underlying="TX", taifex_option_expiry="202607", taifex_option_strike="20000", taifex_option_call_put="C")
     live.ensure_run_manifest(root,a,list(live.CASES))
@@ -178,7 +178,7 @@ def test_individual_case_does_not_overwrite_run_manifest_and_duplicate_rejected(
 
 def test_existing_manifest_rejects_case_set_and_taifex_identity(monkeypatch):
     monkeypatch.setattr(live, "git_sha", lambda: "abc")
-    monkeypatch.setattr(live, "validate_commit_sha_resolvable", lambda sha: True)
+    monkeypatch.setattr(live, "validate_commit_is_ancestor_of_head", lambda sha: True)
     root="research/m8r/live_validation/unit-manifest-mismatch"; shutil.rmtree(root, ignore_errors=True)
     a=args(taifex_future_product="TX", taifex_future_expiry="202607", taifex_option_product="TXO", taifex_option_underlying="TX", taifex_option_expiry="202607", taifex_option_strike="20000", taifex_option_call_put="C")
     live.ensure_run_manifest(root,a,["TWSE_MIS_LISTED_2330"])
@@ -193,7 +193,7 @@ def test_existing_manifest_rejects_case_set_and_taifex_identity(monkeypatch):
 
 def test_reconstructed_manifest_and_sha_provenance(monkeypatch):
     monkeypatch.setattr(live, "git_sha", lambda: "classification-sha")
-    monkeypatch.setattr(live, "validate_commit_sha_resolvable", lambda sha: True)
+    monkeypatch.setattr(live, "validate_commit_is_ancestor_of_head", lambda sha: True)
     a=args(taifex_future_product="TX", taifex_future_expiry="202607", taifex_option_product="TXO", taifex_option_underlying="TX", taifex_option_expiry="202607", taifex_option_strike="20000", taifex_option_call_put="C", historical_live_starting_sha=live.HISTORICAL_M8R02B_LIVE_EXECUTION_SHA)
     m=live.reconstruct_historical_run_manifest("research/m8r/live_validation/reconstructed",a,list(live.CASES))
     assert m["manifest_provenance"]["mode"]=="reconstructed_from_immutable_case_execution_artifacts"
@@ -205,7 +205,7 @@ def test_reconstructed_manifest_and_sha_provenance(monkeypatch):
 
 def test_summary_manifest_case_mismatch_rejected(monkeypatch):
     monkeypatch.setattr(live, "git_sha", lambda: "abc")
-    monkeypatch.setattr(live, "validate_commit_sha_resolvable", lambda sha: True)
+    monkeypatch.setattr(live, "validate_commit_is_ancestor_of_head", lambda sha: True)
     root="research/m8r/live_validation/unit-summary-mismatch"; shutil.rmtree(root, ignore_errors=True)
     live.ensure_run_manifest(root,args(),["TWSE_MIS_LISTED_2330"])
     with pytest.raises(RuntimeError, match="validation_manifest_summary_case_mismatch"):
@@ -226,9 +226,10 @@ def test_runtime_controls_require_receipt_evidence_and_derive_flags(tmp_path):
 
 def test_commit_sha_resolvability_and_new_run_sha_behavior(monkeypatch):
     head=live.git_sha()
-    assert live.validate_commit_sha_resolvable(head) is True
+    assert live.validate_local_commit_object(head) is True
+    assert live.validate_commit_is_ancestor_of_head(head) is True
     with pytest.raises(RuntimeError, match="validation_provenance_sha_mismatch"):
-        live.validate_commit_sha_resolvable("0"*40)
+        live.validate_commit_is_ancestor_of_head("0"*40)
     monkeypatch.setattr(live, "git_sha", lambda: head)
     a=args(taifex_future_product="TX", taifex_future_expiry="202607", classification_code_base_commit_sha=head, classification_patch_commit_sha=head)
     m=live.build_new_run_manifest("research/m8r/live_validation/new-run", a, ["TAIFEX_MIS_FUTURE_EXACT"])
@@ -271,3 +272,31 @@ def test_receipt_and_approval_consistency_mismatches_rejected(tmp_path):
         live.validate_live_validation_evidence_consistency(_minimal_consistency_root(tmp_path/"plan", mutate=lambda p,a,r,res,cm: r.update(plan_hash="other")))
     with pytest.raises(RuntimeError, match="validation_case_approval_mismatch"):
         live.validate_live_validation_evidence_consistency(_minimal_consistency_root(tmp_path/"approval", mutate=lambda p,a,r,res,cm: a.update(approval_id="other")))
+
+
+def test_commit_object_must_be_head_or_ancestor(monkeypatch):
+    def fake_check_call(cmd, stdout=None, stderr=None):
+        if cmd[:3] == ["git", "cat-file", "-e"]:
+            return 0
+        if cmd[:3] == ["git", "merge-base", "--is-ancestor"]:
+            if cmd[3] == "b" * 40:
+                raise RuntimeError("not ancestor")
+            return 0
+        return 0
+    monkeypatch.setattr(live.subprocess, "check_call", fake_check_call)
+    valid = "a" * 40
+    assert live.validate_commit_is_ancestor_of_head(valid) is True
+    with pytest.raises(RuntimeError, match="validation_provenance_sha_mismatch"):
+        live.validate_commit_is_ancestor_of_head("not-a-sha")
+    with pytest.raises(RuntimeError, match="validation_provenance_sha_mismatch"):
+        live.validate_commit_is_ancestor_of_head("b" * 40)
+
+
+def test_historical_live_sha_remains_separate_from_classification_sha(monkeypatch):
+    head=live.git_sha()
+    monkeypatch.setattr(live, "validate_commit_is_ancestor_of_head", lambda sha: True)
+    a=args(historical_live_starting_sha=live.HISTORICAL_M8R02B_LIVE_EXECUTION_SHA, classification_code_base_commit_sha=head, classification_patch_commit_sha=head)
+    m=live.reconstruct_historical_run_manifest("research/m8r/live_validation/old-run", a, ["TWSE_MIS_LISTED_2330"])
+    assert m["live_execution_starting_commit_sha"] == live.HISTORICAL_M8R02B_LIVE_EXECUTION_SHA
+    assert m["classification_code_commit_sha"] == head
+    assert m["live_execution_starting_commit_sha"] != m["classification_code_commit_sha"]
