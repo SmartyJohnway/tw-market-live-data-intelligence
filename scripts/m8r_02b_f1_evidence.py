@@ -60,6 +60,22 @@ def option_identity(value: dict[str, Any]) -> dict[str, str | None]:
 def selected_identity(selection: dict[str, Any]) -> dict[str, str | None]:
     return option_identity(selection.get("selected_contract") or selection.get("selected_option_contract") or selection)
 
+
+def validate_operator_authorization(selection: dict[str, Any], selected: dict[str, str | None], discovery_id: Any) -> None:
+    if selection.get("authorization_source") != "user_instruction":
+        raise F1EvidenceConsistencyError("f1_operator_selection_not_authorized")
+    if not selection.get("authorization_recorded_at_utc"):
+        raise F1EvidenceConsistencyError("f1_operator_selection_not_authorized")
+    try:
+        parse_time(selection.get("authorization_recorded_at_utc"))
+    except ValueError as exc:
+        raise F1EvidenceConsistencyError("f1_operator_selection_not_authorized") from exc
+    if selection.get("discovery_id") != discovery_id:
+        raise F1EvidenceConsistencyError("f1_operator_selection_not_authorized")
+    auth_selected = option_identity(selection.get("selected_contract") or {})
+    if auth_selected != selected:
+        raise F1EvidenceConsistencyError("f1_operator_selection_not_authorized")
+
 def discovered_identity(item: dict[str, Any]) -> dict[str, str | None]:
     return {k: str(item.get(k) or "") for k in ["product", "underlying", "expiry", "strike", "call_put", "session"]}
 
@@ -112,11 +128,10 @@ def validate_m8r_02b_f1_evidence_consistency(root: str | Path, *, require_finali
     if any((source_results.get(src) or {}).get("status") != "succeeded" for src in REQUIRED_OPTION_SOURCE_EVIDENCE):
         raise F1EvidenceConsistencyError("f1_discovery_status_invalid")
     selection = load_json(selection_path)
-    if not selection.get("operator_authorization_reference"):
-        raise F1EvidenceConsistencyError("f1_operator_selection_not_authorized")
     if selection.get("selected_by_operator") is not True or selection.get("discovery_id") != discovery.get("discovery_id"):
         raise F1EvidenceConsistencyError("f1_selected_contract_not_discovered")
     selected = selected_identity(selection)
+    validate_operator_authorization(selection, selected, discovery.get("discovery_id"))
     discovered = None
     for item in discovery.get("exact_contract_identities") or []:
         if discovered_identity(item) == selected:

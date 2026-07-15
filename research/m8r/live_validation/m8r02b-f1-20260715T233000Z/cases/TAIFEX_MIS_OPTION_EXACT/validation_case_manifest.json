@@ -1,0 +1,78 @@
+{
+  "approval_id": "m8r-approval-631d855b69464720",
+  "case_id": "TAIFEX_MIS_OPTION_EXACT",
+  "created_at_utc": "2026-07-15T23:26:19Z",
+  "manifest_provenance": {
+    "mode": "created_before_case_execution",
+    "network_reexecution_performed": false,
+    "source_execution_artifacts_unchanged": false
+  },
+  "plan_hash": "a48ebdd506078b3f8d51674c1cc8f26a181a030180615da34c7f45bfaf20a7bd",
+  "plan_id": "m8r-plan-a48ebdd506078b3f",
+  "planned_source_family": "TAIFEX_MIS",
+  "requested_context": [
+    "liveish_observation"
+  ],
+  "schema_version": "m8r_controlled_live_validation_case_manifest.v1",
+  "source_execution_artifact_root": "research/m8r/live_validation/m8r02b-f1-20260715T233000Z/cases/TAIFEX_MIS_OPTION_EXACT",
+  "target": [
+    {
+      "allowed_source_families": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "derivative_identity": {
+        "call_put": "C",
+        "contract_type": "monthly",
+        "expiry": "202607",
+        "session": "regular",
+        "strike": "40000",
+        "underlying": "TX"
+      },
+      "duplicate_identity_key": "TAIFEX:option:TXO:TX",
+      "identity_resolution_status": "resolved",
+      "input_identity": {
+        "call_put": "C",
+        "contract_type": "monthly",
+        "expiry": "202607",
+        "instrument_type": "option",
+        "market": "TAIFEX",
+        "requested_source_families": [
+          "TAIFEX_MIS"
+        ],
+        "session": "regular",
+        "strike": "40000",
+        "symbol": "TXO",
+        "underlying": "TX"
+      },
+      "instrument_type": "option",
+      "issues": [],
+      "market": "TAIFEX",
+      "planned_mappings": [
+        {
+          "context_type": "liveish_observation",
+          "network_required": true,
+          "operation_class": "planned_network_fetch",
+          "route": "regular_session_monthly_option_selector",
+          "source_family": "TAIFEX_MIS",
+          "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+        }
+      ],
+      "requested_context_types": [
+        "liveish_observation"
+      ],
+      "requested_source_families": [
+        "TAIFEX_MIS"
+      ],
+      "requested_source_selection_mode": "target_exact",
+      "runtime_routes": {
+        "TAIFEX_MIS": "regular_session_monthly_option_selector",
+        "TAIFEX_OPENAPI": "TAIFEX_OPENAPI"
+      },
+      "session": "regular",
+      "symbol": "TXO",
+      "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+    }
+  ],
+  "validation_run_id": "m8r02b-f1-20260715T233000Z"
+}

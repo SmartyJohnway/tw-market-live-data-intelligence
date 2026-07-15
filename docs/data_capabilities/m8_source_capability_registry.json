@@ -674,12 +674,11 @@
   "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go",
   "m8r_02a_status": "GO",
   "production_executor_adapters_ready": true,
-  "production_live_execution_ready": true,
-  "live_validation_completed": true,
+  "production_live_execution_ready": false,
+  "live_validation_completed": false,
   "m8r_02b_status": "NO_GO",
-  "m8r_02b_required": false,
+  "m8r_02b_required": true,
   "m8r_02b_historical_status": "NO_GO",
-  "m8r_02b_f1_status": "GO",
-  "m8r_02b_final_disposition": "GO_AFTER_CORRECTIVE_REVALIDATION"
-
+  "m8r_02b_f1_status": "NO_GO",
+  "m8r_02b_final_disposition": "NO_GO_AFTER_GENUINE_OPERATOR_REVALIDATION_ATTEMPT"
 }

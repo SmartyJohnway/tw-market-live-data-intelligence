@@ -1,0 +1,8 @@
+{
+  "attempt_id": "m8r02b-f1-20260715T170000Z",
+  "schema_version": "m8r_02b_f1_option_attempt_supersession.v1",
+  "source_execution_artifacts_rewritten": false,
+  "successor_attempt_id": "m8r02b-f1-20260715T233000Z",
+  "superseded_at_utc": "2026-07-15T23:27:20Z",
+  "supersession_reason": "superseded_due_to_missing_genuine_operator_authorization"
+}

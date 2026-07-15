@@ -1,0 +1,13 @@
+[
+  {
+    "context_type": "liveish_observation",
+    "forbidden_interpretations": [],
+    "missing_context_status": "missing",
+    "operation_status": "failed",
+    "planned_source_family": "TAIFEX_MIS",
+    "reason_code": "source_payload_invalid",
+    "schema_version": "m8r_market_context_missing_context.v1",
+    "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly",
+    "usable_fallback": null
+  }
+]

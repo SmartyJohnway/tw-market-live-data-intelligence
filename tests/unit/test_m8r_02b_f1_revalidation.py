@@ -77,7 +77,7 @@ def test_f1_consistency_validation_accepts_finalized_cross_source_evidence(tmp_p
     root = tmp_path / "run"
     selected = {"product":"TXO","underlying":"TX","expiry":"202607","strike":"40000","call_put":"C","session":"regular"}
     write_json(root / "taifex_option_contract_discovery.json", {"schema_version": SCHEMA_VERSION, "discovery_id":"d1", "completed_at_utc":"2026-07-15T12:00:01Z", "source_results":{"TAIFEX_MIS":{"status":"succeeded"},"TAIFEX_OPENAPI":{"status":"succeeded"}}, "exact_contract_identities":[selected | {"source_evidence":["TAIFEX_MIS","TAIFEX_OPENAPI"]}]})
-    write_json(root / "operator_selected_option_contract.json", {"selected_by_operator": True, "operator_authorization_reference":"unit_test_authorized_selection", "selected_at_utc":"2026-07-15T12:00:02Z", "selected_contract": selected, "discovery_id":"d1"})
+    write_json(root / "operator_selected_option_contract.json", {"selected_by_operator": True, "authorization_source":"user_instruction", "authorization_recorded_at_utc":"2026-07-15T12:00:02Z", "authorization_reference":"unit_test_authorized_selection", "selected_at_utc":"2026-07-15T12:00:02Z", "selected_contract": selected, "discovery_id":"d1"})
     target = {"symbol":"TXO", "underlying":"TX", "expiry":"202607", "strike":"40000", "call_put":"C", "session":"regular", "derivative_identity": {"underlying":"TX", "expiry":"202607", "strike":"40000", "call_put":"C", "session":"regular"}}
     for cid in ["TAIFEX_MIS_OPTION_EXACT", "TAIFEX_OPENAPI_OPTION_EXACT"]:
         make_case(root, cid, target, selected)
@@ -93,7 +93,7 @@ def test_f1_consistency_validation_rejects_incomplete_source_evidence(tmp_path):
     root = tmp_path / "run"
     selected = {"product":"TXO","underlying":"TX","expiry":"202607","strike":"40000","call_put":"C","session":"regular"}
     write_json(root / "taifex_option_contract_discovery.json", {"schema_version": SCHEMA_VERSION, "discovery_id":"d1", "completed_at_utc":"2026-07-15T12:00:01Z", "source_results":{"TAIFEX_MIS":{"status":"succeeded"},"TAIFEX_OPENAPI":{"status":"succeeded"}}, "exact_contract_identities":[selected | {"source_evidence":["TAIFEX_MIS"]}]})
-    write_json(root / "operator_selected_option_contract.json", {"selected_by_operator": True, "operator_authorization_reference":"unit_test_authorized_selection", "selected_at_utc":"2026-07-15T12:00:02Z", "selected_contract": selected, "discovery_id":"d1"})
+    write_json(root / "operator_selected_option_contract.json", {"selected_by_operator": True, "authorization_source":"user_instruction", "authorization_recorded_at_utc":"2026-07-15T12:00:02Z", "authorization_reference":"unit_test_authorized_selection", "selected_at_utc":"2026-07-15T12:00:02Z", "selected_contract": selected, "discovery_id":"d1"})
     write_json(root / "f1_revalidation_manifest.json", {"finalized": True, "f1_network_execution_performed": True, "historical_source_execution_artifacts_unchanged": True, "f1_execution_artifacts_new": True, "live_execution_code_base_commit_sha": REMOTE_SHA, "live_execution_patch_commit_sha": REMOTE_SHA})
     write_json(root / "option_live_execution_manifest.json", {"manifest_role":"option_live_execution_run", "finalized": True, "network_execution_performed": True})
     with pytest.raises(F1EvidenceConsistencyError) as exc:
@@ -110,7 +110,7 @@ def build_valid_root(tmp_path):
     root = tmp_path / "run_valid"
     selected = {"product":"TXO","underlying":"TX","expiry":"202607","strike":"40000","call_put":"C","session":"regular"}
     write_json(root / "taifex_option_contract_discovery.json", {"schema_version": SCHEMA_VERSION, "discovery_id":"d1", "completed_at_utc":"2026-07-15T12:00:01Z", "source_results":{"TAIFEX_MIS":{"status":"succeeded"},"TAIFEX_OPENAPI":{"status":"succeeded"}}, "exact_contract_identities":[selected | {"source_evidence":["TAIFEX_MIS","TAIFEX_OPENAPI"]}]})
-    write_json(root / "operator_selected_option_contract.json", {"selected_by_operator": True, "operator_authorization_reference":"unit_test_authorized_selection", "selected_at_utc":"2026-07-15T12:00:02Z", "selected_contract": selected, "discovery_id":"d1"})
+    write_json(root / "operator_selected_option_contract.json", {"selected_by_operator": True, "authorization_source":"user_instruction", "authorization_recorded_at_utc":"2026-07-15T12:00:02Z", "authorization_reference":"unit_test_authorized_selection", "selected_at_utc":"2026-07-15T12:00:02Z", "selected_contract": selected, "discovery_id":"d1"})
     target = {"symbol":"TXO", "underlying":"TX", "expiry":"202607", "strike":"40000", "call_put":"C", "session":"regular", "derivative_identity": {"underlying":"TX", "expiry":"202607", "strike":"40000", "call_put":"C", "session":"regular"}}
     for cid in ["TAIFEX_MIS_OPTION_EXACT", "TAIFEX_OPENAPI_OPTION_EXACT"]:
         make_case(root, cid, target, selected)
@@ -125,12 +125,24 @@ def build_valid_root(tmp_path):
 def test_selection_without_operator_authorization_rejected(tmp_path):
     root = build_valid_root(tmp_path)
     selection = json.loads((root / "operator_selected_option_contract.json").read_text())
-    selection.pop("operator_authorization_reference")
+    selection.pop("authorization_source")
     write_json(root / "operator_selected_option_contract.json", selection)
     with pytest.raises(F1EvidenceConsistencyError) as exc:
         validate_m8r_02b_f1_evidence_consistency(root)
     assert exc.value.reason_code == "f1_operator_selection_not_authorized"
 
+
+
+def test_arbitrary_non_empty_authorization_string_rejected(tmp_path):
+    root = build_valid_root(tmp_path)
+    selection = json.loads((root / "operator_selected_option_contract.json").read_text())
+    selection.pop("authorization_source", None)
+    selection.pop("authorization_recorded_at_utc", None)
+    selection["operator_authorization_reference"] = "non_empty_but_unstructured"
+    write_json(root / "operator_selected_option_contract.json", selection)
+    with pytest.raises(F1EvidenceConsistencyError) as exc:
+        validate_m8r_02b_f1_evidence_consistency(root)
+    assert exc.value.reason_code == "f1_operator_selection_not_authorized"
 
 def test_unresolvable_execution_sha_rejected(tmp_path):
     root = build_valid_root(tmp_path)
