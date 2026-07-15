@@ -1,9 +1,11 @@
 {
   "adapter_invocation_count": 1,
+  "ai_artifacts_written": true,
   "ai_package_id": "amc-25f957f4172c8212",
   "ai_package_status": "partial",
   "ai_validation": {
-    "status": "valid"
+    "reason_code": null,
+    "valid": true
   },
   "approval_consumed": true,
   "approval_id": "m8r-approval-4f91525ab783fea4",
@@ -48,6 +50,8 @@
       "severity": "warning"
     }
   ],
+  "classification_corrected_at_utc": "2026-07-15T02:30:00Z",
+  "classification_revision": "m8r02b_commit2_ai_package_mandatory",
   "currentness": {
     "currentness_status": "source_specific_currentness_unresolved"
   },
@@ -92,6 +96,7 @@
     "symbol": "6488"
   },
   "schema_version": "m8r_controlled_live_validation_case_result.v1",
+  "source_execution_artifacts_unchanged": true,
   "source_id": "TWSE_MIS",
   "source_timestamp": "20260715 13:30:00",
   "target": [

@@ -265,3 +265,52 @@ def test_boundary_no_network_or_product_surface_imports():
     banned_imports = ["import requests", "import urllib", "import httpx", "FastAPI", "@app.", "sqlite3"]
     assert not any(item in text for item in banned_imports)
     assert PROD["production_executor_adapters_ready"] is True and PROD["production_live_execution_ready"] is False
+
+def _execution_receipt_dir(root: str, rid: str):
+    rd = Path(root) / rid
+    rd.mkdir(parents=True, exist_ok=True)
+    for name in ["execution_plan.json", "approval_record.json", "execution_receipt.json", "operation_results.json", "missing_context.json", "m8_context_core.json"]:
+        (rd / name).write_text(json.dumps({"ok": True}), encoding="utf-8")
+    return rd
+
+
+def test_writer_allows_existing_approved_receipt_directory_safely():
+    shutil.rmtree(ROOT, ignore_errors=True)
+    pkg = build(result(receipt_id="rid-existing"))
+    rd = _execution_receipt_dir(ROOT, "rid-existing")
+    files = write_ai_market_context_artifacts(pkg, allow_existing_receipt_directory=True)
+    assert {Path(f).name for f in files} == {"ai_market_context_v1.json", "ai_market_context_compact.json", "ai_market_context_standard.json", "ai_market_context_diagnostic.json"}
+    assert all(Path(f).parent == rd for f in files)
+    shutil.rmtree(ROOT, ignore_errors=True)
+
+
+def test_writer_existing_receipt_directory_integrity_failures():
+    shutil.rmtree(ROOT, ignore_errors=True)
+    pkg = build(result(receipt_id="rid-existing-fail"))
+    _execution_receipt_dir(ROOT, "rid-existing-fail")
+    with pytest.raises(OSError, match="receipt_identity_mismatch"):
+        write_ai_market_context_artifacts(pkg, receipt_id="wrong", allow_existing_receipt_directory=True)
+    (Path(ROOT) / "rid-existing-fail" / "ai_market_context_v1.json").write_text("{}", encoding="utf-8")
+    with pytest.raises(OSError, match="ai_artifact_already_exists"):
+        write_ai_market_context_artifacts(pkg, allow_existing_receipt_directory=True)
+    shutil.rmtree(ROOT, ignore_errors=True)
+    _execution_receipt_dir(ROOT, "rid-existing-fail")
+    (Path(ROOT) / "rid-existing-fail" / "unexpected.json").write_text("{}", encoding="utf-8")
+    with pytest.raises(OSError, match="approved_receipt_directory_unexpected_files"):
+        write_ai_market_context_artifacts(pkg, allow_existing_receipt_directory=True)
+    shutil.rmtree(ROOT, ignore_errors=True)
+
+
+def test_writer_existing_receipt_directory_rejects_unsafe_payload_and_invalid_package():
+    shutil.rmtree(ROOT, ignore_errors=True)
+    pkg = build(result(receipt_id="rid-unsafe"))
+    rd = _execution_receipt_dir(ROOT, "rid-unsafe")
+    (rd / "operation_results.json").write_text(json.dumps({"raw_payload": {}}), encoding="utf-8")
+    with pytest.raises((OSError, AIMarketContextPackageError)):
+        write_ai_market_context_artifacts(pkg, allow_existing_receipt_directory=True)
+    shutil.rmtree(ROOT, ignore_errors=True)
+    _execution_receipt_dir(ROOT, "rid-unsafe")
+    bad = deepcopy(pkg); bad["package_id"] = None
+    with pytest.raises(AIMarketContextPackageError):
+        write_ai_market_context_artifacts(bad, allow_existing_receipt_directory=True)
+    shutil.rmtree(ROOT, ignore_errors=True)

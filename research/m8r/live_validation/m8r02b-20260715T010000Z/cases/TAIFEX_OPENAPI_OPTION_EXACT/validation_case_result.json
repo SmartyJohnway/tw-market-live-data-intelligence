@@ -1,10 +1,11 @@
 {
   "adapter_invocation_count": 1,
+  "ai_artifacts_written": false,
   "ai_package_id": null,
   "ai_package_status": "blocked",
   "ai_validation": {
-    "error": "AIMarketContextPackageError",
-    "valid": "false"
+    "reason_code": "ai_package_build_failed",
+    "valid": false
   },
   "approval_consumed": true,
   "approval_id": "m8r-approval-224f5231601baa42",
@@ -24,6 +25,8 @@
       "severity": "error"
     }
   ],
+  "classification_corrected_at_utc": "2026-07-15T02:30:00Z",
+  "classification_revision": "m8r02b_commit2_ai_package_mandatory",
   "currentness": {},
   "execution_status": "blocked",
   "forbidden_interpretations": [],
@@ -62,6 +65,7 @@
   "retrieved_at_utc": null,
   "returned_identity": {},
   "schema_version": "m8r_controlled_live_validation_case_result.v1",
+  "source_execution_artifacts_unchanged": true,
   "source_id": null,
   "source_timestamp": null,
   "target": [

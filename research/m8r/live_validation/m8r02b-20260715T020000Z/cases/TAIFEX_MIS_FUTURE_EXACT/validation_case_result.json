@@ -1,10 +1,11 @@
 {
   "adapter_invocation_count": 1,
+  "ai_artifacts_written": false,
   "ai_package_id": null,
   "ai_package_status": "blocked",
   "ai_validation": {
-    "error": "AIMarketContextPackageError",
-    "valid": "false"
+    "reason_code": "ai_package_build_failed",
+    "valid": false
   },
   "approval_consumed": true,
   "approval_id": "m8r-approval-b5985fb82ce3d115",
@@ -24,6 +25,8 @@
       "severity": "error"
     }
   ],
+  "classification_corrected_at_utc": "2026-07-15T02:30:00Z",
+  "classification_revision": "m8r02b_commit2_ai_package_mandatory",
   "currentness": {
     "calendar_evidence": "not_provided",
     "currentness_confidence": "bounded_policy_not_exchange_sla",
@@ -49,11 +52,12 @@
   "plan_hash": "dce1595a51123b7e979dfe24ef78c4f05bb417e36a08d76597c37458aeb487ad",
   "plan_id": "m8r-plan-dce1595a51123b7e",
   "planned_source_family": "TAIFEX_MIS",
+  "previous_result": "passed_with_caveats",
   "receipt_id": "m8r-receipt-4f8f921187068aca",
   "requested_context": [
     "liveish_observation"
   ],
-  "result": "passed_with_caveats",
+  "result": "failed_runtime_contract",
   "retention_audit": {
     "forbidden_key_hits": [],
     "status": "passed"
@@ -66,6 +70,7 @@
     "session": "regular"
   },
   "schema_version": "m8r_controlled_live_validation_case_result.v1",
+  "source_execution_artifacts_unchanged": true,
   "source_id": "TAIFEX_MIS",
   "source_timestamp": "2026-07-15T13:29:59+08:00",
   "target": [
