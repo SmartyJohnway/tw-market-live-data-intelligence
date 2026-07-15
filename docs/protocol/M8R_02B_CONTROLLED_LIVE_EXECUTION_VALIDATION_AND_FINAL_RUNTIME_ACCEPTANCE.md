@@ -105,13 +105,13 @@ Authoritative provenance now distinguishes the original live execution baseline 
 
 - `live_execution_starting_commit_sha`: `751ad3a1102cb6fd432410717355c35bea08365c`
 - `starting_commit_sha`: retained as the live execution SHA for backward compatibility
-- `classification_code_commit_sha`: records the commit used to regenerate derived classification metadata
-- `classification_revision`: `m8r02b_commit3_manifest_and_provenance_correction`
+- `classification_code_commit_sha`: `f6097d83a4256eb3d17fac59728234b85d92377f`, a repository-resolvable PR-branch commit used as the classification/reconstruction implementation base
+- `classification_revision`: `m8r02b_commit4_resolvable_provenance`
 - `manifest_provenance.mode`: `reconstructed_from_immutable_case_execution_artifacts`
 - `source_execution_artifacts_unchanged`: `true`
 - `network_reexecution_performed`: `false`
 
-The run-level `validation_manifest.json` now contains all nine required cases and the predetermined TAIFEX identities: monthly regular `TX 202607` and monthly regular `TXO/TX 202607 20000 C`. Each case also has a bounded `validation_case_manifest.json` that records the invocation-level plan, approval, target, source family, requested context, and source artifact root used for consistency validation. Runtime-critical controls are now derived from manifest, receipt, case-result, retention-audit, and negative-control evidence; missing evidence fails closed instead of being treated as a pass.
+The manifest and summary now validate that live and classification SHAs resolve through `git cat-file -e <sha>^{commit}`; normal new manifests capture the current `git rev-parse HEAD`, while historical reconstruction requires an explicit `--historical-live-starting-sha`. The run-level `validation_manifest.json` now contains all nine required cases and the predetermined TAIFEX identities: monthly regular `TX 202607` and monthly regular `TXO/TX 202607 20000 C`. Each case also has a bounded `validation_case_manifest.json` that records the invocation-level plan, approval, target, source family, requested context, and source artifact root used for consistency validation. Runtime-critical controls are now derived from manifest, receipt, case-result, retention-audit, and negative-control evidence; missing evidence fails closed instead of being treated as a pass.
 
 ## Decision and successor
 

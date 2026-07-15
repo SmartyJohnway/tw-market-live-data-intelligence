@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, copy, json, os, platform, re, sys
+import argparse, copy, json, os, platform, re, subprocess, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from datetime import datetime, timezone
@@ -13,8 +13,8 @@ from scripts.m8r_ai_market_context_package import build_ai_market_context_packag
 
 MANIFEST_SCHEMA_VERSION="m8r_controlled_live_validation_manifest.v1"
 SUMMARY_SCHEMA_VERSION="m8r_controlled_live_validation_summary.v1"
-LIVE_EXECUTION_STARTING_COMMIT_SHA="751ad3a1102cb6fd432410717355c35bea08365c"
-CLASSIFICATION_REVISION="m8r02b_commit3_manifest_and_provenance_correction"
+HISTORICAL_M8R02B_LIVE_EXECUTION_SHA="751ad3a1102cb6fd432410717355c35bea08365c"
+CLASSIFICATION_REVISION="m8r02b_commit4_resolvable_provenance"
 RUN_ID_RE=re.compile(r"^[A-Za-z0-9_.=-]+$")
 FORBIDDEN_KEYS={"raw_payload","response_body","html","cookies","authorization","headers","api_key","access_token","refresh_token","sockjs_frames","full_option_chain","raw_rest_records","rest_rows","whole_market_rows"}
 
@@ -32,8 +32,19 @@ CASES={
 
 def now(): return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
 def git_sha():
-    import subprocess
     return subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+
+def git_worktree_dirty() -> bool:
+    return bool(subprocess.check_output(["git","status","--short"], text=True).strip())
+
+def validate_commit_sha_resolvable(sha: str | None) -> bool:
+    if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+        raise RuntimeError("validation_provenance_sha_mismatch")
+    try:
+        subprocess.check_call(["git", "cat-file", "-e", f"{sha}^{{commit}}"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception as exc:
+        raise RuntimeError("validation_provenance_sha_mismatch") from exc
+    return True
 def safe_root(root:str)->str:
     if not root: raise SystemExit("artifact-root required")
     p=PurePosixPath(root)
@@ -97,9 +108,34 @@ def write_json(path:Path,obj):
 def _case_manifest_entry(case_id: str, case: dict[str, Any], args, root: str) -> dict[str, Any]:
     return {"case_id": case_id, "required": bool(case.get("required")), "planned_source_family": case["source"], "requested_context": case["contexts"], "target": target_for(case, args), "case_artifact_root": f"{root}/cases/{case_id}"}
 
-def build_run_manifest(root: str, args, ids: list[str], *, reconstructed: bool = False) -> dict[str, Any]:
+def _classification_provenance(base_sha: str | None = None, patch_sha: str | None = None, dirty: bool | None = None) -> dict[str, Any]:
+    base = base_sha or git_sha()
+    patch = patch_sha or base
+    validate_commit_sha_resolvable(base)
+    validate_commit_sha_resolvable(patch)
+    is_dirty = git_worktree_dirty() if dirty is None else bool(dirty)
+    return {"classification_code_commit_sha": patch, "classification_code_base_commit_sha": base, "classification_patch_commit_sha": patch, "classification_worktree_dirty": is_dirty}
+
+def _manifest_payload(root: str, args, ids: list[str], *, live_sha: str, provenance: dict[str, Any], finalized: bool, classification_revision: str | None, source_unchanged: bool) -> dict[str, Any]:
+    validate_commit_sha_resolvable(live_sha)
     created = args.execution_time_utc or now()
-    return {"schema_version":MANIFEST_SCHEMA_VERSION,"validation_run_id":Path(root).name,"created_at_utc":created,"starting_commit_sha":LIVE_EXECUTION_STARTING_COMMIT_SHA,"live_execution_starting_commit_sha":LIVE_EXECUTION_STARTING_COMMIT_SHA,"classification_code_commit_sha":git_sha(),"classification_revision":CLASSIFICATION_REVISION if reconstructed else None,"operator_confirmed":bool(args.operator_confirmed),"allow_network":bool(args.allow_network),"cases":[_case_manifest_entry(cid, CASES[cid], args, root) for cid in ids],"required_cases":[cid for cid in ids if CASES[cid]["required"]],"optional_cases":[],"artifact_root":root,"acceptance_policy":{"runtime_critical_all_required":True,"go_requires_all_source_families":True},"runtime_environment":{"python":sys.version.split()[0],"platform":platform.platform(),"cwd":os.getcwd()},"taifex_exact_identities":{"future":{"symbol":getattr(args,"taifex_future_product",None),"expiry":getattr(args,"taifex_future_expiry",None),"contract_type":"monthly","session":"regular"},"option":{"symbol":getattr(args,"taifex_option_product",None),"underlying":getattr(args,"taifex_option_underlying",None),"expiry":getattr(args,"taifex_option_expiry",None),"strike":getattr(args,"taifex_option_strike",None),"call_put":getattr(args,"taifex_option_call_put",None),"contract_type":"monthly","session":"regular"}},"finalized": bool(reconstructed),"manifest_provenance":{"mode":"reconstructed_from_immutable_case_execution_artifacts" if reconstructed else "created_before_execution","source_execution_artifacts_unchanged":bool(reconstructed),"network_reexecution_performed":False}}
+    cprov = _classification_provenance(getattr(args, "classification_code_base_commit_sha", None), getattr(args, "classification_patch_commit_sha", None), getattr(args, "classification_worktree_dirty", None))
+    return {"schema_version":MANIFEST_SCHEMA_VERSION,"validation_run_id":Path(root).name,"created_at_utc":created,"starting_commit_sha":live_sha,"live_execution_starting_commit_sha":live_sha,**cprov,"classification_revision":classification_revision,"operator_confirmed":bool(args.operator_confirmed),"allow_network":bool(args.allow_network),"cases":[_case_manifest_entry(cid, CASES[cid], args, root) for cid in ids],"required_cases":[cid for cid in ids if CASES[cid]["required"]],"optional_cases":[],"artifact_root":root,"acceptance_policy":{"runtime_critical_all_required":True,"go_requires_all_source_families":True},"runtime_environment":{"python":sys.version.split()[0],"platform":platform.platform(),"cwd":os.getcwd()},"taifex_exact_identities":{"future":{"symbol":getattr(args,"taifex_future_product",None),"expiry":getattr(args,"taifex_future_expiry",None),"contract_type":"monthly","session":"regular"},"option":{"symbol":getattr(args,"taifex_option_product",None),"underlying":getattr(args,"taifex_option_underlying",None),"expiry":getattr(args,"taifex_option_expiry",None),"strike":getattr(args,"taifex_option_strike",None),"call_put":getattr(args,"taifex_option_call_put",None),"contract_type":"monthly","session":"regular"}},"finalized": finalized,"manifest_provenance":{**provenance,"source_execution_artifacts_unchanged":source_unchanged,"network_reexecution_performed":False}}
+
+def build_new_run_manifest(root: str, args, ids: list[str]) -> dict[str, Any]:
+    head = git_sha()
+    return _manifest_payload(root,args,ids,live_sha=head,provenance={"mode":"created_before_execution"},finalized=False,classification_revision=None,source_unchanged=False)
+
+def reconstruct_historical_run_manifest(root: str, args, ids: list[str], *, historical_live_starting_sha: str | None = None) -> dict[str, Any]:
+    live_sha = historical_live_starting_sha or getattr(args, "historical_live_starting_sha", None)
+    if not live_sha:
+        raise SystemExit("historical_live_starting_sha_required")
+    return _manifest_payload(root,args,ids,live_sha=live_sha,provenance={"mode":"reconstructed_from_immutable_case_execution_artifacts"},finalized=True,classification_revision=CLASSIFICATION_REVISION,source_unchanged=True)
+
+def build_run_manifest(root: str, args, ids: list[str], *, reconstructed: bool = False) -> dict[str, Any]:
+    if reconstructed:
+        return reconstruct_historical_run_manifest(root,args,ids)
+    return build_new_run_manifest(root,args,ids)
 
 def _manifest_case_map(manifest: dict[str, Any]) -> dict[str, Any]:
     return {c.get("case_id"): c for c in manifest.get("cases", []) if isinstance(c, dict)}
@@ -265,10 +301,13 @@ def validate_live_validation_evidence_consistency(root: str | Path, summary_payl
     summary_cases=set((summary_payload.get("case_results") or {}).keys())
     if set(manifest_cases) != summary_cases:
         raise RuntimeError("validation_manifest_summary_case_mismatch")
-    if manifest_payload.get("starting_commit_sha") != LIVE_EXECUTION_STARTING_COMMIT_SHA or summary_payload.get("live_execution_starting_commit_sha") != LIVE_EXECUTION_STARTING_COMMIT_SHA:
+    live_sha=manifest_payload.get("live_execution_starting_commit_sha")
+    if manifest_payload.get("starting_commit_sha") != live_sha or summary_payload.get("live_execution_starting_commit_sha") != live_sha or summary_payload.get("starting_commit_sha") != live_sha:
         raise RuntimeError("validation_provenance_sha_mismatch")
-    if summary_payload.get("starting_commit_sha") != LIVE_EXECUTION_STARTING_COMMIT_SHA:
-        raise RuntimeError("validation_provenance_sha_mismatch")
+    validate_commit_sha_resolvable(live_sha)
+    for field in ["classification_code_commit_sha", "classification_code_base_commit_sha", "classification_patch_commit_sha"]:
+        if manifest_payload.get(field): validate_commit_sha_resolvable(manifest_payload.get(field))
+        if summary_payload.get(field): validate_commit_sha_resolvable(summary_payload.get(field))
     receipt_ids=[]; approval_ids=[]
     for cid, case_entry in manifest_cases.items():
         case_manifest_path=root/"cases"/cid/"validation_case_manifest.json"
@@ -280,6 +319,16 @@ def validate_live_validation_evidence_consistency(root: str | Path, summary_payl
         if not plan_path:
             raise RuntimeError("validation_artifact_reference_missing")
         plan=json.loads(plan_path.read_text(encoding="utf-8"))
+        approval_path=_first_json_under(source_root,"approval_record.json")
+        receipt_path=_first_json_under(source_root,"execution_receipt.json")
+        if not approval_path or not receipt_path:
+            raise RuntimeError("validation_artifact_reference_missing")
+        approval=json.loads(approval_path.read_text(encoding="utf-8"))
+        receipt=json.loads(receipt_path.read_text(encoding="utf-8"))
+        if case_manifest.get("approval_id") != approval.get("approval_id"):
+            raise RuntimeError("validation_case_approval_mismatch")
+        if case_manifest.get("plan_hash") != plan.get("plan_hash"):
+            raise RuntimeError("validation_case_plan_mismatch")
         if case_manifest.get("target") != plan.get("targets"):
             raise RuntimeError("validation_case_plan_mismatch")
         if case_entry.get("target") != (plan.get("targets") or [None])[0]:
@@ -290,6 +339,8 @@ def validate_live_validation_evidence_consistency(root: str | Path, summary_payl
                 raise RuntimeError("validation_case_plan_mismatch")
         result, _result_path = _case_result_for(root,cid,case_manifest)
         if case_manifest.get("plan_id") != result.get("plan_id") or case_manifest.get("plan_hash") != result.get("plan_hash") or case_manifest.get("approval_id") != result.get("approval_id"):
+            raise RuntimeError("validation_case_receipt_mismatch")
+        if result.get("receipt_id") != receipt.get("receipt_id") or result.get("approval_id") != receipt.get("approval_id") or result.get("plan_id") != receipt.get("plan_id") or result.get("plan_hash") != receipt.get("plan_hash") or result.get("approval_consumed") != receipt.get("approval_consumed"):
             raise RuntimeError("validation_case_receipt_mismatch")
         if result.get("receipt_id"):
             receipt_ids.append(result.get("receipt_id"))
@@ -318,7 +369,7 @@ def summary(root,args,results,controls=None):
     required=set(CASES)
     attempted=set(case_results)
     accepted={cid for cid,r in case_results.items() if accepted_case(r)}
-    out={"schema_version":SUMMARY_SCHEMA_VERSION,"validation_run_id":Path(root).name,"starting_commit_sha":LIVE_EXECUTION_STARTING_COMMIT_SHA,"live_execution_starting_commit_sha":LIVE_EXECUTION_STARTING_COMMIT_SHA,"classification_code_commit_sha":git_sha(),"classification_revision":CLASSIFICATION_REVISION,"source_execution_artifacts_unchanged":True,"network_reexecution_performed":False,"completed_at_utc":now(),"runtime_critical_status":runtime,"runtime_critical_controls":runtime_controls,"case_results":{cid:{"result":r.get("result"),"ai_package_status":r.get("ai_package_status"),"ai_validation":r.get("ai_validation"),"network_request_count":r.get("network_request_count"),"operation_status":r.get("operation_status")} for cid,r in case_results.items()},"source_family_results":source_family_results,"required_case_coverage":{"required_cases":sorted(required),"attempted_cases":sorted(attempted),"accepted_cases":sorted(accepted),"all_required_attempted":required <= attempted,"all_required_accepted":required <= accepted},"exact_future_acceptance":{"accepted": any(cid.endswith("FUTURE_EXACT") and cid in accepted for cid in attempted),"accepted_cases": sorted(cid for cid in accepted if cid.endswith("FUTURE_EXACT"))},"exact_option_acceptance":{"accepted": any(cid.endswith("OPTION_EXACT") and cid in accepted for cid in attempted),"accepted_cases": sorted(cid for cid in accepted if cid.endswith("OPTION_EXACT"))},"retention_audit":retention,"ai_package_validation":{"case_package_statuses":{cid:r.get("ai_package_status") for cid,r in case_results.items()}},"decision":decision,"production_live_execution_ready":decision=="GO","live_validation_completed":decision=="GO","recommended_next_task":"M8R-04-CONTROLLED-AI-CONVERSATION-HANDOFF" if decision=="GO" else "M8R-02B-DEFECT-CORRECTION-AND-EXACT-OPTION-TPEX-REVALIDATION"}
+    live_sha=(manifest or {}).get("live_execution_starting_commit_sha") or git_sha(); cprov=_classification_provenance(); out={"schema_version":SUMMARY_SCHEMA_VERSION,"validation_run_id":Path(root).name,"starting_commit_sha":live_sha,"live_execution_starting_commit_sha":live_sha,**cprov,"classification_revision":CLASSIFICATION_REVISION,"source_execution_artifacts_unchanged":True,"network_reexecution_performed":False,"completed_at_utc":now(),"runtime_critical_status":runtime,"runtime_critical_controls":runtime_controls,"case_results":{cid:{"result":r.get("result"),"ai_package_status":r.get("ai_package_status"),"ai_validation":r.get("ai_validation"),"network_request_count":r.get("network_request_count"),"operation_status":r.get("operation_status")} for cid,r in case_results.items()},"source_family_results":source_family_results,"required_case_coverage":{"required_cases":sorted(required),"attempted_cases":sorted(attempted),"accepted_cases":sorted(accepted),"all_required_attempted":required <= attempted,"all_required_accepted":required <= accepted},"exact_future_acceptance":{"accepted": any(cid.endswith("FUTURE_EXACT") and cid in accepted for cid in attempted),"accepted_cases": sorted(cid for cid in accepted if cid.endswith("FUTURE_EXACT"))},"exact_option_acceptance":{"accepted": any(cid.endswith("OPTION_EXACT") and cid in accepted for cid in attempted),"accepted_cases": sorted(cid for cid in accepted if cid.endswith("OPTION_EXACT"))},"retention_audit":retention,"ai_package_validation":{"case_package_statuses":{cid:r.get("ai_package_status") for cid,r in case_results.items()}},"decision":decision,"production_live_execution_ready":decision=="GO","live_validation_completed":decision=="GO","recommended_next_task":"M8R-04-CONTROLLED-AI-CONVERSATION-HANDOFF" if decision=="GO" else "M8R-02B-DEFECT-CORRECTION-AND-EXACT-OPTION-TPEX-REVALIDATION"}
     if manifest:
         validate_live_validation_evidence_consistency(root, out, manifest)
     return out
@@ -360,7 +411,7 @@ def run_negative_controls(args, root):
     return controls
 
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument("--list-cases",action="store_true"); ap.add_argument("--case",action="append"); ap.add_argument("--all-required",action="store_true"); ap.add_argument("--allow-network",action="store_true"); ap.add_argument("--operator-confirmed",action="store_true"); ap.add_argument("--dry-run",action="store_true"); ap.add_argument("--run-negative-controls",action="store_true"); ap.add_argument("--artifact-root",required=False); ap.add_argument("--execution-time-utc");
+    ap=argparse.ArgumentParser(); ap.add_argument("--list-cases",action="store_true"); ap.add_argument("--case",action="append"); ap.add_argument("--all-required",action="store_true"); ap.add_argument("--allow-network",action="store_true"); ap.add_argument("--operator-confirmed",action="store_true"); ap.add_argument("--dry-run",action="store_true"); ap.add_argument("--run-negative-controls",action="store_true"); ap.add_argument("--artifact-root",required=False); ap.add_argument("--execution-time-utc"); ap.add_argument("--historical-live-starting-sha");
     for n in ["future-product","future-expiry","option-product","option-underlying","option-expiry","option-strike","option-call-put"]: ap.add_argument("--taifex-"+n)
     args=ap.parse_args()
     if args.list_cases: print("\n".join(CASES)); return

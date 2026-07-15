@@ -50,8 +50,12 @@
       "severity": "warning"
     }
   ],
+  "classification_code_base_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
+  "classification_code_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
   "classification_corrected_at_utc": "2026-07-15T10:30:44Z",
-  "classification_revision": "m8r02b_commit3_manifest_and_provenance_correction",
+  "classification_patch_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
+  "classification_revision": "m8r02b_commit4_resolvable_provenance",
+  "classification_worktree_dirty": false,
   "currentness": {
     "currentness_status": "source_specific_currentness_unresolved"
   },
