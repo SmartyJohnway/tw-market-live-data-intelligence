@@ -1,0 +1,189 @@
+{
+  "caveats": [
+    {
+      "code": "approved_target_scope_not_fully_available",
+      "message": "approved target scope not fully available",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "currentness_unknown",
+      "message": "currentness unknown",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "official_eod_not_intraday",
+      "message": "official eod not intraday",
+      "scope": "package",
+      "severity": "warning",
+      "source_family": "TPEX_OPENAPI"
+    },
+    {
+      "code": "production_live_execution_not_ready",
+      "message": "production live execution not ready",
+      "scope": "package",
+      "severity": "warning"
+    }
+  ],
+  "currentness": {
+    "by_source_family": {
+      "TPEX_OPENAPI": [
+        "unknown"
+      ]
+    },
+    "by_target": {
+      "TPEX:equity:6488": [
+        "unknown"
+      ]
+    },
+    "current_count": 0,
+    "not_applicable_count": 0,
+    "overall_status": "unknown",
+    "stale_count": 0,
+    "unknown_count": 1
+  },
+  "forbidden_interpretations": [
+    "not_all_sources_current",
+    "not_broker_instruction",
+    "not_complete_when_partial",
+    "not_full_market",
+    "not_guaranteed_realtime",
+    "not_live_production_ready_without_m8r02b",
+    "not_prediction",
+    "not_recommendation",
+    "not_safe_to_infer_missing_values",
+    "not_trading_signal",
+    "official_eod_not_live"
+  ],
+  "missing_context": [],
+  "package_id": "amc-fdc57858675be274",
+  "source_provenance": [
+    {
+      "authority_level": "official_documented",
+      "caveats": [
+        {
+          "code": "source_warning",
+          "message": "source_warning",
+          "severity": "warning",
+          "source": "observation_caveat"
+        }
+      ],
+      "context_type": "official_eod_reference",
+      "currentness": {
+        "currentness_status": "official_eod_reference"
+      },
+      "instrument_type": "equity",
+      "market": "tpex_otc",
+      "operation_id": "m8r-op-cb0946a9fcbc0f2c",
+      "retrieved_at_utc": "2026-07-15T14:06:04Z",
+      "safe_fields": {
+        "activity": {
+          "trade_value": 16009810160,
+          "trade_volume": 10788285,
+          "transaction_count": 22260
+        },
+        "currentness_status": "official_eod_reference",
+        "derived_fields": [],
+        "field_validation": {
+          "Change": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "Close": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "Date": {
+            "source_format": "ROC_YYYMMDD",
+            "valid": true
+          },
+          "High": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "Low": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "Open": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "TradingShares": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "TransactionAmount": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "TransactionNumber": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "identity": {
+            "market": "tpex_otc",
+            "symbol_present": true,
+            "valid": true
+          },
+          "instrument_classification": {
+            "artifact_path": "config/m8a_official_eod_security_master.json",
+            "classification_status": "classified",
+            "coverage_mode": "bounded_seed_only",
+            "instrument_type": "equity",
+            "production_classification_completeness": "incomplete",
+            "provenance": "M8R-02B-F1 bounded TPEx validation identity; exact target only; not a complete TPEx security-master authority",
+            "source": "repository_bounded_security_seed"
+          },
+          "trade_date": {
+            "valid": true
+          }
+        },
+        "price": {
+          "change": "-35.00",
+          "change_percent": null,
+          "close": "1480.00",
+          "high": "1600.00",
+          "low": "1430.00",
+          "open": "1580.00",
+          "previous_close": null
+        },
+        "trade_date": "2026-07-15"
+      },
+      "source_context_id": "amc-src-aa5e2da122649129",
+      "source_family": "TPEX_OPENAPI",
+      "source_id": "TPEX_OPENAPI",
+      "source_timestamp": null,
+      "symbol": "6488",
+      "target_id": "TPEX:equity:6488",
+      "timing_class": "official_eod"
+    }
+  ],
+  "targets": [
+    {
+      "available_context_types": [
+        "official_eod_reference"
+      ],
+      "caveats": [],
+      "derivative_identity": {
+        "market": "TPEX",
+        "source_id": "TPEX_OPENAPI",
+        "symbol": "6488"
+      },
+      "forbidden_interpretations": [],
+      "instrument_type": "equity",
+      "market": "tpex_otc",
+      "missing_context_types": [],
+      "requested_context_types": [
+        "official_eod_reference"
+      ],
+      "source_context_refs": [
+        "amc-src-aa5e2da122649129"
+      ],
+      "symbol": "6488",
+      "target_id": "TPEX:equity:6488",
+      "target_status": "ready_with_caveats"
+    }
+  ]
+}

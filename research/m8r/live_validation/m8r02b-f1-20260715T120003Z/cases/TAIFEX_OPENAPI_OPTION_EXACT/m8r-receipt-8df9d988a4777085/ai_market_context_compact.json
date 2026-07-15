@@ -1,0 +1,72 @@
+{
+  "currentness": {
+    "by_source_family": {
+      "TAIFEX_OPENAPI": [
+        "delayed_one_trading_day"
+      ]
+    },
+    "by_target": {
+      "TAIFEX:option:TXO:TX:202607:40000:C:monthly": [
+        "delayed_one_trading_day"
+      ]
+    },
+    "current_count": 0,
+    "not_applicable_count": 0,
+    "overall_status": "unknown",
+    "stale_count": 0,
+    "unknown_count": 1
+  },
+  "highest_severity_caveats": [
+    {
+      "code": "approved_target_scope_not_fully_available",
+      "message": "approved target scope not fully available",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "currentness_unknown",
+      "message": "currentness unknown",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "production_live_execution_not_ready",
+      "message": "production live execution not ready",
+      "scope": "package",
+      "severity": "warning"
+    }
+  ],
+  "latest_usable_observations": [
+    {
+      "currentness": {
+        "calendar_evidence": "incomplete",
+        "caveats": [
+          "taifex_trading_calendar_evidence_incomplete_weekend_rule_only"
+        ],
+        "currentness_confidence": "provisional",
+        "emergency_closure_status": "emergency_closure_unknown",
+        "evaluation_time_asia_taipei": "2026-07-15T22:06:34+08:00",
+        "exchange_market_status": "scheduled_open",
+        "expected_latest_completed_trade_date": "2026-07-15",
+        "expected_latest_completed_trade_date_resolution_trace": [],
+        "source_specific": true,
+        "status": "delayed_one_trading_day",
+        "trade_date": "2026-07-14"
+      },
+      "retrieved_at_utc": "2026-07-15T14:06:35Z",
+      "source_context_id": "amc-src-67f8557c8004bd1a",
+      "source_family": "TAIFEX_OPENAPI",
+      "source_timestamp": null,
+      "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+    }
+  ],
+  "missing_context_count": 0,
+  "package_id": "amc-dfb93331f90d109c",
+  "package_status": "partial",
+  "targets": [
+    {
+      "status": "ready_with_caveats",
+      "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "currentness": {
+    "by_source_family": {
+      "TAIFEX_MIS": [
+        "source_timestamp_unresolved"
+      ]
+    },
+    "by_target": {
+      "TAIFEX:option:TXO:TX:202607:40000:C:monthly": [
+        "source_timestamp_unresolved"
+      ]
+    },
+    "current_count": 0,
+    "not_applicable_count": 0,
+    "overall_status": "unknown",
+    "stale_count": 0,
+    "unknown_count": 1
+  },
+  "highest_severity_caveats": [
+    {
+      "code": "approved_target_scope_not_fully_available",
+      "message": "approved target scope not fully available",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "currentness_unknown",
+      "message": "currentness unknown",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "liveish_not_exchange_official_realtime",
+      "message": "liveish not exchange official realtime",
+      "scope": "package",
+      "severity": "warning",
+      "source_family": "TAIFEX_MIS"
+    },
+    {
+      "code": "production_live_execution_not_ready",
+      "message": "production live execution not ready",
+      "scope": "package",
+      "severity": "warning"
+    }
+  ],
+  "latest_usable_observations": [
+    {
+      "currentness": {
+        "calendar_evidence": "not_provided",
+        "currentness_confidence": "bounded_policy_not_exchange_sla",
+        "market_phase": "market_phase_unresolved",
+        "overall_ai_currentness": "source_timestamp_unresolved",
+        "quote_age_state": "unresolved",
+        "retrieved_at_freshness_ignored_for_upgrade": true,
+        "session_alignment": "aligned",
+        "source_timestamp_state": "unresolved",
+        "special_closure_evidence": null,
+        "transport_state": "completed"
+      },
+      "retrieved_at_utc": null,
+      "source_context_id": "amc-src-d04ccc8e12f6548a",
+      "source_family": "TAIFEX_MIS",
+      "source_timestamp": null,
+      "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+    }
+  ],
+  "missing_context_count": 0,
+  "package_id": "amc-1a1d207ca742c32f",
+  "package_status": "partial",
+  "targets": [
+    {
+      "status": "ready_with_caveats",
+      "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+    }
+  ]
+}

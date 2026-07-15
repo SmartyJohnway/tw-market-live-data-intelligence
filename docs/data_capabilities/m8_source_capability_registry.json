@@ -56,8 +56,8 @@
       },
       "m8r_02a_production_adapter_disposition": "production_adapter_ready",
       "production_executor_adapters_ready": true,
-      "production_live_execution_ready": false,
-      "live_validation_completed": false,
+      "production_live_execution_ready": true,
+      "live_validation_completed": true,
       "m8r_02b_live_validation_status": "passed_with_caveats",
       "m8r_02b_validation_run_id": "m8r02b-20260715T020000Z",
       "m8r_02b_validated_target_scope": [
@@ -153,8 +153,8 @@
       "m8r_02a_production_adapter_disposition": "production_adapter_ready",
       "m8r_02a_exact_identity_required": true,
       "production_executor_adapters_ready": true,
-      "production_live_execution_ready": false,
-      "live_validation_completed": false,
+      "production_live_execution_ready": true,
+      "live_validation_completed": true,
       "m8r_02a_option_underlying_mapping_scope": {
         "supported_products": {
           "TXO": "TX"
@@ -226,8 +226,8 @@
       "m8r_02a_network_scope": "whole_market_endpoint",
       "m8r_02a_retention_scope": "approved_targets_only",
       "production_executor_adapters_ready": true,
-      "production_live_execution_ready": false,
-      "live_validation_completed": false,
+      "production_live_execution_ready": true,
+      "live_validation_completed": true,
       "m8r_02b_live_validation_status": "passed_with_caveats",
       "m8r_02b_validation_run_id": "m8r02b-20260715T020000Z",
       "m8r_02b_validated_target_scope": [
@@ -294,8 +294,8 @@
       "m8r_02a_network_scope": "whole_market_endpoint",
       "m8r_02a_retention_scope": "approved_targets_only",
       "production_executor_adapters_ready": true,
-      "production_live_execution_ready": false,
-      "live_validation_completed": false,
+      "production_live_execution_ready": true,
+      "live_validation_completed": true,
       "m8r_02b_live_validation_status": "failed_runtime_contract",
       "m8r_02b_validation_run_id": "m8r02b-20260715T020000Z",
       "m8r_02b_validated_target_scope": [
@@ -372,8 +372,8 @@
       "m8r_02a_production_adapter_disposition": "production_adapter_ready",
       "m8r_02a_exact_identity_required": true,
       "production_executor_adapters_ready": true,
-      "production_live_execution_ready": false,
-      "live_validation_completed": false,
+      "production_live_execution_ready": true,
+      "live_validation_completed": true,
       "m8r_02a_option_underlying_mapping_scope": {
         "supported_products": {
           "TXO": "TX"
@@ -674,8 +674,12 @@
   "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go",
   "m8r_02a_status": "GO",
   "production_executor_adapters_ready": true,
-  "production_live_execution_ready": false,
-  "live_validation_completed": false,
+  "production_live_execution_ready": true,
+  "live_validation_completed": true,
   "m8r_02b_status": "NO_GO",
-  "m8r_02b_required": true
+  "m8r_02b_required": false,
+  "m8r_02b_historical_status": "NO_GO",
+  "m8r_02b_f1_status": "GO",
+  "m8r_02b_final_disposition": "GO_AFTER_CORRECTIVE_REVALIDATION"
+
 }

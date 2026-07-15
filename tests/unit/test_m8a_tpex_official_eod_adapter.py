@@ -15,3 +15,19 @@ def test_tpex_unclassified_and_signed_change_and_duplicate():
     assert "unclassified" in " ".join(r["observations"][0]["caveats"])
     assert parse_tpex_official_eod_rows(load("tpex_signed_change.json"), requested_symbols=["8069"])["observations"][0]["price"]["change"] == "1.5"
     assert parse_tpex_official_eod_rows(load("tpex_duplicate_identity.json"), requested_symbols=["8069"])["row_count_rejected"] == 1
+
+def test_tpex_6488_bounded_seed_classifies_equity_and_unknown_fails_closed():
+    rows = load("tpex_normal_rows.json")
+    row = dict(rows[0])
+    row["SecuritiesCompanyCode"] = "6488"
+    row["CompanyName"] = "環球晶"
+    r = parse_tpex_official_eod_rows([row], requested_symbols=["6488"], retrieved_at_utc="2026-07-10T00:00:00Z")
+    assert r["row_count_received"] == 1
+    assert r["row_count_retained"] == 1
+    assert r["observations"][0]["instrument_type"] == "equity"
+    cls = r["observations"][0]["field_validation"]["instrument_classification"]
+    assert cls["classification_status"] == "classified"
+    unknown = dict(row, SecuritiesCompanyCode="NOPE")
+    miss = parse_tpex_official_eod_rows([unknown], requested_symbols=["NOPE"])
+    assert miss["observations"][0]["instrument_type"] == "unknown"
+    assert miss["observations"][0]["field_validation"]["instrument_classification"]["classification_status"] == "unclassified"

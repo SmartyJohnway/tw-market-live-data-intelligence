@@ -1,0 +1,136 @@
+[
+  {
+    "adapter_invocation_count": 1,
+    "context_type": "official_eod_reference",
+    "currentness": {
+      "currentness_status": "official_eod_reference"
+    },
+    "finished_at_utc": "2026-07-15T14:06:25Z",
+    "grouping": {
+      "grouped": true,
+      "network_scope": "whole_market_endpoint",
+      "retention_scope": "approved_targets_only"
+    },
+    "issues": [],
+    "network_attempted": true,
+    "network_request_count": 1,
+    "operation_class": "planned_network_fetch",
+    "operation_id": "m8r-op-cb0946a9fcbc0f2c",
+    "retained_artifacts": [],
+    "returned_identity": {
+      "market": "TPEX",
+      "source_id": "TPEX_OPENAPI",
+      "symbol": "6488"
+    },
+    "route": "TPEX_OPENAPI",
+    "schema_version": "m8r_market_context_operation_result.v1",
+    "source_family": "TPEX_OPENAPI",
+    "source_health": {},
+    "source_observation": {
+      "authority_level": "official_documented",
+      "caveats": [
+        "official EOD/reference; not intraday"
+      ],
+      "context_type": "official_eod_reference",
+      "currentness": {
+        "currentness_status": "official_eod_reference"
+      },
+      "instrument_type": "equity",
+      "market": "tpex_otc",
+      "market_date": "2026-07-15",
+      "name": "環球晶",
+      "omitted_fields": [
+        "Average",
+        "LatestBidPrice",
+        "LatesAskPrice",
+        "Capitals",
+        "NextReferencePrice",
+        "NextLimitUp",
+        "NextLimitDown"
+      ],
+      "retrieved_at_utc": "2026-07-15T14:06:04Z",
+      "safe_fields": {
+        "activity": {
+          "trade_value": 16009810160,
+          "trade_volume": 10788285,
+          "transaction_count": 22260
+        },
+        "currentness_status": "official_eod_reference",
+        "derived_fields": [],
+        "field_validation": {
+          "Change": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "Close": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "Date": {
+            "source_format": "ROC_YYYMMDD",
+            "valid": true
+          },
+          "High": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "Low": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "Open": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "TradingShares": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "TransactionAmount": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "TransactionNumber": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "identity": {
+            "market": "tpex_otc",
+            "symbol_present": true,
+            "valid": true
+          },
+          "instrument_classification": {
+            "artifact_path": "config/m8a_official_eod_security_master.json",
+            "classification_status": "classified",
+            "coverage_mode": "bounded_seed_only",
+            "instrument_type": "equity",
+            "production_classification_completeness": "incomplete",
+            "provenance": "M8R-02B-F1 bounded TPEx validation identity; exact target only; not a complete TPEx security-master authority",
+            "source": "repository_bounded_security_seed"
+          },
+          "trade_date": {
+            "valid": true
+          }
+        },
+        "price": {
+          "change": "-35.00",
+          "change_percent": null,
+          "close": "1480.00",
+          "high": "1600.00",
+          "low": "1430.00",
+          "open": "1580.00",
+          "previous_close": null
+        },
+        "trade_date": "2026-07-15"
+      },
+      "source_family": "TPEX_OPENAPI",
+      "source_id": "TPEX_OPENAPI",
+      "symbol": "6488",
+      "timing_class": "official_eod",
+      "trading_date": "2026-07-15"
+    },
+    "started_at_utc": "2026-07-15T14:06:04Z",
+    "status": "succeeded",
+    "target_id": "TPEX:equity:6488"
+  }
+]
