@@ -53,7 +53,11 @@
         "max_intraday_age_seconds": 900,
         "allow_retrieved_at_only_intraday_freshness": true,
         "requires_exchange_timestamp_for_fresh": false
-      }
+      },
+      "m8r_02a_production_adapter_disposition": "production_adapter_ready",
+      "production_executor_adapters_ready": true,
+      "production_live_execution_ready": false,
+      "live_validation_completed": false
     },
     {
       "source_id": "TAIFEX_MIS",
@@ -135,7 +139,12 @@
       "execution_sha_matches_tested_remote_sha": true,
       "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
       "recommended_next_task": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR",
-      "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go"
+      "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go",
+      "m8r_02a_production_adapter_disposition": "production_adapter_ready",
+      "m8r_02a_exact_identity_required": true,
+      "production_executor_adapters_ready": true,
+      "production_live_execution_ready": false,
+      "live_validation_completed": false
     },
     {
       "source_id": "TWSE_OPENAPI",
@@ -186,7 +195,13 @@
       "whole_market_network_scope": true,
       "bounded_retained_scope": true,
       "instrument_classification_coverage_mode": "bounded_seed_only_when_canonical_security_master_absent",
-      "production_classification_completeness": "incomplete_without_canonical_security_master"
+      "production_classification_completeness": "incomplete_without_canonical_security_master",
+      "m8r_02a_production_adapter_disposition": "production_adapter_ready_with_explicit_limitations",
+      "m8r_02a_network_scope": "whole_market_endpoint",
+      "m8r_02a_retention_scope": "approved_targets_only",
+      "production_executor_adapters_ready": true,
+      "production_live_execution_ready": false,
+      "live_validation_completed": false
     },
     {
       "source_id": "TPEX_OPENAPI",
@@ -240,7 +255,13 @@
       "instrument_classification_required": true,
       "mixed_instrument_fail_closed": true,
       "instrument_classification_coverage_mode": "bounded_seed_only_when_canonical_security_master_absent",
-      "production_classification_completeness": "incomplete_without_canonical_security_master"
+      "production_classification_completeness": "incomplete_without_canonical_security_master",
+      "m8r_02a_production_adapter_disposition": "production_adapter_ready_with_explicit_limitations",
+      "m8r_02a_network_scope": "whole_market_endpoint",
+      "m8r_02a_retention_scope": "approved_targets_only",
+      "production_executor_adapters_ready": true,
+      "production_live_execution_ready": false,
+      "live_validation_completed": false
     },
     {
       "source_id": "TAIFEX_OPENAPI",
@@ -305,7 +326,12 @@
         "official_derivatives_large_trader_open_interest_reference",
         "official_derivatives_put_call_ratio_reference",
         "official_derivatives_block_trade_reference"
-      ]
+      ],
+      "m8r_02a_production_adapter_disposition": "production_adapter_ready",
+      "m8r_02a_exact_identity_required": true,
+      "production_executor_adapters_ready": true,
+      "production_live_execution_ready": false,
+      "live_validation_completed": false
     },
     {
       "source_id": "MOPS",
@@ -585,7 +611,11 @@
   "new_m8_failures": [],
   "new_m8c_failures": [],
   "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
-  "recommended_next_task": "M8R-02A-PRODUCTION-SOURCE-EXECUTOR-ADAPTER-INTEGRATION",
+  "recommended_next_task": "M8R-02B-CONTROLLED-LIVE-EXECUTION-VALIDATION-AND-FINAL-RUNTIME-ACCEPTANCE",
   "m8r_01_status": "GO_WITH_COMPLETED_FOLLOW_UP_FIX",
-  "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go"
+  "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go",
+  "m8r_02a_status": "GO",
+  "production_executor_adapters_ready": true,
+  "production_live_execution_ready": false,
+  "live_validation_completed": false
 }

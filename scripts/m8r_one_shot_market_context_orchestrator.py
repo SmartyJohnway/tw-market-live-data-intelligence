@@ -221,7 +221,7 @@ def _blocked_result(op: dict[str, Any], opid: str, issue: dict[str, Any], when: 
     return normalize_operation_result({"status": "blocked", "network_attempted": False, "adapter_invocation_count": 0, "issues": [issue]}, op, opid, started_at_utc=when, finished_at_utc=utc_now())
 
 def execute_approved_market_context_plan(plan: dict[str, Any], approval: dict[str, Any], *, executor_registry: Mapping[tuple[str, str | None], Callable[..., Any]] | None = None, execution_time_utc: str | None = None, allow_network: bool = False, artifact_writer: Callable[..., Any] | None = None, source_registry: dict[str, Any] | None = None, approval_consumption_store: ApprovalConsumptionStore | None = None, m8_context_builder: Callable[..., dict[str, Any]] = build_multi_source_market_context) -> dict[str, Any]:
-    started = execution_time_utc or utc_now(); registry = executor_registry or EXECUTOR_REGISTRY; src_reg = source_registry or load_source_registry(); rid = _receipt_id(plan if isinstance(plan, dict) else {}, approval if isinstance(approval, dict) else {}, started)
+    started = execution_time_utc or utc_now(); registry = EXECUTOR_REGISTRY if executor_registry is None else executor_registry; src_reg = source_registry or load_source_registry(); rid = _receipt_id(plan if isinstance(plan, dict) else {}, approval if isinstance(approval, dict) else {}, started)
     pre = preflight_approved_market_context_plan(plan, approval, executor_registry=registry, execution_time_utc=started, allow_network=allow_network, source_registry=src_reg, approval_consumption_store=approval_consumption_store)
     if pre["preflight_status"] != "passed":
         reason = (pre.get("issues") or [{}])[0].get("code") or "approval_invalid"; missing = build_missing_context_records(plan, [], global_reason=reason); receipt = _blank_receipt(plan, approval, started, started, "blocked", len(missing), 0, False, reason, receipt_id=rid)
@@ -293,12 +293,5 @@ def _local_market_clock_executor(*, operation, target, plan, execution_time_utc,
     return {"status": "succeeded", "network_attempted": False, "source_observation": {"source_id": "LOCAL_MARKET_CLOCK", "source_family": "LOCAL_CONTEXT", "context_type": "market_session_state", "timing_class": "reference_metadata", "authority_level": "local_product_surface", "retrieved_at_utc": execution_time_utc, "market": (target or {}).get("market"), "symbol": (target or {}).get("symbol"), "safe_fields": {"target_market": (target or {}).get("market"), "market_session_state": "unresolved", "calendar_caveat": "regular-session support only; unresolved fails closed"}, "caveats": ["market session unresolved unless accepted market-clock artifact provides evidence", "local-only context is retained outside canonical M8 core"]}}
 
 setattr(_blocked_default_executor, "supports_exact_derivative_identity", False)
-EXECUTOR_REGISTRY: dict[tuple[str, str | None], Callable[..., Any]] = {
-    (NETWORK_CLASS, "TWSE_MIS"): _blocked_default_executor,
-    (NETWORK_CLASS, "TWSE_OPENAPI"): _blocked_default_executor,
-    (NETWORK_CLASS, "TPEX_OPENAPI"): _blocked_default_executor,
-    (NETWORK_CLASS, "TAIFEX_MIS"): _blocked_default_executor,
-    (NETWORK_CLASS, "TAIFEX_OPENAPI"): _blocked_default_executor,
-    ("local_source_health_read", None): _local_source_health_executor,
-    ("local_market_clock_evaluation", None): _local_market_clock_executor,
-}
+from scripts.m8r_production_source_adapters import build_production_executor_registry
+EXECUTOR_REGISTRY: dict[tuple[str, str | None], Callable[..., Any]] = build_production_executor_registry(_local_source_health_executor, _local_market_clock_executor)
