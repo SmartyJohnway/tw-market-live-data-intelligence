@@ -109,7 +109,8 @@ def test_limits_duplicates_and_unsafe_output_scope():
     assert "source_limit_exceeded" in codes(m8r.validate_market_context_request(bad_sources))
     dup=dict(BASE, targets=[{"symbol":"2330","market":"TWSE","instrument_type":"equity"},{"symbol":"2330","market":"TWSE","instrument_type":"stock","notes":"different"}])
     n=m8r.normalize_market_context_request(dup)
-    assert any(i["code"]=="duplicate_target_conflict" for t in n["rejected_targets"] for i in t["issues"])
+    assert len(n["targets"]) == 1
+    assert not any(i["code"]=="duplicate_target_conflict" for t in n["rejected_targets"] for i in t["issues"])
     unsafe=dict(BASE, output_policy={"artifact_root":"../frontend/public"})
     assert "unsafe_output_scope" in codes(m8r.validate_market_context_request(unsafe))
     long_id=dict(BASE, request_id="x"*(m8r.MAX_IDENTIFIER_LENGTH+1))
@@ -227,3 +228,94 @@ def test_boundary_no_network_imports_no_adapters_no_terms_no_second_registry():
     assert "M9" not in m8r.accepted_source_families()
     assert "recommendation" in m8r.NON_GOAL_FLAGS and m8r.NON_GOAL_FLAGS["recommendation"] is False
     assert m8r.SOURCE_REGISTRY_PATH == "docs/data_capabilities/m8_source_capability_registry.json"
+
+
+def _plan_for_hash(req):
+    return m8r.compile_market_context_execution_plan(req, created_at_utc="2026-07-14T00:00:00Z")
+
+
+def test_lifecycle_identity_excluded_from_semantic_and_plan_hashes():
+    a = _plan_for_hash(dict(BASE, request_id="life-a"))
+    b = _plan_for_hash(dict(BASE, request_id="life-b"))
+    assert a["normalized_request_hash"] == b["normalized_request_hash"]
+    assert a["plan_hash"] == b["plan_hash"]
+    assert a["plan_id"] == b["plan_id"]
+
+
+@pytest.mark.parametrize("field", ["display_name", "notes", "comments"])
+def test_presentation_metadata_excluded_from_hashes(field):
+    base_target = {"symbol":"2330","market":"TWSE","instrument_type":"equity"}
+    decorated = dict(base_target, **{field: "presentation-only text"})
+    a = _plan_for_hash(dict(BASE, targets=[base_target]))
+    b = _plan_for_hash(dict(BASE, targets=[decorated]))
+    assert a["normalized_request_hash"] == b["normalized_request_hash"]
+    assert a["plan_hash"] == b["plan_hash"]
+
+
+def test_alias_equivalence_and_duplicate_collapse_without_conflict():
+    req = dict(BASE, targets=[
+        {"symbol":" 2330 ","market":" twse ","instrument_type":" Stock ","display_name":"A"},
+        {"symbol":"2330","market":"TWSE","instrument_type":"equity","notes":"B","comments":"C"},
+        {"symbol":"6488","market":"OTC","instrument_type":"stock"},
+        {"symbol":"6488","market":"tpex","instrument_type":"equity","display_name":"ignored"},
+        {"symbol":"TX","market":"TAIFEX","instrument_type":"futures","requested_context_types":["liveish_observation"],"session":"regular_session"},
+        {"symbol":" tx ","market":"taifex","instrument_type":"future","requested_context_types":[" LIVEISH_OBSERVATION "],"session":"regular"},
+    ])
+    n = m8r.normalize_market_context_request(req)
+    assert [t["target_id"] for t in n["targets"]] == ["TAIFEX:future:TX", "TPEX:equity:6488", "TWSE:equity:2330"]
+    assert not any(i["code"] == "duplicate_target_conflict" for t in n["rejected_targets"] for i in t["issues"])
+
+
+@pytest.mark.parametrize("second", [
+    {"symbol":"2330","market":"TWSE","instrument_type":"equity","requested_context_types":["liveish_observation"]},
+    {"symbol":"2330","market":"TWSE","instrument_type":"equity","requested_source_families":["TWSE_MIS"]},
+])
+def test_true_duplicate_conflicts_context_or_exact_sources(second):
+    first = {"symbol":"2330","market":"TWSE","instrument_type":"equity"}
+    n = m8r.normalize_market_context_request(dict(BASE, targets=[first, second]))
+    assert any(i["code"] == "duplicate_target_conflict" for t in n["rejected_targets"] for i in t["issues"])
+
+
+@pytest.mark.parametrize("mutator", [
+    lambda t: dict(t, expiry="202608"),
+    lambda t: dict(t, strike="20100"),
+    lambda t: dict(t, call_put="P"),
+    lambda t: dict(t, session="after_hours"),
+])
+def test_option_duplicate_identity_conflicts(mutator):
+    opt = {"symbol":"TXO","market":"TAIFEX","instrument_type":"option","underlying":"tx","expiry":"202607","strike":"20000.0","call_put":"c","contract_type":"MONTHLY","requested_context_types":["official_statistical_reference"]}
+    n = m8r.normalize_market_context_request(dict(BASE, targets=[opt, mutator(opt)]))
+    assert n["rejected_targets"]
+
+
+def test_reversed_sources_contexts_and_targets_do_not_change_hashes():
+    req = dict(BASE, requested_context_types=["official_eod_reference", "liveish_observation"], requested_source_families=["TWSE_OPENAPI", "TWSE_MIS"], targets=[
+        {"symbol":"2330","market":"TWSE","instrument_type":"equity"},
+        {"symbol":"0050","market":"TWSE","instrument_type":"etf"},
+    ])
+    rev = dict(req, requested_context_types=list(reversed(req["requested_context_types"])), requested_source_families=list(reversed(req["requested_source_families"])), targets=list(reversed(req["targets"])))
+    assert _plan_for_hash(req)["plan_hash"] == _plan_for_hash(rev)["plan_hash"]
+
+
+def test_executable_scope_sensitivity_for_local_operations_and_retention():
+    base = _plan_for_hash(BASE)
+    local = _plan_for_hash(dict(BASE, requested_context_types=["source_health"]))
+    assert base["plan_hash"] != local["plan_hash"]
+    retained = json.loads(json.dumps(base)); retained["bounded_retained_scope"]["raw_payload_retention"] = True
+    assert m8r.compute_plan_hash(retained) != base["plan_hash"]
+
+
+def test_rejected_targets_do_not_enter_semantic_hash_or_plan_mapping():
+    rejected_a = {"symbol":"BAD SYMBOL","market":"TWSE","instrument_type":"equity","display_name":"A"}
+    rejected_b = dict(rejected_a, display_name="B", notes="changed", comments="changed")
+    pa = _plan_for_hash(dict(BASE, targets=BASE["targets"] + [rejected_a]))
+    pb = _plan_for_hash(dict(BASE, targets=BASE["targets"] + [rejected_b]))
+    clean = _plan_for_hash(BASE)
+    assert pa["normalized_request_hash"] == pb["normalized_request_hash"] == clean["normalized_request_hash"]
+    assert pa["plan_hash"] == pb["plan_hash"] == clean["plan_hash"]
+    assert pa["rejected_targets"] and pb["rejected_targets"]
+    assert all("BAD" not in m["target_id"] for m in pa["source_to_target_context_mapping"])
+    different_rejected = {"symbol":"2330","market":"TWSE","instrument_type":"future"}
+    pc = _plan_for_hash(dict(BASE, targets=BASE["targets"] + [different_rejected]))
+    assert pc["plan_hash"] == clean["plan_hash"]
+    assert pc["rejected_targets"]

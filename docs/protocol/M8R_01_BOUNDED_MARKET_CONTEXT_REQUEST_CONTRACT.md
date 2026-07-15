@@ -199,3 +199,29 @@ M8R-02 may consume only a valid `m8r_market_context_execution_plan.v1` whose `pl
 Decision: `GO`.
 
 Rationale: the request contract is deterministic; exact identity and route compatibility fail closed; source eligibility is derived from accepted M8 policy plus narrow allowlist; research-only/M9/credential-gated sources are excluded; plan scope is immutable and hashable; approval binds to exact plan hash; implementation is non-network; and M8R-02 has a clear input contract.
+
+## M8R-01F canonical identity correction
+
+M8R-01 remains merged, but M8R-02 is gated by `M8R-01F-CANONICAL-REQUEST-HASH-AND-SEMANTIC-DUPLICATE-CORRECTION`. The M8R-01 status is therefore `GO_WITH_REQUIRED_FOLLOW_UP_FIX` until the corrective gate is accepted.
+
+M8R-01F formally separates four identities:
+
+- `request_id` is lifecycle-only and traces one operator request lifecycle. It must not alter `normalized_request_hash`, `plan_hash`, or `plan_id`.
+- `normalized_request_hash` is the canonical semantic request hash. It is built from normalized schema version, accepted target semantic identities, effective per-target contexts and source selections, source-selection mode where behavior differs, normalized derivative/session identity, execution-policy fields, validated output scope, and non-goal flags that govern execution.
+- `plan_id` and `plan_hash` identify the exact executable approved scope. The plan hash may include `normalized_request_hash` only because that hash is the canonical semantic hash, not a full normalized-object digest.
+- `approval_id` identifies one approval event bound to one exact plan hash and is not interchangeable with request or plan identity.
+
+Execution-semantic fields may enter canonical semantic scope: `market`, `symbol`, `instrument_type`, option/future selectors, `session`, effective requested context types, effective requested source families, source-selection mode, execution policy, output policy, retained scope, local/network operation class, and execution-governing non-goal flags.
+
+Presentation fields must not enter semantic request or plan identity: `display_name`, `display_label`, `description`, `notes`, `comments`, UI ordering, display labels, and operator narrative.
+
+Lifecycle fields must not enter plan identity: `request_id`, `created_at_utc`, `approval_id`, and `approved_at_utc`.
+
+Rejected targets are audit/non-executable output only. They remain visible in `normalized_request.rejected_targets` and `plan.rejected_targets`, but rejected target raw `input_identity`, presentation metadata, aliases, validation warnings, validation message text, and operator comments do not enter `normalized_request_hash` or `plan_hash` and do not produce source mappings.
+
+Duplicate comparison uses canonical normalized execution semantics rather than raw `input_identity`. Semantically identical aliases collapse deterministically. The issue code `duplicate_target_conflict` is reserved for the same canonical duplicate key with conflicting effective execution semantics such as different context types, exact target-level sources, option expiry/strike/call-put/contract type, derivative session, or target-scoped output/execution behavior.
+
+Additional supported internal API functions:
+
+- `build_target_semantic_scope(...)`
+- `build_normalized_request_hash_scope(...)`

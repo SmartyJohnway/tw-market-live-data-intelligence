@@ -123,18 +123,19 @@
       "delta_runtime_executable": false,
       "context_integration_added": true,
       "conversation_integration_added": true,
-      "next_task": null,
+      "next_task": "M8R-01F-CANONICAL-REQUEST-HASH-AND-SEMANTIC-DUPLICATE-CORRECTION",
       "currentness_integration": "taifex_mis_source_specific_fail_closed",
       "after_hours_runtime_executable": false,
       "weekly_option_runtime_executable": false,
       "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
-      "next_task_status": "awaiting_operator_acceptance",
+      "next_task_status": "operator_approved_not_started",
       "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
       "m8c_02_evidence_artifact": "research/probe_runs/m8c_02_taifex_mis_context/m8c_02_context_integration_summary.json",
       "actual_execution_head_sha": "b55cf800561f9997991a82b34013ff0564052710",
       "execution_sha_matches_tested_remote_sha": true,
       "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
-      "recommended_next_task": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR"
+      "recommended_next_task": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR",
+      "recommended_next_task_after_fix": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR"
     },
     {
       "source_id": "TWSE_OPENAPI",
@@ -519,7 +520,7 @@
     "no_rotc_route": true,
     "no_emerging_stock_live_route": true
   },
-  "next_task": null,
+  "next_task": "M8R-01F-CANONICAL-REQUEST-HASH-AND-SEMANTIC-DUPLICATE-CORRECTION",
   "implemented_through_track": "M8C",
   "active_runtime_source_families": [
     "TWSE_MIS",
@@ -546,31 +547,37 @@
     "trading_signal_allowed": false,
     "recommendation_allowed": false,
     "raw_payload_exposure_allowed": false,
-    "next_task": null,
+    "next_task": "M8R-01F-CANONICAL-REQUEST-HASH-AND-SEMANTIC-DUPLICATE-CORRECTION",
     "m8c_01_status": "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats",
-    "next_task_status": "awaiting_operator_acceptance",
+    "next_task_status": "operator_approved_not_started",
     "implemented_through_track": "M8C",
     "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
     "m8c_02_taifex_mis_context_integration_complete": true,
     "taifex_mis_ai_context_allowed": true,
     "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
     "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
-    "recommended_next_task": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR"
+    "recommended_next_task": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR",
+    "recommended_next_task_after_fix": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR",
+    "m8r_01_status": "GO_WITH_REQUIRED_FOLLOW_UP_FIX",
+    "required_pre_m8r_02_corrective_gate": "M8R-01F-CANONICAL-REQUEST-HASH-AND-SEMANTIC-DUPLICATE-CORRECTION"
   },
   "planning_state": {
-    "next_task": null,
+    "next_task": "M8R-01F-CANONICAL-REQUEST-HASH-AND-SEMANTIC-DUPLICATE-CORRECTION",
     "preflight_completed_through": "M8C-00",
     "m8c_00_preflight_status": "m8c_00_taifex_mis_preflight_pass_with_caveats",
     "m8c_01_status": "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats",
-    "next_task_status": "awaiting_operator_acceptance",
+    "next_task_status": "operator_approved_not_started",
     "implemented_through_track": "M8C",
     "status": "m8_through_m8c_consolidated_acceptance_pass_with_caveats",
     "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
     "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
     "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
-    "recommended_next_task": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR"
+    "recommended_next_task": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR",
+    "recommended_next_task_after_fix": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR",
+    "m8r_01_status": "GO_WITH_REQUIRED_FOLLOW_UP_FIX",
+    "required_pre_m8r_02_corrective_gate": "M8R-01F-CANONICAL-REQUEST-HASH-AND-SEMANTIC-DUPLICATE-CORRECTION"
   },
-  "next_task_status": "awaiting_operator_acceptance",
+  "next_task_status": "operator_approved_not_started",
   "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
   "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
   "base_sha": "0553e48371d90a7cfceea444ee36c36f7fd44db7",
@@ -580,5 +587,8 @@
   "new_m8_failures": [],
   "new_m8c_failures": [],
   "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
-  "recommended_next_task": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR"
+  "recommended_next_task": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR",
+  "recommended_next_task_after_fix": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR",
+  "m8r_01_status": "GO_WITH_REQUIRED_FOLLOW_UP_FIX",
+  "required_pre_m8r_02_corrective_gate": "M8R-01F-CANONICAL-REQUEST-HASH-AND-SEMANTIC-DUPLICATE-CORRECTION"
 }

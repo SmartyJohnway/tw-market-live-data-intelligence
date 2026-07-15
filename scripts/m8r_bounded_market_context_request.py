@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from decimal import Decimal, InvalidOperation
 from datetime import datetime, timezone
 from pathlib import PurePosixPath
 from typing import Any
@@ -89,6 +90,37 @@ def _norm_instr(v):
 def _norm_symbol(v):
     return v.strip().upper() if isinstance(v,str) else None
 
+def _norm_source_family(v):
+    return v.strip().upper() if isinstance(v, str) else v
+
+def _norm_context_type(v):
+    return v.strip().lower() if isinstance(v, str) else v
+
+def _norm_session(v):
+    if not isinstance(v, str) or not v.strip():
+        return "regular"
+    value = v.strip().lower()
+    return "regular" if value == "regular_session" else value
+
+def _norm_expiry(v):
+    return v.strip().upper() if isinstance(v, str) else v
+
+def _norm_strike(v):
+    if v is None:
+        return None
+    raw = str(v).strip()
+    try:
+        dec = Decimal(raw)
+    except (InvalidOperation, ValueError):
+        return raw
+    return format(dec.normalize(), "f")
+
+def _norm_call_put(v):
+    return v.strip().upper() if isinstance(v, str) else v
+
+def _norm_contract_type(v):
+    return v.strip().lower() if isinstance(v, str) else v
+
 def validate_output_scope(output_policy: dict[str, Any] | None) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     policy = output_policy or {}
     root = policy.get("artifact_root", "research/m8r/planned")
@@ -103,14 +135,14 @@ def validate_output_scope(output_policy: dict[str, Any] | None) -> tuple[dict[st
     return {"artifact_root": str(p), "write_artifacts": False, "raw_payload_retention": False}, issues
 
 def _target_contexts(target, request_contexts):
-    return tuple(sorted(target.get("requested_context_types") or request_contexts or DEFAULT_CONTEXT_TYPES))
+    return tuple(sorted(_norm_context_type(c) for c in (target.get("requested_context_types") or request_contexts or DEFAULT_CONTEXT_TYPES)))
 
 def _requested_sources_for_target(target, request_sources, source_registry):
     explicit = "requested_source_families" in target
     requested = target.get("requested_source_families") if explicit else request_sources
     if requested is None or requested == []:
         requested = accepted_source_families(source_registry)
-    return tuple(sorted(requested)), explicit
+    return tuple(sorted(_norm_source_family(s) for s in requested)), explicit
 
 def _local_context_mapping(target_id: str, context_type: str) -> dict[str, Any] | None:
     if context_type == "source_health":
@@ -149,8 +181,9 @@ def resolve_target_identity(target: dict[str, Any], *, request_context_types=(),
         required=("underlying","expiry","strike","call_put","contract_type")
         missing=[k for k in required if not target.get(k)]
         if missing: issues.append(_issue("ambiguous_identity","option identity requires underlying, expiry, strike, call_put, contract_type","target",raw_id))
-        if str(target.get("contract_type","")).lower()=="weekly": issues.append(_issue("unsupported_product_scope","weekly option runtime remains deferred","target",raw_id))
-    if market == "TAIFEX" and str(target.get("session","regular")).lower() not in {"regular","regular_session"}: issues.append(_issue("unsupported_session_scope","TAIFEX after-hours runtime is not accepted","target",raw_id))
+        if _norm_contract_type(target.get("contract_type"))=="weekly": issues.append(_issue("unsupported_product_scope","weekly option runtime remains deferred","target",raw_id))
+    session = _norm_session(target.get("session", "regular"))
+    if market == "TAIFEX" and session != "regular": issues.append(_issue("unsupported_session_scope","TAIFEX after-hours runtime is not accepted","target",raw_id))
     allowed_by_context, routes = _allowed_for_identity(market, typ, target)
     contexts=_target_contexts(target, request_context_types)
     sources, explicit_target_sources=_requested_sources_for_target(target, request_source_families, source_registry)
@@ -170,7 +203,24 @@ def resolve_target_identity(target: dict[str, Any], *, request_context_types=(),
     effective_sources = tuple(sorted(set(sources) & set(allowed_by_context.values())))
     mappings=[]
     target_id=f"{market}:{typ}:{symbol}"
-    if typ=="option": target_id += f":{target.get('underlying')}:{target.get('expiry')}:{target.get('strike')}:{str(target.get('call_put')).upper()}:{str(target.get('contract_type')).lower()}"
+    derivative_identity={}
+    if typ=="future":
+        derivative_identity={"session": session}
+    if typ=="option":
+        derivative_identity={
+            "underlying": _norm_symbol(target.get("underlying")),
+            "expiry": _norm_expiry(target.get("expiry")),
+            "strike": _norm_strike(target.get("strike")),
+            "call_put": _norm_call_put(target.get("call_put")),
+            "contract_type": _norm_contract_type(target.get("contract_type")),
+            "session": session,
+        }
+        target_id += f":{derivative_identity['underlying']}:{derivative_identity['expiry']}:{derivative_identity['strike']}:{derivative_identity['call_put']}:{derivative_identity['contract_type']}"
+    duplicate_identity_key = target_id
+    if typ == "option":
+        duplicate_identity_key = f"{market}:{typ}:{symbol}:{derivative_identity.get('underlying')}"
+    elif typ == "future":
+        duplicate_identity_key = f"{market}:{typ}:{symbol}"
     for c in contexts:
         local_mapping = _local_context_mapping(target_id, c)
         if local_mapping is not None:
@@ -182,7 +232,7 @@ def resolve_target_identity(target: dict[str, Any], *, request_context_types=(),
             issues.append(_issue("source_target_incompatible",f"required source {required} not selected for {c}","target",raw_id)); continue
         route=routes[required].replace("{symbol}",symbol.lower() if required=="TWSE_MIS" else symbol)
         mappings.append({"target_id": target_id, "context_type":c,"source_family":required,"operation_class":"planned_network_fetch","route":route,"network_required": True})
-    return {"input_identity":target,"target_id":target_id,"symbol":symbol,"market":market,"instrument_type":typ,"identity_resolution_status":"rejected" if issues else "resolved","requested_context_types":list(contexts),"requested_source_families":list(effective_sources),"requested_source_selection_mode":"target_exact" if explicit_target_sources else "request_allowlist","allowed_source_families":sorted(set(allowed_by_context.values())),"runtime_routes":routes,"planned_mappings":mappings,"issues":issues}
+    return {"input_identity":target,"target_id":target_id,"duplicate_identity_key":duplicate_identity_key,"symbol":symbol,"market":market,"instrument_type":typ,"derivative_identity":derivative_identity,"session":session if market == "TAIFEX" else None,"identity_resolution_status":"rejected" if issues else "resolved","requested_context_types":list(contexts),"requested_source_families":list(effective_sources),"requested_source_selection_mode":"target_exact" if explicit_target_sources else "request_allowlist","allowed_source_families":sorted(set(allowed_by_context.values())),"runtime_routes":routes,"planned_mappings":sorted(mappings, key=lambda x:(x.get("target_id") or "", x["context_type"], x.get("source_family") or "", x["operation_class"])),"issues":issues}
 
 def normalize_market_context_request(request: dict[str, Any], *, source_registry=None) -> dict[str, Any]:
     issues=[]
@@ -193,8 +243,8 @@ def normalize_market_context_request(request: dict[str, Any], *, source_registry
     targets=request.get("targets")
     if not isinstance(targets,list) or not targets: issues.append(_issue("missing_required_field","targets must be non-empty",field="targets")); targets=[]
     if len(targets)>MAX_TARGETS: issues.append(_issue("target_limit_exceeded","too many targets",field="targets"))
-    req_contexts=tuple(sorted(request.get("requested_context_types") or DEFAULT_CONTEXT_TYPES))
-    req_sources=tuple(sorted(request.get("requested_source_families") or accepted_source_families(source_registry)))
+    req_contexts=tuple(sorted(_norm_context_type(c) for c in (request.get("requested_context_types") or DEFAULT_CONTEXT_TYPES)))
+    req_sources=tuple(sorted(_norm_source_family(s) for s in (request.get("requested_source_families") or accepted_source_families(source_registry))))
     if len(req_contexts)>MAX_CONTEXT_TYPES_PER_TARGET: issues.append(_issue("context_limit_exceeded","too many request context types"))
     if len(req_sources)>MAX_SOURCE_FAMILIES: issues.append(_issue("source_limit_exceeded","too many source families"))
     for c in req_contexts:
@@ -209,13 +259,14 @@ def normalize_market_context_request(request: dict[str, Any], *, source_registry
     resolved=[resolve_target_identity(t, request_context_types=req_contexts, request_source_families=req_sources, source_registry=source_registry) for t in targets]
     seen={}; final=[]; rejected=[]
     for r in sorted(resolved, key=lambda x: x.get("target_id","")):
-        if r["target_id"] in seen:
-            if canonical_json(seen[r["target_id"]].get("input_identity")) != canonical_json(r.get("input_identity")):
+        duplicate_key = r.get("duplicate_identity_key") or r.get("target_id")
+        if duplicate_key in seen:
+            if build_target_semantic_scope(seen[duplicate_key]) != build_target_semantic_scope(r):
                 r["issues"].append(_issue("duplicate_target_conflict","duplicate target has conflicting definition","target",r["target_id"]))
                 r["identity_resolution_status"]="rejected"
             else:
                 continue
-        seen[r["target_id"]]=r
+        seen[duplicate_key]=r
         (final if r["identity_resolution_status"]=="resolved" else rejected).append(r)
     if sum(len(r.get("requested_context_types",[])) for r in final+rejected)>MAX_TOTAL_TARGET_CONTEXTS: raise M8RValidationError([_issue("context_limit_exceeded","too many target-context combinations")])
     return {"schema_version":NORMALIZED_SCHEMA_VERSION,"request_id":request_id,"requested_context_types":list(req_contexts),"requested_source_families":list(req_sources),"execution_policy":{"one_shot":True,"network_execution_in_m8r01":False,"approval_required":True,"auto_retry":False},"output_policy":output_policy,"targets":final,"rejected_targets":rejected,"normalization_warnings":[],"non_goal_flags":dict(sorted(NON_GOAL_FLAGS.items()))}
@@ -227,6 +278,34 @@ def validate_market_context_request(request: dict[str, Any], *, source_registry=
     except M8RValidationError as e:
         return {"valid": False, "issues": e.issues, "normalized_request": None}
 
+def build_target_semantic_scope(normalized_target: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "target_id": normalized_target.get("target_id"),
+        "duplicate_identity_key": normalized_target.get("duplicate_identity_key"),
+        "market": normalized_target.get("market"),
+        "symbol": normalized_target.get("symbol"),
+        "instrument_type": normalized_target.get("instrument_type"),
+        "derivative_identity": normalized_target.get("derivative_identity") or {},
+        "session": normalized_target.get("session"),
+        "requested_context_types": sorted(normalized_target.get("requested_context_types", [])),
+        "requested_source_families": sorted(normalized_target.get("requested_source_families", [])),
+        "requested_source_selection_mode": normalized_target.get("requested_source_selection_mode"),
+        "planned_mappings": sorted(normalized_target.get("planned_mappings", []), key=lambda x:(x.get("target_id") or "", x.get("context_type") or "", x.get("source_family") or "", x.get("operation_class") or "")),
+    }
+
+def build_normalized_request_hash_scope(normalized_request: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(normalized_request, dict) or normalized_request.get("schema_version") != NORMALIZED_SCHEMA_VERSION:
+        raise M8RValidationError([_issue("invalid_schema_version", "normalized request object required")])
+    return {
+        "schema_version": normalized_request.get("schema_version"),
+        "requested_context_types": sorted(normalized_request.get("requested_context_types", [])),
+        "requested_source_families": sorted(normalized_request.get("requested_source_families", [])),
+        "execution_policy": normalized_request.get("execution_policy", {}),
+        "output_policy": normalized_request.get("output_policy", {}),
+        "targets": sorted((build_target_semantic_scope(t) for t in normalized_request.get("targets", [])), key=lambda x: canonical_json(x)),
+        "non_goal_flags": normalized_request.get("non_goal_flags", {}),
+    }
+
 def build_plan_hash_scope(plan: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(plan, dict) or not _is_plan_object(plan):
         raise M8RValidationError([_issue("invalid_plan", "complete plan object required for plan hash computation")])
@@ -234,7 +313,7 @@ def build_plan_hash_scope(plan: dict[str, Any]) -> dict[str, Any]:
         "schema_version": plan.get("schema_version"),
         "normalized_request_hash": plan.get("normalized_request_hash"),
         "targets": [
-            {"target_id": t.get("target_id"), "market": t.get("market"), "symbol": t.get("symbol"), "instrument_type": t.get("instrument_type")}
+            build_target_semantic_scope(t)
             for t in plan.get("targets", [])
         ],
         "requested_context_types": plan.get("requested_context_types", []),
@@ -278,7 +357,7 @@ def compile_market_context_execution_plan(request_or_normalized: dict[str, Any],
     operation_classes=sorted({m["operation_class"] for m in source_to_target})
     network_required=any(bool(m.get("network_required")) for m in source_to_target)
     planned_source_families=sorted({m["source_family"] for m in source_to_target if m.get("source_family")})
-    plan={"schema_version":PLAN_SCHEMA_VERSION,"plan_id":None,"plan_hash":None,"normalized_request_hash":sha256_json(n),"request_id":n["request_id"],"created_at_utc":created_at_utc or utc_now(),"targets":n["targets"],"rejected_targets":n["rejected_targets"],"requested_context_types":n["requested_context_types"],"planned_source_families":planned_source_families,"source_to_target_context_mapping":source_to_target,"network_required":network_required,"network_scope":{"network_required":network_required,"operation_classes":operation_classes,"network_execution_in_m8r01":False},"approval_required":True,"bounded_retained_scope":{"bounded_targets_only":True,"full_market_retained_output":False,"raw_payload_retention":False},"output_scope":n["output_policy"],"non_goal_flags":n["non_goal_flags"]}
+    plan={"schema_version":PLAN_SCHEMA_VERSION,"plan_id":None,"plan_hash":None,"normalized_request_hash":sha256_json(build_normalized_request_hash_scope(n)),"request_id":n["request_id"],"created_at_utc":created_at_utc or utc_now(),"targets":n["targets"],"rejected_targets":n["rejected_targets"],"requested_context_types":n["requested_context_types"],"planned_source_families":planned_source_families,"source_to_target_context_mapping":source_to_target,"network_required":network_required,"network_scope":{"network_required":network_required,"operation_classes":operation_classes,"network_execution_in_m8r01":False},"approval_required":True,"bounded_retained_scope":{"bounded_targets_only":True,"full_market_retained_output":False,"raw_payload_retention":False},"output_scope":n["output_policy"],"non_goal_flags":n["non_goal_flags"]}
     h=compute_plan_hash(plan)
     plan["plan_hash"]=h
     plan["plan_id"]="m8r-plan-"+h[:16]
