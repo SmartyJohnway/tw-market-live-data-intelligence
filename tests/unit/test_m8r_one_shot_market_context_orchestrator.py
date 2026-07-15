@@ -31,6 +31,7 @@ def plan_for(targets, contexts=("liveish_observation",), sources=None, root="res
     return compile_market_context_execution_plan(req(targets, contexts, sources, root), created_at_utc=NOW)
 
 def approve(plan, **kw):
+    kw.setdefault("single_use", False)
     return build_approval_artifact(plan, approved_at_utc=NOW, **kw)
 
 class Fake:
@@ -79,11 +80,11 @@ def test_unknown_executor_and_research_source_fail_closed():
     assert out2["execution_status"]=="blocked"
 
 def test_one_shot_no_retry_consumes_single_use_and_reuse_blocks():
-    p=plan_for([stock()], sources=["TWSE_MIS"]); a=approve(p); f=Fake(status="failed"); reg=registry((("planned_network_fetch","TWSE_MIS"),f))
-    out=execute_approved_market_context_plan(p,a,executor_registry=reg,execution_time_utc=NOW,allow_network=True)
+    p=plan_for([stock()], sources=["TWSE_MIS"]); a=approve(p, single_use=True); f=Fake(status="failed"); reg=registry((("planned_network_fetch","TWSE_MIS"),f)); store=InMemoryApprovalConsumptionStore()
+    out=execute_approved_market_context_plan(p,a,executor_registry=reg,execution_time_utc=NOW,allow_network=True,approval_consumption_store=store)
     assert len(f.calls)==1 and out["approval_state"]["approval_status"]=="consumed"
     assert out["execution_receipt"]["one_shot"] is True and out["execution_receipt"]["auto_retry"] is False
-    out2=execute_approved_market_context_plan(p,out["approval_state"],executor_registry=reg,execution_time_utc=NOW,allow_network=True)
+    out2=execute_approved_market_context_plan(p,out["approval_state"],executor_registry=reg,execution_time_utc=NOW,allow_network=True,approval_consumption_store=store)
     assert out2["execution_status"]=="blocked" and len(f.calls)==1
 
 def test_partial_completion_builds_m8_core_and_missing_context():
@@ -139,8 +140,19 @@ def test_grouping_retention_raw_payload_absent_and_artifact_writes(tmp_path):
 
 
 
+
+def test_single_use_without_store_blocks_before_executor_call_and_single_use_false_allows():
+    p=plan_for([stock()], sources=["TWSE_MIS"]); a=approve(p, single_use=True); f=Fake(); reg=registry((("planned_network_fetch","TWSE_MIS"),f))
+    pre=preflight_approved_market_context_plan(p,a,executor_registry=reg,execution_time_utc=NOW,allow_network=True)
+    assert pre["preflight_status"]=="blocked" and pre["issues"][0]["code"]=="approval_consumption_store_required"
+    out=execute_approved_market_context_plan(p,a,executor_registry=reg,execution_time_utc=NOW,allow_network=True)
+    assert out["execution_status"]=="blocked" and out["network_operations_attempted"]==0 and f.calls==[]
+    a2=approve(p, single_use=False)
+    out2=execute_approved_market_context_plan(p,a2,executor_registry=reg,execution_time_utc=NOW,allow_network=True)
+    assert out2["execution_status"] in {"ready","ready_with_caveats"} and len(f.calls)==1
+
 def test_consumption_store_blocks_original_approval_replay_and_preflight_does_not_consume(tmp_path):
-    p=plan_for([stock()], sources=["TWSE_MIS"]); a=approve(p); f=Fake(); store=InMemoryApprovalConsumptionStore(); reg=registry((("planned_network_fetch","TWSE_MIS"),f))
+    p=plan_for([stock()], sources=["TWSE_MIS"]); a=approve(p, single_use=True); f=Fake(); store=InMemoryApprovalConsumptionStore(); reg=registry((("planned_network_fetch","TWSE_MIS"),f))
     first=execute_approved_market_context_plan(p,a,executor_registry=reg,execution_time_utc=NOW,allow_network=True,approval_consumption_store=store)
     assert first["execution_status"] in {"ready","ready_with_caveats"} and len(f.calls)==1
     replay=execute_approved_market_context_plan(p,a,executor_registry=reg,execution_time_utc=NOW,allow_network=True,approval_consumption_store=store)
@@ -151,7 +163,7 @@ def test_consumption_store_blocks_original_approval_replay_and_preflight_does_no
     fresh=InMemoryApprovalConsumptionStore(); assert not fresh.is_consumed(a["approval_id"], p["plan_id"], p["plan_hash"])
 
 def test_filesystem_consumption_store_reload_and_different_hash_same_approval_block(tmp_path):
-    p=plan_for([stock()], sources=["TWSE_MIS"]); a=approve(p); f=Fake(); reg=registry((("planned_network_fetch","TWSE_MIS"),f)); root=tmp_path/"ledger"
+    p=plan_for([stock()], sources=["TWSE_MIS"]); a=approve(p, single_use=True); f=Fake(); reg=registry((("planned_network_fetch","TWSE_MIS"),f)); root=tmp_path/"ledger"
     out=execute_approved_market_context_plan(p,a,executor_registry=reg,execution_time_utc=NOW,allow_network=True,approval_consumption_store=FilesystemApprovalConsumptionStore(str(root)))
     assert out["execution_status"] in {"ready","ready_with_caveats"}
     reloaded=FilesystemApprovalConsumptionStore(str(root))
@@ -162,7 +174,7 @@ def test_consumption_write_failure_blocks_before_executor_calls():
     class FailingStore:
         def is_consumed(self, approval_id, plan_id, plan_hash): return False
         def consume(self, approval_id, plan_id, plan_hash, consumed_at_utc, receipt_id): raise OSError("disk full secret-token")
-    p=plan_for([stock()], sources=["TWSE_MIS"]); a=approve(p); f=Fake()
+    p=plan_for([stock()], sources=["TWSE_MIS"]); a=approve(p, single_use=True); f=Fake()
     out=execute_approved_market_context_plan(p,a,executor_registry=registry((("planned_network_fetch","TWSE_MIS"),f)),execution_time_utc=NOW,allow_network=True,approval_consumption_store=FailingStore())
     assert out["execution_status"]=="blocked" and out["network_operations_attempted"]==0 and f.calls==[]
     assert out["execution_receipt"]["issues"][0]["code"]=="approval_consumption_record_failed"

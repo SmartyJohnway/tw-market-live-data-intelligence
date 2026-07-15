@@ -61,7 +61,7 @@ A single-use approval is consumed only after all preflight gates pass and execut
 
 ## Follow-up hardening
 
-Single-use replay protection is store-backed. The returned `approval_state` is informational; the injected approval-consumption store is authoritative across independent invocations and may be filesystem-backed under the approved artifact root. Consumption is recorded after global preflight passes and before the first operation; if consumption recording fails, execution blocks with zero operation attempts.
+Single-use replay protection is store-backed and authoritative. For `single_use=true`, M8R-02 requires an explicit trusted `approval_consumption_store`; if it is missing, preflight and execution fail closed with `approval_consumption_store_required` and zero operation attempts. The returned `approval_state` is informational only; the injected approval-consumption store is authoritative across independent invocations and may be filesystem-backed by the application under the approved artifact root. Consumption is recorded after global preflight passes and before the first operation; if consumption recording fails, execution blocks with zero operation attempts. For `single_use=false`, the store is optional.
 
 Artifact writing now enforces approved output-scope fidelity: the production writer uses `plan.output_scope.artifact_root`, and any test override must exactly equal the approved root or fail with `approved_output_scope_mismatch`. The execution receipt records `approved_output_scope`.
 
@@ -69,7 +69,7 @@ Expected executor operational exceptions (`TimeoutError`, `ConnectionError`, `OS
 
 Local source-health and market-clock observations now use `LOCAL_SOURCE_HEALTH` / `LOCAL_MARKET_CLOCK` and `LOCAL_CONTEXT`, preserve target market, and are retained outside canonical M8 core rather than being falsely attributed to `TWSE_MIS`.
 
-Global preflight blockers are invalid plan/hash, invalid approval, approval replay, unsafe output scope, forbidden source, structurally invalid registry, and missing network permission. Per-operation blockers such as one adapter unavailable or one exact-identity capability missing produce terminal blocked operation results so unrelated compatible operations can proceed and package status can be `partial`.
+Global preflight blockers are invalid plan/hash, invalid approval, missing single-use approval-consumption store, approval replay, unsafe output scope, forbidden source, structurally invalid registry, and missing network permission. Per-operation blockers such as one adapter unavailable or one exact-identity capability missing produce terminal blocked operation results so unrelated compatible operations can proceed and package status can be `partial`.
 
 ## Tests and live validation
 
@@ -77,6 +77,6 @@ Unit tests are non-network and use injected fake executors. They cover global pr
 
 ## Known caveats
 
-The default production registry is intentionally fail-closed for network adapters until narrow source-specific adapters are wired and reviewed in M8R-02A. This is why the M8R-02 acceptance is `CONDITIONAL_GO`: approval integrity, replay protection, one-shot execution, exact identity, partial completion, canonical M8 core construction, output-scope fidelity, and artifact retention are safe, but live production network adapters remain explicit follow-up work rather than silently invoked.
+The default production registry is intentionally fail-closed for network adapters until narrow source-specific adapters are wired and reviewed in M8R-02A. Dependency-injected custom consumption stores are treated as a trusted application/test boundary and must not be used to redirect artifact output scope. This is why the M8R-02 acceptance is `CONDITIONAL_GO`: approval integrity, replay protection, one-shot execution, exact identity, partial completion, canonical M8 core construction, output-scope fidelity, and artifact retention are safe, but live production network adapters remain explicit follow-up work rather than silently invoked.
 
 Recommended successor: `M8R-02A-PRODUCTION-SOURCE-EXECUTOR-ADAPTER-INTEGRATION` before M8R-03, because production network adapters remain intentionally deferred.

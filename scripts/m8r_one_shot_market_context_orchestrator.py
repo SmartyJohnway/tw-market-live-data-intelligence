@@ -110,12 +110,15 @@ def preflight_approved_market_context_plan(plan: dict[str, Any], approval: dict[
         issues.extend(validate_approval_for_plan(approval, plan, now_utc=now).get("issues", []))
         if approval.get("approval_status") == "consumed":
             issues.append(_issue("approval_consumed", "approval artifact is already marked consumed"))
-        if approval_consumption_store and approval.get("single_use", True):
-            try:
-                if approval_consumption_store.is_consumed(*_approval_key(plan, approval)):
-                    issues.append(_issue("approval_replay_detected", "approval consumption store reports prior consumption"))
-            except OSError as exc:
-                issues.append(_issue("approval_consumption_check_failed", "approval consumption check failed", error_class=exc.__class__.__name__))
+        if approval.get("single_use", True):
+            if approval_consumption_store is None:
+                issues.append(_issue("approval_consumption_store_required", "single-use approval requires an authoritative consumption store"))
+            else:
+                try:
+                    if approval_consumption_store.is_consumed(*_approval_key(plan, approval)):
+                        issues.append(_issue("approval_replay_detected", "approval consumption store reports prior consumption"))
+                except OSError as exc:
+                    issues.append(_issue("approval_consumption_check_failed", "approval consumption check failed", error_class=exc.__class__.__name__))
     if not isinstance(operations, list):
         issues.append(_issue("invalid_plan", "source_to_target_context_mapping must be list")); operations = []
     if len(operations) > 40: issues.append(_issue("operation_limit_exceeded", "operation count exceeds M8R bounds"))
@@ -223,10 +226,11 @@ def execute_approved_market_context_plan(plan: dict[str, Any], approval: dict[st
     if pre["preflight_status"] != "passed":
         reason = (pre.get("issues") or [{}])[0].get("code") or "approval_invalid"; missing = build_missing_context_records(plan, [], global_reason=reason); receipt = _blank_receipt(plan, approval, started, started, "blocked", len(missing), 0, False, reason, receipt_id=rid)
         return {"schema_version": RESULT_SCHEMA_VERSION, "execution_status": "blocked", "preflight": pre, "execution_receipt": receipt, "operation_results": [], "missing_context": missing, "m8_context_core": None, "m8_context_core_status": {"status": "not_built", "reason": reason}, "approval_state": dict(approval), "artifacts": [], "network_operations_attempted": 0}
-    if approval.get("single_use", True) and approval_consumption_store:
+    if approval.get("single_use", True):
         try:
+            assert approval_consumption_store is not None
             approval_consumption_store.consume(*_approval_key(plan, approval), consumed_at_utc=started, receipt_id=rid)
-        except OSError as exc:
+        except (OSError, AssertionError) as exc:
             reason = "approval_consumption_record_failed"; missing = build_missing_context_records(plan, [], global_reason=reason); receipt = _blank_receipt(plan, approval, started, started, "blocked", len(missing), 0, False, reason, receipt_id=rid); receipt.setdefault("issues", []).append(_issue(reason, "approval consumption recording failed", error_class=exc.__class__.__name__))
             return {"schema_version": RESULT_SCHEMA_VERSION, "execution_status": "blocked", "preflight": pre, "execution_receipt": receipt, "operation_results": [], "missing_context": missing, "m8_context_core": None, "m8_context_core_status": {"status": "not_built", "reason": reason}, "approval_state": dict(approval), "artifacts": [], "network_operations_attempted": 0}
     consumed = _consume_approval(approval, started, rid) if approval.get("single_use", True) else dict(approval)
