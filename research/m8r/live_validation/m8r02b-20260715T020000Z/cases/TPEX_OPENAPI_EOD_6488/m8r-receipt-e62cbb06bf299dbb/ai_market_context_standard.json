@@ -1,0 +1,83 @@
+{
+  "caveats": [
+    {
+      "code": "approved_target_scope_not_fully_available",
+      "message": "approved target scope not fully available",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "missing_context",
+      "message": "missing context",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "partial_context",
+      "message": "partial context",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "production_live_execution_not_ready",
+      "message": "production live execution not ready",
+      "scope": "package",
+      "severity": "warning"
+    }
+  ],
+  "currentness": {
+    "by_source_family": {},
+    "by_target": {},
+    "current_count": 0,
+    "not_applicable_count": 0,
+    "overall_status": "not_applicable",
+    "stale_count": 0,
+    "unknown_count": 0
+  },
+  "forbidden_interpretations": [
+    "not_broker_instruction",
+    "not_complete_when_partial",
+    "not_full_market",
+    "not_guaranteed_realtime",
+    "not_live_production_ready_without_m8r02b",
+    "not_prediction",
+    "not_recommendation",
+    "not_safe_to_infer_missing_values",
+    "not_trading_signal"
+  ],
+  "missing_context": [
+    {
+      "context_type": "official_eod_reference",
+      "forbidden_interpretations": [
+        "not_safe_to_infer_missing_values"
+      ],
+      "operation_status": "failed",
+      "planned_source_family": "TPEX_OPENAPI",
+      "reason_code": "target_not_present_in_source_result",
+      "target_id": "TPEX:equity:6488",
+      "usable_fallback": null
+    }
+  ],
+  "package_id": "amc-182253eb7bf7b293",
+  "source_provenance": [],
+  "targets": [
+    {
+      "available_context_types": [],
+      "caveats": [],
+      "derivative_identity": {},
+      "forbidden_interpretations": [],
+      "instrument_type": "equity",
+      "market": "TPEX",
+      "missing_context_types": [
+        "official_eod_reference"
+      ],
+      "requested_context_types": [
+        "official_eod_reference"
+      ],
+      "source_context_refs": [],
+      "symbol": "6488",
+      "target_id": "TPEX:equity:6488",
+      "target_status": "partial"
+    }
+  ]
+}

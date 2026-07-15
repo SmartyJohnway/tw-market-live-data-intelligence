@@ -68,9 +68,16 @@ def execute_twse_mis_operation(*, operation: dict[str, Any], target: dict[str, A
     if failures or not rows:
         return _failed("source_payload_invalid")
     row = rows[0]
-    if str(row.get("key") or row.get("ex") + "_" + row.get("ch", "") if row.get("ex") else "") not in {qid, ""} and str(row.get("key")) != qid:
+    key = str(row.get("key") or "")
+    if key and not key.startswith(qid):
         return _failed("source_identity_mismatch")
-    if str(row.get("c") or row.get("ch") or "").split(".")[0].upper() not in {str(target.get("symbol")).upper(), "T00"}:
+    returned_symbol = str(row.get("c") or row.get("ch") or "").split(".")[0].upper()
+    expected_symbol = str(target.get("symbol")).upper()
+    if expected_symbol == "TAIEX":
+        expected_values = {"TAIEX", "T00"}
+    else:
+        expected_values = {expected_symbol}
+    if returned_symbol not in expected_values:
         return _failed("source_identity_mismatch")
     obs = {"source_id": "TWSE_MIS", "source_family": "TWSE_MIS", "authority_level": "official_undocumented", "timing_class": "liveish_intraday_snapshot", "market": target.get("market"), "symbol": target.get("symbol"), "instrument_type": target.get("instrument_type"), "context_type": "liveish_observation", "source_timestamp": " ".join(x for x in [row.get("d"), row.get("t")] if x) or None, "retrieved_at_utc": execution_time_utc, "safe_fields": {"query_id": qid, "last_price": row.get("z"), "previous_close": row.get("y"), "open": row.get("o"), "high": row.get("h"), "low": row.get("l"), "volume": row.get("v")}, "currentness": {"currentness_status": "source_specific_currentness_unresolved"}, "caveats": ["live-ish snapshot; not exchange-guaranteed realtime"]}
     return _ok(obs, identity={"query_id": qid, "symbol": target.get("symbol"), "market": target.get("market")})

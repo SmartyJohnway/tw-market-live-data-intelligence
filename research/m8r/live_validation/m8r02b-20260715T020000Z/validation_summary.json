@@ -1,0 +1,321 @@
+{
+  "ai_package_validation": {
+    "case_package_statuses": {
+      "TAIFEX_MIS_FUTURE_EXACT": "blocked",
+      "TAIFEX_MIS_OPTION_EXACT": "blocked",
+      "TAIFEX_OPENAPI_FUTURE_EXACT": "partial",
+      "TAIFEX_OPENAPI_OPTION_EXACT": "blocked",
+      "TPEX_OPENAPI_EOD_6488": "blocked",
+      "TWSE_MIS_LISTED_2330": "partial",
+      "TWSE_MIS_OTC_6488": "partial",
+      "TWSE_MIS_TAIEX": "partial",
+      "TWSE_OPENAPI_EOD_2330": "partial"
+    }
+  },
+  "case_results": {
+    "TAIFEX_MIS_FUTURE_EXACT": {
+      "ai_package_status": "blocked",
+      "ai_validation": {
+        "reason_code": "ai_package_build_failed",
+        "valid": false
+      },
+      "network_request_count": 2,
+      "operation_status": "succeeded",
+      "result": "failed_runtime_contract"
+    },
+    "TAIFEX_MIS_OPTION_EXACT": {
+      "ai_package_status": "blocked",
+      "ai_validation": {
+        "reason_code": "ai_package_build_failed",
+        "valid": false
+      },
+      "network_request_count": null,
+      "operation_status": "failed",
+      "result": "failed_runtime_contract"
+    },
+    "TAIFEX_OPENAPI_FUTURE_EXACT": {
+      "ai_package_status": "partial",
+      "ai_validation": {
+        "reason_code": null,
+        "valid": true
+      },
+      "network_request_count": 1,
+      "operation_status": "succeeded",
+      "result": "passed_with_caveats"
+    },
+    "TAIFEX_OPENAPI_OPTION_EXACT": {
+      "ai_package_status": "blocked",
+      "ai_validation": {
+        "reason_code": "ai_package_build_failed",
+        "valid": false
+      },
+      "network_request_count": null,
+      "operation_status": "failed",
+      "result": "failed_runtime_contract"
+    },
+    "TPEX_OPENAPI_EOD_6488": {
+      "ai_package_status": "blocked",
+      "ai_validation": {
+        "reason_code": null,
+        "valid": true
+      },
+      "network_request_count": 1,
+      "operation_status": "failed",
+      "result": "failed_runtime_contract"
+    },
+    "TWSE_MIS_LISTED_2330": {
+      "ai_package_status": "partial",
+      "ai_validation": {
+        "reason_code": null,
+        "valid": true
+      },
+      "network_request_count": 1,
+      "operation_status": "succeeded",
+      "result": "passed_with_caveats"
+    },
+    "TWSE_MIS_OTC_6488": {
+      "ai_package_status": "partial",
+      "ai_validation": {
+        "reason_code": null,
+        "valid": true
+      },
+      "network_request_count": 1,
+      "operation_status": "succeeded",
+      "result": "passed_with_caveats"
+    },
+    "TWSE_MIS_TAIEX": {
+      "ai_package_status": "partial",
+      "ai_validation": {
+        "reason_code": null,
+        "valid": true
+      },
+      "network_request_count": 1,
+      "operation_status": "succeeded",
+      "result": "passed_with_caveats"
+    },
+    "TWSE_OPENAPI_EOD_2330": {
+      "ai_package_status": "partial",
+      "ai_validation": {
+        "reason_code": null,
+        "valid": true
+      },
+      "network_request_count": 1,
+      "operation_status": "succeeded",
+      "result": "passed_with_caveats"
+    }
+  },
+  "classification_code_base_commit_sha": "c06e32da958ca767982888a6956c9a1bffffaa8e",
+  "classification_code_commit_sha": "c06e32da958ca767982888a6956c9a1bffffaa8e",
+  "classification_corrected_at_utc": "2026-07-15T10:30:44Z",
+  "classification_patch_commit_sha": "c06e32da958ca767982888a6956c9a1bffffaa8e",
+  "classification_remote_resolution_status": "verified_in_pushed_pr_history",
+  "classification_revision": "m8r02b_commit5_remote_resolvable_provenance",
+  "classification_worktree_dirty": false,
+  "completed_at_utc": "2026-07-15T10:30:44Z",
+  "decision": "NO_GO",
+  "exact_future_acceptance": {
+    "accepted": true,
+    "accepted_cases": [
+      "TAIFEX_OPENAPI_FUTURE_EXACT"
+    ]
+  },
+  "exact_option_acceptance": {
+    "accepted": false,
+    "accepted_cases": []
+  },
+  "live_execution_starting_commit_sha": "751ad3a1102cb6fd432410717355c35bea08365c",
+  "live_validation_completed": false,
+  "network_reexecution_performed": false,
+  "production_live_execution_ready": false,
+  "recommended_next_task": "M8R-02B-DEFECT-CORRECTION-AND-EXACT-OPTION-TPEX-REVALIDATION",
+  "required_case_coverage": {
+    "accepted_cases": [
+      "TAIFEX_OPENAPI_FUTURE_EXACT",
+      "TWSE_MIS_LISTED_2330",
+      "TWSE_MIS_OTC_6488",
+      "TWSE_MIS_TAIEX",
+      "TWSE_OPENAPI_EOD_2330"
+    ],
+    "all_required_accepted": false,
+    "all_required_attempted": true,
+    "attempted_cases": [
+      "TAIFEX_MIS_FUTURE_EXACT",
+      "TAIFEX_MIS_OPTION_EXACT",
+      "TAIFEX_OPENAPI_FUTURE_EXACT",
+      "TAIFEX_OPENAPI_OPTION_EXACT",
+      "TPEX_OPENAPI_EOD_6488",
+      "TWSE_MIS_LISTED_2330",
+      "TWSE_MIS_OTC_6488",
+      "TWSE_MIS_TAIEX",
+      "TWSE_OPENAPI_EOD_2330"
+    ],
+    "required_cases": [
+      "TAIFEX_MIS_FUTURE_EXACT",
+      "TAIFEX_MIS_OPTION_EXACT",
+      "TAIFEX_OPENAPI_FUTURE_EXACT",
+      "TAIFEX_OPENAPI_OPTION_EXACT",
+      "TPEX_OPENAPI_EOD_6488",
+      "TWSE_MIS_LISTED_2330",
+      "TWSE_MIS_OTC_6488",
+      "TWSE_MIS_TAIEX",
+      "TWSE_OPENAPI_EOD_2330"
+    ]
+  },
+  "retention_audit": {
+    "forbidden_key_hits": [],
+    "status": "passed"
+  },
+  "runtime_critical_controls": {
+    "ai_package_writer_integrity_passed": {
+      "evidence": "case_results",
+      "passed": true
+    },
+    "approval_consumed_before_execution": {
+      "evidence": [
+        "TWSE_MIS_LISTED_2330",
+        "TWSE_MIS_OTC_6488",
+        "TWSE_MIS_TAIEX",
+        "TWSE_OPENAPI_EOD_2330",
+        "TPEX_OPENAPI_EOD_6488",
+        "TAIFEX_MIS_FUTURE_EXACT",
+        "TAIFEX_MIS_OPTION_EXACT",
+        "TAIFEX_OPENAPI_FUTURE_EXACT",
+        "TAIFEX_OPENAPI_OPTION_EXACT"
+      ],
+      "passed": true
+    },
+    "approval_replay_blocked": {
+      "control_id": "APPROVAL_REPLAY",
+      "passed": true,
+      "reason_code": "approval_replay_detected"
+    },
+    "artifact_root_bounded": {
+      "evidence": "validation_manifest.json",
+      "passed": true
+    },
+    "auto_retry_false": {
+      "evidence": [
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_OTC_6488/m8r-receipt-491cc80f8155d76e/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_TAIEX/m8r-receipt-f5d778606a8707fb/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TPEX_OPENAPI_EOD_6488/m8r-receipt-e62cbb06bf299dbb/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_MIS_FUTURE_EXACT/m8r-receipt-4f8f921187068aca/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T010000Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-deb5031b2e2a7f6b/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_OPENAPI_FUTURE_EXACT/m8r-receipt-2973a5898670f00f/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T010000Z/cases/TAIFEX_OPENAPI_OPTION_EXACT/m8r-receipt-14d6090d2877e0ef/execution_receipt.json"
+      ],
+      "passed": true
+    },
+    "background_false": {
+      "evidence": [
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_OTC_6488/m8r-receipt-491cc80f8155d76e/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_TAIEX/m8r-receipt-f5d778606a8707fb/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TPEX_OPENAPI_EOD_6488/m8r-receipt-e62cbb06bf299dbb/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_MIS_FUTURE_EXACT/m8r-receipt-4f8f921187068aca/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T010000Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-deb5031b2e2a7f6b/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_OPENAPI_FUTURE_EXACT/m8r-receipt-2973a5898670f00f/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T010000Z/cases/TAIFEX_OPENAPI_OPTION_EXACT/m8r-receipt-14d6090d2877e0ef/execution_receipt.json"
+      ],
+      "passed": true
+    },
+    "modified_plan_blocked": {
+      "control_id": "MODIFIED_PLAN_AFTER_APPROVAL",
+      "passed": true,
+      "reason_code": "plan_hash_mismatch"
+    },
+    "network_disabled_by_default": {
+      "control_id": "NETWORK_DISABLED",
+      "passed": true,
+      "reason_code": "network_execution_not_enabled"
+    },
+    "one_shot_true": {
+      "evidence": [
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_OTC_6488/m8r-receipt-491cc80f8155d76e/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_TAIEX/m8r-receipt-f5d778606a8707fb/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TPEX_OPENAPI_EOD_6488/m8r-receipt-e62cbb06bf299dbb/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_MIS_FUTURE_EXACT/m8r-receipt-4f8f921187068aca/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T010000Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-deb5031b2e2a7f6b/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_OPENAPI_FUTURE_EXACT/m8r-receipt-2973a5898670f00f/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T010000Z/cases/TAIFEX_OPENAPI_OPTION_EXACT/m8r-receipt-14d6090d2877e0ef/execution_receipt.json"
+      ],
+      "passed": true
+    },
+    "operator_confirmation_gate": {
+      "evidence": "validation_manifest.json",
+      "passed": true
+    },
+    "polling_false": {
+      "evidence": [
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_OTC_6488/m8r-receipt-491cc80f8155d76e/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_TAIEX/m8r-receipt-f5d778606a8707fb/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TPEX_OPENAPI_EOD_6488/m8r-receipt-e62cbb06bf299dbb/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_MIS_FUTURE_EXACT/m8r-receipt-4f8f921187068aca/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T010000Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-deb5031b2e2a7f6b/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_OPENAPI_FUTURE_EXACT/m8r-receipt-2973a5898670f00f/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T010000Z/cases/TAIFEX_OPENAPI_OPTION_EXACT/m8r-receipt-14d6090d2877e0ef/execution_receipt.json"
+      ],
+      "passed": true
+    },
+    "retention_audit_passed": {
+      "evidence": "retention_audit",
+      "passed": true
+    },
+    "scheduler_false": {
+      "evidence": [
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330/m8r-receipt-fbf27efe8befdf74/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_OTC_6488/m8r-receipt-491cc80f8155d76e/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_TAIEX/m8r-receipt-f5d778606a8707fb/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TPEX_OPENAPI_EOD_6488/m8r-receipt-e62cbb06bf299dbb/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_MIS_FUTURE_EXACT/m8r-receipt-4f8f921187068aca/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T010000Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-deb5031b2e2a7f6b/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_OPENAPI_FUTURE_EXACT/m8r-receipt-2973a5898670f00f/execution_receipt.json",
+        "research/m8r/live_validation/m8r02b-20260715T010000Z/cases/TAIFEX_OPENAPI_OPTION_EXACT/m8r-receipt-14d6090d2877e0ef/execution_receipt.json"
+      ],
+      "passed": true
+    },
+    "single_use_approval_store": {
+      "control_id": "MISSING_CONSUMPTION_STORE",
+      "passed": true,
+      "reason_code": "approval_consumption_store_required"
+    },
+    "unsupported_taifex_identity_blocked": {
+      "control_id": "UNSUPPORTED_TAIFEX_IDENTITY",
+      "passed": true,
+      "reason_code": "unsupported_product_scope"
+    }
+  },
+  "runtime_critical_status": "passed",
+  "schema_version": "m8r_controlled_live_validation_summary.v1",
+  "source_execution_artifacts_unchanged": true,
+  "source_family_results": {
+    "TAIFEX_MIS": {
+      "TAIFEX_MIS_FUTURE_EXACT": "failed_runtime_contract",
+      "TAIFEX_MIS_OPTION_EXACT": "failed_runtime_contract"
+    },
+    "TAIFEX_OPENAPI": {
+      "TAIFEX_OPENAPI_FUTURE_EXACT": "passed_with_caveats",
+      "TAIFEX_OPENAPI_OPTION_EXACT": "failed_runtime_contract"
+    },
+    "TPEX_OPENAPI": {
+      "TPEX_OPENAPI_EOD_6488": "failed_runtime_contract"
+    },
+    "TWSE_MIS": {
+      "TWSE_MIS_LISTED_2330": "passed_with_caveats",
+      "TWSE_MIS_OTC_6488": "passed_with_caveats",
+      "TWSE_MIS_TAIEX": "passed_with_caveats"
+    },
+    "TWSE_OPENAPI": {
+      "TWSE_OPENAPI_EOD_2330": "passed_with_caveats"
+    }
+  },
+  "starting_commit_sha": "751ad3a1102cb6fd432410717355c35bea08365c",
+  "validation_run_id": "m8r02b-20260715T020000Z"
+}

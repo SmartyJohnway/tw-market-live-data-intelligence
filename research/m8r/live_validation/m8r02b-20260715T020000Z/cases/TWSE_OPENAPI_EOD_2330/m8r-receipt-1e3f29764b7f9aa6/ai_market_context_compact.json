@@ -1,0 +1,67 @@
+{
+  "currentness": {
+    "by_source_family": {
+      "TWSE_OPENAPI": [
+        "unknown"
+      ]
+    },
+    "by_target": {
+      "TWSE:equity:2330": [
+        "unknown"
+      ]
+    },
+    "current_count": 0,
+    "not_applicable_count": 0,
+    "overall_status": "unknown",
+    "stale_count": 0,
+    "unknown_count": 1
+  },
+  "highest_severity_caveats": [
+    {
+      "code": "approved_target_scope_not_fully_available",
+      "message": "approved target scope not fully available",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "currentness_unknown",
+      "message": "currentness unknown",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "official_eod_not_intraday",
+      "message": "official eod not intraday",
+      "scope": "package",
+      "severity": "warning",
+      "source_family": "TWSE_OPENAPI"
+    },
+    {
+      "code": "production_live_execution_not_ready",
+      "message": "production live execution not ready",
+      "scope": "package",
+      "severity": "warning"
+    }
+  ],
+  "latest_usable_observations": [
+    {
+      "currentness": {
+        "currentness_status": "official_eod_reference"
+      },
+      "retrieved_at_utc": "2026-07-15T09:30:10Z",
+      "source_context_id": "amc-src-f5fe1447bc9a9c5a",
+      "source_family": "TWSE_OPENAPI",
+      "source_timestamp": null,
+      "target_id": "TWSE:equity:2330"
+    }
+  ],
+  "missing_context_count": 0,
+  "package_id": "amc-aac71da4c519e422",
+  "package_status": "partial",
+  "targets": [
+    {
+      "status": "ready_with_caveats",
+      "target_id": "TWSE:equity:2330"
+    }
+  ]
+}

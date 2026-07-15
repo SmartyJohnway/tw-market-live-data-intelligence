@@ -1,0 +1,616 @@
+{
+  "acceptance_policy": {
+    "go_requires_all_source_families": true,
+    "runtime_critical_all_required": true
+  },
+  "allow_network": true,
+  "artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z",
+  "cases": [
+    {
+      "approval_id": "m8r-approval-a7cbce74fd8c63d2",
+      "case_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330",
+      "case_id": "TWSE_MIS_LISTED_2330",
+      "plan_hash": "6ddf7ee684dbef24a84598403743dde2959a17026eaa92f25fe1d92025e7bf95",
+      "plan_id": "m8r-plan-6ddf7ee684dbef24",
+      "planned_source_family": "TWSE_MIS",
+      "requested_context": [
+        "liveish_observation"
+      ],
+      "required": true,
+      "source_execution_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330",
+      "target": {
+        "allowed_source_families": [
+          "TWSE_MIS",
+          "TWSE_OPENAPI"
+        ],
+        "derivative_identity": {},
+        "duplicate_identity_key": "TWSE:equity:2330",
+        "identity_resolution_status": "resolved",
+        "input_identity": {
+          "instrument_type": "equity",
+          "market": "TWSE",
+          "requested_source_families": [
+            "TWSE_MIS"
+          ],
+          "symbol": "2330"
+        },
+        "instrument_type": "equity",
+        "issues": [],
+        "market": "TWSE",
+        "planned_mappings": [
+          {
+            "context_type": "liveish_observation",
+            "network_required": true,
+            "operation_class": "planned_network_fetch",
+            "route": "tse_2330.tw",
+            "source_family": "TWSE_MIS",
+            "target_id": "TWSE:equity:2330"
+          }
+        ],
+        "requested_context_types": [
+          "liveish_observation"
+        ],
+        "requested_source_families": [
+          "TWSE_MIS"
+        ],
+        "requested_source_selection_mode": "target_exact",
+        "runtime_routes": {
+          "TWSE_MIS": "tse_{symbol}.tw",
+          "TWSE_OPENAPI": "TWSE_OPENAPI"
+        },
+        "session": null,
+        "symbol": "2330",
+        "target_id": "TWSE:equity:2330"
+      }
+    },
+    {
+      "approval_id": "m8r-approval-4f91525ab783fea4",
+      "case_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_OTC_6488",
+      "case_id": "TWSE_MIS_OTC_6488",
+      "plan_hash": "76b64cdc98472d393de421c9dea68bd5cc63c7ec054c57e6ccb61a32402542e0",
+      "plan_id": "m8r-plan-76b64cdc98472d39",
+      "planned_source_family": "TWSE_MIS",
+      "requested_context": [
+        "liveish_observation"
+      ],
+      "required": true,
+      "source_execution_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_OTC_6488",
+      "target": {
+        "allowed_source_families": [
+          "TPEX_OPENAPI",
+          "TWSE_MIS"
+        ],
+        "derivative_identity": {},
+        "duplicate_identity_key": "TPEX:equity:6488",
+        "identity_resolution_status": "resolved",
+        "input_identity": {
+          "instrument_type": "equity",
+          "market": "TPEX",
+          "requested_source_families": [
+            "TWSE_MIS"
+          ],
+          "symbol": "6488"
+        },
+        "instrument_type": "equity",
+        "issues": [],
+        "market": "TPEX",
+        "planned_mappings": [
+          {
+            "context_type": "liveish_observation",
+            "network_required": true,
+            "operation_class": "planned_network_fetch",
+            "route": "otc_6488.tw",
+            "source_family": "TWSE_MIS",
+            "target_id": "TPEX:equity:6488"
+          }
+        ],
+        "requested_context_types": [
+          "liveish_observation"
+        ],
+        "requested_source_families": [
+          "TWSE_MIS"
+        ],
+        "requested_source_selection_mode": "target_exact",
+        "runtime_routes": {
+          "TPEX_OPENAPI": "TPEX_OPENAPI",
+          "TWSE_MIS": "otc_{symbol}.tw"
+        },
+        "session": null,
+        "symbol": "6488",
+        "target_id": "TPEX:equity:6488"
+      }
+    },
+    {
+      "approval_id": "m8r-approval-d32108be6d22460c",
+      "case_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_TAIEX",
+      "case_id": "TWSE_MIS_TAIEX",
+      "plan_hash": "760961589547e1ca52c92ba77610c87cdc109d75414849282d55e0d267dd8765",
+      "plan_id": "m8r-plan-760961589547e1ca",
+      "planned_source_family": "TWSE_MIS",
+      "requested_context": [
+        "liveish_observation"
+      ],
+      "required": true,
+      "source_execution_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_TAIEX",
+      "target": {
+        "allowed_source_families": [
+          "TWSE_MIS"
+        ],
+        "derivative_identity": {},
+        "duplicate_identity_key": "TWSE:index:TAIEX",
+        "identity_resolution_status": "resolved",
+        "input_identity": {
+          "instrument_type": "index",
+          "market": "TWSE",
+          "requested_source_families": [
+            "TWSE_MIS"
+          ],
+          "symbol": "TAIEX"
+        },
+        "instrument_type": "index",
+        "issues": [],
+        "market": "TWSE",
+        "planned_mappings": [
+          {
+            "context_type": "liveish_observation",
+            "network_required": true,
+            "operation_class": "planned_network_fetch",
+            "route": "tse_t00.tw",
+            "source_family": "TWSE_MIS",
+            "target_id": "TWSE:index:TAIEX"
+          }
+        ],
+        "requested_context_types": [
+          "liveish_observation"
+        ],
+        "requested_source_families": [
+          "TWSE_MIS"
+        ],
+        "requested_source_selection_mode": "target_exact",
+        "runtime_routes": {
+          "TWSE_MIS": "tse_t00.tw"
+        },
+        "session": null,
+        "symbol": "TAIEX",
+        "target_id": "TWSE:index:TAIEX"
+      }
+    },
+    {
+      "approval_id": "m8r-approval-3ab4290ab4a9eb1a",
+      "case_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330",
+      "case_id": "TWSE_OPENAPI_EOD_2330",
+      "plan_hash": "c71781fb610db53f0e0b7a8aa39233a7894a833a68993cfb4a291234e26423f0",
+      "plan_id": "m8r-plan-c71781fb610db53f",
+      "planned_source_family": "TWSE_OPENAPI",
+      "requested_context": [
+        "official_eod_reference"
+      ],
+      "required": true,
+      "source_execution_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330",
+      "target": {
+        "allowed_source_families": [
+          "TWSE_MIS",
+          "TWSE_OPENAPI"
+        ],
+        "derivative_identity": {},
+        "duplicate_identity_key": "TWSE:equity:2330",
+        "identity_resolution_status": "resolved",
+        "input_identity": {
+          "instrument_type": "equity",
+          "market": "TWSE",
+          "requested_source_families": [
+            "TWSE_OPENAPI"
+          ],
+          "symbol": "2330"
+        },
+        "instrument_type": "equity",
+        "issues": [],
+        "market": "TWSE",
+        "planned_mappings": [
+          {
+            "context_type": "official_eod_reference",
+            "network_required": true,
+            "operation_class": "planned_network_fetch",
+            "route": "TWSE_OPENAPI",
+            "source_family": "TWSE_OPENAPI",
+            "target_id": "TWSE:equity:2330"
+          }
+        ],
+        "requested_context_types": [
+          "official_eod_reference"
+        ],
+        "requested_source_families": [
+          "TWSE_OPENAPI"
+        ],
+        "requested_source_selection_mode": "target_exact",
+        "runtime_routes": {
+          "TWSE_MIS": "tse_{symbol}.tw",
+          "TWSE_OPENAPI": "TWSE_OPENAPI"
+        },
+        "session": null,
+        "symbol": "2330",
+        "target_id": "TWSE:equity:2330"
+      }
+    },
+    {
+      "approval_id": "m8r-approval-4e46b04e49f0ca57",
+      "case_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TPEX_OPENAPI_EOD_6488",
+      "case_id": "TPEX_OPENAPI_EOD_6488",
+      "plan_hash": "2ee12bac35055b857d7bb46efe56e16d18894848b978c14a5cd5cebd83a0bcfe",
+      "plan_id": "m8r-plan-2ee12bac35055b85",
+      "planned_source_family": "TPEX_OPENAPI",
+      "requested_context": [
+        "official_eod_reference"
+      ],
+      "required": true,
+      "source_execution_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TPEX_OPENAPI_EOD_6488",
+      "target": {
+        "allowed_source_families": [
+          "TPEX_OPENAPI",
+          "TWSE_MIS"
+        ],
+        "derivative_identity": {},
+        "duplicate_identity_key": "TPEX:equity:6488",
+        "identity_resolution_status": "resolved",
+        "input_identity": {
+          "instrument_type": "equity",
+          "market": "TPEX",
+          "requested_source_families": [
+            "TPEX_OPENAPI"
+          ],
+          "symbol": "6488"
+        },
+        "instrument_type": "equity",
+        "issues": [],
+        "market": "TPEX",
+        "planned_mappings": [
+          {
+            "context_type": "official_eod_reference",
+            "network_required": true,
+            "operation_class": "planned_network_fetch",
+            "route": "TPEX_OPENAPI",
+            "source_family": "TPEX_OPENAPI",
+            "target_id": "TPEX:equity:6488"
+          }
+        ],
+        "requested_context_types": [
+          "official_eod_reference"
+        ],
+        "requested_source_families": [
+          "TPEX_OPENAPI"
+        ],
+        "requested_source_selection_mode": "target_exact",
+        "runtime_routes": {
+          "TPEX_OPENAPI": "TPEX_OPENAPI",
+          "TWSE_MIS": "otc_{symbol}.tw"
+        },
+        "session": null,
+        "symbol": "6488",
+        "target_id": "TPEX:equity:6488"
+      }
+    },
+    {
+      "approval_id": "m8r-approval-b5985fb82ce3d115",
+      "case_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_MIS_FUTURE_EXACT",
+      "case_id": "TAIFEX_MIS_FUTURE_EXACT",
+      "plan_hash": "dce1595a51123b7e979dfe24ef78c4f05bb417e36a08d76597c37458aeb487ad",
+      "plan_id": "m8r-plan-dce1595a51123b7e",
+      "planned_source_family": "TAIFEX_MIS",
+      "requested_context": [
+        "liveish_observation"
+      ],
+      "required": true,
+      "source_execution_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_MIS_FUTURE_EXACT",
+      "target": {
+        "allowed_source_families": [
+          "TAIFEX_MIS",
+          "TAIFEX_OPENAPI"
+        ],
+        "derivative_identity": {
+          "contract_type": "monthly",
+          "expiry": "202607",
+          "session": "regular"
+        },
+        "duplicate_identity_key": "TAIFEX:future:TX",
+        "identity_resolution_status": "resolved",
+        "input_identity": {
+          "contract_type": "monthly",
+          "expiry": "202607",
+          "instrument_type": "future",
+          "market": "TAIFEX",
+          "requested_source_families": [
+            "TAIFEX_MIS"
+          ],
+          "session": "regular",
+          "symbol": "TX"
+        },
+        "instrument_type": "future",
+        "issues": [],
+        "market": "TAIFEX",
+        "planned_mappings": [
+          {
+            "context_type": "liveish_observation",
+            "network_required": true,
+            "operation_class": "planned_network_fetch",
+            "route": "regular_session_monthly_future_selector",
+            "source_family": "TAIFEX_MIS",
+            "target_id": "TAIFEX:future:TX:202607:monthly"
+          }
+        ],
+        "requested_context_types": [
+          "liveish_observation"
+        ],
+        "requested_source_families": [
+          "TAIFEX_MIS"
+        ],
+        "requested_source_selection_mode": "target_exact",
+        "runtime_routes": {
+          "TAIFEX_MIS": "regular_session_monthly_future_selector",
+          "TAIFEX_OPENAPI": "TAIFEX_OPENAPI"
+        },
+        "session": "regular",
+        "symbol": "TX",
+        "target_id": "TAIFEX:future:TX:202607:monthly"
+      }
+    },
+    {
+      "approval_id": "m8r-approval-79cc2d813acba1a6",
+      "case_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_MIS_OPTION_EXACT",
+      "case_id": "TAIFEX_MIS_OPTION_EXACT",
+      "plan_hash": "498123311b9bee0b88a0618bbc9e60263170c419901844c8f00aa6a7a016c69a",
+      "plan_id": "m8r-plan-498123311b9bee0b",
+      "planned_source_family": "TAIFEX_MIS",
+      "requested_context": [
+        "liveish_observation"
+      ],
+      "required": true,
+      "source_execution_artifact_root": "research/m8r/live_validation/m8r02b-20260715T010000Z/cases/TAIFEX_MIS_OPTION_EXACT",
+      "target": {
+        "allowed_source_families": [
+          "TAIFEX_MIS",
+          "TAIFEX_OPENAPI"
+        ],
+        "derivative_identity": {
+          "call_put": "C",
+          "contract_type": "monthly",
+          "expiry": "202607",
+          "session": "regular",
+          "strike": "20000",
+          "underlying": "TX"
+        },
+        "duplicate_identity_key": "TAIFEX:option:TXO:TX",
+        "identity_resolution_status": "resolved",
+        "input_identity": {
+          "call_put": "C",
+          "contract_type": "monthly",
+          "expiry": "202607",
+          "instrument_type": "option",
+          "market": "TAIFEX",
+          "requested_source_families": [
+            "TAIFEX_MIS"
+          ],
+          "session": "regular",
+          "strike": "20000",
+          "symbol": "TXO",
+          "underlying": "TX"
+        },
+        "instrument_type": "option",
+        "issues": [],
+        "market": "TAIFEX",
+        "planned_mappings": [
+          {
+            "context_type": "liveish_observation",
+            "network_required": true,
+            "operation_class": "planned_network_fetch",
+            "route": "regular_session_monthly_option_selector",
+            "source_family": "TAIFEX_MIS",
+            "target_id": "TAIFEX:option:TXO:TX:202607:20000:C:monthly"
+          }
+        ],
+        "requested_context_types": [
+          "liveish_observation"
+        ],
+        "requested_source_families": [
+          "TAIFEX_MIS"
+        ],
+        "requested_source_selection_mode": "target_exact",
+        "runtime_routes": {
+          "TAIFEX_MIS": "regular_session_monthly_option_selector",
+          "TAIFEX_OPENAPI": "TAIFEX_OPENAPI"
+        },
+        "session": "regular",
+        "symbol": "TXO",
+        "target_id": "TAIFEX:option:TXO:TX:202607:20000:C:monthly"
+      }
+    },
+    {
+      "approval_id": "m8r-approval-3673197a8cac89f7",
+      "case_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_OPENAPI_FUTURE_EXACT",
+      "case_id": "TAIFEX_OPENAPI_FUTURE_EXACT",
+      "plan_hash": "c44a3d1d1085f644dd8d6b4f4c2017033e47d7392bf902973a1a8b54dfda1ae4",
+      "plan_id": "m8r-plan-c44a3d1d1085f644",
+      "planned_source_family": "TAIFEX_OPENAPI",
+      "requested_context": [
+        "official_eod_reference"
+      ],
+      "required": true,
+      "source_execution_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_OPENAPI_FUTURE_EXACT",
+      "target": {
+        "allowed_source_families": [
+          "TAIFEX_MIS",
+          "TAIFEX_OPENAPI"
+        ],
+        "derivative_identity": {
+          "contract_type": "monthly",
+          "expiry": "202607",
+          "session": "regular"
+        },
+        "duplicate_identity_key": "TAIFEX:future:TX",
+        "identity_resolution_status": "resolved",
+        "input_identity": {
+          "contract_type": "monthly",
+          "expiry": "202607",
+          "instrument_type": "future",
+          "market": "TAIFEX",
+          "requested_source_families": [
+            "TAIFEX_OPENAPI"
+          ],
+          "session": "regular",
+          "symbol": "TX"
+        },
+        "instrument_type": "future",
+        "issues": [],
+        "market": "TAIFEX",
+        "planned_mappings": [
+          {
+            "context_type": "official_eod_reference",
+            "network_required": true,
+            "operation_class": "planned_network_fetch",
+            "route": "TAIFEX_OPENAPI",
+            "source_family": "TAIFEX_OPENAPI",
+            "target_id": "TAIFEX:future:TX:202607:monthly"
+          }
+        ],
+        "requested_context_types": [
+          "official_eod_reference"
+        ],
+        "requested_source_families": [
+          "TAIFEX_OPENAPI"
+        ],
+        "requested_source_selection_mode": "target_exact",
+        "runtime_routes": {
+          "TAIFEX_MIS": "regular_session_monthly_future_selector",
+          "TAIFEX_OPENAPI": "TAIFEX_OPENAPI"
+        },
+        "session": "regular",
+        "symbol": "TX",
+        "target_id": "TAIFEX:future:TX:202607:monthly"
+      }
+    },
+    {
+      "approval_id": "m8r-approval-224f5231601baa42",
+      "case_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_OPENAPI_OPTION_EXACT",
+      "case_id": "TAIFEX_OPENAPI_OPTION_EXACT",
+      "plan_hash": "5552504a63aaebd48e014d623cc68e1a96a5a0a747cec2707828dc12c427ca39",
+      "plan_id": "m8r-plan-5552504a63aaebd4",
+      "planned_source_family": "TAIFEX_OPENAPI",
+      "requested_context": [
+        "official_eod_reference"
+      ],
+      "required": true,
+      "source_execution_artifact_root": "research/m8r/live_validation/m8r02b-20260715T010000Z/cases/TAIFEX_OPENAPI_OPTION_EXACT",
+      "target": {
+        "allowed_source_families": [
+          "TAIFEX_MIS",
+          "TAIFEX_OPENAPI"
+        ],
+        "derivative_identity": {
+          "call_put": "C",
+          "contract_type": "monthly",
+          "expiry": "202607",
+          "session": "regular",
+          "strike": "20000",
+          "underlying": "TX"
+        },
+        "duplicate_identity_key": "TAIFEX:option:TXO:TX",
+        "identity_resolution_status": "resolved",
+        "input_identity": {
+          "call_put": "C",
+          "contract_type": "monthly",
+          "expiry": "202607",
+          "instrument_type": "option",
+          "market": "TAIFEX",
+          "requested_source_families": [
+            "TAIFEX_OPENAPI"
+          ],
+          "session": "regular",
+          "strike": "20000",
+          "symbol": "TXO",
+          "underlying": "TX"
+        },
+        "instrument_type": "option",
+        "issues": [],
+        "market": "TAIFEX",
+        "planned_mappings": [
+          {
+            "context_type": "official_eod_reference",
+            "network_required": true,
+            "operation_class": "planned_network_fetch",
+            "route": "TAIFEX_OPENAPI",
+            "source_family": "TAIFEX_OPENAPI",
+            "target_id": "TAIFEX:option:TXO:TX:202607:20000:C:monthly"
+          }
+        ],
+        "requested_context_types": [
+          "official_eod_reference"
+        ],
+        "requested_source_families": [
+          "TAIFEX_OPENAPI"
+        ],
+        "requested_source_selection_mode": "target_exact",
+        "runtime_routes": {
+          "TAIFEX_MIS": "regular_session_monthly_option_selector",
+          "TAIFEX_OPENAPI": "TAIFEX_OPENAPI"
+        },
+        "session": "regular",
+        "symbol": "TXO",
+        "target_id": "TAIFEX:option:TXO:TX:202607:20000:C:monthly"
+      }
+    }
+  ],
+  "classification_code_base_commit_sha": "c06e32da958ca767982888a6956c9a1bffffaa8e",
+  "classification_code_commit_sha": "c06e32da958ca767982888a6956c9a1bffffaa8e",
+  "classification_corrected_at_utc": "2026-07-15T10:30:44Z",
+  "classification_patch_commit_sha": "c06e32da958ca767982888a6956c9a1bffffaa8e",
+  "classification_remote_resolution_status": "verified_in_pushed_pr_history",
+  "classification_revision": "m8r02b_commit5_remote_resolvable_provenance",
+  "classification_worktree_dirty": false,
+  "created_at_utc": "2026-07-15T02:00:00Z",
+  "finalized": true,
+  "live_execution_starting_commit_sha": "751ad3a1102cb6fd432410717355c35bea08365c",
+  "manifest_provenance": {
+    "mode": "reconstructed_from_immutable_case_execution_artifacts",
+    "network_reexecution_performed": false,
+    "source_execution_artifacts_unchanged": true
+  },
+  "network_reexecution_performed": false,
+  "operator_confirmed": true,
+  "optional_cases": [],
+  "required_cases": [
+    "TWSE_MIS_LISTED_2330",
+    "TWSE_MIS_OTC_6488",
+    "TWSE_MIS_TAIEX",
+    "TWSE_OPENAPI_EOD_2330",
+    "TPEX_OPENAPI_EOD_6488",
+    "TAIFEX_MIS_FUTURE_EXACT",
+    "TAIFEX_MIS_OPTION_EXACT",
+    "TAIFEX_OPENAPI_FUTURE_EXACT",
+    "TAIFEX_OPENAPI_OPTION_EXACT"
+  ],
+  "runtime_environment": {
+    "cwd": "/workspace/tw-market-live-data-intelligence",
+    "platform": "Linux-6.12.47-x86_64-with-glibc2.39",
+    "python": "3.13.13"
+  },
+  "schema_version": "m8r_controlled_live_validation_manifest.v1",
+  "source_execution_artifacts_unchanged": true,
+  "starting_commit_sha": "751ad3a1102cb6fd432410717355c35bea08365c",
+  "taifex_exact_identities": {
+    "future": {
+      "contract_type": "monthly",
+      "expiry": "202607",
+      "session": "regular",
+      "symbol": "TX"
+    },
+    "option": {
+      "call_put": "C",
+      "contract_type": "monthly",
+      "expiry": "202607",
+      "session": "regular",
+      "strike": "20000",
+      "symbol": "TXO",
+      "underlying": "TX"
+    }
+  },
+  "validation_run_id": "m8r02b-20260715T020000Z"
+}

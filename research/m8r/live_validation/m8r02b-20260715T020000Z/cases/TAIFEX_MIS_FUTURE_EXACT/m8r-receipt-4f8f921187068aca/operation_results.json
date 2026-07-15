@@ -1,0 +1,152 @@
+[
+  {
+    "adapter_invocation_count": 1,
+    "context_type": "liveish_observation",
+    "currentness": {
+      "calendar_evidence": "not_provided",
+      "currentness_confidence": "bounded_policy_not_exchange_sla",
+      "market_phase": "market_phase_unresolved",
+      "overall_ai_currentness": "session_alignment_unresolved",
+      "quote_age_state": "outside_regular_session_window",
+      "retrieved_at_freshness_ignored_for_upgrade": true,
+      "session_alignment": "aligned",
+      "source_timestamp_state": "resolved",
+      "special_closure_evidence": null,
+      "transport_state": "completed"
+    },
+    "finished_at_utc": "2026-07-15T09:30:32Z",
+    "grouping": {
+      "grouped": false
+    },
+    "issues": [],
+    "network_attempted": true,
+    "network_request_count": 2,
+    "operation_class": "planned_network_fetch",
+    "operation_id": "m8r-op-a0f23191df39d934",
+    "retained_artifacts": [],
+    "returned_identity": {
+      "contract_type": "monthly",
+      "expiry": "202607",
+      "product": "TX",
+      "session": "regular"
+    },
+    "route": "regular_session_monthly_future_selector",
+    "schema_version": "m8r_market_context_operation_result.v1",
+    "source_family": "TAIFEX_MIS",
+    "source_health": {},
+    "source_observation": {
+      "accepted_mode_1_present": true,
+      "adapter_validation": {
+        "accepted_mode_1_present": true,
+        "contract_identity_valid": true,
+        "currentness_status": "session_alignment_unresolved",
+        "errors": [],
+        "schema_version": "m8c_taifex_mis_adapter_validation.v1",
+        "source_timestamp_valid": true,
+        "valid": true
+      },
+      "authority_level": "official_undocumented",
+      "caveats": [
+        "regular session only",
+        "monthly YYYYMM contracts only",
+        "mode=1 initial state only",
+        "no delta merge",
+        "no reconnect",
+        "no raw payload",
+        "no full option chain",
+        "directional interpretation forbidden"
+      ],
+      "context_type": "official_derivatives_futures_liveish_snapshot",
+      "contract_identity_valid": true,
+      "currentness": {
+        "calendar_evidence": "not_provided",
+        "currentness_confidence": "bounded_policy_not_exchange_sla",
+        "market_phase": "market_phase_unresolved",
+        "overall_ai_currentness": "session_alignment_unresolved",
+        "quote_age_state": "outside_regular_session_window",
+        "retrieved_at_freshness_ignored_for_upgrade": true,
+        "session_alignment": "aligned",
+        "source_timestamp_state": "resolved",
+        "special_closure_evidence": null,
+        "transport_state": "completed"
+      },
+      "instrument_type": "futures",
+      "market": "taifex",
+      "observation_valid": true,
+      "omitted_fields": [
+        "numeric_qid_keys",
+        "trueValues",
+        "raw_mode_1_dictionary",
+        "raw_rest_records",
+        "raw_payload",
+        "full_option_chain",
+        "raw_qid_map",
+        "competing_top_of_book_families",
+        "cookies",
+        "session_ids"
+      ],
+      "provenance": {
+        "adapter_schema_version": "m8c_taifex_mis_context_adapter.v1",
+        "raw_payload_retained": false,
+        "runtime_source": "M8C-01 TAIFEX MIS bounded runtime"
+      },
+      "retrieved_at_utc": null,
+      "safe_fields": {
+        "activity": {
+          "total_volume": "61967"
+        },
+        "contract_identity": {
+          "contract_type": "monthly",
+          "expiry": "202607",
+          "product": "TX",
+          "session": "regular"
+        },
+        "currentness": {
+          "calendar_evidence": "not_provided",
+          "currentness_confidence": "bounded_policy_not_exchange_sla",
+          "market_phase": "market_phase_unresolved",
+          "overall_ai_currentness": "session_alignment_unresolved",
+          "quote_age_state": "outside_regular_session_window",
+          "retrieved_at_freshness_ignored_for_upgrade": true,
+          "session_alignment": "aligned",
+          "source_timestamp_state": "resolved",
+          "special_closure_evidence": null,
+          "transport_state": "completed"
+        },
+        "field_provenance": {
+          "last": "sockjs_mode_1",
+          "reference": "sockjs_mode_1",
+          "total_volume": "sockjs_mode_1"
+        },
+        "price": {
+          "last": "45830.00",
+          "reference": "44790.00"
+        },
+        "source_status_code": "4",
+        "source_time": {
+          "cdate_raw": "20260715",
+          "ctime_raw": "132959",
+          "source_timestamp": "2026-07-15T13:29:59+08:00"
+        },
+        "top_of_book": {
+          "best_ask": "45830.00",
+          "best_ask_size": null,
+          "best_bid": "45827.00",
+          "best_bid_size": null,
+          "canonicalization_status": "candidate_families_agree"
+        }
+      },
+      "session": "regular",
+      "source_family": "TAIFEX_MIS",
+      "source_id": "TAIFEX_MIS",
+      "source_timestamp": "2026-07-15T13:29:59+08:00",
+      "source_timestamp_valid": true,
+      "symbol": "TXFG6-F",
+      "timing_class": "liveish_intraday_snapshot",
+      "withhold_market_values_from_conversation": false
+    },
+    "started_at_utc": "2026-07-15T09:30:29Z",
+    "status": "succeeded",
+    "target_id": "TAIFEX:future:TX:202607:monthly"
+  }
+]

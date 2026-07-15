@@ -1,0 +1,13 @@
+{
+  "adapter_invocation_count": 0,
+  "approval_id": "m8r-approval-a7cbce74fd8c63d2",
+  "control_id": "NETWORK_DISABLED",
+  "execution_status": "blocked",
+  "first_receipt_id": "m8r-receipt-7e134c473e936b12",
+  "network_operations_attempted": 0,
+  "passed": true,
+  "plan_hash": "6ddf7ee684dbef24a84598403743dde2959a17026eaa92f25fe1d92025e7bf95",
+  "plan_id": "m8r-plan-6ddf7ee684dbef24",
+  "reason_code": "network_execution_not_enabled",
+  "schema_version": "m8r_controlled_live_validation_control_result.v1"
+}

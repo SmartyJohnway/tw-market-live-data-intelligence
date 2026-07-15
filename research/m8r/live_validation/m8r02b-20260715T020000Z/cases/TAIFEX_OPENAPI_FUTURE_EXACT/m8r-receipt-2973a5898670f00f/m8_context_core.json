@@ -1,0 +1,247 @@
+{
+  "ai_exposure_policy": {
+    "blocked_fields": [
+      "ask_prices",
+      "ask_volumes",
+      "bid_prices",
+      "bid_volumes",
+      "cookie",
+      "cookies",
+      "full_option_chain",
+      "option_chain",
+      "order_book_truth",
+      "raw_bid_ask_ladder",
+      "raw_mode_1_dictionary",
+      "raw_payload",
+      "raw_payload_sample",
+      "raw_qid_map",
+      "raw_rest_records",
+      "rest_rows",
+      "session_id",
+      "session_ids",
+      "sockjs_frames",
+      "source_investigation_notes",
+      "trueValues",
+      "truevalues"
+    ],
+    "eod_not_realtime": true,
+    "forbidden_interpretations": [
+      "trading advice",
+      "trading signal",
+      "recommendation",
+      "target price",
+      "support/resistance",
+      "ranking",
+      "bullish/bearish recommendation",
+      "capital-flow interpretation"
+    ],
+    "manual_evidence_not_official_source": true,
+    "not_realtime_unless_source_policy_allows": true,
+    "not_recommendation": true,
+    "not_trading_signal": true,
+    "requires_caveats": true,
+    "retrieved_at_not_exchange_timestamp": true,
+    "safe_to_include_in_conversation_context": true,
+    "validation_only_not_primary_source": true
+  },
+  "context_status": "candidate_built_with_caveats",
+  "cross_source_caveats": [
+    "retrieved_at_utc is not exchange timestamp",
+    "official statistics EOD must not be described as live derivatives signal or leading indicator"
+  ],
+  "freshness_summary": {
+    "caveated_currentness_label": "official_statistics_eod_only",
+    "has_credential_gated_metadata_only": false,
+    "has_liveish_intraday_snapshot": false,
+    "has_liveish_source_family_observation": false,
+    "has_manual_snapshot": false,
+    "has_official_eod_reference": false,
+    "has_official_statistics_eod": true,
+    "has_regulatory_reference": false,
+    "has_stale_sources": false,
+    "has_taifex_mis_aging_liveish": false,
+    "has_taifex_mis_caveated_liveish": false,
+    "has_taifex_mis_closed_reference": false,
+    "has_taifex_mis_metadata_only": false,
+    "has_taifex_mis_observation": false,
+    "has_taifex_mis_phase_caveated": false,
+    "has_taifex_mis_policy_blocked": false,
+    "has_taifex_mis_primary_current": false,
+    "has_taifex_mis_stale_liveish": false,
+    "has_taifex_mis_unresolved": false,
+    "has_unavailable_sources": false,
+    "has_unknown_sources": false,
+    "has_validation_only": false,
+    "most_recent_retrieved_at_utc": "2026-07-15T09:30:33Z",
+    "taifex_mis_currentness_statuses": [],
+    "taifex_mis_role_details": []
+  },
+  "generated_at_utc": "2026-07-15T02:00:00Z",
+  "instrument_contexts": [
+    {
+      "context_group": null,
+      "contexts": [
+        {
+          "ai_exposure_level": "caveated_context_allowed",
+          "authority_level": "official_documented",
+          "caveats": [
+            "quotation_unit_unresolved",
+            "taifex_trading_calendar_evidence_incomplete_weekend_rule_only",
+            "M8B-01 controlled adapters implemented for seven TAIFEX OpenAPI endpoint families.",
+            "Official derivatives EOD/statistical/reference context is not realtime.",
+            "official statistics EOD must not be described as live derivatives signal",
+            "official statistics EOD must not be described as live derivatives signal or leading indicator"
+          ],
+          "context_group": null,
+          "context_role": null,
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "calendar_evidence": "incomplete",
+            "caveats": [
+              "taifex_trading_calendar_evidence_incomplete_weekend_rule_only"
+            ],
+            "currentness_confidence": "provisional",
+            "emergency_closure_status": "emergency_closure_unknown",
+            "evaluation_time_asia_taipei": "2026-07-15T17:30:33+08:00",
+            "exchange_market_status": "scheduled_open",
+            "expected_latest_completed_trade_date": "2026-07-15",
+            "expected_latest_completed_trade_date_resolution_trace": [],
+            "source_specific": true,
+            "status": "delayed_one_trading_day",
+            "trade_date": "2026-07-14"
+          },
+          "endpoint_contract_id": "DailyMarketReportFut",
+          "freshness_assessment": "official_statistics_eod",
+          "instrument_type": "futures",
+          "market": "taifex",
+          "market_date": "2026-07-14",
+          "metadata_only": false,
+          "not_recommendation": true,
+          "not_trading_signal": true,
+          "observation_valid": true,
+          "omitted_fields": [],
+          "overall_ai_currentness": null,
+          "policy_ai_context_allowed": true,
+          "primary_context_allowed": true,
+          "provenance": {
+            "endpoint": "DailyMarketReportFut",
+            "raw_payload_retained": false
+          },
+          "retrieved_at_utc": "2026-07-15T09:30:33Z",
+          "safe_fields": {
+            "aggregate_identity": null,
+            "context_type": "official_derivatives_futures_eod_reference",
+            "contract_identity": {
+              "contract_type": "monthly",
+              "expiry": "202607",
+              "product": "TX",
+              "session": "regular"
+            },
+            "contract_multiplier": null,
+            "currentness": {
+              "calendar_evidence": "incomplete",
+              "caveats": [
+                "taifex_trading_calendar_evidence_incomplete_weekend_rule_only"
+              ],
+              "currentness_confidence": "provisional",
+              "emergency_closure_status": "emergency_closure_unknown",
+              "evaluation_time_asia_taipei": "2026-07-15T17:30:33+08:00",
+              "exchange_market_status": "scheduled_open",
+              "expected_latest_completed_trade_date": "2026-07-15",
+              "expected_latest_completed_trade_date_resolution_trace": [],
+              "source_specific": true,
+              "status": "delayed_one_trading_day",
+              "trade_date": "2026-07-14"
+            },
+            "currentness_status": "delayed_one_trading_day",
+            "endpoint_contract_id": "DailyMarketReportFut",
+            "identity_level": "contract_level",
+            "identity_verification_status": "matched_approved_target",
+            "payload": {
+              "activity": {
+                "volume": 126891
+              },
+              "open_interest": {
+                "open_interest": 20062
+              },
+              "price": {
+                "best_ask": "44815",
+                "best_bid": "44796",
+                "change": "-750",
+                "change_percent": "-1.65",
+                "high": "45464",
+                "last": "44815",
+                "low": "43852",
+                "open": "45046",
+                "settlement": "44790"
+              },
+              "trading_halt": ""
+            },
+            "provenance": {
+              "endpoint": "DailyMarketReportFut",
+              "raw_payload_retained": false
+            },
+            "quotation_unit": "product_specific_quote_unit",
+            "requested_identity": {
+              "contract_type": "monthly",
+              "expiry": "202607",
+              "product": "TX",
+              "session": "regular"
+            },
+            "session": "regular",
+            "settlement_currency": null,
+            "source_session_label": "一般",
+            "trade_date": "2026-07-14"
+          },
+          "safe_for_ai_context": true,
+          "session": "regular",
+          "session_state": null,
+          "source_family": "TAIFEX_OPENAPI",
+          "source_id": "TAIFEX_OPENAPI",
+          "source_timestamp": null,
+          "source_unavailable": false,
+          "source_unavailable_reason": null,
+          "state_specific_context_allowed": true,
+          "supporting_context_only": false,
+          "symbol": "TX",
+          "taifex_mis_role_detail": null,
+          "timing_class": "official_statistics_eod",
+          "trade_date": "2026-07-14",
+          "trading_date": "2026-07-14",
+          "withhold_market_values_from_conversation": false
+        }
+      ],
+      "instrument_type": "futures",
+      "market": "taifex",
+      "name": null,
+      "symbol": "TX"
+    }
+  ],
+  "market_scope": {},
+  "not_recommendation": true,
+  "not_trading_signal": true,
+  "schema_version": "m8_00_multi_source_market_context.v1",
+  "sources": [
+    {
+      "ai_exposure_level": "caveated_context_allowed",
+      "authority_level": "official_documented",
+      "caveats": [
+        "quotation_unit_unresolved",
+        "taifex_trading_calendar_evidence_incomplete_weekend_rule_only",
+        "M8B-01 controlled adapters implemented for seven TAIFEX OpenAPI endpoint families.",
+        "Official derivatives EOD/statistical/reference context is not realtime.",
+        "official statistics EOD must not be described as live derivatives signal"
+      ],
+      "freshness_assessments": [
+        "official_statistics_eod"
+      ],
+      "has_stale_observation": false,
+      "has_unavailable_observation": false,
+      "observation_count": 1,
+      "runtime_executable": true,
+      "source_family": "TAIFEX_OPENAPI",
+      "source_id": "TAIFEX_OPENAPI",
+      "timing_class": "official_statistics_eod"
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "adapter_invocation_count": 1,
+  "ai_artifacts_written": false,
+  "ai_package_id": null,
+  "ai_package_status": "blocked",
+  "ai_validation": {
+    "reason_code": "ai_package_build_failed",
+    "valid": false
+  },
+  "approval_consumed": true,
+  "approval_id": "m8r-approval-b5985fb82ce3d115",
+  "artifact_paths": [
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_MIS_FUTURE_EXACT/m8r-receipt-4f8f921187068aca/execution_plan.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_MIS_FUTURE_EXACT/m8r-receipt-4f8f921187068aca/approval_record.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_MIS_FUTURE_EXACT/m8r-receipt-4f8f921187068aca/execution_receipt.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_MIS_FUTURE_EXACT/m8r-receipt-4f8f921187068aca/operation_results.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_MIS_FUTURE_EXACT/m8r-receipt-4f8f921187068aca/missing_context.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TAIFEX_MIS_FUTURE_EXACT/m8r-receipt-4f8f921187068aca/m8_context_core.json"
+  ],
+  "authority_level": "official_undocumented",
+  "case_id": "TAIFEX_MIS_FUTURE_EXACT",
+  "caveats": [
+    {
+      "code": "ai_package_build_failed",
+      "severity": "error"
+    }
+  ],
+  "classification_code_base_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
+  "classification_code_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
+  "classification_corrected_at_utc": "2026-07-15T10:30:44Z",
+  "classification_patch_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
+  "classification_revision": "m8r02b_commit4_resolvable_provenance",
+  "classification_worktree_dirty": false,
+  "currentness": {
+    "calendar_evidence": "not_provided",
+    "currentness_confidence": "bounded_policy_not_exchange_sla",
+    "market_phase": "market_phase_unresolved",
+    "overall_ai_currentness": "session_alignment_unresolved",
+    "quote_age_state": "outside_regular_session_window",
+    "retrieved_at_freshness_ignored_for_upgrade": true,
+    "session_alignment": "aligned",
+    "source_timestamp_state": "resolved",
+    "special_closure_evidence": null,
+    "transport_state": "completed"
+  },
+  "execution_status": "ready_with_caveats",
+  "forbidden_interpretations": [],
+  "grouping": {
+    "grouped": false
+  },
+  "identity_verification_result": "matched_or_not_applicable",
+  "missing_context": [],
+  "network_attempted": true,
+  "network_reexecution_performed": false,
+  "network_request_count": 2,
+  "operation_status": "succeeded",
+  "plan_hash": "dce1595a51123b7e979dfe24ef78c4f05bb417e36a08d76597c37458aeb487ad",
+  "plan_id": "m8r-plan-dce1595a51123b7e",
+  "planned_source_family": "TAIFEX_MIS",
+  "previous_result": "passed_with_caveats",
+  "receipt_id": "m8r-receipt-4f8f921187068aca",
+  "requested_context": [
+    "liveish_observation"
+  ],
+  "result": "failed_runtime_contract",
+  "retention_audit": {
+    "forbidden_key_hits": [],
+    "status": "passed"
+  },
+  "retrieved_at_utc": null,
+  "returned_identity": {
+    "contract_type": "monthly",
+    "expiry": "202607",
+    "product": "TX",
+    "session": "regular"
+  },
+  "schema_version": "m8r_controlled_live_validation_case_result.v1",
+  "source_execution_artifacts_unchanged": true,
+  "source_id": "TAIFEX_MIS",
+  "source_timestamp": "2026-07-15T13:29:59+08:00",
+  "target": [
+    {
+      "allowed_source_families": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "derivative_identity": {
+        "contract_type": "monthly",
+        "expiry": "202607",
+        "session": "regular"
+      },
+      "duplicate_identity_key": "TAIFEX:future:TX",
+      "identity_resolution_status": "resolved",
+      "input_identity": {
+        "contract_type": "monthly",
+        "expiry": "202607",
+        "instrument_type": "future",
+        "market": "TAIFEX",
+        "requested_source_families": [
+          "TAIFEX_MIS"
+        ],
+        "session": "regular",
+        "symbol": "TX"
+      },
+      "instrument_type": "future",
+      "issues": [],
+      "market": "TAIFEX",
+      "planned_mappings": [
+        {
+          "context_type": "liveish_observation",
+          "network_required": true,
+          "operation_class": "planned_network_fetch",
+          "route": "regular_session_monthly_future_selector",
+          "source_family": "TAIFEX_MIS",
+          "target_id": "TAIFEX:future:TX:202607:monthly"
+        }
+      ],
+      "requested_context_types": [
+        "liveish_observation"
+      ],
+      "requested_source_families": [
+        "TAIFEX_MIS"
+      ],
+      "requested_source_selection_mode": "target_exact",
+      "runtime_routes": {
+        "TAIFEX_MIS": "regular_session_monthly_future_selector",
+        "TAIFEX_OPENAPI": "TAIFEX_OPENAPI"
+      },
+      "session": "regular",
+      "symbol": "TX",
+      "target_id": "TAIFEX:future:TX:202607:monthly"
+    }
+  ],
+  "timing_class": "liveish_intraday_snapshot"
+}

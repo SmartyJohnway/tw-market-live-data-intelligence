@@ -1,0 +1,14 @@
+{
+  "adapter_invocation_count": 0,
+  "approval_id": null,
+  "control_id": "UNSUPPORTED_TAIFEX_IDENTITY",
+  "error_class": "M8RValidationError",
+  "execution_status": "blocked_pre_plan",
+  "first_receipt_id": null,
+  "network_operations_attempted": 0,
+  "passed": true,
+  "plan_hash": null,
+  "plan_id": null,
+  "reason_code": "unsupported_product_scope",
+  "schema_version": "m8r_controlled_live_validation_control_result.v1"
+}

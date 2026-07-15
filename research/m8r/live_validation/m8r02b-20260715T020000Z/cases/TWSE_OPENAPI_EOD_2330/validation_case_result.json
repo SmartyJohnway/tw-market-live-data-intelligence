@@ -1,0 +1,156 @@
+{
+  "adapter_invocation_count": 1,
+  "ai_artifacts_written": true,
+  "ai_package_id": "amc-aac71da4c519e422",
+  "ai_package_status": "partial",
+  "ai_validation": {
+    "reason_code": null,
+    "valid": true
+  },
+  "approval_consumed": true,
+  "approval_id": "m8r-approval-3ab4290ab4a9eb1a",
+  "artifact_paths": [
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/execution_plan.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/approval_record.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/execution_receipt.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/operation_results.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/missing_context.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/m8_context_core.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/ai_market_context_v1.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/ai_market_context_compact.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/ai_market_context_standard.json",
+    "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_OPENAPI_EOD_2330/m8r-receipt-1e3f29764b7f9aa6/ai_market_context_diagnostic.json"
+  ],
+  "authority_level": "official_documented",
+  "case_id": "TWSE_OPENAPI_EOD_2330",
+  "caveats": [
+    {
+      "code": "approved_target_scope_not_fully_available",
+      "message": "approved target scope not fully available",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "currentness_unknown",
+      "message": "currentness unknown",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "official_eod_not_intraday",
+      "message": "official eod not intraday",
+      "scope": "package",
+      "severity": "warning",
+      "source_family": "TWSE_OPENAPI"
+    },
+    {
+      "code": "production_live_execution_not_ready",
+      "message": "production live execution not ready",
+      "scope": "package",
+      "severity": "warning"
+    }
+  ],
+  "classification_code_base_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
+  "classification_code_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
+  "classification_corrected_at_utc": "2026-07-15T10:30:44Z",
+  "classification_patch_commit_sha": "f6097d83a4256eb3d17fac59728234b85d92377f",
+  "classification_revision": "m8r02b_commit4_resolvable_provenance",
+  "classification_worktree_dirty": false,
+  "currentness": {
+    "currentness_status": "official_eod_reference"
+  },
+  "execution_status": "ready_with_caveats",
+  "forbidden_interpretations": [
+    "not_all_sources_current",
+    "not_broker_instruction",
+    "not_complete_when_partial",
+    "not_full_market",
+    "not_guaranteed_realtime",
+    "not_live_production_ready_without_m8r02b",
+    "not_prediction",
+    "not_recommendation",
+    "not_safe_to_infer_missing_values",
+    "not_trading_signal",
+    "official_eod_not_live"
+  ],
+  "grouping": {
+    "grouped": true,
+    "network_scope": "whole_market_endpoint",
+    "retention_scope": "approved_targets_only"
+  },
+  "identity_verification_result": "matched_or_not_applicable",
+  "missing_context": [],
+  "network_attempted": true,
+  "network_reexecution_performed": false,
+  "network_request_count": 1,
+  "operation_status": "succeeded",
+  "plan_hash": "c71781fb610db53f0e0b7a8aa39233a7894a833a68993cfb4a291234e26423f0",
+  "plan_id": "m8r-plan-c71781fb610db53f",
+  "planned_source_family": "TWSE_OPENAPI",
+  "receipt_id": "m8r-receipt-1e3f29764b7f9aa6",
+  "requested_context": [
+    "official_eod_reference"
+  ],
+  "result": "passed_with_caveats",
+  "retention_audit": {
+    "forbidden_key_hits": [],
+    "status": "passed"
+  },
+  "retrieved_at_utc": "2026-07-15T09:30:10Z",
+  "returned_identity": {
+    "market": "TWSE",
+    "source_id": "TWSE_OPENAPI",
+    "symbol": "2330"
+  },
+  "schema_version": "m8r_controlled_live_validation_case_result.v1",
+  "source_execution_artifacts_unchanged": true,
+  "source_id": "TWSE_OPENAPI",
+  "source_timestamp": null,
+  "target": [
+    {
+      "allowed_source_families": [
+        "TWSE_MIS",
+        "TWSE_OPENAPI"
+      ],
+      "derivative_identity": {},
+      "duplicate_identity_key": "TWSE:equity:2330",
+      "identity_resolution_status": "resolved",
+      "input_identity": {
+        "instrument_type": "equity",
+        "market": "TWSE",
+        "requested_source_families": [
+          "TWSE_OPENAPI"
+        ],
+        "symbol": "2330"
+      },
+      "instrument_type": "equity",
+      "issues": [],
+      "market": "TWSE",
+      "planned_mappings": [
+        {
+          "context_type": "official_eod_reference",
+          "network_required": true,
+          "operation_class": "planned_network_fetch",
+          "route": "TWSE_OPENAPI",
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:equity:2330"
+        }
+      ],
+      "requested_context_types": [
+        "official_eod_reference"
+      ],
+      "requested_source_families": [
+        "TWSE_OPENAPI"
+      ],
+      "requested_source_selection_mode": "target_exact",
+      "runtime_routes": {
+        "TWSE_MIS": "tse_{symbol}.tw",
+        "TWSE_OPENAPI": "TWSE_OPENAPI"
+      },
+      "session": null,
+      "symbol": "2330",
+      "target_id": "TWSE:equity:2330"
+    }
+  ],
+  "timing_class": "official_eod"
+}

@@ -57,7 +57,17 @@
       "m8r_02a_production_adapter_disposition": "production_adapter_ready",
       "production_executor_adapters_ready": true,
       "production_live_execution_ready": false,
-      "live_validation_completed": false
+      "live_validation_completed": false,
+      "m8r_02b_live_validation_status": "passed_with_caveats",
+      "m8r_02b_validation_run_id": "m8r02b-20260715T020000Z",
+      "m8r_02b_validated_target_scope": [
+        "TWSE 2330",
+        "TPEX 6488",
+        "TAIEX"
+      ],
+      "m8r_02b_identity_validation": "identity matched for listed, OTC route, and index route",
+      "m8r_02b_retention_validation": "retention audit passed",
+      "m8r_02b_currentness_observed": "source_specific_currentness_unresolved"
     },
     {
       "source_id": "TAIFEX_MIS",
@@ -151,7 +161,16 @@
         },
         "coverage": "bounded_mvp_only",
         "unsupported_products": "fail_closed_exact_option_underlying_not_returned"
-      }
+      },
+      "m8r_02b_live_validation_status": "mixed_future_source_pass_ai_failed_option_failed",
+      "m8r_02b_validation_run_id": "m8r02b-20260715T020000Z",
+      "m8r_02b_validated_target_scope": [
+        "TX 202607 monthly regular future",
+        "TXO 202607 20000 C monthly regular option"
+      ],
+      "m8r_02b_identity_validation": "future source identity matched but AI package failed; option exact identity not proven",
+      "m8r_02b_retention_validation": "retention audit passed",
+      "m8r_02b_currentness_observed": "liveish_intraday_snapshot_with_caveats"
     },
     {
       "source_id": "TWSE_OPENAPI",
@@ -208,7 +227,15 @@
       "m8r_02a_retention_scope": "approved_targets_only",
       "production_executor_adapters_ready": true,
       "production_live_execution_ready": false,
-      "live_validation_completed": false
+      "live_validation_completed": false,
+      "m8r_02b_live_validation_status": "passed_with_caveats",
+      "m8r_02b_validation_run_id": "m8r02b-20260715T020000Z",
+      "m8r_02b_validated_target_scope": [
+        "TWSE 2330 official EOD"
+      ],
+      "m8r_02b_identity_validation": "identity matched for bounded retained row",
+      "m8r_02b_retention_validation": "retention audit passed",
+      "m8r_02b_currentness_observed": "official_eod_reference"
     },
     {
       "source_id": "TPEX_OPENAPI",
@@ -268,7 +295,15 @@
       "m8r_02a_retention_scope": "approved_targets_only",
       "production_executor_adapters_ready": true,
       "production_live_execution_ready": false,
-      "live_validation_completed": false
+      "live_validation_completed": false,
+      "m8r_02b_live_validation_status": "failed_runtime_contract",
+      "m8r_02b_validation_run_id": "m8r02b-20260715T020000Z",
+      "m8r_02b_validated_target_scope": [
+        "TPEX 6488 official EOD"
+      ],
+      "m8r_02b_identity_validation": "no retained matching bounded row for 6488",
+      "m8r_02b_retention_validation": "retention audit passed",
+      "m8r_02b_currentness_observed": "target_not_present_in_source_result"
     },
     {
       "source_id": "TAIFEX_OPENAPI",
@@ -345,7 +380,16 @@
         },
         "coverage": "bounded_mvp_only",
         "unsupported_products": "fail_closed_exact_option_underlying_not_returned"
-      }
+      },
+      "m8r_02b_live_validation_status": "mixed_future_pass_option_failed",
+      "m8r_02b_validation_run_id": "m8r02b-20260715T020000Z",
+      "m8r_02b_validated_target_scope": [
+        "TX 202607 monthly regular future",
+        "TXO 202607 20000 C monthly regular option"
+      ],
+      "m8r_02b_identity_validation": "future contract-level identity matched; option exact identity not proven",
+      "m8r_02b_retention_validation": "retention audit passed",
+      "m8r_02b_currentness_observed": "official_derivatives_eod_with_caveats"
     },
     {
       "source_id": "MOPS",
@@ -596,7 +640,7 @@
     "taifex_mis_ai_context_allowed": true,
     "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
     "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
-    "recommended_next_task": "M8R-02A-PRODUCTION-SOURCE-EXECUTOR-ADAPTER-INTEGRATION",
+    "recommended_next_task": "M8R-02B-DEFECT-CORRECTION-AND-EXACT-OPTION-TPEX-REVALIDATION",
     "m8r_01_status": "GO_WITH_COMPLETED_FOLLOW_UP_FIX",
     "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go"
   },
@@ -611,7 +655,7 @@
     "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
     "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
     "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
-    "recommended_next_task": "M8R-02A-PRODUCTION-SOURCE-EXECUTOR-ADAPTER-INTEGRATION",
+    "recommended_next_task": "M8R-02B-DEFECT-CORRECTION-AND-EXACT-OPTION-TPEX-REVALIDATION",
     "m8r_01_status": "GO_WITH_COMPLETED_FOLLOW_UP_FIX",
     "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go"
   },
@@ -625,11 +669,13 @@
   "new_m8_failures": [],
   "new_m8c_failures": [],
   "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
-  "recommended_next_task": "M8R-02B-CONTROLLED-LIVE-EXECUTION-VALIDATION-AND-FINAL-RUNTIME-ACCEPTANCE",
+  "recommended_next_task": "M8R-02B-DEFECT-CORRECTION-AND-EXACT-OPTION-TPEX-REVALIDATION",
   "m8r_01_status": "GO_WITH_COMPLETED_FOLLOW_UP_FIX",
   "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go",
   "m8r_02a_status": "GO",
   "production_executor_adapters_ready": true,
   "production_live_execution_ready": false,
-  "live_validation_completed": false
+  "live_validation_completed": false,
+  "m8r_02b_status": "NO_GO",
+  "m8r_02b_required": true
 }

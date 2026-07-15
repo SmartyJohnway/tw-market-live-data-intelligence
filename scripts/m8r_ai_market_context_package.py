@@ -727,7 +727,13 @@ def validate_ai_market_context_package(package: dict[str, Any]) -> dict[str, str
     return {"status": "valid"}
 
 
-def write_ai_market_context_artifacts(package: dict[str, Any], *, artifact_root: str | None = None, receipt_id: str | None = None) -> list[str]:
+def write_ai_market_context_artifacts(
+    package: dict[str, Any],
+    *,
+    artifact_root: str | None = None,
+    receipt_id: str | None = None,
+    allow_existing_receipt_directory: bool = False,
+) -> list[str]:
     validate_ai_market_context_package(package)
     approved_root = package.get("provenance", {}).get("approved_output_scope", {}).get("artifact_root")
     approved_receipt = package.get("provenance", {}).get("receipt_id")
@@ -740,19 +746,52 @@ def write_ai_market_context_artifacts(package: dict[str, Any], *, artifact_root:
     if not _safe_output_scope({"artifact_root": root}):
         raise OSError("unapproved_artifact_root")
     run_dir = Path(root) / rid
-    run_dir.mkdir(parents=True, exist_ok=False)
     payloads = {
         "ai_market_context_v1.json": package,
         "ai_market_context_compact.json": package["conversation_views"]["compact"],
         "ai_market_context_standard.json": package["conversation_views"]["standard"],
         "ai_market_context_diagnostic.json": package["conversation_views"]["diagnostic"],
     }
+    if allow_existing_receipt_directory:
+        if not run_dir.is_dir():
+            raise OSError("approved_receipt_directory_missing")
+        expected_existing = {
+            "execution_plan.json",
+            "approval_record.json",
+            "execution_receipt.json",
+            "operation_results.json",
+            "missing_context.json",
+            "m8_context_core.json",
+        }
+        existing = {p.name for p in run_dir.iterdir() if p.is_file()}
+        if any(name in existing for name in payloads):
+            raise OSError("ai_artifact_already_exists")
+        if not expected_existing.issubset(existing):
+            raise OSError("approved_receipt_directory_incomplete")
+        unexpected = existing - expected_existing
+        if unexpected:
+            raise OSError("approved_receipt_directory_unexpected_files")
+        for existing_file in run_dir.iterdir():
+            if existing_file.is_file() and existing_file.suffix == ".json":
+                try:
+                    assert_no_forbidden_keys(json.loads(existing_file.read_text(encoding="utf-8")))
+                except json.JSONDecodeError as exc:
+                    raise OSError("approved_receipt_directory_invalid_json") from exc
+    else:
+        run_dir.mkdir(parents=True, exist_ok=False)
     written = []
     for name, payload in payloads.items():
         assert_no_forbidden_keys(payload)
+        destination = run_dir / name
+        if destination.exists():
+            raise OSError("ai_artifact_already_exists")
         fd, tmp = tempfile.mkstemp(prefix=name, dir=run_dir)
-        with os.fdopen(fd, "w", encoding="utf-8") as fh:
-            json.dump(payload, fh, ensure_ascii=False, sort_keys=True, indent=2)
-        os.replace(tmp, run_dir / name)
-        written.append(str(run_dir / name))
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as fh:
+                json.dump(payload, fh, ensure_ascii=False, sort_keys=True, indent=2)
+            os.replace(tmp, destination)
+        finally:
+            if os.path.exists(tmp):
+                os.unlink(tmp)
+        written.append(str(destination))
     return written

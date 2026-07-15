@@ -1,0 +1,170 @@
+{
+  "ai_exposure_policy": {
+    "blocked_fields": [
+      "ask_prices",
+      "ask_volumes",
+      "bid_prices",
+      "bid_volumes",
+      "cookie",
+      "cookies",
+      "full_option_chain",
+      "option_chain",
+      "order_book_truth",
+      "raw_bid_ask_ladder",
+      "raw_mode_1_dictionary",
+      "raw_payload",
+      "raw_payload_sample",
+      "raw_qid_map",
+      "raw_rest_records",
+      "rest_rows",
+      "session_id",
+      "session_ids",
+      "sockjs_frames",
+      "source_investigation_notes",
+      "trueValues",
+      "truevalues"
+    ],
+    "eod_not_realtime": true,
+    "forbidden_interpretations": [
+      "trading advice",
+      "trading signal",
+      "recommendation",
+      "target price",
+      "support/resistance",
+      "ranking",
+      "bullish/bearish recommendation",
+      "capital-flow interpretation"
+    ],
+    "manual_evidence_not_official_source": true,
+    "not_realtime_unless_source_policy_allows": true,
+    "not_recommendation": true,
+    "not_trading_signal": true,
+    "requires_caveats": true,
+    "retrieved_at_not_exchange_timestamp": true,
+    "safe_to_include_in_conversation_context": true,
+    "validation_only_not_primary_source": true
+  },
+  "context_status": "candidate_built_with_caveats",
+  "cross_source_caveats": [
+    "retrieved_at_utc is not exchange timestamp"
+  ],
+  "freshness_summary": {
+    "caveated_currentness_label": "liveish_intraday_snapshot_only",
+    "has_credential_gated_metadata_only": false,
+    "has_liveish_intraday_snapshot": true,
+    "has_liveish_source_family_observation": true,
+    "has_manual_snapshot": false,
+    "has_official_eod_reference": false,
+    "has_official_statistics_eod": false,
+    "has_regulatory_reference": false,
+    "has_stale_sources": false,
+    "has_taifex_mis_aging_liveish": false,
+    "has_taifex_mis_caveated_liveish": false,
+    "has_taifex_mis_closed_reference": false,
+    "has_taifex_mis_metadata_only": false,
+    "has_taifex_mis_observation": false,
+    "has_taifex_mis_phase_caveated": false,
+    "has_taifex_mis_policy_blocked": false,
+    "has_taifex_mis_primary_current": false,
+    "has_taifex_mis_stale_liveish": false,
+    "has_taifex_mis_unresolved": false,
+    "has_unavailable_sources": false,
+    "has_unknown_sources": false,
+    "has_validation_only": false,
+    "most_recent_retrieved_at_utc": "2026-07-15T02:00:00Z",
+    "taifex_mis_currentness_statuses": [],
+    "taifex_mis_role_details": []
+  },
+  "generated_at_utc": "2026-07-15T02:00:00Z",
+  "instrument_contexts": [
+    {
+      "context_group": "cash_market_liveish",
+      "contexts": [
+        {
+          "ai_exposure_level": "caveated_context_allowed",
+          "authority_level": "official_undocumented",
+          "caveats": [
+            "live-ish snapshot; not exchange-guaranteed realtime",
+            "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+            "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+          ],
+          "context_group": "cash_market_liveish",
+          "context_role": null,
+          "context_type": "liveish_observation",
+          "currentness": {
+            "currentness_status": "source_specific_currentness_unresolved"
+          },
+          "endpoint_contract_id": null,
+          "freshness_assessment": "fresh_intraday_snapshot",
+          "instrument_type": "equity",
+          "market": "TWSE",
+          "market_date": null,
+          "metadata_only": false,
+          "not_recommendation": true,
+          "not_trading_signal": true,
+          "observation_valid": true,
+          "omitted_fields": [],
+          "overall_ai_currentness": null,
+          "policy_ai_context_allowed": true,
+          "primary_context_allowed": true,
+          "provenance": null,
+          "retrieved_at_utc": "2026-07-15T02:00:00Z",
+          "safe_fields": {
+            "high": "2460.0000",
+            "last_price": "2440.0000",
+            "low": "2415.0000",
+            "open": "2425.0000",
+            "previous_close": "2420.0000",
+            "query_id": "tse_2330.tw",
+            "volume": "28481"
+          },
+          "safe_for_ai_context": true,
+          "session": null,
+          "session_state": null,
+          "source_family": "TWSE_MIS",
+          "source_id": "TWSE_MIS",
+          "source_timestamp": "20260715 13:30:00",
+          "source_unavailable": false,
+          "source_unavailable_reason": null,
+          "state_specific_context_allowed": true,
+          "supporting_context_only": false,
+          "symbol": "2330",
+          "taifex_mis_role_detail": null,
+          "timing_class": "liveish_intraday_snapshot",
+          "trade_date": null,
+          "trading_date": null,
+          "withhold_market_values_from_conversation": false
+        }
+      ],
+      "instrument_type": "equity",
+      "market": "TWSE",
+      "name": null,
+      "symbol": "2330"
+    }
+  ],
+  "market_scope": {},
+  "not_recommendation": true,
+  "not_trading_signal": true,
+  "schema_version": "m8_00_multi_source_market_context.v1",
+  "sources": [
+    {
+      "ai_exposure_level": "caveated_context_allowed",
+      "authority_level": "official_undocumented",
+      "caveats": [
+        "live-ish snapshot; not exchange-guaranteed realtime",
+        "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+        "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+      ],
+      "freshness_assessments": [
+        "fresh_intraday_snapshot"
+      ],
+      "has_stale_observation": false,
+      "has_unavailable_observation": false,
+      "observation_count": 1,
+      "runtime_executable": true,
+      "source_family": "TWSE_MIS",
+      "source_id": "TWSE_MIS",
+      "timing_class": "liveish_intraday_snapshot"
+    }
+  ]
+}

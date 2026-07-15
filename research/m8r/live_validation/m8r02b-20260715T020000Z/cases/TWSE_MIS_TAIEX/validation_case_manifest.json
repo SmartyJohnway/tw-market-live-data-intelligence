@@ -1,0 +1,64 @@
+{
+  "approval_id": "m8r-approval-d32108be6d22460c",
+  "case_id": "TWSE_MIS_TAIEX",
+  "classification_corrected_at_utc": "2026-07-15T10:30:44Z",
+  "created_at_utc": "2026-07-15T02:00:00Z",
+  "manifest_provenance": {
+    "mode": "reconstructed_from_immutable_case_execution_artifacts",
+    "network_reexecution_performed": false,
+    "source_execution_artifacts_unchanged": true
+  },
+  "plan_hash": "760961589547e1ca52c92ba77610c87cdc109d75414849282d55e0d267dd8765",
+  "plan_id": "m8r-plan-760961589547e1ca",
+  "planned_source_family": "TWSE_MIS",
+  "requested_context": [
+    "liveish_observation"
+  ],
+  "schema_version": "m8r_controlled_live_validation_case_manifest.v1",
+  "source_execution_artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_TAIEX",
+  "target": [
+    {
+      "allowed_source_families": [
+        "TWSE_MIS"
+      ],
+      "derivative_identity": {},
+      "duplicate_identity_key": "TWSE:index:TAIEX",
+      "identity_resolution_status": "resolved",
+      "input_identity": {
+        "instrument_type": "index",
+        "market": "TWSE",
+        "requested_source_families": [
+          "TWSE_MIS"
+        ],
+        "symbol": "TAIEX"
+      },
+      "instrument_type": "index",
+      "issues": [],
+      "market": "TWSE",
+      "planned_mappings": [
+        {
+          "context_type": "liveish_observation",
+          "network_required": true,
+          "operation_class": "planned_network_fetch",
+          "route": "tse_t00.tw",
+          "source_family": "TWSE_MIS",
+          "target_id": "TWSE:index:TAIEX"
+        }
+      ],
+      "requested_context_types": [
+        "liveish_observation"
+      ],
+      "requested_source_families": [
+        "TWSE_MIS"
+      ],
+      "requested_source_selection_mode": "target_exact",
+      "runtime_routes": {
+        "TWSE_MIS": "tse_t00.tw"
+      },
+      "session": null,
+      "symbol": "TAIEX",
+      "target_id": "TWSE:index:TAIEX"
+    }
+  ],
+  "validation_run_id": "m8r02b-20260715T020000Z"
+}

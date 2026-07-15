@@ -1,0 +1,58 @@
+{
+  "all_caveat_codes": [
+    "approved_target_scope_not_fully_available",
+    "currentness_unknown",
+    "liveish_not_exchange_official_realtime",
+    "production_live_execution_not_ready"
+  ],
+  "identity_evidence": [
+    {
+      "derivative_identity": {
+        "market": "TWSE",
+        "query_id": "tse_2330.tw",
+        "symbol": "2330"
+      },
+      "target_id": "TWSE:equity:2330"
+    }
+  ],
+  "operation_outcomes": [
+    {
+      "context_type": "liveish_observation",
+      "operation_class": "planned_network_fetch",
+      "operation_id": "m8r-op-cf911182b3a399d7",
+      "source_family": "TWSE_MIS",
+      "status": "succeeded",
+      "target_id": "TWSE:equity:2330"
+    }
+  ],
+  "package_id": "amc-97efae4d072438a9",
+  "provenance": {
+    "approval_consumed": true,
+    "approval_id": "m8r-approval-a7cbce74fd8c63d2",
+    "approved_output_scope": {
+      "artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330",
+      "raw_payload_retention": false,
+      "write_artifacts": false
+    },
+    "bounded_retention": true,
+    "execution_finished_at_utc": "2026-07-15T09:30:00Z",
+    "execution_started_at_utc": "2026-07-15T02:00:00Z",
+    "full_market_retained_output": false,
+    "m8_context_core_status": "built",
+    "orchestration_result_schema": "m8r_market_context_orchestration_result.v1",
+    "plan_hash": "6ddf7ee684dbef24a84598403743dde2959a17026eaa92f25fe1d92025e7bf95",
+    "plan_id": "m8r-plan-6ddf7ee684dbef24",
+    "raw_payload_retained": false,
+    "receipt_id": "m8r-receipt-fbf27efe8befdf74",
+    "request_id": null,
+    "target_identity_provenance": "inferred_from_operation_result",
+    "upstream_package_status": "ready_with_caveats"
+  },
+  "source_mappings": [
+    {
+      "operation_id": "m8r-op-cf911182b3a399d7",
+      "source_context_id": "amc-src-99b5bbf7c3a64e17",
+      "target_id": "TWSE:equity:2330"
+    }
+  ]
+}

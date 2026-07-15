@@ -1,0 +1,195 @@
+{
+  "approval_required": true,
+  "bounded_retained_scope": {
+    "bounded_targets_only": true,
+    "full_market_retained_output": false,
+    "raw_payload_retention": false
+  },
+  "created_at_utc": "2026-07-15T02:00:00Z",
+  "hash_scope": {
+    "approval_required": true,
+    "network_scope": {
+      "network_execution_in_m8r01": false,
+      "network_required": true,
+      "operation_classes": [
+        "planned_network_fetch"
+      ]
+    },
+    "non_goal_flags": {
+      "alert": false,
+      "api_surface": false,
+      "auto_retry": false,
+      "background_service": false,
+      "broker_execution": false,
+      "cache": false,
+      "database": false,
+      "frontend_surface": false,
+      "full_market_scanner": false,
+      "m9_ingestion": false,
+      "mcp_surface": false,
+      "network_execution": false,
+      "orchestrator": false,
+      "polling": false,
+      "prediction": false,
+      "ranking": false,
+      "recommendation": false,
+      "scheduler": false,
+      "source_adapter_invocation": false
+    },
+    "normalized_request_hash": "0935f347ee8ed2497a60853efaff3e134de0fa07f4546b99da01a6980cce93c3",
+    "output_scope": {
+      "artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330",
+      "raw_payload_retention": false,
+      "write_artifacts": false
+    },
+    "planned_source_families": [
+      "TWSE_MIS"
+    ],
+    "retained_scope": {
+      "bounded_targets_only": true,
+      "full_market_retained_output": false,
+      "raw_payload_retention": false
+    },
+    "schema_version": "m8r_market_context_execution_plan.v1",
+    "source_to_target_context_mapping": [
+      {
+        "context_type": "liveish_observation",
+        "network_required": true,
+        "operation_class": "planned_network_fetch",
+        "route": "tse_2330.tw",
+        "source_family": "TWSE_MIS",
+        "target_id": "TWSE:equity:2330"
+      }
+    ],
+    "targets": [
+      {
+        "derivative_identity": {},
+        "duplicate_identity_key": "TWSE:equity:2330",
+        "instrument_type": "equity",
+        "market": "TWSE",
+        "planned_mappings": [
+          {
+            "context_type": "liveish_observation",
+            "network_required": true,
+            "operation_class": "planned_network_fetch",
+            "route": "tse_2330.tw",
+            "source_family": "TWSE_MIS",
+            "target_id": "TWSE:equity:2330"
+          }
+        ],
+        "requested_context_types": [
+          "liveish_observation"
+        ],
+        "requested_source_families": [
+          "TWSE_MIS"
+        ],
+        "requested_source_selection_mode": "target_exact",
+        "session": null,
+        "symbol": "2330",
+        "target_id": "TWSE:equity:2330"
+      }
+    ]
+  },
+  "network_required": true,
+  "network_scope": {
+    "network_execution_in_m8r01": false,
+    "network_required": true,
+    "operation_classes": [
+      "planned_network_fetch"
+    ]
+  },
+  "non_goal_flags": {
+    "alert": false,
+    "api_surface": false,
+    "auto_retry": false,
+    "background_service": false,
+    "broker_execution": false,
+    "cache": false,
+    "database": false,
+    "frontend_surface": false,
+    "full_market_scanner": false,
+    "m9_ingestion": false,
+    "mcp_surface": false,
+    "network_execution": false,
+    "orchestrator": false,
+    "polling": false,
+    "prediction": false,
+    "ranking": false,
+    "recommendation": false,
+    "scheduler": false,
+    "source_adapter_invocation": false
+  },
+  "normalized_request_hash": "0935f347ee8ed2497a60853efaff3e134de0fa07f4546b99da01a6980cce93c3",
+  "output_scope": {
+    "artifact_root": "research/m8r/live_validation/m8r02b-20260715T020000Z/cases/TWSE_MIS_LISTED_2330",
+    "raw_payload_retention": false,
+    "write_artifacts": false
+  },
+  "plan_hash": "6ddf7ee684dbef24a84598403743dde2959a17026eaa92f25fe1d92025e7bf95",
+  "plan_id": "m8r-plan-6ddf7ee684dbef24",
+  "planned_source_families": [
+    "TWSE_MIS"
+  ],
+  "rejected_targets": [],
+  "request_id": "m8r02b-twse_mis_listed_2330",
+  "requested_context_types": [
+    "liveish_observation"
+  ],
+  "schema_version": "m8r_market_context_execution_plan.v1",
+  "source_to_target_context_mapping": [
+    {
+      "context_type": "liveish_observation",
+      "network_required": true,
+      "operation_class": "planned_network_fetch",
+      "route": "tse_2330.tw",
+      "source_family": "TWSE_MIS",
+      "target_id": "TWSE:equity:2330"
+    }
+  ],
+  "targets": [
+    {
+      "allowed_source_families": [
+        "TWSE_MIS",
+        "TWSE_OPENAPI"
+      ],
+      "derivative_identity": {},
+      "duplicate_identity_key": "TWSE:equity:2330",
+      "identity_resolution_status": "resolved",
+      "input_identity": {
+        "instrument_type": "equity",
+        "market": "TWSE",
+        "requested_source_families": [
+          "TWSE_MIS"
+        ],
+        "symbol": "2330"
+      },
+      "instrument_type": "equity",
+      "issues": [],
+      "market": "TWSE",
+      "planned_mappings": [
+        {
+          "context_type": "liveish_observation",
+          "network_required": true,
+          "operation_class": "planned_network_fetch",
+          "route": "tse_2330.tw",
+          "source_family": "TWSE_MIS",
+          "target_id": "TWSE:equity:2330"
+        }
+      ],
+      "requested_context_types": [
+        "liveish_observation"
+      ],
+      "requested_source_families": [
+        "TWSE_MIS"
+      ],
+      "requested_source_selection_mode": "target_exact",
+      "runtime_routes": {
+        "TWSE_MIS": "tse_{symbol}.tw",
+        "TWSE_OPENAPI": "TWSE_OPENAPI"
+      },
+      "session": null,
+      "symbol": "2330",
+      "target_id": "TWSE:equity:2330"
+    }
+  ]
+}
