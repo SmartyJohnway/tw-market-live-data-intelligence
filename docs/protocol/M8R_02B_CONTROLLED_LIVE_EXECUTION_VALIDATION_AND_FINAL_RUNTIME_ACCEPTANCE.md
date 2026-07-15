@@ -97,6 +97,22 @@ Runtime-critical safety properties passed after commit-2 correction: network is 
 
 Original live execution artifacts remain unchanged. Derived case classifications and summary metadata were corrected at `2026-07-15T02:30:00Z` under classification revision `m8r02b_commit2_ai_package_mandatory`. A case can now be `passed` or `passed_with_caveats` only when source execution succeeded, AI package build succeeded, package ID is non-empty, package validation is valid, AI artifacts were written through the authoritative writer, and retention audit passed. TAIFEX MIS future is therefore classified as `failed_runtime_contract` despite successful source-network identity evidence because its AI package build/validation failed.
 
+## Commit 3 manifest and provenance correction
+
+The run-level manifest for `m8r02b-20260715T020000Z` has been reconstructed from immutable committed execution plans, approval records, receipts, operation results, M8 context artifacts, and case results. This correction did **not** rerun network cases and did **not** alter immutable source execution artifacts.
+
+Authoritative provenance now distinguishes the original live execution baseline from later classification code:
+
+- `live_execution_starting_commit_sha`: `751ad3a1102cb6fd432410717355c35bea08365c`
+- `starting_commit_sha`: retained as the live execution SHA for backward compatibility
+- `classification_code_commit_sha`: records the commit used to regenerate derived classification metadata
+- `classification_revision`: `m8r02b_commit3_manifest_and_provenance_correction`
+- `manifest_provenance.mode`: `reconstructed_from_immutable_case_execution_artifacts`
+- `source_execution_artifacts_unchanged`: `true`
+- `network_reexecution_performed`: `false`
+
+The run-level `validation_manifest.json` now contains all nine required cases and the predetermined TAIFEX identities: monthly regular `TX 202607` and monthly regular `TXO/TX 202607 20000 C`. Each case also has a bounded `validation_case_manifest.json` that records the invocation-level plan, approval, target, source family, requested context, and source artifact root used for consistency validation. Runtime-critical controls are now derived from manifest, receipt, case-result, retention-audit, and negative-control evidence; missing evidence fails closed instead of being treated as a pass.
+
 ## Decision and successor
 
 `NO_GO`: exact TAIFEX option identity was not proven, TPEx OpenAPI target `6488` did not return a retained bounded EOD row, and TAIFEX MIS future source execution did not produce an accepted AI package. Therefore the required full source-family / exact-future / exact-option / AI-package acceptance criteria were not met.

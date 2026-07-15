@@ -50,8 +50,8 @@
       "severity": "warning"
     }
   ],
-  "classification_corrected_at_utc": "2026-07-15T02:30:00Z",
-  "classification_revision": "m8r02b_commit2_ai_package_mandatory",
+  "classification_corrected_at_utc": "2026-07-15T10:30:44Z",
+  "classification_revision": "m8r02b_commit3_manifest_and_provenance_correction",
   "currentness": {
     "currentness_status": "source_specific_currentness_unresolved"
   },
@@ -75,6 +75,7 @@
   "identity_verification_result": "matched_or_not_applicable",
   "missing_context": [],
   "network_attempted": true,
+  "network_reexecution_performed": false,
   "network_request_count": 1,
   "operation_status": "succeeded",
   "plan_hash": "6ddf7ee684dbef24a84598403743dde2959a17026eaa92f25fe1d92025e7bf95",

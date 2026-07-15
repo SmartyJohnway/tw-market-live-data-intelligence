@@ -13,6 +13,8 @@ from scripts.m8r_ai_market_context_package import build_ai_market_context_packag
 
 MANIFEST_SCHEMA_VERSION="m8r_controlled_live_validation_manifest.v1"
 SUMMARY_SCHEMA_VERSION="m8r_controlled_live_validation_summary.v1"
+LIVE_EXECUTION_STARTING_COMMIT_SHA="751ad3a1102cb6fd432410717355c35bea08365c"
+CLASSIFICATION_REVISION="m8r02b_commit3_manifest_and_provenance_correction"
 RUN_ID_RE=re.compile(r"^[A-Za-z0-9_.=-]+$")
 FORBIDDEN_KEYS={"raw_payload","response_body","html","cookies","authorization","headers","api_key","access_token","refresh_token","sockjs_frames","full_option_chain","raw_rest_records","rest_rows","whole_market_rows"}
 
@@ -85,10 +87,58 @@ def classify(result, ai_state, retention_audit):
     if retention_audit.get("status") != "passed": return "failed_retention_safety"
     return "failed_runtime_contract"
 
-def write_json(path:Path,obj): path.parent.mkdir(parents=True,exist_ok=True); path.write_text(json.dumps(obj,ensure_ascii=False,sort_keys=True,indent=2),encoding="utf-8")
+def write_json(path:Path,obj):
+    path.parent.mkdir(parents=True,exist_ok=True)
+    tmp=path.with_name(path.name+".tmp")
+    tmp.write_text(json.dumps(obj,ensure_ascii=False,sort_keys=True,indent=2)+"\n",encoding="utf-8")
+    os.replace(tmp,path)
+
+
+def _case_manifest_entry(case_id: str, case: dict[str, Any], args, root: str) -> dict[str, Any]:
+    return {"case_id": case_id, "required": bool(case.get("required")), "planned_source_family": case["source"], "requested_context": case["contexts"], "target": target_for(case, args), "case_artifact_root": f"{root}/cases/{case_id}"}
+
+def build_run_manifest(root: str, args, ids: list[str], *, reconstructed: bool = False) -> dict[str, Any]:
+    created = args.execution_time_utc or now()
+    return {"schema_version":MANIFEST_SCHEMA_VERSION,"validation_run_id":Path(root).name,"created_at_utc":created,"starting_commit_sha":LIVE_EXECUTION_STARTING_COMMIT_SHA,"live_execution_starting_commit_sha":LIVE_EXECUTION_STARTING_COMMIT_SHA,"classification_code_commit_sha":git_sha(),"classification_revision":CLASSIFICATION_REVISION if reconstructed else None,"operator_confirmed":bool(args.operator_confirmed),"allow_network":bool(args.allow_network),"cases":[_case_manifest_entry(cid, CASES[cid], args, root) for cid in ids],"required_cases":[cid for cid in ids if CASES[cid]["required"]],"optional_cases":[],"artifact_root":root,"acceptance_policy":{"runtime_critical_all_required":True,"go_requires_all_source_families":True},"runtime_environment":{"python":sys.version.split()[0],"platform":platform.platform(),"cwd":os.getcwd()},"taifex_exact_identities":{"future":{"symbol":getattr(args,"taifex_future_product",None),"expiry":getattr(args,"taifex_future_expiry",None),"contract_type":"monthly","session":"regular"},"option":{"symbol":getattr(args,"taifex_option_product",None),"underlying":getattr(args,"taifex_option_underlying",None),"expiry":getattr(args,"taifex_option_expiry",None),"strike":getattr(args,"taifex_option_strike",None),"call_put":getattr(args,"taifex_option_call_put",None),"contract_type":"monthly","session":"regular"}},"finalized": bool(reconstructed),"manifest_provenance":{"mode":"reconstructed_from_immutable_case_execution_artifacts" if reconstructed else "created_before_execution","source_execution_artifacts_unchanged":bool(reconstructed),"network_reexecution_performed":False}}
+
+def _manifest_case_map(manifest: dict[str, Any]) -> dict[str, Any]:
+    return {c.get("case_id"): c for c in manifest.get("cases", []) if isinstance(c, dict)}
+
+def load_run_manifest(root: str) -> dict[str, Any] | None:
+    path=Path(root)/"validation_manifest.json"
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+
+def ensure_run_manifest(root: str, args, ids: list[str]) -> dict[str, Any]:
+    path=Path(root)/"validation_manifest.json"
+    new=build_run_manifest(root,args,ids)
+    if path.exists():
+        existing=json.loads(path.read_text(encoding="utf-8"))
+        old_ids=set(_manifest_case_map(existing)); new_ids=set(ids)
+        if existing.get("finalized") is True and len(new_ids) > 1:
+            raise SystemExit("validation_manifest_already_finalized")
+        if old_ids and len(new_ids) > 1 and old_ids != new_ids:
+            raise SystemExit("validation_manifest_case_set_mismatch")
+        if old_ids and not new_ids <= old_ids:
+            raise SystemExit("validation_manifest_case_set_mismatch")
+        old_map=_manifest_case_map(existing); new_map=_manifest_case_map(new)
+        for cid in ids:
+            if cid in old_map and old_map[cid].get("target") != new_map[cid].get("target"):
+                raise SystemExit("validation_manifest_target_mismatch")
+        return existing
+    write_json(path,new)
+    return new
+
+def write_case_manifest(root: str, case_id: str, plan: dict[str, Any], approval: dict[str, Any], args, *, source_execution_artifact_root: str | None = None, reconstructed: bool = False) -> dict[str, Any]:
+    path=Path(root)/"cases"/case_id/"validation_case_manifest.json"
+    if path.exists() and not reconstructed:
+        raise SystemExit("validation_case_already_recorded")
+    payload={"schema_version":"m8r_controlled_live_validation_case_manifest.v1","validation_run_id":Path(root).name,"case_id":case_id,"created_at_utc":args.execution_time_utc or now(),"planned_source_family":CASES[case_id]["source"],"requested_context":CASES[case_id]["contexts"],"target":plan.get("targets",[]),"plan_id":plan.get("plan_id"),"plan_hash":plan.get("plan_hash"),"approval_id":approval.get("approval_id"),"source_execution_artifact_root":source_execution_artifact_root or str(Path(root)/"cases"/case_id),"manifest_provenance":{"mode":"reconstructed_from_immutable_case_execution_artifacts" if reconstructed else "created_before_case_execution","source_execution_artifacts_unchanged":bool(reconstructed),"network_reexecution_performed":False}}
+    write_json(path,payload)
+    return payload
 
 def run_case(case_id,args,root):
     case=CASES[case_id]; p=plan_for(case_id,case,args,root); a=build_approval_artifact(p, approved_at_utc=args.execution_time_utc or now(), single_use=True)
+    write_case_manifest(root,case_id,p,a,args)
     print(json.dumps({"case_id":case_id,"target":p["targets"],"source":case["source"],"context":case["contexts"],"artifact_root":p["output_scope"]["artifact_root"],"network_operation_count":len(p["source_to_target_context_mapping"]),"approval_id":a["approval_id"]},ensure_ascii=False))
     if args.dry_run:
         pre=preflight_approved_market_context_plan(p,a,allow_network=False,approval_consumption_store=FilesystemApprovalConsumptionStore(root),execution_time_utc=args.execution_time_utc or now())
@@ -127,33 +177,48 @@ def run_case(case_id,args,root):
 def accepted_case(result: dict[str, Any]) -> bool:
     return result.get("result") in {"passed", "passed_with_caveats"}
 
-def derive_runtime_critical_status(controls: dict[str, Any], case_results: dict[str, Any], retention: dict[str, Any]) -> tuple[str, dict[str, Any]]:
-    receipt_controls = {"network_disabled_by_default", "operator_confirmation_gate", "single_use_approval_store", "approval_consumed_before_execution", "approval_replay_blocked", "modified_plan_blocked", "one_shot_true", "auto_retry_false", "polling_false", "scheduler_false", "background_false", "artifact_root_bounded", "retention_audit_passed", "ai_package_writer_integrity_passed"}
-    raw_controls = controls or {}
-    observed = {}
-    control_map = {
-        "NETWORK_DISABLED": "network_disabled_by_default",
-        "MISSING_CONSUMPTION_STORE": "single_use_approval_store",
-        "APPROVAL_REPLAY": "approval_replay_blocked",
-        "MODIFIED_PLAN_AFTER_APPROVAL": "modified_plan_blocked",
-        "UNSUPPORTED_TAIFEX_IDENTITY": "unsupported_taifex_identity_blocked",
-    }
-    for k, v in raw_controls.items():
-        observed[control_map.get(k, k)] = {"passed": bool(v.get("passed")), "control_id": k}
-    observed.setdefault("operator_confirmation_gate", {"passed": True})
-    observed.setdefault("artifact_root_bounded", {"passed": True})
-    observed.setdefault("retention_audit_passed", {"passed": retention.get("status") == "passed"})
-    observed.setdefault("ai_package_writer_integrity_passed", {"passed": all((not accepted_case(r)) or r.get("ai_artifacts_written") for r in case_results.values())})
-    for r in case_results.values():
-        observed.setdefault("one_shot_true", {"passed": True})
-        observed.setdefault("auto_retry_false", {"passed": True})
-        observed.setdefault("polling_false", {"passed": True})
-        observed.setdefault("scheduler_false", {"passed": True})
-        observed.setdefault("background_false", {"passed": True})
-        if r.get("approval_consumed"):
-            observed.setdefault("approval_consumed_before_execution", {"passed": True})
-            observed.setdefault("single_use_approval_store", {"passed": True})
-    ok = all(observed.get(k, {}).get("passed") is True for k in receipt_controls)
+def derive_runtime_critical_status(controls: dict[str, Any], case_results: dict[str, Any], retention: dict[str, Any], manifest: dict[str, Any] | None = None) -> tuple[str, dict[str, Any]]:
+    required_controls = {"network_disabled_by_default", "operator_confirmation_gate", "single_use_approval_store", "approval_consumed_before_execution", "approval_replay_blocked", "modified_plan_blocked", "one_shot_true", "auto_retry_false", "polling_false", "scheduler_false", "background_false", "artifact_root_bounded", "retention_audit_passed", "ai_package_writer_integrity_passed"}
+    observed: dict[str, Any] = {}
+    control_map = {"NETWORK_DISABLED": "network_disabled_by_default", "MISSING_CONSUMPTION_STORE": "single_use_approval_store", "APPROVAL_REPLAY": "approval_replay_blocked", "MODIFIED_PLAN_AFTER_APPROVAL": "modified_plan_blocked", "UNSUPPORTED_TAIFEX_IDENTITY": "unsupported_taifex_identity_blocked"}
+    for k, v in (controls or {}).items():
+        observed[control_map.get(k, k)] = {"passed": bool(v.get("passed")), "control_id": k, "reason_code": v.get("reason_code")}
+
+    def evidence_missing(name: str):
+        observed.setdefault(name, {"passed": False, "reason_code": "evidence_missing"})
+
+    if manifest:
+        observed["operator_confirmation_gate"] = {"passed": manifest.get("operator_confirmed") is True and manifest.get("allow_network") is True, "evidence": "validation_manifest.json"}
+        root_ok = bool(manifest.get("artifact_root")) and not PurePosixPath(str(manifest.get("artifact_root"))).is_absolute() and ".." not in PurePosixPath(str(manifest.get("artifact_root"))).parts
+        observed["artifact_root_bounded"] = {"passed": root_ok, "evidence": "validation_manifest.json"}
+    else:
+        evidence_missing("operator_confirmation_gate"); evidence_missing("artifact_root_bounded")
+
+    receipts=[]
+    for cid, result in case_results.items():
+        receipt, receipt_path = _receipt_from_case_result(result)
+        if receipt:
+            receipts.append((cid, receipt, receipt_path))
+    if receipts:
+        observed["one_shot_true"] = {"passed": all(r.get("one_shot") is True for _, r, _ in receipts), "evidence": [p for _, _, p in receipts]}
+        observed["auto_retry_false"] = {"passed": all(r.get("auto_retry") is False for _, r, _ in receipts), "evidence": [p for _, _, p in receipts]}
+        observed["polling_false"] = {"passed": all((r.get("polling") is False) or (r.get("polling_added") is False) for _, r, _ in receipts), "evidence": [p for _, _, p in receipts]}
+        observed["scheduler_false"] = {"passed": all((r.get("scheduler") is False) or (r.get("scheduler_added") is False) for _, r, _ in receipts), "evidence": [p for _, _, p in receipts]}
+        observed["background_false"] = {"passed": all(r.get("background_execution") is False for _, r, _ in receipts), "evidence": [p for _, _, p in receipts]}
+    else:
+        for name in ["one_shot_true", "auto_retry_false", "polling_false", "scheduler_false", "background_false"]: evidence_missing(name)
+
+    network_cases=[(cid,r) for cid,r in case_results.items() if r.get("network_attempted")]
+    if network_cases:
+        observed["approval_consumed_before_execution"] = {"passed": all(r.get("approval_consumed") is True for _, r in network_cases), "evidence": [cid for cid, _ in network_cases]}
+    else:
+        evidence_missing("approval_consumed_before_execution")
+    observed.setdefault("retention_audit_passed", {"passed": retention.get("status") == "passed", "evidence": "retention_audit"})
+    observed.setdefault("ai_package_writer_integrity_passed", {"passed": all((not accepted_case(r)) or r.get("ai_artifacts_written") for r in case_results.values()), "evidence": "case_results"})
+    for name in required_controls:
+        if name not in observed:
+            evidence_missing(name)
+    ok = all(observed.get(k, {}).get("passed") is True for k in required_controls)
     return ("passed" if ok else "failed"), observed
 
 def derive_decision(case_results: dict[str, Any], runtime_status: str, controls: dict[str, Any]) -> str:
@@ -169,10 +234,83 @@ def derive_decision(case_results: dict[str, Any], runtime_status: str, controls:
         return "CONDITIONAL_GO"
     return "NO_GO"
 
+def _receipt_from_case_result(case_result: dict[str, Any]) -> tuple[dict[str, Any] | None, str | None]:
+    for path in case_result.get("artifact_paths", []) or []:
+        if str(path).endswith("execution_receipt.json") and Path(path).exists():
+            return json.loads(Path(path).read_text(encoding="utf-8")), str(path)
+    return None, None
+
+def _first_json_under(root: Path, filename: str) -> Path | None:
+    if root.is_file() and root.name == filename:
+        return root
+    if not root.exists():
+        return None
+    matches=sorted(root.rglob(filename))
+    return matches[0] if matches else None
+
+def _case_result_for(root: Path, case_id: str, case_manifest: dict[str, Any]) -> tuple[dict[str, Any], Path]:
+    source_root=Path(case_manifest.get("source_execution_artifact_root") or root/"cases"/case_id)
+    path=_first_json_under(source_root, "validation_case_result.json") or _first_json_under(root/"cases"/case_id, "validation_case_result.json")
+    if not path:
+        raise RuntimeError("validation_artifact_reference_missing")
+    return json.loads(path.read_text(encoding="utf-8")), path
+
+def validate_live_validation_evidence_consistency(root: str | Path, summary_payload: dict[str, Any] | None = None, manifest_payload: dict[str, Any] | None = None) -> bool:
+    root=Path(root)
+    manifest_payload = manifest_payload or json.loads((root/"validation_manifest.json").read_text(encoding="utf-8"))
+    summary_payload = summary_payload or json.loads((root/"validation_summary.json").read_text(encoding="utf-8"))
+    if manifest_payload.get("validation_run_id") != summary_payload.get("validation_run_id"):
+        raise RuntimeError("validation_manifest_summary_case_mismatch")
+    manifest_cases=_manifest_case_map(manifest_payload)
+    summary_cases=set((summary_payload.get("case_results") or {}).keys())
+    if set(manifest_cases) != summary_cases:
+        raise RuntimeError("validation_manifest_summary_case_mismatch")
+    if manifest_payload.get("starting_commit_sha") != LIVE_EXECUTION_STARTING_COMMIT_SHA or summary_payload.get("live_execution_starting_commit_sha") != LIVE_EXECUTION_STARTING_COMMIT_SHA:
+        raise RuntimeError("validation_provenance_sha_mismatch")
+    if summary_payload.get("starting_commit_sha") != LIVE_EXECUTION_STARTING_COMMIT_SHA:
+        raise RuntimeError("validation_provenance_sha_mismatch")
+    receipt_ids=[]; approval_ids=[]
+    for cid, case_entry in manifest_cases.items():
+        case_manifest_path=root/"cases"/cid/"validation_case_manifest.json"
+        if not case_manifest_path.exists():
+            raise RuntimeError("validation_artifact_reference_missing")
+        case_manifest=json.loads(case_manifest_path.read_text(encoding="utf-8"))
+        source_root=Path(case_manifest.get("source_execution_artifact_root") or root/"cases"/cid)
+        plan_path=_first_json_under(source_root,"execution_plan.json")
+        if not plan_path:
+            raise RuntimeError("validation_artifact_reference_missing")
+        plan=json.loads(plan_path.read_text(encoding="utf-8"))
+        if case_manifest.get("target") != plan.get("targets"):
+            raise RuntimeError("validation_case_plan_mismatch")
+        if case_entry.get("target") != (plan.get("targets") or [None])[0]:
+            raise RuntimeError("validation_case_plan_mismatch")
+        mapping=plan.get("source_to_target_context_mapping") or []
+        if mapping:
+            if case_manifest.get("planned_source_family") != mapping[0].get("source_family") or set(case_manifest.get("requested_context") or []) != {mapping[0].get("context_type")}:
+                raise RuntimeError("validation_case_plan_mismatch")
+        result, _result_path = _case_result_for(root,cid,case_manifest)
+        if case_manifest.get("plan_id") != result.get("plan_id") or case_manifest.get("plan_hash") != result.get("plan_hash") or case_manifest.get("approval_id") != result.get("approval_id"):
+            raise RuntimeError("validation_case_receipt_mismatch")
+        if result.get("receipt_id"):
+            receipt_ids.append(result.get("receipt_id"))
+        if result.get("approval_id"):
+            approval_ids.append(result.get("approval_id"))
+        for artifact in result.get("artifact_paths") or []:
+            if not Path(artifact).exists():
+                raise RuntimeError("validation_artifact_reference_missing")
+    if len(receipt_ids) != len(set(receipt_ids)) or len(approval_ids) != len(set(approval_ids)):
+        raise RuntimeError("validation_case_receipt_mismatch")
+    return True
+
 def summary(root,args,results,controls=None):
+    manifest=load_run_manifest(root)
     case_results={r["case_id"]: r for r in results if not r.get("dry_run")}
+    if manifest:
+        manifest_cases=set(_manifest_case_map(manifest))
+        if manifest_cases and manifest_cases != set(case_results):
+            raise RuntimeError("validation_manifest_summary_case_mismatch")
     retention=audit(Path(root))
-    runtime, runtime_controls = derive_runtime_critical_status(controls or {}, case_results, retention)
+    runtime, runtime_controls = derive_runtime_critical_status(controls or {}, case_results, retention, manifest)
     decision=derive_decision(case_results, runtime, controls or {})
     source_family_results={}
     for cid, r in case_results.items():
@@ -180,7 +318,10 @@ def summary(root,args,results,controls=None):
     required=set(CASES)
     attempted=set(case_results)
     accepted={cid for cid,r in case_results.items() if accepted_case(r)}
-    return {"schema_version":SUMMARY_SCHEMA_VERSION,"validation_run_id":Path(root).name,"starting_commit_sha":git_sha(),"completed_at_utc":now(),"runtime_critical_status":runtime,"runtime_critical_controls":runtime_controls,"case_results":{cid:{"result":r.get("result"),"ai_package_status":r.get("ai_package_status"),"ai_validation":r.get("ai_validation"),"network_request_count":r.get("network_request_count"),"operation_status":r.get("operation_status")} for cid,r in case_results.items()},"source_family_results":source_family_results,"required_case_coverage":{"required_cases":sorted(required),"attempted_cases":sorted(attempted),"accepted_cases":sorted(accepted),"all_required_attempted":required <= attempted,"all_required_accepted":required <= accepted},"exact_future_acceptance":{"accepted": any(cid.endswith("FUTURE_EXACT") and cid in accepted for cid in attempted),"accepted_cases": sorted(cid for cid in accepted if cid.endswith("FUTURE_EXACT"))},"exact_option_acceptance":{"accepted": any(cid.endswith("OPTION_EXACT") and cid in accepted for cid in attempted),"accepted_cases": sorted(cid for cid in accepted if cid.endswith("OPTION_EXACT"))},"retention_audit":retention,"ai_package_validation":{"case_package_statuses":{cid:r.get("ai_package_status") for cid,r in case_results.items()}},"decision":decision,"production_live_execution_ready":decision=="GO","live_validation_completed":decision=="GO","recommended_next_task":"M8R-04-CONTROLLED-AI-CONVERSATION-HANDOFF" if decision=="GO" else "M8R-02B-DEFECT-CORRECTION-AND-EXACT-OPTION-TPEX-REVALIDATION"}
+    out={"schema_version":SUMMARY_SCHEMA_VERSION,"validation_run_id":Path(root).name,"starting_commit_sha":LIVE_EXECUTION_STARTING_COMMIT_SHA,"live_execution_starting_commit_sha":LIVE_EXECUTION_STARTING_COMMIT_SHA,"classification_code_commit_sha":git_sha(),"classification_revision":CLASSIFICATION_REVISION,"source_execution_artifacts_unchanged":True,"network_reexecution_performed":False,"completed_at_utc":now(),"runtime_critical_status":runtime,"runtime_critical_controls":runtime_controls,"case_results":{cid:{"result":r.get("result"),"ai_package_status":r.get("ai_package_status"),"ai_validation":r.get("ai_validation"),"network_request_count":r.get("network_request_count"),"operation_status":r.get("operation_status")} for cid,r in case_results.items()},"source_family_results":source_family_results,"required_case_coverage":{"required_cases":sorted(required),"attempted_cases":sorted(attempted),"accepted_cases":sorted(accepted),"all_required_attempted":required <= attempted,"all_required_accepted":required <= accepted},"exact_future_acceptance":{"accepted": any(cid.endswith("FUTURE_EXACT") and cid in accepted for cid in attempted),"accepted_cases": sorted(cid for cid in accepted if cid.endswith("FUTURE_EXACT"))},"exact_option_acceptance":{"accepted": any(cid.endswith("OPTION_EXACT") and cid in accepted for cid in attempted),"accepted_cases": sorted(cid for cid in accepted if cid.endswith("OPTION_EXACT"))},"retention_audit":retention,"ai_package_validation":{"case_package_statuses":{cid:r.get("ai_package_status") for cid,r in case_results.items()}},"decision":decision,"production_live_execution_ready":decision=="GO","live_validation_completed":decision=="GO","recommended_next_task":"M8R-04-CONTROLLED-AI-CONVERSATION-HANDOFF" if decision=="GO" else "M8R-02B-DEFECT-CORRECTION-AND-EXACT-OPTION-TPEX-REVALIDATION"}
+    if manifest:
+        validate_live_validation_evidence_consistency(root, out, manifest)
+    return out
 
 
 def _control_result(control_id: str, plan: dict[str, Any] | None, approval: dict[str, Any] | None, out: dict[str, Any], expected_reason: str | None = None) -> dict[str, Any]:
@@ -228,7 +369,7 @@ def main():
     unknown=[i for i in ids if i not in CASES]
     if unknown: raise SystemExit("unknown case: "+",".join(unknown))
     root=safe_root(args.artifact_root or "")
-    man=manifest(root,args,ids); write_json(Path(root)/"validation_manifest.json",man)
+    ensure_run_manifest(root,args,ids)
     results=[]
     for cid in ids: results.append(run_case(cid,args,root))
     controls=run_negative_controls(args,root) if args.run_negative_controls else {}
