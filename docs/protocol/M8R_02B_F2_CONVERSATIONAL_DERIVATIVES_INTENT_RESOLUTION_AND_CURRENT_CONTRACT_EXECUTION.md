@@ -49,14 +49,14 @@ Execution sequence:
 
 Futures resolve `TX` to nearest active regular-session monthly future.
 
-Options resolve `TXO` to nearest active TAIFEX MIS executable expiry by default, both call and put, and nearest actually listed strike to the reference basis. `nearest_active` is not rewritten to monthly; explicit monthly and weekly preferences filter only when the user says monthly or weekly. The selected set is capped at six exact option contracts and does not retain the full option chain.
+Options resolve `TXO` to nearest active TAIFEX MIS executable expiry by default, both call and put, and nearest actually listed strike to the reference basis. `nearest_active` is not rewritten to monthly; explicit monthly and weekly preferences filter only when the user says monthly or weekly. Option discovery is bounded to the selected expiry: the resolver discovers available months, selects the single expiry from policy, and fetches only that selected expiry chain. The freshness guard repeats month discovery and fetches only the selected expiry chain; a conversational re-resolution may add at most one replacement selected-expiry chain and its verification. The selected set is capped at six exact option contracts and does not retain raw rows, full option chains, or SockJS frames.
 
 ## Monthly, weekly, strike, and call/put policies
 
 - Explicit monthly → nearest active monthly contract.
 - Explicit weekly → nearest active weekly contract.
 - Current/near only → nearest active TAIFEX MIS executable expiry regardless of weekly/monthly; the resolver records the selected contract type and does not describe a monthly contract as weekly or vice versa.
-- Strike uses nearest actually listed strike to the current/reference basis or explicit anchor.
+- Strike uses nearest actually listed strike to the current/reference basis or explicit anchor. Current/reference basis priority is TAIFEX MIS TX current reference, then TWSE MIS TAIEX current reference when a hook is configured, then TAIFEX OpenAPI TX latest EOD reference, otherwise `reference_unavailable`; option-strike midpoint is never used as ATM or near-market.
 - Ties select both equidistant strikes deterministically.
 - Option call/put omitted → both.
 
@@ -91,7 +91,7 @@ Live prompts for a new run ID:
 - `EXACT_TAIFEX_OPTION_UNAVAILABLE_NEGATIVE_CONTROL`: `TXO 202607 40000 C monthly`
 - Optional: `CONVERSATIONAL_TAIFEX_OPTION_WEEKLY_BOTH`: `現在最近到期的台指週選怎麼樣？`
 
-The prior OpenAPI-only run is superseded. F2 remains `NO_GO` until a new controlled run proves TAIFEX MIS current futures/options execution for all required conversational cases. Each future operator run must store `derivatives_intent.json`, `derivatives_resolution_record.json`, MIS operation results, optional OpenAPI enrichment, and AI package artifacts under the supplied run root.
+The prior OpenAPI-only run is superseded. F2 remains `NO_GO` until a new controlled run proves TAIFEX MIS current futures/options execution for all required conversational cases. Each future operator run must store `derivatives_intent.json`, `derivatives_resolution_record.json`, MIS operation results, optional OpenAPI enrichment, and AI package artifacts under the supplied run root. The controlled CLI also writes `mis_conversational_resolution_diagnostic.json`, which contains normalized stage metadata only: request statuses, selected expiry/type, selected-chain row and identity counts, strike range/count, call/put counts, reference acquisition result, resolved targets, freshness second-check result, production selector status, runtime symbol IDs, operation/AI package status, and a precise failure layer when available.
 
 ## Readiness flags
 

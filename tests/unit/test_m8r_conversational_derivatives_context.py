@@ -35,3 +35,21 @@ def test_unavailable_exact_fixture_creates_no_ai_package(tmp_path):
     assert out["ai_package_id"] is None
     assert not list(Path(root).glob("*/ai_market_context_v1.json"))
     shutil.rmtree(root, ignore_errors=True)
+
+
+def test_mis_diagnostic_is_normalized_and_contains_stage_reason(tmp_path):
+    root = f"research/m8r/live_validation/unit-diagnostic-{tmp_path.name}"
+    shutil.rmtree(root, ignore_errors=True)
+    universe = {"contracts": [{"instrument_type":"option","product":"TXO","expiry":"202607W4","contract_type":"weekly","session":"regular","strike":"44900","call_put":"C"},{"instrument_type":"option","product":"TXO","expiry":"202607W4","contract_type":"weekly","session":"regular","strike":"44900","call_put":"P"}]}
+    provider = FixtureUniverseProvider([universe, universe], reference_value=None)
+    out = run("現在台指選擇權怎麼樣？", root, resolver=provider)
+    diag_path = Path(root) / "mis_conversational_resolution_diagnostic.json"
+    assert out["status"] == "blocked"
+    assert diag_path.exists()
+    text = diag_path.read_text(encoding="utf-8")
+    assert "raw_rows" not in text and "SockJS" not in text and "cookie" not in text.lower()
+    diag = __import__("json").loads(text)
+    assert diag["failure_layer"] == "current_reference_unavailable"
+    assert diag["raw_payload_retained"] is False
+    assert diag["full_option_chain_retained"] is False
+    shutil.rmtree(root, ignore_errors=True)

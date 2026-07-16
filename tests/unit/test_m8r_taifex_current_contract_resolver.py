@@ -96,3 +96,81 @@ def test_lower_level_mis_reason_mapping():
     assert map_taifex_mis_detail_reason("option_exact_identity_not_unique") == "source_identity_not_unique"
     assert map_taifex_mis_detail_reason("runtime_symbol_mismatch") == "source_identity_mismatch"
     assert map_taifex_mis_detail_reason("weird") == "source_payload_invalid"
+
+class _FakeSession:
+    def close(self):
+        pass
+
+class _FakeRest:
+    def __init__(self):
+        self.option_chain_calls = []
+        self.quote_calls = []
+    def products(self, market, symtype):
+        return [{"CID": "TXO"}] if symtype == "O" else [{"CID": "TXF"}]
+    def months(self, cid, market, symtype):
+        if cid == "TXO":
+            return [{"item":"202607W4"}, {"item":"202608"}]
+        return [{"item":"202608"}]
+    def option_chain(self, cid, expiry):
+        self.option_chain_calls.append(expiry)
+        if expiry == "202607W4":
+            return [
+                {"SymbolID":"TXO-A-O", "StrikePrice":"44900", "CP":"C"},
+                {"SymbolID":"TXO-B-O", "StrikePrice":"44900", "CP":"P"},
+                {"SymbolID":"TXO-C-O", "StrikePrice":"45100", "CP":"C"},
+                {"SymbolID":"TXO-D-O", "StrikePrice":"45100", "CP":"P"},
+            ]
+        return [
+            {"SymbolID":"TXO-MC-O", "StrikePrice":"45000", "CP":"C"},
+            {"SymbolID":"TXO-MP-O", "StrikePrice":"45000", "CP":"P"},
+        ]
+    def quote_list(self, cid, expiry, kind):
+        self.quote_calls.append((cid, expiry, kind))
+        return [{"SymbolID":"TXF-F", "CLastPrice":"44950"}]
+
+
+def test_mis_provider_fetches_only_selected_expiry_chain(monkeypatch):
+    from scripts.m8r_taifex_current_contract_resolver import TaifexMisCurrentUniverseProvider
+    rest = _FakeRest()
+    provider = TaifexMisCurrentUniverseProvider()
+    monkeypatch.setattr(provider, "_client", lambda: (_FakeSession(), rest))
+    universe = provider.discover(parse_derivatives_intent("現在台指選擇權怎麼樣？"))
+    assert rest.option_chain_calls == ["202607W4"]
+    assert {c["expiry"] for c in universe["contracts"]} == {"202607W4"}
+    assert universe["counts"]["option_chain_fetch_count"] == 1
+    assert universe["counts"]["option_rows_examined"] == 4
+    assert universe["full_option_chain_retained"] is False
+
+
+def test_mis_provider_explicit_monthly_still_fetches_one_chain(monkeypatch):
+    from scripts.m8r_taifex_current_contract_resolver import TaifexMisCurrentUniverseProvider
+    rest = _FakeRest()
+    provider = TaifexMisCurrentUniverseProvider()
+    monkeypatch.setattr(provider, "_client", lambda: (_FakeSession(), rest))
+    universe = provider.discover(parse_derivatives_intent("現在台指選擇權近月月選 call 跟 put 怎麼樣？"))
+    assert rest.option_chain_calls == ["202608"]
+    assert {c["expiry"] for c in universe["contracts"]} == {"202608"}
+    assert universe["counts"]["selected_contract_type"] == "monthly"
+
+
+def test_option_intent_obtains_current_mis_tx_reference(monkeypatch):
+    from scripts.m8r_taifex_current_contract_resolver import TaifexMisCurrentUniverseProvider
+    rest = _FakeRest()
+    provider = TaifexMisCurrentUniverseProvider()
+    monkeypatch.setattr(provider, "_client", lambda: (_FakeSession(), rest))
+    universe = provider.discover(parse_derivatives_intent("現在台指選擇權怎麼樣？"))
+    ref = provider.reference(parse_derivatives_intent("現在台指選擇權怎麼樣？"), universe)
+    assert ref["reference_source"] == "TAIFEX_MIS_TX_current_reference"
+    assert ref["reference_value"] == "44950"
+    assert rest.quote_calls == [("TXF", "202608", "F")]
+
+
+def test_resolver_second_discovery_checks_only_relevant_expiry(monkeypatch):
+    from scripts.m8r_taifex_current_contract_resolver import TaifexMisCurrentUniverseProvider
+    rest = _FakeRest()
+    provider = TaifexMisCurrentUniverseProvider()
+    monkeypatch.setattr(provider, "_client", lambda: (_FakeSession(), rest))
+    r = resolve_current_contracts(parse_derivatives_intent("現在台指選擇權怎麼樣？"), provider)
+    assert r["resolution_status"] == "resolved"
+    assert rest.option_chain_calls == ["202607W4", "202607W4"]
+    assert sum(d["counts"].get("option_chain_fetch_count", 0) for d in provider.diagnostics if d["stage"] == "discover") == 2

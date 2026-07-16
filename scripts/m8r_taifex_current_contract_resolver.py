@@ -202,6 +202,7 @@ class TaifexMisCurrentUniverseProvider:
         self.session_factory = session_factory
         self.max_total_execution_seconds = max_total_execution_seconds
         self._last_tx_reference: dict[str, Any] | None = None
+        self.diagnostics: list[dict[str, Any]] = []
     def _client(self):
         import requests
         from scripts.m8c_taifex_mis_limits import RuntimeBudget
@@ -232,17 +233,29 @@ class TaifexMisCurrentUniverseProvider:
                             if val is not None and self._last_tx_reference is None:
                                 self._last_tx_reference = {"reference_source":"TAIFEX_MIS_TX_current_reference", "reference_value":str(val).replace(',',''), "reference_timestamp":utc_now(), "reference_currentness":"liveish_intraday_snapshot"}
                 else:
+                    # Options are bounded to the selected expiry only.  Do not scan all chains.
+                    continue
+            if typ == "option":
+                pref = intent.get("contract_type_preference") or "nearest_active"
+                selected_expiry = select_expiry([e for e in expiries if e], pref)
+                counts["selected_expiry"] = selected_expiry
+                counts["selected_contract_type"] = _contract_type(selected_expiry) if selected_expiry else None
+                if selected_expiry:
                     try:
-                        rows = rest.option_chain(cid, expiry)
-                    except Exception:
-                        continue
+                        rows = rest.option_chain(cid, selected_expiry)
+                        counts["selected_chain_request_status"] = "succeeded"
+                    except Exception as exc:
+                        rows = []
+                        counts["selected_chain_request_status"] = "failed"
+                        counts["selected_chain_failure_reason"] = exc.__class__.__name__
+                    counts["option_chain_fetch_count"] = 1 if selected_expiry else 0
                     counts["option_rows_examined"] += len(rows)
                     for row in rows:
                         symbol = str(row.get('SymbolID') or '')
                         strike = _dec(_row_value(row, 'StrikePrice', 'Strike'))
                         cp = _cp(_row_value(row, 'CP', 'CallPut', 'OptionType'))
                         if symbol.endswith('-O') and strike is not None and cp:
-                            contracts.append({"instrument_type":"option","product":"TXO","underlying":"TX","expiry":expiry,"contract_type":_contract_type(expiry),"session":"regular","strike":_fmt(strike),"call_put":cp})
+                            contracts.append({"instrument_type":"option","product":"TXO","underlying":"TX","expiry":selected_expiry,"contract_type":_contract_type(selected_expiry),"session":"regular","strike":_fmt(strike),"call_put":cp})
             return self._universe(contracts, counts)
         finally:
             close=getattr(session,'close',None)
@@ -250,8 +263,45 @@ class TaifexMisCurrentUniverseProvider:
     def _universe(self, contracts, counts):
         dedup = {json.dumps(c, sort_keys=True): c for c in contracts}
         out = list(dedup.values()); counts["contracts"] = len(out)
-        return {"source_family":"TAIFEX_MIS", "discovered_at_utc":utc_now(), "contracts":out, "counts":counts, "raw_payload_retained":False, "full_option_chain_retained":False, "sockjs_frames_retained":False}
+        strikes = sorted([_dec(c.get("strike")) for c in out if c.get("strike") and _dec(c.get("strike")) is not None])
+        counts["strike_count"] = len({str(c.get("strike")) for c in out if c.get("strike")})
+        counts["strike_min"] = _fmt(strikes[0]) if strikes else None
+        counts["strike_max"] = _fmt(strikes[-1]) if strikes else None
+        counts["call_count"] = sum(1 for c in out if c.get("call_put") == "C")
+        counts["put_count"] = sum(1 for c in out if c.get("call_put") == "P")
+        universe = {"source_family":"TAIFEX_MIS", "discovered_at_utc":utc_now(), "contracts":out, "counts":counts, "raw_payload_retained":False, "full_option_chain_retained":False, "sockjs_frames_retained":False}
+        self.diagnostics.append({"stage":"discover", "source_family":"TAIFEX_MIS", "discovered_at_utc":universe["discovered_at_utc"], "counts":dict(counts), "available_expiries": sorted({c.get("expiry") for c in out if c.get("expiry")}), "raw_payload_retained": False, "full_option_chain_retained": False, "sockjs_frames_retained": False})
+        return universe
+    def _fetch_tx_reference(self) -> dict[str, Any]:
+        session, rest = self._client()
+        try:
+            products = rest.products('0', 'F')
+            if 'TXF' not in {str(r.get('CID')) for r in products}:
+                return {"reference_source":"unavailable", "reference_value":None, "reference_timestamp":utc_now(), "reference_currentness":"unavailable", "reason":"tx_product_unavailable"}
+            months = rest.months('TXF', '0', 'F')
+            expiry = select_expiry([str(r.get('item') or r.get('ExpireMonth') or r.get('ContractMonth') or '').upper() for r in months], 'nearest_active')
+            if not expiry:
+                return {"reference_source":"unavailable", "reference_value":None, "reference_timestamp":utc_now(), "reference_currentness":"unavailable", "reason":"tx_month_unavailable"}
+            rows = rest.quote_list('TXF', expiry, 'F')
+            for row in rows:
+                if not str(row.get('SymbolID') or '').endswith('-F'):
+                    continue
+                val = _row_value(row, 'CLastPrice', 'LastPrice', 'Last', 'ClosePrice', 'SettlementPrice', 'ReferencePrice')
+                if val is not None:
+                    return {"reference_source":"TAIFEX_MIS_TX_current_reference", "reference_value":str(val).replace(',',''), "reference_timestamp":utc_now(), "reference_currentness":"liveish_intraday_snapshot", "reference_expiry": expiry}
+            return {"reference_source":"unavailable", "reference_value":None, "reference_timestamp":utc_now(), "reference_currentness":"unavailable", "reason":"tx_reference_field_unavailable"}
+        except Exception as exc:
+            return {"reference_source":"unavailable", "reference_value":None, "reference_timestamp":utc_now(), "reference_currentness":"unavailable", "reason":exc.__class__.__name__}
+        finally:
+            close=getattr(session,'close',None)
+            if close: close()
     def reference(self, intent, universe):
+        if intent.get("instrument_family") == "option":
+            ref = self._fetch_tx_reference()
+            self.diagnostics.append({"stage":"reference", "reference_acquisition_result": ref, "raw_payload_retained": False})
+            if ref.get("reference_value") is not None:
+                self._last_tx_reference = ref
+                return ref
         if self._last_tx_reference:
             return dict(self._last_tx_reference)
         return {"reference_source":"unavailable", "reference_value":None, "reference_timestamp":utc_now(), "reference_currentness":"unavailable"}
