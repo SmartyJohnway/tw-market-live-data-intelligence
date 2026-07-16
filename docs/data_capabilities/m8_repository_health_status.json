@@ -21,8 +21,8 @@
   "blocking_findings": [],
   "correctness_status": "GO_WITH_CAVEATS",
   "direct_corrections": [
-    "implemented_through_track set to M8R-03E-F1",
-    "recommended_next_task set to R2 filesystem containment remediation",
+    "implemented_through_track advanced from historical M8R-03E-F1 to M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
+    "active recommended_next_task and registry_successor advanced to M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
     "original M8R-04 marked superseded_and_split",
     "active architecture set to governed_market_evidence_platform",
     "AI behavior hardcoding marked deprecated_direction"
@@ -86,7 +86,7 @@
     "reason_code": "frontend_public_baseline_drift"
   },
   "generated_at_utc": "2026-07-16T00:00:00Z",
-  "implemented_through_track": "M8R-03E-F1",
+  "implemented_through_track": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
   "latest_validation_ref": "docs/acceptance_runs/M8R_03E_R2_FINAL_VALIDATION.json",
   "original_m8r04_disposition": "superseded_and_split",
   "p0_count": 0,
@@ -95,18 +95,19 @@
   "p3_count": 1,
   "performance_status": "reproducible_baseline_recorded_R4_optimization_pending",
   "phase_c_gate_status": "blocked_pending_R3_critical_subset",
-  "phase_c_status": "blocked_until_M8R-03E-R2-complete",
+  "phase_c_status": "blocked_pending_M8R-03E-R3-critical-subset",
   "r2_f0_status": "GO_WITH_CAVEATS",
   "r2_filesystem_containment_status": "GO_WITH_CAVEATS_REMEDIATED_WITH_PORTABLE_TOCTOU_AND_WINDOWS_REPARSE_LIMITATIONS",
   "r2_recommended_next_task": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
-  "recommended_next_task": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
-  "recommended_next_task_reason": "Historical F1 surface retained for compatibility; R2 final acceptance recommends M8R-03E-R3 critical subset before Phase C.",
+  "r2_status": "GO_WITH_CAVEATS",
+  "recommended_next_task": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
+  "recommended_next_task_reason": "R2 is closed with portable TOCTOU and Windows reparse caveats; the R3 critical subset for AI behavior/evidence schema decoupling remains the Phase C gate.",
   "recommended_successor_after_m8r_03e": {
     "status": "historical_superseded",
     "superseded_by": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
     "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION"
   },
-  "registry_successor": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
+  "registry_successor": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
   "roadmap_alignment_status": "aligned_with_caveats",
   "schema_version": "m8_repository_health_status.v1",
   "security_status": "GO_WITH_CAVEATS_R2_CONTAINMENT_REMEDIATED_WITH_PORTABLE_TOCTOU_AND_WINDOWS_REPARSE_LIMITATIONS",

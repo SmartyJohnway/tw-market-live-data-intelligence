@@ -1,25 +1,85 @@
 {
-  "schema_version": "1.0",
-  "task_id": "M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT",
-  "baseline_sha": "d6b83313bb301e652ae82b8583d73d2aaa1d753e",
-  "generated_at_utc": "2026-07-16T00:00:00Z",
   "architecture_principle": "Repository supplies governed evidence, deterministic calculations, timing semantics, provenance, and controlled access; discussion policy stays in agent/product layer.",
+  "availability_semantics": {
+    "ai_facing_runtime_available": "Only true when actual callable AI-facing operation with defined I/O exists; all F1 operations are false.",
+    "network_required": "Network-capable underlying producers require existing controlled execution authorization and are disabled by default in F1.",
+    "underlying_runtime_available": "Represents existing repository producer/executor availability, separate from Phase C operation availability."
+  },
+  "baseline_sha": "d6b83313bb301e652ae82b8583d73d2aaa1d753e",
+  "calculation_semantics": {
+    "average_volume": {
+      "status": "planned"
+    },
+    "official_settlement_comparison": {
+      "status": "implemented_with_caveats"
+    },
+    "percentage_change": {
+      "method": "price_change / reference price",
+      "status": "implemented_with_caveats"
+    },
+    "price_change": {
+      "method": "end minus start using cited inputs",
+      "status": "implemented_with_caveats"
+    },
+    "range_position": {
+      "status": "planned"
+    },
+    "relative_volume": {
+      "status": "planned"
+    },
+    "spot_derivatives_timing_comparison": {
+      "status": "planned"
+    },
+    "unadjusted_return": {
+      "adjustment_status": "unadjusted; not total return; dividends and corporate actions may affect interpretation",
+      "status": "implemented_with_caveats"
+    }
+  },
   "capabilities": [
     {
-      "capability_id": "describe_market_capabilities",
-      "display_name": "Describe Market Capabilities",
-      "description": "AI-facing contract for describe_market_capabilities.",
-      "maturity_status": "contract_only",
-      "network_required": false,
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "authorization_model": "not required for non-network contract inspection",
       "authorization_required": false,
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation.",
+      "capability_id": "describe_market_capabilities",
+      "description": "AI-facing contract for describe_market_capabilities.",
+      "display_name": "Describe Market Capabilities",
+      "evidence_outputs": [
+        "coverage",
+        "missing_evidence",
+        "citations",
+        "lineage",
+        "currentness",
+        "calculation_status"
+      ],
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
+      "internal_dependencies": [],
+      "internal_mapping": {
+        "current_artifact": "docs/ai/m8_ai_capability_contract.json",
+        "current_internal_producer": "docs/ai/M8_AI_CAPABILITY_CONTRACT.md",
+        "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
+        "future_phase_c_api_operation": "describe_market_capabilities"
+      },
+      "known_caveats": [
+        "retrieved_at is not exchange event time",
+        "live-ish is not zero-latency realtime",
+        "fixture evidence is not market state"
+      ],
+      "maturity_status": "contract_only",
+      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "network_default_enabled": false,
+      "network_required": false,
+      "required_inputs": [],
+      "source_families": [
+        "TWSE_MIS",
+        "TAIFEX_MIS",
+        "TWSE_OPENAPI",
+        "TPEX_OPENAPI",
+        "TAIFEX_OPENAPI"
+      ],
       "supported_targets": [
         "repository"
-      ],
-      "supported_venues": [
-        "TWSE",
-        "TPEx",
-        "TAIFEX",
-        "unknown"
       ],
       "supported_timing_classes": [
         "live",
@@ -32,71 +92,24 @@
         "fixture_only",
         "unknown"
       ],
-      "evidence_outputs": [
-        "coverage",
-        "missing_evidence",
-        "citations",
-        "lineage",
-        "currentness",
-        "calculation_status"
-      ],
-      "required_inputs": [],
-      "source_families": [
-        "TWSE_MIS",
-        "TAIFEX_MIS",
-        "TWSE_OPENAPI",
-        "TPEX_OPENAPI",
-        "TAIFEX_OPENAPI"
-      ],
-      "known_caveats": [
-        "retrieved_at is not exchange event time",
-        "live-ish is not zero-latency realtime",
-        "fixture evidence is not market state"
-      ],
-      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
-      "internal_dependencies": [],
-      "internal_mapping": {
-        "current_internal_producer": "docs/ai/M8_AI_CAPABILITY_CONTRACT.md",
-        "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-        "current_artifact": "docs/ai/m8_ai_capability_contract.json",
-        "future_phase_c_api_operation": "describe_market_capabilities"
-      },
-      "future_phase": "Phase C implementation contract; R2 must complete first.",
-      "ai_facing_operation_status": "contract_only",
-      "ai_facing_runtime_available": false,
-      "underlying_capability_status": "contract_only",
-      "underlying_runtime_available": false,
-      "network_default_enabled": false,
-      "authorization_model": "not required for non-network contract inspection",
-      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
-    },
-    {
-      "capability_id": "resolve_market_targets",
-      "display_name": "Resolve Market Targets",
-      "description": "AI-facing contract for resolve_market_targets.",
-      "maturity_status": "contract_only",
-      "network_required": false,
-      "authorization_required": false,
-      "supported_targets": [
-        "tw_equity",
-        "tw_etf",
-        "tw_derivative",
-        "watchlist"
-      ],
       "supported_venues": [
         "TWSE",
         "TPEx",
         "TAIFEX",
         "unknown"
       ],
-      "supported_timing_classes": [
-        "current_bounded_observation",
-        "retrieved_snapshot",
-        "completed_session_eod",
-        "historical_series",
-        "official_settlement",
-        "fixture_only"
-      ],
+      "underlying_capability_status": "contract_only",
+      "underlying_runtime_available": false
+    },
+    {
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "authorization_model": "not required for non-network contract inspection",
+      "authorization_required": false,
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation.",
+      "capability_id": "resolve_market_targets",
+      "description": "AI-facing contract for resolve_market_targets.",
+      "display_name": "Resolve Market Targets",
       "evidence_outputs": [
         "coverage",
         "missing_evidence",
@@ -105,78 +118,26 @@
         "currentness",
         "calculation_status"
       ],
-      "required_inputs": [
-        "target",
-        "timeframe",
-        "evidence_intent"
-      ],
-      "source_families": [
-        "TWSE_MIS",
-        "TAIFEX_MIS",
-        "TWSE_OPENAPI",
-        "TPEX_OPENAPI",
-        "TAIFEX_OPENAPI"
-      ],
-      "known_caveats": [
-        "retrieved_at is not exchange event time",
-        "live-ish is not zero-latency realtime",
-        "fixture evidence is not market state"
-      ],
-      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
       "internal_dependencies": [
         "scripts/resolve_m8r_03d_f1_security_identity.py",
         "tests/fixtures/m8r_03d_f1/snapshot.json"
       ],
       "internal_mapping": {
+        "current_artifact": "tests/fixtures/m8r_03d_f1/snapshot.json",
         "current_internal_producer": "scripts/resolve_m8r_03d_f1_security_identity.py",
         "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-        "current_artifact": "tests/fixtures/m8r_03d_f1/snapshot.json",
         "future_phase_c_api_operation": "resolve_market_targets"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first.",
-      "ai_facing_operation_status": "contract_only",
-      "ai_facing_runtime_available": false,
-      "underlying_capability_status": "implemented_with_caveats",
-      "underlying_runtime_available": true,
-      "network_default_enabled": false,
-      "authorization_model": "not required for non-network contract inspection",
-      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
-    },
-    {
-      "capability_id": "get_current_market_evidence",
-      "display_name": "Get Current Market Evidence",
-      "description": "AI-facing contract for get_current_market_evidence.",
+      "known_caveats": [
+        "retrieved_at is not exchange event time",
+        "live-ish is not zero-latency realtime",
+        "fixture evidence is not market state"
+      ],
       "maturity_status": "contract_only",
-      "network_required": true,
-      "authorization_required": true,
-      "supported_targets": [
-        "tw_equity",
-        "tw_etf",
-        "tw_derivative",
-        "watchlist"
-      ],
-      "supported_venues": [
-        "TWSE",
-        "TPEx",
-        "TAIFEX",
-        "unknown"
-      ],
-      "supported_timing_classes": [
-        "current_bounded_observation",
-        "retrieved_snapshot",
-        "completed_session_eod",
-        "historical_series",
-        "official_settlement",
-        "fixture_only"
-      ],
-      "evidence_outputs": [
-        "coverage",
-        "missing_evidence",
-        "citations",
-        "lineage",
-        "currentness",
-        "calculation_status"
-      ],
+      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "network_default_enabled": false,
+      "network_required": false,
       "required_inputs": [
         "target",
         "timeframe",
@@ -189,66 +150,66 @@
         "TPEX_OPENAPI",
         "TAIFEX_OPENAPI"
       ],
-      "known_caveats": [
-        "retrieved_at is not exchange event time",
-        "live-ish is not zero-latency realtime",
-        "fixture evidence is not market state"
+      "supported_targets": [
+        "tw_equity",
+        "tw_etf",
+        "tw_derivative",
+        "watchlist"
       ],
-      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "supported_timing_classes": [
+        "current_bounded_observation",
+        "retrieved_snapshot",
+        "completed_session_eod",
+        "historical_series",
+        "official_settlement",
+        "fixture_only"
+      ],
+      "supported_venues": [
+        "TWSE",
+        "TPEx",
+        "TAIFEX",
+        "unknown"
+      ],
+      "underlying_capability_status": "implemented_with_caveats",
+      "underlying_runtime_available": true
+    },
+    {
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "authorization_model": "M8R-03D controlled execution authorization",
+      "authorization_required": true,
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation.",
+      "capability_id": "get_current_market_evidence",
+      "description": "AI-facing contract for get_current_market_evidence.",
+      "display_name": "Get Current Market Evidence",
+      "evidence_outputs": [
+        "coverage",
+        "missing_evidence",
+        "citations",
+        "lineage",
+        "currentness",
+        "calculation_status"
+      ],
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
       "internal_dependencies": [
         "scripts/run_m8r_03d_watchlist_controlled_execution.py",
         "tests/fixtures/m8r_03e/complete_snapshot/bundle.json"
       ],
       "internal_mapping": {
+        "current_artifact": "tests/fixtures/m8r_03e/complete_snapshot/bundle.json",
         "current_internal_producer": "scripts/run_m8r_03d_watchlist_controlled_execution.py",
         "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-        "current_artifact": "tests/fixtures/m8r_03e/complete_snapshot/bundle.json",
         "future_phase_c_api_operation": "get_current_market_evidence"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first.",
-      "ai_facing_operation_status": "contract_only",
-      "ai_facing_runtime_available": false,
-      "underlying_capability_status": "implemented_with_caveats",
-      "underlying_runtime_available": true,
-      "network_default_enabled": false,
-      "authorization_model": "M8R-03D controlled execution authorization",
-      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
-    },
-    {
-      "capability_id": "get_official_eod_reference",
-      "display_name": "Get Official Eod Reference",
-      "description": "AI-facing contract for get_official_eod_reference.",
+      "known_caveats": [
+        "retrieved_at is not exchange event time",
+        "live-ish is not zero-latency realtime",
+        "fixture evidence is not market state"
+      ],
       "maturity_status": "contract_only",
+      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "network_default_enabled": false,
       "network_required": true,
-      "authorization_required": true,
-      "supported_targets": [
-        "tw_equity",
-        "tw_etf",
-        "tw_derivative",
-        "watchlist"
-      ],
-      "supported_venues": [
-        "TWSE",
-        "TPEx",
-        "TAIFEX",
-        "unknown"
-      ],
-      "supported_timing_classes": [
-        "current_bounded_observation",
-        "retrieved_snapshot",
-        "completed_session_eod",
-        "historical_series",
-        "official_settlement",
-        "fixture_only"
-      ],
-      "evidence_outputs": [
-        "coverage",
-        "missing_evidence",
-        "citations",
-        "lineage",
-        "currentness",
-        "calculation_status"
-      ],
       "required_inputs": [
         "target",
         "timeframe",
@@ -261,66 +222,66 @@
         "TPEX_OPENAPI",
         "TAIFEX_OPENAPI"
       ],
-      "known_caveats": [
-        "retrieved_at is not exchange event time",
-        "live-ish is not zero-latency realtime",
-        "fixture evidence is not market state"
+      "supported_targets": [
+        "tw_equity",
+        "tw_etf",
+        "tw_derivative",
+        "watchlist"
       ],
-      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "supported_timing_classes": [
+        "current_bounded_observation",
+        "retrieved_snapshot",
+        "completed_session_eod",
+        "historical_series",
+        "official_settlement",
+        "fixture_only"
+      ],
+      "supported_venues": [
+        "TWSE",
+        "TPEx",
+        "TAIFEX",
+        "unknown"
+      ],
+      "underlying_capability_status": "implemented_with_caveats",
+      "underlying_runtime_available": true
+    },
+    {
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "authorization_model": "M8R-03D controlled execution authorization",
+      "authorization_required": true,
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation.",
+      "capability_id": "get_official_eod_reference",
+      "description": "AI-facing contract for get_official_eod_reference.",
+      "display_name": "Get Official Eod Reference",
+      "evidence_outputs": [
+        "coverage",
+        "missing_evidence",
+        "citations",
+        "lineage",
+        "currentness",
+        "calculation_status"
+      ],
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
       "internal_dependencies": [
         "scripts/m8r_03d_watchlist_source_integration.py",
         "docs/protocol/M8A_OFFICIAL_EOD_CONTEXT_FINAL_ACCEPTANCE.md"
       ],
       "internal_mapping": {
+        "current_artifact": "docs/protocol/M8A_OFFICIAL_EOD_CONTEXT_FINAL_ACCEPTANCE.md",
         "current_internal_producer": "scripts/m8r_03d_watchlist_source_integration.py",
         "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-        "current_artifact": "docs/protocol/M8A_OFFICIAL_EOD_CONTEXT_FINAL_ACCEPTANCE.md",
         "future_phase_c_api_operation": "get_official_eod_reference"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first.",
-      "ai_facing_operation_status": "contract_only",
-      "ai_facing_runtime_available": false,
-      "underlying_capability_status": "implemented_with_caveats",
-      "underlying_runtime_available": true,
-      "network_default_enabled": false,
-      "authorization_model": "M8R-03D controlled execution authorization",
-      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
-    },
-    {
-      "capability_id": "get_price_performance_evidence",
-      "display_name": "Get Price Performance Evidence",
-      "description": "AI-facing contract for get_price_performance_evidence.",
+      "known_caveats": [
+        "retrieved_at is not exchange event time",
+        "live-ish is not zero-latency realtime",
+        "fixture evidence is not market state"
+      ],
       "maturity_status": "contract_only",
-      "network_required": false,
-      "authorization_required": false,
-      "supported_targets": [
-        "tw_equity",
-        "tw_etf",
-        "tw_derivative",
-        "watchlist"
-      ],
-      "supported_venues": [
-        "TWSE",
-        "TPEx",
-        "TAIFEX",
-        "unknown"
-      ],
-      "supported_timing_classes": [
-        "current_bounded_observation",
-        "retrieved_snapshot",
-        "completed_session_eod",
-        "historical_series",
-        "official_settlement",
-        "fixture_only"
-      ],
-      "evidence_outputs": [
-        "coverage",
-        "missing_evidence",
-        "citations",
-        "lineage",
-        "currentness",
-        "calculation_status"
-      ],
+      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "network_default_enabled": false,
+      "network_required": true,
       "required_inputs": [
         "target",
         "timeframe",
@@ -333,66 +294,66 @@
         "TPEX_OPENAPI",
         "TAIFEX_OPENAPI"
       ],
-      "known_caveats": [
-        "retrieved_at is not exchange event time",
-        "live-ish is not zero-latency realtime",
-        "fixture evidence is not market state"
+      "supported_targets": [
+        "tw_equity",
+        "tw_etf",
+        "tw_derivative",
+        "watchlist"
       ],
-      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "supported_timing_classes": [
+        "current_bounded_observation",
+        "retrieved_snapshot",
+        "completed_session_eod",
+        "historical_series",
+        "official_settlement",
+        "fixture_only"
+      ],
+      "supported_venues": [
+        "TWSE",
+        "TPEx",
+        "TAIFEX",
+        "unknown"
+      ],
+      "underlying_capability_status": "implemented_with_caveats",
+      "underlying_runtime_available": true
+    },
+    {
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "authorization_model": "not required for non-network contract inspection",
+      "authorization_required": false,
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation.",
+      "capability_id": "get_price_performance_evidence",
+      "description": "AI-facing contract for get_price_performance_evidence.",
+      "display_name": "Get Price Performance Evidence",
+      "evidence_outputs": [
+        "coverage",
+        "missing_evidence",
+        "citations",
+        "lineage",
+        "currentness",
+        "calculation_status"
+      ],
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
       "internal_dependencies": [
         "scripts/m8r_03d_watchlist_execution_plan.py",
         "tests/fixtures/m8r_03e/performance/bundle.json"
       ],
       "internal_mapping": {
+        "current_artifact": "tests/fixtures/m8r_03e/performance/bundle.json",
         "current_internal_producer": "scripts/m8r_03d_watchlist_execution_plan.py",
         "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-        "current_artifact": "tests/fixtures/m8r_03e/performance/bundle.json",
         "future_phase_c_api_operation": "get_price_performance_evidence"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first.",
-      "ai_facing_operation_status": "contract_only",
-      "ai_facing_runtime_available": false,
-      "underlying_capability_status": "implemented_with_caveats",
-      "underlying_runtime_available": true,
-      "network_default_enabled": false,
-      "authorization_model": "not required for non-network contract inspection",
-      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
-    },
-    {
-      "capability_id": "get_derivatives_market_context",
-      "display_name": "Get Derivatives Market Context",
-      "description": "AI-facing contract for get_derivatives_market_context.",
+      "known_caveats": [
+        "retrieved_at is not exchange event time",
+        "live-ish is not zero-latency realtime",
+        "fixture evidence is not market state"
+      ],
       "maturity_status": "contract_only",
-      "network_required": true,
-      "authorization_required": true,
-      "supported_targets": [
-        "tw_equity",
-        "tw_etf",
-        "tw_derivative",
-        "watchlist"
-      ],
-      "supported_venues": [
-        "TWSE",
-        "TPEx",
-        "TAIFEX",
-        "unknown"
-      ],
-      "supported_timing_classes": [
-        "current_bounded_observation",
-        "retrieved_snapshot",
-        "completed_session_eod",
-        "historical_series",
-        "official_settlement",
-        "fixture_only"
-      ],
-      "evidence_outputs": [
-        "coverage",
-        "missing_evidence",
-        "citations",
-        "lineage",
-        "currentness",
-        "calculation_status"
-      ],
+      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "network_default_enabled": false,
+      "network_required": false,
       "required_inputs": [
         "target",
         "timeframe",
@@ -405,66 +366,66 @@
         "TPEX_OPENAPI",
         "TAIFEX_OPENAPI"
       ],
-      "known_caveats": [
-        "retrieved_at is not exchange event time",
-        "live-ish is not zero-latency realtime",
-        "fixture evidence is not market state"
+      "supported_targets": [
+        "tw_equity",
+        "tw_etf",
+        "tw_derivative",
+        "watchlist"
       ],
-      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "supported_timing_classes": [
+        "current_bounded_observation",
+        "retrieved_snapshot",
+        "completed_session_eod",
+        "historical_series",
+        "official_settlement",
+        "fixture_only"
+      ],
+      "supported_venues": [
+        "TWSE",
+        "TPEx",
+        "TAIFEX",
+        "unknown"
+      ],
+      "underlying_capability_status": "implemented_with_caveats",
+      "underlying_runtime_available": true
+    },
+    {
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "authorization_model": "M8R-03D controlled execution authorization",
+      "authorization_required": true,
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation.",
+      "capability_id": "get_derivatives_market_context",
+      "description": "AI-facing contract for get_derivatives_market_context.",
+      "display_name": "Get Derivatives Market Context",
+      "evidence_outputs": [
+        "coverage",
+        "missing_evidence",
+        "citations",
+        "lineage",
+        "currentness",
+        "calculation_status"
+      ],
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
       "internal_dependencies": [
         "docs/protocol/M8B_01_TAIFEX_OPENAPI_OFFICIAL_DERIVATIVES_EOD_FINAL_ACCEPTANCE.md",
         "docs/protocol/M8C_01_TAIFEX_MIS_BOUNDED_RUNTIME_FINAL_ACCEPTANCE.md"
       ],
       "internal_mapping": {
+        "current_artifact": "docs/protocol/M8C_01_TAIFEX_MIS_BOUNDED_RUNTIME_FINAL_ACCEPTANCE.md",
         "current_internal_producer": "docs/protocol/M8B_01_TAIFEX_OPENAPI_OFFICIAL_DERIVATIVES_EOD_FINAL_ACCEPTANCE.md",
         "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-        "current_artifact": "docs/protocol/M8C_01_TAIFEX_MIS_BOUNDED_RUNTIME_FINAL_ACCEPTANCE.md",
         "future_phase_c_api_operation": "get_derivatives_market_context"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first.",
-      "ai_facing_operation_status": "contract_only",
-      "ai_facing_runtime_available": false,
-      "underlying_capability_status": "implemented_with_caveats",
-      "underlying_runtime_available": true,
-      "network_default_enabled": false,
-      "authorization_model": "M8R-03D controlled execution authorization",
-      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
-    },
-    {
-      "capability_id": "get_security_identity_and_lifecycle",
-      "display_name": "Get Security Identity And Lifecycle",
-      "description": "AI-facing contract for get_security_identity_and_lifecycle.",
+      "known_caveats": [
+        "retrieved_at is not exchange event time",
+        "live-ish is not zero-latency realtime",
+        "fixture evidence is not market state"
+      ],
       "maturity_status": "contract_only",
-      "network_required": false,
-      "authorization_required": false,
-      "supported_targets": [
-        "tw_equity",
-        "tw_etf",
-        "tw_derivative",
-        "watchlist"
-      ],
-      "supported_venues": [
-        "TWSE",
-        "TPEx",
-        "TAIFEX",
-        "unknown"
-      ],
-      "supported_timing_classes": [
-        "current_bounded_observation",
-        "retrieved_snapshot",
-        "completed_session_eod",
-        "historical_series",
-        "official_settlement",
-        "fixture_only"
-      ],
-      "evidence_outputs": [
-        "coverage",
-        "missing_evidence",
-        "citations",
-        "lineage",
-        "currentness",
-        "calculation_status"
-      ],
+      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "network_default_enabled": false,
+      "network_required": true,
       "required_inputs": [
         "target",
         "timeframe",
@@ -477,66 +438,66 @@
         "TPEX_OPENAPI",
         "TAIFEX_OPENAPI"
       ],
-      "known_caveats": [
-        "retrieved_at is not exchange event time",
-        "live-ish is not zero-latency realtime",
-        "fixture evidence is not market state"
+      "supported_targets": [
+        "tw_equity",
+        "tw_etf",
+        "tw_derivative",
+        "watchlist"
       ],
-      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "supported_timing_classes": [
+        "current_bounded_observation",
+        "retrieved_snapshot",
+        "completed_session_eod",
+        "historical_series",
+        "official_settlement",
+        "fixture_only"
+      ],
+      "supported_venues": [
+        "TWSE",
+        "TPEx",
+        "TAIFEX",
+        "unknown"
+      ],
+      "underlying_capability_status": "implemented_with_caveats",
+      "underlying_runtime_available": true
+    },
+    {
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "authorization_model": "not required for non-network contract inspection",
+      "authorization_required": false,
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation.",
+      "capability_id": "get_security_identity_and_lifecycle",
+      "description": "AI-facing contract for get_security_identity_and_lifecycle.",
+      "display_name": "Get Security Identity And Lifecycle",
+      "evidence_outputs": [
+        "coverage",
+        "missing_evidence",
+        "citations",
+        "lineage",
+        "currentness",
+        "calculation_status"
+      ],
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
       "internal_dependencies": [
         "scripts/resolve_m8r_03d_f1_security_identity.py",
         "docs/contracts/schemas/tw_verified_security_master_snapshot.v1.schema.json"
       ],
       "internal_mapping": {
+        "current_artifact": "docs/contracts/schemas/tw_verified_security_master_snapshot.v1.schema.json",
         "current_internal_producer": "scripts/resolve_m8r_03d_f1_security_identity.py",
         "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-        "current_artifact": "docs/contracts/schemas/tw_verified_security_master_snapshot.v1.schema.json",
         "future_phase_c_api_operation": "get_security_identity_and_lifecycle"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first.",
-      "ai_facing_operation_status": "contract_only",
-      "ai_facing_runtime_available": false,
-      "underlying_capability_status": "implemented_with_caveats",
-      "underlying_runtime_available": true,
-      "network_default_enabled": false,
-      "authorization_model": "not required for non-network contract inspection",
-      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
-    },
-    {
-      "capability_id": "read_market_evidence_package",
-      "display_name": "Read Market Evidence Package",
-      "description": "AI-facing contract for read_market_evidence_package.",
+      "known_caveats": [
+        "retrieved_at is not exchange event time",
+        "live-ish is not zero-latency realtime",
+        "fixture evidence is not market state"
+      ],
       "maturity_status": "contract_only",
+      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "network_default_enabled": false,
       "network_required": false,
-      "authorization_required": false,
-      "supported_targets": [
-        "tw_equity",
-        "tw_etf",
-        "tw_derivative",
-        "watchlist"
-      ],
-      "supported_venues": [
-        "TWSE",
-        "TPEx",
-        "TAIFEX",
-        "unknown"
-      ],
-      "supported_timing_classes": [
-        "current_bounded_observation",
-        "retrieved_snapshot",
-        "completed_session_eod",
-        "historical_series",
-        "official_settlement",
-        "fixture_only"
-      ],
-      "evidence_outputs": [
-        "coverage",
-        "missing_evidence",
-        "citations",
-        "lineage",
-        "currentness",
-        "calculation_status"
-      ],
       "required_inputs": [
         "target",
         "timeframe",
@@ -549,49 +510,83 @@
         "TPEX_OPENAPI",
         "TAIFEX_OPENAPI"
       ],
-      "known_caveats": [
-        "retrieved_at is not exchange event time",
-        "live-ish is not zero-latency realtime",
-        "fixture evidence is not market state"
+      "supported_targets": [
+        "tw_equity",
+        "tw_etf",
+        "tw_derivative",
+        "watchlist"
       ],
-      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "supported_timing_classes": [
+        "current_bounded_observation",
+        "retrieved_snapshot",
+        "completed_session_eod",
+        "historical_series",
+        "official_settlement",
+        "fixture_only"
+      ],
+      "supported_venues": [
+        "TWSE",
+        "TPEx",
+        "TAIFEX",
+        "unknown"
+      ],
+      "underlying_capability_status": "implemented_with_caveats",
+      "underlying_runtime_available": true
+    },
+    {
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "authorization_model": "not required for non-network contract inspection",
+      "authorization_required": false,
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation.",
+      "capability_id": "read_market_evidence_package",
+      "description": "AI-facing contract for read_market_evidence_package.",
+      "display_name": "Read Market Evidence Package",
+      "evidence_outputs": [
+        "coverage",
+        "missing_evidence",
+        "citations",
+        "lineage",
+        "currentness",
+        "calculation_status"
+      ],
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
       "internal_dependencies": [
         "scripts/m8r_03e_watchlist_ai_context_builder.py",
         "scripts/m8r_03e_context_validator.py"
       ],
       "internal_mapping": {
+        "current_artifact": "scripts/m8r_03e_context_validator.py",
         "current_internal_producer": "scripts/m8r_03e_watchlist_ai_context_builder.py",
         "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-        "current_artifact": "scripts/m8r_03e_context_validator.py",
         "future_phase_c_api_operation": "read_market_evidence_package"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first.",
-      "ai_facing_operation_status": "contract_only",
-      "ai_facing_runtime_available": false,
-      "underlying_capability_status": "implemented_with_caveats",
-      "underlying_runtime_available": true,
-      "network_default_enabled": false,
-      "authorization_model": "not required for non-network contract inspection",
-      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
-    },
-    {
-      "capability_id": "identify_required_additional_evidence",
-      "display_name": "Identify Required Additional Evidence",
-      "description": "AI-facing contract for identify_required_additional_evidence.",
+      "known_caveats": [
+        "retrieved_at is not exchange event time",
+        "live-ish is not zero-latency realtime",
+        "fixture evidence is not market state"
+      ],
       "maturity_status": "contract_only",
+      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "network_default_enabled": false,
       "network_required": false,
-      "authorization_required": false,
+      "required_inputs": [
+        "target",
+        "timeframe",
+        "evidence_intent"
+      ],
+      "source_families": [
+        "TWSE_MIS",
+        "TAIFEX_MIS",
+        "TWSE_OPENAPI",
+        "TPEX_OPENAPI",
+        "TAIFEX_OPENAPI"
+      ],
       "supported_targets": [
         "tw_equity",
         "tw_etf",
         "tw_derivative",
         "watchlist"
-      ],
-      "supported_venues": [
-        "TWSE",
-        "TPEx",
-        "TAIFEX",
-        "unknown"
       ],
       "supported_timing_classes": [
         "current_bounded_observation",
@@ -601,6 +596,24 @@
         "official_settlement",
         "fixture_only"
       ],
+      "supported_venues": [
+        "TWSE",
+        "TPEx",
+        "TAIFEX",
+        "unknown"
+      ],
+      "underlying_capability_status": "implemented_with_caveats",
+      "underlying_runtime_available": true
+    },
+    {
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "authorization_model": "not required for non-network contract inspection",
+      "authorization_required": false,
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation.",
+      "capability_id": "identify_required_additional_evidence",
+      "description": "AI-facing contract for identify_required_additional_evidence.",
+      "display_name": "Identify Required Additional Evidence",
       "evidence_outputs": [
         "coverage",
         "missing_evidence",
@@ -609,6 +622,26 @@
         "currentness",
         "calculation_status"
       ],
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
+      "internal_dependencies": [
+        "scripts/m8r_03e_watchlist_ai_context_builder.py",
+        "tests/fixtures/m8r_03e/partial_source_failure/bundle.json"
+      ],
+      "internal_mapping": {
+        "current_artifact": "tests/fixtures/m8r_03e/partial_source_failure/bundle.json",
+        "current_internal_producer": "scripts/m8r_03e_watchlist_ai_context_builder.py",
+        "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
+        "future_phase_c_api_operation": "identify_required_additional_evidence"
+      },
+      "known_caveats": [
+        "retrieved_at is not exchange event time",
+        "live-ish is not zero-latency realtime",
+        "fixture evidence is not market state"
+      ],
+      "maturity_status": "contract_only",
+      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "network_default_enabled": false,
+      "network_required": false,
       "required_inputs": [
         "target",
         "timeframe",
@@ -621,43 +654,19 @@
         "TPEX_OPENAPI",
         "TAIFEX_OPENAPI"
       ],
-      "known_caveats": [
-        "retrieved_at is not exchange event time",
-        "live-ish is not zero-latency realtime",
-        "fixture evidence is not market state"
-      ],
-      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
-      "internal_dependencies": [
-        "scripts/m8r_03e_watchlist_ai_context_builder.py",
-        "tests/fixtures/m8r_03e/partial_source_failure/bundle.json"
-      ],
-      "internal_mapping": {
-        "current_internal_producer": "scripts/m8r_03e_watchlist_ai_context_builder.py",
-        "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-        "current_artifact": "tests/fixtures/m8r_03e/partial_source_failure/bundle.json",
-        "future_phase_c_api_operation": "identify_required_additional_evidence"
-      },
-      "future_phase": "Phase C implementation contract; R2 must complete first.",
-      "ai_facing_operation_status": "contract_only",
-      "ai_facing_runtime_available": false,
-      "underlying_capability_status": "fixture_validated",
-      "underlying_runtime_available": false,
-      "network_default_enabled": false,
-      "authorization_model": "not required for non-network contract inspection",
-      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
-    },
-    {
-      "capability_id": "request_raw_source_payload",
-      "display_name": "Request Raw Source Payload",
-      "description": "AI-facing contract for request_raw_source_payload.",
-      "maturity_status": "contract_only",
-      "network_required": false,
-      "authorization_required": true,
       "supported_targets": [
         "tw_equity",
         "tw_etf",
         "tw_derivative",
         "watchlist"
+      ],
+      "supported_timing_classes": [
+        "current_bounded_observation",
+        "retrieved_snapshot",
+        "completed_session_eod",
+        "historical_series",
+        "official_settlement",
+        "fixture_only"
       ],
       "supported_venues": [
         "TWSE",
@@ -665,9 +674,18 @@
         "TAIFEX",
         "unknown"
       ],
-      "supported_timing_classes": [
-        "fixture_only"
-      ],
+      "underlying_capability_status": "fixture_validated",
+      "underlying_runtime_available": false
+    },
+    {
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "authorization_model": "authorized audit workflow required",
+      "authorization_required": true,
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation.",
+      "capability_id": "request_raw_source_payload",
+      "description": "AI-facing contract for request_raw_source_payload.",
+      "display_name": "Request Raw Source Payload",
       "evidence_outputs": [
         "coverage",
         "missing_evidence",
@@ -676,6 +694,23 @@
         "currentness",
         "calculation_status"
       ],
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
+      "internal_dependencies": [],
+      "internal_mapping": {
+        "current_artifact": "docs/ai/m8_ai_capability_contract.json",
+        "current_internal_producer": "docs/ai/M8_AI_CAPABILITY_CONTRACT.md",
+        "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
+        "future_phase_c_api_operation": "request_raw_source_payload"
+      },
+      "known_caveats": [
+        "retrieved_at is not exchange event time",
+        "live-ish is not zero-latency realtime",
+        "fixture evidence is not market state"
+      ],
+      "maturity_status": "contract_only",
+      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
+      "network_default_enabled": false,
+      "network_required": false,
       "required_inputs": [
         "target",
         "timeframe",
@@ -688,311 +723,24 @@
         "TPEX_OPENAPI",
         "TAIFEX_OPENAPI"
       ],
-      "known_caveats": [
-        "retrieved_at is not exchange event time",
-        "live-ish is not zero-latency realtime",
-        "fixture evidence is not market state"
+      "supported_targets": [
+        "tw_equity",
+        "tw_etf",
+        "tw_derivative",
+        "watchlist"
       ],
-      "missing_evidence_behavior": "Return missing_evidence with sufficiency status; do not invent facts or identity.",
-      "internal_dependencies": [],
-      "internal_mapping": {
-        "current_internal_producer": "docs/ai/M8_AI_CAPABILITY_CONTRACT.md",
-        "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-        "current_artifact": "docs/ai/m8_ai_capability_contract.json",
-        "future_phase_c_api_operation": "request_raw_source_payload"
-      },
-      "future_phase": "Phase C implementation contract; R2 must complete first.",
-      "ai_facing_operation_status": "contract_only",
-      "ai_facing_runtime_available": false,
+      "supported_timing_classes": [
+        "fixture_only"
+      ],
+      "supported_venues": [
+        "TWSE",
+        "TPEx",
+        "TAIFEX",
+        "unknown"
+      ],
       "underlying_capability_status": "unavailable",
-      "underlying_runtime_available": false,
-      "network_default_enabled": false,
-      "authorization_model": "authorized audit workflow required",
-      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
+      "underlying_runtime_available": false
     }
-  ],
-  "timing_classes": {
-    "live": {
-      "meaning": "live",
-      "timestamp_fields": [
-        "retrieved_at",
-        "source_time",
-        "exchange_time when available"
-      ],
-      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time.",
-      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime."
-    },
-    "liveish_intraday_snapshot": {
-      "meaning": "liveish intraday snapshot",
-      "timestamp_fields": [
-        "retrieved_at",
-        "source_time",
-        "exchange_time when available"
-      ],
-      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time.",
-      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime."
-    },
-    "current_bounded_observation": {
-      "meaning": "current bounded observation",
-      "timestamp_fields": [
-        "retrieved_at",
-        "source_time",
-        "exchange_time when available"
-      ],
-      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time.",
-      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime."
-    },
-    "retrieved_snapshot": {
-      "meaning": "retrieved snapshot",
-      "timestamp_fields": [
-        "retrieved_at",
-        "source_time",
-        "exchange_time when available"
-      ],
-      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time.",
-      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime."
-    },
-    "completed_session_eod": {
-      "meaning": "completed session eod",
-      "timestamp_fields": [
-        "retrieved_at",
-        "source_time",
-        "exchange_time when available"
-      ],
-      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time.",
-      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime."
-    },
-    "official_settlement": {
-      "meaning": "official settlement",
-      "timestamp_fields": [
-        "retrieved_at",
-        "source_time",
-        "exchange_time when available"
-      ],
-      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time.",
-      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime."
-    },
-    "historical_series": {
-      "meaning": "historical series",
-      "timestamp_fields": [
-        "retrieved_at",
-        "source_time",
-        "exchange_time when available"
-      ],
-      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time.",
-      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime."
-    },
-    "fixture_only": {
-      "meaning": "fixture only",
-      "timestamp_fields": [
-        "retrieved_at",
-        "source_time",
-        "exchange_time when available"
-      ],
-      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time.",
-      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime."
-    },
-    "unknown": {
-      "meaning": "unknown",
-      "timestamp_fields": [
-        "retrieved_at",
-        "source_time",
-        "exchange_time when available"
-      ],
-      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time.",
-      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime."
-    }
-  },
-  "source_authority_classes": {
-    "official_exchange_current": {
-      "authority_level": "official_exchange_current",
-      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
-      "limitations": "May require caveats; credentials/secrets never exposed.",
-      "can_serve_as_primary_evidence": true
-    },
-    "official_exchange_eod": {
-      "authority_level": "official_exchange_eod",
-      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
-      "limitations": "May require caveats; credentials/secrets never exposed.",
-      "can_serve_as_primary_evidence": true
-    },
-    "official_government": {
-      "authority_level": "official_government",
-      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
-      "limitations": "May require caveats; credentials/secrets never exposed.",
-      "can_serve_as_primary_evidence": true
-    },
-    "official_issuer": {
-      "authority_level": "official_issuer",
-      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
-      "limitations": "May require caveats; credentials/secrets never exposed.",
-      "can_serve_as_primary_evidence": true
-    },
-    "credential_gated_provider": {
-      "authority_level": "credential_gated_provider",
-      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
-      "limitations": "May require caveats; credentials/secrets never exposed.",
-      "can_serve_as_primary_evidence": false
-    },
-    "external_validation_only": {
-      "authority_level": "external_validation_only",
-      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
-      "limitations": "May require caveats; credentials/secrets never exposed.",
-      "can_serve_as_primary_evidence": false
-    },
-    "manual_operator_evidence": {
-      "authority_level": "manual_operator_evidence",
-      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
-      "limitations": "May require caveats; credentials/secrets never exposed.",
-      "can_serve_as_primary_evidence": false
-    },
-    "fixture": {
-      "authority_level": "fixture",
-      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
-      "limitations": "May require caveats; credentials/secrets never exposed.",
-      "can_serve_as_primary_evidence": false
-    },
-    "derived_calculation": {
-      "authority_level": "derived_calculation",
-      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
-      "limitations": "May require caveats; credentials/secrets never exposed.",
-      "can_serve_as_primary_evidence": true
-    }
-  },
-  "sufficiency_statuses": {
-    "sufficient": {
-      "meaning": "sufficient",
-      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing.",
-      "invoke_another_capability": false,
-      "can_proceed_with_bounded_analysis": true
-    },
-    "sufficient_with_caveats": {
-      "meaning": "sufficient with caveats",
-      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing.",
-      "invoke_another_capability": false,
-      "can_proceed_with_bounded_analysis": true
-    },
-    "partial": {
-      "meaning": "partial",
-      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing.",
-      "invoke_another_capability": true,
-      "can_proceed_with_bounded_analysis": true
-    },
-    "requires_additional_evidence": {
-      "meaning": "requires additional evidence",
-      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing.",
-      "invoke_another_capability": true,
-      "can_proceed_with_bounded_analysis": true
-    },
-    "unavailable": {
-      "meaning": "unavailable",
-      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing.",
-      "invoke_another_capability": true,
-      "can_proceed_with_bounded_analysis": false
-    },
-    "blocked": {
-      "meaning": "blocked",
-      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing.",
-      "invoke_another_capability": true,
-      "can_proceed_with_bounded_analysis": false
-    }
-  },
-  "calculation_semantics": {
-    "price_change": {
-      "status": "implemented_with_caveats",
-      "method": "end minus start using cited inputs"
-    },
-    "percentage_change": {
-      "status": "implemented_with_caveats",
-      "method": "price_change / reference price"
-    },
-    "unadjusted_return": {
-      "status": "implemented_with_caveats",
-      "adjustment_status": "unadjusted; not total return; dividends and corporate actions may affect interpretation"
-    },
-    "range_position": {
-      "status": "planned"
-    },
-    "average_volume": {
-      "status": "planned"
-    },
-    "relative_volume": {
-      "status": "planned"
-    },
-    "official_settlement_comparison": {
-      "status": "implemented_with_caveats"
-    },
-    "spot_derivatives_timing_comparison": {
-      "status": "planned"
-    }
-  },
-  "internal_mappings": {
-    "describe_market_capabilities": {
-      "current_internal_producer": "docs/ai/M8_AI_CAPABILITY_CONTRACT.md",
-      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-      "current_artifact": "docs/ai/m8_ai_capability_contract.json",
-      "future_phase_c_api_operation": "describe_market_capabilities"
-    },
-    "resolve_market_targets": {
-      "current_internal_producer": "scripts/resolve_m8r_03d_f1_security_identity.py",
-      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-      "current_artifact": "tests/fixtures/m8r_03d_f1/snapshot.json",
-      "future_phase_c_api_operation": "resolve_market_targets"
-    },
-    "get_current_market_evidence": {
-      "current_internal_producer": "scripts/run_m8r_03d_watchlist_controlled_execution.py",
-      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-      "current_artifact": "tests/fixtures/m8r_03e/complete_snapshot/bundle.json",
-      "future_phase_c_api_operation": "get_current_market_evidence"
-    },
-    "get_official_eod_reference": {
-      "current_internal_producer": "scripts/m8r_03d_watchlist_source_integration.py",
-      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-      "current_artifact": "docs/protocol/M8A_OFFICIAL_EOD_CONTEXT_FINAL_ACCEPTANCE.md",
-      "future_phase_c_api_operation": "get_official_eod_reference"
-    },
-    "get_price_performance_evidence": {
-      "current_internal_producer": "scripts/m8r_03d_watchlist_execution_plan.py",
-      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-      "current_artifact": "tests/fixtures/m8r_03e/performance/bundle.json",
-      "future_phase_c_api_operation": "get_price_performance_evidence"
-    },
-    "get_derivatives_market_context": {
-      "current_internal_producer": "docs/protocol/M8B_01_TAIFEX_OPENAPI_OFFICIAL_DERIVATIVES_EOD_FINAL_ACCEPTANCE.md",
-      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-      "current_artifact": "docs/protocol/M8C_01_TAIFEX_MIS_BOUNDED_RUNTIME_FINAL_ACCEPTANCE.md",
-      "future_phase_c_api_operation": "get_derivatives_market_context"
-    },
-    "get_security_identity_and_lifecycle": {
-      "current_internal_producer": "scripts/resolve_m8r_03d_f1_security_identity.py",
-      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-      "current_artifact": "docs/contracts/schemas/tw_verified_security_master_snapshot.v1.schema.json",
-      "future_phase_c_api_operation": "get_security_identity_and_lifecycle"
-    },
-    "read_market_evidence_package": {
-      "current_internal_producer": "scripts/m8r_03e_watchlist_ai_context_builder.py",
-      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-      "current_artifact": "scripts/m8r_03e_context_validator.py",
-      "future_phase_c_api_operation": "read_market_evidence_package"
-    },
-    "identify_required_additional_evidence": {
-      "current_internal_producer": "scripts/m8r_03e_watchlist_ai_context_builder.py",
-      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-      "current_artifact": "tests/fixtures/m8r_03e/partial_source_failure/bundle.json",
-      "future_phase_c_api_operation": "identify_required_additional_evidence"
-    },
-    "request_raw_source_payload": {
-      "current_internal_producer": "docs/ai/M8_AI_CAPABILITY_CONTRACT.md",
-      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
-      "current_artifact": "docs/ai/m8_ai_capability_contract.json",
-      "future_phase_c_api_operation": "request_raw_source_payload"
-    }
-  },
-  "known_limitations": [
-    "Unified Market Evidence Tool API not implemented",
-    "MCP not implemented",
-    "R2 filesystem containment hardening remains mandatory",
-    "M8R-03E compatibility fields remain pending migration"
   ],
   "deprecated_ai_behavior_fields": [
     "no_recommendation",
@@ -1001,20 +749,272 @@
     "recommendation_allowed=false",
     "trading_signal_allowed=false"
   ],
+  "generated_at_utc": "2026-07-16T00:00:00Z",
+  "internal_mappings": {
+    "describe_market_capabilities": {
+      "current_artifact": "docs/ai/m8_ai_capability_contract.json",
+      "current_internal_producer": "docs/ai/M8_AI_CAPABILITY_CONTRACT.md",
+      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
+      "future_phase_c_api_operation": "describe_market_capabilities"
+    },
+    "get_current_market_evidence": {
+      "current_artifact": "tests/fixtures/m8r_03e/complete_snapshot/bundle.json",
+      "current_internal_producer": "scripts/run_m8r_03d_watchlist_controlled_execution.py",
+      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
+      "future_phase_c_api_operation": "get_current_market_evidence"
+    },
+    "get_derivatives_market_context": {
+      "current_artifact": "docs/protocol/M8C_01_TAIFEX_MIS_BOUNDED_RUNTIME_FINAL_ACCEPTANCE.md",
+      "current_internal_producer": "docs/protocol/M8B_01_TAIFEX_OPENAPI_OFFICIAL_DERIVATIVES_EOD_FINAL_ACCEPTANCE.md",
+      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
+      "future_phase_c_api_operation": "get_derivatives_market_context"
+    },
+    "get_official_eod_reference": {
+      "current_artifact": "docs/protocol/M8A_OFFICIAL_EOD_CONTEXT_FINAL_ACCEPTANCE.md",
+      "current_internal_producer": "scripts/m8r_03d_watchlist_source_integration.py",
+      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
+      "future_phase_c_api_operation": "get_official_eod_reference"
+    },
+    "get_price_performance_evidence": {
+      "current_artifact": "tests/fixtures/m8r_03e/performance/bundle.json",
+      "current_internal_producer": "scripts/m8r_03d_watchlist_execution_plan.py",
+      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
+      "future_phase_c_api_operation": "get_price_performance_evidence"
+    },
+    "get_security_identity_and_lifecycle": {
+      "current_artifact": "docs/contracts/schemas/tw_verified_security_master_snapshot.v1.schema.json",
+      "current_internal_producer": "scripts/resolve_m8r_03d_f1_security_identity.py",
+      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
+      "future_phase_c_api_operation": "get_security_identity_and_lifecycle"
+    },
+    "identify_required_additional_evidence": {
+      "current_artifact": "tests/fixtures/m8r_03e/partial_source_failure/bundle.json",
+      "current_internal_producer": "scripts/m8r_03e_watchlist_ai_context_builder.py",
+      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
+      "future_phase_c_api_operation": "identify_required_additional_evidence"
+    },
+    "read_market_evidence_package": {
+      "current_artifact": "scripts/m8r_03e_context_validator.py",
+      "current_internal_producer": "scripts/m8r_03e_watchlist_ai_context_builder.py",
+      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
+      "future_phase_c_api_operation": "read_market_evidence_package"
+    },
+    "request_raw_source_payload": {
+      "current_artifact": "docs/ai/m8_ai_capability_contract.json",
+      "current_internal_producer": "docs/ai/M8_AI_CAPABILITY_CONTRACT.md",
+      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
+      "future_phase_c_api_operation": "request_raw_source_payload"
+    },
+    "resolve_market_targets": {
+      "current_artifact": "tests/fixtures/m8r_03d_f1/snapshot.json",
+      "current_internal_producer": "scripts/resolve_m8r_03d_f1_security_identity.py",
+      "current_validator": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
+      "future_phase_c_api_operation": "resolve_market_targets"
+    }
+  },
+  "known_limitations": [
+    "Unified Market Evidence Tool API not implemented",
+    "MCP not implemented",
+    "R2 filesystem containment hardening remains mandatory",
+    "M8R-03E compatibility fields remain pending migration"
+  ],
   "phase_dependencies": {
-    "Phase C": "blocked_until_M8R-03E-R2-complete"
+    "Phase C": "blocked_pending_M8R-03E-R3-critical-subset"
   },
   "raw_payload_exposure_allowed": false,
-  "recommended_next_task": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
-  "availability_semantics": {
-    "ai_facing_runtime_available": "Only true when actual callable AI-facing operation with defined I/O exists; all F1 operations are false.",
-    "underlying_runtime_available": "Represents existing repository producer/executor availability, separate from Phase C operation availability.",
-    "network_required": "Network-capable underlying producers require existing controlled execution authorization and are disabled by default in F1."
-  },
+  "recommended_next_task": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
   "recommended_successor_after_m8r_03e": {
-    "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION",
+    "reason": "R2 filesystem containment remediation is the only active successor before Phase C.",
     "status": "historical_superseded",
     "superseded_by": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
-    "reason": "R2 filesystem containment remediation is the only active successor before Phase C."
+    "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION"
+  },
+  "schema_version": "1.0",
+  "source_authority_classes": {
+    "credential_gated_provider": {
+      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
+      "authority_level": "credential_gated_provider",
+      "can_serve_as_primary_evidence": false,
+      "limitations": "May require caveats; credentials/secrets never exposed."
+    },
+    "derived_calculation": {
+      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
+      "authority_level": "derived_calculation",
+      "can_serve_as_primary_evidence": true,
+      "limitations": "May require caveats; credentials/secrets never exposed."
+    },
+    "external_validation_only": {
+      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
+      "authority_level": "external_validation_only",
+      "can_serve_as_primary_evidence": false,
+      "limitations": "May require caveats; credentials/secrets never exposed."
+    },
+    "fixture": {
+      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
+      "authority_level": "fixture",
+      "can_serve_as_primary_evidence": false,
+      "limitations": "May require caveats; credentials/secrets never exposed."
+    },
+    "manual_operator_evidence": {
+      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
+      "authority_level": "manual_operator_evidence",
+      "can_serve_as_primary_evidence": false,
+      "limitations": "May require caveats; credentials/secrets never exposed."
+    },
+    "official_exchange_current": {
+      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
+      "authority_level": "official_exchange_current",
+      "can_serve_as_primary_evidence": true,
+      "limitations": "May require caveats; credentials/secrets never exposed."
+    },
+    "official_exchange_eod": {
+      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
+      "authority_level": "official_exchange_eod",
+      "can_serve_as_primary_evidence": true,
+      "limitations": "May require caveats; credentials/secrets never exposed."
+    },
+    "official_government": {
+      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
+      "authority_level": "official_government",
+      "can_serve_as_primary_evidence": true,
+      "limitations": "May require caveats; credentials/secrets never exposed."
+    },
+    "official_issuer": {
+      "appropriate_uses": "Primary evidence only for matching source authority; fixture for tests only.",
+      "authority_level": "official_issuer",
+      "can_serve_as_primary_evidence": true,
+      "limitations": "May require caveats; credentials/secrets never exposed."
+    }
+  },
+  "sufficiency_statuses": {
+    "blocked": {
+      "can_proceed_with_bounded_analysis": false,
+      "invoke_another_capability": true,
+      "meaning": "blocked",
+      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing."
+    },
+    "partial": {
+      "can_proceed_with_bounded_analysis": true,
+      "invoke_another_capability": true,
+      "meaning": "partial",
+      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing."
+    },
+    "requires_additional_evidence": {
+      "can_proceed_with_bounded_analysis": true,
+      "invoke_another_capability": true,
+      "meaning": "requires additional evidence",
+      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing."
+    },
+    "sufficient": {
+      "can_proceed_with_bounded_analysis": true,
+      "invoke_another_capability": false,
+      "meaning": "sufficient",
+      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing."
+    },
+    "sufficient_with_caveats": {
+      "can_proceed_with_bounded_analysis": true,
+      "invoke_another_capability": false,
+      "meaning": "sufficient with caveats",
+      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing."
+    },
+    "unavailable": {
+      "can_proceed_with_bounded_analysis": false,
+      "invoke_another_capability": true,
+      "meaning": "unavailable",
+      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing."
+    }
+  },
+  "task_id": "M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT",
+  "timing_classes": {
+    "completed_session_eod": {
+      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime.",
+      "meaning": "completed session eod",
+      "timestamp_fields": [
+        "retrieved_at",
+        "source_time",
+        "exchange_time when available"
+      ],
+      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time."
+    },
+    "current_bounded_observation": {
+      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime.",
+      "meaning": "current bounded observation",
+      "timestamp_fields": [
+        "retrieved_at",
+        "source_time",
+        "exchange_time when available"
+      ],
+      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time."
+    },
+    "fixture_only": {
+      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime.",
+      "meaning": "fixture only",
+      "timestamp_fields": [
+        "retrieved_at",
+        "source_time",
+        "exchange_time when available"
+      ],
+      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time."
+    },
+    "historical_series": {
+      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime.",
+      "meaning": "historical series",
+      "timestamp_fields": [
+        "retrieved_at",
+        "source_time",
+        "exchange_time when available"
+      ],
+      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time."
+    },
+    "live": {
+      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime.",
+      "meaning": "live",
+      "timestamp_fields": [
+        "retrieved_at",
+        "source_time",
+        "exchange_time when available"
+      ],
+      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time."
+    },
+    "liveish_intraday_snapshot": {
+      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime.",
+      "meaning": "liveish intraday snapshot",
+      "timestamp_fields": [
+        "retrieved_at",
+        "source_time",
+        "exchange_time when available"
+      ],
+      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time."
+    },
+    "official_settlement": {
+      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime.",
+      "meaning": "official settlement",
+      "timestamp_fields": [
+        "retrieved_at",
+        "source_time",
+        "exchange_time when available"
+      ],
+      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time."
+    },
+    "retrieved_snapshot": {
+      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime.",
+      "meaning": "retrieved snapshot",
+      "timestamp_fields": [
+        "retrieved_at",
+        "source_time",
+        "exchange_time when available"
+      ],
+      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time."
+    },
+    "unknown": {
+      "cautions": "Do not convert EOD close or settlement into current price; live-ish is not guaranteed realtime.",
+      "meaning": "unknown",
+      "timestamp_fields": [
+        "retrieved_at",
+        "source_time",
+        "exchange_time when available"
+      ],
+      "valid_comparisons": "Only compare aligned timing classes; retrieved_at is retrieval time, not exchange event time."
+    }
   }
 }

@@ -12,7 +12,7 @@
     "status": "pass"
   },
   "baseline_sha": "1c2144498b524e52b2bf21fce8ed00683d9eb3a7",
-  "combined_pr_disposition": "REQUEST_CHANGES_PENDING_MANUAL_OR_RELEASE_WINDOWS_EVIDENCE",
+  "combined_pr_disposition": "APPROVE_WITH_CAVEATS",
   "github_actions_policy": "NO_GITHUB_CI",
   "github_runner_execution": "not_performed",
   "github_workflows_triggered": [],
@@ -25,8 +25,11 @@
     "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
     "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
   ],
+  "phase_c_gate_status": "blocked_pending_R3_critical_subset",
+  "phase_c_status": "blocked_pending_M8R-03E-R3-critical-subset",
   "r2_disposition": "GO_WITH_CAVEATS",
   "r2_f0_disposition": "GO_WITH_CAVEATS",
+  "recommended_next_task": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
   "remaining_limitations": [
     "portable TOCTOU best effort",
     "Windows junction/reparse-point protection not claimed unless separately exercised"
