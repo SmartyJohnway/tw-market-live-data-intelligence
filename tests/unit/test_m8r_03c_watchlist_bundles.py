@@ -94,7 +94,7 @@ def test_currentness_missing_evidence_emitted():
 
 def test_registry_successor_fields_aligned():
     reg=json.loads(Path('docs/data_capabilities/m8_source_capability_registry.json').read_text())
-    nxt='M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP'
+    nxt='M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING'
     assert reg['recommended_next_task']==nxt
     assert reg['registry_successor']==nxt
     assert reg['m8_active_consolidated_status']['recommended_next_task']==nxt

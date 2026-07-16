@@ -14,11 +14,9 @@ def _reject_url(p):
 def load(p): return json.loads(_reject_url(p).read_text(encoding='utf-8'))
 def _safe_root(root):
     return validate_authorized_root(root)
-def atomic_write(path:Path, text:str):
-    root = getattr(atomic_write, '_authorized_root', path.parent)
-    rel = path.relative_to(root)
-    atomic_write_text(root, rel, text)
-def dump(path,obj): atomic_write(path,json.dumps(obj,ensure_ascii=False,sort_keys=True,indent=2)+'\n')
+def atomic_write(root:Path, path:Path, text:str):
+    atomic_write_text(root, path.relative_to(root), text)
+def dump(root:Path, path:Path, obj): atomic_write(root,path,json.dumps(obj,ensure_ascii=False,sort_keys=True,indent=2)+'\n')
 
 def main(argv=None):
     ap=argparse.ArgumentParser(); ap.add_argument('--request',required=True); ap.add_argument('--execution-plan',required=True); ap.add_argument('--execution-result',required=True); ap.add_argument('--bundle',required=True); ap.add_argument('--output-root',required=True); ap.add_argument('--generated-at-utc',required=True); ap.add_argument('--context-policy'); ap.add_argument('--allow-overwrite',action='store_true')
@@ -30,7 +28,6 @@ def main(argv=None):
         run=run_dest.path
         if run.exists() and not a.allow_overwrite: raise FileExistsError('output_run_directory_exists')
         run.mkdir(parents=True,exist_ok=a.allow_overwrite)
-        atomic_write._authorized_root = out
         uv=validate_m8r_03e_upstream_artifacts(validated_request=req,execution_plan=plan,execution_result=res,watchlist_bundle=bundle)
         if not uv['valid']: raise ValueError('upstream_artifact_validation_failed')
         pkg=build_watchlist_ai_context_package(validated_request=req,execution_plan=plan,execution_result=res,watchlist_bundle=bundle,generated_at_utc=a.generated_at_utc,context_policy=policy)
@@ -42,7 +39,7 @@ def main(argv=None):
         vh=validate_watchlist_conversation_handoff(hand,context_package=pkg); vm=validate_watchlist_ai_context_manifest(man,context_package=pkg,handoff=hand,upstream_artifacts=upstream)
         if not (vp['valid'] and vh['valid'] and vm['valid']):
             man['validation_status']='failed'; man['validation_issues']=vp['issues']+vh['issues']+vm['issues']
-        dump(run/'watchlist_ai_context.json',pkg); dump(run/'watchlist_conversation_handoff.json',hand); dump(run/'watchlist_ai_context_manifest.json',man); atomic_write(run/'watchlist_ai_context_preview.md',preview)
+        dump(out,run/'watchlist_ai_context.json',pkg); dump(out,run/'watchlist_conversation_handoff.json',hand); dump(out,run/'watchlist_ai_context_manifest.json',man); atomic_write(out,run/'watchlist_ai_context_preview.md',preview)
         # re-read and validate hashes
         pkg2=load(run/'watchlist_ai_context.json'); hand2=load(run/'watchlist_conversation_handoff.json'); man2=load(run/'watchlist_ai_context_manifest.json')
         ok=validate_watchlist_ai_context_package(pkg2,upstream_artifacts=upstream)['valid'] and validate_watchlist_conversation_handoff(hand2,context_package=pkg2)['valid'] and validate_watchlist_ai_context_manifest(man2,context_package=pkg2,handoff=hand2,upstream_artifacts=upstream)['valid']

@@ -441,6 +441,20 @@
       "browser_policy": "not required",
       "live_policy": "never executes live checks",
       "automatic_ci_allowed": false
+    },
+    "component-architecture": {
+      "purpose": "R3 architecture boundaries, policy/evidence decoupling, contract mirror, and execution-state isolation.",
+      "execution_type": "pytest",
+      "pytest_expression": "not network and not browser and not live",
+      "pytest_paths": [
+        "tests/unit/test_m8r_03e_r3_architecture_boundaries.py",
+        "tests/unit/test_m8r_03e_r3_policy_evidence_decoupling.py",
+        "tests/unit/test_m8r_03e_r3_contract_source_of_truth.py"
+      ],
+      "network_policy": "no network",
+      "browser_policy": "not required",
+      "live_policy": "never executes live checks",
+      "automatic_ci_allowed": false
     }
   }
 }

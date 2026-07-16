@@ -1,0 +1,3 @@
+# M8R-03E R3 AI policy and evidence schema migration
+
+The package schema remains `v1` because the existing schema permits additional properties and this repository has no external versioned consumer release. This is nevertheless a **consumer-visible breaking field migration**: old `prohibitions` becomes evidence-only `evidence_limitations`; `prohibited_inferences` becomes `calculation_limitations`; `conversation_scope` and `allowed_interpretations` move to AgentPolicy. Historical fields in older inventories remain deprecated compatibility records and are not active evidence truth. See the machine-readable map for consumers and removal timing.

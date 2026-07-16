@@ -161,7 +161,7 @@ def validate_watchlist_ai_context_manifest(manifest:dict, *, context_package:dic
     if manifest.get('schema_bundle_sha256')!=schema_bundle_sha256(): issues.append({'code':'schema_hash_mismatch'})
     up=manifest.get('upstream',{})
     if up.get('request_id')!=context_package.get('request',{}).get('request_id'): issues.append({'code':'upstream_id_mismatch'})
-    expected_counts={'target_count':len(context_package.get('targets',[])),'fact_count':len(material_fact_paths(context_package)),'citation_count':len(context_package.get('citation_index',[])),'missing_evidence_count':len(context_package.get('missing_evidence',[])),'caveat_count':len(context_package.get('caveats',[])),'prohibition_count':len(context_package.get('prohibitions',[]))}
+    expected_counts={'target_count':len(context_package.get('targets',[])),'fact_count':len(material_fact_paths(context_package)),'citation_count':len(context_package.get('citation_index',[])),'missing_evidence_count':len(context_package.get('missing_evidence',[])),'caveat_count':len(context_package.get('caveats',[])),'evidence_limitation_count':len(context_package.get('evidence_limitations',[]))}
     for k,v in expected_counts.items():
         if (manifest.get('counts') or {}).get(k)!=v: issues.append({'code':'manifest_count_mismatch','field':k})
     if upstream_artifacts:

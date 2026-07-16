@@ -52,7 +52,7 @@ def test_partial_all_failure_and_blocked_handoff():
 def test_performance_uses_upstream_unadjusted_and_insufficient_not_zero():
     *_,pkg,hand,man=build('performance')
     assert any(t['performance'] for t in pkg['targets'])
-    assert any(p['code']=='do_not_claim_adjusted_return' for p in pkg['prohibitions'])
+    assert any(p['code']=='unadjusted_completed_eod_price_return' for p in pkg['evidence_limitations'])
     assert not any(t['performance'].get('unadjusted_price_return') == 0 for t in pkg['targets'] if t['coverage']['evidence_states']['performance']=='unavailable')
 
 def test_security_forbidden_recursive_rejected():

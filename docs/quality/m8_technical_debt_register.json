@@ -17,15 +17,16 @@
       "recommended_action": "Add schema migration to evidence-oriented fields and move behavior guidance to Agent Skill/deployment policy.",
       "risk": "Agent behavior remains coupled to evidence package compatibility fields.",
       "severity": "P1",
-      "status": "open",
-      "target_remediation_task": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP"
+      "status": "corrected_in_r3",
+      "target_remediation_task": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
+      "blocking_condition": null,
+      "resolution_ref": "docs/protocol/M8R_03E_R3_ARCHITECTURE_AND_CODE_HEALTH_CLEANUP.md"
     },
     {
       "affected_paths": [
         "scripts/run_m8r_03e_watchlist_ai_context_handoff.py"
       ],
-      "blocking_condition": "before any new artifact-write, filesystem, API, MCP, or execution surface",
-      "blocking_phase": "Phase C",
+      "blocking_phase": null,
       "category": "security",
       "debt_id": "M8-DEBT-0002",
       "evidence": [

@@ -19,11 +19,10 @@ def _safe_root(root):
     p=PurePosixPath(str(root))
     if '..' in p.parts or any(x in p.parts for x in ('.env','secrets','credentials')): raise ValueError('unsafe_artifact_root')
     return validate_authorized_root(root)
-def _write_json(path:Path,data:Any):
+def _write_json(root:Path, path:Path, data:Any):
     text=json.dumps(data,ensure_ascii=False,sort_keys=True,indent=2)
     low=text.lower()
     if any(t.lower() in low for t in FORBIDDEN_ARTIFACT_TOKENS): raise ValueError('forbidden_artifact_content')
-    root = getattr(_write_json, '_authorized_root', path.parent)
     atomic_write_text(root, path.relative_to(root), text+'\n')
 
 def preflight(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, security_master=None):
@@ -151,23 +150,22 @@ def _normalize_checked(fam, row, target, retrieved_at):
 def _result(run_id,mode,started,completed,request,plan,auth,observations,bundle,status,issues,artifact_root_path,target_results=None,source_execution_summary=None,write=True):
     artifact_root_path = artifact_root_path if isinstance(artifact_root_path, Path) else _safe_root(artifact_root_path)
     root=safe_destination(artifact_root_path, run_id, create_parent=True).path
-    _write_json._authorized_root = artifact_root_path
     paths={}; final_status=status; final_issues=list(issues or [])
     if write:
         try:
-            _write_json(root/'validated_request.json',request); paths['validated_request']=str(root/'validated_request.json')
-            _write_json(root/'execution_plan.json',plan); paths['execution_plan']=str(root/'execution_plan.json')
-            if auth: _write_json(root/'authorization.json',auth); paths['authorization']=str(root/'authorization.json')
-            _write_json(root/'normalized_observations.json',observations); paths['normalized_observations']=str(root/'normalized_observations.json')
+            _write_json(artifact_root_path,root/'validated_request.json',request); paths['validated_request']=str(root/'validated_request.json')
+            _write_json(artifact_root_path,root/'execution_plan.json',plan); paths['execution_plan']=str(root/'execution_plan.json')
+            if auth: _write_json(artifact_root_path,root/'authorization.json',auth); paths['authorization']=str(root/'authorization.json')
+            _write_json(artifact_root_path,root/'normalized_observations.json',observations); paths['normalized_observations']=str(root/'normalized_observations.json')
             if bundle:
                 name='watchlist_snapshot_bundle.json' if bundle['schema_version'].endswith('snapshot_bundle.v1') else 'watchlist_performance_bundle.json'
-                _write_json(root/name,bundle); paths['bundle']=str(root/name)
+                _write_json(artifact_root_path,root/name,bundle); paths['bundle']=str(root/name)
         except Exception as exc:
             paths={}; final_status='bundle_validation_failed' if status in {'success','success_with_partial_coverage'} else status
             final_issues.append({'code':'artifact_write_failed','detail':str(exc)[:120]})
     summary=source_execution_summary or {'planned_source_call_groups':plan.get('source_call_groups',[]),'group_results':[],'network_default_enabled':False,'polling':False,'scheduler':False}
     result={'schema_version':RESULT_SCHEMA_VERSION,'run_id':run_id,'authorization_id':(auth or {}).get('authorization_id'),'request_id':request.get('request_id'),'request_hash':plan.get('request_hash'),'plan_id':plan.get('plan_id'),'mode':mode,'started_at_utc':started,'completed_at_utc':completed,'source_execution_summary':summary,'target_results':target_results or [],'observation_count':len(observations),'bundle_artifact':paths.get('bundle'),'status':final_status,'issues':final_issues,'artifact_paths':paths}
     if write and paths:
-        try: _write_json(root/'execution_result.json',result)
+        try: _write_json(artifact_root_path,root/'execution_result.json',result)
         except Exception as exc: result['status']='bundle_validation_failed'; result['issues'].append({'code':'artifact_write_failed','detail':str(exc)[:120]})
     return result

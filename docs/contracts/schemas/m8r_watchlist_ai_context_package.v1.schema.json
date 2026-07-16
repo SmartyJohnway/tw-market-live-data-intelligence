@@ -125,10 +125,6 @@
       "pattern": "^m8r03e-context-[0-9a-f]{16}$",
       "type": "string"
     },
-    "conversation_scope": {
-      "additionalProperties": true,
-      "type": "object"
-    },
     "coverage_summary": {
       "additionalProperties": true,
       "properties": {
@@ -256,41 +252,6 @@
       "pattern": "^[0-9a-f]{64}$",
       "type": "string"
     },
-    "prohibitions": {
-      "items": {
-        "additionalProperties": false,
-        "properties": {
-          "code": {
-            "type": "string"
-          },
-          "reason": {
-            "type": "string"
-          },
-          "scope": {
-            "enum": [
-              "global",
-              "target",
-              "package"
-            ],
-            "type": "string"
-          },
-          "target_id": {
-            "pattern": "^(TWSE|TPEX):[A-Z0-9._-]{1,20}$",
-            "type": [
-              "string",
-              "null"
-            ]
-          }
-        },
-        "required": [
-          "code",
-          "scope",
-          "reason"
-        ],
-        "type": "object"
-      },
-      "type": "array"
-    },
     "request": {
       "additionalProperties": true,
       "properties": {
@@ -339,9 +300,6 @@
       "items": {
         "additionalProperties": true,
         "properties": {
-          "allowed_interpretations": {
-            "type": "array"
-          },
           "caveats": {
             "type": "array"
           },
@@ -472,9 +430,6 @@
           "performance": {
             "type": "object"
           },
-          "prohibited_inferences": {
-            "type": "array"
-          },
           "target_id": {
             "pattern": "^(TWSE|TPEX):[A-Z0-9._-]{1,20}$",
             "type": [
@@ -485,6 +440,9 @@
           "target_position": {
             "minimum": 0,
             "type": "integer"
+          },
+          "calculation_limitations": {
+            "type": "array"
           }
         },
         "required": [
@@ -500,13 +458,47 @@
           "coverage",
           "missing_evidence",
           "caveats",
-          "allowed_interpretations",
-          "prohibited_inferences",
+          "calculation_limitations",
           "citations"
         ],
         "type": "object"
       },
       "maxItems": 10,
+      "type": "array"
+    },
+    "evidence_limitations": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "scope": {
+            "enum": [
+              "global",
+              "target",
+              "package"
+            ],
+            "type": "string"
+          },
+          "target_id": {
+            "pattern": "^(TWSE|TPEX):[A-Z0-9._-]{1,20}$",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "scope",
+          "reason"
+        ],
+        "type": "object"
+      },
       "type": "array"
     }
   },
@@ -515,14 +507,13 @@
     "context_package_id",
     "generated_at_utc",
     "request",
-    "conversation_scope",
     "source_lineage",
     "targets",
     "cross_target_context",
     "coverage_summary",
     "missing_evidence",
     "caveats",
-    "prohibitions",
+    "evidence_limitations",
     "citation_index",
     "context_budget",
     "package_hash"
