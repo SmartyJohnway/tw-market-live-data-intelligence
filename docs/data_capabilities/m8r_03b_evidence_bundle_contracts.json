@@ -2725,5 +2725,8 @@
       ],
       "dynamic_entity_item": "dynamic_entity_request"
     }
-  ]
+  ],
+  "canonical_contract_sources": {
+    "conversation_intent": "docs/data_capabilities/m8r_03b_conversation_scope_contract.json is canonical; embedded conversation_intent copies here are synchronized design copies for validator readability and should be replaced by schema reference in M8R-03C"
+  }
 }

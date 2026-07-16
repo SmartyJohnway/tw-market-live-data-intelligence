@@ -3,37 +3,75 @@
   "scenario_id": "scenario_g_composite_followup",
   "user_input": "最近AI科技股狀況怎麼樣？ 那我的觀察清單裡面哪些最強？",
   "parsed_conversation_intent": {
+    "schema_version": "m8r_ai_market_conversation_intent.v1",
+    "original_user_text": "最近AI科技股狀況怎麼樣？ 那我的觀察清單裡面哪些最強？",
     "scope_modes": [
       "dynamic_research",
       "watchlist_subset",
       "market_overview"
     ],
-    "time_mode": "current_plus_recent",
-    "evidence_depth": "standard"
+    "time_scope": {
+      "mode": "current_plus_recent",
+      "lookback_trading_days": 20,
+      "explicit_range": null
+    },
+    "evidence_depth": "standard",
+    "explicit_user_constraints": {},
+    "inferred_defaults": {
+      "time_mode": "current_plus_recent"
+    },
+    "clarification_required": false,
+    "clarification_reason": null
   },
   "evidence_request": {
     "schema_version": "m8r_ai_evidence_request.v1",
     "original_user_text": "最近AI科技股狀況怎麼樣？ 那我的觀察清單裡面哪些最強？",
     "conversation_intent": {
+      "schema_version": "m8r_ai_market_conversation_intent.v1",
+      "original_user_text": "最近AI科技股狀況怎麼樣？ 那我的觀察清單裡面哪些最強？",
       "scope_modes": [
         "dynamic_research",
         "watchlist_subset",
         "market_overview"
       ],
-      "time_mode": "current_plus_recent",
-      "evidence_depth": "standard"
+      "time_scope": {
+        "mode": "current_plus_recent",
+        "lookback_trading_days": 20,
+        "explicit_range": null
+      },
+      "evidence_depth": "standard",
+      "explicit_user_constraints": {},
+      "inferred_defaults": {
+        "time_mode": "current_plus_recent"
+      },
+      "clarification_required": false,
+      "clarification_reason": null
     },
     "explicit_user_constraints": {},
     "inferred_defaults": {
       "time_mode": "current_plus_recent"
     },
-    "persistent_watchlist_reference": "operator_supplied_watchlist",
+    "persistent_watchlist_reference": {
+      "watchlist_id": "operator_supplied_watchlist",
+      "source": "operator_supplied",
+      "enabled_target_ids": [
+        "fixture_target_1"
+      ]
+    },
     "dynamic_entity_requests": [
       {
         "input_reference": "topic:AI technology",
         "entity_role": "research_topic",
         "selection_reason": "user named topic",
-        "persistent_watchlist_mutation": false
+        "persistent_watchlist_mutation": false,
+        "requested_time_range": {
+          "mode": "current_plus_recent",
+          "lookback_trading_days": 20,
+          "explicit_range": null
+        },
+        "priority": "required",
+        "requested_source_timing_class": "official_eod",
+        "fallback_behavior": "mark_missing"
       }
     ],
     "market_context_requests": [
@@ -41,9 +79,45 @@
       "TPEx"
     ],
     "required_evidence": [
-      "twse_official_eod",
-      "tpex_official_eod",
-      "twse_mis_listed_liveish"
+      {
+        "capability_id": "twse_official_eod",
+        "priority": "required",
+        "time_scope": {
+          "mode": "current_plus_recent",
+          "lookback_trading_days": 20,
+          "explicit_range": null
+        },
+        "preferred_timing_class": "official_eod",
+        "source_family_preference": [],
+        "fallback_behavior": "mark_missing",
+        "required_for_answer": true
+      },
+      {
+        "capability_id": "tpex_official_eod",
+        "priority": "required",
+        "time_scope": {
+          "mode": "current_plus_recent",
+          "lookback_trading_days": 20,
+          "explicit_range": null
+        },
+        "preferred_timing_class": "official_eod",
+        "source_family_preference": [],
+        "fallback_behavior": "mark_missing",
+        "required_for_answer": true
+      },
+      {
+        "capability_id": "twse_mis_listed_liveish",
+        "priority": "required",
+        "time_scope": {
+          "mode": "current_plus_recent",
+          "lookback_trading_days": 20,
+          "explicit_range": null
+        },
+        "preferred_timing_class": "liveish_intraday_snapshot",
+        "source_family_preference": [],
+        "fallback_behavior": "mark_missing",
+        "required_for_answer": true
+      }
     ],
     "useful_evidence": [],
     "optional_evidence": [],
@@ -54,7 +128,18 @@
       "scheduler": false
     },
     "clarification_required": false,
-    "clarification_reason": null
+    "clarification_reason": null,
+    "request_id": "scenario_g_composite_followup-request",
+    "identity_resolver_output": {
+      "resolved_entities": [],
+      "unresolved_entities": [],
+      "resolver_assumptions": []
+    },
+    "follow_up_context": {
+      "conversation_context_id": "fixture-context",
+      "parent_evidence_request_id": "prior-dynamic-research",
+      "freshness_recheck_required": true
+    }
   },
   "expected_bundle_types": [
     "dynamic_research",
@@ -106,7 +191,9 @@
     "unit": "percent",
     "formula_id": "return_over_period.v1",
     "input_period": {
-      "mode": "current_plus_recent"
+      "mode": "current_plus_recent",
+      "lookback_trading_days": 20,
+      "explicit_range": null
     },
     "source_dependencies": [
       "twse_official_eod"
@@ -122,6 +209,77 @@
       "impact": "limits_confidence",
       "fallback_used": null,
       "recommended_follow_up": "source expansion"
+    }
+  ],
+  "expected_requested_target_ids": [
+    "fixture_target_1"
+  ],
+  "sample_bundles": [
+    {
+      "schema_version": "dynamic_research.fixture.v1",
+      "bundle_id": "scenario_g_composite_followup-bundle",
+      "request_id": "scenario_g_composite_followup-request",
+      "generated_at_utc": "2026-07-16T00:00:00Z",
+      "conversation_context": {
+        "conversation_context_id": "fixture-context"
+      },
+      "facts": [],
+      "derived_metrics": [
+        {
+          "metric_id": "fixture_return_5d",
+          "value": null,
+          "unit": "percent",
+          "formula_id": "return_over_period.v1",
+          "input_period": {
+            "mode": "current_plus_recent",
+            "lookback_trading_days": 20,
+            "explicit_range": null
+          },
+          "source_dependencies": [
+            "twse_official_eod"
+          ],
+          "calculation_status": "input_unavailable",
+          "as_of": "fixture"
+        }
+      ],
+      "resolution_assumptions": [
+        {
+          "assumption_id": "fixture_assumption",
+          "description": "reuse topic/time/benchmarks where fresh; apply watchlist subset",
+          "source": "fixture",
+          "impact": "design_validation"
+        }
+      ],
+      "missing_evidence": [
+        {
+          "capability_id": "current MIS evidence requires freshness recheck",
+          "reason_code": "not_integrated",
+          "required_for_answer": false,
+          "impact": "limits_confidence",
+          "fallback_used": null,
+          "recommended_follow_up": "source expansion"
+        }
+      ],
+      "coverage": {
+        "requested_target_ids": [
+          "fixture_target_1"
+        ],
+        "targets": [
+          {
+            "target_id": "fixture_target_1",
+            "input_reference": "fixture_target_1",
+            "coverage_state": "usable",
+            "present_field_groups": [
+              "identity",
+              "eod_series"
+            ],
+            "missing_field_groups": [],
+            "reason_code": null
+          }
+        ],
+        "summary": {}
+      },
+      "source_summary": {}
     }
   ]
 }

@@ -3,21 +3,41 @@
   "scenario_id": "scenario_e_derivatives_focus",
   "user_input": "現在台指期和選擇權透露什麼？",
   "parsed_conversation_intent": {
+    "schema_version": "m8r_ai_market_conversation_intent.v1",
+    "original_user_text": "現在台指期和選擇權透露什麼？",
     "scope_modes": [
       "market_overview"
     ],
-    "time_mode": "current",
-    "evidence_depth": "standard"
+    "time_scope": {
+      "mode": "current",
+      "lookback_trading_days": null,
+      "explicit_range": null
+    },
+    "evidence_depth": "standard",
+    "explicit_user_constraints": {},
+    "inferred_defaults": {},
+    "clarification_required": false,
+    "clarification_reason": null
   },
   "evidence_request": {
     "schema_version": "m8r_ai_evidence_request.v1",
     "original_user_text": "現在台指期和選擇權透露什麼？",
     "conversation_intent": {
+      "schema_version": "m8r_ai_market_conversation_intent.v1",
+      "original_user_text": "現在台指期和選擇權透露什麼？",
       "scope_modes": [
         "market_overview"
       ],
-      "time_mode": "current",
-      "evidence_depth": "standard"
+      "time_scope": {
+        "mode": "current",
+        "lookback_trading_days": null,
+        "explicit_range": null
+      },
+      "evidence_depth": "standard",
+      "explicit_user_constraints": {},
+      "inferred_defaults": {},
+      "clarification_required": false,
+      "clarification_reason": null
     },
     "explicit_user_constraints": {},
     "inferred_defaults": {},
@@ -28,10 +48,58 @@
       "TPEx"
     ],
     "required_evidence": [
-      "taifex_mis_future_liveish",
-      "taifex_mis_option_liveish",
-      "derivative_current_contract_resolution",
-      "taifex_official_eod"
+      {
+        "capability_id": "taifex_mis_future_liveish",
+        "priority": "required",
+        "time_scope": {
+          "mode": "current",
+          "lookback_trading_days": null,
+          "explicit_range": null
+        },
+        "preferred_timing_class": "liveish_intraday_snapshot",
+        "source_family_preference": [],
+        "fallback_behavior": "mark_missing",
+        "required_for_answer": true
+      },
+      {
+        "capability_id": "taifex_mis_option_liveish",
+        "priority": "required",
+        "time_scope": {
+          "mode": "current",
+          "lookback_trading_days": null,
+          "explicit_range": null
+        },
+        "preferred_timing_class": "liveish_intraday_snapshot",
+        "source_family_preference": [],
+        "fallback_behavior": "mark_missing",
+        "required_for_answer": true
+      },
+      {
+        "capability_id": "derivative_current_contract_resolution",
+        "priority": "required",
+        "time_scope": {
+          "mode": "current",
+          "lookback_trading_days": null,
+          "explicit_range": null
+        },
+        "preferred_timing_class": "official_eod",
+        "source_family_preference": [],
+        "fallback_behavior": "mark_missing",
+        "required_for_answer": true
+      },
+      {
+        "capability_id": "taifex_official_eod",
+        "priority": "required",
+        "time_scope": {
+          "mode": "current",
+          "lookback_trading_days": null,
+          "explicit_range": null
+        },
+        "preferred_timing_class": "official_eod",
+        "source_family_preference": [],
+        "fallback_behavior": "mark_missing",
+        "required_for_answer": true
+      }
     ],
     "useful_evidence": [],
     "optional_evidence": [],
@@ -42,7 +110,18 @@
       "scheduler": false
     },
     "clarification_required": false,
-    "clarification_reason": null
+    "clarification_reason": null,
+    "request_id": "scenario_e_derivatives_focus-request",
+    "identity_resolver_output": {
+      "resolved_entities": [],
+      "unresolved_entities": [],
+      "resolver_assumptions": []
+    },
+    "follow_up_context": {
+      "conversation_context_id": null,
+      "parent_evidence_request_id": null,
+      "freshness_recheck_required": true
+    }
   },
   "expected_bundle_types": [
     "market_pulse"
@@ -93,7 +172,9 @@
     "unit": "percent",
     "formula_id": "return_over_period.v1",
     "input_period": {
-      "mode": "current"
+      "mode": "current",
+      "lookback_trading_days": null,
+      "explicit_range": null
     },
     "source_dependencies": [
       "taifex_mis_future_liveish"
@@ -109,6 +190,77 @@
       "impact": "limits_confidence",
       "fallback_used": null,
       "recommended_follow_up": "source expansion"
+    }
+  ],
+  "expected_requested_target_ids": [
+    "fixture_target_1"
+  ],
+  "sample_bundles": [
+    {
+      "schema_version": "market_pulse.fixture.v1",
+      "bundle_id": "scenario_e_derivatives_focus-bundle",
+      "request_id": "scenario_e_derivatives_focus-request",
+      "generated_at_utc": "2026-07-16T00:00:00Z",
+      "conversation_context": {
+        "conversation_context_id": null
+      },
+      "facts": [],
+      "derived_metrics": [
+        {
+          "metric_id": "fixture_return_5d",
+          "value": null,
+          "unit": "percent",
+          "formula_id": "return_over_period.v1",
+          "input_period": {
+            "mode": "current",
+            "lookback_trading_days": null,
+            "explicit_range": null
+          },
+          "source_dependencies": [
+            "taifex_mis_future_liveish"
+          ],
+          "calculation_status": "input_unavailable",
+          "as_of": "fixture"
+        }
+      ],
+      "resolution_assumptions": [
+        {
+          "assumption_id": "fixture_assumption",
+          "description": "no manual exact-contract requirement; current contract resolver discloses identity",
+          "source": "fixture",
+          "impact": "design_validation"
+        }
+      ],
+      "missing_evidence": [
+        {
+          "capability_id": "basis/OI/put-call fields only when available",
+          "reason_code": "not_integrated",
+          "required_for_answer": false,
+          "impact": "limits_confidence",
+          "fallback_used": null,
+          "recommended_follow_up": "source expansion"
+        }
+      ],
+      "coverage": {
+        "requested_target_ids": [
+          "fixture_target_1"
+        ],
+        "targets": [
+          {
+            "target_id": "fixture_target_1",
+            "input_reference": "fixture_target_1",
+            "coverage_state": "usable",
+            "present_field_groups": [
+              "identity",
+              "eod_series"
+            ],
+            "missing_field_groups": [],
+            "reason_code": null
+          }
+        ],
+        "summary": {}
+      },
+      "source_summary": {}
     }
   ]
 }

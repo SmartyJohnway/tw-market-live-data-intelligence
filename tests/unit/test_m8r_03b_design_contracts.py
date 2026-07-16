@@ -12,7 +12,7 @@ def load(name):
 def test_watchlist_current_maps_to_mis_and_eod():
     fixture = load("scenario_a_current_watchlist")
     assert fixture["parsed_conversation_intent"]["scope_modes"] == ["watchlist"]
-    assert fixture["parsed_conversation_intent"]["time_mode"] == "current"
+    assert fixture["parsed_conversation_intent"]["time_scope"]["mode"] == "current"
     assert "watchlist_snapshot" in fixture["expected_bundle_types"]
     assert "twse_mis_listed_liveish" in fixture["required_capability_ids"]
     assert "twse_official_eod" in fixture["required_capability_ids"]
@@ -20,7 +20,7 @@ def test_watchlist_current_maps_to_mis_and_eod():
 
 def test_watchlist_recent_maps_primarily_to_eod():
     fixture = load("scenario_b_recent_watchlist")
-    assert fixture["parsed_conversation_intent"]["time_mode"] == "recent"
+    assert fixture["parsed_conversation_intent"]["time_scope"]["mode"] == "recent"
     assert fixture["expected_bundle_types"] == ["watchlist_performance"]
     assert "twse_official_eod" in fixture["required_capability_ids"]
     assert "twse_mis_listed_liveish" not in fixture["required_capability_ids"]
@@ -28,7 +28,7 @@ def test_watchlist_recent_maps_primarily_to_eod():
 
 def test_ambiguous_watchlist_defaults_to_current_plus_recent():
     fixture = load("scenario_c_ambiguous_watchlist")
-    assert fixture["parsed_conversation_intent"]["time_mode"] == "current_plus_recent"
+    assert fixture["parsed_conversation_intent"]["time_scope"]["mode"] == "current_plus_recent"
     assert fixture["clarification_decision"]["clarification_required"] is False
 
 

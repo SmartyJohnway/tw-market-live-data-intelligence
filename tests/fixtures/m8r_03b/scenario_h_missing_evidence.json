@@ -3,21 +3,45 @@
   "scenario_id": "scenario_h_missing_evidence",
   "user_input": "外資期貨和現貨是不是同方向？",
   "parsed_conversation_intent": {
+    "schema_version": "m8r_ai_market_conversation_intent.v1",
+    "original_user_text": "外資期貨和現貨是不是同方向？",
     "scope_modes": [
       "market_overview"
     ],
-    "time_mode": "current_plus_recent",
-    "evidence_depth": "standard"
+    "time_scope": {
+      "mode": "current_plus_recent",
+      "lookback_trading_days": 20,
+      "explicit_range": null
+    },
+    "evidence_depth": "standard",
+    "explicit_user_constraints": {},
+    "inferred_defaults": {
+      "time_mode": "current_plus_recent"
+    },
+    "clarification_required": false,
+    "clarification_reason": null
   },
   "evidence_request": {
     "schema_version": "m8r_ai_evidence_request.v1",
     "original_user_text": "外資期貨和現貨是不是同方向？",
     "conversation_intent": {
+      "schema_version": "m8r_ai_market_conversation_intent.v1",
+      "original_user_text": "外資期貨和現貨是不是同方向？",
       "scope_modes": [
         "market_overview"
       ],
-      "time_mode": "current_plus_recent",
-      "evidence_depth": "standard"
+      "time_scope": {
+        "mode": "current_plus_recent",
+        "lookback_trading_days": 20,
+        "explicit_range": null
+      },
+      "evidence_depth": "standard",
+      "explicit_user_constraints": {},
+      "inferred_defaults": {
+        "time_mode": "current_plus_recent"
+      },
+      "clarification_required": false,
+      "clarification_reason": null
     },
     "explicit_user_constraints": {},
     "inferred_defaults": {
@@ -30,8 +54,32 @@
       "TPEx"
     ],
     "required_evidence": [
-      "cash_institution_flows",
-      "taifex_institutional_positions"
+      {
+        "capability_id": "cash_institution_flows",
+        "priority": "required",
+        "time_scope": {
+          "mode": "current_plus_recent",
+          "lookback_trading_days": 20,
+          "explicit_range": null
+        },
+        "preferred_timing_class": "official_eod",
+        "source_family_preference": [],
+        "fallback_behavior": "mark_missing",
+        "required_for_answer": true
+      },
+      {
+        "capability_id": "taifex_institutional_positions",
+        "priority": "required",
+        "time_scope": {
+          "mode": "current_plus_recent",
+          "lookback_trading_days": 20,
+          "explicit_range": null
+        },
+        "preferred_timing_class": "official_eod",
+        "source_family_preference": [],
+        "fallback_behavior": "mark_missing",
+        "required_for_answer": true
+      }
     ],
     "useful_evidence": [],
     "optional_evidence": [],
@@ -42,7 +90,18 @@
       "scheduler": false
     },
     "clarification_required": false,
-    "clarification_reason": null
+    "clarification_reason": null,
+    "request_id": "scenario_h_missing_evidence-request",
+    "identity_resolver_output": {
+      "resolved_entities": [],
+      "unresolved_entities": [],
+      "resolver_assumptions": []
+    },
+    "follow_up_context": {
+      "conversation_context_id": null,
+      "parent_evidence_request_id": null,
+      "freshness_recheck_required": true
+    }
   },
   "expected_bundle_types": [
     "market_pulse"
@@ -90,7 +149,9 @@
     "unit": "percent",
     "formula_id": "return_over_period.v1",
     "input_period": {
-      "mode": "current_plus_recent"
+      "mode": "current_plus_recent",
+      "lookback_trading_days": 20,
+      "explicit_range": null
     },
     "source_dependencies": [
       "cash_institution_flows"
@@ -106,6 +167,76 @@
       "impact": "limits_confidence",
       "fallback_used": null,
       "recommended_follow_up": "source expansion"
+    }
+  ],
+  "expected_requested_target_ids": [
+    "cash_flow_side"
+  ],
+  "sample_bundles": [
+    {
+      "schema_version": "market_pulse.fixture.v1",
+      "bundle_id": "scenario_h_missing_evidence-bundle",
+      "request_id": "scenario_h_missing_evidence-request",
+      "generated_at_utc": "2026-07-16T00:00:00Z",
+      "conversation_context": {
+        "conversation_context_id": null
+      },
+      "facts": [],
+      "derived_metrics": [
+        {
+          "metric_id": "fixture_return_5d",
+          "value": null,
+          "unit": "percent",
+          "formula_id": "return_over_period.v1",
+          "input_period": {
+            "mode": "current_plus_recent",
+            "lookback_trading_days": 20,
+            "explicit_range": null
+          },
+          "source_dependencies": [
+            "cash_institution_flows"
+          ],
+          "calculation_status": "input_unavailable",
+          "as_of": "fixture"
+        }
+      ],
+      "resolution_assumptions": [
+        {
+          "assumption_id": "fixture_assumption",
+          "description": "do not fabricate unavailable side",
+          "source": "fixture",
+          "impact": "design_validation"
+        }
+      ],
+      "missing_evidence": [
+        {
+          "capability_id": "cash or TAIFEX institutional flow integration may be missing",
+          "reason_code": "not_integrated",
+          "required_for_answer": false,
+          "impact": "limits_confidence",
+          "fallback_used": null,
+          "recommended_follow_up": "source expansion"
+        }
+      ],
+      "coverage": {
+        "requested_target_ids": [
+          "cash_flow_side"
+        ],
+        "targets": [
+          {
+            "target_id": "cash_flow_side",
+            "input_reference": "外資現貨",
+            "coverage_state": "unavailable",
+            "present_field_groups": [],
+            "missing_field_groups": [
+              "cash_market_positioning"
+            ],
+            "reason_code": "not_integrated"
+          }
+        ],
+        "summary": {}
+      },
+      "source_summary": {}
     }
   ]
 }

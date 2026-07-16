@@ -23,7 +23,7 @@ def validate_intent(intent, *, watchlist_reference=None, follow_up_context=None)
     assert intent["scope_modes"], "scope_modes required"
     unknown_scopes = set(intent["scope_modes"]) - intent_scope_enum()
     assert not unknown_scopes, f"unknown scope mode: {unknown_scopes}"
-    assert intent["time_mode"] in time_enum() or intent.get("time_scope", {}).get("mode") in time_enum()
+    assert intent.get("time_scope", {}).get("mode") in time_enum()
     if intent.get("clarification_required") is True:
         assert intent.get("clarification_reason")
     if intent.get("clarification_required") is False:
@@ -40,7 +40,7 @@ def test_contracts_define_required_top_level_validator_shapes():
 
 
 def test_unknown_scope_mode_is_rejected_by_contract_validator():
-    bad = {"scope_modes": ["watchlist", "whole_market_scan"], "time_mode": "current", "clarification_required": False, "clarification_reason": None}
+    bad = {"scope_modes": ["watchlist", "whole_market_scan"], "time_scope": {"mode": "current"}, "clarification_required": False, "clarification_reason": None}
     try:
         validate_intent(bad)
     except AssertionError as exc:
@@ -50,7 +50,7 @@ def test_unknown_scope_mode_is_rejected_by_contract_validator():
 
 
 def test_invalid_time_mode_is_rejected_by_contract_validator():
-    bad = {"scope_modes": ["watchlist"], "time_mode": "right_now_realtime", "clarification_required": False, "clarification_reason": None}
+    bad = {"scope_modes": ["watchlist"], "time_scope": {"mode": "right_now_realtime"}, "clarification_required": False, "clarification_reason": None}
     try:
         validate_intent(bad)
     except AssertionError:
