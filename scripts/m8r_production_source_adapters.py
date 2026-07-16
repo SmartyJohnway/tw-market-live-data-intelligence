@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from decimal import Decimal, InvalidOperation
+import re
 from typing import Any, Callable
 
 from scripts.m8a_official_eod_observation import observation_to_context_observation
@@ -225,6 +226,27 @@ def _taifex_selector(target: dict[str, Any]) -> dict[str, Any] | None:
     return None
 
 
+TAIFEX_MIS_OPTION_RUNTIME_SYMBOL_RE = re.compile(r"^(?P<product>[A-Z]{2,5})(?P<strike>\d+(?:\.\d+)?)(?P<month_code>[A-Z])(?P<year_code>\d)-O$")
+
+
+def parse_taifex_mis_option_runtime_symbol(value: Any) -> dict[str, str] | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    match = TAIFEX_MIS_OPTION_RUNTIME_SYMBOL_RE.fullmatch(value.strip().upper())
+    if not match:
+        return None
+    return match.groupdict()
+
+
+def validate_taifex_mis_option_runtime_symbol(*, runtime_symbol: Any, product: Any, strike: Any) -> bool:
+    parsed = parse_taifex_mis_option_runtime_symbol(runtime_symbol)
+    if not parsed:
+        return False
+    if parsed["product"] != str(product or "").strip().upper():
+        return False
+    return _strike(parsed["strike"]) == _strike(strike)
+
+
 def _m8c_returned_identity(ctx: dict[str, Any], target: dict[str, Any]) -> tuple[dict[str, Any], str | None]:
     ci = ((ctx.get("safe_fields") or {}).get("contract_identity") or {})
     product = ci.get("requested_product_id")
@@ -240,7 +262,7 @@ def _m8c_returned_identity(ctx: dict[str, Any], target: dict[str, Any]) -> tuple
         returned.update({"strike": strike, "call_put": call_put})
         if underlying:
             returned["underlying"] = underlying
-        if not (isinstance(runtime_symbol, str) and runtime_symbol.startswith(str(product or "")) and str(expiry or "") in runtime_symbol):
+        if not validate_taifex_mis_option_runtime_symbol(runtime_symbol=runtime_symbol, product=product, strike=strike):
             return {}, "source_identity_mismatch"
         required = ("product", "expiry", "strike", "call_put", "session")
         cleaned = {k: v for k, v in returned.items() if v is not None}
@@ -267,10 +289,16 @@ def execute_taifex_mis_operation(*, operation, target, plan, execution_time_utc,
     if result.get("status") not in {"successful_liveish_snapshot", "partial_source_success"} or not result.get("observations"):
         return _failed("source_payload_invalid", count=2)
     ctx = adapt_taifex_mis_observation(result["observations"][0])
+    native_context_type = ctx.get("context_type")
+    ctx.setdefault("provenance", {})["source_native_context_type"] = native_context_type
+    ctx["context_type"] = operation.get("context_type") or native_context_type
     identity, issue = _m8c_returned_identity(ctx, target)
     if issue:
         return _failed(issue, count=2)
-    ctx.setdefault("safe_fields", {})["contract_identity"] = identity
+    safe_fields = ctx.setdefault("safe_fields", {})
+    safe_fields["returned_contract_identity"] = identity
+    if target.get("instrument_type") == "option":
+        safe_fields["runtime_symbol_validation"] = "matched_product_strike_and_option_symbol_grammar"
     return _ok(ctx, identity=identity, count=2)
 
 

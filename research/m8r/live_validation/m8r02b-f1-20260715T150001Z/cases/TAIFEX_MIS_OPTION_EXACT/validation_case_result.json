@@ -1,0 +1,172 @@
+{
+  "adapter_invocation_count": 1,
+  "ai_artifacts_written": true,
+  "ai_package_id": "amc-2baa81cfd3362039",
+  "ai_package_status": "partial",
+  "ai_validation": {
+    "reason_code": null,
+    "valid": true
+  },
+  "approval_consumed": true,
+  "approval_id": "m8r-approval-fafbd1fc7e890b86",
+  "artifact_paths": [
+    "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-ddc95f67e7127318/execution_plan.json",
+    "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-ddc95f67e7127318/approval_record.json",
+    "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-ddc95f67e7127318/execution_receipt.json",
+    "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-ddc95f67e7127318/operation_results.json",
+    "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-ddc95f67e7127318/missing_context.json",
+    "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-ddc95f67e7127318/m8_context_core.json",
+    "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-ddc95f67e7127318/ai_market_context_v1.json",
+    "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-ddc95f67e7127318/ai_market_context_compact.json",
+    "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-ddc95f67e7127318/ai_market_context_standard.json",
+    "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-ddc95f67e7127318/ai_market_context_diagnostic.json"
+  ],
+  "authority_level": "official_undocumented",
+  "case_id": "TAIFEX_MIS_OPTION_EXACT",
+  "caveats": [
+    {
+      "code": "approved_target_scope_not_fully_available",
+      "message": "approved target scope not fully available",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "currentness_unknown",
+      "message": "currentness unknown",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "liveish_not_exchange_official_realtime",
+      "message": "liveish not exchange official realtime",
+      "scope": "package",
+      "severity": "warning",
+      "source_family": "TAIFEX_MIS"
+    },
+    {
+      "code": "production_live_execution_not_ready",
+      "message": "production live execution not ready",
+      "scope": "package",
+      "severity": "warning"
+    }
+  ],
+  "currentness": {
+    "calendar_evidence": "not_provided",
+    "currentness_confidence": "bounded_policy_not_exchange_sla",
+    "market_phase": "market_phase_unresolved",
+    "overall_ai_currentness": "source_timestamp_unresolved",
+    "quote_age_state": "unresolved",
+    "retrieved_at_freshness_ignored_for_upgrade": true,
+    "session_alignment": "aligned",
+    "source_timestamp_state": "unresolved",
+    "special_closure_evidence": null,
+    "transport_state": "completed"
+  },
+  "execution_status": "ready_with_caveats",
+  "forbidden_interpretations": [
+    "liveish_not_official_realtime",
+    "not_all_sources_current",
+    "not_broker_instruction",
+    "not_complete_when_partial",
+    "not_full_market",
+    "not_guaranteed_realtime",
+    "not_live_production_ready_without_m8r02b",
+    "not_prediction",
+    "not_recommendation",
+    "not_safe_to_infer_missing_values",
+    "not_trading_signal"
+  ],
+  "grouping": {
+    "grouped": false
+  },
+  "identity_verification_result": "matched_or_not_applicable",
+  "missing_context": [],
+  "network_attempted": true,
+  "network_request_count": 2,
+  "operation_status": "succeeded",
+  "plan_hash": "819b6a5461d32fd0043608028f206a8fd70c85aa5d4489fcd0a4cd72177c41f8",
+  "plan_id": "m8r-plan-819b6a5461d32fd0",
+  "planned_source_family": "TAIFEX_MIS",
+  "receipt_id": "m8r-receipt-ddc95f67e7127318",
+  "requested_context": [
+    "liveish_observation"
+  ],
+  "result": "passed_with_caveats",
+  "retention_audit": {
+    "forbidden_key_hits": [],
+    "status": "passed"
+  },
+  "retrieved_at_utc": null,
+  "returned_identity": {
+    "call_put": "C",
+    "contract_type": "monthly",
+    "expiry": "202607",
+    "product": "TXO",
+    "session": "regular",
+    "strike": "40000",
+    "underlying": "TX"
+  },
+  "schema_version": "m8r_controlled_live_validation_case_result.v1",
+  "source_id": "TAIFEX_MIS",
+  "source_timestamp": null,
+  "target": [
+    {
+      "allowed_source_families": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "derivative_identity": {
+        "call_put": "C",
+        "contract_type": "monthly",
+        "expiry": "202607",
+        "session": "regular",
+        "strike": "40000",
+        "underlying": "TX"
+      },
+      "duplicate_identity_key": "TAIFEX:option:TXO:TX",
+      "identity_resolution_status": "resolved",
+      "input_identity": {
+        "call_put": "C",
+        "contract_type": "monthly",
+        "expiry": "202607",
+        "instrument_type": "option",
+        "market": "TAIFEX",
+        "requested_source_families": [
+          "TAIFEX_MIS"
+        ],
+        "session": "regular",
+        "strike": "40000",
+        "symbol": "TXO",
+        "underlying": "TX"
+      },
+      "instrument_type": "option",
+      "issues": [],
+      "market": "TAIFEX",
+      "planned_mappings": [
+        {
+          "context_type": "liveish_observation",
+          "network_required": true,
+          "operation_class": "planned_network_fetch",
+          "route": "regular_session_monthly_option_selector",
+          "source_family": "TAIFEX_MIS",
+          "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+        }
+      ],
+      "requested_context_types": [
+        "liveish_observation"
+      ],
+      "requested_source_families": [
+        "TAIFEX_MIS"
+      ],
+      "requested_source_selection_mode": "target_exact",
+      "runtime_routes": {
+        "TAIFEX_MIS": "regular_session_monthly_option_selector",
+        "TAIFEX_OPENAPI": "TAIFEX_OPENAPI"
+      },
+      "session": "regular",
+      "symbol": "TXO",
+      "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+    }
+  ],
+  "timing_class": "liveish_intraday_snapshot"
+}

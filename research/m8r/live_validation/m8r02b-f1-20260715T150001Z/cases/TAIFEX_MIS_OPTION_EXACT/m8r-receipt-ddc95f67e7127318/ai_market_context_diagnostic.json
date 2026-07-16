@@ -1,0 +1,62 @@
+{
+  "all_caveat_codes": [
+    "approved_target_scope_not_fully_available",
+    "currentness_unknown",
+    "liveish_not_exchange_official_realtime",
+    "production_live_execution_not_ready"
+  ],
+  "identity_evidence": [
+    {
+      "derivative_identity": {
+        "contract_month_or_week": "202607",
+        "mis_cid": "TXO",
+        "option_type": "call",
+        "requested_product_id": "TXO",
+        "runtime_symbol_id": "TXO40000G6-O",
+        "session": "regular",
+        "strike_price": "40000"
+      },
+      "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+    }
+  ],
+  "operation_outcomes": [
+    {
+      "context_type": "liveish_observation",
+      "operation_class": "planned_network_fetch",
+      "operation_id": "m8r-op-985a89af7deeaccb",
+      "source_family": "TAIFEX_MIS",
+      "status": "succeeded",
+      "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+    }
+  ],
+  "package_id": "amc-2baa81cfd3362039",
+  "provenance": {
+    "approval_consumed": true,
+    "approval_id": "m8r-approval-fafbd1fc7e890b86",
+    "approved_output_scope": {
+      "artifact_root": "research/m8r/live_validation/m8r02b-f1-20260715T150001Z/cases/TAIFEX_MIS_OPTION_EXACT",
+      "raw_payload_retention": false,
+      "write_artifacts": false
+    },
+    "bounded_retention": true,
+    "execution_finished_at_utc": "2026-07-15T15:09:22Z",
+    "execution_started_at_utc": "2026-07-15T15:09:18Z",
+    "full_market_retained_output": false,
+    "m8_context_core_status": "built",
+    "orchestration_result_schema": "m8r_market_context_orchestration_result.v1",
+    "plan_hash": "819b6a5461d32fd0043608028f206a8fd70c85aa5d4489fcd0a4cd72177c41f8",
+    "plan_id": "m8r-plan-819b6a5461d32fd0",
+    "raw_payload_retained": false,
+    "receipt_id": "m8r-receipt-ddc95f67e7127318",
+    "request_id": null,
+    "target_identity_provenance": "inferred_from_operation_result",
+    "upstream_package_status": "ready_with_caveats"
+  },
+  "source_mappings": [
+    {
+      "operation_id": "m8r-op-985a89af7deeaccb",
+      "source_context_id": "amc-src-d04ccc8e12f6548a",
+      "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "adapter_invocations": 1,
+  "approval_binding": {
+    "plan_hash": "86d00bf75ece84c286e0762d4c854c949ecebda29949dc79b575a294683a05bc",
+    "plan_id": "m8r-plan-86d00bf75ece84c2"
+  },
+  "approval_consumed": true,
+  "approval_id": "m8r-approval-2228e3c97313308a",
+  "approval_replay_protection": "consumption_store_authoritative",
+  "approved_operation_count": 1,
+  "approved_output_scope": {
+    "artifact_root": "research/m8r/live_validation/m8r02b-f1-20260715T120003Z/cases/TAIFEX_MIS_FUTURE_EXACT",
+    "raw_payload_retention": false,
+    "write_artifacts": false
+  },
+  "approved_target_count": 1,
+  "auto_retry": false,
+  "background_execution": false,
+  "bounded_retention": true,
+  "execution_finished_at_utc": "2026-07-15T14:06:27Z",
+  "execution_started_at_utc": "2026-07-15T12:00:03Z",
+  "full_market_retained_output": false,
+  "local_operations_attempted": 0,
+  "logical_operations": [
+    "m8r-op-a0f23191df39d934"
+  ],
+  "missing_context_count": 0,
+  "network_operations_attempted": 1,
+  "network_operations_failed": 0,
+  "network_operations_succeeded": 1,
+  "one_shot": true,
+  "package_status": "ready_with_caveats",
+  "plan_hash": "86d00bf75ece84c286e0762d4c854c949ecebda29949dc79b575a294683a05bc",
+  "plan_id": "m8r-plan-86d00bf75ece84c2",
+  "polling": false,
+  "raw_payload_retained": false,
+  "reason": null,
+  "receipt_id": "m8r-receipt-8f2b6bc1d6c5ed32",
+  "returned_derivative_identities": [
+    {
+      "operation_id": "m8r-op-a0f23191df39d934",
+      "returned_identity": {
+        "contract_type": "monthly",
+        "expiry": "202607",
+        "product": "TX",
+        "session": "regular"
+      },
+      "target_id": "TAIFEX:future:TX:202607:monthly"
+    }
+  ],
+  "scheduler": false,
+  "schema_version": "m8r_market_context_execution_receipt.v1",
+  "successful_context_count": 1
+}

@@ -1,0 +1,6963 @@
+{
+  "completed_at_utc": "2026-07-15T15:09:01Z",
+  "contract_count": 578,
+  "created_at_utc": "2026-07-15T15:09:01Z",
+  "discovery_id": "m8r02b-f1-discovery-20260715T150001Z",
+  "exact_contract_identities": [
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "31900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "32900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "33900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "34900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "35900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "36900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "37900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "38900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "39900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "40900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "41900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "42900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS"
+      ],
+      "strike": "43450",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS"
+      ],
+      "strike": "43450",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS"
+      ],
+      "strike": "43550",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS"
+      ],
+      "strike": "43550",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS"
+      ],
+      "strike": "43650",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS"
+      ],
+      "strike": "43650",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS"
+      ],
+      "strike": "43750",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS"
+      ],
+      "strike": "43750",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS"
+      ],
+      "strike": "43850",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS"
+      ],
+      "strike": "43850",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "43900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS"
+      ],
+      "strike": "43950",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS"
+      ],
+      "strike": "43950",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44050",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44050",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44150",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44150",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44250",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44250",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44350",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44350",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44450",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44450",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44550",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44550",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44650",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44650",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44750",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44750",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44850",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44850",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44950",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "44950",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45050",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45050",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45150",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45150",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45250",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45250",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45350",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45350",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45450",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45450",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45550",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45550",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45650",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45650",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45750",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45750",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45850",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45850",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45950",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "45950",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46050",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46050",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46150",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46150",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46250",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46250",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46350",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46350",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46450",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46450",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46550",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46550",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46650",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46650",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46750",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46750",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46850",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46850",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46950",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "46950",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47050",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47050",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47150",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47150",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47250",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47250",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47350",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47350",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47450",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47450",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47550",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47550",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47650",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47650",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47750",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47750",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47850",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47850",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47950",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "47950",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48050",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48050",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48150",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48150",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48250",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48250",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48350",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48350",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "48900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "49900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "50900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "51900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "52900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "53900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54100",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54200",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54300",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54400",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54500",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54600",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54700",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54800",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "54900",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "C",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "55000",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "expiry": "202607",
+      "product": "TXO",
+      "session": "regular",
+      "source_evidence": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "strike": "55000",
+      "underlying": "TX"
+    }
+  ],
+  "expiry": "202607",
+  "operator_selection_required": true,
+  "product": "TXO",
+  "raw_payload_retained": false,
+  "schema_version": "m8r_taifex_option_contract_discovery.v1",
+  "session": "regular",
+  "source_results": {
+    "TAIFEX_MIS": {
+      "contract_count": 578,
+      "network_request_count": 1,
+      "reason_code": null,
+      "status": "succeeded"
+    },
+    "TAIFEX_OPENAPI": {
+      "contract_count": 566,
+      "matching_exact_identity_row_count": 566,
+      "matching_product_month_row_count": 566,
+      "network_request_count": 1,
+      "reason_code": null,
+      "row_count_received": 11571,
+      "schema_valid_row_count": 11571,
+      "status": "succeeded"
+    }
+  },
+  "sources_attempted": [
+    "TAIFEX_MIS",
+    "TAIFEX_OPENAPI"
+  ],
+  "strike_max": "55000",
+  "strike_min": "31200",
+  "underlying": "TX"
+}

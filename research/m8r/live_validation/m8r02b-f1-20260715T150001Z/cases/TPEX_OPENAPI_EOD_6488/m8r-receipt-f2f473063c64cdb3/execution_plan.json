@@ -1,0 +1,195 @@
+{
+  "approval_required": true,
+  "bounded_retained_scope": {
+    "bounded_targets_only": true,
+    "full_market_retained_output": false,
+    "raw_payload_retention": false
+  },
+  "created_at_utc": "2026-07-15T12:00:03Z",
+  "hash_scope": {
+    "approval_required": true,
+    "network_scope": {
+      "network_execution_in_m8r01": false,
+      "network_required": true,
+      "operation_classes": [
+        "planned_network_fetch"
+      ]
+    },
+    "non_goal_flags": {
+      "alert": false,
+      "api_surface": false,
+      "auto_retry": false,
+      "background_service": false,
+      "broker_execution": false,
+      "cache": false,
+      "database": false,
+      "frontend_surface": false,
+      "full_market_scanner": false,
+      "m9_ingestion": false,
+      "mcp_surface": false,
+      "network_execution": false,
+      "orchestrator": false,
+      "polling": false,
+      "prediction": false,
+      "ranking": false,
+      "recommendation": false,
+      "scheduler": false,
+      "source_adapter_invocation": false
+    },
+    "normalized_request_hash": "c35019c9a4fdf2b8afd8379a55520f5c1303ba4c292f49591ec1fd60d3d59653",
+    "output_scope": {
+      "artifact_root": "research/m8r/live_validation/m8r02b-f1-20260715T120003Z/cases/TPEX_OPENAPI_EOD_6488",
+      "raw_payload_retention": false,
+      "write_artifacts": false
+    },
+    "planned_source_families": [
+      "TPEX_OPENAPI"
+    ],
+    "retained_scope": {
+      "bounded_targets_only": true,
+      "full_market_retained_output": false,
+      "raw_payload_retention": false
+    },
+    "schema_version": "m8r_market_context_execution_plan.v1",
+    "source_to_target_context_mapping": [
+      {
+        "context_type": "official_eod_reference",
+        "network_required": true,
+        "operation_class": "planned_network_fetch",
+        "route": "TPEX_OPENAPI",
+        "source_family": "TPEX_OPENAPI",
+        "target_id": "TPEX:equity:6488"
+      }
+    ],
+    "targets": [
+      {
+        "derivative_identity": {},
+        "duplicate_identity_key": "TPEX:equity:6488",
+        "instrument_type": "equity",
+        "market": "TPEX",
+        "planned_mappings": [
+          {
+            "context_type": "official_eod_reference",
+            "network_required": true,
+            "operation_class": "planned_network_fetch",
+            "route": "TPEX_OPENAPI",
+            "source_family": "TPEX_OPENAPI",
+            "target_id": "TPEX:equity:6488"
+          }
+        ],
+        "requested_context_types": [
+          "official_eod_reference"
+        ],
+        "requested_source_families": [
+          "TPEX_OPENAPI"
+        ],
+        "requested_source_selection_mode": "target_exact",
+        "session": null,
+        "symbol": "6488",
+        "target_id": "TPEX:equity:6488"
+      }
+    ]
+  },
+  "network_required": true,
+  "network_scope": {
+    "network_execution_in_m8r01": false,
+    "network_required": true,
+    "operation_classes": [
+      "planned_network_fetch"
+    ]
+  },
+  "non_goal_flags": {
+    "alert": false,
+    "api_surface": false,
+    "auto_retry": false,
+    "background_service": false,
+    "broker_execution": false,
+    "cache": false,
+    "database": false,
+    "frontend_surface": false,
+    "full_market_scanner": false,
+    "m9_ingestion": false,
+    "mcp_surface": false,
+    "network_execution": false,
+    "orchestrator": false,
+    "polling": false,
+    "prediction": false,
+    "ranking": false,
+    "recommendation": false,
+    "scheduler": false,
+    "source_adapter_invocation": false
+  },
+  "normalized_request_hash": "c35019c9a4fdf2b8afd8379a55520f5c1303ba4c292f49591ec1fd60d3d59653",
+  "output_scope": {
+    "artifact_root": "research/m8r/live_validation/m8r02b-f1-20260715T120003Z/cases/TPEX_OPENAPI_EOD_6488",
+    "raw_payload_retention": false,
+    "write_artifacts": false
+  },
+  "plan_hash": "c9a91db5fb5b1d9c10b81413318e74638feb3cd566b6e0ba73e9b330bdb26c14",
+  "plan_id": "m8r-plan-c9a91db5fb5b1d9c",
+  "planned_source_families": [
+    "TPEX_OPENAPI"
+  ],
+  "rejected_targets": [],
+  "request_id": "m8r02b-tpex_openapi_eod_6488",
+  "requested_context_types": [
+    "official_eod_reference"
+  ],
+  "schema_version": "m8r_market_context_execution_plan.v1",
+  "source_to_target_context_mapping": [
+    {
+      "context_type": "official_eod_reference",
+      "network_required": true,
+      "operation_class": "planned_network_fetch",
+      "route": "TPEX_OPENAPI",
+      "source_family": "TPEX_OPENAPI",
+      "target_id": "TPEX:equity:6488"
+    }
+  ],
+  "targets": [
+    {
+      "allowed_source_families": [
+        "TPEX_OPENAPI",
+        "TWSE_MIS"
+      ],
+      "derivative_identity": {},
+      "duplicate_identity_key": "TPEX:equity:6488",
+      "identity_resolution_status": "resolved",
+      "input_identity": {
+        "instrument_type": "equity",
+        "market": "TPEX",
+        "requested_source_families": [
+          "TPEX_OPENAPI"
+        ],
+        "symbol": "6488"
+      },
+      "instrument_type": "equity",
+      "issues": [],
+      "market": "TPEX",
+      "planned_mappings": [
+        {
+          "context_type": "official_eod_reference",
+          "network_required": true,
+          "operation_class": "planned_network_fetch",
+          "route": "TPEX_OPENAPI",
+          "source_family": "TPEX_OPENAPI",
+          "target_id": "TPEX:equity:6488"
+        }
+      ],
+      "requested_context_types": [
+        "official_eod_reference"
+      ],
+      "requested_source_families": [
+        "TPEX_OPENAPI"
+      ],
+      "requested_source_selection_mode": "target_exact",
+      "runtime_routes": {
+        "TPEX_OPENAPI": "TPEX_OPENAPI",
+        "TWSE_MIS": "otc_{symbol}.tw"
+      },
+      "session": null,
+      "symbol": "6488",
+      "target_id": "TPEX:equity:6488"
+    }
+  ]
+}

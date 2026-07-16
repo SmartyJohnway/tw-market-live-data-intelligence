@@ -1,0 +1,20 @@
+{
+  "allow_network": true,
+  "created_before_execution": true,
+  "execution_receipts": {
+    "TAIFEX_MIS_OPTION_EXACT": "research/m8r/live_validation/m8r02b-f1-20260715T170000Z/cases/TAIFEX_MIS_OPTION_EXACT/m8r-receipt-ada3e9494d1872f3/execution_receipt.json",
+    "TAIFEX_OPENAPI_OPTION_EXACT": "research/m8r/live_validation/m8r02b-f1-20260715T170000Z/cases/TAIFEX_OPENAPI_OPTION_EXACT/m8r-receipt-f331a63238333627/execution_receipt.json"
+  },
+  "finalized": true,
+  "live_execution_code_base_commit_sha": "08d18d9c6c3cfe0f5307c7dfd19afb8ad0d7af49",
+  "live_execution_patch_commit_sha": "fd41cdc0adc272a63e99e09c7d34978461e33fe9",
+  "live_execution_worktree_dirty": true,
+  "manifest_role": "option_live_execution_run",
+  "network_execution_performed": true,
+  "operator_confirmed": true,
+  "option_cases": [
+    "TAIFEX_MIS_OPTION_EXACT",
+    "TAIFEX_OPENAPI_OPTION_EXACT"
+  ],
+  "schema_version": "m8r_02b_f1_option_live_execution_manifest.v1"
+}

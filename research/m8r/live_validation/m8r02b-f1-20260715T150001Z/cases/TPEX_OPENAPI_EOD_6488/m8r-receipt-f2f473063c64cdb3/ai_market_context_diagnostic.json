@@ -1,0 +1,58 @@
+{
+  "all_caveat_codes": [
+    "approved_target_scope_not_fully_available",
+    "currentness_unknown",
+    "official_eod_not_intraday",
+    "production_live_execution_not_ready"
+  ],
+  "identity_evidence": [
+    {
+      "derivative_identity": {
+        "market": "TPEX",
+        "source_id": "TPEX_OPENAPI",
+        "symbol": "6488"
+      },
+      "target_id": "TPEX:equity:6488"
+    }
+  ],
+  "operation_outcomes": [
+    {
+      "context_type": "official_eod_reference",
+      "operation_class": "planned_network_fetch",
+      "operation_id": "m8r-op-cb0946a9fcbc0f2c",
+      "source_family": "TPEX_OPENAPI",
+      "status": "succeeded",
+      "target_id": "TPEX:equity:6488"
+    }
+  ],
+  "package_id": "amc-fdc57858675be274",
+  "provenance": {
+    "approval_consumed": true,
+    "approval_id": "m8r-approval-cc6fcdc8d94a2e5c",
+    "approved_output_scope": {
+      "artifact_root": "research/m8r/live_validation/m8r02b-f1-20260715T120003Z/cases/TPEX_OPENAPI_EOD_6488",
+      "raw_payload_retention": false,
+      "write_artifacts": false
+    },
+    "bounded_retention": true,
+    "execution_finished_at_utc": "2026-07-15T14:06:25Z",
+    "execution_started_at_utc": "2026-07-15T12:00:03Z",
+    "full_market_retained_output": false,
+    "m8_context_core_status": "built",
+    "orchestration_result_schema": "m8r_market_context_orchestration_result.v1",
+    "plan_hash": "c9a91db5fb5b1d9c10b81413318e74638feb3cd566b6e0ba73e9b330bdb26c14",
+    "plan_id": "m8r-plan-c9a91db5fb5b1d9c",
+    "raw_payload_retained": false,
+    "receipt_id": "m8r-receipt-f2f473063c64cdb3",
+    "request_id": null,
+    "target_identity_provenance": "inferred_from_operation_result",
+    "upstream_package_status": "ready_with_caveats"
+  },
+  "source_mappings": [
+    {
+      "operation_id": "m8r-op-cb0946a9fcbc0f2c",
+      "source_context_id": "amc-src-aa5e2da122649129",
+      "target_id": "TPEX:equity:6488"
+    }
+  ]
+}

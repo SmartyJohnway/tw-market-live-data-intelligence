@@ -1,0 +1,582 @@
+{
+  "caveats": [
+    {
+      "code": "approved_target_scope_not_fully_available",
+      "message": "approved target scope not fully available",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "currentness_unknown",
+      "message": "currentness unknown",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "official_eod_not_intraday",
+      "message": "official eod not intraday",
+      "scope": "package",
+      "severity": "warning",
+      "source_family": "TPEX_OPENAPI"
+    },
+    {
+      "code": "production_live_execution_not_ready",
+      "message": "production live execution not ready",
+      "scope": "package",
+      "severity": "warning"
+    }
+  ],
+  "conversation_views": {
+    "compact": {
+      "currentness": {
+        "by_source_family": {
+          "TPEX_OPENAPI": [
+            "unknown"
+          ]
+        },
+        "by_target": {
+          "TPEX:equity:6488": [
+            "unknown"
+          ]
+        },
+        "current_count": 0,
+        "not_applicable_count": 0,
+        "overall_status": "unknown",
+        "stale_count": 0,
+        "unknown_count": 1
+      },
+      "highest_severity_caveats": [
+        {
+          "code": "approved_target_scope_not_fully_available",
+          "message": "approved target scope not fully available",
+          "scope": "package",
+          "severity": "warning"
+        },
+        {
+          "code": "currentness_unknown",
+          "message": "currentness unknown",
+          "scope": "package",
+          "severity": "warning"
+        },
+        {
+          "code": "official_eod_not_intraday",
+          "message": "official eod not intraday",
+          "scope": "package",
+          "severity": "warning",
+          "source_family": "TPEX_OPENAPI"
+        },
+        {
+          "code": "production_live_execution_not_ready",
+          "message": "production live execution not ready",
+          "scope": "package",
+          "severity": "warning"
+        }
+      ],
+      "latest_usable_observations": [
+        {
+          "currentness": {
+            "currentness_status": "official_eod_reference"
+          },
+          "retrieved_at_utc": "2026-07-15T14:06:04Z",
+          "source_context_id": "amc-src-aa5e2da122649129",
+          "source_family": "TPEX_OPENAPI",
+          "source_timestamp": null,
+          "target_id": "TPEX:equity:6488"
+        }
+      ],
+      "missing_context_count": 0,
+      "package_id": "amc-fdc57858675be274",
+      "package_status": "partial",
+      "targets": [
+        {
+          "status": "ready_with_caveats",
+          "target_id": "TPEX:equity:6488"
+        }
+      ]
+    },
+    "diagnostic": {
+      "all_caveat_codes": [
+        "approved_target_scope_not_fully_available",
+        "currentness_unknown",
+        "official_eod_not_intraday",
+        "production_live_execution_not_ready"
+      ],
+      "identity_evidence": [
+        {
+          "derivative_identity": {
+            "market": "TPEX",
+            "source_id": "TPEX_OPENAPI",
+            "symbol": "6488"
+          },
+          "target_id": "TPEX:equity:6488"
+        }
+      ],
+      "operation_outcomes": [
+        {
+          "context_type": "official_eod_reference",
+          "operation_class": "planned_network_fetch",
+          "operation_id": "m8r-op-cb0946a9fcbc0f2c",
+          "source_family": "TPEX_OPENAPI",
+          "status": "succeeded",
+          "target_id": "TPEX:equity:6488"
+        }
+      ],
+      "package_id": "amc-fdc57858675be274",
+      "provenance": {
+        "approval_consumed": true,
+        "approval_id": "m8r-approval-cc6fcdc8d94a2e5c",
+        "approved_output_scope": {
+          "artifact_root": "research/m8r/live_validation/m8r02b-f1-20260715T120003Z/cases/TPEX_OPENAPI_EOD_6488",
+          "raw_payload_retention": false,
+          "write_artifacts": false
+        },
+        "bounded_retention": true,
+        "execution_finished_at_utc": "2026-07-15T14:06:25Z",
+        "execution_started_at_utc": "2026-07-15T12:00:03Z",
+        "full_market_retained_output": false,
+        "m8_context_core_status": "built",
+        "orchestration_result_schema": "m8r_market_context_orchestration_result.v1",
+        "plan_hash": "c9a91db5fb5b1d9c10b81413318e74638feb3cd566b6e0ba73e9b330bdb26c14",
+        "plan_id": "m8r-plan-c9a91db5fb5b1d9c",
+        "raw_payload_retained": false,
+        "receipt_id": "m8r-receipt-f2f473063c64cdb3",
+        "request_id": null,
+        "target_identity_provenance": "inferred_from_operation_result",
+        "upstream_package_status": "ready_with_caveats"
+      },
+      "source_mappings": [
+        {
+          "operation_id": "m8r-op-cb0946a9fcbc0f2c",
+          "source_context_id": "amc-src-aa5e2da122649129",
+          "target_id": "TPEX:equity:6488"
+        }
+      ]
+    },
+    "standard": {
+      "caveats": [
+        {
+          "code": "approved_target_scope_not_fully_available",
+          "message": "approved target scope not fully available",
+          "scope": "package",
+          "severity": "warning"
+        },
+        {
+          "code": "currentness_unknown",
+          "message": "currentness unknown",
+          "scope": "package",
+          "severity": "warning"
+        },
+        {
+          "code": "official_eod_not_intraday",
+          "message": "official eod not intraday",
+          "scope": "package",
+          "severity": "warning",
+          "source_family": "TPEX_OPENAPI"
+        },
+        {
+          "code": "production_live_execution_not_ready",
+          "message": "production live execution not ready",
+          "scope": "package",
+          "severity": "warning"
+        }
+      ],
+      "currentness": {
+        "by_source_family": {
+          "TPEX_OPENAPI": [
+            "unknown"
+          ]
+        },
+        "by_target": {
+          "TPEX:equity:6488": [
+            "unknown"
+          ]
+        },
+        "current_count": 0,
+        "not_applicable_count": 0,
+        "overall_status": "unknown",
+        "stale_count": 0,
+        "unknown_count": 1
+      },
+      "forbidden_interpretations": [
+        "not_all_sources_current",
+        "not_broker_instruction",
+        "not_complete_when_partial",
+        "not_full_market",
+        "not_guaranteed_realtime",
+        "not_live_production_ready_without_m8r02b",
+        "not_prediction",
+        "not_recommendation",
+        "not_safe_to_infer_missing_values",
+        "not_trading_signal",
+        "official_eod_not_live"
+      ],
+      "missing_context": [],
+      "package_id": "amc-fdc57858675be274",
+      "source_provenance": [
+        {
+          "authority_level": "official_documented",
+          "caveats": [
+            {
+              "code": "source_warning",
+              "message": "source_warning",
+              "severity": "warning",
+              "source": "observation_caveat"
+            }
+          ],
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "currentness_status": "official_eod_reference"
+          },
+          "instrument_type": "equity",
+          "market": "tpex_otc",
+          "operation_id": "m8r-op-cb0946a9fcbc0f2c",
+          "retrieved_at_utc": "2026-07-15T14:06:04Z",
+          "safe_fields": {
+            "activity": {
+              "trade_value": 16009810160,
+              "trade_volume": 10788285,
+              "transaction_count": 22260
+            },
+            "currentness_status": "official_eod_reference",
+            "derived_fields": [],
+            "field_validation": {
+              "Change": {
+                "numeric_type": "decimal_string",
+                "valid": true
+              },
+              "Close": {
+                "numeric_type": "decimal_string",
+                "valid": true
+              },
+              "Date": {
+                "source_format": "ROC_YYYMMDD",
+                "valid": true
+              },
+              "High": {
+                "numeric_type": "decimal_string",
+                "valid": true
+              },
+              "Low": {
+                "numeric_type": "decimal_string",
+                "valid": true
+              },
+              "Open": {
+                "numeric_type": "decimal_string",
+                "valid": true
+              },
+              "TradingShares": {
+                "numeric_type": "integer",
+                "valid": true
+              },
+              "TransactionAmount": {
+                "numeric_type": "integer",
+                "valid": true
+              },
+              "TransactionNumber": {
+                "numeric_type": "integer",
+                "valid": true
+              },
+              "identity": {
+                "market": "tpex_otc",
+                "symbol_present": true,
+                "valid": true
+              },
+              "instrument_classification": {
+                "artifact_path": "config/m8a_official_eod_security_master.json",
+                "classification_status": "classified",
+                "coverage_mode": "bounded_seed_only",
+                "instrument_type": "equity",
+                "production_classification_completeness": "incomplete",
+                "provenance": "M8R-02B-F1 bounded TPEx validation identity; exact target only; not a complete TPEx security-master authority",
+                "source": "repository_bounded_security_seed"
+              },
+              "trade_date": {
+                "valid": true
+              }
+            },
+            "price": {
+              "change": "-35.00",
+              "change_percent": null,
+              "close": "1480.00",
+              "high": "1600.00",
+              "low": "1430.00",
+              "open": "1580.00",
+              "previous_close": null
+            },
+            "trade_date": "2026-07-15"
+          },
+          "source_context_id": "amc-src-aa5e2da122649129",
+          "source_family": "TPEX_OPENAPI",
+          "source_id": "TPEX_OPENAPI",
+          "source_timestamp": null,
+          "symbol": "6488",
+          "target_id": "TPEX:equity:6488",
+          "timing_class": "official_eod"
+        }
+      ],
+      "targets": [
+        {
+          "available_context_types": [
+            "official_eod_reference"
+          ],
+          "caveats": [],
+          "derivative_identity": {
+            "market": "TPEX",
+            "source_id": "TPEX_OPENAPI",
+            "symbol": "6488"
+          },
+          "forbidden_interpretations": [],
+          "instrument_type": "equity",
+          "market": "tpex_otc",
+          "missing_context_types": [],
+          "requested_context_types": [
+            "official_eod_reference"
+          ],
+          "source_context_refs": [
+            "amc-src-aa5e2da122649129"
+          ],
+          "symbol": "6488",
+          "target_id": "TPEX:equity:6488",
+          "target_status": "ready_with_caveats"
+        }
+      ]
+    }
+  },
+  "currentness_summary": {
+    "by_source_family": {
+      "TPEX_OPENAPI": [
+        "unknown"
+      ]
+    },
+    "by_target": {
+      "TPEX:equity:6488": [
+        "unknown"
+      ]
+    },
+    "current_count": 0,
+    "not_applicable_count": 0,
+    "overall_status": "unknown",
+    "stale_count": 0,
+    "unknown_count": 1
+  },
+  "forbidden_interpretations": [
+    "not_all_sources_current",
+    "not_broker_instruction",
+    "not_complete_when_partial",
+    "not_full_market",
+    "not_guaranteed_realtime",
+    "not_live_production_ready_without_m8r02b",
+    "not_prediction",
+    "not_recommendation",
+    "not_safe_to_infer_missing_values",
+    "not_trading_signal",
+    "official_eod_not_live"
+  ],
+  "generated_at_utc": "2026-07-15T12:00:03Z",
+  "integrity": {
+    "hash_scope_schema": "ai_market_context_hash_scope.v1",
+    "package_hash": "fdc57858675be2741687b15b7a23f5bc97badeb24aa4c6d534e00f898fb2c0a7"
+  },
+  "market_session_context": [],
+  "missing_context": [],
+  "operation_outcomes": [
+    {
+      "context_type": "official_eod_reference",
+      "operation_class": "planned_network_fetch",
+      "operation_id": "m8r-op-cb0946a9fcbc0f2c",
+      "source_family": "TPEX_OPENAPI",
+      "status": "succeeded",
+      "target_id": "TPEX:equity:6488"
+    }
+  ],
+  "package_id": "amc-fdc57858675be274",
+  "package_status": "partial",
+  "production_readiness": {
+    "live_validation_completed": false,
+    "m8r_02a_required": false,
+    "m8r_02b_required": true,
+    "offline_packaging_ready": true,
+    "package_schema_ready": true,
+    "production_executor_adapters_ready": true,
+    "production_live_execution_ready": false,
+    "production_orchestrator_contract_ready": true
+  },
+  "provenance": {
+    "approval_consumed": true,
+    "approval_id": "m8r-approval-cc6fcdc8d94a2e5c",
+    "approved_output_scope": {
+      "artifact_root": "research/m8r/live_validation/m8r02b-f1-20260715T120003Z/cases/TPEX_OPENAPI_EOD_6488",
+      "raw_payload_retention": false,
+      "write_artifacts": false
+    },
+    "bounded_retention": true,
+    "execution_finished_at_utc": "2026-07-15T14:06:25Z",
+    "execution_started_at_utc": "2026-07-15T12:00:03Z",
+    "full_market_retained_output": false,
+    "m8_context_core_status": "built",
+    "orchestration_result_schema": "m8r_market_context_orchestration_result.v1",
+    "plan_hash": "c9a91db5fb5b1d9c10b81413318e74638feb3cd566b6e0ba73e9b330bdb26c14",
+    "plan_id": "m8r-plan-c9a91db5fb5b1d9c",
+    "raw_payload_retained": false,
+    "receipt_id": "m8r-receipt-f2f473063c64cdb3",
+    "request_id": null,
+    "target_identity_provenance": "inferred_from_operation_result",
+    "upstream_package_status": "ready_with_caveats"
+  },
+  "schema_version": "ai_market_context.v1",
+  "scope": {
+    "approved_operation_count": 1,
+    "approved_target_count": 1,
+    "bounded_target_scope": true,
+    "full_market_scope": false,
+    "instrument_types": [
+      "equity"
+    ],
+    "local_operations_attempted": 0,
+    "markets": [
+      "tpex_otc"
+    ],
+    "missing_context_count": 0,
+    "missing_context_types": [],
+    "network_operations_attempted": 1,
+    "requested_context_types": [
+      "official_eod_reference"
+    ],
+    "source_families": [
+      "TPEX_OPENAPI"
+    ],
+    "successful_context_count": 1,
+    "successful_context_types": [
+      "official_eod_reference"
+    ]
+  },
+  "source_contexts": [
+    {
+      "authority_level": "official_documented",
+      "caveats": [
+        {
+          "code": "source_warning",
+          "message": "source_warning",
+          "severity": "warning",
+          "source": "observation_caveat"
+        }
+      ],
+      "context_type": "official_eod_reference",
+      "currentness": {
+        "currentness_status": "official_eod_reference"
+      },
+      "instrument_type": "equity",
+      "market": "tpex_otc",
+      "operation_id": "m8r-op-cb0946a9fcbc0f2c",
+      "retrieved_at_utc": "2026-07-15T14:06:04Z",
+      "safe_fields": {
+        "activity": {
+          "trade_value": 16009810160,
+          "trade_volume": 10788285,
+          "transaction_count": 22260
+        },
+        "currentness_status": "official_eod_reference",
+        "derived_fields": [],
+        "field_validation": {
+          "Change": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "Close": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "Date": {
+            "source_format": "ROC_YYYMMDD",
+            "valid": true
+          },
+          "High": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "Low": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "Open": {
+            "numeric_type": "decimal_string",
+            "valid": true
+          },
+          "TradingShares": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "TransactionAmount": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "TransactionNumber": {
+            "numeric_type": "integer",
+            "valid": true
+          },
+          "identity": {
+            "market": "tpex_otc",
+            "symbol_present": true,
+            "valid": true
+          },
+          "instrument_classification": {
+            "artifact_path": "config/m8a_official_eod_security_master.json",
+            "classification_status": "classified",
+            "coverage_mode": "bounded_seed_only",
+            "instrument_type": "equity",
+            "production_classification_completeness": "incomplete",
+            "provenance": "M8R-02B-F1 bounded TPEx validation identity; exact target only; not a complete TPEx security-master authority",
+            "source": "repository_bounded_security_seed"
+          },
+          "trade_date": {
+            "valid": true
+          }
+        },
+        "price": {
+          "change": "-35.00",
+          "change_percent": null,
+          "close": "1480.00",
+          "high": "1600.00",
+          "low": "1430.00",
+          "open": "1580.00",
+          "previous_close": null
+        },
+        "trade_date": "2026-07-15"
+      },
+      "source_context_id": "amc-src-aa5e2da122649129",
+      "source_family": "TPEX_OPENAPI",
+      "source_id": "TPEX_OPENAPI",
+      "source_timestamp": null,
+      "symbol": "6488",
+      "target_id": "TPEX:equity:6488",
+      "timing_class": "official_eod"
+    }
+  ],
+  "source_health_context": [],
+  "targets": [
+    {
+      "available_context_types": [
+        "official_eod_reference"
+      ],
+      "caveats": [],
+      "derivative_identity": {
+        "market": "TPEX",
+        "source_id": "TPEX_OPENAPI",
+        "symbol": "6488"
+      },
+      "forbidden_interpretations": [],
+      "instrument_type": "equity",
+      "market": "tpex_otc",
+      "missing_context_types": [],
+      "requested_context_types": [
+        "official_eod_reference"
+      ],
+      "source_context_refs": [
+        "amc-src-aa5e2da122649129"
+      ],
+      "symbol": "6488",
+      "target_id": "TPEX:equity:6488",
+      "target_status": "ready_with_caveats"
+    }
+  ]
+}
