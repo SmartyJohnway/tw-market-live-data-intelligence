@@ -93,23 +93,36 @@ def _resolve_security(tid: str, security_master=None) -> dict:
         if isinstance(entry, str): entry={'instrument_type':entry}
         if isinstance(entry, dict): found.append((market, entry))
     if not found:
-        return {'target_id':tid,'security_code':code,'security_name':None,'canonical_market':None,'instrument_type':None,'listing_status':None,'lifecycle_state':'unresolved','resolution_status':'identity_unresolved','resolution_evidence':[{'code':'security_master_miss','requested_market':requested_market}],'requested_identity':requested}
-    canonical_market, entry = found[0]
+        return {'target_id':tid,'security_code':code,'security_name':None,'canonical_market':None,'instrument_type':None,'listing_status':None,'lifecycle_state':'unknown','lifecycle_resolution_status':'unavailable','resolution_status':'identity_unresolved','resolution_evidence':[{'code':'security_master_miss','requested_market':requested_market}],'requested_identity':requested}
+    exact=[(m,e) for m,e in found if m==requested_market]
+    if not exact:
+        canonical_market, entry = found[0]
+    elif len(found)>1 and not exact[0][1].get('cross_market_duplicate_policy') == 'exact_requested_market_ok':
+        return {'target_id':tid,'security_code':code,'security_name':None,'canonical_market':requested_market,'instrument_type':None,'listing_status':None,'lifecycle_state':'unknown','lifecycle_resolution_status':'unavailable','resolution_status':'identity_conflict','resolution_evidence':[{'code':'cross_market_duplicate','markets':[m for m,_ in found]}],'requested_identity':requested}
+    else:
+        canonical_market, entry = exact[0]
     typ=normalize_instrument_type(entry.get('instrument_type')) or entry.get('instrument_type')
-    lifecycle=entry.get('lifecycle_state') or entry.get('listing_status') or 'active'
-    listing=entry.get('listing_status') or lifecycle
+    lifecycle_supplied='lifecycle_state' in entry or 'listing_status' in entry
+    lifecycle=entry.get('lifecycle_state') or entry.get('listing_status') if lifecycle_supplied else 'unknown'
+    listing=entry.get('listing_status')
+    lifecycle_status='resolved' if lifecycle_supplied else 'unavailable'
+    execution_policy='execution_allowed'
+    caveats=[]
     status='resolved'
     if canonical_market != requested_market: status='market_mismatch'
     elif typ not in {'equity','etf'}: status='unsupported_instrument'
-    elif lifecycle not in {'active','listed','trading'}: status='lifecycle_unsupported'
-    return {'target_id':tid,'security_code':code,'security_name':entry.get('security_name') or entry.get('name'),'canonical_market':canonical_market,'instrument_type':typ,'listing_status':listing,'lifecycle_state':lifecycle,'resolution_status':status,'resolution_evidence':[{'source':entry.get('source'),'provenance':entry.get('provenance'),'coverage_mode':entry.get('coverage_mode')}], 'requested_identity':requested}
+    elif lifecycle_supplied and lifecycle not in {'active','listed','trading'}: status='lifecycle_unsupported'
+    elif not lifecycle_supplied:
+        execution_policy='execution_allowed_with_caveat'; caveats.append('lifecycle_evidence_unavailable_not_assumed_active')
+    return {'target_id':tid,'security_code':code,'security_name':entry.get('security_name') or entry.get('name'),'canonical_market':canonical_market,'instrument_type':typ,'listing_status':listing,'lifecycle_state':lifecycle,'lifecycle_resolution_status':lifecycle_status,'execution_policy':execution_policy,'resolution_caveats':caveats,'resolution_status':status,'resolution_evidence':[{'source':entry.get('source'),'provenance':entry.get('provenance'),'coverage_mode':entry.get('coverage_mode')}], 'requested_identity':requested}
 
 def _target_from_resolution(res: dict) -> dict:
     status=res['resolution_status']; canonical=res.get('canonical_market'); prefix=_canonical_to_prefix(canonical) if canonical else None
     issues=[]
-    if status!='resolved': issues.append(_issue(status, blocking=status in {'market_mismatch','unsupported_instrument','lifecycle_unsupported'}, target_id=res['target_id']))
-    resolved={'target_id':res['target_id'],'symbol':res.get('security_code'),'market':prefix,'canonical_market':canonical,'instrument_type':res.get('instrument_type'),'security_name':res.get('security_name'),'listing_status':res.get('listing_status'),'lifecycle_state':res.get('lifecycle_state')} if status=='resolved' else {}
-    return {'target_id':res['target_id'],'requested_identity':res.get('requested_identity') or {'target_id':res['target_id']},'resolved_identity':resolved,'identity_status':'resolved' if status=='resolved' else status,'market':prefix,'canonical_market':canonical,'instrument_type':res.get('instrument_type'),'security_code':res.get('security_code'),'security_name':res.get('security_name'),'listing_status':res.get('listing_status'),'lifecycle_state':res.get('lifecycle_state'),'resolution_status':status,'resolution_evidence':res.get('resolution_evidence') or [],'blocking_issues':issues}
+    if status!='resolved': issues.append(_issue(status, blocking=status in {'market_mismatch','unsupported_instrument','lifecycle_unsupported','identity_conflict'}, target_id=res['target_id']))
+    for caveat in res.get('resolution_caveats') or []: issues.append(_issue(caveat, blocking=False, target_id=res['target_id']))
+    resolved={'target_id':res['target_id'],'symbol':res.get('security_code'),'market':prefix,'canonical_market':canonical,'instrument_type':res.get('instrument_type'),'security_name':res.get('security_name'),'listing_status':res.get('listing_status'),'lifecycle_state':res.get('lifecycle_state'),'lifecycle_resolution_status':res.get('lifecycle_resolution_status'),'execution_policy':res.get('execution_policy'),'resolution_caveats':res.get('resolution_caveats') or []} if status=='resolved' else {}
+    return {'target_id':res['target_id'],'requested_identity':res.get('requested_identity') or {'target_id':res['target_id']},'resolved_identity':resolved,'identity_status':'resolved' if status=='resolved' else status,'market':prefix,'canonical_market':canonical,'instrument_type':res.get('instrument_type'),'security_code':res.get('security_code'),'security_name':res.get('security_name'),'listing_status':res.get('listing_status'),'lifecycle_state':res.get('lifecycle_state'),'lifecycle_resolution_status':res.get('lifecycle_resolution_status'),'execution_policy':res.get('execution_policy'),'resolution_caveats':res.get('resolution_caveats') or [],'resolution_status':status,'resolution_evidence':res.get('resolution_evidence') or [],'blocking_issues':issues}
 
 def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, security_master=None)->dict:
     req=validate_watchlist_snapshot_request(request) if bundle_type=='snapshot' else validate_watchlist_performance_request(request)

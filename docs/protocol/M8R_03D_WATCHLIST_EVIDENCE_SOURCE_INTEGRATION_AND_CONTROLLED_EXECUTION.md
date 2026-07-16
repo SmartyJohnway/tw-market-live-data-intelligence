@@ -16,7 +16,7 @@ Authorization schema: `m8r_03d_watchlist_execution_authorization.v1`.
 
 The authorization is bound to the canonical SHA-256 hash of the validated evidence request JSON using sorted-key compact JSON. It also requires a non-empty `authorization_id` and `one_shot_nonce`, and is bounded by bundle type, non-empty target IDs, source families, maximum target count, expiry, and safety flags. Required safety flags are: `network_execution_allowed=true`, `one_shot_only=true`, `polling_allowed=false`, `scheduler_allowed=false`, `persistent_storage_allowed=false`, and `raw_payload_retention_allowed=false`.
 
-An authorization for one request hash cannot execute a modified request. Expired authorizations, malformed timestamps, empty or duplicate authorization arrays, unknown authorization fields, unauthorized targets, unauthorized sources, unauthorized bundle types, polling/scheduler flags, and raw-retention permission are rejected before controlled execution. Execute mode atomically claims the authorization/nonce in a filesystem-backed consumption receipt before source calls; a second use fails with `authorization_replayed`. Preflight and fixture modes do not consume authorization.
+An authorization for one request hash cannot execute a modified request. Expired authorizations, malformed timestamps, empty or duplicate authorization arrays, unknown authorization fields, unauthorized targets, unauthorized sources, unauthorized bundle types, polling/scheduler flags, and raw-retention permission are rejected before controlled execution. Execute mode atomically claims the authorization/nonce in a fixed governed filesystem-backed consumption receipt root before source calls; the receipt root is independent of `--artifact-root`, so changing artifact output directories cannot bypass replay protection. A second use fails with `authorization_replayed`. Preflight and fixture modes do not consume authorization.
 
 ## Execution modes
 
@@ -38,7 +38,7 @@ TPEx/OTC current observations use the already-approved TWSE MIS OTC route (`otc_
 
 Targets are retained in request order. Supported IDs are explicit `TWSE:{code}` and `TPEX:{code}` watchlist IDs from the M8R-03C request, but the prefix is not treated as authoritative identity. Planning resolves each target through the governed security-master/classifier path into `target_id`, `security_code`, `security_name`, `canonical_market`, `instrument_type`, `listing_status`, `lifecycle_state`, `resolution_status`, and `resolution_evidence`. TWSE targets plan `TWSE_MIS` current route `tse_{symbol}.tw` and `TWSE_OPENAPI` EOD. TPEx targets plan `TWSE_MIS` current route `otc_{symbol}.tw` and `TPEX_OPENAPI` EOD.
 
-Unknown identities remain target-local when other targets are valid; no source calls are planned for them. Market-prefix conflicts become `market_mismatch`, inactive securities become `lifecycle_unsupported`, unsupported instruments become `unsupported_instrument`, and these blocking issues stop fixture and execute modes before source invocation.
+Unknown identities remain target-local when other targets are valid; no source calls are planned for them. Market-prefix conflicts become `market_mismatch`, inactive securities become `lifecycle_unsupported`, unsupported instruments become `unsupported_instrument`, cross-market duplicate conflicts become `identity_conflict`, and these blocking issues stop fixture and execute modes before source invocation. Current repository classifier lookup may provide identity and classification without lifecycle evidence; missing lifecycle evidence is recorded as `lifecycle_state=unknown` and `lifecycle_resolution_status=unavailable`, permits interim `execution_allowed_with_caveat`, and must not be described as active. Explicit inactive lifecycle evidence supplied by an injected or future canonical lifecycle-aware master remains blocking.
 
 ## Safe-field normalization
 
@@ -83,6 +83,7 @@ Live validation is manual, one-shot, and outside default CI. The operator must p
 ## Known caveats
 
 - Live validation is not completed.
+- Full lifecycle verification is not completed; it remains a bounded follow-up tied to integrating a verified external lifecycle-aware security-master/classifier snapshot. The current implementation only uses repository classifier evidence and injected test masters, and does not infer active lifecycle from absent evidence.
 - TPEx current coverage is limited to the already-approved TWSE MIS OTC route.
 - Performance metrics use unadjusted EOD closes supplied by official EOD adapters or fixtures.
 - There is no persistent watchlist database, scheduler, polling, frontend, MCP, public API, notification, broker, order, or M8R-04 implementation.

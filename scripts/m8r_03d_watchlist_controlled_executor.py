@@ -9,6 +9,7 @@ from scripts.m8a_twse_official_eod_adapter import execute_twse_official_eod_adap
 from scripts.m8a_tpex_official_eod_adapter import execute_tpex_official_eod_adapter
 from scripts.m5k_common import execute_live_observation
 RESULT_SCHEMA_VERSION='m8r_03d_watchlist_execution_result.v1'
+AUTHORIZATION_CONSUMPTION_ROOT=Path('artifacts/m8r_03d_authorization_consumption')
 FORBIDDEN_ARTIFACT_TOKENS=('raw_payload"','cookies','session_id','access_token','refresh_token','msgArray')
 MARKET_ALIASES={'TWSE':{'TWSE','listed','twse','tse'},'TPEX':{'TPEX','tpex','tpex_otc','otc'}}
 class M8R03DExecutionError(RuntimeError): pass
@@ -75,7 +76,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
     return _result(run_id,mode,started,utc_now(),request,plan,authorization if mode=='execute' else None,observations,bundle,status,issues,artifact_root,target_results=target_results,source_execution_summary={'planned_source_call_groups':plan.get('source_call_groups',[]),'group_results':group_results,'network_calls_performed':mode=='execute','network_default_enabled':False,'polling':False,'scheduler':False},write=True)
 
 def _claim_authorization(auth, plan, artifact_root, now):
-    root=_safe_root(artifact_root)/'_authorization_consumption'; root.mkdir(parents=True,exist_ok=True)
+    root=AUTHORIZATION_CONSUMPTION_ROOT; root.mkdir(parents=True,exist_ok=True)
     key=sha256_json({'authorization_id':auth['authorization_id'],'one_shot_nonce':auth['one_shot_nonce'],'request_hash':plan['request_hash']})
     path=root/(key+'.json')
     receipt={'schema_version':'m8r_03d_authorization_consumption_receipt.v1','authorization_id':auth['authorization_id'],'one_shot_nonce_hash':sha256_json(auth['one_shot_nonce']),'request_hash':plan['request_hash'],'plan_id':plan['plan_id'],'claimed_at_utc':now,'status':'claimed'}
