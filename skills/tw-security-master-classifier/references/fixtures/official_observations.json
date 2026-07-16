@@ -1,0 +1,139 @@
+{
+  "fixture_version": "1.0.0",
+  "purpose": "Deterministic regression observations from official pages. These are not a living security master and must not be presented as current without a fresh probe.",
+  "observed_at": "2026-07-15T00:00:00+08:00",
+  "records": [
+    {
+      "source_family": "twse_isin",
+      "source_lane": "zh",
+      "source_url": "https://isin.twse.com.tw/isin/C_public.jsp?strMode=1",
+      "str_mode": 1,
+      "page_title": "本國未上市，未上櫃公開發行證券，國際證券辨識號碼一覽表",
+      "source_updated_date": "2026-07-15",
+      "security_code": "1111",
+      "security_name_zh": "欣欣水泥",
+      "isin": "TW0001111003",
+      "issue_date": "1982-11-24",
+      "industry": "水泥工業",
+      "cfi": "ESVUFR",
+      "remarks": ""
+    },
+    {
+      "source_family": "twse_isin",
+      "source_lane": "en",
+      "source_url": "https://isin.twse.com.tw/isin/e_C_public.jsp?strMode=1",
+      "str_mode": 1,
+      "page_title": "List of ISIN Code for Unlisted Issueing Companies",
+      "source_updated_date": "2026-07-15",
+      "security_code": "1111",
+      "security_name_en": "HHCEC",
+      "isin": "TW0001111003",
+      "issue_date": "1982-11-24",
+      "industry": "Cement",
+      "cfi": "ESVUFR",
+      "remarks": ""
+    },
+    {
+      "source_family": "twse_isin",
+      "source_lane": "zh",
+      "source_url": "https://isin.twse.com.tw/isin/C_public.jsp?strMode=1",
+      "str_mode": 1,
+      "page_title": "本國未上市，未上櫃公開發行證券，國際證券辨識號碼一覽表",
+      "section_heading": "特別股",
+      "source_updated_date": "2026-07-15",
+      "security_code": "2364A",
+      "security_name_zh": "倫甲特",
+      "isin": "TW0002364A06",
+      "issue_date": "1990-12-15",
+      "industry": "電子工業",
+      "cfi": "EPNRCR",
+      "remarks": ""
+    },
+    {
+      "source_family": "twse_isin",
+      "source_lane": "zh",
+      "source_url": "https://isin.twse.com.tw/isin/C_public.jsp?strMode=9",
+      "str_mode": 9,
+      "page_title": "登錄買賣黃金現貨國際證券辨識號碼一覽表",
+      "source_updated_date": "2026-07-15",
+      "security_code": "AU9901",
+      "security_name_zh": "臺銀金",
+      "isin": "TW000AU99015",
+      "listing_date": "2015-01-05",
+      "cfi": "MMMXXX",
+      "remarks": ""
+    },
+    {
+      "source_family": "twse_isin",
+      "source_lane": "zh",
+      "source_url": "https://isin.twse.com.tw/isin/C_public.jsp?strMode=12",
+      "str_mode": 12,
+      "page_title": "本國具證券性質之虛擬通貨(STO)國際證券辨識號碼一覽表",
+      "security_code": "ST001D",
+      "security_name_zh": "綠點陽光ST國泰債",
+      "isin": "TW000ST001D8",
+      "issue_date": "2023-12-12",
+      "maturity_date": "2029-12-12",
+      "cfi": "DBFUGB",
+      "remarks": ""
+    },
+    {
+      "source_family": "tpex_openapi",
+      "source_lane": "api",
+      "source_url": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap03_O",
+      "source_updated_date_raw": "1150624",
+      "source_updated_date": "2026-06-24",
+      "security_code": "1240",
+      "security_name_zh": "茂生農經股份有限公司",
+      "security_short_name_zh": "茂生農經",
+      "listing_date": "2018-08-08",
+      "industry_code": "33",
+      "unified_business_number": "18795706",
+      "issuer_level_record": true
+    }
+  ],
+  "events": [
+    {
+      "source_family": "twse_termination_table",
+      "source_url": "https://www.twse.com.tw/zh/listed/suspend-listing.html",
+      "security_code": "2809",
+      "security_name_zh": "京城銀",
+      "event_type": "twse_delisted",
+      "effective_date": "2025-10-01",
+      "date_raw": "114/10/01",
+      "calendar": "ROC",
+      "evidence_status": "official_explicit"
+    },
+    {
+      "source_family": "tpex_announcement",
+      "source_url": "https://www.tpex.org.tw/storage/eb_data/11503/11500564471.html",
+      "security_code": "7822",
+      "security_name_zh": "倍利科技",
+      "event_type": "emerging_terminated",
+      "effective_date": "2026-03-30",
+      "date_raw": "115年3月30日",
+      "calendar": "ROC",
+      "reason_code": "transfer_to_twse",
+      "evidence_status": "official_explicit"
+    },
+    {
+      "source_family": "twse_etn_termination_table",
+      "source_url": "https://www.twse.com.tw/zh/products/securities/etn/products/expire.html",
+      "security_code": "02001R",
+      "security_name_zh": "富邦蘋果反一N",
+      "event_type": "twse_delisted",
+      "effective_date": "2026-05-28",
+      "evidence_status": "official_explicit"
+    },
+    {
+      "source_family": "tpex_etn_termination_table",
+      "source_url": "https://www.tpex.org.tw/zh-tw/product/etn/product/delisted.html",
+      "security_code": "020023",
+      "security_name_zh": "元大櫃買半導體N",
+      "event_type": "tpex_delisted",
+      "effective_date": "2025-12-08",
+      "maturity_date": "2025-12-07",
+      "evidence_status": "official_explicit"
+    }
+  ]
+}

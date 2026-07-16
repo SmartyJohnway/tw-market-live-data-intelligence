@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lifecycle-event.schema.json",
+  "title": "LifecycleEvent",
+  "type": "object",
+  "required": ["source_family", "source_url", "security_code", "event_type", "effective_date", "evidence_status"],
+  "properties": {
+    "source_family": {"type": "string", "minLength": 1},
+    "source_url": {"type": "string", "format": "uri", "pattern": "^https://"},
+    "security_code": {"type": "string", "minLength": 1},
+    "security_name_zh": {"type": "string"},
+    "event_type": {"enum": ["public_issued", "gisa_registered", "gisa_terminated", "emerging_registered", "emerging_suspended", "emerging_resumed", "emerging_terminated", "tpex_listed", "tpex_suspended", "tpex_resumed", "tpex_delisted", "twse_listed", "twse_suspended", "twse_resumed", "twse_delisted", "issued", "matured", "last_trading", "early_terminated", "name_changed", "code_changed", "merged_or_converted"]},
+    "effective_date": {"oneOf": [{"type": "string", "format": "date"}, {"enum": ["unknown", "not_applicable"]}]},
+    "announcement_date": {"oneOf": [{"type": "string", "format": "date"}, {"enum": ["unknown", "not_applicable"]}]},
+    "maturity_date": {"oneOf": [{"type": "string", "format": "date"}, {"enum": ["unknown", "not_applicable"]}]},
+    "last_trading_date": {"oneOf": [{"type": "string", "format": "date"}, {"enum": ["unknown", "not_applicable"]}]},
+    "date_raw": {"type": "string"},
+    "calendar": {"enum": ["Gregorian", "ROC", "unknown"]},
+    "reason_code": {"type": "string"},
+    "evidence_status": {"enum": ["official_explicit", "official_table", "official_announcement", "supplied_official_capture", "needs_manual_review"]},
+    "event_key": {"type": "string"},
+    "provenance": {"type": "object"}
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,14 @@
+interface:
+  display_name: "\u53F0\u7063\u8B49\u5238\u8EAB\u5206\u5206\u985E\u5668"
+  short_description: "\u8FA8\u8B58\u53F0\u7063\u8B49\u5238\u4EE3\u78BC\u3001ISIN\u3001\
+    \u5546\u54C1\u985E\u578B\u3001\u5E02\u5834\u72C0\u614B\u8207\u751F\u547D\u9031\
+    \u671F\u5B98\u65B9\u8B49\u64DA"
+  default_prompt: Use $tw-security-master-classifier to identify this Taiwan security
+    and verify its classification, market, and lifecycle from official evidence.
+policy:
+  allow_implicit_invocation: true
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas

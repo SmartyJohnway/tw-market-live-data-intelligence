@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "normalized-security-record.schema.json",
+  "title": "NormalizedSecurityRecord",
+  "type": "object",
+  "required": ["source_family", "source_lane", "source_url", "security_code"],
+  "properties": {
+    "source_family": {"type": "string", "minLength": 1},
+    "source_lane": {"type": "string", "enum": ["zh", "en", "api", "event"]},
+    "source_url": {"type": "string", "format": "uri", "pattern": "^https://"},
+    "str_mode": {"type": "integer", "minimum": 1, "maximum": 12},
+    "security_code": {"type": "string", "minLength": 1},
+    "security_name_zh": {"type": "string"},
+    "security_name_en": {"type": "string"},
+    "isin": {"type": "string", "pattern": "^[A-Z]{2}[A-Z0-9]{9}[0-9]$"},
+    "cfi": {"type": "string", "pattern": "^[A-Z0-9]{6}$"},
+    "source_updated_date": {"type": ["string", "null"], "format": "date"},
+    "issue_date": {"type": ["string", "null"], "format": "date"},
+    "listing_date": {"type": ["string", "null"], "format": "date"},
+    "registration_date": {"type": ["string", "null"], "format": "date"},
+    "maturity_date": {"type": ["string", "null"], "format": "date"},
+    "issuer_level_record": {"type": "boolean"}
+  },
+  "anyOf": [
+    {"required": ["isin"]},
+    {"required": ["issuer_level_record"]}
+  ],
+  "additionalProperties": true
+}

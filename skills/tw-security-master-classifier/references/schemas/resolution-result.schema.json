@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "resolution-result.schema.json",
+  "title": "ResolutionResult",
+  "type": "object",
+  "required": ["operation", "query", "resolution_status", "candidate_count", "candidates", "caveats"],
+  "properties": {
+    "operation": {"const": "resolve"},
+    "query": {"type": "string"},
+    "resolution_status": {"enum": ["resolved_exact_isin", "resolved_exact_code", "resolved_exact_name", "ambiguous", "not_found", "source_blocked", "quarantined"]},
+    "candidate_count": {"type": "integer", "minimum": 0},
+    "candidates": {"type": "array"},
+    "caveats": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

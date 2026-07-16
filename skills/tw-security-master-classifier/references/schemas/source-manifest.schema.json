@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "source-manifest.schema.json",
+  "title": "SourceManifest",
+  "type": "object",
+  "required": ["manifest_version", "last_verified_date", "allowed_hosts", "identity_sources", "twse_openapi", "tpex_openapi", "lifecycle_sources"],
+  "properties": {
+    "manifest_version": {"type": "string"},
+    "last_verified_date": {"type": "string", "format": "date"},
+    "allowed_hosts": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "identity_sources": {
+      "type": "object",
+      "required": ["twse_isin"],
+      "properties": {
+        "twse_isin": {
+          "type": "object",
+          "required": ["lanes", "modes"],
+          "properties": {
+            "lanes": {"type": "object", "required": ["zh", "en"]},
+            "modes": {"type": "array", "minItems": 12}
+          }
+        }
+      }
+    },
+    "twse_openapi": {
+      "type": "object",
+      "required": ["swagger", "base_url", "datasets"],
+      "properties": {"datasets": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["id", "url", "grain"]}}}
+    },
+    "tpex_openapi": {
+      "type": "object",
+      "required": ["swagger", "base_url", "datasets"],
+      "properties": {"datasets": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["id", "url", "grain"]}}}
+    },
+    "lifecycle_sources": {"type": "array", "minItems": 1}
+  },
+  "additionalProperties": true
+}

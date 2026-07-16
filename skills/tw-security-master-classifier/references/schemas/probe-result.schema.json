@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "probe-result.schema.json",
+  "title": "ProbeResult",
+  "type": "object",
+  "required": ["requested_url", "final_url", "redirect_count", "observed_at", "transport_success", "payload_parseable", "schema_valid", "semantic_data_present", "acquisition_status"],
+  "properties": {
+    "requested_url": {"type": "string", "format": "uri"},
+    "final_url": {"type": ["string", "null"], "format": "uri"},
+    "redirect_count": {"type": "integer", "minimum": 0},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "transport_success": {"type": "boolean"},
+    "payload_parseable": {"type": "boolean"},
+    "schema_valid": {"type": "boolean"},
+    "semantic_data_present": {"type": "boolean"},
+    "acquisition_status": {"enum": ["data", "security_block", "schema_drift", "semantic_error", "http_error", "network_error", "redirect_rejected", "rejected"]},
+    "http_status": {"type": "integer"},
+    "content_type": {"type": "string"},
+    "byte_count": {"type": "integer", "minimum": 0},
+    "raw_payload_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "error_signatures_found": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

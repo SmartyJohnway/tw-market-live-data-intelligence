@@ -1,0 +1,185 @@
+{
+  "manifest_version": "1.1.0",
+  "last_verified_date": "2026-07-15",
+  "verification_scope": "Official-source existence, representative payloads, field contracts, and acquisition behavior. catalog_verified does not mean a live payload was captured in every runtime.",
+  "allowed_hosts": [
+    "isin.twse.com.tw",
+    "openapi.twse.com.tw",
+    "mopsfin.twse.com.tw",
+    "www.twse.com.tw",
+    "accessibility.twse.com.tw",
+    "www.tpex.org.tw",
+    "info.tpex.org.tw",
+    "dsp.tpex.org.tw",
+    "mops.twse.com.tw",
+    "data.gov.tw"
+  ],
+  "identity_sources": {
+    "twse_isin": {
+      "authority": "primary_security_identity",
+      "format": "html",
+      "acquisition_risk": "security_block_possible",
+      "lanes": {
+        "zh": "https://isin.twse.com.tw/isin/C_public.jsp?strMode={mode}",
+        "en": "https://isin.twse.com.tw/isin/e_C_public.jsp?strMode={mode}"
+      },
+      "modes": [
+        {"mode": 1, "collection": "public_unlisted", "zh_title": "本國未上市，未上櫃公開發行證券，國際證券辨識號碼一覽表", "primary_date_semantic": "issue_date", "verification": "payload_verified"},
+        {"mode": 2, "collection": "twse_listed_mixed", "zh_title": "本國上市證券國際證券辨識號碼一覽表", "primary_date_semantic": "listing_date", "verification": "indexed_and_title_verified"},
+        {"mode": 3, "collection": "listed_otc_bonds", "zh_title": "本國上市債券，上櫃債券，國際證券辨識號碼一覽表", "primary_date_semantic": "issue_and_maturity_dates", "verification": "indexed_and_title_verified"},
+        {"mode": 4, "collection": "tpex_listed_mixed", "zh_title": "本國上櫃證券國際證券辨識號碼一覽表", "primary_date_semantic": "listing_date", "verification": "indexed_and_title_verified"},
+        {"mode": 5, "collection": "emerging", "zh_title": "本國興櫃證券國際證券辨識號碼一覽表", "primary_date_semantic": "registration_or_listing_date", "verification": "indexed_and_title_verified"},
+        {"mode": 6, "collection": "futures_options", "zh_title": "本國期貨及選擇權國際證券辨識號碼一覽表", "primary_date_semantic": "listing_date", "verification": "indexed_and_title_verified"},
+        {"mode": 7, "collection": "open_ended_funds", "zh_title": "本國開放式證券投資信託基金，國際證券辨識號碼一覽表", "primary_date_semantic": "issue_date", "verification": "indexed_and_title_verified"},
+        {"mode": 8, "collection": "gisa", "zh_title": "本國未公開發行之創櫃板證券國際證券辨識號碼一覽表", "primary_date_semantic": "registration_date", "verification": "indexed_and_title_verified"},
+        {"mode": 9, "collection": "gold_spot", "zh_title": "登錄買賣黃金現貨國際證券辨識號碼一覽表", "primary_date_semantic": "listing_date", "verification": "payload_verified"},
+        {"mode": 10, "collection": "foreign_currency_ncd", "zh_title": "外幣計價可轉讓定期存單，國際證券辨識號碼一覽表", "primary_date_semantic": "issue_date", "verification": "payload_or_index_verified"},
+        {"mode": 11, "collection": "domestic_indices", "zh_title": "本國指數國際證券辨識號碼一覽表", "primary_date_semantic": "announcement_date", "verification": "indexed_and_title_verified"},
+        {"mode": 12, "collection": "sto", "zh_title": "本國具證券性質之虛擬通貨(STO)國際證券辨識號碼一覽表", "primary_date_semantic": "issue_and_maturity_dates", "verification": "indexed_and_title_verified"}
+      ]
+    }
+  },
+  "twse_openapi": {
+    "authority": "listed_issuer_and_product_enrichment",
+    "swagger": "https://openapi.twse.com.tw/v1/swagger.json",
+    "base_url": "https://openapi.twse.com.tw/v1",
+    "verification": "catalog_verified_live_payload_runtime_blocked",
+    "datasets": [
+      {
+        "id": "twse_listed_company_basic",
+        "url": "https://openapi.twse.com.tw/v1/opendata/t187ap03_L",
+        "alternate_csv": "https://mopsfin.twse.com.tw/opendata/t187ap03_L.csv",
+        "grain": "issuer",
+        "declared_update_frequency": "monthly",
+        "key_fields": ["company_code", "company_name", "industry", "date_of_incorporation", "date_of_listing", "preferred_stock_shares", "english_abbreviation", "issue_shares"],
+        "payload_contract": {"expected_json_type": "array", "required_fields_any": ["公司代號", "公司名稱", "出表日期"], "minimum_record_count": 1, "error_signatures": ["error", "rate limit", "maintenance", "系統維護"]},
+        "verification": "catalog_and_metadata_verified"
+      },
+      {
+        "id": "twse_warrant_basic",
+        "url": "https://openapi.twse.com.tw/v1/opendata/t187ap37_L",
+        "alternate_csv": "https://mopsfin.twse.com.tw/opendata/t187ap37_L.csv",
+        "grain": "security_product",
+        "key_fields": ["security_code", "security_name", "issuer", "underlying", "listing_date", "maturity_date", "warrant_type", "exercise_price", "exercise_ratio"],
+        "payload_contract": {"expected_json_type": "array", "required_fields_any": ["權證代號", "權證名稱", "證券代號"], "minimum_record_count": 1, "error_signatures": ["error", "rate limit", "maintenance", "系統維護"]},
+        "verification": "catalog_verified_payload_fixture_required"
+      },
+      {
+        "id": "twse_fund_basic",
+        "url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L",
+        "alternate_csv": "https://mopsfin.twse.com.tw/opendata/t187ap47_L.csv",
+        "grain": "fund_product",
+        "declared_update_frequency": "monthly",
+        "key_fields": ["fund_code", "fund_name_zh", "fund_name_en", "fund_type", "tracked_index", "inception_date", "listing_date", "manager", "custodian"],
+        "payload_contract": {"expected_json_type": "array", "required_fields_any": ["基金代號", "基金名稱", "證券代號"], "minimum_record_count": 1, "error_signatures": ["error", "rate limit", "maintenance", "系統維護"]},
+        "verification": "catalog_and_metadata_verified"
+      }
+    ]
+  },
+  "tpex_openapi": {
+    "authority": "otc_emerging_gisa_and_product_enrichment",
+    "swagger": "https://www.tpex.org.tw/openapi/swagger.json",
+    "base_url": "https://www.tpex.org.tw/openapi/v1",
+    "verification": "catalog_verified_representative_payload_verified",
+    "datasets": [
+      {
+        "id": "tpex_otc_company_basic",
+        "url": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap03_O",
+        "grain": "issuer",
+        "declared_update_frequency": "daily",
+        "key_fields": ["SecuritiesCompanyCode", "CompanyName", "CompanyAbbreviation", "SecuritiesIndustryCode", "UnifiedBusinessNo.", "DateOfIncorporation", "DateOfListing", "PreferredStock.shares", "Symbol", "IssueShares"],
+        "payload_contract": {"expected_json_type": "array", "required_fields_any": ["SecuritiesCompanyCode", "CompanyName"], "minimum_record_count": 1, "error_signatures": ["error", "rate limit", "maintenance", "系統維護"]},
+        "verification": "live_json_payload_verified"
+      },
+      {
+        "id": "tpex_emerging_company_basic",
+        "url": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap03_R",
+        "grain": "issuer",
+        "payload_contract": {"expected_json_type": "array", "required_fields_any": ["SecuritiesCompanyCode", "CompanyName"], "minimum_record_count": 1, "error_signatures": ["error", "rate limit", "maintenance", "系統維護"]},
+        "verification": "catalog_verified_payload_fixture_required"
+      },
+      {
+        "id": "tpex_warrant_basic",
+        "url": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap37_O",
+        "grain": "security_product",
+        "payload_contract": {"expected_json_type": "array", "required_fields_any": ["SecuritiesCode", "WarrantCode", "SecurityCode"], "minimum_record_count": 1, "error_signatures": ["error", "rate limit", "maintenance", "系統維護"]},
+        "verification": "catalog_verified_payload_fixture_required"
+      },
+      {
+        "id": "tpex_gisa_and_bonds",
+        "url": "https://www.tpex.org.tw/openapi/swagger.json",
+        "grain": "mixed_catalog",
+        "discovery_keywords": ["創櫃", "GISA", "債券", "bond"],
+        "verification": "discovery_required"
+      }
+    ]
+  },
+  "lifecycle_sources": [
+    {
+      "id": "twse_company_delisted",
+      "url": "https://www.twse.com.tw/zh/listed/suspend-listing.html",
+      "alternate_url": "https://www.twse.com.tw/company/suspendListingCsvAndHtml?lang=zh&type=html",
+      "format": "html_or_csv",
+      "observed_html_headers": ["終止上市日期", "公司名稱", "上市編號"],
+      "adapter_contract": {"security_code_header_aliases": ["上市編號", "證券代號", "公司代號"], "unrecognized_header_behavior": "schema_drift_nonzero_exit"},
+      "events": ["twse_delisted"],
+      "verification": "live_payload_and_headers_verified_2026-07-15"
+    },
+    {
+      "id": "tpex_company_delisted",
+      "url": "https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html",
+      "format": "html_table",
+      "events": ["tpex_delisted"],
+      "verification": "payload_verified"
+    },
+    {
+      "id": "tpex_market_announcements",
+      "url": "https://www.tpex.org.tw/zh-tw/announce/market/announce.html",
+      "format": "html_search_and_attachments",
+      "events": ["emerging_terminated", "gisa_terminated", "suspended", "resumed", "tpex_delisted", "early_terminated"],
+      "verification": "payload_verified_adapter_required"
+    },
+    {
+      "id": "twse_market_announcements",
+      "url": "https://www.twse.com.tw/zh/announcement/announcement/list.html",
+      "format": "html_search_and_attachments",
+      "events": ["twse_listed", "twse_delisted", "suspended", "resumed", "etf_terminated", "warrant_early_terminated"],
+      "verification": "payload_verified_adapter_required"
+    },
+    {
+      "id": "twse_etn_expired",
+      "url": "https://www.twse.com.tw/zh/products/securities/etn/products/expire.html",
+      "format": "html_table",
+      "events": ["etn_matured", "last_trading", "twse_delisted"],
+      "verification": "payload_verified"
+    },
+    {
+      "id": "tpex_etn_expired",
+      "url": "https://www.tpex.org.tw/zh-tw/product/etn/product/delisted.html",
+      "format": "html_table",
+      "events": ["etn_matured", "last_trading", "tpex_delisted"],
+      "verification": "payload_verified"
+    },
+    {
+      "id": "twse_warrant_information",
+      "url": "https://www.twse.com.tw/zh/products/securities/warrant/mops.html",
+      "format": "linked_queries",
+      "events": ["warrant_matured", "warrant_early_terminated"],
+      "verification": "catalog_verified_query_adapter_required"
+    },
+    {
+      "id": "tpex_warrant_information",
+      "url": "https://www.tpex.org.tw/zh-tw/derivative/warrant/announce.html",
+      "format": "linked_queries_and_attachments",
+      "events": ["warrant_matured", "warrant_early_terminated"],
+      "verification": "catalog_verified_query_adapter_required"
+    },
+    {
+      "id": "tpex_etf_announcements",
+      "url": "https://info.tpex.org.tw/ETF/zh/announcement-list.html?type=listing",
+      "format": "html_list",
+      "events": ["etf_listed", "etf_terminated", "fund_contract_terminated"],
+      "verification": "payload_verified_adapter_required"
+    }
+  ]
+}
