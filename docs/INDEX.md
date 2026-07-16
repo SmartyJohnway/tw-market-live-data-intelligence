@@ -129,3 +129,8 @@ git diff --check
 - [M8R-03D-F1 Verified Security-Master Classifier Snapshot Adapter](protocol/M8R_03D_F1_VERIFIED_SECURITY_MASTER_CLASSIFIER_SNAPSHOT_ADAPTER.md)
 
 - [M8R-03E Watchlist AI Context Package and Conversation Handoff](protocol/M8R_03E_WATCHLIST_AI_CONTEXT_PACKAGE_AND_CONVERSATION_HANDOFF.md)
+### Post-M8C R1 realignment and health audit
+
+- [M8 Post-M8C Revised Roadmap](roadmap/M8_POST_M8C_REVISED_ROADMAP.md)
+- [M8 Repository Health Audit](quality/M8_REPOSITORY_HEALTH_AUDIT.md)
+- [M8R-03E-R1 Protocol](protocol/M8R_03E_R1_M8_POST_M8C_REPOSITORY_REALIGNMENT_AND_HEALTH_AUDIT.md)

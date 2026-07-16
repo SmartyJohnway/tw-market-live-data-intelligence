@@ -34,8 +34,8 @@ def test_registry_active_state_consolidated():
     assert active['trading_signal_allowed'] is False
     assert active['recommendation_allowed'] is False
     assert active['raw_payload_exposure_allowed'] is False
-    assert active['next_task'] is None
-    assert active['next_task_status']=='awaiting_operator_acceptance'
+    assert active['next_task']=='M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT'
+    assert active['next_task_status']=='accepted_successor'
     assert reg['planning_state']['preflight_completed_through']=='M8C-00'
     assert reg['planning_state']['m8c_00_preflight_status']=='m8c_00_taifex_mis_preflight_pass_with_caveats'
 
@@ -108,8 +108,8 @@ def test_inventory_active_state_and_historical_snapshots():
     assert active['m8a_twse_tpex_official_eod_complete'] is True
     assert active['m8b_taifex_openapi_complete'] is True
     assert active['taifex_mis_runtime_executable'] is True
-    assert active['next_task'] is None
-    assert active['next_task_status']=='awaiting_operator_acceptance'
+    assert active['next_task']=='M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT'
+    assert active['next_task_status']=='accepted_successor'
     assert active['preflight_completed_through']=='M8C-00'
     assert active['m8c_00_preflight_status']=='m8c_00_taifex_mis_preflight_pass_with_caveats'
     assert all(active['m8b_taifex_contexts'].values())

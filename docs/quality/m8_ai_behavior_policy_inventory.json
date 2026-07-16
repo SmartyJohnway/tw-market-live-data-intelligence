@@ -1,0 +1,88 @@
+{
+  "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
+  "dispositions": [
+    "keep",
+    "keep_as_data_semantics",
+    "simplify",
+    "deprecate",
+    "migrate_to_agent_skill",
+    "migrate_to_deployment_policy",
+    "remove_non_breaking_now",
+    "remove_with_schema_migration",
+    "superseded"
+  ],
+  "generated_at_utc": "2026-07-16T00:00:00Z",
+  "items": [
+    {
+      "ai_behavior_relevance": "high",
+      "breaking_change_risk": "medium",
+      "current_layer": "registry",
+      "current_purpose": "AI-output guardrail flag",
+      "data_integrity_relevance": "low",
+      "path": "docs/data_capabilities/m8_source_capability_registry.json",
+      "recommended_disposition": "deprecate",
+      "symbol_or_json_path": "$.m8_active_consolidated_status.recommendation_allowed / trading_signal_allowed",
+      "target_roadmap_phase": "Phase B/C"
+    },
+    {
+      "ai_behavior_relevance": "high",
+      "breaking_change_risk": "high",
+      "current_layer": "context package builder/schema producer",
+      "current_purpose": "compatibility with M8R-03E package contract",
+      "data_integrity_relevance": "mixed; some items encode timing/calculation semantics",
+      "path": "scripts/m8r_03e_watchlist_ai_context_builder.py",
+      "recommended_disposition": "deprecate",
+      "recommended_notes": "retain temporarily; migrate to evidence semantics schema version",
+      "symbol_or_json_path": "conversation_scope.disallowed_topics, targets[].prohibited_inferences, allowed_interpretations",
+      "target_roadmap_phase": "Phase C"
+    },
+    {
+      "ai_behavior_relevance": "high",
+      "breaking_change_risk": "medium",
+      "current_layer": "source capability inventory",
+      "current_purpose": "legacy AI safety metadata",
+      "data_integrity_relevance": "low to mixed",
+      "path": "docs/data_capabilities/twse_mis_rich_field_inventory.json",
+      "recommended_disposition": "remove_non_breaking_now",
+      "symbol_or_json_path": "recommendation_allowed/trading_advice_allowed/not_recommendation/not_trading_signal occurrences",
+      "target_roadmap_phase": "Phase B/R3"
+    },
+    {
+      "ai_behavior_relevance": "high",
+      "breaking_change_risk": "low",
+      "current_layer": "historical protocol",
+      "current_purpose": "legacy AI-safe projection policy",
+      "data_integrity_relevance": "mixed",
+      "path": "docs/protocol/M7B_AI_SAFE_MARKET_CONTEXT_PROJECTION_POLICY.md",
+      "recommended_disposition": "superseded",
+      "recommended_notes": "historical; migrate active behavior policy to Agent Skill/deployment policy",
+      "symbol_or_json_path": "policy prose prohibiting advice/signals",
+      "target_roadmap_phase": "Phase B"
+    }
+  ],
+  "migration_plan": {
+    "compatibility_sensitive_fields": [
+      "unsupported_questions",
+      "prohibitions",
+      "prohibited_inferences",
+      "allowed_interpretations",
+      "disallowed_topics",
+      "must_not_provide_investment_advice",
+      "must_not_predict_future_returns"
+    ],
+    "strategy": "retain temporarily with deprecated disposition; introduce evidence-oriented schema version before removal",
+    "target_fields": [
+      "available_evidence",
+      "unavailable_evidence",
+      "data_semantics",
+      "timing_semantics",
+      "calculation_semantics",
+      "coverage",
+      "missing_evidence",
+      "lineage",
+      "source_authority"
+    ]
+  },
+  "schema_version": "m8_ai_behavior_policy_inventory.v1",
+  "task_id": "M8R-03E-R1-M8-POST-M8C-REPOSITORY-REALIGNMENT-AND-HEALTH-AUDIT"
+}

@@ -1,0 +1,135 @@
+{
+  "ai_behavior_policy_decoupling_status": "deprecated_pending_schema_migration",
+  "architecture_model": "governed_market_evidence_platform",
+  "audit_scope": [
+    "README",
+    "docs",
+    "docs/protocol",
+    "docs/contracts",
+    "docs/contracts/schemas",
+    "docs/data_capabilities",
+    "scripts",
+    "server",
+    "skills",
+    "tests",
+    ".github/workflows",
+    "requirements/config manifests"
+  ],
+  "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
+  "blocking_findings": [],
+  "correctness_status": "GO_WITH_CAVEATS",
+  "direct_corrections": [
+    "implemented_through_track set to M8R-03E",
+    "recommended_next_task set to Phase B skill contract",
+    "original M8R-04 marked superseded_and_split",
+    "active architecture set to governed_market_evidence_platform",
+    "AI behavior hardcoding marked deprecated_direction"
+  ],
+  "documentation_status": "realigned_with_lifecycle_cleanup_scheduled",
+  "generated_at_utc": "2026-07-16T00:00:00Z",
+  "implemented_through_track": "M8R-03E",
+  "original_m8r04_disposition": "superseded_and_split",
+  "p0_count": 0,
+  "p1_count": 2,
+  "p2_count": 4,
+  "p3_count": 1,
+  "performance_status": "baseline_required_R4",
+  "recommended_next_task": "M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT",
+  "recommended_next_task_reason": "No verified P0 blocker; P1 items are bounded and can be scheduled as R2 without blocking a documentation/skill-contract Phase B task.",
+  "roadmap_alignment_status": "aligned_with_caveats",
+  "schema_version": "m8_repository_health_status.v1",
+  "security_status": "GO_WITH_CAVEATS_P1_REMEDIATION_SCHEDULED",
+  "task_id": "M8R-03E-R1-M8-POST-M8C-REPOSITORY-REALIGNMENT-AND-HEALTH-AUDIT",
+  "testing_status": "passing_targeted_checks_with_gaps",
+  "validation_commands": [
+    "git diff --check",
+    "python -m compileall scripts server tests skills",
+    "python scripts/governance_forbidden_path_guard.py",
+    "python scripts/forbidden_behavior_scanner.py",
+    "python skills/tw-security-master-classifier/scripts/validate_skill.py",
+    "pytest tests/unit/test_m8*.py -q",
+    "pytest tests/unit/test_m8r_01*.py -q",
+    "pytest tests/unit/test_m8r_02*.py -q",
+    "pytest tests/unit/test_m8r_03b*.py -q",
+    "pytest tests/unit/test_m8r_03c*.py -q",
+    "pytest tests/unit/test_m8r_03d*.py -q",
+    "pytest tests/unit/test_m8r_03d_f1*.py -q",
+    "pytest tests/unit/test_m8r_03e*.py -q",
+    "python scripts/run_test_profile.py default-ci --json",
+    "python scripts/run_test_profile.py full-non-network --json"
+  ],
+  "validation_results": [
+    {
+      "command": "git diff --check",
+      "status": "pass"
+    },
+    {
+      "command": "python -m compileall scripts server tests skills",
+      "status": "pass"
+    },
+    {
+      "command": "python scripts/governance_forbidden_path_guard.py",
+      "status": "pass",
+      "summary": "ok true, findings []"
+    },
+    {
+      "command": "python scripts/forbidden_behavior_scanner.py",
+      "status": "pass",
+      "summary": "187 checks, 0 failed"
+    },
+    {
+      "command": "python skills/tw-security-master-classifier/scripts/validate_skill.py",
+      "status": "pass"
+    },
+    {
+      "command": "pytest tests/unit/test_m8*.py -q",
+      "status": "pass",
+      "summary": "579 passed"
+    },
+    {
+      "command": "pytest tests/unit/test_m8r_01*.py -q",
+      "status": "warning",
+      "summary": "no matching files; no tests ran"
+    },
+    {
+      "command": "pytest tests/unit/test_m8r_02*.py -q",
+      "status": "pass",
+      "summary": "13 passed"
+    },
+    {
+      "command": "pytest tests/unit/test_m8r_03b*.py -q",
+      "status": "pass",
+      "summary": "32 passed"
+    },
+    {
+      "command": "pytest tests/unit/test_m8r_03c*.py -q",
+      "status": "pass",
+      "summary": "16 passed"
+    },
+    {
+      "command": "pytest tests/unit/test_m8r_03d*.py -q",
+      "status": "pass",
+      "summary": "26 passed"
+    },
+    {
+      "command": "pytest tests/unit/test_m8r_03d_f1*.py -q",
+      "status": "pass",
+      "summary": "18 passed"
+    },
+    {
+      "command": "pytest tests/unit/test_m8r_03e*.py -q",
+      "status": "pass",
+      "summary": "39 passed"
+    },
+    {
+      "command": "python scripts/run_test_profile.py default-ci --json",
+      "status": "pass",
+      "summary": "721 passed"
+    },
+    {
+      "command": "python scripts/run_test_profile.py full-non-network --json",
+      "status": "fail",
+      "summary": "1621 passed, 7 failed, 1 skipped; failure is pre-existing frontend_public_baseline_drift in M5D/M5E candidate tests after current frontend/public inventory recomputation"
+    }
+  ]
+}

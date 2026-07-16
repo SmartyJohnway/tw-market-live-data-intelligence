@@ -39,10 +39,10 @@ def test_rest_scoped_evidence_not_empty_body_probe():
 
 def test_planning_state_has_single_next_task_and_inventory_section():
     reg=json.loads(pathlib.Path('docs/data_capabilities/m8_source_capability_registry.json').read_text())
-    assert reg['next_task'] is None
-    assert reg['next_task_status']=='awaiting_operator_acceptance'
-    assert reg['m8_active_consolidated_status']['next_task'] is None
-    assert reg['planning_state']['next_task'] is None
+    assert reg['next_task']=='M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT'
+    assert reg['next_task_status']=='accepted_successor'
+    assert reg['m8_active_consolidated_status']['next_task']=='M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT'
+    assert reg['planning_state']['next_task']=='M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT'
     inv=json.loads(pathlib.Path('docs/data_capabilities/twse_mis_rich_field_inventory.json').read_text())['m8c_00_taifex_mis_preflight']
     assert inv['runtime_adapter_implemented'] is False
     assert inv['runtime_executable'] is False
