@@ -1,0 +1,35 @@
+{
+  "approval_id": "m8r-approval-1a98fc761b36e42d",
+  "approval_status": "consumed",
+  "approved_at_utc": "2026-07-16T00:59:15Z",
+  "approved_by": "operator",
+  "approved_scope": {
+    "context_types": [
+      "official_eod_reference"
+    ],
+    "output_scope": {
+      "artifact_root": "research/m8r/live_validation/m8r02b-f2-20260716T013000Z/option_current",
+      "raw_payload_retention": false,
+      "write_artifacts": false
+    },
+    "source_families": [
+      "TAIFEX_OPENAPI"
+    ],
+    "target_ids": [
+      "TAIFEX:option:TXO:TX:202607:44750:C:monthly",
+      "TAIFEX:option:TXO:TX:202607:44750:P:monthly"
+    ]
+  },
+  "consumed_at_utc": "2026-07-16T00:59:15Z",
+  "consumption_record": {
+    "consumed_at_utc": "2026-07-16T00:59:15Z",
+    "consumed_by": "m8r_one_shot_market_context_orchestrator",
+    "informational_only": true,
+    "receipt_id": "m8r-receipt-f169b48900e9f7a7"
+  },
+  "expires_at_utc": null,
+  "plan_hash": "6720c91a20188ed7d979bc393a387da88f31fdfd72c96d27823905bc08254f5d",
+  "plan_id": "m8r-plan-6720c91a20188ed7",
+  "schema_version": "m8r_market_context_approval.v1",
+  "single_use": true
+}

@@ -1,0 +1,330 @@
+{
+  "caveats": [
+    {
+      "code": "approved_target_scope_not_fully_available",
+      "message": "approved target scope not fully available",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "currentness_unknown",
+      "message": "currentness unknown",
+      "scope": "package",
+      "severity": "warning"
+    },
+    {
+      "code": "production_live_execution_not_ready",
+      "message": "production live execution not ready",
+      "scope": "package",
+      "severity": "warning"
+    }
+  ],
+  "currentness": {
+    "by_source_family": {
+      "TAIFEX_OPENAPI": [
+        "current_official_derivatives_eod"
+      ]
+    },
+    "by_target": {
+      "TAIFEX:option:TXO:TX:202607:44750:C:monthly": [
+        "current_official_derivatives_eod"
+      ],
+      "TAIFEX:option:TXO:TX:202607:44750:P:monthly": [
+        "current_official_derivatives_eod"
+      ]
+    },
+    "current_count": 0,
+    "not_applicable_count": 0,
+    "overall_status": "unknown",
+    "stale_count": 0,
+    "unknown_count": 2
+  },
+  "forbidden_interpretations": [
+    "not_all_sources_current",
+    "not_broker_instruction",
+    "not_complete_when_partial",
+    "not_full_market",
+    "not_guaranteed_realtime",
+    "not_live_production_ready_without_m8r02b",
+    "not_prediction",
+    "not_recommendation",
+    "not_safe_to_infer_missing_values",
+    "not_trading_signal"
+  ],
+  "missing_context": [],
+  "package_id": "amc-157aeca9ccaac051",
+  "source_provenance": [
+    {
+      "authority_level": "official_documented",
+      "caveats": [
+        {
+          "code": "source_warning",
+          "message": "source_warning",
+          "severity": "warning",
+          "source": "observation_caveat"
+        }
+      ],
+      "context_type": "official_eod_reference",
+      "currentness": {
+        "calendar_evidence": "incomplete",
+        "caveats": [
+          "taifex_trading_calendar_evidence_incomplete_weekend_rule_only"
+        ],
+        "currentness_confidence": "provisional",
+        "emergency_closure_status": "emergency_closure_unknown",
+        "evaluation_time_asia_taipei": "2026-07-16T08:58:08+08:00",
+        "exchange_market_status": "scheduled_open",
+        "expected_latest_completed_trade_date": "2026-07-15",
+        "expected_latest_completed_trade_date_resolution_trace": [],
+        "source_specific": true,
+        "status": "current_official_derivatives_eod",
+        "trade_date": "2026-07-15"
+      },
+      "instrument_type": "options",
+      "market": "taifex",
+      "operation_id": "m8r-op-fb47e56ad1237162",
+      "retrieved_at_utc": "2026-07-16T00:58:09Z",
+      "safe_fields": {
+        "aggregate_identity": null,
+        "context_type": "official_derivatives_options_eod_reference",
+        "contract_identity": {
+          "call_put": "C",
+          "contract_type": "monthly",
+          "expiry": "202607",
+          "product": "TXO",
+          "session": "regular",
+          "strike": "44750",
+          "underlying": "TX"
+        },
+        "contract_multiplier": null,
+        "currentness": {
+          "calendar_evidence": "incomplete",
+          "caveats": [
+            "taifex_trading_calendar_evidence_incomplete_weekend_rule_only"
+          ],
+          "currentness_confidence": "provisional",
+          "emergency_closure_status": "emergency_closure_unknown",
+          "evaluation_time_asia_taipei": "2026-07-16T08:58:08+08:00",
+          "exchange_market_status": "scheduled_open",
+          "expected_latest_completed_trade_date": "2026-07-15",
+          "expected_latest_completed_trade_date_resolution_trace": [],
+          "source_specific": true,
+          "status": "current_official_derivatives_eod",
+          "trade_date": "2026-07-15"
+        },
+        "currentness_status": "current_official_derivatives_eod",
+        "endpoint_contract_id": "DailyMarketReportOpt",
+        "identity_level": "contract_level",
+        "identity_verification_status": "matched_approved_target",
+        "payload": {
+          "activity": {
+            "volume": 95
+          },
+          "open_interest": {
+            "open_interest": 146
+          },
+          "price": {
+            "best_ask": "1090",
+            "best_bid": "1080",
+            "close": "1080",
+            "high": "1080",
+            "low": "108",
+            "open": "595",
+            "settlement": "0"
+          },
+          "trading_halt": ""
+        },
+        "provenance": {
+          "endpoint": "DailyMarketReportOpt",
+          "raw_payload_retained": false
+        },
+        "quotation_unit": "product_specific_quote_unit",
+        "requested_identity": {
+          "call_put": "C",
+          "contract_type": "monthly",
+          "expiry": "202607",
+          "product": "TXO",
+          "session": "regular",
+          "strike": "44750",
+          "underlying": "TX"
+        },
+        "session": "regular",
+        "settlement_currency": null,
+        "source_session_label": "一般",
+        "trade_date": "2026-07-15"
+      },
+      "source_context_id": "amc-src-473c543eb0b16872",
+      "source_family": "TAIFEX_OPENAPI",
+      "source_id": "TAIFEX_OPENAPI",
+      "source_timestamp": null,
+      "symbol": "TXO",
+      "target_id": "TAIFEX:option:TXO:TX:202607:44750:C:monthly",
+      "timing_class": "official_derivatives_eod"
+    },
+    {
+      "authority_level": "official_documented",
+      "caveats": [
+        {
+          "code": "source_warning",
+          "message": "source_warning",
+          "severity": "warning",
+          "source": "observation_caveat"
+        }
+      ],
+      "context_type": "official_eod_reference",
+      "currentness": {
+        "calendar_evidence": "incomplete",
+        "caveats": [
+          "taifex_trading_calendar_evidence_incomplete_weekend_rule_only"
+        ],
+        "currentness_confidence": "provisional",
+        "emergency_closure_status": "emergency_closure_unknown",
+        "evaluation_time_asia_taipei": "2026-07-16T08:58:09+08:00",
+        "exchange_market_status": "scheduled_open",
+        "expected_latest_completed_trade_date": "2026-07-15",
+        "expected_latest_completed_trade_date_resolution_trace": [],
+        "source_specific": true,
+        "status": "current_official_derivatives_eod",
+        "trade_date": "2026-07-15"
+      },
+      "instrument_type": "options",
+      "market": "taifex",
+      "operation_id": "m8r-op-7cdc33fb0e1f0d02",
+      "retrieved_at_utc": "2026-07-16T00:58:09Z",
+      "safe_fields": {
+        "aggregate_identity": null,
+        "context_type": "official_derivatives_options_eod_reference",
+        "contract_identity": {
+          "call_put": "P",
+          "contract_type": "monthly",
+          "expiry": "202607",
+          "product": "TXO",
+          "session": "regular",
+          "strike": "44750",
+          "underlying": "TX"
+        },
+        "contract_multiplier": null,
+        "currentness": {
+          "calendar_evidence": "incomplete",
+          "caveats": [
+            "taifex_trading_calendar_evidence_incomplete_weekend_rule_only"
+          ],
+          "currentness_confidence": "provisional",
+          "emergency_closure_status": "emergency_closure_unknown",
+          "evaluation_time_asia_taipei": "2026-07-16T08:58:09+08:00",
+          "exchange_market_status": "scheduled_open",
+          "expected_latest_completed_trade_date": "2026-07-15",
+          "expected_latest_completed_trade_date_resolution_trace": [],
+          "source_specific": true,
+          "status": "current_official_derivatives_eod",
+          "trade_date": "2026-07-15"
+        },
+        "currentness_status": "current_official_derivatives_eod",
+        "endpoint_contract_id": "DailyMarketReportOpt",
+        "identity_level": "contract_level",
+        "identity_verification_status": "matched_approved_target",
+        "payload": {
+          "activity": {
+            "volume": 2751
+          },
+          "open_interest": {
+            "open_interest": 859
+          },
+          "price": {
+            "best_ask": "0.2",
+            "best_bid": "0.1",
+            "close": "0.2",
+            "high": "110",
+            "low": "0.1",
+            "open": "97",
+            "settlement": "0"
+          },
+          "trading_halt": ""
+        },
+        "provenance": {
+          "endpoint": "DailyMarketReportOpt",
+          "raw_payload_retained": false
+        },
+        "quotation_unit": "product_specific_quote_unit",
+        "requested_identity": {
+          "call_put": "P",
+          "contract_type": "monthly",
+          "expiry": "202607",
+          "product": "TXO",
+          "session": "regular",
+          "strike": "44750",
+          "underlying": "TX"
+        },
+        "session": "regular",
+        "settlement_currency": null,
+        "source_session_label": "一般",
+        "trade_date": "2026-07-15"
+      },
+      "source_context_id": "amc-src-fc383571fe206f73",
+      "source_family": "TAIFEX_OPENAPI",
+      "source_id": "TAIFEX_OPENAPI",
+      "source_timestamp": null,
+      "symbol": "TXO",
+      "target_id": "TAIFEX:option:TXO:TX:202607:44750:P:monthly",
+      "timing_class": "official_derivatives_eod"
+    }
+  ],
+  "targets": [
+    {
+      "available_context_types": [
+        "official_eod_reference"
+      ],
+      "caveats": [],
+      "derivative_identity": {
+        "call_put": "C",
+        "contract_type": "monthly",
+        "expiry": "202607",
+        "product": "TXO",
+        "session": "regular",
+        "strike": "44750",
+        "underlying": "TX"
+      },
+      "forbidden_interpretations": [],
+      "instrument_type": "options",
+      "market": "taifex",
+      "missing_context_types": [],
+      "requested_context_types": [
+        "official_eod_reference"
+      ],
+      "source_context_refs": [
+        "amc-src-473c543eb0b16872"
+      ],
+      "symbol": "TXO",
+      "target_id": "TAIFEX:option:TXO:TX:202607:44750:C:monthly",
+      "target_status": "ready_with_caveats"
+    },
+    {
+      "available_context_types": [
+        "official_eod_reference"
+      ],
+      "caveats": [],
+      "derivative_identity": {
+        "call_put": "P",
+        "contract_type": "monthly",
+        "expiry": "202607",
+        "product": "TXO",
+        "session": "regular",
+        "strike": "44750",
+        "underlying": "TX"
+      },
+      "forbidden_interpretations": [],
+      "instrument_type": "options",
+      "market": "taifex",
+      "missing_context_types": [],
+      "requested_context_types": [
+        "official_eod_reference"
+      ],
+      "source_context_refs": [
+        "amc-src-fc383571fe206f73"
+      ],
+      "symbol": "TXO",
+      "target_id": "TAIFEX:option:TXO:TX:202607:44750:P:monthly",
+      "target_status": "ready_with_caveats"
+    }
+  ]
+}

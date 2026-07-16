@@ -1,0 +1,71 @@
+{
+  "adapter_invocations": 2,
+  "approval_binding": {
+    "plan_hash": "fd28ef1c53607301619d2839c70cb401a3fedc5584719ff53d4b33a1c1816ee6",
+    "plan_id": "m8r-plan-fd28ef1c53607301"
+  },
+  "approval_consumed": true,
+  "approval_id": "m8r-approval-e625c779d97add8d",
+  "approval_replay_protection": "consumption_store_authoritative",
+  "approved_operation_count": 2,
+  "approved_output_scope": {
+    "artifact_root": "research/m8r/live_validation/m8r02b-f2-20260716T013000Z/option_strike",
+    "raw_payload_retention": false,
+    "write_artifacts": false
+  },
+  "approved_target_count": 2,
+  "auto_retry": false,
+  "background_execution": false,
+  "bounded_retention": true,
+  "execution_finished_at_utc": "2026-07-16T00:59:18Z",
+  "execution_started_at_utc": "2026-07-16T00:59:17Z",
+  "full_market_retained_output": false,
+  "local_operations_attempted": 0,
+  "logical_operations": [
+    "m8r-op-cb9307784553db1f",
+    "m8r-op-051c2af74b1f981a"
+  ],
+  "missing_context_count": 0,
+  "network_operations_attempted": 2,
+  "network_operations_failed": 0,
+  "network_operations_succeeded": 2,
+  "one_shot": true,
+  "package_status": "ready_with_caveats",
+  "plan_hash": "fd28ef1c53607301619d2839c70cb401a3fedc5584719ff53d4b33a1c1816ee6",
+  "plan_id": "m8r-plan-fd28ef1c53607301",
+  "polling": false,
+  "raw_payload_retained": false,
+  "reason": null,
+  "receipt_id": "m8r-receipt-0b8a39b2f9864915",
+  "returned_derivative_identities": [
+    {
+      "operation_id": "m8r-op-cb9307784553db1f",
+      "returned_identity": {
+        "call_put": "C",
+        "contract_type": "monthly",
+        "expiry": "202607",
+        "product": "TXO",
+        "session": "regular",
+        "strike": "45000",
+        "underlying": "TX"
+      },
+      "target_id": "TAIFEX:option:TXO:TX:202607:45000:C:monthly"
+    },
+    {
+      "operation_id": "m8r-op-051c2af74b1f981a",
+      "returned_identity": {
+        "call_put": "P",
+        "contract_type": "monthly",
+        "expiry": "202607",
+        "product": "TXO",
+        "session": "regular",
+        "strike": "45000",
+        "underlying": "TX"
+      },
+      "target_id": "TAIFEX:option:TXO:TX:202607:45000:P:monthly"
+    }
+  ],
+  "scheduler": false,
+  "schema_version": "m8r_market_context_execution_receipt.v1",
+  "successful_context_count": 2
+}

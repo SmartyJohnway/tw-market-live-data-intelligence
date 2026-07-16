@@ -1,0 +1,216 @@
+{
+  "approval_required": true,
+  "bounded_retained_scope": {
+    "bounded_targets_only": true,
+    "full_market_retained_output": false,
+    "raw_payload_retention": false
+  },
+  "created_at_utc": "2026-07-16T00:59:23Z",
+  "hash_scope": {
+    "approval_required": true,
+    "network_scope": {
+      "network_execution_in_m8r01": false,
+      "network_required": true,
+      "operation_classes": [
+        "planned_network_fetch"
+      ]
+    },
+    "non_goal_flags": {
+      "alert": false,
+      "api_surface": false,
+      "auto_retry": false,
+      "background_service": false,
+      "broker_execution": false,
+      "cache": false,
+      "database": false,
+      "frontend_surface": false,
+      "full_market_scanner": false,
+      "m9_ingestion": false,
+      "mcp_surface": false,
+      "network_execution": false,
+      "orchestrator": false,
+      "polling": false,
+      "prediction": false,
+      "ranking": false,
+      "recommendation": false,
+      "scheduler": false,
+      "source_adapter_invocation": false
+    },
+    "normalized_request_hash": "2d212e36dba8dba74a6ace56e0e3c3de91a730b3d4de7b44d957f0965b330b22",
+    "output_scope": {
+      "artifact_root": "research/m8r/live_validation/m8r02b-f2-20260716T013000Z/exact_negative",
+      "raw_payload_retention": false,
+      "write_artifacts": false
+    },
+    "planned_source_families": [
+      "TAIFEX_OPENAPI"
+    ],
+    "retained_scope": {
+      "bounded_targets_only": true,
+      "full_market_retained_output": false,
+      "raw_payload_retention": false
+    },
+    "schema_version": "m8r_market_context_execution_plan.v1",
+    "source_to_target_context_mapping": [
+      {
+        "context_type": "official_eod_reference",
+        "network_required": true,
+        "operation_class": "planned_network_fetch",
+        "route": "TAIFEX_OPENAPI",
+        "source_family": "TAIFEX_OPENAPI",
+        "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+      }
+    ],
+    "targets": [
+      {
+        "derivative_identity": {
+          "call_put": "C",
+          "contract_type": "monthly",
+          "expiry": "202607",
+          "session": "regular",
+          "strike": "40000",
+          "underlying": "TX"
+        },
+        "duplicate_identity_key": "TAIFEX:option:TXO:TX:202607:40000:C:monthly",
+        "instrument_type": "option",
+        "market": "TAIFEX",
+        "planned_mappings": [
+          {
+            "context_type": "official_eod_reference",
+            "network_required": true,
+            "operation_class": "planned_network_fetch",
+            "route": "TAIFEX_OPENAPI",
+            "source_family": "TAIFEX_OPENAPI",
+            "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+          }
+        ],
+        "requested_context_types": [
+          "official_eod_reference"
+        ],
+        "requested_source_families": [
+          "TAIFEX_OPENAPI"
+        ],
+        "requested_source_selection_mode": "target_exact",
+        "session": "regular",
+        "symbol": "TXO",
+        "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+      }
+    ]
+  },
+  "network_required": true,
+  "network_scope": {
+    "network_execution_in_m8r01": false,
+    "network_required": true,
+    "operation_classes": [
+      "planned_network_fetch"
+    ]
+  },
+  "non_goal_flags": {
+    "alert": false,
+    "api_surface": false,
+    "auto_retry": false,
+    "background_service": false,
+    "broker_execution": false,
+    "cache": false,
+    "database": false,
+    "frontend_surface": false,
+    "full_market_scanner": false,
+    "m9_ingestion": false,
+    "mcp_surface": false,
+    "network_execution": false,
+    "orchestrator": false,
+    "polling": false,
+    "prediction": false,
+    "ranking": false,
+    "recommendation": false,
+    "scheduler": false,
+    "source_adapter_invocation": false
+  },
+  "normalized_request_hash": "2d212e36dba8dba74a6ace56e0e3c3de91a730b3d4de7b44d957f0965b330b22",
+  "output_scope": {
+    "artifact_root": "research/m8r/live_validation/m8r02b-f2-20260716T013000Z/exact_negative",
+    "raw_payload_retention": false,
+    "write_artifacts": false
+  },
+  "plan_hash": "cb9dec079706603d60df7d339a0d843c29251fcfae1284c89a0181bba4d19e3d",
+  "plan_id": "m8r-plan-cb9dec079706603d",
+  "planned_source_families": [
+    "TAIFEX_OPENAPI"
+  ],
+  "rejected_targets": [],
+  "request_id": "m8r-f2-conversational",
+  "requested_context_types": [
+    "official_eod_reference"
+  ],
+  "schema_version": "m8r_market_context_execution_plan.v1",
+  "source_to_target_context_mapping": [
+    {
+      "context_type": "official_eod_reference",
+      "network_required": true,
+      "operation_class": "planned_network_fetch",
+      "route": "TAIFEX_OPENAPI",
+      "source_family": "TAIFEX_OPENAPI",
+      "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+    }
+  ],
+  "targets": [
+    {
+      "allowed_source_families": [
+        "TAIFEX_MIS",
+        "TAIFEX_OPENAPI"
+      ],
+      "derivative_identity": {
+        "call_put": "C",
+        "contract_type": "monthly",
+        "expiry": "202607",
+        "session": "regular",
+        "strike": "40000",
+        "underlying": "TX"
+      },
+      "duplicate_identity_key": "TAIFEX:option:TXO:TX:202607:40000:C:monthly",
+      "identity_resolution_status": "resolved",
+      "input_identity": {
+        "call_put": "C",
+        "contract_type": "monthly",
+        "expiry": "202607",
+        "instrument_type": "option",
+        "market": "TAIFEX",
+        "requested_source_families": [
+          "TAIFEX_OPENAPI"
+        ],
+        "resolution_mode": "conversational_current",
+        "session": "regular",
+        "strike": "40000",
+        "symbol": "TXO",
+        "underlying": "TX"
+      },
+      "instrument_type": "option",
+      "issues": [],
+      "market": "TAIFEX",
+      "planned_mappings": [
+        {
+          "context_type": "official_eod_reference",
+          "network_required": true,
+          "operation_class": "planned_network_fetch",
+          "route": "TAIFEX_OPENAPI",
+          "source_family": "TAIFEX_OPENAPI",
+          "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+        }
+      ],
+      "requested_context_types": [
+        "official_eod_reference"
+      ],
+      "requested_source_families": [
+        "TAIFEX_OPENAPI"
+      ],
+      "requested_source_selection_mode": "target_exact",
+      "runtime_routes": {
+        "TAIFEX_MIS": "regular_session_monthly_option_selector",
+        "TAIFEX_OPENAPI": "TAIFEX_OPENAPI"
+      },
+      "session": "regular",
+      "symbol": "TXO",
+      "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "assumptions": [
+    {
+      "code": "expiry_policy",
+      "selected_contract_type": "monthly",
+      "selected_expiry": "202607",
+      "value": "nearest_active"
+    },
+    {
+      "code": "strike_policy",
+      "reference_value": "44750",
+      "value": "nearest_listed_to_reference"
+    },
+    {
+      "code": "call_put_policy",
+      "value": "both"
+    }
+  ],
+  "discovered_universe_summary": {
+    "available_expiries": [
+      "202607",
+      "202607F3",
+      "202607F4",
+      "202607W4",
+      "202607W5",
+      "202608",
+      "202609",
+      "202612",
+      "202703"
+    ],
+    "contract_count": 3164,
+    "selected_contract_type": "monthly",
+    "selected_expiry": "202607"
+  },
+  "freshness_check": {
+    "reason": null,
+    "valid": true
+  },
+  "intent_mode": "resolve_current",
+  "original_user_text": "現在台指選擇權怎麼樣？",
+  "parsed_intent": {
+    "call_put_scope": "both",
+    "clarification_reason": null,
+    "clarification_required": false,
+    "contract_type_preference": "nearest_active",
+    "expiry_preference": "nearest_active",
+    "explicit_constraints": {
+      "call_put": false,
+      "contract_type": false,
+      "expiry": false,
+      "product": true,
+      "strike": false
+    },
+    "forbidden_fallbacks": [
+      "trade_execution",
+      "broker_instruction",
+      "investment_intent_inference"
+    ],
+    "inferred_preferences": {
+      "call_put_scope": {
+        "reason": "balanced conversational option discussion default",
+        "value": "both"
+      },
+      "expiry_preference": {
+        "reason": "user said current/near/latest or omitted expiry",
+        "value": "nearest_active"
+      },
+      "strike_preference": {
+        "reason": "option strike omitted in current conversational mode",
+        "value": "around_reference"
+      }
+    },
+    "instrument_family": "option",
+    "intent_mode": "resolve_current",
+    "market": "TAIFEX",
+    "original_user_text": "現在台指選擇權怎麼樣？",
+    "product": "TXO",
+    "requested_context_types": [
+      "liveish_observation",
+      "official_eod_reference"
+    ],
+    "schema_version": "m8r_derivatives_conversational_intent.v1",
+    "session_preference": "current_or_latest_regular",
+    "strike_anchor": null,
+    "strike_preference": "around_reference",
+    "time_scope": "current",
+    "underlying": "TX"
+  },
+  "raw_payload_retained": false,
+  "reference_observation": {
+    "reference_currentness": "fallback_not_market_price",
+    "reference_source": "listed_option_strike_midpoint_fallback",
+    "reference_timestamp": "2026-07-16T00:59:15Z",
+    "reference_value": "44750"
+  },
+  "reresolution_count": 0,
+  "resolution_id": "m8r-res-4d90585b51a58766",
+  "resolution_policy": {
+    "call_put_policy": "both_when_unspecified",
+    "expiry_policy": "nearest_active",
+    "maximum_contracts": 6,
+    "strike_policy": "nearest_listed_to_reference"
+  },
+  "resolution_status": "resolved",
+  "resolved_exact_targets": [
+    {
+      "call_put": "C",
+      "contract_type": "monthly",
+      "expiry": "202607",
+      "instrument_type": "option",
+      "market": "TAIFEX",
+      "product": "TXO",
+      "resolved_identity": {
+        "call_put": {
+          "authority": "conversational_default_both",
+          "value": "C"
+        },
+        "contract_type": {
+          "authority": "current_contract_resolution_policy",
+          "value": "monthly"
+        },
+        "expiry": {
+          "authority": "current_contract_resolution_policy",
+          "value": "202607"
+        },
+        "product": {
+          "authority": "explicit_user_text",
+          "value": "TXO"
+        },
+        "strike": {
+          "authority": "nearest_listed_strike_to_reference",
+          "value": "44750"
+        }
+      },
+      "session": "regular",
+      "strike": "44750",
+      "underlying": "TX"
+    },
+    {
+      "call_put": "P",
+      "contract_type": "monthly",
+      "expiry": "202607",
+      "instrument_type": "option",
+      "market": "TAIFEX",
+      "product": "TXO",
+      "resolved_identity": {
+        "call_put": {
+          "authority": "conversational_default_both",
+          "value": "P"
+        },
+        "contract_type": {
+          "authority": "current_contract_resolution_policy",
+          "value": "monthly"
+        },
+        "expiry": {
+          "authority": "current_contract_resolution_policy",
+          "value": "202607"
+        },
+        "product": {
+          "authority": "explicit_user_text",
+          "value": "TXO"
+        },
+        "strike": {
+          "authority": "nearest_listed_strike_to_reference",
+          "value": "44750"
+        }
+      },
+      "session": "regular",
+      "strike": "44750",
+      "underlying": "TX"
+    }
+  ],
+  "schema_version": "m8r_derivatives_resolution_record.v1"
+}

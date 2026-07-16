@@ -58,6 +58,7 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 ## M8 through M8C governance and acceptance
 
 - [M8R-02B-F1 TPEx/TAIFEX Runtime Defect Correction and Exact Contract Revalidation](protocol/M8R_02B_F1_TPEX_TAIFEX_RUNTIME_DEFECT_CORRECTION_AND_EXACT_CONTRACT_REVALIDATION.md)
+- [M8R-02B-F2 conversational derivatives intent resolution and current contract execution](protocol/M8R_02B_F2_CONVERSATIONAL_DERIVATIVES_INTENT_RESOLUTION_AND_CURRENT_CONTRACT_EXECUTION.md)
 - [M8 consolidated final acceptance](protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md)
 - [M8 full non-network base/head validation](reviews/M8_THROUGH_M8B_FULL_NON_NETWORK_BASE_HEAD_VALIDATION.md)
 - [M8 source capability registry](data_capabilities/m8_source_capability_registry.json)

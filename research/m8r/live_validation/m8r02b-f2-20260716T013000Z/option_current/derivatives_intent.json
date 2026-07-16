@@ -1,0 +1,48 @@
+{
+  "call_put_scope": "both",
+  "clarification_reason": null,
+  "clarification_required": false,
+  "contract_type_preference": "nearest_active",
+  "expiry_preference": "nearest_active",
+  "explicit_constraints": {
+    "call_put": false,
+    "contract_type": false,
+    "expiry": false,
+    "product": true,
+    "strike": false
+  },
+  "forbidden_fallbacks": [
+    "trade_execution",
+    "broker_instruction",
+    "investment_intent_inference"
+  ],
+  "inferred_preferences": {
+    "call_put_scope": {
+      "reason": "balanced conversational option discussion default",
+      "value": "both"
+    },
+    "expiry_preference": {
+      "reason": "user said current/near/latest or omitted expiry",
+      "value": "nearest_active"
+    },
+    "strike_preference": {
+      "reason": "option strike omitted in current conversational mode",
+      "value": "around_reference"
+    }
+  },
+  "instrument_family": "option",
+  "intent_mode": "resolve_current",
+  "market": "TAIFEX",
+  "original_user_text": "現在台指選擇權怎麼樣？",
+  "product": "TXO",
+  "requested_context_types": [
+    "liveish_observation",
+    "official_eod_reference"
+  ],
+  "schema_version": "m8r_derivatives_conversational_intent.v1",
+  "session_preference": "current_or_latest_regular",
+  "strike_anchor": null,
+  "strike_preference": "around_reference",
+  "time_scope": "current",
+  "underlying": "TX"
+}

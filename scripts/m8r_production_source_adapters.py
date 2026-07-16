@@ -15,16 +15,29 @@ from scripts.probe_twse_mis_rich_fields import fetch_twse_mis_rows
 NETWORK_CLASS = "planned_network_fetch"
 
 
-def _issue(code: str, severity: str = "warning") -> dict[str, Any]:
-    return {"code": code, "severity": severity}
+def _issue(code: str, severity: str = "warning", detail_reason: str | None = None) -> dict[str, Any]:
+    out = {"code": code, "severity": severity}
+    if detail_reason:
+        out["detail_reason"] = detail_reason
+    return out
+
+MIS_REASON_CODE_MAP = {
+    "requested_month_not_available": "source_identity_scope_unavailable",
+    "requested_strike_not_available": "source_identity_scope_unavailable",
+    "option_exact_identity_not_unique": "source_identity_not_unique",
+    "runtime_symbol_mismatch": "source_identity_mismatch",
+}
+
+def map_taifex_mis_detail_reason(detail_reason: str | None) -> str:
+    return MIS_REASON_CODE_MAP.get(str(detail_reason or ""), "source_payload_invalid")
 
 
 def _blocked(code: str) -> dict[str, Any]:
     return {"status": "blocked", "network_attempted": False, "adapter_invocation_count": 1, "network_request_count": 0, "source_observation": {}, "returned_identity": {}, "source_health": {}, "currentness": {}, "issues": [_issue(code)], "retained_artifacts": [], "grouping": {"grouped": False}}
 
 
-def _failed(code: str, *, network_attempted: bool = True, count: int = 1, grouping: dict | None = None) -> dict[str, Any]:
-    return {"status": "failed", "network_attempted": network_attempted, "adapter_invocation_count": 1, "network_request_count": count if network_attempted else 0, "source_observation": {}, "returned_identity": {}, "source_health": {}, "currentness": {}, "issues": [_issue(code)], "retained_artifacts": [], "grouping": grouping or {"grouped": False}}
+def _failed(code: str, *, network_attempted: bool = True, count: int = 1, grouping: dict | None = None, detail_reason: str | None = None) -> dict[str, Any]:
+    return {"status": "failed", "network_attempted": network_attempted, "adapter_invocation_count": 1, "network_request_count": count if network_attempted else 0, "source_observation": {}, "returned_identity": {}, "source_health": {}, "currentness": {}, "issues": [_issue(code, detail_reason=detail_reason)], "retained_artifacts": [], "grouping": grouping or {"grouped": False}}
 
 
 def _ok(obs: dict[str, Any], *, identity: dict | None = None, count: int = 1, grouping: dict | None = None) -> dict[str, Any]:
@@ -183,7 +196,8 @@ def _taifex_returned_contract_identity(obs: dict[str, Any], instrument_type: str
     if ci:
         expiry = ci.get("contract_month_or_week") or ci.get("contract_month") or ci.get("delivery_month") or ci.get("settlement_month")
         session = ci.get("session") or obs.get("session")
-        returned = {"product": product, "expiry": expiry, "contract_type": "monthly" if expiry and str(expiry).isdigit() and len(str(expiry)) == 6 else None}
+        ctype = "monthly" if expiry and str(expiry).isdigit() and len(str(expiry)) == 6 else "weekly" if expiry and not (str(expiry).isdigit() and len(str(expiry)) == 6) else None
+        returned = {"product": product, "expiry": expiry, "contract_type": ctype}
         if session and session != "not_applicable":
             returned["session"] = session
         if instrument_type == "option":
@@ -216,7 +230,10 @@ def _identity_matches_approved(returned: dict[str, Any], approved: dict[str, Any
 
 def _taifex_selector(target: dict[str, Any]) -> dict[str, Any] | None:
     di = target.get("derivative_identity") or {}
-    if target.get("market") != "TAIFEX" or di.get("contract_type") != "monthly" or di.get("session") != "regular":
+    if target.get("market") != "TAIFEX" or di.get("contract_type") not in {"monthly", "weekly"} or di.get("session") != "regular":
+        return None
+    mode = target.get("resolution_mode") or (target.get("input_identity") or {}).get("resolution_mode")
+    if di.get("contract_type") == "weekly" and mode != "conversational_current":
         return None
     if target.get("instrument_type") == "future":
         return {"instrument_type": "future", "requested_product_id": target.get("symbol"), "contract_month_or_week": di.get("expiry"), "session": "regular"}
@@ -287,7 +304,12 @@ def execute_taifex_mis_operation(*, operation, target, plan, execution_time_utc,
     except Exception as exc:
         return _exception_result(exc)
     if result.get("status") not in {"successful_liveish_snapshot", "partial_source_success"} or not result.get("observations"):
-        return _failed("source_payload_invalid", count=2)
+        detail = None
+        for item in result.get("selector_results") or result.get("failures") or []:
+            if isinstance(item, dict):
+                detail = item.get("reason_code") or item.get("status") or item.get("reason")
+                break
+        return _failed(map_taifex_mis_detail_reason(detail), count=2, detail_reason=detail)
     ctx = adapt_taifex_mis_observation(result["observations"][0])
     native_context_type = ctx.get("context_type")
     ctx.setdefault("provenance", {})["source_native_context_type"] = native_context_type

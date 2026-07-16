@@ -1,0 +1,61 @@
+{
+  "all_caveat_codes": [
+    "approved_target_scope_not_fully_available",
+    "currentness_unknown",
+    "production_live_execution_not_ready"
+  ],
+  "identity_evidence": [
+    {
+      "derivative_identity": {
+        "call_put": "C",
+        "contract_type": "monthly",
+        "expiry": "202607",
+        "product": "TXO",
+        "session": "regular",
+        "strike": "40000",
+        "underlying": "TX"
+      },
+      "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+    }
+  ],
+  "operation_outcomes": [
+    {
+      "context_type": "official_eod_reference",
+      "operation_class": "planned_network_fetch",
+      "operation_id": "m8r-op-f6dc92d225345ab4",
+      "source_family": "TAIFEX_OPENAPI",
+      "status": "succeeded",
+      "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+    }
+  ],
+  "package_id": "amc-6e8f6e01b68efada",
+  "provenance": {
+    "approval_consumed": true,
+    "approval_id": "m8r-approval-6cce89650506f926",
+    "approved_output_scope": {
+      "artifact_root": "research/m8r/live_validation/m8r02b-f2-20260716T013000Z/exact_negative",
+      "raw_payload_retention": false,
+      "write_artifacts": false
+    },
+    "bounded_retention": true,
+    "execution_finished_at_utc": "2026-07-16T00:59:24Z",
+    "execution_started_at_utc": "2026-07-16T00:59:23Z",
+    "full_market_retained_output": false,
+    "m8_context_core_status": "built",
+    "orchestration_result_schema": "m8r_market_context_orchestration_result.v1",
+    "plan_hash": "cb9dec079706603d60df7d339a0d843c29251fcfae1284c89a0181bba4d19e3d",
+    "plan_id": "m8r-plan-cb9dec079706603d",
+    "raw_payload_retained": false,
+    "receipt_id": "m8r-receipt-1ce0233e844ae97e",
+    "request_id": null,
+    "target_identity_provenance": "inferred_from_operation_result",
+    "upstream_package_status": "ready_with_caveats"
+  },
+  "source_mappings": [
+    {
+      "operation_id": "m8r-op-f6dc92d225345ab4",
+      "source_context_id": "amc-src-67f8557c8004bd1a",
+      "target_id": "TAIFEX:option:TXO:TX:202607:40000:C:monthly"
+    }
+  ]
+}
