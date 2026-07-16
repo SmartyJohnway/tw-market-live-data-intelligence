@@ -5,7 +5,7 @@ from pathlib import Path, PurePosixPath
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.m8r_03e_watchlist_ai_context_builder import build_watchlist_ai_context_package, build_context_manifest, render_watchlist_ai_context_preview
 from scripts.m8r_03e_conversation_handoff_builder import build_watchlist_conversation_handoff
-from scripts.m8r_03e_context_validator import validate_watchlist_ai_context_package, validate_watchlist_conversation_handoff, validate_watchlist_ai_context_manifest
+from scripts.m8r_03e_context_validator import validate_watchlist_ai_context_package, validate_watchlist_conversation_handoff, validate_watchlist_ai_context_manifest, validate_m8r_03e_upstream_artifacts
 
 def _reject_url(p):
     if '://' in str(p): raise ValueError('url_input_rejected')
@@ -30,19 +30,21 @@ def main(argv=None):
         out=_safe_root(a.output_root); run=out/('m8r03e-'+a.generated_at_utc.replace(':','').replace('-',''))
         if run.exists() and not a.allow_overwrite: raise FileExistsError('output_run_directory_exists')
         run.mkdir(parents=True,exist_ok=a.allow_overwrite)
+        uv=validate_m8r_03e_upstream_artifacts(validated_request=req,execution_plan=plan,execution_result=res,watchlist_bundle=bundle)
+        if not uv['valid']: raise ValueError('upstream_artifact_validation_failed')
         pkg=build_watchlist_ai_context_package(validated_request=req,execution_plan=plan,execution_result=res,watchlist_bundle=bundle,generated_at_utc=a.generated_at_utc,context_policy=policy)
         hand=build_watchlist_conversation_handoff(context_package=pkg,generated_at_utc=a.generated_at_utc)
         upstream={'validated_request':req,'execution_plan':plan,'execution_result':res,'watchlist_bundle':bundle}
         man=build_context_manifest(context_package=pkg,conversation_handoff=hand,upstream_artifacts=upstream,generated_at_utc=a.generated_at_utc)
         preview=render_watchlist_ai_context_preview(pkg)
-        vp=validate_watchlist_ai_context_package(pkg,upstream_artifacts={'watchlist_bundle':bundle,'verified_security_master_snapshot':plan})
+        vp=validate_watchlist_ai_context_package(pkg,upstream_artifacts=upstream)
         vh=validate_watchlist_conversation_handoff(hand,context_package=pkg); vm=validate_watchlist_ai_context_manifest(man,context_package=pkg,handoff=hand,upstream_artifacts=upstream)
         if not (vp['valid'] and vh['valid'] and vm['valid']):
             man['validation_status']='failed'; man['validation_issues']=vp['issues']+vh['issues']+vm['issues']
         dump(run/'watchlist_ai_context.json',pkg); dump(run/'watchlist_conversation_handoff.json',hand); dump(run/'watchlist_ai_context_manifest.json',man); atomic_write(run/'watchlist_ai_context_preview.md',preview)
         # re-read and validate hashes
         pkg2=load(run/'watchlist_ai_context.json'); hand2=load(run/'watchlist_conversation_handoff.json'); man2=load(run/'watchlist_ai_context_manifest.json')
-        ok=validate_watchlist_ai_context_package(pkg2)['valid'] and validate_watchlist_conversation_handoff(hand2,context_package=pkg2)['valid'] and validate_watchlist_ai_context_manifest(man2,context_package=pkg2,handoff=hand2)['valid']
+        ok=validate_watchlist_ai_context_package(pkg2,upstream_artifacts=upstream)['valid'] and validate_watchlist_conversation_handoff(hand2,context_package=pkg2)['valid'] and validate_watchlist_ai_context_manifest(man2,context_package=pkg2,handoff=hand2,upstream_artifacts=upstream)['valid']
         print(json.dumps({'status':'success' if ok and man2['validation_status']=='passed' else 'failed','output_dir':str(run),'coverage_status':pkg2['coverage_summary']['coverage_status'],'validation_status':man2['validation_status']},sort_keys=True))
         return 0 if ok and man2['validation_status']=='passed' else 2
     except Exception as e:
