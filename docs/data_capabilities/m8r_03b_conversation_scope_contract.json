@@ -1,0 +1,380 @@
+{
+  "schema_version": "m8r_03b_conversation_scope_contract.v2",
+  "status": "validator_ready_design_contract",
+  "conversation_intent": {
+    "schema_version": "m8r_ai_market_conversation_intent.v1",
+    "object_name": "conversation_intent",
+    "fields": [
+      {
+        "field_name": "schema_version",
+        "type": "string",
+        "required": true,
+        "nullable": false,
+        "enum": [
+          "m8r_ai_market_conversation_intent.v1"
+        ],
+        "invariants": []
+      },
+      {
+        "field_name": "original_user_text",
+        "type": "string",
+        "required": true,
+        "nullable": false,
+        "invariants": [
+          "non-empty",
+          "verbatim user text"
+        ]
+      },
+      {
+        "field_name": "scope_modes",
+        "type": "array",
+        "required": true,
+        "nullable": false,
+        "invariants": [
+          "non-empty",
+          "may contain multiple modes",
+          "watchlist_subset valid only with persistent_watchlist_reference or follow_up_context.parent_evidence_request_id",
+          "market_overview must not implicitly bind persistent_watchlist_reference"
+        ],
+        "items": {
+          "type": "string",
+          "enum": [
+            "watchlist",
+            "market_overview",
+            "dynamic_research",
+            "watchlist_subset"
+          ]
+        }
+      },
+      {
+        "field_name": "time_scope",
+        "type": "object",
+        "required": true,
+        "nullable": false,
+        "invariants": [],
+        "properties": [
+          {
+            "field_name": "mode",
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "current",
+              "recent",
+              "current_plus_recent",
+              "historical",
+              "explicit_range"
+            ],
+            "default": "current_plus_recent",
+            "invariants": []
+          },
+          {
+            "field_name": "lookback_trading_days",
+            "type": "integer",
+            "required": false,
+            "nullable": true,
+            "invariants": [
+              "positive when present",
+              "used for recent/current_plus_recent unless explicit_range overrides"
+            ]
+          },
+          {
+            "field_name": "explicit_range",
+            "type": "object",
+            "required": false,
+            "nullable": true,
+            "invariants": [
+              "required and non-null when mode=explicit_range",
+              "must preserve explicit user constraint"
+            ],
+            "properties": [
+              {
+                "field_name": "range_type",
+                "type": "string",
+                "required": true,
+                "nullable": false,
+                "enum": [
+                  "trading_days",
+                  "calendar_dates",
+                  "year_to_date",
+                  "named_period"
+                ],
+                "invariants": []
+              },
+              {
+                "field_name": "start_date",
+                "type": "string",
+                "required": false,
+                "nullable": true,
+                "invariants": [
+                  "ISO-8601 date when range_type=calendar_dates"
+                ]
+              },
+              {
+                "field_name": "end_date",
+                "type": "string",
+                "required": false,
+                "nullable": true,
+                "invariants": [
+                  "ISO-8601 date or null for now/current when range_type=calendar_dates"
+                ]
+              },
+              {
+                "field_name": "trading_days",
+                "type": "integer",
+                "required": false,
+                "nullable": true,
+                "invariants": [
+                  "positive when range_type=trading_days"
+                ]
+              },
+              {
+                "field_name": "named_period",
+                "type": "string",
+                "required": false,
+                "nullable": true,
+                "invariants": [
+                  "non-empty when range_type=named_period"
+                ]
+              },
+              {
+                "field_name": "user_text",
+                "type": "string",
+                "required": true,
+                "nullable": false,
+                "invariants": [
+                  "preserves explicit user phrase"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "field_name": "evidence_depth",
+        "type": "string",
+        "required": true,
+        "nullable": false,
+        "enum": [
+          "quick",
+          "standard",
+          "deep",
+          "diagnostic"
+        ],
+        "default": "standard",
+        "invariants": []
+      },
+      {
+        "field_name": "explicit_user_constraints",
+        "type": "object",
+        "required": true,
+        "nullable": false,
+        "default": {},
+        "invariants": [
+          "contains only user-stated constraints, not system defaults"
+        ]
+      },
+      {
+        "field_name": "inferred_defaults",
+        "type": "object",
+        "required": true,
+        "nullable": false,
+        "default": {},
+        "invariants": [
+          "contains bounded defaults supplied by system/orchestrator"
+        ]
+      },
+      {
+        "field_name": "clarification_required",
+        "type": "boolean",
+        "required": true,
+        "nullable": false,
+        "default": false,
+        "invariants": []
+      },
+      {
+        "field_name": "clarification_reason",
+        "type": "string",
+        "required": true,
+        "nullable": true,
+        "invariants": [
+          "clarification_required=true -> non-empty string",
+          "clarification_required=false -> null"
+        ]
+      }
+    ],
+    "object_invariants": [
+      "unknown scope mode rejected",
+      "invalid time mode rejected",
+      "composite scopes allowed without requiring multiple user turns",
+      "dynamic_research never mutates persistent_watchlist"
+    ]
+  },
+  "scope_modes": {
+    "enum": [
+      "watchlist",
+      "market_overview",
+      "dynamic_research",
+      "watchlist_subset"
+    ],
+    "composite_scope_rules": [
+      "scope_modes is a non-empty array",
+      "watchlist_subset requires persistent_watchlist_reference or parent conversation context",
+      "dynamic_research may co-exist with market_overview and watchlist_subset",
+      "market_overview is not a fallback to watchlist"
+    ]
+  },
+  "time_modes": {
+    "enum": [
+      "current",
+      "recent",
+      "current_plus_recent",
+      "historical",
+      "explicit_range"
+    ],
+    "default": "current_plus_recent",
+    "explicit_range_structure": {
+      "field_name": "explicit_range",
+      "type": "object",
+      "required": false,
+      "nullable": true,
+      "invariants": [
+        "required and non-null when mode=explicit_range",
+        "must preserve explicit user constraint"
+      ],
+      "properties": [
+        {
+          "field_name": "range_type",
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "enum": [
+            "trading_days",
+            "calendar_dates",
+            "year_to_date",
+            "named_period"
+          ],
+          "invariants": []
+        },
+        {
+          "field_name": "start_date",
+          "type": "string",
+          "required": false,
+          "nullable": true,
+          "invariants": [
+            "ISO-8601 date when range_type=calendar_dates"
+          ]
+        },
+        {
+          "field_name": "end_date",
+          "type": "string",
+          "required": false,
+          "nullable": true,
+          "invariants": [
+            "ISO-8601 date or null for now/current when range_type=calendar_dates"
+          ]
+        },
+        {
+          "field_name": "trading_days",
+          "type": "integer",
+          "required": false,
+          "nullable": true,
+          "invariants": [
+            "positive when range_type=trading_days"
+          ]
+        },
+        {
+          "field_name": "named_period",
+          "type": "string",
+          "required": false,
+          "nullable": true,
+          "invariants": [
+            "non-empty when range_type=named_period"
+          ]
+        },
+        {
+          "field_name": "user_text",
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "invariants": [
+            "preserves explicit user phrase"
+          ]
+        }
+      ]
+    }
+  },
+  "evidence_depth_modes": {
+    "enum": [
+      "quick",
+      "standard",
+      "deep",
+      "diagnostic"
+    ],
+    "default": "standard"
+  },
+  "clarification_policy": {
+    "infer_without_clarification": [
+      "current watchlist",
+      "recent watchlist",
+      "ambiguous watchlist",
+      "today market overview",
+      "bounded dynamic topic research"
+    ],
+    "clarification_required_when": [
+      "entity_unidentified",
+      "material_name_collision",
+      "contradictory_time_period",
+      "unbounded_whole_market_extraction",
+      "dynamic_entity_set_unbounded_or_unjustified"
+    ],
+    "invariants": [
+      "clarification_required=true -> clarification_reason non-empty",
+      "clarification_required=false -> clarification_reason null"
+    ]
+  },
+  "follow_up_context": {
+    "fields": [
+      {
+        "field_name": "conversation_context_id",
+        "type": "string",
+        "required": false,
+        "nullable": true,
+        "invariants": []
+      },
+      {
+        "field_name": "parent_evidence_request_id",
+        "type": "string",
+        "required": false,
+        "nullable": true,
+        "invariants": []
+      },
+      {
+        "field_name": "reusable_resolutions",
+        "type": "array",
+        "required": false,
+        "nullable": false,
+        "invariants": [],
+        "items": {
+          "type": "object"
+        }
+      },
+      {
+        "field_name": "freshness_recheck_required",
+        "type": "boolean",
+        "required": true,
+        "nullable": false,
+        "default": true,
+        "invariants": []
+      }
+    ],
+    "current_mis_reuse": "freshness_check_required",
+    "recent_eod_reuse": "allowed_when_completed_trade_date_coverage_still_valid"
+  },
+  "execution_policy_default": {
+    "operator_confirmation_required": true,
+    "network_allowed": false,
+    "polling": false,
+    "scheduler": false
+  }
+}

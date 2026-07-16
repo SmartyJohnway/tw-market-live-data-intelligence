@@ -1,0 +1,79 @@
+{
+  "schema_version": "m8r_03b_phased_delivery_plan.v1",
+  "decision": "GO_WITH_PHASED_IMPLEMENTATION_REQUIRED",
+  "recommended_next_bounded_engineering_task": "Implement conversation intent/evidence request schema validators and watchlist bundle skeletons without network automation",
+  "m8r04_disposition": "M8R-04 requires scope revision or split; watchlist bundles and minimum market-pulse source expansion should precede broad AI automation",
+  "m8r04_completed": false,
+  "phases": [
+    {
+      "phase": "A",
+      "name": "Conversation contracts",
+      "deliverable": "Implement reviewed intent, evidence request, bundle schema validators"
+    },
+    {
+      "phase": "B",
+      "name": "Watchlist bundles",
+      "deliverable": "Build bounded snapshot/performance packages from existing EOD/MIS sources"
+    },
+    {
+      "phase": "C",
+      "name": "Minimum market pulse",
+      "deliverable": "Add highest priority official market-wide sources"
+    },
+    {
+      "phase": "D",
+      "name": "Dynamic evidence requests",
+      "deliverable": "Bounded AI-generated plans through identity and capability checks"
+    },
+    {
+      "phase": "E",
+      "name": "Conversation continuity",
+      "deliverable": "Reuse and invalidate prior evidence correctly"
+    },
+    {
+      "phase": "F",
+      "name": "AI-facing automation endpoint",
+      "deliverable": "Expose one-shot evidence acquisition to controlled AI/MCP/API client"
+    },
+    {
+      "phase": "G",
+      "name": "Final UI/product integration",
+      "deliverable": "Human-facing workbench after contracts and source gaps are ready"
+    }
+  ],
+  "source_expansion_priorities": [
+    {
+      "priority": 1,
+      "name": "Minimum useful market pulse",
+      "items": [
+        "TWSE/TPEx market breadth",
+        "TWSE/TPEx turnover and rolling turnover baseline",
+        "TAIFEX front-future volume and open interest",
+        "cash-futures basis",
+        "TAIFEX put/call ratios"
+      ]
+    },
+    {
+      "priority": 2,
+      "name": "Positioning and participation",
+      "items": [
+        "TWSE/TPEx three-institution net flows",
+        "TAIFEX institutional futures/options positions",
+        "margin and short balances",
+        "securities-lending or borrowed-share selling"
+      ]
+    },
+    {
+      "priority": 3,
+      "name": "Market structure and volatility",
+      "items": [
+        "sector indices",
+        "large-cap versus small-cap participation",
+        "option OI distribution",
+        "volatility index",
+        "implied volatility and skew",
+        "large-trader positions"
+      ]
+    }
+  ]
+}

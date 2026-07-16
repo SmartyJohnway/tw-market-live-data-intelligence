@@ -1,0 +1,249 @@
+{
+  "schema_version": "m8r_03b_scenario_fixture.v1",
+  "scenario_id": "scenario_a_current_watchlist",
+  "user_input": "我的觀察清單現在表現如何？",
+  "parsed_conversation_intent": {
+    "schema_version": "m8r_ai_market_conversation_intent.v1",
+    "original_user_text": "我的觀察清單現在表現如何？",
+    "scope_modes": [
+      "watchlist"
+    ],
+    "time_scope": {
+      "mode": "current",
+      "lookback_trading_days": null,
+      "explicit_range": null
+    },
+    "evidence_depth": "standard",
+    "explicit_user_constraints": {},
+    "inferred_defaults": {},
+    "clarification_required": false,
+    "clarification_reason": null
+  },
+  "evidence_request": {
+    "schema_version": "m8r_ai_evidence_request.v1",
+    "original_user_text": "我的觀察清單現在表現如何？",
+    "conversation_intent": {
+      "schema_version": "m8r_ai_market_conversation_intent.v1",
+      "original_user_text": "我的觀察清單現在表現如何？",
+      "scope_modes": [
+        "watchlist"
+      ],
+      "time_scope": {
+        "mode": "current",
+        "lookback_trading_days": null,
+        "explicit_range": null
+      },
+      "evidence_depth": "standard",
+      "explicit_user_constraints": {},
+      "inferred_defaults": {},
+      "clarification_required": false,
+      "clarification_reason": null
+    },
+    "explicit_user_constraints": {},
+    "inferred_defaults": {},
+    "persistent_watchlist_reference": {
+      "watchlist_id": "operator_supplied_watchlist",
+      "source": "operator_supplied",
+      "enabled_target_ids": [
+        "fixture_target_1"
+      ]
+    },
+    "dynamic_entity_requests": [],
+    "market_context_requests": [],
+    "required_evidence": [
+      {
+        "capability_id": "twse_mis_listed_liveish",
+        "priority": "required",
+        "time_scope": {
+          "mode": "current",
+          "lookback_trading_days": null,
+          "explicit_range": null
+        },
+        "preferred_timing_class": "liveish_intraday_snapshot",
+        "source_family_preference": [],
+        "fallback_behavior": "mark_missing",
+        "required_for_answer": true
+      },
+      {
+        "capability_id": "twse_mis_tpex_otc_liveish",
+        "priority": "required",
+        "time_scope": {
+          "mode": "current",
+          "lookback_trading_days": null,
+          "explicit_range": null
+        },
+        "preferred_timing_class": "liveish_intraday_snapshot",
+        "source_family_preference": [],
+        "fallback_behavior": "mark_missing",
+        "required_for_answer": true
+      },
+      {
+        "capability_id": "twse_official_eod",
+        "priority": "required",
+        "time_scope": {
+          "mode": "current",
+          "lookback_trading_days": null,
+          "explicit_range": null
+        },
+        "preferred_timing_class": "official_eod",
+        "source_family_preference": [],
+        "fallback_behavior": "mark_missing",
+        "required_for_answer": true
+      },
+      {
+        "capability_id": "tpex_official_eod",
+        "priority": "required",
+        "time_scope": {
+          "mode": "current",
+          "lookback_trading_days": null,
+          "explicit_range": null
+        },
+        "preferred_timing_class": "official_eod",
+        "source_family_preference": [],
+        "fallback_behavior": "mark_missing",
+        "required_for_answer": true
+      }
+    ],
+    "useful_evidence": [],
+    "optional_evidence": [],
+    "execution_policy": {
+      "operator_confirmation_required": true,
+      "network_allowed": false,
+      "polling": false,
+      "scheduler": false
+    },
+    "clarification_required": false,
+    "clarification_reason": null,
+    "request_id": "scenario_a_current_watchlist-request",
+    "identity_resolver_output": {
+      "resolved_entities": [],
+      "unresolved_entities": [],
+      "resolver_assumptions": []
+    },
+    "follow_up_context": {
+      "conversation_context_id": null,
+      "parent_evidence_request_id": null,
+      "freshness_recheck_required": true
+    }
+  },
+  "expected_bundle_types": [
+    "watchlist_snapshot"
+  ],
+  "required_capability_ids": [
+    "twse_mis_listed_liveish",
+    "twse_mis_tpex_otc_liveish",
+    "twse_official_eod",
+    "tpex_official_eod"
+  ],
+  "expected_assumptions": [
+    "MIS primary; latest completed EOD reference"
+  ],
+  "expected_missing_evidence": [],
+  "clarification_decision": {
+    "clarification_required": false,
+    "reason": null
+  },
+  "ai_input_layers": [
+    "facts",
+    "derived_metrics",
+    "resolution_assumptions",
+    "missing_evidence"
+  ],
+  "follow_up_context": {
+    "conversation_context_id": null,
+    "parent_evidence_request_id": null,
+    "freshness_recheck_required": true
+  },
+  "expected_target_coverage": [
+    {
+      "target_id": "fixture_target_1",
+      "input_reference": "fixture_target_1",
+      "coverage_state": "usable",
+      "present_field_groups": [
+        "identity",
+        "current_evidence"
+      ],
+      "missing_field_groups": [],
+      "reason_code": null
+    }
+  ],
+  "sample_derived_metric": {
+    "metric_id": "fixture_return_5d",
+    "value": null,
+    "unit": "percent",
+    "formula_id": "return_over_period.v1",
+    "input_period": {
+      "mode": "current",
+      "lookback_trading_days": null,
+      "explicit_range": null
+    },
+    "source_dependencies": [
+      "twse_mis_listed_liveish"
+    ],
+    "calculation_status": "input_unavailable",
+    "as_of": "fixture"
+  },
+  "sample_missing_evidence": [],
+  "expected_requested_target_ids": [
+    "fixture_target_1"
+  ],
+  "sample_bundles": [
+    {
+      "schema_version": "watchlist_snapshot.fixture.v1",
+      "bundle_id": "scenario_a_current_watchlist-bundle",
+      "request_id": "scenario_a_current_watchlist-request",
+      "generated_at_utc": "2026-07-16T00:00:00Z",
+      "conversation_context": {
+        "conversation_context_id": null
+      },
+      "facts": [],
+      "derived_metrics": [
+        {
+          "metric_id": "fixture_return_5d",
+          "value": null,
+          "unit": "percent",
+          "formula_id": "return_over_period.v1",
+          "input_period": {
+            "mode": "current",
+            "lookback_trading_days": null,
+            "explicit_range": null
+          },
+          "source_dependencies": [
+            "twse_mis_listed_liveish"
+          ],
+          "calculation_status": "input_unavailable",
+          "as_of": "fixture"
+        }
+      ],
+      "resolution_assumptions": [
+        {
+          "assumption_id": "fixture_assumption",
+          "description": "MIS primary; latest completed EOD reference",
+          "source": "fixture",
+          "impact": "design_validation"
+        }
+      ],
+      "missing_evidence": [],
+      "coverage": {
+        "requested_target_ids": [
+          "fixture_target_1"
+        ],
+        "targets": [
+          {
+            "target_id": "fixture_target_1",
+            "input_reference": "fixture_target_1",
+            "coverage_state": "usable",
+            "present_field_groups": [
+              "identity",
+              "current_evidence"
+            ],
+            "missing_field_groups": [],
+            "reason_code": null
+          }
+        ],
+        "summary": {}
+      },
+      "source_summary": {}
+    }
+  ]
+}
