@@ -25,6 +25,17 @@ def test_testing_workflows_are_manual_or_published_release_only():
     assert trigger_sets["Release Validation"] == {"workflow_dispatch", "release"}
 
 
+def test_complete_windows_workflow_and_release_job_retain_compatibility_coverage():
+    windows = validator.load_workflow(ROOT / ".github/workflows/windows-compatibility-smoke.yml")
+    release = validator.load_workflow(ROOT / ".github/workflows/release-validation.yml")
+    for workflow, job_name in ((windows, "windows-compatibility-smoke"), (release, "windows-compatibility")):
+        names = validator.job_step_names(workflow, job_name)
+        run_text = validator.job_run_text(workflow, job_name)
+        assert validator.REQUIRED_WINDOWS_STEP_NAMES <= names
+        assert validator.REQUIRED_WINDOWS_TEST_PATHS <= set(path for path in validator.REQUIRED_WINDOWS_TEST_PATHS if path in run_text)
+        assert "component-security" not in run_text
+
+
 def test_policy_keeps_historical_and_performance_profiles_manual():
     profiles = json.loads((ROOT / "config/test_execution_profiles.json").read_text())["profiles"]
     assert profiles["historical-acceptance"]["automatic_ci_allowed"] is False

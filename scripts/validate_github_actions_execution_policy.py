@@ -12,6 +12,50 @@ ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / ".github" / "workflows"
 POLICY_PATH = ROOT / "config" / "github_actions_execution_policy.json"
 RELEASE_WORKFLOW = "release-validation.yml"
+WINDOWS_WORKFLOW = "windows-compatibility-smoke.yml"
+REQUIRED_WINDOWS_STEP_NAMES = {
+    "Compile Windows compatibility surfaces",
+    "Run Windows non-network compatibility smoke tests",
+    "Validate M5F package",
+    "M5IJ Windows acceptance",
+    "MCP startup check",
+}
+REQUIRED_WINDOWS_TEST_PATHS = {
+    "tests/unit/test_m5f_canonical_market_context_package.py",
+    "tests/unit/test_m5i_explicit_bounded_refresh.py",
+    "tests/unit/test_m5ij_end_to_end_acceptance.py",
+    "tests/unit/test_m5fgh_fastapi_context.py",
+    "tests/unit/test_mcp_server.py",
+    "tests/unit/test_m6d_ssl_policy.py",
+    "tests/unit/test_m6d_operator_and_local_networking.py",
+}
+
+
+def job_step_names(workflow: dict[str, Any], job_name: str) -> set[str]:
+    jobs = workflow.get("jobs", {})
+    job = jobs.get(job_name, {}) if isinstance(jobs, dict) else {}
+    steps = job.get("steps", []) if isinstance(job, dict) else []
+    return {str(step.get("name")) for step in steps if isinstance(step, dict) and step.get("name")}
+
+
+def job_run_text(workflow: dict[str, Any], job_name: str) -> str:
+    jobs = workflow.get("jobs", {})
+    job = jobs.get(job_name, {}) if isinstance(jobs, dict) else {}
+    steps = job.get("steps", []) if isinstance(job, dict) else []
+    return "\n".join(str(step.get("run", "")) for step in steps if isinstance(step, dict))
+
+
+def validate_complete_windows_job(workflow: dict[str, Any], job_name: str, prefix: str, violations: list[str]) -> None:
+    names = job_step_names(workflow, job_name)
+    missing_names = REQUIRED_WINDOWS_STEP_NAMES - names
+    for name in sorted(missing_names):
+        violations.append(f"{prefix}:missing_step:{name}")
+    run_text = job_run_text(workflow, job_name)
+    for test_path in sorted(REQUIRED_WINDOWS_TEST_PATHS):
+        if test_path not in run_text:
+            violations.append(f"{prefix}:missing_test:{test_path}")
+    if "component-security" in run_text:
+        violations.append(f"{prefix}:filesystem_only_mislabeled_complete")
 
 
 def load_workflow(path: Path) -> dict[str, Any]:
@@ -74,6 +118,11 @@ def validate() -> dict[str, Any]:
         violations.append("release_validation_not_published_only")
     if release_files != [RELEASE_WORKFLOW]:
         violations.append("release_validation_not_sole_release_workflow")
+
+    windows_path = WORKFLOWS / WINDOWS_WORKFLOW
+    windows = load_workflow(windows_path) if windows_path.exists() else {}
+    validate_complete_windows_job(windows, "windows-compatibility-smoke", "windows_compatibility", violations)
+    validate_complete_windows_job(release, "windows-compatibility", "release_windows_compatibility", violations)
 
     profiles = json.loads((ROOT / "config" / "test_execution_profiles.json").read_text(encoding="utf-8"))["profiles"]
     for profile in ("performance", "historical-acceptance"):

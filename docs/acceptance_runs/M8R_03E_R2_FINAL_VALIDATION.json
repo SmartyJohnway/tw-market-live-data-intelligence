@@ -12,7 +12,10 @@
     "status": "pass"
   },
   "baseline_sha": "1c2144498b524e52b2bf21fce8ed00683d9eb3a7",
-  "combined_pr_disposition": "REQUEST_CHANGES_PENDING_WINDOWS_WORKFLOW_CONFIRMATION",
+  "combined_pr_disposition": "REQUEST_CHANGES_PENDING_MANUAL_OR_RELEASE_WINDOWS_EVIDENCE",
+  "github_actions_policy": "NO_GITHUB_CI",
+  "github_runner_execution": "not_performed",
+  "github_workflows_triggered": [],
   "known_failures": [
     "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
     "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
@@ -61,11 +64,9 @@
     }
   },
   "windows_compatibility_smoke": {
+    "commands_reference": "docs/acceptance_runs/PR_151_CI_POLICY_V1_VALIDATION.json",
+    "coverage": "complete Windows Compatibility Smoke is manual-only and Release Validation includes the same complete Windows set",
     "junction_reparse_coverage": "not_claimed_best_effort_follow_up",
-    "required_commands": [
-      "python -m compileall scripts/m8r_filesystem_safety.py tests/unit/test_m8r_filesystem_containment.py tests/unit/test_m8r_03e_r2_filesystem_containment.py",
-      "python scripts/run_test_profile.py component-security --json"
-    ],
-    "status": "pending_remote_workflow_confirmation"
+    "status": "unexecuted_under_no_github_ci_policy"
   }
 }
