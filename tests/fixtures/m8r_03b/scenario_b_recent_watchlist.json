@@ -1,0 +1,68 @@
+{
+  "schema_version": "m8r_03b_scenario_fixture.v1",
+  "scenario_id": "scenario_b_recent_watchlist",
+  "user_input": "我的觀察清單最近誰最強？",
+  "parsed_conversation_intent": {
+    "scope_modes": [
+      "watchlist"
+    ],
+    "time_mode": "recent",
+    "evidence_depth": "standard"
+  },
+  "evidence_request": {
+    "schema_version": "m8r_ai_evidence_request.v1",
+    "original_user_text": "我的觀察清單最近誰最強？",
+    "conversation_intent": {
+      "scope_modes": [
+        "watchlist"
+      ],
+      "time_mode": "recent",
+      "evidence_depth": "standard"
+    },
+    "explicit_user_constraints": {},
+    "inferred_defaults": {},
+    "persistent_watchlist_reference": "operator_supplied_watchlist",
+    "dynamic_entity_requests": [],
+    "market_context_requests": [],
+    "required_evidence": [
+      "twse_official_eod",
+      "tpex_official_eod"
+    ],
+    "useful_evidence": [],
+    "optional_evidence": [],
+    "execution_policy": {
+      "operator_confirmation_required": true,
+      "network_allowed": false,
+      "polling": false,
+      "scheduler": false
+    },
+    "clarification_required": false,
+    "clarification_reason": null
+  },
+  "expected_bundle_types": [
+    "watchlist_performance"
+  ],
+  "required_capability_ids": [
+    "twse_official_eod",
+    "tpex_official_eod"
+  ],
+  "expected_assumptions": [
+    "recent defaults to bounded lookback such as 20 trading days unless explicit"
+  ],
+  "expected_missing_evidence": [],
+  "clarification_decision": {
+    "clarification_required": false,
+    "reason": null
+  },
+  "ai_input_layers": [
+    "facts",
+    "derived_metrics",
+    "resolution_assumptions",
+    "missing_evidence"
+  ],
+  "follow_up_context": {
+    "conversation_context_id": null,
+    "parent_evidence_request_id": null,
+    "freshness_recheck_required": false
+  }
+}

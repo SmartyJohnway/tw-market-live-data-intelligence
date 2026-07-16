@@ -1,0 +1,162 @@
+{
+  "schema_version": "m8r_03b_evidence_bundle_contracts.v1",
+  "common_evidence_request": {
+    "schema_version": "m8r_ai_evidence_request.v1",
+    "required_fields": [
+      "original_user_text",
+      "conversation_intent",
+      "explicit_user_constraints",
+      "inferred_defaults",
+      "persistent_watchlist_reference",
+      "dynamic_entity_requests",
+      "market_context_requests",
+      "required_evidence",
+      "useful_evidence",
+      "optional_evidence",
+      "execution_policy",
+      "clarification_required",
+      "clarification_reason",
+      "identity_resolver_output"
+    ],
+    "layer_separation": [
+      "explicit_user_constraints",
+      "system_defaults",
+      "AI_proposed_evidence",
+      "identity_resolver_output"
+    ]
+  },
+  "ai_input_layers": [
+    "facts",
+    "derived_metrics",
+    "resolution_assumptions",
+    "missing_evidence"
+  ],
+  "ai_output_sections": [
+    "answer_summary",
+    "key_findings",
+    "supporting_evidence",
+    "assumptions",
+    "missing_or_stale_evidence",
+    "follow_up_context"
+  ],
+  "bundles": [
+    {
+      "bundle": "watchlist_snapshot",
+      "request_schema": "m8r_watchlist_snapshot_request.v1",
+      "bundle_schema": "m8r_watchlist_snapshot_bundle.v1",
+      "answers": [
+        "我的觀察清單現在怎麼樣？",
+        "今天我的股票表現如何？"
+      ],
+      "primary_sources": [
+        "TWSE_MIS",
+        "TAIFEX_MIS where derivative targets are explicitly approved"
+      ],
+      "reference_sources": [
+        "TWSE_OPENAPI",
+        "TPEX_OPENAPI",
+        "TAIFEX_OPENAPI"
+      ],
+      "field_groups": {
+        "identity": [
+          "security_code",
+          "security_name",
+          "market",
+          "instrument_type",
+          "listing_status",
+          "identity_resolution_status"
+        ],
+        "current_evidence": [
+          "latest_price",
+          "change",
+          "change_percent",
+          "open",
+          "high",
+          "low",
+          "volume",
+          "source_timestamp",
+          "retrieved_at",
+          "currentness_status",
+          "source_family"
+        ],
+        "eod_reference": [
+          "previous_effective_trade_date",
+          "previous_close",
+          "latest_completed_eod_status"
+        ],
+        "coverage": [
+          "usable",
+          "partial",
+          "unavailable",
+          "reason_code"
+        ]
+      }
+    },
+    {
+      "bundle": "watchlist_performance",
+      "request_schema": "m8r_watchlist_performance_request.v1",
+      "bundle_schema": "m8r_watchlist_performance_bundle.v1",
+      "primary_sources": [
+        "TWSE_OPENAPI",
+        "TPEX_OPENAPI",
+        "TAIFEX_OPENAPI"
+      ],
+      "derived_metrics": [
+        "return_1d",
+        "return_5d",
+        "return_10d",
+        "return_20d",
+        "range_high",
+        "range_low",
+        "range_position",
+        "drawdown_from_recent_high",
+        "average_volume",
+        "volume_ratio",
+        "realized_volatility",
+        "relative_return_vs_market"
+      ],
+      "fact_derived_boundary": "derived metrics require formula_id,input_period,source_dependencies,calculation_status"
+    },
+    {
+      "bundle": "market_pulse",
+      "request_schema": "m8r_market_pulse_request.v1",
+      "bundle_schema": "m8r_market_pulse_bundle.v1",
+      "dimensions": [
+        "index_direction",
+        "turnover_and_liquidity",
+        "market_breadth",
+        "weight_and_style",
+        "cash_market_positioning",
+        "derivatives_and_risk_appetite"
+      ],
+      "implementation_warning": "complete market pulse not currently executable"
+    },
+    {
+      "bundle": "dynamic_research",
+      "request_schema": "m8r_dynamic_evidence_request.v1",
+      "bundle_schema": "m8r_dynamic_research_bundle.v1",
+      "persistent_watchlist_mutation": false,
+      "pre_execution_resolution_steps": [
+        "security_master",
+        "market_classifier",
+        "listing_lifecycle_state",
+        "route_resolution",
+        "source_capability_check"
+      ],
+      "required_entity_fields": [
+        "input_reference",
+        "entity_role",
+        "selection_reason",
+        "priority",
+        "requested_time_range",
+        "requested_source_timing_class",
+        "fallback_behavior"
+      ],
+      "recommended_bounds": {
+        "quick": "small representative entity set",
+        "standard": "bounded representative set plus benchmarks",
+        "deep": "larger bounded set with explicit justification and target/retention review"
+      }
+    }
+  ]
+}

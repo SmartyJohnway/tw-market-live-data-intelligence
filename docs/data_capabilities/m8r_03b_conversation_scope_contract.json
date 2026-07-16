@@ -1,0 +1,61 @@
+{
+  "schema_version": "m8r_ai_market_conversation_intent.v1",
+  "status": "design_review_contract",
+  "scope_modes": [
+    "watchlist",
+    "market_overview",
+    "dynamic_research",
+    "watchlist_subset"
+  ],
+  "time_modes": [
+    "current",
+    "recent",
+    "current_plus_recent",
+    "historical",
+    "explicit_range"
+  ],
+  "default_time_mode": "current_plus_recent",
+  "evidence_depth_modes": [
+    "quick",
+    "standard",
+    "deep",
+    "diagnostic"
+  ],
+  "default_evidence_depth": "standard",
+  "concepts": {
+    "persistent_watchlist": "user or operator supplied durable target list; not mutated by dynamic research",
+    "dynamic_evidence_request": "temporary bounded AI-proposed evidence set"
+  },
+  "clarification_policy": {
+    "infer_without_clarification": [
+      "current watchlist",
+      "recent watchlist",
+      "ambiguous watchlist",
+      "today market overview",
+      "bounded dynamic topic research"
+    ],
+    "clarification_required_when": [
+      "entity_unidentified",
+      "material_name_collision",
+      "contradictory_time_period",
+      "unbounded_whole_market_extraction",
+      "dynamic_entity_set_unbounded_or_unjustified"
+    ]
+  },
+  "follow_up_context": {
+    "fields": [
+      "conversation_context_id",
+      "parent_evidence_request_id",
+      "reusable_resolutions",
+      "freshness_recheck_required"
+    ],
+    "current_mis_reuse": "freshness_check_required",
+    "recent_eod_reuse": "allowed_when_completed_trade_date_coverage_still_valid"
+  },
+  "execution_policy_default": {
+    "operator_confirmation_required": true,
+    "network_allowed": false,
+    "polling": false,
+    "scheduler": false
+  }
+}
