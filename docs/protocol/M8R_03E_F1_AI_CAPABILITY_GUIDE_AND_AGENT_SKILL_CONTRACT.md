@@ -6,4 +6,4 @@ Disposition: `GO_WITH_CAVEATS`.
 
 F1 adds an AI-facing quick guide, machine-readable capability contract, evidence sufficiency model, tool-selection matrix, portable Agent Skill, validation fixtures, and semantic tests. It does not implement Phase C runtime APIs, MCP, LLM invocation, or new market-data access.
 
-Historical F1 successor at acceptance: `M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION`. Active successor is now `M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP`.
+Historical F1 successor at acceptance: `M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION`. Active successor: `M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP`.

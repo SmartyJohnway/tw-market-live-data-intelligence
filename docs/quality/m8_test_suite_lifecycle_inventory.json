@@ -2228,16 +2228,16 @@
       "test_path": "tests/unit/test_m8r_03e_f1_ai_capability_guide.py"
     },
     {
-      "current_profile": "pytest/default-ci or full-non-network depending existing config",
-      "default_ci_required": true,
+      "current_profile": "component-governance/full-non-network",
+      "default_ci_required": false,
       "full_non_network_required": true,
       "lifecycle_category": "core regression",
-      "logical_component": "general",
+      "logical_component": "governance/registry",
       "manual_only": false,
-      "migration_action": "keep in declared profile",
-      "reason": "File-level lifecycle classification generated for M8R-03E-R2-F0; exact run-result and one-time migration assertions are not permanent default-CI invariants.",
+      "migration_action": "restored permanent governance, roadmap, debt, historical-discoverability, and performance-baseline contract coverage in place; no responsibilities deleted",
+      "reason": "R1 audit coverage is permanent governance regression coverage. Exact temporary successor assertions were rewritten to R2-complete/R3-next invariants; baseline schema, runner, workload, platform-optional memory, and known-failure-set checks remain runnable.",
       "retirement_condition": "Retire only when the governed contract/artifact is superseded; archive milestone/historical checks after acceptance evidence ages out.",
-      "target_profile": "default-ci/full-non-network",
+      "target_profile": "component-governance/full-non-network",
       "test_path": "tests/unit/test_m8r_03e_r1_repository_health_audit.py"
     },
     {

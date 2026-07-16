@@ -39,7 +39,7 @@ def main():
    if t not in timing: fail(f'unknown matrix timing {t}')
  if (ROOT/'docs/ai/m8_ai_capability_contract.json').read_text(encoding='utf-8') != (SKILL/'assets/m8_ai_capability_contract.json').read_text(encoding='utf-8'): fail('embedded skill contract differs from authoritative contract')
  if c.get('raw_payload_exposure_allowed') is not False: fail('raw payload restriction missing')
- if c.get('recommended_next_task')!='M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP': fail('successor is not R3')
+ if c.get('recommended_next_task')!='M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION': fail('successor is not R2')
  reg=json.load(open(ROOT/'docs/data_capabilities/m8_source_capability_registry.json'))
  for surface_name, surface in [('root',reg),('active',reg.get('m8_active_consolidated_status',{})),('planning',reg.get('planning_state',{}))]:
   if surface.get('implemented_through_track')!='M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION': fail(f'{surface_name} implemented track mismatch')

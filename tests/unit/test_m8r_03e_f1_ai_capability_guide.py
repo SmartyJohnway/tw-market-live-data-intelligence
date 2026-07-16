@@ -75,7 +75,7 @@ def test_skill_validator_passes():
  r=subprocess.run([sys.executable,'skills/tw-market-evidence-agent/scripts/validate_skill.py'],cwd=ROOT,text=True,capture_output=True)
  assert r.returncode==0, r.stderr+r.stdout
 
-def test_registry_successor_advances_to_r3():
+def test_active_registry_successor_advances_to_r3():
  assert REG['recommended_next_task']=='M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP'
 
 def test_phase_c_blocked_pending_r3_critical_subset():
