@@ -1,0 +1,19 @@
+{
+  "schema_version": "m8r_03e_r2_write_surface_inventory.v1",
+  "baseline_sha": "1c2144498b524e52b2bf21fce8ed00683d9eb3a7",
+  "surfaces": [
+    {
+      "surface_id": "m8r_03e_watchlist_ai_context_handoff_output",
+      "path": "scripts/run_m8r_03e_watchlist_ai_context_handoff.py",
+      "write_operation": "materializes context package, conversation handoff, manifest, and markdown preview under --output-root",
+      "user_or_config_controlled_input": "--output-root and generated run directory suffix",
+      "authorized_root_source": "explicit --output-root",
+      "containment_enforced": true,
+      "symlink_checked": true,
+      "atomic_write_behavior": "temporary file in validated parent followed by os.replace",
+      "platform_notes": "Windows absolute/UNC forms rejected portably; junction/reparse coverage is best-effort pending Windows smoke",
+      "test_coverage": "tests/unit/test_m8r_filesystem_containment.py",
+      "status": "remediated_with_platform_caveats"
+    }
+  ]
+}

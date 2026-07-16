@@ -11,6 +11,7 @@
   "agent_skill_contract": "implemented",
   "ai_behavior_hardcoding": "deprecated_direction",
   "ai_behavior_policy_fields_migration": "deprecated_pending_migration_to_agent_skill_or_deployment_policy",
+  "ai_capability_guide": "implemented",
   "base_sha": "0553e48371d90a7cfceea444ee36c36f7fd44db7",
   "conversation_product_north_star_defined": true,
   "conversational_derivatives_eod_resolution_ready": true,
@@ -107,22 +108,31 @@
   "dynamic_research_scope_contract_defined": true,
   "execution_sha_matches_tested_remote_sha": true,
   "full_non_network_evidence": {
-    "comparison_subject": "PR_150",
-    "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
+    "affected_actual_artifacts": [
+      "frontend/public/index.html",
+      "frontend/public/context/latest.json"
+    ],
+    "affected_expected_artifacts": [
+      "research/staging/m5d/m5d_frontend_publication_candidate_01/frontend_public_baseline.json",
+      "research/staging/m5d/m5d_frontend_publication_candidate_01/sha256_manifest.json"
+    ],
     "baseline_counts": {
-      "passed": 1616,
+      "deselected": 1,
       "failed": 7,
-      "skipped": 1,
-      "deselected": 1
+      "passed": 1616,
+      "skipped": 1
     },
     "baseline_reproduced": true,
-    "current_head_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
+    "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
+    "comparison_subject": "PR_150",
     "current_head_counts": {
-      "passed": 1661,
+      "deselected": 1,
       "failed": 7,
-      "skipped": 1,
-      "deselected": 1
+      "passed": 1661,
+      "skipped": 1
     },
+    "current_head_failure_set_matches_baseline": true,
+    "current_head_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
     "current_head_status": "known_pre_existing_failures_unchanged",
     "failing_node_ids": [
       "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
@@ -133,36 +143,28 @@
       "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
       "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
     ],
-    "current_head_failure_set_matches_baseline": true,
-    "failure_set_changed": false,
     "failure_count_delta": 0,
-    "new_m8_m8r_failure_count": 0,
-    "new_f1_specific_regression_count": 0,
-    "pass_count_delta": 45,
-    "reason_code": "frontend_public_baseline_drift",
-    "affected_actual_artifacts": [
-      "frontend/public/index.html",
-      "frontend/public/context/latest.json"
-    ],
-    "affected_expected_artifacts": [
-      "research/staging/m5d/m5d_frontend_publication_candidate_01/frontend_public_baseline.json",
-      "research/staging/m5d/m5d_frontend_publication_candidate_01/sha256_manifest.json"
-    ],
-    "generated_by_command": "python scripts/run_test_profile.py full-non-network --json",
+    "failure_set_changed": false,
     "generated_at_utc": "2026-07-16T13:34:56Z",
+    "generated_by_command": "python scripts/run_test_profile.py full-non-network --json",
+    "generation_head_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
     "historical_pr_149_evidence": {
       "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
       "historical_current_counts": {
-        "passed": 1627,
+        "deselected": 1,
         "failed": 7,
-        "skipped": 1,
-        "deselected": 1
+        "passed": 1627,
+        "skipped": 1
       },
-      "historical_pass_count_delta": 11,
-      "historical_failure_set_changed": false
+      "historical_failure_set_changed": false,
+      "historical_pass_count_delta": 11
     },
-    "generation_head_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195"
+    "new_f1_specific_regression_count": 0,
+    "new_m8_m8r_failure_count": 0,
+    "pass_count_delta": 45,
+    "reason_code": "frontend_public_baseline_drift"
   },
+  "full_non_network_status": "known_baseline_failures_unchanged_pending_validation",
   "generated_for_task": "M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE",
   "global_ai_interpretation_policy": {
     "eod_not_realtime": true,
@@ -174,6 +176,7 @@
     "validation_only_not_primary_source": true
   },
   "implemented_through_track": "M8R-03E-F1",
+  "latest_validation_ref": "docs/acceptance_runs/M8R_03E_R2_FINAL_VALIDATION.json",
   "live_validation_completed": true,
   "m8_active_consolidated_status": {
     "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
@@ -181,11 +184,13 @@
     "agent_skill_contract": "implemented",
     "ai_behavior_hardcoding": "deprecated_direction",
     "ai_behavior_policy_fields_migration": "deprecated_pending_migration_to_agent_skill_or_deployment_policy",
+    "ai_capability_guide": "implemented",
     "conversation_product_north_star_defined": true,
     "current_capability_gap_matrix_completed": true,
     "dynamic_research_scope_contract_defined": true,
     "implemented_through": "M8R-03E",
     "implemented_through_track": "M8R-03E-F1",
+    "latest_validation_ref": "docs/acceptance_runs/M8R_03E_R2_FINAL_VALIDATION.json",
     "m8_00_governance_complete": true,
     "m8a_twse_tpex_official_eod_complete": true,
     "m8b_taifex_openapi_complete": true,
@@ -210,6 +215,7 @@
     "m8r_03d_f1_snapshot_schema_ready": true,
     "m8r_03d_f1_status": "GO_WITH_CAVEATS_verified_snapshot_trust_checks_ready_manual_snapshot_generation_only",
     "m8r_03d_live_validation_completed": false,
+    "m8r_03e_f1_status": "GO_WITH_CAVEATS",
     "m8r_03e_status": "GO_WITH_CAVEATS",
     "market_overview_scope_contract_defined": true,
     "mops_runtime_executable": false,
@@ -230,9 +236,7 @@
     "twse_mis_runtime_executable": true,
     "twse_openapi_runtime_executable": true,
     "unified_tool_api": "required_successor_capability",
-    "watchlist_scope_contract_defined": true,
-    "m8r_03e_f1_status": "GO_WITH_CAVEATS",
-    "ai_capability_guide": "implemented"
+    "watchlist_scope_contract_defined": true
   },
   "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
   "m8r04_completed": false,
@@ -294,6 +298,7 @@
   "m8r_03e_context_builder_ready": true,
   "m8r_03e_context_package_schema_ready": true,
   "m8r_03e_conversation_handoff_schema_ready": true,
+  "m8r_03e_f1_status": "GO_WITH_CAVEATS",
   "m8r_03e_fact_citation_ready": true,
   "m8r_03e_fixture_validation_completed": true,
   "m8r_03e_frontend_enabled": false,
@@ -314,6 +319,7 @@
   "next_task": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
   "next_task_status": "accepted_successor",
   "original_m8r04_disposition": "superseded_and_split",
+  "phase_c_status": "blocked_until_M8R-03E-R2-complete",
   "phased_delivery_plan_completed": true,
   "planning_state": {
     "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
@@ -321,7 +327,9 @@
     "agent_skill_contract": "implemented",
     "ai_behavior_hardcoding": "deprecated_direction",
     "ai_behavior_policy_fields_migration": "deprecated_pending_migration_to_agent_skill_or_deployment_policy",
+    "ai_capability_guide": "implemented",
     "implemented_through_track": "M8R-03E-F1",
+    "latest_validation_ref": "docs/acceptance_runs/M8R_03E_R2_FINAL_VALIDATION.json",
     "m8c_00_preflight_status": "m8c_00_taifex_mis_preflight_pass_with_caveats",
     "m8c_01_status": "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats",
     "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
@@ -338,20 +346,20 @@
     "registry_successor": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
     "status": "m8_through_m8c_consolidated_acceptance_pass_with_caveats",
     "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
-    "unified_tool_api": "required_successor_capability",
-    "ai_capability_guide": "implemented"
+    "unified_tool_api": "required_successor_capability"
   },
   "production_executor_adapters_ready": true,
   "production_live_execution_ready": true,
+  "r2_recommended_next_task": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
   "recommended_next_task": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
   "recommended_successor_after_m8r_02b_f2": "M8R-03B-AI-CONVERSATION-INPUT-OUTPUT-DESIGN-REVIEW",
   "recommended_successor_after_m8r_02b_f2_semantics": "historical F2 transition evidence retained; active successor is registry_successor",
   "recommended_successor_after_m8r_03c": "M8R-03D-WATCHLIST-EVIDENCE-SOURCE-INTEGRATION-AND-CONTROLLED-EXECUTION",
   "recommended_successor_after_m8r_03c_semantics": "Integrate governed source execution into watchlist evidence only after M8R-03C non-network contracts and skeletons pass; do not claim market pulse or dynamic research automation.",
   "recommended_successor_after_m8r_03e": {
-    "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION",
     "status": "historical_superseded",
-    "superseded_by": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION"
+    "superseded_by": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
+    "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION"
   },
   "registry_successor": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
   "schema_version": "m8_source_capability_registry.v1",
@@ -936,8 +944,5 @@
   "tested_code_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
   "tested_remote_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
   "unified_tool_api": "required_successor_capability",
-  "watchlist_scope_contract_defined": true,
-  "m8r_03e_f1_status": "GO_WITH_CAVEATS",
-  "ai_capability_guide": "implemented",
-  "phase_c_status": "blocked_until_M8R-03E-R2-complete"
+  "watchlist_scope_contract_defined": true
 }

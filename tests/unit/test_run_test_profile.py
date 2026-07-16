@@ -56,7 +56,7 @@ def test_browser_and_bounded_live_resolve_m6g_modes():
 def test_full_non_network_preserves_legacy_acceptance_gates():
     rendered = [rtp.command_to_display(cmd) for cmd in rtp.resolve_profile('full-non-network')]
     joined = '\n'.join(rendered)
-    assert rendered[0].endswith('-m pytest -m not network tests')
+    assert rendered[0].endswith('-m pytest -m not network and not historical and not performance tests')
     assert 'run_local_delivery_acceptance.py --check-only' in joined
     assert 'run_ci_delivery_acceptance.py --check-only' in joined
     assert 'run_m4_readiness_check.py --check-only' in joined
@@ -150,3 +150,43 @@ def test_json_success_omits_failure_output_tail(monkeypatch, capsys):
     assert 'failed_return_code' not in payload
     assert 'failure_output_tail' not in payload
     assert 'failure_output_tail' not in payload['command_results'][0]
+
+
+def test_m8r_declared_profiles_resolve_and_point_to_existing_paths():
+    cfg = rtp.load_config()['profiles']
+    expected = {
+        'changed-fast','default-ci','component-security','component-market-source',
+        'component-watchlist-evidence','component-agent-skill','component-governance',
+        'milestone-acceptance','historical-acceptance','performance','full-non-network'
+    }
+    assert expected <= set(cfg)
+    for name in expected:
+        commands = rtp.resolve_profile(name)
+        assert commands
+        for profile_path in cfg[name].get('pytest_paths', []):
+            assert rtp.ROOT.joinpath(profile_path).exists(), f'{name}: {profile_path}'
+
+
+def test_m8r_default_ci_excludes_historical_and_performance_groups():
+    cfg = rtp.load_config()['profiles']['default-ci']
+    expr = cfg['pytest_expression']
+    rendered = '\n'.join(rtp.command_to_display(cmd) for cmd in rtp.resolve_profile('default-ci'))
+    assert 'not historical' in expr
+    assert 'not performance' in expr
+    assert 'tests/acceptance_archive' not in rendered
+    assert 'run_m8r_03e_performance_baseline.py' not in rendered
+
+
+def test_m8r_explicit_acceptance_profiles_route_intentionally():
+    hist = '\n'.join(rtp.command_to_display(cmd) for cmd in rtp.resolve_profile('historical-acceptance'))
+    milestone = '\n'.join(rtp.command_to_display(cmd) for cmd in rtp.resolve_profile('milestone-acceptance'))
+    assert 'tests/acceptance_archive/historical_acceptance_checks.py' in hist
+    assert '-m historical' in hist
+    assert 'test_m8r_filesystem_containment.py' in milestone
+    assert '-m not network and milestone' in milestone
+
+
+def test_m8r_component_security_includes_r2_security_tests():
+    rendered = '\n'.join(rtp.command_to_display(cmd) for cmd in rtp.resolve_profile('component-security'))
+    assert 'tests/unit/test_m8r_filesystem_containment.py' in rendered
+    assert '-m not network and (component_security or core)' in rendered

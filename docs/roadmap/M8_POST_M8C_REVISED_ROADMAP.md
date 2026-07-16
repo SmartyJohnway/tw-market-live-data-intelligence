@@ -66,3 +66,7 @@ market breadth; industry context; index membership; ETF/component relationships;
 
 observability; trace IDs; artifact replay; retention; schema migration; load testing; resource limits; security review; source-drift detection.
 
+
+## M8R-03E-R2 update
+
+R2-F0 and R2 are recorded as GO_WITH_CAVEATS from baseline `1c2144498b524e52b2bf21fce8ed00683d9eb3a7`. Phase C remains blocked pending the R3 critical subset for AI behavior/evidence schema decoupling; R2 filesystem containment is remediated with portable TOCTOU and Windows reparse caveats.

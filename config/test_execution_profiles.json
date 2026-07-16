@@ -24,10 +24,12 @@
       "automatic_ci_allowed": true
     },
     "default-ci": {
-      "purpose": "Normal PR/push merge protection: FAST plus representative integration, source, frontend, canonical, observation, and source-health contracts.",
+      "purpose": "Every-PR default CI: core regressions, active contracts, security smoke, schema compatibility, and essential component integration; excludes historical/performance/milestone-only suites.",
       "execution_type": "pytest",
-      "pytest_expression": "not network and not browser and not live and not release_preflight",
+      "pytest_expression": "not network and not browser and not live and not release_preflight and not historical and not performance",
       "pytest_paths": [
+        "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
+        "tests/unit/test_m8r_filesystem_containment.py",
         "tests/unit/test_m5k_workflow.py",
         "tests/unit/test_m5n_watchlist_workflow.py",
         "tests/unit/test_m6d_ssl_policy.py",
@@ -145,7 +147,7 @@
     "full-non-network": {
       "purpose": "Broad non-network regression for releases and large refactors; preserves the existing broad pytest safety net plus legacy check-only CI acceptance gates.",
       "execution_type": "pytest",
-      "pytest_expression": "not network",
+      "pytest_expression": "not network and not historical and not performance",
       "pytest_paths": [
         "tests"
       ],
@@ -287,6 +289,157 @@
       "network_policy": "explicit bounded live network may occur after confirmation only",
       "browser_policy": "requires browser E2E dependencies for full browser path",
       "live_policy": "requires --confirm-bounded-live; bounded watchlist; no polling, scheduler, startup network, or full-market scan",
+      "automatic_ci_allowed": false
+    },
+    "changed-fast": {
+      "purpose": "Local development quick feedback: profile runner, containment smoke, governance scanners, and directly affected unit tests.",
+      "execution_type": "pytest",
+      "pytest_expression": "not network and not browser and not live and not historical and not performance",
+      "pytest_paths": [
+        "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
+        "tests/unit/test_run_test_profile.py",
+        "tests/unit/test_m8r_filesystem_containment.py",
+        "tests/unit/test_governance_forbidden_path_guard.py",
+        "tests/unit/test_forbidden_behavior_scanner.py"
+      ],
+      "network_policy": "no network; excludes tests marked network",
+      "browser_policy": "not required",
+      "live_policy": "never executes live checks",
+      "automatic_ci_allowed": true
+    },
+    "component-security": {
+      "purpose": "Security-master and filesystem containment component profile.",
+      "execution_type": "pytest",
+      "pytest_expression": "not network and (component_security or core)",
+      "pytest_paths": [
+        "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
+        "tests/unit/test_m8r_filesystem_containment.py",
+        "tests/unit/test_authorization_token_schema.py",
+        "tests/unit/test_governance_forbidden_path_guard.py",
+        "tests/unit/test_forbidden_behavior_scanner.py",
+        "tests/unit/test_m7g_refresh_workflow_security_regression.py",
+        "tests/unit/test_m5ij_forbidden_path_policy.py"
+      ],
+      "network_policy": "no network; excludes tests marked network",
+      "browser_policy": "not required",
+      "live_policy": "never executes live checks",
+      "automatic_ci_allowed": true
+    },
+    "component-market-source": {
+      "purpose": "Market-source contracts and normalization smoke.",
+      "execution_type": "pytest",
+      "pytest_expression": "not network and not historical and not performance",
+      "pytest_paths": [
+        "tests/unit/test_source_contract_schema.py",
+        "tests/unit/test_source_authority_registry.py",
+        "tests/unit/test_source_family_coverage_matrix.py",
+        "tests/unit/test_twse_mis_normalization_v2.py",
+        "tests/unit/test_twse_openapi_normalization_v1.py",
+        "tests/unit/test_tpex_openapi_normalization_v1.py",
+        "tests/unit/test_yahoo_normalized_chart_v1.py"
+      ],
+      "network_policy": "no network; excludes tests marked network",
+      "browser_policy": "not required",
+      "live_policy": "never executes live checks",
+      "automatic_ci_allowed": true
+    },
+    "component-watchlist-evidence": {
+      "purpose": "Watchlist, evidence lineage, context package, and conversation handoff checks.",
+      "execution_type": "pytest",
+      "pytest_expression": "not network and not historical and not performance",
+      "pytest_paths": [
+        "tests/unit/test_m7d_bounded_watchlist_cross_context_builder.py",
+        "tests/unit/test_m8r_03c_watchlist_bundles.py",
+        "tests/unit/test_m8r_03d_watchlist_controlled_execution.py",
+        "tests/unit/test_m8r_03e_watchlist_ai_context.py"
+      ],
+      "network_policy": "no network; excludes tests marked network",
+      "browser_policy": "not required",
+      "live_policy": "never executes live checks",
+      "automatic_ci_allowed": true
+    },
+    "component-agent-skill": {
+      "purpose": "Agent Skill embedded contract and validation checks.",
+      "execution_type": "pytest",
+      "pytest_expression": "not network and not historical and not performance",
+      "pytest_paths": [
+        "tests/unit/test_m8r_03e_f1_ai_capability_guide.py"
+      ],
+      "network_policy": "no network; excludes tests marked network",
+      "browser_policy": "not required",
+      "live_policy": "never executes live checks",
+      "automatic_ci_allowed": false
+    },
+    "component-governance": {
+      "purpose": "Governance, registry, roadmap, and profile-policy checks.",
+      "execution_type": "pytest",
+      "pytest_expression": "not network and not historical and not performance",
+      "pytest_paths": [
+        "tests/unit/test_run_test_profile.py",
+        "tests/unit/test_pytest_marker_governance.py",
+        "tests/unit/test_governance_policy_manifest.py",
+        "tests/unit/test_m8r_03e_r1_repository_health_audit.py"
+      ],
+      "network_policy": "no network; excludes tests marked network",
+      "browser_policy": "not required",
+      "live_policy": "never executes live checks",
+      "automatic_ci_allowed": true
+    },
+    "component-frontend-publication": {
+      "purpose": "Frontend publication component checks; known M5D/M5E baseline drift may be handled outside default-ci.",
+      "execution_type": "pytest",
+      "pytest_expression": "not network and not historical and not performance",
+      "pytest_paths": [
+        "tests/unit/test_frontend_readonly_static_contracts.py",
+        "tests/unit/test_frontend_static_security.py",
+        "tests/unit/test_m5d_frontend_publication_preflight.py",
+        "tests/unit/test_m5e_controlled_frontend_publication.py"
+      ],
+      "network_policy": "no network; excludes tests marked network",
+      "browser_policy": "not required",
+      "live_policy": "never executes live checks",
+      "automatic_ci_allowed": false
+    },
+    "milestone-acceptance": {
+      "purpose": "Active milestone acceptance for M8R-03E-R2-F0 and R2 only.",
+      "execution_type": "pytest",
+      "pytest_expression": "not network and milestone",
+      "pytest_paths": [
+        "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
+        "tests/unit/test_run_test_profile.py",
+        "tests/unit/test_m8r_filesystem_containment.py"
+      ],
+      "network_policy": "no network; excludes tests marked network",
+      "browser_policy": "not required",
+      "live_policy": "never executes live checks",
+      "automatic_ci_allowed": true
+    },
+    "historical-acceptance": {
+      "purpose": "Archived historical milestone reproduction checks; manual only.",
+      "execution_type": "pytest",
+      "pytest_expression": "historical",
+      "pytest_paths": [
+        "tests/acceptance_archive/historical_acceptance_checks.py"
+      ],
+      "network_policy": "no network; excludes tests marked network",
+      "browser_policy": "not required",
+      "live_policy": "never executes live checks",
+      "automatic_ci_allowed": false
+    },
+    "performance": {
+      "purpose": "Reproducible performance baseline verification; manual/nightly only.",
+      "execution_type": "authoritative_runner",
+      "authoritative_runner": [
+        [
+          "python",
+          "scripts/run_m8r_03e_performance_baseline.py",
+          "--verify-existing",
+          "docs/quality/m8_performance_baseline.json"
+        ]
+      ],
+      "network_policy": "no network",
+      "browser_policy": "not required",
+      "live_policy": "never executes live checks",
       "automatic_ci_allowed": false
     }
   }

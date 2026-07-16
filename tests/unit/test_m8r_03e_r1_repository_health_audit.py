@@ -33,7 +33,7 @@ def test_health_status_and_debt_register_shapes():
     for entry in debt["entries"]:
         assert entry_required <= set(entry)
         assert entry["severity"] in {"P0","P1","P2","P3"}
-        assert entry["status"] in {"open","corrected_in_r1","accepted","deferred","requires_operator_decision"}
+        assert entry["status"] in {"open","corrected_in_r1","accepted","deferred","requires_operator_decision","partially_resolved","partially_resolved_with_platform_limitations"}
 
 def test_roadmap_phase_ids_unique_and_complete():
     text = (ROOT / "docs/roadmap/M8_POST_M8C_REVISED_ROADMAP.md").read_text(encoding="utf-8")

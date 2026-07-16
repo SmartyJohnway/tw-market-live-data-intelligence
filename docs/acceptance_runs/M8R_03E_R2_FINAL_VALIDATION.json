@@ -1,0 +1,35 @@
+{
+  "baseline_sha": "1c2144498b524e52b2bf21fce8ed00683d9eb3a7",
+  "combined_pr_disposition": "APPROVE",
+  "known_failures": [
+    "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+    "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+    "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+    "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+    "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+    "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+    "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
+  ],
+  "r2_disposition": "GO_WITH_CAVEATS",
+  "r2_f0_disposition": "GO_WITH_CAVEATS",
+  "remaining_limitations": [
+    "portable TOCTOU best effort",
+    "Windows junction/reparse smoke follow-up"
+  ],
+  "schema_version": "acceptance_run.v1",
+  "validation_results": {
+    "default-ci": {
+      "duration_seconds": 28.089,
+      "passed": 738,
+      "status": "pass"
+    },
+    "full-non-network": {
+      "deselected": 1,
+      "duration_seconds": 75.714,
+      "failed": 7,
+      "passed": 1677,
+      "skipped": 1,
+      "status": "known_baseline_failures_unchanged"
+    }
+  }
+}
