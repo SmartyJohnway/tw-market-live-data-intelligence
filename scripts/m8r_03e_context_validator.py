@@ -77,8 +77,8 @@ def validate_m8r_03e_upstream_artifacts(*, validated_request:dict, execution_pla
     if [t.get('target_id') for t in watchlist_bundle.get('targets',[])]!=order: issues.append({'code':'bundle_target_ids_mismatch'})
     planned=_planned_group_keys(execution_plan); executed=_executed_group_keys(execution_result)
     if executed and not executed.issubset(planned): issues.append({'code':'planned_vs_executed_source_groups_mismatch'})
-    if execution_result.get('bundle_artifact') and watchlist_bundle.get('bundle_id') not in str(execution_result.get('bundle_artifact')) and execution_result.get('status') in {'success','success_with_partial_coverage'}:
-        pass  # retained path may be filesystem-only; bundle id is not guaranteed in path
+    if execution_result.get('status') in {'success','success_with_partial_coverage'} and watchlist_bundle.get('generated_at_utc') != execution_result.get('started_at_utc'):
+        issues.append({'code':'bundle_result_run_lineage_mismatch'})
     return {'valid':not issues,'issues':issues,'bundle_type':bundle_type,'request_hash':rh,'target_order':order}
 
 def _artifact_id(artifact_type:str, art:dict)->str|None:
@@ -93,7 +93,7 @@ def _artifact_for(c:dict, upstream_artifacts:dict|None):
 def material_fact_paths(package:dict)->set[str]:
     paths=set()
     for i,t in enumerate(package.get('targets',[])):
-        for sec in ('identity','current_observation','eod_reference','performance'):
+        for sec in ('identity','classification','lifecycle','execution_eligibility','current_observation','eod_reference','performance'):
             for k,v in (t.get(sec) or {}).items():
                 if v is not None and v != {} and v != []: paths.add(f'/targets/{i}/{sec}/{k}')
     return paths
@@ -160,7 +160,7 @@ def validate_watchlist_ai_context_manifest(manifest:dict, *, context_package:dic
     if manifest.get('schema_bundle_sha256')!=schema_bundle_sha256(): issues.append({'code':'schema_hash_mismatch'})
     up=manifest.get('upstream',{})
     if up.get('request_id')!=context_package.get('request',{}).get('request_id'): issues.append({'code':'upstream_id_mismatch'})
-    expected_counts={'target_count':len(context_package.get('targets',[])),'fact_count':len(context_package.get('citation_index',[])),'citation_count':len(context_package.get('citation_index',[])),'missing_evidence_count':len(context_package.get('missing_evidence',[])),'caveat_count':len(context_package.get('caveats',[])),'prohibition_count':len(context_package.get('prohibitions',[]))}
+    expected_counts={'target_count':len(context_package.get('targets',[])),'fact_count':len(material_fact_paths(context_package)),'citation_count':len(context_package.get('citation_index',[])),'missing_evidence_count':len(context_package.get('missing_evidence',[])),'caveat_count':len(context_package.get('caveats',[])),'prohibition_count':len(context_package.get('prohibitions',[]))}
     for k,v in expected_counts.items():
         if (manifest.get('counts') or {}).get(k)!=v: issues.append({'code':'manifest_count_mismatch','field':k})
     if upstream_artifacts:

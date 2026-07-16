@@ -6,6 +6,9 @@ DEFAULT_POLICY={'max_citations_per_target':40,'max_missing_evidence_entries':80,
 MATERIAL_CURRENT=['latest_price','change','change_percent','open','high','low','volume','no_trade_state']
 IDENTITY_MAP={'canonical_target_id':'target_id','security_code':'security_code','security_name_zh':'security_name','security_name_en':'resolved_identity/security_name_en','market':'market','instrument_type':'instrument_type','classification_status':'classification_status','snapshot_id':'snapshot_id','record_id':'record_id','record_hash':'record_hash'}
 PERF_MAP={'metric_id':'metric_id','calculation_status':'calculation_status','requested_lookback_trading_days':'input_period/lookback_trading_days','end_date':'as_of','unadjusted_price_return':'value'}
+CLASSIFICATION_MAP={'classification_status':'classification_status','instrument_type':'instrument_type','market':'market'}
+LIFECYCLE_MAP={'lifecycle_state':'lifecycle_state','lifecycle_resolution_status':'lifecycle_resolution_status','as_of_date':'execution_eligibility/as_of_date','basis_event_ids':'execution_eligibility/basis_event_ids','execution_policy':'execution_policy','lifecycle_caveats':'resolution_caveats'}
+EXECUTION_ELIGIBILITY_MAP={'status':'execution_eligibility/status','reason_codes':'execution_eligibility/reason_codes','execution_policy':'execution_policy'}
 
 def _get(d,*keys,default=None):
     cur=d
@@ -57,6 +60,28 @@ def _remove_citations_for_paths(pkg, target, prefixes):
         return len(rm)
     return 0
 
+
+
+def _section_state(t, sec):
+    return 'supported' if t.get(sec) else 'unavailable'
+
+def _recompute_after_budget(pkg):
+    for t in pkg['targets']:
+        t['coverage']['evidence_states']['current_observation']=_section_state(t,'current_observation')
+        t['coverage']['evidence_states']['eod_reference']=_section_state(t,'eod_reference')
+        t['coverage']['evidence_states']['performance']=_section_state(t,'performance') if t['coverage']['evidence_states'].get('performance')!='not_applicable' else ('supported' if t.get('performance') else 'not_applicable')
+        if t['coverage']['evidence_states']['identity']=='unavailable': t['coverage']['coverage_state']='unavailable'
+        elif any(t['coverage']['evidence_states'].get(k)=='unavailable' for k in ('current_observation','eod_reference') if k in t['coverage']['evidence_states']): t['coverage']['coverage_state']='partial'
+        elif t['coverage']['evidence_states'].get('performance')=='unavailable': t['coverage']['coverage_state']='partial'
+        else: t['coverage']['coverage_state']='usable'
+    failed=[g for g in pkg['source_lineage']['source_group_summaries'] if g.get('status')=='failed']
+    complete=sum(1 for t in pkg['targets'] if t['coverage']['coverage_state']=='usable')
+    blocked=sum(1 for t in pkg['targets'] if t['coverage']['evidence_states']['identity']=='unavailable')
+    status='partial' if failed or complete<len(pkg['targets']) else 'complete'
+    if pkg['source_lineage'].get('execution_result_status')=='blocked_preflight': status='blocked'
+    elif pkg['source_lineage'].get('execution_result_status')=='source_execution_failed': status='failed'
+    pkg['coverage_summary']={'target_count_requested':len(pkg['targets']),'target_count_resolved':sum(1 for t in pkg['targets'] if t['coverage']['evidence_states']['identity']!='unavailable'),'target_count_with_current_observation':sum(1 for t in pkg['targets'] if t['current_observation']),'target_count_with_eod_reference':sum(1 for t in pkg['targets'] if t['eod_reference']),'target_count_with_performance':sum(1 for t in pkg['targets'] if t['performance']),'complete_target_count':complete,'partial_target_count':sum(1 for t in pkg['targets'] if t['coverage']['coverage_state']=='partial'),'blocked_target_count':blocked,'failed_source_groups':[g.get('source_family') for g in failed],'coverage_status':status}
+
 def _apply_budget(pkg, policy):
     omitted=pkg['context_budget']['omitted_counts']
     # Per-target citation pressure: remove lower-priority projected sections, never identity.
@@ -67,7 +92,7 @@ def _apply_budget(pkg, policy):
                 if len(t['citations'])<=limit: break
                 if t.get(sec):
                     omitted['citations']+=_remove_citations_for_paths(pkg,t,[f"/targets/{t['target_position']}/{sec}/"])
-                    t[sec]={}; t['coverage']['evidence_states'][sec if sec!='eod_reference' else 'eod_reference']='partial'
+                    t[sec]={}; t['missing_evidence'].append(_missing(t['target_id'], {'current_observation':'current_observation','eod_reference':'official_eod_reference','performance':'performance'}[sec], 'context_budget_omitted', None, False, 'requires_new_source', {'budget_limit':'max_citations_per_target'})); pkg['missing_evidence'].append(t['missing_evidence'][-1]); t['caveats'].append('context_budget_omitted_'+sec)
             if len(t['citations'])>limit: pkg['context_budget']['truncated']=True
     for key,limit in [('missing_evidence',policy.get('max_missing_evidence_entries')),('caveats',policy.get('max_caveat_entries'))]:
         if limit is not None and len(pkg[key])>limit:
@@ -80,17 +105,23 @@ def _apply_budget(pkg, policy):
             for t in pkg['targets']:
                 if t.get(sec):
                     omitted['citations']+=_remove_citations_for_paths(pkg,t,[f"/targets/{t['target_position']}/{sec}/"])
-                    t[sec]={}; pkg['context_budget']['truncated']=True
+                    t[sec]={}; t['missing_evidence'].append(_missing(t['target_id'], {'current_observation':'current_observation','eod_reference':'official_eod_reference','performance':'performance'}[sec], 'context_budget_omitted', None, False, 'requires_new_source', {'budget_limit':'max_serialized_bytes'})); pkg['missing_evidence'].append(t['missing_evidence'][-1]); t['caveats'].append('context_budget_omitted_'+sec); pkg['context_budget']['truncated']=True
                 if len(canonical_json(pkg).encode())<=max_bytes: break
     if policy.get('max_caveat_entries') == 0 and not pkg['context_budget']['truncated']:
         pkg['context_budget']['truncated']=True
     if pkg['context_budget']['truncated'] and 'context_truncated' not in pkg['caveats']: pkg['caveats'].append('context_truncated')
+    _recompute_after_budget(pkg)
+    pkg['context_budget']['final_serialized_bytes']=len(canonical_json(pkg).encode())
+    max_bytes=policy.get('max_serialized_bytes')
+    if max_bytes and pkg['context_budget']['final_serialized_bytes']>max_bytes:
+        pkg['context_budget']['budget_satisfied']=False
+        pkg['context_budget']['minimum_required_context_exceeds_budget']=True
 
 def build_watchlist_ai_context_package(*, validated_request:dict, execution_plan:dict, execution_result:dict, watchlist_bundle:dict, generated_at_utc:str, context_policy:dict|None=None) -> dict:
     upstream_validation=validate_m8r_03e_upstream_artifacts(validated_request=validated_request, execution_plan=execution_plan, execution_result=execution_result, watchlist_bundle=watchlist_bundle)
     if not upstream_validation['valid']: raise ValueError('upstream_artifact_validation_failed:'+canonical_json(upstream_validation['issues']))
     policy={**DEFAULT_POLICY,**(context_policy or {})}; bundle_type=upstream_validation['bundle_type']
-    pkg={'schema_version':PACKAGE_SCHEMA_VERSION,'context_package_id':'','generated_at_utc':generated_at_utc,'request':_project_request(validated_request,bundle_type),'conversation_scope':{'analysis_mode':bundle_type if bundle_type in {'snapshot','performance'} else 'comparison','allowed_topics':['identity','current observation','completed EOD reference','bounded historical performance','coverage','missing evidence','caveats'],'disallowed_topics':['personalized investment advice','trade recommendation','future return prediction','unsupported causal claims','order execution']},'source_lineage':{'execution_result_status':execution_result.get('status'),'execution_mode':execution_result.get('mode'),'network_calls_performed':bool(_get(execution_result,'source_execution_summary','network_calls_performed',default=False)),'source_group_summaries':_get(execution_result,'source_execution_summary','group_results',default=[]),'bundle_id':watchlist_bundle.get('bundle_id'),'plan_id':execution_plan.get('plan_id')},'targets':[],'cross_target_context':{'target_order':execution_plan.get('target_order') or []},'coverage_summary':{},'missing_evidence':[],'caveats':[],'prohibitions':[{'code':'do_not_infer_active_from_missing_lifecycle_event','scope':'global','target_id':None,'reason':'lifecycle must come from verified upstream identity evidence'},{'code':'do_not_treat_retrieval_time_as_market_time','scope':'global','target_id':None,'reason':'retrieval timestamp alone never proves market currentness'}],'citation_index':[],'context_budget':{'policy':policy,'omitted_counts':{'citations':0,'missing_evidence':0,'caveats':0},'truncated':False},'package_hash':None}
+    pkg={'schema_version':PACKAGE_SCHEMA_VERSION,'context_package_id':'','generated_at_utc':generated_at_utc,'request':_project_request(validated_request,bundle_type),'conversation_scope':{'analysis_mode':bundle_type if bundle_type in {'snapshot','performance'} else 'comparison','allowed_topics':['identity','current observation','completed EOD reference','bounded historical performance','coverage','missing evidence','caveats'],'disallowed_topics':['personalized investment advice','trade recommendation','future return prediction','unsupported causal claims','order execution']},'source_lineage':{'execution_result_status':execution_result.get('status'),'execution_mode':execution_result.get('mode'),'network_calls_performed':bool(_get(execution_result,'source_execution_summary','network_calls_performed',default=False)),'source_group_summaries':_get(execution_result,'source_execution_summary','group_results',default=[]),'bundle_id':watchlist_bundle.get('bundle_id'),'plan_id':execution_plan.get('plan_id'),'lineage_status':'partial','lineage_missing_fields':['execution_result_bundle_id','execution_result_bundle_hash']},'targets':[],'cross_target_context':{'target_order':execution_plan.get('target_order') or []},'coverage_summary':{},'missing_evidence':[],'caveats':[],'prohibitions':[{'code':'do_not_infer_active_from_missing_lifecycle_event','scope':'global','target_id':None,'reason':'lifecycle must come from verified upstream identity evidence'},{'code':'do_not_treat_retrieval_time_as_market_time','scope':'global','target_id':None,'reason':'retrieval timestamp alone never proves market currentness'}],'citation_index':[],'context_budget':{'policy':policy,'omitted_counts':{'citations':0,'missing_evidence':0,'caveats':0},'truncated':False,'final_serialized_bytes':0,'budget_satisfied':True,'minimum_required_context_exceeds_budget':False},'package_hash':None}
     plan_by={t['target_id']:(i,t) for i,t in enumerate(execution_plan.get('targets',[]))}; bundle_by={t['target_id']:(i,t) for i,t in enumerate(watchlist_bundle.get('targets',[]))}; metrics_all=watchlist_bundle.get('derived_metrics',[])
     for pos,tid in enumerate(pkg['request']['enabled_target_order']):
         plan_i,pt=plan_by.get(tid,(pos,{})); bundle_i,bt=bundle_by.get(tid,(pos,{})); cov=bt.get('coverage') or {'coverage_state':'unavailable','present_field_groups':[],'missing_field_groups':[]}
@@ -98,6 +129,15 @@ def build_watchlist_ai_context_package(*, validated_request:dict, execution_plan
         for f,src in IDENTITY_MAP.items():
             if target['identity'].get(f) is not None:
                 target['citations'].append(_citation(pkg,tid,_source_ptr('targets',pos,'identity',f),'identity_'+f,target['identity'][f],'execution_plan',execution_plan.get('plan_id'),'/targets/%s/%s'%(plan_i,src),None,None,None,None,'supported'))
+        for f,src in CLASSIFICATION_MAP.items():
+            if target['classification'].get(f) is not None:
+                target['citations'].append(_citation(pkg,tid,_source_ptr('targets',pos,'classification',f),'classification_'+f,target['classification'][f],'execution_plan',execution_plan.get('plan_id'),'/targets/%s/%s'%(plan_i,src),None,None,None,None,'supported'))
+        for f,src in LIFECYCLE_MAP.items():
+            if target['lifecycle'].get(f) not in (None, [], {}):
+                target['citations'].append(_citation(pkg,tid,_source_ptr('targets',pos,'lifecycle',f),'lifecycle_'+f,target['lifecycle'][f],'execution_plan',execution_plan.get('plan_id'),'/targets/%s/%s'%(plan_i,src),None,None,None,None,'supported'))
+        for f,src in EXECUTION_ELIGIBILITY_MAP.items():
+            if target['execution_eligibility'].get(f) not in (None, [], {}):
+                target['citations'].append(_citation(pkg,tid,_source_ptr('targets',pos,'execution_eligibility',f),'execution_eligibility_'+f,target['execution_eligibility'][f],'execution_plan',execution_plan.get('plan_id'),'/targets/%s/%s'%(plan_i,src),None,None,None,None,'supported'))
         cur=bt.get('current_evidence') or {}
         if cur:
             facts=cur.get('facts') or {}; target['current_observation']={k:facts[k] for k in MATERIAL_CURRENT if k in facts and facts.get(k) is not None}; target['current_observation'].update({k:cur.get(k) for k in ('source_timestamp','retrieved_at_utc','source_family') if cur.get(k) is not None}); target['current_observation']['currentness_status']=_get(cur,'currentness','status',default='unresolved')
@@ -127,10 +167,8 @@ def build_watchlist_ai_context_package(*, validated_request:dict, execution_plan
         if pt.get('identity_status')!='resolved': target['missing_evidence'].append(_missing(tid,'identity',pt.get('identity_status') or 'identity_unresolved',None,True,'not_recoverable_in_scope',{'plan_issues':pt.get('blocking_issues',[])})); pkg['prohibitions'].append({'code':'do_not_claim_live_price','scope':'target','target_id':tid,'reason':'target identity/execution eligibility is not resolved'})
         if not target['current_observation']: pkg['prohibitions'].append({'code':'do_not_claim_live_price','scope':'target','target_id':tid,'reason':'current observation unavailable'})
         pkg['missing_evidence'].extend(target['missing_evidence']); pkg['caveats'].extend(str(c) for c in target['caveats']); pkg['targets'].append(target)
-    failed=[g for g in pkg['source_lineage']['source_group_summaries'] if g.get('status')=='failed']; complete=sum(1 for t in pkg['targets'] if t['coverage']['coverage_state']=='usable'); blocked=sum(1 for t in pkg['targets'] if t['coverage']['evidence_states']['identity']=='unavailable')
-    status='blocked' if execution_result.get('status')=='blocked_preflight' else 'failed' if execution_result.get('status')=='source_execution_failed' else 'partial' if failed or complete<len(pkg['targets']) else 'complete'
-    pkg['coverage_summary']={'target_count_requested':len(pkg['targets']),'target_count_resolved':sum(1 for t in pkg['targets'] if t['coverage']['evidence_states']['identity']!='unavailable'),'target_count_with_current_observation':sum(1 for t in pkg['targets'] if t['current_observation']),'target_count_with_eod_reference':sum(1 for t in pkg['targets'] if t['eod_reference']),'target_count_with_performance':sum(1 for t in pkg['targets'] if t['performance']),'complete_target_count':complete,'partial_target_count':sum(1 for t in pkg['targets'] if t['coverage']['coverage_state']=='partial'),'blocked_target_count':blocked,'failed_source_groups':[g.get('source_family') for g in failed],'coverage_status':status}
-    if status!='complete': pkg['caveats'].append(status+'_coverage')
+    _recompute_after_budget(pkg)
+    if pkg['coverage_summary']['coverage_status']!='complete': pkg['caveats'].append(pkg['coverage_summary']['coverage_status']+'_coverage')
     _apply_budget(pkg,policy)
     pkg['context_package_id']='m8r03e-context-'+sha256_json({k:pkg[k] for k in pkg if k not in {'context_package_id','package_hash'}})[:16]
     pkg['package_hash']=artifact_hash_without(pkg,'package_hash')
@@ -140,7 +178,7 @@ def build_watchlist_ai_context_package(*, validated_request:dict, execution_plan
 
 def build_context_manifest(*, context_package:dict, conversation_handoff:dict, upstream_artifacts:dict, generated_at_utc:str)->dict:
     up={'request_id':context_package.get('request',{}).get('request_id'),'request_hash':sha256_json(upstream_artifacts.get('validated_request',{})),'execution_plan_id':upstream_artifacts.get('execution_plan',{}).get('plan_id'),'execution_plan_hash':sha256_json(upstream_artifacts.get('execution_plan',{})),'execution_result_id':upstream_artifacts.get('execution_result',{}).get('run_id'),'execution_result_hash':sha256_json(upstream_artifacts.get('execution_result',{})),'bundle_id':upstream_artifacts.get('watchlist_bundle',{}).get('bundle_id'),'bundle_hash':sha256_json(upstream_artifacts.get('watchlist_bundle',{})),'security_master_snapshot_ids':sorted({t.get('identity',{}).get('snapshot_id') for t in context_package.get('targets',[]) if t.get('identity',{}).get('snapshot_id')})}
-    m={'schema_version':MANIFEST_SCHEMA_VERSION,'context_package_id':context_package['context_package_id'],'handoff_id':conversation_handoff['handoff_id'],'generated_at_utc':generated_at_utc,'builder_version':BUILDER_VERSION,'context_package_sha256':sha256_json(context_package),'conversation_handoff_sha256':sha256_json(conversation_handoff),'schema_bundle_sha256':schema_bundle_sha256(),'upstream':up,'counts':{'target_count':len(context_package.get('targets',[])),'fact_count':len(context_package.get('citation_index',[])),'citation_count':len(context_package.get('citation_index',[])),'missing_evidence_count':len(context_package.get('missing_evidence',[])),'caveat_count':len(context_package.get('caveats',[])),'prohibition_count':len(context_package.get('prohibitions',[]))},'validation_status':'passed','validation_issues':[]}
+    m={'schema_version':MANIFEST_SCHEMA_VERSION,'context_package_id':context_package['context_package_id'],'handoff_id':conversation_handoff['handoff_id'],'generated_at_utc':generated_at_utc,'builder_version':BUILDER_VERSION,'context_package_sha256':sha256_json(context_package),'conversation_handoff_sha256':sha256_json(conversation_handoff),'schema_bundle_sha256':schema_bundle_sha256(),'upstream':up,'counts':{'target_count':len(context_package.get('targets',[])),'fact_count':len(material_fact_paths(context_package)),'citation_count':len(context_package.get('citation_index',[])),'missing_evidence_count':len(context_package.get('missing_evidence',[])),'caveat_count':len(context_package.get('caveats',[])),'prohibition_count':len(context_package.get('prohibitions',[]))},'validation_status':'passed','validation_issues':[]}
     return m
 
 def render_watchlist_ai_context_preview(package:dict)->str:
@@ -154,7 +192,7 @@ def render_watchlist_ai_context_preview(package:dict)->str:
     for t in package.get('targets',[]):
         pos=t['target_position']; lines += [f"### {pos}. {t['target_id']}",'','#### Identity and lifecycle']
         if t['identity'].get('security_name_zh') is not None: lines.append(f"- Name: {t['identity'].get('security_name_zh')} [{cite(f'/targets/{pos}/identity/security_name_zh')}]")
-        lines += [f"- Lifecycle: {t['lifecycle'].get('lifecycle_state')}",'','#### Current observation']
+        lines += [f"- Lifecycle: {t['lifecycle'].get('lifecycle_state')} [{cite(f'/targets/{pos}/lifecycle/lifecycle_state')}]",'','#### Current observation']
         if t['current_observation']:
             for k,v in t['current_observation'].items(): lines.append(f"- {k}: {v} [{cite(f'/targets/{pos}/current_observation/{k}')}]")
         else: lines.append('- Unavailable')

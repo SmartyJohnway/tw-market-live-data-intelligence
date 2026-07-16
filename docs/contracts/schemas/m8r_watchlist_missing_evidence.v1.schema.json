@@ -43,7 +43,8 @@
         "evidence_not_requested",
         "MIS observation unavailable",
         "EOD reference unavailable",
-        "no_usable_source_observation"
+        "no_usable_source_observation",
+        "context_budget_omitted"
       ],
       "type": "string"
     },

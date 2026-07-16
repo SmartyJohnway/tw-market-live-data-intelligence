@@ -182,3 +182,47 @@ def test_cli_reread_source_validation_remains_active(tmp_path):
     assert r.returncode==0, r.stderr
     manifest=json.loads(next(out.rglob('watchlist_ai_context_manifest.json')).read_text())
     assert manifest['validation_status']=='passed'
+
+def test_budget_removes_current_coverage_and_handoff_latest_not_answerable():
+    *_,pkg,hand,man=build('complete_snapshot',policy={'max_citations_per_target':4})
+    assert pkg['coverage_summary']['target_count_with_current_observation']==0
+    assert not any(q['category']=='latest_supplied_observations' for q in hand['answerable_questions'])
+    assert any(m['reason_code']=='context_budget_omitted' for m in pkg['missing_evidence'])
+
+def test_uncited_lifecycle_state_rejected():
+    req,plan,res,bundle,pkg,hand,man=build('complete_snapshot')
+    bad=json.loads(json.dumps(pkg)); bad['citation_index']=[c for c in bad['citation_index'] if '/lifecycle/lifecycle_state' not in c['fact_path']]; bad['targets'][0]['citations']=[c for c in bad['targets'][0]['citations'] if c in {x['citation_id'] for x in bad['citation_index']}]; bad['package_hash']='0'*64
+    got=validate_watchlist_ai_context_package(bad,upstream_artifacts={'validated_request':req,'execution_plan':plan,'execution_result':res,'watchlist_bundle':bundle})
+    assert 'uncited_material_fact' in {i['code'] for i in got['issues']}
+
+def test_tampered_lifecycle_state_source_hash_rejected():
+    req,plan,res,bundle,pkg,hand,man=build('complete_snapshot')
+    bad_plan=json.loads(json.dumps(plan)); bad_plan['targets'][0]['lifecycle_state']='terminated'
+    got=validate_watchlist_ai_context_package(pkg,upstream_artifacts={'validated_request':req,'execution_plan':bad_plan,'execution_result':res,'watchlist_bundle':bundle})
+    assert 'citation_source_value_hash_mismatch' in {i['code'] for i in got['issues']}
+
+def test_uncited_execution_policy_rejected():
+    req,plan,res,bundle,pkg,hand,man=build('complete_snapshot')
+    bad=json.loads(json.dumps(pkg)); bad['citation_index']=[c for c in bad['citation_index'] if '/lifecycle/execution_policy' not in c['fact_path'] and '/execution_eligibility/execution_policy' not in c['fact_path']]; bad['targets'][0]['citations']=[c for c in bad['targets'][0]['citations'] if c in {x['citation_id'] for x in bad['citation_index']}]; bad['package_hash']='0'*64
+    got=validate_watchlist_ai_context_package(bad,upstream_artifacts={'validated_request':req,'execution_plan':plan,'execution_result':res,'watchlist_bundle':bundle})
+    assert 'uncited_material_fact' in {i['code'] for i in got['issues']}
+
+def test_final_serialized_byte_count_and_unsatisfied_budget_reported():
+    *_,pkg,hand,man=build('complete_snapshot',policy={'max_serialized_bytes':200})
+    assert pkg['context_budget']['final_serialized_bytes']>0
+    assert pkg['context_budget']['budget_satisfied'] is False
+    assert pkg['context_budget']['minimum_required_context_exceeds_budget'] is True
+
+def test_same_request_different_run_bundle_rejected():
+    req,plan,res,bundle=loadcase('complete_snapshot')
+    bad_bundle=json.loads(json.dumps(bundle)); bad_bundle['generated_at_utc']='2026-07-16T09:09:09Z'
+    from scripts.m8r_03e_context_validator import validate_m8r_03e_upstream_artifacts
+    got=validate_m8r_03e_upstream_artifacts(validated_request=req,execution_plan=plan,execution_result=res,watchlist_bundle=bad_bundle)
+    assert 'bundle_result_run_lineage_mismatch' in {i['code'] for i in got['issues']}
+
+def test_manifest_fact_count_unique_paths_differs_from_citation_count_when_duplicate():
+    req,plan,res,bundle,pkg,hand,man=build('complete_snapshot')
+    dup=json.loads(json.dumps(pkg)); dup['citation_index'].append(json.loads(json.dumps(dup['citation_index'][0]))); dup['citation_index'][-1]['citation_id']='cite-1234567890abcdef1234'; dup['targets'][0]['citations'].append('cite-1234567890abcdef1234'); dup['package_hash']='0'*64
+    hand2=build_watchlist_conversation_handoff(context_package=pkg,generated_at_utc='2026-07-16T03:00:00Z')
+    man2=build_context_manifest(context_package=dup,conversation_handoff=hand2,upstream_artifacts={'validated_request':req,'execution_plan':plan,'execution_result':res,'watchlist_bundle':bundle},generated_at_utc='2026-07-16T03:00:00Z')
+    assert man2['counts']['fact_count'] < man2['counts']['citation_count']
