@@ -1,0 +1,165 @@
+{
+  "baseline_sha": "1c2144498b524e52b2bf21fce8ed00683d9eb3a7",
+  "commit_2_message": "Prove R2 authorization composition and Windows compatibility",
+  "commit_2_remote_sha": "not_verifiable_in_current_sandbox",
+  "commit_2_sha": "11537244e919b8f426acea638e3bf828a5e593b0",
+  "commit_3_remote_sha": "8f69deeacf95ebf02e8ae4650d89e357537597cf",
+  "commit_4_remote_sha": "not_available_until_batch_push",
+  "commit_4_tested_worktree_content_digest": "sha256:efbcd7aae37bc898ede04ba79dcacbc7037de9bb6e66bc5730c5a455284e9775",
+  "commit_4_tested_worktree_content_digest_scope": [
+    ".github/workflows/windows-compatibility-smoke.yml",
+    ".github/workflows/release-validation.yml",
+    "scripts/validate_github_actions_execution_policy.py",
+    "tests/unit/test_github_actions_execution_policy.py"
+  ],
+  "commit_4_tested_worktree_parent_sha": "cd6313c7195e011e1bb34d028c1fbcb1a02a5960",
+  "complete_windows_validation_commands": [
+    "python -m compileall scripts server tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_end_to_end_acceptance.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py tests/unit/test_m6d_ssl_policy.py tests/unit/test_m6d_operator_and_local_networking.py",
+    "pytest -m \"not network\" tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_end_to_end_acceptance.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py tests/unit/test_m6d_ssl_policy.py tests/unit/test_m6d_operator_and_local_networking.py -q",
+    "python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01",
+    "python scripts/run_m5ij_end_to_end_acceptance.py --check-only",
+    "python server/mcp_server.py --startup-check"
+  ],
+  "execution_environment": "codex_sandbox",
+  "github_runner_execution": "not_performed",
+  "github_workflows_triggered": [],
+  "limitations": [
+    "Sandbox validation does not establish GitHub runner or branch-protection behavior.",
+    "workflow_dispatch is normally available after these workflow definitions merge to the default branch.",
+    "No GitHub dispatch was attempted because this task is NO_GITHUB_CI."
+  ],
+  "policy_id": "CI_POLICY_V1",
+  "sandbox_commands": {
+    "git diff --check": {
+      "return_code": 0,
+      "status": "pass"
+    },
+    "pytest tests/unit/test_github_actions_execution_policy.py -q": {
+      "result": "4 passed",
+      "return_code": 0,
+      "status": "pass"
+    },
+    "pytest tests/unit/test_run_test_profile.py -q": {
+      "result": "21 passed",
+      "return_code": 0,
+      "status": "pass"
+    },
+    "python -m compileall scripts server tests skills": {
+      "return_code": 0,
+      "status": "pass"
+    },
+    "python scripts/run_test_profile.py changed-fast --json": {
+      "duration_seconds": 1.627,
+      "passed": 43,
+      "return_codes": [
+        0
+      ],
+      "status": "pass"
+    },
+    "python scripts/run_test_profile.py component-governance --json": {
+      "duration_seconds": 17.347,
+      "passed": 42,
+      "return_codes": [
+        0
+      ],
+      "status": "pass"
+    },
+    "python scripts/run_test_profile.py component-security --json": {
+      "duration_seconds": 1.814,
+      "passed": 16,
+      "return_codes": [
+        0
+      ],
+      "status": "pass"
+    },
+    "python scripts/run_test_profile.py default-ci --json": {
+      "duration_seconds": 31.192,
+      "passed": 741,
+      "return_codes": [
+        0
+      ],
+      "status": "pass"
+    },
+    "python scripts/validate_github_actions_execution_policy.py": {
+      "return_code": 0,
+      "status": "pass",
+      "violations": [],
+      "workflow_count": 5
+    }
+  },
+  "schema_version": "acceptance_run.v1",
+  "statement": "No independent GitHub runner execution was performed for CI-policy Commit 3 or Windows-coverage Commit 4.",
+  "task_github_actions_authorization": "NO_GITHUB_CI",
+  "tested_generation_sha": "11537244e919b8f426acea638e3bf828a5e593b0",
+  "workflow_inventory_after": [
+    {
+      "file": ".github/workflows/browser-operator-e2e.yml",
+      "name": "Browser Operator E2E",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "name": "Default CI",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "file": ".github/workflows/non-network-ci.yml",
+      "name": "Full Non-Network Regression",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "file": ".github/workflows/release-validation.yml",
+      "name": "Release Validation",
+      "triggers": [
+        "release",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "file": ".github/workflows/windows-compatibility-smoke.yml",
+      "name": "Windows Compatibility Smoke",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    }
+  ],
+  "workflow_inventory_before": [
+    {
+      "file": ".github/workflows/browser-operator-e2e.yml",
+      "name": "Browser Operator E2E",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "name": "Default CI",
+      "triggers": [
+        "push(main)",
+        "pull_request(main)"
+      ]
+    },
+    {
+      "file": ".github/workflows/non-network-ci.yml",
+      "name": "Full Non-Network Regression",
+      "triggers": [
+        "workflow_dispatch",
+        "pull_request(main,labeled)"
+      ]
+    },
+    {
+      "file": ".github/workflows/windows-compatibility-smoke.yml",
+      "name": "Windows Compatibility Smoke",
+      "triggers": [
+        "workflow_dispatch",
+        "pull_request(main,paths)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": "github_actions_execution_policy.v1",
+  "policy_id": "CI_POLICY_V1",
+  "default_task_authorization": "NO_GITHUB_CI",
+  "ordinary_pr_auto_ci": false,
+  "pr_update_auto_ci": false,
+  "main_push_auto_ci": false,
+  "sandbox_validation_required": true,
+  "sandbox_validation_artifact_required": true,
+  "authorization_modes": {
+    "NO_GITHUB_CI": {
+      "github_workflows_allowed": []
+    },
+    "LIGHTWEIGHT_CI_REQUIRED": {
+      "github_workflows_allowed": [
+        "Default CI",
+        "Windows Compatibility Smoke"
+      ],
+      "maximum_dispatches_per_workflow": 1,
+      "final_head_only": true
+    },
+    "RELEASE_CI_REQUIRED": {
+      "github_workflows_allowed": [
+        "Release Validation"
+      ],
+      "release_or_tag_context_required": true
+    }
+  },
+  "workflows": {
+    "Default CI": {"file": ".github/workflows/ci.yml", "trigger_class": "manual"},
+    "Full Non-Network Regression": {"file": ".github/workflows/non-network-ci.yml", "trigger_class": "manual"},
+    "Windows Compatibility Smoke": {"file": ".github/workflows/windows-compatibility-smoke.yml", "trigger_class": "manual"},
+    "Browser Operator E2E": {"file": ".github/workflows/browser-operator-e2e.yml", "trigger_class": "manual"},
+    "Release Validation": {"file": ".github/workflows/release-validation.yml", "trigger_class": "release_or_manual"}
+  }
+}

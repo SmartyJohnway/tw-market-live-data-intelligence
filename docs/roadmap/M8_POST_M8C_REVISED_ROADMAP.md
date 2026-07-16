@@ -66,3 +66,7 @@ market breadth; industry context; index membership; ETF/component relationships;
 
 observability; trace IDs; artifact replay; retention; schema migration; load testing; resource limits; security review; source-drift detection.
 
+
+## M8R-03E-R2 update
+
+R2-F0 and R2 are recorded as GO_WITH_CAVEATS from baseline `1c2144498b524e52b2bf21fce8ed00683d9eb3a7`; the combined PR disposition is APPROVE_WITH_CAVEATS. The active implemented-through track is `M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION`, and the active successor is `M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP`. Phase C remains `blocked_pending_M8R-03E-R3-critical-subset` / `blocked_pending_R3_critical_subset` for the R3 AI behavior/evidence schema decoupling work. R2 filesystem containment is remediated with portable TOCTOU and Windows reparse caveats; GitHub runner execution was not performed under NO_GITHUB_CI.

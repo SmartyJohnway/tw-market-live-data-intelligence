@@ -18,7 +18,7 @@ Existing compatibility fields such as `no_recommendation`, `no_trading_advice`, 
 
 ## Phase C boundary
 
-F1 does not implement the Unified Market Evidence Tool API, MCP, HTTP endpoints, LLM invocation, scheduler, polling, persistent watchlists, broker integration, or new source adapters. Phase C remains blocked until `M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION` is complete.
+F1 does not implement the Unified Market Evidence Tool API, MCP, HTTP endpoints, LLM invocation, scheduler, polling, persistent watchlists, broker integration, or new source adapters. Phase C remains blocked pending the `M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP` critical subset.
 
 ## Availability and authorization correction
 

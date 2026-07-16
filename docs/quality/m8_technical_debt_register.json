@@ -1,5 +1,5 @@
 {
-  "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
+  "baseline_sha": "1c2144498b524e52b2bf21fce8ed00683d9eb3a7",
   "entries": [
     {
       "affected_paths": [
@@ -29,13 +29,16 @@
       "category": "security",
       "debt_id": "M8-DEBT-0002",
       "evidence": [
-        "inspected:scripts/run_m8r_03e_watchlist_ai_context_handoff.py"
+        "inspected:scripts/run_m8r_03e_watchlist_ai_context_handoff.py",
+        "implemented:scripts/m8r_filesystem_safety.py",
+        "tested:tests/unit/test_m8r_filesystem_containment.py"
       ],
       "finding": "Output-root safety rejects URLs and some names but does not prove symlink escape or absolute-path containment.",
       "recommended_action": "Centralize safe path resolution, symlink checks, and output root containment.",
+      "resolution_ref": "docs/security/M8R_03E_R2_FILESYSTEM_CONTAINMENT_THREAT_MODEL.md",
       "risk": "Unsafe artifact placement may be possible if new trust-boundary surfaces are added before containment hardening; documentation/Skill-only Phase B is not blocked.",
       "severity": "P1",
-      "status": "open",
+      "status": "partially_resolved_with_platform_limitations",
       "target_remediation_task": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION"
     },
     {
@@ -109,9 +112,10 @@
       ],
       "finding": "Gaps remain for duplicate JSON keys, symlink/path safety, deep nesting, large inputs, and schema-version compatibility.",
       "recommended_action": "Add targeted security/compatibility/property-style tests without heavy dependencies.",
+      "resolution_ref": "docs/quality/m8_test_suite_lifecycle_inventory.json",
       "risk": "Edge cases can regress outside fixture happy paths.",
       "severity": "P2",
-      "status": "open",
+      "status": "partially_resolved",
       "target_remediation_task": "M8R-03E-R5-TESTING-DOCUMENTATION-AND-OPERATIONS-CONSOLIDATION"
     },
     {

@@ -1,0 +1,142 @@
+{
+  "baseline_sha": "1c2144498b524e52b2bf21fce8ed00683d9eb3a7",
+  "commands_planned": [
+    "python scripts/run_test_profile.py changed-fast --json",
+    "python scripts/run_test_profile.py default-ci --json",
+    "python scripts/run_test_profile.py milestone-acceptance --json",
+    "python scripts/run_test_profile.py historical-acceptance --json",
+    "python scripts/run_test_profile.py performance --json",
+    "python scripts/run_test_profile.py full-non-network --json"
+  ],
+  "default_ci_after": {
+    "duration_seconds": 28.089,
+    "passed": 738
+  },
+  "default_ci_before": {
+    "passed": 721,
+    "source": "R1 recorded status before R2-F0; exact counts kept as acceptance-run evidence only"
+  },
+  "disposition": "GO_WITH_CAVEATS",
+  "profile_policy_status": "implemented",
+  "schema_version": "acceptance_run.v1",
+  "validation_results": [
+    {
+      "browser_required": false,
+      "collected": 738,
+      "command_results": [
+        {
+          "command": "/root/.pyenv/versions/3.13.13/bin/python -m pytest -m not network and not browser and not live and not release_preflight and not historical and not performance tests/unit/test_m8r_03e_r2_filesystem_containment.py tests/unit/test_m8r_filesystem_containment.py tests/unit/test_m5k_workflow.py tests/unit/test_m5n_watchlist_workflow.py tests/unit/test_m6d_ssl_policy.py tests/unit/test_server.py tests/unit/test_mcp_server.py tests/unit/test_governance_forbidden_path_guard.py tests/unit/test_forbidden_behavior_scanner.py tests/unit/test_no_frontend_public_write_guard.py tests/unit/test_no_trading_signal_ui_guard.py tests/unit/test_m6d_operator_and_local_networking.py tests/unit/test_run_test_profile.py tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5fgh_consumer_consistency.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_m5fgh_frontend_static.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_forbidden_path_policy.py tests/unit/test_m5op_frontend_operator_workflow.py tests/unit/test_m6a_observation_ux.py tests/unit/test_m6b_contract_hardening.py tests/test_m5q_source_health.py tests/test_m6e_operator_acceptance.py tests/unit/test_frontend_readonly_static_contracts.py tests/unit/test_frontend_readonly_contract_static.py tests/unit/test_frontend_readonly_context_package.py tests/unit/test_frontend_accessibility_static.py tests/unit/test_frontend_observability_static.py tests/unit/test_twse_mis_normalization_v2.py tests/unit/test_twse_openapi_normalization_v1.py tests/unit/test_tpex_openapi_normalization_v1.py tests/unit/test_yahoo_normalized_chart_v1.py tests/unit/test_source_contract_schema.py tests/unit/test_source_authority_registry.py tests/unit/test_source_family_coverage_matrix.py tests/unit/test_m7e_market_clock_session_state_schema.py tests/unit/test_m7e_market_clock_session_state_builder.py tests/unit/test_m7e_twse_holiday_schedule_classifier.py tests/unit/test_m7e_market_clock_session_state_controlled_promotion.py tests/unit/test_m7e_market_clock_session_state_context_integration.py tests/unit/test_m7e_market_clock_session_state_markdown.py tests/unit/test_m7e_market_clock_session_state_inventory.py tests/unit/test_m7e_market_clock_session_state_final_acceptance.py tests/unit/test_m7e_twse_trading_calendar_authority.py tests/unit/test_m7e_twse_trading_calendar_artifact.py tests/unit/test_m7e_twse_trading_calendar_mode_contract.py tests/unit/test_m7f_rich_fact_browser_policy.py tests/unit/test_m7f_rich_fact_display_catalog.py tests/unit/test_m7f_ai_handoff_search_filters.py tests/unit/test_m7f_field_badges_currentness_calendar.py tests/unit/test_m7f_frontend_rich_fact_browser_base_ui.py tests/unit/test_m7f_frontend_security_semantic_regression.py tests/unit/test_m7f_rich_fact_browser_final_acceptance.py tests/unit/test_m7g_safe_context_artifact_schema.py tests/unit/test_m7g_safe_artifact_validator.py tests/unit/test_m7g_frontend_manual_artifact_load_ui.py tests/unit/test_m7g_inventory_policy.py tests/unit/test_m7g_real_safe_artifact_rendering.py tests/unit/test_m7g_provenance_currentness_source_health_panel.py tests/unit/test_m7g_ai_handoff_from_loaded_safe_artifact.py tests/unit/test_m7g_refresh_workflow_policy_request_package.py tests/unit/test_m7g_refresh_request_package_builder.py tests/unit/test_m7g_controlled_refresh_execution_gate.py tests/unit/test_m7g_refreshed_safe_artifact_result_contract.py tests/unit/test_m7g_controlled_refresh_frontend_execution_ui.py tests/unit/test_m7g_refresh_workflow_security_regression.py tests/unit/test_m7g_twse_mis_market_route_semantics.py tests/unit/test_m7g_final_acceptance.py tests/unit/test_m8_source_governance_foundation.py tests/unit/test_m8_source_freshness_evaluator.py tests/unit/test_m8_multi_source_context_builder.py tests/unit/test_m8_controlled_conversation_context_integration.py tests/unit/test_m8_compatibility_hardening.py tests/unit/test_m8_00_final_acceptance.py tests/unit/test_m8a_official_eod_contract_preflight.py tests/unit/test_m8a_official_eod_observation.py tests/unit/test_m8a_twse_official_eod_adapter.py tests/unit/test_m8a_tpex_official_eod_adapter.py tests/unit/test_m8a_official_eod_instrument_classification.py tests/unit/test_m8a_official_eod_failure_contract.py tests/unit/test_m8a_ncdr_dgpa_closure_cap.py tests/unit/test_m8a_market_day_currentness_resolver.py tests/unit/test_m8a_controlled_official_eod_execution.py tests/unit/test_m8a_official_eod_context_integration.py tests/unit/test_m8a_official_eod_conversation_projection.py tests/unit/test_m8a_final_acceptance.py tests/unit/test_m8b_taifex_openapi_contract_preflight.py tests/unit/test_m8b_taifex_derivatives_observation.py tests/unit/test_m8b_taifex_openapi_futures_adapter.py tests/unit/test_m8b_taifex_openapi_options_adapter.py tests/unit/test_m8b_taifex_openapi_final_settlement_adapter.py tests/unit/test_m8b_taifex_openapi_large_trader_oi_adapter.py tests/unit/test_m8b_taifex_openapi_put_call_ratio_adapter.py tests/unit/test_m8b_taifex_openapi_block_trade_adapter.py tests/unit/test_m8b_taifex_openapi_execution.py tests/unit/test_m8b_taifex_openapi_context_integration.py tests/unit/test_m8b_taifex_openapi_conversation_projection.py tests/unit/test_m8b_final_acceptance.py tests/unit/test_m8b_taifex_openapi_currentness.py tests/unit/test_m8b_taifex_openapi_schema_and_validation.py tests/unit/test_m8b_taifex_openapi_projection_families.py tests/unit/test_m8_through_m8b_consolidated_acceptance.py tests/unit/test_m8c_00_final_acceptance.py tests/unit/test_m8c_taifex_mis_contract_preflight.py tests/unit/test_m8c_taifex_mis_currentness_preflight.py tests/unit/test_m8c_taifex_mis_identity_contract.py tests/unit/test_m8c_taifex_mis_probe_parsers.py tests/unit/test_m8c_01_taifex_mis_runtime.py tests/unit/test_m8c_02_taifex_mis_context_integration.py",
+          "duration_seconds": 28.088,
+          "execution_kind": "pytest",
+          "return_code": 0
+        }
+      ],
+      "commands": [
+        "/root/.pyenv/versions/3.13.13/bin/python -m pytest -m not network and not browser and not live and not release_preflight and not historical and not performance tests/unit/test_m8r_03e_r2_filesystem_containment.py tests/unit/test_m8r_filesystem_containment.py tests/unit/test_m5k_workflow.py tests/unit/test_m5n_watchlist_workflow.py tests/unit/test_m6d_ssl_policy.py tests/unit/test_server.py tests/unit/test_mcp_server.py tests/unit/test_governance_forbidden_path_guard.py tests/unit/test_forbidden_behavior_scanner.py tests/unit/test_no_frontend_public_write_guard.py tests/unit/test_no_trading_signal_ui_guard.py tests/unit/test_m6d_operator_and_local_networking.py tests/unit/test_run_test_profile.py tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5fgh_consumer_consistency.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_m5fgh_frontend_static.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_forbidden_path_policy.py tests/unit/test_m5op_frontend_operator_workflow.py tests/unit/test_m6a_observation_ux.py tests/unit/test_m6b_contract_hardening.py tests/test_m5q_source_health.py tests/test_m6e_operator_acceptance.py tests/unit/test_frontend_readonly_static_contracts.py tests/unit/test_frontend_readonly_contract_static.py tests/unit/test_frontend_readonly_context_package.py tests/unit/test_frontend_accessibility_static.py tests/unit/test_frontend_observability_static.py tests/unit/test_twse_mis_normalization_v2.py tests/unit/test_twse_openapi_normalization_v1.py tests/unit/test_tpex_openapi_normalization_v1.py tests/unit/test_yahoo_normalized_chart_v1.py tests/unit/test_source_contract_schema.py tests/unit/test_source_authority_registry.py tests/unit/test_source_family_coverage_matrix.py tests/unit/test_m7e_market_clock_session_state_schema.py tests/unit/test_m7e_market_clock_session_state_builder.py tests/unit/test_m7e_twse_holiday_schedule_classifier.py tests/unit/test_m7e_market_clock_session_state_controlled_promotion.py tests/unit/test_m7e_market_clock_session_state_context_integration.py tests/unit/test_m7e_market_clock_session_state_markdown.py tests/unit/test_m7e_market_clock_session_state_inventory.py tests/unit/test_m7e_market_clock_session_state_final_acceptance.py tests/unit/test_m7e_twse_trading_calendar_authority.py tests/unit/test_m7e_twse_trading_calendar_artifact.py tests/unit/test_m7e_twse_trading_calendar_mode_contract.py tests/unit/test_m7f_rich_fact_browser_policy.py tests/unit/test_m7f_rich_fact_display_catalog.py tests/unit/test_m7f_ai_handoff_search_filters.py tests/unit/test_m7f_field_badges_currentness_calendar.py tests/unit/test_m7f_frontend_rich_fact_browser_base_ui.py tests/unit/test_m7f_frontend_security_semantic_regression.py tests/unit/test_m7f_rich_fact_browser_final_acceptance.py tests/unit/test_m7g_safe_context_artifact_schema.py tests/unit/test_m7g_safe_artifact_validator.py tests/unit/test_m7g_frontend_manual_artifact_load_ui.py tests/unit/test_m7g_inventory_policy.py tests/unit/test_m7g_real_safe_artifact_rendering.py tests/unit/test_m7g_provenance_currentness_source_health_panel.py tests/unit/test_m7g_ai_handoff_from_loaded_safe_artifact.py tests/unit/test_m7g_refresh_workflow_policy_request_package.py tests/unit/test_m7g_refresh_request_package_builder.py tests/unit/test_m7g_controlled_refresh_execution_gate.py tests/unit/test_m7g_refreshed_safe_artifact_result_contract.py tests/unit/test_m7g_controlled_refresh_frontend_execution_ui.py tests/unit/test_m7g_refresh_workflow_security_regression.py tests/unit/test_m7g_twse_mis_market_route_semantics.py tests/unit/test_m7g_final_acceptance.py tests/unit/test_m8_source_governance_foundation.py tests/unit/test_m8_source_freshness_evaluator.py tests/unit/test_m8_multi_source_context_builder.py tests/unit/test_m8_controlled_conversation_context_integration.py tests/unit/test_m8_compatibility_hardening.py tests/unit/test_m8_00_final_acceptance.py tests/unit/test_m8a_official_eod_contract_preflight.py tests/unit/test_m8a_official_eod_observation.py tests/unit/test_m8a_twse_official_eod_adapter.py tests/unit/test_m8a_tpex_official_eod_adapter.py tests/unit/test_m8a_official_eod_instrument_classification.py tests/unit/test_m8a_official_eod_failure_contract.py tests/unit/test_m8a_ncdr_dgpa_closure_cap.py tests/unit/test_m8a_market_day_currentness_resolver.py tests/unit/test_m8a_controlled_official_eod_execution.py tests/unit/test_m8a_official_eod_context_integration.py tests/unit/test_m8a_official_eod_conversation_projection.py tests/unit/test_m8a_final_acceptance.py tests/unit/test_m8b_taifex_openapi_contract_preflight.py tests/unit/test_m8b_taifex_derivatives_observation.py tests/unit/test_m8b_taifex_openapi_futures_adapter.py tests/unit/test_m8b_taifex_openapi_options_adapter.py tests/unit/test_m8b_taifex_openapi_final_settlement_adapter.py tests/unit/test_m8b_taifex_openapi_large_trader_oi_adapter.py tests/unit/test_m8b_taifex_openapi_put_call_ratio_adapter.py tests/unit/test_m8b_taifex_openapi_block_trade_adapter.py tests/unit/test_m8b_taifex_openapi_execution.py tests/unit/test_m8b_taifex_openapi_context_integration.py tests/unit/test_m8b_taifex_openapi_conversation_projection.py tests/unit/test_m8b_final_acceptance.py tests/unit/test_m8b_taifex_openapi_currentness.py tests/unit/test_m8b_taifex_openapi_schema_and_validation.py tests/unit/test_m8b_taifex_openapi_projection_families.py tests/unit/test_m8_through_m8b_consolidated_acceptance.py tests/unit/test_m8c_00_final_acceptance.py tests/unit/test_m8c_taifex_mis_contract_preflight.py tests/unit/test_m8c_taifex_mis_currentness_preflight.py tests/unit/test_m8c_taifex_mis_identity_contract.py tests/unit/test_m8c_taifex_mis_probe_parsers.py tests/unit/test_m8c_01_taifex_mis_runtime.py tests/unit/test_m8c_02_taifex_mis_context_integration.py"
+      ],
+      "deselected": 0,
+      "duration_seconds": 28.089,
+      "explicit_live_confirmation": false,
+      "failed": null,
+      "finished_at": "2026-07-16T14:06:03Z",
+      "network_may_have_occurred": false,
+      "passed": 738,
+      "profile": "default-ci",
+      "return_codes": [
+        0
+      ],
+      "selected": 738,
+      "skipped": null,
+      "ssl_policy": "strict",
+      "started_at": "2026-07-16T14:05:35Z",
+      "status": "pass"
+    },
+    {
+      "browser_required": false,
+      "collected": 34,
+      "command_results": [
+        {
+          "command": "/root/.pyenv/versions/3.13.13/bin/python -m pytest -m not network and milestone tests/unit/test_m8r_03e_r2_filesystem_containment.py tests/unit/test_run_test_profile.py tests/unit/test_m8r_filesystem_containment.py",
+          "duration_seconds": 0.895,
+          "execution_kind": "pytest",
+          "return_code": 0
+        }
+      ],
+      "commands": [
+        "/root/.pyenv/versions/3.13.13/bin/python -m pytest -m not network and milestone tests/unit/test_m8r_03e_r2_filesystem_containment.py tests/unit/test_run_test_profile.py tests/unit/test_m8r_filesystem_containment.py"
+      ],
+      "deselected": 23,
+      "duration_seconds": 0.896,
+      "explicit_live_confirmation": false,
+      "failed": null,
+      "finished_at": "2026-07-16T14:06:05Z",
+      "network_may_have_occurred": false,
+      "passed": 11,
+      "profile": "milestone-acceptance",
+      "return_codes": [
+        0
+      ],
+      "selected": 11,
+      "skipped": null,
+      "ssl_policy": "strict",
+      "started_at": "2026-07-16T14:06:05Z",
+      "status": "pass"
+    },
+    {
+      "browser_required": false,
+      "collected": 1,
+      "command_results": [
+        {
+          "command": "/root/.pyenv/versions/3.13.13/bin/python -m pytest -m historical tests/acceptance_archive/historical_acceptance_checks.py",
+          "duration_seconds": 0.669,
+          "execution_kind": "pytest",
+          "return_code": 0
+        }
+      ],
+      "commands": [
+        "/root/.pyenv/versions/3.13.13/bin/python -m pytest -m historical tests/acceptance_archive/historical_acceptance_checks.py"
+      ],
+      "deselected": 0,
+      "duration_seconds": 0.67,
+      "explicit_live_confirmation": false,
+      "failed": null,
+      "finished_at": "2026-07-16T14:06:07Z",
+      "network_may_have_occurred": false,
+      "passed": 1,
+      "profile": "historical-acceptance",
+      "return_codes": [
+        0
+      ],
+      "selected": 1,
+      "skipped": null,
+      "ssl_policy": "strict",
+      "started_at": "2026-07-16T14:06:06Z",
+      "status": "pass"
+    },
+    {
+      "browser_required": false,
+      "command_results": [
+        {
+          "command": "/root/.pyenv/versions/3.13.13/bin/python scripts/run_m8r_03e_performance_baseline.py --verify-existing docs/quality/m8_performance_baseline.json",
+          "duration_seconds": 5.553,
+          "execution_kind": "authoritative_runner",
+          "return_code": 0
+        }
+      ],
+      "commands": [
+        "/root/.pyenv/versions/3.13.13/bin/python scripts/run_m8r_03e_performance_baseline.py --verify-existing docs/quality/m8_performance_baseline.json"
+      ],
+      "duration_seconds": 5.554,
+      "explicit_live_confirmation": false,
+      "finished_at": "2026-07-16T14:06:13Z",
+      "network_may_have_occurred": false,
+      "profile": "performance",
+      "return_codes": [
+        0
+      ],
+      "ssl_policy": "strict",
+      "started_at": "2026-07-16T14:06:08Z",
+      "status": "pass"
+    }
+  ]
+}

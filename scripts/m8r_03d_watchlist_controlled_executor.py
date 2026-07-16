@@ -8,6 +8,7 @@ from scripts.m8r_03c_watchlist_bundle_builder import build_watchlist_snapshot_bu
 from scripts.m8a_twse_official_eod_adapter import execute_twse_official_eod_adapter
 from scripts.m8a_tpex_official_eod_adapter import execute_tpex_official_eod_adapter
 from scripts.m5k_common import execute_live_observation
+from scripts.m8r_filesystem_safety import atomic_write_text, safe_destination, validate_authorized_root
 RESULT_SCHEMA_VERSION='m8r_03d_watchlist_execution_result.v1'
 AUTHORIZATION_CONSUMPTION_ROOT=Path('artifacts/m8r_03d_authorization_consumption')
 FORBIDDEN_ARTIFACT_TOKENS=('raw_payload"','cookies','session_id','access_token','refresh_token','msgArray')
@@ -15,14 +16,15 @@ MARKET_ALIASES={'TWSE':{'TWSE','listed','twse','tse'},'TPEX':{'TPEX','tpex','tpe
 class M8R03DExecutionError(RuntimeError): pass
 
 def _safe_root(root):
-    p=PurePosixPath(root)
+    p=PurePosixPath(str(root))
     if '..' in p.parts or any(x in p.parts for x in ('.env','secrets','credentials')): raise ValueError('unsafe_artifact_root')
-    return Path(p)
+    return validate_authorized_root(root)
 def _write_json(path:Path,data:Any):
     text=json.dumps(data,ensure_ascii=False,sort_keys=True,indent=2)
     low=text.lower()
     if any(t.lower() in low for t in FORBIDDEN_ARTIFACT_TOKENS): raise ValueError('forbidden_artifact_content')
-    path.parent.mkdir(parents=True,exist_ok=True); path.write_text(text+'\n',encoding='utf-8')
+    root = getattr(_write_json, '_authorized_root', path.parent)
+    atomic_write_text(root, path.relative_to(root), text+'\n')
 
 def preflight(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, security_master=None):
     plan=build_execution_plan(request,bundle_type=bundle_type,generated_at_utc=generated_at_utc,security_master=security_master)
@@ -30,17 +32,19 @@ def preflight(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, 
 
 def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:dict|None=None, fixture_source_data:dict|None=None, artifact_root:str='artifacts/m8r_03d', run_id:str|None=None, generated_at_utc:str|None=None, executors:dict|None=None, security_master=None)->dict:
     started=generated_at_utc or utc_now(); run_id=run_id or 'm8r03d-'+started.replace(':','').replace('-','')
+    artifact_root_path=_safe_root(artifact_root)
+    safe_destination(artifact_root_path, run_id, create_parent=False)
     plan=build_execution_plan(request,bundle_type=bundle_type,generated_at_utc=started,security_master=security_master)
     if mode not in {'preflight','fixture','execute'}: raise ValueError('invalid_mode')
     if mode=='preflight' or plan_has_blocking_issues(plan):
         status='blocked_preflight' if plan_has_blocking_issues(plan) else 'success'
-        return _result(run_id,mode,started,utc_now(),request,plan,authorization if mode=='execute' else None,[],None,status,plan.get('issues',[]),artifact_root,source_execution_summary={'planned_source_call_groups':plan.get('source_call_groups',[]),'group_results':[],'network_calls_performed':False,'network_default_enabled':False,'polling':False,'scheduler':False},write=False)
+        return _result(run_id,mode,started,utc_now(),request,plan,authorization if mode=='execute' else None,[],None,status,plan.get('issues',[]),artifact_root_path,source_execution_summary={'planned_source_call_groups':plan.get('source_call_groups',[]),'group_results':[],'network_calls_performed':False,'network_default_enabled':False,'polling':False,'scheduler':False},write=False)
     if mode=='execute':
-        if not authorization: return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'authorization_required'}],artifact_root,write=False)
+        if not authorization: return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'authorization_required'}],artifact_root_path,write=False)
         av=validate_authorization(authorization,request=request,plan=plan,bundle_type=bundle_type,now_utc=started,require_network=True)
-        if not av['valid']: return _result(run_id,mode,started,utc_now(),request,plan,authorization,[],None,'authorization_failed',av['issues'],artifact_root,write=True)
+        if not av['valid']: return _result(run_id,mode,started,utc_now(),request,plan,authorization,[],None,'authorization_failed',av['issues'],artifact_root_path,write=True)
         claim=_claim_authorization(authorization, plan, artifact_root, started)
-        if not claim['valid']: return _result(run_id,mode,started,utc_now(),request,plan,authorization,[],None,'authorization_failed',claim['issues'],artifact_root,write=True)
+        if not claim['valid']: return _result(run_id,mode,started,utc_now(),request,plan,authorization,[],None,'authorization_failed',claim['issues'],artifact_root_path,write=True)
         source_data, group_results = _execute_source_groups(plan,request,executors or {})
     else:
         source_data=fixture_source_data or {}; group_results=_fixture_group_results(plan, source_data, started)
@@ -73,7 +77,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
         if not observations and any_group_failed: status='source_execution_failed'
     except Exception as exc:
         bundle=None; status='bundle_validation_failed'; issues=normalize_issues+[{'code':'bundle_validation_failed','detail':str(exc)[:160]}]
-    return _result(run_id,mode,started,utc_now(),request,plan,authorization if mode=='execute' else None,observations,bundle,status,issues,artifact_root,target_results=target_results,source_execution_summary={'planned_source_call_groups':plan.get('source_call_groups',[]),'group_results':group_results,'network_calls_performed':mode=='execute','network_default_enabled':False,'polling':False,'scheduler':False},write=True)
+    return _result(run_id,mode,started,utc_now(),request,plan,authorization if mode=='execute' else None,observations,bundle,status,issues,artifact_root_path,target_results=target_results,source_execution_summary={'planned_source_call_groups':plan.get('source_call_groups',[]),'group_results':group_results,'network_calls_performed':mode=='execute','network_default_enabled':False,'polling':False,'scheduler':False},write=True)
 
 def _claim_authorization(auth, plan, artifact_root, now):
     root=AUTHORIZATION_CONSUMPTION_ROOT; root.mkdir(parents=True,exist_ok=True)
@@ -144,8 +148,11 @@ def _normalize_checked(fam, row, target, retrieved_at):
     if fam=='TWSE_OPENAPI': return normalize_twse_openapi_watchlist_observation(row,target)
     return normalize_tpex_openapi_watchlist_observation(row,target)
 
-def _result(run_id,mode,started,completed,request,plan,auth,observations,bundle,status,issues,artifact_root,target_results=None,source_execution_summary=None,write=True):
-    root=_safe_root(artifact_root)/run_id; paths={}; final_status=status; final_issues=list(issues or [])
+def _result(run_id,mode,started,completed,request,plan,auth,observations,bundle,status,issues,artifact_root_path,target_results=None,source_execution_summary=None,write=True):
+    artifact_root_path = artifact_root_path if isinstance(artifact_root_path, Path) else _safe_root(artifact_root_path)
+    root=safe_destination(artifact_root_path, run_id, create_parent=True).path
+    _write_json._authorized_root = artifact_root_path
+    paths={}; final_status=status; final_issues=list(issues or [])
     if write:
         try:
             _write_json(root/'validated_request.json',request); paths['validated_request']=str(root/'validated_request.json')

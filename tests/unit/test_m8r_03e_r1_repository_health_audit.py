@@ -3,14 +3,15 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-NEXT = "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION"
+IMPLEMENTED_THROUGH = "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION"
+NEXT = "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP"
 
 def load(path):
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
 def test_registry_post_m8c_realignment_semantics():
     reg = load("docs/data_capabilities/m8_source_capability_registry.json")
-    assert reg["implemented_through_track"] == "M8R-03E-F1"
+    assert reg["implemented_through_track"] == IMPLEMENTED_THROUGH
     assert reg["recommended_next_task"] == NEXT
     assert reg["registry_successor"] == NEXT
     assert reg["original_m8r04_disposition"] == "superseded_and_split"
@@ -25,15 +26,20 @@ def test_health_status_and_debt_register_shapes():
     status = load("docs/data_capabilities/m8_repository_health_status.json")
     required = {"schema_version","task_id","baseline_sha","generated_at_utc","audit_scope","roadmap_alignment_status","implemented_through_track","original_m8r04_disposition","architecture_model","ai_behavior_policy_decoupling_status","correctness_status","security_status","performance_status","testing_status","documentation_status","p0_count","p1_count","p2_count","p3_count","blocking_findings","direct_corrections","recommended_next_task","recommended_next_task_reason","validation_commands","validation_results"}
     assert required <= set(status)
-    assert status["implemented_through_track"] == "M8R-03E-F1"
+    assert status["implemented_through_track"] == IMPLEMENTED_THROUGH
     assert status["recommended_next_task"] == NEXT
+    final = load("docs/acceptance_runs/M8R_03E_R2_FINAL_VALIDATION.json")
+    assert final["r2_f0_disposition"] == "GO_WITH_CAVEATS"
+    assert final["r2_disposition"] == "GO_WITH_CAVEATS"
+    assert final["combined_pr_disposition"] == "APPROVE_WITH_CAVEATS"
+    assert final["recommended_next_task"] == NEXT
     debt = load("docs/quality/m8_technical_debt_register.json")
     entry_required = {"debt_id","category","severity","status","affected_paths","finding","evidence","risk","recommended_action","blocking_phase","target_remediation_task"}
     assert debt["entries"]
     for entry in debt["entries"]:
         assert entry_required <= set(entry)
         assert entry["severity"] in {"P0","P1","P2","P3"}
-        assert entry["status"] in {"open","corrected_in_r1","accepted","deferred","requires_operator_decision"}
+        assert entry["status"] in {"open","corrected_in_r1","accepted","deferred","requires_operator_decision","partially_resolved_with_platform_limitations","partially_resolved"}
 
 def test_roadmap_phase_ids_unique_and_complete():
     text = (ROOT / "docs/roadmap/M8_POST_M8C_REVISED_ROADMAP.md").read_text(encoding="utf-8")

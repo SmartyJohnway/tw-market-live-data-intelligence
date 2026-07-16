@@ -1,5 +1,7 @@
 {
+  "agent_skill_contract": "implemented",
   "ai_behavior_policy_decoupling_status": "deprecated_pending_schema_migration",
+  "ai_capability_guide": "implemented",
   "architecture_model": "governed_market_evidence_platform",
   "audit_scope": [
     "README",
@@ -15,34 +17,43 @@
     ".github/workflows",
     "requirements/config manifests"
   ],
-  "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
+  "baseline_sha": "1c2144498b524e52b2bf21fce8ed00683d9eb3a7",
   "blocking_findings": [],
   "correctness_status": "GO_WITH_CAVEATS",
   "direct_corrections": [
-    "implemented_through_track set to M8R-03E-F1",
-    "recommended_next_task set to R2 filesystem containment remediation",
+    "implemented_through_track advanced from historical M8R-03E-F1 to M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
+    "active recommended_next_task and registry_successor advanced to M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
     "original M8R-04 marked superseded_and_split",
     "active architecture set to governed_market_evidence_platform",
     "AI behavior hardcoding marked deprecated_direction"
   ],
   "documentation_status": "realigned_with_lifecycle_cleanup_scheduled",
   "full_non_network_evidence": {
-    "comparison_subject": "PR_150",
-    "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
+    "affected_actual_artifacts": [
+      "frontend/public/index.html",
+      "frontend/public/context/latest.json"
+    ],
+    "affected_expected_artifacts": [
+      "research/staging/m5d/m5d_frontend_publication_candidate_01/frontend_public_baseline.json",
+      "research/staging/m5d/m5d_frontend_publication_candidate_01/sha256_manifest.json"
+    ],
     "baseline_counts": {
-      "passed": 1616,
+      "deselected": 1,
       "failed": 7,
-      "skipped": 1,
-      "deselected": 1
+      "passed": 1616,
+      "skipped": 1
     },
     "baseline_reproduced": true,
-    "current_head_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
+    "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
+    "comparison_subject": "PR_150",
     "current_head_counts": {
-      "passed": 1661,
+      "deselected": 1,
       "failed": 7,
-      "skipped": 1,
-      "deselected": 1
+      "passed": 1661,
+      "skipped": 1
     },
+    "current_head_failure_set_matches_baseline": true,
+    "current_head_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
     "current_head_status": "known_pre_existing_failures_unchanged",
     "failing_node_ids": [
       "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
@@ -53,51 +64,55 @@
       "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
       "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
     ],
-    "current_head_failure_set_matches_baseline": true,
-    "failure_set_changed": false,
     "failure_count_delta": 0,
-    "new_m8_m8r_failure_count": 0,
-    "new_f1_specific_regression_count": 0,
-    "pass_count_delta": 45,
-    "reason_code": "frontend_public_baseline_drift",
-    "affected_actual_artifacts": [
-      "frontend/public/index.html",
-      "frontend/public/context/latest.json"
-    ],
-    "affected_expected_artifacts": [
-      "research/staging/m5d/m5d_frontend_publication_candidate_01/frontend_public_baseline.json",
-      "research/staging/m5d/m5d_frontend_publication_candidate_01/sha256_manifest.json"
-    ],
-    "generated_by_command": "python scripts/run_test_profile.py full-non-network --json",
+    "failure_set_changed": false,
     "generated_at_utc": "2026-07-16T13:34:56Z",
+    "generated_by_command": "python scripts/run_test_profile.py full-non-network --json",
+    "generation_head_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
     "historical_pr_149_evidence": {
       "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
       "historical_current_counts": {
-        "passed": 1627,
+        "deselected": 1,
         "failed": 7,
-        "skipped": 1,
-        "deselected": 1
+        "passed": 1627,
+        "skipped": 1
       },
-      "historical_pass_count_delta": 11,
-      "historical_failure_set_changed": false
+      "historical_failure_set_changed": false,
+      "historical_pass_count_delta": 11
     },
-    "generation_head_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195"
+    "new_f1_specific_regression_count": 0,
+    "new_m8_m8r_failure_count": 0,
+    "pass_count_delta": 45,
+    "reason_code": "frontend_public_baseline_drift"
   },
   "generated_at_utc": "2026-07-16T00:00:00Z",
-  "implemented_through_track": "M8R-03E-F1",
+  "implemented_through_track": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
+  "latest_validation_ref": "docs/acceptance_runs/M8R_03E_R2_FINAL_VALIDATION.json",
   "original_m8r04_disposition": "superseded_and_split",
   "p0_count": 0,
   "p1_count": 2,
   "p2_count": 4,
   "p3_count": 1,
   "performance_status": "reproducible_baseline_recorded_R4_optimization_pending",
-  "recommended_next_task": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
-  "recommended_next_task_reason": "R2 filesystem containment hardening remains mandatory before Phase C.",
+  "phase_c_gate_status": "blocked_pending_R3_critical_subset",
+  "phase_c_status": "blocked_pending_M8R-03E-R3-critical-subset",
+  "r2_f0_status": "GO_WITH_CAVEATS",
+  "r2_filesystem_containment_status": "GO_WITH_CAVEATS_REMEDIATED_WITH_PORTABLE_TOCTOU_AND_WINDOWS_REPARSE_LIMITATIONS",
+  "r2_recommended_next_task": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
+  "r2_status": "GO_WITH_CAVEATS",
+  "recommended_next_task": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
+  "recommended_next_task_reason": "R2 is closed with portable TOCTOU and Windows reparse caveats; the R3 critical subset for AI behavior/evidence schema decoupling remains the Phase C gate.",
+  "recommended_successor_after_m8r_03e": {
+    "status": "historical_superseded",
+    "superseded_by": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
+    "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION"
+  },
+  "registry_successor": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
   "roadmap_alignment_status": "aligned_with_caveats",
   "schema_version": "m8_repository_health_status.v1",
-  "security_status": "GO_WITH_CAVEATS_P1_REMEDIATION_SCHEDULED",
+  "security_status": "GO_WITH_CAVEATS_R2_CONTAINMENT_REMEDIATED_WITH_PORTABLE_TOCTOU_AND_WINDOWS_REPARSE_LIMITATIONS",
   "task_id": "M8R-03E-R1-M8-POST-M8C-REPOSITORY-REALIGNMENT-AND-HEALTH-AUDIT",
-  "testing_status": "passing_targeted_checks_with_gaps",
+  "testing_status": "GO_WITH_CAVEATS_PROFILE_LIFECYCLE_REALIGNED",
   "validation_commands": [
     "git diff --check",
     "python -m compileall scripts server tests skills",
@@ -191,24 +206,15 @@
     },
     {
       "command": "python scripts/run_test_profile.py full-non-network --json",
-      "status": "fail_known_baseline_drift",
       "counts": {
-        "passed": 1661,
+        "deselected": 1,
         "failed": 7,
-        "skipped": 1,
-        "deselected": 1
+        "passed": 1661,
+        "skipped": 1
       },
       "failure_set_changed": false,
-      "new_m8_m8r_failure_count": 0
+      "new_m8_m8r_failure_count": 0,
+      "status": "fail_known_baseline_drift"
     }
-  ],
-  "agent_skill_contract": "implemented",
-  "ai_capability_guide": "implemented",
-  "registry_successor": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
-  "recommended_successor_after_m8r_03e": {
-    "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION",
-    "status": "historical_superseded",
-    "superseded_by": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION"
-  },
-  "phase_c_status": "blocked_until_M8R-03E-R2-complete"
+  ]
 }
