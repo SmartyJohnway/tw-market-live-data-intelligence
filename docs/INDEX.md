@@ -121,3 +121,5 @@ git diff --check
 
 - [M8R-02A production source executor adapter integration](protocol/M8R_02A_PRODUCTION_SOURCE_EXECUTOR_ADAPTER_INTEGRATION.md) — GO production adapter integration; M8R-02B controlled live validation remains required.
 - [M8R-03 AI Market Context Package v1](protocol/M8R_03_AI_MARKET_CONTEXT_PACKAGE_V1.md) — GO offline AI-consumable package over accepted M8R-02 orchestration results; production live execution remains gated by M8R-02B.
+
+- [M8R-03D Watchlist Evidence Source Integration and Controlled Execution](protocol/M8R_03D_WATCHLIST_EVIDENCE_SOURCE_INTEGRATION_AND_CONTROLLED_EXECUTION.md)

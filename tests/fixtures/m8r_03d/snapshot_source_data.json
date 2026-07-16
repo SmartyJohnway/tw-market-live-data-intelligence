@@ -1,0 +1,66 @@
+{
+  "targets": {
+    "TWSE:2317": {
+      "TWSE_MIS": {
+        "freshness_status": "live_candidate",
+        "high": 202,
+        "low": 198,
+        "market": "TWSE",
+        "open": 199,
+        "price": 200,
+        "retrieved_at": "2026-07-16T01:30:05Z",
+        "source_timestamp": "2026-07-16T01:30:00Z",
+        "symbol": "2317",
+        "volume": 1000
+      },
+      "TWSE_OPENAPI": {
+        "activity": {
+          "trade_volume": 1000
+        },
+        "caveats": [],
+        "market": "listed",
+        "price": {
+          "close": "198",
+          "high": "200",
+          "low": "196",
+          "open": "197"
+        },
+        "retrieved_at_utc": "2026-07-16T01:30:05Z",
+        "source_id": "TWSE_OPENAPI",
+        "symbol": "2317",
+        "trade_date": "2026-07-15"
+      }
+    },
+    "TWSE:2330": {
+      "TWSE_MIS": {
+        "freshness_status": "live_candidate",
+        "high": 102,
+        "low": 98,
+        "market": "TWSE",
+        "open": 99,
+        "price": 100,
+        "retrieved_at": "2026-07-16T01:30:05Z",
+        "source_timestamp": "2026-07-16T01:30:00Z",
+        "symbol": "2330",
+        "volume": 1000
+      },
+      "TWSE_OPENAPI": {
+        "activity": {
+          "trade_volume": 1000
+        },
+        "caveats": [],
+        "market": "listed",
+        "price": {
+          "close": "99",
+          "high": "101",
+          "low": "97",
+          "open": "98"
+        },
+        "retrieved_at_utc": "2026-07-16T01:30:05Z",
+        "source_id": "TWSE_OPENAPI",
+        "symbol": "2330",
+        "trade_date": "2026-07-15"
+      }
+    }
+  }
+}
