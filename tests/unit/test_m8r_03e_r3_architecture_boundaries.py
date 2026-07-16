@@ -3,7 +3,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 POLICY={'recommendation_allowed','trading_signal_allowed','no_recommendation','no_trading_advice','no_trading_signal','allowed_interpretations','prohibited_inferences','disallowed_topics','prohibitions'}
 def test_active_evidence_schema_has_no_product_policy_fields():
-    schema=json.loads((ROOT/'docs/contracts/schemas/m8r_watchlist_ai_context_package.v1.schema.json').read_text())
+    schema=json.loads((ROOT/'docs/contracts/schemas/m8r_watchlist_ai_context_package.v2.schema.json').read_text())
     assert not (POLICY & set(schema['properties']))
     assert not (POLICY & set(schema['properties']['targets']['items']['properties']))
 def test_evidence_layers_do_not_import_agent_policy():

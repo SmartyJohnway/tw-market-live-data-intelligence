@@ -35,8 +35,8 @@
         "latest_source_health": "generated_at_utc=2026-06-30T04:23:40Z",
         "network_calls": false,
         "repository": {
-          "branch": "codex/m8r-03e-r3-architecture-code-health-cleanup",
-          "commit": "9e6a56d",
+          "branch": "work",
+          "commit": "e425072",
           "release": "Local Release Candidate",
           "version": "v0.1.0"
         },
@@ -448,7 +448,7 @@
     ],
     "status": "pass"
   },
-  "generated_at_utc": "2026-07-16T17:42:50Z",
+  "generated_at_utc": "2026-07-16T18:12:55Z",
   "governance": {
     "check_only_non_network": true,
     "no_m5f_mutation": true,
@@ -623,8 +623,8 @@
       "latest_source_health": "generated_at_utc=2026-06-30T04:23:40Z",
       "network_calls": false,
       "repository": {
-        "branch": "codex/m8r-03e-r3-architecture-code-health-cleanup",
-        "commit": "9e6a56d",
+        "branch": "work",
+        "commit": "e425072",
         "release": "Local Release Candidate",
         "version": "v0.1.0"
       },
@@ -810,8 +810,8 @@
     "python scripts/run_operator_preflight.py --json --timeout-seconds 300"
   ],
   "repository": {
-    "branch": "codex/m8r-03e-r3-architecture-code-health-cleanup",
-    "commit": "9e6a56d",
+    "branch": "work",
+    "commit": "e425072",
     "release": "Local Release Candidate",
     "version": "v0.1.0"
   },

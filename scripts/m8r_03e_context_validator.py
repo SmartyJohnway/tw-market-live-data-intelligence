@@ -7,14 +7,14 @@ from scripts.m8r_03c_conversation_contract_validator import validate_watchlist_s
 from scripts.m8r_03c_watchlist_bundle_builder import validate_watchlist_snapshot_bundle, validate_watchlist_performance_bundle
 from scripts.m8r_03d_watchlist_execution_plan import canonical_request_hash
 
-PACKAGE_SCHEMA_VERSION='m8r_watchlist_ai_context_package.v1'
+PACKAGE_SCHEMA_VERSION='m8r_watchlist_ai_context_package.v2'
 HANDOFF_SCHEMA_VERSION='m8r_watchlist_conversation_handoff.v1'
 MANIFEST_SCHEMA_VERSION='m8r_watchlist_ai_context_manifest.v1'
 CITATION_SCHEMA_VERSION='m8r_watchlist_ai_fact_citation.v1'
 MISSING_SCHEMA_VERSION='m8r_watchlist_missing_evidence.v1'
 BUILDER_VERSION='m8r_03e_context_builder.v1'
 SCHEMA_DIR=Path('docs/contracts/schemas')
-SCHEMA_FILES=['m8r_watchlist_ai_context_package.v1.schema.json','m8r_watchlist_conversation_handoff.v1.schema.json','m8r_watchlist_ai_context_manifest.v1.schema.json','m8r_watchlist_ai_fact_citation.v1.schema.json','m8r_watchlist_missing_evidence.v1.schema.json']
+SCHEMA_FILES=['m8r_watchlist_ai_context_package.v2.schema.json','m8r_watchlist_conversation_handoff.v1.schema.json','m8r_watchlist_ai_context_manifest.v1.schema.json','m8r_watchlist_ai_fact_citation.v1.schema.json','m8r_watchlist_missing_evidence.v1.schema.json']
 FORBIDDEN_FIELDS={x.lower() for x in ['raw_payload','raw_html','raw_cells','cookies','headers','authorization','authorization_header','access_token','refresh_token','session_id','msgArray','browser_frame','complete_endpoint_dump','operator_secrets','one_shot_nonce']}
 CITATION_REQUIRES_SOURCE={'supported','supported_with_caveat','partial','stale'}
 BUNDLE_SCHEMA_BY_TYPE={'snapshot':'m8r_watchlist_snapshot_bundle.v1','performance':'m8r_watchlist_performance_bundle.v1'}
@@ -106,7 +106,7 @@ def _source_value_for(c:dict, source_artifact:dict):
 
 def validate_watchlist_ai_context_package(package:dict, *, upstream_artifacts:dict|None=None)->dict:
     issues=[]
-    try: validate_schema(package,'m8r_watchlist_ai_context_package.v1.schema.json')
+    try: validate_schema(package,'m8r_watchlist_ai_context_package.v2.schema.json')
     except Exception as e: issues.append({'code':'schema_validation_failed','detail':str(e)[:160]})
     issues+=walk_forbidden(package)
     if package.get('package_hash')!=artifact_hash_without(package,'package_hash'): issues.append({'code':'package_hash_mismatch'})

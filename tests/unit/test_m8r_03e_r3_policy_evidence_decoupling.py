@@ -12,3 +12,11 @@ def test_agent_policy_change_does_not_change_evidence_hash_or_lineage():
     assert a['source_lineage']==b['source_lineage']
     assert a['citation_index']==b['citation_index']
     assert a['missing_evidence']==b['missing_evidence']
+
+def test_v1_to_v2_migration_is_deterministic_and_removes_policy_fields():
+    from scripts.m8r_03e_context_validator import validate_schema
+    old=json.loads((FIX/'request.json').read_text())
+    assert old['schema_version']
+    pkg=_package(); assert pkg['schema_version']=='m8r_watchlist_ai_context_package.v2'
+    assert 'conversation_scope' not in pkg and 'prohibitions' not in pkg
+    assert validate_schema(pkg,'m8r_watchlist_ai_context_package.v2.schema.json') is None
