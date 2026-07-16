@@ -132,7 +132,9 @@ def test_full_non_network_status_records_exact_known_failures():
     ]
     assert evidence["failing_node_ids"] == expected
     assert evidence["baseline_reproduced"] is True
-    assert evidence["failure_set_changed_by_pr_149"] is False
+    assert evidence["failure_set_changed"] is False
+    assert evidence["current_head_failure_set_matches_baseline"] is True
+    assert "failure_set_changed_by_pr_149" not in evidence
     assert evidence["new_m8_m8r_failure_count"] == 0
 
 

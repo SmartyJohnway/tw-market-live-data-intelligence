@@ -124,3 +124,35 @@ def test_old_m8r_03f_successor_is_historical_or_superseded():
  old=REG['recommended_successor_after_m8r_03e']
  assert old['task_id']=='M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION'
  assert old['status'] in {'historical_superseded','superseded'}
+
+KNOWN_FULL_NON_NETWORK_FAILURES = [
+ "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+ "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+ "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+ "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+ "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+ "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+ "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+]
+
+def test_f1_full_non_network_evidence_current_head_and_counts():
+ evidence=REG['full_non_network_evidence']
+ assert evidence['comparison_subject']=='PR_150'
+ assert evidence['current_head_sha']==evidence['generation_head_sha']
+ assert evidence['current_head_counts']=={'passed':1661,'failed':7,'skipped':1,'deselected':1}
+ assert evidence['baseline_counts']=={'passed':1616,'failed':7,'skipped':1,'deselected':1}
+ assert evidence['pass_count_delta']==45
+
+def test_f1_full_non_network_evidence_uses_neutral_naming():
+ evidence=REG['full_non_network_evidence']
+ assert 'failure_set_changed_by_pr_149' not in evidence
+ assert 'current_pr_counts' not in evidence
+ assert 'current_pr_status' not in evidence
+ assert evidence['failure_set_changed'] is False
+ assert evidence['current_head_failure_set_matches_baseline'] is True
+
+def test_f1_full_non_network_known_failures_and_no_m8_regression():
+ evidence=REG['full_non_network_evidence']
+ assert evidence['failing_node_ids']==KNOWN_FULL_NON_NETWORK_FAILURES
+ assert evidence['new_m8_m8r_failure_count']==0
+ assert evidence['new_f1_specific_regression_count']==0

@@ -107,29 +107,23 @@
   "dynamic_research_scope_contract_defined": true,
   "execution_sha_matches_tested_remote_sha": true,
   "full_non_network_evidence": {
-    "affected_actual_artifacts": [
-      "frontend/public/index.html",
-      "frontend/public/context/latest.json"
-    ],
-    "affected_expected_artifacts": [
-      "research/staging/m5d/m5d_frontend_publication_candidate_01/frontend_public_baseline.json",
-      "research/staging/m5d/m5d_frontend_publication_candidate_01/sha256_manifest.json"
-    ],
+    "comparison_subject": "PR_150",
+    "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
     "baseline_counts": {
-      "deselected": 1,
-      "failed": 7,
       "passed": 1616,
-      "skipped": 1
+      "failed": 7,
+      "skipped": 1,
+      "deselected": 1
     },
     "baseline_reproduced": true,
-    "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
-    "current_pr_counts": {
-      "deselected": 1,
+    "current_head_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
+    "current_head_counts": {
+      "passed": 1661,
       "failed": 7,
-      "passed": 1627,
-      "skipped": 1
+      "skipped": 1,
+      "deselected": 1
     },
-    "current_pr_status": "known_pre_existing_failures_unchanged",
+    "current_head_status": "known_pre_existing_failures_unchanged",
     "failing_node_ids": [
       "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
       "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
@@ -139,11 +133,35 @@
       "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
       "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
     ],
+    "current_head_failure_set_matches_baseline": true,
+    "failure_set_changed": false,
     "failure_count_delta": 0,
-    "failure_set_changed_by_pr_149": false,
     "new_m8_m8r_failure_count": 0,
-    "pass_count_delta_due_to_pr_tests": 11,
-    "reason_code": "frontend_public_baseline_drift"
+    "new_f1_specific_regression_count": 0,
+    "pass_count_delta": 45,
+    "reason_code": "frontend_public_baseline_drift",
+    "affected_actual_artifacts": [
+      "frontend/public/index.html",
+      "frontend/public/context/latest.json"
+    ],
+    "affected_expected_artifacts": [
+      "research/staging/m5d/m5d_frontend_publication_candidate_01/frontend_public_baseline.json",
+      "research/staging/m5d/m5d_frontend_publication_candidate_01/sha256_manifest.json"
+    ],
+    "generated_by_command": "python scripts/run_test_profile.py full-non-network --json",
+    "generated_at_utc": "2026-07-16T13:34:56Z",
+    "historical_pr_149_evidence": {
+      "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
+      "historical_current_counts": {
+        "passed": 1627,
+        "failed": 7,
+        "skipped": 1,
+        "deselected": 1
+      },
+      "historical_pass_count_delta": 11,
+      "historical_failure_set_changed": false
+    },
+    "generation_head_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195"
   },
   "generated_for_task": "M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE",
   "global_ai_interpretation_policy": {
@@ -915,8 +933,8 @@
   ],
   "standard_evidence_bundles_defined": true,
   "status": "m8_through_m8c_consolidated_acceptance_pass_with_caveats",
-  "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
-  "tested_remote_sha": "b55cf800561f9997991a82b34013ff0564052710",
+  "tested_code_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
+  "tested_remote_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
   "unified_tool_api": "required_successor_capability",
   "watchlist_scope_contract_defined": true,
   "m8r_03e_f1_status": "GO_WITH_CAVEATS",
