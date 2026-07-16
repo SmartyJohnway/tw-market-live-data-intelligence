@@ -22,3 +22,13 @@ Baseline SHA: `1c2144498b524e52b2bf21fce8ed00683d9eb3a7`.
 - `performance`: reproducible performance baseline verification.
 
 Exact pass counts, pass-count deltas, temporary successor values, and exact prose migration assertions are acceptance-run evidence, not permanent registry state.
+
+## Execution profiles versus GitHub Actions
+
+Test profiles define **what** can be run locally, in Codex sandbox, or by an
+authorized runner. GitHub Actions policy defines **when** a remote runner may be
+started; it does not rename or remove profiles. Under `CI_POLICY_V1`,
+`default-ci` is available for every task in the sandbox but its GitHub workflow
+is manual-only; `full-non-network` is available locally/manual and runs
+automatically only through the single published-release `Release Validation`
+workflow. Historical and performance profiles remain manual-only.

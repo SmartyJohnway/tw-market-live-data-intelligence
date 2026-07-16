@@ -2,16 +2,6 @@ name: Windows Compatibility Smoke
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches: ["main"]
-    paths:
-      - "scripts/m8r_filesystem_safety.py"
-      - "scripts/m8r_03d_watchlist_controlled_executor.py"
-      - "scripts/run_m8r_03e_watchlist_ai_context_handoff.py"
-      - "tests/unit/test_m8r_filesystem_containment.py"
-      - "tests/unit/test_m8r_03e_r2_filesystem_containment.py"
-      - "config/test_execution_profiles.json"
-      - ".github/workflows/windows-compatibility-smoke.yml"
 
 jobs:
   windows-compatibility-smoke:

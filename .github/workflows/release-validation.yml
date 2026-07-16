@@ -1,0 +1,53 @@
+name: Release Validation
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  default-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Compile Python files
+        run: python -m compileall scripts server tests
+      - name: Run DEFAULT_CI profile
+        run: python scripts/run_test_profile.py default-ci --json
+  full-non-network:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Compile Python files
+        run: python -m compileall scripts server tests
+      - name: Run FULL_NON_NETWORK profile
+        run: python scripts/run_test_profile.py full-non-network --json
+  windows-compatibility:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install test dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Compile filesystem containment surfaces
+        run: python -m compileall scripts/m8r_filesystem_safety.py tests/unit/test_m8r_filesystem_containment.py tests/unit/test_m8r_03e_r2_filesystem_containment.py
+      - name: Run Windows filesystem containment smoke
+        run: python scripts/run_test_profile.py component-security --json

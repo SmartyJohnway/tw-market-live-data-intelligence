@@ -1,0 +1,147 @@
+{
+  "baseline_sha": "1c2144498b524e52b2bf21fce8ed00683d9eb3a7",
+  "commit_2_message": "Prove R2 authorization composition and Windows compatibility",
+  "commit_2_sha": "11537244e919b8f426acea638e3bf828a5e593b0",
+  "execution_environment": "codex_sandbox",
+  "github_runner_execution": "not_performed",
+  "github_workflows_triggered": [],
+  "limitations": [
+    "Sandbox validation does not establish GitHub runner or branch-protection behavior.",
+    "workflow_dispatch is normally available after these workflow definitions merge to the default branch.",
+    "No GitHub dispatch was attempted because this task is NO_GITHUB_CI."
+  ],
+  "policy_id": "CI_POLICY_V1",
+  "sandbox_commands": {
+    "git diff --check": {
+      "return_code": 0,
+      "status": "pass"
+    },
+    "pytest tests/unit/test_github_actions_execution_policy.py -q": {
+      "result": "3 passed",
+      "return_code": 0,
+      "status": "pass"
+    },
+    "pytest tests/unit/test_run_test_profile.py -q": {
+      "result": "21 passed",
+      "return_code": 0,
+      "status": "pass"
+    },
+    "python -m compileall scripts server tests skills": {
+      "return_code": 0,
+      "status": "pass"
+    },
+    "python scripts/run_test_profile.py changed-fast --json": {
+      "duration_seconds": 1.148,
+      "passed": 43,
+      "return_codes": [
+        0
+      ],
+      "status": "pass"
+    },
+    "python scripts/run_test_profile.py component-governance --json": {
+      "duration_seconds": 12.579,
+      "passed": 42,
+      "return_codes": [
+        0
+      ],
+      "status": "pass"
+    },
+    "python scripts/run_test_profile.py component-security --json": {
+      "duration_seconds": 1.886,
+      "passed": 16,
+      "return_codes": [
+        0
+      ],
+      "status": "pass"
+    },
+    "python scripts/run_test_profile.py default-ci --json": {
+      "duration_seconds": 20.788,
+      "passed": 741,
+      "return_codes": [
+        0
+      ],
+      "status": "pass"
+    },
+    "python scripts/validate_github_actions_execution_policy.py": {
+      "return_code": 0,
+      "status": "pass",
+      "violations": [],
+      "workflow_count": 5
+    }
+  },
+  "schema_version": "acceptance_run.v1",
+  "statement": "No independent GitHub runner execution was performed for this CI-policy change.",
+  "task_github_actions_authorization": "NO_GITHUB_CI",
+  "tested_generation_sha": "11537244e919b8f426acea638e3bf828a5e593b0",
+  "workflow_inventory_after": [
+    {
+      "file": ".github/workflows/browser-operator-e2e.yml",
+      "name": "Browser Operator E2E",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "name": "Default CI",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "file": ".github/workflows/non-network-ci.yml",
+      "name": "Full Non-Network Regression",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "file": ".github/workflows/release-validation.yml",
+      "name": "Release Validation",
+      "triggers": [
+        "release",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "file": ".github/workflows/windows-compatibility-smoke.yml",
+      "name": "Windows Compatibility Smoke",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    }
+  ],
+  "workflow_inventory_before": [
+    {
+      "file": ".github/workflows/browser-operator-e2e.yml",
+      "name": "Browser Operator E2E",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "name": "Default CI",
+      "triggers": [
+        "push(main)",
+        "pull_request(main)"
+      ]
+    },
+    {
+      "file": ".github/workflows/non-network-ci.yml",
+      "name": "Full Non-Network Regression",
+      "triggers": [
+        "workflow_dispatch",
+        "pull_request(main,labeled)"
+      ]
+    },
+    {
+      "file": ".github/workflows/windows-compatibility-smoke.yml",
+      "name": "Windows Compatibility Smoke",
+      "triggers": [
+        "workflow_dispatch",
+        "pull_request(main,paths)"
+      ]
+    }
+  ]
+}
