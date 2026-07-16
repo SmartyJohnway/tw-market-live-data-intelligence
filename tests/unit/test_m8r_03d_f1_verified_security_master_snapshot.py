@@ -125,3 +125,43 @@ def test_manifest_strengthened_rejections_and_duplicate_isin_order_independent()
     dup['records']=list(reversed(dup['records'])); m['snapshot_sha256']=sha256_json(dup)
     with pytest.raises(VerifiedSecurityMasterSnapshotError) as e: validate_verified_security_master_snapshot(dup,m,allow_fixture_snapshot=True)
     assert 'duplicate_unresolved_isin_identity' in str(e.value)
+
+def test_fabricated_validated_wrapper_revalidated_and_rejected():
+    validated=load_verified_security_master_snapshot(FIX/'snapshot.json', FIX/'manifest.json', allow_fixture_snapshot=True)
+    tampered=copy.deepcopy(validated.snapshot); tampered['records'][0]['record_hash']='0'*64
+    forged=ValidatedVerifiedSecurityMasterSnapshot(snapshot=tampered, manifest=validated.manifest, lookup=validated.lookup, validation={'valid':True})
+    with pytest.raises(VerifiedSecurityMasterSnapshotError): build_execution_plan(_req(['TWSE:2330']),bundle_type='snapshot',security_master=forged)
+
+def test_snapshot_and_manifest_json_schema_rejections():
+    snap=load('snapshot.json'); man=load('manifest.json')
+    s=copy.deepcopy(snap); del s['records'][0]['identity']
+    m=copy.deepcopy(man); m['snapshot_sha256']=sha256_json(s)
+    with pytest.raises(VerifiedSecurityMasterSnapshotError) as e: validate_verified_security_master_snapshot(s,m,allow_fixture_snapshot=True)
+    assert 'snapshot_schema_invalid' in str(e.value)
+    m2=copy.deepcopy(man); m2['record_count']='14'
+    with pytest.raises(VerifiedSecurityMasterSnapshotError) as e: validate_verified_security_master_snapshot(snap,m2,allow_fixture_snapshot=True)
+    assert 'manifest_schema_invalid' in str(e.value)
+
+def test_duplicate_isin_policy_explicit_quarantine_only():
+    snap=load('snapshot.json'); man=load('manifest.json')
+    dup=copy.deepcopy(snap); dup['records'][0]['identity']['isin']=dup['records'][1]['identity']['isin']; dup['records'][0]['execution_eligibility']={'status':'blocked','reason_codes':['unsupported_instrument_type']}; dup['records'][0]['record_hash']=sha256_json({k:v for k,v in dup['records'][0].items() if k!='record_hash'})
+    m=copy.deepcopy(man); m['snapshot_sha256']=sha256_json(dup)
+    with pytest.raises(VerifiedSecurityMasterSnapshotError) as e: validate_verified_security_master_snapshot(dup,m,allow_fixture_snapshot=True)
+    assert 'duplicate_unresolved_isin_identity' in str(e.value)
+    for idx in (0,1):
+        dup['records'][idx]['classification']['classification_status']='quarantine_conflict'; dup['records'][idx]['conflicts']=['identity_conflict']; dup['records'][idx]['execution_eligibility']={'status':'blocked','reason_codes':['classification_quarantine_or_conflict']}; dup['records'][idx]['record_hash']=sha256_json({k:v for k,v in dup['records'][idx].items() if k!='record_hash'})
+    m['snapshot_sha256']=sha256_json(dup)
+    assert validate_verified_security_master_snapshot(dup,m,allow_fixture_snapshot=True)['valid']
+
+def test_conflicting_lifecycle_identity_keys_quarantined():
+    rec=load('classification_records.json'); ctx=load('source_context.json')
+    event={"source_family":"twse_company_delisted","source_url":"https://www.twse.com.tw/zh/listed/suspend-listing.html","security_code":"2330","canonical_target_id":"TPEX:6488","event_type":"twse_delisted","effective_date":"2026-01-01","evidence_status":"official_table"}
+    snap,_=export_verified_security_master_snapshot(classification_records=rec,lifecycle_events=[event],source_context=ctx,generated_at_utc='2026-07-16T00:00:00Z',effective_observation_date='2026-07-16')
+    assert snap['quarantined_lifecycle_events'][0]['quarantine_reason']=='lifecycle_identity_conflict'
+    assert all(not r['lifecycle']['events'] for r in snap['records'] if r['canonical_target_id'] in {'TWSE:2330','TPEX:6488'})
+
+def test_isin_only_record_rejected_before_invalid_canonical_target():
+    rec=load('classification_records.json'); ctx=load('source_context.json')
+    bad=copy.deepcopy(rec[:1]); bad[0]['identity']['security_code']=None
+    with pytest.raises(Exception) as e: export_verified_security_master_snapshot(classification_records=bad,lifecycle_events=[],source_context=ctx,generated_at_utc='2026-07-16T00:00:00Z',effective_observation_date='2026-07-16')
+    assert 'missing_runtime_identity' in str(e.value) or 'invalid_canonical_target_identity' in str(e.value)

@@ -1,9 +1,10 @@
 from __future__ import annotations
 from dataclasses import dataclass
 import json, re
+import jsonschema
 from datetime import datetime, timezone, date
 from pathlib import Path
-from scripts.m8r_03d_f1_security_master_snapshot_exporter import SNAPSHOT_SCHEMA_VERSION, MANIFEST_SCHEMA_VERSION, SUPPORTED_PRODUCER_VERSIONS, sha256_json, FORBIDDEN_RAW_FIELDS, CONFIRMED, QUARANTINE, compute_schema_hash, compute_skill_contract_hash, parse_utc_timestamp, validate_iso_date
+from scripts.m8r_03d_f1_security_master_snapshot_exporter import SNAPSHOT_SCHEMA_VERSION, MANIFEST_SCHEMA_VERSION, SUPPORTED_PRODUCER_VERSIONS, sha256_json, FORBIDDEN_RAW_FIELDS, CONFIRMED, QUARANTINE, compute_schema_hash, compute_skill_contract_hash, parse_utc_timestamp, validate_iso_date, SNAPSHOT_SCHEMA_PATH, MANIFEST_SCHEMA_PATH
 
 RESOLUTION_SCHEMA_VERSION='m8r_03d_f1_security_identity_resolution.v1'
 class VerifiedSecurityMasterSnapshotError(ValueError): pass
@@ -33,9 +34,15 @@ def _timestamps_valid(snapshot):
             for k in ('effective_date','announcement_date','maturity_date','last_trading_date','termination_effective_date','contract_termination_date'):
                 if k in e: validate_iso_date(e.get(k), allow_unknown=True)
 
+def _load_schema(path): return json.loads(Path(path).read_text(encoding='utf-8'))
+
 def validate_verified_security_master_snapshot(snapshot:dict, manifest:dict, *, allow_fixture_snapshot:bool=False, require_current_skill_contract:bool=True)->dict:
     issues=[]
     def issue(c): issues.append({'code':c})
+    try: jsonschema.Draft202012Validator(_load_schema(SNAPSHOT_SCHEMA_PATH)).validate(snapshot)
+    except Exception as e: issue('snapshot_schema_invalid')
+    try: jsonschema.Draft202012Validator(_load_schema(MANIFEST_SCHEMA_PATH)).validate(manifest)
+    except Exception as e: issue('manifest_schema_invalid')
     if manifest.get('schema_version')!=MANIFEST_SCHEMA_VERSION: issue('unsupported_manifest_schema')
     if snapshot.get('schema_version')!=SNAPSHOT_SCHEMA_VERSION: issue('unsupported_snapshot_schema')
     if manifest.get('validation_status')!='passed': issue('manifest_validation_not_passed')
@@ -62,7 +69,7 @@ def validate_verified_security_master_snapshot(snapshot:dict, manifest:dict, *, 
         isin=(r.get('identity') or {}).get('isin')
         if isin: isin_groups.setdefault(isin,[]).append(r)
     for isin, group in isin_groups.items():
-        identities={r.get('canonical_target_id') for r in group}; quarantined=all(((r.get('classification') or {}).get('classification_status') in QUARANTINE or (r.get('execution_eligibility') or {}).get('status')=='blocked') for r in group)
+        identities={r.get('canonical_target_id') for r in group}; quarantined=all(((r.get('classification') or {}).get('classification_status') in QUARANTINE or any(c in {'identity_conflict','classification_conflict'} for c in ((r.get('conflicts') or []) + ((r.get('classification') or {}).get('conflicts') or [])))) for r in group)
         if len(identities)>1 and not quarantined: issue('duplicate_unresolved_isin_identity')
     if issues: raise VerifiedSecurityMasterSnapshotError(json.dumps(issues,ensure_ascii=False,sort_keys=True))
     return {'valid':True,'issue_count':0,'require_current_skill_contract':require_current_skill_contract}

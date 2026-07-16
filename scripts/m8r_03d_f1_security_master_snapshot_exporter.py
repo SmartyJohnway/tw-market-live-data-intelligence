@@ -11,6 +11,9 @@ PRODUCER_VERSION='m8r_03d_f1_snapshot_exporter.v1'
 SUPPORTED_PRODUCER_VERSIONS={PRODUCER_VERSION}
 SKILL_PATH='skills/tw-security-master-classifier'
 SKILL_SCHEMA_DIR=Path(SKILL_PATH)/'references'/'schemas'
+F1_SCHEMA_DIR=Path('docs/contracts/schemas')
+SNAPSHOT_SCHEMA_PATH=F1_SCHEMA_DIR/'tw_verified_security_master_snapshot.v1.schema.json'
+MANIFEST_SCHEMA_PATH=F1_SCHEMA_DIR/'tw_verified_security_master_snapshot_manifest.v1.schema.json'
 FORBIDDEN_RAW_FIELDS={'raw_html','raw_payload','raw_cells','html','cookies','session_id','access_token','refresh_token'}
 MARKET_MAP={'twse':'TWSE','tpex':'TPEX','listed':'TWSE','tpex_otc':'TPEX'}
 CONFIRMED={'confirmed_dual_lane','confirmed_official_single_lane'}
@@ -19,21 +22,11 @@ EXEC_TYPES={'common_share','etf'}
 OBS_STATUSES={'observed_in_capture','observed_in_latest_verified_snapshot','fixture_observation_only','historical_capture'}
 DATE_FIELDS={'effective_date','announcement_date','issue_date','listing_date','registration_date','last_trading_date','maturity_date','termination_effective_date','contract_termination_date','source_updated_date'}
 
-SNAPSHOT_SCHEMA_DEFINITION={
- 'schema_version':SNAPSHOT_SCHEMA_VERSION,'required_top_level':['schema_version','snapshot_id','generated_at_utc','effective_observation_date','source_skill','coverage','records'],
- 'record_required':['record_id','canonical_target_id','identity','classification','observation','lifecycle','execution_eligibility','evidence_summary','conflicts','caveats','record_hash'],
- 'identity_required':['security_code','security_name_zh','security_name_en','isin','cfi'],
- 'manifest_schema_version':MANIFEST_SCHEMA_VERSION,
-}
-MANIFEST_SCHEMA_DEFINITION={
- 'schema_version':MANIFEST_SCHEMA_VERSION,'required':['schema_version','snapshot_id','snapshot_path','generated_at_utc','effective_observation_date','record_count','lifecycle_event_count','snapshot_sha256','schema_sha256','skill_contract_hash','producer_version','validation_status','validation_issues','coverage']
-}
-
 def canonical_json(v:Any)->str:
     return json.dumps(v,ensure_ascii=False,sort_keys=True,separators=(',',':'),allow_nan=False)
 def sha256_json(v:Any)->str: return hashlib.sha256(canonical_json(v).encode()).hexdigest()
-def compute_schema_hash()->str: return sha256_json({'snapshot':SNAPSHOT_SCHEMA_DEFINITION,'manifest':MANIFEST_SCHEMA_DEFINITION})
-
+def _load_json(path:Path)->dict: return json.loads(path.read_text(encoding='utf-8'))
+def compute_schema_hash()->str: return sha256_json({'snapshot_schema':_load_json(SNAPSHOT_SCHEMA_PATH),'manifest_schema':_load_json(MANIFEST_SCHEMA_PATH)})
 def parse_utc_timestamp(s:str)->datetime:
     if not isinstance(s,str): raise ValueError('invalid_utc_timestamp')
     d=datetime.fromisoformat(s[:-1]+'+00:00' if s.endswith('Z') else s)
@@ -59,6 +52,7 @@ def validate_skill_classification_record(record:dict)->None:
     jsonschema.Draft202012Validator(_load_skill_schema('classification-result.schema.json')).validate(record)
     ident=record.get('identity') or {}; cls=record.get('classification') or {}; obs=record.get('observation') or {}
     if not ident.get('security_code') and not ident.get('isin'): raise ValueError('missing_identity')
+    if cls.get('classification_status') not in QUARANTINE and (not ident.get('security_code') or _market(cls.get('market')) not in {'TWSE','TPEX'}): raise ValueError('missing_runtime_identity')
     if cls.get('market') not in {'twse','tpex','emerging','gisa','public_unlisted','derivatives','fund_registry','gold_spot','index_registry','sto_registry','listed','tpex_otc'}: raise ValueError('invalid_market')
     if obs.get('status') not in OBS_STATUSES: raise ValueError('invalid_observation_status')
     parse_utc_timestamp(obs['observed_at']) if obs.get('observed_at') else None
@@ -73,8 +67,10 @@ def validate_skill_lifecycle_event(event:dict)->None:
 
 def _market(m): return MARKET_MAP.get((m or '').lower(), m.upper() if isinstance(m,str) and m.isupper() else m)
 def _target_id(rec):
-    ident=rec.get('identity') or {}; cls=rec.get('classification') or {}
-    return rec.get('canonical_target_id') or f"{_market(cls.get('market'))}:{ident.get('security_code')}"
+    ident=rec.get('identity') or {}; cls=rec.get('classification') or {}; market=_market(cls.get('market')); code=ident.get('security_code')
+    if rec.get('canonical_target_id'): return rec.get('canonical_target_id')
+    if market not in {'TWSE','TPEX'} or not code: raise ValueError('invalid_canonical_target_identity')
+    return f"{market}:{code}"
 def _event_id(ev): return ev.get('event_id') or ev.get('event_key') or sha256_json({k:v for k,v in ev.items() if k!='record_hash'})[:16]
 
 def _assign_lifecycle_events(records:list[dict], events:list[dict])->tuple[dict[str,list[dict]],list[dict]]:
@@ -86,20 +82,27 @@ def _assign_lifecycle_events(records:list[dict], events:list[dict])->tuple[dict[
         if ident.get('security_code'):
             by_code.setdefault(ident['security_code'],[]).append(rr); by_market_code.setdefault((_market(cls.get('market')),ident['security_code']),[]).append(rr)
     assigned={_target_id(r):[] for r in records}; quarantine=[]
-    for ev in events:
-        e=copy.deepcopy(ev)|{'event_id':_event_id(ev)}; matches=[]
-        if e.get('isin'): matches=by_isin.get(e['isin'],[])
-        elif e.get('canonical_target_id'): matches=[by_cid[e['canonical_target_id']]] if e.get('canonical_target_id') in by_cid else []
-        elif e.get('market') and e.get('security_code'): matches=by_market_code.get((_market(e.get('market')),str(e.get('security_code'))),[])
+    def ids_for(e):
+        key_matches=[]
+        if e.get('isin'): key_matches.append(('isin', by_isin.get(e['isin'],[])))
+        if e.get('canonical_target_id'): key_matches.append(('canonical_target_id', [by_cid[e['canonical_target_id']]] if e.get('canonical_target_id') in by_cid else []))
+        if e.get('market') and e.get('security_code'): key_matches.append(('market_security_code', by_market_code.get((_market(e.get('market')),str(e.get('security_code'))),[])))
         elif e.get('security_code'):
-            all_matches=by_code.get(str(e.get('security_code')),[]); matches=all_matches if len(all_matches)==1 else []
-            if len(all_matches)>1:
-                e['quarantine_reason']='lifecycle_identity_ambiguous'; quarantine.append(e); continue
-        if len(matches)==1: assigned[matches[0]['cid']].append(e)
-        elif len(matches)>1:
-            e['quarantine_reason']='lifecycle_identity_ambiguous'; quarantine.append(e)
-        else:
-            e['quarantine_reason']='lifecycle_identity_unresolved'; quarantine.append(e)
+            all_matches=by_code.get(str(e.get('security_code')),[])
+            key_matches.append(('security_code', all_matches if len(all_matches)==1 else []))
+            if len(all_matches)>1: return [], 'lifecycle_identity_ambiguous'
+        if not key_matches: return [], 'lifecycle_identity_unresolved'
+        cid_sets=[{m['cid'] for m in matches} for _k,matches in key_matches]
+        if any(not x for x in cid_sets): return [], 'lifecycle_identity_unresolved'
+        first=cid_sets[0]
+        if any(x!=first for x in cid_sets[1:]): return [], 'lifecycle_identity_conflict'
+        if len(first)!=1: return [], 'lifecycle_identity_ambiguous'
+        return [by_cid[next(iter(first))]], None
+    for ev in events:
+        e=copy.deepcopy(ev)|{'event_id':_event_id(ev)}; matches, problem=ids_for(e)
+        if problem:
+            e['quarantine_reason']=problem; quarantine.append(e); continue
+        assigned[matches[0]['cid']].append(e)
     return assigned, quarantine
 
 def derive_lifecycle_view(record:dict, events:list[dict], *, as_of:str)->dict:

@@ -20,7 +20,7 @@
   "lifecycle_event_count": 2,
   "producer_version": "m8r_03d_f1_snapshot_exporter.v1",
   "record_count": 14,
-  "schema_sha256": "8408f9c7358b69ff29d87b554ecc57caa13a27f699621bc29eac685d2746a538",
+  "schema_sha256": "eb5f9c7c7d37147595ee2c29338c8e976b10a6d6523505e04ebc7c4af6ab7a94",
   "schema_version": "tw_verified_security_master_snapshot_manifest.v1",
   "skill_contract_hash": "488b3e04af2e318cd387b0dfdcbad02be4f2c3f495539c3e436698464f37d77a",
   "snapshot_id": "fixture-m8r03d-f1",

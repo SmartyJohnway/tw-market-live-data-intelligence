@@ -4,7 +4,7 @@ from datetime import datetime,timezone
 from typing import Any
 from scripts.m8r_03c_conversation_contract_validator import validate_watchlist_snapshot_request, validate_watchlist_performance_request, assert_no_forbidden_keys
 from scripts.m8a_official_eod_instrument_classifier import build_security_master_lookup, normalize_market as _sm_market, normalize_instrument_type
-from scripts.m8r_03d_f1_security_master_snapshot_adapter import ValidatedVerifiedSecurityMasterSnapshot, load_verified_security_master_snapshot, resolve_verified_security_identity, VerifiedSecurityMasterSnapshotError
+from scripts.m8r_03d_f1_security_master_snapshot_adapter import ValidatedVerifiedSecurityMasterSnapshot, build_verified_security_master_lookup, load_verified_security_master_snapshot, validate_verified_security_master_snapshot, resolve_verified_security_identity, VerifiedSecurityMasterSnapshotError
 
 AUTH_SCHEMA_VERSION='m8r_03d_watchlist_execution_authorization.v1'
 PLAN_SCHEMA_VERSION='m8r_03d_watchlist_execution_plan.v1'
@@ -101,7 +101,8 @@ def _resolve_verified_security(tid: str, snapshot_lookup, *, allow_fixture_snaps
 
 def _resolve_security(tid: str, security_master=None, *, allow_fixture_snapshot: bool=False) -> dict:
     if isinstance(security_master, ValidatedVerifiedSecurityMasterSnapshot):
-        return _resolve_verified_security(tid, security_master.lookup, allow_fixture_snapshot=allow_fixture_snapshot)
+        validate_verified_security_master_snapshot(security_master.snapshot, security_master.manifest, allow_fixture_snapshot=allow_fixture_snapshot)
+        return _resolve_verified_security(tid, build_verified_security_master_lookup(security_master.snapshot), allow_fixture_snapshot=allow_fixture_snapshot)
     if isinstance(security_master, dict) and (security_master.get('schema_version')=='tw_verified_security_master_snapshot.v1' or (security_master.get('snapshot') and security_master.get('by_canonical') is not None)):
         raise VerifiedSecurityMasterSnapshotError('unvalidated_verified_snapshot_injection_rejected')
     parts=tid.split(':'); requested={'target_id':tid}; evidence=[]

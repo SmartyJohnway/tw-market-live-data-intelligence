@@ -21,13 +21,13 @@ Normal watchlist requests do **not** invoke Skill probes, source scraping, lifec
 
 ## Snapshot schema
 
-The snapshot schema is `tw_verified_security_master_snapshot.v1`. Top-level fields are `snapshot_id`, `generated_at_utc`, `effective_observation_date`, `source_skill`, `coverage`, and `records`. Each record carries bounded identity, canonical Skill classification taxonomy, observation provenance, derived lifecycle view, execution eligibility, evidence summary, conflicts, caveats, and `record_hash`.
+The snapshot schema is `tw_verified_security_master_snapshot.v1` and is defined as a canonical Draft 2020-12 JSON Schema at `docs/contracts/schemas/tw_verified_security_master_snapshot.v1.schema.json`. Top-level fields are `snapshot_id`, `generated_at_utc`, `effective_observation_date`, `source_skill`, `coverage`, and `records`. Each record carries bounded identity, canonical Skill classification taxonomy, observation provenance, derived lifecycle view, execution eligibility, evidence summary, conflicts, caveats, and `record_hash`.
 
 Raw HTML cells and full official payloads are forbidden in runtime snapshots.
 
 ## Manifest schema and integrity
 
-The manifest schema is `tw_verified_security_master_snapshot_manifest.v1`. It records `snapshot_sha256`, `schema_sha256`, `skill_contract_hash`, producer version, record counts, lifecycle event counts, coverage, and `validation_status`.
+The manifest schema is `tw_verified_security_master_snapshot_manifest.v1` and is defined as a canonical Draft 2020-12 JSON Schema at `docs/contracts/schemas/tw_verified_security_master_snapshot_manifest.v1.schema.json`. It records `snapshot_sha256`, `schema_sha256`, `skill_contract_hash`, producer version, record counts, lifecycle event counts, coverage, and `validation_status`.
 
 The loader fails closed when schema versions drift, producer versions are unsupported, schema hashes mismatch, snapshot hashes mismatch, generated/effective timestamps differ between manifest and snapshot, record or lifecycle event counts mismatch, snapshot IDs mismatch, coverage differs, Skill contract hashes mismatch, record hashes mismatch, duplicate canonical target IDs appear, unresolved duplicate ISIN identities are detected, forbidden raw fields appear, or `validation_status != passed`. By default it also requires `manifest.skill_contract_hash` to match the current repository Skill contract hash. Historical pinned snapshots may be accepted only by an explicit compatibility caller that sets `require_current_skill_contract=False`; this is for audit/replay, not production watchlist execution.
 
@@ -57,7 +57,7 @@ The resolver supports canonical IDs, exact ISIN, exact code with market context,
 
 ## M8R-03D planner integration
 
-`build_execution_plan` accepts a `ValidatedVerifiedSecurityMasterSnapshot` object or explicit snapshot/manifest paths. Plain dict snapshot/lookup injection is rejected for verified evidence; legacy bounded seed dictionaries remain only for existing test/backward-compatibility paths. Invalid configured snapshots raise an adapter error and do not fall back to the bounded seed. Planned targets retain `snapshot_id`, `record_id`, `record_hash`, classification status, lifecycle state, execution eligibility, and resolution evidence references.
+`build_execution_plan` accepts a `ValidatedVerifiedSecurityMasterSnapshot` object or explicit snapshot/manifest paths. Validated wrappers are revalidated at the planner boundary and their lookup is rebuilt from the validated snapshot. Plain dict snapshot/lookup injection is rejected for verified evidence; legacy bounded seed dictionaries remain only for existing test/backward-compatibility paths. Invalid configured snapshots raise an adapter error and do not fall back to the bounded seed. Planned targets retain `snapshot_id`, `record_id`, `record_hash`, classification status, lifecycle state, execution eligibility, and resolution evidence references.
 
 ## Fixture policy
 
