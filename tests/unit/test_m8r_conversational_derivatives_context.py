@@ -1,4 +1,8 @@
-from scripts.run_m8r_conversational_derivatives_context import conversation_resolution_projection, safe_root
+from pathlib import Path
+import shutil
+
+from scripts.m8r_taifex_current_contract_resolver import FixtureUniverseProvider
+from scripts.run_m8r_conversational_derivatives_context import conversation_resolution_projection, run, safe_root
 
 
 def test_conversation_resolution_projection_is_ai_safe():
@@ -19,3 +23,15 @@ def test_cli_artifact_root_guard():
             pass
         else:
             raise AssertionError(bad)
+
+
+def test_unavailable_exact_fixture_creates_no_ai_package(tmp_path):
+    root = f"research/m8r/live_validation/unit-exact-unavailable-{tmp_path.name}"
+    shutil.rmtree(root, ignore_errors=True)
+    provider = FixtureUniverseProvider([{"contracts": []}, {"contracts": []}])
+    out = run("TXO 209912 99999 C monthly", root, resolver=provider)
+    assert out["status"] == "blocked"
+    assert out["resolution"]["resolution_status"] == "exact_contract_unavailable"
+    assert out["ai_package_id"] is None
+    assert not list(Path(root).glob("*/ai_market_context_v1.json"))
+    shutil.rmtree(root, ignore_errors=True)

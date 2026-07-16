@@ -8,6 +8,9 @@
     "TAIFEX_OPENAPI"
   ],
   "base_sha": "0553e48371d90a7cfceea444ee36c36f7fd44db7",
+  "conversational_derivatives_eod_resolution_ready": true,
+  "conversational_derivatives_live_execution_ready": false,
+  "conversational_derivatives_resolution_ready": true,
   "declared_not_runtime_source_families": [
     "MOPS"
   ],
@@ -27,7 +30,7 @@
     "validation_only_not_primary_source": true
   },
   "implemented_through_track": "M8C",
-  "live_validation_completed": true,
+  "live_validation_completed": false,
   "m8_active_consolidated_status": {
     "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
     "implemented_through": "M8C",
@@ -62,10 +65,10 @@
   "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go",
   "m8r_02a_status": "GO",
   "m8r_02b_f1_status": "NO_GO",
-  "m8r_02b_f2_status": "GO",
-  "m8r_02b_final_disposition": "GO_AFTER_CONVERSATIONAL_CURRENT_CONTRACT_RESOLUTION",
+  "m8r_02b_f2_status": "NO_GO",
+  "m8r_02b_final_disposition": "NO_GO_PENDING_TRUE_TAIFEX_MIS_CONVERSATIONAL_CURRENT_EXECUTION",
   "m8r_02b_historical_status": "NO_GO",
-  "m8r_02b_required": false,
+  "m8r_02b_required": true,
   "m8r_02b_status": "NO_GO",
   "new_m8_failures": [],
   "new_m8c_failures": [],
@@ -87,9 +90,9 @@
     "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710"
   },
   "production_executor_adapters_ready": true,
-  "production_live_execution_ready": true,
-  "recommended_next_task": "M8R-03B-AI-CONVERSATION-INPUT-OUTPUT-DESIGN-REVIEW",
-  "recommended_successor_after_m8r_02b_f2": "M8R-03B-AI-CONVERSATION-INPUT-OUTPUT-DESIGN-REVIEW",
+  "production_live_execution_ready": false,
+  "recommended_next_task": "M8R-02B-F2-TRUE-TAIFEX-MIS-CONVERSATIONAL-CURRENT-LIVE-REVALIDATION",
+  "recommended_successor_after_m8r_02b_f2": "M8R-02B-F2-TRUE-TAIFEX-MIS-CONVERSATIONAL-CURRENT-LIVE-REVALIDATION",
   "schema_version": "m8_source_capability_registry.v1",
   "sources": [
     {

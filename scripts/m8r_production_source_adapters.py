@@ -307,7 +307,7 @@ def execute_taifex_mis_operation(*, operation, target, plan, execution_time_utc,
         detail = None
         for item in result.get("selector_results") or result.get("failures") or []:
             if isinstance(item, dict):
-                detail = item.get("reason_code") or item.get("status") or item.get("reason")
+                detail = item.get("reason_code") or item.get("error") or item.get("status") or item.get("reason")
                 break
         return _failed(map_taifex_mis_detail_reason(detail), count=2, detail_reason=detail)
     ctx = adapt_taifex_mis_observation(result["observations"][0])

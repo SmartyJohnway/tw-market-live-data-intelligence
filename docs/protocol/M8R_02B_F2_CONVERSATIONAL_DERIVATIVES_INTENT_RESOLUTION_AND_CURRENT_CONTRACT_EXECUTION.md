@@ -1,8 +1,8 @@
 # M8R-02B-F2 Conversational Derivatives Intent Resolution and Current Contract Execution
 
-Status: `m8r_02b_f2_go_after_conversational_current_contract_resolution`
+Status: `m8r_02b_f2_no_go_pending_true_taifex_mis_conversational_current_execution`
 
-Decision: `GO`
+Decision: `NO_GO`
 
 Starting baseline: `8e5e39c75f5e6d22b2573ada5d3c6348a11bc91b`.
 
@@ -49,13 +49,13 @@ Execution sequence:
 
 Futures resolve `TX` to nearest active regular-session monthly future.
 
-Options resolve `TXO` to the nearest active executable expiry by default, both call and put, and nearest actually listed strike to the reference basis. In this F2 implementation, exact runtime execution remains constrained by the existing exact-derivative contracts, so unspecified current option prompts select the nearest active monthly executable expiry while explicit weekly resolution is retained as a resolver fixture/policy path until the lower exact execution contract is extended. The selected set is capped at six exact option contracts and does not retain the full option chain.
+Options resolve `TXO` to nearest active TAIFEX MIS executable expiry by default, both call and put, and nearest actually listed strike to the reference basis. `nearest_active` is not rewritten to monthly; explicit monthly and weekly preferences filter only when the user says monthly or weekly. The selected set is capped at six exact option contracts and does not retain the full option chain.
 
 ## Monthly, weekly, strike, and call/put policies
 
 - Explicit monthly → nearest active monthly contract.
 - Explicit weekly → nearest active weekly contract.
-- Current/near only → nearest active executable expiry; the resolver records the selected contract type and does not describe a monthly contract as weekly or vice versa.
+- Current/near only → nearest active TAIFEX MIS executable expiry regardless of weekly/monthly; the resolver records the selected contract type and does not describe a monthly contract as weekly or vice versa.
 - Strike uses nearest actually listed strike to the current/reference basis or explicit anchor.
 - Ties select both equidistant strikes deterministically.
 - Option call/put omitted → both.
@@ -91,7 +91,7 @@ Live prompts for a new run ID:
 - `EXACT_TAIFEX_OPTION_UNAVAILABLE_NEGATIVE_CONTROL`: `TXO 202607 40000 C monthly`
 - Optional: `CONVERSATIONAL_TAIFEX_OPTION_WEEKLY_BOTH`: `現在最近到期的台指週選怎麼樣？`
 
-Network validation was not committed as static source evidence because live identities are time-dependent; each operator run stores `derivatives_intent.json`, `derivatives_resolution_record.json`, orchestration artifacts, and AI package artifacts under the supplied run root.
+The prior OpenAPI-only run is superseded. F2 remains `NO_GO` until a new controlled run proves TAIFEX MIS current futures/options execution for all required conversational cases. Each future operator run must store `derivatives_intent.json`, `derivatives_resolution_record.json`, MIS operation results, optional OpenAPI enrichment, and AI package artifacts under the supplied run root.
 
 ## Readiness flags
 
@@ -99,14 +99,15 @@ Network validation was not committed as static source evidence because live iden
 {
   "m8r_02b_historical_status": "NO_GO",
   "m8r_02b_f1_status": "NO_GO",
-  "m8r_02b_f2_status": "GO",
-  "m8r_02b_final_disposition": "GO_AFTER_CONVERSATIONAL_CURRENT_CONTRACT_RESOLUTION",
+  "m8r_02b_f2_status": "NO_GO",
+  "m8r_02b_final_disposition": "NO_GO_PENDING_TRUE_TAIFEX_MIS_CONVERSATIONAL_CURRENT_EXECUTION",
   "conversational_derivatives_resolution_ready": true,
-  "conversational_derivatives_live_execution_ready": true,
+  "conversational_derivatives_eod_resolution_ready": true,
+  "conversational_derivatives_live_execution_ready": false,
   "exact_derivatives_execution_ready": true,
-  "production_live_execution_ready": true,
-  "live_validation_completed": true,
-  "m8r_02b_required": false,
+  "production_live_execution_ready": false,
+  "live_validation_completed": false,
+  "m8r_02b_required": true,
   "m8r04_completed": false
 }
 ```
