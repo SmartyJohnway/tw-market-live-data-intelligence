@@ -93,10 +93,13 @@ def _apply_budget(pkg, policy):
                 if t.get(sec):
                     omitted['citations']+=_remove_citations_for_paths(pkg,t,[f"/targets/{t['target_position']}/{sec}/"])
                     t[sec]={}; t['missing_evidence'].append(_missing(t['target_id'], {'current_observation':'current_observation','eod_reference':'official_eod_reference','performance':'performance'}[sec], 'context_budget_omitted', None, False, 'requires_new_source', {'budget_limit':'max_citations_per_target'})); pkg['missing_evidence'].append(t['missing_evidence'][-1]); t['caveats'].append('context_budget_omitted_'+sec)
-            if len(t['citations'])>limit: pkg['context_budget']['truncated']=True
+            if len(t['citations'])>limit:
+                pkg['context_budget']['truncated']=True
+                pkg['context_budget']['citation_budget_satisfied']=False
+                pkg['context_budget']['targets_exceeding_citation_budget'].append(t['target_id'])
     for key,limit in [('missing_evidence',policy.get('max_missing_evidence_entries')),('caveats',policy.get('max_caveat_entries'))]:
         if limit is not None and len(pkg[key])>limit:
-            omitted[key]=len(pkg[key])-limit; pkg[key]=pkg[key][:limit]; pkg['context_budget']['truncated']=True
+            omitted[key]=len(pkg[key])-limit; pkg[key]=pkg[key][:limit]; pkg['context_budget']['truncated']=True; pkg['context_budget']['list_budget_satisfied']=False
     # Serialized-byte pressure: deterministic low-priority removal until within budget.
     max_bytes=policy.get('max_serialized_bytes')
     if max_bytes:
@@ -111,17 +114,14 @@ def _apply_budget(pkg, policy):
         pkg['context_budget']['truncated']=True
     if pkg['context_budget']['truncated'] and 'context_truncated' not in pkg['caveats']: pkg['caveats'].append('context_truncated')
     _recompute_after_budget(pkg)
-    pkg['context_budget']['final_serialized_bytes']=len(canonical_json(pkg).encode())
-    max_bytes=policy.get('max_serialized_bytes')
-    if max_bytes and pkg['context_budget']['final_serialized_bytes']>max_bytes:
-        pkg['context_budget']['budget_satisfied']=False
-        pkg['context_budget']['minimum_required_context_exceeds_budget']=True
+    pkg['context_budget']['mandatory_citation_count']=sum(len(t['citations']) for t in pkg['targets'])
+    pkg['context_budget']['final_citation_count']=len(pkg['citation_index'])
 
 def build_watchlist_ai_context_package(*, validated_request:dict, execution_plan:dict, execution_result:dict, watchlist_bundle:dict, generated_at_utc:str, context_policy:dict|None=None) -> dict:
     upstream_validation=validate_m8r_03e_upstream_artifacts(validated_request=validated_request, execution_plan=execution_plan, execution_result=execution_result, watchlist_bundle=watchlist_bundle)
     if not upstream_validation['valid']: raise ValueError('upstream_artifact_validation_failed:'+canonical_json(upstream_validation['issues']))
     policy={**DEFAULT_POLICY,**(context_policy or {})}; bundle_type=upstream_validation['bundle_type']
-    pkg={'schema_version':PACKAGE_SCHEMA_VERSION,'context_package_id':'','generated_at_utc':generated_at_utc,'request':_project_request(validated_request,bundle_type),'conversation_scope':{'analysis_mode':bundle_type if bundle_type in {'snapshot','performance'} else 'comparison','allowed_topics':['identity','current observation','completed EOD reference','bounded historical performance','coverage','missing evidence','caveats'],'disallowed_topics':['personalized investment advice','trade recommendation','future return prediction','unsupported causal claims','order execution']},'source_lineage':{'execution_result_status':execution_result.get('status'),'execution_mode':execution_result.get('mode'),'network_calls_performed':bool(_get(execution_result,'source_execution_summary','network_calls_performed',default=False)),'source_group_summaries':_get(execution_result,'source_execution_summary','group_results',default=[]),'bundle_id':watchlist_bundle.get('bundle_id'),'plan_id':execution_plan.get('plan_id'),'lineage_status':'partial','lineage_missing_fields':['execution_result_bundle_id','execution_result_bundle_hash']},'targets':[],'cross_target_context':{'target_order':execution_plan.get('target_order') or []},'coverage_summary':{},'missing_evidence':[],'caveats':[],'prohibitions':[{'code':'do_not_infer_active_from_missing_lifecycle_event','scope':'global','target_id':None,'reason':'lifecycle must come from verified upstream identity evidence'},{'code':'do_not_treat_retrieval_time_as_market_time','scope':'global','target_id':None,'reason':'retrieval timestamp alone never proves market currentness'}],'citation_index':[],'context_budget':{'policy':policy,'omitted_counts':{'citations':0,'missing_evidence':0,'caveats':0},'truncated':False,'final_serialized_bytes':0,'budget_satisfied':True,'minimum_required_context_exceeds_budget':False},'package_hash':None}
+    pkg={'schema_version':PACKAGE_SCHEMA_VERSION,'context_package_id':'','generated_at_utc':generated_at_utc,'request':_project_request(validated_request,bundle_type),'conversation_scope':{'analysis_mode':bundle_type if bundle_type in {'snapshot','performance'} else 'comparison','allowed_topics':['identity','current observation','completed EOD reference','bounded historical performance','coverage','missing evidence','caveats'],'disallowed_topics':['personalized investment advice','trade recommendation','future return prediction','unsupported causal claims','order execution']},'source_lineage':{'execution_result_status':execution_result.get('status'),'execution_mode':execution_result.get('mode'),'network_calls_performed':bool(_get(execution_result,'source_execution_summary','network_calls_performed',default=False)),'source_group_summaries':_get(execution_result,'source_execution_summary','group_results',default=[]),'bundle_id':watchlist_bundle.get('bundle_id'),'plan_id':execution_plan.get('plan_id'),'lineage_status':'partial','lineage_missing_fields':['execution_result_bundle_id','execution_result_bundle_hash']},'targets':[],'cross_target_context':{'target_order':execution_plan.get('target_order') or []},'coverage_summary':{},'missing_evidence':[],'caveats':[],'prohibitions':[{'code':'do_not_infer_active_from_missing_lifecycle_event','scope':'global','target_id':None,'reason':'lifecycle must come from verified upstream identity evidence'},{'code':'do_not_treat_retrieval_time_as_market_time','scope':'global','target_id':None,'reason':'retrieval timestamp alone never proves market currentness'}],'citation_index':[],'context_budget':{'policy':policy,'omitted_counts':{'citations':0,'missing_evidence':0,'caveats':0},'truncated':False,'serialized_size_basis':'canonical_json_utf8_final_package_including_package_hash','final_serialized_bytes':0,'byte_budget_satisfied':True,'citation_budget_satisfied':True,'list_budget_satisfied':True,'budget_satisfied':True,'overall_budget_status':'satisfied','minimum_required_context_exceeds_byte_budget':False,'minimum_required_context_exceeds_budget':False,'targets_exceeding_citation_budget':[],'mandatory_citation_count':0,'final_citation_count':0,'policy_notes':{'max_lifecycle_event_summaries_per_target':'reserved_not_applicable_no_lifecycle_event_summaries_projected'}} ,'package_hash':None}
     plan_by={t['target_id']:(i,t) for i,t in enumerate(execution_plan.get('targets',[]))}; bundle_by={t['target_id']:(i,t) for i,t in enumerate(watchlist_bundle.get('targets',[]))}; metrics_all=watchlist_bundle.get('derived_metrics',[])
     for pos,tid in enumerate(pkg['request']['enabled_target_order']):
         plan_i,pt=plan_by.get(tid,(pos,{})); bundle_i,bt=bundle_by.get(tid,(pos,{})); cov=bt.get('coverage') or {'coverage_state':'unavailable','present_field_groups':[],'missing_field_groups':[]}
@@ -171,10 +171,34 @@ def build_watchlist_ai_context_package(*, validated_request:dict, execution_plan
     if pkg['coverage_summary']['coverage_status']!='complete': pkg['caveats'].append(pkg['coverage_summary']['coverage_status']+'_coverage')
     _apply_budget(pkg,policy)
     pkg['context_package_id']='m8r03e-context-'+sha256_json({k:pkg[k] for k in pkg if k not in {'context_package_id','package_hash'}})[:16]
-    pkg['package_hash']=artifact_hash_without(pkg,'package_hash')
+    _finalize_package_hash_and_budget(pkg, policy)
     validation=validate_watchlist_ai_context_package(pkg, upstream_artifacts={'execution_plan':execution_plan,'watchlist_bundle':watchlist_bundle,'execution_result':execution_result,'validated_request':validated_request})
     if not validation['valid']: raise ValueError('context_package_validation_failed:'+canonical_json(validation['issues']))
     return pkg
+
+
+
+def _finalize_package_hash_and_budget(pkg, policy):
+    max_bytes=policy.get('max_serialized_bytes')
+    # Compute a stable final serialized size that includes final package ID, package hash field,
+    # and the serialized-size fields themselves. Hash contents are fixed-width, so the size
+    # stabilizes after the byte count digit length stabilizes.
+    pkg['package_hash']='0'*64
+    last=-1
+    for _ in range(8):
+        size=len(canonical_json(pkg).encode())
+        pkg['context_budget']['final_serialized_bytes']=size
+        if size==last: break
+        last=size
+    pkg['context_budget']['byte_budget_satisfied']=not (max_bytes and pkg['context_budget']['final_serialized_bytes']>max_bytes)
+    pkg['context_budget']['minimum_required_context_exceeds_byte_budget']=not pkg['context_budget']['byte_budget_satisfied']
+    pkg['context_budget']['minimum_required_context_exceeds_budget']=pkg['context_budget']['minimum_required_context_exceeds_byte_budget']
+    pkg['context_budget']['budget_satisfied']=pkg['context_budget']['byte_budget_satisfied'] and pkg['context_budget']['citation_budget_satisfied'] and pkg['context_budget']['list_budget_satisfied']
+    pkg['context_budget']['overall_budget_status']='satisfied' if pkg['context_budget']['budget_satisfied'] else 'unsatisfied'
+    pkg['package_hash']=artifact_hash_without(pkg,'package_hash')
+    # final hash value has the same serialized length as the placeholder, so byte count remains stable.
+    pkg['context_budget']['final_serialized_bytes']=len(canonical_json(pkg).encode())
+    pkg['package_hash']=artifact_hash_without(pkg,'package_hash')
 
 def build_context_manifest(*, context_package:dict, conversation_handoff:dict, upstream_artifacts:dict, generated_at_utc:str)->dict:
     up={'request_id':context_package.get('request',{}).get('request_id'),'request_hash':sha256_json(upstream_artifacts.get('validated_request',{})),'execution_plan_id':upstream_artifacts.get('execution_plan',{}).get('plan_id'),'execution_plan_hash':sha256_json(upstream_artifacts.get('execution_plan',{})),'execution_result_id':upstream_artifacts.get('execution_result',{}).get('run_id'),'execution_result_hash':sha256_json(upstream_artifacts.get('execution_result',{})),'bundle_id':upstream_artifacts.get('watchlist_bundle',{}).get('bundle_id'),'bundle_hash':sha256_json(upstream_artifacts.get('watchlist_bundle',{})),'security_master_snapshot_ids':sorted({t.get('identity',{}).get('snapshot_id') for t in context_package.get('targets',[]) if t.get('identity',{}).get('snapshot_id')})}

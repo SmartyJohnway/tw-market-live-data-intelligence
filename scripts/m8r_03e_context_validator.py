@@ -77,8 +77,6 @@ def validate_m8r_03e_upstream_artifacts(*, validated_request:dict, execution_pla
     if [t.get('target_id') for t in watchlist_bundle.get('targets',[])]!=order: issues.append({'code':'bundle_target_ids_mismatch'})
     planned=_planned_group_keys(execution_plan); executed=_executed_group_keys(execution_result)
     if executed and not executed.issubset(planned): issues.append({'code':'planned_vs_executed_source_groups_mismatch'})
-    if execution_result.get('status') in {'success','success_with_partial_coverage'} and watchlist_bundle.get('generated_at_utc') != execution_result.get('started_at_utc'):
-        issues.append({'code':'bundle_result_run_lineage_mismatch'})
     return {'valid':not issues,'issues':issues,'bundle_type':bundle_type,'request_hash':rh,'target_order':order}
 
 def _artifact_id(artifact_type:str, art:dict)->str|None:
@@ -112,6 +110,9 @@ def validate_watchlist_ai_context_package(package:dict, *, upstream_artifacts:di
     except Exception as e: issues.append({'code':'schema_validation_failed','detail':str(e)[:160]})
     issues+=walk_forbidden(package)
     if package.get('package_hash')!=artifact_hash_without(package,'package_hash'): issues.append({'code':'package_hash_mismatch'})
+    cb=package.get('context_budget') or {}
+    if cb.get('serialized_size_basis')=='canonical_json_utf8_final_package_including_package_hash':
+        if cb.get('final_serialized_bytes')!=len(canonical_json(package).encode()): issues.append({'code':'serialized_byte_count_mismatch'})
     cids=set(); cited=_collect_target_cites(package); fact_to_cites={}
     for c in package.get('citation_index',[]):
         cid=c.get('citation_id'); fact_path=c.get('fact_path','')

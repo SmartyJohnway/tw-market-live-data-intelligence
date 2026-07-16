@@ -210,15 +210,19 @@ def test_uncited_execution_policy_rejected():
 def test_final_serialized_byte_count_and_unsatisfied_budget_reported():
     *_,pkg,hand,man=build('complete_snapshot',policy={'max_serialized_bytes':200})
     assert pkg['context_budget']['final_serialized_bytes']>0
-    assert pkg['context_budget']['budget_satisfied'] is False
-    assert pkg['context_budget']['minimum_required_context_exceeds_budget'] is True
+    assert pkg['context_budget']['byte_budget_satisfied'] is False
+    assert pkg['context_budget']['minimum_required_context_exceeds_byte_budget'] is True
+    assert pkg['context_budget']['overall_budget_status']=='unsatisfied'
 
-def test_same_request_different_run_bundle_rejected():
+def test_normal_bundle_generated_after_execution_start_is_accepted_and_lineage_partial():
     req,plan,res,bundle=loadcase('complete_snapshot')
-    bad_bundle=json.loads(json.dumps(bundle)); bad_bundle['generated_at_utc']='2026-07-16T09:09:09Z'
+    later=json.loads(json.dumps(bundle)); later['generated_at_utc']='2026-07-16T09:09:09Z'
     from scripts.m8r_03e_context_validator import validate_m8r_03e_upstream_artifacts
-    got=validate_m8r_03e_upstream_artifacts(validated_request=req,execution_plan=plan,execution_result=res,watchlist_bundle=bad_bundle)
-    assert 'bundle_result_run_lineage_mismatch' in {i['code'] for i in got['issues']}
+    got=validate_m8r_03e_upstream_artifacts(validated_request=req,execution_plan=plan,execution_result=res,watchlist_bundle=later)
+    assert got['valid']
+    *_,pkg,hand,man=build('complete_snapshot')
+    assert pkg['source_lineage']['lineage_status']=='partial'
+    assert pkg['source_lineage']['lineage_missing_fields']==['execution_result_bundle_id','execution_result_bundle_hash']
 
 def test_manifest_fact_count_unique_paths_differs_from_citation_count_when_duplicate():
     req,plan,res,bundle,pkg,hand,man=build('complete_snapshot')
@@ -226,3 +230,25 @@ def test_manifest_fact_count_unique_paths_differs_from_citation_count_when_dupli
     hand2=build_watchlist_conversation_handoff(context_package=pkg,generated_at_utc='2026-07-16T03:00:00Z')
     man2=build_context_manifest(context_package=dup,conversation_handoff=hand2,upstream_artifacts={'validated_request':req,'execution_plan':plan,'execution_result':res,'watchlist_bundle':bundle},generated_at_utc='2026-07-16T03:00:00Z')
     assert man2['counts']['fact_count'] < man2['counts']['citation_count']
+
+
+def test_recorded_serialized_bytes_equal_canonical_size_and_include_final_hash():
+    *_,pkg,hand,man=build('complete_snapshot')
+    assert pkg['context_budget']['serialized_size_basis']=='canonical_json_utf8_final_package_including_package_hash'
+    assert pkg['package_hash'] and len(pkg['package_hash'])==64
+    assert pkg['context_package_id']
+    from scripts.m8r_03e_context_validator import canonical_json
+    assert pkg['context_budget']['final_serialized_bytes']==len(canonical_json(pkg).encode())
+
+def test_mandatory_citations_exceeding_cap_retained_and_reported():
+    *_,pkg,hand,man=build('complete_snapshot',policy={'max_citations_per_target':1})
+    assert pkg['context_budget']['citation_budget_satisfied'] is False
+    assert pkg['context_budget']['targets_exceeding_citation_budget']
+    assert pkg['context_budget']['mandatory_citation_count']>0
+    assert pkg['context_budget']['final_citation_count']==len(pkg['citation_index'])
+    assert pkg['context_budget']['overall_budget_status']=='unsatisfied'
+    assert all(t['identity'] for t in pkg['targets'])
+
+def test_unused_lifecycle_event_summary_policy_marked_reserved():
+    *_,pkg,hand,man=build('complete_snapshot')
+    assert pkg['context_budget']['policy_notes']['max_lifecycle_event_summaries_per_target'].startswith('reserved_not_applicable')
