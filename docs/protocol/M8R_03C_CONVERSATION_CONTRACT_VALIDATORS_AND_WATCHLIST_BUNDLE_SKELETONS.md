@@ -64,10 +64,13 @@ Extensible maps are allowed only where the contract intentionally carries caller
 
 `build_watchlist_snapshot_bundle` validates the evidence request, rejects clarification-required requests, groups supplied observations by target, and represents every enabled watchlist target exactly once in request order.
 
-Source separation:
+Source semantic matrix:
 
-- current evidence: `TWSE_MIS` or `TAIFEX_MIS` / `liveish_observation`;
-- EOD reference: `TWSE_OPENAPI`, `TPEX_OPENAPI`, `TAIFEX_OPENAPI`, or fixture benchmark-style EOD observations where applicable.
+- `TWSE_MIS` and `TAIFEX_MIS` must be `liveish_intraday_snapshot` / `liveish_observation` and have the current/live-ish role only;
+- `TWSE_OPENAPI`, `TPEX_OPENAPI`, and `TAIFEX_OPENAPI` must be official EOD/statistical reference observations and have the EOD/reference role only;
+- `BENCHMARK_FIXTURE` must have the benchmark EOD role only.
+
+Snapshot source selection uses this validated role, so one observation cannot be both current and EOD.
 
 Coverage states:
 
@@ -79,7 +82,7 @@ Missing evidence is recorded as structured records instead of silently dropping 
 
 ## Watchlist performance skeleton
 
-`build_watchlist_performance_bundle` validates recent/historical/explicit/current-plus-recent watchlist requests, accepts EOD/precomputed fixture observations, sorts rows by effective trade date, deduplicates identical target/date rows, and rejects contradictory duplicates.
+`build_watchlist_performance_bundle` validates recent/historical/explicit/current-plus-recent watchlist requests, accepts EOD/precomputed fixture observations, sorts rows by valid ISO effective trade date, requires resolved identity for usable coverage, deduplicates identical target/date rows, and rejects contradictory duplicates.
 
 Metrics are emitted in canonical registry order and include formula metadata, source dependencies, calculation status, and `as_of`.
 
@@ -95,9 +98,9 @@ Metrics are emitted in canonical registry order and include formula metadata, so
 - `average_volume = mean(valid volume over input period)`
 - `volume_ratio = latest_volume / average_volume_prior_window`
 - `realized_volatility = sample standard deviation of daily log returns`
-- `relative_return_vs_market = target return_Nd - supplied benchmark return_Nd`
+- `relative_return_1d_vs_benchmark = target return_1d - explicitly supplied benchmark return_1d`
 
-Price metrics use source-provided unadjusted closes unless future source observations explicitly document adjustment. Missing values, zero denominators, and insufficient history produce `input_unavailable`; metrics are not silently omitted. Benchmark-relative returns are calculated only when benchmark fixture rows are explicitly supplied; otherwise the metric is `formula_not_applicable`.
+Price metrics use source-provided unadjusted closes unless future source observations explicitly document adjustment. Missing values, zero denominators, and insufficient history produce `input_unavailable`; metrics are not silently omitted. Benchmark-relative return is explicitly the 1-day metric `relative_return_1d_vs_benchmark`; it is calculated only when exactly one `benchmark_id` fixture series is supplied, grouped and deduplicated by `benchmark_id` and `trade_date`; otherwise the metric is `formula_not_applicable`, and multiple benchmark IDs or contradictory benchmark duplicate dates fail closed.
 
 ## Fact, derived, assumption, and missing-evidence boundaries
 
@@ -105,7 +108,7 @@ Facts remain source-normalized values under `facts` and per-target source sectio
 
 ## Safety and retention
 
-Recursive forbidden-key checks fail closed for raw or secret-bearing fields including `raw_payload`, `raw_rest_records`, `full_option_chain`, `option_chain`, `sockjs_frames`, cookies, session IDs, authorization headers, and access/refresh tokens. The fixture CLI rejects URL/network/polling/scheduler inputs.
+Date and timestamp validation requires `trade_date` to be ISO `YYYY-MM-DD` or null, performance EOD observations to have a non-null trade date, and `retrieved_at_utc` / non-null `source_timestamp` values to be timezone-aware ISO datetimes. Recursive forbidden-key checks fail closed for raw or secret-bearing fields including `raw_payload`, `raw_rest_records`, `full_option_chain`, `option_chain`, `sockjs_frames`, cookies, session IDs, authorization headers, and access/refresh tokens. The fixture CLI rejects URL/network/polling/scheduler inputs.
 
 ## Non-network CLI
 

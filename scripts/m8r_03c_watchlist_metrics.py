@@ -1,16 +1,15 @@
 from __future__ import annotations
 import math, statistics
 from typing import Any
-from scripts.m8r_03c_conversation_contract_validator import M8R03CValidationError
 
-METRIC_ORDER=("return_1d","return_5d","return_10d","return_20d","range_high","range_low","range_position","drawdown_from_recent_high","average_volume","volume_ratio","realized_volatility","relative_return_vs_market")
+METRIC_ORDER=("return_1d","return_5d","return_10d","return_20d","range_high","range_low","range_position","drawdown_from_recent_high","average_volume","volume_ratio","realized_volatility","relative_return_1d_vs_benchmark")
 FORMULAS={
  'return_Nd':'latest_valid_close / close_N_trading_rows_ago - 1; unadjusted close unless source says otherwise',
  'range_high':'max(valid high/close over input rows)', 'range_low':'min(valid low/close over input rows)',
  'range_position':'(latest_close - range_low) / (range_high - range_low)',
  'drawdown_from_recent_high':'latest_close / range_high - 1', 'average_volume':'mean(valid volume over input period)',
  'volume_ratio':'latest_volume / average_volume_prior_window', 'realized_volatility':'sample standard deviation of daily log returns',
- 'relative_return_vs_market':'target return_Nd - supplied benchmark return_Nd',
+ 'relative_return_1d_vs_benchmark':'target return_1d - explicitly supplied benchmark return_1d',
 }
 
 def _num(v):
@@ -52,5 +51,5 @@ def calculate_metrics(rows: list[dict[str, Any]], *, target_id: str, as_of: str,
         val=t['value']-b['value'] if t['value'] is not None and b['value'] is not None else None
         status='calculated' if val is not None else 'input_unavailable'
     else: val=None; status='formula_not_applicable'
-    out.append(metric_record('relative_return_vs_market',val,status,as_of,deps,period,'relative_return_vs_market'))
+    out.append(metric_record('relative_return_1d_vs_benchmark',val,status,as_of,deps,period,'relative_return_1d_vs_benchmark'))
     return out
