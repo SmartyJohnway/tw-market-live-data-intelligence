@@ -3,20 +3,20 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-NEXT = "M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT"
+NEXT = "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION"
 
 def load(path):
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
 def test_registry_post_m8c_realignment_semantics():
     reg = load("docs/data_capabilities/m8_source_capability_registry.json")
-    assert reg["implemented_through_track"] == "M8R-03E"
+    assert reg["implemented_through_track"] == "M8R-03E-F1"
     assert reg["recommended_next_task"] == NEXT
     assert reg["registry_successor"] == NEXT
     assert reg["original_m8r04_disposition"] == "superseded_and_split"
     assert reg["active_architectural_model"] == "governed_market_evidence_platform"
     assert reg["ai_behavior_hardcoding"] == "deprecated_direction"
-    assert reg["agent_skill_contract"] == "required_successor_capability"
+    assert reg["agent_skill_contract"] == "implemented"
     assert reg["unified_tool_api"] == "required_successor_capability"
     assert reg["m8_active_consolidated_status"]["m8r_03e_status"] == "GO_WITH_CAVEATS"
     assert reg["recommended_next_task"] != "M8R-03D-WATCHLIST-EVIDENCE-SOURCE-INTEGRATION-AND-CONTROLLED-EXECUTION"
@@ -25,7 +25,7 @@ def test_health_status_and_debt_register_shapes():
     status = load("docs/data_capabilities/m8_repository_health_status.json")
     required = {"schema_version","task_id","baseline_sha","generated_at_utc","audit_scope","roadmap_alignment_status","implemented_through_track","original_m8r04_disposition","architecture_model","ai_behavior_policy_decoupling_status","correctness_status","security_status","performance_status","testing_status","documentation_status","p0_count","p1_count","p2_count","p3_count","blocking_findings","direct_corrections","recommended_next_task","recommended_next_task_reason","validation_commands","validation_results"}
     assert required <= set(status)
-    assert status["implemented_through_track"] == "M8R-03E"
+    assert status["implemented_through_track"] == "M8R-03E-F1"
     assert status["recommended_next_task"] == NEXT
     debt = load("docs/quality/m8_technical_debt_register.json")
     entry_required = {"debt_id","category","severity","status","affected_paths","finding","evidence","risk","recommended_action","blocking_phase","target_remediation_task"}
@@ -132,7 +132,9 @@ def test_full_non_network_status_records_exact_known_failures():
     ]
     assert evidence["failing_node_ids"] == expected
     assert evidence["baseline_reproduced"] is True
-    assert evidence["failure_set_changed_by_pr_149"] is False
+    assert evidence["failure_set_changed"] is False
+    assert evidence["current_head_failure_set_matches_baseline"] is True
+    assert "failure_set_changed_by_pr_149" not in evidence
     assert evidence["new_m8_m8r_failure_count"] == 0
 
 

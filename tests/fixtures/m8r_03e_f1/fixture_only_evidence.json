@@ -1,0 +1,9 @@
+{
+  "fixture_id": "fixture_only_evidence",
+  "baseline_sha": "d6b83313bb301e652ae82b8583d73d2aaa1d753e",
+  "intent_id": "fixture_only_evidence",
+  "evidence_sufficiency": "sufficient_with_caveats",
+  "raw_payload_exposure_allowed": false,
+  "secret_fields_exposed": false,
+  "timing_class": "fixture_only"
+}
