@@ -589,6 +589,7 @@ def build_ai_market_context_package(
         "currentness_summary": build_currentness_summary(source_contexts),
         "caveats": [],
         "forbidden_interpretations": [],
+        "conversation_resolution": deepcopy(orchestration_result.get("conversation_resolution") or {}),
         "conversation_views": {},
         "production_readiness": dict(PROD),
         "integrity": {},

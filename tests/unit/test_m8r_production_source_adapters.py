@@ -122,3 +122,38 @@ def test_error_sanitization_and_network_gate(monkeypatch):
     monkeypatch.setattr(a,"fetch_twse_mis_rows",lambda *a,**k: (_ for _ in ()).throw(TimeoutError("secret token url")))
     out=a.execute_twse_mis_operation(operation=op("TWSE_MIS","tse_2330.tw"),target=stock(),plan={},execution_time_utc=NOW,allow_network=True)
     assert out["issues"]==[{"code":"source_timeout","severity":"warning"}] and "secret" not in str(out)
+
+
+def weekly_option(expiry="202607F3", strike="45650", call_put="C"):
+    return {"market":"TAIFEX","instrument_type":"option","symbol":"TXO","resolution_mode":"conversational_current","derivative_identity":{"underlying":"TX","expiry":expiry,"strike":str(strike),"call_put":call_put,"contract_type":"weekly","session":"regular"}}
+
+
+def test_taifex_contract_type_derivation_weekly_and_monthly():
+    assert a.derive_taifex_contract_type("202607F3") == "weekly"
+    assert a.derive_taifex_contract_type("202607W4") == "weekly"
+    assert a.derive_taifex_contract_type("202608") == "monthly"
+
+
+def test_taifex_mis_weekly_returned_identity_accepted(monkeypatch):
+    obs={"instrument_type":"option","requested_product_id":"TXO","runtime_symbol_id":"TXO45650G6-O","contract_month_or_week":"202607F3","strike_price":"45650","option_type":"call","session":"regular","source_timestamp_asia_taipei":"2026-07-15T09:01:00+08:00","currentness":{},"field_provenance":{"last_price":{"source":"sockjs_mode_1"}},"normalized_field_candidates":{"last_price":"1"}}
+    monkeypatch.setattr(a,"execute_taifex_mis_snapshot",lambda **kw:{"status":"successful_liveish_snapshot","observations":[obs]})
+    out=a.execute_taifex_mis_operation(operation=op("TAIFEX_MIS"),target=weekly_option(),plan={},execution_time_utc=NOW,allow_network=True)
+    assert out["status"] == "succeeded"
+    assert out["returned_identity"]["contract_type"] == "weekly"
+    assert out["returned_identity"]["expiry"] == "202607F3"
+    assert out["returned_identity"]["strike"] == "45650"
+    assert out["source_observation"]["safe_fields"]["runtime_symbol_validation"] == "matched_product_strike_and_option_symbol_grammar"
+
+
+def test_taifex_mis_returned_monthly_expiry_mismatch_has_precise_detail(monkeypatch):
+    obs={"instrument_type":"option","requested_product_id":"TXO","runtime_symbol_id":"TXO45650G6-O","contract_month_or_week":"202608","strike_price":"45650","option_type":"call","session":"regular","source_timestamp_asia_taipei":"2026-07-15T09:01:00+08:00","currentness":{},"field_provenance":{"last_price":{"source":"sockjs_mode_1"}},"normalized_field_candidates":{"last_price":"1"}}
+    monkeypatch.setattr(a,"execute_taifex_mis_snapshot",lambda **kw:{"status":"successful_liveish_snapshot","observations":[obs]})
+    out=a.execute_taifex_mis_operation(operation=op("TAIFEX_MIS"),target=weekly_option(),plan={},execution_time_utc=NOW,allow_network=True)
+    issue=out["issues"][0]
+    assert out["status"] == "failed"
+    assert issue["code"] == "source_identity_mismatch"
+    assert issue["detail_reason"] in {"returned_expiry_mismatch", "returned_contract_type_mismatch"}
+    assert issue["diagnostics"]["approved_contract_type"] == "weekly"
+    assert issue["diagnostics"]["returned_contract_type"] == "monthly"
+    assert issue["diagnostics"]["approved_expiry"] == "202607F3"
+    assert issue["diagnostics"]["returned_expiry"] == "202608"

@@ -192,7 +192,7 @@ def resolve_target_identity(target: dict[str, Any], *, request_context_types=(),
         required=("underlying","expiry","strike","call_put","contract_type")
         missing=[k for k in required if not target.get(k)]
         if missing: issues.append(_issue("ambiguous_identity","option identity requires underlying, expiry, strike, call_put, contract_type","target",raw_id))
-        if _norm_contract_type(target.get("contract_type"))=="weekly": issues.append(_issue("unsupported_product_scope","weekly option runtime remains deferred","target",raw_id))
+        if _norm_contract_type(target.get("contract_type"))=="weekly" and target.get("resolution_mode") != "conversational_current": issues.append(_issue("unsupported_product_scope","weekly option runtime remains deferred for exact mode","target",raw_id))
     session = _norm_session(target.get("session", "regular"))
     if market == "TAIFEX" and session != "regular": issues.append(_issue("unsupported_session_scope","TAIFEX after-hours runtime is not accepted","target",raw_id))
     allowed_by_context, routes = _allowed_for_identity(market, typ, target)
@@ -234,7 +234,7 @@ def resolve_target_identity(target: dict[str, Any], *, request_context_types=(),
         target_id += f":{derivative_identity['underlying']}:{derivative_identity['expiry']}:{derivative_identity['strike']}:{derivative_identity['call_put']}:{derivative_identity['contract_type']}"
     duplicate_identity_key = target_id
     if typ == "option":
-        duplicate_identity_key = f"{market}:{typ}:{symbol}:{derivative_identity.get('underlying')}"
+        duplicate_identity_key = target_id if target.get("resolution_mode") == "conversational_current" else f"{market}:{typ}:{symbol}:{derivative_identity.get('underlying')}"
     elif typ == "future":
         duplicate_identity_key = f"{market}:{typ}:{symbol}"
     for c in contexts:
