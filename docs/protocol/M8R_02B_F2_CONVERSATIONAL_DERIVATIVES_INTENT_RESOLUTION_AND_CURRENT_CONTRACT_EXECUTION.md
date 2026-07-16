@@ -1,8 +1,8 @@
 # M8R-02B-F2 Conversational Derivatives Intent Resolution and Current Contract Execution
 
-Status: `m8r_02b_f2_no_go_pending_true_taifex_mis_conversational_current_execution`
+Status: `m8r_02b_f2_go_after_taifex_mis_weekly_returned_identity_validation`
 
-Decision: `NO_GO`
+Decision: `GO`
 
 Starting baseline: `8e5e39c75f5e6d22b2573ada5d3c6348a11bc91b`.
 
@@ -91,7 +91,7 @@ Live prompts for a new run ID:
 - `EXACT_TAIFEX_OPTION_UNAVAILABLE_NEGATIVE_CONTROL`: `TXO 202607 40000 C monthly`
 - Optional: `CONVERSATIONAL_TAIFEX_OPTION_WEEKLY_BOTH`: `現在最近到期的台指週選怎麼樣？`
 
-The prior OpenAPI-only run is superseded. F2 remains `NO_GO` until a new controlled run proves TAIFEX MIS current futures/options execution for all required conversational cases. Each future operator run must store `derivatives_intent.json`, `derivatives_resolution_record.json`, MIS operation results, optional OpenAPI enrichment, and AI package artifacts under the supplied run root. The controlled CLI also writes `mis_conversational_resolution_diagnostic.json`, which contains normalized stage metadata only: request statuses, selected expiry/type, selected-chain row and identity counts, strike range/count, call/put counts, reference acquisition result, resolved targets, freshness second-check result, production selector status, runtime symbol IDs, operation/AI package status, and a precise failure layer when available.
+The prior OpenAPI-only run is superseded. Commit 4 live validation used run ID `m8r02b-f2-mis-20260716T043000Z` and proved TAIFEX MIS current futures/options execution for the required conversational cases plus the exact-unavailable control. The option-current case resolved `TXO 202607F3 45800 C/P weekly` with runtime symbols `TXX45800G6-O` and `TXX45800S6-O`; monthly resolved `TXO 202608 45800 C/P monthly`; explicit strike resolved `TXO 202607F3 45000 C/P weekly`; future resolved `TX 202608 monthly`; the exact unavailable control remained blocked with no AI package. Each future operator run must store `derivatives_intent.json`, `derivatives_resolution_record.json`, MIS operation results, optional OpenAPI enrichment, and AI package artifacts under the supplied run root. The controlled CLI also writes `mis_conversational_resolution_diagnostic.json`, which contains normalized stage metadata only: request statuses, selected expiry/type, selected-chain row and identity counts, strike range/count, call/put counts, reference acquisition result, resolved targets, freshness second-check result, production selector status, runtime symbol IDs, operation/AI package status, and a precise failure layer when available.
 
 ## Readiness flags
 
@@ -99,15 +99,15 @@ The prior OpenAPI-only run is superseded. F2 remains `NO_GO` until a new control
 {
   "m8r_02b_historical_status": "NO_GO",
   "m8r_02b_f1_status": "NO_GO",
-  "m8r_02b_f2_status": "NO_GO",
-  "m8r_02b_final_disposition": "NO_GO_PENDING_TRUE_TAIFEX_MIS_CONVERSATIONAL_CURRENT_EXECUTION",
+  "m8r_02b_f2_status": "GO",
+  "m8r_02b_final_disposition": "GO_AFTER_CONVERSATIONAL_CURRENT_CONTRACT_RESOLUTION",
   "conversational_derivatives_resolution_ready": true,
   "conversational_derivatives_eod_resolution_ready": true,
-  "conversational_derivatives_live_execution_ready": false,
+  "conversational_derivatives_live_execution_ready": true,
   "exact_derivatives_execution_ready": true,
-  "production_live_execution_ready": false,
-  "live_validation_completed": false,
-  "m8r_02b_required": true,
+  "production_live_execution_ready": true,
+  "live_validation_completed": true,
+  "m8r_02b_required": false,
   "m8r04_completed": false
 }
 ```

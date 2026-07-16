@@ -71,8 +71,12 @@ def _classify_failure_layer(resolution: dict[str, Any], operation_results: list[
         if op.get("source_family") != "TAIFEX_MIS" or op.get("status") in {"succeeded", "success"}:
             continue
         issue_text = json.dumps(op.get("issues") or op.get("warnings") or op, ensure_ascii=False)
-        if any(token in issue_text for token in ["source_identity", "requested_month_not_available", "requested_strike_not_available", "option_exact_identity_not_unique", "runtime_symbol_mismatch"]):
+        if any(token in issue_text for token in ["returned_contract_type_mismatch", "returned_expiry_mismatch", "returned_strike_mismatch", "returned_call_put_mismatch", "runtime_symbol_mismatch"]):
+            return "production_returned_identity_validation_failed"
+        if any(token in issue_text for token in ["requested_month_not_available", "requested_strike_not_available", "option_exact_identity_not_unique", "source_identity_not_unique", "source_identity_scope_unavailable"]):
             return "production_exact_identity_resolution_failed"
+        if "source_context" in issue_text or "context_build" in issue_text:
+            return "source_context_build_failed"
         return "production_detail_fetch_failed"
     if ai_state and ai_state.get("status") == "build_failed":
         return "ai_package_build_failed"

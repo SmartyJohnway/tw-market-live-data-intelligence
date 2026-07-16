@@ -37,7 +37,7 @@ def validate_selectors(items, budget:RuntimeBudget|None=None):
         if re.match(r'^\d{6}$', month):
             try: datetime.strptime(month, '%Y%m')
             except ValueError: raise SelectorError('invalid_contract_month')
-        else:
+        elif not re.match(r'^\d{6}[WF]\d{1,2}$', month):
             raise SelectorError('unsupported_weekly_format')
         if it=='future': out.append(ValidatedSelector(it,prod,month,session))
         else: out.append(ValidatedSelector(it,prod,month,session,_dec(x.get('strike_price')),_cp(x.get('option_type'))))

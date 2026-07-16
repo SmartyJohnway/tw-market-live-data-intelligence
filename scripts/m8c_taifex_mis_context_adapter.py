@@ -13,6 +13,7 @@ from typing import Any
 
 SCHEMA_VERSION = "m8c_taifex_mis_context_adapter.v1"
 MONTHLY_YYYYMM_RE = re.compile(r"^\d{6}$")
+WEEKLY_YYYYMM_MARKER_RE = re.compile(r"^\d{6}[WF]\d{1,2}$")
 IDENTIFIER_RE = re.compile(r"^[A-Za-z0-9_.:/=+-]{1,96}$")
 VALID_CURRENTNESS = {
     "active_session_fresh_liveish",
@@ -148,6 +149,18 @@ def _valid_yyyymm(value: Any) -> bool:
     return True
 
 
+def _valid_contract_month_or_week(value: Any) -> bool:
+    if _valid_yyyymm(value):
+        return True
+    if not isinstance(value, str) or not WEEKLY_YYYYMM_MARKER_RE.match(value):
+        return False
+    try:
+        datetime.strptime(value[:6] + "01", "%Y%m%d")
+    except ValueError:
+        return False
+    return True
+
+
 def _parse_tz_timestamp_text(value: Any) -> str | None:
     value = _safe_text(value)
     if not value:
@@ -176,12 +189,12 @@ def _contract_identity_valid(obs: dict) -> bool:
     instrument = obs.get("instrument_type")
     if instrument not in {"future", "option"}:
         return False
-    if obs.get("session") != "regular" or not _valid_yyyymm(obs.get("contract_month_or_week")):
+    if obs.get("session") != "regular" or not _valid_contract_month_or_week(obs.get("contract_month_or_week")):
         return False
     for field in ("requested_product_id", "mis_cid", "runtime_symbol_id"):
         if not _is_bounded_string(obs.get(field)):
             return False
-    if not _valid_yyyymm(obs.get("contract_month_or_week")):
+    if not _valid_contract_month_or_week(obs.get("contract_month_or_week")):
         return False
     symbol = obs.get("runtime_symbol_id")
     suffix = "-F" if instrument == "future" else "-O"
@@ -239,7 +252,7 @@ def _sanitize_currentness(currentness: Any) -> dict:
 def _contract_identity(obs: dict) -> dict:
     instrument = obs.get("instrument_type")
     option_type = _normalize_option_type(obs.get("option_type")) if instrument == "option" else None
-    month = obs.get("contract_month_or_week") if _valid_yyyymm(obs.get("contract_month_or_week")) else None
+    month = obs.get("contract_month_or_week") if _valid_contract_month_or_week(obs.get("contract_month_or_week")) else None
     return {
         "requested_product_id": _safe_bounded_text(obs.get("requested_product_id")),
         "mis_cid": _safe_bounded_text(obs.get("mis_cid")),
@@ -285,8 +298,8 @@ def validate_taifex_mis_runtime_observation(observation: dict) -> dict:
     if obs.get("session") != "regular":
         errors.append("session_not_regular")
     month = obs.get("contract_month_or_week")
-    if not _valid_yyyymm(month):
-        errors.append("contract_month_or_week_not_real_monthly_yyyymm")
+    if not _valid_contract_month_or_week(month):
+        errors.append("contract_month_or_week_not_real_monthly_or_weekly")
     symbol = obs.get("runtime_symbol_id")
     suffix = "-F" if instrument == "future" else "-O" if instrument == "option" else None
     if not isinstance(symbol, str) or not suffix or not symbol.endswith(suffix):

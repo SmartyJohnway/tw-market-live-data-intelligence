@@ -26,6 +26,11 @@ MIS_REASON_CODE_MAP = {
     "requested_strike_not_available": "source_identity_scope_unavailable",
     "option_exact_identity_not_unique": "source_identity_not_unique",
     "runtime_symbol_mismatch": "source_identity_mismatch",
+    "source_identity_mismatch": "source_identity_mismatch",
+    "returned_contract_type_mismatch": "source_identity_mismatch",
+    "returned_expiry_mismatch": "source_identity_mismatch",
+    "returned_strike_mismatch": "source_identity_mismatch",
+    "returned_call_put_mismatch": "source_identity_mismatch",
 }
 
 def map_taifex_mis_detail_reason(detail_reason: str | None) -> str:
@@ -36,8 +41,11 @@ def _blocked(code: str) -> dict[str, Any]:
     return {"status": "blocked", "network_attempted": False, "adapter_invocation_count": 1, "network_request_count": 0, "source_observation": {}, "returned_identity": {}, "source_health": {}, "currentness": {}, "issues": [_issue(code)], "retained_artifacts": [], "grouping": {"grouped": False}}
 
 
-def _failed(code: str, *, network_attempted: bool = True, count: int = 1, grouping: dict | None = None, detail_reason: str | None = None) -> dict[str, Any]:
-    return {"status": "failed", "network_attempted": network_attempted, "adapter_invocation_count": 1, "network_request_count": count if network_attempted else 0, "source_observation": {}, "returned_identity": {}, "source_health": {}, "currentness": {}, "issues": [_issue(code, detail_reason=detail_reason)], "retained_artifacts": [], "grouping": grouping or {"grouped": False}}
+def _failed(code: str, *, network_attempted: bool = True, count: int = 1, grouping: dict | None = None, detail_reason: str | None = None, diagnostics: dict[str, Any] | None = None) -> dict[str, Any]:
+    issue = _issue(code, detail_reason=detail_reason)
+    if diagnostics:
+        issue["diagnostics"] = diagnostics
+    return {"status": "failed", "network_attempted": network_attempted, "adapter_invocation_count": 1, "network_request_count": count if network_attempted else 0, "source_observation": {}, "returned_identity": {}, "source_health": {}, "currentness": {}, "issues": [issue], "retained_artifacts": [], "grouping": grouping or {"grouped": False}}
 
 
 def _ok(obs: dict[str, Any], *, identity: dict | None = None, count: int = 1, grouping: dict | None = None) -> dict[str, Any]:
@@ -157,6 +165,12 @@ def derive_taifex_option_underlying(product_id: Any) -> str | None:
     return TAIFEX_OPTION_UNDERLYING_BY_PRODUCT.get(str(product_id).strip().upper())
 
 
+def derive_taifex_contract_type(expiry: Any) -> str | None:
+    if expiry in (None, ""):
+        return None
+    return "weekly" if any(marker in str(expiry).strip().upper() for marker in ("W", "F")) else "monthly"
+
+
 def _norm_call_put(value: Any) -> str | None:
     text = str(value or "").strip().lower()
     if text in {"c", "call", "買權"}:
@@ -196,8 +210,7 @@ def _taifex_returned_contract_identity(obs: dict[str, Any], instrument_type: str
     if ci:
         expiry = ci.get("contract_month_or_week") or ci.get("contract_month") or ci.get("delivery_month") or ci.get("settlement_month")
         session = ci.get("session") or obs.get("session")
-        ctype = "monthly" if expiry and str(expiry).isdigit() and len(str(expiry)) == 6 else "weekly" if expiry and not (str(expiry).isdigit() and len(str(expiry)) == 6) else None
-        returned = {"product": product, "expiry": expiry, "contract_type": ctype}
+        returned = {"product": product, "expiry": expiry, "contract_type": derive_taifex_contract_type(expiry)}
         if session and session != "not_applicable":
             returned["session"] = session
         if instrument_type == "option":
@@ -220,13 +233,31 @@ def _approved_identity(target: dict[str, Any]) -> dict[str, Any]:
     return out
 
 
-def _identity_matches_approved(returned: dict[str, Any], approved: dict[str, Any], required: tuple[str, ...]) -> bool:
+def _identity_mismatch_detail(returned: dict[str, Any], approved: dict[str, Any], required: tuple[str, ...]) -> tuple[str | None, dict[str, Any]]:
     for key in required:
         rv = _strike(returned.get(key)) if key == "strike" else returned.get(key)
         av = _strike(approved.get(key)) if key == "strike" else approved.get(key)
         if rv != av:
-            return False
-    return True
+            detail = {
+                "contract_type": "returned_contract_type_mismatch",
+                "expiry": "returned_expiry_mismatch",
+                "strike": "returned_strike_mismatch",
+                "call_put": "returned_call_put_mismatch",
+            }.get(key, "source_identity_mismatch")
+            return detail, {
+                "approved_contract_type": approved.get("contract_type"),
+                "returned_contract_type": returned.get("contract_type"),
+                "approved_expiry": approved.get("expiry"),
+                "returned_expiry": returned.get("expiry"),
+                "runtime_symbol_validation_status": returned.get("runtime_symbol_validation_status"),
+                "identity_mismatch_field": key,
+            }
+    return None, {}
+
+
+def _identity_matches_approved(returned: dict[str, Any], approved: dict[str, Any], required: tuple[str, ...]) -> bool:
+    detail, _ = _identity_mismatch_detail(returned, approved, required)
+    return detail is None
 
 def _taifex_selector(target: dict[str, Any]) -> dict[str, Any] | None:
     di = target.get("derivative_identity") or {}
@@ -255,43 +286,53 @@ def parse_taifex_mis_option_runtime_symbol(value: Any) -> dict[str, str] | None:
     return match.groupdict()
 
 
+TAIFEX_MIS_OPTION_RUNTIME_PRODUCTS_BY_REQUESTED = {"TXO": {"TXO", "TXX"}}
+
+
 def validate_taifex_mis_option_runtime_symbol(*, runtime_symbol: Any, product: Any, strike: Any) -> bool:
     parsed = parse_taifex_mis_option_runtime_symbol(runtime_symbol)
     if not parsed:
         return False
-    if parsed["product"] != str(product or "").strip().upper():
+    requested = str(product or "").strip().upper()
+    allowed_products = TAIFEX_MIS_OPTION_RUNTIME_PRODUCTS_BY_REQUESTED.get(requested, {requested})
+    if parsed["product"] not in allowed_products:
         return False
     return _strike(parsed["strike"]) == _strike(strike)
 
 
-def _m8c_returned_identity(ctx: dict[str, Any], target: dict[str, Any]) -> tuple[dict[str, Any], str | None]:
+def _m8c_returned_identity(ctx: dict[str, Any], target: dict[str, Any], raw_observation: dict[str, Any] | None = None) -> tuple[dict[str, Any], str | None, dict[str, Any]]:
     ci = ((ctx.get("safe_fields") or {}).get("contract_identity") or {})
-    product = ci.get("requested_product_id")
-    expiry = ci.get("contract_month_or_week")
-    session = ci.get("session")
-    runtime_symbol = ci.get("runtime_symbol_id")
-    returned = {"product": product, "expiry": expiry, "contract_type": "monthly" if expiry else None, "session": session}
+    raw = raw_observation or {}
+    product = ci.get("requested_product_id") or raw.get("requested_product_id")
+    expiry = ci.get("contract_month_or_week") or raw.get("contract_month_or_week")
+    session = ci.get("session") or raw.get("session")
+    runtime_symbol = ci.get("runtime_symbol_id") or raw.get("runtime_symbol_id")
+    returned = {"product": product, "expiry": expiry, "contract_type": derive_taifex_contract_type(expiry), "session": session}
     approved = _approved_identity(target)
     if target.get("instrument_type") == "option":
-        call_put = _norm_call_put(ci.get("option_type"))
-        strike = _strike(ci.get("strike_price"))
+        call_put = _norm_call_put(ci.get("option_type") or raw.get("option_type"))
+        strike = _strike(ci.get("strike_price") or raw.get("strike_price"))
         underlying = derive_taifex_option_underlying(product)
         returned.update({"strike": strike, "call_put": call_put})
         if underlying:
             returned["underlying"] = underlying
-        if not validate_taifex_mis_option_runtime_symbol(runtime_symbol=runtime_symbol, product=product, strike=strike):
-            return {}, "source_identity_mismatch"
-        required = ("product", "expiry", "strike", "call_put", "session")
-        cleaned = {k: v for k, v in returned.items() if v is not None}
-        if not _identity_matches_approved(cleaned, approved, required):
-            return {}, "source_identity_mismatch"
+        runtime_valid = validate_taifex_mis_option_runtime_symbol(runtime_symbol=runtime_symbol, product=product, strike=strike)
+        returned["runtime_symbol_validation_status"] = "matched_product_strike_and_option_symbol_grammar" if runtime_valid else "runtime_symbol_mismatch"
+        if not runtime_valid:
+            return {}, "runtime_symbol_mismatch", {"approved_contract_type": approved.get("contract_type"), "returned_contract_type": returned.get("contract_type"), "approved_expiry": approved.get("expiry"), "returned_expiry": returned.get("expiry"), "runtime_symbol_validation_status": "runtime_symbol_mismatch", "identity_mismatch_field": "runtime_symbol"}
+        required = ("product", "expiry", "strike", "call_put", "contract_type", "session")
+        cleaned = {k: v for k, v in returned.items() if v is not None and k != "runtime_symbol_validation_status"}
+        detail, diagnostics = _identity_mismatch_detail({**cleaned, "runtime_symbol_validation_status": returned.get("runtime_symbol_validation_status")}, approved, required)
+        if detail:
+            return {}, detail, diagnostics
         if cleaned.get("underlying") != approved.get("underlying"):
-            return {}, "exact_option_underlying_not_returned"
-        return cleaned, None
+            return {}, "exact_option_underlying_not_returned", {"approved_contract_type": approved.get("contract_type"), "returned_contract_type": returned.get("contract_type"), "approved_expiry": approved.get("expiry"), "returned_expiry": returned.get("expiry"), "runtime_symbol_validation_status": returned.get("runtime_symbol_validation_status"), "identity_mismatch_field": "underlying"}
+        return cleaned, None, {}
     cleaned = {k: v for k, v in returned.items() if v is not None}
-    if not _identity_matches_approved(cleaned, approved, ("product", "expiry", "session")):
-        return {}, "source_identity_mismatch"
-    return cleaned, None
+    detail, diagnostics = _identity_mismatch_detail(cleaned, approved, ("product", "expiry", "contract_type", "session"))
+    if detail:
+        return {}, detail, diagnostics
+    return cleaned, None, {}
 
 def execute_taifex_mis_operation(*, operation, target, plan, execution_time_utc, allow_network):
     if (gate := _require_network(allow_network)):
@@ -314,9 +355,9 @@ def execute_taifex_mis_operation(*, operation, target, plan, execution_time_utc,
     native_context_type = ctx.get("context_type")
     ctx.setdefault("provenance", {})["source_native_context_type"] = native_context_type
     ctx["context_type"] = operation.get("context_type") or native_context_type
-    identity, issue = _m8c_returned_identity(ctx, target)
-    if issue:
-        return _failed(issue, count=2)
+    identity, detail_reason, diagnostics = _m8c_returned_identity(ctx, target, result["observations"][0])
+    if detail_reason:
+        return _failed(map_taifex_mis_detail_reason(detail_reason), count=2, detail_reason=detail_reason, diagnostics=diagnostics)
     safe_fields = ctx.setdefault("safe_fields", {})
     safe_fields["returned_contract_identity"] = identity
     if target.get("instrument_type") == "option":
