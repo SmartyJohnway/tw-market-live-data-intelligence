@@ -1,0 +1,139 @@
+{
+  "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
+  "entries": [
+    {
+      "affected_paths": [
+        "scripts/m8r_03e_watchlist_ai_context_builder.py",
+        "docs/contracts/schemas"
+      ],
+      "blocking_phase": null,
+      "category": "architecture",
+      "debt_id": "M8-DEBT-0001",
+      "evidence": [
+        "inspected:scripts/m8r_03e_watchlist_ai_context_builder.py",
+        "inspected:docs/contracts/schemas"
+      ],
+      "finding": "M8R-03E context package includes AI behavior fields in evidence artifacts.",
+      "recommended_action": "Add schema migration to evidence-oriented fields and move behavior guidance to Agent Skill/deployment policy.",
+      "risk": "Agent behavior remains coupled to evidence package compatibility fields.",
+      "severity": "P1",
+      "status": "open",
+      "target_remediation_task": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP"
+    },
+    {
+      "affected_paths": [
+        "scripts/run_m8r_03e_watchlist_ai_context_handoff.py"
+      ],
+      "blocking_condition": "before any new artifact-write, filesystem, API, MCP, or execution surface",
+      "blocking_phase": "Phase C",
+      "category": "security",
+      "debt_id": "M8-DEBT-0002",
+      "evidence": [
+        "inspected:scripts/run_m8r_03e_watchlist_ai_context_handoff.py"
+      ],
+      "finding": "Output-root safety rejects URLs and some names but does not prove symlink escape or absolute-path containment.",
+      "recommended_action": "Centralize safe path resolution, symlink checks, and output root containment.",
+      "risk": "Unsafe artifact placement may be possible if new trust-boundary surfaces are added before containment hardening; documentation/Skill-only Phase B is not blocked.",
+      "severity": "P1",
+      "status": "open",
+      "target_remediation_task": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION"
+    },
+    {
+      "affected_paths": [
+        "scripts/observation_contract.py",
+        "scripts/m5k_common.py",
+        "server/mcp_server.py"
+      ],
+      "blocking_phase": null,
+      "category": "code_health",
+      "debt_id": "M8-DEBT-0003",
+      "evidence": [
+        "inspected:scripts/observation_contract.py",
+        "inspected:scripts/m5k_common.py",
+        "inspected:server/mcp_server.py"
+      ],
+      "finding": "Oversized modules and functions mix builder, validation, CLI, and projection responsibilities.",
+      "recommended_action": "Split by responsibility after Phase B scope is stable.",
+      "risk": "Maintenance risk and duplicate semantics grow across layers.",
+      "severity": "P2",
+      "status": "open",
+      "target_remediation_task": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP"
+    },
+    {
+      "affected_paths": [
+        "scripts/m8b_taifex_openapi_*",
+        "scripts/m8r_03e_watchlist_ai_context_builder.py"
+      ],
+      "blocking_phase": null,
+      "category": "code_health",
+      "debt_id": "M8-DEBT-0004",
+      "evidence": [
+        "inspected:scripts/m8b_taifex_openapi_*",
+        "inspected:scripts/m8r_03e_watchlist_ai_context_builder.py"
+      ],
+      "finding": "Wildcard imports remain in runtime modules.",
+      "recommended_action": "Replace wildcard imports with explicit imports.",
+      "risk": "Implicit APIs obscure dependencies and type boundaries.",
+      "severity": "P2",
+      "status": "open",
+      "target_remediation_task": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP"
+    },
+    {
+      "affected_paths": [
+        "scripts/m8r_03e_watchlist_ai_context_builder.py",
+        "scripts/m8r_03e_context_validator.py"
+      ],
+      "blocking_phase": null,
+      "category": "performance",
+      "debt_id": "M8-DEBT-0005",
+      "evidence": [
+        "inspected:scripts/m8r_03e_watchlist_ai_context_builder.py",
+        "inspected:scripts/m8r_03e_context_validator.py"
+      ],
+      "finding": "Potential repeated canonical serialization, citation scans, and schema validation under high citation/missing-evidence pressure.",
+      "recommended_action": "Add stable benchmark script/results and optimize only where measured.",
+      "risk": "Large watchlists may show superlinear behavior.",
+      "severity": "P2",
+      "status": "open",
+      "target_remediation_task": "M8R-03E-R4-PERFORMANCE-BASELINE-AND-SCALABILITY-HARDENING"
+    },
+    {
+      "affected_paths": [
+        "tests/"
+      ],
+      "blocking_phase": null,
+      "category": "testing",
+      "debt_id": "M8-DEBT-0006",
+      "evidence": [
+        "inspected:tests/"
+      ],
+      "finding": "Gaps remain for duplicate JSON keys, symlink/path safety, deep nesting, large inputs, and schema-version compatibility.",
+      "recommended_action": "Add targeted security/compatibility/property-style tests without heavy dependencies.",
+      "risk": "Edge cases can regress outside fixture happy paths.",
+      "severity": "P2",
+      "status": "open",
+      "target_remediation_task": "M8R-03E-R5-TESTING-DOCUMENTATION-AND-OPERATIONS-CONSOLIDATION"
+    },
+    {
+      "affected_paths": [
+        "docs/protocol/",
+        "docs/reviews/"
+      ],
+      "blocking_phase": null,
+      "category": "documentation",
+      "debt_id": "M8-DEBT-0007",
+      "evidence": [
+        "inspected:docs/protocol/",
+        "inspected:docs/reviews/"
+      ],
+      "finding": "Historical documents still contain active-sounding successor and AI behavior policy language.",
+      "recommended_action": "Add lifecycle labels and archive hierarchy in bounded documentation cleanup.",
+      "risk": "Readers may confuse historical guardrails with post-M8C architecture.",
+      "severity": "P3",
+      "status": "open",
+      "target_remediation_task": "M8R-03E-R5-TESTING-DOCUMENTATION-AND-OPERATIONS-CONSOLIDATION"
+    }
+  ],
+  "generated_at_utc": "2026-07-16T00:00:00Z",
+  "schema_version": "m8_technical_debt_register.v1"
+}

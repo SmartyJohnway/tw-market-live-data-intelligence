@@ -1,0 +1,89 @@
+# M8 Repository Health Audit
+
+Baseline SHA: `bd3496efe7492e6cd3c7dacc169e142f90e6cd92`.
+
+## Executive conclusion
+
+Disposition: **GO_WITH_CAVEATS**. Registry and roadmap contradictions that were low-risk were corrected. No P0 data-correctness blocker was verified, but P1 security/architecture risks remain bounded in R2/R3 and should be addressed before broad tool/API expansion. Phase B may proceed if it does not expand runtime trust boundaries.
+
+## Architecture
+
+Verified fact: M8R-03E builders project 03C/03D/03D-F1 evidence into deterministic packages. Audit inference: the current package exposes too much internal 03C/03D/03E complexity for an eventual simple AI-facing tool API. Recommended future work: Phase C should wrap existing layers instead of exposing internals directly.
+
+## Code health
+
+Largest Python files: `scripts/observation_contract.py` (1679 lines), `scripts/m5k_common.py` (1091), `server/mcp_server.py` (966), `scripts/m8r_ai_market_context_package.py` (798), `scripts/m8_multi_source_context_builder.py` (693). Largest functions include `normalize_yahoo_chart_result` (~214 lines), `build_multi_source_market_context` (~188), and `normalize_twse_mis_row` (~169). Wildcard imports and broad `except Exception` sites remain.
+
+## Security
+
+Verified fact: M8R-03E CLI rejects URL-like input and uses atomic writes. Audit inference: output root safety is incomplete for absolute paths/symlink containment, so R2 should harden path canonicalization before expanding write surfaces. Network execution remains controlled by existing authorization paths; this audit did not authorize live network calls.
+
+## Performance
+
+Baseline observation: current fixture tests are small and passing, but code inspection found repeated canonical serialization and citation scans under budget enforcement. Deterministic benchmark scenarios required for 1/10/50/100 targets, high citation pressure, high missing-evidence pressure, snapshot/performance bundles, and partial source failure are scheduled in R4.
+
+## Testing
+
+Unit tests cover M8, M8R-01/02/03B/03C/03D/03D-F1/03E contracts and fixtures. Gaps remain for producer/consumer compatibility, duplicate JSON keys, large/deep malformed inputs, path/symlink safety, and schema-version migration.
+
+## Documentation
+
+Documentation lifecycle classification: active protocol and data-capability files are normative/informational active; older reviews are historical; M8R-04 broad automation is superseded; M8R-03E AI-behavior fields are deprecated pending migration. Future hierarchy should consolidate roadmap, architecture, AI, quality, operations, and archive areas without mass moves in R1.
+
+## AI behavior policy decoupling
+
+Direct R1 correction records AI behavior hardcoding as deprecated direction in the registry. Compatibility-sensitive fields remain in M8R-03E contracts and are inventoried for migration to evidence-oriented fields. Data semantics such as currentness, timing class, official EOD/current observation, coverage, missing evidence, identity, source authority, and lineage remain strict.
+
+## Blocking findings
+
+No P0 findings. P1 security hardening for filesystem containment is recorded as a Phase-B condition if Phase B would expand artifact writes; otherwise R2 can proceed in parallel.
+
+## Non-blocking debt
+
+P2/P3 debt includes oversized modules, wildcard imports, broad exceptions, performance baselines, edge-case tests, and documentation lifecycle cleanup.
+
+## Recommended successor
+
+Recommended next task: `M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT`, because no blocking P0 was verified and R2 is reserved for bounded P1 security hardening rather than a full Phase-B stop.
+
+## Validation results recorded during R1
+
+- `git diff --check`: pass.
+- `python -m compileall scripts server tests skills`: pass.
+- `python scripts/governance_forbidden_path_guard.py`: pass, no findings.
+- `python scripts/forbidden_behavior_scanner.py`: pass, 187 checks and 0 failures.
+- `python skills/tw-security-master-classifier/scripts/validate_skill.py`: pass.
+- `pytest tests/unit/test_m8*.py -q`: pass, 592 tests.
+- `pytest tests/unit/test_m8r_01*.py -q`: warning, no matching files in this checkout.
+- `pytest tests/unit/test_m8r_02*.py -q`: pass, 13 tests.
+- `pytest tests/unit/test_m8r_03b*.py -q`: pass, 32 tests.
+- `pytest tests/unit/test_m8r_03c*.py -q`: pass, 16 tests.
+- `pytest tests/unit/test_m8r_03d*.py -q`: pass, 26 tests.
+- `pytest tests/unit/test_m8r_03d_f1*.py -q`: pass, 18 tests.
+- `pytest tests/unit/test_m8r_03e*.py -q`: pass, 52 tests.
+- `python scripts/run_test_profile.py default-ci --json`: pass, 721 tests.
+- `python scripts/run_test_profile.py full-non-network --json`: failed with 1627 passed, 7 failed, 1 skipped. The failing cluster is the existing M5D/M5E frontend-public publication candidate baseline drift (`frontend_public_baseline_drift`), not a new runtime market-evidence code failure. This is recorded as R5 documentation/operations consolidation evidence unless future investigation shows artifact integrity impact.
+
+## Commit 2 consistency corrections
+
+Phase-B/R2 semantics were clarified after PR review. The filesystem containment P1 does **not** block the documentation/Skill-only Phase B task. It blocks Phase C or any earlier work that adds a new artifact-write, filesystem, API, MCP, or execution surface. R2 therefore remains mandatory before trust-boundary expansion, but the recommended next task remains `M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT`.
+
+Active registry capability/status objects no longer expose `recommendation_allowed`, `trading_signal_allowed`, `no_recommendation`, `no_trading_advice`, or `no_trading_signal` as authoritative active capability fields. Historical/deprecated copies are retained only under deprecated AI-behavior metadata for migration traceability.
+
+The AI behavior policy inventory was expanded to occurrence-level records for materially active runtime, schema/contract, validator/builder, fixture/test, registry/data-capability, and active protocol occurrences. Historical prose that does not affect active runtime/contracts is grouped separately.
+
+## Performance baseline
+
+`docs/quality/m8_performance_baseline.json` records a deterministic, dependency-free, non-network R1 baseline for 1, 10, 50, and 100 targets plus high citation pressure, high missing-evidence pressure, snapshot, performance, and partial-failure scenarios. The baseline records build time, validation time, serialized bytes, citation counts, missing-evidence counts, growth ratios, and measurement environment. No unstable timing thresholds were added; R4 remains responsible for optimization and scalability hardening.
+
+## Full non-network failure evidence
+
+The seven full-non-network failures were reproduced on baseline SHA `bd3496efe7492e6cd3c7dacc169e142f90e6cd92` with the same failing node IDs. Current PR #149 keeps the same failure set, while adding R1 tests changes the pass count from 1616 to 1627. New M8/M8R failure count is `0`.
+
+## Commit 3 reproducible performance baseline correction
+
+R1 now has a reproducible performance baseline generated by `scripts/run_m8r_03e_performance_baseline.py`. The runner is dependency-free beyond existing repository code, performs no network execution, and re-runs checked-in M8R-03E fixtures through the actual `build_watchlist_ai_context_package`, `validate_watchlist_ai_context_package`, `build_watchlist_conversation_handoff`, and `build_context_manifest` pipeline. The 100-target scenario is explicitly an aggregate workload of multiple valid packages to avoid schema/context-budget distortion while still measuring a 100-target workload. This establishes an R1 baseline only; R4 remains responsible for optimization, scalability hardening, and any production-readiness claims.
+
+## Commit 4 portability correction
+
+The performance baseline runner no longer requires the Unix-only `resource` module. Peak-memory reporting is now explicit and machine-readable as either available with a source/value or unavailable on the platform with a null value; verification ignores platform-dependent memory and timing values. This preserves reproducible structural verification on Windows-like environments without changing roadmap semantics, benchmark scenarios, or M8R-03E contracts.
