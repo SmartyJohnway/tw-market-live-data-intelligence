@@ -1,0 +1,60 @@
+[
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_MIS",
+    "timing_class": "liveish_intraday_snapshot",
+    "context_type": "liveish_observation",
+    "source_timestamp": "2026-07-16T09:30:00+08:00",
+    "trade_date": null,
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "stale"
+    },
+    "facts": {
+      "latest_price": 100,
+      "close": 100,
+      "open": 99,
+      "high": 102,
+      "low": 98,
+      "volume": 1000
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-15",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 99,
+      "close": 99,
+      "open": 98,
+      "high": 101,
+      "low": 97,
+      "volume": 1000
+    },
+    "issues": []
+  }
+]
