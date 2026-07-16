@@ -1,0 +1,578 @@
+[
+  {
+    "dates": {},
+    "evidence": [
+      {
+        "source_family": "twse_isin",
+        "source_lane": "zh"
+      }
+    ],
+    "conflicts": [],
+    "caveats": [],
+    "identity": {
+      "security_code": "2330",
+      "security_name_zh": "台積電",
+      "security_name_en": "TSMC",
+      "isin": "TW0002330008",
+      "cfi": "ESVUFR"
+    },
+    "classification": {
+      "asset_class": "equity",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "equity_subtype": "ordinary",
+      "market": "twse",
+      "board": "main",
+      "listed_common_stock_core_flag": true,
+      "classification_status": "confirmed_dual_lane",
+      "cfi_mapping_version": "controlled-prefix-v1.1.0",
+      "cfi_mapping_scope": "partial_controlled_prefixes_not_full_iso_10962",
+      "cfi_decode_depth": "category_or_group_prefix_only",
+      "reason_codes": [
+        "FIXTURE_NOT_LIVING_TRUTH"
+      ],
+      "conflicts": []
+    },
+    "observation": {
+      "status": "observed_in_latest_verified_snapshot",
+      "observed_at": "2026-07-16T00:00:00+00:00",
+      "source_updated_date": "2026-07-16"
+    },
+    "lifecycle_events": []
+  },
+  {
+    "dates": {},
+    "evidence": [
+      {
+        "source_family": "twse_isin",
+        "source_lane": "zh"
+      }
+    ],
+    "conflicts": [],
+    "caveats": [],
+    "identity": {
+      "security_code": "6488",
+      "security_name_zh": "環球晶",
+      "security_name_en": "GlobalWafers",
+      "isin": "TW0006488000",
+      "cfi": "ESVUFR"
+    },
+    "classification": {
+      "asset_class": "equity",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "equity_subtype": "ordinary",
+      "market": "tpex",
+      "board": "main",
+      "listed_common_stock_core_flag": true,
+      "classification_status": "confirmed_dual_lane",
+      "cfi_mapping_version": "controlled-prefix-v1.1.0",
+      "cfi_mapping_scope": "partial_controlled_prefixes_not_full_iso_10962",
+      "cfi_decode_depth": "category_or_group_prefix_only",
+      "reason_codes": [
+        "FIXTURE_NOT_LIVING_TRUTH"
+      ],
+      "conflicts": []
+    },
+    "observation": {
+      "status": "observed_in_latest_verified_snapshot",
+      "observed_at": "2026-07-16T00:00:00+00:00",
+      "source_updated_date": "2026-07-16"
+    },
+    "lifecycle_events": []
+  },
+  {
+    "dates": {},
+    "evidence": [
+      {
+        "source_family": "twse_isin",
+        "source_lane": "zh"
+      }
+    ],
+    "conflicts": [],
+    "caveats": [],
+    "identity": {
+      "security_code": "0050",
+      "security_name_zh": "元大台灣50",
+      "security_name_en": "Yuanta Taiwan 50",
+      "isin": "TW0000050004",
+      "cfi": "CEOGEU"
+    },
+    "classification": {
+      "asset_class": "fund",
+      "instrument_family": "etf",
+      "instrument_type": "etf",
+      "equity_subtype": null,
+      "market": "twse",
+      "board": "main",
+      "listed_common_stock_core_flag": false,
+      "classification_status": "confirmed_dual_lane",
+      "cfi_mapping_version": "controlled-prefix-v1.1.0",
+      "cfi_mapping_scope": "partial_controlled_prefixes_not_full_iso_10962",
+      "cfi_decode_depth": "category_or_group_prefix_only",
+      "reason_codes": [
+        "FIXTURE_NOT_LIVING_TRUTH"
+      ],
+      "conflicts": []
+    },
+    "observation": {
+      "status": "observed_in_latest_verified_snapshot",
+      "observed_at": "2026-07-16T00:00:00+00:00",
+      "source_updated_date": "2026-07-16"
+    },
+    "lifecycle_events": []
+  },
+  {
+    "dates": {},
+    "evidence": [
+      {
+        "source_family": "twse_isin",
+        "source_lane": "zh"
+      }
+    ],
+    "conflicts": [],
+    "caveats": [],
+    "identity": {
+      "security_code": "2881A",
+      "security_name_zh": "富邦特",
+      "security_name_en": "Fubon Preferred",
+      "isin": "TW0002881A00",
+      "cfi": "ESVUFR"
+    },
+    "classification": {
+      "asset_class": "equity",
+      "instrument_family": "company_share",
+      "instrument_type": "preferred_share",
+      "equity_subtype": null,
+      "market": "twse",
+      "board": "main",
+      "listed_common_stock_core_flag": false,
+      "classification_status": "confirmed_dual_lane",
+      "cfi_mapping_version": "controlled-prefix-v1.1.0",
+      "cfi_mapping_scope": "partial_controlled_prefixes_not_full_iso_10962",
+      "cfi_decode_depth": "category_or_group_prefix_only",
+      "reason_codes": [
+        "FIXTURE_NOT_LIVING_TRUTH"
+      ],
+      "conflicts": []
+    },
+    "observation": {
+      "status": "observed_in_latest_verified_snapshot",
+      "observed_at": "2026-07-16T00:00:00+00:00",
+      "source_updated_date": "2026-07-16"
+    },
+    "lifecycle_events": []
+  },
+  {
+    "dates": {},
+    "evidence": [
+      {
+        "source_family": "twse_isin",
+        "source_lane": "zh"
+      }
+    ],
+    "conflicts": [],
+    "caveats": [],
+    "identity": {
+      "security_code": "1234",
+      "security_name_zh": "權證甲",
+      "security_name_en": "Warrant A",
+      "isin": "TW0001234000",
+      "cfi": "CEOGEU"
+    },
+    "classification": {
+      "asset_class": "derivative",
+      "instrument_family": "warrant",
+      "instrument_type": "warrant",
+      "equity_subtype": null,
+      "market": "twse",
+      "board": "main",
+      "listed_common_stock_core_flag": false,
+      "classification_status": "confirmed_dual_lane",
+      "cfi_mapping_version": "controlled-prefix-v1.1.0",
+      "cfi_mapping_scope": "partial_controlled_prefixes_not_full_iso_10962",
+      "cfi_decode_depth": "category_or_group_prefix_only",
+      "reason_codes": [
+        "FIXTURE_NOT_LIVING_TRUTH"
+      ],
+      "conflicts": []
+    },
+    "observation": {
+      "status": "observed_in_latest_verified_snapshot",
+      "observed_at": "2026-07-16T00:00:00+00:00",
+      "source_updated_date": "2026-07-16"
+    },
+    "lifecycle_events": []
+  },
+  {
+    "dates": {},
+    "evidence": [
+      {
+        "source_family": "twse_isin",
+        "source_lane": "zh"
+      }
+    ],
+    "conflicts": [],
+    "caveats": [],
+    "identity": {
+      "security_code": "7777",
+      "security_name_zh": "下市股",
+      "security_name_en": "Delisted Co",
+      "isin": "TW0007777000",
+      "cfi": "ESVUFR"
+    },
+    "classification": {
+      "asset_class": "equity",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "equity_subtype": "ordinary",
+      "market": "twse",
+      "board": "main",
+      "listed_common_stock_core_flag": true,
+      "classification_status": "confirmed_dual_lane",
+      "cfi_mapping_version": "controlled-prefix-v1.1.0",
+      "cfi_mapping_scope": "partial_controlled_prefixes_not_full_iso_10962",
+      "cfi_decode_depth": "category_or_group_prefix_only",
+      "reason_codes": [
+        "FIXTURE_NOT_LIVING_TRUTH"
+      ],
+      "conflicts": []
+    },
+    "observation": {
+      "status": "observed_in_latest_verified_snapshot",
+      "observed_at": "2026-07-16T00:00:00+00:00",
+      "source_updated_date": "2026-07-16"
+    },
+    "lifecycle_events": []
+  },
+  {
+    "dates": {},
+    "evidence": [
+      {
+        "source_family": "twse_isin",
+        "source_lane": "zh"
+      }
+    ],
+    "conflicts": [],
+    "caveats": [],
+    "identity": {
+      "security_code": "6666",
+      "security_name_zh": "暫停股",
+      "security_name_en": "Suspended Co",
+      "isin": "TW0006666000",
+      "cfi": "ESVUFR"
+    },
+    "classification": {
+      "asset_class": "equity",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "equity_subtype": "ordinary",
+      "market": "twse",
+      "board": "main",
+      "listed_common_stock_core_flag": true,
+      "classification_status": "confirmed_dual_lane",
+      "cfi_mapping_version": "controlled-prefix-v1.1.0",
+      "cfi_mapping_scope": "partial_controlled_prefixes_not_full_iso_10962",
+      "cfi_decode_depth": "category_or_group_prefix_only",
+      "reason_codes": [
+        "FIXTURE_NOT_LIVING_TRUTH"
+      ],
+      "conflicts": []
+    },
+    "observation": {
+      "status": "observed_in_latest_verified_snapshot",
+      "observed_at": "2026-07-16T00:00:00+00:00",
+      "source_updated_date": "2026-07-16"
+    },
+    "lifecycle_events": []
+  },
+  {
+    "dates": {},
+    "evidence": [
+      {
+        "source_family": "twse_isin",
+        "source_lane": "zh"
+      }
+    ],
+    "conflicts": [],
+    "caveats": [],
+    "identity": {
+      "security_code": "2222",
+      "security_name_zh": "未知股",
+      "security_name_en": "Unknown Life",
+      "isin": "TW0002222000",
+      "cfi": "ESVUFR"
+    },
+    "classification": {
+      "asset_class": "equity",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "equity_subtype": "ordinary",
+      "market": "twse",
+      "board": "main",
+      "listed_common_stock_core_flag": true,
+      "classification_status": "confirmed_official_single_lane",
+      "cfi_mapping_version": "controlled-prefix-v1.1.0",
+      "cfi_mapping_scope": "partial_controlled_prefixes_not_full_iso_10962",
+      "cfi_decode_depth": "category_or_group_prefix_only",
+      "reason_codes": [
+        "FIXTURE_NOT_LIVING_TRUTH"
+      ],
+      "conflicts": []
+    },
+    "observation": {
+      "status": "observed_in_capture",
+      "observed_at": "2026-07-16T00:00:00+00:00",
+      "source_updated_date": "2026-07-16"
+    },
+    "lifecycle_events": []
+  },
+  {
+    "dates": {},
+    "evidence": [
+      {
+        "source_family": "twse_isin",
+        "source_lane": "zh"
+      }
+    ],
+    "conflicts": [],
+    "caveats": [],
+    "identity": {
+      "security_code": "9999",
+      "security_name_zh": "衝突股",
+      "security_name_en": "Conflict Co",
+      "isin": "TW0009999000",
+      "cfi": "ESVUFR"
+    },
+    "classification": {
+      "asset_class": "equity",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "equity_subtype": "ordinary",
+      "market": "twse",
+      "board": "main",
+      "listed_common_stock_core_flag": true,
+      "classification_status": "quarantine_conflict",
+      "cfi_mapping_version": "controlled-prefix-v1.1.0",
+      "cfi_mapping_scope": "partial_controlled_prefixes_not_full_iso_10962",
+      "cfi_decode_depth": "category_or_group_prefix_only",
+      "reason_codes": [
+        "FIXTURE_NOT_LIVING_TRUTH"
+      ],
+      "conflicts": [
+        "identity_conflict"
+      ]
+    },
+    "observation": {
+      "status": "observed_in_latest_verified_snapshot",
+      "observed_at": "2026-07-16T00:00:00+00:00",
+      "source_updated_date": "2026-07-16"
+    },
+    "lifecycle_events": []
+  },
+  {
+    "dates": {},
+    "evidence": [
+      {
+        "source_family": "twse_isin",
+        "source_lane": "zh"
+      }
+    ],
+    "conflicts": [],
+    "caveats": [],
+    "identity": {
+      "security_code": "3333",
+      "security_name_zh": "同碼股",
+      "security_name_en": "Same Code TWSE",
+      "isin": "TW0003333000",
+      "cfi": "ESVUFR"
+    },
+    "classification": {
+      "asset_class": "equity",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "equity_subtype": "ordinary",
+      "market": "twse",
+      "board": "main",
+      "listed_common_stock_core_flag": true,
+      "classification_status": "confirmed_dual_lane",
+      "cfi_mapping_version": "controlled-prefix-v1.1.0",
+      "cfi_mapping_scope": "partial_controlled_prefixes_not_full_iso_10962",
+      "cfi_decode_depth": "category_or_group_prefix_only",
+      "reason_codes": [
+        "FIXTURE_NOT_LIVING_TRUTH"
+      ],
+      "conflicts": []
+    },
+    "observation": {
+      "status": "observed_in_latest_verified_snapshot",
+      "observed_at": "2026-07-16T00:00:00+00:00",
+      "source_updated_date": "2026-07-16"
+    },
+    "lifecycle_events": []
+  },
+  {
+    "dates": {},
+    "evidence": [
+      {
+        "source_family": "twse_isin",
+        "source_lane": "zh"
+      }
+    ],
+    "conflicts": [],
+    "caveats": [],
+    "identity": {
+      "security_code": "3333",
+      "security_name_zh": "同碼股",
+      "security_name_en": "Same Code TPEX",
+      "isin": "TW0003333999",
+      "cfi": "ESVUFR"
+    },
+    "classification": {
+      "asset_class": "equity",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "equity_subtype": "ordinary",
+      "market": "tpex",
+      "board": "main",
+      "listed_common_stock_core_flag": true,
+      "classification_status": "confirmed_dual_lane",
+      "cfi_mapping_version": "controlled-prefix-v1.1.0",
+      "cfi_mapping_scope": "partial_controlled_prefixes_not_full_iso_10962",
+      "cfi_decode_depth": "category_or_group_prefix_only",
+      "reason_codes": [
+        "FIXTURE_NOT_LIVING_TRUTH"
+      ],
+      "conflicts": []
+    },
+    "observation": {
+      "status": "observed_in_latest_verified_snapshot",
+      "observed_at": "2026-07-16T00:00:00+00:00",
+      "source_updated_date": "2026-07-16"
+    },
+    "lifecycle_events": []
+  },
+  {
+    "dates": {},
+    "evidence": [
+      {
+        "source_family": "twse_isin",
+        "source_lane": "zh"
+      }
+    ],
+    "conflicts": [],
+    "caveats": [],
+    "identity": {
+      "security_code": "4444",
+      "security_name_zh": "重名股",
+      "security_name_en": "Ambiguous Name",
+      "isin": "TW0004444000",
+      "cfi": "ESVUFR"
+    },
+    "classification": {
+      "asset_class": "equity",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "equity_subtype": "ordinary",
+      "market": "twse",
+      "board": "main",
+      "listed_common_stock_core_flag": true,
+      "classification_status": "confirmed_dual_lane",
+      "cfi_mapping_version": "controlled-prefix-v1.1.0",
+      "cfi_mapping_scope": "partial_controlled_prefixes_not_full_iso_10962",
+      "cfi_decode_depth": "category_or_group_prefix_only",
+      "reason_codes": [
+        "FIXTURE_NOT_LIVING_TRUTH"
+      ],
+      "conflicts": []
+    },
+    "observation": {
+      "status": "observed_in_latest_verified_snapshot",
+      "observed_at": "2026-07-16T00:00:00+00:00",
+      "source_updated_date": "2026-07-16"
+    },
+    "lifecycle_events": []
+  },
+  {
+    "dates": {},
+    "evidence": [
+      {
+        "source_family": "twse_isin",
+        "source_lane": "zh"
+      }
+    ],
+    "conflicts": [],
+    "caveats": [],
+    "identity": {
+      "security_code": "4445",
+      "security_name_zh": "重名股",
+      "security_name_en": "Ambiguous Name",
+      "isin": "TW0004445000",
+      "cfi": "ESVUFR"
+    },
+    "classification": {
+      "asset_class": "equity",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "equity_subtype": "ordinary",
+      "market": "tpex",
+      "board": "main",
+      "listed_common_stock_core_flag": true,
+      "classification_status": "confirmed_dual_lane",
+      "cfi_mapping_version": "controlled-prefix-v1.1.0",
+      "cfi_mapping_scope": "partial_controlled_prefixes_not_full_iso_10962",
+      "cfi_decode_depth": "category_or_group_prefix_only",
+      "reason_codes": [
+        "FIXTURE_NOT_LIVING_TRUTH"
+      ],
+      "conflicts": []
+    },
+    "observation": {
+      "status": "observed_in_latest_verified_snapshot",
+      "observed_at": "2026-07-16T00:00:00+00:00",
+      "source_updated_date": "2026-07-16"
+    },
+    "lifecycle_events": []
+  },
+  {
+    "dates": {},
+    "evidence": [
+      {
+        "source_family": "twse_isin",
+        "source_lane": "zh"
+      }
+    ],
+    "conflicts": [],
+    "caveats": [],
+    "identity": {
+      "security_code": "8888",
+      "security_name_zh": "測試股",
+      "security_name_en": "Fixture Only",
+      "isin": "TW0008888000",
+      "cfi": "ESVUFR"
+    },
+    "classification": {
+      "asset_class": "equity",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "equity_subtype": "ordinary",
+      "market": "twse",
+      "board": "main",
+      "listed_common_stock_core_flag": true,
+      "classification_status": "confirmed_dual_lane",
+      "cfi_mapping_version": "controlled-prefix-v1.1.0",
+      "cfi_mapping_scope": "partial_controlled_prefixes_not_full_iso_10962",
+      "cfi_decode_depth": "category_or_group_prefix_only",
+      "reason_codes": [
+        "FIXTURE_NOT_LIVING_TRUTH"
+      ],
+      "conflicts": []
+    },
+    "observation": {
+      "status": "fixture_observation_only",
+      "observed_at": "2026-07-16T00:00:00+00:00",
+      "source_updated_date": "2026-07-16"
+    },
+    "lifecycle_events": []
+  }
+]

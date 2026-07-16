@@ -123,3 +123,7 @@ git diff --check
 - [M8R-03 AI Market Context Package v1](protocol/M8R_03_AI_MARKET_CONTEXT_PACKAGE_V1.md) — GO offline AI-consumable package over accepted M8R-02 orchestration results; production live execution remains gated by M8R-02B.
 
 - [M8R-03D Watchlist Evidence Source Integration and Controlled Execution](protocol/M8R_03D_WATCHLIST_EVIDENCE_SOURCE_INTEGRATION_AND_CONTROLLED_EXECUTION.md)
+
+## M8R-03D-F1
+
+- [M8R-03D-F1 Verified Security-Master Classifier Snapshot Adapter](protocol/M8R_03D_F1_VERIFIED_SECURITY_MASTER_CLASSIFIER_SNAPSHOT_ADAPTER.md)
