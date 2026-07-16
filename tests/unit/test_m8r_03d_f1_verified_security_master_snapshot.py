@@ -165,3 +165,39 @@ def test_isin_only_record_rejected_before_invalid_canonical_target():
     bad=copy.deepcopy(rec[:1]); bad[0]['identity']['security_code']=None
     with pytest.raises(Exception) as e: export_verified_security_master_snapshot(classification_records=bad,lifecycle_events=[],source_context=ctx,generated_at_utc='2026-07-16T00:00:00Z',effective_observation_date='2026-07-16')
     assert 'missing_runtime_identity' in str(e.value) or 'invalid_canonical_target_identity' in str(e.value)
+
+def test_canonical_identity_mismatch_rejected():
+    snap=load('snapshot.json'); man=load('manifest.json')
+    for patch in [('canonical_target_id','TPEX:2330'),('canonical_target_id','TWSE:9999')]:
+        s=copy.deepcopy(snap); s['records'][0][patch[0]]=patch[1]; s['records'][0]['record_hash']=sha256_json({k:v for k,v in s['records'][0].items() if k!='record_hash'})
+        m=copy.deepcopy(man); m['snapshot_sha256']=sha256_json(s)
+        with pytest.raises(VerifiedSecurityMasterSnapshotError) as e: validate_verified_security_master_snapshot(s,m,allow_fixture_snapshot=True)
+        assert 'canonical_identity_mismatch' in str(e.value)
+
+def test_quarantined_lifecycle_required_counts_and_duplicate_disposition():
+    snap=load('snapshot.json'); man=load('manifest.json')
+    s=copy.deepcopy(snap); del s['quarantined_lifecycle_events']; m=copy.deepcopy(man); m['snapshot_sha256']=sha256_json(s)
+    with pytest.raises(VerifiedSecurityMasterSnapshotError) as e: validate_verified_security_master_snapshot(s,m,allow_fixture_snapshot=True)
+    assert 'snapshot_schema_invalid' in str(e.value)
+    s=copy.deepcopy(snap); s['coverage']['quarantined_lifecycle_event_count']=99; m=copy.deepcopy(man); m['coverage']=s['coverage']; m['snapshot_sha256']=sha256_json(s)
+    with pytest.raises(VerifiedSecurityMasterSnapshotError) as e: validate_verified_security_master_snapshot(s,m,allow_fixture_snapshot=True)
+    assert 'quarantined_lifecycle_event_count_mismatch' in str(e.value)
+    rec=load('classification_records.json'); ctx=load('source_context.json')
+    ev={"source_family":"twse_company_delisted","source_url":"https://www.twse.com.tw/zh/listed/suspend-listing.html","security_code":"2330","event_type":"twse_delisted","effective_date":"2026-01-01","evidence_status":"official_table","event_key":"dup-event"}
+    s,m=export_verified_security_master_snapshot(classification_records=rec,lifecycle_events=[ev],source_context=ctx,generated_at_utc='2026-07-16T00:00:00Z',effective_observation_date='2026-07-16')
+    s['quarantined_lifecycle_events'].append({**ev,'event_id':'dup-event','quarantine_reason':'forced'}); s['coverage']['quarantined_lifecycle_event_count']=1; s['coverage']['total_lifecycle_event_count']=2; m['coverage']=s['coverage']; m['snapshot_sha256']=sha256_json(s)
+    with pytest.raises(VerifiedSecurityMasterSnapshotError) as e: validate_verified_security_master_snapshot(s,m,allow_fixture_snapshot=True)
+    assert 'duplicate_lifecycle_event_disposition' in str(e.value)
+
+def test_lifecycle_total_count_and_dict_conflict_duplicate_isin():
+    rec=load('classification_records.json'); ctx=load('source_context.json')
+    ambiguous={"source_family":"twse_company_delisted","source_url":"https://www.twse.com.tw/zh/listed/suspend-listing.html","security_code":"3333","event_type":"twse_delisted","effective_date":"2026-01-01","evidence_status":"official_table"}
+    s,m=export_verified_security_master_snapshot(classification_records=rec,lifecycle_events=load('lifecycle_events.json')+[ambiguous],source_context=ctx,generated_at_utc='2026-07-16T00:00:00Z',effective_observation_date='2026-07-16')
+    assert s['coverage']['total_lifecycle_event_count']==s['coverage']['lifecycle_event_count']+s['coverage']['quarantined_lifecycle_event_count']
+    assert m['coverage']['total_lifecycle_event_count']==m['coverage']['lifecycle_event_count']+m['coverage']['quarantined_lifecycle_event_count']
+    snap=load('snapshot.json'); man=load('manifest.json')
+    dup=copy.deepcopy(snap); dup['records'][0]['identity']['isin']=dup['records'][1]['identity']['isin']
+    for idx in (0,1):
+        dup['records'][idx]['classification']['classification_status']='confirmed_dual_lane'; dup['records'][idx]['conflicts']=[{'category':'identity_conflict','severity':'hard','field':'isin'}]; dup['records'][idx]['record_hash']=sha256_json({k:v for k,v in dup['records'][idx].items() if k!='record_hash'})
+    mm=copy.deepcopy(man); mm['snapshot_sha256']=sha256_json(dup)
+    assert validate_verified_security_master_snapshot(dup,mm,allow_fixture_snapshot=True)['valid']

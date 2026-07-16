@@ -13,7 +13,8 @@
       "TWSE"
     ],
     "quarantined_lifecycle_event_count": 0,
-    "record_count": 14
+    "record_count": 14,
+    "total_lifecycle_event_count": 2
   },
   "effective_observation_date": "2026-07-16",
   "generated_at_utc": "2026-07-16T00:00:00Z",

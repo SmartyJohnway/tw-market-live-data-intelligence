@@ -36,6 +36,24 @@ def _timestamps_valid(snapshot):
 
 def _load_schema(path): return json.loads(Path(path).read_text(encoding='utf-8'))
 
+def _conflict_categories(record):
+    cats=set()
+    for c in (record.get('conflicts') or []) + ((record.get('classification') or {}).get('conflicts') or []):
+        if isinstance(c,str): cats.add(c)
+        elif isinstance(c,dict):
+            for key in ('category','reason_code','code','severity','field'):
+                if c.get(key): cats.add(str(c.get(key)))
+    return cats
+
+def _validate_canonical_identity(record):
+    cid=record.get('canonical_target_id') or ''
+    if ':' not in cid: raise ValueError('canonical_identity_mismatch')
+    market, code=cid.split(':',1)
+    cls_market=(record.get('classification') or {}).get('market')
+    ident_code=(record.get('identity') or {}).get('security_code')
+    if market not in {'TWSE','TPEX'} or cls_market not in {'TWSE','TPEX'} or not ident_code or market!=cls_market or code!=ident_code:
+        raise ValueError('canonical_identity_mismatch')
+
 def validate_verified_security_master_snapshot(snapshot:dict, manifest:dict, *, allow_fixture_snapshot:bool=False, require_current_skill_contract:bool=True)->dict:
     issues=[]
     def issue(c): issues.append({'code':c})
@@ -52,7 +70,19 @@ def validate_verified_security_master_snapshot(snapshot:dict, manifest:dict, *, 
     if manifest.get('generated_at_utc')!=snapshot.get('generated_at_utc'): issue('generated_at_mismatch')
     if manifest.get('effective_observation_date')!=snapshot.get('effective_observation_date'): issue('effective_observation_date_mismatch')
     if manifest.get('record_count')!=len(snapshot.get('records') or []): issue('record_count_mismatch')
-    if manifest.get('lifecycle_event_count')!=_lifecycle_event_count(snapshot): issue('lifecycle_event_count_mismatch')
+    attached_count=_lifecycle_event_count(snapshot)
+    quarantined_events=snapshot.get('quarantined_lifecycle_events') or []
+    quarantined_count=len(quarantined_events)
+    coverage=snapshot.get('coverage') or {}
+    if manifest.get('lifecycle_event_count')!=attached_count: issue('lifecycle_event_count_mismatch')
+    if coverage.get('lifecycle_event_count')!=attached_count: issue('lifecycle_event_count_mismatch')
+    if coverage.get('quarantined_lifecycle_event_count')!=quarantined_count: issue('quarantined_lifecycle_event_count_mismatch')
+    if coverage.get('total_lifecycle_event_count') is not None and coverage.get('total_lifecycle_event_count')!=attached_count+quarantined_count: issue('total_lifecycle_event_count_mismatch')
+    attached_ids={e.get('event_id') or e.get('event_key') for r in snapshot.get('records') or [] for e in ((r.get('lifecycle') or {}).get('events') or [])}
+    quarantined_ids={e.get('event_id') or e.get('event_key') for e in quarantined_events}
+    if None in attached_ids: attached_ids.remove(None)
+    if None in quarantined_ids: quarantined_ids.remove(None)
+    if attached_ids.intersection(quarantined_ids): issue('duplicate_lifecycle_event_disposition')
     if manifest.get('coverage')!=snapshot.get('coverage'): issue('coverage_mismatch')
     skill_hash=(snapshot.get('source_skill') or {}).get('skill_contract_hash')
     if manifest.get('skill_contract_hash')!=skill_hash: issue('skill_contract_hash_mismatch')
@@ -65,11 +95,14 @@ def validate_verified_security_master_snapshot(snapshot:dict, manifest:dict, *, 
         cid=r.get('canonical_target_id')
         if cid in ids: issue('duplicate_canonical_target_id')
         ids.add(cid)
+
+        try: _validate_canonical_identity(r)
+        except Exception as e: issue(str(e))
         if r.get('record_hash')!=sha256_json({k:v for k,v in r.items() if k!='record_hash'}): issue('record_hash_mismatch')
         isin=(r.get('identity') or {}).get('isin')
         if isin: isin_groups.setdefault(isin,[]).append(r)
     for isin, group in isin_groups.items():
-        identities={r.get('canonical_target_id') for r in group}; quarantined=all(((r.get('classification') or {}).get('classification_status') in QUARANTINE or any(c in {'identity_conflict','classification_conflict'} for c in ((r.get('conflicts') or []) + ((r.get('classification') or {}).get('conflicts') or [])))) for r in group)
+        identities={r.get('canonical_target_id') for r in group}; quarantined=all(((r.get('classification') or {}).get('classification_status') in QUARANTINE or bool(_conflict_categories(r).intersection({'identity_conflict','classification_conflict'}))) for r in group)
         if len(identities)>1 and not quarantined: issue('duplicate_unresolved_isin_identity')
     if issues: raise VerifiedSecurityMasterSnapshotError(json.dumps(issues,ensure_ascii=False,sort_keys=True))
     return {'valid':True,'issue_count':0,'require_current_skill_contract':require_current_skill_contract}

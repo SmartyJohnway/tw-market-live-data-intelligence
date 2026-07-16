@@ -27,9 +27,9 @@ Raw HTML cells and full official payloads are forbidden in runtime snapshots.
 
 ## Manifest schema and integrity
 
-The manifest schema is `tw_verified_security_master_snapshot_manifest.v1` and is defined as a canonical Draft 2020-12 JSON Schema at `docs/contracts/schemas/tw_verified_security_master_snapshot_manifest.v1.schema.json`. It records `snapshot_sha256`, `schema_sha256`, `skill_contract_hash`, producer version, record counts, lifecycle event counts, coverage, and `validation_status`.
+The manifest schema is `tw_verified_security_master_snapshot_manifest.v1` and is defined as a canonical Draft 2020-12 JSON Schema at `docs/contracts/schemas/tw_verified_security_master_snapshot_manifest.v1.schema.json`. It records `snapshot_sha256`, `schema_sha256`, `skill_contract_hash`, producer version, record counts, attached lifecycle event counts, quarantined lifecycle event counts through coverage, total input lifecycle event counts through coverage, coverage, and `validation_status`.
 
-The loader fails closed when schema versions drift, producer versions are unsupported, schema hashes mismatch, snapshot hashes mismatch, generated/effective timestamps differ between manifest and snapshot, record or lifecycle event counts mismatch, snapshot IDs mismatch, coverage differs, Skill contract hashes mismatch, record hashes mismatch, duplicate canonical target IDs appear, unresolved duplicate ISIN identities are detected, forbidden raw fields appear, or `validation_status != passed`. By default it also requires `manifest.skill_contract_hash` to match the current repository Skill contract hash. Historical pinned snapshots may be accepted only by an explicit compatibility caller that sets `require_current_skill_contract=False`; this is for audit/replay, not production watchlist execution.
+The loader fails closed when schema versions drift, producer versions are unsupported, schema hashes mismatch, snapshot hashes mismatch, generated/effective timestamps differ between manifest and snapshot, record or lifecycle event counts mismatch, snapshot IDs mismatch, coverage differs, Skill contract hashes mismatch, record hashes mismatch, canonical target identity disagrees with classification market or security code, duplicate canonical target IDs appear, unresolved duplicate ISIN identities are detected, quarantined lifecycle event counts drift, an event appears in both attached and quarantined lifecycle sets, forbidden raw fields appear, or `validation_status != passed`. By default it also requires `manifest.skill_contract_hash` to match the current repository Skill contract hash. Historical pinned snapshots may be accepted only by an explicit compatibility caller that sets `require_current_skill_contract=False`; this is for audit/replay, not production watchlist execution.
 
 ## Classification mapping
 
@@ -49,7 +49,7 @@ Adapter results expose `classification_resolution_status` and `classification_ex
 
 ## Lifecycle derivation
 
-Lifecycle events are preserved. The adapter derives a current view without flattening event dates. Explicit effective termination, maturity, and suspension events block or caveat execution according to M8R-03D policy. Missing lifecycle evidence remains `unknown`; absence of a termination event is never treated as proof of active trading. Current verified observation may produce `active_with_current_observation_basis` with an explicit evidence-qualified caveat.
+Lifecycle events are preserved. Exporter-produced snapshots distinguish attached lifecycle event count, quarantined lifecycle event count, and total input lifecycle event count, with total equal to attached plus quarantined. The adapter derives a current view without flattening event dates. Explicit effective termination, maturity, and suspension events block or caveat execution according to M8R-03D policy. Missing lifecycle evidence remains `unknown`; absence of a termination event is never treated as proof of active trading. Current verified observation may produce `active_with_current_observation_basis` with an explicit evidence-qualified caveat.
 
 ## Runtime resolution
 
