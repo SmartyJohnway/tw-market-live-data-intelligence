@@ -1,200 +1,354 @@
 {
   "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
   "generated_at_utc": "2026-07-16T00:00:00Z",
+  "generator_script": "scripts/run_m8r_03e_performance_baseline.py",
+  "generator_version": "m8r_03e_performance_baseline_runner.v1",
   "measurement_environment": {
-    "dependency_free": true,
+    "dependency_free_beyond_repository": true,
     "network": false,
     "peak_memory_source": "resource.getrusage.ru_maxrss",
     "platform": "Linux-6.12.47-x86_64-with-glibc2.39",
     "python": "3.13.13",
     "timing_source": "time.perf_counter_ns"
   },
+  "network_execution_used": false,
+  "repository_head_sha": "a038bcb5766d595aa0aab70919707b536876151b",
+  "required_scenarios": [
+    "1_target_snapshot",
+    "10_target_snapshot",
+    "50_target_snapshot",
+    "100_target_snapshot",
+    "high_citation_pressure",
+    "high_missing_evidence_pressure",
+    "snapshot",
+    "performance",
+    "partial_failure"
+  ],
   "scenarios": [
     {
-      "build_time_ms": 0.236,
-      "citation_count": 8,
+      "actual_functions_exercised": [
+        "build_watchlist_ai_context_package",
+        "validate_watchlist_ai_context_package",
+        "build_watchlist_conversation_handoff",
+        "build_context_manifest",
+        "validate_watchlist_conversation_handoff",
+        "validate_watchlist_ai_context_manifest"
+      ],
+      "budget_status": "satisfied",
+      "build_time_ms": 17.684,
+      "citation_count": 27,
+      "context_policy": {},
+      "coverage_status": "complete",
+      "fixture_case": "complete_snapshot",
       "growth_ratio_vs_one_target": {
         "build_time": 1.0,
         "citation_count": 1.0,
+        "missing_evidence_count": 0.0,
         "serialized_bytes": 1.0,
         "target_count": 1.0,
         "validation_time": 1.0
       },
-      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
       "missing_evidence_count": 0,
+      "repeat_count": 1,
+      "scenario_construction_method": "repeat checked-in M8R-03E fixture through actual builder/validator/handoff/manifest pipeline",
       "scenario_id": "1_target_snapshot",
-      "serialized_bytes": 2118,
+      "serialized_bytes": 24942,
       "target_count": 1,
       "valid": true,
-      "validation_time_ms": 0.011
+      "validation_issue_count": 0,
+      "validation_time_ms": 11.348,
+      "workload_mode": "single_valid_package_truncated_to_first_target"
     },
     {
-      "build_time_ms": 0.648,
-      "citation_count": 80,
+      "actual_functions_exercised": [
+        "build_watchlist_ai_context_package",
+        "validate_watchlist_ai_context_package",
+        "build_watchlist_conversation_handoff",
+        "build_context_manifest",
+        "validate_watchlist_conversation_handoff",
+        "validate_watchlist_ai_context_manifest"
+      ],
+      "budget_status": "satisfied",
+      "build_time_ms": 130.273,
+      "citation_count": 270,
+      "context_policy": {},
+      "coverage_status": "complete",
+      "fixture_case": "complete_snapshot",
       "growth_ratio_vs_one_target": {
-        "build_time": 2.746,
+        "build_time": 7.367,
         "citation_count": 10.0,
-        "serialized_bytes": 9.423,
+        "missing_evidence_count": 0.0,
+        "serialized_bytes": 8.676,
         "target_count": 10.0,
-        "validation_time": 1.091
+        "validation_time": 8.321
       },
-      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
       "missing_evidence_count": 0,
+      "repeat_count": 5,
+      "scenario_construction_method": "repeat checked-in M8R-03E fixture through actual builder/validator/handoff/manifest pipeline",
       "scenario_id": "10_target_snapshot",
-      "serialized_bytes": 19958,
+      "serialized_bytes": 216385,
       "target_count": 10,
       "valid": true,
-      "validation_time_ms": 0.012
+      "validation_issue_count": 0,
+      "validation_time_ms": 94.427,
+      "workload_mode": "aggregate_valid_packages"
     },
     {
-      "build_time_ms": 3.258,
-      "citation_count": 400,
+      "actual_functions_exercised": [
+        "build_watchlist_ai_context_package",
+        "validate_watchlist_ai_context_package",
+        "build_watchlist_conversation_handoff",
+        "build_context_manifest",
+        "validate_watchlist_conversation_handoff",
+        "validate_watchlist_ai_context_manifest"
+      ],
+      "budget_status": "satisfied",
+      "build_time_ms": 621.347,
+      "citation_count": 1350,
+      "context_policy": {},
+      "coverage_status": "complete",
+      "fixture_case": "complete_snapshot",
       "growth_ratio_vs_one_target": {
-        "build_time": 13.805,
+        "build_time": 35.136,
         "citation_count": 50.0,
-        "serialized_bytes": 47.157,
+        "missing_evidence_count": 0.0,
+        "serialized_bytes": 43.378,
         "target_count": 50.0,
-        "validation_time": 3.818
+        "validation_time": 40.702
       },
-      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
       "missing_evidence_count": 0,
+      "repeat_count": 25,
+      "scenario_construction_method": "repeat checked-in M8R-03E fixture through actual builder/validator/handoff/manifest pipeline",
       "scenario_id": "50_target_snapshot",
-      "serialized_bytes": 99878,
+      "serialized_bytes": 1081925,
       "target_count": 50,
       "valid": true,
-      "validation_time_ms": 0.042
+      "validation_issue_count": 0,
+      "validation_time_ms": 461.884,
+      "workload_mode": "aggregate_valid_packages"
     },
     {
-      "build_time_ms": 5.934,
-      "citation_count": 800,
+      "actual_functions_exercised": [
+        "build_watchlist_ai_context_package",
+        "validate_watchlist_ai_context_package",
+        "build_watchlist_conversation_handoff",
+        "build_context_manifest",
+        "validate_watchlist_conversation_handoff",
+        "validate_watchlist_ai_context_manifest"
+      ],
+      "budget_status": "satisfied",
+      "build_time_ms": 1312.735,
+      "citation_count": 2700,
+      "context_policy": {},
+      "coverage_status": "complete",
+      "fixture_case": "complete_snapshot",
       "growth_ratio_vs_one_target": {
-        "build_time": 25.144,
+        "build_time": 74.233,
         "citation_count": 100.0,
-        "serialized_bytes": 94.372,
+        "missing_evidence_count": 0.0,
+        "serialized_bytes": 86.755,
         "target_count": 100.0,
-        "validation_time": 7.455
+        "validation_time": 83.583
       },
-      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
       "missing_evidence_count": 0,
+      "repeat_count": 50,
+      "scenario_construction_method": "repeat checked-in M8R-03E fixture through actual builder/validator/handoff/manifest pipeline",
       "scenario_id": "100_target_snapshot",
-      "serialized_bytes": 199879,
+      "serialized_bytes": 2163850,
       "target_count": 100,
       "valid": true,
-      "validation_time_ms": 0.082
+      "validation_issue_count": 0,
+      "validation_time_ms": 948.499,
+      "workload_mode": "aggregate_valid_packages_100_targets_schema_safe"
     },
     {
-      "build_time_ms": 6.395,
-      "citation_count": 1000,
-      "growth_ratio_vs_one_target": {
-        "build_time": 27.097,
-        "citation_count": 125.0,
-        "serialized_bytes": 113.924,
-        "target_count": 25.0,
-        "validation_time": 9.455
+      "actual_functions_exercised": [
+        "build_watchlist_ai_context_package",
+        "validate_watchlist_ai_context_package",
+        "build_watchlist_conversation_handoff",
+        "build_context_manifest",
+        "validate_watchlist_conversation_handoff",
+        "validate_watchlist_ai_context_manifest"
+      ],
+      "budget_status": "satisfied",
+      "build_time_ms": 273.792,
+      "citation_count": 540,
+      "context_policy": {
+        "max_citations_per_target": 40,
+        "max_serialized_bytes": 250000
       },
-      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
+      "coverage_status": "complete",
+      "fixture_case": "context_budget_pressure",
+      "growth_ratio_vs_one_target": {
+        "build_time": 15.482,
+        "citation_count": 20.0,
+        "missing_evidence_count": 0.0,
+        "serialized_bytes": 17.351,
+        "target_count": 20.0,
+        "validation_time": 18.381
+      },
       "missing_evidence_count": 0,
+      "repeat_count": 10,
+      "scenario_construction_method": "repeat checked-in M8R-03E fixture through actual builder/validator/handoff/manifest pipeline",
       "scenario_id": "high_citation_pressure",
-      "serialized_bytes": 241292,
-      "target_count": 25,
+      "serialized_bytes": 432770,
+      "target_count": 20,
       "valid": true,
-      "validation_time_ms": 0.104
+      "validation_issue_count": 0,
+      "validation_time_ms": 208.588,
+      "workload_mode": "aggregate_valid_packages_high_citation_fixture"
     },
     {
-      "build_time_ms": 3.398,
-      "citation_count": 400,
-      "growth_ratio_vs_one_target": {
-        "build_time": 14.398,
-        "citation_count": 50.0,
-        "serialized_bytes": 66.543,
-        "target_count": 50.0,
-        "validation_time": 4.0
+      "actual_functions_exercised": [
+        "build_watchlist_ai_context_package",
+        "validate_watchlist_ai_context_package",
+        "build_watchlist_conversation_handoff",
+        "build_context_manifest",
+        "validate_watchlist_conversation_handoff",
+        "validate_watchlist_ai_context_manifest"
+      ],
+      "budget_status": "satisfied",
+      "build_time_ms": 392.978,
+      "citation_count": 550,
+      "context_policy": {
+        "max_missing_evidence_entries": 1000,
+        "max_serialized_bytes": 250000
       },
-      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
-      "missing_evidence_count": 250,
+      "coverage_status": "failed",
+      "fixture_case": "all_source_failure",
+      "growth_ratio_vs_one_target": {
+        "build_time": 22.222,
+        "citation_count": 20.37,
+        "missing_evidence_count": 100.0,
+        "serialized_bytes": 26.97,
+        "target_count": 50.0,
+        "validation_time": 24.166
+      },
+      "missing_evidence_count": 100,
+      "repeat_count": 25,
+      "scenario_construction_method": "repeat checked-in M8R-03E fixture through actual builder/validator/handoff/manifest pipeline",
       "scenario_id": "high_missing_evidence_pressure",
-      "serialized_bytes": 140939,
+      "serialized_bytes": 672675,
       "target_count": 50,
       "valid": true,
-      "validation_time_ms": 0.044
+      "validation_issue_count": 0,
+      "validation_time_ms": 274.235,
+      "workload_mode": "aggregate_valid_packages_missing_evidence_fixture"
     },
     {
-      "build_time_ms": 0.129,
-      "citation_count": 16,
+      "actual_functions_exercised": [
+        "build_watchlist_ai_context_package",
+        "validate_watchlist_ai_context_package",
+        "build_watchlist_conversation_handoff",
+        "build_context_manifest",
+        "validate_watchlist_conversation_handoff",
+        "validate_watchlist_ai_context_manifest"
+      ],
+      "budget_status": "satisfied",
+      "build_time_ms": 26.169,
+      "citation_count": 54,
+      "context_policy": {},
+      "coverage_status": "complete",
+      "fixture_case": "complete_snapshot",
       "growth_ratio_vs_one_target": {
-        "build_time": 0.547,
+        "build_time": 1.48,
         "citation_count": 2.0,
-        "serialized_bytes": 1.923,
+        "missing_evidence_count": 0.0,
+        "serialized_bytes": 1.735,
         "target_count": 2.0,
-        "validation_time": 0.364
+        "validation_time": 1.682
       },
-      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
       "missing_evidence_count": 0,
+      "repeat_count": 1,
+      "scenario_construction_method": "repeat checked-in M8R-03E fixture through actual builder/validator/handoff/manifest pipeline",
       "scenario_id": "snapshot",
-      "serialized_bytes": 4072,
+      "serialized_bytes": 43277,
       "target_count": 2,
       "valid": true,
-      "validation_time_ms": 0.004
+      "validation_issue_count": 0,
+      "validation_time_ms": 19.09,
+      "workload_mode": "single_valid_package"
     },
     {
-      "build_time_ms": 1.793,
-      "citation_count": 300,
+      "actual_functions_exercised": [
+        "build_watchlist_ai_context_package",
+        "validate_watchlist_ai_context_package",
+        "build_watchlist_conversation_handoff",
+        "build_context_manifest",
+        "validate_watchlist_conversation_handoff",
+        "validate_watchlist_ai_context_manifest"
+      ],
+      "budget_status": "satisfied",
+      "build_time_ms": 29.676,
+      "citation_count": 32,
+      "context_policy": {},
+      "coverage_status": "partial",
+      "fixture_case": "performance",
       "growth_ratio_vs_one_target": {
-        "build_time": 7.597,
-        "citation_count": 37.5,
-        "serialized_bytes": 34.734,
-        "target_count": 25.0,
-        "validation_time": 2.636
+        "build_time": 1.678,
+        "citation_count": 1.185,
+        "missing_evidence_count": 0.0,
+        "serialized_bytes": 1.171,
+        "target_count": 2.0,
+        "validation_time": 1.34
       },
-      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
       "missing_evidence_count": 0,
+      "repeat_count": 1,
+      "scenario_construction_method": "repeat checked-in M8R-03E fixture through actual builder/validator/handoff/manifest pipeline",
       "scenario_id": "performance",
-      "serialized_bytes": 73566,
-      "target_count": 25,
+      "serialized_bytes": 29219,
+      "target_count": 2,
       "valid": true,
-      "validation_time_ms": 0.029
+      "validation_issue_count": 0,
+      "validation_time_ms": 15.205,
+      "workload_mode": "single_valid_performance_package"
     },
     {
-      "build_time_ms": 1.19,
-      "citation_count": 150,
+      "actual_functions_exercised": [
+        "build_watchlist_ai_context_package",
+        "validate_watchlist_ai_context_package",
+        "build_watchlist_conversation_handoff",
+        "build_context_manifest",
+        "validate_watchlist_conversation_handoff",
+        "validate_watchlist_ai_context_manifest"
+      ],
+      "budget_status": "satisfied",
+      "build_time_ms": 23.534,
+      "citation_count": 45,
+      "context_policy": {},
+      "coverage_status": "partial",
+      "fixture_case": "partial_source_failure",
       "growth_ratio_vs_one_target": {
-        "build_time": 5.042,
-        "citation_count": 18.75,
-        "serialized_bytes": 21.749,
-        "target_count": 25.0,
-        "validation_time": 1.636
+        "build_time": 1.331,
+        "citation_count": 1.667,
+        "missing_evidence_count": 1.0,
+        "serialized_bytes": 1.554,
+        "target_count": 2.0,
+        "validation_time": 1.449
       },
-      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
-      "missing_evidence_count": 50,
+      "missing_evidence_count": 1,
+      "repeat_count": 1,
+      "scenario_construction_method": "repeat checked-in M8R-03E fixture through actual builder/validator/handoff/manifest pipeline",
       "scenario_id": "partial_failure",
-      "serialized_bytes": 46064,
-      "target_count": 25,
+      "serialized_bytes": 38769,
+      "target_count": 2,
       "valid": true,
-      "validation_time_ms": 0.018
+      "validation_issue_count": 0,
+      "validation_time_ms": 16.441,
+      "workload_mode": "single_valid_partial_failure_package"
     }
   ],
-  "schema_version": "m8_performance_baseline.v1",
+  "schema_version": "m8_performance_baseline.v2",
   "summary": {
     "all_valid": true,
-    "max_build_time_ms": 6.395,
-    "max_citation_count": 1000,
-    "max_missing_evidence_count": 250,
-    "max_serialized_bytes": 241292,
-    "max_validation_time_ms": 0.104,
-    "observation": "Initial R1 baseline only. No CI timing thresholds. R4 owns optimization and full production scalability hardening.",
-    "peak_memory_kb": 20052,
-    "required_scenarios": [
-      "1 target",
-      "10 targets",
-      "50 targets",
-      "100 targets",
-      "high citation pressure",
-      "high missing-evidence pressure",
-      "snapshot",
-      "performance",
-      "partial failure"
-    ],
+    "max_build_time_ms": 1312.735,
+    "max_citation_count": 2700,
+    "max_missing_evidence_count": 100,
+    "max_serialized_bytes": 2163850,
+    "max_validation_time_ms": 948.499,
+    "observation": "R1 reproducible baseline only; R4 owns optimization and scalability hardening.",
+    "peak_memory_kb": 27928,
+    "production_performance_readiness_claimed": false,
     "scenario_count": 9
-  },
-  "task_id": "M8R-03E-R1-M8-POST-M8C-REPOSITORY-REALIGNMENT-AND-HEALTH-AUDIT"
+  }
 }

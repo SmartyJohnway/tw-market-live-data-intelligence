@@ -134,3 +134,58 @@ def test_full_non_network_status_records_exact_known_failures():
     assert evidence["baseline_reproduced"] is True
     assert evidence["failure_set_changed_by_pr_149"] is False
     assert evidence["new_m8_m8r_failure_count"] == 0
+
+
+def test_performance_baseline_runner_exists_and_declared():
+    runner = ROOT / "scripts/run_m8r_03e_performance_baseline.py"
+    assert runner.exists()
+    baseline = load("docs/quality/m8_performance_baseline.json")
+    assert baseline["generator_script"] == "scripts/run_m8r_03e_performance_baseline.py"
+    assert baseline["generator_version"] == "m8r_03e_performance_baseline_runner.v1"
+    assert baseline["network_execution_used"] is False
+
+
+def test_performance_baseline_runner_exercises_actual_m8r03e_functions():
+    runner_text = (ROOT / "scripts/run_m8r_03e_performance_baseline.py").read_text(encoding="utf-8")
+    for token in [
+        "build_watchlist_ai_context_package",
+        "validate_watchlist_ai_context_package",
+        "build_watchlist_conversation_handoff",
+        "build_context_manifest",
+    ]:
+        assert token in runner_text
+    baseline = load("docs/quality/m8_performance_baseline.json")
+    for scenario in baseline["scenarios"]:
+        exercised = set(scenario["actual_functions_exercised"])
+        assert "build_watchlist_ai_context_package" in exercised
+        assert "validate_watchlist_ai_context_package" in exercised
+        assert "build_watchlist_conversation_handoff" in exercised
+        assert "build_context_manifest" in exercised
+
+
+def test_performance_baseline_verify_mode_succeeds():
+    import subprocess
+    result = subprocess.run(
+        [
+            "python",
+            "scripts/run_m8r_03e_performance_baseline.py",
+            "--verify-existing",
+            "docs/quality/m8_performance_baseline.json",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert '"status": "pass"' in result.stdout
+
+
+def test_hundred_target_workload_mode_is_explicit_and_real_pipeline():
+    baseline = load("docs/quality/m8_performance_baseline.json")
+    scenarios = {scenario["scenario_id"]: scenario for scenario in baseline["scenarios"]}
+    hundred = scenarios["100_target_snapshot"]
+    assert hundred["target_count"] == 100
+    assert hundred["workload_mode"] == "aggregate_valid_packages_100_targets_schema_safe"
+    assert hundred["scenario_construction_method"].startswith("repeat checked-in M8R-03E fixture")
+    assert hundred["valid"] is True

@@ -72,7 +72,7 @@
   "p1_count": 2,
   "p2_count": 4,
   "p3_count": 1,
-  "performance_status": "baseline_recorded_R4_optimization_pending",
+  "performance_status": "reproducible_baseline_recorded_R4_optimization_pending",
   "recommended_next_task": "M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT",
   "recommended_next_task_reason": "No verified P0 blocker and no P1 item blocks documentation/Skill-only Phase B; R2 remains mandatory before Phase C or any new artifact-write, filesystem, API, MCP, or execution surface.",
   "roadmap_alignment_status": "aligned_with_caveats",
@@ -94,6 +94,7 @@
     "pytest tests/unit/test_m8r_03d*.py -q",
     "pytest tests/unit/test_m8r_03d_f1*.py -q",
     "pytest tests/unit/test_m8r_03e*.py -q",
+    "python scripts/run_m8r_03e_performance_baseline.py --verify-existing docs/quality/m8_performance_baseline.json",
     "python scripts/run_test_profile.py default-ci --json",
     "python scripts/run_test_profile.py full-non-network --json"
   ],
@@ -123,7 +124,7 @@
     {
       "command": "pytest tests/unit/test_m8*.py -q",
       "status": "pass",
-      "summary": "585 passed"
+      "summary": "589 passed"
     },
     {
       "command": "pytest tests/unit/test_m8r_01*.py -q",
@@ -158,7 +159,12 @@
     {
       "command": "pytest tests/unit/test_m8r_03e*.py -q",
       "status": "pass",
-      "summary": "45 passed"
+      "summary": "49 passed"
+    },
+    {
+      "command": "python scripts/run_m8r_03e_performance_baseline.py --verify-existing docs/quality/m8_performance_baseline.json",
+      "status": "pass",
+      "summary": "verification mode succeeded for checked-in reproducible baseline"
     },
     {
       "command": "python scripts/run_test_profile.py default-ci --json",
