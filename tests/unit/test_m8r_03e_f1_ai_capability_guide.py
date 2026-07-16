@@ -156,3 +156,12 @@ def test_f1_full_non_network_known_failures_and_no_m8_regression():
  assert evidence['failing_node_ids']==KNOWN_FULL_NON_NETWORK_FAILURES
  assert evidence['new_m8_m8r_failure_count']==0
  assert evidence['new_f1_specific_regression_count']==0
+
+
+def test_health_validation_summary_matches_full_non_network_evidence_counts():
+ evidence=HEALTH['full_non_network_evidence']
+ result=next(item for item in HEALTH['validation_results'] if item['command']=='python scripts/run_test_profile.py full-non-network --json')
+ assert result['status']=='fail_known_baseline_drift'
+ assert result['counts']==evidence['current_head_counts']
+ assert result['failure_set_changed']==evidence['failure_set_changed']
+ assert result['new_m8_m8r_failure_count']==evidence['new_m8_m8r_failure_count']==0

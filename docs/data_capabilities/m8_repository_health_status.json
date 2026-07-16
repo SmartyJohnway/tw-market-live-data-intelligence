@@ -191,8 +191,15 @@
     },
     {
       "command": "python scripts/run_test_profile.py full-non-network --json",
-      "status": "fail",
-      "summary": "current PR: 1627 passed, 7 failed, 1 skipped; baseline SHA reproduced same seven node IDs with 1616 passed, 7 failed, 1 skipped; new M8/M8R failure count 0"
+      "status": "fail_known_baseline_drift",
+      "counts": {
+        "passed": 1661,
+        "failed": 7,
+        "skipped": 1,
+        "deselected": 1
+      },
+      "failure_set_changed": false,
+      "new_m8_m8r_failure_count": 0
     }
   ],
   "agent_skill_contract": "implemented",
