@@ -71,5 +71,41 @@
     "conversation_context_id": null,
     "parent_evidence_request_id": null,
     "freshness_recheck_required": true
-  }
+  },
+  "expected_target_coverage": [
+    {
+      "target_id": "cash_flow_side",
+      "input_reference": "外資現貨",
+      "coverage_state": "unavailable",
+      "present_field_groups": [],
+      "missing_field_groups": [
+        "cash_market_positioning"
+      ],
+      "reason_code": "not_integrated"
+    }
+  ],
+  "sample_derived_metric": {
+    "metric_id": "fixture_return_5d",
+    "value": null,
+    "unit": "percent",
+    "formula_id": "return_over_period.v1",
+    "input_period": {
+      "mode": "current_plus_recent"
+    },
+    "source_dependencies": [
+      "cash_institution_flows"
+    ],
+    "calculation_status": "input_unavailable",
+    "as_of": "fixture"
+  },
+  "sample_missing_evidence": [
+    {
+      "capability_id": "cash or TAIFEX institutional flow integration may be missing",
+      "reason_code": "not_integrated",
+      "required_for_answer": false,
+      "impact": "limits_confidence",
+      "fallback_used": null,
+      "recommended_follow_up": "source expansion"
+    }
+  ]
 }

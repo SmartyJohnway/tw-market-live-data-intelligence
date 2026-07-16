@@ -52,7 +52,7 @@ def test_composite_scope_is_representable():
 
 def test_explicit_time_range_contract_preserves_constraints():
     contract = json.loads((ROOT / "docs" / "data_capabilities" / "m8r_03b_conversation_scope_contract.json").read_text(encoding="utf-8"))
-    assert "explicit_range" in contract["time_modes"]
+    assert "explicit_range" in contract["time_modes"]["enum"]
 
 
 def test_facts_derived_assumptions_missing_remain_distinct():

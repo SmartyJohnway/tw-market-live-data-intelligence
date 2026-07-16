@@ -22,7 +22,7 @@ The data system owns identity correctness, route/source selection, provenance, c
 
 ## Conversation scope contract
 
-Contract: `m8r_ai_market_conversation_intent.v1`.
+Contract: `m8r_ai_market_conversation_intent.v1`. The machine-readable contract is validator-ready: it defines each object field name, type, required/optional status, nullability, enums, defaults, nested structures, and invariants for the next implementation task.
 
 Primary scope modes:
 
@@ -57,7 +57,7 @@ Do not ask clarification for ordinary prompts such as `我的觀察清單現在�
 
 ## Common AI evidence request
 
-Contract: `m8r_ai_evidence_request.v1`. The envelope distinguishes original user text, conversation intent, explicit user constraints, inferred defaults, persistent watchlist reference, dynamic entity requests, market context requests, required/useful/optional evidence, execution policy, clarification decision, and resolver output. Default execution policy for this design review remains manual/operator-confirmed, no network by default, no polling, and no scheduler.
+Contract: `m8r_ai_evidence_request.v1`. The machine-readable evidence contract is validator-ready and defines typed evidence requirements, dynamic entity requests, watchlist references, market-context requests, identity resolver output, follow-up context, bundle envelopes, derived metric records, missing evidence records, and target coverage records. The envelope distinguishes original user text, conversation intent, explicit user constraints, inferred defaults, persistent watchlist reference, dynamic entity requests, market context requests, required/useful/optional evidence, execution policy, clarification decision, and resolver output. Default execution policy for this design review remains manual/operator-confirmed, no network by default, no polling, and no scheduler.
 
 ## Standard evidence bundles
 
@@ -114,7 +114,7 @@ A current watchlist request maps to `watchlist` + `current`, with MIS primary, l
 
 ## Relationship to M8R-04
 
-M8R-04 should be split or scope-revised. The immediate next bounded engineering task should implement conversation contracts and static validators for `m8r_ai_market_conversation_intent.v1`, `m8r_ai_evidence_request.v1`, and bundle schema skeletons, then build watchlist snapshot/performance packages before any broad AI handoff automation. New source-expansion tasks are needed before claiming complete market pulse automation. `m8r04_completed` remains false.
+M8R-04 should be split or scope-revised. The immediate next bounded engineering task is `M8R-03C-CONVERSATION-CONTRACT-VALIDATORS-AND-WATCHLIST-BUNDLE-SKELETONS`: implement validators for `m8r_ai_market_conversation_intent.v1`, `m8r_ai_evidence_request.v1`, and bundle envelopes, then build watchlist snapshot/performance skeletons before any broad AI handoff automation. New source-expansion tasks are needed before claiming complete market pulse automation. `m8r04_completed` remains false.
 
 ## Final M8R-03B decision
 

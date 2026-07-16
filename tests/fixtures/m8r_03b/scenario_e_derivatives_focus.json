@@ -73,5 +73,42 @@
     "conversation_context_id": null,
     "parent_evidence_request_id": null,
     "freshness_recheck_required": true
-  }
+  },
+  "expected_target_coverage": [
+    {
+      "target_id": "fixture_target_1",
+      "input_reference": "fixture_target_1",
+      "coverage_state": "usable",
+      "present_field_groups": [
+        "identity",
+        "eod_series"
+      ],
+      "missing_field_groups": [],
+      "reason_code": null
+    }
+  ],
+  "sample_derived_metric": {
+    "metric_id": "fixture_return_5d",
+    "value": null,
+    "unit": "percent",
+    "formula_id": "return_over_period.v1",
+    "input_period": {
+      "mode": "current"
+    },
+    "source_dependencies": [
+      "taifex_mis_future_liveish"
+    ],
+    "calculation_status": "input_unavailable",
+    "as_of": "fixture"
+  },
+  "sample_missing_evidence": [
+    {
+      "capability_id": "basis/OI/put-call fields only when available",
+      "reason_code": "not_integrated",
+      "required_for_answer": false,
+      "impact": "limits_confidence",
+      "fallback_used": null,
+      "recommended_follow_up": "source expansion"
+    }
+  ]
 }

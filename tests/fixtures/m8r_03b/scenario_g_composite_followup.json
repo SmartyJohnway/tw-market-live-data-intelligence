@@ -86,5 +86,42 @@
     "conversation_context_id": "fixture-context",
     "parent_evidence_request_id": "prior-dynamic-research",
     "freshness_recheck_required": true
-  }
+  },
+  "expected_target_coverage": [
+    {
+      "target_id": "fixture_target_1",
+      "input_reference": "fixture_target_1",
+      "coverage_state": "usable",
+      "present_field_groups": [
+        "identity",
+        "eod_series"
+      ],
+      "missing_field_groups": [],
+      "reason_code": null
+    }
+  ],
+  "sample_derived_metric": {
+    "metric_id": "fixture_return_5d",
+    "value": null,
+    "unit": "percent",
+    "formula_id": "return_over_period.v1",
+    "input_period": {
+      "mode": "current_plus_recent"
+    },
+    "source_dependencies": [
+      "twse_official_eod"
+    ],
+    "calculation_status": "input_unavailable",
+    "as_of": "fixture"
+  },
+  "sample_missing_evidence": [
+    {
+      "capability_id": "current MIS evidence requires freshness recheck",
+      "reason_code": "not_integrated",
+      "required_for_answer": false,
+      "impact": "limits_confidence",
+      "fallback_used": null,
+      "recommended_follow_up": "source expansion"
+    }
+  ]
 }
