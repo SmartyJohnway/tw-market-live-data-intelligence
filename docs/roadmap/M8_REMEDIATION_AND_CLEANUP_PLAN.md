@@ -17,3 +17,7 @@ Task: `M8R-03E-R4-PERFORMANCE-BASELINE-AND-SCALABILITY-HARDENING`. Scope: determ
 ## R5 testing/documentation/operations consolidation
 
 Task: `M8R-03E-R5-TESTING-DOCUMENTATION-AND-OPERATIONS-CONSOLIDATION`. Scope: cross-layer tests, property tests, fixture/live taxonomy, documentation lifecycle labels, operations runbooks, and archive/superseded organization.
+
+## Commit 2 clarification
+
+R2 is mandatory before Phase C or any new artifact-write, filesystem, API, MCP, or execution surface. R2 does not block the documentation/Skill-only Phase B task unless that task expands runtime trust boundaries. R4 now owns optimization and scalability hardening after the initial R1 performance baseline recorded in `docs/quality/m8_performance_baseline.json`.

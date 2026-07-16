@@ -20,19 +20,138 @@
   "declared_not_runtime_source_families": [
     "MOPS"
   ],
+  "deprecated_ai_behavior_policy_fields": {
+    "full_non_network_failure_set_identical": true,
+    "global_ai_interpretation_policy": {
+      "no_recommendation": true,
+      "no_trading_advice": true,
+      "no_trading_signal": true
+    },
+    "m8_active_consolidated_status": {
+      "recommendation_allowed": false,
+      "trading_signal_allowed": false
+    },
+    "source_capability_policy_flags": [
+      {
+        "deprecated_fields": {
+          "recommendation_allowed": false,
+          "trading_signal_allowed": false
+        },
+        "source_family": "TWSE_MIS"
+      },
+      {
+        "deprecated_fields": {
+          "recommendation_allowed": false,
+          "trading_signal_allowed": false
+        },
+        "source_family": "TAIFEX_MIS"
+      },
+      {
+        "deprecated_fields": {
+          "recommendation_allowed": false,
+          "trading_signal_allowed": false
+        },
+        "source_family": "TWSE_OPENAPI"
+      },
+      {
+        "deprecated_fields": {
+          "recommendation_allowed": false,
+          "trading_signal_allowed": false
+        },
+        "source_family": "TPEX_OPENAPI"
+      },
+      {
+        "deprecated_fields": {
+          "recommendation_allowed": false,
+          "trading_signal_allowed": false
+        },
+        "source_family": "TAIFEX_OPENAPI"
+      },
+      {
+        "deprecated_fields": {
+          "recommendation_allowed": false,
+          "trading_signal_allowed": false
+        },
+        "source_family": "MOPS"
+      },
+      {
+        "deprecated_fields": {
+          "recommendation_allowed": false,
+          "trading_signal_allowed": false
+        },
+        "source_family": "MANUAL_OPERATOR_EVIDENCE"
+      },
+      {
+        "deprecated_fields": {
+          "recommendation_allowed": false,
+          "trading_signal_allowed": false
+        },
+        "source_family": "EXTERNAL_VALIDATION_ONLY"
+      },
+      {
+        "deprecated_fields": {
+          "recommendation_allowed": false,
+          "trading_signal_allowed": false
+        },
+        "source_family": "CREDENTIAL_GATED_PROVIDER"
+      },
+      {
+        "deprecated_fields": {
+          "recommendation_allowed": false,
+          "trading_signal_allowed": false
+        },
+        "source_family": "NCDR_DGPA_CLOSURE_CAP"
+      }
+    ]
+  },
   "dynamic_research_scope_contract_defined": true,
   "execution_sha_matches_tested_remote_sha": true,
-  "full_non_network_failure_set_identical": true,
+  "full_non_network_evidence": {
+    "affected_actual_artifacts": [
+      "frontend/public/index.html",
+      "frontend/public/context/latest.json"
+    ],
+    "affected_expected_artifacts": [
+      "research/staging/m5d/m5d_frontend_publication_candidate_01/frontend_public_baseline.json",
+      "research/staging/m5d/m5d_frontend_publication_candidate_01/sha256_manifest.json"
+    ],
+    "baseline_counts": {
+      "deselected": 1,
+      "failed": 7,
+      "passed": 1616,
+      "skipped": 1
+    },
+    "baseline_reproduced": true,
+    "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
+    "current_pr_counts": {
+      "deselected": 1,
+      "failed": 7,
+      "passed": 1627,
+      "skipped": 1
+    },
+    "current_pr_status": "known_pre_existing_failures_unchanged",
+    "failing_node_ids": [
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
+    ],
+    "failure_count_delta": 0,
+    "failure_set_changed_by_pr_149": false,
+    "new_m8_m8r_failure_count": 0,
+    "pass_count_delta_due_to_pr_tests": 11,
+    "reason_code": "frontend_public_baseline_drift"
+  },
   "generated_for_task": "M8C-02-TAIFEX-MIS-M8-CURRENTNESS-CONTEXT-INTEGRATION-AND-FINAL-ACCEPTANCE",
   "global_ai_interpretation_policy": {
     "eod_not_realtime": true,
     "manual_evidence_not_official_source": true,
     "no_emerging_stock_live_route": true,
-    "no_recommendation": true,
     "no_rotc_route": true,
     "no_tpex_mis": true,
-    "no_trading_advice": true,
-    "no_trading_signal": true,
     "retrieved_at_not_exchange_timestamp": true,
     "validation_only_not_primary_source": true
   },
@@ -81,7 +200,6 @@
     "original_m8r04_disposition": "superseded_and_split",
     "phased_delivery_plan_completed": true,
     "raw_payload_exposure_allowed": false,
-    "recommendation_allowed": false,
     "recommended_next_task": "M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT",
     "registry_successor": "M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT",
     "standard_evidence_bundles_defined": true,
@@ -91,7 +209,6 @@
     "taifex_openapi_runtime_executable": true,
     "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
     "tpex_openapi_runtime_executable": true,
-    "trading_signal_allowed": false,
     "twse_mis_runtime_executable": true,
     "twse_openapi_runtime_executable": true,
     "unified_tool_api": "required_successor_capability",
@@ -271,14 +388,12 @@
       "production_executor_adapters_ready": true,
       "production_live_execution_ready": true,
       "raw_payload_exposure_allowed": false,
-      "recommendation_allowed": false,
       "runtime_available": true,
       "runtime_executable": true,
       "source_family": "TWSE_MIS",
       "source_id": "TWSE_MIS",
       "source_notes": [],
-      "timing_class": "liveish_intraday_snapshot",
-      "trading_signal_allowed": false
+      "timing_class": "liveish_intraday_snapshot"
     },
     {
       "access_use_disposition": "operator_accepted_personal_local_research_only",
@@ -370,7 +485,6 @@
       "production_executor_adapters_ready": true,
       "production_live_execution_ready": true,
       "raw_payload_exposure_allowed": false,
-      "recommendation_allowed": false,
       "recommended_next_task": "M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR",
       "runtime_available": true,
       "runtime_executable": true,
@@ -383,7 +497,6 @@
       ],
       "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
       "timing_class": "liveish_intraday_snapshot",
-      "trading_signal_allowed": false,
       "weekly_option_runtime_executable": false
     },
     {
@@ -441,14 +554,12 @@
       "production_executor_adapters_ready": true,
       "production_live_execution_ready": true,
       "raw_payload_exposure_allowed": false,
-      "recommendation_allowed": false,
       "runtime_available": true,
       "runtime_executable": true,
       "source_family": "TWSE_OPENAPI",
       "source_id": "TWSE_OPENAPI",
       "source_notes": [],
       "timing_class": "official_eod",
-      "trading_signal_allowed": false,
       "whole_market_network_scope": true
     },
     {
@@ -509,14 +620,12 @@
       "production_executor_adapters_ready": true,
       "production_live_execution_ready": true,
       "raw_payload_exposure_allowed": false,
-      "recommendation_allowed": false,
       "runtime_available": true,
       "runtime_executable": true,
       "source_family": "TPEX_OPENAPI",
       "source_id": "TPEX_OPENAPI",
       "source_notes": [],
       "timing_class": "official_eod",
-      "trading_signal_allowed": false,
       "whole_market_network_scope": true
     },
     {
@@ -588,7 +697,6 @@
       "production_executor_adapters_ready": true,
       "production_live_execution_ready": true,
       "raw_payload_exposure_allowed": false,
-      "recommendation_allowed": false,
       "runtime_available": true,
       "runtime_executable": true,
       "runtime_status": "implemented_controlled",
@@ -605,7 +713,6 @@
         "official_derivatives_block_trade_reference"
       ],
       "timing_class": "official_statistics_eod",
-      "trading_signal_allowed": false,
       "whole_market_network_scope": true
     },
     {
@@ -638,14 +745,12 @@
       "official_documented": true,
       "primary_use": "disclosure/fundamental reference",
       "raw_payload_exposure_allowed": false,
-      "recommendation_allowed": false,
       "runtime_available": false,
       "runtime_executable": false,
       "source_family": "MOPS",
       "source_id": "MOPS",
       "source_notes": [],
-      "timing_class": "fundamental_reference",
-      "trading_signal_allowed": false
+      "timing_class": "fundamental_reference"
     },
     {
       "ai_context_allowed": true,
@@ -680,14 +785,12 @@
       "official_documented": false,
       "primary_use": "operator-provided local evidence with caveats",
       "raw_payload_exposure_allowed": false,
-      "recommendation_allowed": false,
       "runtime_available": true,
       "runtime_executable": false,
       "source_family": "MANUAL_OPERATOR_EVIDENCE",
       "source_id": "MANUAL_OPERATOR_EVIDENCE",
       "source_notes": [],
-      "timing_class": "manual_snapshot",
-      "trading_signal_allowed": false
+      "timing_class": "manual_snapshot"
     },
     {
       "ai_context_allowed": false,
@@ -721,14 +824,12 @@
       "official_documented": false,
       "primary_use": "validation-only supporting source",
       "raw_payload_exposure_allowed": false,
-      "recommendation_allowed": false,
       "runtime_available": false,
       "runtime_executable": false,
       "source_family": "EXTERNAL_VALIDATION_ONLY",
       "source_id": "EXTERNAL_VALIDATION_ONLY",
       "source_notes": [],
-      "timing_class": "validation_only",
-      "trading_signal_allowed": false
+      "timing_class": "validation_only"
     },
     {
       "ai_context_allowed": false,
@@ -764,14 +865,12 @@
       "official_documented": false,
       "primary_use": "credential-gated provider research only",
       "raw_payload_exposure_allowed": false,
-      "recommendation_allowed": false,
       "runtime_available": false,
       "runtime_executable": false,
       "source_family": "CREDENTIAL_GATED_PROVIDER",
       "source_id": "CREDENTIAL_GATED_PROVIDER",
       "source_notes": [],
-      "timing_class": "credential_gated_research",
-      "trading_signal_allowed": false
+      "timing_class": "credential_gated_research"
     },
     {
       "ai_context_allowed": false,
@@ -799,14 +898,12 @@
       "official_documented": true,
       "primary_use": "Emergency closure evidence for market-day currentness resolution only",
       "raw_payload_exposure_allowed": false,
-      "recommendation_allowed": false,
       "runtime_available": true,
       "runtime_executable": true,
       "source_family": "NCDR_DGPA_CLOSURE_CAP",
       "source_id": "NCDR_DGPA_CLOSURE_CAP",
       "source_role": "emergency_closure_evidence",
-      "timing_class": "emergency_event",
-      "trading_signal_allowed": false
+      "timing_class": "emergency_event"
     }
   ],
   "standard_evidence_bundles_defined": true,

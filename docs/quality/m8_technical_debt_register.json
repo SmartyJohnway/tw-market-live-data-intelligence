@@ -24,7 +24,8 @@
       "affected_paths": [
         "scripts/run_m8r_03e_watchlist_ai_context_handoff.py"
       ],
-      "blocking_phase": "Phase B",
+      "blocking_condition": "before any new artifact-write, filesystem, API, MCP, or execution surface",
+      "blocking_phase": "Phase C",
       "category": "security",
       "debt_id": "M8-DEBT-0002",
       "evidence": [
@@ -32,7 +33,7 @@
       ],
       "finding": "Output-root safety rejects URLs and some names but does not prove symlink escape or absolute-path containment.",
       "recommended_action": "Centralize safe path resolution, symlink checks, and output root containment.",
-      "risk": "Unsafe artifact placement may be possible if invoked with hostile filesystem layout.",
+      "risk": "Unsafe artifact placement may be possible if new trust-boundary surfaces are added before containment hardening; documentation/Skill-only Phase B is not blocked.",
       "severity": "P1",
       "status": "open",
       "target_remediation_task": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION"

@@ -53,13 +53,29 @@ Recommended next task: `M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT`
 - `python scripts/governance_forbidden_path_guard.py`: pass, no findings.
 - `python scripts/forbidden_behavior_scanner.py`: pass, 187 checks and 0 failures.
 - `python skills/tw-security-master-classifier/scripts/validate_skill.py`: pass.
-- `pytest tests/unit/test_m8*.py -q`: pass, 579 tests.
+- `pytest tests/unit/test_m8*.py -q`: pass, 585 tests.
 - `pytest tests/unit/test_m8r_01*.py -q`: warning, no matching files in this checkout.
 - `pytest tests/unit/test_m8r_02*.py -q`: pass, 13 tests.
 - `pytest tests/unit/test_m8r_03b*.py -q`: pass, 32 tests.
 - `pytest tests/unit/test_m8r_03c*.py -q`: pass, 16 tests.
 - `pytest tests/unit/test_m8r_03d*.py -q`: pass, 26 tests.
 - `pytest tests/unit/test_m8r_03d_f1*.py -q`: pass, 18 tests.
-- `pytest tests/unit/test_m8r_03e*.py -q`: pass, 39 tests.
+- `pytest tests/unit/test_m8r_03e*.py -q`: pass, 45 tests.
 - `python scripts/run_test_profile.py default-ci --json`: pass, 721 tests.
-- `python scripts/run_test_profile.py full-non-network --json`: failed with 1621 passed, 7 failed, 1 skipped. The failing cluster is the existing M5D/M5E frontend-public publication candidate baseline drift (`frontend_public_baseline_drift`), not a new runtime market-evidence code failure. This is recorded as R5 documentation/operations consolidation evidence unless future investigation shows artifact integrity impact.
+- `python scripts/run_test_profile.py full-non-network --json`: failed with 1627 passed, 7 failed, 1 skipped. The failing cluster is the existing M5D/M5E frontend-public publication candidate baseline drift (`frontend_public_baseline_drift`), not a new runtime market-evidence code failure. This is recorded as R5 documentation/operations consolidation evidence unless future investigation shows artifact integrity impact.
+
+## Commit 2 consistency corrections
+
+Phase-B/R2 semantics were clarified after PR review. The filesystem containment P1 does **not** block the documentation/Skill-only Phase B task. It blocks Phase C or any earlier work that adds a new artifact-write, filesystem, API, MCP, or execution surface. R2 therefore remains mandatory before trust-boundary expansion, but the recommended next task remains `M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT`.
+
+Active registry capability/status objects no longer expose `recommendation_allowed`, `trading_signal_allowed`, `no_recommendation`, `no_trading_advice`, or `no_trading_signal` as authoritative active capability fields. Historical/deprecated copies are retained only under deprecated AI-behavior metadata for migration traceability.
+
+The AI behavior policy inventory was expanded to occurrence-level records for materially active runtime, schema/contract, validator/builder, fixture/test, registry/data-capability, and active protocol occurrences. Historical prose that does not affect active runtime/contracts is grouped separately.
+
+## Performance baseline
+
+`docs/quality/m8_performance_baseline.json` records a deterministic, dependency-free, non-network R1 baseline for 1, 10, 50, and 100 targets plus high citation pressure, high missing-evidence pressure, snapshot, performance, and partial-failure scenarios. The baseline records build time, validation time, serialized bytes, citation counts, missing-evidence counts, growth ratios, and measurement environment. No unstable timing thresholds were added; R4 remains responsible for optimization and scalability hardening.
+
+## Full non-network failure evidence
+
+The seven full-non-network failures were reproduced on baseline SHA `bd3496efe7492e6cd3c7dacc169e142f90e6cd92` with the same failing node IDs. Current PR #149 keeps the same failure set, while adding R1 tests changes the pass count from 1616 to 1627. New M8/M8R failure count is `0`.

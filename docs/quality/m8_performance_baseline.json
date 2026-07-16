@@ -1,0 +1,200 @@
+{
+  "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
+  "generated_at_utc": "2026-07-16T00:00:00Z",
+  "measurement_environment": {
+    "dependency_free": true,
+    "network": false,
+    "peak_memory_source": "resource.getrusage.ru_maxrss",
+    "platform": "Linux-6.12.47-x86_64-with-glibc2.39",
+    "python": "3.13.13",
+    "timing_source": "time.perf_counter_ns"
+  },
+  "scenarios": [
+    {
+      "build_time_ms": 0.236,
+      "citation_count": 8,
+      "growth_ratio_vs_one_target": {
+        "build_time": 1.0,
+        "citation_count": 1.0,
+        "serialized_bytes": 1.0,
+        "target_count": 1.0,
+        "validation_time": 1.0
+      },
+      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
+      "missing_evidence_count": 0,
+      "scenario_id": "1_target_snapshot",
+      "serialized_bytes": 2118,
+      "target_count": 1,
+      "valid": true,
+      "validation_time_ms": 0.011
+    },
+    {
+      "build_time_ms": 0.648,
+      "citation_count": 80,
+      "growth_ratio_vs_one_target": {
+        "build_time": 2.746,
+        "citation_count": 10.0,
+        "serialized_bytes": 9.423,
+        "target_count": 10.0,
+        "validation_time": 1.091
+      },
+      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
+      "missing_evidence_count": 0,
+      "scenario_id": "10_target_snapshot",
+      "serialized_bytes": 19958,
+      "target_count": 10,
+      "valid": true,
+      "validation_time_ms": 0.012
+    },
+    {
+      "build_time_ms": 3.258,
+      "citation_count": 400,
+      "growth_ratio_vs_one_target": {
+        "build_time": 13.805,
+        "citation_count": 50.0,
+        "serialized_bytes": 47.157,
+        "target_count": 50.0,
+        "validation_time": 3.818
+      },
+      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
+      "missing_evidence_count": 0,
+      "scenario_id": "50_target_snapshot",
+      "serialized_bytes": 99878,
+      "target_count": 50,
+      "valid": true,
+      "validation_time_ms": 0.042
+    },
+    {
+      "build_time_ms": 5.934,
+      "citation_count": 800,
+      "growth_ratio_vs_one_target": {
+        "build_time": 25.144,
+        "citation_count": 100.0,
+        "serialized_bytes": 94.372,
+        "target_count": 100.0,
+        "validation_time": 7.455
+      },
+      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
+      "missing_evidence_count": 0,
+      "scenario_id": "100_target_snapshot",
+      "serialized_bytes": 199879,
+      "target_count": 100,
+      "valid": true,
+      "validation_time_ms": 0.082
+    },
+    {
+      "build_time_ms": 6.395,
+      "citation_count": 1000,
+      "growth_ratio_vs_one_target": {
+        "build_time": 27.097,
+        "citation_count": 125.0,
+        "serialized_bytes": 113.924,
+        "target_count": 25.0,
+        "validation_time": 9.455
+      },
+      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
+      "missing_evidence_count": 0,
+      "scenario_id": "high_citation_pressure",
+      "serialized_bytes": 241292,
+      "target_count": 25,
+      "valid": true,
+      "validation_time_ms": 0.104
+    },
+    {
+      "build_time_ms": 3.398,
+      "citation_count": 400,
+      "growth_ratio_vs_one_target": {
+        "build_time": 14.398,
+        "citation_count": 50.0,
+        "serialized_bytes": 66.543,
+        "target_count": 50.0,
+        "validation_time": 4.0
+      },
+      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
+      "missing_evidence_count": 250,
+      "scenario_id": "high_missing_evidence_pressure",
+      "serialized_bytes": 140939,
+      "target_count": 50,
+      "valid": true,
+      "validation_time_ms": 0.044
+    },
+    {
+      "build_time_ms": 0.129,
+      "citation_count": 16,
+      "growth_ratio_vs_one_target": {
+        "build_time": 0.547,
+        "citation_count": 2.0,
+        "serialized_bytes": 1.923,
+        "target_count": 2.0,
+        "validation_time": 0.364
+      },
+      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
+      "missing_evidence_count": 0,
+      "scenario_id": "snapshot",
+      "serialized_bytes": 4072,
+      "target_count": 2,
+      "valid": true,
+      "validation_time_ms": 0.004
+    },
+    {
+      "build_time_ms": 1.793,
+      "citation_count": 300,
+      "growth_ratio_vs_one_target": {
+        "build_time": 7.597,
+        "citation_count": 37.5,
+        "serialized_bytes": 34.734,
+        "target_count": 25.0,
+        "validation_time": 2.636
+      },
+      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
+      "missing_evidence_count": 0,
+      "scenario_id": "performance",
+      "serialized_bytes": 73566,
+      "target_count": 25,
+      "valid": true,
+      "validation_time_ms": 0.029
+    },
+    {
+      "build_time_ms": 1.19,
+      "citation_count": 150,
+      "growth_ratio_vs_one_target": {
+        "build_time": 5.042,
+        "citation_count": 18.75,
+        "serialized_bytes": 21.749,
+        "target_count": 25.0,
+        "validation_time": 1.636
+      },
+      "method": "dependency_free_synthetic_context_workload_no_network_no_thresholds",
+      "missing_evidence_count": 50,
+      "scenario_id": "partial_failure",
+      "serialized_bytes": 46064,
+      "target_count": 25,
+      "valid": true,
+      "validation_time_ms": 0.018
+    }
+  ],
+  "schema_version": "m8_performance_baseline.v1",
+  "summary": {
+    "all_valid": true,
+    "max_build_time_ms": 6.395,
+    "max_citation_count": 1000,
+    "max_missing_evidence_count": 250,
+    "max_serialized_bytes": 241292,
+    "max_validation_time_ms": 0.104,
+    "observation": "Initial R1 baseline only. No CI timing thresholds. R4 owns optimization and full production scalability hardening.",
+    "peak_memory_kb": 20052,
+    "required_scenarios": [
+      "1 target",
+      "10 targets",
+      "50 targets",
+      "100 targets",
+      "high citation pressure",
+      "high missing-evidence pressure",
+      "snapshot",
+      "performance",
+      "partial failure"
+    ],
+    "scenario_count": 9
+  },
+  "task_id": "M8R-03E-R1-M8-POST-M8C-REPOSITORY-REALIGNMENT-AND-HEALTH-AUDIT"
+}

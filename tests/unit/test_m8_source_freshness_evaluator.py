@@ -167,10 +167,12 @@ def test_registry_policies_remain_safe():
     assert _source("TAIFEX_OPENAPI")["runtime_executable"] is True
     assert _source("TWSE_OPENAPI")["runtime_executable"] is True
     assert _source("TPEX_OPENAPI")["runtime_executable"] is True
+    registry = _registry()
     for source in sources:
-        assert source["recommendation_allowed"] is False
-        assert source["trading_signal_allowed"] is False
+        assert "recommendation_allowed" not in source
+        assert "trading_signal_allowed" not in source
         assert source["raw_payload_exposure_allowed"] is False
+    assert registry["deprecated_ai_behavior_policy_fields"]["source_capability_policy_flags"]
 
 
 def test_inventory_m8_00_04_metadata():

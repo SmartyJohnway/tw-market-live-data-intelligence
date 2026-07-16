@@ -26,6 +26,45 @@
     "AI behavior hardcoding marked deprecated_direction"
   ],
   "documentation_status": "realigned_with_lifecycle_cleanup_scheduled",
+  "full_non_network_evidence": {
+    "affected_actual_artifacts": [
+      "frontend/public/index.html",
+      "frontend/public/context/latest.json"
+    ],
+    "affected_expected_artifacts": [
+      "research/staging/m5d/m5d_frontend_publication_candidate_01/frontend_public_baseline.json",
+      "research/staging/m5d/m5d_frontend_publication_candidate_01/sha256_manifest.json"
+    ],
+    "baseline_counts": {
+      "deselected": 1,
+      "failed": 7,
+      "passed": 1616,
+      "skipped": 1
+    },
+    "baseline_reproduced": true,
+    "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
+    "current_pr_counts": {
+      "deselected": 1,
+      "failed": 7,
+      "passed": 1627,
+      "skipped": 1
+    },
+    "current_pr_status": "known_pre_existing_failures_unchanged",
+    "failing_node_ids": [
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
+    ],
+    "failure_count_delta": 0,
+    "failure_set_changed_by_pr_149": false,
+    "new_m8_m8r_failure_count": 0,
+    "pass_count_delta_due_to_pr_tests": 11,
+    "reason_code": "frontend_public_baseline_drift"
+  },
   "generated_at_utc": "2026-07-16T00:00:00Z",
   "implemented_through_track": "M8R-03E",
   "original_m8r04_disposition": "superseded_and_split",
@@ -33,9 +72,9 @@
   "p1_count": 2,
   "p2_count": 4,
   "p3_count": 1,
-  "performance_status": "baseline_required_R4",
+  "performance_status": "baseline_recorded_R4_optimization_pending",
   "recommended_next_task": "M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT",
-  "recommended_next_task_reason": "No verified P0 blocker; P1 items are bounded and can be scheduled as R2 without blocking a documentation/skill-contract Phase B task.",
+  "recommended_next_task_reason": "No verified P0 blocker and no P1 item blocks documentation/Skill-only Phase B; R2 remains mandatory before Phase C or any new artifact-write, filesystem, API, MCP, or execution surface.",
   "roadmap_alignment_status": "aligned_with_caveats",
   "schema_version": "m8_repository_health_status.v1",
   "security_status": "GO_WITH_CAVEATS_P1_REMEDIATION_SCHEDULED",
@@ -84,7 +123,7 @@
     {
       "command": "pytest tests/unit/test_m8*.py -q",
       "status": "pass",
-      "summary": "579 passed"
+      "summary": "585 passed"
     },
     {
       "command": "pytest tests/unit/test_m8r_01*.py -q",
@@ -119,7 +158,7 @@
     {
       "command": "pytest tests/unit/test_m8r_03e*.py -q",
       "status": "pass",
-      "summary": "39 passed"
+      "summary": "45 passed"
     },
     {
       "command": "python scripts/run_test_profile.py default-ci --json",
@@ -129,7 +168,7 @@
     {
       "command": "python scripts/run_test_profile.py full-non-network --json",
       "status": "fail",
-      "summary": "1621 passed, 7 failed, 1 skipped; failure is pre-existing frontend_public_baseline_drift in M5D/M5E candidate tests after current frontend/public inventory recomputation"
+      "summary": "current PR: 1627 passed, 7 failed, 1 skipped; baseline SHA reproduced same seven node IDs with 1616 passed, 7 failed, 1 skipped; new M8/M8R failure count 0"
     }
   ]
 }

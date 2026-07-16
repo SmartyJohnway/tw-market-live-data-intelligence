@@ -31,8 +31,8 @@ def test_registry_active_state_consolidated():
     assert active['taifex_openapi_runtime_executable'] is True
     assert active['taifex_mis_runtime_executable'] is True
     assert active['mops_runtime_executable'] is False
-    assert active['trading_signal_allowed'] is False
-    assert active['recommendation_allowed'] is False
+    assert 'trading_signal_allowed' not in active
+    assert 'recommendation_allowed' not in active
     assert active['raw_payload_exposure_allowed'] is False
     assert active['next_task']=='M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT'
     assert active['next_task_status']=='accepted_successor'
