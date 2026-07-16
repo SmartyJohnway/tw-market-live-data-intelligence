@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "baseline_sha": "d6b83313bb301e652ae82b8583d73d2aaa1d753e",
+  "statuses": {
+    "sufficient": {
+      "meaning": "sufficient",
+      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing.",
+      "invoke_another_capability": false,
+      "can_proceed_with_bounded_analysis": true
+    },
+    "sufficient_with_caveats": {
+      "meaning": "sufficient with caveats",
+      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing.",
+      "invoke_another_capability": false,
+      "can_proceed_with_bounded_analysis": true
+    },
+    "partial": {
+      "meaning": "partial",
+      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing.",
+      "invoke_another_capability": true,
+      "can_proceed_with_bounded_analysis": true
+    },
+    "requires_additional_evidence": {
+      "meaning": "requires additional evidence",
+      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing.",
+      "invoke_another_capability": true,
+      "can_proceed_with_bounded_analysis": true
+    },
+    "unavailable": {
+      "meaning": "unavailable",
+      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing.",
+      "invoke_another_capability": true,
+      "can_proceed_with_bounded_analysis": false
+    },
+    "blocked": {
+      "meaning": "blocked",
+      "minimum_disclosure": "State coverage, caveats, missing evidence, lineage, and timing.",
+      "invoke_another_capability": true,
+      "can_proceed_with_bounded_analysis": false
+    }
+  },
+  "example": {
+    "status": "requires_additional_evidence",
+    "supported_claims": [
+      "price declined from prior official close"
+    ],
+    "unsupported_claims": [
+      "specific news caused the decline"
+    ],
+    "recommended_additional_evidence": [
+      "MOPS disclosure",
+      "official issuer announcement",
+      "timestamped news"
+    ]
+  }
+}

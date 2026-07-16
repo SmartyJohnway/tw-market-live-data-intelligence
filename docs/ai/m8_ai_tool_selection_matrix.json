@@ -1,0 +1,551 @@
+{
+  "schema_version": "1.0",
+  "task_id": "M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT",
+  "baseline_sha": "d6b83313bb301e652ae82b8583d73d2aaa1d753e",
+  "intents": [
+    {
+      "intent_id": "current_price_request",
+      "example_user_intent": "current price request",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "resolve_market_targets",
+        "get_current_market_evidence"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "current_bounded_observation"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient"
+    },
+    {
+      "intent_id": "current_vs_prior_close",
+      "example_user_intent": "current vs prior close",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "resolve_market_targets",
+        "get_current_market_evidence",
+        "get_official_eod_reference"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "current_bounded_observation"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient"
+    },
+    {
+      "intent_id": "official_completed_session_ohlcv",
+      "example_user_intent": "official completed session ohlcv",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "resolve_market_targets",
+        "get_official_eod_reference"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient"
+    },
+    {
+      "intent_id": "five_or_twenty_day_price_performance",
+      "example_user_intent": "five or twenty day price performance",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "resolve_market_targets",
+        "get_price_performance_evidence"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient"
+    },
+    {
+      "intent_id": "why_did_it_move",
+      "example_user_intent": "why did it move",
+      "required_target_resolution": false,
+      "required_capabilities": [
+        "get_current_market_evidence",
+        "identify_required_additional_evidence"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "requires_additional_evidence"
+    },
+    {
+      "intent_id": "security_identity_classification",
+      "example_user_intent": "security identity classification",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "get_security_identity_and_lifecycle"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient"
+    },
+    {
+      "intent_id": "delisted_or_suspended_security",
+      "example_user_intent": "delisted or suspended security",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "get_security_identity_and_lifecycle"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient"
+    },
+    {
+      "intent_id": "current_derivatives_context",
+      "example_user_intent": "current derivatives context",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "resolve_market_targets",
+        "get_derivatives_market_context"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "current_bounded_observation"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient"
+    },
+    {
+      "intent_id": "eod_only_derivatives_fallback",
+      "example_user_intent": "eod only derivatives fallback",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "get_derivatives_market_context"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient"
+    },
+    {
+      "intent_id": "stale_current_evidence",
+      "example_user_intent": "stale current evidence",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "get_current_market_evidence"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "current_bounded_observation"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient"
+    },
+    {
+      "intent_id": "partial_source_failure",
+      "example_user_intent": "partial source failure",
+      "required_target_resolution": false,
+      "required_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient"
+    },
+    {
+      "intent_id": "corporate_action_sensitive_comparison",
+      "example_user_intent": "corporate action sensitive comparison",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "get_price_performance_evidence",
+        "identify_required_additional_evidence"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient"
+    },
+    {
+      "intent_id": "total_return_without_adjusted_evidence",
+      "example_user_intent": "total return without adjusted evidence",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "get_price_performance_evidence",
+        "identify_required_additional_evidence"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "requires_additional_evidence"
+    },
+    {
+      "intent_id": "multi_target_comparison",
+      "example_user_intent": "multi target comparison",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "resolve_market_targets",
+        "get_current_market_evidence"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient"
+    },
+    {
+      "intent_id": "unsupported_fundamental_valuation",
+      "example_user_intent": "unsupported fundamental valuation",
+      "required_target_resolution": false,
+      "required_capabilities": [
+        "identify_required_additional_evidence"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "requires_additional_evidence"
+    },
+    {
+      "intent_id": "fixture_only_evidence",
+      "example_user_intent": "fixture only evidence",
+      "required_target_resolution": false,
+      "required_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient"
+    },
+    {
+      "intent_id": "ambiguous_security_name",
+      "example_user_intent": "ambiguous security name",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "resolve_market_targets"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient"
+    },
+    {
+      "intent_id": "recommendation_with_available_evidence",
+      "example_user_intent": "recommendation with available evidence",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "get_current_market_evidence",
+        "get_official_eod_reference",
+        "identify_required_additional_evidence"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "sufficient_with_caveats"
+    },
+    {
+      "intent_id": "recommendation_key_evidence_missing",
+      "example_user_intent": "recommendation key evidence missing",
+      "required_target_resolution": true,
+      "required_capabilities": [
+        "identify_required_additional_evidence"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "requires_additional_evidence"
+    },
+    {
+      "intent_id": "raw_source_payload_request",
+      "example_user_intent": "raw source payload request",
+      "required_target_resolution": false,
+      "required_capabilities": [
+        "request_raw_source_payload"
+      ],
+      "optional_capabilities": [
+        "read_market_evidence_package"
+      ],
+      "minimum_evidence": [
+        "target",
+        "timing",
+        "source",
+        "coverage"
+      ],
+      "additional_evidence_trigger": "causal, total-return, fundamental, regulatory, stale, partial, or raw-payload request exceeds normalized evidence",
+      "timing_requirements": [
+        "completed_session_eod",
+        "historical_series",
+        "fixture_only"
+      ],
+      "source_requirements": [
+        "normalized evidence by default; raw payload restricted"
+      ],
+      "expected_sufficiency_status": "requires_additional_evidence"
+    }
+  ]
+}

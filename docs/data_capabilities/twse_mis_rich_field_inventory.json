@@ -1400,7 +1400,7 @@
       "status": "shared_authority_defined",
       "taifex_calendar_supported": false,
       "tpex_calendar_supported": false,
-      "trading_day_label_rule": "Name containing exact substring 交易日 is explicit trading-day label"
+      "trading_day_label_rule": "Name containing exact substring \u4ea4\u6613\u65e5 is explicit trading-day label"
     },
     "m7f_rich_fact_browser_operator_workbench": {
       "ai_discussion_handoff_final_accepted": true,
@@ -1755,14 +1755,14 @@
       "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
       "active_architectural_model": "governed_market_evidence_platform",
       "actual_execution_head_sha": "b55cf800561f9997991a82b34013ff0564052710",
-      "agent_skill_contract": "required_successor_capability",
+      "agent_skill_contract": "implemented",
       "ai_behavior_hardcoding": "deprecated_direction",
       "ai_model_call_added": false,
       "db_write_added": false,
       "execution_sha_matches_tested_remote_sha": true,
       "hidden_fetch_added": false,
       "implemented_through": "M8R-03E",
-      "implemented_through_track": "M8R-03E",
+      "implemented_through_track": "M8R-03E-F1",
       "m8_00_governance_complete": true,
       "m8a_twse_tpex_official_eod_complete": true,
       "m8b_taifex_contexts": {
@@ -1782,7 +1782,7 @@
       "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go",
       "m8r_03e_status": "GO_WITH_CAVEATS",
       "mops_runtime_executable": false,
-      "next_task": "M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT",
+      "next_task": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
       "next_task_status": "accepted_successor",
       "original_m8r04_disposition": "superseded_and_split",
       "persistent_cache_added": false,
@@ -1790,8 +1790,8 @@
       "preflight_completed_through": "M8C-00",
       "raw_payload_exposure_allowed": false,
       "recommendation_allowed": false,
-      "recommended_next_task": "M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT",
-      "registry_successor": "M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT",
+      "recommended_next_task": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
+      "registry_successor": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
       "scheduler_added": false,
       "startup_fetch_added": false,
       "status": "m8_through_m8c_consolidated_acceptance_pass_with_caveats",
@@ -1803,7 +1803,9 @@
       "trading_signal_allowed": false,
       "twse_mis_runtime_executable": true,
       "twse_openapi_runtime_executable": true,
-      "unified_tool_api": "required_successor_capability"
+      "unified_tool_api": "required_successor_capability",
+      "m8r_03e_f1_status": "GO_WITH_CAVEATS",
+      "ai_capability_guide": "implemented"
     },
     "m8c_02_taifex_mis_context_integration": {
       "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
@@ -2052,17 +2054,17 @@
       "target price",
       "support/resistance",
       "main force",
-      "主力",
-      "壓盤",
-      "倒貨",
-      "散戶反指標",
-      "外資一定",
+      "\u4e3b\u529b",
+      "\u58d3\u76e4",
+      "\u5012\u8ca8",
+      "\u6563\u6236\u53cd\u6307\u6a19",
+      "\u5916\u8cc7\u4e00\u5b9a",
       "institutional prediction",
       "order book truth",
       "true liquidity",
       "realtime guarantee",
       "execution feed",
-      "買賣建議"
+      "\u8cb7\u8ce3\u5efa\u8b70"
     ]
   },
   "source_id": "TWSE_MIS"
