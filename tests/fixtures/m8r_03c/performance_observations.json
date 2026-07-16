@@ -1,0 +1,1938 @@
+[
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-20",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 100,
+      "close": 100,
+      "open": 99,
+      "high": 102,
+      "low": 98,
+      "volume": 1000
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-21",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 101,
+      "close": 101,
+      "open": 100,
+      "high": 103,
+      "low": 99,
+      "volume": 1010
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-22",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 102,
+      "close": 102,
+      "open": 101,
+      "high": 104,
+      "low": 100,
+      "volume": 1020
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-23",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 103,
+      "close": 103,
+      "open": 102,
+      "high": 105,
+      "low": 101,
+      "volume": 1030
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-24",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 104,
+      "close": 104,
+      "open": 103,
+      "high": 106,
+      "low": 102,
+      "volume": 1040
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-25",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 105,
+      "close": 105,
+      "open": 104,
+      "high": 107,
+      "low": 103,
+      "volume": 1050
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-26",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 106,
+      "close": 106,
+      "open": 105,
+      "high": 108,
+      "low": 104,
+      "volume": 1060
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-27",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 107,
+      "close": 107,
+      "open": 106,
+      "high": 109,
+      "low": 105,
+      "volume": 1070
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-28",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 108,
+      "close": 108,
+      "open": 107,
+      "high": 110,
+      "low": 106,
+      "volume": 1080
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-29",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 109,
+      "close": 109,
+      "open": 108,
+      "high": 111,
+      "low": 107,
+      "volume": 1090
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-01",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 110,
+      "close": 110,
+      "open": 109,
+      "high": 112,
+      "low": 108,
+      "volume": 1100
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-02",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 111,
+      "close": 111,
+      "open": 110,
+      "high": 113,
+      "low": 109,
+      "volume": 1110
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-03",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 112,
+      "close": 112,
+      "open": 111,
+      "high": 114,
+      "low": 110,
+      "volume": 1120
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-04",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 113,
+      "close": 113,
+      "open": 112,
+      "high": 115,
+      "low": 111,
+      "volume": 1130
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-05",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 114,
+      "close": 114,
+      "open": 113,
+      "high": 116,
+      "low": 112,
+      "volume": 1140
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-06",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 115,
+      "close": 115,
+      "open": 114,
+      "high": 117,
+      "low": 113,
+      "volume": 1150
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-07",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 116,
+      "close": 116,
+      "open": 115,
+      "high": 118,
+      "low": 114,
+      "volume": 1160
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-08",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 117,
+      "close": 117,
+      "open": 116,
+      "high": 119,
+      "low": 115,
+      "volume": 1170
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-09",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 118,
+      "close": 118,
+      "open": 117,
+      "high": 120,
+      "low": 116,
+      "volume": 1180
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-10",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 119,
+      "close": 119,
+      "open": 118,
+      "high": 121,
+      "low": 117,
+      "volume": 1190
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-11",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 120,
+      "close": 120,
+      "open": 119,
+      "high": 122,
+      "low": 118,
+      "volume": 1200
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2330",
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2330",
+      "symbol": "2330"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-12",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 121,
+      "close": 121,
+      "open": 120,
+      "high": 123,
+      "low": 119,
+      "volume": 1210
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-20",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 200,
+      "close": 200,
+      "open": 199,
+      "high": 202,
+      "low": 198,
+      "volume": 1000
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-21",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 201,
+      "close": 201,
+      "open": 200,
+      "high": 203,
+      "low": 199,
+      "volume": 1010
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-22",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 202,
+      "close": 202,
+      "open": 201,
+      "high": 204,
+      "low": 200,
+      "volume": 1020
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-23",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 203,
+      "close": 203,
+      "open": 202,
+      "high": 205,
+      "low": 201,
+      "volume": 1030
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-24",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 204,
+      "close": 204,
+      "open": 203,
+      "high": 206,
+      "low": 202,
+      "volume": 1040
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-25",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 205,
+      "close": 205,
+      "open": 204,
+      "high": 207,
+      "low": 203,
+      "volume": 1050
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-26",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 206,
+      "close": 206,
+      "open": 205,
+      "high": 208,
+      "low": 204,
+      "volume": 1060
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-27",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 207,
+      "close": 207,
+      "open": 206,
+      "high": 209,
+      "low": 205,
+      "volume": 1070
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-28",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 208,
+      "close": 208,
+      "open": 207,
+      "high": 210,
+      "low": 206,
+      "volume": 1080
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-29",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 209,
+      "close": 209,
+      "open": 208,
+      "high": 211,
+      "low": 207,
+      "volume": 1090
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-01",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 210,
+      "close": 210,
+      "open": 209,
+      "high": 212,
+      "low": 208,
+      "volume": 1100
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-02",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 211,
+      "close": 211,
+      "open": 210,
+      "high": 213,
+      "low": 209,
+      "volume": 1110
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-03",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 212,
+      "close": 212,
+      "open": 211,
+      "high": 214,
+      "low": 210,
+      "volume": 1120
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-04",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 213,
+      "close": 213,
+      "open": 212,
+      "high": 215,
+      "low": 211,
+      "volume": 1130
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-05",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 214,
+      "close": 214,
+      "open": 213,
+      "high": 216,
+      "low": 212,
+      "volume": 1140
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-06",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 215,
+      "close": 215,
+      "open": 214,
+      "high": 217,
+      "low": 213,
+      "volume": 1150
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-07",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 216,
+      "close": 216,
+      "open": 215,
+      "high": 218,
+      "low": 214,
+      "volume": 1160
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-08",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 217,
+      "close": 217,
+      "open": 216,
+      "high": 219,
+      "low": 215,
+      "volume": 1170
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-09",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 218,
+      "close": 218,
+      "open": 217,
+      "high": 220,
+      "low": 216,
+      "volume": 1180
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-10",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 219,
+      "close": 219,
+      "open": 218,
+      "high": 221,
+      "low": 217,
+      "volume": 1190
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-11",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 220,
+      "close": 220,
+      "open": 219,
+      "high": 222,
+      "low": 218,
+      "volume": 1200
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "TWSE:2317",
+    "requested_identity": {
+      "target_id": "TWSE:2317"
+    },
+    "resolved_identity": {
+      "target_id": "TWSE:2317",
+      "symbol": "2317"
+    },
+    "source_family": "TWSE_OPENAPI",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-12",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 221,
+      "close": 221,
+      "open": 220,
+      "high": 223,
+      "low": 219,
+      "volume": 1210
+    },
+    "issues": []
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-20",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10000,
+      "close": 10000,
+      "open": 9999,
+      "high": 10002,
+      "low": 9998,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-21",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10005,
+      "close": 10005,
+      "open": 10004,
+      "high": 10007,
+      "low": 10003,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-22",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10010,
+      "close": 10010,
+      "open": 10009,
+      "high": 10012,
+      "low": 10008,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-23",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10015,
+      "close": 10015,
+      "open": 10014,
+      "high": 10017,
+      "low": 10013,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-24",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10020,
+      "close": 10020,
+      "open": 10019,
+      "high": 10022,
+      "low": 10018,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-25",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10025,
+      "close": 10025,
+      "open": 10024,
+      "high": 10027,
+      "low": 10023,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-26",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10030,
+      "close": 10030,
+      "open": 10029,
+      "high": 10032,
+      "low": 10028,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-27",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10035,
+      "close": 10035,
+      "open": 10034,
+      "high": 10037,
+      "low": 10033,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-28",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10040,
+      "close": 10040,
+      "open": 10039,
+      "high": 10042,
+      "low": 10038,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-06-29",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10045,
+      "close": 10045,
+      "open": 10044,
+      "high": 10047,
+      "low": 10043,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-01",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10050,
+      "close": 10050,
+      "open": 10049,
+      "high": 10052,
+      "low": 10048,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-02",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10055,
+      "close": 10055,
+      "open": 10054,
+      "high": 10057,
+      "low": 10053,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-03",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10060,
+      "close": 10060,
+      "open": 10059,
+      "high": 10062,
+      "low": 10058,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-04",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10065,
+      "close": 10065,
+      "open": 10064,
+      "high": 10067,
+      "low": 10063,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-05",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10070,
+      "close": 10070,
+      "open": 10069,
+      "high": 10072,
+      "low": 10068,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-06",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10075,
+      "close": 10075,
+      "open": 10074,
+      "high": 10077,
+      "low": 10073,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-07",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10080,
+      "close": 10080,
+      "open": 10079,
+      "high": 10082,
+      "low": 10078,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-08",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10085,
+      "close": 10085,
+      "open": 10084,
+      "high": 10087,
+      "low": 10083,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-09",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10090,
+      "close": 10090,
+      "open": 10089,
+      "high": 10092,
+      "low": 10088,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-10",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10095,
+      "close": 10095,
+      "open": 10094,
+      "high": 10097,
+      "low": 10093,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-11",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10100,
+      "close": 10100,
+      "open": 10099,
+      "high": 10102,
+      "low": 10098,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  },
+  {
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "target_id": "BENCHMARK:TAIEX",
+    "requested_identity": {
+      "target_id": "BENCHMARK:TAIEX"
+    },
+    "resolved_identity": {
+      "target_id": "BENCHMARK:TAIEX",
+      "symbol": "TAIEX"
+    },
+    "source_family": "BENCHMARK_FIXTURE",
+    "timing_class": "official_eod",
+    "context_type": "official_eod_reference",
+    "source_timestamp": null,
+    "trade_date": "2026-07-12",
+    "retrieved_at_utc": "2026-07-16T01:30:05Z",
+    "currentness": {
+      "status": "fresh"
+    },
+    "facts": {
+      "latest_price": 10105,
+      "close": 10105,
+      "open": 10104,
+      "high": 10107,
+      "low": 10103,
+      "volume": 999
+    },
+    "issues": [],
+    "benchmark_id": "TAIEX"
+  }
+]

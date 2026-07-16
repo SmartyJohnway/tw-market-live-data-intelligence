@@ -75,6 +75,8 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 - [M8R-02A production source executor adapter integration](protocol/M8R_02A_PRODUCTION_SOURCE_EXECUTOR_ADAPTER_INTEGRATION.md)
 - [M8R-02B controlled live execution validation and final runtime acceptance](protocol/M8R_02B_CONTROLLED_LIVE_EXECUTION_VALIDATION_AND_FINAL_RUNTIME_ACCEPTANCE.md)
 - [M8R-03 AI market context package v1](protocol/M8R_03_AI_MARKET_CONTEXT_PACKAGE_V1.md)
+- [M8R-03B AI conversation input/output design review](protocol/M8R_03B_AI_CONVERSATION_INPUT_OUTPUT_DESIGN_REVIEW.md)
+- [M8R-03C conversation contract validators and watchlist bundle skeletons](protocol/M8R_03C_CONVERSATION_CONTRACT_VALIDATORS_AND_WATCHLIST_BUNDLE_SKELETONS.md)
 - [M8C TAIFEX MIS runtime selector/execution contract](protocol/M8C_TAIFEX_MIS_RUNTIME_SELECTOR_AND_EXECUTION_CONTRACT.md)
 - [M8C TAIFEX MIS runtime observation schema](protocol/M8C_TAIFEX_MIS_RUNTIME_OBSERVATION_SCHEMA.md)
 - [M8C TAIFEX MIS runtime currentness contract](protocol/M8C_TAIFEX_MIS_RUNTIME_CURRENTNESS_CONTRACT.md)
