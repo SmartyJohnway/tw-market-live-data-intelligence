@@ -32,7 +32,7 @@ def test_loader_rejects_drift_and_raw_fields():
         assert code in str(e.value)
 
 def test_classification_lifecycle_and_observation_policy():
-    lookup=build_verified_security_master_lookup(load('snapshot.json'))
+    lookup=load_verified_security_master_snapshot(FIX/'snapshot.json', FIX/'manifest.json', allow_fixture_snapshot=True).lookup
     def sel(q, **kw): return resolve_verified_security_identity(q, lookup, allow_fixture_snapshot=kw.get('allow',False))['selected']
     assert sel('TWSE:2330')['classification']['instrument_type']=='common_share'
     assert sel('TWSE:0050')['classification']['instrument_type']=='etf'
@@ -46,7 +46,7 @@ def test_classification_lifecycle_and_observation_policy():
     assert resolve_verified_security_identity('TWSE:8888',lookup,allow_fixture_snapshot=True)['resolution_status']=='resolved'
 
 def test_resolution_exact_and_ambiguous():
-    lookup=build_verified_security_master_lookup(load('snapshot.json'))
+    lookup=load_verified_security_master_snapshot(FIX/'snapshot.json', FIX/'manifest.json', allow_fixture_snapshot=True).lookup
     assert resolve_verified_security_identity('TW0002330008',lookup)['selected']['canonical_target_id']=='TWSE:2330'
     assert resolve_verified_security_identity('2330',lookup,market_context='TWSE')['selected']['canonical_target_id']=='TWSE:2330'
     assert resolve_verified_security_identity('台積電',lookup)['selected']['canonical_target_id']=='TWSE:2330'
@@ -63,7 +63,7 @@ def _req(ids):
     return req
 
 def test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed(tmp_path):
-    snap=load('snapshot.json'); lookup=build_verified_security_master_lookup(snap)
+    validated=load_verified_security_master_snapshot(FIX/'snapshot.json', FIX/'manifest.json', allow_fixture_snapshot=True); snap=validated.snapshot; lookup=validated
     plan=build_execution_plan(_req(['TWSE:2330','TPEX:6488','TWSE:0050']),bundle_type='snapshot',security_master=lookup)
     by={t['target_id']:t for t in plan['targets']}
     assert by['TWSE:2330']['current_source_plan']['route']=='tse_2330.tw' and by['TWSE:2330']['snapshot_id']=='fixture-m8r03d-f1'
@@ -81,3 +81,47 @@ def test_non_network_clis():
     for q in ['2330','台積電','重名股','TWSE:7777']:
         r=subprocess.run([sys.executable,'scripts/resolve_m8r_03d_f1_security_identity.py','--snapshot','/tmp/f1_snapshot.json','--manifest','/tmp/f1_manifest.json','--query',q,'--allow-fixture-snapshot'],capture_output=True,text=True)
         assert r.returncode==0 and 'm8r_03d_f1_security_identity_resolution.v1' in r.stdout
+
+def test_trust_gap_tampered_direct_snapshot_and_lookup_rejected():
+    snap=load('snapshot.json')
+    tampered=copy.deepcopy(snap); tampered['records'][0]['execution_eligibility']['status']='allowed'
+    with pytest.raises(VerifiedSecurityMasterSnapshotError): build_execution_plan(_req(['TWSE:2330']),bundle_type='snapshot',security_master=tampered)
+    validated=load_verified_security_master_snapshot(FIX/'snapshot.json', FIX/'manifest.json', allow_fixture_snapshot=True)
+    bad_lookup=copy.deepcopy(validated.lookup); bad_lookup['by_canonical']['TWSE:2330']['record_hash']='fabricated'
+    with pytest.raises(VerifiedSecurityMasterSnapshotError): build_execution_plan(_req(['TWSE:2330']),bundle_type='snapshot',security_master=bad_lookup)
+
+def test_lifecycle_join_cross_market_ambiguous_event_quarantined():
+    rec=load('classification_records.json'); ctx=load('source_context.json')
+    ambiguous={"source_family":"twse_company_delisted","source_url":"https://www.twse.com.tw/zh/listed/suspend-listing.html","security_code":"3333","event_type":"twse_delisted","effective_date":"2026-01-01","evidence_status":"official_table"}
+    snap,man=export_verified_security_master_snapshot(classification_records=rec,lifecycle_events=[ambiguous],source_context=ctx,generated_at_utc='2026-07-16T00:00:00Z',effective_observation_date='2026-07-16')
+    assert snap['coverage']['quarantined_lifecycle_event_count']==1
+    assert snap['quarantined_lifecycle_events'][0]['quarantine_reason']=='lifecycle_identity_ambiguous'
+    assert all(not (e.get('security_code')=='3333') for r in snap['records'] for e in r['lifecycle']['events'])
+    precise={**ambiguous,'market':'tpex'}
+    snap2,_=export_verified_security_master_snapshot(classification_records=rec,lifecycle_events=[precise],source_context=ctx,generated_at_utc='2026-07-16T00:00:00Z',effective_observation_date='2026-07-16')
+    tpex=[r for r in snap2['records'] if r['canonical_target_id']=='TPEX:3333'][0]
+    twse=[r for r in snap2['records'] if r['canonical_target_id']=='TWSE:3333'][0]
+    assert tpex['lifecycle']['events'] and not twse['lifecycle']['events']
+
+def test_invalid_skill_inputs_rejected():
+    rec=load('classification_records.json'); ctx=load('source_context.json')
+    bad=copy.deepcopy(rec); bad[0]['classification']['classification_status']='bogus'
+    with pytest.raises(Exception): export_verified_security_master_snapshot(classification_records=bad,lifecycle_events=[],source_context=ctx,generated_at_utc='2026-07-16T00:00:00Z',effective_observation_date='2026-07-16')
+    event={"source_family":"x","source_url":"not-url","security_code":"2330","event_type":"bad","effective_date":"bad","evidence_status":"bad"}
+    with pytest.raises(Exception): export_verified_security_master_snapshot(classification_records=rec,lifecycle_events=[event],source_context=ctx,generated_at_utc='2026-07-16T00:00:00Z',effective_observation_date='2026-07-16')
+
+def test_manifest_strengthened_rejections_and_duplicate_isin_order_independent():
+    snap=load('snapshot.json'); man=load('manifest.json')
+    cases=[]
+    for field, code in [('schema_sha256','schema_hash_mismatch'),('skill_contract_hash','skill_contract_hash_mismatch'),('lifecycle_event_count','lifecycle_event_count_mismatch'),('generated_at_utc','generated_at_mismatch')]:
+        m=copy.deepcopy(man); m[field]='bad' if not isinstance(m[field],int) else m[field]+1; cases.append((snap,m,code))
+    for s,m,code in cases:
+        with pytest.raises(VerifiedSecurityMasterSnapshotError) as e: validate_verified_security_master_snapshot(s,m,allow_fixture_snapshot=True)
+        assert code in str(e.value)
+    dup=copy.deepcopy(snap); dup['records'][0]['identity']['isin']=dup['records'][1]['identity']['isin']; dup['records'][0]['record_hash']=sha256_json({k:v for k,v in dup['records'][0].items() if k!='record_hash'})
+    m=copy.deepcopy(man); m['snapshot_sha256']=sha256_json(dup)
+    with pytest.raises(VerifiedSecurityMasterSnapshotError) as e: validate_verified_security_master_snapshot(dup,m,allow_fixture_snapshot=True)
+    assert 'duplicate_unresolved_isin_identity' in str(e.value)
+    dup['records']=list(reversed(dup['records'])); m['snapshot_sha256']=sha256_json(dup)
+    with pytest.raises(VerifiedSecurityMasterSnapshotError) as e: validate_verified_security_master_snapshot(dup,m,allow_fixture_snapshot=True)
+    assert 'duplicate_unresolved_isin_identity' in str(e.value)

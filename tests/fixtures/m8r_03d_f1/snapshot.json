@@ -12,10 +12,12 @@
       "TPEX",
       "TWSE"
     ],
+    "quarantined_lifecycle_event_count": 0,
     "record_count": 14
   },
   "effective_observation_date": "2026-07-16",
   "generated_at_utc": "2026-07-16T00:00:00Z",
+  "quarantined_lifecycle_events": [],
   "records": [
     {
       "canonical_target_id": "TWSE:2330",
@@ -846,7 +848,7 @@
   "snapshot_id": "fixture-m8r03d-f1",
   "source_skill": {
     "name": "tw-security-master-classifier",
-    "skill_contract_hash": "957ae9885e75bc9636107398d6f8d7b2023c7d1e3b74f51af416c54ba523a874",
+    "skill_contract_hash": "488b3e04af2e318cd387b0dfdcbad02be4f2c3f495539c3e436698464f37d77a",
     "skill_path": "skills/tw-security-master-classifier",
     "skill_version": "source-manifest-1.1.0"
   }

@@ -12,6 +12,7 @@
       "TPEX",
       "TWSE"
     ],
+    "quarantined_lifecycle_event_count": 0,
     "record_count": 14
   },
   "effective_observation_date": "2026-07-16",
@@ -19,12 +20,12 @@
   "lifecycle_event_count": 2,
   "producer_version": "m8r_03d_f1_snapshot_exporter.v1",
   "record_count": 14,
-  "schema_sha256": "2b847b0e2e741ffb302c83b7e630072ea730dafa7fe237d76240539b0606b735",
+  "schema_sha256": "8408f9c7358b69ff29d87b554ecc57caa13a27f699621bc29eac685d2746a538",
   "schema_version": "tw_verified_security_master_snapshot_manifest.v1",
-  "skill_contract_hash": "957ae9885e75bc9636107398d6f8d7b2023c7d1e3b74f51af416c54ba523a874",
+  "skill_contract_hash": "488b3e04af2e318cd387b0dfdcbad02be4f2c3f495539c3e436698464f37d77a",
   "snapshot_id": "fixture-m8r03d-f1",
   "snapshot_path": "tests/fixtures/m8r_03d_f1/snapshot.json",
-  "snapshot_sha256": "7f6fd60ea4b435fb0e56baefe5980609f5c9c92263acf9d57f2fbb49707d8d89",
+  "snapshot_sha256": "5cb6eb2e86349d448e95a68efbacbd4477d7561b0c8f4b2dfbb847537ea6fd3c",
   "validation_issues": [],
   "validation_status": "passed"
 }

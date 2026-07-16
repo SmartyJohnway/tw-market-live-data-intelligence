@@ -29,7 +29,7 @@ Raw HTML cells and full official payloads are forbidden in runtime snapshots.
 
 The manifest schema is `tw_verified_security_master_snapshot_manifest.v1`. It records `snapshot_sha256`, `schema_sha256`, `skill_contract_hash`, producer version, record counts, lifecycle event counts, coverage, and `validation_status`.
 
-The loader fails closed when schema versions drift, snapshot hashes mismatch, record counts mismatch, snapshot IDs mismatch, record hashes mismatch, duplicate canonical target IDs appear, unresolved duplicate ISIN identities are detected, forbidden raw fields appear, or `validation_status != passed`.
+The loader fails closed when schema versions drift, producer versions are unsupported, schema hashes mismatch, snapshot hashes mismatch, generated/effective timestamps differ between manifest and snapshot, record or lifecycle event counts mismatch, snapshot IDs mismatch, coverage differs, Skill contract hashes mismatch, record hashes mismatch, duplicate canonical target IDs appear, unresolved duplicate ISIN identities are detected, forbidden raw fields appear, or `validation_status != passed`. By default it also requires `manifest.skill_contract_hash` to match the current repository Skill contract hash. Historical pinned snapshots may be accepted only by an explicit compatibility caller that sets `require_current_skill_contract=False`; this is for audit/replay, not production watchlist execution.
 
 ## Classification mapping
 
@@ -57,7 +57,7 @@ The resolver supports canonical IDs, exact ISIN, exact code with market context,
 
 ## M8R-03D planner integration
 
-`build_execution_plan` accepts a verified snapshot lookup or explicit snapshot/manifest paths. Invalid configured snapshots raise an adapter error and do not fall back to the bounded seed. Planned targets retain `snapshot_id`, `record_id`, `record_hash`, classification status, lifecycle state, execution eligibility, and resolution evidence references.
+`build_execution_plan` accepts a `ValidatedVerifiedSecurityMasterSnapshot` object or explicit snapshot/manifest paths. Plain dict snapshot/lookup injection is rejected for verified evidence; legacy bounded seed dictionaries remain only for existing test/backward-compatibility paths. Invalid configured snapshots raise an adapter error and do not fall back to the bounded seed. Planned targets retain `snapshot_id`, `record_id`, `record_hash`, classification status, lifecycle state, execution eligibility, and resolution evidence references.
 
 ## Fixture policy
 

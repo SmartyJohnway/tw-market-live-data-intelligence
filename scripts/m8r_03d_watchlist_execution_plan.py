@@ -4,7 +4,7 @@ from datetime import datetime,timezone
 from typing import Any
 from scripts.m8r_03c_conversation_contract_validator import validate_watchlist_snapshot_request, validate_watchlist_performance_request, assert_no_forbidden_keys
 from scripts.m8a_official_eod_instrument_classifier import build_security_master_lookup, normalize_market as _sm_market, normalize_instrument_type
-from scripts.m8r_03d_f1_security_master_snapshot_adapter import build_verified_security_master_lookup, load_verified_security_master_snapshot, resolve_verified_security_identity, VerifiedSecurityMasterSnapshotError
+from scripts.m8r_03d_f1_security_master_snapshot_adapter import ValidatedVerifiedSecurityMasterSnapshot, load_verified_security_master_snapshot, resolve_verified_security_identity, VerifiedSecurityMasterSnapshotError
 
 AUTH_SCHEMA_VERSION='m8r_03d_watchlist_execution_authorization.v1'
 PLAN_SCHEMA_VERSION='m8r_03d_watchlist_execution_plan.v1'
@@ -100,10 +100,10 @@ def _resolve_verified_security(tid: str, snapshot_lookup, *, allow_fixture_snaps
     return {'target_id':tid,'security_code':ident.get('security_code'),'security_name':ident.get('security_name_zh') or ident.get('security_name_en'),'canonical_market':canonical,'instrument_type':typ,'listing_status':life.get('state'),'lifecycle_state':life.get('state'),'lifecycle_resolution_status':life.get('resolution_status'),'execution_policy':execution_policy,'resolution_caveats':caveats,'resolution_status':status,'snapshot_id':sel.get('snapshot_id'),'record_id':sel.get('record_id'),'record_hash':sel.get('record_hash'),'classification_status':cls.get('classification_status'),'classification_execution_policy':sel.get('classification_execution_policy'),'execution_eligibility':elig,'resolution_evidence':[{'source':'verified_security_master_snapshot','snapshot_id':sel.get('snapshot_id'),'record_id':sel.get('record_id'),'record_hash':sel.get('record_hash'),'resolution_reason':sel.get('resolution_reason')}], 'requested_identity':requested}
 
 def _resolve_security(tid: str, security_master=None, *, allow_fixture_snapshot: bool=False) -> dict:
-    if isinstance(security_master, dict) and security_master.get('schema_version')=='tw_verified_security_master_snapshot.v1':
-        return _resolve_verified_security(tid, build_verified_security_master_lookup(security_master), allow_fixture_snapshot=allow_fixture_snapshot)
-    if isinstance(security_master, dict) and security_master.get('snapshot') and security_master.get('by_canonical') is not None:
-        return _resolve_verified_security(tid, security_master, allow_fixture_snapshot=allow_fixture_snapshot)
+    if isinstance(security_master, ValidatedVerifiedSecurityMasterSnapshot):
+        return _resolve_verified_security(tid, security_master.lookup, allow_fixture_snapshot=allow_fixture_snapshot)
+    if isinstance(security_master, dict) and (security_master.get('schema_version')=='tw_verified_security_master_snapshot.v1' or (security_master.get('snapshot') and security_master.get('by_canonical') is not None)):
+        raise VerifiedSecurityMasterSnapshotError('unvalidated_verified_snapshot_injection_rejected')
     parts=tid.split(':'); requested={'target_id':tid}; evidence=[]
     if len(parts)!=2 or parts[0] not in {'TWSE','TPEX'} or not re.fullmatch(r'[A-Z0-9._-]{1,20}',parts[1]):
         return {'target_id':tid,'security_code':None,'security_name':None,'canonical_market':None,'instrument_type':None,'listing_status':None,'lifecycle_state':'unresolved','resolution_status':'identity_unresolved','resolution_evidence':[{'code':'invalid_target_id'}],'requested_identity':requested}
@@ -150,8 +150,7 @@ def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|
     req=validate_watchlist_snapshot_request(request) if bundle_type=='snapshot' else validate_watchlist_performance_request(request)
     if verified_snapshot_path or verified_snapshot_manifest_path:
         if not (verified_snapshot_path and verified_snapshot_manifest_path): raise VerifiedSecurityMasterSnapshotError('snapshot_and_manifest_required')
-        snap,_man=load_verified_security_master_snapshot(verified_snapshot_path, verified_snapshot_manifest_path, allow_fixture_snapshot=allow_fixture_snapshot)
-        security_master=build_verified_security_master_lookup(snap)
+        security_master=load_verified_security_master_snapshot(verified_snapshot_path, verified_snapshot_manifest_path, allow_fixture_snapshot=allow_fixture_snapshot)
     ids=list(req['persistent_watchlist_reference']['enabled_target_ids'])
     targets=[]; groups=[]; issues=[]
     if len(ids)>MAX_WATCHLIST_TARGETS: issues.append({'code':'target_limit_exceeded','max_target_count':MAX_WATCHLIST_TARGETS,'blocking':True})
