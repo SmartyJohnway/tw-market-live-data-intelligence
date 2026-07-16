@@ -300,10 +300,10 @@
   "planning_state": {
     "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
     "active_architectural_model": "governed_market_evidence_platform",
-    "agent_skill_contract": "required_successor_capability",
+    "agent_skill_contract": "implemented",
     "ai_behavior_hardcoding": "deprecated_direction",
     "ai_behavior_policy_fields_migration": "deprecated_pending_migration_to_agent_skill_or_deployment_policy",
-    "implemented_through_track": "M8R-03E",
+    "implemented_through_track": "M8R-03E-F1",
     "m8c_00_preflight_status": "m8c_00_taifex_mis_preflight_pass_with_caveats",
     "m8c_01_status": "m8c_01_taifex_mis_bounded_snapshot_runtime_pass_with_caveats",
     "m8c_02_status": "m8c_02_taifex_mis_m8_currentness_context_integration_and_final_acceptance_pass_with_caveats",
@@ -320,7 +320,8 @@
     "registry_successor": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
     "status": "m8_through_m8c_consolidated_acceptance_pass_with_caveats",
     "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
-    "unified_tool_api": "required_successor_capability"
+    "unified_tool_api": "required_successor_capability",
+    "ai_capability_guide": "implemented"
   },
   "production_executor_adapters_ready": true,
   "production_live_execution_ready": true,
@@ -329,7 +330,11 @@
   "recommended_successor_after_m8r_02b_f2_semantics": "historical F2 transition evidence retained; active successor is registry_successor",
   "recommended_successor_after_m8r_03c": "M8R-03D-WATCHLIST-EVIDENCE-SOURCE-INTEGRATION-AND-CONTROLLED-EXECUTION",
   "recommended_successor_after_m8r_03c_semantics": "Integrate governed source execution into watchlist evidence only after M8R-03C non-network contracts and skeletons pass; do not claim market pulse or dynamic research automation.",
-  "recommended_successor_after_m8r_03e": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION",
+  "recommended_successor_after_m8r_03e": {
+    "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION",
+    "status": "historical_superseded",
+    "superseded_by": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION"
+  },
   "registry_successor": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
   "schema_version": "m8_source_capability_registry.v1",
   "sources": [

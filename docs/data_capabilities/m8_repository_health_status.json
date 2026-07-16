@@ -19,8 +19,8 @@
   "blocking_findings": [],
   "correctness_status": "GO_WITH_CAVEATS",
   "direct_corrections": [
-    "implemented_through_track set to M8R-03E",
-    "recommended_next_task set to Phase B skill contract",
+    "implemented_through_track set to M8R-03E-F1",
+    "recommended_next_task set to R2 filesystem containment remediation",
     "original M8R-04 marked superseded_and_split",
     "active architecture set to governed_market_evidence_platform",
     "AI behavior hardcoding marked deprecated_direction"
@@ -176,5 +176,14 @@
       "status": "fail",
       "summary": "current PR: 1627 passed, 7 failed, 1 skipped; baseline SHA reproduced same seven node IDs with 1616 passed, 7 failed, 1 skipped; new M8/M8R failure count 0"
     }
-  ]
+  ],
+  "agent_skill_contract": "implemented",
+  "ai_capability_guide": "implemented",
+  "registry_successor": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
+  "recommended_successor_after_m8r_03e": {
+    "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION",
+    "status": "historical_superseded",
+    "superseded_by": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION"
+  },
+  "phase_c_status": "blocked_until_M8R-03E-R2-complete"
 }

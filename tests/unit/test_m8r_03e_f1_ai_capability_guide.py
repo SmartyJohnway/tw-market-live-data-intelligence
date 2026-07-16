@@ -4,6 +4,7 @@ ROOT=Path(__file__).resolve().parents[2]
 CONTRACT=json.load(open(ROOT/'docs/ai/m8_ai_capability_contract.json'))
 MATRIX=json.load(open(ROOT/'docs/ai/m8_ai_tool_selection_matrix.json'))
 REG=json.load(open(ROOT/'docs/data_capabilities/m8_source_capability_registry.json'))
+HEALTH=json.load(open(ROOT/'docs/data_capabilities/m8_repository_health_status.json'))
 
 def caps(): return {c['capability_id']:c for c in CONTRACT['capabilities']}
 
@@ -19,18 +20,20 @@ def test_matrix_capability_references_exist():
 
 def test_implemented_capabilities_map_to_existing_paths():
  for c in CONTRACT['capabilities']:
-  if c['runtime_available']:
+  if c.get('underlying_runtime_available'):
    assert c['internal_dependencies']
    for p in c['internal_dependencies']:
     assert (ROOT/p).exists(), p
 
 def test_planned_capabilities_are_not_runtime_available():
- assert all(not c['runtime_available'] for c in CONTRACT['capabilities'] if c['maturity_status']=='planned')
+ assert all(not c['ai_facing_runtime_available'] for c in CONTRACT['capabilities'] if c['maturity_status'] in {'planned','contract_only'})
 
 def test_fixture_only_capability_is_not_marked_live():
  raw=caps()['request_raw_source_payload']
- assert raw['maturity_status']=='unavailable'
- assert raw['runtime_available'] is False
+ assert raw['maturity_status']=='contract_only'
+ assert raw['underlying_capability_status']=='unavailable'
+ assert raw['ai_facing_runtime_available'] is False
+ assert raw['underlying_runtime_available'] is False
 
 def test_current_and_eod_timing_classes_are_distinct():
  tc=CONTRACT['timing_classes']
@@ -81,3 +84,43 @@ def test_phase_c_blocked_until_r2():
 
 def test_existing_m8r_03e_schema_files_unchanged_by_f1_contract():
  assert CONTRACT['task_id']=='M8R-03E-F1-AI-CAPABILITY-GUIDE-AND-AGENT-SKILL-CONTRACT'
+
+def test_network_required_capabilities_require_authorization_and_disabled_default():
+ for c in CONTRACT['capabilities']:
+  if c['network_required']:
+   assert c['authorization_required'] is True
+   assert c['network_default_enabled'] is False
+   assert c['authorization_model']=='M8R-03D controlled execution authorization'
+
+def test_no_phase_c_ai_facing_operation_runtime_available():
+ assert all(c['ai_facing_runtime_available'] is False for c in CONTRACT['capabilities'])
+ assert {c['ai_facing_operation_status'] for c in CONTRACT['capabilities']} == {'contract_only'}
+
+def test_underlying_capability_availability_remains_represented():
+ current=caps()['get_current_market_evidence']
+ assert current['underlying_capability_status']=='implemented_with_caveats'
+ assert current['underlying_runtime_available'] is True
+ assert current['ai_facing_runtime_available'] is False
+
+def test_identify_required_additional_evidence_not_falsely_executable():
+ cap=caps()['identify_required_additional_evidence']
+ assert cap['ai_facing_runtime_available'] is False
+ assert cap['underlying_capability_status']=='fixture_validated'
+ assert cap['underlying_runtime_available'] is False
+
+def test_embedded_skill_asset_equals_authoritative_contract():
+ assert (ROOT/'docs/ai/m8_ai_capability_contract.json').read_text() == (ROOT/'skills/tw-market-evidence-agent/assets/m8_ai_capability_contract.json').read_text()
+
+def test_registry_status_surfaces_agree():
+ r2='M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION'
+ for surface in [REG, REG['m8_active_consolidated_status'], REG['planning_state'], HEALTH]:
+  assert surface['implemented_through_track']=='M8R-03E-F1'
+  assert surface['agent_skill_contract']=='implemented'
+  assert surface['ai_capability_guide']=='implemented'
+  assert surface['recommended_next_task']==r2
+  assert surface['registry_successor']==r2
+
+def test_old_m8r_03f_successor_is_historical_or_superseded():
+ old=REG['recommended_successor_after_m8r_03e']
+ assert old['task_id']=='M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION'
+ assert old['status'] in {'historical_superseded','superseded'}

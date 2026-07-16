@@ -19,3 +19,9 @@ Existing compatibility fields such as `no_recommendation`, `no_trading_advice`, 
 ## Phase C boundary
 
 F1 does not implement the Unified Market Evidence Tool API, MCP, HTTP endpoints, LLM invocation, scheduler, polling, persistent watchlists, broker integration, or new source adapters. Phase C remains blocked until `M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION` is complete.
+
+## Availability and authorization correction
+
+F1 separates AI-facing operation availability from underlying repository capability availability. Every AI-facing Phase C operation remains `contract_only` with `ai_facing_runtime_available=false`. Existing producers and validators are represented separately through `underlying_capability_status` and `underlying_runtime_available`.
+
+Any capability with `network_required=true` must also declare `authorization_required=true`, `network_default_enabled=false`, and the existing authorization model `M8R-03D controlled execution authorization`. F1 does not authorize or execute network access.

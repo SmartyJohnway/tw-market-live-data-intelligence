@@ -10,7 +10,6 @@
       "display_name": "Describe Market Capabilities",
       "description": "AI-facing contract for describe_market_capabilities.",
       "maturity_status": "contract_only",
-      "runtime_available": false,
       "network_required": false,
       "authorization_required": false,
       "supported_targets": [
@@ -62,14 +61,20 @@
         "current_artifact": "docs/ai/m8_ai_capability_contract.json",
         "future_phase_c_api_operation": "describe_market_capabilities"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first."
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "underlying_capability_status": "contract_only",
+      "underlying_runtime_available": false,
+      "network_default_enabled": false,
+      "authorization_model": "not required for non-network contract inspection",
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
     },
     {
       "capability_id": "resolve_market_targets",
       "display_name": "Resolve Market Targets",
       "description": "AI-facing contract for resolve_market_targets.",
-      "maturity_status": "implemented_with_caveats",
-      "runtime_available": true,
+      "maturity_status": "contract_only",
       "network_required": false,
       "authorization_required": false,
       "supported_targets": [
@@ -128,16 +133,22 @@
         "current_artifact": "tests/fixtures/m8r_03d_f1/snapshot.json",
         "future_phase_c_api_operation": "resolve_market_targets"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first."
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "underlying_capability_status": "implemented_with_caveats",
+      "underlying_runtime_available": true,
+      "network_default_enabled": false,
+      "authorization_model": "not required for non-network contract inspection",
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
     },
     {
       "capability_id": "get_current_market_evidence",
       "display_name": "Get Current Market Evidence",
       "description": "AI-facing contract for get_current_market_evidence.",
-      "maturity_status": "implemented_with_caveats",
-      "runtime_available": true,
+      "maturity_status": "contract_only",
       "network_required": true,
-      "authorization_required": false,
+      "authorization_required": true,
       "supported_targets": [
         "tw_equity",
         "tw_etf",
@@ -194,16 +205,22 @@
         "current_artifact": "tests/fixtures/m8r_03e/complete_snapshot/bundle.json",
         "future_phase_c_api_operation": "get_current_market_evidence"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first."
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "underlying_capability_status": "implemented_with_caveats",
+      "underlying_runtime_available": true,
+      "network_default_enabled": false,
+      "authorization_model": "M8R-03D controlled execution authorization",
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
     },
     {
       "capability_id": "get_official_eod_reference",
       "display_name": "Get Official Eod Reference",
       "description": "AI-facing contract for get_official_eod_reference.",
-      "maturity_status": "implemented_with_caveats",
-      "runtime_available": true,
+      "maturity_status": "contract_only",
       "network_required": true,
-      "authorization_required": false,
+      "authorization_required": true,
       "supported_targets": [
         "tw_equity",
         "tw_etf",
@@ -260,14 +277,20 @@
         "current_artifact": "docs/protocol/M8A_OFFICIAL_EOD_CONTEXT_FINAL_ACCEPTANCE.md",
         "future_phase_c_api_operation": "get_official_eod_reference"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first."
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "underlying_capability_status": "implemented_with_caveats",
+      "underlying_runtime_available": true,
+      "network_default_enabled": false,
+      "authorization_model": "M8R-03D controlled execution authorization",
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
     },
     {
       "capability_id": "get_price_performance_evidence",
       "display_name": "Get Price Performance Evidence",
       "description": "AI-facing contract for get_price_performance_evidence.",
-      "maturity_status": "implemented_with_caveats",
-      "runtime_available": true,
+      "maturity_status": "contract_only",
       "network_required": false,
       "authorization_required": false,
       "supported_targets": [
@@ -326,16 +349,22 @@
         "current_artifact": "tests/fixtures/m8r_03e/performance/bundle.json",
         "future_phase_c_api_operation": "get_price_performance_evidence"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first."
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "underlying_capability_status": "implemented_with_caveats",
+      "underlying_runtime_available": true,
+      "network_default_enabled": false,
+      "authorization_model": "not required for non-network contract inspection",
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
     },
     {
       "capability_id": "get_derivatives_market_context",
       "display_name": "Get Derivatives Market Context",
       "description": "AI-facing contract for get_derivatives_market_context.",
-      "maturity_status": "implemented_with_caveats",
-      "runtime_available": true,
+      "maturity_status": "contract_only",
       "network_required": true,
-      "authorization_required": false,
+      "authorization_required": true,
       "supported_targets": [
         "tw_equity",
         "tw_etf",
@@ -392,14 +421,20 @@
         "current_artifact": "docs/protocol/M8C_01_TAIFEX_MIS_BOUNDED_RUNTIME_FINAL_ACCEPTANCE.md",
         "future_phase_c_api_operation": "get_derivatives_market_context"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first."
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "underlying_capability_status": "implemented_with_caveats",
+      "underlying_runtime_available": true,
+      "network_default_enabled": false,
+      "authorization_model": "M8R-03D controlled execution authorization",
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
     },
     {
       "capability_id": "get_security_identity_and_lifecycle",
       "display_name": "Get Security Identity And Lifecycle",
       "description": "AI-facing contract for get_security_identity_and_lifecycle.",
-      "maturity_status": "implemented_with_caveats",
-      "runtime_available": true,
+      "maturity_status": "contract_only",
       "network_required": false,
       "authorization_required": false,
       "supported_targets": [
@@ -458,14 +493,20 @@
         "current_artifact": "docs/contracts/schemas/tw_verified_security_master_snapshot.v1.schema.json",
         "future_phase_c_api_operation": "get_security_identity_and_lifecycle"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first."
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "underlying_capability_status": "implemented_with_caveats",
+      "underlying_runtime_available": true,
+      "network_default_enabled": false,
+      "authorization_model": "not required for non-network contract inspection",
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
     },
     {
       "capability_id": "read_market_evidence_package",
       "display_name": "Read Market Evidence Package",
       "description": "AI-facing contract for read_market_evidence_package.",
-      "maturity_status": "implemented_with_caveats",
-      "runtime_available": true,
+      "maturity_status": "contract_only",
       "network_required": false,
       "authorization_required": false,
       "supported_targets": [
@@ -524,14 +565,20 @@
         "current_artifact": "scripts/m8r_03e_context_validator.py",
         "future_phase_c_api_operation": "read_market_evidence_package"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first."
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "underlying_capability_status": "implemented_with_caveats",
+      "underlying_runtime_available": true,
+      "network_default_enabled": false,
+      "authorization_model": "not required for non-network contract inspection",
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
     },
     {
       "capability_id": "identify_required_additional_evidence",
       "display_name": "Identify Required Additional Evidence",
       "description": "AI-facing contract for identify_required_additional_evidence.",
-      "maturity_status": "implemented_with_caveats",
-      "runtime_available": true,
+      "maturity_status": "contract_only",
       "network_required": false,
       "authorization_required": false,
       "supported_targets": [
@@ -590,14 +637,20 @@
         "current_artifact": "tests/fixtures/m8r_03e/partial_source_failure/bundle.json",
         "future_phase_c_api_operation": "identify_required_additional_evidence"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first."
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "underlying_capability_status": "fixture_validated",
+      "underlying_runtime_available": false,
+      "network_default_enabled": false,
+      "authorization_model": "not required for non-network contract inspection",
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
     },
     {
       "capability_id": "request_raw_source_payload",
       "display_name": "Request Raw Source Payload",
       "description": "AI-facing contract for request_raw_source_payload.",
-      "maturity_status": "unavailable",
-      "runtime_available": false,
+      "maturity_status": "contract_only",
       "network_required": false,
       "authorization_required": true,
       "supported_targets": [
@@ -648,7 +701,14 @@
         "current_artifact": "docs/ai/m8_ai_capability_contract.json",
         "future_phase_c_api_operation": "request_raw_source_payload"
       },
-      "future_phase": "Phase C implementation contract; R2 must complete first."
+      "future_phase": "Phase C implementation contract; R2 must complete first.",
+      "ai_facing_operation_status": "contract_only",
+      "ai_facing_runtime_available": false,
+      "underlying_capability_status": "unavailable",
+      "underlying_runtime_available": false,
+      "network_default_enabled": false,
+      "authorization_model": "authorized audit workflow required",
+      "availability_semantics": "AI-facing Phase C operation is contract-only and non-runtime in F1; underlying_capability_* describes existing repository producers or fixture validation."
     }
   ],
   "timing_classes": {
@@ -945,5 +1005,16 @@
     "Phase C": "blocked_until_M8R-03E-R2-complete"
   },
   "raw_payload_exposure_allowed": false,
-  "recommended_next_task": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION"
+  "recommended_next_task": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
+  "availability_semantics": {
+    "ai_facing_runtime_available": "Only true when actual callable AI-facing operation with defined I/O exists; all F1 operations are false.",
+    "underlying_runtime_available": "Represents existing repository producer/executor availability, separate from Phase C operation availability.",
+    "network_required": "Network-capable underlying producers require existing controlled execution authorization and are disabled by default in F1."
+  },
+  "recommended_successor_after_m8r_03e": {
+    "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION",
+    "status": "historical_superseded",
+    "superseded_by": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
+    "reason": "R2 filesystem containment remediation is the only active successor before Phase C."
+  }
 }

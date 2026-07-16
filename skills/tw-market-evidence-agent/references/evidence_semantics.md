@@ -21,3 +21,7 @@ Baseline SHA: `d6b83313bb301e652ae82b8583d73d2aaa1d753e`
 ## Calculation semantics
 
 Price change and percentage change require aligned inputs. `unadjusted_return` is a price return only, not total return; dividends, splits, and corporate actions can change interpretation. Settlement comparisons require explicit spot/derivatives timing alignment.
+
+## Availability semantics
+
+AI-facing capability names in F1 are operation contracts, not callable Phase C tools. Underlying repository producers may exist and may be fixture-validated or implemented with caveats, but network-required producers remain disabled by default and require M8R-03D controlled execution authorization.

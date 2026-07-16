@@ -23,10 +23,13 @@ def main():
  if 'unadjusted; not total return' not in json.dumps(c): fail('unadjusted return semantic missing')
  for cap in c['capabilities']:
   if cap['maturity_status'] not in VALID: fail('bad maturity')
-  if cap['maturity_status']=='planned' and cap['runtime_available']: fail('planned runtime available')
+  if cap['maturity_status'] in {'planned','contract_only'} and cap.get('ai_facing_runtime_available'): fail('planned/contract-only ai operation executable')
+  if cap.get('ai_facing_runtime_available'): fail('F1 Phase C operation marked runtime available')
+  if cap.get('network_required') and not cap.get('authorization_required'): fail('network capability missing authorization requirement')
+  if cap.get('network_required') and cap.get('network_default_enabled') is not False: fail('network capability enabled by default')
   for t in cap['supported_timing_classes']:
    if t not in timing: fail(f'unknown timing {t}')
-  if cap['runtime_available']:
+  if cap.get('underlying_runtime_available'):
    for p in cap.get('internal_dependencies',[]):
     if not (ROOT/p).exists(): fail(f'missing dependency {p}')
  for row in m['intents']:
@@ -34,8 +37,24 @@ def main():
    if cid not in ids: fail(f'unknown capability {cid}')
   for t in row['timing_requirements']:
    if t not in timing: fail(f'unknown matrix timing {t}')
+ if (ROOT/'docs/ai/m8_ai_capability_contract.json').read_text(encoding='utf-8') != (SKILL/'assets/m8_ai_capability_contract.json').read_text(encoding='utf-8'): fail('embedded skill contract differs from authoritative contract')
  if c.get('raw_payload_exposure_allowed') is not False: fail('raw payload restriction missing')
  if c.get('recommended_next_task')!='M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION': fail('successor is not R2')
+ reg=json.load(open(ROOT/'docs/data_capabilities/m8_source_capability_registry.json'))
+ for surface_name, surface in [('root',reg),('active',reg.get('m8_active_consolidated_status',{})),('planning',reg.get('planning_state',{}))]:
+  if surface.get('implemented_through_track')!='M8R-03E-F1': fail(f'{surface_name} implemented track mismatch')
+  if surface.get('agent_skill_contract')!='implemented': fail(f'{surface_name} skill status mismatch')
+  if surface.get('ai_capability_guide')!='implemented': fail(f'{surface_name} guide status mismatch')
+  if surface.get('recommended_next_task')!='M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION': fail(f'{surface_name} successor mismatch')
+  if surface.get('registry_successor')!='M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION': fail(f'{surface_name} registry successor mismatch')
+ health=json.load(open(ROOT/'docs/data_capabilities/m8_repository_health_status.json'))
+ if health.get('implemented_through_track')!='M8R-03E-F1': fail('health implemented track mismatch')
+ if health.get('agent_skill_contract')!='implemented': fail('health skill status mismatch')
+ if health.get('ai_capability_guide')!='implemented': fail('health guide status mismatch')
+ if health.get('recommended_next_task')!='M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION': fail('health successor mismatch')
+ if health.get('registry_successor')!='M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION': fail('health registry successor mismatch')
+ old=reg.get('recommended_successor_after_m8r_03e')
+ if not (isinstance(old,dict) and old.get('status') in {'historical_superseded','superseded'}): fail('old M8R-03F successor is still active')
  active='\n'.join(p.read_text(encoding='utf-8') for p in [SKILL/'SKILL.md',SKILL/'references/capability_quick_guide.md',SKILL/'references/evidence_semantics.md',SKILL/'references/tool_selection_examples.md',SKILL/'references/current_limitations.md',ROOT/'docs/ai/M8_AI_CAPABILITY_QUICK_GUIDE.md'])
  for pat in PROHIB:
   if re.search(pat,active,re.I): fail(f'prohibited blanket policy {pat}')
