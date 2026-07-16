@@ -1,0 +1,31 @@
+{
+  "artifact_paths": {},
+  "bundle_artifact": null,
+  "completed_at_utc": "2026-07-16T01:30:05Z",
+  "issues": [
+    {
+      "blocking": true,
+      "code": "lifecycle_unsupported",
+      "target_id": "TWSE:1111"
+    },
+    {
+      "blocking": true,
+      "code": "unsupported_instrument",
+      "target_id": "TWSE:1234"
+    }
+  ],
+  "mode": "preflight",
+  "observation_count": 0,
+  "plan_id": "m8r03d-plan-4b519f00b2487668",
+  "request_hash": "dbffdbce8950ee535d5c69976833373175bdc42c4640f8c446dfb0fe19404e42",
+  "request_id": "m8r03c-snapshot",
+  "run_id": "blocked",
+  "schema_version": "m8r_03d_watchlist_execution_result.v1",
+  "source_execution_summary": {
+    "group_results": [],
+    "network_calls_performed": false
+  },
+  "started_at_utc": "2026-07-16T01:30:05Z",
+  "status": "blocked_preflight",
+  "target_results": []
+}

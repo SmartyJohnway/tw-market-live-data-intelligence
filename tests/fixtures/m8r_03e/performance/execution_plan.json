@@ -1,0 +1,149 @@
+{
+  "authorization_required": true,
+  "bundle_type": "performance",
+  "created_at_utc": "2026-07-16T01:30:05Z",
+  "issues": [],
+  "max_target_count": 10,
+  "network_required": true,
+  "plan_id": "m8r03d-plan-9cc2d3e8a1510b02",
+  "request_hash": "d0aa45c6a2692e7b572890c5c01a33e8d35f2d101f14e011d9085df5fa5275e4",
+  "request_id": "m8r03c-performance",
+  "schema_version": "m8r_03d_watchlist_execution_plan.v1",
+  "source_call_groups": [
+    {
+      "context_type": "official_eod_reference",
+      "history_window": {
+        "bounded": true,
+        "buffer_trading_days": 5,
+        "minimum_valid_closes": 21,
+        "requested_lookback_trading_days": 20
+      },
+      "network_required": true,
+      "source_family": "TWSE_OPENAPI",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317"
+      ]
+    }
+  ],
+  "target_order": [
+    "TWSE:2330",
+    "TWSE:2317"
+  ],
+  "targets": [
+    {
+      "blocking_issues": [],
+      "canonical_market": "listed",
+      "classification_execution_policy": null,
+      "classification_status": null,
+      "current_source_plan": {},
+      "eod_source_plan": {
+        "operation_class": "planned_network_fetch",
+        "route": "TWSE_OPENAPI",
+        "source_family": "TWSE_OPENAPI"
+      },
+      "execution_eligibility": null,
+      "execution_policy": "execution_allowed",
+      "expected_coverage": "usable",
+      "identity_status": "resolved",
+      "instrument_type": "equity",
+      "lifecycle_resolution_status": "resolved",
+      "lifecycle_state": "active",
+      "listing_status": "active",
+      "market": "TWSE",
+      "record_hash": null,
+      "record_id": null,
+      "requested_identity": {
+        "target_id": "TWSE:2330"
+      },
+      "resolution_caveats": [],
+      "resolution_evidence": [
+        {
+          "coverage_mode": null,
+          "provenance": null,
+          "source": "test"
+        }
+      ],
+      "resolution_status": "resolved",
+      "resolved_identity": {
+        "canonical_market": "listed",
+        "classification_status": null,
+        "execution_eligibility": null,
+        "execution_policy": "execution_allowed",
+        "instrument_type": "equity",
+        "lifecycle_resolution_status": "resolved",
+        "lifecycle_state": "active",
+        "listing_status": "active",
+        "market": "TWSE",
+        "record_hash": null,
+        "record_id": null,
+        "resolution_caveats": [],
+        "security_name": "台積電",
+        "snapshot_id": null,
+        "symbol": "2330",
+        "target_id": "TWSE:2330"
+      },
+      "security_code": "2330",
+      "security_name": "台積電",
+      "snapshot_id": null,
+      "target_id": "TWSE:2330"
+    },
+    {
+      "blocking_issues": [],
+      "canonical_market": "listed",
+      "classification_execution_policy": null,
+      "classification_status": null,
+      "current_source_plan": {},
+      "eod_source_plan": {
+        "operation_class": "planned_network_fetch",
+        "route": "TWSE_OPENAPI",
+        "source_family": "TWSE_OPENAPI"
+      },
+      "execution_eligibility": null,
+      "execution_policy": "execution_allowed",
+      "expected_coverage": "usable",
+      "identity_status": "resolved",
+      "instrument_type": "equity",
+      "lifecycle_resolution_status": "resolved",
+      "lifecycle_state": "active",
+      "listing_status": "active",
+      "market": "TWSE",
+      "record_hash": null,
+      "record_id": null,
+      "requested_identity": {
+        "target_id": "TWSE:2317"
+      },
+      "resolution_caveats": [],
+      "resolution_evidence": [
+        {
+          "coverage_mode": null,
+          "provenance": null,
+          "source": "test"
+        }
+      ],
+      "resolution_status": "resolved",
+      "resolved_identity": {
+        "canonical_market": "listed",
+        "classification_status": null,
+        "execution_eligibility": null,
+        "execution_policy": "execution_allowed",
+        "instrument_type": "equity",
+        "lifecycle_resolution_status": "resolved",
+        "lifecycle_state": "active",
+        "listing_status": "active",
+        "market": "TWSE",
+        "record_hash": null,
+        "record_id": null,
+        "resolution_caveats": [],
+        "security_name": "鴻海",
+        "snapshot_id": null,
+        "symbol": "2317",
+        "target_id": "TWSE:2317"
+      },
+      "security_code": "2317",
+      "security_name": "鴻海",
+      "snapshot_id": null,
+      "target_id": "TWSE:2317"
+    }
+  ]
+}

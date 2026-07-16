@@ -127,3 +127,5 @@ git diff --check
 ## M8R-03D-F1
 
 - [M8R-03D-F1 Verified Security-Master Classifier Snapshot Adapter](protocol/M8R_03D_F1_VERIFIED_SECURITY_MASTER_CLASSIFIER_SNAPSHOT_ADAPTER.md)
+
+- [M8R-03E Watchlist AI Context Package and Conversation Handoff](protocol/M8R_03E_WATCHLIST_AI_CONTEXT_PACKAGE_AND_CONVERSATION_HANDOFF.md)

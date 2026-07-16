@@ -1,0 +1,48 @@
+{
+  "artifact_paths": {},
+  "authorization_id": null,
+  "bundle_artifact": "artifacts/tmp_m8r03e_fixture/partial/watchlist_snapshot_bundle.json",
+  "completed_at_utc": "2026-07-16T09:20:27Z",
+  "issues": [],
+  "mode": "fixture",
+  "observation_count": 0,
+  "plan_id": "m8r03d-plan-b1555850bfe005d2",
+  "request_hash": "55ba085e64f970301e60464ceda45a581d87d82dc5458f0e8b456f5b013f0bd9",
+  "request_id": "m8r03c-snapshot",
+  "run_id": "allfail",
+  "schema_version": "m8r_03d_watchlist_execution_result.v1",
+  "source_execution_summary": {
+    "group_results": [
+      {
+        "source_family": "TWSE_MIS",
+        "status": "failed"
+      },
+      {
+        "source_family": "TWSE_OPENAPI",
+        "status": "failed"
+      }
+    ],
+    "network_calls_performed": false
+  },
+  "started_at_utc": "2026-07-16T01:30:05Z",
+  "status": "source_execution_failed",
+  "target_results": [
+    {
+      "source_family": "TWSE_MIS",
+      "status": "normalized",
+      "target_id": "TWSE:2330"
+    },
+    {
+      "row_count": 1,
+      "source_family": "TWSE_OPENAPI",
+      "status": "normalized",
+      "target_id": "TWSE:2330"
+    },
+    {
+      "row_count": 1,
+      "source_family": "TWSE_OPENAPI",
+      "status": "normalized",
+      "target_id": "TWSE:2317"
+    }
+  ]
+}

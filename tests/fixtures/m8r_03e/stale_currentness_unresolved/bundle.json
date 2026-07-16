@@ -1,0 +1,195 @@
+{
+  "bundle_id": "m8r03c-snapshot-d228ebafc3c36577",
+  "conversation_context": {
+    "original_user_text": "我的觀察清單現在怎麼樣？",
+    "scope_modes": [
+      "watchlist"
+    ]
+  },
+  "coverage": {
+    "requested_target_ids": [
+      "TWSE:2330",
+      "TWSE:2317"
+    ],
+    "targets": [
+      {
+        "coverage_state": "partial",
+        "missing_field_groups": [
+          "currentness"
+        ],
+        "present_field_groups": [
+          "resolved_identity",
+          "current_evidence",
+          "eod_reference"
+        ],
+        "reason_code": null,
+        "target_id": "TWSE:2330"
+      },
+      {
+        "coverage_state": "unavailable",
+        "missing_field_groups": [
+          "resolved_identity",
+          "current_evidence",
+          "currentness",
+          "eod_reference"
+        ],
+        "present_field_groups": [],
+        "reason_code": "identity_unresolved",
+        "target_id": "TWSE:2317"
+      }
+    ]
+  },
+  "derived_metrics": [],
+  "facts": [
+    {
+      "fact_type": "current_evidence",
+      "source_family": "TWSE_MIS",
+      "target_id": "TWSE:2330",
+      "timing_class": "liveish_intraday_snapshot",
+      "values": {
+        "close": 100,
+        "high": 102,
+        "latest_price": 100,
+        "low": 98,
+        "open": 99,
+        "volume": 1000
+      }
+    },
+    {
+      "fact_type": "eod_reference",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "values": {
+        "close": 99,
+        "high": 101,
+        "latest_price": 99,
+        "low": 97,
+        "open": 98,
+        "volume": 1000
+      }
+    }
+  ],
+  "generated_at_utc": "2026-07-16T01:30:05Z",
+  "issues": [],
+  "missing_evidence": [
+    {
+      "capability_id": "current_mis_observation",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "MIS observation unavailable",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": true,
+      "target_id": "TWSE:2317"
+    },
+    {
+      "capability_id": "official_eod_reference",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "EOD reference unavailable",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": false,
+      "target_id": "TWSE:2317"
+    },
+    {
+      "capability_id": "currentness_validation",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "stale_observation",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": false,
+      "target_id": "TWSE:2330"
+    }
+  ],
+  "request_id": "m8r03c-snapshot",
+  "resolution_assumptions": [],
+  "schema_version": "m8r_watchlist_snapshot_bundle.v1",
+  "source_summary": {
+    "TWSE_MIS": {
+      "observation_count": 1
+    },
+    "TWSE_OPENAPI": {
+      "observation_count": 1
+    }
+  },
+  "targets": [
+    {
+      "coverage": {
+        "coverage_state": "partial",
+        "missing_field_groups": [
+          "currentness"
+        ],
+        "present_field_groups": [
+          "resolved_identity",
+          "current_evidence",
+          "eod_reference"
+        ],
+        "reason_code": null,
+        "target_id": "TWSE:2330"
+      },
+      "current_evidence": {
+        "currentness": {
+          "status": "stale"
+        },
+        "facts": {
+          "close": 100,
+          "high": 102,
+          "latest_price": 100,
+          "low": 98,
+          "open": 99,
+          "volume": 1000
+        },
+        "retrieved_at_utc": "2026-07-16T01:30:05Z",
+        "source_family": "TWSE_MIS",
+        "source_timestamp": "2026-07-16T09:30:00+08:00",
+        "timing_class": "liveish_intraday_snapshot"
+      },
+      "eod_reference": {
+        "currentness": {
+          "status": "fresh"
+        },
+        "facts": {
+          "close": 99,
+          "high": 101,
+          "latest_price": 99,
+          "low": 97,
+          "open": 98,
+          "volume": 1000
+        },
+        "retrieved_at_utc": "2026-07-16T01:30:05Z",
+        "source_family": "TWSE_OPENAPI",
+        "timing_class": "official_eod",
+        "trade_date": "2026-07-15"
+      },
+      "issues": [],
+      "requested_identity": {
+        "target_id": "TWSE:2330"
+      },
+      "resolved_identity": {
+        "symbol": "2330",
+        "target_id": "TWSE:2330"
+      },
+      "target_id": "TWSE:2330"
+    },
+    {
+      "coverage": {
+        "coverage_state": "unavailable",
+        "missing_field_groups": [
+          "resolved_identity",
+          "current_evidence",
+          "currentness",
+          "eod_reference"
+        ],
+        "present_field_groups": [],
+        "reason_code": "identity_unresolved",
+        "target_id": "TWSE:2317"
+      },
+      "current_evidence": {},
+      "eod_reference": {},
+      "issues": [],
+      "requested_identity": {},
+      "resolved_identity": {},
+      "target_id": "TWSE:2317"
+    }
+  ]
+}

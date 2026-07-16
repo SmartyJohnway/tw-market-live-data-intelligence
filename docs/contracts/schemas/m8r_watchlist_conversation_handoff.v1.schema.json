@@ -1,0 +1,91 @@
+{
+  "$id": "m8r_watchlist_conversation_handoff.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "answerable_questions": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "citation_requirements": {
+      "type": "object"
+    },
+    "context_package_id": {
+      "type": "string"
+    },
+    "conversation_intent": {
+      "type": "object"
+    },
+    "follow_up_evidence_options": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "generated_at_utc": {
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T.*Z$",
+      "type": "string"
+    },
+    "handoff_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "handoff_id": {
+      "pattern": "^m8r03e-handoff-[0-9a-f]{16}$",
+      "type": "string"
+    },
+    "partially_answerable_questions": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "required_disclosures": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "response_constraints": {
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "m8r_watchlist_conversation_handoff.v1"
+    },
+    "target_order": {
+      "items": {
+        "pattern": "^(TWSE|TPEX):[A-Z0-9._-]{1,20}$",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "type": "array"
+    },
+    "unsupported_questions": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "handoff_id",
+    "generated_at_utc",
+    "context_package_id",
+    "conversation_intent",
+    "target_order",
+    "answerable_questions",
+    "partially_answerable_questions",
+    "unsupported_questions",
+    "required_disclosures",
+    "follow_up_evidence_options",
+    "response_constraints",
+    "citation_requirements",
+    "handoff_hash"
+  ],
+  "type": "object"
+}

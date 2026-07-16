@@ -1,0 +1,104 @@
+{
+  "$id": "m8r_watchlist_ai_fact_citation.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "caveats": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "citation_id": {
+      "pattern": "^cite-[0-9a-f]{20}$",
+      "type": "string"
+    },
+    "currentness_status": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evidence_status": {
+      "enum": [
+        "supported",
+        "supported_with_caveat",
+        "partial",
+        "unavailable",
+        "conflicted",
+        "stale",
+        "not_applicable"
+      ],
+      "type": "string"
+    },
+    "fact_path": {
+      "pattern": "^/",
+      "type": "string"
+    },
+    "fact_type": {
+      "type": "string"
+    },
+    "observed_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "retrieved_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema_version": {
+      "const": "m8r_watchlist_ai_fact_citation.v1"
+    },
+    "source_artifact_id": {
+      "type": "string"
+    },
+    "source_artifact_type": {
+      "enum": [
+        "verified_security_master_snapshot",
+        "normalized_observation",
+        "watchlist_bundle",
+        "execution_plan"
+      ],
+      "type": "string"
+    },
+    "source_family": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_path": {
+      "pattern": "^/",
+      "type": "string"
+    },
+    "target_id": {
+      "pattern": "^(TWSE|TPEX):[A-Z0-9._-]{1,20}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "value_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "citation_id",
+    "target_id",
+    "fact_path",
+    "fact_type",
+    "value_hash",
+    "source_artifact_type",
+    "source_artifact_id",
+    "source_path",
+    "evidence_status",
+    "caveats"
+  ],
+  "type": "object"
+}

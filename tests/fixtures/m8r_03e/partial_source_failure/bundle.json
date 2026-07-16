@@ -1,0 +1,241 @@
+{
+  "bundle_id": "m8r03c-snapshot-d228ebafc3c36577",
+  "conversation_context": {
+    "original_user_text": "我的觀察清單現在怎麼樣？",
+    "scope_modes": [
+      "watchlist"
+    ]
+  },
+  "coverage": {
+    "requested_target_ids": [
+      "TWSE:2330",
+      "TWSE:2317"
+    ],
+    "targets": [
+      {
+        "coverage_state": "usable",
+        "missing_field_groups": [],
+        "present_field_groups": [
+          "resolved_identity",
+          "current_evidence",
+          "currentness",
+          "eod_reference"
+        ],
+        "reason_code": null,
+        "target_id": "TWSE:2330"
+      },
+      {
+        "coverage_state": "partial",
+        "missing_field_groups": [
+          "current_evidence",
+          "currentness"
+        ],
+        "present_field_groups": [
+          "resolved_identity",
+          "eod_reference"
+        ],
+        "reason_code": null,
+        "target_id": "TWSE:2317"
+      }
+    ]
+  },
+  "derived_metrics": [],
+  "facts": [
+    {
+      "fact_type": "current_evidence",
+      "source_family": "TWSE_MIS",
+      "target_id": "TWSE:2330",
+      "timing_class": "liveish_intraday_snapshot",
+      "values": {
+        "high": 102,
+        "latest_price": 100,
+        "low": 98,
+        "open": 99,
+        "volume": 1000
+      }
+    },
+    {
+      "fact_type": "eod_reference",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "values": {
+        "close": "99",
+        "high": "101",
+        "low": "97",
+        "open": "98",
+        "trade_date": "2026-07-15",
+        "volume": 1000
+      }
+    },
+    {
+      "fact_type": "eod_reference",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "values": {
+        "close": "198",
+        "high": "200",
+        "low": "196",
+        "open": "197",
+        "trade_date": "2026-07-15",
+        "volume": 1000
+      }
+    }
+  ],
+  "generated_at_utc": "2026-07-16T01:30:05Z",
+  "issues": [],
+  "missing_evidence": [
+    {
+      "capability_id": "current_mis_observation",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "MIS observation unavailable",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": true,
+      "target_id": "TWSE:2317"
+    }
+  ],
+  "request_id": "m8r03c-snapshot",
+  "resolution_assumptions": [],
+  "schema_version": "m8r_watchlist_snapshot_bundle.v1",
+  "source_summary": {
+    "TWSE_MIS": {
+      "observation_count": 1
+    },
+    "TWSE_OPENAPI": {
+      "observation_count": 2
+    }
+  },
+  "targets": [
+    {
+      "coverage": {
+        "coverage_state": "usable",
+        "missing_field_groups": [],
+        "present_field_groups": [
+          "resolved_identity",
+          "current_evidence",
+          "currentness",
+          "eod_reference"
+        ],
+        "reason_code": null,
+        "target_id": "TWSE:2330"
+      },
+      "current_evidence": {
+        "currentness": {
+          "reason": "twse_mis_normalized",
+          "status": "fresh"
+        },
+        "facts": {
+          "high": 102,
+          "latest_price": 100,
+          "low": 98,
+          "open": 99,
+          "volume": 1000
+        },
+        "retrieved_at_utc": "2026-07-16T01:30:05Z",
+        "source_family": "TWSE_MIS",
+        "source_timestamp": "2026-07-16T01:30:00Z",
+        "timing_class": "liveish_intraday_snapshot"
+      },
+      "eod_reference": {
+        "currentness": {
+          "reason": "latest completed EOD reference",
+          "status": "official_completed_eod"
+        },
+        "facts": {
+          "close": "99",
+          "high": "101",
+          "low": "97",
+          "open": "98",
+          "trade_date": "2026-07-15",
+          "volume": 1000
+        },
+        "retrieved_at_utc": "2026-07-16T01:30:05Z",
+        "source_family": "TWSE_OPENAPI",
+        "timing_class": "official_eod",
+        "trade_date": "2026-07-15"
+      },
+      "issues": [],
+      "requested_identity": {
+        "target_id": "TWSE:2330"
+      },
+      "resolved_identity": {
+        "canonical_market": "listed",
+        "classification_status": null,
+        "execution_eligibility": null,
+        "execution_policy": "execution_allowed",
+        "instrument_type": "equity",
+        "lifecycle_resolution_status": "resolved",
+        "lifecycle_state": "active",
+        "listing_status": "active",
+        "market": "TWSE",
+        "record_hash": null,
+        "record_id": null,
+        "resolution_caveats": [],
+        "security_name": "台積電",
+        "snapshot_id": null,
+        "symbol": "2330",
+        "target_id": "TWSE:2330"
+      },
+      "target_id": "TWSE:2330"
+    },
+    {
+      "coverage": {
+        "coverage_state": "partial",
+        "missing_field_groups": [
+          "current_evidence",
+          "currentness"
+        ],
+        "present_field_groups": [
+          "resolved_identity",
+          "eod_reference"
+        ],
+        "reason_code": null,
+        "target_id": "TWSE:2317"
+      },
+      "current_evidence": {},
+      "eod_reference": {
+        "currentness": {
+          "reason": "latest completed EOD reference",
+          "status": "official_completed_eod"
+        },
+        "facts": {
+          "close": "198",
+          "high": "200",
+          "low": "196",
+          "open": "197",
+          "trade_date": "2026-07-15",
+          "volume": 1000
+        },
+        "retrieved_at_utc": "2026-07-16T01:30:05Z",
+        "source_family": "TWSE_OPENAPI",
+        "timing_class": "official_eod",
+        "trade_date": "2026-07-15"
+      },
+      "issues": [],
+      "requested_identity": {
+        "target_id": "TWSE:2317"
+      },
+      "resolved_identity": {
+        "canonical_market": "listed",
+        "classification_status": null,
+        "execution_eligibility": null,
+        "execution_policy": "execution_allowed",
+        "instrument_type": "equity",
+        "lifecycle_resolution_status": "resolved",
+        "lifecycle_state": "active",
+        "listing_status": "active",
+        "market": "TWSE",
+        "record_hash": null,
+        "record_id": null,
+        "resolution_caveats": [],
+        "security_name": "鴻海",
+        "snapshot_id": null,
+        "symbol": "2317",
+        "target_id": "TWSE:2317"
+      },
+      "target_id": "TWSE:2317"
+    }
+  ]
+}

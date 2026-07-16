@@ -1,0 +1,114 @@
+{
+  "authorization_required": true,
+  "bundle_type": "snapshot",
+  "created_at_utc": "2026-07-16T01:30:05Z",
+  "issues": [
+    {
+      "blocking": true,
+      "code": "lifecycle_unsupported",
+      "target_id": "TWSE:1111"
+    },
+    {
+      "blocking": true,
+      "code": "unsupported_instrument",
+      "target_id": "TWSE:1234"
+    }
+  ],
+  "max_target_count": 10,
+  "network_required": false,
+  "plan_id": "m8r03d-plan-4b519f00b2487668",
+  "request_hash": "dbffdbce8950ee535d5c69976833373175bdc42c4640f8c446dfb0fe19404e42",
+  "request_id": "m8r03c-snapshot",
+  "schema_version": "m8r_03d_watchlist_execution_plan.v1",
+  "source_call_groups": [],
+  "target_order": [
+    "TWSE:1111",
+    "TWSE:1234"
+  ],
+  "targets": [
+    {
+      "blocking_issues": [
+        {
+          "blocking": true,
+          "code": "lifecycle_unsupported",
+          "target_id": "TWSE:1111"
+        }
+      ],
+      "canonical_market": "listed",
+      "classification_execution_policy": null,
+      "classification_status": null,
+      "current_source_plan": {},
+      "eod_source_plan": {},
+      "execution_eligibility": null,
+      "execution_policy": "execution_allowed",
+      "expected_coverage": "unavailable",
+      "identity_status": "lifecycle_unsupported",
+      "instrument_type": "equity",
+      "lifecycle_resolution_status": "resolved",
+      "lifecycle_state": "inactive",
+      "listing_status": "delisted",
+      "market": "TWSE",
+      "record_hash": null,
+      "record_id": null,
+      "requested_identity": {
+        "target_id": "TWSE:1111"
+      },
+      "resolution_caveats": [],
+      "resolution_evidence": [
+        {
+          "coverage_mode": null,
+          "provenance": null,
+          "source": "test"
+        }
+      ],
+      "resolution_status": "lifecycle_unsupported",
+      "resolved_identity": {},
+      "security_code": "1111",
+      "security_name": null,
+      "snapshot_id": null,
+      "target_id": "TWSE:1111"
+    },
+    {
+      "blocking_issues": [
+        {
+          "blocking": true,
+          "code": "unsupported_instrument",
+          "target_id": "TWSE:1234"
+        }
+      ],
+      "canonical_market": "listed",
+      "classification_execution_policy": null,
+      "classification_status": null,
+      "current_source_plan": {},
+      "eod_source_plan": {},
+      "execution_eligibility": null,
+      "execution_policy": "execution_allowed",
+      "expected_coverage": "unavailable",
+      "identity_status": "unsupported_instrument",
+      "instrument_type": "warrant",
+      "lifecycle_resolution_status": "resolved",
+      "lifecycle_state": "active",
+      "listing_status": "active",
+      "market": "TWSE",
+      "record_hash": null,
+      "record_id": null,
+      "requested_identity": {
+        "target_id": "TWSE:1234"
+      },
+      "resolution_caveats": [],
+      "resolution_evidence": [
+        {
+          "coverage_mode": null,
+          "provenance": null,
+          "source": "test"
+        }
+      ],
+      "resolution_status": "unsupported_instrument",
+      "resolved_identity": {},
+      "security_code": "1234",
+      "security_name": null,
+      "snapshot_id": null,
+      "target_id": "TWSE:1234"
+    }
+  ]
+}

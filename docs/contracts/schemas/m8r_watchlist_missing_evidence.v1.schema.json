@@ -1,0 +1,94 @@
+{
+  "$id": "m8r_watchlist_missing_evidence.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blocking": {
+      "type": "boolean"
+    },
+    "category": {
+      "enum": [
+        "identity",
+        "current_observation",
+        "currentness_validation",
+        "official_eod_reference",
+        "performance",
+        "history",
+        "identity_resolution",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "detail": {
+      "type": "object"
+    },
+    "missing_evidence_id": {
+      "pattern": "^missing-[0-9a-f]{20}$",
+      "type": "string"
+    },
+    "reason_code": {
+      "enum": [
+        "identity_unresolved",
+        "identity_conflict",
+        "market_mismatch",
+        "unsupported_instrument",
+        "lifecycle_unsupported",
+        "fixture_observation_only_rejected",
+        "source_execution_failed",
+        "source_identity_mismatch",
+        "currentness_unresolved",
+        "stale_observation",
+        "insufficient_history",
+        "artifact_write_failed",
+        "evidence_not_requested",
+        "MIS observation unavailable",
+        "EOD reference unavailable",
+        "no_usable_source_observation",
+        "context_budget_omitted"
+      ],
+      "type": "string"
+    },
+    "recoverability": {
+      "enum": [
+        "retry_with_new_authorization",
+        "requires_new_source",
+        "not_recoverable_in_scope"
+      ],
+      "type": "string"
+    },
+    "related_citation_ids": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "m8r_watchlist_missing_evidence.v1"
+    },
+    "source_family": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "target_id": {
+      "pattern": "^(TWSE|TPEX):[A-Z0-9._-]{1,20}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "missing_evidence_id",
+    "target_id",
+    "category",
+    "reason_code",
+    "blocking",
+    "recoverability",
+    "detail",
+    "related_citation_ids"
+  ],
+  "type": "object"
+}
