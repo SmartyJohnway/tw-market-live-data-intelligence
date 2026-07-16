@@ -4,12 +4,16 @@ from __future__ import annotations
 import argparse
 import json
 import platform
-import resource
 import subprocess
 import sys
 import time
 from pathlib import Path
 from typing import Any
+
+try:
+    import resource as _resource
+except ImportError:  # pragma: no cover - exercised by monkeypatch in tests
+    _resource = None
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -121,6 +125,16 @@ SCENARIOS = [
     },
 ]
 
+
+
+def _peak_memory() -> dict[str, Any]:
+    if _resource is None:
+        return {"status": "unavailable_on_platform", "value_kb": None, "source": None}
+    return {
+        "status": "available",
+        "value_kb": int(_resource.getrusage(_resource.RUSAGE_SELF).ru_maxrss),
+        "source": "resource.getrusage.ru_maxrss",
+    }
 
 def _load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -314,7 +328,7 @@ def build_baseline() -> dict[str, Any]:
             "dependency_free_beyond_repository": True,
             "network": False,
             "timing_source": "time.perf_counter_ns",
-            "peak_memory_source": "resource.getrusage.ru_maxrss",
+            "peak_memory": _peak_memory(),
         },
         "required_scenarios": REQUIRED_SCENARIO_IDS,
         "scenarios": scenarios,
@@ -326,7 +340,7 @@ def build_baseline() -> dict[str, Any]:
             "max_serialized_bytes": max(s["serialized_bytes"] for s in scenarios),
             "max_citation_count": max(s["citation_count"] for s in scenarios),
             "max_missing_evidence_count": max(s["missing_evidence_count"] for s in scenarios),
-            "peak_memory_kb": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
+            "peak_memory": _peak_memory(),
             "production_performance_readiness_claimed": False,
             "observation": "R1 reproducible baseline only; R4 owns optimization and scalability hardening.",
         },

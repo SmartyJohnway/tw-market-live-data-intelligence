@@ -124,7 +124,7 @@
     {
       "command": "pytest tests/unit/test_m8*.py -q",
       "status": "pass",
-      "summary": "589 passed"
+      "summary": "592 passed"
     },
     {
       "command": "pytest tests/unit/test_m8r_01*.py -q",
@@ -159,7 +159,7 @@
     {
       "command": "pytest tests/unit/test_m8r_03e*.py -q",
       "status": "pass",
-      "summary": "49 passed"
+      "summary": "52 passed"
     },
     {
       "command": "python scripts/run_m8r_03e_performance_baseline.py --verify-existing docs/quality/m8_performance_baseline.json",

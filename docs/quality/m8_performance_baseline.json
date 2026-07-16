@@ -6,13 +6,17 @@
   "measurement_environment": {
     "dependency_free_beyond_repository": true,
     "network": false,
-    "peak_memory_source": "resource.getrusage.ru_maxrss",
+    "peak_memory": {
+      "source": "resource.getrusage.ru_maxrss",
+      "status": "available",
+      "value_kb": 27904
+    },
     "platform": "Linux-6.12.47-x86_64-with-glibc2.39",
     "python": "3.13.13",
     "timing_source": "time.perf_counter_ns"
   },
   "network_execution_used": false,
-  "repository_head_sha": "a038bcb5766d595aa0aab70919707b536876151b",
+  "repository_head_sha": "9ad2bc82d641c9a0db29c35e16bc4e356f0a7bf9",
   "required_scenarios": [
     "1_target_snapshot",
     "10_target_snapshot",
@@ -35,7 +39,7 @@
         "validate_watchlist_ai_context_manifest"
       ],
       "budget_status": "satisfied",
-      "build_time_ms": 17.684,
+      "build_time_ms": 16.122,
       "citation_count": 27,
       "context_policy": {},
       "coverage_status": "complete",
@@ -56,7 +60,7 @@
       "target_count": 1,
       "valid": true,
       "validation_issue_count": 0,
-      "validation_time_ms": 11.348,
+      "validation_time_ms": 11.154,
       "workload_mode": "single_valid_package_truncated_to_first_target"
     },
     {
@@ -69,18 +73,18 @@
         "validate_watchlist_ai_context_manifest"
       ],
       "budget_status": "satisfied",
-      "build_time_ms": 130.273,
+      "build_time_ms": 130.376,
       "citation_count": 270,
       "context_policy": {},
       "coverage_status": "complete",
       "fixture_case": "complete_snapshot",
       "growth_ratio_vs_one_target": {
-        "build_time": 7.367,
+        "build_time": 8.087,
         "citation_count": 10.0,
         "missing_evidence_count": 0.0,
         "serialized_bytes": 8.676,
         "target_count": 10.0,
-        "validation_time": 8.321
+        "validation_time": 8.681
       },
       "missing_evidence_count": 0,
       "repeat_count": 5,
@@ -90,7 +94,7 @@
       "target_count": 10,
       "valid": true,
       "validation_issue_count": 0,
-      "validation_time_ms": 94.427,
+      "validation_time_ms": 96.833,
       "workload_mode": "aggregate_valid_packages"
     },
     {
@@ -103,18 +107,18 @@
         "validate_watchlist_ai_context_manifest"
       ],
       "budget_status": "satisfied",
-      "build_time_ms": 621.347,
+      "build_time_ms": 655.381,
       "citation_count": 1350,
       "context_policy": {},
       "coverage_status": "complete",
       "fixture_case": "complete_snapshot",
       "growth_ratio_vs_one_target": {
-        "build_time": 35.136,
+        "build_time": 40.651,
         "citation_count": 50.0,
         "missing_evidence_count": 0.0,
         "serialized_bytes": 43.378,
         "target_count": 50.0,
-        "validation_time": 40.702
+        "validation_time": 43.548
       },
       "missing_evidence_count": 0,
       "repeat_count": 25,
@@ -124,7 +128,7 @@
       "target_count": 50,
       "valid": true,
       "validation_issue_count": 0,
-      "validation_time_ms": 461.884,
+      "validation_time_ms": 485.739,
       "workload_mode": "aggregate_valid_packages"
     },
     {
@@ -137,18 +141,18 @@
         "validate_watchlist_ai_context_manifest"
       ],
       "budget_status": "satisfied",
-      "build_time_ms": 1312.735,
+      "build_time_ms": 1310.657,
       "citation_count": 2700,
       "context_policy": {},
       "coverage_status": "complete",
       "fixture_case": "complete_snapshot",
       "growth_ratio_vs_one_target": {
-        "build_time": 74.233,
+        "build_time": 81.296,
         "citation_count": 100.0,
         "missing_evidence_count": 0.0,
         "serialized_bytes": 86.755,
         "target_count": 100.0,
-        "validation_time": 83.583
+        "validation_time": 87.092
       },
       "missing_evidence_count": 0,
       "repeat_count": 50,
@@ -158,7 +162,7 @@
       "target_count": 100,
       "valid": true,
       "validation_issue_count": 0,
-      "validation_time_ms": 948.499,
+      "validation_time_ms": 971.424,
       "workload_mode": "aggregate_valid_packages_100_targets_schema_safe"
     },
     {
@@ -171,7 +175,7 @@
         "validate_watchlist_ai_context_manifest"
       ],
       "budget_status": "satisfied",
-      "build_time_ms": 273.792,
+      "build_time_ms": 260.943,
       "citation_count": 540,
       "context_policy": {
         "max_citations_per_target": 40,
@@ -180,12 +184,12 @@
       "coverage_status": "complete",
       "fixture_case": "context_budget_pressure",
       "growth_ratio_vs_one_target": {
-        "build_time": 15.482,
+        "build_time": 16.186,
         "citation_count": 20.0,
         "missing_evidence_count": 0.0,
         "serialized_bytes": 17.351,
         "target_count": 20.0,
-        "validation_time": 18.381
+        "validation_time": 17.188
       },
       "missing_evidence_count": 0,
       "repeat_count": 10,
@@ -195,7 +199,7 @@
       "target_count": 20,
       "valid": true,
       "validation_issue_count": 0,
-      "validation_time_ms": 208.588,
+      "validation_time_ms": 191.72,
       "workload_mode": "aggregate_valid_packages_high_citation_fixture"
     },
     {
@@ -208,7 +212,7 @@
         "validate_watchlist_ai_context_manifest"
       ],
       "budget_status": "satisfied",
-      "build_time_ms": 392.978,
+      "build_time_ms": 379.731,
       "citation_count": 550,
       "context_policy": {
         "max_missing_evidence_entries": 1000,
@@ -217,12 +221,12 @@
       "coverage_status": "failed",
       "fixture_case": "all_source_failure",
       "growth_ratio_vs_one_target": {
-        "build_time": 22.222,
+        "build_time": 23.554,
         "citation_count": 20.37,
         "missing_evidence_count": 100.0,
         "serialized_bytes": 26.97,
         "target_count": 50.0,
-        "validation_time": 24.166
+        "validation_time": 24.695
       },
       "missing_evidence_count": 100,
       "repeat_count": 25,
@@ -232,7 +236,7 @@
       "target_count": 50,
       "valid": true,
       "validation_issue_count": 0,
-      "validation_time_ms": 274.235,
+      "validation_time_ms": 275.45,
       "workload_mode": "aggregate_valid_packages_missing_evidence_fixture"
     },
     {
@@ -245,18 +249,18 @@
         "validate_watchlist_ai_context_manifest"
       ],
       "budget_status": "satisfied",
-      "build_time_ms": 26.169,
+      "build_time_ms": 25.139,
       "citation_count": 54,
       "context_policy": {},
       "coverage_status": "complete",
       "fixture_case": "complete_snapshot",
       "growth_ratio_vs_one_target": {
-        "build_time": 1.48,
+        "build_time": 1.559,
         "citation_count": 2.0,
         "missing_evidence_count": 0.0,
         "serialized_bytes": 1.735,
         "target_count": 2.0,
-        "validation_time": 1.682
+        "validation_time": 1.654
       },
       "missing_evidence_count": 0,
       "repeat_count": 1,
@@ -266,7 +270,7 @@
       "target_count": 2,
       "valid": true,
       "validation_issue_count": 0,
-      "validation_time_ms": 19.09,
+      "validation_time_ms": 18.452,
       "workload_mode": "single_valid_package"
     },
     {
@@ -279,18 +283,18 @@
         "validate_watchlist_ai_context_manifest"
       ],
       "budget_status": "satisfied",
-      "build_time_ms": 29.676,
+      "build_time_ms": 29.899,
       "citation_count": 32,
       "context_policy": {},
       "coverage_status": "partial",
       "fixture_case": "performance",
       "growth_ratio_vs_one_target": {
-        "build_time": 1.678,
+        "build_time": 1.855,
         "citation_count": 1.185,
         "missing_evidence_count": 0.0,
         "serialized_bytes": 1.171,
         "target_count": 2.0,
-        "validation_time": 1.34
+        "validation_time": 1.438
       },
       "missing_evidence_count": 0,
       "repeat_count": 1,
@@ -300,7 +304,7 @@
       "target_count": 2,
       "valid": true,
       "validation_issue_count": 0,
-      "validation_time_ms": 15.205,
+      "validation_time_ms": 16.043,
       "workload_mode": "single_valid_performance_package"
     },
     {
@@ -313,18 +317,18 @@
         "validate_watchlist_ai_context_manifest"
       ],
       "budget_status": "satisfied",
-      "build_time_ms": 23.534,
+      "build_time_ms": 21.867,
       "citation_count": 45,
       "context_policy": {},
       "coverage_status": "partial",
       "fixture_case": "partial_source_failure",
       "growth_ratio_vs_one_target": {
-        "build_time": 1.331,
+        "build_time": 1.356,
         "citation_count": 1.667,
         "missing_evidence_count": 1.0,
         "serialized_bytes": 1.554,
         "target_count": 2.0,
-        "validation_time": 1.449
+        "validation_time": 1.608
       },
       "missing_evidence_count": 1,
       "repeat_count": 1,
@@ -334,20 +338,24 @@
       "target_count": 2,
       "valid": true,
       "validation_issue_count": 0,
-      "validation_time_ms": 16.441,
+      "validation_time_ms": 17.935,
       "workload_mode": "single_valid_partial_failure_package"
     }
   ],
   "schema_version": "m8_performance_baseline.v2",
   "summary": {
     "all_valid": true,
-    "max_build_time_ms": 1312.735,
+    "max_build_time_ms": 1310.657,
     "max_citation_count": 2700,
     "max_missing_evidence_count": 100,
     "max_serialized_bytes": 2163850,
-    "max_validation_time_ms": 948.499,
+    "max_validation_time_ms": 971.424,
     "observation": "R1 reproducible baseline only; R4 owns optimization and scalability hardening.",
-    "peak_memory_kb": 27928,
+    "peak_memory": {
+      "source": "resource.getrusage.ru_maxrss",
+      "status": "available",
+      "value_kb": 27904
+    },
     "production_performance_readiness_claimed": false,
     "scenario_count": 9
   }

@@ -189,3 +189,40 @@ def test_hundred_target_workload_mode_is_explicit_and_real_pipeline():
     assert hundred["workload_mode"] == "aggregate_valid_packages_100_targets_schema_safe"
     assert hundred["scenario_construction_method"].startswith("repeat checked-in M8R-03E fixture")
     assert hundred["valid"] is True
+
+
+def test_performance_runner_peak_memory_optional(monkeypatch):
+    import scripts.run_m8r_03e_performance_baseline as runner
+    monkeypatch.setattr(runner, "_resource", None)
+    memory = runner._peak_memory()
+    assert memory == {"status": "unavailable_on_platform", "value_kb": None, "source": None}
+
+
+def test_performance_runner_generates_without_resource(monkeypatch):
+    import scripts.run_m8r_03e_performance_baseline as runner
+    monkeypatch.setattr(runner, "_resource", None)
+    baseline = runner.build_baseline()
+    assert baseline["measurement_environment"]["peak_memory"]["status"] == "unavailable_on_platform"
+    assert baseline["summary"]["peak_memory"]["value_kb"] is None
+    assert baseline["network_execution_used"] is False
+    assert set(baseline["required_scenarios"]) == {s["scenario_id"] for s in baseline["scenarios"]}
+    assert all(s["valid"] for s in baseline["scenarios"])
+
+
+def test_performance_runner_verify_ignores_platform_memory_values(tmp_path):
+    import scripts.run_m8r_03e_performance_baseline as runner
+    baseline = load("docs/quality/m8_performance_baseline.json")
+    baseline["measurement_environment"]["peak_memory"] = {
+        "status": "unavailable_on_platform",
+        "value_kb": None,
+        "source": None,
+    }
+    baseline["summary"]["peak_memory"] = {
+        "status": "unavailable_on_platform",
+        "value_kb": None,
+        "source": None,
+    }
+    path = tmp_path / "baseline.json"
+    path.write_text(json.dumps(baseline, sort_keys=True), encoding="utf-8")
+    ok, issues = runner.verify_existing(path)
+    assert ok, issues
