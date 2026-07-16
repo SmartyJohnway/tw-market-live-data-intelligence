@@ -14,9 +14,9 @@ The M8R-03C bundle builders remain source-agnostic. Network execution is confine
 
 Authorization schema: `m8r_03d_watchlist_execution_authorization.v1`.
 
-The authorization is bound to the canonical SHA-256 hash of the validated evidence request JSON using sorted-key compact JSON. It is also bounded by bundle type, target IDs, source families, maximum target count, expiry, and safety flags. Required safety flags are: `network_execution_allowed=true`, `one_shot_only=true`, `polling_allowed=false`, `scheduler_allowed=false`, `persistent_storage_allowed=false`, and `raw_payload_retention_allowed=false`.
+The authorization is bound to the canonical SHA-256 hash of the validated evidence request JSON using sorted-key compact JSON. It also requires a non-empty `authorization_id` and `one_shot_nonce`, and is bounded by bundle type, non-empty target IDs, source families, maximum target count, expiry, and safety flags. Required safety flags are: `network_execution_allowed=true`, `one_shot_only=true`, `polling_allowed=false`, `scheduler_allowed=false`, `persistent_storage_allowed=false`, and `raw_payload_retention_allowed=false`.
 
-An authorization for one request hash cannot execute a modified request. Expired authorizations, unauthorized targets, unauthorized sources, unauthorized bundle types, polling/scheduler flags, and raw-retention permission are rejected before controlled execution.
+An authorization for one request hash cannot execute a modified request. Expired authorizations, malformed timestamps, empty or duplicate authorization arrays, unknown authorization fields, unauthorized targets, unauthorized sources, unauthorized bundle types, polling/scheduler flags, and raw-retention permission are rejected before controlled execution. Execute mode atomically claims the authorization/nonce in a filesystem-backed consumption receipt before source calls; a second use fails with `authorization_replayed`. Preflight and fixture modes do not consume authorization.
 
 ## Execution modes
 
@@ -36,9 +36,9 @@ TPEx/OTC current observations use the already-approved TWSE MIS OTC route (`otc_
 
 ## Identity and route resolution
 
-Targets are retained in request order. Supported IDs are explicit `TWSE:{code}` and `TPEX:{code}` watchlist IDs from the M8R-03C request. TWSE targets plan `TWSE_MIS` current route `tse_{symbol}.tw` and `TWSE_OPENAPI` EOD. TPEx targets plan `TWSE_MIS` current route `otc_{symbol}.tw` and `TPEX_OPENAPI` EOD.
+Targets are retained in request order. Supported IDs are explicit `TWSE:{code}` and `TPEX:{code}` watchlist IDs from the M8R-03C request, but the prefix is not treated as authoritative identity. Planning resolves each target through the governed security-master/classifier path into `target_id`, `security_code`, `security_name`, `canonical_market`, `instrument_type`, `listing_status`, `lifecycle_state`, `resolution_status`, and `resolution_evidence`. TWSE targets plan `TWSE_MIS` current route `tse_{symbol}.tw` and `TWSE_OPENAPI` EOD. TPEx targets plan `TWSE_MIS` current route `otc_{symbol}.tw` and `TPEX_OPENAPI` EOD.
 
-Unresolved identities remain in the execution plan and final bundle path; no source calls are planned for them, and coverage is unavailable with `identity_unresolved` when no normalized observation exists.
+Unknown identities remain target-local when other targets are valid; no source calls are planned for them. Market-prefix conflicts become `market_mismatch`, inactive securities become `lifecycle_unsupported`, unsupported instruments become `unsupported_instrument`, and these blocking issues stop fixture and execute modes before source invocation.
 
 ## Safe-field normalization
 
@@ -58,7 +58,7 @@ The plan records bounded history needs for performance requests. A 20-trading-da
 
 ## Partial coverage behavior
 
-Per-target source failures do not remove other targets. The execution result uses `success_with_partial_coverage` when bundle validation succeeds but at least one target has partial or unavailable coverage.
+Per-target and per-source failures do not remove other targets. Execute mode records each source call group with source family, target IDs, start/completion timestamps, status, observation count, and reason code. If one group fails, other authorized groups continue and bundles are built from successful observations. If all source groups fail and no observations are retained, the result is `source_execution_failed`; otherwise partial evidence returns `success_with_partial_coverage`. Source identity is checked against the planned security code and documented market aliases before normalization; mismatches fail target/source closed with `source_identity_mismatch`.
 
 ## Artifact retention
 
@@ -78,7 +78,7 @@ Controlled live validation requires `--mode execute` and a valid authorization J
 
 ## Controlled live validation procedure
 
-Live validation is manual, one-shot, and outside default CI. The operator must prepare an authorization with the exact canonical request hash, authorized source families, authorized targets, max target count, expiry, and all safety flags. No live validation was executed in this task because no explicit authorization was supplied.
+Live validation is manual, one-shot, and outside default CI. The operator must prepare an authorization with the exact canonical request hash, authorization ID, one-shot nonce, authorized source families, authorized targets, max target count, expiry, and all safety flags. A failed live execution consumes the nonce after successful validation and atomic claim; retry requires a new authorization/nonce so replay cannot silently repeat network calls. No live validation was executed in this task because no explicit authorization was supplied.
 
 ## Known caveats
 

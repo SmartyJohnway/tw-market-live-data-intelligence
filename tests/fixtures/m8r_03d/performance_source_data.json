@@ -1,598 +1,640 @@
 {
   "targets": {
-    "TWSE:2330": {
-      "TWSE_OPENAPI": [
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-10",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "99",
-            "high": "101",
-            "low": "98",
-            "close": "100"
-          },
-          "activity": {
-            "trade_volume": 1000
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-11",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "100",
-            "high": "102",
-            "low": "99",
-            "close": "101"
-          },
-          "activity": {
-            "trade_volume": 1001
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-12",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "101",
-            "high": "103",
-            "low": "100",
-            "close": "102"
-          },
-          "activity": {
-            "trade_volume": 1002
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-13",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "102",
-            "high": "104",
-            "low": "101",
-            "close": "103"
-          },
-          "activity": {
-            "trade_volume": 1003
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-14",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "103",
-            "high": "105",
-            "low": "102",
-            "close": "104"
-          },
-          "activity": {
-            "trade_volume": 1004
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-15",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "104",
-            "high": "106",
-            "low": "103",
-            "close": "105"
-          },
-          "activity": {
-            "trade_volume": 1005
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-16",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "105",
-            "high": "107",
-            "low": "104",
-            "close": "106"
-          },
-          "activity": {
-            "trade_volume": 1006
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-17",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "106",
-            "high": "108",
-            "low": "105",
-            "close": "107"
-          },
-          "activity": {
-            "trade_volume": 1007
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-18",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "107",
-            "high": "109",
-            "low": "106",
-            "close": "108"
-          },
-          "activity": {
-            "trade_volume": 1008
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-19",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "108",
-            "high": "110",
-            "low": "107",
-            "close": "109"
-          },
-          "activity": {
-            "trade_volume": 1009
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-20",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "109",
-            "high": "111",
-            "low": "108",
-            "close": "110"
-          },
-          "activity": {
-            "trade_volume": 1010
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-21",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "110",
-            "high": "112",
-            "low": "109",
-            "close": "111"
-          },
-          "activity": {
-            "trade_volume": 1011
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-22",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "111",
-            "high": "113",
-            "low": "110",
-            "close": "112"
-          },
-          "activity": {
-            "trade_volume": 1012
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-23",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "112",
-            "high": "114",
-            "low": "111",
-            "close": "113"
-          },
-          "activity": {
-            "trade_volume": 1013
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-24",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "113",
-            "high": "115",
-            "low": "112",
-            "close": "114"
-          },
-          "activity": {
-            "trade_volume": 1014
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-25",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "114",
-            "high": "116",
-            "low": "113",
-            "close": "115"
-          },
-          "activity": {
-            "trade_volume": 1015
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-26",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "115",
-            "high": "117",
-            "low": "114",
-            "close": "116"
-          },
-          "activity": {
-            "trade_volume": 1016
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-27",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "116",
-            "high": "118",
-            "low": "115",
-            "close": "117"
-          },
-          "activity": {
-            "trade_volume": 1017
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-28",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "117",
-            "high": "119",
-            "low": "116",
-            "close": "118"
-          },
-          "activity": {
-            "trade_volume": 1018
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-29",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "118",
-            "high": "120",
-            "low": "117",
-            "close": "119"
-          },
-          "activity": {
-            "trade_volume": 1019
-          }
-        },
-        {
-          "symbol": "2330",
-          "trade_date": "2026-06-30",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "119",
-            "high": "121",
-            "low": "118",
-            "close": "120"
-          },
-          "activity": {
-            "trade_volume": 1020
-          }
-        }
-      ]
-    },
     "TWSE:2317": {
       "TWSE_OPENAPI": [
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-10",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "199",
-            "high": "201",
-            "low": "198",
-            "close": "200"
-          },
           "activity": {
             "trade_volume": 1000
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "200",
+            "high": "201",
+            "low": "198",
+            "open": "199"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-10"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-11",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "200",
-            "high": "202",
-            "low": "199",
-            "close": "201"
-          },
           "activity": {
             "trade_volume": 1001
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "201",
+            "high": "202",
+            "low": "199",
+            "open": "200"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-11"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-12",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "201",
-            "high": "203",
-            "low": "200",
-            "close": "202"
-          },
           "activity": {
             "trade_volume": 1002
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "202",
+            "high": "203",
+            "low": "200",
+            "open": "201"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-12"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-13",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "202",
-            "high": "204",
-            "low": "201",
-            "close": "203"
-          },
           "activity": {
             "trade_volume": 1003
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "203",
+            "high": "204",
+            "low": "201",
+            "open": "202"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-13"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-14",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "203",
-            "high": "205",
-            "low": "202",
-            "close": "204"
-          },
           "activity": {
             "trade_volume": 1004
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "204",
+            "high": "205",
+            "low": "202",
+            "open": "203"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-14"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-15",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "204",
-            "high": "206",
-            "low": "203",
-            "close": "205"
-          },
           "activity": {
             "trade_volume": 1005
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "205",
+            "high": "206",
+            "low": "203",
+            "open": "204"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-15"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-16",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "205",
-            "high": "207",
-            "low": "204",
-            "close": "206"
-          },
           "activity": {
             "trade_volume": 1006
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "206",
+            "high": "207",
+            "low": "204",
+            "open": "205"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-16"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-17",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "206",
-            "high": "208",
-            "low": "205",
-            "close": "207"
-          },
           "activity": {
             "trade_volume": 1007
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "207",
+            "high": "208",
+            "low": "205",
+            "open": "206"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-17"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-18",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "207",
-            "high": "209",
-            "low": "206",
-            "close": "208"
-          },
           "activity": {
             "trade_volume": 1008
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "208",
+            "high": "209",
+            "low": "206",
+            "open": "207"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-18"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-19",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "208",
-            "high": "210",
-            "low": "207",
-            "close": "209"
-          },
           "activity": {
             "trade_volume": 1009
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "209",
+            "high": "210",
+            "low": "207",
+            "open": "208"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-19"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-20",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "209",
-            "high": "211",
-            "low": "208",
-            "close": "210"
-          },
           "activity": {
             "trade_volume": 1010
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "210",
+            "high": "211",
+            "low": "208",
+            "open": "209"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-20"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-21",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "210",
-            "high": "212",
-            "low": "209",
-            "close": "211"
-          },
           "activity": {
             "trade_volume": 1011
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "211",
+            "high": "212",
+            "low": "209",
+            "open": "210"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-21"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-22",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "211",
-            "high": "213",
-            "low": "210",
-            "close": "212"
-          },
           "activity": {
             "trade_volume": 1012
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "212",
+            "high": "213",
+            "low": "210",
+            "open": "211"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-22"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-23",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "212",
-            "high": "214",
-            "low": "211",
-            "close": "213"
-          },
           "activity": {
             "trade_volume": 1013
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "213",
+            "high": "214",
+            "low": "211",
+            "open": "212"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-23"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-24",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "213",
-            "high": "215",
-            "low": "212",
-            "close": "214"
-          },
           "activity": {
             "trade_volume": 1014
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "214",
+            "high": "215",
+            "low": "212",
+            "open": "213"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-24"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-25",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "214",
-            "high": "216",
-            "low": "213",
-            "close": "215"
-          },
           "activity": {
             "trade_volume": 1015
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "215",
+            "high": "216",
+            "low": "213",
+            "open": "214"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-25"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-26",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "215",
-            "high": "217",
-            "low": "214",
-            "close": "216"
-          },
           "activity": {
             "trade_volume": 1016
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "216",
+            "high": "217",
+            "low": "214",
+            "open": "215"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-26"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-27",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "216",
-            "high": "218",
-            "low": "215",
-            "close": "217"
-          },
           "activity": {
             "trade_volume": 1017
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "217",
+            "high": "218",
+            "low": "215",
+            "open": "216"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-27"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-28",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "217",
-            "high": "219",
-            "low": "216",
-            "close": "218"
-          },
           "activity": {
             "trade_volume": 1018
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "218",
+            "high": "219",
+            "low": "216",
+            "open": "217"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-28"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-29",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "218",
-            "high": "220",
-            "low": "217",
-            "close": "219"
-          },
           "activity": {
             "trade_volume": 1019
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "219",
+            "high": "220",
+            "low": "217",
+            "open": "218"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-29"
         },
         {
-          "symbol": "2317",
-          "trade_date": "2026-06-30",
-          "retrieved_at_utc": "2026-07-16T01:30:05Z",
-          "price": {
-            "open": "219",
-            "high": "221",
-            "low": "218",
-            "close": "220"
-          },
           "activity": {
             "trade_volume": 1020
-          }
+          },
+          "market": "listed",
+          "price": {
+            "close": "220",
+            "high": "221",
+            "low": "218",
+            "open": "219"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2317",
+          "trade_date": "2026-06-30"
+        }
+      ]
+    },
+    "TWSE:2330": {
+      "TWSE_OPENAPI": [
+        {
+          "activity": {
+            "trade_volume": 1000
+          },
+          "market": "listed",
+          "price": {
+            "close": "100",
+            "high": "101",
+            "low": "98",
+            "open": "99"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "activity": {
+            "trade_volume": 1001
+          },
+          "market": "listed",
+          "price": {
+            "close": "101",
+            "high": "102",
+            "low": "99",
+            "open": "100"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "activity": {
+            "trade_volume": 1002
+          },
+          "market": "listed",
+          "price": {
+            "close": "102",
+            "high": "103",
+            "low": "100",
+            "open": "101"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "activity": {
+            "trade_volume": 1003
+          },
+          "market": "listed",
+          "price": {
+            "close": "103",
+            "high": "104",
+            "low": "101",
+            "open": "102"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "activity": {
+            "trade_volume": 1004
+          },
+          "market": "listed",
+          "price": {
+            "close": "104",
+            "high": "105",
+            "low": "102",
+            "open": "103"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "activity": {
+            "trade_volume": 1005
+          },
+          "market": "listed",
+          "price": {
+            "close": "105",
+            "high": "106",
+            "low": "103",
+            "open": "104"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "activity": {
+            "trade_volume": 1006
+          },
+          "market": "listed",
+          "price": {
+            "close": "106",
+            "high": "107",
+            "low": "104",
+            "open": "105"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "activity": {
+            "trade_volume": 1007
+          },
+          "market": "listed",
+          "price": {
+            "close": "107",
+            "high": "108",
+            "low": "105",
+            "open": "106"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "activity": {
+            "trade_volume": 1008
+          },
+          "market": "listed",
+          "price": {
+            "close": "108",
+            "high": "109",
+            "low": "106",
+            "open": "107"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "activity": {
+            "trade_volume": 1009
+          },
+          "market": "listed",
+          "price": {
+            "close": "109",
+            "high": "110",
+            "low": "107",
+            "open": "108"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "activity": {
+            "trade_volume": 1010
+          },
+          "market": "listed",
+          "price": {
+            "close": "110",
+            "high": "111",
+            "low": "108",
+            "open": "109"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "activity": {
+            "trade_volume": 1011
+          },
+          "market": "listed",
+          "price": {
+            "close": "111",
+            "high": "112",
+            "low": "109",
+            "open": "110"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "activity": {
+            "trade_volume": 1012
+          },
+          "market": "listed",
+          "price": {
+            "close": "112",
+            "high": "113",
+            "low": "110",
+            "open": "111"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "activity": {
+            "trade_volume": 1013
+          },
+          "market": "listed",
+          "price": {
+            "close": "113",
+            "high": "114",
+            "low": "111",
+            "open": "112"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "activity": {
+            "trade_volume": 1014
+          },
+          "market": "listed",
+          "price": {
+            "close": "114",
+            "high": "115",
+            "low": "112",
+            "open": "113"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "activity": {
+            "trade_volume": 1015
+          },
+          "market": "listed",
+          "price": {
+            "close": "115",
+            "high": "116",
+            "low": "113",
+            "open": "114"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "activity": {
+            "trade_volume": 1016
+          },
+          "market": "listed",
+          "price": {
+            "close": "116",
+            "high": "117",
+            "low": "114",
+            "open": "115"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "activity": {
+            "trade_volume": 1017
+          },
+          "market": "listed",
+          "price": {
+            "close": "117",
+            "high": "118",
+            "low": "115",
+            "open": "116"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "activity": {
+            "trade_volume": 1018
+          },
+          "market": "listed",
+          "price": {
+            "close": "118",
+            "high": "119",
+            "low": "116",
+            "open": "117"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "activity": {
+            "trade_volume": 1019
+          },
+          "market": "listed",
+          "price": {
+            "close": "119",
+            "high": "120",
+            "low": "117",
+            "open": "118"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "activity": {
+            "trade_volume": 1020
+          },
+          "market": "listed",
+          "price": {
+            "close": "120",
+            "high": "121",
+            "low": "118",
+            "open": "119"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "symbol": "2330",
+          "trade_date": "2026-06-30"
         }
       ]
     }

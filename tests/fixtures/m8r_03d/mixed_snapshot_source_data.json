@@ -1,1 +1,54 @@
-{"targets":{"TWSE:2330":{"TWSE_MIS":{"price":100,"source_timestamp":"2026-07-16T01:30:00Z","retrieved_at":"2026-07-16T01:30:05Z","freshness_status":"live_candidate"},"TWSE_OPENAPI":{"symbol":"2330","trade_date":"2026-07-15","retrieved_at_utc":"2026-07-16T01:30:05Z","price":{"open":"98","high":"101","low":"97","close":"99"},"activity":{"trade_volume":1000}}},"TPEX:6488":{"TWSE_MIS":{"price":500,"source_timestamp":"2026-07-16T01:30:00Z","retrieved_at":"2026-07-16T01:30:05Z","freshness_status":"live_candidate"},"TPEX_OPENAPI":{"symbol":"6488","trade_date":"2026-07-15","retrieved_at_utc":"2026-07-16T01:30:05Z","price":{"open":"490","high":"505","low":"488","close":"499"},"activity":{"trade_volume":800}}}}}
+{
+  "targets": {
+    "TPEX:6488": {
+      "TPEX_OPENAPI": {
+        "activity": {
+          "trade_volume": 800
+        },
+        "market": "tpex_otc",
+        "price": {
+          "close": "499",
+          "high": "505",
+          "low": "488",
+          "open": "490"
+        },
+        "retrieved_at_utc": "2026-07-16T01:30:05Z",
+        "symbol": "6488",
+        "trade_date": "2026-07-15"
+      },
+      "TWSE_MIS": {
+        "freshness_status": "live_candidate",
+        "market": "TPEX",
+        "price": 500,
+        "retrieved_at": "2026-07-16T01:30:05Z",
+        "source_timestamp": "2026-07-16T01:30:00Z",
+        "symbol": "6488"
+      }
+    },
+    "TWSE:2330": {
+      "TWSE_MIS": {
+        "freshness_status": "live_candidate",
+        "market": "TWSE",
+        "price": 100,
+        "retrieved_at": "2026-07-16T01:30:05Z",
+        "source_timestamp": "2026-07-16T01:30:00Z",
+        "symbol": "2330"
+      },
+      "TWSE_OPENAPI": {
+        "activity": {
+          "trade_volume": 1000
+        },
+        "market": "listed",
+        "price": {
+          "close": "99",
+          "high": "101",
+          "low": "97",
+          "open": "98"
+        },
+        "retrieved_at_utc": "2026-07-16T01:30:05Z",
+        "symbol": "2330",
+        "trade_date": "2026-07-15"
+      }
+    }
+  }
+}

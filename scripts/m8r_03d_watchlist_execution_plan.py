@@ -2,12 +2,16 @@ from __future__ import annotations
 import hashlib,json,re
 from datetime import datetime,timezone
 from typing import Any
-from scripts.m8r_03c_conversation_contract_validator import validate_watchlist_snapshot_request, validate_watchlist_performance_request
+from scripts.m8r_03c_conversation_contract_validator import validate_watchlist_snapshot_request, validate_watchlist_performance_request, assert_no_forbidden_keys
+from scripts.m8a_official_eod_instrument_classifier import build_security_master_lookup, normalize_market as _sm_market, normalize_instrument_type
 
 AUTH_SCHEMA_VERSION='m8r_03d_watchlist_execution_authorization.v1'
 PLAN_SCHEMA_VERSION='m8r_03d_watchlist_execution_plan.v1'
 MAX_WATCHLIST_TARGETS=10
 ALLOWED_SOURCE_FAMILIES={'TWSE_MIS','TWSE_OPENAPI','TPEX_OPENAPI'}
+AUTH_ALLOWED_FIELDS={'schema_version','authorization_id','issued_at_utc','expires_at_utc','authorized_request_hash','authorized_bundle_types','authorized_source_families','authorized_target_ids','max_target_count','network_execution_allowed','one_shot_only','one_shot_nonce','polling_allowed','scheduler_allowed','persistent_storage_allowed','raw_payload_retention_allowed','operator_approval'}
+BUNDLE_TYPES={'snapshot','performance'}
+BLOCKING_PLAN_CODES={'target_limit_exceeded','market_mismatch','unsupported_instrument','invalid_request','authorization_planning_inconsistency'}
 
 def utc_now(): return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
 def canonical_json(v): return json.dumps(v,ensure_ascii=False,sort_keys=True,separators=(',',':'),allow_nan=False)
@@ -19,47 +23,108 @@ def _parse_utc(s):
     if d.tzinfo is None or d.utcoffset()!=timezone.utc.utcoffset(d): raise ValueError('invalid_utc_timestamp')
     return d
 
+def _issue(code, **extra):
+    return {'code': code, **extra}
+
+def _non_empty_unique_str_list(value, field, allowed=None):
+    if not isinstance(value, list) or not value:
+        return None, [_issue('authorization_field_invalid', field=field)]
+    if not all(isinstance(x, str) and x.strip() for x in value):
+        return None, [_issue('authorization_field_invalid', field=field)]
+    if len(value) != len(set(value)):
+        return None, [_issue('authorization_duplicate_value', field=field)]
+    if allowed is not None and not set(value).issubset(allowed):
+        return None, [_issue('authorization_enum_invalid', field=field)]
+    return value, []
+
 def validate_authorization(auth:dict, *, request:dict, plan:dict, bundle_type:str, now_utc:str|None=None, require_network:bool=True)->dict:
     issues=[]; h=canonical_request_hash(request); fams={g['source_family'] for g in plan.get('source_call_groups',[]) if g.get('source_family')}
-    if not isinstance(auth,dict) or auth.get('schema_version')!=AUTH_SCHEMA_VERSION: issues.append({'code':'invalid_authorization_schema'})
-    if auth.get('authorized_request_hash')!=h: issues.append({'code':'request_hash_mismatch'})
-    if bundle_type not in set(auth.get('authorized_bundle_types') or []): issues.append({'code':'unauthorized_bundle_type'})
+    try: assert_no_forbidden_keys(auth)
+    except Exception as exc: issues.append(_issue('authorization_forbidden_key', detail=str(exc)[:120]))
+    if not isinstance(auth,dict):
+        return {'valid':False,'issues':[_issue('invalid_authorization_schema')],'request_hash':h,'authorized_source_families':[]}
+    unknown=sorted(set(auth)-AUTH_ALLOWED_FIELDS)
+    if unknown: issues.append(_issue('authorization_unknown_field', field=unknown[0]))
+    if auth.get('schema_version')!=AUTH_SCHEMA_VERSION: issues.append(_issue('invalid_authorization_schema'))
+    for field in ('authorization_id','one_shot_nonce'):
+        if not isinstance(auth.get(field),str) or not auth.get(field).strip(): issues.append(_issue('authorization_field_invalid', field=field))
+    if not isinstance(auth.get('authorized_request_hash'),str) or not re.fullmatch(r'[0-9a-f]{64}', auth.get('authorized_request_hash') or ''): issues.append(_issue('authorization_field_invalid', field='authorized_request_hash'))
+    elif auth.get('authorized_request_hash')!=h: issues.append(_issue('request_hash_mismatch'))
+    bundles, e = _non_empty_unique_str_list(auth.get('authorized_bundle_types'), 'authorized_bundle_types', BUNDLE_TYPES); issues.extend(e)
+    sources, e = _non_empty_unique_str_list(auth.get('authorized_source_families'), 'authorized_source_families', ALLOWED_SOURCE_FAMILIES); issues.extend(e)
+    targets_allowed, e = _non_empty_unique_str_list(auth.get('authorized_target_ids'), 'authorized_target_ids'); issues.extend(e)
+    if bundles and bundle_type not in set(bundles): issues.append(_issue('unauthorized_bundle_type'))
     targets=plan.get('target_order') or []
-    allowed_targets=set(auth.get('authorized_target_ids') or [])
-    if allowed_targets and not set(targets).issubset(allowed_targets): issues.append({'code':'unauthorized_target'})
-    if len(targets)>int(auth.get('max_target_count') or -1): issues.append({'code':'target_limit_exceeded'})
-    if not fams.issubset(set(auth.get('authorized_source_families') or [])): issues.append({'code':'unauthorized_source_family'})
+    if targets_allowed and not set(targets).issubset(set(targets_allowed)): issues.append(_issue('unauthorized_target'))
+    if not isinstance(auth.get('max_target_count'), int) or auth.get('max_target_count') <= 0: issues.append(_issue('authorization_field_invalid', field='max_target_count'))
+    elif len(targets)>auth.get('max_target_count'): issues.append(_issue('target_limit_exceeded'))
+    if sources and not fams.issubset(set(sources)): issues.append(_issue('unauthorized_source_family'))
     for k,want in {'network_execution_allowed':True,'one_shot_only':True,'polling_allowed':False,'scheduler_allowed':False,'persistent_storage_allowed':False,'raw_payload_retention_allowed':False}.items():
-        if auth.get(k) is not want: issues.append({'code':'authorization_flag_rejected','field':k})
-    if require_network and auth.get('network_execution_allowed') is not True: issues.append({'code':'network_not_authorized'})
+        if auth.get(k) is not want: issues.append(_issue('authorization_flag_rejected', field=k))
+    if not isinstance(auth.get('operator_approval'), dict): issues.append(_issue('authorization_field_invalid', field='operator_approval'))
+    else:
+        try: assert_no_forbidden_keys(auth.get('operator_approval'))
+        except Exception as exc: issues.append(_issue('authorization_forbidden_key', field='operator_approval', detail=str(exc)[:120]))
     try:
+        issued=_parse_utc(auth.get('issued_at_utc')); expires=_parse_utc(auth.get('expires_at_utc'))
         now=_parse_utc(now_utc) if now_utc else datetime.now(timezone.utc)
-        if now>=_parse_utc(auth.get('expires_at_utc')): issues.append({'code':'authorization_expired'})
-        _parse_utc(auth.get('issued_at_utc'))
-    except Exception: issues.append({'code':'authorization_timestamp_invalid'})
+        if expires <= issued: issues.append(_issue('authorization_expiry_invalid'))
+        if now>=expires: issues.append(_issue('authorization_expired'))
+    except Exception: issues.append(_issue('authorization_timestamp_invalid'))
+    if require_network and auth.get('network_execution_allowed') is not True: issues.append(_issue('network_not_authorized'))
+    if any(i.get('blocking') for i in plan.get('issues', [])): issues.append(_issue('authorization_planning_inconsistency'))
     return {'valid':not issues,'issues':issues,'request_hash':h,'authorized_source_families':sorted(auth.get('authorized_source_families') or [])}
 
-def _rid(tid:str)->dict:
-    parts=tid.split(':'); requested={'target_id':tid}
+def _market_to_canonical(prefix):
+    return {'TWSE':'listed','TPEX':'tpex_otc'}.get(prefix)
+def _canonical_to_prefix(canonical):
+    return {'listed':'TWSE','tpex_otc':'TPEX'}.get(canonical)
+def _lookup_entry(lookup, canonical_market, code):
+    return lookup.get((canonical_market, code)) or lookup.get(f'{canonical_market}:{code}') or lookup.get(code)
+def _resolve_security(tid: str, security_master=None) -> dict:
+    parts=tid.split(':'); requested={'target_id':tid}; evidence=[]
     if len(parts)!=2 or parts[0] not in {'TWSE','TPEX'} or not re.fullmatch(r'[A-Z0-9._-]{1,20}',parts[1]):
-        return {'target_id':tid,'requested_identity':requested,'resolved_identity':{},'identity_status':'unresolved','market':None,'instrument_type':None,'security_code':None,'security_name':None,'lifecycle_state':'unresolved','blocking_issues':[{'code':'identity_unresolved'}]}
-    market,code=parts; typ='etf' if code.startswith('00') else 'equity'
-    return {'target_id':tid,'requested_identity':requested,'resolved_identity':{'target_id':tid,'symbol':code,'market':market,'instrument_type':typ,'lifecycle_state':'active'},'identity_status':'resolved','market':market,'instrument_type':typ,'security_code':code,'security_name':None,'lifecycle_state':'active','blocking_issues':[]}
+        return {'target_id':tid,'security_code':None,'security_name':None,'canonical_market':None,'instrument_type':None,'listing_status':None,'lifecycle_state':'unresolved','resolution_status':'identity_unresolved','resolution_evidence':[{'code':'invalid_target_id'}],'requested_identity':requested}
+    prefix, code=parts; requested_market=_market_to_canonical(prefix)
+    lookup=security_master if security_master is not None else build_security_master_lookup()
+    found=[]
+    for market in ('listed','tpex_otc'):
+        entry=_lookup_entry(lookup, market, code) if isinstance(lookup, dict) else None
+        if isinstance(entry, str): entry={'instrument_type':entry}
+        if isinstance(entry, dict): found.append((market, entry))
+    if not found:
+        return {'target_id':tid,'security_code':code,'security_name':None,'canonical_market':None,'instrument_type':None,'listing_status':None,'lifecycle_state':'unresolved','resolution_status':'identity_unresolved','resolution_evidence':[{'code':'security_master_miss','requested_market':requested_market}],'requested_identity':requested}
+    canonical_market, entry = found[0]
+    typ=normalize_instrument_type(entry.get('instrument_type')) or entry.get('instrument_type')
+    lifecycle=entry.get('lifecycle_state') or entry.get('listing_status') or 'active'
+    listing=entry.get('listing_status') or lifecycle
+    status='resolved'
+    if canonical_market != requested_market: status='market_mismatch'
+    elif typ not in {'equity','etf'}: status='unsupported_instrument'
+    elif lifecycle not in {'active','listed','trading'}: status='lifecycle_unsupported'
+    return {'target_id':tid,'security_code':code,'security_name':entry.get('security_name') or entry.get('name'),'canonical_market':canonical_market,'instrument_type':typ,'listing_status':listing,'lifecycle_state':lifecycle,'resolution_status':status,'resolution_evidence':[{'source':entry.get('source'),'provenance':entry.get('provenance'),'coverage_mode':entry.get('coverage_mode')}], 'requested_identity':requested}
 
-def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|None=None)->dict:
+def _target_from_resolution(res: dict) -> dict:
+    status=res['resolution_status']; canonical=res.get('canonical_market'); prefix=_canonical_to_prefix(canonical) if canonical else None
+    issues=[]
+    if status!='resolved': issues.append(_issue(status, blocking=status in {'market_mismatch','unsupported_instrument','lifecycle_unsupported'}, target_id=res['target_id']))
+    resolved={'target_id':res['target_id'],'symbol':res.get('security_code'),'market':prefix,'canonical_market':canonical,'instrument_type':res.get('instrument_type'),'security_name':res.get('security_name'),'listing_status':res.get('listing_status'),'lifecycle_state':res.get('lifecycle_state')} if status=='resolved' else {}
+    return {'target_id':res['target_id'],'requested_identity':res.get('requested_identity') or {'target_id':res['target_id']},'resolved_identity':resolved,'identity_status':'resolved' if status=='resolved' else status,'market':prefix,'canonical_market':canonical,'instrument_type':res.get('instrument_type'),'security_code':res.get('security_code'),'security_name':res.get('security_name'),'listing_status':res.get('listing_status'),'lifecycle_state':res.get('lifecycle_state'),'resolution_status':status,'resolution_evidence':res.get('resolution_evidence') or [],'blocking_issues':issues}
+
+def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, security_master=None)->dict:
     req=validate_watchlist_snapshot_request(request) if bundle_type=='snapshot' else validate_watchlist_performance_request(request)
     ids=list(req['persistent_watchlist_reference']['enabled_target_ids'])
     targets=[]; groups=[]; issues=[]
-    if len(ids)>MAX_WATCHLIST_TARGETS: issues.append({'code':'target_limit_exceeded','max_target_count':MAX_WATCHLIST_TARGETS})
+    if len(ids)>MAX_WATCHLIST_TARGETS: issues.append({'code':'target_limit_exceeded','max_target_count':MAX_WATCHLIST_TARGETS,'blocking':True})
     for i,tid in enumerate(ids):
-        r=_rid(tid); cur={}; eod={}; expected='unavailable'
+        r=_target_from_resolution(_resolve_security(tid, security_master)); cur={}; eod={}; expected='unavailable'
         if r['identity_status']=='resolved':
             expected='usable'; market=r['market']; code=r['security_code']
             if bundle_type=='snapshot': cur={'source_family':'TWSE_MIS','route':('tse_' if market=='TWSE' else 'otc_')+code.lower()+'.tw','operation_class':'planned_network_fetch'}
             eodfam='TWSE_OPENAPI' if market=='TWSE' else 'TPEX_OPENAPI'; eod={'source_family':eodfam,'route':eodfam,'operation_class':'planned_network_fetch'}
             if cur: groups.append({'source_family':'TWSE_MIS','context_type':'liveish_observation','target_ids':[tid],'network_required':True})
             groups.append({'source_family':eodfam,'context_type':'official_eod_reference','target_ids':[tid],'network_required':True,'history_window':_history_window(req) if bundle_type=='performance' else {'latest_completed_eod_only':True}})
-        targets.append({**r,'current_source_plan':cur,'eod_source_plan':eod,'expected_coverage':expected})
+        targets.append({**r,'current_source_plan':cur,'eod_source_plan':eod,'expected_coverage':expected}); issues.extend(r.get('blocking_issues', []))
     # merge deterministic groups
     merged={}
     for g in groups:
@@ -74,3 +139,6 @@ def _history_window(req):
     days=req['conversation_intent']['time_scope'].get('lookback_trading_days') or 20
     need={1:2,5:6,10:11,20:21}.get(days, min(21, days+1 if isinstance(days,int) else 21))
     return {'requested_lookback_trading_days':days,'minimum_valid_closes':need,'buffer_trading_days':5,'bounded':True}
+
+def plan_has_blocking_issues(plan: dict) -> bool:
+    return any(i.get('blocking') or i.get('code') in BLOCKING_PLAN_CODES for i in plan.get('issues', []))
