@@ -1,19 +1,32 @@
 {
-  "schema_version": "m8r_03e_r2_write_surface_inventory.v1",
   "baseline_sha": "1c2144498b524e52b2bf21fce8ed00683d9eb3a7",
+  "schema_version": "m8r_03e_r2_write_surface_inventory.v1",
   "surfaces": [
     {
-      "surface_id": "m8r_03e_watchlist_ai_context_handoff_output",
-      "path": "scripts/run_m8r_03e_watchlist_ai_context_handoff.py",
-      "write_operation": "materializes context package, conversation handoff, manifest, and markdown preview under --output-root",
-      "user_or_config_controlled_input": "--output-root and generated run directory suffix",
+      "atomic_write_behavior": "temporary file in validated parent followed by os.replace",
       "authorized_root_source": "explicit --output-root",
       "containment_enforced": true,
-      "symlink_checked": true,
-      "atomic_write_behavior": "temporary file in validated parent followed by os.replace",
+      "path": "scripts/run_m8r_03e_watchlist_ai_context_handoff.py",
       "platform_notes": "Windows absolute/UNC forms rejected portably; junction/reparse coverage is best-effort pending Windows smoke",
+      "status": "remediated_with_platform_caveats",
+      "surface_id": "m8r_03e_watchlist_ai_context_handoff_output",
+      "symlink_checked": true,
       "test_coverage": "tests/unit/test_m8r_filesystem_containment.py",
-      "status": "remediated_with_platform_caveats"
+      "user_or_config_controlled_input": "--output-root and generated run directory suffix",
+      "write_operation": "materializes context package, conversation handoff, manifest, and markdown preview under --output-root"
+    },
+    {
+      "atomic_write_behavior": "temporary file in validated parent followed by os.replace via m8r_filesystem_safety.atomic_write_text",
+      "authorized_root_source": "explicit artifact_root validated before authorization, source execution, or write",
+      "containment_enforced": true,
+      "path": "scripts/m8r_03d_watchlist_controlled_executor.py",
+      "platform_notes": "Windows absolute/UNC candidate forms rejected in containment primitive; artifact root remains explicit, Windows junction/reparse coverage is best-effort pending remote Windows smoke",
+      "status": "remediated_with_platform_caveats",
+      "surface_id": "m8r_03d_watchlist_controlled_execution_artifacts",
+      "symlink_checked": true,
+      "test_coverage": "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
+      "user_or_config_controlled_input": "artifact_root and generated or supplied run_id",
+      "write_operation": "materializes validated request, execution plan, optional authorization, normalized observations, bundle, and execution result under artifact_root/run_id"
     }
   ]
 }

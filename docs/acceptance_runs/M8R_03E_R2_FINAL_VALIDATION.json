@@ -1,6 +1,18 @@
 {
+  "authorization_composition": {
+    "command": "pytest tests/unit/test_m8r_03e_r2_filesystem_containment.py -q",
+    "covered": [
+      "missing authorization + valid output path rejected",
+      "wrong-scope authorization + valid output path rejected",
+      "valid authorization + escaping output path rejected before execution",
+      "invalid authorization + escaping output path does not execute or write",
+      "valid authorization + valid contained output path succeeds",
+      "network execution authorization does not grant replay across output roots"
+    ],
+    "status": "pass"
+  },
   "baseline_sha": "1c2144498b524e52b2bf21fce8ed00683d9eb3a7",
-  "combined_pr_disposition": "APPROVE",
+  "combined_pr_disposition": "REQUEST_CHANGES_PENDING_WINDOWS_WORKFLOW_CONFIRMATION",
   "known_failures": [
     "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
     "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
@@ -14,22 +26,46 @@
   "r2_f0_disposition": "GO_WITH_CAVEATS",
   "remaining_limitations": [
     "portable TOCTOU best effort",
-    "Windows junction/reparse smoke follow-up"
+    "Windows junction/reparse-point protection not claimed unless separately exercised"
   ],
   "schema_version": "acceptance_run.v1",
+  "tested_head_sha": "d86fd07edb92f062186d5cc115beeb38edb60a07",
   "validation_results": {
+    "changed-fast": {
+      "duration_seconds": 1.023,
+      "passed": 43,
+      "status": "pass"
+    },
+    "component-security": {
+      "duration_seconds": 1.419,
+      "passed": 16,
+      "status": "pass"
+    },
+    "component-watchlist-evidence": {
+      "duration_seconds": 4.075,
+      "passed": 57,
+      "status": "pass"
+    },
     "default-ci": {
-      "duration_seconds": 28.089,
-      "passed": 738,
+      "duration_seconds": 22.342,
+      "passed": 741,
       "status": "pass"
     },
     "full-non-network": {
       "deselected": 1,
-      "duration_seconds": 75.714,
+      "duration_seconds": 53.468,
       "failed": 7,
-      "passed": 1677,
+      "passed": 1682,
       "skipped": 1,
       "status": "known_baseline_failures_unchanged"
     }
+  },
+  "windows_compatibility_smoke": {
+    "junction_reparse_coverage": "not_claimed_best_effort_follow_up",
+    "required_commands": [
+      "python -m compileall scripts/m8r_filesystem_safety.py tests/unit/test_m8r_filesystem_containment.py tests/unit/test_m8r_03e_r2_filesystem_containment.py",
+      "python scripts/run_test_profile.py component-security --json"
+    ],
+    "status": "pending_remote_workflow_confirmation"
   }
 }

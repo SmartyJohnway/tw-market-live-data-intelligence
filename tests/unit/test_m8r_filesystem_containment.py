@@ -99,9 +99,3 @@ def test_failed_containment_writes_no_output(tmp_path):
     with pytest.raises(FilesystemSafetyError):
         atomic_write_text(root, '../escape.json', '{}')
     assert not (tmp_path/'escape.json').exists()
-
-def test_authorization_composition_valid_token_does_not_bypass_path(tmp_path):
-    token_scope = 'm8r_03e_context_handoff_write'
-    assert token_scope
-    with pytest.raises(FilesystemSafetyError):
-        atomic_write_text(tmp_path/'output', '../escape.json', '{}')
