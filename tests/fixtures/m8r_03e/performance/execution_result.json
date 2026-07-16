@@ -1,0 +1,72 @@
+{
+  "artifact_paths": {
+    "bundle": "artifacts/tmp_m8r03e_fixture/perf/watchlist_performance_bundle.json",
+    "execution_plan": "artifacts/tmp_m8r03e_fixture/perf/execution_plan.json",
+    "normalized_observations": "artifacts/tmp_m8r03e_fixture/perf/normalized_observations.json",
+    "validated_request": "artifacts/tmp_m8r03e_fixture/perf/validated_request.json"
+  },
+  "authorization_id": null,
+  "bundle_artifact": "artifacts/tmp_m8r03e_fixture/perf/watchlist_performance_bundle.json",
+  "completed_at_utc": "2026-07-16T09:20:27Z",
+  "issues": [],
+  "mode": "fixture",
+  "observation_count": 42,
+  "plan_id": "m8r03d-plan-9cc2d3e8a1510b02",
+  "request_hash": "d0aa45c6a2692e7b572890c5c01a33e8d35f2d101f14e011d9085df5fa5275e4",
+  "request_id": "m8r03c-performance",
+  "run_id": "perf",
+  "schema_version": "m8r_03d_watchlist_execution_result.v1",
+  "source_execution_summary": {
+    "group_results": [
+      {
+        "completed_at_utc": "2026-07-16T01:30:05Z",
+        "observation_count": 42,
+        "reason_code": null,
+        "source_family": "TWSE_OPENAPI",
+        "started_at_utc": "2026-07-16T01:30:05Z",
+        "status": "success",
+        "target_ids": [
+          "TWSE:2330",
+          "TWSE:2317"
+        ]
+      }
+    ],
+    "network_calls_performed": false,
+    "network_default_enabled": false,
+    "planned_source_call_groups": [
+      {
+        "context_type": "official_eod_reference",
+        "history_window": {
+          "bounded": true,
+          "buffer_trading_days": 5,
+          "minimum_valid_closes": 21,
+          "requested_lookback_trading_days": 20
+        },
+        "network_required": true,
+        "source_family": "TWSE_OPENAPI",
+        "target_ids": [
+          "TWSE:2330",
+          "TWSE:2317"
+        ]
+      }
+    ],
+    "polling": false,
+    "scheduler": false
+  },
+  "started_at_utc": "2026-07-16T01:30:05Z",
+  "status": "success",
+  "target_results": [
+    {
+      "row_count": 21,
+      "source_family": "TWSE_OPENAPI",
+      "status": "normalized",
+      "target_id": "TWSE:2330"
+    },
+    {
+      "row_count": 21,
+      "source_family": "TWSE_OPENAPI",
+      "status": "normalized",
+      "target_id": "TWSE:2317"
+    }
+  ]
+}

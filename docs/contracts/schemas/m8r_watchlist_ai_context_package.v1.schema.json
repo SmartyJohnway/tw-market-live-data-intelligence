@@ -1,0 +1,529 @@
+{
+  "$id": "m8r_watchlist_ai_context_package.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "caveats": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "type": "array"
+    },
+    "citation_index": {
+      "items": {
+        "$id": "m8r_watchlist_ai_fact_citation.v1",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "caveats": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "citation_id": {
+            "pattern": "^cite-[0-9a-f]{20}$",
+            "type": "string"
+          },
+          "currentness_status": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "evidence_status": {
+            "enum": [
+              "supported",
+              "supported_with_caveat",
+              "partial",
+              "unavailable",
+              "conflicted",
+              "stale",
+              "not_applicable"
+            ],
+            "type": "string"
+          },
+          "fact_path": {
+            "pattern": "^/",
+            "type": "string"
+          },
+          "fact_type": {
+            "type": "string"
+          },
+          "observed_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "retrieved_at_utc": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "schema_version": {
+            "const": "m8r_watchlist_ai_fact_citation.v1"
+          },
+          "source_artifact_id": {
+            "type": "string"
+          },
+          "source_artifact_type": {
+            "enum": [
+              "verified_security_master_snapshot",
+              "normalized_observation",
+              "watchlist_bundle",
+              "execution_plan"
+            ],
+            "type": "string"
+          },
+          "source_family": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_path": {
+            "pattern": "^/",
+            "type": "string"
+          },
+          "target_id": {
+            "pattern": "^(TWSE|TPEX):[A-Z0-9._-]{1,20}$",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "value_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "citation_id",
+          "target_id",
+          "fact_path",
+          "fact_type",
+          "value_hash",
+          "source_artifact_type",
+          "source_artifact_id",
+          "source_path",
+          "evidence_status",
+          "caveats"
+        ],
+        "type": "object"
+      },
+      "maxItems": 400,
+      "type": "array"
+    },
+    "context_budget": {
+      "type": "object"
+    },
+    "context_package_id": {
+      "pattern": "^m8r03e-context-[0-9a-f]{16}$",
+      "type": "string"
+    },
+    "conversation_scope": {
+      "additionalProperties": true,
+      "type": "object"
+    },
+    "coverage_summary": {
+      "additionalProperties": true,
+      "properties": {
+        "coverage_status": {
+          "enum": [
+            "complete",
+            "partial",
+            "failed",
+            "blocked"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "coverage_status"
+      ],
+      "type": "object"
+    },
+    "cross_target_context": {
+      "type": "object"
+    },
+    "generated_at_utc": {
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T.*Z$",
+      "type": "string"
+    },
+    "missing_evidence": {
+      "items": {
+        "$id": "m8r_watchlist_missing_evidence.v1",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "blocking": {
+            "type": "boolean"
+          },
+          "category": {
+            "enum": [
+              "identity",
+              "current_observation",
+              "currentness_validation",
+              "official_eod_reference",
+              "performance",
+              "history",
+              "identity_resolution",
+              "unknown"
+            ],
+            "type": "string"
+          },
+          "detail": {
+            "type": "object"
+          },
+          "missing_evidence_id": {
+            "pattern": "^missing-[0-9a-f]{20}$",
+            "type": "string"
+          },
+          "reason_code": {
+            "enum": [
+              "identity_unresolved",
+              "identity_conflict",
+              "market_mismatch",
+              "unsupported_instrument",
+              "lifecycle_unsupported",
+              "fixture_observation_only_rejected",
+              "source_execution_failed",
+              "source_identity_mismatch",
+              "currentness_unresolved",
+              "stale_observation",
+              "insufficient_history",
+              "artifact_write_failed",
+              "evidence_not_requested",
+              "MIS observation unavailable",
+              "EOD reference unavailable",
+              "no_usable_source_observation"
+            ],
+            "type": "string"
+          },
+          "recoverability": {
+            "enum": [
+              "retry_with_new_authorization",
+              "requires_new_source",
+              "not_recoverable_in_scope"
+            ],
+            "type": "string"
+          },
+          "related_citation_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "m8r_watchlist_missing_evidence.v1"
+          },
+          "source_family": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "target_id": {
+            "pattern": "^(TWSE|TPEX):[A-Z0-9._-]{1,20}$",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "schema_version",
+          "missing_evidence_id",
+          "target_id",
+          "category",
+          "reason_code",
+          "blocking",
+          "recoverability",
+          "detail",
+          "related_citation_ids"
+        ],
+        "type": "object"
+      },
+      "maxItems": 80,
+      "type": "array"
+    },
+    "package_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "prohibitions": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "scope": {
+            "enum": [
+              "global",
+              "target",
+              "package"
+            ],
+            "type": "string"
+          },
+          "target_id": {
+            "pattern": "^(TWSE|TPEX):[A-Z0-9._-]{1,20}$",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "scope",
+          "reason"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "request": {
+      "additionalProperties": true,
+      "properties": {
+        "bundle_type": {
+          "enum": [
+            "snapshot",
+            "performance",
+            "comparison"
+          ],
+          "type": "string"
+        },
+        "enabled_target_order": {
+          "items": {
+            "pattern": "^(TWSE|TPEX):[A-Z0-9._-]{1,20}$",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "maxItems": 10,
+          "type": "array"
+        },
+        "request_id": {
+          "type": "string"
+        },
+        "target_scope": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "request_id",
+        "bundle_type",
+        "enabled_target_order",
+        "target_scope"
+      ],
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "m8r_watchlist_ai_context_package.v1"
+    },
+    "source_lineage": {
+      "additionalProperties": true,
+      "type": "object"
+    },
+    "targets": {
+      "items": {
+        "additionalProperties": true,
+        "properties": {
+          "allowed_interpretations": {
+            "type": "array"
+          },
+          "caveats": {
+            "type": "array"
+          },
+          "citations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "classification": {
+            "type": "object"
+          },
+          "coverage": {
+            "type": "object"
+          },
+          "current_observation": {
+            "type": "object"
+          },
+          "eod_reference": {
+            "type": "object"
+          },
+          "execution_eligibility": {
+            "type": "object"
+          },
+          "identity": {
+            "type": "object"
+          },
+          "lifecycle": {
+            "type": "object"
+          },
+          "missing_evidence": {
+            "items": {
+              "$id": "m8r_watchlist_missing_evidence.v1",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "additionalProperties": false,
+              "properties": {
+                "blocking": {
+                  "type": "boolean"
+                },
+                "category": {
+                  "enum": [
+                    "identity",
+                    "current_observation",
+                    "currentness_validation",
+                    "official_eod_reference",
+                    "performance",
+                    "history",
+                    "identity_resolution",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "detail": {
+                  "type": "object"
+                },
+                "missing_evidence_id": {
+                  "pattern": "^missing-[0-9a-f]{20}$",
+                  "type": "string"
+                },
+                "reason_code": {
+                  "enum": [
+                    "identity_unresolved",
+                    "identity_conflict",
+                    "market_mismatch",
+                    "unsupported_instrument",
+                    "lifecycle_unsupported",
+                    "fixture_observation_only_rejected",
+                    "source_execution_failed",
+                    "source_identity_mismatch",
+                    "currentness_unresolved",
+                    "stale_observation",
+                    "insufficient_history",
+                    "artifact_write_failed",
+                    "evidence_not_requested",
+                    "MIS observation unavailable",
+                    "EOD reference unavailable",
+                    "no_usable_source_observation"
+                  ],
+                  "type": "string"
+                },
+                "recoverability": {
+                  "enum": [
+                    "retry_with_new_authorization",
+                    "requires_new_source",
+                    "not_recoverable_in_scope"
+                  ],
+                  "type": "string"
+                },
+                "related_citation_ids": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "schema_version": {
+                  "const": "m8r_watchlist_missing_evidence.v1"
+                },
+                "source_family": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "target_id": {
+                  "pattern": "^(TWSE|TPEX):[A-Z0-9._-]{1,20}$",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "schema_version",
+                "missing_evidence_id",
+                "target_id",
+                "category",
+                "reason_code",
+                "blocking",
+                "recoverability",
+                "detail",
+                "related_citation_ids"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "performance": {
+            "type": "object"
+          },
+          "prohibited_inferences": {
+            "type": "array"
+          },
+          "target_id": {
+            "pattern": "^(TWSE|TPEX):[A-Z0-9._-]{1,20}$",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "target_position": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "target_id",
+          "target_position",
+          "identity",
+          "classification",
+          "lifecycle",
+          "execution_eligibility",
+          "current_observation",
+          "eod_reference",
+          "performance",
+          "coverage",
+          "missing_evidence",
+          "caveats",
+          "allowed_interpretations",
+          "prohibited_inferences",
+          "citations"
+        ],
+        "type": "object"
+      },
+      "maxItems": 10,
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "context_package_id",
+    "generated_at_utc",
+    "request",
+    "conversation_scope",
+    "source_lineage",
+    "targets",
+    "cross_target_context",
+    "coverage_summary",
+    "missing_evidence",
+    "caveats",
+    "prohibitions",
+    "citation_index",
+    "context_budget",
+    "package_hash"
+  ],
+  "type": "object"
+}

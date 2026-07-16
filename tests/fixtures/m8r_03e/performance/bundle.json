@@ -1,0 +1,5531 @@
+{
+  "bundle_id": "m8r03c-performance-accff23373e599c1",
+  "conversation_context": {
+    "original_user_text": "我的觀察清單最近表現如何？",
+    "scope_modes": [
+      "watchlist"
+    ]
+  },
+  "coverage": {
+    "requested_target_ids": [
+      "TWSE:2330",
+      "TWSE:2317"
+    ],
+    "targets": [
+      {
+        "coverage_state": "usable",
+        "missing_field_groups": [],
+        "present_field_groups": [
+          "resolved_identity",
+          "eod_series"
+        ],
+        "reason_code": null,
+        "target_id": "TWSE:2330"
+      },
+      {
+        "coverage_state": "usable",
+        "missing_field_groups": [],
+        "present_field_groups": [
+          "resolved_identity",
+          "eod_series"
+        ],
+        "reason_code": null,
+        "target_id": "TWSE:2317"
+      }
+    ]
+  },
+  "derived_metrics": [
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "return_Nd",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "return_1d",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": 0.00840336
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "return_Nd",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "return_5d",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": 0.04347826
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "return_Nd",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "return_10d",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": 0.09090909
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "return_Nd",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "return_20d",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": 0.2
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "range_high",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "range_high",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "price",
+      "value": 121.0
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "range_low",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "range_low",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "price",
+      "value": 98.0
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "range_position",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "range_position",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": 0.95652174
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "drawdown_from_recent_high",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "drawdown_from_recent_high",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": -0.00826446
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "average_volume",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "average_volume",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "shares",
+      "value": 1010.0
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "volume_ratio",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "volume_ratio",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": 1.01040119
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "realized_volatility",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "realized_volatility",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": 0.00049191
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "formula_not_applicable",
+      "formula_id": "relative_return_1d_vs_benchmark",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "relative_return_1d_vs_benchmark",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2330",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": null
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "return_Nd",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "return_1d",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": 0.00456621
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "return_Nd",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "return_5d",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": 0.02325581
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "return_Nd",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "return_10d",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": 0.04761905
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "return_Nd",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "return_20d",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": 0.1
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "range_high",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "range_high",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "price",
+      "value": 221.0
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "range_low",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "range_low",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "price",
+      "value": 198.0
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "range_position",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "range_position",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": 0.95652174
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "drawdown_from_recent_high",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "drawdown_from_recent_high",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": -0.00452489
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "average_volume",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "average_volume",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "shares",
+      "value": 1010.0
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "volume_ratio",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "volume_ratio",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": 1.01040119
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "calculated",
+      "formula_id": "realized_volatility",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "realized_volatility",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": 0.00013437
+    },
+    {
+      "as_of": "2026-06-30",
+      "calculation_status": "formula_not_applicable",
+      "formula_id": "relative_return_1d_vs_benchmark",
+      "input_period": {
+        "explicit_range": null,
+        "lookback_trading_days": 20,
+        "mode": "recent"
+      },
+      "metric_id": "relative_return_1d_vs_benchmark",
+      "source_dependencies": [
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "source_family": "TWSE_OPENAPI",
+          "target_id": "TWSE:2317",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "unit": "ratio",
+      "value": null
+    }
+  ],
+  "facts": [
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-10",
+      "values": {
+        "close": "100",
+        "high": "101",
+        "low": "98",
+        "open": "99",
+        "trade_date": "2026-06-10",
+        "volume": 1000
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-11",
+      "values": {
+        "close": "101",
+        "high": "102",
+        "low": "99",
+        "open": "100",
+        "trade_date": "2026-06-11",
+        "volume": 1001
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-12",
+      "values": {
+        "close": "102",
+        "high": "103",
+        "low": "100",
+        "open": "101",
+        "trade_date": "2026-06-12",
+        "volume": 1002
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-13",
+      "values": {
+        "close": "103",
+        "high": "104",
+        "low": "101",
+        "open": "102",
+        "trade_date": "2026-06-13",
+        "volume": 1003
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-14",
+      "values": {
+        "close": "104",
+        "high": "105",
+        "low": "102",
+        "open": "103",
+        "trade_date": "2026-06-14",
+        "volume": 1004
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-15",
+      "values": {
+        "close": "105",
+        "high": "106",
+        "low": "103",
+        "open": "104",
+        "trade_date": "2026-06-15",
+        "volume": 1005
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-16",
+      "values": {
+        "close": "106",
+        "high": "107",
+        "low": "104",
+        "open": "105",
+        "trade_date": "2026-06-16",
+        "volume": 1006
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-17",
+      "values": {
+        "close": "107",
+        "high": "108",
+        "low": "105",
+        "open": "106",
+        "trade_date": "2026-06-17",
+        "volume": 1007
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-18",
+      "values": {
+        "close": "108",
+        "high": "109",
+        "low": "106",
+        "open": "107",
+        "trade_date": "2026-06-18",
+        "volume": 1008
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-19",
+      "values": {
+        "close": "109",
+        "high": "110",
+        "low": "107",
+        "open": "108",
+        "trade_date": "2026-06-19",
+        "volume": 1009
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-20",
+      "values": {
+        "close": "110",
+        "high": "111",
+        "low": "108",
+        "open": "109",
+        "trade_date": "2026-06-20",
+        "volume": 1010
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-21",
+      "values": {
+        "close": "111",
+        "high": "112",
+        "low": "109",
+        "open": "110",
+        "trade_date": "2026-06-21",
+        "volume": 1011
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-22",
+      "values": {
+        "close": "112",
+        "high": "113",
+        "low": "110",
+        "open": "111",
+        "trade_date": "2026-06-22",
+        "volume": 1012
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-23",
+      "values": {
+        "close": "113",
+        "high": "114",
+        "low": "111",
+        "open": "112",
+        "trade_date": "2026-06-23",
+        "volume": 1013
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-24",
+      "values": {
+        "close": "114",
+        "high": "115",
+        "low": "112",
+        "open": "113",
+        "trade_date": "2026-06-24",
+        "volume": 1014
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-25",
+      "values": {
+        "close": "115",
+        "high": "116",
+        "low": "113",
+        "open": "114",
+        "trade_date": "2026-06-25",
+        "volume": 1015
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-26",
+      "values": {
+        "close": "116",
+        "high": "117",
+        "low": "114",
+        "open": "115",
+        "trade_date": "2026-06-26",
+        "volume": 1016
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-27",
+      "values": {
+        "close": "117",
+        "high": "118",
+        "low": "115",
+        "open": "116",
+        "trade_date": "2026-06-27",
+        "volume": 1017
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-28",
+      "values": {
+        "close": "118",
+        "high": "119",
+        "low": "116",
+        "open": "117",
+        "trade_date": "2026-06-28",
+        "volume": 1018
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-29",
+      "values": {
+        "close": "119",
+        "high": "120",
+        "low": "117",
+        "open": "118",
+        "trade_date": "2026-06-29",
+        "volume": 1019
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2330",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-30",
+      "values": {
+        "close": "120",
+        "high": "121",
+        "low": "118",
+        "open": "119",
+        "trade_date": "2026-06-30",
+        "volume": 1020
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-10",
+      "values": {
+        "close": "200",
+        "high": "201",
+        "low": "198",
+        "open": "199",
+        "trade_date": "2026-06-10",
+        "volume": 1000
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-11",
+      "values": {
+        "close": "201",
+        "high": "202",
+        "low": "199",
+        "open": "200",
+        "trade_date": "2026-06-11",
+        "volume": 1001
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-12",
+      "values": {
+        "close": "202",
+        "high": "203",
+        "low": "200",
+        "open": "201",
+        "trade_date": "2026-06-12",
+        "volume": 1002
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-13",
+      "values": {
+        "close": "203",
+        "high": "204",
+        "low": "201",
+        "open": "202",
+        "trade_date": "2026-06-13",
+        "volume": 1003
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-14",
+      "values": {
+        "close": "204",
+        "high": "205",
+        "low": "202",
+        "open": "203",
+        "trade_date": "2026-06-14",
+        "volume": 1004
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-15",
+      "values": {
+        "close": "205",
+        "high": "206",
+        "low": "203",
+        "open": "204",
+        "trade_date": "2026-06-15",
+        "volume": 1005
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-16",
+      "values": {
+        "close": "206",
+        "high": "207",
+        "low": "204",
+        "open": "205",
+        "trade_date": "2026-06-16",
+        "volume": 1006
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-17",
+      "values": {
+        "close": "207",
+        "high": "208",
+        "low": "205",
+        "open": "206",
+        "trade_date": "2026-06-17",
+        "volume": 1007
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-18",
+      "values": {
+        "close": "208",
+        "high": "209",
+        "low": "206",
+        "open": "207",
+        "trade_date": "2026-06-18",
+        "volume": 1008
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-19",
+      "values": {
+        "close": "209",
+        "high": "210",
+        "low": "207",
+        "open": "208",
+        "trade_date": "2026-06-19",
+        "volume": 1009
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-20",
+      "values": {
+        "close": "210",
+        "high": "211",
+        "low": "208",
+        "open": "209",
+        "trade_date": "2026-06-20",
+        "volume": 1010
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-21",
+      "values": {
+        "close": "211",
+        "high": "212",
+        "low": "209",
+        "open": "210",
+        "trade_date": "2026-06-21",
+        "volume": 1011
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-22",
+      "values": {
+        "close": "212",
+        "high": "213",
+        "low": "210",
+        "open": "211",
+        "trade_date": "2026-06-22",
+        "volume": 1012
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-23",
+      "values": {
+        "close": "213",
+        "high": "214",
+        "low": "211",
+        "open": "212",
+        "trade_date": "2026-06-23",
+        "volume": 1013
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-24",
+      "values": {
+        "close": "214",
+        "high": "215",
+        "low": "212",
+        "open": "213",
+        "trade_date": "2026-06-24",
+        "volume": 1014
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-25",
+      "values": {
+        "close": "215",
+        "high": "216",
+        "low": "213",
+        "open": "214",
+        "trade_date": "2026-06-25",
+        "volume": 1015
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-26",
+      "values": {
+        "close": "216",
+        "high": "217",
+        "low": "214",
+        "open": "215",
+        "trade_date": "2026-06-26",
+        "volume": 1016
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-27",
+      "values": {
+        "close": "217",
+        "high": "218",
+        "low": "215",
+        "open": "216",
+        "trade_date": "2026-06-27",
+        "volume": 1017
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-28",
+      "values": {
+        "close": "218",
+        "high": "219",
+        "low": "216",
+        "open": "217",
+        "trade_date": "2026-06-28",
+        "volume": 1018
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-29",
+      "values": {
+        "close": "219",
+        "high": "220",
+        "low": "217",
+        "open": "218",
+        "trade_date": "2026-06-29",
+        "volume": 1019
+      }
+    },
+    {
+      "fact_type": "eod_row",
+      "source_family": "TWSE_OPENAPI",
+      "target_id": "TWSE:2317",
+      "timing_class": "official_eod",
+      "trade_date": "2026-06-30",
+      "values": {
+        "close": "220",
+        "high": "221",
+        "low": "218",
+        "open": "219",
+        "trade_date": "2026-06-30",
+        "volume": 1020
+      }
+    }
+  ],
+  "generated_at_utc": "2026-07-16T01:30:05Z",
+  "issues": [],
+  "missing_evidence": [],
+  "request_id": "m8r03c-performance",
+  "resolution_assumptions": [
+    "price metrics use source-provided unadjusted closes unless fixture states otherwise",
+    "relative_return_1d_vs_benchmark uses one explicit supplied benchmark_id only"
+  ],
+  "schema_version": "m8r_watchlist_performance_bundle.v1",
+  "source_summary": {
+    "TWSE_OPENAPI": {
+      "observation_count": 42
+    }
+  },
+  "targets": [
+    {
+      "coverage": {
+        "coverage_state": "usable",
+        "missing_field_groups": [],
+        "present_field_groups": [
+          "resolved_identity",
+          "eod_series"
+        ],
+        "reason_code": null,
+        "target_id": "TWSE:2330"
+      },
+      "eod_series": [
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "100",
+            "high": "101",
+            "low": "98",
+            "open": "99",
+            "trade_date": "2026-06-10",
+            "volume": 1000
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "101",
+            "high": "102",
+            "low": "99",
+            "open": "100",
+            "trade_date": "2026-06-11",
+            "volume": 1001
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "102",
+            "high": "103",
+            "low": "100",
+            "open": "101",
+            "trade_date": "2026-06-12",
+            "volume": 1002
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "103",
+            "high": "104",
+            "low": "101",
+            "open": "102",
+            "trade_date": "2026-06-13",
+            "volume": 1003
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "104",
+            "high": "105",
+            "low": "102",
+            "open": "103",
+            "trade_date": "2026-06-14",
+            "volume": 1004
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "105",
+            "high": "106",
+            "low": "103",
+            "open": "104",
+            "trade_date": "2026-06-15",
+            "volume": 1005
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "106",
+            "high": "107",
+            "low": "104",
+            "open": "105",
+            "trade_date": "2026-06-16",
+            "volume": 1006
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "107",
+            "high": "108",
+            "low": "105",
+            "open": "106",
+            "trade_date": "2026-06-17",
+            "volume": 1007
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "108",
+            "high": "109",
+            "low": "106",
+            "open": "107",
+            "trade_date": "2026-06-18",
+            "volume": 1008
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "109",
+            "high": "110",
+            "low": "107",
+            "open": "108",
+            "trade_date": "2026-06-19",
+            "volume": 1009
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "110",
+            "high": "111",
+            "low": "108",
+            "open": "109",
+            "trade_date": "2026-06-20",
+            "volume": 1010
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "111",
+            "high": "112",
+            "low": "109",
+            "open": "110",
+            "trade_date": "2026-06-21",
+            "volume": 1011
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "112",
+            "high": "113",
+            "low": "110",
+            "open": "111",
+            "trade_date": "2026-06-22",
+            "volume": 1012
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "113",
+            "high": "114",
+            "low": "111",
+            "open": "112",
+            "trade_date": "2026-06-23",
+            "volume": 1013
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "114",
+            "high": "115",
+            "low": "112",
+            "open": "113",
+            "trade_date": "2026-06-24",
+            "volume": 1014
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "115",
+            "high": "116",
+            "low": "113",
+            "open": "114",
+            "trade_date": "2026-06-25",
+            "volume": 1015
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "116",
+            "high": "117",
+            "low": "114",
+            "open": "115",
+            "trade_date": "2026-06-26",
+            "volume": 1016
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "117",
+            "high": "118",
+            "low": "115",
+            "open": "116",
+            "trade_date": "2026-06-27",
+            "volume": 1017
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "118",
+            "high": "119",
+            "low": "116",
+            "open": "117",
+            "trade_date": "2026-06-28",
+            "volume": 1018
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "119",
+            "high": "120",
+            "low": "117",
+            "open": "118",
+            "trade_date": "2026-06-29",
+            "volume": 1019
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "120",
+            "high": "121",
+            "low": "118",
+            "open": "119",
+            "trade_date": "2026-06-30",
+            "volume": 1020
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2330"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "台積電",
+            "snapshot_id": null,
+            "symbol": "2330",
+            "target_id": "TWSE:2330"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2330",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "issues": [],
+      "requested_identity": {
+        "target_id": "TWSE:2330"
+      },
+      "resolved_identity": {
+        "canonical_market": "listed",
+        "classification_status": null,
+        "execution_eligibility": null,
+        "execution_policy": "execution_allowed",
+        "instrument_type": "equity",
+        "lifecycle_resolution_status": "resolved",
+        "lifecycle_state": "active",
+        "listing_status": "active",
+        "market": "TWSE",
+        "record_hash": null,
+        "record_id": null,
+        "resolution_caveats": [],
+        "security_name": "台積電",
+        "snapshot_id": null,
+        "symbol": "2330",
+        "target_id": "TWSE:2330"
+      },
+      "target_id": "TWSE:2330"
+    },
+    {
+      "coverage": {
+        "coverage_state": "usable",
+        "missing_field_groups": [],
+        "present_field_groups": [
+          "resolved_identity",
+          "eod_series"
+        ],
+        "reason_code": null,
+        "target_id": "TWSE:2317"
+      },
+      "eod_series": [
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "200",
+            "high": "201",
+            "low": "198",
+            "open": "199",
+            "trade_date": "2026-06-10",
+            "volume": 1000
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-10"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "201",
+            "high": "202",
+            "low": "199",
+            "open": "200",
+            "trade_date": "2026-06-11",
+            "volume": 1001
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-11"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "202",
+            "high": "203",
+            "low": "200",
+            "open": "201",
+            "trade_date": "2026-06-12",
+            "volume": 1002
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-12"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "203",
+            "high": "204",
+            "low": "201",
+            "open": "202",
+            "trade_date": "2026-06-13",
+            "volume": 1003
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-13"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "204",
+            "high": "205",
+            "low": "202",
+            "open": "203",
+            "trade_date": "2026-06-14",
+            "volume": 1004
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-14"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "205",
+            "high": "206",
+            "low": "203",
+            "open": "204",
+            "trade_date": "2026-06-15",
+            "volume": 1005
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-15"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "206",
+            "high": "207",
+            "low": "204",
+            "open": "205",
+            "trade_date": "2026-06-16",
+            "volume": 1006
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-16"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "207",
+            "high": "208",
+            "low": "205",
+            "open": "206",
+            "trade_date": "2026-06-17",
+            "volume": 1007
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-17"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "208",
+            "high": "209",
+            "low": "206",
+            "open": "207",
+            "trade_date": "2026-06-18",
+            "volume": 1008
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-18"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "209",
+            "high": "210",
+            "low": "207",
+            "open": "208",
+            "trade_date": "2026-06-19",
+            "volume": 1009
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-19"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "210",
+            "high": "211",
+            "low": "208",
+            "open": "209",
+            "trade_date": "2026-06-20",
+            "volume": 1010
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-20"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "211",
+            "high": "212",
+            "low": "209",
+            "open": "210",
+            "trade_date": "2026-06-21",
+            "volume": 1011
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-21"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "212",
+            "high": "213",
+            "low": "210",
+            "open": "211",
+            "trade_date": "2026-06-22",
+            "volume": 1012
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-22"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "213",
+            "high": "214",
+            "low": "211",
+            "open": "212",
+            "trade_date": "2026-06-23",
+            "volume": 1013
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-23"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "214",
+            "high": "215",
+            "low": "212",
+            "open": "213",
+            "trade_date": "2026-06-24",
+            "volume": 1014
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-24"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "215",
+            "high": "216",
+            "low": "213",
+            "open": "214",
+            "trade_date": "2026-06-25",
+            "volume": 1015
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-25"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "216",
+            "high": "217",
+            "low": "214",
+            "open": "215",
+            "trade_date": "2026-06-26",
+            "volume": 1016
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-26"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "217",
+            "high": "218",
+            "low": "215",
+            "open": "216",
+            "trade_date": "2026-06-27",
+            "volume": 1017
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-27"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "218",
+            "high": "219",
+            "low": "216",
+            "open": "217",
+            "trade_date": "2026-06-28",
+            "volume": 1018
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-28"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "219",
+            "high": "220",
+            "low": "217",
+            "open": "218",
+            "trade_date": "2026-06-29",
+            "volume": 1019
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-29"
+        },
+        {
+          "context_type": "official_eod_reference",
+          "currentness": {
+            "reason": "latest completed EOD reference",
+            "status": "official_completed_eod"
+          },
+          "facts": {
+            "close": "220",
+            "high": "221",
+            "low": "218",
+            "open": "219",
+            "trade_date": "2026-06-30",
+            "volume": 1020
+          },
+          "issues": [],
+          "requested_identity": {
+            "target_id": "TWSE:2317"
+          },
+          "resolved_identity": {
+            "canonical_market": "listed",
+            "classification_status": null,
+            "execution_eligibility": null,
+            "execution_policy": "execution_allowed",
+            "instrument_type": "equity",
+            "lifecycle_resolution_status": "resolved",
+            "lifecycle_state": "active",
+            "listing_status": "active",
+            "market": "TWSE",
+            "record_hash": null,
+            "record_id": null,
+            "resolution_caveats": [],
+            "security_name": "鴻海",
+            "snapshot_id": null,
+            "symbol": "2317",
+            "target_id": "TWSE:2317"
+          },
+          "retrieved_at_utc": "2026-07-16T01:30:05Z",
+          "schema_version": "m8r_watchlist_input_observation.v1",
+          "source_family": "TWSE_OPENAPI",
+          "source_role": "eod_reference",
+          "source_timestamp": null,
+          "target_id": "TWSE:2317",
+          "timing_class": "official_eod",
+          "trade_date": "2026-06-30"
+        }
+      ],
+      "issues": [],
+      "requested_identity": {
+        "target_id": "TWSE:2317"
+      },
+      "resolved_identity": {
+        "canonical_market": "listed",
+        "classification_status": null,
+        "execution_eligibility": null,
+        "execution_policy": "execution_allowed",
+        "instrument_type": "equity",
+        "lifecycle_resolution_status": "resolved",
+        "lifecycle_state": "active",
+        "listing_status": "active",
+        "market": "TWSE",
+        "record_hash": null,
+        "record_id": null,
+        "resolution_caveats": [],
+        "security_name": "鴻海",
+        "snapshot_id": null,
+        "symbol": "2317",
+        "target_id": "TWSE:2317"
+      },
+      "target_id": "TWSE:2317"
+    }
+  ]
+}

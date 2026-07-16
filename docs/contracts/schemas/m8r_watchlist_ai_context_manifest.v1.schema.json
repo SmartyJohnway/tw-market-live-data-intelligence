@@ -1,0 +1,123 @@
+{
+  "$id": "m8r_watchlist_ai_context_manifest.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "builder_version": {
+      "type": "string"
+    },
+    "context_package_id": {
+      "type": "string"
+    },
+    "context_package_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "conversation_handoff_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "counts": {
+      "type": "object"
+    },
+    "generated_at_utc": {
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T.*Z$",
+      "type": "string"
+    },
+    "handoff_id": {
+      "type": "string"
+    },
+    "schema_bundle_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "m8r_watchlist_ai_context_manifest.v1"
+    },
+    "upstream": {
+      "additionalProperties": false,
+      "properties": {
+        "bundle_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "bundle_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "execution_plan_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "execution_plan_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "execution_result_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "execution_result_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "request_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "request_id": {
+          "type": "string"
+        },
+        "security_master_snapshot_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "request_id",
+        "request_hash",
+        "execution_plan_id",
+        "execution_plan_hash",
+        "execution_result_id",
+        "execution_result_hash",
+        "bundle_id",
+        "bundle_hash",
+        "security_master_snapshot_ids"
+      ],
+      "type": "object"
+    },
+    "validation_issues": {
+      "type": "array"
+    },
+    "validation_status": {
+      "enum": [
+        "passed",
+        "failed"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "context_package_id",
+    "handoff_id",
+    "generated_at_utc",
+    "builder_version",
+    "context_package_sha256",
+    "conversation_handoff_sha256",
+    "schema_bundle_sha256",
+    "upstream",
+    "counts",
+    "validation_status",
+    "validation_issues"
+  ],
+  "type": "object"
+}
