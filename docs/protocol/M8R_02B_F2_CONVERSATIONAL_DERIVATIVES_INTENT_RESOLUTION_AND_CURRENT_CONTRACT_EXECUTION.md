@@ -19,7 +19,7 @@ F2 adds a bounded conversational derivatives resolution layer for Taiwan TAIFEX 
 
 ## Exact versus conversational mode
 
-Exact mode is selected only when the user supplies a complete bounded contract identity such as `TXO 202607 40000 C monthly`. Exact mode uses exact match only and fails closed as `exact_contract_unavailable` when the requested identity is not present. It does not automatically replace expiry, strike, call/put, monthly/weekly type, or session.
+Exact mode is selected only when the user supplies a complete bounded contract identity such as `TXO 209912 99999 C monthly`. Exact mode uses exact match only and fails closed as `exact_contract_unavailable` when the requested identity is not present. It does not automatically replace expiry, strike, call/put, monthly/weekly type, or session.
 
 Conversational `resolve_current` mode is selected for incomplete natural-language market intent such as `現在台指期怎麼樣？` or `現在台指選擇權怎麼樣？`. It discovers the current bounded contract universe at execution time, applies documented policy, generates exact request targets, records assumptions, and discloses the resolved identities to the AI package.
 
@@ -88,7 +88,7 @@ Live prompts for a new run ID:
 - `CONVERSATIONAL_TAIFEX_OPTION_CURRENT_BOTH`: `現在台指選擇權怎麼樣？`
 - `CONVERSATIONAL_TAIFEX_OPTION_MONTHLY_BOTH`: `現在台指選擇權近月月選 call 跟 put 怎麼樣？`
 - `CONVERSATIONAL_TAIFEX_OPTION_EXPLICIT_STRIKE_AREA`: `看一下台指選擇權四萬五附近的 call 跟 put`
-- `EXACT_TAIFEX_OPTION_UNAVAILABLE_NEGATIVE_CONTROL`: `TXO 202607 40000 C monthly`
+- `EXACT_TAIFEX_OPTION_UNAVAILABLE_NEGATIVE_CONTROL`: `TXO 209912 99999 C monthly`
 - Optional: `CONVERSATIONAL_TAIFEX_OPTION_WEEKLY_BOTH`: `現在最近到期的台指週選怎麼樣？`
 
 The prior OpenAPI-only run is superseded. Commit 4 live validation used run ID `m8r02b-f2-mis-20260716T043000Z` and proved TAIFEX MIS current futures/options execution for the required conversational cases plus the exact-unavailable control. The option-current case resolved `TXO 202607F3 45800 C/P weekly` with runtime symbols `TXX45800G6-O` and `TXX45800S6-O`; monthly resolved `TXO 202608 45800 C/P monthly`; explicit strike resolved `TXO 202607F3 45000 C/P weekly`; future resolved `TX 202608 monthly`; the exact unavailable control remained blocked with no AI package. Each future operator run must store `derivatives_intent.json`, `derivatives_resolution_record.json`, MIS operation results, optional OpenAPI enrichment, and AI package artifacts under the supplied run root. The controlled CLI also writes `mis_conversational_resolution_diagnostic.json`, which contains normalized stage metadata only: request statuses, selected expiry/type, selected-chain row and identity counts, strike range/count, call/put counts, reference acquisition result, resolved targets, freshness second-check result, production selector status, runtime symbol IDs, operation/AI package status, and a precise failure layer when available.
