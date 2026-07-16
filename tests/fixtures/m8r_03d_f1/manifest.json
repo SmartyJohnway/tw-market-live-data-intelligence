@@ -1,0 +1,30 @@
+{
+  "coverage": {
+    "coverage_status": "fixture_not_living_truth",
+    "instrument_types": [
+      "common_share",
+      "etf",
+      "preferred_share",
+      "warrant"
+    ],
+    "lifecycle_event_count": 2,
+    "markets": [
+      "TPEX",
+      "TWSE"
+    ],
+    "record_count": 14
+  },
+  "effective_observation_date": "2026-07-16",
+  "generated_at_utc": "2026-07-16T00:00:00Z",
+  "lifecycle_event_count": 2,
+  "producer_version": "m8r_03d_f1_snapshot_exporter.v1",
+  "record_count": 14,
+  "schema_sha256": "2b847b0e2e741ffb302c83b7e630072ea730dafa7fe237d76240539b0606b735",
+  "schema_version": "tw_verified_security_master_snapshot_manifest.v1",
+  "skill_contract_hash": "957ae9885e75bc9636107398d6f8d7b2023c7d1e3b74f51af416c54ba523a874",
+  "snapshot_id": "fixture-m8r03d-f1",
+  "snapshot_path": "tests/fixtures/m8r_03d_f1/snapshot.json",
+  "snapshot_sha256": "7f6fd60ea4b435fb0e56baefe5980609f5c9c92263acf9d57f2fbb49707d8d89",
+  "validation_issues": [],
+  "validation_status": "passed"
+}

@@ -1,0 +1,4 @@
+[
+ {"source_family":"twse_company_delisted","source_url":"https://www.twse.com.tw/zh/listed/suspend-listing.html","security_code":"7777","security_name_zh":"下市股","event_type":"twse_delisted","effective_date":"2026-01-01","evidence_status":"official_table","event_key":"delist-7777"},
+ {"source_family":"twse_market_announcements","source_url":"https://www.twse.com.tw/zh/announcement/announcement/list.html","security_code":"6666","security_name_zh":"暫停股","event_type":"twse_suspended","effective_date":"2026-07-01","evidence_status":"official_announcement","event_key":"suspend-6666"}
+]

@@ -4,6 +4,7 @@ from datetime import datetime,timezone
 from typing import Any
 from scripts.m8r_03c_conversation_contract_validator import validate_watchlist_snapshot_request, validate_watchlist_performance_request, assert_no_forbidden_keys
 from scripts.m8a_official_eod_instrument_classifier import build_security_master_lookup, normalize_market as _sm_market, normalize_instrument_type
+from scripts.m8r_03d_f1_security_master_snapshot_adapter import build_verified_security_master_lookup, load_verified_security_master_snapshot, resolve_verified_security_identity, VerifiedSecurityMasterSnapshotError
 
 AUTH_SCHEMA_VERSION='m8r_03d_watchlist_execution_authorization.v1'
 PLAN_SCHEMA_VERSION='m8r_03d_watchlist_execution_plan.v1'
@@ -81,7 +82,28 @@ def _canonical_to_prefix(canonical):
     return {'listed':'TWSE','tpex_otc':'TPEX'}.get(canonical)
 def _lookup_entry(lookup, canonical_market, code):
     return lookup.get((canonical_market, code)) or lookup.get(f'{canonical_market}:{code}') or lookup.get(code)
-def _resolve_security(tid: str, security_master=None) -> dict:
+def _resolve_verified_security(tid: str, snapshot_lookup, *, allow_fixture_snapshot: bool=False) -> dict:
+    parts=tid.split(':'); requested={'target_id':tid}
+    market_context=parts[0] if len(parts)==2 else None
+    rr=resolve_verified_security_identity(tid, snapshot_lookup, market_context=market_context, allow_fixture_snapshot=allow_fixture_snapshot, execute_mode=True)
+    sel=rr.get('selected') or {}
+    if rr.get('resolution_status')!='resolved':
+        code = {'ambiguous':'identity_conflict','quarantined':'lifecycle_unsupported' if 'fixture_observation_only_rejected' in rr.get('reason_codes',[]) else 'identity_conflict','not_found':'identity_unresolved'}.get(rr.get('resolution_status'),'identity_unresolved')
+        return {'target_id':tid,'security_code':parts[1] if len(parts)==2 else None,'security_name':None,'canonical_market':_market_to_canonical(market_context),'instrument_type':None,'listing_status':None,'lifecycle_state':'unresolved','lifecycle_resolution_status':'unavailable','resolution_status':code,'resolution_evidence':[{'source':'verified_security_master_snapshot','resolution':rr}],'requested_identity':requested}
+    ident=sel.get('identity') or {}; cls=sel.get('classification') or {}; life=sel.get('lifecycle') or {}; elig=sel.get('execution_eligibility') or {}
+    canonical=_market_to_canonical(cls.get('market')); typ=cls.get('instrument_type')
+    status='resolved'; caveats=list(sel.get('caveats') or [])
+    if canonical != _market_to_canonical(market_context): status='market_mismatch'
+    elif elig.get('status')=='blocked': status='lifecycle_unsupported' if 'lifecycle_blocks_current_execution' in elig.get('reason_codes',[]) or 'fixture_observation_only' in elig.get('reason_codes',[]) else 'unsupported_instrument' if 'unsupported_instrument_type' in elig.get('reason_codes',[]) else 'identity_conflict'
+    elif elig.get('status')=='allowed_with_caveat': caveats += elig.get('reason_codes',[])
+    execution_policy='execution_allowed' if elig.get('status')=='allowed' else 'execution_allowed_with_caveat' if elig.get('status')=='allowed_with_caveat' else 'execution_blocked'
+    return {'target_id':tid,'security_code':ident.get('security_code'),'security_name':ident.get('security_name_zh') or ident.get('security_name_en'),'canonical_market':canonical,'instrument_type':typ,'listing_status':life.get('state'),'lifecycle_state':life.get('state'),'lifecycle_resolution_status':life.get('resolution_status'),'execution_policy':execution_policy,'resolution_caveats':caveats,'resolution_status':status,'snapshot_id':sel.get('snapshot_id'),'record_id':sel.get('record_id'),'record_hash':sel.get('record_hash'),'classification_status':cls.get('classification_status'),'classification_execution_policy':sel.get('classification_execution_policy'),'execution_eligibility':elig,'resolution_evidence':[{'source':'verified_security_master_snapshot','snapshot_id':sel.get('snapshot_id'),'record_id':sel.get('record_id'),'record_hash':sel.get('record_hash'),'resolution_reason':sel.get('resolution_reason')}], 'requested_identity':requested}
+
+def _resolve_security(tid: str, security_master=None, *, allow_fixture_snapshot: bool=False) -> dict:
+    if isinstance(security_master, dict) and security_master.get('schema_version')=='tw_verified_security_master_snapshot.v1':
+        return _resolve_verified_security(tid, build_verified_security_master_lookup(security_master), allow_fixture_snapshot=allow_fixture_snapshot)
+    if isinstance(security_master, dict) and security_master.get('snapshot') and security_master.get('by_canonical') is not None:
+        return _resolve_verified_security(tid, security_master, allow_fixture_snapshot=allow_fixture_snapshot)
     parts=tid.split(':'); requested={'target_id':tid}; evidence=[]
     if len(parts)!=2 or parts[0] not in {'TWSE','TPEX'} or not re.fullmatch(r'[A-Z0-9._-]{1,20}',parts[1]):
         return {'target_id':tid,'security_code':None,'security_name':None,'canonical_market':None,'instrument_type':None,'listing_status':None,'lifecycle_state':'unresolved','resolution_status':'identity_unresolved','resolution_evidence':[{'code':'invalid_target_id'}],'requested_identity':requested}
@@ -121,16 +143,20 @@ def _target_from_resolution(res: dict) -> dict:
     issues=[]
     if status!='resolved': issues.append(_issue(status, blocking=status in {'market_mismatch','unsupported_instrument','lifecycle_unsupported','identity_conflict'}, target_id=res['target_id']))
     for caveat in res.get('resolution_caveats') or []: issues.append(_issue(caveat, blocking=False, target_id=res['target_id']))
-    resolved={'target_id':res['target_id'],'symbol':res.get('security_code'),'market':prefix,'canonical_market':canonical,'instrument_type':res.get('instrument_type'),'security_name':res.get('security_name'),'listing_status':res.get('listing_status'),'lifecycle_state':res.get('lifecycle_state'),'lifecycle_resolution_status':res.get('lifecycle_resolution_status'),'execution_policy':res.get('execution_policy'),'resolution_caveats':res.get('resolution_caveats') or []} if status=='resolved' else {}
-    return {'target_id':res['target_id'],'requested_identity':res.get('requested_identity') or {'target_id':res['target_id']},'resolved_identity':resolved,'identity_status':'resolved' if status=='resolved' else status,'market':prefix,'canonical_market':canonical,'instrument_type':res.get('instrument_type'),'security_code':res.get('security_code'),'security_name':res.get('security_name'),'listing_status':res.get('listing_status'),'lifecycle_state':res.get('lifecycle_state'),'lifecycle_resolution_status':res.get('lifecycle_resolution_status'),'execution_policy':res.get('execution_policy'),'resolution_caveats':res.get('resolution_caveats') or [],'resolution_status':status,'resolution_evidence':res.get('resolution_evidence') or [],'blocking_issues':issues}
+    resolved={'target_id':res['target_id'],'symbol':res.get('security_code'),'market':prefix,'canonical_market':canonical,'instrument_type':res.get('instrument_type'),'security_name':res.get('security_name'),'listing_status':res.get('listing_status'),'lifecycle_state':res.get('lifecycle_state'),'lifecycle_resolution_status':res.get('lifecycle_resolution_status'),'execution_policy':res.get('execution_policy'),'resolution_caveats':res.get('resolution_caveats') or [],'snapshot_id':res.get('snapshot_id'),'record_id':res.get('record_id'),'record_hash':res.get('record_hash'),'classification_status':res.get('classification_status'),'execution_eligibility':res.get('execution_eligibility')} if status=='resolved' else {}
+    return {'target_id':res['target_id'],'requested_identity':res.get('requested_identity') or {'target_id':res['target_id']},'resolved_identity':resolved,'identity_status':'resolved' if status=='resolved' else status,'market':prefix,'canonical_market':canonical,'instrument_type':res.get('instrument_type'),'security_code':res.get('security_code'),'security_name':res.get('security_name'),'listing_status':res.get('listing_status'),'lifecycle_state':res.get('lifecycle_state'),'lifecycle_resolution_status':res.get('lifecycle_resolution_status'),'execution_policy':res.get('execution_policy'),'resolution_caveats':res.get('resolution_caveats') or [],'resolution_status':status,'snapshot_id':res.get('snapshot_id'),'record_id':res.get('record_id'),'record_hash':res.get('record_hash'),'classification_status':res.get('classification_status'),'classification_execution_policy':res.get('classification_execution_policy'),'execution_eligibility':res.get('execution_eligibility'),'resolution_evidence':res.get('resolution_evidence') or [],'blocking_issues':issues}
 
-def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, security_master=None)->dict:
+def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, security_master=None, verified_snapshot_path:str|None=None, verified_snapshot_manifest_path:str|None=None, allow_fixture_snapshot:bool=False)->dict:
     req=validate_watchlist_snapshot_request(request) if bundle_type=='snapshot' else validate_watchlist_performance_request(request)
+    if verified_snapshot_path or verified_snapshot_manifest_path:
+        if not (verified_snapshot_path and verified_snapshot_manifest_path): raise VerifiedSecurityMasterSnapshotError('snapshot_and_manifest_required')
+        snap,_man=load_verified_security_master_snapshot(verified_snapshot_path, verified_snapshot_manifest_path, allow_fixture_snapshot=allow_fixture_snapshot)
+        security_master=build_verified_security_master_lookup(snap)
     ids=list(req['persistent_watchlist_reference']['enabled_target_ids'])
     targets=[]; groups=[]; issues=[]
     if len(ids)>MAX_WATCHLIST_TARGETS: issues.append({'code':'target_limit_exceeded','max_target_count':MAX_WATCHLIST_TARGETS,'blocking':True})
     for i,tid in enumerate(ids):
-        r=_target_from_resolution(_resolve_security(tid, security_master)); cur={}; eod={}; expected='unavailable'
+        r=_target_from_resolution(_resolve_security(tid, security_master, allow_fixture_snapshot=allow_fixture_snapshot)); cur={}; eod={}; expected='unavailable'
         if r['identity_status']=='resolved':
             expected='usable'; market=r['market']; code=r['security_code']
             if bundle_type=='snapshot': cur={'source_family':'TWSE_MIS','route':('tse_' if market=='TWSE' else 'otc_')+code.lower()+'.tw','operation_class':'planned_network_fetch'}
