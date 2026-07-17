@@ -25,9 +25,9 @@
   "after_measurements": "docs/quality/m8r_03e_r4_performance_baseline.json",
   "operation_counts": "bounded benchmark-local counters; schema validator compilation cached per immutable schema",
   "serialized_size_growth": "linear aggregate projection; stress is non-contract",
-  "citation_pressure_result": "measured without repeated benchmark-side serialization",
+  "citation_pressure_result": "unsupported_pending_pressure_fixture",
   "missing_evidence_pressure_result": "measured and valid",
-  "combined_pressure_result": "measured and valid",
+  "combined_pressure_result": "unsupported_pending_pressure_fixture",
   "memory_result": "tracemalloc peak bytes recorded",
   "artifact_write_result": "one safe atomic write per valid package pipeline in temporary directories",
   "semantic_equivalence_result": "pass: cached schema compilation does not alter validation output",
@@ -86,17 +86,17 @@
   ],
   "r4_subparts": {
     "R4-A": "PASS",
-    "R4-B": "PASS",
-    "R4-C": "PASS",
-    "R4-D": "PASS",
-    "R4-E": "PASS",
-    "R4-F": "PASS_WITH_CAVEATS"
+    "R4-B": "PARTIAL",
+    "R4-C": "PARTIAL",
+    "R4-D": "PASS_WITH_CAVEATS",
+    "R4-E": "PARTIAL",
+    "R4-F": "PARTIAL"
   },
   "r4_disposition": "PARTIAL_COMPLETION",
   "active_governance_state": {
     "implemented_through": "R3",
     "implemented_through_track": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
-    "phase_c_gate_status": "blocked_pending_R4"
+    "phase_c_gate_status": "pending_post_r4_sequencing_decision"
   },
   "successor_decision": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION; likely workstream R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE.",
   "r4_closure_status": "not_closed",
