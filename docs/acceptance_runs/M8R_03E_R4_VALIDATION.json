@@ -1,9 +1,9 @@
 {
   "task_id": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
   "baseline_main_sha": "d33a807bd8f2a4677dbf630b326271e94dd7202c",
-  "tested_parent_sha": "dffb244cc61f742312b52ea12d25bd055766979f",
-  "tested_tree_sha": "dffb244cc61f742312b52ea12d25bd055766979f+correction_worktree",
-  "tested_worktree_digest": "120d50e9e06610e940a808f0ccc970110b27d3dda9b54a02da482c440deebf1c",
+  "tested_parent_sha": "a182c6cbb1c4679e7d7ad96c5f77a925aeb8dfeb",
+  "tested_tree_sha": null,
+  "tested_worktree_digest": null,
   "execution_environment": {
     "network": false,
     "github_actions_policy": "NO_GITHUB_CI"
@@ -65,14 +65,15 @@
   ],
   "full_non_network_exact_result": {
     "return_code": "unavailable",
-    "status": "incomplete_no_auditable_json_output",
+    "status": "attempted_but_unavailable_in_codex_sandbox",
     "passed": null,
     "failed": null,
     "skipped": null,
     "deselected": null,
     "failing_node_ids": [],
     "failure_set_changed": "unknown",
-    "new_m8_m8r_failure_count": "unknown"
+    "new_m8_m8r_failure_count": "unknown",
+    "merge_readiness_impact": "full_regression_verification_deferred_to_post_r4_sequencing_gate"
   },
   "resolved_debt_ids": [],
   "partially_resolved_debt_ids": [
@@ -114,5 +115,9 @@
     "100_target_stress_measurement",
     "high_citation_pressure_fixture",
     "combined_pressure_fixture"
-  ]
+  ],
+  "acceptance_sealing_status": "unsealed",
+  "acceptance_sealing_reason": "full_non_network_exact_result_unavailable",
+  "acceptance_sealing_strategy": "partial_r4_artifact_bound_to_checked_in_baseline_and_commit_report",
+  "validator_cache_result_equivalence": "pass_for_tested_valid_and_invalid_cases"
 }

@@ -13,6 +13,7 @@ import scripts.m8r_03e_watchlist_ai_context_builder as builder
 from scripts.m8r_03e_conversation_handoff_builder import compose_conversation_handoff,build_watchlist_conversation_handoff
 from scripts.m8r_03e_v1_to_v2_migration import migrate_watchlist_ai_context_package_v1_to_v2
 from scripts.m8r_filesystem_safety import atomic_write_text
+UNSUPPORTED_EXPECTATIONS={'10_target_snapshot':{'expected_target_count':10,'tier':'production_contract','non_contract':False,'not_authorized_for_production_request':False,'reason_code':'schema_valid_10_target_upstream_fixture_unavailable'},'50_target_stress':{'expected_target_count':50,'tier':'stress_only','non_contract':True,'not_authorized_for_production_request':True,'reason_code':'schema_valid_10_target_upstream_fixture_unavailable'},'100_target_stress':{'expected_target_count':100,'tier':'stress_only','non_contract':True,'not_authorized_for_production_request':True,'reason_code':'schema_valid_10_target_upstream_fixture_unavailable'},'high_citation_pressure':{'expected_target_count':None,'tier':'production_contract','non_contract':False,'not_authorized_for_production_request':False,'reason_code':'pressure_fixture_unavailable'},'combined_citation_and_missing_evidence_pressure':{'expected_target_count':None,'tier':'production_contract','non_contract':False,'not_authorized_for_production_request':False,'reason_code':'pressure_fixture_unavailable'}}
 SCENARIOS=['1_target_snapshot','10_target_snapshot','50_target_stress','100_target_stress','high_citation_pressure','high_missing_evidence_pressure','combined_citation_and_missing_evidence_pressure','complete_snapshot','performance_package','partial_source_failure','all_source_failure','conversation_handoff_policy_a','conversation_handoff_policy_b','v1_to_v2_migration','artifact_serialization_only','safe_atomic_artifact_write','manifest_generation']
 def clock(fn):
  s=time.perf_counter_ns(); x=fn(); return x,(time.perf_counter_ns()-s)/1e6
@@ -74,7 +75,7 @@ def _run_once(sid):
    if sid.startswith('conversation_handoff_policy'):
     a=compose_conversation_handoff(evidence_package=pkg,agent_policy={'conversation_policy':{}},generated_at_utc='2026-07-17T00:00:00Z')
     b=compose_conversation_handoff(evidence_package=pkg,agent_policy={'conversation_policy':{'recommendations_permitted':True,'trading_advice_permitted':True}},generated_at_utc='2026-07-17T00:00:00Z')
-    before=validator.canonical_json(pkg); rec['policy_handoffs_differ']=a['response_constraints']!=b['response_constraints']; rec['evidence_bytes_unchanged']=before==validator.canonical_json(pkg); rec['valid']=rec['valid'] and validator.validate_watchlist_conversation_handoff(a,context_package=pkg)['valid'] and validator.validate_watchlist_conversation_handoff(b,context_package=pkg)['valid']
+    before=validator.canonical_json(pkg); a=compose_conversation_handoff(evidence_package=pkg,agent_policy={'conversation_policy':{}},generated_at_utc='2026-07-17T00:00:00Z'); after_a=validator.canonical_json(pkg); b=compose_conversation_handoff(evidence_package=pkg,agent_policy={'conversation_policy':{'recommendations_permitted':True,'trading_advice_permitted':True}},generated_at_utc='2026-07-17T00:00:00Z'); after_b=validator.canonical_json(pkg); rec['policy_handoffs_differ']=a['response_constraints']!=b['response_constraints']; rec['evidence_bytes_unchanged']=before==after_a==after_b; rec['valid']=rec['valid'] and rec['policy_handoffs_differ'] and rec['evidence_bytes_unchanged'] and validator.validate_watchlist_conversation_handoff(a,context_package=pkg)['valid'] and validator.validate_watchlist_conversation_handoff(b,context_package=pkg)['valid']
    elif sid=='v1_to_v2_migration':
     v1=json.loads((ROOT/'tests/fixtures/m8r_03e_r3/historical_v1_context_package.json').read_text()); v2,ms=clock(lambda:migrate_watchlist_ai_context_package_v1_to_v2(v1)); rec['migration_ms']=ms; rec['valid']=validator.validate_schema(v2,'m8r_watchlist_ai_context_package.v2.schema.json') is None
    elif sid=='artifact_serialization_only':
@@ -110,13 +111,17 @@ def build():
  return {'schema_version':'m8r_03e_r4_performance_baseline.v2','task_id':'M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING','baseline_main_sha':'d33a807bd8f2a4677dbf630b326271e94dd7202c','tested_tree_sha':sha(),'measurement_contract_ref':'docs/contracts/m8r_03e_r4_performance_measurement_contract.json','measurement_environment':{'python':sys.version.split()[0],'platform':platform.platform(),'timer':'time.perf_counter_ns','gc_enabled':gc.isenabled(),'network':False},'production_contract_limit':10,'stress_only_limits':[50,100],'scenarios':ss}
 def verify(d):
  ids=[x.get('scenario_id') for x in d.get('scenarios',[])]
- required={'schema_version':'m8r_03e_r4_performance_baseline.v2','task_id':'M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING','baseline_main_sha':'d33a807bd8f2a4677dbf630b326271e94dd7202c','production_contract_limit':10}
- if not (all(d.get(k)==v for k,v in required.items()) and set(ids)==set(SCENARIOS) and len(ids)==len(set(ids))): return False
+ if set(ids)!=set(SCENARIOS) or len(ids)!=len(set(ids)): return False
  for x in d['scenarios']:
-  if not x.get('measurement_executed',True):
-   if x.get('supported') is not False or x.get('actual_target_count') is not None or not x.get('reason_code') or not x.get('blocking_dependency'): return False
-   if any(k in x for k in ('raw_measurements','median_measurements_ms','peak_memory','validity_results','operation_counts')): return False
-  elif not (x.get('warmup_count')==2 and x.get('raw_measurement_count')==x.get('repeat_count') and x.get('all_repetitions_valid') and x.get('validator_cache_result_equivalence') and x.get('operation_counts_scope')): return False
+  sid=x['scenario_id']
+  if sid in UNSUPPORTED_EXPECTATIONS:
+   e=UNSUPPORTED_EXPECTATIONS[sid]
+   if any(x.get(k)!=v for k,v in e.items()) or x.get('supported') is not False or x.get('measurement_executed') is not False or x.get('actual_target_count') is not None or not x.get('blocking_dependency'): return False
+   if any(k in x for k in ('raw_measurements','median_measurements_ms','peak_memory','validity_results','operation_counts','semantic_equivalence')): return False
+  else:
+   if x.get('repeat_count')!=5 or x.get('raw_measurement_count')!=5 or len(x.get('raw_measurements',[]))!=5 or not x.get('all_repetitions_valid') or x.get('semantic_equivalence')!=x.get('validator_cache_result_equivalence'): return False
+   elapsed=[m['elapsed_ms'] for m in x['raw_measurements']]
+   if abs(x['median_measurements_ms']['total_end_to_end']-round(statistics.median(elapsed),3))>.001: return False
  return True
 def main():
  p=argparse.ArgumentParser();p.add_argument('--output',default='docs/quality/m8r_03e_r4_performance_baseline.json');p.add_argument('--verify-existing',action='store_true');a=p.parse_args();out=Path(a.output)

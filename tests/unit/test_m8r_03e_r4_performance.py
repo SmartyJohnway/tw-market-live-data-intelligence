@@ -14,3 +14,6 @@ def test_verify_rejects_unsupported_fake_metrics_and_missing_reason():
  a=copy.deepcopy(b); next(y for y in a['scenarios'] if y['scenario_id']==x['scenario_id'])['reason_code']=''; assert not verify(a)
 def test_verify_rejects_duplicate_scenario():
  b=load(); b['scenarios'].append(copy.deepcopy(b['scenarios'][0])); assert not verify(b)
+def test_verify_rejects_wrong_unsupported_contract_and_median():
+ b=load(); a=copy.deepcopy(b); x=next(x for x in a['scenarios'] if x['scenario_id']=='50_target_stress'); x['tier']='production_contract'; assert not verify(a)
+ a=copy.deepcopy(b); x=next(x for x in a['scenarios'] if x.get('measurement_executed',True)); x['median_measurements_ms']['total_end_to_end']+=1; assert not verify(a)
