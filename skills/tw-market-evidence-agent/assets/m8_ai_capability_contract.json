@@ -1002,10 +1002,12 @@
     "trading_signal_allowed=false"
   ],
   "phase_dependencies": {
-    "Phase C": "blocked_pending_R4"
+    "Phase C": "implementation_ready_activation_blocked",
+    "Phase C implementation": "ready_after_post_R4_readiness_decision",
+    "Phase C activation": "blocked_pending_R5A_10_target_fixture_and_windows_path_validation_correction"
   },
   "raw_payload_exposure_allowed": false,
-  "recommended_next_task": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
+  "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
   "availability_semantics": {
     "ai_facing_runtime_available": "Only true when actual callable AI-facing operation with defined I/O exists; all F1 operations are false.",
     "underlying_runtime_available": "Represents existing repository producer/executor availability, separate from Phase C operation availability.",

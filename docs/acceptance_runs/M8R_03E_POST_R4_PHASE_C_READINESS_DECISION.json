@@ -1,7 +1,9 @@
 {
   "task_id": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION",
-  "baseline_main_sha": "9861a90424f3589e12491b876d14e2c37db51f70",
-  "tested_commit_sha": "9861a90424f3589e12491b876d14e2c37db51f70",
+  "tested_parent_sha": "eb118fdc9d337d21827cca5cb4b0af5e1b3c9906",
+  "tested_tree_sha": "9473c072ed5ac8f98cc400c79ff911beccc00265",
+  "tested_worktree_digest": "058cdce844a24dab9efcd04313d5ccf9ca2eb286",
+  "evidence_execution_stage": "pre_commit_final_tree",
   "execution_environment": {
     "network": true,
     "github_actions_policy": "NO_GITHUB_CI"
@@ -11,8 +13,8 @@
   "network_environment": "local_with_network_access",
   "full_non_network_exact_result": {
     "return_code": 1,
-    "passed": 1664,
-    "failed": 49,
+    "passed": 1665,
+    "failed": 48,
     "skipped": 1,
     "deselected": 1,
     "failing_node_ids": [
@@ -47,7 +49,6 @@
       "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
       "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
       "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
-      "tests/unit/test_m7b_ai_safe_market_context_final_acceptance.py::test_no_latest_summary_or_new_probe_output_committed_in_current_branch",
       "tests/unit/test_m7b_ai_safe_market_context_projection_builder.py::test_runtime_projection_builder_reference_remains_controlled_to_conversation_context",
       "tests/unit/test_m8a_official_eod_instrument_classification.py::test_bounded_seed_only_status_when_canonical_master_unavailable",
       "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields",
@@ -67,6 +68,79 @@
       "tests/unit/test_workflow_policy_matrix.py::test_workflow_policy_matrix_and_ci_local_only"
     ]
   },
+  "full_non_network_failure_classification": {
+    "known_historical_failure": [],
+    "windows_path_semantics": [
+      "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+      "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+      "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+      "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
+      "tests/unit/test_m8a_official_eod_instrument_classification.py::test_bounded_seed_only_status_when_canonical_master_unavailable",
+      "tests/unit/test_m7b_ai_safe_market_context_projection_builder.py::test_runtime_projection_builder_reference_remains_controlled_to_conversation_context",
+      "tests/unit/test_m8r_filesystem_containment.py::test_lexical_traversal_and_absolute_paths_rejected",
+      "tests/unit/test_m8r_03e_r2_filesystem_containment.py::test_valid_authorization_with_escaping_output_path_rejected_before_execution",
+      "tests/unit/test_m8r_03e_r2_filesystem_containment.py::test_invalid_authorization_with_escaping_output_path_does_not_execute_or_write",
+      "tests/unit/test_run_m4_readiness_check.py::test_readiness_check",
+      "tests/unit/test_assess_m5c_staging_candidate.py::test_valid_m5b_evidence_eligible",
+      "tests/unit/test_build_m5b_staging_candidate.py::test_committed_m5b_manifest_verifies",
+      "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+      "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+      "tests/unit/test_m5b_execution_authorization.py::test_valid_authorization_preflight_with_fixed_now",
+      "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_exact_authorized_passes",
+      "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_just_before_expiry_passes",
+      "tests/unit/test_m5b_execution_authorization.py::test_receipt_audit_ignores_current_wall_clock_after_expiry",
+      "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
+      "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+      "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+      "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+      "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+      "tests/unit/test_m5c_staging_promotion.py::test_valid_m5b_evidence_eligible",
+      "tests/unit/test_m5c_staging_promotion.py::test_exact_binding_request_and_schema",
+      "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+      "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_classification_lifecycle_and_observation_policy",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_resolution_exact_and_ambiguous",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_non_network_clis",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_trust_gap_tampered_direct_snapshot_and_lookup_rejected",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_fabricated_validated_wrapper_revalidated_and_rejected",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin",
+      "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema"
+    ],
+    "environment_or_dependency": [],
+    "stale_governance_expectation": [
+      "tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
+      "tests/unit/test_workflow_policy_matrix.py::test_workflow_policy_matrix_and_ci_local_only"
+    ],
+    "artifact_or_fixture_drift": [],
+    "test_harness_side_effect": [],
+    "new_regression": [],
+    "r5a_10_target_dependency": [],
+    "unknown_unclassified": []
+  },
+  "failure_counts": {
+    "known_historical_failure": 0,
+    "windows_path_semantics": 46,
+    "environment_or_dependency": 0,
+    "stale_governance_expectation": 2,
+    "artifact_or_fixture_drift": 0,
+    "test_harness_side_effect": 0,
+    "new_regression": 0,
+    "r5a_10_target_dependency": 0,
+    "unknown_unclassified": 0,
+    "total": 48
+  },
   "component_profile_results": {
     "component-governance": {
       "passed": 38,
@@ -85,31 +159,131 @@
   "R1_health_audit_result": "passed_after_stale_expectation_correction",
   "performance_verification_result": "passed",
   "Windows_filesystem_validation": {
-    "path_containment_tested": true,
-    "windows_behaviors_observed": [
-      "No drive letter absolute paths like /tmp/x.json are resolved lexically within root without raising exception",
-      "PurePosixPath in _safe_root does not split Windows backslash separators, bypassing the .. check for relative paths containing escape sequences"
+    "historical_R2_disposition": "GO_WITH_CAVEATS",
+    "windows_containment_escape_proven": false,
+    "windows_fail_closed_contract_defect": "confirmed",
+    "required_follow_up": "bounded_windows_path_validation_correction_before_Phase_C_activation",
+    "defect_details": [
+      "backslash-delimited traversal not rejected at the expected validation layer",
+      "rooted forward-slash path not rejected as absolute/rooted on Windows",
+      "expected fail-closed exceptions not raised"
     ],
-    "remaining_platform_caveats": "Windows junction/reparse point checks remain best-effort and race conditions are not fully prevented; path delimiter differences cause Windows-specific validation bypasses",
-    "r2_needs_reopening": false
+    "Phase_C_gate_impact": "Phase C activation blocker"
   },
   "controlled_network_preflight": {
-    "probes_run": ["TWSE MIS", "TPEx OpenAPI", "TWSE OpenAPI", "TAIFEX MIS", "TAIFEX OpenAPI"],
-    "endpoint_reachability": "proven_all_reachable",
-    "market_session_status": "open_and_active_intraday",
-    "schema_currentness_findings": "all schemas validated and match expectations",
-    "files_written": "none",
-    "limitations": "live probes are for feasibility preflight only and do not update checked-in observation archives"
+    "executed_at_utc": "2026-07-17T06:02:40Z",
+    "timezone": "Asia/Taipei",
+    "sources": {
+      "TWSE_MIS": {
+        "command": "python scripts/probe_twse_mis.py",
+        "status": "pass",
+        "http_status": 200,
+        "response_non_empty": true,
+        "parsed_record_count": 3,
+        "requested_symbols": ["tse_2330.tw", "tse_0050.tw", "tse_t00.tw"],
+        "returned_symbols": ["2330.tw", "0050.tw", "t00.tw"],
+        "trade_date": "2026-07-17",
+        "exchange_timestamp": "13:30:00",
+        "retrieved_at": "2026-07-17T06:01:29Z",
+        "sample_fields_present": ["pz", "tv", "a", "b", "c", "d"],
+        "schema_validation": "pass",
+        "semantic_validation": "pass",
+        "session_state": "regular_closed",
+        "latency_class": "liveish",
+        "files_written": [],
+        "limitations": ["Strict rate limiting", "Requires index.jsp visit for cookies"]
+      },
+      "TAIFEX_MIS": {
+        "command": "python scripts/validate_m8c_taifex_mis_live.py --auto-smoke --confirm --pretty",
+        "status": "pass",
+        "http_status": 200,
+        "response_non_empty": true,
+        "parsed_record_count": 3,
+        "requested_symbols": ["TX", "MTX", "TXO"],
+        "returned_symbols": ["TXFH6-F", "MXFH6-F", "TXO34000H6-O"],
+        "trade_date": "2026-07-17",
+        "exchange_timestamp": "13:45:00",
+        "retrieved_at": "2026-07-17T06:01:41Z",
+        "sample_fields_present": ["raw_CDate", "raw_CTime", "runtime_symbol_id", "mis_cid"],
+        "schema_validation": "pass",
+        "semantic_validation": "pass",
+        "session_state": "regular_closed",
+        "latency_class": "liveish",
+        "files_written": [],
+        "limitations": ["Requires index.jsp visit for cookies"]
+      },
+      "TWSE_OpenAPI": {
+        "command": "python scripts/probe_twse_openapi.py",
+        "status": "pass",
+        "http_status": 200,
+        "response_non_empty": true,
+        "parsed_record_count": 1215,
+        "requested_symbols": ["STOCK_DAY_ALL"],
+        "returned_symbols": ["00400A"],
+        "trade_date": "2026-07-16",
+        "exchange_timestamp": "EOD",
+        "retrieved_at": "2026-07-17T06:02:11Z",
+        "sample_fields_present": ["ClosingPrice", "Code", "Name", "Date"],
+        "schema_validation": "pass",
+        "semantic_validation": "pass",
+        "session_state": "not_applicable",
+        "latency_class": "EOD",
+        "files_written": [],
+        "limitations": ["Rate limits apply"]
+      },
+      "TPEx_OpenAPI": {
+        "command": "python scripts/probe_tpex_openapi.py",
+        "status": "pass",
+        "http_status": 200,
+        "response_non_empty": true,
+        "parsed_record_count": 878,
+        "requested_symbols": ["tpex_mainboard_daily_close_quotes"],
+        "returned_symbols": ["006201"],
+        "trade_date": "2026-07-16",
+        "exchange_timestamp": "EOD",
+        "retrieved_at": "2026-07-17T06:02:29Z",
+        "sample_fields_present": ["Close", "SecuritiesCompanyCode", "CompanyName", "Date"],
+        "schema_validation": "pass",
+        "semantic_validation": "pass",
+        "session_state": "not_applicable",
+        "latency_class": "EOD",
+        "files_written": [],
+        "limitations": ["Rate limits apply"]
+      },
+      "TAIFEX_OpenAPI": {
+        "command": "python scripts/validate_m8b_taifex_openapi_live.py --contexts put_call_ratio --confirm",
+        "status": "pass",
+        "http_status": 200,
+        "response_non_empty": true,
+        "parsed_record_count": 21,
+        "requested_symbols": ["PutCallRatio"],
+        "returned_symbols": ["PutCallRatio"],
+        "trade_date": "2026-07-16",
+        "exchange_timestamp": "EOD",
+        "retrieved_at": "2026-07-17T06:02:40Z",
+        "sample_fields_present": ["PutCallVolumeRatio%", "PutOI", "Date"],
+        "schema_validation": "pass",
+        "semantic_validation": "pass",
+        "session_state": "not_applicable",
+        "latency_class": "EOD",
+        "files_written": [],
+        "limitations": ["Rate limits apply"]
+      }
+    },
+    "overall_status": "all_data_retrieval_verified"
   },
-  "R4_regression_status": "stable_with_known_Windows_and_successor_test_failures",
+  "R4_regression_evidence_status": "full_non_network_executed_failure_set_fully_classified",
+  "R4_acceptance_sealing_status": "unsealed",
   "R4_completion_status": "PARTIAL_COMPLETION",
-  "R4_sealing_recommendation": "remains_unsealed_until_10_target_cross_layer_fixture_implemented_in_r5a",
+  "R4_scope_closure_status": "not_closed",
+  "R4_sealing_recommendation": "R4 remains unsealed because the current regression failure set is not fully classified and because R4 scope remains partial.",
+  "R5A_relationship": "required_for_Phase_C_activation_not_retroactive_R4_regression_claim",
   "Phase_C_implementation_gate": "ready_to_begin",
-  "Phase_C_activation_gate": "blocked_pending_10_target_cross_layer_fixture",
+  "Phase_C_activation_gate": "blocked_pending_R5A_10_target_fixture_and_windows_path_validation_correction",
   "R5_workstream_classification": {
     "R5A_cross_layer_fixture": "Phase C activation blocker",
-    "stale_R1_expectations_correction": "Phase C implementation blocker",
-    "M8_DEBT_0004_wildcard_imports_cleanup": "should_complete_before_Phase_C",
+    "R5B_windows_filesystem_fail_closed_correction": "Phase C activation blocker",
+    "M8_DEBT_0004_wildcard_imports_cleanup": "parallel_with_Phase_C",
     "M8_DEBT_0007_historical_documentation_lifecycle": "parallel_with_Phase_C",
     "stress_50_100_target_execution": "post_Phase_C"
   },
@@ -120,8 +294,9 @@
     "Corrected stale successor task expectation in validate_skill.py"
   ],
   "unresolved_owner_decisions": [
-    "Whether full-non-network regression sealing must be performed in a separate environment",
-    "Approval of R5A sub-phases partitioning"
+    "Whether full-non-network regression sealing must be performed in a separate isolated Linux environment",
+    "Approval of R5A/R5B parallel execution sequencing"
   ],
-  "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE"
+  "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+  "parallel_authorized_workstream": "M8R-03E-R5B-WINDOWS-FILESYSTEM-FAIL-CLOSED-CORRECTION"
 }

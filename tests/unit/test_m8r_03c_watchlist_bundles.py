@@ -94,7 +94,7 @@ def test_currentness_missing_evidence_emitted():
 
 def test_registry_successor_fields_aligned():
     reg=json.loads(Path('docs/data_capabilities/m8_source_capability_registry.json').read_text())
-    nxt='M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION'
+    nxt='M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE'
     assert reg['recommended_next_task']==nxt
     assert reg['registry_successor']==nxt
     assert reg['m8_active_consolidated_status']['recommended_next_task']==nxt

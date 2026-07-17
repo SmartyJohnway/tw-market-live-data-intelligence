@@ -225,8 +225,8 @@
     "original_m8r04_disposition": "superseded_and_split",
     "phased_delivery_plan_completed": true,
     "raw_payload_exposure_allowed": false,
-    "recommended_next_task": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION",
-    "registry_successor": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION",
+    "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+    "registry_successor": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
     "standard_evidence_bundles_defined": true,
     "status": "m8r_03e_repository_realignment_go_with_caveats",
     "taifex_mis_ai_context_allowed": true,
@@ -344,8 +344,8 @@
     "next_task_status": "accepted_successor",
     "original_m8r04_disposition": "superseded_and_split",
     "preflight_completed_through": "M8C-00",
-    "recommended_next_task": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION",
-    "registry_successor": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION",
+    "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+    "registry_successor": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
     "status": "m8_through_m8c_consolidated_acceptance_pass_with_caveats",
     "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
     "unified_tool_api": "required_successor_capability"
@@ -353,7 +353,7 @@
   "production_executor_adapters_ready": true,
   "production_live_execution_ready": true,
   "r2_recommended_next_task": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
-  "recommended_next_task": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION",
+  "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
   "recommended_successor_after_m8r_02b_f2": "M8R-03B-AI-CONVERSATION-INPUT-OUTPUT-DESIGN-REVIEW",
   "recommended_successor_after_m8r_02b_f2_semantics": "historical F2 transition evidence retained; active successor is registry_successor",
   "recommended_successor_after_m8r_03c": "M8R-03D-WATCHLIST-EVIDENCE-SOURCE-INTEGRATION-AND-CONTROLLED-EXECUTION",
@@ -363,7 +363,7 @@
     "superseded_by": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
     "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION"
   },
-  "registry_successor": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION",
+  "registry_successor": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
   "schema_version": "m8_source_capability_registry.v1",
   "sources": [
     {
@@ -520,7 +520,7 @@
       "production_executor_adapters_ready": true,
       "production_live_execution_ready": true,
       "raw_payload_exposure_allowed": false,
-      "recommended_next_task": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION",
+      "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
       "runtime_available": true,
       "runtime_executable": true,
       "runtime_status": "bounded_initial_state_snapshot_runtime_with_controlled_m8_context",
