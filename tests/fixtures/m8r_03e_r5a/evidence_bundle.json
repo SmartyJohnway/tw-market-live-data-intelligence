@@ -95,12 +95,13 @@
         "target_id": "TWSE:0056"
       },
       {
-        "coverage_state": "usable",
-        "missing_field_groups": [],
+        "coverage_state": "partial",
+        "missing_field_groups": [
+          "currentness"
+        ],
         "present_field_groups": [
           "resolved_identity",
           "current_evidence",
-          "currentness",
           "eod_reference"
         ],
         "reason_code": null,
@@ -332,6 +333,15 @@
       "recommended_follow_up": "supply normalized non-network observation",
       "required_for_answer": true,
       "target_id": "TPEX:6488"
+    },
+    {
+      "capability_id": "currentness_validation",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "stale_observation",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": false,
+      "target_id": "TWSE:2308"
     },
     {
       "capability_id": "current_mis_observation",
@@ -804,12 +814,13 @@
     },
     {
       "coverage": {
-        "coverage_state": "usable",
-        "missing_field_groups": [],
+        "coverage_state": "partial",
+        "missing_field_groups": [
+          "currentness"
+        ],
         "present_field_groups": [
           "resolved_identity",
           "current_evidence",
-          "currentness",
           "eod_reference"
         ],
         "reason_code": null,
@@ -818,7 +829,7 @@
       "current_evidence": {
         "currentness": {
           "reason": "twse_mis_normalized",
-          "status": "fresh"
+          "status": "stale"
         },
         "facts": {
           "change": 5.0,

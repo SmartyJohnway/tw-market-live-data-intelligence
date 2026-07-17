@@ -51,7 +51,8 @@ def run_r5b_insecure_pattern_scan() -> list[str]:
         "scripts/run_m8r_controlled_live_validation.py",
         "scripts/m8r_03d_watchlist_controlled_executor.py",
         "scripts/m8r_one_shot_market_context_orchestrator.py",
-        "scripts/run_m8r_conversational_derivatives_context.py"
+        "scripts/run_m8r_conversational_derivatives_context.py",
+        "scripts/m8r_03e_r5a_cross_layer_fixture.py"
     ]
     
     # Bounded allowlist

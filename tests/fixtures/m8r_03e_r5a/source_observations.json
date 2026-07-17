@@ -95,6 +95,10 @@
     "TWSE:2308": {
       "TWSE_MIS": {
         "change": 5.0,
+        "currentness": {
+          "reason": "fixture_stale_override",
+          "status": "stale"
+        },
         "market": "TWSE",
         "price": 350.0,
         "retrieved_at": "2026-07-15T03:00:00Z",

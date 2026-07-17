@@ -3028,8 +3028,8 @@
   {
     "caveats": [],
     "citation_id": "cite-5c361df3877ed6b63031",
-    "currentness_status": "fresh",
-    "evidence_status": "supported",
+    "currentness_status": "stale",
+    "evidence_status": "stale",
     "fact_path": "/targets/6/current_observation/latest_price",
     "fact_type": "current_latest_price",
     "observed_at": "2026-07-15T02:59:50Z",
@@ -3045,8 +3045,8 @@
   {
     "caveats": [],
     "citation_id": "cite-d66e70537240a1eb15bc",
-    "currentness_status": "fresh",
-    "evidence_status": "supported",
+    "currentness_status": "stale",
+    "evidence_status": "stale",
     "fact_path": "/targets/6/current_observation/change",
     "fact_type": "current_change",
     "observed_at": "2026-07-15T02:59:50Z",
@@ -3062,8 +3062,8 @@
   {
     "caveats": [],
     "citation_id": "cite-1ee548c00c03d7177d9e",
-    "currentness_status": "fresh",
-    "evidence_status": "supported",
+    "currentness_status": "stale",
+    "evidence_status": "stale",
     "fact_path": "/targets/6/current_observation/source_timestamp",
     "fact_type": "current_source_timestamp",
     "observed_at": "2026-07-15T02:59:50Z",
@@ -3079,8 +3079,8 @@
   {
     "caveats": [],
     "citation_id": "cite-2c5cf236cb88c482fc1c",
-    "currentness_status": "fresh",
-    "evidence_status": "supported",
+    "currentness_status": "stale",
+    "evidence_status": "stale",
     "fact_path": "/targets/6/current_observation/retrieved_at_utc",
     "fact_type": "current_retrieved_at_utc",
     "observed_at": "2026-07-15T02:59:50Z",
@@ -3096,8 +3096,8 @@
   {
     "caveats": [],
     "citation_id": "cite-2cf22ba9ffeabd759467",
-    "currentness_status": "fresh",
-    "evidence_status": "supported",
+    "currentness_status": "stale",
+    "evidence_status": "stale",
     "fact_path": "/targets/6/current_observation/source_family",
     "fact_type": "current_source_family",
     "observed_at": "2026-07-15T02:59:50Z",
@@ -3113,8 +3113,8 @@
   {
     "caveats": [],
     "citation_id": "cite-210e93e26e0fa66c4593",
-    "currentness_status": "fresh",
-    "evidence_status": "supported",
+    "currentness_status": "stale",
+    "evidence_status": "stale",
     "fact_path": "/targets/6/current_observation/currentness_status",
     "fact_type": "current_currentness_status",
     "observed_at": "2026-07-15T02:59:50Z",
@@ -3125,7 +3125,7 @@
     "source_family": "TWSE_MIS",
     "source_path": "/targets/6/current_evidence/currentness/status",
     "target_id": "TWSE:2308",
-    "value_hash": "b1e5780cb6ded9edcf5bac26c937adb4aa3023ab34d951398d5b4bed5ae4e115"
+    "value_hash": "f8a2563c3d6855f5c6128a160190711c01bd82838900e04ea21e34a580f72c0f"
   },
   {
     "caveats": [],

@@ -41,6 +41,38 @@
   },
   {
     "blocking": false,
+    "category": "current_observation",
+    "detail": {},
+    "missing_evidence_id": "missing-6f8b54a097236cdfc7ed",
+    "reason_code": "stale_observation",
+    "recoverability": "retry_with_new_authorization",
+    "related_citation_ids": [],
+    "schema_version": "m8r_watchlist_missing_evidence.v1",
+    "source_family": "TWSE_MIS",
+    "target_id": "TWSE:2308"
+  },
+  {
+    "blocking": false,
+    "category": "currentness_validation",
+    "detail": {
+      "capability_id": "currentness_validation",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "stale_observation",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": false,
+      "target_id": "TWSE:2308"
+    },
+    "missing_evidence_id": "missing-5e19944fa097da86a338",
+    "reason_code": "stale_observation",
+    "recoverability": "retry_with_new_authorization",
+    "related_citation_ids": [],
+    "schema_version": "m8r_watchlist_missing_evidence.v1",
+    "source_family": null,
+    "target_id": "TWSE:2308"
+  },
+  {
+    "blocking": false,
     "category": "official_eod_reference",
     "detail": {
       "capability_id": "official_eod_reference",

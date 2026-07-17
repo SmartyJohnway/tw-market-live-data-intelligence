@@ -325,7 +325,8 @@ def build_r5a_cross_layer_fixture(
                     "price": 350.0,
                     "change": 5.0,
                     "source_timestamp": "2026-07-15T02:59:50Z", # 大於 24 小時前
-                    "retrieved_at": "2026-07-15T03:00:00Z"
+                    "retrieved_at": "2026-07-15T03:00:00Z",
+                    "currentness": {"status": "stale", "reason": "fixture_stale_override"}
                 },
                 "TWSE_OPENAPI": {
                     "symbol": "2308",

@@ -1,5 +1,6 @@
 {
   "caveats": [
+    "stale_observation",
     "partial_coverage"
   ],
   "citation_index": [
@@ -3032,8 +3033,8 @@
     {
       "caveats": [],
       "citation_id": "cite-5c361df3877ed6b63031",
-      "currentness_status": "fresh",
-      "evidence_status": "supported",
+      "currentness_status": "stale",
+      "evidence_status": "stale",
       "fact_path": "/targets/6/current_observation/latest_price",
       "fact_type": "current_latest_price",
       "observed_at": "2026-07-15T02:59:50Z",
@@ -3049,8 +3050,8 @@
     {
       "caveats": [],
       "citation_id": "cite-d66e70537240a1eb15bc",
-      "currentness_status": "fresh",
-      "evidence_status": "supported",
+      "currentness_status": "stale",
+      "evidence_status": "stale",
       "fact_path": "/targets/6/current_observation/change",
       "fact_type": "current_change",
       "observed_at": "2026-07-15T02:59:50Z",
@@ -3066,8 +3067,8 @@
     {
       "caveats": [],
       "citation_id": "cite-1ee548c00c03d7177d9e",
-      "currentness_status": "fresh",
-      "evidence_status": "supported",
+      "currentness_status": "stale",
+      "evidence_status": "stale",
       "fact_path": "/targets/6/current_observation/source_timestamp",
       "fact_type": "current_source_timestamp",
       "observed_at": "2026-07-15T02:59:50Z",
@@ -3083,8 +3084,8 @@
     {
       "caveats": [],
       "citation_id": "cite-2c5cf236cb88c482fc1c",
-      "currentness_status": "fresh",
-      "evidence_status": "supported",
+      "currentness_status": "stale",
+      "evidence_status": "stale",
       "fact_path": "/targets/6/current_observation/retrieved_at_utc",
       "fact_type": "current_retrieved_at_utc",
       "observed_at": "2026-07-15T02:59:50Z",
@@ -3100,8 +3101,8 @@
     {
       "caveats": [],
       "citation_id": "cite-2cf22ba9ffeabd759467",
-      "currentness_status": "fresh",
-      "evidence_status": "supported",
+      "currentness_status": "stale",
+      "evidence_status": "stale",
       "fact_path": "/targets/6/current_observation/source_family",
       "fact_type": "current_source_family",
       "observed_at": "2026-07-15T02:59:50Z",
@@ -3117,8 +3118,8 @@
     {
       "caveats": [],
       "citation_id": "cite-210e93e26e0fa66c4593",
-      "currentness_status": "fresh",
-      "evidence_status": "supported",
+      "currentness_status": "stale",
+      "evidence_status": "stale",
       "fact_path": "/targets/6/current_observation/currentness_status",
       "fact_type": "current_currentness_status",
       "observed_at": "2026-07-15T02:59:50Z",
@@ -3129,7 +3130,7 @@
       "source_family": "TWSE_MIS",
       "source_path": "/targets/6/current_evidence/currentness/status",
       "target_id": "TWSE:2308",
-      "value_hash": "b1e5780cb6ded9edcf5bac26c937adb4aa3023ab34d951398d5b4bed5ae4e115"
+      "value_hash": "f8a2563c3d6855f5c6128a160190711c01bd82838900e04ea21e34a580f72c0f"
     },
     {
       "caveats": [],
@@ -4123,7 +4124,7 @@
     "byte_budget_satisfied": true,
     "citation_budget_satisfied": true,
     "final_citation_count": 242,
-    "final_serialized_bytes": 173637,
+    "final_serialized_bytes": 175462,
     "list_budget_satisfied": true,
     "mandatory_citation_count": 242,
     "minimum_required_context_exceeds_budget": false,
@@ -4148,7 +4149,7 @@
     "targets_exceeding_citation_budget": [],
     "truncated": false
   },
-  "context_package_id": "m8r03e-context-4a4efc1e856cd878",
+  "context_package_id": "m8r03e-context-4533e53726c85d0f",
   "coverage_summary": {
     "blocked_target_count": 1,
     "complete_target_count": 5,
@@ -4263,6 +4264,38 @@
     },
     {
       "blocking": false,
+      "category": "current_observation",
+      "detail": {},
+      "missing_evidence_id": "missing-6f8b54a097236cdfc7ed",
+      "reason_code": "stale_observation",
+      "recoverability": "retry_with_new_authorization",
+      "related_citation_ids": [],
+      "schema_version": "m8r_watchlist_missing_evidence.v1",
+      "source_family": "TWSE_MIS",
+      "target_id": "TWSE:2308"
+    },
+    {
+      "blocking": false,
+      "category": "currentness_validation",
+      "detail": {
+        "capability_id": "currentness_validation",
+        "fallback_used": null,
+        "impact": "coverage degraded",
+        "reason_code": "stale_observation",
+        "recommended_follow_up": "supply normalized non-network observation",
+        "required_for_answer": false,
+        "target_id": "TWSE:2308"
+      },
+      "missing_evidence_id": "missing-5e19944fa097da86a338",
+      "reason_code": "stale_observation",
+      "recoverability": "retry_with_new_authorization",
+      "related_citation_ids": [],
+      "schema_version": "m8r_watchlist_missing_evidence.v1",
+      "source_family": null,
+      "target_id": "TWSE:2308"
+    },
+    {
+      "blocking": false,
       "category": "official_eod_reference",
       "detail": {
         "capability_id": "official_eod_reference",
@@ -4362,7 +4395,7 @@
       "target_id": "TWSE:9999"
     }
   ],
-  "package_hash": "567ebf8b953bbcbc20d2b1e68e116417ff9c44435ce3309bd9595b40e5694cea",
+  "package_hash": "88fa10443c6ff79429a1c6a92b9865583f6489dbbc4c282aee05da5bce261d47",
   "request": {
     "bundle_type": "snapshot",
     "conversation_intent": {
@@ -5102,7 +5135,9 @@
         "unadjusted_price_return_only",
         "price_observations_do_not_establish_causality"
       ],
-      "caveats": [],
+      "caveats": [
+        "stale_observation"
+      ],
       "citations": [
         "cite-9c2846f007da6898ae7a",
         "cite-34f5240463aacc364b05",
@@ -5148,11 +5183,13 @@
           "lifecycle": "supported",
           "performance": "not_applicable"
         },
-        "missing_field_groups": []
+        "missing_field_groups": [
+          "currentness"
+        ]
       },
       "current_observation": {
         "change": 5.0,
-        "currentness_status": "fresh",
+        "currentness_status": "stale",
         "latest_price": 350.0,
         "retrieved_at_utc": "2026-07-16T03:00:00Z",
         "source_family": "TWSE_MIS",
@@ -5191,7 +5228,40 @@
         "lifecycle_resolution_status": "resolved",
         "lifecycle_state": "active"
       },
-      "missing_evidence": [],
+      "missing_evidence": [
+        {
+          "blocking": false,
+          "category": "current_observation",
+          "detail": {},
+          "missing_evidence_id": "missing-6f8b54a097236cdfc7ed",
+          "reason_code": "stale_observation",
+          "recoverability": "retry_with_new_authorization",
+          "related_citation_ids": [],
+          "schema_version": "m8r_watchlist_missing_evidence.v1",
+          "source_family": "TWSE_MIS",
+          "target_id": "TWSE:2308"
+        },
+        {
+          "blocking": false,
+          "category": "currentness_validation",
+          "detail": {
+            "capability_id": "currentness_validation",
+            "fallback_used": null,
+            "impact": "coverage degraded",
+            "reason_code": "stale_observation",
+            "recommended_follow_up": "supply normalized non-network observation",
+            "required_for_answer": false,
+            "target_id": "TWSE:2308"
+          },
+          "missing_evidence_id": "missing-5e19944fa097da86a338",
+          "reason_code": "stale_observation",
+          "recoverability": "retry_with_new_authorization",
+          "related_citation_ids": [],
+          "schema_version": "m8r_watchlist_missing_evidence.v1",
+          "source_family": null,
+          "target_id": "TWSE:2308"
+        }
+      ],
       "performance": {},
       "target_id": "TWSE:2308",
       "target_position": 6
