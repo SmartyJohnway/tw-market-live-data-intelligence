@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 import hashlib
 import json
 import re
@@ -7,6 +6,7 @@ from decimal import Decimal, InvalidOperation
 from datetime import datetime, timezone
 from pathlib import PurePosixPath
 from typing import Any
+from scripts.m8r_filesystem_safety import classify_artifact_relative_path
 
 REQUEST_SCHEMA_VERSION = "m8r_bounded_market_context_request.v1"
 NORMALIZED_SCHEMA_VERSION = "m8r_normalized_market_context_request.v1"
@@ -131,11 +131,17 @@ def validate_output_scope(output_policy: dict[str, Any] | None) -> tuple[dict[st
     if not isinstance(root,str) or not root or len(root)>MAX_OUTPUT_RELATIVE_PATH_LENGTH:
         issues.append(_issue("unsafe_output_scope","artifact_root must be a bounded relative path", field="output_policy.artifact_root"))
         root="research/m8r/planned"
-    p=PurePosixPath(root)
-    parts=set(p.parts)
-    if root.startswith("/") or ".." in parts or any(part in {".env","secrets","credentials"} for part in parts) or str(p).startswith(("frontend/public","research/generated")):
-        issues.append(_issue("unsafe_output_scope","artifact_root must not be absolute, traversal, public, generated, or secret-bearing", field="output_policy.artifact_root"))
-    return {"artifact_root": str(p), "write_artifacts": False, "raw_payload_retention": False}, issues
+    
+    cls = classify_artifact_relative_path(root)
+    if not cls.safe_relative or cls.rejection_code:
+        issues.append(_issue("unsafe_output_scope", f"artifact_root is unsafe: {cls.rejection_code or 'unsafe_path'}", field="output_policy.artifact_root"))
+    else:
+        parts = set(cls.segments)
+        if any(part in {".env", "secrets", "credentials"} for part in parts) or cls.normalized_relative.startswith(("frontend/public", "research/generated")):
+            issues.append(_issue("unsafe_output_scope", "artifact_root must not be absolute, traversal, public, generated, or secret-bearing", field="output_policy.artifact_root"))
+            
+    norm_path = cls.normalized_relative if (cls.safe_relative and not cls.rejection_code) else "research/m8r/planned"
+    return {"artifact_root": norm_path, "write_artifacts": False, "raw_payload_retention": False}, issues
 
 def _target_contexts(target, request_contexts):
     return tuple(sorted(_norm_context_type(c) for c in (target.get("requested_context_types") or request_contexts or DEFAULT_CONTEXT_TYPES)))

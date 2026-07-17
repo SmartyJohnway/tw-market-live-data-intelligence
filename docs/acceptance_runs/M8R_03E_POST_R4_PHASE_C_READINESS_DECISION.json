@@ -944,6 +944,11 @@
       "affected_node_count": 2
     }
   },
+  "later_owner_sequencing_decision": {
+    "decision_date": "2026-07-17",
+    "current_primary_task": "M8R-03E-R5B-CROSS-PLATFORM-FILESYSTEM-FAIL-CLOSED-CONTRACT-AND-WINDOWS-CORRECTION",
+    "recommended_next_task_after_r5b": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE"
+  },
   "provisional_assignment_counts": {
     "known_historical_failure": 0,
     "windows_path_semantics": 5,
