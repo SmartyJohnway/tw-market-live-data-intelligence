@@ -18,10 +18,10 @@ def test_lexical_traversal_and_absolute_paths_rejected(tmp_path):
     for candidate, expected in [
         ('../x.json','path_traversal_forbidden'),
         ('a/../../x.json','path_traversal_forbidden'),
-        ('/tmp/x.json','absolute_output_path_forbidden'),
+        ('/tmp/x.json','rooted_output_path_forbidden'),
         ('C:/tmp/x.json','absolute_output_path_forbidden'),
-        ('C:tmp/x.json','absolute_output_path_forbidden'),
-        ('//server/share/x.json','absolute_output_path_forbidden'),
+        ('C:tmp/x.json','drive_relative_output_path_forbidden'),
+        ('//server/share/x.json','unc_output_path_forbidden'),
         ('a\\..\\..\\x.json','path_traversal_forbidden'),
     ]:
         with pytest.raises(FilesystemSafetyError) as exc:
@@ -37,9 +37,12 @@ def test_prefix_collision_absolute_path_rejected(tmp_path):
 
 def test_nonexistent_safe_leaf_and_nested_parent_are_accepted(tmp_path):
     root = tmp_path/'output'
-    dest = safe_destination(root, 'new/leaf/file.json')
-    assert dest.path.parent.exists()
+    dest = safe_destination(root, 'new/leaf/file.json', create_parent=False)
+    assert not dest.path.parent.exists()
     assert dest.path.name == 'file.json'
+    
+    dest_create = safe_destination(root, 'new/leaf/file.json', create_parent=True)
+    assert dest_create.path.parent.exists()
 
 def test_symlink_parent_escape_rejected(tmp_path):
     root = tmp_path/'output'; outside = tmp_path/'outside'
