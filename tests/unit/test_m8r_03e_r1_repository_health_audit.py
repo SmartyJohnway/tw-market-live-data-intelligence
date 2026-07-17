@@ -3,8 +3,8 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-IMPLEMENTED_THROUGH = "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION"
-NEXT = "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP"
+IMPLEMENTED_THROUGH = "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP"
+NEXT = "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING"
 
 def load(path):
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
@@ -32,14 +32,14 @@ def test_health_status_and_debt_register_shapes():
     assert final["r2_f0_disposition"] == "GO_WITH_CAVEATS"
     assert final["r2_disposition"] == "GO_WITH_CAVEATS"
     assert final["combined_pr_disposition"] == "APPROVE_WITH_CAVEATS"
-    assert final["recommended_next_task"] == NEXT
+    assert final["recommended_next_task"] == "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP"
     debt = load("docs/quality/m8_technical_debt_register.json")
     entry_required = {"debt_id","category","severity","status","affected_paths","finding","evidence","risk","recommended_action","blocking_phase","target_remediation_task"}
     assert debt["entries"]
     for entry in debt["entries"]:
         assert entry_required <= set(entry)
         assert entry["severity"] in {"P0","P1","P2","P3"}
-        assert entry["status"] in {"open","corrected_in_r1","accepted","deferred","requires_operator_decision","partially_resolved_with_platform_limitations","partially_resolved"}
+        assert entry["status"] in {"open","corrected_in_r1","accepted","deferred","requires_operator_decision","partially_resolved_with_platform_limitations","partially_resolved","corrected_in_r3"}
 
 def test_roadmap_phase_ids_unique_and_complete():
     text = (ROOT / "docs/roadmap/M8_POST_M8C_REVISED_ROADMAP.md").read_text(encoding="utf-8")
@@ -82,9 +82,8 @@ def test_p1_blocking_and_successor_semantics_are_consistent():
     assert status["p1_count"] == len(p1)
     assert status["recommended_next_task"] == NEXT
     assert all(entry.get("blocking_phase") != "Phase B" for entry in p1)
-    phase_c_blockers = [entry for entry in p1 if entry.get("blocking_phase") == "Phase C"]
-    assert phase_c_blockers
-    assert all("blocking_condition" in entry for entry in phase_c_blockers)
+    phase_c_blockers = [entry for entry in p1 if entry.get("blocking_phase") == "Phase C" and entry.get("status") not in {"corrected_in_r3", "resolved"}]
+    assert not phase_c_blockers
 
 
 def test_finding_counts_match_debt_register_and_blocking_findings_agree():

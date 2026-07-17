@@ -76,7 +76,7 @@ def test_skill_validator_passes():
  assert r.returncode==0, r.stderr+r.stdout
 
 def test_active_registry_successor_advances_to_r3():
- assert REG['recommended_next_task']=='M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP'
+ assert REG['recommended_next_task']=='M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING'
 
 def test_phase_c_blocked_pending_r3_critical_subset():
  assert CONTRACT['phase_dependencies']['Phase C']=='blocked_pending_M8R-03E-R3-critical-subset'
@@ -112,9 +112,9 @@ def test_embedded_skill_asset_equals_authoritative_contract():
  assert (ROOT/'docs/ai/m8_ai_capability_contract.json').read_text() == (ROOT/'skills/tw-market-evidence-agent/assets/m8_ai_capability_contract.json').read_text()
 
 def test_registry_status_surfaces_agree():
- r3='M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP'
+ r3='M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING'
  for surface in [REG, REG['m8_active_consolidated_status'], REG['planning_state'], HEALTH]:
-  assert surface['implemented_through_track']=='M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION'
+  assert surface['implemented_through_track']=='M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP'
   assert surface['agent_skill_contract']=='implemented'
   assert surface['ai_capability_guide']=='implemented'
   assert surface['recommended_next_task']==r3

@@ -32,3 +32,7 @@ started; it does not rename or remove profiles. Under `CI_POLICY_V1`,
 is manual-only; `full-non-network` is available locally/manual and runs
 automatically only through the single published-release `Release Validation`
 workflow. Historical and performance profiles remain manual-only.
+
+## component-architecture
+
+`component-architecture` is a non-network sandbox profile for R3 architecture boundaries, contract mirror drift, policy/evidence decoupling, and execution-state isolation. It is eligible for explicitly authorized lightweight CI in the future but is not automatically triggered by GitHub Actions under CI_POLICY_V1.
