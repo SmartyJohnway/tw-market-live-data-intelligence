@@ -133,3 +133,10 @@ The post-R4 decision task is completed. The next authorized workstreams are sequ
 - **Binding Status**: `unsealed_precommit_evidence`
 - **Evidence Execution Stage**: `pre_commit_unsealed_stage`
 - **Reason**: The evidence artifact is part of the tested change set and is not self-referentially bound to its own final tree or commit.
+
+---
+
+## 7. Later Governance Decision: Sequencing R5B before R5A
+On 2026-07-17, the owner explicitly decided to execute R5B (Windows filesystem safety contract and correction) first, before R5A. Consequently:
+- **Current Primary Task**: `M8R-03E-R5B-CROSS-PLATFORM-FILESYSTEM-FAIL-CLOSED-CONTRACT-AND-WINDOWS-CORRECTION`
+- **Next Task after R5B**: `M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE`

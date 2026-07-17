@@ -1,0 +1,84 @@
+{
+  "task_id": "M8R-03E-R5B-CROSS-PLATFORM-FILESYSTEM-FAIL-CLOSED-CONTRACT-AND-WINDOWS-CORRECTION",
+  "baseline_main_sha": "a17affee7a8f794039b027f339d501b6d59c9184",
+  "tested_parent_sha": "4545ec60f6bd71114e042ee45a1052e8b21b357b",
+  "tested_tree_sha": null,
+  "tested_commit_sha": null,
+  "binding_status": "unsealed_precommit_evidence",
+  "operating_system": "Windows",
+  "python_version": "3.13.7",
+  "inventory_summary": {
+    "total_surfaces": 12,
+    "authoritative_safety_module_users": 2,
+    "legacy_validators": 10,
+    "direct_write_surfaces": 7,
+    "phase_c_critical_surfaces": 9,
+    "migration_required_count": 9,
+    "unresolved_surfaces": 0
+  },
+  "migrated_surfaces": [
+    "m8r_bounded_market_context_request_validate_output_scope",
+    "m8r_03d_watchlist_controlled_executor_safe_root",
+    "m8r_03d_watchlist_controlled_executor_result_write",
+    "m8r_03d_watchlist_controlled_executor_claim_authorization",
+    "run_m8r_controlled_live_validation_safe_root",
+    "run_m8r_controlled_live_validation_write_json",
+    "m8r_one_shot_market_context_orchestrator_is_safe_output_scope",
+    "m8r_one_shot_market_context_orchestrator_consume_approval",
+    "m8r_one_shot_market_context_orchestrator_write_execution_artifacts",
+    "run_m8r_conversational_derivatives_context_safe_root",
+    "run_m8r_conversational_derivatives_context_writes"
+  ],
+  "remaining_legacy_surfaces": [
+    {
+      "surface_id": "governance_forbidden_path_guard_is_forbidden_repo_write_path",
+      "reason": "Static code scanner, not a runtime write surface"
+    }
+  ],
+  "path_class_matrix": {
+    "traversal_rejected": true,
+    "posix_rooted_rejected": true,
+    "windows_drive_rejected": true,
+    "unc_and_device_namespace_rejected": true,
+    "url_scheme_rejected": true,
+    "windows_reserved_names_rejected": true,
+    "alternate_data_streams_rejected": true,
+    "control_characters_rejected": true
+  },
+  "no_side_effect_results": {
+    "directory_creation_prevented": true,
+    "temp_file_creation_prevented": true,
+    "authorization_consumption_prevented": true,
+    "network_execution_prevented": true
+  },
+  "atomic_write_results": {
+    "temp_file_in_dest_dir": true,
+    "durable_write_fsync": true,
+    "atomic_replace": true,
+    "failure_cleanup_successful": true
+  },
+  "symlink_or_junction_results": {
+    "symlink_containment_verified": true,
+    "symlink_runtime_coverage_unavailable": true
+  },
+  "platform_neutral_results": {
+    "posix_tests_passed": true,
+    "windows_tests_passed": true
+  },
+  "windows_specific_results": {
+    "reserved_segment_check_passed": true,
+    "unc_path_check_passed": true,
+    "drive_relative_check_passed": true
+  },
+  "cloud_backend_scope": {
+    "local_filesystem_backend_validated": true,
+    "nfs_validated": false,
+    "object_storage_validated": false,
+    "distributed_race_free_claim": false
+  },
+  "phase_c_gate_result": {
+    "filesystem_safety_blocker": "resolved",
+    "phase_c_activation": "still_blocked_pending_R5A"
+  },
+  "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE"
+}
