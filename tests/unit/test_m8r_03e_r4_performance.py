@@ -17,3 +17,6 @@ def test_verify_rejects_duplicate_scenario():
 def test_verify_rejects_wrong_unsupported_contract_and_median():
  b=load(); a=copy.deepcopy(b); x=next(x for x in a['scenarios'] if x['scenario_id']=='50_target_stress'); x['tier']='production_contract'; assert not verify(a)
  a=copy.deepcopy(b); x=next(x for x in a['scenarios'] if x.get('measurement_executed',True)); x['median_measurements_ms']['total_end_to_end']+=1; assert not verify(a)
+def test_verify_rejects_later_invalid_and_fake_summary():
+ b=load(); m=next(x for x in b['scenarios'] if x.get('measurement_executed',True)); a=copy.deepcopy(b); next(x for x in a['scenarios'] if x['scenario_id']==m['scenario_id'])['raw_measurements'][2]['records'][0]['valid']=False; assert not verify(a)
+ a=copy.deepcopy(b); next(x for x in a['scenarios'] if x.get('measurement_executed') is False)['operation_counts_scope']='x'; assert not verify(a)

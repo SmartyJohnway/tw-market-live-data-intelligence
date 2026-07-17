@@ -111,18 +111,30 @@ def build():
 def verify(d):
  required={'schema_version':'m8r_03e_r4_performance_baseline.v2','task_id':'M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING','baseline_main_sha':'d33a807bd8f2a4677dbf630b326271e94dd7202c','measurement_contract_ref':'docs/contracts/m8r_03e_r4_performance_measurement_contract.json','production_contract_limit':10}
  if any(d.get(k)!=v for k,v in required.items()) or d.get('stress_only_limits') != [50,100] or not isinstance(d.get('scenarios'),list): return False
- ids=[x.get('scenario_id') for x in d.get('scenarios',[])]
+ ids=[x.get('scenario_id') for x in d['scenarios']]
  if set(ids)!=set(SCENARIOS) or len(ids)!=len(set(ids)): return False
+ forbidden={'raw_measurements','median_measurements_ms','peak_memory','validity_results','all_repetitions_valid','raw_measurement_count','operation_counts','operation_counts_scope','validator_cache_result_equivalence','semantic_equivalence','serialized_bytes','target_count','citation_count','missing_evidence_count','aggregate_valid_package_count','warmup_count','repeat_count'}
+ counters={'canonical_json','sha256_json','validate_schema','validator_cache_hits','validator_cache_misses','artifact_serialization','filesystem_write'}
  for x in d['scenarios']:
-  sid=x['scenario_id']
-  if sid in UNSUPPORTED_EXPECTATIONS:
-   e=UNSUPPORTED_EXPECTATIONS[sid]
-   if any(x.get(k)!=v for k,v in e.items()) or x.get('supported') is not False or x.get('measurement_executed') is not False or x.get('actual_target_count') is not None or not x.get('blocking_dependency'): return False
-   if any(k in x for k in ('raw_measurements','median_measurements_ms','peak_memory','validity_results','operation_counts','semantic_equivalence')): return False
-  else:
-   if x.get('validator_cache_result_equivalence') is not True or x.get('semantic_equivalence') is not True or x.get('repeat_count')!=5 or x.get('raw_measurement_count')!=5 or len(x.get('raw_measurements',[]))!=5 or not x.get('all_repetitions_valid') or x.get('semantic_equivalence')!=x.get('validator_cache_result_equivalence'): return False
-   elapsed=[m['elapsed_ms'] for m in x['raw_measurements']]
-   if abs(x['median_measurements_ms']['total_end_to_end']-round(statistics.median(elapsed),3))>.001: return False
+  if x['scenario_id'] in UNSUPPORTED_EXPECTATIONS:
+   e=UNSUPPORTED_EXPECTATIONS[x['scenario_id']]
+   if any(x.get(k)!=v for k,v in e.items()) or x.get('supported') is not False or x.get('measurement_executed') is not False or x.get('actual_target_count') is not None or not isinstance(x.get('blocking_dependency'),str) or not x['blocking_dependency'].strip() or forbidden.intersection(x): return False
+   continue
+  raw=x.get('raw_measurements')
+  if x.get('warmup_count')!=2 or x.get('repeat_count')!=5 or x.get('raw_measurement_count')!=5 or not isinstance(raw,list) or len(raw)!=5 or x.get('validity_results') is not True or x.get('all_repetitions_valid') is not True or x.get('validator_cache_result_equivalence') is not True or x.get('semantic_equivalence') is not True or x.get('operation_counts_scope')!='aggregate_across_all_measured_repetitions': return False
+  ops=x.get('operation_counts');
+  if not isinstance(ops,dict) or any(not isinstance(ops.get(k),int) or isinstance(ops.get(k),bool) or ops[k]<0 for k in counters): return False
+  for m in raw:
+   if not isinstance(m,dict) or not isinstance(m.get('elapsed_ms'),(int,float)) or isinstance(m.get('elapsed_ms'),bool) or m['elapsed_ms']<0 or not isinstance(m.get('records'),list) or not m['records'] or not isinstance(m.get('actual_target_count'),int) or isinstance(m['actual_target_count'],bool): return False
+   total=0
+   for r in m['records']:
+    if not isinstance(r,dict) or r.get('valid') is not True: return False
+    for k in ('actual_target_count','citation_count','missing_evidence_count'):
+     if not isinstance(r.get(k),int) or isinstance(r[k],bool) or r[k]<0:return False
+    total+=r['actual_target_count']
+   if total!=m['actual_target_count']:return False
+  med=x.get('median_measurements_ms',{}).get('total_end_to_end')
+  if not isinstance(med,(int,float)) or isinstance(med,bool) or abs(med-round(statistics.median(m['elapsed_ms'] for m in raw),3))>.001:return False
  return True
 def main():
  p=argparse.ArgumentParser();p.add_argument('--output',default='docs/quality/m8r_03e_r4_performance_baseline.json');p.add_argument('--verify-existing',action='store_true');a=p.parse_args();out=Path(a.output)
