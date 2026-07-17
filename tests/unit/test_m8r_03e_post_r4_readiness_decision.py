@@ -86,3 +86,8 @@ def test_successor_and_phase_c_gates():
     assert pd["Phase C"] == "implementation_ready_activation_blocked"
     assert pd["Phase C implementation"] == "ready_after_post_R4_readiness_decision"
     assert pd["Phase C activation"] == "blocked_pending_R5A_10_target_fixture_and_windows_path_validation_correction"
+
+def test_protocol_passed_metrics():
+    protocol_path = ROOT / "docs/protocol/M8R_03E_POST_R4_PHASE_C_READINESS_AND_R5_SEQUENCING_DECISION.md"
+    text = protocol_path.read_text(encoding="utf-8")
+    assert "Passed**: 1,665" in text

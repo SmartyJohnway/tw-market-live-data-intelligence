@@ -8,10 +8,10 @@ This document records the official preflight evaluation, local Windows-specific 
 
 ## 2. Windows-Local Test Results & Failure Classification
 
-A reproducible local execution result was completed in the Windows UTF-8 environment (`$env:PYTHONUTF8=1` via Python 3.11.15) to obtain recorded local Windows execution result.
+A reproducible local execution result was completed in the Windows UTF-8 environment (`$env:PYTHONUTF8=1` via Python 3.11.15) to record a local Windows execution result.
 
 ### 2.1. Test Execution Metrics
-- **Passed**: 1,664
+- **Passed**: 1,665
 - **Failed**: 48
 - **Skipped**: 1
 - **Deselected**: 1
