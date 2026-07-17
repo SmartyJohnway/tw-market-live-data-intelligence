@@ -15,11 +15,19 @@ from scripts.m8r_one_shot_market_context_orchestrator import FilesystemApprovalC
 from scripts.m8r_ai_market_context_package import AIMarketContextPackageError, build_ai_market_context_package, validate_ai_market_context_package, write_ai_market_context_artifacts
 
 
+from scripts.m8r_filesystem_safety import classify_artifact_relative_path, atomic_write_text
+
 def safe_root(root: str) -> str:
-    p = PurePosixPath(root)
-    if p.is_absolute() or ".." in p.parts or str(p).startswith(("frontend/public", "research/generated")):
+    cls = classify_artifact_relative_path(root)
+    if not cls.safe_relative or cls.rejection_code:
+        raise SystemExit(f"artifact-root must be a bounded relative path: {cls.rejection_code or 'unsafe_path'}")
+    parts = set(cls.segments)
+    if any(x in parts for x in (".env", "secrets", "credentials")):
         raise SystemExit("artifact-root must be a bounded relative path")
-    return str(p)
+    s = cls.normalized_relative
+    if s.startswith(("frontend/public", "research/generated")):
+        raise SystemExit("artifact-root must be a bounded relative path")
+    return s
 
 
 def _target(t: dict[str, Any], sources: list[str]) -> dict[str, Any]:
@@ -137,8 +145,7 @@ def write_mis_diagnostic(root: str, resolver: Any, resolution: dict[str, Any], *
         "full_option_chain_retained": False,
         "sockjs_frames_retained": False,
     }
-    path = Path(root) / "mis_conversational_resolution_diagnostic.json"
-    path.write_text(json.dumps(diagnostic, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    atomic_write_text(root, "mis_conversational_resolution_diagnostic.json", json.dumps(diagnostic, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
     return diagnostic
 
 def run(text: str, root: str, *, execution_time_utc: str | None = None, resolver: Any | None = None) -> dict[str, Any]:
@@ -149,9 +156,8 @@ def run(text: str, root: str, *, execution_time_utc: str | None = None, resolver
         raise SystemExit("clarification_required:" + str(intent.get("clarification_reason")))
     resolver = resolver or CompositeReferenceUniverseProvider(TaifexMisCurrentUniverseProvider(), openapi_reference_fetcher=openapi_tx_reference)
     resolution = resolve_current_contracts(intent, resolver, now_utc=now)
-    Path(root).mkdir(parents=True, exist_ok=True)
-    (Path(root)/"derivatives_intent.json").write_text(json.dumps(intent, ensure_ascii=False, sort_keys=True, indent=2)+"\n", encoding="utf-8")
-    (Path(root)/"derivatives_resolution_record.json").write_text(json.dumps(resolution, ensure_ascii=False, sort_keys=True, indent=2)+"\n", encoding="utf-8")
+    atomic_write_text(root, "derivatives_intent.json", json.dumps(intent, ensure_ascii=False, sort_keys=True, indent=2)+"\n")
+    atomic_write_text(root, "derivatives_resolution_record.json", json.dumps(resolution, ensure_ascii=False, sort_keys=True, indent=2)+"\n")
     if resolution.get("resolution_status") == "exact_contract_unavailable" or not resolution.get("resolved_exact_targets"):
         diagnostic = write_mis_diagnostic(root, resolver, resolution, operation_results=[], ai_state={"status":"not_run", "package_id": None, "reason": resolution.get("resolution_status")})
         return {"status":"blocked", "resolution": resolution, "ai_package_id": None, "diagnostic": diagnostic}

@@ -8,7 +8,7 @@ from scripts.m8r_03c_watchlist_bundle_builder import build_watchlist_snapshot_bu
 from scripts.m8a_twse_official_eod_adapter import execute_twse_official_eod_adapter
 from scripts.m8a_tpex_official_eod_adapter import execute_tpex_official_eod_adapter
 from scripts.m5k_common import execute_live_observation
-from scripts.m8r_filesystem_safety import atomic_write_text, safe_destination, validate_authorized_root
+from scripts.m8r_filesystem_safety import atomic_write_text, safe_destination, validate_authorized_root, classify_artifact_relative_path, FilesystemSafetyError
 RESULT_SCHEMA_VERSION='m8r_03d_watchlist_execution_result.v1'
 AUTHORIZATION_CONSUMPTION_ROOT=Path('artifacts/m8r_03d_authorization_consumption')
 FORBIDDEN_ARTIFACT_TOKENS=('raw_payload"','cookies','session_id','access_token','refresh_token','msgArray')
@@ -16,8 +16,10 @@ MARKET_ALIASES={'TWSE':{'TWSE','listed','twse','tse'},'TPEX':{'TPEX','tpex','tpe
 class M8R03DExecutionError(RuntimeError): pass
 
 def _safe_root(root):
-    p=PurePosixPath(str(root))
-    if '..' in p.parts or any(x in p.parts for x in ('.env','secrets','credentials')): raise ValueError('unsafe_artifact_root')
+    raw = str(root).replace('\\', '/')
+    parts = set(p.lower() for p in raw.split('/') if p not in ('', '.'))
+    if '..' in parts or any(x in parts for x in ('.env','secrets','credentials')):
+        raise ValueError('unsafe_artifact_root')
     return validate_authorized_root(root)
 def _write_json(root:Path, path:Path, data:Any):
     text=json.dumps(data,ensure_ascii=False,sort_keys=True,indent=2)
@@ -79,16 +81,21 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
     return _result(run_id,mode,started,utc_now(),request,plan,authorization if mode=='execute' else None,observations,bundle,status,issues,artifact_root_path,target_results=target_results,source_execution_summary={'planned_source_call_groups':plan.get('source_call_groups',[]),'group_results':group_results,'network_calls_performed':mode=='execute','network_default_enabled':False,'polling':False,'scheduler':False},write=True)
 
 def _claim_authorization(auth, plan, artifact_root, now):
-    root=AUTHORIZATION_CONSUMPTION_ROOT; root.mkdir(parents=True,exist_ok=True)
+    root=AUTHORIZATION_CONSUMPTION_ROOT
     key=sha256_json({'authorization_id':auth['authorization_id'],'one_shot_nonce':auth['one_shot_nonce'],'request_hash':plan['request_hash']})
     path=root/(key+'.json')
     receipt={'schema_version':'m8r_03d_authorization_consumption_receipt.v1','authorization_id':auth['authorization_id'],'one_shot_nonce_hash':sha256_json(auth['one_shot_nonce']),'request_hash':plan['request_hash'],'plan_id':plan['plan_id'],'claimed_at_utc':now,'status':'claimed'}
-    try:
-        fd=os.open(path, os.O_CREAT|os.O_EXCL|os.O_WRONLY, 0o600)
-        with os.fdopen(fd,'w',encoding='utf-8') as fh: json.dump(receipt,fh,ensure_ascii=False,sort_keys=True,indent=2)
-        return {'valid':True,'receipt_path':str(path),'issues':[]}
-    except FileExistsError:
+    
+    if path.exists():
         return {'valid':False,'issues':[{'code':'authorization_replayed'}]}
+        
+    try:
+        atomic_write_text(root, f"{key}.json", json.dumps(receipt, ensure_ascii=False, sort_keys=True, indent=2) + '\n', allow_overwrite=False)
+        return {'valid':True,'receipt_path':str(path),'issues':[]}
+    except FilesystemSafetyError as exc:
+        if exc.code == 'atomic_replace_failed':
+            return {'valid':False,'issues':[{'code':'authorization_replayed'}]}
+        return {'valid':False,'issues':[{'code':'authorization_consumption_failed','detail':str(exc)[:120]}]}
     except Exception as exc:
         return {'valid':False,'issues':[{'code':'authorization_consumption_failed','detail':str(exc)[:120]}]}
 

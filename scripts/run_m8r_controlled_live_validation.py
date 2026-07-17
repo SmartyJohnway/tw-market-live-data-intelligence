@@ -6,6 +6,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from datetime import datetime, timezone
 from pathlib import PurePosixPath
 from typing import Any
+from scripts.m8r_filesystem_safety import classify_artifact_relative_path, validate_authorized_root, atomic_write_text
 
 from scripts.m8r_bounded_market_context_request import compile_market_context_execution_plan, build_approval_artifact, REQUEST_SCHEMA_VERSION, M8RValidationError
 from scripts.m8r_one_shot_market_context_orchestrator import FilesystemApprovalConsumptionStore, execute_approved_market_context_plan, preflight_approved_market_context_plan, write_execution_artifacts, InMemoryApprovalConsumptionStore
@@ -59,10 +60,15 @@ def validate_commit_sha_resolvable(sha: str | None) -> bool:
     return validate_commit_is_ancestor_of_head(sha)
 def safe_root(root:str)->str:
     if not root: raise SystemExit("artifact-root required")
-    p=PurePosixPath(root)
-    if p.is_absolute() or ".." in p.parts: raise SystemExit("artifact root must be normalized relative path")
-    s=str(p)
-    if s.startswith("frontend/public") or s.startswith("research/generated") or "/frontend/public" in s: raise SystemExit("forbidden artifact root")
+    cls = classify_artifact_relative_path(root)
+    if not cls.safe_relative or cls.rejection_code:
+        raise SystemExit(f"artifact root must be normalized relative path: {cls.rejection_code or 'unsafe_path'}")
+    parts = set(cls.segments)
+    if any(x in parts for x in (".env", "secrets", "credentials")):
+        raise SystemExit("forbidden artifact root")
+    s = cls.normalized_relative
+    if s.startswith("frontend/public") or s.startswith("research/generated") or "/frontend/public" in s:
+        raise SystemExit("forbidden artifact root")
     return s
 
 def target_for(case:dict[str,Any], args)->dict[str,Any]:
@@ -111,10 +117,11 @@ def classify(result, ai_state, retention_audit):
     return "failed_runtime_contract"
 
 def write_json(path:Path,obj):
-    path.parent.mkdir(parents=True,exist_ok=True)
-    tmp=path.with_name(path.name+".tmp")
-    tmp.write_text(json.dumps(obj,ensure_ascii=False,sort_keys=True,indent=2)+"\n",encoding="utf-8")
-    os.replace(tmp,path)
+    abs_path = Path(path).resolve()
+    root = abs_path.parent
+    candidate = abs_path.name
+    text = json.dumps(obj,ensure_ascii=False,sort_keys=True,indent=2)+"\n"
+    atomic_write_text(root, candidate, text)
 
 
 def _case_manifest_entry(case_id: str, case: dict[str, Any], args, root: str) -> dict[str, Any]:
@@ -237,7 +244,8 @@ def derive_runtime_critical_status(controls: dict[str, Any], case_results: dict[
 
     if manifest:
         observed["operator_confirmation_gate"] = {"passed": manifest.get("operator_confirmed") is True and manifest.get("allow_network") is True, "evidence": "validation_manifest.json"}
-        root_ok = bool(manifest.get("artifact_root")) and not PurePosixPath(str(manifest.get("artifact_root"))).is_absolute() and ".." not in PurePosixPath(str(manifest.get("artifact_root"))).parts
+        cls_root = classify_artifact_relative_path(str(manifest.get("artifact_root") or ""))
+        root_ok = bool(manifest.get("artifact_root")) and cls_root.safe_relative and not cls_root.rejection_code
         observed["artifact_root_bounded"] = {"passed": root_ok, "evidence": "validation_manifest.json"}
     else:
         evidence_missing("operator_confirmation_gate"); evidence_missing("artifact_root_bounded")

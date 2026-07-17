@@ -14,6 +14,7 @@ from scripts.m8r_bounded_market_context_request import (
     load_source_registry, sha256_json, validate_approval_for_plan,
     validate_plan_internal_consistency, validate_output_scope,
 )
+from scripts.m8r_filesystem_safety import classify_artifact_relative_path, safe_destination, atomic_write_text
 
 RECEIPT_SCHEMA_VERSION = "m8r_market_context_execution_receipt.v1"
 RESULT_SCHEMA_VERSION = "m8r_market_context_orchestration_result.v1"
@@ -60,12 +61,16 @@ class FilesystemApprovalConsumptionStore:
             return True
         return data.get("plan_hash") == plan_hash or data.get("approval_id") == approval_id
     def consume(self, approval_id: str, plan_id: str, plan_hash: str, consumed_at_utc: str, receipt_id: str) -> None:
-        path = self._path(approval_id, plan_id)
-        path.parent.mkdir(parents=True, exist_ok=True)
+        safe = sha256_json({"approval_id": approval_id, "plan_id": plan_id})
+        candidate = f"approval_consumption/{safe}.json"
+        
+        dest = safe_destination(self.root, candidate, create_parent=False)
+        if dest.path.exists():
+            raise FileExistsError("approval consumption record already exists")
+            
         payload = {"approval_id": approval_id, "plan_id": plan_id, "plan_hash": plan_hash, "consumed_at_utc": consumed_at_utc, "receipt_id": receipt_id}
-        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
-        with os.fdopen(fd, "w", encoding="utf-8") as fh:
-            json.dump(payload, fh, ensure_ascii=False, sort_keys=True, indent=2)
+        text = json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+        atomic_write_text(self.root, candidate, text, allow_overwrite=False)
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
@@ -90,8 +95,12 @@ def _target_by_id(plan: dict[str, Any]) -> dict[str, dict[str, Any]]:
 def _is_safe_output_scope(scope: dict[str, Any]) -> tuple[bool, list[dict[str, Any]]]:
     norm, issues = validate_output_scope(scope)
     root = (scope or {}).get("artifact_root")
-    if not isinstance(root, str) or norm.get("artifact_root") != str(PurePosixPath(root)):
+    if not isinstance(root, str):
         issues.append(_issue("unsafe_output_scope", "output_scope artifact_root must be normalized relative path"))
+    else:
+        cls = classify_artifact_relative_path(root)
+        if not cls.safe_relative or cls.rejection_code or norm.get("artifact_root") != cls.normalized_relative:
+            issues.append(_issue("unsafe_output_scope", "output_scope artifact_root must be normalized relative path"))
     return not issues, issues
 
 def _approval_key(plan: dict[str, Any], approval: dict[str, Any]) -> tuple[str, str, str]:
@@ -273,14 +282,24 @@ def write_execution_artifacts(*, plan, approval, receipt, operation_results, mis
         raise OSError("approved_output_scope_mismatch")
     ok, issues = _is_safe_output_scope({"artifact_root": root})
     if not ok: raise OSError("unsafe_output_scope:" + canonical_json(issues))
-    run_dir = Path(root) / receipt["receipt_id"]; run_dir.mkdir(parents=True, exist_ok=False)
+    
+    receipt_id = receipt["receipt_id"]
+    if "/" in receipt_id or "\\" in receipt_id or ".." in receipt_id:
+        raise OSError("unsafe_receipt_id")
+        
+    run_dir = Path(root) / receipt_id
+    if run_dir.exists():
+        raise FileExistsError("run directory already exists")
+        
     payloads = {"execution_plan.json": plan, "approval_record.json": approval, "execution_receipt.json": receipt, "operation_results.json": operation_results, "missing_context.json": missing_context, "m8_context_core.json": m8_context_core}
     written = []
+    
     for name, payload in payloads.items():
         if '"raw_payload":' in canonical_json(payload): raise OSError("raw_payload_retention_forbidden")
-        fd, tmp = tempfile.mkstemp(prefix=name, dir=run_dir)
-        with os.fdopen(fd, "w", encoding="utf-8") as fh: json.dump(payload, fh, ensure_ascii=False, sort_keys=True, indent=2)
-        os.replace(tmp, run_dir / name); written.append(str(run_dir / name))
+        text = json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+        cand_path = f"{receipt_id}/{name}"
+        p = atomic_write_text(root, cand_path, text, allow_overwrite=False)
+        written.append(str(p))
     return written
 
 def _blocked_default_executor(*, operation, target, plan, execution_time_utc, allow_network):
