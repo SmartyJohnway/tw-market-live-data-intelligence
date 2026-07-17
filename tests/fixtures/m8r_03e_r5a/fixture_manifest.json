@@ -1,0 +1,187 @@
+{
+  "artifacts": [
+    {
+      "artifact_type": "fixture_manifest",
+      "consumers": [
+        "tests"
+      ],
+      "producer": "generator",
+      "relative_path": "fixture_manifest.json",
+      "schema_version": "m8r_03e_r5a_cross_layer_fixture_manifest.v1",
+      "sha256": "8afb9855af12c12f2f934e0363e4333de6adf99f6a1884907f8f63b99fa25f0b",
+      "target_ids": []
+    },
+    {
+      "artifact_type": "security_identity_snapshot",
+      "consumers": [
+        "executor"
+      ],
+      "producer": "generator",
+      "relative_path": "security_identity_snapshot.json",
+      "schema_version": "tw_verified_security_master_snapshot.v1",
+      "sha256": "cd7aa384554f5f83c044b6c9bb5a818e7593ad03190a1450ecf36bde3e1598ff",
+      "target_ids": []
+    },
+    {
+      "artifact_type": "security_identity_snapshot_manifest",
+      "consumers": [
+        "executor"
+      ],
+      "producer": "generator",
+      "relative_path": "security_identity_snapshot_manifest.json",
+      "schema_version": "tw_verified_security_master_snapshot_manifest.v1",
+      "sha256": "7451e2cb209d7fb94893b4fa11124418a8d36fe1c620aaefa3cd8f6157102d40",
+      "target_ids": []
+    },
+    {
+      "artifact_type": "source_capability_snapshot",
+      "consumers": [
+        "executor"
+      ],
+      "producer": "generator",
+      "relative_path": "source_capability_snapshot.json",
+      "schema_version": "m8_source_capability_registry.v1",
+      "sha256": "56442286f5a34ebf9bf3fa3c9ee28103b844888a28955be535478cdcccdbd0a6",
+      "target_ids": []
+    },
+    {
+      "artifact_type": "bounded_request",
+      "consumers": [
+        "executor"
+      ],
+      "producer": "generator",
+      "relative_path": "bounded_request.json",
+      "schema_version": "m8r_ai_evidence_request.v1",
+      "sha256": "8e0451a9aadba5ceaced8578c5509088cb44e435f906cd194d47e01aac381c02",
+      "target_ids": []
+    },
+    {
+      "artifact_type": "execution_plan",
+      "consumers": [
+        "executor",
+        "builder"
+      ],
+      "producer": "generator",
+      "relative_path": "execution_plan.json",
+      "schema_version": "m8r_03d_watchlist_execution_plan.v1",
+      "sha256": "4c158314cb40ce7c3177e7618ae4ccb2d2c142fadf5d8ea001626717096ede97",
+      "target_ids": []
+    },
+    {
+      "artifact_type": "source_observations",
+      "consumers": [
+        "executor"
+      ],
+      "producer": "generator",
+      "relative_path": "source_observations.json",
+      "schema_version": "m8r_watchlist_source_data.v1",
+      "sha256": "0278a8ed9a31aad775542b1a4c489bcfbc375393c9f35a5c33f4b9a9f1d17213",
+      "target_ids": []
+    },
+    {
+      "artifact_type": "currentness_assessment",
+      "consumers": [
+        "tests"
+      ],
+      "producer": "generator",
+      "relative_path": "currentness_assessment.json",
+      "schema_version": "m8r_watchlist_currentness_assessment.v1",
+      "sha256": "29eff2bd654adca0b820188dd44e5939175593a22fa701b1b42e5490bd2405ba",
+      "target_ids": []
+    },
+    {
+      "artifact_type": "evidence_bundle",
+      "consumers": [
+        "builder"
+      ],
+      "producer": "generator",
+      "relative_path": "evidence_bundle.json",
+      "schema_version": "m8r_watchlist_snapshot_bundle.v1",
+      "sha256": "dc05e38fdb01c5b5cec2fd16db8c9351f4f01055ff2c0c10d86f31e0cf6de7f8",
+      "target_ids": []
+    },
+    {
+      "artifact_type": "provenance_manifest",
+      "consumers": [
+        "validator"
+      ],
+      "producer": "generator",
+      "relative_path": "provenance_manifest.json",
+      "schema_version": "m8r_watchlist_provenance.v1",
+      "sha256": "df6ca6325ece8071bb15db174ea6a2d15bef6b4c3b1d1c43d479a26784f2b06b",
+      "target_ids": []
+    },
+    {
+      "artifact_type": "citation_map",
+      "consumers": [
+        "validator"
+      ],
+      "producer": "generator",
+      "relative_path": "citation_map.json",
+      "schema_version": "m8r_watchlist_citation_index.v1",
+      "sha256": "7b13cf241460ee6985a7804e30d0894e73ba6328f5504cb77864f43ee7ca17e6",
+      "target_ids": []
+    },
+    {
+      "artifact_type": "missing_evidence_register",
+      "consumers": [
+        "validator"
+      ],
+      "producer": "generator",
+      "relative_path": "missing_evidence_register.json",
+      "schema_version": "m8r_watchlist_missing_evidence.v1",
+      "sha256": "fbbca07a7cb22060b5b463e6669a2025fa606a2e8d85511724859dafe7e1e242",
+      "target_ids": []
+    },
+    {
+      "artifact_type": "context_projection",
+      "consumers": [
+        "validator"
+      ],
+      "producer": "generator",
+      "relative_path": "context_projection.json",
+      "schema_version": "m8r_watchlist_ai_context_package.v2",
+      "sha256": "f1c06c25598f4173e72fbcdd6f9614bc38bd569a644173ebe36a6fe9513030f6",
+      "target_ids": []
+    }
+  ],
+  "canonicalization_contract": "canonical_json_utf8",
+  "expected_states": {
+    "TPEX:5347": "ready",
+    "TPEX:6488": "ready_with_caveats",
+    "TWSE:0050": "ready",
+    "TWSE:0056": "ready",
+    "TWSE:2308": "ready_with_caveats",
+    "TWSE:2317": "partial",
+    "TWSE:2330": "ready",
+    "TWSE:2382": "partial",
+    "TWSE:3008": "ready_with_caveats",
+    "TWSE:9999": "blocked"
+  },
+  "fixture_id": "fixture-r5a-canonical",
+  "fixture_version": "1",
+  "hash_algorithm": "sha256",
+  "manifest_hash": "95d053657eb646436f03fb8c2ed3f2c00012a22e8556bf0f1d9fb914f3e90da6",
+  "network_required": false,
+  "reference_clock_utc": "2026-07-16T03:00:00Z",
+  "schema_version": "m8r_03e_r5a_cross_layer_fixture_manifest.v1",
+  "seed": "seed-r5a",
+  "source_families": [
+    "TWSE_MIS",
+    "TWSE_OPENAPI",
+    "TPEX_OPENAPI"
+  ],
+  "target_count": 10,
+  "target_ids": [
+    "TWSE:2330",
+    "TWSE:2317",
+    "TPEX:6488",
+    "TWSE:0050",
+    "TPEX:5347",
+    "TWSE:0056",
+    "TWSE:2308",
+    "TWSE:2382",
+    "TWSE:3008",
+    "TWSE:9999"
+  ]
+}

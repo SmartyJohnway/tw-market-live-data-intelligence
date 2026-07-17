@@ -1,0 +1,5 @@
+{
+  "expected_variant_a_status": "partial",
+  "expected_variant_b_status": "partial",
+  "expected_variant_c_status": "blocked"
+}

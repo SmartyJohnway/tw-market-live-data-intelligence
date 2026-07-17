@@ -1,0 +1,62 @@
+{
+  "bundle_id": "m8r03c-snapshot-46e036a19b3b1e48",
+  "execution_mode": "fixture",
+  "execution_result_status": "success_with_partial_coverage",
+  "lineage_missing_fields": [
+    "execution_result_bundle_id",
+    "execution_result_bundle_hash"
+  ],
+  "lineage_status": "partial",
+  "network_calls_performed": false,
+  "plan_id": "m8r03d-plan-708754616a452e95",
+  "source_group_summaries": [
+    {
+      "completed_at_utc": "2026-07-16T03:00:00Z",
+      "observation_count": 2,
+      "reason_code": null,
+      "source_family": "TPEX_OPENAPI",
+      "started_at_utc": "2026-07-16T03:00:00Z",
+      "status": "success",
+      "target_ids": [
+        "TPEX:6488",
+        "TPEX:5347"
+      ]
+    },
+    {
+      "completed_at_utc": "2026-07-16T03:00:00Z",
+      "observation_count": 6,
+      "reason_code": null,
+      "source_family": "TWSE_MIS",
+      "started_at_utc": "2026-07-16T03:00:00Z",
+      "status": "success",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008"
+      ]
+    },
+    {
+      "completed_at_utc": "2026-07-16T03:00:00Z",
+      "observation_count": 6,
+      "reason_code": null,
+      "source_family": "TWSE_OPENAPI",
+      "started_at_utc": "2026-07-16T03:00:00Z",
+      "status": "success",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TWSE:0050",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008"
+      ]
+    }
+  ]
+}

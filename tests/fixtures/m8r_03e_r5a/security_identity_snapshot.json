@@ -1,0 +1,408 @@
+{
+  "coverage": {
+    "coverage_status": "complete",
+    "instrument_types": [
+      "equity",
+      "etf"
+    ],
+    "lifecycle_event_count": 0,
+    "markets": [
+      "twse",
+      "tpex"
+    ],
+    "quarantined_lifecycle_event_count": 0,
+    "record_count": 9,
+    "total_lifecycle_event_count": 0
+  },
+  "effective_observation_date": "2026-07-16",
+  "generated_at_utc": "2026-07-16T03:00:00Z",
+  "quarantined_lifecycle_events": [],
+  "records": [
+    {
+      "canonical_target_id": "TWSE:2330",
+      "caveats": [],
+      "classification": {
+        "asset_class": "securities",
+        "board": "main",
+        "classification_status": "confirmed_official_single_lane",
+        "conflicts": [],
+        "instrument_family": "equity",
+        "instrument_type": "equity",
+        "listed_common_stock_core_flag": true,
+        "market": "TWSE",
+        "reason_codes": []
+      },
+      "conflicts": [],
+      "evidence_summary": {},
+      "execution_eligibility": {
+        "reason_codes": [],
+        "status": "allowed"
+      },
+      "identity": {
+        "cfi": "ESVUFR",
+        "isin": "TW000233000",
+        "security_code": "2330",
+        "security_name_en": "EnglishName 2330",
+        "security_name_zh": "台積電"
+      },
+      "lifecycle": {
+        "as_of": "2026-07-16",
+        "basis_event_ids": [],
+        "events": [],
+        "resolution_status": "resolved",
+        "state": "active"
+      },
+      "observation": {
+        "observed_at": "2026-07-16T03:00:00Z",
+        "source_updated_date": "2026-07-16",
+        "status": "observed_in_capture"
+      },
+      "record_hash": "a7aa0ae6f4641d0b5011cfa302af6b7dfade3023b6f4d3570a189c6a6147cd50",
+      "record_id": "rec-01"
+    },
+    {
+      "canonical_target_id": "TWSE:2317",
+      "caveats": [],
+      "classification": {
+        "asset_class": "securities",
+        "board": "main",
+        "classification_status": "confirmed_official_single_lane",
+        "conflicts": [],
+        "instrument_family": "equity",
+        "instrument_type": "equity",
+        "listed_common_stock_core_flag": true,
+        "market": "TWSE",
+        "reason_codes": []
+      },
+      "conflicts": [],
+      "evidence_summary": {},
+      "execution_eligibility": {
+        "reason_codes": [],
+        "status": "allowed"
+      },
+      "identity": {
+        "cfi": "ESVUFR",
+        "isin": "TW000231700",
+        "security_code": "2317",
+        "security_name_en": "EnglishName 2317",
+        "security_name_zh": "鴻海"
+      },
+      "lifecycle": {
+        "as_of": "2026-07-16",
+        "basis_event_ids": [],
+        "events": [],
+        "resolution_status": "resolved",
+        "state": "active"
+      },
+      "observation": {
+        "observed_at": "2026-07-16T03:00:00Z",
+        "source_updated_date": "2026-07-16",
+        "status": "observed_in_capture"
+      },
+      "record_hash": "5330e8929d17860ea35002514d3307d1ccff2ed817292d3488fde552a4d9688c",
+      "record_id": "rec-02"
+    },
+    {
+      "canonical_target_id": "TPEX:6488",
+      "caveats": [],
+      "classification": {
+        "asset_class": "securities",
+        "board": "main",
+        "classification_status": "confirmed_official_single_lane",
+        "conflicts": [],
+        "instrument_family": "equity",
+        "instrument_type": "equity",
+        "listed_common_stock_core_flag": true,
+        "market": "TPEX",
+        "reason_codes": []
+      },
+      "conflicts": [],
+      "evidence_summary": {},
+      "execution_eligibility": {
+        "reason_codes": [],
+        "status": "allowed"
+      },
+      "identity": {
+        "cfi": "ESVUFR",
+        "isin": "TW000648800",
+        "security_code": "6488",
+        "security_name_en": "EnglishName 6488",
+        "security_name_zh": "環球晶"
+      },
+      "lifecycle": {
+        "as_of": "2026-07-16",
+        "basis_event_ids": [],
+        "events": [],
+        "resolution_status": "resolved",
+        "state": "active"
+      },
+      "observation": {
+        "observed_at": "2026-07-16T03:00:00Z",
+        "source_updated_date": "2026-07-16",
+        "status": "observed_in_capture"
+      },
+      "record_hash": "e49bfe59f61bc48261bef56389b30ded93a89f64bec717903ea7a54b460f1713",
+      "record_id": "rec-03"
+    },
+    {
+      "canonical_target_id": "TWSE:0050",
+      "caveats": [],
+      "classification": {
+        "asset_class": "securities",
+        "board": "main",
+        "classification_status": "confirmed_official_single_lane",
+        "conflicts": [],
+        "instrument_family": "structured_product",
+        "instrument_type": "etf",
+        "listed_common_stock_core_flag": false,
+        "market": "TWSE",
+        "reason_codes": []
+      },
+      "conflicts": [],
+      "evidence_summary": {},
+      "execution_eligibility": {
+        "reason_codes": [],
+        "status": "allowed"
+      },
+      "identity": {
+        "cfi": "CEJVXX",
+        "isin": "TW000005000",
+        "security_code": "0050",
+        "security_name_en": "EnglishName 0050",
+        "security_name_zh": "元大台灣50"
+      },
+      "lifecycle": {
+        "as_of": "2026-07-16",
+        "basis_event_ids": [],
+        "events": [],
+        "resolution_status": "resolved",
+        "state": "active"
+      },
+      "observation": {
+        "observed_at": "2026-07-16T03:00:00Z",
+        "source_updated_date": "2026-07-16",
+        "status": "observed_in_capture"
+      },
+      "record_hash": "4bc677b46cc97012ae961fddb98615b4fc1f086b5ebd425c4b89fe549c083c19",
+      "record_id": "rec-04"
+    },
+    {
+      "canonical_target_id": "TPEX:5347",
+      "caveats": [],
+      "classification": {
+        "asset_class": "securities",
+        "board": "main",
+        "classification_status": "confirmed_official_single_lane",
+        "conflicts": [],
+        "instrument_family": "equity",
+        "instrument_type": "equity",
+        "listed_common_stock_core_flag": true,
+        "market": "TPEX",
+        "reason_codes": []
+      },
+      "conflicts": [],
+      "evidence_summary": {},
+      "execution_eligibility": {
+        "reason_codes": [],
+        "status": "allowed"
+      },
+      "identity": {
+        "cfi": "ESVUFR",
+        "isin": "TW000534700",
+        "security_code": "5347",
+        "security_name_en": "EnglishName 5347",
+        "security_name_zh": "世界"
+      },
+      "lifecycle": {
+        "as_of": "2026-07-16",
+        "basis_event_ids": [],
+        "events": [],
+        "resolution_status": "resolved",
+        "state": "active"
+      },
+      "observation": {
+        "observed_at": "2026-07-16T03:00:00Z",
+        "source_updated_date": "2026-07-16",
+        "status": "observed_in_capture"
+      },
+      "record_hash": "570deecdaf66b92cb9ee5a54ab9756f0a7e3567eb5d40272ef29f9ebfab2348c",
+      "record_id": "rec-05"
+    },
+    {
+      "canonical_target_id": "TWSE:0056",
+      "caveats": [],
+      "classification": {
+        "asset_class": "securities",
+        "board": "main",
+        "classification_status": "confirmed_official_single_lane",
+        "conflicts": [],
+        "instrument_family": "structured_product",
+        "instrument_type": "etf",
+        "listed_common_stock_core_flag": false,
+        "market": "TWSE",
+        "reason_codes": []
+      },
+      "conflicts": [],
+      "evidence_summary": {},
+      "execution_eligibility": {
+        "reason_codes": [],
+        "status": "allowed"
+      },
+      "identity": {
+        "cfi": "CEJVXX",
+        "isin": "TW000005600",
+        "security_code": "0056",
+        "security_name_en": "EnglishName 0056",
+        "security_name_zh": "元大高股息"
+      },
+      "lifecycle": {
+        "as_of": "2026-07-16",
+        "basis_event_ids": [],
+        "events": [],
+        "resolution_status": "resolved",
+        "state": "active"
+      },
+      "observation": {
+        "observed_at": "2026-07-16T03:00:00Z",
+        "source_updated_date": "2026-07-16",
+        "status": "observed_in_capture"
+      },
+      "record_hash": "a864f65c7477982cb5bffed98a9235087a239fb182c17a87773876501b5b745e",
+      "record_id": "rec-06"
+    },
+    {
+      "canonical_target_id": "TWSE:2308",
+      "caveats": [],
+      "classification": {
+        "asset_class": "securities",
+        "board": "main",
+        "classification_status": "confirmed_official_single_lane",
+        "conflicts": [],
+        "instrument_family": "equity",
+        "instrument_type": "equity",
+        "listed_common_stock_core_flag": true,
+        "market": "TWSE",
+        "reason_codes": []
+      },
+      "conflicts": [],
+      "evidence_summary": {},
+      "execution_eligibility": {
+        "reason_codes": [],
+        "status": "allowed"
+      },
+      "identity": {
+        "cfi": "ESVUFR",
+        "isin": "TW000230800",
+        "security_code": "2308",
+        "security_name_en": "EnglishName 2308",
+        "security_name_zh": "台達電"
+      },
+      "lifecycle": {
+        "as_of": "2026-07-16",
+        "basis_event_ids": [],
+        "events": [],
+        "resolution_status": "resolved",
+        "state": "active"
+      },
+      "observation": {
+        "observed_at": "2026-07-16T03:00:00Z",
+        "source_updated_date": "2026-07-16",
+        "status": "observed_in_capture"
+      },
+      "record_hash": "8ae300234ff53e87c37e17c92ad9e6747aa5ad2fcab6cc514394ba7066a8568b",
+      "record_id": "rec-07"
+    },
+    {
+      "canonical_target_id": "TWSE:2382",
+      "caveats": [],
+      "classification": {
+        "asset_class": "securities",
+        "board": "main",
+        "classification_status": "confirmed_official_single_lane",
+        "conflicts": [],
+        "instrument_family": "equity",
+        "instrument_type": "equity",
+        "listed_common_stock_core_flag": true,
+        "market": "TWSE",
+        "reason_codes": []
+      },
+      "conflicts": [],
+      "evidence_summary": {},
+      "execution_eligibility": {
+        "reason_codes": [],
+        "status": "allowed"
+      },
+      "identity": {
+        "cfi": "ESVUFR",
+        "isin": "TW000238200",
+        "security_code": "2382",
+        "security_name_en": "EnglishName 2382",
+        "security_name_zh": "廣達"
+      },
+      "lifecycle": {
+        "as_of": "2026-07-16",
+        "basis_event_ids": [],
+        "events": [],
+        "resolution_status": "resolved",
+        "state": "active"
+      },
+      "observation": {
+        "observed_at": "2026-07-16T03:00:00Z",
+        "source_updated_date": "2026-07-16",
+        "status": "observed_in_capture"
+      },
+      "record_hash": "a90ab124aa9fbd632f3d5e526d13831b5b3c53ec9966e9503d736c7420102773",
+      "record_id": "rec-08"
+    },
+    {
+      "canonical_target_id": "TWSE:3008",
+      "caveats": [],
+      "classification": {
+        "asset_class": "securities",
+        "board": "main",
+        "classification_status": "confirmed_official_single_lane",
+        "conflicts": [],
+        "instrument_family": "equity",
+        "instrument_type": "equity",
+        "listed_common_stock_core_flag": true,
+        "market": "TWSE",
+        "reason_codes": []
+      },
+      "conflicts": [],
+      "evidence_summary": {},
+      "execution_eligibility": {
+        "reason_codes": [],
+        "status": "allowed"
+      },
+      "identity": {
+        "cfi": "ESVUFR",
+        "isin": "TW000300800",
+        "security_code": "3008",
+        "security_name_en": "EnglishName 3008",
+        "security_name_zh": "大立光"
+      },
+      "lifecycle": {
+        "as_of": "2026-07-16",
+        "basis_event_ids": [],
+        "events": [],
+        "resolution_status": "resolved",
+        "state": "active"
+      },
+      "observation": {
+        "observed_at": "2026-07-16T03:00:00Z",
+        "source_updated_date": "2026-07-16",
+        "status": "observed_in_capture"
+      },
+      "record_hash": "18f759cac10b9475e725b826c00372dc68d148ba7bf7d3522966410ca6857fd1",
+      "record_id": "rec-09"
+    }
+  ],
+  "schema_version": "tw_verified_security_master_snapshot.v1",
+  "snapshot_id": "snap-r5a-fixture",
+  "source_skill": {
+    "name": "tw-security-master-classifier",
+    "skill_contract_hash": "b42bec6f03b4d53067e59d390f9ed2a8b488fb3a52117c62c02611cdac52d7a8",
+    "skill_path": "skills/tw-security-master-classifier",
+    "skill_version": "1.0.0"
+  }
+}
