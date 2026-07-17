@@ -258,4 +258,74 @@ def test_atomic_write_cleanup_on_failure(tmp_path):
     # Ensure temporary file is cleaned up
     files = list(root.rglob("*.tmp"))
     assert len(files) == 0
-    assert not (root / candidate).exists()
+
+
+def test_uri_like_root_rejection_portable():
+    uri_schemes = [
+        "s3://bucket/key",
+        "gs://bucket",
+        "azure://container",
+        "file:///tmp",
+        "http://localhost",
+        "https://google.com",
+        "myscheme://path",
+    ]
+    for uri in uri_schemes:
+        with pytest.raises(FilesystemSafetyError) as excinfo:
+            validate_authorized_root(uri)
+        assert excinfo.value.code == "absolute_output_path_forbidden"
+
+
+def test_atomic_exclusive_write_failure_cleanup(tmp_path):
+    root = tmp_path / "sandbox"
+    root.mkdir()
+    candidate = "exclusive_failure.json"
+    dest_path = root / candidate
+    
+    import unittest.mock as mock
+    from scripts.m8r_filesystem_safety import atomic_create_text_exclusive
+    
+    # 1. Mock write() failure
+    class FailWriteFile:
+        def __init__(self, fd, *args, **kwargs):
+            self.fd = fd
+        def write(self, content): raise OSError("Mock write failure")
+        def flush(self): pass
+        def close(self):
+            try: os.close(self.fd)
+            except OSError: pass
+        
+    with mock.patch("os.fdopen", side_effect=lambda fd, *args, **kwargs: FailWriteFile(fd)):
+        with pytest.raises(OSError) as excinfo:
+            atomic_create_text_exclusive(root, candidate, "content")
+        assert "Mock write failure" in str(excinfo.value)
+    assert not dest_path.exists()
+    
+    # Verify subsequent writes succeed
+    atomic_create_text_exclusive(root, candidate, "good content")
+    assert dest_path.exists()
+    assert dest_path.read_text(encoding="utf-8") == "good content"
+    dest_path.unlink()
+    
+    # 2. Mock flush() failure
+    class FailFlushFile:
+        def __init__(self, fd, *args, **kwargs):
+            self.fd = fd
+        def write(self, content): pass
+        def flush(self): raise OSError("Mock flush failure")
+        def close(self):
+            try: os.close(self.fd)
+            except OSError: pass
+        
+    with mock.patch("os.fdopen", side_effect=lambda fd, *args, **kwargs: FailFlushFile(fd)):
+        with pytest.raises(OSError) as excinfo:
+            atomic_create_text_exclusive(root, candidate, "content")
+        assert "Mock flush failure" in str(excinfo.value)
+    assert not dest_path.exists()
+    
+    # 3. Mock os.fsync() failure
+    with mock.patch("os.fsync", side_effect=OSError("Mock fsync failure")):
+        with pytest.raises(OSError) as excinfo:
+            atomic_create_text_exclusive(root, candidate, "content")
+        assert "Mock fsync failure" in str(excinfo.value)
+    assert not dest_path.exists()

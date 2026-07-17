@@ -157,14 +157,18 @@ def validate_relative_artifact_path(
         raise FilesystemSafetyError(cls.rejection_code or 'path_traversal_forbidden')
     return cls.segments
 
+def reject_uri_like_root(root: str | os.PathLike[str]) -> None:
+    raw = str(root)
+    if '://' in raw or re.search(r'^[A-Za-z0-9+.-]+://', raw):
+        raise FilesystemSafetyError('absolute_output_path_forbidden', f"URI-like roots are forbidden: {raw}")
+
 def validate_authorized_root(
     root: str | os.PathLike[str],
 ) -> Path:
     if root is None or str(root) == '':
         raise FilesystemSafetyError('output_root_missing')
+    reject_uri_like_root(root)
     raw = str(root)
-    if '://' in raw:
-        raise FilesystemSafetyError('absolute_output_path_forbidden')
     
     p = Path(root)
     try:
@@ -328,10 +332,27 @@ def atomic_create_text_exclusive(
         fd_open.flush()
         os.fsync(fd)
     except Exception as exc:
+        if fd_open is not None:
+            try:
+                fd_open.close()
+            except OSError:
+                pass
+            fd_open = None
+        elif fd is not None:
+            try:
+                os.close(fd)
+            except OSError:
+                pass
+            fd = None
+            
         try:
-            os.remove(dest.path)
-        except OSError:
-            pass
+            if dest.path.exists():
+                os.remove(dest.path)
+        except OSError as cleanup_exc:
+            raise FilesystemSafetyError(
+                'exclusive_create_cleanup_failed',
+                f"Failed to remove incomplete file {dest.path}: {cleanup_exc}"
+            ) from exc
         raise exc
     finally:
         if fd_open is not None:

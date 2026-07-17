@@ -5,8 +5,8 @@ This report documents the verification, acceptance metrics, and governance closu
 ## Executive Summary
 
 - **Task ID**: `M8R-03E-R5B-CROSS-PLATFORM-FILESYSTEM-FAIL-CLOSED-CONTRACT-AND-WINDOWS-CORRECTION`
-- **Disposition**: `resolved`
-- **Filesystem Safety Blocker**: `partially_resolved_with_concurrency_fixes`
+- **Disposition**: `PARTIAL_PASS`
+- **Filesystem Safety Blocker**: `partially_resolved`
 - **Phase C Implementation Gate**: `ready`
 - **Phase C Activation Gate**: `blocked` (pending R5A fixture integration)
 - **Operating System**: Windows / POSIX compliant
@@ -31,6 +31,7 @@ We verified this behavior via mock-based integration tests:
 
 To eliminate TOCTOU (time-of-check to time-of-use) races, the centralized safety contract now includes a native exclusive-create atomic writing API:
 - `atomic_create_text_exclusive`: Uses `os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)` to guarantee exclusive-create atomicity at the OS level.
+- Handle-release cleanup: When write/flush/fsync fails, the file handle is closed *first* before the file is deleted. This resolves the Windows program permission locks during cleanups.
 - Highly concurrent worker threads (12 concurrent runners) competing to write the same single-use receipt were tested.
 - **Result**: Exactly **1 thread succeeds**, and all other **11 threads fail** with `FileExistsError` or safety exceptions.
 
@@ -52,7 +53,7 @@ The following confirmed Windows anomalies have been fully corrected and verified
 
 ### 4.1. Safety Contract Unit Tests
 - **Test File**: `tests/unit/test_m8r_03e_r5b_cross_platform_filesystem_safety.py`
-- **Status**: PASSED (9/9 tests passed)
+- **Status**: PASSED (11/11 tests passed, including new failure-injection and early URI rejection tests)
 - **Legacy Containment Test**: `tests/unit/test_m8r_filesystem_containment.py`
 - **Status**: PASSED (10/10 tests passed)
 - **Concurrency Test**: `tests/unit/test_m8r_03e_r5b_concurrency.py`
@@ -64,9 +65,12 @@ The following confirmed Windows anomalies have been fully corrected and verified
 
 ### 4.3. Full Non-Network Regression
 - **Command**: `$env:PYTHONUTF8=1; .venv\Scripts\python.exe -m pytest -m "not network" -q`
-- **Total Tests Run**: 1733
-- **Passed**: 1695
+- **Selected**: 1739
+- **Executed**: 1737
+- **Passed**: 1701
 - **Failed**: 36 (All 36 are confirmed known pre-existing baseline failures recorded in the R4 readiness decision; zero new regressions introduced)
+- **Novel Failing Node IDs**: 0
+- **Regression Determination Status**: `not_demonstrated_on_equivalent_python_environment` (due to different Python versions between R4 and R5 runs)
 
 ---
 

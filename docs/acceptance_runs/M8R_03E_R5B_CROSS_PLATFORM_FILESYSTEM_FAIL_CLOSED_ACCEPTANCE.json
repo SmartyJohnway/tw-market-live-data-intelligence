@@ -1,7 +1,7 @@
 {
   "task_id": "M8R-03E-R5B-CROSS-PLATFORM-FILESYSTEM-FAIL-CLOSED-CONTRACT-AND-WINDOWS-CORRECTION",
   "baseline_main_sha": "a17affee7a8f794039b027f339d501b6d59c9184",
-  "tested_parent_sha": "4545ec60f6bd71114e042ee45a1052e8b21b357b",
+  "tested_parent_sha": "9a0c77a3826a888f83c78751201b8b95f17a051b",
   "tested_tree_sha": null,
   "tested_commit_sha": null,
   "binding_status": "unsealed_precommit_evidence",
@@ -77,17 +77,20 @@
     "distributed_race_free_claim": false
   },
   "phase_c_gate_result": {
-    "filesystem_safety_blocker": "partially_resolved_with_concurrency_fixes",
+    "filesystem_safety_blocker": "partially_resolved",
     "phase_c_activation": "still_blocked_pending_R5A"
   },
   "full_non_network_regression_results": {
-    "total_tests_run": 1733,
-    "passed": 1695,
+    "collected_or_selected": 1739,
+    "executed": 1737,
+    "passed": 1701,
     "failed": 36,
     "skipped": 1,
     "deselected": 1,
     "warnings": 1,
     "return_code": 1,
+    "novel_failing_node_ids_vs_r4_record": 0,
+    "regression_determination_status": "not_demonstrated_on_equivalent_python_environment",
     "failed_node_ids": [
       "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
       "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
@@ -125,11 +128,7 @@
       "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin",
       "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema",
       "tests/unit/test_workflow_policy_matrix.py::test_workflow_policy_matrix_and_ci_local_only"
-    ],
-    "failures_classification": {
-      "known_historical_failure_drift": 36,
-      "new_regression": 0
-    }
+    ]
   },
   "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE"
 }
