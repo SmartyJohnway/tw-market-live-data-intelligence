@@ -34,7 +34,7 @@ def test_registry_active_state_consolidated():
     assert 'trading_signal_allowed' not in active
     assert 'recommendation_allowed' not in active
     assert active['raw_payload_exposure_allowed'] is False
-    assert active['next_task']=='M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING'
+    assert active['next_task']=='M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE'
     assert active['next_task_status']=='accepted_successor'
     assert reg['planning_state']['preflight_completed_through']=='M8C-00'
     assert reg['planning_state']['m8c_00_preflight_status']=='m8c_00_taifex_mis_preflight_pass_with_caveats'
