@@ -26,9 +26,27 @@ def counters():
  def vs(o,n): c['validate_schema']+=1; return schema(o,n)
  with patch.object(validator,'canonical_json',cj),patch.object(validator,'sha256_json',sj),patch.object(validator,'validate_schema',vs),patch.object(builder,'canonical_json',cj),patch.object(builder,'sha256_json',sj): yield c
  after=validator._validator.cache_info(); c['validator_cache_hits']=after.hits-before.hits; c['validator_cache_misses']=after.misses-before.misses
+def build_valid_target_workload(*, fixture_case: str, target_count: int):
+ """Benchmark-only upstream clone set; never a production watchlist expansion."""
+ base=_load_case(fixture_case)
+ originals=base['validated_request']['persistent_watchlist_reference']['enabled_target_ids']
+ out=copy.deepcopy(base); ids=[f"TWSE:R4T{i:03d}" for i in range(1,target_count+1)]
+ def clone_list(values, key):
+  return [dict(copy.deepcopy(values[i % len(values)]), **{key: ids[i]}) for i in range(target_count)]
+ out['validated_request']['persistent_watchlist_reference']['enabled_target_ids']=ids
+ out['execution_plan']['target_order']=ids
+ out['execution_plan']['targets']=clone_list(base['execution_plan']['targets'],'target_id')
+ for g in out['execution_plan']['source_call_groups']: g['target_ids']=ids
+ out['execution_result']['target_results']=clone_list(base['execution_result']['target_results'],'target_id');out['execution_result']['observation_count']=len(out['execution_result']['target_results'])
+ for g in out['execution_result']['source_execution_summary'].get('group_results',[]): g['target_ids']=ids
+ out['watchlist_bundle']['targets']=clone_list(base['watchlist_bundle']['targets'],'target_id')
+ out['watchlist_bundle']['facts']=[dict(copy.deepcopy(base['watchlist_bundle']['facts'][i % len(base['watchlist_bundle']['facts'])]),target_id=ids[i % target_count]) for i in range(target_count*2)]
+ out['watchlist_bundle']['coverage']['requested_target_ids']=ids;out['watchlist_bundle']['coverage']['targets']=clone_list(base['watchlist_bundle']['coverage']['targets'],'target_id')
+ rh=validator.sha256_json(out['validated_request']);out['execution_plan']['request_hash']=rh;out['execution_result']['request_hash']=rh
+ return out
+
 def pipeline(case='complete_snapshot',one=False):
- up=_load_case(case)
- if one: up=_truncate_to_first_target(up)
+ up=build_valid_target_workload(fixture_case=case,target_count=1 if one else 10)
  pkg=builder.build_watchlist_ai_context_package(validated_request=up['validated_request'],execution_plan=up['execution_plan'],execution_result=up['execution_result'],watchlist_bundle=up['watchlist_bundle'],generated_at_utc='2026-07-17T00:00:00Z')
  hand=build_watchlist_conversation_handoff(context_package=pkg,generated_at_utc='2026-07-17T00:00:00Z')
  man=builder.build_context_manifest(context_package=pkg,conversation_handoff=hand,upstream_artifacts=up,generated_at_utc='2026-07-17T00:00:00Z')
