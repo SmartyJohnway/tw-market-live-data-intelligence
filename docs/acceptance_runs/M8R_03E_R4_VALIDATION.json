@@ -74,10 +74,10 @@
     "failure_set_changed": "unknown",
     "new_m8_m8r_failure_count": "unknown"
   },
-  "resolved_debt_ids": [
+  "resolved_debt_ids": [],
+  "partially_resolved_debt_ids": [
     "M8-DEBT-0005"
   ],
-  "partially_resolved_debt_ids": [],
   "deferred_debt_ids": [
     "M8-DEBT-0003",
     "M8-DEBT-0004",
@@ -92,11 +92,27 @@
     "R4-E": "PASS",
     "R4-F": "PASS_WITH_CAVEATS"
   },
-  "r4_disposition": "NO_GO",
+  "r4_disposition": "PARTIAL_COMPLETION",
   "active_governance_state": {
     "implemented_through": "R3",
     "implemented_through_track": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
     "phase_c_gate_status": "blocked_pending_R4"
   },
-  "successor_decision": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING; full-non-network must complete and record its exact baseline before R4 can close."
+  "successor_decision": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION; likely workstream R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE.",
+  "r4_closure_status": "not_closed",
+  "completed_r4_capabilities": [
+    "measurement_contract",
+    "reproducible_valid_fixture_baseline",
+    "scenario_specific_repetitions",
+    "memory_measurement",
+    "operation_count_instrumentation",
+    "schema_validator_cache"
+  ],
+  "unresolved_r4_capabilities": [
+    "schema_valid_10_target_cross_layer_fixture",
+    "50_target_stress_measurement",
+    "100_target_stress_measurement",
+    "high_citation_pressure_fixture",
+    "combined_pressure_fixture"
+  ]
 }

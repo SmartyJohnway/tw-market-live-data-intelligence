@@ -26,8 +26,8 @@ def counters():
  def vs(o,n): c['validate_schema']+=1; return schema(o,n)
  with patch.object(validator,'canonical_json',cj),patch.object(validator,'sha256_json',sj),patch.object(validator,'validate_schema',vs),patch.object(builder,'canonical_json',cj),patch.object(builder,'sha256_json',sj): yield c
  after=validator._validator.cache_info(); c['validator_cache_hits']=after.hits-before.hits; c['validator_cache_misses']=after.misses-before.misses
-def build_valid_target_workload(*, fixture_case: str, target_count: int):
- """Benchmark-only upstream clone set; never a production watchlist expansion."""
+def build_experimental_target_workload(*, fixture_case: str, target_count: int):
+ """Benchmark-only experimental constructor; not schema-valid for production measurement and not authoritative."""
  base=_load_case(fixture_case)
  originals=base['validated_request']['persistent_watchlist_reference']['enabled_target_ids']
  out=copy.deepcopy(base); ids=[f"TWSE:R4T{i:03d}" for i in range(1,target_count+1)]
@@ -46,7 +46,8 @@ def build_valid_target_workload(*, fixture_case: str, target_count: int):
  return out
 
 def pipeline(case='complete_snapshot',one=False):
- up=build_valid_target_workload(fixture_case=case,target_count=1 if one else 10)
+ up=_load_case(case)
+ if one: up=_truncate_to_first_target(up)
  pkg=builder.build_watchlist_ai_context_package(validated_request=up['validated_request'],execution_plan=up['execution_plan'],execution_result=up['execution_result'],watchlist_bundle=up['watchlist_bundle'],generated_at_utc='2026-07-17T00:00:00Z')
  hand=build_watchlist_conversation_handoff(context_package=pkg,generated_at_utc='2026-07-17T00:00:00Z')
  man=builder.build_context_manifest(context_package=pkg,conversation_handoff=hand,upstream_artifacts=up,generated_at_utc='2026-07-17T00:00:00Z')
@@ -86,6 +87,9 @@ def _run_once(sid):
   return records
  return package_count,work
 def execute(sid):
+ if sid in {'10_target_snapshot','50_target_stress','100_target_stress','high_citation_pressure','combined_citation_and_missing_evidence_pressure'}:
+  stress=sid in {'50_target_stress','100_target_stress'}
+  return {'scenario_id':sid,'status':'unsupported_pending_cross_layer_fixture' if not stress else 'unsupported_pending_valid_10_target_package','supported':False,'measurement_executed':False,'expected_target_count':{'10_target_snapshot':10,'50_target_stress':50,'100_target_stress':100}.get(sid,None),'actual_target_count':None,'reason_code':'schema_valid_10_target_upstream_fixture_unavailable' if 'target' in sid else 'pressure_fixture_unavailable','blocking_dependency':'R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE','tier':'stress_only' if stress else 'production_contract','non_contract':stress,'not_authorized_for_production_request':stress}
  repeats=3 if sid in {'50_target_stress','100_target_stress'} else 5
  # two scenario-specific warmups execute the real named workload.
  for _ in range(2):
@@ -105,7 +109,7 @@ def build():
  ss=[execute(x) for x in SCENARIOS]
  return {'schema_version':'m8r_03e_r4_performance_baseline.v2','task_id':'M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING','baseline_main_sha':'d33a807bd8f2a4677dbf630b326271e94dd7202c','tested_tree_sha':sha(),'measurement_contract_ref':'docs/contracts/m8r_03e_r4_performance_measurement_contract.json','measurement_environment':{'python':sys.version.split()[0],'platform':platform.platform(),'timer':'time.perf_counter_ns','gc_enabled':gc.isenabled(),'network':False},'production_contract_limit':10,'stress_only_limits':[50,100],'scenarios':ss}
 def verify(d):
- ids=[x.get('scenario_id') for x in d.get('scenarios',[])]; required={'schema_version':'m8r_03e_r4_performance_baseline.v2','task_id':'M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING','baseline_main_sha':'d33a807bd8f2a4677dbf630b326271e94dd7202c','production_contract_limit':10}; return all(d.get(k)==v for k,v in required.items()) and set(ids)==set(SCENARIOS) and len(ids)==len(set(ids)) and all(x['warmup_count']==2 and x['repeat_count']>=3 and x['validity_results'] and x['semantic_equivalence'] and {'canonical_json','sha256_json','validate_schema','validator_cache_hits','validator_cache_misses','artifact_serialization','filesystem_write'}<=set(x['operation_counts']) for x in d['scenarios'])
+ ids=[x.get('scenario_id') for x in d.get('scenarios',[])]; required={'schema_version':'m8r_03e_r4_performance_baseline.v2','task_id':'M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING','baseline_main_sha':'d33a807bd8f2a4677dbf630b326271e94dd7202c','production_contract_limit':10}; return all(d.get(k)==v for k,v in required.items()) and set(ids)==set(SCENARIOS) and len(ids)==len(set(ids)) and all((not x.get('measurement_executed',True)) or (x['warmup_count']==2 and x['repeat_count']>=3 and x['validity_results'] and x['semantic_equivalence'] and {'canonical_json','sha256_json','validate_schema','validator_cache_hits','validator_cache_misses','artifact_serialization','filesystem_write'}<=set(x['operation_counts'])) for x in d['scenarios'])
 def main():
  p=argparse.ArgumentParser();p.add_argument('--output',default='docs/quality/m8r_03e_r4_performance_baseline.json');p.add_argument('--verify-existing',action='store_true');a=p.parse_args();out=Path(a.output)
  if a.verify_existing: ok=verify(json.loads(out.read_text()));print(json.dumps({'status':'pass' if ok else 'fail'}));return 0 if ok else 1

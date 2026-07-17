@@ -95,11 +95,11 @@
         "inspected:scripts/m8r_03e_context_validator.py"
       ],
       "finding": "Potential repeated canonical serialization, citation scans, and schema validation under high citation/missing-evidence pressure.",
-      "recommended_action": "Add stable benchmark script/results and optimize only where measured.",
+      "recommended_action": "Completed benchmark foundation and validator caching; defer schema-valid 10-target fixture, real 50/100 scaling, pressure fixtures, and closure to R5A.",
       "risk": "Large watchlists may show superlinear behavior.",
       "severity": "P2",
-      "status": "resolved_in_r4",
-      "target_remediation_task": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
+      "status": "partially_resolved_in_r4",
+      "target_remediation_task": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION",
       "resolution_ref": "docs/acceptance_runs/M8R_03E_R4_VALIDATION.json"
     },
     {

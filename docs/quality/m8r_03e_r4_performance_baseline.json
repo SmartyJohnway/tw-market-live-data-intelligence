@@ -15,7 +15,7 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 27,
       "median_measurements_ms": {
-        "total_end_to_end": 125.149
+        "total_end_to_end": 120.477
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -32,12 +32,12 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 1192105
+        "value": 1193809
       },
       "raw_measurements": [
         {
           "actual_target_count": 1,
-          "elapsed_ms": 131.530129,
+          "elapsed_ms": 123.5544,
           "records": [
             {
               "actual_target_count": 1,
@@ -49,7 +49,7 @@
         },
         {
           "actual_target_count": 1,
-          "elapsed_ms": 125.148829,
+          "elapsed_ms": 121.469194,
           "records": [
             {
               "actual_target_count": 1,
@@ -61,7 +61,7 @@
         },
         {
           "actual_target_count": 1,
-          "elapsed_ms": 125.908868,
+          "elapsed_ms": 120.476872,
           "records": [
             {
               "actual_target_count": 1,
@@ -73,7 +73,7 @@
         },
         {
           "actual_target_count": 1,
-          "elapsed_ms": 118.683109,
+          "elapsed_ms": 118.110932,
           "records": [
             {
               "actual_target_count": 1,
@@ -85,7 +85,7 @@
         },
         {
           "actual_target_count": 1,
-          "elapsed_ms": 118.029599,
+          "elapsed_ms": 120.263239,
           "records": [
             {
               "actual_target_count": 1,
@@ -106,11 +106,171 @@
       "warmup_count": 2
     },
     {
+      "actual_target_count": null,
+      "blocking_dependency": "R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+      "expected_target_count": 10,
+      "measurement_executed": false,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "reason_code": "schema_valid_10_target_upstream_fixture_unavailable",
+      "scenario_id": "10_target_snapshot",
+      "status": "unsupported_pending_cross_layer_fixture",
+      "supported": false,
+      "tier": "production_contract"
+    },
+    {
+      "actual_target_count": null,
+      "blocking_dependency": "R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+      "expected_target_count": 50,
+      "measurement_executed": false,
+      "non_contract": true,
+      "not_authorized_for_production_request": true,
+      "reason_code": "schema_valid_10_target_upstream_fixture_unavailable",
+      "scenario_id": "50_target_stress",
+      "status": "unsupported_pending_valid_10_target_package",
+      "supported": false,
+      "tier": "stress_only"
+    },
+    {
+      "actual_target_count": null,
+      "blocking_dependency": "R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+      "expected_target_count": 100,
+      "measurement_executed": false,
+      "non_contract": true,
+      "not_authorized_for_production_request": true,
+      "reason_code": "schema_valid_10_target_upstream_fixture_unavailable",
+      "scenario_id": "100_target_stress",
+      "status": "unsupported_pending_valid_10_target_package",
+      "supported": false,
+      "tier": "stress_only"
+    },
+    {
+      "actual_target_count": null,
+      "blocking_dependency": "R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+      "expected_target_count": null,
+      "measurement_executed": false,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "reason_code": "pressure_fixture_unavailable",
+      "scenario_id": "high_citation_pressure",
+      "status": "unsupported_pending_cross_layer_fixture",
+      "supported": false,
+      "tier": "production_contract"
+    },
+    {
+      "actual_target_count": 2,
+      "aggregate_valid_package_count": 1,
+      "citation_count": 22,
+      "median_measurements_ms": {
+        "total_end_to_end": 120.104
+      },
+      "missing_evidence_count": 4,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "operation_counts": {
+        "artifact_serialization": 0,
+        "canonical_json": 825,
+        "filesystem_write": 0,
+        "sha256_json": 785,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
+      },
+      "peak_memory": {
+        "source": "tracemalloc",
+        "units": "bytes",
+        "value": 244053
+      },
+      "raw_measurements": [
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 123.425238,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 120.103521,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 120.562839,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 119.177849,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 119.40256,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        }
+      ],
+      "repeat_count": 5,
+      "scenario_id": "high_missing_evidence_pressure",
+      "semantic_equivalence": true,
+      "serialized_bytes": 0,
+      "target_count": 2,
+      "tier": "production_contract",
+      "validity_results": true,
+      "warmup_count": 2
+    },
+    {
+      "actual_target_count": null,
+      "blocking_dependency": "R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+      "expected_target_count": null,
+      "measurement_executed": false,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "reason_code": "pressure_fixture_unavailable",
+      "scenario_id": "combined_citation_and_missing_evidence_pressure",
+      "status": "unsupported_pending_cross_layer_fixture",
+      "supported": false,
+      "tier": "production_contract"
+    },
+    {
       "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 224.598
+        "total_end_to_end": 213.714
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -132,7 +292,7 @@
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 220.888777,
+          "elapsed_ms": 211.235753,
           "records": [
             {
               "actual_target_count": 2,
@@ -144,7 +304,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 222.970703,
+          "elapsed_ms": 213.71374,
           "records": [
             {
               "actual_target_count": 2,
@@ -156,7 +316,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 224.598053,
+          "elapsed_ms": 212.27526,
           "records": [
             {
               "actual_target_count": 2,
@@ -168,7 +328,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 235.714118,
+          "elapsed_ms": 224.400768,
           "records": [
             {
               "actual_target_count": 2,
@@ -180,763 +340,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 226.372235,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        }
-      ],
-      "repeat_count": 5,
-      "scenario_id": "10_target_snapshot",
-      "semantic_equivalence": true,
-      "serialized_bytes": 0,
-      "target_count": 2,
-      "tier": "production_contract",
-      "validity_results": true,
-      "warmup_count": 2
-    },
-    {
-      "actual_target_count": 10,
-      "aggregate_valid_package_count": 5,
-      "citation_count": 270,
-      "median_measurements_ms": {
-        "total_end_to_end": 1177.708
-      },
-      "missing_evidence_count": 0,
-      "non_contract": true,
-      "not_authorized_for_production_request": true,
-      "operation_counts": {
-        "artifact_serialization": 0,
-        "canonical_json": 5295,
-        "filesystem_write": 0,
-        "sha256_json": 5175,
-        "validate_schema": 60,
-        "validator_cache_hits": 60,
-        "validator_cache_misses": 0
-      },
-      "peak_memory": {
-        "source": "tracemalloc",
-        "units": "bytes",
-        "value": 536691
-      },
-      "raw_measurements": [
-        {
-          "actual_target_count": 10,
-          "elapsed_ms": 1094.341061,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 10,
-          "elapsed_ms": 1189.159668,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 10,
-          "elapsed_ms": 1177.708252,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        }
-      ],
-      "repeat_count": 3,
-      "scenario_id": "50_target_stress",
-      "semantic_equivalence": true,
-      "serialized_bytes": 0,
-      "target_count": 10,
-      "tier": "stress_only",
-      "validity_results": true,
-      "warmup_count": 2
-    },
-    {
-      "actual_target_count": 20,
-      "aggregate_valid_package_count": 10,
-      "citation_count": 540,
-      "median_measurements_ms": {
-        "total_end_to_end": 2439.976
-      },
-      "missing_evidence_count": 0,
-      "non_contract": true,
-      "not_authorized_for_production_request": true,
-      "operation_counts": {
-        "artifact_serialization": 0,
-        "canonical_json": 10590,
-        "filesystem_write": 0,
-        "sha256_json": 10350,
-        "validate_schema": 120,
-        "validator_cache_hits": 120,
-        "validator_cache_misses": 0
-      },
-      "peak_memory": {
-        "source": "tracemalloc",
-        "units": "bytes",
-        "value": 550155
-      },
-      "raw_measurements": [
-        {
-          "actual_target_count": 20,
-          "elapsed_ms": 2439.975765,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 20,
-          "elapsed_ms": 2435.563819,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 20,
-          "elapsed_ms": 2559.301921,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            },
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        }
-      ],
-      "repeat_count": 3,
-      "scenario_id": "100_target_stress",
-      "semantic_equivalence": true,
-      "serialized_bytes": 0,
-      "target_count": 20,
-      "tier": "stress_only",
-      "validity_results": true,
-      "warmup_count": 2
-    },
-    {
-      "actual_target_count": 2,
-      "aggregate_valid_package_count": 1,
-      "citation_count": 54,
-      "median_measurements_ms": {
-        "total_end_to_end": 223.991
-      },
-      "missing_evidence_count": 0,
-      "non_contract": false,
-      "not_authorized_for_production_request": false,
-      "operation_counts": {
-        "artifact_serialization": 0,
-        "canonical_json": 1765,
-        "filesystem_write": 0,
-        "sha256_json": 1725,
-        "validate_schema": 20,
-        "validator_cache_hits": 20,
-        "validator_cache_misses": 0
-      },
-      "peak_memory": {
-        "source": "tracemalloc",
-        "units": "bytes",
-        "value": 401179
-      },
-      "raw_measurements": [
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 238.298827,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 235.184646,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 223.991358,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 220.495656,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 218.427253,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        }
-      ],
-      "repeat_count": 5,
-      "scenario_id": "high_citation_pressure",
-      "semantic_equivalence": true,
-      "serialized_bytes": 0,
-      "target_count": 2,
-      "tier": "production_contract",
-      "validity_results": true,
-      "warmup_count": 2
-    },
-    {
-      "actual_target_count": 2,
-      "aggregate_valid_package_count": 1,
-      "citation_count": 22,
-      "median_measurements_ms": {
-        "total_end_to_end": 129.655
-      },
-      "missing_evidence_count": 4,
-      "non_contract": false,
-      "not_authorized_for_production_request": false,
-      "operation_counts": {
-        "artifact_serialization": 0,
-        "canonical_json": 825,
-        "filesystem_write": 0,
-        "sha256_json": 785,
-        "validate_schema": 20,
-        "validator_cache_hits": 20,
-        "validator_cache_misses": 0
-      },
-      "peak_memory": {
-        "source": "tracemalloc",
-        "units": "bytes",
-        "value": 249772
-      },
-      "raw_measurements": [
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 129.654674,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 22,
-              "missing_evidence_count": 4,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 118.727487,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 22,
-              "missing_evidence_count": 4,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 118.578348,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 22,
-              "missing_evidence_count": 4,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 131.539807,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 22,
-              "missing_evidence_count": 4,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 130.615901,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 22,
-              "missing_evidence_count": 4,
-              "valid": true
-            }
-          ]
-        }
-      ],
-      "repeat_count": 5,
-      "scenario_id": "high_missing_evidence_pressure",
-      "semantic_equivalence": true,
-      "serialized_bytes": 0,
-      "target_count": 2,
-      "tier": "production_contract",
-      "validity_results": true,
-      "warmup_count": 2
-    },
-    {
-      "actual_target_count": 2,
-      "aggregate_valid_package_count": 1,
-      "citation_count": 22,
-      "median_measurements_ms": {
-        "total_end_to_end": 128.123
-      },
-      "missing_evidence_count": 4,
-      "non_contract": false,
-      "not_authorized_for_production_request": false,
-      "operation_counts": {
-        "artifact_serialization": 0,
-        "canonical_json": 825,
-        "filesystem_write": 0,
-        "sha256_json": 785,
-        "validate_schema": 20,
-        "validator_cache_hits": 20,
-        "validator_cache_misses": 0
-      },
-      "peak_memory": {
-        "source": "tracemalloc",
-        "units": "bytes",
-        "value": 241547
-      },
-      "raw_measurements": [
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 129.207999,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 22,
-              "missing_evidence_count": 4,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 130.003499,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 22,
-              "missing_evidence_count": 4,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 126.558284,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 22,
-              "missing_evidence_count": 4,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 120.338093,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 22,
-              "missing_evidence_count": 4,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 128.123362,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 22,
-              "missing_evidence_count": 4,
-              "valid": true
-            }
-          ]
-        }
-      ],
-      "repeat_count": 5,
-      "scenario_id": "combined_citation_and_missing_evidence_pressure",
-      "semantic_equivalence": true,
-      "serialized_bytes": 0,
-      "target_count": 2,
-      "tier": "production_contract",
-      "validity_results": true,
-      "warmup_count": 2
-    },
-    {
-      "actual_target_count": 2,
-      "aggregate_valid_package_count": 1,
-      "citation_count": 54,
-      "median_measurements_ms": {
-        "total_end_to_end": 233.967
-      },
-      "missing_evidence_count": 0,
-      "non_contract": false,
-      "not_authorized_for_production_request": false,
-      "operation_counts": {
-        "artifact_serialization": 0,
-        "canonical_json": 1765,
-        "filesystem_write": 0,
-        "sha256_json": 1725,
-        "validate_schema": 20,
-        "validator_cache_hits": 20,
-        "validator_cache_misses": 0
-      },
-      "peak_memory": {
-        "source": "tracemalloc",
-        "units": "bytes",
-        "value": 403655
-      },
-      "raw_measurements": [
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 234.676781,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 233.967039,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 233.739371,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 240.423645,
-          "records": [
-            {
-              "actual_target_count": 2,
-              "citation_count": 54,
-              "missing_evidence_count": 0,
-              "valid": true
-            }
-          ]
-        },
-        {
-          "actual_target_count": 2,
-          "elapsed_ms": 232.020309,
+          "elapsed_ms": 230.044438,
           "records": [
             {
               "actual_target_count": 2,
@@ -961,7 +365,7 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 32,
       "median_measurements_ms": {
-        "total_end_to_end": 225.406
+        "total_end_to_end": 203.475
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -978,12 +382,12 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 960929
+        "value": 965641
       },
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 215.870227,
+          "elapsed_ms": 203.399437,
           "records": [
             {
               "actual_target_count": 2,
@@ -995,7 +399,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 225.40643,
+          "elapsed_ms": 203.474705,
           "records": [
             {
               "actual_target_count": 2,
@@ -1007,7 +411,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 229.839829,
+          "elapsed_ms": 206.345536,
           "records": [
             {
               "actual_target_count": 2,
@@ -1019,7 +423,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 218.410141,
+          "elapsed_ms": 205.132929,
           "records": [
             {
               "actual_target_count": 2,
@@ -1031,7 +435,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 268.358305,
+          "elapsed_ms": 202.313218,
           "records": [
             {
               "actual_target_count": 2,
@@ -1056,7 +460,7 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 45,
       "median_measurements_ms": {
-        "total_end_to_end": 198.914
+        "total_end_to_end": 188.757
       },
       "missing_evidence_count": 1,
       "non_contract": false,
@@ -1073,12 +477,12 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 365146
+        "value": 358745
       },
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 194.469679,
+          "elapsed_ms": 199.057919,
           "records": [
             {
               "actual_target_count": 2,
@@ -1090,7 +494,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 211.252402,
+          "elapsed_ms": 188.757377,
           "records": [
             {
               "actual_target_count": 2,
@@ -1102,7 +506,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 205.383409,
+          "elapsed_ms": 194.856517,
           "records": [
             {
               "actual_target_count": 2,
@@ -1114,7 +518,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 198.157856,
+          "elapsed_ms": 184.39636,
           "records": [
             {
               "actual_target_count": 2,
@@ -1126,7 +530,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 198.914056,
+          "elapsed_ms": 183.647995,
           "records": [
             {
               "actual_target_count": 2,
@@ -1151,7 +555,7 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 22,
       "median_measurements_ms": {
-        "total_end_to_end": 131.484
+        "total_end_to_end": 120.675
       },
       "missing_evidence_count": 4,
       "non_contract": false,
@@ -1168,12 +572,12 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 248823
+        "value": 246790
       },
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 131.483711,
+          "elapsed_ms": 120.674997,
           "records": [
             {
               "actual_target_count": 2,
@@ -1185,7 +589,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 161.565774,
+          "elapsed_ms": 122.238995,
           "records": [
             {
               "actual_target_count": 2,
@@ -1197,7 +601,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 128.559628,
+          "elapsed_ms": 124.101161,
           "records": [
             {
               "actual_target_count": 2,
@@ -1209,7 +613,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 139.046127,
+          "elapsed_ms": 117.647361,
           "records": [
             {
               "actual_target_count": 2,
@@ -1221,7 +625,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 129.009812,
+          "elapsed_ms": 117.144316,
           "records": [
             {
               "actual_target_count": 2,
@@ -1246,7 +650,7 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 259.417
+        "total_end_to_end": 227.686
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -1263,12 +667,12 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 403387
+        "value": 400929
       },
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 275.142408,
+          "elapsed_ms": 230.644674,
           "records": [
             {
               "actual_target_count": 2,
@@ -1282,7 +686,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 265.814967,
+          "elapsed_ms": 224.607146,
           "records": [
             {
               "actual_target_count": 2,
@@ -1296,7 +700,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 259.417158,
+          "elapsed_ms": 228.444151,
           "records": [
             {
               "actual_target_count": 2,
@@ -1310,7 +714,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 245.130328,
+          "elapsed_ms": 227.686283,
           "records": [
             {
               "actual_target_count": 2,
@@ -1324,7 +728,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 258.026949,
+          "elapsed_ms": 226.312772,
           "records": [
             {
               "actual_target_count": 2,
@@ -1351,7 +755,7 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 257.347
+        "total_end_to_end": 227.563
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -1368,12 +772,12 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 400955
+        "value": 408299
       },
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 278.966995,
+          "elapsed_ms": 223.158819,
           "records": [
             {
               "actual_target_count": 2,
@@ -1387,7 +791,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 280.956696,
+          "elapsed_ms": 222.693346,
           "records": [
             {
               "actual_target_count": 2,
@@ -1401,7 +805,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 255.435008,
+          "elapsed_ms": 228.178032,
           "records": [
             {
               "actual_target_count": 2,
@@ -1415,7 +819,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 241.781107,
+          "elapsed_ms": 264.639301,
           "records": [
             {
               "actual_target_count": 2,
@@ -1429,7 +833,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 257.346579,
+          "elapsed_ms": 227.562982,
           "records": [
             {
               "actual_target_count": 2,
@@ -1456,7 +860,7 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 398.945
+        "total_end_to_end": 375.638
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -1473,17 +877,17 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 591439
+        "value": 594471
       },
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 389.394934,
+          "elapsed_ms": 359.897465,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "migration_ms": 115.213868,
+              "migration_ms": 112.766326,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1491,12 +895,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 398.945056,
+          "elapsed_ms": 373.516688,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "migration_ms": 123.261329,
+              "migration_ms": 113.197814,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1504,12 +908,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 395.472422,
+          "elapsed_ms": 378.700323,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "migration_ms": 127.68715,
+              "migration_ms": 114.114581,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1517,12 +921,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 416.260337,
+          "elapsed_ms": 375.638387,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "migration_ms": 128.825779,
+              "migration_ms": 114.691371,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1530,12 +934,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 431.626222,
+          "elapsed_ms": 379.067802,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "migration_ms": 126.311119,
+              "migration_ms": 116.92243,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1556,7 +960,7 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 4.258
+        "total_end_to_end": 3.917
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -1578,11 +982,11 @@
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 4.291888,
+          "elapsed_ms": 3.85663,
           "records": [
             {
               "actual_target_count": 2,
-              "artifact_serialization_ms": 4.022141,
+              "artifact_serialization_ms": 3.636326,
               "citation_count": 54,
               "missing_evidence_count": 0,
               "serialized_bytes": 39547,
@@ -1592,11 +996,11 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 4.031657,
+          "elapsed_ms": 3.817195,
           "records": [
             {
               "actual_target_count": 2,
-              "artifact_serialization_ms": 3.745139,
+              "artifact_serialization_ms": 3.582588,
               "citation_count": 54,
               "missing_evidence_count": 0,
               "serialized_bytes": 39547,
@@ -1606,11 +1010,11 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 5.152864,
+          "elapsed_ms": 3.940085,
           "records": [
             {
               "actual_target_count": 2,
-              "artifact_serialization_ms": 4.908414,
+              "artifact_serialization_ms": 3.714795,
               "citation_count": 54,
               "missing_evidence_count": 0,
               "serialized_bytes": 39547,
@@ -1620,11 +1024,11 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 4.2576,
+          "elapsed_ms": 4.422869,
           "records": [
             {
               "actual_target_count": 2,
-              "artifact_serialization_ms": 3.989283,
+              "artifact_serialization_ms": 4.144242,
               "citation_count": 54,
               "missing_evidence_count": 0,
               "serialized_bytes": 39547,
@@ -1634,11 +1038,11 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 3.73768,
+          "elapsed_ms": 3.917194,
           "records": [
             {
               "actual_target_count": 2,
-              "artifact_serialization_ms": 3.517907,
+              "artifact_serialization_ms": 3.67065,
               "citation_count": 54,
               "missing_evidence_count": 0,
               "serialized_bytes": 39547,
@@ -1661,7 +1065,7 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 9.085
+        "total_end_to_end": 7.534
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -1683,65 +1087,65 @@
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 10.221311,
+          "elapsed_ms": 7.234219,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
               "missing_evidence_count": 0,
-              "safe_atomic_write_ms": 4.205332,
+              "safe_atomic_write_ms": 3.466843,
               "valid": true
             }
           ]
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 8.298862,
+          "elapsed_ms": 7.552655,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
               "missing_evidence_count": 0,
-              "safe_atomic_write_ms": 4.180562,
+              "safe_atomic_write_ms": 3.837602,
               "valid": true
             }
           ]
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 9.084557,
+          "elapsed_ms": 7.598062,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
               "missing_evidence_count": 0,
-              "safe_atomic_write_ms": 4.660205,
+              "safe_atomic_write_ms": 3.724697,
               "valid": true
             }
           ]
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 10.22172,
+          "elapsed_ms": 7.534104,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
               "missing_evidence_count": 0,
-              "safe_atomic_write_ms": 5.090835,
+              "safe_atomic_write_ms": 3.782403,
               "valid": true
             }
           ]
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 7.731653,
+          "elapsed_ms": 7.31165,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
               "missing_evidence_count": 0,
-              "safe_atomic_write_ms": 3.887537,
+              "safe_atomic_write_ms": 3.423724,
               "valid": true
             }
           ]
@@ -1761,7 +1165,7 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 11.396
+        "total_end_to_end": 11.018
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -1783,12 +1187,12 @@
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 10.630001,
+          "elapsed_ms": 11.26322,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "manifest_generation_ms": 10.431425,
+              "manifest_generation_ms": 11.065045,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1796,12 +1200,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 11.396267,
+          "elapsed_ms": 10.265644,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "manifest_generation_ms": 11.164469,
+              "manifest_generation_ms": 10.08411,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1809,12 +1213,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 11.669837,
+          "elapsed_ms": 11.017929,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "manifest_generation_ms": 11.40405,
+              "manifest_generation_ms": 10.83315,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1822,12 +1226,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 12.045084,
+          "elapsed_ms": 13.140864,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "manifest_generation_ms": 11.827702,
+              "manifest_generation_ms": 12.952822,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1835,12 +1239,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 10.953244,
+          "elapsed_ms": 10.224595,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "manifest_generation_ms": 10.661612,
+              "manifest_generation_ms": 10.042742,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1863,5 +1267,5 @@
     100
   ],
   "task_id": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
-  "tested_tree_sha": "b1b0cff7074b28ba2f1fd6d239f83341083a63c2"
+  "tested_tree_sha": "647dab0720bfa74d3432226c2811670c4db574a2"
 }
