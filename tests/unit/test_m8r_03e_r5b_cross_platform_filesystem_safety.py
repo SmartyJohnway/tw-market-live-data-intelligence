@@ -301,7 +301,7 @@ def test_atomic_exclusive_write_failure_cleanup(tmp_path):
         assert "Mock write failure" in str(excinfo.value)
     assert not dest_path.exists()
     
-    # Verify subsequent writes succeed
+    # Verify subsequent write succeeds
     atomic_create_text_exclusive(root, candidate, "good content")
     assert dest_path.exists()
     assert dest_path.read_text(encoding="utf-8") == "good content"
@@ -323,9 +323,52 @@ def test_atomic_exclusive_write_failure_cleanup(tmp_path):
         assert "Mock flush failure" in str(excinfo.value)
     assert not dest_path.exists()
     
+    # Verify subsequent write succeeds
+    atomic_create_text_exclusive(root, candidate, "good content")
+    assert dest_path.exists()
+    assert dest_path.read_text(encoding="utf-8") == "good content"
+    dest_path.unlink()
+    
     # 3. Mock os.fsync() failure
     with mock.patch("os.fsync", side_effect=OSError("Mock fsync failure")):
         with pytest.raises(OSError) as excinfo:
             atomic_create_text_exclusive(root, candidate, "content")
         assert "Mock fsync failure" in str(excinfo.value)
     assert not dest_path.exists()
+    
+    # Verify subsequent write succeeds
+    atomic_create_text_exclusive(root, candidate, "good content")
+    assert dest_path.exists()
+    assert dest_path.read_text(encoding="utf-8") == "good content"
+    dest_path.unlink()
+
+
+def test_validate_authorized_root_with_path_uri():
+    with pytest.raises(FilesystemSafetyError) as excinfo:
+        validate_authorized_root(Path("s3://bucket/key"))
+    assert excinfo.value.code == "absolute_output_path_forbidden"
+
+
+from scripts.m8r_one_shot_market_context_orchestrator import FilesystemApprovalConsumptionStore
+
+@pytest.mark.parametrize("uri", [
+    "s3://bucket/key",
+    "gs://bucket/key",
+    "azure://container/key",
+    "file:///tmp/x",
+    "http://host/x",
+    "https://host/x",
+])
+def test_approval_store_rejects_uri_root_without_side_effect(tmp_path, uri):
+    with pytest.raises(FilesystemSafetyError) as excinfo:
+        FilesystemApprovalConsumptionStore(uri)
+    assert excinfo.value.code == "absolute_output_path_forbidden"
+    
+    # Assert s3: gs: etc were NOT created in the current working directory or tmp
+    # Convert uri to path to see what POSIX would make of it
+    p = Path(uri)
+    # The name of the root segment on disk would be the first part, e.g. "s3:"
+    prefix = str(p).split("/")[0].split("\\")[0]
+    if prefix and ":" in prefix:
+        # Check that no directory of that name exists locally
+        assert not Path(prefix).exists()

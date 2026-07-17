@@ -53,7 +53,7 @@ The following confirmed Windows anomalies have been fully corrected and verified
 
 ### 4.1. Safety Contract Unit Tests
 - **Test File**: `tests/unit/test_m8r_03e_r5b_cross_platform_filesystem_safety.py`
-- **Status**: PASSED (11/11 tests passed, including new failure-injection and early URI rejection tests)
+- **Status**: PASSED (18/18 tests passed, including failure-injection, early URI rejection, and Path-based URI tests)
 - **Legacy Containment Test**: `tests/unit/test_m8r_filesystem_containment.py`
 - **Status**: PASSED (10/10 tests passed)
 - **Concurrency Test**: `tests/unit/test_m8r_03e_r5b_concurrency.py`
@@ -65,10 +65,10 @@ The following confirmed Windows anomalies have been fully corrected and verified
 
 ### 4.3. Full Non-Network Regression
 - **Command**: `$env:PYTHONUTF8=1; .venv\Scripts\python.exe -m pytest -m "not network" -q`
-- **Selected**: 1739
-- **Executed**: 1737
-- **Passed**: 1701
-- **Failed**: 36 (All 36 are confirmed known pre-existing baseline failures recorded in the R4 readiness decision; zero new regressions introduced)
+- **Selected**: 1745
+- **Executed**: 1744
+- **Passed**: 1708
+- **Failed**: 36 (All 36 are confirmed known pre-existing baseline failures; zero new regressions introduced)
 - **Novel Failing Node IDs**: 0
 - **Regression Determination Status**: `not_demonstrated_on_equivalent_python_environment` (due to different Python versions between R4 and R5 runs)
 

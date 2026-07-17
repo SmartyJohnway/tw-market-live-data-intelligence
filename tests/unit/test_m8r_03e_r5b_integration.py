@@ -97,11 +97,10 @@ def test_execute_watchlist_fail_closed_ordering(tmp_path):
 from scripts.m8r_one_shot_market_context_orchestrator import FilesystemApprovalConsumptionStore, preflight_approved_market_context_plan
 
 def test_filesystem_approval_consumption_store_fail_closed():
-    # Pass a rooted absolute URI as root, causing validate_authorized_root to throw safety error
-    store = FilesystemApprovalConsumptionStore(root="s3://bucket/key")
+    # Store constructor should reject absolute URI
     with pytest.raises(FilesystemSafetyError) as excinfo:
-        store.consume("app-123", "plan-123", "hash-123", "2026-07-17T00:00:00Z", "rcpt-123")
-    assert excinfo.value.code == "output_root_missing"
+        FilesystemApprovalConsumptionStore(root="s3://bucket/key")
+    assert excinfo.value.code == "absolute_output_path_forbidden"
 
 
 def test_orchestrator_output_scope_fail_closed():

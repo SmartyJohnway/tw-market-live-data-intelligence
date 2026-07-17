@@ -1,7 +1,7 @@
 {
   "task_id": "M8R-03E-R5B-CROSS-PLATFORM-FILESYSTEM-FAIL-CLOSED-CONTRACT-AND-WINDOWS-CORRECTION",
   "baseline_main_sha": "a17affee7a8f794039b027f339d501b6d59c9184",
-  "tested_parent_sha": "9a0c77a3826a888f83c78751201b8b95f17a051b",
+  "tested_parent_sha": "ea9754c839b08071d52a3075dc8fe87f27a13d8f",
   "tested_tree_sha": null,
   "tested_commit_sha": null,
   "binding_status": "unsealed_precommit_evidence",
@@ -81,9 +81,10 @@
     "phase_c_activation": "still_blocked_pending_R5A"
   },
   "full_non_network_regression_results": {
-    "collected_or_selected": 1739,
-    "executed": 1737,
-    "passed": 1701,
+    "collected_including_deselected": 1746,
+    "selected_including_skipped": 1745,
+    "passed_plus_failed": 1744,
+    "passed": 1708,
     "failed": 36,
     "skipped": 1,
     "deselected": 1,

@@ -159,7 +159,9 @@ def validate_relative_artifact_path(
 
 def reject_uri_like_root(root: str | os.PathLike[str]) -> None:
     raw = str(root)
-    if '://' in raw or re.search(r'^[A-Za-z0-9+.-]+://', raw):
+    if '://' in raw:
+        raise FilesystemSafetyError('absolute_output_path_forbidden', f"URI-like roots are forbidden: {raw}")
+    if re.search(r'^[A-Za-z0-9+.-]{2,}:[/\\]', raw):
         raise FilesystemSafetyError('absolute_output_path_forbidden', f"URI-like roots are forbidden: {raw}")
 
 def validate_authorized_root(

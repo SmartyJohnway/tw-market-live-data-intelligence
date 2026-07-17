@@ -14,7 +14,7 @@ from scripts.m8r_bounded_market_context_request import (
     load_source_registry, sha256_json, validate_approval_for_plan,
     validate_plan_internal_consistency, validate_output_scope,
 )
-from scripts.m8r_filesystem_safety import classify_artifact_relative_path, safe_destination, atomic_write_text, atomic_create_text_exclusive, FilesystemSafetyError
+from scripts.m8r_filesystem_safety import classify_artifact_relative_path, safe_destination, atomic_write_text, atomic_create_text_exclusive, FilesystemSafetyError, reject_uri_like_root
 
 RECEIPT_SCHEMA_VERSION = "m8r_market_context_execution_receipt.v1"
 RESULT_SCHEMA_VERSION = "m8r_market_context_orchestration_result.v1"
@@ -47,6 +47,7 @@ class InMemoryApprovalConsumptionStore:
 
 class FilesystemApprovalConsumptionStore:
     def __init__(self, root: str) -> None:
+        reject_uri_like_root(root)
         self.root = Path(root)
     def _path(self, approval_id: str, plan_id: str) -> Path:
         safe = sha256_json({"approval_id": approval_id, "plan_id": plan_id})
