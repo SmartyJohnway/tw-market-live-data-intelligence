@@ -1,5 +1,6 @@
 from __future__ import annotations
 import hashlib,json
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 import jsonschema
@@ -25,8 +26,14 @@ def artifact_hash_without(v:dict, field:str)->str:
     c=json.loads(json.dumps(v)); c[field]=None; return sha256_json(c)
 def schema_bundle_sha256()->str:
     return sha256_json({p:json.loads((SCHEMA_DIR/p).read_text(encoding='utf-8')) for p in SCHEMA_FILES})
-def _schema(name): return json.loads((SCHEMA_DIR/name).read_text(encoding='utf-8'))
-def validate_schema(obj,name): jsonschema.Draft202012Validator(_schema(name)).validate(obj)
+@lru_cache(maxsize=len(SCHEMA_FILES))
+def _validator(name: str):
+    # Schemas are repository-shipped immutable inputs for a process; caching avoids
+    # reparsing/compiling the same contract during one bounded pipeline.
+    schema = json.loads((SCHEMA_DIR / name).read_text(encoding='utf-8'))
+    return jsonschema.Draft202012Validator(schema)
+def _schema(name): return _validator(name).schema
+def validate_schema(obj,name): _validator(name).validate(obj)
 
 def walk_forbidden(v,path='$',issues=None):
     issues=[] if issues is None else issues

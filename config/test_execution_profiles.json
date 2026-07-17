@@ -427,7 +427,7 @@
       "automatic_ci_allowed": false
     },
     "performance": {
-      "purpose": "Reproducible performance baseline verification; manual/nightly only.",
+      "purpose": "R4 reproducible performance/scalability measurement; manual only under NO_GITHUB_CI.",
       "execution_type": "authoritative_runner",
       "authoritative_runner": [
         [
@@ -435,6 +435,11 @@
           "scripts/run_m8r_03e_performance_baseline.py",
           "--verify-existing",
           "docs/quality/m8_performance_baseline.json"
+        ],
+        [
+          "python",
+          "scripts/run_m8r_03e_r4_performance.py",
+          "--verify-existing"
         ]
       ],
       "network_policy": "no network",

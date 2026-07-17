@@ -76,10 +76,10 @@ def test_skill_validator_passes():
  assert r.returncode==0, r.stderr+r.stdout
 
 def test_active_registry_successor_advances_to_r3():
- assert REG['recommended_next_task']=='M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING'
+ assert REG['recommended_next_task']=='M8R-03E-R5-TESTING-DOCUMENTATION-AND-OPERATIONS-CONSOLIDATION'
 
 def test_phase_c_blocked_pending_r3_critical_subset():
- assert CONTRACT['phase_dependencies']['Phase C']=='blocked_pending_M8R-03E-R3-critical-subset'
+ assert CONTRACT['phase_dependencies']['Phase C']=='blocked_pending_post_R4_closure_decision'
  assert REG['unified_tool_api']=='required_successor_capability'
 
 def test_existing_m8r_03e_schema_files_unchanged_by_f1_contract():
@@ -112,9 +112,9 @@ def test_embedded_skill_asset_equals_authoritative_contract():
  assert (ROOT/'docs/ai/m8_ai_capability_contract.json').read_text() == (ROOT/'skills/tw-market-evidence-agent/assets/m8_ai_capability_contract.json').read_text()
 
 def test_registry_status_surfaces_agree():
- r3='M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING'
+ r3='M8R-03E-R5-TESTING-DOCUMENTATION-AND-OPERATIONS-CONSOLIDATION'
  for surface in [REG, REG['m8_active_consolidated_status'], REG['planning_state'], HEALTH]:
-  assert surface['implemented_through_track']=='M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP'
+  assert surface['implemented_through_track']=='M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING'
   assert surface['agent_skill_contract']=='implemented'
   assert surface['ai_capability_guide']=='implemented'
   assert surface['recommended_next_task']==r3

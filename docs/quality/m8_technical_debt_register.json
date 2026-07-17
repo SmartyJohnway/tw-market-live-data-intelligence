@@ -98,8 +98,9 @@
       "recommended_action": "Add stable benchmark script/results and optimize only where measured.",
       "risk": "Large watchlists may show superlinear behavior.",
       "severity": "P2",
-      "status": "open",
-      "target_remediation_task": "M8R-03E-R4-PERFORMANCE-BASELINE-AND-SCALABILITY-HARDENING"
+      "status": "resolved_in_r4",
+      "target_remediation_task": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
+      "resolution_ref": "docs/acceptance_runs/M8R_03E_R4_VALIDATION.json"
     },
     {
       "affected_paths": [
