@@ -6,7 +6,7 @@ This report documents the verification, acceptance metrics, and governance closu
 
 - **Task ID**: `M8R-03E-R5B-CROSS-PLATFORM-FILESYSTEM-FAIL-CLOSED-CONTRACT-AND-WINDOWS-CORRECTION`
 - **Disposition**: `PARTIAL_PASS`
-- **Filesystem Safety Blocker**: `partially_resolved`
+- **Filesystem Safety Blocker**: `resolved_with_caveats`
 - **Phase C Implementation Gate**: `ready`
 - **Phase C Activation Gate**: `blocked` (pending R5A fixture integration)
 - **Operating System**: Windows / POSIX compliant
@@ -53,7 +53,7 @@ The following confirmed Windows anomalies have been fully corrected and verified
 
 ### 4.1. Safety Contract Unit Tests
 - **Test File**: `tests/unit/test_m8r_03e_r5b_cross_platform_filesystem_safety.py`
-- **Status**: PASSED (23/23 tests passed, including failure-injection, Path-based URI, POSIX Windows drive root rejection, and Windows drive-relative tests)
+- **Status**: PASSED (19 passed, 4 skipped in Windows environment, including failure-injection, Path-based URI, POSIX Windows drive root rejection, and Windows drive-relative tests)
 - **Legacy Containment Test**: `tests/unit/test_m8r_filesystem_containment.py`
 - **Status**: PASSED (10/10 tests passed)
 - **Concurrency Test**: `tests/unit/test_m8r_03e_r5b_concurrency.py`
@@ -96,3 +96,10 @@ The custom static code scanner `scripts/governance_forbidden_path_guard.py` now 
 - **Not Validated**: NFS atomic rename, SMB concurrency, Kubernetes PVC, container host-path trust, S3/GCS/Azure Blob object-store, distributed multi-host locking, kernel TOCTOU.
 
 Future cloud deployment must either run the validated local-filesystem backend inside a controlled container volume, or implement a separate object-storage adapter. S3 object keys must never be represented as OS paths.
+
+### 6.1. Verification Caveats
+The R5B safety blocker status is marked as `resolved_with_caveats` due to the following boundary conditions:
+1. **Pre-existing Failures**: There are 36 pre-existing baseline failures in the non-network regression suite which were inherited from previous phases.
+2. **Environment Version Drift**: A regression determination was not demonstrated on an equivalent Python environment (R4 was on Python 3.11.15, whereas this R5B verification was executed on Python 3.13.7).
+3. **Phase C Dependency**: Phase C runtime write surfaces are successfully migrated, but Phase C activation remains blocked pending the R5A cross-layer fixture infrastructure task.
+
