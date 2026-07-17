@@ -1,0 +1,123 @@
+{
+  "task_id": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
+  "baseline_main_sha": "d33a807bd8f2a4677dbf630b326271e94dd7202c",
+  "tested_parent_sha": "a182c6cbb1c4679e7d7ad96c5f77a925aeb8dfeb",
+  "tested_tree_sha": null,
+  "tested_worktree_digest": null,
+  "execution_environment": {
+    "network": false,
+    "github_actions_policy": "NO_GITHUB_CI"
+  },
+  "github_workflows_triggered": [],
+  "measurement_contract": "docs/contracts/m8r_03e_r4_performance_measurement_contract.json",
+  "production_target_limit": 10,
+  "stress_only_target_limits": [
+    50,
+    100
+  ],
+  "benchmark_scenarios": "docs/quality/m8r_03e_r4_performance_baseline.json",
+  "warmup_count": 2,
+  "repeat_counts": {
+    "normal": 5,
+    "stress": 3
+  },
+  "before_measurements": "historical docs/quality/m8_performance_baseline.json; aggregate workloads only",
+  "after_measurements": "docs/quality/m8r_03e_r4_performance_baseline.json",
+  "operation_counts": "bounded benchmark-local counters; schema validator compilation cached per immutable schema",
+  "serialized_size_growth": "linear aggregate projection; stress is non-contract",
+  "citation_pressure_result": "unsupported_pending_pressure_fixture",
+  "missing_evidence_pressure_result": "measured and valid",
+  "combined_pressure_result": "unsupported_pending_pressure_fixture",
+  "memory_result": "tracemalloc peak bytes recorded",
+  "artifact_write_result": "one safe atomic write per valid package pipeline in temporary directories",
+  "semantic_equivalence_result": "pass: cached schema compilation does not alter validation output",
+  "per_command_records": [
+    {
+      "command": "python -m compileall scripts server tests skills",
+      "status": "passed"
+    },
+    {
+      "command": "python scripts/governance_forbidden_path_guard.py",
+      "status": "passed"
+    },
+    {
+      "command": "python scripts/forbidden_behavior_scanner.py",
+      "status": "passed"
+    },
+    {
+      "command": "python scripts/validate_github_actions_execution_policy.py",
+      "status": "passed"
+    },
+    {
+      "command": "python scripts/run_test_profile.py component-governance --json",
+      "status": "passed",
+      "passed": 42
+    },
+    {
+      "command": "python scripts/run_test_profile.py component-watchlist-evidence --json",
+      "status": "passed",
+      "passed": 57
+    },
+    {
+      "command": "python scripts/run_test_profile.py performance --json",
+      "status": "passed"
+    }
+  ],
+  "full_non_network_exact_result": {
+    "return_code": "unavailable",
+    "status": "attempted_but_unavailable_in_codex_sandbox",
+    "passed": null,
+    "failed": null,
+    "skipped": null,
+    "deselected": null,
+    "failing_node_ids": [],
+    "failure_set_changed": "unknown",
+    "new_m8_m8r_failure_count": "unknown",
+    "merge_readiness_impact": "full_regression_verification_deferred_to_post_r4_sequencing_gate"
+  },
+  "resolved_debt_ids": [],
+  "partially_resolved_debt_ids": [
+    "M8-DEBT-0005"
+  ],
+  "deferred_debt_ids": [
+    "M8-DEBT-0003",
+    "M8-DEBT-0004",
+    "M8-DEBT-0006",
+    "M8-DEBT-0007"
+  ],
+  "r4_subparts": {
+    "R4-A": "PASS",
+    "R4-B": "PARTIAL",
+    "R4-C": "PARTIAL",
+    "R4-D": "PASS_WITH_CAVEATS",
+    "R4-E": "PARTIAL",
+    "R4-F": "PARTIAL"
+  },
+  "r4_disposition": "PARTIAL_COMPLETION",
+  "active_governance_state": {
+    "implemented_through": "R3",
+    "implemented_through_track": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
+    "phase_c_gate_status": "pending_post_r4_sequencing_decision"
+  },
+  "successor_decision": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION; likely workstream R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE.",
+  "r4_closure_status": "not_closed",
+  "completed_r4_capabilities": [
+    "measurement_contract",
+    "reproducible_valid_fixture_baseline",
+    "scenario_specific_repetitions",
+    "memory_measurement",
+    "operation_count_instrumentation",
+    "schema_validator_cache"
+  ],
+  "unresolved_r4_capabilities": [
+    "schema_valid_10_target_cross_layer_fixture",
+    "50_target_stress_measurement",
+    "100_target_stress_measurement",
+    "high_citation_pressure_fixture",
+    "combined_pressure_fixture"
+  ],
+  "acceptance_sealing_status": "unsealed",
+  "acceptance_sealing_reason": "full_non_network_exact_result_unavailable",
+  "acceptance_sealing_strategy": "partial_r4_artifact_bound_to_checked_in_baseline_and_commit_report",
+  "validator_cache_result_equivalence": "pass_for_tested_valid_and_invalid_cases"
+}

@@ -79,7 +79,7 @@ def test_active_registry_successor_advances_to_r3():
  assert REG['recommended_next_task']=='M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING'
 
 def test_phase_c_blocked_pending_r3_critical_subset():
- assert CONTRACT['phase_dependencies']['Phase C']=='blocked_pending_M8R-03E-R3-critical-subset'
+ assert CONTRACT['phase_dependencies']['Phase C']=='blocked_pending_post_R4_closure_decision'
  assert REG['unified_tool_api']=='required_successor_capability'
 
 def test_existing_m8r_03e_schema_files_unchanged_by_f1_contract():

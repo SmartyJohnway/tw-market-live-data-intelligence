@@ -3,7 +3,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-IMPLEMENTED_THROUGH = "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP"
+IMPLEMENTED_THROUGH = "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING"
 NEXT = "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING"
 
 def load(path):
@@ -39,7 +39,7 @@ def test_health_status_and_debt_register_shapes():
     for entry in debt["entries"]:
         assert entry_required <= set(entry)
         assert entry["severity"] in {"P0","P1","P2","P3"}
-        assert entry["status"] in {"open","corrected_in_r1","accepted","deferred","requires_operator_decision","partially_resolved_with_platform_limitations","partially_resolved","corrected_in_r3"}
+        assert entry["status"] in {"open","corrected_in_r1","accepted","deferred","requires_operator_decision","partially_resolved_with_platform_limitations","partially_resolved","corrected_in_r3","resolved_in_r4"}
 
 def test_roadmap_phase_ids_unique_and_complete():
     text = (ROOT / "docs/roadmap/M8_POST_M8C_REVISED_ROADMAP.md").read_text(encoding="utf-8")

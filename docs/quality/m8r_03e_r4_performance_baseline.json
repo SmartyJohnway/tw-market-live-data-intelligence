@@ -1,0 +1,1319 @@
+{
+  "baseline_main_sha": "d33a807bd8f2a4677dbf630b326271e94dd7202c",
+  "measurement_contract_ref": "docs/contracts/m8r_03e_r4_performance_measurement_contract.json",
+  "measurement_environment": {
+    "gc_enabled": true,
+    "network": false,
+    "platform": "Linux-6.12.47-x86_64-with-glibc2.39",
+    "python": "3.13.13",
+    "timer": "time.perf_counter_ns"
+  },
+  "production_contract_limit": 10,
+  "scenarios": [
+    {
+      "actual_target_count": 1,
+      "aggregate_valid_package_count": 1,
+      "all_repetitions_valid": true,
+      "citation_count": 27,
+      "median_measurements_ms": {
+        "total_end_to_end": 119.895
+      },
+      "missing_evidence_count": 0,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "operation_counts": {
+        "artifact_serialization": 0,
+        "canonical_json": 960,
+        "filesystem_write": 0,
+        "sha256_json": 915,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
+      },
+      "operation_counts_scope": "aggregate_across_all_measured_repetitions",
+      "peak_memory": {
+        "source": "tracemalloc",
+        "units": "bytes",
+        "value": 228465
+      },
+      "raw_measurement_count": 5,
+      "raw_measurements": [
+        {
+          "actual_target_count": 1,
+          "elapsed_ms": 119.691177,
+          "records": [
+            {
+              "actual_target_count": 1,
+              "citation_count": 27,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 1,
+          "elapsed_ms": 119.111306,
+          "records": [
+            {
+              "actual_target_count": 1,
+              "citation_count": 27,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 1,
+          "elapsed_ms": 119.895038,
+          "records": [
+            {
+              "actual_target_count": 1,
+              "citation_count": 27,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 1,
+          "elapsed_ms": 121.271476,
+          "records": [
+            {
+              "actual_target_count": 1,
+              "citation_count": 27,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 1,
+          "elapsed_ms": 122.063815,
+          "records": [
+            {
+              "actual_target_count": 1,
+              "citation_count": 27,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        }
+      ],
+      "repeat_count": 5,
+      "scenario_id": "1_target_snapshot",
+      "semantic_equivalence": true,
+      "serialized_bytes": 0,
+      "target_count": 1,
+      "tier": "production_contract",
+      "validator_cache_result_equivalence": true,
+      "validity_results": true,
+      "warmup_count": 2
+    },
+    {
+      "actual_target_count": null,
+      "blocking_dependency": "R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+      "expected_target_count": 10,
+      "measurement_executed": false,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "reason_code": "schema_valid_10_target_upstream_fixture_unavailable",
+      "scenario_id": "10_target_snapshot",
+      "status": "unsupported_pending_cross_layer_fixture",
+      "supported": false,
+      "tier": "production_contract"
+    },
+    {
+      "actual_target_count": null,
+      "blocking_dependency": "R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+      "expected_target_count": 50,
+      "measurement_executed": false,
+      "non_contract": true,
+      "not_authorized_for_production_request": true,
+      "reason_code": "schema_valid_10_target_upstream_fixture_unavailable",
+      "scenario_id": "50_target_stress",
+      "status": "unsupported_pending_valid_10_target_package",
+      "supported": false,
+      "tier": "stress_only"
+    },
+    {
+      "actual_target_count": null,
+      "blocking_dependency": "R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+      "expected_target_count": 100,
+      "measurement_executed": false,
+      "non_contract": true,
+      "not_authorized_for_production_request": true,
+      "reason_code": "schema_valid_10_target_upstream_fixture_unavailable",
+      "scenario_id": "100_target_stress",
+      "status": "unsupported_pending_valid_10_target_package",
+      "supported": false,
+      "tier": "stress_only"
+    },
+    {
+      "actual_target_count": null,
+      "blocking_dependency": "R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+      "expected_target_count": null,
+      "measurement_executed": false,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "reason_code": "pressure_fixture_unavailable",
+      "scenario_id": "high_citation_pressure",
+      "status": "unsupported_pending_cross_layer_fixture",
+      "supported": false,
+      "tier": "production_contract"
+    },
+    {
+      "actual_target_count": 2,
+      "aggregate_valid_package_count": 1,
+      "all_repetitions_valid": true,
+      "citation_count": 22,
+      "median_measurements_ms": {
+        "total_end_to_end": 128.229
+      },
+      "missing_evidence_count": 4,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "operation_counts": {
+        "artifact_serialization": 0,
+        "canonical_json": 825,
+        "filesystem_write": 0,
+        "sha256_json": 785,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
+      },
+      "operation_counts_scope": "aggregate_across_all_measured_repetitions",
+      "peak_memory": {
+        "source": "tracemalloc",
+        "units": "bytes",
+        "value": 240090
+      },
+      "raw_measurement_count": 5,
+      "raw_measurements": [
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 124.181099,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 128.228717,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 130.475069,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 131.500996,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 125.77181,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        }
+      ],
+      "repeat_count": 5,
+      "scenario_id": "high_missing_evidence_pressure",
+      "semantic_equivalence": true,
+      "serialized_bytes": 0,
+      "target_count": 2,
+      "tier": "production_contract",
+      "validator_cache_result_equivalence": true,
+      "validity_results": true,
+      "warmup_count": 2
+    },
+    {
+      "actual_target_count": null,
+      "blocking_dependency": "R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+      "expected_target_count": null,
+      "measurement_executed": false,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "reason_code": "pressure_fixture_unavailable",
+      "scenario_id": "combined_citation_and_missing_evidence_pressure",
+      "status": "unsupported_pending_cross_layer_fixture",
+      "supported": false,
+      "tier": "production_contract"
+    },
+    {
+      "actual_target_count": 2,
+      "aggregate_valid_package_count": 1,
+      "all_repetitions_valid": true,
+      "citation_count": 54,
+      "median_measurements_ms": {
+        "total_end_to_end": 233.238
+      },
+      "missing_evidence_count": 0,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "operation_counts": {
+        "artifact_serialization": 0,
+        "canonical_json": 1765,
+        "filesystem_write": 0,
+        "sha256_json": 1725,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
+      },
+      "operation_counts_scope": "aggregate_across_all_measured_repetitions",
+      "peak_memory": {
+        "source": "tracemalloc",
+        "units": "bytes",
+        "value": 401164
+      },
+      "raw_measurement_count": 5,
+      "raw_measurements": [
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 224.501985,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 218.866753,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 245.580888,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 255.374333,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 233.237787,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        }
+      ],
+      "repeat_count": 5,
+      "scenario_id": "complete_snapshot",
+      "semantic_equivalence": true,
+      "serialized_bytes": 0,
+      "target_count": 2,
+      "tier": "production_contract",
+      "validator_cache_result_equivalence": true,
+      "validity_results": true,
+      "warmup_count": 2
+    },
+    {
+      "actual_target_count": 2,
+      "aggregate_valid_package_count": 1,
+      "all_repetitions_valid": true,
+      "citation_count": 32,
+      "median_measurements_ms": {
+        "total_end_to_end": 210.706
+      },
+      "missing_evidence_count": 0,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "operation_counts": {
+        "artifact_serialization": 0,
+        "canonical_json": 1105,
+        "filesystem_write": 0,
+        "sha256_json": 1065,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
+      },
+      "operation_counts_scope": "aggregate_across_all_measured_repetitions",
+      "peak_memory": {
+        "source": "tracemalloc",
+        "units": "bytes",
+        "value": 966346
+      },
+      "raw_measurement_count": 5,
+      "raw_measurements": [
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 207.075517,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 32,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 210.19726,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 32,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 214.327224,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 32,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 212.66691,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 32,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 210.706339,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 32,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        }
+      ],
+      "repeat_count": 5,
+      "scenario_id": "performance_package",
+      "semantic_equivalence": true,
+      "serialized_bytes": 0,
+      "target_count": 2,
+      "tier": "production_contract",
+      "validator_cache_result_equivalence": true,
+      "validity_results": true,
+      "warmup_count": 2
+    },
+    {
+      "actual_target_count": 2,
+      "aggregate_valid_package_count": 1,
+      "all_repetitions_valid": true,
+      "citation_count": 45,
+      "median_measurements_ms": {
+        "total_end_to_end": 207.897
+      },
+      "missing_evidence_count": 1,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "operation_counts": {
+        "artifact_serialization": 0,
+        "canonical_json": 1500,
+        "filesystem_write": 0,
+        "sha256_json": 1460,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
+      },
+      "operation_counts_scope": "aggregate_across_all_measured_repetitions",
+      "peak_memory": {
+        "source": "tracemalloc",
+        "units": "bytes",
+        "value": 358660
+      },
+      "raw_measurement_count": 5,
+      "raw_measurements": [
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 202.070525,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 45,
+              "missing_evidence_count": 1,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 208.206192,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 45,
+              "missing_evidence_count": 1,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 207.897175,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 45,
+              "missing_evidence_count": 1,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 239.859884,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 45,
+              "missing_evidence_count": 1,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 191.650148,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 45,
+              "missing_evidence_count": 1,
+              "valid": true
+            }
+          ]
+        }
+      ],
+      "repeat_count": 5,
+      "scenario_id": "partial_source_failure",
+      "semantic_equivalence": true,
+      "serialized_bytes": 0,
+      "target_count": 2,
+      "tier": "production_contract",
+      "validator_cache_result_equivalence": true,
+      "validity_results": true,
+      "warmup_count": 2
+    },
+    {
+      "actual_target_count": 2,
+      "aggregate_valid_package_count": 1,
+      "all_repetitions_valid": true,
+      "citation_count": 22,
+      "median_measurements_ms": {
+        "total_end_to_end": 133.975
+      },
+      "missing_evidence_count": 4,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "operation_counts": {
+        "artifact_serialization": 0,
+        "canonical_json": 825,
+        "filesystem_write": 0,
+        "sha256_json": 785,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
+      },
+      "operation_counts_scope": "aggregate_across_all_measured_repetitions",
+      "peak_memory": {
+        "source": "tracemalloc",
+        "units": "bytes",
+        "value": 244320
+      },
+      "raw_measurement_count": 5,
+      "raw_measurements": [
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 133.974752,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 127.846614,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 142.929296,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 145.503708,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 130.696394,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        }
+      ],
+      "repeat_count": 5,
+      "scenario_id": "all_source_failure",
+      "semantic_equivalence": true,
+      "serialized_bytes": 0,
+      "target_count": 2,
+      "tier": "production_contract",
+      "validator_cache_result_equivalence": true,
+      "validity_results": true,
+      "warmup_count": 2
+    },
+    {
+      "actual_target_count": 2,
+      "aggregate_valid_package_count": 1,
+      "all_repetitions_valid": true,
+      "citation_count": 54,
+      "median_measurements_ms": {
+        "total_end_to_end": 242.482
+      },
+      "missing_evidence_count": 0,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "operation_counts": {
+        "artifact_serialization": 0,
+        "canonical_json": 1810,
+        "filesystem_write": 0,
+        "sha256_json": 1745,
+        "validate_schema": 30,
+        "validator_cache_hits": 30,
+        "validator_cache_misses": 0
+      },
+      "operation_counts_scope": "aggregate_across_all_measured_repetitions",
+      "peak_memory": {
+        "source": "tracemalloc",
+        "units": "bytes",
+        "value": 409841
+      },
+      "raw_measurement_count": 5,
+      "raw_measurements": [
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 251.237492,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 312.2012,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 242.481608,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 235.918247,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 235.367219,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        }
+      ],
+      "repeat_count": 5,
+      "scenario_id": "conversation_handoff_policy_a",
+      "semantic_equivalence": true,
+      "serialized_bytes": 0,
+      "target_count": 2,
+      "tier": "production_contract",
+      "validator_cache_result_equivalence": true,
+      "validity_results": true,
+      "warmup_count": 2
+    },
+    {
+      "actual_target_count": 2,
+      "aggregate_valid_package_count": 1,
+      "all_repetitions_valid": true,
+      "citation_count": 54,
+      "median_measurements_ms": {
+        "total_end_to_end": 250.835
+      },
+      "missing_evidence_count": 0,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "operation_counts": {
+        "artifact_serialization": 0,
+        "canonical_json": 1810,
+        "filesystem_write": 0,
+        "sha256_json": 1745,
+        "validate_schema": 30,
+        "validator_cache_hits": 30,
+        "validator_cache_misses": 0
+      },
+      "operation_counts_scope": "aggregate_across_all_measured_repetitions",
+      "peak_memory": {
+        "source": "tracemalloc",
+        "units": "bytes",
+        "value": 408264
+      },
+      "raw_measurement_count": 5,
+      "raw_measurements": [
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 301.279797,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 247.20231,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 251.010354,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 250.835044,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 236.455053,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        }
+      ],
+      "repeat_count": 5,
+      "scenario_id": "conversation_handoff_policy_b",
+      "semantic_equivalence": true,
+      "serialized_bytes": 0,
+      "target_count": 2,
+      "tier": "production_contract",
+      "validator_cache_result_equivalence": true,
+      "validity_results": true,
+      "warmup_count": 2
+    },
+    {
+      "actual_target_count": 2,
+      "aggregate_valid_package_count": 1,
+      "all_repetitions_valid": true,
+      "citation_count": 54,
+      "median_measurements_ms": {
+        "total_end_to_end": 400.132
+      },
+      "missing_evidence_count": 0,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "operation_counts": {
+        "artifact_serialization": 0,
+        "canonical_json": 1800,
+        "filesystem_write": 0,
+        "sha256_json": 1740,
+        "validate_schema": 25,
+        "validator_cache_hits": 35,
+        "validator_cache_misses": 0
+      },
+      "operation_counts_scope": "aggregate_across_all_measured_repetitions",
+      "peak_memory": {
+        "source": "tracemalloc",
+        "units": "bytes",
+        "value": 595411
+      },
+      "raw_measurement_count": 5,
+      "raw_measurements": [
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 400.131795,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "migration_ms": 122.152624,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 415.184666,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "migration_ms": 121.374129,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 395.008044,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "migration_ms": 125.166558,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 401.294404,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "migration_ms": 122.730379,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 386.21427,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "migration_ms": 120.626708,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        }
+      ],
+      "repeat_count": 5,
+      "scenario_id": "v1_to_v2_migration",
+      "semantic_equivalence": true,
+      "serialized_bytes": 0,
+      "target_count": 2,
+      "tier": "production_contract",
+      "validator_cache_result_equivalence": true,
+      "validity_results": true,
+      "warmup_count": 2
+    },
+    {
+      "actual_target_count": 2,
+      "aggregate_valid_package_count": 1,
+      "all_repetitions_valid": true,
+      "citation_count": 54,
+      "median_measurements_ms": {
+        "total_end_to_end": 3.88
+      },
+      "missing_evidence_count": 0,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "operation_counts": {
+        "artifact_serialization": 0,
+        "canonical_json": 5,
+        "filesystem_write": 0,
+        "sha256_json": 0,
+        "validate_schema": 0,
+        "validator_cache_hits": 0,
+        "validator_cache_misses": 0
+      },
+      "operation_counts_scope": "aggregate_across_all_measured_repetitions",
+      "peak_memory": {
+        "source": "tracemalloc",
+        "units": "bytes",
+        "value": 198048
+      },
+      "raw_measurement_count": 5,
+      "raw_measurements": [
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 3.879662,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "artifact_serialization_ms": 3.633677,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "serialized_bytes": 39547,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 3.813481,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "artifact_serialization_ms": 3.58367,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "serialized_bytes": 39547,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 3.816489,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "artifact_serialization_ms": 3.591341,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "serialized_bytes": 39547,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 3.981048,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "artifact_serialization_ms": 3.730169,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "serialized_bytes": 39547,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 4.115269,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "artifact_serialization_ms": 3.884029,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "serialized_bytes": 39547,
+              "valid": true
+            }
+          ]
+        }
+      ],
+      "repeat_count": 5,
+      "scenario_id": "artifact_serialization_only",
+      "semantic_equivalence": true,
+      "serialized_bytes": 39547,
+      "target_count": 2,
+      "tier": "production_contract",
+      "validator_cache_result_equivalence": true,
+      "validity_results": true,
+      "warmup_count": 2
+    },
+    {
+      "actual_target_count": 2,
+      "aggregate_valid_package_count": 1,
+      "all_repetitions_valid": true,
+      "citation_count": 54,
+      "median_measurements_ms": {
+        "total_end_to_end": 9.309
+      },
+      "missing_evidence_count": 0,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "operation_counts": {
+        "artifact_serialization": 0,
+        "canonical_json": 5,
+        "filesystem_write": 0,
+        "sha256_json": 0,
+        "validate_schema": 0,
+        "validator_cache_hits": 0,
+        "validator_cache_misses": 0
+      },
+      "operation_counts_scope": "aggregate_across_all_measured_repetitions",
+      "peak_memory": {
+        "source": "tracemalloc",
+        "units": "bytes",
+        "value": 205040
+      },
+      "raw_measurement_count": 5,
+      "raw_measurements": [
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 11.476262,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "safe_atomic_write_ms": 7.585323,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 9.114645,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "safe_atomic_write_ms": 4.922882,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 9.308957,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "safe_atomic_write_ms": 5.307826,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 23.910831,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "safe_atomic_write_ms": 20.103939,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 8.026687,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "safe_atomic_write_ms": 3.996984,
+              "valid": true
+            }
+          ]
+        }
+      ],
+      "repeat_count": 5,
+      "scenario_id": "safe_atomic_artifact_write",
+      "semantic_equivalence": true,
+      "serialized_bytes": 0,
+      "target_count": 2,
+      "tier": "production_contract",
+      "validator_cache_result_equivalence": true,
+      "validity_results": true,
+      "warmup_count": 2
+    },
+    {
+      "actual_target_count": 2,
+      "aggregate_valid_package_count": 1,
+      "all_repetitions_valid": true,
+      "citation_count": 54,
+      "median_measurements_ms": {
+        "total_end_to_end": 11.612
+      },
+      "missing_evidence_count": 0,
+      "non_contract": false,
+      "not_authorized_for_production_request": false,
+      "operation_counts": {
+        "artifact_serialization": 0,
+        "canonical_json": 35,
+        "filesystem_write": 0,
+        "sha256_json": 35,
+        "validate_schema": 0,
+        "validator_cache_hits": 0,
+        "validator_cache_misses": 0
+      },
+      "operation_counts_scope": "aggregate_across_all_measured_repetitions",
+      "peak_memory": {
+        "source": "tracemalloc",
+        "units": "bytes",
+        "value": 198868
+      },
+      "raw_measurement_count": 5,
+      "raw_measurements": [
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 11.079548,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "manifest_generation_ms": 10.866391,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 12.060628,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "manifest_generation_ms": 11.852297,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 14.668258,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "manifest_generation_ms": 14.367942,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 11.181077,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "manifest_generation_ms": 10.954142,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 11.612129,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "manifest_generation_ms": 11.399668,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        }
+      ],
+      "repeat_count": 5,
+      "scenario_id": "manifest_generation",
+      "semantic_equivalence": true,
+      "serialized_bytes": 0,
+      "target_count": 2,
+      "tier": "production_contract",
+      "validator_cache_result_equivalence": true,
+      "validity_results": true,
+      "warmup_count": 2
+    }
+  ],
+  "schema_version": "m8r_03e_r4_performance_baseline.v2",
+  "stress_only_limits": [
+    50,
+    100
+  ],
+  "task_id": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
+  "tested_tree_sha": "23f1f2e55216f20143563d7384e61a76d067a552"
+}

@@ -87,27 +87,27 @@
   },
   "generated_at_utc": "2026-07-16T00:00:00Z",
   "implemented_through_track": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
-  "latest_validation_ref": "docs/acceptance_runs/M8R_03E_R3_VALIDATION.json",
+  "latest_validation_ref": "docs/acceptance_runs/M8R_03E_R4_VALIDATION.json",
   "original_m8r04_disposition": "superseded_and_split",
   "p0_count": 0,
   "p1_count": 2,
   "p2_count": 4,
   "p3_count": 1,
   "performance_status": "reproducible_baseline_recorded_R4_optimization_pending",
-  "phase_c_gate_status": "blocked_pending_R4_performance_and_scalability",
+  "phase_c_gate_status": "pending_post_r4_sequencing_decision",
   "phase_c_status": "blocked_pending_R4_performance_and_scalability",
   "r2_f0_status": "GO_WITH_CAVEATS",
   "r2_filesystem_containment_status": "GO_WITH_CAVEATS_REMEDIATED_WITH_PORTABLE_TOCTOU_AND_WINDOWS_REPARSE_LIMITATIONS",
   "r2_recommended_next_task": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
   "r2_status": "GO_WITH_CAVEATS",
-  "recommended_next_task": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
+  "recommended_next_task": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION",
   "recommended_next_task_reason": "R3 migration, composition, dependency boundaries, and acceptance closure completed; R4 performance and scalability remains the successor.",
   "recommended_successor_after_m8r_03e": {
     "status": "historical_superseded",
     "superseded_by": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
     "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION"
   },
-  "registry_successor": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
+  "registry_successor": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION",
   "roadmap_alignment_status": "aligned_with_caveats",
   "schema_version": "m8_repository_health_status.v1",
   "security_status": "GO_WITH_CAVEATS_R2_CONTAINMENT_REMEDIATED_WITH_PORTABLE_TOCTOU_AND_WINDOWS_REPARSE_LIMITATIONS",
@@ -216,5 +216,6 @@
       "new_m8_m8r_failure_count": 0,
       "status": "fail_known_baseline_drift"
     }
-  ]
+  ],
+  "implemented_through": "R3"
 }

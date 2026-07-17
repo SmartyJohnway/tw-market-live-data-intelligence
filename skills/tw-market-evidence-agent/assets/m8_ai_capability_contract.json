@@ -1002,7 +1002,7 @@
     "trading_signal_allowed=false"
   ],
   "phase_dependencies": {
-    "Phase C": "blocked_pending_M8R-03E-R3-critical-subset"
+    "Phase C": "blocked_pending_R4"
   },
   "raw_payload_exposure_allowed": false,
   "recommended_next_task": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
