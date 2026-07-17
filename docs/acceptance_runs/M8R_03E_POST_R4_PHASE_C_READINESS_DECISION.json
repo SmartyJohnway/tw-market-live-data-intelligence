@@ -131,18 +131,6 @@
     "r5a_10_target_dependency": [],
     "unknown_unclassified": []
   },
-  "failure_counts": {
-    "known_historical_failure": 0,
-    "windows_path_semantics": 5,
-    "environment_or_dependency": 4,
-    "artifact_or_fixture_drift": 37,
-    "stale_governance_expectation": 2,
-    "test_harness_side_effect": 0,
-    "new_regression": 0,
-    "r5a_10_target_dependency": 0,
-    "unknown_unclassified": 0,
-    "total": 48
-  },
   "component_profile_results": {
     "component-governance": {
       "passed": 38,
@@ -356,7 +344,7 @@
   "R4_acceptance_sealing_status": "unsealed",
   "R4_completion_status": "PARTIAL_COMPLETION",
   "R4_scope_closure_status": "not_closed",
-  "R4_sealing_recommendation": "R4 remains unsealed because the current regression failure set is not fully classified and because R4 scope remains partial.",
+  "R4_sealing_recommendation": "R4 remains unsealed because the current regression failure assignment is complete, but root-cause confirmation remains partial and because R4 scope remains partial.",
   "R5A_relationship": "required_for_Phase_C_activation_not_retroactive_R4_regression_claim",
   "Phase_C_implementation_gate": "ready_to_begin",
   "Phase_C_activation_gate": "blocked_pending_R5A_10_target_fixture_and_windows_path_validation_correction",
@@ -955,5 +943,18 @@
       ],
       "affected_node_count": 2
     }
+  },
+  "provisional_assignment_counts": {
+    "known_historical_failure": 0,
+    "windows_path_semantics": 5,
+    "environment_or_dependency": 4,
+    "artifact_or_fixture_drift": 37,
+    "stale_governance_expectation": 2,
+    "test_harness_side_effect": 0,
+    "new_regression": 0,
+    "r5a_10_target_dependency": 0,
+    "unknown_unclassified": 0,
+    "total": 48,
+    "new_regression_assignment_count_note": "A new_regression assignment count of 0 does not constitute a regression determination."
   }
 }

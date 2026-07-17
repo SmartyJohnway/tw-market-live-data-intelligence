@@ -8,7 +8,7 @@ This document records the official preflight evaluation, local Windows-specific 
 
 ## 2. Windows-Local Test Results & Failure Classification
 
-A reproducible local execution result was completed in the Windows UTF-8 environment (`$env:PYTHONUTF8=1` via Python 3.11.15) to obtain deterministic execution metrics.
+A reproducible local execution result was completed in the Windows UTF-8 environment (`$env:PYTHONUTF8=1` via Python 3.11.15) to obtain recorded local Windows execution result.
 
 ### 2.1. Test Execution Metrics
 - **Passed**: 1,664
@@ -107,7 +107,7 @@ To prevent contradictions between the decision documents and active runtime cont
 
 ### 5.1. Status Matrices
 - **R4 Regression Evidence Status**: `full_non_network_executed_assignment_complete_root_cause_confirmation_partial`
-- **R4 Acceptance Sealing Status**: `unsealed` (R4 remains unsealed because the current regression failure set is not fully classified in main branch and because R4 scope remains partial).
+- **R4 Acceptance Sealing Status**: `unsealed` (R4 remains unsealed because the current regression failure assignment is complete, but root-cause confirmation remains partial and because R4 scope remains partial).
 - **R4 Completion Status**: `PARTIAL_COMPLETION`
 - **R4 Scope Closure Status**: `not_closed`
 - **Phase C Implementation Gate**: `ready_to_begin`

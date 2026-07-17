@@ -47,6 +47,10 @@ def test_assignment_versus_confirmation():
     assert dec["new_regression_count"] is None
     assert dec["new_regression_status"] == "not_demonstrated_due_to_platform_specific_failure_expansion"
 
+    pac = dec["provisional_assignment_counts"]
+    assert pac["total"] == 48
+    assert "new_regression_assignment_count_note" in pac
+
 def test_root_cause_group_references():
     dec = load_json(DECISION_PATH)
     groups = dec["root_cause_groups"]
