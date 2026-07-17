@@ -3,17 +3,17 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-IMPLEMENTED_THROUGH = "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING"
-NEXT = "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING"
+IMPLEMENTED_THROUGH_TRACK = "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP"
+RECOMMENDED_NEXT_TASK = "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION"
 
 def load(path):
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
 def test_registry_post_m8c_realignment_semantics():
     reg = load("docs/data_capabilities/m8_source_capability_registry.json")
-    assert reg["implemented_through_track"] == IMPLEMENTED_THROUGH
-    assert reg["recommended_next_task"] == NEXT
-    assert reg["registry_successor"] == NEXT
+    assert reg["implemented_through_track"] == IMPLEMENTED_THROUGH_TRACK
+    assert reg["recommended_next_task"] == RECOMMENDED_NEXT_TASK
+    assert reg["registry_successor"] == RECOMMENDED_NEXT_TASK
     assert reg["original_m8r04_disposition"] == "superseded_and_split"
     assert reg["active_architectural_model"] == "governed_market_evidence_platform"
     assert reg["ai_behavior_hardcoding"] == "deprecated_direction"
@@ -26,8 +26,8 @@ def test_health_status_and_debt_register_shapes():
     status = load("docs/data_capabilities/m8_repository_health_status.json")
     required = {"schema_version","task_id","baseline_sha","generated_at_utc","audit_scope","roadmap_alignment_status","implemented_through_track","original_m8r04_disposition","architecture_model","ai_behavior_policy_decoupling_status","correctness_status","security_status","performance_status","testing_status","documentation_status","p0_count","p1_count","p2_count","p3_count","blocking_findings","direct_corrections","recommended_next_task","recommended_next_task_reason","validation_commands","validation_results"}
     assert required <= set(status)
-    assert status["implemented_through_track"] == IMPLEMENTED_THROUGH
-    assert status["recommended_next_task"] == NEXT
+    assert status["implemented_through_track"] == IMPLEMENTED_THROUGH_TRACK
+    assert status["recommended_next_task"] == RECOMMENDED_NEXT_TASK
     final = load("docs/acceptance_runs/M8R_03E_R2_FINAL_VALIDATION.json")
     assert final["r2_f0_disposition"] == "GO_WITH_CAVEATS"
     assert final["r2_disposition"] == "GO_WITH_CAVEATS"
@@ -39,7 +39,7 @@ def test_health_status_and_debt_register_shapes():
     for entry in debt["entries"]:
         assert entry_required <= set(entry)
         assert entry["severity"] in {"P0","P1","P2","P3"}
-        assert entry["status"] in {"open","corrected_in_r1","accepted","deferred","requires_operator_decision","partially_resolved_with_platform_limitations","partially_resolved","corrected_in_r3","resolved_in_r4"}
+        assert entry["status"] in {"open","corrected_in_r1","accepted","deferred","requires_operator_decision","partially_resolved_with_platform_limitations","partially_resolved","corrected_in_r3","resolved_in_r4","partially_resolved_in_r4"}
 
 def test_roadmap_phase_ids_unique_and_complete():
     text = (ROOT / "docs/roadmap/M8_POST_M8C_REVISED_ROADMAP.md").read_text(encoding="utf-8")
@@ -80,7 +80,7 @@ def test_p1_blocking_and_successor_semantics_are_consistent():
     debt = load("docs/quality/m8_technical_debt_register.json")
     p1 = [entry for entry in debt["entries"] if entry["severity"] == "P1"]
     assert status["p1_count"] == len(p1)
-    assert status["recommended_next_task"] == NEXT
+    assert status["recommended_next_task"] == RECOMMENDED_NEXT_TASK
     assert all(entry.get("blocking_phase") != "Phase B" for entry in p1)
     phase_c_blockers = [entry for entry in p1 if entry.get("blocking_phase") == "Phase C" and entry.get("status") not in {"corrected_in_r3", "resolved"}]
     assert not phase_c_blockers
@@ -172,9 +172,10 @@ def test_performance_baseline_runner_exercises_actual_m8r03e_functions():
 
 def test_performance_baseline_verify_mode_succeeds():
     import subprocess
+    import sys
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "scripts/run_m8r_03e_performance_baseline.py",
             "--verify-existing",
             "docs/quality/m8_performance_baseline.json",
