@@ -11,34 +11,86 @@
   "production_contract_limit": 10,
   "scenarios": [
     {
+      "actual_target_count": 1,
       "aggregate_valid_package_count": 1,
       "citation_count": 27,
       "median_measurements_ms": {
-        "total_end_to_end": 121.053
+        "total_end_to_end": 125.149
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 192,
+        "canonical_json": 960,
         "filesystem_write": 0,
-        "sha256_json": 183,
-        "validate_schema": 4,
-        "validator_cache_hits": 4,
+        "sha256_json": 915,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
         "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 231002
+        "value": 1192105
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 121.053374,
-          "results": [
+          "actual_target_count": 1,
+          "elapsed_ms": 131.530129,
+          "records": [
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 1,
+              "citation_count": 27,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 1,
+          "elapsed_ms": 125.148829,
+          "records": [
+            {
+              "actual_target_count": 1,
+              "citation_count": 27,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 1,
+          "elapsed_ms": 125.908868,
+          "records": [
+            {
+              "actual_target_count": 1,
+              "citation_count": 27,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 1,
+          "elapsed_ms": 118.683109,
+          "records": [
+            {
+              "actual_target_count": 1,
+              "citation_count": 27,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 1,
+          "elapsed_ms": 118.029599,
+          "records": [
+            {
+              "actual_target_count": 1,
+              "citation_count": 27,
+              "missing_evidence_count": 0,
               "valid": true
             }
           ]
@@ -54,34 +106,86 @@
       "warmup_count": 2
     },
     {
+      "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 228.17
+        "total_end_to_end": 224.598
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 353,
+        "canonical_json": 1765,
         "filesystem_write": 0,
-        "sha256_json": 345,
-        "validate_schema": 4,
-        "validator_cache_hits": 2,
-        "validator_cache_misses": 2
+        "sha256_json": 1725,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 399892
+        "value": 401038
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 228.169689,
-          "results": [
+          "actual_target_count": 2,
+          "elapsed_ms": 220.888777,
+          "records": [
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 222.970703,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 224.598053,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 235.714118,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 226.372235,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             }
           ]
@@ -91,56 +195,140 @@
       "scenario_id": "10_target_snapshot",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 10,
+      "target_count": 2,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 10,
       "aggregate_valid_package_count": 5,
       "citation_count": 270,
       "median_measurements_ms": {
-        "total_end_to_end": 1093.756
+        "total_end_to_end": 1177.708
       },
       "missing_evidence_count": 0,
       "non_contract": true,
       "not_authorized_for_production_request": true,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 1765,
+        "canonical_json": 5295,
         "filesystem_write": 0,
-        "sha256_json": 1725,
-        "validate_schema": 20,
-        "validator_cache_hits": 18,
-        "validator_cache_misses": 2
+        "sha256_json": 5175,
+        "validate_schema": 60,
+        "validator_cache_hits": 60,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 556496
+        "value": 536691
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 1093.755795,
-          "results": [
+          "actual_target_count": 10,
+          "elapsed_ms": 1094.341061,
+          "records": [
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             },
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             },
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             },
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             },
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 10,
+          "elapsed_ms": 1189.159668,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 10,
+          "elapsed_ms": 1177.708252,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             }
           ]
@@ -150,76 +338,230 @@
       "scenario_id": "50_target_stress",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 50,
+      "target_count": 10,
       "tier": "stress_only",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 20,
       "aggregate_valid_package_count": 10,
       "citation_count": 540,
       "median_measurements_ms": {
-        "total_end_to_end": 2243.481
+        "total_end_to_end": 2439.976
       },
       "missing_evidence_count": 0,
       "non_contract": true,
       "not_authorized_for_production_request": true,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 3530,
+        "canonical_json": 10590,
         "filesystem_write": 0,
-        "sha256_json": 3450,
-        "validate_schema": 40,
-        "validator_cache_hits": 38,
-        "validator_cache_misses": 2
+        "sha256_json": 10350,
+        "validate_schema": 120,
+        "validator_cache_hits": 120,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 564516
+        "value": 550155
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 2243.481418,
-          "results": [
+          "actual_target_count": 20,
+          "elapsed_ms": 2439.975765,
+          "records": [
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             },
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             },
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             },
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             },
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             },
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             },
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             },
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             },
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             },
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 20,
+          "elapsed_ms": 2435.563819,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 20,
+          "elapsed_ms": 2559.301921,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            },
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             }
           ]
@@ -229,40 +571,92 @@
       "scenario_id": "100_target_stress",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 100,
+      "target_count": 20,
       "tier": "stress_only",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 210.899
+        "total_end_to_end": 223.991
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 353,
+        "canonical_json": 1765,
         "filesystem_write": 0,
-        "sha256_json": 345,
-        "validate_schema": 4,
-        "validator_cache_hits": 2,
-        "validator_cache_misses": 2
+        "sha256_json": 1725,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 391375
+        "value": 401179
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 210.898825,
-          "results": [
+          "actual_target_count": 2,
+          "elapsed_ms": 238.298827,
+          "records": [
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 235.184646,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 223.991358,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 220.495656,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 218.427253,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             }
           ]
@@ -272,40 +666,92 @@
       "scenario_id": "high_citation_pressure",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 10,
+      "target_count": 2,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 22,
       "median_measurements_ms": {
-        "total_end_to_end": 159.373
+        "total_end_to_end": 129.655
       },
       "missing_evidence_count": 4,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 165,
+        "canonical_json": 825,
         "filesystem_write": 0,
-        "sha256_json": 157,
-        "validate_schema": 4,
-        "validator_cache_hits": 2,
-        "validator_cache_misses": 2
+        "sha256_json": 785,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 245623
+        "value": 249772
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 159.373296,
-          "results": [
+          "actual_target_count": 2,
+          "elapsed_ms": 129.654674,
+          "records": [
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 118.727487,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 118.578348,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 131.539807,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 130.615901,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
               "valid": true
             }
           ]
@@ -315,40 +761,92 @@
       "scenario_id": "high_missing_evidence_pressure",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 10,
+      "target_count": 2,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 22,
       "median_measurements_ms": {
-        "total_end_to_end": 151.0
+        "total_end_to_end": 128.123
       },
       "missing_evidence_count": 4,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 165,
+        "canonical_json": 825,
         "filesystem_write": 0,
-        "sha256_json": 157,
-        "validate_schema": 4,
-        "validator_cache_hits": 2,
-        "validator_cache_misses": 2
+        "sha256_json": 785,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 239365
+        "value": 241547
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 151.000275,
-          "results": [
+          "actual_target_count": 2,
+          "elapsed_ms": 129.207999,
+          "records": [
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 130.003499,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 126.558284,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 120.338093,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 128.123362,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
               "valid": true
             }
           ]
@@ -358,40 +856,92 @@
       "scenario_id": "combined_citation_and_missing_evidence_pressure",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 10,
+      "target_count": 2,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 249.46
+        "total_end_to_end": 233.967
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 353,
+        "canonical_json": 1765,
         "filesystem_write": 0,
-        "sha256_json": 345,
-        "validate_schema": 4,
-        "validator_cache_hits": 2,
-        "validator_cache_misses": 2
+        "sha256_json": 1725,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 403597
+        "value": 403655
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 249.460038,
-          "results": [
+          "actual_target_count": 2,
+          "elapsed_ms": 234.676781,
+          "records": [
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 233.967039,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 233.739371,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 240.423645,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 232.020309,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "valid": true
             }
           ]
@@ -401,40 +951,92 @@
       "scenario_id": "complete_snapshot",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 10,
+      "target_count": 2,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 32,
       "median_measurements_ms": {
-        "total_end_to_end": 226.904
+        "total_end_to_end": 225.406
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 221,
+        "canonical_json": 1105,
         "filesystem_write": 0,
-        "sha256_json": 213,
-        "validate_schema": 4,
-        "validator_cache_hits": 2,
-        "validator_cache_misses": 2
+        "sha256_json": 1065,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 997245
+        "value": 960929
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 226.903917,
-          "results": [
+          "actual_target_count": 2,
+          "elapsed_ms": 215.870227,
+          "records": [
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 32,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 225.40643,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 32,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 229.839829,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 32,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 218.410141,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 32,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 268.358305,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 32,
+              "missing_evidence_count": 0,
               "valid": true
             }
           ]
@@ -444,40 +1046,92 @@
       "scenario_id": "performance_package",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 10,
+      "target_count": 2,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 45,
       "median_measurements_ms": {
-        "total_end_to_end": 192.334
+        "total_end_to_end": 198.914
       },
       "missing_evidence_count": 1,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 300,
+        "canonical_json": 1500,
         "filesystem_write": 0,
-        "sha256_json": 292,
-        "validate_schema": 4,
-        "validator_cache_hits": 2,
-        "validator_cache_misses": 2
+        "sha256_json": 1460,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 362066
+        "value": 365146
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 192.334278,
-          "results": [
+          "actual_target_count": 2,
+          "elapsed_ms": 194.469679,
+          "records": [
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 45,
+              "missing_evidence_count": 1,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 211.252402,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 45,
+              "missing_evidence_count": 1,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 205.383409,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 45,
+              "missing_evidence_count": 1,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 198.157856,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 45,
+              "missing_evidence_count": 1,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 198.914056,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 45,
+              "missing_evidence_count": 1,
               "valid": true
             }
           ]
@@ -487,40 +1141,92 @@
       "scenario_id": "partial_source_failure",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 10,
+      "target_count": 2,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 22,
       "median_measurements_ms": {
-        "total_end_to_end": 127.243
+        "total_end_to_end": 131.484
       },
       "missing_evidence_count": 4,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 165,
+        "canonical_json": 825,
         "filesystem_write": 0,
-        "sha256_json": 157,
-        "validate_schema": 4,
-        "validator_cache_hits": 2,
-        "validator_cache_misses": 2
+        "sha256_json": 785,
+        "validate_schema": 20,
+        "validator_cache_hits": 20,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 242547
+        "value": 248823
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 127.24299,
-          "results": [
+          "actual_target_count": 2,
+          "elapsed_ms": 131.483711,
+          "records": [
             {
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 161.565774,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 128.559628,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 139.046127,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 129.009812,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 22,
+              "missing_evidence_count": 4,
               "valid": true
             }
           ]
@@ -530,41 +1236,102 @@
       "scenario_id": "all_source_failure",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 10,
+      "target_count": 2,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 211.564
+        "total_end_to_end": 259.417
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 356,
+        "canonical_json": 1805,
         "filesystem_write": 0,
-        "sha256_json": 347,
-        "validate_schema": 5,
-        "validator_cache_hits": 3,
-        "validator_cache_misses": 2
+        "sha256_json": 1745,
+        "validate_schema": 30,
+        "validator_cache_hits": 30,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 397921
+        "value": 403387
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 211.564213,
-          "results": [
+          "actual_target_count": 2,
+          "elapsed_ms": 275.142408,
+          "records": [
             {
-              "handoff_policy_differs": false,
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 265.814967,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 259.417158,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 245.130328,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 258.026949,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
               "valid": true
             }
           ]
@@ -574,41 +1341,102 @@
       "scenario_id": "conversation_handoff_policy_a",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 10,
+      "target_count": 2,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 223.567
+        "total_end_to_end": 257.347
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 356,
+        "canonical_json": 1805,
         "filesystem_write": 0,
-        "sha256_json": 347,
-        "validate_schema": 5,
-        "validator_cache_hits": 3,
-        "validator_cache_misses": 2
+        "sha256_json": 1745,
+        "validate_schema": 30,
+        "validator_cache_hits": 30,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 404240
+        "value": 400955
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 223.567286,
-          "results": [
+          "actual_target_count": 2,
+          "elapsed_ms": 278.966995,
+          "records": [
             {
-              "handoff_policy_differs": true,
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 280.956696,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 255.435008,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 241.781107,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 257.346579,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "evidence_bytes_unchanged": true,
+              "missing_evidence_count": 0,
+              "policy_handoffs_differ": true,
               "valid": true
             }
           ]
@@ -618,41 +1446,97 @@
       "scenario_id": "conversation_handoff_policy_b",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 10,
+      "target_count": 2,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 404.592
+        "total_end_to_end": 398.945
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 360,
+        "canonical_json": 1800,
         "filesystem_write": 0,
-        "sha256_json": 348,
-        "validate_schema": 5,
-        "validator_cache_hits": 4,
-        "validator_cache_misses": 3
+        "sha256_json": 1740,
+        "validate_schema": 25,
+        "validator_cache_hits": 35,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 654890
+        "value": 591439
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 404.591981,
-          "results": [
+          "actual_target_count": 2,
+          "elapsed_ms": 389.394934,
+          "records": [
             {
-              "migration_ms": 144.482195,
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "migration_ms": 115.213868,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 398.945056,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "migration_ms": 123.261329,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 395.472422,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "migration_ms": 127.68715,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 416.260337,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "migration_ms": 128.825779,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 431.626222,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "migration_ms": 126.311119,
+              "missing_evidence_count": 0,
               "valid": true
             }
           ]
@@ -662,40 +1546,101 @@
       "scenario_id": "v1_to_v2_migration",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 10,
+      "target_count": 2,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 224.258
+        "total_end_to_end": 4.258
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 354,
+        "artifact_serialization": 0,
+        "canonical_json": 5,
         "filesystem_write": 0,
-        "sha256_json": 345,
-        "validate_schema": 4,
-        "validator_cache_hits": 2,
-        "validator_cache_misses": 2
+        "sha256_json": 0,
+        "validate_schema": 0,
+        "validator_cache_hits": 0,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 404381
+        "value": 198048
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 224.257556,
-          "results": [
+          "actual_target_count": 2,
+          "elapsed_ms": 4.291888,
+          "records": [
             {
-              "artifact_serialization_ms": 3.556514,
+              "actual_target_count": 2,
+              "artifact_serialization_ms": 4.022141,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "serialized_bytes": 39547,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 4.031657,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "artifact_serialization_ms": 3.745139,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "serialized_bytes": 39547,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 5.152864,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "artifact_serialization_ms": 4.908414,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "serialized_bytes": 39547,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 4.2576,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "artifact_serialization_ms": 3.989283,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "serialized_bytes": 39547,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 3.73768,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "artifact_serialization_ms": 3.517907,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
               "serialized_bytes": 39547,
               "valid": true
             }
@@ -706,41 +1651,97 @@
       "scenario_id": "artifact_serialization_only",
       "semantic_equivalence": true,
       "serialized_bytes": 39547,
-      "target_count": 10,
+      "target_count": 2,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 231.465
+        "total_end_to_end": 9.085
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 354,
-        "filesystem_write": 1,
-        "sha256_json": 345,
-        "validate_schema": 4,
-        "validator_cache_hits": 2,
-        "validator_cache_misses": 2
+        "canonical_json": 5,
+        "filesystem_write": 0,
+        "sha256_json": 0,
+        "validate_schema": 0,
+        "validator_cache_hits": 0,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 409175
+        "value": 205040
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 231.464934,
-          "results": [
+          "actual_target_count": 2,
+          "elapsed_ms": 10.221311,
+          "records": [
             {
-              "safe_atomic_write_ms": 6.222073,
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "safe_atomic_write_ms": 4.205332,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 8.298862,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "safe_atomic_write_ms": 4.180562,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 9.084557,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "safe_atomic_write_ms": 4.660205,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 10.22172,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "safe_atomic_write_ms": 5.090835,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 7.731653,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "missing_evidence_count": 0,
+              "safe_atomic_write_ms": 3.887537,
               "valid": true
             }
           ]
@@ -750,41 +1751,97 @@
       "scenario_id": "safe_atomic_artifact_write",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 10,
+      "target_count": 2,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
     },
     {
+      "actual_target_count": 2,
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 230.566
+        "total_end_to_end": 11.396
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 360,
+        "canonical_json": 35,
         "filesystem_write": 0,
-        "sha256_json": 352,
-        "validate_schema": 4,
-        "validator_cache_hits": 2,
-        "validator_cache_misses": 2
+        "sha256_json": 35,
+        "validate_schema": 0,
+        "validator_cache_hits": 0,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 401592
+        "value": 198868
       },
       "raw_measurements": [
         {
-          "elapsed_ms": 230.566246,
-          "results": [
+          "actual_target_count": 2,
+          "elapsed_ms": 10.630001,
+          "records": [
             {
-              "manifest_generation_ms": 10.791516,
-              "serialized_bytes": 0,
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "manifest_generation_ms": 10.431425,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 11.396267,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "manifest_generation_ms": 11.164469,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 11.669837,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "manifest_generation_ms": 11.40405,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 12.045084,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "manifest_generation_ms": 11.827702,
+              "missing_evidence_count": 0,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "actual_target_count": 2,
+          "elapsed_ms": 10.953244,
+          "records": [
+            {
+              "actual_target_count": 2,
+              "citation_count": 54,
+              "manifest_generation_ms": 10.661612,
+              "missing_evidence_count": 0,
               "valid": true
             }
           ]
@@ -794,7 +1851,7 @@
       "scenario_id": "manifest_generation",
       "semantic_equivalence": true,
       "serialized_bytes": 0,
-      "target_count": 10,
+      "target_count": 2,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
@@ -806,5 +1863,5 @@
     100
   ],
   "task_id": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
-  "tested_tree_sha": "dffb244cc61f742312b52ea12d25bd055766979f"
+  "tested_tree_sha": "b1b0cff7074b28ba2f1fd6d239f83341083a63c2"
 }

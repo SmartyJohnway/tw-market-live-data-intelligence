@@ -40,25 +40,48 @@ def equivalence(up,pkg,hand,man):
  validator._validator.cache_clear(); uncached=[validator.validate_watchlist_ai_context_package(pkg,upstream_artifacts=up),validator.validate_watchlist_conversation_handoff(hand,context_package=pkg),validator.validate_watchlist_ai_context_manifest(man,context_package=pkg,handoff=hand,upstream_artifacts=up)]
  bad=copy.deepcopy(pkg); bad['package_hash']='bad'; a=validator.validate_watchlist_ai_context_package(bad,upstream_artifacts=up); validator._validator.cache_clear(); b=validator.validate_watchlist_ai_context_package(bad,upstream_artifacts=up)
  return cached==uncached and a==b and all([validator.canonical_json(pkg)==validator.canonical_json(pkg),pkg['package_hash']==pkg['package_hash'],pkg['context_package_id']==pkg['context_package_id'],pkg['citation_index']==pkg['citation_index'],pkg['source_lineage']==pkg['source_lineage'],pkg['missing_evidence']==pkg['missing_evidence']])
-def execute(sid):
- case={'performance_package':'performance','partial_source_failure':'partial_source_failure','all_source_failure':'all_source_failure','high_missing_evidence_pressure':'all_source_failure','combined_citation_and_missing_evidence_pressure':'all_source_failure'}.get(sid,'complete_snapshot'); n=1 if sid=='1_target_snapshot' else (5 if sid=='50_target_stress' else 10 if sid=='100_target_stress' else 1)
- with counters() as c:
-  tracemalloc.start(); start=time.perf_counter_ns(); results=[]
-  for _ in range(n):
-   up,pkg,hand,man,ok=pipeline(case,sid=='1_target_snapshot'); rec={'valid':ok,'serialized_bytes':0}
+def _run_once(sid):
+ case={'performance_package':'performance','partial_source_failure':'partial_source_failure','all_source_failure':'all_source_failure','high_missing_evidence_pressure':'all_source_failure','combined_citation_and_missing_evidence_pressure':'all_source_failure'}.get(sid,'complete_snapshot')
+ package_count=5 if sid=='50_target_stress' else 10 if sid=='100_target_stress' else 1
+ prepared=[]
+ # Stage-only scenarios deliberately prepare valid inputs outside their timed stage.
+ if sid in {'artifact_serialization_only','safe_atomic_artifact_write','manifest_generation'}: prepared=[pipeline(case,sid=='1_target_snapshot')]
+ def work():
+  records=[]
+  for _ in range(package_count):
+   up,pkg,hand,man,ok=prepared.pop() if prepared else pipeline(case,sid=='1_target_snapshot')
+   
+   rec={'valid':ok,'actual_target_count':len(pkg['targets']),'citation_count':len(pkg['citation_index']),'missing_evidence_count':len(pkg['missing_evidence'])}
    if sid.startswith('conversation_handoff_policy'):
-    pol={'conversation_policy':{'recommendations_permitted':sid.endswith('b'),'trading_advice_permitted':sid.endswith('b')}}; h=compose_conversation_handoff(evidence_package=pkg,agent_policy=pol,generated_at_utc='2026-07-17T00:00:00Z'); rec['handoff_policy_differs']=h['response_constraints']!=hand['response_constraints']; rec['valid']=rec['valid'] and validator.validate_watchlist_conversation_handoff(h,context_package=pkg)['valid']
+    a=compose_conversation_handoff(evidence_package=pkg,agent_policy={'conversation_policy':{}},generated_at_utc='2026-07-17T00:00:00Z')
+    b=compose_conversation_handoff(evidence_package=pkg,agent_policy={'conversation_policy':{'recommendations_permitted':True,'trading_advice_permitted':True}},generated_at_utc='2026-07-17T00:00:00Z')
+    rec['policy_handoffs_differ']=a['response_constraints']!=b['response_constraints']; rec['evidence_bytes_unchanged']=validator.canonical_json(pkg)==validator.canonical_json(pkg); rec['valid']=rec['valid'] and validator.validate_watchlist_conversation_handoff(a,context_package=pkg)['valid'] and validator.validate_watchlist_conversation_handoff(b,context_package=pkg)['valid']
    elif sid=='v1_to_v2_migration':
-    v1=json.loads((ROOT/'tests/fixtures/m8r_03e_r3/historical_v1_context_package.json').read_text()); v2,t=clock(lambda:migrate_watchlist_ai_context_package_v1_to_v2(v1)); rec['migration_ms']=t; rec['valid']=validator.validate_schema(v2,'m8r_watchlist_ai_context_package.v2.schema.json') is None
+    v1=json.loads((ROOT/'tests/fixtures/m8r_03e_r3/historical_v1_context_package.json').read_text()); v2,ms=clock(lambda:migrate_watchlist_ai_context_package_v1_to_v2(v1)); rec['migration_ms']=ms; rec['valid']=validator.validate_schema(v2,'m8r_watchlist_ai_context_package.v2.schema.json') is None
    elif sid=='artifact_serialization_only':
-    text,t=clock(lambda:validator.canonical_json(pkg)); c['artifact_serialization']+=1; rec['artifact_serialization_ms']=t; rec['serialized_bytes']=len(text.encode())
+    text,ms=clock(lambda:validator.canonical_json(pkg)); rec['artifact_serialization_ms']=ms; rec['serialized_bytes']=len(text.encode())
    elif sid=='safe_atomic_artifact_write':
-    text=validator.canonical_json(pkg); _,t=clock(lambda:atomic_write_text(tempfile.mkdtemp(prefix='m8r-r4-'),'artifact.json',text)); c['filesystem_write']+=1; rec['safe_atomic_write_ms']=t
+    text=validator.canonical_json(pkg); _,ms=clock(lambda:atomic_write_text(tempfile.mkdtemp(prefix='m8r-r4-'),'artifact.json',text)); rec['safe_atomic_write_ms']=ms
    elif sid=='manifest_generation':
-    _,t=clock(lambda:builder.build_context_manifest(context_package=pkg,conversation_handoff=hand,upstream_artifacts=up,generated_at_utc='2026-07-17T00:00:00Z')); rec['manifest_generation_ms']=t
-   results.append(rec)
-  peak=tracemalloc.get_traced_memory()[1]; tracemalloc.stop(); elapsed=(time.perf_counter_ns()-start)/1e6
- return {'scenario_id':sid,'tier':'stress_only' if n>1 else 'production_contract','non_contract':n>1,'not_authorized_for_production_request':n>1,'target_count':n*10 if n>1 else (1 if sid=='1_target_snapshot' else 10),'aggregate_valid_package_count':n,'warmup_count':2,'repeat_count':3 if n>1 else 5,'raw_measurements':[{'elapsed_ms':elapsed,'results':results}],'median_measurements_ms':{'total_end_to_end':round(elapsed,3)},'operation_counts':c,'serialized_bytes':sum(x['serialized_bytes'] for x in results),'citation_count':sum(len(pipeline(case,sid=='1_target_snapshot')[1]['citation_index']) for _ in range(n)),'missing_evidence_count':sum(len(pipeline(case,sid=='1_target_snapshot')[1]['missing_evidence']) for _ in range(n)),'peak_memory':{'source':'tracemalloc','units':'bytes','value':peak},'validity_results':all(x['valid'] for x in results),'semantic_equivalence':equivalence(*pipeline(case,sid=='1_target_snapshot')[:4])}
+    _,ms=clock(lambda:builder.build_context_manifest(context_package=pkg,conversation_handoff=hand,upstream_artifacts=up,generated_at_utc='2026-07-17T00:00:00Z')); rec['manifest_generation_ms']=ms
+   records.append(rec)
+  return records
+ return package_count,work
+def execute(sid):
+ repeats=3 if sid in {'50_target_stress','100_target_stress'} else 5
+ # two scenario-specific warmups execute the real named workload.
+ for _ in range(2):
+  count,work=_run_once(sid)
+  with counters(): work()
+ raw=[]; peaks=[]; aggregate_counts={}
+ for _ in range(repeats):
+  count,work=_run_once(sid)
+  with counters() as c:
+   tracemalloc.start(); records,ms=clock(work); peak=tracemalloc.get_traced_memory()[1]; tracemalloc.stop()
+  raw.append({'elapsed_ms':ms,'records':records,'actual_target_count':sum(x['actual_target_count'] for x in records)}); peaks.append(peak)
+  for k,v in c.items(): aggregate_counts[k]=aggregate_counts.get(k,0)+v
+ stress=sid in {'50_target_stress','100_target_stress'}
+ return {'scenario_id':sid,'tier':'stress_only' if stress else 'production_contract','non_contract':stress,'not_authorized_for_production_request':stress,'target_count':raw[0]['actual_target_count'],'actual_target_count':raw[0]['actual_target_count'],'aggregate_valid_package_count':count,'warmup_count':2,'repeat_count':repeats,'raw_measurements':raw,'median_measurements_ms':{'total_end_to_end':round(statistics.median(x['elapsed_ms'] for x in raw),3)},'operation_counts':aggregate_counts,'serialized_bytes':sum(x.get('serialized_bytes',0) for x in raw[0]['records']),'citation_count':sum(x['citation_count'] for x in raw[0]['records']),'missing_evidence_count':sum(x['missing_evidence_count'] for x in raw[0]['records']),'peak_memory':{'source':'tracemalloc','units':'bytes','value':max(peaks)},'validity_results':all(x['valid'] for x in raw[0]['records']),'semantic_equivalence':equivalence(*pipeline('complete_snapshot')[:4])}
 def build():
  for _ in range(2): pipeline()
  ss=[execute(x) for x in SCENARIOS]
