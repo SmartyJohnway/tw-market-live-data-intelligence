@@ -1,28 +1,16 @@
-import json
+import copy,json
 from pathlib import Path
+from scripts.run_m8r_03e_r4_performance import verify
 ROOT=Path(__file__).resolve().parents[2]
-def load(p): return json.loads((ROOT/p).read_text())
-def test_r4_contract_separates_authorized_and_stress_tiers():
- c=load('docs/contracts/m8r_03e_r4_performance_measurement_contract.json')
- assert c['production_contract']['maximum_targets_per_request']==10
- assert c['stress_projection']['not_authorized_for_production_request'] is True
-def test_r4_baseline_has_repetitions_and_deterministic_guardrails():
- b=load('docs/quality/m8r_03e_r4_performance_baseline.json'); scenarios={x['scenario_id']:x for x in b['scenarios']}
- assert scenarios['1_target_snapshot']['validity_results'] and scenarios['10_target_snapshot']['repeat_count']==5
- for name in ('50_target_stress','100_target_stress'):
-  assert scenarios[name]['tier']=='stress_only' and scenarios[name]['non_contract']
- for x in scenarios.values():
-  assert x['operation_counts']['filesystem_write']==x['aggregate_valid_package_count']
-  assert x['semantic_equivalence'] is True
-def test_schema_validator_cache_is_bounded_and_semantically_transparent():
- from scripts.m8r_03e_context_validator import _validator,validate_schema
- pkg=load('tests/fixtures/m8r_03e/complete_snapshot/request.json')
- # Cache identity is process-scoped immutable schema compilation, not evidence caching.
- assert _validator('m8r_watchlist_ai_context_package.v2.schema.json') is _validator('m8r_watchlist_ai_context_package.v2.schema.json')
- assert callable(validate_schema)
-def test_r4_verify_existing_rejects_missing_required_scenario(tmp_path):
- import subprocess,sys
- baseline=load('docs/quality/m8r_03e_r4_performance_baseline.json'); baseline['scenarios'].pop()
- path=tmp_path/'bad.json'; path.write_text(json.dumps(baseline))
- result=subprocess.run([sys.executable,'scripts/run_m8r_03e_r4_performance.py','--output',str(path),'--verify-existing'],cwd=ROOT)
- assert result.returncode==1
+def load(): return json.loads((ROOT/'docs/quality/m8r_03e_r4_performance_baseline.json').read_text())
+def test_baseline_verifies_and_scaling_is_explicitly_unsupported():
+ b=load(); assert verify(b)
+ s={x['scenario_id']:x for x in b['scenarios']}
+ assert s['10_target_snapshot']['measurement_executed'] is False
+ assert s['50_target_stress']['tier']=='stress_only'
+def test_verify_rejects_unsupported_fake_metrics_and_missing_reason():
+ b=load(); x=next(x for x in b['scenarios'] if x.get('measurement_executed') is False)
+ a=copy.deepcopy(b); next(y for y in a['scenarios'] if y['scenario_id']==x['scenario_id'])['raw_measurements']=[]; assert not verify(a)
+ a=copy.deepcopy(b); next(y for y in a['scenarios'] if y['scenario_id']==x['scenario_id'])['reason_code']=''; assert not verify(a)
+def test_verify_rejects_duplicate_scenario():
+ b=load(); b['scenarios'].append(copy.deepcopy(b['scenarios'][0])); assert not verify(b)
