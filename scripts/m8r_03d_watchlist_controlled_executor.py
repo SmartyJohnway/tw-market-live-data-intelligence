@@ -8,7 +8,7 @@ from scripts.m8r_03c_watchlist_bundle_builder import build_watchlist_snapshot_bu
 from scripts.m8a_twse_official_eod_adapter import execute_twse_official_eod_adapter
 from scripts.m8a_tpex_official_eod_adapter import execute_tpex_official_eod_adapter
 from scripts.m5k_common import execute_live_observation
-from scripts.m8r_filesystem_safety import atomic_write_text, safe_destination, validate_authorized_root, classify_artifact_relative_path, FilesystemSafetyError
+from scripts.m8r_filesystem_safety import atomic_write_text, safe_destination, validate_authorized_root, classify_artifact_relative_path, FilesystemSafetyError, atomic_create_text_exclusive
 RESULT_SCHEMA_VERSION='m8r_03d_watchlist_execution_result.v1'
 AUTHORIZATION_CONSUMPTION_ROOT=Path('artifacts/m8r_03d_authorization_consumption')
 FORBIDDEN_ARTIFACT_TOKENS=('raw_payload"','cookies','session_id','access_token','refresh_token','msgArray')
@@ -86,14 +86,12 @@ def _claim_authorization(auth, plan, artifact_root, now):
     path=root/(key+'.json')
     receipt={'schema_version':'m8r_03d_authorization_consumption_receipt.v1','authorization_id':auth['authorization_id'],'one_shot_nonce_hash':sha256_json(auth['one_shot_nonce']),'request_hash':plan['request_hash'],'plan_id':plan['plan_id'],'claimed_at_utc':now,'status':'claimed'}
     
-    if path.exists():
-        return {'valid':False,'issues':[{'code':'authorization_replayed'}]}
-        
     try:
-        atomic_write_text(root, f"{key}.json", json.dumps(receipt, ensure_ascii=False, sort_keys=True, indent=2) + '\n', allow_overwrite=False)
+        content = json.dumps(receipt, ensure_ascii=False, sort_keys=True, indent=2) + '\n'
+        atomic_create_text_exclusive(root, f"{key}.json", content)
         return {'valid':True,'receipt_path':str(path),'issues':[]}
     except FilesystemSafetyError as exc:
-        if exc.code == 'atomic_replace_failed':
+        if exc.code == 'already_consumed_or_replayed':
             return {'valid':False,'issues':[{'code':'authorization_replayed'}]}
         return {'valid':False,'issues':[{'code':'authorization_consumption_failed','detail':str(exc)[:120]}]}
     except Exception as exc:

@@ -25,12 +25,17 @@ class PathClassification:
     safe_relative: bool
     rejection_code: str | None
 
-def _looks_unc_or_device(raw: str) -> bool:
-    if raw.startswith('\\\\') or raw.startswith('//'):
-        return True
+def _looks_device_namespace(raw: str) -> bool:
     if raw.startswith('\\\\?\\') or raw.startswith('\\\\.\\'):
         return True
+    if raw.startswith('//?/') or raw.startswith('//./'):
+        return True
     return False
+
+def _looks_unc(raw: str) -> bool:
+    if _looks_device_namespace(raw):
+        return False
+    return raw.startswith('\\\\') or raw.startswith('//')
 
 def _looks_drive_relative(raw: str) -> bool:
     return bool(re.match(r'^[A-Za-z]:($|[^\\/])', raw))
@@ -57,7 +62,14 @@ def classify_artifact_relative_path(
             safe_relative=False, rejection_code='absolute_output_path_forbidden'
         )
         
-    if _looks_unc_or_device(raw):
+    if _looks_device_namespace(raw):
+        return PathClassification(
+            raw=raw, segments=(), normalized_relative=None,
+            path_class='device_namespace', platform_hints=(),
+            safe_relative=False, rejection_code='device_namespace_path_forbidden'
+        )
+        
+    if _looks_unc(raw):
         return PathClassification(
             raw=raw, segments=(), normalized_relative=None,
             path_class='unc', platform_hints=(),
@@ -123,7 +135,14 @@ def classify_artifact_relative_path(
                 safe_relative=False, rejection_code='reserved_path_segment_forbidden'
             )
 
-    norm_rel = '/'.join(segments) if segments else '.'
+    if not segments:
+        return PathClassification(
+            raw=raw, segments=(), normalized_relative=None,
+            path_class='empty', platform_hints=(),
+            safe_relative=False, rejection_code='empty_relative_path_forbidden'
+        )
+
+    norm_rel = '/'.join(segments)
     return PathClassification(
         raw=raw, segments=segments, normalized_relative=norm_rel,
         path_class='safe_relative', platform_hints=(),
@@ -175,8 +194,8 @@ def safe_destination(
     create_parent: bool = False,
     allow_destination_symlink: bool = False,
 ) -> SafeDestination:
-    root_resolved = validate_authorized_root(root)
     segments = validate_relative_artifact_path(candidate)
+    root_resolved = validate_authorized_root(root)
     lexical = root_resolved.joinpath(*segments)
     
     if not _is_relative_to(lexical, root_resolved):
@@ -279,3 +298,51 @@ def atomic_write_text(
         text.encode(encoding),
         allow_overwrite=allow_overwrite
     )
+
+def atomic_create_text_exclusive(
+    root: str | os.PathLike[str],
+    candidate: str | os.PathLike[str],
+    content: str,
+    *,
+    encoding: str = 'utf-8',
+) -> SafeDestination:
+    dest = safe_destination(root, candidate, create_parent=True)
+    
+    flags = os.O_CREAT | os.O_EXCL | os.O_WRONLY
+    if os.name == 'nt':
+        flags |= getattr(os, 'O_BINARY', 0)
+        
+    try:
+        fd = os.open(str(dest.path), flags, 0o600)
+    except FileExistsError as exc:
+        raise FilesystemSafetyError('already_consumed_or_replayed', f"File already exists: {dest.path}") from exc
+    except PermissionError as exc:
+        raise FilesystemSafetyError('filesystem_permission_denied') from exc
+    except OSError as exc:
+        raise FilesystemSafetyError('atomic_replace_failed') from exc
+        
+    fd_open = None
+    try:
+        fd_open = os.fdopen(fd, 'w', encoding=encoding)
+        fd_open.write(content)
+        fd_open.flush()
+        os.fsync(fd)
+    except Exception as exc:
+        try:
+            os.remove(dest.path)
+        except OSError:
+            pass
+        raise exc
+    finally:
+        if fd_open is not None:
+            try:
+                fd_open.close()
+            except OSError:
+                pass
+        elif fd is not None:
+            try:
+                os.close(fd)
+            except OSError:
+                pass
+                
+    return dest

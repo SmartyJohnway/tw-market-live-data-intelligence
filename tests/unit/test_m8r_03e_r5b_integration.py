@@ -92,3 +92,58 @@ def test_execute_watchlist_fail_closed_ordering(tmp_path):
         assert mock_claim.call_count == 0
         assert mock_exec.call_count == 0
         assert mock_write.call_count == 0
+
+
+from scripts.m8r_one_shot_market_context_orchestrator import FilesystemApprovalConsumptionStore, preflight_approved_market_context_plan
+
+def test_filesystem_approval_consumption_store_fail_closed():
+    # Pass a rooted absolute URI as root, causing validate_authorized_root to throw safety error
+    store = FilesystemApprovalConsumptionStore(root="s3://bucket/key")
+    with pytest.raises(FilesystemSafetyError) as excinfo:
+        store.consume("app-123", "plan-123", "hash-123", "2026-07-17T00:00:00Z", "rcpt-123")
+    assert excinfo.value.code == "output_root_missing"
+
+
+def test_orchestrator_output_scope_fail_closed():
+    plan = {
+        "schema_version": "m8r_market_context_execution_plan.v1",
+        "plan_id": "plan-123",
+        "plan_hash": "hash-123",
+        "targets": [],
+        "source_to_target_context_mapping": [],
+        "output_scope": {
+            "artifact_root": "../outside_root"
+        }
+    }
+    approval = {
+        "schema_version": "m8r_market_context_execution_plan_approval.v1",
+        "approval_id": "app-123",
+        "plan_id": "plan-123",
+        "plan_hash": "hash-123",
+        "approval_status": "approved",
+        "single_use": False
+    }
+    
+    res = preflight_approved_market_context_plan(plan, approval)
+    assert res["preflight_status"] == "blocked"
+    assert any(issue["code"] == "unsafe_output_scope" for issue in res["issues"])
+
+
+from scripts.run_m8r_controlled_live_validation import derive_runtime_critical_status
+
+def test_controlled_live_validation_artifact_root_fail_closed():
+    manifest = {
+        "operator_confirmed": True,
+        "allow_network": True,
+        "artifact_root": "../outside_root"
+    }
+    status, observed = derive_runtime_critical_status(controls={}, case_results={}, retention={}, manifest=manifest)
+    assert observed["artifact_root_bounded"]["passed"] is False
+
+
+from scripts.run_m8r_conversational_derivatives_context import run as run_conversational_derivatives
+
+def test_conversational_derivatives_diagnostic_output_fail_closed():
+    with pytest.raises(SystemExit) as excinfo:
+        run_conversational_derivatives("TX", "../outside_root")
+    assert "artifact-root must be a bounded relative path" in str(excinfo.value)

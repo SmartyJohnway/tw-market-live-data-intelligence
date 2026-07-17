@@ -14,7 +14,7 @@ from scripts.m8r_bounded_market_context_request import (
     load_source_registry, sha256_json, validate_approval_for_plan,
     validate_plan_internal_consistency, validate_output_scope,
 )
-from scripts.m8r_filesystem_safety import classify_artifact_relative_path, safe_destination, atomic_write_text
+from scripts.m8r_filesystem_safety import classify_artifact_relative_path, safe_destination, atomic_write_text, atomic_create_text_exclusive, FilesystemSafetyError
 
 RECEIPT_SCHEMA_VERSION = "m8r_market_context_execution_receipt.v1"
 RESULT_SCHEMA_VERSION = "m8r_market_context_orchestration_result.v1"
@@ -64,13 +64,14 @@ class FilesystemApprovalConsumptionStore:
         safe = sha256_json({"approval_id": approval_id, "plan_id": plan_id})
         candidate = f"approval_consumption/{safe}.json"
         
-        dest = safe_destination(self.root, candidate, create_parent=False)
-        if dest.path.exists():
-            raise FileExistsError("approval consumption record already exists")
-            
         payload = {"approval_id": approval_id, "plan_id": plan_id, "plan_hash": plan_hash, "consumed_at_utc": consumed_at_utc, "receipt_id": receipt_id}
         text = json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
-        atomic_write_text(self.root, candidate, text, allow_overwrite=False)
+        try:
+            atomic_create_text_exclusive(self.root, candidate, text)
+        except FilesystemSafetyError as exc:
+            if exc.code == 'already_consumed_or_replayed':
+                raise FileExistsError("approval consumption record already exists") from exc
+            raise exc
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")

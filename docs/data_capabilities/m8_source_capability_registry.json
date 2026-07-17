@@ -946,5 +946,10 @@
   "tested_code_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
   "tested_remote_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
   "unified_tool_api": "required_successor_capability",
-  "watchlist_scope_contract_defined": true
+  "watchlist_scope_contract_defined": true,
+  "later_owner_sequencing_decision": {
+    "decision_date": "2026-07-17",
+    "current_primary_task": "M8R-03E-R5B-CROSS-PLATFORM-FILESYSTEM-FAIL-CLOSED-CONTRACT-AND-WINDOWS-CORRECTION",
+    "recommended_next_task_after_r5b": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE"
+  }
 }

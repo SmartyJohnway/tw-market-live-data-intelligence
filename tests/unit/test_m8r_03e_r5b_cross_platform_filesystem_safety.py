@@ -52,11 +52,12 @@ def test_unsafe_classes():
         ("C:", "drive_relative_output_path_forbidden"),
         ("z:relative", "drive_relative_output_path_forbidden"),
         # UNC & Device namespace
+        # UNC & Device namespace
         ("\\\\server\\share\\x", "unc_output_path_forbidden"),
         ("//server/share/x", "unc_output_path_forbidden"),
-        ("\\\\?\\C:\\tmp\\x", "unc_output_path_forbidden"),
-        ("\\\\.\\C:\\tmp\\x", "unc_output_path_forbidden"),
-        ("\\\\?\\UNC\\server\\share\\x", "unc_output_path_forbidden"),
+        ("\\\\?\\C:\\tmp\\x", "device_namespace_path_forbidden"),
+        ("\\\\.\\C:\\tmp\\x", "device_namespace_path_forbidden"),
+        ("\\\\?\\UNC\\server\\share\\x", "device_namespace_path_forbidden"),
         # URL/Scheme
         ("file:///tmp/x", "absolute_output_path_forbidden"),
         ("http://localhost", "absolute_output_path_forbidden"),
@@ -87,6 +88,11 @@ def test_unsafe_classes():
         ("trailing.", "reserved_path_segment_forbidden"),
         ("trailing ", "reserved_path_segment_forbidden"),
         ("nested/trailing. /file", "reserved_path_segment_forbidden"),
+        # Empty and Dot paths
+        ("", "empty_relative_path_forbidden"),
+        (".", "empty_relative_path_forbidden"),
+        ("./", "empty_relative_path_forbidden"),
+        (".\\", "empty_relative_path_forbidden"),
     ]
     for case, expected_code in unsafe_cases:
         cls = classify_artifact_relative_path(case)
@@ -113,33 +119,29 @@ def test_prefix_collision(tmp_path):
     assert excinfo.value.code == "path_traversal_forbidden"
 
 def test_no_side_effect_lexical_checks(tmp_path):
-    # Ensure unsafe validation creates NO directories, files, or temp files.
     root = tmp_path / "sandbox"
     
-    # We do not call validate_authorized_root first. We just pass root to safe_destination
-    # and assert that for any unsafe candidate, nothing changes on disk.
     unsafe_candidates = [
         "../evil.json",
         "/absolute/path.json",
         "CON",
         "bad:stream",
-        "trailing. "
+        "trailing. ",
+        "",
+        ".",
+        "\\root\\escape",
+        "C:drive_relative"
     ]
     
     for cand in unsafe_candidates:
-        # Verify pre-condition
         if root.exists():
             shutil.rmtree(root)
             
         with pytest.raises(FilesystemSafetyError):
             safe_destination(root, cand, create_parent=True)
             
-        # Since validation failed, root and any subfiles must not exist.
-        if root.exists():
-            # If root was created (because validate_authorized_root creates it),
-            # check that no candidate parent or file was created.
-            files = list(root.rglob("*"))
-            assert len(files) == 0
+        # Root must never be created if validation fails
+        assert not root.exists()
 
 def test_parent_symlink_escape(tmp_path):
     root = tmp_path / "root"

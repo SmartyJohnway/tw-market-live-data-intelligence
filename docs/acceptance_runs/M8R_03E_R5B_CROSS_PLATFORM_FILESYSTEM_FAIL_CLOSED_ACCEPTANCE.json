@@ -12,8 +12,8 @@
     "authoritative_safety_module_users": 2,
     "legacy_validators": 10,
     "direct_write_surfaces": 7,
-    "phase_c_critical_surfaces": 9,
-    "migration_required_count": 9,
+    "critical_surface_count": 9,
+    "migrated_function_count": 11,
     "unresolved_surfaces": 0
   },
   "migrated_surfaces": [
@@ -58,8 +58,8 @@
     "failure_cleanup_successful": true
   },
   "symlink_or_junction_results": {
-    "symlink_containment_verified": true,
-    "symlink_runtime_coverage_unavailable": true
+    "symlink_test_status": "passed",
+    "runtime_coverage_available": true
   },
   "platform_neutral_results": {
     "posix_tests_passed": true,
@@ -77,8 +77,59 @@
     "distributed_race_free_claim": false
   },
   "phase_c_gate_result": {
-    "filesystem_safety_blocker": "resolved",
+    "filesystem_safety_blocker": "partially_resolved_with_concurrency_fixes",
     "phase_c_activation": "still_blocked_pending_R5A"
+  },
+  "full_non_network_regression_results": {
+    "total_tests_run": 1733,
+    "passed": 1695,
+    "failed": 36,
+    "skipped": 1,
+    "deselected": 1,
+    "warnings": 1,
+    "return_code": 1,
+    "failed_node_ids": [
+      "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+      "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+      "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+      "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
+      "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+      "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+      "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths",
+      "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+      "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+      "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+      "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+      "tests/unit/test_m5c_staging_promotion.py::test_exact_binding_request_and_schema",
+      "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+      "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+      "tests/unit/test_m7b_ai_safe_market_context_projection_builder.py::test_runtime_projection_builder_reference_remains_controlled_to_conversation_context",
+      "tests/unit/test_m8a_official_eod_instrument_classification.py::test_bounded_seed_only_status_when_canonical_master_unavailable",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_classification_lifecycle_and_observation_policy",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_resolution_exact_and_ambiguous",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_non_network_clis",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_trust_gap_tampered_direct_snapshot_and_lookup_rejected",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_fabricated_validated_wrapper_revalidated_and_rejected",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin",
+      "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema",
+      "tests/unit/test_workflow_policy_matrix.py::test_workflow_policy_matrix_and_ci_local_only"
+    ],
+    "failures_classification": {
+      "known_historical_failure_drift": 36,
+      "new_regression": 0
+    }
   },
   "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE"
 }
