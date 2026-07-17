@@ -16,7 +16,7 @@
       "all_repetitions_valid": true,
       "citation_count": 27,
       "median_measurements_ms": {
-        "total_end_to_end": 131.865
+        "total_end_to_end": 125.706
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -34,13 +34,13 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 230486
+        "value": 236987
       },
       "raw_measurement_count": 5,
       "raw_measurements": [
         {
           "actual_target_count": 1,
-          "elapsed_ms": 124.068826,
+          "elapsed_ms": 127.685095,
           "records": [
             {
               "actual_target_count": 1,
@@ -52,7 +52,7 @@
         },
         {
           "actual_target_count": 1,
-          "elapsed_ms": 140.44006,
+          "elapsed_ms": 125.705688,
           "records": [
             {
               "actual_target_count": 1,
@@ -64,7 +64,7 @@
         },
         {
           "actual_target_count": 1,
-          "elapsed_ms": 131.86494,
+          "elapsed_ms": 121.636523,
           "records": [
             {
               "actual_target_count": 1,
@@ -76,7 +76,7 @@
         },
         {
           "actual_target_count": 1,
-          "elapsed_ms": 127.889869,
+          "elapsed_ms": 127.552406,
           "records": [
             {
               "actual_target_count": 1,
@@ -88,7 +88,7 @@
         },
         {
           "actual_target_count": 1,
-          "elapsed_ms": 135.381384,
+          "elapsed_ms": 124.44654,
           "records": [
             {
               "actual_target_count": 1,
@@ -167,7 +167,7 @@
       "all_repetitions_valid": true,
       "citation_count": 22,
       "median_measurements_ms": {
-        "total_end_to_end": 122.1
+        "total_end_to_end": 121.415
       },
       "missing_evidence_count": 4,
       "non_contract": false,
@@ -185,13 +185,13 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 246473
+        "value": 247860
       },
       "raw_measurement_count": 5,
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 134.186541,
+          "elapsed_ms": 121.195318,
           "records": [
             {
               "actual_target_count": 2,
@@ -203,7 +203,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 126.338469,
+          "elapsed_ms": 121.415012,
           "records": [
             {
               "actual_target_count": 2,
@@ -215,7 +215,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 122.10017,
+          "elapsed_ms": 123.674867,
           "records": [
             {
               "actual_target_count": 2,
@@ -227,7 +227,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 118.822293,
+          "elapsed_ms": 119.92059,
           "records": [
             {
               "actual_target_count": 2,
@@ -239,7 +239,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 119.529751,
+          "elapsed_ms": 121.898018,
           "records": [
             {
               "actual_target_count": 2,
@@ -279,7 +279,7 @@
       "all_repetitions_valid": true,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 221.54
+        "total_end_to_end": 221.121
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -297,13 +297,13 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 408276
+        "value": 402374
       },
       "raw_measurement_count": 5,
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 216.182906,
+          "elapsed_ms": 214.571751,
           "records": [
             {
               "actual_target_count": 2,
@@ -315,7 +315,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 226.092422,
+          "elapsed_ms": 213.130055,
           "records": [
             {
               "actual_target_count": 2,
@@ -327,7 +327,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 220.041817,
+          "elapsed_ms": 221.120968,
           "records": [
             {
               "actual_target_count": 2,
@@ -339,7 +339,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 221.539709,
+          "elapsed_ms": 227.102035,
           "records": [
             {
               "actual_target_count": 2,
@@ -351,7 +351,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 227.429175,
+          "elapsed_ms": 233.044682,
           "records": [
             {
               "actual_target_count": 2,
@@ -378,7 +378,7 @@
       "all_repetitions_valid": true,
       "citation_count": 32,
       "median_measurements_ms": {
-        "total_end_to_end": 207.206
+        "total_end_to_end": 214.132
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -396,13 +396,13 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 965250
+        "value": 965535
       },
       "raw_measurement_count": 5,
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 206.334471,
+          "elapsed_ms": 207.111716,
           "records": [
             {
               "actual_target_count": 2,
@@ -414,7 +414,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 207.030502,
+          "elapsed_ms": 220.020114,
           "records": [
             {
               "actual_target_count": 2,
@@ -426,7 +426,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 207.205686,
+          "elapsed_ms": 213.775153,
           "records": [
             {
               "actual_target_count": 2,
@@ -438,7 +438,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 210.807673,
+          "elapsed_ms": 224.466829,
           "records": [
             {
               "actual_target_count": 2,
@@ -450,7 +450,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 211.040397,
+          "elapsed_ms": 214.132417,
           "records": [
             {
               "actual_target_count": 2,
@@ -477,7 +477,7 @@
       "all_repetitions_valid": true,
       "citation_count": 45,
       "median_measurements_ms": {
-        "total_end_to_end": 188.567
+        "total_end_to_end": 192.153
       },
       "missing_evidence_count": 1,
       "non_contract": false,
@@ -495,13 +495,13 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 364197
+        "value": 359497
       },
       "raw_measurement_count": 5,
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 188.566696,
+          "elapsed_ms": 194.257887,
           "records": [
             {
               "actual_target_count": 2,
@@ -513,7 +513,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 187.636708,
+          "elapsed_ms": 192.153014,
           "records": [
             {
               "actual_target_count": 2,
@@ -525,7 +525,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 204.385079,
+          "elapsed_ms": 197.4574,
           "records": [
             {
               "actual_target_count": 2,
@@ -537,7 +537,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 194.307292,
+          "elapsed_ms": 190.590757,
           "records": [
             {
               "actual_target_count": 2,
@@ -549,7 +549,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 187.594165,
+          "elapsed_ms": 191.194843,
           "records": [
             {
               "actual_target_count": 2,
@@ -576,7 +576,7 @@
       "all_repetitions_valid": true,
       "citation_count": 22,
       "median_measurements_ms": {
-        "total_end_to_end": 121.262
+        "total_end_to_end": 121.516
       },
       "missing_evidence_count": 4,
       "non_contract": false,
@@ -594,13 +594,13 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 243770
+        "value": 249716
       },
       "raw_measurement_count": 5,
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 120.901996,
+          "elapsed_ms": 121.516338,
           "records": [
             {
               "actual_target_count": 2,
@@ -612,7 +612,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 124.059406,
+          "elapsed_ms": 123.74377,
           "records": [
             {
               "actual_target_count": 2,
@@ -624,7 +624,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 121.262412,
+          "elapsed_ms": 126.539893,
           "records": [
             {
               "actual_target_count": 2,
@@ -636,7 +636,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 119.67423,
+          "elapsed_ms": 120.952987,
           "records": [
             {
               "actual_target_count": 2,
@@ -648,7 +648,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 122.446549,
+          "elapsed_ms": 121.429571,
           "records": [
             {
               "actual_target_count": 2,
@@ -675,16 +675,16 @@
       "all_repetitions_valid": true,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 237.454
+        "total_end_to_end": 235.14
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 1830,
+        "canonical_json": 1810,
         "filesystem_write": 0,
-        "sha256_json": 1755,
+        "sha256_json": 1745,
         "validate_schema": 30,
         "validator_cache_hits": 30,
         "validator_cache_misses": 0
@@ -693,13 +693,13 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 408875
+        "value": 409383
       },
       "raw_measurement_count": 5,
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 233.573909,
+          "elapsed_ms": 235.139686,
           "records": [
             {
               "actual_target_count": 2,
@@ -713,7 +713,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 237.454431,
+          "elapsed_ms": 238.597048,
           "records": [
             {
               "actual_target_count": 2,
@@ -727,7 +727,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 233.114081,
+          "elapsed_ms": 236.907663,
           "records": [
             {
               "actual_target_count": 2,
@@ -741,7 +741,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 264.222061,
+          "elapsed_ms": 233.631151,
           "records": [
             {
               "actual_target_count": 2,
@@ -755,7 +755,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 250.074566,
+          "elapsed_ms": 234.527048,
           "records": [
             {
               "actual_target_count": 2,
@@ -784,16 +784,16 @@
       "all_repetitions_valid": true,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 230.262
+        "total_end_to_end": 237.814
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 0,
-        "canonical_json": 1830,
+        "canonical_json": 1810,
         "filesystem_write": 0,
-        "sha256_json": 1755,
+        "sha256_json": 1745,
         "validate_schema": 30,
         "validator_cache_hits": 30,
         "validator_cache_misses": 0
@@ -802,13 +802,13 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 412153
+        "value": 413378
       },
       "raw_measurement_count": 5,
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 229.139289,
+          "elapsed_ms": 237.796367,
           "records": [
             {
               "actual_target_count": 2,
@@ -822,7 +822,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 228.861618,
+          "elapsed_ms": 244.185684,
           "records": [
             {
               "actual_target_count": 2,
@@ -836,7 +836,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 230.262395,
+          "elapsed_ms": 251.945162,
           "records": [
             {
               "actual_target_count": 2,
@@ -850,7 +850,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 242.918703,
+          "elapsed_ms": 232.552746,
           "records": [
             {
               "actual_target_count": 2,
@@ -864,7 +864,7 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 239.200476,
+          "elapsed_ms": 237.813823,
           "records": [
             {
               "actual_target_count": 2,
@@ -893,7 +893,7 @@
       "all_repetitions_valid": true,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 374.928
+        "total_end_to_end": 374.157
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -911,18 +911,18 @@
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 597009
+        "value": 593528
       },
       "raw_measurement_count": 5,
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 366.221163,
+          "elapsed_ms": 369.838135,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "migration_ms": 112.204414,
+              "migration_ms": 115.187579,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -930,12 +930,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 418.265425,
+          "elapsed_ms": 374.15707,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "migration_ms": 133.692997,
+              "migration_ms": 114.374175,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -943,12 +943,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 384.193797,
+          "elapsed_ms": 380.801713,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "migration_ms": 116.790257,
+              "migration_ms": 115.641612,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -956,12 +956,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 374.928261,
+          "elapsed_ms": 366.79599,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "migration_ms": 114.379646,
+              "migration_ms": 112.450831,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -969,12 +969,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 367.994978,
+          "elapsed_ms": 377.928637,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "migration_ms": 114.188171,
+              "migration_ms": 115.887087,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -997,7 +997,7 @@
       "all_repetitions_valid": true,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 3.817
+        "total_end_to_end": 3.834
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -1021,11 +1021,11 @@
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 4.065795,
+          "elapsed_ms": 3.969133,
           "records": [
             {
               "actual_target_count": 2,
-              "artifact_serialization_ms": 3.816614,
+              "artifact_serialization_ms": 3.71591,
               "citation_count": 54,
               "missing_evidence_count": 0,
               "serialized_bytes": 39547,
@@ -1035,11 +1035,11 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 3.862711,
+          "elapsed_ms": 3.79829,
           "records": [
             {
               "actual_target_count": 2,
-              "artifact_serialization_ms": 3.636419,
+              "artifact_serialization_ms": 3.572025,
               "citation_count": 54,
               "missing_evidence_count": 0,
               "serialized_bytes": 39547,
@@ -1049,11 +1049,11 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 3.810643,
+          "elapsed_ms": 4.342335,
           "records": [
             {
               "actual_target_count": 2,
-              "artifact_serialization_ms": 3.584975,
+              "artifact_serialization_ms": 4.095479,
               "citation_count": 54,
               "missing_evidence_count": 0,
               "serialized_bytes": 39547,
@@ -1063,11 +1063,11 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 3.796161,
+          "elapsed_ms": 3.833601,
           "records": [
             {
               "actual_target_count": 2,
-              "artifact_serialization_ms": 3.572879,
+              "artifact_serialization_ms": 3.609018,
               "citation_count": 54,
               "missing_evidence_count": 0,
               "serialized_bytes": 39547,
@@ -1077,11 +1077,11 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 3.817299,
+          "elapsed_ms": 3.831087,
           "records": [
             {
               "actual_target_count": 2,
-              "artifact_serialization_ms": 3.57595,
+              "artifact_serialization_ms": 3.600579,
               "citation_count": 54,
               "missing_evidence_count": 0,
               "serialized_bytes": 39547,
@@ -1106,7 +1106,7 @@
       "all_repetitions_valid": true,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 8.01
+        "total_end_to_end": 7.426
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -1130,65 +1130,65 @@
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 7.583766,
+          "elapsed_ms": 9.990643,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
               "missing_evidence_count": 0,
-              "safe_atomic_write_ms": 3.864726,
+              "safe_atomic_write_ms": 5.949557,
               "valid": true
             }
           ]
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 8.010383,
+          "elapsed_ms": 7.426337,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
               "missing_evidence_count": 0,
-              "safe_atomic_write_ms": 3.989454,
+              "safe_atomic_write_ms": 3.588607,
               "valid": true
             }
           ]
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 8.085208,
+          "elapsed_ms": 7.573113,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
               "missing_evidence_count": 0,
-              "safe_atomic_write_ms": 4.262238,
+              "safe_atomic_write_ms": 3.772482,
               "valid": true
             }
           ]
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 7.543503,
+          "elapsed_ms": 7.211119,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
               "missing_evidence_count": 0,
-              "safe_atomic_write_ms": 3.558031,
+              "safe_atomic_write_ms": 3.462474,
               "valid": true
             }
           ]
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 9.818416,
+          "elapsed_ms": 7.386973,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
               "missing_evidence_count": 0,
-              "safe_atomic_write_ms": 4.212585,
+              "safe_atomic_write_ms": 3.427208,
               "valid": true
             }
           ]
@@ -1210,7 +1210,7 @@
       "all_repetitions_valid": true,
       "citation_count": 54,
       "median_measurements_ms": {
-        "total_end_to_end": 10.657
+        "total_end_to_end": 10.223
       },
       "missing_evidence_count": 0,
       "non_contract": false,
@@ -1234,12 +1234,12 @@
       "raw_measurements": [
         {
           "actual_target_count": 2,
-          "elapsed_ms": 10.459471,
+          "elapsed_ms": 10.058971,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "manifest_generation_ms": 10.277511,
+              "manifest_generation_ms": 9.877783,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1247,12 +1247,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 10.67439,
+          "elapsed_ms": 10.682186,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "manifest_generation_ms": 10.474007,
+              "manifest_generation_ms": 10.496118,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1260,12 +1260,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 11.043276,
+          "elapsed_ms": 10.222574,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "manifest_generation_ms": 10.832857,
+              "manifest_generation_ms": 10.025149,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1273,12 +1273,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 10.470686,
+          "elapsed_ms": 10.352735,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "manifest_generation_ms": 10.282056,
+              "manifest_generation_ms": 10.139832,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1286,12 +1286,12 @@
         },
         {
           "actual_target_count": 2,
-          "elapsed_ms": 10.657482,
+          "elapsed_ms": 10.145524,
           "records": [
             {
               "actual_target_count": 2,
               "citation_count": 54,
-              "manifest_generation_ms": 10.446433,
+              "manifest_generation_ms": 9.959017,
               "missing_evidence_count": 0,
               "valid": true
             }
@@ -1315,5 +1315,5 @@
     100
   ],
   "task_id": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
-  "tested_tree_sha": "a182c6cbb1c4679e7d7ad96c5f77a925aeb8dfeb"
+  "tested_tree_sha": "845f948d8c646e1e2d4a131536034ebada20480f"
 }
