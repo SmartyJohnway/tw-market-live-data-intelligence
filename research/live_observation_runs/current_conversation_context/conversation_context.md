@@ -17,33 +17,25 @@ Canonical Summary is Level 1 reviewed context. Latest Observation Summary is Lev
 - Canonical symbols: 0050, 00929, 2330
 - Caveats: not_realtime_guaranteed, not_trading_signal, not_production_current_state, source_risk_present, freshness_must_be_displayed
 
-## Market Clock / Currentness
-- Session state: closed
-- Freshness state: stale
-- Currentness label: reference_only
-- Calendar confidence: weekday_heuristic_only
-- AI currentness summary: Latest observation is reference-only for AI discussion; do not describe it as current intraday movement.
-- Caveats: Builder output is not safe for direct AI context until controlled promotion is implemented., Holiday records missing; weekday heuristic only and official holiday correctness is unknown.
-
 ## Latest Observation Summary
 - healthy=15 degraded=4 failed=0 unsupported=0 reference_only=3
 
 ## Healthy Observations
-- 00878 00878: 33.33 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
-- 00919 00919: 29.53 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
-- 00929 00929: 31.34 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
-- 00934 00934: 28.64 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
-- 00939 00939: 21.28 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
-- 00940 00940: 12.73 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
-- 00981A 00981A: 32.26 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
-- 1569 1569: 48.6 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
-- 2317 2317: 240.5 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
-- 2324 2324: 34.95 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
-- 2603 2603: 195.0 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
-- 2609 2609: 52.4 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
-- 3293 3293: 797.0 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
+- 00878 00878: 33.5 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
+- 00919 00919: 29.5 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
+- 00929 00929: 30.78 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
+- 00934 00934: 28.21 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
+- 00939 00939: 21.46 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
+- 00940 00940: 12.65 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
+- 00981A 00981A: 31.28 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
+- 1569 1569: 45.9 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
+- 2317 2317: 251.0 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
+- 2324 2324: 35.3 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
+- 2603 2603: 184.5 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
+- 2609 2609: 52.0 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
+- 3293 3293: 789.0 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
 - 3543 3543: 29.05 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
-- TAIEX TAIEX: 46780.62 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
+- TAIEX TAIEX: 46125.91 (last_or_current_quote_as_reported_by_source); source=TWSE_MIS; freshness=current observation candidate; realtime status not guaranteed by M5K; delay=not_realtime_guaranteed
 
 ## Degraded Observations
 - 0050 0050: status=reference_value_only; observation_status=reference_value_only; freshness=current observation candidate; realtime status not guaranteed by M5K; reason=reference_value_only; next=Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability.
@@ -65,9 +57,7 @@ Canonical Summary is Level 1 reviewed context. Latest Observation Summary is Lev
 - Failed source families: none
 
 ## Current Caveats
-- M7E indicates latest observation must not be described as current intraday movement.
 - freshness_must_be_displayed
-- holiday schedule records missing; weekday heuristic only
 - live_observation_not_canonical
 - manual_bounded_regression_probe
 - no_polling_or_scheduler

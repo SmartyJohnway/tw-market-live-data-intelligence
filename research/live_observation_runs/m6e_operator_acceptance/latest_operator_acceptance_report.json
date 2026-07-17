@@ -10,7 +10,7 @@
       "returncode": 0,
       "status": "pass",
       "stderr_tail": "",
-      "stdout_tail": "onical_market_context_01/canonical_market_context.json, 4573 bytes)\n- [PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)\n- [PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n- [PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7395 bytes)\n- [PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n- [PASS] Output folder permissions: writable folders detected: 2\n\nRecommended next action: Conversation package already available; review it and send to ChatGPT.\n\nMode reminders: Mode A = Canonical Context; Mode B = Bounded Observation; Mode C = Conversation Package.\nGovernance: Observation != Canonical; Reference-only != Current Price; stale_or_closed_session = degraded; no polling/scheduler/startup network/trading/recommendations/ranking/target price.\n"
+      "stdout_tail": "onical_market_context_01/canonical_market_context.json, 4573 bytes)\n- [PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 39580 bytes)\n- [PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n- [PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 6756 bytes)\n- [PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n- [PASS] Output folder permissions: writable folders detected: 2\n\nRecommended next action: Conversation package already available; review it and send to ChatGPT.\n\nMode reminders: Mode A = Canonical Context; Mode B = Bounded Observation; Mode C = Conversation Package.\nGovernance: Observation != Canonical; Reference-only != Current Price; stale_or_closed_session = degraded; no polling/scheduler/startup network/trading/recommendations/ranking/target price.\n"
     },
     {
       "command": "python scripts/run_environment_diagnostics.py",
@@ -18,7 +18,7 @@
       "returncode": 0,
       "status": "pass",
       "stderr_tail": "",
-      "stdout_tail": "l/certs\", \"openssl_capath_env\": \"SSL_CERT_DIR\"}\n[PASS] Configured TW_MARKET_SSL_POLICY: None\n[PASS] Effective SSL policy: strict\n[CAVEAT] Virtual environment: not detected\n  Suggested command: Create and activate a virtual environment if dependency imports fail.\n[PASS] Installed dependencies: available\n[PASS] FastAPI import: fastapi importable\n[PASS] M5F package: present (research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json, 4573 bytes)\n[PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)\n[PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n[PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7395 bytes)\n[PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n[PASS] Output folder permissions: writable folders detected: 2\n"
+      "stdout_tail": "l/certs\", \"openssl_capath_env\": \"SSL_CERT_DIR\"}\n[PASS] Configured TW_MARKET_SSL_POLICY: None\n[PASS] Effective SSL policy: strict\n[CAVEAT] Virtual environment: not detected\n  Suggested command: Create and activate a virtual environment if dependency imports fail.\n[PASS] Installed dependencies: available\n[PASS] FastAPI import: fastapi importable\n[PASS] M5F package: present (research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json, 4573 bytes)\n[PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 39580 bytes)\n[PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n[PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 6756 bytes)\n[PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n[PASS] Output folder permissions: writable folders detected: 2\n"
     },
     {
       "caveats": [
@@ -30,13 +30,13 @@
       "label": "operator preflight",
       "parsed_json": {
         "caveats": [],
-        "latest_observation": "generated_at_utc=2026-07-03T13:23:42Z",
+        "latest_observation": "generated_at_utc=2026-06-30T08:24:34Z",
         "latest_release_version": "v0.1.0",
         "latest_source_health": "generated_at_utc=2026-06-30T04:23:40Z",
         "network_calls": false,
         "repository": {
           "branch": "work",
-          "commit": "e425072",
+          "commit": "0f7a5e8",
           "release": "Local Release Candidate",
           "version": "v0.1.0"
         },
@@ -110,7 +110,7 @@
                 "suggestion": "Run the M5F validator against research/staging/m5f/m5f_canonical_market_context_01."
               },
               {
-                "detail": "present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)",
+                "detail": "present (research/live_observation_runs/m5k/latest_observation.json, 39580 bytes)",
                 "name": "Latest observation",
                 "status": "PASS",
                 "suggestion": "Observation not found. Suggested command: python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation"
@@ -122,7 +122,7 @@
                 "suggestion": "Run: python scripts/run_m5q_source_health_probe.py --execute-health-probe"
               },
               {
-                "detail": "present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7395 bytes)",
+                "detail": "present (research/live_observation_runs/current_conversation_context/conversation_context.md, 6756 bytes)",
                 "name": "Conversation package",
                 "status": "PASS",
                 "suggestion": "Run: python scripts/build_m5n_conversation_context.py"
@@ -159,7 +159,7 @@
             "returncode": 0,
             "status": "PASS",
             "stderr_tail": "/root/.pyenv/versions/3.13.13/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n  from starlette.testclient import TestClient as TestClient  # noqa\n",
-            "stdout_tail": "\": \"passed\"\n    },\n    {\n      \"check\": \"fastapi_probe_disabled_410\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_not_listed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"details\": {\n        \"authorized_exceptions\": [],\n        \"changed_forbidden_paths\": [],\n        \"frontend_public_changes\": [],\n        \"git_returncode\": 0,\n        \"unauthorized_forbidden_paths\": []\n      },\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n",
+            "stdout_tail": "ext/source-health\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"fastapi_/api/context/capability-summary\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"fastapi_/api/context/briefing\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"fastapi_probe_disabled_410\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_not_listed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n",
             "timed_out": false,
             "timeout_seconds": 300
           },
@@ -218,7 +218,7 @@
       "returncode": 0,
       "status": "pass",
       "stderr_tail": "/root/.pyenv/versions/3.13.13/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n  from starlette.testclient import TestClient as TestClient  # noqa\n",
-      "stdout_tail": "  \"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"details\": {\n        \"authorized_exceptions\": [],\n        \"changed_forbidden_paths\": [],\n        \"frontend_public_changes\": [],\n        \"git_returncode\": 0,\n        \"unauthorized_forbidden_paths\": []\n      },\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n"
+      "stdout_tail": ",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"fastapi_probe_disabled_410\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_not_listed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n"
     },
     {
       "command": "python scripts/run_m5k_postmerge_validation.py --check-only",
@@ -330,7 +330,6 @@
     "schema_version": "m5n_conversation_context.v1",
     "status": "pass"
   },
-  "failed_checks": [],
   "fastapi": {
     "checks": [
       {
@@ -448,7 +447,7 @@
     ],
     "status": "pass"
   },
-  "generated_at_utc": "2026-07-16T18:12:55Z",
+  "generated_at_utc": "2026-07-03T07:54:34Z",
   "governance": {
     "check_only_non_network": true,
     "no_m5f_mutation": true,
@@ -618,13 +617,13 @@
     "label": "operator preflight",
     "parsed_json": {
       "caveats": [],
-      "latest_observation": "generated_at_utc=2026-07-03T13:23:42Z",
+      "latest_observation": "generated_at_utc=2026-06-30T08:24:34Z",
       "latest_release_version": "v0.1.0",
       "latest_source_health": "generated_at_utc=2026-06-30T04:23:40Z",
       "network_calls": false,
       "repository": {
         "branch": "work",
-        "commit": "e425072",
+        "commit": "0f7a5e8",
         "release": "Local Release Candidate",
         "version": "v0.1.0"
       },
@@ -698,7 +697,7 @@
               "suggestion": "Run the M5F validator against research/staging/m5f/m5f_canonical_market_context_01."
             },
             {
-              "detail": "present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)",
+              "detail": "present (research/live_observation_runs/m5k/latest_observation.json, 39580 bytes)",
               "name": "Latest observation",
               "status": "PASS",
               "suggestion": "Observation not found. Suggested command: python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation"
@@ -710,7 +709,7 @@
               "suggestion": "Run: python scripts/run_m5q_source_health_probe.py --execute-health-probe"
             },
             {
-              "detail": "present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7395 bytes)",
+              "detail": "present (research/live_observation_runs/current_conversation_context/conversation_context.md, 6756 bytes)",
               "name": "Conversation package",
               "status": "PASS",
               "suggestion": "Run: python scripts/build_m5n_conversation_context.py"
@@ -747,7 +746,7 @@
           "returncode": 0,
           "status": "PASS",
           "stderr_tail": "/root/.pyenv/versions/3.13.13/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n  from starlette.testclient import TestClient as TestClient  # noqa\n",
-          "stdout_tail": "\": \"passed\"\n    },\n    {\n      \"check\": \"fastapi_probe_disabled_410\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_not_listed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"details\": {\n        \"authorized_exceptions\": [],\n        \"changed_forbidden_paths\": [],\n        \"frontend_public_changes\": [],\n        \"git_returncode\": 0,\n        \"unauthorized_forbidden_paths\": []\n      },\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n",
+          "stdout_tail": "ext/source-health\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"fastapi_/api/context/capability-summary\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"fastapi_/api/context/briefing\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"fastapi_probe_disabled_410\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_not_listed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n",
           "timed_out": false,
           "timeout_seconds": 300
         },
@@ -798,7 +797,7 @@
     "returncode": 0,
     "status": "pass",
     "stderr_tail": "",
-    "stdout_tail": "onical_market_context_01/canonical_market_context.json, 4573 bytes)\n- [PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)\n- [PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n- [PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7395 bytes)\n- [PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n- [PASS] Output folder permissions: writable folders detected: 2\n\nRecommended next action: Conversation package already available; review it and send to ChatGPT.\n\nMode reminders: Mode A = Canonical Context; Mode B = Bounded Observation; Mode C = Conversation Package.\nGovernance: Observation != Canonical; Reference-only != Current Price; stale_or_closed_session = degraded; no polling/scheduler/startup network/trading/recommendations/ranking/target price.\n"
+    "stdout_tail": "onical_market_context_01/canonical_market_context.json, 4573 bytes)\n- [PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 39580 bytes)\n- [PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n- [PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 6756 bytes)\n- [PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n- [PASS] Output folder permissions: writable folders detected: 2\n\nRecommended next action: Conversation package already available; review it and send to ChatGPT.\n\nMode reminders: Mode A = Canonical Context; Mode B = Bounded Observation; Mode C = Conversation Package.\nGovernance: Observation != Canonical; Reference-only != Current Price; stale_or_closed_session = degraded; no polling/scheduler/startup network/trading/recommendations/ranking/target price.\n"
   },
   "platform": "Linux-6.12.47-x86_64-with-glibc2.39",
   "python": "3.13.13 (main, May  1 2026, 05:52:52) [GCC 13.3.0]",
@@ -811,7 +810,7 @@
   ],
   "repository": {
     "branch": "work",
-    "commit": "e425072",
+    "commit": "0f7a5e8",
     "release": "Local Release Candidate",
     "version": "v0.1.0"
   },

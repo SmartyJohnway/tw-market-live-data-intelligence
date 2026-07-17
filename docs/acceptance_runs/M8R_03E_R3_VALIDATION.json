@@ -1,47 +1,170 @@
 {
-  "task_id": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
+  "active_status": "implemented_through = R3",
   "baseline_sha": "c02299f0d90017776ce8c76a78a5df62bfbfed7c",
-  "tested_parent_sha": "e425072361bff7d8c7359c72ecc22cbe586e70ac",
-  "tested_worktree_content_digest": "pending-final-commit",
-  "execution_environment": "codex_sandbox",
-  "github_actions_policy": "NO_GITHUB_CI",
-  "github_workflows_triggered": [],
-  "schema_migration_strategy": "versioned v2; v1 retained for historical validation; builder writes v2",
   "command_records": [
     {
-      "command": "python -m pytest tests/unit/test_m8r_03e_watchlist_ai_context.py tests/unit/test_m8r_03e_r3*.py -q",
+      "command": "git diff --check",
       "return_code": 0,
-      "status": "pass",
-      "passed": 40,
+      "status": "pass"
+    },
+    {
+      "command": "python -m compileall scripts server tests skills",
+      "return_code": 0,
+      "status": "pass"
+    },
+    {
+      "command": "python scripts/governance_forbidden_path_guard.py",
+      "return_code": 0,
+      "status": "pass"
+    },
+    {
+      "command": "python scripts/forbidden_behavior_scanner.py",
+      "return_code": 0,
+      "status": "pass"
+    },
+    {
+      "command": "python scripts/validate_github_actions_execution_policy.py",
+      "return_code": 0,
+      "status": "pass"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_m8r_03e_watchlist_ai_context.py tests/unit/test_m8r_03e_r3*.py -q",
+      "deselected": 0,
       "failed": 0,
+      "passed": 43,
+      "return_code": 0,
       "skipped": 0,
-      "deselected": 0
+      "status": "pass"
+    },
+    {
+      "command": "python scripts/run_test_profile.py component-architecture --json",
+      "deselected": 0,
+      "failed": 0,
+      "passed": 6,
+      "return_code": 0,
+      "skipped": 0,
+      "status": "pass"
+    },
+    {
+      "command": "python scripts/run_test_profile.py component-governance --json",
+      "deselected": 0,
+      "failed": 0,
+      "passed": 42,
+      "return_code": 0,
+      "skipped": 0,
+      "status": "pass"
+    },
+    {
+      "command": "python scripts/run_test_profile.py component-security --json",
+      "deselected": 18,
+      "failed": 0,
+      "passed": 16,
+      "return_code": 0,
+      "skipped": 0,
+      "status": "pass"
+    },
+    {
+      "command": "python scripts/run_test_profile.py component-watchlist-evidence --json",
+      "deselected": 0,
+      "failed": 0,
+      "passed": 57,
+      "return_code": 0,
+      "skipped": 0,
+      "status": "pass"
+    },
+    {
+      "command": "python scripts/run_test_profile.py component-agent-skill --json",
+      "deselected": 0,
+      "failed": 0,
+      "passed": 28,
+      "return_code": 0,
+      "skipped": 0,
+      "status": "pass"
+    },
+    {
+      "command": "python scripts/run_test_profile.py default-ci --json",
+      "deselected": 0,
+      "failed": 0,
+      "passed": 741,
+      "return_code": 0,
+      "skipped": 0,
+      "status": "pass"
     },
     {
       "command": "python scripts/run_test_profile.py full-non-network --json",
-      "return_code": null,
-      "status": "incomplete",
-      "passed": null,
-      "failed": null,
-      "skipped": null,
-      "deselected": null
+      "deselected": 1,
+      "failed": 7,
+      "passed": 1664,
+      "return_code": 1,
+      "skipped": 1,
+      "status": "known_pre_existing_failures_unchanged"
     }
   ],
-  "full_non_network": {
-    "completed": false,
-    "exact_failing_node_ids": null,
-    "failure_set_changed": null,
-    "new_m8_m8r_failures": null,
-    "reason": "runner did not emit a completed JSON result in this sandbox execution"
+  "compatibility_test_results": {
+    "canonical_byte_and_hash_determinism": "pass",
+    "historical_v1_schema_validation": "pass",
+    "legacy_counts_verified": "pass",
+    "v2_schema_validation": "pass"
   },
-  "historical_fixtures_retained": true,
-  "live_observation_artifacts_reverted": true,
-  "final_r3_disposition": "NO_GO",
-  "active_status": "R2 active; R3 pending",
-  "resolved_debt_ids": [],
   "deferred_debt_ids": [
+    "M8-DEBT-0003",
+    "M8-DEBT-0004",
+    "M8-DEBT-0005",
+    "M8-DEBT-0006",
+    "M8-DEBT-0007"
+  ],
+  "execution_environment": "codex_sandbox",
+  "final_commit_sealing_strategy": "This acceptance artifact is sealed in the Commit 3 git object; tested_tree_sha identifies the exact pre-commit tree.",
+  "final_r3_disposition": "GO_WITH_CAVEATS",
+  "final_remote_head": "remote_unavailable: no origin remote configured in sandbox",
+  "full_non_network": {
+    "completed": true,
+    "deselected": 1,
+    "exact_failing_node_ids": [
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
+    ],
+    "failed": 7,
+    "failure_set_changed": false,
+    "new_m8_m8r_failures": 0,
+    "passed": 1664,
+    "return_code": 1,
+    "skipped": 1
+  },
+  "github_actions_policy": "NO_GITHUB_CI",
+  "github_workflows_triggered": [],
+  "historical_fixtures_retained": true,
+  "live_artifact_diff_check": {
+    "baseline": "c02299f0d90017776ce8c76a78a5df62bfbfed7c",
+    "diff_clean": true,
+    "files": [
+      "research/live_observation_runs/current_conversation_context/conversation_context.json",
+      "research/live_observation_runs/current_conversation_context/conversation_context.md",
+      "research/live_observation_runs/m6e_operator_acceptance/latest_operator_acceptance_report.json",
+      "research/live_observation_runs/m6e_operator_acceptance/latest_operator_acceptance_report.md"
+    ]
+  },
+  "live_observation_artifacts_reverted": true,
+  "migration_fixture_identifiers": [
+    "tests/fixtures/m8r_03e_r3/historical_v1_context_package.json"
+  ],
+  "policy_composition_test_results": {
+    "actual_composition_path": "pass",
+    "evidence_bytes_hash_lineage_citations_currentness_missing_evidence_unchanged": "pass",
+    "policy_a_and_b_handoffs_validate": "pass"
+  },
+  "resolved_debt_ids": [
     "M8-DEBT-0001"
   ],
-  "final_commit_sha": "recorded after commit",
-  "final_remote_head": "pending push"
+  "schema_migration_strategy": "validate historical v1, retain evidence-domain content, drop product policy, retain evidence restrictions as limitations, and deterministically recompute identity/hash",
+  "successor": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
+  "task_id": "M8R-03E-R3-COMMIT-3-MIGRATION-COMPOSITION-LIVE-ARTIFACT-AND-ACCEPTANCE-CLOSURE",
+  "tested_parent_sha": "aa55913d2a55243d82b8c1a6a9d32bfc61be5596",
+  "tested_tree_sha": "26d408f51e929e81510da8efd3bb962f5b9561b0",
+  "tested_worktree_content_digest": "git_tree:26d408f51e929e81510da8efd3bb962f5b9561b0"
 }
