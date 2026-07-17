@@ -17,23 +17,38 @@ A reproducible local execution result was completed in the Windows UTF-8 environ
 - **Deselected**: 1
 - **Status**: fail
 
-### 2.2. Failure Classification Matrix (48 node IDs)
-Every failing node ID has been analyzed and classified into a specific root cause category. The complete machine-readable audit list is registered in `docs/acceptance_runs/M8R_03E_POST_R4_PHASE_C_READINESS_DECISION.json`.
+### 2.2. Failure Classification & Root-Cause Confirmation
+Every failing node ID has been analyzed. We separate the provisional category assignment from final causal confirmation:
+- **Failure Assignment Status**: `complete` (all 48 node IDs are assigned to one provisional category).
+- **Root-Cause Confirmation Status**: `partial` (not every node has independently demonstrated causal proof; CRLF drift remains a hypothesis with partial confirmation via representative files).
+- **Regression Determination Status**: `not_demonstrated_on_equivalent_cross_platform_baseline` (no new regression determination is made from the Windows-only expanded failure set).
 
-| Category | Count | Primary Cause & Representative Traceback | Auditable Evidence & Repro |
-| :--- | :---: | :--- | :--- |
-| **windows_path_semantics** | 5 | Platform separator (`\`) or `is_absolute()` / `PurePosixPath` parsing difference. Backslashes bypass `..` check in `_safe_root`. | *Traceback*: `Failed: DID NOT RAISE ValueError` or `FilesystemSafetyError`. *Repro*: `python -m pytest tests/unit/test_m8r_03e_r2_filesystem_containment.py` |
-| **environment_or_dependency** | 4 | Windows `PYTHONPATH` separator character is `;` instead of `:`. subprocess failed to import required scripts. | *Traceback*: `ModuleNotFoundError: No module named 'scripts.probe_twse_openapi'`. *Repro*: `python -m pytest tests/test_m3g04_controlled_live_probe.py` |
-| **artifact_or_fixture_drift** | 37 | Git `autocrlf` converts LF to CRLF in Windows checkout, altering file bytes of checked-in JSON templates/schema files. | *Traceback*: `manifest_sha256_mismatch` or `current_skill_contract_hash_mismatch`. *Repro*: `python -m pytest tests/unit/test_run_m4_readiness_check.py` |
-| **stale_governance_expectation** | 2 | Governance policies or workflow YAML configurations drifted from hardcoded unit test assertions. | *Traceback*: `AssertionError: assert 'pass' == 'pass_with_caveats'`. *Repro*: `python -m pytest tests/test_m6e_operator_acceptance.py` |
-| **known_historical_failure** | 0 | None | N/A |
-| **test_harness_side_effect** | 0 | None | N/A |
-| **new_regression** | 0 | None | N/A |
-| **r5a_10_target_dependency** | 0 | None | N/A |
-| **unknown_unclassified** | 0 | None | N/A |
+### 2.3. Root-Cause Groups
+The 48 observed Windows-local failures are grouped into 4 distinct root-cause groups in `docs/acceptance_runs/M8R_03E_POST_R4_PHASE_C_READINESS_DECISION.json`:
 
-**Validation Formula Verification**:
-$$\text{Sum of Categories} = 5 (\text{path}) + 4 (\text{env}) + 37 (\text{drift}) + 2 (\text{stale}) = 48 \text{ failures}$$
+1. **`WINDOWS-PYTHONPATH-01`** (environment_or_dependency, 4 nodes):
+   - **Root Cause**: Windows uses `;` rather than `:` as the PYTHONPATH separator. Subprocesses fail to import project modules under Windows.
+   - **Confirmation**: Confirmed.
+   - **Representative Observed Failure**: `ModuleNotFoundError: No module named 'scripts.probe_twse_openapi'`.
+
+2. **`WINDOWS-PATH-SEMANTICS-01`** (windows_path_semantics, 5 nodes):
+   - **Root Cause**: PurePosixPath does not recognize backslashes (`\`) as separators, and drive-relative paths (starting with forward-slash) bypass absolute blocks on Windows.
+   - **Confirmation**: Confirmed.
+   - **Representative Observed Failure**: `Failed: DID NOT RAISE ValueError` (R2 containment checks fail to raise expected fail-closed exceptions).
+
+3. **`CRLF-HASH-DRIFT-01`** (artifact_or_fixture_drift, 37 nodes):
+   - **Root Cause Hypothesis**: Git checkout auto-CRLF converts LF to CRLF in Windows checkouts, altering file bytes of checked-in JSON templates/schema files, yielding sha256 checksum mismatches.
+   - **Confirmation Status**: Partial (due to platform-specific failure expansion; core.autocrlf=false or Linux runs not completed).
+   - **Representative Hash Proof**:
+     - `valid_single_source_twse_mis.json`: Expected `84cf99b8...`, Windows `4b39a614...`, LF-normalized `84cf99b8...` (Matches: **True**).
+     - `valid_multi_source_mixed.json`: Expected `e4e9413a...`, Windows `1e6e6810...`, LF-normalized `e4e9413a...` (Matches: **True**).
+     - `golden_single_source_twse_mis.json`: Expected `a3e9e88e...`, Windows `220c3006...`, LF-normalized `a3e9e88e...` (Matches: **True**).
+     - `golden_multi_source_mixed.json`: Expected `eff11d56...`, Windows `8d6dc9fa...`, LF-normalized `eff11d56...` (Matches: **True**).
+
+4. **`STALE-GOVERNANCE-01`** (stale_governance_expectation, 2 nodes):
+   - **Root Cause**: Old YAML trigger structures or local check-only caveats output drifted from hardcoded unit assertions.
+   - **Confirmation**: Confirmed.
+   - **Representative Assertion Difference**: `AssertionError: assert 'pass' == 'pass_with_caveats'`.
 
 ---
 
@@ -57,15 +72,24 @@ Windows-local testing confirmed that the fail-closed path validation contract ha
 
 ## 4. Controlled Live Network Preflight (Parsed Data Retrieval Proof)
 
-Network preflight was successfully executed. The results below verify parsed record properties, while avoiding overclaims on formal schema validation which is not performed by these probes.
+Network preflight was successfully executed. The results below verify parsed record properties. Network probes were not rerun in Commit 4 because no source-level evidence or probe implementation changed.
 
-| Source | Command | Actual Record Count | Trade Date | Exchange Timestamp | Schema Validation | Normalization Validation | Semantic Field Check | Session State / Price Retrieval | Status |
-| :--- | :--- | :---: | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **TWSE_MIS** | `python scripts/probe_twse_mis.py` | 3 | 2026-07-17 | 13:30:00 | `not_available` | `pass` | `pass` | regular_closed / `pz: 2285.0000`, `tv: 9277` | **pass** |
-| **TAIFEX_MIS** | `python scripts/validate_m8c_taifex_mis_live.py --auto-smoke --confirm --pretty` | 3 | 2026-07-17 | 13:45:00 | `not_available` | `pass` | `pass` | `actual_quote_value_unavailable_after_session` | **contract_record_and_timestamp_verified** |
-| **TWSE_OpenAPI** | `python scripts/probe_twse_openapi.py` | 1215 | 2026-07-16 | EOD | `not_available` | `pass` | `pass` | not_applicable / `ClosingPrice: 13.99` | **pass** |
-| **TPEx_OpenAPI** | `python scripts/probe_tpex_openapi.py` | 878 | 2026-07-16 | EOD | `not_available` | `pass` | `pass` | not_applicable / `Close: 44.56` | **pass** |
-| **TAIFEX_OpenAPI** | `python scripts/validate_m8b_taifex_openapi_live.py --contexts put_call_ratio --confirm` | 21 | 2026-07-16 | EOD | `not_available` | `pass` | `pass` | not_applicable / `PutCallVolumeRatio%: 88.01` | **pass** |
+### 4.1. Network Summary
+- **Overall Status**: `partial_market_value_verification`
+- **Actual Market Values Verified**: 4 sources
+- **Contract Record and Timestamp Verified**: 1 source
+- **Failed**: 0 sources
+- **Overall Interpretation**: All five source families returned parsed records. Four produced actual market values; TAIFEX MIS produced contract identity and timestamp evidence only because the regular session had closed.
+
+### 4.2. Source Metrics
+
+| Source | Command | Actual Record Count | Trade Date | Exchange Timestamp | Schema Validation | Normalization Validation | Semantic Field Check | Session State / Price Retrieval |
+| :--- | :--- | :---: | :--- | :--- | :--- | :--- | :--- | :--- |
+| **TWSE_MIS** | `python scripts/probe_twse_mis.py` | 3 | 2026-07-17 | 13:30:00 | `not_available` | `pass` | `pass` | regular_closed / `pz: 2285.0000`, `tv: 9277` |
+| **TAIFEX_MIS** | `python scripts/validate_m8c_taifex_mis_live.py --auto-smoke --confirm --pretty` | 3 | 2026-07-17 | 13:45:00 | `not_available` | `pass` | `pass` | `actual_quote_value_unavailable_after_session` |
+| **TWSE_OpenAPI** | `python scripts/probe_twse_openapi.py` | 1215 | 2026-07-16 | EOD | `not_available` | `pass` | `pass` | not_applicable / `ClosingPrice: 13.99` |
+| **TPEx_OpenAPI** | `python scripts/probe_tpex_openapi.py` | 878 | 2026-07-16 | EOD | `not_available` | `pass` | `pass` | not_applicable / `Close: 44.56` |
+| **TAIFEX_OpenAPI** | `python scripts/validate_m8b_taifex_openapi_live.py --contexts put_call_ratio --confirm` | 21 | 2026-07-16 | EOD | `not_available` | `pass` | `pass` | not_applicable / `PutCallVolumeRatio%: 88.01` |
 
 ---
 
@@ -82,7 +106,7 @@ To prevent contradictions between the decision documents and active runtime cont
 ```
 
 ### 5.1. Status Matrices
-- **R4 Regression Evidence Status**: `full_non_network_executed_failure_set_partially_classified`
+- **R4 Regression Evidence Status**: `full_non_network_executed_assignment_complete_root_cause_confirmation_partial`
 - **R4 Acceptance Sealing Status**: `unsealed` (R4 remains unsealed because the current regression failure set is not fully classified in main branch and because R4 scope remains partial).
 - **R4 Completion Status**: `PARTIAL_COMPLETION`
 - **R4 Scope Closure Status**: `not_closed`
@@ -102,8 +126,10 @@ The post-R4 decision task is completed. The next authorized workstreams are sequ
 ---
 
 ## 6. Tested Tree & Evidence Binding
-- **Tested Parent Commit SHA**: `eb118fdc9d337d21827cca5cb4b0af5e1b3c9906`
-- **Tested Tree SHA**: `null` (Self-referential tree hashing avoided for consistency)
-- **Tested Worktree Diff Digest**: `null` (Avoided self-reference loop)
+- **Baseline Main SHA**: `9861a90424f3589e12491b876d14e2c37db51f70`
+- **Tested Parent SHA**: `0cd81632be83b3f7969da043c7f1510eeeddda00` (Immediately preceding Commit 3 updates)
+- **Tested Tree SHA**: `null`
+- **Tested Commit SHA**: `null`
 - **Binding Status**: `unsealed_precommit_evidence`
 - **Evidence Execution Stage**: `pre_commit_unsealed_stage`
+- **Reason**: The evidence artifact is part of the tested change set and is not self-referentially bound to its own final tree or commit.
