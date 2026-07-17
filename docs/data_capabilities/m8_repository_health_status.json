@@ -100,14 +100,14 @@
   "r2_filesystem_containment_status": "GO_WITH_CAVEATS_REMEDIATED_WITH_PORTABLE_TOCTOU_AND_WINDOWS_REPARSE_LIMITATIONS",
   "r2_recommended_next_task": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
   "r2_status": "GO_WITH_CAVEATS",
-  "recommended_next_task": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION",
+  "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
   "recommended_next_task_reason": "R3 migration, composition, dependency boundaries, and acceptance closure completed; R4 performance and scalability remains the successor.",
   "recommended_successor_after_m8r_03e": {
     "status": "historical_superseded",
     "superseded_by": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
     "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION"
   },
-  "registry_successor": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION",
+  "registry_successor": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
   "roadmap_alignment_status": "aligned_with_caveats",
   "schema_version": "m8_repository_health_status.v1",
   "security_status": "GO_WITH_CAVEATS_R2_CONTAINMENT_REMEDIATED_WITH_PORTABLE_TOCTOU_AND_WINDOWS_REPARSE_LIMITATIONS",

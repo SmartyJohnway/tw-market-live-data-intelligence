@@ -1,0 +1,960 @@
+{
+  "task_id": "M8R-03E-POST-R4-PHASE-C-READINESS-AND-R5-SEQUENCING-DECISION",
+  "tested_parent_sha": "0cd81632be83b3f7969da043c7f1510eeeddda00",
+  "tested_tree_sha": null,
+  "tested_worktree_digest": null,
+  "evidence_execution_stage": "pre_commit_unsealed_stage",
+  "execution_environment": {
+    "network": true,
+    "github_actions_policy": "NO_GITHUB_CI"
+  },
+  "python_version": "3.11.15",
+  "operating_system": "Windows",
+  "network_environment": "local_with_network_access",
+  "full_non_network_exact_result": {
+    "return_code": 1,
+    "passed": 1665,
+    "failed": 48,
+    "skipped": 1,
+    "deselected": 1,
+    "failing_node_ids": [
+      "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+      "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+      "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+      "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
+      "tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
+      "tests/unit/test_assess_m5c_staging_candidate.py::test_valid_m5b_evidence_eligible",
+      "tests/unit/test_build_m5b_staging_candidate.py::test_committed_m5b_manifest_verifies",
+      "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+      "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+      "tests/unit/test_m5b_execution_authorization.py::test_valid_authorization_preflight_with_fixed_now",
+      "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_exact_authorized_passes",
+      "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_just_before_expiry_passes",
+      "tests/unit/test_m5b_execution_authorization.py::test_receipt_audit_ignores_current_wall_clock_after_expiry",
+      "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
+      "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+      "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+      "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+      "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+      "tests/unit/test_m5c_staging_promotion.py::test_valid_m5b_evidence_eligible",
+      "tests/unit/test_m5c_staging_promotion.py::test_exact_binding_request_and_schema",
+      "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+      "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+      "tests/unit/test_m7b_ai_safe_market_context_projection_builder.py::test_runtime_projection_builder_reference_remains_controlled_to_conversation_context",
+      "tests/unit/test_m8a_official_eod_instrument_classification.py::test_bounded_seed_only_status_when_canonical_master_unavailable",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_classification_lifecycle_and_observation_policy",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_resolution_exact_and_ambiguous",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_non_network_clis",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_trust_gap_tampered_direct_snapshot_and_lookup_rejected",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_fabricated_validated_wrapper_revalidated_and_rejected",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin",
+      "tests/unit/test_m8r_03e_r2_filesystem_containment.py::test_valid_authorization_with_escaping_output_path_rejected_before_execution",
+      "tests/unit/test_m8r_03e_r2_filesystem_containment.py::test_invalid_authorization_with_escaping_output_path_does_not_execute_or_write",
+      "tests/unit/test_m8r_filesystem_containment.py::test_lexical_traversal_and_absolute_paths_rejected",
+      "tests/unit/test_run_m4_readiness_check.py::test_readiness_check",
+      "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema",
+      "tests/unit/test_workflow_policy_matrix.py::test_workflow_policy_matrix_and_ci_local_only"
+    ]
+  },
+  "full_non_network_failure_classification": {
+    "known_historical_failure": [],
+    "windows_path_semantics": [
+      "tests/unit/test_m7b_ai_safe_market_context_projection_builder.py::test_runtime_projection_builder_reference_remains_controlled_to_conversation_context",
+      "tests/unit/test_m8a_official_eod_instrument_classification.py::test_bounded_seed_only_status_when_canonical_master_unavailable",
+      "tests/unit/test_m8r_03e_r2_filesystem_containment.py::test_valid_authorization_with_escaping_output_path_rejected_before_execution",
+      "tests/unit/test_m8r_03e_r2_filesystem_containment.py::test_invalid_authorization_with_escaping_output_path_does_not_execute_or_write",
+      "tests/unit/test_m8r_filesystem_containment.py::test_lexical_traversal_and_absolute_paths_rejected"
+    ],
+    "environment_or_dependency": [
+      "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+      "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+      "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+      "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection"
+    ],
+    "artifact_or_fixture_drift": [
+      "tests/unit/test_assess_m5c_staging_candidate.py::test_valid_m5b_evidence_eligible",
+      "tests/unit/test_build_m5b_staging_candidate.py::test_committed_m5b_manifest_verifies",
+      "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+      "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+      "tests/unit/test_m5b_execution_authorization.py::test_valid_authorization_preflight_with_fixed_now",
+      "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_exact_authorized_passes",
+      "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_just_before_expiry_passes",
+      "tests/unit/test_m5b_execution_authorization.py::test_receipt_audit_ignores_current_wall_clock_after_expiry",
+      "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
+      "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+      "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+      "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+      "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+      "tests/unit/test_m5c_staging_promotion.py::test_valid_m5b_evidence_eligible",
+      "tests/unit/test_m5c_staging_promotion.py::test_exact_binding_request_and_schema",
+      "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+      "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_classification_lifecycle_and_observation_policy",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_resolution_exact_and_ambiguous",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_non_network_clis",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_trust_gap_tampered_direct_snapshot_and_lookup_rejected",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_fabricated_validated_wrapper_revalidated_and_rejected",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin",
+      "tests/unit/test_run_m4_readiness_check.py::test_readiness_check",
+      "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema"
+    ],
+    "stale_governance_expectation": [
+      "tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
+      "tests/unit/test_workflow_policy_matrix.py::test_workflow_policy_matrix_and_ci_local_only"
+    ],
+    "test_harness_side_effect": [],
+    "new_regression": [],
+    "r5a_10_target_dependency": [],
+    "unknown_unclassified": []
+  },
+  "component_profile_results": {
+    "component-governance": {
+      "passed": 38,
+      "selected": 38,
+      "status": "pass"
+    },
+    "component-watchlist-evidence": {
+      "passed": 57,
+      "selected": 57,
+      "status": "pass"
+    },
+    "performance": {
+      "status": "pass"
+    }
+  },
+  "R1_health_audit_result": "passed_after_stale_expectation_correction",
+  "performance_verification_result": "passed",
+  "Windows_filesystem_validation": {
+    "historical_R2_disposition": "GO_WITH_CAVEATS",
+    "windows_containment_escape_proven": false,
+    "windows_fail_closed_contract_defect": "confirmed",
+    "required_follow_up": "bounded_windows_path_validation_correction_before_Phase_C_activation",
+    "defect_details": [
+      "backslash-delimited traversal not rejected at the expected validation layer",
+      "rooted forward-slash path not rejected as absolute/rooted on Windows",
+      "expected fail-closed exceptions not raised"
+    ],
+    "Phase_C_gate_impact": "Phase C activation blocker"
+  },
+  "controlled_network_preflight": {
+    "executed_at_utc": "2026-07-17T06:02:40Z",
+    "timezone": "Asia/Taipei",
+    "sources": {
+      "TWSE_MIS": {
+        "command": "python scripts/probe_twse_mis.py",
+        "status": "pass",
+        "http_status": 200,
+        "response_non_empty": true,
+        "parsed_record_count": 3,
+        "requested_symbols": [
+          "tse_2330.tw",
+          "tse_0050.tw",
+          "tse_t00.tw"
+        ],
+        "returned_symbols": [
+          "2330.tw",
+          "0050.tw",
+          "t00.tw"
+        ],
+        "trade_date": "2026-07-17",
+        "exchange_timestamp": "13:30:00",
+        "retrieved_at": "2026-07-17T06:01:29Z",
+        "sample_fields_present": [
+          "pz",
+          "tv",
+          "a",
+          "b",
+          "c",
+          "d"
+        ],
+        "session_state": "regular_closed",
+        "latency_class": "liveish",
+        "files_written": [],
+        "limitations": [
+          "Strict rate limiting",
+          "Requires index.jsp visit for cookies"
+        ],
+        "schema_validation": "not_available",
+        "normalization_validation": "pass",
+        "semantic_field_check": "pass"
+      },
+      "TAIFEX_MIS": {
+        "command": "python scripts/validate_m8c_taifex_mis_live.py --auto-smoke --confirm --pretty",
+        "status": "contract_record_and_timestamp_verified",
+        "http_status": 200,
+        "response_non_empty": true,
+        "parsed_record_count": 3,
+        "requested_symbols": [
+          "TX",
+          "MTX",
+          "TXO"
+        ],
+        "returned_symbols": [
+          "TXFH6-F",
+          "MXFH6-F",
+          "TXO34000H6-O"
+        ],
+        "trade_date": "2026-07-17",
+        "exchange_timestamp": "13:45:00",
+        "retrieved_at": "2026-07-17T06:01:41Z",
+        "sample_fields_present": [
+          "raw_CDate",
+          "raw_CTime",
+          "runtime_symbol_id",
+          "mis_cid"
+        ],
+        "session_state": "regular_closed",
+        "latency_class": "liveish",
+        "files_written": [],
+        "limitations": [
+          "Requires index.jsp visit for cookies"
+        ],
+        "schema_validation": "not_available",
+        "normalization_validation": "pass",
+        "semantic_field_check": "pass",
+        "price_retrieval_status": "actual_quote_value_unavailable_after_session",
+        "sample_market_values": null
+      },
+      "TWSE_OpenAPI": {
+        "command": "python scripts/probe_twse_openapi.py",
+        "status": "pass",
+        "http_status": 200,
+        "response_non_empty": true,
+        "parsed_record_count": 1215,
+        "requested_symbols": [
+          "STOCK_DAY_ALL"
+        ],
+        "returned_symbols": [
+          "00400A"
+        ],
+        "trade_date": "2026-07-16",
+        "exchange_timestamp": "EOD",
+        "retrieved_at": "2026-07-17T06:02:11Z",
+        "sample_fields_present": [
+          "ClosingPrice",
+          "Code",
+          "Name",
+          "Date"
+        ],
+        "session_state": "not_applicable",
+        "latency_class": "EOD",
+        "files_written": [],
+        "limitations": [
+          "Rate limits apply"
+        ],
+        "schema_validation": "not_available",
+        "normalization_validation": "pass",
+        "semantic_field_check": "pass"
+      },
+      "TPEx_OpenAPI": {
+        "command": "python scripts/probe_tpex_openapi.py",
+        "status": "pass",
+        "http_status": 200,
+        "response_non_empty": true,
+        "parsed_record_count": 878,
+        "requested_symbols": [
+          "tpex_mainboard_daily_close_quotes"
+        ],
+        "returned_symbols": [
+          "006201"
+        ],
+        "trade_date": "2026-07-16",
+        "exchange_timestamp": "EOD",
+        "retrieved_at": "2026-07-17T06:02:29Z",
+        "sample_fields_present": [
+          "Close",
+          "SecuritiesCompanyCode",
+          "CompanyName",
+          "Date"
+        ],
+        "session_state": "not_applicable",
+        "latency_class": "EOD",
+        "files_written": [],
+        "limitations": [
+          "Rate limits apply"
+        ],
+        "schema_validation": "not_available",
+        "normalization_validation": "pass",
+        "semantic_field_check": "pass"
+      },
+      "TAIFEX_OpenAPI": {
+        "command": "python scripts/validate_m8b_taifex_openapi_live.py --contexts put_call_ratio --confirm",
+        "status": "pass",
+        "http_status": 200,
+        "response_non_empty": true,
+        "parsed_record_count": 21,
+        "requested_symbols": [
+          "PutCallRatio"
+        ],
+        "returned_symbols": [
+          "PutCallRatio"
+        ],
+        "trade_date": "2026-07-16",
+        "exchange_timestamp": "EOD",
+        "retrieved_at": "2026-07-17T06:02:40Z",
+        "sample_fields_present": [
+          "PutCallVolumeRatio%",
+          "PutOI",
+          "Date"
+        ],
+        "session_state": "not_applicable",
+        "latency_class": "EOD",
+        "files_written": [],
+        "limitations": [
+          "Rate limits apply"
+        ],
+        "schema_validation": "not_available",
+        "normalization_validation": "pass",
+        "semantic_field_check": "pass"
+      }
+    },
+    "overall_status": "partial_market_value_verification",
+    "source_status_counts": {
+      "actual_market_values_verified": 4,
+      "contract_record_and_timestamp_verified": 1,
+      "failed": 0
+    },
+    "overall_interpretation": "All five source families returned parsed records. Four produced actual market values; TAIFEX MIS produced contract identity and timestamp evidence only because the regular session had closed."
+  },
+  "R4_regression_evidence_status": "full_non_network_executed_assignment_complete_root_cause_confirmation_partial",
+  "R4_acceptance_sealing_status": "unsealed",
+  "R4_completion_status": "PARTIAL_COMPLETION",
+  "R4_scope_closure_status": "not_closed",
+  "R4_sealing_recommendation": "R4 remains unsealed because the current regression failure assignment is complete, but root-cause confirmation remains partial and because R4 scope remains partial.",
+  "R5A_relationship": "required_for_Phase_C_activation_not_retroactive_R4_regression_claim",
+  "Phase_C_implementation_gate": "ready_to_begin",
+  "Phase_C_activation_gate": "blocked_pending_R5A_10_target_fixture_and_windows_path_validation_correction",
+  "R5_workstream_classification": {
+    "R5A_cross_layer_fixture": "Phase C activation blocker",
+    "R5B_windows_filesystem_fail_closed_correction": "Phase C activation blocker",
+    "M8_DEBT_0004_wildcard_imports_cleanup": "parallel_with_Phase_C",
+    "M8_DEBT_0007_historical_documentation_lifecycle": "parallel_with_Phase_C",
+    "stress_50_100_target_execution": "post_Phase_C"
+  },
+  "direct_corrections": [
+    "Corrected stale successor task expectation in test_m8r_03e_r1_repository_health_audit.py",
+    "Corrected stale successor task expectation in test_m8r_03c_watchlist_bundles.py",
+    "Corrected stale successor task expectation in test_m8r_03e_f1_ai_capability_guide.py",
+    "Corrected stale successor task expectation in validate_skill.py"
+  ],
+  "unresolved_owner_decisions": [
+    "Whether full-non-network regression sealing must be performed in a separate isolated Linux environment",
+    "Approval of R5A/R5B parallel execution sequencing"
+  ],
+  "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+  "parallel_authorized_workstream": "M8R-03E-R5B-WINDOWS-FILESYSTEM-FAIL-CLOSED-CORRECTION",
+  "full_non_network_failures_auditable": [
+    {
+      "node_id": "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+      "observed_failure": "ModuleNotFoundError: No module named 'scripts.probe_twse_openapi'",
+      "root_cause": "Windows PYTHONPATH delimiter is semicolon ';' instead of colon ':'. The test codebase appends paths using a hardcoded ':', causing import failure under Python subprocess execution.",
+      "evidence": "Subprocess exit code 1 with ModuleNotFoundError traceback.",
+      "reproduction_command": "python -m pytest tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+      "classification": "environment_or_dependency",
+      "root_cause_group_id": "WINDOWS-PYTHONPATH-01"
+    },
+    {
+      "node_id": "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+      "observed_failure": "ModuleNotFoundError: No module named 'scripts.probe_twse_openapi'",
+      "root_cause": "Windows PYTHONPATH delimiter is semicolon ';' instead of colon ':'. The test codebase appends paths using a hardcoded ':', causing import failure under Python subprocess execution.",
+      "evidence": "Subprocess exit code 1 with ModuleNotFoundError traceback.",
+      "reproduction_command": "python -m pytest tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+      "classification": "environment_or_dependency",
+      "root_cause_group_id": "WINDOWS-PYTHONPATH-01"
+    },
+    {
+      "node_id": "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+      "observed_failure": "ModuleNotFoundError: No module named 'scripts.probe_twse_openapi'",
+      "root_cause": "Windows PYTHONPATH delimiter is semicolon ';' instead of colon ':'. The test codebase appends paths using a hardcoded ':', causing import failure under Python subprocess execution.",
+      "evidence": "Subprocess exit code 1 with ModuleNotFoundError traceback.",
+      "reproduction_command": "python -m pytest tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+      "classification": "environment_or_dependency",
+      "root_cause_group_id": "WINDOWS-PYTHONPATH-01"
+    },
+    {
+      "node_id": "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
+      "observed_failure": "ModuleNotFoundError: No module named 'scripts.probe_twse_openapi'",
+      "root_cause": "Windows PYTHONPATH delimiter is semicolon ';' instead of colon ':'. The test codebase appends paths using a hardcoded ':', causing import failure under Python subprocess execution.",
+      "evidence": "Subprocess exit code 1 with ModuleNotFoundError traceback.",
+      "reproduction_command": "python -m pytest tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
+      "classification": "environment_or_dependency",
+      "root_cause_group_id": "WINDOWS-PYTHONPATH-01"
+    },
+    {
+      "node_id": "tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
+      "observed_failure": "AssertionError: assert 'pass' == 'pass_with_caveats'",
+      "root_cause": "Windows local check-only run successfully completes without caveats, returning status 'pass', but the stale unit assertion expects 'pass_with_caveats'.",
+      "evidence": "Mismatch in caveats list count.",
+      "reproduction_command": "python -m pytest tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
+      "classification": "stale_governance_expectation",
+      "root_cause_group_id": "STALE-GOVERNANCE-01"
+    },
+    {
+      "node_id": "tests/unit/test_assess_m5c_staging_candidate.py::test_valid_m5b_evidence_eligible",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_assess_m5c_staging_candidate.py::test_valid_m5b_evidence_eligible",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_build_m5b_staging_candidate.py::test_committed_m5b_manifest_verifies",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_build_m5b_staging_candidate.py::test_committed_m5b_manifest_verifies",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5b_execution_authorization.py::test_valid_authorization_preflight_with_fixed_now",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5b_execution_authorization.py::test_valid_authorization_preflight_with_fixed_now",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_exact_authorized_passes",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_exact_authorized_passes",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_just_before_expiry_passes",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_just_before_expiry_passes",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5b_execution_authorization.py::test_receipt_audit_ignores_current_wall_clock_after_expiry",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5b_execution_authorization.py::test_receipt_audit_ignores_current_wall_clock_after_expiry",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5c_staging_promotion.py::test_valid_m5b_evidence_eligible",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5c_staging_promotion.py::test_valid_m5b_evidence_eligible",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5c_staging_promotion.py::test_exact_binding_request_and_schema",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5c_staging_promotion.py::test_exact_binding_request_and_schema",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m7b_ai_safe_market_context_projection_builder.py::test_runtime_projection_builder_reference_remains_controlled_to_conversation_context",
+      "observed_failure": "AssertionError or Failed: DID NOT RAISE FilesystemSafetyError",
+      "root_cause": "Platform path representation difference. Windows backslash path separators ('\\\\') are not parsed as directory delimiters by PurePosixPath, causing traversal check bypasses and absolute path check anomalies.",
+      "evidence": "Assertion msimatch or pytest.raises failure.",
+      "reproduction_command": "python -m pytest tests/unit/test_m7b_ai_safe_market_context_projection_builder.py::test_runtime_projection_builder_reference_remains_controlled_to_conversation_context",
+      "classification": "windows_path_semantics",
+      "root_cause_group_id": "WINDOWS-PATH-SEMANTICS-01"
+    },
+    {
+      "node_id": "tests/unit/test_m8a_official_eod_instrument_classification.py::test_bounded_seed_only_status_when_canonical_master_unavailable",
+      "observed_failure": "AssertionError or Failed: DID NOT RAISE FilesystemSafetyError",
+      "root_cause": "Platform path representation difference. Windows backslash path separators ('\\\\') are not parsed as directory delimiters by PurePosixPath, causing traversal check bypasses and absolute path check anomalies.",
+      "evidence": "Assertion msimatch or pytest.raises failure.",
+      "reproduction_command": "python -m pytest tests/unit/test_m8a_official_eod_instrument_classification.py::test_bounded_seed_only_status_when_canonical_master_unavailable",
+      "classification": "windows_path_semantics",
+      "root_cause_group_id": "WINDOWS-PATH-SEMANTICS-01"
+    },
+    {
+      "node_id": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_classification_lifecycle_and_observation_policy",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_classification_lifecycle_and_observation_policy",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_resolution_exact_and_ambiguous",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_resolution_exact_and_ambiguous",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_non_network_clis",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_non_network_clis",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_trust_gap_tampered_direct_snapshot_and_lookup_rejected",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_trust_gap_tampered_direct_snapshot_and_lookup_rejected",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_fabricated_validated_wrapper_revalidated_and_rejected",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_fabricated_validated_wrapper_revalidated_and_rejected",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_m8r_03e_r2_filesystem_containment.py::test_valid_authorization_with_escaping_output_path_rejected_before_execution",
+      "observed_failure": "AssertionError or Failed: DID NOT RAISE FilesystemSafetyError",
+      "root_cause": "Platform path representation difference. Windows backslash path separators ('\\\\') are not parsed as directory delimiters by PurePosixPath, causing traversal check bypasses and absolute path check anomalies.",
+      "evidence": "Assertion msimatch or pytest.raises failure.",
+      "reproduction_command": "python -m pytest tests/unit/test_m8r_03e_r2_filesystem_containment.py::test_valid_authorization_with_escaping_output_path_rejected_before_execution",
+      "classification": "windows_path_semantics",
+      "root_cause_group_id": "WINDOWS-PATH-SEMANTICS-01"
+    },
+    {
+      "node_id": "tests/unit/test_m8r_03e_r2_filesystem_containment.py::test_invalid_authorization_with_escaping_output_path_does_not_execute_or_write",
+      "observed_failure": "AssertionError or Failed: DID NOT RAISE FilesystemSafetyError",
+      "root_cause": "Platform path representation difference. Windows backslash path separators ('\\\\') are not parsed as directory delimiters by PurePosixPath, causing traversal check bypasses and absolute path check anomalies.",
+      "evidence": "Assertion msimatch or pytest.raises failure.",
+      "reproduction_command": "python -m pytest tests/unit/test_m8r_03e_r2_filesystem_containment.py::test_invalid_authorization_with_escaping_output_path_does_not_execute_or_write",
+      "classification": "windows_path_semantics",
+      "root_cause_group_id": "WINDOWS-PATH-SEMANTICS-01"
+    },
+    {
+      "node_id": "tests/unit/test_m8r_filesystem_containment.py::test_lexical_traversal_and_absolute_paths_rejected",
+      "observed_failure": "AssertionError or Failed: DID NOT RAISE FilesystemSafetyError",
+      "root_cause": "Platform path representation difference. Windows backslash path separators ('\\\\') are not parsed as directory delimiters by PurePosixPath, causing traversal check bypasses and absolute path check anomalies.",
+      "evidence": "Assertion msimatch or pytest.raises failure.",
+      "reproduction_command": "python -m pytest tests/unit/test_m8r_filesystem_containment.py::test_lexical_traversal_and_absolute_paths_rejected",
+      "classification": "windows_path_semantics",
+      "root_cause_group_id": "WINDOWS-PATH-SEMANTICS-01"
+    },
+    {
+      "node_id": "tests/unit/test_run_m4_readiness_check.py::test_readiness_check",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_run_m4_readiness_check.py::test_readiness_check",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema",
+      "observed_failure": "AssertionError: hash_mismatch or manifest_sha256_mismatch or current_skill_contract_hash_mismatch",
+      "root_cause": "Git auto-CRLF converts LF to CRLF in Windows checkouts. This alters the bytes of checked-in JSON templates/schema files by introducing '\\r\\n', producing sha256 checksums that drift from Linux pre-computed registry values.",
+      "evidence": "Manifest verification failure with hash mismatch output.",
+      "reproduction_command": "python -m pytest tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema",
+      "classification": "artifact_or_fixture_drift",
+      "root_cause_group_id": "CRLF-HASH-DRIFT-01"
+    },
+    {
+      "node_id": "tests/unit/test_workflow_policy_matrix.py::test_workflow_policy_matrix_and_ci_local_only",
+      "observed_failure": "AssertionError: assert 'run_m4_local_validation.py --check-only' in ...",
+      "root_cause": "The GitHub non-network-ci.yml was restructured in R4, rendering the old assertion on step names stale.",
+      "evidence": "AssertionError on substring search.",
+      "reproduction_command": "python -m pytest tests/unit/test_workflow_policy_matrix.py::test_workflow_policy_matrix_and_ci_local_only",
+      "classification": "stale_governance_expectation",
+      "root_cause_group_id": "STALE-GOVERNANCE-01"
+    }
+  ],
+  "binding_status": "unsealed_precommit_evidence",
+  "baseline_main_sha": "9861a90424f3589e12491b876d14e2c37db51f70",
+  "evidence_binding": {
+    "status": "unsealed_precommit_evidence",
+    "baseline_main_sha": "9861a90424f3589e12491b876d14e2c37db51f70",
+    "tested_parent_sha": "0cd81632be83b3f7969da043c7f1510eeeddda00",
+    "tested_tree_sha": null,
+    "tested_commit_sha": null,
+    "reason": "The evidence artifact is part of the tested change set and is not self-referentially bound to its own final tree or commit."
+  },
+  "full_non_network_failure_assignment_status": "complete",
+  "full_non_network_root_cause_confirmation_status": "partial",
+  "full_non_network_regression_determination_status": "not_demonstrated_on_equivalent_cross_platform_baseline",
+  "new_regression": null,
+  "new_regression_count": null,
+  "new_regression_status": "not_demonstrated_due_to_platform_specific_failure_expansion",
+  "unknown_assignment_count": 0,
+  "unconfirmed_root_cause_count": 37,
+  "root_cause_groups": {
+    "WINDOWS-PYTHONPATH-01": {
+      "classification": "environment_or_dependency",
+      "confirmation_status": "confirmed",
+      "root_cause": "Windows uses ';' rather than ':' as the PATH-like PYTHONPATH separator.",
+      "representative_nodes": [
+        "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+        "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+        "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+        "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection"
+      ],
+      "representative_observed_failure": "ModuleNotFoundError: No module named 'scripts.probe_twse_openapi'",
+      "reproduction_commands": [
+        "python -m pytest tests/test_m3g04_controlled_live_probe.py"
+      ],
+      "affected_node_count": 4
+    },
+    "WINDOWS-PATH-SEMANTICS-01": {
+      "classification": "windows_path_semantics",
+      "confirmation_status": "confirmed",
+      "root_cause": "PurePosixPath and rooted-path handling do not enforce the intended fail-closed Windows semantics.",
+      "representative_nodes": [
+        "tests/unit/test_m8r_03e_r2_filesystem_containment.py::test_valid_authorization_with_escaping_output_path_rejected_before_execution",
+        "tests/unit/test_m8r_03e_r2_filesystem_containment.py::test_invalid_authorization_with_escaping_output_path_does_not_execute_or_write",
+        "tests/unit/test_m8r_filesystem_containment.py::test_lexical_traversal_and_absolute_paths_rejected",
+        "tests/unit/test_m8a_official_eod_instrument_classification.py::test_bounded_seed_only_status_when_canonical_master_unavailable",
+        "tests/unit/test_m7b_ai_safe_market_context_projection_builder.py::test_runtime_projection_builder_reference_remains_controlled_to_conversation_context"
+      ],
+      "representative_observed_failures": [
+        "Failed: DID NOT RAISE ValueError",
+        "Failed: DID NOT RAISE FilesystemSafetyError",
+        "AssertionError on backslash path segment lookup"
+      ],
+      "affected_node_count": 5
+    },
+    "CRLF-HASH-DRIFT-01": {
+      "classification": "artifact_or_fixture_drift",
+      "confirmation_status": "partial",
+      "root_cause_hypothesis": "Git checkout LF-to-CRLF conversion changes byte-level SHA-256 values.",
+      "affected_node_count": 37,
+      "affected_nodes": [
+        "tests/unit/test_run_m4_readiness_check.py::test_readiness_check",
+        "tests/unit/test_assess_m5c_staging_candidate.py::test_valid_m5b_evidence_eligible",
+        "tests/unit/test_build_m5b_staging_candidate.py::test_committed_m5b_manifest_verifies",
+        "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+        "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+        "tests/unit/test_m5b_execution_authorization.py::test_valid_authorization_preflight_with_fixed_now",
+        "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_exact_authorized_passes",
+        "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_just_before_expiry_passes",
+        "tests/unit/test_m5b_execution_authorization.py::test_receipt_audit_ignores_current_wall_clock_after_expiry",
+        "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
+        "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+        "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+        "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+        "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+        "tests/unit/test_m5c_staging_promotion.py::test_valid_m5b_evidence_eligible",
+        "tests/unit/test_m5c_staging_promotion.py::test_exact_binding_request_and_schema",
+        "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+        "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+        "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+        "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+        "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+        "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+        "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+        "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+        "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+        "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
+        "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_classification_lifecycle_and_observation_policy",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_resolution_exact_and_ambiguous",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_non_network_clis",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_trust_gap_tampered_direct_snapshot_and_lookup_rejected",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_fabricated_validated_wrapper_revalidated_and_rejected",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin",
+        "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema"
+      ],
+      "representative_paths": [
+        "tests/fixtures/staging_payloads/valid_single_source_twse_mis.json",
+        "tests/fixtures/staging_payloads/valid_multi_source_mixed.json",
+        "tests/fixtures/frontend_readonly_packages/golden_single_source_twse_mis.json",
+        "tests/fixtures/frontend_readonly_packages/golden_multi_source_mixed.json"
+      ],
+      "representative_expected_hashes": [
+        "84cf99b8ee80e69e1070067ca71727dee33eb0ec8471f7d507f7087b68822201",
+        "e4e9413aab904197ef5b324c37089910b539f81472bbb5dd554735c20e4a4aed",
+        "a3e9e88ecd6430d85aa67b5c032f3303624083889bb7e6dc7eb96166ca2d3691",
+        "eff11d562cc917f463b8edd4fd8664f7e4feb7d33441ba0ea4f9d4aaa4f2b19b"
+      ],
+      "representative_windows_hashes": [
+        "4b39a61441d6c29db4fe987abf9f89109077948144b9875bcf72814cdbbb2790",
+        "1e6e6810858e784cfaa7da7b2cabd76ebfa15a44c4a404751d627a6e5f767356",
+        "220c3006d7829b89614df33041f030127608d1897700bd53000afc83467b4a18",
+        "8d6dc9fa9c2355db1f554084408b033997f27266c62b3991f924a21bb0829188"
+      ],
+      "representative_lf_normalized_hashes": [
+        "84cf99b8ee80e69e1070067ca71727dee33eb0ec8471f7d507f7087b68822201",
+        "e4e9413aab904197ef5b324c37089910b539f81472bbb5dd554735c20e4a4aed",
+        "a3e9e88ecd6430d85aa67b5c032f3303624083889bb7e6dc7eb96166ca2d3691",
+        "eff11d562cc917f463b8edd4fd8664f7e4feb7d33441ba0ea4f9d4aaa4f2b19b"
+      ],
+      "representative_tracebacks": [
+        "AssertionError: hash_mismatch or manifest_sha256_mismatch"
+      ],
+      "confirmation_limitations": [
+        "Not every node was independently reproduced after LF normalization.",
+        "A Linux or core.autocrlf=false comparison run was not completed."
+      ]
+    },
+    "STALE-GOVERNANCE-01": {
+      "classification": "stale_governance_expectation",
+      "confirmation_status": "confirmed",
+      "representative_nodes": [
+        "tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
+        "tests/unit/test_workflow_policy_matrix.py::test_workflow_policy_matrix_and_ci_local_only"
+      ],
+      "representative_assertion_differences": [
+        "AssertionError: assert 'pass' == 'pass_with_caveats'",
+        "AssertionError on substring search in workflow configuration"
+      ],
+      "affected_node_count": 2
+    }
+  },
+  "provisional_assignment_counts": {
+    "known_historical_failure": 0,
+    "windows_path_semantics": 5,
+    "environment_or_dependency": 4,
+    "artifact_or_fixture_drift": 37,
+    "stale_governance_expectation": 2,
+    "test_harness_side_effect": 0,
+    "new_regression": 0,
+    "r5a_10_target_dependency": 0,
+    "unknown_unclassified": 0,
+    "total": 48,
+    "new_regression_assignment_count_note": "A new_regression assignment count of 0 does not constitute a regression determination."
+  }
+}
