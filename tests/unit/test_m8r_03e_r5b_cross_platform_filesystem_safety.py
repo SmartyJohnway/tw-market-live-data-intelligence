@@ -359,16 +359,44 @@ from scripts.m8r_one_shot_market_context_orchestrator import FilesystemApprovalC
     "http://host/x",
     "https://host/x",
 ])
-def test_approval_store_rejects_uri_root_without_side_effect(tmp_path, uri):
+def test_approval_store_rejects_uri_root_without_side_effect(tmp_path, monkeypatch, uri):
+    monkeypatch.chdir(tmp_path)
     with pytest.raises(FilesystemSafetyError) as excinfo:
         FilesystemApprovalConsumptionStore(uri)
     assert excinfo.value.code == "absolute_output_path_forbidden"
     
-    # Assert s3: gs: etc were NOT created in the current working directory or tmp
-    # Convert uri to path to see what POSIX would make of it
-    p = Path(uri)
-    # The name of the root segment on disk would be the first part, e.g. "s3:"
-    prefix = str(p).split("/")[0].split("\\")[0]
-    if prefix and ":" in prefix:
-        # Check that no directory of that name exists locally
-        assert not Path(prefix).exists()
+    # Assert no side effect directories were created in the sandboxed tmp_path
+    entries = list(tmp_path.iterdir())
+    assert len(entries) == 0
+
+
+@pytest.mark.skipif(os.name == "nt", reason="POSIX-specific Windows drive root check")
+@pytest.mark.parametrize("root", [
+    "C:/temp/output",
+    r"C:\temp\output",
+    "C:relative",
+    "C:",
+])
+def test_posix_rejects_windows_drive_roots_without_side_effect(tmp_path, monkeypatch, root):
+    monkeypatch.chdir(tmp_path)
+    with pytest.raises(FilesystemSafetyError) as excinfo:
+        validate_authorized_root(root)
+    assert excinfo.value.code == "windows_drive_root_forbidden_on_posix"
+    
+    # Assert C: was not created on disk
+    assert not Path("C:").exists()
+    entries = list(tmp_path.iterdir())
+    assert len(entries) == 0
+
+
+def test_windows_drive_relative_root_rejected_on_windows():
+    # On Windows, drive-relative paths (e.g. C:relative or C:) should be rejected in validate_authorized_root
+    # if it's NT platform. On non-NT, they are rejected by the general POSIX drive match C:
+    if os.name == "nt":
+        with pytest.raises(FilesystemSafetyError) as excinfo:
+            validate_authorized_root("C:relative")
+        assert excinfo.value.code == "drive_relative_output_path_forbidden"
+        
+        with pytest.raises(FilesystemSafetyError) as excinfo:
+            validate_authorized_root("C:")
+        assert excinfo.value.code == "drive_relative_output_path_forbidden"

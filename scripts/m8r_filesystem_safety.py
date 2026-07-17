@@ -172,6 +172,13 @@ def validate_authorized_root(
     reject_uri_like_root(root)
     raw = str(root)
     
+    if os.name != 'nt':
+        if re.match(r'^[A-Za-z]:', raw):
+            raise FilesystemSafetyError('windows_drive_root_forbidden_on_posix', f"Windows drive root is forbidden on POSIX: {raw}")
+    else:
+        if re.match(r'^[A-Za-z]:(?![/\\])', raw):
+            raise FilesystemSafetyError('drive_relative_output_path_forbidden', f"Drive-relative root is forbidden: {raw}")
+            
     p = Path(root)
     try:
         p.mkdir(parents=True, exist_ok=True)
