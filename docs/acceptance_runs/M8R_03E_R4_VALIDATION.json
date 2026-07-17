@@ -1,9 +1,9 @@
 {
   "task_id": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
   "baseline_main_sha": "d33a807bd8f2a4677dbf630b326271e94dd7202c",
-  "tested_parent_sha": "92518b7",
-  "tested_tree_sha": "92518b7_plus_governance_closure_uncommitted",
-  "tested_worktree_digest": "sealed_by_git_diff_and_profile_records",
+  "tested_parent_sha": "dffb244cc61f742312b52ea12d25bd055766979f",
+  "tested_tree_sha": "dffb244cc61f742312b52ea12d25bd055766979f+correction_worktree",
+  "tested_worktree_digest": "120d50e9e06610e940a808f0ccc970110b27d3dda9b54a02da482c440deebf1c",
   "execution_environment": {
     "network": false,
     "github_actions_policy": "NO_GITHUB_CI"
@@ -64,10 +64,15 @@
     }
   ],
   "full_non_network_exact_result": {
-    "status": "known_baseline_expected; final profile run deferred to commit sealing",
-    "known_baseline_failures": 7,
-    "failure_set_changed": false,
-    "new_m8_m8r_failure_count": 0
+    "return_code": "unavailable",
+    "status": "incomplete_no_auditable_json_output",
+    "passed": null,
+    "failed": null,
+    "skipped": null,
+    "deselected": null,
+    "failing_node_ids": [],
+    "failure_set_changed": "unknown",
+    "new_m8_m8r_failure_count": "unknown"
   },
   "resolved_debt_ids": [
     "M8-DEBT-0005"
@@ -87,11 +92,11 @@
     "R4-E": "PASS",
     "R4-F": "PASS_WITH_CAVEATS"
   },
-  "r4_disposition": "GO_WITH_CAVEATS",
+  "r4_disposition": "NO_GO",
   "active_governance_state": {
-    "implemented_through": "R4",
-    "implemented_through_track": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
-    "phase_c_gate_status": "blocked_pending_post_R4_closure_decision"
+    "implemented_through": "R3",
+    "implemented_through_track": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
+    "phase_c_gate_status": "blocked_pending_R4"
   },
-  "successor_decision": "M8R-03E-R5-TESTING-DOCUMENTATION-AND-OPERATIONS-CONSOLIDATION; remaining debt is testing/documentation consolidation, while Phase C remains explicitly blocked pending a later decision."
+  "successor_decision": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING; full-non-network must complete and record its exact baseline before R4 can close."
 }

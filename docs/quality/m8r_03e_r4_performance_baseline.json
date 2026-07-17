@@ -1,27 +1,5 @@
 {
   "baseline_main_sha": "d33a807bd8f2a4677dbf630b326271e94dd7202c",
-  "growth_ratios": {
-    "100_target_stress": 17.461,
-    "10_target_snapshot": 1.746,
-    "1_target_snapshot": 1.0,
-    "50_target_stress": 8.731,
-    "all_source_failure": 1.076,
-    "artifact_serialization_only": 1.746,
-    "combined_citation_and_missing_evidence_pressure": 1.076,
-    "complete_snapshot": 1.746,
-    "conversation_handoff_policy_a": 1.746,
-    "conversation_handoff_policy_b": 1.746,
-    "high_citation_pressure": 1.746,
-    "high_missing_evidence_pressure": 1.076,
-    "manifest_generation": 1.746,
-    "partial_source_failure": 1.562,
-    "performance_package": 1.171,
-    "safe_atomic_artifact_write": 1.746,
-    "v1_to_v2_migration": 1.746
-  },
-  "identified_bottlenecks": [
-    "schema validation and canonical serialization dominate small fixture pipeline"
-  ],
   "measurement_contract_ref": "docs/contracts/m8r_03e_r4_performance_measurement_contract.json",
   "measurement_environment": {
     "gc_enabled": true,
@@ -30,147 +8,46 @@
     "python": "3.13.13",
     "timer": "time.perf_counter_ns"
   },
-  "non_candidates": [
-    "cross-request package cache would risk mutable evidence state"
-  ],
-  "optimization_candidates": [
-    "immutable schema validator cache"
-  ],
   "production_contract_limit": 10,
   "scenarios": [
     {
       "aggregate_valid_package_count": 1,
       "citation_count": 27,
       "median_measurements_ms": {
-        "canonical_serialization": 2.418,
-        "evidence_build": 66.841,
-        "handoff_composition": 0.855,
-        "manifest_construction": 8.127,
-        "safe_atomic_write": 3.938,
-        "semantic_validation": 45.062,
-        "total_end_to_end": 128.457
+        "total_end_to_end": 121.053
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 6,
-        "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 192,
+        "filesystem_write": 0,
+        "sha256_json": 183,
+        "validate_schema": 4,
+        "validator_cache_hits": 4,
+        "validator_cache_misses": 0
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 262124
+        "value": 231002
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 2.409421,
-          "citation_count": 27,
-          "evidence_build": 62.636171,
-          "handoff_composition": 0.878677,
-          "manifest_construction": 7.994171,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.817029,
-          "semantic_validation": 44.649537,
-          "serialized_bytes": 24404,
-          "total_end_to_end": 122.385006,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.452259,
-          "citation_count": 27,
-          "evidence_build": 71.446003,
-          "handoff_composition": 0.923338,
-          "manifest_construction": 9.307047,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 35.368608,
-          "semantic_validation": 53.028715,
-          "serialized_bytes": 24404,
-          "total_end_to_end": 172.52597,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.417738,
-          "citation_count": 27,
-          "evidence_build": 66.840881,
-          "handoff_composition": 0.835544,
-          "manifest_construction": 8.710586,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.938189,
-          "semantic_validation": 45.713901,
-          "serialized_bytes": 24404,
-          "total_end_to_end": 128.456839,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.477285,
-          "citation_count": 27,
-          "evidence_build": 62.373807,
-          "handoff_composition": 0.854768,
-          "manifest_construction": 8.127251,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.827883,
-          "semantic_validation": 45.061765,
-          "serialized_bytes": 24404,
-          "total_end_to_end": 123.72275899999998,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.409292,
-          "citation_count": 27,
-          "evidence_build": 73.182962,
-          "handoff_composition": 0.848339,
-          "manifest_construction": 8.123608,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.703545,
-          "semantic_validation": 44.016999,
-          "serialized_bytes": 24404,
-          "total_end_to_end": 132.284745,
-          "valid": true
+          "elapsed_ms": 121.053374,
+          "results": [
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "1_target_snapshot",
       "semantic_equivalence": true,
-      "serialized_bytes": 24404,
+      "serialized_bytes": 0,
       "target_count": 1,
       "tier": "production_contract",
       "validity_results": true,
@@ -180,135 +57,40 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "canonical_serialization": 4.125,
-        "evidence_build": 124.595,
-        "handoff_composition": 0.891,
-        "manifest_construction": 10.562,
-        "safe_atomic_write": 3.714,
-        "semantic_validation": 88.692,
-        "total_end_to_end": 233.631
+        "total_end_to_end": 228.17
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 6,
-        "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 353,
+        "filesystem_write": 0,
+        "sha256_json": 345,
+        "validate_schema": 4,
+        "validator_cache_hits": 2,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 431749
+        "value": 399892
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 4.124957,
-          "citation_count": 54,
-          "evidence_build": 121.347939,
-          "handoff_composition": 0.890959,
-          "manifest_construction": 10.562034,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.859961,
-          "semantic_validation": 82.454412,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 223.24026199999997,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 7.112394,
-          "citation_count": 54,
-          "evidence_build": 133.213697,
-          "handoff_composition": 0.950491,
-          "manifest_construction": 10.26347,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.561707,
-          "semantic_validation": 89.491057,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 244.59281600000003,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.05968,
-          "citation_count": 54,
-          "evidence_build": 124.218,
-          "handoff_composition": 0.86443,
-          "manifest_construction": 10.637548,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.562955,
-          "semantic_validation": 85.636862,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 228.97947499999998,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.413378,
-          "citation_count": 54,
-          "evidence_build": 124.595172,
-          "handoff_composition": 0.857645,
-          "manifest_construction": 10.394933,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.13622,
-          "semantic_validation": 94.301745,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 238.699093,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.089447,
-          "citation_count": 54,
-          "evidence_build": 125.490883,
-          "handoff_composition": 0.902248,
-          "manifest_construction": 10.742621,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.714023,
-          "semantic_validation": 88.69158,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 233.63080200000002,
-          "valid": true
+          "elapsed_ms": 228.169689,
+          "results": [
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "10_target_snapshot",
       "semantic_equivalence": true,
-      "serialized_bytes": 42612,
+      "serialized_bytes": 0,
       "target_count": 10,
       "tier": "production_contract",
       "validity_results": true,
@@ -318,95 +100,56 @@
       "aggregate_valid_package_count": 5,
       "citation_count": 270,
       "median_measurements_ms": {
-        "canonical_serialization": 4.018,
-        "evidence_build": 122.5,
-        "handoff_composition": 0.881,
-        "manifest_construction": 10.388,
-        "safe_atomic_write": 4.007,
-        "semantic_validation": 84.318,
-        "total_end_to_end": 227.552
+        "total_end_to_end": 1093.756
       },
       "missing_evidence_count": 0,
       "non_contract": true,
       "not_authorized_for_production_request": true,
       "operation_counts": {
-        "artifact_serialization": 5,
-        "canonical_json": 30,
-        "filesystem_write": 5,
-        "schema_validation": 15,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 1765,
+        "filesystem_write": 0,
+        "sha256_json": 1725,
+        "validate_schema": 20,
+        "validator_cache_hits": 18,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 424793
+        "value": 556496
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 4.423038,
-          "citation_count": 54,
-          "evidence_build": 122.580715,
-          "handoff_composition": 0.868305,
-          "manifest_construction": 10.288453,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 5.07351,
-          "semantic_validation": 84.318365,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 227.55238599999998,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.018002,
-          "citation_count": 54,
-          "evidence_build": 122.499993,
-          "handoff_composition": 0.893896,
-          "manifest_construction": 10.923809,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.007377,
-          "semantic_validation": 85.331434,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 227.674511,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.005929,
-          "citation_count": 54,
-          "evidence_build": 119.749899,
-          "handoff_composition": 0.881131,
-          "manifest_construction": 10.387605,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.846955,
-          "semantic_validation": 82.079563,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 220.95108199999999,
-          "valid": true
+          "elapsed_ms": 1093.755795,
+          "results": [
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            },
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            },
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            },
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            },
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 3,
       "scenario_id": "50_target_stress",
       "semantic_equivalence": true,
-      "serialized_bytes": 213060,
+      "serialized_bytes": 0,
       "target_count": 50,
       "tier": "stress_only",
       "validity_results": true,
@@ -416,95 +159,76 @@
       "aggregate_valid_package_count": 10,
       "citation_count": 540,
       "median_measurements_ms": {
-        "canonical_serialization": 3.949,
-        "evidence_build": 118.771,
-        "handoff_composition": 0.904,
-        "manifest_construction": 10.423,
-        "safe_atomic_write": 3.961,
-        "semantic_validation": 81.917,
-        "total_end_to_end": 219.91
+        "total_end_to_end": 2243.481
       },
       "missing_evidence_count": 0,
       "non_contract": true,
       "not_authorized_for_production_request": true,
       "operation_counts": {
-        "artifact_serialization": 10,
-        "canonical_json": 60,
-        "filesystem_write": 10,
-        "schema_validation": 30,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 3530,
+        "filesystem_write": 0,
+        "sha256_json": 3450,
+        "validate_schema": 40,
+        "validator_cache_hits": 38,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 425193
+        "value": 564516
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 3.949045,
-          "citation_count": 54,
-          "evidence_build": 117.758268,
-          "handoff_composition": 0.903833,
-          "manifest_construction": 10.266308,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.960697,
-          "semantic_validation": 81.082422,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 217.92057300000002,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.001943,
-          "citation_count": 54,
-          "evidence_build": 119.716413,
-          "handoff_composition": 0.896185,
-          "manifest_construction": 10.429214,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.030679,
-          "semantic_validation": 81.926368,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 221.000802,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 3.937817,
-          "citation_count": 54,
-          "evidence_build": 118.77138,
-          "handoff_composition": 0.931989,
-          "manifest_construction": 10.422703,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.92962,
-          "semantic_validation": 81.916581,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 219.91008999999997,
-          "valid": true
+          "elapsed_ms": 2243.481418,
+          "results": [
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            },
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            },
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            },
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            },
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            },
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            },
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            },
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            },
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            },
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 3,
       "scenario_id": "100_target_stress",
       "semantic_equivalence": true,
-      "serialized_bytes": 426120,
+      "serialized_bytes": 0,
       "target_count": 100,
       "tier": "stress_only",
       "validity_results": true,
@@ -514,135 +238,40 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "canonical_serialization": 4.093,
-        "evidence_build": 125.471,
-        "handoff_composition": 0.94,
-        "manifest_construction": 10.576,
-        "safe_atomic_write": 4.117,
-        "semantic_validation": 84.509,
-        "total_end_to_end": 230.587
+        "total_end_to_end": 210.899
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 6,
-        "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 353,
+        "filesystem_write": 0,
+        "sha256_json": 345,
+        "validate_schema": 4,
+        "validator_cache_hits": 2,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 432111
+        "value": 391375
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 5.067425,
-          "citation_count": 54,
-          "evidence_build": 132.182701,
-          "handoff_composition": 0.892775,
-          "manifest_construction": 10.596742,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.117201,
-          "semantic_validation": 84.587562,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 237.44440600000004,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 3.973755,
-          "citation_count": 54,
-          "evidence_build": 125.470663,
-          "handoff_composition": 0.915982,
-          "manifest_construction": 10.514446,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 5.597657,
-          "semantic_validation": 84.114592,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 230.58709500000003,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.003241,
-          "citation_count": 54,
-          "evidence_build": 137.210621,
-          "handoff_composition": 0.939589,
-          "manifest_construction": 10.541411,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.023667,
-          "semantic_validation": 83.896106,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 240.61463500000002,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.634106,
-          "citation_count": 54,
-          "evidence_build": 120.758449,
-          "handoff_composition": 0.951864,
-          "manifest_construction": 13.111732,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.266503,
-          "semantic_validation": 85.245632,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 228.968286,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.092631,
-          "citation_count": 54,
-          "evidence_build": 123.225065,
-          "handoff_composition": 0.976166,
-          "manifest_construction": 10.576208,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.91248,
-          "semantic_validation": 84.508947,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 227.29149700000002,
-          "valid": true
+          "elapsed_ms": 210.898825,
+          "results": [
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "high_citation_pressure",
       "semantic_equivalence": true,
-      "serialized_bytes": 42612,
+      "serialized_bytes": 0,
       "target_count": 10,
       "tier": "production_contract",
       "validity_results": true,
@@ -652,135 +281,40 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 22,
       "median_measurements_ms": {
-        "canonical_serialization": 2.7,
-        "evidence_build": 68.013,
-        "handoff_composition": 0.938,
-        "manifest_construction": 8.78,
-        "safe_atomic_write": 3.811,
-        "semantic_validation": 47.635,
-        "total_end_to_end": 133.022
+        "total_end_to_end": 159.373
       },
       "missing_evidence_count": 4,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 6,
-        "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 165,
+        "filesystem_write": 0,
+        "sha256_json": 157,
+        "validate_schema": 4,
+        "validator_cache_hits": 2,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 270653
+        "value": 245623
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 2.700209,
-          "citation_count": 22,
-          "evidence_build": 66.993713,
-          "handoff_composition": 0.943221,
-          "manifest_construction": 8.516165,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.81849,
-          "semantic_validation": 46.970908,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 129.942706,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.675672,
-          "citation_count": 22,
-          "evidence_build": 67.826857,
-          "handoff_composition": 0.928637,
-          "manifest_construction": 8.936434,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.718114,
-          "semantic_validation": 47.634667,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 131.72038099999997,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.829371,
-          "citation_count": 22,
-          "evidence_build": 69.291068,
-          "handoff_composition": 0.937641,
-          "manifest_construction": 8.67923,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.810947,
-          "semantic_validation": 47.536828,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 133.085085,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.866667,
-          "citation_count": 22,
-          "evidence_build": 68.012777,
-          "handoff_composition": 0.928772,
-          "manifest_construction": 8.779595,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.963585,
-          "semantic_validation": 48.880487,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 133.431883,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.640844,
-          "citation_count": 22,
-          "evidence_build": 68.349489,
-          "handoff_composition": 0.951216,
-          "manifest_construction": 9.124119,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.643392,
-          "semantic_validation": 48.313423,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 133.022483,
-          "valid": true
+          "elapsed_ms": 159.373296,
+          "results": [
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "high_missing_evidence_pressure",
       "semantic_equivalence": true,
-      "serialized_bytes": 26256,
+      "serialized_bytes": 0,
       "target_count": 10,
       "tier": "production_contract",
       "validity_results": true,
@@ -790,135 +324,40 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 22,
       "median_measurements_ms": {
-        "canonical_serialization": 2.69,
-        "evidence_build": 67.828,
-        "handoff_composition": 0.982,
-        "manifest_construction": 8.583,
-        "safe_atomic_write": 4.186,
-        "semantic_validation": 48.128,
-        "total_end_to_end": 134.957
+        "total_end_to_end": 151.0
       },
       "missing_evidence_count": 4,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 6,
-        "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 165,
+        "filesystem_write": 0,
+        "sha256_json": 157,
+        "validate_schema": 4,
+        "validator_cache_hits": 2,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 269233
+        "value": 239365
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 2.690414,
-          "citation_count": 22,
-          "evidence_build": 67.287587,
-          "handoff_composition": 1.008087,
-          "manifest_construction": 8.572168,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.783997,
-          "semantic_validation": 48.128374,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 131.470627,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 3.054977,
-          "citation_count": 22,
-          "evidence_build": 68.578066,
-          "handoff_composition": 0.926554,
-          "manifest_construction": 8.583307,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.466368,
-          "semantic_validation": 49.347416,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 134.956688,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.740441,
-          "citation_count": 22,
-          "evidence_build": 70.747162,
-          "handoff_composition": 1.007963,
-          "manifest_construction": 8.83955,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.185797,
-          "semantic_validation": 48.303019,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 135.823932,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.668608,
-          "citation_count": 22,
-          "evidence_build": 67.827859,
-          "handoff_composition": 0.967595,
-          "manifest_construction": 8.408891,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 8.277718,
-          "semantic_validation": 47.368626,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 135.519297,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.664178,
-          "citation_count": 22,
-          "evidence_build": 67.230086,
-          "handoff_composition": 0.982171,
-          "manifest_construction": 8.759212,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.745105,
-          "semantic_validation": 47.727906,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 131.10865800000002,
-          "valid": true
+          "elapsed_ms": 151.000275,
+          "results": [
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "combined_citation_and_missing_evidence_pressure",
       "semantic_equivalence": true,
-      "serialized_bytes": 26256,
+      "serialized_bytes": 0,
       "target_count": 10,
       "tier": "production_contract",
       "validity_results": true,
@@ -928,135 +367,40 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "canonical_serialization": 4.097,
-        "evidence_build": 123.705,
-        "handoff_composition": 0.928,
-        "manifest_construction": 10.693,
-        "safe_atomic_write": 4.015,
-        "semantic_validation": 85.165,
-        "total_end_to_end": 228.064
+        "total_end_to_end": 249.46
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 6,
-        "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 353,
+        "filesystem_write": 0,
+        "sha256_json": 345,
+        "validate_schema": 4,
+        "validator_cache_hits": 2,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 430678
+        "value": 403597
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 4.203989,
-          "citation_count": 54,
-          "evidence_build": 121.927763,
-          "handoff_composition": 0.894951,
-          "manifest_construction": 10.379452,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.349109,
-          "semantic_validation": 84.576814,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 226.332078,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.032672,
-          "citation_count": 54,
-          "evidence_build": 123.704733,
-          "handoff_composition": 0.876109,
-          "manifest_construction": 10.938073,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.561593,
-          "semantic_validation": 84.951169,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 228.06434899999996,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.097116,
-          "citation_count": 54,
-          "evidence_build": 125.366012,
-          "handoff_composition": 0.928075,
-          "manifest_construction": 10.69268,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.014947,
-          "semantic_validation": 87.238301,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 232.33713100000003,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.08873,
-          "citation_count": 54,
-          "evidence_build": 125.42184,
-          "handoff_composition": 0.937626,
-          "manifest_construction": 10.99869,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 6.273277,
-          "semantic_validation": 85.809312,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 233.52947500000002,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.286626,
-          "citation_count": 54,
-          "evidence_build": 122.301502,
-          "handoff_composition": 0.98361,
-          "manifest_construction": 10.324505,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.592279,
-          "semantic_validation": 85.165233,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 226.653755,
-          "valid": true
+          "elapsed_ms": 249.460038,
+          "results": [
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "complete_snapshot",
       "semantic_equivalence": true,
-      "serialized_bytes": 42612,
+      "serialized_bytes": 0,
       "target_count": 10,
       "tier": "production_contract",
       "validity_results": true,
@@ -1066,135 +410,40 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 32,
       "median_measurements_ms": {
-        "canonical_serialization": 2.991,
-        "evidence_build": 107.237,
-        "handoff_composition": 1.004,
-        "manifest_construction": 24.927,
-        "safe_atomic_write": 4.11,
-        "semantic_validation": 71.213,
-        "total_end_to_end": 211.776
+        "total_end_to_end": 226.904
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 6,
-        "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 221,
+        "filesystem_write": 0,
+        "sha256_json": 213,
+        "validate_schema": 4,
+        "validator_cache_hits": 2,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 991145
+        "value": 997245
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 3.017326,
-          "citation_count": 32,
-          "evidence_build": 107.012295,
-          "handoff_composition": 0.980252,
-          "manifest_construction": 24.626223,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.068808,
-          "semantic_validation": 71.213274,
-          "serialized_bytes": 28589,
-          "total_end_to_end": 210.91817799999998,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.991209,
-          "citation_count": 32,
-          "evidence_build": 107.237303,
-          "handoff_composition": 1.00395,
-          "manifest_construction": 24.978062,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.110275,
-          "semantic_validation": 75.922358,
-          "serialized_bytes": 28589,
-          "total_end_to_end": 216.243157,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 3.498674,
-          "citation_count": 32,
-          "evidence_build": 108.69619,
-          "handoff_composition": 1.042412,
-          "manifest_construction": 24.926606,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 5.378037,
-          "semantic_validation": 71.981822,
-          "serialized_bytes": 28589,
-          "total_end_to_end": 215.523741,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.913353,
-          "citation_count": 32,
-          "evidence_build": 106.825396,
-          "handoff_composition": 1.046744,
-          "manifest_construction": 24.900661,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.81989,
-          "semantic_validation": 71.192728,
-          "serialized_bytes": 28589,
-          "total_end_to_end": 210.698772,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.807872,
-          "citation_count": 32,
-          "evidence_build": 107.39491,
-          "handoff_composition": 0.962224,
-          "manifest_construction": 25.106225,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.340096,
-          "semantic_validation": 71.164429,
-          "serialized_bytes": 28589,
-          "total_end_to_end": 211.775756,
-          "valid": true
+          "elapsed_ms": 226.903917,
+          "results": [
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "performance_package",
       "semantic_equivalence": true,
-      "serialized_bytes": 28589,
+      "serialized_bytes": 0,
       "target_count": 10,
       "tier": "production_contract",
       "validity_results": true,
@@ -1204,135 +453,40 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 45,
       "median_measurements_ms": {
-        "canonical_serialization": 3.801,
-        "evidence_build": 112.632,
-        "handoff_composition": 1.01,
-        "manifest_construction": 10.122,
-        "safe_atomic_write": 3.587,
-        "semantic_validation": 72.672,
-        "total_end_to_end": 203.715
+        "total_end_to_end": 192.334
       },
       "missing_evidence_count": 1,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 6,
-        "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 300,
+        "filesystem_write": 0,
+        "sha256_json": 292,
+        "validate_schema": 4,
+        "validator_cache_hits": 2,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 387877
+        "value": 362066
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 3.739188,
-          "citation_count": 45,
-          "evidence_build": 104.337979,
-          "handoff_composition": 0.967012,
-          "manifest_construction": 10.122395,
-          "missing_evidence_count": 1,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.459271,
-          "semantic_validation": 71.433261,
-          "serialized_bytes": 38112,
-          "total_end_to_end": 194.059106,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 5.966248,
-          "citation_count": 45,
-          "evidence_build": 114.382875,
-          "handoff_composition": 1.020928,
-          "manifest_construction": 9.763001,
-          "missing_evidence_count": 1,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.586581,
-          "semantic_validation": 74.972562,
-          "serialized_bytes": 38112,
-          "total_end_to_end": 209.692195,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 3.800872,
-          "citation_count": 45,
-          "evidence_build": 116.23009,
-          "handoff_composition": 0.98743,
-          "manifest_construction": 10.133868,
-          "missing_evidence_count": 1,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.812597,
-          "semantic_validation": 73.994531,
-          "serialized_bytes": 38112,
-          "total_end_to_end": 208.95938800000002,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.655132,
-          "citation_count": 45,
-          "evidence_build": 108.193611,
-          "handoff_composition": 1.009903,
-          "manifest_construction": 10.065452,
-          "missing_evidence_count": 1,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.723623,
-          "semantic_validation": 72.67216,
-          "serialized_bytes": 38112,
-          "total_end_to_end": 200.319881,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 3.638064,
-          "citation_count": 45,
-          "evidence_build": 112.631787,
-          "handoff_composition": 1.067035,
-          "manifest_construction": 10.386305,
-          "missing_evidence_count": 1,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.562957,
-          "semantic_validation": 72.429165,
-          "serialized_bytes": 38112,
-          "total_end_to_end": 203.715313,
-          "valid": true
+          "elapsed_ms": 192.334278,
+          "results": [
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "partial_source_failure",
       "semantic_equivalence": true,
-      "serialized_bytes": 38112,
+      "serialized_bytes": 0,
       "target_count": 10,
       "tier": "production_contract",
       "validity_results": true,
@@ -1342,135 +496,40 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 22,
       "median_measurements_ms": {
-        "canonical_serialization": 2.592,
-        "evidence_build": 67.465,
-        "handoff_composition": 0.924,
-        "manifest_construction": 9.181,
-        "safe_atomic_write": 5.529,
-        "semantic_validation": 47.93,
-        "total_end_to_end": 133.551
+        "total_end_to_end": 127.243
       },
       "missing_evidence_count": 4,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 6,
-        "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 165,
+        "filesystem_write": 0,
+        "sha256_json": 157,
+        "validate_schema": 4,
+        "validator_cache_hits": 2,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 270056
+        "value": 242547
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 2.591692,
-          "citation_count": 22,
-          "evidence_build": 65.520259,
-          "handoff_composition": 0.874427,
-          "manifest_construction": 8.070004,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.829509,
-          "semantic_validation": 47.0995,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 127.98539099999999,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.566085,
-          "citation_count": 22,
-          "evidence_build": 68.107165,
-          "handoff_composition": 0.944231,
-          "manifest_construction": 10.828097,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 6.872675,
-          "semantic_validation": 48.154329,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 137.47258199999996,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.568436,
-          "citation_count": 22,
-          "evidence_build": 67.465395,
-          "handoff_composition": 0.935761,
-          "manifest_construction": 8.249691,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.408522,
-          "semantic_validation": 47.930298,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 130.558103,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 2.632597,
-          "citation_count": 22,
-          "evidence_build": 66.1067,
-          "handoff_composition": 0.875705,
-          "manifest_construction": 9.181165,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 5.528802,
-          "semantic_validation": 49.22578,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 133.550749,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 3.407607,
-          "citation_count": 22,
-          "evidence_build": 69.81517,
-          "handoff_composition": 0.9245,
-          "manifest_construction": 9.333949,
-          "missing_evidence_count": 4,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 7.658365,
-          "semantic_validation": 47.782074,
-          "serialized_bytes": 26256,
-          "total_end_to_end": 138.92166500000002,
-          "valid": true
+          "elapsed_ms": 127.24299,
+          "results": [
+            {
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "all_source_failure",
       "semantic_equivalence": true,
-      "serialized_bytes": 26256,
+      "serialized_bytes": 0,
       "target_count": 10,
       "tier": "production_contract",
       "validity_results": true,
@@ -1480,135 +539,41 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "canonical_serialization": 4.139,
-        "evidence_build": 125.935,
-        "handoff_composition": 0.913,
-        "manifest_construction": 11.696,
-        "safe_atomic_write": 4.033,
-        "semantic_validation": 86.83,
-        "total_end_to_end": 232.581
+        "total_end_to_end": 211.564
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 6,
-        "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 356,
+        "filesystem_write": 0,
+        "sha256_json": 347,
+        "validate_schema": 5,
+        "validator_cache_hits": 3,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 428269
+        "value": 397921
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 3.932082,
-          "citation_count": 54,
-          "evidence_build": 125.934824,
-          "handoff_composition": 0.896966,
-          "manifest_construction": 11.591221,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.032897,
-          "semantic_validation": 86.193055,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 232.581045,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 5.957038,
-          "citation_count": 54,
-          "evidence_build": 130.89899,
-          "handoff_composition": 0.913134,
-          "manifest_construction": 12.87644,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 5.118337,
-          "semantic_validation": 94.502536,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 250.266475,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.015156,
-          "citation_count": 54,
-          "evidence_build": 125.324977,
-          "handoff_composition": 0.874584,
-          "manifest_construction": 10.9019,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.607632,
-          "semantic_validation": 84.851165,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 229.575414,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.159843,
-          "citation_count": 54,
-          "evidence_build": 122.329103,
-          "handoff_composition": 0.917418,
-          "manifest_construction": 11.730542,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.917515,
-          "semantic_validation": 86.830201,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 229.88462199999998,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.139214,
-          "citation_count": 54,
-          "evidence_build": 130.508102,
-          "handoff_composition": 1.068411,
-          "manifest_construction": 11.696398,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.277732,
-          "semantic_validation": 89.614223,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 241.30408,
-          "valid": true
+          "elapsed_ms": 211.564213,
+          "results": [
+            {
+              "handoff_policy_differs": false,
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "conversation_handoff_policy_a",
       "semantic_equivalence": true,
-      "serialized_bytes": 42612,
+      "serialized_bytes": 0,
       "target_count": 10,
       "tier": "production_contract",
       "validity_results": true,
@@ -1618,135 +583,41 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "canonical_serialization": 4.149,
-        "evidence_build": 126.464,
-        "handoff_composition": 1.03,
-        "manifest_construction": 11.125,
-        "safe_atomic_write": 4.068,
-        "semantic_validation": 87.294,
-        "total_end_to_end": 234.182
+        "total_end_to_end": 223.567
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 6,
-        "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 356,
+        "filesystem_write": 0,
+        "sha256_json": 347,
+        "validate_schema": 5,
+        "validator_cache_hits": 3,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 431019
+        "value": 404240
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 4.117853,
-          "citation_count": 54,
-          "evidence_build": 123.093275,
-          "handoff_composition": 1.029803,
-          "manifest_construction": 11.125303,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.090247,
-          "semantic_validation": 84.426797,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 227.883278,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.385631,
-          "citation_count": 54,
-          "evidence_build": 132.525081,
-          "handoff_composition": 1.097037,
-          "manifest_construction": 10.970356,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.956372,
-          "semantic_validation": 84.990734,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 237.925211,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 3.974081,
-          "citation_count": 54,
-          "evidence_build": 134.97415,
-          "handoff_composition": 1.016752,
-          "manifest_construction": 11.063848,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.817742,
-          "semantic_validation": 89.720227,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 244.56680000000003,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.390861,
-          "citation_count": 54,
-          "evidence_build": 124.415283,
-          "handoff_composition": 1.064141,
-          "manifest_construction": 11.13789,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.96317,
-          "semantic_validation": 88.016117,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 233.98746200000002,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.14925,
-          "citation_count": 54,
-          "evidence_build": 126.463608,
-          "handoff_composition": 0.975588,
-          "manifest_construction": 11.231124,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.067578,
-          "semantic_validation": 87.294449,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 234.18159699999998,
-          "valid": true
+          "elapsed_ms": 223.567286,
+          "results": [
+            {
+              "handoff_policy_differs": true,
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "conversation_handoff_policy_b",
       "semantic_equivalence": true,
-      "serialized_bytes": 42612,
+      "serialized_bytes": 0,
       "target_count": 10,
       "tier": "production_contract",
       "validity_results": true,
@@ -1756,135 +627,41 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "canonical_serialization": 4.176,
-        "evidence_build": 123.71,
-        "handoff_composition": 0.974,
-        "manifest_construction": 11.039,
-        "safe_atomic_write": 3.995,
-        "semantic_validation": 83.718,
-        "total_end_to_end": 228.89
+        "total_end_to_end": 404.592
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 6,
-        "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 360,
+        "filesystem_write": 0,
+        "sha256_json": 348,
+        "validate_schema": 5,
+        "validator_cache_hits": 4,
+        "validator_cache_misses": 3
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 1392811
+        "value": 654890
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 3.979571,
-          "citation_count": 54,
-          "evidence_build": 133.241089,
-          "handoff_composition": 1.242366,
-          "manifest_construction": 13.689895,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.594952,
-          "semantic_validation": 83.484432,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 239.232305,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.058742,
-          "citation_count": 54,
-          "evidence_build": 123.709792,
-          "handoff_composition": 0.917681,
-          "manifest_construction": 10.611964,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.84576,
-          "semantic_validation": 83.48367,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 226.62760900000004,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.175534,
-          "citation_count": 54,
-          "evidence_build": 121.615861,
-          "handoff_composition": 0.974142,
-          "manifest_construction": 11.038582,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.193522,
-          "semantic_validation": 83.718456,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 225.716097,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.582378,
-          "citation_count": 54,
-          "evidence_build": 121.317895,
-          "handoff_composition": 0.940583,
-          "manifest_construction": 10.431343,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 5.325431,
-          "semantic_validation": 86.292604,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 228.890234,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.486442,
-          "citation_count": 54,
-          "evidence_build": 126.083961,
-          "handoff_composition": 1.014721,
-          "manifest_construction": 12.49289,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.994578,
-          "semantic_validation": 93.698313,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 241.77090499999997,
-          "valid": true
+          "elapsed_ms": 404.591981,
+          "results": [
+            {
+              "migration_ms": 144.482195,
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "v1_to_v2_migration",
       "semantic_equivalence": true,
-      "serialized_bytes": 42612,
+      "serialized_bytes": 0,
       "target_count": 10,
       "tier": "production_contract",
       "validity_results": true,
@@ -1894,135 +671,41 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "canonical_serialization": 4.083,
-        "evidence_build": 126.891,
-        "handoff_composition": 0.96,
-        "manifest_construction": 11.152,
-        "safe_atomic_write": 4.119,
-        "semantic_validation": 92.454,
-        "total_end_to_end": 239.399
+        "total_end_to_end": 224.258
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
         "artifact_serialization": 1,
-        "canonical_json": 6,
-        "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "canonical_json": 354,
+        "filesystem_write": 0,
+        "sha256_json": 345,
+        "validate_schema": 4,
+        "validator_cache_hits": 2,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 431077
+        "value": 404381
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 3.957064,
-          "citation_count": 54,
-          "evidence_build": 119.082573,
-          "handoff_composition": 0.883211,
-          "manifest_construction": 10.248971,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.647757,
-          "semantic_validation": 82.774349,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 220.593925,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 3.959624,
-          "citation_count": 54,
-          "evidence_build": 120.047174,
-          "handoff_composition": 0.900804,
-          "manifest_construction": 10.380851,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.119028,
-          "semantic_validation": 82.922266,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 222.32974699999994,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.083082,
-          "citation_count": 54,
-          "evidence_build": 126.890922,
-          "handoff_composition": 1.089234,
-          "manifest_construction": 11.233126,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.648719,
-          "semantic_validation": 92.45403,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 239.39911300000003,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.254088,
-          "citation_count": 54,
-          "evidence_build": 145.943329,
-          "handoff_composition": 0.969067,
-          "manifest_construction": 11.152375,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.178818,
-          "semantic_validation": 97.337317,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 263.834994,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.306894,
-          "citation_count": 54,
-          "evidence_build": 138.251521,
-          "handoff_composition": 0.959749,
-          "manifest_construction": 11.556925,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.45252,
-          "semantic_validation": 97.575884,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 257.103493,
-          "valid": true
+          "elapsed_ms": 224.257556,
+          "results": [
+            {
+              "artifact_serialization_ms": 3.556514,
+              "serialized_bytes": 39547,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "artifact_serialization_only",
       "semantic_equivalence": true,
-      "serialized_bytes": 42612,
+      "serialized_bytes": 39547,
       "target_count": 10,
       "tier": "production_contract",
       "validity_results": true,
@@ -2032,135 +715,41 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "canonical_serialization": 4.102,
-        "evidence_build": 127.888,
-        "handoff_composition": 0.922,
-        "manifest_construction": 10.525,
-        "safe_atomic_write": 4.171,
-        "semantic_validation": 87.522,
-        "total_end_to_end": 239.177
+        "total_end_to_end": 231.465
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 6,
+        "artifact_serialization": 0,
+        "canonical_json": 354,
         "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "sha256_json": 345,
+        "validate_schema": 4,
+        "validator_cache_hits": 2,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 431864
+        "value": 409175
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 4.141043,
-          "citation_count": 54,
-          "evidence_build": 125.753355,
-          "handoff_composition": 0.884612,
-          "manifest_construction": 10.426407,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.033416,
-          "semantic_validation": 86.421904,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 231.660737,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.102479,
-          "citation_count": 54,
-          "evidence_build": 127.887879,
-          "handoff_composition": 0.950184,
-          "manifest_construction": 10.684159,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 5.554182,
-          "semantic_validation": 89.998256,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 239.17713899999998,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.057196,
-          "citation_count": 54,
-          "evidence_build": 131.966036,
-          "handoff_composition": 1.137372,
-          "manifest_construction": 11.275663,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.170974,
-          "semantic_validation": 87.522194,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 240.12943500000003,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.102452,
-          "citation_count": 54,
-          "evidence_build": 124.266979,
-          "handoff_composition": 0.902582,
-          "manifest_construction": 10.502496,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.636711,
-          "semantic_validation": 89.771609,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 234.182829,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.749411,
-          "citation_count": 54,
-          "evidence_build": 159.16472,
-          "handoff_composition": 0.922097,
-          "manifest_construction": 10.524807,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.170095,
-          "semantic_validation": 86.911429,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 266.442559,
-          "valid": true
+          "elapsed_ms": 231.464934,
+          "results": [
+            {
+              "safe_atomic_write_ms": 6.222073,
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "safe_atomic_artifact_write",
       "semantic_equivalence": true,
-      "serialized_bytes": 42612,
+      "serialized_bytes": 0,
       "target_count": 10,
       "tier": "production_contract",
       "validity_results": true,
@@ -2170,146 +759,52 @@
       "aggregate_valid_package_count": 1,
       "citation_count": 54,
       "median_measurements_ms": {
-        "canonical_serialization": 4.294,
-        "evidence_build": 127.133,
-        "handoff_composition": 0.92,
-        "manifest_construction": 10.95,
-        "safe_atomic_write": 4.14,
-        "semantic_validation": 88.248,
-        "total_end_to_end": 233.96
+        "total_end_to_end": 230.566
       },
       "missing_evidence_count": 0,
       "non_contract": false,
       "not_authorized_for_production_request": false,
       "operation_counts": {
-        "artifact_serialization": 1,
-        "canonical_json": 6,
-        "filesystem_write": 1,
-        "schema_validation": 3,
-        "sha256_json": 0
+        "artifact_serialization": 0,
+        "canonical_json": 360,
+        "filesystem_write": 0,
+        "sha256_json": 352,
+        "validate_schema": 4,
+        "validator_cache_hits": 2,
+        "validator_cache_misses": 2
       },
       "peak_memory": {
         "source": "tracemalloc",
         "units": "bytes",
-        "value": 430771
+        "value": 401592
       },
       "raw_measurements": [
         {
-          "canonical_serialization": 4.400915,
-          "citation_count": 54,
-          "evidence_build": 122.512988,
-          "handoff_composition": 0.919867,
-          "manifest_construction": 11.454648,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.140105,
-          "semantic_validation": 86.459674,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 229.88819700000002,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.294275,
-          "citation_count": 54,
-          "evidence_build": 127.133243,
-          "handoff_composition": 0.897991,
-          "manifest_construction": 10.558863,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.602671,
-          "semantic_validation": 86.161241,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 233.64828399999996,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 3.934976,
-          "citation_count": 54,
-          "evidence_build": 125.618572,
-          "handoff_composition": 1.265963,
-          "manifest_construction": 11.190717,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.701684,
-          "semantic_validation": 88.248033,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 233.959945,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.085806,
-          "citation_count": 54,
-          "evidence_build": 135.257039,
-          "handoff_composition": 0.901035,
-          "manifest_construction": 10.383648,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 3.842759,
-          "semantic_validation": 93.896474,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 248.366761,
-          "valid": true
-        },
-        {
-          "canonical_serialization": 4.5088,
-          "citation_count": 54,
-          "evidence_build": 143.65417,
-          "handoff_composition": 0.945598,
-          "manifest_construction": 10.950158,
-          "missing_evidence_count": 0,
-          "operation_counts": {
-            "artifact_serialization": 1,
-            "canonical_json": 6,
-            "filesystem_write": 1,
-            "schema_validation": 3,
-            "sha256_json": 0
-          },
-          "safe_atomic_write": 4.286854,
-          "semantic_validation": 90.128332,
-          "serialized_bytes": 42612,
-          "total_end_to_end": 254.47391199999998,
-          "valid": true
+          "elapsed_ms": 230.566246,
+          "results": [
+            {
+              "manifest_generation_ms": 10.791516,
+              "serialized_bytes": 0,
+              "valid": true
+            }
+          ]
         }
       ],
       "repeat_count": 5,
       "scenario_id": "manifest_generation",
       "semantic_equivalence": true,
-      "serialized_bytes": 42612,
+      "serialized_bytes": 0,
       "target_count": 10,
       "tier": "production_contract",
       "validity_results": true,
       "warmup_count": 2
     }
   ],
-  "schema_version": "m8r_03e_r4_performance_baseline.v1",
+  "schema_version": "m8r_03e_r4_performance_baseline.v2",
   "stress_only_limits": [
     50,
     100
   ],
   "task_id": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
-  "tested_tree_sha": "local_uncommitted_r4_measurement"
+  "tested_tree_sha": "dffb244cc61f742312b52ea12d25bd055766979f"
 }

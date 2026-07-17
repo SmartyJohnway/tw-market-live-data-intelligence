@@ -4,7 +4,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 IMPLEMENTED_THROUGH = "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING"
-NEXT = "M8R-03E-R5-TESTING-DOCUMENTATION-AND-OPERATIONS-CONSOLIDATION"
+NEXT = "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING"
 
 def load(path):
     return json.loads((ROOT / path).read_text(encoding="utf-8"))

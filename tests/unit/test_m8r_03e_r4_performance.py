@@ -20,3 +20,9 @@ def test_schema_validator_cache_is_bounded_and_semantically_transparent():
  # Cache identity is process-scoped immutable schema compilation, not evidence caching.
  assert _validator('m8r_watchlist_ai_context_package.v2.schema.json') is _validator('m8r_watchlist_ai_context_package.v2.schema.json')
  assert callable(validate_schema)
+def test_r4_verify_existing_rejects_missing_required_scenario(tmp_path):
+ import subprocess,sys
+ baseline=load('docs/quality/m8r_03e_r4_performance_baseline.json'); baseline['scenarios'].pop()
+ path=tmp_path/'bad.json'; path.write_text(json.dumps(baseline))
+ result=subprocess.run([sys.executable,'scripts/run_m8r_03e_r4_performance.py','--output',str(path),'--verify-existing'],cwd=ROOT)
+ assert result.returncode==1
