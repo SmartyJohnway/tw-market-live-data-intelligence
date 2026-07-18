@@ -1,5 +1,5 @@
 {
-  "bundle_id": "m8r03c-snapshot-46e036a19b3b1e48",
+  "bundle_id": "m8r03c-snapshot-399b3953cf14713a",
   "execution_mode": "fixture",
   "execution_result_status": "success_with_partial_coverage",
   "lineage_missing_fields": [
@@ -8,7 +8,7 @@
   ],
   "lineage_status": "partial",
   "network_calls_performed": false,
-  "plan_id": "m8r03d-plan-708754616a452e95",
+  "plan_id": "m8r03d-plan-2381abccf983a068",
   "source_group_summaries": [
     {
       "completed_at_utc": "2026-07-16T03:00:00Z",

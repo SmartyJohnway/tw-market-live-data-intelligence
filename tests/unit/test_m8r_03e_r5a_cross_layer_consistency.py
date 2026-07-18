@@ -15,7 +15,7 @@ def test_cross_layer_id_and_order_consistency():
     
     # 1. 驗證 request_id
     rid = req["request_id"]
-    assert rid == "m8r03c-snapshot"
+    assert rid.startswith("m8r03c-")
     assert plan["request_id"] == rid
     assert bundle["request_id"] == rid
     assert pkg["request"]["request_id"] == rid

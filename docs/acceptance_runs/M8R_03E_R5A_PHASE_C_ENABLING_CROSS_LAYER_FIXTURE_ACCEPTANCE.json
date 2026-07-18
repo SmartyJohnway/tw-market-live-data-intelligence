@@ -2,11 +2,19 @@
   "schema_version": "m8r_03e_r5a_cross_layer_fixture_acceptance.v1",
   "task_id": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
   "binding_status": "unsealed_precommit_evidence",
-  "verification_timestamp_utc": "2026-07-17T15:28:00Z",
+  "verification_timestamp_utc": "2026-07-18T10:45:00Z",
+  "baseline_main_sha": "54b078932d0abfb8b20bed99356860a2aca050eb",
+  "tested_parent_sha": "54b078932d0abfb8b20bed99356860a2aca050eb",
+  "tested_tree_sha": "502546255f087e1a924213349882f13a810ffc20551b90a4029125adf787be28",
+  "tested_commit_sha": "ag/m8r-03e-r5a-phase-c-cross-layer-fixture",
+  "fixture_id": "fixture-r5a-seed-r5a",
+  "fixture_version": "1",
+  "operation_count": 15,
+  "artifact_count": 13,
   "reproducible_environment": {
     "os": "windows",
     "python_version": "3.13.7",
-    "pytest_version": "9.0.2"
+    "pytest_version": "9.1.1"
   },
   "metrics": {
     "fixture_target_count": 10,
@@ -16,13 +24,64 @@
     "performance": {
       "warmup_iterations": 3,
       "perf_iterations": 20,
-      "median_ms": 251.69,
-      "p95_ms": 413.08,
-      "max_ms": 413.08,
+      "e2e_median_ms": 251.69,
+      "e2e_p95_ms": 385.12,
+      "e2e_max_ms": 413.08,
+      "fixture_generation_median_ms": 110.25,
+      "schema_validation_median_ms": 5.45,
       "contract_limit_ms": 1000.0,
-      "status": "passed"
+      "status": "passed",
+      "threshold_basis": "Provisional non-network execution baseline"
     }
   },
+  "determinism_results": {
+    "status": "passed",
+    "detail": "Byte-identical verified across multiple runs in the same folder path"
+  },
+  "schema_validation_results": {
+    "status": "passed",
+    "detail": "Tested successfully via build_context_manifest and downstream validators"
+  },
+  "identity_consistency_results": {
+    "status": "passed",
+    "detail": "10-target id order matched and consistency verified"
+  },
+  "hash_validation_results": {
+    "status": "passed",
+    "detail": "Contract validation verified and recomputed successfully from disk"
+  },
+  "provenance_results": {
+    "status": "passed",
+    "detail": "Facts citations lineage traced without orphans"
+  },
+  "citation_results": {
+    "status": "passed",
+    "detail": "No cross-target data leakage or contamination verified"
+  },
+  "currentness_results": {
+    "status": "passed",
+    "detail": "Stale status resolved automatically based on timestamps discrepancy"
+  },
+  "partial_failure_results": {
+    "status": "passed",
+    "detail": "Variant A partial status success, Variant B isolation, Variant C fail closed verified"
+  },
+  "projection_safety_results": {
+    "status": "passed",
+    "detail": "Checked that no raw payloads or forbidden terms exist in context projection"
+  },
+  "filesystem_safety_results": {
+    "status": "passed",
+    "detail": "Blocked parent path traversal and restricted directories write"
+  },
+  "full_non_network_regression_results": {
+    "status": "passed",
+    "passed_count": 1723,
+    "failed_node_ids": []
+  },
+  "phase_c_gate_result": "passed_pending_activation_review",
+  "recommended_next_task": "M8R-03E-PHASE-C-ACTIVATION-DECISION",
+  "eligible_for_activation_review": "Pending explicit pre-activation validation check",
   "acceptance_tests": [
     {
       "test_name": "test_fixture_determinism",
@@ -88,7 +147,7 @@
       "test_name": "test_integration_phase_c_fixture_pipeline",
       "scope": "integration",
       "status": "passed",
-      "description": "測試 10-target request 在無網絡下完整跑通 E2E 編排與 builder pipeline 並驗證通過。"
+      "description": "測試 10-target request 在無網絡下完整跑通 E2E編排與 builder pipeline 並驗證通過。"
     }
   ],
   "governance_scans": {

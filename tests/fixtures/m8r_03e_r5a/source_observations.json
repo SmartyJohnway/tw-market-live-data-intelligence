@@ -19,7 +19,7 @@
       "TWSE_MIS": {
         "change": 0.5,
         "market": "TPEX",
-        "price": 120.0,
+        "price": 119.98,
         "retrieved_at": "2026-07-16T03:00:00Z",
         "source_timestamp": "2026-07-16T02:59:50Z",
         "symbol": "5347"
@@ -46,7 +46,7 @@
       "TWSE_MIS": {
         "change": 1.5,
         "market": "TWSE",
-        "price": 180.0,
+        "price": 182.1,
         "retrieved_at": "2026-07-16T03:00:00Z",
         "source_timestamp": "2026-07-16T02:59:50Z",
         "symbol": "0050"
@@ -71,7 +71,7 @@
       "TWSE_MIS": {
         "change": -0.2,
         "market": "TWSE",
-        "price": 40.0,
+        "price": 40.71,
         "retrieved_at": "2026-07-16T03:00:00Z",
         "source_timestamp": "2026-07-16T02:59:50Z",
         "symbol": "0056"
@@ -95,12 +95,10 @@
     "TWSE:2308": {
       "TWSE_MIS": {
         "change": 5.0,
-        "currentness": {
-          "reason": "fixture_stale_override",
-          "status": "stale"
-        },
+        "delay_seconds": 7200,
+        "freshness_status": "stale",
         "market": "TWSE",
-        "price": 350.0,
+        "price": 358.1,
         "retrieved_at": "2026-07-15T03:00:00Z",
         "source_timestamp": "2026-07-15T02:59:50Z",
         "symbol": "2308"
@@ -142,7 +140,7 @@
       "TWSE_MIS": {
         "change": 10.0,
         "market": "TWSE",
-        "price": 1000.0,
+        "price": 991.5,
         "retrieved_at": "2026-07-16T03:00:00Z",
         "source_timestamp": "2026-07-16T02:59:50Z",
         "symbol": "2330"
@@ -167,7 +165,7 @@
       "TWSE_MIS": {
         "change": -3.0,
         "market": "TWSE",
-        "price": 250.0,
+        "price": 252.4,
         "retrieved_at": "2026-07-16T03:00:00Z",
         "source_timestamp": "2026-07-16T02:59:50Z",
         "symbol": "2382"

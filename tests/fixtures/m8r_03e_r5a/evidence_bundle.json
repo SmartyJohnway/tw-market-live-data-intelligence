@@ -1,5 +1,5 @@
 {
-  "bundle_id": "m8r03c-snapshot-46e036a19b3b1e48",
+  "bundle_id": "m8r03c-snapshot-399b3953cf14713a",
   "conversation_context": {
     "original_user_text": "我的觀察清單現在怎麼樣？",
     "scope_modes": [
@@ -156,7 +156,7 @@
       "timing_class": "liveish_intraday_snapshot",
       "values": {
         "change": 10.0,
-        "latest_price": 1000.0
+        "latest_price": 991.5
       }
     },
     {
@@ -208,7 +208,7 @@
       "timing_class": "liveish_intraday_snapshot",
       "values": {
         "change": 1.5,
-        "latest_price": 180.0
+        "latest_price": 182.1
       }
     },
     {
@@ -232,7 +232,7 @@
       "timing_class": "liveish_intraday_snapshot",
       "values": {
         "change": 0.5,
-        "latest_price": 120.0
+        "latest_price": 119.98
       }
     },
     {
@@ -256,7 +256,7 @@
       "timing_class": "liveish_intraday_snapshot",
       "values": {
         "change": -0.2,
-        "latest_price": 40.0
+        "latest_price": 40.71
       }
     },
     {
@@ -280,7 +280,7 @@
       "timing_class": "liveish_intraday_snapshot",
       "values": {
         "change": 5.0,
-        "latest_price": 350.0
+        "latest_price": 358.1
       }
     },
     {
@@ -304,7 +304,7 @@
       "timing_class": "liveish_intraday_snapshot",
       "values": {
         "change": -3.0,
-        "latest_price": 250.0
+        "latest_price": 252.4
       }
     },
     {
@@ -389,7 +389,7 @@
       "target_id": "TWSE:9999"
     }
   ],
-  "request_id": "m8r03c-snapshot",
+  "request_id": "m8r03c-seed-r5a",
   "resolution_assumptions": [],
   "schema_version": "m8r_watchlist_snapshot_bundle.v1",
   "source_summary": {
@@ -424,7 +424,7 @@
         },
         "facts": {
           "change": 10.0,
-          "latest_price": 1000.0
+          "latest_price": 991.5
         },
         "retrieved_at_utc": "2026-07-16T03:00:00Z",
         "source_family": "TWSE_MIS",
@@ -466,11 +466,11 @@
         "lifecycle_state": "active",
         "listing_status": "active",
         "market": "TWSE",
-        "record_hash": "a7aa0ae6f4641d0b5011cfa302af6b7dfade3023b6f4d3570a189c6a6147cd50",
+        "record_hash": "132f0af72c68f5c15562e7fb0cdb4d3ed75894377c8b7bec6c778c4a9c162d65",
         "record_id": "rec-01",
         "resolution_caveats": [],
-        "security_name": "台積電",
-        "snapshot_id": "snap-r5a-fixture",
+        "security_name": "台積電-seed-r5a",
+        "snapshot_id": "snap-r5a-seed-r5a",
         "symbol": "2330",
         "target_id": "TWSE:2330"
       },
@@ -526,11 +526,11 @@
         "lifecycle_state": "active",
         "listing_status": "active",
         "market": "TWSE",
-        "record_hash": "5330e8929d17860ea35002514d3307d1ccff2ed817292d3488fde552a4d9688c",
+        "record_hash": "644dea8b8b6022106162f315fcbb06306f8cb82eac45ded4ac64deb079ce5a21",
         "record_id": "rec-02",
         "resolution_caveats": [],
-        "security_name": "鴻海",
-        "snapshot_id": "snap-r5a-fixture",
+        "security_name": "鴻海-seed-r5a",
+        "snapshot_id": "snap-r5a-seed-r5a",
         "symbol": "2317",
         "target_id": "TWSE:2317"
       },
@@ -586,11 +586,11 @@
         "lifecycle_state": "active",
         "listing_status": "active",
         "market": "TPEX",
-        "record_hash": "e49bfe59f61bc48261bef56389b30ded93a89f64bec717903ea7a54b460f1713",
+        "record_hash": "1979e7f5f44b9a8866cad2bf8ddab1bed75ad79684e7eda7fed92e1e43f26ac5",
         "record_id": "rec-03",
         "resolution_caveats": [],
-        "security_name": "環球晶",
-        "snapshot_id": "snap-r5a-fixture",
+        "security_name": "環球晶-seed-r5a",
+        "snapshot_id": "snap-r5a-seed-r5a",
         "symbol": "6488",
         "target_id": "TPEX:6488"
       },
@@ -616,7 +616,7 @@
         },
         "facts": {
           "change": 1.5,
-          "latest_price": 180.0
+          "latest_price": 182.1
         },
         "retrieved_at_utc": "2026-07-16T03:00:00Z",
         "source_family": "TWSE_MIS",
@@ -658,11 +658,11 @@
         "lifecycle_state": "active",
         "listing_status": "active",
         "market": "TWSE",
-        "record_hash": "4bc677b46cc97012ae961fddb98615b4fc1f086b5ebd425c4b89fe549c083c19",
+        "record_hash": "b4a4574629a6ae38c26cee835b53f08f080cfdda8ed350f73ba9ac69346b1240",
         "record_id": "rec-04",
         "resolution_caveats": [],
-        "security_name": "元大台灣50",
-        "snapshot_id": "snap-r5a-fixture",
+        "security_name": "元大台灣50-seed-r5a",
+        "snapshot_id": "snap-r5a-seed-r5a",
         "symbol": "0050",
         "target_id": "TWSE:0050"
       },
@@ -688,7 +688,7 @@
         },
         "facts": {
           "change": 0.5,
-          "latest_price": 120.0
+          "latest_price": 119.98
         },
         "retrieved_at_utc": "2026-07-16T03:00:00Z",
         "source_family": "TWSE_MIS",
@@ -730,11 +730,11 @@
         "lifecycle_state": "active",
         "listing_status": "active",
         "market": "TPEX",
-        "record_hash": "570deecdaf66b92cb9ee5a54ab9756f0a7e3567eb5d40272ef29f9ebfab2348c",
+        "record_hash": "329ba688b4982ade7df4090cbc148998ee5cd3e82834c57350b5d13069da631a",
         "record_id": "rec-05",
         "resolution_caveats": [],
-        "security_name": "世界",
-        "snapshot_id": "snap-r5a-fixture",
+        "security_name": "世界-seed-r5a",
+        "snapshot_id": "snap-r5a-seed-r5a",
         "symbol": "5347",
         "target_id": "TPEX:5347"
       },
@@ -760,7 +760,7 @@
         },
         "facts": {
           "change": -0.2,
-          "latest_price": 40.0
+          "latest_price": 40.71
         },
         "retrieved_at_utc": "2026-07-16T03:00:00Z",
         "source_family": "TWSE_MIS",
@@ -802,11 +802,11 @@
         "lifecycle_state": "active",
         "listing_status": "active",
         "market": "TWSE",
-        "record_hash": "a864f65c7477982cb5bffed98a9235087a239fb182c17a87773876501b5b745e",
+        "record_hash": "343be4bf83fca859ea1c603a0376551a7c1cbf5ac832bc099235fe99bcc3b9df",
         "record_id": "rec-06",
         "resolution_caveats": [],
-        "security_name": "元大高股息",
-        "snapshot_id": "snap-r5a-fixture",
+        "security_name": "元大高股息-seed-r5a",
+        "snapshot_id": "snap-r5a-seed-r5a",
         "symbol": "0056",
         "target_id": "TWSE:0056"
       },
@@ -833,7 +833,7 @@
         },
         "facts": {
           "change": 5.0,
-          "latest_price": 350.0
+          "latest_price": 358.1
         },
         "retrieved_at_utc": "2026-07-16T03:00:00Z",
         "source_family": "TWSE_MIS",
@@ -875,11 +875,11 @@
         "lifecycle_state": "active",
         "listing_status": "active",
         "market": "TWSE",
-        "record_hash": "8ae300234ff53e87c37e17c92ad9e6747aa5ad2fcab6cc514394ba7066a8568b",
+        "record_hash": "bc3bacf538acdb5e0823af391e4be2fa1eea345b0d8ab71bd799b241f4876247",
         "record_id": "rec-07",
         "resolution_caveats": [],
-        "security_name": "台達電",
-        "snapshot_id": "snap-r5a-fixture",
+        "security_name": "台達電-seed-r5a",
+        "snapshot_id": "snap-r5a-seed-r5a",
         "symbol": "2308",
         "target_id": "TWSE:2308"
       },
@@ -906,7 +906,7 @@
         },
         "facts": {
           "change": -3.0,
-          "latest_price": 250.0
+          "latest_price": 252.4
         },
         "retrieved_at_utc": "2026-07-16T03:00:00Z",
         "source_family": "TWSE_MIS",
@@ -931,11 +931,11 @@
         "lifecycle_state": "active",
         "listing_status": "active",
         "market": "TWSE",
-        "record_hash": "a90ab124aa9fbd632f3d5e526d13831b5b3c53ec9966e9503d736c7420102773",
+        "record_hash": "41b93e9ef0afd8fd766819478412d57141283144a720115e23591ce08f8ebe3f",
         "record_id": "rec-08",
         "resolution_caveats": [],
-        "security_name": "廣達",
-        "snapshot_id": "snap-r5a-fixture",
+        "security_name": "廣達-seed-r5a",
+        "snapshot_id": "snap-r5a-seed-r5a",
         "symbol": "2382",
         "target_id": "TWSE:2382"
       },
@@ -991,11 +991,11 @@
         "lifecycle_state": "active",
         "listing_status": "active",
         "market": "TWSE",
-        "record_hash": "18f759cac10b9475e725b826c00372dc68d148ba7bf7d3522966410ca6857fd1",
+        "record_hash": "3a49a7edcf2ee576a29c887bb3a1b7b5d4c46b5b4fc1ce0994283966ec8b67f0",
         "record_id": "rec-09",
         "resolution_caveats": [],
-        "security_name": "大立光",
-        "snapshot_id": "snap-r5a-fixture",
+        "security_name": "大立光-seed-r5a",
+        "snapshot_id": "snap-r5a-seed-r5a",
         "symbol": "3008",
         "target_id": "TWSE:3008"
       },

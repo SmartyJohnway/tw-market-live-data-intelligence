@@ -7,6 +7,47 @@ FIX_DIR = Path("tests/fixtures/m8r_03e_r5a")
 def load(name):
     return json.loads((FIX_DIR / name).read_text(encoding="utf-8"))
 
+def test_manifest_hash_and_artifact_integrity():
+    manifest = load("fixture_manifest.json")
+    
+    # 1. 驗證不可歧義的 manifest hash contract
+    man_copy = dict(manifest)
+    man_copy["artifacts"][0]["sha256"] = ""
+    man_copy.pop("manifest_hash", None)
+    expected_manifest_hash = sha256_json(man_copy)
+    assert manifest["manifest_hash"] == expected_manifest_hash, "Manifest self-hash contract violated or mismatched"
+    
+    # 2. 逐一讀取 13 個 artifacts，校對其在 manifest 中的 sha256 雜湊與 target_ids
+    tids = manifest["target_ids"]
+    assert len(tids) == 10
+    
+    # 用於驗證是否每個在 artifacts 列表中的檔案都有確實被讀取與核對
+    verified_count = 0
+    for art in manifest["artifacts"]:
+        rel_path = art["relative_path"]
+        
+        # 讀取檔案重算 sha256
+        file_path = FIX_DIR / rel_path
+        assert file_path.exists(), f"Artifact file not found on disk: {rel_path}"
+        
+        file_bytes = file_path.read_bytes()
+        file_json = json.loads(file_bytes.decode("utf-8"))
+        actual_sha256 = sha256_json(file_json)
+        
+        # 如果是 manifest 自身，其在 entry 的 sha256 為空字串
+        if art["artifact_type"] == "fixture_manifest":
+            assert art["sha256"] == ""
+        else:
+            assert art["sha256"] == actual_sha256, f"Hash drift in artifact: {rel_path}"
+            
+        # 驗證 target_ids 補齊情況
+        if art["artifact_type"] not in {"fixture_manifest", "source_capability_snapshot"}:
+            assert art["target_ids"] == tids, f"Empty or incorrect target_ids in artifact entry: {rel_path}"
+            
+        verified_count += 1
+        
+    assert verified_count == 13, "Expected exactly 13 artifacts in the manifest"
+
 def test_package_hash_and_citation_provenance():
     pkg = load("context_projection.json")
     req = load("bounded_request.json")

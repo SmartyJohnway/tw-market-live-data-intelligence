@@ -8,7 +8,7 @@
       "producer": "generator",
       "relative_path": "fixture_manifest.json",
       "schema_version": "m8r_03e_r5a_cross_layer_fixture_manifest.v1",
-      "sha256": "abf45ad9da18d72f1ecb4fed95f1640478a3518be45e6fd239399becd65c975c",
+      "sha256": "",
       "target_ids": []
     },
     {
@@ -19,8 +19,19 @@
       "producer": "generator",
       "relative_path": "security_identity_snapshot.json",
       "schema_version": "tw_verified_security_master_snapshot.v1",
-      "sha256": "cd7aa384554f5f83c044b6c9bb5a818e7593ad03190a1450ecf36bde3e1598ff",
-      "target_ids": []
+      "sha256": "a8c5c32df8baee092f3ca08179931692fa1ddbc255567c8b0444c609a1a8621b",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
     },
     {
       "artifact_type": "security_identity_snapshot_manifest",
@@ -30,8 +41,19 @@
       "producer": "generator",
       "relative_path": "security_identity_snapshot_manifest.json",
       "schema_version": "tw_verified_security_master_snapshot_manifest.v1",
-      "sha256": "4fac6082ff412f2004cc8a8b885b12a185eec468575828294b6535ee9c34dc53",
-      "target_ids": []
+      "sha256": "dd9d3079345c2b4136af051131c90da464cd91af63c4bd641d2b2ab3bd2b7cbf",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
     },
     {
       "artifact_type": "source_capability_snapshot",
@@ -52,8 +74,19 @@
       "producer": "generator",
       "relative_path": "bounded_request.json",
       "schema_version": "m8r_ai_evidence_request.v1",
-      "sha256": "8e0451a9aadba5ceaced8578c5509088cb44e435f906cd194d47e01aac381c02",
-      "target_ids": []
+      "sha256": "d961b92a724060b06a4c69aa0ce7d8e61d50d189e3c44ff0a1902c9fea99c8ff",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
     },
     {
       "artifact_type": "execution_plan",
@@ -64,8 +97,19 @@
       "producer": "generator",
       "relative_path": "execution_plan.json",
       "schema_version": "m8r_03d_watchlist_execution_plan.v1",
-      "sha256": "4c158314cb40ce7c3177e7618ae4ccb2d2c142fadf5d8ea001626717096ede97",
-      "target_ids": []
+      "sha256": "749c97c9550855b58a6a43b25a30a42b1dd04239f20107cc3445c02624934895",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
     },
     {
       "artifact_type": "source_observations",
@@ -75,8 +119,19 @@
       "producer": "generator",
       "relative_path": "source_observations.json",
       "schema_version": "m8r_watchlist_source_data.v1",
-      "sha256": "b1a506fbd82adfd6eab6cd6c2cd78188ae0b7e59b7b599857f62052e7d52a62a",
-      "target_ids": []
+      "sha256": "0117245af7ec789104186f054f1e9f0813ec7d5e762e35472ab36ec2c32d0654",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
     },
     {
       "artifact_type": "currentness_assessment",
@@ -87,7 +142,18 @@
       "relative_path": "currentness_assessment.json",
       "schema_version": "m8r_watchlist_currentness_assessment.v1",
       "sha256": "be090271072e54af171204a29528649f8cea8e68f76fff72f9b0c2bee7d6b8e2",
-      "target_ids": []
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
     },
     {
       "artifact_type": "evidence_bundle",
@@ -97,8 +163,19 @@
       "producer": "generator",
       "relative_path": "evidence_bundle.json",
       "schema_version": "m8r_watchlist_snapshot_bundle.v1",
-      "sha256": "7af67883301d11a980273742f37f7d4848ad6a667e8f35edb81082eecca451f7",
-      "target_ids": []
+      "sha256": "364d799e3cdadc542a2eed7bf4a46d172bf58f35e3ec6a578a78b4730721378e",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
     },
     {
       "artifact_type": "provenance_manifest",
@@ -108,8 +185,19 @@
       "producer": "generator",
       "relative_path": "provenance_manifest.json",
       "schema_version": "m8r_watchlist_provenance.v1",
-      "sha256": "df6ca6325ece8071bb15db174ea6a2d15bef6b4c3b1d1c43d479a26784f2b06b",
-      "target_ids": []
+      "sha256": "abd20259959ace5158360a2087dc0114d0a65199f4af0f5f0ea1ad6c902c56b0",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
     },
     {
       "artifact_type": "citation_map",
@@ -119,8 +207,19 @@
       "producer": "generator",
       "relative_path": "citation_map.json",
       "schema_version": "m8r_watchlist_citation_index.v1",
-      "sha256": "f88a7fa79fa41a1fde76afe57772e53074a5eb1a413baf33cef1dbe3018d9efd",
-      "target_ids": []
+      "sha256": "bf46dde5909ae8478e7a482f7d94c2d446bb223ef09f140a4f40bcc7e76b5405",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
     },
     {
       "artifact_type": "missing_evidence_register",
@@ -131,7 +230,18 @@
       "relative_path": "missing_evidence_register.json",
       "schema_version": "m8r_watchlist_missing_evidence.v1",
       "sha256": "1a4963b4fa4968f554121eb85d4ceae469c45aa785b550697875b6e039f627ae",
-      "target_ids": []
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
     },
     {
       "artifact_type": "context_projection",
@@ -141,8 +251,19 @@
       "producer": "generator",
       "relative_path": "context_projection.json",
       "schema_version": "m8r_watchlist_ai_context_package.v2",
-      "sha256": "c2f12fcf07cbf7a79f37e85b2dba43d8edfa5dc86f94a68465c7a6a10333c1ca",
-      "target_ids": []
+      "sha256": "81543a5676ffed74718450fa56ee4b91a4b1dd81d99859d0f05929dee6c892c4",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
     }
   ],
   "canonicalization_contract": "canonical_json_utf8",
@@ -158,10 +279,10 @@
     "TWSE:3008": "ready_with_caveats",
     "TWSE:9999": "blocked"
   },
-  "fixture_id": "fixture-r5a-canonical",
+  "fixture_id": "fixture-r5a-seed-r5a",
   "fixture_version": "1",
   "hash_algorithm": "sha256",
-  "manifest_hash": "772aaee82a79d2026f33ad393ce4de3c05ebc430fb5e6835ef0d869c97079a58",
+  "manifest_hash": "502546255f087e1a924213349882f13a810ffc20551b90a4029125adf787be28",
   "network_required": false,
   "reference_clock_utc": "2026-07-16T03:00:00Z",
   "schema_version": "m8r_03e_r5a_cross_layer_fixture_manifest.v1",

@@ -74,22 +74,26 @@ def make_security_record(rec_id, target_id, symbol, name_zh, market, instrument_
     record["record_hash"] = sha256_json({k:v for k,v in record.items() if k != "record_hash"})
     return record
 
-def build_r5a_security_master(clock_str: str) -> tuple[dict, dict]:
+def build_r5a_security_master(clock_str: str, seed: R5AFixtureSeed) -> tuple[dict, dict]:
+    import random
+    rng = random.Random(seed.value)
+    name_suffix = f"-{seed.value}"
+    
     records = [
-        make_security_record("rec-01", "TWSE:2330", "2330", "台積電", "TWSE", "equity"),
-        make_security_record("rec-02", "TWSE:2317", "2317", "鴻海", "TWSE", "equity"),
-        make_security_record("rec-03", "TPEX:6488", "6488", "環球晶", "TPEX", "equity"),
-        make_security_record("rec-04", "TWSE:0050", "0050", "元大台灣50", "TWSE", "etf"),
-        make_security_record("rec-05", "TPEX:5347", "5347", "世界", "TPEX", "equity"),
-        make_security_record("rec-06", "TWSE:0056", "0056", "元大高股息", "TWSE", "etf"),
-        make_security_record("rec-07", "TWSE:2308", "2308", "台達電", "TWSE", "equity"),
-        make_security_record("rec-08", "TWSE:2382", "2382", "廣達", "TWSE", "equity"),
-        make_security_record("rec-09", "TWSE:3008", "3008", "大立光", "TWSE", "equity"),
+        make_security_record("rec-01", "TWSE:2330", "2330", f"台積電{name_suffix}", "TWSE", "equity"),
+        make_security_record("rec-02", "TWSE:2317", "2317", f"鴻海{name_suffix}", "TWSE", "equity"),
+        make_security_record("rec-03", "TPEX:6488", "6488", f"環球晶{name_suffix}", "TPEX", "equity"),
+        make_security_record("rec-04", "TWSE:0050", "0050", f"元大台灣50{name_suffix}", "TWSE", "etf"),
+        make_security_record("rec-05", "TPEX:5347", "5347", f"世界{name_suffix}", "TPEX", "equity"),
+        make_security_record("rec-06", "TWSE:0056", "0056", f"元大高股息{name_suffix}", "TWSE", "etf"),
+        make_security_record("rec-07", "TWSE:2308", "2308", f"台達電{name_suffix}", "TWSE", "equity"),
+        make_security_record("rec-08", "TWSE:2382", "2382", f"廣達{name_suffix}", "TWSE", "equity"),
+        make_security_record("rec-09", "TWSE:3008", "3008", f"大立光{name_suffix}", "TWSE", "equity"),
     ]
     
     snapshot = {
         "schema_version": SNAPSHOT_SCHEMA_VERSION,
-        "snapshot_id": "snap-r5a-fixture",
+        "snapshot_id": f"snap-r5a-{seed.value}",
         "generated_at_utc": clock_str,
         "effective_observation_date": "2026-07-16",
         "source_skill": {
@@ -113,7 +117,7 @@ def build_r5a_security_master(clock_str: str) -> tuple[dict, dict]:
     
     manifest = {
         "schema_version": MANIFEST_SCHEMA_VERSION,
-        "snapshot_id": "snap-r5a-fixture",
+        "snapshot_id": f"snap-r5a-{seed.value}",
         "snapshot_path": "security_identity_snapshot.json", # 必須提供此欄位以符合 schema 規範
         "generated_at_utc": clock_str,
         "effective_observation_date": "2026-07-16",
@@ -136,11 +140,21 @@ def build_r5a_cross_layer_fixture(
     clock: R5AFixtureClock,
 ) -> dict[str, Any]:
     clock_str = clock.now_utc
+    import random
+    rng = random.Random(seed.value)
+    
+    # 根據 seed 產生價格
+    p_2330 = round(1000.0 + rng.uniform(-10.0, 10.0), 1)
+    p_0050 = round(180.0 + rng.uniform(-5.0, 5.0), 2)
+    p_5347 = round(120.0 + rng.uniform(-2.0, 2.0), 2)
+    p_0056 = round(40.0 + rng.uniform(-1.0, 1.0), 2)
+    p_2308 = round(350.0 + rng.uniform(-10.0, 10.0), 1)
+    p_2382 = round(250.0 + rng.uniform(-8.0, 8.0), 1)
     
     # 1. Bounded Request
     request = {
         "schema_version": "m8r_ai_evidence_request.v1",
-        "request_id": "m8r03c-snapshot",
+        "request_id": f"m8r03c-{seed.value}",
         "original_user_text": "我的觀察清單現在怎麼樣？",
         "conversation_intent": {
             "schema_version": "m8r_ai_market_conversation_intent.v1",
@@ -158,7 +172,7 @@ def build_r5a_cross_layer_fixture(
             "clarification_reason": None
         },
         "persistent_watchlist_reference": {
-            "watchlist_id": "wl-r5a-fixture",
+            "watchlist_id": f"wl-r5a-{seed.value}",
             "source": "local_fixture",
             "enabled_target_ids": [
                 "TWSE:2330",
@@ -227,7 +241,7 @@ def build_r5a_cross_layer_fixture(
                 "TWSE_MIS": {
                     "symbol": "2330",
                     "market": "TWSE",
-                    "price": 1000.0,
+                    "price": p_2330,
                     "change": 10.0,
                     "source_timestamp": "2026-07-16T02:59:50Z",
                     "retrieved_at": clock_str
@@ -267,7 +281,7 @@ def build_r5a_cross_layer_fixture(
                 "TWSE_MIS": {
                     "symbol": "0050",
                     "market": "TWSE",
-                    "price": 180.0,
+                    "price": p_0050,
                     "change": 1.5,
                     "source_timestamp": "2026-07-16T02:59:50Z",
                     "retrieved_at": clock_str
@@ -285,7 +299,7 @@ def build_r5a_cross_layer_fixture(
                 "TWSE_MIS": {
                     "symbol": "5347",
                     "market": "TPEX",
-                    "price": 120.0,
+                    "price": p_5347,
                     "change": 0.5,
                     "source_timestamp": "2026-07-16T02:59:50Z",
                     "retrieved_at": clock_str
@@ -303,7 +317,7 @@ def build_r5a_cross_layer_fixture(
                 "TWSE_MIS": {
                     "symbol": "0056",
                     "market": "TWSE",
-                    "price": 40.0,
+                    "price": p_0056,
                     "change": -0.2,
                     "source_timestamp": "2026-07-16T02:59:50Z",
                     "retrieved_at": clock_str
@@ -322,11 +336,12 @@ def build_r5a_cross_layer_fixture(
                 "TWSE_MIS": {
                     "symbol": "2308",
                     "market": "TWSE",
-                    "price": 350.0,
+                    "price": p_2308,
                     "change": 5.0,
                     "source_timestamp": "2026-07-15T02:59:50Z", # 大於 24 小時前
                     "retrieved_at": "2026-07-15T03:00:00Z",
-                    "currentness": {"status": "stale", "reason": "fixture_stale_override"}
+                    "freshness_status": "stale",
+                    "delay_seconds": 7200
                 },
                 "TWSE_OPENAPI": {
                     "symbol": "2308",
@@ -342,7 +357,7 @@ def build_r5a_cross_layer_fixture(
                 "TWSE_MIS": {
                     "symbol": "2382",
                     "market": "TWSE",
-                    "price": 250.0,
+                    "price": p_2382,
                     "change": -3.0,
                     "source_timestamp": "2026-07-16T02:59:50Z",
                     "retrieved_at": clock_str
@@ -375,7 +390,7 @@ def generate_fixtures_to_disk(output_root: str | Path, seed_val: str = "seed-r5a
     clock = R5AFixtureClock(clock_val)
     
     # Build security master snapshot & manifest
-    snap, man = build_r5a_security_master(clock.now_utc)
+    snap, man = build_r5a_security_master(clock.now_utc, seed)
     
     # Save security master snapshot & manifest
     sec_snap_dest = safe_destination(root_path, "security_identity_snapshot.json", create_parent=True)
@@ -398,8 +413,8 @@ def generate_fixtures_to_disk(output_root: str | Path, seed_val: str = "seed-r5a
     atomic_write_text(root_path, "source_observations.json", json.dumps(source_data, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
     
     # Use production execution path to compile plans
-    # Note: ValidatedVerifiedSecurityMasterSnapshot wrapper is required by executor
-    val_sm = ValidatedVerifiedSecurityMasterSnapshot(snapshot=snap, manifest=man, lookup=build_verified_security_master_lookup(snap), validation={"valid": True})
+    from scripts.m8r_03d_f1_security_master_snapshot_adapter import load_verified_security_master_snapshot
+    val_sm = load_verified_security_master_snapshot(str(sec_snap_dest.path), str(sec_man_dest.path), allow_fixture_snapshot=True)
     
     # Execute watchlist in fixture mode
     # This will generate: validated_request, execution_plan, execution_result, bundle, and normalized_observations
@@ -414,7 +429,8 @@ def generate_fixtures_to_disk(output_root: str | Path, seed_val: str = "seed-r5a
         artifact_root=str(root_path),
         run_id="temp_run",
         generated_at_utc=clock.now_utc,
-        security_master=val_sm
+        security_master=val_sm,
+        source_capability_registry=cap_registry
     )
     
     if res.get("status") not in {"success", "success_with_partial_coverage"}:
@@ -512,29 +528,34 @@ def generate_fixtures_to_disk(output_root: str | Path, seed_val: str = "seed-r5a
     }, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
     
     # Top-level Fixture Manifest
+    def get_sha(rel):
+        text = (root_path / rel).read_text(encoding="utf-8")
+        return sha256_json(json.loads(text))
+        
+    tids = req["persistent_watchlist_reference"]["enabled_target_ids"]
     fixture_manifest = {
         "schema_version": "m8r_03e_r5a_cross_layer_fixture_manifest.v1",
-        "fixture_id": "fixture-r5a-canonical",
+        "fixture_id": f"fixture-r5a-{seed.value}",
         "fixture_version": "1",
         "seed": seed.value,
         "reference_clock_utc": clock.now_utc,
         "target_count": 10,
-        "target_ids": req["persistent_watchlist_reference"]["enabled_target_ids"],
+        "target_ids": tids,
         "source_families": ["TWSE_MIS", "TWSE_OPENAPI", "TPEX_OPENAPI"],
         "artifacts": [
             {"artifact_type": "fixture_manifest", "relative_path": "fixture_manifest.json", "schema_version": "m8r_03e_r5a_cross_layer_fixture_manifest.v1", "sha256": "", "producer": "generator", "consumers": ["tests"], "target_ids": []},
-            {"artifact_type": "security_identity_snapshot", "relative_path": "security_identity_snapshot.json", "schema_version": SNAPSHOT_SCHEMA_VERSION, "sha256": sha256_json(snap), "producer": "generator", "consumers": ["executor"], "target_ids": []},
-            {"artifact_type": "security_identity_snapshot_manifest", "relative_path": "security_identity_snapshot_manifest.json", "schema_version": MANIFEST_SCHEMA_VERSION, "sha256": sha256_json(man), "producer": "generator", "consumers": ["executor"], "target_ids": []},
-            {"artifact_type": "source_capability_snapshot", "relative_path": "source_capability_snapshot.json", "schema_version": "m8_source_capability_registry.v1", "sha256": sha256_json(cap_registry), "producer": "generator", "consumers": ["executor"], "target_ids": []},
-            {"artifact_type": "bounded_request", "relative_path": "bounded_request.json", "schema_version": "m8r_ai_evidence_request.v1", "sha256": sha256_json(req), "producer": "generator", "consumers": ["executor"], "target_ids": []},
-            {"artifact_type": "execution_plan", "relative_path": "execution_plan.json", "schema_version": "m8r_03d_watchlist_execution_plan.v1", "sha256": sha256_json(plan), "producer": "generator", "consumers": ["executor", "builder"], "target_ids": []},
-            {"artifact_type": "source_observations", "relative_path": "source_observations.json", "schema_version": "m8r_watchlist_source_data.v1", "sha256": sha256_json(source_data), "producer": "generator", "consumers": ["executor"], "target_ids": []},
-            {"artifact_type": "currentness_assessment", "relative_path": "currentness_assessment.json", "schema_version": "m8r_watchlist_currentness_assessment.v1", "sha256": sha256_json(curr_assessment), "producer": "generator", "consumers": ["tests"], "target_ids": []},
-            {"artifact_type": "evidence_bundle", "relative_path": "evidence_bundle.json", "schema_version": "m8r_watchlist_snapshot_bundle.v1", "sha256": sha256_json(bundle), "producer": "generator", "consumers": ["builder"], "target_ids": []},
-            {"artifact_type": "provenance_manifest", "relative_path": "provenance_manifest.json", "schema_version": "m8r_watchlist_provenance.v1", "sha256": sha256_json(prov), "producer": "generator", "consumers": ["validator"], "target_ids": []},
-            {"artifact_type": "citation_map", "relative_path": "citation_map.json", "schema_version": "m8r_watchlist_citation_index.v1", "sha256": sha256_json(cite_map), "producer": "generator", "consumers": ["validator"], "target_ids": []},
-            {"artifact_type": "missing_evidence_register", "relative_path": "missing_evidence_register.json", "schema_version": "m8r_watchlist_missing_evidence.v1", "sha256": sha256_json(miss_reg), "producer": "generator", "consumers": ["validator"], "target_ids": []},
-            {"artifact_type": "context_projection", "relative_path": "context_projection.json", "schema_version": "m8r_watchlist_ai_context_package.v2", "sha256": sha256_json(pkg), "producer": "generator", "consumers": ["validator"], "target_ids": []},
+            {"artifact_type": "security_identity_snapshot", "relative_path": "security_identity_snapshot.json", "schema_version": SNAPSHOT_SCHEMA_VERSION, "sha256": get_sha("security_identity_snapshot.json"), "producer": "generator", "consumers": ["executor"], "target_ids": tids},
+            {"artifact_type": "security_identity_snapshot_manifest", "relative_path": "security_identity_snapshot_manifest.json", "schema_version": MANIFEST_SCHEMA_VERSION, "sha256": get_sha("security_identity_snapshot_manifest.json"), "producer": "generator", "consumers": ["executor"], "target_ids": tids},
+            {"artifact_type": "source_capability_snapshot", "relative_path": "source_capability_snapshot.json", "schema_version": "m8_source_capability_registry.v1", "sha256": get_sha("source_capability_snapshot.json"), "producer": "generator", "consumers": ["executor"], "target_ids": []},
+            {"artifact_type": "bounded_request", "relative_path": "bounded_request.json", "schema_version": "m8r_ai_evidence_request.v1", "sha256": get_sha("bounded_request.json"), "producer": "generator", "consumers": ["executor"], "target_ids": tids},
+            {"artifact_type": "execution_plan", "relative_path": "execution_plan.json", "schema_version": "m8r_03d_watchlist_execution_plan.v1", "sha256": get_sha("execution_plan.json"), "producer": "generator", "consumers": ["executor", "builder"], "target_ids": tids},
+            {"artifact_type": "source_observations", "relative_path": "source_observations.json", "schema_version": "m8r_watchlist_source_data.v1", "sha256": get_sha("source_observations.json"), "producer": "generator", "consumers": ["executor"], "target_ids": tids},
+            {"artifact_type": "currentness_assessment", "relative_path": "currentness_assessment.json", "schema_version": "m8r_watchlist_currentness_assessment.v1", "sha256": get_sha("currentness_assessment.json"), "producer": "generator", "consumers": ["tests"], "target_ids": tids},
+            {"artifact_type": "evidence_bundle", "relative_path": "evidence_bundle.json", "schema_version": "m8r_watchlist_snapshot_bundle.v1", "sha256": get_sha("evidence_bundle.json"), "producer": "generator", "consumers": ["builder"], "target_ids": tids},
+            {"artifact_type": "provenance_manifest", "relative_path": "provenance_manifest.json", "schema_version": "m8r_watchlist_provenance.v1", "sha256": get_sha("provenance_manifest.json"), "producer": "generator", "consumers": ["validator"], "target_ids": tids},
+            {"artifact_type": "citation_map", "relative_path": "citation_map.json", "schema_version": "m8r_watchlist_citation_index.v1", "sha256": get_sha("citation_map.json"), "producer": "generator", "consumers": ["validator"], "target_ids": tids},
+            {"artifact_type": "missing_evidence_register", "relative_path": "missing_evidence_register.json", "schema_version": "m8r_watchlist_missing_evidence.v1", "sha256": get_sha("missing_evidence_register.json"), "producer": "generator", "consumers": ["validator"], "target_ids": tids},
+            {"artifact_type": "context_projection", "relative_path": "context_projection.json", "schema_version": "m8r_watchlist_ai_context_package.v2", "sha256": get_sha("context_projection.json"), "producer": "generator", "consumers": ["validator"], "target_ids": tids},
         ],
         "expected_states": {
             "TWSE:2330": "ready",
@@ -554,9 +575,9 @@ def generate_fixtures_to_disk(output_root: str | Path, seed_val: str = "seed-r5a
     }
     
     # Calculate manifest self-hash
-    # We update the sha256 of the manifest entry inside manifest itself
-    manifest_without_self_hash = sha256_json(fixture_manifest)
-    fixture_manifest["artifacts"][0]["sha256"] = manifest_without_self_hash
+    # We exclude manifest_hash field itself during serialization
+    fixture_manifest["artifacts"][0]["sha256"] = ""
+    fixture_manifest.pop("manifest_hash", None)
     final_manifest_hash = sha256_json(fixture_manifest)
     fixture_manifest["manifest_hash"] = final_manifest_hash
     

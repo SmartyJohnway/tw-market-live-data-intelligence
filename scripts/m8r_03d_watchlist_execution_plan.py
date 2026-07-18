@@ -147,11 +147,31 @@ def _target_from_resolution(res: dict) -> dict:
     resolved={'target_id':res['target_id'],'symbol':res.get('security_code'),'market':prefix,'canonical_market':canonical,'instrument_type':res.get('instrument_type'),'security_name':res.get('security_name'),'listing_status':res.get('listing_status'),'lifecycle_state':res.get('lifecycle_state'),'lifecycle_resolution_status':res.get('lifecycle_resolution_status'),'execution_policy':res.get('execution_policy'),'resolution_caveats':res.get('resolution_caveats') or [],'snapshot_id':res.get('snapshot_id'),'record_id':res.get('record_id'),'record_hash':res.get('record_hash'),'classification_status':res.get('classification_status'),'execution_eligibility':res.get('execution_eligibility')} if status=='resolved' else {}
     return {'target_id':res['target_id'],'requested_identity':res.get('requested_identity') or {'target_id':res['target_id']},'resolved_identity':resolved,'identity_status':'resolved' if status=='resolved' else status,'market':prefix,'canonical_market':canonical,'instrument_type':res.get('instrument_type'),'security_code':res.get('security_code'),'security_name':res.get('security_name'),'listing_status':res.get('listing_status'),'lifecycle_state':res.get('lifecycle_state'),'lifecycle_resolution_status':res.get('lifecycle_resolution_status'),'execution_policy':res.get('execution_policy'),'resolution_caveats':res.get('resolution_caveats') or [],'resolution_status':status,'snapshot_id':res.get('snapshot_id'),'record_id':res.get('record_id'),'record_hash':res.get('record_hash'),'classification_status':res.get('classification_status'),'classification_execution_policy':res.get('classification_execution_policy'),'execution_eligibility':res.get('execution_eligibility'),'resolution_evidence':res.get('resolution_evidence') or [],'blocking_issues':issues}
 
-def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, security_master=None, verified_snapshot_path:str|None=None, verified_snapshot_manifest_path:str|None=None, allow_fixture_snapshot:bool=False)->dict:
+def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, security_master=None, verified_snapshot_path:str|None=None, verified_snapshot_manifest_path:str|None=None, allow_fixture_snapshot:bool=False, source_capability_registry:dict|None=None)->dict:
     req=validate_watchlist_snapshot_request(request) if bundle_type=='snapshot' else validate_watchlist_performance_request(request)
     if verified_snapshot_path or verified_snapshot_manifest_path:
         if not (verified_snapshot_path and verified_snapshot_manifest_path): raise VerifiedSecurityMasterSnapshotError('snapshot_and_manifest_required')
         security_master=load_verified_security_master_snapshot(verified_snapshot_path, verified_snapshot_manifest_path, allow_fixture_snapshot=allow_fixture_snapshot)
+    
+    # 載入並解析 source capability registry
+    if source_capability_registry is None:
+        try:
+            source_capability_registry = json.loads(Path("docs/data_capabilities/m8_source_capability_registry.json").read_text(encoding="utf-8"))
+        except Exception:
+            source_capability_registry = {}
+            
+    active_families = set(source_capability_registry.get("active_runtime_source_families") or ALLOWED_SOURCE_FAMILIES)
+    twse_mis_exec = source_capability_registry.get("twse_mis_runtime_executable", True)
+    twse_openapi_exec = source_capability_registry.get("twse_openapi_runtime_executable", True)
+    tpex_openapi_exec = source_capability_registry.get("tpex_openapi_runtime_executable", True)
+    
+    for src in source_capability_registry.get("sources", []):
+        f = src.get("source_family")
+        exec_val = src.get("runtime_executable", True)
+        if f == "TWSE_MIS": twse_mis_exec = twse_mis_exec and exec_val
+        elif f == "TWSE_OPENAPI": twse_openapi_exec = twse_openapi_exec and exec_val
+        elif f == "TPEX_OPENAPI": tpex_openapi_exec = tpex_openapi_exec and exec_val
+
     ids=list(req['persistent_watchlist_reference']['enabled_target_ids'])
     targets=[]; groups=[]; issues=[]
     if len(ids)>MAX_WATCHLIST_TARGETS: issues.append({'code':'target_limit_exceeded','max_target_count':MAX_WATCHLIST_TARGETS,'blocking':True})
@@ -159,10 +179,30 @@ def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|
         r=_target_from_resolution(_resolve_security(tid, security_master, allow_fixture_snapshot=allow_fixture_snapshot)); cur={}; eod={}; expected='unavailable'
         if r['identity_status']=='resolved':
             expected='usable'; market=r['market']; code=r['security_code']
-            if bundle_type=='snapshot': cur={'source_family':'TWSE_MIS','route':('tse_' if market=='TWSE' else 'otc_')+code.lower()+'.tw','operation_class':'planned_network_fetch'}
-            eodfam='TWSE_OPENAPI' if market=='TWSE' else 'TPEX_OPENAPI'; eod={'source_family':eodfam,'route':eodfam,'operation_class':'planned_network_fetch'}
+            cur_allowed = "TWSE_MIS" in active_families and twse_mis_exec
+            eodfam='TWSE_OPENAPI' if market=='TWSE' else 'TPEX_OPENAPI'
+            eod_allowed = eodfam in active_families and (twse_openapi_exec if eodfam == 'TWSE_OPENAPI' else tpex_openapi_exec)
+            
+            if bundle_type=='snapshot' and cur_allowed:
+                cur={'source_family':'TWSE_MIS','route':('tse_' if market=='TWSE' else 'otc_')+code.lower()+'.tw','operation_class':'planned_network_fetch'}
+            if eod_allowed:
+                eod={'source_family':eodfam,'route':eodfam,'operation_class':'planned_network_fetch'}
+            
+            # 如果某個 source family 因為被 capability registry 標記為不可執行而拒絕，我們將其視為 coverage 缺失或 blocked
+            if bundle_type=='snapshot' and not cur_allowed:
+                # 這裡不把 cur 排入
+                pass
+            if not eod_allowed:
+                # 這裡不把 eod 排入
+                pass
+            
+            if not cur and not eod:
+                expected = 'unavailable'
+            elif not cur or not eod:
+                expected = 'partial'
+                
             if cur: groups.append({'source_family':'TWSE_MIS','context_type':'liveish_observation','target_ids':[tid],'network_required':True})
-            groups.append({'source_family':eodfam,'context_type':'official_eod_reference','target_ids':[tid],'network_required':True,'history_window':_history_window(req) if bundle_type=='performance' else {'latest_completed_eod_only':True}})
+            if eod: groups.append({'source_family':eodfam,'context_type':'official_eod_reference','target_ids':[tid],'network_required':True,'history_window':_history_window(req) if bundle_type=='performance' else {'latest_completed_eod_only':True}})
         targets.append({**r,'current_source_plan':cur,'eod_source_plan':eod,'expected_coverage':expected}); issues.extend(r.get('blocking_issues', []))
     # merge deterministic groups
     merged={}

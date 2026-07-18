@@ -21,10 +21,10 @@
   "record_count": 9,
   "schema_sha256": "e4d36bf0710fb366f09bc969b8c943b03e03e029f00988d2513f67bfeb478935",
   "schema_version": "tw_verified_security_master_snapshot_manifest.v1",
-  "skill_contract_hash": "b42bec6f03b4d53067e59d390f9ed2a8b488fb3a52117c62c02611cdac52d7a8",
-  "snapshot_id": "snap-r5a-fixture",
+  "skill_contract_hash": "488b3e04af2e318cd387b0dfdcbad02be4f2c3f495539c3e436698464f37d77a",
+  "snapshot_id": "snap-r5a-seed-r5a",
   "snapshot_path": "security_identity_snapshot.json",
-  "snapshot_sha256": "cd7aa384554f5f83c044b6c9bb5a818e7593ad03190a1450ecf36bde3e1598ff",
+  "snapshot_sha256": "a8c5c32df8baee092f3ca08179931692fa1ddbc255567c8b0444c609a1a8621b",
   "validation_issues": [],
   "validation_status": "passed"
 }

@@ -27,15 +27,15 @@ def _write_json(root:Path, path:Path, data:Any):
     if any(t.lower() in low for t in FORBIDDEN_ARTIFACT_TOKENS): raise ValueError('forbidden_artifact_content')
     atomic_write_text(root, path.relative_to(root), text+'\n')
 
-def preflight(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, security_master=None):
-    plan=build_execution_plan(request,bundle_type=bundle_type,generated_at_utc=generated_at_utc,security_master=security_master)
+def preflight(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, security_master=None, source_capability_registry=None):
+    plan=build_execution_plan(request,bundle_type=bundle_type,generated_at_utc=generated_at_utc,security_master=security_master,source_capability_registry=source_capability_registry)
     return {'mode':'preflight','request_hash':plan['request_hash'],'plan':plan,'network_calls_performed':False,'observation_count':0,'status':'blocked_preflight' if plan_has_blocking_issues(plan) else 'success'}
 
-def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:dict|None=None, fixture_source_data:dict|None=None, artifact_root:str='artifacts/m8r_03d', run_id:str|None=None, generated_at_utc:str|None=None, executors:dict|None=None, security_master=None)->dict:
+def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:dict|None=None, fixture_source_data:dict|None=None, artifact_root:str='artifacts/m8r_03d', run_id:str|None=None, generated_at_utc:str|None=None, executors:dict|None=None, security_master=None, source_capability_registry=None)->dict:
     started=generated_at_utc or utc_now(); run_id=run_id or 'm8r03d-'+started.replace(':','').replace('-','')
     artifact_root_path=_safe_root(artifact_root)
     safe_destination(artifact_root_path, run_id, create_parent=False)
-    plan=build_execution_plan(request,bundle_type=bundle_type,generated_at_utc=started,security_master=security_master)
+    plan=build_execution_plan(request,bundle_type=bundle_type,generated_at_utc=started,security_master=security_master,source_capability_registry=source_capability_registry)
     if mode not in {'preflight','fixture','execute'}: raise ValueError('invalid_mode')
     if mode=='preflight' or plan_has_blocking_issues(plan):
         status='blocked_preflight' if plan_has_blocking_issues(plan) else 'success'
@@ -78,7 +78,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
         if not observations and any_group_failed: status='source_execution_failed'
     except Exception as exc:
         bundle=None; status='bundle_validation_failed'; issues=normalize_issues+[{'code':'bundle_validation_failed','detail':str(exc)[:160]}]
-    return _result(run_id,mode,started,utc_now(),request,plan,authorization if mode=='execute' else None,observations,bundle,status,issues,artifact_root_path,target_results=target_results,source_execution_summary={'planned_source_call_groups':plan.get('source_call_groups',[]),'group_results':group_results,'network_calls_performed':mode=='execute','network_default_enabled':False,'polling':False,'scheduler':False},write=True)
+    return _result(run_id,mode,started,started if mode != 'execute' else utc_now(),request,plan,authorization if mode=='execute' else None,observations,bundle,status,issues,artifact_root_path,target_results=target_results,source_execution_summary={'planned_source_call_groups':plan.get('source_call_groups',[]),'group_results':group_results,'network_calls_performed':mode=='execute','network_default_enabled':False,'polling':False,'scheduler':False},write=True)
 
 def _claim_authorization(auth, plan, artifact_root, now):
     root=AUTHORIZATION_CONSUMPTION_ROOT

@@ -46,9 +46,9 @@
       "TWSE:9999"
     ],
     "source": "local_fixture",
-    "watchlist_id": "wl-r5a-fixture"
+    "watchlist_id": "wl-r5a-seed-r5a"
   },
-  "request_id": "m8r03c-snapshot",
+  "request_id": "m8r03c-seed-r5a",
   "required_evidence": [
     {
       "capability_id": "twse_mis_listed_liveish",

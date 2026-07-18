@@ -43,7 +43,7 @@
         "isin": "TW000233000",
         "security_code": "2330",
         "security_name_en": "EnglishName 2330",
-        "security_name_zh": "台積電"
+        "security_name_zh": "台積電-seed-r5a"
       },
       "lifecycle": {
         "as_of": "2026-07-16",
@@ -57,7 +57,7 @@
         "source_updated_date": "2026-07-16",
         "status": "observed_in_capture"
       },
-      "record_hash": "a7aa0ae6f4641d0b5011cfa302af6b7dfade3023b6f4d3570a189c6a6147cd50",
+      "record_hash": "132f0af72c68f5c15562e7fb0cdb4d3ed75894377c8b7bec6c778c4a9c162d65",
       "record_id": "rec-01"
     },
     {
@@ -85,7 +85,7 @@
         "isin": "TW000231700",
         "security_code": "2317",
         "security_name_en": "EnglishName 2317",
-        "security_name_zh": "鴻海"
+        "security_name_zh": "鴻海-seed-r5a"
       },
       "lifecycle": {
         "as_of": "2026-07-16",
@@ -99,7 +99,7 @@
         "source_updated_date": "2026-07-16",
         "status": "observed_in_capture"
       },
-      "record_hash": "5330e8929d17860ea35002514d3307d1ccff2ed817292d3488fde552a4d9688c",
+      "record_hash": "644dea8b8b6022106162f315fcbb06306f8cb82eac45ded4ac64deb079ce5a21",
       "record_id": "rec-02"
     },
     {
@@ -127,7 +127,7 @@
         "isin": "TW000648800",
         "security_code": "6488",
         "security_name_en": "EnglishName 6488",
-        "security_name_zh": "環球晶"
+        "security_name_zh": "環球晶-seed-r5a"
       },
       "lifecycle": {
         "as_of": "2026-07-16",
@@ -141,7 +141,7 @@
         "source_updated_date": "2026-07-16",
         "status": "observed_in_capture"
       },
-      "record_hash": "e49bfe59f61bc48261bef56389b30ded93a89f64bec717903ea7a54b460f1713",
+      "record_hash": "1979e7f5f44b9a8866cad2bf8ddab1bed75ad79684e7eda7fed92e1e43f26ac5",
       "record_id": "rec-03"
     },
     {
@@ -169,7 +169,7 @@
         "isin": "TW000005000",
         "security_code": "0050",
         "security_name_en": "EnglishName 0050",
-        "security_name_zh": "元大台灣50"
+        "security_name_zh": "元大台灣50-seed-r5a"
       },
       "lifecycle": {
         "as_of": "2026-07-16",
@@ -183,7 +183,7 @@
         "source_updated_date": "2026-07-16",
         "status": "observed_in_capture"
       },
-      "record_hash": "4bc677b46cc97012ae961fddb98615b4fc1f086b5ebd425c4b89fe549c083c19",
+      "record_hash": "b4a4574629a6ae38c26cee835b53f08f080cfdda8ed350f73ba9ac69346b1240",
       "record_id": "rec-04"
     },
     {
@@ -211,7 +211,7 @@
         "isin": "TW000534700",
         "security_code": "5347",
         "security_name_en": "EnglishName 5347",
-        "security_name_zh": "世界"
+        "security_name_zh": "世界-seed-r5a"
       },
       "lifecycle": {
         "as_of": "2026-07-16",
@@ -225,7 +225,7 @@
         "source_updated_date": "2026-07-16",
         "status": "observed_in_capture"
       },
-      "record_hash": "570deecdaf66b92cb9ee5a54ab9756f0a7e3567eb5d40272ef29f9ebfab2348c",
+      "record_hash": "329ba688b4982ade7df4090cbc148998ee5cd3e82834c57350b5d13069da631a",
       "record_id": "rec-05"
     },
     {
@@ -253,7 +253,7 @@
         "isin": "TW000005600",
         "security_code": "0056",
         "security_name_en": "EnglishName 0056",
-        "security_name_zh": "元大高股息"
+        "security_name_zh": "元大高股息-seed-r5a"
       },
       "lifecycle": {
         "as_of": "2026-07-16",
@@ -267,7 +267,7 @@
         "source_updated_date": "2026-07-16",
         "status": "observed_in_capture"
       },
-      "record_hash": "a864f65c7477982cb5bffed98a9235087a239fb182c17a87773876501b5b745e",
+      "record_hash": "343be4bf83fca859ea1c603a0376551a7c1cbf5ac832bc099235fe99bcc3b9df",
       "record_id": "rec-06"
     },
     {
@@ -295,7 +295,7 @@
         "isin": "TW000230800",
         "security_code": "2308",
         "security_name_en": "EnglishName 2308",
-        "security_name_zh": "台達電"
+        "security_name_zh": "台達電-seed-r5a"
       },
       "lifecycle": {
         "as_of": "2026-07-16",
@@ -309,7 +309,7 @@
         "source_updated_date": "2026-07-16",
         "status": "observed_in_capture"
       },
-      "record_hash": "8ae300234ff53e87c37e17c92ad9e6747aa5ad2fcab6cc514394ba7066a8568b",
+      "record_hash": "bc3bacf538acdb5e0823af391e4be2fa1eea345b0d8ab71bd799b241f4876247",
       "record_id": "rec-07"
     },
     {
@@ -337,7 +337,7 @@
         "isin": "TW000238200",
         "security_code": "2382",
         "security_name_en": "EnglishName 2382",
-        "security_name_zh": "廣達"
+        "security_name_zh": "廣達-seed-r5a"
       },
       "lifecycle": {
         "as_of": "2026-07-16",
@@ -351,7 +351,7 @@
         "source_updated_date": "2026-07-16",
         "status": "observed_in_capture"
       },
-      "record_hash": "a90ab124aa9fbd632f3d5e526d13831b5b3c53ec9966e9503d736c7420102773",
+      "record_hash": "41b93e9ef0afd8fd766819478412d57141283144a720115e23591ce08f8ebe3f",
       "record_id": "rec-08"
     },
     {
@@ -379,7 +379,7 @@
         "isin": "TW000300800",
         "security_code": "3008",
         "security_name_en": "EnglishName 3008",
-        "security_name_zh": "大立光"
+        "security_name_zh": "大立光-seed-r5a"
       },
       "lifecycle": {
         "as_of": "2026-07-16",
@@ -393,15 +393,15 @@
         "source_updated_date": "2026-07-16",
         "status": "observed_in_capture"
       },
-      "record_hash": "18f759cac10b9475e725b826c00372dc68d148ba7bf7d3522966410ca6857fd1",
+      "record_hash": "3a49a7edcf2ee576a29c887bb3a1b7b5d4c46b5b4fc1ce0994283966ec8b67f0",
       "record_id": "rec-09"
     }
   ],
   "schema_version": "tw_verified_security_master_snapshot.v1",
-  "snapshot_id": "snap-r5a-fixture",
+  "snapshot_id": "snap-r5a-seed-r5a",
   "source_skill": {
     "name": "tw-security-master-classifier",
-    "skill_contract_hash": "b42bec6f03b4d53067e59d390f9ed2a8b488fb3a52117c62c02611cdac52d7a8",
+    "skill_contract_hash": "488b3e04af2e318cd387b0dfdcbad02be4f2c3f495539c3e436698464f37d77a",
     "skill_path": "skills/tw-security-master-classifier",
     "skill_version": "1.0.0"
   }
