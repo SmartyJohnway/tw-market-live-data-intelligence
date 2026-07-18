@@ -1,7 +1,7 @@
 # M8R_03E_R5A Phase C Enabling Cross-Layer Fixture Acceptance Report
 
 ## 1. Executive Summary
-本報告記錄了 **M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE** 任務的驗證結果。在完全關閉網絡、無實際授權憑證消耗的情況下，本階段成功建立並驗證了具備 10 個異質 Target 的跨層級確定性測試用例。所有 30+ 個單元與整合測試均順利通過，達成了無網路執行、E2E 一致性、防篡改 fail-closed 與高性能要求。
+本報告記錄了 **M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE** 任務的驗證結果。在完全關閉網絡、無實際授權憑證消耗的情況下，本階段成功建立並驗證了具備 10 個異質 Target 的跨層級確定性測試用例。所有 32 個單元與整合測試均順利通過，達成了無網路執行、E2E 一致性、防篡改 fail-closed 與高性能要求。
 
 > [!IMPORTANT]
 > 此任務僅建立並驗證跨層級測試基礎設施，**並不啟用 Phase C**。Phase C 的激活仍有待後續的審查決定。
@@ -11,14 +11,26 @@
 * **Python Version**: 3.13.7
 * **Pytest Version**: 9.1.1
 * **Baseline Main Commit SHA**: `54b078932d0abfb8b20bed99356860a2aca050eb`
-* **Tested Parent SHA**: `16f238f3e1b24b827996255ed675499a08d63ff0` (Commit 9)
+* **Tested Parent SHA**: `f311daa6885dae04b3a47e5a94b98e854372bbbb` (Commit 10)
 * **Tested Fixture Manifest SHA-256**: `88140fc7ae7d2ed39a7fb94aca36791373077ad2bf197ff66591fa5d42239388` (當前 generated manifest_hash)
 * **Tested Commit SHA**: `null` (因屬 precommit 驗證)
 * **Fixture ID**: `fixture-r5a-seed-r5a`
 * **Fixture Version**: `1`
 * **Generated Artifacts Count**: 13 (manifest 註冊件) + 2 (預期校驗結果件) = 15 檔案
 
-## 3. Test Matrix & Results
+## 3. Governance Gate Disposition
+* **R5A Fixture Blocker**: `resolved_with_caveats`
+* **R5B Filesystem Blocker**: `resolved_with_caveats`
+* **Phase C Gate Disposition**: `ready_for_explicit_activation_review_with_caveats`
+* **Phase C Activation Review Eligibility**: `ready_for_explicit_owner_review`
+* **Phase C Activation**: `blocked_pending_explicit_owner_decision`
+
+## 4. Explicit Caveats
+本項驗收結果包含以下明確的 Caveats：
+1. **EOD Provisional Policy**: 當前的 EOD 新鮮度策略屬暫時性的 `provisional bounded EOD age policy`，並未整合交易所交易日曆與休市日。
+2. **Regression Environment**: Windows 本地測試環境與 Linux CI 環境僅屬 `partially_comparable`，全套回歸測試中仍有 28 個非退化既有失敗。
+
+## 5. Test Matrix & Results
 
 | Test Target / Name | Type | Status | Description |
 | :--- | :--- | :--- | :--- |
@@ -55,7 +67,7 @@
 | `test_currentness_unknown_timing_class_fails_closed` | Unit | **PASSED** | 驗證未知 timing_class 會被 fail-closed 阻斷返回 unresolved 狀態。 |
 | `test_normalizer_preserves_actual_retrieval_time` | Unit | **PASSED** | 驗證 normalizer 輸出的 observation 忠實保留資料來源之原始取得時間，並隔離計算 age 和 transport latency。 |
 
-## 4. Full Non-Network Regression Comparison
+## 6. Full Non-Network Regression Comparison
 我們在 Commit 10 修改完成後，實地重跑了非聯網回歸測試全套執行，並與 R5B 階段的 36 個錯誤結果進行了比較：
 * **Collected (including deselected)**: 1783 (R5B: 1751)
 * **Selected (including skipped)**: 1782 (R5B: 1750)
@@ -80,18 +92,17 @@
   8. `tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin`
 * **Failure Set Relation**: `subset` (無 regression，且失敗集合為 R5B 之子集，證明系統穩定性顯著提升)。
 
-## 5. Performance Benchmarks
+## 7. Performance Benchmarks
 效能測試包含 3 次 warm-up 溫跑與 20 次正式 iterations：
 * **E2E Pipeline (20 runs)**: Median: **251.69 ms**, P95: **385.12 ms**, Max: **413.08 ms**
 * **Fixture Generation (20 runs)**: Median: **110.25 ms**, P95: **142.15 ms**, Max: **180.12 ms**
 * **Schema Validation (20 runs)**: Median: **5.45 ms**, P95: **8.12 ms**, Max: **12.50 ms**
 * **Verdict**: **PASSED**
 
-## 6. Governance Check Results
+## 8. Governance Check Results
 1. **R5B Insecure Path Guard**: **PASS**
 2. **Forbidden Behavior Scanner**: **PASS**
 
-## 7. Binding Agreement
+## 9. Binding Agreement
 * **Binding Status**: `unsealed_precommit_evidence`
 * **Task Intent Verified**: Yes
-* **Phase C Gate Disposition**: `pending_currentness_fail_closed_and_acceptance_refresh` (目前 EOD 新鮮度評估策略屬暫時性的 `provisional bounded EOD age policy`，未涵蓋完整交易日曆/休市日等細節，故維持 pending 狀態等待後續 pre-activation review，並不宜宣稱已完全準備好 activation)

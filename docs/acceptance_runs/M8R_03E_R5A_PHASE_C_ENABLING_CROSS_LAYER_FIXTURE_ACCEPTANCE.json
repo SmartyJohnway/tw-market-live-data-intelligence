@@ -4,7 +4,7 @@
   "binding_status": "unsealed_precommit_evidence",
   "verification_timestamp_utc": "2026-07-18T12:00:00Z",
   "baseline_main_sha": "54b078932d0abfb8b20bed99356860a2aca050eb",
-  "tested_parent_sha": "16f238f3e1b24b827996255ed675499a08d63ff0",
+  "tested_parent_sha": "f311daa6885dae04b3a47e5a94b98e854372bbbb",
   "tested_fixture_manifest_sha256": "88140fc7ae7d2ed39a7fb94aca36791373077ad2bf197ff66591fa5d42239388",
   "tested_commit_sha": null,
   "fixture_id": "fixture-r5a-seed-r5a",
@@ -130,9 +130,17 @@
       "tests/unit/test_workflow_policy_matrix.py::test_workflow_policy_matrix_and_ci_local_only"
     ]
   },
-  "phase_c_gate_result": "pending_currentness_fail_closed_and_acceptance_refresh",
+  "phase_c_gate_result": "ready_for_explicit_activation_review_with_caveats",
   "recommended_next_task": "M8R-03E-PHASE-C-ACTIVATION-DECISION",
-  "eligible_for_activation_review": "Pending explicit pre-activation validation check",
+  "eligible_for_activation_review": "ready_with_caveats",
+  "phase_c_activation": "blocked_pending_explicit_owner_decision",
+  "r5a_fixture_blocker": "resolved_with_caveats",
+  "r5b_filesystem_blocker": "resolved_with_caveats",
+  "phase_c_implementation_readiness": "demonstrated_with_caveats",
+  "explicit_caveats": [
+    "EOD 新鮮度策略屬 provisional bounded EOD age policy，未整合交易所 trading calendar 與休市日",
+    "Windows 本地測試環境與 Linux CI 環境僅屬 partially comparable，全套回歸測試仍有 28 個非退化既有失敗"
+  ],
   "acceptance_tests": [
     {
       "test_name": "test_fixture_byte_identical_determinism",
