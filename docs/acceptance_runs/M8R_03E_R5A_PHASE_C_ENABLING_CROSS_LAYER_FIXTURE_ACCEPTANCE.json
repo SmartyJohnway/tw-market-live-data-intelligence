@@ -1,0 +1,98 @@
+{
+  "schema_version": "m8r_03e_r5a_cross_layer_fixture_acceptance.v1",
+  "task_id": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+  "binding_status": "unsealed_precommit_evidence",
+  "verification_timestamp_utc": "2026-07-17T15:28:00Z",
+  "reproducible_environment": {
+    "os": "windows",
+    "python_version": "3.13.7",
+    "pytest_version": "9.0.2"
+  },
+  "metrics": {
+    "fixture_target_count": 10,
+    "source_family_usages_count": 3,
+    "network_call_count": 0,
+    "authorization_consumption_count": 0,
+    "performance": {
+      "warmup_iterations": 3,
+      "perf_iterations": 20,
+      "median_ms": 251.69,
+      "p95_ms": 413.08,
+      "max_ms": 413.08,
+      "contract_limit_ms": 1000.0,
+      "status": "passed"
+    }
+  },
+  "acceptance_tests": [
+    {
+      "test_name": "test_fixture_determinism",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證相同 seed/clock 生成 byte-identical 內容，不同 clock 產生預期差異。"
+    },
+    {
+      "test_name": "test_cross_layer_id_and_order_consistency",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 10-target 的標識符與順序在 plan, bundle, package 跨層級一致。"
+    },
+    {
+      "test_name": "test_package_hash_and_citation_provenance",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證所有 Fact 均有對應的 citation 及雜湊，可向上追溯無 orphan references。"
+    },
+    {
+      "test_name": "test_projection_has_no_sensitive_data",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 AI projection 沒有洩露 raw cookies 或 credentials。"
+    },
+    {
+      "test_name": "test_target_states_match_expectations",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 stale 觀測值與 missing optional, unresolved 隔離等各類 target 狀態正確封裝。"
+    },
+    {
+      "test_name": "test_filesystem_safety_valid_path",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證正常路徑材料化寫入成功。"
+    },
+    {
+      "test_name": "test_filesystem_safety_blocked_parent_traversal",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 traversal (..) 寫入被 R5B 攔截並 fail-closed。"
+    },
+    {
+      "test_name": "test_filesystem_safety_blocked_forbidden_directories",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證受限目錄 (cookies/frontend/research) 的寫入被安全攔截。"
+    },
+    {
+      "test_name": "test_variant_c_tampering_fail_closed",
+      "scope": "unit",
+      "status": "passed",
+      "description": "手動篡改 Fact 內容而不改雜湊，驗證 package validator 正確攔截防篡改不退化。"
+    },
+    {
+      "test_name": "test_pipeline_performance",
+      "scope": "unit",
+      "status": "passed",
+      "description": "評估無網絡模式下，中位數處理耗時低於 1000ms 的效能指標。"
+    },
+    {
+      "test_name": "test_integration_phase_c_fixture_pipeline",
+      "scope": "integration",
+      "status": "passed",
+      "description": "測試 10-target request 在無網絡下完整跑通 E2E 編排與 builder pipeline 並驗證通過。"
+    }
+  ],
+  "governance_scans": {
+    "r5b_insecure_filesystem_patterns": "passed",
+    "forbidden_behavior_patterns": "passed"
+  }
+}
