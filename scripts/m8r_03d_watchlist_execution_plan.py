@@ -155,19 +155,38 @@ def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|
     
     # 載入並解析 source capability registry
     if source_capability_registry is None:
-        try:
-            source_capability_registry = json.loads(Path("docs/data_capabilities/m8_source_capability_registry.json").read_text(encoding="utf-8"))
-        except Exception:
-            source_capability_registry = {}
+        source_capability_registry = json.loads(Path("docs/data_capabilities/m8_source_capability_registry.json").read_text(encoding="utf-8"))
             
-    active_families = set(source_capability_registry.get("active_runtime_source_families") or ALLOWED_SOURCE_FAMILIES)
-    twse_mis_exec = source_capability_registry.get("twse_mis_runtime_executable", True)
-    twse_openapi_exec = source_capability_registry.get("twse_openapi_runtime_executable", True)
-    tpex_openapi_exec = source_capability_registry.get("tpex_openapi_runtime_executable", True)
+    # Schema 驗證
+    if "schema_version" not in source_capability_registry:
+        raise ValueError("invalid_capability_registry_schema: missing schema_version")
+    if source_capability_registry["schema_version"] != "m8_source_capability_registry.v1":
+        raise ValueError(f"invalid_capability_registry_schema: expected m8_source_capability_registry.v1, got {source_capability_registry['schema_version']}")
+        
+    # active_runtime_source_families 欄位缺失或為空列表時預設為空 set (Fail-Closed)
+    act_list = source_capability_registry.get("active_runtime_source_families")
+    if act_list is None:
+        active_families = set()
+    else:
+        active_families = set(act_list)
+        
+    # 各 source family 預設皆為不可執行 (False)，除非明確指定為 True (Fail-Closed)
+    status_dict = source_capability_registry.get("m8_active_consolidated_status") or {}
+    def get_flag(name):
+        root_val = source_capability_registry.get(name)
+        inner_val = status_dict.get(name)
+        if root_val is None:
+            return inner_val is True
+        return root_val is True and inner_val is True
+        
+    twse_mis_exec = get_flag("twse_mis_runtime_executable")
+    twse_openapi_exec = get_flag("twse_openapi_runtime_executable")
+    tpex_openapi_exec = get_flag("tpex_openapi_runtime_executable")
     
+    # 動態 sources 檢查，缺失 runtime_executable 或非 True 亦視為 False
     for src in source_capability_registry.get("sources", []):
         f = src.get("source_family")
-        exec_val = src.get("runtime_executable", True)
+        exec_val = src.get("runtime_executable") is True
         if f == "TWSE_MIS": twse_mis_exec = twse_mis_exec and exec_val
         elif f == "TWSE_OPENAPI": twse_openapi_exec = twse_openapi_exec and exec_val
         elif f == "TPEX_OPENAPI": tpex_openapi_exec = tpex_openapi_exec and exec_val

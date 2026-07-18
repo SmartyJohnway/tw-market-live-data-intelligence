@@ -26,10 +26,39 @@ def normalize_twse_mis_watchlist_observation(source_obs:dict, plan_target:dict, 
     sf=source_obs.get('safe_fields') if isinstance(source_obs.get('safe_fields'),dict) else source_obs
     for k,dst in mapping.items():
         if k in sf and dst in SAFE_CURRENT: facts[dst]=sf.get(k)
-    status=source_obs.get('currentness',{}).get('status') if isinstance(source_obs.get('currentness'),dict) else None
-    status=status or ({'live_candidate':'fresh','delayed':'acceptable','stale':'stale','unknown':'unresolved'}.get(source_obs.get('freshness_status')) or ('stale' if source_obs.get('reference_only') else 'fresh'))
-    cur={'status':status,'reason':source_obs.get('delay_status') or source_obs.get('price_semantics') or 'twse_mis_normalized'}
-    return _base(plan_target,'TWSE_MIS','liveish_intraday_snapshot','liveish_observation',retrieved_at_utc or source_obs.get('retrieved_at_utc') or source_obs.get('retrieved_at'),source_obs.get('source_timestamp'),None,cur,{k:v for k,v in facts.items() if k in SAFE_CURRENT},list(source_obs.get('caveats') or source_obs.get('issues') or []))
+        
+    # 真正的新鮮度評估器推導邏輯 (Production Currentness Evaluator)
+    ret_str = retrieved_at_utc or source_obs.get('retrieved_at_utc') or source_obs.get('retrieved_at')
+    src_str = source_obs.get('source_timestamp')
+    
+    if not ret_str:
+        status = "missing_currentness"
+    elif not src_str:
+        status = "retrieved_at_only"
+    else:
+        try:
+            from datetime import datetime
+            def parse_dt(s):
+                s = s.replace("Z", "")
+                if "." in s:
+                    s = s.split(".")[0]
+                return datetime.fromisoformat(s)
+            ret_dt = parse_dt(ret_str)
+            src_dt = parse_dt(src_str)
+            diff = (ret_dt - src_dt).total_seconds()
+            
+            # 若 retrieved 與 source 時間差大於 5400 秒 (1.5小時)，判定為 stale
+            if diff > 5400:
+                status = "stale"
+            elif diff < 0:
+                status = "unresolved"
+            else:
+                status = "fresh"
+        except Exception:
+            status = "unresolved"
+            
+    cur={'status':status,'reason':'twse_mis_calculated_freshness'}
+    return _base(plan_target,'TWSE_MIS','liveish_intraday_snapshot','liveish_observation',ret_str,src_str,None,cur,{k:v for k,v in facts.items() if k in SAFE_CURRENT},list(source_obs.get('caveats') or source_obs.get('issues') or []))
 
 def normalize_twse_openapi_watchlist_observation(source_obs:dict, plan_target:dict)->dict:
     return _normalize_eod(source_obs,plan_target,'TWSE_OPENAPI')

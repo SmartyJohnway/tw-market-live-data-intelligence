@@ -5,6 +5,7 @@ from pathlib import Path
 from scripts.m8r_03d_watchlist_controlled_executor import execute_watchlist
 from scripts.m8r_03d_f1_security_master_snapshot_adapter import load_verified_security_master_snapshot, VerifiedSecurityMasterSnapshotError
 from scripts.m8r_03e_context_validator import validate_watchlist_ai_context_package
+from scripts.m8r_03e_watchlist_ai_context_builder import build_watchlist_ai_context_package
 
 FIX_DIR = Path("tests/fixtures/m8r_03e_r5a")
 
@@ -85,12 +86,55 @@ def test_variant_b_stale_and_missing_pipeline(tmp_path):
     
     assert res["status"] in {"success", "success_with_partial_coverage"}
     run_dir = tmp_path / "variant_b_run"
-    plan = json.loads((run_dir / "execution_plan.json").read_text(encoding="utf-8"))
-    t_map = {t["target_id"]: t for t in plan["targets"]}
     
-    # 驗證過期 (TWSE:2308) 與缺失 (TWSE:2382) 狀態未互相污染
-    assert t_map["TWSE:2308"]["expected_coverage"] in {"usable", "ready_with_caveats", "partial"}
-    assert t_map["TWSE:2382"]["expected_coverage"] in {"usable", "ready_with_caveats", "partial"}
+    # 1. 載入 bundle 檔案，做實質隔離與新鮮度推導斷言
+    bundle = json.loads((run_dir / "watchlist_snapshot_bundle.json").read_text(encoding="utf-8"))
+    
+    # 建立 target 覆蓋字典
+    t_cov = {t["target_id"]: t["coverage"] for t in bundle["targets"]}
+    
+    # TWSE:2308 (Stale)：其 coverage_state 應為 partial，且缺失欄位為 currentness
+    assert t_cov["TWSE:2308"]["coverage_state"] == "partial"
+    assert "currentness" in t_cov["TWSE:2308"]["missing_field_groups"]
+    
+    # TWSE:2382 (Missing EOD)：其 coverage_state 應為 partial，且缺失欄位為 eod_reference
+    assert t_cov["TWSE:2382"]["coverage_state"] == "partial"
+    assert "eod_reference" in t_cov["TWSE:2382"]["missing_field_groups"]
+    
+    # 2. 驗證 missing_evidence 中的 reason codes 隔離且明確不同
+    missing_ev = bundle["missing_evidence"]
+    
+    m_2308 = [m for m in missing_ev if m["target_id"] == "TWSE:2308"]
+    m_2382 = [m for m in missing_ev if m["target_id"] == "TWSE:2382"]
+    
+    # 2308 應包含 currentness 驗證失效 (stale)
+    assert any(m["capability_id"] == "currentness_validation" and m["reason_code"] == "stale_observation" for m in m_2308)
+    
+    # 2382 應包含 EOD 缺失
+    assert any(m["capability_id"] == "official_eod_reference" and m["reason_code"] == "EOD reference unavailable" for m in m_2382)
+    
+    # 3. 驗證 unaffected targets (如 TWSE:2330) 完好無損，未受污染且依然為 usable
+    assert t_cov["TWSE:2330"]["coverage_state"] == "usable"
+    
+    # 4. 驗證整體 bundle 狀態為 partial
+    assert bundle["schema_version"] == "m8r_watchlist_snapshot_bundle.v1"
+    
+    # 5. 驗證最終 context package 內之 citation 行為
+    pkg = build_watchlist_ai_context_package(
+        validated_request=req,
+        execution_plan=json.loads((run_dir / "execution_plan.json").read_text(encoding="utf-8")),
+        execution_result=res,
+        watchlist_bundle=bundle,
+        generated_at_utc="2026-07-16T03:00:00Z"
+    )
+    
+    t_pkg = {t["target_id"]: t for t in pkg["targets"]}
+    
+    # TWSE:2308 (Stale) 依然有觀測資料，其 citations 列表不應為空
+    assert len(t_pkg["TWSE:2308"]["citations"]) > 0
+    
+    # TWSE:2382 缺失 EOD reference Facts，其 eod_reference 欄位應為空，且不應生成虛假的 citations
+    assert t_pkg["TWSE:2382"]["eod_reference"] == {}
 
 def test_variant_c_tampering_fail_closed(tmp_path):
     req = load("bounded_request.json")

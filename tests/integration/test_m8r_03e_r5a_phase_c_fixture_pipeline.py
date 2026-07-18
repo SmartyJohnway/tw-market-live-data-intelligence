@@ -146,3 +146,67 @@ def test_capability_snapshot_consumption_and_unsupported_filtering(tmp_path):
     
     # 驗證：由於 TWSE_OPENAPI 移出 active 列表，TWSE:2330 規劃出的 eod_source_plan 必須為空 (拒絕路由)
     assert t_map2["TWSE:2330"]["eod_source_plan"] == {}
+
+def test_capability_registry_fail_closed_behaviors(tmp_path):
+    req = load("bounded_request.json")
+    source_data = load("source_observations.json")
+    val_sm = load_verified_security_master_snapshot(
+        str(FIX_DIR / "security_identity_snapshot.json"),
+        str(FIX_DIR / "security_identity_snapshot_manifest.json"),
+        allow_fixture_snapshot=True
+    )
+    
+    # 情境 1: malformed registry (缺少 schema_version)
+    bad_registry_1 = {"active_runtime_source_families": ["TWSE_MIS"]}
+    with pytest.raises(ValueError, match="invalid_capability_registry_schema"):
+        execute_watchlist(
+            request=req, mode="fixture", bundle_type="snapshot",
+            fixture_source_data=source_data, artifact_root=str(tmp_path),
+            run_id="bad_reg_1", generated_at_utc="2026-07-16T03:00:00Z",
+            security_master=val_sm, source_capability_registry=bad_registry_1
+        )
+        
+    # 情境 2: malformed registry (schema_version 錯誤)
+    bad_registry_2 = {"schema_version": "wrong_version_v99"}
+    with pytest.raises(ValueError, match="invalid_capability_registry_schema"):
+        execute_watchlist(
+            request=req, mode="fixture", bundle_type="snapshot",
+            fixture_source_data=source_data, artifact_root=str(tmp_path),
+            run_id="bad_reg_2", generated_at_utc="2026-07-16T03:00:00Z",
+            security_master=val_sm, source_capability_registry=bad_registry_2
+        )
+        
+    # 情境 3: active_runtime_source_families 明確為空 list -> 拒絕所有 routing
+    empty_registry = {
+        "schema_version": "m8_source_capability_registry.v1",
+        "active_runtime_source_families": []
+    }
+    res_empty = execute_watchlist(
+        request=req, mode="fixture", bundle_type="snapshot",
+        fixture_source_data=source_data, artifact_root=str(tmp_path),
+        run_id="empty_reg", generated_at_utc="2026-07-16T03:00:00Z",
+        security_master=val_sm, source_capability_registry=empty_registry
+    )
+    plan_empty = json.loads((tmp_path / "empty_reg" / "execution_plan.json").read_text(encoding="utf-8"))
+    for t in plan_empty["targets"]:
+        assert t["current_source_plan"] == {}
+        assert t["eod_source_plan"] == {}
+        assert t["expected_coverage"] == "unavailable"
+        
+    # 情境 4: 缺失 twse_mis_runtime_executable 等宣告 -> 預設不可執行
+    missing_flags_registry = {
+        "schema_version": "m8_source_capability_registry.v1",
+        "active_runtime_source_families": ["TWSE_MIS", "TWSE_OPENAPI", "TPEX_OPENAPI"]
+        # 不包含 twse_mis_runtime_executable / twse_openapi_runtime_executable 等
+    }
+    res_flags = execute_watchlist(
+        request=req, mode="fixture", bundle_type="snapshot",
+        fixture_source_data=source_data, artifact_root=str(tmp_path),
+        run_id="missing_flags_reg", generated_at_utc="2026-07-16T03:00:00Z",
+        security_master=val_sm, source_capability_registry=missing_flags_registry
+    )
+    plan_flags = json.loads((tmp_path / "missing_flags_reg" / "execution_plan.json").read_text(encoding="utf-8"))
+    for t in plan_flags["targets"]:
+        assert t["current_source_plan"] == {}
+        assert t["eod_source_plan"] == {}
+        assert t["expected_coverage"] == "unavailable"

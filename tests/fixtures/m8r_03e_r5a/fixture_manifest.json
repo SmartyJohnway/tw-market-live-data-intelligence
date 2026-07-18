@@ -119,7 +119,7 @@
       "producer": "generator",
       "relative_path": "source_observations.json",
       "schema_version": "m8r_watchlist_source_data.v1",
-      "sha256": "0117245af7ec789104186f054f1e9f0813ec7d5e762e35472ab36ec2c32d0654",
+      "sha256": "7370b1960e6c22c07fbd8b9e9b45ed4416e91c9abe7665362b46cde9681edda2",
       "target_ids": [
         "TWSE:2330",
         "TWSE:2317",
@@ -163,7 +163,7 @@
       "producer": "generator",
       "relative_path": "evidence_bundle.json",
       "schema_version": "m8r_watchlist_snapshot_bundle.v1",
-      "sha256": "364d799e3cdadc542a2eed7bf4a46d172bf58f35e3ec6a578a78b4730721378e",
+      "sha256": "0e9ae245d5389e6866934c00fa50bf30ac8b23f317ecf8bdcee6c11e91da0313",
       "target_ids": [
         "TWSE:2330",
         "TWSE:2317",
@@ -207,7 +207,7 @@
       "producer": "generator",
       "relative_path": "citation_map.json",
       "schema_version": "m8r_watchlist_citation_index.v1",
-      "sha256": "bf46dde5909ae8478e7a482f7d94c2d446bb223ef09f140a4f40bcc7e76b5405",
+      "sha256": "40fdd6beae9cc84e514dd4a47a936f89a5e8496aa8193d1efca78fbb23183b41",
       "target_ids": [
         "TWSE:2330",
         "TWSE:2317",
@@ -251,7 +251,7 @@
       "producer": "generator",
       "relative_path": "context_projection.json",
       "schema_version": "m8r_watchlist_ai_context_package.v2",
-      "sha256": "81543a5676ffed74718450fa56ee4b91a4b1dd81d99859d0f05929dee6c892c4",
+      "sha256": "2ba1ee2632d07d14ba038bd3583fd025f56e000689cd74cbdd64969f469bf4de",
       "target_ids": [
         "TWSE:2330",
         "TWSE:2317",
@@ -282,7 +282,7 @@
   "fixture_id": "fixture-r5a-seed-r5a",
   "fixture_version": "1",
   "hash_algorithm": "sha256",
-  "manifest_hash": "502546255f087e1a924213349882f13a810ffc20551b90a4029125adf787be28",
+  "manifest_hash": "e71ee42bf081cb1ecc8f6f0cdbca744b7e8036bd838fdf677f423f3ec7aab21b",
   "network_required": false,
   "reference_clock_utc": "2026-07-16T03:00:00Z",
   "schema_version": "m8r_03e_r5a_cross_layer_fixture_manifest.v1",

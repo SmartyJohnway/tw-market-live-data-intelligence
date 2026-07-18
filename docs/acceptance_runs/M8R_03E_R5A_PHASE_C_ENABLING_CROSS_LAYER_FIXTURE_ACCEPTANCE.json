@@ -2,11 +2,11 @@
   "schema_version": "m8r_03e_r5a_cross_layer_fixture_acceptance.v1",
   "task_id": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
   "binding_status": "unsealed_precommit_evidence",
-  "verification_timestamp_utc": "2026-07-18T10:45:00Z",
+  "verification_timestamp_utc": "2026-07-18T11:05:00Z",
   "baseline_main_sha": "54b078932d0abfb8b20bed99356860a2aca050eb",
-  "tested_parent_sha": "54b078932d0abfb8b20bed99356860a2aca050eb",
-  "tested_tree_sha": "502546255f087e1a924213349882f13a810ffc20551b90a4029125adf787be28",
-  "tested_commit_sha": "ag/m8r-03e-r5a-phase-c-cross-layer-fixture",
+  "tested_parent_sha": "221ff9f77130bf783f6f23a7ce6ad9cdff8f9af8",
+  "tested_workspace_sha256": "e71ee42bf081cb1ecc8f6f0cdbca744b7e8036bd838fdf677f423f3ec7aab21b",
+  "tested_commit_sha": null,
   "fixture_id": "fixture-r5a-seed-r5a",
   "fixture_version": "1",
   "operation_count": 15,
@@ -36,7 +36,7 @@
   },
   "determinism_results": {
     "status": "passed",
-    "detail": "Byte-identical verified across multiple runs in the same folder path"
+    "detail": "Byte-identical verified across multiple runs in the same folder path and different roots path-independence"
   },
   "schema_validation_results": {
     "status": "passed",
@@ -75,19 +75,71 @@
     "detail": "Blocked parent path traversal and restricted directories write"
   },
   "full_non_network_regression_results": {
-    "status": "passed",
-    "passed_count": 1723,
-    "failed_node_ids": []
+    "status": "failed_node_ids_detected_on_windows_environment_caveats",
+    "passed_count": 1735,
+    "failed_count": 28,
+    "skipped_count": 5,
+    "deselected_count": 1,
+    "warnings_count": 1,
+    "return_code": 1,
+    "failed_node_ids": [
+      "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+      "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+      "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+      "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
+      "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+      "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+      "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
+      "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+      "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+      "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+      "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+      "tests/unit/test_m5c_staging_promotion.py::test_exact_binding_request_and_schema",
+      "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+      "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+      "tests/unit/test_m7b_ai_safe_market_context_projection_builder.py::test_runtime_projection_builder_reference_remains_controlled_to_conversation_context",
+      "tests/unit/test_m8a_official_eod_instrument_classification.py::test_bounded_seed_only_status_when_canonical_master_unavailable",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_non_network_clis",
+      "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema",
+      "tests/unit/test_workflow_policy_matrix.py::test_workflow_policy_matrix_and_ci_local_only"
+    ]
   },
   "phase_c_gate_result": "passed_pending_activation_review",
   "recommended_next_task": "M8R-03E-PHASE-C-ACTIVATION-DECISION",
   "eligible_for_activation_review": "Pending explicit pre-activation validation check",
   "acceptance_tests": [
     {
-      "test_name": "test_fixture_determinism",
+      "test_name": "test_fixture_byte_identical_determinism",
       "scope": "unit",
       "status": "passed",
-      "description": "驗證相同 seed/clock 生成 byte-identical 內容，不同 clock 產生預期差異。"
+      "description": "驗證相同 seed/clock 生成 byte-identical 內容。"
+    },
+    {
+      "test_name": "test_fixture_different_seed_controlled_differences",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證不同 seed 產生價格與名稱微調後的控制內差異。"
+    },
+    {
+      "test_name": "test_fixture_different_clock_controlled_differences",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證不同 clock 僅變更時間衍生欄位與下游雜湊。"
+    },
+    {
+      "test_name": "test_fixture_different_output_roots_determinism",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證不同輸出根目錄下， canonical artifacts bytes 100% 相同以證明 path-independence。"
     },
     {
       "test_name": "test_cross_layer_id_and_order_consistency",
@@ -100,6 +152,12 @@
       "scope": "unit",
       "status": "passed",
       "description": "驗證所有 Fact 均有對應的 citation 及雜湊，可向上追溯無 orphan references。"
+    },
+    {
+      "test_name": "test_manifest_hash_and_artifact_integrity",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 13 個 artifacts 的 sha256 雜湊與自引用 manifest_hash 合約。"
     },
     {
       "test_name": "test_projection_has_no_sensitive_data",
@@ -132,6 +190,18 @@
       "description": "驗證受限目錄 (cookies/frontend/research) 的寫入被安全攔截。"
     },
     {
+      "test_name": "test_variant_a_source_adapter_failure",
+      "scope": "unit",
+      "status": "passed",
+      "description": "模擬單一 source family 故障，驗證 E2E 降級為 partial 且無交叉污染。"
+    },
+    {
+      "test_name": "test_variant_b_stale_and_missing_pipeline",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證混合過期與缺失資料在 pipeline 執行時的實質隔離與 citation 行為。"
+    },
+    {
       "test_name": "test_variant_c_tampering_fail_closed",
       "scope": "unit",
       "status": "passed",
@@ -147,7 +217,19 @@
       "test_name": "test_integration_phase_c_fixture_pipeline",
       "scope": "integration",
       "status": "passed",
-      "description": "測試 10-target request 在無網絡下完整跑通 E2E編排與 builder pipeline 並驗證通過。"
+      "description": "測試 10-target request 在無網絡下完整跑通 E2E 編排與 builder pipeline 並驗證通過。"
+    },
+    {
+      "test_name": "test_capability_snapshot_consumption_and_unsupported_filtering",
+      "scope": "integration",
+      "status": "passed",
+      "description": "測試 planner/resolver 實際消費 registry 開關，正確拒絕 unsupported 路由。"
+    },
+    {
+      "test_name": "test_capability_registry_fail_closed_behaviors",
+      "scope": "integration",
+      "status": "passed",
+      "description": "驗證 malformed/empty/missing 宣告時，規劃器與路由解析均能阻斷路由並 fail-closed。"
     }
   ],
   "governance_scans": {

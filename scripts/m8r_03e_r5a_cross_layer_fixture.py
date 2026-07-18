@@ -339,15 +339,13 @@ def build_r5a_cross_layer_fixture(
                     "price": p_2308,
                     "change": 5.0,
                     "source_timestamp": "2026-07-15T02:59:50Z", # 大於 24 小時前
-                    "retrieved_at": "2026-07-15T03:00:00Z",
-                    "freshness_status": "stale",
-                    "delay_seconds": 7200
+                    "retrieved_at": clock_str
                 },
                 "TWSE_OPENAPI": {
                     "symbol": "2308",
                     "market": "listed",
                     "trade_date": "2026-07-14",
-                    "retrieved_at_utc": "2026-07-15T03:00:00Z",
+                    "retrieved_at_utc": clock_str,
                     "price": {"open": "345", "high": "352", "low": "344", "close": "346"},
                     "activity": {"trade_volume": 5000}
                 }

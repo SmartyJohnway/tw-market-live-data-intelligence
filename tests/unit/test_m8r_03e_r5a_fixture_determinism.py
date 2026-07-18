@@ -95,3 +95,27 @@ def test_fixture_different_clock_controlled_differences(tmp_path):
                 if "retrieved_at_utc" in family: family["retrieved_at_utc"] = "CLEANED"
                 
     assert obs_a == obs_b
+
+def test_fixture_different_output_roots_determinism(tmp_path):
+    root_x = tmp_path / "root_x"
+    root_y = tmp_path / "root_y"
+    root_x.mkdir()
+    root_y.mkdir()
+    
+    # 相同 seed 相同 clock，不同輸出目錄
+    generate_fixtures_to_disk(root_x, seed_val="test-seed", clock_val="2026-07-16T03:00:00Z")
+    generate_fixtures_to_disk(root_y, seed_val="test-seed", clock_val="2026-07-16T03:00:00Z")
+    
+    # 讀取 manifest 中列出的 canonical artifacts，核對原始 bytes
+    manifest = json.loads((root_x / "fixture_manifest.json").read_text(encoding="utf-8"))
+    
+    for art in manifest["artifacts"]:
+        rel = art["relative_path"]
+        file_x = root_x / rel
+        file_y = root_y / rel
+        
+        assert file_x.exists()
+        assert file_y.exists()
+        
+        # 斷言不同輸出目錄下對應檔案的原始 bytes 100% 完全相同
+        assert file_x.read_bytes() == file_y.read_bytes(), f"Byte drift under different output root for: {rel}"
