@@ -1,0 +1,33 @@
+{
+  "schema_version": "m8r_ai_evidence_acceptance_record.v1",
+  "task_id": "M8R-03E-PHASE-C-ACTIVATION-DECISION",
+  "acceptance_timestamp_utc": "2026-07-18T14:18:00Z",
+  "environment": {
+    "os": "windows",
+    "python_version": "3.13.7"
+  },
+  "acceptance_tests": {
+    "unit_tests": [
+      "tests/unit/test_m8r_03e_phase_c_activation_policy.py",
+      "tests/unit/test_m8r_phase_c_execution_preview.py",
+      "tests/unit/test_m8r_phase_c_conversation_approval.py",
+      "tests/unit/test_m8r_phase_c_resource_bounds.py",
+      "tests/unit/test_m8r_phase_c_source_activation.py",
+      "tests/unit/test_m8r_phase_c_preview_plan_consistency.py",
+      "tests/unit/test_m8r_phase_c_retention_policy.py"
+    ],
+    "integration_tests": [
+      "tests/integration/test_m8r_phase_c_conversation_driven_activation.py"
+    ],
+    "result": "success",
+    "passed_count": 8,
+    "failed_count": 0
+  },
+  "regression_tests": {
+    "total_not_network_tests": 1790,
+    "baseline_failures": 99,
+    "novel_regressions": 0,
+    "result": "success"
+  },
+  "gate_disposition": "approved_with_caveats"
+}

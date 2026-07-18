@@ -326,7 +326,7 @@
   "next_task_status": "accepted_successor",
   "original_m8r04_disposition": "superseded_and_split",
   "phase_c_activation_profile": "phase_c_conversation_driven_one_shot.v1",
-  "phase_c_activation_status": "conversation_driven_enabled_with_caveats",
+  "phase_c_activation_status": "validated_not_activated",
   "phase_c_approval_mode": "conversation_explicit_approval",
   "phase_c_autonomous_trading_enabled": false,
   "phase_c_default_max_operations": 30,
