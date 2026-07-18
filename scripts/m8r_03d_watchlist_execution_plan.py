@@ -185,36 +185,34 @@ def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|
     tpex_openapi_exec = get_flag("tpex_openapi_runtime_executable")
     
     # 動態 sources 檢查，缺失 runtime_executable 或非 True 亦視為 False
+    source_activation_states = {}
     for src in source_capability_registry.get("sources", []):
         f = src.get("source_family")
+        if f:
+            source_activation_states[f] = src.get("phase_c_activation_state")
+            
         exec_val = src.get("runtime_executable") is True
         if f == "TWSE_MIS": twse_mis_exec = twse_mis_exec and exec_val
         elif f == "TWSE_OPENAPI": twse_openapi_exec = twse_openapi_exec and exec_val
         elif f == "TPEX_OPENAPI": tpex_openapi_exec = tpex_openapi_exec and exec_val
 
+    def is_source_activated(fam):
+        return source_activation_states.get(fam) == "enabled_one_shot"
+
     ids=list(req['persistent_watchlist_reference']['enabled_target_ids'])
     targets=[]; groups=[]; issues=[]
-    if len(ids)>MAX_WATCHLIST_TARGETS: issues.append({'code':'target_limit_exceeded','max_target_count':MAX_WATCHLIST_TARGETS,'blocking':True})
     for i,tid in enumerate(ids):
         r=_target_from_resolution(_resolve_security(tid, security_master, allow_fixture_snapshot=allow_fixture_snapshot)); cur={}; eod={}; expected='unavailable'
         if r['identity_status']=='resolved':
             expected='usable'; market=r['market']; code=r['security_code']
-            cur_allowed = "TWSE_MIS" in active_families and twse_mis_exec
+            cur_allowed = "TWSE_MIS" in active_families and twse_mis_exec and is_source_activated("TWSE_MIS")
             eodfam='TWSE_OPENAPI' if market=='TWSE' else 'TPEX_OPENAPI'
-            eod_allowed = eodfam in active_families and (twse_openapi_exec if eodfam == 'TWSE_OPENAPI' else tpex_openapi_exec)
+            eod_allowed = eodfam in active_families and (twse_openapi_exec if eodfam == 'TWSE_OPENAPI' else tpex_openapi_exec) and is_source_activated(eodfam)
             
             if bundle_type=='snapshot' and cur_allowed:
                 cur={'source_family':'TWSE_MIS','route':('tse_' if market=='TWSE' else 'otc_')+code.lower()+'.tw','operation_class':'planned_network_fetch'}
             if eod_allowed:
                 eod={'source_family':eodfam,'route':eodfam,'operation_class':'planned_network_fetch'}
-            
-            # 如果某個 source family 因為被 capability registry 標記為不可執行而拒絕，我們將其視為 coverage 缺失或 blocked
-            if bundle_type=='snapshot' and not cur_allowed:
-                # 這裡不把 cur 排入
-                pass
-            if not eod_allowed:
-                # 這裡不把 eod 排入
-                pass
             
             if not cur and not eod:
                 expected = 'unavailable'
@@ -224,15 +222,71 @@ def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|
             if cur: groups.append({'source_family':'TWSE_MIS','context_type':'liveish_observation','target_ids':[tid],'network_required':True})
             if eod: groups.append({'source_family':eodfam,'context_type':'official_eod_reference','target_ids':[tid],'network_required':True,'history_window':_history_window(req) if bundle_type=='performance' else {'latest_completed_eod_only':True}})
         targets.append({**r,'current_source_plan':cur,'eod_source_plan':eod,'expected_coverage':expected}); issues.extend(r.get('blocking_issues', []))
+    
+    # 計算 planned operations
+    planned_ops = []
+    for t in targets:
+        tid = t['target_id']
+        if t.get('current_source_plan'):
+            planned_ops.append({
+                "operation_id": f"op-{tid}-TWSE_MIS",
+                "target_id": tid,
+                "source_family": "TWSE_MIS",
+                "operation_type": "current_snapshot",
+                "timing_class": "liveish_intraday_snapshot",
+                "fallback_allowed": True
+            })
+        if t.get('eod_source_plan'):
+            fam = t['eod_source_plan']['source_family']
+            planned_ops.append({
+                "operation_id": f"op-{tid}-{fam}",
+                "target_id": tid,
+                "source_family": fam,
+                "operation_type": "official_eod",
+                "timing_class": "official_eod" if fam.endswith("OPENAPI") else "official_statistics_eod",
+                "fallback_allowed": True
+            })
+            
+    # Bounds 判定
+    target_count = len(ids)
+    operation_count = len(planned_ops)
+    
+    expanded_scope = (target_count > 10 and target_count <= 50) or (operation_count > 30 and operation_count <= 100)
+    
+    if target_count > 50 or operation_count > 100:
+        issues.append({'code': 'rejected_resource_bound', 'blocking': True, 'target_count': target_count, 'operation_count': operation_count})
+        
     # merge deterministic groups
     merged={}
     for g in groups:
         k=(g['source_family'],g['context_type'],canonical_json(g.get('history_window',{})))
         merged.setdefault(k,{**g,'target_ids':[]})['target_ids'].extend(g['target_ids'])
     groups=[{**v,'target_ids':sorted(v['target_ids'], key=ids.index)} for k,v in sorted(merged.items())]
-    base={'schema_version':PLAN_SCHEMA_VERSION,'request_id':req['request_id'],'request_hash':canonical_request_hash(req),'bundle_type':bundle_type,'target_order':ids,'targets':targets,'source_call_groups':groups,'network_required':bool(groups),'authorization_required':True,'max_target_count':MAX_WATCHLIST_TARGETS,'issues':issues}
+    base={'schema_version':PLAN_SCHEMA_VERSION,'request_id':req['request_id'],'request_hash':canonical_request_hash(req),'bundle_type':bundle_type,'target_order':ids,'targets':targets,'source_call_groups':groups,'network_required':bool(groups),'authorization_required':True,'max_target_count':50,'issues':issues}
     base['plan_id']='m8r03d-plan-'+sha256_json({k:base[k] for k in ('request_id','request_hash','bundle_type','target_order','targets','source_call_groups')})[:16]
-    base['created_at_utc']=generated_at_utc or utc_now(); return base
+    base['created_at_utc']=generated_at_utc or utc_now()
+    
+    # 產生 preview 物件
+    preview = {
+        "schema_version": "m8r_phase_c_execution_preview.v1",
+        "preview_id": "preview-" + sha256_json(planned_ops)[:16],
+        "request_id": req["request_id"],
+        "request_summary": req.get("original_user_text") or "取得指定台股目前市場狀況",
+        "targets": ids,
+        "target_count": target_count,
+        "planned_sources": sorted(list(set(op["source_family"] for op in planned_ops))),
+        "planned_operations": planned_ops,
+        "operation_count": operation_count,
+        "estimated_network_calls": operation_count,
+        "expanded_scope": expanded_scope,
+        "fallback_policy": "registry_governed",
+        "partial_success_policy": "allowed",
+        "artifact_retention_days": 30,
+        "requires_user_confirmation": True
+    }
+    base["execution_preview"] = preview
+    
+    return base
 
 def _history_window(req):
     days=req['conversation_intent']['time_scope'].get('lookback_trading_days') or 20
