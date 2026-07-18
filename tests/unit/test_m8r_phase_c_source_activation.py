@@ -25,7 +25,8 @@ def make_req(request_id, target_ids, original_user_text="我的觀察清單現�
         "network_allowed": True,
         "operator_confirmation_required": False,
         "polling": False,
-        "scheduler": False
+        "scheduler": False,
+        "execution_profile": "phase_c_conversation_driven_one_shot.v1"
       },
       "explicit_user_constraints": {},
       "follow_up_context": None,

@@ -5,8 +5,14 @@ from scripts.m8r_03d_watchlist_execution_plan import build_execution_plan
 from scripts.m8r_03d_watchlist_controlled_executor import execute_watchlist, SOURCE_ADAPTERS, NORMALIZERS
 from scripts.m8r_03d_f1_security_master_snapshot_adapter import load_verified_security_master_snapshot
 
-def test_zero_code_expansion():
-    # 建立測試用 Mock Registry，宣告支援 TWSE
+def test_pre_registered_source_activates_without_core_routing_changes():
+    # 驗證「registry-driven activation of pre-registered adapters」：
+    # 只需在 capability registry 中宣告並設定一個 pre-registered source family，
+    # 即可透過 Phase C 的動態路由機制完成來源選擇、呼叫與歸一化，
+    # 不需要修改 planner/executor 的核心路由邏輯。
+    # 注意：新 source 仍然需要 adapter + normalizer + bundle role implementation，
+    # 這些必須在整合前完成 plugin 預先註冊。
+    # 建立測試用 Mock Registry，宣告支援 FIXTURE_TEST_SOURCE
     registry = {
       "schema_version": "m8_source_capability_registry.v1",
       "phase_c_activation_status": "conversation_driven_enabled_with_caveats",
@@ -60,7 +66,10 @@ def test_zero_code_expansion():
             "issues": []
         }
 
-    # 動態註冊自定義擴展來源與歸一化器
+    # Pre-register the plugin adapter/normalizer/role before execution.
+    # This simulates the integration step required for any new source:
+    # adapter (how to fetch) + normalizer (how to standardize) + bundle role (how to bundle)
+    # are all pre-registered here, then activated purely through the capability registry.
     from scripts.m8r_03c_watchlist_bundle_builder import SOURCE_ROLE_MATRIX
     SOURCE_ROLE_MATRIX["FIXTURE_TEST_SOURCE"] = {
         'role': 'current',
@@ -107,7 +116,8 @@ def test_zero_code_expansion():
                 "network_allowed": True,
                 "operator_confirmation_required": False,
                 "polling": False,
-                "scheduler": False
+                "scheduler": False,
+                "execution_profile": "phase_c_conversation_driven_one_shot.v1"
             },
             "conversation_intent": {
                 "schema_version": "m8r_ai_market_conversation_intent.v1",

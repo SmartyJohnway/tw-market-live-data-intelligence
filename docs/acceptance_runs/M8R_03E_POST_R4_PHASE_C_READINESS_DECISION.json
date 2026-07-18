@@ -365,7 +365,7 @@
     "Whether full-non-network regression sealing must be performed in a separate isolated Linux environment",
     "Approval of R5A/R5B parallel execution sequencing"
   ],
-  "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+  "recommended_next_task": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
   "parallel_authorized_workstream": "M8R-03E-R5B-WINDOWS-FILESYSTEM-FAIL-CLOSED-CORRECTION",
   "full_non_network_failures_auditable": [
     {
@@ -947,7 +947,7 @@
   "later_owner_sequencing_decision": {
     "decision_date": "2026-07-17",
     "current_primary_task": "M8R-03E-R5B-CROSS-PLATFORM-FILESYSTEM-FAIL-CLOSED-CONTRACT-AND-WINDOWS-CORRECTION",
-    "recommended_next_task_after_r5b": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE"
+    "recommended_next_task_after_r5b": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS"
   },
   "provisional_assignment_counts": {
     "known_historical_failure": 0,

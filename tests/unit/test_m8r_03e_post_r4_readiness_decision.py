@@ -1,4 +1,4 @@
-import json
+﻿import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -78,7 +78,7 @@ def test_network_summary():
 
 def test_successor_and_phase_c_gates():
     dec = load_json(DECISION_PATH)
-    assert dec["recommended_next_task"] == "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE"
+    assert dec["recommended_next_task"] == "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS"
     assert dec["parallel_authorized_workstream"] == "M8R-03E-R5B-WINDOWS-FILESYSTEM-FAIL-CLOSED-CORRECTION"
 
     contract = load_json(CONTRACT_PATH)

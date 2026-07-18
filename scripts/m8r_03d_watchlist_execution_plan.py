@@ -165,14 +165,10 @@ def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|
         raise ValueError(f"invalid_capability_registry_schema: expected m8_source_capability_registry.v1, got {source_capability_registry['schema_version']}")
 
     # 判定是否啟用 Phase C 對話啟動模式
-    phase_c_active = source_capability_registry.get("phase_c_activation_status") == "conversation_driven_enabled_with_caveats"
-
-    # 智能向後相容退回：如果 required_evidence 和 useful_evidence 皆為空，或者不允許網路，降級為 False
-    if phase_c_active:
-        if not req.get("required_evidence") and not req.get("useful_evidence"):
-            phase_c_active = False
-        elif req.get("execution_policy", {}).get("network_allowed") is not True:
-            phase_c_active = False
+    phase_c_active = False
+    if source_capability_registry.get("phase_c_activation_status") == "conversation_driven_enabled_with_caveats":
+        if req.get("execution_policy", {}).get("execution_profile") == "phase_c_conversation_driven_one_shot.v1":
+            phase_c_active = True
 
     # 載入 Activation Policy (作為唯一 Source of Truth)
     default_max_targets = 10

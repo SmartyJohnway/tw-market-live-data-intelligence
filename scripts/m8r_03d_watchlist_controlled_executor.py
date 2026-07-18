@@ -47,15 +47,10 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
     if mode not in {'preflight','fixture','execute'}: raise ValueError('invalid_mode')
 
     # 判定是否啟用 Phase C 對話啟動模式
-    phase_c_active = source_capability_registry.get("phase_c_activation_status") == "conversation_driven_enabled_with_caveats"
-
-    # 智慧向後相容退回：如果傳入了舊版 auth，且沒有新版 approval/preview，降級回舊版模式
-    if phase_c_active:
-        if authorization is not None and approval is None and preview is None:
-            phase_c_active = False
-        # 如果 request 沒有 required_evidence 且沒有 useful_evidence，降級回舊版模式以相容舊測試
-        elif not request.get("required_evidence") and not request.get("useful_evidence"):
-            phase_c_active = False
+    phase_c_active = False
+    if source_capability_registry.get("phase_c_activation_status") == "conversation_driven_enabled_with_caveats":
+        if request.get("execution_policy", {}).get("execution_profile") == "phase_c_conversation_driven_one_shot.v1":
+            phase_c_active = True
 
     if mode=='preflight' or plan_has_blocking_issues(plan):
         status='blocked_preflight' if plan_has_blocking_issues(plan) else 'success'
@@ -110,9 +105,14 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
             if not canonical_preview:
                 return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'canonical_preview_missing'}],artifact_root_path,write=False)
 
-            # 內容雜湊比對，確保 Preview 無任何欄位被惡意篡改
-            if preview.get('preview_id') != canonical_preview['preview_id']:
-                return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'preview_plan_mismatch','detail':'preview content hash mismatch'}],artifact_root_path,write=False)
+            # 內容雜湊重算與比對，確保 Preview 無任何欄位被惡意篡改
+            caller_body = {k: v for k, v in preview.items() if k != "preview_id"}
+            expected_id = "preview-" + sha256_json(caller_body)
+            
+            if preview.get('preview_id') != expected_id:
+                return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'preview_plan_mismatch','detail':'preview_id does not match caller content hash'}],artifact_root_path,write=False)
+            if expected_id != canonical_preview['preview_id']:
+                return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'preview_plan_mismatch','detail':'caller preview content differs from canonical planner preview'}],artifact_root_path,write=False)
             if approval.get('preview_id') != canonical_preview['preview_id']:
                 return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'approval_referenced_different_preview'}],artifact_root_path,write=False)
 

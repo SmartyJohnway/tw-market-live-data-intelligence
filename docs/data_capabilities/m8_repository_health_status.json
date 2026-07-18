@@ -48,13 +48,14 @@
     "comparison_subject": "PR_150",
     "current_head_counts": {
       "deselected": 1,
-      "failed": 7,
-      "passed": 1661,
-      "skipped": 1
+      "failed": 100,
+      "passed": 1687,
+      "skipped": 5,
+      "warning": 1
     },
-    "current_head_failure_set_matches_baseline": true,
-    "current_head_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
-    "current_head_status": "known_pre_existing_failures_unchanged",
+    "current_head_failure_set_matches_baseline": false,
+    "current_head_sha": "793865d4805a0bffd5aa72c46b457bc0feb1577c",
+    "current_head_status": "phase_c_activation_regression_cleanup_in_progress_100_failures_down_from_109",
     "failing_node_ids": [
       "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
       "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
@@ -64,11 +65,11 @@
       "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
       "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
     ],
-    "failure_count_delta": 0,
-    "failure_set_changed": false,
-    "generated_at_utc": "2026-07-16T13:34:56Z",
-    "generated_by_command": "python scripts/run_test_profile.py full-non-network --json",
-    "generation_head_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
+    "failure_count_delta": 93,
+    "failure_set_changed": true,
+    "generated_at_utc": "2026-07-18T16:46:00Z",
+    "generated_by_command": "pytest -m 'not network' -q",
+    "generation_head_sha": "793865d4805a0bffd5aa72c46b457bc0feb1577c",
     "historical_pr_149_evidence": {
       "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
       "historical_current_counts": {
@@ -82,8 +83,8 @@
     },
     "new_f1_specific_regression_count": 0,
     "new_m8_m8r_failure_count": 0,
-    "pass_count_delta": 45,
-    "reason_code": "frontend_public_baseline_drift"
+    "pass_count_delta": 26,
+    "reason_code": "phase_c_activation_commit8_regression_cleanup_9_fixed"
   },
   "generated_at_utc": "2026-07-16T00:00:00Z",
   "implemented_through_track": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
@@ -100,14 +101,14 @@
   "r2_filesystem_containment_status": "GO_WITH_CAVEATS_REMEDIATED_WITH_PORTABLE_TOCTOU_AND_WINDOWS_REPARSE_LIMITATIONS",
   "r2_recommended_next_task": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
   "r2_status": "GO_WITH_CAVEATS",
-  "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+  "recommended_next_task": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
   "recommended_next_task_reason": "R3 migration, composition, dependency boundaries, and acceptance closure completed; R4 performance and scalability remains the successor.",
   "recommended_successor_after_m8r_03e": {
     "status": "historical_superseded",
     "superseded_by": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
     "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION"
   },
-  "registry_successor": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+  "registry_successor": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
   "roadmap_alignment_status": "aligned_with_caveats",
   "schema_version": "m8_repository_health_status.v1",
   "security_status": "GO_WITH_CAVEATS_R2_CONTAINMENT_REMEDIATED_WITH_PORTABLE_TOCTOU_AND_WINDOWS_REPARSE_LIMITATIONS",
@@ -208,11 +209,12 @@
       "command": "python scripts/run_test_profile.py full-non-network --json",
       "counts": {
         "deselected": 1,
-        "failed": 7,
-        "passed": 1661,
-        "skipped": 1
+        "failed": 100,
+        "passed": 1687,
+        "skipped": 5,
+        "warning": 1
       },
-      "failure_set_changed": false,
+      "failure_set_changed": true,
       "new_m8_m8r_failure_count": 0,
       "status": "fail_known_baseline_drift"
     }
