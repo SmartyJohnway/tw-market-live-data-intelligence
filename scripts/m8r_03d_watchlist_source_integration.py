@@ -129,33 +129,33 @@ def _base(target,source_family,timing,context,retrieved,source_ts=None,trade_dat
     obs.pop('source_role', None)
     return obs
 
-def normalize_twse_mis_watchlist_observation(source_obs:dict, plan_target:dict, *, retrieved_at_utc:str|None=None)->dict:
+def normalize_twse_mis_watchlist_observation(source_obs:dict, plan_target:dict, *, reference_clock_utc:str|None=None)->dict:
     _reject_raw(source_obs); facts={}
     mapping={'price':'latest_price','price_like_value':'latest_price','latest_price':'latest_price','change':'change','change_percent':'change_percent','open':'open','high':'high','low':'low','volume':'volume','no_trade_state':'no_trade_state','close':'close'}
     sf=source_obs.get('safe_fields') if isinstance(source_obs.get('safe_fields'),dict) else source_obs
     for k,dst in mapping.items():
         if k in sf and dst in SAFE_CURRENT: facts[dst]=sf.get(k)
         
-    ret_str = retrieved_at_utc or source_obs.get('retrieved_at_utc') or source_obs.get('retrieved_at')
+    actual_retrieved = source_obs.get('retrieved_at_utc') or source_obs.get('retrieved_at')
     src_str = source_obs.get('source_timestamp')
     
     cur = evaluate_evidence_currentness(
-        reference_clock_str=retrieved_at_utc,
+        reference_clock_str=reference_clock_utc,
         source_timestamp_str=src_str,
-        retrieved_at_str=source_obs.get('retrieved_at_utc') or source_obs.get('retrieved_at'),
+        retrieved_at_str=actual_retrieved,
         timing_class="liveish_intraday_snapshot",
         max_age_seconds=900.0
     )
     
-    return _base(plan_target,'TWSE_MIS','liveish_intraday_snapshot','liveish_observation',ret_str,src_str,None,cur,{k:v for k,v in facts.items() if k in SAFE_CURRENT},list(source_obs.get('caveats') or source_obs.get('issues') or []))
+    return _base(plan_target,'TWSE_MIS','liveish_intraday_snapshot','liveish_observation',actual_retrieved,src_str,None,cur,{k:v for k,v in facts.items() if k in SAFE_CURRENT},list(source_obs.get('caveats') or source_obs.get('issues') or []))
 
-def normalize_twse_openapi_watchlist_observation(source_obs:dict, plan_target:dict, *, retrieved_at_utc:str|None=None)->dict:
-    return _normalize_eod(source_obs,plan_target,'TWSE_OPENAPI',retrieved_at_utc)
+def normalize_twse_openapi_watchlist_observation(source_obs:dict, plan_target:dict, *, reference_clock_utc:str|None=None)->dict:
+    return _normalize_eod(source_obs,plan_target,'TWSE_OPENAPI',reference_clock_utc)
 
-def normalize_tpex_openapi_watchlist_observation(source_obs:dict, plan_target:dict, *, retrieved_at_utc:str|None=None)->dict:
-    return _normalize_eod(source_obs,plan_target,'TPEX_OPENAPI',retrieved_at_utc)
+def normalize_tpex_openapi_watchlist_observation(source_obs:dict, plan_target:dict, *, reference_clock_utc:str|None=None)->dict:
+    return _normalize_eod(source_obs,plan_target,'TPEX_OPENAPI',reference_clock_utc)
 
-def _normalize_eod(source_obs,plan_target,fam,retrieved_at_utc=None):
+def _normalize_eod(source_obs,plan_target,fam,reference_clock_utc=None):
     _reject_raw(source_obs)
     safe_fields=source_obs.get('safe_fields') if isinstance(source_obs.get('safe_fields'),dict) else {}
     price=source_obs.get('price') or safe_fields.get('price') or {}
@@ -167,12 +167,14 @@ def _normalize_eod(source_obs,plan_target,fam,retrieved_at_utc=None):
     facts['trade_date']=trade_date
     facts={k:v for k,v in facts.items() if k in SAFE_EOD}
     
+    actual_retrieved = source_obs.get('retrieved_at_utc') or source_obs.get('retrieved_at')
+    
     cur = evaluate_evidence_currentness(
-        reference_clock_str=retrieved_at_utc,
+        reference_clock_str=reference_clock_utc,
         source_timestamp_str=source_obs.get('source_timestamp'),
-        retrieved_at_str=source_obs.get('retrieved_at_utc') or source_obs.get('retrieved_at'),
+        retrieved_at_str=actual_retrieved,
         timing_class="official_eod",
         trade_date=trade_date
     )
     
-    return _base(plan_target,fam,'official_eod','official_eod_reference',retrieved_at_utc or source_obs.get('retrieved_at_utc'),None,facts.get('trade_date'),cur,facts,list(source_obs.get('caveats') or []))
+    return _base(plan_target,fam,'official_eod','official_eod_reference',actual_retrieved,None,facts.get('trade_date'),cur,facts,list(source_obs.get('caveats') or []))

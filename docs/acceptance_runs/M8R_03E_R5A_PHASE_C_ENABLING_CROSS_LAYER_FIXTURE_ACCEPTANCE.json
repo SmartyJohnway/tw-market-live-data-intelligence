@@ -2,9 +2,9 @@
   "schema_version": "m8r_03e_r5a_cross_layer_fixture_acceptance.v1",
   "task_id": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
   "binding_status": "unsealed_precommit_evidence",
-  "verification_timestamp_utc": "2026-07-18T11:20:00Z",
+  "verification_timestamp_utc": "2026-07-18T11:50:00Z",
   "baseline_main_sha": "54b078932d0abfb8b20bed99356860a2aca050eb",
-  "tested_parent_sha": "4f8c4d3d66c0f12279a1c765fd2c9fe87e4cad81",
+  "tested_parent_sha": "376ffa75d8001ac59326c10b51b51cc7d22b6c1d",
   "tested_workspace_sha256": "88140fc7ae7d2ed39a7fb94aca36791373077ad2bf197ff66591fa5d42239388",
   "tested_commit_sha": null,
   "fixture_id": "fixture-r5a-seed-r5a",
@@ -52,15 +52,15 @@
   },
   "provenance_results": {
     "status": "passed",
-    "detail": "Facts citations lineage traced without orphans"
+    "detail": "Facts citations lineage traced without orphans; actual retrieval timestamp preserved separately from evaluation clock"
   },
   "citation_results": {
     "status": "passed",
     "detail": "No cross-target data leakage or contamination verified"
   },
   "currentness_results": {
-    "status": "passed",
-    "detail": "Dynamic evaluator resolved stale status based on timezone-aware reference clock difference"
+    "status": "passed_with_caveats",
+    "detail": "Dynamic evaluator resolved stale status based on timezone-aware reference clock difference; EOD policy is provisional pending trading calendar integration"
   },
   "partial_failure_results": {
     "status": "passed",
@@ -96,6 +96,8 @@
       "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only",
       "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin"
     ],
+    "environment_equivalence_status": "partially_comparable",
+    "regression_determination_status": "no_novel_failing_node_ids_observed",
     "failure_set_relation": "subset",
     "failed_node_ids": [
       "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
@@ -245,6 +247,66 @@
       "scope": "integration",
       "status": "passed",
       "description": "驗證 malformed/empty/missing 宣告時，規劃器與路由解析均能阻斷路由並 fail-closed。"
+    },
+    {
+      "test_name": "test_parse_iso_datetime_tz_aware",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證帶有時區標記的 ISO 時間戳記之正確解析（包含 UTC Z 與台北偏移）。"
+    },
+    {
+      "test_name": "test_currentness_fresh_liveish",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 age 在 max_age_seconds 內時，live-ish 資料正確標記為 fresh 且計算了 latency。"
+    },
+    {
+      "test_name": "test_currentness_stale_liveish",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 age 超出限制時，live-ish 資料被標記為 stale。"
+    },
+    {
+      "test_name": "test_currentness_future_timestamp",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證來源時間在 reference clock 之後時判定為 unresolved 異常。"
+    },
+    {
+      "test_name": "test_currentness_missing_inputs",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證缺失 clock 或是觀測時點時 fail-closed 返回 unresolved。"
+    },
+    {
+      "test_name": "test_currentness_retrieved_at_fallback",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證當 source_timestamp 缺失時，自動以 retrieved_at 進行評估計算。"
+    },
+    {
+      "test_name": "test_currentness_timezone_offset_equivalence",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證不同時區表達（如 Z 與 +08:00）在 age 計算時的等價對齊。"
+    },
+    {
+      "test_name": "test_currentness_invalid_tz_fallback",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證無效的時間格式會安全返回 unresolved。"
+    },
+    {
+      "test_name": "test_currentness_official_eod",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 EOD 新鮮度在 3 天限制內標為 completed_eod，超出則標為 stale。"
+    },
+    {
+      "test_name": "test_currentness_official_eod_missing_date",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 EOD 資料若無 trade_date 則返回 unresolved 阻斷。"
     }
   ],
   "governance_scans": {

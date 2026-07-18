@@ -1,5 +1,6 @@
 from __future__ import annotations
 import hashlib,json,re
+from pathlib import Path
 from datetime import datetime,timezone
 from typing import Any
 from scripts.m8r_03c_conversation_contract_validator import validate_watchlist_snapshot_request, validate_watchlist_performance_request, assert_no_forbidden_keys
