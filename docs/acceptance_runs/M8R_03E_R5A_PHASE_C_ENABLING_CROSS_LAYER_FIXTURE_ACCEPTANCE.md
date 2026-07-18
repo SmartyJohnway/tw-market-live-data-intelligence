@@ -1,7 +1,7 @@
 # M8R_03E_R5A Phase C Enabling Cross-Layer Fixture Acceptance Report
 
 ## 1. Executive Summary
-本報告記錄了 **M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE** 任務的驗證結果。在完全關閉網絡、無實際授權憑證消耗的情況下，本階段成功建立並驗證了具備 10 個異質 Target 的跨層級確定性測試用例。所有 20+ 個單元與整合測試均順利通過，達成了無網路執行、E2E 一致性、防篡改 fail-closed 與高性能要求。
+本報告記錄了 **M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE** 任務的驗證結果。在完全關閉網絡、無實際授權憑證消耗的情況下，本階段成功建立並驗證了具備 10 個異質 Target 的跨層級確定性測試用例。所有 30+ 個單元與整合測試均順利通過，達成了無網路執行、E2E 一致性、防篡改 fail-closed 與高性能要求。
 
 > [!IMPORTANT]
 > 此任務僅建立並驗證跨層級測試基礎設施，**並不啟用 Phase C**。Phase C 的激活仍有待後續的審查決定。
@@ -11,8 +11,8 @@
 * **Python Version**: 3.13.7
 * **Pytest Version**: 9.1.1
 * **Baseline Main Commit SHA**: `54b078932d0abfb8b20bed99356860a2aca050eb`
-* **Tested Parent SHA**: `376ffa75d8001ac59326c10b51b51cc7d22b6c1d` (Commit 8)
-* **Tested Workspace SHA-256**: `88140fc7ae7d2ed39a7fb94aca36791373077ad2bf197ff66591fa5d42239388` (當前 generated manifest_hash)
+* **Tested Parent SHA**: `16f238f3e1b24b827996255ed675499a08d63ff0` (Commit 9)
+* **Tested Fixture Manifest SHA-256**: `88140fc7ae7d2ed39a7fb94aca36791373077ad2bf197ff66591fa5d42239388` (當前 generated manifest_hash)
 * **Tested Commit SHA**: `null` (因屬 precommit 驗證)
 * **Fixture ID**: `fixture-r5a-seed-r5a`
 * **Fixture Version**: `1`
@@ -27,6 +27,7 @@
 | `test_fixture_different_clock_controlled_differences` | Unit | **PASSED** | 不同 clock 僅變更時間衍生欄位與下游雜湊。 |
 | `test_fixture_different_output_roots_determinism` | Unit | **PASSED** | 相同 seed/clock 生成到不同輸出目錄，原始 bytes 100% 相同以證明 path-independence。 |
 | `test_cross_layer_id_and_order_consistency` | Unit | **PASSED** | 10-target 的 ID 與順序在 plan, bundle, package 跨層級一致。 |
+| `test_upstream_validation_passes` | Unit | **PASSED** | 驗證 10-target 的 upstream schemas 通過合約驗證。 |
 | `test_package_hash_and_citation_provenance` | Unit | **PASSED** | Fact 與 citation 可向上追溯無 orphan references，且時點拆分避免了 provenance 污染。 |
 | `test_manifest_hash_and_artifact_integrity` | Unit | **PASSED** | 驗證 13 個 artifacts 的 sha256 雜湊與自引用 manifest_hash 合約。 |
 | `test_projection_has_no_sensitive_data` | Unit | **PASSED** | AI projection 中無 raw cookies/credentials 洩露。 |
@@ -41,14 +42,25 @@
 | `test_integration_phase_c_fixture_pipeline` | Integration | **PASSED** | 10-target request 在無網絡下完整跑通 E2E 編排與 builder 流程。 |
 | `test_capability_snapshot_consumption_and_unsupported_filtering` | Integration | **PASSED** | 測試 planner/resolver 實際消費 registry 開關，正確拒絕 unsupported 路由。 |
 | `test_capability_registry_fail_closed_behaviors` | Integration | **PASSED** | 驗證 malformed/empty/missing 宣告時，規劃器與路由解析均能阻斷路由並 fail-closed。 |
-| `test_m8r_watchlist_currentness_evaluator.py` | Unit | **PASSED** | 新增的獨立測試，包含 10 個核心評估場景（fresh/stale/future/timezone/EOD/latency）。 |
+| `test_parse_iso_datetime_tz_aware` | Unit | **PASSED** | 驗證帶有時區標記的 ISO 時間戳記之正確解析（包含 UTC Z 與台北偏移）。 |
+| `test_currentness_fresh_liveish` | Unit | **PASSED** | 驗證 live-ish 在 900 秒新鮮期內的正常判定與延遲計算。 |
+| `test_currentness_stale_liveish` | Unit | **PASSED** | 驗證 live-ish 超過 900 秒時的過期狀態。 |
+| `test_currentness_future_timestamp` | Unit | **PASSED** | 驗證未來時間戳判定為 unresolved。 |
+| `test_currentness_missing_inputs` | Unit | **PASSED** | 驗證缺乏 reference clock 或關鍵觀測時間時安全返回 unresolved。 |
+| `test_currentness_retrieved_at_fallback` | Unit | **PASSED** | 驗證缺失 source_timestamp 時，自動 fallback 為以 retrieved_at 評估。 |
+| `test_currentness_timezone_offset_equivalence` | Unit | **PASSED** | 驗證不同時區表達（Z 與 +08:00）在 age 計算時的等價。 |
+| `test_currentness_invalid_tz_fallback` | Unit | **PASSED** | 驗證無效時間戳格式會安全返回 unresolved。 |
+| `test_currentness_official_eod` | Unit | **PASSED** | 驗證 EOD 新鮮度在 3 天限制內標為 completed_eod，超出則標為 stale。 |
+| `test_currentness_official_eod_missing_date` | Unit | **PASSED** | 驗證 EOD 資料若無 trade_date 則返回 unresolved 阻斷。 |
+| `test_currentness_unknown_timing_class_fails_closed` | Unit | **PASSED** | 驗證未知 timing_class 會被 fail-closed 阻斷返回 unresolved 狀態。 |
+| `test_normalizer_preserves_actual_retrieval_time` | Unit | **PASSED** | 驗證 normalizer 輸出的 observation 忠實保留資料來源之原始取得時間，並隔離計算 age 和 transport latency。 |
 
 ## 4. Full Non-Network Regression Comparison
-我們執行了非聯網回歸測試全套執行，並與 R5B 階段的 36 個錯誤結果進行逐項比較：
-* **Collected (including deselected)**: 1771 (R5B: 1751)
-* **Selected (including skipped)**: 1770 (R5B: 1750)
-* **Passed + Failed**: 1763 (R5B: 1745)
-* **Passed**: 1735 (R5B: 1709)
+我們在 Commit 10 修改完成後，實地重跑了非聯網回歸測試全套執行，並與 R5B 階段的 36 個錯誤結果進行了比較：
+* **Collected (including deselected)**: 1783 (R5B: 1751)
+* **Selected (including skipped)**: 1782 (R5B: 1750)
+* **Passed + Failed**: 1777 (R5B: 1745)
+* **Passed**: 1749 (R5B: 1709)
 * **Failed**: 28 (R5B: 36)
 * **Skipped**: 5 (R5B: 5)
 * **Deselected**: 1 (R5B: 1)
@@ -82,4 +94,4 @@
 ## 7. Binding Agreement
 * **Binding Status**: `unsealed_precommit_evidence`
 * **Task Intent Verified**: Yes
-* **Phase C Gate Disposition**: `pending_currentness_and_evidence_correction` (因為 EOD 新鮮度評估策略屬暫時性的 `provisional bounded EOD age policy`，未涵蓋完整交易日曆/休市日等細節，故維持 pending 狀態等待後續 pre-activation review，並不宜宣稱已完全準備好 activation)
+* **Phase C Gate Disposition**: `pending_currentness_fail_closed_and_acceptance_refresh` (目前 EOD 新鮮度評估策略屬暫時性的 `provisional bounded EOD age policy`，未涵蓋完整交易日曆/休市日等細節，故維持 pending 狀態等待後續 pre-activation review，並不宜宣稱已完全準備好 activation)

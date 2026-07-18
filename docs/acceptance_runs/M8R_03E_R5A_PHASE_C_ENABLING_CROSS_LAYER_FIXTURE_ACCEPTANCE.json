@@ -2,10 +2,10 @@
   "schema_version": "m8r_03e_r5a_cross_layer_fixture_acceptance.v1",
   "task_id": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
   "binding_status": "unsealed_precommit_evidence",
-  "verification_timestamp_utc": "2026-07-18T11:50:00Z",
+  "verification_timestamp_utc": "2026-07-18T12:00:00Z",
   "baseline_main_sha": "54b078932d0abfb8b20bed99356860a2aca050eb",
-  "tested_parent_sha": "376ffa75d8001ac59326c10b51b51cc7d22b6c1d",
-  "tested_workspace_sha256": "88140fc7ae7d2ed39a7fb94aca36791373077ad2bf197ff66591fa5d42239388",
+  "tested_parent_sha": "16f238f3e1b24b827996255ed675499a08d63ff0",
+  "tested_fixture_manifest_sha256": "88140fc7ae7d2ed39a7fb94aca36791373077ad2bf197ff66591fa5d42239388",
   "tested_commit_sha": null,
   "fixture_id": "fixture-r5a-seed-r5a",
   "fixture_version": "1",
@@ -76,10 +76,10 @@
   },
   "full_non_network_regression_results": {
     "status": "failed_node_ids_detected_on_windows_environment_caveats",
-    "collected_including_deselected": 1771,
-    "selected_including_skipped": 1770,
-    "passed_plus_failed": 1763,
-    "passed": 1735,
+    "collected_including_deselected": 1783,
+    "selected_including_skipped": 1782,
+    "passed_plus_failed": 1777,
+    "passed": 1749,
     "failed": 28,
     "skipped": 5,
     "deselected": 1,
@@ -130,7 +130,7 @@
       "tests/unit/test_workflow_policy_matrix.py::test_workflow_policy_matrix_and_ci_local_only"
     ]
   },
-  "phase_c_gate_result": "pending_currentness_and_evidence_correction",
+  "phase_c_gate_result": "pending_currentness_fail_closed_and_acceptance_refresh",
   "recommended_next_task": "M8R-03E-PHASE-C-ACTIVATION-DECISION",
   "eligible_for_activation_review": "Pending explicit pre-activation validation check",
   "acceptance_tests": [
@@ -307,6 +307,18 @@
       "scope": "unit",
       "status": "passed",
       "description": "驗證 EOD 資料若無 trade_date 則返回 unresolved 阻斷。"
+    },
+    {
+      "test_name": "test_currentness_unknown_timing_class_fails_closed",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證未知 timing_class 會被 fail-closed 阻斷返回 unresolved 狀態。"
+    },
+    {
+      "test_name": "test_normalizer_preserves_actual_retrieval_time",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 normalizer 輸出的 observation 忠實保留資料來源之原始取得時間，並隔離計算 age 和 transport latency。"
     }
   ],
   "governance_scans": {

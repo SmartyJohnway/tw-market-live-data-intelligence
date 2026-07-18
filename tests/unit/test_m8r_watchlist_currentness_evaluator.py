@@ -2,7 +2,8 @@ import pytest
 from datetime import datetime, timezone, timedelta
 from scripts.m8r_03d_watchlist_source_integration import (
     parse_iso_datetime,
-    evaluate_evidence_currentness
+    evaluate_evidence_currentness,
+    normalize_twse_mis_watchlist_observation
 )
 
 def test_parse_iso_datetime_tz_aware():
@@ -157,3 +158,39 @@ def test_currentness_official_eod_missing_date():
     )
     assert res["status"] == "unresolved"
     assert res["reason"] == "missing_trade_date"
+
+def test_currentness_unknown_timing_class_fails_closed():
+    res = evaluate_evidence_currentness(
+        reference_clock_str="2026-07-16T03:00:00Z",
+        source_timestamp_str="2026-07-16T02:59:00Z",
+        retrieved_at_str="2026-07-16T02:59:10Z",
+        timing_class="unknown_timing_class"
+    )
+    assert res["status"] == "unresolved"
+    assert res["reason"] == "unsupported_timing_class:unknown_timing_class"
+
+def test_normalizer_preserves_actual_retrieval_time():
+    plan_target = {
+        "target_id": "TWSE:2330",
+        "requested_identity": {"symbol": "2330", "market": "TWSE"},
+        "resolved_identity": {"symbol": "2330", "market": "TWSE", "name": "台積電", "instrument_type": "equity"}
+    }
+    source_obs = {
+        "symbol": "2330",
+        "market": "tse",
+        "source_timestamp": "2026-07-15T02:59:50Z",
+        "retrieved_at_utc": "2026-07-15T03:00:00Z",
+        "price": 950.0,
+        "volume": 10000
+    }
+    obs = normalize_twse_mis_watchlist_observation(
+        source_obs=source_obs,
+        plan_target=plan_target,
+        reference_clock_utc="2026-07-16T03:00:00Z"
+    )
+    # 驗證真實時點保留
+    assert obs["retrieved_at_utc"] == "2026-07-15T03:00:00Z"
+    assert obs["currentness"]["status"] == "stale"
+    assert obs["currentness"]["age_seconds"] == 86410.0
+    assert obs["currentness"]["transport_latency_seconds"] == 10.0
+

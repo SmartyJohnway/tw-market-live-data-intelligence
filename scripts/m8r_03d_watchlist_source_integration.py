@@ -45,6 +45,8 @@ def evaluate_evidence_currentness(
     max_age_seconds: float = 900.0,
     trade_date: str | None = None
 ) -> dict:
+    if timing_class not in {"liveish_intraday_snapshot", "official_eod"}:
+        return {"status": "unresolved", "reason": f"unsupported_timing_class:{timing_class}"}
     if not reference_clock_str:
         return {"status": "unresolved", "reason": "missing_reference_clock"}
     try:
