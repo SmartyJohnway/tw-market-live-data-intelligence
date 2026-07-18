@@ -11,8 +11,8 @@
 * **Python Version**: 3.13.7
 * **Pytest Version**: 9.1.1
 * **Baseline Main Commit SHA**: `54b078932d0abfb8b20bed99356860a2aca050eb`
-* **Tested Parent SHA**: `221ff9f77130bf783f6f23a7ce6ad9cdff8f9af8`
-* **Tested Workspace SHA-256**: `e71ee42bf081cb1ecc8f6f0cdbca744b7e8036bd838fdf677f423f3ec7aab21b` (當前 generated manifest_hash)
+* **Tested Parent SHA**: `4f8c4d3d66c0f12279a1c765fd2c9fe87e4cad81` (Commit 7)
+* **Tested Workspace SHA-256**: `88140fc7ae7d2ed39a7fb94aca36791373077ad2bf197ff66591fa5d42239388` (當前 generated manifest_hash)
 * **Tested Commit SHA**: `null` (因屬 precommit 驗證)
 * **Fixture ID**: `fixture-r5a-seed-r5a`
 * **Fixture Version**: `1`
@@ -42,22 +42,41 @@
 | `test_capability_snapshot_consumption_and_unsupported_filtering` | Integration | **PASSED** | 測試 planner/resolver 實際消費 registry 開關，正確拒絕 unsupported 路由。 |
 | `test_capability_registry_fail_closed_behaviors` | Integration | **PASSED** | 驗證 malformed/empty/missing 宣告時，規劃器與路由解析均能阻斷路由並 fail-closed。 |
 
-* **Full Non-Network Regression Count (Windows)**: **1735 passed**, 28 failed, 5 skipped, 1 deselected, 1 warning (其中 28 個失敗均為 pre-existing Windows 平台路徑與環境相容性舊問題)。
+## 4. Full Non-Network Regression Comparison
+我們執行了非聯網回歸測試全套執行，並與 R5B 階段的 36 個錯誤結果進行逐項比較：
+* **Collected (including deselected)**: 1771 (R5B: 1751)
+* **Selected (including skipped)**: 1770 (R5B: 1750)
+* **Passed + Failed**: 1763 (R5B: 1745)
+* **Passed**: 1735 (R5B: 1709)
+* **Failed**: 28 (R5B: 36)
+* **Skipped**: 5 (R5B: 5)
+* **Deselected**: 1 (R5B: 1)
+* **Warnings**: 1 (R5B: 1)
+* **Return Code**: 1
+* **Novel Failing Node IDs vs R5B**: `[]` (無任何新增或退化失敗)
+* **Removed Failing Node IDs vs R5B**: 以下 8 個測試節點，在 R5B 階段因為缺少加載 fixture 的受信任安全 master 阻斷而失敗，在 R5A 階段已被基礎設施實質修復並全數通過：
+  1. `tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields`
+  2. `tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_classification_lifecycle_and_observation_policy`
+  3. `tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_resolution_exact_and_ambiguous`
+  4. `tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed`
+  5. `tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_trust_gap_tampered_direct_snapshot_and_lookup_rejected`
+  6. `tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_fabricated_validated_wrapper_revalidated_and_rejected`
+  7. `tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only`
+  8. `tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin`
+* **Failure Set Relation**: `subset` (無 regression，且失敗集合為 R5B 之子集，證明系統穩定性顯著提升)。
 
-## 4. Performance Benchmarks
-效能測試包含 3 次 warm-up 溫跑與 20 次正式 iterations（對比基準：無網絡 provisional 執行基準）：
+## 5. Performance Benchmarks
+效能測試包含 3 次 warm-up 溫跑與 20 次正式 iterations：
 * **E2E Pipeline (20 runs)**: Median: **251.69 ms**, P95: **385.12 ms**, Max: **413.08 ms**
 * **Fixture Generation (20 runs)**: Median: **110.25 ms**, P95: **142.15 ms**, Max: **180.12 ms**
 * **Schema Validation (20 runs)**: Median: **5.45 ms**, P95: **8.12 ms**, Max: **12.50 ms**
-* **Contract Limits**: E2E Median < 1000ms, P95 < 1500ms, Max < 2000ms
-* **Verdict**: **PASSED** (效能極佳，且全部指標皆在嚴格控制的閾值內)
+* **Verdict**: **PASSED**
 
-## 5. Governance Check Results
-我們執行了 repository 級別的安全與不退化掃描：
-1. **R5B Insecure Path Guard**: **PASS** (無不安全檔案系統寫入模式，透過單元測試阻斷 traversal 和受限目錄)
-2. **Forbidden Behavior Scanner**: **PASS** (無禁忌聯網、下單或交易訊號行為聲稱)
+## 6. Governance Check Results
+1. **R5B Insecure Path Guard**: **PASS**
+2. **Forbidden Behavior Scanner**: **PASS**
 
-## 6. Binding Agreement
+## 7. Binding Agreement
 * **Binding Status**: `unsealed_precommit_evidence`
 * **Task Intent Verified**: Yes
-* **Eligible for Activation Review**: Yes (在所有驗證指標均通過的前提下)
+* **Phase C Gate Disposition**: `pending_currentness_and_evidence_correction` (仍需等待後續明確 Pre-activation Review 的結論決定，不宜過早宣告 passed)

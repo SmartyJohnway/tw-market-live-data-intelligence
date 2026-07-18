@@ -84,7 +84,7 @@ def test_variant_b_stale_and_missing_pipeline(tmp_path):
         source_capability_registry=cap_registry
     )
     
-    assert res["status"] in {"success", "success_with_partial_coverage"}
+    assert res["status"] == "success_with_partial_coverage"
     run_dir = tmp_path / "variant_b_run"
     
     # 1. 載入 bundle 檔案，做實質隔離與新鮮度推導斷言
@@ -116,8 +116,9 @@ def test_variant_b_stale_and_missing_pipeline(tmp_path):
     # 3. 驗證 unaffected targets (如 TWSE:2330) 完好無損，未受污染且依然為 usable
     assert t_cov["TWSE:2330"]["coverage_state"] == "usable"
     
-    # 4. 驗證整體 bundle 狀態為 partial
+    # 4. 驗證整體 bundle 狀態包含 partial 覆蓋
     assert bundle["schema_version"] == "m8r_watchlist_snapshot_bundle.v1"
+    assert any(t["coverage_state"] == "partial" for t in bundle["coverage"]["targets"])
     
     # 5. 驗證最終 context package 內之 citation 行為
     pkg = build_watchlist_ai_context_package(
@@ -135,6 +136,19 @@ def test_variant_b_stale_and_missing_pipeline(tmp_path):
     
     # TWSE:2382 缺失 EOD reference Facts，其 eod_reference 欄位應為空，且不應生成虛假的 citations
     assert t_pkg["TWSE:2382"]["eod_reference"] == {}
+    
+    # 實施更嚴密的安全負向斷言：驗證 2382 的 citations 絕不包含假 eod_reference 或指向 EOD 來源的任何資訊
+    c_index = {c["citation_id"]: c for c in pkg["citation_index"]}
+    for cid in t_pkg["TWSE:2382"]["citations"]:
+        c = c_index[cid]
+        assert "eod_reference" not in c["fact_path"], f"False EOD citation leaked in stale target TWSE:2382: {c['fact_path']}"
+        assert c.get("source_family") not in {"TWSE_OPENAPI", "TPEX_OPENAPI"}, f"Forbidden EOD source family in stale target citation: {c.get('source_family')}"
+        
+    # 驗證正常股票 TWSE:2330 完好且能正常生成 valid EOD citations，無受污染或干擾
+    assert t_pkg["TWSE:2330"]["eod_reference"] != {}
+    cids_2330 = t_pkg["TWSE:2330"]["citations"]
+    eod_cids_2330 = [cid for cid in cids_2330 if "eod_reference" in c_index[cid]["fact_path"]]
+    assert len(eod_cids_2330) > 0, "TWSE:2330 must contain valid official EOD citations"
 
 def test_variant_c_tampering_fail_closed(tmp_path):
     req = load("bounded_request.json")

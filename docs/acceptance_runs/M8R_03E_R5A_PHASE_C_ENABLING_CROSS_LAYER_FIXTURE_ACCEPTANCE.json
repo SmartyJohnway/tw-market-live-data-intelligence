@@ -2,10 +2,10 @@
   "schema_version": "m8r_03e_r5a_cross_layer_fixture_acceptance.v1",
   "task_id": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
   "binding_status": "unsealed_precommit_evidence",
-  "verification_timestamp_utc": "2026-07-18T11:05:00Z",
+  "verification_timestamp_utc": "2026-07-18T11:20:00Z",
   "baseline_main_sha": "54b078932d0abfb8b20bed99356860a2aca050eb",
-  "tested_parent_sha": "221ff9f77130bf783f6f23a7ce6ad9cdff8f9af8",
-  "tested_workspace_sha256": "e71ee42bf081cb1ecc8f6f0cdbca744b7e8036bd838fdf677f423f3ec7aab21b",
+  "tested_parent_sha": "4f8c4d3d66c0f12279a1c765fd2c9fe87e4cad81",
+  "tested_workspace_sha256": "88140fc7ae7d2ed39a7fb94aca36791373077ad2bf197ff66591fa5d42239388",
   "tested_commit_sha": null,
   "fixture_id": "fixture-r5a-seed-r5a",
   "fixture_version": "1",
@@ -60,11 +60,11 @@
   },
   "currentness_results": {
     "status": "passed",
-    "detail": "Stale status resolved automatically based on timestamps discrepancy"
+    "detail": "Dynamic evaluator resolved stale status based on timezone-aware reference clock difference"
   },
   "partial_failure_results": {
     "status": "passed",
-    "detail": "Variant A partial status success, Variant B isolation, Variant C fail closed verified"
+    "detail": "Variant B overall partial status and negative citation block verified"
   },
   "projection_safety_results": {
     "status": "passed",
@@ -76,12 +76,27 @@
   },
   "full_non_network_regression_results": {
     "status": "failed_node_ids_detected_on_windows_environment_caveats",
-    "passed_count": 1735,
-    "failed_count": 28,
-    "skipped_count": 5,
-    "deselected_count": 1,
-    "warnings_count": 1,
+    "collected_including_deselected": 1771,
+    "selected_including_skipped": 1770,
+    "passed_plus_failed": 1763,
+    "passed": 1735,
+    "failed": 28,
+    "skipped": 5,
+    "deselected": 1,
+    "warnings": 1,
     "return_code": 1,
+    "novel_failing_node_ids_vs_r5b": [],
+    "removed_failing_node_ids_vs_r5b": [
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_classification_lifecycle_and_observation_policy",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_resolution_exact_and_ambiguous",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_trust_gap_tampered_direct_snapshot_and_lookup_rejected",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_fabricated_validated_wrapper_revalidated_and_rejected",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin"
+    ],
+    "failure_set_relation": "subset",
     "failed_node_ids": [
       "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
       "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
@@ -113,7 +128,7 @@
       "tests/unit/test_workflow_policy_matrix.py::test_workflow_policy_matrix_and_ci_local_only"
     ]
   },
-  "phase_c_gate_result": "passed_pending_activation_review",
+  "phase_c_gate_result": "pending_currentness_and_evidence_correction",
   "recommended_next_task": "M8R-03E-PHASE-C-ACTIVATION-DECISION",
   "eligible_for_activation_review": "Pending explicit pre-activation validation check",
   "acceptance_tests": [

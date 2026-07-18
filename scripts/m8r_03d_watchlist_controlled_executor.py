@@ -149,8 +149,8 @@ def _normalize_checked(fam, row, target, retrieved_at):
     if symbol != str(target.get('security_code')): return None
     if market is not None and str(market) not in MARKET_ALIASES.get(expected_market,set()): return None
     if fam=='TWSE_MIS': return normalize_twse_mis_watchlist_observation(row,target,retrieved_at_utc=retrieved_at)
-    if fam=='TWSE_OPENAPI': return normalize_twse_openapi_watchlist_observation(row,target)
-    return normalize_tpex_openapi_watchlist_observation(row,target)
+    if fam=='TWSE_OPENAPI': return normalize_twse_openapi_watchlist_observation(row,target,retrieved_at_utc=retrieved_at)
+    return normalize_tpex_openapi_watchlist_observation(row,target,retrieved_at_utc=retrieved_at)
 
 def _result(run_id,mode,started,completed,request,plan,auth,observations,bundle,status,issues,artifact_root_path,target_results=None,source_execution_summary=None,write=True):
     artifact_root_path = artifact_root_path if isinstance(artifact_root_path, Path) else _safe_root(artifact_root_path)

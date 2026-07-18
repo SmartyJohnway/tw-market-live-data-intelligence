@@ -163,7 +163,7 @@
       "producer": "generator",
       "relative_path": "evidence_bundle.json",
       "schema_version": "m8r_watchlist_snapshot_bundle.v1",
-      "sha256": "0e9ae245d5389e6866934c00fa50bf30ac8b23f317ecf8bdcee6c11e91da0313",
+      "sha256": "7988fc99594d55e8f56848518b099d955f72bca054fb14c953f827459c119d4b",
       "target_ids": [
         "TWSE:2330",
         "TWSE:2317",
@@ -282,7 +282,7 @@
   "fixture_id": "fixture-r5a-seed-r5a",
   "fixture_version": "1",
   "hash_algorithm": "sha256",
-  "manifest_hash": "e71ee42bf081cb1ecc8f6f0cdbca744b7e8036bd838fdf677f423f3ec7aab21b",
+  "manifest_hash": "88140fc7ae7d2ed39a7fb94aca36791373077ad2bf197ff66591fa5d42239388",
   "network_required": false,
   "reference_clock_utc": "2026-07-16T03:00:00Z",
   "schema_version": "m8r_03e_r5a_cross_layer_fixture_manifest.v1",

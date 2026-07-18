@@ -419,8 +419,10 @@
       },
       "current_evidence": {
         "currentness": {
-          "reason": "twse_mis_calculated_freshness",
-          "status": "fresh"
+          "age_seconds": 10.0,
+          "reason": "evidence_within_freshness_limit",
+          "status": "fresh",
+          "transport_latency_seconds": 10.0
         },
         "facts": {
           "change": 10.0,
@@ -433,6 +435,7 @@
       },
       "eod_reference": {
         "currentness": {
+          "age_seconds": 77400.0,
           "reason": "latest completed EOD reference",
           "status": "official_completed_eod"
         },
@@ -493,6 +496,7 @@
       "current_evidence": {},
       "eod_reference": {
         "currentness": {
+          "age_seconds": 77400.0,
           "reason": "latest completed EOD reference",
           "status": "official_completed_eod"
         },
@@ -553,6 +557,7 @@
       "current_evidence": {},
       "eod_reference": {
         "currentness": {
+          "age_seconds": 77400.0,
           "reason": "latest completed EOD reference",
           "status": "official_completed_eod"
         },
@@ -611,8 +616,10 @@
       },
       "current_evidence": {
         "currentness": {
-          "reason": "twse_mis_calculated_freshness",
-          "status": "fresh"
+          "age_seconds": 10.0,
+          "reason": "evidence_within_freshness_limit",
+          "status": "fresh",
+          "transport_latency_seconds": 10.0
         },
         "facts": {
           "change": 1.5,
@@ -625,6 +632,7 @@
       },
       "eod_reference": {
         "currentness": {
+          "age_seconds": 77400.0,
           "reason": "latest completed EOD reference",
           "status": "official_completed_eod"
         },
@@ -683,8 +691,10 @@
       },
       "current_evidence": {
         "currentness": {
-          "reason": "twse_mis_calculated_freshness",
-          "status": "fresh"
+          "age_seconds": 10.0,
+          "reason": "evidence_within_freshness_limit",
+          "status": "fresh",
+          "transport_latency_seconds": 10.0
         },
         "facts": {
           "change": 0.5,
@@ -697,6 +707,7 @@
       },
       "eod_reference": {
         "currentness": {
+          "age_seconds": 77400.0,
           "reason": "latest completed EOD reference",
           "status": "official_completed_eod"
         },
@@ -755,8 +766,10 @@
       },
       "current_evidence": {
         "currentness": {
-          "reason": "twse_mis_calculated_freshness",
-          "status": "fresh"
+          "age_seconds": 10.0,
+          "reason": "evidence_within_freshness_limit",
+          "status": "fresh",
+          "transport_latency_seconds": 10.0
         },
         "facts": {
           "change": -0.2,
@@ -769,6 +782,7 @@
       },
       "eod_reference": {
         "currentness": {
+          "age_seconds": 77400.0,
           "reason": "latest completed EOD reference",
           "status": "official_completed_eod"
         },
@@ -828,8 +842,10 @@
       },
       "current_evidence": {
         "currentness": {
-          "reason": "twse_mis_calculated_freshness",
-          "status": "stale"
+          "age_seconds": 86410.0,
+          "reason": "evidence_age_exceeds_max_limit:86410s",
+          "status": "stale",
+          "transport_latency_seconds": 86410.0
         },
         "facts": {
           "change": 5.0,
@@ -842,6 +858,7 @@
       },
       "eod_reference": {
         "currentness": {
+          "age_seconds": 163800.0,
           "reason": "latest completed EOD reference",
           "status": "official_completed_eod"
         },
@@ -901,8 +918,10 @@
       },
       "current_evidence": {
         "currentness": {
-          "reason": "twse_mis_calculated_freshness",
-          "status": "fresh"
+          "age_seconds": 10.0,
+          "reason": "evidence_within_freshness_limit",
+          "status": "fresh",
+          "transport_latency_seconds": 10.0
         },
         "facts": {
           "change": -3.0,
@@ -958,6 +977,7 @@
       "current_evidence": {},
       "eod_reference": {
         "currentness": {
+          "age_seconds": 77400.0,
           "reason": "latest completed EOD reference",
           "status": "official_completed_eod"
         },
