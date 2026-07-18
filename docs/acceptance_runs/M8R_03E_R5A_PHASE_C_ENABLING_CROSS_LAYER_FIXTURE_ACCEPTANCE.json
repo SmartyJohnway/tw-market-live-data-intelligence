@@ -1,0 +1,336 @@
+{
+  "schema_version": "m8r_03e_r5a_cross_layer_fixture_acceptance.v1",
+  "task_id": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+  "binding_status": "unsealed_precommit_evidence",
+  "verification_timestamp_utc": "2026-07-18T12:00:00Z",
+  "baseline_main_sha": "54b078932d0abfb8b20bed99356860a2aca050eb",
+  "tested_parent_sha": "f311daa6885dae04b3a47e5a94b98e854372bbbb",
+  "tested_fixture_manifest_sha256": "88140fc7ae7d2ed39a7fb94aca36791373077ad2bf197ff66591fa5d42239388",
+  "tested_commit_sha": null,
+  "fixture_id": "fixture-r5a-seed-r5a",
+  "fixture_version": "1",
+  "operation_count": 15,
+  "artifact_count": 13,
+  "reproducible_environment": {
+    "os": "windows",
+    "python_version": "3.13.7",
+    "pytest_version": "9.1.1"
+  },
+  "metrics": {
+    "fixture_target_count": 10,
+    "source_family_usages_count": 3,
+    "network_call_count": 0,
+    "authorization_consumption_count": 0,
+    "performance": {
+      "warmup_iterations": 3,
+      "perf_iterations": 20,
+      "e2e_median_ms": 251.69,
+      "e2e_p95_ms": 385.12,
+      "e2e_max_ms": 413.08,
+      "fixture_generation_median_ms": 110.25,
+      "schema_validation_median_ms": 5.45,
+      "contract_limit_ms": 1000.0,
+      "status": "passed",
+      "threshold_basis": "Provisional non-network execution baseline"
+    }
+  },
+  "determinism_results": {
+    "status": "passed",
+    "detail": "Byte-identical verified across multiple runs in the same folder path and different roots path-independence"
+  },
+  "schema_validation_results": {
+    "status": "passed",
+    "detail": "Tested successfully via build_context_manifest and downstream validators"
+  },
+  "identity_consistency_results": {
+    "status": "passed",
+    "detail": "10-target id order matched and consistency verified"
+  },
+  "hash_validation_results": {
+    "status": "passed",
+    "detail": "Contract validation verified and recomputed successfully from disk"
+  },
+  "provenance_results": {
+    "status": "passed",
+    "detail": "Facts citations lineage traced without orphans; actual retrieval timestamp preserved separately from evaluation clock"
+  },
+  "citation_results": {
+    "status": "passed",
+    "detail": "No cross-target data leakage or contamination verified"
+  },
+  "currentness_results": {
+    "status": "passed_with_caveats",
+    "detail": "Dynamic evaluator resolved stale status based on timezone-aware reference clock difference; EOD policy is provisional pending trading calendar integration"
+  },
+  "partial_failure_results": {
+    "status": "passed",
+    "detail": "Variant B overall partial status and negative citation block verified"
+  },
+  "projection_safety_results": {
+    "status": "passed",
+    "detail": "Checked that no raw payloads or forbidden terms exist in context projection"
+  },
+  "filesystem_safety_results": {
+    "status": "passed",
+    "detail": "Blocked parent path traversal and restricted directories write"
+  },
+  "full_non_network_regression_results": {
+    "status": "failed_node_ids_detected_on_windows_environment_caveats",
+    "collected_including_deselected": 1783,
+    "selected_including_skipped": 1782,
+    "passed_plus_failed": 1777,
+    "passed": 1749,
+    "failed": 28,
+    "skipped": 5,
+    "deselected": 1,
+    "warnings": 1,
+    "return_code": 1,
+    "novel_failing_node_ids_vs_r5b": [],
+    "removed_failing_node_ids_vs_r5b": [
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_classification_lifecycle_and_observation_policy",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_resolution_exact_and_ambiguous",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_trust_gap_tampered_direct_snapshot_and_lookup_rejected",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_fabricated_validated_wrapper_revalidated_and_rejected",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin"
+    ],
+    "environment_equivalence_status": "partially_comparable",
+    "regression_determination_status": "no_novel_failing_node_ids_observed",
+    "failure_set_relation": "subset",
+    "failed_node_ids": [
+      "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+      "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+      "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+      "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
+      "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+      "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+      "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
+      "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+      "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+      "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+      "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+      "tests/unit/test_m5c_staging_promotion.py::test_exact_binding_request_and_schema",
+      "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+      "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+      "tests/unit/test_m7b_ai_safe_market_context_projection_builder.py::test_runtime_projection_builder_reference_remains_controlled_to_conversation_context",
+      "tests/unit/test_m8a_official_eod_instrument_classification.py::test_bounded_seed_only_status_when_canonical_master_unavailable",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_non_network_clis",
+      "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema",
+      "tests/unit/test_workflow_policy_matrix.py::test_workflow_policy_matrix_and_ci_local_only"
+    ]
+  },
+  "phase_c_gate_result": "ready_for_explicit_activation_review_with_caveats",
+  "recommended_next_task": "M8R-03E-PHASE-C-ACTIVATION-DECISION",
+  "eligible_for_activation_review": "ready_with_caveats",
+  "phase_c_activation": "blocked_pending_explicit_owner_decision",
+  "r5a_fixture_blocker": "resolved_with_caveats",
+  "r5b_filesystem_blocker": "resolved_with_caveats",
+  "phase_c_implementation_readiness": "demonstrated_with_caveats",
+  "explicit_caveats": [
+    "EOD 新鮮度策略屬 provisional bounded EOD age policy，未整合交易所 trading calendar 與休市日",
+    "Windows 本地測試環境與 Linux CI 環境僅屬 partially comparable，全套回歸測試仍有 28 個非退化既有失敗"
+  ],
+  "acceptance_tests": [
+    {
+      "test_name": "test_fixture_byte_identical_determinism",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證相同 seed/clock 生成 byte-identical 內容。"
+    },
+    {
+      "test_name": "test_fixture_different_seed_controlled_differences",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證不同 seed 產生價格與名稱微調後的控制內差異。"
+    },
+    {
+      "test_name": "test_fixture_different_clock_controlled_differences",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證不同 clock 僅變更時間衍生欄位與下游雜湊。"
+    },
+    {
+      "test_name": "test_fixture_different_output_roots_determinism",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證不同輸出根目錄下， canonical artifacts bytes 100% 相同以證明 path-independence。"
+    },
+    {
+      "test_name": "test_cross_layer_id_and_order_consistency",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 10-target 的標識符與順序在 plan, bundle, package 跨層級一致。"
+    },
+    {
+      "test_name": "test_package_hash_and_citation_provenance",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證所有 Fact 均有對應的 citation 及雜湊，可向上追溯無 orphan references。"
+    },
+    {
+      "test_name": "test_manifest_hash_and_artifact_integrity",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 13 個 artifacts 的 sha256 雜湊與自引用 manifest_hash 合約。"
+    },
+    {
+      "test_name": "test_projection_has_no_sensitive_data",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 AI projection 沒有洩露 raw cookies 或 credentials。"
+    },
+    {
+      "test_name": "test_target_states_match_expectations",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 stale 觀測值與 missing optional, unresolved 隔離等各類 target 狀態正確封裝。"
+    },
+    {
+      "test_name": "test_filesystem_safety_valid_path",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證正常路徑材料化寫入成功。"
+    },
+    {
+      "test_name": "test_filesystem_safety_blocked_parent_traversal",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 traversal (..) 寫入被 R5B 攔截並 fail-closed。"
+    },
+    {
+      "test_name": "test_filesystem_safety_blocked_forbidden_directories",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證受限目錄 (cookies/frontend/research) 的寫入被安全攔截。"
+    },
+    {
+      "test_name": "test_variant_a_source_adapter_failure",
+      "scope": "unit",
+      "status": "passed",
+      "description": "模擬單一 source family 故障，驗證 E2E 降級為 partial 且無交叉污染。"
+    },
+    {
+      "test_name": "test_variant_b_stale_and_missing_pipeline",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證混合過期與缺失資料在 pipeline 執行時的實質隔離與 citation 行為。"
+    },
+    {
+      "test_name": "test_variant_c_tampering_fail_closed",
+      "scope": "unit",
+      "status": "passed",
+      "description": "手動篡改 Fact 內容而不改雜湊，驗證 package validator 正確攔截防篡改不退化。"
+    },
+    {
+      "test_name": "test_pipeline_performance",
+      "scope": "unit",
+      "status": "passed",
+      "description": "評估無網絡模式下，中位數處理耗時低於 1000ms 的效能指標。"
+    },
+    {
+      "test_name": "test_integration_phase_c_fixture_pipeline",
+      "scope": "integration",
+      "status": "passed",
+      "description": "測試 10-target request 在無網絡下完整跑通 E2E 編排與 builder pipeline 並驗證通過。"
+    },
+    {
+      "test_name": "test_capability_snapshot_consumption_and_unsupported_filtering",
+      "scope": "integration",
+      "status": "passed",
+      "description": "測試 planner/resolver 實際消費 registry 開關，正確拒絕 unsupported 路由。"
+    },
+    {
+      "test_name": "test_capability_registry_fail_closed_behaviors",
+      "scope": "integration",
+      "status": "passed",
+      "description": "驗證 malformed/empty/missing 宣告時，規劃器與路由解析均能阻斷路由並 fail-closed。"
+    },
+    {
+      "test_name": "test_parse_iso_datetime_tz_aware",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證帶有時區標記的 ISO 時間戳記之正確解析（包含 UTC Z 與台北偏移）。"
+    },
+    {
+      "test_name": "test_currentness_fresh_liveish",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 age 在 max_age_seconds 內時，live-ish 資料正確標記為 fresh 且計算了 latency。"
+    },
+    {
+      "test_name": "test_currentness_stale_liveish",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 age 超出限制時，live-ish 資料被標記為 stale。"
+    },
+    {
+      "test_name": "test_currentness_future_timestamp",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證來源時間在 reference clock 之後時判定為 unresolved 異常。"
+    },
+    {
+      "test_name": "test_currentness_missing_inputs",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證缺失 clock 或是觀測時點時 fail-closed 返回 unresolved。"
+    },
+    {
+      "test_name": "test_currentness_retrieved_at_fallback",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證當 source_timestamp 缺失時，自動以 retrieved_at 進行評估計算。"
+    },
+    {
+      "test_name": "test_currentness_timezone_offset_equivalence",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證不同時區表達（如 Z 與 +08:00）在 age 計算時的等價對齊。"
+    },
+    {
+      "test_name": "test_currentness_invalid_tz_fallback",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證無效的時間格式會安全返回 unresolved。"
+    },
+    {
+      "test_name": "test_currentness_official_eod",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 EOD 新鮮度在 3 天限制內標為 completed_eod，超出則標為 stale。"
+    },
+    {
+      "test_name": "test_currentness_official_eod_missing_date",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 EOD 資料若無 trade_date 則返回 unresolved 阻斷。"
+    },
+    {
+      "test_name": "test_currentness_unknown_timing_class_fails_closed",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證未知 timing_class 會被 fail-closed 阻斷返回 unresolved 狀態。"
+    },
+    {
+      "test_name": "test_normalizer_preserves_actual_retrieval_time",
+      "scope": "unit",
+      "status": "passed",
+      "description": "驗證 normalizer 輸出的 observation 忠實保留資料來源之原始取得時間，並隔離計算 age 和 transport latency。"
+    }
+  ],
+  "governance_scans": {
+    "r5b_insecure_filesystem_patterns": "passed",
+    "forbidden_behavior_patterns": "passed"
+  }
+}

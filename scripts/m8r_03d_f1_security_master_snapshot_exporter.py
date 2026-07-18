@@ -42,7 +42,7 @@ def compute_skill_contract_hash(skill_root: str|Path=SKILL_PATH)->str:
     files=[root/'SKILL.md',*(root/'references').glob('*.md'),root/'references/source-manifest.json',*(root/'references'/'schemas').glob('*.json')]
     h=hashlib.sha256()
     for p in sorted(files, key=lambda x: str(x)):
-        h.update(str(p.relative_to(root)).encode()); h.update(b'\0'); h.update(p.read_bytes()); h.update(b'\0')
+        h.update(str(p.relative_to(root)).replace('\\', '/').encode()); h.update(b'\0'); h.update(p.read_bytes()); h.update(b'\0')
     return h.hexdigest()
 
 def _load_skill_schema(name:str)->dict:

@@ -1,0 +1,174 @@
+[
+  {
+    "blocking": true,
+    "category": "current_observation",
+    "detail": {
+      "capability_id": "current_mis_observation",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "MIS observation unavailable",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": true,
+      "target_id": "TWSE:2317"
+    },
+    "missing_evidence_id": "missing-a6ea8f0d370aa2d0b336",
+    "reason_code": "MIS observation unavailable",
+    "recoverability": "retry_with_new_authorization",
+    "related_citation_ids": [],
+    "schema_version": "m8r_watchlist_missing_evidence.v1",
+    "source_family": null,
+    "target_id": "TWSE:2317"
+  },
+  {
+    "blocking": true,
+    "category": "current_observation",
+    "detail": {
+      "capability_id": "current_mis_observation",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "MIS observation unavailable",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": true,
+      "target_id": "TPEX:6488"
+    },
+    "missing_evidence_id": "missing-d6d2d1611b3b12ffc80a",
+    "reason_code": "MIS observation unavailable",
+    "recoverability": "retry_with_new_authorization",
+    "related_citation_ids": [],
+    "schema_version": "m8r_watchlist_missing_evidence.v1",
+    "source_family": null,
+    "target_id": "TPEX:6488"
+  },
+  {
+    "blocking": false,
+    "category": "current_observation",
+    "detail": {},
+    "missing_evidence_id": "missing-6f8b54a097236cdfc7ed",
+    "reason_code": "stale_observation",
+    "recoverability": "retry_with_new_authorization",
+    "related_citation_ids": [],
+    "schema_version": "m8r_watchlist_missing_evidence.v1",
+    "source_family": "TWSE_MIS",
+    "target_id": "TWSE:2308"
+  },
+  {
+    "blocking": false,
+    "category": "currentness_validation",
+    "detail": {
+      "capability_id": "currentness_validation",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "stale_observation",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": false,
+      "target_id": "TWSE:2308"
+    },
+    "missing_evidence_id": "missing-5e19944fa097da86a338",
+    "reason_code": "stale_observation",
+    "recoverability": "retry_with_new_authorization",
+    "related_citation_ids": [],
+    "schema_version": "m8r_watchlist_missing_evidence.v1",
+    "source_family": null,
+    "target_id": "TWSE:2308"
+  },
+  {
+    "blocking": false,
+    "category": "official_eod_reference",
+    "detail": {
+      "capability_id": "official_eod_reference",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "EOD reference unavailable",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": false,
+      "target_id": "TWSE:2382"
+    },
+    "missing_evidence_id": "missing-5d4994503895bc70731f",
+    "reason_code": "EOD reference unavailable",
+    "recoverability": "retry_with_new_authorization",
+    "related_citation_ids": [],
+    "schema_version": "m8r_watchlist_missing_evidence.v1",
+    "source_family": null,
+    "target_id": "TWSE:2382"
+  },
+  {
+    "blocking": true,
+    "category": "current_observation",
+    "detail": {
+      "capability_id": "current_mis_observation",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "MIS observation unavailable",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": true,
+      "target_id": "TWSE:3008"
+    },
+    "missing_evidence_id": "missing-19f56defe1ebfa1c7c16",
+    "reason_code": "MIS observation unavailable",
+    "recoverability": "retry_with_new_authorization",
+    "related_citation_ids": [],
+    "schema_version": "m8r_watchlist_missing_evidence.v1",
+    "source_family": null,
+    "target_id": "TWSE:3008"
+  },
+  {
+    "blocking": true,
+    "category": "current_observation",
+    "detail": {
+      "capability_id": "current_mis_observation",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "MIS observation unavailable",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": true,
+      "target_id": "TWSE:9999"
+    },
+    "missing_evidence_id": "missing-8fdcfe49d526b89aca54",
+    "reason_code": "MIS observation unavailable",
+    "recoverability": "retry_with_new_authorization",
+    "related_citation_ids": [],
+    "schema_version": "m8r_watchlist_missing_evidence.v1",
+    "source_family": null,
+    "target_id": "TWSE:9999"
+  },
+  {
+    "blocking": false,
+    "category": "official_eod_reference",
+    "detail": {
+      "capability_id": "official_eod_reference",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "EOD reference unavailable",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": false,
+      "target_id": "TWSE:9999"
+    },
+    "missing_evidence_id": "missing-c052191d9a0dddf09281",
+    "reason_code": "EOD reference unavailable",
+    "recoverability": "retry_with_new_authorization",
+    "related_citation_ids": [],
+    "schema_version": "m8r_watchlist_missing_evidence.v1",
+    "source_family": null,
+    "target_id": "TWSE:9999"
+  },
+  {
+    "blocking": true,
+    "category": "identity",
+    "detail": {
+      "plan_issues": [
+        {
+          "blocking": false,
+          "code": "identity_unresolved",
+          "target_id": "TWSE:9999"
+        }
+      ]
+    },
+    "missing_evidence_id": "missing-b6b1458d0c34b10ac611",
+    "reason_code": "identity_unresolved",
+    "recoverability": "not_recoverable_in_scope",
+    "related_citation_ids": [],
+    "schema_version": "m8r_watchlist_missing_evidence.v1",
+    "source_family": null,
+    "target_id": "TWSE:9999"
+  }
+]

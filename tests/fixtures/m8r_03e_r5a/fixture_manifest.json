@@ -1,0 +1,308 @@
+{
+  "artifacts": [
+    {
+      "artifact_type": "fixture_manifest",
+      "consumers": [
+        "tests"
+      ],
+      "producer": "generator",
+      "relative_path": "fixture_manifest.json",
+      "schema_version": "m8r_03e_r5a_cross_layer_fixture_manifest.v1",
+      "sha256": "",
+      "target_ids": []
+    },
+    {
+      "artifact_type": "security_identity_snapshot",
+      "consumers": [
+        "executor"
+      ],
+      "producer": "generator",
+      "relative_path": "security_identity_snapshot.json",
+      "schema_version": "tw_verified_security_master_snapshot.v1",
+      "sha256": "a8c5c32df8baee092f3ca08179931692fa1ddbc255567c8b0444c609a1a8621b",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
+    },
+    {
+      "artifact_type": "security_identity_snapshot_manifest",
+      "consumers": [
+        "executor"
+      ],
+      "producer": "generator",
+      "relative_path": "security_identity_snapshot_manifest.json",
+      "schema_version": "tw_verified_security_master_snapshot_manifest.v1",
+      "sha256": "dd9d3079345c2b4136af051131c90da464cd91af63c4bd641d2b2ab3bd2b7cbf",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
+    },
+    {
+      "artifact_type": "source_capability_snapshot",
+      "consumers": [
+        "executor"
+      ],
+      "producer": "generator",
+      "relative_path": "source_capability_snapshot.json",
+      "schema_version": "m8_source_capability_registry.v1",
+      "sha256": "56442286f5a34ebf9bf3fa3c9ee28103b844888a28955be535478cdcccdbd0a6",
+      "target_ids": []
+    },
+    {
+      "artifact_type": "bounded_request",
+      "consumers": [
+        "executor"
+      ],
+      "producer": "generator",
+      "relative_path": "bounded_request.json",
+      "schema_version": "m8r_ai_evidence_request.v1",
+      "sha256": "d961b92a724060b06a4c69aa0ce7d8e61d50d189e3c44ff0a1902c9fea99c8ff",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
+    },
+    {
+      "artifact_type": "execution_plan",
+      "consumers": [
+        "executor",
+        "builder"
+      ],
+      "producer": "generator",
+      "relative_path": "execution_plan.json",
+      "schema_version": "m8r_03d_watchlist_execution_plan.v1",
+      "sha256": "749c97c9550855b58a6a43b25a30a42b1dd04239f20107cc3445c02624934895",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
+    },
+    {
+      "artifact_type": "source_observations",
+      "consumers": [
+        "executor"
+      ],
+      "producer": "generator",
+      "relative_path": "source_observations.json",
+      "schema_version": "m8r_watchlist_source_data.v1",
+      "sha256": "7370b1960e6c22c07fbd8b9e9b45ed4416e91c9abe7665362b46cde9681edda2",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
+    },
+    {
+      "artifact_type": "currentness_assessment",
+      "consumers": [
+        "tests"
+      ],
+      "producer": "generator",
+      "relative_path": "currentness_assessment.json",
+      "schema_version": "m8r_watchlist_currentness_assessment.v1",
+      "sha256": "be090271072e54af171204a29528649f8cea8e68f76fff72f9b0c2bee7d6b8e2",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
+    },
+    {
+      "artifact_type": "evidence_bundle",
+      "consumers": [
+        "builder"
+      ],
+      "producer": "generator",
+      "relative_path": "evidence_bundle.json",
+      "schema_version": "m8r_watchlist_snapshot_bundle.v1",
+      "sha256": "7988fc99594d55e8f56848518b099d955f72bca054fb14c953f827459c119d4b",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
+    },
+    {
+      "artifact_type": "provenance_manifest",
+      "consumers": [
+        "validator"
+      ],
+      "producer": "generator",
+      "relative_path": "provenance_manifest.json",
+      "schema_version": "m8r_watchlist_provenance.v1",
+      "sha256": "abd20259959ace5158360a2087dc0114d0a65199f4af0f5f0ea1ad6c902c56b0",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
+    },
+    {
+      "artifact_type": "citation_map",
+      "consumers": [
+        "validator"
+      ],
+      "producer": "generator",
+      "relative_path": "citation_map.json",
+      "schema_version": "m8r_watchlist_citation_index.v1",
+      "sha256": "40fdd6beae9cc84e514dd4a47a936f89a5e8496aa8193d1efca78fbb23183b41",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
+    },
+    {
+      "artifact_type": "missing_evidence_register",
+      "consumers": [
+        "validator"
+      ],
+      "producer": "generator",
+      "relative_path": "missing_evidence_register.json",
+      "schema_version": "m8r_watchlist_missing_evidence.v1",
+      "sha256": "1a4963b4fa4968f554121eb85d4ceae469c45aa785b550697875b6e039f627ae",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
+    },
+    {
+      "artifact_type": "context_projection",
+      "consumers": [
+        "validator"
+      ],
+      "producer": "generator",
+      "relative_path": "context_projection.json",
+      "schema_version": "m8r_watchlist_ai_context_package.v2",
+      "sha256": "2ba1ee2632d07d14ba038bd3583fd025f56e000689cd74cbdd64969f469bf4de",
+      "target_ids": [
+        "TWSE:2330",
+        "TWSE:2317",
+        "TPEX:6488",
+        "TWSE:0050",
+        "TPEX:5347",
+        "TWSE:0056",
+        "TWSE:2308",
+        "TWSE:2382",
+        "TWSE:3008",
+        "TWSE:9999"
+      ]
+    }
+  ],
+  "canonicalization_contract": "canonical_json_utf8",
+  "expected_states": {
+    "TPEX:5347": "ready",
+    "TPEX:6488": "ready_with_caveats",
+    "TWSE:0050": "ready",
+    "TWSE:0056": "ready",
+    "TWSE:2308": "ready_with_caveats",
+    "TWSE:2317": "partial",
+    "TWSE:2330": "ready",
+    "TWSE:2382": "partial",
+    "TWSE:3008": "ready_with_caveats",
+    "TWSE:9999": "blocked"
+  },
+  "fixture_id": "fixture-r5a-seed-r5a",
+  "fixture_version": "1",
+  "hash_algorithm": "sha256",
+  "manifest_hash": "88140fc7ae7d2ed39a7fb94aca36791373077ad2bf197ff66591fa5d42239388",
+  "network_required": false,
+  "reference_clock_utc": "2026-07-16T03:00:00Z",
+  "schema_version": "m8r_03e_r5a_cross_layer_fixture_manifest.v1",
+  "seed": "seed-r5a",
+  "source_families": [
+    "TWSE_MIS",
+    "TWSE_OPENAPI",
+    "TPEX_OPENAPI"
+  ],
+  "target_count": 10,
+  "target_ids": [
+    "TWSE:2330",
+    "TWSE:2317",
+    "TPEX:6488",
+    "TWSE:0050",
+    "TPEX:5347",
+    "TWSE:0056",
+    "TWSE:2308",
+    "TWSE:2382",
+    "TWSE:3008",
+    "TWSE:9999"
+  ]
+}

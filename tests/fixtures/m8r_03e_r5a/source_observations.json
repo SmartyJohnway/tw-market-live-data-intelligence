@@ -1,0 +1,191 @@
+{
+  "targets": {
+    "TPEX:5347": {
+      "TPEX_OPENAPI": {
+        "activity": {
+          "trade_volume": 3000
+        },
+        "market": "tpex_otc",
+        "price": {
+          "close": "119.5",
+          "high": "121",
+          "low": "118",
+          "open": "119"
+        },
+        "retrieved_at_utc": "2026-07-16T03:00:00Z",
+        "symbol": "5347",
+        "trade_date": "2026-07-15"
+      },
+      "TWSE_MIS": {
+        "change": 0.5,
+        "market": "TPEX",
+        "price": 119.98,
+        "retrieved_at": "2026-07-16T03:00:00Z",
+        "source_timestamp": "2026-07-16T02:59:50Z",
+        "symbol": "5347"
+      }
+    },
+    "TPEX:6488": {
+      "TPEX_OPENAPI": {
+        "activity": {
+          "trade_volume": 500
+        },
+        "market": "tpex_otc",
+        "price": {
+          "close": "505",
+          "high": "510",
+          "low": "495",
+          "open": "500"
+        },
+        "retrieved_at_utc": "2026-07-16T03:00:00Z",
+        "symbol": "6488",
+        "trade_date": "2026-07-15"
+      }
+    },
+    "TWSE:0050": {
+      "TWSE_MIS": {
+        "change": 1.5,
+        "market": "TWSE",
+        "price": 182.1,
+        "retrieved_at": "2026-07-16T03:00:00Z",
+        "source_timestamp": "2026-07-16T02:59:50Z",
+        "symbol": "0050"
+      },
+      "TWSE_OPENAPI": {
+        "activity": {
+          "trade_volume": 8000
+        },
+        "market": "listed",
+        "price": {
+          "close": "178.5",
+          "high": "181",
+          "low": "177",
+          "open": "178"
+        },
+        "retrieved_at_utc": "2026-07-16T03:00:00Z",
+        "symbol": "0050",
+        "trade_date": "2026-07-15"
+      }
+    },
+    "TWSE:0056": {
+      "TWSE_MIS": {
+        "change": -0.2,
+        "market": "TWSE",
+        "price": 40.71,
+        "retrieved_at": "2026-07-16T03:00:00Z",
+        "source_timestamp": "2026-07-16T02:59:50Z",
+        "symbol": "0056"
+      },
+      "TWSE_OPENAPI": {
+        "activity": {
+          "trade_volume": 12000
+        },
+        "market": "listed",
+        "price": {
+          "close": "40.2",
+          "high": "40.3",
+          "low": "39.8",
+          "open": "40.1"
+        },
+        "retrieved_at_utc": "2026-07-16T03:00:00Z",
+        "symbol": "0056",
+        "trade_date": "2026-07-15"
+      }
+    },
+    "TWSE:2308": {
+      "TWSE_MIS": {
+        "change": 5.0,
+        "market": "TWSE",
+        "price": 358.1,
+        "retrieved_at": "2026-07-16T03:00:00Z",
+        "source_timestamp": "2026-07-15T02:59:50Z",
+        "symbol": "2308"
+      },
+      "TWSE_OPENAPI": {
+        "activity": {
+          "trade_volume": 5000
+        },
+        "market": "listed",
+        "price": {
+          "close": "346",
+          "high": "352",
+          "low": "344",
+          "open": "345"
+        },
+        "retrieved_at_utc": "2026-07-16T03:00:00Z",
+        "symbol": "2308",
+        "trade_date": "2026-07-14"
+      }
+    },
+    "TWSE:2317": {
+      "TWSE_OPENAPI": {
+        "activity": {
+          "trade_volume": 15000
+        },
+        "market": "listed",
+        "price": {
+          "close": "202",
+          "high": "205",
+          "low": "198",
+          "open": "200"
+        },
+        "retrieved_at_utc": "2026-07-16T03:00:00Z",
+        "symbol": "2317",
+        "trade_date": "2026-07-15"
+      }
+    },
+    "TWSE:2330": {
+      "TWSE_MIS": {
+        "change": 10.0,
+        "market": "TWSE",
+        "price": 991.5,
+        "retrieved_at": "2026-07-16T03:00:00Z",
+        "source_timestamp": "2026-07-16T02:59:50Z",
+        "symbol": "2330"
+      },
+      "TWSE_OPENAPI": {
+        "activity": {
+          "trade_volume": 20000
+        },
+        "market": "listed",
+        "price": {
+          "close": "990",
+          "high": "1005",
+          "low": "985",
+          "open": "990"
+        },
+        "retrieved_at_utc": "2026-07-16T03:00:00Z",
+        "symbol": "2330",
+        "trade_date": "2026-07-15"
+      }
+    },
+    "TWSE:2382": {
+      "TWSE_MIS": {
+        "change": -3.0,
+        "market": "TWSE",
+        "price": 252.4,
+        "retrieved_at": "2026-07-16T03:00:00Z",
+        "source_timestamp": "2026-07-16T02:59:50Z",
+        "symbol": "2382"
+      }
+    },
+    "TWSE:3008": {
+      "TWSE_OPENAPI": {
+        "activity": {
+          "trade_volume": 400
+        },
+        "market": "listed",
+        "price": {
+          "close": "2410",
+          "high": "2450",
+          "low": "2390",
+          "open": "2400"
+        },
+        "retrieved_at_utc": "2026-07-16T03:00:00Z",
+        "symbol": "3008",
+        "trade_date": "2026-07-15"
+      }
+    },
+    "TWSE:9999": {}
+  }
+}
