@@ -122,7 +122,22 @@ def validate_evidence_request(value: dict) -> dict:
         o[field]=[_evidence_item(x,f'$.{field}[{i}]',prio,seen) for i,x in enumerate(_list(o.get(field),f'$.{field}'))]
     pol=deepcopy(_obj(o.get('execution_policy'),'$.execution_policy')); _strict(pol,'$.execution_policy',{'operator_confirmation_required','network_allowed','polling','scheduler'})
     for flag in pol: _bool(pol[flag],'$.execution_policy.'+flag)
-    if pol.get('network_allowed') or pol.get('polling') or pol.get('scheduler'): _err('execution_policy_invalid','$.execution_policy','network/polling/scheduler disabled')
+    
+    try:
+        from pathlib import Path
+        import json
+        _reg_path = Path("docs/data_capabilities/m8_source_capability_registry.json")
+        _reg = json.loads(_reg_path.read_text(encoding="utf-8"))
+        _phase_c_active = _reg.get("phase_c_activation_status") == "conversation_driven_enabled_with_caveats"
+    except Exception:
+        _phase_c_active = False
+
+    if _phase_c_active:
+        if pol.get('polling') or pol.get('scheduler'):
+            _err('execution_policy_invalid','$.execution_policy','polling/scheduler disabled')
+    else:
+        if pol.get('network_allowed') or pol.get('polling') or pol.get('scheduler'):
+            _err('execution_policy_invalid','$.execution_policy','network/polling/scheduler disabled')
     o['execution_policy']=pol
     if o.get('follow_up_context') is not None:
         _strict(_obj(o['follow_up_context'],'$.follow_up_context'),'$.follow_up_context',{'conversation_context_id','parent_evidence_request_id','reusable_resolutions','freshness_recheck_required'})

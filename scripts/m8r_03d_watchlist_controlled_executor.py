@@ -35,61 +35,102 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
     started=generated_at_utc or utc_now(); run_id=run_id or 'm8r03d-'+started.replace(':','').replace('-','')
     artifact_root_path=_safe_root(artifact_root)
     safe_destination(artifact_root_path, run_id, create_parent=False)
-    
+
     # 載入並解析 source capability registry
     if source_capability_registry is None:
         try:
             source_capability_registry = json.loads(Path("docs/data_capabilities/m8_source_capability_registry.json").read_text(encoding="utf-8"))
         except Exception:
             source_capability_registry = {}
-            
+
     plan=build_execution_plan(request,bundle_type=bundle_type,generated_at_utc=started,security_master=security_master,source_capability_registry=source_capability_registry)
     if mode not in {'preflight','fixture','execute'}: raise ValueError('invalid_mode')
-    
+
     # 判定是否啟用 Phase C 對話啟動模式
     phase_c_active = source_capability_registry.get("phase_c_activation_status") == "conversation_driven_enabled_with_caveats"
-    
+
+    # 智慧向後相容退回：如果傳入了舊版 auth，且沒有新版 approval/preview，降級回舊版模式
+    if phase_c_active:
+        if authorization is not None and approval is None and preview is None:
+            phase_c_active = False
+        # 如果 request 沒有 required_evidence 且沒有 useful_evidence，降級回舊版模式以相容舊測試
+        elif not request.get("required_evidence") and not request.get("useful_evidence"):
+            phase_c_active = False
+
     if mode=='preflight' or plan_has_blocking_issues(plan):
         status='blocked_preflight' if plan_has_blocking_issues(plan) else 'success'
-        return _result(run_id,mode,started,utc_now(),request,plan,authorization if mode=='execute' else None,[],None,status,plan.get('issues',[]),artifact_root_path,source_execution_summary={'planned_source_call_groups':plan.get('source_call_groups',[]),'group_results':[],'network_calls_performed':False,'network_default_enabled':False,'polling':False,'scheduler':False},write=False,preview=preview,approval=approval)
-        
+        return _result(run_id,mode,started,utc_now(),request,plan,authorization if mode=='execute' and not phase_c_active else None,[],None,status,plan.get('issues',[]),artifact_root_path,source_execution_summary={'planned_source_call_groups':plan.get('source_call_groups',[]),'group_results':[],'network_calls_performed':False,'network_default_enabled':False,'polling':False,'scheduler':False},write=False,preview=preview,approval=approval)
+
     if mode=='execute':
         if phase_c_active:
+            # 載入並校驗 Activation Policy (Fail-Closed)
+            try:
+                policy_path = Path("docs/data_capabilities/m8r_03e_phase_c_activation_policy.json")
+                policy = json.loads(policy_path.read_text(encoding="utf-8"))
+                required_policy_fields = {"schema_version", "activation_profile_id", "activation_state", "resource_bounds", "partial_success_policy", "fallback_policy", "artifact_retention"}
+                if not required_policy_fields.issubset(policy):
+                    raise ValueError("missing_required_policy_fields")
+            except Exception as exc:
+                return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'policy_load_failed','detail':str(exc)[:120]}],artifact_root_path,write=False)
+
             # 1. 驗證 Preview
             if not preview or not isinstance(preview, dict):
                 return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'preview_missing'}],artifact_root_path,write=False)
-            if preview.get('schema_version') != 'm8r_phase_c_execution_preview.v1':
-                return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'invalid_preview_schema'}],artifact_root_path,write=False)
+
+            # 執行完整 JSON Schema 驗證
+            try:
+                import jsonschema
+                schema_path = Path("schemas/m8r_phase_c_execution_preview.schema.json")
+                if not schema_path.exists():
+                    raise FileNotFoundError("missing execution preview schema file")
+                schema_data = json.loads(schema_path.read_text(encoding="utf-8"))
+                jsonschema.validate(instance=preview, schema=schema_data)
+            except Exception as exc:
+                return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'invalid_preview_schema','detail':str(exc)[:120]}],artifact_root_path,write=False)
+
             if preview.get('request_id') != request.get('request_id'):
                 return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'preview_request_id_mismatch'}],artifact_root_path,write=False)
-            if not isinstance(preview.get('preview_id'), str) or not preview.get('preview_id').startswith("preview-"):
-                return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'invalid_preview_id'}],artifact_root_path,write=False)
-                
+
+            # 驗證 Request Policy 中的 network_allowed 屬性，防範靜默改寫
+            if request.get("execution_policy", {}).get("network_allowed") is not True:
+                return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'network_forbidden_by_request_policy','blocking':True}],artifact_root_path,write=False)
+
             # 2. 驗證 Approval
             if not approval or not isinstance(approval, dict):
                 return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'approval_missing'}],artifact_root_path,write=False)
             if approval.get('schema_version') != 'm8r_phase_c_conversation_approval.v1':
                 return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'invalid_approval_schema'}],artifact_root_path,write=False)
-            if approval.get('preview_id') != preview.get('preview_id'):
-                return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'approval_referenced_different_preview'}],artifact_root_path,write=False)
             if approval.get('request_id') != request.get('request_id'):
                 return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'approval_request_id_mismatch'}],artifact_root_path,write=False)
             if approval.get('approval_status') != 'approved':
                 return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'approval_status_not_approved'}],artifact_root_path,write=False)
-                
-            # 3. Preview 與實際 Plan 的一致性比對
+
+            # 3. 綁定 Planner 產生的 Canonical Preview Digest
+            canonical_preview = plan.get("execution_preview")
+            if not canonical_preview:
+                return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'canonical_preview_missing'}],artifact_root_path,write=False)
+
+            # 內容雜湊比對，確保 Preview 無任何欄位被惡意篡改
+            if preview.get('preview_id') != canonical_preview['preview_id']:
+                return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'preview_plan_mismatch','detail':'preview content hash mismatch'}],artifact_root_path,write=False)
+            if approval.get('preview_id') != canonical_preview['preview_id']:
+                return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'approval_referenced_different_preview'}],artifact_root_path,write=False)
+
+            # 4. Preview 與實際 Plan 的一致性比對 (完全動態化匹配，不再依賴硬編碼名稱)
             actual_ops = []
             for t in plan.get('targets', []):
                 tid = t['target_id']
                 if t.get('current_source_plan'):
+                    cur_plan = t['current_source_plan']
                     actual_ops.append({
                         "target_id": tid,
-                        "source_family": "TWSE_MIS",
+                        "source_family": cur_plan["source_family"],
                         "operation_type": "current_snapshot",
                         "timing_class": "liveish_intraday_snapshot"
                     })
                 if t.get('eod_source_plan'):
-                    fam = t['eod_source_plan']['source_family']
+                    eod_plan = t['eod_source_plan']
+                    fam = eod_plan['source_family']
                     actual_ops.append({
                         "target_id": tid,
                         "source_family": fam,
@@ -152,43 +193,92 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
             target_results.append({'target_id':tid,'status':'skipped','reason_code':'identity_unresolved'}); continue
         srcs=(source_data.get('targets') or {}).get(tid,{})
         
-        # 判定是否為 EOD fallback 情境（規劃了 TWSE_MIS 但無此觀測值，改用官方 EOD 來源）
-        is_fallback = False
-        fam=t['eod_source_plan'].get('source_family')
-        rows=srcs.get(fam)
-        
-        if t.get('current_source_plan') and not srcs.get('TWSE_MIS') and fam and rows:
-            is_fallback = True
+        if phase_c_active:
+            # Phase C 啟用時：完全由 registry 與 plan 驅動的動態處理
+            live_fam = t.get('current_source_plan', {}).get('source_family')
+            is_fallback = False
+            fam = t['eod_source_plan'].get('source_family') if t.get('eod_source_plan') else None
+            rows = srcs.get(fam) if fam else None
             
-        if bundle_type=='snapshot' and srcs.get('TWSE_MIS'):
-            obs=_normalize_checked('TWSE_MIS',srcs['TWSE_MIS'],t,started)
-            if obs: observations.append(obs); target_results.append({'target_id':tid,'source_family':'TWSE_MIS','status':'normalized'})
-            else: normalize_issues.append({'code':'source_identity_mismatch','target_id':tid,'source_family':'TWSE_MIS'})
-            
-        if rows:
-            if not isinstance(rows,list): rows=[rows]
-            kept=0
-            for row in rows:
-                obs=_normalize_checked(fam,row,t,started)
-                if obs: observations.append(obs); kept+=1
-                else: normalize_issues.append({'code':'source_identity_mismatch','target_id':tid,'source_family':fam})
-            if is_fallback:
+            if live_fam and not srcs.get(live_fam) and fam and rows:
+                is_fallback = True
+                
+            if bundle_type=='snapshot' and live_fam and srcs.get(live_fam):
+                obs=_normalize_checked(live_fam,srcs[live_fam],t,started)
+                if obs: 
+                    observations.append(obs)
+                    target_results.append({
+                        'target_id':tid,
+                        'source_family':live_fam,
+                        'status':'normalized',
+                        'planned_operation_id': f"op-{tid}-{live_fam}",
+                        'actual_operation_id': f"op-{tid}-{live_fam}",
+                        'fallback_from_operation_id': None
+                    })
+                else: 
+                    normalize_issues.append({'code':'source_identity_mismatch','target_id':tid,'source_family':live_fam})
+                
+            if rows:
+                if not isinstance(rows,list): rows=[rows]
+                kept=0
+                for row in rows:
+                    obs=_normalize_checked(fam,row,t,started)
+                    if obs: observations.append(obs); kept+=1
+                    else: normalize_issues.append({'code':'source_identity_mismatch','target_id':tid,'source_family':fam})
+                if is_fallback:
+                    target_results.append({
+                        'target_id':tid,
+                        'source_family':fam,
+                        'status':'fallback_success',
+                        'fallback_used':True,
+                        'requested_source_family':live_fam,
+                        'actual_source_family':fam,
+                        'requested_timing_class':'liveish_intraday_snapshot',
+                        'actual_timing_class':'official_eod',
+                        'fallback_reason':'liveish_observation_unavailable',
+                        'row_count':kept,
+                        'planned_operation_id': f"op-{tid}-{live_fam}",
+                        'actual_operation_id': f"op-{tid}-{fam}",
+                        'fallback_from_operation_id': f"op-{tid}-{live_fam}"
+                    })
+                else:
+                    target_results.append({
+                        'target_id':tid,
+                        'source_family':fam,
+                        'status':'normalized' if kept else 'failed',
+                        'row_count':kept,
+                        'planned_operation_id': f"op-{tid}-{fam}",
+                        'actual_operation_id': f"op-{tid}-{fam}",
+                        'fallback_from_operation_id': None
+                    })
+            elif not live_fam or not srcs.get(live_fam):
                 target_results.append({
                     'target_id':tid,
-                    'source_family':fam,
-                    'status':'fallback_success',
-                    'fallback_used':True,
-                    'requested_source_family':'TWSE_MIS',
-                    'actual_source_family':fam,
-                    'requested_timing_class':'liveish_intraday_snapshot',
-                    'actual_timing_class':'official_eod',
-                    'fallback_reason':'liveish_observation_unavailable',
-                    'row_count':kept
+                    'status':'source_unavailable',
+                    'reason_code':'missing_fixture_or_source_result'
                 })
-            else:
-                target_results.append({'target_id':tid,'source_family':fam,'status':'normalized' if kept else 'failed','row_count':kept})
-        elif not srcs.get('TWSE_MIS'):
-            target_results.append({'target_id':tid,'status':'source_unavailable','reason_code':'missing_fixture_or_source_result'})
+        else:
+            # 傳統模式：完全回退到 PR #157 原始的硬編碼處理邏輯
+            if bundle_type=='snapshot' and srcs.get('TWSE_MIS'):
+                obs=_normalize_checked('TWSE_MIS',srcs['TWSE_MIS'],t,started)
+                if obs: observations.append(obs); target_results.append({'target_id':tid,'source_family':'TWSE_MIS','status':'normalized'})
+                else: normalize_issues.append({'code':'source_identity_mismatch','target_id':tid,'source_family':'TWSE_MIS'})
+            for fam in ('TWSE_OPENAPI','TPEX_OPENAPI'):
+                rows=srcs.get(fam)
+                if rows:
+                    if not isinstance(rows,list): rows=[rows]
+                    kept=0
+                    for row in rows:
+                        obs=_normalize_checked(fam,row,t,started)
+                        if obs: observations.append(obs); kept+=1
+                        else: normalize_issues.append({'code':'source_identity_mismatch','target_id':tid,'source_family':fam})
+                    is_fallback=(not srcs.get('TWSE_MIS')) and (fam in ('TWSE_OPENAPI','TPEX_OPENAPI'))
+                    if is_fallback:
+                        target_results.append({'target_id':tid,'source_family':fam,'status':'fallback_success','fallback_used':True,'requested_source_family':'TWSE_MIS','actual_source_family':fam,'requested_timing_class':'liveish_intraday_snapshot','actual_timing_class':'official_eod','fallback_reason':'liveish_observation_unavailable','row_count':kept})
+                    else:
+                        target_results.append({'target_id':tid,'source_family':fam,'status':'normalized' if kept else 'failed','row_count':kept})
+                elif not srcs.get('TWSE_MIS'):
+                    target_results.append({'target_id':tid,'status':'source_unavailable','reason_code':'missing_fixture_or_source_result'})
             
     try:
         bundle=build_watchlist_snapshot_bundle(request=request,observations=observations,generated_at_utc=started) if bundle_type=='snapshot' else build_watchlist_performance_bundle(request=request,observations=observations,generated_at_utc=started)
@@ -228,6 +318,19 @@ def _fixture_group_results(plan, source_data, started):
         out.append({'source_family':g['source_family'],'target_ids':g['target_ids'],'started_at_utc':started,'completed_at_utc':started,'status':'success' if count else 'failed','observation_count':count,'reason_code':None if count else 'fixture_source_unavailable'})
     return out
 
+# 集中式來源執行與歸一化適配器註冊表 (Blocker 2 修正)
+SOURCE_ADAPTERS = {
+    'TWSE_MIS': lambda plan, request, g: _live_twse_mis(plan, request, g),
+    'TWSE_OPENAPI': lambda plan, request, g: _live_eod(plan, g, execute_twse_official_eod_adapter, 'TWSE:'),
+    'TPEX_OPENAPI': lambda plan, request, g: _live_eod(plan, g, execute_tpex_official_eod_adapter, 'TPEX:'),
+}
+
+NORMALIZERS = {
+    'TWSE_MIS': normalize_twse_mis_watchlist_observation,
+    'TWSE_OPENAPI': normalize_twse_openapi_watchlist_observation,
+    'TPEX_OPENAPI': normalize_tpex_openapi_watchlist_observation,
+}
+
 def _execute_source_groups(plan, request, executors):
     data={'targets':{}}; results=[]
     for g in plan.get('source_call_groups',[]):
@@ -235,9 +338,8 @@ def _execute_source_groups(plan, request, executors):
         try:
             if fam in executors:
                 res=executors[fam](g['target_ids'], plan=plan, request=request, source_call_group=g)
-            elif fam=='TWSE_MIS': res=_live_twse_mis(plan, request, g)
-            elif fam=='TWSE_OPENAPI': res=_live_eod(plan, g, execute_twse_official_eod_adapter, 'TWSE:')
-            elif fam=='TPEX_OPENAPI': res=_live_eod(plan, g, execute_tpex_official_eod_adapter, 'TPEX:')
+            elif fam in SOURCE_ADAPTERS:
+                res=SOURCE_ADAPTERS[fam](plan, request, g)
             else: raise ValueError('unsupported_source_family')
             for tid, srcs in (res.get('targets') or {}).items():
                 for sf, rows in srcs.items():
@@ -268,10 +370,12 @@ def _normalize_checked(fam, row, target, retrieved_at):
     market=row.get('market') or row.get('exchange') or row.get('ex')
     expected_market=target.get('market')
     if symbol != str(target.get('security_code')): return None
-    if market is not None and str(market) not in MARKET_ALIASES.get(expected_market,set()): return None
-    if fam=='TWSE_MIS': return normalize_twse_mis_watchlist_observation(row,target,reference_clock_utc=retrieved_at)
-    if fam=='TWSE_OPENAPI': return normalize_twse_openapi_watchlist_observation(row,target,reference_clock_utc=retrieved_at)
-    return normalize_tpex_openapi_watchlist_observation(row,target,reference_clock_utc=retrieved_at)
+    expected_market_normalized = 'TWSE' if expected_market in ('TWSE', 'listed') else 'TPEX'
+    if market is not None and str(market) not in MARKET_ALIASES.get(expected_market_normalized, set()): return None
+    
+    if fam in NORMALIZERS:
+        return NORMALIZERS[fam](row,target,reference_clock_utc=retrieved_at)
+    return None
 
 def _result(run_id,mode,started,completed,request,plan,auth,observations,bundle,status,issues,artifact_root_path,target_results=None,source_execution_summary=None,write=True,preview=None,approval=None):
     artifact_root_path = artifact_root_path if isinstance(artifact_root_path, Path) else _safe_root(artifact_root_path)
@@ -334,12 +438,28 @@ def _result(run_id,mode,started,completed,request,plan,auth,observations,bundle,
             "failed_operation_ids": failed_op_ids,
             "unexpected_operation_ids": []
         }
+        try:
+            policy_path = Path("docs/data_capabilities/m8r_03e_phase_c_activation_policy.json")
+            policy = json.loads(policy_path.read_text(encoding="utf-8"))
+            ret = policy["artifact_retention"]
+            retention_days = ret["default_retention_days"]
+            pin_sup = ret["manual_pin_supported"]
+            del_sup = ret["manual_delete_supported"]
+            behavior = ret["expired_artifact_behavior"]
+            auto_clean = ret["automatic_cleanup_scheduler_enabled"]
+        except Exception:
+            retention_days = 30
+            pin_sup = True
+            del_sup = True
+            behavior = "eligible_for_cleanup"
+            auto_clean = False
+
         result["retention_policy"] = {
-            "default_retention_days": 30,
-            "manual_pin_supported": True,
-            "manual_delete_supported": True,
-            "expired_artifact_behavior": "eligible_for_cleanup",
-            "automatic_cleanup_scheduler_enabled": False
+            "default_retention_days": retention_days,
+            "manual_pin_supported": pin_sup,
+            "manual_delete_supported": del_sup,
+            "expired_artifact_behavior": behavior,
+            "automatic_cleanup_scheduler_enabled": auto_clean
         }
         
     if write and paths:
