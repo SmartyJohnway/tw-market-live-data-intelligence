@@ -1,0 +1,34 @@
+{
+  "schema_version": "m8r_phase_c_activation_policy.v1",
+  "activation_profile_id": "phase_c_conversation_driven_one_shot.v1",
+  "owner_decision": "APPROVE_PHASE_C_CONVERSATION_DRIVEN_ACTIVATION_WITH_EXPANSION_PATH",
+  "activation_state": "enabled_with_caveats",
+  "execution_mode": "conversation_triggered_one_shot",
+  "approval_mode": "conversation_explicit_approval",
+  "execution_preview_required": true,
+  "resource_bounds": {
+    "default_max_targets": 10,
+    "hard_max_targets": 50,
+    "default_max_operations": 30,
+    "hard_max_operations": 100
+  },
+  "partial_success_policy": "allowed",
+  "fallback_policy": "registry_governed",
+  "artifact_retention": {
+    "default_retention_days": 30,
+    "manual_pin_supported": true,
+    "manual_delete_supported": true,
+    "expired_artifact_behavior": "eligible_for_cleanup",
+    "automatic_cleanup_scheduler_enabled": false
+  },
+  "non_activated_features": {
+    "repository_internal_scheduler_enabled": false,
+    "repository_internal_polling_enabled": false,
+    "persistent_autonomous_watchlist_enabled": false,
+    "automatic_llm_followup_execution_enabled": false,
+    "future_external_agent_repeated_execution_supported": true,
+    "future_repeated_execution_activated": false,
+    "autonomous_trading_enabled": false,
+    "order_execution_enabled": false
+  }
+}
