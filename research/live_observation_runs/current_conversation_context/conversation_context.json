@@ -6,7 +6,9 @@
       "2330"
     ],
     "current_limitations": [
+      "M7E indicates latest observation must not be described as current intraday movement.",
       "freshness_must_be_displayed",
+      "holiday schedule records missing; weekday heuristic only",
       "live_observation_not_canonical",
       "manual_bounded_regression_probe",
       "no_polling_or_scheduler",
@@ -36,6 +38,7 @@
       "3543",
       "TAIEX"
     ],
+    "currentness_language_guardrail": "Use M7E currentness_label before describing whether latest observations are live/current; never convert observations into trading signals or recommendations.",
     "degraded_observations": [
       "0050",
       "2330",
@@ -43,6 +46,13 @@
       "TX"
     ],
     "descriptive_only": true,
+    "market_clock_session_state": {
+      "ai_currentness_summary": "Market session is not current for live discussion; treat observations as not-current reference context.",
+      "calendar_confidence": "weekday_heuristic_only",
+      "currentness_label": "not_current",
+      "freshness_state": "stale",
+      "session_state": "weekend_closed"
+    },
     "recommended_operator_workflow": [
       "Review Conversation Context JSON/Markdown as the AI handoff package.",
       "Treat Canonical Summary as Level 1 historical context, not Latest Observation.",
@@ -59,6 +69,661 @@
     ],
     "trading_recommendation": false,
     "unavailable_observations": []
+  },
+  "ai_safe_market_context_projection": {
+    "enabled": true,
+    "full_ladder_exposed": false,
+    "not_recommendation": true,
+    "not_trading_signal": true,
+    "projection_count": 0,
+    "projections": [],
+    "raw_rich_facts_exposed": false,
+    "safe_for_ai_context": true,
+    "schema_version": "m7b_ai_safe_market_context_collection.v1"
+  },
+  "bounded_watchlist_cross_context": {
+    "bounded_watchlist_only": true,
+    "context_count": 1,
+    "contexts": [
+      {
+        "blocked_interpretations": [
+          "full_market_breadth",
+          "market_wide_trend",
+          "sector_rotation",
+          "capital_flow",
+          "main_force",
+          "trading_signal",
+          "buy_signal",
+          "sell_signal",
+          "recommendation",
+          "buy_sell_hold",
+          "target_price",
+          "support",
+          "resistance",
+          "breakout",
+          "breakdown",
+          "true_liquidity",
+          "full_order_book",
+          "prediction",
+          "confirmation"
+        ],
+        "bounded_breadth_summary": {
+          "bounded_flat_change_count": 0,
+          "bounded_negative_change_count": 0,
+          "bounded_positive_change_count": 0,
+          "bounded_unavailable_change_count": 19,
+          "bounded_watchlist_only": true,
+          "not_full_market_breadth": true,
+          "status": "computed"
+        },
+        "bounded_relative_change_summary": {
+          "bounded_watchlist_only": true,
+          "comparison_metric": "change_percent",
+          "not_recommendation": true,
+          "status": "computed",
+          "top_negative_change_percent_items": [],
+          "top_positive_change_percent_items": []
+        },
+        "bounded_watchlist_only": true,
+        "context_id": "M7D_BOUNDED_WATCHLIST_CROSS_CONTEXT",
+        "context_status": "runtime_computed_candidate",
+        "controlled_exposure_policy": "m7d_controlled_bounded_watchlist_cross_context_v1",
+        "coverage_catalog": [
+          {
+            "allowed_interpretation": "Describes only items in the configured watchlist/latest observation payload.",
+            "depends_on": [
+              "latest_observation_payload"
+            ],
+            "description": "Summary of the currently observed watchlist payload only.",
+            "forbidden_interpretation": "Must not imply full market coverage or market-wide direction.",
+            "id": "bounded_observed_market_snapshot",
+            "m7d_schema_group": "watchlist_observation_coverage",
+            "name": "Bounded observed market snapshot",
+            "scope_status": "in_scope_m7d"
+          },
+          {
+            "allowed_interpretation": "M7D may aggregate availability but does not redefine price semantics.",
+            "depends_on": [
+              "M7A",
+              "M7B",
+              "M7C"
+            ],
+            "description": "Latest observed price state per watchlist item from M7A/M7B/M7C dependencies.",
+            "forbidden_interpretation": "Must not reinterpret reference values as current market data.",
+            "id": "current_price_state",
+            "m7d_schema_group": "watchlist_observation_coverage",
+            "name": "Current price state",
+            "scope_status": "referenced_dependency"
+          },
+          {
+            "allowed_interpretation": "Deferred until a market clock/session-state policy exists.",
+            "depends_on": [
+              "M7E_market_clock"
+            ],
+            "description": "Whether the observation is preopen/intraday/closed/stale/session-relative.",
+            "forbidden_interpretation": "Must not invent session clock semantics in M7D-00/01.",
+            "id": "session_position",
+            "m7d_schema_group": "quality_gate_policy",
+            "name": "Session position",
+            "scope_status": "deferred_m7e"
+          },
+          {
+            "allowed_interpretation": "Compare only against an index-like item present in the same watchlist with observations/metrics.",
+            "depends_on": [
+              "watchlist_config",
+              "M7C"
+            ],
+            "description": "Bounded relationship to index-like watchlist items such as TAIEX if present.",
+            "forbidden_interpretation": "Must not infer market prediction or full Taiwan market direction.",
+            "id": "market_index_context",
+            "m7d_schema_group": "index_relative_context",
+            "name": "Market index context",
+            "scope_status": "in_scope_m7d"
+          },
+          {
+            "allowed_interpretation": "Compare only against futures-like items present in the same watchlist.",
+            "depends_on": [
+              "watchlist_config",
+              "M7C"
+            ],
+            "description": "Bounded relationship to TAIFEX/TX-like watchlist items if present.",
+            "forbidden_interpretation": "Must not infer basis, fair value, or futures-led direction unless explicitly supported by later policy.",
+            "id": "futures_context",
+            "m7d_schema_group": "futures_relative_context",
+            "name": "Futures context",
+            "scope_status": "in_scope_m7d"
+          },
+          {
+            "allowed_interpretation": "Bounded watchlist breadth only.",
+            "depends_on": [
+              "M7C"
+            ],
+            "description": "Positive/negative/flat/degraded/failed/reference-only counts within current watchlist.",
+            "forbidden_interpretation": "Must not be called market breadth or generalized to full market breadth.",
+            "id": "watchlist_breadth",
+            "m7d_schema_group": "bounded_breadth_summary",
+            "name": "Watchlist breadth",
+            "scope_status": "in_scope_m7d"
+          },
+          {
+            "allowed_interpretation": "Descriptive comparison among observed watchlist items.",
+            "depends_on": [
+              "M7C"
+            ],
+            "description": "Factual comparison of watchlist items by deterministic metrics such as change_percent.",
+            "forbidden_interpretation": "Must not rank as a recommendation or trading instruction.",
+            "id": "cross_instrument_differences",
+            "m7d_schema_group": "bounded_relative_change_summary",
+            "name": "Cross-instrument differences",
+            "scope_status": "in_scope_m7d"
+          },
+          {
+            "allowed_interpretation": "M7D may summarize availability while preserving upstream caveats.",
+            "depends_on": [
+              "M7A",
+              "M7B",
+              "M7C"
+            ],
+            "description": "Bounded observation of current volume fields if available.",
+            "forbidden_interpretation": "Must not treat volume as capital flow or broad participation.",
+            "id": "current_volume_observations",
+            "m7d_schema_group": "watchlist_observation_coverage",
+            "name": "Current volume observations",
+            "scope_status": "referenced_dependency"
+          },
+          {
+            "allowed_interpretation": "Displayed snapshot only.",
+            "depends_on": [
+              "M7C"
+            ],
+            "description": "Displayed top-5 quote/depth context from M7C metrics.",
+            "forbidden_interpretation": "Must not infer true liquidity, full order book, support/resistance, or main force.",
+            "id": "displayed_order_book_depth_snapshot",
+            "m7d_schema_group": "bounded_relative_change_summary",
+            "name": "Displayed order book depth snapshot",
+            "scope_status": "referenced_dependency"
+          },
+          {
+            "allowed_interpretation": "Use existing freshness/source-health semantics only.",
+            "depends_on": [
+              "latest_observation_payload"
+            ],
+            "description": "Count/summarize fresh/degraded/stale/failed observations.",
+            "forbidden_interpretation": "Must not invent market timing or session state.",
+            "id": "source_freshness_delay_failure",
+            "m7d_schema_group": "source_freshness_summary",
+            "name": "Source freshness delay failure",
+            "scope_status": "in_scope_m7d"
+          },
+          {
+            "allowed_interpretation": "Descriptive availability summary only.",
+            "depends_on": [
+              "M7B",
+              "M7C"
+            ],
+            "description": "Summarize missing required context fields across watchlist items.",
+            "forbidden_interpretation": "Must not convert missingness into direction or recommendation.",
+            "id": "missing_fields_context",
+            "m7d_schema_group": "missing_context_summary",
+            "name": "Missing fields context",
+            "scope_status": "in_scope_m7d"
+          },
+          {
+            "allowed_interpretation": "Describes quality/freshness limitations within current watchlist.",
+            "depends_on": [
+              "latest_observation_payload"
+            ],
+            "description": "Identify stale/reference-only/degraded observations inside bounded watchlist.",
+            "forbidden_interpretation": "Must not call stale observations market direction.",
+            "id": "stale_observations_context",
+            "m7d_schema_group": "degraded_context_summary",
+            "name": "Stale observations context",
+            "scope_status": "in_scope_m7d"
+          },
+          {
+            "allowed_interpretation": "Deferred official EOD/reference context.",
+            "depends_on": [
+              "M8_official_eod_context"
+            ],
+            "description": "Official TWSE/TPEx/TAIFEX EOD reference baseline.",
+            "forbidden_interpretation": "Must not implement official EOD in M7D.",
+            "id": "official_eod_context",
+            "m7d_schema_group": "quality_gate_policy",
+            "name": "Official EOD context",
+            "scope_status": "deferred_m8"
+          },
+          {
+            "allowed_interpretation": "Deferred historical context.",
+            "depends_on": [
+              "M8_recent_history"
+            ],
+            "description": "5D/20D or recent historical baseline.",
+            "forbidden_interpretation": "Must not implement history in M7D.",
+            "id": "recent_historical_context",
+            "m7d_schema_group": "quality_gate_policy",
+            "name": "Recent historical context",
+            "scope_status": "deferred_m8"
+          },
+          {
+            "allowed_interpretation": "Reference existing caveats without changing source-health behavior.",
+            "depends_on": [
+              "source_health_summary"
+            ],
+            "description": "Existing source-health caveats reflected in bounded context.",
+            "forbidden_interpretation": "Must not change source-health behavior in M7D-00/01.",
+            "id": "source_health_caveats",
+            "m7d_schema_group": "source_freshness_summary",
+            "name": "Source health caveats",
+            "scope_status": "referenced_dependency"
+          },
+          {
+            "allowed_interpretation": "Schema includes provenance_summary placeholders.",
+            "depends_on": [
+              "latest_observation_payload"
+            ],
+            "description": "Source, adapter, retrieved_at, and evidence lineage.",
+            "forbidden_interpretation": "Must not fabricate lineage or retrieved_at values.",
+            "id": "data_provenance",
+            "m7d_schema_group": "provenance_summary",
+            "name": "Data provenance",
+            "scope_status": "referenced_dependency"
+          },
+          {
+            "allowed_interpretation": "Required caveats for any future bounded cross-context output.",
+            "depends_on": [],
+            "description": "Explicit limitations and forbidden interpretations.",
+            "forbidden_interpretation": "Must not omit no-go caveats from future builder output.",
+            "id": "semantic_limitations",
+            "m7d_schema_group": "semantic_limitations",
+            "name": "Semantic limitations",
+            "scope_status": "in_scope_m7d"
+          },
+          {
+            "allowed_interpretation": "Deferred product surface work.",
+            "depends_on": [
+              "M7F_frontend_operator_presentation"
+            ],
+            "description": "Frontend/operator card, workbench layout, copy-to-AI rendering.",
+            "forbidden_interpretation": "Must not build frontend in M7D-00/01.",
+            "id": "frontend_operator_presentation",
+            "m7d_schema_group": "quality_gate_policy",
+            "name": "Frontend operator presentation",
+            "scope_status": "deferred_m7f"
+          },
+          {
+            "allowed_interpretation": "Schema only in M7D-00/01; controlled exposure deferred to M7D-04.",
+            "depends_on": [
+              "M7D-04"
+            ],
+            "description": "AI-readable bounded cross-context package.",
+            "forbidden_interpretation": "Must not expose M7D to conversation context before controlled integration.",
+            "id": "ai_discussion_handoff",
+            "m7d_schema_group": "semantic_limitations",
+            "name": "AI discussion handoff",
+            "scope_status": "in_scope_m7d"
+          }
+        ],
+        "cross_context_is_signal": false,
+        "degraded_context_summary": {
+          "blocked_items": [],
+          "bounded_watchlist_only": true,
+          "degraded_items": [
+            {
+              "display_name": "TX futures",
+              "reason": "degraded_or_failed_observation",
+              "symbol": "TX"
+            }
+          ],
+          "reference_only_items": [],
+          "status": "computed"
+        },
+        "etf_group_context": {
+          "bounded_watchlist_only": true,
+          "etf_comparison_pairs": [],
+          "etf_like_items": [],
+          "not_capital_flow": true,
+          "not_sector_rotation": true,
+          "status": "not_computed"
+        },
+        "exposure_scope": "conversation_context_only",
+        "exposure_status": "ai_safe_context_enabled",
+        "futures_relative_context": {
+          "bounded_watchlist_only": true,
+          "futures_comparison_pairs": [],
+          "futures_like_items": [],
+          "not_futures_lead_signal": true,
+          "requires_futures_item_in_watchlist": true,
+          "status": "not_computed"
+        },
+        "grouping_policy": {
+          "allowed_grouping_dimensions": [
+            "market",
+            "source",
+            "adapter_id",
+            "instrument_type",
+            "category",
+            "watchlist_group",
+            "observation_status",
+            "freshness_status",
+            "reference_only_status",
+            "has_m7b_projection",
+            "has_m7c_metrics"
+          ],
+          "deferred_grouping_dimensions": [
+            "industry",
+            "sector",
+            "capital_flow",
+            "market_wide_breadth"
+          ],
+          "semantic_status": "schema_only"
+        },
+        "index_relative_context": {
+          "bounded_watchlist_only": true,
+          "index_comparison_pairs": [],
+          "index_like_items": [],
+          "not_market_prediction": true,
+          "requires_index_item_in_watchlist": true,
+          "status": "not_computed"
+        },
+        "missing_context_summary": {
+          "bounded_watchlist_only": true,
+          "missing_m7b_projection_items": [
+            {
+              "display_name": "0050",
+              "reason": "missing_m7b_projection",
+              "symbol": "0050"
+            },
+            {
+              "display_name": "00878",
+              "reason": "missing_m7b_projection",
+              "symbol": "00878"
+            },
+            {
+              "display_name": "00919",
+              "reason": "missing_m7b_projection",
+              "symbol": "00919"
+            },
+            {
+              "display_name": "00929",
+              "reason": "missing_m7b_projection",
+              "symbol": "00929"
+            },
+            {
+              "display_name": "00934",
+              "reason": "missing_m7b_projection",
+              "symbol": "00934"
+            },
+            {
+              "display_name": "00939",
+              "reason": "missing_m7b_projection",
+              "symbol": "00939"
+            },
+            {
+              "display_name": "00940",
+              "reason": "missing_m7b_projection",
+              "symbol": "00940"
+            },
+            {
+              "display_name": "00981A",
+              "reason": "missing_m7b_projection",
+              "symbol": "00981A"
+            },
+            {
+              "display_name": "1569",
+              "reason": "missing_m7b_projection",
+              "symbol": "1569"
+            },
+            {
+              "display_name": "2317",
+              "reason": "missing_m7b_projection",
+              "symbol": "2317"
+            },
+            {
+              "display_name": "2324",
+              "reason": "missing_m7b_projection",
+              "symbol": "2324"
+            },
+            {
+              "display_name": "2330",
+              "reason": "missing_m7b_projection",
+              "symbol": "2330"
+            },
+            {
+              "display_name": "2603",
+              "reason": "missing_m7b_projection",
+              "symbol": "2603"
+            },
+            {
+              "display_name": "2609",
+              "reason": "missing_m7b_projection",
+              "symbol": "2609"
+            },
+            {
+              "display_name": "3293",
+              "reason": "missing_m7b_projection",
+              "symbol": "3293"
+            },
+            {
+              "display_name": "3483",
+              "reason": "missing_m7b_projection",
+              "symbol": "3483"
+            },
+            {
+              "display_name": "3543",
+              "reason": "missing_m7b_projection",
+              "symbol": "3543"
+            },
+            {
+              "display_name": "TAIEX",
+              "reason": "missing_m7b_projection",
+              "symbol": "TAIEX"
+            },
+            {
+              "display_name": "TX futures",
+              "reason": "missing_m7b_projection",
+              "symbol": "TX"
+            }
+          ],
+          "missing_m7c_metrics_items": [
+            {
+              "display_name": "0050",
+              "reason": "missing_m7c_metrics",
+              "symbol": "0050"
+            },
+            {
+              "display_name": "00878",
+              "reason": "missing_m7c_metrics",
+              "symbol": "00878"
+            },
+            {
+              "display_name": "00919",
+              "reason": "missing_m7c_metrics",
+              "symbol": "00919"
+            },
+            {
+              "display_name": "00929",
+              "reason": "missing_m7c_metrics",
+              "symbol": "00929"
+            },
+            {
+              "display_name": "00934",
+              "reason": "missing_m7c_metrics",
+              "symbol": "00934"
+            },
+            {
+              "display_name": "00939",
+              "reason": "missing_m7c_metrics",
+              "symbol": "00939"
+            },
+            {
+              "display_name": "00940",
+              "reason": "missing_m7c_metrics",
+              "symbol": "00940"
+            },
+            {
+              "display_name": "00981A",
+              "reason": "missing_m7c_metrics",
+              "symbol": "00981A"
+            },
+            {
+              "display_name": "1569",
+              "reason": "missing_m7c_metrics",
+              "symbol": "1569"
+            },
+            {
+              "display_name": "2317",
+              "reason": "missing_m7c_metrics",
+              "symbol": "2317"
+            },
+            {
+              "display_name": "2324",
+              "reason": "missing_m7c_metrics",
+              "symbol": "2324"
+            },
+            {
+              "display_name": "2330",
+              "reason": "missing_m7c_metrics",
+              "symbol": "2330"
+            },
+            {
+              "display_name": "2603",
+              "reason": "missing_m7c_metrics",
+              "symbol": "2603"
+            },
+            {
+              "display_name": "2609",
+              "reason": "missing_m7c_metrics",
+              "symbol": "2609"
+            },
+            {
+              "display_name": "3293",
+              "reason": "missing_m7c_metrics",
+              "symbol": "3293"
+            },
+            {
+              "display_name": "3483",
+              "reason": "missing_m7c_metrics",
+              "symbol": "3483"
+            },
+            {
+              "display_name": "3543",
+              "reason": "missing_m7c_metrics",
+              "symbol": "3543"
+            },
+            {
+              "display_name": "TAIEX",
+              "reason": "missing_m7c_metrics",
+              "symbol": "TAIEX"
+            },
+            {
+              "display_name": "TX futures",
+              "reason": "missing_m7c_metrics",
+              "symbol": "TX"
+            }
+          ],
+          "missing_required_observation_items": [],
+          "status": "computed"
+        },
+        "not_full_market_breadth": true,
+        "not_recommendation": true,
+        "not_trading_signal": true,
+        "provenance_summary": {
+          "adapter_ids": [
+            "taifex_mis_tx_futures_quote",
+            "twse_mis_equity_etf_quote",
+            "twse_mis_taiex_index_quote"
+          ],
+          "provenance_available": true,
+          "retrieved_at_values": [
+            "2026-07-03T13:23:42Z"
+          ],
+          "source_names": [
+            "TAIFEX",
+            "TWSE_MIS"
+          ],
+          "status": "computed"
+        },
+        "quality_gate_policy": {
+          "context_status_values": [
+            "schema_only",
+            "not_computed",
+            "computed",
+            "blocked_missing_watchlist",
+            "blocked_missing_latest_observation",
+            "blocked_missing_m7c_metrics",
+            "blocked_insufficient_observed_items",
+            "blocked_quality_flags",
+            "blocked_deferred_dependency"
+          ],
+          "minimum_observed_items_for_cross_context": 2,
+          "requires_bounded_watchlist": true,
+          "requires_futures_item_for_futures_relative_context": true,
+          "requires_index_item_for_index_relative_context": true,
+          "requires_m7c_metrics_for_change_comparisons": true,
+          "semantic_status": "schema_only"
+        },
+        "raw_full_ladder_exposed": false,
+        "raw_rich_facts_exposed": false,
+        "runtime_populated": true,
+        "safe_for_ai_context": true,
+        "schema_version": "m7d_bounded_watchlist_cross_context.v1",
+        "semantic_limitations": {
+          "bounded_watchlist_only": true,
+          "not_capital_flow": true,
+          "not_full_market_breadth": true,
+          "not_full_order_book": true,
+          "not_market_wide_trend": true,
+          "not_recommendation": true,
+          "not_sector_rotation": true,
+          "not_support_resistance": true,
+          "not_trading_signal": true,
+          "not_true_liquidity": true,
+          "status": "computed"
+        },
+        "source_freshness_summary": {
+          "bounded_watchlist_only": true,
+          "failed_source_count": 0,
+          "fresh_item_count": 0,
+          "stale_item_count": 1,
+          "status": "computed",
+          "unknown_freshness_count": 18
+        },
+        "source_policy": {
+          "depends_on": [
+            "M7A_TWSE_MIS_RICH_OBSERVATION",
+            "M7B_AI_SAFE_MARKET_CONTEXT",
+            "M7C_DETERMINISTIC_METRICS"
+          ],
+          "full_market_claim_allowed": false,
+          "live_probe_required": false,
+          "m7a_final_status": "pass_with_caveats",
+          "m7b_final_status": "pass_with_caveats",
+          "m7c_final_status": "pass_with_caveats",
+          "semantic_status": "schema_only",
+          "source_discovery_required": false
+        },
+        "watchlist_observation_coverage": {
+          "degraded_observation_count": 1,
+          "failed_observation_count": 0,
+          "has_m7b_projection_count": 0,
+          "has_m7c_metrics_count": 0,
+          "missing_observation_count": 0,
+          "observed_item_count": 18,
+          "reference_only_count": 0,
+          "status": "computed",
+          "watchlist_item_count": 19
+        }
+      }
+    ],
+    "cross_context_is_signal": false,
+    "enabled": true,
+    "not_full_market_breadth": true,
+    "not_recommendation": true,
+    "not_trading_signal": true,
+    "raw_full_ladder_exposed": false,
+    "raw_rich_facts_exposed": false,
+    "safe_for_ai_context": true,
+    "schema_version": "m7d_bounded_watchlist_cross_context_collection.v1"
   },
   "canonical_summary": {
     "canonical_caveats": [
@@ -89,10 +754,22 @@
     "source_may_be_delayed_or_unavailable",
     "no_trading_signal"
   ],
-  "created_at_utc": "2026-07-02T10:53:09Z",
+  "created_at_utc": "2026-07-18T16:02:47Z",
+  "deterministic_metrics_context": {
+    "contexts": [],
+    "enabled": true,
+    "metrics_are_signals": false,
+    "metrics_context_count": 0,
+    "not_recommendation": true,
+    "not_trading_signal": true,
+    "raw_full_ladder_exposed": false,
+    "raw_rich_facts_exposed": false,
+    "safe_for_ai_context": true,
+    "schema_version": "m7c_deterministic_metrics_collection.v1"
+  },
   "failed_observations": 0,
   "failures": [],
-  "freshness": "2026-06-30T08:24:34Z",
+  "freshness": "2026-07-03T13:23:42Z",
   "governance": {
     "bounded_watchlist_only": true,
     "buy_sell_hold": false,
@@ -120,12 +797,74 @@
   },
   "latest_observation_summary": {
     "failure_count": 0,
-    "generated_at_utc": "2026-06-30T08:24:34Z",
+    "generated_at_utc": "2026-07-03T13:23:42Z",
     "observation_count": 19,
     "raw_endpoint_payload_included": false,
     "schema_version": "m5k_live_observation.v1",
     "status": "ok",
     "watchlist_id": "m5k_default_taiwan_ai_watchlist"
+  },
+  "market_clock_session_state": {
+    "ai_currentness_summary": "Market session is not current for live discussion; treat observations as not-current reference context.",
+    "allowed_language": [
+      "latest observed context",
+      "latest retrieved observation",
+      "reference-only context",
+      "during regular-session candidate",
+      "not verified as live",
+      "session-state unknown",
+      "weekday heuristic only",
+      "holiday schedule records supplied"
+    ],
+    "blocked_language": [
+      "currently rising",
+      "currently falling",
+      "market is now moving",
+      "live trading signal",
+      "buy signal",
+      "sell signal",
+      "recommendation",
+      "target price",
+      "support",
+      "resistance",
+      "capital flow",
+      "sector rotation",
+      "full-market breadth"
+    ],
+    "bounded_watchlist_only": true,
+    "builder_output_safe_for_ai_context": false,
+    "calendar_confidence": "weekday_heuristic_only",
+    "calendar_policy": "weekends_plus_supplied_twse_holiday_schedule_records",
+    "context_id": "M7E_MARKET_CLOCK_SESSION_STATE",
+    "context_status": "controlled_context_promoted",
+    "currentness_label": "not_current",
+    "exposure_status": "ai_safe_context_enabled",
+    "freshness_state": "stale",
+    "holiday_status": "weekend",
+    "is_trading_day_candidate": false,
+    "is_weekend": true,
+    "latest_observation_age_seconds": 1305545,
+    "latest_observation_time": "2026-07-03T13:23:42+00:00",
+    "market": "TW",
+    "not_capital_flow": true,
+    "not_full_market_breadth": true,
+    "not_market_prediction": true,
+    "not_recommendation": true,
+    "not_trading_signal": true,
+    "raw_full_ladder_exposed": false,
+    "raw_payload_exposed": false,
+    "raw_rich_facts_exposed": false,
+    "safe_for_ai_context": true,
+    "schema_version": "m7e_market_clock_session_state_controlled_context.v1",
+    "semantic_caveats": [
+      "Builder output is not safe for direct AI context until controlled promotion is implemented.",
+      "Holiday records missing; weekday heuristic only and official holiday correctness is unknown."
+    ],
+    "session_phase": "non_trading_day",
+    "session_state": "weekend_closed",
+    "source_schema_version": "m7e_market_clock_session_state.v1",
+    "timezone": "Asia/Taipei",
+    "trade_date": "2026-07-19"
   },
   "observation_summary": {
     "degraded": 4,
@@ -155,7 +894,7 @@
       "instrument_type": "listed_etf",
       "market": "twse",
       "observation_status": "reference_value_only",
-      "price_like_value": 107.8,
+      "price_like_value": 108.35,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability.",
       "reference_only": true,
@@ -185,13 +924,13 @@
       "instrument_type": "listed_etf",
       "market": "twse",
       "observation_status": "ok",
-      "price_like_value": 33.5,
+      "price_like_value": 33.33,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T06:30:00Z",
+      "source_timestamp": "2026-07-03T06:30:00Z",
       "status": "ok",
       "symbol": "00878",
       "value_present": true
@@ -215,13 +954,13 @@
       "instrument_type": "listed_etf",
       "market": "twse",
       "observation_status": "ok",
-      "price_like_value": 29.5,
+      "price_like_value": 29.53,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T06:30:00Z",
+      "source_timestamp": "2026-07-03T06:30:00Z",
       "status": "ok",
       "symbol": "00919",
       "value_present": true
@@ -245,13 +984,13 @@
       "instrument_type": "listed_etf",
       "market": "twse",
       "observation_status": "ok",
-      "price_like_value": 30.78,
+      "price_like_value": 31.34,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T06:30:00Z",
+      "source_timestamp": "2026-07-03T06:30:00Z",
       "status": "ok",
       "symbol": "00929",
       "value_present": true
@@ -275,13 +1014,13 @@
       "instrument_type": "listed_etf",
       "market": "twse",
       "observation_status": "ok",
-      "price_like_value": 28.21,
+      "price_like_value": 28.64,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T06:30:00Z",
+      "source_timestamp": "2026-07-03T06:30:00Z",
       "status": "ok",
       "symbol": "00934",
       "value_present": true
@@ -305,13 +1044,13 @@
       "instrument_type": "listed_etf",
       "market": "twse",
       "observation_status": "ok",
-      "price_like_value": 21.46,
+      "price_like_value": 21.28,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T06:30:00Z",
+      "source_timestamp": "2026-07-03T06:30:00Z",
       "status": "ok",
       "symbol": "00939",
       "value_present": true
@@ -335,13 +1074,13 @@
       "instrument_type": "listed_etf",
       "market": "twse",
       "observation_status": "ok",
-      "price_like_value": 12.65,
+      "price_like_value": 12.73,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T06:30:00Z",
+      "source_timestamp": "2026-07-03T06:30:00Z",
       "status": "ok",
       "symbol": "00940",
       "value_present": true
@@ -365,13 +1104,13 @@
       "instrument_type": "listed_etf",
       "market": "twse",
       "observation_status": "ok",
-      "price_like_value": 31.28,
+      "price_like_value": 32.26,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T06:30:00Z",
+      "source_timestamp": "2026-07-03T06:30:00Z",
       "status": "ok",
       "symbol": "00981A",
       "value_present": true
@@ -395,13 +1134,13 @@
       "instrument_type": "listed_or_otc_equity",
       "market": "tpex",
       "observation_status": "ok",
-      "price_like_value": 45.9,
+      "price_like_value": 48.6,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T06:30:00Z",
+      "source_timestamp": "2026-07-03T06:30:00Z",
       "status": "ok",
       "symbol": "1569",
       "value_present": true
@@ -425,13 +1164,13 @@
       "instrument_type": "listed_equity",
       "market": "twse",
       "observation_status": "ok",
-      "price_like_value": 251.0,
+      "price_like_value": 240.5,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T06:30:00Z",
+      "source_timestamp": "2026-07-03T06:30:00Z",
       "status": "ok",
       "symbol": "2317",
       "value_present": true
@@ -455,13 +1194,13 @@
       "instrument_type": "listed_equity",
       "market": "twse",
       "observation_status": "ok",
-      "price_like_value": 35.3,
+      "price_like_value": 34.95,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T06:30:00Z",
+      "source_timestamp": "2026-07-03T06:30:00Z",
       "status": "ok",
       "symbol": "2324",
       "value_present": true
@@ -486,7 +1225,7 @@
       "instrument_type": "listed_equity",
       "market": "twse",
       "observation_status": "reference_value_only",
-      "price_like_value": 2410.0,
+      "price_like_value": 2445.0,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability.",
       "reference_only": true,
@@ -516,13 +1255,13 @@
       "instrument_type": "listed_equity",
       "market": "twse",
       "observation_status": "ok",
-      "price_like_value": 184.5,
+      "price_like_value": 195.0,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T06:30:00Z",
+      "source_timestamp": "2026-07-03T06:30:00Z",
       "status": "ok",
       "symbol": "2603",
       "value_present": true
@@ -546,13 +1285,13 @@
       "instrument_type": "listed_equity",
       "market": "twse",
       "observation_status": "ok",
-      "price_like_value": 52.0,
+      "price_like_value": 52.4,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T06:30:00Z",
+      "source_timestamp": "2026-07-03T06:30:00Z",
       "status": "ok",
       "symbol": "2609",
       "value_present": true
@@ -576,13 +1315,13 @@
       "instrument_type": "listed_or_otc_equity",
       "market": "tpex",
       "observation_status": "ok",
-      "price_like_value": 789.0,
+      "price_like_value": 797.0,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T06:30:00Z",
+      "source_timestamp": "2026-07-03T06:30:00Z",
       "status": "ok",
       "symbol": "3293",
       "value_present": true
@@ -607,7 +1346,7 @@
       "instrument_type": "listed_or_otc_equity",
       "market": "tpex",
       "observation_status": "reference_value_only",
-      "price_like_value": 90.2,
+      "price_like_value": 93.0,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Do not infer a current trade value from reference-only or unavailable MIS fields; retry a bounded explicit observation later or inspect source availability.",
       "reference_only": true,
@@ -641,9 +1380,9 @@
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T06:30:00Z",
+      "source_timestamp": "2026-07-03T06:30:00Z",
       "status": "ok",
       "symbol": "3543",
       "value_present": true
@@ -667,13 +1406,13 @@
       "instrument_type": "index",
       "market": "twse",
       "observation_status": "ok",
-      "price_like_value": 46125.91,
+      "price_like_value": 46780.62,
       "price_semantics": "last_or_current_quote_as_reported_by_source",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TWSE_MIS",
-      "source_timestamp": "2026-06-30T05:33:00Z",
+      "source_timestamp": "2026-07-03T05:33:00Z",
       "status": "ok",
       "symbol": "TAIEX",
       "value_present": true
@@ -696,13 +1435,13 @@
       "instrument_type": "futures",
       "market": "taifex",
       "observation_status": "ok",
-      "price_like_value": 46730.0,
+      "price_like_value": 46966.0,
       "price_semantics": "last_trade_price_or_settlement_fallback_as_reported_by_taifex_mis",
       "recommended_next_step": "Review caveats before AI discussion.",
       "reference_only": false,
-      "retrieved_at_utc": "2026-06-30T08:24:34Z",
+      "retrieved_at_utc": "2026-07-03T13:23:42Z",
       "source": "TAIFEX",
-      "source_timestamp": "2026-06-30T13:44:59+08:00",
+      "source_timestamp": "2026-07-03T13:44:59+08:00",
       "status": "ok",
       "symbol": "TX",
       "value_present": true
@@ -890,44 +1629,6 @@
       "unsupported": 0
     }
   },
-  "source_investigation_notes": [
-    {
-      "headers_required": [
-        "User-Agent",
-        "Accept",
-        "Content-Type",
-        "Referer",
-        "Origin"
-      ],
-      "method": "POST",
-      "quote_count": "7",
-      "request_body": {
-        "CID": "TXF",
-        "KindID": "1",
-        "MarketType": "0",
-        "SymbolType": "F"
-      },
-      "response_format": "application/json",
-      "rt_code": "0",
-      "sample_symbols": [
-        "TXF-S",
-        "TXFG6-F",
-        "TXFH6-F",
-        "TXFI6-F"
-      ],
-      "selected_symbol": "TXFG6-F",
-      "source": "TAIFEX",
-      "status": "accepted_for_bounded_observation",
-      "status_code": 200,
-      "url": "https://mis.taifex.com.tw/futures/api/getQuoteList"
-    },
-    {
-      "batch_request_status": "accepted",
-      "sample_retained": false,
-      "source": "TWSE_MIS",
-      "status": "accepted_for_bounded_observation"
-    }
-  ],
   "successful_observations": 19,
   "watchlist_rows": [
     {
@@ -937,7 +1638,7 @@
       "display_order": 1,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 107.8,
+      "last_observation": 108.35,
       "market": "twse",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -950,7 +1651,7 @@
       "display_order": 2,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 33.5,
+      "last_observation": 33.33,
       "market": "twse",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -963,7 +1664,7 @@
       "display_order": 3,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 29.5,
+      "last_observation": 29.53,
       "market": "twse",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -976,7 +1677,7 @@
       "display_order": 4,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 30.78,
+      "last_observation": 31.34,
       "market": "twse",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -989,7 +1690,7 @@
       "display_order": 5,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 28.21,
+      "last_observation": 28.64,
       "market": "twse",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -1002,7 +1703,7 @@
       "display_order": 6,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 21.46,
+      "last_observation": 21.28,
       "market": "twse",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -1015,7 +1716,7 @@
       "display_order": 7,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 12.65,
+      "last_observation": 12.73,
       "market": "twse",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -1028,7 +1729,7 @@
       "display_order": 8,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 31.28,
+      "last_observation": 32.26,
       "market": "twse",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -1041,7 +1742,7 @@
       "display_order": 9,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 45.9,
+      "last_observation": 48.6,
       "market": "tpex",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -1054,7 +1755,7 @@
       "display_order": 10,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 251.0,
+      "last_observation": 240.5,
       "market": "twse",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -1067,7 +1768,7 @@
       "display_order": 11,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 35.3,
+      "last_observation": 34.95,
       "market": "twse",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -1080,7 +1781,7 @@
       "display_order": 12,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 2410.0,
+      "last_observation": 2445.0,
       "market": "twse",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -1093,7 +1794,7 @@
       "display_order": 13,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 184.5,
+      "last_observation": 195.0,
       "market": "twse",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -1106,7 +1807,7 @@
       "display_order": 14,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 52.0,
+      "last_observation": 52.4,
       "market": "twse",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -1119,7 +1820,7 @@
       "display_order": 15,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 789.0,
+      "last_observation": 797.0,
       "market": "tpex",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -1132,7 +1833,7 @@
       "display_order": 16,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 90.2,
+      "last_observation": 93.0,
       "market": "tpex",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -1158,7 +1859,7 @@
       "display_order": 18,
       "enabled": true,
       "freshness": "current observation candidate; realtime status not guaranteed by M5K",
-      "last_observation": 46125.91,
+      "last_observation": 46780.62,
       "market": "twse",
       "source": "TWSE_MIS",
       "status": "observed",
@@ -1171,7 +1872,7 @@
       "display_order": 19,
       "enabled": true,
       "freshness": "stale_or_closed_session",
-      "last_observation": 46730.0,
+      "last_observation": 46966.0,
       "market": "taifex",
       "source": "TAIFEX",
       "status": "observed",

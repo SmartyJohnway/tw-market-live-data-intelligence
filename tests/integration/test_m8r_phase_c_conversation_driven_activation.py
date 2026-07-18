@@ -48,7 +48,7 @@ def make_req(request_id_prefix, target_ids, original_user_text="我的觀察清�
       },
       "dynamic_entity_requests": [],
       "execution_policy": {
-        "network_allowed": False,
+        "network_allowed": True,
         "operator_confirmation_required": False,
         "polling": False,
         "scheduler": False
@@ -66,7 +66,23 @@ def make_req(request_id_prefix, target_ids, original_user_text="我的觀察清�
         "watchlist_id": "wl-test"
       },
       "request_id": request_id,
-      "required_evidence": [],
+      "required_evidence": [
+        {
+          "capability_id": "twse_mis_listed_liveish",
+          "fallback_behavior": "record_missing",
+          "preferred_timing_class": "liveish_intraday_snapshot",
+          "priority": "required",
+          "required_for_answer": True,
+          "source_family_preference": [
+            "TWSE_MIS"
+          ],
+          "time_scope": {
+            "explicit_range": None,
+            "lookback_trading_days": None,
+            "mode": "current"
+          }
+        }
+      ],
       "schema_version": "m8r_ai_evidence_request.v1",
       "useful_evidence": []
     }
