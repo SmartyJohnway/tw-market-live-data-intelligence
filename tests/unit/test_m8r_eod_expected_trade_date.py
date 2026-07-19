@@ -1,0 +1,304 @@
+import pytest
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
+from scripts.m8r_eod_expected_trade_date import determine_expected_eod_session_status
+
+TAIPEI = ZoneInfo("Asia/Taipei")
+
+# Helper to generate a dummy calendar
+def get_dummy_calendar(holidays=None):
+    # holidays is a list of "YYYY-MM-DD"
+    holidays = set(holidays or [])
+    dates = []
+    # Populate a year of dates around July 2026
+    start_date = datetime(2026, 1, 1)
+    for i in range(365):
+        d = start_date + timedelta(days=i)
+        d_str = d.date().isoformat()
+        is_weekend = d.weekday() >= 5
+        is_holiday = d_str in holidays
+        is_trading = not (is_weekend or is_holiday)
+        dates.append({
+            "date": d_str,
+            "is_weekend": is_weekend,
+            "is_trading_day": is_trading,
+            "trading_day_status": "trading_day" if is_trading else "non_trading_day",
+            "reason": "weekend" if is_weekend else ("official_holiday" if is_holiday else "regular_weekday")
+        })
+    return {"schema_version": "twse_trading_calendar.v1", "market": "TWSE", "dates": dates}
+
+from datetime import timedelta
+
+# A. 普通交易日盤前
+def test_matrix_a_monday_pre_market():
+    # Monday 2026-07-20 at 08:00 AM Taipei
+    ref = datetime(2026, 7, 20, 8, 0, 0, tzinfo=TAIPEI)
+    # expected latest trade date should be last Friday: 2026-07-17
+    # actual is last Friday
+    cal = get_dummy_calendar()
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=[],
+        actual_trade_date="2026-07-17"
+    )
+    assert res["expected_latest_completed_trade_date"] == "2026-07-17"
+    assert res["currentness_status"] == "official_previous_session_eod_before_close"
+
+# B. 普通交易日盤中
+def test_matrix_b_mid_market():
+    # Tuesday 2026-07-21 at 11:00 AM Taipei
+    ref = datetime(2026, 7, 21, 11, 0, 0, tzinfo=TAIPEI)
+    # expected latest is yesterday (2026-07-20), actual is yesterday
+    cal = get_dummy_calendar()
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=[],
+        actual_trade_date="2026-07-20"
+    )
+    assert res["expected_latest_completed_trade_date"] == "2026-07-20"
+    assert res["currentness_status"] == "official_previous_session_eod_before_close"
+
+# C. 收盤後已更新
+def test_matrix_c_post_market_updated():
+    # Tuesday 2026-07-21 at 16:00 Taipei (after close and after grace)
+    ref = datetime(2026, 7, 21, 16, 0, 0, tzinfo=TAIPEI)
+    # expected latest is today, actual is today
+    cal = get_dummy_calendar()
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=[],
+        actual_trade_date="2026-07-21"
+    )
+    assert res["expected_latest_completed_trade_date"] == "2026-07-21"
+    assert res["currentness_status"] == "official_latest_completed_eod"
+
+# D. 收盤後grace內未更新
+def test_matrix_d_post_market_within_grace_not_updated():
+    # Tuesday 2026-07-21 at 13:50 Taipei (close at 13:30, grace 60 mins -> expires 14:30)
+    ref = datetime(2026, 7, 21, 13, 50, 0, tzinfo=TAIPEI)
+    # expected latest is today 2026-07-21, actual is yesterday 2026-07-20
+    cal = get_dummy_calendar()
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=[],
+        actual_trade_date="2026-07-20"
+    )
+    assert res["expected_latest_completed_trade_date"] == "2026-07-21"
+    assert res["currentness_status"] == "not_yet_published_after_close"
+    assert res["publication_grace_applied"] is True
+
+# E. 收盤後超過grace仍未更新
+def test_matrix_e_post_market_after_grace_not_updated():
+    # Tuesday 2026-07-21 at 15:00 Taipei (grace ended at 14:30)
+    ref = datetime(2026, 7, 21, 15, 0, 0, tzinfo=TAIPEI)
+    # expected latest is today 2026-07-21, actual is yesterday 2026-07-20
+    cal = get_dummy_calendar()
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=[],
+        actual_trade_date="2026-07-20"
+    )
+    assert res["expected_latest_completed_trade_date"] == "2026-07-21"
+    assert res["currentness_status"] == "unexpected_stale_eod"
+    assert res["publication_grace_applied"] is False
+
+# F. 週末
+def test_matrix_f_weekend():
+    # Saturday 2026-07-18 at 16:00 Taipei
+    ref = datetime(2026, 7, 18, 16, 0, 0, tzinfo=TAIPEI)
+    # expected latest is Friday 2026-07-17, actual is Friday
+    cal = get_dummy_calendar()
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=[],
+        actual_trade_date="2026-07-17"
+    )
+    assert res["expected_latest_completed_trade_date"] == "2026-07-17"
+    assert res["session_status"] == "weekend"
+    assert res["currentness_status"] == "official_latest_completed_eod"
+
+# G. 官方例行休市日
+def test_matrix_g_official_holiday():
+    # Suppose 2026-07-15 is an official holiday
+    cal = get_dummy_calendar(holidays=["2026-07-15"])
+    # Reference clock is holiday date 2026-07-15
+    ref = datetime(2026, 7, 15, 16, 0, 0, tzinfo=TAIPEI)
+    # expected latest is Tuesday 2026-07-14, actual is 2026-07-14
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=[],
+        actual_trade_date="2026-07-14"
+    )
+    assert res["expected_latest_completed_trade_date"] == "2026-07-14"
+    assert res["session_status"] == "official_holiday"
+    assert res["currentness_status"] == "official_latest_completed_eod"
+
+# H. 台北市全日停班
+def test_matrix_h_taipei_full_day_closure():
+    # Tuesday 2026-07-21, full day closure event
+    ev = {
+        "status": "Actual",
+        "area_name": "臺北市",
+        "area_level": "municipality",
+        "work_status": "closed",
+        "decision_status": "closure_confirmed",
+        "closure_scope": "full_day",
+        "target_date": "2026-07-21"
+    }
+    # Reference clock is 2026-07-21 16:00
+    ref = datetime(2026, 7, 21, 16, 0, 0, tzinfo=TAIPEI)
+    cal = get_dummy_calendar()
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=[ev],
+        actual_trade_date="2026-07-20"
+    )
+    assert res["expected_latest_completed_trade_date"] == "2026-07-20"
+    assert res["session_status"] == "market_closed_no_session"
+    assert res["currentness_status"] == "official_latest_completed_eod"
+
+# I. 台北市上午停班
+def test_matrix_i_taipei_morning_closure():
+    # Tuesday 2026-07-21, morning closure event -> entire day is closed
+    ev = {
+        "status": "Actual",
+        "area_name": "台北市",
+        "area_level": "municipality",
+        "work_status": "closed",
+        "decision_status": "closure_confirmed",
+        "closure_scope": "morning",
+        "target_date": "2026-07-21"
+    }
+    ref = datetime(2026, 7, 21, 16, 0, 0, tzinfo=TAIPEI)
+    cal = get_dummy_calendar()
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=[ev],
+        actual_trade_date="2026-07-20"
+    )
+    assert res["expected_latest_completed_trade_date"] == "2026-07-20"
+    assert res["session_status"] == "market_closed_no_session"
+    assert res["currentness_status"] == "official_latest_completed_eod"
+
+# J. 台北市下午停班
+def test_matrix_j_taipei_afternoon_closure():
+    # Tuesday 2026-07-21, afternoon closure event -> session remains valid
+    ev = {
+        "status": "Actual",
+        "area_name": "臺北市",
+        "area_level": "municipality",
+        "work_status": "closed",
+        "decision_status": "closure_confirmed",
+        "closure_scope": "afternoon",
+        "target_date": "2026-07-21"
+    }
+    ref = datetime(2026, 7, 21, 16, 0, 0, tzinfo=TAIPEI)
+    cal = get_dummy_calendar()
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=[ev],
+        actual_trade_date="2026-07-21"
+    )
+    # Since session remains valid, expected is today 2026-07-21, actual 2026-07-21 -> current!
+    assert res["expected_latest_completed_trade_date"] == "2026-07-21"
+    assert res["session_status"] == "regular_trading_day"
+    assert res["currentness_status"] == "official_latest_completed_eod"
+
+# K. Closure unresolved
+def test_matrix_k_closure_unresolved():
+    ref = datetime(2026, 7, 21, 16, 0, 0, tzinfo=TAIPEI)
+    cal = get_dummy_calendar()
+    # closure_status is None (unresolved)
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=None,
+        actual_trade_date="2026-07-21"
+    )
+    assert res["fallback_policy_used"] is True
+    assert res["fallback_policy"] == "provisional_bounded_age"
+    assert res["currentness_status"] == "calendar_status_unresolved"
+
+# L. Future trade date
+def test_matrix_l_future_trade_date():
+    ref = datetime(2026, 7, 21, 16, 0, 0, tzinfo=TAIPEI)
+    cal = get_dummy_calendar()
+    # actual is tomorrow's date!
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=[],
+        actual_trade_date="2026-07-22"
+    )
+    assert res["currentness_status"] == "future_trade_date_invalid"
+
+# M. Cross-market
+def test_matrix_m_cross_market():
+    # Test different close times
+    # Friday 2026-07-17 at 13:40 Taipei
+    # For TWSE/TPEX, close is 13:30. At 13:40, today's session is completed! Expected should be 2026-07-17.
+    ref = datetime(2026, 7, 17, 13, 40, 0, tzinfo=TAIPEI)
+    cal = get_dummy_calendar()
+    
+    twse_res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=[],
+        actual_trade_date="2026-07-17"
+    )
+    assert twse_res["expected_latest_completed_trade_date"] == "2026-07-17"
+    
+    # For TAIFEX, close is 13:45. At 13:40, today's session is NOT yet completed!
+    # Expected should be yesterday (2026-07-16)
+    taifex_res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TAIFEX",
+        official_calendar=cal,
+        closure_status=[],
+        actual_trade_date="2026-07-16"
+    )
+    assert taifex_res["expected_latest_completed_trade_date"] == "2026-07-16"
+
+# Test schema validation helper
+def test_json_schema_validation():
+    import json
+    import jsonschema
+    from pathlib import Path
+    
+    schema_path = Path("schemas/m8r_eod_expected_trade_date_status.schema.json")
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    
+    ref = datetime(2026, 7, 21, 16, 0, 0, tzinfo=TAIPEI)
+    cal = get_dummy_calendar()
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=[],
+        actual_trade_date="2026-07-21"
+    )
+    # validate structure
+    jsonschema.validate(instance=res, schema=schema)
