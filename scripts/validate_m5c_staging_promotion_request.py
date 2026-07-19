@@ -9,7 +9,7 @@ def validate_request(path):
     if read_err:
         return {'status':'blocked','errors':[read_err],'request_path':str(path)}
     errs += validate_schema(path)
-    if req.get('source_run_dir') != CANONICAL_RUN_DIR:
+    if Path(req.get('source_run_dir', '')) != Path(CANONICAL_RUN_DIR):
         errs.append({'code':'canonical_run_dir_mismatch','field':'source_run_dir'})
     ev=verify_evidence(RUN_DIR)
     checks={'source_run_id':RUN_ID,'source_id':SOURCE,'merge_commit':MERGE_COMMIT,'source_manifest_sha256':manifest_hash(RUN_DIR),'staging_candidate_sha256':candidate_hash(RUN_DIR)}

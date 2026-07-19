@@ -6,7 +6,7 @@ def atom(summary,msg="Alert",updated="2026-07-10T00:00:00+08:00",status="Actual"
     refs=f'<references xmlns="urn:oasis:names:tc:emergency:cap:1.2">{references}</references>' if references else ""
     return f'<feed xmlns="http://www.w3.org/2005/Atom"><entry><id>{entry_id}</id><updated>{updated}</updated><summary>{summary}</summary><msgType xmlns="urn:oasis:names:tc:emergency:cap:1.2">{msg}</msgType><status xmlns="urn:oasis:names:tc:emergency:cap:1.2">{status}</status>{refs}</entry></feed>'
 def test_taipei_full_day_and_morning_closure():
-    r=parse_closure_feed(FIX.read_text(),target_date="2026-07-10"); ev=r['events'][0]
+    r=parse_closure_feed(FIX.read_text(encoding="utf-8"),target_date="2026-07-10"); ev=r['events'][0]
     assert is_taipei_market_closure_event(ev,"2026-07-10")
     assert ev['expires_at'] and ev['closure_scope']=='full_day' and r['raw_xml_retained'] is False
     assert is_taipei_market_closure_event(parse_closure_feed(atom('臺北市 2026年7月10日 上午停止上班停止上課'))['events'][0],"2026-07-10")
@@ -22,7 +22,7 @@ def test_target_date_filter_and_malformed_xml():
 
 
 def test_realistic_ncdr_summary_7_10_and_yearless_updated_year():
-    r=parse_closure_feed(REALISTIC.read_text(), target_date="2026-07-10")
+    r=parse_closure_feed(REALISTIC.read_text(encoding="utf-8"), target_date="2026-07-10")
     ev=[e for e in r['events'] if e['area_name']=='臺北市' and e['area_level']=='municipality' and e['closure_scope']=='full_day'][0]
     assert ev['target_date']=='2026-07-10'
     assert is_taipei_market_closure_event(ev, '2026-07-10')

@@ -75,11 +75,13 @@ def test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed(tmp_path):
     bad=tmp_path/'bad.json'; man=tmp_path/'man.json'; bad.write_text(json.dumps(snap),encoding='utf-8'); m=load('manifest.json'); m['snapshot_sha256']='bad'; man.write_text(json.dumps(m),encoding='utf-8')
     with pytest.raises(VerifiedSecurityMasterSnapshotError): build_execution_plan(_req(['TWSE:2330']),bundle_type='snapshot',verified_snapshot_path=str(bad),verified_snapshot_manifest_path=str(man))
 
-def test_non_network_clis():
-    export_cmd=[sys.executable,'scripts/export_m8r_03d_f1_verified_security_master_snapshot.py','--classification-input',str(FIX/'classification_records.json'),'--lifecycle-events',str(FIX/'lifecycle_events.json'),'--source-context',str(FIX/'source_context.json'),'--output','/tmp/f1_snapshot.json','--manifest-output','/tmp/f1_manifest.json','--generated-at-utc','2026-07-16T00:00:00Z','--effective-observation-date','2026-07-16']
+def test_non_network_clis(tmp_path):
+    snap_path = str(tmp_path / 'f1_snapshot.json')
+    manifest_path = str(tmp_path / 'f1_manifest.json')
+    export_cmd=[sys.executable,'scripts/export_m8r_03d_f1_verified_security_master_snapshot.py','--classification-input',str(FIX/'classification_records.json'),'--lifecycle-events',str(FIX/'lifecycle_events.json'),'--source-context',str(FIX/'source_context.json'),'--output',snap_path,'--manifest-output',manifest_path,'--generated-at-utc','2026-07-16T00:00:00Z','--effective-observation-date','2026-07-16']
     assert subprocess.run(export_cmd,capture_output=True,text=True).returncode==0
     for q in ['2330','台積電','重名股','TWSE:7777']:
-        r=subprocess.run([sys.executable,'scripts/resolve_m8r_03d_f1_security_identity.py','--snapshot','/tmp/f1_snapshot.json','--manifest','/tmp/f1_manifest.json','--query',q,'--allow-fixture-snapshot'],capture_output=True,text=True)
+        r=subprocess.run([sys.executable,'scripts/resolve_m8r_03d_f1_security_identity.py','--snapshot',snap_path,'--manifest',manifest_path,'--query',q,'--allow-fixture-snapshot'],capture_output=True,text=True)
         assert r.returncode==0 and 'm8r_03d_f1_security_identity_resolution.v1' in r.stdout
 
 def test_trust_gap_tampered_direct_snapshot_and_lookup_rejected():

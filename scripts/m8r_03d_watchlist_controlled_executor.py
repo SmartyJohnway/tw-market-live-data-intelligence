@@ -9,10 +9,12 @@ from scripts.m8a_twse_official_eod_adapter import execute_twse_official_eod_adap
 from scripts.m8a_tpex_official_eod_adapter import execute_tpex_official_eod_adapter
 from scripts.m5k_common import execute_live_observation
 from scripts.m8r_filesystem_safety import atomic_write_text, safe_destination, validate_authorized_root, classify_artifact_relative_path, FilesystemSafetyError, atomic_create_text_exclusive
+
 RESULT_SCHEMA_VERSION='m8r_03d_watchlist_execution_result.v1'
 AUTHORIZATION_CONSUMPTION_ROOT=Path('artifacts/m8r_03d_authorization_consumption')
 FORBIDDEN_ARTIFACT_TOKENS=('raw_payload"','cookies','session_id','access_token','refresh_token','msgArray')
 MARKET_ALIASES={'TWSE':{'TWSE','listed','twse','tse'},'TPEX':{'TPEX','tpex','tpex_otc','otc'}}
+
 class M8R03DExecutionError(RuntimeError): pass
 
 def _safe_root(root):
@@ -21,11 +23,67 @@ def _safe_root(root):
     if '..' in parts or any(x in parts for x in ('.env','secrets','credentials')):
         raise ValueError('unsafe_artifact_root')
     return validate_authorized_root(root)
+
 def _write_json(root:Path, path:Path, data:Any):
     text=json.dumps(data,ensure_ascii=False,sort_keys=True,indent=2)
     low=text.lower()
     if any(t.lower() in low for t in FORBIDDEN_ARTIFACT_TOKENS): raise ValueError('forbidden_artifact_content')
     atomic_write_text(root, path.relative_to(root), text+'\n')
+
+def _load_production_calendar(evaluation_time: datetime, authorized_root: Path) -> tuple[dict | None, str]:
+    """Fetch or load-from-cache the official TWSE trading calendar.
+
+    Must only be called AFTER authorization has been claimed (anti-replay passed).
+    Uses atomic_write_text so the cache is never left in a partially-written state.
+    Records full provenance so the cache artifact can be audited.
+    """
+    relative_cache_path = Path('twse_trading_calendar.json')
+    cache_path = authorized_root / relative_cache_path
+
+    if cache_path.exists():
+        try:
+            from scripts.twse_trading_calendar import load_twse_trading_calendar_artifact
+            loaded = load_twse_trading_calendar_artifact(cache_path)
+            if loaded.get("year") == evaluation_time.year:
+                return loaded, "cache_hit"
+        except Exception:
+            pass  # stale / corrupt cache — fall through to fetch
+
+    import urllib.request
+    from scripts.twse_trading_calendar import build_twse_trading_calendar_from_holiday_schedule
+    url = "https://openapi.twse.com.tw/v1/holidaySchedule/holidaySchedule"
+    try:
+        req = urllib.request.Request(
+            url,
+            headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) tw-market-live-data-intelligence/1.0'}
+        )
+        with urllib.request.urlopen(req, timeout=10) as response:
+            records = json.loads(response.read().decode('utf-8'))
+
+        calendar_artifact = build_twse_trading_calendar_from_holiday_schedule(
+            year=evaluation_time.year,
+            holiday_schedule_records=records
+        )
+
+        # Attach provenance so the cache artifact is auditable.
+        calendar_artifact["_cache_provenance"] = {
+            "retrieved_at_utc": utc_now(),
+            "source_url": url,
+            "source_contract_id": "TWSE_OPENAPI_holidaySchedule",
+            "year": evaluation_time.year,
+        }
+
+        try:
+            content = json.dumps(calendar_artifact, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+            # atomic_write_text requires a path relative to authorized_root.
+            atomic_write_text(authorized_root, relative_cache_path, content)
+        except Exception:
+            pass  # cache write failure is non-fatal
+
+        return calendar_artifact, "network_fetch"
+    except Exception:
+        return None, "unresolved"
+
 
 def preflight(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, security_master=None, source_capability_registry=None):
     plan=build_execution_plan(request,bundle_type=bundle_type,generated_at_utc=generated_at_utc,security_master=security_master,source_capability_registry=source_capability_registry)
@@ -55,6 +113,17 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
     if mode=='preflight' or plan_has_blocking_issues(plan):
         status='blocked_preflight' if plan_has_blocking_issues(plan) else 'success'
         return _result(run_id,mode,started,utc_now(),request,plan,authorization if mode=='execute' and not phase_c_active else None,[],None,status,plan.get('issues',[]),artifact_root_path,source_execution_summary={'planned_source_call_groups':plan.get('source_call_groups',[]),'group_results':[],'network_calls_performed':False,'network_default_enabled':False,'polling':False,'scheduler':False},write=False,preview=preview,approval=approval)
+
+    # calendar_artifact and closure_events are resolved AFTER authorization
+    # (see post-claim block below). Initialize to None here so fixture mode
+    # can populate them from fixture_source_data.
+    calendar_artifact = None
+    closure_events = None
+    if mode != 'execute':
+        if isinstance(fixture_source_data, dict):
+            calendar_artifact = fixture_source_data.get("calendar_artifact") or fixture_source_data.get("trading_calendar_artifact")
+            closure_events = fixture_source_data.get("closure_events")
+
 
     if mode=='execute':
         if phase_c_active:
@@ -116,7 +185,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
             if approval.get('preview_id') != canonical_preview['preview_id']:
                 return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'approval_referenced_different_preview'}],artifact_root_path,write=False)
 
-            # 4. Preview 與實際 Plan 的一致性比對 (完全動態化匹配，不再依賴硬編碼名稱)
+            # 4. Preview 與實際 Plan 的一致性比對 (only target-level ops; session ops use sentinel '_session' target_id)
             actual_ops = []
             for t in plan.get('targets', []):
                 tid = t['target_id']
@@ -137,7 +206,9 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                         "operation_type": "official_eod",
                         "timing_class": "official_eod" if fam.endswith("OPENAPI") else "official_statistics_eod"
                     })
-            planned_ops = preview.get('planned_operations', [])
+            # Filter out session-level ops (target_id starts with '_') from the
+            # preview's planned_operations before comparing against plan-derived ops.
+            planned_ops = [op for op in preview.get('planned_operations', []) if not str(op.get('target_id', '')).startswith('_')]
             mismatch = False
             for aop in actual_ops:
                 found = False
@@ -173,8 +244,61 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                 return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'authorization_consumption_failed','detail':str(exc)[:120]}],artifact_root_path,write=True,preview=preview,approval=approval)
             except Exception as exc:
                 return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'authorization_consumption_failed','detail':str(exc)[:120]}],artifact_root_path,write=True,preview=preview,approval=approval)
-                
-            source_data, group_results = _execute_source_groups(plan,request,executors or {})
+
+            # --- AUTHORIZATION BOUNDARY ---
+            # All network calls and persistent writes must occur after this point.
+            # The anti-replay claim above is the last authorization gate.
+
+            # Resolve official calendar and natural disaster closure feed.
+            # These network calls are declared in the preview as session-level ops.
+            try:
+                from scripts.m8r_eod_expected_trade_date import parse_taipei_datetime
+                ref_dt = parse_taipei_datetime(started)
+            except Exception:
+                from datetime import datetime
+                from zoneinfo import ZoneInfo
+                ref_dt = datetime.now(ZoneInfo("Asia/Taipei"))
+            calendar_artifact, calendar_load_mode = _load_production_calendar(ref_dt, authorized_root=artifact_root_path)
+            try:
+                from scripts.m8a_ncdr_dgpa_closure_cap import fetch_and_parse_closure_feed
+                parsed_feed = fetch_and_parse_closure_feed()
+                closure_events = parsed_feed.get("events")
+            except Exception:
+                closure_events = None
+
+            session_results = []
+            if calendar_artifact is not None:
+                session_results.append({
+                    'operation_id': 'op-_session-TWSE_OPENAPI-calendar',
+                    'target_id': '_session',
+                    'source_family': 'TWSE_OPENAPI',
+                    'status': calendar_load_mode if calendar_load_mode != "network_fetch" else "network_success"
+                })
+            else:
+                session_results.append({
+                    'operation_id': 'op-_session-TWSE_OPENAPI-calendar',
+                    'target_id': '_session',
+                    'source_family': 'TWSE_OPENAPI',
+                    'status': 'unresolved_fallback'
+                })
+            
+            if closure_events is not None:
+                session_results.append({
+                    'operation_id': 'op-_session-NCDR_DGPA_CLOSURE_CAP-closure',
+                    'target_id': '_session',
+                    'source_family': 'NCDR_DGPA_CLOSURE_CAP',
+                    'status': 'network_success'
+                })
+            else:
+                session_results.append({
+                    'operation_id': 'op-_session-NCDR_DGPA_CLOSURE_CAP-closure',
+                    'target_id': '_session',
+                    'source_family': 'NCDR_DGPA_CLOSURE_CAP',
+                    'status': 'unresolved_fallback'
+                })
+
+            source_data, group_results = _execute_source_groups(plan, request, executors or {})
+
         else:
             # 舊版 Authorization 驗證流程
             if not authorization: return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'authorization_required'}],artifact_root_path,write=False)
@@ -187,6 +311,8 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
         source_data=fixture_source_data or {}; group_results=_fixture_group_results(plan, source_data, started)
         
     observations=[]; target_results=[]; normalize_issues=[]
+    if phase_c_active and mode == 'execute':
+        target_results.extend(session_results)
     for t in plan['targets']:
         tid=t['target_id']
         if t['identity_status']!='resolved':
@@ -204,7 +330,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                 is_fallback = True
                 
             if bundle_type=='snapshot' and live_fam and srcs.get(live_fam):
-                obs=_normalize_checked(live_fam,srcs[live_fam],t,started)
+                obs=_normalize_checked(live_fam,srcs[live_fam],t,started, calendar_artifact, closure_events)
                 if obs: 
                     observations.append(obs)
                     target_results.append({
@@ -222,7 +348,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                 if not isinstance(rows,list): rows=[rows]
                 kept=0
                 for row in rows:
-                    obs=_normalize_checked(fam,row,t,started)
+                    obs=_normalize_checked(fam,row,t,started, calendar_artifact, closure_events)
                     if obs: observations.append(obs); kept+=1
                     else: normalize_issues.append({'code':'source_identity_mismatch','target_id':tid,'source_family':fam})
                 if is_fallback:
@@ -260,7 +386,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
         else:
             # 傳統模式：完全回退到 PR #157 原始的硬編碼處理邏輯
             if bundle_type=='snapshot' and srcs.get('TWSE_MIS'):
-                obs=_normalize_checked('TWSE_MIS',srcs['TWSE_MIS'],t,started)
+                obs=_normalize_checked('TWSE_MIS',srcs['TWSE_MIS'],t,started, calendar_artifact, closure_events)
                 if obs: observations.append(obs); target_results.append({'target_id':tid,'source_family':'TWSE_MIS','status':'normalized'})
                 else: normalize_issues.append({'code':'source_identity_mismatch','target_id':tid,'source_family':'TWSE_MIS'})
             for fam in ('TWSE_OPENAPI','TPEX_OPENAPI'):
@@ -269,7 +395,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                     if not isinstance(rows,list): rows=[rows]
                     kept=0
                     for row in rows:
-                        obs=_normalize_checked(fam,row,t,started)
+                        obs=_normalize_checked(fam,row,t,started, calendar_artifact, closure_events)
                         if obs: observations.append(obs); kept+=1
                         else: normalize_issues.append({'code':'source_identity_mismatch','target_id':tid,'source_family':fam})
                     is_fallback=(not srcs.get('TWSE_MIS')) and (fam in ('TWSE_OPENAPI','TPEX_OPENAPI'))
@@ -365,7 +491,7 @@ def _live_eod(plan, g, fn, pref):
     for obs in res.get('observations',[]): out['targets'].setdefault(pref+obs.get('symbol'),{})[g['source_family']]=obs
     return out
 
-def _normalize_checked(fam, row, target, retrieved_at):
+def _normalize_checked(fam, row, target, retrieved_at, calendar_artifact=None, closure_events=None):
     symbol=str(row.get('symbol') or row.get('c') or row.get('safe_fields',{}).get('symbol') or '')
     market=row.get('market') or row.get('exchange') or row.get('ex')
     expected_market=target.get('market')
@@ -374,7 +500,10 @@ def _normalize_checked(fam, row, target, retrieved_at):
     if market is not None and str(market) not in MARKET_ALIASES.get(expected_market_normalized, set()): return None
     
     if fam in NORMALIZERS:
-        return NORMALIZERS[fam](row,target,reference_clock_utc=retrieved_at)
+        if fam in {'TWSE_OPENAPI', 'TPEX_OPENAPI'}:
+            return NORMALIZERS[fam](row,target,reference_clock_utc=retrieved_at, calendar_artifact=calendar_artifact, closure_events=closure_events)
+        else:
+            return NORMALIZERS[fam](row,target,reference_clock_utc=retrieved_at)
     return None
 
 def _result(run_id,mode,started,completed,request,plan,auth,observations,bundle,status,issues,artifact_root_path,target_results=None,source_execution_summary=None,write=True,preview=None,approval=None):
@@ -413,12 +542,12 @@ def _result(run_id,mode,started,completed,request,plan,auth,observations,bundle,
             matched_tr = [tr for tr in (target_results or []) if tr.get("target_id") == tid and tr.get("source_family") == fam]
             if matched_tr:
                 tr_status = matched_tr[0].get("status")
-                if tr_status == "normalized":
+                if tr_status in {"normalized", "network_success", "cache_hit"}:
                     actual_op_ids.append(op_id)
-                elif tr_status == "fallback_success":
+                elif tr_status in {"fallback_success", "unresolved_fallback"}:
                     actual_op_ids.append(op_id)
                     fallback_op_ids.append(op_id)
-                elif tr_status == "failed":
+                elif tr_status in {"failed", "network_failed"}:
                     failed_op_ids.append(op_id)
                 else:
                     skipped_op_ids.append(op_id)
@@ -453,7 +582,7 @@ def _result(run_id,mode,started,completed,request,plan,auth,observations,bundle,
             del_sup = True
             behavior = "eligible_for_cleanup"
             auto_clean = False
-
+ 
         result["retention_policy"] = {
             "default_retention_days": retention_days,
             "manual_pin_supported": pin_sup,

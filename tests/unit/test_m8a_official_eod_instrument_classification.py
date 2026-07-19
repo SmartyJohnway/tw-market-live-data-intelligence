@@ -36,4 +36,4 @@ def test_bounded_seed_only_status_when_canonical_master_unavailable():
     assert result['coverage_mode'] in {'bounded_seed_only','canonical_security_master'}
     if result['coverage_mode']=='bounded_seed_only':
         assert result['production_classification_completeness']=='incomplete'
-        assert result['artifact_path']=='config/m8a_official_eod_security_master.json'
+        assert result['artifact_path'].replace('\\', '/')=='config/m8a_official_eod_security_master.json'

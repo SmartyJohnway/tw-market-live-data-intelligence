@@ -17,7 +17,7 @@ This inventory registers all repository surfaces that perform path validation, d
 ## Detailed Inventory Entries
 
 ### 1. `validate_output_scope` in `m8r_bounded_market_context_request.py`
-- **Repository Path**: [m8r_bounded_market_context_request.py](file:///p:/tw-market-live-data-intelligence-main/scripts/m8r_bounded_market_context_request.py)
+- **Repository Path**: [m8r_bounded_market_context_request.py](scripts/m8r_bounded_market_context_request.py)
 - **Function/Entrypoint**: `validate_output_scope`
 - **Input Origin**: `request`
 - **Operation**: `validate`
@@ -31,7 +31,7 @@ This inventory registers all repository surfaces that perform path validation, d
 - **Notes**: Validates the output artifact root specified in a client request. Needs to migrate to the centralized safety relative path validator.
 
 ### 2. `_safe_root` in `m8r_03d_watchlist_controlled_executor.py`
-- **Repository Path**: [m8r_03d_watchlist_controlled_executor.py](file:///p:/tw-market-live-data-intelligence-main/scripts/m8r_03d_watchlist_controlled_executor.py)
+- **Repository Path**: [m8r_03d_watchlist_controlled_executor.py](scripts/m8r_03d_watchlist_controlled_executor.py)
 - **Function/Entrypoint**: `_safe_root`
 - **Input Origin**: `config`
 - **Operation**: `validate`
@@ -45,7 +45,7 @@ This inventory registers all repository surfaces that perform path validation, d
 - **Notes**: Validates artifact root before executing a watchlist request. Must use centralized validator.
 
 ### 3. Watchlist execution result write in `m8r_03d_watchlist_controlled_executor.py`
-- **Repository Path**: [m8r_03d_watchlist_controlled_executor.py](file:///p:/tw-market-live-data-intelligence-main/scripts/m8r_03d_watchlist_controlled_executor.py)
+- **Repository Path**: [m8r_03d_watchlist_controlled_executor.py](scripts/m8r_03d_watchlist_controlled_executor.py)
 - **Function/Entrypoint**: `_result`
 - **Input Origin**: `derived_identifier` (run_id)
 - **Operation**: `write`
@@ -59,7 +59,7 @@ This inventory registers all repository surfaces that perform path validation, d
 - **Notes**: Writes validation and run outputs using `atomic_write_text`.
 
 ### 4. `_claim_authorization` in `m8r_03d_watchlist_controlled_executor.py`
-- **Repository Path**: [m8r_03d_watchlist_controlled_executor.py](file:///p:/tw-market-live-data-intelligence-main/scripts/m8r_03d_watchlist_controlled_executor.py)
+- **Repository Path**: [m8r_03d_watchlist_controlled_executor.py](scripts/m8r_03d_watchlist_controlled_executor.py)
 - **Function/Entrypoint**: `_claim_authorization`
 - **Input Origin**: `internal`
 - **Operation**: `authorization_claim`
@@ -73,7 +73,7 @@ This inventory registers all repository surfaces that perform path validation, d
 - **Notes**: Claims one-shot authorization before execution. Failure to validate paths beforehand violates fail-closed ordering.
 
 ### 5. `safe_root` in `run_m8r_controlled_live_validation.py`
-- **Repository Path**: [run_m8r_controlled_live_validation.py](file:///p:/tw-market-live-data-intelligence-main/scripts/run_m8r_controlled_live_validation.py)
+- **Repository Path**: [run_m8r_controlled_live_validation.py](scripts/run_m8r_controlled_live_validation.py)
 - **Function/Entrypoint**: `safe_root`
 - **Input Origin**: `cli`
 - **Operation**: `validate`
@@ -87,7 +87,7 @@ This inventory registers all repository surfaces that perform path validation, d
 - **Notes**: Validates the output directory provided via CLI. Must use centralized validator.
 
 ### 6. `write_json` in `run_m8r_controlled_live_validation.py`
-- **Repository Path**: [run_m8r_controlled_live_validation.py](file:///p:/tw-market-live-data-intelligence-main/scripts/run_m8r_controlled_live_validation.py)
+- **Repository Path**: [run_m8r_controlled_live_validation.py](scripts/run_m8r_controlled_live_validation.py)
 - **Function/Entrypoint**: `write_json`
 - **Input Origin**: `internal`
 - **Operation**: `write`
@@ -101,7 +101,7 @@ This inventory registers all repository surfaces that perform path validation, d
 - **Notes**: Write helper for controlled live validation outputs. Must be migrated to `atomic_write_text`.
 
 ### 7. `_is_safe_output_scope` in `m8r_one_shot_market_context_orchestrator.py`
-- **Repository Path**: [m8r_one_shot_market_context_orchestrator.py](file:///p:/tw-market-live-data-intelligence-main/scripts/m8r_one_shot_market_context_orchestrator.py)
+- **Repository Path**: [m8r_one_shot_market_context_orchestrator.py](scripts/m8r_one_shot_market_context_orchestrator.py)
 - **Function/Entrypoint**: `_is_safe_output_scope`
 - **Input Origin**: `config`
 - **Operation**: `validate`
@@ -115,7 +115,7 @@ This inventory registers all repository surfaces that perform path validation, d
 - **Notes**: Validates the output scope from the plan. Must use centralized safety validator.
 
 ### 8. `FilesystemApprovalConsumptionStore.consume` in `m8r_one_shot_market_context_orchestrator.py`
-- **Repository Path**: [m8r_one_shot_market_context_orchestrator.py](file:///p:/tw-market-live-data-intelligence-main/scripts/m8r_one_shot_market_context_orchestrator.py)
+- **Repository Path**: [m8r_one_shot_market_context_orchestrator.py](scripts/m8r_one_shot_market_context_orchestrator.py)
 - **Function/Entrypoint**: `FilesystemApprovalConsumptionStore.consume`
 - **Input Origin**: `internal`
 - **Operation**: `authorization_claim`
@@ -129,7 +129,7 @@ This inventory registers all repository surfaces that perform path validation, d
 - **Notes**: Stores plan approval consumption. Must validate paths before performing writes or directory creation.
 
 ### 9. `write_execution_artifacts` in `m8r_one_shot_market_context_orchestrator.py`
-- **Repository Path**: [m8r_one_shot_market_context_orchestrator.py](file:///p:/tw-market-live-data-intelligence-main/scripts/m8r_one_shot_market_context_orchestrator.py)
+- **Repository Path**: [m8r_one_shot_market_context_orchestrator.py](scripts/m8r_one_shot_market_context_orchestrator.py)
 - **Function/Entrypoint**: `write_execution_artifacts`
 - **Input Origin**: `derived_identifier` (receipt_id)
 - **Operation**: `write`
@@ -143,7 +143,7 @@ This inventory registers all repository surfaces that perform path validation, d
 - **Notes**: Persists market context validation execution outputs. Must migrate to `atomic_write_text`.
 
 ### 10. `safe_root` in `run_m8r_conversational_derivatives_context.py`
-- **Repository Path**: [run_m8r_conversational_derivatives_context.py](file:///p:/tw-market-live-data-intelligence-main/scripts/run_m8r_conversational_derivatives_context.py)
+- **Repository Path**: [run_m8r_conversational_derivatives_context.py](scripts/run_m8r_conversational_derivatives_context.py)
 - **Function/Entrypoint**: `safe_root`
 - **Input Origin**: `cli`
 - **Operation**: `validate`
@@ -157,7 +157,7 @@ This inventory registers all repository surfaces that perform path validation, d
 - **Notes**: Validates artifact root for conversational context runs. Must use centralized validator.
 
 ### 11. Write operations in `run_m8r_conversational_derivatives_context.py`
-- **Repository Path**: [run_m8r_conversational_derivatives_context.py](file:///p:/tw-market-live-data-intelligence-main/scripts/run_m8r_conversational_derivatives_context.py)
+- **Repository Path**: [run_m8r_conversational_derivatives_context.py](scripts/run_m8r_conversational_derivatives_context.py)
 - **Function/Entrypoint**: `write_mis_diagnostic` and `run`
 - **Input Origin**: `internal`
 - **Operation**: `write`
@@ -171,7 +171,7 @@ This inventory registers all repository surfaces that perform path validation, d
 - **Notes**: Writes conversational output and diagnostic artifacts. Must migrate to `atomic_write_text`.
 
 ### 12. `is_forbidden_repo_write_path` in `governance_forbidden_path_guard.py`
-- **Repository Path**: [governance_forbidden_path_guard.py](file:///p:/tw-market-live-data-intelligence-main/scripts/governance_forbidden_path_guard.py)
+- **Repository Path**: [governance_forbidden_path_guard.py](scripts/governance_forbidden_path_guard.py)
 - **Function/Entrypoint**: `is_forbidden_repo_write_path`
 - **Input Origin**: `internal`
 - **Operation**: `validate`

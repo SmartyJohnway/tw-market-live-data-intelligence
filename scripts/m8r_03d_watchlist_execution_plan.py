@@ -341,8 +341,31 @@ def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|
                     "fallback_allowed": True
                 })
 
+        # Session-level dependency operations: declared in preview so the user
+        # and operator can see that calendar and closure network calls will be
+        # made after authorization. These are NOT target-level operations.
+        # They use sentinel target_id '_session' to distinguish them.
+        # Cache-hit path: network_call will not actually occur, but it must be
+        # declared because cache miss triggers a real HTTP request.
+        planned_ops.append({
+            "operation_id": "op-_session-TWSE_OPENAPI-calendar",
+            "target_id": "_session",
+            "source_family": "TWSE_OPENAPI",
+            "operation_type": "session_calendar_lookup",
+            "timing_class": "request_session_context",
+            "fallback_allowed": True
+        })
+        planned_ops.append({
+            "operation_id": "op-_session-NCDR_DGPA_CLOSURE_CAP-closure",
+            "target_id": "_session",
+            "source_family": "NCDR_DGPA_CLOSURE_CAP",
+            "operation_type": "session_closure_lookup",
+            "timing_class": "request_session_context",
+            "fallback_allowed": True
+        })
+
         target_count = len(ids)
-        operation_count = len(planned_ops)
+        operation_count = len(planned_ops)  # includes 2 session-level ops
         expanded_scope = (target_count > default_max_targets and target_count <= hard_max_targets) or (operation_count > default_max_operations and operation_count <= hard_max_operations)
 
         if target_count > hard_max_targets or operation_count > hard_max_operations:
