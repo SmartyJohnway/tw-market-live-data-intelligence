@@ -8,7 +8,8 @@ def test_active_evidence_schema_has_no_product_policy_fields():
     assert not (POLICY & set(schema['properties']['targets']['items']['properties']))
 def test_evidence_layers_do_not_import_agent_policy():
     for path in [ROOT/'scripts/m8r_03e_watchlist_ai_context_builder.py',ROOT/'scripts/m8r_03e_context_validator.py',ROOT/'scripts/m8r_03d_watchlist_controlled_executor.py']:
-        assert 'agent_policy' not in path.read_text()
+        assert 'agent_policy' not in path.read_text(encoding="utf-8")
 def test_no_mutable_writer_root_state():
     for path in [ROOT/'scripts/m8r_03d_watchlist_controlled_executor.py',ROOT/'scripts/run_m8r_03e_watchlist_ai_context_handoff.py']:
-        assert '._authorized_root' not in path.read_text()
+        assert '._authorized_root' not in path.read_text(encoding="utf-8")
+

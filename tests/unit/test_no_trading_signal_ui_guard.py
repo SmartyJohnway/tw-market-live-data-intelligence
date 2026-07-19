@@ -12,6 +12,6 @@ def cleaned(line):
 def test_no_positive_trading_or_realtime_claims():
     forbidden=['buy','sell','hold','target price','recommendation','rank','score','trading signal','official realtime','realtime guaranteed']
     for p in (ROOT/'frontend/readonly-preview').glob('*'):
-        for i,line in enumerate(p.read_text().splitlines(),1):
+        for i,line in enumerate(p.read_text(encoding="utf-8").splitlines(),1):
             c=cleaned(line)
             assert not any(re.search(r'\b'+re.escape(term)+r'\b', c) for term in forbidden), f'{p}:{i}:{line}'

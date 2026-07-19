@@ -217,7 +217,7 @@ def test_approval_binds_to_exact_plan_and_status():
     assert not m8r.validate_approval_for_plan(expired,p,now_utc="2026-07-14T00:00:00Z")["valid"]
 
 def test_boundary_no_network_imports_no_adapters_no_terms_no_second_registry():
-    src=Path("scripts/m8r_bounded_market_context_request.py").read_text()
+    src=Path("scripts/m8r_bounded_market_context_request.py").read_text(encoding="utf-8")
     tree=ast.parse(src)
     imports=[]
     for node in ast.walk(tree):

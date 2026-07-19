@@ -1,10 +1,10 @@
-﻿import json, subprocess, sys
+import json, subprocess, sys
 from pathlib import Path
 import pytest
 from scripts.m8r_03c_watchlist_bundle_builder import *
 from scripts.m8r_03c_conversation_contract_validator import M8R03CValidationError
 FIX=Path('tests/fixtures/m8r_03c')
-def load(n): return json.loads((FIX/n).read_text())
+def load(n): return json.loads((FIX/n).read_text(encoding="utf-8"))
 def test_snapshot_usable_and_separation():
     b=build_watchlist_snapshot_bundle(request=load('snapshot_request.json'), observations=load('snapshot_observations.json'), generated_at_utc='2026-07-16T01:30:05Z')
     assert [t['target_id'] for t in b['targets']]==['TWSE:2330','TWSE:2317']
@@ -47,7 +47,7 @@ def test_cli_runs_and_determinism(tmp_path):
     cmd=[sys.executable,'scripts/run_m8r_03c_watchlist_bundle_fixture.py','--request',str(FIX/'snapshot_request.json'),'--observations',str(FIX/'snapshot_observations.json'),'--bundle-type','snapshot','--output',str(out1)]
     assert subprocess.run(cmd, capture_output=True, text=True).returncode==0
     cmd[-1]=str(out2); assert subprocess.run(cmd, capture_output=True, text=True).returncode==0
-    assert out1.read_text()==out2.read_text()
+    assert out1.read_text(encoding="utf-8")==out2.read_text(encoding="utf-8")
     assert subprocess.run([sys.executable,'scripts/run_m8r_03c_watchlist_bundle_fixture.py','--network'], capture_output=True, text=True).returncode!=0
 
 

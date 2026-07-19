@@ -7,7 +7,7 @@ from scripts.m8r_03e_context_validator import validate_watchlist_ai_context_pack
 FIX=Path('tests/fixtures/m8r_03e')
 def loadcase(name):
     p=FIX/name
-    return [json.loads((p/f).read_text()) for f in ['request.json','execution_plan.json','execution_result.json','bundle.json']]
+    return [json.loads((p/f).read_text(encoding="utf-8")) for f in ['request.json','execution_plan.json','execution_result.json','bundle.json']]
 def build(name, ts='2026-07-16T03:00:00Z', policy=None):
     req,plan,res,bundle=loadcase(name)
     pkg=build_watchlist_ai_context_package(validated_request=req,execution_plan=plan,execution_result=res,watchlist_bundle=bundle,generated_at_utc=ts,context_policy=policy)

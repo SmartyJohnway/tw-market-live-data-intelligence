@@ -48,14 +48,14 @@
     "comparison_subject": "PR_150",
     "current_head_counts": {
       "deselected": 1,
-      "failed": 100,
-      "passed": 1688,
+      "failed": 60,
+      "passed": 1728,
       "skipped": 5,
       "warning": 1
     },
     "current_head_failure_set_matches_baseline": false,
-    "current_head_sha": "302955885b2bf0add2211f9467d71a72d1217552",
-    "current_head_status": "phase_c_activation_regression_cleanup_in_progress_100_failures_down_from_109",
+    "current_head_sha": "350898e1bab9b3a6abc16546d994d0ff5f162892",
+    "current_head_status": "phase_c_activation_regression_cleanup_completed_60_failures_down_from_109",
     "failing_node_ids": [
       "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
       "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
@@ -65,11 +65,11 @@
       "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
       "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
     ],
-    "failure_count_delta": 93,
+    "failure_count_delta": 53,
     "failure_set_changed": true,
-    "generated_at_utc": "2026-07-19T02:03:00Z",
+    "generated_at_utc": "2026-07-19T07:33:00Z",
     "generated_by_command": "pytest -m 'not network' -q",
-    "generation_head_sha": "302955885b2bf0add2211f9467d71a72d1217552",
+    "generation_head_sha": "350898e1bab9b3a6abc16546d994d0ff5f162892",
     "historical_pr_149_evidence": {
       "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
       "historical_current_counts": {
@@ -209,8 +209,8 @@
       "command": "python scripts/run_test_profile.py full-non-network --json",
       "counts": {
         "deselected": 1,
-        "failed": 100,
-        "passed": 1688,
+        "failed": 60,
+        "passed": 1728,
         "skipped": 5,
         "warning": 1
       },

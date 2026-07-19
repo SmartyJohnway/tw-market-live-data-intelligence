@@ -5,13 +5,13 @@
 
 ---
 
-## 1. Lineage & Tested Commit Binding
+## 1. Lineage & Tested Commit Sealing
 
-- **Tested Parent SHA:** `302955885b2bf0add2211f9467d71a72d1217552` (Commit 8 HEAD)
+- **Tested Parent SHA:** `350898e1bab9b3a6abc16546d994d0ff5f162892` (Commit 9 HEAD)
 - **Tested Commit SHA:** `null` (pre-commit validation run)
 - **Binding Status:** `unsealed_precommit_evidence`
 - **Verification Environment:** Windows (locale cp950), Python 3.13.7, Pytest 9.1.1
-- **Acceptance Timestamp:** 2026-07-19T02:03:00Z
+- **Acceptance Timestamp:** 2026-07-19T07:33:00Z
 
 ---
 
@@ -83,14 +83,18 @@ The activation of Phase C is subject to the following explicit operational and g
 ## 5. Offline Regression Analysis & Classification
 
 - **Run Command:** `pytest -m "not network" -q --no-header`
-- **Outcome:** `1688 passed, 100 failed`
-- **Novel Regressions:** **0**
+- **Current Run Outcome:** `1728 passed, 60 failed, 5 skipped, 1 deselected, 1 warning`
+- **Baseline Run Outcome (PR #157 HEAD `fa4cf6c`):** `1668 passed, 109 failed, 5 skipped, 1 deselected, 1 warning`
+- **Failure Set Relation:** `subset` (Current failures are a strict subset of the baseline failures).
+- **Novel Regressions:** **0** (`regression_determination_status: no_novel_failing_node_ids_observed`)
 
-The 100 failures are fully classified as pre-existing environmental or local Windows platform constraints:
+### Failure Set Relation Analysis
+
+On Windows platform with CP950 default locale, the test runner encountered 109 baseline failures, including 35 encoding-related errors.
+By explicitly enforcing UTF-8 encoding (`read_text(encoding="utf-8")`) on file reads inside the test files, all 35 cp950 encoding errors as well as 14 environment-related failures have been resolved. The remaining 60 failures are pre-existing platform-specific failures:
 
 | Category | Count | Description / Representative Node IDs |
 |---|---|---|
-| **Windows cp950 Encoding Issues** | 35 | Pre-existing failures due to default Windows CP950 decoding of UTF-8 test files (e.g. `test_m8r_03e_watchlist_ai_context.py` and `test_no_trading_signal_ui_guard.py`). |
-| **Pre-existing Environment Failures** | 65 | Legacy staging/promotion validation assertions and test case mocks that fail due to missing local environment states/paths (e.g., `test_m3g04_controlled_live_probe.py`, `test_m5c_staging_promotion.py`). |
+| **Pre-existing Windows/Local Environment Failures** | 60 | Legacy staging/promotion validation assertions and test case mocks that fail due to missing local environment states/paths (e.g., `test_m3g04_controlled_live_probe.py`, `test_m5c_staging_promotion.py`). |
 
 There is **no functional regression** introduced by the Phase C activation.
