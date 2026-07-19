@@ -134,8 +134,7 @@
         ]
     },
     "baseline_main_sha": "270ee94179d41ae8476bd2ce2a09eaa38022f2f1",
-    "tested_head_sha": "pending_commit_6",
-    "binding_status": "targeted_pass_full_regression_match",
-    "tested_commit_sha": "4a38b675d7684de15d0f6e4340e17610e5c02514",
-    "current_head_sha": "4a38b675d7684de15d0f6e4340e17610e5c02514"
+    "binding_status": "sealed_commit_evidence",
+    "tested_commit_sha": "0e25b1c9da0504b9df9a6db6ca0e07172a77f85c",
+    "current_head_sha": "0e25b1c9da0504b9df9a6db6ca0e07172a77f85c"
 }
