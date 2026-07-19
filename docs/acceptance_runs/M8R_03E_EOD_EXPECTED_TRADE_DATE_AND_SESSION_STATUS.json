@@ -28,8 +28,8 @@
         {
             "name": "tests/unit/test_m8r_eod_expected_trade_date.py",
             "status": "passed",
-            "test_cases_count": 16,
-            "passed": 16,
+            "test_cases_count": 21,
+            "passed": 21,
             "failed": 0
         },
         {
@@ -68,7 +68,7 @@
             "failed": 0
         }
     ],
-    "targeted_total": 53,
+    "targeted_total": 54,
     "full_offline_regression": {
         "total_collected": 1808,
         "passed": 1759,
@@ -135,7 +135,7 @@
     },
     "baseline_main_sha": "270ee94179d41ae8476bd2ce2a09eaa38022f2f1",
     "tested_head_sha": "pending_commit_6",
-    "binding_status": "targeted_pass_full_regression_incomplete",
+    "binding_status": "targeted_pass_full_regression_match",
     "tested_commit_sha": "4a38b675d7684de15d0f6e4340e17610e5c02514",
     "current_head_sha": "4a38b675d7684de15d0f6e4340e17610e5c02514"
 }
