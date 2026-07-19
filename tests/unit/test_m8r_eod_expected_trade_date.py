@@ -455,3 +455,25 @@ def test_tpex_taipei_full_day_closure_applies_with_caveat():
     assert res["session_status"] == "market_closed_no_session"
     assert res["fallback_policy_used"] is False
     assert any("synchronized" in c.lower() for c in res.get("caveats", []))
+
+def test_taifex_prior_date_taipei_closure_does_not_skip_trading_day():
+    """TAIFEX backward traversal must not apply Taipei closure rule.
+    If the prior day was a Taipei full-day closure, it should NOT be skipped as a non-trading day for TAIFEX.
+    Expected: the expected_latest_completed_trade_date will resolve to that prior date (2026-07-20).
+    """
+    # 2026-07-21 08:00 (Pre-market). Ref date is 21st.
+    ref = datetime(2026, 7, 21, 8, 0, 0, tzinfo=TAIPEI)
+    cal = get_dummy_calendar()
+    # 2026-07-20 (Yesterday) had a Taipei full day closure
+    closure = _taipei_full_day_closure("2026-07-20")
+
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TAIFEX",
+        official_calendar=cal,
+        closure_status=closure,
+        actual_trade_date="2026-07-17"  # actual is trailing
+    )
+    # The expected trade date should be 2026-07-20 since TAIFEX doesn't skip it.
+    assert res["expected_latest_completed_trade_date"] == "2026-07-20"
+

@@ -361,7 +361,7 @@ def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|
             "source_family": "NCDR_DGPA_CLOSURE_CAP",
             "operation_type": "session_closure_lookup",
             "timing_class": "request_session_context",
-            "fallback_allowed": False
+            "fallback_allowed": True
         })
 
         target_count = len(ids)

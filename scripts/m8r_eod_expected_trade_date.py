@@ -162,6 +162,11 @@ def determine_expected_eod_session_status(
     closure_src = "none_detected"
     closure_authority = TAIPEI_CLOSURE_AUTHORITY.get(market, "provisional_unresolved")
 
+    def applies_closure(closure_scope: str, auth: str) -> bool:
+        if auth in {"enabled", "enabled_synchronized"}:
+            return closure_scope in {"full_day", "morning"}
+        return False
+
     if closure_authority in {"enabled", "enabled_synchronized"}:
         # TWSE / TPEX: apply Taipei City work-suspension closure rule.
         if tpe_closure == "unresolved":
@@ -202,7 +207,7 @@ def determine_expected_eod_session_status(
         for _ in range(365):
             cur_status, cur_trading, _ = resolve_date_session_type(cur_date)
             cur_closure = get_taipei_closure_scope(closure_status, cur_date.isoformat())
-            if cur_closure in {"full_day", "morning"}:
+            if applies_closure(cur_closure, closure_authority):
                 cur_trading = False
             if cur_trading and cur_status not in {"calendar_status_unresolved", "market_closed_no_session"}:
                 found_date = cur_date
@@ -272,7 +277,7 @@ def determine_expected_eod_session_status(
                         for _ in range(365):
                             cur_status, cur_trading, _ = resolve_date_session_type(cur_date)
                             cur_closure = get_taipei_closure_scope(closure_status, cur_date.isoformat())
-                            if cur_closure in {"full_day", "morning"}:
+                            if applies_closure(cur_closure, closure_authority):
                                 cur_trading = False
                             if cur_trading and cur_status not in {"calendar_status_unresolved", "market_closed_no_session"}:
                                 prev_date = cur_date

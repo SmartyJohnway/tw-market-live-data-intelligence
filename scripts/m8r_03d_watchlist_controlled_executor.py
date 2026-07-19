@@ -266,6 +266,40 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
             except Exception:
                 closure_events = None
 
+            session_results = []
+            if calendar_artifact is not None:
+                # determine if it was fetched from network by checking provenance
+                prov = calendar_artifact.get("_cache_provenance", {})
+                is_cache = "retrieved_at_utc" in prov and not prov.get("source_url")
+                session_results.append({
+                    'operation_id': 'op-_session-TWSE_OPENAPI-calendar',
+                    'target_id': '_session',
+                    'source_family': 'TWSE_OPENAPI',
+                    'status': 'cache_hit' if is_cache else 'network_success'
+                })
+            else:
+                session_results.append({
+                    'operation_id': 'op-_session-TWSE_OPENAPI-calendar',
+                    'target_id': '_session',
+                    'source_family': 'TWSE_OPENAPI',
+                    'status': 'unresolved_fallback'
+                })
+            
+            if closure_events is not None:
+                session_results.append({
+                    'operation_id': 'op-_session-NCDR_DGPA_CLOSURE_CAP-closure',
+                    'target_id': '_session',
+                    'source_family': 'NCDR_DGPA_CLOSURE_CAP',
+                    'status': 'network_success'
+                })
+            else:
+                session_results.append({
+                    'operation_id': 'op-_session-NCDR_DGPA_CLOSURE_CAP-closure',
+                    'target_id': '_session',
+                    'source_family': 'NCDR_DGPA_CLOSURE_CAP',
+                    'status': 'unresolved_fallback'
+                })
+
             source_data, group_results = _execute_source_groups(plan, request, executors or {})
 
         else:
@@ -280,6 +314,8 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
         source_data=fixture_source_data or {}; group_results=_fixture_group_results(plan, source_data, started)
         
     observations=[]; target_results=[]; normalize_issues=[]
+    if phase_c_active and mode == 'execute':
+        target_results.extend(session_results)
     for t in plan['targets']:
         tid=t['target_id']
         if t['identity_status']!='resolved':
