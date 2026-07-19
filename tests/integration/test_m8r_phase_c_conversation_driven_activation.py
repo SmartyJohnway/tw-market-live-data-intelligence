@@ -162,3 +162,44 @@ def test_e2e_conversation_driven_one_shot_workflow(tmp_path):
     assert tpex_res[0]["requested_source_family"] == "TWSE_MIS"
     assert tpex_res[0]["actual_source_family"] == "TPEX_OPENAPI"
     assert tpex_res[0]["status"] == "fallback_success"
+
+
+def test_missing_profile_registry_active_fails_closed(tmp_path):
+    from scripts.m8r_03c_conversation_contract_validator import M8R03CValidationError
+    
+    # CASE 1: Registry active, execution_profile missing, but network_allowed is True.
+    # The request validator must reject it immediately as invalid execution policy.
+    req_invalid = make_req("fail-closed-req-1", ["TWSE:2330"])
+    if "execution_profile" in req_invalid["execution_policy"]:
+        del req_invalid["execution_policy"]["execution_profile"]
+    
+    with pytest.raises(M8R03CValidationError) as excinfo:
+        build_execution_plan(req_invalid, bundle_type="snapshot", source_capability_registry=PHASE_C_REGISTRY)
+    assert excinfo.value.code == "execution_policy_invalid"
+    assert "network/polling/scheduler disabled" in excinfo.value.detail
+
+    # CASE 2: Registry active, execution_profile missing, and network_allowed is False.
+    # Validation passes, but execution fails closed due to missing legacy authorization.
+    req_valid = make_req("fail-closed-req-2", ["TWSE:2330"])
+    if "execution_profile" in req_valid["execution_policy"]:
+        del req_valid["execution_policy"]["execution_profile"]
+    req_valid["execution_policy"]["network_allowed"] = False
+    
+    # build_execution_plan passes but must NOT output execution_preview (since Phase C is not active)
+    plan = build_execution_plan(req_valid, bundle_type="snapshot", source_capability_registry=PHASE_C_REGISTRY)
+    assert "execution_preview" not in plan
+    
+    # execute_watchlist with mode="execute" must fail closed with authorization_failed
+    res = execute_watchlist(
+        req_valid,
+        mode="execute",
+        bundle_type="snapshot",
+        artifact_root=str(tmp_path),
+        preview=None,
+        approval=None,
+        source_capability_registry=PHASE_C_REGISTRY
+    )
+    assert res["status"] == "authorization_failed"
+    assert any(issue["code"] == "authorization_required" for issue in res.get("issues", []))
+
+

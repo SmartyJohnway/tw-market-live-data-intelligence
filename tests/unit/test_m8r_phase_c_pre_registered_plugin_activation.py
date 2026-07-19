@@ -79,13 +79,13 @@ def test_pre_registered_source_activates_without_core_routing_changes():
     SOURCE_ADAPTERS["FIXTURE_TEST_SOURCE"] = mock_adapter
     NORMALIZERS["FIXTURE_TEST_SOURCE"] = mock_normalizer
 
-    req_id = f"req-zero-code-{uuid.uuid4()}"
+    req_id = f"req-plugin-activation-{uuid.uuid4()}"
 
     try:
         request = {
             "schema_version": "m8r_ai_evidence_request.v1",
             "request_id": req_id,
-            "original_user_text": "testing zero-code expansion",
+            "original_user_text": "testing pre-registered plugin activation",
             "dynamic_entity_requests": [],
             "market_context_requests": [],
             "required_evidence": [
@@ -121,7 +121,7 @@ def test_pre_registered_source_activates_without_core_routing_changes():
             },
             "conversation_intent": {
                 "schema_version": "m8r_ai_market_conversation_intent.v1",
-                "original_user_text": "testing zero-code expansion",
+                "original_user_text": "testing pre-registered plugin activation",
                 "scope_modes": ["watchlist"],
                 "time_scope": {"mode": "current_plus_recent", "lookback_trading_days": 20, "explicit_range": None},
                 "evidence_depth": "standard",
@@ -178,11 +178,11 @@ def test_pre_registered_source_activates_without_core_routing_changes():
             approval=approval,
             security_master=security_master,
             source_capability_registry=registry,
-            artifact_root="artifacts/zero_code_test"
+            artifact_root="artifacts/plugin_activation_test"
         )
 
         # 驗證結果
-        print("ZERO_CODE_TEST RES:", res)
+        print("PLUGIN_ACTIVATION_TEST RES:", res)
         assert res["status"] in ("success", "success_with_partial_coverage")
         assert called_adapter is True
         assert called_normalizer is True

@@ -49,12 +49,12 @@
     "current_head_counts": {
       "deselected": 1,
       "failed": 100,
-      "passed": 1687,
+      "passed": 1688,
       "skipped": 5,
       "warning": 1
     },
     "current_head_failure_set_matches_baseline": false,
-    "current_head_sha": "793865d4805a0bffd5aa72c46b457bc0feb1577c",
+    "current_head_sha": "302955885b2bf0add2211f9467d71a72d1217552",
     "current_head_status": "phase_c_activation_regression_cleanup_in_progress_100_failures_down_from_109",
     "failing_node_ids": [
       "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
@@ -67,9 +67,9 @@
     ],
     "failure_count_delta": 93,
     "failure_set_changed": true,
-    "generated_at_utc": "2026-07-18T16:46:00Z",
+    "generated_at_utc": "2026-07-19T02:03:00Z",
     "generated_by_command": "pytest -m 'not network' -q",
-    "generation_head_sha": "793865d4805a0bffd5aa72c46b457bc0feb1577c",
+    "generation_head_sha": "302955885b2bf0add2211f9467d71a72d1217552",
     "historical_pr_149_evidence": {
       "baseline_sha": "bd3496efe7492e6cd3c7dacc169e142f90e6cd92",
       "historical_current_counts": {
@@ -210,7 +210,7 @@
       "counts": {
         "deselected": 1,
         "failed": 100,
-        "passed": 1687,
+        "passed": 1688,
         "skipped": 5,
         "warning": 1
       },
