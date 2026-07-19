@@ -344,7 +344,11 @@ def _build_markdown(status: str, summary: dict, sources: list[dict], instruments
                     taifex_lines = _format_taifex_context(ctx)
                     lines.extend(taifex_lines or [f"    - TAIFEX official context: {ctx.get('context_type')}"])
                 elif ctx.get('timing_class') == 'official_eod':
-                    lines.append(f"    - Official EOD reference — {ctx.get('source_id')}: market={ctx.get('market')} trade_date={ctx.get('trading_date') or ctx.get('market_date')} currentness={ctx.get('safe_fields', {}).get('currentness_status')} authority={ctx.get('authority_level')} instrument={ctx.get('instrument_type')} safe_fields={ctx.get('safe_fields')}")
+                    curr = ctx.get('safe_fields', {}).get('currentness_status')
+                    desc = "Official EOD reference"
+                    if curr in {"official_previous_session_eod_before_close", "not_yet_published_after_close", "unexpected_stale_eod", "stale_official_eod", "delayed_one_trading_day"}:
+                        desc = "Previous session or stale EOD reference (NOT today's close)"
+                    lines.append(f"    - {desc} — {ctx.get('source_id')}: market={ctx.get('market')} trade_date={ctx.get('trading_date') or ctx.get('market_date')} currentness={curr} authority={ctx.get('authority_level')} instrument={ctx.get('instrument_type')} safe_fields={ctx.get('safe_fields')}")
                 else:
                     lines.append(f"    - {ctx.get('source_id')}: {ctx.get('timing_class')} / {ctx.get('freshness_assessment')} / safe_fields={ctx.get('safe_fields')}")
     lines.append(f"- {GUARDRAIL_LINE}")

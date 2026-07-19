@@ -225,7 +225,7 @@ def test_runtime_projection_builder_reference_remains_controlled_to_conversation
         if not base.exists():
             continue
         for path in base.rglob("*.py"):
-            rel = str(path.relative_to(ROOT))
+            rel = str(path.relative_to(ROOT)).replace('\\', '/')
             if rel in allowed:
                 continue
             text = path.read_text(encoding="utf-8")

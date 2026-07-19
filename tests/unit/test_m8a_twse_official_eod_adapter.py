@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from scripts.m8a_twse_official_eod_adapter import parse_twse_official_eod_rows
 FIX=Path(__file__).resolve().parents[1]/"fixtures/m8a_official_eod"
-def load(n): return json.loads((FIX/n).read_text())
+def load(n): return json.loads((FIX/n).read_text(encoding="utf-8"))
 def test_twse_parse_normal_preserves_identity_and_derives_previous_close():
     r=parse_twse_official_eod_rows(load("twse_normal_rows.json"), requested_symbols=["2330","0050"], retrieved_at_utc="2026-07-10T00:00:00Z")
     assert r["batch_status"] == "successful_eod_batch"

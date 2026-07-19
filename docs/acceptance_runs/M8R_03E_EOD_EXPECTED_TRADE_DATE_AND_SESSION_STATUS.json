@@ -1,0 +1,42 @@
+{
+  "task_id": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
+  "timestamp": "2026-07-19T09:05:00Z",
+  "environment": {
+    "os": "windows",
+    "python_version": "3.13.7",
+    "virtual_env": ".venv"
+  },
+  "targeted_test_suites": [
+    {
+      "name": "tests/unit/test_m8r_eod_expected_trade_date.py",
+      "status": "passed",
+      "test_cases_count": 14,
+      "passed": 14,
+      "failed": 0
+    },
+    {
+      "name": "tests/unit/test_m8a_market_day_currentness_resolver.py",
+      "status": "passed",
+      "test_cases_count": 7,
+      "passed": 7,
+      "failed": 0
+    },
+    {
+      "name": "tests/unit/test_m8a_ncdr_dgpa_closure_cap.py",
+      "status": "passed",
+      "test_cases_count": 10,
+      "passed": 10,
+      "failed": 0
+    }
+  ],
+  "full_offline_regression": {
+    "total_collected": 1808,
+    "passed": 1780,
+    "failed": 23,
+    "skipped": 5,
+    "deselected": 1,
+    "exit_code": 1,
+    "windows_encoding_failures_resolved": 24,
+    "remaining_windows_failures_notes": "The remaining 23 failures are historical test cases from Phase C/M5, Staging Promotion, and Live Probe. They fail in local Windows environments due to CRLF line ending mismatches in git checkout modifying json manifest hashes, and are expected to run and pass in the canonical Linux CI environment."
+  }
+}

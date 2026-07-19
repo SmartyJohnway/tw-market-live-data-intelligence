@@ -9,10 +9,12 @@ from scripts.m8a_twse_official_eod_adapter import execute_twse_official_eod_adap
 from scripts.m8a_tpex_official_eod_adapter import execute_tpex_official_eod_adapter
 from scripts.m5k_common import execute_live_observation
 from scripts.m8r_filesystem_safety import atomic_write_text, safe_destination, validate_authorized_root, classify_artifact_relative_path, FilesystemSafetyError, atomic_create_text_exclusive
+
 RESULT_SCHEMA_VERSION='m8r_03d_watchlist_execution_result.v1'
 AUTHORIZATION_CONSUMPTION_ROOT=Path('artifacts/m8r_03d_authorization_consumption')
 FORBIDDEN_ARTIFACT_TOKENS=('raw_payload"','cookies','session_id','access_token','refresh_token','msgArray')
 MARKET_ALIASES={'TWSE':{'TWSE','listed','twse','tse'},'TPEX':{'TPEX','tpex','tpex_otc','otc'}}
+
 class M8R03DExecutionError(RuntimeError): pass
 
 def _safe_root(root):
@@ -21,6 +23,7 @@ def _safe_root(root):
     if '..' in parts or any(x in parts for x in ('.env','secrets','credentials')):
         raise ValueError('unsafe_artifact_root')
     return validate_authorized_root(root)
+
 def _write_json(root:Path, path:Path, data:Any):
     text=json.dumps(data,ensure_ascii=False,sort_keys=True,indent=2)
     low=text.lower()
@@ -55,6 +58,21 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
     if mode=='preflight' or plan_has_blocking_issues(plan):
         status='blocked_preflight' if plan_has_blocking_issues(plan) else 'success'
         return _result(run_id,mode,started,utc_now(),request,plan,authorization if mode=='execute' and not phase_c_active else None,[],None,status,plan.get('issues',[]),artifact_root_path,source_execution_summary={'planned_source_call_groups':plan.get('source_call_groups',[]),'group_results':[],'network_calls_performed':False,'network_default_enabled':False,'polling':False,'scheduler':False},write=False,preview=preview,approval=approval)
+
+    # Resolve calendar and closure feed events
+    calendar_artifact = None
+    closure_events = None
+    if mode == 'execute':
+        try:
+            from scripts.m8a_ncdr_dgpa_closure_cap import fetch_and_parse_closure_feed
+            parsed_feed = fetch_and_parse_closure_feed()
+            closure_events = parsed_feed.get("events")
+        except Exception:
+            closure_events = None
+    else:
+        if isinstance(fixture_source_data, dict):
+            calendar_artifact = fixture_source_data.get("calendar_artifact") or fixture_source_data.get("trading_calendar_artifact")
+            closure_events = fixture_source_data.get("closure_events")
 
     if mode=='execute':
         if phase_c_active:
@@ -204,7 +222,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                 is_fallback = True
                 
             if bundle_type=='snapshot' and live_fam and srcs.get(live_fam):
-                obs=_normalize_checked(live_fam,srcs[live_fam],t,started)
+                obs=_normalize_checked(live_fam,srcs[live_fam],t,started, calendar_artifact, closure_events)
                 if obs: 
                     observations.append(obs)
                     target_results.append({
@@ -222,7 +240,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                 if not isinstance(rows,list): rows=[rows]
                 kept=0
                 for row in rows:
-                    obs=_normalize_checked(fam,row,t,started)
+                    obs=_normalize_checked(fam,row,t,started, calendar_artifact, closure_events)
                     if obs: observations.append(obs); kept+=1
                     else: normalize_issues.append({'code':'source_identity_mismatch','target_id':tid,'source_family':fam})
                 if is_fallback:
@@ -260,7 +278,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
         else:
             # 傳統模式：完全回退到 PR #157 原始的硬編碼處理邏輯
             if bundle_type=='snapshot' and srcs.get('TWSE_MIS'):
-                obs=_normalize_checked('TWSE_MIS',srcs['TWSE_MIS'],t,started)
+                obs=_normalize_checked('TWSE_MIS',srcs['TWSE_MIS'],t,started, calendar_artifact, closure_events)
                 if obs: observations.append(obs); target_results.append({'target_id':tid,'source_family':'TWSE_MIS','status':'normalized'})
                 else: normalize_issues.append({'code':'source_identity_mismatch','target_id':tid,'source_family':'TWSE_MIS'})
             for fam in ('TWSE_OPENAPI','TPEX_OPENAPI'):
@@ -269,7 +287,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                     if not isinstance(rows,list): rows=[rows]
                     kept=0
                     for row in rows:
-                        obs=_normalize_checked(fam,row,t,started)
+                        obs=_normalize_checked(fam,row,t,started, calendar_artifact, closure_events)
                         if obs: observations.append(obs); kept+=1
                         else: normalize_issues.append({'code':'source_identity_mismatch','target_id':tid,'source_family':fam})
                     is_fallback=(not srcs.get('TWSE_MIS')) and (fam in ('TWSE_OPENAPI','TPEX_OPENAPI'))
@@ -365,7 +383,7 @@ def _live_eod(plan, g, fn, pref):
     for obs in res.get('observations',[]): out['targets'].setdefault(pref+obs.get('symbol'),{})[g['source_family']]=obs
     return out
 
-def _normalize_checked(fam, row, target, retrieved_at):
+def _normalize_checked(fam, row, target, retrieved_at, calendar_artifact=None, closure_events=None):
     symbol=str(row.get('symbol') or row.get('c') or row.get('safe_fields',{}).get('symbol') or '')
     market=row.get('market') or row.get('exchange') or row.get('ex')
     expected_market=target.get('market')
@@ -374,7 +392,10 @@ def _normalize_checked(fam, row, target, retrieved_at):
     if market is not None and str(market) not in MARKET_ALIASES.get(expected_market_normalized, set()): return None
     
     if fam in NORMALIZERS:
-        return NORMALIZERS[fam](row,target,reference_clock_utc=retrieved_at)
+        if fam in {'TWSE_OPENAPI', 'TPEX_OPENAPI'}:
+            return NORMALIZERS[fam](row,target,reference_clock_utc=retrieved_at, calendar_artifact=calendar_artifact, closure_events=closure_events)
+        else:
+            return NORMALIZERS[fam](row,target,reference_clock_utc=retrieved_at)
     return None
 
 def _result(run_id,mode,started,completed,request,plan,auth,observations,bundle,status,issues,artifact_root_path,target_results=None,source_execution_summary=None,write=True,preview=None,approval=None):
@@ -453,7 +474,7 @@ def _result(run_id,mode,started,completed,request,plan,auth,observations,bundle,
             del_sup = True
             behavior = "eligible_for_cleanup"
             auto_clean = False
-
+ 
         result["retention_policy"] = {
             "default_retention_days": retention_days,
             "manual_pin_supported": pin_sup,
