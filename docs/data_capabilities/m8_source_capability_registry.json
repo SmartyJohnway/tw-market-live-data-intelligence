@@ -177,6 +177,11 @@
   },
   "implemented_through": "R3",
   "implemented_through_track": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
+  "later_owner_sequencing_decision": {
+    "current_primary_task": "M8R-03E-R5B-CROSS-PLATFORM-FILESYSTEM-FAIL-CLOSED-CONTRACT-AND-WINDOWS-CORRECTION",
+    "decision_date": "2026-07-17",
+    "recommended_next_task_after_r5b": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS"
+  },
   "latest_validation_ref": "docs/acceptance_runs/M8R_03E_R4_VALIDATION.json",
   "live_validation_completed": true,
   "m8_active_consolidated_status": {
@@ -220,13 +225,13 @@
     "m8r_03e_status": "GO_WITH_CAVEATS",
     "market_overview_scope_contract_defined": true,
     "mops_runtime_executable": false,
-    "next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+    "next_task": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
     "next_task_status": "accepted_successor",
     "original_m8r04_disposition": "superseded_and_split",
     "phased_delivery_plan_completed": true,
     "raw_payload_exposure_allowed": false,
-    "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
-    "registry_successor": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+    "recommended_next_task": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
+    "registry_successor": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
     "standard_evidence_bundles_defined": true,
     "status": "m8r_03e_repository_realignment_go_with_caveats",
     "taifex_mis_ai_context_allowed": true,
@@ -309,7 +314,7 @@
   "m8r_03e_markdown_preview_ready": true,
   "m8r_03e_mcp_enabled": false,
   "m8r_03e_missing_evidence_ready": true,
-  "m8r_03e_network_execution_enabled": false,
+  "m8r_03e_network_execution_enabled": true,
   "m8r_03e_partial_coverage_ready": true,
   "m8r_03e_persistent_watchlist_enabled": false,
   "m8r_03e_status": "GO_WITH_CAVEATS",
@@ -317,11 +322,29 @@
   "market_overview_scope_contract_defined": true,
   "new_m8_failures": [],
   "new_m8c_failures": [],
-  "next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+  "next_task": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
   "next_task_status": "accepted_successor",
   "original_m8r04_disposition": "superseded_and_split",
-  "phase_c_gate_status": "pending_post_r4_sequencing_decision",
-  "phase_c_status": "blocked_pending_R4_performance_and_scalability",
+  "phase_c_activation_profile": "phase_c_conversation_driven_one_shot.v1",
+  "phase_c_activation_status": "conversation_driven_enabled_with_caveats",
+  "phase_c_approval_mode": "conversation_explicit_approval",
+  "phase_c_autonomous_trading_enabled": false,
+  "phase_c_default_max_operations": 30,
+  "phase_c_default_max_targets": 10,
+  "phase_c_default_retention_days": 30,
+  "phase_c_execution_preview_required": true,
+  "phase_c_external_agent_repeated_execution_activated": false,
+  "phase_c_external_agent_repeated_execution_supported": true,
+  "phase_c_fallback_policy": "registry_governed",
+  "phase_c_gate_status": "activated",
+  "phase_c_hard_max_operations": 100,
+  "phase_c_hard_max_targets": 50,
+  "phase_c_order_execution_enabled": false,
+  "phase_c_owner_decision": "approved_with_caveats",
+  "phase_c_partial_success_allowed": true,
+  "phase_c_repository_polling_enabled": false,
+  "phase_c_repository_scheduler_enabled": false,
+  "phase_c_status": "activated",
   "phased_delivery_plan_completed": true,
   "planning_state": {
     "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
@@ -340,12 +363,12 @@
     "m8r_01f_status": "m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go",
     "m8r_03b_status": "GO_WITH_PHASED_IMPLEMENTATION_REQUIRED",
     "m8r_03e_status": "GO_WITH_CAVEATS",
-    "next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+    "next_task": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
     "next_task_status": "accepted_successor",
     "original_m8r04_disposition": "superseded_and_split",
     "preflight_completed_through": "M8C-00",
-    "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
-    "registry_successor": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+    "recommended_next_task": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
+    "registry_successor": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
     "status": "m8_through_m8c_consolidated_acceptance_pass_with_caveats",
     "tested_code_sha": "b55cf800561f9997991a82b34013ff0564052710",
     "unified_tool_api": "required_successor_capability"
@@ -353,7 +376,7 @@
   "production_executor_adapters_ready": true,
   "production_live_execution_ready": true,
   "r2_recommended_next_task": "M8R-03E-R4-PERFORMANCE-AND-SCALABILITY-HARDENING",
-  "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+  "recommended_next_task": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
   "recommended_successor_after_m8r_02b_f2": "M8R-03B-AI-CONVERSATION-INPUT-OUTPUT-DESIGN-REVIEW",
   "recommended_successor_after_m8r_02b_f2_semantics": "historical F2 transition evidence retained; active successor is registry_successor",
   "recommended_successor_after_m8r_03c": "M8R-03D-WATCHLIST-EVIDENCE-SOURCE-INTEGRATION-AND-CONTROLLED-EXECUTION",
@@ -363,10 +386,13 @@
     "superseded_by": "M8R-03E-R3-ARCHITECTURE-AND-CODE-HEALTH-CLEANUP",
     "task_id": "M8R-03F-CONVERSATIONAL-TARGET-INTAKE-AND-TEMPORARY-WATCHLIST-RESOLUTION"
   },
-  "registry_successor": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+  "registry_successor": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
   "schema_version": "m8_source_capability_registry.v1",
   "sources": [
     {
+      "activation_profile_ids": [
+        "phase_c_conversation_driven_one_shot.v1"
+      ],
       "ai_context_allowed": true,
       "ai_exposure_level": "caveated_context_allowed",
       "allowed_interpretation": [
@@ -419,6 +445,7 @@
         }
       },
       "official_documented": false,
+      "phase_c_activation_state": "enabled_one_shot",
       "primary_use": "bounded live-ish listed and TPEx/OTC observation",
       "production_executor_adapters_ready": true,
       "production_live_execution_ready": true,
@@ -433,6 +460,9 @@
     {
       "access_use_disposition": "operator_accepted_personal_local_research_only",
       "activation_commit_sha": "e488e7e05a19687fb72b2ad032afda600b2aebb6",
+      "activation_profile_ids": [
+        "phase_c_conversation_driven_one_shot.v1"
+      ],
       "actual_execution_head_sha": "b55cf800561f9997991a82b34013ff0564052710",
       "adapter_implemented": true,
       "after_hours_runtime_executable": false,
@@ -511,16 +541,17 @@
       "market_scope": {
         "derivatives": "regular-session futures/options bounded initial-state runtime"
       },
-      "next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+      "next_task": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
       "next_task_status": "awaiting_operator_acceptance",
       "official_documented": false,
+      "phase_c_activation_state": "enabled_one_shot",
       "preflight_completed_through": "M8C-00",
       "preflight_transport_reproduced": true,
       "primary_use": "controlled bounded regular-session TAIFEX derivatives initial-state observation for source-specific M8 live-ish/supporting/metadata context",
       "production_executor_adapters_ready": true,
       "production_live_execution_ready": true,
       "raw_payload_exposure_allowed": false,
-      "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+      "recommended_next_task": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
       "runtime_available": true,
       "runtime_executable": true,
       "runtime_status": "bounded_initial_state_snapshot_runtime_with_controlled_m8_context",
@@ -535,6 +566,9 @@
       "weekly_option_runtime_executable": false
     },
     {
+      "activation_profile_ids": [
+        "phase_c_conversation_driven_one_shot.v1"
+      ],
       "adapter_implemented": true,
       "ai_context_allowed": true,
       "ai_exposure_level": "caveated_context_allowed",
@@ -584,6 +618,7 @@
       },
       "official_documented": true,
       "official_eod": true,
+      "phase_c_activation_state": "enabled_one_shot",
       "primary_use": "listed official EOD/reference context",
       "production_classification_completeness": "incomplete_without_canonical_security_master",
       "production_executor_adapters_ready": true,
@@ -598,6 +633,9 @@
       "whole_market_network_scope": true
     },
     {
+      "activation_profile_ids": [
+        "phase_c_conversation_driven_one_shot.v1"
+      ],
       "adapter_implemented": true,
       "ai_context_allowed": true,
       "ai_exposure_level": "caveated_context_allowed",
@@ -650,6 +688,7 @@
       "mixed_instrument_fail_closed": true,
       "official_documented": true,
       "official_eod": true,
+      "phase_c_activation_state": "enabled_one_shot",
       "primary_use": "TPEx official EOD/reference context",
       "production_classification_completeness": "incomplete_without_canonical_security_master",
       "production_executor_adapters_ready": true,
@@ -664,6 +703,9 @@
       "whole_market_network_scope": true
     },
     {
+      "activation_profile_ids": [
+        "phase_c_conversation_driven_one_shot.v1"
+      ],
       "adapter_implemented": true,
       "ai_context_allowed": true,
       "ai_exposure_level": "caveated_context_allowed",
@@ -728,6 +770,7 @@
       ],
       "official_derivatives_eod": true,
       "official_documented": true,
+      "phase_c_activation_state": "enabled_one_shot",
       "primary_use": "official derivatives EOD/statistical context",
       "production_executor_adapters_ready": true,
       "production_live_execution_ready": true,
@@ -751,6 +794,7 @@
       "whole_market_network_scope": true
     },
     {
+      "activation_profile_ids": [],
       "ai_context_allowed": false,
       "ai_exposure_level": "metadata_only",
       "allowed_interpretation": [
@@ -778,6 +822,7 @@
         "issuer_disclosure": "fundamental and disclosure reference"
       },
       "official_documented": true,
+      "phase_c_activation_state": "validated_not_activated",
       "primary_use": "disclosure/fundamental reference",
       "raw_payload_exposure_allowed": false,
       "runtime_available": false,
@@ -788,6 +833,7 @@
       "timing_class": "fundamental_reference"
     },
     {
+      "activation_profile_ids": [],
       "ai_context_allowed": true,
       "ai_exposure_level": "caveated_context_allowed",
       "allowed_interpretation": [
@@ -818,6 +864,7 @@
         "local_artifact": "uploaded artifact / local operator evidence"
       },
       "official_documented": false,
+      "phase_c_activation_state": "validated_not_activated",
       "primary_use": "operator-provided local evidence with caveats",
       "raw_payload_exposure_allowed": false,
       "runtime_available": true,
@@ -828,6 +875,7 @@
       "timing_class": "manual_snapshot"
     },
     {
+      "activation_profile_ids": [],
       "ai_context_allowed": false,
       "ai_exposure_level": "validation_only",
       "allowed_interpretation": [
@@ -857,6 +905,7 @@
         "supporting_validation": "validation-only"
       },
       "official_documented": false,
+      "phase_c_activation_state": "validated_not_activated",
       "primary_use": "validation-only supporting source",
       "raw_payload_exposure_allowed": false,
       "runtime_available": false,
@@ -867,6 +916,7 @@
       "timing_class": "validation_only"
     },
     {
+      "activation_profile_ids": [],
       "ai_context_allowed": false,
       "ai_exposure_level": "metadata_only",
       "allowed_interpretation": [
@@ -898,6 +948,7 @@
         "provider_research": "credential-gated provider metadata"
       },
       "official_documented": false,
+      "phase_c_activation_state": "validated_not_activated",
       "primary_use": "credential-gated provider research only",
       "raw_payload_exposure_allowed": false,
       "runtime_available": false,
@@ -908,6 +959,7 @@
       "timing_class": "credential_gated_research"
     },
     {
+      "activation_profile_ids": [],
       "ai_context_allowed": false,
       "ai_exposure_level": "compact_currentness_provenance_only",
       "allowed_interpretation": [
@@ -931,6 +983,7 @@
       "not_market_price_source": true,
       "not_primary_m8a_market_data_source": true,
       "official_documented": true,
+      "phase_c_activation_state": "validated_not_activated",
       "primary_use": "Emergency closure evidence for market-day currentness resolution only",
       "raw_payload_exposure_allowed": false,
       "runtime_available": true,
@@ -946,10 +999,5 @@
   "tested_code_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
   "tested_remote_sha": "bf68f7baf2dcd16cb8ba275183cf953052a45195",
   "unified_tool_api": "required_successor_capability",
-  "watchlist_scope_contract_defined": true,
-  "later_owner_sequencing_decision": {
-    "decision_date": "2026-07-17",
-    "current_primary_task": "M8R-03E-R5B-CROSS-PLATFORM-FILESYSTEM-FAIL-CLOSED-CONTRACT-AND-WINDOWS-CORRECTION",
-    "recommended_next_task_after_r5b": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE"
-  }
+  "watchlist_scope_contract_defined": true
 }

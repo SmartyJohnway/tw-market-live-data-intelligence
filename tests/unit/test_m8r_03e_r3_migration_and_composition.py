@@ -10,7 +10,7 @@ FIX=ROOT/'tests/fixtures/m8r_03e_r3/historical_v1_context_package.json'
 COMPLETE=ROOT/'tests/fixtures/m8r_03e/complete_snapshot'
 
 def test_historical_v1_migration_preserves_evidence_and_is_canonical():
-    legacy=json.loads(FIX.read_text())
+    legacy=json.loads(FIX.read_text(encoding="utf-8"))
     assert validate_schema(legacy,'m8r_watchlist_ai_context_package.v1.schema.json') is None
     a=migrate_watchlist_ai_context_package_v1_to_v2(legacy); b=migrate_watchlist_ai_context_package_v1_to_v2(legacy)
     assert validate_schema(a,'m8r_watchlist_ai_context_package.v2.schema.json') is None
@@ -30,7 +30,7 @@ def test_historical_v1_migration_preserves_evidence_and_is_canonical():
     assert a['source_lineage']['migration']['v2_counts_verified'] is True
 
 def _evidence():
-    req,plan,res,bundle=[json.loads((COMPLETE/n).read_text()) for n in ('request.json','execution_plan.json','execution_result.json','bundle.json')]
+    req,plan,res,bundle=[json.loads((COMPLETE/n).read_text(encoding="utf-8")) for n in ('request.json','execution_plan.json','execution_result.json','bundle.json')]
     return build_watchlist_ai_context_package(validated_request=req,execution_plan=plan,execution_result=res,watchlist_bundle=bundle,generated_at_utc='2026-07-16T03:00:00Z')
 
 def test_agent_policy_composition_does_not_mutate_evidence():
@@ -48,6 +48,6 @@ def test_agent_policy_composition_does_not_mutate_evidence():
 def test_critical_evidence_modules_have_no_product_policy_imports():
     forbidden={'config.agent_policy','scripts.m8r_03e_conversation_handoff_builder','product_response_policy','conversation_policy'}
     for rel in ('scripts/m8r_03e_watchlist_ai_context_builder.py','scripts/m8r_03e_context_validator.py','scripts/m8r_03d_watchlist_controlled_executor.py'):
-        tree=ast.parse((ROOT/rel).read_text())
+        tree=ast.parse((ROOT/rel).read_text(encoding="utf-8"))
         modules={node.module for node in ast.walk(tree) if isinstance(node,ast.ImportFrom) and node.module} | {alias.name for node in ast.walk(tree) if isinstance(node,ast.Import) for alias in node.names}
         assert not any(module == blocked or module.startswith(blocked+'.') for module in modules for blocked in forbidden), (rel,modules)

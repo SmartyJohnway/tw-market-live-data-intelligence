@@ -153,86 +153,248 @@ def build_execution_plan(request:dict, *, bundle_type:str, generated_at_utc:str|
     if verified_snapshot_path or verified_snapshot_manifest_path:
         if not (verified_snapshot_path and verified_snapshot_manifest_path): raise VerifiedSecurityMasterSnapshotError('snapshot_and_manifest_required')
         security_master=load_verified_security_master_snapshot(verified_snapshot_path, verified_snapshot_manifest_path, allow_fixture_snapshot=allow_fixture_snapshot)
-    
+
     # 載入並解析 source capability registry
     if source_capability_registry is None:
         source_capability_registry = json.loads(Path("docs/data_capabilities/m8_source_capability_registry.json").read_text(encoding="utf-8"))
-            
+
     # Schema 驗證
     if "schema_version" not in source_capability_registry:
         raise ValueError("invalid_capability_registry_schema: missing schema_version")
     if source_capability_registry["schema_version"] != "m8_source_capability_registry.v1":
         raise ValueError(f"invalid_capability_registry_schema: expected m8_source_capability_registry.v1, got {source_capability_registry['schema_version']}")
-        
+
+    # 判定是否啟用 Phase C 對話啟動模式
+    phase_c_active = False
+    if source_capability_registry.get("phase_c_activation_status") == "conversation_driven_enabled_with_caveats":
+        if req.get("execution_policy", {}).get("execution_profile") == "phase_c_conversation_driven_one_shot.v1":
+            phase_c_active = True
+
+    # 載入 Activation Policy (作為唯一 Source of Truth)
+    default_max_targets = 10
+    hard_max_targets = 50
+    default_max_operations = 30
+    hard_max_operations = 100
+    fallback_policy = "registry_governed"
+    partial_success_policy = "allowed"
+    artifact_retention_days = 30
+
+    if phase_c_active:
+        try:
+            policy_path = Path("docs/data_capabilities/m8r_03e_phase_c_activation_policy.json")
+            policy = json.loads(policy_path.read_text(encoding="utf-8"))
+            required_policy_fields = {"schema_version", "activation_profile_id", "activation_state", "resource_bounds", "partial_success_policy", "fallback_policy", "artifact_retention"}
+            if not required_policy_fields.issubset(policy):
+                raise ValueError("missing_required_policy_fields")
+
+            bounds = policy["resource_bounds"]
+            if not all(k in bounds for k in ["default_max_targets", "hard_max_targets", "default_max_operations", "hard_max_operations"]):
+                raise ValueError("invalid_resource_bounds")
+
+            retention = policy["artifact_retention"]
+            if not all(k in retention for k in ["default_retention_days", "expired_artifact_behavior"]):
+                raise ValueError("invalid_retention_policy")
+
+            default_max_targets = bounds["default_max_targets"]
+            hard_max_targets = bounds["hard_max_targets"]
+            default_max_operations = bounds["default_max_operations"]
+            hard_max_operations = bounds["hard_max_operations"]
+            fallback_policy = policy["fallback_policy"]
+            partial_success_policy = policy["partial_success_policy"]
+            artifact_retention_days = retention["default_retention_days"]
+        except Exception as exc:
+            raise RuntimeError(f"failed_to_load_activation_policy: {str(exc)}")
+
     # active_runtime_source_families 欄位缺失或為空列表時預設為空 set (Fail-Closed)
     act_list = source_capability_registry.get("active_runtime_source_families")
     if act_list is None:
         active_families = set()
     else:
         active_families = set(act_list)
-        
-    # 各 source family 預設皆為不可執行 (False)，除非明確指定為 True (Fail-Closed)
-    status_dict = source_capability_registry.get("m8_active_consolidated_status") or {}
-    def get_flag(name):
-        root_val = source_capability_registry.get(name)
-        inner_val = status_dict.get(name)
-        if root_val is None:
-            return inner_val is True
-        return root_val is True and inner_val is True
-        
-    twse_mis_exec = get_flag("twse_mis_runtime_executable")
-    twse_openapi_exec = get_flag("twse_openapi_runtime_executable")
-    tpex_openapi_exec = get_flag("tpex_openapi_runtime_executable")
-    
-    # 動態 sources 檢查，缺失 runtime_executable 或非 True 亦視為 False
+
+    # 動態 sources 檢查，不再依賴硬編碼名稱
+    source_activation_states = {}
+    source_exec_status = {}
     for src in source_capability_registry.get("sources", []):
         f = src.get("source_family")
-        exec_val = src.get("runtime_executable") is True
-        if f == "TWSE_MIS": twse_mis_exec = twse_mis_exec and exec_val
-        elif f == "TWSE_OPENAPI": twse_openapi_exec = twse_openapi_exec and exec_val
-        elif f == "TPEX_OPENAPI": tpex_openapi_exec = tpex_openapi_exec and exec_val
+        if f:
+            source_activation_states[f] = src.get("phase_c_activation_state")
+            flag_name = f"{f.lower()}_runtime_executable"
+            root_val = source_capability_registry.get(flag_name)
+            inner_val = (source_capability_registry.get("m8_active_consolidated_status") or {}).get(flag_name)
+
+            if root_val is None:
+                root_val = src.get("runtime_executable") is True
+            if inner_val is None:
+                inner_val = True
+
+            source_exec_status[f] = root_val is True and inner_val is True
+
+    def is_source_activated(fam):
+        if fam not in active_families:
+            return False
+
+        if not phase_c_active:
+            return source_exec_status.get(fam, False)
+
+        if source_activation_states.get(fam) != "enabled_one_shot":
+            return False
+        return source_exec_status.get(fam, False)
+
+    # 實作完全 registry-driven 的動態尋找最佳來源機制 (具備向後相容 fallback)
+    def find_best_source(market, timing_class):
+        for src in source_capability_registry.get("sources", []):
+            fam = src.get("source_family")
+            if not fam: continue
+            if not is_source_activated(fam): continue
+
+            if fam == "TWSE_OPENAPI" and market.upper() != "TWSE": continue
+            if fam == "TPEX_OPENAPI" and market.upper() != "TPEX": continue
+
+            src_timing = src.get("timing_class")
+            if not src_timing:
+                if fam == "TWSE_MIS": src_timing = "liveish_intraday_snapshot"
+                elif fam in ("TWSE_OPENAPI", "TPEX_OPENAPI"): src_timing = "official_eod"
+
+            if src_timing != timing_class: continue
+
+            scope = src.get("market_scope") or {}
+            if not scope:
+                if fam == "TWSE_MIS": scope = {"TWSE": "listed", "TPEX": "tpex_otc"}
+                elif fam == "TWSE_OPENAPI": scope = {"TWSE": "listed EOD reference"}
+                elif fam == "TPEX_OPENAPI": scope = {"TPEX": "tpex_otc EOD reference"}
+
+            if any(k.upper() == market.upper() or (k.lower() == 'taiwan_equity' and market.upper() in ('TWSE', 'TPEX')) for k in scope):
+                return src
+        return None
 
     ids=list(req['persistent_watchlist_reference']['enabled_target_ids'])
     targets=[]; groups=[]; issues=[]
-    if len(ids)>MAX_WATCHLIST_TARGETS: issues.append({'code':'target_limit_exceeded','max_target_count':MAX_WATCHLIST_TARGETS,'blocking':True})
     for i,tid in enumerate(ids):
         r=_target_from_resolution(_resolve_security(tid, security_master, allow_fixture_snapshot=allow_fixture_snapshot)); cur={}; eod={}; expected='unavailable'
         if r['identity_status']=='resolved':
             expected='usable'; market=r['market']; code=r['security_code']
-            cur_allowed = "TWSE_MIS" in active_families and twse_mis_exec
-            eodfam='TWSE_OPENAPI' if market=='TWSE' else 'TPEX_OPENAPI'
-            eod_allowed = eodfam in active_families and (twse_openapi_exec if eodfam == 'TWSE_OPENAPI' else tpex_openapi_exec)
-            
-            if bundle_type=='snapshot' and cur_allowed:
-                cur={'source_family':'TWSE_MIS','route':('tse_' if market=='TWSE' else 'otc_')+code.lower()+'.tw','operation_class':'planned_network_fetch'}
-            if eod_allowed:
-                eod={'source_family':eodfam,'route':eodfam,'operation_class':'planned_network_fetch'}
-            
-            # 如果某個 source family 因為被 capability registry 標記為不可執行而拒絕，我們將其視為 coverage 缺失或 blocked
-            if bundle_type=='snapshot' and not cur_allowed:
-                # 這裡不把 cur 排入
-                pass
-            if not eod_allowed:
-                # 這裡不把 eod 排入
-                pass
-            
+
+            if phase_c_active:
+                # Phase C 啟用時：完全由 registry 驅動的動態匹配
+                live_src = find_best_source(market, 'liveish_intraday_snapshot')
+                eod_src = find_best_source(market, 'official_eod')
+
+                if bundle_type=='snapshot' and live_src:
+                    cur_fam = live_src["source_family"]
+                    cur={'source_family':cur_fam,'route':('tse_' if market=='TWSE' else 'otc_')+code.lower()+'.tw','operation_class':'planned_network_fetch'}
+                if eod_src:
+                    eod_fam = eod_src["source_family"]
+                    eod={'source_family':eod_fam,'route':eod_fam,'operation_class':'planned_network_fetch'}
+            else:
+                # 傳統模式：回退到 PR #157 原始硬編碼路由
+                status_dict = source_capability_registry.get("m8_active_consolidated_status") or {}
+                def get_flag(name):
+                    root_val = source_capability_registry.get(name)
+                    inner_val = status_dict.get(name)
+                    if root_val is None:
+                        return inner_val is True
+                    return root_val is True and inner_val is True
+                twse_mis_exec = get_flag("twse_mis_runtime_executable") and ("TWSE_MIS" in active_families)
+                twse_openapi_exec = get_flag("twse_openapi_runtime_executable") and ("TWSE_OPENAPI" in active_families)
+                tpex_openapi_exec = get_flag("tpex_openapi_runtime_executable") and ("TPEX_OPENAPI" in active_families)
+
+                if bundle_type=='snapshot' and twse_mis_exec:
+                    cur={'source_family':'TWSE_MIS','route':('tse_' if market=='TWSE' else 'otc_')+code.lower()+'.tw','operation_class':'planned_network_fetch'}
+                if market=='TWSE' and twse_openapi_exec:
+                    eod={'source_family':'TWSE_OPENAPI','route':'TWSE_OPENAPI','operation_class':'planned_network_fetch'}
+                elif market=='TPEX' and tpex_openapi_exec:
+                    eod={'source_family':'TPEX_OPENAPI','route':'TPEX_OPENAPI','operation_class':'planned_network_fetch'}
+
             if not cur and not eod:
                 expected = 'unavailable'
             elif not cur or not eod:
                 expected = 'partial'
-                
-            if cur: groups.append({'source_family':'TWSE_MIS','context_type':'liveish_observation','target_ids':[tid],'network_required':True})
-            if eod: groups.append({'source_family':eodfam,'context_type':'official_eod_reference','target_ids':[tid],'network_required':True,'history_window':_history_window(req) if bundle_type=='performance' else {'latest_completed_eod_only':True}})
+
+            if cur: groups.append({'source_family':cur['source_family'],'context_type':'liveish_observation','target_ids':[tid],'network_required':True})
+            if eod: groups.append({'source_family':eod['source_family'],'context_type':'official_eod_reference','target_ids':[tid],'network_required':True,'history_window':_history_window(req) if bundle_type=='performance' else {'latest_completed_eod_only':True}})
         targets.append({**r,'current_source_plan':cur,'eod_source_plan':eod,'expected_coverage':expected}); issues.extend(r.get('blocking_issues', []))
+
+    # 限制與 Bounds 判定
+    if phase_c_active:
+        planned_ops = []
+        for t in targets:
+            tid = t['target_id']
+            if t.get('current_source_plan'):
+                cur_plan = t['current_source_plan']
+                planned_ops.append({
+                    "operation_id": f"op-{tid}-{cur_plan['source_family']}",
+                    "target_id": tid,
+                    "source_family": cur_plan['source_family'],
+                    "operation_type": "current_snapshot",
+                    "timing_class": "liveish_intraday_snapshot",
+                    "fallback_allowed": True
+                })
+            if t.get('eod_source_plan'):
+                eod_plan = t['eod_source_plan']
+                planned_ops.append({
+                    "operation_id": f"op-{tid}-{eod_plan['source_family']}",
+                    "target_id": tid,
+                    "source_family": eod_plan['source_family'],
+                    "operation_type": "official_eod",
+                    "timing_class": "official_eod",
+                    "fallback_allowed": True
+                })
+
+        target_count = len(ids)
+        operation_count = len(planned_ops)
+        expanded_scope = (target_count > default_max_targets and target_count <= hard_max_targets) or (operation_count > default_max_operations and operation_count <= hard_max_operations)
+
+        if target_count > hard_max_targets or operation_count > hard_max_operations:
+            issues.append({'code': 'rejected_resource_bound', 'blocking': True, 'target_count': target_count, 'operation_count': operation_count})
+
+        max_target_count = hard_max_targets
+    else:
+        if len(ids) > 10:
+            issues.append({'code': 'target_limit_exceeded', 'max_target_count': 10, 'blocking': True})
+        max_target_count = 10
+        planned_ops = []
+        expanded_scope = False
+        target_count = len(ids)
+        operation_count = 0
+
     # merge deterministic groups
     merged={}
     for g in groups:
         k=(g['source_family'],g['context_type'],canonical_json(g.get('history_window',{})))
         merged.setdefault(k,{**g,'target_ids':[]})['target_ids'].extend(g['target_ids'])
     groups=[{**v,'target_ids':sorted(v['target_ids'], key=ids.index)} for k,v in sorted(merged.items())]
-    base={'schema_version':PLAN_SCHEMA_VERSION,'request_id':req['request_id'],'request_hash':canonical_request_hash(req),'bundle_type':bundle_type,'target_order':ids,'targets':targets,'source_call_groups':groups,'network_required':bool(groups),'authorization_required':True,'max_target_count':MAX_WATCHLIST_TARGETS,'issues':issues}
+    base={'schema_version':PLAN_SCHEMA_VERSION,'request_id':req['request_id'],'request_hash':canonical_request_hash(req),'bundle_type':bundle_type,'target_order':ids,'targets':targets,'source_call_groups':groups,'network_required':bool(groups),'authorization_required':True,'max_target_count':max_target_count,'issues':issues}
     base['plan_id']='m8r03d-plan-'+sha256_json({k:base[k] for k in ('request_id','request_hash','bundle_type','target_order','targets','source_call_groups')})[:16]
-    base['created_at_utc']=generated_at_utc or utc_now(); return base
+    base['created_at_utc']=generated_at_utc or utc_now()
+
+    # 產生 preview 物件 (綁定完整 preview 屬性內容的 SHA256 雜湊)
+    if phase_c_active:
+        preview_body = {
+            "schema_version": "m8r_phase_c_execution_preview.v1",
+            "request_id": req["request_id"],
+            "request_summary": req.get("original_user_text") or "取得指定台股目前市場狀況",
+            "targets": ids,
+            "target_count": target_count,
+            "planned_sources": sorted(list(set(op["source_family"] for op in planned_ops))),
+            "planned_operations": planned_ops,
+            "operation_count": operation_count,
+            "estimated_network_calls": operation_count,
+            "expanded_scope": expanded_scope,
+            "fallback_policy": fallback_policy,
+            "partial_success_policy": partial_success_policy,
+            "artifact_retention_days": artifact_retention_days,
+            "requires_user_confirmation": True
+        }
+        preview_hash = sha256_json(preview_body)
+        preview_id = f"preview-{preview_hash}"
+        preview = {
+            "preview_id": preview_id,
+            **preview_body
+        }
+        base["execution_preview"] = preview
+
+    return base
 
 def _history_window(req):
     days=req['conversation_intent']['time_scope'].get('lookback_trading_days') or 20

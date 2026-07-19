@@ -1007,7 +1007,7 @@
     "Phase C activation": "blocked_pending_R5A_10_target_fixture_and_windows_path_validation_correction"
   },
   "raw_payload_exposure_allowed": false,
-  "recommended_next_task": "M8R-03E-R5A-PHASE-C-ENABLING-CROSS-LAYER-FIXTURE-INFRASTRUCTURE",
+  "recommended_next_task": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
   "availability_semantics": {
     "ai_facing_runtime_available": "Only true when actual callable AI-facing operation with defined I/O exists; all F1 operations are false.",
     "underlying_runtime_available": "Represents existing repository producer/executor availability, separate from Phase C operation availability.",

@@ -1,18 +1,18 @@
 # M6E Operator Acceptance Report
 
-Generated: 2026-07-03T07:54:34Z
-Final status: `pass_with_caveats`
+Generated: 2026-07-18T16:02:47Z
+Final status: `fail`
 
 ## Operator readiness
-- operator_ready: True
-- release_preflight_ready: True
+- operator_ready: False
+- release_preflight_ready: False
 - mode_a_ready: True
 - mode_b_check_only_ready: True
 - mode_c_ready: True
 
 ## Caveats
 - operator preflight: Python 3.13 detection caveat (True).
-- operator preflight: Virtual environment caveat (not detected).
+- operator preflight: Windows detection caveat (True).
 
 ## Recommended next commands
 - `python scripts/run_local_workbench.py`

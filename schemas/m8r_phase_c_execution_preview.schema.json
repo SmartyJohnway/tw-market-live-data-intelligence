@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "M8RPhaseCExecutionPreview",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": ["m8r_phase_c_execution_preview.v1"]
+    },
+    "preview_id": {
+      "type": "string",
+      "pattern": "^preview-[a-f0-9]+$"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "request_summary": {
+      "type": "string"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "target_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "planned_sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "planned_operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "operation_id": {
+            "type": "string"
+          },
+          "target_id": {
+            "type": "string"
+          },
+          "source_family": {
+            "type": "string"
+          },
+          "operation_type": {
+            "type": "string"
+          },
+          "timing_class": {
+            "type": "string"
+          },
+          "fallback_allowed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "operation_id",
+          "target_id",
+          "source_family",
+          "operation_type",
+          "timing_class",
+          "fallback_allowed"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "operation_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "estimated_network_calls": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "expanded_scope": {
+      "type": "boolean"
+    },
+    "fallback_policy": {
+      "type": "string"
+    },
+    "partial_success_policy": {
+      "type": "string"
+    },
+    "artifact_retention_days": {
+      "type": "integer"
+    },
+    "requires_user_confirmation": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_version",
+    "preview_id",
+    "request_id",
+    "request_summary",
+    "targets",
+    "target_count",
+    "planned_sources",
+    "planned_operations",
+    "operation_count",
+    "estimated_network_calls",
+    "expanded_scope",
+    "fallback_policy",
+    "partial_success_policy",
+    "artifact_retention_days",
+    "requires_user_confirmation"
+  ],
+  "additionalProperties": false
+}
