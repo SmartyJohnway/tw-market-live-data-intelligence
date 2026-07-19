@@ -30,7 +30,7 @@ def _write_json(root:Path, path:Path, data:Any):
     if any(t.lower() in low for t in FORBIDDEN_ARTIFACT_TOKENS): raise ValueError('forbidden_artifact_content')
     atomic_write_text(root, path.relative_to(root), text+'\n')
 
-def _load_production_calendar(evaluation_time: datetime, authorized_root: Path) -> dict | None:
+def _load_production_calendar(evaluation_time: datetime, authorized_root: Path) -> tuple[dict | None, str]:
     """Fetch or load-from-cache the official TWSE trading calendar.
 
     Must only be called AFTER authorization has been claimed (anti-replay passed).
@@ -45,7 +45,7 @@ def _load_production_calendar(evaluation_time: datetime, authorized_root: Path) 
             from scripts.twse_trading_calendar import load_twse_trading_calendar_artifact
             loaded = load_twse_trading_calendar_artifact(cache_path)
             if loaded.get("year") == evaluation_time.year:
-                return loaded
+                return loaded, "cache_hit"
         except Exception:
             pass  # stale / corrupt cache — fall through to fetch
 
@@ -80,9 +80,9 @@ def _load_production_calendar(evaluation_time: datetime, authorized_root: Path) 
         except Exception:
             pass  # cache write failure is non-fatal
 
-        return calendar_artifact
+        return calendar_artifact, "network_fetch"
     except Exception:
-        return None
+        return None, "unresolved"
 
 
 def preflight(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, security_master=None, source_capability_registry=None):
@@ -258,7 +258,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                 from datetime import datetime
                 from zoneinfo import ZoneInfo
                 ref_dt = datetime.now(ZoneInfo("Asia/Taipei"))
-            calendar_artifact = _load_production_calendar(ref_dt, authorized_root=artifact_root_path)
+            calendar_artifact, calendar_load_mode = _load_production_calendar(ref_dt, authorized_root=artifact_root_path)
             try:
                 from scripts.m8a_ncdr_dgpa_closure_cap import fetch_and_parse_closure_feed
                 parsed_feed = fetch_and_parse_closure_feed()
@@ -268,14 +268,11 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
 
             session_results = []
             if calendar_artifact is not None:
-                # determine if it was fetched from network by checking provenance
-                prov = calendar_artifact.get("_cache_provenance", {})
-                is_cache = "retrieved_at_utc" in prov and not prov.get("source_url")
                 session_results.append({
                     'operation_id': 'op-_session-TWSE_OPENAPI-calendar',
                     'target_id': '_session',
                     'source_family': 'TWSE_OPENAPI',
-                    'status': 'cache_hit' if is_cache else 'network_success'
+                    'status': calendar_load_mode if calendar_load_mode != "network_fetch" else "network_success"
                 })
             else:
                 session_results.append({
@@ -545,12 +542,12 @@ def _result(run_id,mode,started,completed,request,plan,auth,observations,bundle,
             matched_tr = [tr for tr in (target_results or []) if tr.get("target_id") == tid and tr.get("source_family") == fam]
             if matched_tr:
                 tr_status = matched_tr[0].get("status")
-                if tr_status == "normalized":
+                if tr_status in {"normalized", "network_success", "cache_hit"}:
                     actual_op_ids.append(op_id)
-                elif tr_status == "fallback_success":
+                elif tr_status in {"fallback_success", "unresolved_fallback"}:
                     actual_op_ids.append(op_id)
                     fallback_op_ids.append(op_id)
-                elif tr_status == "failed":
+                elif tr_status in {"failed", "network_failed"}:
                     failed_op_ids.append(op_id)
                 else:
                     skipped_op_ids.append(op_id)
