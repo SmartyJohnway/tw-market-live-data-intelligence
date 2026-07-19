@@ -1,9 +1,0 @@
-{
-  "authorization_id": "7d6f8f26-90cc-4cba-9e4e-3bcbf549c226",
-  "claimed_at_utc": "2026-07-16T01:30:05Z",
-  "one_shot_nonce_hash": "8675236e7aab83937e1b417f3449c9d1a4e22f34022832689e354053cc32a090",
-  "plan_id": "m8r03d-plan-080070946d1b67a4",
-  "request_hash": "6601a3dddcbcc4adc8865fa03f4a69238d3b35011d551ab520c6f264431d8f32",
-  "schema_version": "m8r_03d_authorization_consumption_receipt.v1",
-  "status": "claimed"
-}

@@ -344,3 +344,114 @@ def test_invalid_actual_trade_date_formats():
         )
         assert res["currentness_status"] == "invalid_trade_date_format"
 
+
+# Blocker 2: TAIFEX Taipei closure rule isolation tests
+# TAIFEX must NOT apply market_closed_no_session when Taipei work suspension exists.
+# Instead, closure_src should end with 'unresolved', triggering fallback_policy_used=True.
+
+def _taipei_full_day_closure(target_date_str: str) -> list:
+    return [{
+        "status": "Actual",
+        "area_name": "臺北市",
+        "area_level": "municipality",
+        "work_status": "closed",
+        "decision_status": "closure_confirmed",
+        "target_date": target_date_str,
+        "closure_scope": "full_day"
+    }]
+
+def _taipei_morning_closure(target_date_str: str) -> list:
+    return [{
+        "status": "Actual",
+        "area_name": "臺北市",
+        "area_level": "municipality",
+        "work_status": "closed",
+        "decision_status": "closure_confirmed",
+        "target_date": target_date_str,
+        "closure_scope": "morning"
+    }]
+
+def test_taifex_taipei_full_day_closure_does_not_produce_market_closed():
+    """TAIFEX + Taipei full-day closure must NOT yield market_closed_no_session.
+    Authority for applying Taipei closure to TAIFEX is provisional_unresolved.
+    Expected: fallback_policy_used=True, status=calendar_status_unresolved.
+    """
+    # 2026-07-21 Tuesday mid-market — TAIFEX would normally be open
+    ref = datetime(2026, 7, 21, 11, 0, 0, tzinfo=TAIPEI)
+    cal = get_dummy_calendar()
+    closure = _taipei_full_day_closure("2026-07-21")
+
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TAIFEX",
+        official_calendar=cal,
+        closure_status=closure,
+        actual_trade_date="2026-07-20"
+    )
+    # Must NOT be market_closed_no_session
+    assert res["session_status"] != "market_closed_no_session", (
+        "TAIFEX must not inherit Taipei closure rule without official authority"
+    )
+    # Closure authority is unresolved → fail-closed → fallback_policy_used
+    assert res["fallback_policy_used"] is True
+    assert res["currentness_status"] == "calendar_status_unresolved"
+    # Caveats must mention the unresolved authority
+    assert any("provisional_unresolved" in c for c in res.get("caveats", []))
+
+
+def test_taifex_taipei_morning_closure_does_not_produce_market_closed():
+    """TAIFEX + Taipei morning closure must NOT yield market_closed_no_session."""
+    ref = datetime(2026, 7, 21, 11, 0, 0, tzinfo=TAIPEI)
+    cal = get_dummy_calendar()
+    closure = _taipei_morning_closure("2026-07-21")
+
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TAIFEX",
+        official_calendar=cal,
+        closure_status=closure,
+        actual_trade_date="2026-07-20"
+    )
+    assert res["session_status"] != "market_closed_no_session"
+    assert res["fallback_policy_used"] is True
+    assert res["currentness_status"] == "calendar_status_unresolved"
+
+
+def test_twse_taipei_full_day_closure_produces_market_closed():
+    """TWSE + Taipei full-day closure MUST yield market_closed_no_session.
+    Taipei closure authority for TWSE is 'enabled'.
+    """
+    ref = datetime(2026, 7, 21, 11, 0, 0, tzinfo=TAIPEI)
+    cal = get_dummy_calendar()
+    closure = _taipei_full_day_closure("2026-07-21")
+
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=closure,
+        actual_trade_date="2026-07-21"
+    )
+    assert res["session_status"] == "market_closed_no_session"
+    assert res["fallback_policy_used"] is False
+
+
+def test_tpex_taipei_full_day_closure_applies_with_caveat():
+    """TPEX + Taipei full-day closure MUST yield market_closed_no_session.
+    TPEX closure authority is 'enabled_synchronized'; a synchronized-market caveat
+    must appear in caveats.
+    """
+    ref = datetime(2026, 7, 21, 11, 0, 0, tzinfo=TAIPEI)
+    cal = get_dummy_calendar()
+    closure = _taipei_full_day_closure("2026-07-21")
+
+    res = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TPEX",
+        official_calendar=cal,
+        closure_status=closure,
+        actual_trade_date="2026-07-21"
+    )
+    assert res["session_status"] == "market_closed_no_session"
+    assert res["fallback_policy_used"] is False
+    assert any("synchronized" in c.lower() for c in res.get("caveats", []))

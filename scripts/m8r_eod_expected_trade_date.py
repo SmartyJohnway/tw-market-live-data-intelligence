@@ -12,6 +12,18 @@ MARKET_SESSION_POLICIES = {
     "TAIFEX": {"market_close_time": "13:45", "publication_grace_period_minutes": 60},
 }
 
+# Per-market authority for applying Taipei City work-suspension closure rules.
+# TWSE: confirmed — Taipei closure directly governs centralised exchange sessions.
+# TPEX: enabled_synchronized — follows TWSE closure under synchronised-market assumption;
+#        independent TPEX authority not yet independently verified.
+# TAIFEX: provisional_unresolved — no official TAIFEX exchange-session override rule
+#          for Taipei work suspensions has been verified; rule must NOT be applied.
+TAIPEI_CLOSURE_AUTHORITY = {
+    "TWSE": "enabled",
+    "TPEX": "enabled_synchronized",
+    "TAIFEX": "provisional_unresolved",
+}
+
 def parse_taipei_datetime(val: str | datetime) -> datetime:
     """Parse input into timezone-aware Asia/Taipei datetime, failing closed on naive datetimes."""
     if isinstance(val, datetime):
@@ -145,19 +157,35 @@ def determine_expected_eod_session_status(
 
     # Step 2 & 3: Evaluate current reference date
     sess_status, is_trading_day, cal_source = resolve_date_session_type(ref_local_date)
-    
+
     tpe_closure = get_taipei_closure_scope(closure_status, ref_local_date.isoformat())
     closure_src = "none_detected"
-    
-    if tpe_closure == "unresolved":
-        closure_src = "unresolved"
-    elif tpe_closure in {"full_day", "morning"}:
-        sess_status = "market_closed_no_session"
-        is_trading_day = False
-        closure_src = "NCDR_DGPA_CLOSURE_CAP"
-    elif tpe_closure == "afternoon":
-        closure_src = "NCDR_DGPA_CLOSURE_CAP"
-    
+    closure_authority = TAIPEI_CLOSURE_AUTHORITY.get(market, "provisional_unresolved")
+
+    if closure_authority in {"enabled", "enabled_synchronized"}:
+        # TWSE / TPEX: apply Taipei City work-suspension closure rule.
+        if tpe_closure == "unresolved":
+            closure_src = "unresolved"
+        elif tpe_closure in {"full_day", "morning"}:
+            sess_status = "market_closed_no_session"
+            is_trading_day = False
+            closure_src = "NCDR_DGPA_CLOSURE_CAP"
+        elif tpe_closure == "afternoon":
+            closure_src = "NCDR_DGPA_CLOSURE_CAP"
+        if closure_authority == "enabled_synchronized":
+            # Note: TPEX-specific authority not independently verified; follows TWSE assumption.
+            pass  # caveat appended later in caveats section
+    else:
+        # TAIFEX: Taipei closure rule has no verified official authority for this exchange.
+        # Do NOT apply market_closed_no_session; record as unresolved so fail-closed
+        # logic downstream sets fallback_policy_used = True.
+        if tpe_closure == "unresolved":
+            closure_src = "unresolved"
+        else:
+            # Taipei closure data exists but authority to apply it to TAIFEX is unresolved.
+            closure_src = "TAIFEX_closure_unresolved"
+
+
     # Check if today's session has completed
     today_completed = False
     if is_trading_day and sess_status not in {"calendar_status_unresolved", "market_closed_no_session"}:
@@ -188,16 +216,36 @@ def determine_expected_eod_session_status(
     fallback_policy_used = False
     fallback_policy = None
     caveats = []
-    
-    # Declare TAIFEX provisional day session policy warning (Blocker 5)
+
+    # TAIFEX provisional day-session policy caveat (always present for TAIFEX)
     if market == "TAIFEX":
-        caveats.append("TAIFEX is bound by provisional day-session policy only. Night sessions or complex derivatives settlement schedules are not fully evaluated.")
-    
-    if official_calendar is None or cal_source.endswith("unresolved") or closure_src == "unresolved":
+        caveats.append(
+            "TAIFEX is bound by provisional day-session policy only. "
+            "Night sessions or complex derivatives settlement schedules are not fully evaluated."
+        )
+
+    # TPEX synchronized closure assumption caveat
+    if market == "TPEX" and closure_authority == "enabled_synchronized":
+        caveats.append(
+            "TPEX closure follows synchronized market calendar assumption. "
+            "TPEX-specific official authority for Taipei work-suspension closure rules "
+            "has not been independently verified."
+        )
+
+    # TAIFEX closure authority caveat (always present — not just when closure detected)
+    if market == "TAIFEX":
+        caveats.append(
+            "TAIFEX Taipei city work-suspension closure rule is provisional_unresolved. "
+            "No official TAIFEX exchange session override rule has been verified. "
+            "Taipei closure scope is NOT applied to TAIFEX session status."
+        )
+
+    if official_calendar is None or cal_source.endswith("unresolved") or closure_src.endswith("unresolved"):
         fallback_policy_used = True
         fallback_policy = "provisional_bounded_age"
         caveats.append("calendar/closure unresolved; falling back to provisional bounded-age policy.")
-        
+
+
     publication_grace_applied = False
     
     if actual_trade_date is None:

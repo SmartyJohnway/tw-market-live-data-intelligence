@@ -30,10 +30,16 @@ def _write_json(root:Path, path:Path, data:Any):
     if any(t.lower() in low for t in FORBIDDEN_ARTIFACT_TOKENS): raise ValueError('forbidden_artifact_content')
     atomic_write_text(root, path.relative_to(root), text+'\n')
 
-def _load_production_calendar(evaluation_time: datetime, artifact_root: Path | None = None) -> dict | None:
-    cache_dir = artifact_root if artifact_root else Path('artifacts/m8r_03d')
-    cache_path = cache_dir / 'twse_trading_calendar.json'
-    
+def _load_production_calendar(evaluation_time: datetime, authorized_root: Path) -> dict | None:
+    """Fetch or load-from-cache the official TWSE trading calendar.
+
+    Must only be called AFTER authorization has been claimed (anti-replay passed).
+    Uses atomic_write_text so the cache is never left in a partially-written state.
+    Records full provenance so the cache artifact can be audited.
+    """
+    relative_cache_path = Path('twse_trading_calendar.json')
+    cache_path = authorized_root / relative_cache_path
+
     if cache_path.exists():
         try:
             from scripts.twse_trading_calendar import load_twse_trading_calendar_artifact
@@ -41,33 +47,43 @@ def _load_production_calendar(evaluation_time: datetime, artifact_root: Path | N
             if loaded.get("year") == evaluation_time.year:
                 return loaded
         except Exception:
-            pass
+            pass  # stale / corrupt cache — fall through to fetch
 
     import urllib.request
     from scripts.twse_trading_calendar import build_twse_trading_calendar_from_holiday_schedule
     url = "https://openapi.twse.com.tw/v1/holidaySchedule/holidaySchedule"
     try:
         req = urllib.request.Request(
-            url, 
+            url,
             headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) tw-market-live-data-intelligence/1.0'}
         )
         with urllib.request.urlopen(req, timeout=10) as response:
             records = json.loads(response.read().decode('utf-8'))
-        
+
         calendar_artifact = build_twse_trading_calendar_from_holiday_schedule(
             year=evaluation_time.year,
             holiday_schedule_records=records
         )
-        
+
+        # Attach provenance so the cache artifact is auditable.
+        calendar_artifact["_cache_provenance"] = {
+            "retrieved_at_utc": utc_now(),
+            "source_url": url,
+            "source_contract_id": "TWSE_OPENAPI_holidaySchedule",
+            "year": evaluation_time.year,
+        }
+
         try:
-            cache_dir.mkdir(parents=True, exist_ok=True)
-            cache_path.write_text(json.dumps(calendar_artifact, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            content = json.dumps(calendar_artifact, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+            # atomic_write_text requires a path relative to authorized_root.
+            atomic_write_text(authorized_root, relative_cache_path, content)
         except Exception:
-            pass
-            
+            pass  # cache write failure is non-fatal
+
         return calendar_artifact
     except Exception:
         return None
+
 
 def preflight(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, security_master=None, source_capability_registry=None):
     plan=build_execution_plan(request,bundle_type=bundle_type,generated_at_utc=generated_at_utc,security_master=security_master,source_capability_registry=source_capability_registry)
@@ -98,28 +114,16 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
         status='blocked_preflight' if plan_has_blocking_issues(plan) else 'success'
         return _result(run_id,mode,started,utc_now(),request,plan,authorization if mode=='execute' and not phase_c_active else None,[],None,status,plan.get('issues',[]),artifact_root_path,source_execution_summary={'planned_source_call_groups':plan.get('source_call_groups',[]),'group_results':[],'network_calls_performed':False,'network_default_enabled':False,'polling':False,'scheduler':False},write=False,preview=preview,approval=approval)
 
-    # Resolve calendar and closure feed events
+    # calendar_artifact and closure_events are resolved AFTER authorization
+    # (see post-claim block below). Initialize to None here so fixture mode
+    # can populate them from fixture_source_data.
     calendar_artifact = None
     closure_events = None
-    if mode == 'execute':
-        try:
-            from scripts.m8r_eod_expected_trade_date import parse_taipei_datetime
-            ref_dt = parse_taipei_datetime(started)
-        except Exception:
-            from datetime import datetime
-            from zoneinfo import ZoneInfo
-            ref_dt = datetime.now(ZoneInfo("Asia/Taipei"))
-        calendar_artifact = _load_production_calendar(ref_dt, artifact_root=artifact_root_path)
-        try:
-            from scripts.m8a_ncdr_dgpa_closure_cap import fetch_and_parse_closure_feed
-            parsed_feed = fetch_and_parse_closure_feed()
-            closure_events = parsed_feed.get("events")
-        except Exception:
-            closure_events = None
-    else:
+    if mode != 'execute':
         if isinstance(fixture_source_data, dict):
             calendar_artifact = fixture_source_data.get("calendar_artifact") or fixture_source_data.get("trading_calendar_artifact")
             closure_events = fixture_source_data.get("closure_events")
+
 
     if mode=='execute':
         if phase_c_active:
@@ -181,7 +185,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
             if approval.get('preview_id') != canonical_preview['preview_id']:
                 return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'approval_referenced_different_preview'}],artifact_root_path,write=False)
 
-            # 4. Preview 與實際 Plan 的一致性比對 (完全動態化匹配，不再依賴硬編碼名稱)
+            # 4. Preview 與實際 Plan 的一致性比對 (only target-level ops; session ops use sentinel '_session' target_id)
             actual_ops = []
             for t in plan.get('targets', []):
                 tid = t['target_id']
@@ -202,7 +206,9 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                         "operation_type": "official_eod",
                         "timing_class": "official_eod" if fam.endswith("OPENAPI") else "official_statistics_eod"
                     })
-            planned_ops = preview.get('planned_operations', [])
+            # Filter out session-level ops (target_id starts with '_') from the
+            # preview's planned_operations before comparing against plan-derived ops.
+            planned_ops = [op for op in preview.get('planned_operations', []) if not str(op.get('target_id', '')).startswith('_')]
             mismatch = False
             for aop in actual_ops:
                 found = False
@@ -238,8 +244,30 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                 return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'authorization_consumption_failed','detail':str(exc)[:120]}],artifact_root_path,write=True,preview=preview,approval=approval)
             except Exception as exc:
                 return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'authorization_consumption_failed','detail':str(exc)[:120]}],artifact_root_path,write=True,preview=preview,approval=approval)
-                
-            source_data, group_results = _execute_source_groups(plan,request,executors or {})
+
+            # --- AUTHORIZATION BOUNDARY ---
+            # All network calls and persistent writes must occur after this point.
+            # The anti-replay claim above is the last authorization gate.
+
+            # Resolve official calendar and natural disaster closure feed.
+            # These network calls are declared in the preview as session-level ops.
+            try:
+                from scripts.m8r_eod_expected_trade_date import parse_taipei_datetime
+                ref_dt = parse_taipei_datetime(started)
+            except Exception:
+                from datetime import datetime
+                from zoneinfo import ZoneInfo
+                ref_dt = datetime.now(ZoneInfo("Asia/Taipei"))
+            calendar_artifact = _load_production_calendar(ref_dt, authorized_root=artifact_root_path)
+            try:
+                from scripts.m8a_ncdr_dgpa_closure_cap import fetch_and_parse_closure_feed
+                parsed_feed = fetch_and_parse_closure_feed()
+                closure_events = parsed_feed.get("events")
+            except Exception:
+                closure_events = None
+
+            source_data, group_results = _execute_source_groups(plan, request, executors or {})
+
         else:
             # 舊版 Authorization 驗證流程
             if not authorization: return _result(run_id,mode,started,utc_now(),request,plan,None,[],None,'authorization_failed',[{'code':'authorization_required'}],artifact_root_path,write=False)

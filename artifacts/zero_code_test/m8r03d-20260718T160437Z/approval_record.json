@@ -1,9 +1,0 @@
-{
-  "approval_mode": "conversation_explicit_approval",
-  "approval_status": "approved",
-  "approved_at_utc": "2026-07-18T12:05:00Z",
-  "approved_text_summary": "執行",
-  "preview_id": "preview-9d6491e6457e351d6a0760ac5f8630d2ab5be65bb1e6a8751c170144cd6e0236",
-  "request_id": "req-zero-code-7120be36-22b6-4f00-9491-7f7f959a3861",
-  "schema_version": "m8r_phase_c_conversation_approval.v1"
-}

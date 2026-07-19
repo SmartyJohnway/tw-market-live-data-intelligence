@@ -1,84 +1,144 @@
 {
-  "task_id": "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
-  "timestamp": "2026-07-19T11:10:00Z",
-  "environment": {
-    "os": "windows",
-    "python_version": "3.13.7",
-    "virtual_env": ".venv"
-  },
-  "commits": [
-    {
-      "sha": "600994b",
-      "message": "feat(eod): implement expected trade date evaluator and schemas"
-    },
-    {
-      "sha": "3087c62",
-      "message": "feat(eod): integrate EOD session evaluation and harden Windows compatibility"
-    },
-    {
-      "sha": "dc5b538",
-      "message": "fix(eod): resolve review blockers, add production calendar fetching and fail-closed unresolved logic"
-    },
-    {
-      "sha": "8ff07b8",
-      "message": "test(eod): fix test regressions from fail-closed calendar logic and Windows CP950 encoding"
-    }
-  ],
-  "targeted_test_suites": [
-    {
-      "name": "tests/unit/test_m8r_eod_expected_trade_date.py",
-      "status": "passed",
-      "test_cases_count": 16,
-      "passed": 16,
-      "failed": 0
-    },
-    {
-      "name": "tests/unit/test_m8a_market_day_currentness_resolver.py",
-      "status": "passed",
-      "test_cases_count": 7,
-      "passed": 7,
-      "failed": 0
-    },
-    {
-      "name": "tests/unit/test_m8a_ncdr_dgpa_closure_cap.py",
-      "status": "passed",
-      "test_cases_count": 10,
-      "passed": 10,
-      "failed": 0
-    },
-    {
-      "name": "tests/unit/test_m8r_03d_production_calendar_integration.py",
-      "status": "passed",
-      "test_cases_count": 2,
-      "passed": 2,
-      "failed": 0
-    },
-    {
-      "name": "tests/unit/test_m8r_watchlist_currentness_evaluator.py",
-      "status": "passed",
-      "test_cases_count": 12,
-      "passed": 12,
-      "failed": 0
-    },
-    {
-      "name": "tests/unit/test_m8r_03e_r3_policy_evidence_decoupling.py",
-      "status": "passed",
-      "test_cases_count": 2,
-      "passed": 2,
-      "failed": 0
-    }
-  ],
-  "targeted_total": {
-    "passed": 49,
-    "failed": 0
-  },
-  "full_offline_regression": {
-    "total_collected": 1808,
-    "passed": 1759,
-    "failed": 47,
-    "skipped": 4,
-    "deselected": 2,
-    "exit_code": 1,
-    "notes": "The 47 remaining offline failures are pre-existing Windows environment issues (CRLF hash mismatches, M5 staging manifest path assertions, m3g04 live probe test policy changes) and are not caused by M8R-03E changes. Two new regressions introduced by commit 3087c62 (test_currentness_official_eod and test_m8r_03e_r3_policy_evidence_decoupling) were fixed in commit 8ff07b8. All failures are expected to pass in the canonical Linux CI environment."
-  }
+    "task_id":  "M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS",
+    "timestamp":  "2026-07-19T11:10:00Z",
+    "environment":  {
+                        "os":  "windows",
+                        "python_version":  "3.13.7",
+                        "virtual_env":  ".venv"
+                    },
+    "commits":  [
+                    {
+                        "sha":  "600994b",
+                        "message":  "feat(eod): implement expected trade date evaluator and schemas"
+                    },
+                    {
+                        "sha":  "3087c62",
+                        "message":  "feat(eod): integrate EOD session evaluation and harden Windows compatibility"
+                    },
+                    {
+                        "sha":  "dc5b538",
+                        "message":  "fix(eod): resolve review blockers, add production calendar fetching and fail-closed unresolved logic"
+                    },
+                    {
+                        "sha":  "8ff07b8",
+                        "message":  "test(eod): fix test regressions from fail-closed calendar logic and Windows CP950 encoding"
+                    }
+                ],
+    "targeted_test_suites":  [
+                                 {
+                                     "name":  "tests/unit/test_m8r_eod_expected_trade_date.py",
+                                     "status":  "passed",
+                                     "test_cases_count":  16,
+                                     "passed":  16,
+                                     "failed":  0
+                                 },
+                                 {
+                                     "name":  "tests/unit/test_m8a_market_day_currentness_resolver.py",
+                                     "status":  "passed",
+                                     "test_cases_count":  7,
+                                     "passed":  7,
+                                     "failed":  0
+                                 },
+                                 {
+                                     "name":  "tests/unit/test_m8a_ncdr_dgpa_closure_cap.py",
+                                     "status":  "passed",
+                                     "test_cases_count":  10,
+                                     "passed":  10,
+                                     "failed":  0
+                                 },
+                                 {
+                                     "name":  "tests/unit/test_m8r_03d_production_calendar_integration.py",
+                                     "status":  "passed",
+                                     "test_cases_count":  2,
+                                     "passed":  2,
+                                     "failed":  0
+                                 },
+                                 {
+                                     "name":  "tests/unit/test_m8r_watchlist_currentness_evaluator.py",
+                                     "status":  "passed",
+                                     "test_cases_count":  12,
+                                     "passed":  12,
+                                     "failed":  0
+                                 },
+                                 {
+                                     "name":  "tests/unit/test_m8r_03e_r3_policy_evidence_decoupling.py",
+                                     "status":  "passed",
+                                     "test_cases_count":  2,
+                                     "passed":  2,
+                                     "failed":  0
+                                 }
+                             ],
+    "targeted_total":  {
+                           "passed":  49,
+                           "failed":  0
+                       },
+    "full_offline_regression":  {
+                                    "total_collected":  1808,
+                                    "passed":  1759,
+                                    "failed":  47,
+                                    "skipped":  4,
+                                    "deselected":  2,
+                                    "exit_code":  1,
+                                    "notes":  "The 47 remaining offline failures are pre-existing Windows environment issues (CRLF hash mismatches, M5 staging manifest path assertions, m3g04 live probe test policy changes) and are not caused by M8R-03E changes. Two new regressions introduced by commit 3087c62 (test_currentness_official_eod and test_m8r_03e_r3_policy_evidence_decoupling) were fixed in commit 8ff07b8. All failures are expected to pass in the canonical Linux CI environment.",
+                                    "failed_node_ids":  [
+                                                            "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+                                                            "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+                                                            "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+                                                            "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
+                                                            "tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
+                                                            "tests/unit/test_assess_m5c_staging_candidate.py::test_valid_m5b_evidence_eligible",
+                                                            "tests/unit/test_frontend_readonly_static_contracts.py::test_required_wording_exists_and_forbidden_positive_claims_absent",
+                                                            "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+                                                            "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+                                                            "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
+                                                            "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+                                                            "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+                                                            "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+                                                            "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+                                                            "tests/unit/test_m5c_staging_failure_injection.py::test_build_writes_canonical_destination_not_temporary_path",
+                                                            "tests/unit/test_m5c_staging_promotion.py::test_valid_m5b_evidence_eligible",
+                                                            "tests/unit/test_m5c_staging_promotion.py::test_tampered_manifest_blocked",
+                                                            "tests/unit/test_m5c_staging_promotion.py::test_contract_status_failed_is_semantic_block",
+                                                            "tests/unit/test_m5c_staging_promotion.py::test_exact_binding_request_and_schema",
+                                                            "tests/unit/test_m5c_staging_promotion.py::test_historical_not_current_readonly",
+                                                            "tests/unit/test_m5c_staging_promotion.py::test_rollback_failure_injection_no_mutation",
+                                                            "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+                                                            "tests/unit/test_m5c_staging_rollback.py::test_rollback_failure_injection_no_mutation",
+                                                            "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+                                                            "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+                                                            "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+                                                            "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+                                                            "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+                                                            "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+                                                            "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+                                                            "tests/unit/test_m5e_controlled_frontend_publication.py::test_check_only_fail_closed",
+                                                            "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+                                                            "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
+                                                            "tests/unit/test_m5e_controlled_frontend_publication.py::test_frontend_public_unchanged",
+                                                            "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+                                                            "tests/unit/test_m5e_controlled_frontend_publication.py::test_preview_static_dom_contract",
+                                                            "tests/unit/test_m5fgh_consumer_consistency.py::test_demo_json_summary",
+                                                            "tests/unit/test_m5fgh_frontend_static.py::test_frontend_static_uses_m5f_and_safe_dom",
+                                                            "tests/unit/test_m5ij_end_to_end_acceptance.py::test_m5ij_acceptance_check_only_passes",
+                                                            "tests/unit/test_m5ij_end_to_end_acceptance.py::test_m5e_supersession_accepted_by_default",
+                                                            "tests/unit/test_m8_controlled_conversation_context_integration.py::test_pure_projection_no_network_runtime_imports",
+                                                            "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_parse_normal_classifies_and_omits_extension_fields",
+                                                            "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_unclassified_and_signed_change_and_duplicate",
+                                                            "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_6488_bounded_seed_classifies_equity_and_unknown_fails_closed",
+                                                            "tests/unit/test_m8b_final_acceptance.py::test_m8b_final_acceptance_and_registry",
+                                                            "tests/unit/test_m8r_phase_c_execution_preview.py::test_execution_preview_generation",
+                                                            "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema"
+                                                        ],
+                                    "novel_failures_vs_baseline":  [
+
+                                                                   ],
+                                    "removed_failures_vs_baseline":  [
+                                                                         "tests/unit/test_m8r_watchlist_currentness_evaluator.py::test_currentness_official_eod",
+                                                                         "tests/unit/test_m8r_03e_r3_policy_evidence_decoupling.py::test_agent_policy_change_does_not_change_evidence_hash_or_lineage",
+                                                                         "tests/unit/test_m8r_03e_r3_policy_evidence_decoupling.py::test_v1_to_v2_migration_is_deterministic_and_removes_policy_fields"
+                                                                     ]
+                                },
+    "baseline_main_sha":  "270ee94179d41ae8476bd2ce2a09eaa38022f2f1",
+    "tested_head_sha":  "pending_commit_6",
+    "binding_status":  "targeted_pass_full_regression_incomplete"
 }
