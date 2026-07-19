@@ -1,0 +1,86 @@
+{
+  "artifact_paths": {
+    "approval": "P:\\tw-market-live-data-intelligence-main\\artifacts\\zero_code_test\\m8r03d-20260718T145857Z\\approval_record.json",
+    "bundle": "P:\\tw-market-live-data-intelligence-main\\artifacts\\zero_code_test\\m8r03d-20260718T145857Z\\watchlist_snapshot_bundle.json",
+    "execution_plan": "P:\\tw-market-live-data-intelligence-main\\artifacts\\zero_code_test\\m8r03d-20260718T145857Z\\execution_plan.json",
+    "execution_preview": "P:\\tw-market-live-data-intelligence-main\\artifacts\\zero_code_test\\m8r03d-20260718T145857Z\\execution_preview.json",
+    "normalized_observations": "P:\\tw-market-live-data-intelligence-main\\artifacts\\zero_code_test\\m8r03d-20260718T145857Z\\normalized_observations.json",
+    "validated_request": "P:\\tw-market-live-data-intelligence-main\\artifacts\\zero_code_test\\m8r03d-20260718T145857Z\\validated_request.json"
+  },
+  "authorization_id": null,
+  "bundle_artifact": "P:\\tw-market-live-data-intelligence-main\\artifacts\\zero_code_test\\m8r03d-20260718T145857Z\\watchlist_snapshot_bundle.json",
+  "completed_at_utc": "2026-07-18T14:58:57Z",
+  "execution_audit": {
+    "actual_operation_ids": [
+      "op-TWSE:2330-FIXTURE_TEST_SOURCE"
+    ],
+    "approval_mode": "conversation_explicit_approval",
+    "approval_status": "approved",
+    "failed_operation_ids": [],
+    "fallback_operation_ids": [],
+    "planned_operation_ids": [
+      "op-TWSE:2330-FIXTURE_TEST_SOURCE"
+    ],
+    "preview_id": "preview-f7fb69fd7a9e6d20228ed651504fcbe2753c37c68ae41d839c07722609383720",
+    "request_id": "req-zero-code-5ad4383c-b9db-4ce8-af8b-a733b880d5f1",
+    "skipped_operation_ids": [],
+    "unexpected_operation_ids": []
+  },
+  "issues": [],
+  "mode": "execute",
+  "observation_count": 1,
+  "plan_id": "m8r03d-plan-2b272f725d44fc4e",
+  "preview_id": "preview-f7fb69fd7a9e6d20228ed651504fcbe2753c37c68ae41d839c07722609383720",
+  "request_hash": "14a1620240272d9d354f9a98e7d9955a6f5787175218eed05e01acaae30b260a",
+  "request_id": "req-zero-code-5ad4383c-b9db-4ce8-af8b-a733b880d5f1",
+  "retention_policy": {
+    "automatic_cleanup_scheduler_enabled": false,
+    "default_retention_days": 30,
+    "expired_artifact_behavior": "eligible_for_cleanup",
+    "manual_delete_supported": true,
+    "manual_pin_supported": true
+  },
+  "run_id": "m8r03d-20260718T145857Z",
+  "schema_version": "m8r_03d_watchlist_execution_result.v1",
+  "source_execution_summary": {
+    "group_results": [
+      {
+        "completed_at_utc": "2026-07-18T14:58:57Z",
+        "observation_count": 1,
+        "reason_code": null,
+        "source_family": "FIXTURE_TEST_SOURCE",
+        "started_at_utc": "2026-07-18T14:58:57Z",
+        "status": "success",
+        "target_ids": [
+          "TWSE:2330"
+        ]
+      }
+    ],
+    "network_calls_performed": true,
+    "network_default_enabled": false,
+    "planned_source_call_groups": [
+      {
+        "context_type": "liveish_observation",
+        "network_required": true,
+        "source_family": "FIXTURE_TEST_SOURCE",
+        "target_ids": [
+          "TWSE:2330"
+        ]
+      }
+    ],
+    "polling": false,
+    "scheduler": false
+  },
+  "started_at_utc": "2026-07-18T14:58:57Z",
+  "status": "success_with_partial_coverage",
+  "target_results": [
+    {
+      "actual_operation_id": "op-TWSE:2330-FIXTURE_TEST_SOURCE",
+      "fallback_from_operation_id": null,
+      "planned_operation_id": "op-TWSE:2330-FIXTURE_TEST_SOURCE",
+      "source_family": "FIXTURE_TEST_SOURCE",
+      "status": "normalized",
+      "target_id": "TWSE:2330"
+    }
+  ]
+}

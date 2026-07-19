@@ -1,0 +1,62 @@
+{
+  "clarification_reason": null,
+  "clarification_required": false,
+  "conversation_intent": {
+    "clarification_reason": null,
+    "clarification_required": false,
+    "evidence_depth": "standard",
+    "explicit_user_constraints": {},
+    "inferred_defaults": {},
+    "original_user_text": "testing zero-code expansion",
+    "schema_version": "m8r_ai_market_conversation_intent.v1",
+    "scope_modes": [
+      "watchlist"
+    ],
+    "time_scope": {
+      "explicit_range": null,
+      "lookback_trading_days": 20,
+      "mode": "current_plus_recent"
+    }
+  },
+  "dynamic_entity_requests": [],
+  "execution_policy": {
+    "network_allowed": true,
+    "operator_confirmation_required": false,
+    "polling": false,
+    "scheduler": false
+  },
+  "explicit_user_constraints": {},
+  "follow_up_context": null,
+  "identity_resolver_output": {},
+  "inferred_defaults": {},
+  "market_context_requests": [],
+  "optional_evidence": [],
+  "original_user_text": "testing zero-code expansion",
+  "persistent_watchlist_reference": {
+    "enabled_target_ids": [
+      "TWSE:2330"
+    ],
+    "source": "local_fixture",
+    "watchlist_id": "wl-test"
+  },
+  "request_id": "req-zero-code-9561abfb-f51f-4d90-88bd-f0697a19055a",
+  "required_evidence": [
+    {
+      "capability_id": "fixture_test_listed_liveish",
+      "fallback_behavior": "record_missing",
+      "preferred_timing_class": "liveish_intraday_snapshot",
+      "priority": "required",
+      "required_for_answer": true,
+      "source_family_preference": [
+        "FIXTURE_TEST_SOURCE"
+      ],
+      "time_scope": {
+        "explicit_range": null,
+        "lookback_trading_days": null,
+        "mode": "current"
+      }
+    }
+  ],
+  "schema_version": "m8r_ai_evidence_request.v1",
+  "useful_evidence": []
+}

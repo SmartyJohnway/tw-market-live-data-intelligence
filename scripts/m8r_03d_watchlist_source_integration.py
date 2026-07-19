@@ -156,6 +156,8 @@ def evaluate_evidence_currentness(
             
         res_dict = {
             "status": status,
+            "detailed_status": res["currentness_status"],
+            "provisional_candidate_status": res.get("provisional_candidate_status"),
             "reason": reason,
             "age_seconds": age_seconds,
             "actual_trade_date": trade_date,

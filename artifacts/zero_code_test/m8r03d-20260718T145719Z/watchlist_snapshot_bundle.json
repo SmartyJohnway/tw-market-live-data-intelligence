@@ -1,0 +1,78 @@
+{
+  "bundle_id": "m8r03c-snapshot-510c7b8c19770e49",
+  "conversation_context": {
+    "original_user_text": "testing zero-code expansion",
+    "scope_modes": [
+      "watchlist"
+    ]
+  },
+  "coverage": {
+    "requested_target_ids": [
+      "TWSE:2330"
+    ],
+    "targets": [
+      {
+        "coverage_state": "unavailable",
+        "missing_field_groups": [
+          "resolved_identity",
+          "current_evidence",
+          "currentness",
+          "eod_reference"
+        ],
+        "present_field_groups": [],
+        "reason_code": "identity_unresolved",
+        "target_id": "TWSE:2330"
+      }
+    ]
+  },
+  "derived_metrics": [],
+  "facts": [],
+  "generated_at_utc": "2026-07-18T14:57:19Z",
+  "issues": [],
+  "missing_evidence": [
+    {
+      "capability_id": "current_mis_observation",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "MIS observation unavailable",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": true,
+      "target_id": "TWSE:2330"
+    },
+    {
+      "capability_id": "official_eod_reference",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "EOD reference unavailable",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": false,
+      "target_id": "TWSE:2330"
+    }
+  ],
+  "request_id": "req-zero-code-9561abfb-f51f-4d90-88bd-f0697a19055a",
+  "resolution_assumptions": [],
+  "schema_version": "m8r_watchlist_snapshot_bundle.v1",
+  "source_summary": {},
+  "targets": [
+    {
+      "coverage": {
+        "coverage_state": "unavailable",
+        "missing_field_groups": [
+          "resolved_identity",
+          "current_evidence",
+          "currentness",
+          "eod_reference"
+        ],
+        "present_field_groups": [],
+        "reason_code": "identity_unresolved",
+        "target_id": "TWSE:2330"
+      },
+      "current_evidence": {},
+      "eod_reference": {},
+      "issues": [],
+      "requested_identity": {},
+      "resolved_identity": {},
+      "target_id": "TWSE:2330"
+    }
+  ]
+}

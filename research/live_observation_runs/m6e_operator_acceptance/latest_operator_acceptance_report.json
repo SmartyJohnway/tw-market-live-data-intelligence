@@ -35,8 +35,8 @@
         "latest_source_health": "generated_at_utc=2026-06-30T04:23:40Z",
         "network_calls": false,
         "repository": {
-          "branch": "ag/m8r-03e-phase-c-activation-decision",
-          "commit": "b7bea68",
+          "branch": "ag/m8r-03e-eod-expected-trade-date-session-status",
+          "commit": "3087c62",
           "release": "Local Release Candidate",
           "version": "v0.1.0"
         },
@@ -469,7 +469,7 @@
     ],
     "status": "pass"
   },
-  "generated_at_utc": "2026-07-18T16:02:47Z",
+  "generated_at_utc": "2026-07-19T09:36:28Z",
   "governance": {
     "check_only_non_network": true,
     "no_m5f_mutation": true,
@@ -644,8 +644,8 @@
       "latest_source_health": "generated_at_utc=2026-06-30T04:23:40Z",
       "network_calls": false,
       "repository": {
-        "branch": "ag/m8r-03e-phase-c-activation-decision",
-        "commit": "b7bea68",
+        "branch": "ag/m8r-03e-eod-expected-trade-date-session-status",
+        "commit": "3087c62",
         "release": "Local Release Candidate",
         "version": "v0.1.0"
       },
@@ -831,8 +831,8 @@
     "python scripts/run_operator_preflight.py --json --timeout-seconds 300"
   ],
   "repository": {
-    "branch": "ag/m8r-03e-phase-c-activation-decision",
-    "commit": "b7bea68",
+    "branch": "ag/m8r-03e-eod-expected-trade-date-session-status",
+    "commit": "3087c62",
     "release": "Local Release Candidate",
     "version": "v0.1.0"
   },

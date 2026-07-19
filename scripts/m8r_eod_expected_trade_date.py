@@ -86,6 +86,20 @@ def determine_expected_eod_session_status(
     if market not in {"TWSE", "TPEX", "TAIFEX"}:
         raise ValueError(f"Unsupported market: {market}")
         
+    # Early actual_trade_date YYYY-MM-DD validation
+    actual_date = None
+    invalid_format = False
+    if actual_trade_date is not None:
+        s_trade = str(actual_trade_date).strip()
+        # Enforce strict 10-character YYYY-MM-DD pattern validation to override loose Python 3.11+ parses
+        if len(s_trade) != 10 or s_trade[4] != '-' or s_trade[7] != '-':
+            invalid_format = True
+        else:
+            try:
+                actual_date = date.fromisoformat(s_trade)
+            except ValueError:
+                invalid_format = True
+
     # Step 1: Parse reference clock
     ref_tz = parse_taipei_datetime(reference_time_utc)
     ref_local_date = ref_tz.date()
@@ -151,8 +165,9 @@ def determine_expected_eod_session_status(
             today_completed = True
 
     # Search backwards for the latest completed trade date
+    expected_date = None
     if today_completed:
-        expected_date_str = ref_local_date.isoformat()
+        expected_date = ref_local_date
     else:
         found_date = None
         cur_date = ref_local_date - timedelta(days=1)
@@ -165,12 +180,18 @@ def determine_expected_eod_session_status(
                 found_date = cur_date
                 break
             cur_date -= timedelta(days=1)
-        expected_date_str = found_date.isoformat() if found_date else None
+        expected_date = found_date
+
+    expected_date_str = expected_date.isoformat() if expected_date else None
 
     # Step 5: Resolve currentness and fallback flags
     fallback_policy_used = False
     fallback_policy = None
     caveats = []
+    
+    # Declare TAIFEX provisional day session policy warning (Blocker 5)
+    if market == "TAIFEX":
+        caveats.append("TAIFEX is bound by provisional day-session policy only. Night sessions or complex derivatives settlement schedules are not fully evaluated.")
     
     if official_calendar is None or cal_source.endswith("unresolved") or closure_src == "unresolved":
         fallback_policy_used = True
@@ -179,24 +200,22 @@ def determine_expected_eod_session_status(
         
     publication_grace_applied = False
     
-    if not actual_trade_date:
+    if actual_trade_date is None:
         currentness_status = "source_trade_date_missing"
+    elif invalid_format:
+        currentness_status = "invalid_trade_date_format"
     else:
-        if expected_date_str and actual_trade_date > expected_date_str:
+        if expected_date and actual_date > expected_date:
             currentness_status = "future_trade_date_invalid"
-        elif expected_date_str and actual_trade_date == expected_date_str:
-            # Here is the fix:
-            # If today is a trading day and we are currently BEFORE close time, today_completed is False.
-            # In this case, expected_latest_completed_trade_date is previous actual trading day (which matches actual_trade_date).
-            # Because today's market has not closed/completed, the freshness status is official_previous_session_eod_before_close.
+        elif expected_date and actual_date == expected_date:
             if is_trading_day and not today_completed:
                 currentness_status = "official_previous_session_eod_before_close"
             else:
                 currentness_status = "official_latest_completed_eod"
         else:
             # Check for publication grace or stale
-            if expected_date_str:
-                is_today_expected = (expected_date_str == ref_local_date.isoformat())
+            if expected_date:
+                is_today_expected = (expected_date == ref_local_date)
                 if is_today_expected:
                     grace_time = (datetime.combine(ref_local_date, c_time) + timedelta(minutes=grace_min)).time()
                     if c_time <= ref_local_time < grace_time:
@@ -212,8 +231,7 @@ def determine_expected_eod_session_status(
                                 break
                             cur_date -= timedelta(days=1)
                         
-                        prev_expected_str = prev_date.isoformat() if prev_date else None
-                        if actual_trade_date == prev_expected_str:
+                        if actual_date and prev_date and actual_date == prev_date:
                             currentness_status = "not_yet_published_after_close"
                             publication_grace_applied = True
                         else:
@@ -223,26 +241,21 @@ def determine_expected_eod_session_status(
                 else:
                     currentness_status = "unexpected_stale_eod"
             else:
-                try:
-                    act_date = date.fromisoformat(actual_trade_date)
-                    eff_dt = datetime.combine(act_date, c_time, tzinfo=TAIPEI)
-                    age_sec = (ref_tz - eff_dt).total_seconds()
-                    if age_sec < 0:
-                        currentness_status = "future_trade_date_invalid"
-                    elif age_sec <= 259200.0:
-                        currentness_status = "calendar_status_unresolved"
-                    else:
-                        currentness_status = "unexpected_stale_eod"
-                except Exception:
-                    currentness_status = "invalid_trade_date_format"
+                eff_dt = datetime.combine(actual_date, c_time, tzinfo=TAIPEI)
+                age_sec = (ref_tz - eff_dt).total_seconds()
+                if age_sec < 0:
+                    currentness_status = "future_trade_date_invalid"
+                elif age_sec <= 259200.0:
+                    currentness_status = "calendar_status_unresolved"
+                else:
+                    currentness_status = "unexpected_stale_eod"
 
-    # If fallback policy was used, we mark currentness_status accordingly unless it's invalid
-    if fallback_policy_used and currentness_status not in {
-        "future_trade_date_invalid", "source_trade_date_missing", 
-        "invalid_trade_date_format", "unexpected_stale_eod", 
-        "official_previous_session_eod_before_close"
-    }:
-        currentness_status = "calendar_status_unresolved"
+    # Fail-closed on unresolved logic (Blocker 2)
+    provisional_candidate_status = None
+    if fallback_policy_used:
+        if currentness_status not in {"future_trade_date_invalid", "source_trade_date_missing", "invalid_trade_date_format"}:
+            provisional_candidate_status = currentness_status
+            currentness_status = "calendar_status_unresolved"
 
     return {
         "schema_version": "m8r_eod_expected_trade_date_status.v1",
@@ -259,5 +272,6 @@ def determine_expected_eod_session_status(
         "publication_grace_applied": publication_grace_applied,
         "fallback_policy_used": fallback_policy_used,
         "fallback_policy": fallback_policy,
+        "provisional_candidate_status": provisional_candidate_status,
         "caveats": caveats
     }

@@ -1,0 +1,30 @@
+{
+  "artifact_retention_days": 30,
+  "estimated_network_calls": 1,
+  "expanded_scope": false,
+  "fallback_policy": "registry_governed",
+  "operation_count": 1,
+  "partial_success_policy": "allowed",
+  "planned_operations": [
+    {
+      "fallback_allowed": true,
+      "operation_id": "op-TWSE:2330-FIXTURE_TEST_SOURCE",
+      "operation_type": "current_snapshot",
+      "source_family": "FIXTURE_TEST_SOURCE",
+      "target_id": "TWSE:2330",
+      "timing_class": "liveish_intraday_snapshot"
+    }
+  ],
+  "planned_sources": [
+    "FIXTURE_TEST_SOURCE"
+  ],
+  "preview_id": "preview-4ee16b8e5707994451e3d9facbb076c2b7ed27f468c3548bdebfecda1af38ace",
+  "request_id": "req-plugin-activation-9c2b86b9-0086-4bae-92e9-287f6354825c",
+  "request_summary": "testing pre-registered plugin activation",
+  "requires_user_confirmation": true,
+  "schema_version": "m8r_phase_c_execution_preview.v1",
+  "target_count": 1,
+  "targets": [
+    "TWSE:2330"
+  ]
+}

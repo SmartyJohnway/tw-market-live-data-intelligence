@@ -1,0 +1,111 @@
+{
+  "bundle_id": "m8r03c-snapshot-899b5af303ffe8a0",
+  "conversation_context": {
+    "original_user_text": "testing zero-code expansion",
+    "scope_modes": [
+      "watchlist"
+    ]
+  },
+  "coverage": {
+    "requested_target_ids": [
+      "TWSE:2330"
+    ],
+    "targets": [
+      {
+        "coverage_state": "unavailable",
+        "missing_field_groups": [
+          "resolved_identity",
+          "current_evidence",
+          "currentness",
+          "eod_reference"
+        ],
+        "present_field_groups": [],
+        "reason_code": "identity_unresolved",
+        "target_id": "TWSE:2330"
+      }
+    ]
+  },
+  "derived_metrics": [],
+  "facts": [
+    {
+      "fact_type": "current_evidence",
+      "source_family": "FIXTURE_TEST_SOURCE",
+      "target_id": "TWSE:2330",
+      "timing_class": "liveish_intraday_snapshot",
+      "values": {
+        "price": 100.0,
+        "symbol": "2330"
+      }
+    }
+  ],
+  "generated_at_utc": "2026-07-18T16:49:04Z",
+  "issues": [],
+  "missing_evidence": [
+    {
+      "capability_id": "current_mis_observation",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "MIS observation unavailable",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": true,
+      "target_id": "TWSE:2330"
+    },
+    {
+      "capability_id": "currentness_validation",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "currentness_unresolved",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": false,
+      "target_id": "TWSE:2330"
+    },
+    {
+      "capability_id": "official_eod_reference",
+      "fallback_used": null,
+      "impact": "coverage degraded",
+      "reason_code": "EOD reference unavailable",
+      "recommended_follow_up": "supply normalized non-network observation",
+      "required_for_answer": false,
+      "target_id": "TWSE:2330"
+    }
+  ],
+  "request_id": "req-zero-code-95df289e-73e8-4e58-8a29-55320f8c23da",
+  "resolution_assumptions": [],
+  "schema_version": "m8r_watchlist_snapshot_bundle.v1",
+  "source_summary": {
+    "FIXTURE_TEST_SOURCE": {
+      "observation_count": 1
+    }
+  },
+  "targets": [
+    {
+      "coverage": {
+        "coverage_state": "unavailable",
+        "missing_field_groups": [
+          "resolved_identity",
+          "current_evidence",
+          "currentness",
+          "eod_reference"
+        ],
+        "present_field_groups": [],
+        "reason_code": "identity_unresolved",
+        "target_id": "TWSE:2330"
+      },
+      "current_evidence": {
+        "currentness": {},
+        "facts": {
+          "price": 100.0,
+          "symbol": "2330"
+        },
+        "retrieved_at_utc": "2026-07-18T16:49:04Z",
+        "source_family": "FIXTURE_TEST_SOURCE",
+        "timing_class": "liveish_intraday_snapshot"
+      },
+      "eod_reference": {},
+      "issues": [],
+      "requested_identity": {},
+      "resolved_identity": {},
+      "target_id": "TWSE:2330"
+    }
+  ]
+}

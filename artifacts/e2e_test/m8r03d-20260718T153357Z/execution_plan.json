@@ -1,0 +1,233 @@
+{
+  "authorization_required": true,
+  "bundle_type": "snapshot",
+  "created_at_utc": "2026-07-18T15:33:57Z",
+  "execution_preview": {
+    "artifact_retention_days": 30,
+    "estimated_network_calls": 3,
+    "expanded_scope": false,
+    "fallback_policy": "registry_governed",
+    "operation_count": 3,
+    "partial_success_policy": "allowed",
+    "planned_operations": [
+      {
+        "fallback_allowed": true,
+        "operation_id": "op-TWSE:2330-TWSE_MIS",
+        "operation_type": "current_snapshot",
+        "source_family": "TWSE_MIS",
+        "target_id": "TWSE:2330",
+        "timing_class": "liveish_intraday_snapshot"
+      },
+      {
+        "fallback_allowed": true,
+        "operation_id": "op-TWSE:2330-TWSE_OPENAPI",
+        "operation_type": "official_eod",
+        "source_family": "TWSE_OPENAPI",
+        "target_id": "TWSE:2330",
+        "timing_class": "official_eod"
+      },
+      {
+        "fallback_allowed": true,
+        "operation_id": "op-TPEX:6488-TPEX_OPENAPI",
+        "operation_type": "official_eod",
+        "source_family": "TPEX_OPENAPI",
+        "target_id": "TPEX:6488",
+        "timing_class": "official_eod"
+      }
+    ],
+    "planned_sources": [
+      "TPEX_OPENAPI",
+      "TWSE_MIS",
+      "TWSE_OPENAPI"
+    ],
+    "preview_id": "preview-7ef3faf0442b0038ff01b943a92dc596a8fafed2a6503d16581129f3ecfdd384",
+    "request_id": "e2e-req-1-3bf28c70-393c-4916-8781-42b53b246cd5",
+    "request_summary": "test",
+    "requires_user_confirmation": true,
+    "schema_version": "m8r_phase_c_execution_preview.v1",
+    "target_count": 2,
+    "targets": [
+      "TWSE:2330",
+      "TPEX:6488"
+    ]
+  },
+  "issues": [],
+  "max_target_count": 50,
+  "network_required": true,
+  "plan_id": "m8r03d-plan-f6fc93cc5c39f63a",
+  "request_hash": "965a4d63eb8a1072f9a6e6316b15c6c8028fd0e2cc96f482004460522cb8e531",
+  "request_id": "e2e-req-1-3bf28c70-393c-4916-8781-42b53b246cd5",
+  "schema_version": "m8r_03d_watchlist_execution_plan.v1",
+  "source_call_groups": [
+    {
+      "context_type": "official_eod_reference",
+      "history_window": {
+        "latest_completed_eod_only": true
+      },
+      "network_required": true,
+      "source_family": "TPEX_OPENAPI",
+      "target_ids": [
+        "TPEX:6488"
+      ]
+    },
+    {
+      "context_type": "liveish_observation",
+      "network_required": true,
+      "source_family": "TWSE_MIS",
+      "target_ids": [
+        "TWSE:2330"
+      ]
+    },
+    {
+      "context_type": "official_eod_reference",
+      "history_window": {
+        "latest_completed_eod_only": true
+      },
+      "network_required": true,
+      "source_family": "TWSE_OPENAPI",
+      "target_ids": [
+        "TWSE:2330"
+      ]
+    }
+  ],
+  "target_order": [
+    "TWSE:2330",
+    "TPEX:6488"
+  ],
+  "targets": [
+    {
+      "blocking_issues": [],
+      "canonical_market": "listed",
+      "classification_execution_policy": "potentially_eligible",
+      "classification_status": "confirmed_official_single_lane",
+      "current_source_plan": {
+        "operation_class": "planned_network_fetch",
+        "route": "tse_2330.tw",
+        "source_family": "TWSE_MIS"
+      },
+      "eod_source_plan": {
+        "operation_class": "planned_network_fetch",
+        "route": "TWSE_OPENAPI",
+        "source_family": "TWSE_OPENAPI"
+      },
+      "execution_eligibility": {
+        "reason_codes": [],
+        "status": "allowed"
+      },
+      "execution_policy": "execution_allowed",
+      "expected_coverage": "usable",
+      "identity_status": "resolved",
+      "instrument_type": "equity",
+      "lifecycle_resolution_status": "resolved",
+      "lifecycle_state": "active",
+      "listing_status": "active",
+      "market": "TWSE",
+      "record_hash": "132f0af72c68f5c15562e7fb0cdb4d3ed75894377c8b7bec6c778c4a9c162d65",
+      "record_id": "rec-01",
+      "requested_identity": {
+        "target_id": "TWSE:2330"
+      },
+      "resolution_caveats": [],
+      "resolution_evidence": [
+        {
+          "record_hash": "132f0af72c68f5c15562e7fb0cdb4d3ed75894377c8b7bec6c778c4a9c162d65",
+          "record_id": "rec-01",
+          "resolution_reason": "exact_canonical_target_id",
+          "snapshot_id": "snap-r5a-seed-r5a",
+          "source": "verified_security_master_snapshot"
+        }
+      ],
+      "resolution_status": "resolved",
+      "resolved_identity": {
+        "canonical_market": "listed",
+        "classification_status": "confirmed_official_single_lane",
+        "execution_eligibility": {
+          "reason_codes": [],
+          "status": "allowed"
+        },
+        "execution_policy": "execution_allowed",
+        "instrument_type": "equity",
+        "lifecycle_resolution_status": "resolved",
+        "lifecycle_state": "active",
+        "listing_status": "active",
+        "market": "TWSE",
+        "record_hash": "132f0af72c68f5c15562e7fb0cdb4d3ed75894377c8b7bec6c778c4a9c162d65",
+        "record_id": "rec-01",
+        "resolution_caveats": [],
+        "security_name": "台積電-seed-r5a",
+        "snapshot_id": "snap-r5a-seed-r5a",
+        "symbol": "2330",
+        "target_id": "TWSE:2330"
+      },
+      "security_code": "2330",
+      "security_name": "台積電-seed-r5a",
+      "snapshot_id": "snap-r5a-seed-r5a",
+      "target_id": "TWSE:2330"
+    },
+    {
+      "blocking_issues": [],
+      "canonical_market": "tpex_otc",
+      "classification_execution_policy": "potentially_eligible",
+      "classification_status": "confirmed_official_single_lane",
+      "current_source_plan": {},
+      "eod_source_plan": {
+        "operation_class": "planned_network_fetch",
+        "route": "TPEX_OPENAPI",
+        "source_family": "TPEX_OPENAPI"
+      },
+      "execution_eligibility": {
+        "reason_codes": [],
+        "status": "allowed"
+      },
+      "execution_policy": "execution_allowed",
+      "expected_coverage": "partial",
+      "identity_status": "resolved",
+      "instrument_type": "equity",
+      "lifecycle_resolution_status": "resolved",
+      "lifecycle_state": "active",
+      "listing_status": "active",
+      "market": "TPEX",
+      "record_hash": "1979e7f5f44b9a8866cad2bf8ddab1bed75ad79684e7eda7fed92e1e43f26ac5",
+      "record_id": "rec-03",
+      "requested_identity": {
+        "target_id": "TPEX:6488"
+      },
+      "resolution_caveats": [],
+      "resolution_evidence": [
+        {
+          "record_hash": "1979e7f5f44b9a8866cad2bf8ddab1bed75ad79684e7eda7fed92e1e43f26ac5",
+          "record_id": "rec-03",
+          "resolution_reason": "exact_canonical_target_id",
+          "snapshot_id": "snap-r5a-seed-r5a",
+          "source": "verified_security_master_snapshot"
+        }
+      ],
+      "resolution_status": "resolved",
+      "resolved_identity": {
+        "canonical_market": "tpex_otc",
+        "classification_status": "confirmed_official_single_lane",
+        "execution_eligibility": {
+          "reason_codes": [],
+          "status": "allowed"
+        },
+        "execution_policy": "execution_allowed",
+        "instrument_type": "equity",
+        "lifecycle_resolution_status": "resolved",
+        "lifecycle_state": "active",
+        "listing_status": "active",
+        "market": "TPEX",
+        "record_hash": "1979e7f5f44b9a8866cad2bf8ddab1bed75ad79684e7eda7fed92e1e43f26ac5",
+        "record_id": "rec-03",
+        "resolution_caveats": [],
+        "security_name": "環球晶-seed-r5a",
+        "snapshot_id": "snap-r5a-seed-r5a",
+        "symbol": "6488",
+        "target_id": "TPEX:6488"
+      },
+      "security_code": "6488",
+      "security_name": "環球晶-seed-r5a",
+      "snapshot_id": "snap-r5a-seed-r5a",
+      "target_id": "TPEX:6488"
+    }
+  ]
+}

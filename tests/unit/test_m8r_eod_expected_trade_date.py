@@ -302,3 +302,45 @@ def test_json_schema_validation():
     )
     # validate structure
     jsonschema.validate(instance=res, schema=schema)
+
+def test_unresolved_inputs_pre_market_and_mid_market():
+    # Pre-market (Monday 8:00 AM) with closure_status as None (unresolved)
+    ref = datetime(2026, 7, 20, 8, 0, 0, tzinfo=TAIPEI)
+    cal = get_dummy_calendar()
+    res_pre = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=None,
+        actual_trade_date="2026-07-17"
+    )
+    assert res_pre["fallback_policy_used"] is True
+    assert res_pre["currentness_status"] == "calendar_status_unresolved"
+    assert res_pre["provisional_candidate_status"] == "official_previous_session_eod_before_close"
+
+    # Mid-market (Tuesday 11:00 AM) with closure_status as None (unresolved)
+    ref = datetime(2026, 7, 21, 11, 0, 0, tzinfo=TAIPEI)
+    res_mid = determine_expected_eod_session_status(
+        reference_time_utc=ref,
+        market="TWSE",
+        official_calendar=cal,
+        closure_status=None,
+        actual_trade_date="2026-07-20"
+    )
+    assert res_mid["fallback_policy_used"] is True
+    assert res_mid["currentness_status"] == "calendar_status_unresolved"
+    assert res_mid["provisional_candidate_status"] == "official_previous_session_eod_before_close"
+
+def test_invalid_actual_trade_date_formats():
+    ref = datetime(2026, 7, 21, 16, 0, 0, tzinfo=TAIPEI)
+    cal = get_dummy_calendar()
+    for bad_fmt in ["2026-7-2", "20260721", "garbage", "", "   "]:
+        res = determine_expected_eod_session_status(
+            reference_time_utc=ref,
+            market="TWSE",
+            official_calendar=cal,
+            closure_status=[],
+            actual_trade_date=bad_fmt
+        )
+        assert res["currentness_status"] == "invalid_trade_date_format"
+

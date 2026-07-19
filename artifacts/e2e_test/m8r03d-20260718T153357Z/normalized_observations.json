@@ -1,0 +1,135 @@
+[
+  {
+    "context_type": "liveish_observation",
+    "currentness": {
+      "age_seconds": 218037.0,
+      "reason": "evidence_age_exceeds_max_limit:218037s",
+      "status": "stale"
+    },
+    "facts": {
+      "latest_price": 1000.0
+    },
+    "issues": [],
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "canonical_market": "listed",
+      "classification_status": "confirmed_official_single_lane",
+      "execution_eligibility": {
+        "reason_codes": [],
+        "status": "allowed"
+      },
+      "execution_policy": "execution_allowed",
+      "instrument_type": "equity",
+      "lifecycle_resolution_status": "resolved",
+      "lifecycle_state": "active",
+      "listing_status": "active",
+      "market": "TWSE",
+      "record_hash": "132f0af72c68f5c15562e7fb0cdb4d3ed75894377c8b7bec6c778c4a9c162d65",
+      "record_id": "rec-01",
+      "resolution_caveats": [],
+      "security_name": "台積電-seed-r5a",
+      "snapshot_id": "snap-r5a-seed-r5a",
+      "symbol": "2330",
+      "target_id": "TWSE:2330"
+    },
+    "retrieved_at_utc": "2026-07-16T03:00:00Z",
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "source_family": "TWSE_MIS",
+    "source_timestamp": null,
+    "target_id": "TWSE:2330",
+    "timing_class": "liveish_intraday_snapshot",
+    "trade_date": null
+  },
+  {
+    "context_type": "official_eod_reference",
+    "currentness": {
+      "age_seconds": 122637.0,
+      "reason": "latest completed EOD reference",
+      "status": "official_completed_eod"
+    },
+    "facts": {
+      "close": "1000.0",
+      "trade_date": "2026-07-17",
+      "volume": 100
+    },
+    "issues": [],
+    "requested_identity": {
+      "target_id": "TWSE:2330"
+    },
+    "resolved_identity": {
+      "canonical_market": "listed",
+      "classification_status": "confirmed_official_single_lane",
+      "execution_eligibility": {
+        "reason_codes": [],
+        "status": "allowed"
+      },
+      "execution_policy": "execution_allowed",
+      "instrument_type": "equity",
+      "lifecycle_resolution_status": "resolved",
+      "lifecycle_state": "active",
+      "listing_status": "active",
+      "market": "TWSE",
+      "record_hash": "132f0af72c68f5c15562e7fb0cdb4d3ed75894377c8b7bec6c778c4a9c162d65",
+      "record_id": "rec-01",
+      "resolution_caveats": [],
+      "security_name": "台積電-seed-r5a",
+      "snapshot_id": "snap-r5a-seed-r5a",
+      "symbol": "2330",
+      "target_id": "TWSE:2330"
+    },
+    "retrieved_at_utc": "2026-07-18T03:00:00Z",
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "source_family": "TWSE_OPENAPI",
+    "source_timestamp": null,
+    "target_id": "TWSE:2330",
+    "timing_class": "official_eod",
+    "trade_date": "2026-07-17"
+  },
+  {
+    "context_type": "official_eod_reference",
+    "currentness": {
+      "age_seconds": 122637.0,
+      "reason": "latest completed EOD reference",
+      "status": "official_completed_eod"
+    },
+    "facts": {
+      "close": "750.0",
+      "trade_date": "2026-07-17",
+      "volume": 50
+    },
+    "issues": [],
+    "requested_identity": {
+      "target_id": "TPEX:6488"
+    },
+    "resolved_identity": {
+      "canonical_market": "tpex_otc",
+      "classification_status": "confirmed_official_single_lane",
+      "execution_eligibility": {
+        "reason_codes": [],
+        "status": "allowed"
+      },
+      "execution_policy": "execution_allowed",
+      "instrument_type": "equity",
+      "lifecycle_resolution_status": "resolved",
+      "lifecycle_state": "active",
+      "listing_status": "active",
+      "market": "TPEX",
+      "record_hash": "1979e7f5f44b9a8866cad2bf8ddab1bed75ad79684e7eda7fed92e1e43f26ac5",
+      "record_id": "rec-03",
+      "resolution_caveats": [],
+      "security_name": "環球晶-seed-r5a",
+      "snapshot_id": "snap-r5a-seed-r5a",
+      "symbol": "6488",
+      "target_id": "TPEX:6488"
+    },
+    "retrieved_at_utc": "2026-07-18T03:00:00Z",
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "source_family": "TPEX_OPENAPI",
+    "source_timestamp": null,
+    "target_id": "TPEX:6488",
+    "timing_class": "official_eod",
+    "trade_date": "2026-07-17"
+  }
+]

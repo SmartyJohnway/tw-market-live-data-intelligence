@@ -9,7 +9,7 @@
 
 ## 2. Test Matrix Coverage (A to M)
 
-We created a new comprehensive test suite [test_m8r_eod_expected_trade_date.py](file:///p:/tw-market-live-data-intelligence-main/tests/unit/test_m8r_eod_expected_trade_date.py) that covers the entire 13-case matrix:
+We created a new comprehensive test suite [test_m8r_eod_expected_trade_date.py](tests/unit/test_m8r_eod_expected_trade_date.py) that covers the entire 13-case matrix:
 - **A. Monday Pre-Market**: Asserts `official_previous_session_eod_before_close`.
 - **B. Mid-Market**: Asserts `official_previous_session_eod_before_close`.
 - **C. Post-Market Updated**: Asserts `official_latest_completed_eod` when today is updated.

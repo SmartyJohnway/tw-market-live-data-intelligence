@@ -1,0 +1,64 @@
+{
+  "artifact_paths": {
+    "authorization": "P:\\tw-market-live-data-intelligence-main\\artifacts\\debug_exec\\m8r03d-20260716T013005Z\\authorization.json",
+    "execution_plan": "P:\\tw-market-live-data-intelligence-main\\artifacts\\debug_exec\\m8r03d-20260716T013005Z\\execution_plan.json",
+    "normalized_observations": "P:\\tw-market-live-data-intelligence-main\\artifacts\\debug_exec\\m8r03d-20260716T013005Z\\normalized_observations.json",
+    "validated_request": "P:\\tw-market-live-data-intelligence-main\\artifacts\\debug_exec\\m8r03d-20260716T013005Z\\validated_request.json"
+  },
+  "authorization_id": "auth-1",
+  "bundle_artifact": null,
+  "completed_at_utc": "2026-07-18T15:51:24Z",
+  "issues": [
+    {
+      "code": "authorization_replayed"
+    }
+  ],
+  "mode": "execute",
+  "observation_count": 0,
+  "plan_id": "m8r03d-plan-080070946d1b67a4",
+  "request_hash": "6601a3dddcbcc4adc8865fa03f4a69238d3b35011d551ab520c6f264431d8f32",
+  "request_id": "m8r03d-mixed",
+  "run_id": "m8r03d-20260716T013005Z",
+  "schema_version": "m8r_03d_watchlist_execution_result.v1",
+  "source_execution_summary": {
+    "group_results": [],
+    "network_default_enabled": false,
+    "planned_source_call_groups": [
+      {
+        "context_type": "official_eod_reference",
+        "history_window": {
+          "latest_completed_eod_only": true
+        },
+        "network_required": true,
+        "source_family": "TPEX_OPENAPI",
+        "target_ids": [
+          "TPEX:6488"
+        ]
+      },
+      {
+        "context_type": "liveish_observation",
+        "network_required": true,
+        "source_family": "TWSE_MIS",
+        "target_ids": [
+          "TWSE:2330"
+        ]
+      },
+      {
+        "context_type": "official_eod_reference",
+        "history_window": {
+          "latest_completed_eod_only": true
+        },
+        "network_required": true,
+        "source_family": "TWSE_OPENAPI",
+        "target_ids": [
+          "TWSE:2330"
+        ]
+      }
+    ],
+    "polling": false,
+    "scheduler": false
+  },
+  "started_at_utc": "2026-07-16T01:30:05Z",
+  "status": "authorization_failed",
+  "target_results": []
+}

@@ -30,6 +30,45 @@ def _write_json(root:Path, path:Path, data:Any):
     if any(t.lower() in low for t in FORBIDDEN_ARTIFACT_TOKENS): raise ValueError('forbidden_artifact_content')
     atomic_write_text(root, path.relative_to(root), text+'\n')
 
+def _load_production_calendar(evaluation_time: datetime, artifact_root: Path | None = None) -> dict | None:
+    cache_dir = artifact_root if artifact_root else Path('artifacts/m8r_03d')
+    cache_path = cache_dir / 'twse_trading_calendar.json'
+    
+    if cache_path.exists():
+        try:
+            from scripts.twse_trading_calendar import load_twse_trading_calendar_artifact
+            loaded = load_twse_trading_calendar_artifact(cache_path)
+            if loaded.get("year") == evaluation_time.year:
+                return loaded
+        except Exception:
+            pass
+
+    import urllib.request
+    from scripts.twse_trading_calendar import build_twse_trading_calendar_from_holiday_schedule
+    url = "https://openapi.twse.com.tw/v1/holidaySchedule/holidaySchedule"
+    try:
+        req = urllib.request.Request(
+            url, 
+            headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) tw-market-live-data-intelligence/1.0'}
+        )
+        with urllib.request.urlopen(req, timeout=10) as response:
+            records = json.loads(response.read().decode('utf-8'))
+        
+        calendar_artifact = build_twse_trading_calendar_from_holiday_schedule(
+            year=evaluation_time.year,
+            holiday_schedule_records=records
+        )
+        
+        try:
+            cache_dir.mkdir(parents=True, exist_ok=True)
+            cache_path.write_text(json.dumps(calendar_artifact, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        except Exception:
+            pass
+            
+        return calendar_artifact
+    except Exception:
+        return None
+
 def preflight(request:dict, *, bundle_type:str, generated_at_utc:str|None=None, security_master=None, source_capability_registry=None):
     plan=build_execution_plan(request,bundle_type=bundle_type,generated_at_utc=generated_at_utc,security_master=security_master,source_capability_registry=source_capability_registry)
     return {'mode':'preflight','request_hash':plan['request_hash'],'plan':plan,'network_calls_performed':False,'observation_count':0,'status':'blocked_preflight' if plan_has_blocking_issues(plan) else 'success'}
@@ -63,6 +102,14 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
     calendar_artifact = None
     closure_events = None
     if mode == 'execute':
+        try:
+            from scripts.m8r_eod_expected_trade_date import parse_taipei_datetime
+            ref_dt = parse_taipei_datetime(started)
+        except Exception:
+            from datetime import datetime
+            from zoneinfo import ZoneInfo
+            ref_dt = datetime.now(ZoneInfo("Asia/Taipei"))
+        calendar_artifact = _load_production_calendar(ref_dt, artifact_root=artifact_root_path)
         try:
             from scripts.m8a_ncdr_dgpa_closure_cap import fetch_and_parse_closure_feed
             parsed_feed = fetch_and_parse_closure_feed()

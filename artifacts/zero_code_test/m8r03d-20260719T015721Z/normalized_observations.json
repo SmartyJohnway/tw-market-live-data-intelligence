@@ -1,0 +1,18 @@
+[
+  {
+    "context_type": "liveish_observation",
+    "currentness": {},
+    "facts": {
+      "price": 100.0,
+      "symbol": "2330"
+    },
+    "issues": [],
+    "requested_identity": {},
+    "resolved_identity": {},
+    "retrieved_at_utc": "2026-07-19T01:57:21Z",
+    "schema_version": "m8r_watchlist_input_observation.v1",
+    "source_family": "FIXTURE_TEST_SOURCE",
+    "target_id": "TWSE:2330",
+    "timing_class": "liveish_intraday_snapshot"
+  }
+]

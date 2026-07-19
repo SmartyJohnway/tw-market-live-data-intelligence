@@ -66,6 +66,9 @@
     "fallback_policy": {
       "type": ["string", "null"]
     },
+    "provisional_candidate_status": {
+      "type": ["string", "null"]
+    },
     "caveats": {
       "type": "array",
       "items": {
@@ -86,6 +89,7 @@
     "closure_source",
     "publication_grace_applied",
     "fallback_policy_used",
+    "provisional_candidate_status",
     "caveats"
   ],
   "additionalProperties": false

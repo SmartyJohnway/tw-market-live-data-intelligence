@@ -5,8 +5,8 @@
 ## 1. 系統執行與規劃進入點
 
 * **Network Execution 入口**：
-  * 主要由 `scripts/m8r_03d_watchlist_controlled_executor.py` 中的 [execute_watchlist](file:///p:/tw-market-live-data-intelligence-main/scripts/m8r_03d_watchlist_controlled_executor.py#L34-L81) 函數負責。
-  * `execute_watchlist` 內部調用 [build_execution_plan](file:///p:/tw-market-live-data-intelligence-main/scripts/m8r_03d_watchlist_execution_plan.py#L151-L235) 進行執行規劃。
+  * 主要由 `scripts/m8r_03d_watchlist_controlled_executor.py` 中的 [execute_watchlist](scripts/m8r_03d_watchlist_controlled_executor.py#L34-L81) 函數負責。
+  * `execute_watchlist` 內部調用 [build_execution_plan](scripts/m8r_03d_watchlist_execution_plan.py#L151-L235) 進行執行規劃。
 * **Handoff 與 AI Context 產出**：
   * 使用 `scripts/m8r_03e_watchlist_ai_context_builder.py` 與 `scripts/m8r_03e_conversation_handoff_builder.py` 產出 normalized observations、context projection 與 citation map。
 
@@ -28,7 +28,7 @@
     ```
 
 ## 3. Current Source Registry 與 Planner 選擇邏輯
-* **Registry 檔案**：[m8_source_capability_registry.json](file:///p:/tw-market-live-data-intelligence-main/docs/data_capabilities/m8_source_capability_registry.json)。
+* **Registry 檔案**：[m8_source_capability_registry.json](docs/data_capabilities/m8_source_capability_registry.json)。
 * **Planner 選擇邏輯**：
   * 只有符合以下條件之來源方能納入規劃：
     1. 存在於 registry 且 `runtime_available == true` 且 `runtime_executable == true`。
