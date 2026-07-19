@@ -120,10 +120,14 @@ def test_currentness_invalid_tz_fallback():
     assert res["status"] == "unresolved"
 
 def test_currentness_official_eod():
-    # 1. 正常的 EOD (小於 3 天門檻 259200 秒)
-    # trade_date = "2026-07-15" (台北收盤 13:30 = UTC 05:30Z)
+    # Without a calendar artifact, the evaluator uses a heuristic fallback and
+    # triggers fail-closed: status = "unresolved", provisional_candidate_status
+    # carries the heuristic assessment.
+    #
+    # Case 1a: trade_date = "2026-07-15" (台北收盤 13:30 = UTC 05:30Z)
     # reference clock = "2026-07-16T03:00:00Z" (UTC)
-    # age = 2026-07-16T03:00:00Z - 2026-07-15T05:30:00Z = 21.5 小時 (77400 秒)
+    # age = 77400 seconds — within range → heuristic candidate: official_latest_completed_eod
+    # Fail-closed → status = unresolved, provisional = official_latest_completed_eod
     res1 = evaluate_evidence_currentness(
         reference_clock_str="2026-07-16T03:00:00Z",
         source_timestamp_str=None,
@@ -131,12 +135,38 @@ def test_currentness_official_eod():
         timing_class="official_eod",
         trade_date="2026-07-15"
     )
-    assert res1["status"] == "official_completed_eod"
+    assert res1["status"] == "unresolved"
+    assert res1["detailed_status"] == "calendar_status_unresolved"
+    # reference_clock = 2026-07-16T03:00Z = Taipei 11:00 — still before close (13:30)
+    # on a trading day, so heuristic says the previous session is the latest completed EOD
+    assert res1["provisional_candidate_status"] == "official_previous_session_eod_before_close"
     assert res1["age_seconds"] == 77400.0
-    
-    # 2. 過期的 EOD (大於 3 天門檻)
-    # trade_date = "2026-07-10" -> "2026-07-10T05:30:00Z"
-    # reference clock = "2026-07-16T03:00:00Z" -> 差了 6 天 (大於 259200 秒)
+
+    # Case 1b: With a minimal calendar artifact (marking 2026-07-15 as trading)
+    # the evaluator can confirm official_latest_completed_eod without fallback.
+    # reference = 2026-07-16T03:00:00Z (台北 11:00 = pre-open next day), 2026-07-15 is past close.
+    calendar = {
+        "dates": [
+            {"date": "2026-07-14", "is_trading_day": True},
+            {"date": "2026-07-15", "is_trading_day": True},
+            {"date": "2026-07-16", "is_trading_day": True},
+        ]
+    }
+    res1b = evaluate_evidence_currentness(
+        reference_clock_str="2026-07-16T03:00:00Z",
+        source_timestamp_str=None,
+        retrieved_at_str="2026-07-16T00:00:00Z",
+        timing_class="official_eod",
+        trade_date="2026-07-15",
+        calendar_artifact=calendar,
+        closure_events=[]
+    )
+    assert res1b["status"] == "official_completed_eod"
+    assert res1b["age_seconds"] == 77400.0
+
+    # Case 2: Stale EOD (>3 days) — without calendar → fail-closed
+    # trade_date = "2026-07-10" -> age 6 days → heuristic: unexpected_stale_eod
+    # Fail-closed → status = unresolved, provisional = unexpected_stale_eod
     res2 = evaluate_evidence_currentness(
         reference_clock_str="2026-07-16T03:00:00Z",
         source_timestamp_str=None,
@@ -144,8 +174,21 @@ def test_currentness_official_eod():
         timing_class="official_eod",
         trade_date="2026-07-10"
     )
-    assert res2["status"] == "stale"
-    assert res2["reason"] == "eod_older_than_three_days"
+    assert res2["status"] == "unresolved"
+    assert res2["provisional_candidate_status"] == "unexpected_stale_eod"
+
+    # Case 2b: Stale EOD with calendar → expected "stale" mapping
+    res2b = evaluate_evidence_currentness(
+        reference_clock_str="2026-07-16T03:00:00Z",
+        source_timestamp_str=None,
+        retrieved_at_str="2026-07-16T00:00:00Z",
+        timing_class="official_eod",
+        trade_date="2026-07-10",
+        calendar_artifact=calendar,
+        closure_events=[]
+    )
+    assert res2b["status"] == "stale"
+    assert res2b["reason"] == "eod_older_than_three_days"
 
 def test_currentness_official_eod_missing_date():
     # 缺失 trade date 返回 unresolved
