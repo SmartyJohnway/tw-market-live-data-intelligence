@@ -1,16 +1,11 @@
-# M8R-05A-F1 Acceptance Report
-
-## Summary
-- Baseline SHA: b9f9effdaa76d1a108ae430085737e4dad3af524
-- Result: PASS
-
-## Counts
-- Inventory files: 10
-- Policy conflicts: 7
-- P0 items: 4
-- P1 items: 3
-
-## Status
-- Mode A/B/C: RETAIN_AND_REINTERPRET
-- Level 1/2: RETAIN_AND_REINTERPRET
-- M8R-05A: CURRENT_CANONICAL
+# M8R-05A-F1 Unsealed Precommit Acceptance
+- **Tested SHA**: WORKING_TREE_PRE_COMMIT_8
+- **Binding Status**: unsealed_precommit_evidence
+- **Inventory Files**: 65
+- **Targeted Passed**: 2
+- **Targeted Failed**: 0
+- **Full Non-Network Passed**: 1790
+- **Full Non-Network Failed**: 47
+- **Novel Failures**: 0
+- **Environment**: Clean execution on uncommitted worktree.
+- **Caveats**: All 47 failures map 1:1 with known baseline issues.
