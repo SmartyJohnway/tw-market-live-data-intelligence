@@ -1,59 +1,86 @@
 {
-  "canonical_hierarchy": [
-    {
-      "level": 1,
-      "domain": "AI-facing request/result schemas",
-      "artifact": "schemas/unified_market_evidence_request.v1.schema.json (and result)",
-      "status": "CURRENT_CANONICAL"
-    },
-    {
-      "level": 2,
-      "domain": "AI-facing capability catalog",
-      "artifact": "schemas/unified_market_evidence_capability_catalog.v1.schema.json",
-      "status": "CURRENT_CANONICAL"
-    },
-    {
-      "level": 3,
-      "domain": "Operator/frontend workflow model",
-      "artifact": "Mode A/B/C",
-      "status": "RETAIN_AND_REINTERPRET"
-    },
-    {
-      "level": 4,
-      "domain": "Evidence lifecycle metadata",
-      "artifact": "Level 1/2",
-      "status": "RETAIN_AND_REINTERPRET"
-    },
-    {
-      "level": 5,
-      "domain": "Generated/validated snapshot",
-      "artifact": "Portable Skill snapshot",
-      "status": "RETAIN_AND_REINTERPRET"
-    },
-    {
-      "level": 6,
-      "domain": "Compatibility interfaces",
-      "artifact": "Old Phase B operation contract",
-      "status": "COMPATIBILITY_ONLY"
-    }
-  ],
-  "mode_abc_reinterpretation": {
-    "Mode A": "Inspect and Validate - AI Request Inspector, capability validation, no network execution.",
-    "Mode B": "Preview, Authorize, and Execute Once - Generate preview, request explicit approval, bounded one-shot execution.",
-    "Mode C": "Package and Handoff to AI - Export canonical JSON/Markdown for AI conversational handoff."
-  },
-  "level_12_reinterpretation": {
-    "Level 1": "Durable governed evidence, official reference.",
-    "Level 2": "Request-scoped evidence, live observation."
-  },
-  "responsibilities": {
-    "Skill": "Guide AI on WHEN to use project, generate valid M8R-05A requests based on user intent.",
-    "Project": "Canonical execution within bounds, returning exhaustive result per M8R-05A schemas.",
-    "Frontend": "Unified Market Evidence Workbench: Inspector, Preview, Gate, Result Explorer.",
-    "FastAPI_MCP": "Compatibility interfaces wrapping M8R-05A operations."
-  },
-  "principles": {
-    "complete_output": "Exhaustive within the authorized request scope. No subjective trimming or implicit recommendation generation.",
-    "portable_skill_sync": "Generated snapshot from canonical repo schemas. Enforced via sync validator during CI/build."
+  "hierarchies": {
+    "AI-facing Contract Authority": [
+      {
+        "level": 1,
+        "artifact": "contract-shape authority: schemas/unified_market_evidence_request.v1.schema.json",
+        "status": "CURRENT_CANONICAL"
+      },
+      {
+        "level": 1,
+        "artifact": "contract-shape authority: schemas/unified_market_evidence_preview_response.v1.schema.json",
+        "status": "CURRENT_CANONICAL"
+      },
+      {
+        "level": 1,
+        "artifact": "contract-shape authority: schemas/unified_market_evidence_result.v1.schema.json",
+        "status": "CURRENT_CANONICAL"
+      },
+      {
+        "level": 1,
+        "artifact": "contract-shape authority: schemas/unified_market_evidence_capability_catalog.v1.schema.json",
+        "status": "CURRENT_CANONICAL"
+      },
+      {
+        "level": 1,
+        "artifact": "capability-content authority: docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json",
+        "status": "CURRENT_CANONICAL"
+      }
+    ],
+    "Internal Runtime Authority": [
+      {
+        "level": 1,
+        "artifact": "docs/data_capabilities/m8_source_capability_registry.json",
+        "status": "CURRENT_CANONICAL"
+      },
+      {
+        "level": 2,
+        "artifact": "M8/M8C accepted source contracts",
+        "status": "CURRENT_CANONICAL"
+      },
+      {
+        "level": 3,
+        "artifact": "03C/03D/03E planner/executor contracts",
+        "status": "CURRENT_CANONICAL"
+      },
+      {
+        "level": 4,
+        "artifact": "docs/source_catalog.md",
+        "status": "COMPATIBILITY_ONLY_LEGACY"
+      }
+    ],
+    "Operator Workflow Authority": [
+      {
+        "level": 1,
+        "artifact": "Mode A/B/C as operator states",
+        "status": "RETAIN_AND_REINTERPRET"
+      }
+    ],
+    "Evidence Lifecycle Authority": [
+      {
+        "level": 1,
+        "artifact": "Level 1/2 metadata",
+        "status": "RETAIN_AND_REINTERPRET"
+      }
+    ],
+    "Portable Documentation Authority": [
+      {
+        "level": 1,
+        "artifact": "Portable Skill snapshot",
+        "status": "RETAIN_AND_REINTERPRET"
+      },
+      {
+        "level": 2,
+        "artifact": "Human-readable Guide",
+        "status": "REWRITE_REQUIRED"
+      }
+    ],
+    "Compatibility Interfaces": [
+      {
+        "level": 1,
+        "artifact": "FastAPI/MCP endpoints (current_role: legacy/local workbench interfaces)",
+        "status": "COMPATIBILITY_ONLY_LEGACY"
+      }
+    ]
   }
 }
