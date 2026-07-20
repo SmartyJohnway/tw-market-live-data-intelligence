@@ -133,6 +133,10 @@ While the AI composes the JSON request, the actual execution is performed by the
 > A single Unified Result can contain both Level 1 and Level 2 data.
 > "Raw transport payload" versus "canonical normalized evidence" is a completely separate dimension. Raw transport payload belongs to audit artifacts and is NOT equivalent to Level 1.
 
+### Evidence Semantics
+- **Time Semantics**: `retrieved_at` strictly represents the system timestamp when the network request was fulfilled. It is **not** the exchange event time (e.g. trade time).
+- **Return Semantics**: All return percentages and derived performance metrics represent **unadjusted returns** (capital gains only), not total returns, unless explicitly marked with a total return adjustment status.
+
 ---
 
 ## 10. Result Interpretation
@@ -157,9 +161,12 @@ The project operates under the principle of **Exhaustive output within the autho
 
 ## 12. Manual Workbench Handoff
 
-Because the Unified Orchestrator and direct MCP execution are **future F3 deliverables**, the AI must currently operate via Manual Workbench Handoff:
-1. AI generates a valid Unified Request JSON.
-2. AI instructs the operator to paste it into their local workbench interface (performing Mode A).
-3. The operator validates, previews, and executes the command (Mode B).
-4. The operator copies the resulting Level 2 Canonical JSON or Markdown output and pastes it back into the AI conversation (Mode C).
-5. AI interprets the pasted evidence and answers.
+Because the Unified Orchestrator and direct MCP execution are **future F3 deliverables**, the AI must currently operate via Manual Workbench Handoff.
+
+Current F2 handoff:
+AI produces a schema-valid request for review and future intake. The existing legacy workbench does not yet implement the full Unified Request/Preview/Result lifecycle.
+
+Target future workflow:
+Mode A → Mode B → Mode C.
+
+5. AI interprets the pasted evidence and answers (when available).

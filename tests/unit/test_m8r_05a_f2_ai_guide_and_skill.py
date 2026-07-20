@@ -22,8 +22,8 @@ def test_guide_aligns_with_unified_evidence():
     assert "These Modes are NOT AI JSON request parameters" in content
 
     # 3. Level 1/2 evidence lifecycles defined
-    assert "Level 1 (Raw/Transport)" in content
-    assert "Level 2 (Canonical/Normalized)" in content
+    assert "Level 1 (Durable Governed Evidence)" in content
+    assert "Level 2 (Request-Scoped Time-Sensitive Evidence)" in content
 
     # 4. Runtime limitations explicitly stated
     assert "Current Runtime Limitations" in content

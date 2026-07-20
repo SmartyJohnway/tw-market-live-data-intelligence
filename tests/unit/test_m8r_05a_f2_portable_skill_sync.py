@@ -40,12 +40,15 @@ def test_portable_catalog_generator_is_strictly_deterministic(tmp_path):
     # Run first time in temp directory, we will copy the output
     subprocess.run(["python", str(gen_script)], cwd=str(ROOT), check=True, capture_output=True)
     first_json = PORTABLE_CATALOG.read_bytes()
+    first_md = PORTABLE_MD.read_bytes()
     
     # Run second time
     subprocess.run(["python", str(gen_script)], cwd=str(ROOT), check=True, capture_output=True)
     second_json = PORTABLE_CATALOG.read_bytes()
+    second_md = PORTABLE_MD.read_bytes()
     
-    assert first_json == second_json, "Generator output is not deterministic between runs"
+    assert first_json == second_json, "Generator JSON output is not deterministic between runs"
+    assert first_md == second_md, "Generator Markdown output is not deterministic between runs"
 
 def test_fixtures_validate_against_schema():
     assert REQUEST_SCHEMA_PATH.exists()
