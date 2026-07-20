@@ -1,4 +1,4 @@
-# M8 Post-M8C Repository State Inventory
+# M8 Post-M8C Repository State Inventory (SEALED)
 
 Baseline SHA: `bd3496efe7492e6cd3c7dacc169e142f90e6cd92`. Remote baseline: `origin/main` at the same SHA.
 
