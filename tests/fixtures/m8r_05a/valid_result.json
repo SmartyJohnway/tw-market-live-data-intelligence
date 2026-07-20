@@ -18,14 +18,16 @@
           "timing_class": "official_eod",
           "observed_fields": {
             "avg_price_20d": 1000.5
-          }
+          },
+          "citation_ids": ["cit-1"]
         },
         "current_observation": {
           "status": "success",
-          "timing_class": "near_realtime",
+          "timing_class": "liveish_intraday_snapshot",
           "observed_fields": {
             "last_price": 1050.0
-          }
+          },
+          "citation_ids": ["cit-2"]
         }
       },
       "coverage": {
@@ -36,12 +38,21 @@
       "citations": [
         {
           "citation_id": "cit-1",
-          "source_family": "twse_openapi",
+          "source_family": "TWSE_OPENAPI",
           "source_contract_id": "twse_eod",
           "retrieved_at": "2026-07-20T00:00:00Z",
           "effective_trade_date": "2026-07-20",
           "artifact_reference": "data/recent_perf_2330.json",
-          "normalized_evidence_hash": "a1b2c3d4"
+          "normalized_evidence_hash": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+        },
+        {
+          "citation_id": "cit-2",
+          "source_family": "TWSE_MIS",
+          "source_contract_id": "twse_mis",
+          "retrieved_at": "2026-07-20T00:00:00Z",
+          "effective_trade_date": "2026-07-20",
+          "artifact_reference": "data/recent_perf_2330_mis.json",
+          "normalized_evidence_hash": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
         }
       ]
     }

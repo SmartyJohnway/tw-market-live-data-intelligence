@@ -137,10 +137,10 @@
                 "effective_trade_date": {"type": "string", "format": "date"},
                 "artifact_reference": {
                   "type": "string",
-                  "pattern": "^[^/\\\\]",
+                  "pattern": "^(?!([a-zA-Z]:\\\\|file://|/|\\\\)).+",
                   "description": "Must be a relative path or URI, not absolute local path"
                 },
-                "normalized_evidence_hash": {"type": "string", "pattern": "^[a-f0-9]+$"}
+                "normalized_evidence_hash": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}
               },
               "required": ["citation_id", "source_family", "retrieved_at", "artifact_reference"],
               "additionalProperties": false

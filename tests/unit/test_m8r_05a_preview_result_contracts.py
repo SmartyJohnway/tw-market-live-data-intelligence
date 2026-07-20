@@ -121,7 +121,7 @@ def test_valid_result_full_success(result_schema):
                         "retrieved_at": "2026-07-20T12:00:00Z",
                         "effective_trade_date": "2026-07-17",
                         "artifact_reference": "artifact-123",
-                        "normalized_evidence_hash": "abcd"
+                        "normalized_evidence_hash": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
                     }
                 ]
             }

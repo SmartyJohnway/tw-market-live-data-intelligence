@@ -64,7 +64,18 @@
           },
           "allowed_parameters": {
             "type": "object",
-            "additionalProperties": true
+            "properties": {
+              "lookback_trading_days": {
+                "type": "object",
+                "properties": {
+                  "type": {"type": "string"},
+                  "minimum": {"type": "integer"},
+                  "maximum": {"type": "integer"}
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
           },
           "requires_target_resolution": {"type": "boolean"},
           "requires_approval_for_execution": {"type": "boolean"},
@@ -153,7 +164,7 @@
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["realtime_guaranteed", "near_realtime", "official_eod", "delayed_reference", "historical"]
+        "enum": ["liveish_intraday_snapshot", "official_eod", "official_statistics_eod", "request_session_context"]
       }
     },
     "known_limitations": {

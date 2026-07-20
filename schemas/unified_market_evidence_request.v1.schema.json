@@ -75,7 +75,8 @@
                   "properties": {
                     "lookback_trading_days": {
                       "type": "integer",
-                      "minimum": 1
+                      "minimum": 1,
+                      "maximum": 20
                     }
                   },
                   "required": ["lookback_trading_days"],

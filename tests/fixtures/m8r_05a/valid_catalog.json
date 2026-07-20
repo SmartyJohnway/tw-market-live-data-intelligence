@@ -39,8 +39,8 @@
       "allowed_parameters": {},
       "requires_target_resolution": true,
       "requires_approval_for_execution": true,
-      "possible_timing_classes": ["realtime_guaranteed", "near_realtime"],
-      "possible_fallbacks": ["official_eod", "delayed_reference"],
+      "possible_timing_classes": ["liveish_intraday_snapshot"],
+      "possible_fallbacks": ["official_eod"],
       "known_limitations": ["not guaranteed realtime", "source availability may produce partial results", "TAIFEX current observation is not yet implemented"]
     },
     {
@@ -65,7 +65,7 @@
       "allowed_parameters": {},
       "requires_target_resolution": false,
       "requires_approval_for_execution": true,
-      "possible_timing_classes": ["near_realtime"],
+      "possible_timing_classes": ["request_session_context"],
       "possible_fallbacks": [],
       "known_limitations": [
         "TPEX closure authority follows synchronized-market assumption",
@@ -77,11 +77,15 @@
     {
       "capability_id": "recent_performance",
       "description": "Retrieves descriptive performance metrics over a specified lookback period.",
-      "support_status": "contract_supported",
+      "support_status": "runtime_executable",
       "supported_markets": ["TWSE", "TPEX"],
       "provisional_markets": ["TAIFEX"],
       "allowed_parameters": {
-        "lookback_trading_days": "integer"
+        "lookback_trading_days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        }
       },
       "requires_target_resolution": true,
       "requires_approval_for_execution": true,
@@ -133,15 +137,15 @@
   },
   "available_source_families": [
     {
-      "source_family": "twse_mis",
-      "timing_class": "near_realtime",
+      "source_family": "TWSE_MIS",
+      "timing_class": "liveish_intraday_snapshot",
       "market_scope": ["TWSE", "TPEX"],
       "activation_status": "active",
       "runtime_availability": true,
       "known_limitations": ["no continuous polling"]
     },
     {
-      "source_family": "twse_openapi",
+      "source_family": "TWSE_OPENAPI",
       "timing_class": "official_eod",
       "market_scope": ["TWSE"],
       "activation_status": "active",
@@ -149,7 +153,7 @@
       "known_limitations": []
     },
     {
-      "source_family": "tpex_openapi",
+      "source_family": "TPEX_OPENAPI",
       "timing_class": "official_eod",
       "market_scope": ["TPEX"],
       "activation_status": "active",
@@ -157,8 +161,8 @@
       "known_limitations": []
     },
     {
-      "source_family": "ncdr_dgpa_closure_cap",
-      "timing_class": "official_eod",
+      "source_family": "NCDR_DGPA_CLOSURE_CAP",
+      "timing_class": "request_session_context",
       "market_scope": ["TWSE", "TPEX", "TAIFEX"],
       "activation_status": "active",
       "runtime_availability": true,
@@ -170,11 +174,10 @@
     "fallback_timing_class_downgrade_allowed": true
   },
   "timing_classes": [
-    "realtime_guaranteed",
-    "near_realtime",
+    "liveish_intraday_snapshot",
     "official_eod",
-    "delayed_reference",
-    "historical"
+    "official_statistics_eod",
+    "request_session_context"
   ],
   "known_limitations": [
     "publication grace remains provisional and configurable",
