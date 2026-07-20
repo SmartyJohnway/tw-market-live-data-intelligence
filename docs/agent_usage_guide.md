@@ -6,7 +6,12 @@ This guide instructs AI agents on when and how to utilize the Unified Market Evi
 
 ## 1. Purpose
 
-The Unified Market Evidence project provides a deterministic mechanism to resolve targets, query available market evidence, and check market currentness without relying on subjective natural-language interpretation. This guide ensures the AI understands the boundary between the project's data execution and the AI's own reasoning.
+The Unified Market Evidence project provides a deterministic mechanism to query available market evidence and check market currentness without relying on subjective natural-language interpretation. This guide ensures the AI understands the boundary between the project's data execution and the AI's own reasoning.
+
+> [!WARNING]
+> **Current Runtime Limitations**
+> The project currently provides the schema, policies, and manual contract handoff structures. **Unified intake, direct preview orchestration, and automated Unified execution via MCP or F3 resolvers are NOT yet implemented.**
+> The AI currently can only author schema-valid requests and perform manual handoff via the operator. Future phases (F3, 05B, 05C) will build the direct automated runtime. Do not claim the Unified executor is currently available to the AI.
 
 ---
 
@@ -40,7 +45,7 @@ When processing a user query, the AI must follow this reasoning workflow:
 3. **Identify Data Needs**: Select from the 7 defined capability needs (e.g., `identity`, `current_observation`, `official_eod_reference`).
 4. **Clarify Ambiguity**: If target symbols are ambiguous (e.g., "台積" vs "台積電"), **ask the user** for clarification instead of letting the project guess.
 5. **Compose Unified Request**: Build a valid JSON request conforming to `unified_market_evidence_request.v1.schema.json`.
-6. **Preview & Confirm**: Show the planned execution to the user and request explicit confirmation before executing.
+6. **Manual Handoff**: Provide the JSON to the user/operator to run manually in the workbench.
 
 ---
 
@@ -106,20 +111,26 @@ AI must only request capabilities listed in the canonical catalog:
 
 ---
 
-## 8. Preview and Authorization Loop
+## 8. Operator Workflows (Mode A, B, C)
 
-To prevent unauthorized or abusive network actions, all executions must run through a preview-then-execute loop:
-1. AI composes a request with `"execution_mode": "preview"`.
-2. The project returns a Preview Response conforming to `unified_market_evidence_preview_response.v1.schema.json`.
-3. AI displays the planned execution bounds (estimated network calls, target count, expected gaps) and the confirmation text to the user.
-4. **The user must explicitly approve the action.**
-5. Upon approval, AI submits the request with `"execution_mode": "execute"`.
+While the AI composes the JSON request, the actual execution is performed by the human Operator or Frontend Workbench using specific workflows. **These Modes are NOT AI JSON request parameters.** They are the manual processes the operator follows:
+
+- **Mode A (Inspect and Validate)**: The operator reviews the AI's proposed target lists and data needs. The workbench validates the schema without making external network calls.
+- **Mode B (Preview, Authorize, Execute Once)**: The operator runs a dry-run preview, views estimated network costs and target scopes, explicitly authorizes the action, and the workbench executes it.
+- **Mode C (Package and Handoff)**: The workbench generates a bundled snapshot of canonical evidence and passes it back to the AI context.
 
 ---
 
-## 9. Result Interpretation
+## 9. Evidence Lifecycle (Level 1 and Level 2)
 
-When reading the `unified_market_evidence_result.v1` payload, the AI must strictly respect the returned semantics:
+- **Level 1 (Raw/Transport)**: The native responses directly from exchanges (e.g., TWSE OpenAPI, TAIFEX MIS). AI should **NOT** request or interpret Level 1 payloads directly.
+- **Level 2 (Canonical/Normalized)**: The standardized `unified_market_evidence_result.v1` schema. This is the output the AI must interpret. It normalizes venue-specific fields into a unified structure.
+
+---
+
+## 10. Result Interpretation
+
+When reading the `unified_market_evidence_result.v1` payload (e.g., pasted by the operator via Mode C), the AI must strictly respect the returned semantics:
 - **Timing taxonomy**: Do not describe an EOD reference as a "current live price".
 - **Staleness**: If the result marks evidence as `stale` or `reference_only`, describe it in the past tense.
 - **Coverage**: If a target resolution fails (`not_found`, `ambiguous`), explicitly report the failure instead of fabricating data.
@@ -128,7 +139,7 @@ When reading the `unified_market_evidence_result.v1` payload, the AI must strict
 
 ---
 
-## 10. Complete Output Principle
+## 11. Complete Output Principle
 
 The project operates under the principle of **Exhaustive output within the authorized request scope**. 
 - The project will return all relevant records for the approved targets and needs.
@@ -137,21 +148,11 @@ The project operates under the principle of **Exhaustive output within the autho
 
 ---
 
-## 11. Follow-up Behavior
-
-After presenting the result, AI can:
-- Answer the user's analytical questions.
-- Identify missing info and suggest a follow-up request.
-- Ask for authorization to query optional needs if they were skipped.
-- AI must not loop tools automatically without user interaction.
-
----
-
 ## 12. Manual Workbench Handoff
 
-In environments without direct MCP/API tool execution, the AI operates via the Manual Workbench flow:
+Because the Unified Orchestrator and direct MCP execution are **future F3 deliverables**, the AI must currently operate via Manual Workbench Handoff:
 1. AI generates a valid Unified Request JSON.
-2. AI instructs the operator to paste it into their local workbench interface.
-3. The operator validates, previews, and executes the command.
-4. The operator copies the resulting JSON or Markdown output and pastes it back into the AI conversation.
+2. AI instructs the operator to paste it into their local workbench interface (performing Mode A).
+3. The operator validates, previews, and executes the command (Mode B).
+4. The operator copies the resulting Level 2 Canonical JSON or Markdown output and pastes it back into the AI conversation (Mode C).
 5. AI interprets the pasted evidence and answers.

@@ -11,13 +11,16 @@ Use this Skill when you must query Taiwan market data, resolve security targets,
 
 ## 1. Skill Trigger
 
-This Skill applies whenever a user query requires:
-- Fetching Taiwan stock or derivatives prices, volumes, or metadata.
+This Skill applies whenever a user query specifically requires:
+- **Current, official, verifiable, time-sensitive, calculated, or source-grounded** Taiwan market evidence (TWSE, TPEx, TAIFEX).
+- Formulating a structured query to fetch canonical evidence.
 - Determining whether the market is open, closed, or affected by disaster closures.
-- Formulating a structured query to fetch canonical evidence from TWSE, TPEx, or TAIFEX.
-- Interpreting returned market data envelopes, citations, and caveats.
 
-Do not use this Skill for general finance theory, non-Taiwan security inquiries, or simple text formatting tasks.
+Do not use this Skill for:
+- General finance theory or educational concepts.
+- Non-Taiwan security inquiries.
+- Pure textual formatting or analysis of already-provided historical context (where no new data refresh is needed).
+- Simple Taiwan stock queries that only ask for general opinions or basic non-volatile information.
 
 ---
 
@@ -29,10 +32,9 @@ When triggered, the AI must follow this step-by-step workflow:
 2. **Resolve Ambiguity**: If ticker symbols are ambiguous or missing, stop and clarify with the user. Do not make assumptions or guess targets.
 3. **Check Catalog Capabilities**: Consult the portable catalog projection (`assets/unified_capability_catalog_portable.json` or `references/capability_quick_guide.md`) to verify if the requested target-market combination is supported.
 4. **Compose Unified Request**: Generate a request JSON matching `unified_market_evidence_request.v1.schema.json`. Set `execution_mode` to `"preview"`.
-5. **Request User Confirmation**: Show the user the preview JSON, estimated network calls, and bounds. Explicitly ask for confirmation.
-6. **Execute One-Shot**: Once confirmed, execute the request with `"execution_mode": "execute"`.
-7. **Interpret Result**: Parse the returned `unified_market_evidence_result.v1` payload. Strictly preserve timing semantics (EOD vs. live-ish, stale vs. current).
-8. **Respond with Traceability**: Summarize findings, present calculations clearly, and preserve trace links to citations.
+5. **Manual Handoff**: Present the JSON request to the user and instruct them to execute it via their local workbench. **Direct Unified execution/MCP tools are not currently available to the AI.**
+6. **Interpret Result**: Once the user pastes back the `unified_market_evidence_result.v1` payload, parse it. Strictly preserve timing semantics (EOD vs. live-ish, stale vs. current).
+7. **Respond with Traceability**: Summarize findings, present calculations clearly, and preserve trace links to citations.
 
 ---
 
@@ -40,14 +42,14 @@ When triggered, the AI must follow this step-by-step workflow:
 
 - **Schema Strictness**: All request objects must validate against the request schema. Do not inject ad-hoc parameters or obsolete Phase B operation names.
 - **Data Needs Selection**: Use only the 7 official capability IDs. Avoid minimal sufficient limiting rules; retrieve all needs requested by the user within the authorized target scope.
-- **Security Gating**: Do not attempt to bypass execution approvals. Never request or expose raw payloads, credentials, or session cookies.
-- **Manual Workbench Fallback**: If MCP or API services are unavailable, provide the JSON request to the operator and instruct them to run it via the local workbench and paste the result back.
+- **Security Gating**: Do not attempt to bypass execution approvals. Never request or expose raw Level 1 payloads, credentials, or session cookies.
+- **Operator Execution**: Always rely on the operator to perform Mode A (Validate), Mode B (Preview/Execute), and Mode C (Package) via the manual workbench.
 
 ---
 
 ## 4. Result Interpretation and Safety Rules
 
-- **Facts First**: Distinguish raw observations from derived metrics.
+- **Facts First**: Base all conclusions on the returned Level 2 canonical observations and derived metrics. Do not fabricate missing data.
 - **Session Awareness**: Label EOD settlement as completed session statistics. Never present EOD data as real-time intraday quotes.
 - **Staleness and Gaps**: If data is `stale` or target coverage is `not_found`, explicitly declare it. Do not fabricate or estimate missing data.
 - **Safety boundaries and recommendation policy separation**:
