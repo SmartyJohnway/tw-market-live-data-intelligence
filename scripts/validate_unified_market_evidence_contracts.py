@@ -126,45 +126,34 @@ def validate_cross_contract(request_data, catalog_data, preview_data=None, resul
         catalog_sources = {s["source_family"]: s for s in catalog_data.get("available_source_families", [])}
         catalog_timing_classes = set(catalog_data.get("timing_classes", []))
         
-        timing_class_rank = {
-            "liveish_intraday_snapshot": 3,
-            "request_session_context": 2,
-            "official_eod": 1,
-            "official_statistics_eod": 1
-        }
-            
-        citations = {c["citation_id"]: c for c in result_data.get("citations", [])}
-            
+        check_forbidden_fields(result_data)
+        
         for target in result_data.get("targets", []):
+            target_citations = {c["citation_id"]: c for c in target.get("citations", [])}
+            for cid, citation in target_citations.items():
+                src_family = citation.get("source_family")
+                if src_family and src_family not in catalog_sources:
+                    raise ValueError(f"Cross-contract error: Source family {src_family} not defined in catalog.")
+
             evidence = target.get("evidence", {})
             evidence_keys = set(evidence.keys())
             if not evidence_keys.issubset(set(req_needs.keys())):
                 raise ValueError("Cross-contract error: Result evidence keys exceed requested needs.")
                 
             for ev_key, env in evidence.items():
-                if "status" in env:
-                    check_forbidden_fields(env.get("observed_fields", {}))
-                    check_forbidden_fields(env.get("currentness", {}))
+                timing_class = env.get("currentness", {}).get("timing_class") or env.get("timing_class")
+                if timing_class and timing_class not in catalog_timing_classes:
+                    raise ValueError(f"Cross-contract error: Result timing_class {timing_class} not found in catalog.")
                     
-                    timing_class = env.get("currentness", {}).get("timing_class") or env.get("timing_class")
-                    if timing_class and timing_class not in catalog_timing_classes:
-                        raise ValueError(f"Cross-contract error: Result timing_class {timing_class} not found in catalog.")
+                fallback_class = env.get("currentness", {}).get("fallback_timing_class")
+                if fallback_class:
+                    cap = catalog_caps.get(ev_key)
+                    if cap and fallback_class not in cap.get("possible_fallbacks", []):
+                        raise ValueError(f"Cross-contract error: Fallback timing class {fallback_class} not allowed for {ev_key}.")
                         
-                    fallback_class = env.get("currentness", {}).get("fallback_timing_class")
-                    if timing_class and fallback_class:
-                        base_rank = timing_class_rank.get(timing_class, 0)
-                        fall_rank = timing_class_rank.get(fallback_class, 0)
-                        if fall_rank > base_rank:
-                            raise ValueError("Cross-contract error: Fallback timing class cannot be an upgrade.")
-                            
-                    cit_ids = env.get("citations", [])
-                    for cid in cit_ids:
-                        if cid not in citations:
-                            raise ValueError(f"Cross-contract error: Citation {cid} not defined in result citations block.")
-                            
-        for cid, citation in citations.items():
-            src_family = citation.get("source_family")
-            if src_family and src_family not in catalog_sources:
-                raise ValueError(f"Cross-contract error: Source family {src_family} not defined in catalog.")
+                cit_ids = env.get("citation_ids", [])
+                for cid in cit_ids:
+                    if cid not in target_citations:
+                        raise ValueError(f"Cross-contract error: Citation {cid} not defined in target citations block.")
 
     return True

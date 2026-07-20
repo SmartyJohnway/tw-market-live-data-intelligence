@@ -49,15 +49,14 @@ def test_cross_contract_fallback_upgrade_fails():
     catalog_data = get_fixture("valid_catalog.json")
     result_data = get_fixture("valid_result.json")
     
-    # Intraday upgraded to EOD is not an upgrade in rank, but EOD upgraded to Intraday is.
-    # Set the original timing_class to EOD and fallback to liveish_intraday_snapshot
+    # recent_performance does not have liveish_intraday_snapshot in its possible_fallbacks
     result_data["targets"][0]["evidence"]["recent_performance"]["timing_class"] = "official_eod"
     result_data["targets"][0]["evidence"]["recent_performance"]["currentness"] = {
         "timing_class": "official_eod",
         "fallback_timing_class": "liveish_intraday_snapshot"
     }
     
-    with pytest.raises(ValueError, match="Fallback timing class cannot be an upgrade"):
+    with pytest.raises(ValueError, match="Fallback timing class liveish_intraday_snapshot not allowed for recent_performance"):
         validate_cross_contract(request_data, catalog_data, None, result_data)
 
 def test_cross_contract_forbidden_fields():
