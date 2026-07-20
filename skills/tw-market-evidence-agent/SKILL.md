@@ -42,14 +42,14 @@ When triggered, the AI must follow this step-by-step workflow:
 
 - **Schema Strictness**: All request objects must validate against the request schema. Do not inject ad-hoc parameters or obsolete Phase B operation names.
 - **Data Needs Selection**: Use only the 7 official capability IDs. Avoid minimal sufficient limiting rules; retrieve all needs requested by the user within the authorized target scope.
-- **Security Gating**: Do not attempt to bypass execution approvals. Never request or expose raw Level 1 payloads, credentials, or session cookies.
-- **Operator Execution**: Always rely on the operator to perform Mode A (Validate), Mode B (Preview/Execute), and Mode C (Package) via the manual workbench.
+- **Security Gating**: Do not attempt to bypass execution approvals. Never request or expose raw transport payloads, credentials, or session cookies.
+- **Operator Execution**: Always rely on the operator to perform Mode A (Validate), Mode B (Preview/Execute), and Mode C (Package) via the manual workbench. Mode A/B/C are target manual operator workflows, not Unified JSON parameters.
 
 ---
 
 ## 4. Result Interpretation and Safety Rules
 
-- **Facts First**: Base all conclusions on the returned Level 2 canonical observations and derived metrics. Do not fabricate missing data.
+- **Facts First**: Base all conclusions on the returned Level 1 (durable governed evidence) and Level 2 (request-scoped time-sensitive evidence) canonical observations. Do not fabricate missing data.
 - **Session Awareness**: Label EOD settlement as completed session statistics. Never present EOD data as real-time intraday quotes.
 - **Staleness and Gaps**: If data is `stale` or target coverage is `not_found`, explicitly declare it. Do not fabricate or estimate missing data.
 - **Safety boundaries and recommendation policy separation**:

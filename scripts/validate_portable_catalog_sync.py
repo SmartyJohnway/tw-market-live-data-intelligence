@@ -47,13 +47,8 @@ def validate() -> bool:
         print(f"FAIL: Failed to parse canonical JSON. Error: {e}")
         return False
 
-    commit_sha = port.get("portable_metadata", {}).get("generated_from_commit")
-    if not commit_sha:
-        print("FAIL: Missing generated_from_commit in portable metadata.")
-        return False
-
     # Deep Equality Check for JSON
-    expected_portable_data = generate_portable_json_obj(canon, actual_canonical_hash, commit_sha)
+    expected_portable_data = generate_portable_json_obj(canon, actual_canonical_hash)
     
     # We compare the json dumps to ensure strict equivalence
     actual_json_str = json.dumps(port, sort_keys=True)

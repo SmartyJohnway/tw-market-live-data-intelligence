@@ -111,20 +111,27 @@ AI must only request capabilities listed in the canonical catalog:
 
 ---
 
-## 8. Operator Workflows (Mode A, B, C)
+## 8. Target Operator Workflows (Mode A, B, C)
 
-While the AI composes the JSON request, the actual execution is performed by the human Operator or Frontend Workbench using specific workflows. **These Modes are NOT AI JSON request parameters.** They are the manual processes the operator follows:
+While the AI composes the JSON request, the actual execution is performed by the human Operator or Frontend Workbench using specific workflows. **These Modes are NOT AI JSON request parameters.** They are the target manual processes the operator follows:
 
 - **Mode A (Inspect and Validate)**: The operator reviews the AI's proposed target lists and data needs. The workbench validates the schema without making external network calls.
 - **Mode B (Preview, Authorize, Execute Once)**: The operator runs a dry-run preview, views estimated network costs and target scopes, explicitly authorizes the action, and the workbench executes it.
 - **Mode C (Package and Handoff)**: The workbench generates a bundled snapshot of canonical evidence and passes it back to the AI context.
 
+> [!NOTE]
+> The existing legacy workbench does not yet implement the full Unified Request/Preview/Result lifecycle. AI produces schema-valid requests for review and future intake. Mode A/B/C represent the target workflow after Workbench realignment.
+
 ---
 
 ## 9. Evidence Lifecycle (Level 1 and Level 2)
 
-- **Level 1 (Raw/Transport)**: The native responses directly from exchanges (e.g., TWSE OpenAPI, TAIFEX MIS). AI should **NOT** request or interpret Level 1 payloads directly.
-- **Level 2 (Canonical/Normalized)**: The standardized `unified_market_evidence_result.v1` schema. This is the output the AI must interpret. It normalizes venue-specific fields into a unified structure.
+- **Level 1 (Durable Governed Evidence)**: Stable, long-term governed evidence. Examples include canonical security identity, accepted official EOD references, and stable registry evidence.
+- **Level 2 (Request-Scoped Time-Sensitive Evidence)**: Transitory evidence tied to a specific request. Examples include one-shot live-ish observations and request-bound currentness.
+
+> [!NOTE]
+> A single Unified Result can contain both Level 1 and Level 2 data.
+> "Raw transport payload" versus "canonical normalized evidence" is a completely separate dimension. Raw transport payload belongs to audit artifacts and is NOT equivalent to Level 1.
 
 ---
 

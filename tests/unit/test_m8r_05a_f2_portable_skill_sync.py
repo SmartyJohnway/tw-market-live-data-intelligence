@@ -28,6 +28,25 @@ def test_portable_catalog_matches_canonical_via_deep_equality():
     assert "PASS:" in result.stdout
     assert "Deep Equality Verified" in result.stdout
 
+def test_portable_catalog_generator_is_strictly_deterministic(tmp_path):
+    # This tests that running the generator twice on the same canonical input produces
+    # the exact same byte arrays (Double-Generation Determinism test)
+    import subprocess
+    import shutil
+    
+    gen_script = ROOT / "scripts/generate_portable_catalog.py"
+    assert gen_script.exists()
+    
+    # Run first time in temp directory, we will copy the output
+    subprocess.run(["python", str(gen_script)], cwd=str(ROOT), check=True, capture_output=True)
+    first_json = PORTABLE_CATALOG.read_bytes()
+    
+    # Run second time
+    subprocess.run(["python", str(gen_script)], cwd=str(ROOT), check=True, capture_output=True)
+    second_json = PORTABLE_CATALOG.read_bytes()
+    
+    assert first_json == second_json, "Generator output is not deterministic between runs"
+
 def test_fixtures_validate_against_schema():
     assert REQUEST_SCHEMA_PATH.exists()
     with open(REQUEST_SCHEMA_PATH, "r", encoding="utf-8") as f:
