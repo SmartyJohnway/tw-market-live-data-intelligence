@@ -1,27 +1,40 @@
-# Evidence semantics
+# Evidence Semantics (Unified Version)
 
-Baseline SHA: `d6b83313bb301e652ae82b8583d73d2aaa1d753e`
+This document defines the timing taxonomy, source authority rules, and calculation semantics used to interpret results returned by the Unified Market Evidence workbench.
 
-## Timing taxonomy
+---
 
-- `live`: verified live stream only; currently not a general guarantee.
-- `liveish_intraday_snapshot`: current-ish source observation; not zero-latency realtime.
-- `current_bounded_observation`: bounded execution result with retrieval provenance.
-- `retrieved_snapshot`: data as retrieved at `retrieved_at`; `retrieved_at` is not exchange event time.
-- `completed_session_eod`: official completed-session OHLCV; not intraday current price.
-- `official_settlement`: derivatives settlement context; not spot current price.
-- `historical_series`: past series; may be unadjusted.
-- `fixture_only`: test/regression evidence only, not market state.
-- `unknown`: insufficient timing evidence.
+## 1. Timing Taxonomy
 
-## Source authority classes
+Every piece of evidence returned in the `unified_market_evidence_result.v1` envelope carries a specific `timing_class` that governs its freshness and description semantics:
 
-`official_exchange_current`, `official_exchange_eod`, `official_government`, `official_issuer`, `credential_gated_provider`, `external_validation_only`, `manual_operator_evidence`, `fixture`, and `derived_calculation` are defined in the JSON contract. Fixture evidence is never current market evidence. Derived calculations must cite exact input evidence and method.
+- **`liveish_intraday_snapshot`**: Current intraday quote or state. AI must describe this in present tense but disclose that it is **not guaranteed to be real-time zero-latency data**.
+- **`official_eod`**: Official End-of-Day cash-market OHLCV completed session metrics. AI must describe this in past tense as a completed session.
+- **`official_statistics_eod`**: Official EOD derivatives reports, large-trader open interest, or statistical aggregates. AI must describe this in past tense.
+- **`request_session_context`**: Structural clock and calendar state used to assert currentness.
 
-## Calculation semantics
+---
 
-Price change and percentage change require aligned inputs. `unadjusted_return` is a price return only, not total return; dividends, splits, and corporate actions can change interpretation. Settlement comparisons require explicit spot/derivatives timing alignment.
+## 2. Source Authority Classes
 
-## Availability semantics
+Citations in the result contain source attribution that defines the legal and operational trust level of the data:
+- **`official_exchange_current`**: Live-ish data from official exchange query lines (e.g. TWSE MIS).
+- **`official_exchange_eod`**: Official completed EOD reference APIs (e.g. TWSE OpenAPI).
+- **`official_government` / `official_dynamic_event`**: Official announcements (e.g. NCDR closure declarations).
+- **`derived_calculation`**: Metrics calculated deterministically by the workbench (e.g. price change percentages). AI must label these as calculated derived metrics, not exchange-reported figures.
 
-AI-facing capability names in F1 are operation contracts, not callable Phase C tools. Underlying repository producers may exist and may be fixture-validated or implemented with caveats, but network-required producers remain disabled by default and require M8R-03D controlled execution authorization.
+---
+
+## 3. Timestamp Semantics
+
+AI must strictly enforce the following timestamp distinctions:
+- **`retrieved_at`**: The timestamp when the workbench fetched the data. **This is not the exchange event time.** AI must say: *"Retrieved at [retrieved_at]"*, not *"Market price as of [retrieved_at]"*.
+- **`effective_trade_date`**: The trade date to which the data legally belongs. 
+- **`stale` or `reference_only`**: If the currentness evaluator marks data as stale (e.g. market closed but query run during weekend), AI must describe all price facts in past tense.
+
+---
+
+## 4. Calculation Semantics
+
+- **Unadjusted Returns**: Price movements calculated under `recent_performance` are unadjusted returns. AI must warn that splits, dividends, or ex-right events are not accounted for.
+- **No Zero Dividends**: If dividend adjustment data is missing, AI must not assume dividend yield is zero. It must state that dividend data was omitted from the evidence.
