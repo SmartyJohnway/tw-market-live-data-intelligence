@@ -1018,5 +1018,7 @@
     "status": "historical_superseded",
     "superseded_by": "M8R-03E-R2-CRITICAL-CORRECTNESS-AND-SECURITY-REMEDIATION",
     "reason": "R2 filesystem containment remediation is the only active successor before Phase C."
-  }
+  },
+  "_archive_status": "historical_superseded_by_m8r_05a",
+  "_canonical_successor": "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json"
 }
