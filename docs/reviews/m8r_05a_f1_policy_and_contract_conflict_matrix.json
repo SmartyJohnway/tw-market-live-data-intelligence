@@ -1,0 +1,86 @@
+{
+  "recommendation_policy_conflicts": [
+    {
+      "artifact_a": "docs/ai_safety_policy.md",
+      "artifact_b": "M8R-05A complete output principle",
+      "exact_conflicting_semantics": "ai_safety_policy prohibits recommendations completely. M8R-05A ensures canonical project output has no recommendations, but AI is permitted to generate them based on conversation.",
+      "recommended_authority": "M8R-05A Output Principle",
+      "reason": "Separates canonical source generation from AI LLM policy.",
+      "migration_action": "Update ai_safety_policy.md to specify constraint applies to canonical project execution only."
+    },
+    {
+      "artifact_a": "README.md",
+      "artifact_b": "M8R-05A complete output principle",
+      "exact_conflicting_semantics": "README says no recommendations globally.",
+      "recommended_authority": "M8R-05A Output Principle",
+      "reason": "Consistency.",
+      "migration_action": "Update README."
+    }
+  ],
+  "smallest_sufficient_conflicts": [
+    {
+      "artifact_a": "skills/tw-market-evidence-agent/SKILL.md",
+      "artifact_b": "M8R-05A exhaustive output principle",
+      "exact_conflicting_semantics": "SKILL.md advises smallest sufficient capabilities. M8R-05A says exhaustive within authorized scope.",
+      "recommended_authority": "M8R-05A",
+      "reason": "M8R-05A bounded but comprehensive rule.",
+      "migration_action": "Remove smallest sufficient wording from SKILL."
+    },
+    {
+      "artifact_a": "skills/tw-market-evidence-agent/references/capability_quick_guide.md",
+      "artifact_b": "M8R-05A exhaustive output principle",
+      "exact_conflicting_semantics": "Quick Guide limits scope.",
+      "recommended_authority": "M8R-05A",
+      "reason": "M8R-05A bounded but comprehensive rule.",
+      "migration_action": "Remove smallest sufficient wording."
+    }
+  ],
+  "fixed_taxonomy_conflicts": [
+    {
+      "artifact_a": "docs/agent_usage_guide.md",
+      "artifact_b": "schemas/unified_market_evidence_request.v1.schema.json",
+      "exact_conflicting_semantics": "M5F/M5I/M5J-centric agent workflow with old canonical package entrypoint and blanket recommendation boundary.",
+      "recommended_authority": "M8R-05A Schema",
+      "reason": "M8R-05A uses flexible data needs.",
+      "migration_action": "Replace taxonomy with M8R-05A requests."
+    },
+    {
+      "artifact_a": "m8r_03b_conversation_scope_contract.json",
+      "artifact_b": "schemas/unified_market_evidence_request.v1.schema.json",
+      "exact_conflicting_semantics": "M8R-03B relies on quick/standard/deep evidence depth. Phase B relies on fixed AI operation limits.",
+      "recommended_authority": "M8R-05A",
+      "reason": "M8R-05A abstracts this depth selection into canonical execution.",
+      "migration_action": "Separate M8R-03B concepts from Phase B issues. Reinterpret M8R-03B as legacy mapping."
+    }
+  ],
+  "mode_abc_conflicts": [
+    {
+      "artifact_a": "docs/m5k_local_ai_workflow.md",
+      "artifact_b": "Frontend Architecture",
+      "exact_conflicting_semantics": "Mode A/B/C is currently a mixed AI/operator workflow.",
+      "recommended_authority": "Frontend Architecture",
+      "reason": "AI does not control operator execution modes. Must purify to operator/frontend workflow.",
+      "migration_action": "Redefine Mode A/B/C as frontend workflow states (Inspect, Preview, Package) and migrate AI vocabulary to Unified Request."
+    }
+  ],
+  "level_12_conflicts": [
+    {
+      "artifact_a": "docs/m5k_local_ai_workflow.md",
+      "artifact_b": "Evidence Metadata",
+      "exact_conflicting_semantics": "Level 1/2 treated as M5K data layer.",
+      "recommended_authority": "Evidence Metadata",
+      "reason": "Requires expansion into formal Unified Result lifecycle metadata.",
+      "migration_action": "Redefine Level 1/2 as result lifecycle metadata rather than AI request parameter."
+    }
+  ],
+  "duplicate_source_of_truth": [
+    {
+      "artifact_a": "skills/tw-market-evidence-agent/references/capability_quick_guide.md",
+      "artifact_b": "docs/ai/M8_AI_CAPABILITY_QUICK_GUIDE.md",
+      "exact_conflicting_semantics": "Both define capabilities in unstructured markdown.",
+      "recommended_authority": "M8R-05A Catalog Instance",
+      "reason": "Centralized truth is the canonical instance.",
+      "migration_action": "Rewrite Quick Guide to be a generated projection of the canonical instance, synced via hash-bound test."
+    }
+  ]
+}

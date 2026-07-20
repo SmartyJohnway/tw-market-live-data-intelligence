@@ -1,0 +1,86 @@
+{
+  "hierarchies": {
+    "AI-facing Contract Authority": [
+      {
+        "level": 1,
+        "artifact": "contract-shape authority: schemas/unified_market_evidence_request.v1.schema.json",
+        "status": "CURRENT_CANONICAL"
+      },
+      {
+        "level": 1,
+        "artifact": "contract-shape authority: schemas/unified_market_evidence_preview_response.v1.schema.json",
+        "status": "CURRENT_CANONICAL"
+      },
+      {
+        "level": 1,
+        "artifact": "contract-shape authority: schemas/unified_market_evidence_result.v1.schema.json",
+        "status": "CURRENT_CANONICAL"
+      },
+      {
+        "level": 1,
+        "artifact": "contract-shape authority: schemas/unified_market_evidence_capability_catalog.v1.schema.json",
+        "status": "CURRENT_CANONICAL"
+      },
+      {
+        "level": 1,
+        "artifact": "capability-content authority: docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json",
+        "status": "CURRENT_CANONICAL"
+      }
+    ],
+    "Internal Runtime Authority": [
+      {
+        "level": 1,
+        "artifact": "docs/data_capabilities/m8_source_capability_registry.json",
+        "status": "CURRENT_CANONICAL"
+      },
+      {
+        "level": 2,
+        "artifact": "M8/M8C accepted source contracts",
+        "status": "CURRENT_CANONICAL"
+      },
+      {
+        "level": 3,
+        "artifact": "03C/03D/03E planner/executor contracts",
+        "status": "CURRENT_CANONICAL"
+      },
+      {
+        "level": 4,
+        "artifact": "docs/source_catalog.md",
+        "status": "COMPATIBILITY_ONLY_LEGACY"
+      }
+    ],
+    "Operator Workflow Authority": [
+      {
+        "level": 1,
+        "artifact": "Mode A/B/C as operator states",
+        "status": "RETAIN_AND_REINTERPRET"
+      }
+    ],
+    "Evidence Lifecycle Authority": [
+      {
+        "level": 1,
+        "artifact": "Level 1/2 metadata",
+        "status": "RETAIN_AND_REINTERPRET"
+      }
+    ],
+    "Portable Documentation Authority": [
+      {
+        "level": 1,
+        "artifact": "Portable Skill snapshot",
+        "status": "RETAIN_AND_REINTERPRET"
+      },
+      {
+        "level": 2,
+        "artifact": "Human-readable Guide",
+        "status": "REWRITE_REQUIRED"
+      }
+    ],
+    "Compatibility Interfaces": [
+      {
+        "level": 1,
+        "artifact": "FastAPI/MCP endpoints (current_role: legacy/local workbench interfaces)",
+        "status": "COMPATIBILITY_ONLY_LEGACY"
+      }
+    ]
+  }
+}

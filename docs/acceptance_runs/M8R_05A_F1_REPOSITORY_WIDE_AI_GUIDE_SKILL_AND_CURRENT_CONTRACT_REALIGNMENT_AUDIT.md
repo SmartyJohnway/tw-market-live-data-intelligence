@@ -1,0 +1,11 @@
+# M8R-05A-F1 Sealed Acceptance
+- **Tested SHA**: dc82e0add7e2be4a6569b6c61b442bd11f4bf606
+- **Binding Status**: sealed_commit_evidence
+- **Inventory Files**: 65
+- **Targeted Passed**: 3
+- **Targeted Failed**: 0
+- **Full Non-Network Passed**: 1791
+- **Full Non-Network Failed**: 47
+- **Novel Failures**: 0
+- **Environment**: Clean execution on committed worktree.
+- **Caveats**: All 47 failures map 1:1 with known baseline issues.
