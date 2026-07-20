@@ -17,13 +17,28 @@ Identified 65 artifacts including comprehensive traversal of M8R-03C/D/E schemas
 M5 Mode A/B/C and Level 1/2 were historically coupled with AI intents. They must be remapped. Level 1/2 is purely an evidence lifecycle metadata layer.
 
 ## 6. M6 frontend/API/MCP assessment
-Legacy M6 APIs (server/main.py, rontend/index.html) wrap M5 schemas. They are strictly legacy compatibility wrappers and internal operator tools, completely decoupled from the AI\'s M8R-05A workflow.
+| Artifact | Current Role | Future Role |
+|----------|--------------|-------------|
+| frontend/readonly-preview/M5KLocalAIWorkbench.html | Legacy frontend rendering | COMPATIBILITY_ONLY_LEGACY operator view |
+| server/main.py | Legacy M5 backend endpoints | COMPATIBILITY_ONLY_LEGACY wrapper |
+| docs/reference/MCP_REFERENCE.md | Legacy MCP definitions | COMPATIBILITY_ONLY_LEGACY |
+
+Legacy M6 APIs strictly wrap M5 schemas and are decoupled from the AI\'s M8R-05A workflow.
 
 ## 7. M8/M8C source and context assessment
-Sources like TWSE_MIS and TPEX_OPENAPI are internal execution details mapping entirely to m8_source_capability_registry.json.
+| Source Family | Current Status | Future Role |
+|---------------|----------------|-------------|
+| TWSE_MIS | Active execution | Internal execution detail |
+| TPEX_OPENAPI | Provisional | Internal execution detail |
+All sources unequivocally map to m8_source_capability_registry.json.
 
 ## 8. M8R contract assessment
-M8R-03B handled internal planning/depth selection (quick/standard/deep). This is now a backend execution detail under M8R-05A and should no longer leak into AI prompts.
+| Artifact Series | Current Status | Future Role |
+|-----------------|----------------|-------------|
+| M8R-03C / 03D / 03E | Active execution contracts | RETAIN_AND_STRENGTHEN (Internal Runtime) |
+| M8R-03B | Quick/Standard/Deep intent map | COMPATIBILITY_ONLY_LEGACY mapping |
+
+03C/D/E remain the active internal backend for executing M8R-05A requests. Only the AI-facing vocabulary of 03B is deprecated.
 
 ## 9. Phase B Guide and Skill assessment
 The current Phase B Skill imposes fixed AI operations and a \'smallest sufficient\' limit. This must be replaced with the flexible M8R-05A composer.

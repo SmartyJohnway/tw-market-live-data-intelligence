@@ -80,211 +80,36 @@
     "path": "server/main.py",
     "blob_sha": "4870546dec373498cf68cd68b7e1c5742072e814",
     "evidence": "Code def: def governance_caveats():",
-    "classification": "COMPATIBILITY_ONLY",
-    "priority": "P2"
-  },
-  {
-    "path": "docs/data_capabilities/m8r_03b_phased_delivery_plan.json",
-    "blob_sha": "56bc432d5b486df2f3bc8f67a238a36151d7899f",
-    "evidence": "JSON keys: ['schema_version', 'decision', 'recommended_next_bounded_engineering_task']",
     "classification": "COMPATIBILITY_ONLY_LEGACY",
     "priority": "P2"
   },
   {
-    "path": "tests/fixtures/m8r_03b/scenario_a_current_watchlist.json",
-    "blob_sha": "d27f961c265b629f0ece2b004f3b4f408fa85ca9",
-    "evidence": "JSON keys: ['schema_version', 'scenario_id', 'user_input']",
+    "path": "frontend/readonly-preview/M5KLocalAIWorkbench.html",
+    "blob_sha": "3b2aed1d655e2cb967a8b28d05a0ee28d998b471",
+    "evidence": "Title: <head><meta charset=\"utf-8\"><title>M5OP Local Operator Workbench</title><style>body{font-family:system-ui;margin:2rem;max-width:1500px}textarea,pre{width:100%;min-height:8rem;background:#f7f7f7;border:1px solid #ccc;padding:1rem;white-space:pre-wrap}button{margin:.25rem}.badge,.warn{background:#eef;border:1px solid #99c;padding:.5rem;margin:.5rem 0}.warn{background:#fff4d6;border-color:#cc9}table{width:100%;border-collapse:collapse;margin:1rem 0}th,td{border:1px solid #ccc;padding:.4rem;vertical-align:top}input,select{width:100%;box-sizing:border-box}.row-actions{white-space:nowrap}.status-ok{background:#e8f7ed}.status-reference_only,.status-stale,.status-closed_session{background:#fff4d6}.status-failed,.status-value_unavailable{background:#fde8e8}.toolbar{display:flex;flex-wrap:wrap;gap:.25rem}</style></head>",
     "classification": "COMPATIBILITY_ONLY_LEGACY",
     "priority": "P2"
   },
   {
-    "path": "docs/contracts/m8r_03e_r4_performance_measurement_contract.json",
-    "blob_sha": "63010231c1cab4b7b19fb5b487bef906cf1e409e",
-    "evidence": "JSON keys: ['schema_version', 'task_id', 'network_execution_used']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
+    "path": "tests/unit/test_m8r_03e_r3_contract_source_of_truth.py",
+    "blob_sha": "0ea5c063ac4b52523aab8a642d1c9994361ec9a3",
+    "evidence": "Code def: def test_capability_contract_mirror_cann",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
   },
   {
-    "path": "tests/fixtures/m8r_03e_f1/partial_source_failure.json",
-    "blob_sha": "3a9bd1643bb260a2a75eb588e109229d57093dde",
-    "evidence": "JSON keys: ['fixture_id', 'baseline_sha', 'intent_id']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
+    "path": "tests/fixtures/m8r_03e/blocked_target/bundle.json",
+    "blob_sha": "15bb09327acdfe4c16e9f07983b7fc4b37e6bace",
+    "evidence": "JSON keys: ['bundle_id', 'conversation_context', 'coverage']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
   },
   {
     "path": "tests/fixtures/m8r_03e/blocked_target/request.json",
     "blob_sha": "054e73bb470ee5171edb7137426fb0bcdbd0b0ac",
     "evidence": "JSON keys: ['clarification_reason', 'clarification_required', 'conversation_intent']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/fixtures/m8r_03e_r5a/context_projection.json",
-    "blob_sha": "a2833de676d671423699ef164828513d565b3ddc",
-    "evidence": "JSON keys: ['caveats', 'citation_index', 'context_budget']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "docs/acceptance_runs/M8R_03E_R3_VALIDATION.json",
-    "blob_sha": "661263b6b613501b1931021a9ba2909e908541f2",
-    "evidence": "JSON keys: ['active_status', 'baseline_sha', 'command_records']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/fixtures/m8r_03e_r5a/security_identity_snapshot_manifest.json",
-    "blob_sha": "2cca91d5d896680393d7ddfa0a7f9ab349a181a1",
-    "evidence": "JSON keys: ['coverage', 'effective_observation_date', 'generated_at_utc']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/unit/test_m8r_03e_r5b_integration.py",
-    "blob_sha": "dc15539e2693e69e3412590547e4350bc02ec420",
-    "evidence": "Code def: def test_execute_watchlist_fail_closed_o",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/fixtures/m8r_03e/context_budget_pressure/request.json",
-    "blob_sha": "a9872a08e25997318daf9e8708d40a43e14bfb78",
-    "evidence": "JSON keys: ['clarification_reason', 'clarification_required', 'conversation_intent']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/unit/test_m8r_03d_production_calendar_integration.py",
-    "blob_sha": "24eb2ecbde1597dbdecf41674f87e5e7afa54949",
-    "evidence": "Code def: class MockHttpResponse:",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "scripts/m8r_03d_f1_security_master_snapshot_adapter.py",
-    "blob_sha": "88fefcff611f1867531ccaa8fbbe5d1ac98f5e78",
-    "evidence": "Code def: class VerifiedSecurityMasterSnapshotErro",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/fixtures/m8r_03b/scenario_c_ambiguous_watchlist.json",
-    "blob_sha": "9c9d4c50cb7fd58fef4c3d59a6c972700ad2a94d",
-    "evidence": "JSON keys: ['schema_version', 'scenario_id', 'user_input']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/unit/test_m8r_03e_watchlist_ai_context.py",
-    "blob_sha": "a3511bb6d434d0aa00f53b38710ff5b8389b41b8",
-    "evidence": "Code def: def loadcase(name):",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "docs/security/M8R_03E_R2_FILESYSTEM_CONTAINMENT_THREAT_MODEL.md",
-    "blob_sha": "e0fdad93ba5da281f1f230bfc708b199433e0513",
-    "evidence": "Heading: # M8R-03E-R2 filesystem containment threat model",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "docs/protocol/M8R_03E_R1_M8_POST_M8C_REPOSITORY_REALIGNMENT_AND_HEALTH_AUDIT.md",
-    "blob_sha": "786b7e50a323e4f7d76b701fe5cb1cd44af97e79",
-    "evidence": "Heading: # M8R-03E-R1 M8 Post-M8C Repository Realignment and Health Audit Protocol",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "docs/protocol/M8R_03E_R5A_PHASE_C_ENABLING_CROSS_LAYER_FIXTURE_CONTRACT.md",
-    "blob_sha": "2f5d4feb4dd1665a5eb5a889fbe8baacd2d56228",
-    "evidence": "Heading: # M8R-03E-R5A: Phase C Enabling Cross-Layer Fixture Contract",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "docs/protocol/M8R_03E_R4_PERFORMANCE_AND_SCALABILITY_HARDENING.md",
-    "blob_sha": "26829adef70a57081412c1b225bb4dbddc24ef05",
-    "evidence": "Heading: # M8R-03E R4 performance and scalability hardening",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "scripts/run_m8r_03e_performance_baseline.py",
-    "blob_sha": "b4bf7590d0129af31d84cbfdc35579ddd5d55456",
-    "evidence": "Code def: def _peak_memory() -> dict[str, Any]:",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "docs/protocol/M8R_03E_R2_COMBINED_FINAL_ACCEPTANCE.md",
-    "blob_sha": "a207cc2d9f34707436eb78e2e4bd1241481aa8cb",
-    "evidence": "Heading: # M8R-03E-R2 combined final acceptance",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/fixtures/m8r_03e/fixture_only_f1_evidence/execution_plan.json",
-    "blob_sha": "9a40be25ae5d7648b69dea484f702c5391d647d4",
-    "evidence": "JSON keys: ['authorization_required', 'bundle_type', 'created_at_utc']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "docs/acceptance_runs/M8R_03E_EOD_EXPECTED_TRADE_DATE_AND_SESSION_STATUS.json",
-    "blob_sha": "5d49ff60272abd8559be633a29d84a0200a4309d",
-    "evidence": "JSON keys: ['task_id', 'timestamp', 'environment']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/unit/test_m8r_03e_r5b_cross_platform_filesystem_safety.py",
-    "blob_sha": "9dffdd0e2129c8265a259d5122d6d36e0f7e7fe5",
-    "evidence": "Code def: def test_safe_portable_paths():",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "scripts/run_m8r_03c_watchlist_bundle_fixture.py",
-    "blob_sha": "0171944a0fac761a84c6cc8c08f3039a7fedac43",
-    "evidence": "Code def: def main(argv=None):",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "scripts/export_m8r_03d_f1_verified_security_master_snapshot.py",
-    "blob_sha": "f00fff24a7d91c4c3bca6f8a8496eb994e2f6227",
-    "evidence": "Code def: def _load(path):",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "docs/quality/M8R_03E_R3_ARCHITECTURE_AND_POLICY_BOUNDARY_REVIEW.md",
-    "blob_sha": "0180f290f6fa2dbf2882a190297a09edf2b15612",
-    "evidence": "Heading: # M8R-03E R3 architecture and policy boundary review",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/fixtures/m8r_03e_f1/recommendation_with_sufficient_evidence.json",
-    "blob_sha": "b64cad0df68b9763faf10474ca3fbd183b3c70b6",
-    "evidence": "JSON keys: ['fixture_id', 'baseline_sha', 'intent_id']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/fixtures/m8r_03e_r5a/currentness_assessment.json",
-    "blob_sha": "4c3146a37d95b219fee63888aa262c9db8cdea67",
-    "evidence": "JSON keys: ['generated_at_utc', 'targets']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/unit/test_m8r_03e_r5a_cross_layer_consistency.py",
-    "blob_sha": "faed88f19b86fedd3b5011b863b44d2206a0db05",
-    "evidence": "Code def: def load(name):",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
   },
   {
     "path": "scripts/m8r_03b_design_contract_validator.py",
@@ -294,46 +119,235 @@
     "priority": "P2"
   },
   {
+    "path": "tests/fixtures/m8r_03e/performance/request.json",
+    "blob_sha": "a62e82423c72a0c1dbe0c99b542ad6fe81df9767",
+    "evidence": "JSON keys: ['clarification_reason', 'clarification_required', 'conversation_intent']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/unit/test_m8r_03e_r4_performance.py",
+    "blob_sha": "c08ed9a1a0f653f4e9ddf59f31f3093b4384cbc4",
+    "evidence": "Code def: def load(): return json.loads((ROOT/'doc",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
     "path": "docs/quality/m8r_03e_r3_architecture_inventory.json",
     "blob_sha": "ac8186a5664d372abd9e901005070aed038ea84e",
     "evidence": "JSON keys: ['task_id', 'baseline', 'items']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/unit/test_m8r_03c_watchlist_bundles.py",
+    "blob_sha": "119754afaf70bbb827cf82c1579a9c472c8f3298",
+    "evidence": "Code def: def load(n): return json.loads((FIX/n).r",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py",
+    "blob_sha": "cf30b1625a9db253f7dc373edaf262a089aec59d",
+    "evidence": "Code def: def load(n): return json.loads((FIX/n).r",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "docs/data_capabilities/m8r_03b_evidence_bundle_contracts.json",
+    "blob_sha": "6dd9a03ac8ce9acfcfdbbdb0aef60d5d0b725e6e",
+    "evidence": "JSON keys: ['schema_version', 'status', 'common_evidence_request']",
     "classification": "COMPATIBILITY_ONLY_LEGACY",
     "priority": "P2"
   },
   {
-    "path": "tests/fixtures/m8r_03e_f1/performance_intent.json",
-    "blob_sha": "3f14245ebb45211bb6fa04069e634bca00191b7d",
-    "evidence": "JSON keys: ['fixture_id', 'baseline_sha', 'intent_id']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
+    "path": "tests/fixtures/m8r_03d_f1/classification_records.json",
+    "blob_sha": "4dbd63accdbbedcc4ffd5b77e6c33cbbe62f6559",
+    "evidence": "JSON array",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
   },
   {
-    "path": "scripts/m8r_03e_r5a_cross_layer_fixture.py",
-    "blob_sha": "8de5c17ca1c91dfbfc0d49abd7ee4d97fa06a804",
-    "evidence": "Code def: class R5AFixtureClock:",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
+    "path": "scripts/m8r_03d_f1_security_master_snapshot_adapter.py",
+    "blob_sha": "88fefcff611f1867531ccaa8fbbe5d1ac98f5e78",
+    "evidence": "Code def: class VerifiedSecurityMasterSnapshotErro",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
   },
   {
-    "path": "tests/fixtures/m8r_03e_r3/historical_v1_context_package.json",
-    "blob_sha": "f44ae1c019b1b5fec4276fb2db076d64349c4aac",
-    "evidence": "JSON keys: ['caveats', 'citation_index', 'context_budget']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
+    "path": "tests/unit/test_m8r_03e_r5b_concurrency.py",
+    "blob_sha": "8b8fdafbc59251e453f10400c334e6e075523d4c",
+    "evidence": "Code def: def test_exclusive_create_concurrency_ra",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e/fixture_only_f1_evidence/execution_result.json",
+    "blob_sha": "4d75b55d2a3d39fb59bc9671a0aa992f44f35c3f",
+    "evidence": "JSON keys: ['artifact_paths', 'authorization_id', 'bundle_artifact']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
+    "blob_sha": "bd4a59e8036c6db01fbe8421420e9c4e3a27f341",
+    "evidence": "Code def: def load(path: Path) -> dict:",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
   },
   {
     "path": "tests/fixtures/m8r_03d/mixed_snapshot_source_data.json",
     "blob_sha": "65a990207bce40469a6ebb877c5bddbc1348ab21",
     "evidence": "JSON keys: ['targets']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/unit/test_m8r_03b_reference_validator.py",
+    "blob_sha": "f7f13b680af337b0ec13ba02305c845df7afba43",
+    "evidence": "Code def: def fixture_records():",
     "classification": "COMPATIBILITY_ONLY_LEGACY",
     "priority": "P2"
   },
   {
-    "path": "tests/fixtures/m8r_03e_r5a/missing_evidence_register.json",
-    "blob_sha": "f932e6736df8ccd37e07498c0b2a9374ab8e9ef2",
-    "evidence": "JSON array",
+    "path": "tests/fixtures/m8r_03e/complete_snapshot/execution_plan.json",
+    "blob_sha": "9a40be25ae5d7648b69dea484f702c5391d647d4",
+    "evidence": "JSON keys: ['authorization_required', 'bundle_type', 'created_at_utc']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "docs/protocol/M8R_03E_R5A_PHASE_C_ENABLING_CROSS_LAYER_FIXTURE_CONTRACT.md",
+    "blob_sha": "2f5d4feb4dd1665a5eb5a889fbe8baacd2d56228",
+    "evidence": "Heading: # M8R-03E-R5A: Phase C Enabling Cross-Layer Fixture Contract",
     "classification": "COMPATIBILITY_ONLY_LEGACY",
     "priority": "P2"
+  },
+  {
+    "path": "tests/unit/test_m8r_03e_f1_ai_capability_guide.py",
+    "blob_sha": "45774186e1e43b5df1a292064391f39cb7566309",
+    "evidence": "Code def: def caps(): return {c['capability_id']:c",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e/complete_snapshot/bundle.json",
+    "blob_sha": "4c07113d6864de417a64145ddb4ecc7282b3640e",
+    "evidence": "JSON keys: ['bundle_id', 'conversation_context', 'coverage']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e_f1/causal_question_requires_additional_evidence.json",
+    "blob_sha": "14f6007d4ca18e1e5781023e969634e458d4e790",
+    "evidence": "JSON keys: ['fixture_id', 'baseline_sha', 'intent_id']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "docs/contracts/m8r_03e_r4_performance_measurement_contract.json",
+    "blob_sha": "63010231c1cab4b7b19fb5b487bef906cf1e409e",
+    "evidence": "JSON keys: ['schema_version', 'task_id', 'network_execution_used']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "docs/protocol/M8R_03B_AI_CONVERSATION_INPUT_OUTPUT_DESIGN_REVIEW.md",
+    "blob_sha": "40cad887f723de8a70a6d3086a3af696b4444fa3",
+    "evidence": "Heading: # M8R-03B AI Conversation Input/Output Design Review",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "scripts/run_m8r_03e_r4_performance.py",
+    "blob_sha": "d4d870070f851c53e6ef4fff7767b8280c3a5af7",
+    "evidence": "Code def: def clock(fn):",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e/partial_source_failure/execution_result.json",
+    "blob_sha": "a86eee216ed0e44daa4cf238ba89d2e9d2f2e54c",
+    "evidence": "JSON keys: ['artifact_paths', 'authorization_id', 'bundle_artifact']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "docs/migrations/m8r_03e_r3_field_migration_map.json",
+    "blob_sha": "3969fe22d06fd47a6fb36d294675149db8f9ff75",
+    "evidence": "JSON keys: ['schema_change', 'fields']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/fixtures/m8r_03b/scenario_f_dynamic_ai_tech.json",
+    "blob_sha": "7862065ae77baae61a80126fc59cd5cabfd7d7fb",
+    "evidence": "JSON keys: ['schema_version', 'scenario_id', 'user_input']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e/fixture_only_f1_evidence/execution_plan.json",
+    "blob_sha": "9a40be25ae5d7648b69dea484f702c5391d647d4",
+    "evidence": "JSON keys: ['authorization_required', 'bundle_type', 'created_at_utc']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/fixtures/m8r_03c/snapshot_stale_observations.json",
+    "blob_sha": "742efcc4bac96af68ea009cf080270ac2ade8960",
+    "evidence": "JSON array",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e/blocked_target/execution_result.json",
+    "blob_sha": "d3eb6261caac4cc5ae4c34b7dec8e6be14465cca",
+    "evidence": "JSON keys: ['artifact_paths', 'bundle_artifact', 'completed_at_utc']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "scripts/m8r_03d_watchlist_controlled_executor.py",
+    "blob_sha": "be78f066996a336a6a2a862cdce8214f4012c76d",
+    "evidence": "Code def: class M8R03DExecutionError(RuntimeError)",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "docs/quality/M8R_03E_R3_ARCHITECTURE_AND_POLICY_BOUNDARY_REVIEW.md",
+    "blob_sha": "0180f290f6fa2dbf2882a190297a09edf2b15612",
+    "evidence": "Heading: # M8R-03E R3 architecture and policy boundary review",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/acceptance_runs/M8R_03E_R5B_CROSS_PLATFORM_FILESYSTEM_FAIL_CLOSED_ACCEPTANCE.json",
+    "blob_sha": "2d8107ef2e5ef361b6a289a82fb9ba7990ac9705",
+    "evidence": "JSON keys: ['task_id', 'baseline_main_sha', 'tested_parent_sha']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/acceptance_runs/M8R_03E_EOD_EXPECTED_TRADE_DATE_AND_SESSION_STATUS.md",
+    "blob_sha": "d7b865535d997818dd9d07736536396306f950f5",
+    "evidence": "Heading: # M8R-03E EOD Expected Trade Date and Session Status Verification Report",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/unit/test_m8r_03e_r3_migration_and_composition.py",
+    "blob_sha": "fb6b7c2a94f50dbb237010af056f2ce71bb99a3d",
+    "evidence": "Code def: def test_historical_v1_migration_preserv",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e_r3/historical_v1_context_package.json",
+    "blob_sha": "f44ae1c019b1b5fec4276fb2db076d64349c4aac",
+    "evidence": "JSON keys: ['caveats', 'citation_index', 'context_budget']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
   },
   {
     "path": "docs/migrations/M8R_03E_R3_AI_POLICY_AND_EVIDENCE_SCHEMA_MIGRATION.md",
@@ -343,88 +357,39 @@
     "priority": "P2"
   },
   {
+    "path": "docs/acceptance_runs/M8R_03E_R5A_PHASE_C_ENABLING_CROSS_LAYER_FIXTURE_ACCEPTANCE.json",
+    "blob_sha": "112c1cfd712bb9529d7798f0f9d33ffeaa1378eb",
+    "evidence": "JSON keys: ['schema_version', 'task_id', 'binding_status']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
     "path": "tests/unit/test_m8r_03e_r5a_projection_and_citations.py",
     "blob_sha": "dba3fe43abc58eaef9d75338b89f080f0171e8dd",
     "evidence": "Code def: def load(name):",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "docs/acceptance_runs/M8R_03E_PHASE_C_ACTIVATION_DECISION.md",
+    "blob_sha": "ac4b65183e3f5a9989130abb5ff24166dd77715c",
+    "evidence": "Heading: # M8R_03E_PHASE_C_ACTIVATION_DECISION — Acceptance Report",
     "classification": "COMPATIBILITY_ONLY_LEGACY",
     "priority": "P2"
   },
   {
-    "path": "scripts/m8r_03e_conversation_handoff_builder.py",
-    "blob_sha": "e14fd98275f4c6facd5ace89927647b45915dd2a",
-    "evidence": "Code def: def compose_conversation_handoff(*, evid",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
+    "path": "scripts/m8r_03d_watchlist_source_integration.py",
+    "blob_sha": "b06d8d5c545923131b3638aacc586d5a39e92342",
+    "evidence": "Code def: def parse_iso_datetime(s: str) -> dateti",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
   },
   {
-    "path": "tests/unit/test_m8r_03e_r3_architecture_boundaries.py",
-    "blob_sha": "018db029b451f741f2d5d3e0482e6221e5e9dd89",
-    "evidence": "Code def: def test_active_evidence_schema_has_no_p",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/fixtures/m8r_03e/context_budget_pressure/execution_result.json",
-    "blob_sha": "4d75b55d2a3d39fb59bc9671a0aa992f44f35c3f",
-    "evidence": "JSON keys: ['artifact_paths', 'authorization_id', 'bundle_artifact']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "docs/acceptance_runs/M8R_03E_R4_VALIDATION.json",
-    "blob_sha": "f91fa980c5007a3dee88d2c9b9b04b48d97694b2",
-    "evidence": "JSON keys: ['task_id', 'baseline_main_sha', 'tested_parent_sha']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/fixtures/m8r_03e/performance/execution_plan.json",
-    "blob_sha": "42e85faea7e81e92bddf9979f163059ccd3efd38",
-    "evidence": "JSON keys: ['authorization_required', 'bundle_type', 'created_at_utc']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/unit/test_m8r_03e_r4_performance.py",
-    "blob_sha": "c08ed9a1a0f653f4e9ddf59f31f3093b4384cbc4",
-    "evidence": "Code def: def load(): return json.loads((ROOT/'doc",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/fixtures/m8r_03e_r5a/source_capability_snapshot.json",
-    "blob_sha": "d040d9ed975e7d0bbb018d9b92d15f17b45aca6e",
-    "evidence": "JSON keys: ['activation_commit_sha', 'active_architectural_model', 'active_runtime_source_families']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "docs/protocol/M8R_03E_R5B_CROSS_PLATFORM_FILESYSTEM_FAIL_CLOSED_CONTRACT.md",
-    "blob_sha": "f6904717583b6258cc3686c3e59c81c53bab468c",
-    "evidence": "Heading: # M8R-03E R5B Cross-Platform Filesystem Fail-Closed Contract",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/fixtures/m8r_03e/stale_currentness_unresolved/execution_result.json",
-    "blob_sha": "34c91c4dd7340eca1e623fd36fdcb893d7027f0e",
-    "evidence": "JSON keys: ['artifact_paths', 'authorization_id', 'bundle_artifact']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "tests/fixtures/m8r_03e/partial_source_failure/execution_result.json",
-    "blob_sha": "a86eee216ed0e44daa4cf238ba89d2e9d2f2e54c",
-    "evidence": "JSON keys: ['artifact_paths', 'authorization_id', 'bundle_artifact']",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
-  },
-  {
-    "path": "docs/protocol/M8R_00_PRODUCTIZATION_BOUNDARY_AND_SCOPE_CLOSURE.md",
-    "blob_sha": "b5206017f843630389cacb69db665f413d3a441f",
-    "evidence": "Heading: # M8R-00 Productization Boundary and Scope Closure",
-    "classification": "COMPATIBILITY_ONLY_LEGACY",
-    "priority": "P2"
+    "path": "docs/quality/m8r_03e_r3_code_health_inventory.json",
+    "blob_sha": "48bab9a2007d7157b787c8e82b1916dfc0ce5742",
+    "evidence": "JSON keys: ['task_id', 'findings']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
   },
   {
     "path": "docs/acceptance_runs/M8R_03E_R5B_FILESYSTEM_TRUST_BOUNDARY_INVENTORY.json",
@@ -434,23 +399,58 @@
     "priority": "P2"
   },
   {
-    "path": "scripts/resolve_m8r_03d_f1_security_identity.py",
-    "blob_sha": "fc3bd6b6a85edb190142dee2a319d8cdfb28014f",
-    "evidence": "Code def: def main(argv=None):",
+    "path": "docs/acceptance_runs/M8R_03E_EOD_EXPECTED_TRADE_DATE_AND_SESSION_STATUS_WALKTHROUGH.md",
+    "blob_sha": "c421b0464b9995d5b96f4ed541d73098ccb989e3",
+    "evidence": "Heading: # M8R EOD Expected Trade Date and Session Status Walkthrough",
     "classification": "COMPATIBILITY_ONLY_LEGACY",
     "priority": "P2"
   },
   {
-    "path": "docs/research/m8r_03e_r5a/M8R_03E_R5A_CROSS_LAYER_FIXTURE_CONTRACT_INVENTORY.md",
-    "blob_sha": "ad219ea44e22ea9362f79b32fbade0aca57fa865",
-    "evidence": "Heading: # M8R_03E_R5A Cross-Layer Fixture Contract Inventory",
+    "path": "tests/fixtures/m8r_03e_r5a/fixture_manifest.json",
+    "blob_sha": "2e86cd882654ab3c0055f7568443db891bdfc195",
+    "evidence": "JSON keys: ['artifacts', 'canonicalization_contract', 'expected_states']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/unit/test_m8r_03b_design_contracts.py",
+    "blob_sha": "ab09016dfd313deec9cdfbda83aab52b346cb399",
+    "evidence": "Code def: def load(name):",
     "classification": "COMPATIBILITY_ONLY_LEGACY",
     "priority": "P2"
   },
   {
-    "path": "tests/fixtures/m8r_03e/fixture_only_f1_evidence/bundle.json",
-    "blob_sha": "4c07113d6864de417a64145ddb4ecc7282b3640e",
+    "path": "tests/fixtures/m8r_03e_f1/recommendation_with_sufficient_evidence.json",
+    "blob_sha": "b64cad0df68b9763faf10474ca3fbd183b3c70b6",
+    "evidence": "JSON keys: ['fixture_id', 'baseline_sha', 'intent_id']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "docs/protocol/M8R_03E_R1_M8_POST_M8C_REPOSITORY_REALIGNMENT_AND_HEALTH_AUDIT.md",
+    "blob_sha": "786b7e50a323e4f7d76b701fe5cb1cd44af97e79",
+    "evidence": "Heading: # M8R-03E-R1 M8 Post-M8C Repository Realignment and Health Audit Protocol",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/unit/test_m8r_03e_phase_c_activation_policy.py",
+    "blob_sha": "59cebf114642a4f7c9d1330f4dc0062bdac243d1",
+    "evidence": "Code def: def test_activation_policy_structure():",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e/partial_source_failure/bundle.json",
+    "blob_sha": "3907f7aea191d03d759c3811efa1e6ce1918d2a7",
     "evidence": "JSON keys: ['bundle_id', 'conversation_context', 'coverage']",
+    "classification": "RETAIN_AND_STRENGTHEN",
+    "priority": "P1"
+  },
+  {
+    "path": "docs/acceptance_runs/M8R_03E_PHASE_C_ACTIVATION_DECISION.json",
+    "blob_sha": "e69dbbc8b8b024afc70da2ed929b313e8682ce88",
+    "evidence": "JSON keys: ['schema_version', 'task_id', 'tested_parent_sha']",
     "classification": "COMPATIBILITY_ONLY_LEGACY",
     "priority": "P2"
   }

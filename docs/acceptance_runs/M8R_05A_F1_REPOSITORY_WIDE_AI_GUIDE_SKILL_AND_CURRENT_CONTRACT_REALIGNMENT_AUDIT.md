@@ -1,11 +1,11 @@
-# M8R-05A-F1 Unsealed Precommit Acceptance
-- **Tested SHA**: WORKING_TREE_PRE_COMMIT_8
-- **Binding Status**: unsealed_precommit_evidence
+# M8R-05A-F1 Sealed Acceptance
+- **Tested SHA**: 3b65747ac7ae4aeb2940fb7c0dcfccafbbb1384f
+- **Binding Status**: sealed_commit_evidence
 - **Inventory Files**: 65
-- **Targeted Passed**: 2
+- **Targeted Passed**: 3
 - **Targeted Failed**: 0
-- **Full Non-Network Passed**: 1790
+- **Full Non-Network Passed**: 1791
 - **Full Non-Network Failed**: 47
 - **Novel Failures**: 0
-- **Environment**: Clean execution on uncommitted worktree.
+- **Environment**: Clean execution on committed worktree.
 - **Caveats**: All 47 failures map 1:1 with known baseline issues.

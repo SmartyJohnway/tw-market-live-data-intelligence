@@ -12,7 +12,7 @@
 
 ### 2. docs/agent_usage_guide.md
 - **Current role**: M5F/M5I-centric workflow.
-- **Future role**: Pure M8R-05A request generation guide.
+- **Future role**: Comprehensive M8R-05A guide covering when to call, how to author request, preview/confirmation flow, how to interpret complete output, and how to continue conversation.
 - **Modify in F2**: Yes
 - **Breaking Risk**: High
 - **Tests**: test_m8r_05a_f1_audit_validation.py
@@ -20,7 +20,7 @@
 
 ### 3. skills/tw-market-evidence-agent/SKILL.md
 - **Current role**: Fixed operations and smallest-sufficient mapping.
-- **Future role**: Output Unified Request.
+- **Future role**: Comprehensive Skill responsibility covering intent extraction, Unified Request composition, execution loop handling, and evidence analysis.
 - **Modify in F2**: Yes
 - **Breaking Risk**: High
 - **Tests**: test_m8r_05a_f1_audit_validation.py
@@ -36,19 +36,19 @@
 
 ### 5. docs/ai/M8_AI_CAPABILITY_QUICK_GUIDE.md
 - **Current role**: Duplicate unstructured capability listing.
-- **Future role**: Deleted or replaced by generated projection.
+- **Future role**: Compatibility redirect or generated projection.
 - **Modify in F2**: Yes
 - **Breaking Risk**: Medium
 - **Tests**: None
-- **Acceptance**: Removal verified.
+- **Acceptance**: Redirect/Projection verified.
 
 ### 6. docs/ai/m8_ai_capability_contract.json
 - **Current role**: Duplicate JSON catalog.
-- **Future role**: Deprecated in favor of data_capabilities catalog.
+- **Future role**: Historical archive / Compatibility redirect.
 - **Modify in F2**: Yes
 - **Breaking Risk**: High
 - **Tests**: test_m8r_05a_f1_audit_validation.py
-- **Acceptance**: Duplicate removed.
+- **Acceptance**: Redirect established.
 
 ### 7. docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json
 - **Current role**: Primary capability source.
@@ -74,7 +74,7 @@
 - **Tests**: None
 - **Acceptance**: Review.
 
-### 10. frontend/index.html
+### 10. frontend/readonly-preview/M5KLocalAIWorkbench.html
 - **Current role**: Local M5 rendering.
 - **Future role**: COMPATIBILITY_ONLY_LEGACY operator view.
 - **Modify in F2**: Later phase

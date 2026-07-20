@@ -1,10 +1,10 @@
 {
   "baseline_main_sha": "b9f9effdaa76d1a108ae430085737e4dad3af524",
-  "audit_commit_sha": "WORKING_TREE_PRE_COMMIT_8",
   "tested_parent_sha": "12aba166be5a043e92d6118b1526eca58a4cf0d6",
-  "tested_commit_sha": "WORKING_TREE_PRE_COMMIT_8",
-  "current_head_sha": "12aba166be5a043e92d6118b1526eca58a4cf0d6",
-  "binding_status": "unsealed_precommit_evidence",
+  "tested_commit_sha": "3b65747ac7ae4aeb2940fb7c0dcfccafbbb1384f",
+  "current_head_sha": "3b65747ac7ae4aeb2940fb7c0dcfccafbbb1384f",
+  "binding_status": "sealed_commit_evidence",
+  "acceptance_sealing_commit_sha": "PENDING_COMMIT_9",
   "inventory_file_count": 65,
   "ai_facing_artifact_count": 65,
   "duplicate_group_count": 1,
@@ -16,14 +16,13 @@
     "REWRITE_REQUIRED": 2,
     "RETAIN_AND_REINTERPRET": 1,
     "CURRENT_CANONICAL": 6,
-    "RETAIN_AND_STRENGTHEN": 0,
-    "COMPATIBILITY_ONLY": 1,
-    "COMPATIBILITY_ONLY_LEGACY": 55
+    "RETAIN_AND_STRENGTHEN": 35,
+    "COMPATIBILITY_ONLY_LEGACY": 21
   },
-  "targeted_passed": 2,
+  "targeted_passed": 3,
   "targeted_failed": 0,
-  "full_non_network_collected": 1845,
-  "passed": 1790,
+  "full_non_network_collected": 1846,
+  "passed": 1791,
   "failed": 47,
   "skipped": 5,
   "errors": 3,
@@ -132,10 +131,10 @@
   "environment_comparability": "Clean execution",
   "regression_determination": "No novel failures",
   "artifact_blob_shas": {
-    "inventory": "ae26646990870bfbe931b1a9b8df82591d92c2fa",
+    "inventory": "ea3ca33403adf46d6e13397852e92b34986dbda7",
     "conflict_matrix": "f7c516a460c1f7510e4c1b7e7025a62471a710a2",
     "sot_matrix": "5851700e0a945c804bfb00b2544efd0b195fb288",
-    "main_report": "28a4fc480610b42cc74a10146a659cfeb474bd4d",
-    "migration_plan": "4daec9745cde0f3f33dc6ab4829cf797d466c4c5"
+    "main_report": "efc462f9ca059e09b7fd4ba2c67f5969f1698cab",
+    "migration_plan": "8a92c54875178b341824e7de5860ab05cc9dd070"
   }
 }
