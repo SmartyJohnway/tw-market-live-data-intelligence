@@ -4,7 +4,7 @@
   "tested_commit_sha": "dc82e0add7e2be4a6569b6c61b442bd11f4bf606",
   "current_head_sha": "dc82e0add7e2be4a6569b6c61b442bd11f4bf606",
   "binding_status": "sealed_commit_evidence",
-  "acceptance_sealing_commit_sha": "<Commit 10 actual SHA>",
+  "acceptance_sealing_commit_sha": "1a7380f7cbaf24c9910066e354d4c48aa68a4e66",
   "inventory_file_count": 65,
   "ai_facing_artifact_count": 65,
   "duplicate_group_count": 1,
