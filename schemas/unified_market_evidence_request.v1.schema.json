@@ -1,0 +1,132 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v1",
+  "title": "Unified Market Evidence Request v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "unified_market_evidence_request.v1"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "market_hint": {
+            "type": ["string", "null"],
+            "enum": ["TWSE", "TPEX", "TAIFEX", null]
+          },
+          "resolution_requirement": {
+            "type": "string",
+            "enum": ["exact", "allow_ambiguity", "best_effort"]
+          },
+          "client_target_reference": {
+            "type": "string"
+          }
+        },
+        "required": ["input"],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "data_needs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "identity",
+              "current_observation",
+              "official_eod_reference",
+              "recent_performance",
+              "session_status",
+              "source_currentness",
+              "evidence_quality"
+            ]
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["required", "optional"]
+          },
+          "parameters": {
+            "type": "object"
+          },
+          "client_need_reference": {
+            "type": "string"
+          }
+        },
+        "required": ["type", "priority"],
+        "allOf": [
+          {
+            "if": { "properties": { "type": { "const": "recent_performance" } } },
+            "then": {
+              "properties": {
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "lookback_trading_days": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 20
+                    }
+                  },
+                  "required": ["lookback_trading_days"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "parameters": {
+                  "type": "object",
+                  "maxProperties": 0
+                }
+              }
+            }
+          }
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "execution_mode": {
+      "type": "string",
+      "enum": ["preview", "execute"]
+    },
+    "response_preferences": {
+      "type": "object",
+      "properties": {
+        "include_citations": {
+          "type": "boolean"
+        },
+        "include_currentness": {
+          "type": "boolean"
+        },
+        "include_caveats": {
+          "type": "boolean"
+        },
+        "include_audit_reference": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "request_id",
+    "targets",
+    "data_needs",
+    "execution_mode"
+  ],
+  "additionalProperties": false
+}

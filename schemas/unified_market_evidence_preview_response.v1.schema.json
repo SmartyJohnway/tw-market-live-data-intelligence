@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_preview_response:v1",
+  "title": "Unified Market Evidence Preview Response v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "unified_market_evidence_preview_response.v1"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ready_for_confirmation", "partial_possible", "ambiguous_target", "unsupported_capability", "rejected_resource_bound", "error"]
+    },
+    "target_resolution_summary": {
+      "type": "object",
+      "properties": {
+        "resolved": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "ambiguous": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "not_found": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "market_hint_conflict": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "unsupported_market": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "requested_data_needs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "planned_evidence": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "coverage_expectation": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["full_possible", "partial_possible", "none_possible"]
+        },
+        "known_gaps": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "bounds": {
+      "type": "object",
+      "properties": {
+        "target_count": {"type": "integer"},
+        "operation_count": {"type": "integer"},
+        "estimated_network_calls": {"type": "integer"},
+        "expanded_scope": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "fallbacks": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "approval": {
+      "type": "object",
+      "properties": {
+        "required": {"type": "boolean"},
+        "confirmation_text": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "internal_execution_reference": {
+      "type": "object",
+      "properties": {
+        "preview_id": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "caveats": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "required": [
+    "schema_version",
+    "request_id",
+    "status",
+    "target_resolution_summary",
+    "requested_data_needs",
+    "planned_evidence",
+    "coverage_expectation",
+    "bounds",
+    "fallbacks",
+    "approval"
+  ],
+  "additionalProperties": false
+}

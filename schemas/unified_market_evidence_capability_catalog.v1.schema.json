@@ -1,0 +1,188 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_capability_catalog:v1",
+  "title": "Unified Market Evidence Capability Catalog v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "unified_market_evidence_capability_catalog.v1"
+    },
+    "catalog_id": {
+      "type": "string"
+    },
+    "generated_from": {
+      "type": "object",
+      "properties": {
+        "source_capability_registry_reference": {"type": "string"},
+        "activation_policy_reference": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "supported_markets": {
+      "type": "object",
+      "properties": {
+        "TWSE": {
+          "type": "object",
+          "properties": { "support_level": { "type": "string", "enum": ["supported", "supported_with_caveats", "provisional"] } },
+          "required": ["support_level"],
+          "additionalProperties": false
+        },
+        "TPEX": {
+          "type": "object",
+          "properties": { "support_level": { "type": "string", "enum": ["supported", "supported_with_caveats", "provisional"] } },
+          "required": ["support_level"],
+          "additionalProperties": false
+        },
+        "TAIFEX": {
+          "type": "object",
+          "properties": { "support_level": { "type": "string", "enum": ["supported", "supported_with_caveats", "provisional"] } },
+          "required": ["support_level"],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "data_need_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "capability_id": {"type": "string"},
+          "description": {"type": "string"},
+          "support_status": {
+            "type": "string",
+            "enum": ["contract_supported", "runtime_available", "runtime_executable", "provisional", "not_yet_implemented"]
+          },
+          "supported_markets": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "provisional_markets": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "allowed_parameters": {
+            "type": "object",
+            "properties": {
+              "lookback_trading_days": {
+                "type": "object",
+                "properties": {
+                  "type": {"type": "string"},
+                  "minimum": {"type": "integer"},
+                  "maximum": {"type": "integer"}
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "requires_target_resolution": {"type": "boolean"},
+          "requires_approval_for_execution": {"type": "boolean"},
+          "possible_timing_classes": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "possible_fallbacks": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "known_limitations": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        },
+        "required": [
+          "capability_id",
+          "description",
+          "support_status",
+          "supported_markets",
+          "provisional_markets",
+          "allowed_parameters",
+          "requires_target_resolution",
+          "requires_approval_for_execution",
+          "possible_timing_classes",
+          "possible_fallbacks",
+          "known_limitations"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "preview_supported": {"type": "boolean"},
+        "explicit_approval_required": {"type": "boolean"},
+        "one_shot_execution": {"type": "boolean"},
+        "scheduler_enabled": {"type": "boolean"},
+        "polling_enabled": {"type": "boolean"},
+        "persistent_watchlist_mutation": {"type": "boolean"},
+        "trading_enabled": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "bounds": {
+      "type": "object",
+      "properties": {
+        "default_target_limit": {"type": "integer"},
+        "hard_target_limit": {"type": "integer"},
+        "default_operation_limit": {"type": "integer"},
+        "hard_operation_limit": {"type": "integer"}
+      },
+      "additionalProperties": false
+    },
+    "available_source_families": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_family": {"type": "string"},
+          "timing_class": {"type": "string"},
+          "market_scope": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "activation_status": {"type": "string"},
+          "runtime_availability": {"type": "boolean"},
+          "known_limitations": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "fallback_semantics": {
+      "type": "object",
+      "properties": {
+        "fallback_must_be_explicit": {"type": "boolean"},
+        "fallback_timing_class_downgrade_allowed": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "timing_classes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["liveish_intraday_snapshot", "official_eod", "official_statistics_eod", "request_session_context"]
+      }
+    },
+    "known_limitations": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "required": [
+    "schema_version",
+    "catalog_id",
+    "generated_from",
+    "supported_markets",
+    "data_need_capabilities",
+    "execution",
+    "bounds",
+    "fallback_semantics",
+    "timing_classes",
+    "known_limitations"
+  ],
+  "additionalProperties": false
+}

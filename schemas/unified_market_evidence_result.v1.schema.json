@@ -1,0 +1,185 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_result:v1",
+  "title": "Unified Market Evidence Result v1",
+  "type": "object",
+  "definitions": {
+    "evidence_envelope": {
+      "type": "object",
+      "properties": {
+        "status": {"type": "string"},
+        "timing_class": {"type": "string"},
+        "caveats": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "observed_fields": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "missing_fields": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "currentness": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "fallback": {"type": "boolean"},
+        "citation_ids": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "unified_market_evidence_result.v1"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["full_success", "success_with_partial_coverage", "failed", "partially_failed"]
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "client_target_reference": {"type": ["string", "null"]},
+          "resolution": {
+            "type": "object",
+            "properties": {
+              "status": {"type": "string", "enum": ["resolved", "ambiguous", "not_found", "market_hint_conflict", "unsupported_market"]},
+              "canonical_target_id": {"type": ["string", "null"]},
+              "security_code": {"type": ["string", "null"]},
+              "security_name": {"type": ["string", "null"]},
+              "market": {"type": ["string", "null"]}
+            },
+            "required": ["status"],
+            "additionalProperties": false
+          },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "identity": {"$ref": "#/definitions/evidence_envelope"},
+              "current_observation": {"$ref": "#/definitions/evidence_envelope"},
+              "official_eod_reference": {
+                "type": "object",
+                "properties": {
+                  "trade_date": {"type": ["string", "null"]},
+                  "expected_latest_completed_trade_date": {"type": ["string", "null"]},
+                  "currentness_status": {
+                    "type": "string",
+                    "enum": [
+                      "official_latest_completed_eod",
+                      "official_previous_session_eod_before_close",
+                      "not_yet_published_after_close",
+                      "market_closed_no_session",
+                      "unexpected_stale_eod",
+                      "calendar_status_unresolved",
+                      "future_trade_date_invalid",
+                      "source_trade_date_missing",
+                      "invalid_trade_date_format"
+                    ]
+                  },
+                  "session_status": {"type": "string"},
+                  "publication_grace_applied": {"type": "boolean"},
+                  "fallback_policy_used": {"type": "boolean"},
+                  "provisional_candidate_status": {"type": ["string", "null"]},
+                  "caveats": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                  }
+                },
+                "required": ["currentness_status"],
+                "additionalProperties": false
+              },
+              "recent_performance": {"$ref": "#/definitions/evidence_envelope"},
+              "session_status": {"$ref": "#/definitions/evidence_envelope"},
+              "source_currentness": {"$ref": "#/definitions/evidence_envelope"},
+              "evidence_quality": {"$ref": "#/definitions/evidence_envelope"}
+            },
+            "additionalProperties": false
+          },
+          "coverage": {
+            "type": "object",
+            "properties": {
+              "provided_needs": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "missing_needs": {
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            },
+            "additionalProperties": false
+          },
+          "caveats": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "citations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "citation_id": {"type": "string"},
+                "source_family": {"type": "string"},
+                "source_contract_id": {"type": "string"},
+                "retrieved_at": {"type": "string", "format": "date-time"},
+                "effective_trade_date": {"type": "string", "format": "date"},
+                "artifact_reference": {
+                  "type": "string",
+                  "pattern": "^(?!([a-zA-Z]:\\\\|file://|/|\\\\)).+",
+                  "description": "Must be a relative path or URI, not absolute local path"
+                },
+                "normalized_evidence_hash": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}
+              },
+              "required": ["citation_id", "source_family", "retrieved_at", "artifact_reference"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": ["resolution", "evidence"],
+        "additionalProperties": false
+      }
+    },
+    "partial_failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "target_index": {"type": "integer"},
+          "reason": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "request_caveats": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "audit_reference": {
+      "type": "object",
+      "properties": {
+        "audit_id": {"type": "string"},
+        "execution_time_ms": {"type": "integer"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "request_id",
+    "status",
+    "targets"
+  ],
+  "additionalProperties": false
+}
