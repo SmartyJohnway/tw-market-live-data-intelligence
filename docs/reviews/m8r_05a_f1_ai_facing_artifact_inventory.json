@@ -1,174 +1,457 @@
 [
   {
-    "path": "docs/agent_usage_guide.md",
-    "artifact_type": "Human-readable Guide",
-    "current_role": "Legacy Phase B AI Guide",
-    "actual_content_summary": "Describes how agents should use the project, potentially using old M5 terminology and fixed intents (quick/standard/deep).",
-    "current_source_of_truth_claim": "Claims to be the primary guide for AI interaction.",
-    "latest_known_baseline": "Pre-M8R-05A",
-    "conflicts_with": [
-      "schemas/unified_market_evidence_request.v1.schema.json",
-      "skills/tw-market-evidence-agent/SKILL.md"
-    ],
-    "duplication_group": "ai-guide",
-    "recommended_classification": "REWRITE_REQUIRED",
-    "recommended_future_role": "AI capability and integration guide mapped to M8R-05A.",
-    "required_action": "Rewrite to align with M8R-05A Unified Request. Remove intent taxonomy. Define boundaries.",
-    "priority": "P0",
-    "risk_if_unchanged": "AI will continue using old vocabulary (quick/deep) leading to validation errors.",
-    "evidence": "Uses outdated intent taxonomy."
+    "path": "docs/data_capabilities/m8_source_capability_registry.json",
+    "blob_sha": "c88632c562d968575f6cae5d2365a6ef60470f84",
+    "evidence": "JSON keys: ['activation_commit_sha', 'active_architectural_model', 'active_runtime_source_families']",
+    "classification": "CURRENT_CANONICAL",
+    "priority": "P0"
   },
   {
-    "path": "skills/tw-market-evidence-agent/SKILL.md",
-    "artifact_type": "Portable Skill snapshot",
-    "current_role": "Instructions for LLM",
-    "actual_content_summary": "Defines what the agent can do and when to call tools.",
-    "current_source_of_truth_claim": "Primary LLM instructions for context.",
-    "latest_known_baseline": "Pre-M8R-05A",
-    "conflicts_with": [
-      "docs/agent_usage_guide.md"
-    ],
-    "duplication_group": "ai-guide",
-    "recommended_classification": "RETAIN_AND_REINTERPRET",
-    "recommended_future_role": "Guide AI on *when* to use project, generating M8R-05A compatible inputs.",
-    "required_action": "Update to output Unified Market Evidence Request instead of old intents.",
-    "priority": "P1",
-    "risk_if_unchanged": "Agent will output requests not matching the new schema.",
-    "evidence": "Contains fixed AI-facing operation names that need mapping."
-  },
-  {
-    "path": "skills/tw-market-evidence-agent/references/capability_quick_guide.md",
-    "artifact_type": "Skill Reference",
-    "current_role": "Quick capability overview for AI",
-    "actual_content_summary": "Lists capabilities like quotes, historical data.",
-    "current_source_of_truth_claim": "None",
-    "latest_known_baseline": "Pre-M8R-05A",
-    "conflicts_with": [
-      "schemas/unified_market_evidence_capability_catalog.v1.schema.json",
-      "docs/capability_matrix.md"
-    ],
-    "duplication_group": "capability-catalog",
-    "recommended_classification": "SUPERSEDE_REQUIRED",
-    "recommended_future_role": "None, should be superseded by M8R-05A catalog.",
-    "required_action": "Archive and rely on generated unified catalog.",
-    "priority": "P1",
-    "risk_if_unchanged": "Drift between actual capabilities and AI-known capabilities.",
-    "evidence": "Duplicates schema definitions."
-  },
-  {
-    "path": "skills/tw-market-evidence-agent/references/tool_selection_examples.md",
-    "artifact_type": "Skill Reference",
-    "current_role": "Examples for tool selection",
-    "actual_content_summary": "Provides few-shot examples for intent classification.",
-    "current_source_of_truth_claim": "None",
-    "latest_known_baseline": "Pre-M8R-05A",
-    "conflicts_with": [],
-    "duplication_group": "none",
-    "recommended_classification": "REWRITE_REQUIRED",
-    "recommended_future_role": "Examples for generating Unified Requests.",
-    "required_action": "Rewrite examples to produce Unified Market Evidence Requests.",
-    "priority": "P1",
-    "risk_if_unchanged": "Agent uses wrong syntax for tool calling.",
-    "evidence": "Uses legacy intent operations."
-  },
-  {
-    "path": "schemas/unified_market_evidence_request.v1.schema.json",
-    "artifact_type": "Canonical Schema",
-    "current_role": "Defines the new Unified Request",
-    "actual_content_summary": "Schema for AI to request market evidence.",
-    "current_source_of_truth_claim": "Current Canonical AI-facing contract",
-    "latest_known_baseline": "PR #160",
-    "conflicts_with": [],
-    "duplication_group": "none",
-    "recommended_classification": "CURRENT_CANONICAL",
-    "recommended_future_role": "Primary AI-facing request schema",
-    "required_action": "None",
-    "priority": "None",
-    "risk_if_unchanged": "None",
-    "evidence": "Created in PR #160."
+    "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json",
+    "blob_sha": "a982f7d7a972d477a6f62b9b66842c857b03ce63",
+    "evidence": "JSON keys: ['schema_version', 'catalog_id', 'generated_from']",
+    "classification": "CURRENT_CANONICAL",
+    "priority": "P0"
   },
   {
     "path": "schemas/unified_market_evidence_capability_catalog.v1.schema.json",
-    "artifact_type": "Canonical Schema",
-    "current_role": "Defines capability catalog",
-    "actual_content_summary": "Schema for project capabilities exposed to AI.",
-    "current_source_of_truth_claim": "Current Canonical AI-facing capability truth",
-    "latest_known_baseline": "PR #160",
-    "conflicts_with": [],
-    "duplication_group": "capability-catalog",
-    "recommended_classification": "CURRENT_CANONICAL",
-    "recommended_future_role": "Primary capability catalog schema",
-    "required_action": "None",
-    "priority": "None",
-    "risk_if_unchanged": "None",
-    "evidence": "Created in PR #160."
+    "blob_sha": "ed28ebae73b7b11e4c1c2a486c2adf7fdab7f55a",
+    "evidence": "JSON keys: ['$schema', '$id', 'title']",
+    "classification": "CURRENT_CANONICAL",
+    "priority": "P0"
   },
   {
-    "path": "docs/m5k_local_ai_workflow.md",
-    "artifact_type": "Workflow Doc",
-    "current_role": "Describes M5 workflow",
-    "actual_content_summary": "Describes Mode A/B/C and Level 1/2 in M5 context.",
-    "current_source_of_truth_claim": "Workflow reference",
-    "latest_known_baseline": "M5",
-    "conflicts_with": [
-      "M8R-05A contracts"
-    ],
-    "duplication_group": "workflow",
-    "recommended_classification": "RETAIN_AND_REINTERPRET",
-    "recommended_future_role": "Operator and frontend workflow model (Mode A/B/C).",
-    "required_action": "Re-interpret Mode A/B/C as frontend/operator concepts, not AI intents. Re-interpret Level 1/2 as metadata.",
-    "priority": "P0",
-    "risk_if_unchanged": "Confusion over Mode A/B/C being AI request inputs vs frontend execution states.",
-    "evidence": "Uses Mode A/B/C as primary AI vocab."
+    "path": "schemas/unified_market_evidence_request.v1.schema.json",
+    "blob_sha": "b38c8c3adbeaf494bcf8aa489f7e3bd18cb31f91",
+    "evidence": "JSON keys: ['$schema', '$id', 'title']",
+    "classification": "CURRENT_CANONICAL",
+    "priority": "P0"
+  },
+  {
+    "path": "schemas/unified_market_evidence_preview_response.v1.schema.json",
+    "blob_sha": "a18b9cd4b4df114c92ef9d3a9b04fc98fd3ab5eb",
+    "evidence": "JSON keys: ['$schema', '$id', 'title']",
+    "classification": "CURRENT_CANONICAL",
+    "priority": "P0"
+  },
+  {
+    "path": "schemas/unified_market_evidence_result.v1.schema.json",
+    "blob_sha": "cd770d6bc5ee3a074bdf1703485159f2f894a74e",
+    "evidence": "JSON keys: ['$schema', '$id', 'title']",
+    "classification": "CURRENT_CANONICAL",
+    "priority": "P0"
+  },
+  {
+    "path": "docs/ai/m8_ai_capability_contract.json",
+    "blob_sha": "a07eb5812fd418da9e9e87bcb3a0eb7ea2475f68",
+    "evidence": "JSON keys: ['schema_version', 'task_id', 'baseline_sha']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/agent_usage_guide.md",
+    "blob_sha": "bb826bc76b49cf0390f512d316d4743d9c69b0b1",
+    "evidence": "Heading: # Agent Usage Guide",
+    "classification": "REWRITE_REQUIRED",
+    "priority": "P0"
   },
   {
     "path": "docs/ai_safety_policy.md",
-    "artifact_type": "Policy Doc",
-    "current_role": "Safety policy",
-    "actual_content_summary": "Prohibits recommendations and limits output scopes (smallest sufficient).",
-    "current_source_of_truth_claim": "Global safety rule",
-    "latest_known_baseline": "Pre-M8R",
-    "conflicts_with": [
-      "M8R-05A complete output principle"
-    ],
-    "duplication_group": "policy",
-    "recommended_classification": "REWRITE_REQUIRED",
-    "recommended_future_role": "Safety boundaries combined with exhaustive canonical results.",
-    "required_action": "Clarify that no recommendations applies to canonical project output, but AI may discuss scenarios based on policy. Remove smallest sufficient, replace with exhaustive within authorized bounds.",
-    "priority": "P0",
-    "risk_if_unchanged": "Contradicts exhaustive output principle.",
-    "evidence": "Contains smallest sufficient and blanket no recommendations rules."
+    "blob_sha": "fef2c8c843485970ceb05a4478575512df9f196e",
+    "evidence": "Heading: # AI Safety Policy",
+    "classification": "REWRITE_REQUIRED",
+    "priority": "P0"
   },
   {
-    "path": "docs/INDEX.md",
-    "artifact_type": "Index",
-    "current_role": "Docs entrypoint",
-    "actual_content_summary": "Lists documents.",
-    "current_source_of_truth_claim": "None",
-    "latest_known_baseline": "Pre-M8R-05A",
-    "conflicts_with": [],
-    "duplication_group": "none",
-    "recommended_classification": "RETAIN_AND_STRENGTHEN",
-    "recommended_future_role": "Doc index updated with M8R-05A references.",
-    "required_action": "Update links to point to M8R-05A contracts.",
-    "priority": "P4",
-    "risk_if_unchanged": "Points to stale docs.",
-    "evidence": "Outdated index."
+    "path": "skills/tw-market-evidence-agent/SKILL.md",
+    "blob_sha": "9fec9830ae01c34e16037179ca14a41b6b80c843",
+    "evidence": "Heading: # Taiwan Market Evidence Agent Skill",
+    "classification": "RETAIN_AND_REINTERPRET",
+    "priority": "P1"
   },
   {
-    "path": "README.md",
-    "artifact_type": "Repo Root",
-    "current_role": "Repo entrypoint",
-    "actual_content_summary": "General repo info.",
-    "current_source_of_truth_claim": "None",
-    "latest_known_baseline": "Pre-M8R-05A",
-    "conflicts_with": [],
-    "duplication_group": "none",
-    "recommended_classification": "RETAIN_AND_STRENGTHEN",
-    "recommended_future_role": "Top level intro.",
-    "required_action": "Add mention of M8R-05A Unified Evidence architecture.",
-    "priority": "P4",
-    "risk_if_unchanged": "Minor confusion.",
-    "evidence": "Missing M8R-05A references."
+    "path": "skills/tw-market-evidence-agent/references/capability_quick_guide.md",
+    "blob_sha": "6ccabd7950d720a5b1bb4aa7e5d0e9074c32d5f6",
+    "evidence": "Heading: # M8 AI Capability Quick Guide",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "server/main.py",
+    "blob_sha": "4870546dec373498cf68cd68b7e1c5742072e814",
+    "evidence": "Code def: def governance_caveats():",
+    "classification": "COMPATIBILITY_ONLY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/data_capabilities/m8r_03b_phased_delivery_plan.json",
+    "blob_sha": "56bc432d5b486df2f3bc8f67a238a36151d7899f",
+    "evidence": "JSON keys: ['schema_version', 'decision', 'recommended_next_bounded_engineering_task']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03b/scenario_a_current_watchlist.json",
+    "blob_sha": "d27f961c265b629f0ece2b004f3b4f408fa85ca9",
+    "evidence": "JSON keys: ['schema_version', 'scenario_id', 'user_input']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/contracts/m8r_03e_r4_performance_measurement_contract.json",
+    "blob_sha": "63010231c1cab4b7b19fb5b487bef906cf1e409e",
+    "evidence": "JSON keys: ['schema_version', 'task_id', 'network_execution_used']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e_f1/partial_source_failure.json",
+    "blob_sha": "3a9bd1643bb260a2a75eb588e109229d57093dde",
+    "evidence": "JSON keys: ['fixture_id', 'baseline_sha', 'intent_id']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e/blocked_target/request.json",
+    "blob_sha": "054e73bb470ee5171edb7137426fb0bcdbd0b0ac",
+    "evidence": "JSON keys: ['clarification_reason', 'clarification_required', 'conversation_intent']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e_r5a/context_projection.json",
+    "blob_sha": "a2833de676d671423699ef164828513d565b3ddc",
+    "evidence": "JSON keys: ['caveats', 'citation_index', 'context_budget']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/acceptance_runs/M8R_03E_R3_VALIDATION.json",
+    "blob_sha": "661263b6b613501b1931021a9ba2909e908541f2",
+    "evidence": "JSON keys: ['active_status', 'baseline_sha', 'command_records']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e_r5a/security_identity_snapshot_manifest.json",
+    "blob_sha": "2cca91d5d896680393d7ddfa0a7f9ab349a181a1",
+    "evidence": "JSON keys: ['coverage', 'effective_observation_date', 'generated_at_utc']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/unit/test_m8r_03e_r5b_integration.py",
+    "blob_sha": "dc15539e2693e69e3412590547e4350bc02ec420",
+    "evidence": "Code def: def test_execute_watchlist_fail_closed_o",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e/context_budget_pressure/request.json",
+    "blob_sha": "a9872a08e25997318daf9e8708d40a43e14bfb78",
+    "evidence": "JSON keys: ['clarification_reason', 'clarification_required', 'conversation_intent']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/unit/test_m8r_03d_production_calendar_integration.py",
+    "blob_sha": "24eb2ecbde1597dbdecf41674f87e5e7afa54949",
+    "evidence": "Code def: class MockHttpResponse:",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "scripts/m8r_03d_f1_security_master_snapshot_adapter.py",
+    "blob_sha": "88fefcff611f1867531ccaa8fbbe5d1ac98f5e78",
+    "evidence": "Code def: class VerifiedSecurityMasterSnapshotErro",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03b/scenario_c_ambiguous_watchlist.json",
+    "blob_sha": "9c9d4c50cb7fd58fef4c3d59a6c972700ad2a94d",
+    "evidence": "JSON keys: ['schema_version', 'scenario_id', 'user_input']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/unit/test_m8r_03e_watchlist_ai_context.py",
+    "blob_sha": "a3511bb6d434d0aa00f53b38710ff5b8389b41b8",
+    "evidence": "Code def: def loadcase(name):",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/security/M8R_03E_R2_FILESYSTEM_CONTAINMENT_THREAT_MODEL.md",
+    "blob_sha": "e0fdad93ba5da281f1f230bfc708b199433e0513",
+    "evidence": "Heading: # M8R-03E-R2 filesystem containment threat model",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/protocol/M8R_03E_R1_M8_POST_M8C_REPOSITORY_REALIGNMENT_AND_HEALTH_AUDIT.md",
+    "blob_sha": "786b7e50a323e4f7d76b701fe5cb1cd44af97e79",
+    "evidence": "Heading: # M8R-03E-R1 M8 Post-M8C Repository Realignment and Health Audit Protocol",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/protocol/M8R_03E_R5A_PHASE_C_ENABLING_CROSS_LAYER_FIXTURE_CONTRACT.md",
+    "blob_sha": "2f5d4feb4dd1665a5eb5a889fbe8baacd2d56228",
+    "evidence": "Heading: # M8R-03E-R5A: Phase C Enabling Cross-Layer Fixture Contract",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/protocol/M8R_03E_R4_PERFORMANCE_AND_SCALABILITY_HARDENING.md",
+    "blob_sha": "26829adef70a57081412c1b225bb4dbddc24ef05",
+    "evidence": "Heading: # M8R-03E R4 performance and scalability hardening",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "scripts/run_m8r_03e_performance_baseline.py",
+    "blob_sha": "b4bf7590d0129af31d84cbfdc35579ddd5d55456",
+    "evidence": "Code def: def _peak_memory() -> dict[str, Any]:",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/protocol/M8R_03E_R2_COMBINED_FINAL_ACCEPTANCE.md",
+    "blob_sha": "a207cc2d9f34707436eb78e2e4bd1241481aa8cb",
+    "evidence": "Heading: # M8R-03E-R2 combined final acceptance",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e/fixture_only_f1_evidence/execution_plan.json",
+    "blob_sha": "9a40be25ae5d7648b69dea484f702c5391d647d4",
+    "evidence": "JSON keys: ['authorization_required', 'bundle_type', 'created_at_utc']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/acceptance_runs/M8R_03E_EOD_EXPECTED_TRADE_DATE_AND_SESSION_STATUS.json",
+    "blob_sha": "5d49ff60272abd8559be633a29d84a0200a4309d",
+    "evidence": "JSON keys: ['task_id', 'timestamp', 'environment']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/unit/test_m8r_03e_r5b_cross_platform_filesystem_safety.py",
+    "blob_sha": "9dffdd0e2129c8265a259d5122d6d36e0f7e7fe5",
+    "evidence": "Code def: def test_safe_portable_paths():",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "scripts/run_m8r_03c_watchlist_bundle_fixture.py",
+    "blob_sha": "0171944a0fac761a84c6cc8c08f3039a7fedac43",
+    "evidence": "Code def: def main(argv=None):",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "scripts/export_m8r_03d_f1_verified_security_master_snapshot.py",
+    "blob_sha": "f00fff24a7d91c4c3bca6f8a8496eb994e2f6227",
+    "evidence": "Code def: def _load(path):",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/quality/M8R_03E_R3_ARCHITECTURE_AND_POLICY_BOUNDARY_REVIEW.md",
+    "blob_sha": "0180f290f6fa2dbf2882a190297a09edf2b15612",
+    "evidence": "Heading: # M8R-03E R3 architecture and policy boundary review",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e_f1/recommendation_with_sufficient_evidence.json",
+    "blob_sha": "b64cad0df68b9763faf10474ca3fbd183b3c70b6",
+    "evidence": "JSON keys: ['fixture_id', 'baseline_sha', 'intent_id']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e_r5a/currentness_assessment.json",
+    "blob_sha": "4c3146a37d95b219fee63888aa262c9db8cdea67",
+    "evidence": "JSON keys: ['generated_at_utc', 'targets']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/unit/test_m8r_03e_r5a_cross_layer_consistency.py",
+    "blob_sha": "faed88f19b86fedd3b5011b863b44d2206a0db05",
+    "evidence": "Code def: def load(name):",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "scripts/m8r_03b_design_contract_validator.py",
+    "blob_sha": "b2b40b543e882b003b432cd59e7f6558da93619e",
+    "evidence": "Code def: def _require(condition: bool, message: s",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/quality/m8r_03e_r3_architecture_inventory.json",
+    "blob_sha": "ac8186a5664d372abd9e901005070aed038ea84e",
+    "evidence": "JSON keys: ['task_id', 'baseline', 'items']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e_f1/performance_intent.json",
+    "blob_sha": "3f14245ebb45211bb6fa04069e634bca00191b7d",
+    "evidence": "JSON keys: ['fixture_id', 'baseline_sha', 'intent_id']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "scripts/m8r_03e_r5a_cross_layer_fixture.py",
+    "blob_sha": "8de5c17ca1c91dfbfc0d49abd7ee4d97fa06a804",
+    "evidence": "Code def: class R5AFixtureClock:",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e_r3/historical_v1_context_package.json",
+    "blob_sha": "f44ae1c019b1b5fec4276fb2db076d64349c4aac",
+    "evidence": "JSON keys: ['caveats', 'citation_index', 'context_budget']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03d/mixed_snapshot_source_data.json",
+    "blob_sha": "65a990207bce40469a6ebb877c5bddbc1348ab21",
+    "evidence": "JSON keys: ['targets']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e_r5a/missing_evidence_register.json",
+    "blob_sha": "f932e6736df8ccd37e07498c0b2a9374ab8e9ef2",
+    "evidence": "JSON array",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/migrations/M8R_03E_R3_AI_POLICY_AND_EVIDENCE_SCHEMA_MIGRATION.md",
+    "blob_sha": "aabcfef6944daabdd467f3482e3d5398a517a84a",
+    "evidence": "Heading: # M8R-03E R3 AI policy and evidence schema migration",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/unit/test_m8r_03e_r5a_projection_and_citations.py",
+    "blob_sha": "dba3fe43abc58eaef9d75338b89f080f0171e8dd",
+    "evidence": "Code def: def load(name):",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "scripts/m8r_03e_conversation_handoff_builder.py",
+    "blob_sha": "e14fd98275f4c6facd5ace89927647b45915dd2a",
+    "evidence": "Code def: def compose_conversation_handoff(*, evid",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/unit/test_m8r_03e_r3_architecture_boundaries.py",
+    "blob_sha": "018db029b451f741f2d5d3e0482e6221e5e9dd89",
+    "evidence": "Code def: def test_active_evidence_schema_has_no_p",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e/context_budget_pressure/execution_result.json",
+    "blob_sha": "4d75b55d2a3d39fb59bc9671a0aa992f44f35c3f",
+    "evidence": "JSON keys: ['artifact_paths', 'authorization_id', 'bundle_artifact']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/acceptance_runs/M8R_03E_R4_VALIDATION.json",
+    "blob_sha": "f91fa980c5007a3dee88d2c9b9b04b48d97694b2",
+    "evidence": "JSON keys: ['task_id', 'baseline_main_sha', 'tested_parent_sha']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e/performance/execution_plan.json",
+    "blob_sha": "42e85faea7e81e92bddf9979f163059ccd3efd38",
+    "evidence": "JSON keys: ['authorization_required', 'bundle_type', 'created_at_utc']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/unit/test_m8r_03e_r4_performance.py",
+    "blob_sha": "c08ed9a1a0f653f4e9ddf59f31f3093b4384cbc4",
+    "evidence": "Code def: def load(): return json.loads((ROOT/'doc",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e_r5a/source_capability_snapshot.json",
+    "blob_sha": "d040d9ed975e7d0bbb018d9b92d15f17b45aca6e",
+    "evidence": "JSON keys: ['activation_commit_sha', 'active_architectural_model', 'active_runtime_source_families']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/protocol/M8R_03E_R5B_CROSS_PLATFORM_FILESYSTEM_FAIL_CLOSED_CONTRACT.md",
+    "blob_sha": "f6904717583b6258cc3686c3e59c81c53bab468c",
+    "evidence": "Heading: # M8R-03E R5B Cross-Platform Filesystem Fail-Closed Contract",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e/stale_currentness_unresolved/execution_result.json",
+    "blob_sha": "34c91c4dd7340eca1e623fd36fdcb893d7027f0e",
+    "evidence": "JSON keys: ['artifact_paths', 'authorization_id', 'bundle_artifact']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e/partial_source_failure/execution_result.json",
+    "blob_sha": "a86eee216ed0e44daa4cf238ba89d2e9d2f2e54c",
+    "evidence": "JSON keys: ['artifact_paths', 'authorization_id', 'bundle_artifact']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/protocol/M8R_00_PRODUCTIZATION_BOUNDARY_AND_SCOPE_CLOSURE.md",
+    "blob_sha": "b5206017f843630389cacb69db665f413d3a441f",
+    "evidence": "Heading: # M8R-00 Productization Boundary and Scope Closure",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/acceptance_runs/M8R_03E_R5B_FILESYSTEM_TRUST_BOUNDARY_INVENTORY.json",
+    "blob_sha": "b76ee4f637929791aeb1cefd2dc594c1b977abed",
+    "evidence": "JSON array",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "scripts/resolve_m8r_03d_f1_security_identity.py",
+    "blob_sha": "fc3bd6b6a85edb190142dee2a319d8cdfb28014f",
+    "evidence": "Code def: def main(argv=None):",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "docs/research/m8r_03e_r5a/M8R_03E_R5A_CROSS_LAYER_FIXTURE_CONTRACT_INVENTORY.md",
+    "blob_sha": "ad219ea44e22ea9362f79b32fbade0aca57fa865",
+    "evidence": "Heading: # M8R_03E_R5A Cross-Layer Fixture Contract Inventory",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
+  },
+  {
+    "path": "tests/fixtures/m8r_03e/fixture_only_f1_evidence/bundle.json",
+    "blob_sha": "4c07113d6864de417a64145ddb4ecc7282b3640e",
+    "evidence": "JSON keys: ['bundle_id', 'conversation_context', 'coverage']",
+    "classification": "COMPATIBILITY_ONLY_LEGACY",
+    "priority": "P2"
   }
 ]
