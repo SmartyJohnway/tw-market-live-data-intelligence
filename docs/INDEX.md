@@ -135,9 +135,18 @@ git diff --check
 - [M8 Repository Health Audit](quality/M8_REPOSITORY_HEALTH_AUDIT.md)
 - [M8R-03E-R1 Protocol](protocol/M8R_03E_R1_M8_POST_M8C_REPOSITORY_REALIGNMENT_AND_HEALTH_AUDIT.md)
 
-## M8 AI capability and Agent Skill
+## M8R-05A Unified Market Evidence (Current Authority)
 
-- [M8 AI capability quick guide](ai/M8_AI_CAPABILITY_QUICK_GUIDE.md)
-- [M8 AI capability contract](ai/M8_AI_CAPABILITY_CONTRACT.md)
-- [M8R-03E-F1 AI capability guide and Agent Skill protocol](protocol/M8R_03E_F1_AI_CAPABILITY_GUIDE_AND_AGENT_SKILL_CONTRACT.md)
+- [Unified Request Schema](../schemas/unified_market_evidence_request.v1.schema.json)
+- [Unified Result Schema](../schemas/unified_market_evidence_result.v1.schema.json)
+- [Unified Capability Catalog](../docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json)
+- [AI Agent Usage Guide](agent_usage_guide.md)
+- [AI Safety Policy](ai_safety_policy.md)
 - [Portable market-evidence Agent Skill](../skills/tw-market-evidence-agent/SKILL.md)
+
+## Historical / Compatibility References
+
+- [Legacy M8 AI capability quick guide](ai/M8_AI_CAPABILITY_QUICK_GUIDE.md) (Superseded redirect)
+- [Legacy M8 AI capability contract](ai/M8_AI_CAPABILITY_CONTRACT.md) (Archived)
+- [M8R-03E-F1 AI capability guide and Agent Skill protocol](protocol/M8R_03E_F1_AI_CAPABILITY_GUIDE_AND_AGENT_SKILL_CONTRACT.md)
+

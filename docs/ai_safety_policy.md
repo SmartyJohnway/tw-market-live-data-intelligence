@@ -1,41 +1,52 @@
-# AI Safety Policy
+# AI Safety Policy (M8R-05A-F2 Realignment)
 
-## Required framing
-AI responses must state that M5F data is historical/stale reviewed evidence for a bounded watchlist. Always include source, source date, freshness/staleness, and caveats.
+This policy governs the safety boundaries, execution limits, and analytical constraints applied to Taiwan market evidence.
 
-## Prohibited outputs
-Do not provide investment advice, buy/sell/hold instructions, target prices, rankings, portfolio actions, full-market claims, realtime guarantees, production-current-state claims, or broker/execution guidance.
+---
 
-## Source authority rules
-TWSE_OpenAPI is official reference evidence in this package, not an intraday realtime feed. Source authority must be quoted from the package; do not upgrade source status based on assumptions.
+## 1. Project Canonical Output Constraints
 
-## Freshness requirements
-Display `historical/stale`, source date, retrieval timestamp where available, delay status, and `not_realtime_guaranteed`. If a symbol or source fails in future packages, disclose it instead of fabricating values.
+The project's execution engine operates strictly as an objective evidence provider. The canonical output (i.e., any generated JSON matching the `unified_market_evidence_result.v1` schema) **must never generate or contain**:
+- **Trading Instructions**: Explicit `buy`, `sell`, or `hold` classifications.
+- **Valuation Targets**: Target price predictions, price rankings, or trading signals.
+- **Transaction Mutations**: Broker actions, order entries, or portfolio modifications.
 
-## Bounded watchlist requirement
-Only discuss the symbols present in the canonical payload. Do not infer market-wide conclusions from 0050, 00929, and 2330.
+---
 
-## Failure behavior
-If package validation fails or a consumer reports malformed/missing artifacts, refuse market summarization and ask the operator to restore or rebuild the canonical package through the validator and builder.
+## 2. AI Conversational Policy
 
+The prohibition on generating investment advice and trading signals is enforced at the **project execution layer**, not as a blanket muzzle on all conversational AI reasoning. 
+- The AI is **permitted** to perform analytical reasoning, scenario analysis, risk discussions, and comparison of historical returns.
+- If the conversational environment allows, the AI may express opinions or discuss suitability, provided that:
+  1. It relies strictly on the returned evidence.
+  2. It explicitly highlights missing evidence or data gaps.
+  3. It explicitly states the time horizon and associated risks.
+  4. It clearly separates objective evidence from AI-generated analytical commentary.
 
-## M5IJ local product release
+---
 
-M5F is the canonical product context. M5I is explicit bounded refresh only; M5J is final local release hardening. Default startup makes no market-data network calls. Refresh requires explicit single-use authorization and is bounded to the configured watchlist and product scope. Failed refresh preserves last-known-good M5F. No full-market scan, polling, frontend/public publication, research/generated refresh, production/prod write, broker/auth, automatic order, trading signal, target price, ranking, or recommendation is allowed. FastAPI `/api/probe/*` is disabled pending M5I and returns 410.
+## 3. Source Authority and Currentness Framing
 
-Required commands:
+When presenting evidence to users, the AI must strictly preserve the authority level of each source family:
+- **TWSE_OPENAPI / TPEX_OPENAPI**: Official completed End-of-Day statistics. Do not describe EOD prices as intraday live quotes.
+- **TWSE_MIS / TAIFEX_MIS**: Live-ish cash/derivatives snapshots. Always include a caveat stating that these snapshots are not zero-latency realtime feeds and do not guarantee tick-by-tick trading correctness.
+- **NCDR_DGPA_CLOSURE_CAP**: Dynamic emergency closure events only. Do not interpret weather closures as market-maker data.
+- **Staleness disclosure**: If the data's retrieval date is in the past, or if the session is marked `closed` or `stale`, use past tense and state: *"This data is from a completed historical session and is reference-only."*
 
-```bash
-python -m pip install -r requirements.txt
-pytest -m "not network" -v
-python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01
-python scripts/run_m5ij_end_to_end_acceptance.py --check-only
-uvicorn server.main:app --host 127.0.0.1 --port 8000
-python server/mcp_server.py --startup-check
-```
+---
 
-Explicit authorization refresh command, if supported by the operator environment:
+## 4. Request-Scoped Analysis Boundary
 
-```bash
-python scripts/run_m5i_explicit_bounded_refresh.py --execute-refresh --authorization-token <authorization.json> --source TWSE_OpenAPI --targets 0050 00929 2330 --no-frontend-publication --no-production-refresh --no-generated-refresh --no-trading-output
-```
+AI must restrict its discussion to the requested and authorized target securities. 
+- Do not make sweeping market-wide claims or structural inferences from a small watchlist (e.g., inferring TWSE index trends solely from 2330).
+- If additional market-wide context is required, the AI must ask the user to authorize a new Unified Request with an expanded scope.
+
+---
+
+## 5. Security and Credentials Protection
+
+Under no circumstances may the AI request, store, or expose:
+- Personal credentials, passwords, or account IDs.
+- API keys, token secrets, or cookies.
+- Raw payload buffers containing authorization signatures.
+- Local absolute paths or internal server configuration blobs.
