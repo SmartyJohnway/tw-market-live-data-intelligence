@@ -1,0 +1,17 @@
+{
+  "schema_version": "unified_market_evidence_request.v1",
+  "request_id": "fixture-03-req",
+  "targets": [
+    {
+      "input": "台積",
+      "resolution_requirement": "allow_ambiguity"
+    }
+  ],
+  "data_needs": [
+    {
+      "type": "identity",
+      "priority": "required"
+    }
+  ],
+  "execution_mode": "preview"
+}

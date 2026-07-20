@@ -20,7 +20,7 @@ REQ_ART=['authorization_snapshot.json','request_snapshot.json','execution_receip
 FORBID_PREFIX=('research/generated/','frontend/public/','production/','prod/')
 SUCCESS_CONTRACT_STATUSES={'normalized_pass','partial_pass'}
 FORBID_FLAGS=['production_current_state','realtime_guaranteed','trading_signal','generated_artifact_promoted','frontend_published','production_ready','promotion_authorized','frontend_publication_authorized','generated_artifact_write']
-def load(p): return json.loads(Path(p).read_text())
+def load(p): return json.loads(Path(p).read_text(encoding='utf-8'))
 def safe_load(p):
     try:
         return load(p), None

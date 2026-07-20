@@ -1,0 +1,22 @@
+{
+  "schema_version": "unified_market_evidence_request.v1",
+  "request_id": "fixture-04-req",
+  "targets": [
+    {
+      "input": "2330",
+      "market_hint": "TWSE",
+      "resolution_requirement": "exact"
+    },
+    {
+      "input": "INVALID999",
+      "resolution_requirement": "exact"
+    }
+  ],
+  "data_needs": [
+    {
+      "type": "official_eod_reference",
+      "priority": "required"
+    }
+  ],
+  "execution_mode": "execute"
+}

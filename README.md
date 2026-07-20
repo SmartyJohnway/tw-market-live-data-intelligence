@@ -26,7 +26,7 @@ It is a **Local Release Candidate**. It is not production ready and it does not 
 
 ## What can it NOT do?
 
-No trading, no buy/sell/hold, no recommendations, no ranking, no target prices, no broker/auth, no automatic orders, no polling, no scheduler, no startup network calls, no full-market scans, and no realtime guarantee.
+No trading, no buy/sell/hold, and no trading signals in project canonical execution outputs. No broker/auth, no automatic orders, no polling, no scheduler, no startup network calls, no full-market scans, and no zero-latency realtime guarantee. The project acts strictly as a deterministic evidence provider.
 
 ## Start here
 

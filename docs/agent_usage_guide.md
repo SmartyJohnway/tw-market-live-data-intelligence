@@ -1,44 +1,172 @@
-# Agent Usage Guide
+# Agent Usage Guide (M8R-05A-F2 Unified Version)
 
-## Goal
-Agents should help operate a local-first, bounded-watchlist Taiwan market context center. The first artifact to read is `research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json`.
+This guide instructs AI agents on when and how to utilize the Unified Market Evidence workbench. The AI acts as the **request author and evidence analyst**, generating structured requests and interpreting the resulting evidence.
 
-## Citation and quoting rules
-When answering, quote the package path, source, source date, freshness/stale status, caveats, and exact symbols. Do not summarize price-like values without saying they are reviewed historical evidence, not realtime prices.
+---
 
-## Safe workflow for Codex/Jules/Claude/Cursor/VS Code agents
-1. Run `python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01`.
-2. Read canonical payload, then derived briefing if needed.
-3. Use FastAPI/MCP readonly tools only for consumption.
-4. Before handoff, report commands run, files touched, package hashes, and forbidden-path checks.
+## 1. Purpose
 
-## Actions that may use network
-Only future explicitly authorized refresh work may use market-data network calls. This M5FGH package does not authorize live probes, broker/auth flows, or publication.
+The Unified Market Evidence project provides a deterministic mechanism to query available market evidence and check market currentness without relying on subjective natural-language interpretation. This guide ensures the AI understands the boundary between the project's data execution and the AI's own reasoning.
 
-## Forbidden agent claims
-No investment advice, buy/sell/hold, target price, ranking, full-market coverage, realtime guarantee, or production-current-state claim.
+> [!WARNING]
+> **Current Runtime Limitations**
+> The project currently provides the schema, policies, and manual contract handoff structures. **Unified intake, direct preview orchestration, and automated Unified execution via MCP or F3 resolvers are NOT yet implemented.**
+> The AI currently can only author schema-valid requests and perform manual handoff via the operator. Future phases (F3, 05B, 05C) will build the direct automated runtime. Do not claim the Unified executor is currently available to the AI.
 
-## Handoff checklist
-Include branch, commit, validation output, exact symbols, source date, caveats, and whether `frontend/public`, `research/generated`, M5B, M5C, or M5D changed.
+---
 
+## 2. When to Call the Project
 
-## M5IJ local product release
+AI agents should propose invoking the project when the conversation requires:
+- **Taiwan Cash Market Status**: Current intraday or recent cash-market status (TWSE, TPEx).
+- **Official Reference Data**: Official End-of-Day (EOD) metrics (OHLCV, trade volume) or derivatives statistics.
+- **Security Verification**: Verifying the canonical identity, ticker symbol, market venue, or listing lifecycle state.
+- **Currentness & Session Diagnostics**: Determining whether a specific date/time is an active trading session or a holiday.
+- **Evidence Semantics**: Demanding official citations, retrieved timestamps, provenance hashes, or coverage audits.
+- **Explicit Instruction**: When the user explicitly requests querying latest or official exchange data.
 
-M5F is the canonical product context. M5I is explicit bounded refresh only; M5J is final local release hardening. Default startup makes no market-data network calls. Refresh requires explicit single-use authorization and is bounded to the configured watchlist and product scope. Failed refresh preserves last-known-good M5F. No full-market scan, polling, frontend/public publication, research/generated refresh, production/prod write, broker/auth, automatic order, trading signal, target price, ranking, or recommendation is allowed. FastAPI `/api/probe/*` is disabled pending M5I and returns 410.
+---
 
-Required commands:
+## 3. When NOT to Call
 
-```bash
-python -m pip install -r requirements.txt
-pytest -m "not network" -v
-python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01
-python scripts/run_m5ij_end_to_end_acceptance.py --check-only
-uvicorn server.main:app --host 127.0.0.1 --port 8000
-python server/mcp_server.py --startup-check
+AI agents should **NOT** invoke the project for:
+- **General Financial Concepts**: Definitions, educational materials, or standard economic theory.
+- **No-refresh / Existing Context**: When sufficient historical evidence is already present in the conversation context and no refresh is requested.
+- **Non-Taiwan Markets**: Queries regarding US, Japanese, or other global exchanges not supported by the capability catalog.
+- **Pure Textual Formatting**: Editing, translating, or formatting previously retrieved data.
+
+---
+
+## 4. AI Decision Process
+
+When processing a user query, the AI must follow this reasoning workflow:
+1. **Understand Intent**: Analyze the conversation context and identify if market evidence is required.
+2. **Determine Targets**: Identify ticker codes, security names, and target venues.
+3. **Identify Data Needs**: Select from the 7 defined capability needs (e.g., `identity`, `current_observation`, `official_eod_reference`).
+4. **Clarify Ambiguity**: If target symbols are ambiguous (e.g., "台積" vs "台積電"), **ask the user** for clarification instead of letting the project guess.
+5. **Compose Unified Request**: Build a valid JSON request conforming to `unified_market_evidence_request.v1.schema.json`.
+6. **Manual Handoff**: Provide the JSON to the user/operator to run manually in the workbench.
+
+---
+
+## 5. Unified Request Authoring
+
+A Unified Request must be a JSON object with the following fields:
+
+```json
+{
+  "schema_version": "unified_market_evidence_request.v1",
+  "request_id": "unique-uuid-or-string",
+  "targets": [
+    {
+      "input": "2330",
+      "market_hint": "TWSE",
+      "resolution_requirement": "exact"
+    }
+  ],
+  "data_needs": [
+    {
+      "type": "official_eod_reference",
+      "priority": "required"
+    }
+  ],
+  "execution_mode": "preview"
+}
 ```
 
-Explicit authorization refresh command, if supported by the operator environment:
+### Request Fields:
+- **`schema_version`** (string, required): Must be exactly `"unified_market_evidence_request.v1"`.
+- **`request_id`** (string, required): A unique client-supplied tracking identifier.
+- **`targets`** (array, required): Tickers or symbols to query.
+  - `input`: The search string.
+  - `market_hint`: Optional venue constraint (`"TWSE"`, `"TPEX"`, `"TAIFEX"`, or `null`).
+  - `resolution_requirement`: Optional constraint (`"exact"`, `"allow_ambiguity"`, or `"best_effort"`).
+- **`data_needs`** (array, required): Desired capabilities.
+  - `type`: One of the 7 supported capability types.
+  - `priority`: `"required"` or `"optional"`.
+  - `parameters`: Only required for `recent_performance` (lookback days).
+- **`execution_mode`** (string, required): `"preview"` or `"execute"`.
 
-```bash
-python scripts/run_m5i_explicit_bounded_refresh.py --execute-refresh --authorization-token <authorization.json> --source TWSE_OpenAPI --targets 0050 00929 2330 --no-frontend-publication --no-production-refresh --no-generated-refresh --no-trading-output
-```
+---
+
+## 6. Target Authoring and Ambiguity
+
+AI must prioritize canonical code identification. If multiple matches or ambiguous targets exist:
+- Propose the candidate targets back to the user.
+- Ask: *"Please confirm if you meant TWSE 2330 (TSMC) or TPEx 5347 (World Advanced)?"*
+- Do not submit ambiguous inputs to the executor without setting `resolution_requirement` appropriately.
+
+---
+
+## 7. Data Needs Catalog
+
+AI must only request capabilities listed in the canonical catalog:
+1. **`identity`**: Canonical security registration and lifecycle details.
+2. **`current_observation`**: Latest live-ish snapshot (not guaranteed zero-latency realtime).
+3. **`official_eod_reference`**: Official completed-session EOD OHLCV data.
+4. **`recent_performance`**: Historical movement calculations (requires parameter `lookback_trading_days`).
+5. **`session_status`**: Market session status and emergency closure states.
+6. **`source_currentness`**: Metadata regarding retrieval times and effective trade dates.
+7. **`evidence_quality`**: Quality assertions, caveats, and gaps in the retrieved data.
+
+---
+
+## 8. Target Operator Workflows (Mode A, B, C)
+
+While the AI composes the JSON request, the actual execution is performed by the human Operator or Frontend Workbench using specific workflows. **These Modes are NOT AI JSON request parameters.** They are the target manual processes the operator follows:
+
+- **Mode A (Inspect and Validate)**: The operator reviews the AI's proposed target lists and data needs. The workbench validates the schema without making external network calls.
+- **Mode B (Preview, Authorize, Execute Once)**: The operator runs a dry-run preview, views estimated network costs and target scopes, explicitly authorizes the action, and the workbench executes it.
+- **Mode C (Package and Handoff)**: The workbench generates a bundled snapshot of canonical evidence and passes it back to the AI context.
+
+> [!NOTE]
+> The existing legacy workbench does not yet implement the full Unified Request/Preview/Result lifecycle. AI produces schema-valid requests for review and future intake. Mode A/B/C represent the target workflow after Workbench realignment.
+
+---
+
+## 9. Evidence Lifecycle (Level 1 and Level 2)
+
+- **Level 1 (Durable Governed Evidence)**: Stable, long-term governed evidence. Examples include canonical security identity, accepted official EOD references, and stable registry evidence.
+- **Level 2 (Request-Scoped Time-Sensitive Evidence)**: Transitory evidence tied to a specific request. Examples include one-shot live-ish observations and request-bound currentness.
+
+> [!NOTE]
+> A single Unified Result can contain both Level 1 and Level 2 data.
+> "Raw transport payload" versus "canonical normalized evidence" is a completely separate dimension. Raw transport payload belongs to audit artifacts and is NOT equivalent to Level 1.
+
+### Evidence Semantics
+- **Time Semantics**: `retrieved_at` strictly represents the system timestamp when the network request was fulfilled. It is **not** the exchange event time (e.g. trade time).
+- **Return Semantics**: All return percentages and derived performance metrics represent **unadjusted returns** (capital gains only), not total returns, unless explicitly marked with a total return adjustment status.
+
+---
+
+## 10. Result Interpretation
+
+When reading the `unified_market_evidence_result.v1` payload (e.g., pasted by the operator via Mode C), the AI must strictly respect the returned semantics:
+- **Timing taxonomy**: Do not describe an EOD reference as a "current live price".
+- **Staleness**: If the result marks evidence as `stale` or `reference_only`, describe it in the past tense.
+- **Coverage**: If a target resolution fails (`not_found`, `ambiguous`), explicitly report the failure instead of fabricating data.
+- **Missing optional needs**: If optional needs are missing, explain what is missing and why.
+- **Citations**: Preserve `citation_id`, retrieved timestamps, and artifact paths for auditability.
+
+---
+
+## 11. Complete Output Principle
+
+The project operates under the principle of **Exhaustive output within the authorized request scope**. 
+- The project will return all relevant records for the approved targets and needs.
+- The AI must not prompt the project to filter or drop fields during execution.
+- AI should summarize and explain the results for readability in the final chat response, but must retain trace links to the citations.
+
+---
+
+## 12. Manual Workbench Handoff
+
+Because the Unified Orchestrator and direct MCP execution are **future F3 deliverables**, the AI must currently operate via Manual Workbench Handoff.
+
+Current F2 handoff:
+AI produces a schema-valid request for review and future intake. The existing legacy workbench does not yet implement the full Unified Request/Preview/Result lifecycle.
+
+Target future workflow:
+Mode A → Mode B → Mode C.
+
+5. AI interprets the pasted evidence and answers (when available).
