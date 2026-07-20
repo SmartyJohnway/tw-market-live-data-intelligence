@@ -5,13 +5,15 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CANONICAL_PATH = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json"
-PORTABLE_JSON_PATH = ROOT / "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json"
-PORTABLE_GUIDE_PATH = ROOT / "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
-
-def get_file_sha256(path: Path) -> str:
-    with open(path, "rb") as f:
-        return hashlib.sha256(f.read()).hexdigest()
+sys.path.insert(0, str(ROOT / "scripts"))
+from generate_portable_catalog import (
+    CANONICAL_PATH, 
+    PORTABLE_JSON_PATH, 
+    PORTABLE_GUIDE_PATH, 
+    get_file_sha256,
+    generate_portable_json_obj,
+    generate_portable_markdown_text
+)
 
 def validate() -> bool:
     if not CANONICAL_PATH.exists():
@@ -26,7 +28,6 @@ def validate() -> bool:
 
     actual_canonical_hash = get_file_sha256(CANONICAL_PATH)
 
-    # Load Portable JSON
     try:
         with open(PORTABLE_JSON_PATH, "r", encoding="utf-8") as f:
             port = json.load(f)
@@ -39,7 +40,6 @@ def validate() -> bool:
         print(f"FAIL: Hash drift detected. Canonical hash: {actual_canonical_hash}, Portable recorded: {recorded_hash}")
         return False
 
-    # Load Canonical Source
     try:
         with open(CANONICAL_PATH, "r", encoding="utf-8") as f:
             canon = json.load(f)
@@ -47,22 +47,31 @@ def validate() -> bool:
         print(f"FAIL: Failed to parse canonical JSON. Error: {e}")
         return False
 
-    # Verify Capability Record Count and IDs
-    canon_caps = {c["capability_id"]: c for c in canon.get("data_need_capabilities", [])}
-    port_caps = {c["capability_id"]: c for c in port.get("data_need_capabilities", [])}
-
-    if set(canon_caps.keys()) != set(port_caps.keys()):
-        print(f"FAIL: Capability ID mismatch. Canonical: {list(canon_caps.keys())}, Portable: {list(port_caps.keys())}")
+    commit_sha = port.get("portable_metadata", {}).get("generated_from_commit")
+    if not commit_sha:
+        print("FAIL: Missing generated_from_commit in portable metadata.")
         return False
 
-    # Verify Markdown contains the correct source hash
-    guide_text = PORTABLE_GUIDE_PATH.read_text(encoding="utf-8")
-    expected_hash_line = f"Source Registry Hash**: `{actual_canonical_hash}`"
-    if expected_hash_line not in guide_text:
-        print("FAIL: Portable Quick Guide markdown contains outdated source hash or is out of sync.")
+    # Deep Equality Check for JSON
+    expected_portable_data = generate_portable_json_obj(canon, actual_canonical_hash, commit_sha)
+    
+    # We compare the json dumps to ensure strict equivalence
+    actual_json_str = json.dumps(port, sort_keys=True)
+    expected_json_str = json.dumps(expected_portable_data, sort_keys=True)
+    
+    if actual_json_str != expected_json_str:
+        print("FAIL: Deep equality validation failed. The portable JSON has been tampered with or is out of sync with the canonical source.")
         return False
 
-    print("PASS: Portable Skill catalog is fully synchronized with Canonical Catalog SoT.")
+    # Byte-for-byte check for Markdown
+    expected_md_text = generate_portable_markdown_text(expected_portable_data, actual_canonical_hash)
+    actual_md_text = PORTABLE_GUIDE_PATH.read_text(encoding="utf-8")
+
+    if expected_md_text != actual_md_text:
+        print("FAIL: Portable Quick Guide markdown content mismatch. It has been tampered with or is out of sync.")
+        return False
+
+    print("PASS: Portable Skill catalog is fully synchronized with Canonical Catalog SoT (Deep Equality Verified).")
     return True
 
 if __name__ == "__main__":
