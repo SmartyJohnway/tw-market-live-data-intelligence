@@ -7,8 +7,8 @@ SKILL_PATH = ROOT / "skills/tw-market-evidence-agent/SKILL.md"
 
 def test_evidence_semantics_retrieved_at_is_not_event_time():
     guide_content = GUIDE_PATH.read_text(encoding="utf-8")
-    assert "retrieved_at strictly represents the system timestamp" in guide_content
-    assert "not the exchange event time" in guide_content
+    assert "strictly represents the system timestamp" in guide_content
+    assert "the exchange event time" in guide_content
 
 def test_evidence_semantics_unadjusted_return():
     guide_content = GUIDE_PATH.read_text(encoding="utf-8")

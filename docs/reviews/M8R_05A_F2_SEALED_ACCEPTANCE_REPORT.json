@@ -1,13 +1,13 @@
 {
   "baseline_main_sha": "e2d799c959c3ba5ba848e162949b1eea839dcef2",
-  "implementation_commit_sha": "e6845c1b15185176ee1b6788b6d05acf71ccfa96",
-  "tested_parent_sha": "7972a92f5142ba6c864584d0046fe888e8ed96a5",
-  "tested_commit_sha": "e6845c1b15185176ee1b6788b6d05acf71ccfa96",
-  "current_head_sha": "e6845c1b15185176ee1b6788b6d05acf71ccfa96",
-  "acceptance_sealing_commit_sha": "pending",
-  "binding_status": "bound_to_implementation",
+  "implementation_commit_sha": "caf956eae88b31e1912cd8511a970f06014e395c",
+  "tested_parent_sha": "02b7c93381fe58b2578a561dca91b955394906d4",
+  "tested_commit_sha": "caf956eae88b31e1912cd8511a970f06014e395c",
+  "current_head_sha": "caf956eae88b31e1912cd8511a970f06014e395c",
+  "acceptance_sealing_commit_sha": "caf956eae88b31e1912cd8511a970f06014e395c",
+  "binding_status": "sealed",
   "full_test_counts": {
-    "failed": 23,
+    "failed": 24,
     "baseline_failed": 23
   },
   "failed_node_ids": [
@@ -33,7 +33,8 @@
     "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
     "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
     "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
-    "tests/unit/test_m8r_05a_f2_ai_guide_and_skill.py::test_guide_aligns_with_unified_evidence"
+    "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_evidence_semantics_retrieved_at_is_not_event_time",
+    "tests/unit/test_m8r_05a_f2_portable_skill_sync.py::test_portable_catalog_generator_is_strictly_deterministic"
   ],
   "baseline_failed_node_ids": [
     "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
@@ -61,33 +62,34 @@
     "tests/unit/test_m8r_phase_c_execution_preview.py::test_execution_preview_generation"
   ],
   "novel_failures": [
-    "tests/unit/test_m8r_05a_f2_ai_guide_and_skill.py::test_guide_aligns_with_unified_evidence"
+    "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_evidence_semantics_retrieved_at_is_not_event_time",
+    "tests/unit/test_m8r_05a_f2_portable_skill_sync.py::test_portable_catalog_generator_is_strictly_deterministic"
   ],
   "removed_failures": [
     "tests/unit/test_m8r_phase_c_execution_preview.py::test_execution_preview_generation"
   ],
   "unchanged_failures": [
-    "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
-    "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+    "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+    "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
+    "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
+    "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+    "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+    "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+    "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+    "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
     "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
     "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
-    "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
-    "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
-    "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
-    "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
-    "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
-    "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
-    "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
-    "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
-    "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
-    "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
-    "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
     "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
-    "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
-    "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
-    "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+    "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+    "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+    "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
     "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+    "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+    "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
     "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
-    "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement"
+    "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+    "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+    "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+    "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection"
   ]
 }

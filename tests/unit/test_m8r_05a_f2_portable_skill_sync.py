@@ -7,6 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 CANONICAL_CATALOG = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json"
 PORTABLE_CATALOG = ROOT / "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json"
+PORTABLE_MD = ROOT / "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
 REQUEST_SCHEMA_PATH = ROOT / "schemas/unified_market_evidence_request.v1.schema.json"
 FIXTURES_DIR = ROOT / "tests/fixtures/m8r_05a_f2"
 VALIDATOR_SCRIPT = ROOT / "scripts/validate_portable_catalog_sync.py"
