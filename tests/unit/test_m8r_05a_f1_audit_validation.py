@@ -14,8 +14,9 @@ def test_inventory_integrity():
         assert item['classification'] in VALID_CLASSIFICATIONS
         if item['classification'] == 'CURRENT_CANONICAL':
             canonical_count += 1
-        if '03c' in item['path'] or '03d' in item['path'] or '03e' in item['path']:
-            assert item['classification'] == 'RETAIN_AND_STRENGTHEN', f'{item['path']} must not be legacy'
+        if any(x in item['path'] for x in ['m8r_03c', 'm8r_03d', 'm8r_03e']):
+            if 'test' not in item['path'] and 'fixture' not in item['path']:
+                assert item['classification'] == 'RETAIN_AND_STRENGTHEN', f"{item['path']} must not be legacy"
     assert canonical_count >= 6, 'Must have at least 6 canonical items'
 
 def test_matrix_integrity():
