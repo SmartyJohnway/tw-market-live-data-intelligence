@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_preview_response:v1",
   "title": "Unified Market Evidence Preview Response v1",
   "type": "object",
   "properties": {
@@ -26,6 +27,14 @@
           "items": {"type": "string"}
         },
         "not_found": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "market_hint_conflict": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "unsupported_market": {
           "type": "array",
           "items": {"type": "string"}
         }

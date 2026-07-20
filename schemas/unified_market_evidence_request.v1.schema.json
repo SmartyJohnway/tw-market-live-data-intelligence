@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v1",
   "title": "Unified Market Evidence Request v1",
   "type": "object",
   "properties": {
@@ -19,7 +20,8 @@
             "type": "string"
           },
           "market_hint": {
-            "type": ["string", "null"]
+            "type": ["string", "null"],
+            "enum": ["TWSE", "TPEX", "TAIFEX", null]
           },
           "resolution_requirement": {
             "type": "string",
@@ -56,14 +58,41 @@
             "enum": ["required", "optional"]
           },
           "parameters": {
-            "type": "object",
-            "additionalProperties": true
+            "type": "object"
           },
           "client_need_reference": {
             "type": "string"
           }
         },
         "required": ["type", "priority"],
+        "allOf": [
+          {
+            "if": { "properties": { "type": { "const": "recent_performance" } } },
+            "then": {
+              "properties": {
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "lookback_trading_days": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  },
+                  "required": ["lookback_trading_days"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "parameters": {
+                  "type": "object",
+                  "maxProperties": 0
+                }
+              }
+            }
+          }
+        ],
         "additionalProperties": false
       },
       "minItems": 1

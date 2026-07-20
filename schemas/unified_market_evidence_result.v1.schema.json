@@ -1,7 +1,39 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_result:v1",
   "title": "Unified Market Evidence Result v1",
   "type": "object",
+  "definitions": {
+    "evidence_envelope": {
+      "type": "object",
+      "properties": {
+        "status": {"type": "string"},
+        "timing_class": {"type": "string"},
+        "caveats": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "observed_fields": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "missing_fields": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "currentness": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "fallback": {"type": "boolean"},
+        "citation_ids": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": false
+    }
+  },
   "properties": {
     "schema_version": {
       "type": "string",
@@ -29,13 +61,14 @@
               "security_name": {"type": ["string", "null"]},
               "market": {"type": ["string", "null"]}
             },
-            "required": ["status"]
+            "required": ["status"],
+            "additionalProperties": false
           },
           "evidence": {
             "type": "object",
             "properties": {
-              "identity": {"type": "object"},
-              "current_observation": {"type": "object"},
+              "identity": {"$ref": "#/definitions/evidence_envelope"},
+              "current_observation": {"$ref": "#/definitions/evidence_envelope"},
               "official_eod_reference": {
                 "type": "object",
                 "properties": {
@@ -64,16 +97,30 @@
                     "items": {"type": "string"}
                   }
                 },
-                "required": ["currentness_status"]
+                "required": ["currentness_status"],
+                "additionalProperties": false
               },
-              "recent_performance": {"type": "object"},
-              "session_status": {"type": "object"},
-              "source_currentness": {"type": "object"},
-              "evidence_quality": {"type": "object"}
+              "recent_performance": {"$ref": "#/definitions/evidence_envelope"},
+              "session_status": {"$ref": "#/definitions/evidence_envelope"},
+              "source_currentness": {"$ref": "#/definitions/evidence_envelope"},
+              "evidence_quality": {"$ref": "#/definitions/evidence_envelope"}
             },
             "additionalProperties": false
           },
-          "coverage": {"type": "object"},
+          "coverage": {
+            "type": "object",
+            "properties": {
+              "provided_needs": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "missing_needs": {
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            },
+            "additionalProperties": false
+          },
           "caveats": {
             "type": "array",
             "items": {"type": "string"}
@@ -86,28 +133,46 @@
                 "citation_id": {"type": "string"},
                 "source_family": {"type": "string"},
                 "source_contract_id": {"type": "string"},
-                "retrieved_at": {"type": "string"},
-                "effective_trade_date": {"type": "string"},
-                "artifact_reference": {"type": "string"},
-                "normalized_evidence_hash": {"type": "string"}
+                "retrieved_at": {"type": "string", "format": "date-time"},
+                "effective_trade_date": {"type": "string", "format": "date"},
+                "artifact_reference": {
+                  "type": "string",
+                  "pattern": "^[^/\\\\]",
+                  "description": "Must be a relative path or URI, not absolute local path"
+                },
+                "normalized_evidence_hash": {"type": "string", "pattern": "^[a-f0-9]+$"}
               },
-              "required": ["citation_id", "source_family", "retrieved_at", "artifact_reference"]
+              "required": ["citation_id", "source_family", "retrieved_at", "artifact_reference"],
+              "additionalProperties": false
             }
           }
         },
-        "required": ["resolution", "evidence"]
+        "required": ["resolution", "evidence"],
+        "additionalProperties": false
       }
     },
     "partial_failures": {
       "type": "array",
-      "items": {"type": "object"}
+      "items": {
+        "type": "object",
+        "properties": {
+          "target_index": {"type": "integer"},
+          "reason": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
     },
     "request_caveats": {
       "type": "array",
       "items": {"type": "string"}
     },
     "audit_reference": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "audit_id": {"type": "string"},
+        "execution_time_ms": {"type": "integer"}
+      },
+      "additionalProperties": false
     }
   },
   "required": [

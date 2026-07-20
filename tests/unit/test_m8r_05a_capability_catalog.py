@@ -44,9 +44,8 @@ def test_catalog_bounds(capability_catalog):
 
 def test_catalog_fallback_semantics(capability_catalog):
     fallbacks = capability_catalog.get("fallback_semantics", {})
-    assert fallbacks.get("partial_success_supported") is True
     assert fallbacks.get("fallback_must_be_explicit") is True
-    assert fallbacks.get("fallback_never_upgrades_timing_class") is True
+    assert fallbacks.get("fallback_timing_class_downgrade_allowed") is True
 
 def test_catalog_known_limitations_exist(capability_catalog):
     limitations = capability_catalog.get("known_limitations", [])

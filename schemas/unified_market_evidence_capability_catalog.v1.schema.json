@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_capability_catalog:v1",
   "title": "Unified Market Evidence Capability Catalog v1",
   "type": "object",
   "properties": {
@@ -20,17 +21,27 @@
     },
     "supported_markets": {
       "type": "object",
-      "additionalProperties": {
-        "type": "object",
-        "properties": {
-          "support_level": {
-            "type": "string",
-            "enum": ["supported", "supported_with_caveats", "provisional"]
-          }
+      "properties": {
+        "TWSE": {
+          "type": "object",
+          "properties": { "support_level": { "type": "string", "enum": ["supported", "supported_with_caveats", "provisional"] } },
+          "required": ["support_level"],
+          "additionalProperties": false
         },
-        "required": ["support_level"],
-        "additionalProperties": false
-      }
+        "TPEX": {
+          "type": "object",
+          "properties": { "support_level": { "type": "string", "enum": ["supported", "supported_with_caveats", "provisional"] } },
+          "required": ["support_level"],
+          "additionalProperties": false
+        },
+        "TAIFEX": {
+          "type": "object",
+          "properties": { "support_level": { "type": "string", "enum": ["supported", "supported_with_caveats", "provisional"] } },
+          "required": ["support_level"],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "data_need_capabilities": {
       "type": "array",
@@ -132,11 +143,18 @@
     },
     "fallback_semantics": {
       "type": "object",
-      "additionalProperties": true
+      "properties": {
+        "fallback_must_be_explicit": {"type": "boolean"},
+        "fallback_timing_class_downgrade_allowed": {"type": "boolean"}
+      },
+      "additionalProperties": false
     },
     "timing_classes": {
       "type": "array",
-      "items": {"type": "string"}
+      "items": {
+        "type": "string",
+        "enum": ["realtime_guaranteed", "near_realtime", "official_eod", "delayed_reference", "historical"]
+      }
     },
     "known_limitations": {
       "type": "array",
