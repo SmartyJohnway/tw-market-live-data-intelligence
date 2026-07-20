@@ -1,0 +1,21 @@
+{
+  "schema_version": "unified_market_evidence_request.v1",
+  "request_id": "fixture-06-req",
+  "targets": [
+    {
+      "input": "2330",
+      "market_hint": "TWSE"
+    }
+  ],
+  "data_needs": [
+    {
+      "type": "identity",
+      "priority": "required"
+    },
+    {
+      "type": "evidence_quality",
+      "priority": "optional"
+    }
+  ],
+  "execution_mode": "preview"
+}

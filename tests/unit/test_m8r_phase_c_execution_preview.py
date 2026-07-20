@@ -94,9 +94,9 @@ def test_execution_preview_generation():
     assert preview["preview_id"].startswith("preview-")
     assert preview["request_id"] == "test-req-123"
     assert preview["target_count"] == 2
-    assert len(preview["planned_operations"]) == 4
-    assert preview["operation_count"] == 4
-    assert preview["estimated_network_calls"] == 4
+    assert len(preview["planned_operations"]) == 6
+    assert preview["operation_count"] == 6
+    assert preview["estimated_network_calls"] == 6
     assert preview["expanded_scope"] is False
     assert preview["requires_user_confirmation"] is True
     

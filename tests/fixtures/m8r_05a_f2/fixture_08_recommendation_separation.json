@@ -1,0 +1,20 @@
+{
+  "schema_version": "unified_market_evidence_request.v1",
+  "request_id": "fixture-08-req",
+  "targets": [
+    {
+      "input": "2330",
+      "market_hint": "TWSE"
+    }
+  ],
+  "data_needs": [
+    {
+      "type": "recent_performance",
+      "priority": "required",
+      "parameters": {
+        "lookback_trading_days": 10
+      }
+    }
+  ],
+  "execution_mode": "execute"
+}

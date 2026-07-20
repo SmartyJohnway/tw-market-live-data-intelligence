@@ -8,12 +8,14 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'scripts'))
 from probe_twse_openapi import probe as probe_twse
 from probe_yahoo import probe as probe_yahoo
 
-def test_twse_openapi_offline(mocker):
-    # Mock requests.get
-    mock_response = mocker.Mock()
+from unittest.mock import Mock, patch
+
+@patch('requests.get')
+def test_twse_openapi_offline(mock_get):
+    mock_response = Mock()
     mock_response.status_code = 200
     mock_response.json.return_value = [{"Code": "2330", "Name": "TSMC", "ClosingPrice": "1000", "Change": "10"}]
-    mocker.patch('requests.get', return_value=mock_response)
+    mock_get.return_value = mock_response
 
     result = probe_twse()
     assert result["is_usable_now"] is True
@@ -21,9 +23,9 @@ def test_twse_openapi_offline(mocker):
     assert result["normalized_sample"]["symbol"] == "2330"
     assert result["normalized_sample"]["close"] == 1000.0
 
-def test_twse_openapi_failure(mocker):
-    # Mock requests.get to throw exception
-    mocker.patch('requests.get', side_effect=Exception("Connection Timeout"))
+@patch('requests.get')
+def test_twse_openapi_failure(mock_get):
+    mock_get.side_effect = Exception("Connection Timeout")
 
     result = probe_twse()
     assert result["is_usable_now"] is False
@@ -31,8 +33,10 @@ def test_twse_openapi_failure(mocker):
     assert result["http_status"] == "Error"
     assert "Connection Timeout" in result["errors"][0]
 
-def test_yahoo_probe_offline(mocker):
-    mock_response = mocker.Mock()
+@patch('time.sleep')
+@patch('requests.get')
+def test_yahoo_probe_offline(mock_get, mock_sleep):
+    mock_response = Mock()
     mock_response.status_code = 200
     mock_response.json.return_value = {
         "chart": {
@@ -41,8 +45,7 @@ def test_yahoo_probe_offline(mocker):
             ]
         }
     }
-    mocker.patch('requests.get', return_value=mock_response)
-    mocker.patch('time.sleep', return_value=None) # Don't sleep in tests
+    mock_get.return_value = mock_response
 
     result = probe_yahoo(symbols=["2330.TW"])
     assert result["is_usable_now"] is True
