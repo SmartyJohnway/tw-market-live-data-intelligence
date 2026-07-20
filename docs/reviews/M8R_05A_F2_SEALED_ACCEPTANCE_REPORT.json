@@ -5,8 +5,8 @@
   "tested_parent_sha": "caf956eae88b31e1912cd8511a970f06014e395c",
   "tested_commit_sha": "35d527536c1dcf7290eef5011819e468c0adf3eb",
   "current_head_sha": "35d527536c1dcf7290eef5011819e468c0adf3eb",
-  "acceptance_sealing_commit_sha": "pending",
-  "binding_status": "bound_to_implementation",
+  "acceptance_sealing_commit_sha": "f78b622690cc5b77d3db25d8077d9dffc6028afc",
+  "binding_status": "sealed",
   "full_test_counts": {
     "collected": 1832,
     "passed": 1805,
