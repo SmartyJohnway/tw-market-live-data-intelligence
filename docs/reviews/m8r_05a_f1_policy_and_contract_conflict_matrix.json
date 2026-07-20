@@ -1,0 +1,72 @@
+{
+  "recommendation_policy_conflicts": [
+    {
+      "artifact_a": "docs/ai_safety_policy.md",
+      "artifact_b": "M8R-05A complete output principle",
+      "exact_conflicting_semantics": "ai_safety_policy states: no recommendations, no buy/sell/hold. M8R-05A implies canonical project output has no recommendations, but AI may analyze based on policy.",
+      "recommended_authority": "M8R-05A output principle",
+      "reason": "Project output is canonical; AI analysis is separate and allowed within policy limits.",
+      "migration_action": "Update ai_safety_policy to clarify difference between project canonical output and AI conversational capabilities."
+    }
+  ],
+  "smallest_sufficient_conflicts": [
+    {
+      "artifact_a": "skills/tw-market-evidence-agent/SKILL.md",
+      "artifact_b": "M8R-05A exhaustive output principle",
+      "exact_conflicting_semantics": "SKILL.md: choose smallest sufficient capability set. M8R-05A: exhaustive within authorized request scope.",
+      "recommended_authority": "M8R-05A",
+      "reason": "M8R-05A mandates bounded but comprehensive results.",
+      "migration_action": "Remove smallest sufficient wording from SKILL and ai_safety_policy."
+    }
+  ],
+  "fixed_taxonomy_conflicts": [
+    {
+      "artifact_a": "docs/agent_usage_guide.md",
+      "artifact_b": "schemas/unified_market_evidence_request.v1.schema.json",
+      "exact_conflicting_semantics": "Guide uses fixed intents: quick, standard, deep. Schema uses granular targets and data_needs.",
+      "recommended_authority": "M8R-05A Schema",
+      "reason": "M8R-05A introduces flexible data needs.",
+      "migration_action": "Remove fixed intents and migrate to M8R-05A data needs."
+    }
+  ],
+  "old_operation_vs_m8r_05a": [
+    {
+      "artifact_a": "skills/tw-market-evidence-agent/SKILL.md",
+      "artifact_b": "schemas/unified_market_evidence_request.v1.schema.json",
+      "exact_conflicting_semantics": "SKILL uses describe_market_capabilities, get_current_market_evidence. M8R-05A uses Unified Request.",
+      "recommended_authority": "M8R-05A Schema",
+      "reason": "New canonical operation.",
+      "migration_action": "Map old operations to historical interfaces; update Skill to output Unified Request."
+    }
+  ],
+  "mode_abc_conflicts": [
+    {
+      "artifact_a": "docs/m5k_local_ai_workflow.md",
+      "artifact_b": "Task Instructions",
+      "exact_conflicting_semantics": "Mode A/B/C treated as AI intents vs Operator/Frontend workflow.",
+      "recommended_authority": "Task Instructions",
+      "reason": "AI should not set mode; frontend handles inspection and execution.",
+      "migration_action": "Redefine Mode A/B/C as frontend workflow states."
+    }
+  ],
+  "level_12_conflicts": [
+    {
+      "artifact_a": "docs/m5k_local_ai_workflow.md",
+      "artifact_b": "Task Instructions",
+      "exact_conflicting_semantics": "Level 1/2 treated as AI request parameter vs Evidence lifecycle metadata.",
+      "recommended_authority": "Task Instructions",
+      "reason": "Level metadata is intrinsic to the evidence, not a user request.",
+      "migration_action": "Redefine Level 1/2 as metadata on the result payload."
+    }
+  ],
+  "duplicate_source_of_truth": [
+    {
+      "artifact_a": "skills/tw-market-evidence-agent/references/capability_quick_guide.md",
+      "artifact_b": "schemas/unified_market_evidence_capability_catalog.v1.schema.json",
+      "exact_conflicting_semantics": "Both define capabilities.",
+      "recommended_authority": "M8R-05A Catalog Schema",
+      "reason": "Centralized JSON schema is canonical.",
+      "migration_action": "Deprecate quick_guide in favor of the JSON schema."
+    }
+  ]
+}
