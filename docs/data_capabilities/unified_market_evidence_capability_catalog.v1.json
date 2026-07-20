@@ -1,0 +1,136 @@
+{
+  "schema_version": "unified_market_evidence_capability_catalog.v1",
+  "catalog_id": "unified-market-evidence-capabilities",
+  "generated_from": {
+    "source_capability_registry_reference": "m8_source_capability_registry",
+    "activation_policy_reference": "phase_c_conversation_driven_one_shot.v1"
+  },
+  "supported_markets": {
+    "TWSE": {
+      "support_level": "supported"
+    },
+    "TPEX": {
+      "support_level": "supported_with_caveats"
+    },
+    "TAIFEX": {
+      "support_level": "provisional"
+    }
+  },
+  "data_need_capabilities": [
+    {
+      "capability_id": "current_observation",
+      "description": "Retrieves the latest available market data snapshot. Not guaranteed to be realtime.",
+      "support_status": "runtime_executable",
+      "supported_markets": ["TWSE", "TPEX"],
+      "provisional_markets": ["TAIFEX"],
+      "allowed_parameters": {},
+      "requires_target_resolution": true,
+      "requires_approval_for_execution": true,
+      "possible_timing_classes": ["liveish_intraday_snapshot"],
+      "possible_fallbacks": ["official_eod", "source_unavailable"],
+      "known_limitations": ["not guaranteed realtime", "source availability may produce partial results"]
+    },
+    {
+      "capability_id": "official_eod_reference",
+      "description": "Retrieves the official End of Day reference data.",
+      "support_status": "runtime_executable",
+      "supported_markets": ["TWSE", "TPEX"],
+      "provisional_markets": ["TAIFEX"],
+      "allowed_parameters": {},
+      "requires_target_resolution": true,
+      "requires_approval_for_execution": true,
+      "possible_timing_classes": ["official_eod", "official_statistics_eod"],
+      "possible_fallbacks": ["source_unavailable"],
+      "known_limitations": ["publication grace remains provisional and configurable"]
+    },
+    {
+      "capability_id": "session_status",
+      "description": "Retrieves the market session status, local clock and closure states.",
+      "support_status": "runtime_executable",
+      "supported_markets": ["TWSE", "TPEX"],
+      "provisional_markets": ["TAIFEX"],
+      "allowed_parameters": {},
+      "requires_target_resolution": false,
+      "requires_approval_for_execution": true,
+      "possible_timing_classes": ["request_session_context"],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "TPEX closure authority follows synchronized-market assumption",
+        "TAIFEX day-session policy is provisional",
+        "TAIFEX night-session interpretation is unsupported",
+        "TAIFEX Taipei closure authority is unresolved"
+      ]
+    },
+    {
+      "capability_id": "recent_performance",
+      "description": "Retrieves descriptive performance metrics over a specified lookback period.",
+      "support_status": "contract_supported",
+      "supported_markets": ["TWSE", "TPEX"],
+      "provisional_markets": ["TAIFEX"],
+      "allowed_parameters": {
+        "lookback_trading_days": "integer"
+      },
+      "requires_target_resolution": true,
+      "requires_approval_for_execution": true,
+      "possible_timing_classes": ["official_eod"],
+      "possible_fallbacks": ["partial_success_supported"],
+      "known_limitations": ["not every requested evidence need is runtime-executable yet", "not_yet_implemented"]
+    }
+  ],
+  "execution": {
+    "preview_supported": true,
+    "explicit_approval_required": true,
+    "one_shot_execution": true,
+    "scheduler_enabled": false,
+    "polling_enabled": false,
+    "persistent_watchlist_mutation": false,
+    "trading_enabled": false
+  },
+  "bounds": {
+    "default_target_limit": 10,
+    "hard_target_limit": 50,
+    "default_operation_limit": 30,
+    "hard_operation_limit": 100
+  },
+  "available_source_families": [
+    {
+      "source_family": "twse_mis",
+      "timing_class": "liveish_intraday_snapshot",
+      "market_scope": ["TWSE", "TPEX"],
+      "activation_status": "active",
+      "runtime_availability": true,
+      "known_limitations": ["no continuous polling"]
+    }
+  ],
+  "fallback_semantics": {
+    "partial_success_supported": true,
+    "required_need_failure_semantics": "request_partial_or_blocked",
+    "optional_need_failure_semantics": "continue_with_caveats",
+    "calendar_unresolved": "fallback_possible",
+    "source_unavailable": "fallback_possible",
+    "liveish_to_official_eod_fallback": "supported",
+    "fallback_must_be_explicit": true,
+    "fallback_never_upgrades_timing_class": true
+  },
+  "timing_classes": [
+    "liveish_intraday_snapshot",
+    "official_eod",
+    "official_statistics_eod",
+    "request_session_context"
+  ],
+  "known_limitations": [
+    "publication grace remains provisional and configurable",
+    "TPEX closure authority follows synchronized-market assumption",
+    "TAIFEX day-session policy is provisional",
+    "TAIFEX night-session interpretation is unsupported",
+    "TAIFEX Taipei closure authority is unresolved",
+    "not every requested evidence need is runtime-executable yet",
+    "target name resolution implementation belongs to M8R-06",
+    "Unified orchestrator is not implemented in M8R-05A",
+    "no scheduler",
+    "no continuous polling",
+    "no auto retry",
+    "no trading or order execution",
+    "source availability may produce partial results"
+  ]
+}
