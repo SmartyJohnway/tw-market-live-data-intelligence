@@ -754,7 +754,7 @@
     "source_may_be_delayed_or_unavailable",
     "no_trading_signal"
   ],
-  "created_at_utc": "2026-07-20T16:48:43Z",
+  "created_at_utc": "2026-07-21T13:06:13Z",
   "deterministic_metrics_context": {
     "contexts": [],
     "enabled": true,
@@ -843,7 +843,7 @@
     "holiday_status": "records_missing",
     "is_trading_day_candidate": true,
     "is_weekend": false,
-    "latest_observation_age_seconds": 1481101,
+    "latest_observation_age_seconds": 1554151,
     "latest_observation_time": "2026-07-03T13:23:42+00:00",
     "market": "TW",
     "not_capital_flow": true,

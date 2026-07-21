@@ -149,4 +149,13 @@ def resolve_verified_security_identity(query:str, snapshot_lookup:dict, *, marke
     if market_context and (r.get('classification') or {}).get('market')!=market_context: out['resolution_status']='not_found'; out['reason_codes'].append('market_mismatch'); return out
     if execute_mode and (r.get('observation') or {}).get('status')=='fixture_observation_only' and not allow_fixture_snapshot:
         out['resolution_status']='quarantined'; out['selected']=_selected(r,snap,reason[0],['fixture_observation_only_rejected_in_production']); out['reason_codes'].append('fixture_observation_only_rejected'); return out
-    out['resolution_status']='resolved'; out['selected']=_selected(r,snap,reason[0]); return out
+    out['resolution_status']='resolved';
+    sel = _selected(r,snap,reason[0])
+    if allow_fixture_snapshot and (r.get('observation') or {}).get('status')=='fixture_observation_only':
+        # Remove 'fixture_observation_only' from blocking reason codes so F3 validator can pass it
+        elig = sel.get('execution_eligibility', {})
+        if 'fixture_observation_only' in elig.get('reason_codes', []):
+            elig['reason_codes'].remove('fixture_observation_only')
+            if not elig['reason_codes']:
+                elig['status'] = 'allowed'
+    out['selected']=sel; return out

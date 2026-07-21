@@ -60,7 +60,8 @@
               "invalid_market_hint",
               "market_mismatch",
               "invalid_input",
-              "duplicate"
+              "duplicate",
+              "quarantined"
             ]
           },
           "canonical_identity": {

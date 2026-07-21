@@ -1,7 +1,5 @@
 {
   "caveats": [
-    "operator preflight: Python 3.13 detection caveat (True).",
-    "operator preflight: Windows detection caveat (True).",
     "operator preflight: Virtual environment caveat (not detected)."
   ],
   "checks": [
@@ -11,7 +9,7 @@
       "returncode": 0,
       "status": "pass",
       "stderr_tail": "",
-      "stdout_tail": "onical_market_context_01/canonical_market_context.json, 4573 bytes)\n- [PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)\n- [PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n- [PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7487 bytes)\n- [PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n- [PASS] Output folder permissions: writable folders detected: 2\n\nRecommended next action: Conversation package already available; review it and send to ChatGPT.\n\nMode reminders: Mode A = Canonical Context; Mode B = Bounded Observation; Mode C = Conversation Package.\nGovernance: Observation != Canonical; Reference-only != Current Price; stale_or_closed_session = degraded; no polling/scheduler/startup network/trading/recommendations/ranking/target price.\n"
+      "stdout_tail": "onical_market_context_01/canonical_market_context.json, 4573 bytes)\n- [PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)\n- [PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n- [PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7395 bytes)\n- [PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n- [PASS] Output folder permissions: writable folders detected: 2\n\nRecommended next action: Conversation package already available; review it and send to ChatGPT.\n\nMode reminders: Mode A = Canonical Context; Mode B = Bounded Observation; Mode C = Conversation Package.\nGovernance: Observation != Canonical; Reference-only != Current Price; stale_or_closed_session = degraded; no polling/scheduler/startup network/trading/recommendations/ranking/target price.\n"
     },
     {
       "command": "python scripts/run_environment_diagnostics.py",
@@ -19,12 +17,10 @@
       "returncode": 0,
       "status": "pass",
       "stderr_tail": "",
-      "stdout_tail": "L/certs\", \"openssl_capath_env\": \"SSL_CERT_DIR\"}\n[PASS] Configured TW_MARKET_SSL_POLICY: None\n[PASS] Effective SSL policy: strict\n[CAVEAT] Virtual environment: not detected\n  Suggested command: Create and activate a virtual environment if dependency imports fail.\n[PASS] Installed dependencies: available\n[PASS] FastAPI import: fastapi importable\n[PASS] M5F package: present (research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json, 4573 bytes)\n[PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)\n[PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n[PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7487 bytes)\n[PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n[PASS] Output folder permissions: writable folders detected: 2\n"
+      "stdout_tail": "l/certs\", \"openssl_capath_env\": \"SSL_CERT_DIR\"}\n[PASS] Configured TW_MARKET_SSL_POLICY: None\n[PASS] Effective SSL policy: strict\n[CAVEAT] Virtual environment: not detected\n  Suggested command: Create and activate a virtual environment if dependency imports fail.\n[PASS] Installed dependencies: available\n[PASS] FastAPI import: fastapi importable\n[PASS] M5F package: present (research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json, 4573 bytes)\n[PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)\n[PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n[PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7395 bytes)\n[PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n[PASS] Output folder permissions: writable folders detected: 2\n"
     },
     {
       "caveats": [
-        "operator preflight: Python 3.13 detection caveat (True).",
-        "operator preflight: Windows detection caveat (True).",
         "operator preflight: Virtual environment caveat (not detected)."
       ],
       "command": "python scripts/run_operator_preflight.py --json --timeout-seconds 300",
@@ -37,8 +33,8 @@
         "latest_source_health": "generated_at_utc=2026-06-30T04:23:40Z",
         "network_calls": false,
         "repository": {
-          "branch": "unknown",
-          "commit": "35d5275",
+          "branch": "jules-15205147631239836684-e209ab66",
+          "commit": "c2745bb",
           "release": "Local Release Candidate",
           "version": "v0.1.0"
         },
@@ -46,31 +42,31 @@
           {
             "checks": [
               {
-                "detail": "3.13.7",
+                "detail": "3.12.13",
                 "name": "Python version",
                 "status": "PASS",
                 "suggestion": "Use Python 3.10 or newer."
               },
               {
-                "detail": "Windows-10-10.0.19045-SP0",
+                "detail": "Linux-6.8.0-x86_64-with-glibc2.39",
                 "name": "OS platform",
                 "status": "PASS",
                 "suggestion": ""
               },
               {
-                "detail": "True",
+                "detail": "False",
                 "name": "Python 3.13 detection",
-                "status": "CAVEAT",
-                "suggestion": "If TWSE MIS TLS fails on Windows/Python 3.13, retry only the explicit bounded live command with --ssl-policy compatibility. Do not use unsafe-explicit unless you understand TLS verification is disabled."
+                "status": "PASS",
+                "suggestion": ""
               },
               {
-                "detail": "True",
+                "detail": "False",
                 "name": "Windows detection",
-                "status": "CAVEAT",
-                "suggestion": "If TWSE MIS TLS fails on Windows/Python 3.13, retry only the explicit bounded live command with --ssl-policy compatibility. Do not use unsafe-explicit unless you understand TLS verification is disabled."
+                "status": "PASS",
+                "suggestion": ""
               },
               {
-                "detail": "{\"cafile\": null, \"capath\": null, \"openssl_cafile\": \"C:\\\\Program Files\\\\Common Files\\\\SSL/cert.pem\", \"openssl_cafile_env\": \"SSL_CERT_FILE\", \"openssl_capath\": \"C:\\\\Program Files\\\\Common Files\\\\SSL/certs\", \"openssl_capath_env\": \"SSL_CERT_DIR\"}",
+                "detail": "{\"cafile\": \"/usr/lib/ssl/cert.pem\", \"capath\": \"/usr/lib/ssl/certs\", \"openssl_cafile\": \"/usr/lib/ssl/cert.pem\", \"openssl_cafile_env\": \"SSL_CERT_FILE\", \"openssl_capath\": \"/usr/lib/ssl/certs\", \"openssl_capath_env\": \"SSL_CERT_DIR\"}",
                 "name": "SSL default verify paths",
                 "status": "PASS",
                 "suggestion": ""
@@ -85,7 +81,7 @@
                 "detail": "strict",
                 "name": "Effective SSL policy",
                 "status": "PASS",
-                "suggestion": "If TWSE MIS TLS fails on Windows/Python 3.13, retry only the explicit bounded live command with --ssl-policy compatibility. Do not use unsafe-explicit unless you understand TLS verification is disabled."
+                "suggestion": "Strict TLS remains default. Use --ssl-policy compatibility only for explicit bounded live commands when diagnosing known certificate compatibility failures. Do not use unsafe-explicit unless you understand TLS verification is disabled."
               },
               {
                 "detail": "not detected",
@@ -124,7 +120,7 @@
                 "suggestion": "Run: python scripts/run_m5q_source_health_probe.py --execute-health-probe"
               },
               {
-                "detail": "present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7487 bytes)",
+                "detail": "present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7395 bytes)",
                 "name": "Conversation package",
                 "status": "PASS",
                 "suggestion": "Run: python scripts/build_m5n_conversation_context.py"
@@ -160,8 +156,8 @@
             "label": "M5IJ acceptance",
             "returncode": 0,
             "status": "PASS",
-            "stderr_tail": "",
-            "stdout_tail": "\": \"passed\"\n    },\n    {\n      \"check\": \"fastapi_probe_disabled_410\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_not_listed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"details\": {\n        \"authorized_exceptions\": [],\n        \"changed_forbidden_paths\": [],\n        \"frontend_public_changes\": [],\n        \"git_returncode\": 0,\n        \"unauthorized_forbidden_paths\": []\n      },\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n",
+            "stderr_tail": "/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n  from starlette.testclient import TestClient as TestClient  # noqa\n",
+            "stdout_tail": " \"passed\"\n    },\n    {\n      \"check\": \"fastapi_probe_disabled_410\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_not_listed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"details\": {\n        \"authorized_exceptions\": [],\n        \"changed_forbidden_paths\": [],\n        \"frontend_public_changes\": [],\n        \"git_returncode\": 128,\n        \"unauthorized_forbidden_paths\": []\n      },\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n",
             "timed_out": false,
             "timeout_seconds": 300
           },
@@ -219,8 +215,8 @@
       "label": "M5IJ",
       "returncode": 0,
       "status": "pass",
-      "stderr_tail": "",
-      "stdout_tail": "  \"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"details\": {\n        \"authorized_exceptions\": [],\n        \"changed_forbidden_paths\": [],\n        \"frontend_public_changes\": [],\n        \"git_returncode\": 0,\n        \"unauthorized_forbidden_paths\": []\n      },\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n"
+      "stderr_tail": "/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n  from starlette.testclient import TestClient as TestClient  # noqa\n",
+      "stdout_tail": "\"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"details\": {\n        \"authorized_exceptions\": [],\n        \"changed_forbidden_paths\": [],\n        \"frontend_public_changes\": [],\n        \"git_returncode\": 128,\n        \"unauthorized_forbidden_paths\": []\n      },\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n"
     },
     {
       "command": "python scripts/run_m5k_postmerge_validation.py --check-only",
@@ -281,8 +277,6 @@
   ],
   "child_workflow_caveats": {
     "operator_preflight": [
-      "operator preflight: Python 3.13 detection caveat (True).",
-      "operator preflight: Windows detection caveat (True).",
       "operator preflight: Virtual environment caveat (not detected)."
     ]
   },
@@ -451,7 +445,7 @@
     ],
     "status": "pass"
   },
-  "generated_at_utc": "2026-07-20T16:48:43Z",
+  "generated_at_utc": "2026-07-21T13:06:13Z",
   "governance": {
     "check_only_non_network": true,
     "no_m5f_mutation": true,
@@ -613,8 +607,6 @@
   },
   "operator_preflight": {
     "caveats": [
-      "operator preflight: Python 3.13 detection caveat (True).",
-      "operator preflight: Windows detection caveat (True).",
       "operator preflight: Virtual environment caveat (not detected)."
     ],
     "command": "python scripts/run_operator_preflight.py --json --timeout-seconds 300",
@@ -627,8 +619,8 @@
       "latest_source_health": "generated_at_utc=2026-06-30T04:23:40Z",
       "network_calls": false,
       "repository": {
-        "branch": "unknown",
-        "commit": "35d5275",
+        "branch": "jules-15205147631239836684-e209ab66",
+        "commit": "c2745bb",
         "release": "Local Release Candidate",
         "version": "v0.1.0"
       },
@@ -636,31 +628,31 @@
         {
           "checks": [
             {
-              "detail": "3.13.7",
+              "detail": "3.12.13",
               "name": "Python version",
               "status": "PASS",
               "suggestion": "Use Python 3.10 or newer."
             },
             {
-              "detail": "Windows-10-10.0.19045-SP0",
+              "detail": "Linux-6.8.0-x86_64-with-glibc2.39",
               "name": "OS platform",
               "status": "PASS",
               "suggestion": ""
             },
             {
-              "detail": "True",
+              "detail": "False",
               "name": "Python 3.13 detection",
-              "status": "CAVEAT",
-              "suggestion": "If TWSE MIS TLS fails on Windows/Python 3.13, retry only the explicit bounded live command with --ssl-policy compatibility. Do not use unsafe-explicit unless you understand TLS verification is disabled."
+              "status": "PASS",
+              "suggestion": ""
             },
             {
-              "detail": "True",
+              "detail": "False",
               "name": "Windows detection",
-              "status": "CAVEAT",
-              "suggestion": "If TWSE MIS TLS fails on Windows/Python 3.13, retry only the explicit bounded live command with --ssl-policy compatibility. Do not use unsafe-explicit unless you understand TLS verification is disabled."
+              "status": "PASS",
+              "suggestion": ""
             },
             {
-              "detail": "{\"cafile\": null, \"capath\": null, \"openssl_cafile\": \"C:\\\\Program Files\\\\Common Files\\\\SSL/cert.pem\", \"openssl_cafile_env\": \"SSL_CERT_FILE\", \"openssl_capath\": \"C:\\\\Program Files\\\\Common Files\\\\SSL/certs\", \"openssl_capath_env\": \"SSL_CERT_DIR\"}",
+              "detail": "{\"cafile\": \"/usr/lib/ssl/cert.pem\", \"capath\": \"/usr/lib/ssl/certs\", \"openssl_cafile\": \"/usr/lib/ssl/cert.pem\", \"openssl_cafile_env\": \"SSL_CERT_FILE\", \"openssl_capath\": \"/usr/lib/ssl/certs\", \"openssl_capath_env\": \"SSL_CERT_DIR\"}",
               "name": "SSL default verify paths",
               "status": "PASS",
               "suggestion": ""
@@ -675,7 +667,7 @@
               "detail": "strict",
               "name": "Effective SSL policy",
               "status": "PASS",
-              "suggestion": "If TWSE MIS TLS fails on Windows/Python 3.13, retry only the explicit bounded live command with --ssl-policy compatibility. Do not use unsafe-explicit unless you understand TLS verification is disabled."
+              "suggestion": "Strict TLS remains default. Use --ssl-policy compatibility only for explicit bounded live commands when diagnosing known certificate compatibility failures. Do not use unsafe-explicit unless you understand TLS verification is disabled."
             },
             {
               "detail": "not detected",
@@ -714,7 +706,7 @@
               "suggestion": "Run: python scripts/run_m5q_source_health_probe.py --execute-health-probe"
             },
             {
-              "detail": "present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7487 bytes)",
+              "detail": "present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7395 bytes)",
               "name": "Conversation package",
               "status": "PASS",
               "suggestion": "Run: python scripts/build_m5n_conversation_context.py"
@@ -750,8 +742,8 @@
           "label": "M5IJ acceptance",
           "returncode": 0,
           "status": "PASS",
-          "stderr_tail": "",
-          "stdout_tail": "\": \"passed\"\n    },\n    {\n      \"check\": \"fastapi_probe_disabled_410\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_not_listed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"details\": {\n        \"authorized_exceptions\": [],\n        \"changed_forbidden_paths\": [],\n        \"frontend_public_changes\": [],\n        \"git_returncode\": 0,\n        \"unauthorized_forbidden_paths\": []\n      },\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n",
+          "stderr_tail": "/home/jules/.pyenv/versions/3.12.13/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n  from starlette.testclient import TestClient as TestClient  # noqa\n",
+          "stdout_tail": " \"passed\"\n    },\n    {\n      \"check\": \"fastapi_probe_disabled_410\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_not_listed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"details\": {\n        \"authorized_exceptions\": [],\n        \"changed_forbidden_paths\": [],\n        \"frontend_public_changes\": [],\n        \"git_returncode\": 128,\n        \"unauthorized_forbidden_paths\": []\n      },\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n",
           "timed_out": false,
           "timeout_seconds": 300
         },
@@ -802,10 +794,10 @@
     "returncode": 0,
     "status": "pass",
     "stderr_tail": "",
-    "stdout_tail": "onical_market_context_01/canonical_market_context.json, 4573 bytes)\n- [PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)\n- [PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n- [PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7487 bytes)\n- [PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n- [PASS] Output folder permissions: writable folders detected: 2\n\nRecommended next action: Conversation package already available; review it and send to ChatGPT.\n\nMode reminders: Mode A = Canonical Context; Mode B = Bounded Observation; Mode C = Conversation Package.\nGovernance: Observation != Canonical; Reference-only != Current Price; stale_or_closed_session = degraded; no polling/scheduler/startup network/trading/recommendations/ranking/target price.\n"
+    "stdout_tail": "onical_market_context_01/canonical_market_context.json, 4573 bytes)\n- [PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)\n- [PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n- [PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7395 bytes)\n- [PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n- [PASS] Output folder permissions: writable folders detected: 2\n\nRecommended next action: Conversation package already available; review it and send to ChatGPT.\n\nMode reminders: Mode A = Canonical Context; Mode B = Bounded Observation; Mode C = Conversation Package.\nGovernance: Observation != Canonical; Reference-only != Current Price; stale_or_closed_session = degraded; no polling/scheduler/startup network/trading/recommendations/ranking/target price.\n"
   },
-  "platform": "Windows-10-10.0.19045-SP0",
-  "python": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Linux-6.8.0-x86_64-with-glibc2.39",
+  "python": "3.12.13 (main, Mar  6 2026, 16:37:31) [GCC 13.3.0]",
   "recommended_next_steps": [
     "python scripts/run_local_workbench.py",
     "python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01",
@@ -814,8 +806,8 @@
     "python scripts/run_operator_preflight.py --json --timeout-seconds 300"
   ],
   "repository": {
-    "branch": "unknown",
-    "commit": "35d5275",
+    "branch": "jules-15205147631239836684-e209ab66",
+    "commit": "c2745bb",
     "release": "Local Release Candidate",
     "version": "v0.1.0"
   },

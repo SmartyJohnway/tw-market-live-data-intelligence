@@ -2,7 +2,7 @@ from typing import Dict, Any, List
 from scripts.m8r_05a_f3.request_validation_models import (
     TargetResult, CanonicalIdentity,
     TARGET_INPUT_EMPTY, TARGET_NOT_FOUND, TARGET_AMBIGUOUS,
-    TARGET_MARKET_MISMATCH, MARKET_HINT_INVALID,
+    TARGET_IDENTITY_QUARANTINED, TARGET_MARKET_MISMATCH, MARKET_HINT_INVALID,
     TARGET_DUPLICATE, TARGET_MARKET_UNSUPPORTED,
     TARGET_SECURITY_TYPE_UNSUPPORTED
 )
@@ -11,7 +11,6 @@ from scripts.m8r_03d_f1_security_master_snapshot_adapter import (
     resolve_verified_security_identity
 )
 
-SUPPORTED_SECURITY_TYPES = {"equity", "etf"}
 VALID_MARKETS = {"TWSE", "TPEX", "TAIFEX"}
 
 def validate_targets(
@@ -76,10 +75,11 @@ def validate_targets(
 
         res_status = resolution["resolution_status"]
         if res_status == "not_found":
-            result["resolution_status"] = "not_found"
             if "market_mismatch" in resolution["reason_codes"]:
+                result["resolution_status"] = "market_mismatch"
                 reason_codes.append(TARGET_MARKET_MISMATCH)
             else:
+                result["resolution_status"] = "not_found"
                 reason_codes.append(TARGET_NOT_FOUND)
         elif res_status == "ambiguous":
             result["resolution_status"] = "ambiguous"
@@ -99,14 +99,14 @@ def validate_targets(
             result["candidate_matches"] = candidate_matches
         elif res_status == "quarantined":
             result["resolution_status"] = "quarantined"
-            # Keep reason code simple, could map to a specific one if needed
-            reason_codes.append(TARGET_NOT_FOUND) 
+            reason_codes.append(TARGET_IDENTITY_QUARANTINED)
         elif res_status == "resolved":
             selected = resolution["selected"]
             cls = selected.get("classification", {})
             sec_type = cls.get("instrument_type")
+            execution_eligibility = selected.get("execution_eligibility") or {}
             
-            if sec_type not in SUPPORTED_SECURITY_TYPES:
+            if execution_eligibility.get("status") not in {"allowed", "allowed_with_caveat"}:
                 result["resolution_status"] = "unsupported_security_type"
                 reason_codes.append(TARGET_SECURITY_TYPE_UNSUPPORTED)
             else:

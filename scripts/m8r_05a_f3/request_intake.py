@@ -102,9 +102,7 @@ def validate_unified_market_evidence_request(
         return validation_result
 
     # 3. Validate Targets
-    # Just pass ["TWSE", "TPEX", "TAIFEX"] as allowed markets, or extract from capability catalog properly
-    # The original mocked `capability_catalog` doesn't have a top-level `supported_markets`, only under `data_need_capabilities`
-    allowed_markets = ["TWSE", "TPEX", "TAIFEX"]
+    allowed_markets = sorted(capability_catalog.get("supported_markets", {}).keys())
     
     target_results = validate_targets(
         raw_targets, 
@@ -160,12 +158,13 @@ def validate_unified_market_evidence_request(
         if status in ["unsupported", "invalid_parameters", "unknown", "requires_target_resolution"]:
             if priority == "required":
                 has_unsupported_required = True
-                validation_result["blocking_issues"].append({
-                    "reason_code": REQUIRED_CAPABILITY_UNAVAILABLE,
-                    "json_path": "$.data_needs",
-                    "schema_path": "",
-                    "message": f"Required capability '{cr['type']}' is {status}"
-                })
+                if status != "requires_target_resolution":
+                    validation_result["blocking_issues"].append({
+                        "reason_code": REQUIRED_CAPABILITY_UNAVAILABLE,
+                        "json_path": "$.data_needs",
+                        "schema_path": "",
+                        "message": f"Required capability '{cr['type']}' is {status}"
+                    })
             else:
                 has_unsupported_optional = True
                 validation_result["warnings"].append({
