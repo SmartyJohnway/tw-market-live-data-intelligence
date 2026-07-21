@@ -1,0 +1,182 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request_validation:v1",
+  "title": "Unified Market Evidence Request Validation v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "unified_market_evidence_request_validation.v1"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "validation_status": {
+      "type": "string",
+      "enum": ["valid", "invalid", "requires_clarification", "unsupported"]
+    },
+    "request_schema_status": {
+      "type": "string",
+      "enum": ["valid", "invalid"]
+    },
+    "capability_validation_status": {
+      "type": "string",
+      "enum": ["valid", "invalid", "unsupported"]
+    },
+    "target_validation_status": {
+      "type": "string",
+      "enum": ["valid", "invalid", "requires_clarification", "unsupported"]
+    },
+    "normalized_request": {
+      "type": "object",
+      "description": "The request optionally normalized or enriched, but without altering original intent."
+    },
+    "target_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "target_index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "original_input": {
+            "type": "string"
+          },
+          "market_hint": {
+            "type": ["string", "null"]
+          },
+          "resolution_requirement": {
+            "type": "string"
+          },
+          "resolution_status": {
+            "type": "string",
+            "enum": [
+              "resolved",
+              "ambiguous",
+              "not_found",
+              "unsupported_market",
+              "unsupported_security_type",
+              "invalid_market_hint",
+              "market_mismatch",
+              "invalid_input",
+              "duplicate"
+            ]
+          },
+          "canonical_identity": {
+            "type": "object",
+            "properties": {
+              "security_code": { "type": "string" },
+              "market": { "type": "string" },
+              "security_name_zh": { "type": "string" },
+              "security_name_en": { "type": "string" },
+              "security_type": { "type": "string" },
+              "listing_status": { "type": "string" },
+              "effective_from": { "type": "string" },
+              "effective_to": { "type": "string" },
+              "identity_source": { "type": "string" },
+              "identity_record_reference": { "type": "string" }
+            },
+            "required": ["security_code", "market", "security_name_zh", "security_type"]
+          },
+          "candidate_matches": {
+            "type": "array",
+            "items": { "type": "object" }
+          },
+          "reason_codes": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "evidence_references": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": [
+          "target_index",
+          "original_input",
+          "resolution_requirement",
+          "resolution_status"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "capability_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "priority": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["supported", "unsupported", "invalid_parameters", "unknown"]
+          },
+          "supported_markets": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "reason_codes": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["type", "priority", "status", "supported_markets"],
+        "additionalProperties": false
+      }
+    },
+    "blocking_issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "reason_code": { "type": "string" },
+          "json_path": { "type": "string" },
+          "schema_path": { "type": "string" },
+          "message": { "type": "string" }
+        },
+        "required": ["reason_code", "message"]
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "reason_code": { "type": "string" },
+          "message": { "type": "string" }
+        },
+        "required": ["reason_code", "message"]
+      }
+    },
+    "limits": {
+      "type": "object",
+      "properties": {
+        "target_count": { "type": "integer" },
+        "data_need_count": { "type": "integer" },
+        "operation_count_computed": { "type": "boolean" },
+        "operation_count": { "type": "integer" },
+        "orchestrator_projection_required": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "validation_metadata": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "request_id",
+    "validation_status",
+    "request_schema_status",
+    "capability_validation_status",
+    "target_validation_status",
+    "target_results",
+    "capability_results",
+    "blocking_issues",
+    "warnings",
+    "limits",
+    "validation_metadata"
+  ],
+  "additionalProperties": false
+}
