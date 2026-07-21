@@ -137,7 +137,7 @@ def validate_unified_market_evidence_request(
     for cr in capability_results:
         status = cr["status"]
         priority = cr["priority"]
-        if status in ["unsupported", "invalid_parameters", "unknown"]:
+        if status in ["unsupported", "invalid_parameters", "unknown", "requires_target_resolution"]:
             if priority == "required":
                 has_unsupported_required = True
                 validation_result["blocking_issues"].append({

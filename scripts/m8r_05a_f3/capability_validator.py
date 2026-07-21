@@ -38,20 +38,34 @@ def validate_capabilities(
             
         cap_info = capabilities[need_type]
         supported_markets = cap_info.get("supported_markets", [])
+        provisional_markets = cap_info.get("provisional_markets", [])
         result["supported_markets"] = supported_markets
         
+        requires_resolution = cap_info.get("requires_target_resolution", False)
+        if requires_resolution and not resolved_markets:
+            result["status"] = "requires_target_resolution"
+            results.append(result)
+            continue
+
         # Check market support
-        unsupported_for_markets = [m for m in resolved_markets if m not in supported_markets]
+        unsupported = False
+        has_provisional = False
         
-        if unsupported_for_markets:
+        for m in resolved_markets:
+            if m in supported_markets:
+                continue
+            elif m in provisional_markets:
+                has_provisional = True
+            else:
+                unsupported = True
+                
+        if unsupported:
             result["status"] = "unsupported"
             result["reason_codes"].append(CAPABILITY_UNSUPPORTED_FOR_MARKET)
             results.append(result)
             continue
             
-        # Check parameter validity (simplistic validation based on allowed_parameters in catalog)
-        # Note: True JSON Schema validation is done by the top-level schema validation, 
-        # but catalog can have additional limitations.
+        # Check parameter validity
         allowed_params = cap_info.get("allowed_parameters", {})
         invalid_param = False
         for param_key in parameters.keys():
@@ -65,8 +79,14 @@ def validate_capabilities(
             results.append(result)
             continue
             
-        # If all checks pass
-        result["status"] = "supported"
+        # Determine status based on support level and market type
+        base_status = cap_info.get("support_status", "unsupported")
+        
+        if has_provisional:
+            result["status"] = "provisional"
+        else:
+            result["status"] = base_status
+            
         results.append(result)
         
     return results

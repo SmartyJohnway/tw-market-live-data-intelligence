@@ -110,7 +110,15 @@
           "priority": { "type": "string" },
           "status": {
             "type": "string",
-            "enum": ["supported", "unsupported", "invalid_parameters", "unknown"]
+            "enum": [
+              "contract_supported",
+              "runtime_executable",
+              "provisional",
+              "unsupported",
+              "requires_target_resolution",
+              "invalid_parameters",
+              "unknown"
+            ]
           },
           "supported_markets": {
             "type": "array",
