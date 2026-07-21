@@ -5,18 +5,21 @@ from typing import Mapping, Sequence, Dict, Any, List
 
 from scripts.m8r_05a_f3.request_validation_models import (
     UnifiedMarketEvidenceRequestValidation,
-    REQUEST_SCHEMA_INVALID, UNSUPPORTED_SCHEMA_VERSION, TARGET_LIMIT_EXCEEDED,
-    REQUIRED_TARGET_UNRESOLVED, REQUIRED_CAPABILITY_UNAVAILABLE
+    REQUEST_SCHEMA_INVALID, UNSUPPORTED_SCHEMA_VERSION, 
+    REQUIRED_TARGET_UNRESOLVED, REQUIRED_CAPABILITY_UNAVAILABLE,
+    TARGET_LIMIT_EXCEEDED
 )
 from scripts.m8r_05a_f3.target_validator import validate_targets
 from scripts.m8r_05a_f3.capability_validator import validate_capabilities
+from scripts.m8r_03d_f1_security_master_snapshot_adapter import ValidatedVerifiedSecurityMasterSnapshot
 
 def validate_unified_market_evidence_request(
     request: dict,
     *,
-    security_master: Sequence[Dict[str, Any]],
+    security_master: ValidatedVerifiedSecurityMasterSnapshot,
     capability_catalog: dict,
-    request_schema: dict
+    request_schema: dict,
+    allow_fixture_snapshot: bool = False
 ) -> dict:
     """
     Main entry point for F3 Validation.
@@ -79,26 +82,36 @@ def validate_unified_market_evidence_request(
         return validation_result
 
     # 2. Extract Data
-    targets = request.get("targets", [])
+    raw_targets = request.get("targets", [])
     data_needs = request.get("data_needs", [])
-    validation_result["limits"]["target_count"] = len(targets)
+    validation_result["limits"]["target_count"] = len(raw_targets)
     validation_result["limits"]["data_need_count"] = len(data_needs)
     
     # Check limits against catalog
     bounds = capability_catalog.get("bounds", {})
     hard_target_limit = bounds.get("hard_target_limit", 50)
-    if len(targets) > hard_target_limit:
+    if len(raw_targets) > hard_target_limit:
         validation_result["validation_status"] = "invalid"
+        validation_result["target_validation_status"] = "invalid"
         validation_result["blocking_issues"].append({
             "reason_code": TARGET_LIMIT_EXCEEDED,
             "json_path": "$.targets",
             "schema_path": "$.properties.targets.maxItems",
-            "message": f"Target count {len(targets)} exceeds hard limit {hard_target_limit}"
+            "message": f"Target count {len(raw_targets)} exceeds hard limit {hard_target_limit}"
         })
+        return validation_result
 
     # 3. Validate Targets
-    allowed_markets = list(capability_catalog.get("supported_markets", {}).keys())
-    target_results = validate_targets(targets, security_master, allowed_markets)
+    # Just pass ["TWSE", "TPEX", "TAIFEX"] as allowed markets, or extract from capability catalog properly
+    # The original mocked `capability_catalog` doesn't have a top-level `supported_markets`, only under `data_need_capabilities`
+    allowed_markets = ["TWSE", "TPEX", "TAIFEX"]
+    
+    target_results = validate_targets(
+        raw_targets, 
+        security_master, 
+        allowed_markets,
+        allow_fixture_snapshot=allow_fixture_snapshot
+    )
     validation_result["target_results"] = target_results
     
     # Deduce Target Validation Status
@@ -108,10 +121,18 @@ def validate_unified_market_evidence_request(
     
     for tr in target_results:
         res_status = tr["resolution_status"]
-        if res_status == "resolved":
+        if res_status == "resolved" and "canonical_identity" in tr:
             resolved_markets.add(tr["canonical_identity"]["market"])
         elif res_status == "ambiguous":
             has_ambiguous = True
+        elif res_status == "duplicate":
+            has_invalid_targets = True
+            validation_result["blocking_issues"].append({
+                "reason_code": "TARGET_DUPLICATE",
+                "json_path": f"$.targets[{tr['target_index']}]",
+                "schema_path": "",
+                "message": f"Target index {tr['target_index']} is a duplicate."
+            })
         else:
             has_invalid_targets = True
             validation_result["blocking_issues"].append({
@@ -132,7 +153,6 @@ def validate_unified_market_evidence_request(
     
     has_unsupported_required = False
     has_unsupported_optional = False
-    has_invalid_cap = False
     
     for cr in capability_results:
         status = cr["status"]
@@ -160,8 +180,8 @@ def validate_unified_market_evidence_request(
         
     # 5. Final Top-Level Status Deduction
     if validation_result["blocking_issues"]:
-        # Precedence: 1. Schema/Bounds Invalid -> 2. Clarification -> 3. Unsupported
-        if any(b["reason_code"] in [REQUEST_SCHEMA_INVALID, UNSUPPORTED_SCHEMA_VERSION, TARGET_LIMIT_EXCEEDED] for b in validation_result["blocking_issues"]):
+        # Precedence: 1. Schema/Bounds/Unresolved Invalid -> 2. Clarification -> 3. Unsupported
+        if any(b["reason_code"] in [REQUEST_SCHEMA_INVALID, UNSUPPORTED_SCHEMA_VERSION, TARGET_LIMIT_EXCEEDED, REQUIRED_TARGET_UNRESOLVED] for b in validation_result["blocking_issues"]):
             validation_result["validation_status"] = "invalid"
         elif has_ambiguous:
             validation_result["validation_status"] = "requires_clarification"

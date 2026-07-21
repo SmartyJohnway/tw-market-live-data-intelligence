@@ -1,4 +1,4 @@
-from typing import Sequence, Dict, Any, List, Optional
+from typing import Dict, Any, List
 from scripts.m8r_05a_f3.request_validation_models import (
     TargetResult, CanonicalIdentity,
     TARGET_INPUT_EMPTY, TARGET_NOT_FOUND, TARGET_AMBIGUOUS,
@@ -6,39 +6,24 @@ from scripts.m8r_05a_f3.request_validation_models import (
     TARGET_DUPLICATE, TARGET_MARKET_UNSUPPORTED,
     TARGET_SECURITY_TYPE_UNSUPPORTED
 )
-from scripts.m8r_05a_f3.security_master_loader import load_canonical_security_master
+from scripts.m8r_03d_f1_security_master_snapshot_adapter import (
+    ValidatedVerifiedSecurityMasterSnapshot,
+    resolve_verified_security_identity
+)
 
 SUPPORTED_SECURITY_TYPES = {"equity", "etf"}
 VALID_MARKETS = {"TWSE", "TPEX", "TAIFEX"}
 
 def validate_targets(
     targets: List[Dict[str, Any]],
-    security_master: Sequence[Dict[str, Any]],
-    allowed_markets: List[str]
+    security_master: ValidatedVerifiedSecurityMasterSnapshot,
+    allowed_markets: List[str],
+    *,
+    allow_fixture_snapshot: bool = False
 ) -> List[TargetResult]:
     
     results: List[TargetResult] = []
     seen_targets = set()
-
-    # Pre-process security master into a unified structure (handles dicts or already normalized lists)
-    master_records = []
-    for rec in security_master:
-        if "security_name_zh" in rec and "security_code" in rec:
-            master_records.append(rec) # Already normalized
-        else:
-            # Should not happen if passed through loader, but fallback safely
-            master_records.append({
-                "security_code": rec.get("security_code", rec.get("symbol", "")),
-                "market": rec.get("market", "").upper(),
-                "security_name_zh": rec.get("security_name_zh", rec.get("name", "")),
-                "security_name_en": rec.get("security_name_en"),
-                "security_type": rec.get("security_type", rec.get("instrument_type", "unknown")),
-                "listing_status": rec.get("listing_status"),
-                "effective_from": rec.get("effective_from"),
-                "effective_to": rec.get("effective_to"),
-                "identity_source": rec.get("identity_source"),
-                "identity_record_reference": rec.get("identity_record_reference")
-            })
 
     for index, target in enumerate(targets):
         input_str = target.get("input", "").strip()
@@ -58,7 +43,6 @@ def validate_targets(
             result["market_hint"] = market_hint
 
         reason_codes = []
-        candidate_matches = []
         
         if not input_str:
             result["resolution_status"] = "invalid_input"
@@ -81,61 +65,75 @@ def validate_targets(
             results.append(result)
             continue
 
-        # Find matching candidates
-        candidates = []
-        for rec in master_records:
-            match = False
-            # Check exact code or exact name
-            if rec["security_code"] == input_str:
-                match = True
-            elif rec["security_name_zh"] == input_str:
-                match = True
-            
-            if match:
-                candidates.append(rec)
+        # Use M8R-03D-F1 resolver
+        resolution = resolve_verified_security_identity(
+            input_str, 
+            security_master.lookup, 
+            market_context=market_hint, 
+            allow_fixture_snapshot=allow_fixture_snapshot, 
+            execute_mode=True
+        )
 
-        # Apply market hint if provided
-        filtered_candidates = []
-        if market_hint:
-            filtered_candidates = [c for c in candidates if c["market"] == market_hint]
-            if candidates and not filtered_candidates:
-                # Code/Name exists but market does not match
-                result["resolution_status"] = "market_mismatch"
-                reason_codes.append(TARGET_MARKET_MISMATCH)
-        else:
-            filtered_candidates = candidates
-
-        if not candidates:
+        res_status = resolution["resolution_status"]
+        if res_status == "not_found":
             result["resolution_status"] = "not_found"
-            reason_codes.append(TARGET_NOT_FOUND)
-        elif candidates and not filtered_candidates:
-            # handled by market_mismatch block above
-            pass
-        elif len(filtered_candidates) == 1:
-            # Check security type
-            canonical = filtered_candidates[0]
-            if canonical["security_type"] not in SUPPORTED_SECURITY_TYPES:
+            if "market_mismatch" in resolution["reason_codes"]:
+                reason_codes.append(TARGET_MARKET_MISMATCH)
+            else:
+                reason_codes.append(TARGET_NOT_FOUND)
+        elif res_status == "ambiguous":
+            result["resolution_status"] = "ambiguous"
+            reason_codes.append(TARGET_AMBIGUOUS)
+            # Map candidates to simplified F3 format
+            candidate_matches = []
+            for c in resolution["candidates"]:
+                ident = c.get("identity", {})
+                cls = c.get("classification", {})
+                candidate_matches.append({
+                    "security_code": ident.get("security_code"),
+                    "market": cls.get("market"),
+                    "security_name_zh": ident.get("security_name_zh"),
+                    "security_type": cls.get("instrument_type")
+                })
+            candidate_matches.sort(key=lambda x: (x["market"] or "", x["security_code"] or ""))
+            result["candidate_matches"] = candidate_matches
+        elif res_status == "quarantined":
+            result["resolution_status"] = "quarantined"
+            # Keep reason code simple, could map to a specific one if needed
+            reason_codes.append(TARGET_NOT_FOUND) 
+        elif res_status == "resolved":
+            selected = resolution["selected"]
+            cls = selected.get("classification", {})
+            sec_type = cls.get("instrument_type")
+            
+            if sec_type not in SUPPORTED_SECURITY_TYPES:
                 result["resolution_status"] = "unsupported_security_type"
                 reason_codes.append(TARGET_SECURITY_TYPE_UNSUPPORTED)
             else:
-                identity_key = f"{canonical['market']}:{canonical['security_code']}"
-                if identity_key in seen_targets:
+                canonical_id = selected.get("canonical_target_id")
+                if canonical_id in seen_targets:
                     result["resolution_status"] = "duplicate"
                     reason_codes.append(TARGET_DUPLICATE)
                 else:
                     result["resolution_status"] = "resolved"
-                    result["canonical_identity"] = canonical
-                    seen_targets.add(identity_key)
-        else:
-            # Multiple matches
-            result["resolution_status"] = "ambiguous"
-            reason_codes.append(TARGET_AMBIGUOUS)
-            # Sort candidates for stable ordering
-            filtered_candidates.sort(key=lambda x: (x["market"], x["security_code"]))
-            candidate_matches = filtered_candidates
+                    seen_targets.add(canonical_id)
+                    
+                    ident = selected.get("identity", {})
+                    lifecycle = selected.get("lifecycle", {})
+                    
+                    result["canonical_identity"] = {
+                        "security_code": ident.get("security_code"),
+                        "market": cls.get("market"),
+                        "security_name_zh": ident.get("security_name_zh", ""),
+                        "security_name_en": ident.get("security_name_en"),
+                        "security_type": sec_type,
+                        "listing_status": lifecycle.get("state"),
+                        "effective_from": lifecycle.get("as_of"),
+                        "effective_to": None,
+                        "identity_source": "canonical_snapshot",
+                        "identity_record_reference": selected.get("record_id")
+                    }
 
-        if candidate_matches:
-            result["candidate_matches"] = candidate_matches
         if reason_codes:
             result["reason_codes"] = reason_codes
             

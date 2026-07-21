@@ -1,0 +1,306 @@
+[
+  {
+    "description": "Valid request with exact match",
+    "request": {
+      "schema_version": "unified_market_evidence_request.v1",
+      "request_id": "acc-1",
+      "targets": [
+        {
+          "input": "2330",
+          "market_hint": "TWSE",
+          "resolution_requirement": "exact"
+        }
+      ],
+      "data_needs": [
+        {
+          "type": "official_eod_reference",
+          "priority": "required"
+        }
+      ],
+      "execution_mode": "preview"
+    },
+    "result": {
+      "schema_version": "unified_market_evidence_request_validation.v1",
+      "request_id": "acc-1",
+      "validation_status": "valid",
+      "request_schema_status": "valid",
+      "capability_validation_status": "valid",
+      "target_validation_status": "valid",
+      "normalized_request": {
+        "schema_version": "unified_market_evidence_request.v1",
+        "request_id": "acc-1",
+        "targets": [
+          {
+            "input": "2330",
+            "market_hint": "TWSE",
+            "resolution_requirement": "exact"
+          }
+        ],
+        "data_needs": [
+          {
+            "type": "official_eod_reference",
+            "priority": "required"
+          }
+        ],
+        "execution_mode": "preview"
+      },
+      "target_results": [
+        {
+          "target_index": 0,
+          "original_input": "2330",
+          "resolution_requirement": "exact",
+          "resolution_status": "resolved",
+          "market_hint": "TWSE",
+          "canonical_identity": {
+            "security_code": "2330",
+            "market": "TWSE",
+            "security_name_zh": "台積電-seed-r5a",
+            "security_name_en": "EnglishName 2330",
+            "security_type": "equity",
+            "listing_status": "active",
+            "effective_from": "2026-07-16",
+            "effective_to": null,
+            "identity_source": "canonical_snapshot",
+            "identity_record_reference": "rec-01"
+          }
+        }
+      ],
+      "capability_results": [
+        {
+          "type": "official_eod_reference",
+          "priority": "required",
+          "status": "runtime_executable",
+          "supported_markets": [
+            "TWSE",
+            "TPEX"
+          ],
+          "reason_codes": []
+        }
+      ],
+      "blocking_issues": [],
+      "warnings": [],
+      "limits": {
+        "target_count": 1,
+        "data_need_count": 1,
+        "operation_count_computed": false,
+        "operation_count": 0,
+        "orchestrator_projection_required": true
+      },
+      "validation_metadata": {}
+    }
+  },
+  {
+    "description": "Valid request with exact isin match",
+    "request": {
+      "schema_version": "unified_market_evidence_request.v1",
+      "request_id": "acc-2",
+      "targets": [
+        {
+          "input": "TW0002330008"
+        }
+      ],
+      "data_needs": [
+        {
+          "type": "official_eod_reference",
+          "priority": "required"
+        }
+      ],
+      "execution_mode": "preview"
+    },
+    "result": {
+      "schema_version": "unified_market_evidence_request_validation.v1",
+      "request_id": "acc-2",
+      "validation_status": "invalid",
+      "request_schema_status": "valid",
+      "capability_validation_status": "unsupported",
+      "target_validation_status": "invalid",
+      "normalized_request": {
+        "schema_version": "unified_market_evidence_request.v1",
+        "request_id": "acc-2",
+        "targets": [
+          {
+            "input": "TW0002330008"
+          }
+        ],
+        "data_needs": [
+          {
+            "type": "official_eod_reference",
+            "priority": "required"
+          }
+        ],
+        "execution_mode": "preview"
+      },
+      "target_results": [
+        {
+          "target_index": 0,
+          "original_input": "TW0002330008",
+          "resolution_requirement": "exact",
+          "resolution_status": "not_found",
+          "reason_codes": [
+            "TARGET_NOT_FOUND"
+          ]
+        }
+      ],
+      "capability_results": [
+        {
+          "type": "official_eod_reference",
+          "priority": "required",
+          "status": "requires_target_resolution",
+          "supported_markets": [
+            "TWSE",
+            "TPEX"
+          ],
+          "reason_codes": []
+        }
+      ],
+      "blocking_issues": [
+        {
+          "reason_code": "REQUIRED_TARGET_UNRESOLVED",
+          "json_path": "$.targets[0]",
+          "schema_path": "",
+          "message": "Required target index 0 failed to resolve: not_found"
+        },
+        {
+          "reason_code": "REQUIRED_CAPABILITY_UNAVAILABLE",
+          "json_path": "$.data_needs",
+          "schema_path": "",
+          "message": "Required capability 'official_eod_reference' is requires_target_resolution"
+        }
+      ],
+      "warnings": [],
+      "limits": {
+        "target_count": 1,
+        "data_need_count": 1,
+        "operation_count_computed": false,
+        "operation_count": 0,
+        "orchestrator_projection_required": true
+      },
+      "validation_metadata": {}
+    }
+  },
+  {
+    "description": "Ambiguous target requires clarification",
+    "request": {
+      "schema_version": "unified_market_evidence_request.v1",
+      "request_id": "acc-3",
+      "targets": [
+        {
+          "input": "台泥"
+        }
+      ],
+      "data_needs": [
+        {
+          "type": "official_eod_reference",
+          "priority": "required"
+        }
+      ],
+      "execution_mode": "preview"
+    },
+    "result": {
+      "schema_version": "unified_market_evidence_request_validation.v1",
+      "request_id": "acc-3",
+      "validation_status": "invalid",
+      "request_schema_status": "valid",
+      "capability_validation_status": "unsupported",
+      "target_validation_status": "invalid",
+      "normalized_request": {
+        "schema_version": "unified_market_evidence_request.v1",
+        "request_id": "acc-3",
+        "targets": [
+          {
+            "input": "台泥"
+          }
+        ],
+        "data_needs": [
+          {
+            "type": "official_eod_reference",
+            "priority": "required"
+          }
+        ],
+        "execution_mode": "preview"
+      },
+      "target_results": [
+        {
+          "target_index": 0,
+          "original_input": "台泥",
+          "resolution_requirement": "exact",
+          "resolution_status": "not_found",
+          "reason_codes": [
+            "TARGET_NOT_FOUND"
+          ]
+        }
+      ],
+      "capability_results": [
+        {
+          "type": "official_eod_reference",
+          "priority": "required",
+          "status": "requires_target_resolution",
+          "supported_markets": [
+            "TWSE",
+            "TPEX"
+          ],
+          "reason_codes": []
+        }
+      ],
+      "blocking_issues": [
+        {
+          "reason_code": "REQUIRED_TARGET_UNRESOLVED",
+          "json_path": "$.targets[0]",
+          "schema_path": "",
+          "message": "Required target index 0 failed to resolve: not_found"
+        },
+        {
+          "reason_code": "REQUIRED_CAPABILITY_UNAVAILABLE",
+          "json_path": "$.data_needs",
+          "schema_path": "",
+          "message": "Required capability 'official_eod_reference' is requires_target_resolution"
+        }
+      ],
+      "warnings": [],
+      "limits": {
+        "target_count": 1,
+        "data_need_count": 1,
+        "operation_count_computed": false,
+        "operation_count": 0,
+        "orchestrator_projection_required": true
+      },
+      "validation_metadata": {}
+    }
+  },
+  {
+    "description": "Invalid Request Format",
+    "request": {
+      "schema_version": "unified_market_evidence_request.v1",
+      "request_id": "acc-4",
+      "targets": []
+    },
+    "result": {
+      "schema_version": "unified_market_evidence_request_validation.v1",
+      "request_id": "acc-4",
+      "validation_status": "invalid",
+      "request_schema_status": "invalid",
+      "capability_validation_status": "valid",
+      "target_validation_status": "valid",
+      "normalized_request": {},
+      "target_results": [],
+      "capability_results": [],
+      "blocking_issues": [
+        {
+          "reason_code": "REQUEST_SCHEMA_INVALID",
+          "json_path": "$",
+          "schema_path": "required",
+          "message": "'data_needs' is a required property"
+        }
+      ],
+      "warnings": [],
+      "limits": {
+        "target_count": 0,
+        "data_need_count": 0,
+        "operation_count_computed": false,
+        "operation_count": 0,
+        "orchestrator_projection_required": true
+      },
+      "validation_metadata": {}
+    }
+  }
+]
