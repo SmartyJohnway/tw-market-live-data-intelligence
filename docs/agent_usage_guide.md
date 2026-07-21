@@ -10,8 +10,8 @@ The Unified Market Evidence project provides a deterministic mechanism to query 
 
 > [!WARNING]
 > **Current Runtime Limitations**
-> The project currently provides the schema, policies, and manual contract handoff structures. **Unified intake, direct preview orchestration, and automated Unified execution via MCP or F3 resolvers are NOT yet implemented.**
-> The AI currently can only author schema-valid requests and perform manual handoff via the operator. Future phases (F3, 05B, 05C) will build the direct automated runtime. Do not claim the Unified executor is currently available to the AI.
+> The project currently provides the schema, policies, manual contract handoff structures, and the **F3 deterministic request validation layer**. **Direct preview orchestration (05B) and automated Unified execution via MCP (05C) are NOT yet implemented.**
+> The AI can author schema-valid requests, which are then passed to F3 for deterministic target and capability validation. If F3 returns `requires_clarification`, the AI must ask the user for clarification. If `valid`, it prepares for future orchestrator phases. Do not claim the Unified executor is currently available to the AI.
 
 ---
 

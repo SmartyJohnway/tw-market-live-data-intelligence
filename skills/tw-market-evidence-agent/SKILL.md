@@ -32,8 +32,8 @@ When triggered, the AI must follow this step-by-step workflow:
 2. **Resolve Ambiguity**: If ticker symbols are ambiguous or missing, stop and clarify with the user. Do not make assumptions or guess targets.
 3. **Check Catalog Capabilities**: Consult the portable catalog projection (`assets/unified_capability_catalog_portable.json` or `references/capability_quick_guide.md`) to verify if the requested target-market combination is supported.
 4. **Compose Unified Request**: Generate a request JSON matching `unified_market_evidence_request.v1.schema.json`. Set `execution_mode` to `"preview"`.
-5. **Manual Handoff**: Present the JSON request to the user and instruct them to execute it via their local workbench. **Direct Unified execution/MCP tools are not currently available to the AI.**
-6. **Interpret Result**: Once the user pastes back the `unified_market_evidence_result.v1` payload, parse it. Strictly preserve timing semantics (EOD vs. live-ish, stale vs. current).
+5. **F3 Validation and Handoff**: Pass the JSON request to the F3 deterministic validation layer (or ask the operator to do so). If F3 returns `requires_clarification`, ask the user for clarity. If `invalid` or `unsupported`, explain the limits. If `valid`, present the validated JSON request to the user and instruct them to execute it via their local workbench. **Direct Unified execution/MCP tools are not currently available to the AI.**
+6. **Interpret Result**: Once the user pastes back the `unified_market_evidence_result.v1` payload (from 05B execution), parse it. Strictly preserve timing semantics (EOD vs. live-ish, stale vs. current).
 7. **Respond with Traceability**: Summarize findings, present calculations clearly, and preserve trace links to citations.
 
 ---
