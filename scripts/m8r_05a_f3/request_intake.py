@@ -1,5 +1,6 @@
 import json
 import jsonschema
+import copy
 from typing import Mapping, Sequence, Dict, Any, List
 
 from scripts.m8r_05a_f3.request_validation_models import (
@@ -50,9 +51,15 @@ def validate_unified_market_evidence_request(
         validation_result["validation_status"] = "invalid"
         validation_result["request_schema_status"] = "invalid"
         # Provide structural error
+        json_path = "$"
+        for p in e.path:
+            if isinstance(p, int):
+                json_path += f"[{p}]"
+            else:
+                json_path += f".{p}"
         validation_result["blocking_issues"].append({
             "reason_code": REQUEST_SCHEMA_INVALID,
-            "json_path": ".".join([str(p) for p in e.absolute_path]) if e.absolute_path else "$",
+            "json_path": json_path,
             "schema_path": ".".join([str(p) for p in e.absolute_schema_path]) if e.absolute_schema_path else "$",
             "message": e.message
         })
@@ -153,7 +160,12 @@ def validate_unified_market_evidence_request(
         
     # 5. Final Top-Level Status Deduction
     if validation_result["blocking_issues"]:
-        if any(b["reason_code"] == REQUIRED_CAPABILITY_UNAVAILABLE for b in validation_result["blocking_issues"]):
+        # Precedence: 1. Schema/Bounds Invalid -> 2. Clarification -> 3. Unsupported
+        if any(b["reason_code"] in [REQUEST_SCHEMA_INVALID, UNSUPPORTED_SCHEMA_VERSION, TARGET_LIMIT_EXCEEDED] for b in validation_result["blocking_issues"]):
+            validation_result["validation_status"] = "invalid"
+        elif has_ambiguous:
+            validation_result["validation_status"] = "requires_clarification"
+        elif any(b["reason_code"] == REQUIRED_CAPABILITY_UNAVAILABLE for b in validation_result["blocking_issues"]):
             validation_result["validation_status"] = "unsupported"
         else:
             validation_result["validation_status"] = "invalid"
@@ -163,6 +175,6 @@ def validate_unified_market_evidence_request(
         validation_result["validation_status"] = "valid"
         
     # Normalized Request Population (Safe-copy)
-    validation_result["normalized_request"] = request
+    validation_result["normalized_request"] = copy.deepcopy(request)
         
     return validation_result

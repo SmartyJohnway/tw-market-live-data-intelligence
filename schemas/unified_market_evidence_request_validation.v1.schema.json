@@ -69,13 +69,13 @@
               "security_code": { "type": "string" },
               "market": { "type": "string" },
               "security_name_zh": { "type": "string" },
-              "security_name_en": { "type": "string" },
+              "security_name_en": { "type": ["string", "null"] },
               "security_type": { "type": "string" },
-              "listing_status": { "type": "string" },
-              "effective_from": { "type": "string" },
-              "effective_to": { "type": "string" },
-              "identity_source": { "type": "string" },
-              "identity_record_reference": { "type": "string" }
+              "listing_status": { "type": ["string", "null"] },
+              "effective_from": { "type": ["string", "null"] },
+              "effective_to": { "type": ["string", "null"] },
+              "identity_source": { "type": ["string", "null"] },
+              "identity_record_reference": { "type": ["string", "null"] }
             },
             "required": ["security_code", "market", "security_name_zh", "security_type"]
           },

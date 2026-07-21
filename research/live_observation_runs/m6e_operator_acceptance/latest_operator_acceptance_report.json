@@ -1,0 +1,824 @@
+{
+  "caveats": [
+    "operator preflight: Python 3.13 detection caveat (True).",
+    "operator preflight: Windows detection caveat (True).",
+    "operator preflight: Virtual environment caveat (not detected)."
+  ],
+  "checks": [
+    {
+      "command": "python scripts/run_local_workbench.py",
+      "label": "local workbench",
+      "returncode": 0,
+      "status": "pass",
+      "stderr_tail": "",
+      "stdout_tail": "onical_market_context_01/canonical_market_context.json, 4573 bytes)\n- [PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)\n- [PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n- [PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7487 bytes)\n- [PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n- [PASS] Output folder permissions: writable folders detected: 2\n\nRecommended next action: Conversation package already available; review it and send to ChatGPT.\n\nMode reminders: Mode A = Canonical Context; Mode B = Bounded Observation; Mode C = Conversation Package.\nGovernance: Observation != Canonical; Reference-only != Current Price; stale_or_closed_session = degraded; no polling/scheduler/startup network/trading/recommendations/ranking/target price.\n"
+    },
+    {
+      "command": "python scripts/run_environment_diagnostics.py",
+      "label": "environment diagnostics",
+      "returncode": 0,
+      "status": "pass",
+      "stderr_tail": "",
+      "stdout_tail": "L/certs\", \"openssl_capath_env\": \"SSL_CERT_DIR\"}\n[PASS] Configured TW_MARKET_SSL_POLICY: None\n[PASS] Effective SSL policy: strict\n[CAVEAT] Virtual environment: not detected\n  Suggested command: Create and activate a virtual environment if dependency imports fail.\n[PASS] Installed dependencies: available\n[PASS] FastAPI import: fastapi importable\n[PASS] M5F package: present (research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json, 4573 bytes)\n[PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)\n[PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n[PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7487 bytes)\n[PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n[PASS] Output folder permissions: writable folders detected: 2\n"
+    },
+    {
+      "caveats": [
+        "operator preflight: Python 3.13 detection caveat (True).",
+        "operator preflight: Windows detection caveat (True).",
+        "operator preflight: Virtual environment caveat (not detected)."
+      ],
+      "command": "python scripts/run_operator_preflight.py --json --timeout-seconds 300",
+      "json_parse_status": "pass",
+      "label": "operator preflight",
+      "parsed_json": {
+        "caveats": [],
+        "latest_observation": "generated_at_utc=2026-07-03T13:23:42Z",
+        "latest_release_version": "v0.1.0",
+        "latest_source_health": "generated_at_utc=2026-06-30T04:23:40Z",
+        "network_calls": false,
+        "repository": {
+          "branch": "unknown",
+          "commit": "35d5275",
+          "release": "Local Release Candidate",
+          "version": "v0.1.0"
+        },
+        "results": [
+          {
+            "checks": [
+              {
+                "detail": "3.13.7",
+                "name": "Python version",
+                "status": "PASS",
+                "suggestion": "Use Python 3.10 or newer."
+              },
+              {
+                "detail": "Windows-10-10.0.19045-SP0",
+                "name": "OS platform",
+                "status": "PASS",
+                "suggestion": ""
+              },
+              {
+                "detail": "True",
+                "name": "Python 3.13 detection",
+                "status": "CAVEAT",
+                "suggestion": "If TWSE MIS TLS fails on Windows/Python 3.13, retry only the explicit bounded live command with --ssl-policy compatibility. Do not use unsafe-explicit unless you understand TLS verification is disabled."
+              },
+              {
+                "detail": "True",
+                "name": "Windows detection",
+                "status": "CAVEAT",
+                "suggestion": "If TWSE MIS TLS fails on Windows/Python 3.13, retry only the explicit bounded live command with --ssl-policy compatibility. Do not use unsafe-explicit unless you understand TLS verification is disabled."
+              },
+              {
+                "detail": "{\"cafile\": null, \"capath\": null, \"openssl_cafile\": \"C:\\\\Program Files\\\\Common Files\\\\SSL/cert.pem\", \"openssl_cafile_env\": \"SSL_CERT_FILE\", \"openssl_capath\": \"C:\\\\Program Files\\\\Common Files\\\\SSL/certs\", \"openssl_capath_env\": \"SSL_CERT_DIR\"}",
+                "name": "SSL default verify paths",
+                "status": "PASS",
+                "suggestion": ""
+              },
+              {
+                "detail": "None",
+                "name": "Configured TW_MARKET_SSL_POLICY",
+                "status": "PASS",
+                "suggestion": ""
+              },
+              {
+                "detail": "strict",
+                "name": "Effective SSL policy",
+                "status": "PASS",
+                "suggestion": "If TWSE MIS TLS fails on Windows/Python 3.13, retry only the explicit bounded live command with --ssl-policy compatibility. Do not use unsafe-explicit unless you understand TLS verification is disabled."
+              },
+              {
+                "detail": "not detected",
+                "name": "Virtual environment",
+                "status": "CAVEAT",
+                "suggestion": "Create and activate a virtual environment if dependency imports fail."
+              },
+              {
+                "detail": "available",
+                "name": "Installed dependencies",
+                "status": "PASS",
+                "suggestion": "Run: python -m pip install -r requirements.txt"
+              },
+              {
+                "detail": "fastapi importable",
+                "name": "FastAPI import",
+                "status": "PASS",
+                "suggestion": "Run: python -m pip install -r requirements.txt"
+              },
+              {
+                "detail": "present (research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json, 4573 bytes)",
+                "name": "M5F package",
+                "status": "PASS",
+                "suggestion": "Run the M5F validator against research/staging/m5f/m5f_canonical_market_context_01."
+              },
+              {
+                "detail": "present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)",
+                "name": "Latest observation",
+                "status": "PASS",
+                "suggestion": "Observation not found. Suggested command: python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation"
+              },
+              {
+                "detail": "present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)",
+                "name": "Source health",
+                "status": "PASS",
+                "suggestion": "Run: python scripts/run_m5q_source_health_probe.py --execute-health-probe"
+              },
+              {
+                "detail": "present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7487 bytes)",
+                "name": "Conversation package",
+                "status": "PASS",
+                "suggestion": "Run: python scripts/build_m5n_conversation_context.py"
+              },
+              {
+                "detail": "present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)",
+                "name": "Frontend workbench",
+                "status": "PASS",
+                "suggestion": "Open frontend/readonly-preview/M5KLocalAIWorkbench.html after starting FastAPI if API-backed views are needed."
+              },
+              {
+                "detail": "writable folders detected: 2",
+                "name": "Output folder permissions",
+                "status": "PASS",
+                "suggestion": "Ensure research/live_observation_runs is writable for observation and conversation outputs."
+              }
+            ],
+            "label": "Environment",
+            "status": "PASS"
+          },
+          {
+            "command": "python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01",
+            "label": "M5F validation",
+            "returncode": 0,
+            "status": "PASS",
+            "stderr_tail": "",
+            "stdout_tail": "{\n  \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n  \"source\": \"TWSE_OpenAPI\",\n  \"source_date\": \"2026-06-26\",\n  \"status\": \"passed\",\n  \"symbols\": [\n    \"0050\",\n    \"00929\",\n    \"2330\"\n  ]\n}\n",
+            "timed_out": false,
+            "timeout_seconds": 300
+          },
+          {
+            "command": "python scripts/run_m5ij_end_to_end_acceptance.py --check-only",
+            "label": "M5IJ acceptance",
+            "returncode": 0,
+            "status": "PASS",
+            "stderr_tail": "",
+            "stdout_tail": "\": \"passed\"\n    },\n    {\n      \"check\": \"fastapi_probe_disabled_410\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_not_listed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"details\": {\n        \"authorized_exceptions\": [],\n        \"changed_forbidden_paths\": [],\n        \"frontend_public_changes\": [],\n        \"git_returncode\": 0,\n        \"unauthorized_forbidden_paths\": []\n      },\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n",
+            "timed_out": false,
+            "timeout_seconds": 300
+          },
+          {
+            "command": "python scripts/run_m5k_postmerge_validation.py --check-only",
+            "label": "M5K postmerge",
+            "returncode": 0,
+            "status": "PASS",
+            "stderr_tail": "",
+            "stdout_tail": "{\n  \"check_only\": true,\n  \"failures\": [],\n  \"network_calls\": false,\n  \"ok\": true\n}\n",
+            "timed_out": false,
+            "timeout_seconds": 300
+          },
+          {
+            "command": "python scripts/run_m5q_source_health_probe.py --check-only",
+            "label": "M5Q source health plan",
+            "returncode": 0,
+            "status": "PASS",
+            "stderr_tail": "",
+            "stdout_tail": "explicit_execution_only\": true,\n    \"full_market_scan\": false,\n    \"layer\": \"M5K Level 2 Live Observation Layer\",\n    \"m5f_modified\": false,\n    \"m5q_source_health\": true,\n    \"network_free_startup\": true,\n    \"polling\": false,\n    \"promote_to_m5f\": false,\n    \"raw_endpoint_payload_included\": false,\n    \"recommendation\": false,\n    \"scheduler\": false,\n    \"trading_signal\": false,\n    \"validation\": {\n      \"errors\": [],\n      \"symbols\": [\n        \"2330\",\n        \"0050\",\n        \"3483\",\n        \"TAIEX\",\n        \"TX\"\n      ],\n      \"target_count\": 5,\n      \"valid\": true,\n      \"warnings\": []\n    },\n    \"writes_frontend_public\": false,\n    \"writes_m5f\": false,\n    \"writes_research_generated\": false\n  },\n  \"network_calls_may_have_occurred\": false,\n  \"polling\": false,\n  \"scheduler\": false,\n  \"schema_version\": \"m5q_source_health_report.v1\",\n  \"source_families\": [\n    \"TWSE_MIS listed stock route\",\n    \"TWSE_MIS listed ETF route\",\n    \"TWSE_MIS TPEx / OTC route\",\n    \"TWSE_MIS TAIEX route\",\n    \"TAIFEX TX route\"\n  ],\n  \"summary\": {\n    \"degraded\": 0,\n    \"failed\": 5,\n    \"healthy\": 0,\n    \"unsupported\": 0\n  },\n  \"targets\": [\n    \"2330\",\n    \"0050\",\n    \"3483\",\n    \"TAIEX\",\n    \"TX\"\n  ]\n}\n\n",
+            "timed_out": false,
+            "timeout_seconds": 300
+          },
+          {
+            "command": "python scripts/run_m6b_source_contract_preflight.py --check-only",
+            "label": "M6B source contract plan",
+            "returncode": 0,
+            "status": "PASS",
+            "stderr_tail": "",
+            "stdout_tail": "    \"manual_explicit_only\": true,\n    \"network_free_startup\": true,\n    \"no_full_market_scan\": true,\n    \"no_polling\": true,\n    \"no_scheduler\": true,\n    \"no_trading_output\": true,\n    \"polling\": false,\n    \"promote_to_m5f\": false,\n    \"raw_endpoint_payload_included\": false,\n    \"recommendation\": false,\n    \"scheduler\": false,\n    \"trading_signal\": false,\n    \"watchlist_validation\": {\n      \"errors\": [],\n      \"symbols\": [\n        \"2330\",\n        \"0050\",\n        \"TX\"\n      ],\n      \"target_count\": 3,\n      \"valid\": true,\n      \"warnings\": []\n    },\n    \"writes_frontend_public\": false,\n    \"writes_m5f\": false,\n    \"writes_research_generated\": false\n  },\n  \"mode\": \"check_only\",\n  \"network_calls_may_have_occurred\": false,\n  \"raw_payload_included\": false,\n  \"schema_version\": \"m6b_source_contract_preflight.v1\",\n  \"ssl_policy\": {\n    \"compatibility_mode_used\": false,\n    \"network_calls_may_have_occurred\": false,\n    \"selected\": \"strict\",\n    \"silent_tls_fallback\": false,\n    \"ssl_policy\": \"strict\",\n    \"strict_default\": true,\n    \"tls_verification_mode\": \"default_verified_tls\",\n    \"unsafe_mode_used\": false,\n    \"warning\": null\n  },\n  \"targets\": [\n    \"2330\",\n    \"0050\",\n    \"TX\"\n  ]\n}\n",
+            "timed_out": false,
+            "timeout_seconds": 300
+          }
+        ],
+        "status": "PASS WITH CAVEATS",
+        "timeout_seconds": 300,
+        "watchlist": "config/m5k_default_watchlist.json",
+        "writes": "only child validators with documented check-only behavior; no live observation executed"
+      },
+      "returncode": 0,
+      "status": "pass_with_caveats",
+      "stderr_tail": "",
+      "stdout_tail": "\"writes_frontend_public\\\": false,\\n    \\\"writes_m5f\\\": false,\\n    \\\"writes_research_generated\\\": false\\n  },\\n  \\\"mode\\\": \\\"check_only\\\",\\n  \\\"network_calls_may_have_occurred\\\": false,\\n  \\\"raw_payload_included\\\": false,\\n  \\\"schema_version\\\": \\\"m6b_source_contract_preflight.v1\\\",\\n  \\\"ssl_policy\\\": {\\n    \\\"compatibility_mode_used\\\": false,\\n    \\\"network_calls_may_have_occurred\\\": false,\\n    \\\"selected\\\": \\\"strict\\\",\\n    \\\"silent_tls_fallback\\\": false,\\n    \\\"ssl_policy\\\": \\\"strict\\\",\\n    \\\"strict_default\\\": true,\\n    \\\"tls_verification_mode\\\": \\\"default_verified_tls\\\",\\n    \\\"unsafe_mode_used\\\": false,\\n    \\\"warning\\\": null\\n  },\\n  \\\"targets\\\": [\\n    \\\"2330\\\",\\n    \\\"0050\\\",\\n    \\\"TX\\\"\\n  ]\\n}\\n\",\n      \"timed_out\": false,\n      \"timeout_seconds\": 300\n    }\n  ],\n  \"status\": \"PASS WITH CAVEATS\",\n  \"timeout_seconds\": 300,\n  \"watchlist\": \"config/m5k_default_watchlist.json\",\n  \"writes\": \"only child validators with documented check-only behavior; no live observation executed\"\n}\n"
+    },
+    {
+      "command": "python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01",
+      "label": "M5F validator",
+      "returncode": 0,
+      "status": "pass",
+      "stderr_tail": "",
+      "stdout_tail": "{\n  \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n  \"source\": \"TWSE_OpenAPI\",\n  \"source_date\": \"2026-06-26\",\n  \"status\": \"passed\",\n  \"symbols\": [\n    \"0050\",\n    \"00929\",\n    \"2330\"\n  ]\n}\n"
+    },
+    {
+      "command": "python scripts/run_m5ij_end_to_end_acceptance.py --check-only",
+      "label": "M5IJ",
+      "returncode": 0,
+      "status": "pass",
+      "stderr_tail": "",
+      "stdout_tail": "  \"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"details\": {\n        \"authorized_exceptions\": [],\n        \"changed_forbidden_paths\": [],\n        \"frontend_public_changes\": [],\n        \"git_returncode\": 0,\n        \"unauthorized_forbidden_paths\": []\n      },\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n"
+    },
+    {
+      "command": "python scripts/run_m5k_postmerge_validation.py --check-only",
+      "label": "M5K",
+      "returncode": 0,
+      "status": "pass",
+      "stderr_tail": "",
+      "stdout_tail": "{\n  \"check_only\": true,\n  \"failures\": [],\n  \"network_calls\": false,\n  \"ok\": true\n}\n"
+    },
+    {
+      "command": "python scripts/run_m5q_source_health_probe.py --check-only",
+      "label": "M5Q",
+      "returncode": 0,
+      "status": "pass",
+      "stderr_tail": "",
+      "stdout_tail": "true,\n    \"polling\": false,\n    \"promote_to_m5f\": false,\n    \"raw_endpoint_payload_included\": false,\n    \"recommendation\": false,\n    \"scheduler\": false,\n    \"trading_signal\": false,\n    \"validation\": {\n      \"errors\": [],\n      \"symbols\": [\n        \"2330\",\n        \"0050\",\n        \"3483\",\n        \"TAIEX\",\n        \"TX\"\n      ],\n      \"target_count\": 5,\n      \"valid\": true,\n      \"warnings\": []\n    },\n    \"writes_frontend_public\": false,\n    \"writes_m5f\": false,\n    \"writes_research_generated\": false\n  },\n  \"network_calls_may_have_occurred\": false,\n  \"polling\": false,\n  \"scheduler\": false,\n  \"schema_version\": \"m5q_source_health_report.v1\",\n  \"source_families\": [\n    \"TWSE_MIS listed stock route\",\n    \"TWSE_MIS listed ETF route\",\n    \"TWSE_MIS TPEx / OTC route\",\n    \"TWSE_MIS TAIEX route\",\n    \"TAIFEX TX route\"\n  ],\n  \"summary\": {\n    \"degraded\": 0,\n    \"failed\": 5,\n    \"healthy\": 0,\n    \"unsupported\": 0\n  },\n  \"targets\": [\n    \"2330\",\n    \"0050\",\n    \"3483\",\n    \"TAIEX\",\n    \"TX\"\n  ]\n}\n\n"
+    },
+    {
+      "command": "python scripts/run_m6b_source_contract_preflight.py --check-only",
+      "label": "M6B",
+      "returncode": 0,
+      "status": "pass",
+      "stderr_tail": "",
+      "stdout_tail": "se,\n    \"promote_to_m5f\": false,\n    \"raw_endpoint_payload_included\": false,\n    \"recommendation\": false,\n    \"scheduler\": false,\n    \"trading_signal\": false,\n    \"watchlist_validation\": {\n      \"errors\": [],\n      \"symbols\": [\n        \"2330\",\n        \"0050\",\n        \"TX\"\n      ],\n      \"target_count\": 3,\n      \"valid\": true,\n      \"warnings\": []\n    },\n    \"writes_frontend_public\": false,\n    \"writes_m5f\": false,\n    \"writes_research_generated\": false\n  },\n  \"mode\": \"check_only\",\n  \"network_calls_may_have_occurred\": false,\n  \"raw_payload_included\": false,\n  \"schema_version\": \"m6b_source_contract_preflight.v1\",\n  \"ssl_policy\": {\n    \"compatibility_mode_used\": false,\n    \"network_calls_may_have_occurred\": false,\n    \"selected\": \"strict\",\n    \"silent_tls_fallback\": false,\n    \"ssl_policy\": \"strict\",\n    \"strict_default\": true,\n    \"tls_verification_mode\": \"default_verified_tls\",\n    \"unsafe_mode_used\": false,\n    \"warning\": null\n  },\n  \"targets\": [\n    \"2330\",\n    \"0050\",\n    \"TX\"\n  ]\n}\n"
+    },
+    {
+      "command": "python server/mcp_server.py --startup-check",
+      "label": "MCP startup",
+      "returncode": 0,
+      "status": "pass",
+      "stderr_tail": "",
+      "stdout_tail": "mcp_server_startup_check_ok\n"
+    },
+    {
+      "label": "FastAPI",
+      "status": "pass"
+    },
+    {
+      "label": "MCP",
+      "status": "pass"
+    },
+    {
+      "label": "Frontend",
+      "status": "pass"
+    },
+    {
+      "label": "Mode A",
+      "status": "pass"
+    },
+    {
+      "label": "Mode B",
+      "status": "pass"
+    },
+    {
+      "label": "Mode C",
+      "status": "pass"
+    }
+  ],
+  "child_workflow_caveats": {
+    "operator_preflight": [
+      "operator preflight: Python 3.13 detection caveat (True).",
+      "operator preflight: Windows detection caveat (True).",
+      "operator preflight: Virtual environment caveat (not detected)."
+    ]
+  },
+  "conversation_package": {
+    "checks": [
+      {
+        "evidence": null,
+        "name": "builder runs",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "json exists",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "markdown exists",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "canonical summary",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "safety governance",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "observation summary if available",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "source health summary if available",
+        "status": "pass"
+      },
+      {
+        "evidence": [],
+        "name": "no forbidden raw/trading fields",
+        "status": "pass"
+      }
+    ],
+    "output_dir": "research/live_observation_runs/current_conversation_context",
+    "schema_version": "m5n_conversation_context.v1",
+    "status": "pass"
+  },
+  "failed_checks": [],
+  "fastapi": {
+    "checks": [
+      {
+        "evidence": 200,
+        "name": "GET /api/health",
+        "status": "pass"
+      },
+      {
+        "evidence": 200,
+        "name": "GET /api/governance",
+        "status": "pass"
+      },
+      {
+        "evidence": 200,
+        "name": "GET /api/context/canonical",
+        "status": "pass"
+      },
+      {
+        "evidence": 200,
+        "name": "GET /api/context/snapshot",
+        "status": "pass"
+      },
+      {
+        "evidence": 200,
+        "name": "GET /api/conversation/context",
+        "status": "pass"
+      },
+      {
+        "evidence": 200,
+        "name": "GET /api/source-health/latest",
+        "status": "pass"
+      },
+      {
+        "evidence": 200,
+        "name": "GET /api/m5k/live-observation/history",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "POST /api/m5k/live-observation/plan",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "execute requires confirmation",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "invalid ssl_policy returns 400",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "probe routes fail closed",
+        "status": "pass"
+      }
+    ],
+    "network_calls": false,
+    "status": "pass"
+  },
+  "final_status": "pass_with_caveats",
+  "frontend": {
+    "checks": [
+      {
+        "evidence": null,
+        "name": "html exists",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "js exists",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "file api autodetect",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "localhost api autodetect",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "no interval polling",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "no hosted cloud endpoint",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "raw payload hidden",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "no target price ui",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "conversation package ux",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "history timeline ux",
+        "status": "pass"
+      }
+    ],
+    "status": "pass"
+  },
+  "generated_at_utc": "2026-07-20T16:48:43Z",
+  "governance": {
+    "check_only_non_network": true,
+    "no_m5f_mutation": true,
+    "no_polling": true,
+    "no_raw_payload_leakage": true,
+    "no_scheduler": true,
+    "no_trading_output": true
+  },
+  "mcp": {
+    "invalid_ssl_policy": {
+      "artifact_writes": false,
+      "failure_reason": "invalid_ssl_policy",
+      "governance": {
+        "badge": "historical/unknown",
+        "canonical": false,
+        "caveats": [
+          "readonly_local_context",
+          "not_realtime_guaranteed",
+          "not_trading_signal",
+          "not_production_current_state",
+          "freshness_must_be_displayed",
+          "no_artifact_refresh"
+        ],
+        "current_realtime": false,
+        "execution_mode": "readonly_local_artifact_read",
+        "frontend_refresh": false,
+        "historical_evidence_snapshot": true,
+        "layer": "M5K",
+        "live_probe_execution": false,
+        "network_calls": false,
+        "production_current_state": false,
+        "production_ready": false,
+        "production_refresh": false,
+        "readonly_only": true,
+        "realtime_guaranteed": false,
+        "stale_status": "unknown",
+        "surface": "MCP readonly context tool",
+        "trading_signal": false
+      },
+      "message": "Invalid ssl policy 'invalid'. Expected one of: compatibility, strict, unsafe-explicit.",
+      "network_calls": false,
+      "status": "failed_closed",
+      "tool": "run_m5k_bounded_live_observation"
+    },
+    "readonly_tools_available": [
+      "read_latest_market_snapshot",
+      "read_watchlist_observations",
+      "read_ai_context_pack",
+      "read_chatgpt_briefing",
+      "read_m3g_caveats_register",
+      "read_source_contract_baseline",
+      "get_canonical_market_context",
+      "get_source_health",
+      "get_capability_matrix",
+      "get_source_catalog",
+      "get_latest_market_snapshot",
+      "get_watchlist_observations",
+      "get_ai_context_pack",
+      "get_chatgpt_briefing",
+      "read_m3g04_latest_controlled_probe_evidence",
+      "check_bounded_market_refresh_readiness",
+      "get_m5l_source_adapter_matrix",
+      "get_m5l_source_capabilities",
+      "get_watchlist",
+      "get_watchlist_summary",
+      "validate_watchlist",
+      "get_conversation_context",
+      "get_m5k_default_watchlist",
+      "create_m5k_conversation_handoff",
+      "plan_m5k_bounded_live_observation",
+      "read_m5k_latest_live_observation",
+      "run_m5k_bounded_live_observation",
+      "get_source_health_latest",
+      "get_source_health_schema"
+    ],
+    "startup_check": {
+      "command": "python server/mcp_server.py --startup-check",
+      "label": "MCP startup",
+      "returncode": 0,
+      "status": "pass",
+      "stderr_tail": "",
+      "stdout_tail": "mcp_server_startup_check_ok\n"
+    },
+    "status": "pass"
+  },
+  "mode": "check-only",
+  "mode_a": {
+    "ai_context_pack_exists": true,
+    "canonical_readable": true,
+    "chatgpt_briefing_exists": true,
+    "m5f_exists": true,
+    "m5f_unchanged": true,
+    "status": "pass"
+  },
+  "mode_b": {
+    "default_watchlist_exists": true,
+    "latest_observation_readable": true,
+    "observation_remains_noncanonical": true,
+    "planned_routes": 19,
+    "reference_only_not_current_price": true,
+    "stale_or_closed_session_is_degraded": true,
+    "status": "pass",
+    "watchlist_valid": true
+  },
+  "mode_c": {
+    "checks": [
+      {
+        "evidence": null,
+        "name": "builder runs",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "json exists",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "markdown exists",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "canonical summary",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "safety governance",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "observation summary if available",
+        "status": "pass"
+      },
+      {
+        "evidence": null,
+        "name": "source health summary if available",
+        "status": "pass"
+      },
+      {
+        "evidence": [],
+        "name": "no forbidden raw/trading fields",
+        "status": "pass"
+      }
+    ],
+    "output_dir": "research/live_observation_runs/current_conversation_context",
+    "schema_version": "m5n_conversation_context.v1",
+    "status": "pass"
+  },
+  "network_calls_may_have_occurred": false,
+  "operator_acceptance_summary": {
+    "mode_a_ready": true,
+    "mode_b_check_only_ready": true,
+    "mode_c_ready": true,
+    "operator_ready": true,
+    "release_preflight_ready": true
+  },
+  "operator_preflight": {
+    "caveats": [
+      "operator preflight: Python 3.13 detection caveat (True).",
+      "operator preflight: Windows detection caveat (True).",
+      "operator preflight: Virtual environment caveat (not detected)."
+    ],
+    "command": "python scripts/run_operator_preflight.py --json --timeout-seconds 300",
+    "json_parse_status": "pass",
+    "label": "operator preflight",
+    "parsed_json": {
+      "caveats": [],
+      "latest_observation": "generated_at_utc=2026-07-03T13:23:42Z",
+      "latest_release_version": "v0.1.0",
+      "latest_source_health": "generated_at_utc=2026-06-30T04:23:40Z",
+      "network_calls": false,
+      "repository": {
+        "branch": "unknown",
+        "commit": "35d5275",
+        "release": "Local Release Candidate",
+        "version": "v0.1.0"
+      },
+      "results": [
+        {
+          "checks": [
+            {
+              "detail": "3.13.7",
+              "name": "Python version",
+              "status": "PASS",
+              "suggestion": "Use Python 3.10 or newer."
+            },
+            {
+              "detail": "Windows-10-10.0.19045-SP0",
+              "name": "OS platform",
+              "status": "PASS",
+              "suggestion": ""
+            },
+            {
+              "detail": "True",
+              "name": "Python 3.13 detection",
+              "status": "CAVEAT",
+              "suggestion": "If TWSE MIS TLS fails on Windows/Python 3.13, retry only the explicit bounded live command with --ssl-policy compatibility. Do not use unsafe-explicit unless you understand TLS verification is disabled."
+            },
+            {
+              "detail": "True",
+              "name": "Windows detection",
+              "status": "CAVEAT",
+              "suggestion": "If TWSE MIS TLS fails on Windows/Python 3.13, retry only the explicit bounded live command with --ssl-policy compatibility. Do not use unsafe-explicit unless you understand TLS verification is disabled."
+            },
+            {
+              "detail": "{\"cafile\": null, \"capath\": null, \"openssl_cafile\": \"C:\\\\Program Files\\\\Common Files\\\\SSL/cert.pem\", \"openssl_cafile_env\": \"SSL_CERT_FILE\", \"openssl_capath\": \"C:\\\\Program Files\\\\Common Files\\\\SSL/certs\", \"openssl_capath_env\": \"SSL_CERT_DIR\"}",
+              "name": "SSL default verify paths",
+              "status": "PASS",
+              "suggestion": ""
+            },
+            {
+              "detail": "None",
+              "name": "Configured TW_MARKET_SSL_POLICY",
+              "status": "PASS",
+              "suggestion": ""
+            },
+            {
+              "detail": "strict",
+              "name": "Effective SSL policy",
+              "status": "PASS",
+              "suggestion": "If TWSE MIS TLS fails on Windows/Python 3.13, retry only the explicit bounded live command with --ssl-policy compatibility. Do not use unsafe-explicit unless you understand TLS verification is disabled."
+            },
+            {
+              "detail": "not detected",
+              "name": "Virtual environment",
+              "status": "CAVEAT",
+              "suggestion": "Create and activate a virtual environment if dependency imports fail."
+            },
+            {
+              "detail": "available",
+              "name": "Installed dependencies",
+              "status": "PASS",
+              "suggestion": "Run: python -m pip install -r requirements.txt"
+            },
+            {
+              "detail": "fastapi importable",
+              "name": "FastAPI import",
+              "status": "PASS",
+              "suggestion": "Run: python -m pip install -r requirements.txt"
+            },
+            {
+              "detail": "present (research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json, 4573 bytes)",
+              "name": "M5F package",
+              "status": "PASS",
+              "suggestion": "Run the M5F validator against research/staging/m5f/m5f_canonical_market_context_01."
+            },
+            {
+              "detail": "present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)",
+              "name": "Latest observation",
+              "status": "PASS",
+              "suggestion": "Observation not found. Suggested command: python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation"
+            },
+            {
+              "detail": "present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)",
+              "name": "Source health",
+              "status": "PASS",
+              "suggestion": "Run: python scripts/run_m5q_source_health_probe.py --execute-health-probe"
+            },
+            {
+              "detail": "present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7487 bytes)",
+              "name": "Conversation package",
+              "status": "PASS",
+              "suggestion": "Run: python scripts/build_m5n_conversation_context.py"
+            },
+            {
+              "detail": "present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)",
+              "name": "Frontend workbench",
+              "status": "PASS",
+              "suggestion": "Open frontend/readonly-preview/M5KLocalAIWorkbench.html after starting FastAPI if API-backed views are needed."
+            },
+            {
+              "detail": "writable folders detected: 2",
+              "name": "Output folder permissions",
+              "status": "PASS",
+              "suggestion": "Ensure research/live_observation_runs is writable for observation and conversation outputs."
+            }
+          ],
+          "label": "Environment",
+          "status": "PASS"
+        },
+        {
+          "command": "python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01",
+          "label": "M5F validation",
+          "returncode": 0,
+          "status": "PASS",
+          "stderr_tail": "",
+          "stdout_tail": "{\n  \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n  \"source\": \"TWSE_OpenAPI\",\n  \"source_date\": \"2026-06-26\",\n  \"status\": \"passed\",\n  \"symbols\": [\n    \"0050\",\n    \"00929\",\n    \"2330\"\n  ]\n}\n",
+          "timed_out": false,
+          "timeout_seconds": 300
+        },
+        {
+          "command": "python scripts/run_m5ij_end_to_end_acceptance.py --check-only",
+          "label": "M5IJ acceptance",
+          "returncode": 0,
+          "status": "PASS",
+          "stderr_tail": "",
+          "stdout_tail": "\": \"passed\"\n    },\n    {\n      \"check\": \"fastapi_probe_disabled_410\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_not_listed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"legacy_mcp_live_tool_disabled_direct_call\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"mcp_readonly_canonical\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"m5e_superseded_by_m5f\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"readme_stale_wording_removed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"check\": \"no_forbidden_paths_changed\",\n      \"details\": {\n        \"authorized_exceptions\": [],\n        \"changed_forbidden_paths\": [],\n        \"frontend_public_changes\": [],\n        \"git_returncode\": 0,\n        \"unauthorized_forbidden_paths\": []\n      },\n      \"status\": \"passed\"\n    }\n  ],\n  \"m5f\": {\n    \"manifest_sha256\": \"93780e18a823743e522ab4806e670916cdbec609a8815f20eb964ce539968209\",\n    \"source\": \"TWSE_OpenAPI\",\n    \"source_date\": \"2026-06-26\",\n    \"status\": \"passed\",\n    \"symbols\": [\n      \"0050\",\n      \"00929\",\n      \"2330\"\n    ]\n  },\n  \"network_calls\": false,\n  \"release_status\": \"m5ij_local_product_release_candidate\",\n  \"status\": \"passed\"\n}\n",
+          "timed_out": false,
+          "timeout_seconds": 300
+        },
+        {
+          "command": "python scripts/run_m5k_postmerge_validation.py --check-only",
+          "label": "M5K postmerge",
+          "returncode": 0,
+          "status": "PASS",
+          "stderr_tail": "",
+          "stdout_tail": "{\n  \"check_only\": true,\n  \"failures\": [],\n  \"network_calls\": false,\n  \"ok\": true\n}\n",
+          "timed_out": false,
+          "timeout_seconds": 300
+        },
+        {
+          "command": "python scripts/run_m5q_source_health_probe.py --check-only",
+          "label": "M5Q source health plan",
+          "returncode": 0,
+          "status": "PASS",
+          "stderr_tail": "",
+          "stdout_tail": "explicit_execution_only\": true,\n    \"full_market_scan\": false,\n    \"layer\": \"M5K Level 2 Live Observation Layer\",\n    \"m5f_modified\": false,\n    \"m5q_source_health\": true,\n    \"network_free_startup\": true,\n    \"polling\": false,\n    \"promote_to_m5f\": false,\n    \"raw_endpoint_payload_included\": false,\n    \"recommendation\": false,\n    \"scheduler\": false,\n    \"trading_signal\": false,\n    \"validation\": {\n      \"errors\": [],\n      \"symbols\": [\n        \"2330\",\n        \"0050\",\n        \"3483\",\n        \"TAIEX\",\n        \"TX\"\n      ],\n      \"target_count\": 5,\n      \"valid\": true,\n      \"warnings\": []\n    },\n    \"writes_frontend_public\": false,\n    \"writes_m5f\": false,\n    \"writes_research_generated\": false\n  },\n  \"network_calls_may_have_occurred\": false,\n  \"polling\": false,\n  \"scheduler\": false,\n  \"schema_version\": \"m5q_source_health_report.v1\",\n  \"source_families\": [\n    \"TWSE_MIS listed stock route\",\n    \"TWSE_MIS listed ETF route\",\n    \"TWSE_MIS TPEx / OTC route\",\n    \"TWSE_MIS TAIEX route\",\n    \"TAIFEX TX route\"\n  ],\n  \"summary\": {\n    \"degraded\": 0,\n    \"failed\": 5,\n    \"healthy\": 0,\n    \"unsupported\": 0\n  },\n  \"targets\": [\n    \"2330\",\n    \"0050\",\n    \"3483\",\n    \"TAIEX\",\n    \"TX\"\n  ]\n}\n\n",
+          "timed_out": false,
+          "timeout_seconds": 300
+        },
+        {
+          "command": "python scripts/run_m6b_source_contract_preflight.py --check-only",
+          "label": "M6B source contract plan",
+          "returncode": 0,
+          "status": "PASS",
+          "stderr_tail": "",
+          "stdout_tail": "    \"manual_explicit_only\": true,\n    \"network_free_startup\": true,\n    \"no_full_market_scan\": true,\n    \"no_polling\": true,\n    \"no_scheduler\": true,\n    \"no_trading_output\": true,\n    \"polling\": false,\n    \"promote_to_m5f\": false,\n    \"raw_endpoint_payload_included\": false,\n    \"recommendation\": false,\n    \"scheduler\": false,\n    \"trading_signal\": false,\n    \"watchlist_validation\": {\n      \"errors\": [],\n      \"symbols\": [\n        \"2330\",\n        \"0050\",\n        \"TX\"\n      ],\n      \"target_count\": 3,\n      \"valid\": true,\n      \"warnings\": []\n    },\n    \"writes_frontend_public\": false,\n    \"writes_m5f\": false,\n    \"writes_research_generated\": false\n  },\n  \"mode\": \"check_only\",\n  \"network_calls_may_have_occurred\": false,\n  \"raw_payload_included\": false,\n  \"schema_version\": \"m6b_source_contract_preflight.v1\",\n  \"ssl_policy\": {\n    \"compatibility_mode_used\": false,\n    \"network_calls_may_have_occurred\": false,\n    \"selected\": \"strict\",\n    \"silent_tls_fallback\": false,\n    \"ssl_policy\": \"strict\",\n    \"strict_default\": true,\n    \"tls_verification_mode\": \"default_verified_tls\",\n    \"unsafe_mode_used\": false,\n    \"warning\": null\n  },\n  \"targets\": [\n    \"2330\",\n    \"0050\",\n    \"TX\"\n  ]\n}\n",
+          "timed_out": false,
+          "timeout_seconds": 300
+        }
+      ],
+      "status": "PASS WITH CAVEATS",
+      "timeout_seconds": 300,
+      "watchlist": "config/m5k_default_watchlist.json",
+      "writes": "only child validators with documented check-only behavior; no live observation executed"
+    },
+    "returncode": 0,
+    "status": "pass_with_caveats",
+    "stderr_tail": "",
+    "stdout_tail": "\"writes_frontend_public\\\": false,\\n    \\\"writes_m5f\\\": false,\\n    \\\"writes_research_generated\\\": false\\n  },\\n  \\\"mode\\\": \\\"check_only\\\",\\n  \\\"network_calls_may_have_occurred\\\": false,\\n  \\\"raw_payload_included\\\": false,\\n  \\\"schema_version\\\": \\\"m6b_source_contract_preflight.v1\\\",\\n  \\\"ssl_policy\\\": {\\n    \\\"compatibility_mode_used\\\": false,\\n    \\\"network_calls_may_have_occurred\\\": false,\\n    \\\"selected\\\": \\\"strict\\\",\\n    \\\"silent_tls_fallback\\\": false,\\n    \\\"ssl_policy\\\": \\\"strict\\\",\\n    \\\"strict_default\\\": true,\\n    \\\"tls_verification_mode\\\": \\\"default_verified_tls\\\",\\n    \\\"unsafe_mode_used\\\": false,\\n    \\\"warning\\\": null\\n  },\\n  \\\"targets\\\": [\\n    \\\"2330\\\",\\n    \\\"0050\\\",\\n    \\\"TX\\\"\\n  ]\\n}\\n\",\n      \"timed_out\": false,\n      \"timeout_seconds\": 300\n    }\n  ],\n  \"status\": \"PASS WITH CAVEATS\",\n  \"timeout_seconds\": 300,\n  \"watchlist\": \"config/m5k_default_watchlist.json\",\n  \"writes\": \"only child validators with documented check-only behavior; no live observation executed\"\n}\n"
+  },
+  "operator_workbench": {
+    "command": "python scripts/run_local_workbench.py",
+    "label": "local workbench",
+    "returncode": 0,
+    "status": "pass",
+    "stderr_tail": "",
+    "stdout_tail": "onical_market_context_01/canonical_market_context.json, 4573 bytes)\n- [PASS] Latest observation: present (research/live_observation_runs/m5k/latest_observation.json, 40397 bytes)\n- [PASS] Source health: present (research/live_observation_runs/source_health/latest_source_health_report.json, 7954 bytes)\n- [PASS] Conversation package: present (research/live_observation_runs/current_conversation_context/conversation_context.md, 7487 bytes)\n- [PASS] Frontend workbench: present (frontend/readonly-preview/M5KLocalAIWorkbench.html, 8845 bytes)\n- [PASS] Output folder permissions: writable folders detected: 2\n\nRecommended next action: Conversation package already available; review it and send to ChatGPT.\n\nMode reminders: Mode A = Canonical Context; Mode B = Bounded Observation; Mode C = Conversation Package.\nGovernance: Observation != Canonical; Reference-only != Current Price; stale_or_closed_session = degraded; no polling/scheduler/startup network/trading/recommendations/ranking/target price.\n"
+  },
+  "platform": "Windows-10-10.0.19045-SP0",
+  "python": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+  "recommended_next_steps": [
+    "python scripts/run_local_workbench.py",
+    "python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01",
+    "python scripts/run_m5k_postmerge_validation.py --check-only",
+    "python scripts/build_m5n_conversation_context.py",
+    "python scripts/run_operator_preflight.py --json --timeout-seconds 300"
+  ],
+  "repository": {
+    "branch": "unknown",
+    "commit": "35d5275",
+    "release": "Local Release Candidate",
+    "version": "v0.1.0"
+  },
+  "schema_version": "m6e_operator_acceptance.v1",
+  "ssl_policy": "strict"
+}
