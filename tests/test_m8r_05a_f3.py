@@ -60,7 +60,7 @@ def test_security_master():
             "canonical_target_id": "TWSE:030000",
             "identity": {"security_code": "030000", "security_name_zh": "權證A"},
             "classification": {"market": "TWSE", "instrument_type": "warrant"},
-            "execution_eligibility": {"status": "blocked"},
+            "execution_eligibility": {"status": "blocked", "reason_codes": ["unsupported_instrument_type"]},
             "lifecycle": {}
         }
     ]

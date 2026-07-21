@@ -34,7 +34,7 @@
         "network_calls": false,
         "repository": {
           "branch": "jules-15205147631239836684-e209ab66",
-          "commit": "c2745bb",
+          "commit": "021da1c",
           "release": "Local Release Candidate",
           "version": "v0.1.0"
         },
@@ -445,7 +445,7 @@
     ],
     "status": "pass"
   },
-  "generated_at_utc": "2026-07-21T13:06:13Z",
+  "generated_at_utc": "2026-07-21T15:18:30Z",
   "governance": {
     "check_only_non_network": true,
     "no_m5f_mutation": true,
@@ -620,7 +620,7 @@
       "network_calls": false,
       "repository": {
         "branch": "jules-15205147631239836684-e209ab66",
-        "commit": "c2745bb",
+        "commit": "021da1c",
         "release": "Local Release Candidate",
         "version": "v0.1.0"
       },
@@ -807,7 +807,7 @@
   ],
   "repository": {
     "branch": "jules-15205147631239836684-e209ab66",
-    "commit": "c2745bb",
+    "commit": "021da1c",
     "release": "Local Release Candidate",
     "version": "v0.1.0"
   },

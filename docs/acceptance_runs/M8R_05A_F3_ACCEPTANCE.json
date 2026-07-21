@@ -1,0 +1,19 @@
+{
+  "baseline_main_sha": "6e56182824d00dbc940865804c2cce7e8ce5f186",
+  "tested_commit_sha": "021da1c1b8da148553850108be64ce71b1bc86a8",
+  "tested_parent_sha": "c2745bb98994840f6b596b3bb93893338cafec13",
+  "targeted_test_counts": 14,
+  "full_non_network_counts": 1832,
+  "baseline_failed_node_ids": 14,
+  "current_failed_node_ids": 14,
+  "novel_failures": 0,
+  "removed_failures": 0,
+  "unchanged_failures": 14,
+  "strict_loader_result": "passed",
+  "snapshot_sha256": "8b520c211eb0e9ffef2b5825ff8f2603fe0d725298c7a78fcbf2a70666ccb2c5",
+  "manifest_sha256": "c8d0ed34e5672abdb18dc2b210e7dc27e366e5f80b2a74c102a0a38fbe6c4dfb",
+  "determinism_result": "passed",
+  "network_guard_result": "passed",
+  "snapshot_immutability_result": "passed",
+  "binding_status": "sealed"
+}
