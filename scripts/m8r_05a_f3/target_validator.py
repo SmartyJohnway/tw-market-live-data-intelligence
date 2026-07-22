@@ -28,9 +28,9 @@ def validate_target(target, index, *, security_master, supported_markets, seen, 
     eligibility=selected.get("execution_eligibility") or {}; reasons=list(eligibility.get("reason_codes") or [])
     fixture=(security_master.lookup["by_canonical"].get(selected.get("canonical_target_id"),{}).get("observation") or {}).get("status")=="fixture_observation_only"
     effective=[x for x in reasons if not (fixture and allow_fixture_snapshot and x=="fixture_observation_only")]
-    allowed=eligibility.get("status")=="allowed" or (fixture and allow_fixture_snapshot and eligibility.get("status")=="blocked" and not effective)
+    allowed=eligibility.get("status") in {"allowed", "allowed_with_caveat"} or (fixture and allow_fixture_snapshot and eligibility.get("status")=="blocked" and not effective)
     if not allowed:
-        unsupported="unsupported_instrument_type" in effective
+        unsupported=bool(set(effective).intersection(UNSUPPORTED_SECURITY_REASON_CODES))
         out["resolution_status"]="unsupported_security_type" if unsupported else "quarantined"; out["reason_codes"]=([REASON_SECURITY_TYPE_UNSUPPORTED] if unsupported else [REASON_IDENTITY_QUARANTINED])+effective; return out
     cid=selected.get("canonical_target_id")
     if cid in seen: out["resolution_status"]="duplicate"; out["reason_codes"]=[REASON_DUPLICATE]; return out

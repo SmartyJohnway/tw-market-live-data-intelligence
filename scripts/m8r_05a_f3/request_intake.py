@@ -1,10 +1,10 @@
 import copy
 import jsonschema
-from .request_validation_models import OUTPUT_SCHEMA_VERSION
+from .request_validation_models import OUTPUT_SCHEMA_VERSION, TARGET_BLOCKER_BY_STATUS
 from .target_validator import validate_target
 from .capability_validator import validate_capability
 
-def _issue(code,path): return {"code":code,"path":path}
+def _issue(code,path,message=None): return {"code":code,"path":path,"message":message or code.replace("_"," ").lower()}
 def validate_unified_market_evidence_request(request, *, security_master, capability_catalog, request_schema, allow_fixture_snapshot=False):
     normalized=copy.deepcopy(request) if isinstance(request,dict) else {}
     result={"schema_version":OUTPUT_SCHEMA_VERSION,"request_id":normalized.get("request_id","") if isinstance(normalized.get("request_id",""),str) else "","validation_status":"invalid","request_schema_status":"valid","target_validation_status":"valid","capability_validation_status":"valid","normalized_request":normalized,"target_results":[],"capability_results":[],"blocking_issues":[],"warnings":[],"limits":{"target_count":len(normalized.get("targets",[])) if isinstance(normalized.get("targets",[]),list) else 0,"hard_target_limit":0,"operation_count_computed":False,"operation_count":0,"orchestrator_projection_required":True},"validation_metadata":{"offline":True,"deterministic":True,"allow_fixture_snapshot":allow_fixture_snapshot}}
@@ -12,7 +12,8 @@ def validate_unified_market_evidence_request(request, *, security_master, capabi
     if errors:
         result["request_schema_status"]="invalid"; result["blocking_issues"]=[_issue("REQUEST_SCHEMA_INVALID", "$" if e is None else "$"+"".join("[%d]"%x if isinstance(x,int) else "."+x for x in e.path)) for e in errors]; return result
     bounds=capability_catalog.get("bounds") if isinstance(capability_catalog,dict) else None; markets=capability_catalog.get("supported_markets") if isinstance(capability_catalog,dict) else None
-    if not isinstance(bounds,dict) or not isinstance(markets,dict) or not all(isinstance(k,str) for k in markets): result["blocking_issues"]=[_issue("CAPABILITY_CATALOG_INVALID","$")]; return result
+    caps=capability_catalog.get("data_need_capabilities") if isinstance(capability_catalog,dict) else None
+    if not isinstance(bounds,dict) or not isinstance(markets,dict) or not markets or not all(isinstance(k,str) and isinstance(v,dict) for k,v in markets.items()) or not isinstance(caps,list) or len({x.get("capability_id") for x in caps if isinstance(x,dict)}) != len(caps): result["blocking_issues"]=[_issue("CAPABILITY_CATALOG_INVALID","$","capability catalog is malformed")]; return result
     result["limits"]["hard_target_limit"]=bounds.get("hard_target_limit",0)
     if not isinstance(bounds.get("hard_target_limit"),int) or isinstance(bounds.get("hard_target_limit"),bool) or bounds["hard_target_limit"] < 1 or len(request["targets"])>bounds["hard_target_limit"]: result["blocking_issues"]=[_issue("TARGET_LIMIT_EXCEEDED","$.targets")]; return result
     seen=set()
@@ -21,7 +22,7 @@ def validate_unified_market_evidence_request(request, *, security_master, capabi
     resolved={x["canonical_identity"]["market"] for x in result["target_results"] if x["resolution_status"]=="resolved"}
     invalid={"invalid_input","not_found","market_mismatch","invalid_market_hint","duplicate"}; unsupported={"unsupported_market","unsupported_security_type","quarantined"}
     for target in result["target_results"]:
-        if target["resolution_status"] != "resolved": result["blocking_issues"].append(_issue("REQUIRED_TARGET_"+target["resolution_status"].upper(), "$.targets[%d]" % target["target_index"]))
+        if target["resolution_status"] != "resolved": result["blocking_issues"].append(_issue(TARGET_BLOCKER_BY_STATUS[target["resolution_status"]], "$.targets[%d]" % target["target_index"], "target resolution status: "+target["resolution_status"]))
     if any(s in invalid for s in statuses): result["target_validation_status"]="invalid"
     elif "ambiguous" in statuses: result["target_validation_status"]="requires_clarification"
     elif any(s in unsupported for s in statuses): result["target_validation_status"]="unsupported"

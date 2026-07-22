@@ -3,19 +3,309 @@
   "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request_validation:v1",
   "title": "Unified Market Evidence Request Validation v1",
   "type": "object",
-  "required": ["schema_version", "request_id", "validation_status", "request_schema_status", "target_validation_status", "capability_validation_status", "normalized_request", "target_results", "capability_results", "blocking_issues", "warnings", "limits", "validation_metadata"],
+  "required": [
+    "schema_version",
+    "request_id",
+    "validation_status",
+    "request_schema_status",
+    "target_validation_status",
+    "capability_validation_status",
+    "normalized_request",
+    "target_results",
+    "capability_results",
+    "blocking_issues",
+    "warnings",
+    "limits",
+    "validation_metadata"
+  ],
   "properties": {
-    "schema_version": {"const": "unified_market_evidence_request_validation.v1"},
-    "request_id": {"type": "string"},
-    "validation_status": {"enum": ["valid", "invalid", "requires_clarification", "unsupported"]},
-    "request_schema_status": {"enum": ["valid", "invalid"]},
-    "target_validation_status": {"enum": ["valid", "invalid", "requires_clarification", "unsupported"]},
-    "capability_validation_status": {"enum": ["valid", "invalid", "unsupported"]},
-    "normalized_request": {"type": "object"},
-    "target_results": {"type": "array", "items": {"type": "object", "required": ["target_index", "original_input", "resolution_requirement", "resolution_status"], "properties": {"target_index": {"type": "integer", "minimum": 0}, "original_input": {"type": "string"}, "resolution_requirement": {"type": "string"}, "resolution_status": {"enum": ["resolved", "ambiguous", "not_found", "market_mismatch", "unsupported_market", "invalid_market_hint", "unsupported_security_type", "invalid_input", "duplicate", "quarantined"]}, "market_hint": {"type": "string"}, "canonical_identity": {"type": "object"}, "candidate_matches": {"type": "array"}, "reason_codes": {"type": "array", "items": {"type": "string"}}, "evidence_references": {"type": "array"}}, "additionalProperties": false}},
-    "capability_results": {"type": "array", "items": {"type": "object", "required": ["data_need_index", "capability_id", "priority", "status"], "properties": {"data_need_index": {"type": "integer", "minimum": 0}, "capability_id": {"type": "string"}, "priority": {"enum": ["required", "optional"]}, "status": {"enum": ["contract_supported", "runtime_executable", "provisional", "unsupported", "requires_target_resolution", "invalid_parameters", "unknown"]}, "reason_codes": {"type": "array", "items": {"type": "string"}}, "known_limitations": {"type": "array"}}, "additionalProperties": false}},
-    "blocking_issues": {"type": "array", "items": {"type": "object"}}, "warnings": {"type": "array", "items": {"type": "object"}},
-    "limits": {"type": "object", "required": ["target_count", "hard_target_limit", "operation_count_computed", "operation_count", "orchestrator_projection_required"], "properties": {"target_count": {"type": "integer"}, "hard_target_limit": {"type": "integer"}, "operation_count_computed": {"const": false}, "operation_count": {"const": 0}, "orchestrator_projection_required": {"const": true}}, "additionalProperties": false},
-    "validation_metadata": {"type": "object", "required": ["offline", "deterministic", "allow_fixture_snapshot"], "properties": {"offline": {"const": true}, "deterministic": {"const": true}, "allow_fixture_snapshot": {"type": "boolean"}}, "additionalProperties": false}
-  }, "additionalProperties": false
+    "schema_version": {
+      "const": "unified_market_evidence_request_validation.v1"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "validation_status": {
+      "enum": [
+        "valid",
+        "invalid",
+        "requires_clarification",
+        "unsupported"
+      ]
+    },
+    "request_schema_status": {
+      "enum": [
+        "valid",
+        "invalid"
+      ]
+    },
+    "target_validation_status": {
+      "enum": [
+        "valid",
+        "invalid",
+        "requires_clarification",
+        "unsupported"
+      ]
+    },
+    "capability_validation_status": {
+      "enum": [
+        "valid",
+        "invalid",
+        "unsupported"
+      ]
+    },
+    "normalized_request": {
+      "type": "object"
+    },
+    "target_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "target_index",
+          "original_input",
+          "resolution_requirement",
+          "resolution_status"
+        ],
+        "properties": {
+          "target_index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "original_input": {
+            "type": "string"
+          },
+          "resolution_requirement": {
+            "type": "string"
+          },
+          "resolution_status": {
+            "enum": [
+              "resolved",
+              "ambiguous",
+              "not_found",
+              "market_mismatch",
+              "unsupported_market",
+              "invalid_market_hint",
+              "unsupported_security_type",
+              "invalid_input",
+              "duplicate",
+              "quarantined"
+            ]
+          },
+          "market_hint": {
+            "type": "string"
+          },
+          "canonical_identity": {
+            "$ref": "#/definitions/canonical_identity"
+          },
+          "candidate_matches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/canonical_identity"
+            }
+          },
+          "reason_codes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_references": {
+            "type": "array"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "capability_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "data_need_index",
+          "capability_id",
+          "priority",
+          "status"
+        ],
+        "properties": {
+          "data_need_index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "capability_id": {
+            "type": "string"
+          },
+          "priority": {
+            "enum": [
+              "required",
+              "optional"
+            ]
+          },
+          "status": {
+            "enum": [
+              "contract_supported",
+              "runtime_executable",
+              "provisional",
+              "unsupported",
+              "requires_target_resolution",
+              "invalid_parameters",
+              "unknown"
+            ]
+          },
+          "reason_codes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "known_limitations": {
+            "type": "array"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "blocking_issues": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/issue"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/issue"
+      }
+    },
+    "limits": {
+      "type": "object",
+      "required": [
+        "target_count",
+        "hard_target_limit",
+        "operation_count_computed",
+        "operation_count",
+        "orchestrator_projection_required"
+      ],
+      "properties": {
+        "target_count": {
+          "type": "integer"
+        },
+        "hard_target_limit": {
+          "type": "integer"
+        },
+        "operation_count_computed": {
+          "const": false
+        },
+        "operation_count": {
+          "const": 0
+        },
+        "orchestrator_projection_required": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "validation_metadata": {
+      "type": "object",
+      "required": [
+        "offline",
+        "deterministic",
+        "allow_fixture_snapshot"
+      ],
+      "properties": {
+        "offline": {
+          "const": true
+        },
+        "deterministic": {
+          "const": true
+        },
+        "allow_fixture_snapshot": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "canonical_identity": {
+      "type": "object",
+      "required": [
+        "canonical_target_id",
+        "market",
+        "security_code",
+        "isin",
+        "security_name_zh",
+        "security_name_en",
+        "instrument_type",
+        "instrument_family"
+      ],
+      "properties": {
+        "security_code": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isin": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "security_name_zh": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "security_name_en": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "instrument_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "instrument_family": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "canonical_target_id": {
+          "type": "string"
+        },
+        "market": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "issue": {
+      "type": "object",
+      "required": [
+        "code",
+        "path",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^\\$"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
 }
