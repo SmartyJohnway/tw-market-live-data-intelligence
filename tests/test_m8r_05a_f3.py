@@ -34,6 +34,10 @@ def test_catalog_missing_capability_id_fails_closed():
  c=artifacts()[1]; c['data_need_capabilities']=[{}]; assert not _catalog_valid(c)
 def test_catalog_empty_markets_fails_closed():
  c=artifacts()[1]; c['supported_markets']={}; assert not _catalog_valid(c)
+def test_catalog_non_object_capability_fails_closed():
+ c=artifacts()[1]; c['data_need_capabilities']=[None]; assert not _catalog_valid(c)
+def test_catalog_invalid_parameter_rule_fails_closed():
+ c=artifacts()[1]; c['data_need_capabilities'][0]['allowed_parameters']={'':{'type':'integer','minimum':1.5}}; assert not _catalog_valid(c)
 def test_invalid_parameters_make_top_level_invalid():
  assert run(req(needs=[{'type':'recent_performance','priority':'required','parameters':{'lookback_trading_days':0}}]))['validation_status']=='invalid'
 def test_catalog_default_limit_bool_rejected():
