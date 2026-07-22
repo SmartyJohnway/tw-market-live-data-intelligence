@@ -101,37 +101,14 @@ def validate_targets(
             result["resolution_status"] = "quarantined"
             reason_codes.append(TARGET_IDENTITY_QUARANTINED)
         elif res_status == "resolved":
-            import copy
             selected = resolution["selected"]
             cls = selected.get("classification", {})
             sec_type = cls.get("instrument_type")
+            execution_eligibility = selected.get("execution_eligibility") or {}
             
-            raw_eligibility = selected.get("execution_eligibility") or {}
-
-            effective_reason_codes = [
-                code for code in raw_eligibility.get("reason_codes", [])
-                if not (allow_fixture_snapshot and code == "fixture_observation_only")
-            ]
-
-            effective_status = (
-                "allowed"
-                if allow_fixture_snapshot
-                and raw_eligibility.get("status") == "blocked"
-                and not effective_reason_codes
-                else raw_eligibility.get("status", "unknown")
-            )
-
-            if effective_status not in {"allowed", "allowed_with_caveat"}:
-                if any(c in effective_reason_codes for c in ["unsupported_instrument_type"]):
-                    result["resolution_status"] = "unsupported_security_type"
-                    reason_codes.append(TARGET_SECURITY_TYPE_UNSUPPORTED)
-                elif any(c in effective_reason_codes for c in ["classification_quarantine_or_conflict"]):
-                    result["resolution_status"] = "quarantined"
-                    reason_codes.append(TARGET_IDENTITY_QUARANTINED)
-                else:
-                    # Fallback mapping for other blocks (like lifecycle_blocks_current_execution)
-                    result["resolution_status"] = "quarantined"
-                    reason_codes.extend(effective_reason_codes)
+            if execution_eligibility.get("status") not in {"allowed", "allowed_with_caveat"}:
+                result["resolution_status"] = "unsupported_security_type"
+                reason_codes.append(TARGET_SECURITY_TYPE_UNSUPPORTED)
             else:
                 canonical_id = selected.get("canonical_target_id")
                 if canonical_id in seen_targets:

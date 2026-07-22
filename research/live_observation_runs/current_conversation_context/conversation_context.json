@@ -754,7 +754,7 @@
     "source_may_be_delayed_or_unavailable",
     "no_trading_signal"
   ],
-  "created_at_utc": "2026-07-21T15:18:30Z",
+  "created_at_utc": "2026-07-22T08:10:55Z",
   "deterministic_metrics_context": {
     "contexts": [],
     "enabled": true,
@@ -843,7 +843,7 @@
     "holiday_status": "records_missing",
     "is_trading_day_candidate": true,
     "is_weekend": false,
-    "latest_observation_age_seconds": 1562088,
+    "latest_observation_age_seconds": 1622833,
     "latest_observation_time": "2026-07-03T13:23:42+00:00",
     "market": "TW",
     "not_capital_flow": true,
@@ -864,7 +864,7 @@
     "session_state": "closed",
     "source_schema_version": "m7e_market_clock_session_state.v1",
     "timezone": "Asia/Taipei",
-    "trade_date": "2026-07-21"
+    "trade_date": "2026-07-22"
   },
   "observation_summary": {
     "degraded": 4,

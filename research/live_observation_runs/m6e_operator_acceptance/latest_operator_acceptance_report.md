@@ -1,6 +1,6 @@
 # M6E Operator Acceptance Report
 
-Generated: 2026-07-21T15:18:30Z
+Generated: 2026-07-22T08:10:55Z
 Final status: `pass_with_caveats`
 
 ## Operator readiness

@@ -155,18 +155,16 @@ def validate_unified_market_evidence_request(
     for cr in capability_results:
         status = cr["status"]
         priority = cr["priority"]
-        if status == "requires_target_resolution":
-            continue
-
-        if status in ["unsupported", "invalid_parameters", "unknown"]:
+        if status in ["unsupported", "invalid_parameters", "unknown", "requires_target_resolution"]:
             if priority == "required":
                 has_unsupported_required = True
-                validation_result["blocking_issues"].append({
-                    "reason_code": REQUIRED_CAPABILITY_UNAVAILABLE,
-                    "json_path": "$.data_needs",
-                    "schema_path": "",
-                    "message": f"Required capability '{cr['type']}' is {status}"
-                })
+                if status != "requires_target_resolution":
+                    validation_result["blocking_issues"].append({
+                        "reason_code": REQUIRED_CAPABILITY_UNAVAILABLE,
+                        "json_path": "$.data_needs",
+                        "schema_path": "",
+                        "message": f"Required capability '{cr['type']}' is {status}"
+                    })
             else:
                 has_unsupported_optional = True
                 validation_result["warnings"].append({
