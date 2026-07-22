@@ -24,5 +24,8 @@ def test_capability_and_parameter_cases():
  assert run(req(needs=[{'type':'bogus','priority':'optional'}]),sc)['warnings']
  assert run(req(needs=[{'type':'bogus','priority':'required'}]),sc)['validation_status']=='unsupported'
  catalog=artifacts()[1]
+ assert validate_capability({'type':'recent_performance','priority':'required','parameters':{}},0,catalog=catalog,target_resolved={'TWSE'})['status']=='contract_supported'
+ for value in ('20',None,True,1.5,[],{}): assert validate_capability({'type':'recent_performance','priority':'required','parameters':{'lookback_trading_days':value}},0,catalog=catalog,target_resolved={'TWSE'})['status']=='invalid_parameters'
+ assert validate_capability({'type':'recent_performance','priority':'required','parameters':{'unknown':1}},0,catalog=catalog,target_resolved={'TWSE'})['status']=='invalid_parameters'
  assert validate_capability({'type':'recent_performance','priority':'required','parameters':{'lookback_trading_days':0}},0,catalog=catalog,target_resolved={'TWSE'})['status']=='invalid_parameters'
  assert validate_capability({'type':'recent_performance','priority':'required','parameters':{'lookback_trading_days':20}},0,catalog=catalog,target_resolved={'TWSE'})['status']=='contract_supported'

@@ -12,12 +12,13 @@ def validate_capability(need, index, *, catalog, target_resolved):
         for key,value in params.items():
             rule=allowed.get(key)
             if not rule: bad.append("unknown_parameter:"+key); continue
-            if rule.get("type")=="integer" and (not isinstance(value,int) or isinstance(value,bool)): bad.append("invalid_type:"+key)
+            if rule.get("type")=="integer" and (not isinstance(value,int) or isinstance(value,bool)):
+                bad.append("invalid_type:"+key); continue
             if "minimum" in rule and value < rule["minimum"]: bad.append("below_minimum:"+key)
             if "maximum" in rule and value > rule["maximum"]: bad.append("above_maximum:"+key)
             if rule.get("enum") and value not in rule["enum"]: bad.append("invalid_enum:"+key)
-        for key in allowed:
-            if key not in params: bad.append("missing_parameter:"+key)
+        for key, rule in allowed.items():
+            if key not in params and (rule.get("required") is True or key in found.get("required_parameters", [])): bad.append("missing_parameter:"+key)
     if bad: out["status"]="invalid_parameters"; out["reason_codes"]=sorted(bad); return out
     if found.get("requires_target_resolution") and not target_resolved: out["status"]="requires_target_resolution"; return out
     markets=target_resolved or set()
