@@ -36,3 +36,10 @@ def test_catalog_empty_markets_fails_closed():
  c=artifacts()[1]; c['supported_markets']={}; assert not _catalog_valid(c)
 def test_invalid_parameters_make_top_level_invalid():
  assert run(req(needs=[{'type':'recent_performance','priority':'required','parameters':{'lookback_trading_days':0}}]))['validation_status']=='invalid'
+def test_catalog_default_limit_bool_rejected():
+ c=artifacts()[1]; c['bounds']['default_target_limit']=True; assert not _catalog_valid(c)
+def test_schema_recognized_but_catalog_unsupported_market():
+ s,c,sc=artifacts(); c['supported_markets'].pop('TAIFEX')
+ for cap in c['data_need_capabilities']:
+  cap['supported_markets']=[m for m in cap['supported_markets'] if m!='TAIFEX']; cap['provisional_markets']=[m for m in cap['provisional_markets'] if m!='TAIFEX']
+ r=req([{'input':'2330','market_hint':'TAIFEX'}]); out=validate_unified_market_evidence_request(r,security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True); assert out['target_results'][0]['resolution_status']=='unsupported_market' and out['validation_status']=='unsupported'
