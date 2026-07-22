@@ -3,6 +3,7 @@ from pathlib import Path
 import jsonschema
 from scripts.m8r_05a_f3.capability_validator import validate_capability
 from scripts.m8r_05a_f3.request_intake import validate_unified_market_evidence_request
+from scripts.m8r_05a_f3.request_intake import _catalog_valid
 from scripts.m8r_05a_f3.security_master_loader import load_f3_verified_security_master
 FIX=Path('tests/fixtures/m8r_05a_f3')
 def artifacts():
@@ -29,3 +30,9 @@ def test_capability_and_parameter_cases():
  assert validate_capability({'type':'recent_performance','priority':'required','parameters':{'unknown':1}},0,catalog=catalog,target_resolved={'TWSE'})['status']=='invalid_parameters'
  assert validate_capability({'type':'recent_performance','priority':'required','parameters':{'lookback_trading_days':0}},0,catalog=catalog,target_resolved={'TWSE'})['status']=='invalid_parameters'
  assert validate_capability({'type':'recent_performance','priority':'required','parameters':{'lookback_trading_days':20}},0,catalog=catalog,target_resolved={'TWSE'})['status']=='contract_supported'
+def test_catalog_missing_capability_id_fails_closed():
+ c=artifacts()[1]; c['data_need_capabilities']=[{}]; assert not _catalog_valid(c)
+def test_catalog_empty_markets_fails_closed():
+ c=artifacts()[1]; c['supported_markets']={}; assert not _catalog_valid(c)
+def test_invalid_parameters_make_top_level_invalid():
+ assert run(req(needs=[{'type':'recent_performance','priority':'required','parameters':{'lookback_trading_days':0}}]))['validation_status']=='invalid'

@@ -110,8 +110,8 @@
               "type": "string"
             }
           },
-          "evidence_references": {
-            "type": "array"
+            "evidence_references": {
+              "type": "array", "items": {"type": "string"}
           }
         },
         "additionalProperties": false
@@ -158,8 +158,8 @@
               "type": "string"
             }
           },
-          "known_limitations": {
-            "type": "array"
+            "known_limitations": {
+              "type": "array", "items": {"type": "string"}
           }
         },
         "additionalProperties": false
