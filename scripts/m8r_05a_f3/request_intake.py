@@ -9,12 +9,17 @@ def _catalog_valid(catalog):
     if not isinstance(catalog,dict) or catalog.get("schema_version")!="unified_market_evidence_capability_catalog.v1": return False
     bounds=catalog.get("bounds"); markets=catalog.get("supported_markets"); caps=catalog.get("data_need_capabilities")
     if not isinstance(bounds,dict) or not isinstance(markets,dict) or not markets or not isinstance(caps,list): return False
-    if not all(isinstance(k,str) and isinstance(v,dict) for k,v in markets.items()): return False
+    if not all(isinstance(k,str) and k and isinstance(v,dict) and isinstance(v.get("support_level"),str) and v["support_level"] for k,v in markets.items()): return False
     default=bounds.get("default_target_limit")
     if not isinstance(bounds.get("hard_target_limit"),int) or isinstance(bounds.get("hard_target_limit"),bool) or bounds["hard_target_limit"] < 1 or not isinstance(default,int) or isinstance(default,bool) or default < 1 or default > bounds["hard_target_limit"]: return False
     ids=[]
     for cap in caps:
-        if not isinstance(cap,dict) or not isinstance(cap.get("capability_id"),str) or not cap["capability_id"] or cap.get("support_status") not in {"contract_supported","runtime_executable","provisional","unsupported"} or not isinstance(cap.get("supported_markets"),list) or not isinstance(cap.get("provisional_markets"),list) or not all(isinstance(m,str) and m in markets for m in cap["supported_markets"]+cap["provisional_markets"]) or not isinstance(cap.get("allowed_parameters"),dict) or not all(isinstance(k,str) and isinstance(v,dict) for k,v in cap["allowed_parameters"].items()) or not isinstance(cap.get("requires_target_resolution"),bool) or not isinstance(cap.get("known_limitations",[]),list) or not all(isinstance(x,str) for x in cap.get("known_limitations",[])): return False
+        rules=cap.get("allowed_parameters")
+        if not isinstance(cap,dict) or not isinstance(cap.get("capability_id"),str) or not cap["capability_id"] or cap.get("support_status") not in {"contract_supported","runtime_executable","provisional","unsupported"} or not isinstance(cap.get("supported_markets"),list) or not isinstance(cap.get("provisional_markets"),list) or not all(isinstance(m,str) and m in markets for m in cap["supported_markets"]+cap["provisional_markets"]) or not isinstance(rules,dict) or not isinstance(cap.get("requires_target_resolution"),bool) or not isinstance(cap.get("known_limitations",[]),list) or not all(isinstance(x,str) for x in cap.get("known_limitations",[])): return False
+        for key, rule in rules.items():
+            if not isinstance(key,str) or not isinstance(rule,dict) or rule.get("type") not in {"integer","string","number","boolean"} or ("required" in rule and not isinstance(rule["required"],bool)) or ("enum" in rule and (not isinstance(rule["enum"],list) or not rule["enum"])): return False
+            if rule.get("type") in {"integer","number"}:
+                if any(k in rule and (not isinstance(rule[k],(int,float)) or isinstance(rule[k],bool)) for k in ("minimum","maximum")) or ("minimum" in rule and "maximum" in rule and rule["minimum"]>rule["maximum"]): return False
         ids.append(cap["capability_id"])
     return len(ids)==len(set(ids))
 def validate_unified_market_evidence_request(request, *, security_master, capability_catalog, request_schema, allow_fixture_snapshot=False):
