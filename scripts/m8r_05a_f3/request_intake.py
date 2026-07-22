@@ -22,6 +22,7 @@ def _catalog_valid(catalog):
             if not isinstance(key,str) or not key or not isinstance(rule,dict) or typ not in {"integer","string","number","boolean"} or ("required" in rule and not isinstance(rule["required"],bool)) or ("enum" in rule and (not isinstance(rule["enum"],list) or not rule["enum"])): return False
             def matches(v): return (typ=="integer" and isinstance(v,int) and not isinstance(v,bool)) or (typ=="number" and isinstance(v,(int,float)) and not isinstance(v,bool)) or (typ=="string" and isinstance(v,str)) or (typ=="boolean" and isinstance(v,bool))
             if "enum" in rule and not all(matches(v) for v in rule["enum"]): return False
+            if typ not in {"integer","number"} and ("minimum" in rule or "maximum" in rule): return False
             if rule.get("type") in {"integer","number"}:
                 numeric=int if typ=="integer" else (int,float)
                 if any(k in rule and (not isinstance(rule[k],numeric) or isinstance(rule[k],bool)) for k in ("minimum","maximum")) or ("minimum" in rule and "maximum" in rule and rule["minimum"]>rule["maximum"]): return False

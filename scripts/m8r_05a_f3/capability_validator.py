@@ -16,8 +16,8 @@ def validate_capability(need, index, *, catalog, target_resolved):
             valid=(expected=="integer" and isinstance(value,int) and not isinstance(value,bool)) or (expected=="number" and isinstance(value,(int,float)) and not isinstance(value,bool)) or (expected=="string" and isinstance(value,str)) or (expected=="boolean" and isinstance(value,bool))
             if not valid:
                 bad.append("invalid_type:"+key); continue
-            if "minimum" in rule and value < rule["minimum"]: bad.append("below_minimum:"+key)
-            if "maximum" in rule and value > rule["maximum"]: bad.append("above_maximum:"+key)
+            if expected in {"integer","number"} and "minimum" in rule and value < rule["minimum"]: bad.append("below_minimum:"+key)
+            if expected in {"integer","number"} and "maximum" in rule and value > rule["maximum"]: bad.append("above_maximum:"+key)
             if rule.get("enum") and value not in rule["enum"]: bad.append("invalid_enum:"+key)
         for key, rule in allowed.items():
             if key not in params and (rule.get("required") is True or key in found.get("required_parameters", [])): bad.append("missing_parameter:"+key)
