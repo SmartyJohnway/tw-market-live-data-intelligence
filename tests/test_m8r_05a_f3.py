@@ -50,7 +50,7 @@ def test_schema_recognized_but_catalog_unsupported_market():
   cap['supported_markets']=[m for m in cap['supported_markets'] if m!='TAIFEX']; cap['provisional_markets']=[m for m in cap['provisional_markets'] if m!='TAIFEX']
  r=req([{'input':'2330','market_hint':'TAIFEX'}]); out=validate_unified_market_evidence_request(r,security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True); assert out['target_results'][0]['resolution_status']=='unsupported_market' and out['validation_status']=='unsupported'
 def test_allowed_with_caveat_resolves():
- s,c,sc=artifacts(); s.lookup['by_canonical']['TWSE:2330']['execution_eligibility']={'status':'allowed_with_caveat','reason_codes':['capture_observation_freshness_caveat']}; assert validate_unified_market_evidence_request(req(),security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True)['target_results'][0]['resolution_status']=='resolved'
+ s,c,sc=artifacts(); original=copy.deepcopy(s); s=copy.deepcopy(s); s.lookup['by_canonical']['TWSE:2330']['execution_eligibility']={'status':'allowed_with_caveat','reason_codes':['capture_observation_freshness_caveat']}; out=validate_unified_market_evidence_request(req(),security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True); assert out['target_results'][0]['resolution_status']=='resolved'; assert 'capture_observation_freshness_caveat' in out['target_results'][0]['reason_codes']; assert original.snapshot['records'][0]['execution_eligibility']['status']=='blocked'
 def test_mixed_target_precedence():
  assert run(req([{'input':'2330'},{'input':'重名測試'}]))['validation_status']=='requires_clarification'
  assert run(req([{'input':'2330'},{'input':'2881A'}]))['validation_status']=='unsupported'

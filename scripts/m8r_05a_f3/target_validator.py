@@ -36,4 +36,4 @@ def validate_target(target, index, *, security_master, supported_markets, recogn
         out["resolution_status"]="unsupported_security_type" if unsupported else "quarantined"; out["reason_codes"]=([REASON_SECURITY_TYPE_UNSUPPORTED] if unsupported else [REASON_IDENTITY_QUARANTINED])+effective; return out
     cid=selected.get("canonical_target_id")
     if cid in seen: out["resolution_status"]="duplicate"; out["reason_codes"]=[REASON_DUPLICATE]; return out
-    seen.add(cid); out["resolution_status"]="resolved"; out["reason_codes"]=resolved.get("reason_codes",[]); return out
+    seen.add(cid); out["resolution_status"]="resolved"; out["reason_codes"]=sorted(set(resolved.get("reason_codes",[])+effective)); return out
