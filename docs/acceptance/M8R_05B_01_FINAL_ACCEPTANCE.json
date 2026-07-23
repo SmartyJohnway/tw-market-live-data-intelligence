@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "task_id": "M8R-05B-01-DETERMINISTIC-ORCHESTRATION-PLAN-PROJECTION",
+  "acceptance_status": "accepted_with_caveats",
+  "repository": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence",
+  "pr_number": 169,
+  "accepted_pr_head": "7ec4c3e4778ab31c7079745b65b988ea88512bfd",
+  "base_sha": "a55345566060c5c4cfad3ef6ee256950280eb4c2",
+  "planner_version": "m8r_05b_01.v1",
+  "schema_version_plan": "unified_market_evidence_orchestration_plan.v1",
+  "protocol_path": "docs/protocol/M8R_05B_01_DETERMINISTIC_ORCHESTRATION_PLAN_PROJECTION.md",
+  "execution_environment": {
+    "platform": "Linux / WSL Ubuntu 24.04",
+    "kernel": "Linux C04N06 4.4.0-19041-Microsoft #5794-Microsoft x86_64",
+    "python_version": "3.12.3"
+  },
+  "focused_suite": {
+    "command": "python -m pytest tests/unit/test_m8r_05b_01_schema.py tests/unit/test_m8r_05b_01_canonical.py tests/unit/test_m8r_05b_01_planner.py tests/unit/test_m8r_05b_01_cli.py tests/unit/test_m8r_05b_01_no_execution_boundary.py tests/unit/test_m8r_05b_01_golden.py tests/unit/test_m8r_03e_r5b_cross_platform_filesystem_safety.py -q",
+    "status": "pass",
+    "collected": 81,
+    "passed": 81,
+    "failed": 0,
+    "skipped": 0
+  },
+  "upstream_suite": {
+    "command": "python -m pytest tests/test_m8r_05a_f3.py tests/test_m8r_05a_f3_integration.py tests/test_m8r_05a_f3_snapshot_immutability.py tests/unit/test_m8r_05b_00_commit1_inventory_consistency.py tests/unit/test_m8r_05b_00_handoff_preflight.py -q",
+    "status": "pass",
+    "collected": 44,
+    "passed": 44,
+    "failed": 0,
+    "skipped": 0
+  },
+  "authoritative_full_non_network_profile": {
+    "command": "python scripts/run_test_profile.py full-non-network --json",
+    "profile_exit_code": 1,
+    "network_policy": "no network; equivalent to pytest -m 'not network'",
+    "network_may_have_occurred": false,
+    "pytest_component": {
+      "collected": 1939,
+      "passed": 1930,
+      "failed": 7,
+      "skipped": 1,
+      "deselected": 1,
+      "actual_failed_node_set": [
+        "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+        "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+        "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+        "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+        "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+        "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+        "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
+      ],
+      "expected_retained_node_set": [
+        "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+        "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+        "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+        "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+        "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+        "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+        "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
+      ],
+      "missing_retained_failures": [],
+      "novel_failures": []
+    },
+    "profile_runner_caveat": "run_test_profile.py is stop-on-first-nonzero; therefore retained pytest failures prevent inline execution of later runners. The exact configured runner commands were executed separately without modification.",
+    "separate_authoritative_runners": [
+      {
+        "runner_index": 1,
+        "command": "python scripts/run_local_delivery_acceptance.py --check-only",
+        "return_code": 0,
+        "status": "pass"
+      },
+      {
+        "runner_index": 2,
+        "command": "python scripts/run_ci_delivery_acceptance.py --check-only",
+        "return_code": 0,
+        "status": "pass"
+      },
+      {
+        "runner_index": 3,
+        "command": "python scripts/run_m4_local_validation.py --check-only",
+        "return_code": 0,
+        "status": "pass"
+      },
+      {
+        "runner_index": 4,
+        "command": "python scripts/run_m4_readiness_check.py --check-only",
+        "return_code": 0,
+        "status": "pass"
+      },
+      {
+        "runner_index": 5,
+        "command": "python scripts/run_m5c_staging_promotion_preflight.py --check-only",
+        "return_code": 0,
+        "status": "pass"
+      },
+      {
+        "runner_index": 6,
+        "command": "python scripts/validate_m5c_supplemental_audit.py",
+        "return_code": 0,
+        "status": "pass"
+      },
+      {
+        "runner_index": 7,
+        "command": "python scripts/run_m5d_frontend_publication_preflight.py --check-only",
+        "return_code": 1,
+        "status": "failed_retained_baseline_drift",
+        "reason": "frontend_public_baseline_drift (corresponds to retained pytest failure set)"
+      },
+      {
+        "runner_index": 8,
+        "command": "python scripts/validate_m5d_publication_candidate.py --candidate-dir research/staging/m5d/m5d_frontend_publication_candidate_01",
+        "return_code": 1,
+        "status": "failed_retained_baseline_drift",
+        "reason": "frontend_public_baseline_drift (corresponds to retained pytest failure set)"
+      },
+      {
+        "runner_index": 9,
+        "command": "python scripts/simulate_m5d_frontend_publication_transaction.py --check-only",
+        "return_code": 1,
+        "status": "failed_retained_baseline_drift",
+        "reason": "frontend_public_baseline_drift (corresponds to retained pytest failure set)"
+      },
+      {
+        "runner_index": 10,
+        "command": "python scripts/simulate_m5d_frontend_publication_rollback.py --check-only",
+        "return_code": 1,
+        "status": "failed_retained_baseline_drift",
+        "reason": "frontend_public_baseline_drift (corresponds to retained pytest failure set)"
+      },
+      {
+        "runner_index": 11,
+        "command": "python scripts/run_m5ij_end_to_end_acceptance.py --check-only",
+        "return_code": 0,
+        "status": "pass"
+      },
+      {
+        "runner_index": 12,
+        "command": "python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01",
+        "return_code": 0,
+        "status": "pass"
+      },
+      {
+        "runner_index": 13,
+        "command": "python scripts/run_m5e_controlled_frontend_publication.py --check-only",
+        "return_code": 0,
+        "status": "pass"
+      }
+    ]
+  },
+  "invariant_proof": {
+    "execution_authorized": false,
+    "network_access": false,
+    "executor_invocations": false,
+    "persistent_runtime_state": false
+  },
+  "known_caveats": [
+    "Retained M5D frontend publication baseline drift (7 test nodes) remains non-blocking for M8R-05B-01 deterministic planner acceptance.",
+    "run_test_profile.py stops on first non-zero command; non-pytest check-only runners were validated independently."
+  ],
+  "next_task": "M8R-05B-02-OWNER-APPROVAL-AND-EXECUTION-BINDING"
+}

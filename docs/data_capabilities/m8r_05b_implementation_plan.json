@@ -1,8 +1,8 @@
 {
   "schema_version": "m8r_05b_implementation_plan.v1.draft",
   "preflight_state": "completed_go_with_caveats",
-  "next_task": "M8R-05B-01-DETERMINISTIC-ORCHESTRATION-PLAN-PROJECTION",
-  "next_task_status": "in_progress",
+  "next_task": "M8R-05B-02-OWNER-APPROVAL-AND-EXECUTION-BINDING",
+  "next_task_status": "ready",
   "phases": [
     {
       "task_id": "M8R-05B-01-DETERMINISTIC-ORCHESTRATION-PLAN-PROJECTION",
@@ -144,6 +144,6 @@
       ]
     }
   ],
-  "current_gate": "Commit 3 verification",
+  "current_gate": "M8R-05B-01 final acceptance complete",
   "next_task_after_acceptance": "M8R-05B-02-OWNER-APPROVAL-AND-EXECUTION-BINDING"
 }
