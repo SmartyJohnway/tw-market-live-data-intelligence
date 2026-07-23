@@ -15,12 +15,9 @@ def test_valid_and_output_schema_and_copy_isolated():
  r=req(); out=run(r); assert out['validation_status']=='valid'; jsonschema.Draft7Validator(json.loads(Path('schemas/unified_market_evidence_request_validation.v1.schema.json').read_text())).validate(out); out['normalized_request']['targets'][0]['input']='changed'; assert r['targets'][0]['input']=='2330'
 def test_schema_and_target_cases():
  assert run({'request_id':'x'})['request_schema_status']=='invalid'
- assert run(req([{'input':'2330','market_hint':'TPEX'}]))['target_results'][0]['resolution_status']=='market_mismatch'
- assert run(req([{'input':'NOPE'}]))['target_results'][0]['resolution_status']=='not_found'
- assert run(req([{'input':'重名測試'}]))['target_results'][0]['resolution_status']=='ambiguous'
- assert run(req([{'input':'2330'},{'input':'TWSE:2330'}]))['target_results'][1]['resolution_status']=='duplicate'
- assert run(req([{'input':'2881A'}]))['target_results'][0]['resolution_status']=='unsupported_security_type'
- assert run(req([{'input':'9999'}]))['target_results'][0]['resolution_status']=='quarantined'
+ for target,status in [({'input':'2330','market_hint':'TPEX'},'market_mismatch'),({'input':'NOPE'},'not_found'),({'input':'重名測試'},'ambiguous'),({'input':'2881A'},'unsupported_security_type'),({'input':'9999'},'quarantined')]:
+  out=run(req([target])); assert out['target_results'][0]['resolution_status']==status; validate_output(out)
+ out=run(req([{'input':'2330'},{'input':'TWSE:2330'}])); assert out['target_results'][1]['resolution_status']=='duplicate'; validate_output(out)
 def test_capability_and_parameter_cases():
  sc=artifacts()[2]; sc['properties']['data_needs']['items']['properties']['type']['enum'].append('bogus')
  assert run(req(needs=[{'type':'bogus','priority':'optional'}]),sc)['warnings']
@@ -49,9 +46,9 @@ def test_schema_recognized_but_catalog_unsupported_market():
  s,c,sc=artifacts(); c['supported_markets'].pop('TAIFEX')
  for cap in c['data_need_capabilities']:
   cap['supported_markets']=[m for m in cap['supported_markets'] if m!='TAIFEX']; cap['provisional_markets']=[m for m in cap['provisional_markets'] if m!='TAIFEX']
- r=req([{'input':'2330','market_hint':'TAIFEX'}]); out=validate_unified_market_evidence_request(r,security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True); assert out['target_results'][0]['resolution_status']=='unsupported_market' and out['validation_status']=='unsupported'
+ r=req([{'input':'2330','market_hint':'TAIFEX'}]); out=validate_unified_market_evidence_request(r,security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True); assert out['target_results'][0]['resolution_status']=='unsupported_market' and out['validation_status']=='unsupported'; validate_output(out)
 def test_allowed_with_caveat_resolves():
- s,c,sc=artifacts(); original=copy.deepcopy(s); s=copy.deepcopy(s); s.lookup['by_canonical']['TWSE:2330']['execution_eligibility']={'status':'allowed_with_caveat','reason_codes':['capture_observation_freshness_caveat']}; out=validate_unified_market_evidence_request(req(),security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True); assert out['target_results'][0]['resolution_status']=='resolved'; assert 'capture_observation_freshness_caveat' in out['target_results'][0]['reason_codes']; assert original.snapshot['records'][0]['execution_eligibility']['status']=='blocked'
+ s,c,sc=artifacts(); original=copy.deepcopy(s); s=copy.deepcopy(s); s.lookup['by_canonical']['TWSE:2330']['execution_eligibility']={'status':'allowed_with_caveat','reason_codes':['capture_observation_freshness_caveat']}; out=validate_unified_market_evidence_request(req(),security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True); assert out['target_results'][0]['resolution_status']=='resolved'; assert 'capture_observation_freshness_caveat' in out['target_results'][0]['reason_codes']; assert original.snapshot['records'][0]['execution_eligibility']['status']=='blocked'; validate_output(out)
 def test_resolved_plus_ambiguous_requires_clarification():
  out=run(req([{'input':'2330'},{'input':'重名測試'}])); assert out['validation_status']=='requires_clarification'; validate_output(out)
 def test_resolved_plus_unsupported_is_unsupported():
