@@ -26,8 +26,8 @@ def test_schema_and_target_cases():
  out=run(req([{'input':'2330'},{'input':'TWSE:2330'}])); assert out['target_results'][1]['resolution_status']=='duplicate'; validate_output(out)
 def test_capability_and_parameter_cases():
  sc=artifacts()[2]; sc['properties']['data_needs']['items']['properties']['type']['enum'].append('bogus')
- assert run(req(needs=[{'type':'bogus','priority':'optional'}]),sc)['warnings']
- assert run(req(needs=[{'type':'bogus','priority':'required'}]),sc)['validation_status']=='unsupported'
+ optional=run(req(needs=[{'type':'bogus','priority':'optional'}]),sc); assert optional['warnings'] and optional['validation_status']=='valid'; validate_output(optional)
+ required=run(req(needs=[{'type':'bogus','priority':'required'}]),sc); assert required['validation_status']=='unsupported' and required['capability_validation_status']=='unsupported'; validate_output(required)
  catalog=artifacts()[1]
  assert validate_capability({'type':'recent_performance','priority':'required','parameters':{}},0,catalog=catalog,target_resolved={'TWSE'})['status']=='contract_supported'
  for value in ('20',None,True,1.5,[],{}): assert validate_capability({'type':'recent_performance','priority':'required','parameters':{'lookback_trading_days':value}},0,catalog=catalog,target_resolved={'TWSE'})['status']=='invalid_parameters'
@@ -45,7 +45,7 @@ def test_catalog_invalid_parameter_rule_fails_closed():
 def test_catalog_non_numeric_parameter_rule_rejects_bounds():
  c=artifacts()[1]; c['data_need_capabilities'][0]['allowed_parameters']={'enabled':{'type':'boolean','minimum':1}}; assert not _catalog_valid(c)
 def test_invalid_parameters_make_top_level_invalid():
- assert run(req(needs=[{'type':'recent_performance','priority':'required','parameters':{'lookback_trading_days':0}}]))['validation_status']=='invalid'
+ out=run(req(needs=[{'type':'recent_performance','priority':'required','parameters':{'lookback_trading_days':0}}])); assert out['validation_status']=='invalid' and out['request_schema_status']=='invalid'; validate_output(out)
 def test_catalog_default_limit_bool_rejected():
  c=artifacts()[1]; c['bounds']['default_target_limit']=True; assert not _catalog_valid(c)
 def test_schema_recognized_but_catalog_unsupported_market():
