@@ -2,10 +2,12 @@
   "schema_version": "1.0",
   "task_id": "M8R-05B-01-DETERMINISTIC-ORCHESTRATION-PLAN-PROJECTION",
   "acceptance_status": "accepted_with_caveats",
+  "acceptance_decision_reason": "accepted_with_caveats after exact pytest failure-set comparison and exact authoritative-runner retained-failure-set comparison",
   "repository": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence",
   "pr_number": 169,
-  "accepted_pr_head": "7ec4c3e4778ab31c7079745b65b988ea88512bfd",
-  "base_sha": "a55345566060c5c4cfad3ef6ee256950280eb4c2",
+  "base_sha": "a5534556d55fc94cac5cc70e93890644b6a355d3",
+  "tested_implementation_head": "7ec4c3e4778ab31c7079745b65b988ea88512bfd",
+  "prior_evidence_commit": "141c39605c82073f141466288460b26404a60088",
   "planner_version": "m8r_05b_01.v1",
   "schema_version_plan": "unified_market_evidence_orchestration_plan.v1",
   "protocol_path": "docs/protocol/M8R_05B_01_DETERMINISTIC_ORCHESTRATION_PLAN_PROJECTION.md",
@@ -33,7 +35,8 @@
   "authoritative_full_non_network_profile": {
     "command": "python scripts/run_test_profile.py full-non-network --json",
     "profile_exit_code": 1,
-    "network_policy": "no network; equivalent to pytest -m 'not network'",
+    "profile_semantics_explanation": "The full profile process returns exit code 1 because the broad pytest component contains the accepted seven-node retained baseline. The runner is stop-on-first-nonzero, so configured post-pytest commands were executed separately without modification. Four command-level failures are the expected M5D retained baseline manifestations; nine commands returned zero; no novel runner failure occurred.",
+    "network_policy": "not network and not historical and not performance",
     "network_may_have_occurred": false,
     "pytest_component": {
       "collected": 1939,
@@ -62,7 +65,26 @@
       "missing_retained_failures": [],
       "novel_failures": []
     },
-    "profile_runner_caveat": "run_test_profile.py is stop-on-first-nonzero; therefore retained pytest failures prevent inline execution of later runners. The exact configured runner commands were executed separately without modification.",
+    "authoritative_runner_failure_policy": {
+      "runner_count": 13,
+      "runner_pass_count": 9,
+      "runner_retained_failure_count": 4,
+      "runner_novel_failure_count": 0,
+      "expected_retained_failed_commands": [
+        "python scripts/run_m5d_frontend_publication_preflight.py --check-only",
+        "python scripts/validate_m5d_publication_candidate.py --candidate-dir research/staging/m5d/m5d_frontend_publication_candidate_01",
+        "python scripts/simulate_m5d_frontend_publication_transaction.py --check-only",
+        "python scripts/simulate_m5d_frontend_publication_rollback.py --check-only"
+      ],
+      "actual_failed_commands": [
+        "python scripts/run_m5d_frontend_publication_preflight.py --check-only",
+        "python scripts/validate_m5d_publication_candidate.py --candidate-dir research/staging/m5d/m5d_frontend_publication_candidate_01",
+        "python scripts/simulate_m5d_frontend_publication_transaction.py --check-only",
+        "python scripts/simulate_m5d_frontend_publication_rollback.py --check-only"
+      ],
+      "missing_retained_runner_failures": [],
+      "novel_runner_failures": []
+    },
     "separate_authoritative_runners": [
       {
         "runner_index": 1,
