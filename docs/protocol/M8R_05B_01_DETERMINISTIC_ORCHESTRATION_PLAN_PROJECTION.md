@@ -10,7 +10,7 @@ The planner verifies canonical hashes of F3, capability catalog, routing matrix,
 Markets/security types are checked against routing. TAIFEX provisional variants are plan-only. `none`, `same_market`, and `same_source` batching scopes bind batch identity to full member IDs; batch membership is validated. Accounting is non-authorizing and approval composition considers executable operations only.
 
 ## CLI and security
-`python -m scripts.m8r_05b_01.cli` reads only explicit local JSON inputs. `--check-only` builds and validates in memory and writes nothing. Normal writes use repository filesystem containment and atomic replacement. Errors are machine-readable. There are no network, approval, authorization, execution, persistence, scheduler, M8R-05B-02, or M8R-05B-03 behaviors.
+`python -m scripts.m8r_05b_01.cli` reads only explicit local JSON inputs. `--check-only` builds and validates in memory and writes nothing. Normal writes require explicit `--output-root` and safe `--output-relative`; the root is never inferred from the destination, and the existing containment utility performs atomic replacement. Errors are machine-readable. There are no network, approval, authorization, execution, persistence, scheduler, M8R-05B-02, or M8R-05B-03 behaviors.
 
 ## Caveats and next gate
 `session_status` remains blocked, TAIFEX provisional routes remain non-executable, and selected routes still require adapters and later owner approval. Current gate: Commit 3 verification; next acceptance task is M8R-05B-02.
