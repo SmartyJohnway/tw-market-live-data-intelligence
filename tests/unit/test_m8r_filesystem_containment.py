@@ -4,7 +4,13 @@ from pathlib import Path
 import pytest
 
 pytestmark = [pytest.mark.core, pytest.mark.component_security, pytest.mark.milestone]
-from scripts.m8r_filesystem_safety import FilesystemSafetyError, atomic_write_text, safe_destination, validate_authorized_root
+from scripts.m8r_filesystem_safety import (
+    FilesystemSafetyError,
+    atomic_write_text,
+    classify_artifact_relative_path,
+    safe_destination,
+    validate_authorized_root,
+)
 
 def code(exc): return exc.value.code
 
@@ -28,12 +34,31 @@ def test_lexical_traversal_and_absolute_paths_rejected(tmp_path):
             safe_destination(root, candidate)
         assert code(exc) == expected
 
-def test_prefix_collision_absolute_path_rejected(tmp_path):
+def test_prefix_collision_rooted_path_rejected(tmp_path):
     root = tmp_path/'output'
     evil = str(tmp_path/'output-evil'/'file.json')
     with pytest.raises(FilesystemSafetyError) as exc:
         safe_destination(root, evil)
-    assert code(exc) == 'absolute_output_path_forbidden'
+    assert code(exc) == 'rooted_output_path_forbidden'
+
+@pytest.mark.parametrize(
+    ('candidate', 'path_class', 'rejection_code'),
+    [
+        ('/tmp/output-evil/file.json', 'rooted', 'rooted_output_path_forbidden'),
+        ('C:/tmp/output-evil/file.json', 'absolute', 'absolute_output_path_forbidden'),
+        ('C:tmp/output-evil/file.json', 'drive_relative', 'drive_relative_output_path_forbidden'),
+        ('//server/share/output-evil/file.json', 'unc', 'unc_output_path_forbidden'),
+    ],
+    ids=['posix-rooted', 'windows-drive-absolute', 'windows-drive-relative', 'unc'],
+)
+def test_prefix_collision_lexical_path_classes_are_explicit(
+    candidate, path_class, rejection_code,
+):
+    classification = classify_artifact_relative_path(candidate)
+
+    assert classification.path_class == path_class
+    assert classification.rejection_code == rejection_code
+    assert classification.safe_relative is False
 
 def test_nonexistent_safe_leaf_and_nested_parent_are_accepted(tmp_path):
     root = tmp_path/'output'
