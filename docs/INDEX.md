@@ -57,6 +57,8 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 
 ## M8 through M8C governance and acceptance
 
+- [M8R-05A-F3 AI-authored request intake and canonical target validation](protocol/M8R_05A_F3_AI_AUTHORED_REQUEST_INTAKE_AND_CANONICAL_TARGET_VALIDATION.md)
+
 - [M8R-02B-F1 TPEx/TAIFEX Runtime Defect Correction and Exact Contract Revalidation](protocol/M8R_02B_F1_TPEX_TAIFEX_RUNTIME_DEFECT_CORRECTION_AND_EXACT_CONTRACT_REVALIDATION.md)
 - [M8R-02B-F2 conversational derivatives intent resolution and current contract execution](protocol/M8R_02B_F2_CONVERSATIONAL_DERIVATIVES_INTENT_RESOLUTION_AND_CURRENT_CONTRACT_EXECUTION.md)
 - [M8 consolidated final acceptance](protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md)
@@ -149,4 +151,3 @@ git diff --check
 - [Legacy M8 AI capability quick guide](ai/M8_AI_CAPABILITY_QUICK_GUIDE.md) (Superseded redirect)
 - [Legacy M8 AI capability contract](ai/M8_AI_CAPABILITY_CONTRACT.md) (Archived)
 - [M8R-03E-F1 AI capability guide and Agent Skill protocol](protocol/M8R_03E_F1_AI_CAPABILITY_GUIDE_AND_AGENT_SKILL_CONTRACT.md)
-
