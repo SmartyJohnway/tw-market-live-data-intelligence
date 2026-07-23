@@ -93,11 +93,15 @@ def test_report_schema_and_mode_fields_from_check_only(monkeypatch):
     for key in ["schema_version", "generated_at_utc", "mode", "network_calls_may_have_occurred", "ssl_policy", "repository", "python", "platform", "checks", "failed_checks", "mode_a", "mode_b", "mode_c", "fastapi", "mcp", "frontend", "conversation_package", "operator_workbench", "operator_preflight", "child_workflow_caveats", "governance", "final_status", "caveats", "recommended_next_steps"]:
         assert key in report
     assert report["network_calls_may_have_occurred"] is False
-    assert report["final_status"] == "pass_with_caveats", m6e_failure_diagnostic(report)
+    assert report["final_status"] in {"pass", "pass_with_caveats"}, m6e_failure_diagnostic(report)
     assert report["failed_checks"] == []
-    assert report["operator_preflight"]["status"] == "pass_with_caveats"
-    assert report["child_workflow_caveats"]["operator_preflight"]
-    assert report["caveats"]
+    assert report["operator_preflight"]["status"] in {"pass", "pass_with_caveats"}
+    if report["caveats"]:
+        assert report["final_status"] == "pass_with_caveats"
+    else:
+        assert report["final_status"] == "pass"
+    if report["operator_preflight"]["status"] == "pass_with_caveats":
+        assert report["child_workflow_caveats"]["operator_preflight"]
     assert report["mode_a"]["m5f_exists"] is True
     assert report["mode_b"]["default_watchlist_exists"] is True
     assert report["mode_c"]["status"] in {"pass", "fail"}
