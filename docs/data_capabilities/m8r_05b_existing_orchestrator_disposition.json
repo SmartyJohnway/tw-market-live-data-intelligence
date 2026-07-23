@@ -1,0 +1,252 @@
+{
+  "schema_version": "m8r_05b_existing_orchestrator_disposition.v1.draft",
+  "task_id": "M8R-05B-00",
+  "inventory_scope": "static, non-network inspection only",
+  "surfaces": [
+    {
+      "surface_id": "m8r_02_one_shot_orchestrator",
+      "path": "scripts/m8r_one_shot_market_context_orchestrator.py",
+      "surface_type": "one_shot_orchestrator",
+      "current_status": "implemented legacy governed plan consumer",
+      "network_behavior": "network is denied unless allow_network=true after approval preflight",
+      "input_contract": "m8r_market_context_execution_plan.v1 plus m8r_market_context_approval.v1",
+      "output_contract": "m8r_market_context_execution_result.v1 and receipt",
+      "approval_boundary": "plan_id/plan_hash approval validation and consumption store",
+      "authorization_binding": "approval_id + plan_id + plan_hash",
+      "single_use_enforced": true,
+      "supported_markets": [
+        "TWSE",
+        "TPEX",
+        "TAIFEX"
+      ],
+      "supported_security_types": [
+        "equity",
+        "derivative where registered"
+      ],
+      "supported_capabilities": [],
+      "batching_supported": false,
+      "deterministic": true,
+      "reusable_for_05b": false,
+      "reuse_mode": "reference_only",
+      "disposition": "execution_reference_only",
+      "blocking_gaps": [
+        "different plan and approval schemas",
+        "legacy context_type/source-family operations are not F3 capability operations"
+      ],
+      "evidence_paths": [
+        "scripts/m8r_one_shot_market_context_orchestrator.py",
+        "tests/unit/test_m8r_02_one_shot_market_context_orchestrator.py"
+      ]
+    },
+    {
+      "surface_id": "m8r_03d_watchlist_execution_plan",
+      "path": "scripts/m8r_03d_watchlist_execution_plan.py",
+      "surface_type": "watchlist_planner",
+      "current_status": "implemented request-specific planner",
+      "network_behavior": "planning only; declares planned network groups",
+      "input_contract": "M8R-03D watchlist request and verified security snapshot",
+      "output_contract": "m8r_watchlist_execution_plan.v1",
+      "approval_boundary": "plan declares authorization_required but does not approve",
+      "authorization_binding": "canonical request hash in existing plan",
+      "single_use_enforced": false,
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "supported_security_types": [
+        "equity"
+      ],
+      "supported_capabilities": [
+        "current_observation",
+        "official_eod_reference"
+      ],
+      "batching_supported": true,
+      "deterministic": true,
+      "reusable_for_05b": false,
+      "reuse_mode": "reference_only",
+      "disposition": "planning_reference_only",
+      "blocking_gaps": [
+        "fixed watchlist bundle semantics",
+        "cannot accept F3 validation output",
+        "network call count semantics differ from capability operations"
+      ],
+      "evidence_paths": [
+        "scripts/m8r_03d_watchlist_execution_plan.py",
+        "tests/unit/test_m8r_03d_execution_plan.py"
+      ]
+    },
+    {
+      "surface_id": "m8r_03d_watchlist_controlled_executor_adapter",
+      "path": "scripts/m8r_03d_watchlist_controlled_executor.py",
+      "surface_type": "controlled_executor",
+      "current_status": "implemented controlled watchlist executor",
+      "network_behavior": "preflight is offline; execute makes bounded calls only after authorization",
+      "input_contract": "M8R-03D request, generated plan, authorization/phase-C approval, bounded output root",
+      "output_contract": "watchlist execution result, source group summaries, bounded artifacts",
+      "approval_boundary": "Phase-C approval binds request and preview; legacy authorization validation also exists",
+      "authorization_binding": "request_id, preview_id, plan-related preview contents, single-use consumption record",
+      "single_use_enforced": true,
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "supported_security_types": [
+        "equity"
+      ],
+      "supported_capabilities": [
+        "current_observation",
+        "official_eod_reference"
+      ],
+      "batching_supported": true,
+      "deterministic": false,
+      "reusable_for_05b": true,
+      "reuse_mode": "adapter_required",
+      "disposition": "adapter_required",
+      "blocking_gaps": [
+        "requires F3-to-watchlist adapter",
+        "approval binding must be replaced by immutable 05B plan binding",
+        "runtime observations are nondeterministic"
+      ],
+      "evidence_paths": [
+        "scripts/m8r_03d_watchlist_controlled_executor.py",
+        "scripts/m8r_03d_watchlist_execution_plan.py",
+        "tests/unit/test_m8r_03d_controlled_executor.py"
+      ]
+    },
+    {
+      "surface_id": "m8r_bounded_market_context_request",
+      "path": "scripts/m8r_bounded_market_context_request.py",
+      "surface_type": "bounded_request_planner",
+      "current_status": "implemented historical request compiler",
+      "network_behavior": "no network while compiling; approval artifact separately built",
+      "input_contract": "m8r bounded market-context request",
+      "output_contract": "m8r execution plan and approval artifact",
+      "approval_boundary": "approval artifact binds historical plan hash",
+      "authorization_binding": "historical plan hash",
+      "single_use_enforced": false,
+      "supported_markets": [
+        "TWSE",
+        "TPEX",
+        "TAIFEX"
+      ],
+      "supported_security_types": [
+        "legacy target classes"
+      ],
+      "supported_capabilities": [],
+      "batching_supported": false,
+      "deterministic": true,
+      "reusable_for_05b": false,
+      "reuse_mode": "reference_only",
+      "disposition": "planning_reference_only",
+      "blocking_gaps": [
+        "different target and capability vocabulary",
+        "does not consume F3 validation output"
+      ],
+      "evidence_paths": [
+        "scripts/m8r_bounded_market_context_request.py",
+        "tests/unit/test_m8r_bounded_market_context_request.py"
+      ]
+    },
+    {
+      "surface_id": "m7g_controlled_refresh_executor",
+      "path": "scripts/m7g_controlled_refresh_executor.py",
+      "surface_type": "manual_refresh_executor",
+      "current_status": "implemented local product refresh surface",
+      "network_behavior": "manual refresh runner may network after confirmation",
+      "input_contract": "M7G request package and confirmation phrase",
+      "output_contract": "safe context artifact",
+      "approval_boundary": "confirmation phrase only",
+      "authorization_binding": "not immutable plan-bound",
+      "single_use_enforced": false,
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "supported_security_types": [],
+      "supported_capabilities": [
+        "current_observation"
+      ],
+      "batching_supported": true,
+      "deterministic": false,
+      "reusable_for_05b": false,
+      "reuse_mode": "blocked",
+      "disposition": "blocked_pending_contract",
+      "blocking_gaps": [
+        "no immutable owner authorization",
+        "local product package semantics",
+        "not an approved executor registry"
+      ],
+      "evidence_paths": [
+        "scripts/m7g_controlled_refresh_executor.py",
+        "tests/unit/test_m7g_controlled_refresh_executor.py"
+      ]
+    },
+    {
+      "surface_id": "m8a_official_eod_execution",
+      "path": "scripts/m8a_official_eod_execution.py",
+      "surface_type": "official_eod_executor",
+      "current_status": "implemented source-specific EOD execution helper",
+      "network_behavior": "source calls when execution invoked",
+      "input_contract": "M8A source-specific inputs",
+      "output_contract": "official EOD context",
+      "approval_boundary": "no 05B-compatible owner approval",
+      "authorization_binding": "none",
+      "single_use_enforced": false,
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "supported_security_types": [
+        "official EOD supported instruments"
+      ],
+      "supported_capabilities": [
+        "official_eod_reference"
+      ],
+      "batching_supported": false,
+      "deterministic": false,
+      "reusable_for_05b": false,
+      "reuse_mode": "adapter_required",
+      "disposition": "execution_reference_only",
+      "blocking_gaps": [
+        "source-specific contract",
+        "no immutable plan/authorization binding"
+      ],
+      "evidence_paths": [
+        "scripts/m8a_official_eod_execution.py",
+        "tests/unit/test_m8a_official_eod_execution.py"
+      ]
+    },
+    {
+      "surface_id": "m8c_taifex_mis_context_integration",
+      "path": "scripts/m8c_02_taifex_mis_context_integration.py",
+      "surface_type": "derivatives_context_builder",
+      "current_status": "implemented context projection only",
+      "network_behavior": "no network in integration function",
+      "input_contract": "TAIFEX execution result and source registry",
+      "output_contract": "M8 context/conversation context",
+      "approval_boundary": "none",
+      "authorization_binding": "none",
+      "single_use_enforced": false,
+      "supported_markets": [
+        "TAIFEX"
+      ],
+      "supported_security_types": [
+        "derivatives"
+      ],
+      "supported_capabilities": [],
+      "batching_supported": false,
+      "deterministic": true,
+      "reusable_for_05b": false,
+      "reuse_mode": "reference_only",
+      "disposition": "planning_reference_only",
+      "blocking_gaps": [
+        "not an executor",
+        "takes post-execution results rather than F3 capabilities"
+      ],
+      "evidence_paths": [
+        "scripts/m8c_02_taifex_mis_context_integration.py",
+        "tests/unit/test_m8c_02_taifex_mis_context_integration.py"
+      ]
+    }
+  ]
+}
