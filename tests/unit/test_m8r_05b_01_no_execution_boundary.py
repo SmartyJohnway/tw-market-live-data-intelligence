@@ -12,3 +12,8 @@ def test_no_network_or_execution_imports_and_no_forbidden_flags():
    if isinstance(node,ast.ImportFrom): assert node.module not in forbidden
  flags={x.option_strings[0] for x in parser()._actions if x.option_strings}
  assert not flags & {'--execute','--approve','--authorize','--allow-network','--invoke-executor'}
+def _forbidden_calls(source):
+ tree=ast.parse(source); denied={'invoke_executor','execute_plan','run_source','fetch_market','consume_authorization','issue_authorization','approve_plan'}
+ return [n.func.id for n in ast.walk(tree) if isinstance(n,ast.Call) and isinstance(n.func,ast.Name) and n.func.id in denied]
+def test_negative_control_rejects_executor_call():
+ assert _forbidden_calls('invoke_executor()') == ['invoke_executor']

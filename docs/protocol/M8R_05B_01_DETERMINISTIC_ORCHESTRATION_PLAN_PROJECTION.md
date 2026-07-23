@@ -14,3 +14,5 @@ Markets/security types are checked against routing. TAIFEX provisional variants 
 
 ## Caveats and next gate
 `session_status` remains blocked, TAIFEX provisional routes remain non-executable, and selected routes still require adapters and later owner approval. Current gate: Commit 3 verification; next acceptance task is M8R-05B-02.
+
+Committed golden plans protect schema shape, operation/batch identity, dependency binding, accounting, warning/omission semantics, and non-authorization invariants.
