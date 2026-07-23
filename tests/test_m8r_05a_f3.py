@@ -1,6 +1,7 @@
 import copy,json
 from pathlib import Path
 import jsonschema
+import pytest
 from scripts.m8r_05a_f3.capability_validator import validate_capability
 from scripts.m8r_05a_f3.request_intake import validate_unified_market_evidence_request
 from scripts.m8r_05a_f3.request_intake import _catalog_valid
@@ -72,3 +73,34 @@ def test_runtime_parameter_type_matrix():
  assert validate_capability({'type':'identity','priority':'required','parameters':{'number':1.5,'text':'x','enabled':True,'choice':'a'}},0,catalog=c,target_resolved={'TWSE'})['status']=='contract_supported'
  assert validate_capability({'type':'identity','priority':'required','parameters':{'number':True}},0,catalog=c,target_resolved={'TWSE'})['status']=='invalid_parameters'
  assert validate_capability({'type':'identity','priority':'required','parameters':{'choice':'z'}},0,catalog=c,target_resolved={'TWSE'})['status']=='invalid_parameters'
+
+def test_provisional_capability_full_pipeline_output_contract():
+ s,c,sc=artifacts(); s=copy.deepcopy(s); record=s.lookup['by_canonical']['TWSE:2330']; record['classification']['market']='TAIFEX'; s.lookup['by_code'][('TAIFEX','2330')]=[record]
+ out=validate_unified_market_evidence_request(req([{'input':'2330','market_hint':'TAIFEX'}],[{'type':'official_eod_reference','priority':'required'}]),security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True)
+ assert out['request_schema_status']=='valid' and out['target_results'][0]['resolution_status']=='resolved' and out['capability_results'][0]['status']=='provisional' and out['capability_validation_status']=='valid' and out['validation_status']=='valid' and out['capability_results'][0]['known_limitations']; validate_output(out)
+@pytest.mark.parametrize('priority,top,issues', [('required','unsupported','blocking_issues'),('optional','valid','warnings')], ids=['required','optional'])
+def test_existing_capability_unsupported_on_resolved_market(priority,top,issues):
+ s,c,sc=artifacts(); c=copy.deepcopy(c); cap=next(x for x in c['data_need_capabilities'] if x['capability_id']=='current_observation'); cap['supported_markets']=[]; cap['provisional_markets']=[]
+ out=validate_unified_market_evidence_request(req(needs=[{'type':'current_observation','priority':priority}]),security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True)
+ assert out['capability_results'][0]['status']=='unsupported' and out['validation_status']==top and out[issues]; validate_output(out)
+def test_unsupported_instrument_family_maps_to_unsupported_security_type():
+ s,c,sc=artifacts(); original=copy.deepcopy(s); s=copy.deepcopy(s); r=s.lookup['by_canonical']['TWSE:2330']; r['execution_eligibility']={'status':'blocked','reason_codes':['unsupported_instrument_family']}
+ out=validate_unified_market_evidence_request(req(),security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True); t=out['target_results'][0]
+ assert t['resolution_status']=='unsupported_security_type' and 'TARGET_SECURITY_TYPE_UNSUPPORTED' in t['reason_codes'] and 'unsupported_instrument_family' in t['reason_codes'] and out['validation_status']=='unsupported'; assert original.snapshot['records'][0]['execution_eligibility']['status']=='blocked'; validate_output(out)
+@pytest.mark.parametrize('field', ['canonical_target_id','market'], ids=['missing-canonical-id','missing-market'])
+def test_incomplete_selected_identity_is_quarantined(monkeypatch, field):
+ import scripts.m8r_05a_f3.target_validator as tv
+ base={'canonical_target_id':'TWSE:2330','identity':{'security_code':'2330','isin':'TW0002330008','security_name_zh':'台積電','security_name_en':'TSMC'},'classification':{'market':'TWSE','instrument_type':'common_share','instrument_family':'equity'},'execution_eligibility':{'status':'allowed','reason_codes':[]}}
+ if field=='canonical_target_id': base.pop(field)
+ else: base['classification'].pop(field)
+ monkeypatch.setattr(tv,'resolve_verified_security_identity',lambda *a,**k:{'resolution_status':'resolved','selected':base,'candidates':[],'reason_codes':[]})
+ s,c,sc=artifacts(); out=validate_unified_market_evidence_request(req(),security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True)
+ assert out['target_results'][0]['resolution_status']=='quarantined' and 'TARGET_IDENTITY_QUARANTINED' in out['target_results'][0]['reason_codes'] and out['validation_status']=='unsupported'; validate_output(out)
+@pytest.mark.parametrize('rule,value,status', [
+ pytest.param({'type':'number'},1,'contract_supported',id='number-int'), pytest.param({'type':'number'},'1','invalid_parameters',id='number-string'),
+ pytest.param({'type':'string'},1,'invalid_parameters',id='string-integer'), pytest.param({'type':'boolean'},0,'invalid_parameters',id='boolean-zero'), pytest.param({'type':'boolean'},'true','invalid_parameters',id='boolean-string'),
+ pytest.param({'type':'integer','minimum':1,'maximum':2},1,'contract_supported',id='bounds-minimum'), pytest.param({'type':'integer','minimum':1,'maximum':2},2,'contract_supported',id='bounds-maximum'), pytest.param({'type':'integer','minimum':1,'maximum':2},3,'invalid_parameters',id='bounds-above')])
+def test_parameter_runtime_matrix_remaining(rule,value,status):
+ c=artifacts()[1]; c['data_need_capabilities'][0]['allowed_parameters']={'value':rule}; result=validate_capability({'type':'identity','priority':'required','parameters':{'value':value}},0,catalog=c,target_resolved={'TWSE'}); assert result['status']==status
+def test_required_parameter_missing_is_invalid_parameters():
+ c=artifacts()[1]; c['data_need_capabilities'][0]['allowed_parameters']={'value':{'type':'integer','required':True}}; result=validate_capability({'type':'identity','priority':'required','parameters':{}},0,catalog=c,target_resolved={'TWSE'}); assert result['status']=='invalid_parameters' and 'missing_parameter:value' in result['reason_codes']
