@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "task_id": "M8R-03E-R5B-R1-FILESYSTEM-PATH-ERROR-CODE-PRECEDENCE-RECONCILIATION",
+  "tested_local_sha": "65fee90cc13844f6c72d5b60b669c5f11158215b",
+  "decision": "pass_with_caveats",
+  "production_code_changed": false,
+  "test_only_correction_rationale": "The prefix-collision candidate is a POSIX-rooted lexical input. The classifier rejects it before containment evaluation as path_class=rooted with rooted_output_path_forbidden, matching the existing containment and cross-platform contracts. Prefix collision does not convert a POSIX-rooted path into a Windows drive-absolute path.",
+  "contract_matrix": [
+    {"input_class": "safe_relative", "example": "nested/a.json", "path_class": "safe_relative", "error_code": null},
+    {"input_class": "traversal", "example": "../a.json and ..\\a.json", "path_class": "traversal", "error_code": "path_traversal_forbidden"},
+    {"input_class": "posix_rooted", "example": "/tmp/a.json", "path_class": "rooted", "error_code": "rooted_output_path_forbidden"},
+    {"input_class": "windows_drive_absolute", "example": "C:/tmp/a.json", "path_class": "absolute", "error_code": "absolute_output_path_forbidden"},
+    {"input_class": "windows_drive_relative", "example": "C:tmp/a.json", "path_class": "drive_relative", "error_code": "drive_relative_output_path_forbidden"},
+    {"input_class": "unc", "example": "//server/share/a.json", "path_class": "unc", "error_code": "unc_output_path_forbidden"},
+    {"input_class": "uri_like", "example": "https://example.invalid/a.json", "path_class": "scheme", "error_code": "absolute_output_path_forbidden"},
+    {"input_class": "prefix_collision", "example": "/tmp/output-evil/a.json relative to /tmp/output", "path_class": "rooted", "error_code": "rooted_output_path_forbidden", "evaluation_order": "lexical classification before containment"}
+  ],
+  "verification": {
+    "isolated_test": {"command": "python -m pytest tests/unit/test_m8r_filesystem_containment.py::test_prefix_collision_rooted_path_rejected -vv", "result": "1 passed in 0.13s"},
+    "filesystem_module": {"command": "python -m pytest tests/unit/test_m8r_filesystem_containment.py -q", "result": "14 passed in 0.35s"},
+    "related_security_tests": {"command": "python -m pytest tests/unit/test_m8r_03e_r5b_cross_platform_filesystem_safety.py tests/unit/test_m8r_03e_r5b_integration.py tests/unit/test_m8r_03e_r5a_filesystem_materialization.py tests/integration/test_m8r_03e_r5a_phase_c_fixture_pipeline.py tests/unit/test_m8r_03e_r5b_concurrency.py -q", "result": "35 passed in 1.67s"},
+    "compileall": {"command": "python -m compileall scripts/m8r_filesystem_safety.py tests/unit/test_m8r_filesystem_containment.py", "result": "pass"}
+  },
+  "full_non_network": {
+    "command": "python scripts/run_test_profile.py full-non-network --json",
+    "profile_status": "fail_with_established_caveats",
+    "return_code": 1,
+    "collected": 1876,
+    "selected": 1875,
+    "passed": 1867,
+    "failed": 7,
+    "skipped": 1,
+    "deselected": 1,
+    "duration_seconds": 103.134,
+    "baseline_source": "docs/reviews/M8R_05A_F2_SEALED_ACCEPTANCE_REPORT.json",
+    "historical_unresolved_node_source": "docs/reviews/M8R_05A_F3_SEALED_ACCEPTANCE_REPORT.json",
+    "retained_failures": [
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
+    ],
+    "resolved_failures": ["tests/unit/test_m8r_filesystem_containment.py::test_prefix_collision_absolute_path_rejected"],
+    "novel_failures": []
+  },
+  "runtime_side_effects": {
+    "generated": [
+      "research/live_observation_runs/current_conversation_context/conversation_context.json",
+      "research/live_observation_runs/m6e_operator_acceptance/"
+    ],
+    "modified": [
+      "research/live_observation_runs/current_conversation_context/conversation_context.md",
+      "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+      "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+    ],
+    "cleanup": "Restored the three modified tracked files with explicit git restore and removed the two known generated paths. No runtime artifacts are included in this change."
+  },
+  "known_caveats": ["The seven retained M5D/M5E failures remain outside this corrective task."],
+  "recommended_next_task": "M8R-05B-GOVERNED-REQUEST-TO-ORCHESTRATION-HANDOFF-PREFLIGHT"
+}
