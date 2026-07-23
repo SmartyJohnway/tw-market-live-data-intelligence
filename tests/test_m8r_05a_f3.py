@@ -13,6 +13,12 @@ def run(r, schema=None): s,c,sc=artifacts(); return validate_unified_market_evid
 def validate_output(out): jsonschema.Draft7Validator(json.loads(Path('schemas/unified_market_evidence_request_validation.v1.schema.json').read_text())).validate(out)
 def test_valid_and_output_schema_and_copy_isolated():
  r=req(); out=run(r); assert out['validation_status']=='valid'; jsonschema.Draft7Validator(json.loads(Path('schemas/unified_market_evidence_request_validation.v1.schema.json').read_text())).validate(out); out['normalized_request']['targets'][0]['input']='changed'; assert r['targets'][0]['input']=='2330'
+def test_request_schema_invalid_output_shape():
+ out=run({'request_id':'x'}); assert out['request_schema_status']=='invalid'; validate_output(out)
+def test_catalog_invalid_output_shape():
+ s,c,sc=artifacts(); c['supported_markets']={}; out=validate_unified_market_evidence_request(req(),security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True); assert out['blocking_issues'][0]['code']=='CAPABILITY_CATALOG_INVALID'; validate_output(out)
+def test_target_limit_exceeded_output_shape():
+ s,c,sc=artifacts(); c['bounds']['hard_target_limit']=1; c['bounds']['default_target_limit']=1; out=validate_unified_market_evidence_request(req([{'input':'2330'},{'input':'6488'}]),security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True); assert out['blocking_issues'][0]['code']=='TARGET_LIMIT_EXCEEDED'; validate_output(out)
 def test_schema_and_target_cases():
  assert run({'request_id':'x'})['request_schema_status']=='invalid'
  for target,status in [({'input':'2330','market_hint':'TPEX'},'market_mismatch'),({'input':'NOPE'},'not_found'),({'input':'重名測試'},'ambiguous'),({'input':'2881A'},'unsupported_security_type'),({'input':'9999'},'quarantined')]:
