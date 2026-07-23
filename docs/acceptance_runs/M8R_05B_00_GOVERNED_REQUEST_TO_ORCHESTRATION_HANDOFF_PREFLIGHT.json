@@ -1,0 +1,103 @@
+{
+  "task_id": "M8R-05B-00-GOVERNED-REQUEST-TO-ORCHESTRATION-HANDOFF-PREFLIGHT",
+  "starting_local_sha": "9177a93729bd22eed80fa722e688bd6f629d3a33",
+  "authoritative_github_baseline": "9177a93729bd22eed80fa722e688bd6f629d3a33",
+  "tested_local_sha": "d3a386b120b4ac0059d6ec25d8eb5342ca41e487",
+  "decision": "GO_TO_M8R_05B_01_WITH_CAVEATS",
+  "production_code_changed": false,
+  "network_executed": false,
+  "live_artifacts_written": false,
+  "executor_inventory_counts": {
+    "execution_reference_only": 3,
+    "planning_reference_only": 6,
+    "adapter_required": 1,
+    "blocked_pending_contract": 1
+  },
+  "routing_counts": {
+    "plan_only": 4,
+    "resolved": 2,
+    "blocked": 1
+  },
+  "resolved_routes": [
+    "current_observation",
+    "official_eod_reference"
+  ],
+  "plan_only_routes": [
+    "identity",
+    "recent_performance",
+    "source_currentness",
+    "evidence_quality"
+  ],
+  "blocked_routes": [
+    "session_status"
+  ],
+  "approval_semantics_decision": "capability_requires_execution_approval mirrors catalog; package approval is composed separately by strictest executable operation",
+  "session_status_disposition": "blocked; current authoritative closure evidence lacks a complete governed executor route",
+  "canonical_hash_decision": "canonical UTF-8 sorted-key compact JSON, allow_nan=false, SHA-256; plan_id derives from exact plan_hash digest",
+  "plan_identity_scope_decision": "machine-readable semantic scope includes warnings/omissions as codes and canonical records; display text and presentation fields excluded",
+  "operation_representation_decision": "only executable_pending_approval can join executable batch groups; plan-only/blocked/omitted records are isolated",
+  "accounting_decision": "planned_evidence_bundle_count is a planner estimate; actual_evidence_bundle_count belongs only to 05B-03 receipt",
+  "partial_plan_decision": "required fail-closed; optional omissions warn; provisional/non-runtime capabilities plan-only",
+  "implementation_split": [
+    "M8R-05B-01 offline deterministic projection",
+    "M8R-05B-02 owner approval and execution binding",
+    "M8R-05B-03 controlled approved-plan execution and evidence aggregation"
+  ],
+  "focused_tests": {
+    "command": "python -m pytest tests/unit/test_m8r_05b_00_commit1_inventory_consistency.py tests/unit/test_m8r_05b_00_handoff_preflight.py -q",
+    "passed": 5,
+    "failed": 0,
+    "duration_seconds": 0.22
+  },
+  "f3_regression": {
+    "command": "python -m pytest tests/test_m8r_05a_f3.py tests/test_m8r_05a_f3_integration.py tests/test_m8r_05a_f3_snapshot_immutability.py -q",
+    "passed": 39,
+    "failed": 0,
+    "duration_seconds": 1.26
+  },
+  "json_validation_duration_seconds": 4.034,
+  "full_non_network": {
+    "command": "python scripts/run_test_profile.py full-non-network --json",
+    "exit_code": 1,
+    "passed": 1872,
+    "failed": 7,
+    "skipped": 1,
+    "deselected": 1,
+    "duration_seconds": 175.392,
+    "retained_failure_nodes": [
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
+    ],
+    "novel_failure_nodes": [],
+    "network_may_have_occurred": false,
+    "baseline_sources": [
+      "docs/reviews/M8R_05A_F2_SEALED_ACCEPTANCE_REPORT.json",
+      "docs/acceptance_runs/M8R_03E_R5B_R1_FILESYSTEM_PATH_ERROR_CODE_PRECEDENCE_RECONCILIATION.json"
+    ]
+  },
+  "runtime_side_effects": {
+    "generated_paths": [
+      "research/live_observation_runs/current_conversation_context/conversation_context.json",
+      "research/live_observation_runs/m6e_operator_acceptance/"
+    ],
+    "modified_paths": [
+      "research/live_observation_runs/current_conversation_context/conversation_context.md",
+      "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+      "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+    ],
+    "cleanup_performed": "explicit git restore for tracked generated modifications and explicit removal of generated runtime paths; final runtime diff clean"
+  },
+  "next_task": "M8R-05B-01-DETERMINISTIC-ORCHESTRATION-PLAN-PROJECTION",
+  "known_caveats": [
+    "session_status remains blocked",
+    "TAIFEX provisional routes remain non-executable",
+    "only current_observation and official_eod_reference have selected adapter-required executor routes",
+    "05B-01 remains offline and non-authorizing",
+    "seven established M5D/M5E baseline failures remain"
+  ]
+}
