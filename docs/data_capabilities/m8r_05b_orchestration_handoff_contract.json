@@ -1,0 +1,130 @@
+{
+  "schema_version": "m8r_05b_orchestration_handoff_contract.v1.draft",
+  "status": "design_contract_not_executable",
+  "purpose": "Define the future offline boundary from unified_market_evidence_request_validation.v1 to unified_market_evidence_orchestration_plan.v1; this contract confers no execution authorization.",
+  "input": {
+    "schema_version": "unified_market_evidence_request_validation.v1",
+    "required_validation_status": "valid",
+    "f3_invariants_preserved": {
+      "operation_count_computed": false,
+      "operation_count": 0,
+      "orchestrator_projection_required": true
+    },
+    "immutable_bindings": [
+      "original_request_hash",
+      "normalized_request_hash",
+      "f3_validation_output_hash",
+      "security_master_evidence_references",
+      "security_master_artifact_hashes",
+      "capability_catalog_hash",
+      "planner_version",
+      "routing_matrix_version",
+      "routing_matrix_hash",
+      "handoff_contract_version",
+      "handoff_contract_hash"
+    ],
+    "planning_timestamp_policy": "The pure planner receives a caller-supplied RFC3339 UTC timestamp or a fixed test timestamp; wall-clock time is never read implicitly and the timestamp is excluded from semantic plan identity."
+  },
+  "canonical_hash_rule": {
+    "serialization": "UTF-8 JSON with ensure_ascii=false, sort_keys=true, separators=(',', ':'), allow_nan=false; SHA-256 lowercase hexadecimal digest",
+    "precedent": "scripts/m8r_03d_watchlist_execution_plan.py canonical_json/sha256_json",
+    "original_request_hash": "hash the schema-valid AI-authored request artifact",
+    "normalized_request_hash": "hash the canonical normalized semantic planning scope; request lifecycle/presentation-only metadata is excluded",
+    "f3_validation_output_hash": "hash the complete schema-valid F3 validation output",
+    "plan_id": "umeop-v1- plus first 20 hexadecimal characters of SHA-256 canonical plan identity scope",
+    "plan_hash": "SHA-256 of canonical plan identity scope excluding plan_id, planning timestamp, warnings, and presentation text",
+    "operation_id": "deterministic umeop-op-v1- plus first 20 hexadecimal characters of SHA-256 canonical operation identity scope; scope includes capability_id, canonical target IDs, market, security types, normalized parameters, executor_id, batch key, and expected evidence contract"
+  },
+  "planning_eligibility": {
+    "whole_plan_blockers": [
+      "validation_status is invalid, requires_clarification, or unsupported",
+      "request schema status is invalid",
+      "any target is not resolved, including ambiguous, not_found, market_mismatch, unsupported_market, unsupported_security_type, invalid_input, duplicate, or quarantined",
+      "any required capability is unsupported, invalid_parameters, unknown, requires_target_resolution, or has a blocked route"
+    ],
+    "optional_capability_policy": "Optional unsupported, unknown, invalid-parameter, or blocked capabilities are omitted with a deterministic warning after all whole-plan blockers have been excluded.",
+    "provisional_policy": "A provisional capability result is emitted only as plan_only_not_executable; it has no executor invocation, network request estimate, approval artifact, or authorization eligibility.",
+    "contract_supported_policy": "contract_supported but non-runtime-executable capability results are plan_only_not_executable and never executable.",
+    "session_status_policy": "session_status is blocked until a governed executor can bind the complete current clock, calendar, and authoritative closure-evidence route. Local supplied-evidence calculations may be referenced but do not clear this blocker.",
+    "derived_capability_policy": "identity, source_currentness, and evidence_quality link to resolved canonical targets or upstream evidence operations; they never create independent network invocations."
+  },
+  "plan_statuses": [
+    "plan_ready",
+    "plan_ready_with_warnings",
+    "plan_only_not_executable",
+    "blocked",
+    "requires_clarification",
+    "unsupported"
+  ],
+  "operation_statuses": [
+    "executable_pending_approval",
+    "plan_only_not_executable",
+    "omitted_optional",
+    "blocked"
+  ],
+  "operation_record_proposal": {
+    "required_fields": [
+      "operation_id",
+      "capability_id",
+      "canonical_target_ids",
+      "market",
+      "security_types",
+      "parameters",
+      "executor_id",
+      "batch_group_id",
+      "operation_status",
+      "network_required",
+      "capability_requires_execution_approval",
+      "expected_evidence_contract",
+      "estimated_operation_count_contribution",
+      "blocking_reason_codes",
+      "warnings"
+    ],
+    "authorization_statement": "No operation status in this contract authorizes execution. executable_pending_approval only means projection found a governed candidate route."
+  },
+  "ordering_and_batching": {
+    "canonical_order": "Sort logical operations by (capability order in normalized data_needs, market order TWSE,TPEX,TAIFEX, executor_id, canonical target ID tuple, canonical parameter JSON, batch key). Never rely on dictionary insertion order.",
+    "batch_key": "SHA-256 canonical tuple of executor_id, capability_id, market, compatible normalized parameters, output evidence contract, network/approval requirements; targets only join when executor contract supports the group.",
+    "accounting": {
+      "logical_operation_count": "count of non-omitted projected capability/target or capability/market operations",
+      "batch_group_count": "count of deterministic batch keys for executable operations",
+      "executor_invocation_count": "one planned invocation per executable batch group unless a selected executor contract declares another bound",
+      "network_request_estimate": "sum of bounded executor-specific request estimates; null when unknown, never inferred from logical operation count",
+      "evidence_bundle_count": "one aggregate evidence bundle per plan execution attempt; zero for a plan-only or blocked plan"
+    }
+  },
+  "partial_plan_policy": {
+    "default": "required_fail_closed_optional_omission",
+    "request_schema_target_failures": "block whole plan",
+    "required_capability_failure": "block whole plan",
+    "optional_unsupported_or_blocked": "omit operation and emit warning",
+    "mixed_executable_and_plan_only": "emit plan_ready_with_warnings only when all required capabilities are executable or valid derived operations; otherwise plan_only_not_executable",
+    "independently_approvable_subplans": "not designed in v1; strictest operation controls the single package"
+  },
+  "package_approval_composition": {
+    "input_field": "capability_requires_execution_approval",
+    "rule": "The package requires owner approval when any executable operation requires execution approval; use strictest_operation_controls_package. Derived capability fields do not invent approval and may inherit an approved upstream package.",
+    "approval_boundary": "F3 valid does not authorize execution. A plan_ready status does not authorize execution. Only M8R-05B-02 owner authorization bound to immutable plan inputs may enable M8R-05B-03."
+  },
+  "authorization_and_execution_boundary": {
+    "05b_02_responsibility": "produce owner-review package and immutable single-use authorization bound to plan_hash, executor IDs, targets, parameters, output scope, catalog/security-master/routing/contract hashes, expiry, and allowed retry policy",
+    "replay_and_retry": "05B-02 owns authoritative single-use consumption and replay prevention. 05B-03 must reject expired, consumed, scope-drifted, or hash-mismatched authorization; retry needs an explicit unconsumed/reissued authorization policy.",
+    "evidence_aggregation": "05B-03 alone aggregates executor receipts into one bounded evidence bundle, preserving operation IDs, source/evidence references, timestamps, failures, and omissions. The planner aggregates no runtime evidence."
+  },
+  "draft_plan_schema_proposal": {
+    "schema_version": "unified_market_evidence_orchestration_plan.v1",
+    "contains": [
+      "input_bindings",
+      "planner_metadata",
+      "plan_status",
+      "operations",
+      "batch_groups",
+      "accounting",
+      "warnings",
+      "blocked_operations",
+      "evidence_references",
+      "package_approval_requirements"
+    ],
+    "production_schema_location": "Not created in schemas/ during preflight; M8R-05B-01 must establish a production schema only after this design contract is accepted."
+  }
+}

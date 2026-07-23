@@ -29,3 +29,11 @@ The session-status inventory now distinguishes local deterministic classifiers (
 ## Revised Commit-1 decision: GO_TO_COMMIT_2_WITH_CAVEATS
 
 Approval semantics now match the catalog, every selected executor is adapter-required and reusable, and every unresolved route is explicit. The offline 05B-01 planner may proceed only as a design/planning projection: it must preserve blocked session-status and plan-only/provisional outcomes, create no approval or authorization, and never claim runtime-ready or execution-authorized status. Commit 2 remains the handoff-contract work described above.
+
+## Governed handoff contract defined — Commit 3
+
+The design contract is recorded in `docs/data_capabilities/m8r_05b_orchestration_handoff_contract.json`. It binds original request, normalized request, F3 validation result, security-master evidence, capability catalog, routing matrix, handoff contract, and planner-version hashes before a future plan can be identified. Canonical UTF-8 sorted-key JSON and SHA-256 create deterministic plan and operation IDs; neither random UUIDs nor implicit wall-clock reads are permitted.
+
+The contract distinguishes logical operations, batch groups, executor invocations, network-request estimates, and evidence-bundle counts. Required request/target/capability failures block the whole plan. Optional unsupported or blocked capabilities are omitted with warnings; provisional and contract-supported/non-runtime-executable capabilities are plan-only and never executable. `session_status` remains blocked pending a governed complete clock/calendar/closure route; derived capabilities only link upstream evidence and never fan out to a network request.
+
+A future package applies the strictest executable-operation approval requirement, but F3 `valid` and future `plan_ready` remain non-authorizing. M8R-05B-02 must bind the owner decision and single-use authorization to the immutable plan scope; M8R-05B-03 must consume only that authorization and aggregate bounded receipts. M8R-05B-01 is implementation-ready as an offline, pure deterministic projection only; this preflight is not completed until acceptance evidence is sealed.
