@@ -31,8 +31,8 @@
     "original_request_hash": "hash the schema-valid AI-authored request artifact",
     "normalized_request_hash": "hash the canonical normalized semantic planning scope; request lifecycle/presentation-only metadata is excluded",
     "f3_validation_output_hash": "hash the complete schema-valid F3 validation output",
-    "plan_id": "umeop-v1- plus first 20 hexadecimal characters of SHA-256 canonical plan identity scope",
-    "plan_hash": "SHA-256 of canonical plan identity scope excluding plan_id, planning timestamp, warnings, and presentation text",
+    "plan_id": "umeop-v1- plus first 20 hexadecimal characters of exactly the plan_hash digest; never independently hashed.",
+    "plan_hash": "SHA-256 of the exact plan_identity_scope canonical identity bytes; plan_id derives from this exact digest.",
     "operation_id": "deterministic umeop-op-v1- plus first 20 hexadecimal characters of SHA-256 canonical operation identity scope; scope includes capability_id, canonical target IDs, market, security types, normalized parameters, executor_id, batch key, and expected evidence contract"
   },
   "planning_eligibility": {
@@ -63,23 +63,44 @@
     "blocked"
   ],
   "operation_record_proposal": {
-    "required_fields": [
-      "operation_id",
-      "capability_id",
-      "canonical_target_ids",
-      "market",
-      "security_types",
-      "parameters",
-      "executor_id",
-      "batch_group_id",
-      "operation_status",
-      "network_required",
-      "capability_requires_execution_approval",
-      "expected_evidence_contract",
-      "estimated_operation_count_contribution",
-      "blocking_reason_codes",
-      "warnings"
-    ],
+    "representation_by_status": {
+      "executable_pending_approval": {
+        "collection": "operations",
+        "executor_id": "required non-null",
+        "batch_group_id": "required non-null",
+        "executor_invocation_eligible": true
+      },
+      "plan_only_not_executable": {
+        "collection": "operations",
+        "executor_id": "nullable",
+        "batch_group_id": "must be null",
+        "executor_invocation_eligible": false,
+        "network_request_estimate_contribution": 0
+      },
+      "blocked": {
+        "collection": "blocked_operations",
+        "executor_id": "nullable",
+        "batch_group_id": "must be null",
+        "blocking_reason_codes": "required non-empty",
+        "executor_invocation_eligible": false
+      },
+      "omitted_optional": {
+        "collection": "omitted_optional_capabilities",
+        "operation_record": "forbidden",
+        "executor_invocation_eligible": false
+      }
+    },
+    "field_nullability": {
+      "executor_id": "non-null only for executable_pending_approval; nullable for plan_only_not_executable and blocked; absent from omitted records",
+      "batch_group_id": "non-null only for executable_pending_approval; null for plan_only_not_executable and blocked; absent from omitted records",
+      "canonical_target_ids": "non-empty canonical ordered list when target_required; otherwise canonical empty list is permitted for market-scoped capability",
+      "market": "non-null for target/market-scoped operation; null only when the capability contract is explicitly cross-market derived",
+      "network_required": "boolean required for operations; false for plan-only and blocked records",
+      "expected_evidence_contract": "required non-empty string for operations; omitted records carry omission reason instead",
+      "blocking_reason_codes": "required non-empty only for blocked records; empty list for executable and plan-only records",
+      "warnings": "canonical machine-readable warning objects; display text is excluded from plan identity"
+    },
+    "batch_membership_guard": "Only executable_pending_approval operations may appear in executable batch_groups. Plan-only, blocked, and omitted records are forbidden from executable batch groups.",
     "authorization_statement": "No operation status in this contract authorizes execution. executable_pending_approval only means projection found a governed candidate route."
   },
   "ordering_and_batching": {
@@ -89,8 +110,9 @@
       "logical_operation_count": "count of non-omitted projected capability/target or capability/market operations",
       "batch_group_count": "count of deterministic batch keys for executable operations",
       "executor_invocation_count": "one planned invocation per executable batch group unless a selected executor contract declares another bound",
-      "network_request_estimate": "sum of bounded executor-specific request estimates; null when unknown, never inferred from logical operation count",
-      "evidence_bundle_count": "one aggregate evidence bundle per plan execution attempt; zero for a plan-only or blocked plan"
+      "network_request_estimate": "non-authorizing bounded planning estimate; may be null when unknown and is neither an execution result nor retry allowance",
+      "planned_evidence_bundle_count": "planning estimate: one per future execution attempt only when the package has executable_pending_approval operations; zero for blocked or wholly plan-only packages",
+      "actual_evidence_bundle_count": "forbidden in plan artifacts; belongs only to the M8R-05B-03 execution receipt"
     }
   },
   "partial_plan_policy": {
@@ -126,5 +148,46 @@
       "package_approval_requirements"
     ],
     "production_schema_location": "Not created in schemas/ during preflight; M8R-05B-01 must establish a production schema only after this design contract is accepted."
+  },
+  "execution_authorized": false,
+  "plan_identity_scope": {
+    "canonical_identity_bytes": "canonical_json of exactly included_fields after canonical operation ordering; SHA-256 produces plan_hash and plan_id derives from that same digest.",
+    "included_fields": [
+      "schema_version",
+      "input_bindings",
+      "plan_status",
+      "operations",
+      "canonical_operation_ordering",
+      "batch_groups",
+      "accounting",
+      "blocked_operations",
+      "omitted_optional_capabilities",
+      "package_approval_requirements",
+      "planner_version",
+      "routing_matrix_version",
+      "routing_matrix_hash",
+      "handoff_contract_version",
+      "handoff_contract_hash"
+    ],
+    "excluded_fields": [
+      "plan_id",
+      "plan_hash",
+      "planning_timestamp",
+      "warning_display_text",
+      "human_readable_display_messages",
+      "presentation_formatting"
+    ],
+    "warning_and_omission_hash_policy": {
+      "warning_display_text": "excluded",
+      "included_machine_readable_warning_fields": [
+        "code",
+        "capability_id",
+        "canonical_target_ids",
+        "severity",
+        "omission_reason"
+      ],
+      "omitted_optional_capabilities": "included as canonical machine-readable records containing capability_id, canonical_target_ids, reason_code, severity, and normalized parameters"
+    },
+    "plan_id_plan_hash_relationship": "plan_hash is SHA-256(canonical_identity_bytes); plan_id is umeop-v1- plus the first 20 characters of that exact plan_hash. They cannot diverge."
   }
 }
