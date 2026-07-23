@@ -62,3 +62,14 @@ def test_inventory_malformed_and_duplicate_fail_closed():
  with pytest.raises(PlanningError,match='inventory_surface_id_duplicate'): plan(v,inventory=bad)
  bad=copy.deepcopy(INV); bad['surfaces'][0]=None
  with pytest.raises(PlanningError,match='inventory_surface_not_object'): plan(v,inventory=bad)
+def test_batch_ids_bind_membership_and_source_compatibility():
+ v=validation(targets=['TWSE:2330','TWSE:6488']); p=plan(v); assert len({o['batch_group_id'] for o in p['operations']})==1
+ one=plan(validation(targets=['TWSE:2330'])); assert p['batch_groups'][0]['batch_group_id'] != one['batch_groups'][0]['batch_group_id']
+ r=copy.deepcopy(ROUTE); route=next(x for x in r['routes'] if x['capability_id']=='current_observation'); route['source_compatibility_key']='alternate'; b=bindings(v); b['routing_matrix_hash']=sha256_json(r); assert plan(v,routing=r,bindings=b)['batch_groups'][0]['batch_group_id'] != p['batch_groups'][0]['batch_group_id']
+def test_batch_integrity_rejects_duplicate_or_orphan_members():
+ from scripts.m8r_05b_01.planner import _validate_batch_integrity
+ ops=[{'operation_id':'a','operation_status':'executable_pending_approval','batch_group_id':'b'}]
+ with pytest.raises(PlanningError,match='duplicate_batch_group_id'): _validate_batch_integrity(ops,[{'batch_group_id':'b','operation_ids':['a']},{'batch_group_id':'b','operation_ids':[]}])
+ with pytest.raises(PlanningError,match='batch_member_reference_invalid'): _validate_batch_integrity(ops,[{'batch_group_id':'b','operation_ids':['missing']}])
+def test_missing_upstream_derived_warning_is_not_optional_omission():
+ p=plan(validation('source_currentness',status='contract_supported')); op=p['operations'][0]; assert op['warnings'][0]['code']=='upstream_evidence_operation_missing' and not p['omitted_optional_capabilities']

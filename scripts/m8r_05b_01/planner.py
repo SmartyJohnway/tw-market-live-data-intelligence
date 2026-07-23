@@ -51,6 +51,25 @@ def _validate_inputs(validation, catalog, routing, handoff, inventory, bindings)
 
 def _warning(cap, targets, reason): return {'code':'optional_capability_omitted','capability_id':cap,'canonical_target_ids':canonical_target_ids(targets),'severity':'warning','omission_reason':reason}
 
+
+def _validate_batch_integrity(operations: list[dict[str, Any]], batch_groups: list[dict[str, Any]]) -> None:
+    """Fail closed when executable batch membership is not a bijection."""
+    ids=[group.get("batch_group_id") for group in batch_groups]
+    if len(ids) != len(set(ids)): raise PlanningError("batch_contract_invalid", "duplicate_batch_group_id")
+    operation_by_id={operation.get("operation_id"): operation for operation in operations}
+    membership: dict[str, str] = {}
+    for group in batch_groups:
+        group_id=group["batch_group_id"]
+        for operation_id_value in group.get("operation_ids", []):
+            operation=operation_by_id.get(operation_id_value)
+            if operation is None or operation_id_value in membership or operation.get("batch_group_id") != group_id:
+                raise PlanningError("batch_contract_invalid", "batch_member_reference_invalid")
+            membership[operation_id_value]=group_id
+    for operation in operations:
+        executable=operation.get("operation_status")=="executable_pending_approval"
+        if executable != (operation.get("operation_id") in membership) or (not executable and operation.get("batch_group_id") is not None):
+            raise PlanningError("batch_contract_invalid", "operation_batch_reference_invalid")
+
 def build_plan(validation: Mapping[str,Any], *, capability_catalog: Mapping[str,Any], routing_matrix: Mapping[str,Any], handoff_contract: Mapping[str,Any], executor_disposition: Mapping[str,Any], input_bindings: Mapping[str,Any], planning_timestamp: str) -> dict[str,Any]:
     """Return a deep-independent plan; all inputs and timestamp are explicit."""
     validation,catalog,routing,handoff,inventory,bindings=map(copy.deepcopy,(validation,capability_catalog,routing_matrix,handoff_contract,executor_disposition,input_bindings))
@@ -106,7 +125,7 @@ def build_plan(validation: Mapping[str,Any], *, capability_catalog: Mapping[str,
     for op in ops:
         if op['capability_id'] in {'source_currentness','evidence_quality'}:
             op['dependency_operation_ids']=primary_ids
-            if not primary_ids: op['warnings']=[_warning(op['capability_id'],op['canonical_target_ids'],'upstream_evidence_operation_missing')]
+            if not primary_ids: op['warnings']=[{'code':'upstream_evidence_operation_missing','capability_id':op['capability_id'],'canonical_target_ids':op['canonical_target_ids'],'severity':'warning','omission_reason':'upstream_evidence_operation_missing'}]
             identity={'capability_id':op['capability_id'],'canonical_target_ids':op['canonical_target_ids'],'market':op['market'],'security_types':op['security_types'],'normalized_parameters':op['parameters'],'executor_id':op['executor_id'],'batch_key':op['_batch_key'],'expected_evidence_contract':op['expected_evidence_contract'],'operation_status':op['operation_status'],'network_required':op['network_required'],'capability_requires_execution_approval':op['capability_requires_execution_approval'],'dependency_operation_ids':op['dependency_operation_ids']}
             op['operation_id']=operation_id(identity)
     # Group only executable operations according to the declared routing batching scope.
@@ -125,11 +144,15 @@ def build_plan(validation: Mapping[str,Any], *, capability_catalog: Mapping[str,
         groups.setdefault(key,[]).append(op)
     batch_groups=[]
     for key,members in sorted(groups.items()):
-        first=members[0]; bid=batch_group_id({'executor_id':first['executor_id'],'capability_id':first['capability_id'],'market':first['market'],'parameters':first['parameters'],'expected_evidence_contract':first['expected_evidence_contract'],'network_required':first['network_required'],'approval_required':first['capability_requires_execution_approval']})
+        first=members[0]; scope=first['_batching_scope']; operation_ids=sorted(x['operation_id'] for x in members)
+        identity={'batching_scope':scope,'executor_id':first['executor_id'],'capability_id':first['capability_id'],'market':first['market'],'normalized_parameters':first['parameters'],'expected_evidence_contract':first['expected_evidence_contract'],'network_required':first['network_required'],'capability_requires_execution_approval':first['capability_requires_execution_approval'],'operation_ids':operation_ids}
+        if scope=='same_source': identity['source_compatibility_key']=first['_source_compatibility_key']
+        bid=batch_group_id(identity)
         for op in members: op['batch_group_id']=bid
-        batch_groups.append({'batch_group_id':bid,'executor_id':first['executor_id'],'capability_id':first['capability_id'],'market':first['market'],'operation_ids':sorted(x['operation_id'] for x in members),'network_required':True,'capability_requires_execution_approval':first['capability_requires_execution_approval']})
+        batch_groups.append({'batch_group_id':bid,'executor_id':first['executor_id'],'capability_id':first['capability_id'],'market':first['market'],'operation_ids':operation_ids,'network_required':True,'capability_requires_execution_approval':first['capability_requires_execution_approval']})
     order={x.get('capability_id'):i for i,x in enumerate(sorted(validation.get('capability_results',[]),key=lambda x:x.get('data_need_index',0)))}
     batch_keys={op['operation_id']:op['_batch_key'] for op in ops}; ops=[{k:v for k,v in op.items() if k not in {'_batch_key','_batching_scope','_source_compatibility_key'}} for op in canonical_operation_order(ops,capability_order_by_id=order,batch_key_by_operation_id=batch_keys)] if ops else []
+    _validate_batch_integrity(ops, batch_groups)
     operation_ids={op['operation_id'] for op in ops}
     for op in ops:
         dependencies=op['dependency_operation_ids']
