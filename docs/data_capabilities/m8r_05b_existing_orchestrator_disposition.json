@@ -205,7 +205,7 @@
       "batching_supported": false,
       "deterministic": false,
       "reusable_for_05b": false,
-      "reuse_mode": "adapter_required",
+      "reuse_mode": "reference_only",
       "disposition": "execution_reference_only",
       "blocking_gaps": [
         "source-specific contract",
@@ -246,6 +246,147 @@
       "evidence_paths": [
         "scripts/m8c_02_taifex_mis_context_integration.py",
         "tests/unit/test_m8c_02_taifex_mis_context_integration.py"
+      ]
+    },
+    {
+      "surface_id": "m7e_market_clock_session_state",
+      "path": "scripts/market_clock_session_state.py",
+      "surface_type": "local_session_state_builder",
+      "current_status": "implemented pure supplied-evidence classifier",
+      "network_behavior": "no network, filesystem writes, or runtime integration; consumes supplied clock, observation, and calendar evidence",
+      "input_contract": "timezone-aware now_utc plus optional latest observation, holiday records, or trading-calendar artifact",
+      "output_contract": "m7e_market_clock_session_state.v1 candidate and controlled-context projection",
+      "approval_boundary": "none; local computation does not execute a source request",
+      "authorization_binding": "none",
+      "single_use_enforced": false,
+      "supported_markets": [
+        "TWSE"
+      ],
+      "supported_security_types": [],
+      "supported_capabilities": [
+        "session_status"
+      ],
+      "batching_supported": true,
+      "deterministic": true,
+      "reusable_for_05b": false,
+      "reuse_mode": "reference_only",
+      "disposition": "planning_reference_only",
+      "blocking_gaps": [
+        "cannot independently establish authoritative holiday or emergency-closure evidence",
+        "output is explicitly candidate/not runtime integrated absent controlled promotion",
+        "TWSE-only calendar semantics"
+      ],
+      "evidence_paths": [
+        "scripts/market_clock_session_state.py",
+        "tests/unit/test_m7e_market_clock_session_state_builder.py",
+        "tests/unit/test_m7e_market_clock_session_state_controlled_promotion.py",
+        "docs/protocol/M7E_MARKET_CLOCK_SESSION_STATE_CONTRACT.md"
+      ]
+    },
+    {
+      "surface_id": "m8a_ncdr_dgpa_closure_cap",
+      "path": "scripts/m8a_ncdr_dgpa_closure_cap.py",
+      "surface_type": "closure_feed_adapter",
+      "current_status": "implemented bounded external closure helper",
+      "network_behavior": "fetch_closure_feed/fetch_and_parse_closure_feed use urllib to request NCDR Atom/CAP; parse_closure_feed is offline",
+      "input_contract": "optional target_date and timeout, or supplied XML for parser",
+      "output_contract": "m8a_emergency_work_closure_parse_result.v1 and m8a_emergency_work_closure_event.v1",
+      "approval_boundary": "no 05B-compatible approval boundary",
+      "authorization_binding": "none",
+      "single_use_enforced": false,
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "supported_security_types": [],
+      "supported_capabilities": [
+        "session_status"
+      ],
+      "batching_supported": false,
+      "deterministic": false,
+      "reusable_for_05b": false,
+      "reuse_mode": "reference_only",
+      "disposition": "execution_reference_only",
+      "blocking_gaps": [
+        "network fetch lacks immutable 05B plan/authorization binding",
+        "closure feed is contextual closure evidence, not a market-price source",
+        "TAIFEX closure authority is unresolved"
+      ],
+      "evidence_paths": [
+        "scripts/m8a_ncdr_dgpa_closure_cap.py",
+        "tests/unit/test_m8a_ncdr_dgpa_closure_cap.py",
+        "docs/protocol/M8A_NCDR_DGPA_CLOSURE_SOURCE_CONTRACT.md"
+      ]
+    },
+    {
+      "surface_id": "m8a_market_day_currentness_resolver",
+      "path": "scripts/m8a_market_day_currentness_resolver.py",
+      "surface_type": "local_currentness_resolver",
+      "current_status": "implemented pure resolver over supplied calendar/closure evidence",
+      "network_behavior": "no network; consumes supplied inputs",
+      "input_contract": "evaluation time, reported trade date, calendar artifact, closure events/query outcome, special closures",
+      "output_contract": "market-day currentness and expected completed trade-date resolution",
+      "approval_boundary": "none",
+      "authorization_binding": "none",
+      "single_use_enforced": false,
+      "supported_markets": [
+        "TWSE",
+        "TPEX",
+        "TAIFEX"
+      ],
+      "supported_security_types": [],
+      "supported_capabilities": [
+        "session_status"
+      ],
+      "batching_supported": true,
+      "deterministic": true,
+      "reusable_for_05b": false,
+      "reuse_mode": "reference_only",
+      "disposition": "planning_reference_only",
+      "blocking_gaps": [
+        "does not retrieve calendar or closure evidence",
+        "TAIFEX Taipei closure application remains deliberately unresolved"
+      ],
+      "evidence_paths": [
+        "scripts/m8a_market_day_currentness_resolver.py",
+        "tests/unit/test_m8a_market_day_currentness_resolver.py",
+        "tests/unit/test_m8r_eod_expected_trade_date.py"
+      ]
+    },
+    {
+      "surface_id": "m8r_eod_expected_trade_date_resolver",
+      "path": "scripts/m8r_eod_expected_trade_date.py",
+      "surface_type": "local_eod_session_resolver",
+      "current_status": "implemented deterministic supplied-evidence resolver",
+      "network_behavior": "no network; receives supplied calendar and closure status",
+      "input_contract": "market, reference clock, calendar artifact, closure status, optional session override",
+      "output_contract": "expected EOD session status/currentness decision",
+      "approval_boundary": "none",
+      "authorization_binding": "none",
+      "single_use_enforced": false,
+      "supported_markets": [
+        "TWSE",
+        "TPEX",
+        "TAIFEX"
+      ],
+      "supported_security_types": [],
+      "supported_capabilities": [
+        "session_status",
+        "official_eod_reference"
+      ],
+      "batching_supported": true,
+      "deterministic": true,
+      "reusable_for_05b": false,
+      "reuse_mode": "reference_only",
+      "disposition": "planning_reference_only",
+      "blocking_gaps": [
+        "not a source retriever",
+        "closure authority depends on supplied evidence and TAIFEX rule is unresolved"
+      ],
+      "evidence_paths": [
+        "scripts/m8r_eod_expected_trade_date.py",
+        "tests/unit/test_m8r_eod_expected_trade_date.py",
+        "docs/acceptance_runs/M8R_03E_EOD_EXPECTED_TRADE_DATE_AND_SESSION_STATUS.json"
       ]
     }
   ]
