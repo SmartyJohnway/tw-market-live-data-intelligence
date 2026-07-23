@@ -50,6 +50,8 @@ def test_capability_invalid_parameters_output_shape_after_request_schema():
  s,c,sc=artifacts(); sc=copy.deepcopy(sc); sc['properties']['data_needs']['items']['allOf'][0]['then']['properties']['parameters']['properties']['lookback_trading_days']['minimum']=0
  out=validate_unified_market_evidence_request(req(needs=[{'type':'recent_performance','priority':'required','parameters':{'lookback_trading_days':0}}]),security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True)
  assert out['request_schema_status']=='valid' and out['capability_results'][0]['status']=='invalid_parameters' and out['capability_validation_status']=='invalid' and out['validation_status']=='invalid'; validate_output(out)
+def test_requires_target_resolution_is_dependency_not_unsupported():
+ out=run(req([{'input':'重名測試'}],[{'type':'identity','priority':'required'}])); assert out['target_validation_status']=='requires_clarification' and out['capability_results'][0]['status']=='requires_target_resolution' and out['capability_validation_status']=='valid' and out['validation_status']=='requires_clarification'; validate_output(out)
 def test_catalog_default_limit_bool_rejected():
  c=artifacts()[1]; c['bounds']['default_target_limit']=True; assert not _catalog_valid(c)
 def test_schema_recognized_but_catalog_unsupported_market():
