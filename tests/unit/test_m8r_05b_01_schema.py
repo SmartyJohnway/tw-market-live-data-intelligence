@@ -5,7 +5,7 @@ import jsonschema
 import pytest
 
 SCHEMA=json.loads(Path('schemas/unified_market_evidence_orchestration_plan.v1.schema.json').read_text())
-V=jsonschema.Draft7Validator(SCHEMA)
+V=jsonschema.Draft7Validator(SCHEMA, format_checker=jsonschema.FormatChecker())
 H='a'*64
 
 def valid_plan():
@@ -26,3 +26,11 @@ def test_blocked_requires_reason():
  p=valid_plan(); p['blocked_operations']=[{'capability_id':'session_status','canonical_target_ids':[],'market':'TWSE','parameters':{},'executor_id':None,'batch_group_id':None,'network_required':False,'expected_evidence_contract':'session','blocking_reason_codes':[],'executor_invocation_eligible':False}]; assert errors(p)
 def test_omitted_optional_is_not_an_operation_status():
  p=valid_plan(); p['operations'][0]['operation_status']='omitted_optional'; assert errors(p)
+
+def test_planning_timestamp_requires_rfc3339_utc_z():
+ p=valid_plan(); p['planner_metadata']['planning_timestamp']='2026-07-23T00:00:00Z'; assert not errors(p)
+@pytest.mark.parametrize("timestamp", ['not-a-timestamp', '2026-07-23', '2026-07-23T00:00:00+00:00', '2026-07-23T00:00:00' ])
+def test_planning_timestamp_rejects_malformed_or_non_z(timestamp):
+ p=valid_plan(); p['planner_metadata']['planning_timestamp']=timestamp; assert errors(p)
+def test_batch_operation_id_requires_complete_identifier():
+ p=valid_plan(); p['batch_groups'][0]['operation_ids']=['umeop-op-v1-short']; assert errors(p)
