@@ -10,6 +10,7 @@ def artifacts():
  return load_f3_verified_security_master(FIX/'verified_security_master_snapshot.json',FIX/'verified_security_master_snapshot_manifest.json',allow_fixture_snapshot=True),json.loads(Path('docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json').read_text()),json.loads(Path('schemas/unified_market_evidence_request.v1.schema.json').read_text())
 def req(targets=[{'input':'2330','market_hint':'TWSE'}], needs=[{'type':'identity','priority':'required'}]): return {'schema_version':'unified_market_evidence_request.v1','request_id':'f3-test','targets':targets,'data_needs':needs,'execution_mode':'preview'}
 def run(r, schema=None): s,c,sc=artifacts(); return validate_unified_market_evidence_request(r,security_master=s,capability_catalog=c,request_schema=schema or sc,allow_fixture_snapshot=True)
+def validate_output(out): jsonschema.Draft7Validator(json.loads(Path('schemas/unified_market_evidence_request_validation.v1.schema.json').read_text())).validate(out)
 def test_valid_and_output_schema_and_copy_isolated():
  r=req(); out=run(r); assert out['validation_status']=='valid'; jsonschema.Draft7Validator(json.loads(Path('schemas/unified_market_evidence_request_validation.v1.schema.json').read_text())).validate(out); out['normalized_request']['targets'][0]['input']='changed'; assert r['targets'][0]['input']=='2330'
 def test_schema_and_target_cases():
@@ -52,11 +53,11 @@ def test_schema_recognized_but_catalog_unsupported_market():
 def test_allowed_with_caveat_resolves():
  s,c,sc=artifacts(); original=copy.deepcopy(s); s=copy.deepcopy(s); s.lookup['by_canonical']['TWSE:2330']['execution_eligibility']={'status':'allowed_with_caveat','reason_codes':['capture_observation_freshness_caveat']}; out=validate_unified_market_evidence_request(req(),security_master=s,capability_catalog=c,request_schema=sc,allow_fixture_snapshot=True); assert out['target_results'][0]['resolution_status']=='resolved'; assert 'capture_observation_freshness_caveat' in out['target_results'][0]['reason_codes']; assert original.snapshot['records'][0]['execution_eligibility']['status']=='blocked'
 def test_resolved_plus_ambiguous_requires_clarification():
- assert run(req([{'input':'2330'},{'input':'重名測試'}]))['validation_status']=='requires_clarification'
+ out=run(req([{'input':'2330'},{'input':'重名測試'}])); assert out['validation_status']=='requires_clarification'; validate_output(out)
 def test_resolved_plus_unsupported_is_unsupported():
- assert run(req([{'input':'2330'},{'input':'2881A'}]))['validation_status']=='unsupported'
+ out=run(req([{'input':'2330'},{'input':'2881A'}])); assert out['validation_status']=='unsupported'; validate_output(out)
 def test_invalid_plus_unsupported_is_invalid():
- assert run(req([{'input':'NOPE'},{'input':'2881A'}]))['validation_status']=='invalid'
+ out=run(req([{'input':'NOPE'},{'input':'2881A'}])); assert out['validation_status']=='invalid'; validate_output(out)
 def test_runtime_parameter_type_matrix():
  c=artifacts()[1]; cap=c['data_need_capabilities'][0]; cap['allowed_parameters']={'number':{'type':'number'},'text':{'type':'string'},'enabled':{'type':'boolean'},'choice':{'type':'string','enum':['a','b']}}
  assert validate_capability({'type':'identity','priority':'required','parameters':{'number':1.5,'text':'x','enabled':True,'choice':'a'}},0,catalog=c,target_resolved={'TWSE'})['status']=='contract_supported'
