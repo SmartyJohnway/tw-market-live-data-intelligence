@@ -57,7 +57,7 @@ def build_plan(validation: Mapping[str,Any], *, capability_catalog: Mapping[str,
     pairs, executors=_validate_inputs(validation,catalog,routing,handoff,inventory,bindings)
     if not isinstance(planning_timestamp,str) or not planning_timestamp.endswith('Z'): raise PlanningError('input_schema_invalid','planning_timestamp')
     status=validation.get('validation_status')
-    targets=_targets(validation); routes={x.get('capability_id'):x for x in routing.get('routes',[]) if isinstance(x,dict)}
+    targets=_targets(validation); catalog_caps={x.get('capability_id'):x for x in catalog.get('data_need_capabilities',[]) if isinstance(x,dict)}; routes={x.get('capability_id'):x for x in routing.get('routes',[]) if isinstance(x,dict)}
     ops=[]; blocked=[]; omissions=[]; warnings=[]
     if status in {'requires_clarification','unsupported'}:
         plan_status=status
@@ -85,25 +85,56 @@ def build_plan(validation: Mapping[str,Any], *, capability_catalog: Mapping[str,
             units=targets if route.get('target_required') else [{'id':None,'market':None,'security_type':None}]
             for unit in units:
                 market=unit['market']; tids=[unit['id']] if unit['id'] else []
-                if cap_status=='provisional': executable=False
+                catalog_cap=catalog_caps.get(cid, {})
+                provisional_market=market in catalog_cap.get('provisional_markets', [])
+                mismatch=(market is not None and not provisional_market and market not in route.get('supported_markets', [])) or (bool(route.get('supported_security_types')) and unit['security_type'] not in route.get('supported_security_types', []))
+                if mismatch:
+                    mismatch_reason='unsupported_market' if market not in route.get('supported_markets', []) else 'unsupported_security_type'
+                    if priority=='optional':
+                        omissions.append({'capability_id':cid,'canonical_target_ids':canonical_target_ids(tids),'reason_code':mismatch_reason,'severity':'warning','normalized_parameters':params}); warnings.append(_warning(cid,tids,mismatch_reason)); continue
+                    blocked.append({'capability_id':cid,'canonical_target_ids':canonical_target_ids(tids),'market':market,'parameters':params,'executor_id':None,'batch_group_id':None,'network_required':False,'expected_evidence_contract':route['output_evidence_contract'],'blocking_reason_codes':[mismatch_reason],'executor_invocation_eligible':False}); plan_status='blocked'; continue
+                if cap_status=='provisional' or provisional_market:
+                    executable=False
+                    if priority=='required' and plan_status!='blocked': plan_status='plan_only_not_executable'
                 batch_scope={'executor_id':route.get('selected_executor_id') if executable else None,'capability_id':cid,'market':market,'parameters':params,'expected_evidence_contract':route['output_evidence_contract'],'network_required':bool(executable and route.get('network_required')),'approval_required':bool(route.get('capability_requires_execution_approval'))}
                 bkey=sha256_json(batch_scope)
-                scope={'capability_id':cid,'canonical_target_ids':canonical_target_ids(tids),'market':market,'security_types':[unit['security_type']] if unit['security_type'] else [],'normalized_parameters':params,'executor_id':route.get('selected_executor_id') if executable else None,'batch_key':bkey,'expected_evidence_contract':route['output_evidence_contract'],'operation_status':'executable_pending_approval' if executable else 'plan_only_not_executable','network_required':bool(executable and route.get('network_required')),'capability_requires_execution_approval':bool(route.get('capability_requires_execution_approval'))}
-                op={'operation_id':operation_id(scope),'capability_id':cid,'canonical_target_ids':scope['canonical_target_ids'],'market':market,'security_types':scope['security_types'],'parameters':params,'executor_id':scope['executor_id'],'batch_group_id':None,'operation_status':scope['operation_status'],'network_required':scope['network_required'],'capability_requires_execution_approval':scope['capability_requires_execution_approval'],'expected_evidence_contract':scope['expected_evidence_contract'],'blocking_reason_codes':[],'warnings':[],'executor_invocation_eligible':executable,'_batch_key':bkey}
+                scope={'capability_id':cid,'canonical_target_ids':canonical_target_ids(tids),'market':market,'security_types':[unit['security_type']] if unit['security_type'] else [],'normalized_parameters':params,'executor_id':route.get('selected_executor_id') if executable else None,'batch_key':bkey,'expected_evidence_contract':route['output_evidence_contract'],'operation_status':'executable_pending_approval' if executable else 'plan_only_not_executable','network_required':bool(executable and route.get('network_required')),'capability_requires_execution_approval':bool(route.get('capability_requires_execution_approval')),'dependency_operation_ids':[]}
+                op={'operation_id':operation_id(scope),'capability_id':cid,'canonical_target_ids':scope['canonical_target_ids'],'market':market,'security_types':scope['security_types'],'parameters':params,'executor_id':scope['executor_id'],'batch_group_id':None,'operation_status':scope['operation_status'],'network_required':scope['network_required'],'capability_requires_execution_approval':scope['capability_requires_execution_approval'],'expected_evidence_contract':scope['expected_evidence_contract'],'blocking_reason_codes':[],'warnings':[],'executor_invocation_eligible':executable,'dependency_operation_ids':[],'_batch_key':bkey,'_batching_scope':route.get('batching_scope'),'_source_compatibility_key':route.get('source_compatibility_key') or route.get('selected_executor_id')}
                 ops.append(op)
-    # Group only routes expressly declaring batching.
+    # Derived capabilities never invoke a source and bind by deterministic operation ID.
+    primary_ids=sorted(op['operation_id'] for op in ops if op['operation_status']=='executable_pending_approval')
+    for op in ops:
+        if op['capability_id'] in {'source_currentness','evidence_quality'}:
+            op['dependency_operation_ids']=primary_ids
+            if not primary_ids: op['warnings']=[_warning(op['capability_id'],op['canonical_target_ids'],'upstream_evidence_operation_missing')]
+            identity={'capability_id':op['capability_id'],'canonical_target_ids':op['canonical_target_ids'],'market':op['market'],'security_types':op['security_types'],'normalized_parameters':op['parameters'],'executor_id':op['executor_id'],'batch_key':op['_batch_key'],'expected_evidence_contract':op['expected_evidence_contract'],'operation_status':op['operation_status'],'network_required':op['network_required'],'capability_requires_execution_approval':op['capability_requires_execution_approval'],'dependency_operation_ids':op['dependency_operation_ids']}
+            op['operation_id']=operation_id(identity)
+    # Group only executable operations according to the declared routing batching scope.
     groups={}
     for op in ops:
-        if op['operation_status']=='executable_pending_approval':
-            key=(op['_batch_key'],op['executor_id'],op['capability_id'],op['market'])
-            groups.setdefault(key,[]).append(op)
+        if op['operation_status']!='executable_pending_approval': continue
+        batching_scope=op['_batching_scope']
+        if batching_scope not in {'none','same_market','same_source'}: raise PlanningError('batch_contract_invalid')
+        base=(op['_batch_key'],op['executor_id'],op['capability_id'],op['market'])
+        if batching_scope=='none': key=base+(op['operation_id'],)
+        elif batching_scope=='same_market': key=base
+        else:
+            source_key=op['_source_compatibility_key']
+            if not isinstance(source_key,str) or not source_key: raise PlanningError('batch_contract_invalid')
+            key=base+(source_key,)
+        groups.setdefault(key,[]).append(op)
     batch_groups=[]
     for key,members in sorted(groups.items()):
         first=members[0]; bid=batch_group_id({'executor_id':first['executor_id'],'capability_id':first['capability_id'],'market':first['market'],'parameters':first['parameters'],'expected_evidence_contract':first['expected_evidence_contract'],'network_required':first['network_required'],'approval_required':first['capability_requires_execution_approval']})
         for op in members: op['batch_group_id']=bid
         batch_groups.append({'batch_group_id':bid,'executor_id':first['executor_id'],'capability_id':first['capability_id'],'market':first['market'],'operation_ids':sorted(x['operation_id'] for x in members),'network_required':True,'capability_requires_execution_approval':first['capability_requires_execution_approval']})
     order={x.get('capability_id'):i for i,x in enumerate(sorted(validation.get('capability_results',[]),key=lambda x:x.get('data_need_index',0)))}
-    batch_keys={op['operation_id']:op['_batch_key'] for op in ops}; ops=[{k:v for k,v in op.items() if k!='_batch_key'} for op in canonical_operation_order(ops,capability_order_by_id=order,batch_key_by_operation_id=batch_keys)] if ops else []
+    batch_keys={op['operation_id']:op['_batch_key'] for op in ops}; ops=[{k:v for k,v in op.items() if k not in {'_batch_key','_batching_scope','_source_compatibility_key'}} for op in canonical_operation_order(ops,capability_order_by_id=order,batch_key_by_operation_id=batch_keys)] if ops else []
+    operation_ids={op['operation_id'] for op in ops}
+    for op in ops:
+        dependencies=op['dependency_operation_ids']
+        if dependencies != sorted(set(dependencies)) or op['operation_id'] in dependencies or not set(dependencies).issubset(operation_ids):
+            raise PlanningError('target_binding_invalid','dependency_operation_ids_invalid')
     warnings=canonical_warning_order(warnings); omissions=sorted(omissions,key=canonical_json); blocked=sorted(blocked,key=canonical_json); batch_groups=sorted(batch_groups,key=lambda x:x['batch_group_id'])
     executable=[o for o in ops if o['operation_status']=='executable_pending_approval']
     logical=len(ops)+len(blocked); hard=catalog.get('bounds',{}).get('hard_operation_limit')

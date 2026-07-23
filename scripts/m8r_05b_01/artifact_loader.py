@@ -26,5 +26,10 @@ def executor_index(inventory: Mapping[str,Any]) -> dict[str,dict[str,Any]]:
     if not isinstance(surfaces,list): raise PlanningError('input_schema_invalid','executor_inventory_surfaces')
     result={}
     for surface in surfaces:
-        if isinstance(surface,dict) and isinstance(surface.get('surface_id'),str): result[surface['surface_id']]=copy.deepcopy(surface)
+        if not isinstance(surface,dict): raise PlanningError('selected_executor_invalid','inventory_surface_not_object')
+        surface_id=surface.get('surface_id')
+        if not isinstance(surface_id,str) or not surface_id.strip(): raise PlanningError('selected_executor_invalid','inventory_surface_id_invalid')
+        if surface_id in result: raise PlanningError('selected_executor_invalid','inventory_surface_id_duplicate')
+        if 'reusable_for_05b' not in surface or 'disposition' not in surface: raise PlanningError('selected_executor_invalid','inventory_surface_contract_missing')
+        result[surface_id]=copy.deepcopy(surface)
     return result

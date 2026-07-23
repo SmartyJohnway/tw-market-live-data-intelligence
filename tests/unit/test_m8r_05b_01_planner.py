@@ -45,3 +45,20 @@ def test_selected_executor_is_verified():
 def test_hard_operation_limit_fails_closed():
  c=copy.deepcopy(CAT); c['bounds']['hard_operation_limit']=1; v=validation(targets=['TWSE:2330','TWSE:6488']); b=bindings(v); b['capability_catalog_hash']=sha256_json(c)
  with pytest.raises(PlanningError,match='operation_limit_exceeded'): plan(v,catalog=c,bindings=b)
+def test_market_and_security_contracts_required_block_optional_omit():
+ v=validation('current_observation',market='TAIFEX',targets=['TAIFEX:TX']); assert plan(v)['plan_status']=='blocked'
+ optional=plan(validation('current_observation',priority='optional',market='TAIFEX',targets=['TAIFEX:TX'])); assert optional['omitted_optional_capabilities']
+ v=validation('current_observation'); v['target_results'][0]['canonical_identity']['instrument_family']='etf'; assert plan(v)['plan_status']=='blocked'
+def test_runtime_eod_taifex_is_provisional_plan_only():
+ p=plan(validation('official_eod_reference',market='TAIFEX',targets=['TAIFEX:TX'])); assert p['plan_status']=='plan_only_not_executable' and not p['batch_groups']
+def test_batching_scope_contracts_and_dependencies():
+ r=copy.deepcopy(ROUTE); next(x for x in r['routes'] if x['capability_id']=='current_observation')['batching_scope']='none'; v=validation(targets=['TWSE:2330','TWSE:6488']); b=bindings(v); b['routing_matrix_hash']=sha256_json(r); assert plan(v,routing=r,bindings=b)['accounting']['batch_group_count']==2
+ r=copy.deepcopy(ROUTE); next(x for x in r['routes'] if x['capability_id']=='current_observation')['batching_scope']='bogus'; b=bindings(v); b['routing_matrix_hash']=sha256_json(r)
+ with pytest.raises(PlanningError,match='batch_contract_invalid'): plan(v,routing=r,bindings=b)
+ # source_currentness receives the primary observation ID, not an array position.
+ v=validation(); v['normalized_request']['data_needs'].append({'type':'source_currentness','priority':'required','parameters':{}}); v['capability_results'].append({'data_need_index':1,'capability_id':'source_currentness','priority':'required','status':'contract_supported'}); p=plan(v); derived=next(x for x in p['operations'] if x['capability_id']=='source_currentness'); primary=next(x for x in p['operations'] if x['capability_id']=='current_observation'); assert derived['dependency_operation_ids']==[primary['operation_id']] and derived['batch_group_id'] is None
+def test_inventory_malformed_and_duplicate_fail_closed():
+ v=validation(); bad=copy.deepcopy(INV); bad['surfaces'].append(dict(bad['surfaces'][0]))
+ with pytest.raises(PlanningError,match='inventory_surface_id_duplicate'): plan(v,inventory=bad)
+ bad=copy.deepcopy(INV); bad['surfaces'][0]=None
+ with pytest.raises(PlanningError,match='inventory_surface_not_object'): plan(v,inventory=bad)
