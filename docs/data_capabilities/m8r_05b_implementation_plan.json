@@ -2,7 +2,7 @@
   "schema_version": "m8r_05b_implementation_plan.v1.draft",
   "preflight_state": "completed_go_with_caveats",
   "next_task": "M8R-05B-01-DETERMINISTIC-ORCHESTRATION-PLAN-PROJECTION",
-  "next_task_status": "pending_owner_acceptance",
+  "next_task_status": "in_progress",
   "phases": [
     {
       "task_id": "M8R-05B-01-DETERMINISTIC-ORCHESTRATION-PLAN-PROJECTION",
@@ -143,5 +143,7 @@
         "unapproved executor reuse"
       ]
     }
-  ]
+  ],
+  "current_gate": "Commit 3 verification",
+  "next_task_after_acceptance": "M8R-05B-02-OWNER-APPROVAL-AND-EXECUTION-BINDING"
 }
