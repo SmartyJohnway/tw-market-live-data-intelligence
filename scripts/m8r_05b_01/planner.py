@@ -65,6 +65,9 @@ def validate_batch_integrity(operations: list[dict[str, Any]], batch_groups: lis
             if operation is None or operation_id_value in membership or operation.get("batch_group_id") != group_id:
                 raise PlanningError("batch_contract_invalid", "batch_member_reference_invalid")
             membership[operation_id_value]=group_id
+            if group.get('executor_id') != operation.get('executor_id'): raise PlanningError('batch_contract_invalid','batch_executor_mismatch')
+            if group.get('capability_id') != operation.get('capability_id'): raise PlanningError('batch_contract_invalid','batch_capability_mismatch')
+            if group.get('market') != operation.get('market'): raise PlanningError('batch_contract_invalid','batch_market_mismatch')
     for operation in operations:
         executable=operation.get("operation_status")=="executable_pending_approval"
         if executable != (operation.get("operation_id") in membership) or (not executable and operation.get("batch_group_id") is not None):
