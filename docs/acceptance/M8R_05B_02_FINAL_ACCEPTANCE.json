@@ -1,58 +1,143 @@
 {
   "schema_version": "1.0",
   "task_id": "M8R-05B-02-OWNER-APPROVAL-AND-EXECUTION-BINDING",
-  "acceptance_status": "not_yet_accepted",
-  "repository": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence",
-  "base_sha": "5c639bcec8d24cf73c87f7ea7f4f23a83754bb5c",
-  "tested_implementation_head": "195aaad",
-  "schema_versions": [
-    "unified_market_evidence_execution_authorization.v1",
-    "unified_market_evidence_authorization_consumption_binding.v1"
-  ],
-  "protocol_path": "docs/protocol/M8R_05B_02_OWNER_APPROVAL_AND_EXECUTION_BINDING.md",
-  "focused_test_results": {
-    "status": "pass",
-    "passed": 16
+  "acceptance_status": "accepted_with_caveats",
+  "tested_remote_sha": "9f38e4df31598351215b02304243e4890ee56a7e",
+  "tested_local_sha": "c484e306b2d2792dd810ad43621ab3d6902662c8",
+  "execution_environment": "native WSL/Linux",
+  "focused_result": {
+    "passed": 55,
+    "failed": 0
   },
-  "05b_01_regression_result": {
-    "status": "pass",
-    "passed": 58
+  "m8r_05b_01_result": {
+    "passed": 58,
+    "failed": 0
   },
   "upstream_result": {
-    "status": "pass",
-    "passed": 44
+    "passed": 44,
+    "failed": 0
   },
-  "full_non_network_result": {
-    "status": "unavailable",
-    "reason": "authoritative failure-set telemetry unavailable"
+  "authoritative_profile": {
+    "profile": "full-non-network",
+    "json_path": "/tmp/m8r_05b_02_final_acceptance/profile.json",
+    "json_sha256": "fcd77fe49d46bc9d047026f5ba55b758656e6d88b79de666eca1dbf340023f8a",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "exit_code": 1,
+    "exit_code_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "wrapper_log_sha256": "a1fff6cf632e70147b9b2ed8ebd02b518e5e1de192771729691504a5bd5366b6",
+    "pytest_totals": {
+      "total": 1993,
+      "passed": 1984,
+      "failed": 7,
+      "skipped": 1,
+      "deselected": 1
+    },
+    "retained_pytest_failures": [
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
+    ],
+    "missing_retained_pytest_failures": [],
+    "novel_pytest_failures": []
   },
-  "expected_retained_pytest_failures": [
-    "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
-    "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
-    "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
-    "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
-    "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
-    "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
-    "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
+  "runners": [
+    {
+      "command": "python scripts/run_local_delivery_acceptance.py --check-only",
+      "exit_code": 0,
+      "classification": "pass"
+    },
+    {
+      "command": "python scripts/run_ci_delivery_acceptance.py --check-only",
+      "exit_code": 0,
+      "classification": "pass"
+    },
+    {
+      "command": "python scripts/run_m4_local_validation.py --check-only",
+      "exit_code": 0,
+      "classification": "pass"
+    },
+    {
+      "command": "python scripts/run_m4_readiness_check.py --check-only",
+      "exit_code": 0,
+      "classification": "pass"
+    },
+    {
+      "command": "python scripts/run_m5c_staging_promotion_preflight.py --check-only",
+      "exit_code": 0,
+      "classification": "pass"
+    },
+    {
+      "command": "python scripts/validate_m5c_supplemental_audit.py",
+      "exit_code": 0,
+      "classification": "pass"
+    },
+    {
+      "command": "python scripts/run_m5d_frontend_publication_preflight.py --check-only",
+      "exit_code": 1,
+      "classification": "retained"
+    },
+    {
+      "command": "python scripts/validate_m5d_publication_candidate.py --candidate-dir research/staging/m5d/m5d_frontend_publication_candidate_01",
+      "exit_code": 1,
+      "classification": "retained"
+    },
+    {
+      "command": "python scripts/simulate_m5d_frontend_publication_transaction.py --check-only",
+      "exit_code": 1,
+      "classification": "retained"
+    },
+    {
+      "command": "python scripts/simulate_m5d_frontend_publication_rollback.py --check-only",
+      "exit_code": 1,
+      "classification": "retained"
+    },
+    {
+      "command": "python scripts/run_m5ij_end_to_end_acceptance.py --check-only",
+      "exit_code": 0,
+      "classification": "pass"
+    },
+    {
+      "command": "python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01",
+      "exit_code": 0,
+      "classification": "pass"
+    },
+    {
+      "command": "python scripts/run_m5e_controlled_frontend_publication.py --check-only",
+      "exit_code": 0,
+      "classification": "pass"
+    }
   ],
-  "no_network_proof": "Package tests statically reject network imports; implementation uses only local JSON and filesystem safety utility.",
-  "no_execution_proof": "No executor or source adapter exists in scripts/m8r_05b_02.",
-  "no_consumption_proof": "Consumption preflight evaluates supplied state only and creates no durable registry.",
-  "canonical_identity_proof": "Focused canonical and authorization tests passed.",
-  "plan_binding_proof": "Focused authorization tests reject plan hash drift.",
-  "expiry_proof": "Focused preflight test rejects evaluation at expiry.",
-  "scope_proof": "Validator restricts scopes to executable_pending_approval operations.",
-  "single_use_proof": "Executable approvals require single_use=true and maximum_use_count=1.",
-  "replay_proof": "Executable approvals require replay_policy=deny_replay.",
-  "filesystem_containment_proof": "CLI delegates output to scripts.m8r_filesystem_safety.atomic_write_text.",
-  "runtime_artifact_inventory": [
-    "research/live_observation_runs/current_conversation_context/conversation_context.json",
-    "research/live_observation_runs/m6e_operator_acceptance/"
-  ],
-  "cleanup_performed": true,
-  "known_caveats": [
-    "No git origin remote is configured, so push and remote PR publication cannot be performed here.",
-    "Full non-network profile did not return its required JSON payload in this execution environment; the exact retained failure comparison remains to be rerun in persistent CI."
+  "runner_summary": {
+    "configured": 13,
+    "passed": 9,
+    "retained_command_failures": [
+      "run_m5d_frontend_publication_preflight.py --check-only",
+      "validate_m5d_publication_candidate.py --candidate-dir research/staging/m5d/m5d_frontend_publication_candidate_01",
+      "simulate_m5d_frontend_publication_transaction.py --check-only",
+      "simulate_m5d_frontend_publication_rollback.py --check-only"
+    ],
+    "missing_retained_command_failures": [],
+    "novel_command_failures": []
+  },
+  "static_gates": {
+    "compileall": "pass",
+    "authorization_schema_json": "pass",
+    "consumption_schema_json": "pass",
+    "diff_check": "pass"
+  },
+  "boundaries": {
+    "network_allowed": false,
+    "execution_invoked": false,
+    "consumption_registry_mutated": false,
+    "queue_or_database_mutated": false
+  },
+  "runtime_cleanup": "complete; workspace clean",
+  "caveats": [
+    "Exact retained M5D/M5E baseline failures only."
   ],
   "next_task": "M8R-05B-03-CONTROLLED-UNIFIED-MARKET-EVIDENCE-ORCHESTRATOR"
 }
