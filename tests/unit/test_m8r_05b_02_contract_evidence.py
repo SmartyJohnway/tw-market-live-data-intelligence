@@ -29,7 +29,7 @@ def test_state_contract(kind,code):
  elif kind=='unknown': x['state']='other'
  with pytest.raises(AuthorizationError) as e:evaluate_consumption_preflight(a,p,b,'2026-07-23T00:30:00Z',x)
  assert e.value.code==code
-@pytest.mark.parametrize('field,value',[('consumption_binding_identity_scope',None),('consumption_binding_hash',None),('consumption_binding_id',None)])
+@pytest.mark.parametrize('field,value',[('consumption_binding_identity_scope',None),('consumption_binding_identity_scope',[]),('consumption_binding_identity_scope','x'),('consumption_binding_hash',None),('consumption_binding_hash','A'*64),('consumption_binding_id',None),('consumption_binding_id','umeacb-v1-'+'A'*20)])
 def test_identity_core_invalid_is_safe(field,value):
  a,p,b=fixture();b[field]=value
  with pytest.raises(AuthorizationError) as e:validate_consumption_binding(b,a,p)

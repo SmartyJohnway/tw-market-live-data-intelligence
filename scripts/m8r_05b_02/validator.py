@@ -26,7 +26,8 @@ def validate_execution_authorization(a,plan):
  _validate_plan(plan)
  if list(Draft202012Validator(_schema(), format_checker=FormatChecker()).iter_errors(a)): raise AuthorizationError('authorization_schema_invalid')
  h,i=authorization_identity(a['authorization_identity_scope'])
- if (a['authorization_hash'],a['authorization_id'])!=(h,i): raise AuthorizationError('authorization_hash_mismatch')
+ if a['authorization_hash']!=h: raise AuthorizationError('authorization_hash_mismatch')
+ if a['authorization_id']!=i: raise AuthorizationError('authorization_id_mismatch')
  for k,code in [('plan_schema_version','plan_schema_mismatch'),('plan_id','plan_id_mismatch'),('plan_hash','plan_hash_mismatch'),('input_bindings','input_binding_hash_mismatch')]:
   if a.get(k)!=({'plan_schema_version':plan.get('schema_version'),'plan_id':plan.get('plan_id'),'plan_hash':plan.get('plan_hash'),'input_bindings':plan.get('input_bindings')}[k]): raise AuthorizationError(code)
  start,end=_time(a['issued_at']),_time(a['expires_at'])
