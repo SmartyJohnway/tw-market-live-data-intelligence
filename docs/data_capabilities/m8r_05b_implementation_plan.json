@@ -1,8 +1,8 @@
 {
   "schema_version": "m8r_05b_implementation_plan.v1.draft",
   "preflight_state": "accepted_with_caveats",
-  "next_task": "M8R-05B-03-CONTROLLED-UNIFIED-MARKET-EVIDENCE-ORCHESTRATOR",
-  "next_task_status": "ready",
+  "next_task": "M8R-05B-02-OWNER-APPROVAL-AND-EXECUTION-BINDING",
+  "next_task_status": "in_progress",
   "phases": [
     {
       "task_id": "M8R-05B-01-DETERMINISTIC-ORCHESTRATION-PLAN-PROJECTION",
@@ -144,6 +144,6 @@
       ]
     }
   ],
-  "current_gate": "M8R-05B-02 final acceptance complete",
-  "next_task_after_acceptance": "M8R-05B-03-CONTROLLED-UNIFIED-MARKET-EVIDENCE-ORCHESTRATOR"
+  "current_gate": "M8R-05B-02 substantive contract/binding correction verification",
+  "next_task_after_acceptance": "M8R-05B-02-OWNER-APPROVAL-AND-EXECUTION-BINDING"
 }
