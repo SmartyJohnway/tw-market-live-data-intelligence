@@ -15,6 +15,7 @@ def build_consumption_binding(authorization):
 def validate_consumption_binding(binding,authorization,plan):
  validate_execution_authorization(authorization,plan)
  schema=json.loads(Path('schemas/unified_market_evidence_authorization_consumption_binding.v1.schema.json').read_text())
+ if not isinstance(binding,dict) or not isinstance(binding.get('consumption_binding_identity_scope'),dict) or not isinstance(binding.get('consumption_binding_hash'),str) or not __import__('re').fullmatch(r'[0-9a-f]{64}',binding.get('consumption_binding_hash','')) or not isinstance(binding.get('consumption_binding_id'),str) or not __import__('re').fullmatch(r'umeacb-v1-[0-9a-f]{20}',binding.get('consumption_binding_id','')): raise AuthorizationError('consumption_binding_schema_invalid')
  schema_errors=list(Draft202012Validator(schema).iter_errors(binding))
  actual=sha256_json(binding['consumption_binding_identity_scope'])
  if actual!=binding['consumption_binding_hash']: raise AuthorizationError('consumption_binding_hash_mismatch')

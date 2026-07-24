@@ -29,3 +29,14 @@ def test_state_contract(kind,code):
  elif kind=='unknown': x['state']='other'
  with pytest.raises(AuthorizationError) as e:evaluate_consumption_preflight(a,p,b,'2026-07-23T00:30:00Z',x)
  assert e.value.code==code
+@pytest.mark.parametrize('field,value',[('consumption_binding_identity_scope',None),('consumption_binding_hash',None),('consumption_binding_id',None)])
+def test_identity_core_invalid_is_safe(field,value):
+ a,p,b=fixture();b[field]=value
+ with pytest.raises(AuthorizationError) as e:validate_consumption_binding(b,a,p)
+ assert e.value.code=='consumption_binding_schema_invalid'
+def test_self_consistent_identity_scope_tamper_fails_expected():
+ a,p,b=fixture();b=copy.deepcopy(b);b['consumption_binding_identity_scope']['scope_hash']='0'*64
+ from scripts.m8r_05b_02.canonical import sha256_json
+ b['consumption_binding_hash']=sha256_json(b['consumption_binding_identity_scope']);b['consumption_binding_id']='umeacb-v1-'+b['consumption_binding_hash'][:20]
+ with pytest.raises(AuthorizationError) as e:validate_consumption_binding(b,a,p)
+ assert e.value.code=='consumption_binding_identity_scope_mismatch'
