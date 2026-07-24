@@ -19,7 +19,7 @@
   },
   "authoritative_profile": {
     "profile": "full-non-network",
-    "json_path": "/tmp/m8r_05b_02_final_acceptance/profile.json",
+    "json_path": "/root/m8r_05b_02_final_acceptance/profile.json",
     "json_sha256": "fcd77fe49d46bc9d047026f5ba55b758656e6d88b79de666eca1dbf340023f8a",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "exit_code": 1,
@@ -42,7 +42,10 @@
       "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate"
     ],
     "missing_retained_pytest_failures": [],
-    "novel_pytest_failures": []
+    "novel_pytest_failures": [],
+    "profile_stderr_path": "/root/m8r_05b_02_final_acceptance/profile.stderr.log",
+    "profile_exit_code_path": "/root/m8r_05b_02_final_acceptance/profile.exit_code",
+    "profile_wrapper_log_path": "/root/m8r_05b_02_final_acceptance/profile.wrapper.log"
   },
   "runners": [
     {
