@@ -52,7 +52,7 @@ def _validate_inputs(validation, catalog, routing, handoff, inventory, bindings)
 def _warning(cap, targets, reason): return {'code':'optional_capability_omitted','capability_id':cap,'canonical_target_ids':canonical_target_ids(targets),'severity':'warning','omission_reason':reason}
 
 
-def _validate_batch_integrity(operations: list[dict[str, Any]], batch_groups: list[dict[str, Any]]) -> None:
+def validate_batch_integrity(operations: list[dict[str, Any]], batch_groups: list[dict[str, Any]]) -> None:
     """Fail closed when executable batch membership is not a bijection."""
     ids=[group.get("batch_group_id") for group in batch_groups]
     if len(ids) != len(set(ids)): raise PlanningError("batch_contract_invalid", "duplicate_batch_group_id")
@@ -158,7 +158,7 @@ def build_plan(validation: Mapping[str,Any], *, capability_catalog: Mapping[str,
         batch_groups.append({'batch_group_id':bid,'executor_id':first['executor_id'],'capability_id':first['capability_id'],'market':first['market'],'operation_ids':operation_ids,'network_required':True,'capability_requires_execution_approval':first['capability_requires_execution_approval']})
     order={x.get('capability_id'):i for i,x in enumerate(sorted(validation.get('capability_results',[]),key=lambda x:x.get('data_need_index',0)))}
     batch_keys={op['operation_id']:op['_batch_key'] for op in ops}; ops=[{k:v for k,v in op.items() if k not in {'_batch_key','_batching_scope','_source_compatibility_key'}} for op in canonical_operation_order(ops,capability_order_by_id=order,batch_key_by_operation_id=batch_keys)] if ops else []
-    _validate_batch_integrity(ops, batch_groups)
+    validate_batch_integrity(ops, batch_groups)
     operation_ids={op['operation_id'] for op in ops}
     for op in ops:
         dependencies=op['dependency_operation_ids']
@@ -177,3 +177,6 @@ def build_plan(validation: Mapping[str,Any], *, capability_catalog: Mapping[str,
     plan['plan_hash'],plan['plan_id']=plan_hash_and_id(scope)
     if list(PLAN_VALIDATOR.iter_errors(plan)): raise PlanningError('output_schema_invalid')
     return copy.deepcopy(plan)
+
+# Backward-compatible test/import alias; both consumers use the same implementation.
+_validate_batch_integrity = validate_batch_integrity
