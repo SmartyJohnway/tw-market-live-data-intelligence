@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"unified_market_evidence_authorization_consumption_binding.v1","type":"object","required":["authorization_id","authorization_hash","plan_id","plan_hash","scope_hash","consumption_binding_id","consumption_binding_hash"],"properties":{"consumption_binding_id":{"pattern":"^umeacb-v1-[0-9a-f]{20}$"}}}
