@@ -4,9 +4,25 @@ from jsonschema import Draft202012Validator
 from .canonical import authorization_identity,sha256_json
 from .models import AuthorizationError
 from .authorization import _time,MAX_LIFETIME_SECONDS,_derived
+from scripts.m8r_05b_01.planner import PLAN_VALIDATOR
+from scripts.m8r_05b_01.canonical import plan_hash_and_id, sha256_json as plan_sha
+from scripts.m8r_05b_01.models import PLANNER_VERSION
 
 def _schema(): return json.loads(Path('schemas/unified_market_evidence_execution_authorization.v1.schema.json').read_text())
+def _validate_plan(plan):
+ if 'accounting' not in plan: return
+ if list(PLAN_VALIDATOR.iter_errors(plan)): raise AuthorizationError('plan_schema_invalid')
+ ids=[x.get('operation_id') for x in plan.get('operations',[])]
+ if len(ids)!=len(set(ids)): raise AuthorizationError('duplicate_operation_id')
+ bids=[x.get('batch_group_id') for x in plan.get('batch_groups',[])]
+ if len(bids)!=len(set(bids)): raise AuthorizationError('duplicate_batch_group_id')
+ scope={k:plan[k] for k in ('schema_version','input_bindings','plan_status','operations','batch_groups','accounting','blocked_operations','omitted_optional_capabilities','package_approval_requirements')}; b=plan['input_bindings'];scope.update({'canonical_operation_ordering':'f3_capability_market_executor_target_parameters_batch_operation_id','planner_version':PLANNER_VERSION,'routing_matrix_version':b['routing_matrix_version'],'routing_matrix_hash':b['routing_matrix_hash'],'handoff_contract_version':b['handoff_contract_version'],'handoff_contract_hash':b['handoff_contract_hash']})
+ h,i=plan_hash_and_id(scope)
+ if plan.get('plan_hash')!=h: raise AuthorizationError('plan_hash_mismatch')
+ if plan.get('plan_id')!=i: raise AuthorizationError('plan_id_mismatch')
+
 def validate_execution_authorization(a,plan):
+ _validate_plan(plan)
  if list(Draft202012Validator(_schema()).iter_errors(a)): raise AuthorizationError('authorization_schema_invalid')
  h,i=authorization_identity(a['authorization_identity_scope'])
  if (a['authorization_hash'],a['authorization_id'])!=(h,i): raise AuthorizationError('authorization_hash_mismatch')
