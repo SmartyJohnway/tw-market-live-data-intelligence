@@ -1,31 +1,74 @@
-"""Evidence output containment; raw/session/credential-like fields are rejected."""
+"""Output containment preflight. It validates only; it never creates files."""
 from __future__ import annotations
 
-from typing import Any
+import os
+from pathlib import Path
+
+from scripts.m8r_filesystem_safety import FilesystemSafetyError, validate_relative_artifact_path
 
 from .errors import OrchestrationError
 
-_FORBIDDEN = {"raw_payload", "raw_response", "cookie", "cookies", "authorization", "access_token", "refresh_token", "session_id", "set_cookie"}
+
+FORBIDDEN_ROOT_PARTS = {
+    ("frontend", "public"),
+    ("frontend", "static"),
+    ("docs", "data_capabilities"),
+    ("docs", "protocol"),
+    ("schemas",),
+    ("scripts",),
+    ("tests",),
+}
 
 
-def assert_contained(value: Any) -> None:
-    if isinstance(value, dict):
-        for key, child in value.items():
-            if str(key).lower() in _FORBIDDEN:
-                raise OrchestrationError("evidence_containment_violation")
-            assert_contained(child)
-    elif isinstance(value, list):
-        for child in value:
-            assert_contained(child)
+def _is_relative_to(child: Path, parent: Path) -> bool:
+    try:
+        common = os.path.commonpath([str(parent), str(child)])
+        if os.name == "nt":
+            return os.path.normcase(common) == os.path.normcase(str(parent))
+        return common == str(parent)
+    except ValueError:
+        return False
 
 
-def contained_evidence(raw: object, expected_contract: str) -> dict:
-    if not isinstance(raw, dict):
-        raise OrchestrationError("executor_result_invalid")
-    evidence = raw.get("evidence")
-    if raw.get("status") != "success" or not isinstance(evidence, dict) or not evidence:
-        raise OrchestrationError("incomplete_evidence")
-    if raw.get("evidence_contract") != expected_contract:
-        raise OrchestrationError("expected_evidence_contract_mismatch")
-    assert_contained(evidence)
-    return evidence
+def validate_governed_output_root(output_root: str | os.PathLike[str]) -> Path:
+    if output_root is None or str(output_root) == "":
+        raise OrchestrationError("output_root_missing")
+    root = Path(output_root)
+    if not root.is_absolute():
+        raise OrchestrationError("output_root_not_absolute")
+    if not root.exists() or not root.is_dir():
+        raise OrchestrationError("output_root_missing")
+    resolved = root.resolve(strict=True)
+    normalized_parts = tuple(part.lower() for part in resolved.parts)
+    for forbidden in FORBIDDEN_ROOT_PARTS:
+        for index in range(0, len(normalized_parts) - len(forbidden) + 1):
+            if normalized_parts[index : index + len(forbidden)] == forbidden:
+                raise OrchestrationError("governed_output_root_forbidden")
+    return resolved
+
+
+def validate_contained_relative_paths(output_root: str | os.PathLike[str], relative_paths: list[str]) -> list[str]:
+    root = validate_governed_output_root(output_root)
+    normalized: list[str] = []
+    seen: set[str] = set()
+    for candidate in relative_paths:
+        try:
+            segments = validate_relative_artifact_path(candidate)
+        except FilesystemSafetyError as exc:
+            raise OrchestrationError(exc.code) from exc
+        lexical = root.joinpath(*segments)
+        if not _is_relative_to(lexical, root):
+            raise OrchestrationError("output_path_outside_authorized_root")
+        existing = lexical.parent
+        while not existing.exists() and existing != root and existing.parent != existing:
+            existing = existing.parent
+        if not _is_relative_to(existing.resolve(strict=True), root):
+            raise OrchestrationError("output_parent_symlink_escape")
+        rel = "/".join(segments)
+        if rel in seen:
+            raise OrchestrationError("contained_output_path_collision")
+        if lexical.exists() or lexical.is_symlink():
+            raise OrchestrationError("contained_output_path_collision")
+        seen.add(rel)
+        normalized.append(rel)
+    return normalized

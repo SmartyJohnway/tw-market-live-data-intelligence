@@ -34,3 +34,9 @@ def approved_operation_map(plan: dict, authorization: dict) -> dict[str, dict]:
     if set(authorization.get("approved_executor_ids", [])) != {item["executor_id"] for item in result.values()}:
         raise OrchestrationError("executor_binding_mismatch")
     return result
+
+
+def approved_operations(plan: dict, authorization: dict) -> list[tuple[dict, dict]]:
+    operations = {item.get("operation_id"): item for item in plan.get("operations", []) if isinstance(item, dict)}
+    binding_map = approved_operation_map(plan, authorization)
+    return [(operations[operation_id], binding_map[operation_id]) for operation_id in sorted(binding_map)]

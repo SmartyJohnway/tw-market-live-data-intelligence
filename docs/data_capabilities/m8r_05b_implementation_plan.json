@@ -2,7 +2,7 @@
   "schema_version": "m8r_05b_implementation_plan.v1.draft",
   "preflight_state": "accepted_with_caveats",
   "next_task": "M8R-05B-03-CONTROLLED-UNIFIED-MARKET-EVIDENCE-ORCHESTRATOR",
-  "next_task_status": "ready",
+  "next_task_status": "in_progress",
   "phases": [
     {
       "task_id": "M8R-05B-01-DETERMINISTIC-ORCHESTRATION-PLAN-PROJECTION",

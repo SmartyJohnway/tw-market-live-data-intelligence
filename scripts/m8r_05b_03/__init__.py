@@ -1,5 +1,5 @@
-"""Controlled, one-shot execution of M8R-05B approved evidence plans."""
+"""Preflight-only contract surface for M8R-05B-03 Commit 1."""
 
-from .orchestrator import execute_controlled_plan
+from .preflight import build_orchestrator_preflight
 
-__all__ = ["execute_controlled_plan"]
+__all__ = ["build_orchestrator_preflight"]
