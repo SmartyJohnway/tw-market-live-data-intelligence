@@ -1,5 +1,6 @@
 """Pure future-consumption requirements; no registry or state mutation."""
 import json
+import re
 from pathlib import Path
 from jsonschema import Draft202012Validator
 from .canonical import sha256_json
@@ -14,7 +15,7 @@ def build_consumption_binding(authorization):
 def validate_consumption_binding(binding,authorization,plan):
  validate_execution_authorization(authorization,plan)
  schema=json.loads(Path('schemas/unified_market_evidence_authorization_consumption_binding.v1.schema.json').read_text())
- if list(Draft202012Validator(schema).iter_errors(binding)): raise AuthorizationError('consumption_binding_schema_invalid')
+ schema_errors=list(Draft202012Validator(schema).iter_errors(binding))
  actual=sha256_json(binding['consumption_binding_identity_scope'])
  if actual!=binding['consumption_binding_hash']: raise AuthorizationError('consumption_binding_hash_mismatch')
  if 'umeacb-v1-'+actual[:20]!=binding['consumption_binding_id']: raise AuthorizationError('consumption_binding_id_mismatch')
@@ -25,11 +26,14 @@ def validate_consumption_binding(binding,authorization,plan):
    if key=='consumption_binding_hash': raise AuthorizationError('consumption_binding_hash_mismatch')
    if key=='consumption_binding_id': raise AuthorizationError('consumption_binding_id_mismatch')
    raise AuthorizationError(_CODES.get(key, key+'_mismatch'))
+ if schema_errors: raise AuthorizationError('consumption_binding_schema_invalid')
  return True
 def evaluate_consumption_preflight(authorization,plan,consumption_binding,evaluation_timestamp,supplied_consumption_state):
  evaluate_authorization_preflight(authorization,plan,evaluation_timestamp);validate_consumption_binding(consumption_binding,authorization,plan)
  if supplied_consumption_state is None: raise AuthorizationError('consumption_record_missing')
+ if isinstance(supplied_consumption_state,list): raise AuthorizationError('consumption_state_ambiguous')
  if not isinstance(supplied_consumption_state,dict) or set(supplied_consumption_state)!={'authorization_id','authorization_hash','consumption_binding_id','consumption_binding_hash','registry_contract_version','state'}: raise AuthorizationError('consumption_state_schema_invalid')
+ if not re.fullmatch(r'umea-v1-[0-9a-f]{20}', str(supplied_consumption_state.get('authorization_id'))) or not re.fullmatch(r'[0-9a-f]{64}',str(supplied_consumption_state.get('authorization_hash'))) or not re.fullmatch(r'umeacb-v1-[0-9a-f]{20}',str(supplied_consumption_state.get('consumption_binding_id'))) or not re.fullmatch(r'[0-9a-f]{64}',str(supplied_consumption_state.get('consumption_binding_hash'))): raise AuthorizationError('consumption_state_schema_invalid')
  for k in ('authorization_id','authorization_hash'):
   if supplied_consumption_state[k]!=consumption_binding[k]: raise AuthorizationError('consumption_authorization_mismatch')
  for k in ('consumption_binding_id','consumption_binding_hash'):
