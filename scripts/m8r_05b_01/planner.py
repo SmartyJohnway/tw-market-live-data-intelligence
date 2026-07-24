@@ -52,7 +52,7 @@ def _validate_inputs(validation, catalog, routing, handoff, inventory, bindings)
 def _warning(cap, targets, reason): return {'code':'optional_capability_omitted','capability_id':cap,'canonical_target_ids':canonical_target_ids(targets),'severity':'warning','omission_reason':reason}
 
 
-def _validate_batch_integrity(operations: list[dict[str, Any]], batch_groups: list[dict[str, Any]]) -> None:
+def validate_batch_integrity(operations: list[dict[str, Any]], batch_groups: list[dict[str, Any]]) -> None:
     """Fail closed when executable batch membership is not a bijection."""
     ids=[group.get("batch_group_id") for group in batch_groups]
     if len(ids) != len(set(ids)): raise PlanningError("batch_contract_invalid", "duplicate_batch_group_id")
@@ -65,10 +65,19 @@ def _validate_batch_integrity(operations: list[dict[str, Any]], batch_groups: li
             if operation is None or operation_id_value in membership or operation.get("batch_group_id") != group_id:
                 raise PlanningError("batch_contract_invalid", "batch_member_reference_invalid")
             membership[operation_id_value]=group_id
+            if group.get('executor_id') != operation.get('executor_id'): raise PlanningError('batch_contract_invalid','batch_executor_mismatch')
+            if group.get('capability_id') != operation.get('capability_id'): raise PlanningError('batch_contract_invalid','batch_capability_mismatch')
+            if group.get('market') != operation.get('market'): raise PlanningError('batch_contract_invalid','batch_market_mismatch')
     for operation in operations:
         executable=operation.get("operation_status")=="executable_pending_approval"
         if executable != (operation.get("operation_id") in membership) or (not executable and operation.get("batch_group_id") is not None):
             raise PlanningError("batch_contract_invalid", "operation_batch_reference_invalid")
+
+def plan_identity_scope(plan: Mapping[str, Any]) -> dict[str, Any]:
+    scope={k:plan[k] for k in ('schema_version','input_bindings','plan_status','operations','batch_groups','accounting','blocked_operations','omitted_optional_capabilities','package_approval_requirements')}
+    bindings=plan['input_bindings']
+    scope.update({'canonical_operation_ordering':'f3_capability_market_executor_target_parameters_batch_operation_id','planner_version':PLANNER_VERSION,'routing_matrix_version':bindings['routing_matrix_version'],'routing_matrix_hash':bindings['routing_matrix_hash'],'handoff_contract_version':bindings['handoff_contract_version'],'handoff_contract_hash':bindings['handoff_contract_hash']})
+    return scope
 
 def build_plan(validation: Mapping[str,Any], *, capability_catalog: Mapping[str,Any], routing_matrix: Mapping[str,Any], handoff_contract: Mapping[str,Any], executor_disposition: Mapping[str,Any], input_bindings: Mapping[str,Any], planning_timestamp: str) -> dict[str,Any]:
     """Return a deep-independent plan; all inputs and timestamp are explicit."""
@@ -152,7 +161,7 @@ def build_plan(validation: Mapping[str,Any], *, capability_catalog: Mapping[str,
         batch_groups.append({'batch_group_id':bid,'executor_id':first['executor_id'],'capability_id':first['capability_id'],'market':first['market'],'operation_ids':operation_ids,'network_required':True,'capability_requires_execution_approval':first['capability_requires_execution_approval']})
     order={x.get('capability_id'):i for i,x in enumerate(sorted(validation.get('capability_results',[]),key=lambda x:x.get('data_need_index',0)))}
     batch_keys={op['operation_id']:op['_batch_key'] for op in ops}; ops=[{k:v for k,v in op.items() if k not in {'_batch_key','_batching_scope','_source_compatibility_key'}} for op in canonical_operation_order(ops,capability_order_by_id=order,batch_key_by_operation_id=batch_keys)] if ops else []
-    _validate_batch_integrity(ops, batch_groups)
+    validate_batch_integrity(ops, batch_groups)
     operation_ids={op['operation_id'] for op in ops}
     for op in ops:
         dependencies=op['dependency_operation_ids']
@@ -167,7 +176,10 @@ def build_plan(validation: Mapping[str,Any], *, capability_catalog: Mapping[str,
     approval={'package_requires_owner_approval':any(o['capability_requires_execution_approval'] for o in executable),'authorization_eligible':bool(executable) and plan_status in {'plan_ready','plan_ready_with_warnings'},'approval_policy':'strictest_operation_controls_package','approval_reason_codes':['execution_approval_required'] if any(o['capability_requires_execution_approval'] for o in executable) else []}
     bindings['security_master_evidence_references']=[r for r,_ in pairs]; bindings['security_master_artifact_hashes']=[h for _,h in pairs]
     plan={'schema_version':PLAN_SCHEMA_VERSION,'execution_authorized':False,'input_bindings':bindings,'planner_metadata':{'planning_timestamp':planning_timestamp,'offline':True,'deterministic':True,'limit_source':'catalog.hard_operation_limit'},'plan_status':plan_status,'operations':ops,'batch_groups':batch_groups,'accounting':accounting,'warnings':warnings,'blocked_operations':blocked,'omitted_optional_capabilities':omissions,'evidence_references':bindings['security_master_evidence_references'],'package_approval_requirements':approval}
-    scope={k:plan[k] for k in ('schema_version','input_bindings','plan_status','operations','batch_groups','accounting','blocked_operations','omitted_optional_capabilities','package_approval_requirements')}; scope.update({'canonical_operation_ordering':'f3_capability_market_executor_target_parameters_batch_operation_id','planner_version':PLANNER_VERSION,'routing_matrix_version':bindings['routing_matrix_version'],'routing_matrix_hash':bindings['routing_matrix_hash'],'handoff_contract_version':bindings['handoff_contract_version'],'handoff_contract_hash':bindings['handoff_contract_hash']})
+    scope=plan_identity_scope(plan)
     plan['plan_hash'],plan['plan_id']=plan_hash_and_id(scope)
     if list(PLAN_VALIDATOR.iter_errors(plan)): raise PlanningError('output_schema_invalid')
     return copy.deepcopy(plan)
+
+# Backward-compatible test/import alias; both consumers use the same implementation.
+_validate_batch_integrity = validate_batch_integrity
