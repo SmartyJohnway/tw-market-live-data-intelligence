@@ -1,4 +1,4 @@
-"""Atomic single-use authorization claim for Commit 2."""
+"""Atomic single-use authorization claim for Commit 2 & 3."""
 from __future__ import annotations
 
 import json
@@ -94,6 +94,8 @@ def build_claim_record(
 ) -> dict:
     _validate_supplied_unused_state(supplied_consumption_state, preflight)
     _validate_timestamp(claim_created_at)
+    if type(network_execution_confirmed) is not bool:
+        raise OrchestrationError("network_execution_confirmation_invalid")
     valid_ref = validate_operator_confirmation_reference(operator_confirmation_reference)
     bound_at = confirmation_bound_at or claim_created_at
     _validate_timestamp(bound_at)
@@ -112,7 +114,7 @@ def build_claim_record(
         "execution_mode": "execute-approved",
         "execution_confirmed": True,
         "operator_confirmation_reference": valid_ref,
-        "network_execution_confirmed": bool(network_execution_confirmed),
+        "network_execution_confirmed": network_execution_confirmed,
         "confirmation_bound_at": bound_at,
         "claim_created_at": claim_created_at,
     }

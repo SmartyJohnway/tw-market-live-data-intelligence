@@ -1,12 +1,16 @@
-"""Public contract surface for M8R-05B-03 Commit 2."""
-
+"""M8R-05B-03 Controlled Unified Market Evidence Orchestrator."""
 from .controlled_dispatch import claim_and_dispatch_approved
-from .dispatch import RuntimeAdapterRegistration, RuntimeAdapterRegistry
-from .preflight import build_orchestrator_preflight
+from .errors import OrchestrationError
+from .orchestrator import execute_controlled_plan
+from .preflight import (
+    build_orchestrator_preflight,
+    validate_accepted_preflight,
+)
 
 __all__ = [
-    "RuntimeAdapterRegistration",
-    "RuntimeAdapterRegistry",
+    "OrchestrationError",
     "build_orchestrator_preflight",
+    "validate_accepted_preflight",
     "claim_and_dispatch_approved",
+    "execute_controlled_plan",
 ]

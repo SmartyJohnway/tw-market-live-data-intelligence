@@ -41,20 +41,17 @@ def scan_code_for_boundary_violations(source: str, filename: str = "test.py") ->
     return violations
 
 
-def test_public_surface_does_not_export_aggregation_or_receipt():
+def test_public_surface_exports_controlled_orchestration():
     source = (PACKAGE / "__init__.py").read_text(encoding="utf-8")
-    assert "execute_controlled_plan" not in source
-    assert "aggregate_evidence" not in source
-    assert "build_execution_receipt" not in source
+    assert "execute_controlled_plan" in source
     assert "build_orchestrator_preflight" in source
     assert "claim_and_dispatch_approved" in source
 
 
-def test_no_aggregation_or_receipt_modules_exist():
+def test_no_m8r_05c_ai_or_workbench_modules_exist():
     forbidden = [
-        "evidence_aggregation.py",
-        "receipt.py",
-        "orchestrator.py",
+        "workbench.py",
+        "ai_result_projection.py",
     ]
     assert not any((PACKAGE / name).exists() for name in forbidden)
 
