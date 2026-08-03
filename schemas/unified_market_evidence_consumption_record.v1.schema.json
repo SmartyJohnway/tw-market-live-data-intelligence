@@ -82,7 +82,9 @@
       "pattern": "^umecl-v1-[0-9a-f]{20}$"
     },
     "claim_created_at": {
-      "type": "string"
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
     },
     "claimed_by_component": {
       "type": "string"

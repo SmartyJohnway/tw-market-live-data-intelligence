@@ -8,16 +8,17 @@ ROOT = Path(__file__).resolve().parents[2]
 PACKAGE = ROOT / "scripts" / "m8r_05b_03"
 
 
-def test_public_surface_does_not_export_execution():
+def test_public_surface_does_not_export_aggregation_or_receipt():
     source = (PACKAGE / "__init__.py").read_text(encoding="utf-8")
     assert "execute_controlled_plan" not in source
+    assert "aggregate_evidence" not in source
+    assert "build_execution_receipt" not in source
     assert "build_orchestrator_preflight" in source
+    assert "claim_and_dispatch_approved" in source
 
 
-def test_no_claim_dispatch_aggregation_receipt_modules_exist():
+def test_no_aggregation_or_receipt_modules_exist():
     forbidden = [
-        "consumption_store.py",
-        "executor_dispatch.py",
         "evidence_aggregation.py",
         "receipt.py",
         "orchestrator.py",

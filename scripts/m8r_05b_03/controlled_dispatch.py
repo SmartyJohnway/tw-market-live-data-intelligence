@@ -1,4 +1,4 @@
-"""Commit 2 orchestration: revalidate, atomically claim, then dispatch."""
+"""Commit 2 orchestration: revalidate, atomically claim (execute-approved only), then dispatch."""
 from __future__ import annotations
 
 from .consumption_claim import atomic_claim_authorization, validate_claim_destination
@@ -24,9 +24,13 @@ def claim_and_dispatch_approved(
     runtime_adapter_registry: RuntimeAdapterRegistry,
     output_root: str,
     mode: str,
+    confirm_execution: bool = False,
+    operator_confirmation_reference: str | None = None,
+    confirm_network_execution: bool = False,
 ) -> dict:
     if mode not in {"dry-run", "execute-approved"}:
         raise OrchestrationError("execution_mode_invalid")
+
     rebuilt_preflight = build_orchestrator_preflight(
         plan,
         authorization,
@@ -45,12 +49,27 @@ def claim_and_dispatch_approved(
         mode=mode,
     )
     validate_claim_destination(output_root, accepted_preflight["authorization_id"])
-    claim_record, claim_path = atomic_claim_authorization(
-        accepted_preflight,
-        supplied_consumption_state,
-        output_root=output_root,
-        claim_created_at=claim_created_at,
-    )
+
+    if mode == "execute-approved":
+        if confirm_execution is not True:
+            raise OrchestrationError("execution_confirmation_required")
+        if not isinstance(operator_confirmation_reference, str) or not operator_confirmation_reference.strip():
+            raise OrchestrationError("operator_confirmation_reference_required")
+        if accepted_preflight.get("network_required") and confirm_network_execution is not True:
+            raise OrchestrationError("network_execution_confirmation_required")
+
+        claim_record, claim_path = atomic_claim_authorization(
+            accepted_preflight,
+            supplied_consumption_state,
+            output_root=output_root,
+            claim_created_at=claim_created_at,
+        )
+        consumption_state = "claimed"
+    else:
+        claim_record = None
+        claim_path = None
+        consumption_state = "unconsumed_dry_run"
+
     outcomes = dispatch_prepared(
         prepared,
         governed_output_root=accepted_preflight["governed_output_root"],
@@ -62,7 +81,7 @@ def claim_and_dispatch_approved(
         "claim_relative_path": claim_path,
         "claim_record": claim_record,
         "dispatch_outcomes": outcomes,
-        "consumption_state": "claimed",
+        "consumption_state": consumption_state,
         "aggregation_created": False,
         "execution_receipt_created": False,
     }

@@ -97,6 +97,8 @@ class RuntimeAdapterRegistry:
                 raise OrchestrationError(code)
         if mode == "dry-run" and not registration.fake_adapter:
             raise OrchestrationError("dry_run_requires_fake_adapter")
+        if mode == "execute-approved" and registration.fake_adapter:
+            raise OrchestrationError("execute_approved_rejects_fake_adapter")
         return registration
 
 
