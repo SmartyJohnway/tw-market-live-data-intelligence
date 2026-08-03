@@ -2,7 +2,7 @@
     "contract_version": "m8r_05b_03.v1",
     "milestone": "M8R-05B-03",
     "acceptance_status": "accepted",
-    "implementation_stage": "commit_13_authoritative_baseline_classified_and_closure",
+    "implementation_stage": "commit_14_authoritative_baseline_substantiated",
     "flags": {
         "preflight_validation_implemented": true,
         "consumption_claim_implemented": true,
@@ -12,8 +12,8 @@
         "consumption_finalization_implemented": true,
         "final_execution_closure_implemented": true
     },
-    "acceptance_date": "2026-08-03T10:35:00Z",
+    "acceptance_date": "2026-08-03T10:48:00Z",
     "accepted_by": "owner_authoritative_acceptance",
-    "evidence_bundle_hash": "ac0fa9e74824e037d07ab3394069241a98e878a76094ac880a1b45c06b369955",
-    "notes": "M8R-05B-03 formal closure accepted. Baseline failures classified. Zero novel failures caused by M8R-05B orchestrator."
+    "evidence_bundle_hash": "8361e217a5641a72498b721e6e579dcb463e775f26e1a4f0766ef49578f7b607",
+    "notes": "M8R-05B-03 formal closure accepted. 20 environment-induced failures fully substantiated in isolated worktree."
 }
