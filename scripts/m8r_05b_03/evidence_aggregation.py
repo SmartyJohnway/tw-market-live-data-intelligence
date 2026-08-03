@@ -30,6 +30,7 @@ def aggregate_dispatch_outcomes(
     op_receipts = []
     bundle_entries = []
     artifact_inventory = []
+    aggregate_warnings: list[str] = []
 
     for idx, outcome in enumerate(dispatch_outcomes):
         op_id = outcome.get("operation_id")
@@ -69,6 +70,8 @@ def aggregate_dispatch_outcomes(
         item_count = outcome.get("result_item_count", 0)
         total_items += item_count
         arts = outcome.get("evidence_artifacts", [])
+        op_warnings = list(outcome.get("warnings", []))
+        aggregate_warnings.extend(op_warnings)
 
         op_receipts.append({
             "operation_id": op_id,
@@ -80,6 +83,7 @@ def aggregate_dispatch_outcomes(
             "execution_request_hash": outcome["execution_request_hash"],
             "result_item_count": item_count,
             "evidence_artifacts": arts,
+            "warnings": op_warnings,
         })
 
         bundle_entries.append({
@@ -91,17 +95,20 @@ def aggregate_dispatch_outcomes(
                 {
                     "relative_path": a["relative_path"],
                     "sha256": a["sha256"],
+                    "schema_version": a["schema_version"],
                     "byte_size": a["byte_size"],
                     "item_count": a["item_count"],
                 }
                 for a in arts
             ],
+            "warnings": op_warnings,
         })
 
         for a in arts:
             artifact_inventory.append({
                 "relative_path": a["relative_path"],
                 "sha256": a["sha256"],
+                "schema_version": a["schema_version"],
                 "byte_size": a["byte_size"],
                 "item_count": a["item_count"],
                 "evidence_contract": outcome["evidence_contract"],
@@ -126,4 +133,5 @@ def aggregate_dispatch_outcomes(
         "operation_evidence_entries": bundle_entries,
         "artifact_inventory": artifact_inventory,
         "total_item_count": total_items,
+        "warnings": aggregate_warnings,
     }

@@ -21,6 +21,7 @@
     "operation_evidence_entries",
     "artifact_inventory",
     "total_item_count",
+    "warnings",
     "finalized_at"
   ],
   "properties": {
@@ -92,7 +93,8 @@
           "status",
           "error_code",
           "result_item_count",
-          "artifacts"
+          "artifacts",
+          "warnings"
         ],
         "properties": {
           "operation_id": { "type": "string" },
@@ -104,14 +106,19 @@
             "items": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["relative_path", "sha256", "byte_size", "item_count"],
+              "required": ["relative_path", "sha256", "schema_version", "byte_size", "item_count"],
               "properties": {
                 "relative_path": { "type": "string" },
                 "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+                "schema_version": { "type": "string" },
                 "byte_size": { "type": "integer", "minimum": 0 },
                 "item_count": { "type": "integer", "minimum": 0 }
               }
             }
+          },
+          "warnings": {
+            "type": "array",
+            "items": { "type": "string" }
           }
         }
       }
@@ -124,6 +131,7 @@
         "required": [
           "relative_path",
           "sha256",
+          "schema_version",
           "byte_size",
           "item_count",
           "evidence_contract"
@@ -131,6 +139,7 @@
         "properties": {
           "relative_path": { "type": "string" },
           "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "schema_version": { "type": "string" },
           "byte_size": { "type": "integer", "minimum": 0 },
           "item_count": { "type": "integer", "minimum": 0 },
           "evidence_contract": { "type": "string" }
@@ -140,6 +149,10 @@
     "total_item_count": {
       "type": "integer",
       "minimum": 0
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
     },
     "finalized_at": {
       "type": "string",

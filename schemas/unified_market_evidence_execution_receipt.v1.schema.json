@@ -17,6 +17,7 @@
     "succeeded_operations",
     "failed_operations",
     "operation_receipts",
+    "warnings",
     "finalized_at",
     "created_by_component"
   ],
@@ -86,7 +87,8 @@
           "execution_request_id",
           "execution_request_hash",
           "result_item_count",
-          "evidence_artifacts"
+          "evidence_artifacts",
+          "warnings"
         ],
         "properties": {
           "operation_id": {
@@ -136,9 +138,17 @@
                 "item_count": { "type": "integer", "minimum": 0 }
               }
             }
+          },
+          "warnings": {
+            "type": "array",
+            "items": { "type": "string" }
           }
         }
       }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
     },
     "finalized_at": {
       "type": "string",

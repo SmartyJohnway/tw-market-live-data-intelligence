@@ -101,7 +101,11 @@
       },
       "then": {
         "properties": {
-          "error_code": { "type": "null" }
+          "error_code": { "type": "null" },
+          "evidence_artifacts": {
+            "type": "array",
+            "minItems": 1
+          }
         }
       }
     },

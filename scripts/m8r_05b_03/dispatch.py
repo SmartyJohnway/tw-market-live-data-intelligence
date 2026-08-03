@@ -225,12 +225,13 @@ def dispatch_prepared(
                 or raw_result["capability_id"] != item.request["capability_id"]
                 or raw_result["evidence_contract"] != item.metadata.expected_evidence_contract
             ):
-                import sys
-                sys.stderr.write(f"\nDETAILS:\n  op_id: {raw_result['operation_id']} vs {item.request['operation_id']}\n  req_id: {raw_result['execution_request_id']} vs {expected_req_id}\n  req_hash: {raw_result['execution_request_hash']} vs {expected_req_hash}\n  executor: {raw_result['executor_id']} vs {item.request['executor_id']}\n  cap: {raw_result['capability_id']} vs {item.request['capability_id']}\n  contract: {raw_result['evidence_contract']} vs {item.metadata.expected_evidence_contract}\n")
                 raise OrchestrationError("operation_result_identity_mismatch")
 
             status = raw_result["status"]
             if status == "succeeded":
+                artifact_total_items = sum(art["item_count"] for art in raw_result["evidence_artifacts"])
+                if raw_result["result_item_count"] != artifact_total_items:
+                    raise OrchestrationError("operation_result_item_count_mismatch")
                 _verify_evidence_artifacts(governed_output_root, raw_result["evidence_artifacts"], mode)
                 outcome = dict(raw_result)
             else:

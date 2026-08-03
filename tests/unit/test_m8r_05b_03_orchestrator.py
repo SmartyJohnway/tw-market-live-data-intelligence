@@ -32,8 +32,16 @@ def test_end_to_end_dry_run_execution(tmp_path):
             "status": "succeeded",
             "error_code": None,
             "result_item_count": 0,
-            "evidence_artifacts": [],
-            "warnings": [],
+            "evidence_artifacts": [
+                {
+                    "relative_path": f"evidence/{request['operation_id']}_dry.json",
+                    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                    "schema_version": "unified_market_evidence_item.v1",
+                    "byte_size": 0,
+                    "item_count": 0,
+                }
+            ],
+            "warnings": ["dry-run simulation"],
         }
 
     run_reg = RuntimeAdapterRegistry([runtime_registration(plan, adapter=fake_dry_adapter, fake_adapter=True)])

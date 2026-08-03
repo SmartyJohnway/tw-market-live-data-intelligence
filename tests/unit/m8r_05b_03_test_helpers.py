@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import json
 from copy import deepcopy
+from hashlib import sha256
 from pathlib import Path
 
 from scripts.m8r_05b_02.authorization import build_execution_authorization
 from scripts.m8r_05b_02.consumption_binding import build_consumption_binding
+from scripts.m8r_filesystem_safety import safe_destination
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -87,9 +89,24 @@ def default_mock_adapter(request, context):
 
     req_id, req_hash = request_identity(request)
     contract = request.get("evidence_contract") or "bounded normalized source observation with source health/currentness"
+    op_id = request["operation_id"]
+    rel_path = f"evidence/{op_id}.json"
+    content = json.dumps([{"symbol": "2330.TW", "price": 100.0}]).encode("utf-8")
+    if hasattr(context, "governed_output_root") and context.governed_output_root:
+        dest = safe_destination(context.governed_output_root, rel_path, create_parent=True)
+        dest.path.write_bytes(content)
+
+    art_hash = sha256(content).hexdigest()
+    artifact = {
+        "relative_path": rel_path,
+        "sha256": art_hash,
+        "schema_version": "unified_market_evidence_item.v1",
+        "byte_size": len(content),
+        "item_count": 1,
+    }
     return {
         "schema_version": "unified_market_evidence_operation_result.v1",
-        "operation_id": request["operation_id"],
+        "operation_id": op_id,
         "execution_request_id": req_id,
         "execution_request_hash": req_hash,
         "executor_id": request["executor_id"],
@@ -97,8 +114,8 @@ def default_mock_adapter(request, context):
         "evidence_contract": contract,
         "status": "succeeded",
         "error_code": None,
-        "result_item_count": 0,
-        "evidence_artifacts": [],
+        "result_item_count": 1,
+        "evidence_artifacts": [artifact],
         "warnings": [],
     }
 
