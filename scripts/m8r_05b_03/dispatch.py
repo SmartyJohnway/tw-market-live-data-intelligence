@@ -1,13 +1,18 @@
-"""Closed runtime adapter boundary and sequential bounded dispatch."""
+"""Controlled dispatch for preflight execution requests."""
 from __future__ import annotations
 
+import hashlib
 import json
-from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable
+from typing import Any, Callable
 
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, FormatChecker
+
+from scripts.m8r_filesystem_safety import (
+    FilesystemSafetyError,
+    safe_destination,
+)
 
 from .containment import validate_contained_relative_paths
 from .errors import OrchestrationError
@@ -16,13 +21,16 @@ from .registry import ExecutorMetadata, ExecutorMetadataRegistry
 
 ROOT = Path(__file__).resolve().parents[2]
 REQUEST_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_execution_request.v1.schema.json"
-AdapterCallable = Callable[[dict, "DispatchRuntimeContext"], dict]
+RESULT_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_operation_result.v1.schema.json"
 
 
 @dataclass(frozen=True)
 class DispatchRuntimeContext:
     governed_output_root: str
     mode: str
+
+
+AdapterCallable = Callable[[dict, DispatchRuntimeContext], dict[str, Any]]
 
 
 @dataclass(frozen=True)
@@ -42,17 +50,11 @@ class RuntimeAdapterRegistration:
 
 
 class RuntimeAdapterRegistry:
-    """Explicit code-constructed registry; never built from an input artifact."""
-
     def __init__(self, registrations: list[RuntimeAdapterRegistration]):
-        entries: dict[str, RuntimeAdapterRegistration] = {}
-        for registration in registrations:
-            if not isinstance(registration, RuntimeAdapterRegistration) or not callable(registration.adapter):
-                raise OrchestrationError("runtime_adapter_registration_invalid")
-            if registration.executor_id in entries:
-                raise OrchestrationError("duplicate_runtime_adapter")
-            entries[registration.executor_id] = registration
-        self._entries = entries
+        self._by_executor = {reg.executor_id: reg for reg in registrations}
+
+    def get(self, executor_id: str) -> RuntimeAdapterRegistration | None:
+        return self._by_executor.get(executor_id)
 
     def resolve(
         self,
@@ -61,7 +63,7 @@ class RuntimeAdapterRegistry:
         *,
         mode: str,
     ) -> RuntimeAdapterRegistration:
-        registration = self._entries.get(request["executor_id"])
+        registration = self.get(request["executor_id"])
         if registration is None:
             raise OrchestrationError("unknown_runtime_adapter")
         checks = (
@@ -69,8 +71,8 @@ class RuntimeAdapterRegistry:
             (registration.capability_id, metadata.capability_id, "capability_mismatch"),
             (registration.market, metadata.market, "market_mismatch"),
             (
-                tuple(sorted(registration.supported_security_types)),
-                metadata.supported_security_types,
+                sorted(registration.supported_security_types),
+                sorted(metadata.supported_security_types),
                 "unsupported_security_type",
             ),
             (
@@ -82,7 +84,7 @@ class RuntimeAdapterRegistry:
             (
                 registration.bounded_execution_supported,
                 metadata.bounded_execution_supported,
-                "bounded_support_mismatch",
+                "bounded_execution_unsupported",
             ),
             (registration.timeout_seconds, metadata.timeout_seconds, "timeout_limit_mismatch"),
             (
@@ -161,8 +163,35 @@ def prepare_dispatch(
         ):
             raise OrchestrationError("dispatch_binding_mismatch")
         registration = runtime_registry.resolve(request, metadata, mode=mode)
-        prepared.append(PreparedDispatch(deepcopy(request), metadata, registration))
+        prepared.append(PreparedDispatch(request, metadata, registration))
     return tuple(prepared)
+
+
+def _verify_evidence_artifacts(
+    governed_output_root: str,
+    artifacts: list[dict],
+    mode: str,
+) -> None:
+    for art in artifacts:
+        rel_path = art["relative_path"]
+        try:
+            dest = safe_destination(governed_output_root, rel_path, create_parent=False)
+        except FilesystemSafetyError as exc:
+            raise OrchestrationError(exc.code) from exc
+
+        if mode == "execute-approved":
+            if not dest.path.is_file():
+                raise OrchestrationError("evidence_artifact_missing")
+            content = dest.path.read_bytes()
+            if len(content) != art["byte_size"]:
+                raise OrchestrationError("evidence_artifact_size_mismatch")
+            sha = hashlib.sha256(content).hexdigest()
+            if sha != art["sha256"]:
+                raise OrchestrationError("evidence_artifact_hash_mismatch")
+
+
+def request_identity(request: dict) -> tuple[str, str]:
+    return request["execution_request_id"], request["execution_request_hash"]
 
 
 def dispatch_prepared(
@@ -173,32 +202,71 @@ def dispatch_prepared(
 ) -> list[dict]:
     context = DispatchRuntimeContext(governed_output_root=governed_output_root, mode=mode)
     outcomes: list[dict] = []
+    result_schema = json.loads(RESULT_SCHEMA_PATH.read_text(encoding="utf-8"))
+    validator = Draft202012Validator(result_schema, format_checker=FormatChecker())
+
     for item in prepared:
         validate_contained_relative_paths(
             governed_output_root,
             [item.request["relative_contained_output_path"]],
         )
+        expected_req_id, expected_req_hash = request_identity(item.request)
+
         try:
-            result = item.registration.adapter(deepcopy(item.request), context)
-            if not isinstance(result, dict) or set(result) - {"status", "error_code"}:
-                raise ValueError("adapter_result_invalid")
-            status = result.get("status")
-            if status == "succeeded" and result.get("error_code") is None:
-                outcome_status, error_code = "succeeded", None
-            elif status in {"failed", "source_unavailable"} and isinstance(result.get("error_code"), str):
-                outcome_status, error_code = "failed", result["error_code"]
+            raw_result = item.registration.adapter(item.request, context)
+            if list(validator.iter_errors(raw_result)):
+                raise OrchestrationError("operation_result_schema_invalid")
+
+            if (
+                raw_result["operation_id"] != item.request["operation_id"]
+                or raw_result["execution_request_id"] != expected_req_id
+                or raw_result["execution_request_hash"] != expected_req_hash
+                or raw_result["executor_id"] != item.request["executor_id"]
+                or raw_result["capability_id"] != item.request["capability_id"]
+                or raw_result["evidence_contract"] != item.metadata.expected_evidence_contract
+            ):
+                import sys
+                sys.stderr.write(f"\nDETAILS:\n  op_id: {raw_result['operation_id']} vs {item.request['operation_id']}\n  req_id: {raw_result['execution_request_id']} vs {expected_req_id}\n  req_hash: {raw_result['execution_request_hash']} vs {expected_req_hash}\n  executor: {raw_result['executor_id']} vs {item.request['executor_id']}\n  cap: {raw_result['capability_id']} vs {item.request['capability_id']}\n  contract: {raw_result['evidence_contract']} vs {item.metadata.expected_evidence_contract}\n")
+                raise OrchestrationError("operation_result_identity_mismatch")
+
+            status = raw_result["status"]
+            if status == "succeeded":
+                _verify_evidence_artifacts(governed_output_root, raw_result["evidence_artifacts"], mode)
+                outcome = dict(raw_result)
             else:
-                raise ValueError("adapter_result_invalid")
+                outcome = dict(raw_result)
+        except OrchestrationError:
+            raise
         except TimeoutError:
-            outcome_status, error_code = "failed", "adapter_timeout"
-        except Exception:
-            outcome_status, error_code = "failed", "adapter_exception"
-        outcomes.append(
-            {
+            outcome = {
+                "schema_version": "unified_market_evidence_operation_result.v1",
                 "operation_id": item.request["operation_id"],
+                "execution_request_id": expected_req_id,
+                "execution_request_hash": expected_req_hash,
                 "executor_id": item.request["executor_id"],
-                "status": outcome_status,
-                "error_code": error_code,
+                "capability_id": item.request["capability_id"],
+                "evidence_contract": item.metadata.expected_evidence_contract,
+                "status": "failed",
+                "error_code": "adapter_timeout",
+                "result_item_count": 0,
+                "evidence_artifacts": [],
+                "warnings": [],
             }
-        )
+        except Exception:
+            outcome = {
+                "schema_version": "unified_market_evidence_operation_result.v1",
+                "operation_id": item.request["operation_id"],
+                "execution_request_id": expected_req_id,
+                "execution_request_hash": expected_req_hash,
+                "executor_id": item.request["executor_id"],
+                "capability_id": item.request["capability_id"],
+                "evidence_contract": item.metadata.expected_evidence_contract,
+                "status": "failed",
+                "error_code": "adapter_exception",
+                "result_item_count": 0,
+                "evidence_artifacts": [],
+                "warnings": [],
+            }
+
+        outcomes.append(outcome)
     return outcomes

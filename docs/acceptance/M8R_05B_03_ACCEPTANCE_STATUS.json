@@ -2,7 +2,7 @@
   "contract_version": "m8r_05b_03.v1",
   "milestone": "M8R-05B-03",
   "acceptance_status": "not_yet_accepted",
-  "implementation_stage": "commit_3_aggregation_and_receipt",
+  "implementation_stage": "commit_3_aggregation_and_receipt_correction",
   "flags": {
     "preflight_validation_implemented": true,
     "consumption_claim_implemented": true,
@@ -10,10 +10,10 @@
     "aggregation_implemented": true,
     "receipt_implemented": true,
     "consumption_finalization_implemented": true,
-    "final_execution_closure_implemented": true
+    "final_execution_closure_implemented": false
   },
   "acceptance_date": null,
   "accepted_by": null,
   "evidence_bundle_hash": null,
-  "notes": "M8R-05B-03 Commit 3 evidence aggregation, execution receipt materialization, evidence bundle generation, and consumption state finalization fully implemented and tested locally."
+  "notes": "M8R-05B-03 Commit 3 evidence aggregation correction: governed operation results with evidence artifact verification, audit-grade evidence bundle inventory, and crash-consistent CAS finalization."
 }

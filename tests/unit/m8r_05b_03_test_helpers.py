@@ -82,6 +82,27 @@ def build_valid_preflight(output_root: Path):
     )
 
 
+def default_mock_adapter(request, context):
+    from scripts.m8r_05b_03.dispatch import request_identity
+
+    req_id, req_hash = request_identity(request)
+    contract = request.get("evidence_contract") or "bounded normalized source observation with source health/currentness"
+    return {
+        "schema_version": "unified_market_evidence_operation_result.v1",
+        "operation_id": request["operation_id"],
+        "execution_request_id": req_id,
+        "execution_request_hash": req_hash,
+        "executor_id": request["executor_id"],
+        "capability_id": request["capability_id"],
+        "evidence_contract": contract,
+        "status": "succeeded",
+        "error_code": None,
+        "result_item_count": 0,
+        "evidence_artifacts": [],
+        "warnings": [],
+    }
+
+
 def runtime_registration(plan: dict | None = None, adapter=None, **overrides):
     from scripts.m8r_05b_03.dispatch import RuntimeAdapterRegistration
 
@@ -97,7 +118,7 @@ def runtime_registration(plan: dict | None = None, adapter=None, **overrides):
         "timeout_seconds": entry["timeout_seconds"],
         "maximum_result_items": entry["maximum_result_items"],
         "output_policy": entry["output_policy"],
-        "adapter": adapter or (lambda _request, _context: {"status": "succeeded"}),
+        "adapter": adapter or default_mock_adapter,
         "fake_adapter": True,
     }
     values.update(overrides)

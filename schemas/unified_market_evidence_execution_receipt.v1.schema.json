@@ -86,7 +86,7 @@
           "execution_request_id",
           "execution_request_hash",
           "result_item_count",
-          "artifact_relative_path"
+          "evidence_artifacts"
         ],
         "properties": {
           "operation_id": {
@@ -116,8 +116,26 @@
             "type": "integer",
             "minimum": 0
           },
-          "artifact_relative_path": {
-            "type": ["string", "null"]
+          "evidence_artifacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "relative_path",
+                "sha256",
+                "schema_version",
+                "byte_size",
+                "item_count"
+              ],
+              "properties": {
+                "relative_path": { "type": "string" },
+                "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+                "schema_version": { "type": "string" },
+                "byte_size": { "type": "integer", "minimum": 0 },
+                "item_count": { "type": "integer", "minimum": 0 }
+              }
+            }
           }
         }
       }

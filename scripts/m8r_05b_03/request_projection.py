@@ -6,6 +6,7 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
+from .canonical import sha256_json
 from .errors import OrchestrationError
 from .registry import ExecutorMetadata
 
@@ -42,8 +43,33 @@ def build_execution_request_projection(
         currentness_requirement = "eod_reference_only"
         warnings.append("currentness_requirement_unavailable")
 
+    identity_body = {
+        "operation_id": operation["operation_id"],
+        "batch_group_id": operation["batch_group_id"],
+        "plan_id": plan["plan_id"],
+        "plan_hash": plan["plan_hash"],
+        "authorization_id": authorization["authorization_id"],
+        "authorization_hash": authorization["authorization_hash"],
+        "consumption_binding_id": consumption_binding["consumption_binding_id"],
+        "consumption_binding_hash": consumption_binding["consumption_binding_hash"],
+        "market": binding["market"],
+        "approved_security_identifiers": sorted(operation.get("canonical_target_ids", [])),
+        "approved_security_types": sorted(operation.get("security_types", [])),
+        "capability_id": binding["capability_id"],
+        "executor_id": binding["executor_id"],
+        "requested_fields": sorted(requested_fields),
+        "currentness_requirement": currentness_requirement,
+        "maximum_records": executor.maximum_result_items,
+        "timeout_seconds": executor.timeout_seconds,
+        "network_authorized": network_authorized,
+    }
+    req_hash = sha256_json(identity_body)
+    req_id = "umereq-v1-" + req_hash[:20]
+
     request = {
         "schema_version": "unified_market_evidence_execution_request.v1",
+        "execution_request_id": req_id,
+        "execution_request_hash": req_hash,
         "operation_id": operation["operation_id"],
         "batch_group_id": operation["batch_group_id"],
         "plan_id": plan["plan_id"],

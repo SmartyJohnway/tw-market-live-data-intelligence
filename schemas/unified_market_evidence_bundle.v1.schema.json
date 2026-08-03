@@ -8,11 +8,19 @@
     "bundle_id",
     "bundle_hash",
     "authorization_id",
+    "authorization_hash",
     "preflight_id",
+    "preflight_identity_hash",
+    "preflight_artifact_hash",
     "claim_id",
+    "claim_hash",
     "execution_receipt_id",
+    "execution_receipt_hash",
     "overall_status",
-    "manifest_relative_path",
+    "operation_order",
+    "operation_evidence_entries",
+    "artifact_inventory",
+    "total_item_count",
     "finalized_at"
   ],
   "properties": {
@@ -31,17 +39,37 @@
       "type": "string",
       "pattern": "^umea-v1-[0-9a-f]{20}$"
     },
+    "authorization_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
     "preflight_id": {
       "type": "string",
       "pattern": "^umeopf-v1-[0-9a-f]{20}$"
+    },
+    "preflight_identity_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "preflight_artifact_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
     },
     "claim_id": {
       "type": "string",
       "pattern": "^umecl-v1-[0-9a-f]{20}$"
     },
+    "claim_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
     "execution_receipt_id": {
       "type": "string",
       "pattern": "^umerec-v1-[0-9a-f]{20}$"
+    },
+    "execution_receipt_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
     },
     "overall_status": {
       "enum": [
@@ -50,8 +78,68 @@
         "failed"
       ]
     },
-    "manifest_relative_path": {
-      "type": "string"
+    "operation_order": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "operation_evidence_entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation_id",
+          "status",
+          "error_code",
+          "result_item_count",
+          "artifacts"
+        ],
+        "properties": {
+          "operation_id": { "type": "string" },
+          "status": { "enum": ["succeeded", "failed"] },
+          "error_code": { "type": ["string", "null"] },
+          "result_item_count": { "type": "integer", "minimum": 0 },
+          "artifacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["relative_path", "sha256", "byte_size", "item_count"],
+              "properties": {
+                "relative_path": { "type": "string" },
+                "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+                "byte_size": { "type": "integer", "minimum": 0 },
+                "item_count": { "type": "integer", "minimum": 0 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "artifact_inventory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "relative_path",
+          "sha256",
+          "byte_size",
+          "item_count",
+          "evidence_contract"
+        ],
+        "properties": {
+          "relative_path": { "type": "string" },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "byte_size": { "type": "integer", "minimum": 0 },
+          "item_count": { "type": "integer", "minimum": 0 },
+          "evidence_contract": { "type": "string" }
+        }
+      }
+    },
+    "total_item_count": {
+      "type": "integer",
+      "minimum": 0
     },
     "finalized_at": {
       "type": "string",

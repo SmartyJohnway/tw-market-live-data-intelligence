@@ -3,29 +3,61 @@ from __future__ import annotations
 
 from typing import Any
 
-from .canonical import sha256_json
+from .dispatch import request_identity
 from .errors import OrchestrationError
 
 
 def aggregate_dispatch_outcomes(
-    preflight: dict,
+    preflight: dict[str, Any],
     dispatch_outcomes: list[dict[str, Any]],
 ) -> dict[str, Any]:
     if not isinstance(dispatch_outcomes, list) or not dispatch_outcomes:
         raise OrchestrationError("dispatch_outcomes_empty")
 
-    total_ops = len(preflight["approved_operation_order"])
+    approved_order = preflight["approved_operation_order"]
+    total_ops = len(approved_order)
     if len(dispatch_outcomes) != total_ops:
         raise OrchestrationError("dispatch_outcomes_count_mismatch")
 
     requests = preflight.get("bounded_execution_requests", [])
     requests_by_op = {r.get("operation_id"): r for r in requests if isinstance(r, dict)}
+    bindings = preflight.get("resolved_operation_bindings", {})
 
+    seen_ops = set()
     succeeded = 0
     failed = 0
+    total_items = 0
     op_receipts = []
+    bundle_entries = []
+    artifact_inventory = []
 
-    for outcome in dispatch_outcomes:
+    for idx, outcome in enumerate(dispatch_outcomes):
+        op_id = outcome.get("operation_id")
+        if not op_id or op_id not in requests_by_op:
+            raise OrchestrationError("unknown_operation_id")
+        if op_id in seen_ops:
+            raise OrchestrationError("duplicate_operation_id")
+        if op_id != approved_order[idx]:
+            raise OrchestrationError("aggregation_order_mismatch")
+        seen_ops.add(op_id)
+
+        req = requests_by_op[op_id]
+        binding = bindings.get(op_id, {})
+        expected_req_id, expected_req_hash = request_identity(req)
+
+        if (
+            outcome["execution_request_id"] != expected_req_id
+            or outcome["execution_request_hash"] != expected_req_hash
+        ):
+            raise OrchestrationError("request_identity_mismatch")
+
+        if (
+            outcome["executor_id"] != req["executor_id"]
+            or outcome["capability_id"] != req["capability_id"]
+            or outcome["evidence_contract"] != binding.get("expected_evidence_contract")
+        ):
+            raise OrchestrationError("aggregation_identity_mismatch")
+
         st = outcome.get("status")
         if st == "succeeded":
             succeeded += 1
@@ -34,25 +66,49 @@ def aggregate_dispatch_outcomes(
         else:
             raise OrchestrationError("dispatch_outcome_status_invalid")
 
-        op_id = outcome["operation_id"]
-        req = outcome.get("request") or requests_by_op.get(op_id, {})
-        req_hash = req.get("execution_request_hash") or sha256_json(req)
-        req_id = req.get("execution_request_id") or ("umereq-v1-" + req_hash[:20])
-        cap_id = outcome.get("capability_id") or req.get("capability_id", "unknown_capability")
-        exec_id = outcome.get("executor_id") or req.get("executor_id", "unknown_executor")
-        art_path = outcome.get("artifact_relative_path") or req.get("relative_contained_output_path")
+        item_count = outcome.get("result_item_count", 0)
+        total_items += item_count
+        arts = outcome.get("evidence_artifacts", [])
 
         op_receipts.append({
             "operation_id": op_id,
-            "executor_id": exec_id,
-            "capability_id": cap_id,
+            "executor_id": outcome["executor_id"],
+            "capability_id": outcome["capability_id"],
             "status": st,
             "error_code": outcome.get("error_code"),
-            "execution_request_id": req_id,
-            "execution_request_hash": req_hash,
-            "result_item_count": outcome.get("result_item_count", 0),
-            "artifact_relative_path": art_path if st == "succeeded" else None,
+            "execution_request_id": outcome["execution_request_id"],
+            "execution_request_hash": outcome["execution_request_hash"],
+            "result_item_count": item_count,
+            "evidence_artifacts": arts,
         })
+
+        bundle_entries.append({
+            "operation_id": op_id,
+            "status": st,
+            "error_code": outcome.get("error_code"),
+            "result_item_count": item_count,
+            "artifacts": [
+                {
+                    "relative_path": a["relative_path"],
+                    "sha256": a["sha256"],
+                    "byte_size": a["byte_size"],
+                    "item_count": a["item_count"],
+                }
+                for a in arts
+            ],
+        })
+
+        for a in arts:
+            artifact_inventory.append({
+                "relative_path": a["relative_path"],
+                "sha256": a["sha256"],
+                "byte_size": a["byte_size"],
+                "item_count": a["item_count"],
+                "evidence_contract": outcome["evidence_contract"],
+            })
+
+    if set(approved_order) != seen_ops:
+        raise OrchestrationError("operation_missing")
 
     if succeeded == total_ops:
         overall_status = "succeeded"
@@ -67,4 +123,7 @@ def aggregate_dispatch_outcomes(
         "succeeded_operations": succeeded,
         "failed_operations": failed,
         "operation_receipts": op_receipts,
+        "operation_evidence_entries": bundle_entries,
+        "artifact_inventory": artifact_inventory,
+        "total_item_count": total_items,
     }

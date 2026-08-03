@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from copy import deepcopy
-
 import pytest
 
 from scripts.m8r_05b_03.controlled_dispatch import claim_and_dispatch_approved
@@ -12,6 +10,7 @@ from tests.unit.m8r_05b_03_test_helpers import (
     EVALUATION_TIMESTAMP,
     artifacts,
     build_valid_preflight,
+    default_mock_adapter,
     registry_metadata,
     runtime_registration,
 )
@@ -198,7 +197,7 @@ def test_successful_execute_approved_creates_claim_and_dispatches(tmp_path):
 
     def mock_real_adapter(request, context):
         invoked.append(request["operation_id"])
-        return {"status": "succeeded"}
+        return default_mock_adapter(request, context)
 
     plan, authorization, binding, state = artifacts()
     preflight = build_valid_preflight(tmp_path)

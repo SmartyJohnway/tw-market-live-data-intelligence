@@ -5,6 +5,8 @@
   "additionalProperties": false,
   "required": [
     "schema_version",
+    "execution_request_id",
+    "execution_request_hash",
     "operation_id",
     "batch_group_id",
     "plan_id",
@@ -27,6 +29,8 @@
   ],
   "properties": {
     "schema_version": { "const": "unified_market_evidence_execution_request.v1" },
+    "execution_request_id": { "type": "string", "pattern": "^umereq-v1-[0-9a-f]{20}$" },
+    "execution_request_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
     "operation_id": { "type": "string", "pattern": "^umeop-op-v1-[0-9a-f]{20}$" },
     "batch_group_id": { "type": "string", "pattern": "^umeop-batch-v1-[0-9a-f]{20}$" },
     "plan_id": { "type": "string" },

@@ -9,18 +9,29 @@ from tests.unit.m8r_05b_03_test_helpers import build_valid_preflight
 
 def test_aggregate_all_succeeded(tmp_path):
     preflight = build_valid_preflight(tmp_path)
+    op_id = preflight["approved_operation_order"][0]
+    req = preflight["bounded_execution_requests"][0]
+    binding = preflight["resolved_operation_bindings"][op_id]
+
     outcomes = [{
-        "operation_id": preflight["approved_operation_order"][0],
-        "executor_id": "test-executor",
-        "capability_id": "test-cap",
+        "schema_version": "unified_market_evidence_operation_result.v1",
+        "operation_id": op_id,
+        "execution_request_id": req["execution_request_id"],
+        "execution_request_hash": req["execution_request_hash"],
+        "executor_id": req["executor_id"],
+        "capability_id": req["capability_id"],
+        "evidence_contract": binding["expected_evidence_contract"],
         "status": "succeeded",
         "error_code": None,
-        "request": {
-            "execution_request_id": "umereq-v1-00000000000000000001",
-            "execution_request_hash": "00" * 32,
-        },
         "result_item_count": 5,
-        "artifact_relative_path": "artifacts/op1.json",
+        "evidence_artifacts": [{
+            "relative_path": req["relative_contained_output_path"],
+            "sha256": "00" * 32,
+            "schema_version": "test.v1",
+            "byte_size": 10,
+            "item_count": 5,
+        }],
+        "warnings": [],
     }]
 
     agg = aggregate_dispatch_outcomes(preflight, outcomes)
@@ -29,74 +40,86 @@ def test_aggregate_all_succeeded(tmp_path):
     assert agg["succeeded_operations"] == 1
     assert agg["failed_operations"] == 0
     assert len(agg["operation_receipts"]) == 1
+    assert len(agg["artifact_inventory"]) == 1
+    assert agg["total_item_count"] == 5
 
 
-def test_aggregate_partial_success(tmp_path):
-    preflight = dict(build_valid_preflight(tmp_path))
-    preflight["approved_operation_order"] = ["op1", "op2"]
+def test_aggregate_duplicate_operation_raises(tmp_path):
+    preflight = build_valid_preflight(tmp_path)
+    op_id = preflight["approved_operation_order"][0]
+    req = preflight["bounded_execution_requests"][0]
+    binding = preflight["resolved_operation_bindings"][op_id]
 
-    outcomes = [
+    outcome = {
+        "schema_version": "unified_market_evidence_operation_result.v1",
+        "operation_id": op_id,
+        "execution_request_id": req["execution_request_id"],
+        "execution_request_hash": req["execution_request_hash"],
+        "executor_id": req["executor_id"],
+        "capability_id": req["capability_id"],
+        "evidence_contract": binding["expected_evidence_contract"],
+        "status": "succeeded",
+        "error_code": None,
+        "result_item_count": 1,
+        "evidence_artifacts": [],
+        "warnings": [],
+    }
+
+    # Pass 2 identical operation outcomes for preflight that has 2 operations
+    preflight_2 = dict(preflight)
+    preflight_2["approved_operation_order"] = [op_id, op_id]
+
+    with pytest.raises(OrchestrationError, match="duplicate_operation_id"):
+        aggregate_dispatch_outcomes(preflight_2, [outcome, outcome])
+
+
+def test_aggregate_reordered_operations_raises(tmp_path):
+    preflight = build_valid_preflight(tmp_path)
+    op_id = preflight["approved_operation_order"][0]
+    req = preflight["bounded_execution_requests"][0]
+    binding = preflight["resolved_operation_bindings"][op_id]
+
+    preflight_multi = dict(preflight)
+    preflight_multi["approved_operation_order"] = ["opA", "opB"]
+    preflight_multi["bounded_execution_requests"] = [
+        dict(req, operation_id="opA"),
+        dict(req, operation_id="opB"),
+    ]
+    preflight_multi["resolved_operation_bindings"] = {
+        "opA": binding,
+        "opB": binding,
+    }
+
+    outcomes_reordered = [
         {
-            "operation_id": "op1",
-            "executor_id": "e1",
-            "capability_id": "c1",
+            "schema_version": "unified_market_evidence_operation_result.v1",
+            "operation_id": "opB",
+            "execution_request_id": req["execution_request_id"],
+            "execution_request_hash": req["execution_request_hash"],
+            "executor_id": req["executor_id"],
+            "capability_id": req["capability_id"],
+            "evidence_contract": binding["expected_evidence_contract"],
             "status": "succeeded",
             "error_code": None,
-            "request": {"execution_request_id": "umereq-v1-00000000000000000001", "execution_request_hash": "00" * 32},
-            "result_item_count": 2,
-            "artifact_relative_path": "art1",
-        },
-        {
-            "operation_id": "op2",
-            "executor_id": "e2",
-            "capability_id": "c2",
-            "status": "failed",
-            "error_code": "adapter_timeout",
-            "request": {"execution_request_id": "umereq-v1-00000000000000000002", "execution_request_hash": "00" * 32},
             "result_item_count": 0,
-            "artifact_relative_path": None,
+            "evidence_artifacts": [],
+            "warnings": [],
+        },
+        {
+            "schema_version": "unified_market_evidence_operation_result.v1",
+            "operation_id": "opA",
+            "execution_request_id": req["execution_request_id"],
+            "execution_request_hash": req["execution_request_hash"],
+            "executor_id": req["executor_id"],
+            "capability_id": req["capability_id"],
+            "evidence_contract": binding["expected_evidence_contract"],
+            "status": "succeeded",
+            "error_code": None,
+            "result_item_count": 0,
+            "evidence_artifacts": [],
+            "warnings": [],
         },
     ]
 
-    agg = aggregate_dispatch_outcomes(preflight, outcomes)
-    assert agg["overall_status"] == "partial_success"
-    assert agg["succeeded_operations"] == 1
-    assert agg["failed_operations"] == 1
-
-
-def test_aggregate_all_failed(tmp_path):
-    preflight = build_valid_preflight(tmp_path)
-    outcomes = [{
-        "operation_id": preflight["approved_operation_order"][0],
-        "executor_id": "test-executor",
-        "capability_id": "test-cap",
-        "status": "failed",
-        "error_code": "adapter_exception",
-        "request": {"execution_request_id": "umereq-v1-00000000000000000001", "execution_request_hash": "00" * 32},
-        "result_item_count": 0,
-        "artifact_relative_path": None,
-    }]
-
-    agg = aggregate_dispatch_outcomes(preflight, outcomes)
-    assert agg["overall_status"] == "failed"
-    assert agg["succeeded_operations"] == 0
-    assert agg["failed_operations"] == 1
-
-
-def test_aggregate_count_mismatch_raises(tmp_path):
-    preflight = build_valid_preflight(tmp_path)
-    # preflight expects 1 operation, pass 2 outcomes to trigger count mismatch
-    outcomes = [
-        {
-            "operation_id": "op1",
-            "status": "succeeded",
-            "request": {"execution_request_id": "umereq-v1-00000000000000000001", "execution_request_hash": "00" * 32},
-        },
-        {
-            "operation_id": "op2",
-            "status": "succeeded",
-            "request": {"execution_request_id": "umereq-v1-00000000000000000002", "execution_request_hash": "00" * 32},
-        },
-    ]
-    with pytest.raises(OrchestrationError, match="dispatch_outcomes_count_mismatch"):
-        aggregate_dispatch_outcomes(preflight, outcomes)
+    with pytest.raises(OrchestrationError, match="aggregation_order_mismatch"):
+        aggregate_dispatch_outcomes(preflight_multi, outcomes_reordered)

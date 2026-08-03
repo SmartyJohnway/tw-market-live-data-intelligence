@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from copy import deepcopy
 
 import pytest
 
@@ -18,6 +17,7 @@ from tests.unit.m8r_05b_03_test_helpers import (
     ROOT,
     artifacts,
     build_valid_preflight,
+    default_mock_adapter,
     registry_metadata,
     runtime_registration,
 )
@@ -28,7 +28,7 @@ def test_approved_adapter_invoked_exactly_once_sequentially(tmp_path):
 
     def mock_adapter(request, context):
         invocations.append(request["operation_id"])
-        return {"status": "succeeded"}
+        return default_mock_adapter(request, context)
 
     plan, authorization, binding, state = artifacts()
     preflight = build_valid_preflight(tmp_path)
@@ -72,7 +72,7 @@ def test_multi_operation_dispatch_order_proof(tmp_path):
 
     def mock_multi_adapter(request, context):
         invocations.append(request["operation_id"])
-        return {"status": "succeeded"}
+        return default_mock_adapter(request, context)
 
     meta_reg = ExecutorMetadataRegistry.from_json(registry_metadata(plan))
     run_reg = RuntimeAdapterRegistry([runtime_registration(plan, adapter=mock_multi_adapter, fake_adapter=True)])

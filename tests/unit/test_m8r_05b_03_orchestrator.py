@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import hashlib
+import json
+
 from scripts.m8r_05b_03.dispatch import RuntimeAdapterRegistry
 from scripts.m8r_05b_03.orchestrator import execute_controlled_plan
 from tests.unit.m8r_05b_03_test_helpers import (
@@ -15,7 +18,25 @@ from tests.unit.m8r_05b_03_test_helpers import (
 def test_end_to_end_dry_run_execution(tmp_path):
     plan, authorization, binding, state = artifacts()
     preflight = build_valid_preflight(tmp_path)
-    run_reg = RuntimeAdapterRegistry([runtime_registration(plan, fake_adapter=True)])
+    op = plan["operations"][0]
+
+    def fake_dry_adapter(request, context):
+        return {
+            "schema_version": "unified_market_evidence_operation_result.v1",
+            "operation_id": request["operation_id"],
+            "execution_request_id": request["execution_request_id"],
+            "execution_request_hash": request["execution_request_hash"],
+            "executor_id": request["executor_id"],
+            "capability_id": request["capability_id"],
+            "evidence_contract": op["expected_evidence_contract"],
+            "status": "succeeded",
+            "error_code": None,
+            "result_item_count": 0,
+            "evidence_artifacts": [],
+            "warnings": [],
+        }
+
+    run_reg = RuntimeAdapterRegistry([runtime_registration(plan, adapter=fake_dry_adapter, fake_adapter=True)])
 
     res = execute_controlled_plan(
         plan,
@@ -40,16 +61,48 @@ def test_end_to_end_dry_run_execution(tmp_path):
     assert res["evidence_bundle"] is None
 
 
-def test_end_to_end_approved_execution(tmp_path):
-    invoked = []
-
-    def mock_adapter(request, context):
-        invoked.append(request["operation_id"])
-        return {"status": "succeeded"}
-
+def test_end_to_end_approved_execution_with_real_evidence_artifact(tmp_path):
     plan, authorization, binding, state = artifacts()
     preflight = build_valid_preflight(tmp_path)
-    run_reg = RuntimeAdapterRegistry([runtime_registration(plan, adapter=mock_adapter, fake_adapter=False)])
+    op = plan["operations"][0]
+    art_rel = f"evidence/{op['operation_id']}.json"
+
+    invoked = []
+
+    def mock_real_adapter(request, context):
+        invoked.append(request["operation_id"])
+
+        # Materialize real evidence artifact file on disk
+        dest_path = tmp_path / art_rel
+        dest_path.parent.mkdir(parents=True, exist_ok=True)
+        content = json.dumps({"market": "TWSE", "items": [{"id": 100}]}).encode("utf-8")
+        dest_path.write_bytes(content)
+        sha = hashlib.sha256(content).hexdigest()
+
+        return {
+            "schema_version": "unified_market_evidence_operation_result.v1",
+            "operation_id": request["operation_id"],
+            "execution_request_id": request["execution_request_id"],
+            "execution_request_hash": request["execution_request_hash"],
+            "executor_id": request["executor_id"],
+            "capability_id": request["capability_id"],
+            "evidence_contract": op["expected_evidence_contract"],
+            "status": "succeeded",
+            "error_code": None,
+            "result_item_count": 1,
+            "evidence_artifacts": [
+                {
+                    "relative_path": art_rel,
+                    "sha256": sha,
+                    "schema_version": "test.evidence.v1",
+                    "byte_size": len(content),
+                    "item_count": 1,
+                }
+            ],
+            "warnings": [],
+        }
+
+    run_reg = RuntimeAdapterRegistry([runtime_registration(plan, adapter=mock_real_adapter, fake_adapter=False)])
 
     res = execute_controlled_plan(
         plan,
@@ -75,6 +128,7 @@ def test_end_to_end_approved_execution(tmp_path):
     assert res["execution_receipt_created"] is True
     assert res["execution_receipt"]["overall_status"] == "succeeded"
     assert res["evidence_bundle"]["overall_status"] == "succeeded"
+    assert len(res["evidence_bundle"]["artifact_inventory"]) == 1
     assert len(invoked) == 1
 
     # Verify artifacts exist on disk
@@ -82,3 +136,4 @@ def test_end_to_end_approved_execution(tmp_path):
     assert (tmp_path / "claims" / f"{auth_id}.consumption-record.json").exists()
     assert (tmp_path / "receipts" / f"{auth_id}.execution-receipt.json").exists()
     assert (tmp_path / "bundles" / f"{auth_id}.evidence-bundle.json").exists()
+    assert (tmp_path / art_rel).exists()
