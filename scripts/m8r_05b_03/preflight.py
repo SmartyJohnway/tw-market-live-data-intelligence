@@ -85,9 +85,11 @@ def build_orchestrator_preflight(
             executor=executor,
             network_authorized=authorization["network_authorized"],
         )
+
         request["relative_contained_output_path"] = relative_path
         bounded_projections.append(request)
         warnings.extend(f"{operation['operation_id']}:{warning}" for warning in request_warnings)
+
         executor_bindings[executor.executor_id] = {
             "executor_id": executor.executor_id,
             "capability_id": executor.capability_id,
@@ -102,21 +104,26 @@ def build_orchestrator_preflight(
         }
 
     output_root_resolved = str(Path(output_root).resolve(strict=True))
-    artifact_without_hash = {
+    preflight_identity_scope = {
+        "plan_id": plan["plan_id"],
+        "plan_hash": plan["plan_hash"],
+        "authorization_id": authorization["authorization_id"],
+        "authorization_hash": authorization["authorization_hash"],
+        "consumption_binding_id": consumption_binding["consumption_binding_id"],
+        "consumption_binding_hash": consumption_binding["consumption_binding_hash"],
+        "scope_hash": authorization["scope_hash"],
+        "approved_operation_order": approved_operation_order,
+        "executor_registry_ids": registry.ids(),
+        "bounded_execution_requests": bounded_projections,
+        "governed_output_root": output_root_resolved,
+    }
+    preflight_identity_hash = sha256_json(preflight_identity_scope)
+    artifact_without_artifact_hash = {
         "schema_version": "unified_market_evidence_orchestrator_preflight.v1",
-        "preflight_identity_scope": {
-            "plan_id": plan["plan_id"],
-            "plan_hash": plan["plan_hash"],
-            "authorization_id": authorization["authorization_id"],
-            "authorization_hash": authorization["authorization_hash"],
-            "consumption_binding_id": consumption_binding["consumption_binding_id"],
-            "consumption_binding_hash": consumption_binding["consumption_binding_hash"],
-            "scope_hash": authorization["scope_hash"],
-            "approved_operation_order": approved_operation_order,
-            "executor_registry_ids": registry.ids(),
-            "bounded_execution_requests": bounded_projections,
-            "governed_output_root": output_root_resolved,
-        },
+        "preflight_id": "umeopf-v1-" + preflight_identity_hash[:20],
+        "preflight_hash": preflight_identity_hash,
+        "preflight_identity_hash": preflight_identity_hash,
+        "preflight_identity_scope": preflight_identity_scope,
         "plan_id": plan["plan_id"],
         "plan_hash": plan["plan_hash"],
         "authorization_id": authorization["authorization_id"],
@@ -139,13 +146,36 @@ def build_orchestrator_preflight(
         "ready_for_claim": True,
         "created_by_component": "m8r_05b_03_preflight",
     }
-    preflight_hash = sha256_json(artifact_without_hash)
     artifact = {
-        **artifact_without_hash,
-        "preflight_id": "umeopf-v1-" + preflight_hash[:20],
-        "preflight_hash": preflight_hash,
+        **artifact_without_artifact_hash,
+        "preflight_artifact_hash": sha256_json(artifact_without_artifact_hash),
     }
     schema = json.loads(PREFLIGHT_SCHEMA_PATH.read_text(encoding="utf-8"))
     if list(Draft202012Validator(schema).iter_errors(artifact)):
         raise OrchestrationError("preflight_schema_invalid")
     return artifact
+
+
+def validate_preflight_hashes(preflight: dict) -> None:
+    if not isinstance(preflight, dict):
+        raise OrchestrationError("preflight_schema_invalid")
+    schema = json.loads(PREFLIGHT_SCHEMA_PATH.read_text(encoding="utf-8"))
+    if list(Draft202012Validator(schema).iter_errors(preflight)):
+        raise OrchestrationError("preflight_schema_invalid")
+    identity_hash = sha256_json(preflight["preflight_identity_scope"])
+    if (
+        preflight["preflight_identity_hash"] != identity_hash
+        or preflight["preflight_hash"] != identity_hash
+        or preflight["preflight_id"] != "umeopf-v1-" + identity_hash[:20]
+    ):
+        raise OrchestrationError("preflight_identity_mismatch")
+    artifact_without_hash = {key: value for key, value in preflight.items() if key != "preflight_artifact_hash"}
+    if preflight["preflight_artifact_hash"] != sha256_json(artifact_without_hash):
+        raise OrchestrationError("preflight_artifact_hash_mismatch")
+
+
+def validate_accepted_preflight(preflight: dict, rebuilt_preflight: dict) -> None:
+    validate_preflight_hashes(preflight)
+    validate_preflight_hashes(rebuilt_preflight)
+    if preflight != rebuilt_preflight:
+        raise OrchestrationError("preflight_drift")

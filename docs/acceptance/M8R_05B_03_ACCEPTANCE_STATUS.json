@@ -2,13 +2,13 @@
   "schema_version": "m8r_05b_03_acceptance_status.v1",
   "task_id": "M8R-05B-03-CONTROLLED-UNIFIED-MARKET-EVIDENCE-ORCHESTRATOR",
   "acceptance_status": "not_yet_accepted",
-  "implementation_stage": "commit_1_preflight",
+  "implementation_stage": "commit_2_claim_and_dispatch",
   "execution_implemented": false,
   "consumption_implemented": false,
-  "claim_implemented": false,
-  "dispatch_implemented": false,
+  "claim_implemented": true,
+  "dispatch_implemented": true,
   "aggregation_implemented": false,
   "receipt_implemented": false,
   "network_access_implemented": false,
-  "created_by_component": "m8r_05b_03_preflight"
+  "created_by_component": "m8r_05b_03_claim_and_dispatch"
 }

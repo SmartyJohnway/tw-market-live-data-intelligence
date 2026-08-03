@@ -39,7 +39,9 @@ def build_execution_request_projection(
         warnings.append("requested_fields_unavailable")
     currentness_requirement = parameters.get("currentness_requirement")
     if currentness_requirement is None:
+        currentness_requirement = "eod_reference_only"
         warnings.append("currentness_requirement_unavailable")
+
     request = {
         "schema_version": "unified_market_evidence_execution_request.v1",
         "operation_id": operation["operation_id"],

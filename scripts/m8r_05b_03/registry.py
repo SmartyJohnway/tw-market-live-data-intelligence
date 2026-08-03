@@ -1,9 +1,18 @@
-"""Closed executor metadata registry for preflight validation only."""
+"""Closed, strictly typed executor metadata registry."""
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
+from pathlib import Path
+
+from jsonschema import Draft202012Validator
 
 from .errors import OrchestrationError
+
+
+ROOT = Path(__file__).resolve().parents[2]
+REGISTRY_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_executor_registry_metadata.v1.schema.json"
+SUPPORTED_OUTPUT_POLICIES = frozenset({"contained_artifact_only", "no_raw_payload_retention"})
 
 
 @dataclass(frozen=True)
@@ -21,38 +30,45 @@ class ExecutorMetadata:
 
 
 def _metadata_from_dict(raw: dict) -> ExecutorMetadata:
-    required = {
-        "executor_id",
-        "capability_id",
-        "market",
-        "supported_security_types",
-        "expected_evidence_contract",
-        "network_required",
-        "bounded_execution_supported",
-        "timeout_seconds",
-        "maximum_result_items",
-        "output_policy",
-    }
-    if not isinstance(raw, dict) or set(raw) != required:
+    if not isinstance(raw, dict):
         raise OrchestrationError("executor_registry_schema_invalid")
-    if not isinstance(raw["supported_security_types"], list) or not raw["supported_security_types"]:
+
+    for str_field in ("executor_id", "capability_id", "market", "expected_evidence_contract", "output_policy"):
+        val = raw.get(str_field)
+        if not isinstance(val, str) or not val:
+            raise OrchestrationError("executor_registry_schema_invalid")
+
+    sec_types = raw.get("supported_security_types")
+    if not isinstance(sec_types, list) or not sec_types or len(sec_types) != len(set(sec_types)):
         raise OrchestrationError("executor_registry_schema_invalid")
-    try:
-        timeout_seconds = int(raw["timeout_seconds"])
-        maximum_result_items = int(raw["maximum_result_items"])
-    except (TypeError, ValueError) as exc:
-        raise OrchestrationError("executor_limits_invalid") from exc
+    for item in sec_types:
+        if not isinstance(item, str) or not item:
+            raise OrchestrationError("executor_registry_schema_invalid")
+
+    for bool_field in ("network_required", "bounded_execution_supported"):
+        val = raw.get(bool_field)
+        if type(val) is not bool:
+            raise OrchestrationError("executor_registry_schema_invalid")
+
+    for int_field, min_val, max_val in (("timeout_seconds", 1, 60), ("maximum_result_items", 1, 500)):
+        val = raw.get(int_field)
+        if type(val) is not int or val < min_val or val > max_val:
+            raise OrchestrationError("executor_registry_schema_invalid")
+
+    if raw.get("output_policy") not in SUPPORTED_OUTPUT_POLICIES:
+        raise OrchestrationError("executor_output_policy_invalid")
+
     return ExecutorMetadata(
-        executor_id=str(raw["executor_id"]),
-        capability_id=str(raw["capability_id"]),
-        market=str(raw["market"]),
-        supported_security_types=tuple(sorted(str(item) for item in raw["supported_security_types"])),
-        expected_evidence_contract=str(raw["expected_evidence_contract"]),
-        network_required=raw["network_required"] is True,
-        bounded_execution_supported=raw["bounded_execution_supported"] is True,
-        timeout_seconds=timeout_seconds,
-        maximum_result_items=maximum_result_items,
-        output_policy=str(raw["output_policy"]),
+        executor_id=raw["executor_id"],
+        capability_id=raw["capability_id"],
+        market=raw["market"],
+        supported_security_types=tuple(sorted(raw["supported_security_types"])),
+        expected_evidence_contract=raw["expected_evidence_contract"],
+        network_required=raw["network_required"],
+        bounded_execution_supported=raw["bounded_execution_supported"],
+        timeout_seconds=raw["timeout_seconds"],
+        maximum_result_items=raw["maximum_result_items"],
+        output_policy=raw["output_policy"],
     )
 
 
@@ -62,13 +78,11 @@ class ExecutorMetadataRegistry:
 
     @classmethod
     def from_json(cls, payload: dict) -> "ExecutorMetadataRegistry":
-        if not isinstance(payload, dict) or payload.get("schema_version") != "m8r_05b_03_executor_registry_metadata.v1":
-            raise OrchestrationError("executor_registry_schema_invalid")
-        executors = payload.get("executors")
-        if not isinstance(executors, list) or not executors:
+        schema = json.loads(REGISTRY_SCHEMA_PATH.read_text(encoding="utf-8"))
+        if not isinstance(payload, dict) or list(Draft202012Validator(schema).iter_errors(payload)):
             raise OrchestrationError("executor_registry_schema_invalid")
         entries: dict[str, ExecutorMetadata] = {}
-        for raw in executors:
+        for raw in payload.get("executors", []):
             entry = _metadata_from_dict(raw)
             if entry.executor_id in entries:
                 raise OrchestrationError("duplicate_executor_id")
@@ -106,8 +120,6 @@ def validate_executor_for_operation(
         raise OrchestrationError("network_required_not_authorized")
     if not entry.bounded_execution_supported:
         raise OrchestrationError("executor_not_bounded")
-    if entry.timeout_seconds <= 0 or entry.timeout_seconds > 60 or entry.maximum_result_items <= 0 or entry.maximum_result_items > 500:
-        raise OrchestrationError("executor_limits_invalid")
-    if entry.output_policy not in {"contained_artifact_only", "no_raw_payload_retention"}:
+    if entry.output_policy not in SUPPORTED_OUTPUT_POLICIES:
         raise OrchestrationError("executor_output_policy_invalid")
     return entry

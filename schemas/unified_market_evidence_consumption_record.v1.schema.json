@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "unified_market_evidence_consumption_record.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "authorization_id",
+    "authorization_hash",
+    "consumption_binding_id",
+    "consumption_binding_hash",
+    "plan_id",
+    "plan_hash",
+    "scope_hash",
+    "preflight_id",
+    "preflight_identity_hash",
+    "preflight_artifact_hash",
+    "state",
+    "claim_id",
+    "claim_created_at",
+    "claimed_by_component",
+    "attempt_count",
+    "execution_receipt_id",
+    "execution_receipt_hash",
+    "finalized_at",
+    "last_error_code"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "unified_market_evidence_consumption_record.v1"
+    },
+    "authorization_id": {
+      "type": "string",
+      "pattern": "^umea-v1-[0-9a-f]{20}$"
+    },
+    "authorization_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "consumption_binding_id": {
+      "type": "string",
+      "pattern": "^umeacb-v1-[0-9a-f]{20}$"
+    },
+    "consumption_binding_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "plan_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "scope_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "preflight_id": {
+      "type": "string",
+      "pattern": "^umeopf-v1-[0-9a-f]{20}$"
+    },
+    "preflight_identity_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "preflight_artifact_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "state": {
+      "enum": [
+        "unused",
+        "claimed",
+        "consumed_success",
+        "consumed_partial",
+        "consumed_failed"
+      ]
+    },
+    "claim_id": {
+      "type": "string",
+      "pattern": "^umecl-v1-[0-9a-f]{20}$"
+    },
+    "claim_created_at": {
+      "type": "string"
+    },
+    "claimed_by_component": {
+      "type": "string"
+    },
+    "attempt_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "execution_receipt_id": {
+      "type": ["string", "null"]
+    },
+    "execution_receipt_hash": {
+      "type": ["string", "null"]
+    },
+    "finalized_at": {
+      "type": ["string", "null"]
+    },
+    "last_error_code": {
+      "type": ["string", "null"]
+    }
+  }
+}

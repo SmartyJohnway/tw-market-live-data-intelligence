@@ -2,12 +2,9 @@
 
 Acceptance status: `not_yet_accepted`
 
-Implementation stage: `commit_1_preflight`
+Implementation stage: `commit_2_claim_and_dispatch`
 
-Current head contains only contract and preflight behavior. It does not implement
-authorization claim, durable consumption mutation, executor dispatch, source
-adapter invocation, runtime evidence aggregation, final execution receipt
-creation, or final consumption state.
+Current head contains atomic authorization claim and controlled sequential dispatch behavior. It does not implement runtime evidence aggregation, final execution receipt creation, or final bundle generation.
 
 The governance pointer remains
 `docs/data_capabilities/m8r_05b_implementation_plan.json`, with
