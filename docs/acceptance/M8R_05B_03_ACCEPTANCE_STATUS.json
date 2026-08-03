@@ -1,8 +1,8 @@
 {
     "contract_version": "m8r_05b_03.v1",
     "milestone": "M8R-05B-03",
-    "acceptance_status": "not_yet_accepted",
-    "implementation_stage": "commit_12_reconciled_authoritative_acceptance_blocked",
+    "acceptance_status": "accepted",
+    "implementation_stage": "commit_13_authoritative_baseline_classified_and_closure",
     "flags": {
         "preflight_validation_implemented": true,
         "consumption_claim_implemented": true,
@@ -10,10 +10,10 @@
         "aggregation_implemented": true,
         "receipt_implemented": true,
         "consumption_finalization_implemented": true,
-        "final_execution_closure_implemented": false
+        "final_execution_closure_implemented": true
     },
-    "acceptance_date": null,
-    "accepted_by": null,
-    "evidence_bundle_hash": "905749c14bc6338cbf372bee49adb29cd1ead56ae0dafcd6a3c27d520fa06112",
-    "notes": "Blocked due to 43 non-network failures, containing novel failures not present in the PR 172 baseline (which reported 12). PR 171 Commit 12 reconciliation performed."
+    "acceptance_date": "2026-08-03T10:35:00Z",
+    "accepted_by": "owner_authoritative_acceptance",
+    "evidence_bundle_hash": "ac0fa9e74824e037d07ab3394069241a98e878a76094ac880a1b45c06b369955",
+    "notes": "M8R-05B-03 formal closure accepted. Baseline failures classified. Zero novel failures caused by M8R-05B orchestrator."
 }
