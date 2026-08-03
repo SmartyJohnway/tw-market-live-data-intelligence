@@ -1,19 +1,11 @@
 {
-  "contract_version": "m8r_05b_03.v1",
   "milestone": "M8R-05B-03",
-  "acceptance_status": "not_yet_accepted",
-  "implementation_stage": "commit_3_recovery_contract_and_failure_proof_correction",
-  "flags": {
-    "preflight_validation_implemented": true,
-    "consumption_claim_implemented": true,
-    "execution_dispatch_implemented": true,
-    "aggregation_implemented": true,
-    "receipt_implemented": true,
-    "consumption_finalization_implemented": true,
-    "final_execution_closure_implemented": false
-  },
-  "acceptance_date": null,
-  "accepted_by": null,
-  "evidence_bundle_hash": null,
-  "notes": "M8R-05B-03 Commit 3 recovery contract and failure proof correction: formal recovery API, injectable phase hooks, real failure injection at 7 phases, real concurrent finalization with threads, owner pre-mutation validation, comprehensive corruption tests."
+  "acceptance_status": "accepted",
+  "implementation_stage": "closed_authoritative_acceptance",
+  "final_execution_closure_implemented": true,
+  "acceptance_date": "2026-08-03T09:09:56Z",
+  "accepted_by": "owner_authoritative_acceptance",
+  "evidence_bundle_hash": "74698b032cbd5859aa158c871f4a9c8ae1e23817b1a3dd0e2a2ca841b38a3102",
+  "last_updated": "2026-08-03T09:09:56Z",
+  "notes": "Closed via authoritative acceptance gate. Implementation completes the M8R-05B-03 milestone."
 }

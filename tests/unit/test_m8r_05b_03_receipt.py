@@ -413,13 +413,32 @@ class TestRecoveryContract:
 # True concurrent finalization test using threads
 # ===========================================================================
 class TestTrueConcurrentFinalization:
-    def test_two_threads_exactly_one_wins(self, tmp_path):
+    def test_two_threads_single_mutation_owner(self, tmp_path):
         """Two threads simultaneously attempt finalization on the same authorization.
-        Exactly one must succeed; the other must get finalization_in_progress."""
+
+        Supported contract:
+        - Exactly one transaction owner performs journal acquisition, staging,
+          promotion, and claim mutation.
+        - A second caller either receives finalization_in_progress, or if the
+          first transaction already completed, returns verified idempotent success.
+
+        Instrumentation proves every mutation phase executes exactly once via
+        phase hook counters.
+        """
         _, preflight, claim_rec, claim_rel, agg = setup_dispatch_environment(tmp_path)
 
         barrier = threading.Barrier(2, timeout=5)
-        results = [None, None]  # (result_or_exception, owner_id)
+        results = [None, None]
+
+        # Shared mutation counters (thread-safe via lock)
+        mutation_counts = {phase: 0 for phase in ALL_PHASES}
+        counter_lock = threading.Lock()
+
+        def counting_hook(phase: str) -> None:
+            with counter_lock:
+                mutation_counts[phase] += 1
+
+        hook = FinalizationPhaseHook(counting_hook)
 
         def finalize_thread(idx: int, owner_id: str):
             try:
@@ -428,6 +447,7 @@ class TestTrueConcurrentFinalization:
                     preflight, claim_rec, claim_rel, agg,
                     output_root=str(tmp_path), finalized_at=FINALIZED_AT,
                     finalization_owner_id=owner_id,
+                    phase_hook=hook,
                 )
                 results[idx] = ("success", result)
             except OrchestrationError as exc:
@@ -448,32 +468,60 @@ class TestTrueConcurrentFinalization:
         assert results[0] is not None, "Thread 0 must have a result"
         assert results[1] is not None, "Thread 1 must have a result"
 
+        # Both callers must resolve (not hang or crash unexpectedly)
         statuses = [r[0] for r in results]
-        success_count = statuses.count("success")
-        error_count = sum(1 for r in results if r[0] == "error" and r[1] in ("finalization_in_progress", "finalization_ownership_conflict"))
+        for i, (status, detail) in enumerate(results):
+            assert status in ("success", "error"), f"Thread {i} unexpected: {status}={detail}"
+            if status == "error":
+                assert detail in ("finalization_in_progress", "finalization_ownership_conflict"), \
+                    f"Thread {i} unexpected error code: {detail}"
 
-        # Exactly one winner
-        assert success_count + error_count == 2, f"Unexpected results: {results}"
+        # At least one caller succeeded
+        success_count = statuses.count("success")
         assert success_count >= 1, f"At least one must succeed: {results}"
 
-        # Verify final artifacts are valid
+        # --- Mutation-once proof ---
+        # Every mutation phase that was reached must have executed exactly once.
+        # The winner thread executes all 7 phases. The loser thread executes 0 phases
+        # (blocked at journal acquisition) or arrives after completion (idempotent verify,
+        # which does not enter the preparing-state mutation path and thus fires 0 hooks).
+        for phase in ALL_PHASES:
+            assert mutation_counts[phase] == 1, \
+                f"Phase {phase} executed {mutation_counts[phase]} times, expected exactly 1"
+
+        # --- Final artifact integrity ---
         auth_id = preflight["authorization_id"]
         j_path = tmp_path / f"finalization/{auth_id}.finalization-journal.json"
         rec_path = tmp_path / f"receipts/{auth_id}.execution-receipt.json"
         bun_path = tmp_path / f"bundles/{auth_id}.evidence-bundle.json"
+        claim_path = tmp_path / f"claims/{auth_id}.consumption-record.json"
 
-        if success_count == 1:
-            assert j_path.is_file()
-            assert rec_path.is_file()
-            assert bun_path.is_file()
-            j_data = json.loads(j_path.read_text(encoding="utf-8"))
-            assert j_data["state"] == "claim_committed"
+        assert j_path.is_file(), "Journal must exist"
+        assert rec_path.is_file(), "Receipt must exist"
+        assert bun_path.is_file(), "Bundle must exist"
+        assert claim_path.is_file(), "Claim must exist"
 
-        # No shared temp file races
-        finalization_dir = tmp_path / "finalization"
-        if finalization_dir.is_dir():
-            tmp_files = [f for f in finalization_dir.iterdir() if f.name.startswith(".tmp-")]
-            assert len(tmp_files) == 0, f"Temp files should be cleaned up: {tmp_files}"
+        j_data = json.loads(j_path.read_text(encoding="utf-8"))
+        rec_data = json.loads(rec_path.read_text(encoding="utf-8"))
+        bun_data = json.loads(bun_path.read_text(encoding="utf-8"))
+        claim_data = json.loads(claim_path.read_text(encoding="utf-8"))
+
+        assert j_data["state"] == "claim_committed"
+        assert claim_data["state"] == "consumed_success"
+        assert claim_data["execution_receipt_id"] == rec_data["execution_receipt_id"]
+        assert claim_data["execution_receipt_hash"] == rec_data["execution_receipt_hash"]
+        assert bun_data["execution_receipt_id"] == rec_data["execution_receipt_id"]
+        assert bun_data["execution_receipt_hash"] == rec_data["execution_receipt_hash"]
+        assert j_data["execution_receipt_id"] == rec_data["execution_receipt_id"]
+        assert j_data["bundle_id"] == bun_data["bundle_id"]
+        assert j_data["bundle_hash"] == bun_data["bundle_hash"]
+
+        # --- No temp file races ---
+        for subdir in ("finalization", "receipts", "bundles", "claims"):
+            d = tmp_path / subdir
+            if d.is_dir():
+                tmp_files = [f for f in d.iterdir() if f.name.startswith(".tmp-")]
+                assert len(tmp_files) == 0, f"Temp files in {subdir} must be cleaned: {tmp_files}"
 
 
 # ===========================================================================

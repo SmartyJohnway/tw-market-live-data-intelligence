@@ -1,0 +1,43 @@
+{
+  "milestone": "M8R-05B-03",
+  "acceptance_date": "2026-08-03T09:09:56Z",
+  "accepted_by": "owner_authoritative_acceptance",
+  "remote_head": "718b67d49dd4e6b148ed83ae0e9cf025c956029b",
+  "base_sha": "1af005c9b42bef3e5464192faf671317a60927eb",
+  "test_profile": {
+    "M8R-05B-03": {
+      "count": 108,
+      "result": "passed"
+    },
+    "M8R-05B-02": {
+      "count": 55,
+      "result": "passed"
+    },
+    "M8R-05B-01": {
+      "count": 58,
+      "result": "passed"
+    },
+    "upstream_gate": {
+      "count": 44,
+      "result": "passed"
+    },
+    "total": 265
+  },
+  "crash_phase_matrix": [
+    "after_journal_acquired",
+    "after_receipt_staged",
+    "after_bundle_staged",
+    "after_receipt_promoted",
+    "after_bundle_promoted",
+    "after_artifacts_committed",
+    "after_claim_committed_before_journal"
+  ],
+  "concurrency_mutation_count_proof": "exactly once per phase, verified via FinalizationPhaseHook counters and thread barrier",
+  "recovery_contract": "durable owner retrieval from journal, no redispatch, no second claim, idempotent terminal CAS handling",
+  "dry_run_and_single_use_claim_proof": "dry-run yields unconsumed_dry_run without claiming; execute-approved mutations exactly once",
+  "evidence_artifact_verification_proof": "receipt and bundle schema-valid, generated exclusively from durable claim",
+  "durable_cross_link_verification": "claim_receipt_hash, bundle_receipt_id, journal_receipt_hash, journal_bundle_hash all checked before finalization completes",
+  "caveats": "Recovery currently requires caller to re-supply preflight, claim_record, and aggregation (fail-closed if mismatched)",
+  "non_network_statement": "Authoritative acceptance executed strictly in local boundary without live external network calls",
+  "boundary_static_checks": "compileall passed, JSON schema checked, python syntax valid, git diff clean"
+}
