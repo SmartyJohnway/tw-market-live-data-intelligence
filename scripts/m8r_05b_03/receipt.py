@@ -52,8 +52,28 @@ class FinalizationPhaseHook:
 
     def __init__(self, hook: Callable[[str], None] | None = None):
         self._hook = hook
+        # Test-only observation counters
+        self.journal_acquired_count = 0
+        self.receipt_staged_count = 0
+        self.bundle_staged_count = 0
+        self.receipt_promoted_count = 0
+        self.bundle_promoted_count = 0
+        self.claim_committed_count = 0
 
     def __call__(self, phase: str) -> None:
+        if phase == PHASE_AFTER_JOURNAL_ACQUIRED:
+            self.journal_acquired_count += 1
+        elif phase == PHASE_AFTER_RECEIPT_STAGED:
+            self.receipt_staged_count += 1
+        elif phase == PHASE_AFTER_BUNDLE_STAGED:
+            self.bundle_staged_count += 1
+        elif phase == PHASE_AFTER_RECEIPT_PROMOTED:
+            self.receipt_promoted_count += 1
+        elif phase == PHASE_AFTER_BUNDLE_PROMOTED:
+            self.bundle_promoted_count += 1
+        elif phase == PHASE_AFTER_CLAIM_COMMITTED:
+            self.claim_committed_count += 1
+
         if self._hook is not None:
             self._hook(phase)
 

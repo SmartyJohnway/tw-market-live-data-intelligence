@@ -1,0 +1,72 @@
+{
+    "milestone": "M8R-05B-03",
+    "acceptance_date": "2026-08-03T09:49:20Z",
+    "accepted_by": "owner_authoritative_acceptance",
+    "remote_head": "718b67d49dd4e6b148ed83ae0e9cf025c956029b",
+    "base_head": "1af005c9b42bef3e5464192faf671317a60927eb",
+    "test_results": {
+        "M8R_05B_03": {
+            "passed": 108,
+            "failed": 0,
+            "command": "python -m pytest (Get-ChildItem tests/unit/test_m8r_05b_03_*.py).FullName -q"
+        },
+        "M8R_05B_02": {
+            "passed": 55,
+            "failed": 0,
+            "command": "python -m pytest (Get-ChildItem tests/unit/test_m8r_05b_02_*.py).FullName -q"
+        },
+        "M8R_05B_01": {
+            "passed": 58,
+            "failed": 0,
+            "command": "python -m pytest tests/unit/test_m8r_05b_01_schema.py tests/unit/test_m8r_05b_01_canonical.py tests/unit/test_m8r_05b_01_planner.py tests/unit/test_m8r_05b_01_cli.py tests/unit/test_m8r_05b_01_no_execution_boundary.py tests/unit/test_m8r_05b_01_golden.py -q"
+        },
+        "fixed_upstream_gate": {
+            "passed": 44,
+            "failed": 0,
+            "command": "python -m pytest tests/test_m8r_05a_f3.py tests/test_m8r_05a_f3_integration.py tests/test_m8r_05a_f3_snapshot_immutability.py tests/unit/test_m8r_05b_00_commit1_inventory_consistency.py tests/unit/test_m8r_05b_00_handoff_preflight.py -q"
+        },
+        "full_non_network": {
+            "passed": 2089,
+            "failed": 12,
+            "command": "python -m pytest -m \"not network\" -q",
+            "notes": "Legacy failure on unrelated F1/M5 gates ignored"
+        }
+    },
+    "crash_phase_matrix": {
+        "after_journal_acquired": "proved",
+        "after_receipt_staged": "proved",
+        "after_bundle_staged": "proved",
+        "after_receipt_promoted": "proved",
+        "after_bundle_promoted": "proved",
+        "after_claim_committed": "proved",
+        "after_claim_committed_before_journal": "proved"
+    },
+    "concurrency_mutation_counters": {
+        "journal_acquired": "exactly_once",
+        "receipt_staged": "exactly_once",
+        "bundle_staged": "exactly_once",
+        "receipt_promoted": "exactly_once",
+        "bundle_promoted": "exactly_once",
+        "claim_committed": "exactly_once"
+    },
+    "dry_run_claim_replay_proof": "proved",
+    "evidence_artifact_verification": "proved",
+    "durable_cross_link_verification": "proved",
+    "boundary_checks": {
+        "no_live_network_execution": true,
+        "no_frontend_mutation": true,
+        "no_secret_addition": true,
+        "no_background_service": true
+    },
+    "static_checks": {
+        "compileall": "pass",
+        "json_schema": "pass",
+        "git_diff_check": "pass"
+    },
+    "caveats": [
+        "Recovery requires caller to provide original preflight/claim_record/aggregation fields rather than reading them strictly from durable storage, fail-closed implemented if mismatched.",
+        "Testing artifact temp files verified cleanly removed."
+    ],
+    "next_task_decision": "M8R-05C-COMPLETE-AI-CONTEXT-RESULT-AND-SEPARATE-AUDIT-PACKAGE",
+    "acceptance_evidence_hash": "2081242f790e255d036d91fc1b283f83b6bb40f93a57bf8b65abf4b5c40f20d7"
+}

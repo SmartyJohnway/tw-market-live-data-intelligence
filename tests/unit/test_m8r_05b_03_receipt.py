@@ -421,6 +421,7 @@ class TestTrueConcurrentFinalization:
         barrier = threading.Barrier(2, timeout=5)
         results = [None, None]  # (result_or_exception, owner_id)
 
+        phase_hook = FinalizationPhaseHook()
         def finalize_thread(idx: int, owner_id: str):
             try:
                 barrier.wait()  # Both threads start simultaneously
@@ -428,6 +429,7 @@ class TestTrueConcurrentFinalization:
                     preflight, claim_rec, claim_rel, agg,
                     output_root=str(tmp_path), finalized_at=FINALIZED_AT,
                     finalization_owner_id=owner_id,
+                    phase_hook=phase_hook,
                 )
                 results[idx] = ("success", result)
             except OrchestrationError as exc:
@@ -452,27 +454,59 @@ class TestTrueConcurrentFinalization:
         success_count = statuses.count("success")
         error_count = sum(1 for r in results if r[0] == "error" and r[1] in ("finalization_in_progress", "finalization_ownership_conflict"))
 
-        # Exactly one winner
+        # Caller can be success + finalization_in_progress OR success + success (verified idempotent success)
         assert success_count + error_count == 2, f"Unexpected results: {results}"
-        assert success_count >= 1, f"At least one must succeed: {results}"
+
+        # EXACTLY ONE MUTATION COUNTS
+        assert phase_hook.journal_acquired_count == 1, "Exactly one transaction owner performs journal acquisition"
+        assert phase_hook.receipt_staged_count == 1, "Exactly one transaction owner stages receipt"
+        assert phase_hook.bundle_staged_count == 1, "Exactly one transaction owner stages bundle"
+        assert phase_hook.receipt_promoted_count == 1, "Exactly one transaction owner promotes receipt"
+        assert phase_hook.bundle_promoted_count == 1, "Exactly one transaction owner promotes bundle"
+        assert phase_hook.claim_committed_count == 1, "Exactly one transaction owner replaces terminal claim"
 
         # Verify final artifacts are valid
         auth_id = preflight["authorization_id"]
         j_path = tmp_path / f"finalization/{auth_id}.finalization-journal.json"
         rec_path = tmp_path / f"receipts/{auth_id}.execution-receipt.json"
         bun_path = tmp_path / f"bundles/{auth_id}.evidence-bundle.json"
+        claim_path = tmp_path / claim_rel
 
-        if success_count == 1:
-            assert j_path.is_file()
-            assert rec_path.is_file()
-            assert bun_path.is_file()
-            j_data = json.loads(j_path.read_text(encoding="utf-8"))
-            assert j_data["state"] == "claim_committed"
+        assert j_path.is_file()
+        assert rec_path.is_file()
+        assert bun_path.is_file()
+        assert claim_path.is_file()
+
+        j_data = json.loads(j_path.read_text(encoding="utf-8"))
+        assert j_data["state"] == "claim_committed"
+
+        # Verify cross-links schema-validity
+        r_data = json.loads(rec_path.read_text(encoding="utf-8"))
+        b_data = json.loads(bun_path.read_text(encoding="utf-8"))
+        c_data = json.loads(claim_path.read_text(encoding="utf-8"))
+        assert c_data["execution_receipt_id"] == r_data["execution_receipt_id"]
+        assert b_data["execution_receipt_id"] == r_data["execution_receipt_id"]
+        assert j_data["execution_receipt_id"] == r_data["execution_receipt_id"]
 
         # No shared temp file races
         finalization_dir = tmp_path / "finalization"
         if finalization_dir.is_dir():
             tmp_files = [f for f in finalization_dir.iterdir() if f.name.startswith(".tmp-")]
+            assert len(tmp_files) == 0, f"Temp files should be cleaned up: {tmp_files}"
+
+        receipts_dir = tmp_path / "receipts"
+        if receipts_dir.is_dir():
+            tmp_files = [f for f in receipts_dir.iterdir() if f.name.startswith(".tmp-")]
+            assert len(tmp_files) == 0, f"Temp files should be cleaned up: {tmp_files}"
+
+        bundles_dir = tmp_path / "bundles"
+        if bundles_dir.is_dir():
+            tmp_files = [f for f in bundles_dir.iterdir() if f.name.startswith(".tmp-")]
+            assert len(tmp_files) == 0, f"Temp files should be cleaned up: {tmp_files}"
+
+        claims_dir = tmp_path / "claims"
+        if claims_dir.is_dir():
+            tmp_files = [f for f in claims_dir.iterdir() if f.name.startswith(".tmp-")]
             assert len(tmp_files) == 0, f"Temp files should be cleaned up: {tmp_files}"
 
 
