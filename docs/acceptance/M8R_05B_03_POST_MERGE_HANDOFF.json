@@ -1,0 +1,25 @@
+{
+  "milestone": "M8R-05B-03",
+  "accepted_pr": 171,
+  "accepted_branch_head": "e5406dcfb63360eacd7a6fbf174e74d08fca938e",
+  "merge_commit": "9afecb38c5084de30604fcc8a55ca4be3eef37f5",
+  "acceptance_evidence_hash": "9cfd4331b5964b972e5f28a1645c7a77481215a3efe0b551a6e6fbeb2bc75859",
+  "post_merge_smoke_status": "passed",
+  "post_merge_smoke_commands": [
+    "PYTHONPATH=\"${PYTHONPATH}:/app/scripts:/app/server\" python -m pytest tests/unit/test_m8r_05b_03_*.py -q",
+    "PYTHONPATH=\"${PYTHONPATH}:/app/scripts:/app/server\" python -m pytest tests/unit/test_m8r_05b_02_*.py -q",
+    "PYTHONPATH=\"${PYTHONPATH}:/app/scripts:/app/server\" python -m pytest tests/unit/test_m8r_05b_01_schema.py tests/unit/test_m8r_05b_01_canonical.py tests/unit/test_m8r_05b_01_planner.py tests/unit/test_m8r_05b_01_cli.py tests/unit/test_m8r_05b_01_no_execution_boundary.py tests/unit/test_m8r_05b_01_golden.py -q",
+    "PYTHONPATH=\"${PYTHONPATH}:/app/scripts:/app/server\" python -m pytest tests/test_m8r_05a_f3.py tests/test_m8r_05a_f3_integration.py tests/test_m8r_05a_f3_snapshot_immutability.py tests/unit/test_m8r_05b_00_commit1_inventory_consistency.py tests/unit/test_m8r_05b_00_handoff_preflight.py -q",
+    "python -m compileall scripts tests"
+  ],
+  "post_merge_smoke_counts": {
+    "m8r_05b_03": 108,
+    "m8r_05b_02": 55,
+    "explicit_m8r_05b_01": 58,
+    "fixed_upstream_gate": 44
+  },
+  "next_task": "M8R-05C-COMPLETE-AI-CONTEXT-RESULT-AND-SEPARATE-AUDIT-PACKAGE",
+  "next_task_status": "ready",
+  "no_live_network_execution": true,
+  "created_at_utc": "2026-08-03T11:17:31Z"
+}

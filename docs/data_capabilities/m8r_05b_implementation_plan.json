@@ -1,8 +1,8 @@
 {
   "schema_version": "m8r_05b_implementation_plan.v1.draft",
-  "preflight_state": "accepted_with_caveats",
-  "next_task": "PENDING_ROADMAP_DECISION_F2_OR_05C",
-  "next_task_status": "blocked_pending_decision",
+  "preflight_state": "accepted",
+  "next_task": "M8R-05C-COMPLETE-AI-CONTEXT-RESULT-AND-SEPARATE-AUDIT-PACKAGE",
+  "next_task_status": "ready",
   "phases": [
     {
       "task_id": "M8R-05B-01-DETERMINISTIC-ORCHESTRATION-PLAN-PROJECTION",
@@ -144,6 +144,6 @@
       ]
     }
   ],
-  "current_gate": "M8R-05B-03 authoritative baseline classified and closure complete",
-  "next_task_after_acceptance": "PENDING_ROADMAP_DECISION_F2_OR_05C"
+  "current_gate": "M8R-05B-03 merged and authoritative closure complete",
+  "next_task_after_acceptance": "M8R-05C-COMPLETE-AI-CONTEXT-RESULT-AND-SEPARATE-AUDIT-PACKAGE"
 }
