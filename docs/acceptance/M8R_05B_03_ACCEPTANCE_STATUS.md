@@ -1,13 +1,18 @@
 # M8R-05B-03 Acceptance Status
 
 - **Milestone**: M8R-05B-03 Controlled Unified Market Evidence Orchestrator
-- **Acceptance Status**: `accepted`
-- **Implementation Stage**: `closed_authoritative_acceptance`
-- **Final Execution Closure Implemented**: `true`
-- **Acceptance Date**: `2026-08-03T09:09:56Z`
-- **Accepted By**: `owner_authoritative_acceptance`
-- **Evidence Bundle Hash**: `74698b032cbd5859aa158c871f4a9c8ae1e23817b1a3dd0e2a2ca841b38a3102`
-- **Last Updated**: 2026-08-03T09:09:56Z
+- **Contract Version**: m8r_05b_03.v1
+- **Acceptance Status**: not_yet_accepted
+- **Implementation Stage**: commit_12_reconciled_authoritative_acceptance_blocked
+
+## Governance Flags
+- preflight_validation_implemented: true
+- consumption_claim_implemented: true
+- execution_dispatch_implemented: true
+- aggregation_implemented: true
+- receipt_implemented: true
+- consumption_finalization_implemented: true
+- final_execution_closure_implemented: false
 
 ## Notes
-Closed via authoritative acceptance gate. Implementation completes the M8R-05B-03 milestone.
+Blocked due to 43 non-network failures, containing novel failures not present in the PR 172 baseline (which reported 12). PR 171 Commit 12 reconciliation performed. Evidence hash: 905749c14bc6338cbf372bee49adb29cd1ead56ae0dafcd6a3c27d520fa06112

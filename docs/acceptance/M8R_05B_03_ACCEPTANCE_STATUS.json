@@ -1,11 +1,19 @@
 {
-  "milestone": "M8R-05B-03",
-  "acceptance_status": "accepted",
-  "implementation_stage": "closed_authoritative_acceptance",
-  "final_execution_closure_implemented": true,
-  "acceptance_date": "2026-08-03T09:09:56Z",
-  "accepted_by": "owner_authoritative_acceptance",
-  "evidence_bundle_hash": "74698b032cbd5859aa158c871f4a9c8ae1e23817b1a3dd0e2a2ca841b38a3102",
-  "last_updated": "2026-08-03T09:09:56Z",
-  "notes": "Closed via authoritative acceptance gate. Implementation completes the M8R-05B-03 milestone."
+    "contract_version": "m8r_05b_03.v1",
+    "milestone": "M8R-05B-03",
+    "acceptance_status": "not_yet_accepted",
+    "implementation_stage": "commit_12_reconciled_authoritative_acceptance_blocked",
+    "flags": {
+        "preflight_validation_implemented": true,
+        "consumption_claim_implemented": true,
+        "execution_dispatch_implemented": true,
+        "aggregation_implemented": true,
+        "receipt_implemented": true,
+        "consumption_finalization_implemented": true,
+        "final_execution_closure_implemented": false
+    },
+    "acceptance_date": null,
+    "accepted_by": null,
+    "evidence_bundle_hash": "905749c14bc6338cbf372bee49adb29cd1ead56ae0dafcd6a3c27d520fa06112",
+    "notes": "Blocked due to 43 non-network failures, containing novel failures not present in the PR 172 baseline (which reported 12). PR 171 Commit 12 reconciliation performed."
 }

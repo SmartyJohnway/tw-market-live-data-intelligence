@@ -1,43 +1,120 @@
 {
-  "milestone": "M8R-05B-03",
-  "acceptance_date": "2026-08-03T09:09:56Z",
-  "accepted_by": "owner_authoritative_acceptance",
-  "remote_head": "718b67d49dd4e6b148ed83ae0e9cf025c956029b",
-  "base_sha": "1af005c9b42bef3e5464192faf671317a60927eb",
-  "test_profile": {
-    "M8R-05B-03": {
-      "count": 108,
-      "result": "passed"
+    "milestone": "M8R-05B-03",
+    "acceptance_date": "2026-08-03T10:14:00Z",
+    "accepted_by": "owner_authoritative_acceptance",
+    "tested_implementation_head": "718b67d49dd4e6b148ed83ae0e9cf025c956029b",
+    "prior_closure_commit": "c1e7aa96b5052ed698223664862bd487b9c49daf",
+    "reconciliation_commit": "pending",
+    "base_sha": "1af005c9b42bef3e5464192faf671317a60927eb",
+    "test_results": {
+        "M8R_05B_03": {
+            "passed": 108,
+            "failed": 0,
+            "command": "python -m pytest (Get-ChildItem tests/unit/test_m8r_05b_03_*.py).FullName -q"
+        },
+        "M8R_05B_02": {
+            "passed": 55,
+            "failed": 0,
+            "command": "python -m pytest (Get-ChildItem tests/unit/test_m8r_05b_02_*.py).FullName -q"
+        },
+        "M8R_05B_01": {
+            "passed": 58,
+            "failed": 0,
+            "command": "python -m pytest tests/unit/test_m8r_05b_01_schema.py tests/unit/test_m8r_05b_01_canonical.py tests/unit/test_m8r_05b_01_planner.py tests/unit/test_m8r_05b_01_cli.py tests/unit/test_m8r_05b_01_no_execution_boundary.py tests/unit/test_m8r_05b_01_golden.py -q"
+        },
+        "fixed_upstream_gate": {
+            "passed": 44,
+            "failed": 0,
+            "command": "python -m pytest tests/test_m8r_05a_f3.py tests/test_m8r_05a_f3_integration.py tests/test_m8r_05a_f3_snapshot_immutability.py tests/unit/test_m8r_05b_00_commit1_inventory_consistency.py tests/unit/test_m8r_05b_00_handoff_preflight.py -q"
+        },
+        "full_non_network": {
+            "passed": 2053,
+            "failed": 43,
+            "command": "python -m pytest -m \\\"not network\\\" -q",
+            "notes": "Found 43 failures instead of 12. Contains novel failures.",
+            "failures": [
+                "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+                "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+                "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+                "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
+                "tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
+                "tests/unit/test_frontend_readonly_static_contracts.py::test_required_wording_exists_and_forbidden_positive_claims_absent",
+                "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+                "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+                "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
+                "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+                "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+                "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+                "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+                "tests/unit/test_m5c_staging_failure_injection.py::test_execute_blocks_existing_destination_without_second_promotion",
+                "tests/unit/test_m5c_staging_promotion.py::test_tampered_manifest_blocked",
+                "tests/unit/test_m5c_staging_promotion.py::test_rollback_failure_injection_no_mutation",
+                "tests/unit/test_m5c_staging_promotion.py::test_one_command_preflight_shape",
+                "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+                "tests/unit/test_m5c_staging_rollback.py::test_rollback_failure_injection_no_mutation",
+                "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+                "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+                "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+                "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+                "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+                "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+                "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+                "tests/unit/test_m5e_controlled_frontend_publication.py::test_check_only_fail_closed",
+                "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+                "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
+                "tests/unit/test_m5e_controlled_frontend_publication.py::test_frontend_public_unchanged",
+                "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+                "tests/unit/test_m5e_controlled_frontend_publication.py::test_preview_static_dom_contract",
+                "tests/unit/test_m5fgh_consumer_consistency.py::test_demo_json_summary",
+                "tests/unit/test_m5fgh_frontend_static.py::test_frontend_static_uses_m5f_and_safe_dom",
+                "tests/unit/test_m5ij_end_to_end_acceptance.py::test_m5ij_acceptance_check_only_passes",
+                "tests/unit/test_m5ij_end_to_end_acceptance.py::test_m5e_supersession_accepted_by_default",
+                "tests/unit/test_m8_controlled_conversation_context_integration.py::test_pure_projection_no_network_runtime_imports",
+                "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_parse_normal_classifies_and_omits_extension_fields",
+                "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_unclassified_and_signed_change_and_duplicate",
+                "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_6488_bounded_seed_classifies_equity_and_unknown_fails_closed",
+                "tests/unit/test_m8b_final_acceptance.py::test_m8b_final_acceptance_and_registry",
+                "tests/unit/test_m8r_filesystem_containment.py::test_prefix_collision_rooted_path_rejected",
+                "tests/unit/test_run_m5c_staging_promotion_preflight.py::test_one_command_preflight_shape"
+            ]
+        }
     },
-    "M8R-05B-02": {
-      "count": 55,
-      "result": "passed"
+    "crash_phase_matrix": {
+        "after_journal_acquired": "proved",
+        "after_receipt_staged": "proved",
+        "after_bundle_staged": "proved",
+        "after_receipt_promoted": "proved",
+        "after_bundle_promoted": "proved",
+        "after_artifacts_committed": "proved",
+        "after_claim_committed_before_journal": "proved"
     },
-    "M8R-05B-01": {
-      "count": 58,
-      "result": "passed"
+    "concurrency_mutation_counters": {
+        "journal_acquired": "exactly_once",
+        "receipt_staged": "exactly_once",
+        "bundle_staged": "exactly_once",
+        "receipt_promoted": "exactly_once",
+        "bundle_promoted": "exactly_once",
+        "claim_committed": "exactly_once"
     },
-    "upstream_gate": {
-      "count": 44,
-      "result": "passed"
+    "dry_run_claim_replay_proof": "proved",
+    "evidence_artifact_verification": "proved",
+    "durable_cross_link_verification": "proved",
+    "boundary_checks": {
+        "no_live_network_execution": true,
+        "no_frontend_mutation": true,
+        "no_secret_addition": true,
+        "no_background_service": true
     },
-    "total": 265
-  },
-  "crash_phase_matrix": [
-    "after_journal_acquired",
-    "after_receipt_staged",
-    "after_bundle_staged",
-    "after_receipt_promoted",
-    "after_bundle_promoted",
-    "after_artifacts_committed",
-    "after_claim_committed_before_journal"
-  ],
-  "concurrency_mutation_count_proof": "exactly once per phase, verified via FinalizationPhaseHook counters and thread barrier",
-  "recovery_contract": "durable owner retrieval from journal, no redispatch, no second claim, idempotent terminal CAS handling",
-  "dry_run_and_single_use_claim_proof": "dry-run yields unconsumed_dry_run without claiming; execute-approved mutations exactly once",
-  "evidence_artifact_verification_proof": "receipt and bundle schema-valid, generated exclusively from durable claim",
-  "durable_cross_link_verification": "claim_receipt_hash, bundle_receipt_id, journal_receipt_hash, journal_bundle_hash all checked before finalization completes",
-  "caveats": "Recovery currently requires caller to re-supply preflight, claim_record, and aggregation (fail-closed if mismatched)",
-  "non_network_statement": "Authoritative acceptance executed strictly in local boundary without live external network calls",
-  "boundary_static_checks": "compileall passed, JSON schema checked, python syntax valid, git diff clean"
+    "static_checks": {
+        "compileall": "pass",
+        "json_schema": "pass",
+        "git_diff_check": "pass"
+    },
+    "caveats": [
+        "Recovery requires caller to provide original preflight/claim_record/aggregation fields rather than reading them strictly from durable storage, fail-closed implemented if mismatched.",
+        "Testing artifact temp files verified cleanly removed.",
+        "NOVEL FAILURES DETECTED: 43 non-network failures present."
+    ],
+    "next_task_decision": "blocked_by_novel_failures",
+    "acceptance_evidence_hash": "905749c14bc6338cbf372bee49adb29cd1ead56ae0dafcd6a3c27d520fa06112"
 }
