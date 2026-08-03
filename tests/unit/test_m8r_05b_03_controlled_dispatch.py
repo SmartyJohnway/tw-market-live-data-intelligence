@@ -46,6 +46,87 @@ def test_dry_run_is_non_consuming_and_leaves_no_durable_claim(tmp_path):
     assert not (tmp_path / "claims").exists()
 
 
+def test_repeated_dry_run_then_successful_execute_and_replay_block(tmp_path):
+    plan, authorization, binding, state = artifacts()
+    preflight = build_valid_preflight(tmp_path)
+
+    dry_run_reg = RuntimeAdapterRegistry([runtime_registration(plan, fake_adapter=True)])
+    real_run_reg = RuntimeAdapterRegistry([runtime_registration(plan, fake_adapter=False)])
+
+    # 1. First dry-run
+    res_dry1 = claim_and_dispatch_approved(
+        plan,
+        authorization,
+        binding,
+        supplied_consumption_state=state,
+        accepted_preflight=preflight,
+        evaluation_timestamp=EVALUATION_TIMESTAMP,
+        claim_created_at=CLAIM_TIMESTAMP,
+        executor_registry_metadata=registry_metadata(plan),
+        runtime_adapter_registry=dry_run_reg,
+        output_root=str(tmp_path),
+        mode="dry-run",
+    )
+    assert res_dry1["consumption_state"] == "unconsumed_dry_run"
+    assert not (tmp_path / "claims").exists()
+
+    # 2. Second dry-run
+    res_dry2 = claim_and_dispatch_approved(
+        plan,
+        authorization,
+        binding,
+        supplied_consumption_state=state,
+        accepted_preflight=preflight,
+        evaluation_timestamp=EVALUATION_TIMESTAMP,
+        claim_created_at=CLAIM_TIMESTAMP,
+        executor_registry_metadata=registry_metadata(plan),
+        runtime_adapter_registry=dry_run_reg,
+        output_root=str(tmp_path),
+        mode="dry-run",
+    )
+    assert res_dry2["consumption_state"] == "unconsumed_dry_run"
+    assert not (tmp_path / "claims").exists()
+
+    # 3. Third step: execute-approved
+    res_exec = claim_and_dispatch_approved(
+        plan,
+        authorization,
+        binding,
+        supplied_consumption_state=state,
+        accepted_preflight=preflight,
+        evaluation_timestamp=EVALUATION_TIMESTAMP,
+        claim_created_at=CLAIM_TIMESTAMP,
+        executor_registry_metadata=registry_metadata(plan),
+        runtime_adapter_registry=real_run_reg,
+        output_root=str(tmp_path),
+        mode="execute-approved",
+        confirm_execution=True,
+        operator_confirmation_reference="op-ref-seq-test",
+        confirm_network_execution=True,
+    )
+    assert res_exec["consumption_state"] == "claimed"
+    assert (tmp_path / res_exec["claim_relative_path"]).exists()
+
+    # 4. Fourth step: second execute-approved is replay-blocked
+    with pytest.raises(OrchestrationError, match="authorization_already_claimed"):
+        claim_and_dispatch_approved(
+            plan,
+            authorization,
+            binding,
+            supplied_consumption_state=state,
+            accepted_preflight=preflight,
+            evaluation_timestamp=EVALUATION_TIMESTAMP,
+            claim_created_at=CLAIM_TIMESTAMP,
+            executor_registry_metadata=registry_metadata(plan),
+            runtime_adapter_registry=real_run_reg,
+            output_root=str(tmp_path),
+            mode="execute-approved",
+            confirm_execution=True,
+            operator_confirmation_reference="op-ref-seq-test",
+            confirm_network_execution=True,
+        )
+
+
 def test_execute_approved_requires_all_confirmations_before_claim(tmp_path):
     plan, authorization, binding, state = artifacts()
     preflight = build_valid_preflight(tmp_path)

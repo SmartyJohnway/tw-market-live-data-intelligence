@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from copy import deepcopy
 
 import pytest
@@ -10,8 +11,11 @@ from scripts.m8r_05b_03.dispatch import (
     prepare_dispatch,
 )
 from scripts.m8r_05b_03.errors import OrchestrationError
+from scripts.m8r_05b_03.preflight import build_orchestrator_preflight
 from scripts.m8r_05b_03.registry import ExecutorMetadataRegistry
 from tests.unit.m8r_05b_03_test_helpers import (
+    EVALUATION_TIMESTAMP,
+    ROOT,
     artifacts,
     build_valid_preflight,
     registry_metadata,
@@ -39,6 +43,47 @@ def test_approved_adapter_invoked_exactly_once_sequentially(tmp_path):
     assert len(outcomes) == 1
     assert outcomes[0]["status"] == "succeeded"
     assert outcomes[0]["error_code"] is None
+
+
+def test_multi_operation_dispatch_order_proof(tmp_path):
+    multi_plan = json.loads((ROOT / "tests/fixtures/m8r_05b_01/golden/batching_none_two_unique_batches.json").read_text(encoding="utf-8"))
+    plan, authorization, binding, state = artifacts(multi_plan)
+
+    preflight = build_orchestrator_preflight(
+        plan,
+        authorization,
+        binding,
+        supplied_consumption_state=state,
+        evaluation_timestamp=EVALUATION_TIMESTAMP,
+        executor_registry_metadata=registry_metadata(plan),
+        output_root=str(tmp_path),
+    )
+
+    expected_order = preflight["approved_operation_order"]
+    assert len(expected_order) > 1
+    assert expected_order == sorted(expected_order)
+
+    # Verify bounded execution requests order
+    req_order = [r["operation_id"] for r in preflight["bounded_execution_requests"]]
+    assert req_order == expected_order
+
+    # Build runtime registry with custom adapters for each operation
+    invocations = []
+
+    def mock_multi_adapter(request, context):
+        invocations.append(request["operation_id"])
+        return {"status": "succeeded"}
+
+    meta_reg = ExecutorMetadataRegistry.from_json(registry_metadata(plan))
+    run_reg = RuntimeAdapterRegistry([runtime_registration(plan, adapter=mock_multi_adapter, fake_adapter=True)])
+
+    prepared = prepare_dispatch(preflight, meta_reg, run_reg, mode="dry-run")
+    prep_order = [p.request["operation_id"] for p in prepared]
+    assert prep_order == expected_order
+
+    outcomes = dispatch_prepared(prepared, governed_output_root=str(tmp_path), mode="dry-run")
+    assert invocations == expected_order
+    assert len(outcomes) == len(expected_order)
 
 
 def test_dry_run_requires_fake_adapter_and_execute_approved_rejects_fake(tmp_path):

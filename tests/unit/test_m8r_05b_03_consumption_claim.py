@@ -12,6 +12,7 @@ from scripts.m8r_05b_03.consumption_claim import (
     build_claim_record,
     claim_relative_path,
     validate_claim_destination,
+    validate_operator_confirmation_reference,
 )
 from scripts.m8r_05b_03.errors import OrchestrationError
 from tests.unit.m8r_05b_03_test_helpers import (
@@ -31,8 +32,14 @@ def test_first_claim_succeeds_and_second_claim_fails(tmp_path):
         state,
         output_root=str(tmp_path),
         claim_created_at=CLAIM_TIMESTAMP,
+        operator_confirmation_reference="op-ref-unit-test",
+        network_execution_confirmed=True,
     )
     assert record["state"] == "claimed"
+    assert record["execution_mode"] == "execute-approved"
+    assert record["execution_confirmed"] is True
+    assert record["operator_confirmation_reference"] == "op-ref-unit-test"
+    assert record["network_execution_confirmed"] is True
     assert rel_path == claim_relative_path(authorization["authorization_id"])
     assert (tmp_path / rel_path).exists()
 
@@ -42,6 +49,8 @@ def test_first_claim_succeeds_and_second_claim_fails(tmp_path):
             state,
             output_root=str(tmp_path),
             claim_created_at=CLAIM_TIMESTAMP,
+            operator_confirmation_reference="op-ref-unit-test",
+            network_execution_confirmed=True,
         )
 
 
@@ -59,6 +68,8 @@ def test_two_concurrent_claims_produce_exactly_one_winner(tmp_path):
                 deepcopy(state),
                 output_root=str(tmp_path),
                 claim_created_at=CLAIM_TIMESTAMP,
+                operator_confirmation_reference="op-ref-concurrent",
+                network_execution_confirmed=True,
             )
             results.append((rec, path))
         except OrchestrationError as exc:
@@ -76,6 +87,44 @@ def test_two_concurrent_claims_produce_exactly_one_winner(tmp_path):
     assert errors[0] == "authorization_already_claimed"
 
 
+def test_changing_operator_confirmation_reference_changes_claim_identity_and_id(tmp_path):
+    _plan, _authorization, _binding, state = artifacts()
+    preflight = build_valid_preflight(tmp_path)
+
+    rec1 = build_claim_record(
+        preflight,
+        state,
+        claim_created_at=CLAIM_TIMESTAMP,
+        operator_confirmation_reference="ref-alpha",
+    )
+    rec2 = build_claim_record(
+        preflight,
+        state,
+        claim_created_at=CLAIM_TIMESTAMP,
+        operator_confirmation_reference="ref-beta",
+    )
+
+    assert rec1["operator_confirmation_reference"] == "ref-alpha"
+    assert rec2["operator_confirmation_reference"] == "ref-beta"
+    assert rec1["claim_id"] != rec2["claim_id"]
+
+
+def test_operator_confirmation_reference_validation():
+    assert validate_operator_confirmation_reference("  op-ref-123  ") == "op-ref-123"
+
+    with pytest.raises(OrchestrationError, match="operator_confirmation_reference_invalid"):
+        validate_operator_confirmation_reference("")
+
+    with pytest.raises(OrchestrationError, match="operator_confirmation_reference_invalid"):
+        validate_operator_confirmation_reference("   ")
+
+    with pytest.raises(OrchestrationError, match="operator_confirmation_reference_invalid"):
+        validate_operator_confirmation_reference("bad\nref")
+
+    with pytest.raises(OrchestrationError, match="operator_confirmation_reference_invalid"):
+        validate_operator_confirmation_reference("x" * 129)
+
+
 def test_claimed_supplied_state_rejected(tmp_path):
     _plan, _authorization, _binding, state = artifacts()
     preflight = build_valid_preflight(tmp_path)
@@ -83,7 +132,12 @@ def test_claimed_supplied_state_rejected(tmp_path):
     claimed_state["state"] = "claimed"
 
     with pytest.raises(OrchestrationError, match="authorization_already_claimed"):
-        build_claim_record(preflight, claimed_state, claim_created_at=CLAIM_TIMESTAMP)
+        build_claim_record(
+            preflight,
+            claimed_state,
+            claim_created_at=CLAIM_TIMESTAMP,
+            operator_confirmation_reference="op-ref-1",
+        )
 
 
 def test_authorization_and_binding_mismatch_rejected(tmp_path):
@@ -93,12 +147,22 @@ def test_authorization_and_binding_mismatch_rejected(tmp_path):
     bad_auth_state = deepcopy(state)
     bad_auth_state["authorization_id"] = "umea-v1-00000000000000000000"
     with pytest.raises(OrchestrationError, match="consumption_authorization_mismatch"):
-        build_claim_record(preflight, bad_auth_state, claim_created_at=CLAIM_TIMESTAMP)
+        build_claim_record(
+            preflight,
+            bad_auth_state,
+            claim_created_at=CLAIM_TIMESTAMP,
+            operator_confirmation_reference="op-ref-1",
+        )
 
     bad_binding_state = deepcopy(state)
     bad_binding_state["consumption_binding_id"] = "umeacb-v1-00000000000000000000"
     with pytest.raises(OrchestrationError, match="consumption_binding_state_mismatch"):
-        build_claim_record(preflight, bad_binding_state, claim_created_at=CLAIM_TIMESTAMP)
+        build_claim_record(
+            preflight,
+            bad_binding_state,
+            claim_created_at=CLAIM_TIMESTAMP,
+            operator_confirmation_reference="op-ref-1",
+        )
 
 
 def test_registry_contract_version_mismatch_rejected(tmp_path):
@@ -107,7 +171,12 @@ def test_registry_contract_version_mismatch_rejected(tmp_path):
     bad_registry_state = deepcopy(state)
     bad_registry_state["registry_contract_version"] = "m8r_05b_02.v1"
     with pytest.raises(OrchestrationError, match="registry_contract_mismatch"):
-        build_claim_record(preflight, bad_registry_state, claim_created_at=CLAIM_TIMESTAMP)
+        build_claim_record(
+            preflight,
+            bad_registry_state,
+            claim_created_at=CLAIM_TIMESTAMP,
+            operator_confirmation_reference="op-ref-1",
+        )
 
 
 def test_invalid_claim_timestamp_rejected(tmp_path):
@@ -115,14 +184,25 @@ def test_invalid_claim_timestamp_rejected(tmp_path):
     preflight = build_valid_preflight(tmp_path)
 
     with pytest.raises(OrchestrationError, match="claim_timestamp_invalid"):
-        build_claim_record(preflight, state, claim_created_at="not-a-timestamp")
+        build_claim_record(
+            preflight,
+            state,
+            claim_created_at="not-a-timestamp",
+            operator_confirmation_reference="op-ref-1",
+        )
 
 
 def test_claim_record_schema_validation(tmp_path):
     schema = json.loads((ROOT / "schemas/unified_market_evidence_consumption_record.v1.schema.json").read_text(encoding="utf-8"))
     _plan, _authorization, _binding, state = artifacts()
     preflight = build_valid_preflight(tmp_path)
-    record = build_claim_record(preflight, state, claim_created_at=CLAIM_TIMESTAMP)
+    record = build_claim_record(
+        preflight,
+        state,
+        claim_created_at=CLAIM_TIMESTAMP,
+        operator_confirmation_reference="op-ref-schema-test",
+        network_execution_confirmed=True,
+    )
 
     validator = Draft202012Validator(schema, format_checker=FormatChecker())
     assert list(validator.iter_errors(record)) == []

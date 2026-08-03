@@ -15,6 +15,11 @@
     "preflight_id",
     "preflight_identity_hash",
     "preflight_artifact_hash",
+    "execution_mode",
+    "execution_confirmed",
+    "operator_confirmation_reference",
+    "network_execution_confirmed",
+    "confirmation_bound_at",
     "state",
     "claim_id",
     "claim_created_at",
@@ -68,6 +73,25 @@
       "type": "string",
       "pattern": "^[0-9a-f]{64}$"
     },
+    "execution_mode": {
+      "const": "execute-approved"
+    },
+    "execution_confirmed": {
+      "const": true
+    },
+    "operator_confirmation_reference": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "network_execution_confirmed": {
+      "type": "boolean"
+    },
+    "confirmation_bound_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
     "state": {
       "enum": [
         "unused",
@@ -105,5 +129,37 @@
     "last_error_code": {
       "type": ["string", "null"]
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "state": { "const": "claimed" } }
+      },
+      "then": {
+        "properties": {
+          "execution_receipt_id": { "type": "null" },
+          "execution_receipt_hash": { "type": "null" },
+          "finalized_at": { "type": "null" },
+          "last_error_code": { "type": "null" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "enum": ["consumed_success", "consumed_partial", "consumed_failed"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "execution_receipt_id": { "type": "string", "minLength": 1 },
+          "execution_receipt_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "finalized_at": { "type": "string", "format": "date-time", "pattern": "Z$" }
+        },
+        "required": ["execution_receipt_id", "execution_receipt_hash", "finalized_at"]
+      }
+    }
+  ]
 }

@@ -39,6 +39,17 @@ def _validate_timestamp(value: str) -> None:
         raise OrchestrationError("claim_timestamp_invalid")
 
 
+def validate_operator_confirmation_reference(ref: str) -> str:
+    if not isinstance(ref, str):
+        raise OrchestrationError("operator_confirmation_reference_invalid")
+    trimmed = ref.strip()
+    if not trimmed or len(trimmed) > 128:
+        raise OrchestrationError("operator_confirmation_reference_invalid")
+    if any(ord(c) < 32 or ord(c) == 127 for c in ref):
+        raise OrchestrationError("operator_confirmation_reference_invalid")
+    return trimmed
+
+
 def _validate_supplied_unused_state(state: dict, preflight: dict) -> None:
     if state is None:
         raise OrchestrationError("consumption_record_missing")
@@ -77,9 +88,16 @@ def build_claim_record(
     supplied_consumption_state: dict,
     *,
     claim_created_at: str,
+    operator_confirmation_reference: str,
+    network_execution_confirmed: bool = False,
+    confirmation_bound_at: str | None = None,
 ) -> dict:
     _validate_supplied_unused_state(supplied_consumption_state, preflight)
     _validate_timestamp(claim_created_at)
+    valid_ref = validate_operator_confirmation_reference(operator_confirmation_reference)
+    bound_at = confirmation_bound_at or claim_created_at
+    _validate_timestamp(bound_at)
+
     claim_identity = {
         "authorization_id": preflight["authorization_id"],
         "authorization_hash": preflight["authorization_hash"],
@@ -91,6 +109,11 @@ def build_claim_record(
         "preflight_id": preflight["preflight_id"],
         "preflight_identity_hash": preflight["preflight_identity_hash"],
         "preflight_artifact_hash": preflight["preflight_artifact_hash"],
+        "execution_mode": "execute-approved",
+        "execution_confirmed": True,
+        "operator_confirmation_reference": valid_ref,
+        "network_execution_confirmed": bool(network_execution_confirmed),
+        "confirmation_bound_at": bound_at,
         "claim_created_at": claim_created_at,
     }
     record = {
@@ -106,6 +129,11 @@ def build_claim_record(
             "preflight_id",
             "preflight_identity_hash",
             "preflight_artifact_hash",
+            "execution_mode",
+            "execution_confirmed",
+            "operator_confirmation_reference",
+            "network_execution_confirmed",
+            "confirmation_bound_at",
         )},
         "state": "claimed",
         "claim_id": "umecl-v1-" + sha256_json(claim_identity)[:20],
@@ -138,12 +166,18 @@ def atomic_claim_authorization(
     *,
     output_root: str,
     claim_created_at: str,
+    operator_confirmation_reference: str,
+    network_execution_confirmed: bool = False,
+    confirmation_bound_at: str | None = None,
 ) -> tuple[dict, str]:
     relative_path = validate_claim_destination(output_root, preflight["authorization_id"])
     record = build_claim_record(
         preflight,
         supplied_consumption_state,
         claim_created_at=claim_created_at,
+        operator_confirmation_reference=operator_confirmation_reference,
+        network_execution_confirmed=network_execution_confirmed,
+        confirmation_bound_at=confirmation_bound_at,
     )
     try:
         atomic_create_text_exclusive(

@@ -48,7 +48,6 @@ def claim_and_dispatch_approved(
         runtime_adapter_registry,
         mode=mode,
     )
-    validate_claim_destination(output_root, accepted_preflight["authorization_id"])
 
     if mode == "execute-approved":
         if confirm_execution is not True:
@@ -58,11 +57,14 @@ def claim_and_dispatch_approved(
         if accepted_preflight.get("network_required") and confirm_network_execution is not True:
             raise OrchestrationError("network_execution_confirmation_required")
 
+        validate_claim_destination(output_root, accepted_preflight["authorization_id"])
         claim_record, claim_path = atomic_claim_authorization(
             accepted_preflight,
             supplied_consumption_state,
             output_root=output_root,
             claim_created_at=claim_created_at,
+            operator_confirmation_reference=operator_confirmation_reference,
+            network_execution_confirmed=confirm_network_execution,
         )
         consumption_state = "claimed"
     else:
