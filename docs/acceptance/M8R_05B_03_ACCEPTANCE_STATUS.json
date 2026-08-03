@@ -2,7 +2,7 @@
   "contract_version": "m8r_05b_03.v1",
   "milestone": "M8R-05B-03",
   "acceptance_status": "not_yet_accepted",
-  "implementation_stage": "commit_3_finalization_ownership_recovery_correction",
+  "implementation_stage": "commit_3_recovery_contract_and_failure_proof_correction",
   "flags": {
     "preflight_validation_implemented": true,
     "consumption_claim_implemented": true,
@@ -15,5 +15,5 @@
   "acceptance_date": null,
   "accepted_by": null,
   "evidence_bundle_hash": null,
-  "notes": "M8R-05B-03 Commit 3 finalization ownership and recovery correction: single active finalization owner, owner-specific temporary paths, terminal-commit CAS guard, and failure-injection recovery proofs."
+  "notes": "M8R-05B-03 Commit 3 recovery contract and failure proof correction: formal recovery API, injectable phase hooks, real failure injection at 7 phases, real concurrent finalization with threads, owner pre-mutation validation, comprehensive corruption tests."
 }

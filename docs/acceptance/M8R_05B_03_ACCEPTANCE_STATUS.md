@@ -3,7 +3,7 @@
 - **Milestone**: M8R-05B-03 Controlled Unified Market Evidence Orchestrator
 - **Contract Version**: `m8r_05b_03.v1`
 - **Acceptance Status**: `not_yet_accepted`
-- **Implementation Stage**: `commit_3_finalization_ownership_recovery_correction`
+- **Implementation Stage**: `commit_3_recovery_contract_and_failure_proof_correction`
 
 ## Governance Flags
 - `preflight_validation_implemented`: `true`
@@ -15,4 +15,4 @@
 - `final_execution_closure_implemented`: `false`
 
 ## Notes
-M8R-05B-03 Commit 3 finalization ownership and recovery correction: single active finalization owner, owner-specific temporary paths, terminal-commit CAS guard, and failure-injection recovery proofs. PR #171 implementation pending review.
+M8R-05B-03 Commit 3 recovery contract and failure proof correction: formal recovery API (`recover_controlled_finalization`), injectable phase hooks (`FinalizationPhaseHook`), real failure injection at 7 named phases, real concurrent finalization with threads and barriers, owner pre-mutation validation, comprehensive corruption and cross-link mismatch tests. PR #171 implementation pending review.
