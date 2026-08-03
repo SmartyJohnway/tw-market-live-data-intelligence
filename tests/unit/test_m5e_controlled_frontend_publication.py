@@ -52,10 +52,10 @@ def test_schema_invalid_auth_returns_structured_errors(tmp_path):
 
 def test_token_hash_integrity(tmp_path):
     d,t=make_auth(tmp_path)
-    token=json.loads(t.read_text()); token['token_sha256']='0'*64; t.write_text(json.dumps(token))
+    token=json.loads(t.read_text(encoding="utf-8")); token['token_sha256']='0'*64; t.write_text(json.dumps(token))
     errs=m5e.validate_auth(d,t)
     assert 'token_sha256_mismatch' in errs
-    decision=json.loads(d.read_text()); decision['token_sha256']='0'*64; d.write_text(json.dumps(decision))
+    decision=json.loads(d.read_text(encoding="utf-8")); decision['token_sha256']='0'*64; d.write_text(json.dumps(decision))
     errs=m5e.validate_auth(d,t)
     assert 'decision_token_sha256_binding_mismatch' in errs
 
@@ -71,13 +71,13 @@ def test_single_use_duplicate(tmp_path):
     with pytest.raises(ValueError): m5e.claim_once(tmp_path,'../escape')
 
 def test_transaction_claims_single_use(tmp_path):
-    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; journal=tmp_path/'j'; claims=tmp_path/'claims'
+    src=tmp_path/'src'; src.write_text('new', encoding="utf-8"); dest=tmp_path/'dest'; journal=tmp_path/'j'; claims=tmp_path/'claims'
     m5e.publish_transaction(src,dest,journal,auth_id='auth-claim',claim_dir=claims,expected_src_sha256=m5e.fsha(src),candidate_manifest_sha256=m5e.fsha(src),simulation_mode=True)
     assert (claims/'auth-claim.used').exists()
     with pytest.raises(FileExistsError): m5e.publish_transaction(src,tmp_path/'dest2',tmp_path/'j2',auth_id='auth-claim',claim_dir=claims,expected_src_sha256=m5e.fsha(src),candidate_manifest_sha256=m5e.fsha(src),simulation_mode=True)
 
 def test_transaction_new_target_rollback_and_recovery(tmp_path):
-    src=tmp_path/'src.json'; src.write_text('{"ok":true}\n'); dest=tmp_path/'out.json'; journal=tmp_path/'j'
+    src=tmp_path/'src.json'; src.write_text('{"ok":true}\n', encoding="utf-8"); dest=tmp_path/'out.json'; journal=tmp_path/'j'
     r=m5e.publish_transaction(src,dest,journal,**tx_kwargs(tmp_path, src))
     assert r['status']=='simulated' and r['publication_performed'] is False and dest.read_bytes()==src.read_bytes()
     rb=m5e.rollback(dest,journal)
@@ -85,36 +85,36 @@ def test_transaction_new_target_rollback_and_recovery(tmp_path):
     assert (journal/'rollback_receipt.json').exists()
 
 def test_transaction_replace_rollback(tmp_path):
-    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; dest.write_text('old'); journal=tmp_path/'j'
+    src=tmp_path/'src'; src.write_text('new', encoding="utf-8"); dest=tmp_path/'dest'; dest.write_text('old', encoding="utf-8"); journal=tmp_path/'j'
     m5e.publish_transaction(src,dest,journal,**tx_kwargs(tmp_path, src))
-    assert dest.read_text()=='new'
+    assert dest.read_text(encoding="utf-8")=='new'
     assert m5e.rollback(dest,journal)['status']=='rolled_back_replacement'
-    assert dest.read_text()=='old'
+    assert dest.read_text(encoding="utf-8")=='old'
 
 def test_rollback_refuses_to_overwrite_newer_content(tmp_path):
-    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; dest.write_text('old'); journal=tmp_path/'j'
+    src=tmp_path/'src'; src.write_text('new', encoding="utf-8"); dest=tmp_path/'dest'; dest.write_text('old', encoding="utf-8"); journal=tmp_path/'j'
     m5e.publish_transaction(src,dest,journal,**tx_kwargs(tmp_path, src))
-    dest.write_text('operator-newer-content')
+    dest.write_text('operator-newer-content', encoding="utf-8")
     rb=m5e.rollback(dest,journal)
     assert rb['status']=='manual_recovery_required'
-    assert dest.read_text()=='operator-newer-content'
+    assert dest.read_text(encoding="utf-8")=='operator-newer-content'
 
 @pytest.mark.parametrize('phase,expected', [('before_temp_write','safe_no_publication_or_temp_only'),('after_temp_write','safe_no_publication_or_temp_only'),('after_backup','safe_no_publication_or_temp_only'),('after_replace','manual_recovery_required'),('before_receipt','manual_recovery_required'),('after_receipt','simulation_completed')])
 def test_crash_recovery_matrix(tmp_path, phase, expected):
-    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; dest.write_text('old'); journal=tmp_path/'j'
+    src=tmp_path/'src'; src.write_text('new', encoding="utf-8"); dest=tmp_path/'dest'; dest.write_text('old', encoding="utf-8"); journal=tmp_path/'j'
     with pytest.raises(RuntimeError): m5e.publish_transaction(src,dest,journal,crash_at=phase,**tx_kwargs(tmp_path, src, 'crash-'+phase.replace('_','-')))
     rec=m5e.recover(dest,journal)
     assert rec['status'] == expected
     assert (journal/'recovery_state.json').exists()
     if expected == 'safe_no_publication_or_temp_only':
-        assert dest.read_text() == 'old'
+        assert dest.read_text(encoding="utf-8") == 'old'
 
 
 def test_path_traversal_and_symlink(tmp_path, monkeypatch):
     monkeypatch.setattr(m5e, 'ROOT', tmp_path)
     public=tmp_path/'frontend'/'public'; public.mkdir(parents=True)
     with pytest.raises(ValueError): m5e.safe_dest('../bad')
-    outside=tmp_path/'outside'; outside.write_text('x')
+    outside=tmp_path/'outside'; outside.write_text('x', encoding="utf-8")
     link=public/'market-context.json'; link.symlink_to(outside)
     with pytest.raises(ValueError): m5e.safe_dest('frontend/public/market-context.json')
 
@@ -124,13 +124,13 @@ def test_frontend_public_unchanged():
 def test_reproducibility_materialize_candidate(tmp_path):
     from scripts.m5d_publication_common import _materialize_candidate
     _materialize_candidate(tmp_path)
-    committed=json.loads((m5e.ROOT/m5e.CAND/'sha256_manifest.json').read_text())['files']
-    generated=json.loads((tmp_path/'sha256_manifest.json').read_text())['files']
+    committed=json.loads((m5e.ROOT/m5e.CAND/'sha256_manifest.json').read_text(encoding="utf-8"))['files']
+    generated=json.loads((tmp_path/'sha256_manifest.json').read_text(encoding="utf-8"))['files']
     assert generated==committed
 
 def test_preview_static_dom_contract():
-    html=(m5e.ROOT/'frontend/readonly-preview/M5EMarketContextPreview.html').read_text()
-    js=(m5e.ROOT/'frontend/readonly-preview/m5e-market-context-adapter.js').read_text()
+    html=(m5e.ROOT/'frontend/readonly-preview/M5EMarketContextPreview.html').read_text(encoding="utf-8")
+    js=(m5e.ROOT/'frontend/readonly-preview/m5e-market-context-adapter.js').read_text(encoding="utf-8")
     assert 'Loading local readonly market context' in html
     assert '<script type="module"' in html
     for text in ['TWSE_OpenAPI','historical/stale','Global caveats','source risk flags','<main>']:
@@ -139,7 +139,7 @@ def test_preview_static_dom_contract():
         assert forbidden not in (html + js).lower()
 
 def test_transaction_requires_claim_dir_and_candidate_hash(tmp_path):
-    src=tmp_path/'src'; src.write_text('not-candidate'); dest=tmp_path/'dest'; journal=tmp_path/'j'
+    src=tmp_path/'src'; src.write_text('not-candidate', encoding="utf-8"); dest=tmp_path/'dest'; journal=tmp_path/'j'
     with pytest.raises(ValueError, match='claim_dir_required'):
         m5e.publish_transaction(src,dest,journal,auth_id='no-claim')
     with pytest.raises(ValueError, match='simulation_destination_in_repo_forbidden'):
@@ -158,16 +158,16 @@ def test_transaction_outputs_validate_against_schemas(tmp_path):
     assert not m5e._schema_errors('rollback_receipt', rb)
 
 def test_after_receipt_recovery_rejects_wrong_authorization_binding(tmp_path):
-    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; dest.write_text('old'); journal=tmp_path/'j'
+    src=tmp_path/'src'; src.write_text('new', encoding="utf-8"); dest=tmp_path/'dest'; dest.write_text('old', encoding="utf-8"); journal=tmp_path/'j'
     with pytest.raises(RuntimeError):
         m5e.publish_transaction(src,dest,journal,crash_at='after_receipt',**tx_kwargs(tmp_path, src, 'after-receipt-bind'))
     receipt_path=journal/'publication_receipt.json'
-    receipt=json.loads(receipt_path.read_text()); receipt['authorization_id']='other-auth'; receipt_path.write_text(json.dumps(receipt))
+    receipt=json.loads(receipt_path.read_text(encoding="utf-8")); receipt['authorization_id']='other-auth'; receipt_path.write_text(json.dumps(receipt))
     rec=m5e.recover(dest,journal)
     assert rec['status']=='manual_recovery_required'
 
 def test_simulation_journal_and_receipt_do_not_claim_publication(tmp_path):
-    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; journal=tmp_path/'j'
+    src=tmp_path/'src'; src.write_text('new', encoding="utf-8"); dest=tmp_path/'dest'; journal=tmp_path/'j'
     receipt=m5e.publish_transaction(src,dest,journal,**tx_kwargs(tmp_path, src, 'sim-governance'))
     journal_payload=m5e.load(journal/'journal.json')
     assert receipt['status']=='simulated'
@@ -181,14 +181,14 @@ def test_simulation_journal_and_receipt_do_not_claim_publication(tmp_path):
 def test_production_rejects_symlink_alias_destination(tmp_path, monkeypatch):
     monkeypatch.setattr(m5e, 'ROOT', tmp_path)
     public=tmp_path/'frontend'/'public'; public.mkdir(parents=True)
-    target=public/'market-context.json'; target.write_text('old')
+    target=public/'market-context.json'; target.write_text('old', encoding="utf-8")
     alias=tmp_path/'alias.json'; alias.symlink_to(target)
-    src=tmp_path/'src'; src.write_text('new')
+    src=tmp_path/'src'; src.write_text('new', encoding="utf-8")
     with pytest.raises(ValueError, match='production_destination_mismatch'):
         m5e.publish_transaction(src,alias,tmp_path/'j',auth_id='prod-alias',claim_dir=tmp_path/'claims')
 
 def test_io_failure_injection_for_write_fsync_replace_and_backup(tmp_path, monkeypatch):
-    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; journal=tmp_path/'j'
+    src=tmp_path/'src'; src.write_text('new', encoding="utf-8"); dest=tmp_path/'dest'; journal=tmp_path/'j'
     def fail_write(fd, data): raise OSError('short_write')
     monkeypatch.setattr(m5e, '_write_all', fail_write)
     with pytest.raises(OSError, match='short_write'):
@@ -205,7 +205,7 @@ def test_io_failure_injection_for_write_fsync_replace_and_backup(tmp_path, monke
         m5e.publish_transaction(src,tmp_path/'dest3',tmp_path/'j3',**tx_kwargs(tmp_path, src, 'fail-replace'))
 
 def test_duplicate_single_use_same_journal_preserves_existing_evidence(tmp_path):
-    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; dest.write_text('old'); journal=tmp_path/'j'; claims=tmp_path/'claims'
+    src=tmp_path/'src'; src.write_text('new', encoding="utf-8"); dest=tmp_path/'dest'; dest.write_text('old', encoding="utf-8"); journal=tmp_path/'j'; claims=tmp_path/'claims'
     m5e.publish_transaction(src,dest,journal,auth_id='same-journal',claim_dir=claims,expected_src_sha256=m5e.fsha(src),candidate_manifest_sha256=m5e.fsha(src),simulation_mode=True)
     before={p.name:p.read_bytes() for p in journal.iterdir() if p.is_file()}
     dest_before=dest.read_bytes()
@@ -217,7 +217,7 @@ def test_duplicate_single_use_same_journal_preserves_existing_evidence(tmp_path)
 
 
 def test_failure_injection_late_transaction_and_receipt_stages(tmp_path, monkeypatch):
-    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; dest.write_text('old')
+    src=tmp_path/'src'; src.write_text('new', encoding="utf-8"); dest=tmp_path/'dest'; dest.write_text('old', encoding="utf-8")
     # Backup copy failure after temp write but before replace.
     def fail_copy(a,b): raise OSError('backup_failed')
     monkeypatch.setattr(m5e, 'durable_copy', fail_copy)
@@ -256,7 +256,7 @@ def test_failure_injection_late_transaction_and_receipt_stages(tmp_path, monkeyp
 
 
 def test_failure_injection_rollback_receipt_and_directory_fsync(tmp_path, monkeypatch):
-    src=tmp_path/'src'; src.write_text('new'); dest=tmp_path/'dest'; journal=tmp_path/'j'
+    src=tmp_path/'src'; src.write_text('new', encoding="utf-8"); dest=tmp_path/'dest'; journal=tmp_path/'j'
     m5e.publish_transaction(src,dest,journal,**tx_kwargs(tmp_path, src, 'rollback-fail'))
     real_durable=m5e.durable_json_replace
     def fail_rollback_receipt(path,obj):

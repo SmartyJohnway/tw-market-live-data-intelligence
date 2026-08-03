@@ -2,11 +2,11 @@ from __future__ import annotations
 import argparse, json, os, shutil, tempfile, hashlib
 from pathlib import Path
 from datetime import datetime, timezone
-from validate_m5c_staging_promotion_authorization import validate as validate_auth, AUTH, REQ, RUN, DEST, TARGETS, sha
+from scripts.validate_m5c_staging_promotion_authorization import validate as validate_auth, AUTH, REQ, RUN, DEST, TARGETS, sha
 from run_m5c_staging_promotion_preflight import run as preflight_run, is_success
 from build_frontend_readonly_context_package import build_frontend_readonly_context_package
 from m5c_common import load, readonly_payload_from_candidate
-from validate_m5c_promoted_staging_package import validate as validate_promoted_package, validate_core_package
+from scripts.validate_m5c_promoted_staging_package import validate as validate_promoted_package, validate_core_package
 CONSUME_DIR=Path('research/staging/m5c/authorization_consumption')
 
 def _atomic_write_json(path: Path, data: dict):
@@ -59,7 +59,7 @@ def _build(dst:Path, consumption_path:str):
 def _validate_built_package_at(path: Path):
     errors=[]
     try:
-        from verify_m5c_staging_manifest import verify as verify_manifest
+        from scripts.verify_m5c_staging_manifest import verify as verify_manifest
     except ModuleNotFoundError:
         from scripts.verify_m5c_staging_manifest import verify as verify_manifest
     errors += verify_manifest(path)
