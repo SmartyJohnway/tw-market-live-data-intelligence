@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import uuid
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -175,8 +176,9 @@ def finalize_consumption_and_write_receipt(
     *,
     output_root: str,
     finalized_at: str,
+    finalization_owner_id: str | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
-    # Step 1: Read durable disk claim and validate against schema and preflight binding
+    # Step 1: Read durable disk claim and validate schema and preflight binding
     try:
         claim_dest = safe_destination(output_root, claim_relative_path, create_parent=False)
         if not claim_dest.path.is_file():
@@ -202,22 +204,14 @@ def finalize_consumption_and_write_receipt(
     if disk_claim.get("claim_id") != claim_record.get("claim_id"):
         raise OrchestrationError("claim_id_mismatch")
 
-    # Verify caller-supplied claim matches durable claim content hash
-    if sha256_json(claim_record) != sha256_json(disk_claim):
-        # If disk_claim state is already terminal, allow state difference if base identity matches
-        base_claim = dict(disk_claim)
-        base_caller = dict(claim_record)
-        for k in ("state", "execution_receipt_id", "execution_receipt_hash", "finalized_at"):
-            base_claim.pop(k, None)
-            base_caller.pop(k, None)
-        if sha256_json(base_claim) != sha256_json(base_caller):
-            raise OrchestrationError("claim_content_mismatch")
+    if initial_claim_hash(claim_record) != initial_claim_hash(disk_claim):
+        raise OrchestrationError("claim_content_mismatch")
 
     # Step 2: Build receipt and bundle using disk_claim as sole authority
     receipt = build_execution_receipt(preflight, disk_claim, aggregation, finalized_at=finalized_at)
     bundle = build_evidence_bundle(preflight, disk_claim, receipt, aggregation, finalized_at=finalized_at)
 
-    tx_id = receipt["execution_receipt_hash"][:16]
+    current_owner_id = finalization_owner_id or f"umefo-v1-{sha256_json({'u': str(uuid.uuid4()), 't': finalized_at})[:20]}"
     journal_rel = journal_relative_path(preflight["authorization_id"])
     journal_dest = safe_destination(output_root, journal_rel, create_parent=True)
 
@@ -240,6 +234,7 @@ def finalize_consumption_and_write_receipt(
     journal = {
         "schema_version": "unified_market_evidence_finalization_journal.v1",
         "journal_id": journal_id,
+        "finalization_owner_id": current_owner_id,
         "authorization_id": preflight["authorization_id"],
         "authorization_hash": preflight["authorization_hash"],
         "claim_id": disk_claim["claim_id"],
@@ -273,7 +268,7 @@ def finalize_consumption_and_write_receipt(
             if list(Draft202012Validator(journal_schema, format_checker=FormatChecker()).iter_errors(journal)):
                 raise OrchestrationError("finalization_journal_schema_invalid")
 
-            # Verify journal transaction ownership
+            # Verify journal transaction identity
             if (
                 journal.get("authorization_id") != preflight["authorization_id"]
                 or journal.get("claim_id") != disk_claim["claim_id"]
@@ -282,6 +277,15 @@ def finalize_consumption_and_write_receipt(
                 or journal.get("bundle_hash") != bundle["bundle_hash"]
             ):
                 raise OrchestrationError("finalization_ownership_conflict")
+
+            # Enforce single active owner check if journal is in preparing state
+            if journal.get("state") == "preparing":
+                if finalization_owner_id is not None and journal.get("finalization_owner_id") == finalization_owner_id:
+                    current_owner_id = finalization_owner_id
+                else:
+                    raise OrchestrationError("finalization_in_progress")
+            else:
+                current_owner_id = journal.get("finalization_owner_id", current_owner_id)
         else:
             raise OrchestrationError("finalization_journal_creation_failed") from exc
 
@@ -290,10 +294,12 @@ def finalize_consumption_and_write_receipt(
     bun_rel = bundle_relative_path(preflight["authorization_id"])
     bun_dest = safe_destination(output_root, bun_rel, create_parent=True)
 
+    owner_slug = current_owner_id.replace("umefo-v1-", "")
+
     # Step 4: Temporary File Staging & Atomic Promotion (if state is preparing)
     if journal["state"] == "preparing":
-        tmp_rec_rel = f"receipts/.tmp-{preflight['authorization_id']}-{tx_id}.json"
-        tmp_bun_rel = f"bundles/.tmp-{preflight['authorization_id']}-{tx_id}.json"
+        tmp_rec_rel = f"receipts/.tmp-{preflight['authorization_id']}-{owner_slug}.json"
+        tmp_bun_rel = f"bundles/.tmp-{preflight['authorization_id']}-{owner_slug}.json"
         tmp_rec_dest = safe_destination(output_root, tmp_rec_rel, create_parent=True)
         tmp_bun_dest = safe_destination(output_root, tmp_bun_rel, create_parent=True)
 
@@ -330,7 +336,8 @@ def finalize_consumption_and_write_receipt(
         # Advance journal state to artifacts_committed
         journal["state"] = "artifacts_committed"
         journal["updated_at"] = finalized_at
-        tmp_j_dest = safe_destination(output_root, f"finalization/.tmp-journal-{preflight['authorization_id']}.json", create_parent=True)
+        tmp_j_rel = f"finalization/.tmp-journal-{preflight['authorization_id']}-{owner_slug}.json"
+        tmp_j_dest = safe_destination(output_root, tmp_j_rel, create_parent=True)
         tmp_j_dest.path.write_text(canonical_json(journal) + "\n", encoding="utf-8")
         tmp_j_dest.path.replace(journal_dest.path)
 
@@ -343,9 +350,27 @@ def finalize_consumption_and_write_receipt(
         }
         new_state = status_map[aggregation["overall_status"]]
 
-        # Re-read claim to ensure non-corrupt state
-        disk_claim = json.loads(claim_dest.path.read_text(encoding="utf-8"))
-        final_claim_record = dict(disk_claim)
+        # Re-read claim and perform Terminal CAS Guard
+        try:
+            current_disk_claim = json.loads(claim_dest.path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError) as exc:
+            raise OrchestrationError("consumption_record_read_failed") from exc
+
+        if list(Draft202012Validator(claim_schema, format_checker=FormatChecker()).iter_errors(current_disk_claim)):
+            raise OrchestrationError("consumption_record_schema_invalid")
+
+        if (
+            current_disk_claim.get("state") != "claimed"
+            or current_disk_claim.get("claim_id") != disk_claim["claim_id"]
+            or current_disk_claim.get("authorization_id") != preflight["authorization_id"]
+            or initial_claim_hash(current_disk_claim) != journal["claim_hash"]
+        ):
+            raise OrchestrationError("finalization_cas_mismatch")
+
+        if journal.get("finalization_owner_id") != current_owner_id or journal.get("state") != "artifacts_committed":
+            raise OrchestrationError("finalization_cas_mismatch")
+
+        final_claim_record = dict(current_disk_claim)
         final_claim_record["state"] = new_state
         final_claim_record["execution_receipt_id"] = receipt["execution_receipt_id"]
         final_claim_record["execution_receipt_hash"] = receipt["execution_receipt_hash"]
@@ -354,17 +379,19 @@ def finalize_consumption_and_write_receipt(
         if list(Draft202012Validator(claim_schema, format_checker=FormatChecker()).iter_errors(final_claim_record)):
             raise OrchestrationError("consumption_record_schema_invalid")
 
-        temp_claim_dest = safe_destination(output_root, f"claims/.tmp-claim-{preflight['authorization_id']}.json", create_parent=True)
+        temp_claim_rel = f"claims/.tmp-claim-{preflight['authorization_id']}-{owner_slug}.json"
+        temp_claim_dest = safe_destination(output_root, temp_claim_rel, create_parent=True)
         temp_claim_dest.path.write_text(canonical_json(final_claim_record) + "\n", encoding="utf-8")
         temp_claim_dest.path.replace(claim_dest.path)
 
         journal["state"] = "claim_committed"
         journal["updated_at"] = finalized_at
-        tmp_j_dest = safe_destination(output_root, f"finalization/.tmp-journal-{preflight['authorization_id']}.json", create_parent=True)
+        tmp_j_rel = f"finalization/.tmp-journal-{preflight['authorization_id']}-{owner_slug}.json"
+        tmp_j_dest = safe_destination(output_root, tmp_j_rel, create_parent=True)
         tmp_j_dest.path.write_text(canonical_json(journal) + "\n", encoding="utf-8")
         tmp_j_dest.path.replace(journal_dest.path)
 
-    # Step 6: Durable Idempotent Verification
+    # Step 6: Complete Durable Cross-Link Verification
     if not claim_dest.path.is_file() or not rec_dest.path.is_file() or not bun_dest.path.is_file() or not journal_dest.path.is_file():
         raise OrchestrationError("final_artifact_verification_failed")
 
@@ -379,14 +406,35 @@ def finalize_consumption_and_write_receipt(
     rec_schema = json.loads(RECEIPT_SCHEMA_PATH.read_text(encoding="utf-8"))
     bun_schema = json.loads(BUNDLE_SCHEMA_PATH.read_text(encoding="utf-8"))
 
+    if list(Draft202012Validator(claim_schema, format_checker=FormatChecker()).iter_errors(final_claim)):
+        raise OrchestrationError("final_artifact_verification_failed")
+    if list(Draft202012Validator(journal_schema, format_checker=FormatChecker()).iter_errors(disk_journal)):
+        raise OrchestrationError("final_artifact_verification_failed")
     if list(Draft202012Validator(rec_schema, format_checker=FormatChecker()).iter_errors(disk_rec)):
         raise OrchestrationError("final_artifact_verification_failed")
     if list(Draft202012Validator(bun_schema, format_checker=FormatChecker()).iter_errors(disk_bun)):
         raise OrchestrationError("final_artifact_verification_failed")
 
+    # Full cross-link checks
     if disk_rec.get("execution_receipt_hash") != receipt["execution_receipt_hash"] or sha256_json(disk_rec) != sha256_json(receipt):
         raise OrchestrationError("final_artifact_verification_failed")
     if disk_bun.get("bundle_hash") != bundle["bundle_hash"] or sha256_json(disk_bun) != sha256_json(bundle):
+        raise OrchestrationError("final_artifact_verification_failed")
+    if final_claim.get("execution_receipt_id") != receipt["execution_receipt_id"]:
+        raise OrchestrationError("final_artifact_verification_failed")
+    if final_claim.get("execution_receipt_hash") != receipt["execution_receipt_hash"]:
+        raise OrchestrationError("final_artifact_verification_failed")
+    if disk_bun.get("execution_receipt_id") != receipt["execution_receipt_id"]:
+        raise OrchestrationError("final_artifact_verification_failed")
+    if disk_bun.get("execution_receipt_hash") != receipt["execution_receipt_hash"]:
+        raise OrchestrationError("final_artifact_verification_failed")
+    if disk_journal.get("execution_receipt_id") != receipt["execution_receipt_id"]:
+        raise OrchestrationError("final_artifact_verification_failed")
+    if disk_journal.get("execution_receipt_hash") != receipt["execution_receipt_hash"]:
+        raise OrchestrationError("final_artifact_verification_failed")
+    if disk_journal.get("bundle_id") != bundle["bundle_id"]:
+        raise OrchestrationError("final_artifact_verification_failed")
+    if disk_journal.get("bundle_hash") != bundle["bundle_hash"]:
         raise OrchestrationError("final_artifact_verification_failed")
     if disk_claim.get("authorization_id") != preflight["authorization_id"]:
         raise OrchestrationError("final_artifact_verification_failed")

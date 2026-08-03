@@ -6,6 +6,7 @@
   "required": [
     "schema_version",
     "journal_id",
+    "finalization_owner_id",
     "authorization_id",
     "authorization_hash",
     "claim_id",
@@ -28,6 +29,10 @@
     "journal_id": {
       "type": "string",
       "pattern": "^umefj-v1-[0-9a-f]{20}$"
+    },
+    "finalization_owner_id": {
+      "type": "string",
+      "pattern": "^umefo-v1-[0-9a-f]{20}$"
     },
     "authorization_id": {
       "type": "string",
