@@ -1,0 +1,19 @@
+{
+    "contract_version": "m8r_05b_03.v1",
+    "milestone": "M8R-05B-03",
+    "acceptance_status": "accepted",
+    "implementation_stage": "commit_15_final_acceptance_telemetry_sealed",
+    "flags": {
+        "preflight_validation_implemented": true,
+        "consumption_claim_implemented": true,
+        "execution_dispatch_implemented": true,
+        "aggregation_implemented": true,
+        "receipt_implemented": true,
+        "consumption_finalization_implemented": true,
+        "final_execution_closure_implemented": true
+    },
+    "acceptance_date": "2026-08-03T10:48:00Z",
+    "accepted_by": "owner_authoritative_acceptance",
+    "evidence_bundle_hash": "9cfd4331b5964b972e5f28a1645c7a77481215a3efe0b551a6e6fbeb2bc75859",
+    "notes": "M8R-05B-03 formal closure accepted. 20 failures individually revalidated and classified as non-causal to M8R-05B-03; several are direct Windows encoding/import-path failures, while cascade classifications rely on documented upstream failure chains."
+}

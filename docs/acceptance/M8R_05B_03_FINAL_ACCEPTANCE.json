@@ -1,0 +1,250 @@
+{
+    "milestone": "M8R-05B-03",
+    "acceptance_date": "2026-08-03T10:48:00Z",
+    "accepted_by": "owner_authoritative_acceptance",
+    "implementation_code_head": "718b67d49dd4e6b148ed83ae0e9cf025c956029b",
+    "acceptance_evaluation_parent": "bfec39042a07f82257d25bcc8efebf458362b2a6",
+    "full_non_network_tested_head": "6998157705df40e6f33fc11683cfc4e7f77e7516",
+    "test_results": {
+        "M8R_05B_03": {
+            "passed": 108,
+            "failed": 0,
+            "command": "python -m pytest (Get-ChildItem tests/unit/test_m8r_05b_03_*.py).FullName -q",
+            "provenance": {
+                "tested_head": "6998157705df40e6f33fc11683cfc4e7f77e7516",
+                "run_timestamp": "2026-08-03T10:44:23Z",
+                "freshly_rerun_at_commit_14": true
+            }
+        },
+        "M8R_05B_02": {
+            "passed": 55,
+            "failed": 0,
+            "command": "python -m pytest (Get-ChildItem tests/unit/test_m8r_05b_02_*.py).FullName -q",
+            "provenance": {
+                "tested_head": "6998157705df40e6f33fc11683cfc4e7f77e7516",
+                "run_timestamp": "2026-08-03T10:44:23Z",
+                "freshly_rerun_at_commit_14": true
+            }
+        },
+        "M8R_05B_01": {
+            "passed": 58,
+            "failed": 0,
+            "command": "python -m pytest tests/unit/test_m8r_05b_01_schema.py tests/unit/test_m8r_05b_01_canonical.py tests/unit/test_m8r_05b_01_planner.py tests/unit/test_m8r_05b_01_cli.py tests/unit/test_m8r_05b_01_no_execution_boundary.py tests/unit/test_m8r_05b_01_golden.py -q",
+            "provenance": {
+                "tested_head": "6998157705df40e6f33fc11683cfc4e7f77e7516",
+                "run_timestamp": "2026-08-03T10:44:23Z",
+                "freshly_rerun_at_commit_14": true
+            }
+        },
+        "fixed_upstream_gate": {
+            "passed": 44,
+            "failed": 0,
+            "command": "python -m pytest tests/test_m8r_05a_f3.py tests/test_m8r_05a_f3_integration.py tests/test_m8r_05a_f3_snapshot_immutability.py tests/unit/test_m8r_05b_00_commit1_inventory_consistency.py tests/unit/test_m8r_05b_00_handoff_preflight.py -q",
+            "provenance": {
+                "tested_head": "6998157705df40e6f33fc11683cfc4e7f77e7516",
+                "run_timestamp": "2026-08-03T10:44:23Z",
+                "freshly_rerun_at_commit_14": true
+            }
+        },
+        "full_non_network": {
+            "passed": 2053,
+            "failed": 43,
+            "command": "python -m pytest -m \"not network\" -q",
+            "environment": "isolated detached HEAD worktree",
+            "notes": "43 failures in full profile. 23 retained from baseline M8R-05A-F2/F3.",
+            "skipped": 5,
+            "deselected": 1,
+            "exit_code": 1
+        }
+    },
+    "crash_phase_matrix": {
+        "after_journal_acquired": "proved",
+        "after_receipt_staged": "proved",
+        "after_bundle_staged": "proved",
+        "after_receipt_promoted": "proved",
+        "after_bundle_promoted": "proved",
+        "after_artifacts_committed": "proved",
+        "after_claim_committed_before_journal": "proved"
+    },
+    "concurrency_mutation_counters": {
+        "journal_acquired": "exactly_once",
+        "receipt_staged": "exactly_once",
+        "bundle_staged": "exactly_once",
+        "receipt_promoted": "exactly_once",
+        "bundle_promoted": "exactly_once",
+        "claim_committed": "exactly_once"
+    },
+    "dry_run_claim_replay_proof": "proved",
+    "evidence_artifact_verification": "proved",
+    "durable_cross_link_verification": "proved",
+    "boundary_checks": {
+        "no_live_network_execution": true,
+        "no_frontend_mutation": true,
+        "no_secret_addition": true,
+        "no_background_service": true
+    },
+    "static_checks": {
+        "compileall": "pass",
+        "json_schema": "pass",
+        "git_diff_check": "pass"
+    },
+    "caveats": [
+        "Recovery requires caller to provide original preflight/claim_record/aggregation fields rather than reading them strictly from durable storage, fail-closed implemented if mismatched.",
+        "Testing artifact temp files verified cleanly removed."
+    ],
+    "next_task_decision": "pending_owner_roadmap_decision",
+    "candidates": [
+        "M8R-05A-F2",
+        "M8R-05C"
+    ],
+    "acceptance_evidence_hash": "9cfd4331b5964b972e5f28a1645c7a77481215a3efe0b551a6e6fbeb2bc75859",
+    "isolated_failure_revalidation": {
+        "run_timestamp": "2026-08-03T10:44:00Z",
+        "tested_head": "6998157705df40e6f33fc11683cfc4e7f77e7516",
+        "environment": "fresh isolated detached HEAD worktree",
+        "failures_classification": [
+            {
+                "node_id": "tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
+                "exact_failure_message": "E   AssertionError: {\nE       \"final_status\": \"fail\",\nE       \"failed_checks\": [",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_frontend_readonly_static_contracts.py::test_required_wording_exists_and_forbidden_positive_claims_absent",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0xe2 in position 771: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_frontend_readonly_static_contracts.py::test_required_wording_exists_and_forbidden_positive_claims_absent",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_m5c_staging_failure_injection.py::test_execute_blocks_existing_destination_without_second_promotion",
+                "exact_failure_message": "E   ModuleNotFoundError: No module named 'validate_m5c_staging_promotion_authorization'\n=========================== short test summary info ===========================\nERROR tests/unit/test_m5c_staging_failure_injection.py",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_import_path",
+                "causal_relation_to_05b03": "Test fails with ModuleNotFoundError when run in isolation because sys.path does not include the scripts directory. Unrelated to M8R-05B-03 logic."
+            },
+            {
+                "node_id": "tests/unit/test_m5c_staging_promotion.py::test_one_command_preflight_shape",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0xe5 in position 1144: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m5c_staging_promotion.py::test_one_command_preflight_shape",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_m5c_staging_promotion.py::test_rollback_failure_injection_no_mutation",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0xe5 in position 1144: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m5c_staging_promotion.py::test_rollback_failure_injection_no_mutation",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_m5c_staging_promotion.py::test_tampered_manifest_blocked",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0xe5 in position 1144: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m5c_staging_promotion.py::test_tampered_manifest_blocked",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_m5c_staging_rollback.py::test_rollback_failure_injection_no_mutation",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0xe5 in position 1144: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m5c_staging_rollback.py::test_rollback_failure_injection_no_mutation",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_m5e_controlled_frontend_publication.py::test_check_only_fail_closed",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0xe2 in position 624: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m5e_controlled_frontend_publication.py::test_check_only_fail_closed",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_m5e_controlled_frontend_publication.py::test_frontend_public_unchanged",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0xe2 in position 624: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m5e_controlled_frontend_publication.py::test_frontend_public_unchanged",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_m5e_controlled_frontend_publication.py::test_preview_static_dom_contract",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0xe2 in position 771: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m5e_controlled_frontend_publication.py::test_preview_static_dom_contract",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_m5fgh_consumer_consistency.py::test_demo_json_summary",
+                "exact_failure_message": "E   subprocess.CalledProcessError: Command '['C:\\\\Users\\\\weitang\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', 'scripts/run_m5fgh_local_product_demo.py', '--check-only']' returned non-zero exit status 1.\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m5fgh_consumer_consistency.py::test_demo_json_summary",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding_cascaded",
+                "causal_relation_to_05b03": "Cascading failure from CP950 decode error inside the subprocess. Unrelated to M8R-05B-03 logic."
+            },
+            {
+                "node_id": "tests/unit/test_m5fgh_frontend_static.py::test_frontend_static_uses_m5f_and_safe_dom",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0xe2 in position 4998: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m5fgh_frontend_static.py::test_frontend_static_uses_m5f_and_safe_dom",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_m5ij_end_to_end_acceptance.py::test_m5e_supersession_accepted_by_default",
+                "exact_failure_message": "E   AssertionError: assert 'failed' == 'passed'\nE     \nE     - passed",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding_cascaded",
+                "causal_relation_to_05b03": "Cascading failure from Windows CP950 decoding error in subprocess or pathlib when reading UTF-8 files. Unrelated to M8R-05B-03."
+            },
+            {
+                "node_id": "tests/unit/test_m5ij_end_to_end_acceptance.py::test_m5ij_acceptance_check_only_passes",
+                "exact_failure_message": "E   AssertionError: {\nE       \"checks\": [\nE         {",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_m8_controlled_conversation_context_integration.py::test_pure_projection_no_network_runtime_imports",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0xe2 in position 18761: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m8_controlled_conversation_context_integration.py::test_pure_projection_no_network_runtime_imports",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_6488_bounded_seed_classifies_equity_and_unknown_fails_closed",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0xe5 in position 86: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_6488_bounded_seed_classifies_equity_and_unknown_fails_closed",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_parse_normal_classifies_and_omits_extension_fields",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0xe5 in position 86: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_parse_normal_classifies_and_omits_extension_fields",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_unclassified_and_signed_change_and_duplicate",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0xe5 in position 86: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_unclassified_and_signed_change_and_duplicate",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_m8b_final_acceptance.py::test_m8b_final_acceptance_and_registry",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0x80 in position 3437: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m8b_final_acceptance.py::test_m8b_final_acceptance_and_registry",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            },
+            {
+                "node_id": "tests/unit/test_run_m5c_staging_promotion_preflight.py::test_one_command_preflight_shape",
+                "exact_failure_message": "E   UnicodeDecodeError: 'cp950' codec can't decode byte 0xe5 in position 1144: illegal multibyte sequence\n=========================== short test summary info ===========================\nFAILED tests/unit/test_run_m5c_staging_promotion_preflight.py::test_one_command_preflight_shape",
+                "isolated_rerun_result": "FAILED",
+                "root_cause_category": "environment_state_induced_windows_encoding",
+                "causal_relation_to_05b03": "Failure occurs because Windows Python uses CP950 by default in pathlib.Path.read_text() when reading UTF-8 files (like markdown or JSON) without specifying encoding='utf-8'. Unrelated to M8R-05B-03 orchestrator logic."
+            }
+        ],
+        "summary": "20 failures individually revalidated and classified as non-causal to M8R-05B-03; several are direct Windows encoding/import-path failures, while cascade classifications rely on documented upstream failure chains."
+    },
+    "closure_parent": "c55e6b96a581065d14679fdfe00d158c060edffb"
+}
