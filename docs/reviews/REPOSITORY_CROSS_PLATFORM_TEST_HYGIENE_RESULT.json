@@ -2,7 +2,7 @@
   "status": "pass_with_caveats",
   "baseline_main_sha": "e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388",
   "implementation_parent_sha": "e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388",
-  "tested_pr_head_sha": "66781c7f7e8288d6bc35b5424edd8ef456918dfa",
+  "tested_pr_head_sha": "d6bfc1e06be82b44e9b0b8074097de0cb4798ca0",
   "environment": {
     "os": "Linux (Ubuntu)",
     "python_version": "3.12.13",
@@ -136,5 +136,7 @@
   "known_caveats": [
     "Linux same-environment regression closure passed with zero novel failures. Windows-specific CP950 closure remains unverified because no Windows rerun was performed."
   ],
-  "recommended_follow_up": "Merge PR-B. M8R-05C can now commence."
+  "recommended_follow_up": "Merge PR-B. M8R-05C can now commence.",
+  "tested_implementation_tree_sha": "d6bfc1e06be82b44e9b0b8074097de0cb4798ca0",
+  "evidence_commit_sha": "pending"
 }
