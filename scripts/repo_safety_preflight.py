@@ -20,7 +20,7 @@ def evaluate_repo_safety(repo_root, changed_files=None, required_files=None):
 def main(argv=None):
     ap=argparse.ArgumentParser(); ap.add_argument('--repo-root',default='.'); ap.add_argument('--changed-files',nargs='*',default=[]); ap.add_argument('--changed-files-file'); ap.add_argument('--json',action='store_true')
     a=ap.parse_args(argv); files=list(a.changed_files)
-    if a.changed_files_file: files += [x.strip() for x in Path(a.changed_files_file).read_text().splitlines() if x.strip()]
+    if a.changed_files_file: files += [x.strip() for x in Path(a.changed_files_file).read_text(encoding="utf-8").splitlines() if x.strip()]
     r=evaluate_repo_safety(a.repo_root, files)
     print(json.dumps(r,indent=2,sort_keys=True) if a.json else ('OK' if r['ok'] else 'FAILED'))
     return 0 if r['ok'] else 1

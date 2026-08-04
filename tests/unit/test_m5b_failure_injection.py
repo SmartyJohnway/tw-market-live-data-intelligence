@@ -14,10 +14,10 @@ REQ = 'tests/fixtures/authorization/valid_m5a_live_probe_request.json'
 
 
 def copy_auth(**updates):
-    data = json.loads(AUTH.read_text())
+    data = json.loads(AUTH.read_text(encoding="utf-8"))
     data.update(updates)
     path = Path(tempfile.mkdtemp()) / 'auth.json'
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     return str(path)
 
 
@@ -94,12 +94,12 @@ def test_attempted_full_raw_payload_retention_guard(tmp_path):
         'rows': [{'symbol': '2330', 'raw_full_response': {'unexpected': 'payload'}}],
     }
     for name in ['authorization_snapshot.json', 'request_snapshot.json', 'execution_receipt.json']:
-        (run_dir / name).write_text(json.dumps({'name': name}))
-    (run_dir / 'bounded_probe_result.json').write_text(json.dumps(result))
-    (run_dir / 'bounded_normalized_rows.json').write_text(json.dumps(result))
-    (run_dir / 'source_contract_assessment.json').write_text(json.dumps({'x': 1}))
-    (run_dir / 'freshness_delay_assessment.json').write_text(json.dumps({'x': 1}))
-    (run_dir / 'run_summary.json').write_text(json.dumps({'run_id': 'run'}))
+        (run_dir / name).write_text(json.dumps({'name': name}), encoding="utf-8")
+    (run_dir / 'bounded_probe_result.json').write_text(json.dumps(result), encoding="utf-8")
+    (run_dir / 'bounded_normalized_rows.json').write_text(json.dumps(result), encoding="utf-8")
+    (run_dir / 'source_contract_assessment.json').write_text(json.dumps({'x': 1}), encoding="utf-8")
+    (run_dir / 'freshness_delay_assessment.json').write_text(json.dumps({'x': 1}), encoding="utf-8")
+    (run_dir / 'run_summary.json').write_text(json.dumps({'run_id': 'run'}), encoding="utf-8")
     with pytest.raises(ValueError, match='forbidden'):
         build(run_dir)
 
@@ -142,7 +142,7 @@ def test_execute_http_400_returns_nonzero_and_no_staging_candidate(monkeypatch, 
     assert runner.execute(args) == 1
     assert calls['count'] == 1
     assert not (tmp_path / 'run' / 'staging_candidate.json').exists()
-    receipt = json.loads((tmp_path / 'run' / 'execution_receipt.json').read_text())
+    receipt = json.loads((tmp_path / 'run' / 'execution_receipt.json').read_text(encoding="utf-8"))
     assert receipt['authorization_consumed'] is True
     assert receipt['contract_status'] == 'http_failed'
 
@@ -167,7 +167,7 @@ def test_consumption_update_failure_after_finalization_preserves_package(monkeyp
 
     def fake_write_artifacts(out, *args, **kwargs):
         out.mkdir(parents=True, exist_ok=True)
-        (out / 'sha256_manifest.json').write_text(json.dumps({'manifest_final': True, 'sentinel': 'preserve'}))
+        (out / 'sha256_manifest.json').write_text(json.dumps({'manifest_final': True, 'sentinel': 'preserve'}), encoding="utf-8")
         return 'normalized_pass'
 
     update_calls = {'count': 0}
@@ -188,6 +188,6 @@ def test_consumption_update_failure_after_finalization_preserves_package(monkeyp
         'authorization': auth_path, 'request': REQ, 'output_dir': str(tmp_path / 'run'), 'attempt_count': 1,
     })()
     assert runner.execute(args) == 1
-    manifest = json.loads((tmp_path / 'run' / 'sha256_manifest.json').read_text())
+    manifest = json.loads((tmp_path / 'run' / 'sha256_manifest.json').read_text(encoding="utf-8"))
     assert manifest == {'manifest_final': True, 'sentinel': 'preserve'}
     assert not (tmp_path / 'run' / 'bounded_probe_result.json').exists()

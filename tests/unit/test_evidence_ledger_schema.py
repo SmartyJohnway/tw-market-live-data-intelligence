@@ -2,7 +2,7 @@ from pathlib import Path
 import json
 from jsonschema import Draft202012Validator
 ROOT=Path(__file__).resolve().parents[2]
-def load(p): return json.loads((ROOT/p).read_text())
+def load(p): return json.loads((ROOT/p).read_text(encoding="utf-8"))
 from scripts.json_schema_validation import validate_json_schema
 
 def test_evidence_schema_fields():

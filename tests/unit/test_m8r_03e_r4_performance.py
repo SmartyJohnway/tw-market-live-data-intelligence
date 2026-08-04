@@ -2,7 +2,7 @@ import copy,json
 from pathlib import Path
 from scripts.run_m8r_03e_r4_performance import verify
 ROOT=Path(__file__).resolve().parents[2]
-def load(): return json.loads((ROOT/'docs/quality/m8r_03e_r4_performance_baseline.json').read_text())
+def load(): return json.loads((ROOT/'docs/quality/m8r_03e_r4_performance_baseline.json').read_text(encoding="utf-8"))
 def test_baseline_verifies_and_scaling_is_explicitly_unsupported():
  b=load(); assert verify(b)
  s={x['scenario_id']:x for x in b['scenarios']}

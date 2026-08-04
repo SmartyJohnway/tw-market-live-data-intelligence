@@ -21,10 +21,10 @@ def _is_forbidden_tmp_root(path: Path) -> bool:
     return False
 def _copy(base:Path, name:str):
     d=base/name; shutil.copytree(RUN_DIR,d); return d
-def _write(p:Path,obj): p.write_text(json.dumps(obj,indent=2,sort_keys=True)+"\n")
+def _write(p:Path,obj): p.write_text(json.dumps(obj,indent=2,sort_keys=True)+"\n", encoding="utf-8")
 def _run_scenarios(base:Path):
     out=[]; scenarios={}
-    d=_copy(base,'tampered_manifest'); (d/'staging_candidate.json').write_text((d/'staging_candidate.json').read_text().replace('TWSE_OpenAPI','BAD',1)); scenarios['tampered_manifest']=(d,{'manifest_sha256_mismatch'})
+    d=_copy(base,'tampered_manifest'); (d/'staging_candidate.json').write_text((d/'staging_candidate.json').read_text(encoding="utf-8").replace('TWSE_OpenAPI','BAD',1)); scenarios['tampered_manifest']=(d,{'manifest_sha256_mismatch'})
     d=_copy(base,'missing_artifact'); (d/'evidence_ledger.json').unlink(); scenarios['missing_artifact']=(d,{'manifest_artifact_missing','missing_required_artifact'})
     d=_copy(base,'stale_historical_evidence'); scenarios['stale_historical_evidence']=(d,{'stale_historical_evidence_not_current'})
     d=_copy(base,'unauthorized_target'); c=load(d/'staging_candidate.json'); c['requested_targets'].append('9999'); c['rows'][0]['symbol']='9999'; _write(d/'staging_candidate.json',c); scenarios['unauthorized_target']=(d,{'target_drift'})
@@ -33,7 +33,7 @@ def _run_scenarios(base:Path):
         c=load(d/fn); c['contract_status']='failed'; _write(d/fn,c)
     scenarios['contract_failure']=(d,{'contract_status_blocked'})
     d=_copy(base,'forbidden_realtime_trading_flag'); c=load(d/'staging_candidate.json'); c['realtime_guaranteed']=True; c['trading_signal']=True; _write(d/'staging_candidate.json',c); scenarios['forbidden_realtime_trading_flag']=(d,{'forbidden_flag'})
-    d=_copy(base,'partial_write_simulation'); (d/'partial.tmp').write_text('partial simulation marker'); scenarios['partial_write_simulation']=(d,{'partial_write_detected'})
+    d=_copy(base,'partial_write_simulation'); (d/'partial.tmp').write_text('partial simulation marker', encoding="utf-8"); scenarios['partial_write_simulation']=(d,{'partial_write_detected'})
     failed=False
     for name,(d,expected) in scenarios.items():
         v=verify_evidence(d); codes={e.get('code') for e in v['errors']}

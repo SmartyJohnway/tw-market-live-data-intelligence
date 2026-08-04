@@ -12,7 +12,7 @@ from scripts.build_frontend_readonly_context_package import build_frontend_reado
 REQ='docs/authorization/requests/M5C_TWSE_OPENAPI_STAGING_PROMOTION_REQUEST.json'
 def copy_run(tmp_path):
     dst=tmp_path/RUN_DIR.name; shutil.copytree(RUN_DIR,dst); return dst
-def write_json(path,obj): path.write_text(json.dumps(obj,indent=2,sort_keys=True)+"\n")
+def write_json(path,obj): path.write_text(json.dumps(obj,indent=2,sort_keys=True)+"\n", encoding="utf-8")
 def test_valid_m5b_evidence_eligible(): assert assess()['status']=='eligible_for_user_authorization'
 def test_tampered_manifest_blocked(tmp_path):
     d=copy_run(tmp_path); p=d/'staging_candidate.json'; p.write_text(p.read_text(encoding="utf-8").replace('TWSE_OpenAPI','BAD',1)); codes={e['code'] for e in verify_evidence(d)['errors']}; assert 'manifest_sha256_mismatch' in codes

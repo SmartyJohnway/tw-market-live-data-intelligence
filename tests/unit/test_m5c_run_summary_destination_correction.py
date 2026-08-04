@@ -5,7 +5,7 @@ def test_run_summary_destination_correction_validates():
     assert validate()==[]
 
 def test_run_summary_destination_correction_blocks_tamper(tmp_path):
-    data=json.loads(CORRECTION.read_text())
+    data=json.loads(CORRECTION.read_text(encoding="utf-8"))
     data['recorded_value']='research/staging/m5c/m5c_twse_openapi_20260627_authorized_01'
-    p=tmp_path/'correction.json'; p.write_text(json.dumps(data))
+    p=tmp_path/'correction.json'; p.write_text(json.dumps(data), encoding="utf-8")
     assert validate(p)

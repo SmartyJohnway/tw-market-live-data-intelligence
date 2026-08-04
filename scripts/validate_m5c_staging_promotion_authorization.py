@@ -9,7 +9,7 @@ RUN=Path('research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z')
 DEST='research/staging/m5c/m5c_twse_openapi_20260627_authorized_01'
 TARGETS=['2330','0050','00929']
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
-def load(p): return json.loads(Path(p).read_text())
+def load(p): return json.loads(Path(p).read_text(encoding="utf-8"))
 def _schema_errors(data):
     schema=load(SCHEMA)
     return [{'code':'schema_error','path':'$' + ''.join(f'/{x}' for x in e.path),'detail':e.message} for e in Draft202012Validator(schema).iter_errors(data)]

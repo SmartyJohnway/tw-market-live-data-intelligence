@@ -180,7 +180,7 @@ def test_cli_reread_source_validation_remains_active(tmp_path):
     cmd=[sys.executable,'scripts/run_m8r_03e_watchlist_ai_context_handoff.py','--request',str(case/'request.json'),'--execution-plan',str(case/'execution_plan.json'),'--execution-result',str(case/'execution_result.json'),'--bundle',str(case/'bundle.json'),'--output-root',str(out),'--generated-at-utc','2026-07-16T03:00:00Z']
     r=subprocess.run(cmd,capture_output=True,text=True)
     assert r.returncode==0, r.stderr
-    manifest=json.loads(next(out.rglob('watchlist_ai_context_manifest.json')).read_text())
+    manifest=json.loads(next(out.rglob('watchlist_ai_context_manifest.json')).read_text(encoding="utf-8"))
     assert manifest['validation_status']=='passed'
 
 def test_budget_removes_current_coverage_and_handoff_latest_not_answerable():

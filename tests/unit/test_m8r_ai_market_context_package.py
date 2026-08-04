@@ -261,7 +261,7 @@ def test_fixture_files_are_small_and_present():
 
 
 def test_boundary_no_network_or_product_surface_imports():
-    text = Path("scripts/m8r_ai_market_context_package.py").read_text()
+    text = Path("scripts/m8r_ai_market_context_package.py").read_text(encoding="utf-8")
     banned_imports = ["import requests", "import urllib", "import httpx", "FastAPI", "@app.", "sqlite3"]
     assert not any(item in text for item in banned_imports)
     assert PROD["production_executor_adapters_ready"] is True and PROD["production_live_execution_ready"] is False

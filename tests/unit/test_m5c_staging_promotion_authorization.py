@@ -6,10 +6,10 @@ def test_m5c_authorization_binding_passes():
     assert validate() == []
 
 def test_m5c_authorization_schema_blocks_extra_and_wrong_destination(tmp_path):
-    data=json.loads(AUTH.read_text())
+    data=json.loads(AUTH.read_text(encoding="utf-8"))
     data['destination']='research/staging/m5c/other'
     data['extra']='forbidden'
-    p=tmp_path/'auth.json'; p.write_text(json.dumps(data))
+    p=tmp_path/'auth.json'; p.write_text(json.dumps(data), encoding="utf-8")
     codes={e['code'] for e in validate(p)}
     assert 'schema_error' in codes
     assert 'binding_mismatch' in codes

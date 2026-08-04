@@ -5,11 +5,11 @@ from scripts.m8r_05b_01.canonical import sha256_json
 from scripts.m8r_05b_01.models import PLANNER_VERSION,PlanningError
 from scripts.m8r_05b_01.planner import build_plan,ROUTING_VERSION,HANDOFF_VERSION
 ROOT=Path('.')
-CAT=json.loads((ROOT/'docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json').read_text())
-ROUTE=json.loads((ROOT/'docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.json').read_text())
-HAND=json.loads((ROOT/'docs/data_capabilities/m8r_05b_orchestration_handoff_contract.json').read_text())
-INV=json.loads((ROOT/'docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json').read_text())
-SCHEMA=json.loads((ROOT/'schemas/unified_market_evidence_orchestration_plan.v1.schema.json').read_text())
+CAT=json.loads((ROOT/'docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json').read_text(encoding="utf-8"))
+ROUTE=json.loads((ROOT/'docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.json').read_text(encoding="utf-8"))
+HAND=json.loads((ROOT/'docs/data_capabilities/m8r_05b_orchestration_handoff_contract.json').read_text(encoding="utf-8"))
+INV=json.loads((ROOT/'docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json').read_text(encoding="utf-8"))
+SCHEMA=json.loads((ROOT/'schemas/unified_market_evidence_orchestration_plan.v1.schema.json').read_text(encoding="utf-8"))
 
 def bindings(v): return {'original_request_hash':'1'*64,'normalized_request_hash':'2'*64,'f3_validation_output_hash':sha256_json(v),'security_master_evidence_references':['master-b','master-a'],'security_master_artifact_hashes':['b'*64,'a'*64],'capability_catalog_hash':sha256_json(CAT),'planner_version':PLANNER_VERSION,'routing_matrix_version':ROUTING_VERSION,'routing_matrix_hash':sha256_json(ROUTE),'handoff_contract_version':HANDOFF_VERSION,'handoff_contract_hash':sha256_json(HAND)}
 def validation(cap='current_observation',priority='required',status='runtime_executable',market='TWSE',targets=None):

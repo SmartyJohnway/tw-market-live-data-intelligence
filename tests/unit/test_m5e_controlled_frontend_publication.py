@@ -31,8 +31,8 @@ def make_auth(tmp_path, **over):
     tok={'authorization_id':base['authorization_id'],'allowed_action':base.get('allowed_action'),'single_use':True,'single_use_id':base.get('single_use_id','once'),'candidate_dir':base.get('candidate_dir'),'candidate_manifest_sha256':base.get('candidate_manifest_sha256'),'destination':base.get('destination'),'frontend_baseline_sha256':base.get('frontend_baseline_sha256'),'m5c_lineage_hashes':base.get('m5c_lineage_hashes'),'expires_at_epoch':base['expires_at_epoch']}
     tok['token_sha256']=m5e.canonical_hash(tok)
     base['token_sha256']=tok['token_sha256']
-    dec=tmp_path/'decision.json'; dec.write_text(json.dumps(base))
-    token=tmp_path/'token.json'; token.write_text(json.dumps(tok)); return dec,token
+    dec=tmp_path/'decision.json'; dec.write_text(json.dumps(base), encoding="utf-8")
+    token=tmp_path/'token.json'; token.write_text(json.dumps(tok), encoding="utf-8"); return dec,token
 
 
 def tx_kwargs(tmp_path, src, auth_id='auth-tx'):
@@ -52,10 +52,10 @@ def test_schema_invalid_auth_returns_structured_errors(tmp_path):
 
 def test_token_hash_integrity(tmp_path):
     d,t=make_auth(tmp_path)
-    token=json.loads(t.read_text(encoding="utf-8")); token['token_sha256']='0'*64; t.write_text(json.dumps(token))
+    token=json.loads(t.read_text(encoding="utf-8")); token['token_sha256']='0'*64; t.write_text(json.dumps(token), encoding="utf-8")
     errs=m5e.validate_auth(d,t)
     assert 'token_sha256_mismatch' in errs
-    decision=json.loads(d.read_text(encoding="utf-8")); decision['token_sha256']='0'*64; d.write_text(json.dumps(decision))
+    decision=json.loads(d.read_text(encoding="utf-8")); decision['token_sha256']='0'*64; d.write_text(json.dumps(decision), encoding="utf-8")
     errs=m5e.validate_auth(d,t)
     assert 'decision_token_sha256_binding_mismatch' in errs
 
@@ -162,7 +162,7 @@ def test_after_receipt_recovery_rejects_wrong_authorization_binding(tmp_path):
     with pytest.raises(RuntimeError):
         m5e.publish_transaction(src,dest,journal,crash_at='after_receipt',**tx_kwargs(tmp_path, src, 'after-receipt-bind'))
     receipt_path=journal/'publication_receipt.json'
-    receipt=json.loads(receipt_path.read_text(encoding="utf-8")); receipt['authorization_id']='other-auth'; receipt_path.write_text(json.dumps(receipt))
+    receipt=json.loads(receipt_path.read_text(encoding="utf-8")); receipt['authorization_id']='other-auth'; receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
     rec=m5e.recover(dest,journal)
     assert rec['status']=='manual_recovery_required'
 

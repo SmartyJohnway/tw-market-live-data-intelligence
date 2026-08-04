@@ -6,7 +6,7 @@ AUDIT=Path('research/staging/m5c/supplemental_audit/M5C_TWSE_OPENAPI_STAGING_PRO
 SCHEMA=Path('docs/authorization/m5c_supplemental_audit_schema.json')
 PKG=Path('research/staging/m5c/m5c_twse_openapi_20260627_authorized_01')
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
-def load(p): return json.loads(Path(p).read_text())
+def load(p): return json.loads(Path(p).read_text(encoding="utf-8"))
 def validate(path=AUDIT, package_dir=PKG):
     package_dir=Path(package_dir)
     data=load(path); schema=load(SCHEMA); errs=[]

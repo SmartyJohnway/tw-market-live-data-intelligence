@@ -9,5 +9,5 @@ def validate_manifest(manifest):
   if h!=row.get('sha256'): e.append({'code':'hash_mismatch','path':row['path']})
  return e
 def main(argv=None):
- ap=argparse.ArgumentParser(); ap.add_argument('--manifest',required=True); a=ap.parse_args(argv); errs=validate_manifest(json.loads(Path(a.manifest).read_text())); print(json.dumps({'ok':not errs,'errors':errs},indent=2)); return 0 if not errs else 1
+ ap=argparse.ArgumentParser(); ap.add_argument('--manifest',required=True); a=ap.parse_args(argv); errs=validate_manifest(json.loads(Path(a.manifest).read_text(encoding="utf-8"))); print(json.dumps({'ok':not errs,'errors':errs},indent=2)); return 0 if not errs else 1
 if __name__=='__main__': raise SystemExit(main())

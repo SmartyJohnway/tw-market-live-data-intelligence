@@ -6,7 +6,7 @@ from scripts.m8r_03d_watchlist_execution_plan import build_execution_plan, canon
 from scripts.m8r_03d_watchlist_controlled_executor import execute_watchlist
 from scripts.m8r_03d_watchlist_source_integration import normalize_twse_mis_watchlist_observation, normalize_twse_openapi_watchlist_observation
 FIX=Path('tests/fixtures/m8r_03d'); C=Path('tests/fixtures/m8r_03c')
-def load(p): return json.loads(Path(p).read_text())
+def load(p): return json.loads(Path(p).read_text(encoding="utf-8"))
 SM={('listed','2330'):{'instrument_type':'equity','name':'台積電','listing_status':'active','lifecycle_state':'active','source':'test'},('listed','2317'):{'instrument_type':'equity','name':'鴻海','listing_status':'active','lifecycle_state':'active','source':'test'},('tpex_otc','6488'):{'instrument_type':'equity','name':'環球晶','listing_status':'active','lifecycle_state':'active','source':'test'},('listed','1111'):{'instrument_type':'equity','listing_status':'delisted','lifecycle_state':'inactive','source':'test'},('listed','1234'):{'instrument_type':'warrant','listing_status':'active','lifecycle_state':'active','source':'test'},('listed','2222'):{'instrument_type':'equity','name':'NoLifecycle','source':'test'},('listed','3333'):{'instrument_type':'equity','name':'ListedLane','source':'test'},('tpex_otc','3333'):{'instrument_type':'equity','name':'OtcLane','source':'test'}}
 def auth(req,plan,**kw):
     return {'schema_version':AUTH_SCHEMA_VERSION,'authorization_id':'auth-1','one_shot_nonce':'nonce-1','issued_at_utc':'2026-07-16T00:00:00Z','expires_at_utc':'2026-07-17T00:00:00Z','authorized_request_hash':canonical_request_hash(req),'authorized_bundle_types':['snapshot','performance'],'authorized_source_families':['TWSE_MIS','TWSE_OPENAPI','TPEX_OPENAPI'],'authorized_target_ids':plan['target_order'],'max_target_count':MAX_WATCHLIST_TARGETS,'network_execution_allowed':True,'one_shot_only':True,'polling_allowed':False,'scheduler_allowed':False,'persistent_storage_allowed':False,'raw_payload_retention_allowed':False,'operator_approval':{'approved_by':'test'},**kw}
@@ -103,5 +103,5 @@ def test_execute_authorization_rejections_and_cli(tmp_path, monkeypatch):
     assert execute_watchlist(req,mode='execute',bundle_type='snapshot',authorization=auth(req,plan,authorized_request_hash='0'*64),artifact_root=str(tmp_path),generated_at_utc='2026-07-16T01:30:05Z',security_master=SM)['status']=='authorization_failed'
     out=tmp_path/'out'; cmd=[sys.executable,'scripts/run_m8r_03d_watchlist_controlled_execution.py','--request',str(FIX/'mixed_snapshot_request.json'),'--mode','fixture','--bundle-type','snapshot','--fixture-source-data',str(FIX/'mixed_snapshot_source_data.json'),'--artifact-root',str(out),'--generated-at-utc','2026-07-16T01:30:05Z']
     assert subprocess.run(cmd,capture_output=True,text=True).returncode==0
-    texts='\n'.join(p.read_text() for p in out.rglob('*.json'))
+    texts='\n'.join(p.read_text(encoding="utf-8") for p in out.rglob('*.json'))
     assert not any(x in texts.lower() for x in ['"raw_payload"','cookies','session_id','access_token'])

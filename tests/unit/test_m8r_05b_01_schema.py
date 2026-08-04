@@ -4,7 +4,7 @@ from pathlib import Path
 import jsonschema
 import pytest
 
-SCHEMA=json.loads(Path('schemas/unified_market_evidence_orchestration_plan.v1.schema.json').read_text())
+SCHEMA=json.loads(Path('schemas/unified_market_evidence_orchestration_plan.v1.schema.json').read_text(encoding="utf-8"))
 V=jsonschema.Draft7Validator(SCHEMA, format_checker=jsonschema.FormatChecker())
 H='a'*64
 

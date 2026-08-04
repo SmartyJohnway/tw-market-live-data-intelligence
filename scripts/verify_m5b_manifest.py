@@ -14,7 +14,7 @@ def verify(run_dir: str | Path) -> list[dict]:
     if not manifest_path.exists():
         return [{"code": "manifest_missing", "path": str(manifest_path)}]
     try:
-        manifest_doc = json.loads(manifest_path.read_text())
+        manifest_doc = json.loads(manifest_path.read_text(encoding="utf-8"))
     except Exception as exc:
         return [{"code": "manifest_parse_failed", "path": str(manifest_path), "detail": str(exc)}]
     if manifest_doc.get("manifest_final") is not True:

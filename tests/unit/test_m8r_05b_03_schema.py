@@ -16,13 +16,13 @@ from tests.unit.m8r_05b_03_test_helpers import (
 
 
 def test_preflight_schema_accepts_valid_artifact(tmp_path):
-    schema = json.loads((ROOT / "schemas/unified_market_evidence_orchestrator_preflight.v1.schema.json").read_text())
+    schema = json.loads((ROOT / "schemas/unified_market_evidence_orchestrator_preflight.v1.schema.json").read_text(encoding="utf-8"))
     valid = build_valid_preflight(tmp_path)
     assert not list(Draft202012Validator(schema).iter_errors(valid))
 
 
 def test_execution_request_schema_accepts_valid_projection():
-    schema = json.loads((ROOT / "schemas/unified_market_evidence_execution_request.v1.schema.json").read_text())
+    schema = json.loads((ROOT / "schemas/unified_market_evidence_execution_request.v1.schema.json").read_text(encoding="utf-8"))
     plan, authorization, binding, _state = artifacts()
     from scripts.m8r_05b_03.registry import ExecutorMetadataRegistry
 
@@ -43,7 +43,7 @@ def test_execution_request_schema_accepts_valid_projection():
 
 
 def test_schemas_reject_invalid_payloads():
-    schema = json.loads((ROOT / "schemas/unified_market_evidence_executor_registry_metadata.v1.schema.json").read_text())
+    schema = json.loads((ROOT / "schemas/unified_market_evidence_executor_registry_metadata.v1.schema.json").read_text(encoding="utf-8"))
     valid = registry_metadata()
     assert not list(Draft202012Validator(schema).iter_errors(valid))
     valid["executors"][0]["timeout_seconds"] = "15"
@@ -51,7 +51,7 @@ def test_schemas_reject_invalid_payloads():
 
 
 def test_consumption_record_schema_accepts_claimed_record(tmp_path):
-    schema = json.loads((ROOT / "schemas/unified_market_evidence_consumption_record.v1.schema.json").read_text())
+    schema = json.loads((ROOT / "schemas/unified_market_evidence_consumption_record.v1.schema.json").read_text(encoding="utf-8"))
     _plan, _authorization, _binding, state = artifacts()
     record = build_claim_record(
         build_valid_preflight(tmp_path),

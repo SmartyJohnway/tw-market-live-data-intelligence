@@ -19,15 +19,15 @@ def sim(fail=False, existing=None):
         dest.parent.mkdir(parents=True)
         backup = dest.with_suffix('.json.bak')
         if existing:
-            backup.write_text('{"previous":true}\n')
-            dest.write_text('{"new":true}\n')
+            backup.write_text('{"previous":true}\n', encoding="utf-8")
+            dest.write_text('{"new":true}\n', encoding="utf-8")
             if fail:
                 backup.unlink()
                 return {'status': 'blocked', 'errors': ['rollback_failure'], 'publication_performed': False}
             before = h(backup)
             dest.write_bytes(backup.read_bytes())
             return {'status': 'pass', 'simulation_only': True, 'publication_performed': False, 'rollback_mode': 'restore_existing_destination', 'rollback_hash_restored': h(dest), 'matches_backup': h(dest) == before}
-        dest.write_text('{"new":true}\n')
+        dest.write_text('{"new":true}\n', encoding="utf-8")
         if fail:
             return {'status': 'blocked', 'errors': ['rollback_delete_new_destination_failure'], 'publication_performed': False}
         dest.unlink()

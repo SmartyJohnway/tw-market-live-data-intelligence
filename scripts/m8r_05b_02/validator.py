@@ -8,7 +8,7 @@ from scripts.m8r_05b_01.planner import PLAN_VALIDATOR, plan_identity_scope, vali
 from scripts.m8r_05b_01.canonical import plan_hash_and_id, sha256_json as plan_sha
 from scripts.m8r_05b_01.models import PLANNER_VERSION
 
-def _schema(): return json.loads(Path('schemas/unified_market_evidence_execution_authorization.v1.schema.json').read_text())
+def _schema(): return json.loads(Path('schemas/unified_market_evidence_execution_authorization.v1.schema.json').read_text(encoding="utf-8"))
 def _validate_plan(plan):
  if list(PLAN_VALIDATOR.iter_errors(plan)): raise AuthorizationError('plan_schema_invalid')
  try: validate_batch_integrity(plan['operations'],plan['batch_groups'])

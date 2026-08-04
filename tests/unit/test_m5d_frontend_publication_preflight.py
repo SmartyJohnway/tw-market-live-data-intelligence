@@ -5,10 +5,10 @@ def test_m5d_request_is_request_only():
     assert validate()==[]
 
 def test_m5d_request_rejects_wrong_hash_and_approval_material(tmp_path):
-    data=json.loads(REQ.read_text())
+    data=json.loads(REQ.read_text(encoding="utf-8"))
     data['m5c_staging_manifest_sha256']='0'*64
     data['approval_token']='not-allowed'
-    p=tmp_path/'request.json'; p.write_text(json.dumps(data))
+    p=tmp_path/'request.json'; p.write_text(json.dumps(data), encoding="utf-8")
     codes={e['code'] for e in validate(p)}
     assert 'schema_error' in codes
     assert 'staging_manifest_sha_mismatch' in codes

@@ -28,5 +28,5 @@ def test_stale_delayed_live_candidate_preserved():
     assert payload(freshness_status="live_candidate", delay_status="delayed_candidate")["source_runs"][0]["freshness_status"] == "live_candidate"
 def test_tmp_path_write_success_with_explicit_confirmations(tmp_path): assert write_staging_payload(payload(), tmp_path).exists()
 def test_missing_confirmation_flag_fails_closed(tmp_path):
-    inp=tmp_path/"in.json"; inp.write_text(json.dumps({"generated_at_utc":"x","target_universe":{"symbols":["2330"]},"source_runs":[run()]}))
+    inp=tmp_path/"in.json"; inp.write_text(json.dumps({"generated_at_utc":"x","target_universe":{"symbols":["2330"]},"source_runs":[run()]}), encoding="utf-8")
     with pytest.raises(SystemExit): main(["--input-fixture",str(inp),"--output-dir",str(tmp_path)])

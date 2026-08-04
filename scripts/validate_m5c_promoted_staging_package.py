@@ -14,7 +14,7 @@ TARGETS=['2330','0050','00929']; TARGET_SET=set(TARGETS)
 RUN='research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z'; DEST='research/staging/m5c/m5c_twse_openapi_20260627_authorized_01'; AUTH_ID='M5C_TWSE_OPENAPI_STAGING_PROMOTION_AUTHORIZATION_20260627_AUTHORIZED_01'
 AUTH_PATH=Path('docs/authorization/decisions/M5C_TWSE_OPENAPI_STAGING_PROMOTION_AUTHORIZATION.json'); REQ_PATH=Path('docs/authorization/requests/M5C_TWSE_OPENAPI_STAGING_PROMOTION_REQUEST.json')
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
-def load(p): return json.loads(Path(p).read_text())
+def load(p): return json.loads(Path(p).read_text(encoding="utf-8"))
 def _flag_errors(name,obj):
     errs=[]
     for k,v in {'historical_evidence_snapshot':True,'current_realtime':False,'realtime_guaranteed':False,'staging_only':True,'production_ready':False,'frontend_publication_authorized':False,'generated_artifact_write':False,'trading_signal':False}.items():

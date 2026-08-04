@@ -18,14 +18,14 @@ CONSUME_DIR=Path('research/staging/m5c/authorization_consumption')
 
 def _atomic_write_json(path: Path, data: dict):
     tmp=path.with_name(path.name + '.tmp')
-    tmp.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
+    tmp.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     os.replace(tmp, path)
 def _destination_state():
     dest=Path(DEST)
     return {'exists': dest.exists(), 'is_dir': dest.is_dir(), 'file_count': len(list(dest.iterdir())) if dest.is_dir() else 0}
 def _existing_consumed_at(path: Path, fallback: str):
     try:
-        existing=json.loads(path.read_text())
+        existing=json.loads(path.read_text(encoding="utf-8"))
         return existing.get('consumed_at_utc') or fallback
     except Exception:
         return fallback
@@ -61,8 +61,8 @@ def _build(dst:Path, consumption_path:str):
       'frontend_readonly_context_package.json':{**build_frontend_readonly_context_package(readonly_payload_from_candidate(cand)), **flags, 'badge':'historical/stale','stale_badge':True},
       'run_summary.json':{**base,'status':'pass','destination':DEST,'artifact_count':12},
     }
-    for n,d in docs.items(): (dst/n).write_text(json.dumps(d,indent=2,sort_keys=True)+'\n')
-    manifest={n:sha(dst/n) for n in REQUIRED}; (dst/'sha256_manifest.json').write_text(json.dumps({**base,'manifest_final':True,'immutable':True,'manifest':manifest},indent=2,sort_keys=True)+'\n')
+    for n,d in docs.items(): (dst/n).write_text(json.dumps(d,indent=2,sort_keys=True)+'\n', encoding="utf-8")
+    manifest={n:sha(dst/n) for n in REQUIRED}; (dst/'sha256_manifest.json').write_text(json.dumps({**base,'manifest_final':True,'immutable':True,'manifest':manifest},indent=2,sort_keys=True)+'\n', encoding="utf-8")
 def _validate_built_package_at(path: Path):
     errors=[]
     try:
@@ -72,7 +72,7 @@ def _validate_built_package_at(path: Path):
     errors += verify_manifest(path)
     for name in ('promotion_receipt.json','run_summary.json'):
         try:
-            doc=json.loads((path/name).read_text())
+            doc=json.loads((path/name).read_text(encoding="utf-8"))
         except Exception as exc:
             errors.append({'code':'built_artifact_read_failed','path':name,'detail':str(exc)})
             continue

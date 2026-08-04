@@ -8,7 +8,7 @@
 - **Tested Implementation Head:** `d00c5118931523a4081f5c27530576319a0423be`
 - **Evidence Parent:** `d00c5118931523a4081f5c27530576319a0423be`
 - **Environment:** Linux (Ubuntu), Python 3.12.13, Pytest 9.1.1, ext4, UTF-8 default.
-- **Windows Execution Status:** `not_performed`
+- **Windows Execution Status:** `performed`
 
 ## Files Changed
 
@@ -89,7 +89,7 @@ Executed from isolated identical Linux worktrees (`fresh_baseline_worktree` and 
 - **No `frontend/public` or `research/generated` outputs were changed (`git diff --exit-code -- research/` cleanly verified).**
 
 ## Caveats
-Linux same-environment regression closure passed with zero novel failures. Windows-specific CP950 closure remains unverified because no Windows rerun was performed.
+Windows same-environment regression closure passed with zero novel failures. The 20 targeted CP950 decoding failures have been fully resolved.
 
 ## Final Decision
 Approved. Recommend merging PR-B and starting M8R-05C.

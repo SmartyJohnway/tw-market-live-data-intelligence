@@ -4,20 +4,20 @@ import pytest
 from scripts.m8r_03c_contracts import *
 from scripts.m8r_03c_conversation_contract_validator import *
 FIX=Path('tests/fixtures/m8r_03c')
-def load(n): return json.loads((FIX/n).read_text())
+def load(n): return json.loads((FIX/n).read_text(encoding="utf-8"))
 def test_contract_loader_and_enums_sync():
     c=load_conversation_contract(); e=load_evidence_bundle_contract(); m=compile_contract_metadata()
     assert set(m['scope_modes'])==set(c['scope_modes']['enum'])
     assert set(m['time_modes'])==set(c['time_modes']['enum'])
     assert 'calculated' in m['calculation_statuses'] and 'usable' in m['coverage_states']
 def test_loader_fail_closed(tmp_path):
-    p=tmp_path/'c.json'; p.write_text('{"schema_version":"bad","conversation_intent":{}}')
+    p=tmp_path/'c.json'; p.write_text('{"schema_version":"bad","conversation_intent":{}}', encoding="utf-8")
     with pytest.raises(M8R03CContractError) as e: load_conversation_contract(p)
     assert e.value.code=='unsupported_contract_schema_version'
-    d=load_conversation_contract(); d.pop('conversation_intent'); p.write_text(json.dumps(d))
+    d=load_conversation_contract(); d.pop('conversation_intent'); p.write_text(json.dumps(d), encoding="utf-8")
     with pytest.raises(M8R03CContractError) as e: load_conversation_contract(p)
     assert e.value.code=='required_contract_section_missing'
-    d=load_conversation_contract(); d['conversation_intent']['fields'].append(d['conversation_intent']['fields'][0]); p.write_text(json.dumps(d))
+    d=load_conversation_contract(); d['conversation_intent']['fields'].append(d['conversation_intent']['fields'][0]); p.write_text(json.dumps(d), encoding="utf-8")
     with pytest.raises(M8R03CContractError) as e: load_conversation_contract(p)
     assert e.value.code=='duplicate_field_definition'
 def test_valid_intent_and_unknown_map_policy():

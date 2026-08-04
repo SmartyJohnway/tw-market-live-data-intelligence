@@ -7,7 +7,7 @@ from scripts.m8_multi_source_context_builder import (
 )
 
 ROOT = Path(__file__).resolve().parents[2]
-REGISTRY = json.loads((ROOT / "docs/data_capabilities/m8_source_capability_registry.json").read_text())
+REGISTRY = json.loads((ROOT / "docs/data_capabilities/m8_source_capability_registry.json").read_text(encoding="utf-8"))
 
 
 def _ctx(result, source_id):
@@ -25,7 +25,7 @@ def _obs(source_id="TWSE_MIS", **kw):
 
 
 def test_pure_helper_has_no_network_or_runtime_imports():
-    text = (ROOT / "scripts/m8_multi_source_context_builder.py").read_text().lower()
+    text = (ROOT / "scripts/m8_multi_source_context_builder.py").read_text(encoding="utf-8").lower()
     for forbidden in ["import requests", "import httpx", "urllib.request", "fastapi", "server.main", "frontend", "openai", "import mcp", "from mcp"]:
         assert forbidden not in text
 
@@ -138,7 +138,7 @@ def test_raw_field_scrubbing():
 
 
 def test_inventory_m8_00_05_metadata():
-    inv = json.loads((ROOT / "docs/data_capabilities/twse_mis_rich_field_inventory.json").read_text())
+    inv = json.loads((ROOT / "docs/data_capabilities/twse_mis_rich_field_inventory.json").read_text(encoding="utf-8"))
     entry = inv["rich_observation_contract"]["milestone_snapshots"]["state_at_m8_00_acceptance"]
     assert entry["status"] == "m8_00_final_acceptance_pass_with_caveats"
     assert "M8-00-05" in entry["completed_tasks"]
@@ -154,7 +154,7 @@ def test_inventory_m8_00_05_metadata():
 
 
 def test_default_ci_includes_builder_test():
-    config = json.loads((ROOT / "config/test_execution_profiles.json").read_text())
+    config = json.loads((ROOT / "config/test_execution_profiles.json").read_text(encoding="utf-8"))
     assert "tests/unit/test_m8_multi_source_context_builder.py" in config["profiles"]["default-ci"]["pytest_paths"]
 
 

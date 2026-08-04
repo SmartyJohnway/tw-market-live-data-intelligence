@@ -95,7 +95,7 @@ def test_nested_symlink_escape_rejected(tmp_path):
 def test_destination_symlink_forbidden(tmp_path):
     root = tmp_path/'output'; outside = tmp_path/'outside'
     root.mkdir(); outside.mkdir()
-    target = outside/'target.json'; target.write_text('outside')
+    target = outside/'target.json'; target.write_text('outside', encoding="utf-8")
     try:
         (root/'dest.json').symlink_to(target)
     except (OSError, NotImplementedError):
@@ -116,11 +116,11 @@ def test_root_symlink_is_resolved_as_authorized_root(tmp_path):
 def test_atomic_write_places_temp_inside_root_and_replaces(tmp_path):
     root = tmp_path/'output'
     path = atomic_write_text(root, 'nested/file.json', '{"ok": true}\n')
-    assert path.read_text() == '{"ok": true}\n'
+    assert path.read_text(encoding="utf-8") == '{"ok": true}\n'
     assert path.resolve().is_relative_to(root.resolve())
     assert not list(path.parent.glob('*.tmp'))
     atomic_write_text(root, 'nested/file.json', '{"ok": false}\n')
-    assert 'false' in path.read_text()
+    assert 'false' in path.read_text(encoding="utf-8")
 
 def test_failed_containment_writes_no_output(tmp_path):
     root = tmp_path/'output'

@@ -40,7 +40,7 @@ RUNNER_PRODUCED = {
 
 
 def _write_json(path: Path, obj: dict) -> None:
-    path.write_text(json.dumps(obj, indent=2, ensure_ascii=False, sort_keys=True) + "\n")
+    path.write_text(json.dumps(obj, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def _sha256(path: Path) -> str:
@@ -48,7 +48,7 @@ def _sha256(path: Path) -> str:
 
 
 def _load(path: Path) -> dict:
-    return json.loads(path.read_text())
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def _existing_manifest(run_path: Path) -> bool:

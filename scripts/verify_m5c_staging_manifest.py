@@ -3,7 +3,7 @@ import argparse, hashlib, json
 from pathlib import Path
 REQUIRED={'authorization_snapshot.json','request_snapshot.json','source_binding.json','staging_payload.json','promotion_receipt.json','validation_report.json','lineage.json','evidence_ledger.json','rollback_plan.json','frontend_readonly_context_package.json','run_summary.json'}
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
-def load(p): return json.loads(Path(p).read_text())
+def load(p): return json.loads(Path(p).read_text(encoding="utf-8"))
 def verify(package_dir):
     d=Path(package_dir); errs=[]; mp=d/'sha256_manifest.json'
     if not mp.exists(): return [{'code':'manifest_missing','path':str(mp)}]

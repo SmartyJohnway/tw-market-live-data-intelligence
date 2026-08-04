@@ -17,7 +17,7 @@ def sha256_file(path: str | Path) -> str:
 
 
 def _load_json(path: str | Path) -> dict:
-    return json.loads(Path(path).read_text())
+    return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
 def _receipt_time(receipt_doc: dict) -> datetime | None:

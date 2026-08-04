@@ -39,12 +39,12 @@ def sha(p: Path) -> str:
     return hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
 
 def load(p: Path):
-    return json.loads((ROOT / p).read_text())
+    return json.loads((ROOT / p).read_text(encoding="utf-8"))
 
 def dump(p: Path, d):
     path = ROOT / p
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(d, indent=2, sort_keys=True) + "\n")
+    path.write_text(json.dumps(d, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 def _git_commit_exists(commit: str) -> bool:
     return subprocess.run(['git', 'cat-file', '-e', f'{commit}^{{commit}}'], cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0
@@ -132,7 +132,7 @@ def _materialize_candidate(out_dir: Path):
         'no_temporary_paths': True,
     }
     def write(name, obj):
-        (out_dir / name).write_text(json.dumps(obj, indent=2, sort_keys=True) + "\n")
+        (out_dir / name).write_text(json.dumps(obj, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     out_dir.mkdir(parents=True, exist_ok=True)
     write('market-context.json', {**src, **common, 'schema_version': 'm5d_market_context.v1', 'derived_from': 'reviewed_m5c_frontend_readonly_context_package', 'bindings': bindings})
     write('source_binding.json', {**common, **bindings})
@@ -245,7 +245,7 @@ def validate_candidate(cdir=CAND):
     for caveat in ['not_realtime_guaranteed', 'not_trading_signal', 'not_production_current_state', 'freshness_must_be_displayed']:
         if caveat not in mc.get('global_caveats', []):
             errs.append('missing_caveat:' + caveat)
-    text = '\n'.join((ROOT / p).read_text() for p in c.glob('*.json'))
+    text = '\n'.join((ROOT / p).read_text(encoding="utf-8") for p in c.glob('*.json'))
     if '/tmp/' in text or '.m5c_tmp_' in text:
         errs.append('temporary_path_leakage')
     for artifact in sorted(artifact_names):

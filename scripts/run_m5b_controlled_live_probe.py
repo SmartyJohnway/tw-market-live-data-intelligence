@@ -34,11 +34,11 @@ def _utc_now() -> str:
 
 def _write_json(path: Path, obj: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(obj, indent=2, ensure_ascii=False, sort_keys=True) + "\n")
+    path.write_text(json.dumps(obj, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def _load_json(path: str | Path) -> dict[str, Any]:
-    return json.loads(Path(path).read_text())
+    return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
 def classify_retryable_failure(status: int | None = None, exc: BaseException | None = None) -> bool:
@@ -402,7 +402,7 @@ def execute(args: argparse.Namespace) -> int:
         manifest_path = Path(args.output_dir) / "sha256_manifest.json"
         if manifest_path.exists():
             try:
-                manifest_doc = json.loads(manifest_path.read_text())
+                manifest_doc = json.loads(manifest_path.read_text(encoding="utf-8"))
             except Exception:
                 manifest_doc = {}
             if manifest_doc.get("manifest_final") is True:

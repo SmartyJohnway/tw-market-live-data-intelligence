@@ -36,7 +36,7 @@ def test_cli_outputs_valid_json_and_does_not_write_outputs(tmp_path):
         EVALUATION_TIMESTAMP,
     ]
     before = sorted(path.relative_to(output_root).as_posix() for path in output_root.rglob("*"))
-    result = subprocess.run(args, check=False, capture_output=True, text=True)
+    result = subprocess.run(args, check=False, capture_output=True, text=True, encoding="utf-8")
     after = sorted(path.relative_to(output_root).as_posix() for path in output_root.rglob("*"))
     artifact = json.loads(result.stdout)
     assert result.returncode == 0

@@ -32,7 +32,7 @@ def test_check_only_no_network_no_writes():
     data=json.loads(r.stdout); assert data['network_calls'] is False and data['artifact_writes'] is False
 
 def test_execute_requires_authorization():
-    r=subprocess.run([sys.executable, str(REPO/'scripts/run_m5i_explicit_bounded_refresh.py'), '--execute-refresh', '--source', 'TWSE_OpenAPI', '--targets', '0050'], cwd=REPO, text=True, capture_output=True)
+    r=subprocess.run([sys.executable, str(REPO/'scripts/run_m5i_explicit_bounded_refresh.py'), '--execute-refresh', '--source', 'TWSE_OpenAPI', '--targets', '0050'], cwd=REPO, text=True, capture_output=True, encoding="utf-8")
     assert r.returncode != 0
 
 def test_parse_twse_rows_price_semantics():
@@ -104,10 +104,10 @@ def test_validate_candidate_failed_targets_schema(tmp_path, monkeypatch):
             'targets': targets
         }
         import json, hashlib
-        (candidate_dir / 'market-context.json').write_text(json.dumps(c))
-        (candidate_dir / 'source_binding.json').write_text(json.dumps(b))
-        (candidate_dir / 'refresh_summary.json').write_text('{}')
-        (candidate_dir / 'validation_report.json').write_text('{}')
+        (candidate_dir / 'market-context.json').write_text(json.dumps(c), encoding="utf-8")
+        (candidate_dir / 'source_binding.json').write_text(json.dumps(b), encoding="utf-8")
+        (candidate_dir / 'refresh_summary.json').write_text('{}', encoding="utf-8")
+        (candidate_dir / 'validation_report.json').write_text('{}', encoding="utf-8")
 
         def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
         m = {
@@ -119,7 +119,7 @@ def test_validate_candidate_failed_targets_schema(tmp_path, monkeypatch):
                 'validation_report.json': sha(candidate_dir / 'validation_report.json')
             }
         }
-        (candidate_dir / 'sha256_manifest.json').write_text(json.dumps(m))
+        (candidate_dir / 'sha256_manifest.json').write_text(json.dumps(m), encoding="utf-8")
 
     # Not a list
     write_cand("not_a_list")
@@ -163,7 +163,7 @@ def test_partial_failure_direct_wrapper_call_blocks(tmp_path, monkeypatch):
 
     canonical = tmp_path/'research/staging/m5f/m5f_canonical_market_context_01'
     canonical.mkdir(parents=True)
-    (canonical/'test.txt').write_text('original')
+    (canonical/'test.txt').write_text('original', encoding="utf-8")
 
     candidate = tmp_path/'cand'
     candidate.mkdir()
@@ -173,7 +173,7 @@ def test_partial_failure_direct_wrapper_call_blocks(tmp_path, monkeypatch):
         'failed_targets': [{'symbol': '0050', 'status': 'missing_close_price'}]
     }
     import json
-    (candidate / 'market-context.json').write_text(json.dumps(c_doc))
+    (candidate / 'market-context.json').write_text(json.dumps(c_doc), encoding="utf-8")
 
     res = c.promote_m5i_candidate_to_m5f(candidate)
 
@@ -183,7 +183,7 @@ def test_partial_failure_direct_wrapper_call_blocks(tmp_path, monkeypatch):
     assert res['promotion_performed'] is False
 
     # Assert canonical remains untouched
-    assert (canonical/'test.txt').read_text() == 'original'
+    assert (canonical/'test.txt').read_text(encoding="utf-8") == 'original'
 
     # Assert no temp promotion attempted (no m5i_promote_* or backup paths remain/were successfully created because it short circuits)
     assert len(list(tmp_path.glob("m5i_promote_*"))) == 0
@@ -217,7 +217,7 @@ def test_promotion_wrapper_failure_leaves_canonical_untouched(tmp_path, monkeypa
     # Mock candidate validation failure
     canonical = tmp_path/'research/staging/m5f/m5f_canonical_market_context_01'
     canonical.mkdir(parents=True)
-    (canonical/'test.txt').write_text('original')
+    (canonical/'test.txt').write_text('original', encoding="utf-8")
 
     candidate = tmp_path/'candidate'
     candidate.mkdir()
@@ -225,7 +225,7 @@ def test_promotion_wrapper_failure_leaves_canonical_untouched(tmp_path, monkeypa
     res = c.promote_m5i_candidate_to_m5f(candidate)
     assert res['status'] == 'failed'
     assert res['stage'] == 'temp_package_build_or_validate'
-    assert (canonical/'test.txt').read_text() == 'original'
+    assert (canonical/'test.txt').read_text(encoding="utf-8") == 'original'
 
 def test_promotion_wrapper_rolls_back_on_final_replace_failure(tmp_path, monkeypatch):
     import scripts.m5i_common as c
@@ -233,7 +233,7 @@ def test_promotion_wrapper_rolls_back_on_final_replace_failure(tmp_path, monkeyp
 
     canonical = tmp_path/'research/staging/m5f/m5f_canonical_market_context_01'
     canonical.mkdir(parents=True)
-    (canonical/'test.txt').write_text('original')
+    (canonical/'test.txt').write_text('original', encoding="utf-8")
 
     # We force `shutil.copytree(temp_dir, canonical_dir)` to fail
     import shutil
@@ -254,14 +254,14 @@ def test_promotion_wrapper_rolls_back_on_final_replace_failure(tmp_path, monkeyp
     sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
     import build_m5f_canonical_market_context_package as bld
     import validate_m5f_canonical_market_context_package as val
-    monkeypatch.setattr(bld, 'write_package', lambda c, t: (t/'built.txt').write_text('built'))
+    monkeypatch.setattr(bld, 'write_package', lambda c, t: (t/'built.txt').write_text('built', encoding="utf-8"))
     monkeypatch.setattr(val, 'validate_package', lambda p: {'status':'passed'})
 
     res = c.promote_m5i_candidate_to_m5f(tmp_path/'candidate')
     assert res['status'] == 'failed'
     assert res['stage'] == 'final_replace'
     assert res['rollback'] == 'successful'
-    assert (canonical/'test.txt').read_text() == 'original'
+    assert (canonical/'test.txt').read_text(encoding="utf-8") == 'original'
 
 def test_promotion_wrapper_rolls_back_on_post_promotion_validation_failure(tmp_path, monkeypatch):
     import scripts.m5i_common as c
@@ -269,13 +269,13 @@ def test_promotion_wrapper_rolls_back_on_post_promotion_validation_failure(tmp_p
 
     canonical = tmp_path/'research/staging/m5f/m5f_canonical_market_context_01'
     canonical.mkdir(parents=True)
-    (canonical/'test.txt').write_text('original')
+    (canonical/'test.txt').write_text('original', encoding="utf-8")
 
     import sys
     sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
     import build_m5f_canonical_market_context_package as bld
     import validate_m5f_canonical_market_context_package as val
-    monkeypatch.setattr(bld, 'write_package', lambda c, t: (t/'built.txt').write_text('built'))
+    monkeypatch.setattr(bld, 'write_package', lambda c, t: (t/'built.txt').write_text('built', encoding="utf-8"))
 
     calls = []
     def failing_validation(p):
@@ -290,4 +290,4 @@ def test_promotion_wrapper_rolls_back_on_post_promotion_validation_failure(tmp_p
     assert res['status'] == 'failed'
     assert res['stage'] == 'post_promotion_validation'
     assert res['rollback'] == 'successful'
-    assert (canonical/'test.txt').read_text() == 'original'
+    assert (canonical/'test.txt').read_text(encoding="utf-8") == 'original'

@@ -12,7 +12,7 @@ def _forbidden_calls(source):
    if name in DENY: found.append(name)
  return found
 def test_real_package_has_no_forbidden_execution_surface():
- for path in Path('scripts/m8r_05b_01').glob('*.py'): assert _forbidden_calls(path.read_text())==[]
+ for path in Path('scripts/m8r_05b_01').glob('*.py'): assert _forbidden_calls(path.read_text(encoding="utf-8"))==[]
 def test_forbidden_flags_absent():
  flags={x.option_strings[0] for x in parser()._actions if x.option_strings};assert not flags & {'--execute','--approve','--authorize','--allow-network','--invoke-executor'}
 def test_negative_controls():

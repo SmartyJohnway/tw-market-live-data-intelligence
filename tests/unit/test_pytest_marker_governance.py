@@ -4,5 +4,5 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT)); sys.path.insert(0,str(ROOT/'scripts'))
 
 def test_network_marker_declared():
-    text=(ROOT/'pytest.ini').read_text()
+    text=(ROOT/'pytest.ini').read_text(encoding="utf-8")
     assert 'network:' in text and 'pytest -m "not network"' in text

@@ -4,7 +4,7 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT)); sys.path.insert(0,str(ROOT/'scripts'))
 
 from scripts.controlled_refresh_staging_validator import validate_controlled_refresh_staging_payload
-def base(): return json.loads((ROOT/'tests/fixtures/staging_payloads/valid_single_source_twse_mis.json').read_text())
+def base(): return json.loads((ROOT/'tests/fixtures/staging_payloads/valid_single_source_twse_mis.json').read_text(encoding="utf-8"))
 def test_source_id_allowlist_and_safe_bounded_universe():
     p=base(); assert validate_controlled_refresh_staging_payload(p)==[]; p['source_runs'][0]['source_id']='Bad'; assert validate_controlled_refresh_staging_payload(p)
 def test_forbidden_keys_recursively_and_flags():

@@ -1,7 +1,7 @@
 from pathlib import Path
 import json
 ROOT=Path(__file__).resolve().parents[2]
-def load(p): return json.loads((ROOT/p).read_text())
+def load(p): return json.loads((ROOT/p).read_text(encoding="utf-8"))
 from scripts.run_fixture_replay_scenarios import run_scenarios
 
 def test_failure_injection_scenarios_present():

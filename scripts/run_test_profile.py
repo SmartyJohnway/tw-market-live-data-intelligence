@@ -13,7 +13,7 @@ CommandPlan = dict[str, Any]
 CommandResult = dict[str, Any]
 
 def utc(): return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
-def load_config(): return json.loads(CONFIG.read_text())
+def load_config(): return json.loads(CONFIG.read_text(encoding="utf-8"))
 def command_to_display(cmd:list[str])->str: return ' '.join(cmd)
 
 def _materialize_runner_command(cmd: list[str], ssl_policy: str) -> list[str]:

@@ -5,7 +5,7 @@ from scripts.m8_controlled_conversation_context import build_controlled_conversa
 from scripts.m8_multi_source_context_builder import build_multi_source_market_context
 
 ROOT = Path(__file__).resolve().parents[2]
-REGISTRY = json.loads((ROOT / "docs/data_capabilities/m8_source_capability_registry.json").read_text())
+REGISTRY = json.loads((ROOT / "docs/data_capabilities/m8_source_capability_registry.json").read_text(encoding="utf-8"))
 
 
 def _obs(source_id="TWSE_MIS", **kw):
@@ -91,7 +91,7 @@ def test_no_trading_advice_signal_recommendation():
 
 
 def test_source_taxonomy_remains_clean():
-    inv = json.loads((ROOT / "docs/data_capabilities/twse_mis_rich_field_inventory.json").read_text())
+    inv = json.loads((ROOT / "docs/data_capabilities/twse_mis_rich_field_inventory.json").read_text(encoding="utf-8"))
     entry = inv["rich_observation_contract"]["milestone_snapshots"]["state_at_m8_00_acceptance"]
     assert entry.get("tpex_mis_introduced") is False
     assert entry.get("rotc_route_introduced") is False
@@ -100,7 +100,7 @@ def test_source_taxonomy_remains_clean():
 
 
 def test_inventory_m8_00_06_07_metadata():
-    inv = json.loads((ROOT / "docs/data_capabilities/twse_mis_rich_field_inventory.json").read_text())
+    inv = json.loads((ROOT / "docs/data_capabilities/twse_mis_rich_field_inventory.json").read_text(encoding="utf-8"))
     entry = inv["rich_observation_contract"]["milestone_snapshots"]["state_at_m8_00_acceptance"]
     assert entry["status"] == "m8_00_final_acceptance_pass_with_caveats"
     assert "M8-00-06" in entry["completed_tasks"] and "M8-00-07" in entry["completed_tasks"]
@@ -113,7 +113,7 @@ def test_inventory_m8_00_06_07_metadata():
 
 
 def test_default_ci_includes_hardening_test():
-    config = json.loads((ROOT / "config/test_execution_profiles.json").read_text())
+    config = json.loads((ROOT / "config/test_execution_profiles.json").read_text(encoding="utf-8"))
     assert "tests/unit/test_m8_compatibility_hardening.py" in config["profiles"]["default-ci"]["pytest_paths"]
 
 

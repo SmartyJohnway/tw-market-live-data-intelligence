@@ -10,10 +10,10 @@ def _rehash_manifest(pkg: Path):
     for p in pkg.iterdir():
         if p.is_file() and p.name!='sha256_manifest.json':
             man['manifest'][p.name]=hashlib.sha256(p.read_bytes()).hexdigest()
-    (pkg/'sha256_manifest.json').write_text(json.dumps(man,indent=2,sort_keys=True)+'\n')
+    (pkg/'sha256_manifest.json').write_text(json.dumps(man,indent=2,sort_keys=True)+'\n', encoding="utf-8")
 
 def test_missing_artifact_blocked(tmp_path):
-    (tmp_path/'sha256_manifest.json').write_text(json.dumps({'manifest':{}}))
+    (tmp_path/'sha256_manifest.json').write_text(json.dumps({'manifest':{}}), encoding="utf-8")
     assert any(e['code']=='missing_artifact' for e in validate(tmp_path))
 
 def test_untracked_artifact_blocked(tmp_path):
@@ -27,7 +27,7 @@ def test_consumption_record_mismatch_blocked(tmp_path):
     dst=tmp_path/'pkg'; shutil.copytree(src,dst)
     rec=json.loads((dst/'promotion_receipt.json').read_text(encoding="utf-8"))
     rec['consumption_record']=str(tmp_path/'missing.json')
-    (dst/'promotion_receipt.json').write_text(json.dumps(rec))
+    (dst/'promotion_receipt.json').write_text(json.dumps(rec), encoding="utf-8")
     assert any(e['code']=='manifest_hash_mismatch' for e in validate(dst)) or any(e['code']=='consumption_record_missing' for e in validate(dst))
 
 def test_execute_blocks_existing_destination_without_second_promotion():
@@ -88,18 +88,18 @@ def test_deleted_binding_field_after_rehash_is_blocked(tmp_path):
     dst=tmp_path/'pkg'; shutil.copytree(src,dst)
     binding=json.loads((dst/'source_binding.json').read_text(encoding="utf-8"))
     del binding['source_manifest_sha256']
-    (dst/'source_binding.json').write_text(json.dumps(binding,indent=2,sort_keys=True)+'\n')
+    (dst/'source_binding.json').write_text(json.dumps(binding,indent=2,sort_keys=True)+'\n', encoding="utf-8")
     _rehash_manifest(dst)
     assert any(e['code']=='required_binding_missing' and e.get('object')=='source_binding' for e in validate(dst))
 
 def test_supplemental_audit_missing_or_tampered_blocked(tmp_path):
     audit=json.loads(AUDIT.read_text(encoding="utf-8"))
     audit['artifacts']=audit['artifacts'][:-1]
-    p=tmp_path/'audit.json'; p.write_text(json.dumps(audit))
+    p=tmp_path/'audit.json'; p.write_text(json.dumps(audit), encoding="utf-8")
     assert validate_audit(p)
     audit=json.loads(AUDIT.read_text(encoding="utf-8"))
     audit['artifacts'][0]['sha256']='0'*64
-    p.write_text(json.dumps(audit))
+    p.write_text(json.dumps(audit), encoding="utf-8")
     assert any(e['code']=='audit_artifact_hash_mismatch' for e in validate_audit(p))
 
 def test_success_outcome_persistence_failure_does_not_retry_or_delete_destination(monkeypatch, tmp_path):

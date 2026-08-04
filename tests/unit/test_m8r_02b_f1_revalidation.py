@@ -124,7 +124,7 @@ def build_valid_root(tmp_path):
 
 def test_selection_without_operator_authorization_rejected(tmp_path):
     root = build_valid_root(tmp_path)
-    selection = json.loads((root / "operator_selected_option_contract.json").read_text())
+    selection = json.loads((root / "operator_selected_option_contract.json").read_text(encoding="utf-8"))
     selection.pop("authorization_source")
     write_json(root / "operator_selected_option_contract.json", selection)
     with pytest.raises(F1EvidenceConsistencyError) as exc:
@@ -135,7 +135,7 @@ def test_selection_without_operator_authorization_rejected(tmp_path):
 
 def test_arbitrary_non_empty_authorization_string_rejected(tmp_path):
     root = build_valid_root(tmp_path)
-    selection = json.loads((root / "operator_selected_option_contract.json").read_text())
+    selection = json.loads((root / "operator_selected_option_contract.json").read_text(encoding="utf-8"))
     selection.pop("authorization_source", None)
     selection.pop("authorization_recorded_at_utc", None)
     selection["operator_authorization_reference"] = "non_empty_but_unstructured"
@@ -146,7 +146,7 @@ def test_arbitrary_non_empty_authorization_string_rejected(tmp_path):
 
 def test_unresolvable_execution_sha_rejected(tmp_path):
     root = build_valid_root(tmp_path)
-    manifest = json.loads((root / "f1_revalidation_manifest.json").read_text())
+    manifest = json.loads((root / "f1_revalidation_manifest.json").read_text(encoding="utf-8"))
     manifest["live_execution_patch_commit_sha"] = "0" * 40
     write_json(root / "f1_revalidation_manifest.json", manifest)
     with pytest.raises(F1EvidenceConsistencyError) as exc:

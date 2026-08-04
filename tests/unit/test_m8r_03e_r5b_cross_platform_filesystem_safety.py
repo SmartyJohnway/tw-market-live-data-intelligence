@@ -170,7 +170,7 @@ def test_destination_symlink(tmp_path):
     outside.mkdir()
     
     target_file = outside / "leak.json"
-    target_file.write_text("secret")
+    target_file.write_text("secret", encoding="utf-8")
     
     # Create symlink inside root pointing to outside/leak.json
     link = root / "link.json"

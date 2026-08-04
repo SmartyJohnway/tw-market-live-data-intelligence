@@ -83,7 +83,7 @@ def test_builds_single_use_approval_and_requires_store(monkeypatch):
 
 
 def test_raw_key_audit_detects_marker(tmp_path):
-    root=tmp_path/"audit"; root.mkdir(); (root/"x.json").write_text(json.dumps({"raw_payload": {}}))
+    root=tmp_path/"audit"; root.mkdir(); (root/"x.json").write_text(json.dumps({"raw_payload": {}}), encoding="utf-8")
     out=live.audit(root)
     assert out["status"]=="failed" and out["forbidden_key_hits"][0]["key"]=="raw_payload"
 
@@ -155,7 +155,7 @@ def test_dry_run_does_not_consume_approval(monkeypatch):
 
 
 def test_manual_ai_artifact_fallback_absent():
-    text=Path("scripts/run_m8r_controlled_live_validation.py").read_text()
+    text=Path("scripts/run_m8r_controlled_live_validation.py").read_text(encoding="utf-8")
     assert "except FileExistsError" not in text
     assert "ai_market_context_v1.json" not in text
 
@@ -166,9 +166,9 @@ def test_individual_case_does_not_overwrite_run_manifest_and_duplicate_rejected(
     root="research/m8r/live_validation/unit-manifest"; shutil.rmtree(root, ignore_errors=True)
     a=args(taifex_future_product="TX", taifex_future_expiry="202607", taifex_option_product="TXO", taifex_option_underlying="TX", taifex_option_expiry="202607", taifex_option_strike="20000", taifex_option_call_put="C")
     live.ensure_run_manifest(root,a,list(live.CASES))
-    before=json.loads(Path(root,"validation_manifest.json").read_text())
+    before=json.loads(Path(root,"validation_manifest.json").read_text(encoding="utf-8"))
     live.ensure_run_manifest(root,a,["TWSE_MIS_LISTED_2330"])
-    after=json.loads(Path(root,"validation_manifest.json").read_text())
+    after=json.loads(Path(root,"validation_manifest.json").read_text(encoding="utf-8"))
     assert [c["case_id"] for c in after["cases"]] == [c["case_id"] for c in before["cases"]]
     p=live.plan_for("TWSE_MIS_LISTED_2330", live.CASES["TWSE_MIS_LISTED_2330"], a, root); appr=build_approval_artifact(p, approved_at_utc=a.execution_time_utc, single_use=True)
     live.write_case_manifest(root,"TWSE_MIS_LISTED_2330",p,appr,a)
@@ -215,7 +215,7 @@ def test_summary_manifest_case_mismatch_rejected(monkeypatch):
 def test_runtime_controls_require_receipt_evidence_and_derive_flags(tmp_path):
     cases={c["case_id"]: c for c in all_pass_cases()}
     receipt=tmp_path/"execution_receipt.json"
-    receipt.write_text(json.dumps({"one_shot":True,"auto_retry":False,"polling":False,"scheduler":False,"background_execution":False}))
+    receipt.write_text(json.dumps({"one_shot":True,"auto_retry":False,"polling":False,"scheduler":False,"background_execution":False}), encoding="utf-8")
     cases["TWSE_MIS_LISTED_2330"]["artifact_paths"]=[str(receipt)]
     manifest={"operator_confirmed":True,"allow_network":True,"artifact_root":"research/m8r/live_validation/x"}
     runtime, rc=live.derive_runtime_critical_status(controls(), {"TWSE_MIS_LISTED_2330":cases["TWSE_MIS_LISTED_2330"]}, {"status":"passed"}, manifest)
@@ -253,14 +253,14 @@ def _minimal_consistency_root(tmp_path, *, mutate=None):
     if mutate:
         mutate(plan, approval, receipt, result, case_manifest)
     for name,obj in [("execution_plan.json",plan),("approval_record.json",approval),("execution_receipt.json",receipt)]:
-        (receipt_dir/name).write_text(json.dumps(obj))
+        (receipt_dir/name).write_text(json.dumps(obj), encoding="utf-8")
     case_dir=root/"cases"/"TWSE_MIS_LISTED_2330"
-    (case_dir/"validation_case_result.json").write_text(json.dumps(result))
-    (case_dir/"validation_case_manifest.json").write_text(json.dumps(case_manifest))
+    (case_dir/"validation_case_result.json").write_text(json.dumps(result), encoding="utf-8")
+    (case_dir/"validation_case_manifest.json").write_text(json.dumps(case_manifest), encoding="utf-8")
     manifest={"validation_run_id":"evidence","starting_commit_sha":head,"live_execution_starting_commit_sha":head,"classification_code_commit_sha":head,"classification_code_base_commit_sha":head,"classification_patch_commit_sha":head,"cases":[{"case_id":"TWSE_MIS_LISTED_2330","target":{"symbol":"2330"}}]}
     summary={"validation_run_id":"evidence","starting_commit_sha":head,"live_execution_starting_commit_sha":head,"classification_code_commit_sha":head,"classification_code_base_commit_sha":head,"classification_patch_commit_sha":head,"case_results":{"TWSE_MIS_LISTED_2330":{}}}
-    (root/"validation_manifest.json").write_text(json.dumps(manifest))
-    (root/"validation_summary.json").write_text(json.dumps(summary))
+    (root/"validation_manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+    (root/"validation_summary.json").write_text(json.dumps(summary), encoding="utf-8")
     return root
 
 

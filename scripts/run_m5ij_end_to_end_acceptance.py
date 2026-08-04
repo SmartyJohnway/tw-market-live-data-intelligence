@@ -70,7 +70,7 @@ def run_checks():
         res={'status': 'failed'}
 
     try:
-        canonical=json.loads((pkg/'canonical_market_context.json').read_text())
+        canonical=json.loads((pkg/'canonical_market_context.json').read_text(encoding="utf-8"))
         forbidden=json.dumps(canonical).lower()
         forbidden_found = [x for x in ['raw_payload','recommendation','target_price','"buy"','"sell"','"hold"','ranking'] if x in forbidden]
         record_check(checks, 'no_raw_or_trading_fields', not forbidden_found, {'found': forbidden_found})

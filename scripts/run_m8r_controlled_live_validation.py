@@ -91,7 +91,7 @@ def manifest(root,args,ids):
 def audit(root:Path)->dict[str,Any]:
     hits=[]
     for path in root.rglob("*.json"):
-        try: data=json.loads(path.read_text())
+        try: data=json.loads(path.read_text(encoding="utf-8"))
         except Exception: continue
         def walk(x,p=""):
             if isinstance(x,dict):

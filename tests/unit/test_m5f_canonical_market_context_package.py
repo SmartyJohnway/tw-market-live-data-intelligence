@@ -17,10 +17,10 @@ def test_write_package_uses_lf_bytes_for_hash_bound_artifacts(tmp_path):
    assert b'\r\n' not in p.read_bytes()
 
 def test_manifest_tampering_rejected(tmp_path):
- out=tmp_path/'pkg'; shutil.copytree(PKG,out); data=json.loads((out/'canonical_market_context.json').read_text()); data['symbols'][0]['price_like_value']=1; (out/'canonical_market_context.json').write_text(json.dumps(data));
+ out=tmp_path/'pkg'; shutil.copytree(PKG,out); data=json.loads((out/'canonical_market_context.json').read_text(encoding="utf-8")); data['symbols'][0]['price_like_value']=1; (out/'canonical_market_context.json').write_text(json.dumps(data), encoding="utf-8");
  with pytest.raises(ValueError): validate_package(out)
 def test_extra_file_rejected(tmp_path):
- out=tmp_path/'pkg'; shutil.copytree(PKG,out); (out/'extra.txt').write_text('x')
+ out=tmp_path/'pkg'; shutil.copytree(PKG,out); (out/'extra.txt').write_text('x', encoding="utf-8")
  with pytest.raises(ValueError): validate_package(out)
 def test_builder_rejects_forbidden_output():
  with pytest.raises(ValueError): write_package(Path('research/generated/m5f_bad'), build_package())
@@ -33,7 +33,7 @@ def test_extra_directory_rejected(tmp_path):
 
 
 def test_nested_unexpected_file_rejected(tmp_path):
-    out=tmp_path/'pkg'; shutil.copytree(PKG,out); nested=out/'unexpected_dir'; nested.mkdir(); (nested/'extra.json').write_text('{}')
+    out=tmp_path/'pkg'; shutil.copytree(PKG,out); nested=out/'unexpected_dir'; nested.mkdir(); (nested/'extra.json').write_text('{}', encoding="utf-8")
     with pytest.raises(ValueError, match='unexpected package directory'):
         validate_package(out)
 
@@ -90,19 +90,19 @@ def test_write_package_rolls_back_on_final_replace_failure(tmp_path, monkeypatch
 
 def test_cli_check_only_and_write_package_mutually_exclusive():
     import subprocess, sys
-    cp = subprocess.run([sys.executable, 'scripts/build_m5f_canonical_market_context_package.py', '--check-only', '--write-package'], capture_output=True, text=True)
+    cp = subprocess.run([sys.executable, 'scripts/build_m5f_canonical_market_context_package.py', '--check-only', '--write-package'], capture_output=True, text=True, encoding="utf-8")
     assert cp.returncode != 0
     assert 'not allowed with argument' in cp.stderr
 
 def test_recursive_forbidden_symbol_field_rejected(tmp_path):
     out=tmp_path/'pkg'; shutil.copytree(PKG,out)
-    data=json.loads((out/'canonical_market_context.json').read_text())
+    data=json.loads((out/'canonical_market_context.json').read_text(encoding="utf-8"))
     data['symbols'][0]['target_price']=999
-    (out/'canonical_market_context.json').write_text(json.dumps(data, ensure_ascii=False, indent=2))
-    manifest=json.loads((out/'sha256_manifest.json').read_text())
+    (out/'canonical_market_context.json').write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    manifest=json.loads((out/'sha256_manifest.json').read_text(encoding="utf-8"))
     import hashlib
     manifest['files']['canonical_market_context.json']=hashlib.sha256((out/'canonical_market_context.json').read_bytes()).hexdigest()
-    (out/'sha256_manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
+    (out/'sha256_manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     with pytest.raises(ValueError, match='forbidden'):
         validate_package(out)
 
@@ -110,10 +110,10 @@ def test_recursive_forbidden_symbol_field_rejected(tmp_path):
 def _write_candidate_fixture(tmp_path, mutate):
     src=Path('research/staging/m5d/m5d_frontend_publication_candidate_01')
     out=tmp_path/f'candidate_{len(list(tmp_path.iterdir()))}'; shutil.copytree(src,out)
-    data=json.loads((out/'market-context.json').read_text())
+    data=json.loads((out/'market-context.json').read_text(encoding="utf-8"))
     mutate(data)
     (out/'market-context.json').write_bytes((json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False)+'\n').encode('utf-8'))
-    manifest=json.loads((out/'sha256_manifest.json').read_text())
+    manifest=json.loads((out/'sha256_manifest.json').read_text(encoding="utf-8"))
     import hashlib
     manifest['files']['market-context.json']=hashlib.sha256((out/'market-context.json').read_bytes()).hexdigest()
     (out/'sha256_manifest.json').write_bytes((json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True)+'\n').encode('utf-8'))

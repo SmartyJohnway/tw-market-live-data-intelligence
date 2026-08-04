@@ -7,7 +7,7 @@ SCHEMA=Path('docs/authorization/m5c_run_summary_destination_correction_schema.js
 PKG=Path('research/staging/m5c/m5c_twse_openapi_20260627_authorized_01')
 DEST='research/staging/m5c/m5c_twse_openapi_20260627_authorized_01'
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
-def load(p): return json.loads(Path(p).read_text())
+def load(p): return json.loads(Path(p).read_text(encoding="utf-8"))
 def validate(path=CORRECTION, package_dir=PKG):
     package_dir=Path(package_dir); data=load(path); schema=load(SCHEMA); errs=[]
     errs += [{'code':'schema_error','path':'$' + ''.join(f'/{x}' for x in e.path),'detail':e.message} for e in Draft202012Validator(schema).iter_errors(data)]

@@ -75,7 +75,7 @@ def _run_once(sid):
    if sid.startswith('conversation_handoff_policy'):
     before=validator.canonical_json(pkg); a=compose_conversation_handoff(evidence_package=pkg,agent_policy={'conversation_policy':{}},generated_at_utc='2026-07-17T00:00:00Z'); after_a=validator.canonical_json(pkg); b=compose_conversation_handoff(evidence_package=pkg,agent_policy={'conversation_policy':{'recommendations_permitted':True,'trading_advice_permitted':True}},generated_at_utc='2026-07-17T00:00:00Z'); after_b=validator.canonical_json(pkg); rec['policy_handoffs_differ']=a['response_constraints']!=b['response_constraints']; rec['evidence_bytes_unchanged']=before==after_a==after_b; rec['valid']=rec['valid'] and rec['policy_handoffs_differ'] and rec['evidence_bytes_unchanged'] and validator.validate_watchlist_conversation_handoff(a,context_package=pkg)['valid'] and validator.validate_watchlist_conversation_handoff(b,context_package=pkg)['valid']
    elif sid=='v1_to_v2_migration':
-    v1=json.loads((ROOT/'tests/fixtures/m8r_03e_r3/historical_v1_context_package.json').read_text()); v2,ms=clock(lambda:migrate_watchlist_ai_context_package_v1_to_v2(v1)); rec['migration_ms']=ms; rec['valid']=validator.validate_schema(v2,'m8r_watchlist_ai_context_package.v2.schema.json') is None
+    v1=json.loads((ROOT/'tests/fixtures/m8r_03e_r3/historical_v1_context_package.json').read_text(encoding="utf-8")); v2,ms=clock(lambda:migrate_watchlist_ai_context_package_v1_to_v2(v1)); rec['migration_ms']=ms; rec['valid']=validator.validate_schema(v2,'m8r_watchlist_ai_context_package.v2.schema.json') is None
    elif sid=='artifact_serialization_only':
     text,ms=clock(lambda:validator.canonical_json(pkg)); rec['artifact_serialization_ms']=ms; rec['serialized_bytes']=len(text.encode())
    elif sid=='safe_atomic_artifact_write':
@@ -138,6 +138,6 @@ def verify(d):
  return True
 def main():
  p=argparse.ArgumentParser();p.add_argument('--output',default='docs/quality/m8r_03e_r4_performance_baseline.json');p.add_argument('--verify-existing',action='store_true');a=p.parse_args();out=Path(a.output)
- if a.verify_existing: ok=verify(json.loads(out.read_text()));print(json.dumps({'status':'pass' if ok else 'fail'}));return 0 if ok else 1
- out.write_text(json.dumps(build(),indent=2,sort_keys=True)+'\n');return 0
+ if a.verify_existing: ok=verify(json.loads(out.read_text(encoding="utf-8")));print(json.dumps({'status':'pass' if ok else 'fail'}));return 0 if ok else 1
+ out.write_text(json.dumps(build(),indent=2,sort_keys=True)+'\n', encoding="utf-8");return 0
 if __name__=='__main__':raise SystemExit(main())

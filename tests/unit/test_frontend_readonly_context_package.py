@@ -20,5 +20,5 @@ def test_buy_sell_hold_field_in_input_fails():
 def test_missing_caveats_fails():
     p=build_frontend_readonly_context_package(payload()); p["global_caveats"]=[]; assert validate_frontend_readonly_context_package(p)
 def test_cli_missing_confirmation_fails(tmp_path):
-    inp=tmp_path/"staging.json"; inp.write_text(json.dumps(payload()))
+    inp=tmp_path/"staging.json"; inp.write_text(json.dumps(payload()), encoding="utf-8")
     with pytest.raises(SystemExit): main(["--input-staging-payload",str(inp),"--output-dir",str(tmp_path)])

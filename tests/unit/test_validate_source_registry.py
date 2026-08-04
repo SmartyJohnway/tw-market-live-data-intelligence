@@ -1,7 +1,7 @@
 from pathlib import Path
 import copy, json
 ROOT=Path(__file__).resolve().parents[2]
-def load(p): return json.loads((ROOT/p).read_text())
+def load(p): return json.loads((ROOT/p).read_text(encoding="utf-8"))
 from scripts.validate_source_registry import validate_source_registry
 
 def registry_args(reg=None):

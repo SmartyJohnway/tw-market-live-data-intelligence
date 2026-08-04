@@ -9,5 +9,5 @@ def validate_manifest(data):
   if not isinstance(data[k],list) or not data[k]: e.append({'code':'invalid_list','path':k})
  return e
 def main(argv=None):
- p=argparse.ArgumentParser(); p.add_argument('--manifest',default='docs/governance/governance_policy_manifest.json'); p.add_argument('--json',action='store_true'); a=p.parse_args(argv); errs=validate_manifest(json.loads(Path(a.manifest).read_text())); print(json.dumps({'ok':not errs,'errors':errs},indent=2)); return 0 if not errs else 1
+ p=argparse.ArgumentParser(); p.add_argument('--manifest',default='docs/governance/governance_policy_manifest.json'); p.add_argument('--json',action='store_true'); a=p.parse_args(argv); errs=validate_manifest(json.loads(Path(a.manifest).read_text(encoding="utf-8"))); print(json.dumps({'ok':not errs,'errors':errs},indent=2)); return 0 if not errs else 1
 if __name__=='__main__': raise SystemExit(main())

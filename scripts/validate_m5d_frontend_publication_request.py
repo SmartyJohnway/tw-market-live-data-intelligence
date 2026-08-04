@@ -20,7 +20,7 @@ except ModuleNotFoundError:
 
 CANONICAL='research/staging/m5c/m5c_twse_openapi_20260627_authorized_01'
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
-def load(p): return json.loads(Path(p).read_text())
+def load(p): return json.loads(Path(p).read_text(encoding="utf-8"))
 def validate(path=REQ):
     d=load(path); errs=[]
     schema=load(SCHEMA)

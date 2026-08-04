@@ -16,7 +16,7 @@ def scan(source):
  return out
 def test_package_ast_boundary():
  from pathlib import Path
- assert not scan('\n'.join(x.read_text() for x in Path('scripts/m8r_05b_02').glob('*.py')))
+ assert not scan('\n'.join(x.read_text(encoding="utf-8") for x in Path('scripts/m8r_05b_02').glob('*.py')))
 def test_ast_negative_controls():
  for x in ('__import__("requests")','from importlib import import_module\nimport_module("requests")','from x import consume_authorization as consume\nconsume()','from x import mark_consumed as mark\nmark()','connection.execute("x")','queue.put(1)','runner.run_source()'):assert scan(x)
 def test_ast_allowed_local_calls(): assert not scan('local_object.execute()\nlocal_collection.put(1)')

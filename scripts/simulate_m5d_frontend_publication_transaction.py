@@ -13,7 +13,7 @@ def simulate(existing=False, fail_replace=False):
   root=Path(td); dest=root/DEST; dest.parent.mkdir(parents=True)
   before=None
   if existing:
-   dest.write_text('{"previous":true}\n'); before=h(dest)
+   dest.write_text('{"previous":true}\n', encoding="utf-8"); before=h(dest)
   tmp=dest.with_suffix('.json.tmp')
   shutil.copy2(src,tmp)
   if fail_replace: tmp.unlink(); return {'status':'blocked','errors':['simulated_atomic_replace_failure'],'publication_performed':False,'rollback_required':existing}

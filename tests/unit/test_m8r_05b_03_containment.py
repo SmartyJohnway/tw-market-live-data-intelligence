@@ -27,7 +27,7 @@ def test_output_outside_governed_root_and_frontend_public_are_rejected(tmp_path)
 def test_collision_rejected_without_filesystem_mutation(tmp_path):
     existing = tmp_path / "operations"
     existing.mkdir()
-    (existing / "umeop-op-v1-37e7ffc42102745298c7.execution-request.json").write_text("existing")
+    (existing / "umeop-op-v1-37e7ffc42102745298c7.execution-request.json").write_text("existing", encoding="utf-8")
     before = sorted(path.relative_to(tmp_path).as_posix() for path in tmp_path.rglob("*"))
     with pytest.raises(OrchestrationError, match="contained_output_path_collision"):
         validate_contained_relative_paths(tmp_path, ["operations/umeop-op-v1-37e7ffc42102745298c7.execution-request.json"])

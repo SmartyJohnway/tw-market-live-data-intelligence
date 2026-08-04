@@ -44,9 +44,9 @@ def test_receipt_audit_ignores_current_wall_clock_after_expiry():
 
 
 def test_receipt_audit_exact_expiry_rejected(tmp_path):
-    receipt = json.loads(Path(RECEIPT).read_text())
+    receipt = json.loads(Path(RECEIPT).read_text(encoding="utf-8"))
     receipt['retrieved_at_utc'] = '2026-06-28T00:00:00+00:00'
     receipt_path = tmp_path / 'receipt.json'
-    receipt_path.write_text(json.dumps(receipt))
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
     errors = validate_authorization(AUTH, REQ, receipt=receipt_path, mode='receipt_audit')
     assert 'receipt_outside_authorization_window' in codes(errors)

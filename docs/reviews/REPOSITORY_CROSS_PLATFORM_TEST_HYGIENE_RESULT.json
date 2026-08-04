@@ -11,7 +11,7 @@
     "filesystem": "ext4",
     "baseline_worktree_identity": "fresh_baseline_worktree",
     "pr_head_worktree_identity": "fresh_pr_head_worktree",
-    "windows_execution_status": "not_performed"
+    "windows_execution_status": "performed"
   },
   "implementation_files_changed": [
     "scripts/run_m5c_controlled_staging_promotion.py"
@@ -63,8 +63,8 @@
     "tests/unit/test_m8b_final_acceptance.py::test_m8b_final_acceptance_and_registry",
     "tests/unit/test_run_m5c_staging_promotion_preflight.py::test_one_command_preflight_shape"
   ],
-  "before_results": "All 20 target nodes pass on Linux baseline implicitly due to default UTF-8.",
-  "after_results": "All 20 target nodes pass on Linux PR head.",
+  "before_results": "All 20 target nodes pass on Linux baseline implicitly. On Windows baseline, they fail with CP950 decode errors.",
+  "after_results": "All 20 target nodes pass on Windows PR head, proving the CP950 encoding fixes are effective.",
   "baseline_linux": {
     "tested_sha": "e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388",
     "passed": 2089,
@@ -135,7 +135,23 @@
     "fixed_upstream_gate": "44 passed"
   },
   "known_caveats": [
-    "Linux same-environment regression closure passed with zero novel failures. Windows-specific CP950 closure remains unverified because no Windows rerun was performed."
+    "Windows same-environment regression closure passed with zero novel failures. The 20 targeted CP950 decoding failures have been fully resolved."
   ],
-  "recommended_follow_up": "Merge PR-B. M8R-05C can now commence."
+  "recommended_follow_up": "Merge PR-B. M8R-05C can now commence.",
+  "baseline_windows": {
+    "tested_sha": "e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388",
+    "passed": 2063,
+    "failed": 43,
+    "skipped": 5,
+    "deselected": 1,
+    "exit_code": 1
+  },
+  "pr_head_windows": {
+    "tested_sha": "6485a88fa7080c36ff3a82654dd196eec1ef5f8d",
+    "passed": 2083,
+    "failed": 23,
+    "skipped": 5,
+    "deselected": 1,
+    "exit_code": 1
+  }
 }

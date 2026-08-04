@@ -16,7 +16,7 @@ def main(argv=None):
         if not rollback_plan.exists(): errors.append({'code':'rollback_plan_missing'})
         else:
             try:
-                plan=json.loads(rollback_plan.read_text())
+                plan=json.loads(rollback_plan.read_text(encoding="utf-8"))
                 if plan.get('committed_package_delete_allowed') is not False: errors.append({'code':'rollback_plan_delete_guard_mismatch'})
                 if plan.get('rollback_mode')!='tmp_path_simulation_only': errors.append({'code':'rollback_mode_mismatch','actual':plan.get('rollback_mode')})
             except Exception as exc:

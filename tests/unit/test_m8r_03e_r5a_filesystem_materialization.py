@@ -9,7 +9,7 @@ def test_filesystem_safety_valid_path(tmp_path):
     
     # 正常寫入
     atomic_write_text(root, "valid_file.json", "{}")
-    assert (tmp_path / "valid_file.json").read_text() == "{}"
+    assert (tmp_path / "valid_file.json").read_text(encoding="utf-8") == "{}"
 
 def test_filesystem_safety_blocked_parent_traversal(tmp_path):
     root = validate_authorized_root(tmp_path)

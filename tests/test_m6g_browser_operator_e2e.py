@@ -17,7 +17,7 @@ def test_report_schema_and_final_status_skip(tmp_path, monkeypatch):
 
     report = m6g.build_report(args)
     m6g.write_report(report)
-    data = json.loads((tmp_path / "latest_browser_operator_e2e_report.json").read_text())
+    data = json.loads((tmp_path / "latest_browser_operator_e2e_report.json").read_text(encoding="utf-8"))
 
     for key in [
         "schema_version",

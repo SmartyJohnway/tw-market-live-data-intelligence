@@ -29,7 +29,7 @@ LINEAGE = {
 }
 
 def load(p: Path | str):
-    return json.loads(Path(p).read_text())
+    return json.loads(Path(p).read_text(encoding="utf-8"))
 
 def fsha(p: Path | str) -> str:
     return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -263,7 +263,7 @@ def changed_paths_against_base():
     if base_ref: candidates.append(f"origin/{base_ref}...HEAD")
     candidates += ["origin/main...HEAD", "HEAD~1..HEAD"]
     for spec in candidates:
-        r = subprocess.run(["git", "diff", "--name-only", spec], cwd=ROOT, text=True, capture_output=True)
+        r = subprocess.run(["git", "diff", "--name-only", spec], cwd=ROOT, text=True, capture_output=True, encoding="utf-8")
         if r.returncode == 0: return [p for p in r.stdout.splitlines() if p]
     return subprocess.check_output(["git", "diff", "--name-only", "HEAD"], cwd=ROOT, text=True).splitlines()
 
@@ -275,7 +275,7 @@ def validate_schemas_and_outputs() -> bool:
         if _schema_errors("publication_receipt", receipt): return False
         rb = rollback(dest, j)
         if _schema_errors("rollback_receipt", rb): return False
-        dest.write_text("old"); j2 = t / "journal2"
+        dest.write_text("old", encoding="utf-8"); j2 = t / "journal2"
         try: publish_transaction(src, dest, j2, auth_id="schema-gate2", claim_dir=claims, crash_at="after_backup", simulation_mode=True, expected_src_sha256=candidate_market_context_sha(), candidate_manifest_sha256=manifest_sha())
         except RuntimeError: pass
         rec = recover(dest, j2)
@@ -290,10 +290,10 @@ def check_only():
     checks["schema_validation"] = validate_schemas_and_outputs()
     checks["authorization_absence"] = not (ROOT / "docs/authorization/decisions/M5E_FRONTEND_PUBLICATION_AUTHORIZATION.json").exists() and not (ROOT / "docs/authorization/tokens").exists()
     with tempfile.TemporaryDirectory() as td:
-        t = Path(td); src = ROOT / CAND / "market-context.json"; dest = t / "dest"; dest.write_text("old"); j = t / "j"; claims = t / "claims"
+        t = Path(td); src = ROOT / CAND / "market-context.json"; dest = t / "dest"; dest.write_text("old", encoding="utf-8"); j = t / "j"; claims = t / "claims"
         publish_transaction(src, dest, j, auth_id="gate", claim_dir=claims, simulation_mode=True, expected_src_sha256=candidate_market_context_sha(), candidate_manifest_sha256=manifest_sha()); checks["transaction_simulation"] = fsha(dest) == candidate_market_context_sha()
-        checks["rollback_simulation"] = rollback(dest, j).get("status") == "rolled_back_replacement" and dest.read_text() == "old"
-        dest.write_text("old2"); j2 = t / "j2"
+        checks["rollback_simulation"] = rollback(dest, j).get("status") == "rolled_back_replacement" and dest.read_text(encoding="utf-8") == "old"
+        dest.write_text("old2", encoding="utf-8"); j2 = t / "j2"
         try: publish_transaction(src, dest, j2, auth_id="gate2", claim_dir=claims, crash_at="after_backup", simulation_mode=True, expected_src_sha256=candidate_market_context_sha(), candidate_manifest_sha256=manifest_sha())
         except RuntimeError: pass
         checks["crash_recovery_simulation"] = recover(dest, j2).get("status") == "safe_no_publication_or_temp_only"

@@ -45,10 +45,10 @@ def test_performance_insufficient_duplicate_and_no_benchmark():
 def test_cli_runs_and_determinism(tmp_path):
     out1=tmp_path/'s1.json'; out2=tmp_path/'s2.json'
     cmd=[sys.executable,'scripts/run_m8r_03c_watchlist_bundle_fixture.py','--request',str(FIX/'snapshot_request.json'),'--observations',str(FIX/'snapshot_observations.json'),'--bundle-type','snapshot','--output',str(out1)]
-    assert subprocess.run(cmd, capture_output=True, text=True).returncode==0
-    cmd[-1]=str(out2); assert subprocess.run(cmd, capture_output=True, text=True).returncode==0
+    assert subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8").returncode==0
+    cmd[-1]=str(out2); assert subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8").returncode==0
     assert out1.read_text(encoding="utf-8")==out2.read_text(encoding="utf-8")
-    assert subprocess.run([sys.executable,'scripts/run_m8r_03c_watchlist_bundle_fixture.py','--network'], capture_output=True, text=True).returncode!=0
+    assert subprocess.run([sys.executable,'scripts/run_m8r_03c_watchlist_bundle_fixture.py','--network'], capture_output=True, text=True, encoding="utf-8").returncode!=0
 
 
 def test_source_semantics_and_dates_rejected():
@@ -93,7 +93,7 @@ def test_currentness_missing_evidence_emitted():
     assert any(m['capability_id']=='currentness_validation' and m['reason_code']=='stale_observation' for m in b['missing_evidence'])
 
 def test_registry_successor_fields_aligned():
-    reg=json.loads(Path('docs/data_capabilities/m8_source_capability_registry.json').read_text())
+    reg=json.loads(Path('docs/data_capabilities/m8_source_capability_registry.json').read_text(encoding="utf-8"))
     nxt='M8R-03E-EOD-EXPECTED-TRADE-DATE-AND-NATURAL-DISASTER-SESSION-STATUS'
     assert reg['recommended_next_task']==nxt
     assert reg['registry_successor']==nxt

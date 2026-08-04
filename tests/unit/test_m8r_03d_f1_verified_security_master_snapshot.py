@@ -57,7 +57,7 @@ def test_resolution_exact_and_ambiguous():
     assert resolve_verified_security_identity('3333',lookup,market_context='TWSE')['selected']['canonical_target_id']=='TWSE:3333'
 
 def _req(ids):
-    req=json.loads(Path('tests/fixtures/m8r_03d/mixed_snapshot_request.json').read_text())
+    req=json.loads(Path('tests/fixtures/m8r_03d/mixed_snapshot_request.json').read_text(encoding="utf-8"))
     req['request_id']='req-f1'
     req['persistent_watchlist_reference']['enabled_target_ids']=ids
     return req

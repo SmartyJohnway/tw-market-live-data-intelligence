@@ -37,6 +37,6 @@ def test_complete_windows_workflow_and_release_job_retain_compatibility_coverage
 
 
 def test_policy_keeps_historical_and_performance_profiles_manual():
-    profiles = json.loads((ROOT / "config/test_execution_profiles.json").read_text())["profiles"]
+    profiles = json.loads((ROOT / "config/test_execution_profiles.json").read_text(encoding="utf-8"))["profiles"]
     assert profiles["historical-acceptance"]["automatic_ci_allowed"] is False
     assert profiles["performance"]["automatic_ci_allowed"] is False
