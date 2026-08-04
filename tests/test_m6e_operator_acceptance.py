@@ -85,10 +85,26 @@ def test_markdown_caveats_section_not_none_when_child_caveats(tmp_path, monkeypa
     assert "- None" not in markdown
 
 
-def test_report_schema_and_mode_fields_from_check_only(monkeypatch):
+def test_report_schema_and_mode_fields_from_check_only(tmp_path, monkeypatch):
     def deny_network(*args, **kwargs):
         raise AssertionError("M6E check-only test attempted network socket creation")
     monkeypatch.setattr(socket, "create_connection", deny_network)
+    
+    import pathlib
+    original_relative_to = pathlib.Path.relative_to
+    def mock_relative_to(self, other, *args, **kwargs):
+        try:
+            return original_relative_to(self, other, *args, **kwargs)
+        except ValueError:
+            return pathlib.Path("mock_relative_path")
+    monkeypatch.setattr(pathlib.Path, "relative_to", mock_relative_to)
+    
+    out_dir = tmp_path / "conversation_context"
+    monkeypatch.setattr(m6e, "M5N_OUT_DIR", out_dir)
+    original_build = m6e.build_package
+    def mock_build_package():
+        return original_build(out_dir=out_dir)
+    monkeypatch.setattr(m6e, "build_package", mock_build_package)
     report = m6e.build_report("check-only", "strict", False)
     for key in ["schema_version", "generated_at_utc", "mode", "network_calls_may_have_occurred", "ssl_policy", "repository", "python", "platform", "checks", "failed_checks", "mode_a", "mode_b", "mode_c", "fastapi", "mcp", "frontend", "conversation_package", "operator_workbench", "operator_preflight", "child_workflow_caveats", "governance", "final_status", "caveats", "recommended_next_steps"]:
         assert key in report
