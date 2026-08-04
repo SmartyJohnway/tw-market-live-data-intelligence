@@ -1,8 +1,8 @@
 {
   "status": "pass_with_caveats",
   "baseline_main_sha": "e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388",
-  "tested_implementation_head": "8056f6ead47aa6935a62ab9297464ac6cf7fb791",
-  "evidence_parent": "8056f6ead47aa6935a62ab9297464ac6cf7fb791",
+  "tested_implementation_commit_sha": "d00c5118931523a4081f5c27530576319a0423be",
+  "evidence_parent_commit_sha": "d00c5118931523a4081f5c27530576319a0423be",
   "environment": {
     "os": "Linux (Ubuntu)",
     "python_version": "3.12.13",
@@ -39,7 +39,7 @@
     "Replaced .read_text() with .read_text(encoding='utf-8') in targeted tests",
     "Replaced .write_text(...) with .write_text(..., encoding='utf-8') in targeted tests",
     "Rewrote relative import path for validate_m5c_staging_promotion_authorization to a stable try/except fallback correctly differentiating bare relative imports and absolute package imports in run_m5c_controlled_staging_promotion.py",
-    "Monkeypatched M5N_OUT_DIR in test_m6e_operator_acceptance.py to securely prevent tests from unintentionally mutating research generated artifacts."
+    "Monkeypatched M5N_OUT_DIR with tmp_path in test_m6e_operator_acceptance.py to securely prevent tests from unintentionally mutating research generated artifacts."
   ],
   "targeted_nodes": [
     "tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
@@ -88,7 +88,7 @@
     ]
   },
   "pr_head_linux": {
-    "tested_sha": "8056f6ead47aa6935a62ab9297464ac6cf7fb791",
+    "tested_sha": "d00c5118931523a4081f5c27530576319a0423be",
     "passed": 2089,
     "failed": 12,
     "skipped": 0,

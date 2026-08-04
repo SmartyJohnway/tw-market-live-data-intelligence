@@ -5,8 +5,8 @@
 
 ## Tested Identity and Environment
 - **Baseline SHA:** `e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388`
-- **Tested Implementation Head:** `8056f6ead47aa6935a62ab9297464ac6cf7fb791`
-- **Evidence Parent:** `8056f6ead47aa6935a62ab9297464ac6cf7fb791`
+- **Tested Implementation Head:** `d00c5118931523a4081f5c27530576319a0423be`
+- **Evidence Parent:** `d00c5118931523a4081f5c27530576319a0423be`
 - **Environment:** Linux (Ubuntu), Python 3.12.13, Pytest 9.1.1, ext4, UTF-8 default.
 - **Windows Execution Status:** `not_performed`
 

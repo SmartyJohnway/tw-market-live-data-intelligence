@@ -91,16 +91,20 @@ def test_report_schema_and_mode_fields_from_check_only(monkeypatch, tmp_path):
     monkeypatch.setattr(socket, "create_connection", deny_network)
 
     # Redirect M5N output to prevent mutating tracked research artifacts
-    mock_out = m6e.ROOT / "research/live_observation_runs/m6e_mock_tmp"
+    mock_out = tmp_path / "m6e_mock_output"
     mock_out.mkdir(parents=True, exist_ok=True)
-    monkeypatch.setattr(m6e, "M5N_OUT_DIR", mock_out)
+    class MockPath:
+        def __init__(self, p): self.p = p
+        def __truediv__(self, other): return self.p / other
+        def relative_to(self, *a, **k): return self.p
+        def as_posix(self): return self.p.as_posix()
+        def exists(self): return self.p.exists()
+    mock_out_obj = MockPath(mock_out)
+    monkeypatch.setattr(m6e, "M5N_OUT_DIR", mock_out_obj)
     monkeypatch.setattr(m6e, "build_package", lambda *a, **k: {"status": "ok"})
     (mock_out / "conversation_context.json").write_text('{"schema_version": "m5n_conversation_context.v1"}', encoding="utf-8")
     (mock_out / "conversation_context.md").write_text('markdown text canonical no trading governance observation source', encoding="utf-8")
 
-    def deny_network(*args, **kwargs):
-        raise AssertionError("M6E check-only test attempted network socket creation")
-    monkeypatch.setattr(socket, "create_connection", deny_network)
     report = m6e.build_report("check-only", "strict", False)
     for key in ["schema_version", "generated_at_utc", "mode", "network_calls_may_have_occurred", "ssl_policy", "repository", "python", "platform", "checks", "failed_checks", "mode_a", "mode_b", "mode_c", "fastapi", "mcp", "frontend", "conversation_package", "operator_workbench", "operator_preflight", "child_workflow_caveats", "governance", "final_status", "caveats", "recommended_next_steps"]:
         assert key in report
