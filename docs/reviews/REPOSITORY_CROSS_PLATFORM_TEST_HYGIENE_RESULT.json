@@ -1,17 +1,22 @@
 {
-  "status": "passed",
+  "status": "pass_with_caveats",
   "baseline_main_sha": "e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388",
-  "tested_commit_sha": "e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388",
+  "implementation_parent_sha": "e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388",
+  "tested_pr_head_sha": "66781c7f7e8288d6bc35b5424edd8ef456918dfa",
   "environment": {
     "os": "Linux (Ubuntu)",
     "python_version": "3.12.13",
     "pytest_version": "9.1.1",
     "default_encoding": "utf-8",
     "filesystem": "ext4",
-    "notes": "Linux verification passed with explicit UTF-8 handling. Windows-specific CP950 failures were addressed by code changes derived from prior evidence, but Windows rerun was not performed in this PR."
+    "baseline_worktree_identity": "fresh_baseline_worktree",
+    "pr_head_worktree_identity": "fresh_pr_head_worktree",
+    "windows_execution_status": "not_performed"
   },
-  "files_changed": [
-    "scripts/run_m5c_controlled_staging_promotion.py",
+  "implementation_files_changed": [
+    "scripts/run_m5c_controlled_staging_promotion.py"
+  ],
+  "test_files_changed": [
     "tests/unit/test_frontend_readonly_static_contracts.py",
     "tests/unit/test_m5c_staging_failure_injection.py",
     "tests/unit/test_m5c_staging_promotion.py",
@@ -22,11 +27,18 @@
     "tests/unit/test_m8a_tpex_official_eod_adapter.py",
     "tests/unit/test_m8b_final_acceptance.py"
   ],
+  "evidence_files_created": [
+    "docs/reviews/REPOSITORY_CROSS_PLATFORM_TEST_HYGIENE_PREFLIGHT.json",
+    "docs/reviews/REPOSITORY_CROSS_PLATFORM_TEST_HYGIENE_PREFLIGHT.md",
+    "docs/reviews/REPOSITORY_CROSS_PLATFORM_TEST_HYGIENE_RESULT.json",
+    "docs/reviews/REPOSITORY_CROSS_PLATFORM_TEST_HYGIENE_RESULT.md"
+  ],
+  "unexpected_generated_files": [],
   "normalization_rules_applied": [
     "Replaced .read_text() with .read_text(encoding='utf-8') in targeted tests",
     "Replaced .write_text(...) with .write_text(..., encoding='utf-8') in targeted tests",
-    "Replaced json.dumps(..., encoding='utf-8') where mistakenly added",
-    "Rewrote relative import path for validate_m5c_staging_promotion_authorization to absolute package path in run_m5c_controlled_staging_promotion.py"
+    "Rewrote relative import path for validate_m5c_staging_promotion_authorization to a stable try/except fallback matching CLI and module invocations in run_m5c_controlled_staging_promotion.py",
+    "Monkeypatched M5N_OUT_DIR in test_m6e_operator_acceptance.py to prevent mutating research generated artifacts."
   ],
   "targeted_nodes": [
     "tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
@@ -50,59 +62,71 @@
     "tests/unit/test_m8b_final_acceptance.py::test_m8b_final_acceptance_and_registry",
     "tests/unit/test_run_m5c_staging_promotion_preflight.py::test_one_command_preflight_shape"
   ],
-  "before_results": "20 targeted nodes failed on Windows (from M8R-05B-03_FINAL_ACCEPTANCE.json). 43 total failures in full non-network.",
-  "after_results": "All 20 targeted nodes passed on Linux.",
-  "full_non_network_before": {
-    "passed": 2053,
-    "failed": 43,
-    "skipped": 5,
-    "deselected": 1
-  },
-  "full_non_network_after": {
+  "before_results": "All 20 target nodes pass on Linux baseline implicitly due to default UTF-8.",
+  "after_results": "All 20 target nodes pass on Linux PR head.",
+  "baseline_linux": {
+    "tested_sha": "e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388",
     "passed": 2089,
     "failed": 12,
     "skipped": 0,
-    "deselected": 1
+    "deselected": 1,
+    "exit_code": 1,
+    "failed_node_ids": [
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+      "tests/unit/test_m8r_02b_f1_revalidation.py::test_f1_consistency_validation_accepts_finalized_cross_source_evidence",
+      "tests/unit/test_m8r_02b_f1_revalidation.py::test_remote_ancestor_execution_sha_accepted",
+      "tests/unit/test_m8r_02b_f1_revalidation.py::test_option_subrun_finalized_false_rejected",
+      "tests/unit/test_m8r_02b_f1_revalidation.py::test_option_subrun_network_execution_false_rejected",
+      "tests/unit/test_m8r_controlled_live_validation.py::test_commit_sha_resolvability_and_new_run_sha_behavior"
+    ]
   },
-  "resolved_failures": [
-    "tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
-    "tests/unit/test_frontend_readonly_static_contracts.py::test_required_wording_exists_and_forbidden_positive_claims_absent",
-    "tests/unit/test_m5c_staging_failure_injection.py::test_execute_blocks_existing_destination_without_second_promotion",
-    "tests/unit/test_m5c_staging_promotion.py::test_one_command_preflight_shape",
-    "tests/unit/test_m5c_staging_promotion.py::test_rollback_failure_injection_no_mutation",
-    "tests/unit/test_m5c_staging_promotion.py::test_tampered_manifest_blocked",
-    "tests/unit/test_m5c_staging_rollback.py::test_rollback_failure_injection_no_mutation",
-    "tests/unit/test_m5e_controlled_frontend_publication.py::test_check_only_fail_closed",
-    "tests/unit/test_m5e_controlled_frontend_publication.py::test_frontend_public_unchanged",
-    "tests/unit/test_m5e_controlled_frontend_publication.py::test_preview_static_dom_contract",
-    "tests/unit/test_m5fgh_consumer_consistency.py::test_demo_json_summary",
-    "tests/unit/test_m5fgh_frontend_static.py::test_frontend_static_uses_m5f_and_safe_dom",
-    "tests/unit/test_m5ij_end_to_end_acceptance.py::test_m5e_supersession_accepted_by_default",
-    "tests/unit/test_m5ij_end_to_end_acceptance.py::test_m5ij_acceptance_check_only_passes",
-    "tests/unit/test_m8_controlled_conversation_context_integration.py::test_pure_projection_no_network_runtime_imports",
-    "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_6488_bounded_seed_classifies_equity_and_unknown_fails_closed",
-    "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_parse_normal_classifies_and_omits_extension_fields",
-    "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_unclassified_and_signed_change_and_duplicate",
-    "tests/unit/test_m8b_final_acceptance.py::test_m8b_final_acceptance_and_registry",
-    "tests/unit/test_run_m5c_staging_promotion_preflight.py::test_one_command_preflight_shape",
-    "(11 additional historical failures incidentally resolved)"
-  ],
-  "retained_failures": [
-    "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
-    "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
-    "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
-    "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
-    "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
-    "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
-    "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
-    "tests/unit/test_m8r_02b_f1_revalidation.py::test_f1_consistency_validation_accepts_finalized_cross_source_evidence",
-    "tests/unit/test_m8r_02b_f1_revalidation.py::test_remote_ancestor_execution_sha_accepted",
-    "tests/unit/test_m8r_02b_f1_revalidation.py::test_option_subrun_finalized_false_rejected",
-    "tests/unit/test_m8r_02b_f1_revalidation.py::test_option_subrun_network_execution_false_rejected",
-    "tests/unit/test_m8r_controlled_live_validation.py::test_commit_sha_resolvability_and_new_run_sha_behavior"
-  ],
-  "unresolved_failures": [],
-  "novel_failures": [],
+  "pr_head_linux": {
+    "tested_sha": "66781c7f7e8288d6bc35b5424edd8ef456918dfa",
+    "passed": 2089,
+    "failed": 12,
+    "skipped": 0,
+    "deselected": 1,
+    "exit_code": 1,
+    "failed_node_ids": [
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+      "tests/unit/test_m8r_02b_f1_revalidation.py::test_f1_consistency_validation_accepts_finalized_cross_source_evidence",
+      "tests/unit/test_m8r_02b_f1_revalidation.py::test_remote_ancestor_execution_sha_accepted",
+      "tests/unit/test_m8r_02b_f1_revalidation.py::test_option_subrun_finalized_false_rejected",
+      "tests/unit/test_m8r_02b_f1_revalidation.py::test_option_subrun_network_execution_false_rejected",
+      "tests/unit/test_m8r_controlled_live_validation.py::test_commit_sha_resolvability_and_new_run_sha_behavior"
+    ]
+  },
+  "classification": {
+    "retained": [
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+      "tests/unit/test_m8r_02b_f1_revalidation.py::test_f1_consistency_validation_accepts_finalized_cross_source_evidence",
+      "tests/unit/test_m8r_02b_f1_revalidation.py::test_remote_ancestor_execution_sha_accepted",
+      "tests/unit/test_m8r_02b_f1_revalidation.py::test_option_subrun_finalized_false_rejected",
+      "tests/unit/test_m8r_02b_f1_revalidation.py::test_option_subrun_network_execution_false_rejected",
+      "tests/unit/test_m8r_controlled_live_validation.py::test_commit_sha_resolvability_and_new_run_sha_behavior"
+    ],
+    "removed": [],
+    "novel": [],
+    "unresolved": []
+  },
   "M8R_regression_results": {
     "m8r_05b_03": "108 passed",
     "m8r_05b_02": "55 passed",
@@ -110,7 +134,7 @@
     "fixed_upstream_gate": "44 passed"
   },
   "known_caveats": [
-    "Windows rerun was not explicitly performed in this PR. Fixes were verified on Linux."
+    "Linux same-environment regression closure passed with zero novel failures. Windows-specific CP950 closure remains unverified because no Windows rerun was performed."
   ],
   "recommended_follow_up": "Merge PR-B. M8R-05C can now commence."
 }
