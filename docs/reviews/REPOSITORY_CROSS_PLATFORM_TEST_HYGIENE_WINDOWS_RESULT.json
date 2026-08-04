@@ -1,12 +1,15 @@
 {
   "baseline_sha": "e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388",
-  "candidate_sha": "c1103d65b...",
-  "caveats": [],
+  "candidate_sha": "b5f8e872bd0257ab4e84b09c8a2c6fc8a7b457b6",
+  "caveats": [
+    "The targeted Windows CP950 hygiene failures were removed with zero novel failures, while 22 baseline-preexisting non-network failures remain retained and are outside this bounded PR."
+  ],
   "containment": {
     "research_diff_exit_code": 0,
     "untracked_research_mutations": 0
   },
   "environment": "Windows",
+  "evidence_parent_commit_sha": "b5f8e872bd0257ab4e84b09c8a2c6fc8a7b457b6",
   "failed_node_ids": {
     "novel": [],
     "removed": [
@@ -71,5 +74,6 @@
   },
   "preferred_encoding": "cp950",
   "schema_version": "validation_evidence.v1",
+  "status": "pass_with_caveats",
   "target_20_nodes_results": "All target nodes fixed"
 }
