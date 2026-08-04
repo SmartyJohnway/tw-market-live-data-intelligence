@@ -1,15 +1,26 @@
 {
   "baseline_sha": "e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388",
-  "candidate_sha": "b5f8e872bd0257ab4e84b09c8a2c6fc8a7b457b6",
   "caveats": [
     "The targeted Windows CP950 hygiene failures were removed with zero novel failures, while 22 baseline-preexisting non-network failures remain retained and are outside this bounded PR."
   ],
   "containment": {
-    "research_diff_exit_code": 0,
-    "untracked_research_mutations": 0
+    "compileall_exit_code": 0,
+    "diff_check_exit_code": 1,
+    "git_status": " M research/live_observation_runs/current_conversation_context/conversation_context.md\n?? 20_nodes_baseline.txt\n?? 20_nodes_recheck.txt\n?? 4_nodes_recheck.txt\n?? baseline_q.txt\n?? candidate_q.txt\n?? candidate_short.txt\n?? compileall_cand.txt\n?? diff_check.txt\n?? diff_research.txt\n?? errors.txt\n?? errors_recheck.txt\n?? extract.txt\n?? fs_recheck.txt\n?? full_test_exitcode.txt\n?? full_test_output.txt\n?? git_status.txt\n?? m6e_recheck.txt\n?? out_diff.txt\n?? out_m5c1.txt\n?? out_m5c2.txt\n?? out_m6e.txt\n?? out_status.txt\n?? parsed_tracebacks.txt\n?? pr_body.md\n?? research/live_observation_runs/current_conversation_context/conversation_context.json\n?? research/live_observation_runs/m6e_operator_acceptance/latest_operator_acceptance_report.json\n?? research/live_observation_runs/m6e_operator_acceptance/latest_operator_acceptance_report.md\n?? run_default_ci.ps1\n?? stacktraces.txt\n",
+    "research_diff_exit_code": 0
   },
-  "environment": "Windows",
-  "evidence_parent_commit_sha": "b5f8e872bd0257ab4e84b09c8a2c6fc8a7b457b6",
+  "environment": {
+    "PYTHONIOENCODING": null,
+    "PYTHONPATH": null,
+    "PYTHONUTF8": null,
+    "filesystem_encoding": "utf-8",
+    "os": "Windows",
+    "platform_details": "Windows-10-10.0.19045-SP0",
+    "preferred_encoding": "cp950",
+    "python_version": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+    "sys_flags_utf8_mode": 0
+  },
+  "evidence_parent_commit_sha": "bc22a8854cbc1178c06dbb16cd1f66331e923c73",
   "failed_node_ids": {
     "novel": [],
     "removed": [
@@ -61,10 +72,13 @@
     ]
   },
   "full_non_network_counts": {
-    "baseline_failed": 43,
-    "candidate_failed": 22
+    "baseline_summary": "43 failed, 2053 passed, 5 skipped, 1 deselected in 119.42s (0:01:59)",
+    "candidate_summary": "22 failed, 2074 passed, 5 skipped, 1 deselected in 120.31s (0:02:00)"
   },
-  "m5c_invocation": "Passed (script and module mode exit 0 without PYTHONPATH)",
+  "m5c_invocation": {
+    "module_mode_exit_code": 1,
+    "script_mode_exit_code": 1
+  },
   "m5k_no_write": "Passed",
   "m8r_results": {
     "m8r-05b-01": "58 passed",
@@ -72,8 +86,8 @@
     "m8r-05b-03": "108 passed",
     "upstream_gate": "44 passed"
   },
-  "preferred_encoding": "cp950",
-  "schema_version": "validation_evidence.v1",
+  "schema_version": "validation_evidence.v2",
   "status": "pass_with_caveats",
-  "target_20_nodes_results": "All target nodes fixed"
+  "target_20_nodes_results": "All target nodes fixed, plus 1 filesystem unit test.",
+  "tested_implementation_commit_sha": "bc22a8854cbc1178c06dbb16cd1f66331e923c73"
 }
