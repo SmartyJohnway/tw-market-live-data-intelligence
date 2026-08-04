@@ -5,35 +5,52 @@
   ],
   "containment": {
     "compileall_exit_code": 0,
-    "diff_check_exit_code": 1,
-    "git_status": " M research/live_observation_runs/current_conversation_context/conversation_context.md\n?? 20_nodes_baseline.txt\n?? 20_nodes_recheck.txt\n?? 4_nodes_recheck.txt\n?? baseline_q.txt\n?? candidate_q.txt\n?? candidate_short.txt\n?? compileall_cand.txt\n?? diff_check.txt\n?? diff_research.txt\n?? errors.txt\n?? errors_recheck.txt\n?? extract.txt\n?? fs_recheck.txt\n?? full_test_exitcode.txt\n?? full_test_output.txt\n?? git_status.txt\n?? m6e_recheck.txt\n?? out_diff.txt\n?? out_m5c1.txt\n?? out_m5c2.txt\n?? out_m6e.txt\n?? out_status.txt\n?? parsed_tracebacks.txt\n?? pr_body.md\n?? research/live_observation_runs/current_conversation_context/conversation_context.json\n?? research/live_observation_runs/m6e_operator_acceptance/latest_operator_acceptance_report.json\n?? research/live_observation_runs/m6e_operator_acceptance/latest_operator_acceptance_report.md\n?? run_default_ci.ps1\n?? stacktraces.txt\n",
+    "diff_check_exit_code": 0,
     "research_diff_exit_code": 0
   },
   "environment": {
-    "PYTHONIOENCODING": null,
-    "PYTHONPATH": null,
-    "PYTHONUTF8": null,
     "filesystem_encoding": "utf-8",
     "os": "Windows",
     "platform_details": "Windows-10-10.0.19045-SP0",
     "preferred_encoding": "cp950",
-    "python_version": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
-    "sys_flags_utf8_mode": 0
+    "python_version": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]"
   },
-  "evidence_parent_commit_sha": "bc22a8854cbc1178c06dbb16cd1f66331e923c73",
+  "evidence_parent_commit_sha": "90275beea4fa3804d88c0b3047fcc75e4a40dd02",
   "failed_node_ids": {
     "novel": [],
     "removed": [
+      "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+      "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+      "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+      "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
       "tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
       "tests/unit/test_frontend_readonly_static_contracts.py::test_required_wording_exists_and_forbidden_positive_claims_absent",
+      "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+      "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+      "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
+      "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+      "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+      "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+      "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
       "tests/unit/test_m5c_staging_failure_injection.py::test_execute_blocks_existing_destination_without_second_promotion",
       "tests/unit/test_m5c_staging_promotion.py::test_one_command_preflight_shape",
       "tests/unit/test_m5c_staging_promotion.py::test_rollback_failure_injection_no_mutation",
       "tests/unit/test_m5c_staging_promotion.py::test_tampered_manifest_blocked",
+      "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
       "tests/unit/test_m5c_staging_rollback.py::test_rollback_failure_injection_no_mutation",
+      "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
       "tests/unit/test_m5e_controlled_frontend_publication.py::test_check_only_fail_closed",
       "tests/unit/test_m5e_controlled_frontend_publication.py::test_frontend_public_unchanged",
       "tests/unit/test_m5e_controlled_frontend_publication.py::test_preview_static_dom_contract",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+      "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
       "tests/unit/test_m5fgh_consumer_consistency.py::test_demo_json_summary",
       "tests/unit/test_m5fgh_frontend_static.py::test_frontend_static_uses_m5f_and_safe_dom",
       "tests/unit/test_m5ij_end_to_end_acceptance.py::test_m5e_supersession_accepted_by_default",
@@ -46,48 +63,234 @@
       "tests/unit/test_m8r_filesystem_containment.py::test_prefix_collision_rooted_path_rejected",
       "tests/unit/test_run_m5c_staging_promotion_preflight.py::test_one_command_preflight_shape"
     ],
-    "retained": [
-      "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
-      "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
-      "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
-      "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
-      "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
-      "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
-      "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
-      "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
-      "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
-      "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
-      "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
-      "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
-      "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
-      "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
-      "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
-      "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
-      "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
-      "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
-      "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
-      "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
-      "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
-      "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery"
-    ]
+    "retained": []
   },
   "full_non_network_counts": {
     "baseline_summary": "43 failed, 2053 passed, 5 skipped, 1 deselected in 119.42s (0:01:59)",
-    "candidate_summary": "22 failed, 2074 passed, 5 skipped, 1 deselected in 120.31s (0:02:00)"
+    "candidate_summary": ""
   },
   "m5c_invocation": {
     "module_mode_exit_code": 1,
     "script_mode_exit_code": 1
   },
-  "m5k_no_write": "Passed",
-  "m8r_results": {
-    "m8r-05b-01": "58 passed",
-    "m8r-05b-02": "55 passed",
-    "m8r-05b-03": "108 passed",
-    "upstream_gate": "44 passed"
-  },
-  "schema_version": "validation_evidence.v2",
+  "schema_version": "validation_evidence.v3",
   "status": "pass_with_caveats",
-  "target_20_nodes_results": "All target nodes fixed, plus 1 filesystem unit test.",
-  "tested_implementation_commit_sha": "bc22a8854cbc1178c06dbb16cd1f66331e923c73"
+  "target_20_nodes_results": [
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_frontend_readonly_static_contracts.py::test_required_wording_exists_and_forbidden_positive_claims_absent",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5c_staging_failure_injection.py::test_execute_blocks_existing_destination_without_second_promotion",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5c_staging_promotion.py::test_one_command_preflight_shape",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5c_staging_promotion.py::test_rollback_failure_injection_no_mutation",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5c_staging_promotion.py::test_tampered_manifest_blocked",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5c_staging_rollback.py::test_rollback_failure_injection_no_mutation",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5e_controlled_frontend_publication.py::test_check_only_fail_closed",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5e_controlled_frontend_publication.py::test_frontend_public_unchanged",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5e_controlled_frontend_publication.py::test_preview_static_dom_contract",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5fgh_consumer_consistency.py::test_demo_json_summary",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5fgh_frontend_static.py::test_frontend_static_uses_m5f_and_safe_dom",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5ij_end_to_end_acceptance.py::test_m5e_supersession_accepted_by_default",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m5ij_end_to_end_acceptance.py::test_m5ij_acceptance_check_only_passes",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m8_controlled_conversation_context_integration.py::test_pure_projection_no_network_runtime_imports",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_6488_bounded_seed_classifies_equity_and_unknown_fails_closed",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_parse_normal_classifies_and_omits_extension_fields",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m8a_tpex_official_eod_adapter.py::test_tpex_unclassified_and_signed_change_and_duplicate",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m8b_final_acceptance.py::test_m8b_final_acceptance_and_registry",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_m8r_filesystem_containment.py::test_prefix_collision_rooted_path_rejected",
+      "status": "passed"
+    },
+    {
+      "fix_confirmed": true,
+      "node_id": "tests/unit/test_run_m5c_staging_promotion_preflight.py::test_one_command_preflight_shape",
+      "status": "passed"
+    }
+  ],
+  "tested_implementation_commit_sha": "90275beea4fa3804d88c0b3047fcc75e4a40dd02"
 }
