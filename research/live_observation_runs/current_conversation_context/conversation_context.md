@@ -18,11 +18,11 @@ Canonical Summary is Level 1 reviewed context. Latest Observation Summary is Lev
 - Caveats: not_realtime_guaranteed, not_trading_signal, not_production_current_state, source_risk_present, freshness_must_be_displayed
 
 ## Market Clock / Currentness
-- Session state: closed
+- Session state: weekend_closed
 - Freshness state: stale
-- Currentness label: reference_only
+- Currentness label: not_current
 - Calendar confidence: weekday_heuristic_only
-- AI currentness summary: Latest observation is reference-only for AI discussion; do not describe it as current intraday movement.
+- AI currentness summary: Market session is not current for live discussion; treat observations as not-current reference context.
 - Caveats: Builder output is not safe for direct AI context until controlled promotion is implemented., Holiday records missing; weekday heuristic only and official holiday correctness is unknown.
 
 ## Latest Observation Summary
