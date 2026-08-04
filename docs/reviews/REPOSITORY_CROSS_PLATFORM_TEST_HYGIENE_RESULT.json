@@ -1,8 +1,8 @@
 {
   "status": "pass_with_caveats",
   "baseline_main_sha": "e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388",
-  "implementation_parent_sha": "e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388",
-  "tested_pr_head_sha": "d6bfc1e06be82b44e9b0b8074097de0cb4798ca0",
+  "tested_implementation_head": "8056f6ead47aa6935a62ab9297464ac6cf7fb791",
+  "evidence_parent": "8056f6ead47aa6935a62ab9297464ac6cf7fb791",
   "environment": {
     "os": "Linux (Ubuntu)",
     "python_version": "3.12.13",
@@ -17,6 +17,7 @@
     "scripts/run_m5c_controlled_staging_promotion.py"
   ],
   "test_files_changed": [
+    "tests/test_m6e_operator_acceptance.py",
     "tests/unit/test_frontend_readonly_static_contracts.py",
     "tests/unit/test_m5c_staging_failure_injection.py",
     "tests/unit/test_m5c_staging_promotion.py",
@@ -37,8 +38,8 @@
   "normalization_rules_applied": [
     "Replaced .read_text() with .read_text(encoding='utf-8') in targeted tests",
     "Replaced .write_text(...) with .write_text(..., encoding='utf-8') in targeted tests",
-    "Rewrote relative import path for validate_m5c_staging_promotion_authorization to a stable try/except fallback matching CLI and module invocations in run_m5c_controlled_staging_promotion.py",
-    "Monkeypatched M5N_OUT_DIR in test_m6e_operator_acceptance.py to prevent mutating research generated artifacts."
+    "Rewrote relative import path for validate_m5c_staging_promotion_authorization to a stable try/except fallback correctly differentiating bare relative imports and absolute package imports in run_m5c_controlled_staging_promotion.py",
+    "Monkeypatched M5N_OUT_DIR in test_m6e_operator_acceptance.py to securely prevent tests from unintentionally mutating research generated artifacts."
   ],
   "targeted_nodes": [
     "tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only",
@@ -87,7 +88,7 @@
     ]
   },
   "pr_head_linux": {
-    "tested_sha": "66781c7f7e8288d6bc35b5424edd8ef456918dfa",
+    "tested_sha": "8056f6ead47aa6935a62ab9297464ac6cf7fb791",
     "passed": 2089,
     "failed": 12,
     "skipped": 0,
@@ -136,7 +137,5 @@
   "known_caveats": [
     "Linux same-environment regression closure passed with zero novel failures. Windows-specific CP950 closure remains unverified because no Windows rerun was performed."
   ],
-  "recommended_follow_up": "Merge PR-B. M8R-05C can now commence.",
-  "tested_implementation_tree_sha": "d6bfc1e06be82b44e9b0b8074097de0cb4798ca0",
-  "evidence_commit_sha": "pending"
+  "recommended_follow_up": "Merge PR-B. M8R-05C can now commence."
 }

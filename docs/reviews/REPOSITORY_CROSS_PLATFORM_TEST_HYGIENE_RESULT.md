@@ -5,8 +5,8 @@
 
 ## Tested Identity and Environment
 - **Baseline SHA:** `e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388`
-- **Implementation Parent SHA:** `e00193d0c1719bbdbd3eea2ed9f0f21c0fd23388`
-- **Tested PR Head SHA:** `d6bfc1e06be82b44e9b0b8074097de0cb4798ca0`
+- **Tested Implementation Head:** `8056f6ead47aa6935a62ab9297464ac6cf7fb791`
+- **Evidence Parent:** `8056f6ead47aa6935a62ab9297464ac6cf7fb791`
 - **Environment:** Linux (Ubuntu), Python 3.12.13, Pytest 9.1.1, ext4, UTF-8 default.
 - **Windows Execution Status:** `not_performed`
 
@@ -16,6 +16,7 @@
 - `scripts/run_m5c_controlled_staging_promotion.py`
 
 ### Test Files Changed
+- `tests/test_m6e_operator_acceptance.py`
 - `tests/unit/test_frontend_readonly_static_contracts.py`
 - `tests/unit/test_m5c_staging_failure_injection.py`
 - `tests/unit/test_m5c_staging_promotion.py`
@@ -41,10 +42,10 @@ None. `unexpected_generated_files = []`
 - Targeted exclusively to the tests mapped directly to the 20 failures.
 
 ## Import-Path Changes
-- Refactored `validate_m5c_staging_promotion_authorization` and related sibling imports in `scripts/run_m5c_controlled_staging_promotion.py` into a stable `try/except` double-fallback block supporting both module (`python -m scripts...`) and direct script (`python scripts/...`) execution correctly.
+- Refactored `validate_m5c_staging_promotion_authorization` and related sibling imports in `scripts/run_m5c_controlled_staging_promotion.py` into a stable `try/except` double-fallback block supporting both module (`python -m scripts...`) and direct script (`python scripts/...`) execution correctly without duplicating module identities.
 
 ## Unintended Mutation Reversal
-- Modified `tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only` to effectively mock `m6e.M5N_OUT_DIR` using `monkeypatch` and `tmp_path`, preventing tests from unintentionally overwriting the sealed `research/live_observation_runs/current_conversation_context/conversation_context.md` file. The unintended mutation committed previously has been securely reverted and verified.
+- Modified `tests/test_m6e_operator_acceptance.py::test_report_schema_and_mode_fields_from_check_only` to safely mock `m6e.M5N_OUT_DIR` using `monkeypatch` and `tmp_path`, preventing tests from unintentionally overwriting the sealed `research/live_observation_runs/current_conversation_context/conversation_context.md` file. The unintended mutation committed previously has been securely reverted and verified.
 
 ## Targeted Failure Results
 - The 20 Windows-origin target nodes were used as the bounded change inventory.

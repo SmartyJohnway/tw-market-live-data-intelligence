@@ -85,7 +85,19 @@ def test_markdown_caveats_section_not_none_when_child_caveats(tmp_path, monkeypa
     assert "- None" not in markdown
 
 
-def test_report_schema_and_mode_fields_from_check_only(monkeypatch):
+def test_report_schema_and_mode_fields_from_check_only(monkeypatch, tmp_path):
+    def deny_network(*args, **kwargs):
+        raise AssertionError("M6E check-only test attempted network socket creation")
+    monkeypatch.setattr(socket, "create_connection", deny_network)
+
+    # Redirect M5N output to prevent mutating tracked research artifacts
+    mock_out = m6e.ROOT / "research/live_observation_runs/m6e_mock_tmp"
+    mock_out.mkdir(parents=True, exist_ok=True)
+    monkeypatch.setattr(m6e, "M5N_OUT_DIR", mock_out)
+    monkeypatch.setattr(m6e, "build_package", lambda *a, **k: {"status": "ok"})
+    (mock_out / "conversation_context.json").write_text('{"schema_version": "m5n_conversation_context.v1"}', encoding="utf-8")
+    (mock_out / "conversation_context.md").write_text('markdown text canonical no trading governance observation source', encoding="utf-8")
+
     def deny_network(*args, **kwargs):
         raise AssertionError("M6E check-only test attempted network socket creation")
     monkeypatch.setattr(socket, "create_connection", deny_network)
