@@ -89,7 +89,7 @@ def test_report_schema_and_mode_fields_from_check_only(tmp_path, monkeypatch):
     def deny_network(*args, **kwargs):
         raise AssertionError("M6E check-only test attempted network socket creation")
     monkeypatch.setattr(socket, "create_connection", deny_network)
-    
+
     import pathlib
     original_relative_to = pathlib.Path.relative_to
     out_dir = tmp_path / "conversation_context"
@@ -98,7 +98,7 @@ def test_report_schema_and_mode_fields_from_check_only(tmp_path, monkeypatch):
             return pathlib.Path("mock_relative_path")
         return original_relative_to(self, other, *args, **kwargs)
     monkeypatch.setattr(pathlib.Path, "relative_to", scoped_relative_to)
-    
+
     monkeypatch.setattr(m6e, "M5N_OUT_DIR", out_dir)
     original_build = m6e.build_package
     def mock_build_package():
@@ -122,12 +122,36 @@ def test_report_schema_and_mode_fields_from_check_only(tmp_path, monkeypatch):
     assert report["mode_c"]["status"] in {"pass", "fail"}
 
 
-def test_check_only_writes_only_m6e_report_folder(tmp_path):
+def test_check_only_writes_only_m6e_report_folder(tmp_path, monkeypatch):
+    import pathlib
+    out_dir = tmp_path / "conversation_context"
+
+    mock_root = tmp_path / "mock_root"
+    mock_report_dir = mock_root / "research/live_observation_runs/m6e_operator_acceptance"
+    mock_report_dir.mkdir(parents=True, exist_ok=True)
+    monkeypatch.setattr(m6e, "ROOT", mock_root)
+    monkeypatch.setattr(m6e, "REPORT_DIR", mock_report_dir)
+    monkeypatch.setattr(m6e, "JSON_REPORT", mock_report_dir / "latest_operator_acceptance_report.json")
+    monkeypatch.setattr(m6e, "MD_REPORT", mock_report_dir / "latest_operator_acceptance_report.md")
+
+    original_relative_to = pathlib.Path.relative_to
+    def scoped_relative_to(self, other, *args, **kwargs):
+        if self == out_dir and pathlib.Path(other) == mock_root:
+            return pathlib.Path("mock_relative_path")
+        return original_relative_to(self, other, *args, **kwargs)
+    monkeypatch.setattr(pathlib.Path, "relative_to", scoped_relative_to)
+
+    monkeypatch.setattr(m6e, "M5N_OUT_DIR", out_dir)
+    original_build = m6e.build_package
+    def mock_build_package():
+        return original_build(out_dir=out_dir)
+    monkeypatch.setattr(m6e, "build_package", mock_build_package)
+
     report = m6e.build_report("check-only", "strict", False)
     m6e.write_report(report)
     assert m6e.JSON_REPORT.exists()
     assert m6e.MD_REPORT.exists()
-    allowed = ROOT / "research/live_observation_runs/m6e_operator_acceptance"
+    allowed = mock_root / "research/live_observation_runs/m6e_operator_acceptance"
     assert m6e.JSON_REPORT.resolve().is_relative_to(allowed.resolve())
     assert m6e.MD_REPORT.resolve().is_relative_to(allowed.resolve())
 
@@ -143,8 +167,23 @@ def test_invalid_ssl_policy_acceptance_surfaces_fail_closed():
     assert result["network_calls"] is False
 
 
-def test_frontend_static_acceptance_and_forbidden_behavior_scan():
+def test_frontend_static_acceptance_and_forbidden_behavior_scan(tmp_path, monkeypatch):
     frontend = m6e.frontend_acceptance()
     assert frontend["status"] == "pass"
+
+    import pathlib
+    out_dir = tmp_path / "conversation_context"
+    original_relative_to = pathlib.Path.relative_to
+    def scoped_relative_to(self, other, *args, **kwargs):
+        if self == out_dir and pathlib.Path(other) == m6e.ROOT:
+            return pathlib.Path("mock_relative_path")
+        return original_relative_to(self, other, *args, **kwargs)
+    monkeypatch.setattr(pathlib.Path, "relative_to", scoped_relative_to)
+    monkeypatch.setattr(m6e, "M5N_OUT_DIR", out_dir)
+    original_build = m6e.build_package
+    def mock_build_package():
+        return original_build(out_dir=out_dir)
+    monkeypatch.setattr(m6e, "build_package", mock_build_package)
+
     conv = m6e.conversation_acceptance()
     assert any(c["name"] == "no forbidden raw/trading fields" and c["status"] == "pass" for c in conv["checks"])
