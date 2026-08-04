@@ -92,14 +92,13 @@ def test_report_schema_and_mode_fields_from_check_only(tmp_path, monkeypatch):
     
     import pathlib
     original_relative_to = pathlib.Path.relative_to
-    def mock_relative_to(self, other, *args, **kwargs):
-        try:
-            return original_relative_to(self, other, *args, **kwargs)
-        except ValueError:
-            return pathlib.Path("mock_relative_path")
-    monkeypatch.setattr(pathlib.Path, "relative_to", mock_relative_to)
-    
     out_dir = tmp_path / "conversation_context"
+    def scoped_relative_to(self, other, *args, **kwargs):
+        if self == out_dir and pathlib.Path(other) == m6e.ROOT:
+            return pathlib.Path("mock_relative_path")
+        return original_relative_to(self, other, *args, **kwargs)
+    monkeypatch.setattr(pathlib.Path, "relative_to", scoped_relative_to)
+    
     monkeypatch.setattr(m6e, "M5N_OUT_DIR", out_dir)
     original_build = m6e.build_package
     def mock_build_package():
