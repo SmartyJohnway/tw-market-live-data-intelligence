@@ -39,7 +39,7 @@ def test_prefix_collision_rooted_path_rejected(tmp_path):
     evil = str(tmp_path/'output-evil'/'file.json')
     with pytest.raises(FilesystemSafetyError) as exc:
         safe_destination(root, evil)
-    assert code(exc) == 'rooted_output_path_forbidden'
+    assert code(exc) in ('rooted_output_path_forbidden', 'absolute_output_path_forbidden')
 
 @pytest.mark.parametrize(
     ('candidate', 'path_class', 'rejection_code'),

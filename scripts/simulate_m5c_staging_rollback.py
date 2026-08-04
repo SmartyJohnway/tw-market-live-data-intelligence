@@ -24,7 +24,7 @@ def _copy(base:Path, name:str):
 def _write(p:Path,obj): p.write_text(json.dumps(obj,indent=2,sort_keys=True)+"\n")
 def _run_scenarios(base:Path):
     out=[]; scenarios={}
-    d=_copy(base,'tampered_manifest'); (d/'staging_candidate.json').write_text((d/'staging_candidate.json').read_text().replace('TWSE_OpenAPI','BAD',1)); scenarios['tampered_manifest']=(d,{'manifest_sha256_mismatch'})
+    d=_copy(base,'tampered_manifest'); (d/'staging_candidate.json').write_text((d/'staging_candidate.json').read_text(encoding="utf-8").replace('TWSE_OpenAPI','BAD',1), encoding="utf-8"); scenarios['tampered_manifest']=(d,{'manifest_sha256_mismatch'})
     d=_copy(base,'missing_artifact'); (d/'evidence_ledger.json').unlink(); scenarios['missing_artifact']=(d,{'manifest_artifact_missing','missing_required_artifact'})
     d=_copy(base,'stale_historical_evidence'); scenarios['stale_historical_evidence']=(d,{'stale_historical_evidence_not_current'})
     d=_copy(base,'unauthorized_target'); c=load(d/'staging_candidate.json'); c['requested_targets'].append('9999'); c['rows'][0]['symbol']='9999'; _write(d/'staging_candidate.json',c); scenarios['unauthorized_target']=(d,{'target_drift'})

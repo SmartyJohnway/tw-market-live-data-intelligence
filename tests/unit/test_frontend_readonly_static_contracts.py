@@ -8,7 +8,7 @@ def test_required_frontend_preview_files_exist():
     for f in ['readonlyContextAdapter.js','ReadonlyMarketContextPreview.html','readonlyCaveatBadges.js','sourceAuthorityDisplay.js','readonly-preview.js']: assert (ROOT/'frontend/readonly-preview'/f).exists()
 def test_no_frontend_public_changed(): assert not (ROOT/'frontend/public').exists() or True
 def test_required_wording_exists_and_forbidden_positive_claims_absent():
-    text='\n'.join(p.read_text().lower() for p in files())
+    text='\n'.join(p.read_text(encoding="utf-8").lower() for p in files())
     for phrase in ['not realtime guaranteed','not a trading signal','not production current state','local preview only','source authority']:
         assert phrase in text
     for phrase in ['target price','recommendation']:

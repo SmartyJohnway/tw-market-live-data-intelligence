@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from scripts.m8a_tpex_official_eod_adapter import parse_tpex_official_eod_rows
 FIX=Path(__file__).resolve().parents[1]/"fixtures/m8a_official_eod"
-def load(n): return json.loads((FIX/n).read_text())
+def load(n): return json.loads((FIX/n).read_text(encoding="utf-8"))
 def test_tpex_parse_normal_classifies_and_omits_extension_fields():
     r=parse_tpex_official_eod_rows(load("tpex_normal_rows.json"), requested_symbols=["8069","006201"], retrieved_at_utc="2026-07-10T00:00:00Z")
     assert r["batch_status"] == "successful_eod_batch"
