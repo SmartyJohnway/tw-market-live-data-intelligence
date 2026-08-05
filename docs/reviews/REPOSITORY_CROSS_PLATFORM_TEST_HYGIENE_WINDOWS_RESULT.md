@@ -14,6 +14,7 @@
 - Novel failures: 0
 
 ## Details
+- The exact retained, removed, and novel node lists are preserved in the JSON evidence.
 - All 20 target CP950 decoding nodes were successfully fixed.
 - M5C dual invocation (script vs package) verified with help and no-arg validation.
 - M6E containment verified via clean runtime status and git diff.
