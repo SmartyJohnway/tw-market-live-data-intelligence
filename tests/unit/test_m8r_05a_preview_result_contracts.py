@@ -87,7 +87,17 @@ def test_valid_preview_partial_possible(preview_schema):
 def test_valid_result_full_success(result_schema):
     result = {
         "schema_version": "unified_market_evidence_result.v1",
+        "result_id": "umeresult-v1-00000000000000000000",
+        "result_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "generated_at": "2026-07-20T12:00:00Z",
         "request_id": "req-001",
+        "request_summary": {
+            "execution_mode": "latest_published",
+            "target_count": 1,
+            "requested_data_needs": ["official_eod_reference"],
+            "required_data_needs": ["official_eod_reference"],
+            "optional_data_needs": []
+        },
         "status": "full_success",
         "targets": [
             {
@@ -125,14 +135,29 @@ def test_valid_result_full_success(result_schema):
                     }
                 ]
             }
-        ]
+        ],
+        "audit_reference": {
+            "audit_package_id": "umeap-v1-00000000000000000000",
+            "schema_version": "unified_market_evidence_audit_package.v1",
+            "relative_path": "audit/unified_market_evidence_audit_package.v1.json"
+        }
     }
     validate(instance=result, schema=result_schema)
 
 def test_valid_result_not_yet_published(result_schema):
     result = {
         "schema_version": "unified_market_evidence_result.v1",
+        "result_id": "umeresult-v1-11111111111111111111",
+        "result_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+        "generated_at": "2026-07-20T12:00:00Z",
         "request_id": "req-001",
+        "request_summary": {
+            "execution_mode": "latest_published",
+            "target_count": 1,
+            "requested_data_needs": ["official_eod_reference"],
+            "required_data_needs": ["official_eod_reference"],
+            "optional_data_needs": []
+        },
         "status": "success_with_partial_coverage",
         "targets": [
             {
@@ -157,9 +182,33 @@ def test_valid_result_not_yet_published(result_schema):
                 "caveats": [],
                 "citations": []
             }
-        ]
+        ],
+        "audit_reference": {
+            "audit_package_id": "umeap-v1-11111111111111111111",
+            "schema_version": "unified_market_evidence_audit_package.v1",
+            "relative_path": "audit/unified_market_evidence_audit_package.v1.json"
+        }
     }
     validate(instance=result, schema=result_schema)
+
+def test_invalid_result_pre_05c_migration(result_schema):
+    """
+    Explicit compatibility test showing that pre-05C incomplete payloads
+    fail validation after the v1 schema was intentionally completed.
+    This proves that downstream consumers must migrate to the completed shape.
+    """
+    result = {
+        "schema_version": "unified_market_evidence_result.v1",
+        "request_id": "req-001",
+        "status": "full_success",
+        "targets": []
+    }
+    with pytest.raises(ValidationError) as exc_info:
+        validate(instance=result, schema=result_schema)
+    
+    msg = str(exc_info.value)
+    assert "result_id" in msg or "result_hash" in msg or "generated_at" in msg or "request_summary" in msg
+
 
 # Negative Result Fixture (raw payload disallowed implicitly by strict schemas, no unknown properties)
 def test_invalid_result_has_raw_payload(result_schema):

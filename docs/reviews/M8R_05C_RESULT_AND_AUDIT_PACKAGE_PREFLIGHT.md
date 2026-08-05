@@ -48,7 +48,7 @@ The existing `unified_market_evidence_result.v1.schema.json` is missing:
 - `audit_id` and `execution_time_ms` exist but are inadequate for 05C
 
 ### Compatibility Assessment
-> **All gaps are additive.** No existing passing test fixture is broken by adding new `required` fields — the fixture update is mandatory and safe. **v1 in-place evolution. No v2 needed.**
+> **Intentional completion of a pre-runtime draft contract requiring coordinated fixture, validator, documentation, and consumer migration.** Adding new `required` top-level fields is NOT backward-compatible. Old v1 payloads will fail validation. All upstream fixtures and downstream consumers must migrate to the completed v1 shape in a coordinated manner. No v2 is needed because the schema was previously a draft contract.
 
 ---
 
