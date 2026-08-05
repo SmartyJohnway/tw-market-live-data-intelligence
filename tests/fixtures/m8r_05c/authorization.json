@@ -1,8 +1,27 @@
 {
   "schema_version": "unified_market_evidence_execution_authorization.v1",
   "authorization_id": "umea-v1-b811db029e355ebf9bad",
-  "authorization_hash": "b811db029e355ebf9bad0221a64c74298405d7c55aabdee39064373b1ed11afd",
-  "authorization_identity_scope": {},
+  "authorization_hash": "d5c8f661399d116cccd8d565f081e893ab5aa8a15a8413cce6cf93fb487e8222",
+  "authorization_identity_scope": {
+    "plan_hash": "31a8afa5376cd9c58485ccc27169a0ae81c430f8d1a00aed9a769327bdc60a08",
+    "input_bindings": {
+      "original_request_hash": "57e5bae21293040b91ee54acc221e693384c2341d09e77c860d788970b88a35a",
+      "normalized_request_hash": "fbda73587516a5a583487169d9ccdc65c93ca8e07d3706264239b0ff3ec45440",
+      "f3_validation_output_hash": "fc19c82bb818febe92eef06aa8203b2fa5c5feb25996d0f7f88864235447fb81",
+      "security_master_evidence_references": [
+        "security_master_v1"
+      ],
+      "security_master_artifact_hashes": [
+        "bbbb0000cccc1111dddd2222eeee3333ffff4444000055556666777788889999"
+      ],
+      "capability_catalog_hash": "cccc0000dddd1111eeee2222ffff333300004444555566667777888899990000",
+      "planner_version": "m8r_05b_01_planner_v1",
+      "routing_matrix_version": "routing_matrix_v1",
+      "routing_matrix_hash": "dddd0000eeee1111ffff2222000033334444555566667777888899990000aaaa",
+      "handoff_contract_version": "m8r_05b_00_handoff_v1",
+      "handoff_contract_hash": "eeee0000ffff1111000022223333444455556666777788889999aaaa0000bbbb"
+    }
+  },
   "decision": "approved",
   "decision_reason": "test",
   "owner_identity_reference": "test_owner",
@@ -13,7 +32,7 @@
   "authorization_status": "approved",
   "plan_schema_version": "unified_market_evidence_orchestration_plan.v1",
   "plan_id": "umeop-v1-8b0880508f4eb8c58369",
-  "plan_hash": "51a20f01ae7ae8066e8bb8235064e62ba60923e229f6cc15a2592a5e2372aa70",
+  "plan_hash": "31a8afa5376cd9c58485ccc27169a0ae81c430f8d1a00aed9a769327bdc60a08",
   "plan_binding_hash": "8b0880508f4eb8c583696f325b9559f0e7fc9ab687b52a2f9ae1513bf07eb6bb",
   "approval_scope_mode": "whole_plan_executable_scope",
   "approved_operation_ids": [
@@ -55,19 +74,19 @@
   ],
   "input_bindings": {
     "original_request_hash": "57e5bae21293040b91ee54acc221e693384c2341d09e77c860d788970b88a35a",
-    "normalized_request_hash": "b811db029e355ebf9bad0221a64c74298405d7c55aabdee39064373b1ed11afd",
-    "f3_validation_output_hash": "8f12eb3b828d14c14aba89bc971bc51ac96bee883ac10f199fe42dad48fb93ee",
+    "normalized_request_hash": "fbda73587516a5a583487169d9ccdc65c93ca8e07d3706264239b0ff3ec45440",
+    "f3_validation_output_hash": "fc19c82bb818febe92eef06aa8203b2fa5c5feb25996d0f7f88864235447fb81",
     "security_master_evidence_references": [
-      "x"
+      "security_master_v1"
     ],
     "security_master_artifact_hashes": [
-      "b811db029e355ebf9bad0221a64c74298405d7c55aabdee39064373b1ed11afd"
+      "bbbb0000cccc1111dddd2222eeee3333ffff4444000055556666777788889999"
     ],
-    "capability_catalog_hash": "b811db029e355ebf9bad0221a64c74298405d7c55aabdee39064373b1ed11afd",
-    "planner_version": "v1",
-    "routing_matrix_version": "v1",
-    "routing_matrix_hash": "b811db029e355ebf9bad0221a64c74298405d7c55aabdee39064373b1ed11afd",
-    "handoff_contract_version": "v1",
-    "handoff_contract_hash": "b811db029e355ebf9bad0221a64c74298405d7c55aabdee39064373b1ed11afd"
+    "capability_catalog_hash": "cccc0000dddd1111eeee2222ffff333300004444555566667777888899990000",
+    "planner_version": "m8r_05b_01_planner_v1",
+    "routing_matrix_version": "routing_matrix_v1",
+    "routing_matrix_hash": "dddd0000eeee1111ffff2222000033334444555566667777888899990000aaaa",
+    "handoff_contract_version": "m8r_05b_00_handoff_v1",
+    "handoff_contract_hash": "eeee0000ffff1111000022223333444455556666777788889999aaaa0000bbbb"
   }
 }

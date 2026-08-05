@@ -6,6 +6,7 @@ Usage:
         --plan-input path/to/plan.json \\
         --authorization-input path/to/authorization.json \\
         --consumption-binding-input path/to/consumption_binding.json \\
+        --claim-input path/to/claim.json \\
         --receipt-input path/to/receipt.json \\
         --bundle-input path/to/bundle.json \\
         --artifact-root path/to/artifact_root/ \\
@@ -66,6 +67,7 @@ def main(argv=None) -> int:
     parser.add_argument(
         "--consumption-binding-input", required=True, help="Path to the consumption binding JSON."
     )
+    parser.add_argument("--claim-input", required=True, help="Path to the execution claim JSON.")
     parser.add_argument("--receipt-input", required=True, help="Path to the execution receipt JSON.")
     parser.add_argument("--bundle-input", required=True, help="Path to the evidence bundle JSON.")
     parser.add_argument(
@@ -104,6 +106,7 @@ def main(argv=None) -> int:
             plan_path=args.plan_input,
             authorization_path=args.authorization_input,
             consumption_binding_path=args.consumption_binding_input,
+            claim_path=args.claim_input,
             receipt_path=args.receipt_input,
             bundle_path=args.bundle_input,
             artifact_root=args.artifact_root,

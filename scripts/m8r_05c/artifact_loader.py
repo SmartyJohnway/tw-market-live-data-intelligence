@@ -12,12 +12,18 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+from copy import deepcopy
 
 from jsonschema import Draft202012Validator, Draft7Validator
 
 from .errors import ProjectionError
 from .models import ProjectionInputs
 from scripts.m8r_05b_03.canonical import sha256_json
+
+# Import authoritative validators from 05B-01, 05B-02, 05B-03
+from scripts.m8r_05b_02.validator import validate_execution_authorization
+from scripts.m8r_05b_02.consumption_binding import validate_consumption_binding
+from scripts.m8r_05b_03.consumption_claim import validate_claim_destination, validate_operator_confirmation_reference
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMAS_DIR = ROOT / "schemas"
@@ -28,6 +34,7 @@ _SCHEMA_NAMES = {
     "plan": "unified_market_evidence_orchestration_plan.v1.schema.json",
     "authorization": "unified_market_evidence_execution_authorization.v1.schema.json",
     "consumption_binding": "unified_market_evidence_authorization_consumption_binding.v1.schema.json",
+    "claim": "unified_market_evidence_consumption_record.v1.schema.json",
     "receipt": "unified_market_evidence_execution_receipt.v1.schema.json",
     "bundle": "unified_market_evidence_bundle.v1.schema.json",
 }
@@ -86,8 +93,8 @@ def _check_containment(path: Path, root: Path) -> None:
     
     if not resolved.is_file():
         raise ProjectionError("artifact_not_found")
-    with open(resolved, "r", encoding="utf-8") as f:
-        return json.load(f)
+
+
 def load_projection_inputs(
     *,
     request_path: str,
@@ -95,6 +102,7 @@ def load_projection_inputs(
     plan_path: str,
     authorization_path: str,
     consumption_binding_path: str,
+    claim_path: str,
     receipt_path: str,
     bundle_path: str,
     artifact_root: str,
@@ -115,6 +123,9 @@ def load_projection_inputs(
 
     consumption_binding = _load_json(Path(consumption_binding_path))
     _validate_schema(consumption_binding, "consumption_binding")
+    
+    claim = _load_json(Path(claim_path))
+    _validate_schema(claim, "claim")
 
     receipt = _load_json(Path(receipt_path))
     _validate_schema(receipt, "receipt")
@@ -122,47 +133,109 @@ def load_projection_inputs(
     bundle = _load_json(Path(bundle_path))
     _validate_schema(bundle, "bundle")
 
-    # Recompute and verify identity chain (strict predecessor hashing)
-    # Note: excluding self hashes when computing JSON hashes isn't standardized here except for result/audit
-    # We rely on the hashes recorded in the plan's input_bindings.
-    
-    # Check plan -> request
+    # Authoritative Validation of F3 canonical result against Request
+    request_id = request.get("request_id")
+    if f3_validation.get("request_id") != request_id:
+        raise ProjectionError("f3_request_id_mismatch")
+    if f3_validation.get("validation_status") not in ("accepted", "accepted_with_warnings"):
+        raise ProjectionError("f3_validation_status_not_acceptable")
+        
+    f3_targets = f3_validation.get("targets", [])
+    if len(f3_targets) != len(request.get("targets", [])):
+        raise ProjectionError("f3_target_count_mismatch")
+        
+    seen_indices = set()
+    for t in f3_targets:
+        idx = t.get("original_index")
+        if idx in seen_indices or idx < 0 or idx >= len(request["targets"]):
+            raise ProjectionError("f3_target_index_invalid")
+        seen_indices.add(idx)
+        # Original input must match
+        if t.get("original_input") != request["targets"][idx]:
+            raise ProjectionError("f3_original_input_mismatch")
+
+    # Authoritative Validation of Plan against F3 & Request
     request_hash = sha256_json(request)
     if plan.get("input_bindings", {}).get("original_request_hash") != request_hash:
         raise ProjectionError("predecessor_hash_mismatch_request")
     
-    # Check plan -> f3_validation
-    # Wait, plan schema uses a 64 char sha256 for f3_validation. Let's just verify identity equality.
+    normalized_hash = f3_validation.get("normalized_request_hash")
+    if plan.get("input_bindings", {}).get("normalized_request_hash") != normalized_hash:
+        raise ProjectionError("predecessor_hash_mismatch_normalized_request")
+        
     f3_hash = sha256_json(f3_validation)
     if plan.get("input_bindings", {}).get("f3_validation_output_hash") != f3_hash:
         raise ProjectionError("predecessor_hash_mismatch_f3")
 
     plan_id = plan.get("plan_id")
-    
-    # Check auth -> plan
-    if authorization.get("plan_id") != plan_id:
-        raise ProjectionError("predecessor_id_mismatch_plan")
-    
+    plan_body = deepcopy(plan)
+    plan_body.pop("plan_hash", None)
+    plan_hash = sha256_json(plan_body)
+    if plan.get("plan_hash") != plan_hash:
+        raise ProjectionError("plan_hash_invalid")
+
+    # Authoritative Validation of Authorization against Plan
+    try:
+        validate_execution_authorization(authorization, plan)
+    except Exception as exc:
+        raise ProjectionError("authorization_validation_failed") from exc
+        
     auth_id = authorization.get("authorization_id")
     
-    # Check claim -> auth
-    if consumption_binding.get("authorization_id") != auth_id:
+    # Authoritative Validation of Consumption Binding
+    try:
+        validate_consumption_binding(consumption_binding, authorization, plan)
+    except Exception as exc:
+        raise ProjectionError("consumption_binding_validation_failed") from exc
+        
+    # Validation of Execution Claim against Authorization & Plan & Binding
+    if claim.get("authorization_id") != auth_id:
         raise ProjectionError("predecessor_id_mismatch_auth")
-    if consumption_binding.get("plan_id") != plan_id:
+    if claim.get("plan_id") != plan_id:
         raise ProjectionError("predecessor_id_mismatch_plan")
-    claim_hash = consumption_binding.get("consumption_binding_hash")
+        
+    claim_body = deepcopy(claim)
+    claim_body.pop("consumption_claim_hash", None)
+    expected_claim_hash = sha256_json(claim_body)
+    if claim.get("consumption_claim_hash") != expected_claim_hash:
+        raise ProjectionError("claim_hash_invalid")
+        
+    claim_id = claim.get("consumption_claim_id")
+    claim_hash = claim.get("consumption_claim_hash")
     
-    # Check receipt -> claim
+    try:
+        validate_operator_confirmation_reference(claim)
+    except Exception as exc:
+        raise ProjectionError("claim_operator_reference_invalid") from exc
+        
+    # Validation of Receipt
+    receipt_body = deepcopy(receipt)
+    receipt_body.pop("execution_receipt_hash", None)
+    if receipt.get("execution_receipt_hash") != sha256_json(receipt_body):
+        raise ProjectionError("receipt_hash_invalid")
+        
     if receipt.get("claim_hash") != claim_hash:
         raise ProjectionError("predecessor_hash_mismatch_claim")
         
     receipt_id = receipt.get("execution_receipt_id")
     
-    # Check bundle -> auth & receipt
+    # Validation of Bundle
+    bundle_body = deepcopy(bundle)
+    bundle_body.pop("bundle_hash", None)
+    if bundle.get("bundle_hash") != sha256_json(bundle_body):
+        raise ProjectionError("bundle_hash_invalid")
+        
     if bundle.get("authorization_id") != auth_id:
         raise ProjectionError("predecessor_id_mismatch_auth")
     if bundle.get("execution_receipt_id") != receipt_id:
         raise ProjectionError("predecessor_id_mismatch_receipt")
+    if bundle.get("execution_receipt_hash") != receipt.get("execution_receipt_hash"):
+        raise ProjectionError("predecessor_hash_mismatch_receipt")
+        
+    bundle_ops = set(entry.get("operation_id") for entry in bundle.get("operation_evidence_entries", []))
+    plan_ops = set(op.get("operation_id") for op in plan.get("operations", []))
+    if not bundle_ops.issubset(plan_ops):
+        raise ProjectionError("bundle_unknown_operation")
 
     # Ensure artifact root is strict
     artifact_root_path = Path(artifact_root).resolve()
@@ -187,8 +260,6 @@ def load_projection_inputs(
         artifact_path = Path(relative_path)
         full_path = artifact_root_path / artifact_path
         _check_containment(full_path, artifact_root_path)
-        if not full_path.exists():
-            raise ProjectionError("inventory_artifact_missing")
             
         # Verify hash
         actual_sha256 = _sha256_file(full_path)
@@ -205,13 +276,13 @@ def load_projection_inputs(
         evidence_contract = entry.get("evidence_contract")
         if evidence_contract:
             # Check if schema exists for this contract
-            # E.g., twse_mis_identity.v1 -> twse_mis_identity.v1.schema.json
             schema_file = SCHEMAS_DIR / f"{evidence_contract}.schema.json"
-            if schema_file.exists():
-                schema = json.loads(schema_file.read_text(encoding="utf-8"))
-                errors = list(Draft202012Validator(schema).iter_errors(artifact_obj))
-                if errors:
-                    raise ProjectionError("artifact_schema_invalid")
+            if not schema_file.exists():
+                raise ProjectionError("missing_evidence_contract_schema")
+            schema = json.loads(schema_file.read_text(encoding="utf-8"))
+            errors = list(Draft202012Validator(schema).iter_errors(artifact_obj))
+            if errors:
+                raise ProjectionError("artifact_schema_invalid")
                     
         # Verify item count if applicable
         expected_items = entry.get("item_count")
@@ -231,6 +302,7 @@ def load_projection_inputs(
         plan=plan,
         authorization=authorization,
         consumption_binding=consumption_binding,
+        claim=claim,
         receipt=receipt,
         bundle=bundle,
         artifact_root=str(artifact_root_path),

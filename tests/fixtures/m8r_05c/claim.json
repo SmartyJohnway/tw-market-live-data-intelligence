@@ -1,0 +1,20 @@
+{
+  "schema_version": "unified_market_evidence_consumption_record.v1",
+  "consumption_claim_id": "umecl-v1-cdd785afa40a3def8cf5",
+  "consumption_claim_hash": "faa404854f4a0f1360697f2b68053a131be73794113469acf3b5d5a025ae1c77",
+  "consumption_binding_id": "umeacb-v1-cdd785afa40a3def8cf5",
+  "consumption_binding_hash": "8c750c994129b8bd38ccc433d0e49e9857afea8bf56bdfa5a2606406313716d4",
+  "authorization_id": "umea-v1-b811db029e355ebf9bad",
+  "authorization_hash": "d5c8f661399d116cccd8d565f081e893ab5aa8a15a8413cce6cf93fb487e8222",
+  "plan_id": "umeop-v1-8b0880508f4eb8c58369",
+  "plan_hash": "31a8afa5376cd9c58485ccc27169a0ae81c430f8d1a00aed9a769327bdc60a08",
+  "operator_confirmation_reference": {
+    "operator_id": "system",
+    "workstation_id": "test",
+    "intended_use_statement": "test",
+    "operator_attestation": true
+  },
+  "output_root": "P:\\tw-market-live-data-intelligence-main\\tests\\fixtures\\m8r_05c\\artifact_root",
+  "destination_policy_status": "enforced",
+  "created_at": "2026-08-01T02:05:00Z"
+}

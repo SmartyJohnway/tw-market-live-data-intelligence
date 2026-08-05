@@ -61,5 +61,6 @@
     "offline": true,
     "deterministic": true,
     "allow_fixture_snapshot": false
-  }
+  },
+  "normalized_request_hash": "fbda73587516a5a583487169d9ccdc65c93ca8e07d3706264239b0ff3ec45440"
 }

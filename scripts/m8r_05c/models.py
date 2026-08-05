@@ -111,6 +111,7 @@ class ProjectionInputs:
     plan: dict
     authorization: dict
     consumption_binding: dict
+    claim: dict
     receipt: dict
     bundle: dict
     artifact_root: str  # governed output_root used during 05B-03 execution
