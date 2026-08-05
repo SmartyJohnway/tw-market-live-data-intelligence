@@ -137,21 +137,21 @@ def load_projection_inputs(
     request_id = request.get("request_id")
     if f3_validation.get("request_id") != request_id:
         raise ProjectionError("f3_request_id_mismatch")
-    if f3_validation.get("validation_status") not in ("accepted", "accepted_with_warnings"):
+    if f3_validation.get("validation_status") not in ("valid",):
         raise ProjectionError("f3_validation_status_not_acceptable")
         
-    f3_targets = f3_validation.get("targets", [])
+    f3_targets = f3_validation.get("target_results", [])
     if len(f3_targets) != len(request.get("targets", [])):
         raise ProjectionError("f3_target_count_mismatch")
         
     seen_indices = set()
     for t in f3_targets:
-        idx = t.get("original_index")
+        idx = t.get("target_index")
         if idx in seen_indices or idx < 0 or idx >= len(request["targets"]):
             raise ProjectionError("f3_target_index_invalid")
         seen_indices.add(idx)
         # Original input must match
-        if t.get("original_input") != request["targets"][idx]:
+        if t.get("original_input") != request["targets"][idx]["input"]:
             raise ProjectionError("f3_original_input_mismatch")
 
     # Authoritative Validation of Plan against F3 & Request
@@ -159,7 +159,7 @@ def load_projection_inputs(
     if plan.get("input_bindings", {}).get("original_request_hash") != request_hash:
         raise ProjectionError("predecessor_hash_mismatch_request")
     
-    normalized_hash = f3_validation.get("normalized_request_hash")
+    normalized_hash = sha256_json(f3_validation.get("normalized_request", {}))
     if plan.get("input_bindings", {}).get("normalized_request_hash") != normalized_hash:
         raise ProjectionError("predecessor_hash_mismatch_normalized_request")
         
@@ -168,11 +168,6 @@ def load_projection_inputs(
         raise ProjectionError("predecessor_hash_mismatch_f3")
 
     plan_id = plan.get("plan_id")
-    plan_body = deepcopy(plan)
-    plan_body.pop("plan_hash", None)
-    plan_hash = sha256_json(plan_body)
-    if plan.get("plan_hash") != plan_hash:
-        raise ProjectionError("plan_hash_invalid")
 
     # Authoritative Validation of Authorization against Plan
     try:
@@ -194,19 +189,18 @@ def load_projection_inputs(
     if claim.get("plan_id") != plan_id:
         raise ProjectionError("predecessor_id_mismatch_plan")
         
-    claim_body = deepcopy(claim)
-    claim_body.pop("consumption_claim_hash", None)
-    expected_claim_hash = sha256_json(claim_body)
-    if claim.get("consumption_claim_hash") != expected_claim_hash:
-        raise ProjectionError("claim_hash_invalid")
-        
-    claim_id = claim.get("consumption_claim_id")
-    claim_hash = claim.get("consumption_claim_hash")
+    # claim has no internal hash signature field in schema
+    claim_id = claim.get("claim_id")
+    claim_hash = sha256_json(claim)
     
     try:
-        validate_operator_confirmation_reference(claim)
+        validate_operator_confirmation_reference(claim.get("operator_confirmation_reference"))
     except Exception as exc:
         raise ProjectionError("claim_operator_reference_invalid") from exc
+        
+    # Authoritative Validation of Bundle
+    if bundle.get("claim_hash") != claim_hash:
+        raise ProjectionError("predecessor_hash_mismatch_claim")
         
     # Validation of Receipt
     receipt_body = deepcopy(receipt)

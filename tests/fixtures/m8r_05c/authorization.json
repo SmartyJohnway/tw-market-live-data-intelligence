@@ -1,13 +1,13 @@
 {
   "schema_version": "unified_market_evidence_execution_authorization.v1",
-  "authorization_id": "umea-v1-b811db029e355ebf9bad",
-  "authorization_hash": "d5c8f661399d116cccd8d565f081e893ab5aa8a15a8413cce6cf93fb487e8222",
+  "authorization_id": "umea-v1-2e589eb14b73fadf6b29",
+  "authorization_hash": "2e589eb14b73fadf6b29967ee40f5dd12cc6e6d3eb1c6a7e1e5b270de9abc7ea",
   "authorization_identity_scope": {
-    "plan_hash": "31a8afa5376cd9c58485ccc27169a0ae81c430f8d1a00aed9a769327bdc60a08",
+    "plan_hash": "caddb03ec9ef846c56cedecb9cb5e90272a16d7949f5c7d957fe4036432f131b",
     "input_bindings": {
       "original_request_hash": "57e5bae21293040b91ee54acc221e693384c2341d09e77c860d788970b88a35a",
       "normalized_request_hash": "fbda73587516a5a583487169d9ccdc65c93ca8e07d3706264239b0ff3ec45440",
-      "f3_validation_output_hash": "fc19c82bb818febe92eef06aa8203b2fa5c5feb25996d0f7f88864235447fb81",
+      "f3_validation_output_hash": "8f12eb3b828d14c14aba89bc971bc51ac96bee883ac10f199fe42dad48fb93ee",
       "security_master_evidence_references": [
         "security_master_v1"
       ],
@@ -31,9 +31,9 @@
   "expires_at": "2026-08-01T02:55:00Z",
   "authorization_status": "approved",
   "plan_schema_version": "unified_market_evidence_orchestration_plan.v1",
-  "plan_id": "umeop-v1-8b0880508f4eb8c58369",
-  "plan_hash": "31a8afa5376cd9c58485ccc27169a0ae81c430f8d1a00aed9a769327bdc60a08",
-  "plan_binding_hash": "8b0880508f4eb8c583696f325b9559f0e7fc9ab687b52a2f9ae1513bf07eb6bb",
+  "plan_id": "umeop-v1-caddb03ec9ef846c56ce",
+  "plan_hash": "caddb03ec9ef846c56cedecb9cb5e90272a16d7949f5c7d957fe4036432f131b",
+  "plan_binding_hash": "c47e13b430dc511255993bc9de7ae9b89cd9cdb63d7635a58ad2fa27836bac44",
   "approval_scope_mode": "whole_plan_executable_scope",
   "approved_operation_ids": [
     "umeop-op-v1-42d40e6c106a2cbdd274"
@@ -49,7 +49,7 @@
   "expected_evidence_contracts": [
     "twse_mis_identity.v1"
   ],
-  "scope_hash": "8b0880508f4eb8c583696f325b9559f0e7fc9ab687b52a2f9ae1513bf07eb6bb",
+  "scope_hash": "4fa963d9ef8cea9c64485f1a3cd4eb5ae9de206c2ae11f0d402a942f865d5258",
   "execution_authorized": true,
   "network_authorized": true,
   "single_use": true,
@@ -65,17 +65,19 @@
     {
       "operation_id": "umeop-op-v1-42d40e6c106a2cbdd274",
       "market": "TWSE",
+      "security_types": [
+        "stock"
+      ],
       "capability_id": "identity",
       "executor_id": "twse_mis_v1",
       "expected_evidence_contract": "twse_mis_identity.v1",
-      "batch_group_id": "umeop-batch-v1-12345678901234567890",
-      "security_types": []
+      "batch_group_id": "umeop-batch-v1-bb108f4108f34629fedb"
     }
   ],
   "input_bindings": {
     "original_request_hash": "57e5bae21293040b91ee54acc221e693384c2341d09e77c860d788970b88a35a",
     "normalized_request_hash": "fbda73587516a5a583487169d9ccdc65c93ca8e07d3706264239b0ff3ec45440",
-    "f3_validation_output_hash": "fc19c82bb818febe92eef06aa8203b2fa5c5feb25996d0f7f88864235447fb81",
+    "f3_validation_output_hash": "8f12eb3b828d14c14aba89bc971bc51ac96bee883ac10f199fe42dad48fb93ee",
     "security_master_evidence_references": [
       "security_master_v1"
     ],
