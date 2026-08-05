@@ -50,7 +50,7 @@
     "missing_evidence_envelope_fields": [
       "fallback_state (string enum, distinct from boolean fallback)"
     ],
-    "compatibility_assessment": "All gaps are additive. Existing fixtures use a subset of fields allowed by additionalProperties:false on the top-level object only — inner objects also have additionalProperties:false so extensions require schema update. Verdict: v1 in-place evolution is compatible."
+    "compatibility_assessment": "Intentional completion of a pre-runtime draft contract requiring coordinated fixture, validator, documentation, and consumer migration. Adding new required top-level fields is NOT backward-compatible. Old v1 payloads will fail validation. Verdict: v1 in-place evolution is breaking."
   },
   "required_05c_fields": {
     "top_level": {

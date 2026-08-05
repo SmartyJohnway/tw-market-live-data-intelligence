@@ -479,14 +479,24 @@
           "type": "integer"
         }
       },
+      "required": [
+        "audit_package_id",
+        "schema_version",
+        "relative_path"
+      ],
       "additionalProperties": false
     }
   },
   "required": [
     "schema_version",
+    "result_id",
+    "result_hash",
     "request_id",
+    "generated_at",
+    "request_summary",
     "status",
-    "targets"
+    "targets",
+    "audit_reference"
   ],
   "additionalProperties": false
 }
