@@ -123,35 +123,51 @@ def test_report_schema_and_mode_fields_from_check_only(tmp_path, monkeypatch):
 
 
 def test_check_only_writes_only_m6e_report_folder(tmp_path, monkeypatch):
-    import pathlib
-    out_dir = tmp_path / "conversation_context"
+    from scripts import build_m5n_conversation_context as m5n_builder
 
     mock_root = tmp_path / "mock_root"
-    mock_report_dir = mock_root / "research/live_observation_runs/m6e_operator_acceptance"
+    out_dir = mock_root / "conversation_context"
+    mock_report_dir = (
+        mock_root
+        / "research/live_observation_runs/m6e_operator_acceptance"
+    )
     mock_report_dir.mkdir(parents=True, exist_ok=True)
+
+    import shutil
+    shutil.copytree(Path(__file__).parents[1] / "frontend", mock_root / "frontend")
+
     monkeypatch.setattr(m6e, "ROOT", mock_root)
     monkeypatch.setattr(m6e, "REPORT_DIR", mock_report_dir)
-    monkeypatch.setattr(m6e, "JSON_REPORT", mock_report_dir / "latest_operator_acceptance_report.json")
-    monkeypatch.setattr(m6e, "MD_REPORT", mock_report_dir / "latest_operator_acceptance_report.md")
+    monkeypatch.setattr(
+        m6e,
+        "JSON_REPORT",
+        mock_report_dir / "latest_operator_acceptance_report.json",
+    )
+    monkeypatch.setattr(
+        m6e,
+        "MD_REPORT",
+        mock_report_dir / "latest_operator_acceptance_report.md",
+    )
 
-    original_relative_to = pathlib.Path.relative_to
-    def scoped_relative_to(self, other, *args, **kwargs):
-        if self == out_dir and pathlib.Path(other) == mock_root:
-            return pathlib.Path("mock_relative_path")
-        return original_relative_to(self, other, *args, **kwargs)
-    monkeypatch.setattr(pathlib.Path, "relative_to", scoped_relative_to)
-
+    monkeypatch.setattr(m5n_builder, "REPO_ROOT", mock_root)
+    monkeypatch.setattr(m5n_builder, "OUT_DIR", out_dir)
     monkeypatch.setattr(m6e, "M5N_OUT_DIR", out_dir)
-    original_build = m6e.build_package
+
     def mock_build_package():
-        return original_build(out_dir=out_dir)
+        return m5n_builder.build_package(out_dir=out_dir)
+
     monkeypatch.setattr(m6e, "build_package", mock_build_package)
 
     report = m6e.build_report("check-only", "strict", False)
     m6e.write_report(report)
+
     assert m6e.JSON_REPORT.exists()
     assert m6e.MD_REPORT.exists()
-    allowed = mock_root / "research/live_observation_runs/m6e_operator_acceptance"
+
+    allowed = (
+        mock_root
+        / "research/live_observation_runs/m6e_operator_acceptance"
+    )
     assert m6e.JSON_REPORT.resolve().is_relative_to(allowed.resolve())
     assert m6e.MD_REPORT.resolve().is_relative_to(allowed.resolve())
 
