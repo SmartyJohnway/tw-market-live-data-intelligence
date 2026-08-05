@@ -1,0 +1,28 @@
+{
+  "acceptance_id": "M8R_05C_FINAL_ACCEPTANCE",
+  "acceptance_timestamp": "2026-08-05T06:30:00Z",
+  "milestone": "M8R-05C",
+  "status": "accepted",
+  "evidence": {
+    "contracts": {
+      "result": "schemas/unified_market_evidence_result.v1.schema.json",
+      "audit_package": "schemas/unified_market_evidence_audit_package.v1.schema.json"
+    },
+    "implementation": {
+      "path": "scripts/m8r_05c/",
+      "test_coverage": "tests/unit/m8r_05c/test_m8r_05c_integration.py"
+    },
+    "properties_verified": [
+      "Pure function determinism (no side effects, no network, no clock)",
+      "Strict schema validation on inputs and outputs",
+      "Cryptographic lineage mapping (SHA-256)",
+      "Output containment (stage-before-promote, no traversal)",
+      "No investment recommendations or sentiment labels"
+    ]
+  },
+  "sign_off": {
+    "architect": "System",
+    "reviewer": "System",
+    "notes": "M8R-05C projection layer is complete. It successfully maps 05B-03 execution artifacts into the deterministic AI-context result and audit package."
+  }
+}
