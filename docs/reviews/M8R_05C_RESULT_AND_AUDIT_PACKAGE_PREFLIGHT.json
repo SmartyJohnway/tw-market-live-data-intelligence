@@ -1,0 +1,343 @@
+{
+  "milestone": "M8R-05C",
+  "task": "M8R-05C-COMPLETE-AI-CONTEXT-RESULT-AND-SEPARATE-AUDIT-PACKAGE",
+  "preflight_date": "2026-08-05T06:09:00Z",
+  "baseline_main_sha": "370374aff9f4b515c26757583ef7adda6ec80891",
+  "predecessor_task": "M8R-05B-03",
+  "predecessor_acceptance_sha": "9cfd4331b5964b972e5f28a1645c7a77481215a3efe0b551a6e6fbeb2bc75859",
+  "predecessor_post_merge_handoff": "docs/acceptance/M8R_05B_03_POST_MERGE_HANDOFF.json",
+  "authoritative_input_schemas": {
+    "unified_market_evidence_request.v1": "schemas/unified_market_evidence_request.v1.schema.json",
+    "unified_market_evidence_orchestration_plan.v1": "schemas/unified_market_evidence_orchestration_plan.v1.schema.json",
+    "unified_market_evidence_execution_receipt.v1": "schemas/unified_market_evidence_execution_receipt.v1.schema.json",
+    "unified_market_evidence_bundle.v1": "schemas/unified_market_evidence_bundle.v1.schema.json",
+    "unified_market_evidence_orchestrator_preflight.v1": "schemas/unified_market_evidence_orchestrator_preflight.v1.schema.json",
+    "unified_market_evidence_execution_authorization.v1": "schemas/unified_market_evidence_execution_authorization.v1.schema.json",
+    "unified_market_evidence_authorization_consumption_binding.v1": "schemas/unified_market_evidence_authorization_consumption_binding.v1.schema.json",
+    "unified_market_evidence_consumption_record.v1": "schemas/unified_market_evidence_consumption_record.v1.schema.json",
+    "unified_market_evidence_result.v1_pre05c": "schemas/unified_market_evidence_result.v1.schema.json"
+  },
+  "materialized_predecessor_artifacts": {
+    "description": "M8R-05B-03 produces these in the governed output_root at runtime. 05C consumes them as inputs.",
+    "execution_receipt": "receipts/{authorization_id}.execution-receipt.json",
+    "evidence_bundle": "bundles/{authorization_id}.evidence-bundle.json",
+    "evidence_artifacts": "Per operation_evidence_entries[].artifacts[].relative_path inside the bundle",
+    "finalization_journal": "finalization/{authorization_id}.finalization-journal.json",
+    "claim_record": "claims/{authorization_id}.consumption-claim.json",
+    "orchestrator_preflight": "Passed as input to 05B-03 at execution time; not stored separately by 05B-03"
+  },
+  "current_result_schema_gaps": {
+    "missing_required_fields": [
+      "result_id",
+      "result_hash",
+      "generated_at",
+      "request_summary"
+    ],
+    "incomplete_audit_reference": [
+      "audit_package_id (missing)",
+      "schema_version (missing)",
+      "relative_path (missing)",
+      "audit_id present but not semantically bound to 05C audit_package_id",
+      "execution_time_ms present but not required by 05C (optional)"
+    ],
+    "missing_target_fields": [
+      "canonical_target_id (at top level of target, only inside resolution)",
+      "observations (grouping for current_observation envelope)",
+      "derived_metrics (no definition)",
+      "provided_evidence_needs / missing_evidence_needs (in coverage, schema has provided_needs/missing_needs)",
+      "fallback_usage (top-level per-target)"
+    ],
+    "missing_evidence_envelope_fields": [
+      "fallback_state (string enum, distinct from boolean fallback)"
+    ],
+    "compatibility_assessment": "All gaps are additive. Existing fixtures use a subset of fields allowed by additionalProperties:false on the top-level object only — inner objects also have additionalProperties:false so extensions require schema update. Verdict: v1 in-place evolution is compatible."
+  },
+  "required_05c_fields": {
+    "top_level": {
+      "result_id": {"type": "string", "pattern": "^umeresult-v1-[0-9a-f]{20}$", "required": true},
+      "result_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$", "required": true},
+      "generated_at": {"type": "string", "format": "date-time", "required": true},
+      "request_summary": {"type": "object", "required": true},
+      "schema_version": {"existing": true},
+      "request_id": {"existing": true},
+      "status": {"existing": true},
+      "targets": {"existing": true},
+      "partial_failures": {"existing": true},
+      "request_caveats": {"existing": true},
+      "audit_reference": {"existing": true, "needs_extension": true}
+    },
+    "request_summary_fields": {
+      "execution_mode": "from request.execution_mode",
+      "target_count": "len(request.targets)",
+      "requested_data_needs": "sorted list of request.data_needs[].type",
+      "required_data_needs": "sorted list of data_needs where priority==required",
+      "optional_data_needs": "sorted list of data_needs where priority==optional",
+      "currentness_requirements": "per-need currentness_requirement from plan operations"
+    },
+    "audit_reference_extension": {
+      "audit_package_id": "string, required",
+      "schema_version": "const unified_market_evidence_audit_package.v1, required",
+      "relative_path": "string, relative path to audit package, required",
+      "audit_id": "retain for backward compatibility, optional",
+      "execution_time_ms": "retain for backward compatibility, optional"
+    }
+  },
+  "field_provenance_matrix": [
+    {
+      "output_field": "result_id",
+      "source_artifact": "computed",
+      "source_field_or_rule": "sha256_json({request_id, receipt.execution_receipt_id, bundle.bundle_id})[:20] prefixed umeresult-v1-",
+      "required": true,
+      "missing_input_behavior": "ProjectionError(result_id_cannot_be_computed)",
+      "classification": "AI-context"
+    },
+    {
+      "output_field": "result_hash",
+      "source_artifact": "computed",
+      "source_field_or_rule": "sha256_json(result_body excluding result_hash field)",
+      "required": true,
+      "missing_input_behavior": "N/A - always computable if body is built",
+      "classification": "AI-context"
+    },
+    {
+      "output_field": "generated_at",
+      "source_artifact": "supplied or receipt",
+      "source_field_or_rule": "CLI --calculated-at or receipt.finalized_at",
+      "required": true,
+      "missing_input_behavior": "ProjectionError(generated_at_missing)",
+      "classification": "AI-context"
+    },
+    {
+      "output_field": "request_id",
+      "source_artifact": "request",
+      "source_field_or_rule": "request.request_id",
+      "required": true,
+      "missing_input_behavior": "ProjectionError(request_id_missing)",
+      "classification": "AI-context"
+    },
+    {
+      "output_field": "request_summary.execution_mode",
+      "source_artifact": "request",
+      "source_field_or_rule": "request.execution_mode",
+      "required": true,
+      "missing_input_behavior": "null",
+      "classification": "AI-context"
+    },
+    {
+      "output_field": "request_summary.target_count",
+      "source_artifact": "request",
+      "source_field_or_rule": "len(request.targets)",
+      "required": true,
+      "missing_input_behavior": "0",
+      "classification": "AI-context"
+    },
+    {
+      "output_field": "request_summary.requested_data_needs",
+      "source_artifact": "request",
+      "source_field_or_rule": "sorted([n.type for n in request.data_needs])",
+      "required": true,
+      "missing_input_behavior": "[]",
+      "classification": "AI-context"
+    },
+    {
+      "output_field": "request_summary.required_data_needs",
+      "source_artifact": "request",
+      "source_field_or_rule": "sorted([n.type for n in request.data_needs if n.priority=='required'])",
+      "required": true,
+      "missing_input_behavior": "[]",
+      "classification": "AI-context"
+    },
+    {
+      "output_field": "request_summary.optional_data_needs",
+      "source_artifact": "request",
+      "source_field_or_rule": "sorted([n.type for n in request.data_needs if n.priority=='optional'])",
+      "required": true,
+      "missing_input_behavior": "[]",
+      "classification": "AI-context"
+    },
+    {
+      "output_field": "status",
+      "source_artifact": "computed",
+      "source_field_or_rule": "deterministic mapping from target resolution + operation status + evidence availability",
+      "required": true,
+      "missing_input_behavior": "failed",
+      "classification": "AI-context"
+    },
+    {
+      "output_field": "targets[].resolution",
+      "source_artifact": "plan",
+      "source_field_or_rule": "plan.operations[].canonical_target_ids + market + security_code/name from plan or request",
+      "required": true,
+      "missing_input_behavior": "resolution.status=not_found",
+      "classification": "AI-context"
+    },
+    {
+      "output_field": "targets[].evidence.*",
+      "source_artifact": "bundle evidence artifacts",
+      "source_field_or_rule": "bundle.operation_evidence_entries -> artifact_root + relative_path -> JSON content",
+      "required": "per request data_need",
+      "missing_input_behavior": "evidence envelope with status=missing",
+      "classification": "AI-context"
+    },
+    {
+      "output_field": "targets[].citations[]",
+      "source_artifact": "bundle + request",
+      "source_field_or_rule": "deterministic from operation_id + artifact sha256 + evidence_contract",
+      "required": "when evidence present",
+      "missing_input_behavior": "empty array",
+      "classification": "AI-context"
+    },
+    {
+      "output_field": "audit_reference.audit_package_id",
+      "source_artifact": "computed",
+      "source_field_or_rule": "sha256_json({result_id, bundle.bundle_id})[:20] prefixed umeap-v1-",
+      "required": true,
+      "missing_input_behavior": "ProjectionError",
+      "classification": "AI-context (reference only)"
+    },
+    {
+      "output_field": "audit package - request_identity",
+      "source_artifact": "request",
+      "source_field_or_rule": "request_id + request_hash",
+      "required": true,
+      "missing_input_behavior": "ProjectionError",
+      "classification": "audit-only"
+    },
+    {
+      "output_field": "audit package - operation_lineage[]",
+      "source_artifact": "plan + preflight + receipt + bundle",
+      "source_field_or_rule": "per-operation: operation_id, capability_id, executor_id, adapter/route, status, artifacts",
+      "required": true,
+      "missing_input_behavior": "ProjectionError",
+      "classification": "audit-only"
+    },
+    {
+      "output_field": "audit package - artifact_inventory[]",
+      "source_artifact": "bundle.artifact_inventory",
+      "source_field_or_rule": "bundle.artifact_inventory with hashes, byte_sizes, schemas",
+      "required": true,
+      "missing_input_behavior": "[]",
+      "classification": "audit-only"
+    },
+    {
+      "output_field": "audit package - replay_manifest",
+      "source_artifact": "receipt + bundle + preflight",
+      "source_field_or_rule": "all predecessor identity + hash references needed to replay the projection",
+      "required": true,
+      "missing_input_behavior": "ProjectionError",
+      "classification": "audit-only"
+    }
+  ],
+  "request_target_operation_mapping_authority": {
+    "rule": "For each request.target, the plan.operations[] that include that canonical_target_id (resolved by M8R-05A-F3 validation) and whose capability_id matches a request.data_need.type constitute the authoritative operation set for that target+need pair.",
+    "mapping_key": "plan.operations[i].canonical_target_ids × plan.operations[i].capability_id",
+    "authority_source": "plan + preflight.resolved_operation_bindings"
+  },
+  "timestamp_authority": {
+    "generated_at": "receipt.finalized_at (from execution receipt, UTC ISO-8601 with Z suffix) or explicit CLI --calculated-at",
+    "citation.retrieved_at": "bundle.finalized_at or per-artifact evidence field where available",
+    "audit.timestamps": "receipt.finalized_at for execution times, projection run time from CLI --calculated-at",
+    "pure_function_constraint": "Pure builder must not call datetime.now() or time.time()"
+  },
+  "canonical_hash_implementation": {
+    "reuse": "scripts/m8r_05b_03/canonical.py",
+    "functions": ["canonical_json", "sha256_json"],
+    "rationale": "Single authoritative implementation, already accepted and validated"
+  },
+  "output_containment_conventions": {
+    "output_structure": {
+      "ai_context_result_json": "ai_context/unified_market_evidence_result.v1.json",
+      "ai_context_result_md": "ai_context/unified_market_evidence_result.v1.md",
+      "audit_package_json": "audit/unified_market_evidence_audit_package.v1.json"
+    },
+    "rejection_rules": [
+      "absolute paths (drive-rooted, UNC, unix /)",
+      "path traversal (.. segments)",
+      "prefix collision containment bypass"
+    ],
+    "promotion_policy": "stage-before-promote, atomic rename, validate hashes before promotion",
+    "failure_policy": "on failure expose no partially-promoted final package"
+  },
+  "compatibility_impact_on_05a_fixtures": {
+    "affected_tests": ["tests/unit/test_m8r_05a_preview_result_contracts.py"],
+    "affected_fixtures": ["test_valid_result_full_success", "test_valid_result_not_yet_published"],
+    "required_action": "Update these 2 fixtures to include new required fields (result_id, result_hash, generated_at, request_summary). Existing negative test (test_invalid_result_has_raw_payload) remains valid and must not be weakened.",
+    "compatibility_verdict": "additive_no_v2_needed"
+  },
+  "explicit_non_goals": [
+    "No market-data network calls",
+    "No executor adapter invocation",
+    "No new authorization or claim creation",
+    "No execution replay",
+    "No evidence refresh",
+    "No watchlist modification",
+    "No MCP implementation",
+    "No FastAPI/service endpoints",
+    "No frontend or Workbench UI",
+    "No AI investment answers",
+    "No recommendation, ranking, target price, bullish/bearish labels",
+    "No new market-data sources",
+    "No silent inference of missing evidence",
+    "No unnecessary transport raw payload in AI-context result",
+    "No cookies, credentials, tokens, authorization secrets, or local absolute paths",
+    "No roadmap pointer advancement to M8R-06 before owner acceptance"
+  ],
+  "proposed_production_file_inventory": {
+    "schemas": [
+      "schemas/unified_market_evidence_result.v1.schema.json (MODIFY - v1 in-place completion)",
+      "schemas/unified_market_evidence_audit_package.v1.schema.json (NEW)"
+    ],
+    "scripts": [
+      "scripts/m8r_05c/__init__.py (NEW)",
+      "scripts/m8r_05c/errors.py (NEW)",
+      "scripts/m8r_05c/canonical.py (NEW)",
+      "scripts/m8r_05c/models.py (NEW)",
+      "scripts/m8r_05c/artifact_loader.py (NEW)",
+      "scripts/m8r_05c/lineage_resolver.py (NEW)",
+      "scripts/m8r_05c/evidence_projector.py (NEW)",
+      "scripts/m8r_05c/derived_metrics.py (NEW)",
+      "scripts/m8r_05c/citation_builder.py (NEW)",
+      "scripts/m8r_05c/result_builder.py (NEW)",
+      "scripts/m8r_05c/audit_package_builder.py (NEW)",
+      "scripts/m8r_05c/markdown_renderer.py (NEW)",
+      "scripts/m8r_05c/containment.py (NEW)",
+      "scripts/m8r_05c/cli.py (NEW)"
+    ],
+    "validators": [
+      "scripts/validate_unified_market_evidence_contracts.py (MODIFY - add validate_audit_package)"
+    ],
+    "docs": [
+      "docs/reviews/M8R_05C_RESULT_AND_AUDIT_PACKAGE_PREFLIGHT.json (NEW - this file)",
+      "docs/reviews/M8R_05C_RESULT_AND_AUDIT_PACKAGE_PREFLIGHT.md (NEW)",
+      "docs/protocol/M8R_05A_UNIFIED_MARKET_EVIDENCE_CONTRACT.md (MODIFY - record v1 completion)"
+    ],
+    "tests": [
+      "tests/fixtures/m8r_05c/ (NEW directory with fixtures)",
+      "tests/unit/test_m8r_05c_schema.py (NEW)",
+      "tests/unit/test_m8r_05c_determinism.py (NEW)",
+      "tests/unit/test_m8r_05c_projection.py (NEW)",
+      "tests/unit/test_m8r_05c_derived_metrics.py (NEW)",
+      "tests/unit/test_m8r_05c_citation_audit.py (NEW)",
+      "tests/unit/test_m8r_05c_containment.py (NEW)",
+      "tests/unit/test_m8r_05c_markdown.py (NEW)",
+      "tests/unit/test_m8r_05c_no_network.py (NEW)",
+      "tests/unit/test_m8r_05a_preview_result_contracts.py (MODIFY - update result fixtures)"
+    ],
+    "acceptance": [
+      "docs/acceptance/M8R_05C_IMPLEMENTATION_RESULT.json (NEW - Commit 5 only)",
+      "docs/acceptance/M8R_05C_IMPLEMENTATION_RESULT.md (NEW - Commit 5 only)"
+    ]
+  },
+  "stop_condition_evaluation": {
+    "request_target_bundle_mapping_resolvable": true,
+    "operation_data_need_mapping_resolvable": true,
+    "artifact_hash_independently_verifiable": true,
+    "target_identity_sources_no_conflict": true,
+    "requested_vs_unrequested_evidence_distinguishable": true,
+    "currentness_session_semantics_traceable": true,
+    "result_audit_hash_no_circular_reference": true,
+    "verdict": "NO_STOP_CONDITIONS_TRIGGERED - proceed to Commit 2"
+  },
+  "created_by": "m8r_05c_preflight",
+  "created_at": "2026-08-05T06:09:00Z"
+}
