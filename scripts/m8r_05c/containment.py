@@ -148,8 +148,14 @@ def materialize_outputs(
                 raise
             staged.append((Path(staged_path_str), dest))
 
-        # Validate staged JSON can be parsed back.
+        # Validate staged JSON can be parsed back, and check sizes.
         for staged_path, dest in staged:
+            size = staged_path.stat().st_size
+            if size == 0:
+                raise ProjectionError("staged_file_empty")
+            if size > 50 * 1024 * 1024:  # 50MB sanity limit
+                raise ProjectionError("staged_file_too_large")
+
             if dest.suffix == ".json":
                 try:
                     json.loads(staged_path.read_text(encoding="utf-8"))
