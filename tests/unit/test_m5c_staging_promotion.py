@@ -15,7 +15,7 @@ def copy_run(tmp_path):
 def write_json(path,obj): path.write_text(json.dumps(obj,indent=2,sort_keys=True)+"\n")
 def test_valid_m5b_evidence_eligible(): assert assess()['status']=='eligible_for_user_authorization'
 def test_tampered_manifest_blocked(tmp_path):
-    d=copy_run(tmp_path); p=d/'staging_candidate.json'; p.write_text(p.read_text().replace('TWSE_OpenAPI','BAD',1)); codes={e['code'] for e in verify_evidence(d)['errors']}; assert 'manifest_sha256_mismatch' in codes
+    d=copy_run(tmp_path); p=d/'staging_candidate.json'; p.write_text(p.read_text(encoding="utf-8").replace('TWSE_OpenAPI','BAD',1), encoding="utf-8"); codes={e['code'] for e in verify_evidence(d)['errors']}; assert 'manifest_sha256_mismatch' in codes
 def test_missing_manifest_artifact_and_ledger_blocked(tmp_path):
     d=copy_run(tmp_path); (d/'evidence_ledger.json').unlink(); codes={e['code'] for e in verify_evidence(d)['errors']}; assert {'manifest_artifact_missing','missing_required_artifact'} <= codes
 def test_untracked_json_artifact_blocked(tmp_path):
@@ -37,11 +37,11 @@ def test_malformed_json_returns_structured_blocked(tmp_path):
     assert validate_request(req)['errors'][0]['code']=='json_read_failed'
 def test_exact_binding_request_and_schema():
     r=validate_request(REQ); assert r['status']=='pass'
-    q=json.loads(Path(REQ).read_text()); assert q['source_manifest_sha256']==manifest_hash(); assert q['staging_candidate_sha256']==candidate_hash(); assert q['targets']==TARGETS
+    q=json.loads(Path(REQ).read_text(encoding="utf-8")); assert q['source_manifest_sha256']==manifest_hash(); assert q['staging_candidate_sha256']==candidate_hash(); assert q['targets']==TARGETS
 def test_request_rejects_duplicate_targets_and_noncanonical_run_dir(tmp_path):
-    q=json.loads(Path(REQ).read_text()); q['targets']=['2330','2330','00929']; q['source_run_dir']=str(tmp_path/RUN_DIR.name); p=tmp_path/'bad_request.json'; write_json(p,q); codes={e['code'] for e in validate_request(p)['errors']}; assert 'schema_error' in codes and 'canonical_run_dir_mismatch' in codes
+    q=json.loads(Path(REQ).read_text(encoding="utf-8")); q['targets']=['2330','2330','00929']; q['source_run_dir']=str(tmp_path/RUN_DIR.name); p=tmp_path/'bad_request.json'; write_json(p,q); codes={e['code'] for e in validate_request(p)['errors']}; assert 'schema_error' in codes and 'canonical_run_dir_mismatch' in codes
 def test_no_decision_or_token(tmp_path):
-    q=json.loads(Path(REQ).read_text()); q['approval_token']='forbidden'; p=tmp_path/'bad_request.json'; write_json(p,q); codes={e['code'] for e in validate_request(p)['errors']}; assert 'schema_error' in codes and 'decision_or_token_forbidden' in codes
+    q=json.loads(Path(REQ).read_text(encoding="utf-8")); q['approval_token']='forbidden'; p=tmp_path/'bad_request.json'; write_json(p,q); codes={e['code'] for e in validate_request(p)['errors']}; assert 'schema_error' in codes and 'decision_or_token_forbidden' in codes
 def test_historical_not_current_readonly():
     pkg=build_frontend_readonly_context_package(readonly_payload_from_candidate(load(RUN_DIR/'staging_candidate.json'))); assert pkg['realtime_guaranteed'] is False; assert all(s['freshness_status']=='stale' for s in pkg['symbols'])
 def test_default_plan_no_write_and_forbidden_paths():

@@ -5,7 +5,7 @@ from scripts.m8_controlled_conversation_context import CONTROLLED_CONVERSATION_C
 from scripts.m8_multi_source_context_builder import build_multi_source_market_context
 
 ROOT = Path(__file__).resolve().parents[2]
-REGISTRY = json.loads((ROOT / "docs/data_capabilities/m8_source_capability_registry.json").read_text())
+REGISTRY = json.loads((ROOT / "docs/data_capabilities/m8_source_capability_registry.json").read_text(encoding="utf-8"))
 
 
 def _obs(source_id="TWSE_MIS", **kw):
@@ -23,7 +23,7 @@ def _contexts(proj):
 
 
 def test_pure_projection_no_network_runtime_imports():
-    text = (ROOT / "scripts/m8_controlled_conversation_context.py").read_text().lower()
+    text = (ROOT / "scripts/m8_controlled_conversation_context.py").read_text(encoding="utf-8").lower()
     for forbidden in ["import requests", "import httpx", "urllib.request", "fastapi", "server.main", "frontend", "openai", "import mcp", "from mcp"]:
         assert forbidden not in text
 
@@ -101,7 +101,7 @@ def test_wrong_schema_is_blocked():
 
 
 def test_default_ci_includes_new_test():
-    config = json.loads((ROOT / "config/test_execution_profiles.json").read_text())
+    config = json.loads((ROOT / "config/test_execution_profiles.json").read_text(encoding="utf-8"))
     assert "tests/unit/test_m8_controlled_conversation_context_integration.py" in config["profiles"]["default-ci"]["pytest_paths"]
 
 

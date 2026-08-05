@@ -9,7 +9,7 @@ PKG=REPO/'research/staging/m5f/m5f_canonical_market_context_01'
 def _symbols(payload): return [s['symbol'] for s in payload['symbols']]
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--check-only',action='store_true',default=True); a=ap.parse_args()
-    v=validate_package(PKG); c=json.loads((PKG/'canonical_market_context.json').read_text())
+    v=validate_package(PKG); c=json.loads((PKG/'canonical_market_context.json').read_text(encoding="utf-8"))
     from fastapi.testclient import TestClient
     from server.main import app
     client=TestClient(app)
@@ -29,7 +29,7 @@ def main():
     frontend_status='not_run_node_unavailable'
     try:
         import subprocess, tempfile
-        adapter_text=(REPO/'frontend/readonly-preview/m5e-market-context-adapter.js').read_text()
+        adapter_text=(REPO/'frontend/readonly-preview/m5e-market-context-adapter.js').read_text(encoding="utf-8")
         with tempfile.NamedTemporaryFile('w', suffix='.mjs', delete=False) as ah:
             ah.write(adapter_text); adapter_path=ah.name
         js = f'''
@@ -45,7 +45,7 @@ console.log(JSON.stringify({{status:'ok', symbols:model.symbols.map(s=>s.symbol)
 '''
         with tempfile.NamedTemporaryFile('w', suffix='.mjs', delete=False) as fh:
             fh.write(js); path=fh.name
-        cp=subprocess.run(['node', path], capture_output=True, text=True, timeout=10)
+        cp=subprocess.run(['node', path], capture_output=True, text=True, timeout=10, encoding="utf-8")
         if cp.returncode != 0: raise RuntimeError(cp.stderr or cp.stdout)
         frontend_status=json.loads(cp.stdout)['status']
     except FileNotFoundError:

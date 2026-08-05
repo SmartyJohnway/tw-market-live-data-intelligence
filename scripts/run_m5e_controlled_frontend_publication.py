@@ -29,7 +29,7 @@ LINEAGE = {
 }
 
 def load(p: Path | str):
-    return json.loads(Path(p).read_text())
+    return json.loads(Path(p).read_text(encoding="utf-8"))
 
 def fsha(p: Path | str) -> str:
     return hashlib.sha256(Path(p).read_bytes()).hexdigest()

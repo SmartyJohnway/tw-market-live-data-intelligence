@@ -1,6 +1,6 @@
 from pathlib import Path
 def test_frontend_static_uses_m5f_and_safe_dom():
- js=Path('frontend/readonly-preview/m5e-market-context-adapter.js').read_text(); html=Path('frontend/readonly-preview/M5EMarketContextPreview.html').read_text()
+ js=Path('frontend/readonly-preview/m5e-market-context-adapter.js').read_text(encoding="utf-8"); html=Path('frontend/readonly-preview/M5EMarketContextPreview.html').read_text(encoding="utf-8")
  assert 'research/staging/m5f/m5f_canonical_market_context_01/' in js
  assert '/api/context/canonical' in js
  assert 'PINNED_MANIFEST_SHA256' in js

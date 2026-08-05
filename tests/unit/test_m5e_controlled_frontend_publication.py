@@ -124,13 +124,13 @@ def test_frontend_public_unchanged():
 def test_reproducibility_materialize_candidate(tmp_path):
     from scripts.m5d_publication_common import _materialize_candidate
     _materialize_candidate(tmp_path)
-    committed=json.loads((m5e.ROOT/m5e.CAND/'sha256_manifest.json').read_text())['files']
-    generated=json.loads((tmp_path/'sha256_manifest.json').read_text())['files']
+    committed=json.loads((m5e.ROOT/m5e.CAND/'sha256_manifest.json').read_text(encoding="utf-8"))['files']
+    generated=json.loads((tmp_path/'sha256_manifest.json').read_text(encoding="utf-8"))['files']
     assert generated==committed
 
 def test_preview_static_dom_contract():
-    html=(m5e.ROOT/'frontend/readonly-preview/M5EMarketContextPreview.html').read_text()
-    js=(m5e.ROOT/'frontend/readonly-preview/m5e-market-context-adapter.js').read_text()
+    html=(m5e.ROOT/'frontend/readonly-preview/M5EMarketContextPreview.html').read_text(encoding="utf-8")
+    js=(m5e.ROOT/'frontend/readonly-preview/m5e-market-context-adapter.js').read_text(encoding="utf-8")
     assert 'Loading local readonly market context' in html
     assert '<script type="module"' in html
     for text in ['TWSE_OpenAPI','historical/stale','Global caveats','source risk flags','<main>']:
