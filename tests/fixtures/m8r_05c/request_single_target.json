@@ -1,0 +1,29 @@
+{
+  "schema_version": "unified_market_evidence_request.v1",
+  "request_id": "umereq-test-0001",
+  "targets": [
+    {
+      "input": "2330",
+      "market_hint": "TWSE",
+      "resolution_requirement": "exact",
+      "client_target_reference": "target_0"
+    }
+  ],
+  "data_needs": [
+    {
+      "type": "identity",
+      "priority": "required"
+    },
+    {
+      "type": "current_observation",
+      "priority": "optional"
+    }
+  ],
+  "execution_mode": "execute",
+  "response_preferences": {
+    "include_citations": true,
+    "include_currentness": true,
+    "include_caveats": true,
+    "include_audit_reference": true
+  }
+}

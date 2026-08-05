@@ -1,0 +1,15 @@
+{
+  "schema_version": "unified_market_evidence_authorization_consumption_binding.v1",
+  "consumption_binding_id": "umecl-v1-cdd785afa40a3def8cf5",
+  "consumption_binding_hash": "cdd785afa40a3def8cf56368c99f7383adb127822f1a25e992be3670d7727794",
+  "authorization_id": "umea-v1-b811db029e355ebf9bad",
+  "authorization_hash": "b811db029e355ebf9bad0221a64c74298405d7c55aabdee39064373b1ed11afd",
+  "plan_id": "umeop-v1-8b0880508f4eb8c58369",
+  "plan_hash": "8b0880508f4eb8c583696f325b9559f0e7fc9ab687b52a2f9ae1513bf07eb6bb",
+  "binding_timestamp": "2026-08-01T02:00:00Z",
+  "authorized_operations": ["umeop-op-v1-42d40e6c106a2cbdd274"],
+  "executor_overrides": {},
+  "network_authorization_status": "authorized",
+  "authorized_network_scopes": ["api.twse.com.tw", "mis.twse.com.tw"],
+  "created_by_component": "m8r_05b_03_orchestrator_v1"
+}

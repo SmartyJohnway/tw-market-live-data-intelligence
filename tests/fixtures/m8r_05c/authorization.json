@@ -1,0 +1,22 @@
+{
+  "schema_version": "unified_market_evidence_execution_authorization.v1",
+  "authorization_id": "umea-v1-b811db029e355ebf9bad",
+  "authorization_hash": "b811db029e355ebf9bad0221a64c74298405d7c55aabdee39064373b1ed11afd",
+  "authorization_timestamp": "2026-08-01T01:55:00Z",
+  "plan_id": "umeop-v1-8b0880508f4eb8c58369",
+  "plan_hash": "8b0880508f4eb8c583696f325b9559f0e7fc9ab687b52a2f9ae1513bf07eb6bb",
+  "plan_authorization_status": "fully_authorized",
+  "authorized_executor_ids": ["twse_mis_v1"],
+  "network_authorization_status": "authorized",
+  "authorized_network_scopes": ["api.twse.com.tw", "mis.twse.com.tw"],
+  "authorized_operations": ["umeop-op-v1-42d40e6c106a2cbdd274"],
+  "rejected_operations": [],
+  "rejection_reason_codes": [],
+  "executor_overrides": {},
+  "authorization_evidence": {
+    "approver": "system_owner",
+    "approval_method": "explicit_approval",
+    "approval_reference": "preflight_review_123"
+  },
+  "created_by_component": "m8r_05b_02_authorizer_v1"
+}
