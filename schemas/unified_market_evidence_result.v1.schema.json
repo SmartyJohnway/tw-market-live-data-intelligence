@@ -26,11 +26,45 @@
           "additionalProperties": true
         },
         "fallback": {"type": "boolean"},
+        "fallback_state": {"type": "string"},
         "citation_ids": {
           "type": "array",
           "items": {"type": "string"}
         }
       },
+      "additionalProperties": false
+    },
+    "derived_metric": {
+      "type": "object",
+      "properties": {
+        "metric_id": {"type": "string"},
+        "metric_name": {"type": "string"},
+        "status": {
+          "type": "string",
+          "enum": ["available", "unavailable", "invalid", "not_requested"]
+        },
+        "value": {"type": ["number", "string", "null"]},
+        "unit": {"type": ["string", "null"]},
+        "method": {"type": ["string", "null"]},
+        "formula_or_definition": {"type": ["string", "null"]},
+        "window": {"type": ["string", "null"]},
+        "input_evidence_references": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "calculation_version": {"type": ["string", "null"]},
+        "calculated_at": {"type": ["string", "null"]},
+        "invalid_reason": {"type": ["string", "null"]},
+        "caveats": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "citation_ids": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "required": ["metric_id", "metric_name", "status"],
       "additionalProperties": false
     }
   },
@@ -39,8 +73,46 @@
       "type": "string",
       "const": "unified_market_evidence_result.v1"
     },
+    "result_id": {
+      "type": "string",
+      "pattern": "^umeresult-v1-[0-9a-f]{20}$"
+    },
+    "result_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
     "request_id": {
       "type": "string"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "request_summary": {
+      "type": "object",
+      "properties": {
+        "execution_mode": {"type": ["string", "null"]},
+        "target_count": {"type": "integer", "minimum": 0},
+        "requested_data_needs": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "required_data_needs": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "optional_data_needs": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "required": [
+        "target_count",
+        "requested_data_needs",
+        "required_data_needs",
+        "optional_data_needs"
+      ],
+      "additionalProperties": false
     },
     "status": {
       "type": "string",
@@ -107,6 +179,10 @@
             },
             "additionalProperties": false
           },
+          "derived_metrics": {
+            "type": "array",
+            "items": {"$ref": "#/definitions/derived_metric"}
+          },
           "coverage": {
             "type": "object",
             "properties": {
@@ -157,7 +233,9 @@
         "type": "object",
         "properties": {
           "target_index": {"type": "integer"},
-          "reason": {"type": "string"}
+          "data_need": {"type": ["string", "null"]},
+          "reason": {"type": "string"},
+          "reason_code": {"type": ["string", "null"]}
         },
         "additionalProperties": false
       }
@@ -169,15 +247,32 @@
     "audit_reference": {
       "type": "object",
       "properties": {
+        "audit_package_id": {
+          "type": "string",
+          "pattern": "^umeap-v1-[0-9a-f]{20}$"
+        },
+        "schema_version": {
+          "type": "string",
+          "const": "unified_market_evidence_audit_package.v1"
+        },
+        "relative_path": {
+          "type": "string",
+          "pattern": "^(?!([a-zA-Z]:\\\\|file://|/|\\\\)).+"
+        },
         "audit_id": {"type": "string"},
         "execution_time_ms": {"type": "integer"}
       },
+      "required": ["audit_package_id", "schema_version", "relative_path"],
       "additionalProperties": false
     }
   },
   "required": [
     "schema_version",
+    "result_id",
+    "result_hash",
     "request_id",
+    "generated_at",
+    "request_summary",
     "status",
     "targets"
   ],
