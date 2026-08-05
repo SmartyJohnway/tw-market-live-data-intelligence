@@ -2,21 +2,72 @@
   "schema_version": "unified_market_evidence_execution_authorization.v1",
   "authorization_id": "umea-v1-b811db029e355ebf9bad",
   "authorization_hash": "b811db029e355ebf9bad0221a64c74298405d7c55aabdee39064373b1ed11afd",
-  "authorization_timestamp": "2026-08-01T01:55:00Z",
+  "authorization_identity_scope": {},
+  "decision": "approved",
+  "decision_reason": "test",
+  "owner_identity_reference": "test_owner",
+  "owner_review_reference": null,
+  "reviewed_at": null,
+  "issued_at": "2026-08-01T01:55:00Z",
+  "expires_at": "2026-08-01T02:55:00Z",
+  "authorization_status": "approved",
+  "plan_schema_version": "unified_market_evidence_orchestration_plan.v1",
   "plan_id": "umeop-v1-8b0880508f4eb8c58369",
-  "plan_hash": "8b0880508f4eb8c583696f325b9559f0e7fc9ab687b52a2f9ae1513bf07eb6bb",
-  "plan_authorization_status": "fully_authorized",
-  "authorized_executor_ids": ["twse_mis_v1"],
-  "network_authorization_status": "authorized",
-  "authorized_network_scopes": ["api.twse.com.tw", "mis.twse.com.tw"],
-  "authorized_operations": ["umeop-op-v1-42d40e6c106a2cbdd274"],
-  "rejected_operations": [],
-  "rejection_reason_codes": [],
-  "executor_overrides": {},
-  "authorization_evidence": {
-    "approver": "system_owner",
-    "approval_method": "explicit_approval",
-    "approval_reference": "preflight_review_123"
-  },
-  "created_by_component": "m8r_05b_02_authorizer_v1"
+  "plan_hash": "51a20f01ae7ae8066e8bb8235064e62ba60923e229f6cc15a2592a5e2372aa70",
+  "plan_binding_hash": "8b0880508f4eb8c583696f325b9559f0e7fc9ab687b52a2f9ae1513bf07eb6bb",
+  "approval_scope_mode": "whole_plan_executable_scope",
+  "approved_operation_ids": [
+    "umeop-op-v1-42d40e6c106a2cbdd274"
+  ],
+  "approved_batch_group_ids": [],
+  "approved_batch_membership": {},
+  "approved_capability_ids": [
+    "identity"
+  ],
+  "approved_executor_ids": [
+    "twse_mis_v1"
+  ],
+  "expected_evidence_contracts": [
+    "twse_mis_identity.v1"
+  ],
+  "scope_hash": "8b0880508f4eb8c583696f325b9559f0e7fc9ab687b52a2f9ae1513bf07eb6bb",
+  "execution_authorized": true,
+  "network_authorized": true,
+  "single_use": true,
+  "replay_policy": "deny_replay",
+  "maximum_use_count": 1,
+  "supersedes_authorization_id": null,
+  "revocation_reference": null,
+  "revoked_at": null,
+  "caveats": [],
+  "created_by_component": "m8r_05b_02",
+  "contract_version": "m8r_05b_02.v1",
+  "approved_operation_bindings": [
+    {
+      "operation_id": "umeop-op-v1-42d40e6c106a2cbdd274",
+      "market": "TWSE",
+      "capability_id": "identity",
+      "executor_id": "twse_mis_v1",
+      "expected_evidence_contract": "twse_mis_identity.v1",
+      "batch_group_id": "umeop-batch-v1-12345678901234567890",
+      "security_types": []
+    }
+  ],
+  "input_bindings": {
+    "original_request_hash": "57e5bae21293040b91ee54acc221e693384c2341d09e77c860d788970b88a35a",
+    "normalized_request_hash": "b811db029e355ebf9bad0221a64c74298405d7c55aabdee39064373b1ed11afd",
+    "f3_validation_output_hash": "8f12eb3b828d14c14aba89bc971bc51ac96bee883ac10f199fe42dad48fb93ee",
+    "security_master_evidence_references": [
+      "x"
+    ],
+    "security_master_artifact_hashes": [
+      "b811db029e355ebf9bad0221a64c74298405d7c55aabdee39064373b1ed11afd"
+    ],
+    "capability_catalog_hash": "b811db029e355ebf9bad0221a64c74298405d7c55aabdee39064373b1ed11afd",
+    "planner_version": "v1",
+    "routing_matrix_version": "v1",
+    "routing_matrix_hash": "b811db029e355ebf9bad0221a64c74298405d7c55aabdee39064373b1ed11afd",
+    "handoff_contract_version": "v1",
+    "handoff_contract_hash": "b811db029e355ebf9bad0221a64c74298405d7c55aabdee39064373b1ed11afd"
+  }
 }

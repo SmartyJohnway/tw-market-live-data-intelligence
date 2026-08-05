@@ -21,6 +21,7 @@ def test_m8r_05c_cli_end_to_end_single_target(tmp_path: Path):
 
     argv = [
         "--request-input", str(FIXTURES_DIR / "request_single_target.json"),
+        "--f3-validation-input", str(FIXTURES_DIR / "f3_validation.json"),
         "--plan-input", str(FIXTURES_DIR / "plan_single_target.json"),
         "--authorization-input", str(FIXTURES_DIR / "authorization.json"),
         "--consumption-binding-input", str(FIXTURES_DIR / "consumption_binding.json"),
@@ -99,6 +100,7 @@ def test_m8r_05c_cli_check_only_mode(tmp_path: Path):
 
     argv = [
         "--request-input", str(FIXTURES_DIR / "request_single_target.json"),
+        "--f3-validation-input", str(FIXTURES_DIR / "f3_validation.json"),
         "--plan-input", str(FIXTURES_DIR / "plan_single_target.json"),
         "--authorization-input", str(FIXTURES_DIR / "authorization.json"),
         "--consumption-binding-input", str(FIXTURES_DIR / "consumption_binding.json"),

@@ -6,9 +6,10 @@ authoritative operation(s) and their evidence artifacts from the
 
 This module:
 - Is a pure function (no side effects, no network, no clock).
+- Uses f3_validation for explicit target resolution mapping.
 - Uses plan.operations[] as the authoritative mapping.
 - Uses bundle.artifact_inventory as the authoritative artifact registry.
-- Never invokes executors or dispatches.
+- Enforces strict governance: duplicate operations or bindings raise errors, unknown capabilities raise errors.
 """
 from __future__ import annotations
 
@@ -28,6 +29,16 @@ _CAPABILITY_TO_DATA_NEED: dict[str, str] = {
     "source_currentness": "source_currentness",
     "evidence_quality": "evidence_quality",
 }
+
+
+@dataclass
+class TargetResolution:
+    """Explicit mapping from f3_validation for a single target."""
+    target_index: int
+    original_input: str
+    resolution_status: str
+    canonical_target_id: str | None = None
+    market: str | None = None
 
 
 @dataclass
@@ -55,18 +66,19 @@ class LineageMap:
     by_operation_id: dict[str, OperationBinding] = field(default_factory=dict)
     # requested data needs from request
     requested_data_needs: list[str] = field(default_factory=list)
-    # All canonical_target_ids resolved by plan
-    all_target_ids: list[str] = field(default_factory=list)
+    # Target resolutions mapped by their index in the request
+    target_resolutions: dict[int, TargetResolution] = field(default_factory=dict)
 
 
 def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
-    """Build the deterministic lineage map from plan + bundle.
+    """Build the deterministic lineage map from f3_validation, plan, and bundle.
 
     Pure function: no network, no clock, no side effects.
-    Raises ProjectionError on unresolvable mapping.
+    Raises ProjectionError on unresolvable mapping, duplicate operations, or unknown capabilities.
     """
     plan = inputs.plan
     bundle = inputs.bundle
+    f3_validation = inputs.f3_validation
     evidence_artifacts = inputs.evidence_artifacts
 
     # Index request data_needs.
@@ -77,21 +89,42 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
         dn["type"] for dn in data_needs if isinstance(dn, dict) and "type" in dn
     )
 
+    # Process f3_validation target mappings.
+    target_resolutions: dict[int, TargetResolution] = {}
+    for t_res in f3_validation.get("target_results", []):
+        if not isinstance(t_res, dict):
+            continue
+        target_idx = t_res.get("target_index")
+        if target_idx is None:
+            continue
+            
+        canonical_id = None
+        market = None
+        identity = t_res.get("canonical_identity")
+        if isinstance(identity, dict):
+            canonical_id = identity.get("canonical_target_id")
+            market = identity.get("market")
+            
+        target_resolutions[target_idx] = TargetResolution(
+            target_index=target_idx,
+            original_input=t_res.get("original_input", ""),
+            resolution_status=t_res.get("resolution_status", "not_found"),
+            canonical_target_id=canonical_id,
+            market=market
+        )
+
     # Index bundle operation evidence entries by operation_id.
     operation_evidence_index: dict[str, dict] = {}
     for entry in bundle.get("operation_evidence_entries", []):
         if isinstance(entry, dict) and "operation_id" in entry:
-            operation_evidence_index[entry["operation_id"]] = entry
-
-    # Collect all canonical target IDs across all plan operations.
-    all_target_ids_set: set[str] = set()
-    for op in plan.get("operations", []):
-        for tid in op.get("canonical_target_ids", []):
-            all_target_ids_set.add(tid)
+            op_id = entry["operation_id"]
+            if op_id in operation_evidence_index:
+                raise ProjectionError("duplicate_operation_id")
+            operation_evidence_index[op_id] = entry
 
     lineage = LineageMap(
         requested_data_needs=requested_data_needs,
-        all_target_ids=sorted(all_target_ids_set),
+        target_resolutions=target_resolutions,
     )
 
     # Build (target_id, data_need) → OperationBinding mapping.
@@ -110,8 +143,7 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
         # Map capability_id to data_need.
         data_need = _CAPABILITY_TO_DATA_NEED.get(capability_id)
         if data_need is None:
-            # Unknown capability — skip; this is not a 05A evidence need.
-            continue
+            raise ProjectionError("unknown_capability")
 
         # Only process requested data_needs.
         if data_need not in requested_data_needs:
@@ -147,8 +179,9 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
 
             if canonical_target_id not in lineage.bindings:
                 lineage.bindings[canonical_target_id] = {}
-            # If multiple operations serve the same (target, data_need),
-            # last writer wins in plan order (plan order is authoritative).
+            if data_need in lineage.bindings[canonical_target_id]:
+                raise ProjectionError("duplicate_binding")
+                
             lineage.bindings[canonical_target_id][data_need] = binding
             lineage.by_operation_id[operation_id] = binding
 

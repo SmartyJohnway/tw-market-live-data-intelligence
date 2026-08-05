@@ -54,6 +54,11 @@ def main(argv=None) -> int:
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("--request-input", required=True, help="Path to the original request JSON.")
+    parser.add_argument(
+        "--f3-validation-input",
+        required=True,
+        help="Path to the F3 canonical target validation JSON.",
+    )
     parser.add_argument("--plan-input", required=True, help="Path to the orchestration plan JSON.")
     parser.add_argument(
         "--authorization-input", required=True, help="Path to the execution authorization JSON."
@@ -95,6 +100,7 @@ def main(argv=None) -> int:
         # We defer this decision to after loading the receipt.
         inputs = load_projection_inputs(
             request_path=args.request_input,
+            f3_validation_path=args.f3_validation_input,
             plan_path=args.plan_input,
             authorization_path=args.authorization_input,
             consumption_binding_path=args.consumption_binding_input,

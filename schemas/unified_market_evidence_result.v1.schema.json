@@ -7,11 +7,17 @@
     "evidence_envelope": {
       "type": "object",
       "properties": {
-        "status": {"type": "string"},
-        "timing_class": {"type": "string"},
+        "status": {
+          "type": "string"
+        },
+        "timing_class": {
+          "type": "string"
+        },
         "caveats": {
           "type": "array",
-          "items": {"type": "string"}
+          "items": {
+            "type": "string"
+          }
         },
         "observed_fields": {
           "type": "object",
@@ -19,17 +25,25 @@
         },
         "missing_fields": {
           "type": "array",
-          "items": {"type": "string"}
+          "items": {
+            "type": "string"
+          }
         },
         "currentness": {
           "type": "object",
           "additionalProperties": true
         },
-        "fallback": {"type": "boolean"},
-        "fallback_state": {"type": "string"},
+        "fallback": {
+          "type": "boolean"
+        },
+        "fallback_state": {
+          "type": "string"
+        },
         "citation_ids": {
           "type": "array",
-          "items": {"type": "string"}
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": false
@@ -37,34 +51,94 @@
     "derived_metric": {
       "type": "object",
       "properties": {
-        "metric_id": {"type": "string"},
-        "metric_name": {"type": "string"},
+        "metric_id": {
+          "type": "string"
+        },
+        "metric_name": {
+          "type": "string"
+        },
         "status": {
           "type": "string",
-          "enum": ["available", "unavailable", "invalid", "not_requested"]
+          "enum": [
+            "available",
+            "unavailable",
+            "invalid",
+            "not_requested"
+          ]
         },
-        "value": {"type": ["number", "string", "null"]},
-        "unit": {"type": ["string", "null"]},
-        "method": {"type": ["string", "null"]},
-        "formula_or_definition": {"type": ["string", "null"]},
-        "window": {"type": ["string", "null"]},
+        "value": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "method": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "formula_or_definition": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "window": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "input_evidence_references": {
           "type": "array",
-          "items": {"type": "string"}
+          "items": {
+            "type": "string"
+          }
         },
-        "calculation_version": {"type": ["string", "null"]},
-        "calculated_at": {"type": ["string", "null"]},
-        "invalid_reason": {"type": ["string", "null"]},
+        "calculation_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "calculated_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "invalid_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "caveats": {
           "type": "array",
-          "items": {"type": "string"}
+          "items": {
+            "type": "string"
+          }
         },
         "citation_ids": {
           "type": "array",
-          "items": {"type": "string"}
+          "items": {
+            "type": "string"
+          }
         }
       },
-      "required": ["metric_id", "metric_name", "status"],
+      "required": [
+        "metric_id",
+        "metric_name",
+        "status"
+      ],
       "additionalProperties": false
     }
   },
@@ -91,19 +165,33 @@
     "request_summary": {
       "type": "object",
       "properties": {
-        "execution_mode": {"type": ["string", "null"]},
-        "target_count": {"type": "integer", "minimum": 0},
+        "execution_mode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "target_count": {
+          "type": "integer",
+          "minimum": 0
+        },
         "requested_data_needs": {
           "type": "array",
-          "items": {"type": "string"}
+          "items": {
+            "type": "string"
+          }
         },
         "required_data_needs": {
           "type": "array",
-          "items": {"type": "string"}
+          "items": {
+            "type": "string"
+          }
         },
         "optional_data_needs": {
           "type": "array",
-          "items": {"type": "string"}
+          "items": {
+            "type": "string"
+          }
         }
       },
       "required": [
@@ -116,36 +204,91 @@
     },
     "status": {
       "type": "string",
-      "enum": ["full_success", "success_with_partial_coverage", "failed", "partially_failed"]
+      "enum": [
+        "full_success",
+        "success_with_partial_coverage",
+        "failed",
+        "partially_failed"
+      ]
     },
     "targets": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "client_target_reference": {"type": ["string", "null"]},
+          "client_target_reference": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "resolution": {
             "type": "object",
             "properties": {
-              "status": {"type": "string", "enum": ["resolved", "ambiguous", "not_found", "market_hint_conflict", "unsupported_market"]},
-              "canonical_target_id": {"type": ["string", "null"]},
-              "security_code": {"type": ["string", "null"]},
-              "security_name": {"type": ["string", "null"]},
-              "market": {"type": ["string", "null"]}
+              "status": {
+                "type": "string",
+                "enum": [
+                  "resolved",
+                  "ambiguous",
+                  "not_found",
+                  "market_hint_conflict",
+                  "unsupported_market"
+                ]
+              },
+              "canonical_target_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "security_code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "security_name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "market": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
             },
-            "required": ["status"],
+            "required": [
+              "status"
+            ],
             "additionalProperties": false
           },
           "evidence": {
             "type": "object",
             "properties": {
-              "identity": {"$ref": "#/definitions/evidence_envelope"},
-              "current_observation": {"$ref": "#/definitions/evidence_envelope"},
+              "identity": {
+                "$ref": "#/definitions/evidence_envelope"
+              },
+              "current_observation": {
+                "$ref": "#/definitions/evidence_envelope"
+              },
               "official_eod_reference": {
                 "type": "object",
                 "properties": {
-                  "trade_date": {"type": ["string", "null"]},
-                  "expected_latest_completed_trade_date": {"type": ["string", "null"]},
+                  "trade_date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "expected_latest_completed_trade_date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
                   "currentness_status": {
                     "type": "string",
                     "enum": [
@@ -160,70 +303,124 @@
                       "invalid_trade_date_format"
                     ]
                   },
-                  "session_status": {"type": "string"},
-                  "publication_grace_applied": {"type": "boolean"},
-                  "fallback_policy_used": {"type": "boolean"},
-                  "provisional_candidate_status": {"type": ["string", "null"]},
+                  "session_status": {
+                    "type": "string"
+                  },
+                  "publication_grace_applied": {
+                    "type": "boolean"
+                  },
+                  "fallback_policy_used": {
+                    "type": "boolean"
+                  },
+                  "provisional_candidate_status": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
                   "caveats": {
                     "type": "array",
-                    "items": {"type": "string"}
+                    "items": {
+                      "type": "string"
+                    }
                   }
                 },
-                "required": ["currentness_status"],
+                "required": [
+                  "currentness_status"
+                ],
                 "additionalProperties": false
               },
-              "recent_performance": {"$ref": "#/definitions/evidence_envelope"},
-              "session_status": {"$ref": "#/definitions/evidence_envelope"},
-              "source_currentness": {"$ref": "#/definitions/evidence_envelope"},
-              "evidence_quality": {"$ref": "#/definitions/evidence_envelope"}
+              "recent_performance": {
+                "$ref": "#/definitions/evidence_envelope"
+              },
+              "session_status": {
+                "$ref": "#/definitions/evidence_envelope"
+              },
+              "source_currentness": {
+                "$ref": "#/definitions/evidence_envelope"
+              },
+              "evidence_quality": {
+                "$ref": "#/definitions/evidence_envelope"
+              }
             },
             "additionalProperties": false
           },
           "derived_metrics": {
             "type": "array",
-            "items": {"$ref": "#/definitions/derived_metric"}
+            "items": {
+              "$ref": "#/definitions/derived_metric"
+            }
           },
           "coverage": {
             "type": "object",
             "properties": {
               "provided_needs": {
                 "type": "array",
-                "items": {"type": "string"}
+                "items": {
+                  "type": "string"
+                }
               },
               "missing_needs": {
                 "type": "array",
-                "items": {"type": "string"}
+                "items": {
+                  "type": "string"
+                }
               }
             },
             "additionalProperties": false
           },
           "caveats": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
           "citations": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "citation_id": {"type": "string"},
-                "source_family": {"type": "string"},
-                "source_contract_id": {"type": "string"},
-                "retrieved_at": {"type": "string", "format": "date-time"},
-                "effective_trade_date": {"type": "string", "format": "date"},
+                "citation_id": {
+                  "type": "string"
+                },
+                "source_family": {
+                  "type": "string"
+                },
+                "source_contract_id": {
+                  "type": "string"
+                },
+                "retrieved_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "effective_trade_date": {
+                  "type": "string",
+                  "format": "date"
+                },
                 "artifact_reference": {
                   "type": "string",
                   "pattern": "^(?!([a-zA-Z]:\\\\|file://|/|\\\\)).+",
                   "description": "Must be a relative path or URI, not absolute local path"
                 },
-                "normalized_evidence_hash": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}
+                "normalized_evidence_hash": {
+                  "type": "string",
+                  "pattern": "^[a-fA-F0-9]{64}$"
+                }
               },
-              "required": ["citation_id", "source_family", "retrieved_at", "artifact_reference"],
+              "required": [
+                "citation_id",
+                "source_family",
+                "retrieved_at",
+                "artifact_reference"
+              ],
               "additionalProperties": false
             }
           }
         },
-        "required": ["resolution", "evidence"],
+        "required": [
+          "resolution",
+          "evidence"
+        ],
         "additionalProperties": false
       }
     },
@@ -232,17 +429,33 @@
       "items": {
         "type": "object",
         "properties": {
-          "target_index": {"type": "integer"},
-          "data_need": {"type": ["string", "null"]},
-          "reason": {"type": "string"},
-          "reason_code": {"type": ["string", "null"]}
+          "target_index": {
+            "type": "integer"
+          },
+          "data_need": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "reason_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
         },
         "additionalProperties": false
       }
     },
     "request_caveats": {
       "type": "array",
-      "items": {"type": "string"}
+      "items": {
+        "type": "string"
+      }
     },
     "audit_reference": {
       "type": "object",
@@ -259,20 +472,19 @@
           "type": "string",
           "pattern": "^(?!([a-zA-Z]:\\\\|file://|/|\\\\)).+"
         },
-        "audit_id": {"type": "string"},
-        "execution_time_ms": {"type": "integer"}
+        "audit_id": {
+          "type": "string"
+        },
+        "execution_time_ms": {
+          "type": "integer"
+        }
       },
-      "required": ["audit_package_id", "schema_version", "relative_path"],
       "additionalProperties": false
     }
   },
   "required": [
     "schema_version",
-    "result_id",
-    "result_hash",
     "request_id",
-    "generated_at",
-    "request_summary",
     "status",
     "targets"
   ],

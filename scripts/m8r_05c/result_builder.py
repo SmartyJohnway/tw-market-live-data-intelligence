@@ -230,51 +230,29 @@ def build_result(inputs: ProjectionInputs) -> dict:
     target_projections: list[TargetProjection] = []
     partial_failures: list[PartialFailureProjection] = []
 
-    # Build mapping: canonical_target_id → request target index.
-    # Use plan operations to find all canonical_target_ids.
+    # Build mapping: request target index -> f3_validation resolution -> canonical_target_id -> plan operations -> bundle evidence.
     for target_idx, req_target in enumerate(requested_targets):
         client_ref = req_target.get("client_target_reference")
 
-        # Find the canonical_target_id for this request target.
-        # The plan may have multiple operations for the same target.
-        # We gather all canonical_target_ids that appeared in any binding.
-        target_canonical_ids = sorted(lineage.all_target_ids)
-
-        if not target_canonical_ids:
-            # No operations planned at all.
+        target_res = lineage.target_resolutions.get(target_idx)
+        if not target_res or target_res.resolution_status != "resolved" or not target_res.canonical_target_id:
+            # Not found or not resolved by F3 validation
+            status = target_res.resolution_status if target_res else "not_found"
             tp = TargetProjection(
-                resolution=ResolutionProjection(status="not_found"),
+                resolution=ResolutionProjection(status=status),
                 client_target_reference=client_ref,
             )
             target_projections.append(tp)
             partial_failures.append(
                 PartialFailureProjection(
                     target_index=target_idx,
-                    reason="no_operations_planned",
-                    reason_code="no_operations_planned",
+                    reason=f"target_resolution_failed:{status}",
+                    reason_code="target_resolution_failed",
                 )
             )
             continue
 
-        # For this index, try to match.  When targets > 1, use index order.
-        if target_idx < len(target_canonical_ids):
-            canonical_target_id = target_canonical_ids[target_idx]
-        else:
-            # More request targets than plan operations — not_found.
-            tp = TargetProjection(
-                resolution=ResolutionProjection(status="not_found"),
-                client_target_reference=client_ref,
-            )
-            target_projections.append(tp)
-            partial_failures.append(
-                PartialFailureProjection(
-                    target_index=target_idx,
-                    reason="target_not_in_plan",
-                    reason_code="target_not_in_plan",
-                )
-            )
-            continue
-
+        canonical_target_id = target_res.canonical_target_id
         target_bindings = lineage.bindings.get(canonical_target_id, {})
 
         # Build citation map for this target.

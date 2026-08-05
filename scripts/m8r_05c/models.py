@@ -107,6 +107,7 @@ class ProjectionInputs:
     deserialized JSON objects (validated against their schemas).
     """
     request: dict
+    f3_validation: dict
     plan: dict
     authorization: dict
     consumption_binding: dict

@@ -203,10 +203,20 @@ def build_audit_package(
         })
 
     # Integrity verification.
-    receipt_hash_ok = receipt.get("execution_receipt_hash") == receipt.get("execution_receipt_hash")
-    bundle_hash_ok = bundle.get("bundle_hash") == bundle.get("bundle_hash")
-    result_hash_ok = True  # Already validated by schema in result_builder
-    all_artifacts_ok = True  # Verified by artifact_loader._verify_artifact_hash
+    # Actually recompute the hashes to prove they match what was provided
+    # The result hash is computed by excluding "result_hash"
+    recomputed_result_hash = hash_body_excluding_key(result, "result_hash")
+    result_hash_ok = recomputed_result_hash == result.get("result_hash")
+    
+    recomputed_receipt_hash = hash_body_excluding_key(receipt, "execution_receipt_hash")
+    receipt_hash_ok = recomputed_receipt_hash == receipt.get("execution_receipt_hash")
+    
+    recomputed_bundle_hash = hash_body_excluding_key(bundle, "bundle_hash")
+    bundle_hash_ok = recomputed_bundle_hash == bundle.get("bundle_hash")
+    
+    # all_artifacts_ok is True only because artifact_loader.py explicitly verifies every file against its sha256
+    # and would have raised ProjectionError if any failed.
+    all_artifacts_ok = True
 
     integrity_verification: dict = {
         "receipt_hash_verified": receipt_hash_ok,

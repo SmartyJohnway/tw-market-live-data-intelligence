@@ -100,7 +100,7 @@
       "additionalProperties": false,
       "required": ["claim_id", "claim_hash", "schema_version"],
       "properties": {
-        "claim_id": {"type": "string", "pattern": "^umecl-v1-[0-9a-f]{20}$"},
+        "claim_id": {"type": "string", "pattern": "^umeacb-v1-[0-9a-f]{20}$"},
         "claim_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
         "schema_version": {"type": "string"}
       }
