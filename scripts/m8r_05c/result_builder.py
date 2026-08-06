@@ -76,22 +76,23 @@ def _build_request_summary(request: dict) -> RequestSummaryProjection:
 
 
 def _build_resolution(
-    canonical_target_id: str,
+    target_res,
     target_bindings: dict,
-    request_target: dict,
 ) -> ResolutionProjection:
-    """Resolve status from lineage. If any binding exists → resolved."""
-    if target_bindings:
-        # Use the first binding to get market info.
+    """Resolve status from lineage. Inherit F3 canonically resolved status."""
+    status = target_res.resolution_status if target_res else "not_found"
+    canonical_target_id = target_res.canonical_target_id if target_res else None
+    market = target_res.market if target_res else None
+    
+    if not market and target_bindings:
+        # Use the first binding to get market info if missing from F3.
         sample = next(iter(target_bindings.values()))
-        return ResolutionProjection(
-            status="resolved",
-            canonical_target_id=canonical_target_id,
-            market=sample.market,
-        )
+        market = sample.market
+        
     return ResolutionProjection(
-        status="not_found",
+        status=status,
         canonical_target_id=canonical_target_id,
+        market=market,
     )
 
 
@@ -284,7 +285,15 @@ def build_result(inputs: ProjectionInputs) -> dict:
         missing_needs: list[str] = []
         for need in request_summary.requested_data_needs:
             binding = target_bindings.get(need)
+            is_provided = False
             if binding and binding.status == "succeeded":
+                # Ensure evidence was actually projected, or it's an artifact-free contract
+                if getattr(evidence_proj, need, None) is not None:
+                    is_provided = True
+                elif not binding.evidence_artifacts:
+                    is_provided = True
+            
+            if is_provided:
                 provided_needs.append(need)
             else:
                 missing_needs.append(need)
@@ -299,7 +308,7 @@ def build_result(inputs: ProjectionInputs) -> dict:
                     )
 
         # Build resolution.
-        resolution = _build_resolution(canonical_target_id, target_bindings, req_target)
+        resolution = _build_resolution(target_res, target_bindings)
 
         # Collect used citation IDs for this target.
         used_cits: set[str] = set()

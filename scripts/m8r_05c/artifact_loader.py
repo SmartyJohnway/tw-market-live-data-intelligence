@@ -198,9 +198,21 @@ def load_projection_inputs(
     except Exception as exc:
         raise ProjectionError("claim_operator_reference_invalid") from exc
         
+    if claim.get("consumption_binding_id") != consumption_binding.get("consumption_binding_id"):
+        raise ProjectionError("predecessor_id_mismatch_binding")
+    
+    if claim.get("consumption_binding_hash") != consumption_binding.get("consumption_binding_hash"):
+        raise ProjectionError("predecessor_hash_mismatch_binding")
+        
+    if claim.get("execution_receipt_id") and claim.get("execution_receipt_id") != receipt.get("execution_receipt_id"):
+        raise ProjectionError("predecessor_id_mismatch_receipt")
+        
+    if claim.get("execution_receipt_hash") and claim.get("execution_receipt_hash") != receipt.get("execution_receipt_hash"):
+        raise ProjectionError("predecessor_hash_mismatch_receipt")
+        
     # Authoritative Validation of Bundle
-    if bundle.get("claim_hash") != claim_hash:
-        raise ProjectionError("predecessor_hash_mismatch_claim")
+    if bundle.get("claim_id") != claim_id:
+        raise ProjectionError("predecessor_id_mismatch_claim")
         
     # Validation of Receipt
     receipt_body = deepcopy(receipt)
@@ -208,8 +220,8 @@ def load_projection_inputs(
     if receipt.get("execution_receipt_hash") != sha256_json(receipt_body):
         raise ProjectionError("receipt_hash_invalid")
         
-    if receipt.get("claim_hash") != claim_hash:
-        raise ProjectionError("predecessor_hash_mismatch_claim")
+    if receipt.get("claim_id") != claim.get("claim_id"):
+        raise ProjectionError("predecessor_id_mismatch_claim")
         
     receipt_id = receipt.get("execution_receipt_id")
     
@@ -285,7 +297,23 @@ def load_projection_inputs(
             if actual_items != expected_items:
                 raise ProjectionError("artifact_item_count_mismatch")
                 
+                
         evidence_artifacts[relative_path] = artifact_obj
+
+    inventory_paths = {entry.get("relative_path"): entry for entry in bundle.get("artifact_inventory", [])}
+    for entry in bundle.get("operation_evidence_entries", []):
+        for art in entry.get("artifacts", []):
+            rel_path = art.get("relative_path")
+            if rel_path not in inventory_paths:
+                raise ProjectionError("operation_artifact_missing_from_inventory")
+            
+            inv_entry = inventory_paths[rel_path]
+            if art.get("sha256") != inv_entry.get("sha256"):
+                raise ProjectionError("operation_artifact_hash_mismatch")
+            if art.get("byte_size") != inv_entry.get("byte_size"):
+                raise ProjectionError("operation_artifact_size_mismatch")
+            if art.get("schema_version") != inv_entry.get("schema_version"):
+                raise ProjectionError("operation_artifact_schema_mismatch")
 
     if not calculated_at:
         raise ProjectionError("calculated_at_missing")

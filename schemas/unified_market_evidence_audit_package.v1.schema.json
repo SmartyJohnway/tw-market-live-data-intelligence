@@ -100,7 +100,7 @@
       "additionalProperties": false,
       "required": ["claim_id", "claim_hash", "schema_version"],
       "properties": {
-        "claim_id": {"type": "string", "pattern": "^umeacb-v1-[0-9a-f]{20}$"},
+        "claim_id": {"type": "string", "pattern": "^umecl-v1-[0-9a-f]{20}$"},
         "claim_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
         "schema_version": {"type": "string"}
       }
@@ -269,6 +269,8 @@
         "plan_hash",
         "authorization_id",
         "authorization_hash",
+        "consumption_binding_id",
+        "consumption_binding_hash",
         "claim_id",
         "claim_hash",
         "execution_receipt_id",
@@ -283,6 +285,8 @@
         "plan_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
         "authorization_id": {"type": "string"},
         "authorization_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "consumption_binding_id": {"type": "string"},
+        "consumption_binding_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
         "claim_id": {"type": "string"},
         "claim_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
         "execution_receipt_id": {"type": "string"},

@@ -262,7 +262,7 @@
     "affected_tests": ["tests/unit/test_m8r_05a_preview_result_contracts.py"],
     "affected_fixtures": ["test_valid_result_full_success", "test_valid_result_not_yet_published"],
     "required_action": "Update these 2 fixtures to include new required fields (result_id, result_hash, generated_at, request_summary). Existing negative test (test_invalid_result_has_raw_payload) remains valid and must not be weakened.",
-    "compatibility_verdict": "additive_no_v2_needed"
+    "compatibility_verdict": "controlled_breaking_draft_completion_no_v2_needed"
   },
   "explicit_non_goals": [
     "No market-data network calls",

@@ -105,11 +105,12 @@ def build_audit_package(
         authorization_identity["scope_hash"] = authorization["scope_hash"]
 
     # Claim identity.
+    claim = inputs.claim
     claim_identity = {
-        "claim_id": consumption_binding.get("consumption_binding_id", ""),
-        "claim_hash": consumption_binding.get("consumption_binding_hash", ""),
-        "schema_version": consumption_binding.get(
-            "schema_version", "unified_market_evidence_authorization_consumption_binding.v1"
+        "claim_id": claim.get("claim_id", ""),
+        "claim_hash": sha256_json(claim),
+        "schema_version": claim.get(
+            "schema_version", "unified_market_evidence_consumption_record.v1"
         ),
     }
 
@@ -233,8 +234,10 @@ def build_audit_package(
         "plan_hash": plan.get("plan_hash", ""),
         "authorization_id": authorization.get("authorization_id", ""),
         "authorization_hash": authorization.get("authorization_hash", ""),
-        "claim_id": consumption_binding.get("consumption_binding_id", ""),
-        "claim_hash": consumption_binding.get("consumption_binding_hash", ""),
+        "consumption_binding_id": consumption_binding.get("consumption_binding_id", ""),
+        "consumption_binding_hash": consumption_binding.get("consumption_binding_hash", ""),
+        "claim_id": claim.get("claim_id", ""),
+        "claim_hash": sha256_json(claim),
         "execution_receipt_id": receipt.get("execution_receipt_id", ""),
         "execution_receipt_hash": receipt.get("execution_receipt_hash", ""),
         "bundle_id": bundle_id,
