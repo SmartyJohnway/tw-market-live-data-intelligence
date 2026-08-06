@@ -98,10 +98,11 @@
     "claim_identity": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["claim_id", "claim_hash", "schema_version"],
+      "required": ["claim_id", "atomic_claim_hash", "finalized_record_hash", "schema_version"],
       "properties": {
         "claim_id": {"type": "string", "pattern": "^umecl-v1-[0-9a-f]{20}$"},
-        "claim_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "atomic_claim_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "finalized_record_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
         "schema_version": {"type": "string"}
       }
     },
@@ -272,7 +273,8 @@
         "consumption_binding_id",
         "consumption_binding_hash",
         "claim_id",
-        "claim_hash",
+        "atomic_claim_hash",
+        "finalized_record_hash",
         "execution_receipt_id",
         "execution_receipt_hash",
         "bundle_id",
@@ -288,7 +290,8 @@
         "consumption_binding_id": {"type": "string"},
         "consumption_binding_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
         "claim_id": {"type": "string"},
-        "claim_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "atomic_claim_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "finalized_record_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
         "execution_receipt_id": {"type": "string"},
         "execution_receipt_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
         "bundle_id": {"type": "string"},

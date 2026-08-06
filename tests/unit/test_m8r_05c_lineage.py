@@ -106,3 +106,56 @@ def test_inventory_referential_integrity():
         res = _run_cli_with_overrides(d_out, bundle=mutate_bundle)
         assert res.returncode != 0
         assert "operation_artifact_hash_mismatch" in res.stderr
+
+def test_lineage_receipt_claim_hash_mismatch():
+    if not (FIXTURES_DIR / "receipt.json").exists():
+        pytest.skip("Fixtures missing")
+
+    import copy, sys, json
+    if str(FIXTURES_DIR.parents[2]) not in sys.path:
+        sys.path.insert(0, str(FIXTURES_DIR.parents[2]))
+    from scripts.m8r_05b_03.canonical import sha256_json
+    
+    r_obj = json.loads((FIXTURES_DIR / "receipt.json").read_text(encoding="utf-8"))
+    r_obj["claim_hash"] = "0" * 64
+    r_obj_body = copy.deepcopy(r_obj)
+    r_obj_body.pop("execution_receipt_hash", None)
+    new_hash = sha256_json(r_obj_body)
+
+    def mutate_receipt(r):
+        r["claim_hash"] = "0" * 64
+        r["execution_receipt_hash"] = new_hash
+        
+    def mutate_claim(c):
+        c["execution_receipt_hash"] = new_hash
+
+    with tempfile.TemporaryDirectory() as d_out:
+        res = _run_cli_with_overrides(d_out, receipt=mutate_receipt, claim=mutate_claim)
+        assert res.returncode != 0
+        assert "predecessor_hash_mismatch_claim" in res.stderr
+
+def test_lineage_claim_tampering():
+    if not (FIXTURES_DIR / "claim.json").exists():
+        pytest.skip("Fixtures missing")
+
+    import copy, sys, json
+    if str(FIXTURES_DIR.parents[2]) not in sys.path:
+        sys.path.insert(0, str(FIXTURES_DIR.parents[2]))
+    from scripts.m8r_05b_03.canonical import sha256_json
+
+    # We mutate a non-finalization field (e.g. state or execution_mode)
+    c_obj = json.loads((FIXTURES_DIR / "claim.json").read_text(encoding="utf-8"))
+    c_obj["execution_mode"] = "simulate"
+    
+    # We must also recompute its finalized receipt hash since the claim hash changed
+    # wait, claim hash is verified by receipt.claim_hash! 
+    # If we mutate claim execution_mode, its atomic claim hash changes.
+    # Therefore it will no longer match receipt.claim_hash!
+    
+    def mutate_claim(c):
+        c["scope_hash"] = "0" * 64
+        
+    with tempfile.TemporaryDirectory() as d_out:
+        res = _run_cli_with_overrides(d_out, claim=mutate_claim)
+        assert res.returncode != 0
+        assert "predecessor_hash_mismatch_claim" in res.stderr

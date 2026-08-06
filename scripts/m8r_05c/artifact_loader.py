@@ -223,6 +223,17 @@ def load_projection_inputs(
     if receipt.get("claim_id") != claim.get("claim_id"):
         raise ProjectionError("predecessor_id_mismatch_claim")
         
+    atomic_claim = deepcopy(claim)
+    atomic_claim["state"] = "claimed"
+    atomic_claim["execution_receipt_id"] = None
+    atomic_claim["execution_receipt_hash"] = None
+    atomic_claim["finalized_at"] = None
+    atomic_claim["last_error_code"] = None
+    atomic_claim_hash = sha256_json(atomic_claim)
+    
+    if receipt.get("claim_hash") != atomic_claim_hash:
+        raise ProjectionError("predecessor_hash_mismatch_claim")
+        
     receipt_id = receipt.get("execution_receipt_id")
     
     # Validation of Bundle

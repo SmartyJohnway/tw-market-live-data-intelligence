@@ -86,4 +86,4 @@ The `audit_reference` now requires `audit_package_id`, `schema_version`, and `re
 A separate `unified_market_evidence_audit_package.v1` schema was added for operator/replay/debug evidence. It contains operation lineage, artifact inventory, citation-to-operation mapping, integrity verification, and replay manifest. It is never embedded in the AI-context result.
 
 ### Compatibility
-All changes are additive. The `schema_version` remains `unified_market_evidence_result.v1`. No v2 migration is required. Existing test fixtures were updated to include the new required fields.
+This is a controlled breaking completion of a pre-runtime draft v1 contract. No deployed canonical v1 consumer compatibility is claimed; therefore a v2 migration is not required.

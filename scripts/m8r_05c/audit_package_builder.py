@@ -12,6 +12,7 @@ This module:
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from pathlib import Path
 
 from jsonschema import Draft202012Validator
@@ -106,9 +107,20 @@ def build_audit_package(
 
     # Claim identity.
     claim = inputs.claim
+    atomic_claim = deepcopy(claim)
+    atomic_claim["state"] = "claimed"
+    atomic_claim["execution_receipt_id"] = None
+    atomic_claim["execution_receipt_hash"] = None
+    atomic_claim["finalized_at"] = None
+    atomic_claim["last_error_code"] = None
+
+    atomic_claim_hash = sha256_json(atomic_claim)
+    finalized_record_hash = sha256_json(claim)
+
     claim_identity = {
         "claim_id": claim.get("claim_id", ""),
-        "claim_hash": sha256_json(claim),
+        "atomic_claim_hash": atomic_claim_hash,
+        "finalized_record_hash": finalized_record_hash,
         "schema_version": claim.get(
             "schema_version", "unified_market_evidence_consumption_record.v1"
         ),
@@ -237,7 +249,8 @@ def build_audit_package(
         "consumption_binding_id": consumption_binding.get("consumption_binding_id", ""),
         "consumption_binding_hash": consumption_binding.get("consumption_binding_hash", ""),
         "claim_id": claim.get("claim_id", ""),
-        "claim_hash": sha256_json(claim),
+        "atomic_claim_hash": atomic_claim_hash,
+        "finalized_record_hash": finalized_record_hash,
         "execution_receipt_id": receipt.get("execution_receipt_id", ""),
         "execution_receipt_hash": receipt.get("execution_receipt_hash", ""),
         "bundle_id": bundle_id,

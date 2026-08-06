@@ -21,7 +21,7 @@
   "claimed_by_component": "m8r_05c_test",
   "attempt_count": 1,
   "execution_receipt_id": "umerec-v1-e22749b15ccb21a961e1",
-  "execution_receipt_hash": "6521e27e2db4f868c4fd64c6b19f08d28c1b5f14c0b75ff09dacbf7f24e76d37",
+  "execution_receipt_hash": "30acb8427313f1831385bed06196bffeaffc18b68668bb3f198dcd1211ecfff7",
   "finalized_at": "2026-08-01T02:05:00Z",
   "last_error_code": null
 }
