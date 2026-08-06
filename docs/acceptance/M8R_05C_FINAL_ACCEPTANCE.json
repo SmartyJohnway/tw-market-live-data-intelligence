@@ -1,0 +1,9 @@
+{
+  "milestone": "M8R_05C",
+  "status": "M8R-05C_FORMALLY_CLOSED_AND_READY_FOR_M8R-06-00-WORKBENCH_PREFLIGHT",
+  "baseline_sha": "9a11d6fcf7c03383582518620379b86f587e3253",
+  "architect": "System",
+  "reviewer": "System",
+  "description": "M8R-05C has been formally accepted. Post-merge verification passed on main branch.",
+  "caveats": []
+}
