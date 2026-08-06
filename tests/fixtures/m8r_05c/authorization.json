@@ -1,0 +1,94 @@
+{
+  "schema_version": "unified_market_evidence_execution_authorization.v1",
+  "authorization_id": "umea-v1-2e589eb14b73fadf6b29",
+  "authorization_hash": "2e589eb14b73fadf6b29967ee40f5dd12cc6e6d3eb1c6a7e1e5b270de9abc7ea",
+  "authorization_identity_scope": {
+    "plan_hash": "caddb03ec9ef846c56cedecb9cb5e90272a16d7949f5c7d957fe4036432f131b",
+    "input_bindings": {
+      "original_request_hash": "57e5bae21293040b91ee54acc221e693384c2341d09e77c860d788970b88a35a",
+      "normalized_request_hash": "fbda73587516a5a583487169d9ccdc65c93ca8e07d3706264239b0ff3ec45440",
+      "f3_validation_output_hash": "8f12eb3b828d14c14aba89bc971bc51ac96bee883ac10f199fe42dad48fb93ee",
+      "security_master_evidence_references": [
+        "security_master_v1"
+      ],
+      "security_master_artifact_hashes": [
+        "bbbb0000cccc1111dddd2222eeee3333ffff4444000055556666777788889999"
+      ],
+      "capability_catalog_hash": "cccc0000dddd1111eeee2222ffff333300004444555566667777888899990000",
+      "planner_version": "m8r_05b_01_planner_v1",
+      "routing_matrix_version": "routing_matrix_v1",
+      "routing_matrix_hash": "dddd0000eeee1111ffff2222000033334444555566667777888899990000aaaa",
+      "handoff_contract_version": "m8r_05b_00_handoff_v1",
+      "handoff_contract_hash": "eeee0000ffff1111000022223333444455556666777788889999aaaa0000bbbb"
+    }
+  },
+  "decision": "approved",
+  "decision_reason": "test",
+  "owner_identity_reference": "test_owner",
+  "owner_review_reference": null,
+  "reviewed_at": null,
+  "issued_at": "2026-08-01T01:55:00Z",
+  "expires_at": "2026-08-01T02:55:00Z",
+  "authorization_status": "approved",
+  "plan_schema_version": "unified_market_evidence_orchestration_plan.v1",
+  "plan_id": "umeop-v1-caddb03ec9ef846c56ce",
+  "plan_hash": "caddb03ec9ef846c56cedecb9cb5e90272a16d7949f5c7d957fe4036432f131b",
+  "plan_binding_hash": "c47e13b430dc511255993bc9de7ae9b89cd9cdb63d7635a58ad2fa27836bac44",
+  "approval_scope_mode": "whole_plan_executable_scope",
+  "approved_operation_ids": [
+    "umeop-op-v1-42d40e6c106a2cbdd274"
+  ],
+  "approved_batch_group_ids": [],
+  "approved_batch_membership": {},
+  "approved_capability_ids": [
+    "identity"
+  ],
+  "approved_executor_ids": [
+    "twse_mis_v1"
+  ],
+  "expected_evidence_contracts": [
+    "twse_mis_identity.v1"
+  ],
+  "scope_hash": "4fa963d9ef8cea9c64485f1a3cd4eb5ae9de206c2ae11f0d402a942f865d5258",
+  "execution_authorized": true,
+  "network_authorized": true,
+  "single_use": true,
+  "replay_policy": "deny_replay",
+  "maximum_use_count": 1,
+  "supersedes_authorization_id": null,
+  "revocation_reference": null,
+  "revoked_at": null,
+  "caveats": [],
+  "created_by_component": "m8r_05b_02",
+  "contract_version": "m8r_05b_02.v1",
+  "approved_operation_bindings": [
+    {
+      "operation_id": "umeop-op-v1-42d40e6c106a2cbdd274",
+      "market": "TWSE",
+      "security_types": [
+        "stock"
+      ],
+      "capability_id": "identity",
+      "executor_id": "twse_mis_v1",
+      "expected_evidence_contract": "twse_mis_identity.v1",
+      "batch_group_id": "umeop-batch-v1-bb108f4108f34629fedb"
+    }
+  ],
+  "input_bindings": {
+    "original_request_hash": "57e5bae21293040b91ee54acc221e693384c2341d09e77c860d788970b88a35a",
+    "normalized_request_hash": "fbda73587516a5a583487169d9ccdc65c93ca8e07d3706264239b0ff3ec45440",
+    "f3_validation_output_hash": "8f12eb3b828d14c14aba89bc971bc51ac96bee883ac10f199fe42dad48fb93ee",
+    "security_master_evidence_references": [
+      "security_master_v1"
+    ],
+    "security_master_artifact_hashes": [
+      "bbbb0000cccc1111dddd2222eeee3333ffff4444000055556666777788889999"
+    ],
+    "capability_catalog_hash": "cccc0000dddd1111eeee2222ffff333300004444555566667777888899990000",
+    "planner_version": "m8r_05b_01_planner_v1",
+    "routing_matrix_version": "routing_matrix_v1",
+    "routing_matrix_hash": "dddd0000eeee1111ffff2222000033334444555566667777888899990000aaaa",
+    "handoff_contract_version": "m8r_05b_00_handoff_v1",
+    "handoff_contract_hash": "eeee0000ffff1111000022223333444455556666777788889999aaaa0000bbbb"
+  }
+}

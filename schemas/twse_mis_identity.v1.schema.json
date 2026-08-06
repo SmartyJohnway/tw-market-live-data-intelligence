@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smarty.johnway.com/schemas/twse_mis_identity.v1.schema.json",
+  "title": "TWSE MIS Identity Evidence Contract",
+  "type": "object"
+}

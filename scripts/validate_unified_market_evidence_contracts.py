@@ -21,6 +21,11 @@ def validate_result(instance):
     schema = load_schema("unified_market_evidence_result.v1.schema.json")
     validate(instance=instance, schema=schema)
 
+
+def validate_audit_package(instance):
+    schema = load_schema("unified_market_evidence_audit_package.v1.schema.json")
+    validate(instance=instance, schema=schema)
+
 def validate_catalog(instance):
     schema = load_schema("unified_market_evidence_capability_catalog.v1.schema.json")
     validate(instance=instance, schema=schema)

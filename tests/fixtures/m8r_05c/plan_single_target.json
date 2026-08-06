@@ -1,0 +1,94 @@
+{
+  "schema_version": "unified_market_evidence_orchestration_plan.v1",
+  "plan_id": "umeop-v1-caddb03ec9ef846c56ce",
+  "plan_hash": "caddb03ec9ef846c56cedecb9cb5e90272a16d7949f5c7d957fe4036432f131b",
+  "execution_authorized": false,
+  "input_bindings": {
+    "original_request_hash": "57e5bae21293040b91ee54acc221e693384c2341d09e77c860d788970b88a35a",
+    "normalized_request_hash": "fbda73587516a5a583487169d9ccdc65c93ca8e07d3706264239b0ff3ec45440",
+    "f3_validation_output_hash": "8f12eb3b828d14c14aba89bc971bc51ac96bee883ac10f199fe42dad48fb93ee",
+    "security_master_evidence_references": [
+      "security_master_v1"
+    ],
+    "security_master_artifact_hashes": [
+      "bbbb0000cccc1111dddd2222eeee3333ffff4444000055556666777788889999"
+    ],
+    "capability_catalog_hash": "cccc0000dddd1111eeee2222ffff333300004444555566667777888899990000",
+    "planner_version": "m8r_05b_01_planner_v1",
+    "routing_matrix_version": "routing_matrix_v1",
+    "routing_matrix_hash": "dddd0000eeee1111ffff2222000033334444555566667777888899990000aaaa",
+    "handoff_contract_version": "m8r_05b_00_handoff_v1",
+    "handoff_contract_hash": "eeee0000ffff1111000022223333444455556666777788889999aaaa0000bbbb"
+  },
+  "planner_metadata": {
+    "planning_timestamp": "2026-08-01T01:50:00Z",
+    "offline": true,
+    "deterministic": true,
+    "limit_source": "capability_catalog_hard_limit"
+  },
+  "plan_status": "plan_ready",
+  "operations": [
+    {
+      "operation_id": "umeop-op-v1-42d40e6c106a2cbdd274",
+      "capability_id": "identity",
+      "canonical_target_ids": [
+        "TW.2330"
+      ],
+      "market": "TWSE",
+      "security_types": [
+        "stock"
+      ],
+      "parameters": {
+        "requested_fields": [
+          "security_code",
+          "security_name"
+        ],
+        "currentness_requirement": "intraday"
+      },
+      "executor_id": "twse_mis_v1",
+      "batch_group_id": "umeop-batch-v1-bb108f4108f34629fedb",
+      "operation_status": "executable_pending_approval",
+      "network_required": true,
+      "capability_requires_execution_approval": true,
+      "expected_evidence_contract": "twse_mis_identity.v1",
+      "blocking_reason_codes": [],
+      "warnings": [],
+      "executor_invocation_eligible": true,
+      "dependency_operation_ids": []
+    }
+  ],
+  "batch_groups": [
+    {
+      "batch_group_id": "umeop-batch-v1-bb108f4108f34629fedb",
+      "executor_id": "twse_mis_v1",
+      "capability_id": "identity",
+      "market": "TWSE",
+      "operation_ids": [
+        "umeop-op-v1-42d40e6c106a2cbdd274"
+      ],
+      "network_required": true,
+      "capability_requires_execution_approval": true
+    }
+  ],
+  "accounting": {
+    "logical_operation_count": 1,
+    "batch_group_count": 1,
+    "executor_invocation_count": 1,
+    "network_request_estimate": 1,
+    "planned_evidence_bundle_count": 1
+  },
+  "warnings": [],
+  "blocked_operations": [],
+  "omitted_optional_capabilities": [],
+  "evidence_references": [
+    "twse_mis_identity.v1"
+  ],
+  "package_approval_requirements": {
+    "package_requires_owner_approval": true,
+    "authorization_eligible": true,
+    "approval_policy": "owner_explicit_approval_required",
+    "approval_reason_codes": [
+      "network_required"
+    ]
+  }
+}

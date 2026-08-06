@@ -1,0 +1,79 @@
+{
+  "schema_version": "unified_market_evidence_authorization_consumption_binding.v1",
+  "authorization_id": "umea-v1-2e589eb14b73fadf6b29",
+  "authorization_hash": "2e589eb14b73fadf6b29967ee40f5dd12cc6e6d3eb1c6a7e1e5b270de9abc7ea",
+  "plan_id": "umeop-v1-caddb03ec9ef846c56ce",
+  "plan_hash": "caddb03ec9ef846c56cedecb9cb5e90272a16d7949f5c7d957fe4036432f131b",
+  "scope_hash": "4fa963d9ef8cea9c64485f1a3cd4eb5ae9de206c2ae11f0d402a942f865d5258",
+  "approved_operation_ids": [
+    "umeop-op-v1-42d40e6c106a2cbdd274"
+  ],
+  "approved_operation_bindings": [
+    {
+      "operation_id": "umeop-op-v1-42d40e6c106a2cbdd274",
+      "market": "TWSE",
+      "security_types": [
+        "stock"
+      ],
+      "capability_id": "identity",
+      "executor_id": "twse_mis_v1",
+      "expected_evidence_contract": "twse_mis_identity.v1",
+      "batch_group_id": "umeop-batch-v1-bb108f4108f34629fedb"
+    }
+  ],
+  "approved_batch_group_ids": [],
+  "approved_batch_membership": {},
+  "approved_capability_ids": [
+    "identity"
+  ],
+  "approved_executor_ids": [
+    "twse_mis_v1"
+  ],
+  "expected_evidence_contracts": [
+    "twse_mis_identity.v1"
+  ],
+  "single_use": true,
+  "replay_policy": "deny_replay",
+  "maximum_use_count": 1,
+  "consumption_binding_id": "umeacb-v1-d474180d77b4cad466b1",
+  "consumption_binding_hash": "d474180d77b4cad466b1a867f64fc53c8786d7cf6a92abf8a439b441485969d4",
+  "consumption_binding_identity_scope": {
+    "authorization_id": "umea-v1-2e589eb14b73fadf6b29",
+    "authorization_hash": "2e589eb14b73fadf6b29967ee40f5dd12cc6e6d3eb1c6a7e1e5b270de9abc7ea",
+    "plan_id": "umeop-v1-caddb03ec9ef846c56ce",
+    "plan_hash": "caddb03ec9ef846c56cedecb9cb5e90272a16d7949f5c7d957fe4036432f131b",
+    "scope_hash": "4fa963d9ef8cea9c64485f1a3cd4eb5ae9de206c2ae11f0d402a942f865d5258",
+    "approved_operation_ids": [
+      "umeop-op-v1-42d40e6c106a2cbdd274"
+    ],
+    "approved_operation_bindings": [
+      {
+        "operation_id": "umeop-op-v1-42d40e6c106a2cbdd274",
+        "market": "TWSE",
+        "security_types": [
+          "stock"
+        ],
+        "capability_id": "identity",
+        "executor_id": "twse_mis_v1",
+        "expected_evidence_contract": "twse_mis_identity.v1",
+        "batch_group_id": "umeop-batch-v1-bb108f4108f34629fedb"
+      }
+    ],
+    "approved_batch_group_ids": [],
+    "approved_batch_membership": {},
+    "approved_capability_ids": [
+      "identity"
+    ],
+    "approved_executor_ids": [
+      "twse_mis_v1"
+    ],
+    "expected_evidence_contracts": [
+      "twse_mis_identity.v1"
+    ],
+    "single_use": true,
+    "replay_policy": "deny_replay",
+    "maximum_use_count": 1
+  },
+  "consumption_registry_contract": "m8r_05b_03.v1",
+  "expected_unused_state": "explicit supplied state required"
+}

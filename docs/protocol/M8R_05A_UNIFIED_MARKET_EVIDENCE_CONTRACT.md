@@ -62,3 +62,28 @@ The request allows `preview` and `execute` modes. The current profile for M8R-05
 
 **Prohibited Internal Fields in Request:**
 The AI MUST NOT specify internal execution details in its requests, including but not limited to `source_family`, `adapter`, `route`, `endpoint`, `03c_bundle`, or `operation_id`. All such internal mapping is solely the responsibility of the deterministic project layer.
+
+## 7. Result Schema Completion (M8R-05C)
+
+M8R-05C completed the `unified_market_evidence_result.v1` schema with the following additive fields:
+
+### New Required Fields
+- **`result_id`** (`umeresult-v1-*`): Deterministic result identity computed from `request_id + receipt_id + bundle_id`.
+- **`result_hash`**: SHA-256 of the canonical result body (excluding itself).
+- **`generated_at`**: Inherited from `receipt.finalized_at` or explicit CLI parameter.
+- **`request_summary`**: Deterministic projection of request fields (mode, target count, data needs).
+
+### Extended `audit_reference`
+The `audit_reference` now requires `audit_package_id`, `schema_version`, and `relative_path` linking to the separate audit package (`unified_market_evidence_audit_package.v1`).
+
+### New Optional Fields
+- **`derived_metrics`** per target: Deterministic metric calculations with explicit status, input references, and calculation version.
+- **`fallback_state`** in evidence_envelope: String classification of fallback type.
+- **`derived_metrics`** definition: Schema-validated metric objects with `metric_id`, `status` (available/unavailable/invalid/not_requested), `value`, `method`, `formula_or_definition`, `input_evidence_references`, `calculation_version`, `calculated_at`.
+- **`partial_failures[].data_need`** and **`partial_failures[].reason_code`**: More precise failure attribution.
+
+### New Audit Package Schema
+A separate `unified_market_evidence_audit_package.v1` schema was added for operator/replay/debug evidence. It contains operation lineage, artifact inventory, citation-to-operation mapping, integrity verification, and replay manifest. It is never embedded in the AI-context result.
+
+### Compatibility
+This is a controlled breaking completion of a pre-runtime draft v1 contract. No deployed canonical v1 consumer compatibility is claimed; therefore a v2 migration is not required.

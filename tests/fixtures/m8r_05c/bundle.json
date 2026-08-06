@@ -1,0 +1,49 @@
+{
+  "schema_version": "unified_market_evidence_bundle.v1",
+  "bundle_id": "umeb-v1-f20d8fda52d1cf16dddf",
+  "authorization_id": "umea-v1-2e589eb14b73fadf6b29",
+  "authorization_hash": "2e589eb14b73fadf6b29967ee40f5dd12cc6e6d3eb1c6a7e1e5b270de9abc7ea",
+  "preflight_id": "umeopf-v1-aaaabbbbccccdddd0000",
+  "preflight_identity_hash": "25f54ccf69ba54e601556094fc6127bcfb92d6e38202513f56e0ebc19bd183f3",
+  "preflight_artifact_hash": "4225026dfab055f187a8ceaf5a4be46dbf87c2fb8bcfd7d5669b76eabdf9d436",
+  "claim_id": "umecl-v1-cdd785afa40a3def8cf5",
+  "claim_hash": "cbcfbeac10a70be6d028ece544c7288f50a43f69d8aa2a98769da5ceb5011882",
+  "execution_receipt_id": "umerec-v1-e22749b15ccb21a961e1",
+  "execution_receipt_hash": "30acb8427313f1831385bed06196bffeaffc18b68668bb3f198dcd1211ecfff7",
+  "overall_status": "succeeded",
+  "operation_order": [
+    "umeop-op-v1-42d40e6c106a2cbdd274"
+  ],
+  "operation_evidence_entries": [
+    {
+      "operation_id": "umeop-op-v1-42d40e6c106a2cbdd274",
+      "status": "succeeded",
+      "error_code": null,
+      "result_item_count": 1,
+      "artifacts": [
+        {
+          "relative_path": "operations/op_identity/evidence.json",
+          "sha256": "b39ac561c9cd66126c5301a4f3c09ccb2ca2a138aee1711e39cb18dc77bb449c",
+          "schema_version": "twse_mis_identity.v1",
+          "byte_size": 216,
+          "item_count": 1
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "artifact_inventory": [
+    {
+      "relative_path": "operations/op_identity/evidence.json",
+      "sha256": "b39ac561c9cd66126c5301a4f3c09ccb2ca2a138aee1711e39cb18dc77bb449c",
+      "schema_version": "twse_mis_identity.v1",
+      "byte_size": 216,
+      "item_count": 1,
+      "evidence_contract": "twse_mis_identity.v1"
+    }
+  ],
+  "total_item_count": 1,
+  "warnings": [],
+  "finalized_at": "2026-08-01T02:05:00Z",
+  "bundle_hash": "7771f2fee35fc54c781c585b6ade0d4e06d57d10596b77afdd67ed7f17943450"
+}

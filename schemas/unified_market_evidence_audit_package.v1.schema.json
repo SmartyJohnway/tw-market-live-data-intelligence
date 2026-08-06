@@ -1,0 +1,323 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_audit_package:v1",
+  "title": "unified_market_evidence_audit_package.v1",
+  "description": "Operator/replay/debug evidence package for M8R-05C projection. Separate from AI-context result. Must never contain authorization secret material, plaintext tokens, cookies, credentials, private keys, or absolute local paths.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "audit_package_id",
+    "audit_package_hash",
+    "result_id",
+    "result_hash",
+    "result_relative_path",
+    "request_identity",
+    "target_validation_identity",
+    "plan_identity",
+    "authorization_identity",
+    "claim_identity",
+    "receipt_identity",
+    "bundle_identity",
+    "operation_lineage",
+    "artifact_inventory",
+    "citation_to_operation_map",
+    "integrity_verification",
+    "replay_manifest",
+    "projector_metadata",
+    "warnings"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "unified_market_evidence_audit_package.v1"
+    },
+    "audit_package_id": {
+      "type": "string",
+      "pattern": "^umeap-v1-[0-9a-f]{20}$"
+    },
+    "audit_package_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "result_id": {
+      "type": "string",
+      "pattern": "^umeresult-v1-[0-9a-f]{20}$"
+    },
+    "result_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "result_relative_path": {
+      "type": "string",
+      "pattern": "^(?!([a-zA-Z]:\\\\|file://|/|\\\\)).+"
+    },
+    "request_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["request_id", "request_hash", "schema_version"],
+      "properties": {
+        "request_id": {"type": "string"},
+        "request_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "schema_version": {"type": "string"}
+      }
+    },
+    "target_validation_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["f3_validation_output_hash"],
+      "properties": {
+        "f3_validation_output_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "security_master_artifact_hashes": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "plan_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["plan_id", "plan_hash", "schema_version", "plan_status"],
+      "properties": {
+        "plan_id": {"type": "string", "pattern": "^umeop-v1-[0-9a-f]{20}$"},
+        "plan_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "schema_version": {"type": "string"},
+        "plan_status": {"type": "string"}
+      }
+    },
+    "authorization_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authorization_id", "authorization_hash", "schema_version"],
+      "properties": {
+        "authorization_id": {"type": "string", "pattern": "^umea-v1-[0-9a-f]{20}$"},
+        "authorization_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "schema_version": {"type": "string"},
+        "scope_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "claim_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_id", "atomic_claim_hash", "finalized_record_hash", "schema_version"],
+      "properties": {
+        "claim_id": {"type": "string", "pattern": "^umecl-v1-[0-9a-f]{20}$"},
+        "atomic_claim_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "finalized_record_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "schema_version": {"type": "string"}
+      }
+    },
+    "receipt_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_receipt_id", "execution_receipt_hash", "schema_version", "overall_status", "finalized_at"],
+      "properties": {
+        "execution_receipt_id": {"type": "string", "pattern": "^umerec-v1-[0-9a-f]{20}$"},
+        "execution_receipt_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "schema_version": {"type": "string"},
+        "overall_status": {"type": "string", "enum": ["succeeded", "partial_success", "failed"]},
+        "total_operations": {"type": "integer", "minimum": 0},
+        "succeeded_operations": {"type": "integer", "minimum": 0},
+        "failed_operations": {"type": "integer", "minimum": 0},
+        "finalized_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "bundle_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bundle_id", "bundle_hash", "schema_version", "overall_status", "finalized_at"],
+      "properties": {
+        "bundle_id": {"type": "string", "pattern": "^umeb-v1-[0-9a-f]{20}$"},
+        "bundle_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "schema_version": {"type": "string"},
+        "overall_status": {"type": "string", "enum": ["succeeded", "partial_success", "failed"]},
+        "total_item_count": {"type": "integer", "minimum": 0},
+        "finalized_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "operation_lineage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation_id",
+          "capability_id",
+          "executor_id",
+          "status",
+          "canonical_target_ids",
+          "market",
+          "evidence_contract",
+          "artifact_references"
+        ],
+        "properties": {
+          "operation_id": {"type": "string"},
+          "capability_id": {"type": "string"},
+          "executor_id": {"type": "string"},
+          "status": {"type": "string", "enum": ["succeeded", "failed"]},
+          "error_code": {"type": ["string", "null"]},
+          "canonical_target_ids": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "market": {"type": ["string", "null"]},
+          "evidence_contract": {"type": "string"},
+          "result_item_count": {"type": "integer", "minimum": 0},
+          "artifact_references": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["relative_path", "sha256", "schema_version", "byte_size"],
+              "properties": {
+                "relative_path": {"type": "string"},
+                "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+                "schema_version": {"type": "string"},
+                "byte_size": {"type": "integer", "minimum": 0},
+                "item_count": {"type": "integer", "minimum": 0}
+              }
+            }
+          },
+          "warnings": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "artifact_inventory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["relative_path", "sha256", "schema_version", "byte_size", "evidence_contract"],
+        "properties": {
+          "relative_path": {"type": "string"},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "schema_version": {"type": "string"},
+          "byte_size": {"type": "integer", "minimum": 0},
+          "item_count": {"type": "integer", "minimum": 0},
+          "evidence_contract": {"type": "string"}
+        }
+      }
+    },
+    "citation_to_operation_map": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "citation_id",
+          "operation_id",
+          "capability_id",
+          "executor_id",
+          "artifact_relative_path",
+          "artifact_hash",
+          "canonical_target_id",
+          "requested_data_need"
+        ],
+        "properties": {
+          "citation_id": {"type": "string"},
+          "operation_id": {"type": "string"},
+          "capability_id": {"type": "string"},
+          "executor_id": {"type": "string"},
+          "artifact_relative_path": {"type": "string"},
+          "artifact_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "canonical_target_id": {"type": "string"},
+          "requested_data_need": {"type": "string"}
+        }
+      }
+    },
+    "integrity_verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "receipt_hash_verified",
+        "bundle_hash_verified",
+        "result_hash_verified",
+        "all_artifact_hashes_verified"
+      ],
+      "properties": {
+        "receipt_hash_verified": {"type": "boolean"},
+        "bundle_hash_verified": {"type": "boolean"},
+        "result_hash_verified": {"type": "boolean"},
+        "all_artifact_hashes_verified": {"type": "boolean"},
+        "failed_artifact_paths": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "omission_diagnostics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["data_need", "canonical_target_id", "reason_code"],
+            "properties": {
+              "data_need": {"type": "string"},
+              "canonical_target_id": {"type": "string"},
+              "reason_code": {"type": "string"},
+              "detail": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "replay_manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_id",
+        "plan_id",
+        "plan_hash",
+        "authorization_id",
+        "authorization_hash",
+        "consumption_binding_id",
+        "consumption_binding_hash",
+        "claim_id",
+        "atomic_claim_hash",
+        "finalized_record_hash",
+        "execution_receipt_id",
+        "execution_receipt_hash",
+        "bundle_id",
+        "bundle_hash"
+      ],
+      "properties": {
+        "request_id": {"type": "string"},
+        "request_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "plan_id": {"type": "string"},
+        "plan_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "authorization_id": {"type": "string"},
+        "authorization_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "consumption_binding_id": {"type": "string"},
+        "consumption_binding_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "claim_id": {"type": "string"},
+        "atomic_claim_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "finalized_record_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "execution_receipt_id": {"type": "string"},
+        "execution_receipt_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "bundle_id": {"type": "string"},
+        "bundle_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "artifact_root_relative": {"type": "string"}
+      }
+    },
+    "projector_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["projector_version", "canonicalization_version", "projected_at", "timestamp_authority"],
+      "properties": {
+        "projector_version": {"type": "string"},
+        "canonicalization_version": {"type": "string"},
+        "projected_at": {"type": "string", "format": "date-time"},
+        "timestamp_authority": {"type": "string"},
+        "calculated_at_source": {"type": "string"}
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "caveats": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}
