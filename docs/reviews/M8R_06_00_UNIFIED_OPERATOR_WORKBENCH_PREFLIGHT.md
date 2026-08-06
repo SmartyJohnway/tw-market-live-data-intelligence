@@ -59,18 +59,20 @@ The Unified (M8R-05B/05C) runtime exposes authoritative programmatic entry point
 graph TD
     UI[Browser Workbench Mode A/B/C]
     API[FastAPI Thin Adapter localhost-only]
-    Val[F3 / 05B-02 Validator]
-    Prev[05B-02 Preflight Preview]
-    Auth[05B-03 Authorization]
-    Exec[05B-03 Execute Once CLI]
+    F3[F3 Request / Target / Capability Validation]
+    Prev[05B-02 Preview]
+    Auth[05B-02 Authorization + Binding]
+    Gate[05B-03 Execute-time Gate]
+    Exec[05B-03 Execute Once]
     Res[05C Result/Audit Builder]
     FS[Governed Artifact Roots]
 
     UI --> API
-    API --> Val
+    API --> F3
     API --> Prev
     API --> Auth
-    API -.subprocess.-> Exec
+    API -.subprocess.-> Gate
+    Gate --> Exec
     Exec --> FS
     API --> Res
     Res --> FS
@@ -89,7 +91,7 @@ graph TD
 2. **Command Allowlist**: Only explicit paths corresponding to the M8R-05B/05C CLIs and functions will be exposed. No generic `execute-command` endpoints.
 3. **Path Containment**: All output roots provided to the UI must be normalized, relative to governed artifact directories, and checked for traversal escapes.
 4. **Explicit Authorization**: The API cannot execute a network call without a consumed, one-time Authorization Binding.
-5. **Raw Payload Boundary**: The AI-ready `Result` must not leak `raw payload` filesystem paths, tokens, or network traces. These remain confined to the `Audit Package`.
+5. **Raw Payload Boundary**: Raw transport payloads remain governed by the existing artifact retention policy and are not embedded into the AI-facing Result. The Audit Package may reference governed artifacts through metadata, hashes, and relative paths.
 
 ---
 
@@ -113,9 +115,21 @@ stateDiagram-v2
     EXECUTING --> EXECUTION_SUCCEEDED
     EXECUTING --> EXECUTION_FAILED
     EXECUTION_FAILED --> [*] : Terminal / Requires New Auth
-    EXECUTION_SUCCEEDED --> RESULT_READY
-    EXECUTION_SUCCEEDED --> AUDIT_READY
-    RESULT_READY --> RESULT_READY_AUDIT_UNAVAILABLE
+    EXECUTION_SUCCEEDED --> RESULT_PROJECTING
+    EXECUTION_SUCCEEDED --> AUDIT_PROJECTING
+    
+    RESULT_PROJECTING --> RESULT_READY
+    RESULT_PROJECTING --> RESULT_PROJECTION_FAILURE
+    AUDIT_PROJECTING --> AUDIT_READY
+    AUDIT_PROJECTING --> AUDIT_PROJECTION_FAILURE
+    
+    RESULT_READY --> RESULT_READY_AUDIT_UNAVAILABLE : IF AUDIT_PROJECTION_FAILURE
+    
+    note right of HANDOFF_READY
+        HANDOFF_READY is a derived state requiring both flags:
+        result_ready=true AND audit_ready=true
+    end note
+    
     RESULT_READY --> HANDOFF_READY : IF AUDIT_READY
     AUDIT_READY --> HANDOFF_READY : IF RESULT_READY
 ```
@@ -124,7 +138,7 @@ stateDiagram-v2
 - **Forbidden Transitions**: Bypassing `AUTHORIZATION_PENDING` to `EXECUTING` is strictly forbidden.
 - **Handoff Prerequisites**: The system cannot enter `HANDOFF_READY` unless both `RESULT_READY` and `AUDIT_READY` are satisfied. If Result is ready but Audit fails, the system enters `RESULT_READY_AUDIT_UNAVAILABLE`.
 - **Page Reload Recovery**: Page reloads should return the UI to `EMPTY` or `REQUEST_LOADED` without auto-triggering previews or executions.
-- **Authorization Expiry / Consumption**: Once an authorization is consumed or expired, any execution failure drops the state to a terminal `EXECUTION_FAILED`, demanding a fresh flow.
+- **Authorization Expiry / Consumption**: Once an authorization is consumed or expired (`AUTHORIZATION_CONSUMED` / `AUTHORIZATION_EXPIRED`), any execution failure drops the state to a terminal `EXECUTION_FAILED`, demanding a fresh flow.
 - **Projection Failures**: Errors building Result or Audit packages (e.g. `artifact mismatch`) drop the state to `RESULT_PROJECTION_FAILURE` or `AUDIT_PROJECTION_FAILURE`.
 
 ---
@@ -156,18 +170,30 @@ stateDiagram-v2
 - **Idempotency**: Idempotent.
 
 ### `POST /api/unified/authorizations`
-- **Purpose**: Mint a one-time execution authorization token based on operator explicit approval.
-- **Request Body**: `orchestration_plan.v1`, operator confirmation phrase boolean.
-- **Response Body**: `unified_market_evidence_execution_authorization.v1`
+- **Purpose**: Construct canonical `unified_market_evidence_execution_authorization.v1` from explicit operator decision input.
+- **Request Body**:
+  - canonical orchestration plan
+  - explicit operator decision input
+  - approval scope selection
+  - issued/expires timestamps
+  - single-use and replay-policy fields
+  - owner review reference
+- **Response Body**: Canonical execution authorization object.
 - **Network Behavior**: Offline.
-- **Filesystem Effects**: May cache or write temporary state for consumption binding.
+- **Single-use enforcement**: Performed through canonical authorization fields, consumption binding, and supplied consumption state.
 - **Authorization Required**: Operator physical confirmation (UI click).
-- **Idempotency**: Non-idempotent (creates unique token/nonce).
-- **Sensitive Fields**: The token/nonce returned must only be stored in memory and bound once.
+- **Idempotency**: Idempotent generation of the authorization object.
 
 ### `POST /api/unified/executions`
 - **Purpose**: Subprocess execute-once wrapper for 05B-03 CLI.
-- **Request Body**: `execution_authorization.v1`, `consumption_binding.v1`.
+- **Request Body** (may be passed via explicit reference to governed workspace resolving these):
+  - orchestration plan
+  - execution authorization
+  - consumption binding
+  - supplied consumption state
+  - evaluation timestamp
+  - governed output root
+  - required runtime snapshots/artifact inputs
 - **Response Body**: `execution_receipt.v1` + status.
 - **Network Behavior**: Active (Executes live probes).
 - **Filesystem Effects**: Writes to governed artifact roots.
@@ -217,7 +243,7 @@ stateDiagram-v2
 - **Collected Count**: 189 tests.
 - **Status**: 1 failed, 188 passed.
 - **Exact Failure**: `tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]`
-- **Cause / Classification**: Assertion error matching `output_path_unsafe` against `{output_outside_m5b, output_must_be_direct_m5b_child...}`. This is a pre-existing schema failure from the baseline caveat noted in `M8R_05C_FINAL_ACCEPTANCE.md`. It was not introduced by this preflight.
+- **Cause / Classification**: Assertion error matching `output_path_unsafe` against `{output_outside_m5b, output_must_be_direct_m5b_child...}`. Because PR #178 changes documentation only, this failure was not caused by production-code changes in this PR. It is consistent with the existing legacy failure class documented during M8R-05C closure.
 
 ---
 
@@ -233,7 +259,7 @@ stateDiagram-v2
 
 ## Preflight Acceptance Gates
 - 🟢 **Gate A: Canonical contract reuse** -> `PASS`
-- 🟡 **Gate B: Runtime entry-point availability** -> `PARTIAL` (Entry-point mapping is correct, awaiting FastAPI wrappers)
+- 🟢 **Gate B: Runtime entry-point availability** -> `PASS`
 - 🟡 **Gate C: Safe local integration boundary** -> `READY_WITH_WRAPPER`
 - 🟢 **Gate D: No startup network** -> `PASS`
 - 🟡 **Gate E: Explicit authorization** -> `PASS_WITH_REQUIREMENTS`
