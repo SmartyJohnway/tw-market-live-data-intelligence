@@ -1,0 +1,64 @@
+{
+  "milestone": "M8R-06-01",
+  "task": "M8R-06-01-UNIFIED-WORKBENCH-MODE-A-INSPECT-AND-VALIDATE",
+  "baseline_main_sha": "e7ccf6932e929f1b9f84958312eb445ad50c5c47",
+  "validated_code_head_sha": "HEAD",
+  "status": "PASS_WITH_CAVEATS",
+  "principal_decision": "M8R-06-01-MODE-A-INSPECT-AND-VALIDATE-IMPLEMENTED",
+  "implemented_surfaces": [
+    "server/services/unified_mode_a.py",
+    "server/unified_workbench_router.py",
+    "scripts/run_unified_workbench.py",
+    "frontend/unified-workbench/UnifiedMarketEvidenceWorkbench.html",
+    "frontend/unified-workbench/unified-workbench.js",
+    "frontend/unified-workbench/unified-workbench.css"
+  ],
+  "canonical_runtime_reused": [
+    "scripts.m8r_05a_f3.request_intake.validate_unified_market_evidence_request",
+    "scripts.m8r_05a_f3.security_master_loader.load_f3_verified_security_master"
+  ],
+  "api_endpoints": [
+    "POST /api/unified/validate-request"
+  ],
+  "frontend_entry_point": "/workbench/mode-a/UnifiedMarketEvidenceWorkbench.html",
+  "offline_verification": {
+    "server_startup_network": false,
+    "page_load_remote_assets": false,
+    "validation_engine_offline_patched_tests_pass": true
+  },
+  "state_machine_verification": {
+    "invalid_request_enters_preview_ready": false,
+    "preview_disabled": true
+  },
+  "security_verification": {
+    "payload_limit_enforced_1MB": true,
+    "localhost_binding_enforced": true,
+    "no_arbitrary_file_paths_allowed": true
+  },
+  "test_commands": [
+    "pytest tests/unit/m8r_06_01 -q",
+    "pytest tests/integration/test_unified_workbench_api.py -q",
+    "python scripts/run_unified_workbench.py --startup-check",
+    "python scripts/run_test_profile.py default-ci --json"
+  ],
+  "test_results": {
+    "mode_a_unit_tests": "pass",
+    "mode_a_api_tests": "pass",
+    "startup_check": "pass",
+    "default_ci": "pass"
+  },
+  "accepted_caveats": [
+    "Used tests/fixtures/m8r_05a_f3/verified_security_master_snapshot.json as the canonical security master fallback since no production version exists in docs/ or config/ yet."
+  ],
+  "blocking_findings": [],
+  "prohibited_claims": [
+    "Mode B implemented",
+    "authorization implemented",
+    "execution implemented",
+    "live data available",
+    "MCP Unified execution available",
+    "Mode C implemented",
+    "complete Workbench implemented"
+  ],
+  "next_task": "M8R-06-02-UNIFIED-WORKBENCH-MODE-B1-PREVIEW"
+}
