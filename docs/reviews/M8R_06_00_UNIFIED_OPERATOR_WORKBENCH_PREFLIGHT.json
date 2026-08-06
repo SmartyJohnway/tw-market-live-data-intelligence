@@ -36,11 +36,11 @@
     }
   },
   "server_inventory": {
-    "architecture": "FastAPI (localhost only)",
+    "architecture": "FastAPI (localhost only execution wrapper required)",
     "capabilities": {
       "readonly": true,
       "operator_mutation": false,
-      "subprocess_bridge": true,
+      "subprocess_bridge": "Server/main.py is readonly product API without execution bridge. Subprocess capability resides in scripts and MCP wrapper.",
       "generic_command_runner": false,
       "invoke_f3_05b_05c": false,
       "request_scoped_job_identity": false,
@@ -48,7 +48,7 @@
       "cancellation": false,
       "stream_log_transport": false,
       "no_network_startup": true,
-      "localhost_only_bind": true,
+      "localhost_only_bind": "Current documented launch path binds to 127.0.0.1, but server/main.py itself does not enforce the bind address. M8R-06 adapter startup wrapper must enforce localhost-only binding.",
       "cors_restrictions": true,
       "schema_validation_endpoint": false,
       "artifact_download_endpoint": true,
@@ -59,7 +59,7 @@
     "architecture": "Local MCP server with readonly tool specs and legacy probe wrappers",
     "capabilities": {
       "readonly": true,
-      "local_execution": true,
+      "local_execution": "May expose controlled legacy execution tools",
       "invoke_unified_request": false,
       "invoke_preview": false,
       "create_authorization": false,
@@ -71,11 +71,17 @@
     }
   },
   "runtime_entry_points": {
-    "validation": "scripts/m8r_05b_02/validator.py",
+    "request_intake_validation": "scripts/m8r_05a_f3/request_intake.py",
+    "target_resolution": "scripts/m8r_05a_f3/target_validator.py",
+    "capability_validation": "scripts/m8r_05a_f3/capability_validator.py",
+    "security_master_loading": "scripts/m8r_05a_f3/security_master_loader.py",
     "preview": "scripts/m8r_05b_02/preflight.py and scripts/m8r_05b_02/cli.py",
-    "authorization": "scripts/m8r_05b_03/authorization_gate.py",
+    "authorization_construction": "scripts/m8r_05b_02/authorization.py",
+    "authorization_validation": "scripts/m8r_05b_02/validator.py",
+    "consumption_binding_construction": "scripts/m8r_05b_02/consumption_binding.py",
+    "execute_time_authorization_gate": "scripts/m8r_05b_03/authorization_gate.py",
     "execute_once": "scripts/m8r_05b_03/orchestrator.py and scripts/m8r_05b_03/cli.py",
-    "result_and_package": "scripts/m8r_05c/cli.py, scripts/m8r_05c/result_builder.py, scripts/m8r_05c/audit_package_builder.py"
+    "result_and_package": "scripts/m8r_05c/result_builder.py, scripts/m8r_05c/audit_package_builder.py, scripts/m8r_05c/cli.py with full input artifact chain"
   },
   "integration_options": [
     "Option A: Frontend directly invokes local CLI via privileged browser bridge",
@@ -116,6 +122,7 @@
       "EXECUTION_FAILED",
       "RESULT_READY",
       "AUDIT_READY",
+      "RESULT_READY_AUDIT_UNAVAILABLE",
       "HANDOFF_READY"
     ]
   },
@@ -128,19 +135,20 @@
   ],
   "acceptance_gates": {
     "canonical_contract_reuse": "PASS",
-    "runtime_entry_point_availability": "PASS",
-    "safe_local_integration_boundary": "PASS",
+    "runtime_entry_point_availability": "PARTIAL",
+    "safe_local_integration_boundary": "READY_WITH_WRAPPER",
     "no_startup_network": "PASS",
-    "explicit_authorization": "PASS",
+    "explicit_authorization": "PASS_WITH_REQUIREMENTS",
     "result_audit_separation": "PASS",
     "legacy_isolation": "PASS",
     "testability": "PASS",
-    "cross_platform_viability": "PASS",
+    "cross_platform_viability": "PASS_WITH_REQUIREMENTS",
     "phase_decomposition": "PASS"
   },
   "identified_gaps": [
     "No FastAPI endpoints currently exist for M8R-05B/05C runtimes.",
-    "Current frontend lacks TypeScript definitions generated from the canonical JSON schemas."
+    "Current frontend lacks TypeScript definitions generated from the canonical JSON schemas.",
+    "FastAPI wrapper must enforce localhost binding explicitly."
   ],
   "accepted_caveats": [
     "Legacy tests may continue to fail in full-non-network CI runs.",
