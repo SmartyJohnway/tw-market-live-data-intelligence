@@ -151,7 +151,17 @@ flowchart LR
   M5N --> ChatGPT[ChatGPT discussion]
 ```
 
-Mode semantics are fixed: **Mode A = Canonical Context**, **Mode B = Bounded Observation**, and **Mode C = Conversation Package**. M5F is canonical; M5K is bounded observation; M5Q is source health; M5N is conversation package. Observation is not canonical, reference-only is not current price, and `stale_or_closed_session` is degraded.
+Legacy M5 terminology:
+- **Mode A = Canonical Context**
+- **Mode B = Bounded Observation**
+- **Mode C = Conversation Package**
+
+Current Unified operator workflow terminology:
+- **Mode A = Inspect and Validate**
+- **Mode B = Preview, Authorize, and Execute Once**
+- **Mode C = Package and Handoff to AI**
+
+In the legacy M5 context, M5F is canonical; M5K is bounded observation; M5Q is source health; M5N is conversation package. Observation is not canonical, reference-only is not current price, and `stale_or_closed_session` is degraded.
 
 
 ## Data capability map

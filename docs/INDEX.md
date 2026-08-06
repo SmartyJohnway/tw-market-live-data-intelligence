@@ -137,7 +137,14 @@ git diff --check
 - [M8 Repository Health Audit](quality/M8_REPOSITORY_HEALTH_AUDIT.md)
 - [M8R-03E-R1 Protocol](protocol/M8R_03E_R1_M8_POST_M8C_REPOSITORY_REALIGNMENT_AND_HEALTH_AUDIT.md)
 
-## M8R-05A Unified Market Evidence (Current Authority)
+## M8R-05C Unified Market Evidence Result and Audit (Current Authority)
+
+- [M8R-05C Final Acceptance](acceptance/M8R_05C_FINAL_ACCEPTANCE.md)
+- [M8R-05C Post-Merge Handoff](acceptance/M8R_05C_POST_MERGE_HANDOFF.md)
+- [M8R-05C Stale Statement Audit](acceptance/M8R_05C_STALE_STATEMENT_AUDIT.md)
+- M8R-05C status = `PASS_WITH_CAVEATS`; next_task = `M8R-06-00-UNIFIED-MARKET-EVIDENCE-OPERATOR-WORKBENCH-PREFLIGHT`
+
+## M8R-05A Unified Market Evidence (Previous Authority)
 
 - [Unified Request Schema](../schemas/unified_market_evidence_request.v1.schema.json)
 - [Unified Result Schema](../schemas/unified_market_evidence_result.v1.schema.json)
