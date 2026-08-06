@@ -2,7 +2,7 @@
   "milestone": "M8R-06-01",
   "task": "M8R-06-01-UNIFIED-WORKBENCH-MODE-A-INSPECT-AND-VALIDATE",
   "baseline_main_sha": "e7ccf6932e929f1b9f84958312eb445ad50c5c47",
-  "validated_code_head_sha": "13279c827fd99be62a646b4de51b976cf84a231f",
+  "validated_implementation_sha": "5dcd1d33b5dad694a95067efa7544597dac17e21",
   "status": "BLOCKED",
   "principal_decision": "M8R-06-01_BLOCKED_BY_CANONICAL_SECURITY_MASTER_CONFIGURATION",
   "implemented_surfaces": [
@@ -49,7 +49,7 @@
   "test_results": {
     "mode_a_unit_tests": "pass",
     "mode_a_api_tests": "pass",
-    "startup_check": "expected failure until governed snapshot exists",
+    "startup_check": "expected_blocked (canonical_security_master_unavailable)",
     "default_ci": "pass"
   },
   "accepted_caveats": [],

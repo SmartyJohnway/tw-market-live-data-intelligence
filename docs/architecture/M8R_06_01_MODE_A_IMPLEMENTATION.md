@@ -21,6 +21,13 @@ Mode A must be able to load:
 
 Currently, `PRODUCTION_SNAPSHOT_PATH` is loaded for the security master via `allow_fixture_snapshot=False`. Since a governed production security master snapshot does not exist in `config/`, the endpoint currently fails closed and validation is blocked.
 
+### Required unblock tasks:
+- identify governed production security-master authority
+- materialize snapshot and manifest
+- validate provenance/hash/schema
+- run startup-check successfully
+- rerun production API acceptance
+
 ## 4. No Network Boundary
 Unit testing patches `socket`, `requests`, `httpx`, and `urllib` to prove F3 Mode A evaluates in strict offline bounds. No external asset URLs (Google Fonts, CDNs) are loaded by the `frontend/unified-workbench/UnifiedMarketEvidenceWorkbench.html` CSP `default-src 'self'`.
 

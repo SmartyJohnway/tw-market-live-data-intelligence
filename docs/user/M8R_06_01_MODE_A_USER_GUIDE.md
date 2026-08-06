@@ -1,5 +1,14 @@
 # Unified Workbench Mode A: User Guide
 
+> [!WARNING]
+> **Current Activation Status: BLOCKED**
+> 
+> The UI and API boundary are implemented, but production validation cannot complete until the governed security-master snapshot and manifest are configured.
+> 
+> **Current expected response:**
+> `409 canonical_security_master_unavailable`
+>
+> *Note: Test fixtures are strictly for automated tests and are not used in the operator usage path.*
 Mode A allows an operator to inspect, format, and validate Unified Market Evidence Requests against the M8R-05A F3 canonical validation engine, strictly offline.
 
 ## Launching

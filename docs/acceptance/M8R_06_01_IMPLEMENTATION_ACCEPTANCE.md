@@ -19,7 +19,6 @@ Mode A of the Unified Operator Workbench has been implemented, establishing an o
 - **Gate G (UI state discipline)**: PARTIAL. Validation result states enforce boundaries, but the initial production state fails closed.
 - **Gate H (Error separation)**: PASS. API transport errors return HTTP statuses (400, 413, 422, 500) while F3 domain validation issues return 200 with `blocking_issues`.
 - **Gate I (Security)**: PASS_WITH_CAVEATS. Body limited to 1MiB, HTML CSP set to self, arbitrary paths blocked, and production fixture fallback is disabled.
-- **Gate J (Tests)**: NOT_PROVEN. M5D/M5E tests passing, but Mode A production tests fail closed due to missing configuration.
-
+- **Gate J (Tests)**: PASS_WITH_BLOCKED_ACTIVATION. Mode A focused tests: PASS (10 passed). Production activation check: EXPECTED_BLOCKED (409 canonical_security_master_unavailable). Default CI: PASS.
 ## Blocking Findings
 - `canonical_security_master_unavailable`: The production `config/production_security_master_snapshot.json` and its manifest are missing, causing the system to fail closed in production usage and during the `--startup-check`.
