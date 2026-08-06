@@ -1,9 +1,67 @@
 {
   "milestone": "M8R_05C",
-  "status": "M8R-05C_FORMALLY_CLOSED_AND_READY_FOR_M8R-06-00-WORKBENCH_PREFLIGHT",
+  "status": "PASS_WITH_CAVEATS",
+  "principal_decision": "M8R-05C_FORMALLY_CLOSED_AND_READY_FOR_M8R-06-00-WORKBENCH_PREFLIGHT",
+  "task_identity": "M8R-05C-F1_Post-Merge_Closure_and_Pre-M8R-06_Contract_Realignment",
   "baseline_sha": "9a11d6fcf7c03383582518620379b86f587e3253",
+  "merge_commit_sha": "9a11d6fcf7c03383582518620379b86f587e3253",
+  "validated_branch_head_sha": "c7e307025cf7b277be7f9cb4be62c8678a416538",
   "architect": "System",
   "reviewer": "System",
-  "description": "M8R-05C has been formally accepted. Post-merge verification passed on main branch.",
-  "caveats": []
+  "predecessor_artifacts": [
+    "docs/acceptance/M8R_05B_03_FINAL_ACCEPTANCE.json",
+    "docs/acceptance/M8R_05B_03_POST_MERGE_HANDOFF.json"
+  ],
+  "canonical_output_schemas": [
+    "schemas/unified_market_evidence_result.v1.schema.json",
+    "schemas/unified_market_evidence_audit_package.v1.schema.json"
+  ],
+  "canonical_entry_points": [
+    "scripts/m8r_05c/cli.py"
+  ],
+  "validation_commands": [
+    "pytest tests/unit/m8r_05c/",
+    "python scripts/run_test_profile.py default-ci --json",
+    "python scripts/run_test_profile.py full-non-network --json"
+  ],
+  "exit_codes": {
+    "pytest_m8r_05c": 0,
+    "default_ci": 0,
+    "full_non_network": 1
+  },
+  "test_counts": {
+    "pytest_m8r_05c": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    "default_ci": {
+      "passed": 451,
+      "failed": 0,
+      "skipped": 0
+    },
+    "full_non_network": {
+      "passed": 2086,
+      "failed": 27,
+      "skipped": 5
+    }
+  },
+  "contract_closure_matrix": {
+    "result_schema_tightened": true,
+    "claim_and_consumption_binding_separated": true
+  },
+  "lineage_verification": "PASS",
+  "containment_verification": "PASS",
+  "determinism_verification": "PASS",
+  "artifact_referential_integrity": "PASS",
+  "F3_authority_verification": "PASS",
+  "accepted_caveats": [
+    "The 27 failures in full-non-network are pre-existing legacy schema validation failures (e.g. test_m3g04_controlled_live_probe.py, test_m5a_live_probe_authorization_request.py). They are caused by legacy tests still using pre-05C schema definitions and are treated as accepted caveats because focused 05C tests explicitly pass and validate the new cryptographic lineage successfully. GitHub CI is not currently providing independent statuses."
+  ],
+  "prohibited_claims": [
+    "Do not claim M8R-06 Operator Workbench is implemented.",
+    "Do not claim Unified MCP execution is available.",
+    "Do not claim the repository is completely clean of legacy schema failures in legacy tests."
+  ],
+  "next_task": "M8R-06-00-UNIFIED-MARKET-EVIDENCE-OPERATOR-WORKBENCH-PREFLIGHT"
 }
