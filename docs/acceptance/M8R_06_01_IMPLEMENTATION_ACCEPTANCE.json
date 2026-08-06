@@ -1,0 +1,76 @@
+{
+  "milestone": "M8R-06-01",
+  "task": "M8R-06-01-UNIFIED-WORKBENCH-MODE-A-INSPECT-AND-VALIDATE",
+  "baseline_main_sha": "e7ccf6932e929f1b9f84958312eb445ad50c5c47",
+  "validated_implementation_sha": "5dcd1d33b5dad694a95067efa7544597dac17e21",
+  "status": "BLOCKED",
+  "principal_decision": "M8R-06-01_BLOCKED_BY_CANONICAL_SECURITY_MASTER_CONFIGURATION",
+  "implemented_surfaces": [
+    "server/services/unified_mode_a.py",
+    "server/unified_workbench_router.py",
+    "scripts/run_unified_workbench.py",
+    "frontend/unified-workbench/UnifiedMarketEvidenceWorkbench.html",
+    "frontend/unified-workbench/unified-workbench.js",
+    "frontend/unified-workbench/unified-workbench.css"
+  ],
+  "canonical_runtime_reused": [
+    "scripts.m8r_05a_f3.request_intake.validate_unified_market_evidence_request",
+    "scripts.m8r_05a_f3.security_master_loader.load_f3_verified_security_master"
+  ],
+  "api_endpoints": [
+    "POST /api/unified/validate-request"
+  ],
+  "frontend_entry_point": "/workbench/mode-a/UnifiedMarketEvidenceWorkbench.html",
+  "offline_verification": {
+    "server_startup_network": false,
+    "page_load_remote_assets": false,
+    "validation_engine_offline_patched_tests_pass": true
+  },
+  "production_readiness": {
+    "production_snapshot_configured": false,
+    "production_mode_a_validation_available": false,
+    "fixture_fallback_enabled_in_production": false
+  },
+  "state_machine_verification": {
+    "invalid_request_enters_preview_ready": false,
+    "preview_disabled": true
+  },
+  "security_verification": {
+    "payload_limit_enforced_1MB": true,
+    "localhost_binding_enforced": true,
+    "no_arbitrary_file_paths_allowed": true
+  },
+  "test_commands": [
+    "pytest tests/unit/m8r_06_01/ tests/integration/test_unified_workbench_api.py -q",
+    "python scripts/run_unified_workbench.py --startup-check",
+    "python scripts/run_test_profile.py default-ci --json"
+  ],
+  "test_results": {
+    "mode_a_focused_tests": {
+      "status": "pass",
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    "production_activation_check": {
+      "status": "expected_blocked",
+      "http_status": 409,
+      "error": "canonical_security_master_unavailable"
+    },
+    "default_ci": "pass"
+  },
+  "accepted_caveats": [],
+  "blocking_findings": [
+    "canonical_security_master_unavailable"
+  ],
+  "prohibited_claims": [
+    "Mode B implemented",
+    "authorization implemented",
+    "execution implemented",
+    "live data available",
+    "MCP Unified execution available",
+    "Mode C implemented",
+    "complete Workbench implemented"
+  ],
+  "next_task": "M8R-06-02_NOT_AUTHORIZED"
+}

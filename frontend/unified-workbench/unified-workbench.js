@@ -1,0 +1,323 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const fileInput = document.getElementById('file-input');
+    const formatBtn = document.getElementById('btn-format');
+    const clearBtn = document.getElementById('btn-clear');
+    const validateBtn = document.getElementById('btn-validate');
+    const textarea = document.getElementById('request-textarea');
+    const syntaxStatus = document.getElementById('syntax-status');
+    const summaryBox = document.getElementById('validation-summary');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const exportActions = document.getElementById('export-actions');
+    
+    let currentValidationResult = null;
+    let parsedRequest = null;
+
+    // --- State Machine ---
+    const updateSyntaxStatus = () => {
+        const val = textarea.value.trim();
+        if (!val) {
+            syntaxStatus.textContent = 'JSON not loaded';
+            syntaxStatus.className = 'syntax-empty';
+            validateBtn.disabled = true;
+            parsedRequest = null;
+            return;
+        }
+        try {
+            parsedRequest = JSON.parse(val);
+            syntaxStatus.textContent = 'JSON syntax valid';
+            syntaxStatus.className = 'syntax-valid';
+            validateBtn.disabled = false;
+        } catch (e) {
+            syntaxStatus.textContent = `JSON syntax invalid: ${e.message}`;
+            syntaxStatus.className = 'syntax-invalid';
+            validateBtn.disabled = true;
+            parsedRequest = null;
+        }
+    };
+
+    // --- Event Listeners ---
+    textarea.addEventListener('input', updateSyntaxStatus);
+
+    const MAX_BODY_SIZE = 1 * 1024 * 1024; // 1 MiB
+
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > MAX_BODY_SIZE) {
+            alert(`File size exceeds 1 MiB limit.`);
+            fileInput.value = '';
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            textarea.value = ev.target.result;
+            updateSyntaxStatus();
+        };
+        reader.readAsText(file);
+        fileInput.value = '';
+    });
+
+    formatBtn.addEventListener('click', () => {
+        if (parsedRequest) {
+            textarea.value = JSON.stringify(parsedRequest, null, 2);
+        }
+    });
+
+    clearBtn.addEventListener('click', () => {
+        textarea.value = '';
+        updateSyntaxStatus();
+        resetValidationView();
+    });
+
+    validateBtn.addEventListener('click', async () => {
+        if (!parsedRequest) return;
+        const payloadStr = JSON.stringify({ request: parsedRequest });
+        const encoder = new TextEncoder();
+        if (encoder.encode(payloadStr).length > MAX_BODY_SIZE) {
+            renderTransportError({ error: 'request_too_large', detail: 'Request exceeds 1 MiB limit.' });
+            return;
+        }
+
+        validateBtn.disabled = true;
+        validateBtn.textContent = 'Validating...';
+        
+        try {
+            const response = await fetch('/api/unified/validate-request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ request: parsedRequest })
+            });
+            
+            const data = await response.json();
+            if (response.ok) {
+                renderValidationResult(data);
+            } else {
+                renderTransportError(data);
+            }
+        } catch (err) {
+            renderTransportError({ error: 'network_error', detail: err.message });
+        } finally {
+            validateBtn.disabled = false;
+            validateBtn.textContent = 'Validate';
+        }
+    });
+
+    // --- Tab Switching ---
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(btn.dataset.target).classList.add('active');
+        });
+    });
+
+    // --- Actions ---
+    const copyToClipboard = (data) => navigator.clipboard.writeText(typeof data === 'string' ? data : JSON.stringify(data, null, 2));
+    const downloadJson = (data, prefix) => {
+        const id = currentValidationResult?.request_id || 'unified-request';
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${id}.${prefix}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
+    document.getElementById('btn-copy-req').addEventListener('click', () => copyToClipboard(currentValidationResult?.normalized_request));
+    document.getElementById('btn-dl-req').addEventListener('click', () => downloadJson(currentValidationResult?.normalized_request, 'normalized'));
+    document.getElementById('btn-copy-res').addEventListener('click', () => copyToClipboard(currentValidationResult));
+    document.getElementById('btn-dl-res').addEventListener('click', () => downloadJson(currentValidationResult, 'validation'));
+
+    // --- Render Logic ---
+    const resetValidationView = () => {
+        currentValidationResult = null;
+        summaryBox.innerHTML = '';
+        document.getElementById('list-blockers').innerHTML = '';
+        document.getElementById('list-warnings').innerHTML = '';
+        document.getElementById('target-results').innerHTML = '';
+        document.getElementById('capability-results').innerHTML = '';
+        document.getElementById('normalized-request-view').textContent = '';
+        document.getElementById('badge-issues').textContent = '0';
+        document.getElementById('badge-targets').textContent = '0';
+        document.getElementById('badge-capabilities').textContent = '0';
+        exportActions.style.display = 'none';
+    };
+
+    const getStatusClass = (status) => {
+        if (status === 'valid') return 'status-valid';
+        if (status === 'invalid') return 'status-invalid';
+        if (status === 'requires_clarification') return 'status-clarification';
+        return 'status-unsupported';
+    };
+
+    const renderValidationResult = (res) => {
+        currentValidationResult = res;
+        exportActions.style.display = 'flex';
+
+        // Summary
+        summaryBox.innerHTML = '';
+        const summaryGrid = document.createElement('div');
+        summaryGrid.className = 'summary-grid';
+        
+        const appendSummaryRow = (label, value, valueClass = '') => {
+            const labelEl = document.createElement('div');
+            labelEl.className = 'summary-label';
+            labelEl.textContent = label;
+            const valueEl = document.createElement('div');
+            valueEl.className = valueClass;
+            valueEl.textContent = value;
+            summaryGrid.appendChild(labelEl);
+            summaryGrid.appendChild(valueEl);
+        };
+
+        appendSummaryRow('Request ID:', res.request_id || '-');
+        appendSummaryRow('Overall Status:', res.validation_status, getStatusClass(res.validation_status));
+        appendSummaryRow('Schema Status:', res.request_schema_status, getStatusClass(res.request_schema_status));
+        appendSummaryRow('Target Status:', res.target_validation_status, getStatusClass(res.target_validation_status));
+        appendSummaryRow('Capability Status:', res.capability_validation_status, getStatusClass(res.capability_validation_status));
+        appendSummaryRow('Metadata:', `Offline: ${res.validation_metadata?.offline}, Deterministic: ${res.validation_metadata?.deterministic}`);
+        appendSummaryRow('Limits:', `Targets: ${res.limits?.target_count} / ${res.limits?.hard_target_limit}`);
+        
+        summaryBox.appendChild(summaryGrid);
+
+        // Issues
+        const blockersList = document.getElementById('list-blockers');
+        blockersList.innerHTML = '';
+        if (res.blocking_issues && res.blocking_issues.length > 0) {
+            res.blocking_issues.forEach(b => {
+                const li = document.createElement('li');
+                li.textContent = `[${b.code}] ${b.path}: ${b.message}`;
+                blockersList.appendChild(li);
+            });
+        } else {
+            const li = document.createElement('li');
+            li.textContent = 'No blocking issues';
+            blockersList.appendChild(li);
+        }
+        
+        const warningsList = document.getElementById('list-warnings');
+        warningsList.innerHTML = '';
+        if (res.warnings && res.warnings.length > 0) {
+            res.warnings.forEach(w => {
+                const li = document.createElement('li');
+                li.textContent = `[${w.code}] ${w.path}: ${w.message}`;
+                warningsList.appendChild(li);
+            });
+        } else {
+            const li = document.createElement('li');
+            li.textContent = 'No warnings';
+            warningsList.appendChild(li);
+        }
+        
+        document.getElementById('badge-issues').textContent = (res.blocking_issues?.length || 0) + (res.warnings?.length || 0);
+
+        // Targets
+        const targetsDiv = document.getElementById('target-results');
+        targetsDiv.innerHTML = '';
+        if (res.target_results && res.target_results.length > 0) {
+            res.target_results.forEach(t => {
+                const card = document.createElement('div');
+                card.className = 'target-card';
+                
+                const h4 = document.createElement('h4');
+                h4.textContent = `[${t.target_index}] ${t.input_target?.input || '-'}`;
+                card.appendChild(h4);
+                
+                const grid = document.createElement('div');
+                grid.className = 'card-grid';
+                
+                const appendGridRow = (label, val, valClass = '') => {
+                    const l = document.createElement('strong');
+                    l.textContent = label;
+                    const v = document.createElement('span');
+                    v.textContent = val;
+                    if (valClass) v.className = valClass;
+                    grid.appendChild(l);
+                    grid.appendChild(v);
+                };
+                
+                appendGridRow('Status:', t.resolution_status, getStatusClass(t.resolution_status === 'resolved' ? 'valid' : 'invalid'));
+                appendGridRow('Market:', t.canonical_identity?.market || '-');
+                appendGridRow('Sec Type:', t.canonical_identity?.security_type || '-');
+                
+                card.appendChild(grid);
+                targetsDiv.appendChild(card);
+            });
+        } else {
+            const div = document.createElement('div');
+            div.textContent = 'No targets';
+            targetsDiv.appendChild(div);
+        }
+        document.getElementById('badge-targets').textContent = res.target_results?.length || 0;
+
+        // Capabilities
+        const capsDiv = document.getElementById('capability-results');
+        capsDiv.innerHTML = '';
+        if (res.capability_results && res.capability_results.length > 0) {
+            res.capability_results.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'capability-card';
+                
+                const h4 = document.createElement('h4');
+                h4.textContent = `[${c.data_need_index}] ${c.capability_id} (${c.priority})`;
+                card.appendChild(h4);
+                
+                const grid = document.createElement('div');
+                grid.className = 'card-grid';
+                
+                const appendGridRow = (label, val, valClass = '') => {
+                    const l = document.createElement('strong');
+                    l.textContent = label;
+                    const v = document.createElement('span');
+                    v.textContent = val;
+                    if (valClass) v.className = valClass;
+                    grid.appendChild(l);
+                    grid.appendChild(v);
+                };
+                
+                appendGridRow('Status:', c.status, getStatusClass(c.status === 'supported' ? 'valid' : 'invalid'));
+                appendGridRow('Limitations:', (c.limitations || []).join(', ') || 'None');
+                
+                card.appendChild(grid);
+                capsDiv.appendChild(card);
+            });
+        } else {
+            const div = document.createElement('div');
+            div.textContent = 'No capabilities';
+            capsDiv.appendChild(div);
+        }
+        document.getElementById('badge-capabilities').textContent = res.capability_results?.length || 0;
+
+        // Normalized Request
+        document.getElementById('normalized-request-view').textContent = JSON.stringify(res.normalized_request, null, 2);
+    };
+
+    const renderTransportError = (data) => {
+        resetValidationView();
+        summaryBox.innerHTML = '';
+        const summaryGrid = document.createElement('div');
+        summaryGrid.className = 'summary-grid';
+        
+        const appendSummaryRow = (label, value, valueClass = '') => {
+            const labelEl = document.createElement('div');
+            labelEl.className = 'summary-label';
+            labelEl.textContent = label;
+            const valueEl = document.createElement('div');
+            valueEl.className = valueClass;
+            valueEl.textContent = value;
+            summaryGrid.appendChild(labelEl);
+            summaryGrid.appendChild(valueEl);
+        };
+        
+        appendSummaryRow('Error:', data.error || 'Unknown Error', 'status-invalid');
+        appendSummaryRow('Detail:', data.trace_id || data.detail || JSON.stringify(data));
+        
+        summaryBox.appendChild(summaryGrid);
+    };
+
+    // Init
+    updateSyntaxStatus();
+});

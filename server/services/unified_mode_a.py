@@ -1,0 +1,63 @@
+import json
+from pathlib import Path
+from scripts.m8r_05a_f3.request_intake import validate_unified_market_evidence_request
+from scripts.m8r_05a_f3.security_master_loader import load_f3_verified_security_master
+
+ROOT = Path(__file__).resolve().parent.parent.parent
+CANONICAL_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_request.v1.schema.json"
+CANONICAL_CATALOG_PATH = ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v1.json"
+
+# Mode A attempts to use production snapshots.
+PRODUCTION_SNAPSHOT_PATH = ROOT / "config" / "production_security_master_snapshot.json"
+PRODUCTION_MANIFEST_PATH = ROOT / "config" / "production_security_master_snapshot_manifest.json"
+
+
+def _load_json(path: Path) -> dict:
+    if not path.exists():
+        raise FileNotFoundError(f"canonical_dependency_missing: {path.name}")
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        raise ValueError(f"canonical_dependency_malformed: {path.name}") from e
+
+
+def validate_mode_a_request(request: dict, allow_fixture_snapshot: bool = False) -> dict:
+    """
+    Executes the canonical Mode A F3 validation.
+    Enforces offline execution and deterministic outputs.
+    """
+    try:
+        request_schema = _load_json(CANONICAL_SCHEMA_PATH)
+        capability_catalog = _load_json(CANONICAL_CATALOG_PATH)
+        
+        # Security Master
+        snapshot_path = PRODUCTION_SNAPSHOT_PATH
+        manifest_path = PRODUCTION_MANIFEST_PATH
+        
+        if allow_fixture_snapshot:
+            snapshot_path = ROOT / "tests" / "fixtures" / "m8r_05a_f3" / "verified_security_master_snapshot.json"
+            manifest_path = ROOT / "tests" / "fixtures" / "m8r_05a_f3" / "verified_security_master_snapshot_manifest.json"
+            
+        if not snapshot_path.exists() or not manifest_path.exists():
+            raise FileNotFoundError("canonical_dependency_missing: security_master_snapshot")
+        
+        security_master = load_f3_verified_security_master(
+            snapshot_path,
+            manifest_path,
+            allow_fixture_snapshot=allow_fixture_snapshot
+        )
+
+        return validate_unified_market_evidence_request(
+            request=request,
+            security_master=security_master,
+            capability_catalog=capability_catalog,
+            request_schema=request_schema,
+            allow_fixture_snapshot=allow_fixture_snapshot
+        )
+    except FileNotFoundError as e:
+        raise e
+    except ValueError as e:
+        raise e
+    except Exception as e:
+        # Prevent F3 traceback leakage
+        raise RuntimeError(f"mode_a_internal_error: {type(e).__name__}") from e

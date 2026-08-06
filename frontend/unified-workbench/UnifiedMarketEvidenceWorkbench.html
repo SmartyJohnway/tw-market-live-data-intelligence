@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unified Market Evidence Workbench - Mode A</title>
+    <!-- Content Security Policy to enforce local-only assets -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self';">
+    <link rel="stylesheet" href="unified-workbench.css">
+</head>
+<body>
+    <div class="workbench-container">
+        <header>
+            <h1>Unified Market Evidence Operator Workbench</h1>
+            <span class="mode-badge">Mode A: Inspect and Validate</span>
+            <div class="offline-badge">📴 Offline Localhost</div>
+        </header>
+
+        <main>
+            <section class="panel request-panel">
+                <h2>Request Input</h2>
+                <div class="actions">
+                    <input type="file" id="file-input" accept=".json,application/json" aria-label="Import JSON File">
+                    <button id="btn-format">Format JSON</button>
+                    <button id="btn-clear" class="danger">Clear</button>
+                </div>
+                <textarea id="request-textarea" placeholder="Paste Unified Request JSON here..." aria-label="JSON Request Input"></textarea>
+                <div class="status-bar">
+                    <span id="syntax-status">JSON not loaded</span>
+                    <button id="btn-validate" disabled>Validate</button>
+                </div>
+            </section>
+
+            <section class="panel validation-panel">
+                <h2>Validation Result</h2>
+                <div id="validation-summary" class="summary-box">
+                    <!-- Populated by JS -->
+                </div>
+                
+                <div class="action-bar" style="display: none;" id="export-actions">
+                    <button id="btn-copy-req">Copy Request</button>
+                    <button id="btn-dl-req">DL Request</button>
+                    <button id="btn-copy-res">Copy Result</button>
+                    <button id="btn-dl-res">DL Result</button>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" data-target="tab-issues">Issues <span id="badge-issues" class="badge">0</span></button>
+                    <button class="tab-btn" data-target="tab-targets">Targets <span id="badge-targets" class="badge">0</span></button>
+                    <button class="tab-btn" data-target="tab-capabilities">Capabilities <span id="badge-capabilities" class="badge">0</span></button>
+                    <button class="tab-btn" data-target="tab-normalized">Normalized Request</button>
+                </div>
+
+                <div class="tab-content active" id="tab-issues">
+                    <h3>Blocking Issues</h3>
+                    <ul id="list-blockers" class="issue-list blocker-list"></ul>
+                    
+                    <h3>Warnings</h3>
+                    <ul id="list-warnings" class="issue-list warning-list"></ul>
+                </div>
+
+                <div class="tab-content" id="tab-targets">
+                    <div id="target-results"></div>
+                </div>
+
+                <div class="tab-content" id="tab-capabilities">
+                    <div id="capability-results"></div>
+                </div>
+
+                <div class="tab-content" id="tab-normalized">
+                    <pre id="normalized-request-view"></pre>
+                </div>
+
+                <div class="preview-placeholder">
+                    <button id="btn-preview" disabled title="Preview is available in M8R-06-02">Preview (M8R-06-02)</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="unified-workbench.js"></script>
+</body>
+</html>
