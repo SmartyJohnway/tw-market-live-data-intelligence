@@ -49,7 +49,7 @@
     "integrity verification"
   ],
   "workbench_constraints": [
-    "Do not break the cryptographic lineage established in 05B/05C.",
+    "Preserve the canonical dependency chain defined above.",
     "Do not mutate historical sealed artifacts.",
     "Preserve the fail-closed mechanism: any tampering in the chain must invalidate the final package."
   ],

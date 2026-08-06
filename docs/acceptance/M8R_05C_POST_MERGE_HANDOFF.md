@@ -54,7 +54,7 @@ The authoritative cryptographic dependency chain is:
 - `integrity verification`
 
 ## Constraints for M8R-06
-1. Do not break the cryptographic lineage (Atomic Claim -> Consumption Binding -> Execution Receipt -> Evidence Bundle -> Result -> Audit Package) established in 05B/05C.
+1. Preserve the canonical dependency chain defined above.
 2. Do not mutate historical sealed artifacts.
 3. Preserve the "fail-closed" mechanism: any tampering in the chain must invalidate the final package.
 

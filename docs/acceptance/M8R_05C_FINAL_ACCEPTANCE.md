@@ -5,7 +5,7 @@
 **Task Identity**: M8R-05C-F1_Post-Merge_Closure_and_Pre-M8R-06_Contract_Realignment
 **Baseline SHA**: 9a11d6fcf7c03383582518620379b86f587e3253
 **Merge Commit SHA**: 9a11d6fcf7c03383582518620379b86f587e3253
-**Validated Branch Head SHA**: c7e307025cf7b277be7f9cb4be62c8678a416538
+**Validated Code Head SHA**: a5a4bde6c976bf65a4d21e3eeaad4417e865db0f
 
 ## Overview
 M8R-05C has been formally accepted. Post-merge verification passed on the main branch, validating the AI-context Result and Audit Package logic. The cryptographic lineage separation (Claim vs Consumption Binding) is verified.
@@ -16,7 +16,7 @@ M8R-05C has been formally accepted. Post-merge verification passed on the main b
 - **Canonical Entry Points**: `scripts/m8r_05c/cli.py`
 
 ### Commands and Exit Codes
-- `pytest tests/unit/m8r_05c/` - Exit Code 0 (2 passed, 0 failed, 0 skipped)
+- `$env:PYTHONPATH="."; pytest tests/unit/m8r_05c/ tests/unit/test_m8r_05c_lineage.py tests/unit/test_m8r_05c_containment.py tests/unit/test_m8r_05c_determinism.py` - Exit Code 0 (16 passed, 0 failed, 0 skipped)
 - `python scripts/run_test_profile.py default-ci --json` - Exit Code 0 (451 passed, 0 failed, 0 skipped)
 - `python scripts/run_test_profile.py full-non-network --json` - Exit Code 1 (2086 passed, 27 failed, 5 skipped)
 
@@ -29,7 +29,7 @@ M8R-05C has been formally accepted. Post-merge verification passed on the main b
 - **F3 Authority Verification**: PASS
 
 ## Accepted Caveats
-The 27 failures in `full-non-network` are pre-existing legacy schema validation failures (e.g. `test_m3g04_controlled_live_probe.py`, `test_m5a_live_probe_authorization_request.py`). They are caused by legacy tests still using pre-05C schema definitions and are treated as accepted caveats because focused 05C tests explicitly pass and validate the new cryptographic lineage successfully. GitHub CI is not currently providing independent statuses.
+The observed 27 full-non-network failures were classified as apparently pre-existing/unrelated based on comparison with the baseline. They were not introduced by the focused M8R-05C closure changes.
 
 ## Prohibited Claims
 - Do not claim M8R-06 Operator Workbench is implemented.
