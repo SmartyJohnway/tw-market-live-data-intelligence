@@ -18,7 +18,7 @@ CONSUME_DIR=Path('research/staging/m5c/authorization_consumption')
 
 def _atomic_write_json(path: Path, data: dict):
     tmp=path.with_name(path.name + '.tmp')
-    tmp.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
+    tmp.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     os.replace(tmp, path)
 def _destination_state():
     dest=Path(DEST)
@@ -47,7 +47,7 @@ def _common_flags():
 def _build(dst:Path, consumption_path:str):
     cand=load(RUN/'staging_candidate.json'); auth=load(AUTH); req=load(REQ); flags=_common_flags(); now=datetime.now(timezone.utc).isoformat()
     rows=cand['rows']
-    base={'schema_version':'m5c_promoted_staging_package.v1','created_at_utc':now, **flags, 'source_run_dir':str(RUN),'targets':TARGETS,'authorization_id':auth['authorization_id']}
+    base={'schema_version':'m5c_promoted_staging_package.v1','created_at_utc':now, **flags, 'source_run_dir':RUN.as_posix(),'targets':TARGETS,'authorization_id':auth['authorization_id']}
     docs={
       'authorization_snapshot.json':{**base,'authorization':auth},
       'request_snapshot.json':{**base,'request':req},
@@ -56,7 +56,7 @@ def _build(dst:Path, consumption_path:str):
       'promotion_receipt.json':{**base,'actual_staging_promotion_performed':True,'consumption_record':consumption_path,'destination':DEST},
       'validation_report.json':{**base,'status':'pass','checks':['exact_target_source_row_uniqueness','lineage_hashes','forbidden_flags','no_raw_full_market_payload']},
       'lineage.json':{**base,'m5b_manifest_sha256':sha(RUN/'sha256_manifest.json'),'m5b_candidate_sha256':sha(RUN/'staging_candidate.json'),'m5c_request_sha256':sha(REQ),'m5c_authorization_sha256':sha(AUTH)},
-      'evidence_ledger.json':{**base,'entries':[{'source':'M5B','path':str(RUN/'staging_candidate.json'),'sha256':sha(RUN/'staging_candidate.json')}]},
+      'evidence_ledger.json':{**base,'entries':[{'source':'M5B','path':(RUN/'staging_candidate.json').as_posix(),'sha256':sha(RUN/'staging_candidate.json')}]},
       'rollback_plan.json':{**base,'rollback_mode':'tmp_path_simulation_only','committed_package_delete_allowed':False},
       'frontend_readonly_context_package.json':{**build_frontend_readonly_context_package(readonly_payload_from_candidate(cand)), **flags, 'badge':'historical/stale','stale_badge':True},
       'run_summary.json':{**base,'status':'pass','destination':DEST,'artifact_count':12},

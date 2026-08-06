@@ -36,7 +36,11 @@ FORBIDDEN_AUTHORIZATION_KEYS = {
 READONLY_REQUIRED_ARTIFACTS = REQUIRED_ARTIFACTS - {'frontend_public_baseline.json'}
 
 def sha(p: Path) -> str:
-    return hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
+    path = ROOT / p
+    b = path.read_bytes()
+    if path.suffix in {'.html', '.json', '.js', '.css', '.md'}:
+        b = b.replace(b'\r\n', b'\n')
+    return hashlib.sha256(b).hexdigest()
 
 def load(p: Path):
     return json.loads((ROOT / p).read_text())
@@ -59,10 +63,12 @@ def frontend_inventory():
         for p in sorted(x for x in base.rglob('*') if x.is_file()):
             rel = p.relative_to(base).as_posix()
             is_target = rel == 'market-context.json'
+            b = p.read_bytes()
+            if p.suffix in {'.html', '.json', '.js', '.css', '.md'}: b = b.replace(b'\r\n', b'\n')
             rows.append({
                 'relative_path': rel,
-                'sha256': hashlib.sha256(p.read_bytes()).hexdigest(),
-                'size_bytes': p.stat().st_size,
+                'sha256': hashlib.sha256(b).hexdigest(),
+                'size_bytes': len(b),
                 'target_path_exists': is_target,
                 'overwrite_required': is_target,
                 'rollback_required': is_target,
@@ -80,7 +86,11 @@ def frontend_inventory():
     }
 
 def _current_artifact_hashes(c: Path) -> dict[str, str]:
-    return {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted((ROOT / c).glob('*.json')) if p.name != 'sha256_manifest.json'}
+    def _h(p):
+        b = p.read_bytes()
+        if p.suffix in {'.html', '.json', '.js', '.css', '.md'}: b = b.replace(b'\r\n', b'\n')
+        return hashlib.sha256(b).hexdigest()
+    return {p.name: _h(p) for p in sorted((ROOT / c).glob('*.json')) if p.name != 'sha256_manifest.json'}
 
 def verify_upstream():
     errs = []
@@ -106,7 +116,7 @@ def verify_upstream():
 def _materialize_candidate(out_dir: Path):
     src = load(M5C / 'frontend_readonly_context_package.json')
     bindings = {
-        'm5c_package_dir': str(M5C),
+        'm5c_package_dir': M5C.as_posix(),
         'm5c_manifest_sha256': M5C_MANIFEST_SHA,
         'm5c_frontend_readonly_context_package_sha256': M5C_FRONTEND_PACKAGE_SHA,
         'm5c_supplemental_audit_sha256': M5C_AUDIT_SHA,
@@ -117,8 +127,8 @@ def _materialize_candidate(out_dir: Path):
     }
     common = {
         'schema_version': 'm5d_frontend_publication_candidate.v1',
-        'candidate_dir': str(CAND),
-        'proposed_destination': str(DEST),
+        'candidate_dir': CAND.as_posix(),
+        'proposed_destination': DEST.as_posix(),
         'publication_performed': False,
         'frontend_public_write': False,
         'actual_frontend_publication_authorized': False,
@@ -141,8 +151,12 @@ def _materialize_candidate(out_dir: Path):
     write('validation_report.json', {**common, 'status': 'pass', 'checks': ['upstream_integrity', 'baseline_hash_only', 'readonly_stale_caveats', 'activation_semantics', 'no_temp_paths', 'forbidden_flags', 'frontend_public_baseline_drift']})
     write('rollback_plan.json', {**common, 'simulation_only': True, 'rollback_required': (ROOT / DEST).exists(), 'steps': ['restore previous destination hash from baseline if overwritten in future authorized execution', 'remove newly created destination if no baseline existed']})
     write('publication_plan.json', {**common, 'request_only': True, 'next_required_action': 'user_authorization', 'execution_available': False, 'fail_closed_reason': 'no authorization decision or token exists'})
-    files = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(out_dir.glob('*.json')) if p.name != 'sha256_manifest.json'}
-    write('sha256_manifest.json', {'schema_version': 'm5d_sha256_manifest.v1', 'candidate_dir': str(CAND), 'manifest_final': True, 'files': files, **common, **bindings})
+    def _h2(p):
+        b = p.read_bytes()
+        if p.suffix in {'.html', '.json', '.js', '.css', '.md'}: b = b.replace(b'\r\n', b'\n')
+        return hashlib.sha256(b).hexdigest()
+    files = {p.name: _h2(p) for p in sorted(out_dir.glob('*.json')) if p.name != 'sha256_manifest.json'}
+    write('sha256_manifest.json', {'schema_version': 'm5d_sha256_manifest.v1', 'candidate_dir': CAND.as_posix(), 'manifest_final': True, 'files': files, **common, **bindings})
 
 
 def build():
@@ -181,7 +195,7 @@ def build():
             raise
         if backup.exists():
             shutil.rmtree(backup)
-    req = {'schema_version': 'm5d_frontend_publication_request.v2', 'request_id': 'M5D_FRONTEND_PUBLICATION_REQUEST', 'candidate_dir': str(CAND), 'candidate_manifest_sha256': sha(CAND / 'sha256_manifest.json'), 'proposed_destination': str(DEST), 'm5c_staging_package_dir': str(M5C), 'm5c_staging_manifest_sha256': M5C_MANIFEST_SHA, 'single_use': True, 'request_only': True, 'authorization_token_issued': False, 'actual_frontend_publication_authorized': False, 'publication_performed': False, 'next_required_action': 'user_authorization'}
+    req = {'schema_version': 'm5d_frontend_publication_request.v2', 'request_id': 'M5D_FRONTEND_PUBLICATION_REQUEST', 'candidate_dir': CAND.as_posix(), 'candidate_manifest_sha256': sha(CAND / 'sha256_manifest.json'), 'proposed_destination': DEST.as_posix(), 'm5c_staging_package_dir': M5C.as_posix(), 'm5c_staging_manifest_sha256': M5C_MANIFEST_SHA, 'single_use': True, 'request_only': True, 'authorization_token_issued': False, 'actual_frontend_publication_authorized': False, 'publication_performed': False, 'next_required_action': 'user_authorization'}
     dump(REQ, req)
     return load(CAND / 'sha256_manifest.json')
 
@@ -214,9 +228,9 @@ def validate_candidate(cdir=CAND):
     man = load(c / 'sha256_manifest.json')
     if man.get('manifest_final') is not True:
         errs.append('manifest_final_not_true')
-    if man.get('candidate_dir') != str(CAND):
+    if man.get('candidate_dir') != CAND.as_posix():
         errs.append('candidate_dir_mismatch')
-    if man.get('proposed_destination') != str(DEST):
+    if man.get('proposed_destination') != DEST.as_posix():
         errs.append('proposed_destination_mismatch')
     if man.get('pr57_merge_sha') != PR57_MERGE_SHA:
         errs.append('pr57_merge_sha_mismatch')
@@ -227,7 +241,7 @@ def validate_candidate(cdir=CAND):
         'm5c_run_summary_destination_correction_sha256': M5C_CORRECTION_SHA,
         'source': 'TWSE_OpenAPI',
         'targets': TARGETS,
-        'm5c_package_dir': str(M5C),
+        'm5c_package_dir': M5C.as_posix(),
     }
     for k, v in expected_bindings.items():
         if man.get(k) != v:

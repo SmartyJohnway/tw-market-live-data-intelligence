@@ -9,9 +9,11 @@ SNAPSHOT_SCHEMA_VERSION='tw_verified_security_master_snapshot.v1'
 MANIFEST_SCHEMA_VERSION='tw_verified_security_master_snapshot_manifest.v1'
 PRODUCER_VERSION='m8r_03d_f1_snapshot_exporter.v1'
 SUPPORTED_PRODUCER_VERSIONS={PRODUCER_VERSION}
+
+ROOT = Path(__file__).resolve().parents[1]
 SKILL_PATH='skills/tw-security-master-classifier'
-SKILL_SCHEMA_DIR=Path(SKILL_PATH)/'references'/'schemas'
-F1_SCHEMA_DIR=Path('docs/contracts/schemas')
+SKILL_SCHEMA_DIR=ROOT/'skills'/'tw-security-master-classifier'/'references'/'schemas'
+F1_SCHEMA_DIR=ROOT/'docs'/'contracts'/'schemas'
 SNAPSHOT_SCHEMA_PATH=F1_SCHEMA_DIR/'tw_verified_security_master_snapshot.v1.schema.json'
 MANIFEST_SCHEMA_PATH=F1_SCHEMA_DIR/'tw_verified_security_master_snapshot_manifest.v1.schema.json'
 FORBIDDEN_RAW_FIELDS={'raw_html','raw_payload','raw_cells','html','cookies','session_id','access_token','refresh_token'}
@@ -37,7 +39,7 @@ def validate_iso_date(s, *, allow_unknown=False):
     if s is None: return True
     date.fromisoformat(s); return True
 
-def compute_skill_contract_hash(skill_root: str|Path=SKILL_PATH)->str:
+def compute_skill_contract_hash(skill_root: str|Path=ROOT/SKILL_PATH)->str:
     root=Path(skill_root)
     files=[root/'SKILL.md',*(root/'references').glob('*.md'),root/'references/source-manifest.json',*(root/'references'/'schemas').glob('*.json')]
     h=hashlib.sha256()

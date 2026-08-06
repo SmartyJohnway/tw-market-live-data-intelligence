@@ -40,7 +40,7 @@ RUNNER_PRODUCED = {
 
 
 def _write_json(path: Path, obj: dict) -> None:
-    path.write_text(json.dumps(obj, indent=2, ensure_ascii=False, sort_keys=True) + "\n")
+    path.write_text(json.dumps(obj, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
 
 
 def _sha256(path: Path) -> str:

@@ -22,9 +22,9 @@ def test_repository_execute_without_auth_fails(capsys):
 
 def make_auth(tmp_path, **over):
     base={
-      'authorization_id':'auth-1','allowed_action':m5e.ACTION,'candidate_dir':str(m5e.CAND),'candidate_manifest_sha256':m5e.manifest_sha(),
+      'authorization_id':'auth-1','allowed_action':m5e.ACTION,'candidate_dir':m5e.CAND.as_posix(),'candidate_manifest_sha256':m5e.manifest_sha(),
       'm5c_lineage_hashes':{'m5c_manifest_sha256':m5e.M5C_MANIFEST_SHA,'m5c_frontend_readonly_context_package_sha256':m5e.M5C_FRONTEND_PACKAGE_SHA,'m5c_supplemental_audit_sha256':m5e.M5C_AUDIT_SHA,'m5c_run_summary_destination_correction_sha256':m5e.M5C_CORRECTION_SHA},
-      'destination':str(m5e.DEST),'frontend_baseline_sha256':m5e.fsha(m5e.ROOT/m5e.CAND/'frontend_public_baseline.json'),'expires_at_epoch':int(time.time())+9999,
+      'destination':m5e.DEST.as_posix(),'frontend_baseline_sha256':m5e.fsha(m5e.ROOT/m5e.CAND/'frontend_public_baseline.json'),'expires_at_epoch':int(time.time())+9999,
       'single_use_id':'once','acknowledgement_required':True,'operator_acknowledged':True,
       'forbidden_behaviors':{'production_ready':False,'generated_write':False,'network_market_data_call':False,'trading_output':False,'recommendation_output':False,'realtime_claim':False,'publication_performed':False}}
     base.update(over)

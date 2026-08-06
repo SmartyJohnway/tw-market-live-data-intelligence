@@ -34,7 +34,7 @@ def _utc_now() -> str:
 
 def _write_json(path: Path, obj: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(obj, indent=2, ensure_ascii=False, sort_keys=True) + "\n")
+    path.write_text(json.dumps(obj, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
 
 
 def _load_json(path: str | Path) -> dict[str, Any]:
@@ -58,12 +58,13 @@ def validate_execution_scope(source: str, targets: list[str], output_dir: str) -
         errors.append({"code": "duplicate_targets", "path": "$.targets"})
     if sorted(targets) != sorted(ALLOWED_TARGETS):
         errors.append({"code": "target_set_mismatch", "path": "$.targets"})
-    if path.is_absolute() or ".." in path.parts:
+    if path.is_absolute() or ".." in path.parts or output_dir.startswith(("/", "\\")):
         errors.append({"code": "output_path_unsafe", "path": "$.output_dir"})
-    try:
-        path.relative_to(ROOT)
-    except ValueError:
-        errors.append({"code": "output_outside_m5b", "path": "$.output_dir"})
+    else:
+        try:
+            path.relative_to(ROOT)
+        except ValueError:
+            errors.append({"code": "output_outside_m5b", "path": "$.output_dir"})
     if path == ROOT:
         errors.append({"code": "output_root_forbidden", "path": "$.output_dir"})
     if path.parent != ROOT:
@@ -205,7 +206,7 @@ def _create_consumption_record(auth_path: str, request_path: str, output_dir: st
         "frontend_published": False,
     }
     fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
-    with os.fdopen(fd, "w") as handle:
+    with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
         json.dump(record, handle, indent=2, sort_keys=True)
         handle.write("\n")
     return path

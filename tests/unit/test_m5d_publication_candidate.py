@@ -12,7 +12,7 @@ def copy_candidate(tmp_path):
     shutil.copytree(ROOT / CAND, d)
     return d
 
-def write_json(p, obj): p.write_text(json.dumps(obj, indent=2, sort_keys=True) + '\n')
+def write_json(p, obj): p.write_text(json.dumps(obj, indent=2, sort_keys=True) + '\n', encoding='utf-8', newline='\n')
 
 def test_candidate_validates(): assert validate_candidate(CAND) == []
 
@@ -20,7 +20,7 @@ def test_request_validator_calls_candidate_validator_for_payload_tampering(tmp_p
     d = copy_candidate(tmp_path)
     (d / 'market-context.json').write_text('{}\n')
     req = load(Path('docs/authorization/requests/M5D_FRONTEND_PUBLICATION_REQUEST.json'))
-    req['candidate_dir'] = str(d.relative_to(ROOT)) if d.is_relative_to(ROOT) else str(d)
+    req['candidate_dir'] = d.relative_to(ROOT).as_posix() if d.is_relative_to(ROOT) else d.as_posix()
     req_path = tmp_path / 'request.json'
     write_json(req_path, req)
     errs = validate_request(req_path)

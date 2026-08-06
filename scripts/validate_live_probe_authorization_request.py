@@ -172,7 +172,7 @@ def validate_request(request: Any, schema: dict[str, Any], registry: dict[str, A
             errors.append(_json_error("output_path_not_relative_safe", "$.proposed_output_directory", "output path must be a safe relative path"))
         if any(normalized == prefix or normalized.startswith(prefix + "/") for prefix in FORBIDDEN_OUTPUT_PREFIXES):
             errors.append(_json_error("forbidden_output_path", "$.proposed_output_directory", "output path must not target frontend/public, research/generated, production, or prod"))
-        allowed = str(ALLOWED_OUTPUT_PREFIX)
+        allowed = ALLOWED_OUTPUT_PREFIX.as_posix()
         if not (normalized == allowed or normalized.startswith(allowed + "/")):
             errors.append(_json_error("output_path_not_m5b", "$.proposed_output_directory", "output path must be under research/live_probe_runs/m5b/"))
 

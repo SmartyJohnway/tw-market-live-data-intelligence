@@ -13,7 +13,11 @@ REQ=['authorization_snapshot.json','request_snapshot.json','source_binding.json'
 TARGETS=['2330','0050','00929']; TARGET_SET=set(TARGETS)
 RUN='research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z'; DEST='research/staging/m5c/m5c_twse_openapi_20260627_authorized_01'; AUTH_ID='M5C_TWSE_OPENAPI_STAGING_PROMOTION_AUTHORIZATION_20260627_AUTHORIZED_01'
 AUTH_PATH=Path('docs/authorization/decisions/M5C_TWSE_OPENAPI_STAGING_PROMOTION_AUTHORIZATION.json'); REQ_PATH=Path('docs/authorization/requests/M5C_TWSE_OPENAPI_STAGING_PROMOTION_REQUEST.json')
-def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def sha(p):
+    b = Path(p).read_bytes()
+    if Path(p).suffix in {'.html', '.json', '.js', '.css', '.md'}:
+        b = b.replace(b'\r\n', b'\n')
+    return hashlib.sha256(b).hexdigest()
 def load(p): return json.loads(Path(p).read_text())
 def _flag_errors(name,obj):
     errs=[]

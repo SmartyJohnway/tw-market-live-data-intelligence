@@ -32,7 +32,7 @@ When triggered, the AI must follow this step-by-step workflow:
 2. **Resolve Ambiguity**: If ticker symbols are ambiguous or missing, stop and clarify with the user. Do not make assumptions or guess targets.
 3. **Check Catalog Capabilities**: Consult the portable catalog projection (`assets/unified_capability_catalog_portable.json` or `references/capability_quick_guide.md`) to verify if the requested target-market combination is supported.
 4. **Compose Unified Request**: Generate a request JSON matching `unified_market_evidence_request.v1.schema.json`. Set `execution_mode` to `"preview"`.
-5. **Manual Handoff**: Present the JSON request to the user and instruct them to execute it via their local workbench. **Direct Unified MCP/service execution is not currently available to the AI.** The governed local CLI/runtime for F3, 05B, and 05C exists. Until M8R-06 is implemented, execution is performed by the human operator through the governed local CLI/manual artifact workflow.
+5. **Manual Handoff**: Present the JSON request to the user and instruct them to execute it via their local workbench. **MCP direct execution surface are NOT yet implemented.** The governed local CLI/runtime for F3, 05B, and 05C exists. Until M8R-06 is implemented, execution is performed by the human operator through the governed local CLI/manual artifact workflow.
 6. **Interpret Result**: Once the user pastes back the `unified_market_evidence_result.v1` payload, parse it. Strictly preserve timing semantics (EOD vs. live-ish, stale vs. current).
 7. **Respond with Traceability**: Summarize findings, present calculations clearly, and preserve trace links to citations.
 

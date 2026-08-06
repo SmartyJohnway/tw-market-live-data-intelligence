@@ -27,7 +27,7 @@ def test_guide_aligns_with_unified_evidence():
 
     # 4. Runtime limitations explicitly stated
     assert "Current Runtime Limitations" in content
-    assert "MCP or F3 resolvers are NOT yet implemented" in content
+    assert "MCP direct execution surface are NOT yet implemented" in content
     assert "manual handoff via the operator" in content
 
 def test_guide_json_examples_schema_valid():
@@ -64,7 +64,7 @@ def test_skill_realignment():
     assert "canonical observations" in content.lower()
     
     # Does not claim unified executor exists
-    assert "Direct Unified execution/MCP tools are not currently available" in content
+    assert "MCP direct execution surface are NOT yet implemented" in content
     
     # No legacy phrases
     assert "smallest sufficient" not in content.lower()

@@ -8,14 +8,18 @@ REQ=Path('docs/authorization/requests/M5C_TWSE_OPENAPI_STAGING_PROMOTION_REQUEST
 RUN=Path('research/live_probe_runs/m5b/m5b_twse_openapi_20260627T015136Z')
 DEST='research/staging/m5c/m5c_twse_openapi_20260627_authorized_01'
 TARGETS=['2330','0050','00929']
-def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def sha(p):
+    b = Path(p).read_bytes()
+    if Path(p).suffix in {'.html', '.json', '.js', '.css', '.md'}:
+        b = b.replace(b'\r\n', b'\n')
+    return hashlib.sha256(b).hexdigest()
 def load(p): return json.loads(Path(p).read_text())
 def _schema_errors(data):
     schema=load(SCHEMA)
     return [{'code':'schema_error','path':'$' + ''.join(f'/{x}' for x in e.path),'detail':e.message} for e in Draft202012Validator(schema).iter_errors(data)]
 def validate(path=AUTH):
     a=load(path); errs=_schema_errors(a)
-    checks=[('merge_sha','11711eacf7795f3074350a0db68b3227b7986215'),('m5c_request_sha256',sha(REQ)),('source_manifest_sha256',sha(RUN/'sha256_manifest.json')),('staging_candidate_sha256',sha(RUN/'staging_candidate.json')),('source_run_dir',str(RUN)),('destination',DEST),('source_id','TWSE_OpenAPI'),('source_run_id','m5b_twse_openapi_20260627T015136Z')]
+    checks=[('merge_sha','11711eacf7795f3074350a0db68b3227b7986215'),('m5c_request_sha256',sha(REQ)),('source_manifest_sha256',sha(RUN/'sha256_manifest.json')),('staging_candidate_sha256',sha(RUN/'staging_candidate.json')),('source_run_dir',RUN.as_posix()),('destination',DEST),('source_id','TWSE_OpenAPI'),('source_run_id','m5b_twse_openapi_20260627T015136Z')]
     for k,v in checks:
         if a.get(k)!=v: errs.append({'code':'binding_mismatch','field':k,'expected':v,'actual':a.get(k)})
     if a.get('targets')!=TARGETS: errs.append({'code':'target_mismatch','actual':a.get('targets')})

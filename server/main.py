@@ -16,9 +16,13 @@ app = FastAPI(
     version="1.0.0"
 )
 
-app.include_router(unified_workbench_router)
-app.mount("/workbench/mode-a", StaticFiles(directory="frontend/unified-workbench", html=True), name="workbench_mode_a")
+from pathlib import Path
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+WORKBENCH_DIR = REPO_ROOT / "frontend" / "unified-workbench"
+
+app.include_router(unified_workbench_router)
+app.mount("/workbench/mode-a", StaticFiles(directory=str(WORKBENCH_DIR), html=True), name="workbench_mode_a")
 # Local-first CORS setup
 app.add_middleware(
     CORSMiddleware,

@@ -4,7 +4,7 @@
   "candidate_dir": "research/staging/m5d/m5d_frontend_publication_candidate_01",
   "files": {
     "candidate_summary.json": "5a0d693c34c197bd2f674ae2adab9295e9b30056200938e646dbb0011aea61db",
-    "frontend_public_baseline.json": "d9abd3d0158b61ccf980b415fc60672acccdd9021cf7797c24c6abf7c0f2f10d",
+    "frontend_public_baseline.json": "718c395c8522376e398507dc78b5a323bfe7496c959200c1f2881964c1709145",
     "market-context.json": "6af7d93bee04a1dde10672ead0958c2c7aa68c2d90e1bd9be877f769560ff581",
     "publication_plan.json": "1e289eceab9f85a4d36137628a9cf144bdcace767a94fd1cbca708b193735a98",
     "rollback_plan.json": "9884299dc18437472a118e9bbbc0bd87325292322201322b5406921283b512cc",

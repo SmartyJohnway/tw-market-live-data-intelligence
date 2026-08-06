@@ -22,7 +22,7 @@ import sys
 def get_env():
     env = os.environ.copy()
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    env["PYTHONPATH"] = f"{project_root}:{env.get('PYTHONPATH', '')}"
+    env["PYTHONPATH"] = f"{project_root}{os.pathsep}{env.get('PYTHONPATH', '')}"
     return env
 
 @pytest.mark.not_network

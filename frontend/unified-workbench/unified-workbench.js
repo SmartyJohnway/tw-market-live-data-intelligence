@@ -39,9 +39,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Event Listeners ---
     textarea.addEventListener('input', updateSyntaxStatus);
 
+    const MAX_BODY_SIZE = 1 * 1024 * 1024; // 1 MiB
+
     fileInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
+        if (file.size > MAX_BODY_SIZE) {
+            alert(`File size exceeds 1 MiB limit.`);
+            fileInput.value = '';
+            return;
+        }
         const reader = new FileReader();
         reader.onload = (ev) => {
             textarea.value = ev.target.result;
@@ -65,6 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     validateBtn.addEventListener('click', async () => {
         if (!parsedRequest) return;
+        const payloadStr = JSON.stringify({ request: parsedRequest });
+        const encoder = new TextEncoder();
+        if (encoder.encode(payloadStr).length > MAX_BODY_SIZE) {
+            renderTransportError({ error: 'request_too_large', detail: 'Request exceeds 1 MiB limit.' });
+            return;
+        }
+
         validateBtn.disabled = true;
         validateBtn.textContent = 'Validating...';
         
@@ -144,52 +158,137 @@ document.addEventListener('DOMContentLoaded', () => {
         exportActions.style.display = 'flex';
 
         // Summary
-        summaryBox.innerHTML = `
-            <div class="summary-grid">
-                <div class="summary-label">Request ID:</div><div>${res.request_id || '-'}</div>
-                <div class="summary-label">Overall Status:</div><div class="${getStatusClass(res.validation_status)}">${res.validation_status}</div>
-                <div class="summary-label">Schema Status:</div><div class="${getStatusClass(res.request_schema_status)}">${res.request_schema_status}</div>
-                <div class="summary-label">Target Status:</div><div class="${getStatusClass(res.target_validation_status)}">${res.target_validation_status}</div>
-                <div class="summary-label">Capability Status:</div><div class="${getStatusClass(res.capability_validation_status)}">${res.capability_validation_status}</div>
-                <div class="summary-label">Metadata:</div><div>Offline: ${res.validation_metadata?.offline}, Deterministic: ${res.validation_metadata?.deterministic}</div>
-                <div class="summary-label">Limits:</div><div>Targets: ${res.limits?.target_count} / ${res.limits?.hard_target_limit}</div>
-            </div>
-        `;
+        summaryBox.innerHTML = '';
+        const summaryGrid = document.createElement('div');
+        summaryGrid.className = 'summary-grid';
+        
+        const appendSummaryRow = (label, value, valueClass = '') => {
+            const labelEl = document.createElement('div');
+            labelEl.className = 'summary-label';
+            labelEl.textContent = label;
+            const valueEl = document.createElement('div');
+            valueEl.className = valueClass;
+            valueEl.textContent = value;
+            summaryGrid.appendChild(labelEl);
+            summaryGrid.appendChild(valueEl);
+        };
+
+        appendSummaryRow('Request ID:', res.request_id || '-');
+        appendSummaryRow('Overall Status:', res.validation_status, getStatusClass(res.validation_status));
+        appendSummaryRow('Schema Status:', res.request_schema_status, getStatusClass(res.request_schema_status));
+        appendSummaryRow('Target Status:', res.target_validation_status, getStatusClass(res.target_validation_status));
+        appendSummaryRow('Capability Status:', res.capability_validation_status, getStatusClass(res.capability_validation_status));
+        appendSummaryRow('Metadata:', `Offline: ${res.validation_metadata?.offline}, Deterministic: ${res.validation_metadata?.deterministic}`);
+        appendSummaryRow('Limits:', `Targets: ${res.limits?.target_count} / ${res.limits?.hard_target_limit}`);
+        
+        summaryBox.appendChild(summaryGrid);
 
         // Issues
         const blockersList = document.getElementById('list-blockers');
-        blockersList.innerHTML = (res.blocking_issues || []).map(b => `<li>[${b.code}] ${b.path}: ${b.message}</li>`).join('') || '<li>No blocking issues</li>';
+        blockersList.innerHTML = '';
+        if (res.blocking_issues && res.blocking_issues.length > 0) {
+            res.blocking_issues.forEach(b => {
+                const li = document.createElement('li');
+                li.textContent = `[${b.code}] ${b.path}: ${b.message}`;
+                blockersList.appendChild(li);
+            });
+        } else {
+            const li = document.createElement('li');
+            li.textContent = 'No blocking issues';
+            blockersList.appendChild(li);
+        }
         
         const warningsList = document.getElementById('list-warnings');
-        warningsList.innerHTML = (res.warnings || []).map(w => `<li>[${w.code}] ${w.path}: ${w.message}</li>`).join('') || '<li>No warnings</li>';
+        warningsList.innerHTML = '';
+        if (res.warnings && res.warnings.length > 0) {
+            res.warnings.forEach(w => {
+                const li = document.createElement('li');
+                li.textContent = `[${w.code}] ${w.path}: ${w.message}`;
+                warningsList.appendChild(li);
+            });
+        } else {
+            const li = document.createElement('li');
+            li.textContent = 'No warnings';
+            warningsList.appendChild(li);
+        }
         
         document.getElementById('badge-issues').textContent = (res.blocking_issues?.length || 0) + (res.warnings?.length || 0);
 
         // Targets
         const targetsDiv = document.getElementById('target-results');
-        targetsDiv.innerHTML = (res.target_results || []).map(t => `
-            <div class="target-card">
-                <h4>[${t.target_index}] ${t.input_target?.input || '-'}</h4>
-                <div class="card-grid">
-                    <strong>Status:</strong> <span class="${getStatusClass(t.resolution_status === 'resolved' ? 'valid' : 'invalid')}">${t.resolution_status}</span>
-                    <strong>Market:</strong> <span>${t.canonical_identity?.market || '-'}</span>
-                    <strong>Sec Type:</strong> <span>${t.canonical_identity?.security_type || '-'}</span>
-                </div>
-            </div>
-        `).join('') || '<div>No targets</div>';
+        targetsDiv.innerHTML = '';
+        if (res.target_results && res.target_results.length > 0) {
+            res.target_results.forEach(t => {
+                const card = document.createElement('div');
+                card.className = 'target-card';
+                
+                const h4 = document.createElement('h4');
+                h4.textContent = `[${t.target_index}] ${t.input_target?.input || '-'}`;
+                card.appendChild(h4);
+                
+                const grid = document.createElement('div');
+                grid.className = 'card-grid';
+                
+                const appendGridRow = (label, val, valClass = '') => {
+                    const l = document.createElement('strong');
+                    l.textContent = label;
+                    const v = document.createElement('span');
+                    v.textContent = val;
+                    if (valClass) v.className = valClass;
+                    grid.appendChild(l);
+                    grid.appendChild(v);
+                };
+                
+                appendGridRow('Status:', t.resolution_status, getStatusClass(t.resolution_status === 'resolved' ? 'valid' : 'invalid'));
+                appendGridRow('Market:', t.canonical_identity?.market || '-');
+                appendGridRow('Sec Type:', t.canonical_identity?.security_type || '-');
+                
+                card.appendChild(grid);
+                targetsDiv.appendChild(card);
+            });
+        } else {
+            const div = document.createElement('div');
+            div.textContent = 'No targets';
+            targetsDiv.appendChild(div);
+        }
         document.getElementById('badge-targets').textContent = res.target_results?.length || 0;
 
         // Capabilities
         const capsDiv = document.getElementById('capability-results');
-        capsDiv.innerHTML = (res.capability_results || []).map(c => `
-            <div class="capability-card">
-                <h4>[${c.data_need_index}] ${c.capability_id} (${c.priority})</h4>
-                <div class="card-grid">
-                    <strong>Status:</strong> <span class="${getStatusClass(c.status === 'supported' ? 'valid' : 'invalid')}">${c.status}</span>
-                    <strong>Limitations:</strong> <span>${(c.limitations || []).join(', ') || 'None'}</span>
-                </div>
-            </div>
-        `).join('') || '<div>No capabilities</div>';
+        capsDiv.innerHTML = '';
+        if (res.capability_results && res.capability_results.length > 0) {
+            res.capability_results.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'capability-card';
+                
+                const h4 = document.createElement('h4');
+                h4.textContent = `[${c.data_need_index}] ${c.capability_id} (${c.priority})`;
+                card.appendChild(h4);
+                
+                const grid = document.createElement('div');
+                grid.className = 'card-grid';
+                
+                const appendGridRow = (label, val, valClass = '') => {
+                    const l = document.createElement('strong');
+                    l.textContent = label;
+                    const v = document.createElement('span');
+                    v.textContent = val;
+                    if (valClass) v.className = valClass;
+                    grid.appendChild(l);
+                    grid.appendChild(v);
+                };
+                
+                appendGridRow('Status:', c.status, getStatusClass(c.status === 'supported' ? 'valid' : 'invalid'));
+                appendGridRow('Limitations:', (c.limitations || []).join(', ') || 'None');
+                
+                card.appendChild(grid);
+                capsDiv.appendChild(card);
+            });
+        } else {
+            const div = document.createElement('div');
+            div.textContent = 'No capabilities';
+            capsDiv.appendChild(div);
+        }
         document.getElementById('badge-capabilities').textContent = res.capability_results?.length || 0;
 
         // Normalized Request
@@ -198,12 +297,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderTransportError = (data) => {
         resetValidationView();
-        summaryBox.innerHTML = `
-            <div class="summary-grid">
-                <div class="summary-label">Error:</div><div class="status-invalid">${data.error || 'Unknown Error'}</div>
-                <div class="summary-label">Detail:</div><div>${data.detail || JSON.stringify(data)}</div>
-            </div>
-        `;
+        summaryBox.innerHTML = '';
+        const summaryGrid = document.createElement('div');
+        summaryGrid.className = 'summary-grid';
+        
+        const appendSummaryRow = (label, value, valueClass = '') => {
+            const labelEl = document.createElement('div');
+            labelEl.className = 'summary-label';
+            labelEl.textContent = label;
+            const valueEl = document.createElement('div');
+            valueEl.className = valueClass;
+            valueEl.textContent = value;
+            summaryGrid.appendChild(labelEl);
+            summaryGrid.appendChild(valueEl);
+        };
+        
+        appendSummaryRow('Error:', data.error || 'Unknown Error', 'status-invalid');
+        appendSummaryRow('Detail:', data.trace_id || data.detail || JSON.stringify(data));
+        
+        summaryBox.appendChild(summaryGrid);
     };
 
     // Init

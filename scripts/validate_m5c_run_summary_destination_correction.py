@@ -6,12 +6,16 @@ CORRECTION=Path('research/staging/m5c/corrections/M5C_RUN_SUMMARY_DESTINATION_CO
 SCHEMA=Path('docs/authorization/m5c_run_summary_destination_correction_schema.json')
 PKG=Path('research/staging/m5c/m5c_twse_openapi_20260627_authorized_01')
 DEST='research/staging/m5c/m5c_twse_openapi_20260627_authorized_01'
-def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def sha(p):
+    b = Path(p).read_bytes()
+    if Path(p).suffix in {'.html', '.json', '.js', '.css', '.md'}:
+        b = b.replace(b'\r\n', b'\n')
+    return hashlib.sha256(b).hexdigest()
 def load(p): return json.loads(Path(p).read_text())
 def validate(path=CORRECTION, package_dir=PKG):
     package_dir=Path(package_dir); data=load(path); schema=load(SCHEMA); errs=[]
     errs += [{'code':'schema_error','path':'$' + ''.join(f'/{x}' for x in e.path),'detail':e.message} for e in Draft202012Validator(schema).iter_errors(data)]
-    if data.get('package_dir')!=str(package_dir): errs.append({'code':'correction_package_dir_mismatch','expected':str(package_dir),'actual':data.get('package_dir')})
+    if data.get('package_dir')!=package_dir.as_posix(): errs.append({'code':'correction_package_dir_mismatch','expected':package_dir.as_posix(),'actual':data.get('package_dir')})
     run=package_dir/'run_summary.json'; man=package_dir/'sha256_manifest.json'
     if not run.exists(): errs.append({'code':'run_summary_missing'}); return errs
     doc=load(run)

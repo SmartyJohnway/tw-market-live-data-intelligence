@@ -7,7 +7,11 @@ sys.path.insert(0,str(REPO/'scripts'))
 from build_m5f_canonical_market_context_package import build_package, reject_forbidden_nested, SYMBOL_ALLOWLIST, ALLOWED_FRESHNESS, ALLOWED_BADGES, validate_symbol_shape
 FILES={'canonical_market_context.json','latest_market_snapshot.json','watchlist_observations.json','ai_context_pack.json','ai_context_pack.md','chatgpt_briefing.md','source_health.json','capability_summary.json','lineage.json','validation_report.json','sha256_manifest.json'}
 CAVEATS={'not_realtime_guaranteed','not_trading_signal','not_production_current_state','source_risk_present','freshness_must_be_displayed'}
-def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def sha(p):
+    b = Path(p).read_bytes()
+    if Path(p).suffix in {'.html', '.json', '.js', '.css', '.md'}:
+        b = b.replace(b'\r\n', b'\n')
+    return hashlib.sha256(b).hexdigest()
 def load(p): return json.loads(Path(p).read_text(encoding='utf-8'))
 def _canonical_checks(c):
     reject_forbidden_nested(c)

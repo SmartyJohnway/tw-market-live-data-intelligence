@@ -32,7 +32,11 @@ def load(p: Path | str):
     return json.loads(Path(p).read_text(encoding="utf-8"))
 
 def fsha(p: Path | str) -> str:
-    return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+    path = Path(p)
+    b = path.read_bytes()
+    if path.suffix in {'.html', '.json', '.js', '.css', '.md'}:
+        b = b.replace(b'\r\n', b'\n')
+    return hashlib.sha256(b).hexdigest()
 
 def canonical_hash(obj: dict, *, omit: set[str] | None = None) -> str:
     payload = {k: v for k, v in obj.items() if k not in (omit or set())}
@@ -58,7 +62,7 @@ def _fsync_dir(path: Path) -> None:
         return
     fd = os.open(path, os.O_RDONLY)
     try:
-        os.fsync(fd)
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as f: pass
     finally:
         os.close(fd)
 
@@ -66,7 +70,7 @@ def durable_json_replace(path: Path, obj: dict) -> str:
     path.parent.mkdir(parents=True, exist_ok=True)
     data = json.dumps(obj, indent=2, sort_keys=True).encode() + b"\n"
     tmp = path.with_name(f".{path.name}.{os.getpid()}.tmp")
-    fd = os.open(tmp, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+    fd = os.open(tmp, os.O_CREAT | os.O_EXCL | os.O_WRONLY | getattr(os, 'O_BINARY', 0), 0o644)
     try:
         _write_all(fd, data); os.fsync(fd)
     finally:
@@ -79,7 +83,7 @@ def durable_copy(src: Path, dest: Path) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     data = src.read_bytes()
     tmp = dest.with_name(f".{dest.name}.{os.getpid()}.tmp")
-    fd = os.open(tmp, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+    fd = os.open(tmp, os.O_CREAT | os.O_EXCL | os.O_WRONLY | getattr(os, 'O_BINARY', 0), 0o644)
     try:
         _write_all(fd, data); os.fsync(fd)
     finally:
@@ -110,11 +114,11 @@ def validate_auth(decision, token, *, now=None):
     if t.get("single_use") is not True or not t.get("single_use_id"): errs.append("single_use_token_required")
     if d.get("single_use_id") != t.get("single_use_id"): errs.append("single_use_id_mismatch")
     if int(d.get("expires_at_epoch", 0)) <= now or int(t.get("expires_at_epoch", 0)) <= now: errs.append("expired_token")
-    if d.get("candidate_dir") != str(CAND): errs.append("candidate_dir_mismatch")
+    if d.get("candidate_dir") != CAND.as_posix(): errs.append("candidate_dir_mismatch")
     if d.get("candidate_manifest_sha256") != manifest_sha(): errs.append("wrong_candidate_hash")
     for k in ["candidate_dir", "candidate_manifest_sha256", "destination", "frontend_baseline_sha256"]:
         if t.get(k) != d.get(k): errs.append("token_decision_binding_mismatch:" + k)
-    if d.get("destination") != str(DEST): errs.append("wrong_destination")
+    if d.get("destination") != DEST.as_posix(): errs.append("wrong_destination")
     if d.get("frontend_baseline_sha256") != fsha(ROOT / CAND / "frontend_public_baseline.json"): errs.append("frontend_baseline_drift")
     for k, v in LINEAGE.items():
         if d.get("m5c_lineage_hashes", {}).get(k) != v: errs.append("m5c_lineage_drift:" + k)
@@ -142,14 +146,14 @@ def safe_dest(dest):
     raw = ROOT / dest
     if raw.exists() and raw.is_symlink(): raise ValueError("symlink_target_forbidden")
     resolved = raw.resolve(); base = (ROOT / "frontend/public").resolve()
-    if not str(resolved).startswith(str(base) + os.sep): raise ValueError("path_traversal_or_wrong_root")
+    if not resolved.as_posix().startswith(base.as_posix() + '/'): raise ValueError("path_traversal_or_wrong_root")
     return resolved
 
 def claim_once(claim_dir, auth_id):
     if not SAFE_ID.match(auth_id or ""): raise ValueError("unsafe_authorization_id")
     claim_dir = Path(claim_dir); claim_dir.mkdir(parents=True, exist_ok=True)
     path = claim_dir / (auth_id + ".used")
-    fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+    fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY | getattr(os, 'O_BINARY', 0), 0o644)
     try:
         _write_all(fd, b"claimed\n"); os.fsync(fd)
     finally:
@@ -158,7 +162,7 @@ def claim_once(claim_dir, auth_id):
     return path
 
 def _journal_state(auth_id, dest, candidate_manifest_sha256, new_sha256, *, simulation_mode, state="started"):
-    return {"schema_version":"m5e_transaction_journal.v1","state":state,"auth_id":auth_id,"destination":str(dest),"candidate_sha256":candidate_manifest_sha256,"new_sha256":new_sha256,"publication_performed":False,"simulation_mode":simulation_mode,"destination_write_simulated":False}
+    return {"schema_version":"m5e_transaction_journal.v1","state":state,"auth_id":auth_id,"destination":dest.as_posix(),"candidate_sha256":candidate_manifest_sha256,"new_sha256":new_sha256,"publication_performed":False,"simulation_mode":simulation_mode,"destination_write_simulated":False}
 
 def publish_transaction(src, dest, journal_dir, *, auth_id, claim_dir=None, expected_src_sha256=None, candidate_manifest_sha256=None, crash_at=None, simulation_mode=False):
     if claim_dir is None: raise ValueError("claim_dir_required")
@@ -170,9 +174,9 @@ def publish_transaction(src, dest, journal_dir, *, auth_id, claim_dir=None, expe
         simulation_root = Path(journal_dir).resolve().parent
         resolved_dest = dest.resolve()
         repo_root = ROOT.resolve()
-        if str(resolved_dest).startswith(str(repo_root) + os.sep):
+        if resolved_dest.as_posix().startswith(repo_root.as_posix() + '/'):
             raise ValueError("simulation_destination_in_repo_forbidden")
-        if not str(resolved_dest).startswith(str(simulation_root) + os.sep):
+        if not resolved_dest.as_posix().startswith(simulation_root.as_posix() + '/'):
             raise ValueError("simulation_destination_outside_temporary_root")
     else:
         lexical_dest = dest if dest.is_absolute() else ROOT / dest
@@ -184,34 +188,34 @@ def publish_transaction(src, dest, journal_dir, *, auth_id, claim_dir=None, expe
         safe_dest(DEST)
     expected_src_sha256 = expected_src_sha256 if simulation_mode and expected_src_sha256 else candidate_market_context_sha()
     candidate_manifest_sha256 = candidate_manifest_sha256 if simulation_mode and candidate_manifest_sha256 else manifest_sha()
-    data = src.read_bytes(); new_hash = hashlib.sha256(data).hexdigest()
+    data = src.read_bytes(); new_hash = fsha(src)
     if new_hash != expected_src_sha256: raise ValueError("source_hash_mismatch")
     state = _journal_state(auth_id, dest, candidate_manifest_sha256, new_hash, simulation_mode=simulation_mode)
     claim_path = claim_once(claim_dir, auth_id)
-    state.update(state="claimed", single_use_claim=str(claim_path))
+    state.update(state="claimed", single_use_claim=claim_path.as_posix())
     _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
     if crash_at == "before_temp_write": raise RuntimeError("crash:before_temp_write")
     tmp = dest.with_name("." + dest.name + ".tmp")
-    fd = os.open(tmp, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+    fd = os.open(tmp, os.O_CREAT | os.O_EXCL | os.O_WRONLY | getattr(os, 'O_BINARY', 0), 0o644)
     try:
         _write_all(fd, data); os.fsync(fd)
     finally:
         os.close(fd)
     _fsync_dir(tmp.parent)
-    state.update(state="after_temp_write", temp=str(tmp)); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
+    state.update(state="after_temp_write", temp=tmp.as_posix()); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
     if crash_at == "after_temp_write": raise RuntimeError("crash:after_temp_write")
     if dest.exists():
         backup = journal_dir / "previous.bin"; durable_copy(dest, backup)
-        state.update(state="after_backup", backup=str(backup), previous_sha256=fsha(backup)); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
+        state.update(state="after_backup", backup=backup.as_posix(), previous_sha256=fsha(backup)); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
     if crash_at == "after_backup": raise RuntimeError("crash:after_backup")
     os.replace(tmp, dest); _fsync_dir(dest.parent)
     state.update(state="after_replace", publication_performed=False if simulation_mode else True, destination_write_simulated=True if simulation_mode else False); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
     if crash_at in {"after_replace", "before_receipt"}: raise RuntimeError("crash:" + crash_at)
-    out = {"schema_version":"m5e_publication_receipt.v1","status":"simulated" if simulation_mode else "published","authorization_id":auth_id,"destination":str(dest),"sha256":fsha(dest),"candidate_manifest_sha256":candidate_manifest_sha256,"publication_performed":False if simulation_mode else True,"single_use_claim":state.get("single_use_claim")}
+    out = {"schema_version":"m5e_publication_receipt.v1","status":"simulated" if simulation_mode else "published","authorization_id":auth_id,"destination":dest.as_posix(),"sha256":fsha(dest),"candidate_manifest_sha256":candidate_manifest_sha256,"publication_performed":False if simulation_mode else True,"single_use_claim":state.get("single_use_claim")}
     if simulation_mode: out["simulation_mode"] = True
     if state.get("previous_sha256"): out["previous_sha256"] = state["previous_sha256"]
     _assert_schema("publication_receipt", out); durable_json_replace(journal_dir / "publication_receipt.json", out)
-    state.update(state="after_receipt", receipt=str(journal_dir / "publication_receipt.json")); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
+    state.update(state="after_receipt", receipt=(journal_dir / "publication_receipt.json").as_posix()); _assert_schema("journal", state); durable_json_replace(journal_dir / "journal.json", state)
     if crash_at == "after_receipt": raise RuntimeError("crash:after_receipt")
     return out
 
@@ -219,13 +223,13 @@ def rollback(dest, journal_dir):
     dest = Path(dest); st = load(Path(journal_dir) / "journal.json")
     if st.get("backup") and Path(st["backup"]).exists():
         if not dest.exists() or fsha(dest) != st.get("new_sha256"):
-            out = {"schema_version":"m5e_rollback_receipt.v1","status":"manual_recovery_required","destination":str(dest),"rollback_performed":False,"state":st}
+            out = {"schema_version":"m5e_rollback_receipt.v1","status":"manual_recovery_required","destination":dest.as_posix(),"rollback_performed":False,"state":st}
         else:
             durable_copy(Path(st["backup"]), dest)
-            out = {"schema_version":"m5e_rollback_receipt.v1","status":"rolled_back_replacement","destination":str(dest),"rollback_performed":True,"sha256":fsha(dest)}
+            out = {"schema_version":"m5e_rollback_receipt.v1","status":"rolled_back_replacement","destination":dest.as_posix(),"rollback_performed":True,"sha256":fsha(dest)}
     elif (st.get("publication_performed") or st.get("destination_write_simulated")) and dest.exists() and fsha(dest) == st.get("new_sha256"):
         dest.unlink(); _fsync_dir(dest.parent)
-        out = {"schema_version":"m5e_rollback_receipt.v1","status":"rolled_back_new_target","destination":str(dest),"rollback_performed":True}
+        out = {"schema_version":"m5e_rollback_receipt.v1","status":"rolled_back_new_target","destination":dest.as_posix(),"rollback_performed":True}
     else:
         out = {"schema_version":"m5e_rollback_receipt.v1","status":"manual_recovery_required","destination":str(dest),"rollback_performed":False,"state":st}
     _assert_schema("rollback_receipt", out)
@@ -246,7 +250,7 @@ def recover(dest, journal_dir):
             receipt = load(receipt_path)
             receipt_ok = not _schema_errors("publication_receipt", receipt)
             dest_ok = Path(dest).exists() and fsha(dest) == st.get("new_sha256") == receipt.get("sha256")
-            binding_ok = (receipt.get("candidate_manifest_sha256") == st.get("candidate_sha256") and receipt.get("authorization_id") == st.get("auth_id") and receipt.get("destination") == st.get("destination") == str(dest) and receipt.get("single_use_claim") == st.get("single_use_claim"))
+            binding_ok = (receipt.get("candidate_manifest_sha256") == st.get("candidate_sha256") and receipt.get("authorization_id") == st.get("auth_id") and receipt.get("destination") == st.get("destination") == dest.as_posix() and receipt.get("single_use_claim") == st.get("single_use_claim"))
             completed = "simulation_completed" if receipt.get("simulation_mode") is True else "publication_completed"
             out = {"schema_version":"m5e_crash_recovery_state.v1","status":completed if (receipt_ok and dest_ok and binding_ok) else "manual_recovery_required","state":st}
         else:
