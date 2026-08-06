@@ -41,15 +41,22 @@
     "no_arbitrary_file_paths_allowed": true
   },
   "test_commands": [
-    "pytest tests/unit/m8r_06_01 -q",
-    "pytest tests/integration/test_unified_workbench_api.py -q",
+    "pytest tests/unit/m8r_06_01/ tests/integration/test_unified_workbench_api.py -q",
     "python scripts/run_unified_workbench.py --startup-check",
     "python scripts/run_test_profile.py default-ci --json"
   ],
   "test_results": {
-    "mode_a_unit_tests": "pass",
-    "mode_a_api_tests": "pass",
-    "startup_check": "expected_blocked (canonical_security_master_unavailable)",
+    "mode_a_focused_tests": {
+      "status": "pass",
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    "production_activation_check": {
+      "status": "expected_blocked",
+      "http_status": 409,
+      "error": "canonical_security_master_unavailable"
+    },
     "default_ci": "pass"
   },
   "accepted_caveats": [],
