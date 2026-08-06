@@ -10,8 +10,9 @@ The Unified Market Evidence project provides a deterministic mechanism to query 
 
 > [!WARNING]
 > **Current Runtime Limitations**
-> The project currently provides the schema, policies, and manual contract handoff structures. **Unified intake, direct preview orchestration, and automated Unified execution via MCP or F3 resolvers are NOT yet implemented.**
-> The AI currently can only author schema-valid requests and perform manual handoff via the operator. Future phases (F3, 05B, 05C) will build the direct automated runtime. Do not claim the Unified executor is currently available to the AI.
+> The project currently provides the schema, policies, and manual contract handoff structures. The governed local CLI/runtime for F3, 05B, and 05C exists.
+> **M8R-06 Unified Operator Workbench and Unified FastAPI/MCP direct execution surface are NOT yet implemented.**
+> Until M8R-06 is implemented, execution is performed by the human operator through the governed local CLI/manual artifact workflow. The AI currently can only author schema-valid requests and perform manual handoff via the operator. Do not claim the Unified executor is currently available to the AI.
 
 ---
 
@@ -161,12 +162,16 @@ The project operates under the principle of **Exhaustive output within the autho
 
 ## 12. Manual Workbench Handoff
 
-Because the Unified Orchestrator and direct MCP execution are **future F3 deliverables**, the AI must currently operate via Manual Workbench Handoff.
+Because the M8R-06 Unified Operator Workbench and direct MCP execution are **future deliverables**, the AI must currently operate via Manual Workbench Handoff.
 
-Current F2 handoff:
-AI produces a schema-valid request for review and future intake. The existing legacy workbench does not yet implement the full Unified Request/Preview/Result lifecycle.
+Current workflow:
+AI authors Unified Request
+→ operator validates/runs governed local CLI workflow
+→ 05B executes only after explicit authorization
+→ 05C produces Result and Audit Package
+→ operator hands AI-ready Result/context back to AI
 
 Target future workflow:
-Mode A → Mode B → Mode C.
+Mode A (Inspect and Validate) → Mode B (Preview, Authorize, and Execute Once) → Mode C (Package and Handoff to AI)
 
 5. AI interprets the pasted evidence and answers (when available).
