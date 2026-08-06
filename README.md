@@ -17,10 +17,19 @@ It is a **Local Release Candidate**. It is not production ready and it does not 
 
 ## What can it do?
 
-- Read and validate the reviewed **M5F canonical package** (Mode A).
-- Plan and optionally execute explicit, manual, bounded **M5K observations** (Mode B).
+### Current canonical Unified architecture
+- **M8R-05A/F3**: Unified Request and canonical target validation
+- **M8R-05B**: deterministic preview/authorization/execute-once orchestration
+- **M8R-05C**: complete AI-context Result and separate Audit Package
+- **M8R-06**: next planned Unified Operator Workbench (NOT YET IMPLEMENTED)
+
+*Note: The M8R-06 frontend, Unified MCP execution, and automatic execution are not yet implemented. There is no automatic polling, scheduler, or realtime guarantee.*
+
+### Legacy compatibility / historical local workbench surfaces
+- Read and validate the reviewed **M5F canonical package** (legacy Mode A: Canonical Context).
+- Plan and optionally execute explicit, manual, bounded **M5K observations** (legacy Mode B: Bounded Observation).
 - Read **M5Q source-health** diagnostics.
-- Build an **M5N Conversation Package** for ChatGPT (Mode C).
+- Build an **M5N Conversation Package** for ChatGPT (legacy Mode C: Conversation Package).
 - Serve readonly FastAPI, frontend, and MCP local surfaces.
 - Provide an offline operator dashboard and release preflight.
 
@@ -142,7 +151,17 @@ flowchart LR
   M5N --> ChatGPT[ChatGPT discussion]
 ```
 
-Mode semantics are fixed: **Mode A = Canonical Context**, **Mode B = Bounded Observation**, and **Mode C = Conversation Package**. M5F is canonical; M5K is bounded observation; M5Q is source health; M5N is conversation package. Observation is not canonical, reference-only is not current price, and `stale_or_closed_session` is degraded.
+Legacy M5 terminology:
+- **Mode A = Canonical Context**
+- **Mode B = Bounded Observation**
+- **Mode C = Conversation Package**
+
+Current Unified operator workflow terminology:
+- **Mode A = Inspect and Validate**
+- **Mode B = Preview, Authorize, and Execute Once**
+- **Mode C = Package and Handoff to AI**
+
+In the legacy M5 context, M5F is canonical; M5K is bounded observation; M5Q is source health; M5N is conversation package. Observation is not canonical, reference-only is not current price, and `stale_or_closed_session` is degraded.
 
 
 ## Data capability map

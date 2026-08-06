@@ -1,0 +1,67 @@
+{
+  "milestone": "M8R_05C",
+  "status": "PASS_WITH_CAVEATS",
+  "principal_decision": "M8R-05C_FORMALLY_CLOSED_AND_READY_FOR_M8R-06-00-WORKBENCH_PREFLIGHT",
+  "task_identity": "M8R-05C-F1_Post-Merge_Closure_and_Pre-M8R-06_Contract_Realignment",
+  "baseline_sha": "9a11d6fcf7c03383582518620379b86f587e3253",
+  "merge_commit_sha": "9a11d6fcf7c03383582518620379b86f587e3253",
+  "validated_code_head_sha": "a5a4bde6c976bf65a4d21e3eeaad4417e865db0f",
+  "architect": "System",
+  "reviewer": "System",
+  "predecessor_artifacts": [
+    "docs/acceptance/M8R_05B_03_FINAL_ACCEPTANCE.json",
+    "docs/acceptance/M8R_05B_03_POST_MERGE_HANDOFF.json"
+  ],
+  "canonical_output_schemas": [
+    "schemas/unified_market_evidence_result.v1.schema.json",
+    "schemas/unified_market_evidence_audit_package.v1.schema.json"
+  ],
+  "canonical_entry_points": [
+    "scripts/m8r_05c/cli.py"
+  ],
+  "validation_commands": [
+    "$env:PYTHONPATH=\".\"; pytest tests/unit/m8r_05c/ tests/unit/test_m8r_05c_lineage.py tests/unit/test_m8r_05c_containment.py tests/unit/test_m8r_05c_determinism.py",
+    "python scripts/run_test_profile.py default-ci --json",
+    "python scripts/run_test_profile.py full-non-network --json"
+  ],
+  "exit_codes": {
+    "pytest_m8r_05c_focused": 0,
+    "default_ci": 0,
+    "full_non_network": 1
+  },
+  "test_counts": {
+    "pytest_m8r_05c_focused": {
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0
+    },
+    "default_ci": {
+      "passed": 451,
+      "failed": 0,
+      "skipped": 0
+    },
+    "full_non_network": {
+      "passed": 2086,
+      "failed": 27,
+      "skipped": 5
+    }
+  },
+  "contract_closure_matrix": {
+    "result_schema_tightened": true,
+    "claim_and_consumption_binding_separated": true
+  },
+  "lineage_verification": "PASS",
+  "containment_verification": "PASS",
+  "determinism_verification": "PASS",
+  "artifact_referential_integrity": "PASS",
+  "F3_authority_verification": "PASS",
+  "accepted_caveats": [
+    "The observed 27 full-non-network failures were classified as apparently pre-existing/unrelated based on comparison with the baseline. They were not introduced by the focused M8R-05C closure changes."
+  ],
+  "prohibited_claims": [
+    "Do not claim M8R-06 Operator Workbench is implemented.",
+    "Do not claim Unified MCP execution is available.",
+    "Do not claim the repository is completely clean of legacy schema failures in legacy tests."
+  ],
+  "next_task": "M8R-06-00-UNIFIED-MARKET-EVIDENCE-OPERATOR-WORKBENCH-PREFLIGHT"
+}

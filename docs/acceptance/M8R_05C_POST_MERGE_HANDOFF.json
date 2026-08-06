@@ -1,0 +1,59 @@
+{
+  "handoff_source": "M8R_05C_POST_MERGE_CLOSURE",
+  "next_task": "M8R-06-00-UNIFIED-MARKET-EVIDENCE-OPERATOR-WORKBENCH-PREFLIGHT",
+  "baseline_sha": "9a11d6fcf7c03383582518620379b86f587e3253",
+  "dependency_chain": [
+    "Unified Request",
+    "F3 Validation",
+    "Orchestration Plan",
+    "Execution Authorization",
+    "Consumption Binding",
+    "Atomic Claim",
+    "Finalized Consumption Record",
+    "Execution Receipt",
+    "Evidence Bundle",
+    "Evidence Artifacts",
+    "Unified Result",
+    "Audit Package"
+  ],
+  "canonical_paths": {
+    "result": "ai_context/unified_market_evidence_result.v1.json",
+    "audit_package": "audit/unified_market_evidence_audit_package.v1.json"
+  },
+  "result_consumer_contract": [
+    "result_id",
+    "result_hash",
+    "generated_at",
+    "request_summary",
+    "status",
+    "targets[].resolution",
+    "targets[].evidence",
+    "targets[].derived_metrics",
+    "targets[].coverage",
+    "targets[].caveats",
+    "targets[].citations",
+    "partial_failures",
+    "request_caveats",
+    "audit_reference"
+  ],
+  "audit_only_contract": [
+    "authorization identity",
+    "consumption binding identity",
+    "atomic claim hash",
+    "finalized record hash",
+    "receipt internals",
+    "bundle internals",
+    "operation lineage",
+    "artifact inventory",
+    "replay manifest",
+    "integrity verification"
+  ],
+  "workbench_constraints": [
+    "Preserve the canonical dependency chain defined above.",
+    "Do not mutate historical sealed artifacts.",
+    "Preserve the fail-closed mechanism: any tampering in the chain must invalidate the final package."
+  ],
+  "accepted_caveats": [
+    "Legacy schema validation failures in full-non-network are accepted for this phase as 05C tests explicitly pass and validate the new cryptographic lineage successfully."
+  ]
+}
