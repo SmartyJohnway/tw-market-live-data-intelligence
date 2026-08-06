@@ -15,7 +15,7 @@ def test_valid_mode_a_request():
             {"type": "identity", "priority": "required"}
         ]
     }
-    result = validate_mode_a_request(req)
+    result = validate_mode_a_request(req, allow_fixture_snapshot=True)
     assert result["validation_status"] == "valid"
     assert result["validation_metadata"]["offline"] is True
     assert result["validation_metadata"]["deterministic"] is True
@@ -30,7 +30,7 @@ def test_invalid_mode_a_request_target_limit():
         "targets": [{"input": str(i)} for i in range(100)],
         "data_needs": [{"type": "identity", "priority": "required"}]
     }
-    result = validate_mode_a_request(req)
+    result = validate_mode_a_request(req, allow_fixture_snapshot=True)
     assert result["validation_status"] == "invalid"
     assert any(b["code"] == "TARGET_LIMIT_EXCEEDED" for b in result["blocking_issues"])
 
@@ -63,5 +63,5 @@ def test_no_network_monkeypatch(monkeypatch):
         "data_needs": [{"type": "identity", "priority": "required"}]
     }
     # Should not raise any network errors
-    result = validate_mode_a_request(req)
+    result = validate_mode_a_request(req, allow_fixture_snapshot=True)
     assert result["validation_status"] == "valid"

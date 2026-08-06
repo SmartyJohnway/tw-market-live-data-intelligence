@@ -2,6 +2,7 @@ import json
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import JSONResponse
 from .services.unified_mode_a import validate_mode_a_request
+import uuid
 
 router = APIRouter(
     prefix="/api/unified",
@@ -37,14 +38,14 @@ async def validate_request(request: Request):
     try:
         validation_result = validate_mode_a_request(target_request)
     except FileNotFoundError as e:
-        return JSONResponse(status_code=409, content={"error": "canonical_dependency_unavailable", "detail": str(e)})
+        error_msg = str(e)
+        if "security_master_snapshot" in error_msg:
+            return JSONResponse(status_code=409, content={"error": "canonical_security_master_unavailable", "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=500, content={"error": "canonical_dependency_missing", "trace_id": str(uuid.uuid4())})
     except ValueError as e:
-        # Note: If it's a domain failure, it shouldn't raise here, it returns in the validation_result. 
-        # ValueError here indicates malformed canonical dependency or F3 invariant violation.
-        return JSONResponse(status_code=500, content={"error": "mode_a_internal_error", "detail": str(e)})
+        return JSONResponse(status_code=500, content={"error": "canonical_dependency_malformed", "trace_id": str(uuid.uuid4())})
     except RuntimeError as e:
-        # Internal unexpected failure
-        return JSONResponse(status_code=500, content={"error": "mode_a_internal_error", "detail": str(e)})
+        return JSONResponse(status_code=500, content={"error": "mode_a_internal_error", "trace_id": str(uuid.uuid4())})
 
     # 5. Return canonical F3 result directly
     return JSONResponse(status_code=200, content=validation_result)

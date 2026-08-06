@@ -17,9 +17,9 @@ The endpoint forces a strict `< 1 MiB` body constraint, and rejects cross-origin
 Mode A must be able to load:
 - `unified_market_evidence_request.v1.schema.json`
 - `unified_market_evidence_capability_catalog.v1.json`
-- `verified_security_master_snapshot.json`
+- `production_security_master_snapshot.json`
 
-Currently, `FIXTURE_SNAPSHOT_PATH` is loaded for the security master via `allow_fixture_snapshot=True`.
+Currently, `PRODUCTION_SNAPSHOT_PATH` is loaded for the security master via `allow_fixture_snapshot=False`. Since a governed production security master snapshot does not exist in `config/`, the endpoint currently fails closed and validation is blocked.
 
 ## 4. No Network Boundary
 Unit testing patches `socket`, `requests`, `httpx`, and `urllib` to prove F3 Mode A evaluates in strict offline bounds. No external asset URLs (Google Fonts, CDNs) are loaded by the `frontend/unified-workbench/UnifiedMarketEvidenceWorkbench.html` CSP `default-src 'self'`.

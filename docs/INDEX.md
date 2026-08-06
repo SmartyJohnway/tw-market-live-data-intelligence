@@ -153,6 +153,12 @@ git diff --check
 - [AI Safety Policy](ai_safety_policy.md)
 - [Portable market-evidence Agent Skill](../skills/tw-market-evidence-agent/SKILL.md)
 
+## M8R-06 Unified Operator Workbench
+
+- [M8R-06-00 Unified Operator Workbench Preflight](reviews/M8R_06_00_UNIFIED_OPERATOR_WORKBENCH_PREFLIGHT.md)
+- [M8R-06-01 Mode A Implementation](architecture/M8R_06_01_MODE_A_IMPLEMENTATION.md)
+- [M8R-06-01 Implementation Acceptance](acceptance/M8R_06_01_IMPLEMENTATION_ACCEPTANCE.md)
+
 ## Historical / Compatibility References
 
 - [Legacy M8 AI capability quick guide](ai/M8_AI_CAPABILITY_QUICK_GUIDE.md) (Superseded redirect)

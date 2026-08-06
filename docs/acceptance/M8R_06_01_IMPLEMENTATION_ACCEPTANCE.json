@@ -2,9 +2,9 @@
   "milestone": "M8R-06-01",
   "task": "M8R-06-01-UNIFIED-WORKBENCH-MODE-A-INSPECT-AND-VALIDATE",
   "baseline_main_sha": "e7ccf6932e929f1b9f84958312eb445ad50c5c47",
-  "validated_code_head_sha": "HEAD",
-  "status": "PASS_WITH_CAVEATS",
-  "principal_decision": "M8R-06-01-MODE-A-INSPECT-AND-VALIDATE-IMPLEMENTED",
+  "validated_code_head_sha": "13279c827fd99be62a646b4de51b976cf84a231f",
+  "status": "BLOCKED",
+  "principal_decision": "M8R-06-01_BLOCKED_BY_CANONICAL_SECURITY_MASTER_CONFIGURATION",
   "implemented_surfaces": [
     "server/services/unified_mode_a.py",
     "server/unified_workbench_router.py",
@@ -26,6 +26,11 @@
     "page_load_remote_assets": false,
     "validation_engine_offline_patched_tests_pass": true
   },
+  "production_readiness": {
+    "production_snapshot_configured": false,
+    "production_mode_a_validation_available": false,
+    "fixture_fallback_enabled_in_production": false
+  },
   "state_machine_verification": {
     "invalid_request_enters_preview_ready": false,
     "preview_disabled": true
@@ -44,13 +49,13 @@
   "test_results": {
     "mode_a_unit_tests": "pass",
     "mode_a_api_tests": "pass",
-    "startup_check": "pass",
+    "startup_check": "expected failure until governed snapshot exists",
     "default_ci": "pass"
   },
-  "accepted_caveats": [
-    "Used tests/fixtures/m8r_05a_f3/verified_security_master_snapshot.json as the canonical security master fallback since no production version exists in docs/ or config/ yet."
+  "accepted_caveats": [],
+  "blocking_findings": [
+    "canonical_security_master_unavailable"
   ],
-  "blocking_findings": [],
   "prohibited_claims": [
     "Mode B implemented",
     "authorization implemented",
@@ -60,5 +65,5 @@
     "Mode C implemented",
     "complete Workbench implemented"
   ],
-  "next_task": "M8R-06-02-UNIFIED-WORKBENCH-MODE-B1-PREVIEW"
+  "next_task": "M8R-06-02_NOT_AUTHORIZED"
 }

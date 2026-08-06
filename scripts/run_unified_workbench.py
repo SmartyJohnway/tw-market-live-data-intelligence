@@ -16,14 +16,17 @@ def run_startup_check():
         from server.services.unified_mode_a import (
             CANONICAL_SCHEMA_PATH, 
             CANONICAL_CATALOG_PATH,
-            FIXTURE_SNAPSHOT_PATH,
-            FIXTURE_MANIFEST_PATH,
+            PRODUCTION_SNAPSHOT_PATH,
+            PRODUCTION_MANIFEST_PATH,
             _load_json
         )
         
         schema_loaded = CANONICAL_SCHEMA_PATH.exists()
         catalog_loaded = CANONICAL_CATALOG_PATH.exists()
-        security_master_loaded = FIXTURE_SNAPSHOT_PATH.exists() and FIXTURE_MANIFEST_PATH.exists()
+        security_master_loaded = PRODUCTION_SNAPSHOT_PATH.exists() and PRODUCTION_MANIFEST_PATH.exists()
+        
+        if not security_master_loaded:
+            raise FileNotFoundError("canonical_security_master_unavailable")
         
         if schema_loaded: _load_json(CANONICAL_SCHEMA_PATH)
         if catalog_loaded: _load_json(CANONICAL_CATALOG_PATH)
