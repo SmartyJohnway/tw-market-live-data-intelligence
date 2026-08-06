@@ -1,0 +1,165 @@
+{
+  "milestone": "M8R-06-00",
+  "task": "M8R-06-00-UNIFIED-MARKET-EVIDENCE-OPERATOR-WORKBENCH-PREFLIGHT",
+  "baseline_main_sha": "c40b6a19eba6e52277b2bea23caeb5146a412c44",
+  "status": "PASS_WITH_CAVEATS",
+  "principal_decision": "READY_FOR_M8R-06-01-UNIFIED-WORKBENCH-MODE-A-INSPECT-AND-VALIDATE",
+  "authoritative_predecessors": [
+    "M8R-05A",
+    "M8R-05A-F1",
+    "M8R-05A-F2",
+    "M8R-05A-F3",
+    "M8R-05B-00",
+    "M8R-05B-01",
+    "M8R-05B-02",
+    "M8R-05B-03",
+    "M8R-05C",
+    "M8R-05C-F1"
+  ],
+  "frontend_inventory": {
+    "architecture": "Standalone HTML with vanilla JavaScript",
+    "current_operator_surface": "frontend/readonly-preview/m5k-workbench.js and M5KLocalAIWorkbench.html",
+    "legacy_previews": [
+      "frontend/readonly-preview/GovernanceConsolePreview.html",
+      "frontend/readonly-preview/M5EMarketContextPreview.html",
+      "frontend/readonly-preview/ReadonlyMarketContextPreview.html"
+    ],
+    "capabilities": {
+      "request_editor": false,
+      "json_viewer": true,
+      "readonly_artifact_viewer": true,
+      "operator_confirmation_ui": false,
+      "process_execution_bridge": false,
+      "local_api_client": true,
+      "testable_dom_selectors": false,
+      "browser_e2e": false
+    }
+  },
+  "server_inventory": {
+    "architecture": "FastAPI (localhost only execution wrapper required)",
+    "capabilities": {
+      "readonly": true,
+      "operator_mutation": false,
+      "subprocess_bridge": "Server/main.py is readonly product API without execution bridge. Subprocess capability resides in scripts and MCP wrapper.",
+      "generic_command_runner": false,
+      "invoke_f3_05b_05c": false,
+      "request_scoped_job_identity": false,
+      "status_result_retrieval": false,
+      "cancellation": false,
+      "stream_log_transport": false,
+      "no_network_startup": true,
+      "localhost_only_bind": "Current documented launch path binds to 127.0.0.1, but server/main.py itself does not enforce the bind address. M8R-06 adapter startup wrapper must enforce localhost-only binding.",
+      "cors_restrictions": true,
+      "schema_validation_endpoint": false,
+      "artifact_download_endpoint": true,
+      "raw_payload_exposure_risk": false
+    }
+  },
+  "mcp_inventory": {
+    "architecture": "Local MCP server with readonly tool specs and legacy probe wrappers",
+    "capabilities": {
+      "readonly": true,
+      "local_execution": "May expose controlled legacy execution tools",
+      "invoke_unified_request": false,
+      "invoke_preview": false,
+      "create_authorization": false,
+      "execute_once": false,
+      "read_result": false,
+      "read_audit": false,
+      "suitable_for_m8r_06": false,
+      "deferred_to_phase_e": true
+    }
+  },
+  "runtime_entry_points": {
+    "request_intake_validation": "scripts/m8r_05a_f3/request_intake.py",
+    "target_resolution": "scripts/m8r_05a_f3/target_validator.py",
+    "capability_validation": "scripts/m8r_05a_f3/capability_validator.py",
+    "security_master_loading": "scripts/m8r_05a_f3/security_master_loader.py",
+    "preview": "scripts/m8r_05b_02/preflight.py and scripts/m8r_05b_02/cli.py",
+    "authorization_construction": "scripts/m8r_05b_02/authorization.py",
+    "authorization_validation": "scripts/m8r_05b_02/validator.py",
+    "consumption_binding_construction": "scripts/m8r_05b_02/consumption_binding.py",
+    "execute_time_authorization_gate": "scripts/m8r_05b_03/authorization_gate.py",
+    "execute_once": "scripts/m8r_05b_03/orchestrator.py and scripts/m8r_05b_03/cli.py",
+    "result_and_package": "scripts/m8r_05c/result_builder.py, scripts/m8r_05c/audit_package_builder.py, scripts/m8r_05c/cli.py with full input artifact chain"
+  },
+  "integration_options": [
+    "Option A: Frontend directly invokes local CLI via privileged browser bridge",
+    "Option B: Thin local FastAPI Workbench Adapter",
+    "Option C: Reuse MCP as execution backend"
+  ],
+  "recommended_architecture": "THIN_LOCALHOST_ONLY_WORKBENCH_ADAPTER_REUSING_CANONICAL_F3_05B_05C_RUNTIME",
+  "rejected_architectures": [
+    {
+      "option": "Option A",
+      "reason": "Browser security limitations and lack of desktop shell integration."
+    },
+    {
+      "option": "Option C",
+      "reason": "MCP is slated for Phase E and currently lacks robust UI operation confirmation semantics."
+    }
+  ],
+  "security_boundary": {
+    "local_only": true,
+    "command_allowlist": true,
+    "path_containment": true,
+    "explicit_authorization": true,
+    "raw_payload_isolation": true
+  },
+  "state_machine": {
+    "states": [
+      "EMPTY",
+      "REQUEST_LOADED",
+      "REQUEST_INVALID",
+      "REQUEST_VALIDATED",
+      "F3_VALIDATED",
+      "PREVIEW_READY",
+      "PREVIEW_BLOCKED",
+      "AUTHORIZATION_PENDING",
+      "AUTHORIZED",
+      "AUTHORIZATION_EXPIRED",
+      "AUTHORIZATION_CONSUMED",
+      "EXECUTING",
+      "EXECUTION_SUCCEEDED",
+      "EXECUTION_FAILED",
+      "RESULT_PROJECTING",
+      "AUDIT_PROJECTING",
+      "RESULT_PROJECTION_FAILURE",
+      "AUDIT_PROJECTION_FAILURE",
+      "RESULT_READY",
+      "AUDIT_READY",
+      "RESULT_READY_AUDIT_UNAVAILABLE",
+      "HANDOFF_READY"
+    ]
+  },
+  "phase_plan": [
+    "M8R-06-01: Mode A - Inspect and Validate",
+    "M8R-06-02: Mode B1 - Preview",
+    "M8R-06-03: Mode B2 - Authorize and Execute Once",
+    "M8R-06-04: Mode C - Package and Handoff",
+    "M8R-06-05: End-to-End Operator Acceptance"
+  ],
+  "acceptance_gates": {
+    "canonical_contract_reuse": "PASS",
+    "runtime_entry_point_availability": "PASS",
+    "safe_local_integration_boundary": "READY_WITH_WRAPPER",
+    "no_startup_network": "PASS",
+    "explicit_authorization": "PASS_WITH_REQUIREMENTS",
+    "result_audit_separation": "PASS",
+    "legacy_isolation": "PASS",
+    "testability": "PASS",
+    "cross_platform_viability": "PASS_WITH_REQUIREMENTS",
+    "phase_decomposition": "PASS"
+  },
+  "identified_gaps": [
+    "No FastAPI endpoints currently exist for M8R-05B/05C runtimes.",
+    "Current frontend lacks TypeScript definitions generated from the canonical JSON schemas.",
+    "FastAPI wrapper must enforce localhost binding explicitly."
+  ],
+  "accepted_caveats": [
+    "Legacy tests may continue to fail in full-non-network CI runs.",
+    "Frontend implementation will utilize vanilla JS or minimal extensions in line with existing UI architecture."
+  ],
+  "blocking_findings": [],
+  "next_task": "M8R-06-01-UNIFIED-WORKBENCH-MODE-A-INSPECT-AND-VALIDATE"
+}
