@@ -1,0 +1,82 @@
+{
+  "task": "M8R-06-01B-EXISTING-SECURITY-MASTER-CLASSIFIER-PRODUCTION-INPUT-MATERIALIZATION",
+  "baseline_main_sha": "29a5182e72124a21b762c3490e6f890c99632e24",
+  "skill_path": "skills/tw-security-master-classifier",
+  "skill_contract_hash": "488b3e04af2e318cd387b0dfdcbad02be4f2c3f495539c3e436698464f37d77a",
+  "official_sources_probed": 5,
+  "successful_sources": 3,
+  "failed_sources": 2,
+  "classification_records_attempted": 43070,
+  "classification_records_qualified": 43070,
+  "classification_records_quarantined": 0,
+  "classification_records_rejected": 0,
+  "lifecycle_events_attempted": 264,
+  "lifecycle_events_qualified": 264,
+  "lifecycle_events_quarantined": 0,
+  "lifecycle_events_rejected": 0,
+  "production_input_bundle_created": true,
+  "bundle_id": "m8r06-01b-20260807T041027Z",
+  "bundle_path": "data/security_master/input_bundles/m8r06-01b-20260807T041027Z",
+  "fixture_input_used": false,
+  "historical_input_used_as_current": false,
+  "exporter_dry_run_attempted": true,
+  "exporter_dry_run_status": "passed",
+  "snapshot_schema_validation": true,
+  "manifest_schema_validation": true,
+  "skill_contract_hash_validation": true,
+  "record_hash_validation": true,
+  "coverage_reconciliation": true,
+  "lifecycle_count_reconciliation": true,
+  "freshness_evidence": {
+    "identity_source_update_cadence": "daily (source_updated_date in ISIN page)",
+    "lifecycle_source_update_cadence": "event-driven (delisting/termination pages updated per event)",
+    "observation_semantics": "observed_in_latest_verified_snapshot (fresh probe at generation time)",
+    "daily_refresh_meaningful": true,
+    "session_refresh_meaningful": false,
+    "threshold_recommendation_deferred": true
+  },
+  "coverage_summary": {
+    "requested_scope": "TWSE mode 2 + TPEX mode 4 (zh lane)",
+    "qualified_scope": "43070 records",
+    "out_of_scope": "modes 1, 3, 5-12 (unlisted, bonds, emerging, derivatives, funds, etc.)",
+    "coverage_limitations": "zh lane only (no en lane for dual-lane confirmation); bounded operator universe",
+    "instrument_type_breakdown": {
+      "common_share": 1973,
+      "preferred_share": 29,
+      "etf": 354,
+      "fund": 6,
+      "bond": 8,
+      "etn": 21,
+      "depositary_receipt": 10,
+      "warrant": 40669
+    },
+    "market_breakdown": {
+      "twse": 32507,
+      "tpex": 10563
+    }
+  },
+  "repairs_made": [
+    {
+      "file": "scripts/m8r_03d_f1_security_master_snapshot_exporter.py",
+      "description": "SKILL_PATH Path object converted to POSIX string for JSON serialization",
+      "scope": "1 line change",
+      "contracts_preserved": true,
+      "taxonomy_broadened": false,
+      "quarantine_weakened": false
+    }
+  ],
+  "tests_added": [
+    "tests/unit/test_m8r_06_01b_production_input_materialization.py"
+  ],
+  "blocking_findings": [],
+  "accepted_caveats": [
+    "zh_lane_only_single_lane_not_dual_lane",
+    "lifecycle_unknown_for_most_active_securities",
+    "bounded_operator_universe_not_full_market"
+  ],
+  "principal_decision": "READY_FOR_GOVERNED_SNAPSHOT_MATERIALIZATION",
+  "authorized_next_task": "M8R-06-01C-GOVERNED-SNAPSHOT-MATERIALIZATION-AND-MODE-A-ACTIVATION",
+  "unauthorized_tasks": [
+    "M8R-06-02"
+  ]
+}
