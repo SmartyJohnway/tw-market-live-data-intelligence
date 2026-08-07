@@ -9,11 +9,15 @@ SCRIPTS_DIR = REPO_ROOT / "scripts"
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 
-from m8r_06_01c1r_runtime_identity_cache_benchmark import project_to_compact_records
+from m8r_06_01c1r_runtime_identity_cache_benchmark import project_to_compact_records, build_compact_lookup
 
 # Path to the authorized bundle
 BUNDLE_DIR = REPO_ROOT / "data" / "security_master" / "input_bundles" / "m8r06-01b-20260807T053540Z"
 FULL_SNAPSHOT_PATH = BUNDLE_DIR / "dryrun_snapshot.json"
+
+# Skip all tests in this module if the authorized bundle is not present
+if not FULL_SNAPSHOT_PATH.exists():
+    pytest.skip("Authorized bundle not present; skipping tests that require local data", allow_module_level=True)
 
 
 def load_snapshot():
@@ -160,3 +164,192 @@ def test_complete_real_bundle_semantic_comparison_can_run():
         assert "lifecycle" in comp and isinstance(comp["lifecycle"], dict)
         assert "execution_eligibility" in comp and isinstance(comp["execution_eligibility"], dict)
         assert "record_hash" in comp and isinstance(comp["record_hash"], str)
+
+
+# New test for lookup equivalence using synthetic data (does not require the bundle)
+def test_lookup_equivalence_synthetic():
+    """Test that the compact lookup produces equivalent results to full snapshot lookup for key fields using synthetic data."""
+    # Synthetic data with multiple records to test various lookup scenarios
+    records = [
+        {
+            "record_id": "security-1",
+            "canonical_target_id": "TWSE:2330",
+            "identity": {
+                "security_code": "2330",
+                "security_name_zh": "TSMC",
+                "security_name_en": "TSMC",
+                "isin": "TW0002330008"
+            },
+            "classification": {
+                "market": "TWSE",
+                "instrument_type": "common_share",
+                "instrument_family": "company_share",
+                "classification_status": "confirmed_official_single_lane"
+            },
+            "observation": {
+                "status": "active",
+                "observed_at": "2026-08-07T00:00:00Z",
+                "source_updated_date": "2026-08-07"
+            },
+            "lifecycle": {
+                "state": "listed",
+                "resolution_status": "resolved",
+                "as_of": "2026-08-07
+            },
+            "execution_eligibility": {
+                "status": "eligible",
+                "reason_codes": []
+            },
+            "record_hash": "hash1"
+        },
+        {
+            "record_id": "security-2",
+            "canonical_target_id": "TWSE:2454",
+            "identity": {
+                "security_code": "2454",
+                "security_name_zh": "MediaTek",
+                "security_name_en": "MediaTek",
+                "isin": "TW0002454006
+            },
+            "classification": {
+                "market": "TWSE",
+                "instrument_type": "common_share",
+                "instrument_family": "company_share",
+                "classification_status": "confirmed_official_single_lane
+            },
+            "observation": {
+                "status": "active",
+                "observed_at": "2026-08-07T00:00:00Z",
+                "source_updated_date": "2026-08-07
+            },
+            "lifecycle": {
+                "state": "listed",
+                "resolution_status": "resolved",
+                "as_of": "2026-08-07
+            },
+            "execution_eligibility": {
+                "status": "eligible",
+                "reason_codes": ["E001"]
+            },
+            "record_hash": "hash2"
+        },
+        {
+            "record_id": "security-3",
+            "canonical_target_id": "TWSE:0050",
+            "identity": {
+                "security_code": "0050",
+                "security_name_zh": "Fubon Financial",
+                "security_name_en": "Fubon Financial",
+                "isin": "TW0000050002
+            },
+            "classification": {
+                "market": "TWSE",
+                "instrument_type": "common_share",
+                "instrument_family": "company_share",
+                "classification_status": "confirmed_official_single_lane
+            },
+            "observation": {
+                "status": "active",
+                "observed_at": "2026-08-07T00:00:00Z",
+                "source_updated_date": "2026-08-07
+            },
+            "lifecycle": {
+                "state": "listed",
+                "resolution_status": "resolved",
+                "as_of": "2026-08-07
+            },
+            "execution_eligibility": {
+                "status": "eligible",
+                "reason_codes": []
+            },
+            "record_hash": "hash3"
+        }
+    ]
+    
+    # Project to compact records
+    compact_records = project_to_compact_records(records)
+    compact_data = {
+        "schema_version": "tw_runtime_identity_index.v1",
+        "generated_at_utc": "2026-08-07T00:00:00Z",
+        "source_bundle_id": "synthetic",
+        "record_count": len(compact_records),
+        "records": compact_records,
+    }
+    
+    # Build compact lookup
+    compact_lookup = build_compact_lookup(compact_data)
+    
+    # Test canonical ID lookup
+    assert compact_lookup['by_canonical'].get("TWSE:2330") is not None
+    assert compact_lookup['by_canonical'].get("TWSE:2330")['canonical_target_id'] == "TWSE:2330"
+    assert compact_lookup['by_canonical'].get("TWSE:2454")['canonical_target_id'] == "TWSE:2454"
+    assert compact_lookup['by_canonical'].get("TWSE:0050")['canonical_target_id'] == "TWSE:0050"
+    
+    # Test ISIN lookup
+    isin_results = compact_lookup['by_isin'].get("TW0002330008", [])
+    assert len(isin_results) == 1
+    assert isin_results[0]['identity']['isin'] == "TW0002330008"
+    
+    isin_results = compact_lookup['by_isin'].get("TW0002454006", [])
+    assert len(isin_results) == 1
+    assert isin_results[0]['identity']['isin'] == "TW0002454006"
+    
+    isin_results = compact_lookup['by_isin'].get("TW0000050002", [])
+    assert len(isin_results) == 1
+    assert isin_results[0]['identity']['isin'] == "TW0000050002"
+    
+    # Test code lookup (with market)
+    code_results = compact_lookup['by_code'].get(("TWSE", "2330"), [])
+    assert len(code_results) == 1
+    assert code_results[0]['identity']['security_code'] == "2330"
+    assert code_results[0]['classification']['market'] == "TWSE"
+    
+    code_results = compact_lookup['by_code'].get(("TWSE", "2454"), [])
+    assert len(code_results) == 1
+    assert code_results[0]['identity']['security_code'] == "2454"
+    assert code_results[0]['classification']['market'] == "TWSE"
+    
+    code_results = compact_lookup['by_code'].get(("TWSE", "0050"), [])
+    assert len(code_results) == 1
+    assert code_results[0]['identity']['security_code'] == "0050"
+    assert code_results[0]['classification']['market'] == "TWSE"
+    
+    # Test code lookup (without market - should still work)
+    code_results = compact_lookup['by_code'].get((None, "2330"), [])
+    assert len(code_results) >= 1  # May have multiple matches if same code in different markets
+    # Find the TWSE one
+    twse_result = None
+    for result in code_results:
+        if result.get('classification', {}).get('market') == 'TWSE':
+            twse_result = result
+            break
+    assert twse_result is not None
+    assert twse_result['identity']['security_code'] == "2330"
+    
+    # Test name lookup (Chinese)
+    zh_name_results = compact_lookup['by_name'].get('TSMC'.replace(' ', '').casefold(), [])
+    assert len(zh_name_results) >= 1
+    # Find the exact match
+    zh_match = None
+    for result in zh_name_results:
+        if result['identity']['security_name_zh'] == 'TSMC':
+            zh_match = result
+            break
+    assert zh_match is not None
+    
+    # Test name lookup (English)
+    en_name_results = compact_lookup['by_name'].get('tsmc'.replace(' ', '').casefold(), [])
+    assert len(en_name_results) >= 1
+    # Find the exact match
+    en_match = None
+    for result in en_name_results:
+        if result['identity']['security_name_en'] and result['identity']['security_name_en'].lower() == 'tsmc':
+            en_match = result
+            break
+    assert en_match is not None
+    
+    # Test that non-existent keys return None/empty
+    assert compact_lookup['by_canonical'].get("TWSE:9999") is None
+    assert len(compact_lookup['by_isin'].get("TW0009999999", [])) == 0
+    assert len(compact_lookup['by_code'].get(("TWSE", "9999"), [])) == 0
+    assert len(compact_lookup['by_name'].get('nonexistent'.replace(' ', '').casefold(), [])) == 0

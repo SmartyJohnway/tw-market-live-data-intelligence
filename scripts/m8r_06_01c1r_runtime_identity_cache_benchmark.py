@@ -414,8 +414,7 @@ def main():
         print(f"WARNING: {len(extra_in_compact)} extra canonical_target_ids in compact index")
     results["semantic_preservation"] = {
         "canonical_target_ids_preserved": len(missing_in_compact) == 0 and len(extra_in_compact) == 0,
-        "missing_in_compact": list(missing_in_compact)[:5],
-        "extra_in_compact": list(extra_in_compact)[:5],
+        "lookup_equivalence": "NOT_PROVEN"
     }
 
     # Write benchmark results
