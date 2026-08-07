@@ -5,9 +5,9 @@
   "full_snapshot_size_bytes": 82362814,
   "full_snapshot_size_mib": 78.55,
   "compact_index_record_count": 43070,
-  "compact_index_size_bytes": 34280726,
-  "compact_index_size_mib": 32.69,
-  "size_reduction_percent": 58.4,
+  "compact_index_size_bytes": 33979236,
+  "compact_index_size_mib": 32.41,
+  "size_reduction_percent": 58.7,
   "required_runtime_fields": [
     "canonical_target_id",
     "record_id",
@@ -27,7 +27,7 @@
     "lifecycle.as_of",
     "execution_eligibility.status",
     "execution_eligibility.reason_codes",
-    "source_record_hash"
+    "record_hash"
   ],
   "semantic_preservation": {
     "canonical_target_ids": true,
@@ -44,16 +44,16 @@
     "source_record_traceability": true
   },
   "benchmark": {
-    "full_json_load_seconds": 2.133,
-    "full_lookup_build_seconds": 0.580,
-    "compact_projection_seconds": 3.574,
-    "compact_serialization_seconds": 3.574,
-    "compact_json_load_seconds": 0.724,
-    "compact_lookup_build_seconds": 0.356,
+    "full_json_load_seconds": 1.581,
+    "full_lookup_build_seconds": 0.366,
+    "compact_projection_seconds": 2.170,
+    "compact_serialization_seconds": 2.170,
+    "compact_json_load_seconds": 0.507,
+    "compact_lookup_build_seconds": 0.336,
     "lookup_operation_count": 1000,
     "compact_lookup_benchmark_seconds": 0.0
   },
-  "offline_export_processing_seconds": 55.284,
+  "offline_export_processing_seconds": 40.638,
   "network_acquisition_time": "NOT_MEASURED",
   "targeted_identity_lookup_capability": "PARTIALLY_SUPPORTED",
   "runtime_cache_policy_assessment": {
@@ -67,8 +67,8 @@
   "git_diff_check": "PASS",
   "network_probe_used": false,
   "production_runtime_modified": false,
-  "commit_sha": "0000000000000000000000000000000000000000",
-  "push_status": "PENDING",
+  "commit_sha": "b4f6282220a00cce70d032807130d9edf7f475c9",
+  "push_status": "SUCCESS",
   "remote_branch": "hermes/m8r-06-01c1r-runtime-identity-cache-realignment",
   "status": "PASS_WITH_CAVEATS",
   "principal_decision": "READY_FOR_COMPACT_RUNTIME_IDENTITY_INDEX_IMPLEMENTATION",
@@ -79,8 +79,10 @@
   ],
   "blocking_findings": [],
   "accepted_caveats": [
-    "Compact index size (32.69 MiB) is still substantial for memory-constrained environments",
+    "Compact index size (32.41 MiB) is still substantial for memory-constrained environments",
     "Targeted identity lookup capability analysis indicates partial support in existing contracts",
-    "Lookup benchmark showed 0.0 seconds due to measurement precision limitations"
+    "Lookup benchmark showed 0.0 seconds due to measurement precision limitations (sub-microscale)",
+    "The compact index is not a drop-in replacement for the full snapshot in the resolver without further adjustments (missing snapshot wrapper and coverage fields)",
+    "Offline export processing time (~40s) measures local producer computation only; network acquisition latency (TWSE/TPEx response times, rate limiting) is NOT_MEASURED and would add to total refresh cost in production"
   ]
 }

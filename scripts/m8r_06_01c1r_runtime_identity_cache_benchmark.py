@@ -26,10 +26,92 @@ if str(REPO_ROOT) not in sys.path:
 # Paths
 BUNDLE_DIR = REPO_ROOT / "data" / "security_master" / "input_bundles" / "m8r06-01b-20260807T053540Z"
 FULL_SNAPSHOT_PATH = BUNDLE_DIR / "dryrun_snapshot.json"
+COMMITTED_MANIFEST_PATH = REPO_ROOT / "docs" / "reviews" / "m8r06-01b-bundle-manifest" / "immutable_manifest.json"
 ARTIFACTS_DIR = REPO_ROOT / "artifacts" / "m8r_06_01c1r"
 ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
 COMPACT_INDEX_PATH = ARTIFACTS_DIR / "compact_identity_index.json"
 BENCHMARK_RESULTS_PATH = ARTIFACTS_DIR / "benchmark_results.json"
+
+
+def sha256_file(path: Path) -> str:
+    """Compute SHA-256 of a file."""
+    h = hashlib.sha256()
+    with path.open('rb') as f:
+        for chunk in iter(lambda: f.read(4096), b''):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def load_json(path: Path):
+    with path.open('r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+def verify_bundle_integrity(bundle_dir: Path, manifest_path: Path) -> bool:
+    """
+    Verify that the bundle matches the committed manifest.
+    Returns True if all hashes match and required fields are present.
+    """
+    manifest = load_json(manifest_path)
+    bundle_id = manifest.get("bundle_id")
+    expected_id = "m8r06-01b-20260807T053540Z"
+    if bundle_id != expected_id:
+        print(f"ERROR: Bundle ID mismatch. Expected {expected_id}, got {bundle_id}")
+        return False
+
+    # Check each artifact
+    artifacts = [
+        ("classification_records.json", "classification_records"),
+        ("lifecycle_events.json", "lifecycle_events"),
+        ("source_evidence_manifest.json", "source_evidence_manifest"),
+        ("qualification_report.json", "qualification_report"),
+        ("dryrun_snapshot.json", "dryrun_snapshot"),
+        ("dryrun_manifest.json", "dryrun_manifest"),
+    ]
+    for file_name, manifest_key in artifacts:
+        file_path = bundle_dir / file_name
+        if not file_path.exists():
+            print(f"ERROR: Missing file {file_path}")
+            return False
+        local_hash = sha256_file(file_path)
+        manifest_hash = manifest.get(manifest_key, {}).get("sha256")
+        if local_hash != manifest_hash:
+            print(f"ERROR: Hash mismatch for {file_name}")
+            print(f"  Expected: {manifest_hash}")
+            print(f"  Got:      {local_hash}")
+            return False
+
+    # Check raw payloads
+    raw_payloads = manifest.get("raw_payloads", [])
+    for entry in raw_payloads:
+        file_name = entry["file_name"]
+        file_path = bundle_dir / "raw_payloads" / file_name
+        if not file_path.exists():
+            print(f"ERROR: Missing raw payload {file_path}")
+            return False
+        local_hash = sha256_file(file_path)
+        manifest_hash = entry.get("sha256")
+        if local_hash != manifest_hash:
+            print(f"ERROR: Hash mismatch for raw payload {file_name}")
+            print(f"  Expected: {manifest_hash}")
+            print(f"  Got:      {local_hash}")
+            return False
+
+    # Check skill_contract_hash
+    skill_hash = manifest.get("skill_contract_hash")
+    if not skill_hash:
+        print("ERROR: Missing skill_contract_hash in manifest")
+        return False
+    # We could also compute it from the skill files, but we trust the manifest for now.
+    # For completeness, we could compute and compare, but we skip to avoid dependency on skill path.
+
+    # Check bundle_persisted_in_git
+    persisted = manifest.get("bundle_persisted_in_git")
+    if persisted is not None and persisted:
+        print("ERROR: Bundle marked as persisted in git, but it should not be")
+        return False
+
+    return True, manifest, bundle_id
 
 
 def project_to_compact_records(records):
@@ -70,29 +152,55 @@ def project_to_compact_records(records):
                 "status": exec_elig.get("status"),
                 "reason_codes": exec_elig.get("reason_codes", []),
             },
-            "source_record_hash": rec.get("record_hash"),
+            "record_hash": rec.get("record_hash"),  # Note: keeping the name 'record_hash' for resolver compatibility
         }
         compact_records.append(compact)
     return compact_records
 
 
-def load_json(path: Path):
-    with path.open('r', encoding='utf-8') as f:
-        return json.load(f)
+def build_compact_lookup(compact_data):
+    """
+    Build a lookup dictionary from compact data, mimicking the structure
+    built by build_verified_security_master_lookup for the full snapshot.
+    Returns a dict with keys: 'by_canonical', 'by_isin', 'by_code', 'by_name'.
+    Note: This does NOT include the 'snapshot' key, so it is not a drop-in replacement
+    for the full snapshot in the resolver. However, we can use it to test lookup equivalence.
+    """
+    lookup = {
+        'by_canonical': {},
+        'by_isin': {},
+        'by_code': {},
+        'by_name': {},
+    }
+    for rec in compact_data.get('records', []):
+        cid = rec.get('canonical_target_id')
+        if cid:
+            lookup['by_canonical'][cid] = rec
+        ident = rec.get('identity', {})
+        market = rec.get('classification', {}).get('market')
+        isin = ident.get('isin')
+        if isin:
+            lookup['by_isin'].setdefault(isin.upper(), []).append(rec)
+        security_code = ident.get('security_code')
+        if security_code:
+            lookup['by_code'].setdefault((market, security_code), []).append(rec)
+            lookup['by_code'].setdefault((None, security_code), []).append(rec)
+        for k in ('security_name_zh', 'security_name_en'):
+            name = ident.get(k)
+            if name:
+                # Normalize as in the adapter: remove spaces and casefold
+                import re
+                norm = re.sub(r'\s+', '', name or '').casefold()
+                if norm:
+                    lookup['by_name'].setdefault(norm, []).append(rec)
+    return lookup
 
 
 def main():
     print("Loading authorized bundle...")
-    # Verify bundle integrity (optional, but we can do a quick check)
-    manifest_path = BUNDLE_DIR / "immutable_manifest.json"
-    if not manifest_path.exists():
-        print(f"ERROR: Manifest not found at {manifest_path}")
-        sys.exit(1)
-    manifest = load_json(manifest_path)
-    bundle_id = manifest.get("bundle_id")
-    expected_id = "m8r06-01b-20260807T053540Z"
-    if bundle_id != expected_id:
-        print(f"ERROR: Bundle ID mismatch. Expected {expected_id}, got {bundle_id}")
+    # Verify bundle integrity against the committed manifest
+    success, manifest, bundle_id = verify_bundle_integrity(BUNDLE_DIR, COMMITTED_MANIFEST_PATH)
+    if not success:
         sys.exit(1)
     print(f"Authorized bundle ID: {bundle_id}")
 
@@ -123,8 +231,57 @@ def main():
     print("\nProjecting to compact records...")
     compact_records = project_to_compact_records(records)
 
-    # Build a compact index: we can also create a lookup dictionary by canonical_target_id
-    # but for size measurement we just serialize the list.
+    # Build a compact index: we will include minimal snapshot metadata to make it a drop-in replacement?
+    # However, to keep the size small, we will not duplicate the large arrays (like quarantined_lifecycle_events).
+    # Instead, we will create a structure that mimics the full snapshot but with compact records and adjusted metadata.
+    # For the purpose of being a drop-in replacement for the resolver, we need to provide at least the fields
+    # that the resolver uses for validation and lookup.
+    # We will construct a compact snapshot with:
+    #   - schema_version, snapshot_id, generated_at_utc, effective_observation_date
+    #   - source_skill (with skill_contract_hash)
+    #   - coverage (adjusted for compact records)
+    #   - quarantined_lifecycle_events (empty, as we are not including lifecycle events in the compact record)
+    #   - records: the compact records
+    #
+    # Note: The resolver uses the coverage for validation. We will compute the coverage from the compact records.
+    # We will also compute the quarantined_lifecycle_events as empty (since we are not including them).
+    # This means the manifest for the compact index would have to be different, but we are not producing a manifest.
+    # However, for the benchmark we are only comparing the lookup behavior, not running the full validation.
+    #
+    # Given the time, we will output two versions:
+    #   1. The simple compact index (as before) for size measurement and basic projection.
+    #   2. A compact snapshot that aims to be a drop-in replacement for the resolver (with the understanding that
+    #      the coverage and quarantined events will be adjusted).
+    #
+    # We will use the compact snapshot for the resolver equivalence tests.
+    #
+    # Let's compute the coverage from the compact records (similar to how the exporter does it).
+    # We'll mimic the coverage computation from the exporter.
+    # We'll need to compute:
+    #   - markets, instrument_types, record_count, lifecycle_event_count (from compact records' lifecycle events? but we removed them)
+    #   - coverage_status, quarantined_lifecycle_event_count, total_lifecycle_event_count
+    #
+    # Since we removed the lifecycle events from the compact record, we cannot compute the lifecycle_event_count from the compact record.
+    # However, the full snapshot's lifecycle_event_count is the sum of events attached to records (via the lifecycle.events field).
+    # In our compact record, we have removed the events, so we cannot compute the same lifecycle_event_count.
+    #
+    # Given the complexity and the fact that the task is a preflight, we will decide to not attempt to make a full drop-in replacement
+    # snapshot at this time. Instead, we will focus on the projection and semantic equivalence of the identity resolution data.
+    #
+    # We will output the simple compact index (without the snapshot wrapper) for the benchmark, and we will note in the report
+    # that it is not a drop-in replacement for the resolver without further work.
+    #
+    # For the resolver equivalence test, we will build a lookup from the compact records (as we did before) and compare
+    # the results of the resolver functions with those from the full snapshot.
+    #
+    # We will adjust the benchmark to measure the time to build the compact lookup (which we already do) and the time to
+    # perform lookups using that lookup.
+    #
+    # We will also add a test that uses the resolver functions to verify equivalence.
+    #
+    # For now, we will keep the compact index output as the simple one (as before) for size measurement.
+    #
+    # Build the compact index data (simple version)
     compact_data = {
         "schema_version": "tw_runtime_identity_index.v1",
         "generated_at_utc": full_snapshot.get("generated_at_utc"),
@@ -172,8 +329,6 @@ def main():
 
     # Build lookup from full snapshot (as done in the adapter)
     # We'll time the build_verified_security_master_lookup function from the adapter.
-    # Since we cannot import the adapter directly due to path, we'll copy the logic or
-    # we can import it by adjusting sys.path.
     sys.path.append(str(REPO_ROOT / "scripts"))
     from m8r_03d_f1_security_master_snapshot_adapter import build_verified_security_master_lookup
 
@@ -186,38 +341,7 @@ def main():
     full_build_median = median(full_build_times)
 
     # Build lookup from compact index: we need to create a similar lookup structure.
-    # For the compact index, we can build a similar lookup dictionary.
-    # We'll define a function to build lookup from compact records.
-    def build_compact_lookup(compact_data):
-        lookup = {
-            'by_canonical': {},
-            'by_isin': {},
-            'by_code': {},
-            'by_name': {},
-        }
-        for rec in compact_data.get('records', []):
-            cid = rec.get('canonical_target_id')
-            if cid:
-                lookup['by_canonical'][cid] = rec
-            ident = rec.get('identity', {})
-            market = rec.get('classification', {}).get('market')
-            isin = ident.get('isin')
-            if isin:
-                lookup['by_isin'].setdefault(isin.upper(), []).append(rec)
-            security_code = ident.get('security_code')
-            if security_code:
-                lookup['by_code'].setdefault((market, security_code), []).append(rec)
-                lookup['by_code'].setdefault((None, security_code), []).append(rec)
-            for k in ('security_name_zh', 'security_name_en'):
-                name = ident.get(k)
-                if name:
-                    # Normalize as in the adapter: remove spaces and casefold
-                    import re
-                    norm = re.sub(r'\s+', '', name or '').casefold()
-                    if norm:
-                        lookup['by_name'].setdefault(norm, []).append(rec)
-        return lookup
-
+    # We'll use the build_compact_lookup function defined above.
     compact_build_times = []
     for _ in range(3):
         t0 = time.perf_counter()
@@ -301,14 +425,9 @@ def main():
         "notes": [
             "All measurements are offline and use the authorized bundle only.",
             "Lookup average is for canonical_target_id lookups in the compact index.",
-            "Compact index schema is a candidate for discussion."
+            "Compact index schema is a candidate for discussion and is not a drop-in replacement for the full snapshot without further adjustments."
         ]
     }
-
-    # Write benchmark results
-    with BENCHMARK_RESULTS_PATH.open('w', encoding='utf-8') as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
-    print(f"Benchmark results written to {BENCHMARK_RESULTS_PATH}")
 
     # Additionally, we can run a semantic preservation check (optional for now)
     # We'll do a quick check: ensure that every canonical_target_id in the full snapshot
@@ -334,6 +453,11 @@ def main():
         "missing_in_compact": list(missing_in_compact)[:5],
         "extra_in_compact": list(extra_in_compact)[:5],
     }
+
+    # Write benchmark results
+    with BENCHMARK_RESULTS_PATH.open('w', encoding='utf-8') as f:
+        json.dump(results, f, indent=2, ensure_ascii=False)
+    print(f"Benchmark results written to {BENCHMARK_RESULTS_PATH}")
 
     print("\nBenchmark complete.")
 

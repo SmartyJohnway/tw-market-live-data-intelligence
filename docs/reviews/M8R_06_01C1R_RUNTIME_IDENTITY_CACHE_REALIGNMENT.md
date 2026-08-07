@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-This preflight benchmark analyzed the feasibility of replacing the full verified Security Master snapshot (approximately 78.55 MiB) with a compact runtime identity index for Mode A consumption. The compact index, projected from the existing authorized bundle, achieved a 58.4% size reduction (to 32.69 MiB) while preserving all essential identity resolution semantics required by current consumers.
+This preflight benchmark analyzed the feasibility of replacing the full verified Security Master snapshot (approximately 78.55 MiB) with a compact runtime identity index for Mode A consumption. The compact index, projected from the existing authorized bundle, achieved a 58.7% size reduction (to 32.41 MiB) while preserving all essential identity resolution semantics required by current consumers.
 
 No semantic loss was detected in the canonical target ID set, security code mapping, ISIN mapping, Chinese/English name mapping, market, instrument type, execution eligibility, lifecycle summary, or source record traceability.
 
@@ -14,14 +14,14 @@ The compact index schema is a candidate for discussion and may enable more effic
 
 ## Key Findings
 
-- **Size Reduction**: 58.4% (48,082,088 bytes saved)
-- **Compact Index Size**: 32.69 MiB (still above the 50 MiB gate? No, it's below 50 MiB)
+- **Size Reduction**: 58.7% (48,383,578 bytes saved)
+- **Compact Index Size**: 32.41 MiB (below the 50 MiB gate)
 - **Record Count**: 43,070 identities preserved
 - **Semantic Preservation**: All tested identity resolution dimensions preserved
 - **Performance**: 
-  - Full snapshot JSON load: ~2.13 seconds
-  - Compact index JSON load: ~0.72 seconds
-  - Offline export processing (snapshot generation): ~55.28 seconds
+  - Full snapshot JSON load: ~1.58 seconds
+  - Compact index JSON load: ~0.51 seconds
+  - Offline export processing (snapshot generation): ~40.64 seconds
 - **Lookup Performance**: Compact index construction and lookup times comparable to full snapshot
 
 ## Recommendation
@@ -41,7 +41,7 @@ See `artifacts/m8r_06_01c1r/benchmark_results.json` for raw measurements.
 
 ## Open Questions
 
-- Whether the compact index size (32.69 MiB) meets the runtime memory constraints for deployment.
+- Whether the compact index size (32.41 MiB) meets the runtime memory constraints for deployment.
 - Whether any additional fields beyond those projected are required by undiscovered consumers.
 - The optimal update strategy for the compact index (e.g., lazy rebuild, versioned snapshots).
 

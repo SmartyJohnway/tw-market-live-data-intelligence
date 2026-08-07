@@ -108,7 +108,7 @@ def test_source_record_hash_preserved():
             continue
         comp = compact_map.get(cid)
         assert comp is not None, f"Missing compact record for {cid}"
-        assert rec.get("record_hash") == comp.get("source_record_hash"), \
+        assert rec.get("record_hash") == comp.get("record_hash"), \
             f"Source record hash mismatch for {cid}"
 
 
@@ -159,4 +159,4 @@ def test_complete_real_bundle_semantic_comparison_can_run():
         assert "observation" in comp and isinstance(comp["observation"], dict)
         assert "lifecycle" in comp and isinstance(comp["lifecycle"], dict)
         assert "execution_eligibility" in comp and isinstance(comp["execution_eligibility"], dict)
-        assert "source_record_hash" in comp and isinstance(comp["source_record_hash"], str)
+        assert "record_hash" in comp and isinstance(comp["record_hash"], str)
