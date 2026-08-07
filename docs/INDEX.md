@@ -158,6 +158,8 @@ git diff --check
 - [M8R-06-00 Unified Operator Workbench Preflight](reviews/M8R_06_00_UNIFIED_OPERATOR_WORKBENCH_PREFLIGHT.md)
 - [M8R-06-01 Mode A Implementation](architecture/M8R_06_01_MODE_A_IMPLEMENTATION.md)
 - [M8R-06-01 Implementation Acceptance](acceptance/M8R_06_01_IMPLEMENTATION_ACCEPTANCE.md)
+- [M8R-06-01A Canonical Security Master Activation Preflight](reviews/M8R_06_01A_CANONICAL_SECURITY_MASTER_ACTIVATION_PREFLIGHT.md)
+- Mode A remains blocked pending `M8R-06-01B-GOVERNED-SECURITY-MASTER-MATERIALIZATION-AND-MODE-A-ACTIVATION`
 
 ## Historical / Compatibility References
 
