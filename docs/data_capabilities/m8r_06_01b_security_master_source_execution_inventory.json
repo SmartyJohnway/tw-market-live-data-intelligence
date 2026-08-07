@@ -1,0 +1,52 @@
+{
+  "inventory_id": "m8r-06-01b-source-execution-inventory",
+  "generated_at_utc": "2026-08-07T04:10:27Z",
+  "scope": "governed_bounded_operator_universe",
+  "sources": [
+    {
+      "source_id": "twse_isin_mode2_zh",
+      "endpoint": "https://isin.twse.com.tw/isin/C_public.jsp?strMode=2",
+      "purpose": "identity_evidence",
+      "parser": "isin_parser.parse_html",
+      "output_schema": "classification-result.schema.json",
+      "execution_status": "success",
+      "production_candidacy": "approved_with_caveats"
+    },
+    {
+      "source_id": "twse_isin_mode4_zh",
+      "endpoint": "https://isin.twse.com.tw/isin/C_public.jsp?strMode=4",
+      "purpose": "identity_evidence",
+      "parser": "isin_parser.parse_html",
+      "output_schema": "classification-result.schema.json",
+      "execution_status": "success",
+      "production_candidacy": "approved_with_caveats"
+    },
+    {
+      "source_id": "twse_delisted",
+      "endpoint": "https://www.twse.com.tw/company/suspendListingCsvAndHtml?lang=zh&type=html",
+      "purpose": "lifecycle_evidence",
+      "parser": "parse_twse_delisted",
+      "output_schema": "lifecycle-event.schema.json",
+      "execution_status": "success",
+      "production_candidacy": "approved"
+    },
+    {
+      "source_id": "tpex_delisted",
+      "endpoint": "https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html",
+      "purpose": "lifecycle_evidence",
+      "parser": "parse_tpex_delisted",
+      "output_schema": "lifecycle-event.schema.json",
+      "execution_status": "schema_drift",
+      "production_candidacy": "rejected_temporarily"
+    },
+    {
+      "source_id": "twse_etn_expired",
+      "endpoint": "https://www.twse.com.tw/zh/products/securities/etn/products/expire.html",
+      "purpose": "lifecycle_evidence",
+      "parser": "parse_etn_twse",
+      "output_schema": "lifecycle-event.schema.json",
+      "execution_status": "schema_drift",
+      "production_candidacy": "rejected_temporarily"
+    }
+  ]
+}

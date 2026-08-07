@@ -159,7 +159,8 @@ git diff --check
 - [M8R-06-01 Mode A Implementation](architecture/M8R_06_01_MODE_A_IMPLEMENTATION.md)
 - [M8R-06-01 Implementation Acceptance](acceptance/M8R_06_01_IMPLEMENTATION_ACCEPTANCE.md)
 - [M8R-06-01A Canonical Security Master Activation Preflight](reviews/M8R_06_01A_CANONICAL_SECURITY_MASTER_ACTIVATION_PREFLIGHT.md)
-- Mode A remains blocked pending `M8R-06-01B-GOVERNED-SECURITY-MASTER-MATERIALIZATION-AND-MODE-A-ACTIVATION`
+- [M8R-06-01B Production Input Materialization Review](reviews/M8R_06_01B_PRODUCTION_INPUT_MATERIALIZATION.md)
+- Mode A remains blocked pending `M8R-06-01C-GOVERNED-SNAPSHOT-MATERIALIZATION-AND-MODE-A-ACTIVATION`
 
 ## Historical / Compatibility References
 

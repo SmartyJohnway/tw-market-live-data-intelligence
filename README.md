@@ -21,7 +21,7 @@ It is a **Local Release Candidate**. It is not production ready and it does not 
 - **M8R-05A/F3**: Unified Request and canonical target validation
 - **M8R-05B**: deterministic preview/authorization/execute-once orchestration
 - **M8R-05C**: complete AI-context Result and separate Audit Package
-- **M8R-06-01**: Unified Operator Workbench Mode A (Inspect and Validate) - Implemented but production activation remains blocked pending canonical security master configuration (M8R-06-01A preflight decision).
+- **M8R-06-01**: Unified Operator Workbench Mode A (Inspect and Validate) - Implemented but production activation remains blocked pending canonical security master configuration (M8R-06-01C activation decision).
 
 *Note: The M8R-06 frontend Mode B and C, Unified MCP execution, and automatic execution are not yet implemented. There is no automatic polling, scheduler, or realtime guarantee.*
 

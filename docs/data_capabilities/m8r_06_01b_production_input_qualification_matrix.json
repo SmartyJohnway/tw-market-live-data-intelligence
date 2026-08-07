@@ -1,0 +1,42 @@
+{
+  "matrix_id": "m8r-06-01b-qualification-matrix",
+  "generated_at_utc": "2026-08-07T04:10:27Z",
+  "qualification_rules": [
+    {
+      "status": "QUALIFIED_PRODUCTION_INPUT",
+      "condition": "dual_lane_confirmed OR (fixture_overridden AND approved_in_manifest)"
+    },
+    {
+      "status": "QUALIFIED_WITH_CAVEATS",
+      "condition": "single_lane_official AND NO_CONFLICTS"
+    },
+    {
+      "status": "QUARANTINED",
+      "condition": "duplicate_isin_different_ticker OR conflicting_lifecycle_disposition"
+    },
+    {
+      "status": "REJECTED_IDENTITY_CONFLICT",
+      "condition": "canonical_target_invalid OR cross_market_ambiguity_unresolvable"
+    }
+  ],
+  "execution_results": {
+    "total_records_processed": 43070,
+    "distribution": {
+      "QUALIFIED_PRODUCTION_INPUT": 0,
+      "QUALIFIED_WITH_CAVEATS": 43070,
+      "QUARANTINED": 0,
+      "REJECTED_FIXTURE_ONLY": 0,
+      "REJECTED_HISTORICAL_ONLY": 0,
+      "REJECTED_SCHEMA_INVALID": 0,
+      "REJECTED_SOURCE_UNAVAILABLE": 0,
+      "REJECTED_IDENTITY_CONFLICT": 0,
+      "REJECTED_LIFECYCLE_CONFLICT": 0
+    },
+    "caveats_applied": [
+      {
+        "caveat": "zh_lane_only_single_lane_not_dual_lane",
+        "count": 43070
+      }
+    ]
+  }
+}

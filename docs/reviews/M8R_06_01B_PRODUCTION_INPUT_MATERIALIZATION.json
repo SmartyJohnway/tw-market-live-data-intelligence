@@ -1,0 +1,23 @@
+{
+  "production_input_bundle_created": true,
+  "bundle_id": "m8r06-01b-20260807T053540Z",
+  "bundle_path": "data/security_master/input_bundles/m8r06-01b-20260807T053540Z",
+  "official_sources_probed": 5,
+  "transport_successful_sources": 5,
+  "transport_failed_sources": 0,
+  "parser_qualified_sources": 3,
+  "parser_drift_sources": 2,
+  "classification_records_attempted": 43070,
+  "classification_records_qualified": 43070,
+  "mode_a_runtime_candidate_scope": 2327,
+  "lifecycle_events_attempted": 264,
+  "lifecycle_events_qualified": 264,
+  "exporter_dry_run_attempted": true,
+  "exporter_dry_run_status": "passed",
+  "blocking_findings": [],
+  "principal_decision": "READY_FOR_GOVERNED_SNAPSHOT_MATERIALIZATION",
+  "authorized_next_task": "M8R-06-01C-GOVERNED-SNAPSHOT-MATERIALIZATION-AND-MODE-A-ACTIVATION",
+  "unauthorized_tasks": [
+    "M8R-06-02"
+  ]
+}
