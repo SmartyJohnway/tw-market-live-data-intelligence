@@ -2,6 +2,7 @@ import json
 import os
 import sys
 from pathlib import Path
+import pytest
 
 # Add the scripts directory to path to import the benchmark module
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -9,15 +10,15 @@ SCRIPTS_DIR = REPO_ROOT / "scripts"
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 
-from m8r_06_01c1r_runtime_identity_cache_benchmark import project_to_compact_records, build_compact_lookup
+from m8r_06_01c1r_runtime_identity_cache_benchmark import (
+    project_to_compact_records,
+    build_compact_lookup,
+    build_full_lookup,
+)
 
 # Path to the authorized bundle
 BUNDLE_DIR = REPO_ROOT / "data" / "security_master" / "input_bundles" / "m8r06-01b-20260807T053540Z"
 FULL_SNAPSHOT_PATH = BUNDLE_DIR / "dryrun_snapshot.json"
-
-# Skip all tests in this module if the authorized bundle is not present
-if not FULL_SNAPSHOT_PATH.exists():
-    pytest.skip("Authorized bundle not present; skipping tests that require local data", allow_module_level=True)
 
 
 def load_snapshot():
@@ -25,10 +26,16 @@ def load_snapshot():
         return json.load(f)
 
 
-def test_deterministic_compact_projection():
+@pytest.fixture
+def real_snapshot():
+    if not FULL_SNAPSHOT_PATH.exists():
+        pytest.skip("authorized local bundle unavailable")
+    return load_snapshot()
+
+
+def test_deterministic_compact_projection(real_snapshot):
     """Test that the projection is deterministic and produces the same output each time."""
-    snapshot = load_snapshot()
-    records = snapshot.get("records", [])
+    records = real_snapshot.get("records", [])
     
     # Project twice
     compact1 = project_to_compact_records(records)
@@ -38,10 +45,9 @@ def test_deterministic_compact_projection():
     assert compact1 == compact2, "Projection is not deterministic"
 
 
-def test_one_compact_record_per_canonical_target():
+def test_one_compact_record_per_canonical_target(real_snapshot):
     """Test that there is exactly one compact record per canonical_target_id."""
-    snapshot = load_snapshot()
-    records = snapshot.get("records", [])
+    records = real_snapshot.get("records", [])
     compact = project_to_compact_records(records)
     
     # Extract canonical_target_id from full records
@@ -54,10 +60,9 @@ def test_one_compact_record_per_canonical_target():
     assert len(full_cids) == len(compact_cids) == len(set(full_cids)), "Duplicate canonical_target_id found"
 
 
-def test_execution_eligibility_preserved():
+def test_execution_eligibility_preserved(real_snapshot):
     """Test that execution_eligibility.status and reason_codes are preserved."""
-    snapshot = load_snapshot()
-    records = snapshot.get("records", [])
+    records = real_snapshot.get("records", [])
     compact = project_to_compact_records(records)
     
     # Build mapping from canonical_target_id to compact record
@@ -78,10 +83,9 @@ def test_execution_eligibility_preserved():
         assert rec_reasons == comp_reasons, f"Execution eligibility reason_codes mismatch for {cid}"
 
 
-def test_lifecycle_summary_preserved():
+def test_lifecycle_summary_preserved(real_snapshot):
     """Test that lifecycle.state and resolution_status are preserved."""
-    snapshot = load_snapshot()
-    records = snapshot.get("records", [])
+    records = real_snapshot.get("records", [])
     compact = project_to_compact_records(records)
     
     compact_map = {r["canonical_target_id"]: r for r in compact if r.get("canonical_target_id")}
@@ -98,10 +102,9 @@ def test_lifecycle_summary_preserved():
             f"Lifecycle resolution_status mismatch for {cid}"
 
 
-def test_source_record_hash_preserved():
+def test_source_record_hash_preserved(real_snapshot):
     """Test that source_record_hash (copied from record_hash) is preserved."""
-    snapshot = load_snapshot()
-    records = snapshot.get("records", [])
+    records = real_snapshot.get("records", [])
     compact = project_to_compact_records(records)
     
     compact_map = {r["canonical_target_id"]: r for r in compact if r.get("canonical_target_id")}
@@ -116,10 +119,9 @@ def test_source_record_hash_preserved():
             f"Source record hash mismatch for {cid}"
 
 
-def test_no_full_lifecycle_event_arrays_copied():
+def test_no_full_lifecycle_event_arrays_copied(real_snapshot):
     """Test that the compact record does not contain the full lifecycle events array."""
-    snapshot = load_snapshot()
-    records = snapshot.get("records", [])
+    records = real_snapshot.get("records", [])
     compact = project_to_compact_records(records)
     
     for comp in compact:
@@ -134,10 +136,9 @@ def test_no_full_lifecycle_event_arrays_copied():
         assert set(lifecycle.keys()) == expected_keys, f"Compact lifecycle has unexpected keys: {lifecycle.keys()}"
 
 
-def test_no_raw_evidence_payload_copied():
+def test_no_raw_evidence_payload_copied(real_snapshot):
     """Test that the compact record does not contain raw payload fields like evidence_summary, conflicts, caveats."""
-    snapshot = load_snapshot()
-    records = snapshot.get("records", [])
+    records = real_snapshot.get("records", [])
     compact = project_to_compact_records(records)
     
     forbidden_fields = {"evidence_summary", "conflicts", "caveats", "raw_html", "raw_payload", "raw_cells", "html", "cookies", "session_id", "access_token", "refresh_token"}
@@ -146,12 +147,11 @@ def test_no_raw_evidence_payload_copied():
             assert field not in comp, f"Compact record should not contain forbidden field '{field}'"
 
 
-def test_complete_real_bundle_semantic_comparison_can_run():
+def test_complete_real_bundle_semantic_comparison_can_run(real_snapshot):
     """Test that we can run a semantic comparison using the full bundle (we already do in benchmark).
     This test just ensures that the projection function works on the real bundle and produces
     the expected number of records."""
-    snapshot = load_snapshot()
-    records = snapshot.get("records", [])
+    records = real_snapshot.get("records", [])
     compact = project_to_compact_records(records)
     assert len(compact) == len(records), "Compact record count should match full record count"
     # Additionally, we can check that each compact record has the expected structure
@@ -209,23 +209,23 @@ def test_lookup_equivalence_synthetic():
                 "security_code": "2454",
                 "security_name_zh": "MediaTek",
                 "security_name_en": "MediaTek",
-                "isin": "TW0002454006"
+                "isin": "TW0002454006
             },
             "classification": {
                 "market": "TWSE",
                 "instrument_type": "common_share",
                 "instrument_family": "company_share",
-                "classification_status": "confirmed_official_single_lane"
+                "classification_status": "confirmed_official_single_lane
             },
             "observation": {
                 "status": "active",
                 "observed_at": "2026-08-07T00:00:00Z",
-                "source_updated_date": "2026-08-07"
+                "source_updated_date": "2026-08-07
             },
             "lifecycle": {
                 "state": "listed",
                 "resolution_status": "resolved",
-                "as_of": "2026-08-07"
+                "as_of": "2026-08-07
             },
             "execution_eligibility": {
                 "status": "eligible",
@@ -240,23 +240,23 @@ def test_lookup_equivalence_synthetic():
                 "security_code": "0050",
                 "security_name_zh": "Fubon Financial",
                 "security_name_en": "Fubon Financial",
-                "isin": "TW0000050002"
+                "isin": "TW0000050002
             },
             "classification": {
                 "market": "TWSE",
                 "instrument_type": "common_share",
                 "instrument_family": "company_share",
-                "classification_status": "confirmed_official_single_lane"
+                "classification_status": "confirmed_official_single_lane
             },
             "observation": {
                 "status": "active",
                 "observed_at": "2026-08-07T00:00:00Z",
-                "source_updated_date": "2026-08-07"
+                "source_updated_date": "2026-08-07
             },
             "lifecycle": {
                 "state": "listed",
                 "resolution_status": "resolved",
-                "as_of": "2026-08-07"
+                "as_of": "2026-08-07
             },
             "execution_eligibility": {
                 "status": "eligible",
@@ -265,6 +265,18 @@ def test_lookup_equivalence_synthetic():
             "record_hash": "hash3"
         }
     ]
+    
+    # Build full snapshot structure for synthetic data (as expected by build_full_lookup)
+    full_snapshot = {
+        "schema_version": "tw_runtime_identity_index.v1",
+        "generated_at_utc": "2026-08-07T00:00:00Z",
+        "source_bundle_id": "synthetic",
+        "record_count": len(records),
+        "records": records
+    }
+    
+    # Build full lookup from the synthetic full snapshot
+    full_lookup = build_full_lookup(full_snapshot)
     
     # Project to compact records
     compact_records = project_to_compact_records(records)
@@ -280,76 +292,133 @@ def test_lookup_equivalence_synthetic():
     compact_lookup = build_compact_lookup(compact_data)
     
     # Test canonical ID lookup
+    assert full_lookup['by_canonical'].get("TWSE:2330") is not None
     assert compact_lookup['by_canonical'].get("TWSE:2330") is not None
+    assert full_lookup['by_canonical'].get("TWSE:2330")['canonical_target_id'] == "TWSE:2330"
     assert compact_lookup['by_canonical'].get("TWSE:2330")['canonical_target_id'] == "TWSE:2330"
+    
+    assert full_lookup['by_canonical'].get("TWSE:2454") is not None
+    assert compact_lookup['by_canonical'].get("TWSE:2454") is not None
+    assert full_lookup['by_canonical'].get("TWSE:2454")['canonical_target_id'] == "TWSE:2454"
     assert compact_lookup['by_canonical'].get("TWSE:2454")['canonical_target_id'] == "TWSE:2454"
+    
+    assert full_lookup['by_canonical'].get("TWSE:0050") is not None
+    assert compact_lookup['by_canonical'].get("TWSE:0050") is not None
+    assert full_lookup['by_canonical'].get("TWSE:0050")['canonical_target_id'] == "TWSE:0050"
     assert compact_lookup['by_canonical'].get("TWSE:0050")['canonical_target_id'] == "TWSE:0050"
     
     # Test ISIN lookup
-    isin_results = compact_lookup['by_isin'].get("TW0002330008", [])
-    assert len(isin_results) == 1
-    assert isin_results[0]['identity']['isin'] == "TW0002330008"
+    isin_results_full = full_lookup['by_isin'].get("TW0002330008", [])
+    isin_results_compact = compact_lookup['by_isin'].get("TW0002330008", [])
+    assert len(isin_results_full) == len(isin_results_compact) == 1
+    assert isin_results_full[0]['identity']['isin'] == "TW0002330008"
+    assert isin_results_compact[0]['identity']['isin'] == "TW0002330008"
     
-    isin_results = compact_lookup['by_isin'].get("TW0002454006", [])
-    assert len(isin_results) == 1
-    assert isin_results[0]['identity']['isin'] == "TW0002454006"
+    isin_results_full = full_lookup['by_isin'].get("TW0002454006", [])
+    isin_results_compact = compact_lookup['by_isin'].get("TW0002454006", [])
+    assert len(isin_results_full) == len(isin_results_compact) == 1
+    assert isin_results_full[0]['identity']['isin'] == "TW0002454006"
+    assert isin_results_compact[0]['identity']['isin'] == "TW0002454006"
     
-    isin_results = compact_lookup['by_isin'].get("TW0000050002", [])
-    assert len(isin_results) == 1
-    assert isin_results[0]['identity']['isin'] == "TW0000050002"
+    isin_results_full = full_lookup['by_isin'].get("TW0000050002", [])
+    isin_results_compact = compact_lookup['by_isin'].get("TW0000050002", [])
+    assert len(isin_results_full) == len(isin_results_compact) == 1
+    assert isin_results_full[0]['identity']['isin'] == "TW0000050002"
+    assert isin_results_compact[0]['identity']['isin'] == "TW0000050002"
     
     # Test code lookup (with market)
-    code_results = compact_lookup['by_code'].get(("TWSE", "2330"), [])
-    assert len(code_results) == 1
-    assert code_results[0]['identity']['security_code'] == "2330"
-    assert code_results[0]['classification']['market'] == "TWSE"
+    code_results_full = full_lookup['by_code'].get(("TWSE", "2330"), [])
+    code_results_compact = compact_lookup['by_code'].get(("TWSE", "2330"), [])
+    assert len(code_results_full) == len(code_results_compact) == 1
+    assert code_results_full[0]['identity']['security_code'] == "2330"
+    assert code_results_compact[0]['identity']['security_code'] == "2330"
+    assert code_results_full[0]['classification']['market'] == "TWSE"
+    assert code_results_compact[0]['classification']['market'] == "TWSE"
     
-    code_results = compact_lookup['by_code'].get(("TWSE", "2454"), [])
-    assert len(code_results) == 1
-    assert code_results[0]['identity']['security_code'] == "2454"
-    assert code_results[0]['classification']['market'] == "TWSE"
+    code_results_full = full_lookup['by_code'].get(("TWSE", "2454"), [])
+    code_results_compact = compact_lookup['by_code'].get(("TWSE", "2454"), [])
+    assert len(code_results_full) == len(code_results_compact) == 1
+    assert code_results_full[0]['identity']['security_code'] == "2454"
+    assert code_results_compact[0]['identity']['security_code'] == "2454"
+    assert code_results_full[0]['classification']['market'] == "TWSE"
+    assert code_results_compact[0]['classification']['market'] == "TWSE"
     
-    code_results = compact_lookup['by_code'].get(("TWSE", "0050"), [])
-    assert len(code_results) == 1
-    assert code_results[0]['identity']['security_code'] == "0050"
-    assert code_results[0]['classification']['market'] == "TWSE"
+    code_results_full = full_lookup['by_code'].get(("TWSE", "0050"), [])
+    code_results_compact = compact_lookup['by_code'].get(("TWSE", "0050"), [])
+    assert len(code_results_full) == len(code_results_compact) == 1
+    assert code_results_full[0]['identity']['security_code'] == "0050"
+    assert code_results_compact[0]['identity']['security_code'] == "0050"
+    assert code_results_full[0]['classification']['market'] == "TWSE"
+    assert code_results_compact[0]['classification']['market'] == "TWSE"
     
     # Test code lookup (without market - should still work)
-    code_results = compact_lookup['by_code'].get((None, "2330"), [])
-    assert len(code_results) >= 1  # May have multiple matches if same code in different markets
-    # Find the TWSE one
-    twse_result = None
-    for result in code_results:
+    code_results_full = full_lookup['by_code'].get((None, "2330"), [])
+    code_results_compact = compact_lookup['by_code'].get((None, "2330"), [])
+    assert len(code_results_full) >= 1  # May have multiple matches if same code in different markets
+    assert len(code_results_compact) >= 1
+    # Find the TWSE one in both
+    twse_result_full = None
+    for result in code_results_full:
         if result.get('classification', {}).get('market') == 'TWSE':
-            twse_result = result
+            twse_result_full = result
             break
-    assert twse_result is not None
-    assert twse_result['identity']['security_code'] == "2330"
+    assert twse_result_full is not None
+    assert twse_result_full['identity']['security_code'] == "2330"
+    
+    twse_result_compact = None
+    for result in code_results_compact:
+        if result.get('classification', {}).get('market') == 'TWSE':
+            twse_result_compact = result
+            break
+    assert twse_result_compact is not None
+    assert twse_result_compact['identity']['security_code'] == "2330"
     
     # Test name lookup (Chinese)
-    zh_name_results = compact_lookup['by_name'].get('TSMC'.replace(' ', '').casefold(), [])
-    assert len(zh_name_results) >= 1
+    zh_name_results_full = full_lookup['by_name'].get('TSMC'.replace(' ', '').casefold(), [])
+    zh_name_results_compact = compact_lookup['by_name'].get('TSMC'.replace(' ', '').casefold(), [])
+    assert len(zh_name_results_full) >= 1
+    assert len(zh_name_results_compact) >= 1
     # Find the exact match
-    zh_match = None
-    for result in zh_name_results:
+    zh_match_full = None
+    for result in zh_name_results_full:
         if result['identity']['security_name_zh'] == 'TSMC':
-            zh_match = result
+            zh_match_full = result
             break
-    assert zh_match is not None
+    assert zh_match_full is not None
+    
+    zh_match_compact = None
+    for result in zh_name_results_compact:
+        if result['identity']['security_name_zh'] == 'TSMC':
+            zh_match_compact = result
+            break
+    assert zh_match_compact is not None
     
     # Test name lookup (English)
-    en_name_results = compact_lookup['by_name'].get('tsmc'.replace(' ', '').casefold(), [])
-    assert len(en_name_results) >= 1
+    en_name_results_full = full_lookup['by_name'].get('tsmc'.replace(' ', '').casefold(), [])
+    en_name_results_compact = compact_lookup['by_name'].get('tsmc'.replace(' ', '').casefold(), [])
+    assert len(en_name_results_full) >= 1
+    assert len(en_name_results_compact) >= 1
     # Find the exact match
-    en_match = None
-    for result in en_name_results:
+    en_match_full = None
+    for result in en_name_results_full:
         if result['identity']['security_name_en'] and result['identity']['security_name_en'].lower() == 'tsmc':
-            en_match = result
+            en_match_full = result
             break
-    assert en_match is not None
+    assert en_match_full is not None
+    
+    en_match_compact = None
+    for result in en_name_results_compact:
+        if result['identity']['security_name_en'] and result['identity']['security_name_en'].lower() == 'tsmc':
+            en_match_compact = result
+            break
+    assert en_match_compact is not None
     
     # Test that non-existent keys return None/empty
+    assert full_lookup['by_canonical'].get("TWSE:9999") is None
     assert compact_lookup['by_canonical'].get("TWSE:9999") is None
+    assert len(full_lookup['by_isin'].get("TW0009999999", [])) == 0
     assert len(compact_lookup['by_isin'].get("TW0009999999", [])) == 0
+    assert len(full_lookup['by_code'].get(("TWSE", "9999"), [])) == 0
     assert len(compact_lookup['by_code'].get(("TWSE", "9999"), [])) == 0
+    assert len(full_lookup['by_name'].get('nonexistent'.replace(' ', '').casefold(), [])) == 0
     assert len(compact_lookup['by_name'].get('nonexistent'.replace(' ', '').casefold(), [])) == 0
