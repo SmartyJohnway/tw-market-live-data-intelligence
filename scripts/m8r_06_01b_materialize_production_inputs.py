@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import hashlib
 import os
 import ssl
 import sys
@@ -163,7 +164,7 @@ def main() -> int:
             try:
                 contract = find_source_contract(manifest, None, url)
             except ValueError:
-                contract = {}
+                raise ValueError(f"SOURCE_CONTRACT_UNRESOLVED for {source_id or url}")
         raw_path = bundle_dir / "raw_payloads" / f"{source_id}.html"
         probe_result = probe(url, allowed_hosts, contract=contract, save_raw=raw_path)
         probe_result["source_id"] = source_id
@@ -261,7 +262,7 @@ def main() -> int:
             try:
                 contract = find_source_contract(manifest, None, url)
             except ValueError:
-                contract = {}
+                raise ValueError(f"SOURCE_CONTRACT_UNRESOLVED for {source_id or url}")
         raw_path = bundle_dir / "raw_payloads" / f"{source_id}.html"
         probe_result = probe(url, allowed_hosts, contract=contract, save_raw=raw_path)
         probe_result["source_id"] = source_id
@@ -430,13 +431,43 @@ def main() -> int:
     # Create immutable manifest
     manifest_dir = ROOT / "docs" / "reviews" / "m8r06-01b-bundle-manifest"
     manifest_dir.mkdir(parents=True, exist_ok=True)
+    raw_payloads_info = []
+    for probe_res in source_probes:
+        raw_path = probe_res.get("save_raw")
+        if probe_res.get("transport_success") and raw_path and Path(raw_path).exists():
+            raw_payloads_info.append({
+                "source_id": probe_res.get("source_id", "unknown"),
+                "sha256": file_sha256(Path(raw_path).read_bytes()),
+                "retrieved_at_utc": probe_res.get("timestamp")
+            })
+
     immutable_manifest = {
         "bundle_id": bundle_id,
-        "generated_at_utc": generated_at,
-        "source_evidence_manifest_hash": sha256_json(source_manifest),
-        "qualification_report_hash": sha256_json(qual_report),
-        "reproduction_command": "python scripts/m8r_06_01b_materialize_production_inputs.py",
-        "bundle_persisted_in_git": False
+        "bundle_persisted_in_git": False,
+        "classification_records": {
+            "count": len(qualified_records),
+            "sha256": file_sha256((bundle_dir / "classification_records.json").read_bytes())
+        },
+        "lifecycle_events": {
+            "count": len(lifecycle_events),
+            "sha256": file_sha256((bundle_dir / "lifecycle_events.json").read_bytes())
+        },
+        "source_evidence_manifest": {
+            "sha256": file_sha256((bundle_dir / "source_evidence_manifest.json").read_bytes())
+        },
+        "qualification_report": {
+            "sha256": file_sha256((bundle_dir / "qualification_report.json").read_bytes())
+        },
+        "dryrun_snapshot": {
+            "record_count": len(qualified_records),
+            "sha256": file_sha256((bundle_dir / f"dryrun-{bundle_id}-snapshot.json").read_bytes()) if (bundle_dir / f"dryrun-{bundle_id}-snapshot.json").exists() else None
+        },
+        "dryrun_manifest": {
+            "sha256": file_sha256((bundle_dir / f"dryrun-{bundle_id}-manifest.json").read_bytes()) if (bundle_dir / f"dryrun-{bundle_id}-manifest.json").exists() else None
+        },
+        "raw_payloads": raw_payloads_info,
+        "skill_contract_hash": compute_skill_contract_hash(),
+        "reproduction_semantics": "REGENERATES_A_NEW_CURRENT_BUNDLE_NOT_THE_ORIGINAL_BYTES"
     }
     (manifest_dir / "immutable_manifest.json").write_text(json.dumps(immutable_manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -543,8 +574,10 @@ def main() -> int:
         "skill_path": "skills/tw-security-master-classifier",
         "skill_contract_hash": compute_skill_contract_hash(),
         "official_sources_probed": total_probes,
-        "successful_sources": successful_probes,
-        "failed_sources": failed_probes,
+        "transport_successful_sources": len([p for p in source_probes if p.get("transport_success")]),
+        "transport_failed_sources": len([p for p in source_probes if not p.get("transport_success")]),
+        "parser_qualified_sources": len([p for p in source_probes if p.get("acquisition_status") == "data"]),
+        "parser_drift_sources": len([p for p in source_probes if p.get("acquisition_status") == "schema_drift"]),
         "classification_records_attempted": len(classified_records),
         "classification_records_qualified": len(qualified_records),
         "classification_records_quarantined": len(quarantined_records),
@@ -578,13 +611,10 @@ def main() -> int:
             "threshold_recommendation_deferred": True,
         },
         "coverage_summary": {
-            "requested_scope": "TWSE mode 2 + TPEX mode 4 (zh lane)",
-            "identity_evidence_qualified": f"{len(qualified_records)} records",
-            "mode_a_runtime_eligible": f"{len([r for r in qualified_records if r.get('classification', {}).get('instrument_type') in ('common_share', 'etf')])} records (common_share + etf)",
-            "out_of_scope": "modes 1, 3, 5-12 (unlisted, bonds, emerging, derivatives, funds, etc.)",
-            "coverage_limitations": "zh lane only (no en lane for dual-lane confirmation); bounded operator universe",
-            "instrument_type_breakdown": type_counts,
-            "market_breakdown": market_counts,
+            "acquisition_scope": "TWSE_ISIN_MODE_2_PLUS_MODE_4_ZH_LANE",
+            "identity_evidence_qualified": len(qualified_records),
+            "mode_a_runtime_candidate_scope": f"{len([r for r in qualified_records if r.get('classification', {}).get('instrument_type') in ('common_share', 'etf')])} common_share + ETF",
+            "operator_governed_scope": "NOT_YET_SELECTED"
         },
         "repairs_made": [
             {
@@ -603,7 +633,6 @@ def main() -> int:
             "TPEX_DELISTED_SCHEMA_DRIFT",
             "TWSE_ETN_TERMINATION_SCHEMA_DRIFT",
             "TPEX_LIFECYCLE_COVERAGE_INCOMPLETE",
-            "bounded_operator_universe_not_full_market",
         ],
         "principal_decision": principal_decision,
         "authorized_next_task": "M8R-06-01C-GOVERNED-SNAPSHOT-MATERIALIZATION-AND-MODE-A-ACTIVATION",
@@ -631,8 +660,10 @@ def _write_failure_report(bundle_dir: Path, generated_at: str, effective_date: s
         "skill_path": "skills/tw-security-master-classifier",
         "skill_contract_hash": compute_skill_contract_hash(),
         "official_sources_probed": len(source_probes),
-        "successful_sources": len([p for p in source_probes if p.get("transport_success")]),
-        "failed_sources": len([p for p in source_probes if not p.get("transport_success")]),
+        "transport_successful_sources": len([p for p in source_probes if p.get("transport_success")]),
+        "transport_failed_sources": len([p for p in source_probes if not p.get("transport_success")]),
+        "parser_qualified_sources": len([p for p in source_probes if p.get("acquisition_status") == "data"]),
+        "parser_drift_sources": len([p for p in source_probes if p.get("acquisition_status") == "schema_drift"]),
         "classification_records_attempted": 0,
         "classification_records_qualified": 0,
         "classification_records_quarantined": 0,
