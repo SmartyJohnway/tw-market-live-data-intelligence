@@ -428,50 +428,6 @@ def main() -> int:
     qr_path = bundle_dir / "qualification_report.json"
     qr_path.write_text(json.dumps(qual_report, ensure_ascii=False, indent=2), encoding="utf-8")
     log(f"  Written: {qr_path.relative_to(ROOT)}")
-    # Create immutable manifest
-    manifest_dir = ROOT / "docs" / "reviews" / "m8r06-01b-bundle-manifest"
-    manifest_dir.mkdir(parents=True, exist_ok=True)
-    raw_payloads_info = []
-    for probe_res in source_probes:
-        raw_path = probe_res.get("save_raw")
-        if probe_res.get("transport_success") and raw_path and Path(raw_path).exists():
-            raw_payloads_info.append({
-                "source_id": probe_res.get("source_id", "unknown"),
-                "sha256": file_sha256(Path(raw_path).read_bytes()),
-                "retrieved_at_utc": probe_res.get("timestamp")
-            })
-
-    immutable_manifest = {
-        "bundle_id": bundle_id,
-        "bundle_persisted_in_git": False,
-        "classification_records": {
-            "count": len(qualified_records),
-            "sha256": file_sha256((bundle_dir / "classification_records.json").read_bytes())
-        },
-        "lifecycle_events": {
-            "count": len(lifecycle_events),
-            "sha256": file_sha256((bundle_dir / "lifecycle_events.json").read_bytes())
-        },
-        "source_evidence_manifest": {
-            "sha256": file_sha256((bundle_dir / "source_evidence_manifest.json").read_bytes())
-        },
-        "qualification_report": {
-            "sha256": file_sha256((bundle_dir / "qualification_report.json").read_bytes())
-        },
-        "dryrun_snapshot": {
-            "record_count": len(qualified_records),
-            "sha256": file_sha256((bundle_dir / f"dryrun-{bundle_id}-snapshot.json").read_bytes()) if (bundle_dir / f"dryrun-{bundle_id}-snapshot.json").exists() else None
-        },
-        "dryrun_manifest": {
-            "sha256": file_sha256((bundle_dir / f"dryrun-{bundle_id}-manifest.json").read_bytes()) if (bundle_dir / f"dryrun-{bundle_id}-manifest.json").exists() else None
-        },
-        "raw_payloads": raw_payloads_info,
-        "skill_contract_hash": compute_skill_contract_hash(),
-        "reproduction_semantics": "REGENERATES_A_NEW_CURRENT_BUNDLE_NOT_THE_ORIGINAL_BYTES"
-    }
-    (manifest_dir / "immutable_manifest.json").write_text(json.dumps(immutable_manifest, ensure_ascii=False, indent=2), encoding="utf-8")
-
-
     # ── Phase H: Exporter dry-run ────────────────────────────────────────
     log("\n── Phase H: Exporter compatibility dry-run ──")
     exporter_status = "not_attempted"
@@ -694,4 +650,50 @@ def _write_failure_report(bundle_dir: Path, generated_at: str, effective_date: s
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main())    # Create immutable manifest
+    manifest_dir = ROOT / "docs" / "reviews" / "m8r06-01b-bundle-manifest"
+    manifest_dir.mkdir(parents=True, exist_ok=True)
+    raw_payloads_info = []
+    for probe_res in source_probes:
+        if probe_res.get("transport_success"):
+            source_id = probe_res.get("source_id", "unknown")
+            raw_path = bundle_dir / "raw_payloads" / f"{source_id}.html"
+            if raw_path.exists():
+                raw_payloads_info.append({
+                    "source_id": source_id,
+                    "sha256": file_sha256(raw_path.read_bytes()),
+                    "retrieved_at_utc": probe_res.get("observed_at")
+                })
+
+    immutable_manifest = {
+        "bundle_id": bundle_id,
+        "bundle_persisted_in_git": False,
+        "classification_records": {
+            "count": len(qualified_records),
+            "sha256": file_sha256((bundle_dir / "classification_records.json").read_bytes())
+        },
+        "lifecycle_events": {
+            "count": len(lifecycle_events),
+            "sha256": file_sha256((bundle_dir / "lifecycle_events.json").read_bytes())
+        },
+        "source_evidence_manifest": {
+            "sha256": file_sha256((bundle_dir / "source_evidence_manifest.json").read_bytes())
+        },
+        "qualification_report": {
+            "sha256": file_sha256((bundle_dir / "qualification_report.json").read_bytes())
+        },
+        "dryrun_snapshot": {
+            "record_count": len(qualified_records),
+            "sha256": file_sha256((bundle_dir / "dryrun_snapshot.json").read_bytes()) if (bundle_dir / "dryrun_snapshot.json").exists() else None
+        },
+        "dryrun_manifest": {
+            "sha256": file_sha256((bundle_dir / "dryrun_manifest.json").read_bytes()) if (bundle_dir / "dryrun_manifest.json").exists() else None
+        },
+        "raw_payloads": raw_payloads_info,
+        "skill_contract_hash": compute_skill_contract_hash(),
+        "reproduction_semantics": "REGENERATES_A_NEW_CURRENT_BUNDLE_NOT_THE_ORIGINAL_BYTES"
+    }
+    (manifest_dir / "immutable_manifest.json").write_text(json.dumps(immutable_manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+

@@ -16,10 +16,10 @@
   },
   "dryrun_snapshot": {
     "record_count": 43070,
-    "sha256": null
+    "sha256": "a851aa664727a02df87e88b086d956467ce9348aa8a9d9ef9dfc33cc415dc2b8"
   },
   "dryrun_manifest": {
-    "sha256": null
+    "sha256": "adc39b5aea43f1fea1a6384b2c29d3349da12631e1305da710f45049257f04ec"
   },
   "raw_payloads": [
     {
@@ -58,7 +58,7 @@
       "timestamp_status": "ORIGINAL_TIMESTAMP_UNAVAILABLE"
     }
   ],
-  "skill_contract_hash": "4263084a3ed9e14c2e0f76c68bb7ee6b67ca0535b28c5ff1f3f2d2bf9b30bf29",
+  "skill_contract_hash": "488b3e04af2e318cd387b0dfdcbad02be4f2c3f495539c3e436698464f37d77a",
   "bundle_persisted_in_git": false,
   "reproduction_semantics": "REGENERATES_A_NEW_CURRENT_BUNDLE_NOT_THE_ORIGINAL_BYTES"
 }
