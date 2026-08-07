@@ -47,17 +47,23 @@ def load_json(path: Path):
         return json.load(f)
 
 
-def verify_bundle_integrity(bundle_dir: Path, manifest_path: Path) -> bool:
+def verify_bundle_integrity(bundle_dir: Path, manifest_path: Path):
     """
     Verify that the bundle matches the committed manifest.
-    Returns True if all hashes match and required fields are present.
+    Returns (success, manifest, bundle_id) where success is a boolean.
+    On failure, manifest and bundle_id are None.
     """
-    manifest = load_json(manifest_path)
+    try:
+        manifest = load_json(manifest_path)
+    except Exception as e:
+        print(f"ERROR: Failed to load manifest {manifest_path}: {e}")
+        return False, None, None
+
     bundle_id = manifest.get("bundle_id")
     expected_id = "m8r06-01b-20260807T053540Z"
     if bundle_id != expected_id:
         print(f"ERROR: Bundle ID mismatch. Expected {expected_id}, got {bundle_id}")
-        return False
+        return False, None, None
 
     # Check each artifact
     artifacts = [
@@ -72,14 +78,14 @@ def verify_bundle_integrity(bundle_dir: Path, manifest_path: Path) -> bool:
         file_path = bundle_dir / file_name
         if not file_path.exists():
             print(f"ERROR: Missing file {file_path}")
-            return False
+            return False, None, None
         local_hash = sha256_file(file_path)
         manifest_hash = manifest.get(manifest_key, {}).get("sha256")
         if local_hash != manifest_hash:
             print(f"ERROR: Hash mismatch for {file_name}")
             print(f"  Expected: {manifest_hash}")
             print(f"  Got:      {local_hash}")
-            return False
+            return False, None, None
 
     # Check raw payloads
     raw_payloads = manifest.get("raw_payloads", [])
@@ -88,28 +94,26 @@ def verify_bundle_integrity(bundle_dir: Path, manifest_path: Path) -> bool:
         file_path = bundle_dir / "raw_payloads" / file_name
         if not file_path.exists():
             print(f"ERROR: Missing raw payload {file_path}")
-            return False
+            return False, None, None
         local_hash = sha256_file(file_path)
         manifest_hash = entry.get("sha256")
         if local_hash != manifest_hash:
             print(f"ERROR: Hash mismatch for raw payload {file_name}")
             print(f"  Expected: {manifest_hash}")
             print(f"  Got:      {local_hash}")
-            return False
+            return False, None, None
 
     # Check skill_contract_hash
     skill_hash = manifest.get("skill_contract_hash")
     if not skill_hash:
         print("ERROR: Missing skill_contract_hash in manifest")
-        return False
-    # We could also compute it from the skill files, but we trust the manifest for now.
-    # For completeness, we could compute and compare, but we skip to avoid dependency on skill path.
+        return False, None, None
 
     # Check bundle_persisted_in_git
     persisted = manifest.get("bundle_persisted_in_git")
     if persisted is not None and persisted:
         print("ERROR: Bundle marked as persisted in git, but it should not be")
-        return False
+        return False, None, None
 
     return True, manifest, bundle_id
 
@@ -229,58 +233,11 @@ def main():
 
     # Project to compact records
     print("\nProjecting to compact records...")
+    project_start = time.perf_counter()
     compact_records = project_to_compact_records(records)
+    project_time = time.perf_counter() - project_start
+    print(f"Compact projection completed in {project_time:.3f} seconds")
 
-    # Build a compact index: we will include minimal snapshot metadata to make it a drop-in replacement?
-    # However, to keep the size small, we will not duplicate the large arrays (like quarantined_lifecycle_events).
-    # Instead, we will create a structure that mimics the full snapshot but with compact records and adjusted metadata.
-    # For the purpose of being a drop-in replacement for the resolver, we need to provide at least the fields
-    # that the resolver uses for validation and lookup.
-    # We will construct a compact snapshot with:
-    #   - schema_version, snapshot_id, generated_at_utc, effective_observation_date
-    #   - source_skill (with skill_contract_hash)
-    #   - coverage (adjusted for compact records)
-    #   - quarantined_lifecycle_events (empty, as we are not including lifecycle events in the compact record)
-    #   - records: the compact records
-    #
-    # Note: The resolver uses the coverage for validation. We will compute the coverage from the compact records.
-    # We will also compute the quarantined_lifecycle_events as empty (since we are not including them).
-    # This means the manifest for the compact index would have to be different, but we are not producing a manifest.
-    # However, for the benchmark we are only comparing the lookup behavior, not running the full validation.
-    #
-    # Given the time, we will output two versions:
-    #   1. The simple compact index (as before) for size measurement and basic projection.
-    #   2. A compact snapshot that aims to be a drop-in replacement for the resolver (with the understanding that
-    #      the coverage and quarantined events will be adjusted).
-    #
-    # We will use the compact snapshot for the resolver equivalence tests.
-    #
-    # Let's compute the coverage from the compact records (similar to how the exporter does it).
-    # We'll mimic the coverage computation from the exporter.
-    # We'll need to compute:
-    #   - markets, instrument_types, record_count, lifecycle_event_count (from compact records' lifecycle events? but we removed them)
-    #   - coverage_status, quarantined_lifecycle_event_count, total_lifecycle_event_count
-    #
-    # Since we removed the lifecycle events from the compact record, we cannot compute the lifecycle_event_count from the compact record.
-    # However, the full snapshot's lifecycle_event_count is the sum of events attached to records (via the lifecycle.events field).
-    # In our compact record, we have removed the events, so we cannot compute the same lifecycle_event_count.
-    #
-    # Given the complexity and the fact that the task is a preflight, we will decide to not attempt to make a full drop-in replacement
-    # snapshot at this time. Instead, we will focus on the projection and semantic equivalence of the identity resolution data.
-    #
-    # We will output the simple compact index (without the snapshot wrapper) for the benchmark, and we will note in the report
-    # that it is not a drop-in replacement for the resolver without further work.
-    #
-    # For the resolver equivalence test, we will build a lookup from the compact records (as we did before) and compare
-    # the results of the resolver functions with those from the full snapshot.
-    #
-    # We will adjust the benchmark to measure the time to build the compact lookup (which we already do) and the time to
-    # perform lookups using that lookup.
-    #
-    # We will also add a test that uses the resolver functions to verify equivalence.
-    #
-    # For now, we will keep the compact index output as the simple one (as before) for size measurement.
-    #
     # Build the compact index data (simple version)
     compact_data = {
         "schema_version": "tw_runtime_identity_index.v1",
@@ -291,11 +248,11 @@ def main():
     }
 
     # Write compact index to artifacts
-    start = time.perf_counter()
+    serialize_start = time.perf_counter()
     with COMPACT_INDEX_PATH.open('w', encoding='utf-8') as f:
         json.dump(compact_data, f, ensure_ascii=False, separators=(',', ':'))
-    serialization_time = time.perf_counter() - start
-    print(f"Compact index serialized in {serialization_time:.3f} seconds")
+    serialize_time = time.perf_counter() - serialize_start
+    print(f"Compact index serialized in {serialize_time:.3f} seconds")
 
     # Measure compact index size
     compact_size_bytes = COMPACT_INDEX_PATH.stat().st_size
@@ -369,6 +326,7 @@ def main():
         t1 = time.perf_counter()
         lookup_times.append((t1 - t0) / len(unique_cids))  # average per lookup
     lookup_avg_seconds = median(lookup_times)
+    lookup_avg_nanoseconds = lookup_avg_seconds * 1_000_000_000
 
     # Offline export processing time: we can time the export_verified_security_master_snapshot
     # function from the exporter, but note that we are not to run the exporter for production
@@ -419,7 +377,13 @@ def main():
             "compact_json_load_seconds": round(compact_load_median, 3),
             "full_lookup_build_seconds": round(full_build_median, 3),
             "compact_lookup_build_seconds": round(compact_build_median, 3),
+            "compact_projection_seconds": round(project_time, 3),
+            "compact_serialization_seconds": round(serialize_time, 3),
             "compact_lookup_average_seconds": round(lookup_avg_seconds, 6),
+            "compact_lookup_average_nanoseconds": round(lookup_avg_nanoseconds, 0),
+            "unique_lookup_keys": len(unique_cids),
+            "benchmark_rounds": 10,
+            "total_lookup_operations": len(unique_cids) * 10,
             "offline_export_processing_seconds": round(export_median, 3),
         },
         "notes": [

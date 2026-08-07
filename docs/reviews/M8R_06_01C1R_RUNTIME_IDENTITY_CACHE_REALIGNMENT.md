@@ -19,10 +19,12 @@ The compact index schema is a candidate for discussion and may enable more effic
 - **Record Count**: 43,070 identities preserved
 - **Semantic Preservation**: All tested identity resolution dimensions preserved
 - **Performance**: 
-  - Full snapshot JSON load: ~1.58 seconds
-  - Compact index JSON load: ~0.51 seconds
-  - Offline export processing (snapshot generation): ~40.64 seconds
-- **Lookup Performance**: Compact index construction and lookup times comparable to full snapshot
+  - Full snapshot JSON load: ~1.51 seconds
+  - Compact index JSON load: ~0.49 seconds
+  - Compact projection: ~0.22 seconds
+  - Compact serialization: ~1.98 seconds
+  - Offline export processing (snapshot generation): ~43.59 seconds
+- **Lookup Performance**: Compact index construction and lookup times comparable to full snapshot, with average lookup time of 65 nanoseconds per operation
 
 ## Recommendation
 

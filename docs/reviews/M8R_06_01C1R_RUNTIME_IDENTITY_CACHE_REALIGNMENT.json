@@ -44,16 +44,20 @@
     "source_record_traceability": true
   },
   "benchmark": {
-    "full_json_load_seconds": 1.581,
-    "full_lookup_build_seconds": 0.366,
-    "compact_projection_seconds": 2.170,
-    "compact_serialization_seconds": 2.170,
-    "compact_json_load_seconds": 0.507,
-    "compact_lookup_build_seconds": 0.336,
-    "lookup_operation_count": 1000,
-    "compact_lookup_benchmark_seconds": 0.0
+    "full_json_load_seconds": 1.507,
+    "compact_json_load_seconds": 0.494,
+    "full_lookup_build_seconds": 0.347,
+    "compact_lookup_build_seconds": 0.337,
+    "compact_projection_seconds": 0.221,
+    "compact_serialization_seconds": 1.98,
+    "compact_lookup_average_seconds": 0.0,
+    "compact_lookup_average_nanoseconds": 65.0,
+    "unique_lookup_keys": 1000,
+    "benchmark_rounds": 10,
+    "total_lookup_operations": 10000,
+    "offline_export_processing_seconds": 43.586
   },
-  "offline_export_processing_seconds": 40.638,
+  "offline_export_processing_seconds": 43.586,
   "network_acquisition_time": "NOT_MEASURED",
   "targeted_identity_lookup_capability": "PARTIALLY_SUPPORTED",
   "runtime_cache_policy_assessment": {
@@ -67,7 +71,7 @@
   "git_diff_check": "PASS",
   "network_probe_used": false,
   "production_runtime_modified": false,
-  "commit_sha": "b4f6282220a00cce70d032807130d9edf7f475c9",
+  "commit_sha": "d1af1b61eca4c8bc48832d162e92057fd599f9a4",
   "push_status": "SUCCESS",
   "remote_branch": "hermes/m8r-06-01c1r-runtime-identity-cache-realignment",
   "status": "PASS_WITH_CAVEATS",
