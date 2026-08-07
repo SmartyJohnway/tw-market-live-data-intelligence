@@ -171,7 +171,7 @@
       "production_eligible": false,
       "eligibility_if_materialized_and_validated": true,
       "blocker": "missing_production_grade_identity_input",
-      "reason_code": "configured_production_pointer_missing"
+      "reason_code": "configured_production_snapshot_artifact_missing"
     },
     {
       "artifact_or_contract_id": "production_security_master_snapshot_manifest",
@@ -191,7 +191,7 @@
       "production_eligible": false,
       "eligibility_if_materialized_and_validated": true,
       "blocker": "missing_production_grade_identity_input",
-      "reason_code": "configured_production_pointer_missing"
+      "reason_code": "configured_production_manifest_artifact_missing"
     },
     {
       "artifact_or_contract_id": "mode_a_security_master_pointer",

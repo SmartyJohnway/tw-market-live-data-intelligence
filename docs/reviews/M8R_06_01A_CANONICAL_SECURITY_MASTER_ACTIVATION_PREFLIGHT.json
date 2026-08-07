@@ -63,10 +63,14 @@
     },
     "default_ci": {
       "command": "python scripts/run_test_profile.py default-ci --json",
-      "exit_code": 1,
-      "status": "fail",
-      "attribution": "not_determined",
-      "merge_gate": "not_proven"
+      "pr_exit_code": 1,
+      "pr_status": "fail",
+      "baseline_comparison_sha": "7f37da2ce5e8894586134afe87e94e0f157a4e23",
+      "baseline_exit_code": 1,
+      "baseline_status": "fail",
+      "attribution": "BASELINE_EXISTING_FAILURE",
+      "pr_introduced_failure": false,
+      "merge_gate": "NOT_BLOCKED_BY_THIS_DOCS_ONLY_PR"
     },
     "diff_check": {
       "command": "git diff --check",

@@ -5,7 +5,7 @@
 **BLOCKED**.
 Principal decision: `BLOCKED_BY_MISSING_PRODUCTION_GRADE_IDENTITY_INPUT`
 
-The current repository authority establishes the `tw-security-master-classifier` Skill as the canonical producer of identity and lifecycle evidence. M8R-03D-F1 provides a fully functional, verified snapshot adapter and exporter. However, no production-grade inputs currently exist in the repository. The only available snapshots and input records are fixture-only (`tests/fixtures/m8r_05a_f3/`), which are explicitly rejected in production Mode A (`allow_fixture_snapshot=False`).
+The current repository authority establishes the `tw-security-master-classifier` Skill as the canonical producer of identity and lifecycle evidence. M8R-03D-F1 provides a fully functional, verified snapshot adapter and exporter. However, no production-grade inputs currently exist in the repository. The only available snapshots and input records are fixture-only (`tests/fixtures/m8r_03d_f1/` and `tests/fixtures/m8r_05a_f3/`), which are explicitly rejected in production Mode A (`allow_fixture_snapshot=False`).
 
 ### Task Sequencing
 
@@ -114,11 +114,14 @@ The following validations were executed to confirm the current repository state:
    *Status*: `11 passed`
 
 3. **Default CI Profile**
-   *Command*: `python scripts/run_test_profile.py default-ci --json`
-   *Exit code*: `1`
-   *Status*: `fail`
-   *Attribution*: `not_determined`
-   *Merge gate*: `not_proven`
+   * PR command: `python scripts/run_test_profile.py default-ci --json`
+   * PR exit code: `1`
+   * Baseline comparison SHA: `7f37da2ce5e8894586134afe87e94e0f157a4e23`
+   * Baseline exit code: `1`
+   * Baseline status: `fail`
+   * Attribution: `BASELINE_EXISTING_FAILURE`
+   * PR-introduced regression: `false`
+   * Merge gate: `NOT_BLOCKED_BY_THIS_DOCS_ONLY_PR`
 
 4. **Diff Check**
    *Command*: `git diff --check`
