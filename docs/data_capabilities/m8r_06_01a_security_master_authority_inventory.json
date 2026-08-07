@@ -1,0 +1,16 @@
+{
+  "authority": "tw-security-master-classifier",
+  "inventory": [
+    {
+      "type": "ClassificationRecord",
+      "status": "fixture_only"
+    },
+    {
+      "type": "LifecycleEvent",
+      "status": "fixture_only"
+    }
+  ],
+  "producer": "scripts/m8r_03d_f1_security_master_snapshot_exporter.py",
+  "consumer": "scripts/m8r_05a_f3/security_master_loader.py",
+  "production_readiness": "blocked_by_missing_input"
+}
