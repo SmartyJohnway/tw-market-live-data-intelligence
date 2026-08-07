@@ -1,8 +1,64 @@
 {
-  "bundle_id": "m8r06-01b-20260807T051255Z",
-  "generated_at_utc": "2026-08-07T05:12:55.496442+00:00",
-  "source_evidence_manifest_hash": "bcb17bde481294958050fb79e1e2444a11d03ae9426efb54b1527885871c5d6b",
-  "qualification_report_hash": "e2fd871d56f86f6d7fc6f4f79a3f40e33c4256fcc2a7d1c9e183689a5798f818",
-  "reproduction_command": "python scripts/m8r_06_01b_materialize_production_inputs.py",
-  "bundle_persisted_in_git": false
+  "bundle_id": "m8r06-01b-20260807T053540Z",
+  "classification_records": {
+    "count": 43070,
+    "sha256": "c63f827e00d7bf677dd3b40516ad9cf2c9cb28d2139b22d1f13a684c74755ce1"
+  },
+  "lifecycle_events": {
+    "count": 264,
+    "sha256": "dbdf2158158527b64402ed5e9b7add29ee991b409f9d40622728a2c531e4b241"
+  },
+  "source_evidence_manifest": {
+    "sha256": "46338fe3a47f570f5b0600214f74088cf8e8b4842398096b34f9e6330a351509"
+  },
+  "qualification_report": {
+    "sha256": "94fef63e97364de253a65514465507179e1b0d05956f3a54eebe91334b36573c"
+  },
+  "dryrun_snapshot": {
+    "record_count": 43070,
+    "sha256": null
+  },
+  "dryrun_manifest": {
+    "sha256": null
+  },
+  "raw_payloads": [
+    {
+      "source_id": "twse",
+      "file_name": "twse_delisted.html",
+      "sha256": "2c69aef721451d12ba332ec1dd193187c5289e693e0a0e3b0fb15c5d4448b1e7",
+      "retrieved_at_utc": null,
+      "timestamp_status": "ORIGINAL_TIMESTAMP_UNAVAILABLE"
+    },
+    {
+      "source_id": "tpex",
+      "file_name": "tpex_delisted.html",
+      "sha256": "0c954bca2c0f7210a0f56e8d462b1bacc86ac5fa5c998299d26a9f6ce99ebcd1",
+      "retrieved_at_utc": null,
+      "timestamp_status": "ORIGINAL_TIMESTAMP_UNAVAILABLE"
+    },
+    {
+      "source_id": "twse",
+      "file_name": "twse_etn_expired.html",
+      "sha256": "265d3eeb30e292795ad9a089f6e34f10c6c5b781b756c9766f796717b97cb8d9",
+      "retrieved_at_utc": null,
+      "timestamp_status": "ORIGINAL_TIMESTAMP_UNAVAILABLE"
+    },
+    {
+      "source_id": "twse",
+      "file_name": "twse_isin_mode2_zh.html",
+      "sha256": "4702de6822714469e54f837b3266741064e1b4d954f3c0089d4350e8a3d84741",
+      "retrieved_at_utc": null,
+      "timestamp_status": "ORIGINAL_TIMESTAMP_UNAVAILABLE"
+    },
+    {
+      "source_id": "twse",
+      "file_name": "twse_isin_mode4_zh.html",
+      "sha256": "e4afe3eb755e977eb9319d9dc6dace5af2d9a5f93b4e8d7f05a84e74d949f345",
+      "retrieved_at_utc": null,
+      "timestamp_status": "ORIGINAL_TIMESTAMP_UNAVAILABLE"
+    }
+  ],
+  "skill_contract_hash": "4263084a3ed9e14c2e0f76c68bb7ee6b67ca0535b28c5ff1f3f2d2bf9b30bf29",
+  "bundle_persisted_in_git": false,
+  "reproduction_semantics": "REGENERATES_A_NEW_CURRENT_BUNDLE_NOT_THE_ORIGINAL_BYTES"
 }
