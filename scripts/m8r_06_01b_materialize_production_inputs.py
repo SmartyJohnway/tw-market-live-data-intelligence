@@ -523,6 +523,9 @@ def main() -> int:
     log(f"  Authorized next: M8R-06-01C-GOVERNED-SNAPSHOT-MATERIALIZATION-AND-MODE-A-ACTIVATION")
     log(f"  M8R-06-02: NOT_AUTHORIZED")
 
+    # ── Phase G: Immutable Manifest Generation ──
+    build_immutable_manifest(bundle_id, bundle_dir, qualified_records, lifecycle_events, source_probes)
+
     # ── Write machine-readable report ────────────────────────────────────
     report = {
         "task": "M8R-06-01B-EXISTING-SECURITY-MASTER-CLASSIFIER-PRODUCTION-INPUT-MATERIALIZATION",
@@ -649,8 +652,9 @@ def _write_failure_report(bundle_dir: Path, generated_at: str, effective_date: s
     evidence_path.write_text(json.dumps({"source_probes": source_probes}, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-if __name__ == "__main__":
-    sys.exit(main())    # Create immutable manifest
+
+def build_immutable_manifest(bundle_id: str, bundle_dir: Path, qualified_records: list, lifecycle_events: list, source_probes: list) -> None:
+    """Generate and write the immutable manifest for the materialization bundle."""
     manifest_dir = ROOT / "docs" / "reviews" / "m8r06-01b-bundle-manifest"
     manifest_dir.mkdir(parents=True, exist_ok=True)
     raw_payloads_info = []
@@ -694,6 +698,8 @@ if __name__ == "__main__":
         "reproduction_semantics": "REGENERATES_A_NEW_CURRENT_BUNDLE_NOT_THE_ORIGINAL_BYTES"
     }
     (manifest_dir / "immutable_manifest.json").write_text(json.dumps(immutable_manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    log(f"  Written immutable manifest")
 
 
-
+if __name__ == "__main__":
+    sys.exit(main())
