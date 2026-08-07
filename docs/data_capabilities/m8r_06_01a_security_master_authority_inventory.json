@@ -1,5 +1,4 @@
 {
-  "authority": "tw-security-master-classifier",
   "inventory": [
     {
       "artifact_or_contract_id": "ClassificationRecord",
@@ -149,14 +148,15 @@
       "lifecycle_event_count": 0,
       "fixture_status": "N/A",
       "historical_status": "N/A",
-      "production_eligible": true,
+      "production_eligible": false,
+      "eligibility_if_materialized_and_validated": true,
       "blocker": "missing_production_grade_identity_input",
       "reason_code": "current_production_input_missing"
     },
     {
       "artifact_or_contract_id": "production_security_master_snapshot",
       "path": "config/production_security_master_snapshot.json",
-      "role": "Current Legacy Pointer",
+      "role": "Current hardcoded expected snapshot artifact path",
       "schema_version": "tw_verified_security_master_snapshot.v1",
       "producer": "scripts/m8r_03d_f1_security_master_snapshot_exporter.py",
       "consumer": "scripts/m8r_05a_f3/security_master_loader.py",
@@ -168,12 +168,38 @@
       "lifecycle_event_count": 0,
       "fixture_status": "N/A",
       "historical_status": "N/A",
-      "production_eligible": true,
+      "production_eligible": false,
+      "eligibility_if_materialized_and_validated": true,
       "blocker": "missing_production_grade_identity_input",
       "reason_code": "configured_production_pointer_missing"
+    },
+    {
+      "artifact_or_contract_id": "production_security_master_snapshot_manifest",
+      "path": "config/production_security_master_snapshot_manifest.json",
+      "role": "Current hardcoded expected manifest artifact path",
+      "schema_version": "tw_verified_security_master_snapshot_manifest.v1",
+      "producer": "scripts/m8r_03d_f1_security_master_snapshot_exporter.py",
+      "consumer": "scripts/m8r_05a_f3/security_master_loader.py",
+      "evidence_grade": "production_grade",
+      "observation_status": "N/A",
+      "coverage": "N/A",
+      "effective_date": "N/A",
+      "record_count": 0,
+      "lifecycle_event_count": 0,
+      "fixture_status": "N/A",
+      "historical_status": "N/A",
+      "production_eligible": false,
+      "eligibility_if_materialized_and_validated": true,
+      "blocker": "missing_production_grade_identity_input",
+      "reason_code": "configured_production_pointer_missing"
+    },
+    {
+      "artifact_or_contract_id": "mode_a_security_master_pointer",
+      "path": "config/m8r_06_mode_a_security_master_pointer.json",
+      "role": "Proposed configuration pointer",
+      "status": "not_yet_implemented",
+      "production_eligible": false,
+      "reason_code": "authorized_for_future_M8R_06_01C_only"
     }
-  ],
-  "producer": "scripts/m8r_03d_f1_security_master_snapshot_exporter.py",
-  "consumer": "scripts/m8r_05a_f3/security_master_loader.py",
-  "production_readiness": "blocked_by_missing_input"
+  ]
 }

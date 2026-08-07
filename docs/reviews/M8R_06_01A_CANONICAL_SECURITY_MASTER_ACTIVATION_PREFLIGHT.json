@@ -1,7 +1,7 @@
 {
   "task": "M8R-06-01A-CANONICAL-SECURITY-MASTER-AUTHORITY-AND-ACTIVATION-PREFLIGHT",
-  "baseline_main_sha": "7f37da2ce5e8894586134afe87e94e0f157a4e23",
-  "reviewed_head_sha": "ac7b4df4a5f6ebd5861bae1aea5aec7c779e7d79",
+  "reviewed_repository_baseline_sha": "7f37da2ce5e8894586134afe87e94e0f157a4e23",
+  "preflight_content_commit_sha": "49ae4065793d30d62a3e50ce07a978a5733be061",
   "authority_owner": "tw-security-master-classifier",
   "producer_path": "scripts/m8r_03d_f1_security_master_snapshot_exporter.py",
   "consumer_path": "scripts/m8r_05a_f3/security_master_loader.py",
@@ -13,7 +13,7 @@
   "production_grade_input_available": false,
   "selected_storage_architecture": "governed_data_directory_with_config_pointer",
   "coverage_policy": "governed_bounded_operator_universe",
-  "freshness_policy": "fresh_stale_expired_thresholds",
+  "freshness_policy": "threshold_status: UNRESOLVED; authorized_next_task must determine exact thresholds",
   "activation_gates": [
     "snapshot_schema_validation",
     "manifest_schema_validation",
@@ -64,7 +64,9 @@
     "default_ci": {
       "command": "python scripts/run_test_profile.py default-ci --json",
       "exit_code": 1,
-      "status": "fail"
+      "status": "fail",
+      "attribution": "not_determined",
+      "merge_gate": "not_proven"
     },
     "diff_check": {
       "command": "git diff --check",

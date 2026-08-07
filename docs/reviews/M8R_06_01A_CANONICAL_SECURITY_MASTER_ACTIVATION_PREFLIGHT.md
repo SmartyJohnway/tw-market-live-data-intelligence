@@ -52,10 +52,10 @@ The coverage mode is explicitly defined as `governed_bounded_operator_universe`.
 ### D. Freshness policy
 **Thresholds and Operator Behavior:**
 
-1. **`fresh`**: Snapshot is within the acceptable age (e.g., generated within the last 24-48 hours, or matching the current logical trading session).
-   *Behavior*: Mode A inspection is allowed. Target resolution and Mode B preview are fully authorized.
+1. **`fresh`**: Freshness classes are approved; numeric thresholds remain unresolved and must be established during M8R-06-01B based on input source cadence.
+   *Behavior*: Mode A inspection and target resolution are allowed after M8R-06-01C activation acceptance. Mode B preview remains NOT_AUTHORIZED until M8R-06-02 is separately implemented and accepted.
 2. **`stale_but_inspectable`**: Snapshot is older than the `fresh` threshold but has not yet reached hard expiry.
-   *Behavior*: Mode A inspection is allowed with an explicit warning caveat. Mode B execution authorization is **not authorized**.
+   *Behavior*: Mode A inspection is allowed with an explicit warning caveat. Mode B remains not authorized independently of freshness.
 3. **`expired_and_blocked`**: Snapshot has reached hard expiry.
    *Behavior*: Mode A returns a controlled blocker (e.g. `canonical_security_master_expired`).
 
@@ -116,7 +116,9 @@ The following validations were executed to confirm the current repository state:
 3. **Default CI Profile**
    *Command*: `python scripts/run_test_profile.py default-ci --json`
    *Exit code*: `1`
-   *Status*: `fail` (Tests failing due to environment configuration or existing strict baseline issues)
+   *Status*: `fail`
+   *Attribution*: `not_determined`
+   *Merge gate*: `not_proven`
 
 4. **Diff Check**
    *Command*: `git diff --check`
