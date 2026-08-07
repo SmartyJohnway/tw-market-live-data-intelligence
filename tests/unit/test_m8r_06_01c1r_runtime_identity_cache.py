@@ -194,7 +194,7 @@ def test_lookup_equivalence_synthetic():
             "lifecycle": {
                 "state": "listed",
                 "resolution_status": "resolved",
-                "as_of": "2026-08-07
+                "as_of": "2026-08-07"
             },
             "execution_eligibility": {
                 "status": "eligible",
@@ -209,23 +209,23 @@ def test_lookup_equivalence_synthetic():
                 "security_code": "2454",
                 "security_name_zh": "MediaTek",
                 "security_name_en": "MediaTek",
-                "isin": "TW0002454006
+                "isin": "TW0002454006"
             },
             "classification": {
                 "market": "TWSE",
                 "instrument_type": "common_share",
                 "instrument_family": "company_share",
-                "classification_status": "confirmed_official_single_lane
+                "classification_status": "confirmed_official_single_lane"
             },
             "observation": {
                 "status": "active",
                 "observed_at": "2026-08-07T00:00:00Z",
-                "source_updated_date": "2026-08-07
+                "source_updated_date": "2026-08-07"
             },
             "lifecycle": {
                 "state": "listed",
                 "resolution_status": "resolved",
-                "as_of": "2026-08-07
+                "as_of": "2026-08-07"
             },
             "execution_eligibility": {
                 "status": "eligible",
@@ -240,23 +240,23 @@ def test_lookup_equivalence_synthetic():
                 "security_code": "0050",
                 "security_name_zh": "Fubon Financial",
                 "security_name_en": "Fubon Financial",
-                "isin": "TW0000050002
+                "isin": "TW0000050002"
             },
             "classification": {
                 "market": "TWSE",
                 "instrument_type": "common_share",
                 "instrument_family": "company_share",
-                "classification_status": "confirmed_official_single_lane
+                "classification_status": "confirmed_official_single_lane"
             },
             "observation": {
                 "status": "active",
                 "observed_at": "2026-08-07T00:00:00Z",
-                "source_updated_date": "2026-08-07
+                "source_updated_date": "2026-08-07"
             },
             "lifecycle": {
                 "state": "listed",
                 "resolution_status": "resolved",
-                "as_of": "2026-08-07
+                "as_of": "2026-08-07"
             },
             "execution_eligibility": {
                 "status": "eligible",
