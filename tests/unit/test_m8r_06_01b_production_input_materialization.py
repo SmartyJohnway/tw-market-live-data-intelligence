@@ -78,27 +78,46 @@ class TestSkillPathSerializationFix:
 class TestQualificationTaxonomy:
     """Test that the qualification taxonomy covers all expected statuses."""
 
-    EXPECTED_STATUSES = {
-        "QUALIFIED_PRODUCTION_INPUT",
-        "QUALIFIED_WITH_CAVEATS",
-        "QUARANTINED",
-        "REJECTED_FIXTURE_ONLY",
-        "REJECTED_HISTORICAL_ONLY",
-        "REJECTED_SCHEMA_INVALID",
-        "REJECTED_SOURCE_UNAVAILABLE",
-        "REJECTED_IDENTITY_CONFLICT",
-        "REJECTED_LIFECYCLE_CONFLICT",
-    }
-
     def test_all_statuses_defined(self):
-        """All qualification statuses must be importable from the script."""
+        """All qualification statuses must be correctly routed by qualify_record."""
         import importlib.util
         spec = importlib.util.spec_from_file_location(
             "m8r_06_01b",
             str(ROOT / "scripts" / "m8r_06_01b_materialize_production_inputs.py"),
         )
         mod = importlib.util.module_from_spec(spec)
-        # Don't execute main, just verify the constants exist
-        for status in self.EXPECTED_STATUSES:
-            # Just confirm the string is defined (we use constants, not enums)
-            assert isinstance(status, str)
+        spec.loader.exec_module(mod)
+
+        # Test Dual Lane -> QUALIFIED_PRODUCTION_INPUT
+        assert mod.qualify_record({
+            "classification": {"classification_status": "confirmed_dual_lane"},
+            "observation": {"status": "observed_in_capture"}
+        }, {}) == mod.QUAL_PRODUCTION
+
+        # Test Single Lane -> QUALIFIED_WITH_CAVEATS
+        assert mod.qualify_record({
+            "classification": {"classification_status": "confirmed_official_single_lane"},
+            "observation": {"status": "observed_in_capture"}
+        }, {}) == mod.QUAL_CAVEATS
+
+        # Test Fixture -> REJECTED_FIXTURE_ONLY
+        assert mod.qualify_record({
+            "observation": {"status": "fixture_observation_only"}
+        }, {}) == mod.QUAL_REJECTED_FIXTURE
+
+        # Test Historical -> REJECTED_HISTORICAL_ONLY
+        assert mod.qualify_record({
+            "observation": {"status": "historical_capture"}
+        }, {}) == mod.QUAL_REJECTED_HISTORICAL
+
+        # Test Identity Conflict -> REJECTED_IDENTITY_CONFLICT
+        assert mod.qualify_record({
+            "conflicts": [{"severity": "hard", "category": "identity_conflict"}],
+            "observation": {"status": "observed_in_capture"}
+        }, {}) == mod.QUAL_REJECTED_IDENTITY
+
+        # Test Quarantine -> QUARANTINED
+        assert mod.qualify_record({
+            "classification": {"classification_status": "quarantine_conflict"},
+            "observation": {"status": "observed_in_capture"}
+        }, {}) == mod.QUAL_QUARANTINED

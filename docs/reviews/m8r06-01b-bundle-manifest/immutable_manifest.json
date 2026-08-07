@@ -1,0 +1,8 @@
+{
+  "bundle_id": "m8r06-01b-20260807T051255Z",
+  "generated_at_utc": "2026-08-07T05:12:55.496442+00:00",
+  "source_evidence_manifest_hash": "bcb17bde481294958050fb79e1e2444a11d03ae9426efb54b1527885871c5d6b",
+  "qualification_report_hash": "e2fd871d56f86f6d7fc6f4f79a3f40e33c4256fcc2a7d1c9e183689a5798f818",
+  "reproduction_command": "python scripts/m8r_06_01b_materialize_production_inputs.py",
+  "bundle_persisted_in_git": false
+}

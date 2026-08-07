@@ -38,7 +38,7 @@ from merge_lifecycle_events import merge as merge_lifecycle  # noqa: E402
 from parse_etn_termination import parse as parse_etn  # noqa: E402
 from parse_tpex_delisted import parse as parse_tpex_delisted  # noqa: E402
 from parse_twse_delisted import parse as parse_twse_delisted  # noqa: E402
-from probe_sources import probe, load_manifest  # noqa: E402
+from probe_sources import probe, load_manifest, find_source_contract  # noqa: E402
 from schema_validation import validate as validate_schema  # noqa: E402
 
 # Remove skill scripts from path after importing
@@ -87,48 +87,6 @@ def log(msg: str) -> None:
     safe = msg.encode("ascii", errors="replace").decode("ascii")
     print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] {safe}", flush=True)
 
-
-def fetch_raw(url: str, allowed_hosts: list[str], *, timeout: float = 30) -> tuple[bytes | None, dict[str, Any]]:
-    """Fetch raw bytes from an official URL using the existing probe infrastructure."""
-    observed_at = datetime.now(timezone.utc).isoformat()
-    try:
-        ctx = ssl.create_default_context()
-        req = urllib.request.Request(url, headers={
-            "User-Agent": "tw-security-master-classifier/1.1 (+official-source-validation)",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-        })
-        opener = urllib.request.build_opener(urllib.request.HTTPSHandler(context=ctx))
-        with opener.open(req, timeout=timeout) as resp:
-            data = resp.read(20 * 1024 * 1024)
-            status = resp.status
-            content_type = resp.headers.get_content_type()
-            final_url = resp.geturl()
-        probe_result = {
-            "source_url": url,
-            "final_url": final_url,
-            "retrieved_at_utc": observed_at,
-            "http_status": status,
-            "content_type": content_type,
-            "response_size": len(data),
-            "response_hash": file_sha256(data),
-            "probe_status": "success",
-            "failure_reason": None,
-        }
-        return data, probe_result
-    except Exception as exc:
-        probe_result = {
-            "source_url": url,
-            "final_url": None,
-            "retrieved_at_utc": observed_at,
-            "http_status": getattr(exc, "code", None),
-            "content_type": None,
-            "response_size": 0,
-            "response_hash": None,
-            "probe_status": "failure",
-            "failure_reason": f"{type(exc).__name__}: {exc}",
-        }
-        return None, probe_result
 
 
 def qualify_record(record: dict[str, Any], schemas: dict[str, dict]) -> str:
@@ -199,17 +157,26 @@ def main() -> int:
         source_id = f"twse_isin_mode{mode}_zh"
         log(f"  Probing {source_id}: {url}")
 
-        data, probe_result = fetch_raw(url, allowed_hosts)
+        try:
+            contract = find_source_contract(manifest, source_id, url)
+        except ValueError:
+            try:
+                contract = find_source_contract(manifest, None, url)
+            except ValueError:
+                contract = {}
+        raw_path = bundle_dir / "raw_payloads" / f"{source_id}.html"
+        probe_result = probe(url, allowed_hosts, contract=contract, save_raw=raw_path)
         probe_result["source_id"] = source_id
         probe_result["parser_selected"] = "isin_parser.parse_html"
         source_probes.append(probe_result)
 
-        if data is None:
-            log(f"    FAILED: {probe_result['failure_reason']}")
+        if probe_result["acquisition_status"] not in {"data", "schema_drift", "semantic_error"}:
+            log(f"    FAILED: {probe_result.get('error', probe_result.get('error_type', 'unknown'))}")
             probe_failures.append(probe_result)
             continue
 
-        log(f"    HTTP {probe_result['http_status']}, {probe_result['response_size']} bytes")
+        log(f"    HTTP {probe_result.get('http_status')}, {probe_result.get('byte_count', 0)} bytes")
+        data = raw_path.read_bytes()
 
         # Parse using existing isin_parser
         parsed = parse_html(
@@ -255,7 +222,7 @@ def main() -> int:
     # ── Phase C: Classify all records ────────────────────────────────────
     log("\n── Phase C: Classifying records ──")
     source_context = {
-        "observation_status": "observed_in_latest_verified_snapshot",
+        "observation_status": "observed_in_capture",
         "observed_at": generated_at,
         "fresh_probe": True,
     }
@@ -288,17 +255,26 @@ def main() -> int:
 
     for source_id, url, parser_name in lifecycle_sources:
         log(f"  Probing {source_id}: {url}")
-        data, probe_result = fetch_raw(url, allowed_hosts)
+        try:
+            contract = find_source_contract(manifest, source_id, url)
+        except ValueError:
+            try:
+                contract = find_source_contract(manifest, None, url)
+            except ValueError:
+                contract = {}
+        raw_path = bundle_dir / "raw_payloads" / f"{source_id}.html"
+        probe_result = probe(url, allowed_hosts, contract=contract, save_raw=raw_path)
         probe_result["source_id"] = source_id
         probe_result["parser_selected"] = parser_name
         source_probes.append(probe_result)
 
-        if data is None:
-            log(f"    FAILED: {probe_result['failure_reason']}")
+        if probe_result["acquisition_status"] not in {"data", "schema_drift", "semantic_error"}:
+            log(f"    FAILED: {probe_result.get('error', probe_result.get('error_type', 'unknown'))}")
             probe_failures.append(probe_result)
             continue
 
-        log(f"    HTTP {probe_result.get('http_status')}, {probe_result['response_size']} bytes")
+        log(f"    HTTP {probe_result.get('http_status')}, {probe_result.get('byte_count', 0)} bytes")
+        data = raw_path.read_bytes()
 
         try:
             if parser_name == "parse_twse_delisted":
@@ -376,9 +352,12 @@ def main() -> int:
                               "No records qualified for production input")
         return 1
 
+
     # ── Phase F–G: Create input bundle ───────────────────────────────────
     log("\n── Phase F–G: Creating input bundle ──")
     bundle_dir.mkdir(parents=True, exist_ok=True)
+    (bundle_dir / "raw_payloads").mkdir(exist_ok=True)
+
 
     # Validate all qualified records against the exporter's schema expectations
     log("  Validating records against exporter schema...")
@@ -417,7 +396,7 @@ def main() -> int:
         "effective_observation_date": effective_date,
         "source_probes": source_probes,
         "probe_count": len(source_probes),
-        "successful_count": len([p for p in source_probes if p["probe_status"] == "success"]),
+        "successful_count": len([p for p in source_probes if p.get("transport_success")]),
         "failed_count": len(probe_failures),
         "identity_modes_probed": IDENTITY_MODES,
         "lifecycle_sources_probed": [s[0] for s in lifecycle_sources],
@@ -431,7 +410,7 @@ def main() -> int:
         "bundle_id": bundle_id,
         "generated_at_utc": generated_at,
         "effective_observation_date": effective_date,
-        "coverage_mode": "governed_bounded_operator_universe",
+        "coverage_mode": "TWSE_ISIN_MODE_2_PLUS_MODE_4_ZH_LANE",
         "requested_scope": "TWSE mode 2 + TPEX mode 4 (zh lane)",
         "qualified_scope": f"{len(qualified_records)} records qualified",
         "excluded_scope": f"{len(rejected_records)} rejected, {len(quarantined_records)} quarantined",
@@ -448,6 +427,19 @@ def main() -> int:
     qr_path = bundle_dir / "qualification_report.json"
     qr_path.write_text(json.dumps(qual_report, ensure_ascii=False, indent=2), encoding="utf-8")
     log(f"  Written: {qr_path.relative_to(ROOT)}")
+    # Create immutable manifest
+    manifest_dir = ROOT / "docs" / "reviews" / "m8r06-01b-bundle-manifest"
+    manifest_dir.mkdir(parents=True, exist_ok=True)
+    immutable_manifest = {
+        "bundle_id": bundle_id,
+        "generated_at_utc": generated_at,
+        "source_evidence_manifest_hash": sha256_json(source_manifest),
+        "qualification_report_hash": sha256_json(qual_report),
+        "reproduction_command": "python scripts/m8r_06_01b_materialize_production_inputs.py",
+        "bundle_persisted_in_git": False
+    }
+    (manifest_dir / "immutable_manifest.json").write_text(json.dumps(immutable_manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+
 
     # ── Phase H: Exporter dry-run ────────────────────────────────────────
     log("\n── Phase H: Exporter compatibility dry-run ──")
@@ -510,7 +502,7 @@ def main() -> int:
     log("=" * 70)
 
     total_probes = len(source_probes)
-    successful_probes = len([p for p in source_probes if p["probe_status"] == "success"])
+    successful_probes = len([p for p in source_probes if p.get("transport_success")])
     failed_probes = len(probe_failures)
 
     log(f"  Sources probed: {total_probes}")
@@ -561,8 +553,11 @@ def main() -> int:
         "lifecycle_events_qualified": len(lifecycle_events),
         "lifecycle_events_quarantined": len(merged_lifecycle.get("conflicts", [])),
         "lifecycle_events_rejected": 0,
+
         "production_input_bundle_created": bool(qualified_records),
+        "bundle_persisted_in_git": False,
         "bundle_id": bundle_id,
+
         "bundle_path": str(bundle_dir.relative_to(ROOT)).replace("\\", "/"),
         "fixture_input_used": False,
         "historical_input_used_as_current": False,
@@ -577,14 +572,15 @@ def main() -> int:
         "freshness_evidence": {
             "identity_source_update_cadence": "daily (source_updated_date in ISIN page)",
             "lifecycle_source_update_cadence": "event-driven (delisting/termination pages updated per event)",
-            "observation_semantics": "observed_in_latest_verified_snapshot (fresh probe at generation time)",
+            "observation_semantics": "observed_in_capture (fresh probe at generation time)",
             "daily_refresh_meaningful": True,
             "session_refresh_meaningful": False,
             "threshold_recommendation_deferred": True,
         },
         "coverage_summary": {
             "requested_scope": "TWSE mode 2 + TPEX mode 4 (zh lane)",
-            "qualified_scope": f"{len(qualified_records)} records",
+            "identity_evidence_qualified": f"{len(qualified_records)} records",
+            "mode_a_runtime_eligible": f"{len([r for r in qualified_records if r.get('classification', {}).get('instrument_type') in ('common_share', 'etf')])} records (common_share + etf)",
             "out_of_scope": "modes 1, 3, 5-12 (unlisted, bonds, emerging, derivatives, funds, etc.)",
             "coverage_limitations": "zh lane only (no en lane for dual-lane confirmation); bounded operator universe",
             "instrument_type_breakdown": type_counts,
@@ -604,7 +600,9 @@ def main() -> int:
         "blocking_findings": exporter_issues if exporter_issues else [],
         "accepted_caveats": [
             "zh_lane_only_single_lane_not_dual_lane",
-            "lifecycle_unknown_for_most_active_securities",
+            "TPEX_DELISTED_SCHEMA_DRIFT",
+            "TWSE_ETN_TERMINATION_SCHEMA_DRIFT",
+            "TPEX_LIFECYCLE_COVERAGE_INCOMPLETE",
             "bounded_operator_universe_not_full_market",
         ],
         "principal_decision": principal_decision,
@@ -633,8 +631,8 @@ def _write_failure_report(bundle_dir: Path, generated_at: str, effective_date: s
         "skill_path": "skills/tw-security-master-classifier",
         "skill_contract_hash": compute_skill_contract_hash(),
         "official_sources_probed": len(source_probes),
-        "successful_sources": len([p for p in source_probes if p["probe_status"] == "success"]),
-        "failed_sources": len([p for p in source_probes if p["probe_status"] != "success"]),
+        "successful_sources": len([p for p in source_probes if p.get("transport_success")]),
+        "failed_sources": len([p for p in source_probes if not p.get("transport_success")]),
         "classification_records_attempted": 0,
         "classification_records_qualified": 0,
         "classification_records_quarantined": 0,
