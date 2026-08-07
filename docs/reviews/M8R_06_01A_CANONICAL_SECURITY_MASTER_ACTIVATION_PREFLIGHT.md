@@ -5,7 +5,14 @@
 **BLOCKED**.
 Principal decision: `BLOCKED_BY_MISSING_PRODUCTION_GRADE_IDENTITY_INPUT`
 
-The current repository authority establishes the `tw-security-master-classifier` Skill as the canonical producer of identity and lifecycle evidence. M8R-03D-F1 provides a fully functional, verified snapshot adapter and exporter. However, no production-grade inputs currently exist in the repository. The only available snapshots are fixture-only (`tests/fixtures/m8r_05a_f3/`), which are explicitly rejected in production Mode A (`allow_fixture_snapshot=False`).
+The current repository authority establishes the `tw-security-master-classifier` Skill as the canonical producer of identity and lifecycle evidence. M8R-03D-F1 provides a fully functional, verified snapshot adapter and exporter. However, no production-grade inputs currently exist in the repository. The only available snapshots and input records are fixture-only (`tests/fixtures/m8r_05a_f3/`), which are explicitly rejected in production Mode A (`allow_fixture_snapshot=False`).
+
+### Task Sequencing
+
+1. **Current Status**: `BLOCKED_BY_MISSING_PRODUCTION_GRADE_IDENTITY_INPUT`
+2. **Next Authorized Task**: `M8R-06-01B-PRODUCTION-GRADE-IDENTITY-AND-LIFECYCLE-INPUT-QUALIFICATION`
+3. **Future Task After B**: `M8R-06-01C-GOVERNED-SNAPSHOT-MATERIALIZATION-AND-MODE-A-ACTIVATION`
+4. **M8R-06-02**: `NOT_AUTHORIZED`
 
 ## Required Investigation
 
@@ -18,30 +25,100 @@ The current repository authority establishes the `tw-security-master-classifier`
 
 ### B. Artifact and configuration design
 **Recommendation:** Store immutable artifacts under a governed data/artifact directory and keep only pointers in `config/`.
-*Why:* Snapshots will rotate. Committing full JSON snapshots directly to `config/` bloats the configuration path and mixes volatile market data with static configuration. By keeping only a pointer (`snapshot_path` and `manifest_path`) in `config/` and storing the snapshots elsewhere (e.g., `data/snapshots/`), we preserve a clean configuration boundary.
+
+**Exact pointer schema and paths:**
+Create a new pointer file:
+`config/m8r_06_mode_a_security_master_pointer.json`
+
+Pointer Schema:
+```json
+{
+  "snapshot_path": "data/security_master/snapshots/<snapshot_id>/snapshot.json",
+  "manifest_path": "data/security_master/snapshots/<snapshot_id>/manifest.json"
+}
+```
+
+*Semantics:*
+- **Current pointer semantics**: `config/m8r_06_mode_a_security_master_pointer.json` specifies the active snapshot. Mode A config loading must be updated to read this pointer instead of hardcoding `config/production_security_master_snapshot.json`.
+- **Rollback pointer semantics**: To rollback, the operator rewrites `config/m8r_06_mode_a_security_master_pointer.json` to point to a previous `<snapshot_id>` directory.
+- **Atomic update order**: Write snapshot -> write manifest -> update pointer file.
+- **Path traversal prevention**: Pointer paths must be strict relative paths constrained within the repository's data directory.
 
 ### C. Coverage policy
-**Policy:** Bounded operator/watchlist universe initially, expanding to full current-active universe.
-*Why:* For Mode A to provide value, it must at least cover the bounded target universe of current executing operators. If a target is not found, Mode A fails closed. The distinction between TWSE and TPEX is maintained strictly in the snapshot taxonomy.
+**Policy:** `governed_bounded_operator_universe`
+
+The coverage mode is explicitly defined as `governed_bounded_operator_universe`. The snapshot must strictly define its coverage scope (e.g. `requested_scope`, `qualified_scope`, `excluded_scope`, `coverage_effective_date`, `coverage_hash`). Mode A is a request inspection tool; therefore, any target not found within the qualified scope will return `TARGET_OUTSIDE_GOVERNED_SNAPSHOT_COVERAGE` instead of a generic `not_found`. This ensures that unknown targets are clearly identified as falling outside the explicit operator watchlist boundaries, rather than implying they do not exist in the market.
 
 ### D. Freshness policy
-* `generated_at_utc`: The exact time the exporter was run.
-* `effective_observation_date`: The logical date of the source state.
-* Behavior: Hard-expiry is currently not strictly enforced in the schema beyond manual rotation (snapshots are manually refreshed). Stale-but-usable requires explicit operator caveats.
+**Thresholds and Operator Behavior:**
+
+1. **`fresh`**: Snapshot is within the acceptable age (e.g., generated within the last 24-48 hours, or matching the current logical trading session).
+   *Behavior*: Mode A inspection is allowed. Target resolution and Mode B preview are fully authorized.
+2. **`stale_but_inspectable`**: Snapshot is older than the `fresh` threshold but has not yet reached hard expiry.
+   *Behavior*: Mode A inspection is allowed with an explicit warning caveat. Mode B execution authorization is **not authorized**.
+3. **`expired_and_blocked`**: Snapshot has reached hard expiry.
+   *Behavior*: Mode A returns a controlled blocker (e.g. `canonical_security_master_expired`).
 
 ### E. Activation gate
 Mode A currently returns `HTTP 409 canonical_security_master_unavailable` because `config/production_security_master_snapshot.json` does not exist.
-The offline startup check (`python scripts/run_unified_workbench.py --startup-check`) predictably fails with exit status `1` and stable failure code `canonical_security_master_unavailable`.
 
-Activation requires:
-1. Valid production-grade snapshot and manifest available at the configured path.
-2. All hash, schema, and coverage reconciliations passing.
-3. Startup check (`scripts/run_unified_workbench.py --startup-check`) succeeding.
+Activation requires successfully passing the following checklist:
+1. `snapshot_schema_validation`
+2. `manifest_schema_validation`
+3. `snapshot_hash_verification`
+4. `schema_hash_verification`
+5. `skill_contract_hash_verification`
+6. `record_hash_verification`
+7. `coverage_reconciliation`
+8. `lifecycle_count_reconciliation`
+9. `fixture_only_rejection`
+10. `validation_status == passed`
+11. `startup-check success`
+12. `production API acceptance success`
+13. `focused tests success`
+14. `default-ci closure`
 
 ### F. Rollback and failure behavior
-Missing snapshots, hash mismatches, or fixture-only rejections all result in an immediate fail-closed state (HTTP 409). If the target is ambiguous, the resolver explicitly fails.
+The failure matrix explicitly defines stable reason codes for all failure modes to ensure UI and test stability:
 
-## Next Task
-M8R-06-01B-GOVERNED-SECURITY-MASTER-MATERIALIZATION-AND-MODE-A-ACTIVATION
+* **Missing snapshot**: `canonical_security_master_unavailable`
+* **Missing manifest**: `canonical_security_master_manifest_missing`
+* **Hash mismatch**: `canonical_security_master_hash_mismatch`
+* **Schema drift**: `canonical_security_master_schema_drift`
+* **Skill contract drift**: `canonical_security_master_skill_contract_drift`
+* **Expired snapshot**: `canonical_security_master_expired`
+* **Fixture observation found**: `fixture_snapshot_rejected_in_production`
+* **Duplicate canonical target**: `duplicate_canonical_target_id`
+* **Identity conflict**: `identity_conflict_blocked`
+* **Lifecycle conflict**: `lifecycle_conflict_blocked`
+* **Malformed pointer**: `canonical_security_master_pointer_malformed`
 
-This task will materialize the production snapshot into the data directory, update the configuration pointer, and activate Mode A validation.
+## Evidence Commands
+
+The following validations were executed to confirm the current repository state:
+
+1. **Startup Check**
+   *Command*: `python scripts/run_unified_workbench.py --startup-check`
+   *Exit code*: `1`
+   *Stdout/stable reason*:
+   ```json
+   {
+     "status": "error",
+     "message": "canonical_security_master_unavailable"
+   }
+   ```
+
+2. **Focused Tests**
+   *Command*: `pytest tests/unit/m8r_06_01/ tests/integration/test_unified_workbench_api.py -q`
+   *Exit code*: `0`
+   *Status*: `11 passed`
+
+3. **Default CI Profile**
+   *Command*: `python scripts/run_test_profile.py default-ci --json`
+   *Exit code*: `1`
+   *Status*: `fail` (Tests failing due to environment configuration or existing strict baseline issues)
+
+4. **Diff Check**
+   *Command*: `git diff --check`
+   *Exit code*: `0`
+   *Status*: No trailing whitespace or conflict markers.
