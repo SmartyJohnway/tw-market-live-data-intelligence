@@ -227,48 +227,58 @@ def lookup_equivalence(full_lookup, compact_lookup):
     Returns a dict with keys for each lookup type indicating if they are equivalent.
     """
     equivalence = {
-        'canonical_target_id': True,
-        'isin': True,
-        'code_with_market': True,
-        'code_without_market': True,
-        'name_zh': True,
-        'name_en': True,
+        "canonical_target_id": True,
+        "isin": True,
+        "code_with_market": True,
+        "code_without_market": True,
+        "name_zh": True,
+        "name_en": True,
     }
     # We'll check a sample of keys to avoid O(n^2) but for simplicity we check all keys in the compact lookup.
     # In practice, the compact lookup should have the same keys as the full lookup for the fields we care about.
     # We'll do a bidirectional check: every key in compact must be in full and vice versa for the same values.
-
+    
     # Helper to compare two lists of records (order doesn't matter)
     def records_equiv(list1, list2):
+        """
+        Compare two lists of records for equivalence (order doesn't matter).
+        Also handles single records by converting them to lists.
+        """
+        # Convert single records to lists
+        if not isinstance(list1, list):
+            list1 = [list1]
+        if not isinstance(list2, list):
+            list2 = [list2]
+        
         if len(list1) != len(list2):
             return False
         # Compare by record_id (assuming unique)
         ids1 = sorted(r.get('record_id') for r in list1)
         ids2 = sorted(r.get('record_id') for r in list2)
         return ids1 == ids2
-
+    
     # Canonical target ID
     full_cids = set(full_lookup['by_canonical'].keys())
     compact_cids = set(compact_lookup['by_canonical'].keys())
     if full_cids != compact_cids:
-        equivalence['canonical_target_id'] = False
+        equivalence["canonical_target_id"] = False
     else:
         for cid in full_cids:
             if not records_equiv(full_lookup['by_canonical'][cid], compact_lookup['by_canonical'][cid]):
-                equivalence['canonical_target_id'] = False
+                equivalence["canonical_target_id"] = False
                 break
-
+    
     # ISIN
     full_isins = set(full_lookup['by_isin'].keys())
     compact_isins = set(compact_lookup['by_isin'].keys())
     if full_isins != compact_isins:
-        equivalence['isin'] = False
+        equivalence["isin"] = False
     else:
         for isin in full_isins:
             if not records_equiv(full_lookup['by_isin'][isin], compact_lookup['by_isin'][isin]):
-                equivalence['isin'] = False
+                equivalence["isin"] = False
                 break
-
+    
     # Code with market
     full_code_market = set(full_lookup['by_code'].keys())
     compact_code_market = set(compact_lookup['by_code'].keys())
@@ -276,13 +286,13 @@ def lookup_equivalence(full_lookup, compact_lookup):
     full_code_market = {k for k in full_code_market if k[0] is not None}
     compact_code_market = {k for k in compact_code_market if k[0] is not None}
     if full_code_market != compact_code_market:
-        equivalence['code_with_market'] = False
+        equivalence["code_with_market"] = False
     else:
         for key in full_code_market:
             if not records_equiv(full_lookup['by_code'][key], compact_lookup['by_code'][key]):
-                equivalence['code_with_market'] = False
+                equivalence["code_with_market"] = False
                 break
-
+    
     # Code without market
     full_code_nomarket = set(full_lookup['by_code'].keys())
     compact_code_nomarket = set(compact_lookup['by_code'].keys())
@@ -290,34 +300,102 @@ def lookup_equivalence(full_lookup, compact_lookup):
     full_code_nomarket = {k for k in full_code_nomarket if k[0] is None}
     compact_code_nomarket = {k for k in compact_code_nomarket if k[0] is None}
     if full_code_nomarket != compact_code_nomarket:
-        equivalence['code_without_market'] = False
+        equivalence["code_without_market"] = False
     else:
         for key in full_code_nomarket:
             if not records_equiv(full_lookup['by_code'][key], compact_lookup['by_code'][key]):
-                equivalence['code_without_market'] = False
+                equivalence["code_without_market"] = False
                 break
-
+    
     # Name (Chinese and English)
     full_names = set(full_lookup['by_name'].keys())
     compact_names = set(compact_lookup['by_name'].keys())
     if full_names != compact_names:
-        equivalence['name_zh'] = False
-        equivalence['name_en'] = False
+        equivalence["name_zh"] = False
+        equivalence["name_en"] = False
     else:
         for name in full_names:
             if not records_equiv(full_lookup['by_name'][name], compact_lookup['by_name'][name]):
-                equivalence['name_zh'] = False
-                equivalence['name_en'] = False
+                equivalence["name_zh"] = False
+                equivalence["name_en"] = False
                 break
-
+    
     return equivalence
+    def records_equiv(list1, list2):
 
+        """
 
+        Compare two lists of records for equivalence (order doesn't matter).
+
+        Also handles single records by converting them to lists.
+
+        """
+
+        # Convert single records to lists
+
+        if not isinstance(list1, list):
+
+            list1 = [list1]
+
+        if not isinstance(list2, list):
+
+            list2 = [list2]
+
+        
+
+        if len(list1) != len(list2):
+
+            return False
+
+        # Compare by record_id (assuming unique)
+
+        ids1 = sorted(r.get('record_id') for r in list1)
+
+        ids2 = sorted(r.get('record_id') for r in list2)
+
+        return ids1 == ids2
+
+    # Helper to compare two lists of records (order doesn't matter)
+    def records_equiv(list1, list2):
+        """
+        Compare two lists of records for equivalence (order doesn't matter).
+        Also handles single records by converting them to lists.
+        """
+        # Convert single records to lists
+        if not isinstance(list1, list):
+            list1 = [list1]
+        if not isinstance(list2, list):
+            list2 = [list2]
+        
+        if len(list1) != len(list2):
+            return False
+        # Compare by record_id (assuming unique)
+        ids1 = sorted(r.get('record_id') for r in list1)
+        ids2 = sorted(r.get('record_id') for r in list2)
+        return ids1 == ids2
+    # Helper to compare two lists of records (order doesn't matter)
+    """
+    Compare two lists of records for equivalence (order doesn't matter).
+    Also handles single records by converting them to lists.
+    """
+    # Convert single records to lists
+    if not isinstance(list1, list):
+        list1 = [list1]
+    if not isinstance(list2, list):
+        list2 = [list2]
+    
+    if len(list1) != len(list2):
+        return False
+    # Compare by record_id (assuming unique)
+    ids1 = sorted(r.get('record_id') for r in list1)
+    ids2 = sorted(r.get('record_id') for r in list2)
+    return ids1 == ids2
 def main():
     print("Loading authorized bundle...")
     is_valid, manifest, bundle_id = verify_bundle_integrity(BUNDLE_DIR, COMMITTED_MANIFEST_PATH)
     if not is_valid:
-        print("Bundle verification failed. Checking if we can continue anyway...")
+        print("Bundle verification failed. Exiting.")
+        sys.exit(1)
         # We'll continue but note the failure in the results
     print(f"Authorized bundle ID: {bundle_id}")
 
