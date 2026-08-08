@@ -4,7 +4,7 @@ import json, re
 import jsonschema
 from datetime import datetime, timezone, date
 from pathlib import Path
-from scripts.m8r_03d_f1_security_master_snapshot_exporter import SNAPSHOT_SCHEMA_VERSION, MANIFEST_SCHEMA_VERSION, SUPPORTED_PRODUCER_VERSIONS, sha256_json, FORBIDDEN_RAW_FIELDS, CONFIRMED, QUARANTINE, compute_schema_hash, compute_skill_contract_hash, parse_utc_timestamp, validate_iso_date, SNAPSHOT_SCHEMA_PATH, MANIFEST_SCHEMA_PATH
+from m8r_03d_f1_security_master_snapshot_exporter import SNAPSHOT_SCHEMA_VERSION, MANIFEST_SCHEMA_VERSION, SUPPORTED_PRODUCER_VERSIONS, sha256_json, FORBIDDEN_RAW_FIELDS, CONFIRMED, QUARANTINE, compute_schema_hash, compute_skill_contract_hash, parse_utc_timestamp, validate_iso_date, SNAPSHOT_SCHEMA_PATH, MANIFEST_SCHEMA_PATH
 
 RESOLUTION_SCHEMA_VERSION='m8r_03d_f1_security_identity_resolution.v1'
 class VerifiedSecurityMasterSnapshotError(ValueError): pass
