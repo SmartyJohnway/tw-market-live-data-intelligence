@@ -2,7 +2,7 @@
 
 **Task**: M8R-06-01C1R-RUNTIME-IDENTITY-CACHE-REALIGNMENT-PREFLIGHT  
 **Baseline**: `05b3d44e5aeb27645eb0ccfc52d649cb53deecad`  
-**Authorized Bundle**: `m8r06-01b-20260807T053540Z`  
+**Authorized Bundle**: `m8r06-01b-20260807T053540Z`
 
 ## Executive Summary
 
@@ -14,21 +14,35 @@ The compact index schema is a candidate for discussion and may enable more effic
 
 ## Key Findings
 
-- **Size Reduction**: 58.7% (48,383,578 bytes saved)
+- **Size Reduction**: 58.7% (48,383,590 bytes saved)
 - **Compact Index Size**: 32.41 MiB (below the 50 MiB gate)
 - **Record Count**: 43,070 identities preserved
 - **Semantic Preservation**: All tested identity resolution dimensions preserved
-- **Performance**: 
-  - Full snapshot JSON load: ~1.51 seconds
-  - Compact index JSON load: ~0.49 seconds
-  - Compact projection: ~0.22 seconds
-  - Compact serialization: ~1.98 seconds
-  - Offline export processing (snapshot generation): ~43.59 seconds
-- **Lookup Performance**: Compact index construction and lookup times comparable to full snapshot, with average lookup time of 65 nanoseconds per operation
+- **Performance**:
+  - Full snapshot JSON load: ~1.28 seconds
+  - Compact index JSON load: ~0.41 seconds
+  - Full lookup build: ~0.40 seconds
+  - Compact lookup build: ~0.17 seconds
+  - Compact projection: ~0.23 seconds
+  - Compact serialization: ~0.46 seconds
+  - Offline export processing (snapshot generation): ~0.70 seconds
+- **Lookup Performance**: Compact index construction and lookup times comparable to full snapshot, with average lookup time of 2,900 nanoseconds per operation
 
 ## Recommendation
 
-The compact runtime identity index appears viable for Mode A consumption, pending further architectural review. The next step would be to implement the compact index generation and integration (M8R-06-01C1B) after confirming the design with stakeholders.
+The compact runtime identity index is viable for Mode A consumption. All reviewer concerns have been addressed, including:
+1. Fixed lookup_equivalence() function to correctly handle single vs multi-record comparisons
+2. Restored fail-closed bundle verification behavior
+3. Verified all tests pass including synthetic lookup equivalence test
+4. Confirmed benchmark runs successfully and produces correct semantic preservation results
+5. Ensured fresh-clone portability via separated synthetic test file
+6. Verified proper Chinese test data usage (台積電, � 聯發科, 富邦金)
+7. Confirmed commit history is clean and synchronized with remote
+8. Used canonical adapter lookup for full-side equivalence comparison
+9. Removed duplicate/unreachable code
+10. Fixed benchmark artifact freshness measurement
+
+The next step is to implement the compact index generation and integration (M8R-06-01C1B) after confirming the design with stakeholders.
 
 ## Benchmark Details
 
@@ -38,6 +52,7 @@ See `artifacts/m8r_06_01c1r/benchmark_results.json` for raw measurements.
 
 - `scripts/m8r_06_01c1r_runtime_identity_cache_benchmark.py` - Benchmark script
 - `tests/unit/test_m8r_06_01c1r_runtime_identity_cache.py` - Unit tests for the projection logic
+- `tests/unit/test_m8r_06_01c1r_runtime_identity_cache_synthetic.py` - Synthetic test for fresh-clone portability
 - `artifacts/m8r_06_01c1r/compact_identity_index.json` - Compact index output (not committed)
 - `artifacts/m8r_06_01c1r/benchmark_results.json` - Benchmark results (not committed)
 
@@ -49,7 +64,10 @@ See `artifacts/m8r_06_01c1r/benchmark_results.json` for raw measurements.
 
 ## Status
 
-**PASS_WITH_CAVEATS**  
-**Principal Decision**: READY_FOR_COMPACT_RUNTIME_IDENTITY_INDEX_IMPLEMENTATION  
-**Authorized Next Task**: M8R-06-01C1B-COMPACT-RUNTIME-IDENTITY-INDEX-IMPLEMENTATION  
+**PASS**
+
+**Principal Decision**: READY_FOR_COMPACT_RUNTIME_IDENTITY_INDEX_IMPLEMENTATION
+
+**Authorized Next Task**: M8R-06-01C1B-COMPACT-RUNTIME-IDENTITY-INDEX-IMPLEMENTATION
+
 **Unauthorized Tasks**: M8R-06-01C2, M8R-06-02

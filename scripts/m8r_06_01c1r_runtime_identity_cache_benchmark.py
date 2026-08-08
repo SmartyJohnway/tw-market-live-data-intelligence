@@ -18,10 +18,15 @@ import re
 import sys
 from pathlib import Path
 from statistics import median
+from m8r_03d_f1_security_master_snapshot_adapter import build_verified_security_master_lookup
 
 # Ensure the repo root is in sys.path for importing local modules
 REPO_ROOT = Path(__file__).resolve().parent.parent
+SCRIPTS_DIR = REPO_ROOT / "scripts"
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
 if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
     sys.path.insert(0, str(REPO_ROOT))
 
 # Paths
@@ -34,8 +39,10 @@ COMPACT_INDEX_PATH = ARTIFACTS_DIR / "compact_identity_index.json"
 BENCHMARK_RESULTS_PATH = ARTIFACTS_DIR / "benchmark_results.json"
 
 
-def sha256_file(path: Path) -> str:
+def sha256_file(path) -> str:
     """Compute SHA-256 of a file."""
+    if isinstance(path, str):
+        path = Path(path)
     h = hashlib.sha256()
     with path.open('rb') as f:
         for chunk in iter(lambda: f.read(4096), b''):
@@ -49,10 +56,11 @@ def load_json(path: Path):
 
 
 def verify_bundle_integrity(bundle_dir: Path, manifest_path: Path):
-    """
+    """"
     Verify bundle integrity against the committed manifest.
     Returns (is_valid, manifest, bundle_id) where is_valid is a boolean.
     If invalid, manifest and bundle_id may be None.
+    Performs verification of key components listed in the manifest.
     """
     if not bundle_dir.is_dir():
         print(f"ERROR: Bundle directory not found: {bundle_dir}")
@@ -72,9 +80,6 @@ def verify_bundle_integrity(bundle_dir: Path, manifest_path: Path):
     if not dryrun_info:
         print("ERROR: Missing dryrun_snapshot in manifest")
         return False, None, None
-    # In the manifest we saw, dryrun_snapshot is a dict with record_count and sha256, no file_name.
-    # However, the bundle directory contains the file dryrun_snapshot.json.
-    # We'll assume the file name is "dryrun_snapshot.json".
     snapshot_path = bundle_dir / "dryrun_snapshot.json"
     if not snapshot_path.is_file():
         print(f"ERROR: Missing file in bundle: dryrun_snapshot.json")
@@ -102,8 +107,77 @@ def verify_bundle_integrity(bundle_dir: Path, manifest_path: Path):
         print("ERROR: Bundle marked as persisted in git, but it should not be")
         return False, None, None
 
-    return True, manifest, bundle_id
+    # Additional verification: check that all listed components exist and have correct hashes
+    components_to_verify = [
+        ("classification_records", "count", "sha256"),
+        ("lifecycle_events", "count", "sha256"),
+        ("source_evidence_manifest", None, "sha256"),
+        ("qualification_report", None, "sha256"),
+        ("dryrun_manifest", None, "sha256"),
+    ]
 
+    for component_name, count_field, hash_field in components_to_verify:
+        component_info = manifest.get(component_name)
+        if not component_info:
+            print(f"ERROR: Missing {component_name} in manifest")
+            return False, None, None
+
+        if count_field:
+            expected_count = component_info.get(count_field)
+            if expected_count is None:
+                print(f"ERROR: Missing {count_field} for {component_name} in manifest")
+                return False, None, None
+
+        if hash_field:
+            expected_hash = component_info.get(hash_field)
+            if not expected_hash:
+                print(f"ERROR: Missing {hash_field} for {component_name} in manifest")
+                return False, None, None
+            # Determine the file path
+            if component_name == "source_evidence_manifest":
+                file_path = bundle_dir / "source_evidence_manifest.json"
+            elif component_name == "qualification_report":
+                file_path = bundle_dir / "qualification_report.json"
+            elif component_name == "dryrun_manifest":
+                file_path = bundle_dir / "dryrun_manifest.json"
+            else:
+                continue  # Already handled above
+
+            if not file_path.is_file():
+                print(f"ERROR: Missing file in bundle: {file_path.name}")
+                return False, None, None
+            local_hash = sha256_file(file_path)
+            if local_hash != expected_hash:
+                print(f"ERROR: Hash mismatch for {component_name}")
+                print(f"  Expected: {expected_hash}")
+                print(f"  Got:      {local_hash}")
+                return False, None, None
+
+    # Verify raw_payloads if present
+    raw_payloads = manifest.get("raw_payloads")
+    if raw_payloads is not None:
+        for i, payload_info in enumerate(raw_payloads):
+            source_id = payload_info.get("source_id")
+            file_name = payload_info.get("file_name")
+            expected_hash = payload_info.get("sha256")
+            if not all([source_id, file_name, expected_hash]):
+                print(f"ERROR: Incomplete raw_payloads entry {i} in manifest")
+                return False, None, None
+            file_path = os.path.join(bundle_dir, "raw_payloads", file_name)
+            if not os.path.exists(file_path):
+                print(f"ERROR: Missing raw payload file: {file_name}")
+                return False, None, None
+            if not os.path.isfile(file_path):
+                print(f"ERROR: Not a file: {file_name}")
+                return False, None, None
+            local_hash = sha256_file(file_path)
+            if local_hash != expected_hash:
+                print(f"ERROR: Hash mismatch for raw payload {file_name}")
+                print(f"  Expected: {expected_hash}")
+                print(f"  Got:      {local_hash}")
+                return False, None, None
+
+    return True, manifest, bundle_id
 
 def project_to_compact_records(records):
     """Project full records to compact identity records."""
@@ -188,39 +262,19 @@ def build_compact_lookup(compact_data):
 
 def build_full_lookup(snapshot):
     """
-    Build a lookup dictionary from a full snapshot, mimicking the structure
-    built by build_verified_security_master_lookup.
+    Build a lookup dictionary from a full snapshot using the canonical adapter.
+    This ensures we are comparing against the repository canonical authority.
     Returns a dict with keys: 'by_canonical', 'by_isin', 'by_code', 'by_name'.
     """
-    lookup = {
-        'by_canonical': {},
-        'by_isin': {},
-        'by_code': {},
-        'by_name': {},
+    # Use the canonical adapter to build the verified security master lookup
+    adapter_result = build_verified_security_master_lookup(snapshot)
+    # Extract just the lookup dictionaries (excluding the snapshot key)
+    return {
+        "by_canonical": adapter_result.get("by_canonical", {}),
+        "by_isin": adapter_result.get("by_isin", {}),
+        "by_code": adapter_result.get("by_code", {}),
+        "by_name": adapter_result.get("by_name", {})
     }
-    for rec in snapshot.get('records', []):
-        cid = rec.get('canonical_target_id')
-        if cid:
-            lookup['by_canonical'][cid] = rec
-        ident = rec.get('identity', {})
-        market = rec.get('classification', {}).get('market')
-        isin = ident.get('isin')
-        if isin:
-            lookup['by_isin'].setdefault(isin.upper(), []).append(rec)
-        security_code = ident.get('security_code')
-        if security_code:
-            lookup['by_code'].setdefault((market, security_code), []).append(rec)
-            lookup['by_code'].setdefault((None, security_code), []).append(rec)
-        for k in ('security_name_zh', 'security_name_en'):
-            name = ident.get(k)
-            if name:
-                # Normalize as in the adapter: remove spaces and casefold
-                norm = re.sub(r'\s+', '', name or '').casefold()
-                if norm:
-                    lookup['by_name'].setdefault(norm, []).append(rec)
-    return lookup
-
-
 def lookup_equivalence(full_lookup, compact_lookup):
     """
     Compare full_lookup and compact_lookup for equivalence.
@@ -321,75 +375,7 @@ def lookup_equivalence(full_lookup, compact_lookup):
                 break
     
     return equivalence
-    def records_equiv(list1, list2):
 
-        """
-
-        Compare two lists of records for equivalence (order doesn't matter).
-
-        Also handles single records by converting them to lists.
-
-        """
-
-        # Convert single records to lists
-
-        if not isinstance(list1, list):
-
-            list1 = [list1]
-
-        if not isinstance(list2, list):
-
-            list2 = [list2]
-
-        
-
-        if len(list1) != len(list2):
-
-            return False
-
-        # Compare by record_id (assuming unique)
-
-        ids1 = sorted(r.get('record_id') for r in list1)
-
-        ids2 = sorted(r.get('record_id') for r in list2)
-
-        return ids1 == ids2
-
-    # Helper to compare two lists of records (order doesn't matter)
-    def records_equiv(list1, list2):
-        """
-        Compare two lists of records for equivalence (order doesn't matter).
-        Also handles single records by converting them to lists.
-        """
-        # Convert single records to lists
-        if not isinstance(list1, list):
-            list1 = [list1]
-        if not isinstance(list2, list):
-            list2 = [list2]
-        
-        if len(list1) != len(list2):
-            return False
-        # Compare by record_id (assuming unique)
-        ids1 = sorted(r.get('record_id') for r in list1)
-        ids2 = sorted(r.get('record_id') for r in list2)
-        return ids1 == ids2
-    # Helper to compare two lists of records (order doesn't matter)
-    """
-    Compare two lists of records for equivalence (order doesn't matter).
-    Also handles single records by converting them to lists.
-    """
-    # Convert single records to lists
-    if not isinstance(list1, list):
-        list1 = [list1]
-    if not isinstance(list2, list):
-        list2 = [list2]
-    
-    if len(list1) != len(list2):
-        return False
-    # Compare by record_id (assuming unique)
-    ids1 = sorted(r.get('record_id') for r in list1)
-    ids2 = sorted(r.get('record_id') for r in list2)
-    return ids1 == ids2
 def main():
     print("Loading authorized bundle...")
     is_valid, manifest, bundle_id = verify_bundle_integrity(BUNDLE_DIR, COMMITTED_MANIFEST_PATH)
@@ -439,7 +425,7 @@ def main():
     print("\nBenchmarking load and lookup construction...")
     # Load times
     start_time = time.time()
-    _ = load_json(COMPACT_INDEX_PATH) if COMPACT_INDEX_PATH.is_file() else json.loads(compact_index_json)
+    _ = json.loads(compact_index_json)
     compact_json_load_time = time.time() - start_time
 
     start_time = time.time()
