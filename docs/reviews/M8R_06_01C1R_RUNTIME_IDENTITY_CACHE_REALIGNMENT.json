@@ -86,7 +86,7 @@
     "Targeted identity lookup capability analysis indicates partial support in existing contracts",
     "Lookup benchmark showed approximately 4 microseconds per lookup",
     "The compact index is not a drop-in replacement for the full snapshot in the resolver without further adjustments (missing snapshot wrapper and coverage fields)",
-    "Offline export processing time (~0.81s) measures local producer computation only; network acquisition latency (TWSE/TPEx response times, rate limiting) is NOT_MEASURED and would add to total refresh cost in production"
+    "Offline export processing time (~1.14s) measures local producer computation only; network acquisition latency (TWSE/TPEx response times, rate limiting) is NOT_MEASURED and would add to total refresh cost in production"
   ],
   "benchmark_execution_source_sha": "6e65365ad2ed2c5cc15b60999a00c62bc1277b38"
 }
