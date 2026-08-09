@@ -36,7 +36,7 @@ The compact runtime identity index is viable for Mode A consumption. All reviewe
 3. Verified all tests pass including synthetic lookup equivalence test
 4. Confirmed benchmark runs successfully and produces correct semantic preservation results
 5. Ensured fresh-clone portability via separated synthetic test file
-6. Verified proper Chinese test data usage (台積電, � 聯發科, 富邦金)
+6. Verified proper Chinese test data usage (台積電、聯發科、富邦金)
 7. Confirmed commit history is clean and synchronized with remote
 8. Used canonical adapter lookup for full-side equivalence comparison without modifying the adapter
 9. Removed duplicate/unreachable code
