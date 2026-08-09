@@ -19,14 +19,14 @@ The compact index schema is a candidate for discussion and may enable more effic
 - **Record Count**: 43,070 identities preserved
 - **Semantic Preservation**: All tested identity resolution dimensions preserved
 - **Performance**:
-  - Full snapshot JSON load: ~1.28 seconds
-  - Compact index JSON load: ~0.41 seconds
-  - Full lookup build: ~0.40 seconds
-  - Compact lookup build: ~0.17 seconds
-  - Compact projection: ~0.23 seconds
-  - Compact serialization: ~0.46 seconds
-  - Offline export processing (snapshot generation): ~0.70 seconds
-- **Lookup Performance**: Compact index construction and lookup times comparable to full snapshot, with average lookup time of 2,900 nanoseconds per operation
+  - Full snapshot JSON load: ~1.52 seconds
+  - Compact index JSON load: ~0.60 seconds
+  - Full lookup build: ~0.45 seconds
+  - Compact lookup build: ~0.19 seconds
+  - Compact projection: ~0.24 seconds
+  - Compact serialization: ~0.57 seconds
+  - Offline export processing (snapshot generation): ~0.81 seconds
+- **Lookup Performance**: Compact index construction and lookup times comparable to full snapshot, with average lookup time of approximately 3.9 microseconds per operation
 
 ## Recommendation
 
@@ -38,9 +38,10 @@ The compact runtime identity index is viable for Mode A consumption. All reviewe
 5. Ensured fresh-clone portability via separated synthetic test file
 6. Verified proper Chinese test data usage (台積電, � 聯發科, 富邦金)
 7. Confirmed commit history is clean and synchronized with remote
-8. Used canonical adapter lookup for full-side equivalence comparison
+8. Used canonical adapter lookup for full-side equivalence comparison without modifying the adapter
 9. Removed duplicate/unreachable code
 10. Fixed benchmark artifact freshness measurement
+11. Restored complete canonical bundle verification (including classification_records and lifecycle_events SHA verification)
 
 The next step is to implement the compact index generation and integration (M8R-06-01C1B) after confirming the design with stakeholders.
 
@@ -64,10 +65,10 @@ See `artifacts/m8r_06_01c1r/benchmark_results.json` for raw measurements.
 
 ## Status
 
-**PASS**
+**PASS_WITH_CAVEATS**
 
 **Principal Decision**: READY_FOR_COMPACT_RUNTIME_IDENTITY_INDEX_IMPLEMENTATION
 
-**Authorized Next Task**: M8R-06-01C1B-COMPACT-RUNTIME-IDENTITY-INDEX-IMPLEMENTATION
+**Recommended Next Task**: M8R-06-01C1B-COMPACT-RUNTIME-IDENTITY-INDEX-IMPLEMENTATION
 
 **Unauthorized Tasks**: M8R-06-01C2, M8R-06-02

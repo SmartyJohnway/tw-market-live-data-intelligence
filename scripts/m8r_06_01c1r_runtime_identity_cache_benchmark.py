@@ -18,16 +18,12 @@ import re
 import sys
 from pathlib import Path
 from statistics import median
-from m8r_03d_f1_security_master_snapshot_adapter import build_verified_security_master_lookup
-
 # Ensure the repo root is in sys.path for importing local modules
 REPO_ROOT = Path(__file__).resolve().parent.parent
-SCRIPTS_DIR = REPO_ROOT / "scripts"
-if str(SCRIPTS_DIR) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS_DIR))
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
-    sys.path.insert(0, str(REPO_ROOT))
+from scripts.m8r_03d_f1_security_master_snapshot_adapter import build_verified_security_master_lookup
+
 
 # Paths
 BUNDLE_DIR = REPO_ROOT / "data" / "security_master" / "input_bundles" / "m8r06-01b-20260807T053540Z"
@@ -108,6 +104,7 @@ def verify_bundle_integrity(bundle_dir: Path, manifest_path: Path):
         return False, None, None
 
     # Additional verification: check that all listed components exist and have correct hashes
+    # Additional verification: check that all listed components exist and have correct hashes
     components_to_verify = [
         ("classification_records", "count", "sha256"),
         ("lifecycle_events", "count", "sha256"),
@@ -134,14 +131,18 @@ def verify_bundle_integrity(bundle_dir: Path, manifest_path: Path):
                 print(f"ERROR: Missing {hash_field} for {component_name} in manifest")
                 return False, None, None
             # Determine the file path
-            if component_name == "source_evidence_manifest":
+            if component_name == "classification_records":
+                file_path = bundle_dir / "classification_records.json"
+            elif component_name == "lifecycle_events":
+                file_path = bundle_dir / "lifecycle_events.json"
+            elif component_name == "source_evidence_manifest":
                 file_path = bundle_dir / "source_evidence_manifest.json"
             elif component_name == "qualification_report":
                 file_path = bundle_dir / "qualification_report.json"
             elif component_name == "dryrun_manifest":
                 file_path = bundle_dir / "dryrun_manifest.json"
             else:
-                continue  # Already handled above
+                continue  # Should not happen
 
             if not file_path.is_file():
                 print(f"ERROR: Missing file in bundle: {file_path.name}")
@@ -152,7 +153,6 @@ def verify_bundle_integrity(bundle_dir: Path, manifest_path: Path):
                 print(f"  Expected: {expected_hash}")
                 print(f"  Got:      {local_hash}")
                 return False, None, None
-
     # Verify raw_payloads if present
     raw_payloads = manifest.get("raw_payloads")
     if raw_payloads is not None:
