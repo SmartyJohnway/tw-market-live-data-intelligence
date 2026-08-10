@@ -213,6 +213,55 @@ def test_target_limit_is_resource_rejection_and_invalid_request_has_no_preview()
     assert invalid_result["orchestration_plan"] is None
 
 
+def test_actual_f3_duplicate_target_is_non_plannable():
+    req = request()
+    req["targets"] = [
+        {"input": "2330", "market_hint": "TWSE"},
+        {"input": "TWSE:2330"},
+    ]
+    result = package(req)
+    assert [target["resolution_status"] for target in result["validation"]["target_results"]] == [
+        "resolved",
+        "duplicate",
+    ]
+    assert result["preview"]["status"] == "target_not_plannable"
+    assert result["preview"]["target_resolution_summary"]["duplicate"] == [
+        "TWSE:2330"
+    ]
+
+
+def test_taifex_provisional_eod_is_honestly_not_executable():
+    req = request(
+        "TX",
+        "TAIFEX",
+        [{"type": "official_eod_reference", "priority": "required"}],
+    )
+    validation = fixture_validation(request())
+    validation["normalized_request"] = copy.deepcopy(req)
+    validation["target_results"][0]["canonical_identity"].update(
+        {
+            "canonical_target_id": "TAIFEX:TX",
+            "market": "TAIFEX",
+            "security_code": "TX",
+            "instrument_family": "derivative",
+            "instrument_type": "futures",
+        }
+    )
+    validation["target_results"][0]["original_input"] = "TX"
+    validation["capability_results"] = [
+        {
+            "data_need_index": 0,
+            "capability_id": "official_eod_reference",
+            "priority": "required",
+            "status": "provisional",
+        }
+    ]
+    result = package(req, validation)
+    assert result["orchestration_plan"]["plan_status"] == "blocked"
+    assert result["preview"]["status"] == "unsupported_capability"
+    assert result["orchestration_plan"]["execution_authorized"] is False
+
+
 def test_hard_operation_limit_projects_resource_rejection():
     authorities = copy.deepcopy(AUTHORITIES)
     authorities["capability_catalog"]["bounds"]["hard_operation_limit"] = 0
