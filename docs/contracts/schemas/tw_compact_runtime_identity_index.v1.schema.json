@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/docs/contracts/schemas/tw_compact_runtime_identity_index.v1.schema.json",
+  "title": "Taiwan Compact Runtime Identity Index",
+  "description": "Schema for the compact runtime identity index derived from the Security Master snapshot",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "index_id",
+    "source_bundle_id",
+    "source_snapshot_id",
+    "source_snapshot_sha256",
+    "source_skill_contract_hash",
+    "generated_at_utc",
+    "record_count",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Version of the compact index schema",
+      "pattern": "^m8r_06_01c1b_compact_identity_index\\.v\\d+$"
+    },
+    "index_id": {
+      "type": "string",
+      "description": "Unique identifier for this compact index (typically matches source bundle ID)"
+    },
+    "source_bundle_id": {
+      "type": "string",
+      "description": "ID of the source Security Master bundle"
+    },
+    "source_snapshot_id": {
+      "type": "string",
+      "description": "Identifier of the source snapshot within the bundle"
+    },
+    "source_snapshot_sha256": {
+      "type": "string",
+      "description": "SHA-256 hash of the source snapshot (dryrun_snapshot.json)",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_skill_contract_hash": {
+      "type": "string",
+      "description": "SHA-256 hash of the skill contract used to generate the source bundle",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "description": "Timestamp when the compact index was generated (ISO 8601 UTC)",
+      "format": "date-time"
+    },
+    "record_count": {
+      "type": "integer",
+      "description": "Number of records in the compact index",
+      "minimum": 0
+    },
+    "records": {
+      "type": "array",
+      "description": "Array of compact identity records",
+      "items": {
+        "type": "object",
+        "required": [
+          "canonical_target_id",
+          "record_id",
+          "identity",
+          "classification",
+          "observation",
+          "lifecycle",
+          "execution_eligibility",
+          "record_hash"
+        ],
+        "properties": {
+          "canonical_target_id": {
+            "type": "string",
+            "description": "Canonical identifier in format MARKET:CODE"
+          },
+          "record_id": {
+            "type": ["string", "null"],
+            "description": "Unique record identifier from the source snapshot"
+          },
+          "identity": {
+            "type": "object",
+            "required": ["security_code", "security_name_zh", "security_name_en", "isin"],
+            "properties": {
+              "security_code": {
+                "type": "string",
+                "description": "Unscoped security code (e.g., 2330)"
+              },
+              "security_name_zh": {
+                "type": "string",
+                "description": "Security name in Traditional Chinese"
+              },
+              "security_name_en": {
+                "type": ["string", "null"],
+                "description": "Security name in English"
+              },
+              "isin": {
+                "type": ["string", "null"],
+                "description": "International Securities Identification Number",
+                "pattern": "^[A-Z]{2}[A-Z0-9]{9}[0-9]$"
+              }
+            },
+            "additionalProperties": false
+          },
+          "classification": {
+            "type": "object",
+            "required": ["market", "instrument_type", "instrument_family", "classification_status"],
+            "properties": {
+              "market": {
+                "type": "string",
+                "enum": ["TWSE", "TPEX"],
+                "description": "Market where the security is listed"
+              },
+              "instrument_type": {
+                "type": "string",
+                "description": "Type of financial instrument (e.g., stock, ETF, REIT)"
+              },
+              "instrument_family": {
+                "type": "string",
+                "description": "Family of financial instruments"
+              },
+              "classification_status": {
+                "type": "string",
+                "description": "Classification status (e.g., confirmed, quarantined, provisional)"
+              }
+            },
+            "additionalProperties": false
+          },
+          "observation": {
+            "type": "object",
+            "required": ["status", "observed_at", "source_updated_date"],
+            "properties": {
+              "status": {
+                "type": "string",
+                "description": "Observation status (e.g., active, delisted, suspended)"
+              },
+              "observed_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the observation was made (UTC)"
+              },
+              "source_updated_date": {
+                "type": ["string", "null"],
+                "format": "date-time",
+                "description": "When the source data was last updated"
+              }
+            },
+            "additionalProperties": false
+          },
+          "lifecycle": {
+            "type": "object",
+            "required": ["state", "resolution_status", "as_of"],
+            "properties": {
+              "state": {
+                "type": "string",
+                "description": "Current lifecycle state"
+              },
+              "resolution_status": {
+                "type": "string",
+                "description": "Resolution status for corporate actions"
+              },
+              "as_of": {
+                "type": "string",
+                "format": "date",
+                "description": "Effective date for lifecycle information"
+              }
+            },
+            "additionalProperties": false
+          },
+          "execution_eligibility": {
+            "type": "object",
+            "required": ["status", "reason_codes"],
+            "properties": {
+              "status": {
+                "type": "string",
+                "description": "Execution eligibility status"
+              },
+              "reason_codes": {
+                "type": "array",
+                "description": "Codes explaining execution eligibility status",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "record_hash": {
+            "type": "string",
+            "description": "SHA-256 hash of the source canonical full-record (for traceability)",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

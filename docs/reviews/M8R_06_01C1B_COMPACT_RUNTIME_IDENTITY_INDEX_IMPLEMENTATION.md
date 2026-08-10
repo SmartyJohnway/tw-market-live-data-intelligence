@@ -12,7 +12,7 @@ This implementation created a governed compact runtime identity index from the a
 
 - **Source Bundle Verification**: PASSED
 - **Compact Index Record Count**: 43070
-- **Compact Index Size**: 47677162 bytes
+- **Compact Index Size**: 47796981 bytes
 - **Deterministic Materialization**: YES
 - **Lookup Key Equivalence**: PASSED
 - **Resolver Semantic Equivalence**: PASSED (sampled)
@@ -26,9 +26,9 @@ This implementation created a governed compact runtime identity index from the a
 - **Source Bundle ID**: m8r06-01b-20260807T053540Z
 - **Source Snapshot ID**: dryrun_snapshot.json
 - **Source Snapshot SHA-256**: a851aa664727a02df87e88b086d956467ce9348aa8a9d9ef9dfc33cc415dc2b8
-- **Compact Index SHA-256**: 2ee3e689d469d1e4f3951911ac5ae0789f1180cdccf7b5fa120421b1bd2e1610
-- **Manifest SHA-256**: 1c6ce3f15cc7aed3c726989b34f19d44cc3db5daf14a19f48bf44cf0b79214e7
-- **Generated At**: 2026-08-09T14:41:09.839485+00:00
+- **Compact Index SHA-256**: 397471e504dcea1dce77e8211573498c1aba1d4b655df5fb583ffc2f3fcf61d9
+- **Manifest SHA-256**: acb69d08bb73682639355c1913814c195b55b90b87e751d6853559a279838390
+- **Generated At**: 2026-08-07T05:35:40.438940+00:00
 
 ## Accepted Caveats
 
@@ -41,7 +41,7 @@ This implementation created a governed compact runtime identity index from the a
 
 **PASS_WITH_CAVEATS**
 
-**Principal Decision**: READY_FOR_M8R_06_01C2_AUTHORIZATION_REVIEW
+**Principal Decision**: READY_FOR_M8R_06-01C2_AUTHORIZATION_REVIEW
 
 **Recommended Next Task**: M8R-06-01C2-MODE-A-POINTER-ACTIVATION-AND-ACCEPTANCE
 
