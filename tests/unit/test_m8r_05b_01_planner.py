@@ -73,3 +73,48 @@ def test_batch_integrity_rejects_duplicate_or_orphan_members():
  with pytest.raises(PlanningError,match='batch_member_reference_invalid'): _validate_batch_integrity(ops,[{'batch_group_id':'b','operation_ids':['missing']}])
 def test_missing_upstream_derived_warning_is_not_optional_omission():
  p=plan(validation('source_currentness',status='contract_supported')); op=p['operations'][0]; assert op['warnings'][0]['code']=='upstream_evidence_operation_missing' and not p['omitted_optional_capabilities']
+
+@pytest.mark.parametrize(
+ ('capability','market','target'),
+ [
+  ('current_observation','TWSE','TWSE:2330'),
+  ('official_eod_reference','TWSE','TWSE:2330'),
+  ('current_observation','TPEX','TPEX:5227'),
+ ],
+)
+def test_real_canonical_common_share_routes_as_equity(capability,market,target):
+ v=validation(capability,market=market,targets=[target])
+ identity=v['target_results'][0]['canonical_identity']
+ identity['instrument_type']='common_share'; identity['instrument_family']='company_share'
+ p=plan(v)
+ assert p['plan_status']=='plan_ready'
+ assert p['operations'][0]['operation_status']=='executable_pending_approval'
+ assert p['operations'][0]['security_types']==['equity']
+ assert p['execution_authorized'] is False
+
+def test_fund_product_etf_is_not_silently_mapped_to_equity():
+ v=validation('current_observation',market='TWSE',targets=['TWSE:0050'])
+ identity=v['target_results'][0]['canonical_identity']
+ identity['instrument_type']='etf'; identity['instrument_family']='fund_product'
+ p=plan(v)
+ assert p['plan_status']=='blocked'
+ assert not p['operations']
+ assert p['blocked_operations'][0]['blocking_reason_codes']==['unsupported_security_type']
+
+def test_actual_f3_common_share_shape_reaches_existing_equity_route():
+ from server.services.unified_mode_a import validate_mode_a_request
+ request={
+  'schema_version':'unified_market_evidence_request.v1',
+  'request_id':'real-shaped-f3-planner',
+  'targets':[{'input':'2330','market_hint':'TWSE'}],
+  'data_needs':[{'type':'current_observation','priority':'required'}],
+  'execution_mode':'preview',
+ }
+ v=validate_mode_a_request(request,allow_fixture_snapshot=True)
+ identity=v['target_results'][0]['canonical_identity']
+ assert identity['instrument_family']=='company_share'
+ assert identity['instrument_type']=='common_share'
+ p=plan(v)
+ assert p['plan_status']=='plan_ready'
+ assert p['operations'][0]['security_types']==['equity']
+ assert p['execution_authorized'] is False

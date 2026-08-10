@@ -28,13 +28,20 @@ def _pairs(bindings: Mapping[str,Any]) -> list[tuple[str,str]]:
     if len({h for _,h in pairs})!=len(pairs): raise PlanningError('target_binding_invalid','conflicting_duplicate_hash')
     return pairs
 
+def routing_security_type(identity: Mapping[str, Any]) -> str | None:
+    """Project canonical F3 classification into the coarse executor route class."""
+    family=identity.get('instrument_family'); instrument_type=identity.get('instrument_type')
+    if family=='company_share' and instrument_type=='common_share': return 'equity'
+    if family=='equity' or (family is None and instrument_type=='equity'): return 'equity'
+    return family or instrument_type
+
 def _targets(validation: Mapping[str,Any]) -> list[dict[str,Any]]:
     result=[]
     for target in validation.get('target_results',[]):
         if target.get('resolution_status')!='resolved': continue
         identity=target.get('canonical_identity') or {}; tid=identity.get('canonical_target_id')
         if not isinstance(tid,str) or not tid: raise PlanningError('target_binding_invalid')
-        result.append({'id':tid,'market':identity.get('market'),'security_type':identity.get('instrument_family') or identity.get('instrument_type')})
+        result.append({'id':tid,'market':identity.get('market'),'security_type':routing_security_type(identity)})
     return sorted(result,key=lambda x:x['id'])
 
 def _validate_inputs(validation, catalog, routing, handoff, inventory, bindings):
