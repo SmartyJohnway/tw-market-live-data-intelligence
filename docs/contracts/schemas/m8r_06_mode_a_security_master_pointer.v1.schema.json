@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/docs/contracts/schemas/m8r_06_mode_a_security_master_pointer.v1.schema.json",
+  "title": "M8R-06 Mode A Security Master Pointer",
+  "description": "Governed local selection of an accepted compact runtime identity index.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "selection_id",
+    "artifact_type",
+    "index_id",
+    "index_path",
+    "manifest_path",
+    "immutable_seal_path",
+    "source_bundle_id",
+    "source_snapshot_id",
+    "source_snapshot_sha256",
+    "source_skill_contract_hash",
+    "compact_index_sha256",
+    "compact_manifest_sha256",
+    "compact_index_schema_sha256",
+    "compact_manifest_schema_sha256",
+    "record_count",
+    "knowledge_universe_count",
+    "runtime_eligible_count",
+    "quarantined_count",
+    "activation_mode",
+    "artifact_persisted_in_git"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "m8r_06_mode_a_security_master_pointer.v1"
+    },
+    "selection_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_type": {
+      "const": "compact_runtime_identity_index"
+    },
+    "index_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "index_path": {
+      "$ref": "#/$defs/repositoryRelativePath"
+    },
+    "manifest_path": {
+      "$ref": "#/$defs/repositoryRelativePath"
+    },
+    "immutable_seal_path": {
+      "$ref": "#/$defs/repositoryRelativePath"
+    },
+    "source_bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_snapshot_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_snapshot_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "source_skill_contract_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "compact_index_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "compact_manifest_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "compact_index_schema_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "compact_manifest_schema_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "record_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "knowledge_universe_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "runtime_eligible_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "quarantined_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "activation_mode": {
+      "const": "governed_local_candidate"
+    },
+    "artifact_persisted_in_git": {
+      "const": false
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "repositoryRelativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9._/-]+$"
+    }
+  }
+}

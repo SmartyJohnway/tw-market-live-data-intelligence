@@ -18,13 +18,8 @@ def mock_validation(monkeypatch):
         }
     monkeypatch.setattr(unified_workbench_router, "validate_mode_a_request", fake_validate)
 
-def test_production_boundary_enforced():
-    # In a fresh environment without the monkeypatch above, the router would attempt
-    # to load the production snapshot which doesn't exist, and return 409.
-    # We test the raw adapter function here to ensure it raises correctly.
-    from server.services.unified_mode_a import validate_mode_a_request
-    from pathlib import Path
-    import pytest
+def test_production_boundary_enforced(monkeypatch, tmp_path):
+    from server.services import unified_mode_a
     
     req = {
         "schema_version": "unified_market_evidence_request.v1",
@@ -33,10 +28,13 @@ def test_production_boundary_enforced():
         "targets": [{"input": "2330"}],
         "data_needs": []
     }
+    monkeypatch.setattr(unified_mode_a, "PRODUCTION_POINTER_PATH", tmp_path / "missing.json")
     with pytest.raises(FileNotFoundError):
-        validate_mode_a_request(req) # defaults to allow_fixture_snapshot=False
+        unified_mode_a.validate_mode_a_request(req)
 
-def test_api_returns_409_when_production_security_master_missing():
+def test_api_returns_409_when_production_security_master_missing(monkeypatch, tmp_path):
+    from server.services import unified_mode_a
+
     req = {
         "schema_version": "unified_market_evidence_request.v1",
         "request_id": "test-prod",
@@ -44,6 +42,7 @@ def test_api_returns_409_when_production_security_master_missing():
         "targets": [{"input": "2330"}],
         "data_needs": []
     }
+    monkeypatch.setattr(unified_mode_a, "PRODUCTION_POINTER_PATH", tmp_path / "missing.json")
     response = client.post("/api/unified/validate-request", json={"request": req})
     assert response.status_code == 409
     data = response.json()

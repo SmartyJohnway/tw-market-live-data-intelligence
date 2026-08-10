@@ -2,14 +2,17 @@ import json
 from pathlib import Path
 from scripts.m8r_05a_f3.request_intake import validate_unified_market_evidence_request
 from scripts.m8r_05a_f3.security_master_loader import load_f3_verified_security_master
+from scripts.m8r_06_01c2_mode_a_security_master_loader import (
+    POINTER_PATH,
+    get_production_mode_a_security_master,
+)
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 CANONICAL_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_request.v1.schema.json"
 CANONICAL_CATALOG_PATH = ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v1.json"
 
-# Mode A attempts to use production snapshots.
-PRODUCTION_SNAPSHOT_PATH = ROOT / "config" / "production_security_master_snapshot.json"
-PRODUCTION_MANIFEST_PATH = ROOT / "config" / "production_security_master_snapshot_manifest.json"
+# Production Mode A uses only the governed current-selection pointer.
+PRODUCTION_POINTER_PATH = POINTER_PATH
 
 
 def _load_json(path: Path) -> dict:
@@ -30,22 +33,17 @@ def validate_mode_a_request(request: dict, allow_fixture_snapshot: bool = False)
         request_schema = _load_json(CANONICAL_SCHEMA_PATH)
         capability_catalog = _load_json(CANONICAL_CATALOG_PATH)
         
-        # Security Master
-        snapshot_path = PRODUCTION_SNAPSHOT_PATH
-        manifest_path = PRODUCTION_MANIFEST_PATH
-        
         if allow_fixture_snapshot:
-            snapshot_path = ROOT / "tests" / "fixtures" / "m8r_05a_f3" / "verified_security_master_snapshot.json"
-            manifest_path = ROOT / "tests" / "fixtures" / "m8r_05a_f3" / "verified_security_master_snapshot_manifest.json"
-            
-        if not snapshot_path.exists() or not manifest_path.exists():
-            raise FileNotFoundError("canonical_dependency_missing: security_master_snapshot")
-        
-        security_master = load_f3_verified_security_master(
-            snapshot_path,
-            manifest_path,
-            allow_fixture_snapshot=allow_fixture_snapshot
-        )
+            fixture_root = ROOT / "tests" / "fixtures" / "m8r_05a_f3"
+            security_master = load_f3_verified_security_master(
+                fixture_root / "verified_security_master_snapshot.json",
+                fixture_root / "verified_security_master_snapshot_manifest.json",
+                allow_fixture_snapshot=True,
+            )
+        else:
+            security_master = get_production_mode_a_security_master(
+                PRODUCTION_POINTER_PATH
+            )
 
         return validate_unified_market_evidence_request(
             request=request,
