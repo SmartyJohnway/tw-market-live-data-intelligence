@@ -91,6 +91,23 @@ def test_validate_request_valid_envelope(mock_validation):
     assert data["validation_status"] == "valid"
     assert data["target_results"][0]["canonical_identity"]["market"] == "TWSE"
 
+
+def test_mode_a_workbench_routes_and_health():
+    root_response = client.get("/workbench/mode-a/")
+    assert root_response.status_code == 200
+    assert "Unified Market Evidence Operator Workbench" in root_response.text
+
+    explicit_html_response = client.get(
+        "/workbench/mode-a/UnifiedMarketEvidenceWorkbench.html"
+    )
+    assert explicit_html_response.status_code == 200
+    assert "Unified Market Evidence Operator Workbench" in explicit_html_response.text
+
+    assert client.get("/workbench/mode-a/unified-workbench.css").status_code == 200
+    assert client.get("/workbench/mode-a/unified-workbench.js").status_code == 200
+    assert client.get("/api/health").status_code == 200
+
+
 def test_validate_request_oversized_body(mock_validation):
     large_payload = "a" * (1 * 1024 * 1024 + 1)
     response = client.post("/api/unified/validate-request", content=large_payload)

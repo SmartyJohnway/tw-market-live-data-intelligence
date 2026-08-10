@@ -5,6 +5,7 @@ import os
 import sys
 import json
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from server.unified_workbench_router import router as unified_workbench_router
 
 # Product server intentionally avoids importing live probe modules.
@@ -22,6 +23,13 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 WORKBENCH_DIR = REPO_ROOT / "frontend" / "unified-workbench"
 
 app.include_router(unified_workbench_router)
+
+
+@app.get("/workbench/mode-a/", include_in_schema=False)
+def get_mode_a_workbench():
+    return FileResponse(WORKBENCH_DIR / "UnifiedMarketEvidenceWorkbench.html")
+
+
 app.mount("/workbench/mode-a", StaticFiles(directory=str(WORKBENCH_DIR), html=True), name="workbench_mode_a")
 # Local-first CORS setup
 app.add_middleware(
