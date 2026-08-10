@@ -4,7 +4,7 @@ from scripts.m8r_05a_f3.request_intake import validate_unified_market_evidence_r
 from scripts.m8r_05a_f3.security_master_loader import load_f3_verified_security_master
 from scripts.m8r_06_01c2_mode_a_security_master_loader import (
     POINTER_PATH,
-    load_mode_a_security_master,
+    get_production_mode_a_security_master,
 )
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -41,7 +41,9 @@ def validate_mode_a_request(request: dict, allow_fixture_snapshot: bool = False)
                 allow_fixture_snapshot=True,
             )
         else:
-            security_master = load_mode_a_security_master(PRODUCTION_POINTER_PATH)
+            security_master = get_production_mode_a_security_master(
+                PRODUCTION_POINTER_PATH
+            )
 
         return validate_unified_market_evidence_request(
             request=request,

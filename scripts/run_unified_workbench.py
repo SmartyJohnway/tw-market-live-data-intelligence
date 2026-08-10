@@ -20,12 +20,14 @@ def run_startup_check():
             _load_json
         )
         from scripts.m8r_06_01c2_mode_a_security_master_loader import (
-            load_mode_a_security_master,
+            get_production_mode_a_security_master,
         )
         
         schema_loaded = CANONICAL_SCHEMA_PATH.exists()
         catalog_loaded = CANONICAL_CATALOG_PATH.exists()
-        security_master_loaded = bool(load_mode_a_security_master(PRODUCTION_POINTER_PATH))
+        security_master_loaded = bool(
+            get_production_mode_a_security_master(PRODUCTION_POINTER_PATH)
+        )
         
         if schema_loaded: _load_json(CANONICAL_SCHEMA_PATH)
         if catalog_loaded: _load_json(CANONICAL_CATALOG_PATH)

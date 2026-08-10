@@ -24,6 +24,8 @@ config/m8r_06_mode_a_security_master_pointer.json
 
 The pointer binds the accepted sealed bundle, semantic snapshot ID, source and artifact hashes, both schema hashes, record and coverage counts, paths, artifact type, and local-only activation policy. Absolute paths, traversal, alternate candidates, missing dependencies, forged bindings, and tampered artifacts fail closed. No fixture or network fallback exists in production.
 
+The strict `load_mode_a_security_master()` authority remains uncached. Production Mode A uses a locked process-level provider that publishes only a successfully validated runtime. Its consistency model is `PROCESS_LIFETIME_IMMUTABLE_SELECTION`; pointer changes require process restart. There is no watcher, automatic reload, scheduler, or background refresh.
+
 ## Activation proof
 
 The exact local candidate from PR #184 was reproduced and validated:
@@ -33,7 +35,7 @@ The exact local candidate from PR #184 was reproduced and validated:
 - record count: 43,070;
 - runtime eligible: 2,324.
 
-An actual production API request for `2330 / TWSE` returned HTTP 200 and resolved to `TWSE:2330`. Additional governed runtime results were:
+An actual production API request using TestClient, the committed production pointer, committed immutable seal, local candidate, and the real loader/provider returned HTTP 200 for `2330 / TWSE` and resolved to `TWSE:2330`. No runtime or loader monkeypatch was used for this sealed milestone. Additional governed runtime results were:
 
 - `TPEX:5227`: resolved;
 - `C2_NOT_FOUND_SENTINEL`: not found;
@@ -45,28 +47,27 @@ Missing pointer/candidate/manifest/seal, pointer/path tampering, manifest/index 
 
 ## Validation
 
-- Focused C2 tests: 21 passed, including the non-skipped sealed local activation.
+- Focused C2 tests: 25 passed, including process-cache semantics and the non-skipped real sealed HTTP E2E.
 - C1B regressions: 23 passed.
 - Canonical Security Master regressions: 18 passed.
 - Mode A/F3 regressions: 42 passed.
 - Workbench/API regressions: 8 passed with one existing deprecation warning.
 - Python compileall: passed.
-- Repository default CI: 789 passed, zero failed, no network.
+- Repository default CI: 793 passed, zero failed, no network.
 
 ## Performance preflight
 
-Method: new Python process, no application cache, Windows OS file cache not cleared, `perf_counter` wall time, no network.
+Method: new Python process, real TestClient with the committed pointer, immutable seal, and local candidate, Windows OS file cache not cleared, `perf_counter` wall time, no network.
 
 - candidate size: 68,256,184 bytes;
-- compact JSON load: 1.077 seconds;
-- strict validation: 8.754 seconds;
-- lookup construction: 0.276 seconds;
-- total runtime load: 9.152 seconds;
-- 2330 resolver median: 0.0037 milliseconds; p95: 0.0041 milliseconds;
-- two-target validation median excluding runtime load: 1.711 milliseconds;
-- two-target production end-to-end: 9.713 seconds.
+- Commit 1 per-request end-to-end baseline: 9.713 seconds;
+- final cold first HTTP: 18.455 seconds;
+- strict validation within that cold activation: 17.656 seconds;
+- lookup construction: 0.510 seconds;
+- warm 2330 HTTP median: 7.590 milliseconds; p95: 11.506 milliseconds;
+- warm two-target HTTP median: 7.544 milliseconds; p95: 11.032 milliseconds.
 
-No existing contract defines a latency failure threshold. Peak memory was not measured reliably. The local-only candidate and full per-call validation cost are accepted C2 caveats for the subsequent, separately authorized Post-Activation Acceptance review.
+No existing contract defines a latency failure threshold. Cold activation occurs once per process, while warm requests reuse the validated runtime and remain millisecond-scale. Peak memory was not measured reliably. The local-only candidate and variable cold-start cost remain C2 caveats for the subsequent, separately authorized Post-Activation Acceptance review.
 
 ## Scope boundary
 

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import threading
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -31,6 +32,11 @@ POINTER_SCHEMA_PATH = (
 IMMUTABLE_SEAL_RELATIVE_PATH = Path(
     "docs/reviews/m8r06-01c1b-runtime-index-manifest/immutable_manifest.json"
 )
+ACTIVATION_CONSISTENCY_MODEL = "PROCESS_LIFETIME_IMMUTABLE_SELECTION"
+POINTER_CHANGE_REQUIRES_RESTART = True
+
+_production_runtime: ValidatedModeASecurityMaster | None = None
+_production_runtime_lock = threading.Lock()
 
 
 class ModeASecurityMasterUnavailable(FileNotFoundError):
@@ -49,6 +55,28 @@ class ValidatedModeASecurityMaster:
     manifest: dict[str, Any]
     lookup: dict[str, Any]
     validation: dict[str, Any]
+
+
+def get_production_mode_a_security_master(
+    pointer_path: Path | str = POINTER_PATH,
+) -> ValidatedModeASecurityMaster:
+    """Activate once, then reuse the immutable selection for this process lifetime."""
+    global _production_runtime
+    if _production_runtime is not None:
+        return _production_runtime
+    with _production_runtime_lock:
+        if _production_runtime is None:
+            # The strict authority remains uncached.  Only a successfully validated
+            # runtime is published to the process-level provider.
+            _production_runtime = load_mode_a_security_master(pointer_path)
+    return _production_runtime
+
+
+def reset_production_mode_a_security_master_for_tests() -> None:
+    """Explicit test isolation hook; production has no reload or watcher surface."""
+    global _production_runtime
+    with _production_runtime_lock:
+        _production_runtime = None
 
 
 def _fail(code: str) -> None:

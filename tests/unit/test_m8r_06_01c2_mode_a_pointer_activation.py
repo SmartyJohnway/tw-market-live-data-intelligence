@@ -19,17 +19,29 @@ from scripts.m8r_06_01c1b_compact_runtime_identity_index import (
     write_json_file,
 )
 from scripts.m8r_06_01c2_mode_a_security_master_loader import (
+    ACTIVATION_CONSISTENCY_MODEL,
     POINTER_PATH,
     POINTER_SCHEMA_PATH,
+    POINTER_CHANGE_REQUIRES_RESTART,
     ModeASecurityMasterUnavailable,
+    get_production_mode_a_security_master,
     load_mode_a_security_master,
+    reset_production_mode_a_security_master_for_tests,
 )
+from scripts import m8r_06_01c2_mode_a_security_master_loader as c2_loader
 from server.main import app
 from server.services import unified_mode_a
 
 SYNTHETIC_SNAPSHOT_SHA = "a" * 64
 SYNTHETIC_SKILL_HASH = "b" * 64
 SYNTHETIC_BUNDLE_ID = "synthetic-c2-bundle"
+
+
+@pytest.fixture(autouse=True)
+def _reset_process_runtime() -> None:
+    reset_production_mode_a_security_master_for_tests()
+    yield
+    reset_production_mode_a_security_master_for_tests()
 
 
 def _record(
@@ -247,6 +259,43 @@ def test_runtime_loader_builds_canonical_lookup(tmp_path: Path) -> None:
     assert runtime.validation["valid"] is True
 
 
+def test_process_provider_activates_once_and_keeps_immutable_selection(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo = _build_repo(tmp_path)
+    strict_loader = load_mode_a_security_master
+    calls = 0
+
+    def counted(pointer_path):
+        nonlocal calls
+        calls += 1
+        return strict_loader(pointer_path, repo_root=tmp_path)
+
+    monkeypatch.setattr(c2_loader, "load_mode_a_security_master", counted)
+    first = get_production_mode_a_security_master(repo["pointer_path"])
+    second = get_production_mode_a_security_master(tmp_path / "different-pointer.json")
+    assert first is second
+    assert calls == 1
+    assert ACTIVATION_CONSISTENCY_MODEL == "PROCESS_LIFETIME_IMMUTABLE_SELECTION"
+    assert POINTER_CHANGE_REQUIRES_RESTART is True
+
+
+def test_failed_activation_is_not_cached(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo = _build_repo(tmp_path)
+    strict_loader = load_mode_a_security_master
+    with pytest.raises(ModeASecurityMasterUnavailable):
+        get_production_mode_a_security_master(tmp_path / "missing.json")
+    monkeypatch.setattr(
+        c2_loader,
+        "load_mode_a_security_master",
+        lambda pointer_path: strict_loader(pointer_path, repo_root=tmp_path),
+    )
+    runtime = get_production_mode_a_security_master(repo["pointer_path"])
+    assert runtime.validation["valid"] is True
+
+
 @pytest.mark.parametrize(
     ("mutation", "expected"),
     [
@@ -360,7 +409,9 @@ def test_mode_a_functional_semantics_with_governed_runtime(
 ) -> None:
     repo = _build_repo(tmp_path)
     runtime = load_mode_a_security_master(repo["pointer_path"], repo_root=tmp_path)
-    monkeypatch.setattr(unified_mode_a, "load_mode_a_security_master", lambda _: runtime)
+    monkeypatch.setattr(
+        unified_mode_a, "get_production_mode_a_security_master", lambda _: runtime
+    )
     targets = [
         {"input": "2330", "market_hint": "TWSE"},
         {"input": "6488", "market_hint": "TPEX"},
@@ -386,7 +437,9 @@ def test_invalid_schema_and_target_limit_preserve_f3_semantics(
 ) -> None:
     repo = _build_repo(tmp_path)
     runtime = load_mode_a_security_master(repo["pointer_path"], repo_root=tmp_path)
-    monkeypatch.setattr(unified_mode_a, "load_mode_a_security_master", lambda _: runtime)
+    monkeypatch.setattr(
+        unified_mode_a, "get_production_mode_a_security_master", lambda _: runtime
+    )
     invalid = _request([{"input": "2330"}])
     invalid["unexpected"] = True
     result = unified_mode_a.validate_mode_a_request(invalid)
@@ -408,10 +461,38 @@ def test_api_transitions_from_409_to_governed_200(
 
     repo = _build_repo(tmp_path / "valid")
     runtime = load_mode_a_security_master(repo["pointer_path"], repo_root=repo["root"])
-    monkeypatch.setattr(unified_mode_a, "load_mode_a_security_master", lambda _: runtime)
+    monkeypatch.setattr(
+        unified_mode_a, "get_production_mode_a_security_master", lambda _: runtime
+    )
     response = client.post("/api/unified/validate-request", json={"request": request})
     assert response.status_code == 200
     assert response.json()["target_results"][0]["resolution_status"] == "resolved"
+
+
+def test_api_reuses_one_successful_process_activation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo = _build_repo(tmp_path)
+    runtime = load_mode_a_security_master(repo["pointer_path"], repo_root=tmp_path)
+    calls = 0
+
+    def counted_strict_loader(_):
+        nonlocal calls
+        calls += 1
+        return runtime
+
+    monkeypatch.setattr(c2_loader, "load_mode_a_security_master", counted_strict_loader)
+    client = TestClient(app)
+    payload = {
+        "request": _request(
+            [{"input": "2330", "market_hint": "TWSE"}],
+            request_id="api-process-cache",
+        )
+    }
+    first = client.post("/api/unified/validate-request", json=payload)
+    second = client.post("/api/unified/validate-request", json=payload)
+    assert first.status_code == second.status_code == 200
+    assert calls == 1
 
 
 @pytest.mark.skipif(
@@ -423,7 +504,9 @@ def test_api_transitions_from_409_to_governed_200(
 )
 def test_sealed_candidate_production_activation(monkeypatch: pytest.MonkeyPatch) -> None:
     runtime = load_mode_a_security_master()
-    monkeypatch.setattr(unified_mode_a, "load_mode_a_security_master", lambda _: runtime)
+    monkeypatch.setattr(
+        unified_mode_a, "get_production_mode_a_security_master", lambda _: runtime
+    )
     allowed_tpex = next(
         record
         for record in runtime.index["records"]
@@ -465,3 +548,31 @@ def test_sealed_candidate_production_activation(monkeypatch: pytest.MonkeyPatch)
     assert statuses[2] == "not_found"
     assert statuses[3] == "market_mismatch"
     assert statuses[4] in {"unsupported_security_type", "quarantined"}
+
+
+@pytest.mark.skipif(
+    not (
+        POINTER_PATH.parents[1]
+        / "data/security_master/runtime_identity_indexes/m8r06-01b-20260807T053540Z/index.json"
+    ).is_file(),
+    reason="accepted local C1B compact candidate is not materialized",
+)
+def test_real_sealed_pointer_http_e2e_without_runtime_monkeypatch() -> None:
+    reset_production_mode_a_security_master_for_tests()
+    response = TestClient(app).post(
+        "/api/unified/validate-request",
+        json={
+            "request": _request(
+                [{"input": "2330", "market_hint": "TWSE"}],
+                request_id="sealed-real-http-c2",
+            )
+        },
+    )
+    assert response.status_code == 200
+    result = response.json()
+    assert result["validation_status"] == "valid"
+    assert result["target_results"][0]["resolution_status"] == "resolved"
+    assert (
+        result["target_results"][0]["canonical_identity"]["canonical_target_id"]
+        == "TWSE:2330"
+    )
