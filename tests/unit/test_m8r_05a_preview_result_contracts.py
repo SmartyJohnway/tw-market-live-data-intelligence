@@ -82,6 +82,73 @@ def test_valid_preview_partial_possible(preview_schema):
     }
     validate(instance=preview, schema=preview_schema)
 
+
+def _target_outcome_preview(status, summary_field):
+    summary = {
+        "resolved": [],
+        "ambiguous": [],
+        "not_found": [],
+        "market_hint_conflict": [],
+        "unsupported_market": [],
+        "invalid_market_hint": [],
+        "unsupported_security_type": [],
+        "invalid_input": [],
+        "duplicate": [],
+        "quarantined": [],
+    }
+    summary[summary_field] = ["target-1"]
+    return {
+        "schema_version": "unified_market_evidence_preview_response.v1",
+        "request_id": "req-target-outcome",
+        "status": status,
+        "target_resolution_summary": summary,
+        "requested_data_needs": ["current_observation"],
+        "planned_evidence": [],
+        "coverage_expectation": {
+            "status": "none_possible",
+            "known_gaps": [summary_field],
+        },
+        "bounds": {
+            "target_count": 1,
+            "operation_count": 0,
+            "estimated_network_calls": 0,
+            "expanded_scope": False,
+        },
+        "fallbacks": [],
+        "approval": {
+            "required": False,
+            "confirmation_text": "Preview only; target is not plannable.",
+        },
+        "caveats": ["No execution is authorized."],
+    }
+
+
+@pytest.mark.parametrize(
+    "summary_field",
+    [
+        "not_found",
+        "market_hint_conflict",
+        "unsupported_market",
+        "invalid_market_hint",
+        "unsupported_security_type",
+        "invalid_input",
+        "duplicate",
+        "quarantined",
+    ],
+)
+def test_target_not_plannable_outcomes_are_valid(preview_schema, summary_field):
+    validate(
+        instance=_target_outcome_preview("target_not_plannable", summary_field),
+        schema=preview_schema,
+    )
+
+
+def test_ambiguous_target_remains_a_distinct_valid_status(preview_schema):
+    validate(
+        instance=_target_outcome_preview("ambiguous_target", "ambiguous"),
+        schema=preview_schema,
+    )
+
 # Result Fixtures
 
 def test_valid_result_full_success(result_schema):
