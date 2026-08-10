@@ -50,7 +50,7 @@ Validation recorded before the final evidence-only commit:
 - Preview contract: 15 passed.
 - M8R-05B-01: 63 passed.
 - Combined F3, Mode A, 05B-01, C1B, C2, Preview, and Workbench regression: 211 passed.
-- Repository `default-ci`: 836/836 passed with `network_may_have_occurred=false` (a final evidence-HEAD rerun is required).
+- Repository `default-ci`: 838/838 passed on the evidence HEAD with `network_may_have_occurred=false`.
 - `compileall` and `git diff --check`: passed.
 
 ## Caveats

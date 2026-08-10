@@ -117,7 +117,7 @@
   "planner_05b01_regressions": "PASS: 63",
   "combined_f3_mode_a_05b01_c1b_c2_preview_workbench_regressions": "PASS: 211",
   "sealed_local_acceptance": "PASS: executed, not skipped",
-  "default_ci": "PASS: 836/836 at implementation HEAD; final evidence HEAD rerun required",
+  "default_ci": "PASS: 838/838 on evidence HEAD; network_may_have_occurred=false",
   "compileall": "PASS",
   "git_diff_check": "PASS",
   "browser_e2e": "NOT_RUN: Playwright dependency unavailable",
