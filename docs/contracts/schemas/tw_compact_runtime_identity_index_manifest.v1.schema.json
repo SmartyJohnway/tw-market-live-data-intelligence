@@ -1,0 +1,121 @@
+{
+  "$id": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/docs/contracts/schemas/tw_compact_runtime_identity_index_manifest.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Deterministic cryptographic manifest for the governed compact runtime identity index.",
+  "properties": {
+    "artifact_persisted_in_git": {
+      "const": false
+    },
+    "compact_index_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "compact_index_schema_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "compact_index_schema_version": {
+      "const": "m8r_06_01c1b_compact_identity_index.v1"
+    },
+    "compact_index_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "compact_manifest_schema_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "coverage": {
+      "additionalProperties": false,
+      "properties": {
+        "knowledge_universe_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "quarantined_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "runtime_eligible_count": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "knowledge_universe_count",
+        "runtime_eligible_count",
+        "quarantined_count"
+      ],
+      "type": "object"
+    },
+    "generated_at_utc": {
+      "description": "Source-derived snapshot generation timestamp; never the compact execution wall clock.",
+      "format": "date-time",
+      "type": "string"
+    },
+    "index_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "manifest_schema_version": {
+      "const": "m8r_06_01c1b_compact_index_manifest.v1"
+    },
+    "producer_version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "record_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "reproduction_semantics": {
+      "const": "REQUIRES_ORIGINAL_SEALED_01B_BUNDLE"
+    },
+    "source_bundle_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source_skill_contract_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "source_snapshot_artifact": {
+      "const": "dryrun_snapshot.json"
+    },
+    "source_snapshot_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source_snapshot_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "validation_status": {
+      "const": "PASSED"
+    }
+  },
+  "required": [
+    "manifest_schema_version",
+    "compact_index_schema_version",
+    "index_id",
+    "source_bundle_id",
+    "source_snapshot_id",
+    "source_snapshot_artifact",
+    "source_snapshot_sha256",
+    "source_skill_contract_hash",
+    "compact_index_sha256",
+    "compact_index_schema_sha256",
+    "compact_manifest_schema_sha256",
+    "compact_index_path",
+    "record_count",
+    "coverage",
+    "generated_at_utc",
+    "validation_status",
+    "producer_version",
+    "artifact_persisted_in_git",
+    "reproduction_semantics"
+  ],
+  "title": "Taiwan Compact Runtime Identity Index Manifest",
+  "type": "object"
+}

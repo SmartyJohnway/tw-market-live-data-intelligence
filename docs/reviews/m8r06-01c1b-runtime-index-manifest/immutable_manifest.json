@@ -1,0 +1,19 @@
+{
+  "schema_version": "m8r_06_01c1b_immutable_candidate_seal.v1",
+  "source_bundle_id": "m8r06-01b-20260807T053540Z",
+  "source_snapshot_id": "dryrun-m8r06-01b-20260807T053540Z",
+  "source_snapshot_sha256": "a851aa664727a02df87e88b086d956467ce9348aa8a9d9ef9dfc33cc415dc2b8",
+  "source_skill_contract_hash": "488b3e04af2e318cd387b0dfdcbad02be4f2c3f495539c3e436698464f37d77a",
+  "compact_index_id": "m8r06-01b-20260807T053540Z",
+  "compact_index_sha256": "ad467f077c76d9c7462545fcf322d4960cbd485d09d34463e26dfefea8c1c455",
+  "compact_manifest_sha256": "01857224d025bd9342402917c140050f0fb40b385a65103702c856037dfc93db",
+  "compact_index_schema_sha256": "f6f83daaeca8e9aa1ffe4710fc3f812f361cf63f3eeaa28f372ead942c8c3707",
+  "compact_manifest_schema_sha256": "5e8bb4d231484e4f757ba81e16d08b93de906e2f541ca88429b53a161e6c3c18",
+  "record_count": 43070,
+  "knowledge_universe_count": 43070,
+  "runtime_eligible_count": 2324,
+  "quarantined_count": 0,
+  "artifact_persisted_in_git": false,
+  "reproduction_semantics": "REQUIRES_ORIGINAL_SEALED_01B_BUNDLE",
+  "fresh_reprobe_equivalence": false
+}
