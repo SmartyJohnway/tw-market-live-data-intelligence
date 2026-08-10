@@ -1,3 +1,3 @@
 # Reviews / Acceptance
 
-Historical milestone reports live here. Current release evidence is [M5XR Final Mode ABC Level 1/2 Release Acceptance](M5XR_FINAL_MODE_ABC_LEVEL12_RELEASE_ACCEPTANCE.md).
+Historical milestone reports live here. Current Unified Workbench authorities include [M8R-06-01C Post-Activation Acceptance](M8R_06_01C_POST_ACTIVATION_ACCEPTANCE.md); M8R-06-02 adds the evidence package for offline deterministic Mode B1 Preview.

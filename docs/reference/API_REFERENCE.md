@@ -26,6 +26,8 @@ uvicorn server.main:app --host 127.0.0.1 --port 8000
 - `POST /api/m5k/live-observation/plan` — plan routes, no network.
 - `POST /api/m5k/live-observation/execute?confirm_live_observation=true` — explicit bounded execution only.
 - `GET /api/source-health/latest`, `/api/source-health/schema` — source-health report/schema.
+- `POST /api/unified/validate-request` — production F3 validation using the governed local compact Security Master; no network.
+- `POST /api/unified/preview-request` — Mode B1 deterministic Preview plus internal 05B-01 orchestration plan; reruns F3, creates no authorization, and performs no execution or network call.
 
 ## Disabled / deprecated
 
