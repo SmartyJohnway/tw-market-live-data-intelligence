@@ -76,6 +76,7 @@ def claim_and_dispatch_approved(
         prepared,
         governed_output_root=accepted_preflight["governed_output_root"],
         mode=mode,
+        accepted_preflight=accepted_preflight,
     )
     return {
         "schema_version": "m8r_05b_03_claim_and_dispatch_result.v1",

@@ -117,6 +117,7 @@ async def create_authorization(request: Request):
         status = 422 if exc.code in {
             "invalid_api_envelope", "privileged_field_forbidden",
             "authorization_confirmation_required", "authorization_ttl_invalid",
+            "approval_scope_mode_invalid", "approval_scope_input_conflict",
         } else 409
         return JSONResponse(status_code=status, content={"error": exc.code, "trace_id": str(uuid.uuid4())})
     except FileNotFoundError:

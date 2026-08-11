@@ -86,6 +86,26 @@ def test_multi_operation_dispatch_order_proof(tmp_path):
     assert len(outcomes) == len(expected_order)
 
 
+@pytest.mark.parametrize("bad_batch", ["missing", "duplicate"])
+def test_batch_adapter_result_membership_fails_closed(tmp_path, bad_batch):
+    multi_plan = json.loads((ROOT / "tests/fixtures/m8r_05b_01/golden/multi_target_same_source_batch.json").read_text(encoding="utf-8"))
+    plan, authorization, binding, state = artifacts(multi_plan)
+    preflight = build_orchestrator_preflight(
+        plan, authorization, binding, supplied_consumption_state=state,
+        evaluation_timestamp=EVALUATION_TIMESTAMP, executor_registry_metadata=registry_metadata(plan), output_root=str(tmp_path),
+    )
+
+    def batch_adapter(requests, context):
+        results = [default_mock_adapter(request, context) for request in requests]
+        return results[:1] if bad_batch == "missing" else [results[0], results[0]]
+
+    metadata = ExecutorMetadataRegistry.from_json(registry_metadata(plan))
+    runtime = RuntimeAdapterRegistry([runtime_registration(plan, fake_adapter=False, batch_adapter=batch_adapter)])
+    prepared = prepare_dispatch(preflight, metadata, runtime, mode="execute-approved")
+    with pytest.raises(OrchestrationError, match="batch_operation_result_(count|membership)_mismatch"):
+        dispatch_prepared(prepared, governed_output_root=str(tmp_path), mode="execute-approved", accepted_preflight=preflight)
+
+
 def test_dry_run_requires_fake_adapter_and_execute_approved_rejects_fake(tmp_path):
     plan, _auth, _bind, _state = artifacts()
     preflight = build_valid_preflight(tmp_path)

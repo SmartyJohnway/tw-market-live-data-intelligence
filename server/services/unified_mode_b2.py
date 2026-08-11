@@ -14,7 +14,7 @@ from scripts.m8r_05b_02.validator import validate_execution_authorization
 from scripts.m8r_05b_03.preflight import build_orchestrator_preflight, validate_preflight_hashes
 from scripts.m8r_06_03_production_adapter import load_production_executor_metadata
 from scripts.m8r_filesystem_safety import atomic_write_text, safe_destination
-from server.services.unified_mode_b1 import build_mode_b1_preview
+from server.services.unified_mode_b1 import ModeB1PlanningUnavailable, build_mode_b1_preview
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -52,10 +52,16 @@ def _json_text(value: dict[str, Any]) -> str:
 
 
 def _write_control_package(package_root: Path, artifacts: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    manifest_path = safe_destination(package_root, "control/manifest.json", create_parent=True).path
+    control_root = manifest_path.parent
+    if manifest_path.exists():
+        raise ModeB2Error("control_package_already_finalized")
+    if any(control_root.iterdir()):
+        raise ModeB2Error("control_package_partial_conflict")
     hashes: dict[str, str] = {}
     for name, artifact in artifacts.items():
         text = _json_text(artifact)
-        atomic_write_text(package_root, f"control/{name}.json", text)
+        atomic_write_text(package_root, f"control/{name}.json", text, allow_overwrite=False)
         hashes[name] = hashlib.sha256(text.encode("utf-8")).hexdigest()
     manifest = {
         "schema_version": "m8r_06_03_control_package.v1",
@@ -68,7 +74,7 @@ def _write_control_package(package_root: Path, artifacts: dict[str, dict[str, An
         "artifact_hashes": hashes,
     }
     text = _json_text(manifest)
-    atomic_write_text(package_root, "control/manifest.json", text)
+    atomic_write_text(package_root, "control/manifest.json", text, allow_overwrite=False)
     return manifest | {"manifest_hash": hashlib.sha256(text.encode("utf-8")).hexdigest()}
 
 
@@ -82,7 +88,10 @@ def build_mode_b2_authorization(payload: dict[str, Any]) -> dict[str, Any]:
     if payload.get("confirm_authorization") is not True:
         raise ModeB2Error("authorization_confirmation_required")
 
-    rebuilt = build_mode_b1_preview(payload["request"])
+    try:
+        rebuilt = build_mode_b1_preview(payload["request"])
+    except ModeB1PlanningUnavailable as exc:
+        raise ModeB2Error("mode_b1_planning_dependency_unavailable") from exc
     preview, plan = rebuilt.get("preview"), rebuilt.get("orchestration_plan")
     if not isinstance(preview, dict) or not isinstance(plan, dict):
         raise ModeB2Error("preview_not_authorizable")
@@ -101,6 +110,19 @@ def build_mode_b2_authorization(payload: dict[str, Any]) -> dict[str, Any]:
     scope_mode = payload.get("approval_scope_mode", "whole_plan_executable_scope")
     if scope_mode not in {"whole_plan_executable_scope", "selected_operations", "selected_batches"}:
         raise ModeB2Error("approval_scope_mode_invalid")
+    operation_ids = payload.get("approved_operation_ids", [])
+    batch_ids = payload.get("approved_batch_group_ids", [])
+    batch_membership = payload.get("approved_batch_membership", {})
+    if scope_mode == "whole_plan_executable_scope":
+        if operation_ids not in (None, []) or batch_ids not in (None, []) or batch_membership not in (None, {}):
+            raise ModeB2Error("approval_scope_input_conflict")
+        operation_ids, batch_ids, batch_membership = [], [], {}
+    elif scope_mode == "selected_operations":
+        if not isinstance(operation_ids, list) or not operation_ids or batch_ids != [] or batch_membership != {}:
+            raise ModeB2Error("approval_scope_input_conflict")
+    else:
+        if operation_ids != [] or not isinstance(batch_ids, list) or not batch_ids or not isinstance(batch_membership, dict) or not batch_membership:
+            raise ModeB2Error("approval_scope_input_conflict")
     requested_ttl = payload.get("ttl_seconds", DEFAULT_TTL_SECONDS)
     if type(requested_ttl) is not int or not 1 <= requested_ttl <= min(DEFAULT_TTL_SECONDS, MAX_LIFETIME_SECONDS):
         raise ModeB2Error("authorization_ttl_invalid")
@@ -117,9 +139,9 @@ def build_mode_b2_authorization(payload: dict[str, Any]) -> dict[str, Any]:
         "replay_policy": "deny_replay",
         "maximum_use_count": 1,
         "approval_scope_mode": scope_mode,
-        "approved_operation_ids": payload.get("approved_operation_ids", []),
-        "approved_batch_group_ids": payload.get("approved_batch_group_ids", []),
-        "approved_batch_membership": payload.get("approved_batch_membership", {}),
+        "approved_operation_ids": operation_ids,
+        "approved_batch_group_ids": batch_ids,
+        "approved_batch_membership": batch_membership,
     }
     try:
         authorization = build_execution_authorization(plan, decision)

@@ -31,6 +31,7 @@ class DispatchRuntimeContext:
 
 
 AdapterCallable = Callable[[dict, DispatchRuntimeContext], dict[str, Any]]
+BatchAdapterCallable = Callable[[tuple[dict, ...], DispatchRuntimeContext], list[dict[str, Any]]]
 
 
 @dataclass(frozen=True)
@@ -46,6 +47,7 @@ class RuntimeAdapterRegistration:
     maximum_result_items: int
     output_policy: str
     adapter: AdapterCallable
+    batch_adapter: BatchAdapterCallable | None = None
     fake_adapter: bool = False
 
 
@@ -228,47 +230,72 @@ def dispatch_prepared(
     *,
     governed_output_root: str,
     mode: str,
+    accepted_preflight: dict | None = None,
 ) -> list[dict]:
     context = DispatchRuntimeContext(governed_output_root=governed_output_root, mode=mode)
     outcomes: list[dict] = []
     result_schema = json.loads(RESULT_SCHEMA_PATH.read_text(encoding="utf-8"))
     validator = Draft202012Validator(result_schema, format_checker=FormatChecker())
 
+    by_batch: dict[str, list[PreparedDispatch]] = {}
     for item in prepared:
+        by_batch.setdefault(item.request["batch_group_id"], []).append(item)
+
+    def validate_result(item: PreparedDispatch, raw_result: dict) -> dict:
         validate_contained_relative_paths(
             governed_output_root,
             [item.request["relative_contained_output_path"]],
         )
         expected_req_id, expected_req_hash = request_identity(item.request)
 
+        if list(validator.iter_errors(raw_result)):
+            raise OrchestrationError("operation_result_schema_invalid")
+
+        if (
+            raw_result["operation_id"] != item.request["operation_id"]
+            or raw_result["execution_request_id"] != expected_req_id
+            or raw_result["execution_request_hash"] != expected_req_hash
+            or raw_result["executor_id"] != item.request["executor_id"]
+            or raw_result["capability_id"] != item.request["capability_id"]
+            or raw_result["evidence_contract"] != item.metadata.expected_evidence_contract
+        ):
+            raise OrchestrationError("operation_result_identity_mismatch")
+
+        if raw_result["status"] == "succeeded":
+            artifact_total_items = sum(art["item_count"] for art in raw_result["evidence_artifacts"])
+            if raw_result["result_item_count"] != artifact_total_items:
+                raise OrchestrationError("operation_result_item_count_mismatch")
+            _verify_evidence_artifacts(governed_output_root, raw_result["evidence_artifacts"], mode)
+        return dict(raw_result)
+
+    for batch_group_id, items in by_batch.items():
+        first = items[0]
+        route = (first.request["executor_id"], first.request["capability_id"], first.request["market"])
+        if any((x.request["executor_id"], x.request["capability_id"], x.request["market"]) != route or x.registration != first.registration for x in items):
+            raise OrchestrationError("batch_dispatch_binding_mismatch")
+        if accepted_preflight is not None:
+            batch = accepted_preflight.get("resolved_batch_bindings", {}).get(batch_group_id)
+            if not isinstance(batch, dict) or sorted(batch.get("operation_ids", [])) != sorted(x.request["operation_id"] for x in items) or (batch.get("executor_id"), batch.get("capability_id"), batch.get("market")) != route:
+                raise OrchestrationError("batch_dispatch_binding_mismatch")
         try:
-            raw_result = item.registration.adapter(item.request, context)
-            if list(validator.iter_errors(raw_result)):
-                raise OrchestrationError("operation_result_schema_invalid")
-
-            if (
-                raw_result["operation_id"] != item.request["operation_id"]
-                or raw_result["execution_request_id"] != expected_req_id
-                or raw_result["execution_request_hash"] != expected_req_hash
-                or raw_result["executor_id"] != item.request["executor_id"]
-                or raw_result["capability_id"] != item.request["capability_id"]
-                or raw_result["evidence_contract"] != item.metadata.expected_evidence_contract
-            ):
-                raise OrchestrationError("operation_result_identity_mismatch")
-
-            status = raw_result["status"]
-            if status == "succeeded":
-                artifact_total_items = sum(art["item_count"] for art in raw_result["evidence_artifacts"])
-                if raw_result["result_item_count"] != artifact_total_items:
-                    raise OrchestrationError("operation_result_item_count_mismatch")
-                _verify_evidence_artifacts(governed_output_root, raw_result["evidence_artifacts"], mode)
-                outcome = dict(raw_result)
+            if len(items) > 1:
+                if first.registration.batch_adapter is None:
+                    raise OrchestrationError("batch_runtime_adapter_required")
+                raw_results = first.registration.batch_adapter(tuple(x.request for x in items), context)
+                if not isinstance(raw_results, list) or len(raw_results) != len(items):
+                    raise OrchestrationError("batch_operation_result_count_mismatch")
+                by_operation = {item.get("operation_id"): item for item in raw_results if isinstance(item, dict)}
+                if len(by_operation) != len(items) or set(by_operation) != {x.request["operation_id"] for x in items}:
+                    raise OrchestrationError("batch_operation_result_membership_mismatch")
+                outcomes.extend(validate_result(item, by_operation[item.request["operation_id"]]) for item in items)
             else:
-                outcome = dict(raw_result)
+                outcomes.append(validate_result(first, first.registration.adapter(first.request, context)))
         except OrchestrationError:
             raise
         except TimeoutError:
-            outcome = {
+            for item in items:
+                expected_req_id, expected_req_hash = request_identity(item.request)
+                outcome = {
                 "schema_version": "unified_market_evidence_operation_result.v1",
                 "operation_id": item.request["operation_id"],
                 "execution_request_id": expected_req_id,
@@ -281,9 +308,12 @@ def dispatch_prepared(
                 "result_item_count": 0,
                 "evidence_artifacts": [],
                 "warnings": [],
-            }
+                }
+                outcomes.append(outcome)
         except Exception:
-            outcome = {
+            for item in items:
+                expected_req_id, expected_req_hash = request_identity(item.request)
+                outcome = {
                 "schema_version": "unified_market_evidence_operation_result.v1",
                 "operation_id": item.request["operation_id"],
                 "execution_request_id": expected_req_id,
@@ -296,7 +326,7 @@ def dispatch_prepared(
                 "result_item_count": 0,
                 "evidence_artifacts": [],
                 "warnings": [],
-            }
-
-        outcomes.append(outcome)
-    return outcomes
+                }
+                outcomes.append(outcome)
+    order = {item.request["operation_id"]: index for index, item in enumerate(prepared)}
+    return sorted(outcomes, key=lambda outcome: order[outcome["operation_id"]])

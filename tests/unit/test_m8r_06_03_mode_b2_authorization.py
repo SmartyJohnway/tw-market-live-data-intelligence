@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 
 import pytest
 
@@ -57,3 +58,39 @@ def test_stale_or_privileged_browser_fields_fail_closed_without_rebuild(monkeypa
     payload = _payload() | {"expected_plan_hash": "0" * 64}
     with pytest.raises(unified_mode_b2.ModeB2Error, match="mode_b2_preview_stale"):
         unified_mode_b2.build_mode_b2_authorization(payload)
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        _payload() | {"approved_operation_ids": ["unexpected"]},
+        _payload() | {"approval_scope_mode": "selected_operations", "approved_operation_ids": []},
+        _payload() | {"approval_scope_mode": "selected_operations", "approved_operation_ids": ["umeop-op-v1-37e7ffc42102745298c7"], "approved_batch_group_ids": ["unexpected"]},
+        _payload() | {"approval_scope_mode": "selected_batches", "approved_operation_ids": ["unexpected"], "approved_batch_group_ids": ["umeop-batch-v1-e2e0b2ff88ba782d586b"], "approved_batch_membership": {"umeop-batch-v1-e2e0b2ff88ba782d586b": ["umeop-op-v1-37e7ffc42102745298c7"]}},
+    ],
+)
+def test_scope_mode_rejects_mixed_browser_selection_inputs(payload, monkeypatch):
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: _rebuilt())
+    with pytest.raises(unified_mode_b2.ModeB2Error, match="approval_scope_input_conflict"):
+        unified_mode_b2.build_mode_b2_authorization(payload)
+
+
+def test_finalized_control_package_is_write_once(tmp_path, monkeypatch):
+    monkeypatch.setattr(unified_mode_b2, "CONTROL_ROOT", tmp_path)
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: _rebuilt())
+    monkeypatch.setattr(unified_mode_b2, "_utc_now", lambda: datetime(2026, 8, 11, tzinfo=timezone.utc))
+    payload = _payload()
+    unified_mode_b2.build_mode_b2_authorization(payload)
+    with pytest.raises(unified_mode_b2.ModeB2Error, match="control_package_already_finalized"):
+        unified_mode_b2.build_mode_b2_authorization(payload)
+
+
+def test_mode_b1_planning_dependency_is_bounded_at_b2_service(monkeypatch):
+    from server.services.unified_mode_b1 import ModeB1PlanningUnavailable
+
+    def unavailable(_request):
+        raise ModeB1PlanningUnavailable("P:\\secret\\authority.json")
+
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", unavailable)
+    with pytest.raises(unified_mode_b2.ModeB2Error, match="mode_b1_planning_dependency_unavailable"):
+        unified_mode_b2.build_mode_b2_authorization(_payload())

@@ -61,8 +61,19 @@ def _result_base(request: dict[str, Any], *, status: str, error_code: str | None
     }
 
 
+def _require_approved_execution(requests: tuple[dict[str, Any], ...], context: DispatchRuntimeContext) -> None:
+    if context.mode != "execute-approved":
+        raise OrchestrationError("production_execution_mode_required")
+    if any(request.get("network_authorized") is not True for request in requests):
+        raise OrchestrationError("network_required_not_authorized")
+
+
 def _write_safe_evidence(
-    request: dict[str, Any], context: DispatchRuntimeContext, records: list[dict[str, Any],], *, source_family: str
+    request: dict[str, Any],
+    context: DispatchRuntimeContext,
+    records: list[dict[str, Any]],
+    *,
+    source_family: str,
 ) -> dict[str, Any]:
     # ``records`` are already normalized source observations/adapters outputs;
     # neither transport bodies nor headers are persisted here.
@@ -88,6 +99,7 @@ def _write_safe_evidence(
 
 
 def _current_observation(request: dict[str, Any], context: DispatchRuntimeContext) -> dict[str, Any]:
+    _require_approved_execution((request,), context)
     identifiers = request["approved_security_identifiers"]
     if len(identifiers) != 1:
         return _result_base(request, status="failed", error_code="approved_target_count_invalid")
@@ -136,6 +148,7 @@ def _current_observation(request: dict[str, Any], context: DispatchRuntimeContex
 
 
 def _official_eod(request: dict[str, Any], context: DispatchRuntimeContext) -> dict[str, Any]:
+    _require_approved_execution((request,), context)
     identifiers = request["approved_security_identifiers"]
     if len(identifiers) != 1:
         return _result_base(request, status="failed", error_code="approved_target_count_invalid")
@@ -170,6 +183,89 @@ def production_operation_adapter(request: dict[str, Any], context: DispatchRunti
     raise OrchestrationError("unsupported_capability")
 
 
+def production_batch_operation_adapter(requests: tuple[dict[str, Any], ...], context: DispatchRuntimeContext) -> list[dict[str, Any]]:
+    """One governed source call per canonical compatible batch, then fan out."""
+    if not requests:
+        raise OrchestrationError("batch_dispatch_binding_mismatch")
+    _require_approved_execution(requests, context)
+    first = requests[0]
+    fields = ("batch_group_id", "executor_id", "capability_id", "market")
+    expected_binding = tuple(first.get(field) for field in fields)
+    if any(tuple(item.get(field) for field in fields) != expected_binding for item in requests):
+        raise OrchestrationError("batch_dispatch_binding_mismatch")
+    identifiers = [item["approved_security_identifiers"] for item in requests]
+    if any(len(item) != 1 for item in identifiers):
+        raise OrchestrationError("approved_target_count_invalid")
+    try:
+        target_parts = [item[0].split(":", 1) for item in identifiers]
+        if any(len(parts) != 2 or parts[0] != first["market"] for parts in target_parts):
+            raise ValueError
+        symbols = [parts[1] for parts in target_parts]
+    except (IndexError, ValueError):
+        raise OrchestrationError("approved_target_market_mismatch") from None
+    capability, market = first["capability_id"], first["market"]
+    if capability == "current_observation":
+        watchlist = {
+            "schema_version": "m5n_watchlist.v1",
+            "watchlist_id": first["batch_group_id"],
+            "name": "M8R-06-03 approved batch",
+            "description": "server constructed from approved 05B execution requests",
+            "import_export": {"json": True, "csv_future": True},
+            "governance": {"trading_signal": False, "recommendations_allowed": False},
+            "items": [
+                {
+                    "id": f"{market}:{symbol}",
+                    "symbol": symbol,
+                    "display_name": f"{market}:{symbol}",
+                    "market": market.lower(),
+                    "instrument_type": "equity",
+                    "adapter": "twse_mis_equity_etf_quote",
+                    "preferred_sources": ["twse_mis_equity_etf_quote"],
+                    "category": "m8r_06_03",
+                    "enabled": True,
+                    "display_order": index,
+                    "tags": ["approved"],
+                    "notes": "",
+                }
+                for index, symbol in enumerate(symbols, 1)
+            ],
+        }
+        source = execute_live_observation(
+            watchlist,
+            write_latest=False,
+            timeout=first["timeout_seconds"],
+            allow_individual_fallback=False,
+        )
+        records = {str(item.get("symbol")): item for item in source.get("observations", []) if isinstance(item, dict)}
+        family = "TWSE_MIS"
+    elif capability == "official_eod_reference":
+        execute = (
+            execute_twse_official_eod_adapter
+            if market == "TWSE"
+            else execute_tpex_official_eod_adapter
+            if market == "TPEX"
+            else None
+        )
+        if execute is None:
+            raise OrchestrationError("unsupported_market")
+        source = execute(symbols, timeout=first["timeout_seconds"])
+        records = {str(item.get("symbol")): item for item in source.get("observations", []) if isinstance(item, dict)}
+        family = source.get("source_id", "official_eod")
+    else:
+        raise OrchestrationError("unsupported_capability")
+    results = []
+    for request, symbol in zip(requests, symbols, strict=True):
+        record = records.get(symbol)
+        if record is None:
+            results.append(_result_base(request, status="failed", error_code=f"{capability}_unavailable"))
+        else:
+            artifact = _write_safe_evidence(request, context, [record], source_family=family)
+            result = _result_base(request, status="succeeded", error_code=None)
+            result.update(result_item_count=1, evidence_artifacts=[artifact])
+            results.append(result)
+    return results
+
+
 def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
     """Materialize exactly the four committed, route-aware production routes."""
     metadata = ExecutorMetadataRegistry.from_json(load_production_executor_metadata())
@@ -186,6 +282,7 @@ def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
             maximum_result_items=entry.maximum_result_items,
             output_policy=entry.output_policy,
             adapter=production_operation_adapter,
+            batch_adapter=production_batch_operation_adapter,
             fake_adapter=False,
         )
         for entry in (metadata.get_route(EXECUTOR_ID, capability, market) for capability, market in (

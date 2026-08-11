@@ -337,3 +337,37 @@ def test_real_sealed_candidate_preview_endpoint_executes_locally_without_monkeyp
     ]
     assert result["network_executed"] is False
     assert result["execution_performed"] is False
+
+
+def test_authorization_api_uses_real_service_boundary_and_sanitizes_dependency(monkeypatch, tmp_path):
+    from server.services import unified_mode_b2
+    from server.services.unified_mode_b1 import ModeB1PlanningUnavailable
+
+    plan = json.loads((Path(__file__).resolve().parents[1] / "fixtures/m8r_05b_01/golden/single_executable_plan.json").read_text(encoding="utf-8"))
+    rebuilt = {
+        "preview": {"status": "ready_for_confirmation", "internal_execution_reference": {"preview_id": "umepreview-v1-api-test"}},
+        "orchestration_plan": plan,
+    }
+    monkeypatch.setattr(unified_mode_b2, "CONTROL_ROOT", tmp_path)
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: rebuilt)
+    payload = {
+        "request": {"schema_version": "unified_market_evidence_request.v1", "request_id": "b2-api-test"},
+        "expected_preview_id": "umepreview-v1-api-test",
+        "expected_plan_id": plan["plan_id"], "expected_plan_hash": plan["plan_hash"],
+        "confirm_authorization": True, "approval_scope_mode": "whole_plan_executable_scope",
+    }
+    response = client.post("/api/unified/authorizations", json=payload)
+    assert response.status_code == 200
+    result = response.json()
+    assert result["network_executed"] is False
+    assert "governed_output_root" not in json.dumps(result)
+
+    def unavailable(_request):
+        raise ModeB1PlanningUnavailable("P:\\secret\\planning.json")
+
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", unavailable)
+    response = client.post("/api/unified/authorizations", json=payload)
+    assert response.status_code == 409
+    result = response.json()
+    assert result["error"] == "mode_b1_planning_dependency_unavailable"
+    assert "secret" not in json.dumps(result).lower()

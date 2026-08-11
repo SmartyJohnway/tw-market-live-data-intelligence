@@ -6,6 +6,7 @@ from scripts.m8r_05b_03.dispatch import DispatchRuntimeContext
 from scripts.m8r_06_03_production_adapter import (
     build_production_runtime_adapter_registry,
     load_production_executor_metadata,
+    production_batch_operation_adapter,
     production_executor_metadata_sha256,
     production_operation_adapter,
 )
@@ -21,6 +22,8 @@ def _request(capability_id: str, market: str) -> dict:
         "market": market,
         "approved_security_identifiers": [f"{market}:2330"],
         "approved_security_types": ["equity"],
+        "batch_group_id": "umeop-batch-v1-00000000000000000000",
+        "network_authorized": True,
         "timeout_seconds": 15,
     }
 
@@ -72,3 +75,59 @@ def test_official_eod_adapter_uses_exact_market_stub(tmp_path, monkeypatch):
     )
     assert result["status"] == "succeeded"
     assert result["result_item_count"] == 1
+
+
+def test_production_batch_current_observation_calls_source_once_and_fans_out(tmp_path, monkeypatch):
+    calls = []
+
+    def fake_execute(watchlist, **kwargs):
+        calls.append(watchlist)
+        assert kwargs["allow_individual_fallback"] is False
+        return {"observations": [{"symbol": item["symbol"]} for item in watchlist["items"]]}
+
+    monkeypatch.setattr("scripts.m8r_06_03_production_adapter.execute_live_observation", fake_execute)
+    first, second = _request("current_observation", "TWSE"), _request("current_observation", "TWSE")
+    second.update(operation_id="umeop-op-v1-00000000000000000001", execution_request_id="umereq-v1-00000000000000000001")
+    second["approved_security_identifiers"] = ["TWSE:2317"]
+    results = production_batch_operation_adapter((first, second), DispatchRuntimeContext(str(tmp_path), "execute-approved"))
+
+    assert len(calls) == 1
+    assert [item["status"] for item in results] == ["succeeded", "succeeded"]
+    assert [item["result_item_count"] for item in results] == [1, 1]
+
+
+def test_production_batch_eod_uses_exact_market_once_and_fans_out(tmp_path, monkeypatch):
+    calls = []
+
+    def fake_execute(symbols, *, timeout):
+        calls.append((symbols, timeout))
+        return {"source_id": "TPEX_OPENAPI", "observations": [{"symbol": symbol} for symbol in symbols]}
+
+    monkeypatch.setattr("scripts.m8r_06_03_production_adapter.execute_tpex_official_eod_adapter", fake_execute)
+    first, second = _request("official_eod_reference", "TPEX"), _request("official_eod_reference", "TPEX")
+    first["approved_security_identifiers"] = ["TPEX:5227"]
+    second.update(operation_id="umeop-op-v1-00000000000000000001", execution_request_id="umereq-v1-00000000000000000001")
+    second["approved_security_identifiers"] = ["TPEX:6488"]
+    results = production_batch_operation_adapter((first, second), DispatchRuntimeContext(str(tmp_path), "execute-approved"))
+
+    assert calls == [(["5227", "6488"], 15)]
+    assert [item["status"] for item in results] == ["succeeded", "succeeded"]
+
+
+def test_production_adapter_requires_execute_approved_and_network_authorization(tmp_path, monkeypatch):
+    calls = []
+    monkeypatch.setattr(
+        "scripts.m8r_06_03_production_adapter.execute_live_observation",
+        lambda *_args, **_kwargs: calls.append(True),
+    )
+    request = _request("current_observation", "TWSE")
+
+    import pytest
+    from scripts.m8r_05b_03.errors import OrchestrationError
+
+    with pytest.raises(OrchestrationError, match="production_execution_mode_required"):
+        production_operation_adapter(request, DispatchRuntimeContext(str(tmp_path), "dry-run"))
+    request["network_authorized"] = False
+    with pytest.raises(OrchestrationError, match="network_required_not_authorized"):
+        production_operation_adapter(request, DispatchRuntimeContext(str(tmp_path), "execute-approved"))
+    assert calls == []
