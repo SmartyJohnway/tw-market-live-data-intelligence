@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
@@ -18,7 +19,9 @@ from server.services.unified_mode_b1 import ModeB1PlanningUnavailable, build_mod
 
 
 ROOT = Path(__file__).resolve().parents[2]
-CONTROL_ROOT = ROOT / "artifacts" / "m8r_06_03_workbench"
+# This is process configuration only.  It permits an isolated local test/server
+# run without allowing any API payload to select an output location.
+CONTROL_ROOT = Path(os.environ.get("M8R_06_03_CONTROL_ROOT", str(ROOT / "artifacts" / "m8r_06_03_workbench"))).resolve()
 DEFAULT_TTL_SECONDS = 900
 
 

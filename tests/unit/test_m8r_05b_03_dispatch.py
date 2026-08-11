@@ -106,6 +106,20 @@ def test_batch_adapter_result_membership_fails_closed(tmp_path, bad_batch):
         dispatch_prepared(prepared, governed_output_root=str(tmp_path), mode="execute-approved", accepted_preflight=preflight)
 
 
+def test_execute_approved_multi_operation_batch_requires_accepted_preflight(tmp_path):
+    multi_plan = json.loads((ROOT / "tests/fixtures/m8r_05b_01/golden/multi_target_same_source_batch.json").read_text(encoding="utf-8"))
+    plan, authorization, binding, state = artifacts(multi_plan)
+    preflight = build_orchestrator_preflight(
+        plan, authorization, binding, supplied_consumption_state=state,
+        evaluation_timestamp=EVALUATION_TIMESTAMP, executor_registry_metadata=registry_metadata(plan), output_root=str(tmp_path),
+    )
+    metadata = ExecutorMetadataRegistry.from_json(registry_metadata(plan))
+    runtime = RuntimeAdapterRegistry([runtime_registration(plan, fake_adapter=False, batch_adapter=lambda requests, context: [default_mock_adapter(item, context) for item in requests])])
+    prepared = prepare_dispatch(preflight, metadata, runtime, mode="execute-approved")
+    with pytest.raises(OrchestrationError, match="accepted_preflight_required_for_batch_dispatch"):
+        dispatch_prepared(prepared, governed_output_root=str(tmp_path), mode="execute-approved")
+
+
 def test_dry_run_requires_fake_adapter_and_execute_approved_rejects_fake(tmp_path):
     plan, _auth, _bind, _state = artifacts()
     preflight = build_valid_preflight(tmp_path)

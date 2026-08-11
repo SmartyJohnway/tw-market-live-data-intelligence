@@ -189,6 +189,8 @@ def production_batch_operation_adapter(requests: tuple[dict[str, Any], ...], con
         raise OrchestrationError("batch_dispatch_binding_mismatch")
     _require_approved_execution(requests, context)
     first = requests[0]
+    if first.get("executor_id") != EXECUTOR_ID:
+        raise OrchestrationError("executor_mismatch")
     fields = ("batch_group_id", "executor_id", "capability_id", "market")
     expected_binding = tuple(first.get(field) for field in fields)
     if any(tuple(item.get(field) for field in fields) != expected_binding for item in requests):
@@ -204,6 +206,13 @@ def production_batch_operation_adapter(requests: tuple[dict[str, Any], ...], con
     except (IndexError, ValueError):
         raise OrchestrationError("approved_target_market_mismatch") from None
     capability, market = first["capability_id"], first["market"]
+    if (capability, market) not in {
+        ("current_observation", "TWSE"),
+        ("current_observation", "TPEX"),
+        ("official_eod_reference", "TWSE"),
+        ("official_eod_reference", "TPEX"),
+    }:
+        raise OrchestrationError("unsupported_production_route")
     if capability == "current_observation":
         watchlist = {
             "schema_version": "m5n_watchlist.v1",

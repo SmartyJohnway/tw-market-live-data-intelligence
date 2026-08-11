@@ -368,7 +368,7 @@ def test_production_service_independently_reruns_f3_for_the_supplied_request(
     assert result["orchestration_plan"]["execution_authorized"] is False
 
 
-def test_workbench_exposes_preview_without_authorize_or_execute_controls():
+def test_workbench_exposes_preview_and_mode_b2_controls():
     html = (
         ROOT / "frontend/unified-workbench/UnifiedMarketEvidenceWorkbench.html"
     ).read_text(encoding="utf-8")
@@ -379,8 +379,8 @@ def test_workbench_exposes_preview_without_authorize_or_execute_controls():
     assert "PREVIEW ONLY" in html
     assert "NO NETWORK EXECUTED" in html
     assert "NOT AUTHORIZED" in html
-    assert 'id="btn-authorize"' not in html
-    assert 'id="btn-execute"' not in html
+    assert 'id="btn-authorize"' in html
+    assert 'id="btn-execute-once"' in html
     assert "/api/unified/preview-request" in javascript
     assert "validatedRequestFingerprint" in javascript
     assert "invalidateDerivedState" in javascript

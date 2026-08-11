@@ -273,6 +273,8 @@ def dispatch_prepared(
         route = (first.request["executor_id"], first.request["capability_id"], first.request["market"])
         if any((x.request["executor_id"], x.request["capability_id"], x.request["market"]) != route or x.registration != first.registration for x in items):
             raise OrchestrationError("batch_dispatch_binding_mismatch")
+        if mode == "execute-approved" and len(items) > 1 and accepted_preflight is None:
+            raise OrchestrationError("accepted_preflight_required_for_batch_dispatch")
         if accepted_preflight is not None:
             batch = accepted_preflight.get("resolved_batch_bindings", {}).get(batch_group_id)
             if not isinstance(batch, dict) or sorted(batch.get("operation_ids", [])) != sorted(x.request["operation_id"] for x in items) or (batch.get("executor_id"), batch.get("capability_id"), batch.get("market")) != route:

@@ -115,8 +115,9 @@ def build_orchestrator_preflight(
         "consumption_binding_hash": consumption_binding["consumption_binding_hash"],
         "scope_hash": authorization["scope_hash"],
         "approved_operation_order": approved_operation_order,
-        "executor_registry_ids": registry.ids(),
-        "executor_registry_route_keys": registry.route_keys(),
+        # Persisted preflight must rehydrate identically from JSON.
+        "executor_registry_ids": list(registry.ids()),
+        "executor_registry_route_keys": list(registry.route_keys()),
         "resolved_executor_route_keys": sorted(executor_bindings),
         "bounded_execution_requests": bounded_projections,
         "governed_output_root": output_root_resolved,

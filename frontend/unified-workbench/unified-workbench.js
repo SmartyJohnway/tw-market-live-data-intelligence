@@ -11,11 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const exportActions = document.getElementById('export-actions');
     const previewBtn = document.getElementById('btn-preview');
     const previewSummary = document.getElementById('preview-summary');
+    const authorizeBtn = document.getElementById('btn-authorize');
+    const executeOnceBtn = document.getElementById('btn-execute-once');
+    const modeB2Summary = document.getElementById('mode-b2-summary');
     
     let currentValidationResult = null;
     let currentPreviewResult = null;
     let validatedRequestFingerprint = null;
     let parsedRequest = null;
+    let currentAuthorization = null;
 
     const fingerprint = (value) => JSON.stringify(value);
 
@@ -23,7 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
         currentValidationResult = null;
         currentPreviewResult = null;
         validatedRequestFingerprint = null;
+        currentAuthorization = null;
         previewBtn.disabled = true;
+        authorizeBtn.disabled = true;
+        executeOnceBtn.disabled = true;
+        modeB2Summary.textContent = 'Authorization required. Execution performed = NO.';
         resetPreviewView();
     };
 
@@ -149,6 +157,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    authorizeBtn.addEventListener('click', async () => {
+        if (!currentPreviewResult?.preview || !currentPreviewResult?.orchestration_plan) return;
+        const reference = currentPreviewResult.preview.internal_execution_reference || {};
+        const payload = { request: parsedRequest, expected_preview_id: reference.preview_id,
+            expected_plan_id: currentPreviewResult.orchestration_plan.plan_id,
+            expected_plan_hash: currentPreviewResult.orchestration_plan.plan_hash,
+            confirm_authorization: true, approval_scope_mode: 'whole_plan_executable_scope' };
+        const response = await fetch('/api/unified/authorizations', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+        const data = await response.json();
+        if (!response.ok) { modeB2Summary.textContent = `Authorization unavailable: ${data.error || 'unknown'}`; return; }
+        currentAuthorization = data;
+        modeB2Summary.textContent = `AUTHORIZED — execution performed = NO; network executed = NO; single use = YES; expires ${data.expires_at}`;
+        executeOnceBtn.disabled = false;
+    });
+
+    executeOnceBtn.addEventListener('click', async () => {
+        if (!currentAuthorization) return;
+        const reference = window.prompt('Operator confirmation reference');
+        if (!reference) return;
+        const response = await fetch('/api/unified/executions', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({
+            control_package_id: currentAuthorization.control_package_id, confirm_execution:true,
+            operator_confirmation_reference:reference, confirm_network_execution:currentAuthorization.network_required === true
+        })});
+        const data = await response.json();
+        modeB2Summary.textContent = response.ok ? `EXECUTION ATTEMPTED — ${data.aggregation_status}; authorization consumed = YES.` : `Execution unavailable: ${data.error || 'unknown'}`;
+        executeOnceBtn.disabled = true;
+    });
+
     // --- Tab Switching ---
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -199,6 +235,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('preview-coverage').innerHTML = '';
         document.getElementById('preview-gaps').innerHTML = '';
         document.getElementById('preview-plan-view').textContent = '';
+        authorizeBtn.disabled = true;
+        executeOnceBtn.disabled = true;
     }
 
     const appendDetail = (container, label, value) => {
@@ -246,6 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
             gaps.appendChild(item);
         });
         document.getElementById('preview-plan-view').textContent = JSON.stringify(result.orchestration_plan, null, 2);
+        authorizeBtn.disabled = preview.status === 'ready_for_confirmation' || preview.status === 'partial_possible';
     };
 
     const renderPreviewError = (data) => {

@@ -96,6 +96,22 @@ def test_production_batch_current_observation_calls_source_once_and_fans_out(tmp
     assert [item["result_item_count"] for item in results] == [1, 1]
 
 
+def test_production_batch_partial_fanout_never_retries_missing_symbol(tmp_path, monkeypatch):
+    calls = []
+
+    def fake_execute(_watchlist, **_kwargs):
+        calls.append(True)
+        return {"observations": [{"symbol": "2330"}]}
+
+    monkeypatch.setattr("scripts.m8r_06_03_production_adapter.execute_live_observation", fake_execute)
+    first, second = _request("current_observation", "TWSE"), _request("current_observation", "TWSE")
+    second.update(operation_id="umeop-op-v1-00000000000000000001", execution_request_id="umereq-v1-00000000000000000001")
+    second["approved_security_identifiers"] = ["TWSE:2317"]
+    result = production_batch_operation_adapter((first, second), DispatchRuntimeContext(str(tmp_path), "execute-approved"))
+    assert calls == [True]
+    assert [item["status"] for item in result] == ["succeeded", "failed"]
+
+
 def test_production_batch_eod_uses_exact_market_once_and_fans_out(tmp_path, monkeypatch):
     calls = []
 
