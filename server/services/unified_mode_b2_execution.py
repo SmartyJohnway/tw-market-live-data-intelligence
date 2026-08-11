@@ -66,7 +66,12 @@ def execute_mode_b2_once(payload: dict[str, Any]) -> dict[str, Any]:
         raise ModeB2Error("mode_b2_execution_child_protocol_invalid")
     if child.returncode == 2:
         raise ModeB2Error(str(result.get("error") or "mode_b2_execution_unavailable"))
-    required = {"schema_version", "authorization_id", "consumption_state", "operation_statuses", "aggregation_status", "execution_receipt_id", "evidence_bundle_id", "external_market_network_executed"}
-    if child.returncode != 0 or set(result) != required or result.get("authorization_id") != control_id:
+    required = {"schema_version", "authorization_id", "consumption_state", "operation_statuses", "aggregation_status", "execution_receipt_id", "evidence_bundle_id", "transport_mode", "test_transport_active", "external_market_network_attempted", "external_market_network_executed"}
+    transport_mode = result.get("transport_mode")
+    transport_valid = (
+        (transport_mode == "deterministic_test_transport" and result.get("test_transport_active") is True and result.get("external_market_network_attempted") is False and result.get("external_market_network_executed") is False)
+        or (transport_mode == "production_transport" and result.get("test_transport_active") is False and type(result.get("external_market_network_attempted")) is bool and type(result.get("external_market_network_executed")) is bool)
+    )
+    if child.returncode != 0 or set(result) != required or result.get("authorization_id") != control_id or not transport_valid:
         raise ModeB2Error("mode_b2_execution_child_protocol_invalid")
     return result

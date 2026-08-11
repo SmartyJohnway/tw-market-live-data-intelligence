@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -84,6 +85,7 @@ def _write_safe_evidence(
         "source_family": source_family,
         "capability_id": request["capability_id"],
         "market": request["market"],
+        "transport_mode": os.environ.get("M8R_06_03_TRANSPORT_MODE", "production_transport"),
         "records": records,
     }
     content = (json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")

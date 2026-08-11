@@ -37,6 +37,7 @@ ARTIFACTS = (
     "request", "plan", "authorization", "consumption_binding",
     "unused_consumption_state", "preflight",
 )
+TEST_PREFIX = "M8R_06_03_TEST_"
 
 
 def _now() -> str:
@@ -96,6 +97,21 @@ def load_control_package(authorization_id: str) -> tuple[Path, dict[str, dict[st
     return package_root, artifacts, manifest
 
 
+def _configure_transport_mode() -> tuple[str, bool]:
+    """Select the child transport once, before package loading or claiming."""
+    active_test_seams = [key for key in os.environ if key.startswith(TEST_PREFIX)]
+    if not active_test_seams:
+        os.environ["M8R_06_03_TRANSPORT_MODE"] = "production_transport"
+        return "production_transport", False
+    if (
+        os.environ.get("M8R_06_03_EXECUTION_ENVIRONMENT") != "test"
+        or os.environ.get("M8R_06_03_TEST_SOURCE_TRANSPORT") != "deterministic"
+    ):
+        raise OrchestrationError("test_transport_not_allowed")
+    os.environ["M8R_06_03_TRANSPORT_MODE"] = "deterministic_test_transport"
+    return "deterministic_test_transport", True
+
+
 def _install_deterministic_test_transport() -> None:
     """A process-local test seam, unavailable to browser request data."""
     if os.environ.get("M8R_06_03_TEST_SOURCE_TRANSPORT") != "deterministic":
@@ -132,10 +148,12 @@ def _install_deterministic_test_transport() -> None:
 
 
 def execute_once(authorization_id: str, *, confirm_execution: bool, operator_confirmation_reference: str, confirm_network_execution: bool) -> dict[str, Any]:
+    transport_mode, test_transport_active = _configure_transport_mode()
     package_root, artifacts, _manifest = load_control_package(authorization_id)
     if confirm_execution is not True:
         raise OrchestrationError("execution_confirmation_required")
-    _install_deterministic_test_transport()
+    if test_transport_active:
+        _install_deterministic_test_transport()
     now = _now()
     result = execute_controlled_plan(
         artifacts["plan"], artifacts["authorization"], artifacts["consumption_binding"],
@@ -156,7 +174,14 @@ def execute_once(authorization_id: str, *, confirm_execution: bool, operator_con
         "aggregation_status": result["aggregation"]["overall_status"],
         "execution_receipt_id": result["execution_receipt"]["execution_receipt_id"],
         "evidence_bundle_id": result["evidence_bundle"]["bundle_id"],
-        "external_market_network_executed": False,
+        # A deterministic transport performs no external market I/O.  A
+        # production transport reaches the fixed source adapters for every
+        # dispatched approved operation, so this is attempt/execution telemetry
+        # rather than a hard-coded offline assertion.
+        "transport_mode": transport_mode,
+        "test_transport_active": test_transport_active,
+        "external_market_network_attempted": transport_mode == "production_transport" and bool(result["dispatch_outcomes"]),
+        "external_market_network_executed": transport_mode == "production_transport" and bool(result["dispatch_outcomes"]),
     }
 
 

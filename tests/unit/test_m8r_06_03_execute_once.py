@@ -35,12 +35,15 @@ def _package(tmp_path, monkeypatch):
 
 def test_fixed_child_executes_once_and_replay_is_rejected(tmp_path, monkeypatch):
     package = _package(tmp_path, monkeypatch)
-    environment = os.environ | {"PYTHONPATH": str(ROOT), "M8R_06_03_CONTROL_ROOT": str(tmp_path), "M8R_06_03_TEST_SOURCE_TRANSPORT": "deterministic"}
+    environment = os.environ | {"PYTHONPATH": str(ROOT), "M8R_06_03_CONTROL_ROOT": str(tmp_path), "M8R_06_03_EXECUTION_ENVIRONMENT": "test", "M8R_06_03_TEST_SOURCE_TRANSPORT": "deterministic"}
     command = [sys.executable, str(WRAPPER), "--authorization-id", package["authorization_id"], "--confirm-execution", "--confirm-network-execution", "--operator-confirmation-reference", "unit-child"]
     first = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, env=environment, timeout=30)
     assert first.returncode == 0
     result = json.loads(first.stdout)
     assert result["consumption_state"] in {"consumed_success", "consumed_partial", "consumed_failed"}
+    assert result["transport_mode"] == "deterministic_test_transport"
+    assert result["test_transport_active"] is True
+    assert result["external_market_network_attempted"] is False
     assert result["external_market_network_executed"] is False
     second = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, env=environment, timeout=30)
     assert second.returncode == 2
@@ -76,6 +79,7 @@ def _parent_payload(package):
 def test_timeout_after_claim_consumes_authorization_and_prevents_retry(tmp_path, monkeypatch):
     package = _package(tmp_path, monkeypatch)
     monkeypatch.setenv("M8R_06_03_CONTROL_ROOT", str(tmp_path))
+    monkeypatch.setenv("M8R_06_03_EXECUTION_ENVIRONMENT", "test")
     monkeypatch.setenv("M8R_06_03_TEST_SOURCE_TRANSPORT", "deterministic")
     monkeypatch.setenv("M8R_06_03_TEST_SOURCE_DELAY_SECONDS", "3")
     monkeypatch.setattr(unified_mode_b2_execution, "MAX_CHILD_TIMEOUT_SECONDS", 1)
@@ -93,6 +97,7 @@ def test_concurrent_parent_attempts_have_one_atomic_claim_and_one_dispatch(tmp_p
     package = _package(tmp_path, monkeypatch)
     counter = tmp_path / "invocations"
     monkeypatch.setenv("M8R_06_03_CONTROL_ROOT", str(tmp_path))
+    monkeypatch.setenv("M8R_06_03_EXECUTION_ENVIRONMENT", "test")
     monkeypatch.setenv("M8R_06_03_TEST_SOURCE_TRANSPORT", "deterministic")
     monkeypatch.setenv("M8R_06_03_TEST_INVOCATION_COUNTER", str(counter))
     results = []
@@ -113,3 +118,36 @@ def test_concurrent_parent_attempts_have_one_atomic_claim_and_one_dispatch(tmp_p
     assert [kind for kind, _ in results].count("error") == 1
     assert results[[kind for kind, _ in results].index("error")][1] == "mode_b2_execution_unavailable"
     assert len(list(counter.glob("*.invoked"))) == 1
+
+
+def test_network_confirmation_false_fails_before_claim_or_source_invocation(tmp_path, monkeypatch):
+    package = _package(tmp_path, monkeypatch)
+    counter = tmp_path / "invocations"
+    monkeypatch.setenv("M8R_06_03_CONTROL_ROOT", str(tmp_path))
+    monkeypatch.setenv("M8R_06_03_EXECUTION_ENVIRONMENT", "test")
+    monkeypatch.setenv("M8R_06_03_TEST_SOURCE_TRANSPORT", "deterministic")
+    monkeypatch.setenv("M8R_06_03_TEST_INVOCATION_COUNTER", str(counter))
+    payload = _parent_payload(package) | {"confirm_network_execution": False}
+    with pytest.raises(unified_mode_b2.ModeB2Error, match="mode_b2_execution_unavailable"):
+        unified_mode_b2_execution.execute_mode_b2_once(payload)
+    package_root = tmp_path / package["authorization_id"]
+    assert not list((package_root / "claims").glob("*.json"))
+    assert not counter.exists()
+
+
+def test_production_mode_rejects_active_deterministic_test_transport_before_claim(tmp_path, monkeypatch):
+    package = _package(tmp_path, monkeypatch)
+    monkeypatch.setenv("M8R_06_03_CONTROL_ROOT", str(tmp_path))
+    monkeypatch.setenv("M8R_06_03_TEST_SOURCE_TRANSPORT", "deterministic")
+    # Absence of the explicit process test mode is production/pre-live mode.
+    with pytest.raises(unified_mode_b2.ModeB2Error, match="mode_b2_execution_unavailable"):
+        unified_mode_b2_execution.execute_mode_b2_once(_parent_payload(package))
+    assert not list((tmp_path / package["authorization_id"] / "claims").glob("*.json"))
+
+
+def test_production_transport_identity_proves_test_transport_disabled(monkeypatch):
+    for key in list(os.environ):
+        if key.startswith("M8R_06_03_TEST_"):
+            monkeypatch.delenv(key)
+    monkeypatch.delenv("M8R_06_03_EXECUTION_ENVIRONMENT", raising=False)
+    assert __import__("scripts.m8r_06_03_execute_once", fromlist=["_configure_transport_mode"])._configure_transport_mode() == ("production_transport", False)

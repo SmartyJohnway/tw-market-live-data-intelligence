@@ -42,6 +42,7 @@ def test_real_localhost_authorize_execute_once_vertical(tmp_path):
     control_root, counter = tmp_path / "control", tmp_path / "counter"
     environment = os.environ | {
         "M8R_06_03_CONTROL_ROOT": str(control_root),
+        "M8R_06_03_EXECUTION_ENVIRONMENT": "test",
         "M8R_06_03_TEST_SOURCE_TRANSPORT": "deterministic",
         "M8R_06_03_TEST_INVOCATION_COUNTER": str(counter),
     }
@@ -85,6 +86,8 @@ def test_real_localhost_authorize_execute_once_vertical(tmp_path):
         }
         status, execution = _json(base + "/api/unified/executions", execution_payload)
         assert status == 200 and execution["external_market_network_executed"] is False
+        assert execution["transport_mode"] == "deterministic_test_transport"
+        assert execution["test_transport_active"] is True
         assert execution["execution_receipt_id"] and execution["evidence_bundle_id"]
         status, replay = _json(base + "/api/unified/executions", execution_payload)
         assert status == 409 and replay["error"] == "mode_b2_execution_unavailable"
@@ -92,6 +95,8 @@ def test_real_localhost_authorize_execute_once_vertical(tmp_path):
         package = control_root / authorization["authorization_id"]
         assert list((package / "receipts").glob("*.json"))
         assert list((package / "bundles").glob("*.json"))
+        evidence = json.loads(next((package / "evidence").glob("*.json")).read_text(encoding="utf-8"))
+        assert evidence["transport_mode"] == "deterministic_test_transport"
         assert len(list(counter.glob("*.invoked"))) == 1
     finally:
         server.terminate()

@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const previewBtn = document.getElementById('btn-preview');
     const previewSummary = document.getElementById('preview-summary');
     const authorizeBtn = document.getElementById('btn-authorize');
+    const networkConfirmation = document.getElementById('confirm-network-execution');
     const executeOnceBtn = document.getElementById('btn-execute-once');
     const modeB2Summary = document.getElementById('mode-b2-summary');
     
@@ -23,15 +24,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fingerprint = (value) => JSON.stringify(value);
 
-    const invalidateDerivedState = () => {
-        currentValidationResult = null;
-        currentPreviewResult = null;
-        validatedRequestFingerprint = null;
+    const invalidateExecutionAuthorization = () => {
         currentAuthorization = null;
         previewBtn.disabled = true;
         authorizeBtn.disabled = true;
         executeOnceBtn.disabled = true;
+        networkConfirmation.checked = false;
+        networkConfirmation.disabled = true;
         modeB2Summary.textContent = 'Authorization required. Execution performed = NO.';
+    };
+
+    const invalidateDerivedState = () => {
+        currentValidationResult = null;
+        currentPreviewResult = null;
+        validatedRequestFingerprint = null;
+        invalidateExecutionAuthorization();
         resetPreviewView();
     };
 
@@ -97,6 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     validateBtn.addEventListener('click', async () => {
         if (!parsedRequest) return;
+        // A revalidation starts a fresh authority chain, even for identical text.
+        invalidateDerivedState();
         const payloadStr = JSON.stringify({ request: parsedRequest });
         const encoder = new TextEncoder();
         if (encoder.encode(payloadStr).length > MAX_BODY_SIZE) {
@@ -135,6 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
             invalidateDerivedState();
             return;
         }
+        // A new preview is never permitted to retain an older authorization.
+        invalidateExecutionAuthorization();
         previewBtn.disabled = true;
         previewBtn.textContent = 'Building Preview...';
         try {
@@ -168,6 +179,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await response.json();
         if (!response.ok) { modeB2Summary.textContent = `Authorization unavailable: ${data.error || 'unknown'}`; return; }
         currentAuthorization = data;
+        networkConfirmation.checked = false;
+        networkConfirmation.disabled = data.network_required !== true;
         modeB2Summary.textContent = `AUTHORIZED — execution performed = NO; network executed = NO; single use = YES; expires ${data.expires_at}`;
         executeOnceBtn.disabled = false;
     });
@@ -178,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!reference) return;
         const response = await fetch('/api/unified/executions', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({
             control_package_id: currentAuthorization.control_package_id, confirm_execution:true,
-            operator_confirmation_reference:reference, confirm_network_execution:currentAuthorization.network_required === true
+            operator_confirmation_reference:reference, confirm_network_execution:networkConfirmation.checked === true
         })});
         const data = await response.json();
         modeB2Summary.textContent = response.ok ? `EXECUTION ATTEMPTED — ${data.aggregation_status}; authorization consumed = YES.` : `Execution unavailable: ${data.error || 'unknown'}`;
