@@ -1,8 +1,8 @@
 # M8R-06-02 Mode B1 Deterministic Preview
 
-Status: `BLOCKED`
+Status: `PASS_WITH_CAVEATS`
 
-Principal decision: `BLOCKED_PENDING_DEFAULT_CI_COMPLETION`. M8R-06-03 and all later execution work remain unauthorized.
+Principal decision: `READY_FOR_M8R_06_03_AUTHORIZATION_REVIEW`. This is readiness only; M8R-06-03 and all later execution work remain unauthorized.
 
 ## Accepted vertical slice
 
@@ -19,7 +19,7 @@ Unified Request
 → Workbench Mode B1
 ```
 
-The server reruns F3 for every Preview request and does not accept a client-supplied validation result. Planning binds canonical hashes for the original request, normalized request, complete F3 output, active compact index/manifest, capability catalog, planner, routing matrix, and handoff contract. The Preview remains separate from the internal orchestration plan. The implementation code head is `d10e40545505e1abf17655ff51d1f607a6f808d8`; later commits contain current documentation/evidence and the narrow planning-dependency boundary correction only.
+The server reruns F3 for every Preview request and does not accept a client-supplied validation result. Planning binds canonical hashes for the original request, normalized request, complete F3 output, active compact index/manifest, capability catalog, planner, routing matrix, and handoff contract. The Preview remains separate from the internal orchestration plan. The feature implementation head is `d10e40545505e1abf17655ff51d1f607a6f808d8`; the final review correction head is `a16b0135abdacc1049229c2160733268493baaab`, which added meta-schema validation and explicit input/output error classification.
 
 Every result explicitly preserves the boundary:
 
@@ -50,7 +50,7 @@ Validation recorded before the final evidence-only commit:
 - Preview contract: 15 passed.
 - M8R-05B-01: 63 passed.
 - Combined F3, Mode A, 05B-01, C1B, C2, Preview, and Workbench regression: 211 passed.
-- Post-Commit-7 repository `default-ci`: not confirmed. Two runs exceeded 600 seconds without pytest failure output and the owned test runners were terminated. This is a closure blocker; prior evidence-head passes are not substituted for the current commit.
+- Post-Commit-7 repository `default-ci`: 841 passed, 0 failed, 0 skipped, 0 deselected in 239.81 seconds. The exact streaming `python scripts/run_test_profile.py default-ci` command exited 0 on `a16b0135abdacc1049229c2160733268493baaab`.
 - `compileall` and `git diff --check`: passed.
 
 ## Caveats
@@ -61,4 +61,4 @@ Validation recorded before the final evidence-only commit:
 - The existing Starlette/httpx TestClient deprecation warning remains.
 - `tests/unit/test_m8r_05a_cross_contract_consistency.py` remains 6 passed / 3 failed due `PRE_EXISTING_CROSS_CONTRACT_FIXTURE_DRIFT`: the old `valid_result.json` lacks completed Result v1 fields such as `result_id`. It was not modified or misreported as passing.
 
-Blocking finding: `BLOCKED_FINAL_DEFAULT_CI_TIMEOUT`. M8R-06-03, M8R-06-04, M8R-06-05, M8R-07, and M8R-08/MCP remain `NOT_AUTHORIZED`.
+There are no current M8R-06-02 blocking findings. M8R-06-03, M8R-06-04, M8R-06-05, M8R-07, and M8R-08/MCP remain `NOT_AUTHORIZED`.
