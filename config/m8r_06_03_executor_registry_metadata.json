@@ -1,0 +1,53 @@
+{
+  "schema_version": "m8r_05b_03_executor_registry_metadata.v1",
+  "executors": [
+    {
+      "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+      "capability_id": "current_observation",
+      "market": "TWSE",
+      "supported_security_types": ["equity"],
+      "expected_evidence_contract": "bounded normalized source observation with source health/currentness",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 15,
+      "maximum_result_items": 50,
+      "output_policy": "contained_artifact_only"
+    },
+    {
+      "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+      "capability_id": "current_observation",
+      "market": "TPEX",
+      "supported_security_types": ["equity"],
+      "expected_evidence_contract": "bounded normalized source observation with source health/currentness",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 15,
+      "maximum_result_items": 50,
+      "output_policy": "contained_artifact_only"
+    },
+    {
+      "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+      "capability_id": "official_eod_reference",
+      "market": "TWSE",
+      "supported_security_types": ["equity"],
+      "expected_evidence_contract": "official EOD reference plus timing/currentness context",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 15,
+      "maximum_result_items": 50,
+      "output_policy": "contained_artifact_only"
+    },
+    {
+      "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+      "capability_id": "official_eod_reference",
+      "market": "TPEX",
+      "supported_security_types": ["equity"],
+      "expected_evidence_contract": "official EOD reference plus timing/currentness context",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 15,
+      "maximum_result_items": 50,
+      "output_policy": "contained_artifact_only"
+    }
+  ]
+}

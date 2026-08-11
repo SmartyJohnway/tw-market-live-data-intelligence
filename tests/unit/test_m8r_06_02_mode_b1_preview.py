@@ -368,7 +368,7 @@ def test_production_service_independently_reruns_f3_for_the_supplied_request(
     assert result["orchestration_plan"]["execution_authorized"] is False
 
 
-def test_workbench_exposes_preview_without_authorize_or_execute_controls():
+def test_workbench_exposes_preview_and_mode_b2_controls():
     html = (
         ROOT / "frontend/unified-workbench/UnifiedMarketEvidenceWorkbench.html"
     ).read_text(encoding="utf-8")
@@ -379,8 +379,16 @@ def test_workbench_exposes_preview_without_authorize_or_execute_controls():
     assert "PREVIEW ONLY" in html
     assert "NO NETWORK EXECUTED" in html
     assert "NOT AUTHORIZED" in html
-    assert 'id="btn-authorize"' not in html
-    assert 'id="btn-execute"' not in html
+    assert 'id="btn-authorize"' in html
+    assert 'id="confirm-network-execution"' in html
+    assert 'id="confirm-network-execution" type="checkbox" disabled' in html
+    assert 'id="confirm-network-execution" type="checkbox" checked' not in html
+    assert 'id="btn-execute-once"' in html
     assert "/api/unified/preview-request" in javascript
     assert "validatedRequestFingerprint" in javascript
     assert "invalidateDerivedState" in javascript
+    assert "networkConfirmation.checked === true" in javascript
+    assert "confirm_network_execution:currentAuthorization.network_required === true" not in javascript
+    assert "invalidateExecutionAuthorization();" in javascript
+    assert "validateBtn.addEventListener('click', async () => {\n        if (!parsedRequest) return;\n        // A revalidation starts a fresh authority chain, even for identical text.\n        invalidateDerivedState();" in javascript
+    assert "// A new preview is never permitted to retain an older authorization.\n        invalidateExecutionAuthorization();" in javascript
