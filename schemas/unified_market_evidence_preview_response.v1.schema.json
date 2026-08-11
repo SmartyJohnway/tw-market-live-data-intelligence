@@ -13,7 +13,7 @@
     },
     "status": {
       "type": "string",
-      "enum": ["ready_for_confirmation", "partial_possible", "ambiguous_target", "unsupported_capability", "rejected_resource_bound", "error"]
+      "enum": ["ready_for_confirmation", "partial_possible", "ambiguous_target", "target_not_plannable", "unsupported_capability", "rejected_resource_bound", "error"]
     },
     "target_resolution_summary": {
       "type": "object",
@@ -35,6 +35,26 @@
           "items": {"type": "string"}
         },
         "unsupported_market": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "invalid_market_hint": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "unsupported_security_type": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "invalid_input": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "duplicate": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "quarantined": {
           "type": "array",
           "items": {"type": "string"}
         }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unified Market Evidence Workbench - Mode A</title>
+    <title>Unified Market Evidence Workbench - Mode A / Mode B1</title>
     <!-- Content Security Policy to enforce local-only assets -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self';">
     <link rel="stylesheet" href="unified-workbench.css">
@@ -12,7 +12,7 @@
     <div class="workbench-container">
         <header>
             <h1>Unified Market Evidence Operator Workbench</h1>
-            <span class="mode-badge">Mode A: Inspect and Validate</span>
+            <span class="mode-badge">Mode A + Mode B1: Validate and Preview</span>
             <div class="offline-badge">📴 Offline Localhost</div>
         </header>
 
@@ -72,8 +72,38 @@
                 </div>
 
                 <div class="preview-placeholder">
-                    <button id="btn-preview" disabled title="Preview is available in M8R-06-02">Preview (M8R-06-02)</button>
+                    <button id="btn-preview" disabled>Build Offline Preview</button>
                 </div>
+            </section>
+
+            <section class="panel preview-panel" id="preview-panel">
+                <div class="preview-heading">
+                    <h2>Mode B1 Deterministic Preview</h2>
+                    <div class="preview-guardrails" aria-label="Preview safety boundaries">
+                        <span>PREVIEW ONLY</span>
+                        <span>NO NETWORK EXECUTED</span>
+                        <span>NOT AUTHORIZED</span>
+                    </div>
+                </div>
+                <div id="preview-summary" class="summary-box">
+                    Validate the current request before building a Preview.
+                </div>
+                <div class="preview-columns">
+                    <div>
+                        <h3>Requested and Planned</h3>
+                        <dl id="preview-planning" class="preview-details"></dl>
+                    </div>
+                    <div>
+                        <h3>Coverage and Bounds</h3>
+                        <dl id="preview-coverage" class="preview-details"></dl>
+                    </div>
+                </div>
+                <h3>Known Gaps and Caveats</h3>
+                <ul id="preview-gaps" class="issue-list warning-list"></ul>
+                <details>
+                    <summary>Advanced internal orchestration plan</summary>
+                    <pre id="preview-plan-view"></pre>
+                </details>
             </section>
         </main>
     </div>

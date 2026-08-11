@@ -9,12 +9,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
     const exportActions = document.getElementById('export-actions');
+    const previewBtn = document.getElementById('btn-preview');
+    const previewSummary = document.getElementById('preview-summary');
     
     let currentValidationResult = null;
+    let currentPreviewResult = null;
+    let validatedRequestFingerprint = null;
     let parsedRequest = null;
+
+    const fingerprint = (value) => JSON.stringify(value);
+
+    const invalidateDerivedState = () => {
+        currentValidationResult = null;
+        currentPreviewResult = null;
+        validatedRequestFingerprint = null;
+        previewBtn.disabled = true;
+        resetPreviewView();
+    };
 
     // --- State Machine ---
     const updateSyntaxStatus = () => {
+        invalidateDerivedState();
+        resetValidationView();
         const val = textarea.value.trim();
         if (!val) {
             syntaxStatus.textContent = 'JSON not loaded';
@@ -61,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     formatBtn.addEventListener('click', () => {
         if (parsedRequest) {
             textarea.value = JSON.stringify(parsedRequest, null, 2);
+            updateSyntaxStatus();
         }
     });
 
@@ -92,6 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             if (response.ok) {
                 renderValidationResult(data);
+                validatedRequestFingerprint = fingerprint(parsedRequest);
+                previewBtn.disabled = false;
             } else {
                 renderTransportError(data);
             }
@@ -100,6 +119,33 @@ document.addEventListener('DOMContentLoaded', () => {
         } finally {
             validateBtn.disabled = false;
             validateBtn.textContent = 'Validate';
+        }
+    });
+
+    previewBtn.addEventListener('click', async () => {
+        if (!parsedRequest || fingerprint(parsedRequest) !== validatedRequestFingerprint) {
+            invalidateDerivedState();
+            return;
+        }
+        previewBtn.disabled = true;
+        previewBtn.textContent = 'Building Preview...';
+        try {
+            const response = await fetch('/api/unified/preview-request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ request: parsedRequest })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                renderPreviewResult(data);
+            } else {
+                renderPreviewError(data);
+            }
+        } catch (err) {
+            renderPreviewError({ error: 'network_error', detail: err.message });
+        } finally {
+            previewBtn.textContent = 'Build Offline Preview';
+            previewBtn.disabled = fingerprint(parsedRequest) !== validatedRequestFingerprint;
         }
     });
 
@@ -144,6 +190,68 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('badge-targets').textContent = '0';
         document.getElementById('badge-capabilities').textContent = '0';
         exportActions.style.display = 'none';
+        previewBtn.disabled = true;
+    };
+
+    function resetPreviewView() {
+        previewSummary.textContent = 'Validate the current request before building a Preview.';
+        document.getElementById('preview-planning').innerHTML = '';
+        document.getElementById('preview-coverage').innerHTML = '';
+        document.getElementById('preview-gaps').innerHTML = '';
+        document.getElementById('preview-plan-view').textContent = '';
+    }
+
+    const appendDetail = (container, label, value) => {
+        const term = document.createElement('dt');
+        term.textContent = label;
+        const description = document.createElement('dd');
+        description.textContent = Array.isArray(value) ? (value.join(', ') || 'None') : String(value ?? '-');
+        container.appendChild(term);
+        container.appendChild(description);
+    };
+
+    const renderPreviewResult = (result) => {
+        currentPreviewResult = result;
+        const preview = result.preview;
+        previewSummary.textContent = preview
+            ? `Preview status: ${preview.status}`
+            : 'No Preview was produced because request schema validation did not run.';
+        const planning = document.getElementById('preview-planning');
+        const coverage = document.getElementById('preview-coverage');
+        const gaps = document.getElementById('preview-gaps');
+        planning.innerHTML = '';
+        coverage.innerHTML = '';
+        gaps.innerHTML = '';
+        if (!preview) {
+            document.getElementById('preview-plan-view').textContent = '';
+            return;
+        }
+        appendDetail(planning, 'Requested needs', preview.requested_data_needs);
+        appendDetail(planning, 'Planned evidence', preview.planned_evidence);
+        appendDetail(planning, 'Approval required', preview.approval?.required ? 'YES' : 'NO');
+        appendDetail(planning, 'Execution authorized', 'NO');
+        appendDetail(coverage, 'Coverage', preview.coverage_expectation?.status);
+        appendDetail(coverage, 'Targets', preview.bounds?.target_count);
+        appendDetail(coverage, 'Logical operations', preview.bounds?.operation_count);
+        appendDetail(coverage, 'Estimated source calls', preview.bounds?.estimated_network_calls);
+        appendDetail(coverage, 'Executor invocations', result.orchestration_plan?.accounting?.executor_invocation_count ?? 0);
+        appendDetail(coverage, 'Expanded scope', preview.bounds?.expanded_scope ? 'YES' : 'NO');
+        const notes = [
+            ...(preview.coverage_expectation?.known_gaps || []),
+            ...(preview.caveats || [])
+        ];
+        (notes.length ? notes : ['No known gaps']).forEach(note => {
+            const item = document.createElement('li');
+            item.textContent = note;
+            gaps.appendChild(item);
+        });
+        document.getElementById('preview-plan-view').textContent = JSON.stringify(result.orchestration_plan, null, 2);
+    };
+
+    const renderPreviewError = (data) => {
+        currentPreviewResult = null;
+        previewSummary.textContent = `Preview unavailable: ${data.error || data.detail || 'unknown error'}`;
+        document.getElementById('preview-plan-view').textContent = '';
     };
 
     const getStatusClass = (status) => {

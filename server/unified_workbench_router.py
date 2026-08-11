@@ -2,6 +2,10 @@ import json
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import JSONResponse
 from .services.unified_mode_a import validate_mode_a_request
+from .services.unified_mode_b1 import (
+    ModeB1PlanningUnavailable,
+    build_mode_b1_preview,
+)
 import uuid
 
 router = APIRouter(
@@ -49,3 +53,48 @@ async def validate_request(request: Request):
 
     # 5. Return canonical F3 result directly
     return JSONResponse(status_code=200, content=validation_result)
+
+
+@router.post("/preview-request")
+async def preview_request(request: Request):
+    """Offline Mode B1 planning endpoint; never authorizes or executes."""
+    body = await request.body()
+    if len(body) > MAX_BODY_SIZE:
+        raise HTTPException(status_code=413, detail="request_too_large")
+    try:
+        payload = json.loads(body)
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=400, detail="malformed_json_body")
+    if (
+        not isinstance(payload, dict)
+        or "request" not in payload
+        or not isinstance(payload["request"], dict)
+    ):
+        raise HTTPException(
+            status_code=422,
+            detail="invalid_api_envelope: missing or invalid 'request' key",
+        )
+    try:
+        result = build_mode_b1_preview(payload["request"])
+    except FileNotFoundError:
+        return JSONResponse(
+            status_code=409,
+            content={
+                "error": "canonical_security_master_unavailable",
+                "trace_id": str(uuid.uuid4()),
+            },
+        )
+    except ModeB1PlanningUnavailable:
+        return JSONResponse(
+            status_code=409,
+            content={
+                "error": "mode_b1_planning_dependency_unavailable",
+                "trace_id": str(uuid.uuid4()),
+            },
+        )
+    except RuntimeError:
+        return JSONResponse(
+            status_code=500,
+            content={"error": "mode_b1_internal_error", "trace_id": str(uuid.uuid4())},
+        )
+    return JSONResponse(status_code=200, content=result)

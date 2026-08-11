@@ -117,11 +117,12 @@ AI must only request capabilities listed in the canonical catalog:
 While the AI composes the JSON request, the actual execution is performed by the human Operator or Frontend Workbench using specific workflows. **These Modes are NOT AI JSON request parameters.** They are the target manual processes the operator follows:
 
 - **Mode A (Inspect and Validate)**: The operator reviews the AI's proposed target lists and data needs. The workbench validates the schema without making external network calls.
-- **Mode B (Preview, Authorize, Execute Once)**: The operator runs a dry-run preview, views estimated network costs and target scopes, explicitly authorizes the action, and the workbench executes it.
+- **Mode B1 (Preview)**: Implemented. The operator views deterministic planned evidence, coverage, gaps, and estimated source calls. No authorization or execution occurs.
+- **Mode B2 (Authorize and Execute Once)**: Not implemented or authorized.
 - **Mode C (Package and Handoff)**: The workbench generates a bundled snapshot of canonical evidence and passes it back to the AI context.
 
 > [!NOTE]
-> The existing legacy workbench does not yet implement the full Unified Request/Preview/Result lifecycle. AI produces schema-valid requests for review and future intake. Mode A/B/C represent the target workflow after Workbench realignment.
+> The current Unified Workbench implements production Mode A and offline deterministic Mode B1. Mode B2 authorization/execution, Mode C packaging, and Unified MCP execution remain future, separately governed work.
 
 ---
 
@@ -162,7 +163,7 @@ The project operates under the principle of **Exhaustive output within the autho
 
 ## 12. Manual Workbench Handoff
 
-Because the M8R-06 Unified Operator Workbench and direct MCP execution are **future deliverables**, the AI must currently operate via Manual Workbench Handoff.
+Because Mode B2, Mode C, and direct Unified MCP execution are **not implemented**, the AI must still use a manual handoff after Mode A validation and Mode B1 Preview.
 
 Current workflow:
 AI authors Unified Request

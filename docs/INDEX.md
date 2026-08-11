@@ -160,7 +160,9 @@ git diff --check
 - [M8R-06-01 Implementation Acceptance](acceptance/M8R_06_01_IMPLEMENTATION_ACCEPTANCE.md)
 - [M8R-06-01A Canonical Security Master Activation Preflight](reviews/M8R_06_01A_CANONICAL_SECURITY_MASTER_ACTIVATION_PREFLIGHT.md)
 - [M8R-06-01B Production Input Materialization Review](reviews/M8R_06_01B_PRODUCTION_INPUT_MATERIALIZATION.md)
-- Mode A remains blocked pending `M8R-06-01C-GOVERNED-SNAPSHOT-MATERIALIZATION-AND-MODE-A-ACTIVATION`
+- [M8R-06-01C Post-Activation Acceptance](reviews/M8R_06_01C_POST_ACTIVATION_ACCEPTANCE.md)
+- [M8R-06-02 Mode B1 Deterministic Preview](reviews/M8R_06_02_MODE_B1_DETERMINISTIC_PREVIEW.md)
+- Mode A is active through the governed local compact candidate. M8R-06-02 adds offline deterministic Mode B1 Preview; Mode B2 authorization/execution remains unauthorized.
 
 ## Historical / Compatibility References
 

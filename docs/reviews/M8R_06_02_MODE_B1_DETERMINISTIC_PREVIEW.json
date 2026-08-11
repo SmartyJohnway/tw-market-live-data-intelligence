@@ -1,0 +1,174 @@
+{
+  "task": "M8R-06-02-UNIFIED-WORKBENCH-MODE-B1-DETERMINISTIC-PREVIEW",
+  "baseline_sha": "c9a30a124999689df3d5b4fc96ae58e05c75cc23",
+  "implementation_lineage": {
+    "feature_implementation_head_sha": "d10e40545505e1abf17655ff51d1f607a6f808d8",
+    "final_review_correction_head_sha": "a16b0135abdacc1049229c2160733268493baaab",
+    "final_review_correction": "planning_dependency_boundary_meta_schema_and_output_error_classification"
+  },
+  "branch": "codex/m8r-06-02-mode-b1-deterministic-preview",
+  "architecture": [
+    "Unified Request",
+    "production F3 validation",
+    "immutable production planning bindings",
+    "M8R-05B-01 deterministic planner",
+    "canonical Preview v1 projector",
+    "POST /api/unified/preview-request",
+    "Workbench Mode B1"
+  ],
+  "api_endpoint": "POST /api/unified/preview-request",
+  "planning_binding_semantics": {
+    "canonical_hash_authority": "scripts/m8r_05b_01/canonical.py",
+    "bound_fields": [
+      "original_request_hash",
+      "normalized_request_hash",
+      "f3_validation_output_hash",
+      "security_master_evidence_references",
+      "security_master_artifact_hashes",
+      "capability_catalog_hash",
+      "planner_version",
+      "routing_matrix_version",
+      "routing_matrix_hash",
+      "handoff_contract_version",
+      "handoff_contract_hash"
+    ]
+  },
+  "security_master_binding": {
+    "selection_id": "m8r06-01c2-mode-a-m8r06-01b-20260807T053540Z",
+    "source_bundle_id": "m8r06-01b-20260807T053540Z",
+    "compact_index_sha256": "ad467f077c76d9c7462545fcf322d4960cbd485d09d34463e26dfefea8c1c455",
+    "compact_manifest_sha256": "01857224d025bd9342402917c140050f0fb40b385a65103702c856037dfc93db",
+    "record_count": 43070,
+    "runtime_eligible_count": 2324,
+    "candidate_persisted_in_git": false,
+    "production_fixture_fallback": false
+  },
+  "preview_schema_version": "unified_market_evidence_preview_response.v1",
+  "preview_schema_old_hash": "f05454cf4c085f8c991b1b57c4068d3780971048ea9fad87767b63c188923ff1",
+  "preview_schema_new_hash": "68592a194f71e519b6c2545e0a201342eccdfabf4b2fd9d9f07dc16fdf11e5d2",
+  "preview_schema_old_canonical_json_hash": "3ad38c5ddb3a91b2a38a2dbb8a364114729b824b24c664c45afb8093e7545b48",
+  "preview_schema_new_canonical_json_hash": "f4f7c6cb1fd7e45a0680941513899a9915dbe713cd3388f6190aad8f59bd5189",
+  "preview_contract_amendment": {
+    "classification": "CONTROLLED_ADDITIVE_V1_COMPLETION",
+    "reason": "first production Mode B1 projection exposed missing F3 target states",
+    "existing_v1_payloads_remain_valid": true
+  },
+  "f3_resolution_statuses_covered": [
+    "resolved",
+    "ambiguous",
+    "not_found",
+    "market_mismatch",
+    "unsupported_market",
+    "invalid_market_hint",
+    "unsupported_security_type",
+    "invalid_input",
+    "duplicate",
+    "quarantined"
+  ],
+  "security_type_compatibility": {
+    "classification": "CONTROLLED_05B_ROUTING_COMPATIBILITY_CORRECTION",
+    "canonical_common_share": {
+      "instrument_family": "company_share",
+      "instrument_type": "common_share"
+    },
+    "routing_class": "equity",
+    "routing_matrix_changed": false,
+    "routing_matrix_hash_changed": false,
+    "routing_matrix_raw_sha256": "c8ef622a05d939058d6ee1d9740086bcf876cdd13159bf958c026c96f04f2c4f",
+    "routing_matrix_canonical_json_hash": "870c4d59f746bc29bf3c3f29c532767bab7df5107c21cc2a21c3e2f0865b710c",
+    "planner_version_changed": false,
+    "etf_mapping_authorized": false,
+    "real_twse_common_share_test": "PASS",
+    "real_tpex_common_share_test": "PASS",
+    "etf_non_silent_execution_test": "PASS"
+  },
+  "scenario_matrix": {
+    "twse_2330_current_observation": "ready_for_confirmation",
+    "twse_2330_official_eod": "ready_for_confirmation",
+    "tpex_5227_current_observation": "ready_for_confirmation",
+    "current_required_recent_optional": "partial_possible",
+    "recent_performance_required": "unsupported_capability",
+    "session_status_required": "unsupported_capability",
+    "ambiguous_target": "ambiguous_target",
+    "not_found": "target_not_plannable",
+    "market_mismatch": "target_not_plannable",
+    "unsupported_security_type": "target_not_plannable",
+    "duplicate_target": "target_not_plannable",
+    "target_hard_limit": "rejected_resource_bound",
+    "operation_hard_limit": "rejected_resource_bound",
+    "taifex_provisional_derivative": "unsupported_capability",
+    "malformed_planning_dependency": "FAIL_CLOSED",
+    "malformed_preview_schema": {
+      "http_status": 409,
+      "error": "mode_b1_planning_dependency_unavailable",
+      "sanitized": true
+    },
+    "invalid_preview_output": {
+      "http_status": 500,
+      "error": "mode_b1_internal_error",
+      "classification": "output_schema_invalid"
+    }
+  },
+  "real_production_smoke": {
+    "server": "actual localhost subprocess",
+    "health_http_status": 200,
+    "workbench_http_status": 200,
+    "twse_http_status": 200,
+    "twse_target": "TWSE:2330",
+    "twse_preview_status": "ready_for_confirmation",
+    "twse_routing_security_type": "equity",
+    "tpex_http_status": 200,
+    "tpex_target": "TPEX:5227",
+    "tpex_preview_status": "ready_for_confirmation"
+  },
+  "network_executed": false,
+  "authorization_created": false,
+  "authorization_consumed": false,
+  "execution_performed": false,
+  "persistent_runtime_mutation": false,
+  "focused_tests": "PASS: 31 Mode B1 unit + 17 Workbench/API integration",
+  "preview_contract_tests": "PASS: 15",
+  "planner_05b01_regressions": "PASS: 63",
+  "combined_f3_mode_a_05b01_c1b_c2_preview_workbench_regressions": "PASS: 216",
+  "sealed_local_acceptance": "PASS: executed, not skipped",
+  "default_ci": "PASS: 841 passed, 0 failed, 0 skipped, 0 deselected, 239.81 seconds; exact streaming command exited 0 on a16b0135abdacc1049229c2160733268493baaab.",
+  "compileall": "PASS",
+  "git_diff_check": "PASS",
+  "browser_e2e": "NOT_RUN: Playwright dependency unavailable",
+  "github_remote_ci": "NOT_RUN",
+  "pre_existing_cross_contract_fixture_drift": {
+    "classification": "PRE_EXISTING_CROSS_CONTRACT_FIXTURE_DRIFT",
+    "suite_result": "6 passed, 3 failed",
+    "cause": "tests/fixtures/m8r_05a/valid_result.json predates required completed Result v1 fields including result_id",
+    "modified_in_this_task": false
+  },
+  "actual_files_changed": [
+    "schemas/unified_market_evidence_preview_response.v1.schema.json",
+    "scripts/m8r_05b_01/planner.py",
+    "scripts/m8r_06_02_mode_b1_preview.py",
+    "server/services/unified_mode_b1.py",
+    "server/unified_workbench_router.py",
+    "frontend/unified-workbench/UnifiedMarketEvidenceWorkbench.html",
+    "frontend/unified-workbench/unified-workbench.js",
+    "frontend/unified-workbench/unified-workbench.css",
+    "config/test_execution_profiles.json",
+    "focused tests and bounded current-truth documentation"
+  ],
+  "accepted_caveats": [
+    "The governed compact candidate remains Git-ignored and local-only; absence fails closed.",
+    "Browser E2E was not run because Playwright is not installed; actual localhost HTTP composition passed.",
+    "GitHub remote CI is not run locally and must not be inferred from local CI.",
+    "Three pre-existing cross-contract tests retain stale Result v1 fixture drift and are not reported as passing.",
+    "Starlette TestClient emits the existing httpx deprecation warning."
+  ],
+  "blocking_findings": [],
+  "status": "PASS_WITH_CAVEATS",
+  "principal_decision": "READY_FOR_M8R_06_03_AUTHORIZATION_REVIEW",
+  "unauthorized_tasks": [
+    "M8R-06-03",
+    "M8R-06-04",
+    "M8R-06-05",
+    "M8R-07",
+    "M8R-08 / MCP"
+  ]
+}

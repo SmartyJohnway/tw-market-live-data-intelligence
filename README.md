@@ -21,9 +21,10 @@ It is a **Local Release Candidate**. It is not production ready and it does not 
 - **M8R-05A/F3**: Unified Request and canonical target validation
 - **M8R-05B**: deterministic preview/authorization/execute-once orchestration
 - **M8R-05C**: complete AI-context Result and separate Audit Package
-- **M8R-06-01**: Unified Operator Workbench Mode A (Inspect and Validate) - Implemented but production activation remains blocked pending canonical security master configuration (M8R-06-01C activation decision).
+- **M8R-06-01**: Unified Operator Workbench Mode A (Inspect and Validate) is production-activated through the governed local compact Security Master pointer.
+- **M8R-06-02**: Mode B1 provides deterministic, offline Preview planning from the production F3 result and accepted 05B-01 planner. It does not authorize or execute.
 
-*Note: The M8R-06 frontend Mode B and C, Unified MCP execution, and automatic execution are not yet implemented. There is no automatic polling, scheduler, or realtime guarantee.*
+*Note: Mode B2 authorization/execution, Mode C, Unified MCP execution, and automatic execution are not implemented. There is no automatic polling, scheduler, or realtime guarantee.*
 
 ### Legacy compatibility / historical local workbench surfaces
 - Read and validate the reviewed **M5F canonical package** (legacy Mode A: Canonical Context).
