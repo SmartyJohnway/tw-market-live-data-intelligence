@@ -394,7 +394,14 @@ def _parse_mis_item(item: dict[str, Any], instrument: dict[str, Any], retrieved_
     return parsed
 
 
-def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = True, timeout: int = 12, ssl_policy: str | None = None) -> dict[str, Any]:
+def execute_live_observation(
+    watchlist: dict[str, Any],
+    *,
+    write_latest: bool = True,
+    timeout: int = 12,
+    ssl_policy: str | None = None,
+    allow_individual_fallback: bool = True,
+) -> dict[str, Any]:
     selected_ssl_policy = resolve_ssl_policy(ssl_policy)
     ssl_context = build_ssl_context(selected_ssl_policy)
     validation = validate_watchlist(watchlist)
@@ -452,7 +459,9 @@ def execute_live_observation(watchlist: dict[str, Any], *, write_latest: bool = 
             payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "accepted_for_bounded_observation", "batch_request_status": "accepted", "sample_retained": False})
         except Exception as exc:
             payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "batch_request_failed", "reason": str(exc), "fallback": "individual_bounded_requests", "sample_retained": False})
-            for ch in mis_channels:
+            if not allow_individual_fallback:
+                payload["source_investigation_notes"][-1]["fallback"] = "disabled_by_caller"
+            for ch in (mis_channels if allow_individual_fallback else []):
                 single_url = f"https://mis.twse.com.tw/stock/api/getStockInfo.jsp?{urllib.parse.urlencode({'ex_ch': ch, 'json': '1', 'delay': '0'})}"
                 try:
                     req = urllib.request.Request(single_url, headers={"User-Agent": "Mozilla/5.0 tw-market-m5k-live-observation/1.0", "Referer": "https://mis.twse.com.tw/stock/fibest.jsp"})
