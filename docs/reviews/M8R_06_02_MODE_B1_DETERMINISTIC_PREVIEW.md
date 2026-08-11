@@ -49,7 +49,7 @@ Validation recorded before the final evidence-only commit:
 - Workbench/API integration: 17 collected; the sealed-candidate test executed locally and passed.
 - Preview contract: 15 passed.
 - M8R-05B-01: 63 passed.
-- Combined F3, Mode A, 05B-01, C1B, C2, Preview, and Workbench regression: 211 passed.
+- Combined F3, Mode A, 05B-01, C1B, C2, Preview, and Workbench regression: 216 passed.
 - Post-Commit-7 repository `default-ci`: 841 passed, 0 failed, 0 skipped, 0 deselected in 239.81 seconds. The exact streaming `python scripts/run_test_profile.py default-ci` command exited 0 on `a16b0135abdacc1049229c2160733268493baaab`.
 - `compileall` and `git diff --check`: passed.
 

@@ -129,7 +129,7 @@
   "focused_tests": "PASS: 31 Mode B1 unit + 17 Workbench/API integration",
   "preview_contract_tests": "PASS: 15",
   "planner_05b01_regressions": "PASS: 63",
-  "combined_f3_mode_a_05b01_c1b_c2_preview_workbench_regressions": "PASS: 211",
+  "combined_f3_mode_a_05b01_c1b_c2_preview_workbench_regressions": "PASS: 216",
   "sealed_local_acceptance": "PASS: executed, not skipped",
   "default_ci": "PASS: 841 passed, 0 failed, 0 skipped, 0 deselected, 239.81 seconds; exact streaming command exited 0 on a16b0135abdacc1049229c2160733268493baaab.",
   "compileall": "PASS",
