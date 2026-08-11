@@ -211,6 +211,105 @@ def test_preview_request_dependency_failures_are_sanitized(monkeypatch):
     assert "traceback" not in serialized.lower()
 
 
+def test_malformed_preview_schema_authority_is_409_at_real_service_boundary(
+    monkeypatch,
+):
+    """The router must receive the service's bounded conversion, not a mocked error."""
+    from server.services import unified_mode_b1
+
+    class FakeSecurityMaster:
+        pointer = {
+            "index_path": "data/security_master/runtime_identity_indexes/test/index.json",
+            "manifest_path": "data/security_master/runtime_identity_indexes/test/manifest.json",
+            "compact_index_sha256": "a" * 64,
+            "compact_manifest_sha256": "b" * 64,
+        }
+
+    from server.services.unified_mode_a import validate_mode_a_request
+    from scripts.m8r_06_02_mode_b1_preview import load_planning_authorities
+
+    authorities = load_planning_authorities()
+    authorities["preview_schema"] = {"type": "not-a-json-schema-type"}
+    monkeypatch.setattr(
+        unified_mode_b1,
+        "validate_mode_a_request",
+        lambda request: validate_mode_a_request(request, allow_fixture_snapshot=True),
+    )
+    monkeypatch.setattr(
+        unified_mode_b1,
+        "get_production_mode_a_security_master",
+        lambda _pointer: FakeSecurityMaster(),
+    )
+    monkeypatch.setattr(unified_mode_b1, "load_planning_authorities", lambda: authorities)
+
+    request = {
+        "schema_version": "unified_market_evidence_request.v1",
+        "request_id": "malformed-preview-schema-authority",
+        "execution_mode": "preview",
+        "targets": [{"input": "2330", "market_hint": "TWSE"}],
+        "data_needs": [{"type": "current_observation", "priority": "required"}],
+    }
+    response = client.post("/api/unified/preview-request", json={"request": request})
+    assert response.status_code == 409
+    result = response.json()
+    assert result["error"] == "mode_b1_planning_dependency_unavailable"
+    assert "trace_id" in result
+    serialized = json.dumps(result).lower()
+    assert "jsonschema" not in serialized
+    assert "traceback" not in serialized
+    assert "preview_schema" not in serialized
+    assert "\\" not in serialized and "/" not in serialized
+
+
+def test_invalid_preview_output_is_500_not_dependency_unavailable(monkeypatch):
+    """A valid authority rejecting our generated output is an implementation defect."""
+    from server.services import unified_mode_b1
+
+    class FakeSecurityMaster:
+        pointer = {
+            "index_path": "data/security_master/runtime_identity_indexes/test/index.json",
+            "manifest_path": "data/security_master/runtime_identity_indexes/test/manifest.json",
+            "compact_index_sha256": "a" * 64,
+            "compact_manifest_sha256": "b" * 64,
+        }
+
+    from server.services.unified_mode_a import validate_mode_a_request
+    from scripts.m8r_06_02_mode_b1_preview import load_planning_authorities
+
+    authorities = load_planning_authorities()
+    authorities["preview_schema"] = {"type": "object", "required": ["missing"]}
+    monkeypatch.setattr(
+        unified_mode_b1,
+        "validate_mode_a_request",
+        lambda request: validate_mode_a_request(request, allow_fixture_snapshot=True),
+    )
+    monkeypatch.setattr(
+        unified_mode_b1,
+        "get_production_mode_a_security_master",
+        lambda _pointer: FakeSecurityMaster(),
+    )
+    monkeypatch.setattr(unified_mode_b1, "load_planning_authorities", lambda: authorities)
+    response = client.post(
+        "/api/unified/preview-request",
+        json={
+            "request": {
+                "schema_version": "unified_market_evidence_request.v1",
+                "request_id": "invalid-preview-output",
+                "execution_mode": "preview",
+                "targets": [{"input": "2330", "market_hint": "TWSE"}],
+                "data_needs": [
+                    {"type": "current_observation", "priority": "required"}
+                ],
+            }
+        },
+    )
+    assert response.status_code == 500
+    result = response.json()
+    assert result["error"] == "mode_b1_internal_error"
+    assert "trace_id" in result
+    assert "dependency" not in json.dumps(result).lower()
+
+
 def test_real_sealed_candidate_preview_endpoint_executes_locally_without_monkeypatch():
     candidate = (
         Path(__file__).resolve().parents[2]

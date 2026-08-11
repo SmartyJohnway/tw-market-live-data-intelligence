@@ -28,7 +28,7 @@ Unit testing patches `socket`, `requests`, `httpx`, and `urllib` to prove F3 Mod
 
 ## 5. Security & State Transition
 No path injection is allowed; schemas are referenced via `Path(__file__).resolve()`.
-Invalid requests render properly as Canonical Validation Results (with HTTP 200 payload) ensuring operators see F3 blocking issues, but are prohibited from transitioning into Mode B1 (Preview).
+Unified Request schema-invalid input returns the canonical F3 validation result but produces no canonical Preview. By contrast, governed target ambiguity and target-not-plannable outcomes may produce deterministic non-executable Mode B1 Previews that explain the blocker. Neither outcome becomes an executable plan or an authorization candidate.
 
 ## 6. Mode B1 Boundary
 

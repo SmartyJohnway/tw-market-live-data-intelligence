@@ -41,6 +41,8 @@ def build_mode_b1_preview(
     except FileNotFoundError:
         raise
     except PlanningError as exc:
+        if exc.code == "output_schema_invalid":
+            raise RuntimeError("mode_b1_output_contract_invalid") from exc
         raise ModeB1PlanningUnavailable(exc.code) from exc
     except (KeyError, OSError, ValueError) as exc:
         raise ModeB1PlanningUnavailable("planning_dependency_invalid") from exc

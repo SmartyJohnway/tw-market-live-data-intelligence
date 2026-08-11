@@ -254,7 +254,14 @@ def project_canonical_preview(
         },
         "caveats": ["PREVIEW_ONLY", "NO_NETWORK_EXECUTED", "EXECUTION_NOT_AUTHORIZED"],
     }
-    jsonschema.Draft7Validator(preview_schema).validate(preview)
+    try:
+        jsonschema.Draft7Validator.check_schema(preview_schema)
+    except jsonschema.SchemaError as exc:
+        raise PlanningError("input_schema_invalid", "preview_schema") from exc
+    try:
+        jsonschema.Draft7Validator(preview_schema).validate(preview)
+    except jsonschema.ValidationError as exc:
+        raise PlanningError("output_schema_invalid", "preview") from exc
     return preview
 
 

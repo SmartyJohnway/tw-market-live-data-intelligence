@@ -1,8 +1,8 @@
 # M8R-06-02 Mode B1 Deterministic Preview
 
-Status: `PASS_WITH_CAVEATS`
+Status: `BLOCKED`
 
-Principal decision: `READY_FOR_M8R_06_03_AUTHORIZATION_REVIEW`. This is readiness only; M8R-06-03 and all later execution work remain unauthorized.
+Principal decision: `BLOCKED_PENDING_DEFAULT_CI_COMPLETION`. M8R-06-03 and all later execution work remain unauthorized.
 
 ## Accepted vertical slice
 
@@ -19,7 +19,7 @@ Unified Request
 → Workbench Mode B1
 ```
 
-The server reruns F3 for every Preview request and does not accept a client-supplied validation result. Planning binds canonical hashes for the original request, normalized request, complete F3 output, active compact index/manifest, capability catalog, planner, routing matrix, and handoff contract. The Preview remains separate from the internal orchestration plan.
+The server reruns F3 for every Preview request and does not accept a client-supplied validation result. Planning binds canonical hashes for the original request, normalized request, complete F3 output, active compact index/manifest, capability catalog, planner, routing matrix, and handoff contract. The Preview remains separate from the internal orchestration plan. The implementation code head is `d10e40545505e1abf17655ff51d1f607a6f808d8`; later commits contain current documentation/evidence and the narrow planning-dependency boundary correction only.
 
 Every result explicitly preserves the boundary:
 
@@ -39,18 +39,18 @@ The 05B planning boundary received a `CONTROLLED_05B_ROUTING_COMPATIBILITY_CORRE
 
 ## Acceptance results
 
-The executable scenario matrix covers TWSE current/EOD, TPEx current, optional partial coverage, required plan-only and blocked capabilities, all F3 target outcomes, duplicate targets, target and operation limits, TAIFEX provisional/unsupported planning, and malformed planning dependencies.
+The executable scenario matrix covers TWSE current/EOD, TPEx current, optional partial coverage, required plan-only and blocked capabilities, all F3 target outcomes, duplicate targets, target and operation limits, TAIFEX provisional/unsupported planning, and malformed planning dependencies. A malformed Preview schema authority is meta-schema checked, maps to `input_schema_invalid`, and reaches the actual API as sanitized HTTP 409 `mode_b1_planning_dependency_unavailable`. A valid Preview schema that rejects generated output maps to `output_schema_invalid` and sanitized HTTP 500 `mode_b1_internal_error`.
 
 An actual localhost subprocess served health and Workbench endpoints with HTTP 200. Real production Preview requests resolved `TWSE:2330` and `TPEX:5227` and returned `ready_for_confirmation`; the TWSE operation used routing security class `equity`. All network, authorization, and execution flags were false.
 
 Validation recorded before the final evidence-only commit:
 
-- Mode B1 focused unit tests: 30 passed.
-- Workbench/API integration: 15 collected; the sealed-candidate test executed locally and passed.
+- Mode B1 focused unit tests: 31 passed.
+- Workbench/API integration: 17 collected; the sealed-candidate test executed locally and passed.
 - Preview contract: 15 passed.
 - M8R-05B-01: 63 passed.
 - Combined F3, Mode A, 05B-01, C1B, C2, Preview, and Workbench regression: 211 passed.
-- Repository `default-ci`: 838/838 passed on the evidence HEAD with `network_may_have_occurred=false`.
+- Post-Commit-7 repository `default-ci`: not confirmed. Two runs exceeded 600 seconds without pytest failure output and the owned test runners were terminated. This is a closure blocker; prior evidence-head passes are not substituted for the current commit.
 - `compileall` and `git diff --check`: passed.
 
 ## Caveats
@@ -61,4 +61,4 @@ Validation recorded before the final evidence-only commit:
 - The existing Starlette/httpx TestClient deprecation warning remains.
 - `tests/unit/test_m8r_05a_cross_contract_consistency.py` remains 6 passed / 3 failed due `PRE_EXISTING_CROSS_CONTRACT_FIXTURE_DRIFT`: the old `valid_result.json` lacks completed Result v1 fields such as `result_id`. It was not modified or misreported as passing.
 
-There are no M8R-06-02 blocking findings. M8R-06-03, M8R-06-04, M8R-06-05, M8R-07, and M8R-08/MCP remain `NOT_AUTHORIZED`.
+Blocking finding: `BLOCKED_FINAL_DEFAULT_CI_TIMEOUT`. M8R-06-03, M8R-06-04, M8R-06-05, M8R-07, and M8R-08/MCP remain `NOT_AUTHORIZED`.

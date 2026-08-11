@@ -1,7 +1,11 @@
 {
   "task": "M8R-06-02-UNIFIED-WORKBENCH-MODE-B1-DETERMINISTIC-PREVIEW",
   "baseline_sha": "c9a30a124999689df3d5b4fc96ae58e05c75cc23",
-  "tested_implementation_head_sha": "d10e405",
+  "tested_implementation_head_sha": "d10e40545505e1abf17655ff51d1f607a6f808d8",
+  "post_implementation_changes": {
+    "evidence_and_current_documentation_only": true,
+    "planning_dependency_boundary_correction": "Commit 7 adds schema meta-validation and the bounded API classification tests."
+  },
   "branch": "codex/m8r-06-02-mode-b1-deterministic-preview",
   "architecture": [
     "Unified Request",
@@ -93,7 +97,17 @@
     "target_hard_limit": "rejected_resource_bound",
     "operation_hard_limit": "rejected_resource_bound",
     "taifex_provisional_derivative": "unsupported_capability",
-    "malformed_planning_dependency": "FAIL_CLOSED"
+    "malformed_planning_dependency": "FAIL_CLOSED",
+    "malformed_preview_schema": {
+      "http_status": 409,
+      "error": "mode_b1_planning_dependency_unavailable",
+      "sanitized": true
+    },
+    "invalid_preview_output": {
+      "http_status": 500,
+      "error": "mode_b1_internal_error",
+      "classification": "output_schema_invalid"
+    }
   },
   "real_production_smoke": {
     "server": "actual localhost subprocess",
@@ -112,12 +126,12 @@
   "authorization_consumed": false,
   "execution_performed": false,
   "persistent_runtime_mutation": false,
-  "focused_tests": "PASS: 30 Mode B1 unit + 15 Workbench/API integration",
+  "focused_tests": "PASS: 31 Mode B1 unit + 17 Workbench/API integration",
   "preview_contract_tests": "PASS: 15",
   "planner_05b01_regressions": "PASS: 63",
   "combined_f3_mode_a_05b01_c1b_c2_preview_workbench_regressions": "PASS: 211",
   "sealed_local_acceptance": "PASS: executed, not skipped",
-  "default_ci": "PASS: 838/838 on evidence HEAD; network_may_have_occurred=false",
+  "default_ci": "NOT_CONFIRMED: post-Commit-7 default-ci exceeded 600 seconds twice without pytest failure output and the owned test runners were terminated.",
   "compileall": "PASS",
   "git_diff_check": "PASS",
   "browser_e2e": "NOT_RUN: Playwright dependency unavailable",
@@ -147,9 +161,11 @@
     "Three pre-existing cross-contract tests retain stale Result v1 fixture drift and are not reported as passing.",
     "Starlette TestClient emits the existing httpx deprecation warning."
   ],
-  "blocking_findings": [],
-  "status": "PASS_WITH_CAVEATS",
-  "principal_decision": "READY_FOR_M8R_06_03_AUTHORIZATION_REVIEW",
+  "blocking_findings": [
+    "BLOCKED_FINAL_DEFAULT_CI_TIMEOUT: post-Commit-7 repository default-ci did not return an exit result within 600 seconds on two runs."
+  ],
+  "status": "BLOCKED",
+  "principal_decision": "BLOCKED_PENDING_DEFAULT_CI_COMPLETION",
   "unauthorized_tasks": [
     "M8R-06-03",
     "M8R-06-04",

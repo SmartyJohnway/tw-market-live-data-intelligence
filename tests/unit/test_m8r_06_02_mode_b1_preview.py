@@ -6,9 +6,8 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
-import jsonschema
-
 from scripts.m8r_05b_01.canonical import sha256_json
+from scripts.m8r_05b_01.models import PlanningError
 from scripts.m8r_06_02_mode_b1_preview import (
     F3_RESOLUTION_TO_SUMMARY,
     build_mode_b1_preview_package,
@@ -313,7 +312,14 @@ def test_mode_b1_package_does_not_use_network(monkeypatch):
 def test_malformed_planning_authority_fails_closed():
     authorities = copy.deepcopy(AUTHORITIES)
     authorities["preview_schema"] = {"type": "not-a-json-schema-type"}
-    with pytest.raises(jsonschema.exceptions.UnknownType):
+    with pytest.raises(PlanningError, match="input_schema_invalid: preview_schema"):
+        package(request(), authorities=authorities)
+
+
+def test_invalid_projected_preview_is_an_internal_output_contract_error():
+    authorities = copy.deepcopy(AUTHORITIES)
+    authorities["preview_schema"] = {"type": "object", "required": ["missing"]}
+    with pytest.raises(PlanningError, match="output_schema_invalid: preview"):
         package(request(), authorities=authorities)
 
 
