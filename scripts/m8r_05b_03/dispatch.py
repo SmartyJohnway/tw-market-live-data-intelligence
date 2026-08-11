@@ -16,7 +16,7 @@ from scripts.m8r_filesystem_safety import (
 
 from .containment import validate_contained_relative_paths
 from .errors import OrchestrationError
-from .registry import ExecutorMetadata, ExecutorMetadataRegistry
+from .registry import ExecutorMetadata, ExecutorMetadataRegistry, executor_route_key
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -51,10 +51,30 @@ class RuntimeAdapterRegistration:
 
 class RuntimeAdapterRegistry:
     def __init__(self, registrations: list[RuntimeAdapterRegistration]):
-        self._by_executor = {reg.executor_id: reg for reg in registrations}
+        self._by_route: dict[str, RuntimeAdapterRegistration] = {}
+        for registration in registrations:
+            route_key = executor_route_key(
+                registration.executor_id,
+                registration.capability_id,
+                registration.market,
+            )
+            if route_key in self._by_route:
+                raise OrchestrationError("duplicate_runtime_adapter_route")
+            self._by_route[route_key] = registration
 
     def get(self, executor_id: str) -> RuntimeAdapterRegistration | None:
-        return self._by_executor.get(executor_id)
+        matches = [reg for reg in self._by_route.values() if reg.executor_id == executor_id]
+        if len(matches) > 1:
+            raise OrchestrationError("ambiguous_runtime_adapter_lookup")
+        return matches[0] if matches else None
+
+    def get_route(
+        self, executor_id: str, capability_id: str, market: str
+    ) -> RuntimeAdapterRegistration | None:
+        return self._by_route.get(executor_route_key(executor_id, capability_id, market))
+
+    def routes_for_executor(self, executor_id: str) -> tuple[RuntimeAdapterRegistration, ...]:
+        return tuple(reg for reg in self._by_route.values() if reg.executor_id == executor_id)
 
     def resolve(
         self,
@@ -63,8 +83,15 @@ class RuntimeAdapterRegistry:
         *,
         mode: str,
     ) -> RuntimeAdapterRegistration:
-        registration = self.get(request["executor_id"])
+        registration = self.get_route(
+            request["executor_id"], request["capability_id"], request["market"]
+        )
         if registration is None:
+            candidates = self.routes_for_executor(request["executor_id"])
+            if any(item.capability_id == request["capability_id"] for item in candidates):
+                raise OrchestrationError("market_mismatch")
+            if any(item.market == request["market"] for item in candidates):
+                raise OrchestrationError("capability_mismatch")
             raise OrchestrationError("unknown_runtime_adapter")
         checks = (
             (registration.executor_id, metadata.executor_id, "executor_mismatch"),
@@ -152,7 +179,9 @@ def prepare_dispatch(
         binding = preflight["resolved_operation_bindings"].get(operation_id)
         if not isinstance(binding, dict):
             raise OrchestrationError("approved_operation_binding_mismatch")
-        metadata = metadata_registry.get(request["executor_id"])
+        metadata = metadata_registry.get_route(
+            request["executor_id"], request["capability_id"], request["market"]
+        )
         _validate_request_against_metadata(request, metadata)
         if (
             request["capability_id"] != binding["capability_id"]

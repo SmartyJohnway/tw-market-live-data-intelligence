@@ -14,7 +14,7 @@ from .authorization_gate import approved_operations, authorize
 from .canonical import sha256_json
 from .containment import validate_contained_relative_paths
 from .errors import OrchestrationError
-from .registry import ExecutorMetadataRegistry, validate_executor_for_operation
+from .registry import ExecutorMetadataRegistry, executor_route_key, validate_executor_for_operation
 from .request_projection import build_execution_request_projection, relative_operation_request_path
 
 
@@ -90,7 +90,9 @@ def build_orchestrator_preflight(
         bounded_projections.append(request)
         warnings.extend(f"{operation['operation_id']}:{warning}" for warning in request_warnings)
 
-        executor_bindings[executor.executor_id] = {
+        executor_bindings[executor_route_key(
+            executor.executor_id, executor.capability_id, executor.market
+        )] = {
             "executor_id": executor.executor_id,
             "capability_id": executor.capability_id,
             "market": executor.market,
@@ -114,6 +116,8 @@ def build_orchestrator_preflight(
         "scope_hash": authorization["scope_hash"],
         "approved_operation_order": approved_operation_order,
         "executor_registry_ids": registry.ids(),
+        "executor_registry_route_keys": registry.route_keys(),
+        "resolved_executor_route_keys": sorted(executor_bindings),
         "bounded_execution_requests": bounded_projections,
         "governed_output_root": output_root_resolved,
     }

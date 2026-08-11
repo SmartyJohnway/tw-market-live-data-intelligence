@@ -15,6 +15,19 @@ REGISTRY_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_executor_regi
 SUPPORTED_OUTPUT_POLICIES = frozenset({"contained_artifact_only", "no_raw_payload_retention"})
 
 
+def executor_route_key(executor_id: str, capability_id: str, market: str) -> str:
+    """Return the canonical, collision-safe identity for an executor route.
+
+    ``executor_id`` is intentionally not a route identity: one controlled
+    executor can serve more than one approved capability and market.  The
+    compact JSON representation is stable and can also be used as an object
+    key in the persisted preflight artifact.
+    """
+    if not all(isinstance(value, str) and value for value in (executor_id, capability_id, market)):
+        raise OrchestrationError("executor_registry_schema_invalid")
+    return json.dumps([executor_id, capability_id, market], ensure_ascii=True, separators=(",", ":"))
+
+
 @dataclass(frozen=True)
 class ExecutorMetadata:
     executor_id: str
@@ -84,18 +97,33 @@ class ExecutorMetadataRegistry:
         entries: dict[str, ExecutorMetadata] = {}
         for raw in payload.get("executors", []):
             entry = _metadata_from_dict(raw)
-            if entry.executor_id in entries:
-                raise OrchestrationError("duplicate_executor_id")
-            entries[entry.executor_id] = entry
+            route_key = executor_route_key(entry.executor_id, entry.capability_id, entry.market)
+            if route_key in entries:
+                raise OrchestrationError("duplicate_executor_route")
+            entries[route_key] = entry
         return cls(entries)
 
     def get(self, executor_id: str) -> ExecutorMetadata:
-        entry = self._entries.get(executor_id)
-        if entry is None:
+        matches = [entry for entry in self._entries.values() if entry.executor_id == executor_id]
+        if not matches:
             raise OrchestrationError("unknown_executor")
+        if len(matches) != 1:
+            raise OrchestrationError("ambiguous_executor_lookup")
+        return matches[0]
+
+    def get_route(self, executor_id: str, capability_id: str, market: str) -> ExecutorMetadata:
+        entry = self._entries.get(executor_route_key(executor_id, capability_id, market))
+        if entry is None:
+            raise OrchestrationError("unknown_executor_route")
         return entry
 
+    def routes_for_executor(self, executor_id: str) -> tuple[ExecutorMetadata, ...]:
+        return tuple(entry for entry in self._entries.values() if entry.executor_id == executor_id)
+
     def ids(self) -> tuple[str, ...]:
+        return tuple(sorted({entry.executor_id for entry in self._entries.values()}))
+
+    def route_keys(self) -> tuple[str, ...]:
         return tuple(sorted(self._entries))
 
 
@@ -106,7 +134,22 @@ def validate_executor_for_operation(
     *,
     network_authorized: bool,
 ) -> ExecutorMetadata:
-    entry = registry.get(str(binding["executor_id"]))
+    executor_id = str(binding["executor_id"])
+    capability_id = str(binding["capability_id"])
+    market = str(binding["market"])
+    try:
+        entry = registry.get_route(executor_id, capability_id, market)
+    except OrchestrationError as exc:
+        if exc.code != "unknown_executor_route":
+            raise
+        candidates = registry.routes_for_executor(executor_id)
+        if not candidates:
+            raise OrchestrationError("unknown_executor") from exc
+        if any(item.market == market for item in candidates):
+            raise OrchestrationError("capability_mismatch") from exc
+        if any(item.capability_id == capability_id for item in candidates):
+            raise OrchestrationError("market_mismatch") from exc
+        raise
     if entry.capability_id != binding["capability_id"] or entry.capability_id != operation.get("capability_id"):
         raise OrchestrationError("capability_mismatch")
     if entry.market != binding["market"] or entry.market != operation.get("market"):
