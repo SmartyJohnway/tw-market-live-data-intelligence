@@ -12,7 +12,7 @@
     <div class="workbench-container">
         <header>
             <h1>Unified Market Evidence Operator Workbench</h1>
-            <span class="mode-badge">Mode A + Mode B1: Validate and Preview</span>
+            <span class="mode-badge">Mode A / B / C: Validate, Execute, Result Explorer</span>
             <div class="offline-badge">📴 Offline Localhost</div>
         </header>
 
@@ -110,6 +110,20 @@
                     <button id="btn-execute-once" disabled>Execute Once</button>
                 </div>
                 <div id="mode-b2-summary" class="summary-box">Authorization required. Execution performed = NO.</div>
+            </section>
+
+            <section class="panel preview-panel" id="mode-c-panel">
+                <h2>Mode C Result Explorer and AI Handoff</h2>
+                <p>Post-execution only. This builds or verifies local, server-owned result and audit packages; it never dispatches market sources.</p>
+                <div class="preview-placeholder"><button id="btn-build-result" disabled>Build Result Package</button></div>
+                <div id="mode-c-summary" class="summary-box">A finalized execution is required. External network execution = NO.</div>
+                <div class="action-bar" id="mode-c-actions" style="display:none">
+                    <button id="btn-copy-markdown">Copy AI-ready Markdown</button>
+                    <button id="btn-download-markdown">Download Markdown</button>
+                    <button id="btn-download-result">Download Canonical Result JSON</button>
+                    <button id="btn-download-audit">Download Audit JSON</button>
+                </div>
+                <pre id="mode-c-result-view"></pre>
             </section>
         </main>
     </div>

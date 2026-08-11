@@ -40,6 +40,7 @@ _SCHEMA_NAMES = {
 }
 
 _DRAFT07_KEYS = {"request", "plan"}
+_M8R_06_03_EVIDENCE_SCHEMA = "m8r_06_03_operation_evidence.v1"
 
 
 def _load_schema(name: str) -> dict:
@@ -215,8 +216,9 @@ def load_projection_inputs(
         raise ProjectionError("predecessor_id_mismatch_claim")
         
     # Validation of Receipt
-    receipt_body = deepcopy(receipt)
-    receipt_body.pop("execution_receipt_hash", None)
+    receipt_body = {k: v for k, v in receipt.items() if k not in {
+        "schema_version", "execution_receipt_id", "execution_receipt_hash", "created_by_component"
+    }}
     if receipt.get("execution_receipt_hash") != sha256_json(receipt_body):
         raise ProjectionError("receipt_hash_invalid")
         
@@ -237,8 +239,9 @@ def load_projection_inputs(
     receipt_id = receipt.get("execution_receipt_id")
     
     # Validation of Bundle
-    bundle_body = deepcopy(bundle)
-    bundle_body.pop("bundle_hash", None)
+    bundle_body = {k: v for k, v in bundle.items() if k not in {
+        "schema_version", "bundle_id", "bundle_hash"
+    }}
     if bundle.get("bundle_hash") != sha256_json(bundle_body):
         raise ProjectionError("bundle_hash_invalid")
         
@@ -291,7 +294,15 @@ def load_projection_inputs(
         # Load and validate schema based on evidence_contract if applicable
         artifact_obj = _load_json(full_path)
         evidence_contract = entry.get("evidence_contract")
-        if evidence_contract:
+        if artifact_obj.get("schema_version") == _M8R_06_03_EVIDENCE_SCHEMA:
+            # M8R-06-03's fixed child envelope is an already-governed evidence
+            # contract.  Keep it explicit here rather than treating its human
+            # inventory label as a schema filename.
+            required = {"schema_version", "operation_id", "execution_request_id",
+                        "source_family", "capability_id", "market", "transport_mode", "records"}
+            if not required.issubset(artifact_obj) or not isinstance(artifact_obj["records"], list):
+                raise ProjectionError("artifact_schema_invalid")
+        elif evidence_contract:
             # Check if schema exists for this contract
             schema_file = SCHEMAS_DIR / f"{evidence_contract}.schema.json"
             if not schema_file.exists():
@@ -304,7 +315,11 @@ def load_projection_inputs(
         # Verify item count if applicable
         expected_items = entry.get("item_count")
         if expected_items is not None:
-            actual_items = len(artifact_obj.get("items", [])) if "items" in artifact_obj else 1
+            actual_items = (
+                len(artifact_obj["records"])
+                if artifact_obj.get("schema_version") == _M8R_06_03_EVIDENCE_SCHEMA
+                else len(artifact_obj.get("items", [])) if "items" in artifact_obj else 1
+            )
             if actual_items != expected_items:
                 raise ProjectionError("artifact_item_count_mismatch")
                 

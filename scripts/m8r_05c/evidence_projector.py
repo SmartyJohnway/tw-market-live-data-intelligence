@@ -57,7 +57,7 @@ def _project_envelope(
         if not isinstance(artifact_obj, dict):
             continue
         # Try standard evidence object field layout.
-        items = artifact_obj.get("items", [artifact_obj])
+        items = artifact_obj.get("records") if artifact_obj.get("schema_version") == "m8r_06_03_operation_evidence.v1" else artifact_obj.get("items", [artifact_obj])
         if not isinstance(items, list):
             items = [artifact_obj]
 
@@ -119,7 +119,7 @@ def _project_official_eod(
     for artifact_obj in binding.artifact_objects.values():
         if not isinstance(artifact_obj, dict):
             continue
-        items = artifact_obj.get("items", [artifact_obj])
+        items = artifact_obj.get("records") if artifact_obj.get("schema_version") == "m8r_06_03_operation_evidence.v1" else artifact_obj.get("items", [artifact_obj])
         if not isinstance(items, list):
             items = [artifact_obj]
         for item in items:

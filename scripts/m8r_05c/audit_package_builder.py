@@ -221,10 +221,16 @@ def build_audit_package(
     recomputed_result_hash = hash_body_excluding_key(result, "result_hash")
     result_hash_ok = recomputed_result_hash == result.get("result_hash")
     
-    recomputed_receipt_hash = hash_body_excluding_key(receipt, "execution_receipt_hash")
+    receipt_for_hash = {k: v for k, v in receipt.items() if k not in {
+        "schema_version", "execution_receipt_id", "execution_receipt_hash", "created_by_component"
+    }}
+    recomputed_receipt_hash = sha256_json(receipt_for_hash)
     receipt_hash_ok = recomputed_receipt_hash == receipt.get("execution_receipt_hash")
     
-    recomputed_bundle_hash = hash_body_excluding_key(bundle, "bundle_hash")
+    bundle_for_hash = {k: v for k, v in bundle.items() if k not in {
+        "schema_version", "bundle_id", "bundle_hash"
+    }}
+    recomputed_bundle_hash = sha256_json(bundle_for_hash)
     bundle_hash_ok = recomputed_bundle_hash == bundle.get("bundle_hash")
     
     # all_artifacts_ok is True only because artifact_loader.py explicitly verifies every file against its sha256
