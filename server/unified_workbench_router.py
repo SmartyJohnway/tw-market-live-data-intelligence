@@ -8,7 +8,8 @@ from .services.unified_mode_b1 import (
 )
 from .services.unified_mode_b2 import ModeB2Error, build_mode_b2_authorization
 from .services.unified_mode_b2_execution import execute_mode_b2_once
-from .services.unified_mode_c import ModeCError, build_mode_c_result_package, read_mode_c_audit
+from .services.unified_mode_c import ModeCError, build_mode_c_ai_handoff, build_mode_c_result_package, read_mode_c_audit
+from .services.unified_local_service import LocalServiceError, describe_capabilities
 import uuid
 
 router = APIRouter(
@@ -17,6 +18,15 @@ router = APIRouter(
 )
 
 MAX_BODY_SIZE = 1 * 1024 * 1024  # 1 MiB
+
+
+@router.get("/capabilities")
+async def get_capabilities():
+    """Deterministic catalog/routing/registration projection; never executes."""
+    try:
+        return JSONResponse(status_code=200, content=describe_capabilities())
+    except LocalServiceError as exc:
+        return JSONResponse(status_code=409, content={"error": exc.code, "trace_id": str(uuid.uuid4())})
 
 
 @router.post("/validate-request")
@@ -177,5 +187,14 @@ async def build_result_package(request: Request):
 async def download_result_audit(control_package_id: str):
     try:
         return JSONResponse(status_code=200, content=read_mode_c_audit(control_package_id))
+    except ModeCError as exc:
+        return JSONResponse(status_code=409, content={"error": exc.code, "trace_id": str(uuid.uuid4())})
+
+
+@router.get("/result-package/{control_package_id}/handoff")
+async def read_ai_handoff(control_package_id: str):
+    """Verified AI-safe Result/Audit transport; never performs market retrieval."""
+    try:
+        return JSONResponse(status_code=200, content=build_mode_c_ai_handoff(control_package_id))
     except ModeCError as exc:
         return JSONResponse(status_code=409, content={"error": exc.code, "trace_id": str(uuid.uuid4())})
