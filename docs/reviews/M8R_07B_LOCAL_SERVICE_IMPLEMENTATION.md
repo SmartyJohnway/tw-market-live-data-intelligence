@@ -20,9 +20,10 @@ Existing validate, preview, authorization, execution, Result, and Audit routes a
 
 ## Verification and network accounting
 
-- Focused Local Service/Mode C tests: `18 passed, 1 warning`.
-- Relevant Mode A/B1/B2/execute-once/Mode C/Workbench/API/AI handoff/operator acceptance selection: `96 passed, 1 warning`.
-- `default-ci` final HEAD: `913 passed, 0 failed, 0 skipped, 1 warning`, return code `0`.
+- Implementation code head: `310ca4fe74785f286945b053f52882dd1eaddd9f`.
+- Focused Local Service/Mode C tests: `23 passed, 0 failed, 1 warning`.
+- Relevant M8R-07B/Mode C/operator acceptance/API regressions: `101 passed, 0 failed, 1 warning`.
+- `default-ci`: `913 passed, 0 failed, 0 skipped, 1 warning`, `258.79s`, return code `0`.
 - Startup check: localhost `127.0.0.1`, `network_on_startup=false`, canonical schema, Security Master, and capability catalog loaded.
 - `compileall server scripts tests`, both required frontend `node --check` commands, and `git diff --check`: passed.
 - Sealed local Security Master candidate executed in `default-ci` and passed.
