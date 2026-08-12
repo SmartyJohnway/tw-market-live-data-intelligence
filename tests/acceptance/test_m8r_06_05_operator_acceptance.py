@@ -126,6 +126,12 @@ def test_m8r_06_05_localhost_operator_matrix(tmp_path):
         assert "current_observation_not_guaranteed_realtime" in result["ai_ready_markdown"]
         status, audit = _json(server.base + f"/api/unified/result-package/{authorization['control_package_id']}/audit.json")
         assert status == 200 and audit["audit_package_id"] == result["audit_package_id"] and audit != result["canonical_result"]
+        status, handoff = _json(server.base + f"/api/unified/result-package/{authorization['control_package_id']}/handoff")
+        assert status == 200 and handoff["canonical_result"] == result["canonical_result"]
+        assert {item["capability_id"] for item in handoff["citation_references"]} == {
+            "current_observation", "official_eod_reference"
+        }
+        assert handoff["execution_outcome"] == "succeeded"
         claim = json.loads(next((package / "claims").glob("*.json")).read_text(encoding="utf-8"))
         receipt = json.loads(next((package / "receipts").glob("*.json")).read_text(encoding="utf-8"))
         bundle = json.loads(next((package / "bundles").glob("*.json")).read_text(encoding="utf-8"))
