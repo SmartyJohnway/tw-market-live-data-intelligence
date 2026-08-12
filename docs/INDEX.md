@@ -165,6 +165,7 @@ git diff --check
 - [M8R-06-03 Bounded Live Acceptance](reviews/M8R_06_03_BOUNDED_LIVE_ACCEPTANCE.md)
 - [M8R-06-04 Mode C Result Explorer and AI Handoff](reviews/M8R_06_04_MODE_C_RESULT_AI_HANDOFF.md)
 - [M8R-06-05 End-to-End Operator Acceptance](acceptance/M8R_06_05_END_TO_END_OPERATOR_ACCEPTANCE.md)
+- [M8R-06 Human Browser Acceptance Repair 01](reviews/M8R_06_HUMAN_BROWSER_ACCEPTANCE_REPAIR_01.md)
 - Mode A is active through the governed local compact candidate. M8R-06-02 adds offline deterministic Mode B1 Preview; M8R-06-03 records accepted bounded live execution with current-observation caveats.
 
 ## Historical / Compatibility References

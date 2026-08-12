@@ -141,6 +141,7 @@
         "tests/unit/test_m8r_06_01c1b_compact_runtime_identity_index.py",
         "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py",
         "tests/unit/test_m8r_06_02_mode_b1_preview.py",
+        "tests/unit/test_m8r_06_human_browser_authorize_state.py",
         "tests/unit/test_m8r_06_03_execute_once.py",
         "tests/unit/test_m8r_06_03_localhost_vertical.py",
         "tests/unit/test_m8r_06_03_mode_b2_authorization.py",
