@@ -52,7 +52,7 @@ def _project_envelope(
             caveats=[f"operation_failed:{binding.error_code or 'unknown'}"],
         )
 
-    if binding.capability_id == "current_observation" and binding.market == "TWSE":
+    if binding.capability_id == "current_observation":
         has_m7b_input = any(isinstance(item, dict) and item.get("source") == "TWSE_MIS" and isinstance(item.get("twse_mis_rich_facts"), dict)
                             for artifact in binding.artifact_objects.values() for item in artifact.get("records", []))
         if has_m7b_input:
@@ -118,10 +118,19 @@ def _project_envelope(
 def _project_current_observation(binding: OperationBinding, citation_ids: list[str]) -> EvidenceEnvelopeProjection:
     """Admit only governed M7B standard facts plus Mode-C-only displayed depth."""
     item = next((record for artifact in binding.artifact_objects.values() if isinstance(artifact, dict)
-                 for record in artifact.get("records", []) if isinstance(record, dict)), {})
+                 for record in artifact.get("records", [])
+                 if isinstance(record, dict)
+                 and record.get("source") == "TWSE_MIS"
+                 and isinstance(record.get("twse_mis_rich_facts"), dict)), {})
     projection = promote_ai_safe_market_context_projection_for_controlled_context(
         build_ai_safe_market_context_projection_from_observation(item)
     )
+    if not (projection.get("safe_for_ai_context") is True and projection.get("exposure_status") == "ai_safe_context_enabled"):
+        return EvidenceEnvelopeProjection(
+            status="missing",
+            caveats=["m7b_controlled_projection_blocked"],
+            citation_ids=citation_ids,
+        )
     rich = item.get("twse_mis_rich_facts", {}) if isinstance(item.get("twse_mis_rich_facts"), dict) else {}
     depth = rich.get("displayed_depth_facts", {}) if isinstance(rich.get("displayed_depth_facts"), dict) else {}
     limits = rich.get("limit_or_reference_facts", {}) if isinstance(rich.get("limit_or_reference_facts"), dict) else {}
@@ -242,7 +251,8 @@ def _project_official_eod(
             caveats = list(item.get("caveats", []))
             classification = item.get("field_validation", {}).get("instrument_classification", {}) if isinstance(item.get("field_validation"), dict) else {}
             if classification.get("coverage_mode") == "bounded_seed_only" and classification.get("classification_status") == "unclassified":
-                caveats.append("classification_coverage_drift")
+                caveats = [c for c in caveats if c != "unclassified rows are excluded from deterministic metrics and AI context by default"]
+                caveats.extend(["legacy_classifier_coverage_drift", "canonical_identity_preserved_from_verified_execution_binding"])
             if caveats:
                 result["caveats"] = sorted(set(caveats))
             return result

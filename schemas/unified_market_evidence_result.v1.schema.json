@@ -326,15 +326,15 @@
                   "price": {
                     "type": "object",
                     "properties": {
-                      "open": {}, "high": {}, "low": {}, "close": {},
-                      "previous_close": {}, "change": {}
+                      "open": {"type": ["string", "number", "null"]}, "high": {"type": ["string", "number", "null"]}, "low": {"type": ["string", "number", "null"]}, "close": {"type": ["string", "number", "null"]},
+                      "previous_close": {"type": ["string", "number", "null"]}, "change": {"type": ["string", "number", "null"]}
                     },
                     "additionalProperties": false
                   },
                   "activity": {
                     "type": "object",
                     "properties": {
-                      "trade_volume": {}, "trade_value": {}, "transaction_count": {}
+                      "trade_volume": {"type": ["integer", "number", "string", "null"]}, "trade_value": {"type": ["integer", "number", "string", "null"]}, "transaction_count": {"type": ["integer", "number", "string", "null"]}
                     },
                     "additionalProperties": false
                   },
@@ -346,6 +346,10 @@
                     }
                   }
                 },
+                "anyOf": [
+                  {"required": ["currentness_status"]},
+                  {"required": ["status"]}
+                ],
                 "additionalProperties": false
               },
               "recent_performance": {
