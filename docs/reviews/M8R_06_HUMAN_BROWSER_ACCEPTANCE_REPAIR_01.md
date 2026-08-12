@@ -2,7 +2,7 @@
 
 ## Status
 
-`CODE_REPAIR_COMPLETE; PENDING_HUMAN_RETEST`
+`PASS_WITH_CAVEATS` — the post-merge human retest completed and exposed the separate AI handoff repair findings below.
 
 - baseline_sha: `416fc4c01642909768e44e650bb71df865984717`
 - external_market_network_calls: `0`
@@ -32,6 +32,6 @@ Adjacent assignments for Preview, Authorize, network confirmation, Execute Once,
 
 ## Human browser status
 
-`human_browser_e2e: PENDING_HUMAN_RETEST`
+`human_browser_e2e: PASS_WITH_CAVEATS`
 
-The repair does not claim a completed human browser run. The operator should repeat the normal browser flow after merge.
+Validate, Preview, Authorize, explicit network confirmation, Execute Once, production network execution, Mode C, and AI-ready Markdown all completed. The run accepted a partial current-observation source failure and identified: `AI_HANDOFF_CONTROLLED_PROJECTION_BYPASS`, `OFFICIAL_EOD_AI_PROJECTION_INCOMPLETE`, `TPEX_EOD_IDENTITY_CLASSIFICATION_DRIFT`, `AI_HANDOFF_TARGET_DISPLAY_INDEX_OFF_BY_ONE`, `LOCALHOST_NETWORK_BADGE_AMBIGUOUS`, and `MODE_C_NETWORK_WORDING_AMBIGUOUS`.
