@@ -39,6 +39,8 @@ assert(invalidated.executeOnceDisabled, true, 'invalidated execute');
 assert(invalidated.networkConfirmationDisabled, true, 'invalidated network');
 assert(invalidated.networkConfirmationChecked, false, 'invalidated network checked');
 assert(invalidated.buildResultDisabled, true, 'invalidated Mode C');
+assert(state.validationAllowsPreview('valid'), true, 'valid request preview');
+assert(state.validationAllowsPreview('invalid'), false, 'invalid request preview');
 '''
     completed = subprocess.run(
         ["node", "-e", script, str(STATE_MODULE)], cwd=ROOT,

@@ -141,8 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             if (response.ok) {
                 renderValidationResult(data);
-                validatedRequestFingerprint = fingerprint(parsedRequest);
-                previewBtn.disabled = false;
+                validatedRequestFingerprint = workbenchState.validationAllowsPreview(data.validation_status)
+                    ? fingerprint(parsedRequest)
+                    : null;
+                previewBtn.disabled = validatedRequestFingerprint === null;
             } else {
                 renderTransportError(data);
             }

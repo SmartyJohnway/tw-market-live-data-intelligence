@@ -10,9 +10,11 @@ from jsonschema import ValidationError, validate
 
 from scripts.m8r_05c.errors import ProjectionError
 from scripts.m8r_05c import evidence_projector
-from scripts.m8r_05c.evidence_projector import _project_envelope, _project_official_eod
-from scripts.m8r_05c.lineage_resolver import OperationBinding
+from scripts.m8r_05c.evidence_projector import LEGACY_PROJECTOR_VERSION, _project_envelope, _project_envelope_legacy, _project_official_eod
+from scripts.m8r_05c.lineage_resolver import OperationBinding, build_lineage_map
 from scripts.m8r_05c.markdown_renderer import render_result_markdown
+from scripts.m8r_05c.models import ProjectionInputs
+from scripts.m8r_05c.result_builder import build_result
 
 
 def _binding(capability: str, market: str, target: str, record: dict) -> OperationBinding:
@@ -94,3 +96,36 @@ def test_eod_source_identity_mismatch_fails_closed_and_partial_display_is_one_ba
         raise AssertionError("identity mismatch must fail closed")
     markdown = render_result_markdown({"status": "partially_failed", "partial_failures": [{"target_index": 1, "data_need": "current_observation", "reason": "missing"}], "targets": []})
     assert "目標 #2 [current_observation]" in markdown
+
+
+def _plan_only_inputs() -> ProjectionInputs:
+    root = Path(__file__).parents[2] / "tests" / "fixtures" / "m8r_05c"
+    load = lambda name: json.loads((root / name).read_text(encoding="utf-8"))
+    request, plan = load("request_single_target.json"), load("plan_single_target.json")
+    request["data_needs"] = [{"type": "identity", "priority": "required"}, {"type": "recent_performance", "priority": "optional"}]
+    plan["operations"].append({"operation_id": "plan-only-recent", "capability_id": "recent_performance", "executor_id": "", "canonical_target_ids": ["TW.2330"], "market": "TWSE", "operation_status": "plan_only_not_executable", "executor_invocation_eligible": False})
+    return ProjectionInputs(request=request, f3_validation=load("f3_validation.json"), plan=plan, authorization=load("authorization.json"), consumption_binding=load("consumption_binding.json"), claim=load("claim.json"), receipt=load("receipt.json"), bundle=load("bundle.json"), artifact_root=str(root / "artifact_root"), calculated_at="2026-08-12T00:00:00Z", evidence_artifacts={"operations/op_identity/evidence.json": load("artifact_root/operations/op_identity/evidence.json")})
+
+
+def test_plan_only_current_projection_is_explicit_without_weakening_missing_executable():
+    inputs = _plan_only_inputs()
+    lineage = build_lineage_map(inputs)
+    plan_only = lineage.bindings["TW.2330"]["recent_performance"]
+    assert plan_only.plan_operation_status == "plan_only_not_executable"
+    assert plan_only.status == "plan_only_not_executed"
+    result = build_result(inputs)
+    evidence = result["targets"][0]["evidence"]["recent_performance"]
+    metric = result["targets"][0]["derived_metrics"][0]
+    markdown = render_result_markdown(result)
+    assert result["status"] == "success_with_partial_coverage"
+    assert evidence["status"] == "plan_only_not_executed"
+    assert "operation_failed:unknown" not in evidence["caveats"]
+    assert metric["status"] == "unavailable" and metric["invalid_reason"] == "recent_performance_plan_only_not_executed"
+    assert "Plan-only（未執行）" in markdown and "no_execution_attempted" in markdown
+    assert _project_envelope_legacy(plan_only, []).status == "failed"
+
+    executable = copy.deepcopy(inputs)
+    executable.plan["operations"][-1]["operation_status"] = "executable_pending_approval"
+    missing = build_lineage_map(executable).bindings["TW.2330"]["recent_performance"]
+    assert missing.status == "failed"
+    assert _project_envelope(missing, []).caveats == ["operation_failed:unknown"]

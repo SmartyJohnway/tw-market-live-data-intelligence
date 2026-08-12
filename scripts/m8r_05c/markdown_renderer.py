@@ -29,6 +29,7 @@ _STATUS_LABELS: dict[str, str] = {
     "missing": "缺失",
     "failed": "失敗",
     "empty": "空",
+    "plan_only_not_executed": "⏸ Plan-only（未執行）",
 }
 
 _RESOLUTION_STATUS_LABELS: dict[str, str] = {
@@ -161,7 +162,7 @@ def _data_need_label(need: str) -> str:
     return labels.get(need, need)
 
 
-def render_result_markdown(result: dict, *, projector_version: str = "m8r_05c_v1_1") -> str:
+def render_result_markdown(result: dict, *, projector_version: str = "m8r_05c_v1_2") -> str:
     """Render the result dict as AI-ready Markdown.
 
     Pure function: no I/O, no network, no datetime.now().

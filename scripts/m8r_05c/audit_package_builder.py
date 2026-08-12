@@ -25,7 +25,7 @@ from .models import ProjectionInputs
 ROOT = Path(__file__).resolve().parents[2]
 AUDIT_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_audit_package.v1.schema.json"
 
-_PROJECTOR_VERSION = "m8r_05c_v1_1"
+_PROJECTOR_VERSION = "m8r_05c_v1_2"
 _CANONICALIZATION_VERSION = "m8r_05b_03_canonical_v1"
 
 

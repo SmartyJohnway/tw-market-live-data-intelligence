@@ -15,7 +15,7 @@ from scripts.m8r_05c.errors import ProjectionError
 from scripts.m8r_05c.lineage_resolver import build_lineage_map
 from scripts.m8r_05c.markdown_renderer import render_result_markdown
 from scripts.m8r_05c.result_builder import build_result
-from scripts.m8r_05c.evidence_projector import CURRENT_PROJECTOR_VERSION, LEGACY_PROJECTOR_VERSION
+from scripts.m8r_05c.evidence_projector import CURRENT_PROJECTOR_VERSION, LEGACY_PROJECTOR_VERSION, PREVIOUS_PROJECTOR_VERSION
 from server.services.unified_mode_a import validate_mode_a_request
 from server.services.unified_mode_b2 import CONTROL_ROOT
 
@@ -134,7 +134,7 @@ def build_mode_c_result_package(payload: dict[str, Any]) -> dict[str, Any]:
     projector_version = CURRENT_PROJECTOR_VERSION
     if audit_path.is_file():
         projector_version = _read(audit_path).get("projector_metadata", {}).get("projector_version", CURRENT_PROJECTOR_VERSION)
-        if projector_version not in {CURRENT_PROJECTOR_VERSION, LEGACY_PROJECTOR_VERSION}:
+        if projector_version not in {CURRENT_PROJECTOR_VERSION, PREVIOUS_PROJECTOR_VERSION, LEGACY_PROJECTOR_VERSION}:
             raise ModeCError("mode_c_existing_output_inconsistent")
     expected_result, expected_audit, expected_markdown = _expected_outputs(inputs, projector_version)
     result_path, md_path, audit_path = (package / _RESULT, package / _MARKDOWN, package / _AUDIT)

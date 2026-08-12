@@ -19,7 +19,8 @@ from scripts.observation_contract import (
     promote_ai_safe_market_context_projection_for_controlled_context,
 )
 
-CURRENT_PROJECTOR_VERSION = "m8r_05c_v1_1"
+CURRENT_PROJECTOR_VERSION = "m8r_05c_v1_2"
+PREVIOUS_PROJECTOR_VERSION = "m8r_05c_v1_1"
 LEGACY_PROJECTOR_VERSION = "m8r_05c_v1"
 
 # Data needs that use the generic evidence_envelope structure.
@@ -45,6 +46,13 @@ def _project_envelope(
     """
     if binding is None:
         return EvidenceEnvelopeProjection(status="missing")
+
+    if binding.status == "plan_only_not_executed":
+        return EvidenceEnvelopeProjection(
+            status="plan_only_not_executed",
+            caveats=["capability_plan_only", "no_execution_attempted", "no_market_network_attempted"],
+            citation_ids=citation_ids,
+        )
 
     if binding.status == "failed":
         return EvidenceEnvelopeProjection(
@@ -159,7 +167,7 @@ def _project_envelope_legacy(binding: OperationBinding | None, citation_ids: lis
     """Frozen v1 generic projection retained solely for immutable output verification."""
     if binding is None:
         return EvidenceEnvelopeProjection(status="missing")
-    if binding.status == "failed":
+    if binding.status in {"failed", "plan_only_not_executed"}:
         return EvidenceEnvelopeProjection(status="failed", caveats=[f"operation_failed:{binding.error_code or 'unknown'}"])
     observed, missing, caveats, currentness = {}, [], [], {}
     timing_class = None
@@ -178,6 +186,15 @@ def _project_envelope_legacy(binding: OperationBinding | None, citation_ids: lis
     return EvidenceEnvelopeProjection(status="available" if observed or currentness else "empty", timing_class=timing_class,
         caveats=sorted(set(caveats)), observed_fields=observed, missing_fields=sorted(set(missing)), currentness=currentness,
         fallback=fallback, fallback_state=fallback_state, citation_ids=citation_ids)
+
+
+def _project_envelope_v1_1(binding: OperationBinding | None, citation_ids: list[str]) -> EvidenceEnvelopeProjection:
+    """Frozen v1.1 envelope semantics for existing-output verification."""
+    if binding is None:
+        return EvidenceEnvelopeProjection(status="missing")
+    if binding.status in {"failed", "plan_only_not_executed"}:
+        return EvidenceEnvelopeProjection(status="failed", caveats=[f"operation_failed:{binding.error_code or 'unknown'}"])
+    return _project_envelope(binding, citation_ids)
 
 
 def _project_official_eod_legacy(binding: OperationBinding | None, citation_ids: list[str]) -> dict | None:
@@ -291,11 +308,13 @@ def project_target_evidence(
 
     if "identity" in requested_data_needs:
         binding = target_bindings.get("identity")
-        proj.identity = (_project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else _project_envelope)(binding, _cite("identity"))
+        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == PREVIOUS_PROJECTOR_VERSION else _project_envelope)
+        proj.identity = projector(binding, _cite("identity"))
 
     if "current_observation" in requested_data_needs:
         binding = target_bindings.get("current_observation")
-        proj.current_observation = (_project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else _project_envelope)(binding, _cite("current_observation"))
+        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == PREVIOUS_PROJECTOR_VERSION else _project_envelope)
+        proj.current_observation = projector(binding, _cite("current_observation"))
 
     if _OFFICIAL_EOD_NEED in requested_data_needs:
         binding = target_bindings.get(_OFFICIAL_EOD_NEED)
@@ -303,18 +322,22 @@ def project_target_evidence(
 
     if "recent_performance" in requested_data_needs:
         binding = target_bindings.get("recent_performance")
-        proj.recent_performance = (_project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else _project_envelope)(binding, _cite("recent_performance"))
+        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == PREVIOUS_PROJECTOR_VERSION else _project_envelope)
+        proj.recent_performance = projector(binding, _cite("recent_performance"))
 
     if "session_status" in requested_data_needs:
         binding = target_bindings.get("session_status")
-        proj.session_status = (_project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else _project_envelope)(binding, _cite("session_status"))
+        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == PREVIOUS_PROJECTOR_VERSION else _project_envelope)
+        proj.session_status = projector(binding, _cite("session_status"))
 
     if "source_currentness" in requested_data_needs:
         binding = target_bindings.get("source_currentness")
-        proj.source_currentness = (_project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else _project_envelope)(binding, _cite("source_currentness"))
+        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == PREVIOUS_PROJECTOR_VERSION else _project_envelope)
+        proj.source_currentness = projector(binding, _cite("source_currentness"))
 
     if "evidence_quality" in requested_data_needs:
         binding = target_bindings.get("evidence_quality")
-        proj.evidence_quality = (_project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else _project_envelope)(binding, _cite("evidence_quality"))
+        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == PREVIOUS_PROJECTOR_VERSION else _project_envelope)
+        proj.evidence_quality = projector(binding, _cite("evidence_quality"))
 
     return proj

@@ -52,6 +52,9 @@ class OperationBinding:
     market: str | None
     status: str  # succeeded | failed
     error_code: str | None
+    # Planning status remains authoritative when an intentional plan-only
+    # operation has no execution-bundle entry.
+    plan_operation_status: str | None = None
     evidence_artifacts: list[dict] = field(default_factory=list)
     # Resolved evidence artifact JSON objects keyed by relative_path
     artifact_objects: dict[str, dict] = field(default_factory=dict)
@@ -149,11 +152,17 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
         if data_need not in requested_data_needs:
             continue
 
-        # Resolve operation status from bundle.
-        bundle_entry = operation_evidence_index.get(operation_id, {})
-        op_status = bundle_entry.get("status", "failed")
-        error_code = bundle_entry.get("error_code")
-        raw_artifacts = bundle_entry.get("artifacts", [])
+        # An absent execution entry is only non-failure when the plan itself
+        # explicitly marks the operation as non-executable.
+        plan_operation_status = op.get("operation_status")
+        bundle_entry = operation_evidence_index.get(operation_id)
+        if bundle_entry is None and plan_operation_status == "plan_only_not_executable":
+            op_status, error_code, raw_artifacts = "plan_only_not_executed", None, []
+        else:
+            bundle_entry = bundle_entry or {}
+            op_status = bundle_entry.get("status", "failed")
+            error_code = bundle_entry.get("error_code")
+            raw_artifacts = bundle_entry.get("artifacts", [])
 
         # Resolve artifact objects.
         artifact_objects: dict[str, dict] = {}
@@ -173,6 +182,7 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
                 market=market,
                 status=op_status,
                 error_code=error_code,
+                plan_operation_status=plan_operation_status,
                 evidence_artifacts=raw_artifacts,
                 artifact_objects=artifact_objects,
             )

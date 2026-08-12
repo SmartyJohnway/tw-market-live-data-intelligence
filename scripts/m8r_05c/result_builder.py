@@ -278,6 +278,7 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
             calculated_at=calculated_at,
             citation_map=citation_map,
             request_parameters=request_parameters,
+            enable_plan_only_reason=projector_version == CURRENT_PROJECTOR_VERSION,
         )
 
         # Compute coverage.
