@@ -160,3 +160,44 @@ def read_mode_c_audit(control_package_id: str) -> dict[str, Any]:
     build_mode_c_result_package({"control_package_id": control_package_id})
     package, *_ = _load_verified(control_package_id)
     return _read(package / _AUDIT)
+
+
+def build_mode_c_ai_handoff(control_package_id: str) -> dict[str, Any]:
+    """Return only verified, AI-safe Mode C material for a finalized package."""
+    result_package = build_mode_c_result_package({"control_package_id": control_package_id})
+    audit = read_mode_c_audit(control_package_id)
+    citations = audit.get("citation_to_operation_map")
+    if not isinstance(citations, list):
+        raise ModeCError("mode_c_existing_output_inconsistent")
+    fields = ("citation_id", "canonical_target_id", "capability_id", "executor_id", "artifact_relative_path", "artifact_hash")
+    citation_references = []
+    for citation in citations:
+        if not isinstance(citation, dict) or any(field not in citation for field in fields):
+            raise ModeCError("mode_c_existing_output_inconsistent")
+        citation_references.append({field: citation[field] for field in fields})
+    citation_references.sort(key=lambda item: tuple(str(item[field]) for field in fields))
+    package, _, _, receipt_path, _, _ = _load_verified(control_package_id)
+    receipt = _read(receipt_path)
+    outcome = receipt.get("overall_status")
+    if not isinstance(outcome, str):
+        raise ModeCError("mode_c_existing_output_inconsistent")
+    canonical_result = result_package["canonical_result"]
+    request_summary = canonical_result.get("request_summary", {})
+    return {
+        "service_contract_version": "unified_market_evidence_local_service.v1",
+        "control_package_id": control_package_id,
+        "result_id": result_package["result_id"],
+        "result_hash": result_package["result_hash"],
+        "result_status": result_package["result_status"],
+        "request_id": canonical_result.get("request_id"),
+        "request_mode": request_summary.get("execution_mode"),
+        "execution_outcome": outcome,
+        "canonical_result": canonical_result,
+        "ai_ready_markdown": result_package["ai_ready_markdown"],
+        "citation_references": citation_references,
+        "canonical_result_reference": result_package["canonical_result_reference"],
+        "audit_package_id": result_package["audit_package_id"],
+        "audit_reference": result_package["audit_reference"],
+        "materialization": result_package["materialization"],
+        "external_market_network_executed": False,
+    }

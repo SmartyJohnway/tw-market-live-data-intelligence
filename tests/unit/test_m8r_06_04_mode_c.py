@@ -165,3 +165,30 @@ def test_mode_c_browser_state_is_cleared_for_new_authorization_and_displays_summ
     assert "const invalidateModeCState = () =>" in javascript
     assert "// A new authorization must never inherit a prior result package.\n        invalidateModeCState();" in javascript
     assert "result_status:data.result_status, request_summary:data.request_summary" in javascript
+
+
+def test_verified_handoff_reuses_mode_c_outputs_and_audit_citations(mode_c_root):
+    handoff = unified_mode_c.build_mode_c_ai_handoff(PACKAGE_ID)
+    result = _build(mode_c_root)
+    audit = unified_mode_c.read_mode_c_audit(PACKAGE_ID)
+    assert handoff["canonical_result"] == result["canonical_result"]
+    assert handoff["ai_ready_markdown"] == result["ai_ready_markdown"]
+    assert handoff["audit_package_id"] == audit["audit_package_id"]
+    assert handoff["execution_outcome"] == "succeeded"
+    assert handoff["request_mode"] != handoff["execution_outcome"]
+    assert handoff["citation_references"] == sorted(
+        handoff["citation_references"], key=lambda item: tuple(str(item[key]) for key in (
+            "citation_id", "canonical_target_id", "capability_id", "executor_id", "artifact_relative_path", "artifact_hash"
+        ))
+    )
+    serialized = json.dumps(handoff, ensure_ascii=False)
+    assert "twse_mis_rich_facts" not in serialized
+
+
+def test_verified_handoff_rejects_unfinalized_package(mode_c_root):
+    claim = next((mode_c_root / "claims").glob("*.json"))
+    data = _load(claim)
+    data["state"] = "claimed"
+    claim.write_text(json.dumps(data), encoding="utf-8")
+    with pytest.raises(ModeCError, match="mode_c_execution_not_finalized"):
+        unified_mode_c.build_mode_c_ai_handoff(PACKAGE_ID)
