@@ -88,6 +88,9 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 
 ## Reviews / acceptance
 
+- [M8R-08A deep MCP architecture / security preflight](reviews/M8R_08A_DEEP_MCP_ARCHITECTURE_PREFLIGHT.md)
+- [M8R-08A MCP host compatibility matrix](reviews/M8R_08A_MCP_HOST_COMPATIBILITY_MATRIX.md)
+- [M8R-08A MCP implementation blueprint](reviews/M8R_08A_MCP_IMPLEMENTATION_BLUEPRINT.md)
 - [M8R-07C Local Service post-merge acceptance](reviews/M8R_07C_LOCAL_SERVICE_POST_MERGE_ACCEPTANCE.md)
 - [M8R-07A Local-First Unified Market Evidence Service boundary preflight](reviews/M8R_07A_LOCAL_SERVICE_BOUNDARY_PREFLIGHT.md)
 - [M8R-07B Local-First Unified Market Evidence Service contract](protocol/M8R_07B_LOCAL_SERVICE_CONTRACT.md)
