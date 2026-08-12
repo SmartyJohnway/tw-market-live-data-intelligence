@@ -15,6 +15,7 @@ from scripts.m8r_05c.errors import ProjectionError
 from scripts.m8r_05c.lineage_resolver import build_lineage_map
 from scripts.m8r_05c.markdown_renderer import render_result_markdown
 from scripts.m8r_05c.result_builder import build_result
+from scripts.m8r_05c.evidence_projector import CURRENT_PROJECTOR_VERSION, LEGACY_PROJECTOR_VERSION
 from server.services.unified_mode_a import validate_mode_a_request
 from server.services.unified_mode_b2 import CONTROL_ROOT
 
@@ -107,18 +108,18 @@ def _inputs(package: Path, c: dict[str, Path], claim: Path, receipt: Path, bundl
         raise ModeCError("mode_c_lineage_verification_failed") from exc
 
 
-def _expected_outputs(inputs: Any) -> tuple[dict[str, Any], dict[str, Any], str]:
+def _expected_outputs(inputs: Any, projector_version: str = CURRENT_PROJECTOR_VERSION) -> tuple[dict[str, Any], dict[str, Any], str]:
     """Rebuild the complete 05C projection from verified predecessors only."""
     try:
-        result = build_result(inputs)
+        result = build_result(inputs, projector_version=projector_version)
         citation_index = build_citation_index(build_lineage_map(inputs), inputs.bundle)
         audit = build_audit_package(
             result=result,
             inputs=inputs,
             citation_index=citation_index,
-            result_relative_path=_RESULT,
+            result_relative_path=_RESULT, projector_version=projector_version,
         )
-        return result, audit, render_result_markdown(result)
+        return result, audit, render_result_markdown(result, projector_version=projector_version)
     except ProjectionError as exc:
         raise ModeCError("mode_c_lineage_verification_failed") from exc
 
@@ -129,7 +130,13 @@ def build_mode_c_result_package(payload: dict[str, Any]) -> dict[str, Any]:
     package, controls, claim, receipt, bundle, f3 = _load_verified(payload["control_package_id"])
     _f3(package, controls, f3)
     inputs = _inputs(package, controls, claim, receipt, bundle, f3)
-    expected_result, expected_audit, expected_markdown = _expected_outputs(inputs)
+    audit_path = package / _AUDIT
+    projector_version = CURRENT_PROJECTOR_VERSION
+    if audit_path.is_file():
+        projector_version = _read(audit_path).get("projector_metadata", {}).get("projector_version", CURRENT_PROJECTOR_VERSION)
+        if projector_version not in {CURRENT_PROJECTOR_VERSION, LEGACY_PROJECTOR_VERSION}:
+            raise ModeCError("mode_c_existing_output_inconsistent")
+    expected_result, expected_audit, expected_markdown = _expected_outputs(inputs, projector_version)
     result_path, md_path, audit_path = (package / _RESULT, package / _MARKDOWN, package / _AUDIT)
     if any(p.exists() for p in (result_path, md_path, audit_path)):
         if not all(p.is_file() for p in (result_path, md_path, audit_path)):

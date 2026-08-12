@@ -277,6 +277,11 @@
               "official_eod_reference": {
                 "type": "object",
                 "properties": {
+                  "status": {"type": "string", "enum": ["available", "missing", "failed", "empty"]},
+                  "source_id": {"type": "string"},
+                  "source_family": {"type": "string"},
+                  "authority_level": {"type": "string"},
+                  "timing_class": {"type": "string"},
                   "trade_date": {
                     "type": [
                       "string",
@@ -318,6 +323,22 @@
                       "null"
                     ]
                   },
+                  "price": {
+                    "type": "object",
+                    "properties": {
+                      "open": {}, "high": {}, "low": {}, "close": {},
+                      "previous_close": {}, "change": {}
+                    },
+                    "additionalProperties": false
+                  },
+                  "activity": {
+                    "type": "object",
+                    "properties": {
+                      "trade_volume": {}, "trade_value": {}, "transaction_count": {}
+                    },
+                    "additionalProperties": false
+                  },
+                  "citation_ids": {"type": "array", "items": {"type": "string"}},
                   "caveats": {
                     "type": "array",
                     "items": {
@@ -325,9 +346,6 @@
                     }
                   }
                 },
-                "required": [
-                  "currentness_status"
-                ],
                 "additionalProperties": false
               },
               "recent_performance": {

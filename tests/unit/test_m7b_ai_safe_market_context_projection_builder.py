@@ -215,8 +215,9 @@ def test_runtime_projection_builder_reference_remains_controlled_to_conversation
     checked_roots = ["server", "frontend", "scripts"]
     references = []
     allowed = {
-        "scripts/observation_contract.py",
-        "scripts/m5k_common.py",
+            "scripts/observation_contract.py",
+            "scripts/m5k_common.py",
+            "scripts/m8r_05c/evidence_projector.py",
         "tests/unit/test_m7b_ai_safe_market_context_projection_builder.py",
         "tests/unit/test_m7b_ai_safe_market_context_controlled_exposure.py",
     }
