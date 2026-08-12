@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from scripts.m8r_06_03_production_adapter import load_production_executor_metadata
+from scripts.m8r_05b_03.errors import OrchestrationError
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -30,24 +31,30 @@ def _load_json(path: Path) -> dict[str, Any]:
     return value
 
 
-def _authorities() -> tuple[dict[str, Any], dict[str, dict[str, Any]], list[dict[str, Any]]]:
+def _authorities() -> tuple[dict[str, Any], dict[str, Any], dict[str, dict[str, Any]], list[dict[str, Any]]]:
     catalog = _load_json(CATALOG_PATH)
     routing = _load_json(ROUTING_PATH)
     capabilities = catalog.get("data_need_capabilities")
     routes = routing.get("routes")
     if not isinstance(capabilities, list) or not isinstance(routes, list):
         raise LocalServiceError("capability_authority_malformed")
-    route_by_id = {route.get("capability_id"): route for route in routes if isinstance(route, dict)}
+    if any(not isinstance(route, dict) or not isinstance(route.get("capability_id"), str) for route in routes):
+        raise LocalServiceError("capability_authority_malformed")
+    route_by_id = {route["capability_id"]: route for route in routes}
     if len(route_by_id) != len(routes) or any(not isinstance(c, dict) or not isinstance(c.get("capability_id"), str) for c in capabilities):
         raise LocalServiceError("capability_authority_malformed")
     try:
         metadata = load_production_executor_metadata()
         executors = metadata["executors"]
-    except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+    except OrchestrationError as exc:
+        raise LocalServiceError("production_executor_metadata_malformed") from exc
+    except OSError as exc:
         raise LocalServiceError("production_executor_metadata_unavailable") from exc
+    except (KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise LocalServiceError("production_executor_metadata_malformed") from exc
     if not isinstance(executors, list) or any(not isinstance(entry, dict) for entry in executors):
         raise LocalServiceError("production_executor_metadata_malformed")
-    return catalog, route_by_id, executors
+    return catalog, routing, route_by_id, executors
 
 
 def _availability(executors: list[dict[str, Any]], capability_id: str, market: str, executor_id: str | None) -> bool:
@@ -62,9 +69,11 @@ def _availability(executors: list[dict[str, Any]], capability_id: str, market: s
 
 def describe_capabilities() -> dict[str, Any]:
     """Project catalog → routing disposition → production registration truthfully."""
-    catalog, routes, executors = _authorities()
+    catalog, routing, routes, executors = _authorities()
     capabilities: list[dict[str, Any]] = []
-    for capability in catalog["data_need_capabilities"]:
+    for capability in catalog.get("data_need_capabilities", []):
+        if not isinstance(capability, dict) or not isinstance(capability.get("capability_id"), str):
+            raise LocalServiceError("capability_authority_malformed")
         capability_id = capability["capability_id"]
         route = routes.get(capability_id)
         if route is None:
@@ -78,6 +87,8 @@ def describe_capabilities() -> dict[str, Any]:
         if not isinstance(supported_markets, list) or not isinstance(provisional_markets, list):
             raise LocalServiceError("capability_authority_malformed")
         market_entries: list[dict[str, Any]] = []
+        if any(not isinstance(market, str) for market in supported_markets + provisional_markets):
+            raise LocalServiceError("capability_authority_malformed")
         for market in sorted(set(supported_markets + provisional_markets)):
             if market in provisional_markets:
                 disposition = "provisional"
@@ -114,6 +125,6 @@ def describe_capabilities() -> dict[str, Any]:
     return {
         "service_contract_version": SERVICE_CONTRACT_VERSION,
         "capability_catalog_schema_version": catalog.get("schema_version"),
-        "routing_matrix_schema_version": _load_json(ROUTING_PATH).get("schema_version"),
+        "routing_matrix_schema_version": routing.get("schema_version"),
         "capabilities": capabilities,
     }

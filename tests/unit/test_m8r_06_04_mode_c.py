@@ -175,6 +175,8 @@ def test_verified_handoff_reuses_mode_c_outputs_and_audit_citations(mode_c_root)
     assert handoff["ai_ready_markdown"] == result["ai_ready_markdown"]
     assert handoff["audit_package_id"] == audit["audit_package_id"]
     assert handoff["execution_outcome"] == "succeeded"
+    assert handoff["additional_market_network_executed"] is False
+    assert "external_market_network_executed" not in handoff
     assert handoff["request_mode"] != handoff["execution_outcome"]
     assert handoff["citation_references"] == sorted(
         handoff["citation_references"], key=lambda item: tuple(str(item[key]) for key in (

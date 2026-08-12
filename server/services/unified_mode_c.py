@@ -199,5 +199,5 @@ def build_mode_c_ai_handoff(control_package_id: str) -> dict[str, Any]:
         "audit_package_id": result_package["audit_package_id"],
         "audit_reference": result_package["audit_reference"],
         "materialization": result_package["materialization"],
-        "external_market_network_executed": False,
+        "additional_market_network_executed": False,
     }
