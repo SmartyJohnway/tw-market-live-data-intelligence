@@ -25,3 +25,18 @@ The accepted human package was never mutated. A temporary copy, with prior Mode 
 - human_browser_ai_handoff_retest: `PENDING_AFTER_MERGE`
 - M8R-07: `NOT_AUTHORIZED`
 - M8R-08: `NOT_AUTHORIZED`
+
+## Accepted human E2E follow-up
+
+- Run 1 (`manual-e2e-20260812-expanded-live-01`): `PASS_WITH_CAVEATS`. All official EOD operations succeeded. TPEX:5227 demonstrated the controlled `TWSE_MIS` Standard and Top-5 projection, canonical identity preservation, freshness caveats, and file-only rich-facts exclusion in a real browser flow. Other current observations were unavailable and are not reclassified as a product pass.
+- Run 2 (`manual-e2e-20260812-plan-only-01`): B1 planning, B2 authorization exclusion, and execution exclusion for optional `recent_performance` passed. Mode C had incorrectly described the absent plan-only operation as a failed execution. The v1.2 projector records `plan_only_not_executed`, explicit no-execution/no-network caveats, and the precise unavailable derived-metric reason instead. Legacy v1 and v1.1 reconstruction remain frozen.
+- Run 3 (`manual-e2e-20260812-negative-market-01`): `HUMAN_BROWSER_PASS`. Market mismatch and unknown-target validation blocked authorization/execution.
+- Current-observation source reliability remains `UNDER_INVESTIGATION`.
+
+## Bounded source reliability diagnostic
+
+Existing human control packages retained only the collapsed `current_observation_unavailable` operation error and no failed-operation source diagnostics, HTTP status, response code, response row count, channel mapping, or normalization reason: `FAILED_OPERATION_SOURCE_DIAGNOSTICS_NOT_RETAINED`.
+
+Six explicit M5K-path diagnostic calls were made after this gap was confirmed: TWSE batch (2330, 2317), TPEX batch (5227, 6488), and one individual call per symbol. Every response was HTTP 200 with `rtcode=0000`; each batch returned both requested rows, every derived MIS key matched its requested `ex_ch`, and every row normalized as `ok`. No raw response, credentials, cookies, or headers were retained.
+
+This supports `TRANSIENT_SOURCE_FAILURE` / `INSUFFICIENT_EVIDENCE` for the earlier human-run failures; it does not support a confirmed rate-limit, anti-bot, batch-size, channel-mapping, or normalization explanation. A future bounded fallback for batch-missing symbols is `INSUFFICIENT_EVIDENCE` pending a reproduced partial batch response. The current collapsed failure code is too lossy for production support; future work should consider bounded persisted reasons for batch failure, partial missing symbol, mapping failure, normalization rejection, and individual unavailability. No source behavior changed in this repair.
