@@ -28,6 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fingerprint = (value) => JSON.stringify(value);
 
+    const invalidateModeCState = () => {
+        currentModeCResult = null;
+        buildResultBtn.disabled = true;
+        modeCActions.style.display = 'none';
+        document.getElementById('mode-c-result-view').textContent = '';
+        modeCSummary.textContent = 'A finalized execution is required. External network execution = NO.';
+    };
+
     const invalidateExecutionAuthorization = () => {
         currentAuthorization = null;
         previewBtn.disabled = true;
@@ -36,11 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         networkConfirmation.checked = false;
         networkConfirmation.disabled = true;
         modeB2Summary.textContent = 'Authorization required. Execution performed = NO.';
-        currentModeCResult = null;
-        buildResultBtn.disabled = true;
-        modeCActions.style.display = 'none';
-        document.getElementById('mode-c-result-view').textContent = '';
-        modeCSummary.textContent = 'A finalized execution is required. External network execution = NO.';
+        invalidateModeCState();
     };
 
     const invalidateDerivedState = () => {
@@ -179,6 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     authorizeBtn.addEventListener('click', async () => {
         if (!currentPreviewResult?.preview || !currentPreviewResult?.orchestration_plan) return;
+        // A new authorization must never inherit a prior result package.
+        invalidateModeCState();
         const reference = currentPreviewResult.preview.internal_execution_reference || {};
         const payload = { request: parsedRequest, expected_preview_id: reference.preview_id,
             expected_plan_id: currentPreviewResult.orchestration_plan.plan_id,
@@ -196,6 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     executeOnceBtn.addEventListener('click', async () => {
         if (!currentAuthorization) return;
+        invalidateModeCState();
         const reference = window.prompt('Operator confirmation reference');
         if (!reference) return;
         const response = await fetch('/api/unified/executions', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({
@@ -216,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!response.ok) { modeCSummary.textContent = `Result package unavailable: ${data.error || 'unknown'}`; return; }
         currentModeCResult = data;
         modeCSummary.textContent = `RESULT READY — ${data.result_status}; ${data.materialization}; external network execution = NO.`;
-        document.getElementById('mode-c-result-view').textContent = JSON.stringify({result_id:data.result_id, result_hash:data.result_hash, targets:data.targets, request_caveats:data.request_caveats, citations:data.citation_references}, null, 2);
+        document.getElementById('mode-c-result-view').textContent = JSON.stringify({result_id:data.result_id, result_hash:data.result_hash, result_status:data.result_status, request_summary:data.request_summary, targets:data.targets, request_caveats:data.request_caveats, citations:data.citation_references}, null, 2);
         modeCActions.style.display = 'flex';
     });
 

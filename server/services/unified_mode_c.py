@@ -9,7 +9,6 @@ from typing import Any
 from scripts.m8r_05b_03.canonical import sha256_json
 from scripts.m8r_05c.artifact_loader import load_projection_inputs
 from scripts.m8r_05c.audit_package_builder import build_audit_package
-from scripts.m8r_05c.canonical import build_result_id, hash_body_excluding_key
 from scripts.m8r_05c.containment import materialize_outputs
 from scripts.m8r_05c.citation_builder import build_citation_index
 from scripts.m8r_05c.errors import ProjectionError
@@ -108,33 +107,43 @@ def _inputs(package: Path, c: dict[str, Path], claim: Path, receipt: Path, bundl
         raise ModeCError("mode_c_lineage_verification_failed") from exc
 
 
+def _expected_outputs(inputs: Any) -> tuple[dict[str, Any], dict[str, Any], str]:
+    """Rebuild the complete 05C projection from verified predecessors only."""
+    try:
+        result = build_result(inputs)
+        citation_index = build_citation_index(build_lineage_map(inputs), inputs.bundle)
+        audit = build_audit_package(
+            result=result,
+            inputs=inputs,
+            citation_index=citation_index,
+            result_relative_path=_RESULT,
+        )
+        return result, audit, render_result_markdown(result)
+    except ProjectionError as exc:
+        raise ModeCError("mode_c_lineage_verification_failed") from exc
+
+
 def build_mode_c_result_package(payload: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(payload, dict) or set(payload) != {"control_package_id"}:
         raise ModeCError("invalid_api_envelope")
     package, controls, claim, receipt, bundle, f3 = _load_verified(payload["control_package_id"])
     _f3(package, controls, f3)
     inputs = _inputs(package, controls, claim, receipt, bundle, f3)
+    expected_result, expected_audit, expected_markdown = _expected_outputs(inputs)
     result_path, md_path, audit_path = (package / _RESULT, package / _MARKDOWN, package / _AUDIT)
     if any(p.exists() for p in (result_path, md_path, audit_path)):
         if not all(p.is_file() for p in (result_path, md_path, audit_path)):
             raise ModeCError("mode_c_existing_output_inconsistent")
         result, audit, markdown = _read(result_path), _read(audit_path), md_path.read_text(encoding="utf-8")
-        expected_id = build_result_id(inputs.request["request_id"], inputs.receipt["execution_receipt_id"], inputs.bundle["bundle_id"])
-        if result.get("result_id") != expected_id or result.get("result_hash") != hash_body_excluding_key(result, "result_hash") or audit.get("result_id") != expected_id or audit.get("audit_package_hash") != hash_body_excluding_key(audit, "audit_package_hash") or markdown != render_result_markdown(result):
+        if result != expected_result or audit != expected_audit or markdown != expected_markdown:
             raise ModeCError("mode_c_existing_output_inconsistent")
         materialization = "existing_verified"
     else:
         try:
-            result = build_result(inputs)
-            audit = build_audit_package(
-                result=result, inputs=inputs,
-                citation_index=build_citation_index(build_lineage_map(inputs), inputs.bundle),
-                result_relative_path=_RESULT,
-            )
-            markdown = render_result_markdown(result)
-            materialize_outputs(output_root=str(package), result_json=result, audit_package_json=audit, result_markdown=markdown, result_relative_path=_RESULT, audit_relative_path=_AUDIT, result_md_relative_path=_MARKDOWN)
+            materialize_outputs(output_root=str(package), result_json=expected_result, audit_package_json=expected_audit, result_markdown=expected_markdown, result_relative_path=_RESULT, audit_relative_path=_AUDIT, result_md_relative_path=_MARKDOWN)
         except ProjectionError as exc:
             raise ModeCError("mode_c_materialization_failed") from exc
+        result, audit, markdown = expected_result, expected_audit, expected_markdown
         materialization = "newly_materialized"
     return {"result_id": result["result_id"], "result_hash": result["result_hash"], "result_status": result["status"], "request_summary": result["request_summary"], "targets": result["targets"], "request_caveats": result.get("request_caveats", []), "citation_references": [c for t in result["targets"] for c in t.get("citations", [])], "ai_ready_markdown": markdown, "canonical_result": result, "canonical_result_reference": _RESULT, "audit_package_id": audit["audit_package_id"], "audit_reference": _AUDIT, "materialization": materialization, "external_market_network_executed": False}
 

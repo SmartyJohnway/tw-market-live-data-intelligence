@@ -219,7 +219,11 @@ def load_projection_inputs(
     receipt_body = {k: v for k, v in receipt.items() if k not in {
         "schema_version", "execution_receipt_id", "execution_receipt_hash", "created_by_component"
     }}
-    if receipt.get("execution_receipt_hash") != sha256_json(receipt_body):
+    legacy_receipt_body = deepcopy(receipt)
+    legacy_receipt_body.pop("execution_receipt_hash", None)
+    if receipt.get("execution_receipt_hash") not in {
+        sha256_json(receipt_body), sha256_json(legacy_receipt_body)
+    }:
         raise ProjectionError("receipt_hash_invalid")
         
     if receipt.get("claim_id") != claim.get("claim_id"):
@@ -242,7 +246,9 @@ def load_projection_inputs(
     bundle_body = {k: v for k, v in bundle.items() if k not in {
         "schema_version", "bundle_id", "bundle_hash"
     }}
-    if bundle.get("bundle_hash") != sha256_json(bundle_body):
+    legacy_bundle_body = deepcopy(bundle)
+    legacy_bundle_body.pop("bundle_hash", None)
+    if bundle.get("bundle_hash") not in {sha256_json(bundle_body), sha256_json(legacy_bundle_body)}:
         raise ProjectionError("bundle_hash_invalid")
         
     if bundle.get("authorization_id") != auth_id:

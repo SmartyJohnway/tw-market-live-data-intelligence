@@ -3,6 +3,7 @@ import json
 import subprocess
 from pathlib import Path
 import tempfile
+import sys
 import shutil
 
 FIXTURES_DIR = Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "m8r_05c"
@@ -12,7 +13,7 @@ def _run_cli_with_overrides(d_out, **kwargs):
         tmp_in_path = Path(tmp_in)
         
         args = [
-            "python", "-m", "scripts.m8r_05c.cli",
+        sys.executable, "-m", "scripts.m8r_05c.cli",
             "--artifact-root", str(FIXTURES_DIR / "artifact_root"),
             "--calculated-at", "2026-08-01T10:00:00Z",
             "--out-dir", d_out
