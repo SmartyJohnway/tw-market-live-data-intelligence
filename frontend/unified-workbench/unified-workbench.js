@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const buildResultBtn = document.getElementById('btn-build-result');
     const modeCSummary = document.getElementById('mode-c-summary');
     const modeCActions = document.getElementById('mode-c-actions');
+    const workbenchState = window.UnifiedWorkbenchState;
     
     let currentValidationResult = null;
     let currentPreviewResult = null;
@@ -39,10 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const invalidateExecutionAuthorization = () => {
         currentAuthorization = null;
         previewBtn.disabled = true;
-        authorizeBtn.disabled = true;
-        executeOnceBtn.disabled = true;
-        networkConfirmation.checked = false;
-        networkConfirmation.disabled = true;
+        const controls = workbenchState.invalidatedControls();
+        authorizeBtn.disabled = controls.authorizeDisabled;
+        executeOnceBtn.disabled = controls.executeOnceDisabled;
+        networkConfirmation.checked = controls.networkConfirmationChecked;
+        networkConfirmation.disabled = controls.networkConfirmationDisabled;
         modeB2Summary.textContent = 'Authorization required. Execution performed = NO.';
         invalidateModeCState();
     };
@@ -194,10 +196,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await response.json();
         if (!response.ok) { modeB2Summary.textContent = `Authorization unavailable: ${data.error || 'unknown'}`; return; }
         currentAuthorization = data;
-        networkConfirmation.checked = false;
-        networkConfirmation.disabled = data.network_required !== true;
+        const controls = workbenchState.authorizationControls(data.network_required);
+        networkConfirmation.checked = controls.networkConfirmationChecked;
+        networkConfirmation.disabled = controls.networkConfirmationDisabled;
         modeB2Summary.textContent = `AUTHORIZED — execution performed = NO; network executed = NO; single use = YES; expires ${data.expires_at}`;
-        executeOnceBtn.disabled = false;
+        executeOnceBtn.disabled = controls.executeOnceDisabled;
     });
 
     executeOnceBtn.addEventListener('click', async () => {
@@ -335,7 +338,11 @@ document.addEventListener('DOMContentLoaded', () => {
             gaps.appendChild(item);
         });
         document.getElementById('preview-plan-view').textContent = JSON.stringify(result.orchestration_plan, null, 2);
-        authorizeBtn.disabled = preview.status === 'ready_for_confirmation' || preview.status === 'partial_possible';
+        const controls = workbenchState.previewControls(preview.status);
+        authorizeBtn.disabled = controls.authorizeDisabled;
+        executeOnceBtn.disabled = controls.executeOnceDisabled;
+        networkConfirmation.disabled = controls.networkConfirmationDisabled;
+        networkConfirmation.checked = controls.networkConfirmationChecked;
     };
 
     const renderPreviewError = (data) => {
