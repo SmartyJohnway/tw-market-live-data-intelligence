@@ -16,6 +16,8 @@
         networkConfirmationChecked: false,
     });
 
+    const validationAllowsPreview = (validationStatus) => validationStatus === 'valid';
+
     const authorizationControls = (networkRequired) => ({
         executeOnceDisabled: false,
         networkConfirmationDisabled: networkRequired !== true,
@@ -33,6 +35,7 @@
     return Object.freeze({
         AUTHORIZEABLE_PREVIEW_STATUSES,
         previewControls,
+        validationAllowsPreview,
         authorizationControls,
         invalidatedControls,
     });

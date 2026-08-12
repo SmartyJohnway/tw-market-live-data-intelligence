@@ -27,7 +27,7 @@ from .canonical import (
 from .citation_builder import CitationIndex, build_citation_index, get_citations_for_target
 from .derived_metrics import project_derived_metrics
 from .errors import ProjectionError
-from .evidence_projector import project_target_evidence
+from .evidence_projector import CURRENT_PROJECTOR_VERSION, project_target_evidence
 from .lineage_resolver import build_lineage_map
 from .models import (
     CitationProjection,
@@ -182,7 +182,7 @@ def _derived_metric_to_dict(m) -> dict:
     return d
 
 
-def build_result(inputs: ProjectionInputs) -> dict:
+def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_PROJECTOR_VERSION) -> dict:
     """Build the complete AI-context result dict.
 
     Pure function: no I/O (inputs already loaded), no network, no datetime.now().
@@ -267,7 +267,7 @@ def build_result(inputs: ProjectionInputs) -> dict:
             canonical_target_id=canonical_target_id,
             lineage=lineage,
             requested_data_needs=request_summary.requested_data_needs,
-            citation_map=citation_map,
+            citation_map=citation_map, projector_version=projector_version,
         )
 
         # Project derived metrics.
@@ -278,6 +278,7 @@ def build_result(inputs: ProjectionInputs) -> dict:
             calculated_at=calculated_at,
             citation_map=citation_map,
             request_parameters=request_parameters,
+            enable_plan_only_reason=projector_version == CURRENT_PROJECTOR_VERSION,
         )
 
         # Compute coverage.

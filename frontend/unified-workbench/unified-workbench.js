@@ -141,8 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             if (response.ok) {
                 renderValidationResult(data);
-                validatedRequestFingerprint = fingerprint(parsedRequest);
-                previewBtn.disabled = false;
+                validatedRequestFingerprint = workbenchState.validationAllowsPreview(data.validation_status)
+                    ? fingerprint(parsedRequest)
+                    : null;
+                previewBtn.disabled = validatedRequestFingerprint === null;
             } else {
                 renderTransportError(data);
             }
@@ -225,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await response.json();
         if (!response.ok) { modeCSummary.textContent = `Result package unavailable: ${data.error || 'unknown'}`; return; }
         currentModeCResult = data;
-        modeCSummary.textContent = `RESULT READY — ${data.result_status}; ${data.materialization}; external network execution = NO.`;
+        modeCSummary.textContent = `RESULT READY — ${data.result_status}; ${data.materialization}; Mode C projection made no additional market request.`;
         document.getElementById('mode-c-result-view').textContent = JSON.stringify({result_id:data.result_id, result_hash:data.result_hash, result_status:data.result_status, request_summary:data.request_summary, targets:data.targets, request_caveats:data.request_caveats, citations:data.citation_references}, null, 2);
         modeCActions.style.display = 'flex';
     });

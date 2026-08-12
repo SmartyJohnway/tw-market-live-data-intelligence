@@ -25,7 +25,7 @@ from .models import ProjectionInputs
 ROOT = Path(__file__).resolve().parents[2]
 AUDIT_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_audit_package.v1.schema.json"
 
-_PROJECTOR_VERSION = "m8r_05c_v1"
+_PROJECTOR_VERSION = "m8r_05c_v1_2"
 _CANONICALIZATION_VERSION = "m8r_05b_03_canonical_v1"
 
 
@@ -41,6 +41,7 @@ def build_audit_package(
     inputs: ProjectionInputs,
     citation_index: CitationIndex,
     result_relative_path: str,
+    projector_version: str = _PROJECTOR_VERSION,
 ) -> dict:
     """Build the audit package dict.
 
@@ -265,7 +266,7 @@ def build_audit_package(
 
     # Projector metadata.
     projector_metadata: dict = {
-        "projector_version": _PROJECTOR_VERSION,
+        "projector_version": projector_version,
         "canonicalization_version": _CANONICALIZATION_VERSION,
         "projected_at": calculated_at,
         "timestamp_authority": "receipt.finalized_at_or_cli_calculated_at",

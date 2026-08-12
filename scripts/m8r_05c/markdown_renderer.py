@@ -29,6 +29,7 @@ _STATUS_LABELS: dict[str, str] = {
     "missing": "缺失",
     "failed": "失敗",
     "empty": "空",
+    "plan_only_not_executed": "⏸ Plan-only（未執行）",
 }
 
 _RESOLUTION_STATUS_LABELS: dict[str, str] = {
@@ -62,9 +63,16 @@ def _fmt_evidence_envelope(envelope: dict, data_need: str) -> str:
 
     observed = envelope.get("observed_fields", {})
     if observed:
-        lines.append("\n**觀測欄位**:\n")
-        for k, v in sorted(observed.items()):
-            lines.append(f"  - `{k}`: {v}")
+        if data_need == "current_observation":
+            labels = {"instrument_context": "Instrument Context", "source_context": "Source", "price_snapshot": "Current Market Snapshot", "reference_price_context": "Reference Prices", "displayed_quote_snapshot": "Displayed Quote Snapshot", "extended_displayed_depth_snapshot": "Extended Displayed Depth", "freshness_context": "Freshness / Source", "market_session_context": "Market / Session", "data_quality_context": "Data Quality"}
+            for key, value in observed.items():
+                lines.append(f"\n**{labels.get(key, key)}**:")
+                if isinstance(value, dict):
+                    for field, field_value in value.items(): lines.append(f"- `{field}`: {field_value}")
+                else: lines.append(f"- `{key}`: {value}")
+        else:
+            lines.append("\n**觀測欄位**:\n")
+            for k, v in sorted(observed.items()): lines.append(f"  - `{k}`: {v}")
 
     missing = envelope.get("missing_fields", [])
     if missing:
@@ -91,7 +99,7 @@ def _fmt_evidence_envelope(envelope: dict, data_need: str) -> str:
     return "\n".join(lines)
 
 
-def _fmt_eod_reference(eod: dict) -> str:
+def _fmt_eod_reference(eod: dict, *, legacy: bool = False) -> str:
     """Render official_eod_reference to markdown."""
     lines: list[str] = []
     currentness_status = eod.get("currentness_status", "unknown")
@@ -111,13 +119,25 @@ def _fmt_eod_reference(eod: dict) -> str:
         "source_trade_date_missing": "❌ 來源交易日期缺失",
         "invalid_trade_date_format": "❌ 交易日期格式無效",
     }
-    lines.append(f"- **EOD 狀態**: {labels.get(currentness_status, currentness_status)}")
+    if legacy:
+        lines.append(f"- **EOD 狀態**: {labels.get(currentness_status, currentness_status)}")
+    else:
+        lines.append(f"- **EOD 狀態**: {_STATUS_LABELS.get(eod.get('status', 'available'), eod.get('status', 'available'))}")
+        for key, label in (("source_id", "來源"), ("source_family", "來源家族"), ("authority_level", "權威等級")):
+            if eod.get(key): lines.append(f"- **{label}**: {eod[key]}")
     if trade_date:
         lines.append(f"- **交易日期**: {trade_date}")
     if expected:
         lines.append(f"- **預期最新交易日**: {expected}")
     if session:
         lines.append(f"- **交易時段狀態**: {session}")
+    if not legacy and eod.get("price"):
+        lines.append("\n**Price**:")
+        for key, value in eod["price"].items(): lines.append(f"- `{key}`: {value}")
+    if not legacy and eod.get("activity"):
+        lines.append("\n**Activity**:")
+        for key, value in eod["activity"].items(): lines.append(f"- `{key}`: {value}")
+    if not legacy: lines.append(f"\n**Currentness**: {labels.get(currentness_status, currentness_status)}")
     if eod.get("fallback_policy_used"):
         lines.append("- ⚠️ 使用了備援政策")
     if eod.get("publication_grace_applied"):
@@ -142,7 +162,7 @@ def _data_need_label(need: str) -> str:
     return labels.get(need, need)
 
 
-def render_result_markdown(result: dict) -> str:
+def render_result_markdown(result: dict, *, projector_version: str = "m8r_05c_v1_2") -> str:
     """Render the result dict as AI-ready Markdown.
 
     Pure function: no I/O, no network, no datetime.now().
@@ -186,7 +206,8 @@ def render_result_markdown(result: dict) -> str:
             reason = pf.get("reason", "")
             data_need = pf.get("data_need", "")
             need_label = f" [{data_need}]" if data_need else ""
-            lines.append(f"- 目標 #{idx}{need_label}: {reason}")
+            display_idx = idx if projector_version == "m8r_05c_v1" else (idx + 1 if isinstance(idx, int) else idx)
+            lines.append(f"- 目標 #{display_idx}{need_label}: {reason}")
 
     # Request caveats.
     req_caveats = result.get("request_caveats", [])
@@ -260,9 +281,9 @@ def render_result_markdown(result: dict) -> str:
                 lines.append("")
                 lines.append(_section(f"{_data_need_label(need_key)}", 4))
                 if need_key == "official_eod_reference":
-                    lines.append(_fmt_eod_reference(ev))
+                    lines.append(_fmt_eod_reference(ev, legacy=projector_version == "m8r_05c_v1"))
                 else:
-                    lines.append(_fmt_evidence_envelope(ev, need_key))
+                    lines.append(_fmt_evidence_envelope(ev, need_key if projector_version != "m8r_05c_v1" else "legacy"))
 
         # Derived metrics.
         derived_metrics = target.get("derived_metrics", [])

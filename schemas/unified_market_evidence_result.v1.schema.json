@@ -277,6 +277,11 @@
               "official_eod_reference": {
                 "type": "object",
                 "properties": {
+                  "status": {"type": "string", "enum": ["available", "missing", "failed", "empty"]},
+                  "source_id": {"type": "string"},
+                  "source_family": {"type": "string"},
+                  "authority_level": {"type": "string"},
+                  "timing_class": {"type": "string"},
                   "trade_date": {
                     "type": [
                       "string",
@@ -318,6 +323,22 @@
                       "null"
                     ]
                   },
+                  "price": {
+                    "type": "object",
+                    "properties": {
+                      "open": {"type": ["string", "number", "null"]}, "high": {"type": ["string", "number", "null"]}, "low": {"type": ["string", "number", "null"]}, "close": {"type": ["string", "number", "null"]},
+                      "previous_close": {"type": ["string", "number", "null"]}, "change": {"type": ["string", "number", "null"]}
+                    },
+                    "additionalProperties": false
+                  },
+                  "activity": {
+                    "type": "object",
+                    "properties": {
+                      "trade_volume": {"type": ["integer", "number", "string", "null"]}, "trade_value": {"type": ["integer", "number", "string", "null"]}, "transaction_count": {"type": ["integer", "number", "string", "null"]}
+                    },
+                    "additionalProperties": false
+                  },
+                  "citation_ids": {"type": "array", "items": {"type": "string"}},
                   "caveats": {
                     "type": "array",
                     "items": {
@@ -325,8 +346,9 @@
                     }
                   }
                 },
-                "required": [
-                  "currentness_status"
+                "anyOf": [
+                  {"required": ["currentness_status"]},
+                  {"required": ["status"]}
                 ],
                 "additionalProperties": false
               },

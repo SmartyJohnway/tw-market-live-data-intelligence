@@ -31,6 +31,7 @@ def project_recent_performance_metrics(
     calculated_at: str,
     citation_ids: list[str],
     lookback_trading_days: int | None = None,
+    plan_only_not_executed: bool = False,
 ) -> list[DerivedMetricProjection]:
     """Project derived metrics from a recent_performance evidence artifact.
 
@@ -44,7 +45,7 @@ def project_recent_performance_metrics(
                 metric_id="recent_return_pct",
                 metric_name="Recent Return (%)",
                 status="unavailable",
-                invalid_reason="no_recent_performance_artifact",
+                invalid_reason=("recent_performance_plan_only_not_executed" if plan_only_not_executed else "no_recent_performance_artifact"),
                 calculated_at=calculated_at,
                 calculation_version=_CALCULATION_VERSION,
             )
@@ -157,6 +158,7 @@ def project_derived_metrics(
     calculated_at: str,
     citation_map: dict[str, list[str]],
     request_parameters: dict[str, dict] | None = None,
+    enable_plan_only_reason: bool = True,
 ) -> list[DerivedMetricProjection]:
     """Project all applicable derived metrics for one canonical target.
 
@@ -200,6 +202,7 @@ def project_derived_metrics(
                 calculated_at=calculated_at,
                 citation_ids=cite_ids,
                 lookback_trading_days=lookback,
+                plan_only_not_executed=bool(enable_plan_only_reason and binding and binding.status == "plan_only_not_executed"),
             )
         )
 
