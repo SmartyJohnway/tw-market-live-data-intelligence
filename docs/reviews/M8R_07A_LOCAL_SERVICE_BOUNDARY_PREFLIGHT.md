@@ -30,13 +30,23 @@ Every unified route limits bodies to 1 MiB and rejects malformed/privileged tran
 
 | Operation | Current implementation | Classification | Network / side effect | Recommended M8R-07B contract |
 |---|---|---|---|---|
-| `describe_capabilities` | committed capability catalog + `load_production_executor_metadata()` | `THIN_FACADE` | no / none | deterministic safe projection of markets, capabilities, executable vs plan-only disposition, approval/network requirements, executor availability, and caveats; `EXISTING_CAPABILITY_AUTHORITY_REUSABLE` |
+| `describe_capabilities` | capability catalog + 05B routing matrix + `load_production_executor_metadata()` | `THIN_FACADE` | no / none | deterministic safe projection preserving executable, plan-only, blocked, and provisional disposition; `EXISTING_CAPABILITY_AUTHORITY_REUSABLE` |
 | `validate_request` | POST validate → `validate_mode_a_request()` | `REUSE_AS_IS` | no / none | preserve `{request}` envelope and F3 response |
 | `preview_request` | POST preview → `build_mode_b1_preview()` | `REUSE_AS_IS` | no / none | preserve offline preview, deterministic planning, plan-only records and estimates |
 | `authorize_request` | POST authorizations → `build_mode_b2_authorization()` | `REUSE_AS_IS` | no market network / control package write | require explicit `confirm_authorization:true`, matching preview/plan identity, and current scope rules; preview never authorizes |
 | `execute_request` | POST executions → `execute_mode_b2_once()` | `REUSE_AS_IS` | approved market network possible / governed execution writes | require control ID, explicit execution confirmation, operator reference, network confirmation, fixed runtime, atomic single use and replay denial |
 | `read_result` | Mode C result package plus verified audit reader | `THIN_FACADE` | no new market request / may first materialize deterministic local outputs | expose a verified `read_or_materialize_result` operation; do not split public semantics unless later needed |
 | `export_ai_handoff` | Mode C response fields | `THIN_FACADE` | no new market request / none after verified materialization | stable subset of Result, Markdown, citations, Result/Audit references; reuse renderer and raw-fact exclusion |
+
+### Describe-capabilities authority and deterministic precedence
+
+`describe_capabilities` must reuse, not replace, all three existing authorities:
+
+1. `unified_market_evidence_capability_catalog.v1` is the semantic capability and support universe: markets, security types, capability meaning, and caveats.
+2. `m8r_05b_capability_to_executor_routing_matrix` is the current planner disposition authority: resolved executable, plan-only, blocked, or provisional status; selected executor; network and approval behavior; and blocking reasons.
+3. `m8r_06_03_executor_registry_metadata` establishes whether the selected production executor is actually registered and available.
+
+Projection precedence is catalog semantics → routing-matrix disposition → production-metadata availability verification. Production-metadata absence must never be inferred to mean plan-only: `current_observation` is executable, `recent_performance` is plan-only, and `session_status` remains blocked because there is no approved complete 05B route. A production-metadata mismatch is reported as executor availability/deployment state while retaining the routing disposition; it must not erase blocked, plan-only, or provisional distinctions. No new registry is needed.
 
 ## Side-effect and authority matrix
 
@@ -54,15 +64,15 @@ Every unified route limits bodies to 1 MiB and rejects malformed/privileged tran
 
 Route naming, APIRouter tag (`unified-workbench-mode-a`), Workbench phrasing, buttons, preview state, and download UX are `COSMETIC_ONLY` or `TRANSPORT_ONLY`; none is a semantic authority or blocker. `control_package_id`, explicit confirmation fields, body bounds, and Result/Audit references are `SERVICE_CONTRACT_RELEVANT`, and should be retained with client-neutral wording. No examined coupling is an `ARCHITECTURAL_BLOCKER`.
 
-The launcher defaults to `127.0.0.1`, rejects non-local hosts (only `127.0.0.1`, `localhost`, `::1`), and reports `network_on_startup:false`. CORS is limited to localhost/127.0.0.1 origins. There is no remote-access or authentication protocol because the service is local-first only. Market network is possible only in governed execute-once production transport, never startup, validation, preview, read, or export. Existing containment, identifier checks, 1 MiB body limits, privileged-field rejection, no client path selection, and safe evidence writing remain mandatory. No secrets, headers, cookies, or raw rich facts are service output.
+The launcher defaults to `127.0.0.1`, rejects non-local hosts (only `127.0.0.1`, `localhost`, `::1`), and reports `network_on_startup:false`. The server bind therefore remains localhost-only. CORS accepts localhost/127.0.0.1 origins through its regex and additionally permits `Origin: null`; this does not by itself create remote network exposure. Whether `Origin: null` should remain is a future explicit Local Service hardening decision and is not changed in M8R-07A. There is no remote-access or authentication protocol because the service is local-first only. Market network is possible only in governed execute-once production transport, never startup, validation, preview, read, or export. Existing containment, identifier checks, 1 MiB body limits, privileged-field rejection, no client path selection, and safe evidence writing remain mandatory. No secrets, headers, cookies, or raw rich facts are service output.
 
 ## Contract options and recommendation
 
-**Option A — adopt `/api/unified/*` directly:** lowest migration and browser-compatibility cost, but its Workbench-named namespace/tag is less clear as a long-lived client-neutral surface.
+**Option A — promote `/api/unified/*` directly:** lowest migration, testing, and browser-compatibility cost. The surface is already semantically reusable; its Workbench tag/naming is cosmetic or transport-only, not a safety or client-neutrality incompatibility.
 
-**Option B — add `/api/market-evidence/*` thin facade:** delegates 1:1 to the existing Mode A/B/C functions and returns the same objects. It has a small transport-test cost, preserves the Workbench as an unchanged client, clearly supports a future MCP adapter, and avoids divergence if no business logic is placed in the facade.
+**Option B — add `/api/market-evidence/*` thin facade:** can delegate 1:1 to the existing Mode A/B/C functions, but creates a duplicate transport surface, adds migration and transport-test cost, and supplies no demonstrated semantic or security benefit.
 
-Recommendation: `OPTION_B`. M8R-07B should add only the capability-description projection and thin facade routes needed to name the seven operations. The existing `/api/unified/*` surface remains backward-compatible. No second semantic stack, schema, resolver, planner, authorization model, runtime adapter, projector, or Markdown renderer is permitted.
+Recommendation: `OPTION_A`. Promote `/api/unified/*` as the formal localhost Local Service contract and add only the genuine missing `describe_capabilities` operation. Add result/handoff read aliases only if an explicit client contract need appears. A duplicate namespace is not required. No second semantic stack, schema, resolver, planner, authorization model, runtime adapter, projector, or Markdown renderer is permitted.
 
 ## MCP readiness and versioning
 
@@ -85,4 +95,4 @@ Keep current v1 request, authorization, receipt, bundle, Result, and Audit schem
 
 The startup check and existing no-network Mode A/B1/B2/execute-once/Mode C/Workbench/API/handoff tests are recorded in this PR. No market network call was made. There are no architectural blockers.
 
-M8R-07B, if authorized, may implement Option B only: a localhost-only facade, deterministic capability-description projection from the committed catalog and executor metadata, explicit thin route contracts for the seven operations, contract-level no-network/confirmation/replay tests, and client-neutral documentation. It must not implement MCP, source retries, remote exposure, new schemas, or any Phase D semantic change.
+M8R-07B, if authorized, may promote Option A only: document `/api/unified/*` as the localhost Local Service transport, add deterministic `describe_capabilities` from existing authorities, add only demonstrated result/handoff aliases, and add contract-level no-network/confirmation/replay tests. It must not implement MCP, source retries, remote exposure, new schemas, or any Phase D semantic change.
