@@ -120,6 +120,7 @@ def _install_deterministic_test_transport() -> None:
 
     delay_seconds = float(os.environ.get("M8R_06_03_TEST_SOURCE_DELAY_SECONDS", "0"))
     counter_dir = os.environ.get("M8R_06_03_TEST_INVOCATION_COUNTER")
+    fail_capability = os.environ.get("M8R_06_03_TEST_SOURCE_FAILURE_CAPABILITY")
 
     def record_invocation() -> None:
         if not counter_dir:
@@ -134,12 +135,19 @@ def _install_deterministic_test_transport() -> None:
         record_invocation()
         if delay_seconds:
             time.sleep(delay_seconds)
-        return {"observations": [{"symbol": item["symbol"], "source": "deterministic"} for item in watchlist["items"]]}
+        if fail_capability == "current_observation":
+            return {"observations": []}
+        return {"observations": [{
+            "symbol": item["symbol"], "source": "deterministic",
+            "caveats": ["current_observation_not_guaranteed_realtime"],
+        } for item in watchlist["items"]]}
 
     def eod(symbols, *, timeout):
         record_invocation()
         if delay_seconds:
             time.sleep(delay_seconds)
+        if fail_capability == "official_eod_reference":
+            return {"source_id": "deterministic_eod", "observations": []}
         return {"source_id": "deterministic_eod", "observations": [{"symbol": item, "timeout": timeout} for item in symbols]}
 
     adapter.execute_live_observation = observation
