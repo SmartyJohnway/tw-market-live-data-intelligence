@@ -146,6 +146,11 @@
         "tests/unit/test_m8r_06_03_mode_b2_authorization.py",
         "tests/unit/test_m8r_06_03_production_adapter.py",
         "tests/unit/test_m8r_06_03_batch_runtime.py",
+        "tests/unit/test_m8r_06_04_mode_c.py",
+        "tests/unit/m8r_05c/test_m8r_05c_integration.py",
+        "tests/unit/test_m8r_05c_determinism.py",
+        "tests/unit/test_m8r_05c_lineage.py",
+        "tests/unit/test_m8r_05c_containment.py",
         "tests/integration/test_unified_workbench_api.py"
       ],
       "network_policy": "no network; excludes tests marked network",

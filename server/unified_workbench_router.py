@@ -8,6 +8,7 @@ from .services.unified_mode_b1 import (
 )
 from .services.unified_mode_b2 import ModeB2Error, build_mode_b2_authorization
 from .services.unified_mode_b2_execution import execute_mode_b2_once
+from .services.unified_mode_c import ModeCError, build_mode_c_result_package, read_mode_c_audit
 import uuid
 
 router = APIRouter(
@@ -150,3 +151,31 @@ async def execute_authorization(request: Request):
     except Exception:
         return JSONResponse(status_code=500, content={"error": "mode_b2_execution_internal_error", "trace_id": str(uuid.uuid4())})
     return JSONResponse(status_code=200, content=result)
+
+
+@router.post("/result-package")
+async def build_result_package(request: Request):
+    """Build or verify server-owned Mode C outputs for a final execution."""
+    body = await request.body()
+    if len(body) > MAX_BODY_SIZE:
+        raise HTTPException(status_code=413, detail="request_too_large")
+    try:
+        payload = json.loads(body)
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=400, detail="malformed_json_body")
+    try:
+        result = build_mode_c_result_package(payload)
+    except ModeCError as exc:
+        status = 422 if exc.code in {"invalid_api_envelope", "control_package_id_invalid"} else 409
+        return JSONResponse(status_code=status, content={"error": exc.code, "trace_id": str(uuid.uuid4())})
+    except Exception:
+        return JSONResponse(status_code=500, content={"error": "mode_c_internal_error", "trace_id": str(uuid.uuid4())})
+    return JSONResponse(status_code=200, content=result)
+
+
+@router.get("/result-package/{control_package_id}/audit.json")
+async def download_result_audit(control_package_id: str):
+    try:
+        return JSONResponse(status_code=200, content=read_mode_c_audit(control_package_id))
+    except ModeCError as exc:
+        return JSONResponse(status_code=409, content={"error": exc.code, "trace_id": str(uuid.uuid4())})

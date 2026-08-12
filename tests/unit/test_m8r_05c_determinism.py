@@ -3,6 +3,7 @@ import json
 import subprocess
 from pathlib import Path
 import tempfile
+import sys
 import shutil
 
 FIXTURES_DIR = Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "m8r_05c"
@@ -14,7 +15,7 @@ def test_m8r_05c_determinism():
 
     with tempfile.TemporaryDirectory() as d1, tempfile.TemporaryDirectory() as d2:
         cmd = [
-            "python", "-m", "scripts.m8r_05c.cli",
+            sys.executable, "-m", "scripts.m8r_05c.cli",
             "--request-input", str(FIXTURES_DIR / "request_single_target.json"),
             "--f3-validation-input", str(FIXTURES_DIR / "f3_validation.json"),
             "--plan-input", str(FIXTURES_DIR / "plan_single_target.json"),
@@ -55,7 +56,7 @@ def test_m8r_05c_check_only():
 
     with tempfile.TemporaryDirectory() as d:
         cmd = [
-            "python", "-m", "scripts.m8r_05c.cli",
+            sys.executable, "-m", "scripts.m8r_05c.cli",
             "--request-input", str(FIXTURES_DIR / "request_single_target.json"),
             "--f3-validation-input", str(FIXTURES_DIR / "f3_validation.json"),
             "--plan-input", str(FIXTURES_DIR / "plan_single_target.json"),

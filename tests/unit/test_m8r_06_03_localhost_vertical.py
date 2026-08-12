@@ -89,6 +89,13 @@ def test_real_localhost_authorize_execute_once_vertical(tmp_path):
         assert execution["transport_mode"] == "deterministic_test_transport"
         assert execution["test_transport_active"] is True
         assert execution["execution_receipt_id"] and execution["evidence_bundle_id"]
+        # Mode C is a separate post-execution local projection: no dispatch.
+        status, result_package = _json(base + "/api/unified/result-package", {
+            "control_package_id": authorization["control_package_id"]
+        })
+        assert status == 200 and result_package["external_market_network_executed"] is False
+        assert result_package["result_id"] and result_package["audit_package_id"]
+        assert _status(base + f"/api/unified/result-package/{authorization['control_package_id']}/audit.json") == 200
         status, replay = _json(base + "/api/unified/executions", execution_payload)
         assert status == 409 and replay["error"] == "mode_b2_execution_unavailable"
         assert "traceback" not in json.dumps(replay).lower()
