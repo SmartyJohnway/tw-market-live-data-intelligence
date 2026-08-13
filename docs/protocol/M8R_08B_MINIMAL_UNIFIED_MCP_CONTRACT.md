@@ -8,7 +8,7 @@ The adapter is fixed to `http://127.0.0.1:8000` by default. Process configuratio
 
 ## Startup and transport
 
-The launcher requires `mcp==1.29.0`, then makes exactly one bounded loopback compatibility check: `GET /api/unified/capabilities` must return HTTP 200 and `service_contract_version = unified_market_evidence_local_service.v1`. Failure is terminal; there is no retry, port discovery, direct-Python fallback, redirect following, proxy inheritance, or market request.
+The launcher requires `mcp==1.29.0`, then creates one process-lifetime tool-contract snapshot: it loads the canonical Request authority, verifies its identity and JSON Schema meta-schema, and builds the exact Tool specs and argument validators. Only after that preflight does it make one bounded loopback compatibility check: `GET /api/unified/capabilities` must return HTTP 200 and `service_contract_version = unified_market_evidence_local_service.v1`. Failure is terminal; there is no retry, port discovery, direct-Python fallback, redirect following, proxy inheritance, or market request.
 
 The HTTP client has finite all-phase timeouts, `trust_env=False`, no redirects, a 1 MiB POST-body limit, and an 8 MiB response limit. Stdio stdout is MCP protocol only; launcher diagnostics are stderr only.
 

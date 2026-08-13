@@ -8,7 +8,7 @@ Baseline: `5826c3697ac1fd06eb17fa83058b0d61a4d79b37`.
 
 Branch: `codex/m8r-08b-minimal-unified-mcp`.
 
-Implementation code head: `54896691628e7bed5d5eaeb2e37893b512030e20`.
+Implementation code head: `75b5e4607d1cd2b2700123948e9d23ed199ef5ee`.
 
 Final head: this documentation closure commit (reported exactly in PR closure metadata after its final-head test run).
 
@@ -19,8 +19,10 @@ Final head: this documentation closure commit (reported exactly in PR closure me
 - Bound service identity: `unified_market_evidence_local_service.v1`.
 - Tool count and names: exactly five: describe capabilities, validate, preview, Result read, and AI handoff export.
 - Canonical Request authority is loaded from committed schema bytes; the registered nested input schema is concrete rather than `{}`.
+- Startup now constructs exactly one immutable tool-contract snapshot before contacting the Local Service or entering stdio. It loads canonical schema bytes, validates the declared identity and the JSON Schema meta-schema, builds five Tool specs and argument validators, then uses that single snapshot for tools/list and every tool call. Missing, malformed, identity-mismatched, and meta-schema-invalid authority fails with a bounded configuration exit before stdio serving.
 - The subprocess integration test uses real MCP stdio and a real TCP `127.0.0.1` Local Service test server, proving tool discovery, annotations, startup compatibility check, exact routes/envelopes, structured content, and stderr-only startup logging.
 - HTTP controls: loopback-only URL validation, no proxy environment, no redirects or retries, finite timeout, 1 MiB request bound, and 8 MiB response bound.
+- `localhost` configuration normalizes to numeric `127.0.0.1`; explicit IPv6 loopback remains `[::1]`.
 
 Changed implementation surfaces are `requirements.txt`, `server/unified_mcp/`, `scripts/run_unified_market_evidence_mcp.py`, and the four focused test modules. Documentation adds the protocol, this review, local operator guide, and index links.
 
@@ -32,13 +34,13 @@ The annotation matrix is exact: describe/validate/preview are read-only; Result 
 
 ## Test closure
 
-- Focused M8R-08B plus historical MCP regression: `56 passed`, `0 failed`, `0 warnings`.
+- Focused M8R-08B startup/snapshot/network-guard test selection: `24 passed`, `0 failed`, `0 warnings`.
 - M8R-07 / Mode C / operator routing selection: `84 passed`, `0 failed`, `1 warning` (existing Starlette HTTPX deprecation warning).
-- Default CI: `913 passed`, `0 failed`, `0 skipped`, `1 warning`, `252.18s`, return code `0`.
+- Default CI: `909 passed`, `0 failed`, `4 skipped`, `1 warning`, `158.45s`, return code `0`.
 - Actual closure runtime SDK: `importlib.metadata.version("mcp") == "1.29.0"`.
 - Dedicated adapter startup and remaining static checks are run against this documentation final head.
 
-Automated test execution is offline/loopback only; automatic external market-network calls are zero. MCP Inspector was not run: `npx --no-install @modelcontextprotocol/inspector` found no installed Inspector and refused package installation, which this closure does not mutate the environment to perform. A real host smoke is `NOT_RUN_REQUIRES_OPERATOR_RESTART`: restart/reconfigure a supported MCP host with the operator command in the local client guide, confirm stdio discovery and the five tools, and verify authorization/execution remain absent.
+Automated test execution is offline/loopback only; automatic external market-network calls are zero. Focused M8R-08B tests have a test-only socket guard that permits loopback only and raises before any synthetic non-loopback connection can occur. MCP Inspector was not run: `npx --no-install @modelcontextprotocol/inspector` found no installed Inspector and refused package installation, which this closure does not mutate the environment to perform. A real host smoke is `NOT_RUN_REQUIRES_OPERATOR_RESTART`: restart/reconfigure a supported MCP host with the operator command in the local client guide, confirm stdio discovery and the five tools, and verify authorization/execution remain absent.
 
 ## Closure recommendation
 

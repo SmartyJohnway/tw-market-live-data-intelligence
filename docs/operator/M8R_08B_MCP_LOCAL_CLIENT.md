@@ -7,7 +7,7 @@ command: P:\tw-market-live-data-intelligence-main\venv\Scripts\python.exe
 args: [P:\tw-market-live-data-intelligence-main\scripts\run_unified_market_evidence_mcp.py]
 ```
 
-The default Local Service address is `http://127.0.0.1:8000`. For an explicit local test port only, set `UNIFIED_MARKET_EVIDENCE_SERVICE_URL` to an allowed loopback base URL. The adapter refuses non-loopback URLs and never starts a server itself.
+The default Local Service address is `http://127.0.0.1:8000`. For an explicit local test port only, set `UNIFIED_MARKET_EVIDENCE_SERVICE_URL` to an allowed loopback base URL. `localhost` normalizes to numeric `127.0.0.1`; `[::1]` remains valid for explicit IPv6 loopback. The adapter refuses non-loopback URLs and never starts a server itself.
 
 Before normal stdio serving, the adapter checks the local service capability endpoint and requires `unified_market_evidence_local_service.v1`. Startup diagnostics go to stderr. Do not send manual text or logging to its stdout: stdout is the MCP protocol stream.
 
