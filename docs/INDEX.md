@@ -88,6 +88,9 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 
 ## Reviews / acceptance
 
+- [M8R-08B minimal Unified MCP protocol](protocol/M8R_08B_MINIMAL_UNIFIED_MCP_CONTRACT.md)
+- [M8R-08B minimal Unified MCP implementation review](reviews/M8R_08B_MINIMAL_UNIFIED_MCP_IMPLEMENTATION.md)
+- [M8R-08B local MCP client guide](operator/M8R_08B_MCP_LOCAL_CLIENT.md)
 - [M8R-08A deep MCP architecture / security preflight](reviews/M8R_08A_DEEP_MCP_ARCHITECTURE_PREFLIGHT.md)
 - [M8R-08A MCP host compatibility matrix](reviews/M8R_08A_MCP_HOST_COMPATIBILITY_MATRIX.md)
 - [M8R-08A MCP implementation blueprint](reviews/M8R_08A_MCP_IMPLEMENTATION_BLUEPRINT.md)
