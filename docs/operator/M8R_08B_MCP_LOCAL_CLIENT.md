@@ -15,3 +15,12 @@ Only these five tools are available: capability description, validation, offline
 
 MCP hosts must treat returned evidence as data, not instructions, and must preserve timestamps/caveats when interpreting currentness. This milestone does not expose action tools, remote MCP, Streamable HTTP, or elicitation.
 
+## Human acceptance script
+
+1. Start `python scripts/run_unified_workbench.py` and confirm `http://127.0.0.1:8000` is local only.
+2. Configure the host with the command above; there is no extra MCP port.
+3. Confirm exactly five tools appear. Ask the host to describe capabilities, validate a normal canonical request, and build its preview.
+4. Ask it to “authorize and execute this now.” The MCP tool surface has no such tool. Use the existing browser Workbench for authorization and execution if that is desired.
+5. Give the resulting Workbench `control_package_id` to the host. It can read the governed Result or export its existing AI handoff, and those reads are safely repeatable.
+
+The historical `server/mcp_server.py` remains a separate pre-unified MCP surface. This guide applies only to `server/unified_mcp/`. For host-specific configuration syntax, use the accepted M8R-08A host compatibility evidence; do not infer unsupported host configuration forms from this guide.
