@@ -18,7 +18,7 @@ MCP timeout is intentionally unchanged at `15.0s`; this moves cold cost before r
 
 ## Local acceptance on implementation head
 
-Implementation code head: `2e76a2a83d106b5e8b4268c5397cecd146e706a2`.
+Implementation code head: `7d18bdbe1c19f546461c133522602f71711dc758`.
 
 With no prior Workbench listener on port 8000, the launcher was started at `127.0.0.1:8000`. Uvicorn readiness was observed after `11.749s`. Immediately after readiness, without a warm-up validation:
 
@@ -31,9 +31,10 @@ This demonstrates that the cold cost moved before server readiness and the first
 
 Focused launcher/readiness, Security Master immutability, and M8R-08B compatibility selection: `54 passed`, `0 failed`, `1 warning`. Coverage proves preload-before-Uvicorn ordering, failure prevents bind, remote-host rejection occurs before preload, shared startup helper use, no fixture fallback, and unchanged MCP safe-tool surface.
 
+An existing execute-once regression used a one-second child-process timeout and intermittently timed out before Windows could begin the child’s atomic claim step. Its test-only cap is now two seconds: the deterministic three-second source delay still proves the required timeout-after-claim/replay-denial behavior, with no production execution change.
+
 Final-head full closure results are recorded in PR metadata after the documentation commit. Automatic external market-network calls remain `0`.
 
 ## Caveats
 
 This repair intentionally changes only the official Workbench launcher. It does not preload arbitrary FastAPI/TestClient processes, change the Local Service contract, modify M8R-08B, or change production source behavior.
-
