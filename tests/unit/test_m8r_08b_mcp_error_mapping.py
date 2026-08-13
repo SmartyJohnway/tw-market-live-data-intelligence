@@ -11,7 +11,7 @@ from server.unified_mcp.local_service_client import DEFAULT_SERVICE_URL, LocalSe
 
 def test_loopback_url_validation_rejects_every_non_local_shape():
     assert validate_loopback_service_url(DEFAULT_SERVICE_URL) == DEFAULT_SERVICE_URL
-    assert validate_loopback_service_url("http://localhost:8123") == "http://localhost:8123"
+    assert validate_loopback_service_url("http://localhost:8123") == "http://127.0.0.1:8123"
     assert validate_loopback_service_url("http://[::1]:8123") == "http://[::1]:8123"
     rejected = (
         "http://0.0.0.0:8000", "http://192.168.1.5:8000", "https://127.0.0.1:8000",

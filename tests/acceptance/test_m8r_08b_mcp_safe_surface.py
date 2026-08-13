@@ -1,7 +1,11 @@
 """No-network governance checks for the M8R-08B adapter surface."""
 import asyncio
+import socket
+
+import pytest
 
 from server.unified_mcp.server import dispatch_safe_tool
+from server.unified_mcp.tool_contracts import build_tool_contract_snapshot
 
 
 class NoNetworkClient:
@@ -40,6 +44,7 @@ def test_safe_surface_never_reaches_authorization_execution_or_raw_evidence():
         "data_needs": [{"type": "current_observation", "priority": "required"}],
     }
     identifier = "umea-v1-0123456789abcdef0123"
+    snapshot = build_tool_contract_snapshot()
     async def run():
         for name, arguments in (
             ("market_describe_capabilities", {}),
@@ -48,13 +53,19 @@ def test_safe_surface_never_reaches_authorization_execution_or_raw_evidence():
             ("market_read_result", {"control_package_id": identifier}),
             ("market_export_ai_handoff", {"control_package_id": identifier}),
         ):
-            result = await dispatch_safe_tool(name, arguments, client=client)
+            result = await dispatch_safe_tool(name, arguments, client=client, tool_contract_snapshot=snapshot)
             assert result.isError is False
             assert "twse_mis_rich_facts" not in str(result.structuredContent)
         for name in ("market_authorize_request", "market_execute_request", "execute_once"):
-            result = await dispatch_safe_tool(name, {"confirm_authorization": True, "confirm_execution": True}, client=client)
+            result = await dispatch_safe_tool(name, {"confirm_authorization": True, "confirm_execution": True}, client=client, tool_contract_snapshot=snapshot)
             assert result.isError is True
     asyncio.run(run())
     assert [call[0] if isinstance(call, tuple) else call for call in client.calls] == [
         "capabilities", "validate", "preview", "read", "handoff",
     ]
+
+
+def test_test_only_network_guard_rejects_non_loopback_without_connection():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        with pytest.raises(AssertionError, match="m8r_08b_non_loopback_socket_blocked"):
+            sock.connect(("198.51.100.1", 9))

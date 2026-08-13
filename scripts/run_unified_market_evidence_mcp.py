@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse
 import asyncio
 import importlib.metadata
-import logging
 import os
 import sys
 from pathlib import Path
@@ -18,6 +17,7 @@ from mcp.server.stdio import stdio_server
 from server.unified_mcp import ADAPTER_VERSION
 from server.unified_mcp.local_service_client import DEFAULT_SERVICE_URL, LocalServiceClientError, UnifiedLocalServiceClient
 from server.unified_mcp.server import build_unified_market_evidence_mcp_server
+from server.unified_mcp.tool_contracts import ToolContractError, build_tool_contract_snapshot
 
 EXIT_CONFIGURATION = 2
 EXIT_LOCAL_SERVICE = 3
@@ -37,12 +37,18 @@ async def _serve(service_url: str) -> int:
         _stderr("M8R-08B requires mcp==1.29.0")
         return EXIT_DEPENDENCY
     try:
+        tool_contract_snapshot = build_tool_contract_snapshot()
         client = UnifiedLocalServiceClient(service_url)
         await client.verify_service_contract()
+    except ToolContractError as exc:
+        _stderr(f"MCP tool-contract startup check failed: {exc}")
+        return EXIT_CONFIGURATION
     except LocalServiceClientError as exc:
         _stderr(f"Unified Local Service startup check failed: {exc.code}")
         return EXIT_LOCAL_SERVICE
-    app = build_unified_market_evidence_mcp_server(client=client)
+    app = build_unified_market_evidence_mcp_server(
+        client=client, tool_contract_snapshot=tool_contract_snapshot
+    )
     _stderr(f"Starting {ADAPTER_VERSION} over stdio")
     async with stdio_server() as (read_stream, write_stream):
         await app.run(read_stream, write_stream, app.create_initialization_options())
@@ -60,8 +66,12 @@ def main() -> int:
                 _stderr("M8R-08B requires mcp==1.29.0")
                 return EXIT_DEPENDENCY
             try:
+                build_tool_contract_snapshot()
                 client = UnifiedLocalServiceClient(args.service_url)
                 await client.verify_service_contract()
+            except ToolContractError as exc:
+                _stderr(f"MCP tool-contract startup check failed: {exc}")
+                return EXIT_CONFIGURATION
             except LocalServiceClientError as exc:
                 _stderr(f"Unified Local Service startup check failed: {exc.code}")
                 return EXIT_LOCAL_SERVICE

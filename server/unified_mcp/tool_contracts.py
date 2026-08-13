@@ -2,11 +2,13 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from dataclasses import dataclass
 import hashlib
 import json
 from pathlib import Path
 from typing import Any
 
+import jsonschema
 from mcp.types import Tool, ToolAnnotations
 
 from . import ADAPTER_VERSION
@@ -32,8 +34,10 @@ class ToolContractError(Exception):
 def _load_json(path: Path) -> dict[str, Any]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
+    except OSError as exc:
         raise ToolContractError("canonical_request_schema_unavailable") from exc
+    except json.JSONDecodeError as exc:
+        raise ToolContractError("canonical_request_schema_malformed") from exc
     if not isinstance(value, dict):
         raise ToolContractError("canonical_request_schema_malformed")
     return value
@@ -48,6 +52,11 @@ def load_canonical_unified_request_schema() -> dict[str, Any]:
     schema_version = properties.get("schema_version") if isinstance(properties, dict) else None
     if not isinstance(schema_version, dict) or schema_version.get("const") != "unified_market_evidence_request.v1":
         raise ToolContractError("canonical_request_schema_identity_mismatch")
+    try:
+        validator_class = jsonschema.validators.validator_for(schema)
+        validator_class.check_schema(schema)
+    except jsonschema.exceptions.SchemaError as exc:
+        raise ToolContractError("canonical_request_schema_malformed") from exc
     return schema
 
 
@@ -95,22 +104,63 @@ def _annotations(*, read_only: bool) -> ToolAnnotations:
     )
 
 
-def build_tool_specs() -> tuple[Tool, ...]:
-    """Build the exact five static MCP-visible contracts in deterministic order."""
+@dataclass(frozen=True)
+class ToolContractSnapshot:
+    """One startup-validated authority snapshot for one MCP process."""
+
+    tools: tuple[Tool, ...]
+    validators: dict[str, jsonschema.protocols.Validator]
+    canonical_request_schema_sha256: str
+
+    def validate_arguments(self, name: str, arguments: object) -> bool:
+        validator = self.validators.get(name)
+        if validator is None or not isinstance(arguments, dict):
+            return False
+        try:
+            validator.validate(arguments)
+        except jsonschema.ValidationError:
+            return False
+        return True
+
+
+def build_tool_contract_snapshot() -> ToolContractSnapshot:
+    """Load and validate all schema authority before stdio is entered."""
+    canonical_request = load_canonical_unified_request_schema()
+    canonical_hash = canonical_request_schema_sha256()
     empty = {"$schema": "https://json-schema.org/draft/2020-12/schema", "type": "object", "properties": {}, "additionalProperties": False}
-    request = build_request_envelope_schema()
+    request = {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {"request": deepcopy(canonical_request)},
+        "required": ["request"],
+        "additionalProperties": False,
+    }
     control = build_control_package_schema()
-    return (
+    tools = (
         Tool(name="market_describe_capabilities", description=TOOL_DESCRIPTIONS["market_describe_capabilities"], inputSchema=empty, annotations=_annotations(read_only=True)),
         Tool(name="market_validate_request", description=TOOL_DESCRIPTIONS["market_validate_request"], inputSchema=request, annotations=_annotations(read_only=True)),
         Tool(name="market_preview_request", description=TOOL_DESCRIPTIONS["market_preview_request"], inputSchema=deepcopy(request), annotations=_annotations(read_only=True)),
         Tool(name="market_read_result", description=TOOL_DESCRIPTIONS["market_read_result"], inputSchema=control, annotations=_annotations(read_only=False)),
         Tool(name="market_export_ai_handoff", description=TOOL_DESCRIPTIONS["market_export_ai_handoff"], inputSchema=deepcopy(control), annotations=_annotations(read_only=False)),
     )
+    validators: dict[str, jsonschema.protocols.Validator] = {}
+    try:
+        for tool in tools:
+            validator_class = jsonschema.validators.validator_for(tool.inputSchema)
+            validator_class.check_schema(tool.inputSchema)
+            validators[tool.name] = validator_class(tool.inputSchema)
+    except jsonschema.exceptions.SchemaError as exc:
+        raise ToolContractError("canonical_request_schema_malformed") from exc
+    return ToolContractSnapshot(tools=tools, validators=validators, canonical_request_schema_sha256=canonical_hash)
+
+
+def build_tool_specs() -> tuple[Tool, ...]:
+    """Build the exact five static MCP-visible contracts in deterministic order."""
+    return build_tool_contract_snapshot().tools
 
 
 def tool_schema_by_name() -> dict[str, dict[str, Any]]:
-    return {tool.name: tool.inputSchema for tool in build_tool_specs()}
+    return {tool.name: tool.inputSchema for tool in build_tool_contract_snapshot().tools}
 
 
 def adapter_identity() -> str:

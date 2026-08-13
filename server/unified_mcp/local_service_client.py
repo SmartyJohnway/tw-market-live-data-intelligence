@@ -49,7 +49,7 @@ def validate_loopback_service_url(value: str) -> str:
         or parsed.path not in {"", "/"}
     ):
         raise LocalServiceClientError("local_service_url_invalid")
-    host = "[::1]" if parsed.hostname == "::1" else parsed.hostname
+    host = "[::1]" if parsed.hostname == "::1" else "127.0.0.1" if parsed.hostname == "localhost" else parsed.hostname
     return urlunsplit(("http", f"{host}:{port}", "", "", ""))
 
 
