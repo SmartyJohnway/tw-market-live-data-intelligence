@@ -82,7 +82,9 @@ def test_timeout_after_claim_consumes_authorization_and_prevents_retry(tmp_path,
     monkeypatch.setenv("M8R_06_03_EXECUTION_ENVIRONMENT", "test")
     monkeypatch.setenv("M8R_06_03_TEST_SOURCE_TRANSPORT", "deterministic")
     monkeypatch.setenv("M8R_06_03_TEST_SOURCE_DELAY_SECONDS", "3")
-    monkeypatch.setattr(unified_mode_b2_execution, "MAX_CHILD_TIMEOUT_SECONDS", 1)
+    # Leave enough Windows process-start margin for the child to atomically claim,
+    # while the deterministic three-second source delay still proves timeout after claim.
+    monkeypatch.setattr(unified_mode_b2_execution, "MAX_CHILD_TIMEOUT_SECONDS", 2)
     monkeypatch.setattr(unified_mode_b2_execution, "FIXED_OVERHEAD_SECONDS", 0)
     with pytest.raises(unified_mode_b2.ModeB2Error, match="mode_b2_execution_timeout"):
         unified_mode_b2_execution.execute_mode_b2_once(_parent_payload(package))
