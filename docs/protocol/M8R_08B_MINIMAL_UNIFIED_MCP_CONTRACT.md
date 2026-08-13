@@ -31,4 +31,3 @@ No authorization, execution, elicitation, generic HTTP proxy, source selection, 
 Successes carry the Local Service JSON in MCP `structuredContent`. `market_export_ai_handoff` text is exactly the existing `ai_ready_markdown`; the adapter does not create a second renderer or duplicate a large Result into text. Failures preserve only bounded Local Service reason fields and sanitized adapter codes; they never expose exception details, paths, headers, or bodies.
 
 The MCP adapter identity, negotiated MCP wire version, Local Service contract version, and canonical artifact schemas are independent versioned contracts.
-
