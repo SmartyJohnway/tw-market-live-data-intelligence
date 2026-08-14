@@ -10,7 +10,7 @@ Clear user retrieval intent in the active conversation is sufficient to initiate
 
 The current five-tool MCP is accepted historical M8R-08B/08C evidence and remains unchanged. Its documented inability to authorize/execute is true for the current runtime. Existing authorization artifacts are retained and reclassified for the future action path as internal governed execution tickets carrying plan/request binding, execute-once claim, replay denial, receipt, audit, and accounting—not a mandatory separate browser permission ceremony.
 
-`market_fetch_evidence` is accepted as the single preferred future M8R-08E tool. It uses the canonical Unified Request and existing validation, planner, internal ticket, execution, Result, Audit, and handoff authorities. It is not implemented by this decision.
+`market_fetch_evidence` is accepted as the single preferred future M8R-08E tool. It requires canonical `execution_mode=execute`; preview must fail closed with no ticket or network and must never be rewritten. It uses the canonical Unified Request and existing validation, planner, truthful local-action ticket provenance, execution, Result, Audit, and handoff authorities. It is not implemented by this decision. The five current tools remain unchanged; 08E may add exactly a sixth tool, not separate authorize/execute tools.
 
 ## Repository documentation audit
 

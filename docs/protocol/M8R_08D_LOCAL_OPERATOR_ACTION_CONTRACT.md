@@ -32,6 +32,8 @@ Input is the existing closed MCP envelope:
 { "request": "<canonical unified_market_evidence_request.v1 object>" }
 ```
 
+`market_fetch_evidence` requires `request.execution_mode == "execute"`. A canonical Request with `execution_mode == "preview"` is rejected/fails closed through an existing-compatible bounded domain-error strategy: it creates no internal execution ticket, makes no market-network request, and is never silently rewritten to `execute`. This preserves the canonical Request, its hash, and all request/plan/ticket bindings without mutation.
+
 There is no MCP-only Request, planner, resolver, Result, source selector, executor selector, target cap, or operation cap. M8R-08E must reuse existing canonical limits as bounded resource/source-load/failure-containment engineering—not as human-permission boundaries.
 
 Lifecycle:
@@ -43,7 +45,11 @@ canonical Request → production Mode A validation → deterministic B1 plan
 → Mode C canonical Result and governed AI handoff → MCP response
 ```
 
-Validation/ambiguity, blocked capability, bounded-resource, and identity failures preserve their existing fail-closed reason vocabulary. Optional or partial execution preserves governed partial-success/coverage/caveat semantics. Repeating `market_fetch_evidence` is a new requested one-shot retrieval, not a replay of a consumed ticket; `market_read_result` and `market_export_ai_handoff` remain the deterministic reread/reuse path.
+Validation/ambiguity, blocked capability, bounded-resource, and identity failures preserve their existing fail-closed reason vocabulary. Optional or partial execution preserves governed partial-success/coverage/caveat semantics. The same internal execution ticket is denied by existing single-use/replay protection. A new `market_fetch_evidence` invocation is a new conversation-triggered one-shot retrieval and receives a new internal execution ticket, subject to canonical bounds and current capability; matching a prior normalized request does not create permanent request-level deduplication. `market_read_result` and `market_export_ai_handoff` remain the deterministic reread/reuse path.
+
+## Truthful local-action provenance
+
+The local-operator MCP action invocation is legitimate governed action provenance. M8R-08E may deterministically construct existing M8R-05B-02 execution-ticket decision input from this local action context, but must not fabricate browser review, manual owner review, human-presence proof, or another approval event that did not occur. Any `owner_identity_reference`, `owner_review_reference`, or successor provenance field must truthfully identify the local-operator action path. Exact accepted field materialization remains an existing-authority decision and must be locked by M8R-08E tests.
 
 ## Action response and annotations
 
@@ -65,9 +71,11 @@ Retain stdio transport, loopback Local Service, canonical Request/resolver/catal
 
 ## M8R-08E implementation handoff and acceptance
 
-Reuse Local Service Mode A/B1/B2/B2-execution/Mode C services and the existing `/api/unified/*` contract authorities; do not duplicate any business layer. Add one bounded MCP action dispatch path only after explicit authorization. Map Local Service errors through existing sanitized MCP error mapping; never reinterpret domain-invalid, ambiguity, blocked, partial, or failure outcomes.
+M8R-08E implementation begins only after explicit **OWNER AUTHORIZATION OF THE MILESTONE**. At runtime, a clear active-conversation retrieval request is sufficient to invoke `market_fetch_evidence`; no second security-authorization ceremony is required. Reuse Local Service Mode A/B1/B2/B2-execution/Mode C services and the existing `/api/unified/*` contract authorities; do not duplicate any business layer. Map Local Service errors through existing sanitized MCP error mapping; never reinterpret domain-invalid, ambiguity, blocked, partial, or failure outcomes.
 
-Acceptance requires: canonical Request parity; exact existing validation/planning/authorization-ticket/claim/execution/Mode C chain; one bounded requested fetch; correct no-network preflight and read/export behavior; governed partial/blocked/ambiguous behavior; result/audit/hash/citation preservation; action accounting; no raw expansion; replay denial; unchanged five existing tools; no remote/background/persistent/trading behavior; deterministic regression and real-host closed-loop acceptance.
+The existing five tools remain behaviorally unchanged: `market_describe_capabilities`, `market_validate_request`, `market_preview_request`, `market_read_result`, and `market_export_ai_handoff`. M8R-08E adds exactly `market_fetch_evidence`; the expected MCP-visible total is six tools. It removes or renames none of the existing five and adds no separate authorize/execute MCP tools.
+
+Acceptance requires: canonical Request parity; `execution_mode=execute` eligible for the one-shot action path; `execution_mode=preview` rejected with no ticket and no market network; exact existing validation/planning/authorization-ticket/claim/execution/Mode C chain; truthful local-action ticket provenance with no fabricated human/browser approval; same-ticket replay denial and new-fetch allowance; unchanged five legacy tools and total tool count six; one bounded requested fetch; correct no-network preflight and read/export behavior; governed partial/blocked/ambiguous behavior; result/audit/hash/citation preservation; action accounting; no raw expansion; no remote/background/persistent/trading behavior; deterministic regression and real-host closed-loop acceptance.
 
 ## Phase E exit gate
 
