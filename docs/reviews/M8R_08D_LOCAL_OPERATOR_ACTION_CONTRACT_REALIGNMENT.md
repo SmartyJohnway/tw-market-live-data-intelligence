@@ -36,4 +36,3 @@ No runtime, server, schema, planner, Local Service, source, market network, or M
 Principal decision: `READY_FOR_M8R_08E_ONE_SHOT_MARKET_EVIDENCE_MCP_IMPLEMENTATION`.
 
 M8R-08E remains **NOT_AUTHORIZED** until owner review and explicit authorization after this contract PR.
-

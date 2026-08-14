@@ -72,4 +72,3 @@ Acceptance requires: canonical Request parity; exact existing validation/plannin
 ## Phase E exit gate
 
 Phase E exits only when a natural-language request can lead, in the same active conversation, through canonical Request, validation, planning, one requested bounded retrieval, governed Result/AI handoff, and an AI answer—without browser handoff, manual JSON copy, manual authorization/execution, or Result copy-back. Phase F begins only after that conversation-local execute-once loop is stable.
-
