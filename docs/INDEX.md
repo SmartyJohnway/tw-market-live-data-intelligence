@@ -88,6 +88,8 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 
 ## Reviews / acceptance
 
+- [M8R-08D Local Operator Action Contract](protocol/M8R_08D_LOCAL_OPERATOR_ACTION_CONTRACT.md)
+- [M8R-08D Local Operator Action Contract Realignment](reviews/M8R_08D_LOCAL_OPERATOR_ACTION_CONTRACT_REALIGNMENT.md)
 - [M8R-08C-R1 same-process Local Service readiness repair](reviews/M8R_08C_R1_LOCAL_SERVICE_READINESS_REPAIR.md)
 - [M8R-08B minimal Unified MCP protocol](protocol/M8R_08B_MINIMAL_UNIFIED_MCP_CONTRACT.md)
 - [M8R-08B minimal Unified MCP implementation review](reviews/M8R_08B_MINIMAL_UNIFIED_MCP_IMPLEMENTATION.md)
