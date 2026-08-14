@@ -94,3 +94,21 @@ def test_mode_b1_planning_dependency_is_bounded_at_b2_service(monkeypatch):
     monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", unavailable)
     with pytest.raises(unified_mode_b2.ModeB2Error, match="mode_b1_planning_dependency_unavailable"):
         unified_mode_b2.build_mode_b2_authorization(_payload())
+
+
+def test_local_operator_ticket_uses_truthful_non_workbench_provenance(tmp_path, monkeypatch):
+    monkeypatch.setattr(unified_mode_b2, "CONTROL_ROOT", tmp_path)
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: _rebuilt())
+    request = _payload()["request"] | {"execution_mode": "execute"}
+    result = unified_mode_b2.build_local_operator_execution_ticket(request)
+    authorization = json.loads((tmp_path / result["authorization_id"] / "control" / "authorization.json").read_text(encoding="utf-8"))
+    assert authorization["owner_identity_reference"] == "local_operator_mcp"
+    assert authorization["owner_review_reference"] == "local_operator_mcp_action"
+    assert authorization["single_use"] is True
+    assert authorization["maximum_use_count"] == 1
+
+
+def test_local_operator_preview_mode_creates_no_ticket(monkeypatch):
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: _rebuilt())
+    with pytest.raises(unified_mode_b2.ModeB2Error, match="market_fetch_requires_execute_mode"):
+        unified_mode_b2.build_local_operator_execution_ticket(_payload()["request"] | {"execution_mode": "preview"})

@@ -75,3 +75,17 @@ def execute_mode_b2_once(payload: dict[str, Any]) -> dict[str, Any]:
     if child.returncode != 0 or set(result) != required or result.get("authorization_id") != control_id or not transport_valid:
         raise ModeB2Error("mode_b2_execution_child_protocol_invalid")
     return result
+
+
+def execute_local_operator_ticket(control_package_id: str, *, network_required: bool) -> dict[str, Any]:
+    """Consume an existing ticket from the truthful local-operator action path.
+
+    The fixed child protocol still needs its bounded confirmation fields; they
+    are derived server-side from the active local action, never supplied by MCP.
+    """
+    return execute_mode_b2_once({
+        "control_package_id": control_package_id,
+        "confirm_execution": True,
+        "operator_confirmation_reference": "local_operator_mcp_action",
+        "confirm_network_execution": network_required,
+    })

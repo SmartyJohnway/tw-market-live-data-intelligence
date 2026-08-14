@@ -15,6 +15,9 @@ DEFAULT_SERVICE_URL = "http://127.0.0.1:8000"
 MAX_REQUEST_BYTES = 1 * 1024 * 1024
 MAX_RESPONSE_BYTES = 8 * 1024 * 1024
 TIMEOUT_SECONDS = 15.0
+# Existing execution children are bounded at 70 seconds; this adds only bounded
+# request/planning/Mode C overhead for the one action route.
+ACTION_TIMEOUT_SECONDS = 85.0
 
 _LOOPBACK_HOSTS = frozenset({"127.0.0.1", "localhost", "::1"})
 _CONTROL_ID = re.compile(CONTROL_PACKAGE_PATTERN)
@@ -68,7 +71,7 @@ class UnifiedLocalServiceClient:
     def _url(self, route: str) -> str:
         return f"{self.base_url}{route}"
 
-    async def _request(self, method: str, route: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+    async def _request(self, method: str, route: str, payload: dict[str, Any] | None = None, *, timeout_seconds: float | None = None) -> dict[str, Any]:
         body: bytes | None = None
         headers: dict[str, str] = {"Accept": "application/json"}
         if payload is not None:
@@ -79,7 +82,7 @@ class UnifiedLocalServiceClient:
             if len(body) > MAX_REQUEST_BYTES:
                 raise LocalServiceClientError("local_service_request_too_large")
             headers["Content-Type"] = "application/json"
-        timeout = httpx.Timeout(self.timeout_seconds)
+        timeout = httpx.Timeout(self.timeout_seconds if timeout_seconds is None else timeout_seconds)
         try:
             async with httpx.AsyncClient(
                 trust_env=False,
@@ -125,6 +128,12 @@ class UnifiedLocalServiceClient:
 
     async def preview_request(self, request_envelope: dict[str, Any]) -> dict[str, Any]:
         return await self._request("POST", "/api/unified/preview-request", request_envelope)
+
+    async def fetch_evidence(self, request_envelope: dict[str, Any]) -> dict[str, Any]:
+        return await self._request(
+            "POST", "/api/unified/fetch-evidence", request_envelope,
+            timeout_seconds=ACTION_TIMEOUT_SECONDS,
+        )
 
     @staticmethod
     def _validate_control_package_id(control_package_id: object) -> str:
