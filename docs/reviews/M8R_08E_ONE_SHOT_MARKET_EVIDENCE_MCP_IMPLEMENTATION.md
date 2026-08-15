@@ -6,6 +6,8 @@ M8R-08E adds exactly one MCP-visible action, `market_fetch_evidence`, to the exi
 
 Implementation code head: `8f4ffcf587d08a6e7dfa5a40b2b6a249e0d44588`.
 
+Correctness repair implementation head: `37e596ddf5a04c83c7e1c7ddabacb49952c3b334`. Local-operator issuance now uses a process-monotonic microsecond timestamp while the Workbench retains its existing timestamp behavior. Two identical requests in the same wall-clock second therefore get distinct B2 tickets; each can be consumed once, while a second consumption of either remains denied. The action path also projects existing F3/B1 refusal vocabulary (ambiguity, not found, market-hint conflict, unsupported security/capability, blocked/plan-only capability, and resource bounds) instead of collapsing it to `preview_not_authorizable`.
+
 ## Contract
 
 The MCP process exposes six tools. The original five remain compatible; the sixth accepts only `{ "request": <canonical Unified Request> }`. `market_fetch_evidence` requires `execution_mode == "execute"`; preview mode is rejected before Local Service action dispatch, ticket creation, or market access. The action uses the fixed loopback `POST /api/unified/fetch-evidence` route and no model-controlled execution fields, source URL, executor, or output location.
@@ -22,9 +24,11 @@ Legacy Local Service calls retain `TIMEOUT_SECONDS = 15.0`. The action alone use
 
 Focused deterministic MCP contract/action tests verify six names and annotations, canonical schema reuse, preview rejection before service dispatch, execute delegation, action network-field distinction, raw boundary, and real stdio-to-loopback transport. A real loopback Local Service action using the deterministic transport completed with `execution_outcome=succeeded`, a materialized Mode C Result, and both `market_network_executed=false` and `additional_market_network_executed=false`. B2 coverage verifies truthful local-action provenance and preview-mode no-ticket behavior. External market network calls in non-action tests are zero.
 
-The separately authorized single production probe was not issued: the production-mode Local Service did not become ready within the bounded 75-second local wait, so no action request or external market call occurred. Its status is `NOT_RUN_ENVIRONMENT_UNAVAILABLE`; no retry or source probe was performed.
+The initial production-probe attempt was not issued because the production-mode Local Service did not become ready within the bounded 75-second local wait; it made no action request or external market call. The subsequent correctness-repair task explicitly authorized one new single-target attempt after environment stabilization.
 
 `default-ci` was attempted twice with isolated pytest base directories. Both attempts stopped during collection on transient Windows filesystem errors (`WinError 1359`) while statting unrelated existing test files; no M8R-08E test failure was reported. The direct focused selection completed `47 passed, 1 warning` with an isolated base directory.
+
+The closure environment was stabilized by assigning a clean local system `TEMP`/`TMP` directory (without a custom pytest base path). `default-ci` then completed with `920 passed, 4 skipped, 1 warning`, return code 0. The focused correctness selection completed `66 passed`. The single authorized production probe then succeeded for TWSE:2330 `current_observation`: control package `umea-v1-a672d00e39fc19ee6a77`, Result `umeresult-v1-ae2ff4281cfca6464108`, result hash `b830ddee5e495e8ddab7cf2fa8f6054f5b1d7aa0e85add8e608194e0885771cc`, and one executed market network action.
 
 ## Remaining boundaries
 
