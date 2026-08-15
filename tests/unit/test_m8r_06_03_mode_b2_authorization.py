@@ -94,3 +94,54 @@ def test_mode_b1_planning_dependency_is_bounded_at_b2_service(monkeypatch):
     monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", unavailable)
     with pytest.raises(unified_mode_b2.ModeB2Error, match="mode_b1_planning_dependency_unavailable"):
         unified_mode_b2.build_mode_b2_authorization(_payload())
+
+
+def test_local_operator_ticket_uses_truthful_non_workbench_provenance(tmp_path, monkeypatch):
+    monkeypatch.setattr(unified_mode_b2, "CONTROL_ROOT", tmp_path)
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: _rebuilt())
+    request = _payload()["request"] | {"execution_mode": "execute"}
+    result = unified_mode_b2.build_local_operator_execution_ticket(request)
+    authorization = json.loads((tmp_path / result["authorization_id"] / "control" / "authorization.json").read_text(encoding="utf-8"))
+    assert authorization["owner_identity_reference"] == "local_operator_mcp"
+    assert authorization["owner_review_reference"] == "local_operator_mcp_action"
+    assert authorization["single_use"] is True
+    assert authorization["maximum_use_count"] == 1
+
+
+def test_local_operator_preview_mode_creates_no_ticket(monkeypatch):
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: _rebuilt())
+    with pytest.raises(unified_mode_b2.ModeB2Error, match="market_fetch_requires_execute_mode"):
+        unified_mode_b2.build_local_operator_execution_ticket(_payload()["request"] | {"execution_mode": "preview"})
+
+
+@pytest.mark.parametrize(
+    ("preview", "validation", "plan", "expected"),
+    [
+        ({"status": "ambiguous_target"}, {"target_results": [{"resolution_status": "ambiguous"}]}, {}, "ambiguous_target"),
+        ({"status": "target_not_plannable"}, {"target_results": [{"resolution_status": "not_found"}]}, {}, "target_not_found"),
+        ({"status": "target_not_plannable"}, {"target_results": [{"resolution_status": "market_mismatch"}]}, {}, "market_hint_conflict"),
+        ({"status": "target_not_plannable"}, {"target_results": [{"resolution_status": "unsupported_security_type"}]}, {}, "unsupported_security_type"),
+        ({"status": "rejected_resource_bound"}, {}, {}, "rejected_resource_bound"),
+        ({"status": "unsupported_capability"}, {}, {"blocked_operations": [{"capability_id": "session_status"}]}, "required_capability_blocked"),
+        ({"status": "unsupported_capability"}, {}, {"operations": [{"operation_status": "plan_only_not_executable"}]}, "required_capability_plan_only_not_executable"),
+    ],
+)
+def test_local_action_preserves_b1_domain_refusal_code(monkeypatch, preview, validation, plan, expected):
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: {
+        "preview": preview, "validation": validation, "orchestration_plan": plan,
+    })
+    with pytest.raises(unified_mode_b2.ModeB2Error, match=expected):
+        unified_mode_b2.build_local_operator_execution_ticket(_payload()["request"] | {"execution_mode": "execute"})
+
+
+def test_same_second_local_action_tickets_are_distinct(tmp_path, monkeypatch):
+    fixed = datetime(2026, 8, 15, 12, 0, 0, tzinfo=timezone.utc)
+    monkeypatch.setattr(unified_mode_b2, "CONTROL_ROOT", tmp_path)
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: _rebuilt())
+    monkeypatch.setattr(unified_mode_b2, "_utc_now", lambda: fixed)
+    monkeypatch.setattr(unified_mode_b2, "_last_local_action_issued_at", None)
+    request = _payload()["request"] | {"execution_mode": "execute"}
+    first = unified_mode_b2.build_local_operator_execution_ticket(request)
+    second = unified_mode_b2.build_local_operator_execution_ticket(request)
+    assert first["authorization_id"] != second["authorization_id"]
+    assert first["control_package_id"] != second["control_package_id"]

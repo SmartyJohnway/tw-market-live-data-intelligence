@@ -28,6 +28,7 @@ EXPECTED_NAMES = (
     "market_preview_request",
     "market_read_result",
     "market_export_ai_handoff",
+    "market_fetch_evidence",
 )
 FORBIDDEN = {
     "market_authorize_request", "market_execute_request", "authorize_market_request",
@@ -60,8 +61,12 @@ class RecordingClient:
         self.calls.append(("export", identifier))
         return {"ai_ready_markdown": "# governed"}
 
+    async def fetch_evidence(self, envelope):
+        self.calls.append(("fetch", envelope))
+        return {"ai_ready_markdown": "# fetched", "canonical_result": {"status": "success"}}
 
-def test_exactly_five_deterministic_safe_tool_contracts():
+
+def test_exactly_six_tool_contracts_with_one_bounded_action():
     first = build_tool_specs()
     second = build_tool_specs()
     assert tuple(tool.name for tool in first) == EXPECTED_NAMES
@@ -71,10 +76,16 @@ def test_exactly_five_deterministic_safe_tool_contracts():
     for tool in first:
         assert tool.description == TOOL_DESCRIPTIONS[tool.name]
         assert tool.annotations.destructiveHint is False
-        assert tool.annotations.idempotentHint is True
-        assert tool.annotations.openWorldHint is False
+        if tool.name != "market_fetch_evidence":
+            assert tool.annotations.idempotentHint is True
+            assert tool.annotations.openWorldHint is False
     assert all(tool.annotations.readOnlyHint is True for tool in first[:3])
     assert all(tool.annotations.readOnlyHint is False for tool in first[3:])
+    action = first[-1]
+    assert action.annotations.readOnlyHint is False
+    assert action.annotations.destructiveHint is False
+    assert action.annotations.idempotentHint is False
+    assert action.annotations.openWorldHint is True
 
 
 def test_request_schemas_embed_committed_authority_without_placeholder():
@@ -103,7 +114,7 @@ def test_tool_contracts_have_no_adapter_privileged_or_endpoint_inputs():
         assert not (set(tool.inputSchema["properties"]) & forbidden_fields)
 
 
-def test_dispatch_uses_exact_envelopes_and_never_dispatches_actions():
+def test_dispatch_uses_exact_envelopes_and_rejects_preview_action_before_service():
     client = RecordingClient()
     request = {
         "schema_version": "unified_market_evidence_request.v1", "request_id": "mcp-test",
@@ -119,13 +130,18 @@ def test_dispatch_uses_exact_envelopes_and_never_dispatches_actions():
         assert not (await dispatch_safe_tool("market_read_result", {"control_package_id": identifier}, client=client, tool_contract_snapshot=snapshot)).isError
         handoff = await dispatch_safe_tool("market_export_ai_handoff", {"control_package_id": identifier}, client=client, tool_contract_snapshot=snapshot)
         assert handoff.content[0].text == "# governed"
+        rejected = await dispatch_safe_tool("market_fetch_evidence", {"request": request}, client=client, tool_contract_snapshot=snapshot)
+        assert rejected.isError is True
+        execute_request = request | {"execution_mode": "execute"}
+        fetched = await dispatch_safe_tool("market_fetch_evidence", {"request": execute_request}, client=client, tool_contract_snapshot=snapshot)
+        assert fetched.isError is False and fetched.content[0].text == "# fetched"
         for forbidden in FORBIDDEN:
             result = await dispatch_safe_tool(forbidden, {"confirm_execution": True}, client=client, tool_contract_snapshot=snapshot)
             assert result.isError is True
     asyncio.run(run())
     assert client.calls == [
         ("describe", None), ("validate", {"request": request}), ("preview", {"request": request}),
-        ("read", identifier), ("export", identifier),
+        ("read", identifier), ("export", identifier), ("fetch", {"request": request | {"execution_mode": "execute"}}),
     ]
 
 
@@ -163,7 +179,7 @@ def test_startup_snapshot_fails_closed_for_unusable_canonical_authority(monkeypa
         build_tool_contract_snapshot()
 
 
-def test_one_snapshot_builds_five_tools_and_avoids_per_call_authority_reads(monkeypatch):
+def test_one_snapshot_builds_six_tools_and_avoids_per_call_authority_reads(monkeypatch):
     snapshot = build_tool_contract_snapshot()
     monkeypatch.setattr(
         tool_contracts,
@@ -178,7 +194,7 @@ def test_one_snapshot_builds_five_tools_and_avoids_per_call_authority_reads(monk
     }
     asyncio.run(dispatch_safe_tool("market_validate_request", {"request": request}, client=client, tool_contract_snapshot=snapshot))
     asyncio.run(dispatch_safe_tool("market_preview_request", {"request": request}, client=client, tool_contract_snapshot=snapshot))
-    assert len(snapshot.tools) == 5
+    assert len(snapshot.tools) == 6
 
 
 @pytest.mark.parametrize(

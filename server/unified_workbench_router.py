@@ -10,6 +10,7 @@ from .services.unified_mode_b2 import ModeB2Error, build_mode_b2_authorization
 from .services.unified_mode_b2_execution import execute_mode_b2_once
 from .services.unified_mode_c import ModeCError, build_mode_c_ai_handoff, build_mode_c_result_package, read_mode_c_audit
 from .services.unified_local_service import LocalServiceError, describe_capabilities
+from .services.unified_local_operator_action import LocalOperatorActionError, fetch_market_evidence
 import uuid
 
 router = APIRouter(
@@ -160,6 +161,26 @@ async def execute_authorization(request: Request):
         return JSONResponse(status_code=status, content={"error": exc.code, "trace_id": str(uuid.uuid4())})
     except Exception:
         return JSONResponse(status_code=500, content={"error": "mode_b2_execution_internal_error", "trace_id": str(uuid.uuid4())})
+    return JSONResponse(status_code=200, content=result)
+
+
+@router.post("/fetch-evidence")
+async def fetch_evidence(request: Request):
+    """One bounded local-operator action; MCP cannot select execution mechanics."""
+    body = await request.body()
+    if len(body) > MAX_BODY_SIZE:
+        raise HTTPException(status_code=413, detail="request_too_large")
+    try:
+        payload = json.loads(body)
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=400, detail="malformed_json_body")
+    try:
+        result = fetch_market_evidence(payload)
+    except LocalOperatorActionError as exc:
+        status = 422 if exc.code in {"invalid_api_envelope", "market_fetch_requires_execute_mode"} else 409
+        return JSONResponse(status_code=status, content={"error": exc.code, "trace_id": str(uuid.uuid4())})
+    except Exception:
+        return JSONResponse(status_code=500, content={"error": "local_operator_action_internal_error", "trace_id": str(uuid.uuid4())})
     return JSONResponse(status_code=200, content=result)
 
 

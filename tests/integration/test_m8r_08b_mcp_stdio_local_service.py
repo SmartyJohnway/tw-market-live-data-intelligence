@@ -50,6 +50,8 @@ class _Handler(BaseHTTPRequestHandler):
             self._json(200, {"status": "ready_for_confirmation", "request_id": payload["request"]["request_id"]})
         elif self.path == "/api/unified/result-package":
             self._json(200, {"result_status": "success", "canonical_result": {"status": "success"}})
+        elif self.path == "/api/unified/fetch-evidence":
+            self._json(200, {"execution_outcome": "success", "canonical_result": {"status": "success"}, "ai_ready_markdown": "# fetched\n"})
         else:
             self._json(409, {"error": "bounded_error", "trace_id": "test"})
 
@@ -90,7 +92,7 @@ def test_real_stdio_to_actual_loopback_http_service():
                         tools = await session.list_tools()
                         assert [tool.name for tool in tools.tools] == [
                             "market_describe_capabilities", "market_validate_request", "market_preview_request",
-                            "market_read_result", "market_export_ai_handoff",
+                            "market_read_result", "market_export_ai_handoff", "market_fetch_evidence",
                         ]
                         assert tools.tools[0].annotations.readOnlyHint is True
                         assert tools.tools[3].annotations.readOnlyHint is False
@@ -102,6 +104,11 @@ def test_real_stdio_to_actual_loopback_http_service():
                         handoff = await session.call_tool("market_export_ai_handoff", {"control_package_id": CONTROL_ID})
                         assert handoff.structuredContent["ai_ready_markdown"] == "# AI-ready\n"
                         assert handoff.content[0].text == "# AI-ready\n"
+                        preview_fetch = await session.call_tool("market_fetch_evidence", {"request": _request()})
+                        assert preview_fetch.isError
+                        fetched = await session.call_tool("market_fetch_evidence", {"request": _request() | {"execution_mode": "execute"}})
+                        assert not fetched.isError
+                        assert fetched.content[0].text == "# fetched\n"
                         unknown = await session.call_tool("market_execute_request", {"confirm_execution": True})
                         assert unknown.isError is True
                 stderr.seek(0)
@@ -114,4 +121,5 @@ def test_real_stdio_to_actual_loopback_http_service():
         ("POST", "/api/unified/preview-request", {"request": _request()}),
         ("POST", "/api/unified/result-package", {"control_package_id": CONTROL_ID}),
         ("GET", f"/api/unified/result-package/{CONTROL_ID}/handoff", None),
+        ("POST", "/api/unified/fetch-evidence", {"request": _request() | {"execution_mode": "execute"}}),
     ]
