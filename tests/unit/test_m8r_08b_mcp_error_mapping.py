@@ -1,12 +1,14 @@
 import asyncio
 import json
 import threading
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import pytest
 
 from server.unified_mcp.error_mapping import map_internal_error, map_local_service_error
-from server.unified_mcp.local_service_client import DEFAULT_SERVICE_URL, LocalServiceClientError, UnifiedLocalServiceClient, validate_loopback_service_url
+from server.unified_mcp.local_service_client import ACTION_TIMEOUT_SECONDS, DEFAULT_SERVICE_URL, TIMEOUT_SECONDS, LocalServiceClientError, UnifiedLocalServiceClient, validate_loopback_service_url
+import server.unified_mcp.local_service_client as local_service_client
 
 
 def test_loopback_url_validation_rejects_every_non_local_shape():
@@ -81,6 +83,8 @@ class _ServiceHandler(BaseHTTPRequestHandler):
         length = int(self.headers.get("Content-Length", "0"))
         payload = json.loads(self.rfile.read(length))
         type(self).calls.append(("POST", self.path, payload))
+        if type(self).mode == "action_over_legacy_timeout" and self.path == "/api/unified/fetch-evidence":
+            time.sleep(16)
         self._send(200, b"{}")
 
 
@@ -107,6 +111,7 @@ def test_client_uses_only_fixed_exact_routes_and_envelopes():
             envelope = {"request": {"request_id": "unchanged"}}
             await client.validate_request(envelope)
             await client.preview_request(envelope)
+            await client.fetch_evidence(envelope)
             identifier = "umea-v1-0123456789abcdef0123"
             await client.read_result(identifier)
             await client.export_ai_handoff(identifier)
@@ -115,6 +120,7 @@ def test_client_uses_only_fixed_exact_routes_and_envelopes():
         ("GET", "/api/unified/capabilities", None),
         ("POST", "/api/unified/validate-request", {"request": {"request_id": "unchanged"}}),
         ("POST", "/api/unified/preview-request", {"request": {"request_id": "unchanged"}}),
+        ("POST", "/api/unified/fetch-evidence", {"request": {"request_id": "unchanged"}}),
         ("POST", "/api/unified/result-package", {"control_package_id": "umea-v1-0123456789abcdef0123"}),
         ("GET", "/api/unified/result-package/umea-v1-0123456789abcdef0123/handoff", None),
     ]
@@ -143,3 +149,32 @@ def test_service_version_mismatch_fails_closed_and_invalid_id_never_connects():
                 await client.verify_service_contract()
         asyncio.run(run())
     assert _ServiceHandler.calls == [("GET", "/api/unified/capabilities", None)]
+
+
+def test_action_over_legacy_timeout_uses_separate_finite_bound():
+    assert TIMEOUT_SECONDS == 15.0
+    assert ACTION_TIMEOUT_SECONDS == 85.0
+    with _LoopbackService() as url:
+        _ServiceHandler.mode = "action_over_legacy_timeout"
+        started = time.monotonic()
+        result = asyncio.run(UnifiedLocalServiceClient(url).fetch_evidence({"request": {"request_id": "slow"}}))
+        assert result == {}
+        assert time.monotonic() - started > TIMEOUT_SECONDS
+    assert _ServiceHandler.calls == [("POST", "/api/unified/fetch-evidence", {"request": {"request_id": "slow"}})]
+
+
+def test_action_timeout_is_bounded_and_has_no_retry(monkeypatch):
+    attempts = []
+
+    class TimeoutClient:
+        def __init__(self, **kwargs):
+            attempts.append(kwargs["timeout"].read)
+        async def __aenter__(self):
+            raise local_service_client.httpx.TimeoutException("synthetic")
+        async def __aexit__(self, *_args):
+            return False
+
+    monkeypatch.setattr(local_service_client.httpx, "AsyncClient", TimeoutClient)
+    with pytest.raises(LocalServiceClientError, match="local_service_action_timeout"):
+        asyncio.run(UnifiedLocalServiceClient("http://127.0.0.1:8000").fetch_evidence({"request": {}}))
+    assert attempts == [ACTION_TIMEOUT_SECONDS]

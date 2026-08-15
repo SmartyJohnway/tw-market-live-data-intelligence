@@ -71,7 +71,7 @@ class UnifiedLocalServiceClient:
     def _url(self, route: str) -> str:
         return f"{self.base_url}{route}"
 
-    async def _request(self, method: str, route: str, payload: dict[str, Any] | None = None, *, timeout_seconds: float | None = None) -> dict[str, Any]:
+    async def _request(self, method: str, route: str, payload: dict[str, Any] | None = None, *, timeout_seconds: float | None = None, timeout_error_code: str = "local_service_timeout") -> dict[str, Any]:
         body: bytes | None = None
         headers: dict[str, str] = {"Accept": "application/json"}
         if payload is not None:
@@ -101,7 +101,7 @@ class UnifiedLocalServiceClient:
         except LocalServiceClientError:
             raise
         except httpx.TimeoutException as exc:
-            raise LocalServiceClientError("local_service_timeout") from exc
+            raise LocalServiceClientError(timeout_error_code) from exc
         except httpx.HTTPError as exc:
             raise LocalServiceClientError("local_service_unavailable") from exc
         try:
@@ -133,6 +133,7 @@ class UnifiedLocalServiceClient:
         return await self._request(
             "POST", "/api/unified/fetch-evidence", request_envelope,
             timeout_seconds=ACTION_TIMEOUT_SECONDS,
+            timeout_error_code="local_service_action_timeout",
         )
 
     @staticmethod

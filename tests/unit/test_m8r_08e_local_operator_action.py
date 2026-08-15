@@ -46,3 +46,19 @@ def test_execute_composes_existing_ticket_execution_and_mode_c(monkeypatch):
 def test_action_envelope_rejects_privileged_fields_without_ticket():
     with pytest.raises(LocalOperatorActionError, match="invalid_api_envelope"):
         action.fetch_market_evidence({"request": _request(), "confirm_execution": True})
+
+
+@pytest.mark.parametrize(
+    "code",
+    (
+        "ambiguous_target", "target_not_found", "market_hint_conflict",
+        "unsupported_security_type", "duplicate_target", "unsupported_capability",
+        "required_capability_blocked", "rejected_resource_bound",
+        "required_capability_plan_only_not_executable",
+    ),
+)
+def test_non_actionable_domain_failures_preserve_code_without_execution(monkeypatch, code):
+    monkeypatch.setattr(action, "build_local_operator_execution_ticket", lambda _request: (_ for _ in ()).throw(action.ModeB2Error(code)))
+    monkeypatch.setattr(action, "execute_local_operator_ticket", lambda *_args, **_kwargs: pytest.fail("network"))
+    with pytest.raises(LocalOperatorActionError, match=code):
+        action.fetch_market_evidence({"request": _request()})

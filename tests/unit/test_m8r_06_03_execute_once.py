@@ -5,6 +5,7 @@ import os
 import subprocess
 import sys
 import threading
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -153,3 +154,22 @@ def test_production_transport_identity_proves_test_transport_disabled(monkeypatc
             monkeypatch.delenv(key)
     monkeypatch.delenv("M8R_06_03_EXECUTION_ENVIRONMENT", raising=False)
     assert __import__("scripts.m8r_06_03_execute_once", fromlist=["_configure_transport_mode"])._configure_transport_mode() == ("production_transport", False)
+
+
+def test_identical_same_second_local_action_tickets_each_consume_once(tmp_path, monkeypatch):
+    monkeypatch.setattr(unified_mode_b2, "CONTROL_ROOT", tmp_path)
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: _rebuilt())
+    fixed_now = datetime.now(timezone.utc).replace(microsecond=0)
+    monkeypatch.setattr(unified_mode_b2, "_utc_now", lambda: fixed_now)
+    monkeypatch.setattr(unified_mode_b2, "_last_local_action_issued_at", None)
+    monkeypatch.setenv("M8R_06_03_CONTROL_ROOT", str(tmp_path))
+    monkeypatch.setenv("M8R_06_03_EXECUTION_ENVIRONMENT", "test")
+    monkeypatch.setenv("M8R_06_03_TEST_SOURCE_TRANSPORT", "deterministic")
+    request = {"schema_version": "unified_market_evidence_request.v1", "request_id": "same-second", "execution_mode": "execute"}
+    first = unified_mode_b2.build_local_operator_execution_ticket(request)
+    second = unified_mode_b2.build_local_operator_execution_ticket(request)
+    assert first["authorization_id"] != second["authorization_id"]
+    assert unified_mode_b2_execution.execute_local_operator_ticket(first["control_package_id"], network_required=True)["consumption_state"]
+    assert unified_mode_b2_execution.execute_local_operator_ticket(second["control_package_id"], network_required=True)["consumption_state"]
+    with pytest.raises(unified_mode_b2.ModeB2Error, match="mode_b2_execution_unavailable"):
+        unified_mode_b2_execution.execute_local_operator_ticket(first["control_package_id"], network_required=True)

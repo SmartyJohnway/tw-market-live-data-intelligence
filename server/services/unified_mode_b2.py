@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import threading
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
@@ -23,6 +24,8 @@ ROOT = Path(__file__).resolve().parents[2]
 # run without allowing any API payload to select an output location.
 CONTROL_ROOT = Path(os.environ.get("M8R_06_03_CONTROL_ROOT", str(ROOT / "artifacts" / "m8r_06_03_workbench"))).resolve()
 DEFAULT_TTL_SECONDS = 900
+_LOCAL_ACTION_ISSUANCE_LOCK = threading.Lock()
+_last_local_action_issued_at: datetime | None = None
 
 
 class ModeB2Error(RuntimeError):
@@ -37,6 +40,22 @@ def _utc_now() -> datetime:
 
 def _zulu(value: datetime) -> str:
     return value.isoformat().replace("+00:00", "Z")
+
+
+def _next_local_action_issuance_time() -> datetime:
+    """Return a process-monotonic timestamp for a new local MCP invocation.
+
+    Workbench authorization retains its established second-granularity clock.
+    The local action needs a distinct existing B2 ticket for every invocation,
+    including identical requests received in one wall-clock second.
+    """
+    global _last_local_action_issued_at
+    now = _utc_now()
+    with _LOCAL_ACTION_ISSUANCE_LOCK:
+        if _last_local_action_issued_at is not None and now <= _last_local_action_issued_at:
+            now = _last_local_action_issued_at + timedelta(microseconds=1)
+        _last_local_action_issued_at = now
+        return now
 
 
 def _unused_state(binding: dict[str, Any]) -> dict[str, Any]:
@@ -123,19 +142,87 @@ def _materialize_execution_ticket(
     }
 
 
-def _authorizable_preview(request: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+def _authorizable_preview(
+    request: dict[str, Any], *, preserve_domain_failure: bool = False
+) -> tuple[dict[str, Any], dict[str, Any]]:
     try:
         rebuilt = build_mode_b1_preview(request)
     except ModeB1PlanningUnavailable as exc:
         raise ModeB2Error("mode_b1_planning_dependency_unavailable") from exc
     preview, plan = rebuilt.get("preview"), rebuilt.get("orchestration_plan")
     if not isinstance(preview, dict) or not isinstance(plan, dict):
-        raise ModeB2Error("preview_not_authorizable")
+        raise ModeB2Error(_non_actionable_preview_code(rebuilt) if preserve_domain_failure else "preview_not_authorizable")
     if preview.get("status") not in {"ready_for_confirmation", "partial_possible"}:
-        raise ModeB2Error("preview_not_authorizable")
+        raise ModeB2Error(_non_actionable_preview_code(rebuilt) if preserve_domain_failure else "preview_not_authorizable")
     if not any(item.get("operation_status") == "executable_pending_approval" for item in plan.get("operations", [])):
-        raise ModeB2Error("preview_not_authorizable")
+        raise ModeB2Error(_non_actionable_preview_code(rebuilt) if preserve_domain_failure else "preview_not_authorizable")
     return preview, plan
+
+
+def _non_actionable_preview_code(rebuilt: dict[str, Any]) -> str:
+    """Project existing F3/B1 refusal semantics without adding a resolver."""
+    preview = rebuilt.get("preview") if isinstance(rebuilt, dict) else None
+    validation = rebuilt.get("validation") if isinstance(rebuilt, dict) else None
+    plan = rebuilt.get("orchestration_plan") if isinstance(rebuilt, dict) else None
+    if isinstance(preview, dict):
+        status = preview.get("status")
+        if status == "ambiguous_target":
+            return "ambiguous_target"
+        if status == "rejected_resource_bound":
+            return "rejected_resource_bound"
+        if status == "target_not_plannable" and isinstance(validation, dict):
+            statuses = {
+                target.get("resolution_status")
+                for target in validation.get("target_results", [])
+                if isinstance(target, dict)
+            }
+            for status, code in (
+                ("not_found", "target_not_found"),
+                ("market_mismatch", "market_hint_conflict"),
+                ("unsupported_security_type", "unsupported_security_type"),
+                ("duplicate", "duplicate_target"),
+            ):
+                if status in statuses:
+                    return code
+            return "target_not_plannable"
+        if status == "unsupported_capability":
+            if isinstance(plan, dict):
+                blocked = plan.get("blocked_operations", [])
+                if isinstance(blocked, list) and blocked:
+                    return "required_capability_blocked"
+                operations = plan.get("operations", [])
+                if isinstance(operations, list) and any(
+                    isinstance(operation, dict)
+                    and operation.get("operation_status") == "plan_only_not_executable"
+                    for operation in operations
+                ):
+                    return "required_capability_plan_only_not_executable"
+            return "unsupported_capability"
+        if isinstance(status, str):
+            return status
+    if isinstance(validation, dict):
+        statuses = {
+            target.get("resolution_status")
+            for target in validation.get("target_results", [])
+            if isinstance(target, dict)
+        }
+        for status, code in (
+            ("ambiguous", "ambiguous_target"),
+            ("not_found", "target_not_found"),
+            ("market_mismatch", "market_hint_conflict"),
+            ("unsupported_security_type", "unsupported_security_type"),
+            ("duplicate", "duplicate_target"),
+        ):
+            if status in statuses:
+                return code
+        blockers = {
+            issue.get("code")
+            for issue in validation.get("blocking_issues", [])
+            if isinstance(issue, dict)
+        }
+        if "TARGET_LIMIT_EXCEEDED" in blockers:
+            return "rejected_resource_bound"
+    return "preview_not_authorizable"
 
 
 def build_mode_b2_authorization(payload: dict[str, Any]) -> dict[str, Any]:
@@ -203,8 +290,8 @@ def build_local_operator_execution_ticket(request: dict[str, Any]) -> dict[str, 
     # The action path is only defined for the canonical execute request mode.
     if request.get("execution_mode") != "execute":
         raise ModeB2Error("market_fetch_requires_execute_mode")
-    _preview, plan = _authorizable_preview(request)
-    now = _utc_now()
+    _preview, plan = _authorizable_preview(request, preserve_domain_failure=True)
+    now = _next_local_action_issuance_time()
     decision = {
         "decision": "approved",
         "decision_reason": "conversation-triggered local-operator one-shot retrieval",
