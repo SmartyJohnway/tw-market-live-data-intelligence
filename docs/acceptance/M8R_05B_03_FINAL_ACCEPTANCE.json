@@ -175,7 +175,7 @@
             },
             {
                 "node_id": "tests/unit/test_m5fgh_consumer_consistency.py::test_demo_json_summary",
-                "exact_failure_message": "E   subprocess.CalledProcessError: Command '['C:\\\\Users\\\\weitang\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', 'scripts/run_m5fgh_local_product_demo.py', '--check-only']' returned non-zero exit status 1.\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m5fgh_consumer_consistency.py::test_demo_json_summary",
+                "exact_failure_message": "E   subprocess.CalledProcessError: Command '['C:\\\\Users\\\\<user>\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', 'scripts/run_m5fgh_local_product_demo.py', '--check-only']' returned non-zero exit status 1.\n=========================== short test summary info ===========================\nFAILED tests/unit/test_m5fgh_consumer_consistency.py::test_demo_json_summary",
                 "isolated_rerun_result": "FAILED",
                 "root_cause_category": "environment_state_induced_windows_encoding_cascaded",
                 "causal_relation_to_05b03": "Cascading failure from CP950 decode error inside the subprocess. Unrelated to M8R-05B-03 logic."
