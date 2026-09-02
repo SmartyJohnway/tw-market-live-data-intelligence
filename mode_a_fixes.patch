@@ -1,5 +1,5 @@
 commit ac00f0680688f2444f630ddf592ec399a1588667
-Author: Johnway <johnway0219@gmail.com>
+Author: SmartyJohnway <https://github.com/SmartyJohnway/>
 Date:   Fri Aug 7 00:30:02 2026 +0800
 
     fix(M8R-06-01): resolve all cross-platform path and hash mismatches in tests
