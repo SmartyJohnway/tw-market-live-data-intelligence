@@ -1,0 +1,197 @@
+{
+  "task": "M8R-08F-R0-02-GOVERNED-PRODUCTION-RUNTIME-CANDIDATE-MATERIALIZATION-QUALIFICATION-AND-SEALING",
+  "baseline_sha": "dfefbe8e4734c8a395032d8c699680471f7db37d",
+  "candidate_id": "m8r06-01b-20260903T093604Z",
+  "generation_timestamp_utc": "2026-09-03T09:36:04.554288+00:00",
+  "network_authorization_used": true,
+  "network_scope": "One bounded 01B acquisition attempt against the declared official source contracts only; no quote, TAIFEX, MCP, polling, retry loop, or unrelated web request.",
+  "official_source_outcomes": [
+    {
+      "source_id": "twse_isin_mode2_zh",
+      "url": "https://isin.twse.com.tw/isin/C_public.jsp?strMode=2",
+      "allowed_host": "isin.twse.com.tw",
+      "parser": "isin_parser.parse_html",
+      "classification": "PASS_CURRENT",
+      "http_status": 200,
+      "byte_count": 8377586,
+      "acquisition_status": "data",
+      "records_or_events": 35098,
+      "source_updated_date": "2026-09-03"
+    },
+    {
+      "source_id": "twse_isin_mode4_zh",
+      "url": "https://isin.twse.com.tw/isin/C_public.jsp?strMode=4",
+      "allowed_host": "isin.twse.com.tw",
+      "parser": "isin_parser.parse_html",
+      "classification": "PASS_CURRENT",
+      "http_status": 200,
+      "byte_count": 2687706,
+      "acquisition_status": "data",
+      "records_or_events": 11276,
+      "source_updated_date": "2026-09-03"
+    },
+    {
+      "source_id": "twse_delisted",
+      "url": "https://www.twse.com.tw/company/suspendListingCsvAndHtml?lang=zh&type=html",
+      "allowed_host": "www.twse.com.tw",
+      "parser": "parse_twse_delisted",
+      "classification": "SCHEMA_DRIFT",
+      "http_status": 200,
+      "byte_count": 51814,
+      "acquisition_status": "schema_drift",
+      "records_or_events": 265,
+      "caveat_or_failure": "Existing parser emitted 265 lifecycle events but the governed acquisition contract classified the payload as schema_drift."
+    },
+    {
+      "source_id": "tpex_delisted",
+      "url": "https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html",
+      "allowed_host": "www.tpex.org.tw",
+      "parser": "parse_tpex_delisted",
+      "classification": "SCHEMA_DRIFT",
+      "http_status": 200,
+      "byte_count": 11160,
+      "acquisition_status": "schema_drift",
+      "records_or_events": 0,
+      "caveat_or_failure": "LifecycleSchemaDrift: no_html_tables"
+    },
+    {
+      "source_id": "twse_etn_expired",
+      "url": "https://www.twse.com.tw/zh/products/securities/etn/products/expire.html",
+      "allowed_host": "www.twse.com.tw",
+      "parser": "parse_etn_twse",
+      "classification": "SCHEMA_DRIFT",
+      "http_status": 200,
+      "byte_count": 11284,
+      "acquisition_status": "schema_drift",
+      "records_or_events": 0,
+      "caveat_or_failure": "LifecycleSchemaDrift: no_html_tables"
+    }
+  ],
+  "qualification": {
+    "status": "PASS_WITH_CAVEATS",
+    "classification_records_attempted": 46374,
+    "classification_records_qualified": 46374,
+    "qualification_counts": {
+      "QUALIFIED_WITH_CAVEATS": 46374,
+      "QUARANTINED": 0,
+      "REJECTED_FIXTURE_ONLY": 0,
+      "REJECTED_HISTORICAL_ONLY": 0
+    },
+    "market_counts": {"TWSE": 35098, "TPEX": 11276},
+    "instrument_type_counts": {
+      "common_share": 1974,
+      "preferred_share": 29,
+      "etf": 360,
+      "fund": 6,
+      "bond": 4,
+      "etn": 21,
+      "depositary_receipt": 10,
+      "warrant": 43970
+    },
+    "lifecycle_events": 265,
+    "lifecycle_conflicts": 0,
+    "fixture_input_used": false,
+    "historical_input_used_as_current": false
+  },
+  "source_authority": {
+    "source_seal_path": "docs/reviews/security_master_candidates/m8r06-01b-20260903T093604Z/source_immutable_manifest.json",
+    "source_skill_contract_hash": "33be39c30a84641e7591d3d1680adb18b90efd8f509d75b3e971cb46d24c9b6d",
+    "source_snapshot_id": "dryrun-m8r06-01b-20260903T093604Z",
+    "source_snapshot_sha256": "0db0debfd23132d49dd85fcff775ecf1589f968c8550fb51619dbc6e13cda9b0",
+    "bundle_integrity": "PASS",
+    "bundle_file_set": "PASS",
+    "fixture_rejection": "PASS"
+  },
+  "runtime_authority": {
+    "runtime_index_path": "data/security_master/runtime_identity_indexes/m8r06-01b-20260903T093604Z/index.json",
+    "runtime_manifest_path": "data/security_master/runtime_identity_indexes/m8r06-01b-20260903T093604Z/manifest.json",
+    "runtime_seal_path": "docs/reviews/security_master_candidates/m8r06-01b-20260903T093604Z/runtime_identity_immutable_manifest.json",
+    "compact_index_sha256": "e6a2fa11e14f89392f1a18e99f940c964141b0bea1e256e55bfd4eb1aed58417",
+    "compact_manifest_sha256": "3c99304cbc2501f05439b38726859bcafe3f2a74c383c494854987685a578668",
+    "compact_index_schema_sha256": "980d4f34e3b5380f69fe4669687d0d7b98e1199f2ec303d3997816f5b462ec06",
+    "compact_manifest_schema_sha256": "919f461d1b4b21d0157d23f38193c1500a07b44c75bfcea661c11cee94d6612a",
+    "knowledge_universe_count": 46374,
+    "runtime_eligible_count": 2331,
+    "quarantined_count": 0,
+    "candidate_identity_coherence": "PASS",
+    "compact_runtime_integrity": "PASS",
+    "artifact_persisted_in_git": false,
+    "reproduction_semantics": "REQUIRES_ORIGINAL_SEALED_01B_BUNDLE",
+    "fresh_reprobe_equivalence": false
+  },
+  "supported_type_eligibility_reconciliation": {
+    "supported_common_share_plus_etf_count": 2334,
+    "runtime_eligible_count": 2331,
+    "supported_type_blocked_count": 3,
+    "supported_type_blocked_records": [
+      {
+        "canonical_target_id": "TWSE:2301",
+        "instrument_type": "common_share",
+        "lifecycle_state": "terminated",
+        "execution_eligibility": "blocked",
+        "reason_codes": ["lifecycle_blocks_current_execution"]
+      },
+      {
+        "canonical_target_id": "TWSE:2432",
+        "instrument_type": "common_share",
+        "lifecycle_state": "terminated",
+        "execution_eligibility": "blocked",
+        "reason_codes": ["lifecycle_blocks_current_execution"]
+      },
+      {
+        "canonical_target_id": "TPEX:6423",
+        "instrument_type": "common_share",
+        "lifecycle_state": "terminated",
+        "execution_eligibility": "blocked",
+        "reason_codes": ["lifecycle_blocks_current_execution"]
+      }
+    ],
+    "historical_a": {
+      "supported_scope": 2327,
+      "runtime_eligible": 2324,
+      "delta": 3
+    },
+    "candidate_b_delta": 3,
+    "structural_delta_consistency": "PASS"
+  },
+  "resolver_equivalence": {
+    "result": "PASS",
+    "all_canonical_ids_tested": true,
+    "canonical_id_query_count": 46374,
+    "normalized_name_queries_tested": 46374,
+    "resolver_tested_query_count": 92768,
+    "market_mismatch_cases_tested": 16,
+    "non_runtime_eligible_cases_tested": 44043,
+    "real_tpex_cases_tested": 1,
+    "fixture_observation_only_cases_tested": 0,
+    "quarantine_cases_tested": 0
+  },
+  "representative_identity_checks": {
+    "TWSE_2330": {"resolution": "resolved", "canonical_target_id": "TWSE:2330", "execution_eligibility": "allowed"},
+    "TWSE_2317": {"resolution": "resolved", "canonical_target_id": "TWSE:2317", "execution_eligibility": "allowed"},
+    "TPEX_6488": {"resolution": "resolved", "canonical_target_id": "TPEX:6488", "execution_eligibility": "allowed"}
+  },
+  "comparison_to_historical_candidate_a": {
+    "knowledge_universe": {"A": 43070, "B": 46374, "delta": 3304},
+    "runtime_eligible": {"A": 2324, "B": 2331, "delta": 7},
+    "quarantined": {"A": 0, "B": 0, "delta": 0},
+    "lifecycle_events": {"A": 264, "B": 265, "delta": 1},
+    "interpretation": "B is a distinct 2026-09-03 capture with changed official payloads and a different current skill contract. Numerical changes are not treated as byte, snapshot, hash, or semantic equivalence with A."
+  },
+  "caveats": [
+    "zh_lane_only_single_lane_not_dual_lane",
+    "twse_delisted_acquisition_status_schema_drift_despite_265_parsed_events",
+    "tpex_delisted_schema_drift_no_html_tables",
+    "twse_etn_expired_schema_drift_no_html_tables",
+    "tpex_lifecycle_coverage_incomplete"
+  ],
+  "blocking_findings": [],
+  "legacy_producer_report_metadata_caveat": {
+    "materialization_report_path": "docs/reviews/security_master_candidates/m8r06-01b-20260903T093604Z/materialization_report.json",
+    "statement": "The sealed producer report retains legacy M8R-06 baseline and next-task wording. It is preserved byte-identically as producer-stage evidence. This M8R_08F_R0_02_CANDIDATE_MATERIALIZATION_REVIEW.json is the controlling current R0-02 governance decision."
+  },
+  "historical_candidate_a_unchanged": true,
+  "production_pointer_unchanged": true,
+  "production_authority_rotated": false,
+  "principal_decision": "ACCEPTABLE_WITH_CAVEATS_FOR_PRODUCTION_ACTIVATION_REVIEW"
+}
