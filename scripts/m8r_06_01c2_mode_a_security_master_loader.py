@@ -18,6 +18,11 @@ from scripts.m8r_06_01c1b_compact_runtime_identity_index import (
     load_and_validate_compact_artifacts,
     sha256_file,
 )
+from scripts.m8r_06_security_master_candidate_paths import (
+    runtime_immutable_seal_path,
+    runtime_index_dir,
+    validate_candidate_id,
+)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 POINTER_SCHEMA_VERSION = "m8r_06_mode_a_security_master_pointer.v1"
@@ -28,9 +33,6 @@ POINTER_SCHEMA_PATH = (
     / "contracts"
     / "schemas"
     / "m8r_06_mode_a_security_master_pointer.v1.schema.json"
-)
-IMMUTABLE_SEAL_RELATIVE_PATH = Path(
-    "docs/reviews/m8r06-01c1b-runtime-index-manifest/immutable_manifest.json"
 )
 ACTIVATION_CONSISTENCY_MODEL = "PROCESS_LIFETIME_IMMUTABLE_SELECTION"
 POINTER_CHANGE_REQUIRES_RESTART = True
@@ -164,6 +166,8 @@ def _validate_pointer_seal_binding(
             _fail(f"pointer_seal_{pointer_field}_mismatch")
     if pointer.get("index_id") != seal.get("compact_index_id"):
         _fail("pointer_seal_index_id_mismatch")
+    if seal.get("compact_index_id") != seal.get("source_bundle_id"):
+        _fail("runtime_seal_candidate_identity_mismatch")
     if seal.get("reproduction_semantics") != "REQUIRES_ORIGINAL_SEALED_01B_BUNDLE":
         _fail("immutable_seal_reproduction_semantics_mismatch")
     if seal.get("fresh_reprobe_equivalence") is not False:
@@ -184,6 +188,12 @@ def load_mode_a_security_master(
         invalid_code="pointer_malformed",
     )
     _validate_pointer(pointer)
+    try:
+        candidate_id = validate_candidate_id(pointer["index_id"])
+    except ValueError:
+        _fail("pointer_candidate_id_invalid")
+    if pointer.get("index_id") != pointer.get("source_bundle_id"):
+        _fail("pointer_candidate_identity_mismatch")
 
     runtime_root = root / "data" / "security_master" / "runtime_identity_indexes"
     index_path = _resolve_governed_path(
@@ -205,15 +215,14 @@ def load_mode_a_security_master(
         invalid_code="immutable_seal_path_not_authorized",
     )
 
-    expected_index = Path(
-        f"data/security_master/runtime_identity_indexes/{pointer['index_id']}/index.json"
-    )
+    expected_index = runtime_index_dir(root, candidate_id).relative_to(root) / "index.json"
     expected_manifest = expected_index.with_name("manifest.json")
     if Path(pointer["index_path"]) != expected_index:
         _fail("pointer_index_path_mismatch")
     if Path(pointer["manifest_path"]) != expected_manifest:
         _fail("pointer_manifest_path_mismatch")
-    if Path(pointer["immutable_seal_path"]) != IMMUTABLE_SEAL_RELATIVE_PATH:
+    expected_seal = runtime_immutable_seal_path(root, candidate_id).relative_to(root)
+    if Path(pointer["immutable_seal_path"]) != expected_seal:
         _fail("pointer_immutable_seal_path_mismatch")
 
     seal = _load_dict(

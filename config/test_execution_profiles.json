@@ -140,6 +140,7 @@
         "tests/unit/test_m8c_02_taifex_mis_context_integration.py",
         "tests/unit/test_m8r_06_01c1b_compact_runtime_identity_index.py",
         "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py",
+        "tests/unit/test_m8r_08f_r0_rotation_candidate_contract.py",
         "tests/unit/test_m8r_06_02_mode_b1_preview.py",
         "tests/unit/test_m8r_06_human_browser_authorize_state.py",
         "tests/unit/test_m8r_06_ai_handoff_repair_02.py",

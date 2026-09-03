@@ -11,6 +11,7 @@ from pathlib import Path
 from urllib.error import URLError
 from urllib.request import Request, urlopen
 
+import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -34,8 +35,14 @@ def _status(url: str) -> int:
 
 
 def test_real_localhost_authorize_execute_once_vertical(tmp_path):
-    sealed = ROOT / "data/security_master/runtime_identity_indexes/m8r06-01b-20260807T053540Z/index.json"
-    assert sealed.is_file(), "the governed local candidate is required for this pre-live closure"
+    pointer = json.loads(
+        (ROOT / "config" / "m8r_06_mode_a_security_master_pointer.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    sealed = ROOT / pointer["index_path"]
+    if not sealed.is_file():
+        pytest.skip("current pointer-selected governed candidate is Git-ignored and unavailable")
     with socket.socket() as probe:
         probe.bind(("127.0.0.1", 0))
         port = probe.getsockname()[1]

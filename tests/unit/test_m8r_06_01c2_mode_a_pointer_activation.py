@@ -28,13 +28,19 @@ from scripts.m8r_06_01c2_mode_a_security_master_loader import (
     load_mode_a_security_master,
     reset_production_mode_a_security_master_for_tests,
 )
+from scripts.m8r_06_security_master_candidate_paths import runtime_immutable_seal_path
 from scripts import m8r_06_01c2_mode_a_security_master_loader as c2_loader
 from server.main import app
 from server.services import unified_mode_a
 
 SYNTHETIC_SNAPSHOT_SHA = "a" * 64
 SYNTHETIC_SKILL_HASH = "b" * 64
-SYNTHETIC_BUNDLE_ID = "synthetic-c2-bundle"
+SYNTHETIC_BUNDLE_ID = "m8r06-01b-20990101T000000Z"
+
+
+def _current_pointer_index_exists() -> bool:
+    pointer = json.loads(POINTER_PATH.read_text(encoding="utf-8"))
+    return (POINTER_PATH.parents[1] / pointer["index_path"]).is_file()
 
 
 @pytest.fixture(autouse=True)
@@ -163,9 +169,7 @@ def _build_repo(tmp_path: Path, *, include_fixture: bool = False) -> dict:
     )
     relative_index = index_path.relative_to(tmp_path).as_posix()
     relative_manifest = manifest_path.relative_to(tmp_path).as_posix()
-    relative_seal = (
-        "docs/reviews/m8r06-01c1b-runtime-index-manifest/immutable_manifest.json"
-    )
+    relative_seal = runtime_immutable_seal_path(tmp_path, index_id).relative_to(tmp_path).as_posix()
     seal = {
         "schema_version": "m8r_06_01c1b_immutable_candidate_seal.v1",
         "source_bundle_id": index_id,
@@ -304,6 +308,8 @@ def test_failed_activation_is_not_cached(
         (lambda p: p.update(index_path="C:/outside/index.json"), "pointer_schema_invalid"),
         (lambda p: p.update(index_path="data/security_master/runtime_identity_indexes/other/index.json"), "pointer_index_path_mismatch"),
         (lambda p: p.update(immutable_seal_path="docs/reviews/other.json"), "pointer_immutable_seal_path_mismatch"),
+        (lambda p: p.update(index_id="../m8r06-01b-20990101T000000Z"), "pointer_candidate_id_invalid"),
+        (lambda p: p.update(index_id="m8r06-01b-not-a-timestamp"), "pointer_candidate_id_invalid"),
     ],
 )
 def test_pointer_contract_and_path_fail_closed(
@@ -366,6 +372,38 @@ def test_pointer_tamper_fail_closed(tmp_path: Path) -> None:
     with pytest.raises(ModeASecurityMasterUnavailable) as exc:
         load_mode_a_security_master(repo["pointer_path"], repo_root=tmp_path)
     assert _reason(exc) == "pointer_seal_compact_index_sha256_mismatch"
+
+
+def test_cross_candidate_lineage_fails_closed_even_when_hashes_are_rebound(
+    tmp_path: Path,
+) -> None:
+    """A candidate ID cannot bind B's index identity to C's source lineage."""
+    repo = _build_repo(tmp_path)
+    candidate_c = "m8r06-01b-20990102T000000Z"
+    index = copy.deepcopy(repo["index"])
+    manifest = copy.deepcopy(repo["manifest"])
+    seal = copy.deepcopy(repo["seal"])
+    pointer = copy.deepcopy(repo["pointer"])
+
+    index["source_bundle_id"] = candidate_c
+    manifest["source_bundle_id"] = candidate_c
+    write_json_file(repo["index_path"], index)
+    manifest["compact_index_sha256"] = sha256_file(repo["index_path"])
+    write_json_file(repo["manifest_path"], manifest)
+
+    seal["source_bundle_id"] = candidate_c
+    seal["compact_index_sha256"] = sha256_file(repo["index_path"])
+    seal["compact_manifest_sha256"] = sha256_file(repo["manifest_path"])
+    write_json_file(repo["seal_path"], seal)
+
+    pointer["source_bundle_id"] = candidate_c
+    pointer["compact_index_sha256"] = seal["compact_index_sha256"]
+    pointer["compact_manifest_sha256"] = seal["compact_manifest_sha256"]
+    write_json_file(repo["pointer_path"], pointer)
+
+    with pytest.raises(ModeASecurityMasterUnavailable) as exc:
+        load_mode_a_security_master(repo["pointer_path"], repo_root=tmp_path)
+    assert _reason(exc) == "pointer_candidate_identity_mismatch"
 
 
 def test_manifest_tamper_fails_closed(tmp_path: Path) -> None:
@@ -496,10 +534,7 @@ def test_api_reuses_one_successful_process_activation(
 
 
 @pytest.mark.skipif(
-    not (
-        POINTER_PATH.parents[1]
-        / "data/security_master/runtime_identity_indexes/m8r06-01b-20260807T053540Z/index.json"
-    ).is_file(),
+    not _current_pointer_index_exists(),
     reason="accepted local C1B compact candidate is not materialized",
 )
 def test_sealed_candidate_production_activation(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -551,10 +586,7 @@ def test_sealed_candidate_production_activation(monkeypatch: pytest.MonkeyPatch)
 
 
 @pytest.mark.skipif(
-    not (
-        POINTER_PATH.parents[1]
-        / "data/security_master/runtime_identity_indexes/m8r06-01b-20260807T053540Z/index.json"
-    ).is_file(),
+    not _current_pointer_index_exists(),
     reason="accepted local C1B compact candidate is not materialized",
 )
 def test_real_sealed_pointer_http_e2e_without_runtime_monkeypatch() -> None:

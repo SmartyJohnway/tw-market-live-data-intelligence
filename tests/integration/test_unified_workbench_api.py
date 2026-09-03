@@ -311,11 +311,13 @@ def test_invalid_preview_output_is_500_not_dependency_unavailable(monkeypatch):
 
 
 def test_real_sealed_candidate_preview_endpoint_executes_locally_without_monkeypatch():
-    candidate = (
-        Path(__file__).resolve().parents[2]
-        / "data/security_master/runtime_identity_indexes"
-        / "m8r06-01b-20260807T053540Z/index.json"
+    root = Path(__file__).resolve().parents[2]
+    pointer = json.loads(
+        (root / "config/m8r_06_mode_a_security_master_pointer.json").read_text(
+            encoding="utf-8"
+        )
     )
+    candidate = root / pointer["index_path"]
     if not candidate.exists():
         pytest.skip("governed local candidate is Git-ignored")
     req = {
