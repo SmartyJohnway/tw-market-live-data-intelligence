@@ -8,7 +8,7 @@ def test_build_immutable_manifest_deterministic_hashes(tmp_path: Path):
     Test that build_immutable_manifest properly hashes all expected files
     and produces non-null dryrun and raw_payloads SHA256 hashes.
     """
-    bundle_id = "test-bundle-123"
+    bundle_id = "m8r06-01b-20990101T000000Z"
     bundle_dir = tmp_path / bundle_id
     bundle_dir.mkdir()
 
@@ -42,8 +42,12 @@ def test_build_immutable_manifest_deterministic_hashes(tmp_path: Path):
     finally:
         m8r.ROOT = original_root
 
-    manifest_file = tmp_path / "docs" / "reviews" / "m8r06-01b-bundle-manifest" / "immutable_manifest.json"
+    manifest_file = (
+        tmp_path / "docs" / "reviews" / "security_master_candidates" / bundle_id
+        / "source_immutable_manifest.json"
+    )
     assert manifest_file.exists()
+    assert (bundle_dir / "immutable_manifest.json").exists()
     
     manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
     
@@ -56,5 +60,17 @@ def test_build_immutable_manifest_deterministic_hashes(tmp_path: Path):
     assert len(manifest["raw_payloads"]) == 1
     assert manifest["raw_payloads"][0]["sha256"] is not None
     assert manifest["raw_payloads"][0]["source_id"] == "test_source"
+    assert manifest["raw_payloads"][0]["file_name"] == "test_source.html"
     
     assert manifest["skill_contract_hash"] is not None
+    assert manifest["bundle_persisted_in_git"] is False
+
+
+def test_historical_a_source_seal_cannot_be_overwritten(tmp_path: Path):
+    import scripts.m8r_06_01b_materialize_production_inputs as m8r
+
+    bundle_id = "m8r06-01b-20260807T053540Z"
+    bundle_dir = tmp_path / "bundle"
+    bundle_dir.mkdir()
+    with pytest.raises(ValueError, match="historical_candidate_a_materialization_forbidden"):
+        m8r.build_immutable_manifest(bundle_id, bundle_dir, [], [], [], repo_root=tmp_path)

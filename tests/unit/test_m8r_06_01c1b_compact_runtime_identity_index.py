@@ -17,6 +17,7 @@ from scripts.m8r_06_01c1b_compact_runtime_identity_index import (
     COMPACT_INDEX_SCHEMA_VERSION,
     COMPACT_MANIFEST_SCHEMA_VERSION,
     CompactArtifactValidationError,
+    build_runtime_immutable_seal,
     build_lookup_from_compact_index,
     compute_coverage,
     load_and_validate_compact_artifacts,
@@ -162,6 +163,27 @@ def test_materialization_schema_hash_binding_and_determinism(
     assert index["source_snapshot_artifact"] == "dryrun_snapshot.json"
     assert manifest["generated_at_utc"] == synthetic_snapshot["generated_at_utc"]
     assert "compact_index_sha256" not in index
+
+
+def test_rotatable_runtime_seal_binds_a_valid_synthetic_candidate(
+    tmp_path: Path,
+    synthetic_snapshot: dict,
+) -> None:
+    candidate_id = "m8r06-01b-20990101T000000Z"
+    index_path, manifest_path, index, manifest = materialize_compact_artifacts(
+        synthetic_snapshot,
+        SYNTHETIC_SNAPSHOT_SHA,
+        tmp_path,
+        source_bundle_id=candidate_id,
+        source_skill_contract_hash=SYNTHETIC_SKILL_HASH,
+    )
+    seal = build_runtime_immutable_seal(
+        index, manifest, index_path=index_path, manifest_path=manifest_path
+    )
+    assert seal["compact_index_id"] == candidate_id
+    assert seal["source_bundle_id"] == candidate_id
+    assert seal["compact_index_sha256"] == sha256_file(index_path)
+    assert seal["fresh_reprobe_equivalence"] is False
 
 
 def test_lookup_uses_canonical_resolver_contract_and_exact_semantics(

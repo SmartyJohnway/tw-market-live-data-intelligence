@@ -57,6 +57,11 @@ from scripts.m8r_03d_f1_security_master_snapshot_exporter import (  # noqa: E402
 from scripts.m8r_03d_f1_security_master_snapshot_adapter import (  # noqa: E402
     validate_verified_security_master_snapshot,
 )
+from scripts.m8r_06_security_master_candidate_paths import (  # noqa: E402
+    is_legacy_accepted_candidate,
+    source_immutable_seal_path,
+    validate_candidate_id,
+)
 sys.path.pop(0)
 
 # ── Constants ────────────────────────────────────────────────────────────────
@@ -653,21 +658,37 @@ def _write_failure_report(bundle_dir: Path, generated_at: str, effective_date: s
 
 
 
-def build_immutable_manifest(bundle_id: str, bundle_dir: Path, qualified_records: list, lifecycle_events: list, source_probes: list) -> None:
-    """Generate and write the immutable manifest for the materialization bundle."""
-    manifest_dir = ROOT / "docs" / "reviews" / "m8r06-01b-bundle-manifest"
-    manifest_dir.mkdir(parents=True, exist_ok=True)
+def build_immutable_manifest(
+    bundle_id: str,
+    bundle_dir: Path,
+    qualified_records: list,
+    lifecycle_events: list,
+    source_probes: list,
+    *,
+    repo_root: Path | None = None,
+) -> None:
+    """Write bundle-local metadata and its independently reviewed candidate seal."""
+    root = (repo_root or ROOT).resolve()
+    candidate_id = validate_candidate_id(bundle_id)
+    if is_legacy_accepted_candidate(candidate_id):
+        raise ValueError("historical_candidate_a_materialization_forbidden")
+    raw_dir = bundle_dir / "raw_payloads"
+    source_by_filename = {
+        f"{probe.get('source_id')}.html": probe
+        for probe in source_probes
+        if probe.get("transport_success") and isinstance(probe.get("source_id"), str)
+    }
     raw_payloads_info = []
-    for probe_res in source_probes:
-        if probe_res.get("transport_success"):
-            source_id = probe_res.get("source_id", "unknown")
-            raw_path = bundle_dir / "raw_payloads" / f"{source_id}.html"
-            if raw_path.exists():
-                raw_payloads_info.append({
-                    "source_id": source_id,
-                    "sha256": file_sha256(raw_path.read_bytes()),
-                    "retrieved_at_utc": probe_res.get("observed_at")
-                })
+    for raw_path in sorted(raw_dir.glob("*")):
+        if not raw_path.is_file():
+            continue
+        probe = source_by_filename.get(raw_path.name, {})
+        raw_payloads_info.append({
+            "source_id": probe.get("source_id"),
+            "file_name": raw_path.name,
+            "sha256": file_sha256(raw_path.read_bytes()),
+            "retrieved_at_utc": probe.get("observed_at"),
+        })
 
     immutable_manifest = {
         "bundle_id": bundle_id,
@@ -695,10 +716,16 @@ def build_immutable_manifest(bundle_id: str, bundle_dir: Path, qualified_records
         },
         "raw_payloads": raw_payloads_info,
         "skill_contract_hash": compute_skill_contract_hash(),
+        "bundle_persisted_in_git": False,
         "reproduction_semantics": "REGENERATES_A_NEW_CURRENT_BUNDLE_NOT_THE_ORIGINAL_BYTES"
     }
-    (manifest_dir / "immutable_manifest.json").write_text(json.dumps(immutable_manifest, ensure_ascii=False, indent=2), encoding="utf-8")
-    log(f"  Written immutable manifest")
+    bundle_manifest = bundle_dir / "immutable_manifest.json"
+    review_manifest = source_immutable_seal_path(root, candidate_id)
+    review_manifest.parent.mkdir(parents=True, exist_ok=True)
+    serialized = json.dumps(immutable_manifest, ensure_ascii=False, indent=2)
+    bundle_manifest.write_text(serialized, encoding="utf-8")
+    review_manifest.write_text(serialized, encoding="utf-8")
+    log(f"  Written candidate-local and reviewed immutable manifests")
 
 
 if __name__ == "__main__":

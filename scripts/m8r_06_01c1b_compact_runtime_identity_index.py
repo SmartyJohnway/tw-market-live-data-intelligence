@@ -27,8 +27,18 @@ from scripts.m8r_03d_f1_security_master_snapshot_adapter import (  # noqa: E402
     build_verified_security_master_lookup,
     resolve_verified_security_identity,
 )
+from scripts.m8r_06_security_master_candidate_paths import (  # noqa: E402
+    LEGACY_ACCEPTED_CANDIDATE_A,
+    input_bundle_dir,
+    runtime_immutable_seal_path,
+    runtime_index_dir,
+    source_immutable_seal_path,
+    validate_candidate_id,
+)
 
-AUTHORIZED_BUNDLE_ID = "m8r06-01b-20260807T053540Z"
+# Historical constants remain frozen-A compatibility evidence only.  Rotatable
+# production generation derives all authority from an explicit candidate ID.
+AUTHORIZED_BUNDLE_ID = LEGACY_ACCEPTED_CANDIDATE_A
 AUTHORIZED_SKILL_CONTRACT_HASH = (
     "488b3e04af2e318cd387b0dfdcbad02be4f2c3f495539c3e436698464f37d77a"
 )
@@ -37,27 +47,9 @@ COMPACT_MANIFEST_SCHEMA_VERSION = "m8r_06_01c1b_compact_index_manifest.v1"
 PRODUCER_VERSION = "m8r_06_01c1b_compact_runtime_identity_index.v2"
 SOURCE_SNAPSHOT_ARTIFACT = "dryrun_snapshot.json"
 
-BUNDLE_DIR = (
-    REPO_ROOT
-    / "data"
-    / "security_master"
-    / "input_bundles"
-    / AUTHORIZED_BUNDLE_ID
-)
-COMMITTED_MANIFEST_PATH = (
-    REPO_ROOT
-    / "docs"
-    / "reviews"
-    / "m8r06-01b-bundle-manifest"
-    / "immutable_manifest.json"
-)
-COMPACT_INDEX_DIR = (
-    REPO_ROOT
-    / "data"
-    / "security_master"
-    / "runtime_identity_indexes"
-    / AUTHORIZED_BUNDLE_ID
-)
+BUNDLE_DIR = input_bundle_dir(REPO_ROOT, AUTHORIZED_BUNDLE_ID)
+COMMITTED_MANIFEST_PATH = source_immutable_seal_path(REPO_ROOT, AUTHORIZED_BUNDLE_ID)
+COMPACT_INDEX_DIR = runtime_index_dir(REPO_ROOT, AUTHORIZED_BUNDLE_ID)
 COMPACT_INDEX_SCHEMA_PATH = (
     REPO_ROOT
     / "docs"
@@ -138,14 +130,19 @@ def _count_component(component: str, payload: Any) -> int:
 
 
 def verify_bundle_integrity(
-    bundle_dir: Path = BUNDLE_DIR,
-    manifest_path: Path = COMMITTED_MANIFEST_PATH,
+    candidate_id: str = AUTHORIZED_BUNDLE_ID,
+    *,
+    repo_root: Path = REPO_ROOT,
 ) -> tuple[dict[str, Any], dict[str, Any], str]:
     """Verify every sealed component, raw payload, count, and lineage field."""
+    candidate = validate_candidate_id(candidate_id)
+    root = repo_root.resolve()
+    bundle_dir = input_bundle_dir(root, candidate)
+    manifest_path = source_immutable_seal_path(root, candidate)
     seal = load_json_file(manifest_path, error_code="invalid_authorized_manifest")
-    if seal.get("bundle_id") != AUTHORIZED_BUNDLE_ID:
+    if seal.get("bundle_id") != candidate:
         _fail("authorized_bundle_id_mismatch")
-    if seal.get("skill_contract_hash") != AUTHORIZED_SKILL_CONTRACT_HASH:
+    if candidate == AUTHORIZED_BUNDLE_ID and seal.get("skill_contract_hash") != AUTHORIZED_SKILL_CONTRACT_HASH:
         _fail("authorized_skill_contract_hash_mismatch")
     if seal.get("bundle_persisted_in_git") is not False:
         _fail("authorized_bundle_persistence_mismatch")
@@ -205,8 +202,13 @@ def verify_bundle_integrity(
     )
 
     snapshot = loaded["dryrun_snapshot"]
+    if any(
+        (record.get("observation") or {}).get("status") == "fixture_observation_only"
+        for record in snapshot.get("records") or []
+    ):
+        _fail("authorized_fixture_snapshot_rejected")
     source_skill_hash = (snapshot.get("source_skill") or {}).get("skill_contract_hash")
-    if source_skill_hash != AUTHORIZED_SKILL_CONTRACT_HASH:
+    if source_skill_hash != seal.get("skill_contract_hash"):
         _fail("source_snapshot_skill_contract_hash_mismatch")
     snapshot_id = snapshot.get("snapshot_id")
     if not snapshot_id or snapshot_id == SOURCE_SNAPSHOT_ARTIFACT:
@@ -342,11 +344,44 @@ def materialize_compact_artifacts(
     return index_path, manifest_path, index, manifest
 
 
-def authorized_lineage(
-    bundle_dir: Path = BUNDLE_DIR,
-    manifest_path: Path = COMMITTED_MANIFEST_PATH,
+def build_runtime_immutable_seal(
+    compact_index: dict[str, Any],
+    compact_manifest: dict[str, Any],
+    *,
+    index_path: Path,
+    manifest_path: Path,
 ) -> dict[str, Any]:
-    snapshot, seal, snapshot_sha256 = verify_bundle_integrity(bundle_dir, manifest_path)
+    """Build the reviewed authority binding for one rotatable runtime candidate."""
+    coverage = compact_manifest["coverage"]
+    return {
+        "schema_version": "m8r_06_01c1b_immutable_candidate_seal.v1",
+        "source_bundle_id": compact_index["source_bundle_id"],
+        "source_snapshot_id": compact_index["source_snapshot_id"],
+        "source_snapshot_sha256": compact_index["source_snapshot_sha256"],
+        "source_skill_contract_hash": compact_index["source_skill_contract_hash"],
+        "compact_index_id": compact_index["index_id"],
+        "compact_index_sha256": sha256_file(index_path),
+        "compact_manifest_sha256": sha256_file(manifest_path),
+        "compact_index_schema_sha256": sha256_file(COMPACT_INDEX_SCHEMA_PATH),
+        "compact_manifest_schema_sha256": sha256_file(COMPACT_MANIFEST_SCHEMA_PATH),
+        "record_count": compact_index["record_count"],
+        "knowledge_universe_count": coverage["knowledge_universe_count"],
+        "runtime_eligible_count": coverage["runtime_eligible_count"],
+        "quarantined_count": coverage["quarantined_count"],
+        "artifact_persisted_in_git": False,
+        "reproduction_semantics": "REQUIRES_ORIGINAL_SEALED_01B_BUNDLE",
+        "fresh_reprobe_equivalence": False,
+    }
+
+
+def authorized_lineage(
+    candidate_id: str = AUTHORIZED_BUNDLE_ID,
+    *,
+    repo_root: Path = REPO_ROOT,
+) -> dict[str, Any]:
+    snapshot, seal, snapshot_sha256 = verify_bundle_integrity(
+        candidate_id, repo_root=repo_root
+    )
     return {
         "source_bundle_id": seal["bundle_id"],
         "source_snapshot_id": snapshot["snapshot_id"],
@@ -544,19 +579,29 @@ def run_resolver_equivalence(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output-dir", type=Path, default=COMPACT_INDEX_DIR)
+    parser.add_argument("--candidate-id", required=True)
     parser.add_argument("--verify-resolver", action="store_true")
     args = parser.parse_args(argv)
     try:
-        snapshot, seal, snapshot_sha256 = verify_bundle_integrity()
+        candidate_id = validate_candidate_id(args.candidate_id)
+        snapshot, seal, snapshot_sha256 = verify_bundle_integrity(candidate_id)
+        output_dir = runtime_index_dir(REPO_ROOT, candidate_id)
         index_path, manifest_path, index, _ = materialize_compact_artifacts(
             snapshot,
             snapshot_sha256,
-            args.output_dir,
+            output_dir,
             source_bundle_id=seal["bundle_id"],
             source_skill_contract_hash=seal["skill_contract_hash"],
         )
-        load_and_validate_compact_artifacts(index_path, manifest_path)
+        index, manifest = load_and_validate_compact_artifacts(
+            index_path,
+            manifest_path,
+            expected_lineage=authorized_lineage(candidate_id),
+        )
+        runtime_seal = build_runtime_immutable_seal(
+            index, manifest, index_path=index_path, manifest_path=manifest_path
+        )
+        write_json_file(runtime_immutable_seal_path(REPO_ROOT, candidate_id), runtime_seal)
         print(f"index_sha256={sha256_file(index_path)}")
         print(f"manifest_sha256={sha256_file(manifest_path)}")
         print(f"coverage={json.dumps(compute_coverage(snapshot), sort_keys=True)}")
