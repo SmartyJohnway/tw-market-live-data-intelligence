@@ -1,0 +1,70 @@
+{
+  "task": "M8R-08F-R0-04-POST-MERGE-PRODUCTION-RUNTIME-AUTHORITY-VALIDATION-AND-RECOVERY-CLOSURE",
+  "baseline_sha": "78685f9a2796e27deb853c1c79d78b4581feea60",
+  "merged_pr": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/pull/203",
+  "candidate_id": "m8r06-01b-20260903T093604Z",
+  "main_pointer_selection_id": "m8r06-01c2-mode-a-m8r06-01b-20260903T093604Z",
+  "main_pointer_index_id": "m8r06-01b-20260903T093604Z",
+  "main_pointer_git_blob_sha": "6c326d6064835411ad3c3e707c52c59ba743f08c",
+  "main_pointer_git_content_sha256": "d913d5c9d4d6d6dad92e09f46731294cce7a557e69189fc00c0cc11d30e83a53",
+  "candidate_b_local_bundle_present": true,
+  "candidate_b_runtime_index_present": true,
+  "candidate_b_runtime_manifest_present": true,
+  "runtime_seal_binding": "PASS",
+  "compact_integrity": "PASS",
+  "candidate_identity_coherence": "PASS",
+  "loaded_selection_id": "m8r06-01c2-mode-a-m8r06-01b-20260903T093604Z",
+  "loaded_candidate_id": "m8r06-01b-20260903T093604Z",
+  "record_count": 46374,
+  "knowledge_universe_count": 46374,
+  "runtime_eligible_count": 2331,
+  "quarantined_count": 0,
+  "fallback_to_historical_a": false,
+  "fixture_fallback": false,
+  "source_acquisition": false,
+  "pointer_watcher": false,
+  "hot_reload": false,
+  "canonical_identity_checks": {
+    "TWSE_2330": {"resolution_status": "resolved", "canonical_target_id": "TWSE:2330", "instrument_type": "common_share", "execution_eligibility": "allowed"},
+    "TPEX_6488": {"resolution_status": "resolved", "canonical_target_id": "TPEX:6488", "instrument_type": "common_share", "execution_eligibility": "allowed"},
+    "TWSE_2301": {"resolution_status": "resolved", "canonical_target_id": "TWSE:2301", "lifecycle_state": "terminated", "execution_eligibility": "blocked", "reason_code": "lifecycle_blocks_current_execution"}
+  },
+  "workbench_startup": "PASS",
+  "workbench_elapsed_seconds": 12.1,
+  "workbench_network_on_startup": false,
+  "workbench_security_master_loaded": true,
+  "local_service": {
+    "binding": "127.0.0.1:8000 only",
+    "startup": "PASS",
+    "capabilities": "PASS_HTTP_200_JSON_NO_REDIRECT",
+    "localhost_2330_validation": "PASS: validation_status valid; canonical target TWSE:2330",
+    "stopped_after_mcp_acceptance": true
+  },
+  "mcp": {
+    "version": "1.29.0",
+    "startup": "PASS",
+    "tool_contract": "PASS",
+    "tool_count": 6,
+    "tools": ["market_describe_capabilities", "market_validate_request", "market_preview_request", "market_read_result", "market_export_ai_handoff", "market_fetch_evidence"],
+    "market_fetch_evidence_visible": true,
+    "market_fetch_evidence_called": false
+  },
+  "network": {
+    "external_market_network_calls": 0,
+    "fresh_security_master_acquisition_calls": 0,
+    "market_fetch_evidence_calls": 0,
+    "loopback_http_only": true
+  },
+  "immutability": {
+    "historical_a_unchanged": true,
+    "candidate_b_seals_unchanged": true,
+    "production_pointer_unchanged": true,
+    "local_b_artifacts_gitignored": true,
+    "local_b_artifacts_staged": false
+  },
+  "blocking_findings": [],
+  "production_authority_rotated_on_main": true,
+  "production_runtime_recovery_validated_on_main": true,
+  "r0_closure_status": "READY_TO_CLOSE_M8R_08F_R0",
+  "principal_decision": "READY_FOR_PR_204_R0_CLOSURE_REVIEW"
+}
