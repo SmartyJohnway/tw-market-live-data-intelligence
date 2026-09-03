@@ -1,0 +1,59 @@
+{
+  "bundle_id": "m8r06-01b-20260903T093604Z",
+  "bundle_persisted_in_git": false,
+  "classification_records": {
+    "count": 46374,
+    "sha256": "ea55cf619c2c7a56f92cd5bcc1140b6b1b6c0d21197df2e953627b64584d70f3"
+  },
+  "lifecycle_events": {
+    "count": 265,
+    "sha256": "c39c9cf0139ef23d7e83748f331bc61f15af911c6f193722101f5ccb72ffa53c"
+  },
+  "source_evidence_manifest": {
+    "sha256": "1a642517e66aee8c4c2e0af76c89d088385b2acba723be4b924fad41622ffb40"
+  },
+  "qualification_report": {
+    "sha256": "2eefb1729e3a3ffbaeab80667168f6a6ea4cd3346c12568d2424deee5c0dc513"
+  },
+  "dryrun_snapshot": {
+    "record_count": 46374,
+    "sha256": "0db0debfd23132d49dd85fcff775ecf1589f968c8550fb51619dbc6e13cda9b0"
+  },
+  "dryrun_manifest": {
+    "sha256": "57f709fb7590c5bf35c00820c6fec123a884e99871b0d066f8328432fcb473d3"
+  },
+  "raw_payloads": [
+    {
+      "source_id": "tpex_delisted",
+      "file_name": "tpex_delisted.html",
+      "sha256": "1b2d900b7727597d0e65c472546b2b896670622dd18cd1314c1e1da8638809a1",
+      "retrieved_at_utc": "2026-09-03T09:36:19.344331+00:00"
+    },
+    {
+      "source_id": "twse_delisted",
+      "file_name": "twse_delisted.html",
+      "sha256": "3ba1395a7549d8ebee35c02350bb5470c9cdde68ddc4339a461b6d19953a9228",
+      "retrieved_at_utc": "2026-09-03T09:36:19.130321+00:00"
+    },
+    {
+      "source_id": "twse_etn_expired",
+      "file_name": "twse_etn_expired.html",
+      "sha256": "265d3eeb30e292795ad9a089f6e34f10c6c5b781b756c9766f796717b97cb8d9",
+      "retrieved_at_utc": "2026-09-03T09:36:19.499114+00:00"
+    },
+    {
+      "source_id": "twse_isin_mode2_zh",
+      "file_name": "twse_isin_mode2_zh.html",
+      "sha256": "4cb93030b8c6d4d5d863c43533141826baad488564e75cc78841ec865f41b1c0",
+      "retrieved_at_utc": "2026-09-03T09:36:04.574402+00:00"
+    },
+    {
+      "source_id": "twse_isin_mode4_zh",
+      "file_name": "twse_isin_mode4_zh.html",
+      "sha256": "4aafe7493a5f17b649871c0f1f0466f83d019022a10e2e9fece0fe9ba77c1df4",
+      "retrieved_at_utc": "2026-09-03T09:36:11.622590+00:00"
+    }
+  ],
+  "skill_contract_hash": "33be39c30a84641e7591d3d1680adb18b90efd8f509d75b3e971cb46d24c9b6d",
+  "reproduction_semantics": "REGENERATES_A_NEW_CURRENT_BUNDLE_NOT_THE_ORIGINAL_BYTES"
+}

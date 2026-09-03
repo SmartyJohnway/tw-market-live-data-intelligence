@@ -1,0 +1,19 @@
+{
+  "artifact_persisted_in_git": false,
+  "compact_index_id": "m8r06-01b-20260903T093604Z",
+  "compact_index_schema_sha256": "980d4f34e3b5380f69fe4669687d0d7b98e1199f2ec303d3997816f5b462ec06",
+  "compact_index_sha256": "e6a2fa11e14f89392f1a18e99f940c964141b0bea1e256e55bfd4eb1aed58417",
+  "compact_manifest_schema_sha256": "919f461d1b4b21d0157d23f38193c1500a07b44c75bfcea661c11cee94d6612a",
+  "compact_manifest_sha256": "3c99304cbc2501f05439b38726859bcafe3f2a74c383c494854987685a578668",
+  "fresh_reprobe_equivalence": false,
+  "knowledge_universe_count": 46374,
+  "quarantined_count": 0,
+  "record_count": 46374,
+  "reproduction_semantics": "REQUIRES_ORIGINAL_SEALED_01B_BUNDLE",
+  "runtime_eligible_count": 2331,
+  "schema_version": "m8r_06_01c1b_immutable_candidate_seal.v1",
+  "source_bundle_id": "m8r06-01b-20260903T093604Z",
+  "source_skill_contract_hash": "33be39c30a84641e7591d3d1680adb18b90efd8f509d75b3e971cb46d24c9b6d",
+  "source_snapshot_id": "dryrun-m8r06-01b-20260903T093604Z",
+  "source_snapshot_sha256": "0db0debfd23132d49dd85fcff775ecf1589f968c8550fb51619dbc6e13cda9b0"
+}
