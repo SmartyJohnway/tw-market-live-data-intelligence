@@ -1,0 +1,147 @@
+{
+  "task": "M8R-08F-R0-03A-PC-A-MCP-RUNTIME-DEPENDENCY-REPAIR-AND-R0-03-RESUME",
+  "baseline_sha": "0e30e182f375113f65e82b35db24eb3b346d9503",
+  "candidate_id": "m8r06-01b-20260903T093604Z",
+  "activation_scope": "PC-A local governed runtime activation preparation; no main-branch merge",
+  "first_attempt": {
+    "principal_decision": "BLOCKED_R0_03_MCP",
+    "mcp_version": "1.28.1",
+    "failure_behavior": "fail_closed_exit_4",
+    "pointer_result": "Pointer was restored to historical candidate A after the failed MCP gate."
+  },
+  "environment_repair": {
+    "repository_required_mcp_version": "1.29.0",
+    "python_executable": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "python_version": "3.13.7",
+    "command": "python -m pip install \"mcp==1.29.0\"",
+    "mcp_version_before": "1.28.1",
+    "mcp_version_after": "1.29.0",
+    "repository_code_change_for_dependency": false,
+    "requirements_modified": false,
+    "mcp_launcher_modified": false
+  },
+  "pointer_rotation": {
+    "schema_version": "m8r_06_mode_a_security_master_pointer.v1",
+    "pre_activation_pointer_git_content_sha256": "7938f42c02ad0f494cc2ae4f73d1fb99059cd992580c7889bd6d341e5d29114a",
+    "pre_activation_pointer_worktree_sha256": "aa5c1fff2b85112be33050b592146c3df0e133a0ddbe2074e3ad8022e25c009f",
+    "pre_activation_pointer_worktree_eol": "CRLF",
+    "pre_activation_selection_id": "m8r06-01c2-mode-a-m8r06-01b-20260807T053540Z",
+    "pre_activation_index_id": "m8r06-01b-20260807T053540Z",
+    "post_change_pointer_git_content_sha256": "d913d5c9d4d6d6dad92e09f46731294cce7a557e69189fc00c0cc11d30e83a53",
+    "post_change_pointer_worktree_sha256": "33f747f7cea862f99a213985b0267a3cdfd0e59daf0a40db048156a6dcd73b2e",
+    "post_change_pointer_worktree_eol": "MIXED_CRLF_LF",
+    "post_change_pointer_worktree_eol_counts": {"crlf": 7, "lf_only": 16},
+    "pointer_hash_semantics": "git_content_sha256 hashes canonical committed Git content bytes; worktree_sha256 hashes the actual PC-A checkout bytes and may differ because the pointer currently has no repository-level eol attribute and may contain mixed CRLF and LF newline forms.",
+    "post_change_selection_id": "m8r06-01c2-mode-a-m8r06-01b-20260903T093604Z",
+    "post_change_index_id": "m8r06-01b-20260903T093604Z",
+    "pointer_schema_validation": "PASS",
+    "pointer_seal_binding": "PASS",
+    "pointer_manifest_binding": "PASS",
+    "pointer_coverage_binding": "PASS",
+    "candidate_identity_coherence": "PASS"
+  },
+  "candidate_b_local_authority": {
+    "bundle_present": true,
+    "runtime_index_present": true,
+    "runtime_manifest_present": true,
+    "runtime_index_sha256": "e6a2fa11e14f89392f1a18e99f940c964141b0bea1e256e55bfd4eb1aed58417",
+    "runtime_manifest_sha256": "3c99304cbc2501f05439b38726859bcafe3f2a74c383c494854987685a578668",
+    "runtime_seal_binding": "PASS",
+    "compact_integrity": "PASS",
+    "record_count": 46374,
+    "knowledge_universe_count": 46374,
+    "runtime_eligible_count": 2331,
+    "quarantined_count": 0
+  },
+  "fresh_process_c2_loader": {
+    "result": "PASS",
+    "valid": true,
+    "loaded_selection_id": "m8r06-01c2-mode-a-m8r06-01b-20260903T093604Z",
+    "loaded_index_id": "m8r06-01b-20260903T093604Z",
+    "fallback_to_historical_a": false,
+    "fixture_fallback": false,
+    "source_acquisition": false,
+    "pointer_watcher_or_hot_reload": false
+  },
+  "canonical_identity_checks": {
+    "TWSE_2330": {"canonical_target_id": "TWSE:2330", "instrument_type": "common_share", "execution_eligibility": "allowed"},
+    "TWSE_2317": {"canonical_target_id": "TWSE:2317", "instrument_type": "common_share", "execution_eligibility": "allowed"},
+    "TPEX_6488": {"canonical_target_id": "TPEX:6488", "instrument_type": "common_share", "execution_eligibility": "allowed"},
+    "TWSE_2301": {"lifecycle_state": "terminated", "execution_eligibility": "blocked", "reason_code": "lifecycle_blocks_current_execution"},
+    "TWSE_2432": {"lifecycle_state": "terminated", "execution_eligibility": "blocked", "reason_code": "lifecycle_blocks_current_execution"},
+    "TPEX_6423": {"lifecycle_state": "terminated", "execution_eligibility": "blocked", "reason_code": "lifecycle_blocks_current_execution"}
+  },
+  "workbench": {
+    "startup_check": "PASS",
+    "status": "ok",
+    "mode": "mode_a",
+    "network_on_startup": false,
+    "canonical_schema_loaded": true,
+    "security_master_loaded": true,
+    "capability_catalog_loaded": true,
+    "elapsed_seconds": 11.706
+  },
+  "local_service": {
+    "binding": "127.0.0.1:8000 only",
+    "startup": "PASS",
+    "capabilities_contract": "PASS_HTTP_200_JSON_NO_REDIRECT",
+    "localhost_identity_smoke": "PASS: validate-request TWSE 2330 resolved as TWSE:2330",
+    "fetch_evidence_called": false,
+    "stopped_after_acceptance": true
+  },
+  "mcp": {
+    "second_attempt_startup": "PASS",
+    "startup_check": "PASS",
+    "runtime_version": "1.29.0",
+    "local_service_contract": "compatible",
+    "tool_contract": "PASS",
+    "tool_count": 6,
+    "tools": [
+      "market_describe_capabilities",
+      "market_validate_request",
+      "market_preview_request",
+      "market_read_result",
+      "market_export_ai_handoff",
+      "market_fetch_evidence"
+    ],
+    "market_fetch_evidence_visible": true,
+    "market_fetch_evidence_called": false
+  },
+  "validation": {
+    "rotation_c1b_c2_local_service_suite": "80 passed, 12 skipped",
+    "mcp_contract_suite": "3 passed",
+    "f3_and_workbench_fixture_suite": "40 failed, 16 passed; known current_skill_contract_hash_mismatch fixture family",
+    "default_ci": "897 passed, 1 skipped, 41 failed",
+    "default_ci_reference": "893 passed, 5 skipped, 41 failed",
+    "default_ci_failure_node_set_equal_to_r0_02_reference": true,
+    "new_test_failures_introduced": 0,
+    "compileall": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "network": {
+    "external_market_network_calls": 0,
+    "fresh_security_master_acquisition_calls": 0,
+    "market_fetch_evidence_calls": 0,
+    "allowed_loopback_calls_only": true
+  },
+  "immutability": {
+    "historical_a_source_seal_sha256": "fc14c41b3c479f4ed9926525868b82034bc823a35cba7b61a3ef650499f29e56",
+    "historical_a_runtime_seal_sha256": "6bbedac0c3ef26e9a79ea95b0b62099527c49cac418800a57beb2b21132cc01f",
+    "historical_a_materialization_report_sha256": "fc7e187b3af31daa5e1e73ad0985fe1e97fb86f0e22d1731ba62a4c7cce1bd9b",
+    "historical_a_unchanged": true,
+    "candidate_b_materialization_report_sha256": "80ff15e62d5b91837aae333dd1449f0effcef8ec01bc6a7cc85cf58be7eb4e7a",
+    "candidate_b_source_seal_sha256": "1098bc531e4f6b3029cfb87a9766e9d57aa8a34abb73fe56889d471aca54a0e3",
+    "candidate_b_runtime_seal_sha256": "c343322d777dbb974b49d52ff417d7f553c16d9b096d76e3c485778d328657f9",
+    "candidate_b_seals_unchanged": true,
+    "local_runtime_artifacts_gitignored": true,
+    "local_runtime_artifacts_staged": false
+  },
+  "activation_caveats": [
+    "Candidate B retains the accepted R0-02 lifecycle-source caveats: zh_lane_only_single_lane_not_dual_lane, TWSE delisted schema drift despite parsed events, TPEx delisted schema drift, TWSE ETN expiry schema drift, and incomplete TPEx lifecycle coverage.",
+    "The initial R0-03 MCP gate correctly failed closed on mcp 1.28.1; the governed environment was repaired to the required 1.29.0 without repository dependency or code changes."
+  ],
+  "blocking_findings": [],
+  "production_authority_rotation_prepared": true,
+  "production_authority_rotated_on_main": false,
+  "principal_decision": "READY_WITH_CAVEATS_FOR_PR_203_REVIEW_AND_MERGE"
+}
