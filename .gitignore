@@ -17,6 +17,11 @@ artifacts/zero_code_test/
 artifacts/latest_operator_acceptance_report.json
 artifacts/latest_operator_acceptance_report.md
 
+# Governed Security Master acquisition and compact runtime payloads are local.
+# Candidate review authority remains tracked under docs/reviews/security_master_candidates/.
+data/security_master/input_bundles/
+data/security_master/runtime_identity_indexes/
+
 # Authorization consumption receipts are single-use and must not be versioned.
 # They are managed by the runtime retention policy (30-day default).
 artifacts/**/*.json

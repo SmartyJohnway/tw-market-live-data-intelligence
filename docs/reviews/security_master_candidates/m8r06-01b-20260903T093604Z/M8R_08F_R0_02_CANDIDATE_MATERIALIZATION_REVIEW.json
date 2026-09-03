@@ -119,6 +119,41 @@
     "reproduction_semantics": "REQUIRES_ORIGINAL_SEALED_01B_BUNDLE",
     "fresh_reprobe_equivalence": false
   },
+  "supported_type_eligibility_reconciliation": {
+    "supported_common_share_plus_etf_count": 2334,
+    "runtime_eligible_count": 2331,
+    "supported_type_blocked_count": 3,
+    "supported_type_blocked_records": [
+      {
+        "canonical_target_id": "TWSE:2301",
+        "instrument_type": "common_share",
+        "lifecycle_state": "terminated",
+        "execution_eligibility": "blocked",
+        "reason_codes": ["lifecycle_blocks_current_execution"]
+      },
+      {
+        "canonical_target_id": "TWSE:2432",
+        "instrument_type": "common_share",
+        "lifecycle_state": "terminated",
+        "execution_eligibility": "blocked",
+        "reason_codes": ["lifecycle_blocks_current_execution"]
+      },
+      {
+        "canonical_target_id": "TPEX:6423",
+        "instrument_type": "common_share",
+        "lifecycle_state": "terminated",
+        "execution_eligibility": "blocked",
+        "reason_codes": ["lifecycle_blocks_current_execution"]
+      }
+    ],
+    "historical_a": {
+      "supported_scope": 2327,
+      "runtime_eligible": 2324,
+      "delta": 3
+    },
+    "candidate_b_delta": 3,
+    "structural_delta_consistency": "PASS"
+  },
   "resolver_equivalence": {
     "result": "PASS",
     "all_canonical_ids_tested": true,
@@ -151,6 +186,10 @@
     "tpex_lifecycle_coverage_incomplete"
   ],
   "blocking_findings": [],
+  "legacy_producer_report_metadata_caveat": {
+    "materialization_report_path": "docs/reviews/security_master_candidates/m8r06-01b-20260903T093604Z/materialization_report.json",
+    "statement": "The sealed producer report retains legacy M8R-06 baseline and next-task wording. It is preserved byte-identically as producer-stage evidence. This M8R_08F_R0_02_CANDIDATE_MATERIALIZATION_REVIEW.json is the controlling current R0-02 governance decision."
+  },
   "historical_candidate_a_unchanged": true,
   "production_pointer_unchanged": true,
   "production_authority_rotated": false,
