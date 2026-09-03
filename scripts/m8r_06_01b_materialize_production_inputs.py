@@ -59,6 +59,7 @@ from scripts.m8r_03d_f1_security_master_snapshot_adapter import (  # noqa: E402
 )
 from scripts.m8r_06_security_master_candidate_paths import (  # noqa: E402
     is_legacy_accepted_candidate,
+    materialization_report_path,
     source_immutable_seal_path,
     validate_candidate_id,
 )
@@ -603,11 +604,7 @@ def main() -> int:
         "unauthorized_tasks": ["M8R-06-02"],
     }
 
-    # Write to docs/reviews/
-    reviews_dir = ROOT / "docs" / "reviews"
-    reviews_dir.mkdir(parents=True, exist_ok=True)
-    report_path = reviews_dir / "M8R_06_01B_PRODUCTION_INPUT_MATERIALIZATION.json"
-    report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    report_path = _write_candidate_materialization_report(bundle_id, report)
     log(f"\n  Report: {report_path.relative_to(ROOT)}")
 
     return 0 if status != "BLOCKED" else 1
@@ -615,8 +612,10 @@ def main() -> int:
 
 def _write_failure_report(bundle_dir: Path, generated_at: str, effective_date: str,
                           bundle_id: str, source_probes: list[dict],
-                          decision: str, reason: str) -> None:
+                          decision: str, reason: str, *,
+                          repo_root: Path | None = None) -> None:
     """Write a failure report when materialization cannot proceed."""
+    root = (repo_root or ROOT).resolve()
     bundle_dir.mkdir(parents=True, exist_ok=True)
     report = {
         "task": "M8R-06-01B-EXISTING-SECURITY-MASTER-CLASSIFIER-PRODUCTION-INPUT-MATERIALIZATION",
@@ -638,7 +637,7 @@ def _write_failure_report(bundle_dir: Path, generated_at: str, effective_date: s
         "lifecycle_events_rejected": 0,
         "production_input_bundle_created": False,
         "bundle_id": bundle_id,
-        "bundle_path": str(bundle_dir.relative_to(ROOT)).replace("\\", "/"),
+        "bundle_path": str(bundle_dir.relative_to(root)).replace("\\", "/"),
         "fixture_input_used": False,
         "historical_input_used_as_current": False,
         "exporter_dry_run_attempted": False,
@@ -649,12 +648,26 @@ def _write_failure_report(bundle_dir: Path, generated_at: str, effective_date: s
         "authorized_next_task": "retry_M8R-06-01B",
         "unauthorized_tasks": ["M8R-06-01C", "M8R-06-02"],
     }
-    reviews_dir = ROOT / "docs" / "reviews"
-    reviews_dir.mkdir(parents=True, exist_ok=True)
-    report_path = reviews_dir / "M8R_06_01B_PRODUCTION_INPUT_MATERIALIZATION.json"
-    report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    _write_candidate_materialization_report(bundle_id, report, repo_root=root)
     evidence_path = bundle_dir / "source_evidence_manifest.json"
     evidence_path.write_text(json.dumps({"source_probes": source_probes}, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _write_candidate_materialization_report(
+    bundle_id: str,
+    report: dict,
+    *,
+    repo_root: Path | None = None,
+) -> Path:
+    """Write only the governed, candidate-local 01B report."""
+    root = (repo_root or ROOT).resolve()
+    candidate_id = validate_candidate_id(bundle_id)
+    if is_legacy_accepted_candidate(candidate_id):
+        raise ValueError("historical_candidate_a_materialization_forbidden")
+    report_path = materialization_report_path(root, candidate_id)
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    return report_path
 
 
 

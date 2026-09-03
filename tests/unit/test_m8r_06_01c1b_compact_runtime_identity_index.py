@@ -21,12 +21,14 @@ from scripts.m8r_06_01c1b_compact_runtime_identity_index import (
     build_lookup_from_compact_index,
     compute_coverage,
     load_and_validate_compact_artifacts,
+    main as compact_main,
     materialize_compact_artifacts,
     run_resolver_equivalence,
     sha256_file,
     verify_bundle_integrity,
     write_json_file,
 )
+from scripts.m8r_06_security_master_candidate_paths import runtime_immutable_seal_path
 
 SYNTHETIC_SNAPSHOT_SHA = "a" * 64
 SYNTHETIC_SKILL_HASH = "b" * 64
@@ -186,6 +188,20 @@ def test_rotatable_runtime_seal_binds_a_valid_synthetic_candidate(
     assert seal["fresh_reprobe_equivalence"] is False
 
 
+def test_historical_a_remains_verifiable_but_rotatable_generation_is_rejected(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """The legacy verifier remains addressable while the new writer fails first."""
+    historical_seal = runtime_immutable_seal_path(Path(__file__).resolve().parents[2], AUTHORIZED_BUNDLE_ID)
+    before = sha256_file(historical_seal)
+
+    assert verify_bundle_integrity.__defaults__ == (AUTHORIZED_BUNDLE_ID,)
+    assert compact_main(["--candidate-id", AUTHORIZED_BUNDLE_ID]) == 1
+
+    assert "historical_candidate_a_runtime_materialization_forbidden" in capsys.readouterr().err
+    assert sha256_file(historical_seal) == before
+
+
 def test_lookup_uses_canonical_resolver_contract_and_exact_semantics(
     tmp_path: Path,
     synthetic_snapshot: dict,
@@ -243,7 +259,8 @@ def _rewrite_and_rebind(
         ("wrong_index_schema_version", "wrong_index_schema_version"),
         ("wrong_manifest_schema_version", "wrong_manifest_schema_version"),
         ("index_id_mismatch", "index_id_mismatch"),
-        ("source_bundle_id_mismatch", "authorized_source_bundle_id_mismatch"),
+        ("index_source_bundle_id_mismatch", "index_source_bundle_id_mismatch"),
+        ("source_bundle_id_mismatch", "index_source_bundle_id_mismatch"),
         ("source_snapshot_id_mismatch", "authorized_source_snapshot_id_mismatch"),
         ("source_snapshot_sha256_mismatch", "authorized_source_snapshot_sha256_mismatch"),
         ("source_skill_contract_hash_mismatch", "authorized_source_skill_contract_hash_mismatch"),
@@ -284,6 +301,10 @@ def test_strict_validator_rejects_invalid_or_forged_artifacts(
         write_json_file(manifest_path, manifest)
     elif mutation == "index_id_mismatch":
         index["index_id"] = "forged-index"
+        _rewrite_and_rebind(index_path, manifest_path, index, manifest)
+    elif mutation == "index_source_bundle_id_mismatch":
+        index["source_bundle_id"] = "other-synthetic-bundle"
+        manifest["source_bundle_id"] = "other-synthetic-bundle"
         _rewrite_and_rebind(index_path, manifest_path, index, manifest)
     elif mutation in {
         "source_bundle_id_mismatch",

@@ -296,6 +296,8 @@ def build_compact_manifest(
     compact_index_sha256: str,
     coverage: dict[str, int],
 ) -> dict[str, Any]:
+    if compact_index.get("index_id") != compact_index.get("source_bundle_id"):
+        _fail("compact_index_candidate_identity_mismatch")
     return {
         "manifest_schema_version": COMPACT_MANIFEST_SCHEMA_VERSION,
         "compact_index_schema_version": COMPACT_INDEX_SCHEMA_VERSION,
@@ -352,6 +354,8 @@ def build_runtime_immutable_seal(
     manifest_path: Path,
 ) -> dict[str, Any]:
     """Build the reviewed authority binding for one rotatable runtime candidate."""
+    if compact_index.get("index_id") != compact_index.get("source_bundle_id"):
+        _fail("runtime_seal_candidate_identity_mismatch")
     coverage = compact_manifest["coverage"]
     return {
         "schema_version": "m8r_06_01c1b_immutable_candidate_seal.v1",
@@ -423,6 +427,10 @@ def load_and_validate_compact_artifacts(
 
     if index.get("index_id") != manifest.get("index_id"):
         _fail("index_id_mismatch")
+    if index.get("index_id") != index.get("source_bundle_id"):
+        _fail("index_source_bundle_id_mismatch")
+    if manifest.get("index_id") != manifest.get("source_bundle_id"):
+        _fail("manifest_index_source_bundle_id_mismatch")
     for field in (
         "source_bundle_id",
         "source_snapshot_id",
@@ -584,6 +592,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         candidate_id = validate_candidate_id(args.candidate_id)
+        if candidate_id == AUTHORIZED_BUNDLE_ID:
+            _fail("historical_candidate_a_runtime_materialization_forbidden")
         snapshot, seal, snapshot_sha256 = verify_bundle_integrity(candidate_id)
         output_dir = runtime_index_dir(REPO_ROOT, candidate_id)
         index_path, manifest_path, index, _ = materialize_compact_artifacts(

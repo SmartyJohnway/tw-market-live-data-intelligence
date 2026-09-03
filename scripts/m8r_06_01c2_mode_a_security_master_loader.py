@@ -166,6 +166,8 @@ def _validate_pointer_seal_binding(
             _fail(f"pointer_seal_{pointer_field}_mismatch")
     if pointer.get("index_id") != seal.get("compact_index_id"):
         _fail("pointer_seal_index_id_mismatch")
+    if seal.get("compact_index_id") != seal.get("source_bundle_id"):
+        _fail("runtime_seal_candidate_identity_mismatch")
     if seal.get("reproduction_semantics") != "REQUIRES_ORIGINAL_SEALED_01B_BUNDLE":
         _fail("immutable_seal_reproduction_semantics_mismatch")
     if seal.get("fresh_reprobe_equivalence") is not False:
@@ -190,6 +192,8 @@ def load_mode_a_security_master(
         candidate_id = validate_candidate_id(pointer["index_id"])
     except ValueError:
         _fail("pointer_candidate_id_invalid")
+    if pointer.get("index_id") != pointer.get("source_bundle_id"):
+        _fail("pointer_candidate_identity_mismatch")
 
     runtime_root = root / "data" / "security_master" / "runtime_identity_indexes"
     index_path = _resolve_governed_path(

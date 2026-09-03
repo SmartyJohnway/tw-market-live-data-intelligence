@@ -68,3 +68,20 @@ def runtime_immutable_seal_path(repo_root: Path, candidate_id: object) -> Path:
         / candidate
         / "runtime_identity_immutable_manifest.json"
     )
+
+
+def materialization_report_path(repo_root: Path, candidate_id: object) -> Path:
+    """Return the candidate-local 01B materialization report path.
+
+    This intentionally has no legacy-A exception: the historical aggregate
+    report is immutable evidence and is never a materializer output path.
+    """
+    candidate = validate_candidate_id(candidate_id)
+    return (
+        repo_root
+        / "docs"
+        / "reviews"
+        / "security_master_candidates"
+        / candidate
+        / "materialization_report.json"
+    )

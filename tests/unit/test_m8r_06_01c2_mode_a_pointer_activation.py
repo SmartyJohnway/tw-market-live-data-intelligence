@@ -374,6 +374,38 @@ def test_pointer_tamper_fail_closed(tmp_path: Path) -> None:
     assert _reason(exc) == "pointer_seal_compact_index_sha256_mismatch"
 
 
+def test_cross_candidate_lineage_fails_closed_even_when_hashes_are_rebound(
+    tmp_path: Path,
+) -> None:
+    """A candidate ID cannot bind B's index identity to C's source lineage."""
+    repo = _build_repo(tmp_path)
+    candidate_c = "m8r06-01b-20990102T000000Z"
+    index = copy.deepcopy(repo["index"])
+    manifest = copy.deepcopy(repo["manifest"])
+    seal = copy.deepcopy(repo["seal"])
+    pointer = copy.deepcopy(repo["pointer"])
+
+    index["source_bundle_id"] = candidate_c
+    manifest["source_bundle_id"] = candidate_c
+    write_json_file(repo["index_path"], index)
+    manifest["compact_index_sha256"] = sha256_file(repo["index_path"])
+    write_json_file(repo["manifest_path"], manifest)
+
+    seal["source_bundle_id"] = candidate_c
+    seal["compact_index_sha256"] = sha256_file(repo["index_path"])
+    seal["compact_manifest_sha256"] = sha256_file(repo["manifest_path"])
+    write_json_file(repo["seal_path"], seal)
+
+    pointer["source_bundle_id"] = candidate_c
+    pointer["compact_index_sha256"] = seal["compact_index_sha256"]
+    pointer["compact_manifest_sha256"] = seal["compact_manifest_sha256"]
+    write_json_file(repo["pointer_path"], pointer)
+
+    with pytest.raises(ModeASecurityMasterUnavailable) as exc:
+        load_mode_a_security_master(repo["pointer_path"], repo_root=tmp_path)
+    assert _reason(exc) == "pointer_candidate_identity_mismatch"
+
+
 def test_manifest_tamper_fails_closed(tmp_path: Path) -> None:
     repo = _build_repo(tmp_path)
     repo["manifest_path"].write_bytes(repo["manifest_path"].read_bytes() + b" ")
