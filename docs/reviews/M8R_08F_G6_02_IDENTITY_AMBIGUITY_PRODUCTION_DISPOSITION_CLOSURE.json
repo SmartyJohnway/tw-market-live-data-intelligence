@@ -1,0 +1,76 @@
+{
+  "task": "M8R-08F-G6-02-IDENTITY-AMBIGUITY-PRODUCTION-DISPOSITION-CLOSURE",
+  "baseline_sha": "623888ae9ddec9d0923e7203d550cbf1ab578854",
+  "candidate_id": "m8r06-01b-20260903T093604Z",
+  "g6_r1_merge_present": true,
+  "production_inventory": {
+    "canonical_record_count": 46374,
+    "duplicate_normalized_name_groups": 0,
+    "unscoped_code_collision_groups": 0,
+    "duplicate_isin_groups": 0,
+    "natural_ambiguous_resolver_inputs_found": 0,
+    "inventory_method": "Canonical production C2 loader lookup buckets were inspected offline. The canonical resolver can return ambiguous only when an unscoped normalized-name, security-code, or ISIN lookup bucket contains multiple canonical target identities."
+  },
+  "production_exercisability": "NOT_EXERCISABLE_ON_CURRENT_PRODUCTION_DATA",
+  "deterministic_fixture_authority": {
+    "skill_contract_hash": "33be39c30a84641e7591d3d1680adb18b90efd8f509d75b3e971cb46d24c9b6d",
+    "fixture_snapshot_sha256": "e4c0972e72f4f1b785449c651812fb2620a572825495bdfa4a42288e921ca126",
+    "canonical_loader_validation": "PASS"
+  },
+  "deterministic_ambiguity": {
+    "input": "重名測試",
+    "resolution_status": "ambiguous",
+    "candidate_count": 2,
+    "selected_empty": true,
+    "reason_codes": [
+      "exact_normalized_name",
+      "multiple_candidates"
+    ],
+    "candidate_canonical_target_ids": [
+      "TWSE:2330",
+      "TWSE:3333"
+    ]
+  },
+  "f3_fail_closed": {
+    "target_resolution_status": "ambiguous",
+    "candidate_match_count": 2,
+    "canonical_identity_present": false,
+    "validation_status": "requires_clarification",
+    "executable": false
+  },
+  "focused_regressions": {
+    "ambiguity_tests": "PASS: 1 passed, 35 deselected",
+    "localhost_operator_acceptance": "PASS: 1 passed; deterministic test transport; external real market calls 0"
+  },
+  "governance_interpretation": "G6 does not establish that a natural production ambiguity was observed on Candidate B. It establishes that Candidate B currently contains no naturally ambiguous identity; production therefore provides no honest real-world ambiguity case; the canonical ambiguity code path is verified with repository-owned deterministic collision evidence; that path returns ambiguous and requires_clarification without selecting a candidate; and a future active production candidate with natural ambiguity must reopen G6.",
+  "real_production_ambiguity_execution_tested": false,
+  "production_identity_guessing_observed": false,
+  "production_execution_attempted": false,
+  "authorization_created": false,
+  "ticket_created": false,
+  "claim_created": false,
+  "execution_receipt_created": false,
+  "evidence_bundle_created": false,
+  "result_created": false,
+  "control_package_created": false,
+  "market_fetch_evidence_calls": 0,
+  "external_market_network_calls": 0,
+  "production_pointer_unchanged": true,
+  "candidate_B_seals_unchanged": true,
+  "candidate_B_local_runtime_artifacts_unchanged": true,
+  "historical_A_unchanged": true,
+  "fail_closed_contract_status": "PASS",
+  "deterministic_fixture_contract_status": "PASS",
+  "reopen_on_future_natural_ambiguity": true,
+  "reopen_conditions": [
+    "A future active production Security Master contains a duplicate normalized-name group.",
+    "A future active production Security Master contains an unscoped security-code collision.",
+    "A future active production Security Master contains a duplicate ISIN group.",
+    "Any canonical resolver input for a future active production Security Master returns resolution_status = ambiguous.",
+    "A future natural production ambiguity must be exercised through the real-agent MCP path before that candidate can inherit this disposition."
+  ],
+  "g6_status": "PASS_WITH_PRODUCTION_DATA_CONSTRAINT",
+  "g6_disposition": "ACCEPTED_WITH_CONSTRAINT",
+  "blocking_findings": [],
+  "principal_decision": "READY_FOR_PR_207_G6_DISPOSITION_CLOSURE_REVIEW"
+}
