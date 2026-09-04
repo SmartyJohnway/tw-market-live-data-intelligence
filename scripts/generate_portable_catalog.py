@@ -8,10 +8,20 @@ ROOT = Path(__file__).resolve().parents[1]
 CANONICAL_PATH = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json"
 PORTABLE_JSON_PATH = ROOT / "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json"
 PORTABLE_GUIDE_PATH = ROOT / "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+# The checked-in portable projections are a CRLF byte contract.  Make that
+# representation explicit so Windows and Linux generator runs reproduce it.
+PORTABLE_OUTPUT_NEWLINE = "\r\n"
 
 def get_file_sha256(path: Path) -> str:
-    with open(path, "rb") as f:
-        return hashlib.sha256(f.read()).hexdigest()
+    """Hash UTF-8 text with newline representation normalized to LF.
+
+    The canonical catalog is a text contract.  Its semantic bytes must be
+    stable whether a checkout materializes its line endings as LF, CRLF, or
+    CR, without normalizing any other content.
+    """
+    text = path.read_bytes().decode("utf-8")
+    normalized_text = text.replace("\r\n", "\n").replace("\r", "\n")
+    return hashlib.sha256(normalized_text.encode("utf-8")).hexdigest()
 
 def generate_portable_json_obj(catalog: dict, sha256: str) -> dict:
     return {
@@ -75,24 +85,45 @@ def generate_portable_markdown_text(portable_data: dict, sha256: str) -> str:
 
     return "\n".join(md_lines) + "\n"
 
+def generate_portable_catalog(
+    *,
+    canonical_path: Path,
+    portable_json_path: Path,
+    portable_guide_path: Path,
+) -> str:
+    """Generate portable projections at caller-selected bounded paths."""
+    sha256 = get_file_sha256(canonical_path)
+    with canonical_path.open("r", encoding="utf-8") as f:
+        catalog = json.load(f)
+
+    portable_data = generate_portable_json_obj(catalog, sha256)
+
+    portable_json_path.parent.mkdir(parents=True, exist_ok=True)
+    portable_guide_path.parent.mkdir(parents=True, exist_ok=True)
+    with portable_json_path.open(
+        "w", encoding="utf-8", newline=PORTABLE_OUTPUT_NEWLINE
+    ) as f:
+        json.dump(portable_data, f, indent=2, ensure_ascii=False)
+
+    md_text = generate_portable_markdown_text(portable_data, sha256)
+    with portable_guide_path.open(
+        "w", encoding="utf-8", newline=PORTABLE_OUTPUT_NEWLINE
+    ) as f:
+        f.write(md_text)
+    return sha256
+
+
 def main():
     if not CANONICAL_PATH.exists():
         print(f"ERROR: Canonical catalog not found at {CANONICAL_PATH}")
         return
 
-    sha256 = get_file_sha256(CANONICAL_PATH)
-    with open(CANONICAL_PATH, "r", encoding="utf-8") as f:
-        catalog = json.load(f)
-
-    portable_data = generate_portable_json_obj(catalog, sha256)
-    
-    with open(PORTABLE_JSON_PATH, "w", encoding="utf-8") as f:
-        json.dump(portable_data, f, indent=2, ensure_ascii=False)
+    generate_portable_catalog(
+        canonical_path=CANONICAL_PATH,
+        portable_json_path=PORTABLE_JSON_PATH,
+        portable_guide_path=PORTABLE_GUIDE_PATH,
+    )
     print(f"Generated portable catalog JSON at: {PORTABLE_JSON_PATH.relative_to(ROOT)}")
-
-    md_text = generate_portable_markdown_text(portable_data, sha256)
-    with open(PORTABLE_GUIDE_PATH, "w", encoding="utf-8") as f:
-        f.write(md_text)
     print(f"Generated human-readable guide markdown at: {PORTABLE_GUIDE_PATH.relative_to(ROOT)}")
 
 if __name__ == "__main__":
