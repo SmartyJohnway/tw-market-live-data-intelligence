@@ -7,7 +7,7 @@
     "name": "tw-security-master-classifier",
     "skill_version": "source-manifest-1.1.0",
     "skill_path": "skills/tw-security-master-classifier",
-    "skill_contract_hash": "488b3e04af2e318cd387b0dfdcbad02be4f2c3f495539c3e436698464f37d77a"
+    "skill_contract_hash": "33be39c30a84641e7591d3d1680adb18b90efd8f509d75b3e971cb46d24c9b6d"
   },
   "coverage": {
     "markets": [
