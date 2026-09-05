@@ -1,0 +1,80 @@
+{
+  "task": "M8R-08F-G8-TAIFEX-SUPPORTED-SCOPE-BOUNDARY-REAL-AGENT-ACCEPTANCE",
+  "baseline_sha": "388738725031984efa9d1ad3fcf0de00b8dfa7a7",
+  "branch": "codex/m8r-08f-g8-taifex-supported-scope-boundary",
+  "roadmap_scope": {
+    "scenario": "TAIFEX supported-scope boundary; not TAIFEX activation",
+    "interpretation": "The Real Agent discovers a provisional/non-executable TAIFEX boundary, stops before execution, and reports no market retrieval."
+  },
+  "governed_boundary": {
+    "taifex_market_support_level": "provisional",
+    "identity": "contract_supported; plan_only; no Unified executor",
+    "current_observation": "TAIFEX not implemented; absent from executable/provisional Local Service market projection",
+    "official_eod_reference": "TAIFEX provisional; production_executor_available=false; non-executable",
+    "session_status": "TAIFEX provisional semantics; routing=blocked; day-session provisional, night-session unsupported, Taipei closure unresolved",
+    "recent_performance": "TAIFEX provisional; routing=plan_only; non-executable",
+    "source_currentness": "contract_supported; plan_only; not an active market-data executor",
+    "evidence_quality": "contract_supported; plan_only; not an active market-data executor",
+    "taifex_unified_production_executor_registered": false
+  },
+  "focused_boundary_tests": {
+    "taifex_preview_test": "PASS: tests/unit/test_m8r_06_02_mode_b1_preview.py::test_taifex_provisional_eod_is_honestly_not_executable",
+    "local_service_contract_tests": "7 passed"
+  },
+  "mcp": {
+    "version": "1.29.0",
+    "tool_count": 6,
+    "capability_projection": {
+      "official_eod_reference_taifex": {"disposition": "provisional", "production_executor_available": false},
+      "current_observation_taifex": "not present in Local Service executable/provisional market entries; not executable",
+      "session_status_taifex": {"disposition": "provisional", "production_executor_available": false},
+      "recent_performance_taifex": {"disposition": "provisional", "production_executor_available": false}
+    }
+  },
+  "real_agent": {
+    "runtime_root": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\g8-taifex-20260905T093550Z",
+    "runtime_root_outside_repository": true,
+    "request_id": "m8r-08f-g8-taifex-boundary-20260905t093700z",
+    "target": "TAIFEX:TX requested as input=TX, market_hint=TAIFEX",
+    "requested_need": "official_eod_reference",
+    "validation_status": "invalid",
+    "target_resolution_status": "not_found",
+    "target_resolution_reason": ["exact_code", "exact_normalized_name"],
+    "canonical_identity": null,
+    "production_taifex_identity_exercisable": false,
+    "production_identity_constraint": "not_found",
+    "capability_status": "requires_target_resolution; deterministic canonical TAIFEX identity test proves official_eod_reference remains provisional/non-executable",
+    "preview_status": "target_not_plannable",
+    "plan_status": "blocked",
+    "execution_authorized": false,
+    "authorization_created": false,
+    "execution_performed": false,
+    "market_fetch_evidence_calls": 0,
+    "result_materialized": false,
+    "interpretation": "TAIFEX is currently provisional in Unified Market Evidence. The TAIFEX official-EOD route is not production-executable; production identity TX was not found, so no retrieval was executed and no TAIFEX market data was fabricated. The request stopped at validation/preview according to the governed boundary.",
+    "agent_capability_boundary_understood": true
+  },
+  "boundary_classification": "TAIFEX_PRODUCTION_IDENTITY_NOT_EXERCISABLE_AND_CAPABILITY_PROVISIONAL",
+  "network": {
+    "source_invocation_count": 0,
+    "real_external_market_network_calls": 0,
+    "market_network_executed": false,
+    "automatic_retry_count": 0,
+    "fallback_source_used": false
+  },
+  "immutability": {
+    "production_pointer_unchanged": true,
+    "candidate_B_id": "m8r06-01b-20260903T093604Z",
+    "candidate_B_seals_unchanged": true,
+    "candidate_B_local_runtime_artifacts_unchanged": true,
+    "historical_A_unchanged": true
+  },
+  "repository_clean_before_artifact": true,
+  "compileall": "PASS",
+  "git_diff_check": "PASS",
+  "test_processes_stopped": true,
+  "test_environment_cleared": true,
+  "blocking_findings": [],
+  "disposition": "PASS_WITH_PRODUCTION_IDENTITY_CONSTRAINT",
+  "principal_decision": "READY_FOR_PR_211_G8_TAIFEX_BOUNDARY_REVIEW"
+}
