@@ -1,0 +1,164 @@
+{
+  "task": "M8R-08F-G9-STALE-CURRENTNESS-REAL-AGENT-ACCEPTANCE",
+  "baseline_sha": "ff6b670b228ccc117eda3673b7a7cc468c8ff207",
+  "branch": "codex/m8r-08f-g9-stale-currentness-real-agent-acceptance",
+  "roadmap_scope": {
+    "scenario": "successful TWSE current_observation with naturally currentness-caveated source evidence",
+    "interpretation": "data availability is distinct from a guarantee that the observation is a current or realtime market state"
+  },
+  "currentness_authority": {
+    "intraday_max_age_seconds": 900,
+    "stale_assessment": "stale_intraday_snapshot",
+    "stale_requires_caveats": true,
+    "stale_safe_for_ai_context": false,
+    "stale_blocked_interpretation": "stale source not safe to describe as current market",
+    "eod_not_realtime": true
+  },
+  "focused_tests": {
+    "deterministic_stale_authority": "PASS; age_seconds=3601; freshness_assessment=stale_intraday_snapshot; stale_reason=stale source must not be described as current market",
+    "mode_c_currentness": "PASS; tests/unit/test_m8r_06_ai_handoff_repair_02.py::test_eod_is_available_with_unresolved_currentness_and_drift_is_caveated (1 passed)",
+    "eod_trade_date": "PASS; tests/unit/test_m8r_eod_expected_trade_date.py (21 passed)",
+    "stale_context_regression": "PASS; tests/unit/test_m8r_03e_watchlist_ai_context.py (34 passed)"
+  },
+  "mcp": {
+    "version": "1.29.0",
+    "tool_count": 6,
+    "current_observation_twse_disposition": "executable"
+  },
+  "real_agent": {
+    "runtime_root": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\g9-currentness-20260905T095632Z",
+    "runtime_root_outside_repository": true,
+    "request_id": "m8r-08f-g9-currentness-20260905t095750z",
+    "target": "TWSE:2330",
+    "requested_need": "current_observation",
+    "validation_status": "valid",
+    "target_resolution_status": "resolved",
+    "preview_status": "ready_for_confirmation",
+    "plan_status": "plan_ready",
+    "market_fetch_evidence_calls": 1
+  },
+  "execution": {
+    "transport_mode": "production_transport",
+    "operation_status": "succeeded",
+    "operation_error_code": null,
+    "result_item_count": 1,
+    "evidence_artifact_count": 1,
+    "receipt_id": "umerec-v1-c0ae51fb6d987ca2a81d",
+    "receipt_hash": "c0ae51fb6d987ca2a81deac54ec2c199090d99f2925cc74f3677331083e8f5cd",
+    "receipt_status": "succeeded",
+    "consumption_state": "consumed_success",
+    "bundle_id": "umeb-v1-9a4cb9864eeb7048d71e",
+    "bundle_hash": "9a4cb9864eeb7048d71e4efe705f25e79b0013ed5d7b6cfb343d0ac582af8a6b",
+    "bundle_status": "succeeded"
+  },
+  "normalized_source_currentness": {
+    "observation_status": "ok",
+    "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
+    "freshness_reason": null,
+    "source_timestamp": "2026-09-04T06:30:00Z",
+    "retrieved_at_utc": "2026-09-05T09:57:06Z",
+    "delay_seconds": 98826,
+    "delay_status": "not_realtime_guaranteed",
+    "session_state": "regular_or_post_close_candidate",
+    "market_session": "regular_board",
+    "value_status": "ok",
+    "not_realtime_guaranteed": true,
+    "caveats": [
+      "fragile_frontend_contract",
+      "freshness_must_be_displayed",
+      "live_observation_not_canonical",
+      "no_trading_signal",
+      "not_official_realtime_api",
+      "not_realtime_guaranteed",
+      "source_may_be_delayed_or_unavailable",
+      "unofficial_source_risk"
+    ]
+  },
+  "natural_currentness_classification": "CURRENTNESS_UNRESOLVED_OR_CAVEATED",
+  "mode_c": {
+    "projector_version": "m8r_05c_v1_3",
+    "result_id": "umeresult-v1-1a19617b3317d684638b",
+    "result_hash": "7ff4cf031bcf2a569949cdbc14d6d97eda4daee0021ce99665de8b91e68c67a8",
+    "result_status": "full_success",
+    "current_observation_status": "available",
+    "timing_class": null,
+    "currentness": {
+      "delay_seconds": 98826,
+      "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
+      "not_realtime_guaranteed": true,
+      "retrieved_at_utc": "2026-09-05T09:57:06Z",
+      "semantic_status": "runtime_projected_candidate",
+      "source_timestamp": "2026-09-04T06:30:00Z"
+    },
+    "freshness_context": {
+      "delay_seconds": 98826,
+      "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
+      "not_realtime_guaranteed": true,
+      "retrieved_at_utc": "2026-09-05T09:57:06Z",
+      "semantic_status": "runtime_projected_candidate",
+      "source_timestamp": "2026-09-04T06:30:00Z"
+    },
+    "market_session_context": {
+      "session_state_candidate": "regular_or_post_close_candidate",
+      "session_state_confidence": "candidate_only",
+      "closing_auction_candidate": false,
+      "post_close_candidate": false,
+      "odd_lot_mode_supported": false,
+      "semantic_status": "runtime_projected_candidate"
+    },
+    "caveats": [
+      "fragile_frontend_contract",
+      "freshness_must_be_displayed",
+      "live_observation_not_canonical",
+      "no_trading_signal",
+      "not_official_realtime_api",
+      "not_realtime_guaranteed",
+      "source_may_be_delayed_or_unavailable",
+      "unofficial_source_risk"
+    ],
+    "currentness_semantics_preserved": true
+  },
+  "handoff": {
+    "execution_outcome": "succeeded",
+    "result_status": "full_success",
+    "stale_or_currentness_visible": true,
+    "realtime_claim_present": false,
+    "source_failure_claim_present": false,
+    "interpretation_status": "PASS: 成功取得的 observation 保留 98,826 秒 source/retrieval time difference 與 not_realtime_guaranteed；Agent 可引用已觀測事實，但不得描述為此刻即時價格、即時行情或目前市場價格。"
+  },
+  "eod_vs_current_interpretation_boundary": "PASS",
+  "network": {
+    "real_external_market_network_calls": 1,
+    "market_network_executed": true,
+    "additional_market_network_executed": false,
+    "automatic_retry_count": 0,
+    "fallback_source_used": false
+  },
+  "integrity": {
+    "evidence_fabricated": false,
+    "source_timestamp_rewritten": false,
+    "retrieved_at_rewritten": false,
+    "currentness_reclassified_by_agent": false,
+    "audit_integrity_verification": {
+      "all_artifact_hashes_verified": true,
+      "bundle_hash_verified": true,
+      "receipt_hash_verified": true,
+      "result_hash_verified": true
+    }
+  },
+  "immutability": {
+    "production_pointer_unchanged": true,
+    "candidate_B_id": "m8r06-01b-20260903T093604Z",
+    "candidate_B_seals_unchanged": true,
+    "candidate_B_local_runtime_artifacts_unchanged": true,
+    "historical_A_unchanged": true
+  },
+  "repository_clean_before_artifact": true,
+  "compileall": "PASS",
+  "git_diff_check": "PASS",
+  "test_processes_stopped": true,
+  "test_environment_cleared": true,
+  "blocking_findings": [],
+  "disposition": "PASS",
+  "principal_decision": "READY_FOR_PR_212_G9_CURRENTNESS_REVIEW"
+}
