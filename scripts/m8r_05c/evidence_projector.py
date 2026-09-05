@@ -19,9 +19,16 @@ from scripts.observation_contract import (
     promote_ai_safe_market_context_projection_for_controlled_context,
 )
 
-CURRENT_PROJECTOR_VERSION = "m8r_05c_v1_2"
-PREVIOUS_PROJECTOR_VERSION = "m8r_05c_v1_1"
+CURRENT_PROJECTOR_VERSION = "m8r_05c_v1_3"
+PREVIOUS_PROJECTOR_VERSION = "m8r_05c_v1_2"
+OLDER_PROJECTOR_VERSION = "m8r_05c_v1_1"
 LEGACY_PROJECTOR_VERSION = "m8r_05c_v1"
+SUPPORTED_PROJECTOR_VERSIONS = frozenset({
+    CURRENT_PROJECTOR_VERSION,
+    PREVIOUS_PROJECTOR_VERSION,
+    OLDER_PROJECTOR_VERSION,
+    LEGACY_PROJECTOR_VERSION,
+})
 
 # Data needs that use the generic evidence_envelope structure.
 _ENVELOPE_DATA_NEEDS = {
@@ -213,11 +220,11 @@ def _project_official_eod_legacy(binding: OperationBinding | None, citation_ids:
     return {"currentness_status": "calendar_status_unresolved", "caveats": ["no_eod_currentness_found_in_artifact"]}
 
 
-def _project_official_eod(
+def _project_official_eod_pre_v1_3(
     binding: OperationBinding | None,
     citation_ids: list[str],
 ) -> dict | None:
-    """Project official_eod_reference from operation binding."""
+    """Frozen v1.1/v1.2 official-EOD projection for output verification."""
     if binding is None:
         return None
     if binding.status == "failed":
@@ -280,6 +287,20 @@ def _project_official_eod(
     }
 
 
+def _project_official_eod(
+    binding: OperationBinding | None,
+    citation_ids: list[str],
+) -> dict | None:
+    """Project current official-EOD evidence, including explicit failure state."""
+    if binding is not None and binding.status == "failed":
+        return {
+            "status": "failed",
+            "currentness_status": "calendar_status_unresolved",
+            "caveats": [f"operation_failed:{binding.error_code or 'unknown'}"],
+        }
+    return _project_official_eod_pre_v1_3(binding, citation_ids)
+
+
 def project_target_evidence(
     canonical_target_id: str,
     lineage: LineageMap,
@@ -308,36 +329,43 @@ def project_target_evidence(
 
     if "identity" in requested_data_needs:
         binding = target_bindings.get("identity")
-        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == PREVIOUS_PROJECTOR_VERSION else _project_envelope)
+        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == OLDER_PROJECTOR_VERSION else _project_envelope)
         proj.identity = projector(binding, _cite("identity"))
 
     if "current_observation" in requested_data_needs:
         binding = target_bindings.get("current_observation")
-        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == PREVIOUS_PROJECTOR_VERSION else _project_envelope)
+        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == OLDER_PROJECTOR_VERSION else _project_envelope)
         proj.current_observation = projector(binding, _cite("current_observation"))
 
     if _OFFICIAL_EOD_NEED in requested_data_needs:
         binding = target_bindings.get(_OFFICIAL_EOD_NEED)
-        proj.official_eod_reference = (_project_official_eod_legacy if projector_version == LEGACY_PROJECTOR_VERSION else _project_official_eod)(binding, _cite(_OFFICIAL_EOD_NEED))
+        projector = (
+            _project_official_eod_legacy
+            if projector_version == LEGACY_PROJECTOR_VERSION
+            else _project_official_eod_pre_v1_3
+            if projector_version in {PREVIOUS_PROJECTOR_VERSION, OLDER_PROJECTOR_VERSION}
+            else _project_official_eod
+        )
+        proj.official_eod_reference = projector(binding, _cite(_OFFICIAL_EOD_NEED))
 
     if "recent_performance" in requested_data_needs:
         binding = target_bindings.get("recent_performance")
-        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == PREVIOUS_PROJECTOR_VERSION else _project_envelope)
+        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == OLDER_PROJECTOR_VERSION else _project_envelope)
         proj.recent_performance = projector(binding, _cite("recent_performance"))
 
     if "session_status" in requested_data_needs:
         binding = target_bindings.get("session_status")
-        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == PREVIOUS_PROJECTOR_VERSION else _project_envelope)
+        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == OLDER_PROJECTOR_VERSION else _project_envelope)
         proj.session_status = projector(binding, _cite("session_status"))
 
     if "source_currentness" in requested_data_needs:
         binding = target_bindings.get("source_currentness")
-        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == PREVIOUS_PROJECTOR_VERSION else _project_envelope)
+        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == OLDER_PROJECTOR_VERSION else _project_envelope)
         proj.source_currentness = projector(binding, _cite("source_currentness"))
 
     if "evidence_quality" in requested_data_needs:
         binding = target_bindings.get("evidence_quality")
-        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == PREVIOUS_PROJECTOR_VERSION else _project_envelope)
+        projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == OLDER_PROJECTOR_VERSION else _project_envelope)
         proj.evidence_quality = projector(binding, _cite("evidence_quality"))
 
     return proj

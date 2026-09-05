@@ -21,11 +21,12 @@ from .canonical import build_audit_package_id, hash_body_excluding_key, sha256_j
 from .citation_builder import CitationIndex
 from .errors import ProjectionError
 from .models import ProjectionInputs
+from .evidence_projector import CURRENT_PROJECTOR_VERSION
 
 ROOT = Path(__file__).resolve().parents[2]
 AUDIT_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_audit_package.v1.schema.json"
 
-_PROJECTOR_VERSION = "m8r_05c_v1_2"
+_PROJECTOR_VERSION = CURRENT_PROJECTOR_VERSION
 _CANONICALIZATION_VERSION = "m8r_05b_03_canonical_v1"
 
 

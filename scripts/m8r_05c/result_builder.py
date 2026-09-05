@@ -96,7 +96,12 @@ def _build_resolution(
     )
 
 
-def _compute_result_status(targets: list[TargetProjection], partial_failures: list) -> str:
+def _compute_result_status(
+    targets: list[TargetProjection],
+    partial_failures: list,
+    *,
+    projector_version: str = CURRENT_PROJECTOR_VERSION,
+) -> str:
     """Deterministic status mapping.
 
     full_success: all targets resolved, all required evidence present, no failures.
@@ -112,8 +117,17 @@ def _compute_result_status(targets: list[TargetProjection], partial_failures: li
         return "failed"
 
     if partial_failures:
-        # Check if any required data need failed.
-        return "partially_failed"
+        if projector_version != CURRENT_PROJECTOR_VERSION:
+            return "partially_failed"
+        # Identity resolution is not evidence success.  A required failure is
+        # partial only when the canonical projection retained requested
+        # evidence for at least one target; otherwise all required evidence is
+        # missing and the Result is failed.
+        has_provided_evidence = any(
+            bool(target.coverage_provided_needs)
+            for target in targets
+        )
+        return "partially_failed" if has_provided_evidence else "failed"
 
     # Check optional coverage gaps.
     has_optional_gap = any(t.coverage_missing_needs for t in targets)
@@ -341,7 +355,11 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
         target_projections.append(tp)
 
     # Compute overall status.
-    result_status = _compute_result_status(target_projections, partial_failures)
+    result_status = _compute_result_status(
+        target_projections,
+        partial_failures,
+        projector_version=projector_version,
+    )
 
     # Serialize targets to dicts.
     targets_dicts: list[dict] = []
