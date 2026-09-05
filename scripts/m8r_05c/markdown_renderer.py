@@ -11,6 +11,8 @@ This module:
 """
 from __future__ import annotations
 
+from .evidence_projector import CURRENT_PROJECTOR_VERSION, LEGACY_PROJECTOR_VERSION
+
 _TIMING_CLASS_LABELS: dict[str, str] = {
     "intraday_live": "即時 (Intraday Live)",
     "intraday_delayed": "延遲 (Intraday Delayed)",
@@ -20,11 +22,19 @@ _TIMING_CLASS_LABELS: dict[str, str] = {
     "non_trading_day": "非交易日 (Non-trading Day)",
 }
 
-_STATUS_LABELS: dict[str, str] = {
+_RESULT_STATUS_LABELS: dict[str, str] = {
     "full_success": "✅ 完整成功",
     "success_with_partial_coverage": "⚠️ 部分覆蓋",
     "partially_failed": "⚠️ 部分失敗",
     "failed": "❌ 失敗",
+}
+
+_LEGACY_RESULT_STATUS_LABELS: dict[str, str] = {
+    **_RESULT_STATUS_LABELS,
+    "failed": "失敗",
+}
+
+_EVIDENCE_STATUS_LABELS: dict[str, str] = {
     "available": "可用",
     "missing": "缺失",
     "failed": "失敗",
@@ -58,7 +68,7 @@ def _fmt_evidence_envelope(envelope: dict, data_need: str) -> str:
     status = envelope.get("status", "unknown")
     timing = _fmt_timing(envelope.get("timing_class"))
 
-    lines.append(f"- **狀態**: {_STATUS_LABELS.get(status, status)}")
+    lines.append(f"- **狀態**: {_EVIDENCE_STATUS_LABELS.get(status, status)}")
     lines.append(f"- **時效類別**: {timing}")
 
     observed = envelope.get("observed_fields", {})
@@ -99,7 +109,7 @@ def _fmt_evidence_envelope(envelope: dict, data_need: str) -> str:
     return "\n".join(lines)
 
 
-def _fmt_eod_reference(eod: dict, *, legacy: bool = False) -> str:
+def _fmt_eod_reference(eod: dict, *, projector_version: str) -> str:
     """Render official_eod_reference to markdown."""
     lines: list[str] = []
     currentness_status = eod.get("currentness_status", "unknown")
@@ -119,10 +129,11 @@ def _fmt_eod_reference(eod: dict, *, legacy: bool = False) -> str:
         "source_trade_date_missing": "❌ 來源交易日期缺失",
         "invalid_trade_date_format": "❌ 交易日期格式無效",
     }
-    if legacy:
+    if projector_version == LEGACY_PROJECTOR_VERSION:
         lines.append(f"- **EOD 狀態**: {labels.get(currentness_status, currentness_status)}")
     else:
-        lines.append(f"- **EOD 狀態**: {_STATUS_LABELS.get(eod.get('status', 'available'), eod.get('status', 'available'))}")
+        status = eod.get("status", "available")
+        lines.append(f"- **EOD 狀態**: {_EVIDENCE_STATUS_LABELS.get(status, status)}")
         for key, label in (("source_id", "來源"), ("source_family", "來源家族"), ("authority_level", "權威等級")):
             if eod.get(key): lines.append(f"- **{label}**: {eod[key]}")
     if trade_date:
@@ -131,13 +142,13 @@ def _fmt_eod_reference(eod: dict, *, legacy: bool = False) -> str:
         lines.append(f"- **預期最新交易日**: {expected}")
     if session:
         lines.append(f"- **交易時段狀態**: {session}")
-    if not legacy and eod.get("price"):
+    if projector_version != LEGACY_PROJECTOR_VERSION and eod.get("price"):
         lines.append("\n**Price**:")
         for key, value in eod["price"].items(): lines.append(f"- `{key}`: {value}")
-    if not legacy and eod.get("activity"):
+    if projector_version != LEGACY_PROJECTOR_VERSION and eod.get("activity"):
         lines.append("\n**Activity**:")
         for key, value in eod["activity"].items(): lines.append(f"- `{key}`: {value}")
-    if not legacy: lines.append(f"\n**Currentness**: {labels.get(currentness_status, currentness_status)}")
+    if projector_version != LEGACY_PROJECTOR_VERSION: lines.append(f"\n**Currentness**: {labels.get(currentness_status, currentness_status)}")
     if eod.get("fallback_policy_used"):
         lines.append("- ⚠️ 使用了備援政策")
     if eod.get("publication_grace_applied"):
@@ -162,7 +173,7 @@ def _data_need_label(need: str) -> str:
     return labels.get(need, need)
 
 
-def render_result_markdown(result: dict, *, projector_version: str = "m8r_05c_v1_2") -> str:
+def render_result_markdown(result: dict, *, projector_version: str = CURRENT_PROJECTOR_VERSION) -> str:
     """Render the result dict as AI-ready Markdown.
 
     Pure function: no I/O, no network, no datetime.now().
@@ -178,7 +189,8 @@ def render_result_markdown(result: dict, *, projector_version: str = "m8r_05c_v1
 
     lines.append("# 市場證據結果 (Market Evidence Result)")
     lines.append("")
-    lines.append(f"**整體狀態**: {_STATUS_LABELS.get(status, status)}")
+    result_labels = _RESULT_STATUS_LABELS if projector_version == CURRENT_PROJECTOR_VERSION else _LEGACY_RESULT_STATUS_LABELS
+    lines.append(f"**整體狀態**: {result_labels.get(status, status)}")
     lines.append(f"**結果 ID**: `{result_id}`")
     lines.append(f"**請求 ID**: `{request_id}`")
     lines.append(f"**生成時間**: {generated_at}")
@@ -200,13 +212,14 @@ def render_result_markdown(result: dict, *, projector_version: str = "m8r_05c_v1
     pf_list = result.get("partial_failures", [])
     if pf_list:
         lines.append("")
-        lines.append(_section("部分失敗", 2))
+        section = "失敗詳情" if projector_version == CURRENT_PROJECTOR_VERSION and status == "failed" else "部分失敗"
+        lines.append(_section(section, 2))
         for pf in pf_list:
             idx = pf.get("target_index", "?")
             reason = pf.get("reason", "")
             data_need = pf.get("data_need", "")
             need_label = f" [{data_need}]" if data_need else ""
-            display_idx = idx if projector_version == "m8r_05c_v1" else (idx + 1 if isinstance(idx, int) else idx)
+            display_idx = idx if projector_version == LEGACY_PROJECTOR_VERSION else (idx + 1 if isinstance(idx, int) else idx)
             lines.append(f"- 目標 #{display_idx}{need_label}: {reason}")
 
     # Request caveats.
@@ -281,9 +294,9 @@ def render_result_markdown(result: dict, *, projector_version: str = "m8r_05c_v1
                 lines.append("")
                 lines.append(_section(f"{_data_need_label(need_key)}", 4))
                 if need_key == "official_eod_reference":
-                    lines.append(_fmt_eod_reference(ev, legacy=projector_version == "m8r_05c_v1"))
+                    lines.append(_fmt_eod_reference(ev, projector_version=projector_version))
                 else:
-                    lines.append(_fmt_evidence_envelope(ev, need_key if projector_version != "m8r_05c_v1" else "legacy"))
+                    lines.append(_fmt_evidence_envelope(ev, need_key if projector_version != LEGACY_PROJECTOR_VERSION else "legacy"))
 
         # Derived metrics.
         derived_metrics = target.get("derived_metrics", [])
