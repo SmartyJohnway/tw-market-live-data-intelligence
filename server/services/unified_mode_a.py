@@ -11,7 +11,8 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 CANONICAL_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_request.v1.schema.json"
 CANONICAL_CATALOG_PATH = ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v1.json"
 
-# Production Mode A uses only the governed current-selection pointer.
+# The default loader interprets this historical path as the active-release
+# selector.  Tests may still inject an explicit path through this seam.
 PRODUCTION_POINTER_PATH = POINTER_PATH
 
 
@@ -41,9 +42,7 @@ def validate_mode_a_request(request: dict, allow_fixture_snapshot: bool = False)
                 allow_fixture_snapshot=True,
             )
         else:
-            security_master = get_production_mode_a_security_master(
-                PRODUCTION_POINTER_PATH
-            )
+            security_master = get_production_mode_a_security_master(PRODUCTION_POINTER_PATH)
 
         return validate_unified_market_evidence_request(
             request=request,

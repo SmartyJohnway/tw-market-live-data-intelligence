@@ -62,6 +62,21 @@ def build_planning_bindings(
 ) -> dict[str, Any]:
     """Bind F3 and the active governed compact candidate using 05B canonical hashes."""
     pointer = security_master.pointer
+    if pointer.get("schema_version") == "taiwan_market_identity_active_pointer.v1":
+        release_id = pointer["release_id"]
+        return {
+            "original_request_hash": sha256_json(original_request),
+            "normalized_request_hash": sha256_json(f3_validation["normalized_request"]),
+            "f3_validation_output_hash": sha256_json(f3_validation),
+            "security_master_evidence_references": [f"local_security_master_release:{release_id}:index", f"local_security_master_release:{release_id}:manifest"],
+            "security_master_artifact_hashes": [pointer["release_index_sha256"], pointer["release_manifest_sha256"]],
+            "capability_catalog_hash": sha256_json(capability_catalog),
+            "planner_version": PLANNER_VERSION,
+            "routing_matrix_version": ROUTING_VERSION,
+            "routing_matrix_hash": sha256_json(routing_matrix),
+            "handoff_contract_version": HANDOFF_VERSION,
+            "handoff_contract_hash": sha256_json(handoff_contract),
+        }
     return {
         "original_request_hash": sha256_json(original_request),
         "normalized_request_hash": sha256_json(f3_validation["normalized_request"]),

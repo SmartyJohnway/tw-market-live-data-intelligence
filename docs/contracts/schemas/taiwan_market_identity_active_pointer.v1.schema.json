@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "taiwan_market_identity_active_pointer.v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "release_id", "activated_at", "release_manifest_sha256", "release_index_sha256", "release_manifest_schema_sha256"],
+  "properties": {
+    "schema_version": {"const": "taiwan_market_identity_active_pointer.v1"},
+    "release_id": {"type": "string", "pattern": "^security-master-[0-9]{8}T[0-9]{6}Z$"},
+    "activated_at": {"type": "string", "format": "date-time"},
+    "release_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "release_index_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "release_manifest_schema_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

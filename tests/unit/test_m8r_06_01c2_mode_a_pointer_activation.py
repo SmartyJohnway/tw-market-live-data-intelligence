@@ -25,6 +25,7 @@ from scripts.m8r_06_01c2_mode_a_security_master_loader import (
     POINTER_CHANGE_REQUIRES_RESTART,
     ModeASecurityMasterUnavailable,
     get_production_mode_a_security_master,
+    load_active_mode_a_security_master,
     load_mode_a_security_master,
     reset_production_mode_a_security_master_for_tests,
 )
@@ -39,8 +40,14 @@ SYNTHETIC_BUNDLE_ID = "m8r06-01b-20990101T000000Z"
 
 
 def _current_pointer_index_exists() -> bool:
-    pointer = json.loads(POINTER_PATH.read_text(encoding="utf-8"))
-    return (POINTER_PATH.parents[1] / pointer["index_path"]).is_file()
+    # Production no longer activates the historical compact pointer merely
+    # because its files are present.  This e2e assertion is meaningful only
+    # with a valid installation-local active release.
+    try:
+        load_active_mode_a_security_master()
+    except ModeASecurityMasterUnavailable:
+        return False
+    return True
 
 
 @pytest.fixture(autouse=True)
@@ -514,12 +521,13 @@ def test_api_reuses_one_successful_process_activation(
     runtime = load_mode_a_security_master(repo["pointer_path"], repo_root=tmp_path)
     calls = 0
 
-    def counted_strict_loader(_):
+    def counted_active_loader():
         nonlocal calls
         calls += 1
         return runtime
 
-    monkeypatch.setattr(c2_loader, "load_mode_a_security_master", counted_strict_loader)
+    monkeypatch.setattr(c2_loader, "load_active_mode_a_security_master", counted_active_loader)
+    reset_production_mode_a_security_master_for_tests()
     client = TestClient(app)
     payload = {
         "request": _request(

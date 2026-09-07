@@ -7,30 +7,39 @@ client = TestClient(app)
 from pathlib import Path
 import pytest
 
+
 @pytest.fixture()
 def mock_validation(monkeypatch):
     from server import unified_workbench_router
+
     def fake_validate(req):
         return {
             "request_id": req.get("request_id"),
             "validation_status": "valid",
-            "target_results": [{"canonical_identity": {"market": "TWSE"}}]
+            "target_results": [{"canonical_identity": {"market": "TWSE"}}],
         }
-    monkeypatch.setattr(unified_workbench_router, "validate_mode_a_request", fake_validate)
+
+    monkeypatch.setattr(
+        unified_workbench_router, "validate_mode_a_request", fake_validate
+    )
+
 
 def test_production_boundary_enforced(monkeypatch, tmp_path):
     from server.services import unified_mode_a
-    
+
     req = {
         "schema_version": "unified_market_evidence_request.v1",
         "request_id": "test-prod",
         "execution_mode": "preview",
         "targets": [{"input": "2330"}],
-        "data_needs": []
+        "data_needs": [],
     }
-    monkeypatch.setattr(unified_mode_a, "PRODUCTION_POINTER_PATH", tmp_path / "missing.json")
+    monkeypatch.setattr(
+        unified_mode_a, "PRODUCTION_POINTER_PATH", tmp_path / "missing.json"
+    )
     with pytest.raises(FileNotFoundError):
         unified_mode_a.validate_mode_a_request(req)
+
 
 def test_api_returns_409_when_production_security_master_missing(monkeypatch, tmp_path):
     from server.services import unified_mode_a
@@ -40,9 +49,11 @@ def test_api_returns_409_when_production_security_master_missing(monkeypatch, tm
         "request_id": "test-prod",
         "execution_mode": "preview",
         "targets": [{"input": "2330"}],
-        "data_needs": []
+        "data_needs": [],
     }
-    monkeypatch.setattr(unified_mode_a, "PRODUCTION_POINTER_PATH", tmp_path / "missing.json")
+    monkeypatch.setattr(
+        unified_mode_a, "PRODUCTION_POINTER_PATH", tmp_path / "missing.json"
+    )
     response = client.post("/api/unified/validate-request", json={"request": req})
     assert response.status_code == 409
     data = response.json()
@@ -54,10 +65,11 @@ def test_api_returns_409_when_production_security_master_missing(monkeypatch, tm
     assert "traceback" not in error_str
     assert "\\" not in error_str and "/" not in data.get("detail", "")
 
+
 def test_non_root_cwd_isolation(monkeypatch):
     import os
     from server.services.unified_mode_a import validate_mode_a_request
-    
+
     # Change CWD to something else
     original_cwd = os.getcwd()
     try:
@@ -67,7 +79,7 @@ def test_non_root_cwd_isolation(monkeypatch):
             "request_id": "test-prod",
             "execution_mode": "preview",
             "targets": [{"input": "2330"}],
-            "data_needs": [{"type": "identity", "priority": "required"}]
+            "data_needs": [{"type": "identity", "priority": "required"}],
         }
         # It should still find the files correctly and raise FileNotFoundError for production snapshot
         # rather than crashing with some other random path error, or if we pass allow_fixture_snapshot=True,
@@ -77,13 +89,14 @@ def test_non_root_cwd_isolation(monkeypatch):
     finally:
         os.chdir(original_cwd)
 
+
 def test_validate_request_valid_envelope(mock_validation):
     req = {
         "schema_version": "unified_market_evidence_request.v1",
         "request_id": "api-test",
         "execution_mode": "preview",
         "targets": [{"input": "2330"}],
-        "data_needs": [{"type": "identity", "priority": "required"}]
+        "data_needs": [{"type": "identity", "priority": "required"}],
     }
     response = client.post("/api/unified/validate-request", json={"request": req})
     assert response.status_code == 200
@@ -113,15 +126,22 @@ def test_validate_request_oversized_body(mock_validation):
     response = client.post("/api/unified/validate-request", content=large_payload)
     assert response.status_code == 413
 
+
 def test_validate_request_missing_envelope(mock_validation):
     response = client.post("/api/unified/validate-request", json={})
     assert response.status_code == 422
     assert "missing 'request' key" in response.json()["detail"]
 
+
 def test_validate_request_malformed_json(mock_validation):
-    response = client.post("/api/unified/validate-request", content="{invalid json", headers={"Content-Type": "application/json"})
+    response = client.post(
+        "/api/unified/validate-request",
+        content="{invalid json",
+        headers={"Content-Type": "application/json"},
+    )
     assert response.status_code == 400
     assert response.json()["detail"] == "malformed_json_body"
+
 
 def test_validate_request_too_large():
     large_req = {"request": {"targets": [{"input": "A" * (1 * 1024 * 1024)}]}}
@@ -240,7 +260,9 @@ def test_malformed_preview_schema_authority_is_409_at_real_service_boundary(
         "get_production_mode_a_security_master",
         lambda _pointer: FakeSecurityMaster(),
     )
-    monkeypatch.setattr(unified_mode_b1, "load_planning_authorities", lambda: authorities)
+    monkeypatch.setattr(
+        unified_mode_b1, "load_planning_authorities", lambda: authorities
+    )
 
     request = {
         "schema_version": "unified_market_evidence_request.v1",
@@ -288,7 +310,9 @@ def test_invalid_preview_output_is_500_not_dependency_unavailable(monkeypatch):
         "get_production_mode_a_security_master",
         lambda _pointer: FakeSecurityMaster(),
     )
-    monkeypatch.setattr(unified_mode_b1, "load_planning_authorities", lambda: authorities)
+    monkeypatch.setattr(
+        unified_mode_b1, "load_planning_authorities", lambda: authorities
+    )
     response = client.post(
         "/api/unified/preview-request",
         json={
@@ -297,9 +321,7 @@ def test_invalid_preview_output_is_500_not_dependency_unavailable(monkeypatch):
                 "request_id": "invalid-preview-output",
                 "execution_mode": "preview",
                 "targets": [{"input": "2330", "market_hint": "TWSE"}],
-                "data_needs": [
-                    {"type": "current_observation", "priority": "required"}
-                ],
+                "data_needs": [{"type": "current_observation", "priority": "required"}],
             }
         },
     )
@@ -310,7 +332,7 @@ def test_invalid_preview_output_is_500_not_dependency_unavailable(monkeypatch):
     assert "dependency" not in json.dumps(result).lower()
 
 
-def test_real_sealed_candidate_preview_endpoint_executes_locally_without_monkeypatch():
+def test_real_sealed_candidate_is_not_a_production_fallback():
     root = Path(__file__).resolve().parents[2]
     pointer = json.loads(
         (root / "config/m8r_06_mode_a_security_master_pointer.json").read_text(
@@ -328,35 +350,43 @@ def test_real_sealed_candidate_preview_endpoint_executes_locally_without_monkeyp
         "data_needs": [{"type": "current_observation", "priority": "required"}],
     }
     response = client.post("/api/unified/preview-request", json={"request": req})
-    assert response.status_code == 200
-    result = response.json()
-    assert result["validation"]["target_results"][0]["canonical_identity"][
-        "canonical_target_id"
-    ] == "TWSE:2330"
-    assert result["preview"]["status"] == "ready_for_confirmation"
-    assert result["orchestration_plan"]["operations"][0]["security_types"] == [
-        "equity"
-    ]
-    assert result["network_executed"] is False
-    assert result["execution_performed"] is False
+    assert response.status_code == 409
+    assert response.json()["error"] == "canonical_security_master_unavailable"
 
 
-def test_authorization_api_uses_real_service_boundary_and_sanitizes_dependency(monkeypatch, tmp_path):
+def test_authorization_api_uses_real_service_boundary_and_sanitizes_dependency(
+    monkeypatch, tmp_path
+):
     from server.services import unified_mode_b2
     from server.services.unified_mode_b1 import ModeB1PlanningUnavailable
 
-    plan = json.loads((Path(__file__).resolve().parents[1] / "fixtures/m8r_05b_01/golden/single_executable_plan.json").read_text(encoding="utf-8"))
+    plan = json.loads(
+        (
+            Path(__file__).resolve().parents[1]
+            / "fixtures/m8r_05b_01/golden/single_executable_plan.json"
+        ).read_text(encoding="utf-8")
+    )
     rebuilt = {
-        "preview": {"status": "ready_for_confirmation", "internal_execution_reference": {"preview_id": "umepreview-v1-api-test"}},
+        "preview": {
+            "status": "ready_for_confirmation",
+            "internal_execution_reference": {"preview_id": "umepreview-v1-api-test"},
+        },
         "orchestration_plan": plan,
     }
     monkeypatch.setattr(unified_mode_b2, "CONTROL_ROOT", tmp_path)
-    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: rebuilt)
+    monkeypatch.setattr(
+        unified_mode_b2, "build_mode_b1_preview", lambda _request: rebuilt
+    )
     payload = {
-        "request": {"schema_version": "unified_market_evidence_request.v1", "request_id": "b2-api-test"},
+        "request": {
+            "schema_version": "unified_market_evidence_request.v1",
+            "request_id": "b2-api-test",
+        },
         "expected_preview_id": "umepreview-v1-api-test",
-        "expected_plan_id": plan["plan_id"], "expected_plan_hash": plan["plan_hash"],
-        "confirm_authorization": True, "approval_scope_mode": "whole_plan_executable_scope",
+        "expected_plan_id": plan["plan_id"],
+        "expected_plan_hash": plan["plan_hash"],
+        "confirm_authorization": True,
+        "approval_scope_mode": "whole_plan_executable_scope",
     }
     response = client.post("/api/unified/authorizations", json=payload)
     assert response.status_code == 200

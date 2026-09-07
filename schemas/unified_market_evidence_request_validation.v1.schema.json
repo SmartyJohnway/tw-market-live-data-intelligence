@@ -289,9 +289,24 @@
             "null"
           ]
         },
-        "canonical_target_id": {
-          "type": "string"
-        },
+    "canonical_target_id": {
+      "type": "string"
+    },
+    "listing_id": {
+      "type": ["string", "null"]
+    },
+    "instrument_id": {
+      "type": ["string", "null"]
+    },
+    "release_id": {
+      "type": ["string", "null"]
+    },
+    "release_manifest_hash": {
+      "type": ["string", "null"]
+    },
+    "execution_eligibility": {
+      "type": ["object", "null"]
+    },
         "market": {
           "type": "string"
         }

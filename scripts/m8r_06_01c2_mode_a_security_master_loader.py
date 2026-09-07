@@ -23,6 +23,11 @@ from scripts.m8r_06_security_master_candidate_paths import (
     runtime_index_dir,
     validate_candidate_id,
 )
+from scripts.m8r_08g_security_master_releases import (
+    SECURITY_MASTER_ROOT,
+    LocalSecurityMasterError,
+    load_active_identity_service,
+)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 POINTER_SCHEMA_VERSION = "m8r_06_mode_a_security_master_pointer.v1"
@@ -57,6 +62,7 @@ class ValidatedModeASecurityMaster:
     manifest: dict[str, Any]
     lookup: dict[str, Any]
     validation: dict[str, Any]
+    identity_service: Any | None = None
 
 
 def get_production_mode_a_security_master(
@@ -68,9 +74,13 @@ def get_production_mode_a_security_master(
         return _production_runtime
     with _production_runtime_lock:
         if _production_runtime is None:
-            # The strict authority remains uncached.  Only a successfully validated
-            # runtime is published to the process-level provider.
-            _production_runtime = load_mode_a_security_master(pointer_path)
+            # M8R-08G moves default production selection to an installation-local
+            # active release.  An explicit non-default pointer remains a legacy
+            # test/migration adapter and is never a production fallback.
+            if Path(pointer_path) == POINTER_PATH:
+                _production_runtime = load_active_mode_a_security_master()
+            else:
+                _production_runtime = load_mode_a_security_master(pointer_path)
     return _production_runtime
 
 
@@ -83,6 +93,51 @@ def reset_production_mode_a_security_master_for_tests() -> None:
 
 def _fail(code: str) -> None:
     raise ModeASecurityMasterUnavailable(code)
+
+
+def load_active_mode_a_security_master(
+    *,
+    security_master_root: Path | str = SECURITY_MASTER_ROOT,
+) -> ValidatedModeASecurityMaster:
+    """Load one atomically selected local release or expose NOT_INITIALIZED.
+
+    This validates only persisted release provenance.  It intentionally does
+    not recompute the present working-tree classifier Skill contract hash.
+    """
+    try:
+        service, active_pointer, release, manifest = load_active_identity_service(
+            root=Path(security_master_root).resolve()
+        )
+    except LocalSecurityMasterError as exc:
+        _fail(exc.code)
+    index = {
+        "schema_version": "taiwan_market_identity_release_index.v1",
+        "release_id": service.release_id,
+        "records": service.records,
+        "record_count": len(service.records),
+    }
+    lookup = {
+        "snapshot": {"snapshot_id": service.release_id},
+        "by_canonical": {record["canonical_target_id"]: record for record in service.records},
+        "by_isin": service._by_isin,
+        "by_code": service._by_code,
+        "by_name": service._by_name,
+    }
+    return ValidatedModeASecurityMaster(
+        pointer=active_pointer,
+        immutable_seal=release,
+        index=index,
+        manifest=manifest,
+        lookup=lookup,
+        validation={
+            "valid": True,
+            "selection_id": service.release_id,
+            "release_id": service.release_id,
+            "release_manifest_hash": service.manifest_hash,
+            "process_lifetime_immutable_selection": True,
+        },
+        identity_service=service,
+    )
 
 
 def _load_dict(path: Path, *, missing_code: str, invalid_code: str) -> dict[str, Any]:

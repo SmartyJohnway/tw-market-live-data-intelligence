@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"taiwan_market_identity_release_status.v1.schema.json","type":"object","additionalProperties":true,"required":["schema_version","release_id","state"],"properties":{"schema_version":{"const":"taiwan_market_identity_release_status.v1"},"release_id":{"type":"string"},"state":{"enum":["REJECTED","RETIRED"]}}}

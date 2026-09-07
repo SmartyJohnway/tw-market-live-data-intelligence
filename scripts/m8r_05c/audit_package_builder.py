@@ -89,6 +89,11 @@ def build_audit_package(
     sec_master_hashes = input_bindings.get("security_master_artifact_hashes")
     if sec_master_hashes:
         target_validation_identity["security_master_artifact_hashes"] = sec_master_hashes
+    references = input_bindings.get("security_master_evidence_references") or []
+    local_release_refs = [ref for ref in references if isinstance(ref, str) and ref.startswith("local_security_master_release:")]
+    if local_release_refs:
+        target_validation_identity["security_master_release_id"] = local_release_refs[0].split(":")[1]
+        target_validation_identity["security_master_release_manifest_hash"] = sec_master_hashes[1] if isinstance(sec_master_hashes, list) and len(sec_master_hashes) > 1 else ""
 
     # Plan identity.
     plan_identity = {
