@@ -273,30 +273,37 @@ No part of this graph is implemented by this task.
 
 ## 26. Critical ordering findings
 
-**Yes.** Any future change to a file included by
-`compute_skill_contract_hash()` changes the active classifier Skill hash.  The
-exact producer is `scripts/m8r_03d_f1_security_master_snapshot_exporter.py`;
-the hash is copied into source snapshot/manifest, Candidate B runtime seal and
-the committed pointer.  The exact validator is the Mode A loader's
-`_validate_pointer_seal_binding()` plus compact-manifest lineage validation;
-the historical seal is the tracked Candidate B
-`runtime_identity_immutable_manifest.json`.  A changed skill cannot validate
-as the old Candidate B lineage.  Therefore 08G-04 cannot safely be implemented
-first: lifecycle/consumer compatibility and new-release migration must precede
-skill realignment.
+`compute_skill_contract_hash()` is a **producer-time provenance binding**.  A
+future change to a covered classifier Skill file changes the hash computed for a
+future source snapshot/release.  The exact producer is
+`scripts/m8r_03d_f1_security_master_snapshot_exporter.py`; Candidate B
+permanently preserves the hash used at its production in the source
+snapshot/manifest, Candidate B runtime seal, and committed pointer.  The exact
+activation validators are the Mode A loader's `_validate_pointer_seal_binding()`
+and compact-manifest lineage validation.  They compare the stored historical
+hash across pointer → seal → index/manifest lineage; they do **not** recompute
+the present working-tree classifier Skill hash.  Editing the current classifier
+Skill alone therefore does not invalidate existing Candidate B activation.  A
+future Security Master Release must instead carry its then-current computed
+Skill contract hash.  The sequencing remains 08G-01 → 08G-02 → 08G-03 →
+08G-04 so portable Skill text describes the final architecture after contract,
+release-lifecycle, and consumer alignment—not an intermediate state.
 
 ## 27. Portability gap register
 
 1. **P0:** current committed pointer selects ignored machine-local artifacts;
    clean clone has no explicit `NOT_INITIALIZED` bootstrap contract.
-2. **P1:** Candidate B/Skill raw-byte hash binding makes independent skill
-   evolution invalidate active release validation without a lifecycle migration.
+2. **P1:** Candidate B preserves a historical producer-contract hash; future
+   releases must bind their then-current Skill contract.  Skill realignment
+   must follow final contract/lifecycle/consumer alignment so it describes the
+   final architecture rather than an intermediate one.
 3. **P1:** requirements have mostly lower bounds and no lock; clean-machine
    reproducibility is not deterministic.
 4. **P1:** skill/AI-guide narrative is stale despite working MCP runtime; its
    validator has an obsolete archive assertion.
-5. **P2:** current schemas use listing identity as canonical, requiring a
-   carefully versioned ISIN-primary migration.
+5. **P1:** current schemas use listing identity as canonical.  Phase-F
+   persistent watchlists must not establish `MARKET:CODE` as durable identity
+   before the carefully versioned ISIN-primary contract is established.
 6. **HISTORICAL ONLY:** Candidate A original payloads are unavailable; reviews
    preserve history and must not be reconstructed.
 
@@ -321,4 +328,3 @@ skill validator failure and stale documentation are retained as 08G-04 gaps.
 
 Proceed only to **M8R-08G-01 Taiwan Market Identity Service Contract
 Realignment Review**.  Do not start 08G implementation, Phase F, or M8R-09.
-
