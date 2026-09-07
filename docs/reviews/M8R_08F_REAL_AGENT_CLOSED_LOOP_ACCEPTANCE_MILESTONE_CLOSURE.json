@@ -1,0 +1,238 @@
+{
+  "task": "M8R-08F-REAL-AGENT-CLOSED-LOOP-ACCEPTANCE-MILESTONE-CLOSURE-AND-PHASE-F-TRANSITION",
+  "baseline_sha": "a423e6c87974c40403fbfaf4fdae068ef9ce26e1",
+  "branch": "codex/m8r-08f-milestone-closure",
+  "g9_merge_provenance_verified": true,
+  "roadmap_authority": {
+    "document": "docs/roadmap/M8_POST_M8C_REVISED_ROADMAP.md",
+    "e3_required_scenarios": [
+      "TWSE",
+      "TPEX",
+      "TAIFEX supported scope / futures",
+      "stale data",
+      "partial success",
+      "identity ambiguity",
+      "authorization refusal",
+      "source failure"
+    ],
+    "phase_f_transition_condition": "conversation-local one-shot closed loop stable, all required E3 scenarios traceable, and unresolved M8R-08F blocker count is zero",
+    "next_milestone": "M8R-09 PERSISTENT WATCHLIST STORAGE AND VERSIONING"
+  },
+  "gate_inventory": {
+    "G0": {
+      "gate_id": "G0",
+      "scenario": "MCP / six-tool contract",
+      "evidence_artifact": "docs/reviews/M8R_08E_ONE_SHOT_MARKET_EVIDENCE_MCP_IMPLEMENTATION.md",
+      "pr_number": 200,
+      "merge_sha": "32347170626efe6197b12604ccf14d05a397cdc1",
+      "request_id": null,
+      "result_id": null,
+      "status": "PASS",
+      "disposition": "six-tool Unified MCP contract accepted",
+      "constraint": null,
+      "blocking_findings": []
+    },
+    "G1": {
+      "gate_id": "G1",
+      "scenario": "TWSE normal supported execution",
+      "evidence_artifact": "docs/reviews/M8R_08E_ONE_SHOT_MARKET_EVIDENCE_MCP_IMPLEMENTATION.md",
+      "pr_number": 200,
+      "merge_sha": "32347170626efe6197b12604ccf14d05a397cdc1",
+      "request_id": null,
+      "result_id": "umeresult-v1-ae2ff4281cfca6464108",
+      "status": "PASS",
+      "disposition": "single authorized production probe for TWSE:2330 current_observation succeeded",
+      "constraint": "current observation is not guaranteed realtime",
+      "blocking_findings": []
+    },
+    "G2": {
+      "gate_id": "G2",
+      "scenario": "TPEX normal supported execution",
+      "evidence_artifact": "docs/reviews/M8R_08F_G5_PARTIAL_SUCCESS_REAL_AGENT_ACCEPTANCE.json",
+      "pr_number": 205,
+      "merge_sha": "48006b39661bb47b94fc0be327f9bef4439cc353",
+      "request_id": "m8r-08f-g5-20260904t055329z",
+      "result_id": "umeresult-v1-c21e301168fae0577562",
+      "status": "PASS",
+      "disposition": "TPEX:6488 normal official_eod_reference operation succeeded with one evidence artifact",
+      "constraint": null,
+      "blocking_findings": []
+    },
+    "G3": {
+      "gate_id": "G3",
+      "scenario": "unsupported-domain fail-closed",
+      "evidence_artifact": "docs/reviews/M8R_08E_ONE_SHOT_MARKET_EVIDENCE_MCP_IMPLEMENTATION.md",
+      "pr_number": 200,
+      "merge_sha": "32347170626efe6197b12604ccf14d05a397cdc1",
+      "request_id": null,
+      "result_id": null,
+      "status": "PASS",
+      "disposition": "existing F3/B1 refusal vocabulary is projected without ticket or network execution for non-actionable domain failures",
+      "constraint": null,
+      "blocking_findings": []
+    },
+    "G4": {
+      "gate_id": "G4",
+      "scenario": "multi-target supported execution",
+      "evidence_artifact": "docs/reviews/M8R_06_03_BOUNDED_LIVE_ACCEPTANCE.md",
+      "pr_number": null,
+      "merge_sha": null,
+      "request_id": null,
+      "result_id": null,
+      "status": "PASS",
+      "disposition": "bounded live acceptance records successful TWSE:2330 and TPEX:5227 current-observation and official-EOD operations",
+      "constraint": null,
+      "blocking_findings": []
+    },
+    "G5": {
+      "gate_id": "G5",
+      "scenario": "partial success",
+      "evidence_artifact": "docs/reviews/M8R_08F_G5_PARTIAL_SUCCESS_REAL_AGENT_ACCEPTANCE.json",
+      "pr_number": 205,
+      "merge_sha": "48006b39661bb47b94fc0be327f9bef4439cc353",
+      "request_id": "m8r-08f-g5-20260904t055329z",
+      "result_id": "umeresult-v1-c21e301168fae0577562",
+      "status": "PASS",
+      "disposition": "one successful TPEX:6488 operation plus one unavailable TPEX:4804 operation yields partial_success and partially_failed without fabricated evidence",
+      "constraint": "TARGET_LEVEL_SOURCE_NON_COVERAGE",
+      "blocking_findings": []
+    },
+    "G6": {
+      "gate_id": "G6",
+      "scenario": "identity ambiguity",
+      "evidence_artifact": "docs/reviews/M8R_08F_G6_02_IDENTITY_AMBIGUITY_PRODUCTION_DISPOSITION_CLOSURE.json",
+      "pr_number": 207,
+      "merge_sha": "095bfaf933ace56b171f1b7f0aa7be24cfcf257a",
+      "request_id": null,
+      "result_id": null,
+      "status": "PASS_WITH_PRODUCTION_DATA_CONSTRAINT",
+      "disposition": "ACCEPTED_WITH_CONSTRAINT",
+      "constraint": "PRODUCTION_AMBIGUITY_NOT_NATURALLY_EXERCISABLE; Candidate B has zero duplicate normalized-name, unscoped-code, and ISIN collision groups; deterministic resolver proves ambiguous/requires_clarification with no selected identity",
+      "blocking_findings": []
+    },
+    "G7": {
+      "gate_id": "G7",
+      "scenario": "source-wide failure",
+      "evidence_artifact": "docs/reviews/M8R_08F_G7_R1_R2_R4C_FINAL_SOURCE_WIDE_FAILURE_CLOSURE.json",
+      "pr_number": 209,
+      "merge_sha": "7a81d94b440a5aba2f88161b5786807adec36d01",
+      "request_id": "m8r-08f-g7-r4c-source-wide-failure-20260904t095800z",
+      "result_id": "umeresult-v1-254d677a9b2e53279ca2",
+      "status": "PASS",
+      "disposition": "repository-owned deterministic source failure yields failed operation, receipt, bundle, consumed_failed Result, and explicit failed AI handoff without retry or fallback",
+      "constraint": "REPOSITORY_OWNED_DETERMINISTIC_SOURCE_FAILURE; no real external outage claimed",
+      "blocking_findings": []
+    },
+    "G8": {
+      "gate_id": "G8",
+      "scenario": "TAIFEX supported-scope boundary",
+      "evidence_artifact": "docs/reviews/M8R_08F_G8_TAIFEX_SUPPORTED_SCOPE_BOUNDARY_ACCEPTANCE.json",
+      "pr_number": 211,
+      "merge_sha": "ff6b670b228ccc117eda3673b7a7cc468c8ff207",
+      "request_id": "m8r-08f-g8-taifex-boundary-20260905t093700z",
+      "result_id": null,
+      "status": "PASS_WITH_PRODUCTION_IDENTITY_CONSTRAINT",
+      "disposition": "TAIFEX_PRODUCTION_IDENTITY_NOT_EXERCISABLE_AND_CAPABILITY_PROVISIONAL",
+      "constraint": "TAIFEX_PRODUCTION_IDENTITY_NOT_EXERCISABLE; deterministic canonical TAIFEX boundary remains provisional and non-executable, with no executor or identity fabricated",
+      "blocking_findings": []
+    },
+    "G9": {
+      "gate_id": "G9",
+      "scenario": "stale / currentness",
+      "evidence_artifact": "docs/reviews/M8R_08F_G9_STALE_CURRENTNESS_REAL_AGENT_ACCEPTANCE.json",
+      "pr_number": 212,
+      "merge_sha": "a423e6c87974c40403fbfaf4fdae068ef9ce26e1",
+      "request_id": "m8r-08f-g9-currentness-20260905t095750z",
+      "result_id": "umeresult-v1-1a19617b3317d684638b",
+      "status": "PASS",
+      "disposition": "successful production transport observation retained source timestamp, retrieval timestamp, 98826-second delay, and not_realtime_guaranteed through Mode C and AI handoff",
+      "constraint": "CURRENTNESS_UNRESOLVED_OR_CAVEATED",
+      "blocking_findings": []
+    }
+  },
+  "roadmap_traceability": {
+    "TWSE": {"evidence": "G1", "status": "COVERED", "constraint": "current observation does not imply a realtime guarantee"},
+    "TPEX": {"evidence": "G2", "status": "COVERED", "constraint": null},
+    "futures": {"evidence": "G8", "status": "COVERED_WITH_PRODUCTION_IDENTITY_CONSTRAINT", "constraint": "TAIFEX_PRODUCTION_IDENTITY_NOT_EXERCISABLE"},
+    "stale": {"evidence": "G9", "status": "COVERED", "constraint": "production observation was currentness-caveated rather than relabelled stale"},
+    "partial_success": {"evidence": "G5", "status": "COVERED", "constraint": "TARGET_LEVEL_SOURCE_NON_COVERAGE"},
+    "identity_ambiguity": {"evidence": "G6", "status": "COVERED_WITH_PRODUCTION_DATA_CONSTRAINT", "constraint": "PRODUCTION_AMBIGUITY_NOT_NATURALLY_EXERCISABLE"},
+    "authorization_refusal": {"evidence": "focused B2/MCP contracts plus closure MCP smoke", "status": "COVERED", "constraint": null},
+    "source_failure": {"evidence": "G7", "status": "COVERED", "constraint": "deterministic source-failure transport; no real outage claimed"}
+  },
+  "authorization_refusal_closure": {
+    "focused_tests": {"command": "pytest tests/unit/test_m8r_05b_03_controlled_dispatch.py tests/unit/test_m8r_06_03_mode_b2_authorization.py tests/unit/test_m8r_08e_local_operator_action.py -q", "passed": 35, "failed": 0, "skipped": 0},
+    "mode_b2_confirmation_refusal": "PASS; missing confirm_execution returns execution_confirmation_required and network-required execution without confirm_network_execution returns network_execution_confirmation_required before claim and dispatch",
+    "authorization_refusal_b2_contract": "PASS",
+    "mcp_preview_action_refusal": "PASS",
+    "request_id": "m8r-08f-closure-authorization-refusal-20260905t135000z",
+    "error_code": "market_fetch_requires_execute_mode",
+    "is_error": true,
+    "authorization_created": false,
+    "control_package_created": false,
+    "source_invocation_count": 0,
+    "external_market_calls": 0,
+    "market_network_executed": false,
+    "result_materialized": false,
+    "runtime_root": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\m8r-08f-closure-20260905T134948Z",
+    "runtime_root_outside_repository": true,
+    "disposition": "COVERED_BY_EXISTING_FAIL_CLOSED_AUTHORIZATION_CONTRACTS"
+  },
+  "accepted_constraints": {
+    "G6": "PRODUCTION_AMBIGUITY_NOT_NATURALLY_EXERCISABLE: Candidate B currently contains no natural duplicate-name, code, or ISIN ambiguity; deterministic contract evidence proves fail-closed semantics and no production identity was fabricated.",
+    "G8": "TAIFEX_PRODUCTION_IDENTITY_NOT_EXERCISABLE: TAIFEX support remains provisional; Candidate B does not naturally resolve the required futures identity, while deterministic canonical boundary proof remains non-executable and no executor or identity was fabricated."
+  },
+  "carried_debts": {
+    "G9_currentness_vocabulary": {
+      "debt_id": "TWSE_CURRENT_OBSERVATION_FRESHNESS_CONTRACT_CONVERGENCE",
+      "classification": "NON_BLOCKING_PRODUCTIZATION_DEBT",
+      "description": "TWSE current_observation normalization uses conservative M5K wording, current observation candidate; realtime status not guaranteed, while stricter freshness utilities classify observations older than 900 seconds as stale or stale_or_closed_session. G9 proved source timestamp, retrieval timestamp, 98826-second delay, and not_realtime_guaranteed remain visible through Mode C and AI handoff without an Agent realtime upgrade."
+    },
+    "inherited_test_debt": {
+      "present": true,
+      "evidence_artifact": "docs/reviews/M8R_08F_G7_R1_R2_R4C_FINAL_SOURCE_WIDE_FAILURE_CLOSURE.json",
+      "known_families": [
+        "M8R-05C lineage and sanitized-lineage fixtures, including artifact_hash_mismatch cases",
+        "pre-existing M3G/M5 staging, promotion, and Phase-C fixture failures recorded in the P0 baseline"
+      ],
+      "m8r_08f_regression": false
+    }
+  },
+  "security_master": {
+    "production_pointer_unchanged": true,
+    "candidate_B_id": "m8r06-01b-20260903T093604Z",
+    "candidate_B_seals_unchanged": true,
+    "candidate_B_local_runtime_artifacts_unchanged": true,
+    "historical_A_unchanged": true,
+    "candidate_A_original_artifacts": "unavailable and not reconstructed",
+    "production_authority": "Candidate B remains the governed production authority"
+  },
+  "product_contract_freeze": {
+    "mcp_version": "1.29.0",
+    "mcp_tool_count": 6,
+    "tool_names": ["market_describe_capabilities", "market_validate_request", "market_preview_request", "market_read_result", "market_export_ai_handoff", "market_fetch_evidence"],
+    "bounded_execute_once": true,
+    "no_background_execution": true,
+    "no_scheduler": true,
+    "no_persistent_watchlist_mutation": true,
+    "no_trading": true,
+    "no_model_selected_urls_or_executors": true,
+    "accepted_chain": "AI -> Unified Market Evidence Request -> deterministic validation -> preview -> bounded one-shot execution where executable -> Receipt / Bundle -> canonical Unified Result -> audit / citations -> AI-ready handoff -> continued AI discussion"
+  },
+  "transition_gate": {
+    "all_required_e3_scenarios_traceable": true,
+    "conversation_local_one_shot_stable": true,
+    "unresolved_08f_blocker_count": 0,
+    "phase_f_transition_eligible": true,
+    "m8r_09_implementation_started": false,
+    "next_authorized_action": "READY_TO_BEGIN_M8R_09_PREFLIGHT"
+  },
+  "repository_clean_before_artifact": true,
+  "compileall": "PASS",
+  "git_diff_check": "PASS",
+  "test_processes_stopped": true,
+  "test_environment_cleared": true,
+  "blocking_findings": [],
+  "milestone_disposition": "CLOSED_WITH_ACCEPTED_CONSTRAINTS_AND_CARRIED_DEBTS",
+  "principal_decision": "READY_FOR_PR_213_M8R_08F_MILESTONE_CLOSURE_REVIEW"
+}
