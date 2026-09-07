@@ -1,0 +1,128 @@
+{
+  "task": "M8R-08G-00-ARCHITECTURE-CONTRACT-AND-REPOSITORY-WIDE-IMPACT-INVENTORY",
+  "baseline_sha": "bcf586041a94c2349d6a854410a1813d2669cd7e",
+  "branch": "codex/m8r-08g-00-architecture-impact-inventory",
+  "network_used": false,
+  "production_behavior_changed": false,
+  "production_security_master_mutated": false,
+  "phase_f_implementation_started": false,
+  "expected_no_change_assertions": {
+    "production_pointer_changed": false,
+    "candidate_b_mutated": false,
+    "security_master_acquisition_performed": false,
+    "market_network_used": false,
+    "skill_content_changed": false,
+    "ai_guide_changed": false,
+    "schema_changed": false,
+    "dependency_lock_created": false,
+    "persistent_watchlist_implemented": false
+  },
+  "architecture_decisions": [
+    {"decision": "instrument_primary_identity", "current_state": "canonical_target_id is MARKET:CODE in active contracts", "target": "ISIN for governed cash-market instruments", "gap": "durable instrument and listing identities are not separated", "target_milestones": ["M8R-08G-01", "M8R-08G-03"]},
+    {"decision": "listing_routing_identity", "current_state": "canonical_target_id is resolver, planner, result, audit and adapter key", "target": "retain MARKET:CODE as listing/routing identity", "gap": "must introduce compatibility mapping", "target_milestones": ["M8R-08G-01", "M8R-08G-03"]},
+    {"decision": "local_authority", "current_state": "committed pointer selects Git-ignored Candidate B compact artifacts", "target": "installation-local qualified release lifecycle and active pointer", "gap": "no explicit NOT_INITIALIZED bootstrap", "target_milestones": ["M8R-08G-02", "M8R-08G-05"]},
+    {"decision": "knowledge_execution_split", "current_state": "46,374 knowledge records and 2,331 runtime-eligible records are counted separately", "target": "Identity Knowledge Universe explicitly separate from Execution Universe", "gap": "split is internal data semantics, not public service contract", "target_milestones": ["M8R-08G-01", "M8R-08G-03"]},
+    {"decision": "skill_state", "current_state": "classifier Skill is Candidate-B hash-bound; market-evidence Skill says MCP is unavailable", "target": "current portable skill and guide after consumer migration", "gap": "updating skill first breaks sealed lineage and guide is stale", "target_milestones": ["M8R-08G-03", "M8R-08G-04"]},
+    {"decision": "dependency_reproducibility", "current_state": "mcp is exact pinned but most requirements are lower bounds; no lock file", "target": "deterministic clean-machine environment", "gap": "dependency resolution is not locked", "target_milestones": ["M8R-08G-05"]}
+  ],
+  "current_security_master_authority_chain": [
+    {"path": "config/m8r_06_mode_a_security_master_pointer.json", "role": "committed current selector", "authority": "ACTIVE_RUNTIME/CURRENT_CONFIG", "tracked_state": "Git-tracked", "bindings": ["index_id", "source_bundle_id", "source_snapshot_id", "source_snapshot_sha256", "source_skill_contract_hash", "compact SHA/schema hashes", "coverage counts"], "failure_behavior": "strict schema and binding validation"},
+    {"path": "docs/contracts/schemas/m8r_06_mode_a_security_master_pointer.v1.schema.json", "role": "pointer schema", "authority": "ACTIVE_RUNTIME", "tracked_state": "Git-tracked", "bindings": ["all pointer required fields"], "failure_behavior": "unsupported_pointer_schema_version/pointer_schema_invalid"},
+    {"path": "docs/reviews/security_master_candidates/m8r06-01b-20260903T093604Z/runtime_identity_immutable_manifest.json", "role": "immutable Candidate B runtime seal", "authority": "CURRENT_DOC/SEAL", "tracked_state": "Git-tracked", "bindings": ["source lineage", "compact hashes", "record/coverage counts", "reproduction policy"], "failure_behavior": "pointer_seal_* mismatch"},
+    {"path": "data/security_master/runtime_identity_indexes/m8r06-01b-20260903T093604Z/{index,manifest}.json", "role": "compact runtime authority", "authority": "ACTIVE_RUNTIME", "tracked_state": "Git-ignored local", "bindings": ["pointer SHA-256", "manifest lineage", "index schema"], "failure_behavior": "candidate_index_missing/candidate_manifest_missing or hash/lineage failure"},
+    {"path": "scripts/m8r_06_01c2_mode_a_security_master_loader.py", "role": "strict loader and process cache", "authority": "ACTIVE_RUNTIME", "tracked_state": "Git-tracked", "bindings": ["pointer→seal→local artifacts→lookup"], "failure_behavior": "ModeASecurityMasterUnavailable with private reason code"},
+    {"path": "scripts/m8r_05a_f3/target_validator.py", "role": "canonical resolver/F3 target projection", "authority": "ACTIVE_RUNTIME", "tracked_state": "Git-tracked", "bindings": ["lookup canonical_target_id", "execution_eligibility"], "failure_behavior": "not_found/ambiguous/quarantined/unsupported_security_type/duplicate"},
+    {"path": "scripts/m8r_06_02_mode_b1_preview.py", "role": "offline preview and planning authority load", "authority": "ACTIVE_RUNTIME", "tracked_state": "Git-tracked", "bindings": ["F3 validation", "catalog", "routing", "executor disposition"], "failure_behavior": "non-authorizing error/blocked preview"},
+    {"path": "server/services/unified_mode_a.py; server/services/unified_mode_b1.py", "role": "Local Service Mode A/B bridge", "authority": "ACTIVE_RUNTIME", "tracked_state": "Git-tracked", "bindings": ["production pointer-selected loader"], "failure_behavior": "no fixture fallback in production"},
+    {"path": "server/services/unified_mode_c.py; server/unified_mcp/{tool_contracts,server}.py", "role": "verified result materialization and six-tool MCP", "authority": "ACTIVE_RUNTIME", "tracked_state": "Git-tracked", "bindings": ["verified control lineage", "canonical request schema"], "failure_behavior": "invalid/unsupported control or non-execute fetch rejects fail closed"}
+  ],
+  "identity_model": {
+    "current_canonical_identity": "canonical_target_id = MARKET:CODE",
+    "current_identity_fields": ["canonical_target_id", "identity.security_code", "identity.isin", "security_name_zh", "security_name_en", "cfi", "classification.market", "classification.instrument_type"],
+    "resolver_order": ["exact ISIN", "exact code within market context", "exact normalized Chinese/English name", "official alias/former name", "candidate-only fuzzy match"],
+    "future_instrument_primary_identity": "ISIN for ISIN.twse-governed cash-market instruments",
+    "future_listing_identity": "market + security_code",
+    "current_alias_history": "skill contract supports alias/former-name evidence and lifecycle event preservation; active compact runtime has no separate durable alias/listing-history service"
+  },
+  "candidate_b_couplings": [
+    {"path": "config/m8r_06_mode_a_security_master_pointer.json", "classification": "ACTIVE_RUNTIME", "fields": ["selection_id", "index_id", "source_bundle_id", "source_snapshot_id", "source_skill_contract_hash", "compact hashes", "counts"], "future_disposition": "MIGRATE_CONSUMER"},
+    {"path": "scripts/m8r_06_01c2_mode_a_security_master_loader.py", "classification": "ACTIVE_RUNTIME", "fields": ["pointer/seal/manifest bindings", "process cache"], "future_disposition": "MIGRATE_CONSUMER"},
+    {"path": "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py", "classification": "ACTIVE_TEST", "fields": ["synthetic pointer/manifest and fail-closed cases"], "future_disposition": "REALIGN"},
+    {"path": "docs/reviews/security_master_candidates/m8r06-01b-20260903T093604Z/*", "classification": "CURRENT_DOC", "fields": ["materialization, activation, local runtime closure, immutable seals"], "future_disposition": "RETAIN_AS_HISTORICAL"},
+    {"path": "docs/reviews/M8R_08F_G5_PARTIAL_SUCCESS_REAL_AGENT_ACCEPTANCE.json", "classification": "HISTORICAL_ACCEPTANCE", "fields": ["candidate_id"], "future_disposition": "RETAIN_AS_HISTORICAL"},
+    {"path": "docs/reviews/M8R_08F_G6_02_IDENTITY_AMBIGUITY_PRODUCTION_DISPOSITION_CLOSURE.json", "classification": "HISTORICAL_ACCEPTANCE", "fields": ["candidate_id and counts"], "future_disposition": "RETAIN_AS_HISTORICAL"},
+    {"path": "docs/reviews/M8R_08F_G7_POST_MERGE_CLOSURE.json; M8R_08F_G8_TAIFEX_SUPPORTED_SCOPE_BOUNDARY_ACCEPTANCE.json; M8R_08F_G9_STALE_CURRENTNESS_REAL_AGENT_ACCEPTANCE.json", "classification": "HISTORICAL_ACCEPTANCE", "fields": ["Candidate B immutability assertions"], "future_disposition": "RETAIN_AS_HISTORICAL"},
+    {"path": "docs/reviews/M8R_08F_REAL_AGENT_CLOSED_LOOP_ACCEPTANCE_MILESTONE_CLOSURE.json", "classification": "HISTORICAL_REVIEW", "fields": ["production authority freeze"], "future_disposition": "RETAIN_AS_HISTORICAL"}
+  ],
+  "artifacts": [
+    {"path": "config/m8r_06_mode_a_security_master_pointer.json", "blob_sha": "6c326d6064835411ad3c3e707c52c59ba743f08c", "class": "configuration", "current_role": "active Candidate B selection", "authority_status": "CURRENT", "tracked_state": "Git-tracked", "producer": "M8R-08F R0 activation", "consumers": ["Mode A loader", "Mode A/B Local Service", "Workbench"], "bindings": ["seal", "local index", "local manifest"], "disposition": "MIGRATE_CONSUMER", "target_milestone": "M8R-08G-02/03", "risk": "hard-coded candidate-specific committed local dependency"},
+    {"path": "docs/reviews/security_master_candidates/m8r06-01b-20260903T093604Z/runtime_identity_immutable_manifest.json", "blob_sha": "355e725902e9b9006cd2e9f9607110047016ed00", "class": "immutable seal", "current_role": "Candidate B lineage authority", "authority_status": "CURRENT_SEALED_HISTORY", "tracked_state": "Git-tracked", "producer": "compact identity index producer", "consumers": ["Mode A loader", "acceptance review"], "bindings": ["source_skill_contract_hash", "source snapshot", "compact hashes"], "disposition": "RETAIN_AS_HISTORICAL", "target_milestone": "M8R-08G-02", "risk": "cannot alter without invalidating history"},
+    {"path": "data/security_master/runtime_identity_indexes/m8r06-01b-20260903T093604Z/{index,manifest}.json", "blob_sha": null, "class": "local runtime artifact", "current_role": "active lookup source", "authority_status": "CURRENT_LOCAL", "tracked_state": "Git-ignored", "producer": "M8R-06 compact index materialization", "consumers": ["Mode A loader", "F3"], "bindings": ["pointer SHA-256", "manifest lineage"], "disposition": "REALIGN", "target_milestone": "M8R-08G-02", "risk": "clean clone lacks active local artifacts"},
+    {"path": "scripts/m8r_06_01c2_mode_a_security_master_loader.py", "blob_sha": "4208879e3ece6d52e9855f3976172f6f422cb629", "class": "runtime loader", "current_role": "strict authority validation and immutable process cache", "authority_status": "CURRENT", "tracked_state": "Git-tracked", "producer": "M8R-06", "consumers": ["Mode A", "B1", "Workbench"], "bindings": ["pointer", "seal", "compact artifacts"], "disposition": "MIGRATE_CONSUMER", "target_milestone": "M8R-08G-02/03", "risk": "no explicit NOT_INITIALIZED state"},
+    {"path": "scripts/m8r_05a_f3/target_validator.py", "blob_sha": "20da1a267144f07aa71fb0b50ff818794f6437d6", "class": "F3 resolver", "current_role": "canonical target validation", "authority_status": "CURRENT", "tracked_state": "Git-tracked", "producer": "M8R-05A", "consumers": ["B1", "B2", "Mode C lineage"], "bindings": ["canonical_target_id", "execution_eligibility"], "disposition": "MIGRATE_CONSUMER", "target_milestone": "M8R-08G-03", "risk": "canonical listing ID is not future durable instrument ID"},
+    {"path": "skills/tw-security-master-classifier", "blob_sha": "e6798c2c1933154f339ba2374aa13da3e42d1caf", "class": "skill source contract", "current_role": "classification/identity/lifecycle authority", "authority_status": "CURRENT", "tracked_state": "Git-tracked", "producer": "skill repository", "consumers": ["snapshot exporter", "Candidate B seal lineage"], "bindings": ["source_skill_contract_hash"], "disposition": "RETAIN_AS_AUTHORITY", "target_milestone": "M8R-08G-01/04", "risk": "contract changes invalidate old Candidate B hash binding"},
+    {"path": "skills/tw-market-evidence-agent/SKILL.md", "blob_sha": "c22a7d6c040559cf789a9034544672944e2f6610", "class": "portable skill", "current_role": "agent instructions", "authority_status": "STALE_CURRENT_DOC", "tracked_state": "Git-tracked", "producer": "M8R-05A", "consumers": ["AI agent"], "bindings": ["portable catalog"], "disposition": "REALIGN", "target_milestone": "M8R-08G-04", "risk": "claims direct MCP unavailable despite merged runtime"},
+    {"path": "docs/agent_usage_guide.md", "blob_sha": "cb6dd9a8b23811c4f493a1b3b8b57ddaabe6a63a", "class": "AI guide", "current_role": "agent/operator guide", "authority_status": "STALE_CURRENT_DOC", "tracked_state": "Git-tracked", "producer": "M8R-05A", "consumers": ["AI/operator"], "bindings": [], "disposition": "REALIGN", "target_milestone": "M8R-08G-04", "risk": "manual-only/M8R-06-not-implemented statements"},
+    {"path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json", "blob_sha": null, "class": "canonical capability catalog", "current_role": "committed capability authority", "authority_status": "CURRENT", "tracked_state": "Git-tracked", "producer": "catalog governance", "consumers": ["Local Service", "B1", "portable generator"], "bindings": ["portable canonical_sha256"], "disposition": "RETAIN_AS_AUTHORITY", "target_milestone": "NO_CHANGE", "risk": "does not ensure narrative skill/runtime alignment"},
+    {"path": "docs/reviews/M8R_08F_*.json/md", "blob_sha": null, "class": "acceptance evidence", "current_role": "historical M8R-08F truth", "authority_status": "HISTORICAL", "tracked_state": "Git-tracked", "producer": "G0-G9 acceptance", "consumers": ["milestone closure", "future migration review"], "bindings": ["requests/results/seals where recorded"], "disposition": "RETAIN_AS_HISTORICAL", "target_milestone": "ALL", "risk": "must not be retroactively rewritten"}
+  ],
+  "dependency_edges": [
+    {"from": "tw-security-master-classifier contract files", "to": "compute_skill_contract_hash", "type": "raw-byte hash"},
+    {"from": "source snapshot/manifest", "to": "Candidate B source/runtime immutable seals", "type": "lineage hash and counts"},
+    {"from": "Candidate B seal", "to": "committed pointer", "type": "exact binding validation"},
+    {"from": "committed pointer", "to": "ignored compact index/manifest", "type": "governed paths and SHA-256"},
+    {"from": "validated compact lookup", "to": "F3 target validator", "type": "canonical identity and eligibility"},
+    {"from": "F3", "to": "B1 plan/B2 execution/Mode C", "type": "validated canonical targets and lineage"},
+    {"from": "Local Service", "to": "Unified MCP", "type": "fixed six-tool delegation"}
+  ],
+  "schema_impacts": [
+    {"path": "docs/contracts/schemas/m8r_06_mode_a_security_master_pointer.v1.schema.json", "impact": "MIGRATION_ADAPTER_REQUIRED", "reason": "candidate-specific local selector"},
+    {"path": "docs/contracts/schemas/tw_compact_runtime_identity_index.v1.schema.json", "impact": "LIKELY_REALIGN", "reason": "canonical_target_id is current primary key while ISIN is metadata"},
+    {"path": "docs/contracts/schemas/tw_compact_runtime_identity_index_manifest.v1.schema.json", "impact": "MIGRATION_ADAPTER_REQUIRED", "reason": "old candidate lineage and reproduction semantics remain historical"},
+    {"path": "schemas/unified_market_evidence_request_validation.v1.schema.json", "impact": "MIGRATION_ADAPTER_REQUIRED", "reason": "canonical target identity is returned with market/code/ISIN"},
+    {"path": "schemas/unified_market_evidence_{request,preview_response,orchestration_plan,result,audit_package}.v1.schema.json", "impact": "MIGRATION_ADAPTER_REQUIRED", "reason": "downstream plans/results/audits bind current listing canonical IDs"},
+    {"path": "skills/tw-security-master-classifier/references/schemas/*.json", "impact": "NO_CHANGE", "reason": "classification/lifecycle authority is broader than current execution universe"}
+  ],
+  "skill_impacts": [
+    {"skill": "tw-security-master-classifier", "current_contract_hash": "33be39c30a84641e7591d3d1680adb18b90efd8f509d75b3e971cb46d24c9b6d", "impact": "changes alter Candidate B sealed lineage", "ordering": "do not update before lifecycle/consumer migration", "target_milestone": "M8R-08G-01/03 before 04"},
+    {"skill": "tw-market-evidence-agent", "impact": "manual-handoff and unavailable-MCP claims drift from current M8R-08F runtime", "ordering": "realign after runtime identity contract", "target_milestone": "M8R-08G-04"}
+  ],
+  "documentation_drift": [
+    {"path": "docs/agent_usage_guide.md", "classification": "STALE_CURRENT_DOC", "evidence": ["M8R-06 Unified Operator Workbench and direct MCP not implemented", "manual handoff", "Mode B2/Mode C not implemented"], "target_milestone": "M8R-08G-04"},
+    {"path": "skills/tw-market-evidence-agent/SKILL.md", "classification": "STALE_CURRENT_DOC", "evidence": ["direct Unified MCP/service execution not currently available", "manual operator execution"], "target_milestone": "M8R-08G-04"},
+    {"path": "skills/tw-market-evidence-agent/references/current_limitations.md", "classification": "STALE_CURRENT_DOC", "evidence": ["Unified Orchestrator API Pending", "Manual Workbench Fallback"], "target_milestone": "M8R-08G-04"},
+    {"path": "docs/ai/M8_AI_CAPABILITY_CONTRACT.md and m8_ai_capability_contract.json", "classification": "DUPLICATE_AUTHORITY_RISK", "evidence": ["older contract is described as authoritative", "validator expects obsolete string archive marker while JSON has archive object"], "target_milestone": "M8R-08G-04"}
+  ],
+  "portability_gaps": [
+    {"gap_id": "SM_LOCAL_CANDIDATE_BOOTSTRAP", "severity": "P0 BLOCKER", "current_state": "tracked pointer requires ignored local Candidate B index and manifest; missing files fail closed but have no explicit NOT_INITIALIZED state", "evidence_paths": [".gitignore", "config/m8r_06_mode_a_security_master_pointer.json", "scripts/m8r_06_01c2_mode_a_security_master_loader.py", "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py"], "target_state": "installation-local qualified release lifecycle with legal NOT_INITIALIZED bootstrap", "blocker_for_phase_f": true, "recommended_milestone": "M8R-08G-02"},
+    {"gap_id": "SKILL_SEAL_COUPLING", "severity": "P1 PRE-PHASE-F REQUIRED", "current_state": "active skill raw-byte contract hash is sealed in Candidate B pointer/seal/manifest lineage", "evidence_paths": ["scripts/m8r_03d_f1_security_master_snapshot_exporter.py", "config/m8r_06_mode_a_security_master_pointer.json", "docs/reviews/security_master_candidates/m8r06-01b-20260903T093604Z/runtime_identity_immutable_manifest.json", "scripts/m8r_06_01c2_mode_a_security_master_loader.py"], "target_state": "versioned release/consumer migration before skill realignment", "blocker_for_phase_f": true, "recommended_milestone": "M8R-08G-01/02/03"},
+    {"gap_id": "IDENTITY_PRIMARY_KEY", "severity": "P1 PRE-PHASE-F REQUIRED", "current_state": "MARKET:CODE is current canonical key and ISIN is metadata", "evidence_paths": ["docs/contracts/schemas/tw_compact_runtime_identity_index.v1.schema.json", "scripts/m8r_05a_f3/target_validator.py", "schemas/unified_market_evidence_request_validation.v1.schema.json"], "target_state": "ISIN-primary governed identity with listing routing adapter", "blocker_for_phase_f": true, "recommended_milestone": "M8R-08G-01/03"},
+    {"gap_id": "SKILL_GUIDE_RUNTIME_DRIFT", "severity": "P1 PRE-PHASE-F REQUIRED", "current_state": "portable Skill and agent guide still say MCP/B2/C unavailable; validator itself has obsolete archive comparison", "evidence_paths": ["skills/tw-market-evidence-agent/SKILL.md", "skills/tw-market-evidence-agent/references/current_limitations.md", "docs/agent_usage_guide.md", "skills/tw-market-evidence-agent/scripts/validate_skill.py"], "target_state": "current runtime-aware portable skill, guide and validator", "blocker_for_phase_f": true, "recommended_milestone": "M8R-08G-04"},
+    {"gap_id": "DEPENDENCY_REPRODUCIBILITY", "severity": "P1 PRE-PHASE-F REQUIRED", "current_state": "mostly lower-bound requirements and no lock file", "evidence_paths": ["requirements.txt", ".github/workflows/ci.yml", ".github/workflows/windows-compatibility-smoke.yml"], "target_state": "deterministic clean-machine dependency contract", "blocker_for_phase_f": true, "recommended_milestone": "M8R-08G-05"},
+    {"gap_id": "HISTORICAL_CANDIDATE_A", "severity": "HISTORICAL ONLY", "current_state": "original Candidate A payloads unavailable; reviews/seals preserve historical evidence", "evidence_paths": ["docs/reviews/security_master_candidates/m8r06-01b-20260903T093604Z/M8R_08F_R0_02_CANDIDATE_MATERIALIZATION_REVIEW.json", "docs/reviews/security_master_candidates/m8r06-01b-20260903T093604Z/M8R_08F_R0_03_PRODUCTION_AUTHORITY_ACTIVATION_REVIEW.json"], "target_state": "preserve, do not reconstruct", "blocker_for_phase_f": false, "recommended_milestone": "NO_CHANGE"}
+  ],
+  "watchlist_surface_inventory": [
+    {"path": "config/m5k_default_watchlist.json; docs/architecture/ai_watchlist_workflow.md", "classification": "legacy M5 bounded config / conversation workspace", "persistent_product_storage": false},
+    {"path": "scripts/m8r_03d_watchlist_execution_plan.py; scripts/m8r_03e_watchlist_ai_context_builder.py", "classification": "source planning and temporary conversation context", "persistent_product_storage": false},
+    {"path": "docs/data_capabilities/m8_source_capability_registry.json", "classification": "governance registry", "evidence": "m8r_03e_persistent_watchlist_enabled=false", "persistent_product_storage": false},
+    {"path": "frontend/readonly-preview/watchlist-workspace.html", "classification": "local import/export UI surface", "persistent_product_storage": false}
+  ],
+  "milestone_allocation": [
+    {"milestone": "M8R-08G-01", "scope": "Taiwan Market Identity Service Contract Realignment"},
+    {"milestone": "M8R-08G-02", "scope": "Local Security Master Release Lifecycle Implementation"},
+    {"milestone": "M8R-08G-03", "scope": "Identity Service Consumer Migration"},
+    {"milestone": "M8R-08G-04", "scope": "Portable Skill and AI Guide Realignment"},
+    {"milestone": "M8R-08G-05", "scope": "Clean Clone and Cross-Machine Reproducibility"},
+    {"milestone": "M8R-08G-06", "scope": "Pre-Phase-F Final Closure"}
+  ],
+  "validation": {
+    "security_master_skill_validator": {"status": "PASS", "details": "187 checks; inspected before run and uses fixtures/policy checks, not acquisition"},
+    "portable_catalog_sync_validator": {"status": "PASS", "details": "Deep Equality Verified; no tracked output mutation"},
+    "market_evidence_skill_validator": {"status": "NOT_PASS", "details": "fails because validator expects _archive_status string but current archived JSON uses an object; recorded as 08G-04 validator/documentation gap"},
+    "full_pytest": {"status": "NOT_RUN", "reason": "inventory task; default profile safety was not established as necessary and no test-count gate applies"},
+    "market_network": "NOT_USED",
+    "security_master_mutation": "NOT_USED"
+  },
+  "blocking_findings": [],
+  "principal_decision": "READY_FOR_M8R_08G_01_CONTRACT_REALIGNMENT_REVIEW"
+}
