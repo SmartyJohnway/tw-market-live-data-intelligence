@@ -70,7 +70,9 @@
         "security_master_artifact_hashes": {
           "type": "array",
           "items": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
-        }
+        },
+        "security_master_release_id": {"type": "string"},
+        "security_master_release_manifest_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
       }
     },
     "plan_identity": {

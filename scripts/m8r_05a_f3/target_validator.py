@@ -4,7 +4,7 @@ from .request_validation_models import *
 
 def _identity(selected):
     identity = selected.get("identity") or {}; classification = selected.get("classification") or {}
-    return {"canonical_target_id": selected.get("canonical_target_id"), "market": classification.get("market"), "security_code": identity.get("security_code"), "isin": identity.get("isin"), "security_name_zh": identity.get("security_name_zh"), "security_name_en": identity.get("security_name_en"), "instrument_type": classification.get("instrument_type"), "instrument_family": classification.get("instrument_family")}
+    return {"canonical_target_id": selected.get("canonical_target_id"), "listing_id": selected.get("listing_id") or selected.get("canonical_target_id"), "instrument_id": selected.get("instrument_id") or identity.get("isin"), "market": classification.get("market"), "security_code": identity.get("security_code"), "isin": identity.get("isin"), "security_name_zh": identity.get("security_name_zh"), "security_name_en": identity.get("security_name_en"), "instrument_type": classification.get("instrument_type"), "instrument_family": classification.get("instrument_family"), "execution_eligibility": selected.get("execution_eligibility"), "release_id": selected.get("release_id"), "release_manifest_hash": selected.get("release_manifest_hash")}
 
 def validate_target(target, index, *, security_master, supported_markets, recognized_markets=(), seen, allow_fixture_snapshot):
     raw = target.get("input") if isinstance(target, dict) else None; hint = target.get("market_hint") if isinstance(target, dict) else None
@@ -14,11 +14,30 @@ def validate_target(target, index, *, security_master, supported_markets, recogn
     # The canonical request schema makes invalid hints unreachable in normal use.
     if hint is not None and hint not in supported_markets:
         out["resolution_status"]="unsupported_market" if hint in recognized_markets else "invalid_market_hint"; out["reason_codes"]=["TARGET_MARKET_UNSUPPORTED" if hint in recognized_markets else "TARGET_MARKET_HINT_INVALID"]; return out
-    resolved = resolve_verified_security_identity(raw.strip(), security_master.lookup, market_context=hint, allow_fixture_snapshot=allow_fixture_snapshot, execute_mode=True)
+    service = getattr(security_master, "identity_service", None)
+    if service is not None:
+        service_resolution = service.resolve(raw.strip(), market_hint=hint)
+        candidates_with_provenance = []
+        for candidate in service_resolution.candidates:
+            enriched = dict(candidate)
+            enriched["release_id"] = service.release_id
+            enriched["release_manifest_hash"] = service.manifest_hash
+            candidates_with_provenance.append(enriched)
+        selected_with_provenance = dict(service_resolution.selected or {})
+        if selected_with_provenance:
+            selected_with_provenance["release_id"] = service.release_id
+            selected_with_provenance["release_manifest_hash"] = service.manifest_hash
+        resolved = {"resolution_status": service_resolution.status, "selected": selected_with_provenance, "candidates": candidates_with_provenance, "reason_codes": service_resolution.reason_codes, "candidate_count": len(candidates_with_provenance)}
+    else:
+        resolved = resolve_verified_security_identity(raw.strip(), security_master.lookup, market_context=hint, allow_fixture_snapshot=allow_fixture_snapshot, execute_mode=True)
     status = resolved["resolution_status"]; candidates = sorted(resolved.get("candidates") or [], key=lambda x: ((x.get("classification") or {}).get("market") or "", (x.get("identity") or {}).get("security_code") or "", x.get("canonical_target_id") or ""))
     if candidates: out["candidate_matches"]=[_identity(x) for x in candidates]
     if status == "not_found":
-        unscoped = resolve_verified_security_identity(raw.strip(), security_master.lookup, allow_fixture_snapshot=allow_fixture_snapshot, execute_mode=True) if hint else None
+        if hint and service is not None:
+            unscoped_resolution = service.resolve(raw.strip())
+            unscoped = {"candidate_count": len(unscoped_resolution.candidates), "candidates": unscoped_resolution.candidates}
+        else:
+            unscoped = resolve_verified_security_identity(raw.strip(), security_master.lookup, allow_fixture_snapshot=allow_fixture_snapshot, execute_mode=True) if hint else None
         mismatch = bool(unscoped and unscoped.get("candidate_count"))
         if mismatch: out["candidate_matches"]=[_identity(x) for x in sorted(unscoped.get("candidates") or [], key=lambda x: ((x.get("classification") or {}).get("market") or "", x.get("canonical_target_id") or ""))]
         out["resolution_status"]="market_mismatch" if mismatch else "not_found"; out["reason_codes"]=resolved.get("reason_codes",[]); return out
@@ -28,6 +47,11 @@ def validate_target(target, index, *, security_master, supported_markets, recogn
     elif status not in {"not_found", "ambiguous"}: out["resolution_status"]="quarantined"; out["reason_codes"]=[REASON_IDENTITY_QUARANTINED]; return out
     if status == "quarantined": out["resolution_status"]="quarantined"; out["reason_codes"]=resolved.get("reason_codes",[]); return out
     eligibility=selected.get("execution_eligibility") or {}; reasons=list(eligibility.get("reason_codes") or [])
+    if service is not None:
+        selected = dict(selected)
+        selected["release_id"] = service.release_id
+        selected["release_manifest_hash"] = service.manifest_hash
+        out["canonical_identity"] = _identity(selected)
     fixture=(security_master.lookup["by_canonical"].get(selected.get("canonical_target_id"),{}).get("observation") or {}).get("status")=="fixture_observation_only"
     effective=[x for x in reasons if not (fixture and allow_fixture_snapshot and x=="fixture_observation_only")]
     allowed=eligibility.get("status") in {"allowed", "allowed_with_caveat"} or (fixture and allow_fixture_snapshot and eligibility.get("status")=="blocked" and not effective)

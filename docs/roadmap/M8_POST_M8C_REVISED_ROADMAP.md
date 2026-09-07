@@ -30,6 +30,17 @@ describe_capabilities; resolve_targets; preview_market_evidence_request; execute
 
 persistent watchlist storage/versioning; local-first service API; watchlist and evidence UI.
 
+### M8R-08G pre-Phase-F architecture realignment
+
+Before Phase F durable storage begins, the Taiwan Market Identity Service and
+installation-local Security Master release lifecycle are the governing identity
+boundary.  Cash instruments use ISIN as their durable instrument identity while
+`MARKET:CODE` remains the listing and execution-routing identity.  Releases are
+explicitly built, qualified, atomically activated and rollback-capable in the
+local installation; a clean installation is legally `NOT_INITIALIZED` and has
+no Candidate-B fallback.  This combined 08G-01 tranche covers identity contract,
+release lifecycle, and consumer migration.  It does not start watchlist storage.
+
 ## Phase G — Dynamic Research Evidence
 
 MOPS disclosures; official fundamentals/financial statements; dynamic research sources; multi-source research evidence packages.

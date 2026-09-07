@@ -1,0 +1,146 @@
+{
+  "task": "M8R-08G-01-IDENTITY-SERVICE-AND-LOCAL-RELEASE-REALIGNMENT",
+  "baseline_sha": "f774c543a3d8fc41abab8551669c454b40a1be71",
+  "branch": "codex/m8r-08g-01-identity-service-local-release-realignment",
+  "phase_f_started": false,
+  "changed_files": [
+    ".gitignore",
+    "docs/contracts/schemas/taiwan_market_identity_active_pointer.v1.schema.json",
+    "docs/contracts/schemas/taiwan_market_identity_candidate.v1.schema.json",
+    "docs/contracts/schemas/taiwan_market_identity_record.v1.schema.json",
+    "docs/contracts/schemas/taiwan_market_identity_release.v1.schema.json",
+    "docs/contracts/schemas/taiwan_market_identity_release_index.v1.schema.json",
+    "docs/contracts/schemas/taiwan_market_identity_release_manifest.v1.schema.json",
+    "docs/contracts/schemas/taiwan_market_identity_release_qualification.v1.schema.json",
+    "docs/contracts/schemas/taiwan_market_identity_release_status.v1.schema.json",
+    "docs/reviews/M8R_08G_01_IDENTITY_SERVICE_AND_LOCAL_RELEASE_REALIGNMENT.json",
+    "docs/reviews/M8R_08G_01_IDENTITY_SERVICE_AND_LOCAL_RELEASE_REALIGNMENT.md",
+    "docs/roadmap/M8_POST_M8C_REVISED_ROADMAP.md",
+    "schemas/unified_market_evidence_audit_package.v1.schema.json",
+    "schemas/unified_market_evidence_request_validation.v1.schema.json",
+    "scripts/m8r_05a_f3/target_validator.py",
+    "scripts/m8r_05c/audit_package_builder.py",
+    "scripts/m8r_06_01c2_mode_a_security_master_loader.py",
+    "scripts/m8r_06_02_mode_b1_preview.py",
+    "scripts/m8r_08g_identity_service.py",
+    "scripts/m8r_08g_security_master_releases.py",
+    "scripts/manage_security_master.py",
+    "server/services/unified_mode_a.py",
+    "tests/integration/test_unified_workbench_api.py",
+    "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py",
+    "tests/unit/test_m8r_08g_identity_service_and_releases.py"
+  ],
+  "identity_contract": {
+    "isin_primary_identity_active": true,
+    "listing_routing_identity_preserved": true,
+    "instrument_id": "cash-market ISIN",
+    "listing_id": "MARKET:CODE",
+    "canonical_target_id_compatibility": "listing_id",
+    "resolution_order": [
+      "exact_listing_id",
+      "exact_isin",
+      "exact_scoped_code",
+      "exact_normalized_name_or_official_alias"
+    ],
+    "fuzzy_resolution_selects_winner": false,
+    "successor_migration_requires_review": true,
+    "snapshot_absence_implies_termination": false
+  },
+  "knowledge_execution_boundary": {
+    "knowledge_execution_split_active": true,
+    "common_share_execution_preserved": true,
+    "etf_execution_preserved": true,
+    "eligible_common_share_count": 1971,
+    "independently_blocked_common_share_count": 3,
+    "eligible_etf_count": 360,
+    "known_unsupported_identity_resolution": "resolved_with_unsupported_instrument_type"
+  },
+  "installation_local_release_lifecycle": {
+    "authority_root": "data/security_master",
+    "active_pointer": "data/security_master/active.json",
+    "installation_local_release_lifecycle_active": true,
+    "states": ["NOT_INITIALIZED", "BUILDING", "CANDIDATE", "QUALIFIED", "ACTIVE", "RETIRED", "REJECTED"],
+    "not_initialized_state_active": true,
+    "qualification_required_for_activation": true,
+    "atomic_activation_verified": true,
+    "rollback_verified": true,
+    "rejected_retention_verified": true,
+    "process_lifetime_immutable_selection_preserved": true,
+    "user_cli": ["status", "update", "history", "rollback", "migrate-legacy-active"]
+  },
+  "candidate_b": {
+    "candidate_b_required_for_fresh_clone": false,
+    "candidate_b_historical_evidence_preserved": true,
+    "skill_hash_semantics": "historical producer-time provenance; active release validation does not recompute the current working-tree Skill"
+  },
+  "consumer_migration": {
+    "mode_a": "active installation-local release by default; explicit legacy pointer remains test/migration adapter",
+    "f3": "additive instrument/listing/eligibility/release provenance while preserving canonical_target_id",
+    "b1": "local release references in planning bindings",
+    "b2": "unchanged authorization and execute-once semantics",
+    "mode_c": "audit carries local release lineage",
+    "local_service": "uses Mode A/F3 compatibility boundary",
+    "mcp": "uses Local Service compatibility boundary"
+  },
+  "pre_correction_live_attempt": {
+    "live_update_attempted": true,
+    "official_sources_probed": 5,
+    "transport_successful_sources": 5,
+    "transport_failed_sources": 0,
+    "parser_qualified_sources": 2,
+    "parser_drift_sources": 3,
+    "qualified_record_count": 46635,
+    "materialization_principal_decision": "READY_FOR_GOVERNED_SNAPSHOT_MATERIALIZATION",
+    "classification": "PRE_CORRECTION_LOCAL_DIAGNOSTIC_NOT_FINAL_CORRECTED_ACCEPTANCE",
+    "result": "historical materializer returned non-zero after producing a snapshot; the prior implementation then used --records activation, which is no longer a production path",
+    "active_release_id": "security-master-20260907T075809Z",
+    "active_release_manifest_sha256": "4d8662b96d07b1bfc8499e4a35d47335d7d38e970efe6e33bab2b9a0a2b28590",
+    "active_release_record_count": 46635,
+    "producer_skill_contract_hash": "33be39c30a84641e7591d3d1680adb18b90efd8f509d75b3e971cb46d24c9b6d"
+  },
+  "tests": {
+    "identity_service_and_release_lifecycle": "12 passed",
+    "focused_regressions": "203 passed, 2 skipped: identity/release, F3, Mode A, B1, B2, Mode C result/handoff, Unified Workbench, and MCP",
+    "m8r_08f_regression_pass": true,
+    "historical_default_ci_debt": "historically recorded pre-existing Mode C lineage-fixture artifact_hash_mismatch debt; not independently re-baselined in this final correction",
+    "compileall": "PASS",
+    "schema_json_validation": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "known_debt": [
+    "The pre-existing materializer exit code did not reflect its qualified local output; this task did not alter that historical producer.",
+    "Nine inherited Mode C lineage-fixture artifact_hash_mismatch failures remain outside this scope."
+  ],
+  "governance_correction": {
+    "qualification_bypass_fixed": true,
+    "candidate_validation": "CANDIDATE -> PASS qualification report -> QUALIFIED; FAIL -> REJECTED",
+    "schemas_added": [
+      "taiwan_market_identity_release_index.v1.schema.json",
+      "taiwan_market_identity_record.v1.schema.json",
+      "taiwan_market_identity_candidate.v1.schema.json",
+      "taiwan_market_identity_release_status.v1.schema.json",
+      "taiwan_market_identity_release_qualification.v1.schema.json",
+      "taiwan_market_identity_release_manifest.v1.schema.json",
+      "taiwan_market_identity_release.v1.schema.json",
+      "taiwan_market_identity_active_pointer.v1.schema.json"
+    ],
+    "listing_history_fabrication_removed": true,
+    "post_correction_live_attempt": {
+      "attempted": true,
+      "result": "REJECTED",
+      "reason_code": "official_acquisition_or_qualification_failed",
+      "classification": "EXTERNALLY_UNVERIFIED_FAIL_CLOSED",
+      "official_probe_failure": "the bounded acquisition attempt encountered URLError for TWSE ISIN mode 2 and mode 4; no outage is asserted",
+      "new_corrected_release_activated": false
+    },
+    "focused_regression": "203 passed, 2 skipped after final code correction",
+    "trusted_provenance": "production Active is available only through update --live or strict --legacy-pointer import. --records rejects self-asserted provenance and is diagnostic non-production.",
+    "record_schema_authority": "taiwan_market_identity_record.v1.schema.json validated per candidate record",
+    "lifecycle_metadata_schemas": ["taiwan_market_identity_candidate.v1.schema.json", "taiwan_market_identity_release_status.v1.schema.json"],
+    "legacy_import": "strict legacy pointer loading retains validated pointer, immutable seal, compact index, manifest, source snapshot, and producer Skill hashes; no reserialized index hash is treated as historical authority",
+    "principal_decision": "READY_FOR_M8R_08G_SKILL_AND_PORTABILITY_CLOSURE"
+  },
+  "blocking_findings": [],
+  "live_bootstrap_result": "EXTERNALLY_UNVERIFIED_FAIL_CLOSED",
+  "principal_decision": "READY_FOR_M8R_08G_SKILL_AND_PORTABILITY_CLOSURE"
+}
