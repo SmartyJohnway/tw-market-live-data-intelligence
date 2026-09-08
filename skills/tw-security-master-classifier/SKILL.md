@@ -7,6 +7,16 @@ description: "Identify and verify the current identity, instrument type, market 
 
 Resolve what a Taiwan security is now and report the official evidence behind the result. Separate current identity from historical lifecycle and never infer a missing event date from a snapshot transition.
 
+This package is the reusable Taiwan Market Identity Service source Skill. For
+governed Taiwan cash-market instruments, the Instrument Primary Identity is
+ISIN. `MARKET:CODE` is the current Listing / Routing Identity. A Security
+Master `release_id` identifies a release, never a financial instrument.
+
+Identity Knowledge Universe is distinct from Execution Universe. The service
+may resolve and describe an instrument whose downstream market-evidence route
+must fail closed. Current cash execution eligibility is limited to governed
+`common_share` and `etf` records; this Skill does not grant execution authority.
+
 ## Operating modes
 
 - **Resolve one security:** Accept a code, Chinese name, English name, or ISIN and return exact or ambiguous candidates.
@@ -133,6 +143,26 @@ Return the format in [references/output-contract.md](references/output-contract.
 - It does not reconstruct a PIT universe or authorize backtesting.
 - It does not write to a production database unless a separate, explicit workflow authorizes that action.
 - It may report `listed_common_stock_core_flag`, but that flag is a current classification, not proof of historical backtest eligibility.
+
+## Installation-local release contract
+
+The governed lifecycle is `NOT_INITIALIZED → BUILDING → CANDIDATE → QUALIFIED
+→ ACTIVE`, with `REJECTED` and `RETIRED` terminal/local status projections.
+Updates are user-triggered: official acquisition creates a candidate,
+qualification validates schema, identity, conflicts, lineage and hashes, and
+only a qualified release may be atomically activated. Failed updates preserve
+the prior Active release; rollback selects another immutable qualified release.
+There is no startup acquisition, scheduler, or Candidate B fallback.
+
+Aliases, `current_listing`, `listing_history`, and lifecycle events require
+governed evidence. Snapshot absence is not termination, and snapshot time is
+not listing `valid_from`. When official evidence establishes old ISIN → new
+ISIN, return `IDENTITY_MIGRATION_REVIEW_REQUIRED`; do not rewrite downstream
+identity automatically.
+
+`producer_skill_contract_hash` is producer-time provenance. Historical
+releases retain the Skill hash used when produced; changing this Skill affects
+future producer provenance and does not rewrite or invalidate historical bytes.
 
 ## Bundled resources
 

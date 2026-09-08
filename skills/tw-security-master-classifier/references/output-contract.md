@@ -1,5 +1,15 @@
 # Output Contract
 
+## Identity Service projection
+
+For governed cash-market records, `instrument_id` is the normalized ISIN and
+`listing_id` is `MARKET:CODE`. `canonical_target_id` remains the compatible
+listing/routing identity. `release_id` identifies installation-local release
+lineage and must never be substituted for any of these identities.
+
+Identity resolution does not imply execution eligibility. Preserve explicit
+eligibility status and reason codes for known but non-executable instruments.
+
 The CLI exposes three separate machine schemas. Never infer one schema from another.
 
 ## 1. `ResolutionResult`

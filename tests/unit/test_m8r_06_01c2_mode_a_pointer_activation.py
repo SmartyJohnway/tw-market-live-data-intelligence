@@ -39,10 +39,19 @@ SYNTHETIC_SKILL_HASH = "b" * 64
 SYNTHETIC_BUNDLE_ID = "m8r06-01b-20990101T000000Z"
 
 
-def _current_pointer_index_exists() -> bool:
-    # Production no longer activates the historical compact pointer merely
-    # because its files are present.  This e2e assertion is meaningful only
-    # with a valid installation-local active release.
+def _legacy_compact_pointer_index_exists() -> bool:
+    # This is a legacy compact-pointer assertion.  It is meaningful only
+    # when the historical sealed C1B artifacts themselves are materialized;
+    # an installation-local 08G active release is a separate authority.
+    try:
+        load_mode_a_security_master()
+    except ModeASecurityMasterUnavailable:
+        return False
+    return True
+
+
+def _active_local_release_exists() -> bool:
+    """Return whether the current production authority is initialized."""
     try:
         load_active_mode_a_security_master()
     except ModeASecurityMasterUnavailable:
@@ -542,7 +551,7 @@ def test_api_reuses_one_successful_process_activation(
 
 
 @pytest.mark.skipif(
-    not _current_pointer_index_exists(),
+    not _legacy_compact_pointer_index_exists(),
     reason="accepted local C1B compact candidate is not materialized",
 )
 def test_sealed_candidate_production_activation(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -594,10 +603,10 @@ def test_sealed_candidate_production_activation(monkeypatch: pytest.MonkeyPatch)
 
 
 @pytest.mark.skipif(
-    not _current_pointer_index_exists(),
-    reason="accepted local C1B compact candidate is not materialized",
+    not _active_local_release_exists(),
+    reason="installation-local active release is not initialized",
 )
-def test_real_sealed_pointer_http_e2e_without_runtime_monkeypatch() -> None:
+def test_active_release_http_e2e_without_runtime_monkeypatch() -> None:
     reset_production_mode_a_security_master_for_tests()
     response = TestClient(app).post(
         "/api/unified/validate-request",

@@ -52,7 +52,9 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="perform one explicit bounded official acquisition",
     )
-    args = parser.parse_args(argv)
+    # Keep the documented command form portable across supported Python
+    # versions when optional flags appear between the two positional values.
+    args = parser.parse_intermixed_args(argv)
     try:
         if args.command == "status":
             try:

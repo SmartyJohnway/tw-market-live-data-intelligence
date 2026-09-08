@@ -1,5 +1,9 @@
 # M8 AI Capability Contract
 
+> **HISTORICAL ARCHIVE.** This Phase-B-era artifact preserves its original
+> contract. Current authority is the canonical Unified capability catalog,
+> registered MCP contracts, portable Skills, and `docs/agent_usage_guide.md`.
+
 Baseline SHA: `d6b83313bb301e652ae82b8583d73d2aaa1d753e`
 
 The authoritative structured contract is [`m8_ai_capability_contract.json`](m8_ai_capability_contract.json). It defines capability IDs, maturity states, timing classes, source-authority classes, sufficiency statuses, calculation semantics, internal mappings, deprecated compatibility fields, and the Phase C dependency on R2.
