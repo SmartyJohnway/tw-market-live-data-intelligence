@@ -1,0 +1,887 @@
+{
+  "task": "M8R-09-PERSISTENT-WATCHLIST-STORAGE-AND-VERSIONING-PREFLIGHT",
+  "baseline_sha": "4b67363cdce50b1d52e55afab2ae95d114fd679a",
+  "branch": "codex/m8r-09-preflight-persistent-watchlist",
+  "phase_f_implementation_started": false,
+  "persistent_storage_mutation_performed": false,
+  "market_network_used": false,
+  "scope": {
+    "included": [
+      "current-state inventory",
+      "target storage and version contract",
+      "identity binding contract",
+      "mutation and confirmation boundary",
+      "legacy migration disposition",
+      "consumer impact map",
+      "implementation plan",
+      "acceptance criteria"
+    ],
+    "excluded": [
+      "persistent storage implementation",
+      "watchlist CRUD implementation",
+      "FastAPI or MCP mutation implementation",
+      "frontend persistent mutation",
+      "market execution or network",
+      "background monitoring, scheduling, notification",
+      "Security Master mutation",
+      "M8R-10 user experience"
+    ]
+  },
+  "current_watchlist_surfaces": [
+    {
+      "path": "config/m5k_default_watchlist.json",
+      "classification": "A_REPO_TRACKED_DEFAULT_TEMPLATE",
+      "schema": "m5n_watchlist.v1 with legacy category-shaped stored content",
+      "item_count_after_normalization": 19,
+      "identity_model": "lowercase MARKET:CODE listing/routing IDs",
+      "persistence": "Git-tracked template only",
+      "network": false,
+      "target_disposition": "IMPORT_TEMPLATE_AND_LEGACY_COMPATIBILITY_FIXTURE"
+    },
+    {
+      "path": "scripts/m5k_common.py",
+      "classification": "E_LEGACY_EXECUTION_ADAPTER_INPUT",
+      "role": "normalize and validate m5k/m5n watchlists; plan/execute bounded observations; summarize and build conversation context",
+      "accepted_schemas": ["m5n_watchlist.v1", "m5k_watchlist.v1"],
+      "max_target_count": 25,
+      "write_behavior": "explicit observation may write research/live_observation_runs/m5k; normalization and read paths do not persist watchlists",
+      "target_disposition": "RETAIN_COMPATIBILITY_ADAPTER"
+    },
+    {
+      "path": "server/main.py",
+      "classification": "B_READ_ONLY_LEGACY_WATCHLIST_WORKSPACE",
+      "surfaces": [
+        "GET /api/watchlist",
+        "GET /api/watchlist/summary",
+        "GET /api/watchlist/schema",
+        "GET /api/conversation/context",
+        "GET /api/m5k/watchlist/default",
+        "POST /api/m5k/watchlist/validate",
+        "POST /api/m5k/conversation/handoff",
+        "POST /api/m5k/live-observation/plan",
+        "POST /api/m5k/live-observation/execute"
+      ],
+      "source": "repo-tracked default template and local observation artifacts",
+      "persistent_watchlist_writes": false,
+      "target_disposition": "RETAIN_LEGACY_IN_M8R_09_REALIGN_IN_M8R_10"
+    },
+    {
+      "path": "server/mcp_server.py",
+      "classification": "B_READ_ONLY_LEGACY_WATCHLIST_WORKSPACE",
+      "surfaces": ["get_watchlist", "get_watchlist_summary", "validate_watchlist", "get_conversation_context"],
+      "current_unified_authority": false,
+      "persistent_watchlist_writes": false,
+      "target_disposition": "COMPATIBILITY_HISTORICAL_SURFACE"
+    },
+    {
+      "path": "server/unified_mcp",
+      "classification": "CURRENT_UNIFIED_MCP_AUTHORITY",
+      "tools": [
+        "market_describe_capabilities",
+        "market_validate_request",
+        "market_preview_request",
+        "market_read_result",
+        "market_export_ai_handoff",
+        "market_fetch_evidence"
+      ],
+      "persistent_watchlist_tools": [],
+      "target_disposition": "UNCHANGED_IN_M8R_09"
+    },
+    {
+      "path": "frontend/readonly-preview/watchlist-workspace.html",
+      "classification": "B_READ_ONLY_LEGACY_WATCHLIST_WORKSPACE",
+      "role": "read server default; browser-local JSON import and export",
+      "server_persistence": false,
+      "target_disposition": "RETAIN_LEGACY_ADAPT_OR_REPLACE_IN_M8R_10"
+    },
+    {
+      "path": "frontend/readonly-preview/M5KLocalAIWorkbench.html",
+      "classification": "B_READ_ONLY_LEGACY_WATCHLIST_WORKSPACE",
+      "role": "browser-memory edit/import/export and explicit observation workflow",
+      "server_persistence": false,
+      "target_disposition": "RETAIN_LEGACY_ADAPT_OR_REPLACE_IN_M8R_10"
+    },
+    {
+      "path": "tests/fixtures/m8r_03b and tests/fixtures/m8r_03c",
+      "classification": "D_TEST_FIXTURE_ONLY",
+      "role": "request-scoped watchlist reference and target-order fixtures",
+      "persistent_authority": false,
+      "target_disposition": "PRESERVE"
+    },
+    {
+      "path": "docs/protocol and docs/architecture historical watchlist contracts",
+      "classification": "F_HISTORICAL_CONTRACT",
+      "role": "bounded observation, conversation context, and legacy execution semantics",
+      "persistent_authority": false,
+      "target_disposition": "RETAIN_HISTORY_REALIGN_CURRENT_GUIDES_AFTER_M8R_10"
+    }
+  ],
+  "legacy_m5n_watchlist": {
+    "raw_schema_version": "m5n_watchlist.v1",
+    "legacy_schema_version_accepted": "m5k_watchlist.v1",
+    "stored_shape": "three categories containing instruments",
+    "normalized_shape": "flat items array",
+    "normalized_item_count": 19,
+    "current_item_identity": "MARKET:CODE listing/routing identity",
+    "fields": [
+      "id",
+      "symbol",
+      "display_name",
+      "market",
+      "instrument_type",
+      "adapter",
+      "preferred_sources",
+      "category",
+      "enabled",
+      "display_order",
+      "tags",
+      "notes"
+    ],
+    "validation": {
+      "implementation": "manual validator in scripts/m5k_common.py",
+      "formal_json_schema": false,
+      "supported_markets": ["twse", "tpex", "otc", "taifex"],
+      "max_targets": 25,
+      "duplicate_rule": "duplicate symbol rejected",
+      "required_fields_checked": true,
+      "forbidden_semantics_checked": true
+    },
+    "import_export": {
+      "json": "browser/file copy only",
+      "csv": "future advertised; not implemented",
+      "server_persistence": false
+    },
+    "read_consumers": [
+      "FastAPI legacy watchlist endpoints",
+      "legacy MCP watchlist tools",
+      "readonly preview frontend",
+      "M5K workbench",
+      "conversation context",
+      "observation and source-health helpers"
+    ],
+    "mutation_behavior": "browser-memory edits or caller-provided JSON only; no durable per-installation write",
+    "filesystem_paths": [
+      "config/m5k_default_watchlist.json",
+      "research/live_observation_runs/m5k/latest_observation.json"
+    ]
+  },
+  "legacy_persistent_reference_findings": [
+    {
+      "name": "persistent_watchlist_reference",
+      "actual_semantics": "request-scoped logical selection and target-order binding",
+      "durable_object_reference": false,
+      "implemented_fields": ["watchlist_id", "source", "enabled_target_ids"],
+      "source_values_in_current_strict_validator": ["operator_supplied", "local_fixture", "persistent_user_watchlist", "follow_up_context"],
+      "identity_values": "usually fixture IDs or MARKET:CODE target IDs",
+      "storage_resolution_or_version_verification": false,
+      "current_consumers": [
+        "M8R-03B design validation",
+        "M8R-03C strict request validation and bundle builders",
+        "M8R-03D planning and controlled execution adapters",
+        "M8R-03E context projection and validators",
+        "performance runners and cross-layer fixtures"
+      ],
+      "watchlist_version_observation": "03E projection can pass through watchlist_version, but the current 03C strict input contract does not accept it",
+      "compatibility_required": true,
+      "rename_required": false,
+      "disposition": "KEEP_AS_COMPATIBILITY_CONTRACT; future adapter constructs it from an authoritative persistent read without making it storage authority"
+    },
+    {
+      "name": "persistent_watchlist_mutation",
+      "actual_semantics": "explicit prohibition in conversation and capability contracts",
+      "required_value": false,
+      "disposition": "PRESERVE_UNTIL_A_SEPARATE_GOVERNED_MUTATION_CONTRACT_EXISTS"
+    }
+  ],
+  "target_identity_contract": {
+    "v1_scope": "TWSE/TPEX cash instruments with governed ISIN",
+    "durable_instrument_identity": "ISIN",
+    "listing_routing_identity": "MARKET:CODE",
+    "listing_fields_are": "cached UX and routing metadata",
+    "instrument_resolution_before_persist": true,
+    "security_master_not_initialized_behavior": "fail closed with SECURITY_MASTER_NOT_INITIALIZED; never persist MARKET:CODE as substitute",
+    "ambiguous_behavior": "no persistence; present candidates; selected candidate requires a new preview and confirmation",
+    "not_found_behavior": "no persistence",
+    "same_isin_metadata_change": "retain entry identity and user state; refresh only current read/cache projection",
+    "successor_isin_behavior": "IDENTITY_MIGRATION_REVIEW_REQUIRED with explicit confirmation before new identity revision",
+    "snapshot_absence_behavior": "retain entry; mark current projection unresolved or stale; no auto-delete, disable, or migrate",
+    "known_unsupported_cash_instrument": {
+      "persistable": true,
+      "executable": false,
+      "rationale": "identity knowledge universe is broader than execution universe"
+    },
+    "derivatives": {
+      "v1_persistent_support": false,
+      "legacy_reference_allowed": true,
+      "behavior": "report deferred or unsupported identity scheme; do not invent derivative durable IDs"
+    }
+  },
+  "target_entry_contract": {
+    "required": [
+      "watchlist_entry_id",
+      "instrument_id",
+      "identity_scheme",
+      "enabled",
+      "display_order",
+      "created_at",
+      "updated_at",
+      "resolved_under_security_master_release_id"
+    ],
+    "optional_user_state": ["tags", "notes"],
+    "cached": ["display_name", "cached_market", "cached_security_code", "cached_listing_id", "instrument_type"],
+    "derived": ["identity_status", "current_execution_eligibility", "current_resolution_projection"],
+    "audit": ["resolved_under_security_master_release_id", "migration_status", "created_at", "updated_at"],
+    "do_not_persist": ["adapter", "preferred_sources", "market values", "AI interpretation", "raw prompt", "full conversation", "secrets"],
+    "notes_semantics": "user-authored exact persistent state; never overwritten by Security Master or AI",
+    "enabled_semantics": "user preference for selectable evidence actions; not exchange lifecycle",
+    "category_disposition": "MIGRATE_TO_TAG_AND_DEPRECATE_CATEGORY",
+    "tags_disposition": "KEEP"
+  },
+  "watchlist_identity_contract": {
+    "watchlist_id": "immutable opaque UUIDv4 internal storage identity",
+    "name": "mutable user-visible display name",
+    "watchlist_entry_id": "independent opaque UUIDv4 storage identity",
+    "instrument_id_is_entry_id": false,
+    "same_watchlist_instrument_uniqueness": "one active entry per ISIN",
+    "duplicate_add_result": "WATCHLIST_ENTRY_ALREADY_EXISTS and existing entry reference; no upsert",
+    "cross_watchlist_duplicate_allowed": true,
+    "multiple_watchlist_decision": "ONE_OPTIONAL_DEFAULT_PLUS_MULTIPLE_NAMED_WATCHLISTS",
+    "fresh_install_state": "NO_WATCHLISTS"
+  },
+  "target_storage_contract": {
+    "authority": "installation-local user state; never Git authority",
+    "recommended_storage": "SQLite",
+    "recommended_path": "data/watchlists/watchlists.sqlite3",
+    "standard_library_dependency": "sqlite3",
+    "current_projection": true,
+    "immutable_revisions": true,
+    "atomicity": "current projection and revision commit in one SQLite transaction or neither changes",
+    "concurrency": "optimistic expected_version plus database transaction; no silent last-write-wins",
+    "foreign_keys": true,
+    "git_policy": "data/watchlists must be ignored during implementation",
+    "backup_contract": "canonical JSON export of current state, optionally including history; raw database bytes are not the sole backup contract",
+    "retention_v1": "retain all revisions; no automatic compaction",
+    "missing_or_empty": "legal NO_WATCHLISTS",
+    "corrupt_or_unsupported": "fail closed without automatic reset",
+    "security_master_state_independent": true
+  },
+  "storage_decision_matrix": [
+    {
+      "option": "SQLite",
+      "decision": "RECOMMENDED",
+      "atomicity": "native transaction",
+      "concurrency": "transaction plus expected_version",
+      "versioning": "current projection and immutable revision rows",
+      "backup": "requires canonical export",
+      "human_readability": "low",
+      "migration": "transactional",
+      "dependency_cost": "Python standard library",
+      "windows_behavior": "local file locking is preferable to multi-file rename protocol",
+      "clean_clone": "NO_WATCHLISTS with injected installation root",
+      "testability": "high",
+      "future_api": "high"
+    },
+    {
+      "option": "JSON snapshot plus revision files",
+      "decision": "ALTERNATIVE_REJECTED_FOR_V1",
+      "atomicity": "requires custom multi-file commit and recovery",
+      "concurrency": "requires external lock protocol",
+      "versioning": "human-readable immutable files",
+      "backup": "simple directory copy",
+      "human_readability": "high",
+      "migration": "file-by-file complexity",
+      "dependency_cost": "Python standard library",
+      "windows_behavior": "more rename and lock edge cases",
+      "clean_clone": "simple",
+      "testability": "good but recovery protocol larger",
+      "future_api": "adequate"
+    }
+  ],
+  "target_versioning_contract": {
+    "model": "HYBRID_CURRENT_STATE_PLUS_IMMUTABLE_FULL_SNAPSHOT_REVISIONS",
+    "watchlist_current_version": "monotonic positive integer",
+    "revision_fields": [
+      "watchlist_id",
+      "version",
+      "created_at",
+      "mutation_type",
+      "previous_version",
+      "actor_source",
+      "affected_entry_ids",
+      "affected_instrument_ids",
+      "confirmation_provenance",
+      "entries_snapshot",
+      "content_sha256"
+    ],
+    "historical_revision_mutable": false,
+    "rollback": "create a new revision from an old immutable snapshot",
+    "user_state_version_increments_for": [
+      "create",
+      "rename",
+      "set default",
+      "add",
+      "remove",
+      "enable or disable",
+      "reorder",
+      "set tags",
+      "set notes",
+      "import",
+      "identity migration confirmation",
+      "delete",
+      "restore",
+      "rollback"
+    ],
+    "metadata_reconciliation_version_behavior": "current read/cache projection only; no semantic user version increment",
+    "storage_schema_version": "separate explicit SQLite migration version",
+    "domain_schema_version": "persistent_watchlist.v1",
+    "revision_schema_version": "persistent_watchlist_revision.v1",
+    "migration_behavior": "explicit, versioned, transactional, fail closed"
+  },
+  "target_mutation_contract": {
+    "generic_upsert_allowed": false,
+    "commands": [
+      "create_watchlist",
+      "rename_watchlist",
+      "set_default_watchlist",
+      "add_entry",
+      "remove_entry",
+      "set_entry_enabled",
+      "reorder_entries",
+      "set_entry_tags",
+      "set_entry_notes",
+      "delete_watchlist",
+      "rollback_watchlist",
+      "import_legacy_watchlist",
+      "confirm_identity_migration"
+    ],
+    "expected_version_required_for_existing_watchlist": true,
+    "stale_expected_version": "WATCHLIST_VERSION_CONFLICT with zero mutation",
+    "atomic": true,
+    "persistent_mutation_triggers_market_execution": false,
+    "background_behavior": false,
+    "actor_source_enum": ["human", "ai_assisted", "import", "migration", "rollback", "system_metadata_reconcile"],
+    "audit_fields": [
+      "operation",
+      "timestamp",
+      "previous_version",
+      "new_version",
+      "affected_entry_ids",
+      "affected_instrument_ids",
+      "preview_id",
+      "confirmation_id",
+      "confirmation_hash",
+      "reason_or_source"
+    ]
+  },
+  "target_confirmation_contract": {
+    "conversation_mention_is_confirmation": false,
+    "all_mutations_require_explicit_intent": true,
+    "preview_required_for": [
+      "create watchlist",
+      "add entry",
+      "remove entry",
+      "replace or migrate identity",
+      "bulk import",
+      "delete watchlist",
+      "rollback"
+    ],
+    "direct_explicit_owner_action_allowed_for": ["rename", "enable", "disable", "reorder", "set tags", "set notes"],
+    "preview_is_non_mutating": true,
+    "preview_must_include": [
+      "normalized typed command",
+      "resolved durable identities",
+      "current version",
+      "expected version",
+      "affected entries",
+      "warnings and deferred items",
+      "content hash",
+      "expiry"
+    ],
+    "commit_binding": "explicit confirmation must bind the exact unexpired preview ID and content hash",
+    "ai_assisted_requirement": "never infer confirmation from conversation text"
+  },
+  "target_migration_contract": {
+    "temporary_to_persistent": [
+      "conversation-local target",
+      "Identity Service resolution",
+      "candidate persistent entry",
+      "mutation preview",
+      "explicit confirmation",
+      "atomic revision"
+    ],
+    "legacy_import": [
+      "parse",
+      "validate legacy shape",
+      "resolve listing/name/code with current Identity Service",
+      "bind governed ISIN",
+      "deduplicate within destination by ISIN",
+      "report ambiguity, not-found, unsupported-known, and deferred derivatives",
+      "preview exact accepted subset",
+      "explicit confirmation",
+      "commit one new revision"
+    ],
+    "legacy_id_trusted_as_durable_identity": false,
+    "partial_resolution": "allowed only as an explicit report and user-selected accepted subset",
+    "successor": "old identity remains auditable; successor and evidence remain pending until explicit confirmation",
+    "same_isin_refresh_is_migration": false,
+    "snapshot_absence_is_termination": false,
+    "default_template_disposition": ["IMPORT_TEMPLATE", "LEGACY_COMPATIBILITY_FIXTURE"]
+  },
+  "corporate_action_matrix": [
+    {
+      "event": "same ISIN plus name change",
+      "persistent_state": "retain entry and user fields",
+      "read_projection": "show current name and distinguish stale cache",
+      "confirmation_required": false,
+      "version_increment": false
+    },
+    {
+      "event": "same ISIN plus listing metadata change",
+      "persistent_state": "retain durable ISIN",
+      "read_projection": "use current listing and routing projection",
+      "confirmation_required": false,
+      "version_increment": false
+    },
+    {
+      "event": "official successor new ISIN",
+      "persistent_state": "retain predecessor and pending migration audit",
+      "read_projection": "IDENTITY_MIGRATION_REVIEW_REQUIRED",
+      "confirmation_required": true,
+      "version_increment": true
+    },
+    {
+      "event": "unknown lifecycle or snapshot disappearance",
+      "persistent_state": "retain entry and enabled preference",
+      "read_projection": "identity unresolved or lifecycle uncertain; routing unavailable",
+      "confirmation_required": false,
+      "version_increment": false
+    }
+  ],
+  "future_service_api": {
+    "m8r_09": [
+      "GET /api/watchlists",
+      "GET /api/watchlists/{watchlist_id}",
+      "GET /api/watchlists/{watchlist_id}/versions",
+      "GET /api/watchlists/{watchlist_id}/versions/{version}",
+      "POST /api/watchlist-mutations/preview",
+      "POST /api/watchlist-mutations/commit"
+    ],
+    "rationale": "typed command preview and commit avoids unsafe generic CRUD upsert while keeping the service surface minimal",
+    "legacy_api_disposition": {
+      "GET /api/watchlist": "RETAIN_LEGACY_IN_M8R_09; ADAPT_OR_REDIRECT_IN_M8R_10",
+      "GET /api/watchlist/summary": "RETAIN_LEGACY_IN_M8R_09; REALIGN_IN_M8R_10",
+      "GET /api/watchlist/schema": "RETAIN_LEGACY_DESCRIPTOR; NEW_SCHEMAS_HAVE_DISTINCT_IDENTITIES"
+    },
+    "mcp_read": "DEFER_TO_M8R_10",
+    "mcp_mutation": "DEFER_TO_M8R_10_OR_LATER_WITH_HIGHER_CONFIRMATION_GOVERNANCE",
+    "unified_mcp_six_tool_contract_changed": false
+  },
+  "execution_boundary": {
+    "watchlist_is_execution_request": false,
+    "flow": [
+      "read selected enabled entries",
+      "resolve current listing and routing",
+      "select explicit bounded subset",
+      "build normal Unified Request",
+      "preview and authorization",
+      "execute once if separately confirmed"
+    ],
+    "display_order_implies_execute_all": false,
+    "automatic_chunking": false,
+    "background_fetch": false,
+    "monitoring": false,
+    "scheduler": false,
+    "notifications": false,
+    "storage_limit_equals_execution_bound": false,
+    "current_unified_default_target_limit": 10,
+    "legacy_m5k_target_limit": 25
+  },
+  "failure_model": [
+    "NO_WATCHLISTS",
+    "WATCHLIST_NOT_FOUND",
+    "WATCHLIST_VERSION_CONFLICT",
+    "WATCHLIST_ENTRY_ALREADY_EXISTS",
+    "WATCHLIST_ENTRY_NOT_FOUND",
+    "WATCHLIST_SCHEMA_INVALID",
+    "WATCHLIST_STORAGE_CORRUPT",
+    "WATCHLIST_STORAGE_SCHEMA_UNSUPPORTED",
+    "WATCHLIST_VERSION_CHAIN_BROKEN",
+    "WATCHLIST_CONFIRMATION_REQUIRED",
+    "WATCHLIST_CONFIRMATION_MISMATCH",
+    "WATCHLIST_IMPORT_TOO_LARGE",
+    "WATCHLIST_RESOURCE_LIMIT_EXCEEDED",
+    "SECURITY_MASTER_NOT_INITIALIZED",
+    "IDENTITY_AMBIGUOUS",
+    "IDENTITY_NOT_FOUND",
+    "IDENTITY_MIGRATION_REVIEW_REQUIRED",
+    "IDENTITY_SCHEME_UNSUPPORTED"
+  ],
+  "artifact_dispositions": [
+    {
+      "path": "config/m5k_default_watchlist.json",
+      "current_role": "Git-tracked default legacy watchlist",
+      "persistent_authority": false,
+      "identity_model": "MARKET:CODE",
+      "consumers": ["m5k_common", "FastAPI legacy reads", "legacy MCP", "readonly frontends", "observation/context builders"],
+      "target_disposition": "IMPORT_TEMPLATE_AND_LEGACY_COMPATIBILITY_FIXTURE",
+      "m8r_09_impact": "legacy import adapter only",
+      "m8r_10_impact": "offer explicit import/selection UX",
+      "risk": "must not become mutable user store"
+    },
+    {
+      "path": "scripts/m5k_common.py",
+      "current_role": "legacy normalization, validation, routing, observation, and context",
+      "persistent_authority": false,
+      "identity_model": "symbol and MARKET:CODE-compatible IDs",
+      "consumers": ["server/main.py", "server/mcp_server.py", "scripts", "tests"],
+      "target_disposition": "RETAIN_COMPATIBILITY_ADAPTER",
+      "m8r_09_impact": "do not reuse as storage domain",
+      "m8r_10_impact": "adapt persistent read to bounded legacy consumers",
+      "risk": "25-target execution bound and routing metadata must not leak into storage contract"
+    },
+    {
+      "path": "server/main.py",
+      "current_role": "legacy readonly watchlist APIs plus explicit M5K actions and current Unified APIs",
+      "persistent_authority": false,
+      "identity_model": "legacy watchlist for old endpoints; Identity Service for Unified paths",
+      "consumers": ["readonly frontends", "operator workflows", "tests"],
+      "target_disposition": "ADD_MINIMAL_VERSIONED_DOMAIN_API_WITHOUT_REPLACING_LEGACY_ROUTES_IN_M8R_09",
+      "m8r_09_impact": "minimal local persistent service endpoints",
+      "m8r_10_impact": "UI and evidence selection integration",
+      "risk": "route ambiguity and accidental mutation-triggered execution"
+    },
+    {
+      "path": "frontend/readonly-preview/watchlist-workspace.html",
+      "current_role": "readonly server display with browser-local import/export",
+      "persistent_authority": false,
+      "identity_model": "legacy symbol and listing metadata",
+      "consumers": ["local operator"],
+      "target_disposition": "RETAIN_LEGACY_UNTIL_M8R_10",
+      "m8r_09_impact": "none",
+      "m8r_10_impact": "adapt or replace with confirmation-aware persistent UX",
+      "risk": "browser import is not server persistence"
+    },
+    {
+      "path": "docs/architecture/ai_watchlist_workflow.md",
+      "current_role": "historical M5N shared-workspace architecture",
+      "persistent_authority": false,
+      "identity_model": "legacy watchlist item",
+      "consumers": ["maintainers and operators"],
+      "target_disposition": "HISTORICAL_COMPATIBILITY_CONTEXT",
+      "m8r_09_impact": "none during preflight; future current-authority realignment",
+      "m8r_10_impact": "redirect or revise current workflow",
+      "risk": "wording can be mistaken for durable persistence"
+    },
+    {
+      "path": "docs/operator/AI_WATCHLIST_OPERATOR_GUIDE.md",
+      "current_role": "legacy file/import operator guide",
+      "persistent_authority": false,
+      "identity_model": "legacy M5N",
+      "consumers": ["local operator"],
+      "target_disposition": "REALIGN_AFTER_IMPLEMENTATION",
+      "m8r_09_impact": "document impact only",
+      "m8r_10_impact": "replace with persistent confirmation workflow",
+      "risk": "editing config may be mistaken for supported user persistence"
+    },
+    {
+      "path": "M8R-03 persistent_watchlist_reference contracts and handlers",
+      "current_role": "request-scoped logical watchlist target binding",
+      "persistent_authority": false,
+      "identity_model": "ordered target IDs, usually MARKET:CODE",
+      "consumers": ["03C bundles", "03D execution", "03E context", "fixtures and tests"],
+      "target_disposition": "PRESERVE_AND_ADAPT",
+      "m8r_09_impact": "no breaking schema change",
+      "m8r_10_impact": "adapter from verified persistent revision to existing request contract",
+      "risk": "name overstates current persistence semantics"
+    },
+    {
+      "path": "future data/watchlists/watchlists.sqlite3",
+      "current_role": null,
+      "persistent_authority": true,
+      "identity_model": "UUID storage IDs plus ISIN durable cash instrument IDs",
+      "consumers": ["future persistent watchlist domain service", "future local API", "future M8R-10 UI adapter"],
+      "target_disposition": "G_TRUE_PERSISTENT_STORAGE_CANDIDATE",
+      "m8r_09_impact": "implement",
+      "m8r_10_impact": "consume",
+      "risk": "must be Git-ignored, transaction-safe, schema-versioned, and path-contained"
+    }
+  ],
+  "consumer_impacts": [
+    {
+      "consumer": "M5K observation",
+      "status": "CURRENT_LEGACY_DEPENDENCY",
+      "plan": "retain compatibility conversion; persistent read never automatically executes"
+    },
+    {
+      "consumer": "M5Q source health",
+      "status": "CURRENT_BOUNDED_TARGET_HELPER",
+      "plan": "retain; accept explicit bounded target projection later"
+    },
+    {
+      "consumer": "M5N conversation context",
+      "status": "CURRENT_LEGACY_DEPENDENCY",
+      "plan": "adapter needed in M8R-10"
+    },
+    {
+      "consumer": "M7D bounded cross-context",
+      "status": "CURRENT_LEGACY_DEPENDENCY",
+      "plan": "consume explicit persistent revision projection through adapter; boundedness unchanged"
+    },
+    {
+      "consumer": "M8R-03 watchlist bundle pipeline",
+      "status": "CURRENT_COMPATIBILITY_CONTRACT",
+      "plan": "preserve persistent_watchlist_reference and listing target order; adapter later"
+    },
+    {
+      "consumer": "Unified Market Evidence",
+      "status": "NO_DIRECT_PERSISTENT_DEPENDENCY",
+      "plan": "M8R-10 selects bounded entries and builds normal Unified Request; six-tool MCP unchanged in M8R-09"
+    },
+    {
+      "consumer": "Taiwan Market Identity Service",
+      "status": "CURRENT_AUTHORITY_DEPENDENCY",
+      "plan": "read-only resolution and migration guard; do not modify Security Master"
+    },
+    {
+      "consumer": "readonly-preview frontends",
+      "status": "LEGACY_BROWSER_LOCAL_WORKSPACE",
+      "plan": "retain in M8R-09; replace/adapt in M8R-10"
+    }
+  ],
+  "schema_impacts": [
+    {
+      "proposed": "persistent_watchlist.v1.schema.json",
+      "purpose": "watchlist current domain document"
+    },
+    {
+      "proposed": "persistent_watchlist_entry.v1.schema.json",
+      "purpose": "ISIN-bound user entry state and cached/audit metadata"
+    },
+    {
+      "proposed": "persistent_watchlist_revision.v1.schema.json",
+      "purpose": "immutable revision snapshot, chain, audit, and hash"
+    },
+    {
+      "proposed": "persistent_watchlist_mutation_command.v1.schema.json",
+      "purpose": "typed command, actor, expected version, and confirmation binding"
+    },
+    {
+      "proposed": "persistent_watchlist_mutation_preview.v1.schema.json",
+      "purpose": "non-mutating exact diff and identity resolution preview"
+    },
+    {
+      "proposed": "persistent_watchlist_export.v1.schema.json",
+      "purpose": "portable current state and optional immutable history export/import"
+    },
+    {
+      "proposed": "storage migration registry",
+      "purpose": "explicit SQLite schema version independent of domain schemas"
+    }
+  ],
+  "security_findings": [
+    {
+      "risk": "path traversal or arbitrary file write",
+      "requirement": "fixed installation-local root, resolved containment, no caller-selected database path in product API"
+    },
+    {
+      "risk": "symlink or Windows reparse escape",
+      "requirement": "fail-closed containment checks before open/create and tests on supported platforms"
+    },
+    {
+      "risk": "concurrent write race",
+      "requirement": "SQLite transaction, expected_version, bounded busy behavior, conflict response"
+    },
+    {
+      "risk": "SQL injection",
+      "requirement": "parameterized SQL only; identifiers are static implementation constants"
+    },
+    {
+      "risk": "malformed or oversized import",
+      "requirement": "byte/depth/count limits and schema validation before identity work or transaction"
+    },
+    {
+      "risk": "script or HTML in notes/tags",
+      "requirement": "store Unicode text; escape/render as text in future UI"
+    },
+    {
+      "risk": "storage corruption or broken revision chain",
+      "requirement": "integrity check, schema/content hashes, chain validation, fail closed without reset"
+    },
+    {
+      "risk": "silent identity substitution",
+      "requirement": "ISIN resolution before persist and explicit successor migration confirmation"
+    },
+    {
+      "risk": "secret or conversation retention",
+      "requirement": "audit stores bounded confirmation provenance, never secrets, raw prompts, or full conversations"
+    }
+  ],
+  "resource_limit_decisions": [
+    {"name": "WATCHLISTS_PER_INSTALLATION", "value": 32, "unit": "watchlists"},
+    {"name": "ENTRIES_PER_WATCHLIST", "value": 500, "unit": "entries"},
+    {"name": "TAGS_PER_ENTRY", "value": 20, "unit": "tags"},
+    {"name": "TAG_LENGTH", "value": 64, "unit": "Unicode code points"},
+    {"name": "NOTES_LENGTH", "value": 4096, "unit": "Unicode code points"},
+    {"name": "WATCHLIST_NAME_LENGTH", "value": 120, "unit": "Unicode code points"},
+    {"name": "IMPORT_BYTES", "value": 1048576, "unit": "bytes"},
+    {"name": "JSON_NESTING_DEPTH", "value": 20, "unit": "levels"},
+    {
+      "name": "STORAGE_VS_EXECUTION_BOUND",
+      "value": "SEPARATE",
+      "detail": "500 stored entries does not authorize a 500-target request; current Unified default target limit 10 and legacy M5K limit 25 remain separate contracts"
+    }
+  ],
+  "implementation_acceptance_scenarios": [
+    "create empty watchlist and select optional default",
+    "create and rename multiple named watchlists without changing immutable IDs",
+    "add governed TWSE stock by code or name after ISIN resolution",
+    "add governed TPEx stock by code or name after ISIN resolution",
+    "add governed ETF",
+    "persist identity-known unsupported cash instrument while execution remains blocked",
+    "remove entry, disable and enable, deterministic reorder, tags, and exact notes",
+    "same-watchlist duplicate ISIN returns existing/conflict without duplicate row",
+    "same ISIN may exist in separate watchlists",
+    "version increments deterministically for semantic mutation",
+    "historical revision bytes and content hash are immutable",
+    "rollback creates a new revision",
+    "stale expected_version returns WATCHLIST_VERSION_CONFLICT",
+    "current projection and revision commit atomically or both remain unchanged",
+    "code or name resolves to ISIN before persistence",
+    "SECURITY_MASTER_NOT_INITIALIZED fails identity-dependent add closed",
+    "ambiguous and not-found identity do not persist",
+    "same-ISIN metadata refresh does not migrate identity or increment user version",
+    "official successor enters migration review and requires exact explicit confirmation",
+    "snapshot absence does not delete, disable, or migrate",
+    "Security Master rollback changes only current read projection",
+    "legacy m5n/m5k import resolves listing identities to ISIN",
+    "legacy partial resolution and ambiguity are reported before confirmation",
+    "legacy derivative/index entries are deferred without invented durable IDs",
+    "legacy duplicate ISIN is reported and not silently upserted",
+    "bulk import commits exactly one new revision after confirmation",
+    "fresh install returns NO_WATCHLISTS independently of Security Master state",
+    "corrupt, unsupported-schema, hash-mismatched, and broken-chain storage fail closed",
+    "watchlist and entry deletion preserve immutable audit history",
+    "JSON export supports current-only and current-plus-history portability",
+    "installation-local database is Git ignored",
+    "two injected installation roots remain isolated",
+    "read returns stored user state plus current identity/execution projection without mutation",
+    "mutation preview performs no write",
+    "confirmation mismatch or expiry performs no write",
+    "watchlist mutation performs no market request, polling, scheduling, notification, or background work",
+    "resource limits, path traversal, symlink/reparse, malformed import, SQL parameterization, and text rendering are tested",
+    "minimal FastAPI service returns stable reason codes and exact version reads"
+  ],
+  "test_strategy": {
+    "profiles": [
+      "unit domain and reason-code tests",
+      "JSON Schema tests",
+      "SQLite transaction and rollback tests",
+      "optimistic concurrency tests",
+      "identity integration using governed deterministic release fixture",
+      "legacy migration/import tests",
+      "FastAPI/internal service tests",
+      "corruption and schema migration tests",
+      "clean-install and independent-install tests",
+      "legacy consumer compatibility regression"
+    ],
+    "live_market_network_required": false,
+    "focused_current_state_validation": "10 passed in tests/unit/test_m5n_watchlist_workflow.py"
+  },
+  "dependency_graph": [
+    {
+      "from": "repo-tracked legacy watchlist/template",
+      "to": "legacy read APIs and execution adapters",
+      "relationship": "MUST_RETAIN_COMPATIBILITY"
+    },
+    {
+      "from": "conversation-local targets",
+      "to": "future persistent mutation preview",
+      "relationship": "EXPLICIT_PROMOTION_ONLY"
+    },
+    {
+      "from": "Taiwan Market Identity Service and Active Security Master",
+      "to": "future persistent domain service",
+      "relationship": "MUST_VALIDATE_IDENTITY_READ_ONLY"
+    },
+    {
+      "from": "future persistent domain service",
+      "to": "installation-local SQLite current state and revisions",
+      "relationship": "AUTHORITATIVE_TRANSACTION"
+    },
+    {
+      "from": "future persistent read projection",
+      "to": "M8R-03 legacy consumers",
+      "relationship": "ADAPTER_REQUIRED"
+    },
+    {
+      "from": "future persistent storage",
+      "to": "M8R-10 Workbench and Unified Request selection",
+      "relationship": "FUTURE_CONSUMER"
+    },
+    {
+      "from": "persistent mutation",
+      "to": "market execution",
+      "relationship": "NO_DEPENDENCY"
+    }
+  ],
+  "authority_chain": [
+    "human or AI-assisted explicit mutation",
+    "Persistent Watchlist Domain Service",
+    "Identity validation or migration guard",
+    "optimistic expected-version check",
+    "SQLite transaction",
+    "current projection plus immutable revision",
+    "read projection",
+    "current Taiwan Market Identity Service resolution",
+    "future M8R-10 Workbench or bounded Unified Request"
+  ],
+  "m8r_09_m8r_10_boundary": {
+    "m8r_09": [
+      "persistent domain model and formal schemas",
+      "installation-local storage",
+      "version history",
+      "atomic typed mutation",
+      "optimistic concurrency",
+      "identity binding and migration guard",
+      "legacy import/migration",
+      "rollback and export",
+      "minimal local service API",
+      "tests"
+    ],
+    "m8r_10": [
+      "watchlist and evidence Workbench integration",
+      "user-facing mutation and confirmation UX",
+      "persistent selection to Unified Request integration",
+      "persistent read or mutation MCP decision",
+      "legacy frontend/API transition UX"
+    ],
+    "phase_h": ["monitoring", "scheduled refresh", "notifications", "background execution"]
+  },
+  "implementation_tranche": {
+    "shape": "one bounded implementation tranche",
+    "deliverables": [
+      "Persistent Watchlist Domain Model",
+      "installation-local SQLite storage",
+      "current projection and immutable version history",
+      "atomic typed mutation and optimistic concurrency",
+      "ISIN identity binding and successor review",
+      "legacy import/migration",
+      "rollback, tombstones, and canonical export",
+      "minimal local service/API",
+      "offline deterministic tests"
+    ],
+    "not_included": ["full UI", "new MCP tools", "market execution", "background behavior", "Phase H monitoring"]
+  },
+  "validation": {
+    "required_authority_read": "PASS",
+    "repository_wide_search": "PASS",
+    "legacy_watchlist_focused_tests": "10 passed",
+    "offline_only": true,
+    "json_parse": "PASS",
+    "git_diff_check": "PASS",
+    "changed_files_bounded": "PASS: exactly the two preflight review artifacts"
+  },
+  "blocking_findings": [],
+  "owner_decisions_required": [],
+  "principal_decision": "READY_FOR_M8R_09_PERSISTENT_WATCHLIST_IMPLEMENTATION"
+}
