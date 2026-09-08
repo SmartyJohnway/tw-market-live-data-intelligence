@@ -3,6 +3,19 @@
 Baseline: `b9cf1ca8025e8043a58912fbc91d52d80d02c31b`
 Branch: `codex/m8r-08g-02-skill-portability-final-closure`
 
+## Final-head evidence binding
+
+The deterministic closure validation was run against local commit
+`276582bf40f4cc8946e2bf74f5b682b4387fac01`, which remains available only in
+the local object database.  Its comparison with final implementation candidate
+`b3ea5d73268ec57f7b69df5325dbc26ac247f30a` found exactly three differences:
+these two closure artifacts and `docs/roadmap/M8_POST_M8C_REVISED_ROADMAP.md`.
+All three are evidence or Roadmap closure metadata; no runtime, acquisition,
+qualification, Skill, schema, lockfile, or other execution-affecting file
+differs.  Therefore validated code equivalence is `PASS` and the final
+candidate is bound to the validation evidence.  This correction's successor
+commit is evidence-only and does not repeat live acquisition.
+
 ## Decision
 
 M8R-08G is closed.  The next authorized action is

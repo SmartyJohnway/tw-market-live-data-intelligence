@@ -2,7 +2,18 @@
   "task": "M8R-08G-02-PORTABLE-SKILLS-REPRODUCIBILITY-CLEAN-CLONE-ACCEPTANCE-AND-PRE-PHASE-F-CLOSURE",
   "baseline_sha": "b9cf1ca8025e8043a58912fbc91d52d80d02c31b",
   "branch": "codex/m8r-08g-02-skill-portability-final-closure",
-  "head_at_closure_validation": "276582bf40f4cc8946e2bf74f5b682b4387fac01",
+  "validated_code_commit": "b3ea5d73268ec57f7b69df5325dbc26ac247f30a",
+  "validated_code_tree_sha": "da40e6ac5a661d1dd7992dfc2d81a10323711e8a",
+  "finalization_delta_policy": "EVIDENCE_ONLY",
+  "validation_subject_reachable_from_pr": true,
+  "prior_validation_commit": "276582bf40f4cc8946e2bf74f5b682b4387fac01",
+  "prior_validation_commit_local_only": true,
+  "validated_code_equivalence": true,
+  "equivalence_diff": [
+    "A\tdocs/reviews/M8R_08G_PRE_PHASE_F_PORTABILITY_AND_SKILL_REALIGNMENT_CLOSURE.json",
+    "A\tdocs/reviews/M8R_08G_PRE_PHASE_F_PORTABILITY_AND_SKILL_REALIGNMENT_CLOSURE.md",
+    "M\tdocs/roadmap/M8_POST_M8C_REVISED_ROADMAP.md"
+  ],
   "tw_market_evidence_agent_current": true,
   "tw_security_master_classifier_current": true,
   "new_security_master_skill_contract_hash": "e04e480a6a48a10cfe64e7334ee6233d1c866977a0666f2f1ca4fba6c1fdd62f",
@@ -72,7 +83,7 @@
   },
   "clean_clone": {
     "method": "git clone --no-local outside the repository",
-    "head": "276582bf40f4cc8946e2bf74f5b682b4387fac01",
+    "validated_implementation_commit": "276582bf40f4cc8946e2bf74f5b682b4387fac01",
     "fresh_locked_install_pass": true,
     "clean_clone_offline_pass": true,
     "offline_checks": [
