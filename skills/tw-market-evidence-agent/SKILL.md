@@ -1,64 +1,80 @@
 ---
 name: tw-market-evidence-agent
-description: Use this Skill when an agent must choose governed Taiwan market evidence capabilities and compose Unified Request JSON inputs.
+description: Use for governed Taiwan market-evidence requests through the Unified Market Evidence MCP surface.
 ---
 
-# Taiwan Market Evidence Agent Skill
+# Taiwan Market Evidence Agent
 
-Use this Skill when you must query Taiwan market data, resolve security targets, check session states, or analyze historical end-of-day/intraday observation evidence.
+Use this Skill when fresh, source-grounded Taiwan market evidence is needed.
+The callable interface is the six-tool Unified MCP surface:
 
----
+`market_describe_capabilities`, `market_validate_request`,
+`market_preview_request`, `market_read_result`, `market_export_ai_handoff`,
+and `market_fetch_evidence`.
 
-## 1. Skill Trigger
+Mode A/B/C describe product workflow concepts; they are not alternate MCP
+tools. The canonical request contract is
+`schemas/unified_market_evidence_request.v1.schema.json`.
 
-This Skill applies whenever a user query specifically requires:
-- **Current, official, verifiable, time-sensitive, calculated, or source-grounded** Taiwan market evidence (TWSE, TPEx, TAIFEX).
-- Formulating a structured query to fetch canonical evidence.
-- Determining whether the market is open, closed, or affected by disaster closures.
+## When to use
 
-Do not use this Skill for:
-- General finance theory or educational concepts.
-- Non-Taiwan security inquiries.
-- Pure textual formatting or analysis of already-provided historical context (where no new data refresh is needed).
-- Simple Taiwan stock queries that only ask for general opinions or basic non-volatile information.
+Use for current Taiwan-market observations, official EOD evidence, currentness,
+session state, execution-relevant identity resolution, or source-grounded
+calculations. Do not use for finance theory, non-Taiwan markets, translation,
+or when already-provided governed evidence is sufficient and no refresh is
+needed.
 
----
+## Governed workflow
 
-## 2. Mandatory Workflow
+1. Identify conversational intent and requested targets.
+2. Call `market_describe_capabilities` when support or market scope is unclear.
+3. Author a canonical Unified Request, then call `market_validate_request`.
+4. Call `market_preview_request` before any execution-sensitive request.
+5. Only for an executable, user-authorized `execution_mode: "execute"` request,
+   call `market_fetch_evidence` once. Preview never authorizes execution.
+6. Read the governed Result with `market_read_result`; export the same
+   AI-ready handoff with `market_export_ai_handoff` when useful.
+7. Interpret evidence, citations, coverage, failures, and currentness without
+   changing their meaning.
 
-When triggered, the AI must follow this step-by-step workflow:
+Do not retry outside the governed workflow, silently switch sources, invent
+evidence, or turn an unsupported/provisional capability into an execution.
 
-1. **Extract Intent & Targets**: Identify security codes, names, hints (TWSE/TPEx/TAIFEX), and desired metrics (EOD vs. current live-ish data).
-2. **Resolve Ambiguity**: If ticker symbols are ambiguous or missing, stop and clarify with the user. Do not make assumptions or guess targets.
-3. **Check Catalog Capabilities**: Consult the portable catalog projection (`assets/unified_capability_catalog_portable.json` or `references/capability_quick_guide.md`) to verify if the requested target-market combination is supported.
-4. **Compose Unified Request**: Generate a request JSON matching `unified_market_evidence_request.v1.schema.json`. Set `execution_mode` to `"preview"`.
-5. **Manual Handoff**: Present the JSON request to the user and instruct them to execute it via their local workbench. **Direct Unified MCP/service execution is not currently available to the AI.** The governed local CLI/runtime for F3, 05B, and 05C exists. Until M8R-06 is implemented, execution is performed by the human operator through the governed local CLI/manual artifact workflow.
-6. **Interpret Result**: Once the user pastes back the `unified_market_evidence_result.v1` payload, parse it. Strictly preserve timing semantics (EOD vs. live-ish, stale vs. current).
-7. **Respond with Traceability**: Summarize findings, present calculations clearly, and preserve trace links to citations.
+## Identity and eligibility
 
----
+Users may supply `2330`, `台積電`, or `TW0002330008`; do not require them to
+know an ISIN. For governed Taiwan cash instruments, `instrument_id` is the
+ISIN while `listing_id` and `canonical_target_id` retain `MARKET:CODE` routing
+identity. Identity knowledge is broader than execution eligibility: currently
+`common_share` and `etf` are cash execution-supported families; known other
+instruments can resolve and still fail closed for execution.
 
-## 3. Request Composition Rules
+Ambiguous identity is not a fuzzy winner: present candidates and obtain the
+required clarification.
 
-- **Schema Strictness**: All request objects must validate against the request schema. Do not inject ad-hoc parameters or obsolete Phase B operation names.
-- **Data Needs Selection**: Use only the 7 official capability IDs. Avoid minimal sufficient limiting rules; retrieve all needs requested by the user within the authorized target scope.
-- **Security Gating**: Do not attempt to bypass execution approvals. Never request or expose raw transport payloads, credentials, or session cookies.
-- **Operator Execution**: Always rely on the operator to perform Mode A (Validate), Mode B (Preview/Execute), and Mode C (Package) via the manual workbench. After M8R-06, the target operator workflow is Mode A → Mode B → Mode C. Mode A/B/C are target manual operator workflows, not Unified JSON parameters.
+## Evidence interpretation
 
----
+- A successful Result is not automatically fresh or realtime. Preserve source
+  timestamp, retrieval timestamp, event/trade date, stale/currentness state,
+  and `not_realtime_guaranteed` caveats.
+- Official EOD is completed-session reference data, never a live quote.
+- For partial success, report each provided target/need and each missing need
+  with its reason; do not summarize it as wholly successful or wholly failed.
+- For source failure, preserve missing coverage, reason codes and citation
+  absence. Never fabricate values, retry autonomously, or use an unofficial
+  fallback silently.
+- TAIFEX support is provisional/non-executable where the capability authority
+  says so. This boundary is not a source outage.
 
-## 4. Result Interpretation and Safety Rules
+## Installation-local Security Master
 
-- **Facts First**: Base all conclusions on the returned Level 1 (durable governed evidence) and Level 2 (request-scoped time-sensitive evidence) canonical observations. Do not fabricate missing data.
-- **Session Awareness**: Label EOD settlement as completed session statistics. Never present EOD data as real-time intraday quotes.
-- **Staleness and Gaps**: If data is `stale` or target coverage is `not_found`, explicitly declare it. Do not fabricate or estimate missing data.
-- **Safety boundaries and recommendation policy separation**:
-  - The project output will never generate trading recommendations (buy/sell/hold/signals).
-  - Conversational recommendations and analysis are permitted under AI conversational policy, provided that all evidence, caveats, time horizons, and uncertainties are clearly disclosed.
+A fresh installation can legally return `SECURITY_MASTER_NOT_INITIALIZED` (or
+the current formal equivalent). Do not fall back to fixtures or ask an end user
+to find Candidate B. Direct the operator to the explicit local Security Master
+update workflow. There is no scheduler, startup fetch, background polling,
+trading, order routing, model-selected URL, or model-selected executor.
 
----
-
-## 5. References
+## References
 
 - `references/capability_quick_guide.md`
 - `references/evidence_semantics.md`

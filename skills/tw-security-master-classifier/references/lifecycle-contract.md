@@ -134,6 +134,12 @@ Report lifecycle completeness as:
 
 Absence from an announcement search is never proof that an event did not occur.
 
+Aliases and listing history follow the same evidence rule. Preserve an official
+former-name or listing event with its source and only the dates actually
+evidenced. A current snapshot may populate `current_listing.observed_as_of`,
+but it must not fabricate `listing_history.valid_from`. An official successor
+ISIN produces `IDENTITY_MIGRATION_REVIEW_REQUIRED` for downstream review.
+
 ## 6. Implemented adapter boundary
 
 The bundle parses supplied official HTML captures with:

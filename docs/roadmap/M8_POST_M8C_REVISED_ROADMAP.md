@@ -41,6 +41,12 @@ local installation; a clean installation is legally `NOT_INITIALIZED` and has
 no Candidate-B fallback.  This combined 08G-01 tranche covers identity contract,
 release lifecycle, and consumer migration.  It does not start watchlist storage.
 
+**Status: CLOSED.**  M8R-08G portability, portable-Skill realignment, clean-clone
+acceptance, and installation-local bootstrap are recorded in
+`docs/reviews/M8R_08G_PRE_PHASE_F_PORTABILITY_AND_SKILL_REALIGNMENT_CLOSURE.*`.
+The next authorized action is `READY_TO_BEGIN_M8R_09_PREFLIGHT`; M8R-09
+implementation and Phase F storage remain unstarted.
+
 ## Phase G — Dynamic Research Evidence
 
 MOPS disclosures; official fundamentals/financial statements; dynamic research sources; multi-source research evidence packages.

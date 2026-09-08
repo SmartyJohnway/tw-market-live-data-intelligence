@@ -51,6 +51,28 @@ def main() -> int:
     required += [f"references/schemas/{name}.schema.json" for name in schema_names]
     for relative in required: v.check((ROOT / relative).is_file(), f"required_file:{relative}")
 
+    skill_text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+    output_text = (ROOT / "references/output-contract.md").read_text(encoding="utf-8")
+    lifecycle_text = (ROOT / "references/lifecycle-contract.md").read_text(encoding="utf-8")
+    semantic_text = "\n".join((skill_text, output_text, lifecycle_text))
+    for fact in (
+        "Instrument Primary Identity",
+        "Listing / Routing Identity",
+        "Identity Knowledge Universe",
+        "Execution Universe",
+        "NOT_INITIALIZED",
+        "CANDIDATE",
+        "QUALIFIED",
+        "ACTIVE",
+        "RETIRED",
+        "REJECTED",
+        "IDENTITY_MIGRATION_REVIEW_REQUIRED",
+        "producer-time provenance",
+    ):
+        v.check(fact in semantic_text, f"identity_service_contract:{fact}")
+    v.check("Snapshot absence is not termination" in semantic_text, "absence_not_termination_retained")
+    v.check("current_listing.observed_as_of" in semantic_text, "current_listing_not_history_date")
+
     schemas = {name: json.loads((ROOT / f"references/schemas/{name}.schema.json").read_text(encoding="utf-8")) for name in schema_names}
     for name, schema in schemas.items():
         v.equal(schema.get("$schema"), "https://json-schema.org/draft/2020-12/schema", f"schema_draft:{name}")

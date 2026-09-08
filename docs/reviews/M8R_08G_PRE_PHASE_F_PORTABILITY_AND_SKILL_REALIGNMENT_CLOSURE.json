@@ -1,0 +1,165 @@
+{
+  "task": "M8R-08G-02-PORTABLE-SKILLS-REPRODUCIBILITY-CLEAN-CLONE-ACCEPTANCE-AND-PRE-PHASE-F-CLOSURE",
+  "baseline_sha": "b9cf1ca8025e8043a58912fbc91d52d80d02c31b",
+  "branch": "codex/m8r-08g-02-skill-portability-final-closure",
+  "validated_code_commit": "b3ea5d73268ec57f7b69df5325dbc26ac247f30a",
+  "validated_code_tree_sha": "da40e6ac5a661d1dd7992dfc2d81a10323711e8a",
+  "finalization_delta_policy": "EVIDENCE_ONLY",
+  "validation_subject_reachable_from_pr": true,
+  "prior_validation_commit": "276582bf40f4cc8946e2bf74f5b682b4387fac01",
+  "prior_validation_commit_local_only": true,
+  "validated_code_equivalence": true,
+  "equivalence_diff": [
+    "A\tdocs/reviews/M8R_08G_PRE_PHASE_F_PORTABILITY_AND_SKILL_REALIGNMENT_CLOSURE.json",
+    "A\tdocs/reviews/M8R_08G_PRE_PHASE_F_PORTABILITY_AND_SKILL_REALIGNMENT_CLOSURE.md",
+    "M\tdocs/roadmap/M8_POST_M8C_REVISED_ROADMAP.md"
+  ],
+  "tw_market_evidence_agent_current": true,
+  "tw_security_master_classifier_current": true,
+  "new_security_master_skill_contract_hash": "e04e480a6a48a10cfe64e7334ee6233d1c866977a0666f2f1ca4fba6c1fdd62f",
+  "historical_candidate_b_producer_skill_contract_hash": "33be39c30a84641e7591d3d1680adb18b90efd8f509d75b3e971cb46d24c9b6d",
+  "historical_candidate_b_provenance_unchanged": true,
+  "agent_usage_guide_current": true,
+  "docs_ai_authority": {
+    "current_authority": [
+      "docs/agent_usage_guide.md",
+      "current Skills",
+      "canonical runtime/contracts"
+    ],
+    "docs_ai_competing_current_authority": false,
+    "classifications": {
+      "M8_AI_CAPABILITY_CONTRACT.md": "HISTORICAL_ARCHIVE",
+      "M8_AI_CAPABILITY_QUICK_GUIDE.md": "COMPATIBILITY_REDIRECT",
+      "MARKET_EVIDENCE_AGENT_POLICY.md": "CURRENT_GENERATED_PROJECTION",
+      "README.md": "COMPATIBILITY_REDIRECT",
+      "m8_ai_capability_contract.json": "HISTORICAL_ARCHIVE",
+      "m8_ai_tool_selection_matrix.json": "HISTORICAL_ARCHIVE",
+      "m8_evidence_sufficiency_model.json": "HISTORICAL_ARCHIVE"
+    }
+  },
+  "semantic_drift_validator": {
+    "path": "scripts/validate_runtime_skill_guide_sync.py",
+    "status": "PASS",
+    "mcp_tool_count": 6,
+    "tools": [
+      "market_describe_capabilities",
+      "market_validate_request",
+      "market_preview_request",
+      "market_read_result",
+      "market_export_ai_handoff",
+      "market_fetch_evidence"
+    ],
+    "checks": [
+      "runtime MCP registrations",
+      "canonical and portable capability catalogs",
+      "market-evidence Skill",
+      "agent usage guide",
+      "stale-current-claim prohibition"
+    ]
+  },
+  "requirements_lock": {
+    "path": "requirements-lock.txt",
+    "present": true,
+    "source": "fresh disposable venv installed only from requirements.txt",
+    "tested_python": "CPython 3.11.15",
+    "tested_pip": "26.2.1",
+    "tested_platform": "Windows x86_64",
+    "pip_check": "PASS"
+  },
+  "environment_verify": {
+    "path": "scripts/verify_environment.py",
+    "status": "PASS",
+    "checked": [
+      "supported Python version",
+      "mcp==1.29.0",
+      "jsonschema",
+      "requests",
+      "httpx",
+      "FastAPI",
+      "uvicorn",
+      "pandas",
+      "critical imports"
+    ]
+  },
+  "clean_clone": {
+    "method": "git clone --no-local outside the repository",
+    "validated_implementation_commit": "276582bf40f4cc8946e2bf74f5b682b4387fac01",
+    "fresh_locked_install_pass": true,
+    "clean_clone_offline_pass": true,
+    "offline_checks": [
+      "19 JSON Schemas validated",
+      "market-evidence Skill validator PASS",
+      "security-master Skill validator PASS with 201 checks",
+      "portable catalog deep equality PASS",
+      "runtime/Skill/Guide semantic drift validator PASS",
+      "compileall PASS"
+    ],
+    "not_initialized_pass": true,
+    "identity_fail_closed_pass": true,
+    "not_initialized_behavior": {
+      "status_command": "NOT_INITIALIZED",
+      "local_service_identity_response": "409 canonical_security_master_unavailable",
+      "local_service_startup_before_initialization": "governed fail closed",
+      "mcp_startup_before_initialization": "governed fail closed because Local Service is unavailable"
+    },
+    "service_startup_pass_after_bootstrap": true,
+    "mcp_startup_pass_after_bootstrap": true
+  },
+  "deterministic_bootstrap": {
+    "success": "PASS: one command materializer stub -> CANDIDATE -> qualification PASS -> QUALIFIED -> atomic ACTIVE -> restart_required=true",
+    "failure": "PASS: materializer/acquisition failure returns REJECTED and preserves prior Active",
+    "focused_tests": "74 passed, 2 skipped in fresh locked environment",
+    "python_311_cli_argument_compatibility": "PASS after parse_intermixed_args supports update --root <root> --live <release_id>"
+  },
+  "independent_install": {
+    "pass": true,
+    "installation_a_release_id": "security-master-20990101T000001Z",
+    "installation_b_release_id": "security-master-20990101T000002Z",
+    "a_activation_left_b_not_initialized": true,
+    "b_activation_left_a_active_pointer_unchanged": true,
+    "physical_cross_machine_test": "NOT_EXECUTED"
+  },
+  "live_bootstrap": {
+    "attempted": true,
+    "attempt_limit": 1,
+    "status": "PASS",
+    "release_id": "security-master-20260908T052023Z",
+    "manifest_sha256": "eb1fc472060b8313e9de5ba5bf09933ff26daa6978b3eb1057fda48d9b2cba4d",
+    "index_sha256": "74f71449d6f217097d8f2e3a156d29bcd574dce312bce82ba927419f633434a8",
+    "record_count": 46664,
+    "qualification": "PASS",
+    "source_behavior": "bounded official acquisition; no retry, no Candidate B fallback, no unofficial source or WAF bypass",
+    "smoke": {
+      "common_share": "resolved and execution eligible",
+      "etf": "resolved and execution eligible",
+      "known_unsupported_warrant": "identity resolved and execution blocked with unsupported_instrument_type"
+    }
+  },
+  "regression": {
+    "primary_focused": "208 passed, 1 skipped",
+    "default_ci_clean_clone": {
+      "passed": 926,
+      "failed": 9,
+      "skipped": 4,
+      "classification": "INHERITED_NON_BLOCKING_MODE_C_LINEAGE_FIXTURE_DEBT",
+      "failure_family": "Mode C artifact_hash_mismatch lineage fixtures",
+      "baseline_comparison": "the nine failure nodes match b9cf1ca's Mode C lineage-fixture debt; one valid installation-local Active-release HTTP test ran and passed instead of skipping; no new failure"
+    }
+  },
+  "m8r_08f_semantics_preserved": true,
+  "phase_f_started": false,
+  "roadmap": {
+    "m8r_08g": "CLOSED",
+    "next_authorized_action": "READY_TO_BEGIN_M8R_09_PREFLIGHT",
+    "m8r_09_implementation_started": false
+  },
+  "network_actions": {
+    "offline_validation_network": false,
+    "bounded_live_bootstrap_external_calls": true,
+    "bounded_live_bootstrap_attempts": 1,
+    "fallback_source_used": false,
+    "retry_loop_used": false
+  },
+  "blocking_findings": [],
+  "principal_decision": "M8R_08G_CLOSED_READY_FOR_M8R_09_PREFLIGHT"
+}

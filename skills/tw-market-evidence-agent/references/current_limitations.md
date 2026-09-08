@@ -1,8 +1,19 @@
-# Current Limitations
+# Current Limits and Governed Boundaries
 
-- **Unified Orchestrator API Pending**: The automated HTTP executor or MCP tool for intake processing of `unified_market_evidence_request.v1` is not yet implemented (scheduled for F3+).
-- **Manual Workbench Fallback**: AI agents must author requests, display the preview to the operator, and rely on the operator manually pasting results back into the conversation.
-- **Underlying Active Runtime**: The active backend planners (M8R-03C, M8R-03D, M8R-03E) remain the authoritative engine. New unified integrations are simulated via legacy/compatibility wrappers.
-- **R2 Filesystem Containment**: File reads and writes remain strictly sandboxed. No absolute local paths may be written or requested.
-- **No Raw Payloads**: Exposure of raw JSON adapter feeds is restricted. AI must only process normalized evidence envelopes.
-- **No Trading or Orders**: Direct order routing, stock broker mutations, or portfolio writes are permanently disabled.
+The Unified MCP and Local Service are available through their six registered
+tools. Availability does not authorize every request: validation, preview,
+capability authority, explicit execution confirmation, and execute-once control
+remain mandatory.
+
+- Supported cash execution is bounded to governed TWSE/TPEX routes and eligible
+  `common_share`/`etf` instruments.
+- TAIFEX capability support is provisional; no provisional or blocked route may
+  be represented as an executable market retrieval.
+- `recent_performance` is plan-only and session-state semantics remain bounded
+  by the capability authority.
+- Current observation is not realtime guaranteed. EOD is reference data for a
+  completed session.
+- A fresh installation may be `NOT_INITIALIZED`; operators explicitly update
+  the installation-local Security Master. There is no Candidate B fallback,
+  scheduler, polling, startup acquisition, raw-payload exposure, trading, or
+  order routing.

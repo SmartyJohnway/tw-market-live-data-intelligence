@@ -21,10 +21,15 @@ It is a **Local Release Candidate**. It is not production ready and it does not 
 - **M8R-05A/F3**: Unified Request and canonical target validation
 - **M8R-05B**: deterministic preview/authorization/execute-once orchestration
 - **M8R-05C**: complete AI-context Result and separate Audit Package
-- **M8R-06-01**: Unified Operator Workbench Mode A (Inspect and Validate) is production-activated through the governed local compact Security Master pointer.
-- **M8R-06-02**: Mode B1 provides deterministic, offline Preview planning from the production F3 result and accepted 05B-01 planner. It does not authorize or execute.
+- **Mode A** validates requests against the installation-local Taiwan Market
+  Identity Service.
+- **Mode B** previews, explicitly authorizes, and executes one bounded request.
+- **Mode C** builds the canonical Result, Audit Package, and AI-ready handoff.
+- **Unified MCP** exposes six governed tools for capability discovery,
+  validation, preview, execute-once, Result reading, and handoff export.
 
-*Note: Mode B2 authorization/execution, Mode C, Unified MCP execution, and automatic execution are not implemented. There is no automatic polling, scheduler, or realtime guarantee.*
+There is no automatic polling, scheduler, startup fetch, persistent watchlist,
+trading, or realtime guarantee.
 
 ### Legacy compatibility / historical local workbench surfaces
 - Read and validate the reviewed **M5F canonical package** (legacy Mode A: Canonical Context).
@@ -38,14 +43,38 @@ It is a **Local Release Candidate**. It is not production ready and it does not 
 
 No trading, no buy/sell/hold, and no trading signals in project canonical execution outputs. No broker/auth, no automatic orders, no polling, no scheduler, no startup network calls, no full-market scans, and no zero-latency realtime guarantee. The project acts strictly as a deterministic evidence provider.
 
-## Start here
+## Fresh installation
 
 ```bash
-python -m pip install -r requirements.txt
-python scripts/run_local_workbench.py
+git clone https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git
+cd tw-market-live-data-intelligence
+python -m venv .venv
+# Activate .venv using your shell, then:
+python -m pip install -r requirements-lock.txt
+python scripts/verify_environment.py
+python scripts/manage_security_master.py status
 ```
 
-The local workbench is offline by default. It checks repository version, Python/dependencies, directory structure, M5F, latest observation, latest source health, latest conversation package, FastAPI/frontend/MCP entry points, and recommended next action.
+`NOT_INITIALIZED` is the normal fresh-install Security Master state. Initialize
+only through an explicit operator action:
+
+```bash
+python scripts/manage_security_master.py update --live
+python scripts/manage_security_master.py history
+python scripts/manage_security_master.py rollback RELEASE_ID
+```
+
+Start the loopback Local Service and MCP after initialization:
+
+```bash
+uvicorn server.main:app --host 127.0.0.1 --port 8000
+python scripts/run_unified_market_evidence_mcp.py
+```
+
+`requirements.txt` remains the supported direct compatibility range; the lock
+records the exact dependency graph tested on CPython 3.11/Windows. Fresh setup
+does not require Candidate A/B or historical runtime indexes. Legacy pointer
+migration is an advanced compatibility operation only.
 
 For the full operator path, see [`docs/operator/LOCAL_WORKBENCH.md`](docs/operator/LOCAL_WORKBENCH.md).
 

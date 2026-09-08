@@ -1,178 +1,84 @@
-# Agent Usage Guide (M8R-05A-F2 Unified Version)
+# Unified Market Evidence Agent Usage Guide
 
-This guide instructs AI agents on when and how to utilize the Unified Market Evidence workbench. The AI acts as the **request author and evidence analyst**, generating structured requests and interpreting the resulting evidence.
+This is the current operating guide for AI agents using the local Unified
+Market Evidence product. Runtime schemas, the canonical capability catalog,
+and registered MCP contracts remain authoritative when details differ.
 
----
+## Use boundary
 
-## 1. Purpose
+Use the product for fresh or official Taiwan-market evidence, identity needed
+for execution, EOD reference, currentness/session state, citations, and
+source-grounded calculations. Do not call it for general theory, non-Taiwan
+markets, translation, or when existing evidence is sufficient and no refresh
+is requested.
 
-The Unified Market Evidence project provides a deterministic mechanism to query available market evidence and check market currentness without relying on subjective natural-language interpretation. This guide ensures the AI understands the boundary between the project's data execution and the AI's own reasoning.
+## Callable interface
 
-> [!WARNING]
-> **Current Runtime Limitations**
-> The project currently provides the schema, policies, and manual contract handoff structures. The governed local CLI/runtime for F3, 05B, and 05C exists.
-> **M8R-06 Unified Operator Workbench and Unified FastAPI/MCP direct execution surface are NOT yet implemented.**
-> Until M8R-06 is implemented, execution is performed by the human operator through the governed local CLI/manual artifact workflow. The AI currently can only author schema-valid requests and perform manual handoff via the operator. Do not claim the Unified executor is currently available to the AI.
+The six MCP tools are:
 
----
+1. `market_describe_capabilities`
+2. `market_validate_request`
+3. `market_preview_request`
+4. `market_read_result`
+5. `market_export_ai_handoff`
+6. `market_fetch_evidence`
 
-## 2. When to Call the Project
+Mode A/B/C are workflow concepts—validate, preview/authorize/execute once, and
+Result/handoff—not tool names or JSON parameters.
 
-AI agents should propose invoking the project when the conversation requires:
-- **Taiwan Cash Market Status**: Current intraday or recent cash-market status (TWSE, TPEx).
-- **Official Reference Data**: Official End-of-Day (EOD) metrics (OHLCV, trade volume) or derivatives statistics.
-- **Security Verification**: Verifying the canonical identity, ticker symbol, market venue, or listing lifecycle state.
-- **Currentness & Session Diagnostics**: Determining whether a specific date/time is an active trading session or a holiday.
-- **Evidence Semantics**: Demanding official citations, retrieved timestamps, provenance hashes, or coverage audits.
-- **Explicit Instruction**: When the user explicitly requests querying latest or official exchange data.
+## Request and execution workflow
 
----
+Author a `unified_market_evidence_request.v1` request from the conversation.
+Users may identify a target by code, name, or ISIN. Validate it, inspect the
+preview and capability boundary, and call `market_fetch_evidence` only when the
+request is executable, explicitly authorized, and has `execution_mode:
+"execute"`. Preview does not authorize execution. A fetch is one bounded
+governed action; do not retry or switch sources outside that workflow.
 
-## 3. When NOT to Call
+Use `market_read_result` to read the same finalized canonical Result and
+`market_export_ai_handoff` to obtain its AI-ready projection. Follow-up
+discussion does not itself trigger another fetch; create and authorize a new
+request when fresh evidence is genuinely required.
 
-AI agents should **NOT** invoke the project for:
-- **General Financial Concepts**: Definitions, educational materials, or standard economic theory.
-- **No-refresh / Existing Context**: When sufficient historical evidence is already present in the conversation context and no refresh is requested.
-- **Non-Taiwan Markets**: Queries regarding US, Japanese, or other global exchanges not supported by the capability catalog.
-- **Pure Textual Formatting**: Editing, translating, or formatting previously retrieved data.
+## Identity semantics
 
----
+For governed Taiwan cash instruments:
 
-## 4. AI Decision Process
+- `instrument_id` is ISIN, such as `TW0002330008`.
+- `listing_id` and compatible `canonical_target_id` are routing identity,
+  such as `TWSE:2330`.
+- Identity knowledge is broader than execution eligibility. `common_share` and
+  `etf` are the governed cash execution families; other known instruments may
+  resolve but remain blocked.
 
-When processing a user query, the AI must follow this reasoning workflow:
-1. **Understand Intent**: Analyze the conversation context and identify if market evidence is required.
-2. **Determine Targets**: Identify ticker codes, security names, and target venues.
-3. **Identify Data Needs**: Select from the 7 defined capability needs (e.g., `identity`, `current_observation`, `official_eod_reference`).
-4. **Clarify Ambiguity**: If target symbols are ambiguous (e.g., "台積" vs "台積電"), **ask the user** for clarification instead of letting the project guess.
-5. **Compose Unified Request**: Build a valid JSON request conforming to `unified_market_evidence_request.v1.schema.json`.
-6. **Manual Handoff**: Provide the JSON to the user/operator to run manually in the workbench.
+Never choose a fuzzy winner for an ambiguous identity. Present candidates and
+obtain clarification.
 
----
+## Result interpretation
 
-## 5. Unified Request Authoring
+Execution success, freshness, and realtime status are separate facts. Preserve
+observation/event timestamps, retrieval time, trade date, source authority,
+currentness status, caveats, and citations. Official EOD is completed-session
+reference data, not live price. `full_success` never implies realtime.
 
-A Unified Request must be a JSON object with the following fields:
+For partial success, identify each successful target/need and each missing need
+with its reason. For source failure, preserve reason and coverage impact; do not
+invent values, hide absent citations, retry automatically, or silently use an
+unofficial fallback. TAIFEX remains provisional/non-executable where the
+capability catalog says so; a capability boundary is not a source outage.
 
-```json
-{
-  "schema_version": "unified_market_evidence_request.v1",
-  "request_id": "unique-uuid-or-string",
-  "targets": [
-    {
-      "input": "2330",
-      "market_hint": "TWSE",
-      "resolution_requirement": "exact"
-    }
-  ],
-  "data_needs": [
-    {
-      "type": "official_eod_reference",
-      "priority": "required"
-    }
-  ],
-  "execution_mode": "preview"
-}
+## Installation-local Security Master
+
+A fresh clone normally reports `NOT_INITIALIZED`. Identity-dependent calls must
+fail closed through the governed public error rather than fixtures or Candidate
+B. The operator initializes or refreshes explicitly:
+
+```bash
+python scripts/manage_security_master.py status
+python scripts/manage_security_master.py update --live
+python scripts/manage_security_master.py history
+python scripts/manage_security_master.py rollback RELEASE_ID
 ```
 
-### Request Fields:
-- **`schema_version`** (string, required): Must be exactly `"unified_market_evidence_request.v1"`.
-- **`request_id`** (string, required): A unique client-supplied tracking identifier.
-- **`targets`** (array, required): Tickers or symbols to query.
-  - `input`: The search string.
-  - `market_hint`: Optional venue constraint (`"TWSE"`, `"TPEX"`, `"TAIFEX"`, or `null`).
-  - `resolution_requirement`: Optional constraint (`"exact"`, `"allow_ambiguity"`, or `"best_effort"`).
-- **`data_needs`** (array, required): Desired capabilities.
-  - `type`: One of the 7 supported capability types.
-  - `priority`: `"required"` or `"optional"`.
-  - `parameters`: Only required for `recent_performance` (lookback days).
-- **`execution_mode`** (string, required): `"preview"` or `"execute"`.
-
----
-
-## 6. Target Authoring and Ambiguity
-
-AI must prioritize canonical code identification. If multiple matches or ambiguous targets exist:
-- Propose the candidate targets back to the user.
-- Ask: *"Please confirm if you meant TWSE 2330 (TSMC) or TPEx 5347 (World Advanced)?"*
-- Do not submit ambiguous inputs to the executor without setting `resolution_requirement` appropriately.
-
----
-
-## 7. Data Needs Catalog
-
-AI must only request capabilities listed in the canonical catalog:
-1. **`identity`**: Canonical security registration and lifecycle details.
-2. **`current_observation`**: Latest live-ish snapshot (not guaranteed zero-latency realtime).
-3. **`official_eod_reference`**: Official completed-session EOD OHLCV data.
-4. **`recent_performance`**: Historical movement calculations (requires parameter `lookback_trading_days`).
-5. **`session_status`**: Market session status and emergency closure states.
-6. **`source_currentness`**: Metadata regarding retrieval times and effective trade dates.
-7. **`evidence_quality`**: Quality assertions, caveats, and gaps in the retrieved data.
-
----
-
-## 8. Target Operator Workflows (Mode A, B, C)
-
-While the AI composes the JSON request, the actual execution is performed by the human Operator or Frontend Workbench using specific workflows. **These Modes are NOT AI JSON request parameters.** They are the target manual processes the operator follows:
-
-- **Mode A (Inspect and Validate)**: The operator reviews the AI's proposed target lists and data needs. The workbench validates the schema without making external network calls.
-- **Mode B1 (Preview)**: Implemented. The operator views deterministic planned evidence, coverage, gaps, and estimated source calls. No authorization or execution occurs.
-- **Mode B2 (Authorize and Execute Once)**: Not implemented or authorized.
-- **Mode C (Package and Handoff)**: The workbench generates a bundled snapshot of canonical evidence and passes it back to the AI context.
-
-> [!NOTE]
-> The current Unified Workbench implements production Mode A and offline deterministic Mode B1. Mode B2 authorization/execution, Mode C packaging, and Unified MCP execution remain future, separately governed work.
-
----
-
-## 9. Evidence Lifecycle (Level 1 and Level 2)
-
-- **Level 1 (Durable Governed Evidence)**: Stable, long-term governed evidence. Examples include canonical security identity, accepted official EOD references, and stable registry evidence.
-- **Level 2 (Request-Scoped Time-Sensitive Evidence)**: Transitory evidence tied to a specific request. Examples include one-shot live-ish observations and request-bound currentness.
-
-> [!NOTE]
-> A single Unified Result can contain both Level 1 and Level 2 data.
-> "Raw transport payload" versus "canonical normalized evidence" is a completely separate dimension. Raw transport payload belongs to audit artifacts and is NOT equivalent to Level 1.
-
-### Evidence Semantics
-- **Time Semantics**: `retrieved_at` strictly represents the system timestamp when the network request was fulfilled. It is **not** the exchange event time (e.g. trade time).
-- **Return Semantics**: All return percentages and derived performance metrics represent **unadjusted returns** (capital gains only), not total returns, unless explicitly marked with a total return adjustment status.
-
----
-
-## 10. Result Interpretation
-
-When reading the `unified_market_evidence_result.v1` payload (e.g., pasted by the operator via Mode C), the AI must strictly respect the returned semantics:
-- **Timing taxonomy**: Do not describe an EOD reference as a "current live price".
-- **Staleness**: If the result marks evidence as `stale` or `reference_only`, describe it in the past tense.
-- **Coverage**: If a target resolution fails (`not_found`, `ambiguous`), explicitly report the failure instead of fabricating data.
-- **Missing optional needs**: If optional needs are missing, explain what is missing and why.
-- **Citations**: Preserve `citation_id`, retrieved timestamps, and artifact paths for auditability.
-
----
-
-## 11. Complete Output Principle
-
-The project operates under the principle of **Exhaustive output within the authorized request scope**. 
-- The project will return all relevant records for the approved targets and needs.
-- The AI must not prompt the project to filter or drop fields during execution.
-- AI should summarize and explain the results for readability in the final chat response, but must retain trace links to the citations.
-
----
-
-## 12. Manual Workbench Handoff
-
-Because Mode B2, Mode C, and direct Unified MCP execution are **not implemented**, the AI must still use a manual handoff after Mode A validation and Mode B1 Preview.
-
-Current workflow:
-AI authors Unified Request
-→ operator validates/runs governed local CLI workflow
-→ 05B executes only after explicit authorization
-→ 05C produces Result and Audit Package
-→ operator hands AI-ready Result/context back to AI
-
-Target future workflow:
-Mode A (Inspect and Validate) → Mode B (Preview, Authorize, and Execute Once) → Mode C (Package and Handoff to AI)
-
-5. AI interprets the pasted evidence and answers (when available).
+There is no automatic Security Master update, startup fetch, scheduler,
+background polling, persistent watchlist mutation, trading, or order routing.
