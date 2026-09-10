@@ -1,54 +1,44 @@
 # M8R-09 Persistent Watchlist Storage and Versioning — Implementation Closure
 
 Baseline: `458e240d0ba97867795568016c82c3f9cb8fc191`
-Implementation commit: `fe5466530308d500ec5f0b6442c973e007e250a1`
+Validated code commit: `1d68940355a9268053f2f786e3abbf47d9b8a797`
+Validated code tree: `058a23d025bcea7e48b8c5b2274cec680a476917`
 
 ## Decision
 
 `M8R_09_CLOSED_READY_FOR_M8R_10_PREFLIGHT`
 
-M8R-09 introduces only installation-local persistent watchlist state. SQLite
-is the authority at `data/watchlists/watchlists.sqlite3` (Git ignored); it is
-not an evidence executor, scheduler, market-data cache, or MCP mutation
-surface.
+M8R-09 is installation-local SQLite user state. It is not a market-data
+executor, scheduler, cache, or Unified MCP mutation surface.
 
-## Accepted contract
+## Final governance correction
 
-- Cash durable identity is ISIN; `MARKET:CODE` is cached listing/routing
-  metadata only. TWSE/TPEX known-but-execution-blocked cash identities remain
-  persistable. TAIFEX/derivative durable identity is deferred.
-- A watchlist and each entry have immutable UUIDv4 storage IDs. Multiple named
-  watchlists and at most one default are supported. Entry uniqueness is one
-  active ISIN per watchlist, never a generic upsert.
-- Semantic changes use typed preview then explicit commit. The stored preview
-  binds the normalized command, exact resolved identity, expected version,
-  hash, expiry, and active Security Master release where identity-sensitive.
-  Commits are single-use and transactional.
-- Current state is paired with immutable full-snapshot revisions. Revisions
-  are hash-chained; rollback creates a later revision rather than rewriting
-  history. Reads project current Identity Service state without silently
-  changing durable state.
-- M5N/M5K template import is explicit and resolves only accepted cash ISINs.
-  Unresolved, ambiguous, duplicate, and derivative inputs are deferred or
-  rejected rather than persisted as legacy routing identifiers.
+- Preview documents are schema-validated before persistence and again after
+  SQLite read. Their content hash excludes `content_sha256`; the embedded hash,
+  database hash, and caller confirmation hash must agree.
+- Mutation commands use strict command-specific typed branches. Unknown caller
+  fields, prompts, conversations, and raw legacy payloads are never persisted.
+- Legacy import accepts only governed `m5n_watchlist.v1` / `m5k_watchlist.v1`
+  shapes, persists only normalized accepted entries and bounded provenance, and
+  defers unsupported identities.
+- SQLite enforces zero-or-one active default. Default transfer and rollback are
+  explicitly previewed and committed atomically. Revision and current-state
+  reads schema-validate and verify hash-chain integrity before returning data.
 
-## Verification
+## Exact-code validation
 
-The new M8R-09 suite and retained M5N compatibility suite passed `23 passed`.
-The exact committed implementation was checked out through a real external
-`git clone --no-local` with no inherited watchlist DB: `13 passed`; a fresh
-empty store reported `NO_WATCHLISTS`, persisted/reopened state, and the offline
-integrity verifier returned `PASS`.
+An external `git clone --no-local` checked out the exact validated commit and
+installed `requirements-lock.txt`. Environment verification, both Skill
+validators, portable catalog sync, runtime/Skill/Guide drift validation,
+watchlist/legacy/Identity/Mode A/B focused tests (`97 passed`), integrity
+verification, compileall, and `NOT_INITIALIZED` clean-install behavior passed.
 
-Clean-clone default CI compared the exact baseline and implementation node
-sets. Baseline: `2328 passed, 69 failed, 18 skipped`; implementation:
-`2341 passed, 69 failed, 18 skipped, 120 warnings`. The implementation adds
-13 passing M8R-09 tests and introduced no failure node. The retained 69-node
-set is historical M5/Mode-C/Security-Master fixture and provenance debt, not a
-watchlist regression. A primary-worktree run was deliberately not used for the
-gate because its ignored historical local Security Master material changes
-whether loopback tests skip or attempt startup.
+Default CI on that same clone completed with `2351 passed, 69 failed, 18
+skipped`. The clean baseline was `2328 passed, 69 failed, 18 skipped`.
+Normalized pytest node-set comparison found 69 unchanged historical failures,
+zero resolved nodes, and `new_failure_nodes = []`. The retained failures are
+inherited non-blocking fixture/provenance debt and are outside this tranche.
 
-No market network call, automatic retrieval, scheduler, polling, notification,
-Security Master mutation, Unified MCP change, M8R-10 implementation, tag, or
-v1.0 release occurred.
+No market network request, Security Master mutation, background behavior,
+M8R-10 implementation, or v1 release occurred. The next authorized action is
+M8R-10 preflight only.
