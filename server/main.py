@@ -305,6 +305,82 @@ def get_context_capability_summary():
 def get_context_briefing():
     return _read_m5f_artifact("chatgpt_briefing.md", text=True)
 
+# M8R-09 installation-local persistent watchlist API.  It is intentionally
+# separate from legacy M5K/M5N template endpoints and never executes market
+# retrieval.  The production database root is fixed by the domain service.
+from scripts.m8r_09_persistent_watchlists import (
+    WatchlistError as _PersistentWatchlistError,
+    production_store as _persistent_watchlist_store,
+)
+
+
+def _persistent_watchlist_error(error: _PersistentWatchlistError) -> HTTPException:
+    if error.code == "WATCHLIST_NOT_FOUND": status = 404
+    elif error.code == "SECURITY_MASTER_NOT_INITIALIZED": status = 503
+    elif error.code in {"WATCHLIST_VERSION_CONFLICT", "WATCHLIST_ENTRY_ALREADY_EXISTS", "WATCHLIST_CONFIRMATION_ALREADY_CONSUMED", "WATCHLIST_CONFIRMATION_MISMATCH", "WATCHLIST_CONFIRMATION_EXPIRED"}: status = 409
+    else: status = 422
+    return HTTPException(status_code=status, detail={"error": {"code": error.code, "message": str(error), "details": error.details}})
+
+
+@app.get("/api/watchlists")
+def get_persistent_watchlists(include_deleted: bool = False):
+    try:
+        return _persistent_watchlist_store().list_watchlists(include_deleted=include_deleted)
+    except _PersistentWatchlistError as exc:
+        raise _persistent_watchlist_error(exc) from exc
+
+
+@app.get("/api/watchlists/{watchlist_id}")
+def get_persistent_watchlist(watchlist_id: str, include_deleted: bool = False):
+    try:
+        return _persistent_watchlist_store().get_watchlist(watchlist_id, include_deleted=include_deleted)
+    except _PersistentWatchlistError as exc:
+        raise _persistent_watchlist_error(exc) from exc
+
+
+@app.get("/api/watchlists/{watchlist_id}/versions")
+def get_persistent_watchlist_versions(watchlist_id: str):
+    try:
+        return {"watchlist_id": watchlist_id, "revisions": _persistent_watchlist_store().revisions(watchlist_id)}
+    except _PersistentWatchlistError as exc:
+        raise _persistent_watchlist_error(exc) from exc
+
+
+@app.get("/api/watchlists/{watchlist_id}/versions/{version}")
+def get_persistent_watchlist_version(watchlist_id: str, version: int):
+    try:
+        return _persistent_watchlist_store().revision(watchlist_id, version)
+    except _PersistentWatchlistError as exc:
+        raise _persistent_watchlist_error(exc) from exc
+
+
+@app.get("/api/watchlists/{watchlist_id}/export")
+def export_persistent_watchlist(watchlist_id: str, include_history: bool = False):
+    try:
+        return _persistent_watchlist_store().export(watchlist_id, include_history=include_history)
+    except _PersistentWatchlistError as exc:
+        raise _persistent_watchlist_error(exc) from exc
+
+
+@app.post("/api/watchlist-mutations/preview")
+def preview_persistent_watchlist_mutation(command: dict):
+    try:
+        return _persistent_watchlist_store().preview(command)
+    except _PersistentWatchlistError as exc:
+        raise _persistent_watchlist_error(exc) from exc
+
+
+@app.post("/api/watchlist-mutations/commit")
+def commit_persistent_watchlist_mutation(payload: dict):
+    try:
+        return _persistent_watchlist_store().commit(
+            preview_id=str(payload.get("preview_id") or ""),
+            preview_hash=str(payload.get("preview_hash") or ""),
+            confirmed=payload.get("confirmed") is True,
+        )
+    except _PersistentWatchlistError as exc:
+        raise _persistent_watchlist_error(exc) from exc
+
 # M5K Level 2 watchlist and bounded live observation endpoints.
 from scripts.m5k_common import (
     DEFAULT_WATCHLIST_PATH as M5K_DEFAULT_WATCHLIST_PATH,

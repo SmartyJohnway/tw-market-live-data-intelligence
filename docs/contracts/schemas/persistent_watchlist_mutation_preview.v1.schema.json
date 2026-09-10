@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "persistent_watchlist_mutation_preview.v1.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "preview_id", "content_sha256", "command", "watchlist_id", "expected_versions", "created_at", "expires_at", "warnings", "deferred_items"],
+  "properties": {
+    "schema_version": {"const": "persistent_watchlist_mutation_preview.v1"}, "preview_id": {"type": "string", "format": "uuid"},
+    "content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "command": {"$ref": "persistent_watchlist_mutation_command.v1.schema.json"},
+    "watchlist_id": {"type": ["string", "null"]}, "expected_versions": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}},
+    "created_at": {"type": "string", "format": "date-time"}, "expires_at": {"type": "string", "format": "date-time"},
+    "warnings": {"type": "array", "items": {"type": "string"}}, "deferred_items": {"type": "array"}
+  }
+}

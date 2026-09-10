@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "persistent_watchlist_revision.v1.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "watchlist_id", "version", "previous_version", "created_at", "mutation_type", "actor_source", "affected_entry_ids", "affected_instrument_ids", "confirmation", "snapshot", "previous_revision_sha256", "content_sha256"],
+  "properties": {
+    "schema_version": {"const": "persistent_watchlist_revision.v1"}, "watchlist_id": {"type": "string", "format": "uuid"},
+    "version": {"type": "integer", "minimum": 1}, "previous_version": {"type": ["integer", "null"], "minimum": 1},
+    "created_at": {"type": "string", "format": "date-time"}, "mutation_type": {"type": "string"},
+    "actor_source": {"enum": ["human", "ai_assisted", "import", "migration", "rollback", "system_metadata_reconcile"]},
+    "affected_entry_ids": {"type": "array", "items": {"type": "string", "format": "uuid"}},
+    "affected_instrument_ids": {"type": "array", "items": {"type": "string"}},
+    "confirmation": {"type": "object"}, "snapshot": {"$ref": "persistent_watchlist.v1.schema.json"},
+    "previous_revision_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}, "content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

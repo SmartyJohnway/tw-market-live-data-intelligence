@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "persistent_watchlist_mutation_command.v1.schema.json",
+  "type": "object", "additionalProperties": true,
+  "required": ["schema_version", "command_type", "actor_source"],
+  "properties": {
+    "schema_version": {"const": "persistent_watchlist_mutation_command.v1"},
+    "command_type": {"enum": ["create_watchlist", "rename_watchlist", "set_default_watchlist", "add_entry", "remove_entry", "set_entry_enabled", "reorder_entries", "set_entry_tags", "set_entry_notes", "delete_watchlist", "restore_watchlist", "rollback_watchlist", "import_legacy_watchlist", "confirm_identity_migration"]},
+    "actor_source": {"enum": ["human", "ai_assisted", "import", "migration", "rollback", "system_metadata_reconcile"]},
+    "watchlist_id": {"type": "string", "format": "uuid"}, "expected_version": {"type": "integer", "minimum": 1}
+  }
+}

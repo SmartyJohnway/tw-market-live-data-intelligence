@@ -47,6 +47,19 @@ acceptance, and installation-local bootstrap are recorded in
 The next authorized action is `READY_TO_BEGIN_M8R_09_PREFLIGHT`; M8R-09
 implementation and Phase F storage remain unstarted.
 
+### M8R-09 persistent watchlist storage and versioning
+
+**Status: CLOSED.**  Installation-local SQLite watchlist storage now has
+ISIN durable cash identity, typed preview/commit mutations, optimistic version
+checks, immutable hash-chained revisions, legacy M5N/M5K import, rollback,
+export, and a minimal local FastAPI surface.  It does not add MCP mutation,
+market execution, background work, or a frontend persistence UX.  The closure
+evidence is `docs/reviews/M8R_09_PERSISTENT_WATCHLIST_STORAGE_AND_VERSIONING_IMPLEMENTATION_CLOSURE.*`.
+The next authorized action is `READY_FOR_M8R_10_PREFLIGHT`; M8R-10
+implementation remains unstarted.  Phase F is the planned v1.0 feature-freeze
+boundary only; formal v1.0 release remains subject to separate release-readiness
+and contract-freeze review.
+
 ## Phase G — Dynamic Research Evidence
 
 MOPS disclosures; official fundamentals/financial statements; dynamic research sources; multi-source research evidence packages.

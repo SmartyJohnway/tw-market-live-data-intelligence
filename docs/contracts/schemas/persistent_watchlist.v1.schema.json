@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "persistent_watchlist.v1.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "watchlist_id", "name", "current_version", "is_default", "deleted", "created_at", "updated_at", "entries"],
+  "properties": {
+    "schema_version": {"const": "persistent_watchlist.v1"},
+    "watchlist_id": {"type": "string", "format": "uuid"},
+    "name": {"type": "string", "minLength": 1, "maxLength": 120},
+    "current_version": {"type": "integer", "minimum": 1},
+    "is_default": {"type": "boolean"}, "deleted": {"type": "boolean"},
+    "created_at": {"type": "string", "format": "date-time"}, "updated_at": {"type": "string", "format": "date-time"},
+    "entries": {"type": "array", "maxItems": 500, "items": {"$ref": "persistent_watchlist_entry.v1.schema.json"}}
+  }
+}
