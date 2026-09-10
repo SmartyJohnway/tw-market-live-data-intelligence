@@ -1,13 +1,23 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "persistent_watchlist_mutation_preview.v1.schema.json",
-  "type": "object", "additionalProperties": false,
-  "required": ["schema_version", "preview_id", "content_sha256", "command", "watchlist_id", "expected_versions", "created_at", "expires_at", "warnings", "deferred_items"],
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "preview_id", "content_sha256", "command", "watchlist_id", "expected_versions", "before", "after", "additional_after", "security_master_release_id", "warnings", "deferred_items", "created_at", "expires_at"],
   "properties": {
-    "schema_version": {"const": "persistent_watchlist_mutation_preview.v1"}, "preview_id": {"type": "string", "format": "uuid"},
-    "content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "command": {"$ref": "persistent_watchlist_mutation_command.v1.schema.json"},
-    "watchlist_id": {"type": ["string", "null"]}, "expected_versions": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}},
-    "created_at": {"type": "string", "format": "date-time"}, "expires_at": {"type": "string", "format": "date-time"},
-    "warnings": {"type": "array", "items": {"type": "string"}}, "deferred_items": {"type": "array"}
+    "schema_version": { "const": "persistent_watchlist_mutation_preview.v1" },
+    "preview_id": { "type": "string", "format": "uuid" },
+    "content_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "command": { "type": "object", "additionalProperties": false, "required": ["schema_version", "command_type", "actor_source"], "properties": { "schema_version": { "const": "persistent_watchlist_mutation_command.v1" }, "command_type": { "type": "string" }, "actor_source": { "type": "string" }, "watchlist_id": { "type": "string", "format": "uuid" }, "expected_version": { "type": "integer", "minimum": 1 }, "name": { "type": "string" }, "set_default": { "type": "boolean" }, "query": { "type": "string" }, "market_hint": { "type": "string" }, "enabled": { "type": "boolean" }, "tags": { "type": "array", "items": { "type": "string" } }, "notes": { "type": "string" }, "watchlist_entry_id": { "type": "string", "format": "uuid" }, "watchlist_entry_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "target_version": { "type": "integer", "minimum": 1 }, "resolved_entry": { "$ref": "persistent_watchlist_entry.v1.schema.json" }, "resolved_successor": { "type": "string" }, "legacy_schema_version": { "enum": ["m5n_watchlist.v1", "m5k_watchlist.v1"] }, "source_content_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "accepted_entries": { "type": "array", "items": { "$ref": "persistent_watchlist_entry.v1.schema.json" } }, "deferred_summary": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } } } },
+    "watchlist_id": { "type": "string", "format": "uuid" },
+    "expected_versions": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 1 } },
+    "before": { "anyOf": [{ "$ref": "persistent_watchlist.v1.schema.json" }, { "type": "null" }] },
+    "after": { "$ref": "persistent_watchlist.v1.schema.json" },
+    "additional_after": { "type": "array", "items": { "$ref": "persistent_watchlist.v1.schema.json" } },
+    "security_master_release_id": { "type": ["string", "null"] },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "deferred_items": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["item", "reason_code"], "properties": { "item": { "type": ["string", "null"] }, "reason_code": { "type": "string" } } } },
+    "created_at": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": "string", "format": "date-time" }
   }
 }

@@ -77,7 +77,7 @@ def test_preview_is_not_semantic_write_replay_expiry_and_hash(store):
     watchlist = create(store)
     preview = store.preview(command("rename_watchlist", watchlist_id=watchlist["watchlist_id"], expected_version=1, name="Renamed"))
     assert store.get_watchlist(watchlist["watchlist_id"])["name"] == "Primary"
-    with pytest.raises(WatchlistError, match="WATCHLIST_CONFIRMATION_MISMATCH"):
+    with pytest.raises(WatchlistError, match="WATCHLIST_PREVIEW_INTEGRITY_FAILED"):
         store.commit(preview_id=preview["preview_id"], preview_hash="0" * 64, confirmed=True)
     result = commit(store, preview)
     assert result["watchlist"]["name"] == "Renamed"
@@ -116,7 +116,7 @@ def test_known_unsupported_persists_but_derivative_and_unavailable_do_not(store)
 
 def test_legacy_import_partial_and_installation_isolation(store, service, tmp_path):
     watchlist = create(store)
-    legacy = {"categories": [{"instruments": [{"id": "twse:2330", "symbol": "2330", "market": "twse", "enabled": True}, {"id": "taifex:tx", "symbol": "TX", "market": "taifex"}]}]}
+    legacy = {"schema_version": "m5n_watchlist.v1", "categories": [{"instruments": [{"id": "twse:2330", "symbol": "2330", "market": "twse", "enabled": True}, {"id": "taifex:tx", "symbol": "TX", "market": "taifex"}]}]}
     preview = store.preview(command("import_legacy_watchlist", watchlist_id=watchlist["watchlist_id"], expected_version=1, legacy_watchlist=legacy, actor_source="import"))
     assert preview["deferred_items"][0]["reason_code"] == "IDENTITY_SCHEME_UNSUPPORTED"
     committed = commit(store, preview)["watchlist"]
@@ -137,7 +137,7 @@ def test_api_preview_commit_and_legacy_compatibility(monkeypatch, store):
 
 
 def test_default_switch_is_atomic_and_versions_both_watchlists(store):
-    first = create(store, "First")
+    first = commit(store, store.preview(command("create_watchlist", name="First", set_default=True)))["watchlist"]
     second = create(store, "Second")
     assert first["is_default"] is True and second["is_default"] is False
     preview = store.preview(command("set_default_watchlist", watchlist_id=second["watchlist_id"], expected_version=second["current_version"]))
@@ -193,3 +193,95 @@ def test_current_legacy_template_is_import_only_and_unified_mcp_is_unchanged(sto
     assert preview["deferred_items"]
     from server.unified_mcp.tool_contracts import build_tool_contract_snapshot
     assert {tool.name for tool in build_tool_contract_snapshot().tools} == {"market_describe_capabilities", "market_validate_request", "market_preview_request", "market_read_result", "market_export_ai_handoff", "market_fetch_evidence"}
+
+
+def test_preview_contract_is_runtime_bound_and_payload_tamper_fails_without_consuming(store):
+    watchlist = create(store)
+    preview = store.preview(command("rename_watchlist", watchlist_id=watchlist["watchlist_id"], expected_version=1, name="Safe"))
+    validate_contract(preview, "persistent_watchlist_mutation_preview.v1.schema.json")
+    bad = dict(preview); bad["raw_prompt"] = "must not validate"
+    with pytest.raises(WatchlistError, match="WATCHLIST_SCHEMA_INVALID"):
+        validate_contract(bad, "persistent_watchlist_mutation_preview.v1.schema.json")
+    con = store._connect()
+    try:
+        tampered = dict(preview); tampered["after"] = dict(tampered["after"]); tampered["after"]["name"] = "Tampered"
+        con.execute("UPDATE mutation_previews SET payload_json=? WHERE preview_id=?", (canonical_json(tampered), preview["preview_id"]))
+    finally:
+        con.close()
+    with pytest.raises(WatchlistError, match="WATCHLIST_PREVIEW_INTEGRITY_FAILED"):
+        commit(store, preview)
+    con = store._connect()
+    try:
+        assert con.execute("SELECT consumed_at FROM mutation_previews WHERE preview_id=?", (preview["preview_id"],)).fetchone()[0] is None
+    finally:
+        con.close()
+    assert store.get_watchlist(watchlist["watchlist_id"])["name"] == "Primary"
+
+
+@pytest.mark.parametrize("field,value", [("enabled", "false"), ("set_default", "yes"), ("target_version", "2"), ("unknown_field", "x"), ("raw_prompt", "x"), ("full_conversation", {"secret": "x"})])
+def test_command_schema_is_strict_and_unknown_fields_never_persist(store, field, value):
+    watchlist = create(store)
+    if field == "set_default":
+        payload = command("create_watchlist", name="Invalid", set_default=value)
+    elif field == "target_version":
+        payload = command("rollback_watchlist", watchlist_id=watchlist["watchlist_id"], expected_version=1, target_version=value)
+    else:
+        payload = command("set_entry_enabled", watchlist_id=watchlist["watchlist_id"], expected_version=1, watchlist_entry_id="00000000-0000-4000-8000-000000000001", enabled=False)
+        payload[field] = value
+    with pytest.raises(WatchlistError, match="WATCHLIST_SCHEMA_INVALID"):
+        store.preview(payload)
+    con = store._connect()
+    try:
+        assert con.execute("SELECT COUNT(*) FROM mutation_previews").fetchone()[0] == 1  # create only
+    finally:
+        con.close()
+
+
+def test_default_is_optional_race_and_rollback_preserve_singleton(store):
+    first = create(store, "No default")
+    assert first["is_default"] is False
+    preview_a = store.preview(command("create_watchlist", name="A", set_default=True))
+    preview_b = store.preview(command("create_watchlist", name="B", set_default=True))
+    committed_a = commit(store, preview_a)["watchlist"]
+    with pytest.raises(WatchlistError, match="WATCHLIST_DEFAULT_CONFLICT"):
+        commit(store, preview_b)
+    second = commit(store, store.preview(command("create_watchlist", name="Second", set_default=False)))["watchlist"]
+    switch = store.preview(command("set_default_watchlist", watchlist_id=second["watchlist_id"], expected_version=1))
+    commit(store, switch)
+    current_a = store.get_watchlist(committed_a["watchlist_id"])
+    rolled = store.preview(command("rollback_watchlist", watchlist_id=committed_a["watchlist_id"], expected_version=current_a["current_version"], target_version=1))
+    assert rolled["additional_after"][0]["watchlist_id"] == second["watchlist_id"]
+    commit(store, rolled)
+    rows = store.list_watchlists()["watchlists"]
+    assert sum(row["is_default"] for row in rows) == 1
+    deleted = commit(store, store.preview(command("delete_watchlist", watchlist_id=committed_a["watchlist_id"], expected_version=3)))["watchlist"]
+    assert deleted["is_default"] is False
+    assert sum(row["is_default"] for row in store.list_watchlists()["watchlists"]) == 0
+
+
+def test_legacy_payload_is_schema_identified_and_sanitized_before_persistence(store):
+    watchlist = create(store)
+    invalid = {"schema_version": "unknown.v1", "items": []}
+    with pytest.raises(WatchlistError, match="WATCHLIST_SCHEMA_INVALID"):
+        store.preview(command("import_legacy_watchlist", watchlist_id=watchlist["watchlist_id"], expected_version=1, legacy_watchlist=invalid, actor_source="import"))
+    legacy = {"schema_version": "m5k_watchlist.v1", "items": [{"id": "twse:2330", "symbol": "2330", "market": "twse", "enabled": True, "notes": "ok", "tags": []}]}
+    preview = store.preview(command("import_legacy_watchlist", watchlist_id=watchlist["watchlist_id"], expected_version=1, legacy_watchlist=legacy, actor_source="import"))
+    assert "legacy_watchlist" not in preview["command"] and "source_content_sha256" in preview["command"]
+    legacy["random_nested_object"] = {"market_quote": 999}
+    with pytest.raises(WatchlistError, match="WATCHLIST_SCHEMA_INVALID"):
+        store.preview(command("import_legacy_watchlist", watchlist_id=watchlist["watchlist_id"], expected_version=1, legacy_watchlist=legacy, actor_source="import"))
+
+
+def test_current_projection_and_revision_reads_fail_closed_when_schema_invalid(store):
+    watchlist = add(store, create(store))
+    con = store._connect()
+    try:
+        entry = watchlist["entries"][0].copy()
+        entry["enabled"] = "false"
+        con.execute("UPDATE entries SET payload_json=? WHERE watchlist_entry_id=?", (canonical_json(entry), entry["watchlist_entry_id"]))
+    finally:
+        con.close()
+    with pytest.raises(WatchlistError, match="WATCHLIST_VERSION_CHAIN_BROKEN"):
+        store.get_watchlist(watchlist["watchlist_id"])
+    with pytest.raises(WatchlistError, match="WATCHLIST_VERSION_CHAIN_BROKEN"):
+        store.verify_integrity()
