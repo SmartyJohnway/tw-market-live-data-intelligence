@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "persistent_watchlist_export.v1.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "watchlist", "content_sha256"],
+  "properties": {"schema_version": {"const": "persistent_watchlist_export.v1"}, "watchlist": {"$ref": "persistent_watchlist.v1.schema.json"}, "revisions": {"type": "array", "items": {"$ref": "persistent_watchlist_revision.v1.schema.json"}}, "content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

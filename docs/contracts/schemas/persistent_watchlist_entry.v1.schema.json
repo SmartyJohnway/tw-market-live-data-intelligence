@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "persistent_watchlist_entry.v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["watchlist_entry_id", "instrument_id", "identity_scheme", "enabled", "display_order", "tags", "notes", "created_at", "updated_at", "resolved_under_security_master_release_id"],
+  "properties": {
+    "watchlist_entry_id": {"type": "string", "format": "uuid"},
+    "instrument_id": {"type": "string", "pattern": "^[A-Z]{2}[A-Z0-9]{10}$"},
+    "identity_scheme": {"const": "ISIN"},
+    "enabled": {"type": "boolean"},
+    "display_order": {"type": "integer", "minimum": 1},
+    "tags": {"type": "array", "maxItems": 20, "items": {"type": "string", "minLength": 1, "maxLength": 64}, "uniqueItems": true},
+    "notes": {"type": "string", "maxLength": 4096},
+    "created_at": {"type": "string", "format": "date-time"},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "resolved_under_security_master_release_id": {"type": ["string", "null"]},
+    "display_name": {"type": ["string", "null"]},
+    "cached_market": {"type": ["string", "null"]},
+    "cached_security_code": {"type": ["string", "null"]},
+    "cached_listing_id": {"type": ["string", "null"]},
+    "instrument_type": {"type": ["string", "null"]}
+  }
+}

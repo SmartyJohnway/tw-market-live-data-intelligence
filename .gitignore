@@ -27,6 +27,9 @@ data/security_master/releases/
 data/security_master/rejected/
 data/security_master/retired/
 
+# Installation-local persistent watchlist state and ephemeral confirmation data.
+data/watchlists/
+
 # Authorization consumption receipts are single-use and must not be versioned.
 # They are managed by the runtime retention policy (30-day default).
 artifacts/**/*.json
