@@ -1,0 +1,2143 @@
+{
+  "task": "V1.0-RELEASE-READINESS-AND-PUBLIC-CONTRACT-FREEZE-PREFLIGHT",
+  "baseline_sha": "2740e4982d77bd3bd192bed4aceeaab8302e4aa6",
+  "baseline_tree_sha": "a81e93af55527ab78e3c3493010c8a85abdcdcb0",
+  "branch": "codex/v1-release-readiness-preflight",
+  "phase_f_closed": true,
+  "phase_g_started": false,
+  "v1_feature_complete": true,
+  "v1_release_ready": false,
+  "v1_release_candidate": false,
+  "v1_release_started": false,
+  "v1_released": false,
+  "tag_created": false,
+  "release_created": false,
+  "market_network_used": false,
+  "persistent_production_state_mutated": false,
+  "current_public_release": {
+    "product_version_authority": "Git tag and GitHub Release",
+    "tag": "v0.1.0",
+    "title": "v0.1.0 – Initial Local-first Preview",
+    "tag_commit": "804496ca1b015fc8e6340a8ba8c524106fb9d4a2",
+    "published_at": "2026-06-30T11:21:07Z",
+    "target_commitish": "main",
+    "draft": false,
+    "prerelease": false,
+    "assets": [],
+    "other_releases": [],
+    "url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v0.1.0"
+  },
+  "version_surface_inventory": [
+    {
+      "path": "Git refs and GitHub Releases",
+      "line_context": "refs/tags/v0.1.0 and GitHub Release metadata",
+      "value": "v0.1.0",
+      "classification": "A_PRODUCT_SEMVER",
+      "authority": "current published product version",
+      "correct_for_v1": false,
+      "action": "Tag exact immutable validated commit as v1.0.0 only after RC gates pass.",
+      "blocking": true
+    },
+    {
+      "path": "server/main.py",
+      "line_context": "FastAPI app declaration lines 14-18",
+      "value": "FastAPI version=1.0.0 with M5F readonly title/description",
+      "classification": "G_STALE_OR_AMBIGUOUS_VERSION_METADATA",
+      "authority": "OpenAPI application metadata only; not established product SemVer",
+      "correct_for_v1": false,
+      "action": "Bind to a single explicit API/product-version policy and update stale title/description.",
+      "blocking": true
+    },
+    {
+      "path": "server/unified_mcp/__init__.py",
+      "line_context": "ADAPTER_VERSION line 6",
+      "value": "unified_market_evidence_mcp_adapter.v1",
+      "classification": "D_API_SERVICE_CONTRACT_VERSION",
+      "authority": "Unified MCP adapter contract",
+      "correct_for_v1": true,
+      "action": "Keep independently versioned from product SemVer.",
+      "blocking": false
+    },
+    {
+      "path": "server/unified_mcp/__init__.py",
+      "line_context": "LOCAL_SERVICE_CONTRACT_VERSION line 7",
+      "value": "unified_market_evidence_local_service.v1",
+      "classification": "D_API_SERVICE_CONTRACT_VERSION",
+      "authority": "Local Service contract",
+      "correct_for_v1": true,
+      "action": "Keep independently versioned.",
+      "blocking": false
+    },
+    {
+      "path": "scripts/m8r_09_persistent_watchlists.py",
+      "line_context": "SCHEMA_VERSION line 28",
+      "value": "SCHEMA_VERSION=1",
+      "classification": "C_STORAGE_SCHEMA_VERSION",
+      "authority": "SQLite installation-local storage",
+      "correct_for_v1": true,
+      "action": "Freeze schema 1 through v1.x or add tested forward-only migrations before changing it.",
+      "blocking": false
+    },
+    {
+      "path": "schemas/unified_market_evidence_{request,request_validation,preview_response,orchestration_plan,result,audit_package,capability_catalog}.v1.schema.json",
+      "line_context": "seven public-candidate schema $id/schema_version declarations",
+      "value": "v1",
+      "classification": "B_PUBLIC_CONTRACT_VERSION",
+      "authority": "Canonical public Unified schemas",
+      "correct_for_v1": true,
+      "action": "Publish required/additive compatibility and removal policy.",
+      "blocking": true
+    },
+    {
+      "path": "schemas/unified_market_evidence_{authorization_consumption_binding,bundle,consumption_record,execution_authorization,execution_receipt,execution_request,executor_registry_metadata,finalization_journal,operation_result,orchestrator_preflight}.v1.schema.json",
+      "line_context": "ten execution-control schema $id/schema_version declarations",
+      "value": "v1",
+      "classification": "E_INTERNAL_PROTOCOL_VERSION",
+      "authority": "Internal stable execution/lineage implementation contracts",
+      "correct_for_v1": true,
+      "action": "Do not expose as client-authored public contracts.",
+      "blocking": false
+    },
+    {
+      "path": "docs/contracts/schemas/{persistent_watchlist*,watchlist_evidence_selection*,taiwan_market_identity_record,taiwan_market_identity_release,taiwan_market_identity_release_status,taiwan_market_identity_active_pointer}.v1.schema.json",
+      "line_context": "public-candidate domain schema $id/schema_version declarations",
+      "value": "v1",
+      "classification": "B_PUBLIC_CONTRACT_VERSION",
+      "authority": "Persistent Watchlist, selection and externally observable Identity contracts",
+      "correct_for_v1": true,
+      "action": "Publish the exact public subset and compatibility rules.",
+      "blocking": true
+    },
+    {
+      "path": "docs/contracts/schemas/taiwan_market_identity_{candidate,release_index,release_manifest,release_qualification}.v1.schema.json and remaining historical/context schemas",
+      "line_context": "producer/lifecycle internals and historical context schema declarations",
+      "value": "v1",
+      "classification": "E_INTERNAL_PROTOCOL_VERSION",
+      "authority": "Internal producer and historical compatibility contracts",
+      "correct_for_v1": true,
+      "action": "Keep internal or historical unless explicitly promoted later.",
+      "blocking": false
+    },
+    {
+      "path": "skills/tw-security-master-classifier/scripts/isin_parser.py",
+      "line_context": "PARSER_VERSION line 17",
+      "value": "1.0.0",
+      "classification": "E_INTERNAL_PROTOCOL_VERSION",
+      "authority": "Skill parser implementation",
+      "correct_for_v1": true,
+      "action": "Do not treat as product SemVer.",
+      "blocking": false
+    },
+    {
+      "path": "config/test_execution_profiles.json",
+      "line_context": "top-level schema_version",
+      "value": "schema_version 1.0",
+      "classification": "E_INTERNAL_PROTOCOL_VERSION",
+      "authority": "test profile configuration",
+      "correct_for_v1": true,
+      "action": "Keep internal.",
+      "blocking": false
+    },
+    {
+      "path": "README.md",
+      "line_context": "line 10 product status",
+      "value": "Local Release Candidate",
+      "classification": "F_HISTORICAL_LEGACY_VERSION_LANGUAGE",
+      "authority": "current landing page but stale",
+      "correct_for_v1": false,
+      "action": "Replace with stable local-first v1 status after gates pass.",
+      "blocking": true
+    },
+    {
+      "path": "CHANGELOG.md",
+      "line_context": "line 3 product release heading",
+      "value": "v0.1.0 only",
+      "classification": "A_PRODUCT_SEMVER_HISTORY",
+      "authority": "product history",
+      "correct_for_v1": false,
+      "action": "Add v1 entry with contracts, migration, deprecations and limitations.",
+      "blocking": true
+    },
+    {
+      "path": "frontend/unified-workbench",
+      "line_context": "canonical HTML/JS files contain no product-version authority",
+      "value": null,
+      "classification": "G_STALE_OR_AMBIGUOUS_VERSION_METADATA",
+      "authority": "no visible product version",
+      "correct_for_v1": true,
+      "action": "Optional display only if sourced from the same product version authority.",
+      "blocking": false
+    },
+    {
+      "path": "package metadata / CLI --version",
+      "line_context": "pyproject.toml/setup.py/setup.cfg/package.json and canonical CLI version option absent",
+      "value": null,
+      "classification": "G_STALE_OR_AMBIGUOUS_VERSION_METADATA",
+      "authority": "absent",
+      "correct_for_v1": false,
+      "action": "Create one machine-readable product version/release manifest authority; avoid duplicated literals.",
+      "blocking": true
+    }
+  ],
+  "product_narrative": {
+    "name": "TW-Market Live Data Intelligence",
+    "v1_statement": "A stable local-first governed Taiwan Market Evidence Workbench.",
+    "core_loop": [
+      "fresh installation",
+      "Security Master initialization",
+      "persistent Watchlists or temporary targets",
+      "Unified Market Evidence Request",
+      "validate",
+      "preview",
+      "authorize",
+      "explicit execute once",
+      "Result and Audit",
+      "AI handoff"
+    ],
+    "accurate_for_current_code": true,
+    "forbidden_claims": [
+      "production-grade market-data infrastructure",
+      "realtime trading platform",
+      "investment advisory system"
+    ]
+  },
+  "v1_capability_matrix": [
+    {
+      "name": "Identity and installation-local Security Master",
+      "status": "SUPPORTED",
+      "caveat": "Explicit initialization; cash durable identity is ISIN."
+    },
+    {
+      "name": "Persistent Watchlists, revisions, import and export",
+      "status": "SUPPORTED",
+      "caveat": "Installation-local SQLite; explicit preview/commit; zero-or-one default."
+    },
+    {
+      "name": "Temporary targets",
+      "status": "SUPPORTED",
+      "caveat": "Never persisted without explicit Watchlist mutation."
+    },
+    {
+      "name": "Unified validation, planning and authorization",
+      "status": "SUPPORTED",
+      "caveat": "Three confirmations remain distinct."
+    },
+    {
+      "name": "One-shot evidence execution",
+      "status": "SUPPORTED_WITH_CAVEATS",
+      "caveat": "TWSE/TPEX governed routes only; no realtime guarantee."
+    },
+    {
+      "name": "Result, Audit reconstruction and AI handoff",
+      "status": "SUPPORTED",
+      "caveat": "Lineage is stable but active fixture tests must be repaired."
+    },
+    {
+      "name": "Unified MCP",
+      "status": "SUPPORTED",
+      "caveat": "Exactly six tools."
+    },
+    {
+      "name": "Canonical browser Workbench",
+      "status": "SUPPORTED",
+      "caveat": "Route /workbench/; actual Playwright release gate still needs pinned dependency and canonical scenario."
+    },
+    {
+      "name": "TAIFEX and derivatives",
+      "status": "PLAN_ONLY",
+      "caveat": "Provisional/non-executable in Unified production path."
+    },
+    {
+      "name": "recent_performance",
+      "status": "PLAN_ONLY",
+      "caveat": "Contract-supported but no production executor."
+    },
+    {
+      "name": "session_status",
+      "status": "SUPPORTED_WITH_CAVEATS",
+      "caveat": "Governed semantics exist; production route remains blocked/non-executable."
+    },
+    {
+      "name": "Scheduler, polling and automatic refresh",
+      "status": "DEFERRED_POST_V1",
+      "caveat": "Explicitly absent."
+    }
+  ],
+  "v1_non_goals": [
+    "No trading, broker integration, order routing, recommendations or target prices.",
+    "No scheduler, polling, startup network, automatic refresh, automatic retry, background batching or watchlist-driven execution.",
+    "No silent persistence, automatic batching, full-market autonomous scan or credential storage.",
+    "No realtime guarantee; retrieved, current, stale, EOD/reference and realtime remain distinct."
+  ],
+  "public_contract_inventory": [
+    {
+      "name": "Unified Market Evidence Request v1",
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "Request Validation v1 and orchestration preview semantics",
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "Unified Market Evidence Result v1",
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "Unified Market Evidence Audit Package v1",
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "Capability Catalog v1",
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "Watchlist Evidence Selection Request/Selection v1",
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "Persistent Watchlist, Entry, Revision, Mutation Command, Mutation Preview and Export v1",
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "Taiwan Market Identity record/release/status/active-pointer semantics",
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "Identity resolver externally observable statuses and durable/listing identity rules",
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "Unified MCP exact six tool names and input envelopes",
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "AI handoff structured Result/Audit lineage",
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "/workbench/",
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "Current portable Skill user-facing safety and workflow contract",
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "/workbench/mode-a/",
+      "classification": "PUBLIC_COMPATIBILITY_V1"
+    },
+    {
+      "name": "M5N/M5K watchlist import through governed preview/commit",
+      "classification": "PUBLIC_COMPATIBILITY_V1"
+    },
+    {
+      "name": "authorization, receipt, consumption, finalization and executor-registry schemas",
+      "classification": "INTERNAL_STABLE_IMPLEMENTATION_DETAIL"
+    },
+    {
+      "name": "SQLite tables, control-package paths, projector metadata and rendered prose",
+      "classification": "INTERNAL_CHANGEABLE"
+    },
+    {
+      "name": "M5/M7 observation/context schemas, legacy MCP and readonly frontend",
+      "classification": "HISTORICAL_ONLY"
+    }
+  ],
+  "public_contract_freeze_proposal": [
+    {
+      "contract": "Identity",
+      "breaking": [
+        "change cash durable ID away from ISIN",
+        "treat MARKET:CODE as durable instrument identity",
+        "treat snapshot absence as termination"
+      ],
+      "nonbreaking": [
+        "add evidenced aliases or listing history"
+      ],
+      "deprecation": "new successor ISIN requires explicit migration review",
+      "removal": "not before v2 and only with an explicit migration contract",
+      "compatibility": "all v1.x"
+    },
+    {
+      "contract": "Watchlists",
+      "breaking": [
+        "silent persistence",
+        "collapse preview/commit",
+        "allow more than one default",
+        "network on persistence"
+      ],
+      "nonbreaking": [
+        "add optional export fields"
+      ],
+      "deprecation": "schema fields retained for all v1.x",
+      "removal": "required v1 fields cannot be removed before v2",
+      "compatibility": "forward-compatible additive fields only"
+    },
+    {
+      "contract": "Three confirmations",
+      "breaking": [
+        "collapse mutation, evidence authorization and network execute-once"
+      ],
+      "nonbreaking": [
+        "add clearer optional explanations"
+      ],
+      "deprecation": "major-version governance required",
+      "removal": "not removable in v1.x",
+      "compatibility": "all v1.x"
+    },
+    {
+      "contract": "Unified Result/Audit",
+      "breaking": [
+        "remove lineage or redefine currentness upward without evidence"
+      ],
+      "nonbreaking": [
+        "add optional caveats"
+      ],
+      "deprecation": "machine codes receive advance notice",
+      "removal": "required lineage/currentness fields not removable before v2",
+      "compatibility": "schema v1 readers remain valid"
+    },
+    {
+      "contract": "Unified MCP",
+      "breaking": [
+        "rename/remove tool or add required input"
+      ],
+      "nonbreaking": [
+        "optional backward-compatible fields on existing tools"
+      ],
+      "deprecation": "retain deprecated names through v1.x",
+      "removal": "tool removal or seventh canonical tool requires v2-level public-contract governance",
+      "compatibility": "exact six baseline names frozen"
+    },
+    {
+      "contract": "No-background behavior",
+      "breaking": [
+        "implicit polling, retry, batching, startup network"
+      ],
+      "nonbreaking": [
+        "clarify no-background wording without enabling background behavior"
+      ],
+      "deprecation": "scheduler/polling/background execution is deferred to v2-level governance",
+      "removal": "no-background guarantee is not removable in v1.x",
+      "compatibility": "no scheduler, polling, startup network, automatic retry or background batching throughout v1.x"
+    },
+    {
+      "contract": "Unified Request and Validation/Preview",
+      "breaking": ["remove a required semantic, add an unconditionally required field, or make preview authorize/execute"],
+      "nonbreaking": ["add an optional field with fail-closed interpretation"],
+      "deprecation": "retain v1 request readers for all v1.x",
+      "removal": "not before v2",
+      "compatibility": "schema-v1 payloads and offline preview semantics remain accepted"
+    },
+    {
+      "contract": "Capability Catalog",
+      "breaking": ["silently promote provisional/plan-only capability to executable or weaken explicit bounds"],
+      "nonbreaking": ["add a capability with an explicit support/execution disposition"],
+      "deprecation": "mark capability deprecated before removal",
+      "removal": "not before the next major contract version when clients depend on it",
+      "compatibility": "support level, executable flag, bounds and caveats remain machine-readable"
+    },
+    {
+      "contract": "Watchlist Evidence Selection",
+      "breaking": ["persist temporary targets, remove exact-version binding, or change accepted/deferred meaning"],
+      "nonbreaking": ["add optional diagnostics"],
+      "deprecation": "retain selection v1 through v1.x",
+      "removal": "not before v2",
+      "compatibility": "exact watchlist revision and temporary-target nonpersistence remain stable"
+    },
+    {
+      "contract": "AI handoff structured contract",
+      "breaking": ["remove canonical Result/Audit identity, citations or caveat lineage"],
+      "nonbreaking": ["change prose rendering or add optional structured context"],
+      "deprecation": "deprecate machine fields explicitly; prose is not frozen",
+      "removal": "required structured lineage not removable before v2",
+      "compatibility": "machine structure and status/currentness semantics remain stable"
+    },
+    {
+      "contract": "Canonical Workbench route",
+      "breaking": ["remove or repurpose /workbench/"],
+      "nonbreaking": ["add UI behavior without changing governed backend contracts"],
+      "deprecation": "announce replacement throughout a minor-release cycle",
+      "removal": "not before v2",
+      "compatibility": "/workbench/ remains canonical for all v1.x"
+    },
+    {
+      "contract": "Portable Skill user-facing contract",
+      "breaking": ["instruct silent persistence, background execution, unsupported capability use, or bypass confirmations"],
+      "nonbreaking": ["clarify wording while runtime/Skill/Guide drift validation remains green"],
+      "deprecation": "redirect superseded guidance to current Skill/Guide authority",
+      "removal": "current portable Skills remain shipped for v1.x",
+      "compatibility": "safety and workflow semantics freeze; exact prose does not"
+    }
+  ],
+  "public_contract_freeze_coverage": [
+    {"inventory":"Unified Market Evidence Request v1","rule":"Unified Request and Validation/Preview"},
+    {"inventory":"Request Validation v1 and orchestration preview semantics","rule":"Unified Request and Validation/Preview"},
+    {"inventory":"Unified Market Evidence Result v1","rule":"Unified Result/Audit"},
+    {"inventory":"Unified Market Evidence Audit Package v1","rule":"Unified Result/Audit"},
+    {"inventory":"Capability Catalog v1","rule":"Capability Catalog"},
+    {"inventory":"Watchlist Evidence Selection Request/Selection v1","rule":"Watchlist Evidence Selection"},
+    {"inventory":"Persistent Watchlist, Entry, Revision, Mutation Command, Mutation Preview and Export v1","rule":"Watchlists"},
+    {"inventory":"Taiwan Market Identity record/release/status/active-pointer semantics","rule":"Identity"},
+    {"inventory":"Identity resolver externally observable statuses and durable/listing identity rules","rule":"Identity"},
+    {"inventory":"Unified MCP exact six tool names and input envelopes","rule":"Unified MCP"},
+    {"inventory":"AI handoff structured Result/Audit lineage","rule":"AI handoff structured contract"},
+    {"inventory":"/workbench/","rule":"Canonical Workbench route"},
+    {"inventory":"Current portable Skill user-facing safety and workflow contract","rule":"Portable Skill user-facing contract"}
+  ],
+  "semver_policy": {
+    "PATCH": "Bug fixes without intentional public-contract change.",
+    "MINOR": "Backward-compatible capabilities, optional fields and additive endpoints.",
+    "MAJOR": "Breaking required fields, identities, error categories, tool names or safety behavior.",
+    "schema_independence": "Product v1.x may continue using independently versioned *.v1 contracts.",
+    "single_product_version_authority_required": true
+  },
+  "mcp_contract_inventory": [
+    {
+      "name": "market_describe_capabilities",
+      "input": "{}",
+      "input_schema_authority": "server/unified_mcp/tool_contracts.py empty closed object schema",
+      "output_shape": "content[0].text is canonical compact JSON; structuredContent is the exact Local Service capability payload; isError=false",
+      "payload_schema_authority": "Capability Catalog and Local Service capability projection; no standalone MCP output schema",
+      "error_semantics": "startup/contract errors are stable machine categories; prose is not frozen",
+      "network": false,
+      "mutation": false,
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "market_validate_request",
+      "input": "{request: unified_market_evidence_request.v1}",
+      "input_schema_authority": "schemas/unified_market_evidence_request.v1.schema.json",
+      "input_schema_sha256": "6b2062151abdbb22f48b6b5e280636425b782c0e3c4e9c633ff552498607cc0b",
+      "output_shape": "content[0].text is canonical compact JSON; structuredContent is the exact validation payload; isError=false",
+      "payload_schema_authority": "schemas/unified_market_evidence_request_validation.v1.schema.json through Local Service",
+      "error_semantics": "validation status/reason codes stable; English messages changeable",
+      "network": false,
+      "mutation": false,
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "market_preview_request",
+      "input": "{request: unified_market_evidence_request.v1}",
+      "input_schema_authority": "schemas/unified_market_evidence_request.v1.schema.json",
+      "input_schema_sha256": "6b2062151abdbb22f48b6b5e280636425b782c0e3c4e9c633ff552498607cc0b",
+      "output_shape": "content[0].text is canonical compact JSON; structuredContent is the exact preview payload; isError=false",
+      "payload_schema_authority": "Unified preview/orchestration-plan v1 schemas through Local Service",
+      "error_semantics": "preview/unsupported/not-plannable categories stable; no authorization side effect",
+      "network": false,
+      "mutation": false,
+      "classification": "PUBLIC_STABLE_V1"
+    },
+    {
+      "name": "market_read_result",
+      "input": "{control_package_id: umea-v1-*}",
+      "input_schema_authority": "server/unified_mcp/tool_contracts.py generated closed control-package schema",
+      "output_shape": "content[0].text is the fixed notice 'Governed Result returned in structuredContent.'; structuredContent contains the verified canonical Result; isError=false",
+      "payload_schema_authority": "schemas/unified_market_evidence_result.v1.schema.json through Local Service",
+      "error_semantics": "control-package/result verification categories stable; internal filesystem detail not public",
+      "network": false,
+      "mutation": false,
+      "classification": "PUBLIC_STABLE_V1",
+      "finding": "readOnlyHint is currently false although operation is read-only"
+    },
+    {
+      "name": "market_export_ai_handoff",
+      "input": "{control_package_id: umea-v1-*}",
+      "input_schema_authority": "server/unified_mcp/tool_contracts.py generated closed control-package schema",
+      "output_shape": "content[0].text is ai_ready_markdown when present; structuredContent contains the complete verified handoff payload; isError=false",
+      "payload_schema_authority": "AI handoff projection over canonical Result/Audit; exact separate MCP output schema is absent and must be documented before freeze",
+      "error_semantics": "handoff/result verification categories stable; rendered prose not frozen",
+      "network": false,
+      "mutation": false,
+      "classification": "PUBLIC_STABLE_V1",
+      "finding": "readOnlyHint is currently false although operation is read-only"
+    },
+    {
+      "name": "market_fetch_evidence",
+      "input": "{request: unified_market_evidence_request.v1 execute-mode}",
+      "input_schema_authority": "schemas/unified_market_evidence_request.v1.schema.json",
+      "input_schema_sha256": "6b2062151abdbb22f48b6b5e280636425b782c0e3c4e9c633ff552498607cc0b",
+      "output_shape": "content[0].text is ai_ready_markdown when present; structuredContent contains the complete execute-once Local Service payload; isError=false",
+      "payload_schema_authority": "Unified execution/Result/Audit schemas through Local Service",
+      "error_semantics": "execute-mode, authorization, bounded-execution and source-failure machine categories stable; prose internal",
+      "network": "one explicitly authorized bounded action",
+      "mutation": "governed control-package lifecycle",
+      "classification": "PUBLIC_STABLE_V1"
+    }
+  ],
+  "mcp_result_envelope": {
+    "success": "CallToolResult(content=[TextContent], structuredContent=<payload>, isError=false)",
+    "error": "CallToolResult(content=[TextContent machine-error JSON], structuredContent={error: <machine code>}, isError=true)",
+    "freeze_policy": "Envelope fields and tool-specific structured payload contract are stable; human text/Markdown prose is not frozen."
+  },
+  "api_error_contract_policy": {
+    "WATCHLIST_*": "stable documented categories for v1; exact-code allowlist must be generated from current WatchlistError authorities before any exact-code freeze",
+    "IDENTITY_*": "externally observable resolution/not-initialized/migration-required categories frozen; internal loader details excluded",
+    "Mode_A_B_C": "legacy family names are internal/compatibility; only errors surfaced through a declared public contract freeze",
+    "authorization_execution": "public confirmation/refusal/execute-once categories frozen; internal journal or adapter diagnostics changeable",
+    "english_messages": "not frozen"
+  },
+  "api_surface_inventory": [
+    {
+      "classification": "V1_CANONICAL_PUBLIC",
+      "routes": [
+        "GET /workbench/"
+      ]
+    },
+    {
+      "classification": "V1_CANONICAL_INTERNAL_UI_BACKEND",
+      "routes": [
+        "GET /api/unified/capabilities",
+        "POST /api/unified/validate-request",
+        "POST /api/unified/preview-request",
+        "POST /api/unified/authorizations",
+        "POST /api/unified/executions",
+        "POST /api/unified/fetch-evidence",
+        "POST /api/unified/result-package",
+        "GET /api/unified/result-package/{control_package_id}/audit.json",
+        "GET /api/unified/result-package/{control_package_id}/handoff",
+        "GET /api/watchlists",
+        "GET /api/watchlists/{watchlist_id}",
+        "GET /api/watchlists/{watchlist_id}/versions",
+        "GET /api/watchlists/{watchlist_id}/versions/{version}",
+        "GET /api/watchlists/{watchlist_id}/export",
+        "POST /api/watchlists/{watchlist_id}/evidence-request-preview",
+        "POST /api/evidence-request-previews",
+        "POST /api/watchlist-mutations/preview",
+        "POST /api/watchlist-mutations/commit"
+      ]
+    },
+    {
+      "classification": "PUBLIC_COMPATIBILITY_V1",
+      "routes": [
+        "GET /workbench/mode-a/"
+      ]
+    },
+    {
+      "classification": "LEGACY_COMPATIBILITY",
+      "routes": [
+        "GET /",
+        "GET /api/health",
+        "GET /api/governance",
+        "GET /api/matrix",
+        "GET /api/context/canonical",
+        "GET /api/context/snapshot",
+        "GET /api/context/source-health",
+        "GET /api/context/capability-summary",
+        "GET /api/context/briefing",
+        "GET /api/watchlist",
+        "GET /api/watchlist/summary",
+        "GET /api/watchlist/schema",
+        "GET /api/conversation/context",
+        "GET /api/m5l/source-adapter-matrix",
+        "GET /api/m5l/source-capabilities",
+        "GET /api/m5k/watchlist/default",
+        "POST /api/m5k/watchlist/validate",
+        "POST /api/m5k/conversation/handoff",
+        "GET /api/m5k/live-observation/latest",
+        "POST /api/m5k/live-observation/plan",
+        "POST /api/m5k/live-observation/execute",
+        "GET /api/source-health/latest",
+        "GET /api/source-health/schema",
+        "GET /api/m5k/live-observation/history",
+        "GET /api/source-health/history",
+        "POST /api/m7g/controlled-refresh/execute"
+      ]
+    },
+    {
+      "classification": "HISTORICAL_DEPRECATION_CANDIDATE",
+      "routes": [
+        "GET /api/probe/twse",
+        "GET /api/probe/tpex",
+        "GET /api/probe/yahoo",
+        "GET /api/probe/twse_mis",
+        "GET /api/probe/finmind",
+        "GET /api/probe/feasibility"
+      ]
+    }
+  ],
+  "storage_compatibility": {
+    "path": "data/watchlists/watchlists.sqlite3",
+    "tracked": false,
+    "storage_schema_version": 1,
+    "existing_state_survives_current_upgrade": true,
+    "unsupported_future_schema": "WATCHLIST_STORAGE_SCHEMA_UNSUPPORTED fail closed",
+    "v1_policy": "Keep schema 1 for v1.x unless a tested forward-only migration is added; downgrade may be unsupported.",
+    "backup_export_required_before_upgrade": true,
+    "automatic_migration": false
+  },
+  "identity_contract": {
+    "cash_durable_identity": "ISIN",
+    "listing_routing_identity": "MARKET:CODE",
+    "resolver_inputs": [
+      "names",
+      "codes",
+      "ISIN"
+    ],
+    "absence_not_termination": true,
+    "successor_requires": "IDENTITY_MIGRATION_REVIEW_REQUIRED",
+    "taifex_cash_semantics_inherited": false
+  },
+  "watchlist_contract": {
+    "storage": "installation-local SQLite",
+    "mutation": "explicit preview then commit",
+    "concurrency": "optimistic",
+    "revisions": "immutable full snapshots",
+    "default_cardinality": "zero or one",
+    "temporary_target_persists": false,
+    "enabled_implies_executable": false,
+    "persistence_causes_market_network": false
+  },
+  "v0_1_to_v1_migration": {
+    "automatic": false,
+    "steps": [
+      "checkout/install v1 with lock",
+      "verify environment",
+      "inspect Security Master status",
+      "explicitly initialize or strictly migrate Security Master",
+      "start Local Service",
+      "explicitly import M5N/M5K Watchlist via governed preview",
+      "confirm persistent import",
+      "validate /workbench/ and Unified MCP"
+    ],
+    "supported_by_repository": true
+  },
+  "existing_install_upgrade": {
+    "git_pull_preserves_ignored_watchlist_db": true,
+    "qualified_security_master_remains_usable_if_compatible": true,
+    "current_storage_schema_opens": true,
+    "current_component_supports_schema_1": true,
+    "exact_rc_upgrade_verified": false,
+    "survival_conclusion": "SUPPORTED_BY_CURRENT_SCHEMA_1_COMPONENT_PATH_BUT_NOT_YET_PROVEN_ON_EXACT_RC",
+    "pass_conditions": [
+      "copy a real supported schema-1 database and compatible qualified Security Master into an isolated install",
+      "start exact RC without migration or data loss",
+      "verify Watchlist revisions/default and identity projection",
+      "export and run the governed request workflow"
+    ],
+    "destructive_migration": false,
+    "recommendation": "Export/backup Watchlists and record active Security Master status before upgrade."
+  },
+  "fresh_install_release_journey": {
+    "status": "DEFINED_NOT_EXECUTED_IN_PREFLIGHT",
+    "security_master_policy": {
+      "formal_fresh_install_path": "python scripts/manage_security_master.py update --root <isolated-security-master-root> --live",
+      "strict_legacy_path": "python scripts/manage_security_master.py migrate-legacy-active --root <isolated-security-master-root> --legacy-pointer <validated-pointer>",
+      "records_import_activation": "forbidden; --records is non-production and returns REJECTED",
+      "deterministic_test_scope": "Proves one-command acquisition-adapter to qualification/activation and fail-closed behavior, but does not prove official source availability.",
+      "official_live_acceptance": "RECOMMENDED_MANUAL_POLICY_BOUND; at most one bounded explicit attempt on exact RC, not automatic CI.",
+      "owner_decision_required": false,
+      "recommended_default": "Offline deterministic path is mandatory; official live attempt is recommended and failure due external dependency is recorded without weakening fail-closed release gates."
+    },
+    "command_plan": [
+      {"step":"clone","status":"EXECUTABLE_TEMPLATE","windows_command":"git clone --no-local https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git $env:V1_RC_CLONE","posix_command":"git clone --no-local https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git \"$V1_RC_CLONE\"","fixture_path":null,"expected_evidence":"fresh external clone"},
+      {"step":"checkout","status":"EXECUTABLE_TEMPLATE","windows_command":"git -C $env:V1_RC_CLONE checkout --detach $env:V1_RC_SHA","posix_command":"git -C \"$V1_RC_CLONE\" checkout --detach \"$V1_RC_SHA\"","fixture_path":null,"expected_evidence":"HEAD and tree equal immutable RC candidate"},
+      {"step":"venv_install","status":"EXECUTABLE_TEMPLATE","windows_command":"python -m venv $env:V1_RC_CLONE\\.venv; & $env:V1_RC_CLONE\\.venv\\Scripts\\python.exe -m pip install -r $env:V1_RC_CLONE\\requirements-lock.txt","posix_command":"python3 -m venv \"$V1_RC_CLONE/.venv\" && \"$V1_RC_CLONE/.venv/bin/python\" -m pip install -r \"$V1_RC_CLONE/requirements-lock.txt\"","fixture_path":"requirements-lock.txt","expected_evidence":"lock install and pip check PASS"},
+      {"step":"environment","status":"EXECUTABLE","windows_command":"python scripts/verify_environment.py","posix_command":"python scripts/verify_environment.py","fixture_path":null,"expected_evidence":"PASS with Python/pip/platform"},
+      {"step":"not_initialized","status":"EXECUTABLE_TEMPLATE","windows_command":"python scripts/manage_security_master.py status --root $env:V1_SM_ROOT","posix_command":"python scripts/manage_security_master.py status --root \"$V1_SM_ROOT\"","fixture_path":"empty external Security Master root","expected_evidence":"NOT_INITIALIZED without traceback/network"},
+      {"step":"deterministic_security_master","status":"EXECUTABLE","windows_command":"python -m pytest tests/unit/test_m8r_08g_identity_service_and_releases.py::test_live_success_qualifies_and_activates_in_one_command tests/unit/test_m8r_08g_identity_service_and_releases.py::test_live_failure_leaves_active_unchanged -q","posix_command":"python -m pytest tests/unit/test_m8r_08g_identity_service_and_releases.py::test_live_success_qualifies_and_activates_in_one_command tests/unit/test_m8r_08g_identity_service_and_releases.py::test_live_failure_leaves_active_unchanged -q","fixture_path":"pytest tmp_path plus monkeypatched canonical materializer","expected_evidence":"one-command PASS and fail-closed old Active unchanged"},
+      {"step":"deterministic_workbench_loop","status":"EXECUTABLE","windows_command":"python -m pytest tests/acceptance/test_m8r_10_watchlist_evidence_e2e.py::test_fresh_install_watchlist_to_deterministic_result_audit_and_handoff -q","posix_command":"python -m pytest tests/acceptance/test_m8r_10_watchlist_evidence_e2e.py::test_fresh_install_watchlist_to_deterministic_result_audit_and_handoff -q","fixture_path":"pytest isolated tmp_path deterministic transport","expected_evidence":"Watchlist persistence through Result/Audit/handoff"},
+      {"step":"service_browser","status":"RELEASE_TRANCHE_TO_IMPLEMENT","windows_command":null,"posix_command":null,"fixture_path":"external initialized Security Master and Watchlist roots; pinned Playwright/Chromium","expected_evidence":"127.0.0.1 service, /workbench/ canonical browser matrix, no unauthorized load-time network"},
+      {"step":"mcp_startup","status":"EXECUTABLE","windows_command":"python scripts/run_unified_market_evidence_mcp.py --startup-check","posix_command":"python scripts/run_unified_market_evidence_mcp.py --startup-check","fixture_path":null,"expected_evidence":"mcp 1.29.0 and exact six tools"}
+    ],
+    "required": [
+      "fresh clone exact RC",
+      "supported CPython and requirements-lock",
+      "verify_environment PASS",
+      "understand NOT_INITIALIZED",
+      "deterministic release-approved Security Master initialization",
+      "start FastAPI and open /workbench/",
+      "create Watchlist/add 2330/restart/persistence",
+      "validate/preview/three confirmations/execute once",
+      "Result/Audit/AI handoff",
+      "Unified MCP six-tool startup"
+    ]
+  },
+  "upgrade_release_journey": {
+    "status": "DEFINED_NOT_EXECUTED_IN_PREFLIGHT",
+    "command_plan": [
+      {"step":"prepare_fixture","status":"RELEASE_TRANCHE_TO_IMPLEMENT","windows_command":null,"posix_command":null,"fixture_path":"versioned non-sensitive pre-v1 schema-1 Watchlist export/database and compatible qualified Security Master fixture","expected_evidence":"source hashes, versions and copy into external install root"},
+      {"step":"checkout_install","status":"USE_FRESH_INSTALL_CLONE_AND_VENV_COMMANDS","windows_command":null,"posix_command":null,"fixture_path":"same exact RC candidate","expected_evidence":"HEAD/tree and lock evidence identical"},
+      {"step":"environment","status":"EXECUTABLE","windows_command":"python scripts/verify_environment.py","posix_command":"python scripts/verify_environment.py","fixture_path":null,"expected_evidence":"PASS"},
+      {"step":"security_master_status","status":"EXECUTABLE_TEMPLATE","windows_command":"python scripts/manage_security_master.py status --root $env:V1_SM_ROOT","posix_command":"python scripts/manage_security_master.py status --root \"$V1_SM_ROOT\"","fixture_path":"isolated compatible qualified release","expected_evidence":"ACTIVE expected release and hashes"},
+      {"step":"watchlist_integrity","status":"EXECUTABLE_TEMPLATE","windows_command":"python -c \"import os; from pathlib import Path; from scripts.m8r_09_persistent_watchlists import PersistentWatchlistStore; print(PersistentWatchlistStore(root=Path(os.environ['V1_WATCHLIST_ROOT'])).verify_integrity())\"","posix_command":"python -c 'import os; from pathlib import Path; from scripts.m8r_09_persistent_watchlists import PersistentWatchlistStore; print(PersistentWatchlistStore(root=Path(os.environ[\"V1_WATCHLIST_ROOT\"])).verify_integrity())'","fixture_path":"isolated schema-1 Watchlist root","expected_evidence":"PASS; release tranche should add --root to scripts/verify_persistent_watchlists.py"},
+      {"step":"component_regression","status":"EXECUTABLE","windows_command":"python -m pytest tests/unit/test_m8r_09_persistent_watchlists.py tests/integration/test_unified_workbench_api.py -q","posix_command":"python -m pytest tests/unit/test_m8r_09_persistent_watchlists.py tests/integration/test_unified_workbench_api.py -q","fixture_path":"repository pytest isolated fixtures","expected_evidence":"PASS"},
+      {"step":"existing_install_browser_and_request","status":"RELEASE_TRANCHE_TO_IMPLEMENT","windows_command":null,"posix_command":null,"fixture_path":"prepared isolated existing-install fixture","expected_evidence":"service starts, state preserved, deterministic request workflow and browser matrix PASS"}
+    ],
+    "required": [
+      "copy isolated existing schema-1 database and qualified Security Master",
+      "install exact RC",
+      "service starts",
+      "Watchlist and identity preserved",
+      "full governed request workflow succeeds",
+      "no silent migration"
+    ]
+  },
+  "test_profile_inventory": [
+    {
+      "name": "fast",
+      "current_status": "NOT_RUN_THIS_PREFLIGHT",
+      "v1_policy": "developer feedback; green"
+    },
+    {
+      "name": "default-ci",
+      "current_status": "FAIL",
+      "result": {
+        "selected": 941,
+        "passed": 929,
+        "failed": 10,
+        "skipped": 2
+      },
+      "v1_policy": "mandatory green"
+    },
+    {
+      "name": "full-non-network",
+      "current_status": "FAIL",
+      "result": {
+        "selected": 2459,
+        "passed": 2375,
+        "failed": 69,
+        "skipped": 15,
+        "deselected": 1,
+        "warnings": 1077
+      },
+      "v1_policy": "mandatory green"
+    },
+    {
+      "name": "operator-preflight",
+      "current_status": "PASS",
+      "result": {
+        "runner_count": 5,
+        "failed": 0
+      },
+      "v1_policy": "mandatory green"
+    },
+    {
+      "name": "browser-e2e",
+      "current_status": "PASS_CHECK_ONLY",
+      "result": {
+        "runner_count": 1,
+        "actual_playwright_test_skipped_in_broad_suite": true
+      },
+      "v1_policy": "mandatory actual canonical Workbench release gate with pinned Playwright/Chromium"
+    },
+    {
+      "name": "bounded-live",
+      "current_status": "NOT_EXECUTED_POLICY_BOUND",
+      "v1_policy": "recommended single manual acceptance, not automatic CI"
+    }
+  ],
+  "skip_inventory": {
+    "broad_suite_skip_count": 15,
+    "v1_critical_hidden_by_skip": true,
+    "nodes": [
+      {"node":"tests/test_m6g_browser_operator_e2e.py::test_browser_dependency_optional_marker_only","reason":"Playwright not installed","classification":"V1_CRITICAL_BROWSER_PATH_NOT_ACTUALLY_EXECUTED"},
+      {"node":"tests/unit/test_m8r_03e_r5b_cross_platform_filesystem_safety.py::test_posix_rejects_windows_drive_roots_without_side_effect[C:/temp/output]","reason":"POSIX-specific check on Windows","classification":"PLATFORM_MATRIX_EXPECTED"},
+      {"node":"tests/unit/test_m8r_03e_r5b_cross_platform_filesystem_safety.py::test_posix_rejects_windows_drive_roots_without_side_effect[C:\\temp\\output]","reason":"POSIX-specific check on Windows","classification":"PLATFORM_MATRIX_EXPECTED"},
+      {"node":"tests/unit/test_m8r_03e_r5b_cross_platform_filesystem_safety.py::test_posix_rejects_windows_drive_roots_without_side_effect[C:relative]","reason":"POSIX-specific check on Windows","classification":"PLATFORM_MATRIX_EXPECTED"},
+      {"node":"tests/unit/test_m8r_03e_r5b_cross_platform_filesystem_safety.py::test_posix_rejects_windows_drive_roots_without_side_effect[C:]","reason":"POSIX-specific check on Windows","classification":"PLATFORM_MATRIX_EXPECTED"},
+      {"node":"tests/unit/test_m8r_06_01c1b_compact_runtime_identity_index.py::test_sealed_bundle_acceptance_and_exhaustive_resolver_equivalence","reason":"original sealed 01B bundle unavailable","classification":"INSTALLATION_LOCAL_AUTHORITY_OPTIONAL_BUT_RC_NEEDS_SYNTHETIC_EQUIVALENCE"},
+      {"node":"tests/unit/test_m8r_06_01c1r_runtime_identity_cache.py::test_deterministic_compact_projection","reason":"authorized local bundle unavailable","classification":"INSTALLATION_LOCAL_AUTHORITY_OPTIONAL"},
+      {"node":"tests/unit/test_m8r_06_01c1r_runtime_identity_cache.py::test_one_compact_record_per_canonical_target","reason":"authorized local bundle unavailable","classification":"INSTALLATION_LOCAL_AUTHORITY_OPTIONAL"},
+      {"node":"tests/unit/test_m8r_06_01c1r_runtime_identity_cache.py::test_execution_eligibility_preserved","reason":"authorized local bundle unavailable","classification":"INSTALLATION_LOCAL_AUTHORITY_OPTIONAL"},
+      {"node":"tests/unit/test_m8r_06_01c1r_runtime_identity_cache.py::test_lifecycle_summary_preserved","reason":"authorized local bundle unavailable","classification":"INSTALLATION_LOCAL_AUTHORITY_OPTIONAL"},
+      {"node":"tests/unit/test_m8r_06_01c1r_runtime_identity_cache.py::test_source_record_hash_preserved","reason":"authorized local bundle unavailable","classification":"INSTALLATION_LOCAL_AUTHORITY_OPTIONAL"},
+      {"node":"tests/unit/test_m8r_06_01c1r_runtime_identity_cache.py::test_no_full_lifecycle_event_arrays_copied","reason":"authorized local bundle unavailable","classification":"INSTALLATION_LOCAL_AUTHORITY_OPTIONAL"},
+      {"node":"tests/unit/test_m8r_06_01c1r_runtime_identity_cache.py::test_no_raw_evidence_payload_copied","reason":"authorized local bundle unavailable","classification":"INSTALLATION_LOCAL_AUTHORITY_OPTIONAL"},
+      {"node":"tests/unit/test_m8r_06_01c1r_runtime_identity_cache.py::test_complete_real_bundle_semantic_comparison_can_run","reason":"authorized local bundle unavailable","classification":"INSTALLATION_LOCAL_AUTHORITY_OPTIONAL"},
+      {"node":"tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_active_release_http_e2e_without_runtime_monkeypatch","reason":"installation-local active release not initialized","classification":"INSTALLATION_LOCAL_AUTHORITY_OPTIONAL_BUT_EXACT_RC_NEEDS_ISOLATED_FIXTURE"}
+    ]
+  },
+  "browser_release_acceptance": {
+    "mandatory_before_rc_publish": true,
+    "current_evidence_sufficient": false,
+    "required": [
+      "/workbench/ loads from exact RC",
+      "persistent Watchlist create/restart persistence",
+      "temporary target remains nonpersistent",
+      "Watchlist mutation, evidence authorization and network execute-once confirmations remain distinct",
+      "advanced JSON round-trip and schema errors",
+      "Result/Audit and AI handoff rendering",
+      "XSS-safe rendering and CSP-clean console",
+      "no unauthorized external or market network on page load"
+    ],
+    "dependency_policy": "Playwright and Chromium exact tested versions recorded; may remain a release-only dependency but the gate is mandatory."
+  },
+  "current_document_authority_inventory": [
+    {"path":"README.md","classification":"CURRENT_BUT_STALE","action":"rewrite current-first before v1"},
+    {"path":"docs/agent_usage_guide.md","classification":"CURRENT_AUTHORITY","action":"retain and validate against runtime/Skills"},
+    {"path":"skills/tw-market-evidence-agent","classification":"CURRENT_AUTHORITY","action":"freeze safety/workflow semantics, not prose"},
+    {"path":"skills/tw-security-master-classifier","classification":"CURRENT_AUTHORITY","action":"retain producer-time provenance semantics"},
+    {"path":"docs/INDEX.md","classification":"CURRENT_LOCATION_STALE_CONTENT","action":"reroute to Unified current docs"},
+    {"path":"docs/operator","classification":"CURRENT_LOCATION_STALE_CONTENT","action":"replace M5 primary workflow"},
+    {"path":"docs/reference","classification":"CURRENT_LOCATION_STALE_CONTENT","action":"publish current API/MCP classification"},
+    {"path":"docs/release","classification":"LEGACY_RELEASE_AUTHORITY","action":"replace with v1 release policy and archive M5 material"},
+    {"path":"docs/reviews and research","classification":"HISTORICAL_EVIDENCE","action":"retain immutable context; never treat as current usage authority"}
+  ],
+  "documentation_surface_taxonomy": [
+    {"path":"README.md","category":"USER_DOCUMENTATION","status":"STALE_CURRENT_LOCATION"},
+    {"path":"docs/agent_usage_guide.md","category":"USER_AND_AGENT_DOCUMENTATION","status":"CURRENT"},
+    {"path":"docs/operator/","category":"OPERATOR_DOCUMENTATION","status":"STALE_CURRENT_LOCATION"},
+    {"path":"docs/reference/API_REFERENCE.md","category":"API_DOCUMENTATION","status":"STALE_CURRENT_LOCATION"},
+    {"path":"docs/reference/MCP_REFERENCE.md","category":"API_DOCUMENTATION","status":"STALE_CURRENT_LOCATION"},
+    {"path":"AGENTS.md and repository code docs","category":"DEVELOPER_DOCUMENTATION","status":"CURRENT_WITH_HISTORY"},
+    {"path":"docs/release/","category":"LEGACY_RELEASE_DOCUMENTATION","status":"HISTORICAL_OR_REPLACE"},
+    {"path":"frontend/readonly-preview and M5/M7 walkthroughs","category":"LEGACY_COMPATIBILITY_DOCUMENTATION","status":"HISTORICAL"},
+    {"path":"docs/reviews/ and research/","category":"HISTORICAL_EVIDENCE","status":"HISTORICAL_NOT_CURRENT_AUTHORITY"}
+  ],
+  "repository_metadata": {
+    "license":"MIT",
+    "description":"Present but describes legacy bounded-live/source-contract emphasis; update after contract freeze.",
+    "homepage":null,
+    "topics":["fastapi","financial-data","local-first","market-data-ai-context","mcp-server","python","source-contracts","stock-market-observation","taifex","taiwan-stock-market","tpex","twse"],
+    "v1_blocker":"Repository description/current docs must match the v1 narrative; homepage is optional."
+  },
+  "failure_classification_counts": {
+    "A_CURRENT_PRODUCT_BUG": 0,
+    "B_CURRENT_PUBLIC_CONTRACT_REGRESSION": 0,
+    "C_STALE_TEST_EXPECTATION": 11,
+    "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT": 48,
+    "E_LEGACY_COMPONENT_OUTSIDE_V1_PRODUCT": 5,
+    "F_ENVIRONMENT_DEPENDENT_TEST_DESIGN": 3,
+    "G_DUPLICATE_OBSOLETE_TEST": 2,
+    "H_UNKNOWN_REQUIRES_INVESTIGATION": 0,
+    "total": 69
+  },
+  "m8r_10_failure_set_comparison": {
+    "prior_count": 69,
+    "current_count": 69,
+    "unchanged_count": 68,
+    "resolved_nodes": [
+      "tests/integration/test_m8r_08b_mcp_stdio_local_service.py::test_real_stdio_to_actual_loopback_http_service"
+    ],
+    "new_nodes": [
+      "tests/unit/test_m8r_06_03_localhost_vertical.py::test_real_localhost_authorize_execute_once_vertical"
+    ],
+    "resolved_node_prior_signature": "Previous closure recorded an environment-sensitive repository-venv/loopback subprocess failure; the node passed in current broad execution and is not a current failure.",
+    "new_node_current_signature": "Same-baseline focused rerun fails after the bounded 30-second health wait with 'supported localhost launcher did not become healthy'; the test does not reach Mode C.",
+    "new_node_category": "F_ENVIRONMENT_DEPENDENT_TEST_DESIGN",
+    "classification_basis": "The harness does not provide self-contained current Security Master/startup authority; default-ci, broad and focused execution reproduce launcher-health dependence while operator-preflight passes.",
+    "new_current_product_defect_proven": false
+  },
+  "failure_families": [
+    {
+      "id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "nodes": [
+        "tests/integration/test_m8r_03e_r5a_phase_c_fixture_pipeline.py::test_capability_registry_fail_closed_behaviors",
+        "tests/integration/test_m8r_03e_r5a_phase_c_fixture_pipeline.py::test_capability_snapshot_consumption_and_unsupported_filtering",
+        "tests/integration/test_m8r_03e_r5a_phase_c_fixture_pipeline.py::test_integration_phase_c_fixture_pipeline",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_classification_lifecycle_and_observation_policy",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_fabricated_validated_wrapper_revalidated_and_rejected",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_resolution_exact_and_ambiguous",
+        "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_trust_gap_tampered_direct_snapshot_and_lookup_rejected",
+        "tests/unit/test_m8r_03e_r5a_partial_failure.py::test_variant_a_source_adapter_failure",
+        "tests/unit/test_m8r_03e_r5a_partial_failure.py::test_variant_b_stale_and_missing_pipeline",
+        "tests/unit/test_m8r_03e_r5a_performance.py::test_pipeline_performance"
+      ],
+      "root_cause": "Frozen fixtures retain a producer Skill hash that no longer equals the current Skill contract; the validator correctly fails closed.",
+      "current_product_affected": false,
+      "public_contract_affected": false,
+      "v1_blocking": true,
+      "action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks.",
+      "count": 14
+    },
+    {
+      "id": "MODE_C_ARTIFACT_LINEAGE_DRIFT",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "nodes": [
+        "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_check_only_mode",
+        "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_end_to_end_single_target",
+        "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_check_only",
+        "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_determinism",
+        "tests/unit/test_m8r_05c_lineage.py::test_inventory_referential_integrity",
+        "tests/unit/test_m8r_06_04_mode_c.py::test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected",
+        "tests/unit/test_m8r_06_04_mode_c.py::test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected",
+        "tests/unit/test_m8r_06_04_mode_c.py::test_mode_c_materializes_and_reuses_sanitized_finalized_lineage",
+        "tests/unit/test_m8r_06_04_mode_c.py::test_verified_handoff_reuses_mode_c_outputs_and_audit_citations"
+      ],
+      "root_cause": "M8R-05C and Mode C fixtures fail initial artifact lineage hashing, preventing their intended behavior assertions.",
+      "current_product_affected": false,
+      "public_contract_affected": false,
+      "v1_blocking": true,
+      "action": "Regenerate a governed current fixture package and make active tests reach Result/Audit/handoff assertions.",
+      "count": 9
+    },
+    {
+      "id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "nodes": [
+        "tests/unit/test_build_m5b_staging_candidate.py::test_committed_m5b_manifest_verifies",
+        "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+        "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+        "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_exact_authorized_passes",
+        "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_just_before_expiry_passes",
+        "tests/unit/test_m5b_execution_authorization.py::test_receipt_audit_ignores_current_wall_clock_after_expiry",
+        "tests/unit/test_m5b_execution_authorization.py::test_valid_authorization_preflight_with_fixed_now",
+        "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+        "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+        "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+        "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+        "tests/unit/test_m5c_staging_promotion.py::test_exact_binding_request_and_schema",
+        "tests/unit/test_m5c_staging_promotion.py::test_valid_m5b_evidence_eligible",
+        "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+        "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+        "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+        "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+        "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+        "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+        "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+        "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+        "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+        "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+        "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery"
+      ],
+      "root_cause": "Historical M5 authorization, staging, publication and path/EOL fixtures no longer match committed hashes or materialization assumptions.",
+      "current_product_affected": false,
+      "public_contract_affected": false,
+      "v1_blocking": true,
+      "action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity.",
+      "count": 24
+    },
+    {
+      "id": "M4_EVIDENCE_LEDGER_DRIFT",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "nodes": [
+        "tests/unit/test_run_m4_readiness_check.py::test_readiness_check"
+      ],
+      "root_cause": "Historical readiness ledger artifact hashes are stale.",
+      "current_product_affected": false,
+      "public_contract_affected": false,
+      "v1_blocking": true,
+      "action": "Move to historical profile or rebuild a governed replay ledger.",
+      "count": 1
+    },
+    {
+      "id": "M8R05A_SCHEMA_AND_TEXT_EXPECTATION_DRIFT",
+      "category": "C_STALE_TEST_EXPECTATION",
+      "nodes": [
+        "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_fallback_upgrade_fails",
+        "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_forbidden_fields",
+        "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_valid",
+        "tests/unit/test_m8r_05a_f2_ai_guide_and_skill.py::test_guide_aligns_with_unified_evidence",
+        "tests/unit/test_m8r_05a_f2_ai_guide_and_skill.py::test_skill_realignment",
+        "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_evidence_semantics_retrieved_at_is_not_event_time",
+        "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_evidence_semantics_unadjusted_return",
+        "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_network_authorization_boundaries_exist",
+        "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_raw_payload_exposure_is_restricted",
+        "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_timing_class_distinctions"
+      ],
+      "root_cause": "Fixtures omit current required Result fields or tests assert superseded exact guide wording while current drift and Skill validators pass.",
+      "current_product_affected": false,
+      "public_contract_affected": false,
+      "v1_blocking": true,
+      "action": "Update fixtures to current schemas and replace brittle wording checks with semantic authority checks.",
+      "count": 10
+    },
+    {
+      "id": "M5B_ERROR_CODE_EXPECTATION_DRIFT",
+      "category": "C_STALE_TEST_EXPECTATION",
+      "nodes": [
+        "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]"
+      ],
+      "root_cause": "The path remains fail-closed but the test expects a superseded exact error code.",
+      "current_product_affected": false,
+      "public_contract_affected": false,
+      "v1_blocking": true,
+      "action": "Assert the governed current error category if the legacy test remains active.",
+      "count": 1
+    },
+    {
+      "id": "LEGACY_M3G04_REMOVED_IMPORT",
+      "category": "E_LEGACY_COMPONENT_OUTSIDE_V1_PRODUCT",
+      "nodes": [
+        "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+        "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+        "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+        "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection"
+      ],
+      "root_cause": "Legacy controlled-probe CLI imports a removed module before reaching rejection behavior.",
+      "current_product_affected": false,
+      "public_contract_affected": false,
+      "v1_blocking": true,
+      "action": "Deprecate/archive the CLI and tests, or repair only if explicitly retained as V1 compatibility.",
+      "count": 4
+    },
+    {
+      "id": "LEGACY_PHASE_C_PLUGIN_ACTIVATION",
+      "category": "E_LEGACY_COMPONENT_OUTSIDE_V1_PRODUCT",
+      "nodes": [
+        "tests/unit/test_m8r_phase_c_pre_registered_plugin_activation.py::test_pre_registered_source_activates_without_core_routing_changes"
+      ],
+      "root_cause": "Historical plugin activation fixture is outside the canonical Unified V1 executor authority.",
+      "current_product_affected": false,
+      "public_contract_affected": false,
+      "v1_blocking": true,
+      "action": "Move to historical profile and isolate its artifact root.",
+      "count": 1
+    },
+    {
+      "id": "LOOPBACK_HARNESS_ENVIRONMENT",
+      "category": "F_ENVIRONMENT_DEPENDENT_TEST_DESIGN",
+      "nodes": [
+        "tests/acceptance/test_m8r_06_05_operator_acceptance.py::test_m8r_06_05_localhost_operator_matrix",
+        "tests/acceptance/test_m8r_06_05_operator_acceptance.py::test_m8r_06_05_partial_source_failure_and_ui_bindings",
+        "tests/unit/test_m8r_06_03_localhost_vertical.py::test_real_localhost_authorize_execute_once_vertical"
+      ],
+      "root_cause": "Current localhost harness depends on installation-local Security Master/startup state and timing rather than fully isolated authority.",
+      "current_product_affected": false,
+      "public_contract_affected": false,
+      "v1_blocking": true,
+      "action": "Bootstrap isolated Security Master authority, bound startup/cleanup and use deterministic ports/timeouts.",
+      "count": 3
+    },
+    {
+      "id": "DUPLICATE_M5_IMPORT_PROXY_TESTS",
+      "category": "G_DUPLICATE_OBSOLETE_TEST",
+      "nodes": [
+        "tests/unit/test_assess_m5c_staging_candidate.py::test_valid_m5b_evidence_eligible",
+        "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema"
+      ],
+      "root_cause": "Proxy/import tests repeat assertions owned by the source modules and preserve obsolete fixture expectations.",
+      "current_product_affected": false,
+      "public_contract_affected": false,
+      "v1_blocking": true,
+      "action": "Remove proxy collection or move the authoritative historical checks to a historical profile.",
+      "count": 2
+    }
+  ],
+  "failure_node_dispositions": [
+    {
+      "node": "tests/acceptance/test_m8r_06_05_operator_acceptance.py::test_m8r_06_05_localhost_operator_matrix",
+      "category": "F_ENVIRONMENT_DEPENDENT_TEST_DESIGN",
+      "family_id": "LOOPBACK_HARNESS_ENVIRONMENT",
+      "v1_blocking": true,
+      "recommended_action": "Bootstrap isolated Security Master authority, bound startup/cleanup and use deterministic ports/timeouts."
+    },
+    {
+      "node": "tests/acceptance/test_m8r_06_05_operator_acceptance.py::test_m8r_06_05_partial_source_failure_and_ui_bindings",
+      "category": "F_ENVIRONMENT_DEPENDENT_TEST_DESIGN",
+      "family_id": "LOOPBACK_HARNESS_ENVIRONMENT",
+      "v1_blocking": true,
+      "recommended_action": "Bootstrap isolated Security Master authority, bound startup/cleanup and use deterministic ports/timeouts."
+    },
+    {
+      "node": "tests/integration/test_m8r_03e_r5a_phase_c_fixture_pipeline.py::test_capability_registry_fail_closed_behaviors",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks."
+    },
+    {
+      "node": "tests/integration/test_m8r_03e_r5a_phase_c_fixture_pipeline.py::test_capability_snapshot_consumption_and_unsupported_filtering",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks."
+    },
+    {
+      "node": "tests/integration/test_m8r_03e_r5a_phase_c_fixture_pipeline.py::test_integration_phase_c_fixture_pipeline",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks."
+    },
+    {
+      "node": "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+      "category": "E_LEGACY_COMPONENT_OUTSIDE_V1_PRODUCT",
+      "family_id": "LEGACY_M3G04_REMOVED_IMPORT",
+      "v1_blocking": true,
+      "recommended_action": "Deprecate/archive the CLI and tests, or repair only if explicitly retained as V1 compatibility."
+    },
+    {
+      "node": "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+      "category": "E_LEGACY_COMPONENT_OUTSIDE_V1_PRODUCT",
+      "family_id": "LEGACY_M3G04_REMOVED_IMPORT",
+      "v1_blocking": true,
+      "recommended_action": "Deprecate/archive the CLI and tests, or repair only if explicitly retained as V1 compatibility."
+    },
+    {
+      "node": "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+      "category": "E_LEGACY_COMPONENT_OUTSIDE_V1_PRODUCT",
+      "family_id": "LEGACY_M3G04_REMOVED_IMPORT",
+      "v1_blocking": true,
+      "recommended_action": "Deprecate/archive the CLI and tests, or repair only if explicitly retained as V1 compatibility."
+    },
+    {
+      "node": "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection",
+      "category": "E_LEGACY_COMPONENT_OUTSIDE_V1_PRODUCT",
+      "family_id": "LEGACY_M3G04_REMOVED_IMPORT",
+      "v1_blocking": true,
+      "recommended_action": "Deprecate/archive the CLI and tests, or repair only if explicitly retained as V1 compatibility."
+    },
+    {
+      "node": "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_check_only_mode",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "MODE_C_ARTIFACT_LINEAGE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Regenerate a governed current fixture package and make active tests reach Result/Audit/handoff assertions."
+    },
+    {
+      "node": "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_end_to_end_single_target",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "MODE_C_ARTIFACT_LINEAGE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Regenerate a governed current fixture package and make active tests reach Result/Audit/handoff assertions."
+    },
+    {
+      "node": "tests/unit/test_assess_m5c_staging_candidate.py::test_valid_m5b_evidence_eligible",
+      "category": "G_DUPLICATE_OBSOLETE_TEST",
+      "family_id": "DUPLICATE_M5_IMPORT_PROXY_TESTS",
+      "v1_blocking": true,
+      "recommended_action": "Remove proxy collection or move the authoritative historical checks to a historical profile."
+    },
+    {
+      "node": "tests/unit/test_build_m5b_staging_candidate.py::test_committed_m5b_manifest_verifies",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_exact_authorized_passes",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_just_before_expiry_passes",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5b_execution_authorization.py::test_receipt_audit_ignores_current_wall_clock_after_expiry",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5b_execution_authorization.py::test_valid_authorization_preflight_with_fixed_now",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]",
+      "category": "C_STALE_TEST_EXPECTATION",
+      "family_id": "M5B_ERROR_CODE_EXPECTATION_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Assert the governed current error category if the legacy test remains active."
+    },
+    {
+      "node": "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5c_staging_promotion.py::test_exact_binding_request_and_schema",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5c_staging_promotion.py::test_valid_m5b_evidence_eligible",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Archive/reclassify genuinely historical tests or produce valid replay fixtures; do not xfail or weaken integrity."
+    },
+    {
+      "node": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_classification_lifecycle_and_observation_policy",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_fabricated_validated_wrapper_revalidated_and_rejected",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_resolution_exact_and_ambiguous",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_trust_gap_tampered_direct_snapshot_and_lookup_rejected",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_03e_r5a_partial_failure.py::test_variant_a_source_adapter_failure",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_03e_r5a_partial_failure.py::test_variant_b_stale_and_missing_pipeline",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_03e_r5a_performance.py::test_pipeline_performance",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Create a current producer-generated fixture lineage while preserving historical bytes; keep fail-closed hash checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_fallback_upgrade_fails",
+      "category": "C_STALE_TEST_EXPECTATION",
+      "family_id": "M8R05A_SCHEMA_AND_TEXT_EXPECTATION_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Update fixtures to current schemas and replace brittle wording checks with semantic authority checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_forbidden_fields",
+      "category": "C_STALE_TEST_EXPECTATION",
+      "family_id": "M8R05A_SCHEMA_AND_TEXT_EXPECTATION_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Update fixtures to current schemas and replace brittle wording checks with semantic authority checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_valid",
+      "category": "C_STALE_TEST_EXPECTATION",
+      "family_id": "M8R05A_SCHEMA_AND_TEXT_EXPECTATION_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Update fixtures to current schemas and replace brittle wording checks with semantic authority checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_05a_f2_ai_guide_and_skill.py::test_guide_aligns_with_unified_evidence",
+      "category": "C_STALE_TEST_EXPECTATION",
+      "family_id": "M8R05A_SCHEMA_AND_TEXT_EXPECTATION_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Update fixtures to current schemas and replace brittle wording checks with semantic authority checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_05a_f2_ai_guide_and_skill.py::test_skill_realignment",
+      "category": "C_STALE_TEST_EXPECTATION",
+      "family_id": "M8R05A_SCHEMA_AND_TEXT_EXPECTATION_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Update fixtures to current schemas and replace brittle wording checks with semantic authority checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_evidence_semantics_retrieved_at_is_not_event_time",
+      "category": "C_STALE_TEST_EXPECTATION",
+      "family_id": "M8R05A_SCHEMA_AND_TEXT_EXPECTATION_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Update fixtures to current schemas and replace brittle wording checks with semantic authority checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_evidence_semantics_unadjusted_return",
+      "category": "C_STALE_TEST_EXPECTATION",
+      "family_id": "M8R05A_SCHEMA_AND_TEXT_EXPECTATION_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Update fixtures to current schemas and replace brittle wording checks with semantic authority checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_network_authorization_boundaries_exist",
+      "category": "C_STALE_TEST_EXPECTATION",
+      "family_id": "M8R05A_SCHEMA_AND_TEXT_EXPECTATION_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Update fixtures to current schemas and replace brittle wording checks with semantic authority checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_raw_payload_exposure_is_restricted",
+      "category": "C_STALE_TEST_EXPECTATION",
+      "family_id": "M8R05A_SCHEMA_AND_TEXT_EXPECTATION_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Update fixtures to current schemas and replace brittle wording checks with semantic authority checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_timing_class_distinctions",
+      "category": "C_STALE_TEST_EXPECTATION",
+      "family_id": "M8R05A_SCHEMA_AND_TEXT_EXPECTATION_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Update fixtures to current schemas and replace brittle wording checks with semantic authority checks."
+    },
+    {
+      "node": "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_check_only",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "MODE_C_ARTIFACT_LINEAGE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Regenerate a governed current fixture package and make active tests reach Result/Audit/handoff assertions."
+    },
+    {
+      "node": "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_determinism",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "MODE_C_ARTIFACT_LINEAGE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Regenerate a governed current fixture package and make active tests reach Result/Audit/handoff assertions."
+    },
+    {
+      "node": "tests/unit/test_m8r_05c_lineage.py::test_inventory_referential_integrity",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "MODE_C_ARTIFACT_LINEAGE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Regenerate a governed current fixture package and make active tests reach Result/Audit/handoff assertions."
+    },
+    {
+      "node": "tests/unit/test_m8r_06_03_localhost_vertical.py::test_real_localhost_authorize_execute_once_vertical",
+      "category": "F_ENVIRONMENT_DEPENDENT_TEST_DESIGN",
+      "family_id": "LOOPBACK_HARNESS_ENVIRONMENT",
+      "v1_blocking": true,
+      "recommended_action": "Bootstrap isolated Security Master authority, bound startup/cleanup and use deterministic ports/timeouts."
+    },
+    {
+      "node": "tests/unit/test_m8r_06_04_mode_c.py::test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "MODE_C_ARTIFACT_LINEAGE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Regenerate a governed current fixture package and make active tests reach Result/Audit/handoff assertions."
+    },
+    {
+      "node": "tests/unit/test_m8r_06_04_mode_c.py::test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "MODE_C_ARTIFACT_LINEAGE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Regenerate a governed current fixture package and make active tests reach Result/Audit/handoff assertions."
+    },
+    {
+      "node": "tests/unit/test_m8r_06_04_mode_c.py::test_mode_c_materializes_and_reuses_sanitized_finalized_lineage",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "MODE_C_ARTIFACT_LINEAGE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Regenerate a governed current fixture package and make active tests reach Result/Audit/handoff assertions."
+    },
+    {
+      "node": "tests/unit/test_m8r_06_04_mode_c.py::test_verified_handoff_reuses_mode_c_outputs_and_audit_citations",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "MODE_C_ARTIFACT_LINEAGE_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Regenerate a governed current fixture package and make active tests reach Result/Audit/handoff assertions."
+    },
+    {
+      "node": "tests/unit/test_m8r_phase_c_pre_registered_plugin_activation.py::test_pre_registered_source_activates_without_core_routing_changes",
+      "category": "E_LEGACY_COMPONENT_OUTSIDE_V1_PRODUCT",
+      "family_id": "LEGACY_PHASE_C_PLUGIN_ACTIVATION",
+      "v1_blocking": true,
+      "recommended_action": "Move to historical profile and isolate its artifact root."
+    },
+    {
+      "node": "tests/unit/test_run_m4_readiness_check.py::test_readiness_check",
+      "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+      "family_id": "M4_EVIDENCE_LEDGER_DRIFT",
+      "v1_blocking": true,
+      "recommended_action": "Move to historical profile or rebuild a governed replay ledger."
+    },
+    {
+      "node": "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema",
+      "category": "G_DUPLICATE_OBSOLETE_TEST",
+      "family_id": "DUPLICATE_M5_IMPORT_PROXY_TESTS",
+      "v1_blocking": true,
+      "recommended_action": "Remove proxy collection or move the authoritative historical checks to a historical profile."
+    }
+  ],
+  "release_test_gate_proposal": {
+    "policy": "ACTIVE V1 RELEASE GATES MUST BE GREEN",
+    "mandatory": [
+      "default-ci",
+      "full-non-network",
+      "operator-preflight",
+      "actual canonical browser E2E",
+      "both Skill validators",
+      "environment verifier and pip check",
+      "Unified contract validator",
+      "portable catalog sync",
+      "runtime/Skill/Guide drift validator",
+      "compileall and JavaScript syntax",
+      "clean-install acceptance",
+      "existing-install upgrade acceptance",
+      "secret scan",
+      "documentation link check"
+    ],
+    "bounded_live": "RECOMMENDED_MANUAL_POLICY_BOUND",
+    "no_mass_xfail": true
+  },
+  "documentation_drift": [
+    {
+      "path": "README.md",
+      "finding": "Still says Local Release Candidate, says no persistent Watchlist, centers M5K/M5N, old readonly frontend/MCP and M8-through-M8C framing.",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "DOC_CHANGE"
+    },
+    {
+      "path": "docs/INDEX.md",
+      "finding": "Still declares M5 Local Release Candidate as master map.",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "DOC_CHANGE"
+    },
+    {
+      "path": "docs/operator and docs/reference",
+      "finding": "Primary guidance/reference remains M5-era and API/MCP references omit canonical Unified surfaces.",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "DOC_CHANGE"
+    },
+    {
+      "path": "docs/release",
+      "finding": "Release checklist requires retaining Local Release Candidate language and does not describe v1 gates.",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "DOC_CHANGE"
+    },
+    {
+      "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json",
+      "finding": "Current authority still contains known-limitations text saying Unified runtime work belongs to M8R-06 or is not implemented.",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "DOC_CHANGE"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "finding": "Only v0.1.0 is present.",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "DOC_CHANGE"
+    }
+  ],
+  "readme_statement_audit": [
+    {"line":1,"statement":"product name","classification":"CURRENT_CORRECT","action":"retain canonical name"},
+    {"line":10,"statement":"Local Release Candidate","classification":"V1_BLOCKER","action":"replace with stable local-first v1 status only after gates pass"},
+    {"line":20,"statement":"Current canonical Unified architecture","classification":"CURRENT_CORRECT","action":"move before legacy history"},
+    {"line":31,"statement":"no persistent watchlist","classification":"STALE_AND_USER_MISLEADING","action":"state no automatic/background persistence while documenting explicit persistent Watchlists"},
+    {"line":81,"statement":"Typical daily workflow","classification":"HISTORICAL_SHOULD_MOVE","action":"replace with Security Master/Watchlist/Unified Workbench flow"},
+    {"line":104,"statement":"M8 through M8C framing","classification":"HISTORICAL_SHOULD_MOVE","action":"move to architecture history"},
+    {"line":199,"statement":"TAIFEX OpenAPI implemented runtime wording","classification":"STALE_AND_USER_MISLEADING","action":"align to Unified provisional/non-executable authority"},
+    {"line":224,"statement":"readonly M5K frontend is primary","classification":"V1_BLOCKER","action":"point to /workbench/"},
+    {"line":229,"statement":"legacy MCP startup command","classification":"V1_BLOCKER","action":"use scripts/run_unified_market_evidence_mcp.py"},
+    {"line":248,"statement":"legacy repository layout","classification":"STALE_BUT_HARMLESS","action":"make Unified frontend/contracts/runtime primary"}
+  ],
+  "legacy_disposition": [
+    {
+      "surface": "/workbench/mode-a/",
+      "status": "SUPPORTED_COMPATIBILITY_IN_V1",
+      "warning": "Document redirect",
+      "replacement": "/workbench/",
+      "removal": "v2 earliest"
+    },
+    {
+      "surface": "M5N/M5K Watchlist import",
+      "status": "SUPPORTED_COMPATIBILITY_IN_V1",
+      "warning": "Shown during import preview",
+      "replacement": "Persistent Watchlists",
+      "removal": "review for v2"
+    },
+    {
+      "surface": "legacy /api/watchlist*, /api/m5k/*, /api/m5l/*, /api/source-health/*, /api/m7g/*",
+      "status": "DEPRECATED_IN_V1",
+      "warning": "HTTP deprecation metadata and docs",
+      "replacement": "/api/watchlists*, /api/unified/*",
+      "removal": "v2"
+    },
+    {
+      "surface": "legacy server/mcp_server.py",
+      "status": "DEPRECATED_IN_V1",
+      "warning": "startup/docs warning",
+      "replacement": "scripts/run_unified_market_evidence_mcp.py",
+      "removal": "v2"
+    },
+    {
+      "surface": "legacy readonly M5K UI and old conversation package paths",
+      "status": "HISTORICAL_ONLY",
+      "warning": "archive banner",
+      "replacement": "/workbench/ and Unified handoff",
+      "removal": "remove from current navigation before v1"
+    },
+    {
+      "surface": "legacy probe routes and M3G CLI",
+      "status": "REMOVE_BEFORE_V1_OR_HISTORICAL_ONLY",
+      "warning": "410/current docs removal",
+      "replacement": "governed Unified execution",
+      "removal": "before v1 current surface"
+    }
+  ],
+  "repository_hygiene_findings": [
+    {
+      "path": "mode_a_fixes.patch",
+      "finding": "Tracked root patch artifact",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "Archive with provenance or remove in release-readiness tranche."
+    },
+    {
+      "path": "FINAL_DELIVERY_REPORT.md",
+      "finding": "Tracked root historical delivery report competes with current docs",
+      "severity": "P2_SHOULD_FIX_BEFORE_V1",
+      "action": "Move/archive and link from history if retained."
+    },
+    {
+      "path": "data/, artifacts/, venv caches",
+      "finding": "Ignored and not tracked; working tree clean",
+      "severity": "HISTORICAL_NO_ACTION",
+      "action": "Retain ignore policy and verify source archive."
+    },
+    {
+      "path": "operator-preflight and browser-e2e authoritative runners",
+      "finding": "Check-only execution rewrote three tracked historical reports and created three untracked report/context files; exact generated paths were restored or removed after inspection.",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "Require isolated external output roots and assert repository cleanliness in every release profile."
+    }
+  ],
+  "security_findings": [
+    {
+      "finding": "No tracked secret value was proven by the static preflight; path-only token/key regex hits were variable names or placeholders.",
+      "severity": "NO_CURRENT_FINDING",
+      "action": "Run dedicated secret scanner on exact RC and never persist values in evidence."
+    }
+  ],
+  "dependency_findings": [
+    {
+      "finding": "requirements-lock.txt is exact and records CPython 3.11.15, Windows 11 x86_64, pip 26.2.1.",
+      "severity": "NO_CHANGE",
+      "action": "Use it for RC clean installs and publish its hash in release manifest."
+    },
+    {
+      "finding": "requirements-browser-e2e.txt leaves playwright unpinned and inherits compatibility requirements.",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "Pin tested Playwright and record Chromium build/version for browser release gate."
+    },
+    {
+      "finding": "Current verifier passed on Windows 10 / CPython 3.13.7, but this is not lock-equivalent validation.",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "Run RC matrix on CPython 3.11 and 3.13; make Windows primary, Linux supported only after exact workflow pass; macOS unverified."
+    },
+    {
+      "finding": "jsonschema.RefResolver emits 1077 broad-suite warnings and is scheduled for upstream removal.",
+      "severity": "P2_SHOULD_FIX_BEFORE_V1",
+      "action": "Migrate to referencing or bound the supported jsonschema version and record debt."
+    }
+  ],
+  "python_platform_policy": {
+    "minimum": "CPython 3.11",
+    "recommended": "CPython 3.11",
+    "candidate_supported": [
+      "3.11",
+      "3.13"
+    ],
+    "windows": "primary supported platform after RC pass",
+    "linux": "supported only after exact RC workflow passes",
+    "macos": "unverified"
+  },
+  "rc_recommendation": {
+    "recommended": true,
+    "tag": "v1.0.0-rc.1",
+    "reason": [
+      "large jump from v0.1.0",
+      "persistent storage",
+      "new Identity/Security Master architecture",
+      "new canonical Workbench and public contracts",
+      "legacy migration",
+      "active red tests require disposition"
+    ],
+    "promotion": "Exact immutable RC commit; no execution-code delta after validation except evidence/release docs; repeat all gates before v1.0.0."
+  },
+  "release_mechanics": {
+    "sequence": [
+      "merge consolidated release-readiness PR",
+      "verify exact main commit and tree",
+      "designate an untagged immutable RC-candidate commit",
+      "run every mandatory gate, including fresh-install, existing-install upgrade and actual browser acceptance, against that exact commit",
+      "tag immutable v1.0.0-rc.1",
+      "publish RC from same tag",
+      "collect policy-bound operator/live feedback without changing validated execution bytes",
+      "if any execution code changes, create and fully validate a new RC candidate/tag",
+      "resolve all P0/P1 and repeat every final gate on the exact final commit",
+      "tag exact commit v1.0.0",
+      "create GitHub Release from same tag"
+    ],
+    "never": "tag a mutable branch, publish an RC before mandatory RC gates, or run release-validation only after publishing"
+  },
+  "release_artifact_strategy": {
+    "publish": [
+      "annotated Git tag",
+      "GitHub Release",
+      "GitHub source ZIP/tarball",
+      "release notes",
+      "machine-readable release manifest with checksums"
+    ],
+    "additional_binary_required": false,
+    "release_manifest_recommended": true,
+    "sbom": "requirements-lock plus lightweight dependency/version evidence is sufficient for v1; no heavyweight SBOM tool required.",
+    "source_archive_status": "LIKELY_USABLE_BUT_MUST_BE_TESTED_FROM_EXACT_RC"
+  },
+  "release_readiness_scorecard": [
+    {
+      "area": "Product behavior",
+      "status": "FEATURE_COMPLETE",
+      "evidence": "Merged M8R-10 closure plus current validators",
+      "gap": "Active test gates red",
+      "severity": "P0_RELEASE_BLOCKER",
+      "action": "TEST_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Public contracts",
+      "status": "IMPLEMENTED_NOT_FROZEN",
+      "evidence": "schemas/, docs/contracts/schemas/ and this inventory",
+      "gap": "No explicit published inventory/freeze policy",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "DOC_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Identity",
+      "status": "SUPPORTED",
+      "evidence": "Taiwan Identity schemas and Security Master Skill validator 201 checks",
+      "gap": "Historical fixtures stale",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "TEST_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Watchlists",
+      "status": "SUPPORTED",
+      "evidence": "M8R-09/M8R-10 closures and storage schema 1",
+      "gap": "Upgrade policy must be documented",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "DOC_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Workbench",
+      "status": "SUPPORTED",
+      "evidence": "/workbench/ route and canonical frontend files",
+      "gap": "Actual canonical browser gate not proven",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "TEST_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "MCP",
+      "status": "SUPPORTED",
+      "evidence": "runtime/Skill/Guide drift validator reports exact six tools",
+      "gap": "Read-only annotations and docs conflict",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "CODE_CHANGE_AND_DOC_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "API",
+      "status": "IMPLEMENTED",
+      "evidence": "52 custom routes inventoried from server decorators",
+      "gap": "Public/internal/legacy compatibility not frozen; metadata stale",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "CODE_CHANGE_AND_DOC_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Fresh install",
+      "status": "PRIOR_EVIDENCE_ONLY",
+      "evidence": "M8R-08G portability closure; no exact RC exists yet",
+      "gap": "Exact RC journey not run",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "TEST_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Upgrade/migration",
+      "status": "SUPPORTED_BY_COMPONENTS",
+      "evidence": "schema-1 loader, export/import and strict Security Master migration paths",
+      "gap": "Exact RC upgrade acceptance not run",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "TEST_CHANGE_AND_DOC_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Storage compatibility",
+      "status": "SCHEMA_1_FAIL_CLOSED",
+      "evidence": "scripts/m8r_09_persistent_watchlists.py",
+      "gap": "No v1.x migration promise",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "DOC_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Security",
+      "status": "NO_PROVEN_SECRET",
+      "evidence": "static path-only review and governance scanners",
+      "gap": "No exact-RC dedicated scan evidence",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "RELEASE_PROCESS_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Dependencies",
+      "status": "CORE_LOCKED",
+      "evidence": "requirements-lock.txt and verify_environment PASS",
+      "gap": "Browser dependency unpinned",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "CODE_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Tests",
+      "status": "RED",
+      "evidence": "exact baseline default-ci and full-non-network executions",
+      "gap": "default-ci 10 and full-non-network 69 failures",
+      "severity": "P0_RELEASE_BLOCKER",
+      "action": "TEST_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Documentation",
+      "status": "STALE",
+      "evidence": "README, docs/INDEX.md, docs/operator, docs/reference and docs/release audit",
+      "gap": "README/index/operator/reference/release docs describe old product",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "DOC_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Versioning",
+      "status": "AMBIGUOUS",
+      "evidence": "GitHub v0.1.0 versus server/main.py FastAPI 1.0.0",
+      "gap": "FastAPI says 1.0.0 while product is v0.1.0",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "CODE_CHANGE_AND_DOC_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Release process",
+      "status": "POST_PUBLISH_TRIGGER_PRESENT",
+      "evidence": ".github/workflows/release-validation.yml",
+      "gap": "release-validation also runs after published release",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "RELEASE_PROCESS_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Repository hygiene",
+      "status": "NEEDS_CLEANUP",
+      "evidence": "tracked mode_a_fixes.patch and FINAL_DELIVERY_REPORT.md; profile runner output side effects",
+      "gap": "Tracked root patch/report",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "REPOSITORY_CLEANUP",
+      "release_blocker": true
+    },
+    {
+      "area": "Browser",
+      "status": "CHECK_ONLY_PASS_ACTUAL_TEST_SKIPPED",
+      "evidence": "browser-e2e profile PASS; broad Playwright test skipped",
+      "gap": "Canonical Workbench browser journey and pinned Chromium not proven",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "TEST_CHANGE_AND_RELEASE_PROCESS_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Changelog",
+      "status": "V0_1_ONLY",
+      "evidence": "CHANGELOG.md",
+      "gap": "No v1 Added/Changed/contracts/migration/deprecation entry",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "DOC_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Release notes",
+      "status": "NOT_DRAFTED",
+      "evidence": "docs/release remains M5-era",
+      "gap": "No v1 current narrative, migration or limitations map",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "DOC_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "Legacy/deprecation",
+      "status": "INVENTORIED_NOT_COMMUNICATED",
+      "evidence": "legacy routes, server/mcp_server.py and readonly frontend inventory",
+      "gap": "No visible warnings, retention period or removal version",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "CODE_CHANGE_AND_DOC_CHANGE",
+      "release_blocker": true
+    },
+    {
+      "area": "GitHub release mechanics",
+      "status": "V0_1_HISTORY_ONLY",
+      "evidence": "one v0.1.0 Release; workflows are manual and release-validation also triggers after publication",
+      "gap": "No pre-tag exact-commit manifest/checksum/RC enforcement",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "action": "RELEASE_PROCESS_CHANGE",
+      "release_blocker": true
+    }
+  ],
+  "blocking_findings": [
+    {
+      "id": "ACTIVE_RELEASE_GATES_RED",
+      "severity": "P0_RELEASE_BLOCKER",
+      "change_type": "TEST_CHANGE",
+      "detail": "default-ci has 10 failures and full-non-network has 69; active gates must be green without cosmetic xfail."
+    },
+    {
+      "id": "CURRENT_PUBLIC_DOCS_STALE",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "DOC_CHANGE",
+      "detail": "README, index, operator/reference/release docs and Capability Catalog limitations contradict current product."
+    },
+    {
+      "id": "VERSION_AUTHORITY_AMBIGUOUS",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "CODE_CHANGE_AND_DOC_CHANGE",
+      "detail": "Published product is v0.1.0 while FastAPI metadata says 1.0.0 and no single version authority exists."
+    },
+    {
+      "id": "PUBLIC_CONTRACT_FREEZE_MISSING",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "DOC_CHANGE",
+      "detail": "Public/internal/legacy contract sets and compatibility policy are not formally published."
+    },
+    {
+      "id": "RC_INSTALL_UPGRADE_BROWSER_EVIDENCE_MISSING",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "TEST_CHANGE",
+      "detail": "Exact RC fresh install, upgrade, and canonical browser journeys have not passed."
+    },
+    {
+      "id": "RELEASE_REPRODUCIBILITY_AND_PROCESS",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "RELEASE_PROCESS_CHANGE",
+      "detail": "Playwright is unpinned, check-only runners mutate repository reports, and release-validation is partly post-publish rather than a pre-tag gate."
+    },
+    {
+      "id": "MCP_METADATA_AND_ERROR_FREEZE",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "CODE_CHANGE_AND_DOC_CHANGE",
+      "detail": "Read-result/export readOnly annotations conflict with behavior and public machine-error stability has not been published."
+    },
+    {
+      "id": "STORAGE_UPGRADE_POLICY_UNPROVEN",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "TEST_CHANGE_AND_DOC_CHANGE",
+      "detail": "Schema-1 components support current state, but exact-RC existing-install survival has not been demonstrated."
+    },
+    {
+      "id": "REPOSITORY_AND_PROFILE_HYGIENE",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "REPOSITORY_CLEANUP_AND_TEST_CHANGE",
+      "detail": "Tracked root artifacts compete with current docs and check-only release runners write repository report paths."
+    },
+    {
+      "id": "EXACT_RC_SECURITY_EVIDENCE_MISSING",
+      "severity": "P1_MUST_FIX_BEFORE_V1",
+      "change_type": "RELEASE_PROCESS_CHANGE",
+      "detail": "No dedicated secret scan and link check have been bound to an exact RC candidate."
+    }
+  ],
+  "blocking_finding_change_types": {
+    "ACTIVE_RELEASE_GATES_RED": ["TEST_CHANGE"],
+    "CURRENT_PUBLIC_DOCS_STALE": ["DOC_CHANGE"],
+    "VERSION_AUTHORITY_AMBIGUOUS": ["CODE_CHANGE", "DOC_CHANGE"],
+    "PUBLIC_CONTRACT_FREEZE_MISSING": ["DOC_CHANGE"],
+    "RC_INSTALL_UPGRADE_BROWSER_EVIDENCE_MISSING": ["TEST_CHANGE"],
+    "RELEASE_REPRODUCIBILITY_AND_PROCESS": ["TEST_CHANGE", "RELEASE_PROCESS_CHANGE"],
+    "MCP_METADATA_AND_ERROR_FREEZE": ["CODE_CHANGE", "DOC_CHANGE"],
+    "STORAGE_UPGRADE_POLICY_UNPROVEN": ["TEST_CHANGE", "DOC_CHANGE"],
+    "REPOSITORY_AND_PROFILE_HYGIENE": ["REPOSITORY_CLEANUP", "TEST_CHANGE"],
+    "EXACT_RC_SECURITY_EVIDENCE_MISSING": ["RELEASE_PROCESS_CHANGE"]
+  },
+  "owner_decisions_required": [],
+  "next_tranche": {
+    "name": "V1.0 RELEASE READINESS IMPLEMENTATION & RC CANDIDATE PREPARATION",
+    "single_consolidated_pr": true,
+    "scope": [
+      "repair/reclassify all active red tests with exact profile evidence",
+      "align README/current docs and archive historical surfaces",
+      "establish product version and release manifest authority",
+      "publish public contract/SemVer/deprecation policy",
+      "pin browser release environment",
+      "run exact RC fresh-install, upgrade, browser, MCP, Skills, contract, security and link gates",
+      "prepare CHANGELOG and release notes draft"
+    ],
+    "phase_g_started": false
+  },
+  "explicit_answers": {
+    "authoritative_product_version_today": "v0.1.0",
+    "fastapi_1_0_0_is_product_version": "NO; ambiguous stale OpenAPI metadata",
+    "legacy_supported_in_v1": [
+      "/workbench/mode-a/ redirect",
+      "governed M5N/M5K Watchlist import"
+    ],
+    "existing_sqlite_survives_upgrade": "SUPPORTED_BY_CURRENT_SCHEMA_1_COMPONENT_PATH_BUT_EXACT_RC_NOT_YET_VERIFIED",
+    "real_current_product_defects_proven": 0,
+    "stale_tests": 11,
+    "historical_or_out_of_v1": 55,
+    "environment_dependent": 3,
+    "rc_recommended": true,
+    "bounded_live_e2e": "RECOMMENDED_MANUAL_POLICY_BOUND",
+    "can_release_v1_immediately": false
+  },
+  "validation": {
+    "environment_verifier": "PASS Windows-10-10.0.19045-SP0 CPython 3.13.7",
+    "pip_check": "PASS",
+    "unified_contract_validator": "PASS",
+    "semantic_drift_validator": "PASS tool_count=6",
+    "portable_catalog_sync": "PASS Deep Equality",
+    "market_evidence_skill": "PASS",
+    "security_master_skill": "PASS 201 checks",
+    "compileall": "PASS",
+    "javascript_syntax": "PASS three canonical Workbench files",
+    "default_ci": "FAIL 929 passed 10 failed 2 skipped",
+    "full_non_network": "FAIL 2375 passed 69 failed 15 skipped 1 deselected",
+    "operator_preflight": "PASS five runners",
+    "browser_e2e": "PASS check-only; actual Playwright test skipped in broad suite",
+    "clean_clone_exact_baseline": "NOT_EXECUTED_PREFLIGHT; mandatory on exact RC"
+  },
+  "principal_decision": "READY_FOR_V1_0_RELEASE_READINESS_IMPLEMENTATION"
+}
