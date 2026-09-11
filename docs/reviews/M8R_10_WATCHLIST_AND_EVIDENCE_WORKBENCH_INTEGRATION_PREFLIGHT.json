@@ -1,0 +1,98 @@
+{
+  "task": "M8R-10 — Watchlist and Evidence Workbench Integration — Preflight",
+  "baseline_sha": "9f38c0a4811aa82eb729bb68255c3f3c9cc8a130",
+  "branch": "codex/m8r-10-preflight-watchlist-evidence-workbench",
+  "scope": "READ_ONLY_ARCHITECTURE_AND_IMPLEMENTATION_PLAN",
+  "implementation_started": false,
+  "network_used": false,
+  "production_mutation": false,
+  "canonical_ui": {
+    "existing_surface": "frontend/unified-workbench/",
+    "v1_route_decision": "/workbench/ is the proposed canonical route",
+    "legacy_route_decision": "/workbench/mode-a/ remains a compatibility alias or redirect decision for implementation; no third workbench",
+    "technology_constraint": "plain HTML, CSS, and JavaScript only; no React, Vue, npm, or CDN"
+  },
+  "product_authority_matrix": {
+    "persistent_watchlist": "M8R-09 installation-local SQLite at data/watchlists/watchlists.sqlite3; only durable watchlist authority",
+    "identity": "installation-local Taiwan Market Identity Service; ISIN is durable cash identity and MARKET:CODE is cached listing/routing identity",
+    "unified_request": "unified_market_evidence_request.v1; preserve v1 unless a demonstrated implementation gap requires a separately governed version",
+    "capability": "canonical Unified Capability Catalog and /api/unified/capabilities projection",
+    "execution": "existing Mode A validation, Mode B1 preview, Mode B2 authorization/execute-once, and fixed source adapters",
+    "result_audit": "server-owned Mode C canonical Result, audit, and AI handoff",
+    "ai_skill": "current tw-market-evidence-agent and docs/agent_usage_guide.md; no direct SQLite or raw notes exposure",
+    "ui": "existing Unified Market Evidence Workbench"
+  },
+  "adapter_contract": {
+    "proposal": "server-owned, read-only watchlist-to-Unified-Request composition service, then existing Mode A validates the composed request",
+    "conceptual_route": "POST /api/watchlists/{watchlist_id}/evidence-request-preview",
+    "input": ["watchlist_id", "exact_watchlist_version", "selected_watchlist_entry_ids", "data_needs", "response_preferences", "execution_mode"],
+    "forbidden_authority_inputs": ["SQLite path", "raw SQLite payload", "browser cache identity", "raw prompt", "market observations"],
+    "target_projection": "input=instrument_id (ISIN), resolution_requirement=exact, client_target_reference=watchlist_entry_id; market_hint comes only from the current Identity Service projection",
+    "version_binding": "the selected watchlist version and revision hash are frozen before validation; a later N+1 mutation never silently changes the composed request",
+    "provenance": "server-owned selection sidecar or existing audit extension must bind watchlist ID, exact version, revision hash, selected entry UUIDs/ISINs, request ID, creation time, and request hash; it is not an undefined field in Unified Request v1",
+    "legacy_reference": "persistent_watchlist_reference remains compatibility-only for older 03C/03D consumers; it is never a SQLite locator and may only be projected from a verified revision",
+    "no_execution": "composition, validation, preview, result read, and handoff do not dispatch a market source"
+  },
+  "governance": {
+    "confirmation_domains": [
+      "Watchlist mutation preview and confirmation: local persistent-state change only, no market network",
+      "Evidence authorization: governed approval of the exact previewed plan",
+      "Network Execute Once confirmation: one bounded market action"
+    ],
+    "invalidation": "any target, data-need, preference, execution-mode, or selection change invalidates validation, preview, authorization, execution, and result state; a post-composition watchlist mutation leaves the prior request frozen and requires explicit rebuild to use current state",
+    "selection_bounds": "watchlist storage limit (500), workbench selection limit, and Unified execution bounds are separate. Catalog default target limit is 10 and hard target limit is 50. Over-bound selection must not auto-split, batch, or run in background.",
+    "mixed_targets": "one request may combine persistent then temporary targets; deterministic dedupe keeps the persistent entry as source for an equivalent ISIN and visibly suppresses the duplicate temporary target; every client_target_reference remains unique",
+    "mcp": "the existing six-tool Unified MCP contract remains unchanged; no watchlist-specific MCP tool is proposed"
+  },
+  "identity_and_selection_rules": {
+    "ambiguity": "present candidates and require explicit user choice; never select a fuzzy winner",
+    "unsupported_cash": "known unsupported cash instruments remain visible and persistable, but their non-executable capability state is shown and they are not silently dropped or executed",
+    "unresolved": "persisted unresolved identity remains visible; no automatic deletion, disabling, or migration",
+    "successor": "requires Review Migration followed by the existing M8R-09 mutation preview and explicit commit",
+    "enabled": "user selection preference only; it does not mean executable. Select Enabled is explicit.",
+    "temporary_targets": "ephemeral only. Promotion requires Add to Watchlist, M8R-09 preview, identity/listing/warning display, explicit confirmation, then commit."
+  },
+  "capability_and_result_rules": {
+    "capability_source": "load from /api/unified/capabilities or canonical capability catalog; UI presets are mappings, not authority",
+    "result_explorer": "show canonical Result/Audit and selection provenance when available; do not write results to watchlist notes or cache market values",
+    "ai_handoff": "canonical server Mode C Result/Audit only; do not expose raw SQLite, full notes, or unselected entries",
+    "currentness": "display source/retrieval timestamps, currentness status, and caveats without upgrading observations to realtime"
+  },
+  "state_model": {
+    "states": ["BOOT", "SECURITY_MASTER_UNAVAILABLE", "WATCHLIST_READY", "SELECTION_DIRTY", "REQUEST_COMPOSED", "VALIDATED", "EVIDENCE_PREVIEWED", "AUTHORIZED", "EXECUTION_CONFIRMATION_REQUIRED", "EXECUTING", "EXECUTED", "RESULT_READY", "MUTATION_PREVIEW", "MUTATION_CONFIRMATION_REQUIRED", "CONFLICT_OR_EXPIRY"],
+    "rules": [
+      "Load/list/compose/validate/preview are offline and non-authorizing.",
+      "Only explicit Execute Once can invoke market retrieval.",
+      "Conflict, expired preview, or stale identity context disables commit and forces reload/rebuild/reconfirm; never silently retry or rebase.",
+      "Accessibility requires semantic controls, keyboard operation, visible state text, and disabled actions that explain their prerequisite."
+    ]
+  },
+  "legacy_surface_matrix": {
+    "GET /api/watchlist and /api/watchlist/summary": "LEGACY_READONLY_COMPATIBILITY; not persistent watchlist authority",
+    "GET /api/m5k/watchlist/default and POST /api/m5k/watchlist/validate": "HISTORICAL_COMPATIBILITY; not a new-workbench backend",
+    "M5K live-observation endpoints and legacy MCP tools": "HISTORICAL_COMPATIBILITY; do not route M8R-10 execution through them",
+    "frontend/readonly-preview/watchlist-workspace.html": "LEGACY_READONLY_UI; redirect/deprecation decision belongs to M8R-10 implementation",
+    "frontend/M5KLocalAIWorkbench.html": "HISTORICAL_UI; do not extend it",
+    "persistent_watchlist_reference": "LEGACY_REQUEST_SCOPED_COMPATIBILITY; never a database locator"
+  },
+  "implementation_slices": [
+    {"slice": "10-01", "scope": "read-only composition contract/service and deterministic tests", "network": false},
+    {"slice": "10-02", "scope": "watchlist UI and mutation preview/commit integration using existing M8R-09 APIs", "network": false},
+    {"slice": "10-03", "scope": "Workbench request builder, selection provenance, A/B/C state integration, and compatibility routing", "network": false},
+    {"slice": "10-04", "scope": "bounded end-to-end acceptance with explicit Execute Once only", "network": "only if separately authorized"}
+  ],
+  "acceptance_matrix": [
+    "Watchlist CRUD uses existing preview/commit endpoints and preserves optimistic concurrency, expiry, single-use confirmation, and zero-or-one default.",
+    "Persistent selection binds exact version and entry UUIDs; temporary targets are clearly nonpersistent.",
+    "Ambiguous, unresolved, successor, known-unsupported, and Security-Master-unavailable paths fail closed or require the specified explicit review.",
+    "Composed request passes the existing Unified Request v1 schema and Mode A validation without bypass.",
+    "B1 preview, B2 authorization, and network Execute Once retain separate confirmations and no automatic dispatch.",
+    "Mode C Result Explorer and AI handoff preserve provenance and make no extra market request.",
+    "E2E: persistent-only selection; temporary-only selection; mixed deterministic dedupe; selected-version mutation after composition."
+  ],
+  "deferred_non_goals": ["new MCP tools", "background refresh", "scheduler or polling", "watchlist-driven automatic execution", "market-data persistence in watchlist notes", "TAIFEX activation", "new Security Master acquisition", "Phase G", "V1 release"],
+  "owner_decisions": [],
+  "repository_clean_before_artifact": true,
+  "blocking_findings": [],
+  "principal_decision": "READY_FOR_M8R_10_WATCHLIST_EVIDENCE_WORKBENCH_IMPLEMENTATION"
+}
