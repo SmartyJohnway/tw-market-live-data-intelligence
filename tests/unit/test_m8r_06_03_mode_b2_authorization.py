@@ -43,6 +43,23 @@ def test_authorization_rebuilds_and_persists_server_owned_control_package(tmp_pa
     assert (tmp_path / result["authorization_id"] / "control" / "manifest.json").is_file()
 
 
+def test_watchlist_selection_provenance_is_bound_into_control_package(tmp_path, monkeypatch):
+    selection = {
+        "schema_version": "watchlist_evidence_selection.v1",
+        "selection_id": "de34c90a-b34f-44a6-9587-e771f31f9974",
+        "content_sha256": "a" * 64,
+    }
+    monkeypatch.setattr(unified_mode_b2, "CONTROL_ROOT", tmp_path)
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: _rebuilt())
+    monkeypatch.setattr(unified_mode_b2, "load_selection_provenance_for_request", lambda _request: selection)
+    result = unified_mode_b2.build_mode_b2_authorization(_payload())
+    control = tmp_path / result["authorization_id"] / "control"
+    assert result["selection_provenance_bound"] is True
+    assert json.loads((control / "selection_provenance.json").read_text(encoding="utf-8")) == selection
+    manifest = json.loads((control / "manifest.json").read_text(encoding="utf-8"))
+    assert "selection_provenance" in manifest["artifact_hashes"]
+
+
 def test_stale_or_privileged_browser_fields_fail_closed_without_rebuild(monkeypatch):
     called = False
     def rebuild(_request):

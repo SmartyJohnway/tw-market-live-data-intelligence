@@ -5,7 +5,7 @@ import os
 import sys
 import json
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from server.unified_workbench_router import router as unified_workbench_router
 
 # Product server intentionally avoids importing live probe modules.
@@ -25,12 +25,18 @@ WORKBENCH_DIR = REPO_ROOT / "frontend" / "unified-workbench"
 app.include_router(unified_workbench_router)
 
 
-@app.get("/workbench/mode-a/", include_in_schema=False)
-def get_mode_a_workbench():
+@app.get("/workbench/", include_in_schema=False)
+def get_unified_workbench():
     return FileResponse(WORKBENCH_DIR / "UnifiedMarketEvidenceWorkbench.html")
 
 
+@app.get("/workbench/mode-a/", include_in_schema=False)
+def get_mode_a_workbench():
+    return RedirectResponse(url="/workbench/", status_code=307)
+
+
 app.mount("/workbench/mode-a", StaticFiles(directory=str(WORKBENCH_DIR), html=True), name="workbench_mode_a")
+app.mount("/workbench", StaticFiles(directory=str(WORKBENCH_DIR), html=True), name="unified_workbench")
 # Local-first CORS setup
 app.add_middleware(
     CORSMiddleware,
@@ -312,6 +318,10 @@ from scripts.m8r_09_persistent_watchlists import (
     WatchlistError as _PersistentWatchlistError,
     production_store as _persistent_watchlist_store,
 )
+from server.services.watchlist_evidence_composer import (
+    WatchlistEvidenceComposer as _WatchlistEvidenceComposer,
+    WatchlistEvidenceCompositionError as _WatchlistEvidenceCompositionError,
+)
 
 
 def _persistent_watchlist_error(error: _PersistentWatchlistError) -> HTTPException:
@@ -319,6 +329,11 @@ def _persistent_watchlist_error(error: _PersistentWatchlistError) -> HTTPExcepti
     elif error.code == "SECURITY_MASTER_NOT_INITIALIZED": status = 503
     elif error.code in {"WATCHLIST_VERSION_CONFLICT", "WATCHLIST_ENTRY_ALREADY_EXISTS", "WATCHLIST_CONFIRMATION_ALREADY_CONSUMED", "WATCHLIST_CONFIRMATION_MISMATCH", "WATCHLIST_CONFIRMATION_EXPIRED"}: status = 409
     else: status = 422
+    return HTTPException(status_code=status, detail={"error": {"code": error.code, "message": str(error), "details": error.details}})
+
+
+def _watchlist_composition_error(error: _WatchlistEvidenceCompositionError) -> HTTPException:
+    status = 409 if error.code == "WATCHLIST_SELECTION_STALE" else 422
     return HTTPException(status_code=status, detail={"error": {"code": error.code, "message": str(error), "details": error.details}})
 
 
@@ -360,6 +375,28 @@ def export_persistent_watchlist(watchlist_id: str, include_history: bool = False
         return _persistent_watchlist_store().export(watchlist_id, include_history=include_history)
     except _PersistentWatchlistError as exc:
         raise _persistent_watchlist_error(exc) from exc
+
+
+@app.post("/api/watchlists/{watchlist_id}/evidence-request-preview")
+def compose_watchlist_evidence_request(watchlist_id: str, payload: dict):
+    try:
+        store = _persistent_watchlist_store()
+        return _WatchlistEvidenceComposer(store=store).compose(payload, watchlist_id=watchlist_id)
+    except _PersistentWatchlistError as exc:
+        raise _persistent_watchlist_error(exc) from exc
+    except _WatchlistEvidenceCompositionError as exc:
+        raise _watchlist_composition_error(exc) from exc
+
+
+@app.post("/api/evidence-request-previews")
+def compose_temporary_evidence_request(payload: dict):
+    try:
+        store = _persistent_watchlist_store()
+        return _WatchlistEvidenceComposer(store=store).compose(payload)
+    except _PersistentWatchlistError as exc:
+        raise _persistent_watchlist_error(exc) from exc
+    except _WatchlistEvidenceCompositionError as exc:
+        raise _watchlist_composition_error(exc) from exc
 
 
 @app.post("/api/watchlist-mutations/preview")

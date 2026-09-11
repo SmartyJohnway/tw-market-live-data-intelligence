@@ -2,6 +2,12 @@
 
 This document provides examples of how the AI should compose Unified Requests based on user conversation intents.
 
+When the browser Workbench supplies a server-composed request from a persistent
+Watchlist, keep that exact request and its selection provenance together. Do
+not reconstruct targets from labels or cached routing fields. Temporary
+targets are request-only until a distinct watchlist mutation is previewed and
+confirmed.
+
 ---
 
 ## Example 1: Current Quote and EOD Reference for Listed Stock

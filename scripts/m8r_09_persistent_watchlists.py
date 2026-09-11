@@ -160,6 +160,10 @@ class PersistentWatchlistStore:
             if str(exc) == "NOT_INITIALIZED": raise WatchlistError("SECURITY_MASTER_NOT_INITIALIZED") from exc
             raise WatchlistError("SECURITY_MASTER_UNAVAILABLE", str(exc)) from exc
 
+    def identity_service_for_read(self):
+        """Return the governed read-only identity authority for integrations."""
+        return self._service()
+
     def _release_id(self, service: Any) -> str | None:
         return getattr(service, "release_id", None)
 

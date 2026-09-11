@@ -26,6 +26,32 @@ The six MCP tools are:
 Mode A/B/C are workflow concepts—validate, preview/authorize/execute once, and
 Result/handoff—not tool names or JSON parameters.
 
+The canonical browser surface is `/workbench/`. It provides installation-local
+persistent Watchlists, temporary request-only targets, a capability-driven
+request builder, the existing Mode A/B/C workflow, and Result exploration. The
+older `/workbench/mode-a/` address is a compatibility redirect.
+
+## Persistent Watchlist composition
+
+Watchlist state is installation-local SQLite authority. A stored cash entry is
+bound to its durable ISIN; cached `MARKET:CODE` fields are display/routing
+metadata, not durable identity. Select entries explicitly—`enabled` is a user
+preference and does not itself authorize selection. “Select Enabled” is an
+explicit UI action.
+
+Server-side composition binds the exact watchlist version and revision hash,
+resolves every selected entry through the current Identity Service, then emits
+a schema-valid Unified Request plus a bounded selection-provenance sidecar.
+Persistent entries retain display order. Temporary targets follow them in user
+order and are not persisted; duplicate ISINs are removed visibly, with the
+persistent entry winning. Ambiguous and unknown targets stop composition for
+clarification. A later watchlist mutation does not rewrite an already composed
+request; rebuild and revalidate to use the new version.
+
+Watchlist writes use their own mutation preview and explicit confirmation.
+That confirmation is separate from evidence authorization and from the final
+network execution confirmation. Never treat one confirmation as another.
+
 ## Request and execution workflow
 
 Author a `unified_market_evidence_request.v1` request from the conversation.
@@ -81,4 +107,4 @@ python scripts/manage_security_master.py rollback RELEASE_ID
 ```
 
 There is no automatic Security Master update, startup fetch, scheduler,
-background polling, persistent watchlist mutation, trading, or order routing.
+background polling, automatic watchlist mutation, trading, or order routing.

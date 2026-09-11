@@ -40,6 +40,31 @@ needed.
 Do not retry outside the governed workflow, silently switch sources, invent
 evidence, or turn an unsupported/provisional capability into an execution.
 
+## Persistent Watchlists and temporary targets
+
+The browser Workbench at `/workbench/` can compose a Unified Request from an
+installation-local persistent Watchlist. Stored Taiwan cash instruments use
+ISIN as durable identity; `MARKET:CODE` is current routing metadata. Selection
+is explicit. The entry's `enabled` preference is not implicit execution scope,
+although the operator may explicitly choose **Select Enabled**.
+
+Composition is server-owned and offline. It binds the exact watchlist version
+and revision hash, resolves identities through the current Identity Service,
+preserves watchlist display order, appends temporary request-only targets in
+user order, and reports ISIN deduplication decisions. Persistent entries win a
+duplicate. Ambiguous or unknown temporary targets require clarification and do
+not become a request. Temporary targets remain nonpersistent unless the user
+separately previews and confirms an M8R-09 watchlist mutation.
+
+Keep the three confirmation boundaries distinct:
+
+1. watchlist mutation preview and confirmation;
+2. evidence-plan authorization;
+3. explicit network **Execute Once** confirmation.
+
+A source watchlist change never mutates a frozen composed request. Recompose,
+revalidate, and obtain new authorization when the changed state is desired.
+
 ## Identity and eligibility
 
 Users may supply `2330`, `台積電`, or `TW0002330008`; do not require them to

@@ -106,6 +106,9 @@ def test_validate_request_valid_envelope(mock_validation):
 
 
 def test_mode_a_workbench_routes_and_health():
+    canonical = client.get("/workbench/")
+    assert canonical.status_code == 200
+    assert "Persistent Watchlist &amp; Request Builder" in canonical.text
     root_response = client.get("/workbench/mode-a/")
     assert root_response.status_code == 200
     assert "Unified Market Evidence Operator Workbench" in root_response.text
@@ -118,7 +121,48 @@ def test_mode_a_workbench_routes_and_health():
 
     assert client.get("/workbench/mode-a/unified-workbench.css").status_code == 200
     assert client.get("/workbench/mode-a/unified-workbench.js").status_code == 200
+    assert client.get("/workbench/watchlist-workbench.js").status_code == 200
     assert client.get("/api/health").status_code == 200
+
+
+def test_watchlist_composition_api_is_server_owned_and_offline(tmp_path, monkeypatch):
+    from scripts.m8r_08g_identity_service import TaiwanMarketIdentityService
+    from scripts.m8r_09_persistent_watchlists import PersistentWatchlistStore
+    from server import main
+    from server.services import watchlist_evidence_composer
+
+    record = {
+        "canonical_target_id": "TWSE:2330",
+        "identity": {"security_code": "2330", "isin": "TW0002330008", "security_name_zh": "台積電"},
+        "classification": {"market": "TWSE", "instrument_type": "common_share"},
+        "lifecycle": {"state": "listed", "resolution_status": "resolved", "as_of": "2026-09-11", "events": []},
+        "execution_eligibility": {"status": "allowed", "reason_codes": []},
+    }
+    service = TaiwanMarketIdentityService([record], release_id="release-api", manifest_hash="a" * 64)
+    store = PersistentWatchlistStore(root=tmp_path / "watchlists", identity_service=service)
+    monkeypatch.setattr(main, "_persistent_watchlist_store", lambda: store)
+    monkeypatch.setattr(watchlist_evidence_composer, "validate_mode_a_request", lambda request: {"validation_status": "valid", "request_id": request["request_id"]})
+    create = {"schema_version": "persistent_watchlist_mutation_command.v1", "command_type": "create_watchlist", "actor_source": "human", "name": "API"}
+    preview = client.post("/api/watchlist-mutations/preview", json=create).json()
+    watchlist = client.post("/api/watchlist-mutations/commit", json={"preview_id": preview["preview_id"], "preview_hash": preview["content_sha256"], "confirmed": True}).json()["watchlist"]
+    add = {"schema_version": "persistent_watchlist_mutation_command.v1", "command_type": "add_entry", "actor_source": "human", "watchlist_id": watchlist["watchlist_id"], "expected_version": 1, "query": "2330", "market_hint": "TWSE"}
+    add_preview = client.post("/api/watchlist-mutations/preview", json=add).json()
+    watchlist = client.post("/api/watchlist-mutations/commit", json={"preview_id": add_preview["preview_id"], "preview_hash": add_preview["content_sha256"], "confirmed": True}).json()["watchlist"]
+    selection = {
+        "schema_version": "watchlist_evidence_selection_request.v1",
+        "expected_watchlist_version": 2,
+        "selected_entry_ids": [watchlist["entries"][0]["watchlist_entry_id"]],
+        "temporary_targets": [],
+        "data_needs": [{"type": "identity", "priority": "required", "parameters": {}}],
+        "execution_mode": "preview",
+        "response_preferences": {},
+    }
+    response = client.post(f"/api/watchlists/{watchlist['watchlist_id']}/evidence-request-preview", json=selection)
+    assert response.status_code == 200
+    result = response.json()
+    assert result["composition_status"] == "composed"
+    assert result["request"]["targets"][0]["input"] == "TW0002330008"
+    assert result["selection_provenance"]["watchlist"]["version"] == 2
 
 
 def test_validate_request_oversized_body(mock_validation):

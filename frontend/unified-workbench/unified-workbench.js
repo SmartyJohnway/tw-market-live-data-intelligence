@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const invalidateModeCState = () => {
         currentModeCResult = null;
         buildResultBtn.disabled = true;
-        modeCActions.style.display = 'none';
+        modeCActions.hidden = true;
         document.getElementById('mode-c-result-view').textContent = '';
         modeCSummary.textContent = 'A finalized execution is required. External network execution = NO.';
     };
@@ -84,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners ---
     textarea.addEventListener('input', updateSyntaxStatus);
+    document.addEventListener('workbench-builder-dirty', invalidateDerivedState);
 
     const MAX_BODY_SIZE = 1 * 1024 * 1024; // 1 MiB
 
@@ -228,8 +229,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!response.ok) { modeCSummary.textContent = `Result package unavailable: ${data.error || 'unknown'}`; return; }
         currentModeCResult = data;
         modeCSummary.textContent = `RESULT READY — ${data.result_status}; ${data.materialization}; Mode C projection made no additional market request.`;
-        document.getElementById('mode-c-result-view').textContent = JSON.stringify({result_id:data.result_id, result_hash:data.result_hash, result_status:data.result_status, request_summary:data.request_summary, targets:data.targets, request_caveats:data.request_caveats, citations:data.citation_references}, null, 2);
-        modeCActions.style.display = 'flex';
+        document.getElementById('mode-c-result-view').textContent = JSON.stringify({result_id:data.result_id, result_hash:data.result_hash, result_status:data.result_status, request_summary:data.request_summary, targets:data.targets, request_caveats:data.request_caveats, citations:data.citation_references, selection_provenance:data.selection_provenance_identity}, null, 2);
+        modeCActions.hidden = false;
     });
 
     // --- Tab Switching ---
@@ -281,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('badge-issues').textContent = '0';
         document.getElementById('badge-targets').textContent = '0';
         document.getElementById('badge-capabilities').textContent = '0';
-        exportActions.style.display = 'none';
+        exportActions.hidden = true;
         previewBtn.disabled = true;
     };
 
@@ -362,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderValidationResult = (res) => {
         currentValidationResult = res;
-        exportActions.style.display = 'flex';
+        exportActions.hidden = false;
 
         // Summary
         summaryBox.innerHTML = '';
