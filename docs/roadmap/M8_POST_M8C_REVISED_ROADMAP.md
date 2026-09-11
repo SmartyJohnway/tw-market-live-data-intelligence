@@ -60,6 +60,21 @@ implementation remains unstarted.  Phase F is the planned v1.0 feature-freeze
 boundary only; formal v1.0 release remains subject to separate release-readiness
 and contract-freeze review.
 
+### M8R-10 watchlist and evidence Workbench integration
+
+**Status: CLOSED.**  The canonical `/workbench/` now integrates M8R-09
+persistent watchlists, temporary targets, deterministic mixed-target selection,
+Unified Request v1 composition, exact-version selection provenance, the existing
+Mode A/B/C execute-once path, and AI handoff.  Persistent mutation, evidence
+authorization, and network execution remain three separate explicit confirmation
+domains.  Closure evidence is recorded in
+`docs/reviews/M8R_10_WATCHLIST_AND_EVIDENCE_WORKBENCH_INTEGRATION_IMPLEMENTATION_CLOSURE.*`.
+
+**Phase F status: CLOSED.**  The planned v1 feature set is complete.  The next
+authorized action is
+`READY_FOR_V1_0_RELEASE_READINESS_AND_CONTRACT_FREEZE`.  Formal v1.0 release,
+tagging, and GitHub Release work have not started.  Phase G is **NOT STARTED**.
+
 ## Phase G — Dynamic Research Evidence
 
 MOPS disclosures; official fundamentals/financial statements; dynamic research sources; multi-source research evidence packages.
