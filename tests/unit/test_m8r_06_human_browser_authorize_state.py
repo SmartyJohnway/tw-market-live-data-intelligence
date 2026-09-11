@@ -41,6 +41,22 @@ assert(invalidated.networkConfirmationChecked, false, 'invalidated network check
 assert(invalidated.buildResultDisabled, true, 'invalidated Mode C');
 assert(state.validationAllowsPreview('valid'), true, 'valid request preview');
 assert(state.validationAllowsPreview('invalid'), false, 'invalid request preview');
+let lifecycle = state.initialState();
+assert(lifecycle.state, state.STATES.BOOT, 'initial state');
+lifecycle = state.transition(lifecycle, 'LOAD_WATCHLIST');
+assert(lifecycle.state, state.STATES.WATCHLIST_READY, 'watchlist ready');
+lifecycle = state.transition(lifecycle, 'EDIT_SELECTION');
+assert(lifecycle.state, state.STATES.SELECTION_DIRTY, 'selection dirty');
+lifecycle = state.transition(lifecycle, 'COMPOSE_REQUEST');
+assert(lifecycle.state, state.STATES.REQUEST_COMPOSED, 'request composed');
+assert(lifecycle.composedRequestFrozen, true, 'request frozen');
+const stale = state.markSourceWatchlistChanged(lifecycle);
+assert(stale.sourceWatchlistStale, true, 'source change is visible');
+assert(stale.composedRequestFrozen, true, 'source mutation does not rewrite frozen request');
+lifecycle = state.transition(lifecycle, 'PREVIEW_MUTATION');
+assert(lifecycle.state, state.STATES.MUTATION_PREVIEW, 'mutation preview');
+lifecycle = state.transition(lifecycle, 'CONFLICT');
+assert(lifecycle.state, state.STATES.CONFLICT_OR_EXPIRY, 'conflict state');
 '''
     completed = subprocess.run(
         ["node", "-e", script, str(STATE_MODULE)], cwd=ROOT,

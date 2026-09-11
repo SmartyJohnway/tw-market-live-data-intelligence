@@ -33,10 +33,11 @@ from scripts.m8r_filesystem_safety import safe_destination
 # Test harnesses may redirect the server-owned root through process environment;
 # no browser/API request can affect this value.
 CONTROL_ROOT = Path(os.environ.get("M8R_06_03_CONTROL_ROOT", str(ROOT / "artifacts" / "m8r_06_03_workbench"))).resolve()
-ARTIFACTS = (
+REQUIRED_ARTIFACTS = (
     "request", "plan", "authorization", "consumption_binding",
     "unused_consumption_state", "preflight",
 )
+OPTIONAL_ARTIFACTS = ("selection_provenance",)
 TEST_PREFIX = "M8R_06_03_TEST_"
 
 
@@ -62,9 +63,14 @@ def load_control_package(authorization_id: str) -> tuple[Path, dict[str, dict[st
     manifest = _load_json(manifest_path, "control_package_manifest_invalid")
     artifacts: dict[str, dict[str, Any]] = {}
     hashes = manifest.get("artifact_hashes")
-    if not isinstance(hashes, dict) or set(hashes) != set(ARTIFACTS):
+    artifact_names = set(hashes) if isinstance(hashes, dict) else set()
+    if (
+        not isinstance(hashes, dict)
+        or not set(REQUIRED_ARTIFACTS).issubset(artifact_names)
+        or artifact_names - set(REQUIRED_ARTIFACTS) - set(OPTIONAL_ARTIFACTS)
+    ):
         raise OrchestrationError("control_package_manifest_invalid")
-    for name in ARTIFACTS:
+    for name in sorted(artifact_names):
         path = safe_destination(CONTROL_ROOT, f"{authorization_id}/control/{name}.json", create_parent=False).path
         content = path.read_bytes()
         if hashlib.sha256(content).hexdigest() != hashes.get(name):
@@ -76,6 +82,12 @@ def load_control_package(authorization_id: str) -> tuple[Path, dict[str, dict[st
         if not isinstance(value, dict):
             raise OrchestrationError("control_package_artifact_invalid")
         artifacts[name] = value
+    if "selection_provenance" in artifacts:
+        try:
+            from server.services.watchlist_evidence_composer import validate_selection_provenance
+            validate_selection_provenance(artifacts["selection_provenance"], artifacts["request"])
+        except Exception as exc:
+            raise OrchestrationError("control_package_artifact_invalid") from exc
     plan, authorization, binding, preflight = (artifacts[key] for key in ("plan", "authorization", "consumption_binding", "preflight"))
     if (
         manifest.get("authorization_id") != authorization.get("authorization_id")

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unified Market Evidence Workbench - Mode A / Mode B1</title>
+    <title>Unified Market Evidence Workbench</title>
     <!-- Content Security Policy to enforce local-only assets -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self';">
     <link rel="stylesheet" href="unified-workbench.css">
@@ -17,8 +17,76 @@
         </header>
 
         <main>
+            <section class="panel watchlist-panel" id="watchlist-panel">
+                <div class="preview-heading">
+                    <h2>Persistent Watchlist &amp; Request Builder</h2>
+                    <div class="preview-guardrails" aria-label="Persistence and execution boundaries">
+                        <span>LOCAL SQLITE</span><span>PREVIEW → CONFIRM MUTATIONS</span><span>NO AUTOMATIC EXECUTION</span>
+                    </div>
+                </div>
+                <div class="builder-grid">
+                    <div>
+                        <h3>Watchlists</h3>
+                        <div class="actions">
+                            <select id="watchlist-select" aria-label="Persistent Watchlist"></select>
+                            <button id="btn-watchlist-refresh">Refresh</button>
+                            <label><input id="watchlist-include-deleted" type="checkbox"> Show deleted</label>
+                        </div>
+                        <div class="actions wrap-actions">
+                            <button id="btn-watchlist-create">Create</button>
+                            <button id="btn-watchlist-rename">Rename</button>
+                            <button id="btn-watchlist-default">Set default</button>
+                            <button id="btn-watchlist-delete" class="danger">Delete</button>
+                            <button id="btn-watchlist-restore">Restore</button>
+                            <button id="btn-watchlist-history">History</button>
+                            <button id="btn-watchlist-export">Export</button>
+                            <button id="btn-watchlist-export-history">Export + history</button>
+                            <label class="file-action">Import legacy<input id="watchlist-import" type="file" accept=".json,application/json"></label>
+                        </div>
+                        <div id="watchlist-summary" class="summary-box">Loading installation-local watchlists…</div>
+                        <div id="watchlist-entries" class="entry-list" aria-live="polite"></div>
+                        <div class="actions">
+                            <input id="watchlist-add-query" maxlength="256" placeholder="Code, ISIN, or exact name" aria-label="Add watchlist identity">
+                            <select id="watchlist-add-market" aria-label="Market hint"><option value="TWSE">TWSE</option><option value="TPEX">TPEX</option></select>
+                            <button id="btn-watchlist-add">Preview Add</button>
+                            <button id="btn-select-enabled">Select Enabled</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Temporary Targets</h3>
+                        <p class="muted">Temporary targets are request-local. “Add to Watchlist” starts a separate mutation preview.</p>
+                        <div class="actions">
+                            <input id="temporary-target-input" maxlength="120" placeholder="Code, ISIN, or exact name" aria-label="Temporary target">
+                            <select id="temporary-target-market" aria-label="Temporary market hint"><option value="">No hint</option><option value="TWSE">TWSE</option><option value="TPEX">TPEX</option><option value="TAIFEX">TAIFEX</option></select>
+                            <button id="btn-temporary-add">Add temporary</button>
+                        </div>
+                        <div id="temporary-targets" class="entry-list"></div>
+                        <h3>Evidence Needs</h3>
+                        <div id="capability-builder" class="capability-builder">Loading current capability authority…</div>
+                        <div class="actions">
+                            <label>Execution mode <select id="builder-execution-mode"><option value="preview">preview</option><option value="execute">execute</option></select></label>
+                            <label><input id="builder-citations" type="checkbox" checked> citations</label>
+                            <label><input id="builder-currentness" type="checkbox" checked> currentness</label>
+                            <label><input id="builder-caveats" type="checkbox" checked> caveats</label>
+                            <label><input id="builder-audit" type="checkbox" checked> audit reference</label>
+                            <button id="btn-compose-request">Compose Frozen Request</button>
+                        </div>
+                        <div id="composition-summary" class="summary-box">Select entries or add temporary targets.</div>
+                        <pre id="selection-provenance-view"></pre>
+                    </div>
+                </div>
+                <div id="mutation-preview-panel" class="mutation-preview" hidden>
+                    <h3>Mutation Preview — separate confirmation boundary</h3>
+                    <pre id="mutation-preview-view"></pre>
+                    <button id="btn-confirm-mutation" class="danger">Confirm Mutation</button>
+                    <button id="btn-cancel-mutation">Cancel</button>
+                </div>
+                <pre id="watchlist-history-view"></pre>
+            </section>
+
             <section class="panel request-panel">
-                <h2>Request Input</h2>
+                <h2>Advanced Unified Request JSON</h2>
+                <p class="muted">The builder above is the primary path. Editing this JSON invalidates prior validation, preview and authorization.</p>
                 <div class="actions">
                     <input type="file" id="file-input" accept=".json,application/json" aria-label="Import JSON File">
                     <button id="btn-format">Format JSON</button>
@@ -37,7 +105,7 @@
                     <!-- Populated by JS -->
                 </div>
                 
-                <div class="action-bar" style="display: none;" id="export-actions">
+                <div class="action-bar" hidden id="export-actions">
                     <button id="btn-copy-req">Copy Request</button>
                     <button id="btn-dl-req">DL Request</button>
                     <button id="btn-copy-res">Copy Result</button>
@@ -117,7 +185,7 @@
                 <p>Post-execution only. This builds or verifies local, server-owned result and audit packages; it never dispatches market sources.</p>
                 <div class="preview-placeholder"><button id="btn-build-result" disabled>Build Result Package</button></div>
                 <div id="mode-c-summary" class="summary-box">A finalized execution is required. External network execution = NO.</div>
-                <div class="action-bar" id="mode-c-actions" style="display:none">
+                <div class="action-bar" id="mode-c-actions" hidden>
                     <button id="btn-copy-markdown">Copy AI-ready Markdown</button>
                     <button id="btn-download-markdown">Download Markdown</button>
                     <button id="btn-download-result">Download Canonical Result JSON</button>
@@ -130,5 +198,6 @@
 
     <script src="workbench-state.js"></script>
     <script src="unified-workbench.js"></script>
+    <script src="watchlist-workbench.js"></script>
 </body>
 </html>

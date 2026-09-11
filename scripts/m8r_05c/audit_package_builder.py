@@ -43,6 +43,7 @@ def build_audit_package(
     citation_index: CitationIndex,
     result_relative_path: str,
     projector_version: str = _PROJECTOR_VERSION,
+    selection_provenance: dict | None = None,
 ) -> dict:
     """Build the audit package dict.
 
@@ -302,6 +303,20 @@ def build_audit_package(
         "warnings": [],
         "caveats": [],
     }
+    if selection_provenance is not None:
+        binding = selection_provenance.get("watchlist")
+        body_without_hash["selection_provenance_identity"] = {
+            "selection_id": selection_provenance.get("selection_id"),
+            "selection_sha256": selection_provenance.get("content_sha256"),
+            "request_sha256": selection_provenance.get("request_sha256"),
+            "watchlist_id": binding.get("watchlist_id") if isinstance(binding, dict) else None,
+            "watchlist_version": binding.get("version") if isinstance(binding, dict) else None,
+            "watchlist_revision_sha256": binding.get("revision_sha256") if isinstance(binding, dict) else None,
+            "selected_watchlist_entry_ids": [item.get("watchlist_entry_id") for item in selection_provenance.get("selected_targets", []) if item.get("source") == "persistent_watchlist"],
+            "selected_instrument_ids": [item.get("instrument_id") for item in selection_provenance.get("selected_targets", [])],
+            "temporary_target_inputs": [item.get("input") for item in selection_provenance.get("temporary_targets", [])],
+            "deduplication_decisions": deepcopy(selection_provenance.get("deduplication_decisions", [])),
+        }
 
     audit_package_hash = hash_body_excluding_key(body_without_hash, "audit_package_hash")
     audit_package = {**body_without_hash, "audit_package_hash": audit_package_hash}

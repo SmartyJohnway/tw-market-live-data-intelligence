@@ -18,6 +18,10 @@ from scripts.m8r_05c.result_builder import build_result
 from scripts.m8r_05c.evidence_projector import CURRENT_PROJECTOR_VERSION, SUPPORTED_PROJECTOR_VERSIONS
 from server.services.unified_mode_a import validate_mode_a_request
 from server.services.unified_mode_b2 import CONTROL_ROOT
+from server.services.watchlist_evidence_composer import (
+    WatchlistEvidenceCompositionError,
+    validate_selection_provenance,
+)
 
 _RESULT = "ai_context/unified_market_evidence_result.v1.json"
 _MARKDOWN = "ai_context/unified_market_evidence_result.v1.md"
@@ -59,6 +63,12 @@ def _verify_control(package: Path, control_id: str) -> dict[str, Path]:
         "unused_consumption_state": package / "control" / "unused_consumption_state.json",
     }
     expected = manifest.get("artifact_hashes", {})
+    if not isinstance(expected, dict):
+        raise ModeCError("mode_c_control_integrity_failed")
+    if "selection_provenance" in expected:
+        files["selection_provenance"] = package / "control" / "selection_provenance.json"
+    if set(expected) != set(files):
+        raise ModeCError("mode_c_control_integrity_failed")
     for name, path in files.items():
         try:
             actual = hashlib.sha256(path.read_bytes()).hexdigest()
@@ -108,7 +118,11 @@ def _inputs(package: Path, c: dict[str, Path], claim: Path, receipt: Path, bundl
         raise ModeCError("mode_c_lineage_verification_failed") from exc
 
 
-def _expected_outputs(inputs: Any, projector_version: str = CURRENT_PROJECTOR_VERSION) -> tuple[dict[str, Any], dict[str, Any], str]:
+def _expected_outputs(
+    inputs: Any,
+    projector_version: str = CURRENT_PROJECTOR_VERSION,
+    selection_provenance: dict[str, Any] | None = None,
+) -> tuple[dict[str, Any], dict[str, Any], str]:
     """Rebuild the complete 05C projection from verified predecessors only."""
     try:
         result = build_result(inputs, projector_version=projector_version)
@@ -118,6 +132,7 @@ def _expected_outputs(inputs: Any, projector_version: str = CURRENT_PROJECTOR_VE
             inputs=inputs,
             citation_index=citation_index,
             result_relative_path=_RESULT, projector_version=projector_version,
+            selection_provenance=selection_provenance,
         )
         return result, audit, render_result_markdown(result, projector_version=projector_version)
     except ProjectionError as exc:
@@ -130,13 +145,22 @@ def build_mode_c_result_package(payload: dict[str, Any]) -> dict[str, Any]:
     package, controls, claim, receipt, bundle, f3 = _load_verified(payload["control_package_id"])
     _f3(package, controls, f3)
     inputs = _inputs(package, controls, claim, receipt, bundle, f3)
+    selection_provenance = None
+    if "selection_provenance" in controls:
+        selection_provenance = _read(controls["selection_provenance"])
+        try:
+            validate_selection_provenance(selection_provenance, inputs.request)
+        except WatchlistEvidenceCompositionError as exc:
+            raise ModeCError("mode_c_control_integrity_failed") from exc
     audit_path = package / _AUDIT
     projector_version = CURRENT_PROJECTOR_VERSION
     if audit_path.is_file():
         projector_version = _read(audit_path).get("projector_metadata", {}).get("projector_version", CURRENT_PROJECTOR_VERSION)
         if projector_version not in SUPPORTED_PROJECTOR_VERSIONS:
             raise ModeCError("mode_c_existing_output_inconsistent")
-    expected_result, expected_audit, expected_markdown = _expected_outputs(inputs, projector_version)
+    expected_result, expected_audit, expected_markdown = _expected_outputs(
+        inputs, projector_version, selection_provenance
+    )
     result_path, md_path, audit_path = (package / _RESULT, package / _MARKDOWN, package / _AUDIT)
     if any(p.exists() for p in (result_path, md_path, audit_path)):
         if not all(p.is_file() for p in (result_path, md_path, audit_path)):
@@ -152,7 +176,7 @@ def build_mode_c_result_package(payload: dict[str, Any]) -> dict[str, Any]:
             raise ModeCError("mode_c_materialization_failed") from exc
         result, audit, markdown = expected_result, expected_audit, expected_markdown
         materialization = "newly_materialized"
-    return {"result_id": result["result_id"], "result_hash": result["result_hash"], "result_status": result["status"], "request_summary": result["request_summary"], "targets": result["targets"], "request_caveats": result.get("request_caveats", []), "citation_references": [c for t in result["targets"] for c in t.get("citations", [])], "ai_ready_markdown": markdown, "canonical_result": result, "canonical_result_reference": _RESULT, "audit_package_id": audit["audit_package_id"], "audit_reference": _AUDIT, "materialization": materialization, "external_market_network_executed": False}
+    return {"result_id": result["result_id"], "result_hash": result["result_hash"], "result_status": result["status"], "request_summary": result["request_summary"], "targets": result["targets"], "request_caveats": result.get("request_caveats", []), "citation_references": [c for t in result["targets"] for c in t.get("citations", [])], "ai_ready_markdown": markdown, "canonical_result": result, "canonical_result_reference": _RESULT, "audit_package_id": audit["audit_package_id"], "audit_reference": _AUDIT, "selection_provenance_identity": audit.get("selection_provenance_identity"), "materialization": materialization, "external_market_network_executed": False}
 
 
 def read_mode_c_audit(control_package_id: str) -> dict[str, Any]:
@@ -198,6 +222,7 @@ def build_mode_c_ai_handoff(control_package_id: str) -> dict[str, Any]:
         "canonical_result_reference": result_package["canonical_result_reference"],
         "audit_package_id": result_package["audit_package_id"],
         "audit_reference": result_package["audit_reference"],
+        "selection_provenance_identity": result_package.get("selection_provenance_identity"),
         "materialization": result_package["materialization"],
         "additional_market_network_executed": False,
     }

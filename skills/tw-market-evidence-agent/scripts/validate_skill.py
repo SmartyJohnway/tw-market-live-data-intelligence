@@ -73,6 +73,17 @@ def main():
         if tool not in current_text:
             print(f"ERROR: current portable instructions omit {tool}.", file=sys.stderr)
             sys.exit(1)
+    for required_fact in (
+        "Persistent Watchlists",
+        "ISIN",
+        "temporary request-only targets",
+        "three confirmation boundaries",
+        "watchlist version",
+        "revision hash",
+    ):
+        if required_fact.casefold() not in current_text.casefold():
+            print(f"ERROR: current portable instructions omit {required_fact}.", file=sys.stderr)
+            sys.exit(1)
     forbidden = (
         "Direct Unified MCP/service execution is not currently available",
         "Until M8R-06 is implemented",

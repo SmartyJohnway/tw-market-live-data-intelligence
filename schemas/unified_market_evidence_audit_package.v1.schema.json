@@ -313,6 +313,23 @@
         "calculated_at_source": {"type": "string"}
       }
     },
+    "selection_provenance_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selection_id", "selection_sha256", "request_sha256", "watchlist_id", "watchlist_version", "watchlist_revision_sha256", "selected_watchlist_entry_ids", "selected_instrument_ids", "temporary_target_inputs", "deduplication_decisions"],
+      "properties": {
+        "selection_id": {"type": "string", "format": "uuid"},
+        "selection_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "request_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "watchlist_id": {"type": ["string", "null"], "format": "uuid"},
+        "watchlist_version": {"type": ["integer", "null"], "minimum": 1},
+        "watchlist_revision_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "selected_watchlist_entry_ids": {"type": "array", "items": {"type": "string", "format": "uuid"}},
+        "selected_instrument_ids": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z]{2}[A-Z0-9]{10}$"}},
+        "temporary_target_inputs": {"type": "array", "items": {"type": "string", "maxLength": 120}},
+        "deduplication_decisions": {"type": "array", "items": {"type": "object"}}
+      }
+    },
     "warnings": {
       "type": "array",
       "items": {"type": "string"}

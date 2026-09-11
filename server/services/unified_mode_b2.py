@@ -16,6 +16,10 @@ from scripts.m8r_05b_02.validator import validate_execution_authorization
 from scripts.m8r_05b_03.preflight import build_orchestrator_preflight, validate_preflight_hashes
 from scripts.m8r_06_03_production_adapter import load_production_executor_metadata
 from scripts.m8r_filesystem_safety import atomic_write_text, safe_destination
+from server.services.watchlist_evidence_composer import (
+    WatchlistEvidenceCompositionError,
+    load_selection_provenance_for_request,
+)
 from server.services.unified_mode_b1 import ModeB1PlanningUnavailable, build_mode_b1_preview
 
 
@@ -122,11 +126,18 @@ def _materialize_execution_ticket(
         output_root=str(package_root),
     )
     validate_preflight_hashes(preflight)
-    manifest = _write_control_package(package_root, {
+    artifacts = {
         "request": request, "plan": plan, "authorization": authorization,
         "consumption_binding": binding, "unused_consumption_state": unused_state,
         "preflight": preflight,
-    })
+    }
+    try:
+        selection_provenance = load_selection_provenance_for_request(request)
+    except WatchlistEvidenceCompositionError as exc:
+        raise ModeB2Error("selection_provenance_integrity_failed") from exc
+    if selection_provenance is not None:
+        artifacts["selection_provenance"] = selection_provenance
+    manifest = _write_control_package(package_root, artifacts)
     return {
         "authorization_id": authorization["authorization_id"], "authorization_hash": authorization["authorization_hash"],
         "plan_id": plan["plan_id"], "plan_hash": plan["plan_hash"], "scope_hash": authorization["scope_hash"],
@@ -139,6 +150,7 @@ def _materialize_execution_ticket(
         "control_package_id": authorization["authorization_id"], "control_package_manifest_hash": manifest["manifest_hash"],
         "execution_ready": True, "authorization_created": True, "authorization_consumed": False,
         "execution_performed": False, "network_executed": False,
+        "selection_provenance_bound": selection_provenance is not None,
     }
 
 
