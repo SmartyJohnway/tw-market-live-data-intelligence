@@ -5,6 +5,8 @@ import tempfile
 import sys
 import shutil
 
+import pytest
+
 # Only inventory referential integrity is a frozen historical replay node.  The
 # collection hook in tests/conftest.py marks that exact node; the remaining
 # tamper-detection regressions must remain active V1 coverage.

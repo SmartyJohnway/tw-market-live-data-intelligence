@@ -236,12 +236,15 @@ FastAPI:
 uvicorn server.main:app --host 127.0.0.1 --port 8000
 ```
 
-Frontend: open [`frontend/readonly-preview/M5KLocalAIWorkbench.html`](frontend/readonly-preview/M5KLocalAIWorkbench.html).
+Workbench: start [`scripts/run_unified_workbench.py`](scripts/run_unified_workbench.py)
+and open the canonical `/workbench/` surface. The legacy
+[`frontend/readonly-preview/`](frontend/readonly-preview/) remains historical
+reference material, not the current V1 Workbench.
 
-MCP startup check:
+Unified MCP startup check:
 
 ```bash
-python server/mcp_server.py --startup-check
+python scripts/run_unified_market_evidence_mcp.py
 ```
 
 ## Documentation map
@@ -265,7 +268,8 @@ Do not mutate M5F, change observation/source-health/conversation semantics, crea
 ```text
 config/                         Watchlists and source adapter matrix
 docs/                           Product, operator, reference, contributor, release docs
-frontend/readonly-preview/      Local readonly browser workbench
+frontend/unified-workbench/     Canonical V1 Workbench assets
+frontend/readonly-preview/      Historical readonly browser preview
 research/staging/m5f/           Level 1 canonical package
 research/live_observation_runs/ Level 2 observation/source-health/conversation artifacts
 scripts/                        Validators, builders, diagnostics, bounded runners
