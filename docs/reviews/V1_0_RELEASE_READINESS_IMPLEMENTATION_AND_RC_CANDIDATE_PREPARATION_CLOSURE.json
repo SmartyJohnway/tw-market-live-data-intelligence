@@ -1,0 +1,142 @@
+{
+  "task": "V1.0-RELEASE-READINESS-IMPLEMENTATION-AND-RC-CANDIDATE-PREPARATION",
+  "baseline_sha": "dd4e9a85d0636cebab17be4176265042883e523c",
+  "branch": "codex/v1-release-readiness-implementation-rc-preparation",
+  "target_candidate_version": "1.0.0-rc.1",
+  "validated_code_commit": "ce8fa7cc06509dbea3935a5c4f3e1fb5ccbc933f",
+  "validated_code_tree_sha": "2f460d70b78749be12c8c16891887128a805d4bc",
+  "validation_subject_reachable_from_pr": true,
+  "finalization_delta_policy": "EVIDENCE_ONLY",
+  "validation_evidence": {
+    "orchestrator_report": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-final-gate-ce8fa7c\\v1_release_readiness.json",
+    "orchestrator_report_sha256": "0d7f580e28448ee592fa203f63cb1b77680ea0ea316b7a57fec04676344b421e",
+    "worktree_clean_before": true,
+    "worktree_clean_after": true,
+    "platform": "Windows-10-10.0.19045-SP0",
+    "python": "3.13.7",
+    "fresh_clone": {
+      "method": "git clone --no-local",
+      "path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-clean-clone-ce8fa7c",
+      "head": "ce8fa7cc06509dbea3935a5c4f3e1fb5ccbc933f",
+      "requirements_lock_install": "PASS",
+      "pip_check": "PASS",
+      "working_tree_clean": true
+    },
+    "candidate_artifact_hashes": {
+      "VERSION": "8e3ccfbe492191dbb919be7b4ef3d93bd88f92b1d99532b25ba19c5ad9f1f722",
+      "requirements-lock.txt": "d180091af66039600d62979c2747dd69dbf20031b4e95a063152dfed4f92f9c7",
+      "docs/contracts/v1_public_contracts.json": "0dd53aeeac9ab6a5bc50652a4412e04b9ea5454a8f027df10b38a816de6a0b8f",
+      "config/test_execution_profiles.json": "ab59b6a86142e1632ec29b08ebf4560c68262d870b7c8b46e5226c25183fd643"
+    }
+  },
+  "gates": {
+    "environment": "PASS",
+    "dependency_check": "PASS",
+    "version_consistency": "PASS",
+    "public_contracts": "PASS",
+    "release_hygiene_links_and_secrets": "PASS",
+    "portable_catalog": "PASS",
+    "runtime_skill_guide_semantics": "PASS",
+    "market_evidence_skill": "PASS",
+    "security_master_skill": "PASS",
+    "compileall": "PASS",
+    "default_ci": {
+      "status": "PASS",
+      "passed": 942,
+      "failed": 0,
+      "skipped": 4,
+      "selected": 946,
+      "deselected": 15
+    },
+    "full_non_network": {
+      "status": "PASS",
+      "passed": 2402,
+      "failed": 0,
+      "skipped": 16,
+      "selected": 2418,
+      "deselected": 62
+    },
+    "operator_preflight": "PASS",
+    "browser_e2e": "PASS",
+    "release_manifest": "PASS",
+    "javascript_syntax": "PASS",
+    "source_archive": "PASS"
+  },
+  "phase_f_closed": true,
+  "phase_g_started": false,
+  "current_published_release": "v0.1.0",
+  "release_readiness_implementation_complete": true,
+  "v1_release_ready": true,
+  "untagged_rc_candidate_ready": true,
+  "rc_tag_created": false,
+  "github_prerelease_created": false,
+  "v1_final_tag_created": false,
+  "v1_final_release_created": false,
+  "active_default_ci_green": true,
+  "active_full_non_network_green": true,
+  "actual_browser_e2e_passed": true,
+  "browser_e2e": {
+    "report": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-final-gate-ce8fa7c\\browser-e2e\\v1-workbench-browser\\v1_workbench_browser_e2e.json",
+    "status": "PASS",
+    "playwright_available": true,
+    "runtime_root_outside_repository": true,
+    "fixture_release": "tracked_deterministic_fixture",
+    "security_master_not_initialized": true,
+    "workbench_loaded": true,
+    "csp_clean": true,
+    "xss_safe_rendering": true,
+    "no_watchlists_state": true,
+    "persistent_watchlist_flow": true,
+    "temporary_target_nonpersistent": true,
+    "validation_passed": true,
+    "preview_passed": true,
+    "authorization_passed": true,
+    "execute_once_request_count": 1,
+    "deterministic_source_invocations": 1,
+    "result_audit_handoff": true,
+    "external_market_network": false
+  },
+  "fresh_install_passed": true,
+  "existing_install_upgrade_passed": true,
+  "legacy_v0_1_migration_passed": true,
+  "installation_journey_evidence": {
+    "test": "tests/acceptance/test_v1_release_install_journeys.py",
+    "fresh_install": "PASS",
+    "existing_schema_one_installation": "PASS",
+    "v0_1_legacy_import": "PASS",
+    "independent_installation_roots": "PASS"
+  },
+  "source_archive_smoke_passed": true,
+  "source_archive": {
+    "git_directory_absent": true,
+    "environment": "PASS",
+    "version": "PASS",
+    "local_service_import": "PASS",
+    "mcp_startup": "PASS"
+  },
+  "public_contract_freeze_active": true,
+  "product_version_authority_established": true,
+  "unified_mcp_tool_count": 6,
+  "secret_scan_passed": true,
+  "docs_link_check_passed": true,
+  "security_master_compatibility": {
+    "fresh_install_status": "NOT_INITIALIZED",
+    "identity_fail_closed": "SECURITY_MASTER_NOT_INITIALIZED",
+    "candidate_b_fallback_used": false,
+    "production_security_master_mutated": false
+  },
+  "storage_schema_one_compatibility": true,
+  "historical_test_profile": {
+    "classification": "ACTIVE_PROFILES_GREEN",
+    "historical_failures_reconciled_as": "No active failure node was introduced by the RC validation subject."
+  },
+  "market_network_used": false,
+  "production_persistent_state_mutated": false,
+  "platform_status": {
+    "windows": "VALIDATED_ON_WINDOWS_10_CPYTHON_3_13_7",
+    "linux": "NOT_VALIDATED_IN_THIS_CLOSURE",
+    "macos": "NOT_VALIDATED_IN_THIS_CLOSURE"
+  },
+  "blocking_findings": [],
+  "principal_decision": "V1_0_RELEASE_READINESS_COMPLETE_READY_FOR_RC1_POST_MERGE_VALIDATION"
+}
