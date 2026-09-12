@@ -197,11 +197,6 @@
         ],
         [
           "python",
-          "scripts/run_m4_readiness_check.py",
-          "--check-only"
-        ],
-        [
-          "python",
           "scripts/run_m5ij_end_to_end_acceptance.py",
           "--check-only"
         ],
@@ -214,8 +209,9 @@
       ],
       "historical_exclusions": {
         "classification": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
-        "reason": "M5C/M5D/M5E archived artifacts retain immutable historical path and hash bindings that correctly fail under the current repository materialization. They remain available for manual historical diagnosis but are not current V1 release contracts.",
+        "reason": "M4 evidence-ledger and M5C/M5D/M5E archived artifacts retain immutable historical path and hash bindings that correctly fail under the current repository materialization. They remain available for manual historical diagnosis but are not current V1 release contracts.",
         "runners": [
+          "scripts/run_m4_readiness_check.py --check-only",
           "scripts/run_m5c_staging_promotion_preflight.py --check-only",
           "scripts/validate_m5c_supplemental_audit.py",
           "scripts/run_m5d_frontend_publication_preflight.py --check-only",

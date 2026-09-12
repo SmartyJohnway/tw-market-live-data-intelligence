@@ -72,12 +72,13 @@ def test_full_non_network_preserves_current_acceptance_gates_and_records_histori
     assert rendered[0].endswith('-m pytest -m not network and not historical and not performance tests')
     assert 'run_local_delivery_acceptance.py --check-only' in joined
     assert 'run_ci_delivery_acceptance.py --check-only' in joined
-    assert 'run_m4_readiness_check.py --check-only' in joined
+    assert 'run_m4_readiness_check.py --check-only' not in joined
     assert 'run_m5ij_end_to_end_acceptance.py --check-only' in joined
     assert 'validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01' in joined
     assert 'run_m5e_controlled_frontend_publication.py --check-only' not in joined
     exclusions = rtp.load_config()['profiles']['full-non-network']['historical_exclusions']
     assert exclusions['classification'] == 'D_HISTORICAL_FIXTURE_PROVENANCE_DEBT'
+    assert 'scripts/run_m4_readiness_check.py --check-only' in exclusions['runners']
     assert 'scripts/run_m5e_controlled_frontend_publication.py --check-only' in exclusions['runners']
 
 

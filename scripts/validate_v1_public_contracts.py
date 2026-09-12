@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -21,6 +22,24 @@ EXPECTED_TOOLS = (
     "market_export_ai_handoff",
     "market_fetch_evidence",
 )
+
+
+def readme_current_product_truth_failures(readme_path: Path) -> list[str]:
+    """Return contradictions that would misdescribe the current V1 product."""
+    text = readme_path.read_text(encoding="utf-8")
+    failures: list[str] = []
+    if "Persistent Watchlists" not in text:
+        failures.append("readme_missing_persistent_watchlist_support")
+    if re.search(r"no[^\\n.]*persistent watchlist", text, flags=re.IGNORECASE):
+        failures.append("readme_persistent_watchlist_contradiction")
+    required_release_patterns = (
+        r"1\.0\.0-rc\.1",
+        r"v0\.1\.0",
+        r"no RC tag or GitHub prerelease\s+has been created",
+    )
+    if any(not re.search(pattern, text) for pattern in required_release_patterns):
+        failures.append("readme_candidate_release_status_incomplete")
+    return failures
 
 
 def _fail(code: str, detail: object | None = None) -> int:
@@ -49,6 +68,9 @@ def main() -> int:
         return _fail("mcp_tool_inventory_drift", tools)
     if inventory.get("public_api", {}).get("mcp_tools") != list(EXPECTED_TOOLS):
         return _fail("mcp_tool_contract_inventory_drift")
+    readme_failures = readme_current_product_truth_failures(ROOT / "README.md")
+    if readme_failures:
+        return _fail("readme_current_product_truth_drift", readme_failures)
 
     for relative in inventory.get("public_api", {}).get("local_service", {}).get("schemas", []):
         schema_path = ROOT / relative

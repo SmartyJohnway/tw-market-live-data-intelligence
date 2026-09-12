@@ -7,9 +7,11 @@ Historical context is preserved in [`docs/archive/readme/README_20260630_M5LRM_A
 
 TW-Market Live Data Intelligence is a local-first, AI-native Taiwan market data workbench for operators who need governed context, bounded observation evidence, source-health diagnostics, and a safe Conversation Package for ChatGPT discussion.
 
-It is a **V1 release candidate** (`1.0.0-rc.1`). It is local-first and
-does not guarantee realtime prices. Historical M5/M8 materials remain
-available for audit, but they are not a second current product contract.
+The repository is preparing candidate version **`1.0.0-rc.1`**. The latest
+published GitHub Release remains **`v0.1.0`**; no RC tag or GitHub prerelease
+has been created. It is local-first and does not guarantee realtime prices.
+Historical M5/M8 materials remain available for audit, but they are not a
+second current product contract.
 
 ## Who is it for?
 
@@ -30,8 +32,9 @@ available for audit, but they are not a second current product contract.
 - **Unified MCP** exposes six governed tools for capability discovery,
   validation, preview, execute-once, Result reading, and handoff export.
 
-There is no automatic polling, scheduler, startup fetch, persistent watchlist,
-trading, or realtime guarantee.
+There is no automatic polling, scheduler, startup market fetch, Watchlist-driven
+automatic execution, trading, or realtime guarantee. Persistent Watchlists are
+installation-local and mutate only through explicit preview/commit.
 
 ### Legacy compatibility / historical local workbench surfaces
 - Read and validate the reviewed **M5F canonical package** (legacy Mode A: Canonical Context).
@@ -109,9 +112,13 @@ The preflight reuses existing validators and reports `PASS`, `PASS WITH CAVEATS`
 Full release validation remains in [`docs/release/RELEASE_CHECKLIST.md`](docs/release/RELEASE_CHECKLIST.md).
 
 
-## Current M8 architecture (M8 through M8C)
+## Historical M8 architecture (M8 through M8C)
 
-M8 adds governed, source-attributed market context on top of the historical M5 local workbench. It is still local-first and operator-controlled: no scheduler, no polling, no startup fetch, no database persistence, no model call, and no trading recommendation.
+The following describes the pre-Phase-F architecture before Persistent Watchlist
+storage and the canonical V1 Workbench. M8 added governed, source-attributed
+market context on top of the historical M5 local workbench. It was local-first
+and operator-controlled: no scheduler, no polling, no startup fetch, no
+database persistence, no model call, and no trading recommendation.
 
 ```mermaid
 flowchart LR
