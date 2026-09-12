@@ -2,6 +2,7 @@ import json
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import JSONResponse
 from .services.unified_mode_a import validate_mode_a_request
+from scripts.m8r_06_01c2_mode_a_security_master_loader import ModeASecurityMasterUnavailable
 from .services.unified_mode_b1 import (
     ModeB1PlanningUnavailable,
     build_mode_b1_preview,
@@ -55,6 +56,10 @@ async def validate_request(request: Request):
     # 4. Invoke Mode A adapter
     try:
         validation_result = validate_mode_a_request(target_request)
+    except ModeASecurityMasterUnavailable as e:
+        if e.reason_code == "NOT_INITIALIZED":
+            return JSONResponse(status_code=503, content={"error": "SECURITY_MASTER_NOT_INITIALIZED", "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=409, content={"error": "canonical_security_master_unavailable", "trace_id": str(uuid.uuid4())})
     except FileNotFoundError as e:
         error_msg = str(e)
         if "security_master_snapshot" in error_msg:

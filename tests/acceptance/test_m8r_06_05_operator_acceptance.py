@@ -12,6 +12,12 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+from scripts.m8r_08g_security_master_releases import (
+    activate_qualified_release,
+    build_candidate_release,
+    qualify_candidate_release,
+)
+
 ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -37,15 +43,56 @@ def _json(url: str, payload: dict | None = None) -> tuple[int, dict]:
         return exc.code, json.loads(exc.read())
 
 
+def _bootstrap_test_security_master(root: Path) -> Path:
+    """Create a qualified, installation-local authority for this loopback test."""
+    release_id = "security-master-20260912T000000Z"
+    records = [
+        {
+            "canonical_target_id": "TWSE:2330",
+            "identity": {"security_code": "2330", "isin": "TW0002330008"},
+            "classification": {"market": "TWSE", "instrument_family": "company_share", "instrument_type": "common_share"},
+            "lifecycle": {"state": "listed", "resolution_status": "resolved", "basis_event_ids": [], "events": []},
+            "execution_eligibility": {"status": "allowed", "reason_codes": []},
+        },
+        {
+            "canonical_target_id": "TPEX:6488",
+            "identity": {"security_code": "6488", "isin": "TW0006488000"},
+            "classification": {"market": "TPEX", "instrument_family": "company_share", "instrument_type": "common_share"},
+            "lifecycle": {"state": "listed", "resolution_status": "resolved", "basis_event_ids": [], "events": []},
+            "execution_eligibility": {"status": "allowed", "reason_codes": []},
+        },
+    ]
+    provenance = {
+        "source_type": "test",
+        "snapshot_id": "m8r-06-05-loopback",
+        "source_content_hashes": {"fixture": "a" * 64},
+        "producer_skill": {"name": "test", "skill_version": "1", "skill_contract_hash": "b" * 64},
+    }
+    build_candidate_release(
+        root=root,
+        release_id=release_id,
+        records=records,
+        source_provenance=provenance,
+    )
+    release_path, report = qualify_candidate_release(root=root, release_id=release_id)
+    assert release_path is not None and report["status"] == "PASS"
+    activate_qualified_release(root=root, release_id=release_id)
+    return root
+
+
 class LocalWorkbench:
     def __init__(self, tmp_path: Path, *, failure_capability: str | None = None):
         with socket.socket() as probe:
             probe.bind(("127.0.0.1", 0))
             self.port = probe.getsockname()[1]
         self.root, self.counter = tmp_path / "control", tmp_path / "counter"
+        self.security_master_root = _bootstrap_test_security_master(
+            tmp_path / "security-master"
+        )
         env = os.environ | {
             "M8R_06_03_CONTROL_ROOT": str(self.root), "M8R_06_03_EXECUTION_ENVIRONMENT": "test",
             "M8R_06_03_TEST_SOURCE_TRANSPORT": "deterministic", "M8R_06_03_TEST_INVOCATION_COUNTER": str(self.counter),
+            "TW_MARKET_SECURITY_MASTER_ROOT": str(self.security_master_root),
         }
         if failure_capability:
             env["M8R_06_03_TEST_SOURCE_FAILURE_CAPABILITY"] = failure_capability

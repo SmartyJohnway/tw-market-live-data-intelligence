@@ -14,6 +14,14 @@ from scripts.m5k_common import DEFAULT_WATCHLIST_PATH, build_conversation_contex
 OUT_DIR = REPO_ROOT / "research/live_observation_runs/current_conversation_context"
 
 
+def display_path(path: Path) -> str:
+    """Render repository-relative paths when possible, otherwise preserve the external path."""
+    try:
+        return path.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 def build_package(
     watchlist_path: Path = DEFAULT_WATCHLIST_PATH,
     out_dir: Path = OUT_DIR,
@@ -27,7 +35,7 @@ def build_package(
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "conversation_context.json").write_text(dump_json(context), encoding="utf-8")
     (out_dir / "conversation_context.md").write_text(conversation_context_markdown(context), encoding="utf-8")
-    return {"status": "ok", "output_dir": out_dir.relative_to(REPO_ROOT).as_posix(), "files": ["conversation_context.json", "conversation_context.md"], "context": context}
+    return {"status": "ok", "output_dir": display_path(out_dir), "files": ["conversation_context.json", "conversation_context.md"], "context": context}
 
 
 def main() -> int:

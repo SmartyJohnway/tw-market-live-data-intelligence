@@ -16,12 +16,31 @@ def preload_governed_runtime() -> dict:
         _load_json,
     )
     from scripts.m8r_06_01c2_mode_a_security_master_loader import (
+        ModeASecurityMasterUnavailable,
         get_production_mode_a_security_master,
     )
 
     _load_json(CANONICAL_SCHEMA_PATH)
     _load_json(CANONICAL_CATALOG_PATH)
-    security_master = get_production_mode_a_security_master(PRODUCTION_POINTER_PATH)
+    try:
+        security_master = get_production_mode_a_security_master(PRODUCTION_POINTER_PATH)
+    except ModeASecurityMasterUnavailable as exc:
+        if exc.reason_code != "NOT_INITIALIZED":
+            raise
+        # A fresh installation is a supported local-service state. Identity
+        # operations fail closed at their public boundary, but `/api/health`,
+        # the Workbench, and MCP startup must not require a hidden fixture or
+        # a startup acquisition.
+        return {
+            "status": "not_initialized",
+            "mode": "mode_a",
+            "host": "127.0.0.1",
+            "network_on_startup": False,
+            "canonical_schema_loaded": True,
+            "security_master_loaded": False,
+            "security_master_status": "NOT_INITIALIZED",
+            "capability_catalog_loaded": True,
+        }
     if not security_master:
         raise RuntimeError("governed_security_master_unavailable")
     return {

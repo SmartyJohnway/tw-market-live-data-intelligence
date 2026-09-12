@@ -2,6 +2,7 @@ import asyncio
 import json
 import os
 from pathlib import Path
+import sys
 import tempfile
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -11,7 +12,9 @@ from mcp.client.stdio import StdioServerParameters, stdio_client
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PYTHON = ROOT / "venv" / "Scripts" / "python.exe"
+# The test must launch the same isolated runtime that invoked pytest.  A
+# repository-local `venv/` is neither required nor present in a clean clone.
+PYTHON = Path(sys.executable)
 LAUNCHER = ROOT / "scripts" / "run_unified_market_evidence_mcp.py"
 CONTROL_ID = "umea-v1-0123456789abcdef0123"
 
@@ -79,7 +82,7 @@ def _request():
 
 
 def test_real_stdio_to_actual_loopback_http_service():
-    assert PYTHON.is_file(), "M8R-08B test must use the repository runtime"
+    assert PYTHON.is_file(), "M8R-08B test must use the active isolated runtime"
     with LoopbackService() as service_url:
         async def run():
             env = {**os.environ, "UNIFIED_MARKET_EVIDENCE_SERVICE_URL": service_url}
@@ -95,7 +98,7 @@ def test_real_stdio_to_actual_loopback_http_service():
                             "market_read_result", "market_export_ai_handoff", "market_fetch_evidence",
                         ]
                         assert tools.tools[0].annotations.readOnlyHint is True
-                        assert tools.tools[3].annotations.readOnlyHint is False
+                        assert tools.tools[3].annotations.readOnlyHint is True
                         assert tools.tools[1].inputSchema["properties"]["request"] != {}
                         assert not (await session.call_tool("market_describe_capabilities", {})).isError
                         assert not (await session.call_tool("market_validate_request", {"request": _request()})).isError

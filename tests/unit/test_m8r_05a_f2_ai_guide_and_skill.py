@@ -11,24 +11,19 @@ def test_guide_aligns_with_unified_evidence():
     assert GUIDE_PATH.exists()
     content = GUIDE_PATH.read_text(encoding="utf-8")
     
-    # 1. when-to-call / when-not-to-call
-    assert "When to Call" in content
-    assert "When NOT to Call" in content
+    # The current guide defines the callable boundary semantically rather than
+    # preserving the superseded M8R-05A heading text.
+    assert "## Use boundary" in content
+    assert "Do not call it for general theory" in content
 
-    # 2. Mode A/B/C retained but clearly defined as operator workflows, not AI JSON parameters
-    assert "Mode A (Inspect and Validate)" in content
-    assert "Mode B (Preview, Authorize, Execute Once)" in content
-    assert "Mode C (Package and Handoff)" in content
-    assert "These Modes are NOT AI JSON request parameters" in content
+    # Mode names are workflow concepts, not a second request protocol.
+    assert "Mode A/B/C are workflow concepts" in content
+    assert "not tool names or JSON parameters" in content
 
-    # 3. Level 1/2 evidence lifecycles defined
-    assert "Level 1 (Durable Governed Evidence)" in content
-    assert "Level 2 (Request-Scoped Time-Sensitive Evidence)" in content
-
-    # 4. Runtime limitations explicitly stated
-    assert "Current Runtime Limitations" in content
-    assert "MCP or F3 resolvers are NOT yet implemented" in content
-    assert "manual handoff via the operator" in content
+    # Current runtime boundaries and handoff are authoritative.
+    assert "`market_export_ai_handoff`" in content
+    assert "TAIFEX remains provisional/non-executable" in content
+    assert "There is no automatic Security Master update" in content
 
 def test_guide_json_examples_schema_valid():
     content = GUIDE_PATH.read_text(encoding="utf-8")
@@ -56,16 +51,7 @@ def test_skill_realignment():
     assert SKILL_PATH.exists()
     content = SKILL_PATH.read_text(encoding="utf-8")
     
-    # Skill trigger must be specific
-    assert "Current, official, verifiable, time-sensitive, calculated, or source-grounded" in content
-    assert "General finance theory" in content # listed in NOT to call
-    
-    # Terminology fixes
-    assert "canonical observations" in content.lower()
-    
-    # Does not claim unified executor exists
-    assert "Direct Unified execution/MCP tools are not currently available" in content
-    
-    # No legacy phrases
-    assert "smallest sufficient" not in content.lower()
-    assert "safety boundaries" in content.lower()
+    assert "Use this Skill when fresh, source-grounded Taiwan market evidence is needed." in content
+    assert "Do not use for finance theory" in content
+    assert "six-tool Unified MCP surface" in content
+    assert "Preview never authorizes execution." in content

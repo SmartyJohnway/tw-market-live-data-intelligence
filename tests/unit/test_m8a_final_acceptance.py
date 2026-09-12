@@ -13,7 +13,7 @@ def test_acceptance_docs_and_inventory_closed():
         assert flags[forbidden] is False
 
 def test_readme_static_contracts_and_registry_roles():
-    readme=(ROOT/'README.md').read_text()
+    readme=(ROOT/'README.md').read_text(encoding='utf-8')
     for text in ['TWSE_OPENAPI','TPEX_OPENAPI','NCDR_DGPA_CLOSURE_CAP','explicit operator confirmation','no automatic polling']:
         assert text in readme
     assert 'not market price data' in readme

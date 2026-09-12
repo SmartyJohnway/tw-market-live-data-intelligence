@@ -171,6 +171,17 @@ def test_report_artifact_paths_are_allowed():
     assert not any(path.startswith(forbidden) for path in report["artifacts_written"])
 
 
+def test_report_paths_can_be_directed_outside_repository(tmp_path):
+    report_dir = tmp_path / "external-release-evidence"
+    args = type("Args", (), {"check_only": True, "execute_bounded_live_check": False, "ssl_policy": "strict", "report_dir": report_dir})()
+    paths = m6g.report_paths(args.report_dir)
+    assert paths == (
+        report_dir / "latest_browser_operator_e2e_report.json",
+        report_dir / "latest_browser_operator_e2e_report.md",
+    )
+    assert all(not str(path).startswith(str(m6g.ROOT)) for path in paths)
+
+
 def test_ssl_policy_api_checks_fail_closed_and_override():
     checks = m6g.ssl_policy_api_checks()
     assert checks["env_override"] is True

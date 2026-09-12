@@ -16,10 +16,16 @@ def utc(): return datetime.now(timezone.utc).replace(microsecond=0).isoformat().
 def load_config(): return json.loads(CONFIG.read_text())
 def command_to_display(cmd:list[str])->str: return ' '.join(cmd)
 
-def _materialize_runner_command(cmd: list[str], ssl_policy: str) -> list[str]:
-    return [sys.executable if c == 'python' else c.format(ssl_policy=ssl_policy) for c in cmd]
+def _materialize_runner_command(cmd: list[str], ssl_policy: str, output_root: Path | None = None) -> list[str]:
+    materialized = [sys.executable if c == 'python' else c.format(ssl_policy=ssl_policy) for c in cmd]
+    if output_root:
+        if 'scripts/run_m6e_operator_acceptance.py' in materialized:
+            materialized.extend(['--output-root', str(output_root / 'm6e')])
+        elif 'scripts/run_m6g_browser_operator_e2e.py' in materialized:
+            materialized.extend(['--report-dir', str(output_root / 'm6g')])
+    return materialized
 
-def resolve_profile_plan(profile:str, *, confirm_bounded_live=False, ssl_policy='strict')->list[CommandPlan]:
+def resolve_profile_plan(profile:str, *, confirm_bounded_live=False, ssl_policy='strict', output_root: Path | None = None)->list[CommandPlan]:
     cfg=load_config()['profiles']
     if profile not in cfg: raise ValueError(f"Unknown test profile: {profile}")
     if ssl_policy not in VALID_SSL: raise ValueError(f"Invalid ssl_policy: {ssl_policy}")
@@ -32,12 +38,12 @@ def resolve_profile_plan(profile:str, *, confirm_bounded_live=False, ssl_policy=
             'execution_kind': 'pytest',
         }]
         for cmd in p.get('authoritative_runner', []):
-            out.append({'command': _materialize_runner_command(cmd, ssl_policy), 'execution_kind': 'authoritative_runner'})
+            out.append({'command': _materialize_runner_command(cmd, ssl_policy, output_root), 'execution_kind': 'authoritative_runner'})
         return out
-    return [{'command': _materialize_runner_command(cmd, ssl_policy), 'execution_kind': 'authoritative_runner'} for cmd in p['authoritative_runner']]
+    return [{'command': _materialize_runner_command(cmd, ssl_policy, output_root), 'execution_kind': 'authoritative_runner'} for cmd in p['authoritative_runner']]
 
-def resolve_profile(profile:str, *, confirm_bounded_live=False, ssl_policy='strict')->list[list[str]]:
-    return [item['command'] for item in resolve_profile_plan(profile, confirm_bounded_live=confirm_bounded_live, ssl_policy=ssl_policy)]
+def resolve_profile(profile:str, *, confirm_bounded_live=False, ssl_policy='strict', output_root: Path | None = None)->list[list[str]]:
+    return [item['command'] for item in resolve_profile_plan(profile, confirm_bounded_live=confirm_bounded_live, ssl_policy=ssl_policy, output_root=output_root)]
 
 def parse_pytest_counts(text:str)->dict[str, int|None]:
     res={k:None for k in ['collected','selected','passed','failed','skipped','deselected']}
@@ -116,8 +122,9 @@ def main(argv=None):
     ap.add_argument('--json', action='store_true')
     ap.add_argument('--confirm-bounded-live', action='store_true')
     ap.add_argument('--ssl-policy', default='strict')
+    ap.add_argument('--output-root', type=Path, help='Direct report-writing operator/browser runners outside the repository.')
     args=ap.parse_args(argv); args._start=time.monotonic()
-    try: command_plan=resolve_profile_plan(args.profile, confirm_bounded_live=args.confirm_bounded_live, ssl_policy=args.ssl_policy)
+    try: command_plan=resolve_profile_plan(args.profile, confirm_bounded_live=args.confirm_bounded_live, ssl_policy=args.ssl_policy, output_root=args.output_root)
     except ValueError as e:
         if args.json:
             print(json.dumps({'profile':args.profile,'status':'fail','error':str(e),'commands':[]}, indent=2, sort_keys=True))

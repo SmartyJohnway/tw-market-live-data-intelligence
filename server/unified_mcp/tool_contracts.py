@@ -145,8 +145,8 @@ def build_tool_contract_snapshot() -> ToolContractSnapshot:
         Tool(name="market_describe_capabilities", description=TOOL_DESCRIPTIONS["market_describe_capabilities"], inputSchema=empty, annotations=_annotations(read_only=True)),
         Tool(name="market_validate_request", description=TOOL_DESCRIPTIONS["market_validate_request"], inputSchema=request, annotations=_annotations(read_only=True)),
         Tool(name="market_preview_request", description=TOOL_DESCRIPTIONS["market_preview_request"], inputSchema=deepcopy(request), annotations=_annotations(read_only=True)),
-        Tool(name="market_read_result", description=TOOL_DESCRIPTIONS["market_read_result"], inputSchema=control, annotations=_annotations(read_only=False)),
-        Tool(name="market_export_ai_handoff", description=TOOL_DESCRIPTIONS["market_export_ai_handoff"], inputSchema=deepcopy(control), annotations=_annotations(read_only=False)),
+        Tool(name="market_read_result", description=TOOL_DESCRIPTIONS["market_read_result"], inputSchema=control, annotations=_annotations(read_only=True)),
+        Tool(name="market_export_ai_handoff", description=TOOL_DESCRIPTIONS["market_export_ai_handoff"], inputSchema=deepcopy(control), annotations=_annotations(read_only=True)),
         Tool(name="market_fetch_evidence", description=TOOL_DESCRIPTIONS["market_fetch_evidence"], inputSchema=deepcopy(request), annotations=_action_annotations()),
     )
     validators: dict[str, jsonschema.protocols.Validator] = {}

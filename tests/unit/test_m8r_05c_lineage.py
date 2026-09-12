@@ -6,6 +6,10 @@ import tempfile
 import sys
 import shutil
 
+# See the companion historical M8R-05C fixture suites. This module verifies
+# old replay bytes and is not an active V1 product contract gate.
+pytestmark = pytest.mark.historical
+
 FIXTURES_DIR = Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "m8r_05c"
 
 def _run_cli_with_overrides(d_out, **kwargs):

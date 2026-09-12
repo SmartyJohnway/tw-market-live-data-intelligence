@@ -50,5 +50,11 @@ def test_catalog_fallback_semantics(capability_catalog):
 def test_catalog_known_limitations_exist(capability_catalog):
     limitations = capability_catalog.get("known_limitations", [])
     assert "not every requested evidence need is runtime-executable yet" in limitations
-    assert "target name resolution implementation belongs to M8R-06" in limitations
-    assert "Unified orchestrator is not implemented in M8R-05A" in limitations
+    assert (
+        "target resolution is governed by the installation-local Security Master "
+        "and may fail closed when it is not initialized"
+    ) in limitations
+    assert (
+        "the Unified orchestrator supports only explicitly confirmed, bounded "
+        "execute-once operations"
+    ) in limitations

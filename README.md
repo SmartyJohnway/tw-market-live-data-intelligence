@@ -7,7 +7,9 @@ Historical context is preserved in [`docs/archive/readme/README_20260630_M5LRM_A
 
 TW-Market Live Data Intelligence is a local-first, AI-native Taiwan market data workbench for operators who need governed context, bounded observation evidence, source-health diagnostics, and a safe Conversation Package for ChatGPT discussion.
 
-It is a **Local Release Candidate**. It is not production ready and it does not guarantee realtime prices. Legacy controlled refresh/probe publication paths are disabled pending M5I authorization and are not current product surfaces.
+It is a **V1 release candidate** (`1.0.0-rc.1`). It is local-first and
+does not guarantee realtime prices. Historical M5/M8 materials remain
+available for audit, but they are not a second current product contract.
 
 ## Who is it for?
 
@@ -67,7 +69,7 @@ python scripts/manage_security_master.py rollback RELEASE_ID
 Start the loopback Local Service and MCP after initialization:
 
 ```bash
-uvicorn server.main:app --host 127.0.0.1 --port 8000
+python scripts/run_unified_workbench.py
 python scripts/run_unified_market_evidence_mcp.py
 ```
 
@@ -78,17 +80,23 @@ migration is an advanced compatibility operation only.
 
 For the full operator path, see [`docs/operator/LOCAL_WORKBENCH.md`](docs/operator/LOCAL_WORKBENCH.md).
 
-## Typical daily workflow
+## Current operator workflow
 
 ```bash
-python scripts/run_local_workbench.py
-python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01
-# Optional, explicit, bounded Mode B only when needed:
-python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation
-python scripts/build_m5n_conversation_context.py
+python scripts/manage_security_master.py status
+python scripts/run_unified_workbench.py
+python scripts/run_unified_market_evidence_mcp.py
 ```
 
-Review `research/live_observation_runs/current_conversation_context/conversation_context.md` before sending governed context to ChatGPT.
+Use the Unified six-tool MCP contract or `/workbench/` to validate a request,
+preview it, explicitly authorize one bounded execution where capability support
+permits, then read its Result or export the AI-ready handoff. Persistent
+Watchlists use preview → explicit commit; they do not start background market
+work.
+
+See [V1 public contracts](docs/contracts/V1_PUBLIC_CONTRACTS.md) and the
+[current AI usage guide](docs/agent_usage_guide.md). Historical M5 daily
+workflow material below is retained as archive context only.
 
 ## Typical release workflow
 

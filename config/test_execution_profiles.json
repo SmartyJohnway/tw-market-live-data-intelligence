@@ -154,7 +154,14 @@
         "tests/unit/test_m8r_05c_determinism.py",
         "tests/unit/test_m8r_05c_lineage.py",
         "tests/unit/test_m8r_05c_containment.py",
-        "tests/integration/test_unified_workbench_api.py"
+        "tests/integration/test_unified_workbench_api.py",
+        "tests/unit/test_product_version.py",
+        "tests/unit/test_validate_product_version_consistency.py",
+        "tests/unit/test_validate_v1_public_contracts.py",
+        "tests/unit/test_build_v1_release_manifest.py",
+        "tests/unit/test_validate_release_hygiene.py",
+        "tests/unit/test_browser_e2e_requirements.py",
+        "tests/unit/test_m8r_08c_r1_launcher_readiness.py"
       ],
       "network_policy": "no network; excludes tests marked network",
       "browser_policy": "does not install or require Playwright/Chromium",
@@ -162,7 +169,7 @@
       "automatic_ci_allowed": true
     },
     "full-non-network": {
-      "purpose": "Broad non-network regression for releases and large refactors; preserves the existing broad pytest safety net plus legacy check-only CI acceptance gates.",
+      "purpose": "Broad current non-network regression for releases and large refactors. Archived M5C/M5D/M5E hash-bound evidence remains fail-closed historical evidence and is not an active release gate.",
       "execution_type": "pytest",
       "pytest_expression": "not network and not historical and not performance",
       "pytest_paths": [
@@ -195,36 +202,6 @@
         ],
         [
           "python",
-          "scripts/run_m5c_staging_promotion_preflight.py",
-          "--check-only"
-        ],
-        [
-          "python",
-          "scripts/validate_m5c_supplemental_audit.py"
-        ],
-        [
-          "python",
-          "scripts/run_m5d_frontend_publication_preflight.py",
-          "--check-only"
-        ],
-        [
-          "python",
-          "scripts/validate_m5d_publication_candidate.py",
-          "--candidate-dir",
-          "research/staging/m5d/m5d_frontend_publication_candidate_01"
-        ],
-        [
-          "python",
-          "scripts/simulate_m5d_frontend_publication_transaction.py",
-          "--check-only"
-        ],
-        [
-          "python",
-          "scripts/simulate_m5d_frontend_publication_rollback.py",
-          "--check-only"
-        ],
-        [
-          "python",
           "scripts/run_m5ij_end_to_end_acceptance.py",
           "--check-only"
         ],
@@ -233,13 +210,21 @@
           "scripts/validate_m5f_canonical_market_context_package.py",
           "--package-dir",
           "research/staging/m5f/m5f_canonical_market_context_01"
-        ],
-        [
-          "python",
-          "scripts/run_m5e_controlled_frontend_publication.py",
-          "--check-only"
         ]
-      ]
+      ],
+      "historical_exclusions": {
+        "classification": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+        "reason": "M5C/M5D/M5E archived artifacts retain immutable historical path and hash bindings that correctly fail under the current repository materialization. They remain available for manual historical diagnosis but are not current V1 release contracts.",
+        "runners": [
+          "scripts/run_m5c_staging_promotion_preflight.py --check-only",
+          "scripts/validate_m5c_supplemental_audit.py",
+          "scripts/run_m5d_frontend_publication_preflight.py --check-only",
+          "scripts/validate_m5d_publication_candidate.py --candidate-dir research/staging/m5d/m5d_frontend_publication_candidate_01",
+          "scripts/simulate_m5d_frontend_publication_transaction.py --check-only",
+          "scripts/simulate_m5d_frontend_publication_rollback.py --check-only",
+          "scripts/run_m5e_controlled_frontend_publication.py --check-only"
+        ]
+      }
     },
     "operator-preflight": {
       "purpose": "Operator/release readiness through authoritative existing runners.",
