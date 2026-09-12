@@ -2,9 +2,9 @@
 
 ## Decision
 
-The exact validated code subject is `1d815e2407f6a9d24974b215f8df4e60574e346e` (tree `c31c2bceaf3260a10e2c82199fb90b42bad2faa1`). It was pushed before validation and validated from a true external `git clone --no-local`.
+The exact validated code subject is `40c2fe006fd3bbbb325c23cce1e7f1e713a8e720` (tree `73d3df3ba5c390af5fca8304aed7053dbda4a3e8`). It was pushed before validation and validated from a true external `git clone --no-local`.
 
-`ce8fa7cc06509dbea3935a5c4f3e1fb5ccbc933f` / `2f460d70b78749be12c8c16891887128a805d4bc` is superseded by this PR #222 correction. `29812e824ddbd24009a46a210d5207fe9fc9ad4a` is also superseded because its first corrected gate exposed two active README-assertion failures.
+`ce8fa7cc06509dbea3935a5c4f3e1fb5ccbc933f` / `2f460d70b78749be12c8c16891887128a805d4bc` is superseded by this PR #222 correction. `29812e824ddbd24009a46a210d5207fe9fc9ad4a` is superseded because its first corrected gate exposed two active README-assertion failures. `1d815e2407f6a9d24974b215f8df4e60574e346e` is superseded by the final micro-correction that restores the lineage fixture-missing skip import and aligns README Local services with current V1 surfaces.
 
 The principal decision is `V1_0_RELEASE_READINESS_COMPLETE_READY_FOR_RC1_POST_MERGE_VALIDATION`. This finalization is evidence-only: no runtime, test, profile, or product-contract code changes follow the validated code commit.
 
@@ -24,7 +24,7 @@ The principal decision is `V1_0_RELEASE_READINESS_COMPLETE_READY_FOR_RC1_POST_ME
 
 ## Exact-code clean-clone validation
 
-The external report `D:\Codex-Workspace\runtime\tw-market-live-data-intelligence\v1-rc-correction-final-gate-1d815e2-r2\v1_release_readiness.json` has SHA-256 `f9a1fa081658c1bd1fae98c0deaaf56e2c8e21deef2d5070af1606e98a02afa0`. The working tree was clean before and after the gate. The fresh clone installed `requirements-lock.txt`, passed `pip check`, and used CPython 3.13.7 on Windows 10.
+The external report `D:\Codex-Workspace\runtime\tw-market-live-data-intelligence\v1-rc-micro-final-gate-40c2fe0\v1_release_readiness.json` has SHA-256 `c50459aa0700b5c34919dfb73568ca83ad931cd2129fe26c99001eef8d5c7447`. The working tree was clean before and after the gate. The fresh clone installed `requirements-lock.txt`, passed `pip check`, and used CPython 3.13.7 on Windows 10.
 
 - Default CI: `949 passed, 0 failed, 4 skipped`.
 - Full non-network profile: `2409 passed, 0 failed, 16 skipped`.

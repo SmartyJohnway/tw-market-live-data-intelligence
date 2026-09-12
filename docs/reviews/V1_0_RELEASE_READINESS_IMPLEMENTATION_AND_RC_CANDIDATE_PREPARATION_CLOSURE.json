@@ -3,21 +3,21 @@
   "baseline_sha": "dd4e9a85d0636cebab17be4176265042883e523c",
   "branch": "codex/v1-release-readiness-implementation-rc-preparation",
   "target_candidate_version": "1.0.0-rc.1",
-  "validated_code_commit": "1d815e2407f6a9d24974b215f8df4e60574e346e",
-  "validated_code_tree_sha": "c31c2bceaf3260a10e2c82199fb90b42bad2faa1",
+  "validated_code_commit": "40c2fe006fd3bbbb325c23cce1e7f1e713a8e720",
+  "validated_code_tree_sha": "73d3df3ba5c390af5fca8304aed7053dbda4a3e8",
   "validation_subject_reachable_from_pr": true,
   "finalization_delta_policy": "EVIDENCE_ONLY",
   "validation_evidence": {
-    "orchestrator_report": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-correction-final-gate-1d815e2-r2\\v1_release_readiness.json",
-    "orchestrator_report_sha256": "f9a1fa081658c1bd1fae98c0deaaf56e2c8e21deef2d5070af1606e98a02afa0",
+    "orchestrator_report": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-micro-final-gate-40c2fe0\\v1_release_readiness.json",
+    "orchestrator_report_sha256": "c50459aa0700b5c34919dfb73568ca83ad931cd2129fe26c99001eef8d5c7447",
     "worktree_clean_before": true,
     "worktree_clean_after": true,
     "platform": "Windows-10-10.0.19045-SP0",
     "python": "3.13.7",
     "fresh_clone": {
       "method": "git clone --no-local",
-      "path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-correction-clean-clone-1d815e2",
-      "head": "1d815e2407f6a9d24974b215f8df4e60574e346e",
+      "path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-micro-clean-clone-40c2fe0",
+      "head": "40c2fe006fd3bbbb325c23cce1e7f1e713a8e720",
       "requirements_lock_install": "PASS",
       "pip_check": "PASS",
       "working_tree_clean": true
@@ -76,7 +76,7 @@
   "active_full_non_network_green": true,
   "actual_browser_e2e_passed": true,
   "browser_e2e": {
-    "report": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-correction-final-gate-1d815e2-r2\\browser-e2e\\v1-workbench-browser\\v1_workbench_browser_e2e.json",
+    "report": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-micro-final-gate-40c2fe0\\browser-e2e\\v1-workbench-browser\\v1_workbench_browser_e2e.json",
     "status": "PASS",
     "playwright_available": true,
     "runtime_root_outside_repository": true,
@@ -159,6 +159,11 @@
       "commit": "29812e824ddbd24009a46a210d5207fe9fc9ad4a",
       "tree": "64455d92acbd2e8382b823fe34071ba035bed6ce",
       "reason": "SUPERSEDED_BY_ACTIVE_TEST_FAILURES"
+    },
+    {
+      "commit": "1d815e2407f6a9d24974b215f8df4e60574e346e",
+      "tree": "c31c2bceaf3260a10e2c82199fb90b42bad2faa1",
+      "reason": "SUPERSEDED_BY_FINAL_MICRO_CORRECTION"
     }
   ],
   "failure_reconciliation": {
@@ -485,6 +490,11 @@
     "disposition": "Nine exact Mode-C lineage nodes are historical provenance debt; the isolated loopback harness node is active and now passes."
   },
   "correction_summary": {
+    "final_micro_correction": {
+      "lineage_fixture_missing_skip_import_restored": true,
+      "readme_local_services_use_current_v1_workbench_and_unified_mcp": true,
+      "pr_metadata_updated_to_current_validation_subject": true
+    },
     "readme_current_product_truth": "PASS",
     "readme_candidate_vs_published_release_wording": "PASS",
     "mode_c_historical_scope": "PASS",
