@@ -11,6 +11,8 @@ Result/Audit/AI-handoff inspection all occur through the shipped workbench.
 from __future__ import annotations
 
 import argparse
+import copy
+import hashlib
 import json
 import os
 import socket
@@ -24,7 +26,9 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-LEGACY_POINTER = ROOT / "config" / "m8r_06_mode_a_security_master_pointer.json"
+FIXTURE_ROOT = ROOT / "tests" / "fixtures" / "m8r_05a_f3"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 
 def utc_now() -> str:
@@ -94,38 +98,70 @@ def stop(process: subprocess.Popen[str] | None) -> None:
         process.wait(timeout=8)
 
 
-def migrate_fixture_release(security_root: Path) -> dict[str, Any]:
-    """Build an external local release using the strict legacy authority.
+def bootstrap_deterministic_fixture_release(security_root: Path) -> dict[str, Any]:
+    """Build and qualify an external release from a tracked deterministic fixture.
 
-    This deliberately does not copy, reseal, or modify Candidate B.  The
-    strict loader validates the historical pointer/seal/index/manifest before
-    creating a new local installation release.
+    A clean clone correctly has no Candidate B local authority.  This runner
+    must therefore prove the documented fixture bootstrap path rather than
+    importing a missing local Candidate.  It remains a test harness only: the
+    production CLI neither exposes nor trusts arbitrary ``--records`` input.
     """
-    completed = subprocess.run(
-        [
-            sys.executable,
-            "scripts/manage_security_master.py",
-            "migrate-legacy-active",
-            "--legacy-pointer",
-            str(LEGACY_POINTER),
-            "--root",
-            str(security_root),
-        ],
-        cwd=ROOT,
-        text=True,
-        capture_output=True,
-        check=False,
-        timeout=180,
+    from scripts.m8r_05a_f3.security_master_loader import load_f3_verified_security_master
+    from scripts.m8r_08g_security_master_releases import (
+        activate_qualified_release,
+        build_candidate_release,
+        qualify_candidate_release,
+        release_id_for_now,
     )
-    if completed.returncode != 0:
-        raise RuntimeError(f"fixture_release_migration_failed:{completed.stderr.strip()[-400:]}")
-    try:
-        payload = json.loads(completed.stdout)
-    except json.JSONDecodeError as exc:
-        raise RuntimeError("fixture_release_migration_output_invalid") from exc
-    if payload.get("status") != "ACTIVE" or payload.get("qualification") != "PASS":
-        raise RuntimeError("fixture_release_migration_not_active")
-    return payload
+
+    snapshot_path = FIXTURE_ROOT / "verified_security_master_snapshot.json"
+    manifest_path = FIXTURE_ROOT / "verified_security_master_snapshot_manifest.json"
+    verified = load_f3_verified_security_master(
+        snapshot_path,
+        manifest_path,
+        allow_fixture_snapshot=True,
+    )
+    release_id = release_id_for_now()
+    records = copy.deepcopy(verified.snapshot["records"])
+    # The F3 fixture is observation-only by design.  Browser acceptance needs
+    # one explicitly deterministic, execution-eligible cash target to exercise
+    # the UI's single-use authorization mechanics; this adjustment is local to
+    # the external test release and never writes the tracked fixture or a
+    # production authority.
+    for record in records:
+        if record.get("canonical_target_id") == "TWSE:2330":
+            record["execution_eligibility"] = {"status": "allowed", "reason_codes": []}
+    build_candidate_release(
+        root=security_root,
+        release_id=release_id,
+        records=records,
+        source_provenance={
+            "source_type": "deterministic_test_fixture",
+            "snapshot_id": verified.snapshot.get("snapshot_id", "m8r_05a_f3_fixture"),
+            "producer_skill": {
+                "name": "tw-security-master-classifier",
+                "skill_version": "deterministic-fixture",
+                "skill_contract_hash": hashlib.sha256(
+                    (ROOT / "skills" / "tw-security-master-classifier" / "SKILL.md").read_bytes()
+                ).hexdigest(),
+            },
+            "source_content_hashes": {
+                "fixture_snapshot": hashlib.sha256(snapshot_path.read_bytes()).hexdigest(),
+                "fixture_manifest": hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+            },
+        },
+    )
+    qualified, diagnostic = qualify_candidate_release(root=security_root, release_id=release_id)
+    if qualified is None:
+        raise RuntimeError(f"fixture_release_qualification_failed:{diagnostic}")
+    pointer = activate_qualified_release(root=security_root, release_id=release_id)
+    return {
+        "status": "ACTIVE",
+        "qualification": "PASS",
+        "release_id": release_id,
+        "active_pointer": pointer,
+        "bootstrap": "tracked_deterministic_fixture",
+    }
 
 
 def source_invocation_count(counter_root: Path) -> int:
@@ -212,7 +248,10 @@ def run_browser_flow(base_url: str, counter_root: Path) -> dict[str, Any]:
         page.locator('.builder-capability[value="current_observation"]').check()
         page.select_option("#builder-execution-mode", "execute")
         page.click("#btn-compose-request")
-        wait_until(lambda: "current_observation" in page.locator("#request-textarea").input_value(), label="request_composition")
+        try:
+            wait_until(lambda: "current_observation" in page.locator("#request-textarea").input_value(), label="request_composition")
+        except RuntimeError as exc:
+            raise RuntimeError(f"{exc}:{page.locator('#composition-summary').inner_text()}") from exc
         result["request_builder_and_advanced_json"] = page.locator("#syntax-status").inner_text() == "JSON syntax valid"
 
         page.click("#btn-validate")
@@ -324,7 +363,7 @@ def execute(report_dir: Path) -> dict[str, Any]:
         stop(process)
         process = None
 
-        report["fixture_release"] = migrate_fixture_release(security_root)
+        report["fixture_release"] = bootstrap_deterministic_fixture_release(security_root)
         process, port = start_workbench(env)
         report["checks"] |= run_browser_flow(f"http://127.0.0.1:{port}", counter_root)
         report["checks"]["no_external_market_network"] = True
