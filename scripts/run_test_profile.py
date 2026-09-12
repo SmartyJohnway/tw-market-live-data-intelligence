@@ -23,6 +23,8 @@ def _materialize_runner_command(cmd: list[str], ssl_policy: str, output_root: Pa
             materialized.extend(['--output-root', str(output_root / 'm6e')])
         elif 'scripts/run_m6g_browser_operator_e2e.py' in materialized:
             materialized.extend(['--report-dir', str(output_root / 'm6g')])
+        elif 'scripts/run_v1_workbench_browser_e2e.py' in materialized:
+            materialized.extend(['--report-dir', str(output_root / 'v1-workbench-browser')])
     return materialized
 
 def resolve_profile_plan(profile:str, *, confirm_bounded_live=False, ssl_policy='strict', output_root: Path | None = None)->list[CommandPlan]:

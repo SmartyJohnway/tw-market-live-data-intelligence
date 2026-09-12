@@ -53,10 +53,16 @@ def test_output_root_is_forwarded_only_to_report_writing_runners(tmp_path):
     assert all('--output-root' not in command for command in rendered if 'run_m6e_operator_acceptance.py' not in command)
 
 
-def test_browser_and_bounded_live_resolve_m6g_modes():
+def test_browser_profile_directs_its_evidence_outside_the_repository(tmp_path):
+    rendered = [rtp.command_to_display(command) for command in rtp.resolve_profile('browser-e2e', output_root=tmp_path)]
+    assert len(rendered) == 1
+    assert f'--report-dir {tmp_path / "v1-workbench-browser"}' in rendered[0]
+
+
+def test_browser_and_bounded_live_resolve_governed_browser_modes():
     browser = rtp.command_to_display(rtp.resolve_profile('browser-e2e')[0])
     bounded = rtp.command_to_display(rtp.resolve_profile('bounded-live', confirm_bounded_live=True, ssl_policy='compatibility')[0])
-    assert 'run_m6g_browser_operator_e2e.py --check-only' in browser
+    assert 'run_v1_workbench_browser_e2e.py' in browser
     assert 'run_m6g_browser_operator_e2e.py --execute-bounded-live-check --ssl-policy compatibility' in bounded
 
 
