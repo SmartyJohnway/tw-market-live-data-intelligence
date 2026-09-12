@@ -3,21 +3,21 @@
   "baseline_sha": "dd4e9a85d0636cebab17be4176265042883e523c",
   "branch": "codex/v1-release-readiness-implementation-rc-preparation",
   "target_candidate_version": "1.0.0-rc.1",
-  "validated_code_commit": "ce8fa7cc06509dbea3935a5c4f3e1fb5ccbc933f",
-  "validated_code_tree_sha": "2f460d70b78749be12c8c16891887128a805d4bc",
+  "validated_code_commit": "1d815e2407f6a9d24974b215f8df4e60574e346e",
+  "validated_code_tree_sha": "c31c2bceaf3260a10e2c82199fb90b42bad2faa1",
   "validation_subject_reachable_from_pr": true,
   "finalization_delta_policy": "EVIDENCE_ONLY",
   "validation_evidence": {
-    "orchestrator_report": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-final-gate-ce8fa7c\\v1_release_readiness.json",
-    "orchestrator_report_sha256": "0d7f580e28448ee592fa203f63cb1b77680ea0ea316b7a57fec04676344b421e",
+    "orchestrator_report": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-correction-final-gate-1d815e2-r2\\v1_release_readiness.json",
+    "orchestrator_report_sha256": "f9a1fa081658c1bd1fae98c0deaaf56e2c8e21deef2d5070af1606e98a02afa0",
     "worktree_clean_before": true,
     "worktree_clean_after": true,
     "platform": "Windows-10-10.0.19045-SP0",
     "python": "3.13.7",
     "fresh_clone": {
       "method": "git clone --no-local",
-      "path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-clean-clone-ce8fa7c",
-      "head": "ce8fa7cc06509dbea3935a5c4f3e1fb5ccbc933f",
+      "path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-correction-clean-clone-1d815e2",
+      "head": "1d815e2407f6a9d24974b215f8df4e60574e346e",
       "requirements_lock_install": "PASS",
       "pip_check": "PASS",
       "working_tree_clean": true
@@ -26,7 +26,7 @@
       "VERSION": "8e3ccfbe492191dbb919be7b4ef3d93bd88f92b1d99532b25ba19c5ad9f1f722",
       "requirements-lock.txt": "d180091af66039600d62979c2747dd69dbf20031b4e95a063152dfed4f92f9c7",
       "docs/contracts/v1_public_contracts.json": "0dd53aeeac9ab6a5bc50652a4412e04b9ea5454a8f027df10b38a816de6a0b8f",
-      "config/test_execution_profiles.json": "ab59b6a86142e1632ec29b08ebf4560c68262d870b7c8b46e5226c25183fd643"
+      "config/test_execution_profiles.json": "b028a3b56b8be7eba1183ef59005caef4c3f47395cf8463bc18cfe668cd1708f"
     }
   },
   "gates": {
@@ -42,19 +42,19 @@
     "compileall": "PASS",
     "default_ci": {
       "status": "PASS",
-      "passed": 942,
+      "passed": 949,
       "failed": 0,
       "skipped": 4,
-      "selected": 946,
-      "deselected": 15
+      "selected": 953,
+      "deselected": 9
     },
     "full_non_network": {
       "status": "PASS",
-      "passed": 2402,
+      "passed": 2409,
       "failed": 0,
       "skipped": 16,
-      "selected": 2418,
-      "deselected": 62
+      "selected": 2425,
+      "deselected": 56
     },
     "operator_preflight": "PASS",
     "browser_e2e": "PASS",
@@ -76,7 +76,7 @@
   "active_full_non_network_green": true,
   "actual_browser_e2e_passed": true,
   "browser_e2e": {
-    "report": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-final-gate-ce8fa7c\\browser-e2e\\v1-workbench-browser\\v1_workbench_browser_e2e.json",
+    "report": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\v1-rc-correction-final-gate-1d815e2-r2\\browser-e2e\\v1-workbench-browser\\v1_workbench_browser_e2e.json",
     "status": "PASS",
     "playwright_available": true,
     "runtime_root_outside_repository": true,
@@ -127,8 +127,18 @@
   },
   "storage_schema_one_compatibility": true,
   "historical_test_profile": {
-    "classification": "ACTIVE_PROFILES_GREEN",
-    "historical_failures_reconciled_as": "No active failure node was introduced by the RC validation subject."
+    "classification": "ACTIVE_PROFILES_GREEN_HISTORICAL_DEBT_PRESERVED",
+    "historical_scope_audit": {
+      "expected_preflight_D_E_G_nodes": 55,
+      "actual_historical_nodes": 55,
+      "exact_match_historical_nodes": 55,
+      "additional_historical_nodes": [],
+      "missing_historical_nodes": []
+    },
+    "m4_readiness_active_gate_disposition": "HISTORICAL_EXCLUSION",
+    "m4_historical_evidence_modified": false,
+    "m4_ledger_restored_to_baseline": true,
+    "m4_historical_runner_status": "KNOWN_HISTORICAL_PROVENANCE_DRIFT"
   },
   "market_network_used": false,
   "production_persistent_state_mutated": false,
@@ -138,5 +148,350 @@
     "macos": "NOT_VALIDATED_IN_THIS_CLOSURE"
   },
   "blocking_findings": [],
-  "principal_decision": "V1_0_RELEASE_READINESS_COMPLETE_READY_FOR_RC1_POST_MERGE_VALIDATION"
+  "principal_decision": "V1_0_RELEASE_READINESS_COMPLETE_READY_FOR_RC1_POST_MERGE_VALIDATION",
+  "superseded_validation_subjects": [
+    {
+      "commit": "ce8fa7cc06509dbea3935a5c4f3e1fb5ccbc933f",
+      "tree": "2f460d70b78749be12c8c16891887128a805d4bc",
+      "reason": "SUPERSEDED_BY_PR_222_CORRECTION"
+    },
+    {
+      "commit": "29812e824ddbd24009a46a210d5207fe9fc9ad4a",
+      "tree": "64455d92acbd2e8382b823fe34071ba035bed6ce",
+      "reason": "SUPERSEDED_BY_ACTIVE_TEST_FAILURES"
+    }
+  ],
+  "failure_reconciliation": {
+    "preflight_total_failure_nodes": 69,
+    "accounted_for": 69,
+    "families": [
+      {
+        "family_id": "SECURITY_MASTER_SKILL_HASH_FIXTURE_DRIFT",
+        "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+        "original_count": 14,
+        "original_nodes": [
+          "tests/integration/test_m8r_03e_r5a_phase_c_fixture_pipeline.py::test_capability_registry_fail_closed_behaviors",
+          "tests/integration/test_m8r_03e_r5a_phase_c_fixture_pipeline.py::test_capability_snapshot_consumption_and_unsupported_filtering",
+          "tests/integration/test_m8r_03e_r5a_phase_c_fixture_pipeline.py::test_integration_phase_c_fixture_pipeline",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_classification_lifecycle_and_observation_policy",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_fabricated_validated_wrapper_revalidated_and_rejected",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_resolution_exact_and_ambiguous",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_trust_gap_tampered_direct_snapshot_and_lookup_rejected",
+          "tests/unit/test_m8r_03e_r5a_partial_failure.py::test_variant_a_source_adapter_failure",
+          "tests/unit/test_m8r_03e_r5a_partial_failure.py::test_variant_b_stale_and_missing_pipeline",
+          "tests/unit/test_m8r_03e_r5a_performance.py::test_pipeline_performance"
+        ],
+        "disposition": "HISTORICAL_PROFILE_PRESERVED",
+        "active_v1_nodes_after": [],
+        "historical_nodes_after": [
+          "tests/integration/test_m8r_03e_r5a_phase_c_fixture_pipeline.py::test_capability_registry_fail_closed_behaviors",
+          "tests/integration/test_m8r_03e_r5a_phase_c_fixture_pipeline.py::test_capability_snapshot_consumption_and_unsupported_filtering",
+          "tests/integration/test_m8r_03e_r5a_phase_c_fixture_pipeline.py::test_integration_phase_c_fixture_pipeline",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_classification_lifecycle_and_observation_policy",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_duplicate_isin_policy_explicit_quarantine_only",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_fabricated_validated_wrapper_revalidated_and_rejected",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_lifecycle_total_count_and_dict_conflict_duplicate_isin",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_loader_rejects_drift_and_raw_fields",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_m8r03d_planner_consumes_verified_snapshot_and_fails_closed",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_resolution_exact_and_ambiguous",
+          "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py::test_trust_gap_tampered_direct_snapshot_and_lookup_rejected",
+          "tests/unit/test_m8r_03e_r5a_partial_failure.py::test_variant_a_source_adapter_failure",
+          "tests/unit/test_m8r_03e_r5a_partial_failure.py::test_variant_b_stale_and_missing_pipeline",
+          "tests/unit/test_m8r_03e_r5a_performance.py::test_pipeline_performance"
+        ],
+        "updated_current_tests": [],
+        "removed_duplicate_tests": [],
+        "remaining_known_historical_debt": true
+      },
+      {
+        "family_id": "MODE_C_ARTIFACT_LINEAGE_DRIFT",
+        "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+        "original_count": 9,
+        "original_nodes": [
+          "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_check_only_mode",
+          "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_end_to_end_single_target",
+          "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_check_only",
+          "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_determinism",
+          "tests/unit/test_m8r_05c_lineage.py::test_inventory_referential_integrity",
+          "tests/unit/test_m8r_06_04_mode_c.py::test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected",
+          "tests/unit/test_m8r_06_04_mode_c.py::test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected",
+          "tests/unit/test_m8r_06_04_mode_c.py::test_mode_c_materializes_and_reuses_sanitized_finalized_lineage",
+          "tests/unit/test_m8r_06_04_mode_c.py::test_verified_handoff_reuses_mode_c_outputs_and_audit_citations"
+        ],
+        "disposition": "HISTORICAL_PROFILE_PRESERVED",
+        "active_v1_nodes_after": [],
+        "historical_nodes_after": [
+          "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_check_only_mode",
+          "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_end_to_end_single_target",
+          "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_check_only",
+          "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_determinism",
+          "tests/unit/test_m8r_05c_lineage.py::test_inventory_referential_integrity",
+          "tests/unit/test_m8r_06_04_mode_c.py::test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected",
+          "tests/unit/test_m8r_06_04_mode_c.py::test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected",
+          "tests/unit/test_m8r_06_04_mode_c.py::test_mode_c_materializes_and_reuses_sanitized_finalized_lineage",
+          "tests/unit/test_m8r_06_04_mode_c.py::test_verified_handoff_reuses_mode_c_outputs_and_audit_citations"
+        ],
+        "updated_current_tests": [],
+        "removed_duplicate_tests": [],
+        "remaining_known_historical_debt": true
+      },
+      {
+        "family_id": "M5_HISTORICAL_ARTIFACT_BINDING_DRIFT",
+        "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+        "original_count": 24,
+        "original_nodes": [
+          "tests/unit/test_build_m5b_staging_candidate.py::test_committed_m5b_manifest_verifies",
+          "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+          "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+          "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_exact_authorized_passes",
+          "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_just_before_expiry_passes",
+          "tests/unit/test_m5b_execution_authorization.py::test_receipt_audit_ignores_current_wall_clock_after_expiry",
+          "tests/unit/test_m5b_execution_authorization.py::test_valid_authorization_preflight_with_fixed_now",
+          "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+          "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+          "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+          "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+          "tests/unit/test_m5c_staging_promotion.py::test_exact_binding_request_and_schema",
+          "tests/unit/test_m5c_staging_promotion.py::test_valid_m5b_evidence_eligible",
+          "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+          "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+          "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+          "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+          "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+          "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+          "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+          "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+          "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+          "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+          "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery"
+        ],
+        "disposition": "HISTORICAL_PROFILE_PRESERVED",
+        "active_v1_nodes_after": [],
+        "historical_nodes_after": [
+          "tests/unit/test_build_m5b_staging_candidate.py::test_committed_m5b_manifest_verifies",
+          "tests/unit/test_m5a_live_probe_authorization_request.py::test_cli_check_only_valid_request_passes",
+          "tests/unit/test_m5a_live_probe_authorization_request.py::test_valid_m5a_request_is_ready_for_user_authorization_review",
+          "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_exact_authorized_passes",
+          "tests/unit/test_m5b_execution_authorization.py::test_authorization_preflight_just_before_expiry_passes",
+          "tests/unit/test_m5b_execution_authorization.py::test_receipt_audit_ignores_current_wall_clock_after_expiry",
+          "tests/unit/test_m5b_execution_authorization.py::test_valid_authorization_preflight_with_fixed_now",
+          "tests/unit/test_m5c_controlled_staging_promotion.py::test_m5c_controlled_check_only_passes_before_execution_or_blocks_after_single_use",
+          "tests/unit/test_m5c_core_package_validation.py::test_core_validation_accepts_fresh_tmp_package_without_historical_audit_or_correction",
+          "tests/unit/test_m5c_promoted_staging_package.py::test_committed_package_valid_if_present",
+          "tests/unit/test_m5c_run_summary_destination_correction.py::test_run_summary_destination_correction_validates",
+          "tests/unit/test_m5c_staging_promotion.py::test_exact_binding_request_and_schema",
+          "tests/unit/test_m5c_staging_promotion.py::test_valid_m5b_evidence_eligible",
+          "tests/unit/test_m5c_staging_promotion_authorization.py::test_m5c_authorization_binding_passes",
+          "tests/unit/test_m5c_supplemental_audit.py::test_m5c_supplemental_audit_validates",
+          "tests/unit/test_m5d_frontend_publication_preflight.py::test_m5d_request_is_request_only",
+          "tests/unit/test_m5d_publication_candidate.py::test_candidate_validates",
+          "tests/unit/test_m5d_publication_candidate.py::test_destination_already_exists_simulation",
+          "tests/unit/test_m5d_publication_candidate.py::test_frontend_public_baseline_recomputed_matches_current",
+          "tests/unit/test_m5d_publication_candidate.py::test_rollback_no_existing_destination_deletes_new_file",
+          "tests/unit/test_m5d_publication_candidate.py::test_shallow_checkout_missing_pr57_commit_does_not_block",
+          "tests/unit/test_m5e_controlled_frontend_publication.py::test_reproducibility_materialize_candidate",
+          "tests/unit/test_m5e_controlled_frontend_publication.py::test_token_hash_integrity",
+          "tests/unit/test_m5e_controlled_frontend_publication.py::test_transaction_new_target_rollback_and_recovery"
+        ],
+        "updated_current_tests": [],
+        "removed_duplicate_tests": [],
+        "remaining_known_historical_debt": true
+      },
+      {
+        "family_id": "M4_EVIDENCE_LEDGER_DRIFT",
+        "category": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
+        "original_count": 1,
+        "original_nodes": [
+          "tests/unit/test_run_m4_readiness_check.py::test_readiness_check"
+        ],
+        "disposition": "HISTORICAL_PROFILE_PRESERVED",
+        "active_v1_nodes_after": [],
+        "historical_nodes_after": [
+          "tests/unit/test_run_m4_readiness_check.py::test_readiness_check"
+        ],
+        "updated_current_tests": [],
+        "removed_duplicate_tests": [],
+        "remaining_known_historical_debt": true
+      },
+      {
+        "family_id": "M8R05A_SCHEMA_AND_TEXT_EXPECTATION_DRIFT",
+        "category": "C_STALE_TEST_EXPECTATION",
+        "original_count": 10,
+        "original_nodes": [
+          "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_fallback_upgrade_fails",
+          "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_forbidden_fields",
+          "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_valid",
+          "tests/unit/test_m8r_05a_f2_ai_guide_and_skill.py::test_guide_aligns_with_unified_evidence",
+          "tests/unit/test_m8r_05a_f2_ai_guide_and_skill.py::test_skill_realignment",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_evidence_semantics_retrieved_at_is_not_event_time",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_evidence_semantics_unadjusted_return",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_network_authorization_boundaries_exist",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_raw_payload_exposure_is_restricted",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_timing_class_distinctions"
+        ],
+        "disposition": "UPDATED_TO_CURRENT_AUTHORITY",
+        "active_v1_nodes_after": [
+          "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_fallback_upgrade_fails",
+          "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_forbidden_fields",
+          "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_valid",
+          "tests/unit/test_m8r_05a_f2_ai_guide_and_skill.py::test_guide_aligns_with_unified_evidence",
+          "tests/unit/test_m8r_05a_f2_ai_guide_and_skill.py::test_skill_realignment",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_evidence_semantics_retrieved_at_is_not_event_time",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_evidence_semantics_unadjusted_return",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_network_authorization_boundaries_exist",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_raw_payload_exposure_is_restricted",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_timing_class_distinctions"
+        ],
+        "historical_nodes_after": [],
+        "updated_current_tests": [
+          "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_fallback_upgrade_fails",
+          "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_forbidden_fields",
+          "tests/unit/test_m8r_05a_cross_contract_consistency.py::test_cross_contract_valid",
+          "tests/unit/test_m8r_05a_f2_ai_guide_and_skill.py::test_guide_aligns_with_unified_evidence",
+          "tests/unit/test_m8r_05a_f2_ai_guide_and_skill.py::test_skill_realignment",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_evidence_semantics_retrieved_at_is_not_event_time",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_evidence_semantics_unadjusted_return",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_network_authorization_boundaries_exist",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_raw_payload_exposure_is_restricted",
+          "tests/unit/test_m8r_05a_f2_canonical_governance_rules.py::test_timing_class_distinctions"
+        ],
+        "removed_duplicate_tests": [],
+        "remaining_known_historical_debt": false
+      },
+      {
+        "family_id": "M5B_ERROR_CODE_EXPECTATION_DRIFT",
+        "category": "C_STALE_TEST_EXPECTATION",
+        "original_count": 1,
+        "original_nodes": [
+          "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]"
+        ],
+        "disposition": "UPDATED_TO_CURRENT_AUTHORITY",
+        "active_v1_nodes_after": [
+          "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]"
+        ],
+        "historical_nodes_after": [],
+        "updated_current_tests": [
+          "tests/unit/test_m5b_failure_injection.py::test_execution_scope_rejects_invalid_source_targets_and_output_paths[TWSE_OpenAPI-targets5-/tmp/x-output_path_unsafe]"
+        ],
+        "removed_duplicate_tests": [],
+        "remaining_known_historical_debt": false
+      },
+      {
+        "family_id": "LEGACY_M3G04_REMOVED_IMPORT",
+        "category": "E_LEGACY_COMPONENT_OUTSIDE_V1_PRODUCT",
+        "original_count": 4,
+        "original_nodes": [
+          "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+          "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+          "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+          "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection"
+        ],
+        "disposition": "HISTORICAL_LEGACY_OUTSIDE_V1_PRODUCT",
+        "active_v1_nodes_after": [],
+        "historical_nodes_after": [
+          "tests/test_m3g04_controlled_live_probe.py::test_empty_targets_rejection",
+          "tests/test_m3g04_controlled_live_probe.py::test_max_targets_enforcement",
+          "tests/test_m3g04_controlled_live_probe.py::test_prohibited_source_rejection",
+          "tests/test_m3g04_controlled_live_probe.py::test_unknown_source_rejection"
+        ],
+        "updated_current_tests": [],
+        "removed_duplicate_tests": [],
+        "remaining_known_historical_debt": true
+      },
+      {
+        "family_id": "LEGACY_PHASE_C_PLUGIN_ACTIVATION",
+        "category": "E_LEGACY_COMPONENT_OUTSIDE_V1_PRODUCT",
+        "original_count": 1,
+        "original_nodes": [
+          "tests/unit/test_m8r_phase_c_pre_registered_plugin_activation.py::test_pre_registered_source_activates_without_core_routing_changes"
+        ],
+        "disposition": "HISTORICAL_LEGACY_OUTSIDE_V1_PRODUCT",
+        "active_v1_nodes_after": [],
+        "historical_nodes_after": [
+          "tests/unit/test_m8r_phase_c_pre_registered_plugin_activation.py::test_pre_registered_source_activates_without_core_routing_changes"
+        ],
+        "updated_current_tests": [],
+        "removed_duplicate_tests": [],
+        "remaining_known_historical_debt": true
+      },
+      {
+        "family_id": "LOOPBACK_HARNESS_ENVIRONMENT",
+        "category": "F_ENVIRONMENT_DEPENDENT_TEST_DESIGN",
+        "original_count": 3,
+        "original_nodes": [
+          "tests/acceptance/test_m8r_06_05_operator_acceptance.py::test_m8r_06_05_localhost_operator_matrix",
+          "tests/acceptance/test_m8r_06_05_operator_acceptance.py::test_m8r_06_05_partial_source_failure_and_ui_bindings",
+          "tests/unit/test_m8r_06_03_localhost_vertical.py::test_real_localhost_authorize_execute_once_vertical"
+        ],
+        "disposition": "REPAIRED_AND_ISOLATED_ACTIVE_PASS",
+        "active_v1_nodes_after": [
+          "tests/acceptance/test_m8r_06_05_operator_acceptance.py::test_m8r_06_05_localhost_operator_matrix",
+          "tests/acceptance/test_m8r_06_05_operator_acceptance.py::test_m8r_06_05_partial_source_failure_and_ui_bindings",
+          "tests/unit/test_m8r_06_03_localhost_vertical.py::test_real_localhost_authorize_execute_once_vertical"
+        ],
+        "historical_nodes_after": [],
+        "updated_current_tests": [],
+        "removed_duplicate_tests": [],
+        "remaining_known_historical_debt": false
+      },
+      {
+        "family_id": "DUPLICATE_M5_IMPORT_PROXY_TESTS",
+        "category": "G_DUPLICATE_OBSOLETE_TEST",
+        "original_count": 2,
+        "original_nodes": [
+          "tests/unit/test_assess_m5c_staging_candidate.py::test_valid_m5b_evidence_eligible",
+          "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema"
+        ],
+        "disposition": "HISTORICAL_DUPLICATE_OBSOLETE_PROXY",
+        "active_v1_nodes_after": [],
+        "historical_nodes_after": [
+          "tests/unit/test_assess_m5c_staging_candidate.py::test_valid_m5b_evidence_eligible",
+          "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema"
+        ],
+        "updated_current_tests": [],
+        "removed_duplicate_tests": [
+          "tests/unit/test_assess_m5c_staging_candidate.py::test_valid_m5b_evidence_eligible",
+          "tests/unit/test_validate_m5c_staging_promotion_request.py::test_exact_binding_request_and_schema"
+        ],
+        "remaining_known_historical_debt": true
+      }
+    ],
+    "unexpected_historical_nodes": [],
+    "unresolved_nodes": []
+  },
+  "default_ci_baseline_reconciliation": {
+    "original_passed": 929,
+    "original_failed": 10,
+    "original_skipped": 2,
+    "original_failure_count": 10,
+    "original_nodes": [
+      "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_check_only_mode",
+      "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_end_to_end_single_target",
+      "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_check_only",
+      "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_determinism",
+      "tests/unit/test_m8r_05c_lineage.py::test_inventory_referential_integrity",
+      "tests/unit/test_m8r_06_03_localhost_vertical.py::test_real_localhost_authorize_execute_once_vertical",
+      "tests/unit/test_m8r_06_04_mode_c.py::test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected",
+      "tests/unit/test_m8r_06_04_mode_c.py::test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected",
+      "tests/unit/test_m8r_06_04_mode_c.py::test_mode_c_materializes_and_reuses_sanitized_finalized_lineage",
+      "tests/unit/test_m8r_06_04_mode_c.py::test_verified_handoff_reuses_mode_c_outputs_and_audit_citations"
+    ],
+    "accounted_for": 10,
+    "current_failure_count": 0,
+    "disposition": "Nine exact Mode-C lineage nodes are historical provenance debt; the isolated loopback harness node is active and now passes."
+  },
+  "correction_summary": {
+    "readme_current_product_truth": "PASS",
+    "readme_candidate_vs_published_release_wording": "PASS",
+    "mode_c_historical_scope": "PASS",
+    "m4_ledger_restored_to_baseline": "PASS",
+    "m4_readiness_active_gate_disposition": "HISTORICAL_EXCLUSION",
+    "external_market_network_used": false,
+    "production_persistent_state_mutated": false
+  },
+  "github_actions_status": "NOT RUN"
 }
