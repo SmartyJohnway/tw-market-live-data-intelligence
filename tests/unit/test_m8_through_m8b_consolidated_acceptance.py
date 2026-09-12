@@ -90,7 +90,9 @@ def test_final_settlement_bounded_retention_and_source_latest():
 def test_docs_and_boundaries():
     assert (ROOT/'docs/protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md').exists()
     readme=(ROOT/'README.md').read_text(encoding='utf-8')
-    assert 'Current M8 architecture' in readme
+    assert 'Historical M8 architecture' in readme
+    assert 'pre-Phase-F architecture' in readme
+    assert 'Persistent Watchlist' in readme
     assert 'TAIFEX_MIS` has accepted M8C-02 controlled M8 context integration' in readme
     m8b=(ROOT/'docs/protocol/M8B_01_TAIFEX_OPENAPI_OFFICIAL_DERIVATIVES_EOD_FINAL_ACCEPTANCE.md').read_text(encoding='utf-8')
     assert 'PR #129' in m8b and 'bounded retention' in m8b

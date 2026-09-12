@@ -121,7 +121,9 @@ def run_checks():
     # the V1 Unified product contract. Keep this runner fail-closed against
     # the superseded M3G-08 claim while accepting either audited wording.
     readme_ok = 'M3G-08' not in readme and (
-        'disabled pending M5I' in readme or 'V1 release candidate' in readme
+        'disabled pending M5I' in readme
+        or 'V1 release candidate' in readme
+        or 'The repository is preparing candidate version' in readme
     )
     record_check(checks, 'readme_current_or_legacy_governance_wording', readme_ok, {'reason': 'Stale M3G-08 wording found or no governed README product statement'})
 
