@@ -32,13 +32,21 @@ def readme_current_product_truth_failures(readme_path: Path) -> list[str]:
         failures.append("readme_missing_persistent_watchlist_support")
     if re.search(r"no[^\\n.]*persistent watchlist", text, flags=re.IGNORECASE):
         failures.append("readme_persistent_watchlist_contradiction")
-    required_release_patterns = (
+    published_release_patterns = (
         r"1\.0\.0-rc\.1",
         r"v0\.1\.0",
-        r"no RC tag or GitHub prerelease\s+has been created",
+        r"latest\s+prerelease\s+(?:is|=|:)\s+[`*_]*v1\.0\.0-rc\.1",
+        r"final\s+[`*_]*v1\.0\.0[`*_]*\s+(?:is\s+)?not\s+released",
+        r"phase\s+g\s+(?:has\s+)?not\s+started",
     )
-    if any(not re.search(pattern, text) for pattern in required_release_patterns):
-        failures.append("readme_candidate_release_status_incomplete")
+    if any(not re.search(pattern, text, flags=re.IGNORECASE) for pattern in published_release_patterns):
+        failures.append("readme_published_rc_release_status_incomplete")
+    if re.search(
+        r"no\s+rc\s+tag\s+or\s+github\s+prerelease\s+has\s+been\s+created",
+        text,
+        flags=re.IGNORECASE,
+    ):
+        failures.append("readme_stale_prepublication_release_status")
     return failures
 
 
