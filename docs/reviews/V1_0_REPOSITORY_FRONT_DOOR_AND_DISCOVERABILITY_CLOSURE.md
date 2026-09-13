@@ -5,8 +5,10 @@
 `READY_FOR_V1_RC1_FRONT_DOOR_DISCOVERABILITY_REVIEW`
 
 The Gate B candidate was validated at code commit
-`39200d56dfb97cc46ab2ac9e0814de3a0b8426b3` and tree
-`39ec84b6b8c41119ffeaacabcd66ddfa686e981d`. This closure records an
+`44a9d09cae4b0ec13dffa0ba92a7a8aaf5ebb161` and tree
+`514ea148bb63676dd14c8bbb61ae638b159b81d8`. The earlier `39200d56…` validation
+subject is superseded by this public-history and security-reporting correction.
+This closure records an
 evidence-only finalization; it does not authorize an RC tag, GitHub prerelease,
 final release, Phase G, or external market execution.
 
@@ -22,15 +24,22 @@ final release, Phase G, or external market execution.
 - `docs/assets/workbench-overview.png` is an actual Chromium capture using
   deterministic local fixture data. It shows `ready_for_confirmation`, no
   authorization, and no executed market network request.
-- Historical M5/M8 material is retained behind documentation history/archive
-  routing rather than competing with current V1 authority.
+- Root README contains only the current product front door. Historical
+  M5/M6/M8 material remains available through Project History, the
+  documentation history/protocol archive, and `docs/archive/`, rather than
+  competing with current V1 authority.
+- English and Traditional Chinese README files have reciprocal top-level
+  language selectors. Security reporting uses an available GitHub private
+  channel only when it is visibly enabled; otherwise it asks for a minimal
+  public request for a private contact path.
 
 ## Community and distribution readiness
 
 `CONTRIBUTING.md`, `SECURITY.md`, issue forms, a social-preview specification,
 and an MCP registry-readiness note provide the public collaboration boundary.
 No GitHub repository metadata was mutated. The JSON closure retains observed
-current topics and conservative proposed description/topics for owner review.
+current topics plus a search-oriented proposed description/topics for owner
+review.
 
 ## Release-manifest portability correction
 
