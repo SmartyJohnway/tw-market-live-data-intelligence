@@ -14,9 +14,18 @@ def test_acceptance_docs_and_inventory_closed():
 
 def test_readme_static_contracts_and_registry_roles():
     readme=(ROOT/'README.md').read_text(encoding='utf-8')
-    for text in ['TWSE_OPENAPI','TPEX_OPENAPI','NCDR_DGPA_CLOSURE_CAP','explicit operator confirmation','no automatic polling']:
-        assert text in readme
-    assert 'not market price data' in readme
+    assert 'Data and source caveats' in readme
+    assert 'no automatic polling' in readme
+    historical = '\n'.join(
+        (ROOT / path).read_text(encoding='utf-8')
+        for path in [
+            'docs/protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md',
+            'docs/protocol/M8A_NCDR_DGPA_CLOSURE_SOURCE_CONTRACT.md',
+        ]
+    )
+    for text in ['TWSE_OPENAPI','TPEX_OPENAPI','NCDR_DGPA_CLOSURE_CAP','explicit operator confirmation']:
+        assert text in historical
+    assert 'not market price data' in historical
     assert 'official EOD is realtime' not in readme
     reg=json.loads((ROOT/'docs/data_capabilities/m8_source_capability_registry.json').read_text())
     src={s['source_id']:s for s in reg['sources']}
