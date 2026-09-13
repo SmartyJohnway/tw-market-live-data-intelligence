@@ -8,10 +8,9 @@
 
 ![Deterministic Unified Workbench overview](docs/assets/workbench-overview.png)
 
-The repository is preparing candidate version **`1.0.0-rc.1`**. The latest
-published GitHub Release remains **`v0.1.0`**; no RC tag or GitHub prerelease
-has been created. This is a local-first evidence workbench, not a realtime
-trading product.
+The repository has published release candidate
+**[`1.0.0-rc.1`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)**.
+The latest prerelease is `v1.0.0-rc.1`; the latest stable GitHub Release remains **`v0.1.0`**. Final `v1.0.0` is not released, and Phase G has not started. This is a local-first evidence workbench, not a realtime trading product.
 
 ## Why TW-Market
 
@@ -114,10 +113,10 @@ security concerns using the grounded guidance in [SECURITY.md](SECURITY.md).
 
 ## Release status
 
-`VERSION` records the repository candidate `1.0.0-rc.1`. The latest published
-GitHub Release is `v0.1.0`; RC tag, GitHub prerelease, and final v1.0 release
-are **not created**. Release validation and publication are separate,
-owner-approved operations.
+`VERSION` records `1.0.0-rc.1`, which is published as the current prerelease.
+The latest stable GitHub Release remains `v0.1.0`; final `v1.0.0` is **not
+released**, and Phase G has **not started**. The RC tag is an immutable
+release authority; subsequent documentation status updates do not move it.
 
 ## Project Overview
 

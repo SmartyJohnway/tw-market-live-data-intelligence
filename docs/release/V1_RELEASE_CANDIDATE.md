@@ -1,9 +1,10 @@
-# V1.0 release candidate
+# V1.0.0-rc.1 release candidate
 
 The repository candidate version is `1.0.0-rc.1`; its tracked authority is the
-repository-root `VERSION` file. The latest published GitHub Release remains
-`v0.1.0`. No RC tag or GitHub prerelease has been created. This document is
-release preparation, not a tag or a GitHub Release announcement.
+repository-root `VERSION` file. It was published as the
+[`v1.0.0-rc.1` prerelease](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)
+on 2026-09-13. The latest stable GitHub Release remains `v0.1.0`; final
+`v1.0.0` is not released and Phase G has not started.
 
 ## What is in the candidate
 
@@ -49,15 +50,16 @@ path; legacy v0.1 Watchlist import remains an explicit compatibility flow.
 Historical M5/M8 documents and readonly surfaces are retained for audit, not
 as a competing V1 product authority.
 
-## Before publication
+## Published RC provenance
 
-The candidate must pass deterministic and browser release gates, fresh-install
-and migration checks, source-archive verification, and a Git-tree-bound release
-manifest. Tagging or publishing remains a separate owner-approved operation.
+The immutable annotated tag `v1.0.0-rc.1` peels to
+`2c03b03f0853a509791f755daa0bb8f2be181dca`. The release manifest binds that
+exact commit and its Git tree. Documentation status changes after publication
+do not move or replace the RC tag.
 
 ## Release gate
 
-Run the repository validators, deterministic test profiles, actual browser
-E2E, fresh-install and upgrade checks, then generate an untagged release
-manifest. The candidate may only be tagged or published after a separate
-approval task.
+The published candidate passed repository validators, deterministic test
+profiles, actual browser E2E, fresh-install and upgrade checks, source-archive
+verification, and a Git-tree-bound release manifest. Any later correction that
+changes product bytes requires a new RC tag rather than moving `v1.0.0-rc.1`.
