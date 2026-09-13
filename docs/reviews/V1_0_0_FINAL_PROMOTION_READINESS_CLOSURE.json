@@ -1,0 +1,172 @@
+{
+  "task": "RC1 Gate-O re-entry to V1.0.0 final promotion candidate",
+  "rc1": {
+    "tag": "v1.0.0-rc.1",
+    "tag_object": "08e689782b40f7c1e391e21b0f685b2888beb9eb",
+    "peeled_commit": "2c03b03f0853a509791f755daa0bb8f2be181dca",
+    "tree": "e60104750e7ffba3c46862ace62d953fa0ba6c2b",
+    "release_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1",
+    "release_integrity": "PASS",
+    "release_validation": {
+      "workflow": "Release Validation",
+      "workflow_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/actions/runs/34757718889",
+      "default_ci": "PASS",
+      "full_non_network": "PASS",
+      "windows_compatibility": "PASS"
+    }
+  },
+  "gate_o": {
+    "observation_start": "2026-09-13T13:34:42Z",
+    "observation_end": "2026-09-13T14:14:10.6865230Z",
+    "elapsed_public_observation": "PT39M28.686523S",
+    "long_duration_external_soak_claimed": false,
+    "feedback": {
+      "classification": "NO_REPORTS_OBSERVED_IN_CURRENT_WINDOW",
+      "issues": [],
+      "pull_requests": [],
+      "public_security_contact_requests": [],
+      "release_reactions": 0,
+      "p0": [],
+      "p1": [],
+      "p2": [],
+      "p3": []
+    },
+    "fresh_rc_replay": {
+      "environment": "PASS",
+      "security_master_status": "NOT_INITIALIZED",
+      "browser_e2e": {
+        "status": "PASS",
+        "execute_once_request_count": 1,
+        "deterministic_source_invocations": 1,
+        "external_market_network": false
+      },
+      "mcp_startup": "PASS",
+      "mcp_tool_count": 6,
+      "migration_and_persistence": "PASS",
+      "source_archive": "PASS"
+    },
+    "post_225_main": {
+      "commit": "226a825c03b5f049e32f5fa95add08923e3202ca",
+      "tree": "3b4178acafe7f42fedf1345bc8273ec54c425da1",
+      "active_release_suite": "PASS",
+      "default_ci": {
+        "passed": 955,
+        "failed": 0,
+        "skipped": 4,
+        "deselected": 9
+      },
+      "full_non_network": {
+        "passed": 2416,
+        "failed": 0,
+        "skipped": 16,
+        "deselected": 56
+      },
+      "post_rc_release_status_validator_desynchronization": "CLOSED"
+    },
+    "delta_classification": {
+      "rc1_to_224": "post-publication release/status documentation and front-door validation only",
+      "224_to_225": "release-status validator and test realignment only",
+      "runtime_semantic_delta": "NONE",
+      "public_api_semantic_delta": "NONE",
+      "schema_delta": "NONE",
+      "mcp_semantic_delta": "NONE"
+    },
+    "decision": "RC1_OBSERVATION_PASS_FINAL_PROMOTION_ALLOWED"
+  },
+  "final_promotion_candidate": {
+    "branch": "codex/v1-final-promotion-candidate",
+    "product_version": "1.0.0",
+    "validated_code_commit": "bdf9563c51306b79c4b695082547bc1395e9c0c4",
+    "validated_code_tree_sha": "da7f4c1b386c4b235759cce2eca542fc9202798a",
+    "fresh_clean_clone": true,
+    "worktree_clean_before": true,
+    "worktree_clean_after": true,
+    "validation": {
+      "environment": "PASS",
+      "dependency_check": "PASS",
+      "product_version_consistency": "PASS",
+      "public_contracts": "PASS",
+      "front_door": "PASS",
+      "release_hygiene_links_and_secrets": "PASS",
+      "portable_catalog": "PASS",
+      "runtime_skill_guide_semantics": "PASS",
+      "market_evidence_skill": "PASS",
+      "security_master_skill": "PASS",
+      "compileall": "PASS",
+      "javascript_syntax": "PASS",
+      "operator_preflight": "PASS",
+      "default_ci": {
+        "passed": 959,
+        "failed": 0,
+        "skipped": 4,
+        "deselected": 9
+      },
+      "full_non_network": {
+        "passed": 2420,
+        "failed": 0,
+        "skipped": 16,
+        "deselected": 56
+      },
+      "browser_e2e": {
+        "status": "PASS",
+        "execute_once_request_count": 1,
+        "source_invocation_count": 1,
+        "external_market_network": false
+      },
+      "fresh_install": "PASS",
+      "schema_1_upgrade": "PASS",
+      "v0_1_legacy_import": "PASS",
+      "unified_mcp": {
+        "startup": "PASS",
+        "tool_count": 6,
+        "tools": [
+          "market_describe_capabilities",
+          "market_validate_request",
+          "market_preview_request",
+          "market_read_result",
+          "market_export_ai_handoff",
+          "market_fetch_evidence"
+        ]
+      },
+      "source_archive_without_git": "PASS"
+    },
+    "manifest": {
+      "status": "PASS",
+      "product_version": "1.0.0",
+      "release_commit": "bdf9563c51306b79c4b695082547bc1395e9c0c4",
+      "release_tree_sha": "da7f4c1b386c4b235759cce2eca542fc9202798a",
+      "artifact_hashes_exact_git_blob_bytes": true,
+      "artifact_hashes": {
+        "VERSION": "59854984853104df5c353e2f681a15fc7924742f9a2e468c29af248dce45ce03",
+        "docs/contracts/v1_public_contracts.json": "bb63b9f2d2e4afa3f0d10af7e1a7f12b03067d80faac2f7d3e150232edb4da0d",
+        "requirements-lock.txt": "57a4ffbb17095e5f5108b229cce781ab9d0f64b2ea1642ed3c93822b7fdfb85a"
+      },
+      "local_path_leakage": false
+    },
+    "external_release_notes_draft": "V1_0_0_FINAL_RELEASE_NOTES_DRAFT.md"
+  },
+  "promotion_delta": {
+    "rc1_to_current_main": "publication status sync and validator realignment only",
+    "current_main_to_final_candidate": "ProductVersion, release-status/lifecycle documentation, and ProductVersion-aware validator/test promotion only",
+    "runtime_semantic_change": false,
+    "public_contract_product_version_metadata_change": true,
+    "public_contract_behavioral_semantic_change": false,
+    "schema_semantic_change": false,
+    "identity_semantic_change": false,
+    "watchlist_semantic_change": false,
+    "security_master_semantic_change": false,
+    "mcp_semantic_change": false,
+    "market_source_semantic_change": false
+  },
+  "safety": {
+    "external_market_network": false,
+    "production_security_master_mutation": false,
+    "production_watchlist_mutation": false,
+    "rc1_tag_moved": false,
+    "final_v1_0_0_tag_created": false,
+    "final_github_release_created": false,
+    "phase_g_started": false
+  },
+  "blocking_findings": [],
+  "principal_decision": "V1_0_0_FINAL_PROMOTION_CANDIDATE_READY_FOR_OWNER_REVIEW"
+}
