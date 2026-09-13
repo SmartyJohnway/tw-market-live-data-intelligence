@@ -2,10 +2,17 @@
 
 from __future__ import annotations
 
+import re
+import sys
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.product_version import product_version
+
+
 README = ROOT / "README.md"
 README_ZH = ROOT / "README.zh-TW.md"
 DOC_INDEX = ROOT / "docs" / "INDEX.md"
@@ -13,11 +20,7 @@ SECURITY = ROOT / "SECURITY.md"
 SECURITY_CONTACT_FORM = ROOT / ".github" / "ISSUE_TEMPLATE" / "security_contact_request.yml"
 
 
-REQUIRED_README_FACTS = (
-    "1.0.0-rc.1",
-    "v0.1.0",
-    "latest prerelease is `v1.0.0-rc.1`",
-    "Final `v1.0.0` is not released, and Phase G has not started.",
+COMMON_REQUIRED_README_FACTS = (
     "Persistent Watchlists are supported",
     "no automatic polling, scheduler, startup market fetch",
     "python scripts/run_unified_workbench.py",
@@ -29,6 +32,24 @@ REQUIRED_README_FACTS = (
     "Project History",
     "Engineering history / protocol",
 )
+
+
+def required_release_patterns() -> tuple[str, ...]:
+    if product_version() == "1.0.0-rc.1":
+        return (
+            r"1\.0\.0-rc\.1",
+            r"v0\.1\.0",
+            r"latest\s+prerelease\s+is\s+`v1\.0\.0-rc\.1`",
+            r"final\s+`v1\.0\.0`\s+is\s+not\s+released,\s+and\s+phase\s+g\s+has\s+not\s+started",
+        )
+    if product_version() == "1.0.0":
+        return (
+            r"productversion\s*=\s*`1\.0\.0`",
+            r"v1\.0\.0-rc\.1",
+            r"latest\s+prerelease\s+is\s+`v1\.0\.0-rc\.1`",
+            r"final\s+`v1\.0\.0`\s+has\s+not\s+yet\s+been\s+published,\s+and\s+phase\s+g\s+has\s+not\s+started",
+        )
+    return ()
 
 FORBIDDEN_CURRENT_CLAIMS = (
     "There is no persistent watchlist",
@@ -49,9 +70,12 @@ def validate() -> list[str]:
     readme_zh = README_ZH.read_text(encoding="utf-8")
     index = DOC_INDEX.read_text(encoding="utf-8")
     security = SECURITY.read_text(encoding="utf-8")
-    for fact in REQUIRED_README_FACTS:
+    for fact in COMMON_REQUIRED_README_FACTS:
         if fact not in readme:
             errors.append(f"front_door_missing:{fact}")
+    for pattern in required_release_patterns():
+        if not re.search(pattern, readme, flags=re.IGNORECASE):
+            errors.append(f"front_door_missing_release_status:{pattern}")
     for claim in FORBIDDEN_CURRENT_CLAIMS:
         if claim in readme:
             errors.append(f"front_door_forbidden_current_claim:{claim}")

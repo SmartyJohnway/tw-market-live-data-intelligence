@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.0 (unreleased)
+
+- Promotes the accepted V1 release-candidate contract to final V1 ProductVersion
+  without runtime feature expansion. Final `v1.0.0` has not yet been published.
+
 ## 1.0.0-rc.1 (2026-09-13)
 
 - Freeze the current local-first public contract around Unified Request,

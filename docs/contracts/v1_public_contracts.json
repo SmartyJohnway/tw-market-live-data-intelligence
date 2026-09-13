@@ -1,7 +1,7 @@
 {
   "schema_version": "v1_public_contract_inventory.v1",
   "product_version_authority": "VERSION",
-  "product_version": "1.0.0-rc.1",
+  "product_version": "1.0.0",
   "api_contract_version": "unified_market_evidence_local_service.v1",
   "public_api": {
     "local_service": {
