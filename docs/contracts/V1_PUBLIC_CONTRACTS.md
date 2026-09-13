@@ -1,7 +1,8 @@
 # V1 public contracts
 
-`VERSION` is the product-version authority.  The current release candidate is
-`1.0.0-rc.1`.  It is intentionally distinct from the Local Service API
+`VERSION` is the product-version authority. The current final-promotion
+candidate is `1.0.0`; the published prerelease remains `v1.0.0-rc.1`. It is
+intentionally distinct from the Local Service API
 contract identifier, `unified_market_evidence_local_service.v1`.
 
 ## Public surfaces

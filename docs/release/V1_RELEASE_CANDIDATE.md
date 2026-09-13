@@ -1,12 +1,14 @@
-# V1.0.0-rc.1 release candidate
+# V1.0.0 final promotion candidate
 
-The repository candidate version is `1.0.0-rc.1`; its tracked authority is the
-repository-root `VERSION` file. It was published as the
+The repository final-promotion ProductVersion is `1.0.0`; its tracked
+authority is the repository-root `VERSION` file. The immutable RC provenance is
+the published
 [`v1.0.0-rc.1` prerelease](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)
-on 2026-09-13. The latest stable GitHub Release remains `v0.1.0`; final
-`v1.0.0` is not released and Phase G has not started.
+on 2026-09-13. Gate O observation passed without product feature expansion. The
+latest stable GitHub Release remains `v0.1.0`; final `v1.0.0` has not yet been
+published and Phase G has not started.
 
-## What is in the candidate
+## What is in the final promotion candidate
 
 - The Unified Workbench at `/workbench/` for local, explicit operator flows.
 - Installation-local Persistent Watchlists with preview/commit mutation,
@@ -16,7 +18,7 @@ on 2026-09-13. The latest stable GitHub Release remains `v0.1.0`; final
 - A six-tool Unified MCP surface for capability discovery through handoff
   export.
 
-The candidate is deliberately not a trading, polling, scheduling, background
+The final promotion candidate is deliberately not a trading, polling, scheduling, background
 refresh, or realtime-guarantee product.
 
 ## Installation
@@ -40,7 +42,7 @@ Start `python scripts/run_unified_workbench.py` and
 Workbench is `/workbench/`; the legacy Mode-A route redirects to it. The MCP
 surface has six tools and the sole action is explicit execute-once retrieval.
 
-The release candidate does not ship a scheduler, background refresh, trading,
+The final promotion candidate does not ship a scheduler, background refresh, trading,
 order routing, model-selected URLs, or model-selected executors.
 
 ## Migration and compatibility
@@ -59,7 +61,9 @@ do not move or replace the RC tag.
 
 ## Release gate
 
-The published candidate passed repository validators, deterministic test
+The published RC passed repository validators, deterministic test
 profiles, actual browser E2E, fresh-install and upgrade checks, source-archive
 verification, and a Git-tree-bound release manifest. Any later correction that
 changes product bytes requires a new RC tag rather than moving `v1.0.0-rc.1`.
+The final promotion changes ProductVersion and release-status metadata only;
+final `v1.0.0` publication remains separately gated.

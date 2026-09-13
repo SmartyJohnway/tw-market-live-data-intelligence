@@ -24,7 +24,9 @@ EXPECTED_TOOLS = (
 )
 
 
-def readme_current_product_truth_failures(readme_path: Path) -> list[str]:
+def readme_current_product_truth_failures(
+    readme_path: Path, *, current_product_version: str = "1.0.0-rc.1"
+) -> list[str]:
     """Return contradictions that would misdescribe the current V1 product."""
     text = readme_path.read_text(encoding="utf-8")
     failures: list[str] = []
@@ -32,15 +34,32 @@ def readme_current_product_truth_failures(readme_path: Path) -> list[str]:
         failures.append("readme_missing_persistent_watchlist_support")
     if re.search(r"no[^\\n.]*persistent watchlist", text, flags=re.IGNORECASE):
         failures.append("readme_persistent_watchlist_contradiction")
-    published_release_patterns = (
-        r"1\.0\.0-rc\.1",
-        r"v0\.1\.0",
-        r"latest\s+prerelease\s+(?:is|=|:)\s+[`*_]*v1\.0\.0-rc\.1",
-        r"final\s+[`*_]*v1\.0\.0[`*_]*\s+(?:is\s+)?not\s+released",
-        r"phase\s+g\s+(?:has\s+)?not\s+started",
-    )
-    if any(not re.search(pattern, text, flags=re.IGNORECASE) for pattern in published_release_patterns):
-        failures.append("readme_published_rc_release_status_incomplete")
+    release_patterns_by_version = {
+        "1.0.0-rc.1": (
+            r"1\.0\.0-rc\.1",
+            r"v0\.1\.0",
+            r"latest\s+prerelease\s+(?:is|=|:)\s+[`*_]*v1\.0\.0-rc\.1",
+            r"final\s+[`*_]*v1\.0\.0[`*_]*\s+(?:is\s+)?not\s+released",
+            r"phase\s+g\s+(?:has\s+)?not\s+started",
+        ),
+        "1.0.0": (
+            r"(?:productversion|product\s+version|version)\s*(?:=|:|records)?\s+[`*_]*1\.0\.0[`*_]*",
+            r"v1\.0\.0-rc\.1",
+            r"v0\.1\.0",
+            r"latest\s+prerelease\s+(?:is|=|:)\s+[`*_]*v1\.0\.0-rc\.1",
+            r"final\s+[`*_]*v1\.0\.0[`*_]*(?:\s+(?:is|has))?\s+not\s+(?:yet\s+)?(?:been\s+)?published",
+            r"phase\s+g\s+(?:has\s+)?not\s+started",
+        ),
+    }
+    required_patterns = release_patterns_by_version.get(current_product_version)
+    if required_patterns is None:
+        failures.append("readme_release_status_version_unsupported")
+    elif any(not re.search(pattern, text, flags=re.IGNORECASE) for pattern in required_patterns):
+        failures.append(
+            "readme_published_rc_release_status_incomplete"
+            if current_product_version == "1.0.0-rc.1"
+            else "readme_final_promotion_release_status_incomplete"
+        )
     if re.search(
         r"no\s+rc\s+tag\s+or\s+github\s+prerelease\s+has\s+been\s+created",
         text,
@@ -76,7 +95,9 @@ def main() -> int:
         return _fail("mcp_tool_inventory_drift", tools)
     if inventory.get("public_api", {}).get("mcp_tools") != list(EXPECTED_TOOLS):
         return _fail("mcp_tool_contract_inventory_drift")
-    readme_failures = readme_current_product_truth_failures(ROOT / "README.md")
+    readme_failures = readme_current_product_truth_failures(
+        ROOT / "README.md", current_product_version=product_version()
+    )
     if readme_failures:
         return _fail("readme_current_product_truth_drift", readme_failures)
 

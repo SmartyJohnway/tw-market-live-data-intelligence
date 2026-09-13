@@ -56,9 +56,10 @@ def source_archive_smoke(output_root: Path) -> dict[str, Any]:
     subprocess.run(["git", "archive", "--format=zip", "--output", str(archive), "HEAD"], cwd=ROOT, check=True)
     with zipfile.ZipFile(archive) as bundle:
         bundle.extractall(extracted)
+    expected_version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
     checks = [
         run("archive_environment", [sys.executable, "scripts/verify_environment.py"], cwd=extracted),
-        run("archive_version", [sys.executable, "-c", "from scripts.product_version import product_version; assert product_version() == '1.0.0-rc.1'; print(product_version())"], cwd=extracted),
+        run("archive_version", [sys.executable, "-c", f"from scripts.product_version import product_version; assert product_version() == {expected_version!r}; print(product_version())"], cwd=extracted),
         run("archive_local_service_import", [sys.executable, "-c", "from server.main import app; assert app.title; print(app.title)"], cwd=extracted),
         run("archive_mcp_startup", [sys.executable, "server/mcp_server.py", "--startup-check"], cwd=extracted),
     ]

@@ -1,6 +1,6 @@
 # Documentation Index
 
-Master map for the V1 release candidate. Links below point to current product
+Master map for the V1 final promotion candidate. Links below point to current product
 docs unless explicitly marked archive or historical review.
 
 ## Start here
@@ -10,7 +10,7 @@ docs unless explicitly marked archive or historical review.
 - [Local Workbench](operator/LOCAL_WORKBENCH.md)
 - [Operator Quick Start](operator/QUICK_START.md)
 - [Mode A/B/C Walkthrough](operator/MODE_ABC_WALKTHROUGH.md)
-- [V1 Release Candidate](release/V1_RELEASE_CANDIDATE.md)
+- [V1 Final Promotion Candidate](release/V1_RELEASE_CANDIDATE.md)
 - [Project History](PROJECT_HISTORY.md)
 
 ## Architecture

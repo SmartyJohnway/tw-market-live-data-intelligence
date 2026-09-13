@@ -23,5 +23,6 @@ Security Master acquisition, or data mutation merely to make a test pass.
 
 ## Release status
 
-`1.0.0-rc.1` is a repository candidate only. No RC tag or GitHub prerelease
-exists. See [the V1 release candidate guide](docs/release/V1_RELEASE_CANDIDATE.md).
+The repository is preparing final ProductVersion `1.0.0` from the published
+`v1.0.0-rc.1` prerelease. Final `v1.0.0` is not yet published. See [the V1
+release candidate guide](docs/release/V1_RELEASE_CANDIDATE.md).

@@ -70,10 +70,7 @@ authorization, and network execution remain three separate explicit confirmation
 domains.  Closure evidence is recorded in
 `docs/reviews/M8R_10_WATCHLIST_AND_EVIDENCE_WORKBENCH_INTEGRATION_IMPLEMENTATION_CLOSURE.*`.
 
-**Phase F status: CLOSED.  V1 feature complete.**  V1 release-readiness implementation is complete and the exact untagged RC candidate is recorded in `docs/reviews/V1_0_RELEASE_READINESS_IMPLEMENTATION_AND_RC_CANDIDATE_PREPARATION_CLOSURE.*`; it is ready for post-merge validation and publication review.  The published product remains
-`v0.1.0`; the candidate code is `1.0.0-rc.1`.  No RC tag, GitHub prerelease,
-final v1 tag, or final v1 release has been created.  Phase G is **NOT
-STARTED**.
+**Phase F status: CLOSED.  V1 feature complete.** V1 release-readiness implementation is complete. The immutable `v1.0.0-rc.1` prerelease is published; its exact RC provenance remains recorded in `docs/reviews/V1_0_RELEASE_READINESS_IMPLEMENTATION_AND_RC_CANDIDATE_PREPARATION_CLOSURE.*`. The repository is preparing final ProductVersion `1.0.0`; the latest stable GitHub Release remains `v0.1.0`. Final v1.0.0 has not yet been published. Phase G is **NOT STARTED**.
 
 ## Phase G — Dynamic Research Evidence
 

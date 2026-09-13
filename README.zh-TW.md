@@ -6,7 +6,7 @@
 
 ![確定性 Unified Workbench 總覽](docs/assets/workbench-overview.png)
 
-本儲存庫已發布候選版本 **[`1.0.0-rc.1`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)**。最新 prerelease 是 `v1.0.0-rc.1`；最新 stable GitHub Release 仍為 **`v0.1.0`**。正式 `v1.0.0` 尚未發布，Phase G 尚未開始。它是本機優先的證據工作台，不是即時交易產品。
+本儲存庫正由已發布的 **[`v1.0.0-rc.1`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)** 候選版本準備最終 V1 promotion。ProductVersion = `1.0.0`。最新 prerelease 是 `v1.0.0-rc.1`；最新 stable GitHub Release 仍為 **`v0.1.0`**。正式 `v1.0.0` 尚未發布，Phase G 尚未開始。它是本機優先的證據工作台，不是即時交易產品。
 
 ## 快速開始
 
