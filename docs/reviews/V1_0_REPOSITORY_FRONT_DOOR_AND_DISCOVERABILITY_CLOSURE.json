@@ -1,0 +1,119 @@
+{
+  "task": "V1.0 RC1 post-merge validation Gate B: repository front door and discoverability",
+  "baseline_commit": "eb58a113c73f3a23bafcde5e4609b67611742fd3",
+  "baseline_tree_sha": "671ca4ae11f070d7fca145526cb7c1274d00919a",
+  "branch": "codex/v1-front-door-discoverability",
+  "validated_code_commit": "39200d56dfb97cc46ab2ac9e0814de3a0b8426b3",
+  "validated_code_tree_sha": "39ec84b6b8c41119ffeaacabcd66ddfa686e981d",
+  "validation_subject_reachable_from_pr": true,
+  "finalization_delta_policy": "EVIDENCE_ONLY",
+  "gate_a_runtime_product_validation": "RC1_POST_MERGE_VALIDATED",
+  "gate_a_manifest_portability_defect": {
+    "id": "RELEASE_MANIFEST_ARTIFACT_HASH_PORTABILITY_DEFECT",
+    "original_manifest": "valid schema and correct commit/tree binding, but governed artifact hashes depended on host checkout bytes",
+    "disposition": "CORRECTED_IN_FRONT_DOOR_TRANCHE_BEFORE_RC1_PUBLICATION",
+    "scope": "release tooling / release integrity, not runtime or public API behavior"
+  },
+  "front_door": {
+    "english_readme_current": true,
+    "traditional_chinese_readme_current": true,
+    "canonical_workbench": "/workbench/ via python scripts/run_unified_workbench.py",
+    "mcp_launcher": "python scripts/run_unified_market_evidence_mcp.py",
+    "mcp_tool_count": 6,
+    "mcp_tools": [
+      "market_describe_capabilities",
+      "market_validate_request",
+      "market_preview_request",
+      "market_read_result",
+      "market_export_ai_handoff",
+      "market_fetch_evidence"
+    ],
+    "persistent_watchlists_supported": true,
+    "automatic_watchlist_execution_supported": false,
+    "screenshot": {
+      "path": "docs/assets/workbench-overview.png",
+      "source": "actual Chromium capture of the canonical Workbench with deterministic local fixture data",
+      "state": "ready_for_confirmation; no authorization; no market network executed",
+      "contains_personal_data": false
+    },
+    "current_legacy_boundary": "Historical M5/M8 material is retained for audit and routed through the documentation history/archive boundary."
+  },
+  "community_and_discoverability": {
+    "contributing": "CONTRIBUTING.md",
+    "security_reporting": "SECURITY.md",
+    "issue_templates": [
+      ".github/ISSUE_TEMPLATE/bug_report.yml",
+      ".github/ISSUE_TEMPLATE/feature_request.yml"
+    ],
+    "social_preview_spec": "docs/branding/SOCIAL_PREVIEW_SPEC.md",
+    "mcp_registry_readiness": "docs/distribution/MCP_REGISTRY_READINESS.md",
+    "github_metadata_changed": false,
+    "current_repository_topics_observed": [
+      "fastapi",
+      "financial-data",
+      "local-first",
+      "mcp-server",
+      "python",
+      "source-contracts",
+      "taifex",
+      "taiwan-stock-market",
+      "tpex",
+      "twse",
+      "market-data-ai-context",
+      "stock-market-observation"
+    ],
+    "proposed_repository_description": "Local-first governed Taiwan-market evidence workbench with an operator Workbench and six-tool Unified MCP.",
+    "proposed_topics": [
+      "taiwan-market",
+      "market-data",
+      "mcp",
+      "fastapi",
+      "playwright",
+      "local-first",
+      "watchlist",
+      "ai-agents",
+      "evidence",
+      "python"
+    ]
+  },
+  "release_manifest": {
+    "artifact_hash_authority": "exact Git blob bytes from HEAD:<relative-path>",
+    "working_tree_fallback": false,
+    "dirty_governed_artifact_behavior": "fail closed",
+    "focused_tests": "PASS (manifest blob binding, missing/untracked artifact failure, schema and product/release hygiene tests)"
+  },
+  "exact_clean_clone_validation": {
+    "clone_method": "git clone --no-local",
+    "clone_root": "D:/Codex-Workspace/runtime/tw-market-live-data-intelligence/v1-front-door-clean-clone-39200d5",
+    "lock_install": "PASS",
+    "pip_check": "PASS",
+    "worktree_clean_before": true,
+    "worktree_clean_after": true,
+    "environment": "PASS",
+    "version_consistency": "PASS",
+    "public_contracts": "PASS",
+    "release_hygiene_links_and_secrets": "PASS",
+    "portable_catalog": "PASS",
+    "runtime_skill_guide_semantics": "PASS",
+    "market_evidence_skill": "PASS",
+    "security_master_skill": "PASS (201 checks)",
+    "compileall": "PASS",
+    "default_ci": {"status": "PASS", "passed": 951, "failed": 0, "skipped": 4, "deselected": 9},
+    "full_non_network": {"status": "PASS", "passed": 2412, "failed": 0, "skipped": 16, "deselected": 56},
+    "operator_preflight": "PASS",
+    "actual_browser_e2e": "PASS",
+    "release_manifest": "PASS",
+    "javascript_syntax": "PASS",
+    "source_archive_without_git": "PASS"
+  },
+  "boundaries": {
+    "external_market_network_used": false,
+    "production_security_master_mutated": false,
+    "production_watchlist_mutated": false,
+    "rc_tag_created": false,
+    "github_prerelease_created": false,
+    "phase_g_started": false
+  },
+  "blocking_findings": [],
+  "principal_decision": "READY_FOR_V1_RC1_FRONT_DOOR_DISCOVERABILITY_REVIEW"
+}
