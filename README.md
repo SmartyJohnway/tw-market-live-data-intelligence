@@ -61,7 +61,7 @@ explicit preview/commit. There is no automatic polling, scheduler, startup
 market fetch, Watchlist-driven automatic execution, trading, or realtime
 guarantee.
 
-## Project overview
+## Project Overview
 
 Historical context is preserved in
 [`docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md`](docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md).
