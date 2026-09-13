@@ -1,0 +1,25 @@
+name: Feature request
+description: Propose a governed product improvement.
+title: "feature: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and intended operator outcome
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: Contract and governance impact
+      description: Explain effects on authorization, source semantics, persistence, or AI handoff.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety acknowledgement
+      options:
+        - label: This proposal does not include credentials, secrets, or private market data.
+          required: true

@@ -1,0 +1,28 @@
+name: Bug report
+description: Report a reproducible defect without sharing secrets or private data.
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include credentials, cookies, tokens, private market data, or raw sensitive payloads."
+  - type: input
+    id: revision
+    attributes:
+      label: Repository revision
+      description: Commit SHA or released version.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Commands and safe, deterministic inputs.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true

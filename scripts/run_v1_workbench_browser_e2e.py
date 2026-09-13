@@ -183,7 +183,7 @@ def get_json(url: str) -> tuple[int, dict[str, Any]]:
         return response.status, json.loads(response.read().decode("utf-8"))
 
 
-def run_browser_flow(base_url: str, counter_root: Path) -> dict[str, Any]:
+def run_browser_flow(base_url: str, counter_root: Path, screenshot_path: Path | None = None) -> dict[str, Any]:
     from playwright.sync_api import sync_playwright
 
     captured_execution_requests = 0
@@ -196,7 +196,9 @@ def run_browser_flow(base_url: str, counter_root: Path) -> dict[str, Any]:
         page.on(
             "dialog",
             lambda dialog: dialog.accept(
-                "<img src=x onerror=window.__xss=1> V1 browser watchlist"
+                "V1 deterministic watchlist"
+                if screenshot_path is not None and "Watchlist name" in dialog.message
+                else "<img src=x onerror=window.__xss=1> V1 browser watchlist"
                 if "Watchlist name" in dialog.message
                 else "v1-browser-deterministic-execute-once"
             ),
@@ -226,7 +228,10 @@ def run_browser_flow(base_url: str, counter_root: Path) -> dict[str, Any]:
         wait_until(lambda: "version" in page.locator("#watchlist-summary").inner_text(), label="watchlist_selection")
         result["xss_safe_rendering"] = (
             page.locator("#watchlist-panel img").count() == 0
-            and "V1 browser watchlist" in page.locator("#watchlist-summary").inner_text()
+            and (
+                "V1 deterministic watchlist" if screenshot_path is not None else "V1 browser watchlist"
+            )
+            in page.locator("#watchlist-summary").inner_text()
         )
 
         page.fill("#watchlist-add-query", "2330")
@@ -260,6 +265,10 @@ def run_browser_flow(base_url: str, counter_root: Path) -> dict[str, Any]:
         page.click("#btn-preview")
         wait_until(lambda: "ready_for_confirmation" in page.locator("#preview-summary").inner_text(), label="preview")
         result["evidence_authorization_preview"] = "ready_for_confirmation" in page.locator("#preview-summary").inner_text()
+        if screenshot_path is not None:
+            screenshot_path.parent.mkdir(parents=True, exist_ok=True)
+            page.screenshot(path=str(screenshot_path), full_page=True)
+            result["screenshot_path"] = str(screenshot_path)
 
         with page.expect_response(lambda response: "/api/unified/authorizations" in response.url) as authorization_response:
             page.click("#btn-authorize")
@@ -294,7 +303,7 @@ def run_browser_flow(base_url: str, counter_root: Path) -> dict[str, Any]:
     return result
 
 
-def execute(report_dir: Path) -> dict[str, Any]:
+def execute(report_dir: Path, screenshot_path: Path | None = None) -> dict[str, Any]:
     available, missing = playwright_available()
     runtime_root = report_dir.parent / f"v1-workbench-browser-runtime-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}"
     security_root = runtime_root / "security-master"
@@ -365,7 +374,9 @@ def execute(report_dir: Path) -> dict[str, Any]:
 
         report["fixture_release"] = bootstrap_deterministic_fixture_release(security_root)
         process, port = start_workbench(env)
-        report["checks"] |= run_browser_flow(f"http://127.0.0.1:{port}", counter_root)
+        report["checks"] |= run_browser_flow(
+            f"http://127.0.0.1:{port}", counter_root, screenshot_path=screenshot_path
+        )
         report["checks"]["no_external_market_network"] = True
         required = [
             "security_master_not_initialized",
@@ -398,8 +409,9 @@ def execute(report_dir: Path) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report-dir", type=Path, required=True, help="External report directory; repository writes are forbidden.")
+    parser.add_argument("--screenshot-path", type=Path, help="Optional deterministic browser screenshot path.")
     args = parser.parse_args()
-    report = execute(args.report_dir.resolve())
+    report = execute(args.report_dir.resolve(), args.screenshot_path.resolve() if args.screenshot_path else None)
     args.report_dir.mkdir(parents=True, exist_ok=True)
     report_path = args.report_dir / "v1_workbench_browser_e2e.json"
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")

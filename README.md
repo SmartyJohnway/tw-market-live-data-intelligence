@@ -1,17 +1,73 @@
 # TW-Market Live Data Intelligence
 
-## Project Overview
+> Local-first, governed Taiwan-market evidence for an operator and an AI
+> assistant — validate first, preview the bounded work, then explicitly
+> authorize one execution where the capability permits it.
 
-Historical context is preserved in [`docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md`](docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md).
-
-
-TW-Market Live Data Intelligence is a local-first, AI-native Taiwan market data workbench for operators who need governed context, bounded observation evidence, source-health diagnostics, and a safe Conversation Package for ChatGPT discussion.
+![Deterministic Unified Workbench overview](docs/assets/workbench-overview.png)
 
 The repository is preparing candidate version **`1.0.0-rc.1`**. The latest
 published GitHub Release remains **`v0.1.0`**; no RC tag or GitHub prerelease
-has been created. It is local-first and does not guarantee realtime prices.
-Historical M5/M8 materials remain available for audit, but they are not a
-second current product contract.
+has been created. This is a local-first evidence workbench, not a realtime
+trading product.
+
+## Start here
+
+```bash
+git clone https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git
+cd tw-market-live-data-intelligence
+python -m venv .venv
+# Activate .venv using your shell, then:
+python -m pip install -r requirements-lock.txt
+python scripts/verify_environment.py
+python scripts/manage_security_master.py status
+```
+
+`NOT_INITIALIZED` is the normal fresh-install state. A Security Master update
+is an explicit operator action and may use official external acquisition:
+
+```bash
+python scripts/manage_security_master.py update --live
+python scripts/run_unified_workbench.py
+```
+
+Open the loopback Workbench at [`/workbench/`](http://127.0.0.1:8000/workbench/).
+For an MCP host, start the separate stdio launcher:
+
+```bash
+python scripts/run_unified_market_evidence_mcp.py
+```
+
+See the [operator quick start](docs/operator/QUICK_START.md), [V1 public
+contracts](docs/contracts/V1_PUBLIC_CONTRACTS.md), and [documentation index](docs/INDEX.md).
+
+## A governed 2330 workflow
+
+1. Create or select an installation-local Watchlist, then add `2330`.
+2. Compose a Unified Market Evidence Request and validate its identity.
+3. Preview the planned operation and its capability boundary.
+4. Explicitly authorize and confirm one bounded execution only when the
+   preview is executable.
+5. Read the canonical Result and Audit Package, or export the AI-ready
+   handoff for continued discussion.
+
+The MCP exposes exactly six governed tools:
+`market_describe_capabilities`, `market_validate_request`,
+`market_preview_request`, `market_read_result`,
+`market_export_ai_handoff`, and `market_fetch_evidence`.
+
+Persistent Watchlists are supported, installation-local, and mutate only by
+explicit preview/commit. There is no automatic polling, scheduler, startup
+market fetch, Watchlist-driven automatic execution, trading, or realtime
+guarantee.
+
+## Project overview
+
+Historical context is preserved in
+[`docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md`](docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md).
+TW-Market Live Data Intelligence is a local-first, AI-native Taiwan market
+data workbench for operators who need governed context, bounded observation
+evidence, source-health diagnostics, and a safe conversation handoff.
 
 ## Who is it for?
 

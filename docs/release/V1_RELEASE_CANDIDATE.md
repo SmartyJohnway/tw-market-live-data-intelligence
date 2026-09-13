@@ -1,8 +1,22 @@
-# V1 release candidate
+# V1.0 release candidate
 
-The candidate product version is `1.0.0-rc.1`; its tracked authority is the
-repository-root `VERSION` file. This document is release preparation, not a
-tag or a GitHub Release announcement.
+The repository candidate version is `1.0.0-rc.1`; its tracked authority is the
+repository-root `VERSION` file. The latest published GitHub Release remains
+`v0.1.0`. No RC tag or GitHub prerelease has been created. This document is
+release preparation, not a tag or a GitHub Release announcement.
+
+## What is in the candidate
+
+- The Unified Workbench at `/workbench/` for local, explicit operator flows.
+- Installation-local Persistent Watchlists with preview/commit mutation,
+  immutable revisions, and optimistic concurrency.
+- Unified Request validation, capability preview, explicit bounded
+  execute-once, canonical Result/Audit, and AI-ready handoff.
+- A six-tool Unified MCP surface for capability discovery through handoff
+  export.
+
+The candidate is deliberately not a trading, polling, scheduling, background
+refresh, or realtime-guarantee product.
 
 ## Installation
 
@@ -15,8 +29,8 @@ python scripts/manage_security_master.py status
 ```
 
 Fresh installations correctly report `NOT_INITIALIZED`. An operator may later
-run `python scripts/manage_security_master.py update --live`; that is explicit
-and bounded, never a startup action.
+run `python scripts/manage_security_master.py update --live`; that explicit,
+bounded action may acquire governed official data and is never a startup action.
 
 ## Operational contract
 
@@ -27,6 +41,19 @@ surface has six tools and the sole action is explicit execute-once retrieval.
 
 The release candidate does not ship a scheduler, background refresh, trading,
 order routing, model-selected URLs, or model-selected executors.
+
+## Migration and compatibility
+
+Existing schema-1 Watchlists upgrade in place through the governed migration
+path; legacy v0.1 Watchlist import remains an explicit compatibility flow.
+Historical M5/M8 documents and readonly surfaces are retained for audit, not
+as a competing V1 product authority.
+
+## Before publication
+
+The candidate must pass deterministic and browser release gates, fresh-install
+and migration checks, source-archive verification, and a Git-tree-bound release
+manifest. Tagging or publishing remains a separate owner-approved operation.
 
 ## Release gate
 
