@@ -27,12 +27,34 @@ DEFAULT_ARTIFACTS = (
 )
 
 
-def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 def _git_value(*args: str) -> str:
     return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
+
+
+def _git_blob(relative: str) -> bytes:
+    """Return exact HEAD blob bytes for a governed release artifact."""
+    try:
+        return subprocess.check_output(
+            ["git", "cat-file", "blob", f"HEAD:{relative}"],
+            cwd=ROOT,
+        )
+    except subprocess.CalledProcessError as error:
+        raise RuntimeError(f"release_manifest_artifact_not_tracked_in_head:{relative}") from error
+
+
+def _governed_artifact_hash(relative: str) -> str:
+    """Hash HEAD bytes and reject a checkout that diverges from the release tree."""
+    blob = _git_blob(relative)
+    path = ROOT / relative
+    if not path.is_file():
+        raise RuntimeError(f"release_manifest_artifact_missing_from_worktree:{relative}")
+    # The manifest describes HEAD, so a local modification must not be silently
+    # ignored even though the authoritative hash is Git-tree based.
+    if subprocess.run(
+        ["git", "diff", "--quiet", "HEAD", "--", relative], cwd=ROOT, check=False
+    ).returncode:
+        raise RuntimeError(f"release_manifest_artifact_worktree_differs_from_head:{relative}")
+    return hashlib.sha256(blob).hexdigest()
 
 
 def build_manifest(*, generated_at: str | None = None) -> dict[str, object]:
@@ -42,7 +64,7 @@ def build_manifest(*, generated_at: str | None = None) -> dict[str, object]:
         "product_version": product_version(),
         "release_commit": _git_value("rev-parse", "HEAD"),
         "release_tree_sha": _git_value("rev-parse", "HEAD^{tree}"),
-        "artifact_hashes": {relative: _sha256(ROOT / relative) for relative in DEFAULT_ARTIFACTS},
+        "artifact_hashes": {relative: _governed_artifact_hash(relative) for relative in DEFAULT_ARTIFACTS},
         "generated_at": generated_at
         or datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
     }

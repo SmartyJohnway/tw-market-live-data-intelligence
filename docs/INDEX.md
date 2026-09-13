@@ -59,7 +59,15 @@ docs unless explicitly marked archive or historical review.
 - [M5R Documentation Audit](release/M5R_DOCUMENTATION_AUDIT.md)
 
 
-## M8 through M8C governance and acceptance
+## Engineering history / protocol archive
+
+The following links preserve milestone protocol, governance, and acceptance
+evidence. They are useful for audit and compatibility research, but are not a
+second current-product entry point. Start with the sections above for the V1
+operator contract; use [Project History](PROJECT_HISTORY.md) and the
+[Archive](archive/README.md) for chronological context.
+
+### M8 through M8C governance and acceptance
 
 - [M8R-05A-F3 AI-authored request intake and canonical target validation](protocol/M8R_05A_F3_AI_AUTHORED_REQUEST_INTAKE_AND_CANONICAL_TARGET_VALIDATION.md)
 
@@ -90,7 +98,7 @@ docs unless explicitly marked archive or historical review.
 - [M8B live validator](../scripts/validate_m8b_taifex_openapi_live.py)
 - M8R-01F status = `m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go`; next_task = `null`; next_task_status = `awaiting_operator_acceptance`; recommended_next_task = `M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR`
 
-## Reviews / acceptance
+### Reviews / acceptance
 
 - [M8R-08D Local Operator Action Contract](protocol/M8R_08D_LOCAL_OPERATOR_ACTION_CONTRACT.md)
 - [M8R-08E one-shot market evidence MCP implementation](reviews/M8R_08E_ONE_SHOT_MARKET_EVIDENCE_MCP_IMPLEMENTATION.md)

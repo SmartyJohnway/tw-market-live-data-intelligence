@@ -90,17 +90,17 @@ def test_final_settlement_bounded_retention_and_source_latest():
 def test_docs_and_boundaries():
     assert (ROOT/'docs/protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md').exists()
     readme=(ROOT/'README.md').read_text(encoding='utf-8')
-    assert 'Historical M8 architecture' in readme
-    assert 'pre-Phase-F architecture' in readme
+    assert 'Historical M8 architecture' not in readme
+    assert 'Engineering history / protocol' in readme
     assert 'Persistent Watchlist' in readme
-    assert 'TAIFEX_MIS` has accepted M8C-02 controlled M8 context integration' in readme
     m8b=(ROOT/'docs/protocol/M8B_01_TAIFEX_OPENAPI_OFFICIAL_DERIVATIVES_EOD_FINAL_ACCEPTANCE.md').read_text(encoding='utf-8')
     assert 'PR #129' in m8b and 'bounded retention' in m8b
     index=(ROOT/'docs/INDEX.md').read_text(encoding='utf-8')
     assert 'M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md' in index
     forbidden=['scheduler added','polling added','startup fetch','DB persistence','model call','trading recommendation']
+    historical=(ROOT/'docs/protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md').read_text(encoding='utf-8')
     for token in forbidden:
-        assert token in readme or token in (ROOT/'docs/protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md').read_text(encoding='utf-8')
+        assert token in historical
 
 
 def test_inventory_active_state_and_historical_snapshots():
@@ -155,13 +155,20 @@ def test_block_trade_and_large_trader_retention_limits_visible():
 
 
 def test_readme_m8b_command_parser_succeeds_without_network():
-    import os, re, subprocess
-    readme=(ROOT/'README.md').read_text(encoding='utf-8')
-    blocks=re.findall(r'```bash\n(.*?)\n```', readme, flags=re.S)
-    cmd=next(b for b in blocks if 'validate_m8b_taifex_openapi_live.py' in b)
-    cmd=' '.join(line.strip().rstrip('\\') for line in cmd.splitlines())
+    import os, subprocess, sys
+    cmd=[
+        sys.executable,
+        'scripts/validate_m8b_taifex_openapi_live.py',
+        '--contexts', 'futures_eod,options_eod,final_settlement,large_trader_oi_futures,large_trader_oi_options,put_call_ratio,block_trade',
+        '--products', 'TX,MTX,TXO',
+        '--contract-month', '202607', '--strike', '23000', '--option-type', 'call',
+        '--delivery-month', '202607', '--settlement-month', '202607', '--trader-type', 'all',
+        '--pcr-latest-n', '1', '--max-pcr-rows', '20', '--final-settlement-latest-n', '1',
+        '--max-final-settlement-rows', '50', '--max-block-trade-rows', '100',
+        '--max-large-trader-oi-rows', '100', '--session', 'regular', '--confirm',
+    ]
     env=dict(os.environ, M8B_VALIDATOR_TEST_FIXTURE='1')
-    result=subprocess.run(cmd, shell=True, cwd=ROOT, env=env, text=True, capture_output=True, timeout=30)
+    result=subprocess.run(cmd, cwd=ROOT, env=env, text=True, capture_output=True, timeout=30)
     assert result.returncode == 0, result.stderr
     payload=json.loads(result.stdout)
     assert payload['raw_payload_retained'] is False

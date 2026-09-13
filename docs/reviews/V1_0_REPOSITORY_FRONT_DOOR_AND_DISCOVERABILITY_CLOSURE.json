@@ -1,0 +1,140 @@
+{
+  "task": "V1.0 RC1 post-merge validation Gate B: repository front door and discoverability",
+  "baseline_commit": "eb58a113c73f3a23bafcde5e4609b67611742fd3",
+  "baseline_tree_sha": "671ca4ae11f070d7fca145526cb7c1274d00919a",
+  "branch": "codex/v1-front-door-discoverability",
+  "superseded_validation_subjects": [
+    {
+      "commit": "39200d56dfb97cc46ab2ac9e0814de3a0b8426b3",
+      "tree_sha": "39ec84b6b8c41119ffeaacabcd66ddfa686e981d",
+      "reason": "front-door public-history and security-reporting correction"
+    },
+    {
+      "commit": "44a9d09cae4b0ec13dffa0ba92a7a8aaf5ebb161",
+      "tree_sha": "514ea148bb63676dd14c8bbb61ae638b159b81d8",
+      "reason": "executable security-reporting fallback correction"
+    }
+  ],
+  "validated_code_commit": "8aeb887cce23f6af36deec9fe305e24d7d889944",
+  "validated_code_tree_sha": "97559875248f0c29e7c2098d92cd3d2976d203a6",
+  "validation_subject_reachable_from_pr": true,
+  "finalization_delta_policy": "EVIDENCE_ONLY",
+  "gate_a_runtime_product_validation": "RC1_POST_MERGE_VALIDATED",
+  "gate_a_manifest_portability_defect": {
+    "id": "RELEASE_MANIFEST_ARTIFACT_HASH_PORTABILITY_DEFECT",
+    "original_manifest": "valid schema and correct commit/tree binding, but governed artifact hashes depended on host checkout bytes",
+    "disposition": "CORRECTED_IN_FRONT_DOOR_TRANCHE_BEFORE_RC1_PUBLICATION",
+    "scope": "release tooling / release integrity, not runtime or public API behavior"
+  },
+  "front_door": {
+    "english_readme_current": true,
+    "traditional_chinese_readme_current": true,
+    "canonical_workbench": "/workbench/ via python scripts/run_unified_workbench.py",
+    "mcp_launcher": "python scripts/run_unified_market_evidence_mcp.py",
+    "mcp_tool_count": 6,
+    "mcp_tools": [
+      "market_describe_capabilities",
+      "market_validate_request",
+      "market_preview_request",
+      "market_read_result",
+      "market_export_ai_handoff",
+      "market_fetch_evidence"
+    ],
+    "persistent_watchlists_supported": true,
+    "automatic_watchlist_execution_supported": false,
+    "screenshot": {
+      "path": "docs/assets/workbench-overview.png",
+      "source": "actual Chromium capture of the canonical Workbench with deterministic local fixture data",
+      "state": "ready_for_confirmation; no authorization; no market network executed",
+      "contains_personal_data": false
+    },
+    "current_legacy_boundary": "Root README contains only the current product front door; historical M5/M6/M8 material is retained through Project History, the documentation history/protocol archive, and docs/archive.",
+    "language_selector": "English and Traditional Chinese README links are present at the top of both files",
+    "security_reporting_grounded": true,
+    "security_fallback": "Security contact request issue form with one required public-safety acknowledgement; blank issues remain disabled"
+  },
+  "community_and_discoverability": {
+    "contributing": "CONTRIBUTING.md",
+    "security_reporting": "SECURITY.md",
+    "issue_templates": [
+      ".github/ISSUE_TEMPLATE/bug_report.yml",
+      ".github/ISSUE_TEMPLATE/feature_request.yml"
+    ],
+    "social_preview_spec": "docs/branding/SOCIAL_PREVIEW_SPEC.md",
+    "mcp_registry_readiness": "docs/distribution/MCP_REGISTRY_READINESS.md",
+    "github_metadata_changed": false,
+    "current_repository_topics_observed": [
+      "fastapi",
+      "financial-data",
+      "local-first",
+      "mcp-server",
+      "python",
+      "source-contracts",
+      "taifex",
+      "taiwan-stock-market",
+      "tpex",
+      "twse",
+      "market-data-ai-context",
+      "stock-market-observation"
+    ],
+    "proposed_repository_description": "Local-first Taiwan market evidence workbench for AI agents — TWSE/TPEx, persistent Watchlists, governed MCP, auditable evidence, explicit execute-once.",
+    "proposed_topics": [
+      "taiwan-stock",
+      "taiwan-stock-market",
+      "twse",
+      "tpex",
+      "taifex",
+      "market-data",
+      "financial-data",
+      "stock-market",
+      "mcp",
+      "mcp-server",
+      "model-context-protocol",
+      "fastapi",
+      "local-first",
+      "ai-agents",
+      "python",
+      "fintech"
+    ]
+  },
+  "release_manifest": {
+    "artifact_hash_authority": "exact Git blob bytes from HEAD:<relative-path>",
+    "working_tree_fallback": false,
+    "dirty_governed_artifact_behavior": "fail closed",
+    "focused_tests": "PASS (manifest blob binding, missing/untracked artifact failure, schema and product/release hygiene tests)"
+  },
+  "exact_clean_clone_validation": {
+    "clone_method": "git clone --no-local",
+    "clone_root": "D:/Codex-Workspace/runtime/tw-market-live-data-intelligence/v1-front-door-clean-clone-8aeb887",
+    "lock_install": "PASS",
+    "pip_check": "PASS",
+    "worktree_clean_before": true,
+    "worktree_clean_after": true,
+    "environment": "PASS",
+    "version_consistency": "PASS",
+    "public_contracts": "PASS",
+    "release_hygiene_links_and_secrets": "PASS",
+    "portable_catalog": "PASS",
+    "runtime_skill_guide_semantics": "PASS",
+    "market_evidence_skill": "PASS",
+    "security_master_skill": "PASS (201 checks)",
+    "compileall": "PASS",
+    "default_ci": {"status": "PASS", "passed": 951, "failed": 0, "skipped": 4, "deselected": 9},
+    "full_non_network": {"status": "PASS", "passed": 2412, "failed": 0, "skipped": 16, "deselected": 56},
+    "operator_preflight": "PASS",
+    "actual_browser_e2e": "PASS",
+    "release_manifest": "PASS",
+    "javascript_syntax": "PASS",
+    "source_archive_without_git": "PASS"
+  },
+  "boundaries": {
+    "external_market_network_used": false,
+    "production_security_master_mutated": false,
+    "production_watchlist_mutated": false,
+    "rc_tag_created": false,
+    "github_prerelease_created": false,
+    "phase_g_started": false
+  },
+  "blocking_findings": [],
+  "principal_decision": "READY_FOR_V1_RC1_FRONT_DOOR_DISCOVERABILITY_REVIEW"
+}
