@@ -1,8 +1,10 @@
 # TW-Market Live Data Intelligence
 
+[English](README.md) | [繁體中文](README.zh-TW.md)
+
 > Local-first, governed Taiwan-market evidence for an operator and an AI
-> assistant — validate first, preview the bounded work, then explicitly
-> authorize one execution where the capability permits it.
+> assistant — validate first, preview bounded work, then explicitly authorize
+> one execution where the capability permits it.
 
 ![Deterministic Unified Workbench overview](docs/assets/workbench-overview.png)
 
@@ -11,7 +13,14 @@ published GitHub Release remains **`v0.1.0`**; no RC tag or GitHub prerelease
 has been created. This is a local-first evidence workbench, not a realtime
 trading product.
 
-## Start here
+## Why TW-Market
+
+AI discussion needs evidence with identity, source, timestamp, caveat, and
+execution provenance — not an unqualified price claim. This workbench gives a
+human operator a governed local path from request validation to an AI-ready
+handoff, while retaining a separate audit package.
+
+## Quick start
 
 ```bash
 git clone https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git
@@ -38,9 +47,6 @@ For an MCP host, start the separate stdio launcher:
 python scripts/run_unified_market_evidence_mcp.py
 ```
 
-See the [operator quick start](docs/operator/QUICK_START.md), [V1 public
-contracts](docs/contracts/V1_PUBLIC_CONTRACTS.md), and [documentation index](docs/INDEX.md).
-
 ## A governed 2330 workflow
 
 1. Create or select an installation-local Watchlist, then add `2330`.
@@ -51,351 +57,79 @@ contracts](docs/contracts/V1_PUBLIC_CONTRACTS.md), and [documentation index](doc
 5. Read the canonical Result and Audit Package, or export the AI-ready
    handoff for continued discussion.
 
-The MCP exposes exactly six governed tools:
+## Core capabilities
+
+- **Identity-aware requests:** Mode A validates targets against the
+  installation-local Taiwan Market Identity Service.
+- **Bounded execution:** Mode B previews, explicitly authorizes, and executes
+  one request only when its governed capability is executable.
+- **Auditable handoff:** Mode C creates a canonical Result, separate Audit
+  Package, and AI-ready Markdown without dispatching another market source.
+- **Persistent Watchlists are supported:** installation-local Watchlists have immutable
+  revisions, optimistic concurrency, and explicit preview/commit mutation.
+
+## Unified MCP
+
+The MCP surface has exactly six governed tools:
+
 `market_describe_capabilities`, `market_validate_request`,
 `market_preview_request`, `market_read_result`,
 `market_export_ai_handoff`, and `market_fetch_evidence`.
 
-Persistent Watchlists are supported, installation-local, and mutate only by
-explicit preview/commit. There is no automatic polling, scheduler, startup
-market fetch, Watchlist-driven automatic execution, trading, or realtime
-guarantee.
+See the [V1 public contracts](docs/contracts/V1_PUBLIC_CONTRACTS.md) and
+[current AI usage guide](docs/agent_usage_guide.md) for request, result, and
+handoff semantics.
+
+## Data and source caveats
+
+Capability support, currentness, source provenance, and execution eligibility
+are explicit product data. A supported identity does not imply an executable
+source route; a preview is not an authorization; a source observation is not a
+realtime guarantee. Consult the [capability matrix](docs/reference/CAPABILITY_MATRIX.md),
+[source matrix](docs/reference/SOURCE_MATRIX.md), and
+[governance boundaries](docs/reference/GOVERNANCE_BOUNDARIES.md) before relying
+on any result.
+
+## Safety and non-goals
+
+There is no automatic polling, scheduler, startup market fetch, Watchlist-driven
+automatic execution, trading, order routing, full-market scan, model-selected
+URL/executor, or realtime guarantee. Persistent Watchlists mutate only through
+explicit preview/commit. Never commit credentials, tokens, cookies, or private
+market payloads.
+
+## Documentation
+
+- [Operator quick start](docs/operator/QUICK_START.md)
+- [Local Workbench guide](docs/operator/LOCAL_WORKBENCH.md)
+- [Troubleshooting](docs/operator/TROUBLESHOOTING.md)
+- [Documentation index](docs/INDEX.md)
+- [V1 release candidate](docs/release/V1_RELEASE_CANDIDATE.md)
+- [Changelog](CHANGELOG.md)
+
+## Contributing and security
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Report
+security concerns using the grounded guidance in [SECURITY.md](SECURITY.md).
+
+## Release status
+
+`VERSION` records the repository candidate `1.0.0-rc.1`. The latest published
+GitHub Release is `v0.1.0`; RC tag, GitHub prerelease, and final v1.0 release
+are **not created**. Release validation and publication are separate,
+owner-approved operations.
 
 ## Project Overview
 
-Historical context is preserved in
-[`docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md`](docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md).
-TW-Market Live Data Intelligence is a local-first, AI-native Taiwan market
-data workbench for operators who need governed context, bounded observation
-evidence, source-health diagnostics, and a safe conversation handoff.
-
-## Who is it for?
-
-- Human operators validating and discussing Taiwan market context with an AI assistant.
-- Maintainers preserving evidence, timestamps, source caveats, and governance boundaries.
-- Researchers comparing official, unofficial, commercial, and browser-rendered market-data paths.
-
-## What can it do?
-
-### Current canonical Unified architecture
-- **M8R-05A/F3**: Unified Request and canonical target validation
-- **M8R-05B**: deterministic preview/authorization/execute-once orchestration
-- **M8R-05C**: complete AI-context Result and separate Audit Package
-- **Mode A** validates requests against the installation-local Taiwan Market
-  Identity Service.
-- **Mode B** previews, explicitly authorizes, and executes one bounded request.
-- **Mode C** builds the canonical Result, Audit Package, and AI-ready handoff.
-- **Unified MCP** exposes six governed tools for capability discovery,
-  validation, preview, execute-once, Result reading, and handoff export.
-
-There is no automatic polling, scheduler, startup market fetch, Watchlist-driven
-automatic execution, trading, or realtime guarantee. Persistent Watchlists are
-installation-local and mutate only through explicit preview/commit.
-
-### Legacy compatibility / historical local workbench surfaces
-- Read and validate the reviewed **M5F canonical package** (legacy Mode A: Canonical Context).
-- Plan and optionally execute explicit, manual, bounded **M5K observations** (legacy Mode B: Bounded Observation).
-- Read **M5Q source-health** diagnostics.
-- Build an **M5N Conversation Package** for ChatGPT (legacy Mode C: Conversation Package).
-- Serve readonly FastAPI, frontend, and MCP local surfaces.
-- Provide an offline operator dashboard and release preflight.
-
-## What can it NOT do?
-
-No trading, no buy/sell/hold, and no trading signals in project canonical execution outputs. No broker/auth, no automatic orders, no polling, no scheduler, no startup network calls, no full-market scans, and no zero-latency realtime guarantee. The project acts strictly as a deterministic evidence provider.
-
-## Fresh installation
-
-```bash
-git clone https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git
-cd tw-market-live-data-intelligence
-python -m venv .venv
-# Activate .venv using your shell, then:
-python -m pip install -r requirements-lock.txt
-python scripts/verify_environment.py
-python scripts/manage_security_master.py status
-```
-
-`NOT_INITIALIZED` is the normal fresh-install Security Master state. Initialize
-only through an explicit operator action:
-
-```bash
-python scripts/manage_security_master.py update --live
-python scripts/manage_security_master.py history
-python scripts/manage_security_master.py rollback RELEASE_ID
-```
-
-Start the loopback Local Service and MCP after initialization:
-
-```bash
-python scripts/run_unified_workbench.py
-python scripts/run_unified_market_evidence_mcp.py
-```
-
-`requirements.txt` remains the supported direct compatibility range; the lock
-records the exact dependency graph tested on CPython 3.11/Windows. Fresh setup
-does not require Candidate A/B or historical runtime indexes. Legacy pointer
-migration is an advanced compatibility operation only.
-
-For the full operator path, see [`docs/operator/LOCAL_WORKBENCH.md`](docs/operator/LOCAL_WORKBENCH.md).
-
-## Current operator workflow
-
-```bash
-python scripts/manage_security_master.py status
-python scripts/run_unified_workbench.py
-python scripts/run_unified_market_evidence_mcp.py
-```
-
-Use the Unified six-tool MCP contract or `/workbench/` to validate a request,
-preview it, explicitly authorize one bounded execution where capability support
-permits, then read its Result or export the AI-ready handoff. Persistent
-Watchlists use preview → explicit commit; they do not start background market
-work.
-
-See [V1 public contracts](docs/contracts/V1_PUBLIC_CONTRACTS.md) and the
-[current AI usage guide](docs/agent_usage_guide.md). Historical M5 daily
-workflow material below is retained as archive context only.
-
-## Typical release workflow
-
-```bash
-python scripts/run_operator_preflight.py
-```
-
-The preflight reuses existing validators and reports `PASS`, `PASS WITH CAVEATS`, or `FAIL` without performing live observation.
-
-Full release validation remains in [`docs/release/RELEASE_CHECKLIST.md`](docs/release/RELEASE_CHECKLIST.md).
-
-
-## Historical M8 architecture (M8 through M8C)
-
-The following describes the pre-Phase-F architecture before Persistent Watchlist
-storage and the canonical V1 Workbench. M8 added governed, source-attributed
-market context on top of the historical M5 local workbench. It was local-first
-and operator-controlled: no scheduler, no polling, no startup fetch, no
-database persistence, no model call, and no trading recommendation.
-
-```mermaid
-flowchart LR
-  TWSE_MIS[TWSE_MIS] --> LIVE[live-ish cash market context]
-  TWSE_OPENAPI[TWSE_OPENAPI] --> CASH[official cash-market EOD context]
-  TPEX_OPENAPI[TPEX_OPENAPI] --> CASH
-  TAIFEX_OPENAPI[TAIFEX_OPENAPI] --> DERIV[official derivatives EOD/statistical/reference context]
-  TAIFEX_MIS[TAIFEX_MIS] --> LIVE_DERIV[bounded derivatives live-ish/supporting/metadata context]
-  NCDR[NCDR/DGPA] --> CLOSURE[closure/currentness supporting evidence]
-  LIVE --> BUILDER[M8 multi-source context builder]
-  CASH --> BUILDER
-  DERIV --> BUILDER
-  LIVE_DERIV --> BUILDER
-  CLOSURE --> BUILDER
-  BUILDER --> CONVO[controlled conversation context]
-  CONVO --> HANDOFF[safe artifact / AI discussion handoff]
-```
-
-`TAIFEX_MIS` has accepted M8C-02 controlled M8 context integration after exact remote-code bounded TX/MTX/monthly-TXO validation. AI context is limited to controlled caveated safe fields through the adapter, TAIFEX-specific currentness bridge, M8 builder, and controlled projection; it remains not realtime guaranteed, and delta support, after-hours support, weekly options, reconnect, unsubscribe, public API, raw payload exposure, recommendations, rankings, and trading signals remain disabled.
-
-### M8 validation examples
-
-M8A bounded official cash-market latest-EOD validation:
-
-```bash
-python scripts/validate_m8a_official_eod_live.py \
-  --sources TWSE_OPENAPI,TPEX_OPENAPI \
-  --symbols 2330,0050,8069,006201 \
-  --confirm
-```
-
-M8B bounded TAIFEX official derivatives validation. The options scope is bounded by product, contract month/week, strike, and option type; Put/Call Ratio and final-settlement retention are bounded by runtime defaults.
-
-```bash
-python scripts/validate_m8b_taifex_openapi_live.py \
-  --contexts futures_eod,options_eod,final_settlement,large_trader_oi_futures,large_trader_oi_options,put_call_ratio,block_trade \
-  --products TX,MTX,TXO \
-  --contract-month 202607 \
-  --strike 23000 \
-  --option-type call \
-  --delivery-month 202607 \
-  --settlement-month 202607 \
-  --trader-type all \
-  --pcr-latest-n 1 \
-  --max-pcr-rows 20 \
-  --final-settlement-latest-n 1 \
-  --max-final-settlement-rows 50 \
-  --max-block-trade-rows 100 \
-  --max-large-trader-oi-rows 100 \
-  --session regular \
-  --confirm
-```
-
-### M8 source capability table
-
-| Source | Role | Timing | Runtime status | Operator gate | Retained scope | Major caveat |
-|---|---|---|---|---|---|---|
-| TWSE_MIS | live-ish cash quote snapshot | intraday snapshot | executable | yes | bounded watchlist | not realtime guaranteed |
-| TWSE_OPENAPI | official listed cash EOD | latest EOD | executable | yes | bounded symbols | no historical backfill |
-| TPEX_OPENAPI | official TPEx cash EOD | latest EOD | executable | yes | bounded symbols | no canonical security master |
-| TAIFEX_OPENAPI | official derivatives EOD/statistical/reference | official EOD/reference | executable | yes | bounded selectors/row limits | product/session metadata caveats |
-| TAIFEX_MIS | regular-session futures/options live-ish initial state | M8C-02 context code staged pending validation | controlled executable only | raw payload retained=false | AI value context disabled pending validation | staged |
-| NCDR_DGPA_CLOSURE_CAP | supporting closure evidence | event/reference | supporting evidence | yes | compact evidence | not TAIFEX-specific confirmation |
-
-## Architecture overview
-
-```mermaid
-flowchart LR
-  M5F[M5F Canonical Package\nMode A / Level 1] --> API[FastAPI readonly]
-  M5F --> FE[Frontend readonly]
-  M5F --> MCP[MCP readonly]
-  M5K[M5K Bounded Observation\nMode B / Level 2] --> M5N[M5N Conversation Package\nMode C]
-  M5Q[M5Q Source Health\nMode B/C] --> M5N
-  M5F --> M5N
-  M5N --> ChatGPT[ChatGPT discussion]
-```
-
-Legacy M5 terminology:
-- **Mode A = Canonical Context**
-- **Mode B = Bounded Observation**
-- **Mode C = Conversation Package**
-
-Current Unified operator workflow terminology:
-- **Mode A = Inspect and Validate**
-- **Mode B = Preview, Authorize, and Execute Once**
-- **Mode C = Package and Handoff to AI**
-
-In the legacy M5 context, M5F is canonical; M5K is bounded observation; M5Q is source health; M5N is conversation package. Observation is not canonical, reference-only is not current price, and `stale_or_closed_session` is degraded.
-
-
-## Data capability map
-
-This repo includes canonical local context, bounded live observation, conversation context, source health, validated runtime sources, validated contracts/probes, validated historical workbench sources, catalogued candidates, and credential-gated providers. It distinguishes `TAIFEX_MIS` as the bounded intraday observation source family from `TAIFEX_OpenAPI` as the official OpenAPI/OAS endpoint inventory for EOD/statistical/reference context planning. TAIFEX_OPENAPI is implemented in M8B-01 as official TAIFEX derivatives EOD/statistical/reference context. Controlled runtime adapters cover futures/options daily reports, final settlement, large-trader OI concentration, Put/Call Ratio, and block trades. It is not realtime, not TAIFEX_MIS, and produces no trading signals or recommendations. The full source/field/AI-context capability inventory is in [`docs/data_capabilities/VALIDATED_ENDPOINT_DATA_CAPABILITY_INVENTORY.md`](docs/data_capabilities/VALIDATED_ENDPOINT_DATA_CAPABILITY_INVENTORY.md), with machine-readable data in [`docs/data_capabilities/validated_endpoint_data_capability_inventory.json`](docs/data_capabilities/validated_endpoint_data_capability_inventory.json). Not every listed source family is a validated usable endpoint, and raw availability does not mean every field is currently parsed, normalized, retained, or exposed. All AI usage is context-only, caveated, and non-trading.
-
-## Test execution profiles
-
-Do not optimize for test count. Optimize for operator journey coverage, risk coverage, and the correct execution profile for the change. M6K defines explicit profiles in `config/test_execution_profiles.json` and routes them through `scripts/run_test_profile.py`:
-
-```bash
-python scripts/run_test_profile.py fast --json
-python scripts/run_test_profile.py default-ci --json
-python scripts/run_test_profile.py full-non-network --json
-python scripts/run_test_profile.py operator-preflight --json
-python scripts/run_test_profile.py browser-e2e --json
-python scripts/run_test_profile.py bounded-live --confirm-bounded-live --ssl-policy compatibility
-```
-
-Normal PR CI runs DEFAULT_CI, not the entire non-network suite. FULL_NON_NETWORK preserves the broad `pytest -m "not network"` safety net for release preparation and large refactors. Operator preflight, browser E2E, and bounded live checks remain separate. Optional browser E2E dependencies are installed with `requirements-browser-e2e.txt`; normal DEFAULT_CI does not install Playwright, Chromium, or OS browser dependencies. Strict TLS remains default; compatibility TLS is explicit opt-in only for bounded/live operator commands.
-
-## Local services
-
-FastAPI:
-
-```bash
-uvicorn server.main:app --host 127.0.0.1 --port 8000
-```
-
-Workbench: start [`scripts/run_unified_workbench.py`](scripts/run_unified_workbench.py)
-and open the canonical `/workbench/` surface. The legacy
-[`frontend/readonly-preview/`](frontend/readonly-preview/) remains historical
-reference material, not the current V1 Workbench.
-
-Unified MCP startup check:
-
-```bash
-python scripts/run_unified_market_evidence_mcp.py
-```
-
-## Documentation map
-
-Start at [`docs/INDEX.md`](docs/INDEX.md). Recommended operator path:
-
-- [`docs/operator/LOCAL_WORKBENCH.md`](docs/operator/LOCAL_WORKBENCH.md)
-- [`docs/operator/MODE_ABC_WALKTHROUGH.md`](docs/operator/MODE_ABC_WALKTHROUGH.md)
-- [`docs/operator/TROUBLESHOOTING.md`](docs/operator/TROUBLESHOOTING.md)
-- [`docs/reference/GOVERNANCE_BOUNDARIES.md`](docs/reference/GOVERNANCE_BOUNDARIES.md)
-- [`docs/reference/API_REFERENCE.md`](docs/reference/API_REFERENCE.md)
-- [`docs/reference/SOURCE_MATRIX.md`](docs/reference/SOURCE_MATRIX.md)
-- [`docs/reference/CAPABILITY_MATRIX.md`](docs/reference/CAPABILITY_MATRIX.md)
-
-## Important governance boundaries
-
-Do not mutate M5F, change observation/source-health/conversation semantics, create parallel contracts, write `frontend/public` or `research/generated`, bypass authentication, add credentials, introduce startup network calls, schedule/poll observations, scan the full market, expose raw payloads unnecessarily, or produce trading outputs.
-
-## Repository layout
-
-```text
-config/                         Watchlists and source adapter matrix
-docs/                           Product, operator, reference, contributor, release docs
-frontend/unified-workbench/     Canonical V1 Workbench assets
-frontend/readonly-preview/      Historical readonly browser preview
-research/staging/m5f/           Level 1 canonical package
-research/live_observation_runs/ Level 2 observation/source-health/conversation artifacts
-scripts/                        Validators, builders, diagnostics, bounded runners
-server/                         FastAPI and MCP local surfaces
-tests/                          Non-network regression tests and fixtures
-```
-
-
-## M6D SSL/TLS compatibility policy
-
-Strict TLS verification remains the default for explicit live observation and source-contract preflight. Operators may select `--ssl-policy strict`, `--ssl-policy compatibility`, or `--ssl-policy unsafe-explicit`; the CLI flag takes precedence over `TW_MARKET_SSL_POLICY`, which takes precedence over the strict default. Compatibility mode is explicit and diagnostic for known Windows/Python 3.13 certificate compatibility failures. No silent TLS fallback exists. Do not use unsafe-explicit unless you understand TLS verification is disabled.
-
-Example bounded commands:
-
-```bash
-python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation --ssl-policy strict
-python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation --ssl-policy compatibility
-python scripts/run_m6b_source_contract_preflight.py --execute-live-contract-check --ssl-policy strict
-```
-
-Diagnostics and workbench commands remain no-network unless an explicit live command is run.
-
-## M6E operator acceptance
-
-Run `python scripts/run_m6e_operator_acceptance.py --check-only` for the M6E operator acceptance layer. It is non-network by default, aggregates existing diagnostics/validators, verifies readonly FastAPI/MCP/frontend contracts, and writes reports under `research/live_observation_runs/m6e_operator_acceptance/`.
-
-## M6G browser/operator E2E acceptance
-
-Run `python scripts/run_m6g_browser_operator_e2e.py --check-only` to verify the local FastAPI plus actual readonly frontend operator path. Browser dependencies are optional for default CI; if Playwright/Chromium is missing, the script writes `skipped_with_caveats` with install instructions. Full browser execution requires `python -m pip install playwright` and `python -m playwright install chromium`. Explicit bounded live mode is manual only: `python scripts/run_m6g_browser_operator_e2e.py --execute-bounded-live-check --ssl-policy compatibility` or `--ssl-policy strict`.
-
-## M8A official EOD context capability
-
-M8A adds governed official latest EOD context alongside bounded live-ish TWSE_MIS observations. The repository now supports TWSE_MIS bounded live-ish market observation, official TWSE latest EOD context, official TPEx latest EOD context, source authority/provenance, currentness evaluation, emergency-closure-aware market-day resolution, bounded safe artifact generation, and AI-readable multi-source context.
-
-| Source | Role | Timing | Market | Runtime mode | Primary caveat |
-|---|---|---|---|---|---|
-| `TWSE_MIS` | bounded browser-observed market snapshot | live-ish intraday snapshot | listed / TPEx route | controlled bounded refresh | not streaming or realtime guaranteed |
-| `TWSE_OPENAPI` | official latest EOD market data | official EOD | listed | explicit operator-confirmed adapter execution | latest-only; not realtime |
-| `TPEX_OPENAPI` | official latest EOD market data | official EOD | OTC mainboard | explicit operator-confirmed adapter execution | latest-only; mixed instruments require classification |
-| `NCDR_DGPA_CLOSURE_CAP` | emergency closure evidence only | dynamic emergency event | Taiwan work-closure evidence | queried only for mismatch/currentness resolution | not market price data |
-
-Controlled official EOD execution requires explicit operator confirmation and bounded requested symbols. TWSE/TPEx official EOD endpoints are whole-market network fetches, but adapters immediately filter to requested symbols and do not retain raw full-market payloads. There is no automatic polling, background scheduler, startup fetch, hidden fetch, or database write.
-
-Currentness is resolved as:
-
-```text
-scheduled trading calendar
-+ emergency closure evidence
-+ official source trade date
-= actual expected latest completed trade date
-```
-
-For this project, a confirmed Taipei City full-day or morning work suspension is treated as closing TWSE and TPEx for the full market day. `NCDR_DGPA_CLOSURE_CAP` is used only as exception/currentness evidence and is not a market data or price source.
-
-Example deterministic checks:
-
-```bash
-python -m pytest tests/unit/test_m8a*.py -q
-python scripts/run_test_profile.py default-ci --json
-```
-
-Example explicit bounded live validation:
-
-```bash
-python scripts/validate_m8a_official_eod_live.py \
-  --sources TWSE_OPENAPI,TPEX_OPENAPI \
-  --symbols 2330,0050,8069,006201 \
-  --confirm
-```
-
-Limitations: M8A endpoints are latest-only, no historical backfill is included, mixed TPEx instruments depend on exact security-master classification, NCDR is exception/currentness evidence only, no scheduler/polling is added, and the project does not implement an investment recommendation engine. The current repository does not contain a complete canonical production security master; M8A therefore marks production classification completeness as incomplete and uses a bounded seed only until a complete canonical master is added. Unknown symbols continue to fail closed.
-
-Review note: PR #126 was reviewed as a squashed single GitHub commit even though the earlier implementation report described a four-commit local execution structure. Current reports should describe the actual GitHub commit shape rather than claiming four reviewable commits.
+This root README is the current product entry point. Engineering history,
+protocol acceptance, and prior M5/M6/M8 architecture remain available through
+[Project History](docs/PROJECT_HISTORY.md), the [Engineering history / protocol
+archive](docs/INDEX.md#engineering-history--protocol-archive), and
+[`docs/archive/`](docs/archive/), including the
+[`2026-06-30 historical README`](docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md).
+They are retained for audit and compatibility,
+not as a second current-product contract.
+
+## License
+
+See [LICENSE](LICENSE).

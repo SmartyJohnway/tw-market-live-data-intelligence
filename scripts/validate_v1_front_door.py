@@ -22,6 +22,9 @@ REQUIRED_README_FACTS = (
     "market_describe_capabilities",
     "market_fetch_evidence",
     "docs/assets/workbench-overview.png",
+    "[English](README.md) | [繁體中文](README.zh-TW.md)",
+    "Project History",
+    "Engineering history / protocol",
 )
 
 FORBIDDEN_CURRENT_CLAIMS = (
@@ -30,6 +33,10 @@ FORBIDDEN_CURRENT_CLAIMS = (
     "direct MCP unavailable",
     "manual handoff only",
     "Unified MCP future",
+    "## Historical M8 architecture",
+    "## M8A official EOD context capability",
+    "## M6D SSL/TLS compatibility policy",
+    "security contact shown on the GitHub repository profile",
 )
 
 
@@ -44,7 +51,11 @@ def validate() -> list[str]:
     for claim in FORBIDDEN_CURRENT_CLAIMS:
         if claim in readme:
             errors.append(f"front_door_forbidden_current_claim:{claim}")
-    if "Persistent Watchlists" not in readme_zh or "preview/commit" not in readme_zh:
+    if (
+        "Persistent Watchlists" not in readme_zh
+        or "preview/commit" not in readme_zh
+        or "[English](README.md) | [繁體中文](README.zh-TW.md)" not in readme_zh
+    ):
         errors.append("front_door_zh_tw_missing_current_watchlist_contract")
     if "Engineering history / protocol archive" not in index:
         errors.append("docs_index_missing_history_boundary")

@@ -1,5 +1,7 @@
 # TW-Market Live Data Intelligence
 
+[English](README.md) | [繁體中文](README.zh-TW.md)
+
 > 提供給操作人員與 AI 助理的本機優先、受治理台灣市場證據工作台：先驗證、再預覽受界限的工作，僅在能力允許時明確授權一次執行。
 
 ![確定性 Unified Workbench 總覽](docs/assets/workbench-overview.png)

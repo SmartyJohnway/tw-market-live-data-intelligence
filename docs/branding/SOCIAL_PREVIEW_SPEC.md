@@ -12,6 +12,12 @@ metadata or upload an image.
 - **Recommended asset:** `docs/assets/workbench-overview.png` or a derived
   1280×640 social card that preserves the same caveat.
 
-Repository topics should describe software concepts rather than data quality
-claims: `taiwan-market`, `market-data`, `mcp`, `fastapi`, `playwright`,
-`local-first`, `watchlist`, `ai-agents`, `evidence`, `python`.
+Proposed repository description: **Local-first Taiwan market evidence workbench
+for AI agents — TWSE/TPEx, persistent Watchlists, governed MCP, auditable
+evidence, explicit execute-once.**
+
+Proposed topics prioritize discovery vocabulary over implementation details:
+`taiwan-stock`, `taiwan-stock-market`, `twse`, `tpex`, `taifex`, `market-data`,
+`financial-data`, `stock-market`, `mcp`, `mcp-server`,
+`model-context-protocol`, `ai-agents`, `local-first`, `python`, `fastapi`, and
+`fintech`.

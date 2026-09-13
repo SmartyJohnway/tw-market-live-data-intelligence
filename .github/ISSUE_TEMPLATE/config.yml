@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Security vulnerability
-    url: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/security
-    about: Please use the private security-reporting path instead of a public issue.
+    url: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/SECURITY.md
+    about: Follow the repository security policy; do not post vulnerability details publicly.
