@@ -8,10 +8,15 @@
       "commit": "39200d56dfb97cc46ab2ac9e0814de3a0b8426b3",
       "tree_sha": "39ec84b6b8c41119ffeaacabcd66ddfa686e981d",
       "reason": "front-door public-history and security-reporting correction"
+    },
+    {
+      "commit": "44a9d09cae4b0ec13dffa0ba92a7a8aaf5ebb161",
+      "tree_sha": "514ea148bb63676dd14c8bbb61ae638b159b81d8",
+      "reason": "executable security-reporting fallback correction"
     }
   ],
-  "validated_code_commit": "44a9d09cae4b0ec13dffa0ba92a7a8aaf5ebb161",
-  "validated_code_tree_sha": "514ea148bb63676dd14c8bbb61ae638b159b81d8",
+  "validated_code_commit": "8aeb887cce23f6af36deec9fe305e24d7d889944",
+  "validated_code_tree_sha": "97559875248f0c29e7c2098d92cd3d2976d203a6",
   "validation_subject_reachable_from_pr": true,
   "finalization_delta_policy": "EVIDENCE_ONLY",
   "gate_a_runtime_product_validation": "RC1_POST_MERGE_VALIDATED",
@@ -45,7 +50,8 @@
     },
     "current_legacy_boundary": "Root README contains only the current product front door; historical M5/M6/M8 material is retained through Project History, the documentation history/protocol archive, and docs/archive.",
     "language_selector": "English and Traditional Chinese README links are present at the top of both files",
-    "security_reporting_grounded": true
+    "security_reporting_grounded": true,
+    "security_fallback": "Security contact request issue form with one required public-safety acknowledgement; blank issues remain disabled"
   },
   "community_and_discoverability": {
     "contributing": "CONTRIBUTING.md",
@@ -99,7 +105,7 @@
   },
   "exact_clean_clone_validation": {
     "clone_method": "git clone --no-local",
-    "clone_root": "D:/Codex-Workspace/runtime/tw-market-live-data-intelligence/v1-front-door-clean-clone-44a9d09",
+    "clone_root": "D:/Codex-Workspace/runtime/tw-market-live-data-intelligence/v1-front-door-clean-clone-8aeb887",
     "lock_install": "PASS",
     "pip_check": "PASS",
     "worktree_clean_before": true,

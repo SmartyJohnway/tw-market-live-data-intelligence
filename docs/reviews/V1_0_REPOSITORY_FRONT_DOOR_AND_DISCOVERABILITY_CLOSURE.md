@@ -5,10 +5,10 @@
 `READY_FOR_V1_RC1_FRONT_DOOR_DISCOVERABILITY_REVIEW`
 
 The Gate B candidate was validated at code commit
-`44a9d09cae4b0ec13dffa0ba92a7a8aaf5ebb161` and tree
-`514ea148bb63676dd14c8bbb61ae638b159b81d8`. The earlier `39200d56…` validation
-subject is superseded by this public-history and security-reporting correction.
-This closure records an
+`8aeb887cce23f6af36deec9fe305e24d7d889944` and tree
+`97559875248f0c29e7c2098d92cd3d2976d203a6`. The earlier `39200d56…` and
+`44a9d09…` validation subjects are superseded by the public-history and
+executable security-reporting corrections. This closure records an
 evidence-only finalization; it does not authorize an RC tag, GitHub prerelease,
 final release, Phase G, or external market execution.
 
@@ -30,8 +30,10 @@ final release, Phase G, or external market execution.
   competing with current V1 authority.
 - English and Traditional Chinese README files have reciprocal top-level
   language selectors. Security reporting uses an available GitHub private
-  channel only when it is visibly enabled; otherwise it asks for a minimal
-  public request for a private contact path.
+  channel only when it is visibly enabled; otherwise the dedicated **Security
+  contact request** issue form requests a private contact path. Its only
+  required field confirms that no vulnerability details or sensitive material
+  were disclosed publicly; blank issues remain disabled.
 
 ## Community and distribution readiness
 
