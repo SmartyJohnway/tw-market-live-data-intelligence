@@ -9,6 +9,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
 import sqlite3
 import uuid
 from contextlib import contextmanager
@@ -37,6 +38,24 @@ class WatchlistError(Exception):
     def __init__(self, code: str, message: str | None = None, details: dict[str, Any] | None = None):
         super().__init__(message or code)
         self.code, self.details = code, details or {}
+
+
+def default_root() -> Path:
+    """Return this installation's watchlist authority root.
+
+    The checked-out repository is never an implicit shared authority for a
+    launched Local Service.  A deployment may explicitly select its own local
+    root, while command-line and test callers can still pass ``root`` directly.
+    """
+    configured = os.environ.get("TW_MARKET_WATCHLIST_ROOT")
+    return Path(configured).expanduser().resolve() if configured else DEFAULT_ROOT
+
+
+def default_security_master_root() -> Path:
+    """Use the same explicit installation-local security authority as Mode A."""
+    configured = os.environ.get("TW_MARKET_SECURITY_MASTER_ROOT")
+    default = REPO_ROOT / "data" / "security_master"
+    return Path(configured).expanduser().resolve() if configured else default
 
 
 def utc_now() -> str:
@@ -100,9 +119,9 @@ class PersistentWatchlistStore:
     """SQLite authority with preview-bound transactional semantic mutations."""
 
     def __init__(self, *, root: Path | None = None, identity_service: Any | None = None, security_master_root: Path | None = None, now: Callable[[], str] = utc_now):
-        self.root = (root or DEFAULT_ROOT).resolve()
+        self.root = (root or default_root()).resolve()
         self.identity_service = identity_service
-        self.security_master_root = security_master_root or (REPO_ROOT / "data" / "security_master")
+        self.security_master_root = (security_master_root or default_security_master_root()).resolve()
         self.now = now
         self.root.mkdir(parents=True, exist_ok=True)
         self.path = self.root / DATABASE_NAME
@@ -514,4 +533,4 @@ class PersistentWatchlistStore:
 
 
 def production_store() -> PersistentWatchlistStore:
-    return PersistentWatchlistStore()
+    return PersistentWatchlistStore(root=default_root())

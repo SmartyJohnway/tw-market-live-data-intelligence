@@ -28,7 +28,7 @@
       "requires_approval_for_execution": false,
       "possible_timing_classes": [],
       "possible_fallbacks": [],
-      "known_limitations": ["actual runtime execution left for M8R-06"]
+      "known_limitations": ["identity is resolved by the installation-local Security Master; unsupported or uninitialized identities fail closed"]
     },
     {
       "capability_id": "current_observation",
@@ -186,8 +186,8 @@
     "TAIFEX night-session interpretation is unsupported",
     "TAIFEX Taipei closure authority is unresolved",
     "not every requested evidence need is runtime-executable yet",
-    "target name resolution implementation belongs to M8R-06",
-    "Unified orchestrator is not implemented in M8R-05A",
+    "target resolution is governed by the installation-local Security Master and may fail closed when it is not initialized",
+    "the Unified orchestrator supports only explicitly confirmed, bounded execute-once operations",
     "no scheduler",
     "no continuous polling",
     "no auto retry",

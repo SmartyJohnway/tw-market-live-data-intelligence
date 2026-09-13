@@ -8,7 +8,15 @@ from fastapi.testclient import TestClient
 from jsonschema import Draft202012Validator
 
 from scripts.m8r_08g_identity_service import TaiwanMarketIdentityService
-from scripts.m8r_09_persistent_watchlists import PersistentWatchlistStore, WatchlistError, canonical_json, validate_contract
+from scripts.m8r_09_persistent_watchlists import (
+    PersistentWatchlistStore,
+    WatchlistError,
+    canonical_json,
+    default_root,
+    default_security_master_root,
+    production_store,
+    validate_contract,
+)
 
 
 def record(code: str, isin: str, market: str = "TWSE", kind: str = "common_share", *, successor: str | None = None):
@@ -48,6 +56,16 @@ def test_formal_schemas_parse_and_fresh_state(store):
         Draft202012Validator.check_schema(json.loads(path.read_text(encoding="utf-8")))
     assert store.list_watchlists() == {"state": "NO_WATCHLISTS", "watchlists": []}
     assert store.verify_integrity()["status"] == "PASS"
+
+
+def test_production_store_honors_explicit_installation_root(tmp_path, monkeypatch):
+    installation_root = tmp_path / "installation-local-watchlists"
+    security_root = tmp_path / "installation-local-security-master"
+    monkeypatch.setenv("TW_MARKET_WATCHLIST_ROOT", str(installation_root))
+    monkeypatch.setenv("TW_MARKET_SECURITY_MASTER_ROOT", str(security_root))
+    assert default_root() == installation_root.resolve()
+    assert default_security_master_root() == security_root.resolve()
+    assert production_store().root == installation_root.resolve()
 
 
 def test_domain_schema_positive_and_negative_contracts(store):

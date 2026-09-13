@@ -79,8 +79,7 @@ def test_exactly_six_tool_contracts_with_one_bounded_action():
         if tool.name != "market_fetch_evidence":
             assert tool.annotations.idempotentHint is True
             assert tool.annotations.openWorldHint is False
-    assert all(tool.annotations.readOnlyHint is True for tool in first[:3])
-    assert all(tool.annotations.readOnlyHint is False for tool in first[3:])
+    assert all(tool.annotations.readOnlyHint is True for tool in first[:5])
     action = first[-1]
     assert action.annotations.readOnlyHint is False
     assert action.annotations.destructiveHint is False

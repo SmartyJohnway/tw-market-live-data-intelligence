@@ -7,14 +7,19 @@ import json
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, RedirectResponse
 from server.unified_workbench_router import router as unified_workbench_router
+from server.unified_mcp import LOCAL_SERVICE_CONTRACT_VERSION
 
 # Product server intentionally avoids importing live probe modules.
 # Future market-data execution belongs behind M5I authorization in a separate legacy/refresh app.
 
 app = FastAPI(
-    title="TW-Market Readonly Context API",
-    description="Readonly local M5F market-context API. Legacy live probes are disabled pending M5I authorization.",
-    version="1.0.0"
+    title="TW-Market Unified Evidence Local Service",
+    description=(
+        "Local-first governed Taiwan market evidence service for persistent Watchlists, "
+        "Unified Request validation, preview, explicit authorization, bounded execute-once, "
+        "Result/Audit reconstruction, and AI handoff."
+    ),
+    version=LOCAL_SERVICE_CONTRACT_VERSION,
 )
 
 from pathlib import Path

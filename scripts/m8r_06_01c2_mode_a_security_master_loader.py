@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import threading
 import time
 from dataclasses import dataclass
@@ -78,7 +79,19 @@ def get_production_mode_a_security_master(
             # active release.  An explicit non-default pointer remains a legacy
             # test/migration adapter and is never a production fallback.
             if Path(pointer_path) == POINTER_PATH:
-                _production_runtime = load_active_mode_a_security_master()
+                # Installation-local deployments may select an authority root
+                # through their process environment. This is not a fallback:
+                # the selected root must independently contain a valid active
+                # release, and an empty root reports NOT_INITIALIZED.
+                configured_root = os.environ.get("TW_MARKET_SECURITY_MASTER_ROOT")
+                if configured_root:
+                    _production_runtime = load_active_mode_a_security_master(
+                        security_master_root=Path(configured_root)
+                    )
+                else:
+                    # Preserve the public/default call shape and its existing
+                    # process-lifetime activation seam.
+                    _production_runtime = load_active_mode_a_security_master()
             else:
                 _production_runtime = load_mode_a_security_master(pointer_path)
     return _production_runtime

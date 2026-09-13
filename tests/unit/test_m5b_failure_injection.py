@@ -41,7 +41,7 @@ def test_wrong_hash():
         ("TWSE_OpenAPI", ["2330", "2330", "00929"], "research/live_probe_runs/m5b/x", "duplicate_targets"),
         ("TWSE_OpenAPI", ["*"], "research/live_probe_runs/m5b/x", "wildcard_target"),
         ("TWSE_OpenAPI", ["2330", "0050", "00929"], "research/live_probe_runs/m5b/../x", "output_path_unsafe"),
-        ("TWSE_OpenAPI", ["2330", "0050", "00929"], "/tmp/x", "output_path_unsafe"),
+        ("TWSE_OpenAPI", ["2330", "0050", "00929"], "/tmp/x", "output_outside_m5b"),
     ],
 )
 def test_execution_scope_rejects_invalid_source_targets_and_output_paths(source, targets, output_dir, expected_code):

@@ -240,16 +240,28 @@ def recommended_next_steps(report: dict[str, Any]) -> list[str]:
     ]
 
 
-def write_report(report: dict[str, Any]) -> None:
-    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+def report_paths(output_root: Path | None = None) -> tuple[Path, Path]:
+    """Return report paths, allowing release validation to stay outside the source tree."""
+    if output_root is None:
+        return JSON_REPORT, MD_REPORT
+    return (
+        output_root / "latest_browser_operator_e2e_report.json",
+        output_root / "latest_browser_operator_e2e_report.md",
+    )
+
+
+def write_report(report: dict[str, Any], output_root: Path | None = None) -> tuple[Path, Path]:
+    json_report, md_report = report_paths(output_root)
+    json_report.parent.mkdir(parents=True, exist_ok=True)
     report["final_status"] = final_status(report)
     report["recommended_next_steps"] = recommended_next_steps(report)
-    JSON_REPORT.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    json_report.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     md = ["# M6G Browser/Operator E2E Acceptance", "", f"Generated: {report['generated_at_utc']}", f"Mode: `{report['mode']}`", f"Final status: `{report['final_status']}`", "", "## Results"]
     for key in ["playwright_available", "fastapi_started", "frontend_loaded", "watchlist_payload_checked", "id_generation_status", "validate_request_status", "plan_request_status", "execute_request_status", "unexpected_execute_requests", "polling_detected", "network_calls_may_have_occurred", "ssl_policy", "requested_ssl_policy", "effective_server_env_ssl_policy", "browser_execute_ssl_policy_source"]:
         md.append(f"- {key}: `{report.get(key)}`")
     md += ["", "## Caveats", *(f"- {c}" for c in report.get("caveats") or ["None"]), "", "## Recommended next steps", *(f"- `{c}`" for c in report["recommended_next_steps"])]
-    MD_REPORT.write_text("\n".join(md) + "\n", encoding="utf-8")
+    md_report.write_text("\n".join(md) + "\n", encoding="utf-8")
+    return json_report, md_report
 
 
 def build_report(args: argparse.Namespace) -> dict[str, Any]:
@@ -280,7 +292,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "browser_execute_ssl_policy_source": "default",
         "live_execution": {"executed": False, "explicit": execute_live, "bounded": True},
         "targets": DEFAULT_TARGETS,
-        "artifacts_written": [display_path(JSON_REPORT), display_path(MD_REPORT)],
+        "artifacts_written": [display_path(path) for path in report_paths(getattr(args, "report_dir", None))],
         "mode_a_reference": {"m5f_canonical": True, "mutated": False},
         "mode_b_observation": {"canonical": False, "reference_only_is_not_current_price": True, "ssl_policy_api_checks": ssl_policy_api_checks()},
         "mode_c_conversation": {"contract": "M5N conversation package", "parallel_contract_created": False},
@@ -322,10 +334,15 @@ def main() -> int:
     mode.add_argument("--check-only", action="store_true")
     mode.add_argument("--execute-bounded-live-check", action="store_true")
     ap.add_argument("--ssl-policy", choices=sorted(VALID_SSL_POLICIES), default="strict")
+    ap.add_argument(
+        "--report-dir",
+        type=Path,
+        help="Write browser acceptance reports outside the repository during release validation.",
+    )
     args = ap.parse_args()
     report = build_report(args)
-    write_report(report)
-    print(json.dumps({"status": report["final_status"], "json": display_path(JSON_REPORT), "markdown": display_path(MD_REPORT)}, indent=2))
+    json_report, md_report = write_report(report, args.report_dir)
+    print(json.dumps({"status": report["final_status"], "json": display_path(json_report), "markdown": display_path(md_report)}, indent=2))
     return 0 if report["final_status"] in {"pass", "pass_with_caveats", "skipped_with_caveats"} else 1
 
 

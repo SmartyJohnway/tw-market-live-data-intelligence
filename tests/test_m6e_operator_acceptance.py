@@ -172,6 +172,21 @@ def test_check_only_writes_only_m6e_report_folder(tmp_path, monkeypatch):
     assert m6e.MD_REPORT.resolve().is_relative_to(allowed.resolve())
 
 
+def test_explicit_output_root_keeps_reports_and_conversation_outside_repository(tmp_path, monkeypatch):
+    root = tmp_path / "release-evidence"
+    monkeypatch.setattr(m6e, "conversation_acceptance", lambda output_dir=None: {"status": "pass", "checks": [], "output_dir": str(output_dir), "schema_version": "test"})
+    monkeypatch.setattr(m6e, "run", lambda *args, **kwargs: {"label": "test", "status": "pass", "returncode": 0})
+    monkeypatch.setattr(m6e, "run_json", lambda *args, **kwargs: {"label": "test", "status": "pass", "returncode": 0, "caveats": []})
+    monkeypatch.setattr(m6e, "fastapi_acceptance", lambda _watchlist: {"status": "pass", "checks": [], "network_calls": False})
+    monkeypatch.setattr(m6e, "frontend_acceptance", lambda: {"status": "pass", "checks": []})
+    monkeypatch.setattr(m6e, "run_m5k_live_observation_tool", lambda _payload: {"status": "failed_closed"})
+    report = m6e.build_report("check-only", "strict", False, root)
+    json_report, md_report = m6e.write_report(report, root)
+    assert json_report.resolve().is_relative_to(root.resolve())
+    assert md_report.resolve().is_relative_to(root.resolve())
+    assert report["conversation_package"]["output_dir"] == str(root / "conversation_context")
+
+
 def test_invalid_ssl_policy_acceptance_surfaces_fail_closed():
     client = TestClient(app)
     watchlist = json.loads((ROOT / "config/m5k_default_watchlist.json").read_text(encoding="utf-8"))

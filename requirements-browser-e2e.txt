@@ -1,2 +1,4 @@
 -r requirements.txt
-playwright
+# Browser acceptance is a separately installed, reproducible test extra.
+# Keep this exact pin aligned with the RC validation environment.
+playwright==1.55.0

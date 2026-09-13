@@ -22,6 +22,23 @@ FORBIDDEN_FIELDS = {"target_price", "ranking", "broker_order", "raw_payload", "r
 
 
 def utc_now() -> str: return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def display_path(path: Path) -> str:
+    try:
+        return path.relative_to(ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+def report_paths(output_root: Path | None = None) -> tuple[Path, Path]:
+    """Return report destinations without forcing release checks to write the tree."""
+    if output_root is None:
+        return JSON_REPORT, MD_REPORT
+    return (
+        output_root / "m6e_operator_acceptance.json",
+        output_root / "m6e_operator_acceptance.md",
+    )
 def sha_dir(path: Path) -> str:
     h = hashlib.sha256()
     for p in sorted(x for x in path.rglob("*") if x.is_file()):
@@ -122,9 +139,12 @@ def frontend_acceptance() -> dict[str, Any]:
     ]
     return {"status": "pass" if all(c["status"] == "pass" for c in checks) else "fail", "checks": checks}
 
-def conversation_acceptance() -> dict[str, Any]:
-    res = build_package()
-    j = M5N_OUT_DIR/"conversation_context.json"; m = M5N_OUT_DIR/"conversation_context.md"
+def conversation_acceptance(output_dir: Path | None = None) -> dict[str, Any]:
+    destination = output_dir or M5N_OUT_DIR
+    # Preserve the long-standing no-argument callable seam for older tests and
+    # callers while making release validation output-root explicit.
+    res = build_package() if output_dir is None else build_package(out_dir=destination)
+    j = destination/"conversation_context.json"; m = destination/"conversation_context.md"
     text = j.read_text(encoding="utf-8") + "\n" + m.read_text(encoding="utf-8")
     data = json.loads(j.read_text(encoding="utf-8"))
     lower_text = text.lower()
@@ -141,9 +161,9 @@ def conversation_acceptance() -> dict[str, Any]:
         return []
     forbidden_found = sorted(k for k in set(bad_keys(data)) if k in {"broker_order", "raw_payload", "response_sample", "raw_fields_sample"})
     checks = [ok("builder runs", res.get("status") == "ok"), ok("json exists", j.exists()), ok("markdown exists", m.exists()), ok("canonical summary", "canonical" in text.lower()), ok("safety governance", ("no trading" in lower_text or "trading" in lower_text) and "governance" in lower_text), ok("observation summary if available", "observation" in text.lower()), ok("source health summary if available", "source" in text.lower()), ok("no forbidden raw/trading fields", not forbidden_found, forbidden_found)]
-    return {"status": "pass" if all(c["status"] == "pass" for c in checks) else "fail", "checks": checks, "output_dir": M5N_OUT_DIR.relative_to(ROOT).as_posix(), "schema_version": data.get("schema_version")}
+    return {"status": "pass" if all(c["status"] == "pass" for c in checks) else "fail", "checks": checks, "output_dir": display_path(destination), "schema_version": data.get("schema_version")}
 
-def build_report(mode: str, ssl_policy: str, execute_live: bool) -> dict[str, Any]:
+def build_report(mode: str, ssl_policy: str, execute_live: bool, output_root: Path | None = None) -> dict[str, Any]:
     before = sha_dir(M5F_DIR)
     watchlist = normalize_watchlist(load_json(DEFAULT_WATCHLIST_PATH))
     command_checks = [run("local workbench", [sys.executable,"scripts/run_local_workbench.py"]), run("environment diagnostics", [sys.executable,"scripts/run_environment_diagnostics.py"]), run_json("operator preflight", [sys.executable,"scripts/run_operator_preflight.py","--json","--timeout-seconds","300"]), run("M5F validator", [sys.executable,"scripts/validate_m5f_canonical_market_context_package.py","--package-dir","research/staging/m5f/m5f_canonical_market_context_01"]), run("M5IJ", [sys.executable,"scripts/run_m5ij_end_to_end_acceptance.py","--check-only"]), run("M5K", [sys.executable,"scripts/run_m5k_postmerge_validation.py","--check-only"]), run("M5Q", [sys.executable,"scripts/run_m5q_source_health_probe.py","--check-only"]), run("M6B", [sys.executable,"scripts/run_m6b_source_contract_preflight.py","--check-only"]), run("MCP startup", [sys.executable,"server/mcp_server.py","--startup-check"])]
@@ -151,7 +171,8 @@ def build_report(mode: str, ssl_policy: str, execute_live: bool) -> dict[str, An
     fastapi = fastapi_acceptance(watchlist); mcp_invalid = run_m5k_live_observation_tool({"confirm_live_observation": True, "watchlist": watchlist, "ssl_policy":"invalid"})
     tools = asyncio.run(list_tools())
     mcp = {"status": "pass" if mcp_invalid.get("status") == "failed_closed" and any(t.name == "get_canonical_market_context" for t in tools) else "fail", "startup_check": command_checks[-1], "invalid_ssl_policy": mcp_invalid, "readonly_tools_available": [t.name for t in tools]}
-    conv = conversation_acceptance(); front = frontend_acceptance(); after = sha_dir(M5F_DIR)
+    conversation_root = output_root / "conversation_context" if output_root else None
+    conv = conversation_acceptance(conversation_root); front = frontend_acceptance(); after = sha_dir(M5F_DIR)
     mode_a = {"status":"pass" if before == after and fastapi["status"]=="pass" and command_checks[3]["status"]=="pass" and command_checks[-1]["status"]=="pass" else "fail", "m5f_exists": M5F_DIR.exists(), "m5f_unchanged": before == after, "canonical_readable": (M5F_DIR/"canonical_market_context.json").exists(), "ai_context_pack_exists": (M5F_DIR/"ai_context_pack.md").exists(), "chatgpt_briefing_exists": (M5F_DIR/"chatgpt_briefing.md").exists()}
     mode_b = {"status":"pass" if validation.get("valid") and command_checks[5]["status"]=="pass" and command_checks[6]["status"]=="pass" and command_checks[7]["status"]=="pass" else "fail", "default_watchlist_exists": DEFAULT_WATCHLIST_PATH.exists(), "watchlist_valid": validation.get("valid"), "planned_routes": len(plan.get("planned_routes", [])), "latest_observation_readable": latest_obs.get("status") != "error", "observation_remains_noncanonical": plan.get("governance",{}).get("canonical") is False, "reference_only_not_current_price": True, "stale_or_closed_session_is_degraded": True}
     mode_c = {"status": conv["status"], **conv}
@@ -165,24 +186,27 @@ def build_report(mode: str, ssl_policy: str, execute_live: bool) -> dict[str, An
     summary = {"operator_ready": status != "fail", "release_preflight_ready": status != "fail", "mode_a_ready": mode_a["status"]=="pass", "mode_b_check_only_ready": mode_b["status"]=="pass", "mode_c_ready": mode_c["status"]=="pass"}
     return {"schema_version":"m6e_operator_acceptance.v1", "generated_at_utc": utc_now(), "mode": mode, "network_calls_may_have_occurred": execute_live, "ssl_policy": ssl_policy, "repository": repository_version(), "python": sys.version, "platform": platform.platform(), "checks": all_checks, "failed_checks": failed_checks, "mode_a": mode_a, "mode_b": mode_b, "mode_c": mode_c, "fastapi": fastapi, "mcp": mcp, "frontend": front, "conversation_package": conv, "operator_workbench": command_checks[0], "operator_preflight": command_checks[2], "child_workflow_caveats": child_workflow_caveats, "governance": {"no_m5f_mutation": before == after, "check_only_non_network": not execute_live, "no_polling": True, "no_scheduler": True, "no_trading_output": True, "no_raw_payload_leakage": conv["status"]=="pass"}, "final_status": status, "operator_acceptance_summary": summary, "caveats": caveats, "recommended_next_steps": ["python scripts/run_local_workbench.py", "python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01", "python scripts/run_m5k_postmerge_validation.py --check-only", "python scripts/build_m5n_conversation_context.py", "python scripts/run_operator_preflight.py --json --timeout-seconds 300"]}
 
-def write_report(report: dict[str, Any]) -> None:
-    REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    JSON_REPORT.write_text(json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False)+"\n", encoding="utf-8")
+def write_report(report: dict[str, Any], output_root: Path | None = None) -> tuple[Path, Path]:
+    json_report, md_report = report_paths(output_root)
+    json_report.parent.mkdir(parents=True, exist_ok=True)
+    json_report.write_text(json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False)+"\n", encoding="utf-8")
     md = ["# M6E Operator Acceptance Report", "", f"Generated: {report['generated_at_utc']}", f"Final status: `{report['final_status']}`", "", "## Operator readiness"]
     for k,v in report["operator_acceptance_summary"].items(): md.append(f"- {k}: {v}")
     md += ["", "## Caveats", *(f"- {c}" for c in report["caveats"] or ["None"]), "", "## Recommended next commands", *(f"- `{c}`" for c in report["recommended_next_steps"])]
-    MD_REPORT.write_text("\n".join(md)+"\n", encoding="utf-8")
+    md_report.write_text("\n".join(md)+"\n", encoding="utf-8")
+    return json_report, md_report
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="M6E operator acceptance and release preflight. Check-only is non-network.")
     mode = ap.add_mutually_exclusive_group(required=True); mode.add_argument("--check-only", action="store_true"); mode.add_argument("--execute-bounded-live-check", action="store_true")
     ap.add_argument("--ssl-policy", default="strict", choices=["strict","compatibility","unsafe-explicit"])
+    ap.add_argument("--output-root", type=Path, help="Write all generated acceptance outputs outside the repository.")
     args = ap.parse_args()
-    report = build_report("execute-bounded-live-check" if args.execute_bounded_live_check else "check-only", args.ssl_policy, args.execute_bounded_live_check)
+    report = build_report("execute-bounded-live-check" if args.execute_bounded_live_check else "check-only", args.ssl_policy, args.execute_bounded_live_check, args.output_root)
     if args.execute_bounded_live_check:
         report["live_execution"] = {"implemented": False, "reason": "M6E live aggregation is intentionally not implemented; run existing bounded M5K/M6B commands explicitly."}
         report["network_calls_may_have_occurred"] = False
-    write_report(report)
-    print(json.dumps({"status": report["final_status"], "json": JSON_REPORT.relative_to(ROOT).as_posix(), "markdown": MD_REPORT.relative_to(ROOT).as_posix()}, indent=2))
+    json_report, md_report = write_report(report, args.output_root)
+    print(json.dumps({"status": report["final_status"], "json": display_path(json_report), "markdown": display_path(md_report)}, indent=2))
     return 0 if report["final_status"] != "fail" else 1
 if __name__ == "__main__": raise SystemExit(main())

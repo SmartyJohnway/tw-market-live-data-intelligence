@@ -1,13 +1,23 @@
 {
   "schema_version": "unified_market_evidence_result.v1",
+  "result_id": "umeresult-v1-0123456789abcdef0123",
+  "result_hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
   "request_id": "req-1234",
+  "generated_at": "2026-07-20T00:00:00Z",
+  "request_summary": {
+    "execution_mode": "preview",
+    "target_count": 1,
+    "requested_data_needs": ["recent_performance", "current_observation"],
+    "required_data_needs": ["recent_performance"],
+    "optional_data_needs": ["current_observation"]
+  },
   "status": "full_success",
   "targets": [
     {
       "client_target_reference": null,
       "resolution": {
         "status": "resolved",
-        "canonical_target_id": "TWSE_2330",
+        "canonical_target_id": "TWSE:2330",
         "security_code": "2330",
         "security_name": "TSMC",
         "market": "TWSE"
@@ -16,17 +26,13 @@
         "recent_performance": {
           "status": "success",
           "timing_class": "official_eod",
-          "observed_fields": {
-            "avg_price_20d": 1000.5
-          },
+          "observed_fields": {"avg_price_20d": 1000.5},
           "citation_ids": ["cit-1"]
         },
         "current_observation": {
           "status": "success",
           "timing_class": "liveish_intraday_snapshot",
-          "observed_fields": {
-            "last_price": 1050.0
-          },
+          "observed_fields": {"last_price": 1050.0},
           "citation_ids": ["cit-2"]
         }
       },
@@ -51,8 +57,8 @@
           "source_contract_id": "twse_mis",
           "retrieved_at": "2026-07-20T00:00:00Z",
           "effective_trade_date": "2026-07-20",
-          "artifact_reference": "data/recent_perf_2330_mis.json",
-          "normalized_evidence_hash": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+          "artifact_reference": "data/current_2330.json",
+          "normalized_evidence_hash": "b1c2d3e4f5a6b1c2d3e4f5a6b1c2d3e4f5a6b1c2d3e4f5a6b1c2d3e4f5a6b1c2"
         }
       ]
     }
@@ -60,7 +66,8 @@
   "partial_failures": [],
   "request_caveats": [],
   "audit_reference": {
-    "audit_id": "aud-1234",
-    "execution_time_ms": 150
+    "audit_package_id": "umeap-v1-0123456789abcdef0123",
+    "schema_version": "unified_market_evidence_audit_package.v1",
+    "relative_path": "audit/umeap-v1-0123456789abcdef0123.json"
   }
 }

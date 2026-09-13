@@ -2,7 +2,7 @@
   "schema_version": "unified_market_evidence_capability_catalog.v1",
   "portable_metadata": {
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json",
-    "canonical_sha256": "3bb0d8508d2b33353cd5a53c40811d68d9adedd5cfce1f007970821469e24f8f",
+    "canonical_sha256": "be8d17a23058c2ce90090f4348280369a2c7d1905641669ec8a42b5e54cd72f6",
     "generator_version": "M8R-05A-F2-v3"
   },
   "supported_markets": {
@@ -33,7 +33,7 @@
       "possible_timing_classes": [],
       "possible_fallbacks": [],
       "known_limitations": [
-        "actual runtime execution left for M8R-06"
+        "identity is resolved by the installation-local Security Master; unsupported or uninitialized identities fail closed"
       ]
     },
     {
@@ -193,8 +193,8 @@
     "TAIFEX night-session interpretation is unsupported",
     "TAIFEX Taipei closure authority is unresolved",
     "not every requested evidence need is runtime-executable yet",
-    "target name resolution implementation belongs to M8R-06",
-    "Unified orchestrator is not implemented in M8R-05A",
+    "target resolution is governed by the installation-local Security Master and may fail closed when it is not initialized",
+    "the Unified orchestrator supports only explicitly confirmed, bounded execute-once operations",
     "no scheduler",
     "no continuous polling",
     "no auto retry",

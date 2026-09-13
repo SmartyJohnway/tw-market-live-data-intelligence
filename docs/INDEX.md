@@ -1,14 +1,16 @@
 # Documentation Index
 
-Master map for the M5 Local Release Candidate. Links below point to current product docs unless explicitly marked archive or historical review.
+Master map for the V1 release candidate. Links below point to current product
+docs unless explicitly marked archive or historical review.
 
 ## Start here
 
 - [Repository README](../README.md)
+- [V1 Public Contracts](contracts/V1_PUBLIC_CONTRACTS.md)
 - [Local Workbench](operator/LOCAL_WORKBENCH.md)
 - [Operator Quick Start](operator/QUICK_START.md)
 - [Mode A/B/C Walkthrough](operator/MODE_ABC_WALKTHROUGH.md)
-- [M5 Local Release Candidate](release/M5_LOCAL_RELEASE_CANDIDATE.md)
+- [V1 Release Candidate](release/V1_RELEASE_CANDIDATE.md)
 - [Project History](PROJECT_HISTORY.md)
 
 ## Architecture
@@ -50,6 +52,8 @@ Master map for the M5 Local Release Candidate. Links below point to current prod
 ## Release docs
 
 - [Release README](release/README.md)
+- [V1 Release Candidate](release/V1_RELEASE_CANDIDATE.md)
+- [V1 Migration](release/V1_MIGRATION.md)
 - [Release Checklist](release/RELEASE_CHECKLIST.md)
 - [M5 Local Release Candidate](release/M5_LOCAL_RELEASE_CANDIDATE.md)
 - [M5R Documentation Audit](release/M5R_DOCUMENTATION_AUDIT.md)

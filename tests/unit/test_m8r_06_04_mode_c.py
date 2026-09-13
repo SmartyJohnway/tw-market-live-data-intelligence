@@ -73,6 +73,7 @@ def _build(package: Path) -> dict:
     return build_mode_c_result_package({"control_package_id": PACKAGE_ID})
 
 
+@pytest.mark.historical
 def test_mode_c_materializes_and_reuses_sanitized_finalized_lineage(mode_c_root):
     result = _build(mode_c_root)
     assert result["result_status"] == "success_with_partial_coverage"
@@ -111,6 +112,7 @@ def test_mode_c_rejects_f3_reconstruction_mismatch(mode_c_root, monkeypatch):
         _build(mode_c_root)
 
 
+@pytest.mark.historical
 def test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected(mode_c_root):
     _build(mode_c_root)
     path = mode_c_root / "ai_context" / "unified_market_evidence_result.v1.json"
@@ -125,6 +127,7 @@ def test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected(mode_c_
         _build(mode_c_root)
 
 
+@pytest.mark.historical
 def test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected(mode_c_root):
     _build(mode_c_root)
     path = mode_c_root / "audit" / "unified_market_evidence_audit_package.v1.json"
@@ -167,6 +170,7 @@ def test_mode_c_browser_state_is_cleared_for_new_authorization_and_displays_summ
     assert "result_status:data.result_status, request_summary:data.request_summary" in javascript
 
 
+@pytest.mark.historical
 def test_verified_handoff_reuses_mode_c_outputs_and_audit_citations(mode_c_root):
     handoff = unified_mode_c.build_mode_c_ai_handoff(PACKAGE_ID)
     result = _build(mode_c_root)

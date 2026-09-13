@@ -1,0 +1,47 @@
+{
+  "schema_version": "v1_public_contract_inventory.v1",
+  "product_version_authority": "VERSION",
+  "product_version": "1.0.0-rc.1",
+  "api_contract_version": "unified_market_evidence_local_service.v1",
+  "public_api": {
+    "local_service": {
+      "base_path": "/api/unified",
+      "schemas": [
+        "schemas/unified_market_evidence_request.v1.schema.json",
+        "schemas/persistent_watchlist.v1.schema.json",
+        "schemas/persistent_watchlist_entry.v1.schema.json",
+        "schemas/persistent_watchlist_mutation_command.v1.schema.json",
+        "schemas/persistent_watchlist_mutation_preview.v1.schema.json"
+      ]
+    },
+    "workbench": {
+      "current_path": "/workbench/",
+      "legacy_mode_a_redirect": "/workbench/mode-a/"
+    },
+    "mcp_tools": [
+      "market_describe_capabilities",
+      "market_validate_request",
+      "market_preview_request",
+      "market_read_result",
+      "market_export_ai_handoff",
+      "market_fetch_evidence"
+    ]
+  },
+  "security_and_execution": {
+    "execution_confirmation": "confirm_execution",
+    "network_confirmation": "confirm_network_execution",
+    "watchlist_confirmation": "preview_id_and_preview_hash",
+    "public_errors": [
+      "SECURITY_MASTER_NOT_INITIALIZED",
+      "market_fetch_requires_execute_mode",
+      "WATCHLIST_CONFIRMATION_MISMATCH",
+      "WATCHLIST_PREVIEW_INTEGRITY_FAILED"
+    ]
+  },
+  "product_boundaries": {
+    "background_execution": false,
+    "trading": false,
+    "model_selected_urls": false,
+    "model_selected_executors": false
+  }
+}

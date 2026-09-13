@@ -1,10 +1,15 @@
-import pytest
 import json
 import subprocess
 from pathlib import Path
 import tempfile
 import sys
 import shutil
+
+import pytest
+
+# Only inventory referential integrity is a frozen historical replay node.  The
+# collection hook in tests/conftest.py marks that exact node; the remaining
+# tamper-detection regressions must remain active V1 coverage.
 
 FIXTURES_DIR = Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "m8r_05c"
 

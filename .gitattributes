@@ -3,3 +3,7 @@ research/staging/m5f/**/*.json text eol=lf
 research/staging/m5f/**/*.md text eol=lf
 research/staging/m5d/**/*.json text eol=lf
 research/staging/m5c/**/*.json text eol=lf
+
+# Portable catalog projections intentionally have a CRLF byte contract.
+skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json text eol=crlf
+skills/tw-market-evidence-agent/references/capability_quick_guide.md text eol=crlf

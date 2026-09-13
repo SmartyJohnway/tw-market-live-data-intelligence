@@ -46,23 +46,40 @@ def test_operator_preflight_resolves_authoritative_runners():
     assert any('forbidden_behavior_scanner.py' in c for c in rendered)
 
 
-def test_browser_and_bounded_live_resolve_m6g_modes():
+def test_output_root_is_forwarded_only_to_report_writing_runners(tmp_path):
+    rendered = [rtp.command_to_display(command) for command in rtp.resolve_profile('operator-preflight', output_root=tmp_path)]
+    m6e = next(command for command in rendered if 'run_m6e_operator_acceptance.py' in command)
+    assert f'--output-root {tmp_path / "m6e"}' in m6e
+    assert all('--output-root' not in command for command in rendered if 'run_m6e_operator_acceptance.py' not in command)
+
+
+def test_browser_profile_directs_its_evidence_outside_the_repository(tmp_path):
+    rendered = [rtp.command_to_display(command) for command in rtp.resolve_profile('browser-e2e', output_root=tmp_path)]
+    assert len(rendered) == 1
+    assert f'--report-dir {tmp_path / "v1-workbench-browser"}' in rendered[0]
+
+
+def test_browser_and_bounded_live_resolve_governed_browser_modes():
     browser = rtp.command_to_display(rtp.resolve_profile('browser-e2e')[0])
     bounded = rtp.command_to_display(rtp.resolve_profile('bounded-live', confirm_bounded_live=True, ssl_policy='compatibility')[0])
-    assert 'run_m6g_browser_operator_e2e.py --check-only' in browser
+    assert 'run_v1_workbench_browser_e2e.py' in browser
     assert 'run_m6g_browser_operator_e2e.py --execute-bounded-live-check --ssl-policy compatibility' in bounded
 
 
-def test_full_non_network_preserves_legacy_acceptance_gates():
+def test_full_non_network_preserves_current_acceptance_gates_and_records_historical_exclusions():
     rendered = [rtp.command_to_display(cmd) for cmd in rtp.resolve_profile('full-non-network')]
     joined = '\n'.join(rendered)
     assert rendered[0].endswith('-m pytest -m not network and not historical and not performance tests')
     assert 'run_local_delivery_acceptance.py --check-only' in joined
     assert 'run_ci_delivery_acceptance.py --check-only' in joined
-    assert 'run_m4_readiness_check.py --check-only' in joined
+    assert 'run_m4_readiness_check.py --check-only' not in joined
     assert 'run_m5ij_end_to_end_acceptance.py --check-only' in joined
     assert 'validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01' in joined
-    assert 'run_m5e_controlled_frontend_publication.py --check-only' in joined
+    assert 'run_m5e_controlled_frontend_publication.py --check-only' not in joined
+    exclusions = rtp.load_config()['profiles']['full-non-network']['historical_exclusions']
+    assert exclusions['classification'] == 'D_HISTORICAL_FIXTURE_PROVENANCE_DEBT'
+    assert 'scripts/run_m4_readiness_check.py --check-only' in exclusions['runners']
+    assert 'scripts/run_m5e_controlled_frontend_publication.py --check-only' in exclusions['runners']
 
 
 def test_composite_profile_metrics_ignore_authoritative_runner_output(monkeypatch, capsys):
