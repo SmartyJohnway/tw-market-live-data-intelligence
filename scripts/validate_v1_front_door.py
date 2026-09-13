@@ -16,7 +16,8 @@ SECURITY_CONTACT_FORM = ROOT / ".github" / "ISSUE_TEMPLATE" / "security_contact_
 REQUIRED_README_FACTS = (
     "1.0.0-rc.1",
     "v0.1.0",
-    "no RC tag or GitHub prerelease",
+    "latest prerelease is `v1.0.0-rc.1`",
+    "Final `v1.0.0` is not released, and Phase G has not started.",
     "Persistent Watchlists are supported",
     "no automatic polling, scheduler, startup market fetch",
     "python scripts/run_unified_workbench.py",

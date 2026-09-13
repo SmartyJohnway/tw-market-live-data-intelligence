@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0-rc.1 (unreleased)
+## 1.0.0-rc.1 (2026-09-13)
 
 - Freeze the current local-first public contract around Unified Request,
   validation, preview, explicit bounded execution, Result/Audit, and
@@ -8,7 +8,8 @@
 - Add installation-local Persistent Watchlists with immutable revisions,
   optimistic concurrency, and single-use mutation previews.
 - Establish tracked product-version authority and the V1 public-contract
-  inventory. No release tag or GitHub Release is created by this candidate.
+  inventory. This release candidate is published as `v1.0.0-rc.1`; final
+  `v1.0.0` remains unreleased.
 - Provide the canonical `/workbench/` operator surface, an explicit
   six-tool Unified MCP contract, and governed Result/Audit/AI handoff output.
 - Keep execution local-first and bounded: no polling, scheduler, background
