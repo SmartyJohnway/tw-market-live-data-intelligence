@@ -8,9 +8,10 @@ shows **Report a vulnerability** under this repository's Security tab, use that
 private channel with a concise reproduction, affected revision, impact, and
 safe remediation suggestion.
 
-If no private channel is available, open a minimal public issue requesting a
-private contact path. Do not include exploit details, credentials, tokens,
-cookies, private payloads, or proof-of-concept material in that issue.
+If no private channel is available, choose the **Security contact request**
+issue form and request a private reporting path. Do not include vulnerability
+or exploit details, credentials, tokens, cookies, private payloads, or
+proof-of-concept material in that public request.
 
 We will acknowledge a report, assess the affected local-first contract, and
 coordinate disclosure before publishing a fix. Do not attempt to bypass

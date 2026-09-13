@@ -9,6 +9,8 @@ ROOT = Path(__file__).resolve().parents[1]
 README = ROOT / "README.md"
 README_ZH = ROOT / "README.zh-TW.md"
 DOC_INDEX = ROOT / "docs" / "INDEX.md"
+SECURITY = ROOT / "SECURITY.md"
+SECURITY_CONTACT_FORM = ROOT / ".github" / "ISSUE_TEMPLATE" / "security_contact_request.yml"
 
 
 REQUIRED_README_FACTS = (
@@ -45,6 +47,7 @@ def validate() -> list[str]:
     readme = README.read_text(encoding="utf-8")
     readme_zh = README_ZH.read_text(encoding="utf-8")
     index = DOC_INDEX.read_text(encoding="utf-8")
+    security = SECURITY.read_text(encoding="utf-8")
     for fact in REQUIRED_README_FACTS:
         if fact not in readme:
             errors.append(f"front_door_missing:{fact}")
@@ -59,6 +62,12 @@ def validate() -> list[str]:
         errors.append("front_door_zh_tw_missing_current_watchlist_contract")
     if "Engineering history / protocol archive" not in index:
         errors.append("docs_index_missing_history_boundary")
+    if "Security contact request" not in security:
+        errors.append("security_policy_missing_executable_fallback")
+    if not SECURITY_CONTACT_FORM.is_file():
+        errors.append("security_contact_request_form_missing")
+    elif "required: true" not in SECURITY_CONTACT_FORM.read_text(encoding="utf-8"):
+        errors.append("security_contact_request_form_missing_required_safety_acknowledgement")
     for path in (
         ROOT / "docs" / "assets" / "workbench-overview.png",
         ROOT / "CONTRIBUTING.md",

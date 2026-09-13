@@ -1,0 +1,15 @@
+name: Security contact request
+description: Request a private security reporting path without disclosing vulnerability details.
+title: "security: request private reporting contact"
+labels: [security]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not disclose vulnerability or exploit details, credentials, tokens, cookies, private payloads, or proof-of-concept material in this public request."
+  - type: checkboxes
+    id: safe_public_request
+    attributes:
+      label: Public-request safety acknowledgement
+      options:
+        - label: I have not included vulnerability details, credentials, tokens, cookies, private payloads, or proof-of-concept material in this public issue.
+          required: true

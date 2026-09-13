@@ -56,4 +56,4 @@ Persistent Watchlists 已支援，但僅在本機保存，且只可經由明確 
 
 ## 參與與安全回報
 
-請先閱讀 [CONTRIBUTING.md](CONTRIBUTING.md)；安全問題請依 [SECURITY.md](SECURITY.md) 的私下回報流程處理。此專案禁止提交憑證、密鑰、cookie 或其他敏感資料。
+請先閱讀 [CONTRIBUTING.md](CONTRIBUTING.md)；安全問題請依 [SECURITY.md](SECURITY.md) 的安全回報流程處理。此專案禁止提交憑證、密鑰、cookie 或其他敏感資料。
