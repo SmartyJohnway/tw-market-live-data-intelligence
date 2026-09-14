@@ -82,6 +82,18 @@ See the [V1 public contracts](docs/contracts/V1_PUBLIC_CONTRACTS.md) and
 [current AI usage guide](docs/agent_usage_guide.md) for request, result, and
 handoff semantics.
 
+## MCP distribution
+
+The supported Windows MCPB distribution is published with
+[`v1.0.0`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0):
+[download the MCPB](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/tw-market-unified-mcp-v1.0.0-win-x64.mcpb)
+and its [SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/tw-market-unified-mcp-v1.0.0-win-x64.mcpb.sha256).
+It uses local stdio transport and provides the same six tools. The [official
+Registry entry](https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.SmartyJohnway/tw-market-live-data-intelligence)
+is `io.github.SmartyJohnway/tw-market-live-data-intelligence`. See
+[MCP distribution](docs/distribution/MCP_DISTRIBUTION.md) for installation
+scope, integrity, and Security Master boundaries.
+
 ## Data and source caveats
 
 Capability support, currentness, source provenance, and execution eligibility

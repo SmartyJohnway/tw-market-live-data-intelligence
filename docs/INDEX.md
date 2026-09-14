@@ -11,6 +11,7 @@ docs unless explicitly marked archive or historical review.
 - [Operator Quick Start](operator/QUICK_START.md)
 - [Mode A/B/C Walkthrough](operator/MODE_ABC_WALKTHROUGH.md)
 - [V1 Release](release/V1_RELEASE.md)
+- [Unified MCP Distribution](distribution/MCP_DISTRIBUTION.md)
 - [Project History](PROJECT_HISTORY.md)
 
 ## Architecture

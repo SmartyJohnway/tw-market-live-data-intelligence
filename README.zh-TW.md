@@ -48,6 +48,11 @@ MCP 固定提供六個受治理工具：
 `market_preview_request`、`market_read_result`、
 `market_export_ai_handoff`、`market_fetch_evidence`。
 
+## MCP 發行套件
+
+Windows MCPB 套件隨
+[`v1.0.0`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0)發行：可[下載 MCPB](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/tw-market-unified-mcp-v1.0.0-win-x64.mcpb)，並以其 [SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/tw-market-unified-mcp-v1.0.0-win-x64.mcpb.sha256)驗證。它採用本機 stdio，並提供相同六個工具。官方 [MCP Registry entry](https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.SmartyJohnway/tw-market-live-data-intelligence) 是 `io.github.SmartyJohnway/tw-market-live-data-intelligence`；安裝範圍、完整性與 Security Master 邊界請見 [MCP 發行說明](docs/distribution/MCP_DISTRIBUTION.md)。
+
 Persistent Watchlists 已支援，但僅在本機保存，且只可經由明確 preview/commit 變更。系統不提供自動輪詢、排程器、啟動時市場取得、Watchlist 驅動的自動執行、交易或即時性保證。
 
 ## 現行產品與歷史資料

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.SmartyJohnway/tw-market-live-data-intelligence",
+  "title": "TW-Market Live Data Intelligence",
+  "description": "Local-first Taiwan market evidence for AI agents: Watchlists, governed MCP, audited execute-once.",
+  "repository": {
+    "url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/tw-market-unified-mcp-v1.0.0-win-x64.mcpb",
+      "fileSha256": "c60f2fbbfb2b4d34191d84bc5631dc7df27f39aaa7dd61c0a94f41465b7e529b",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
