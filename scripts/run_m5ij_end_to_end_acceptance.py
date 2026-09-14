@@ -119,11 +119,13 @@ def run_checks():
     readme=(REPO/'README.md').read_text(encoding='utf-8')
     # Historical M5I wording is optional now that the README is governed by
     # the V1 Unified product contract. Keep this runner fail-closed against
-    # the superseded M3G-08 claim while accepting either audited wording.
+    # the superseded M3G-08 claim while accepting an audited legacy,
+    # pre-publication, or published-stable V1 statement.
     readme_ok = 'M3G-08' not in readme and (
         'disabled pending M5I' in readme
         or 'V1 release candidate' in readme
         or 'The repository is preparing candidate version' in readme
+        or 'The current stable release is `v1.0.0`' in readme
     )
     record_check(checks, 'readme_current_or_legacy_governance_wording', readme_ok, {'reason': 'Stale M3G-08 wording found or no governed README product statement'})
 

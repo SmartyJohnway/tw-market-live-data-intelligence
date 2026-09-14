@@ -46,8 +46,8 @@ def required_release_patterns() -> tuple[str, ...]:
         return (
             r"productversion\s*=\s*`1\.0\.0`",
             r"v1\.0\.0-rc\.1",
-            r"latest\s+prerelease\s+is\s+`v1\.0\.0-rc\.1`",
-            r"final\s+`v1\.0\.0`\s+has\s+not\s+yet\s+been\s+published,\s+and\s+phase\s+g\s+has\s+not\s+started",
+            r"current\s+stable\s+release\s+is[\s\S]{0,180}?v1\.0\.0",
+            r"phase\s+g\s+has\s+not\s+started",
         )
     return ()
 
@@ -79,6 +79,12 @@ def validate() -> list[str]:
     for claim in FORBIDDEN_CURRENT_CLAIMS:
         if claim in readme:
             errors.append(f"front_door_forbidden_current_claim:{claim}")
+    if product_version() == "1.0.0" and re.search(
+        r"final\s+`v1\.0\.0`\s+has\s+not\s+yet\s+been\s+published",
+        readme,
+        flags=re.IGNORECASE,
+    ):
+        errors.append("front_door_stale_final_promotion_release_status")
     if (
         "Persistent Watchlists" not in readme_zh
         or "preview/commit" not in readme_zh

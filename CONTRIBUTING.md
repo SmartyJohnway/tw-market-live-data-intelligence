@@ -23,6 +23,5 @@ Security Master acquisition, or data mutation merely to make a test pass.
 
 ## Release status
 
-The repository is preparing final ProductVersion `1.0.0` from the published
-`v1.0.0-rc.1` prerelease. Final `v1.0.0` is not yet published. See [the V1
-release candidate guide](docs/release/V1_RELEASE_CANDIDATE.md).
+The current stable ProductVersion and GitHub Release are `1.0.0`; published
+prerelease history remains `v1.0.0-rc.1`. See [the V1 release guide](docs/release/V1_RELEASE.md).
