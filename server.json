@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.smartyjohnway/tw-market-live-data-intelligence",
+  "name": "io.github.SmartyJohnway/tw-market-live-data-intelligence",
   "title": "TW-Market Live Data Intelligence",
   "description": "Local-first Taiwan market evidence for AI agents: Watchlists, governed MCP, audited execute-once.",
   "repository": {

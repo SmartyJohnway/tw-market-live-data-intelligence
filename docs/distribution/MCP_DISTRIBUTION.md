@@ -42,11 +42,11 @@ background polling, automatic Watchlist execution, or a realtime guarantee.
 
 ## Registry metadata
 
-The proposed official MCP Registry identity is
-`io.github.smartyjohnway/tw-market-live-data-intelligence`. The Registry is a
-preview service, and publication requires the repository owner's GitHub device
-authorization through the official `mcp-publisher` tool. Until that step is
-completed, use the MCPB asset above as the supported distribution path.
+The official MCP Registry identity is
+[`io.github.SmartyJohnway/tw-market-live-data-intelligence`](https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.SmartyJohnway/tw-market-live-data-intelligence).
+The Registry is a preview service. Its published metadata points to the same
+Windows MCPB asset; use that local distribution path when your MCP client
+supports MCPB.
 
 The release asset is bound by SHA-256:
 
