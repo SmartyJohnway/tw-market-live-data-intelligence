@@ -17,7 +17,7 @@ CURRENT_DOCUMENTS = (
     ROOT / "README.md",
     ROOT / "CHANGELOG.md",
     ROOT / "docs/contracts/v1_public_contracts.json",
-    ROOT / "docs/release/V1_RELEASE_CANDIDATE.md",
+    ROOT / "docs/release/V1_RELEASE.md",
 )
 
 

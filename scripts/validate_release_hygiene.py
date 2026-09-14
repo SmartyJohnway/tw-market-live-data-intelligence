@@ -18,6 +18,7 @@ CURRENT_DOCUMENTS = (
     "docs/contracts/V1_PUBLIC_CONTRACTS.md",
     "docs/contracts/V1_API_ERROR_POLICY.md",
     "docs/release/README.md",
+    "docs/release/V1_RELEASE.md",
     "docs/release/V1_RELEASE_CANDIDATE.md",
     "docs/release/V1_MIGRATION.md",
 )

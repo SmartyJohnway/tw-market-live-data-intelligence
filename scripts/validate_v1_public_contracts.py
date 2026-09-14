@@ -25,7 +25,10 @@ EXPECTED_TOOLS = (
 
 
 def readme_current_product_truth_failures(
-    readme_path: Path, *, current_product_version: str = "1.0.0-rc.1"
+    readme_path: Path,
+    *,
+    current_product_version: str = "1.0.0-rc.1",
+    release_lifecycle_state: str | None = None,
 ) -> list[str]:
     """Return contradictions that would misdescribe the current V1 product."""
     text = readme_path.read_text(encoding="utf-8")
@@ -34,15 +37,19 @@ def readme_current_product_truth_failures(
         failures.append("readme_missing_persistent_watchlist_support")
     if re.search(r"no[^\\n.]*persistent watchlist", text, flags=re.IGNORECASE):
         failures.append("readme_persistent_watchlist_contradiction")
-    release_patterns_by_version = {
-        "1.0.0-rc.1": (
+    if release_lifecycle_state is None:
+        release_lifecycle_state = (
+            "published_rc" if current_product_version == "1.0.0-rc.1" else "stable_published"
+        )
+    release_patterns_by_state = {
+        "published_rc": (
             r"1\.0\.0-rc\.1",
             r"v0\.1\.0",
             r"latest\s+prerelease\s+(?:is|=|:)\s+[`*_]*v1\.0\.0-rc\.1",
             r"final\s+[`*_]*v1\.0\.0[`*_]*\s+(?:is\s+)?not\s+released",
             r"phase\s+g\s+(?:has\s+)?not\s+started",
         ),
-        "1.0.0": (
+        "final_promotion": (
             r"(?:productversion|product\s+version|version)\s*(?:=|:|records)?\s+[`*_]*1\.0\.0[`*_]*",
             r"v1\.0\.0-rc\.1",
             r"v0\.1\.0",
@@ -50,22 +57,36 @@ def readme_current_product_truth_failures(
             r"final\s+[`*_]*v1\.0\.0[`*_]*(?:\s+(?:is|has))?\s+not\s+(?:yet\s+)?(?:been\s+)?published",
             r"phase\s+g\s+(?:has\s+)?not\s+started",
         ),
+        "stable_published": (
+            r"(?:productversion|product\s+version|version)\s*(?:=|:|records)?\s+[`*_]*1\.0\.0[`*_]*",
+            r"v1\.0\.0-rc\.1",
+            r"v0\.1\.0",
+            r"(?:latest|published)\s+prerelease(?:\s+history)?\s+(?:is|=|:)\s+[`*_]*v1\.0\.0-rc\.1",
+            r"(?:current|latest)\s+stable\s+(?:github\s+)?release\s+(?:is|=|:)\s+[`*_]*v1\.0\.0",
+            r"phase\s+g\s+(?:has\s+)?not\s+started",
+        ),
     }
-    required_patterns = release_patterns_by_version.get(current_product_version)
+    required_patterns = release_patterns_by_state.get(release_lifecycle_state)
     if required_patterns is None:
-        failures.append("readme_release_status_version_unsupported")
+        failures.append("readme_release_lifecycle_state_unsupported")
     elif any(not re.search(pattern, text, flags=re.IGNORECASE) for pattern in required_patterns):
-        failures.append(
-            "readme_published_rc_release_status_incomplete"
-            if current_product_version == "1.0.0-rc.1"
-            else "readme_final_promotion_release_status_incomplete"
-        )
+        failures.append({
+            "published_rc": "readme_published_rc_release_status_incomplete",
+            "final_promotion": "readme_final_promotion_release_status_incomplete",
+            "stable_published": "readme_stable_published_release_status_incomplete",
+        }.get(release_lifecycle_state, "readme_release_lifecycle_state_unsupported"))
     if re.search(
         r"no\s+rc\s+tag\s+or\s+github\s+prerelease\s+has\s+been\s+created",
         text,
         flags=re.IGNORECASE,
     ):
         failures.append("readme_stale_prepublication_release_status")
+    if release_lifecycle_state == "stable_published" and re.search(
+        r"final\s+[`*_]*v1\.0\.0[`*_]*(?:\s+(?:is|has))?\s+not\s+(?:yet\s+)?(?:been\s+)?published",
+        text,
+        flags=re.IGNORECASE,
+    ):
+        failures.append("readme_stale_final_promotion_release_status")
     return failures
 
 

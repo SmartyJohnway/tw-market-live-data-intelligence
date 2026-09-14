@@ -1,9 +1,9 @@
 # Changelog
 
-## 1.0.0 (unreleased)
+## 1.0.0 (2026-09-14)
 
 - Promotes the accepted V1 release-candidate contract to final V1 ProductVersion
-  without runtime feature expansion. Final `v1.0.0` has not yet been published.
+  without runtime feature expansion. Stable `v1.0.0` was published on 2026-09-14.
 
 ## 1.0.0-rc.1 (2026-09-13)
 

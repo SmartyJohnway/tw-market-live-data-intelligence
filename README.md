@@ -8,12 +8,12 @@
 
 ![Deterministic Unified Workbench overview](docs/assets/workbench-overview.png)
 
-The repository is preparing final V1 promotion from the published
-**[`v1.0.0-rc.1`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)**
-candidate. ProductVersion = `1.0.0`. The latest prerelease is `v1.0.0-rc.1`;
-the latest stable GitHub Release remains **`v0.1.0`**. Final `v1.0.0` has not
-yet been published, and Phase G has not started. This is a local-first evidence
-workbench, not a realtime trading product.
+ProductVersion = `1.0.0`. The current stable release is `v1.0.0`
+([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0)).
+The published prerelease history is `v1.0.0-rc.1`
+([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)),
+and the earlier stable GitHub Release was `v0.1.0`. Phase G has not started.
+This is a local-first evidence workbench, not a realtime trading product.
 
 ## Why TW-Market
 
@@ -106,7 +106,7 @@ market payloads.
 - [Local Workbench guide](docs/operator/LOCAL_WORKBENCH.md)
 - [Troubleshooting](docs/operator/TROUBLESHOOTING.md)
 - [Documentation index](docs/INDEX.md)
-- [V1 release candidate](docs/release/V1_RELEASE_CANDIDATE.md)
+- [V1 release](docs/release/V1_RELEASE.md)
 - [Changelog](CHANGELOG.md)
 
 ## Contributing and security
@@ -116,11 +116,11 @@ security concerns using the grounded guidance in [SECURITY.md](SECURITY.md).
 
 ## Release status
 
-`VERSION` records `1.0.0`, the final-promotion ProductVersion. The published
-prerelease remains `v1.0.0-rc.1`; the latest stable GitHub Release remains
-`v0.1.0`. Final `v1.0.0` has **not yet been published**, and Phase G has **not
-started**. The RC tag is an immutable release authority; subsequent
-documentation status updates do not move it.
+`VERSION` records `1.0.0`. The current stable release is `v1.0.0`
+([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0));
+published prerelease history remains `v1.0.0-rc.1`, and Phase G has **not
+started**. Both release tags are immutable authorities; subsequent documentation
+status updates do not move them.
 
 ## Project Overview
 

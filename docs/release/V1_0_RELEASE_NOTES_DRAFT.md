@@ -1,6 +1,7 @@
-# V1.0.0-rc.1 release notes draft
+# Historical V1.0.0-rc.1 release notes draft
 
-This is a release-candidate draft, not a tag or published GitHub Release.
+This pre-publication draft is retained for RC1 provenance. The current stable
+release authority is [V1 Release](V1_RELEASE.md).
 
 ## Current product path
 
@@ -15,7 +16,7 @@ This is a release-candidate draft, not a tag or published GitHub Release.
 Install the locked dependencies, verify the environment, and check Security
 Master status before running an explicit initialization update. A fresh
 installation reporting `NOT_INITIALIZED` is an expected fail-closed state.
-See [V1 Release Candidate](V1_RELEASE_CANDIDATE.md) and
+See [V1 Release](V1_RELEASE.md) and
 [V1 Migration](V1_MIGRATION.md).
 
 ## Compatibility and limits
