@@ -280,13 +280,15 @@
       "output_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
       "known_limitations": [
         "dormant route only; PR-B owns executor and source normalization",
-        "no production research network execution before PR-D/D1",
-        null
+        "no production research network execution before PR-D/D1"
       ],
       "evidence_paths": [
-        "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json",
-        "Phase_G_Capability_Routing_Executor_Impact_Map_FROZEN.md"
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json"
       ],
+      "planning_authority_metadata": {
+        "document_id": "Phase_G_Capability_Routing_Executor_Impact_Map_FROZEN",
+        "location": "owner-managed external governance authority"
+      },
       "capability_requires_execution_approval": true,
       "package_approval_policy": "strictest_operation_controls_package",
       "blocking_reasons": [],
@@ -323,13 +325,15 @@
       "output_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
       "known_limitations": [
         "dormant route only; PR-B owns executor and source normalization",
-        "no production research network execution before PR-D/D1",
-        null
+        "no production research network execution before PR-D/D1"
       ],
       "evidence_paths": [
-        "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json",
-        "Phase_G_Capability_Routing_Executor_Impact_Map_FROZEN.md"
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json"
       ],
+      "planning_authority_metadata": {
+        "document_id": "Phase_G_Capability_Routing_Executor_Impact_Map_FROZEN",
+        "location": "owner-managed external governance authority"
+      },
       "capability_requires_execution_approval": true,
       "package_approval_policy": "strictest_operation_controls_package",
       "blocking_reasons": [],

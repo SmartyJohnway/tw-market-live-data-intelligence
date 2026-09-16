@@ -2,15 +2,15 @@
 
 from __future__ import annotations
 
-import copy
 import json
 import socket
 from pathlib import Path
 
 import jsonschema
+import pytest
 
 from scripts.m8r_05b_01.canonical import sha256_json
-from scripts.m8r_05b_01.models import PLANNER_VERSION
+from scripts.m8r_05b_01.models import PLANNER_VERSION, PlanningError
 from scripts.m8r_05b_01.planner import HANDOFF_VERSION, build_plan
 
 
@@ -20,6 +20,7 @@ ROUTING = json.loads((ROOT / "docs/data_capabilities/m8r_05b_capability_to_execu
 HANDOFF = json.loads((ROOT / "docs/data_capabilities/m8r_05b_orchestration_handoff_contract.json").read_text())
 INVENTORY = json.loads((ROOT / "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json").read_text())
 PLAN_SCHEMA = json.loads((ROOT / "schemas/unified_market_evidence_orchestration_plan.v1.schema.json").read_text())
+TEST_SNAPSHOT = ROOT / "tests/fixtures/phase_g_contract_v2"
 
 
 def target(target_id: str, market: str, family: str, instrument_type: str) -> dict:
@@ -113,8 +114,7 @@ def test_b07_and_b10_planning_uses_canonical_market_code_and_preserves_full_scop
 
 
 def test_b10_frozen_result_contract_requires_resolved_identity_and_allows_unresolved_null():
-    frozen = Path(r"D:\Codex-Workspace\docs\tw-market-live-data-intelligence\10_Phase_G_Authority\Phase_G_V2_Exact_Schema_Contract_FROZEN")
-    result = json.loads((frozen / "example_unified_market_evidence_result.v2.json").read_text(encoding="utf-8"))
+    result = json.loads((TEST_SNAPSHOT / "example_unified_market_evidence_result.v2.json").read_text(encoding="utf-8"))
     identity = result["targets"][0]["canonical_identity"]
     assert set(("canonical_target_id", "isin", "market", "security_code", "instrument_family", "instrument_type")) <= set(identity)
     result["targets"][0]["resolution"]["status"] = "not_found"
@@ -132,16 +132,75 @@ def test_mixed_targets_omit_only_noncommon_optional_research_without_network():
     assert result["accounting"]["network_request_estimate"] == 0
 
 
-def test_e06_e07_e09_e12_dormant_routes_are_same_source_per_market_and_offline(monkeypatch):
+def test_e06_e07_e09_e12_dormant_routes_preserve_compatible_per_market_planning_without_network(monkeypatch):
     routes = {route["capability_id"]: route for route in ROUTING["routes"]}
     monthly = routes["monthly_revenue"]
     assert monthly["selected_executor_id"] == "phase_g_official_research_executor"
     assert monthly["batching_scope"] == "same_source"
     assert monthly["runtime_executable"] is False
     assert monthly["source_compatibility_key"] == "phase_g_official_research_executor:monthly_revenue"
-    assert (monthly["source_compatibility_key"], "TWSE") == (monthly["source_compatibility_key"], "TWSE")
-    assert (monthly["source_compatibility_key"], "TWSE") != (monthly["source_compatibility_key"], "TPEX")
     monkeypatch.setattr(socket, "socket", lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("network forbidden")))
+    twse_result = plan(validation([
+        target("TWSE:2330", "TWSE", "company_share", "common_share"),
+        target("TWSE:2317", "TWSE", "company_share", "common_share"),
+    ], [research_need()]))
+    assert twse_result["plan_status"] == "plan_only_not_executable"
+    assert twse_result["batch_groups"] == []
+    assert twse_result["accounting"]["logical_operation_count"] == 2
+    assert {tuple(operation["canonical_target_ids"]) for operation in twse_result["operations"]} == {("TWSE:2330",), ("TWSE:2317",)}
+    assert {operation["market"] for operation in twse_result["operations"]} == {"TWSE"}
+    assert all(operation["executor_id"] is None for operation in twse_result["operations"])
+    mixed_market_result = plan(validation([
+        target("TWSE:2330", "TWSE", "company_share", "common_share"),
+        target("TPEX:6488", "TPEX", "company_share", "common_share"),
+    ], [research_need()]))
+    assert mixed_market_result["batch_groups"] == []
+    assert {operation["market"] for operation in mixed_market_result["operations"]} == {"TWSE", "TPEX"}
+    assert len(mixed_market_result["operations"]) == 2
+    assert all(operation["operation_status"] == "plan_only_not_executable" for operation in mixed_market_result["operations"])
     result = plan(validation([target("TWSE:2330", "TWSE", "company_share", "common_share")], [research_need()]))
     assert result["accounting"]["network_request_estimate"] == 0
     assert result["operations"][0]["executor_id"] is None
+
+
+@pytest.mark.parametrize(
+    ("catalog_version", "routing_version"),
+    [
+        ("unified_market_evidence_capability_catalog.v1", "m8r_05b_capability_to_executor_routing_matrix.v2"),
+        ("unified_market_evidence_capability_catalog.v2", "m8r_05b_capability_to_executor_routing_matrix.v1.draft"),
+    ],
+)
+def test_catalog_and_routing_version_skew_fails_closed(catalog_version, routing_version):
+    catalog = dict(CATALOG, schema_version=catalog_version)
+    routing = dict(ROUTING, schema_version=routing_version)
+    value = validation([target("TWSE:2330", "TWSE", "company_share", "common_share")], [research_need()])
+    skewed_bindings = bindings(value)
+    skewed_bindings.update({
+        "capability_catalog_hash": sha256_json(catalog),
+        "routing_matrix_version": routing_version,
+        "routing_matrix_hash": sha256_json(routing),
+    })
+    with pytest.raises(PlanningError, match="unsupported_contract_version"):
+        build_plan(value, capability_catalog=catalog, routing_matrix=routing,
+                   handoff_contract=HANDOFF, executor_disposition=INVENTORY,
+                   input_bindings=skewed_bindings, planning_timestamp="2026-09-16T00:00:00Z")
+
+
+def test_governed_catalog_and_routing_version_pairs_are_accepted():
+    v1_catalog = json.loads((ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json").read_text())
+    v1_routing = json.loads((ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.json").read_text())
+    value = validation([target("TWSE:2330", "TWSE", "company_share", "common_share")], [
+        {"type": "current_observation", "priority": "required", "parameters": {}},
+    ])
+    v1_bindings = bindings(value)
+    v1_bindings.update({
+        "capability_catalog_hash": sha256_json(v1_catalog),
+        "routing_matrix_version": v1_routing["schema_version"],
+        "routing_matrix_hash": sha256_json(v1_routing),
+    })
+    v1_plan = build_plan(value, capability_catalog=v1_catalog, routing_matrix=v1_routing,
+                         handoff_contract=HANDOFF, executor_disposition=INVENTORY,
+                         input_bindings=v1_bindings, planning_timestamp="2026-09-16T00:00:00Z")
+    assert v1_plan["input_bindings"]["routing_matrix_version"] == "m8r_05b_capability_to_executor_routing_matrix.v1.draft"
+    v2_plan = plan(value)
+    assert v2_plan["input_bindings"]["routing_matrix_version"] == "m8r_05b_capability_to_executor_routing_matrix.v2"

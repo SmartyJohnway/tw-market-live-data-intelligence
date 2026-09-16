@@ -1,0 +1,31 @@
+{
+  "schema_version": "unified_market_evidence_request.v2",
+  "request_id": "phase-g-v2-schema-example-001",
+  "targets": [
+    {
+      "input": "2330",
+      "market_hint": "TWSE"
+    }
+  ],
+  "data_needs": [
+    {
+      "type": "current_observation",
+      "priority": "required"
+    },
+    {
+      "type": "material_disclosures",
+      "priority": "optional"
+    },
+    {
+      "type": "monthly_revenue",
+      "priority": "optional"
+    }
+  ],
+  "execution_mode": "preview",
+  "response_preferences": {
+    "include_citations": true,
+    "include_currentness": true,
+    "include_caveats": true,
+    "include_audit_reference": true
+  }
+}

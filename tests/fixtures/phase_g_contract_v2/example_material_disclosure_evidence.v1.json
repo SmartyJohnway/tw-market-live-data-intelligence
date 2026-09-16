@@ -1,0 +1,44 @@
+{
+  "schema_version": "material_disclosure_evidence.v1",
+  "status": "available",
+  "coverage": {
+    "mode": "latest_completed_official_daily_batch",
+    "source_report_date": "2026-09-15",
+    "coverage_through": "2026-09-14",
+    "historical_lookup_supported": false,
+    "item_count": 1,
+    "truncated": false
+  },
+  "currentness": {
+    "status": "current_within_source_contract",
+    "observed_at": "2026-09-15T21:30:00+08:00"
+  },
+  "source": {
+    "authority": "official",
+    "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+    "market": "TWSE",
+    "source_contract_id": "mops-t187ap04-l-csv.v1",
+    "transport": "official_csv",
+    "fallback_used": false
+  },
+  "items": [
+    {
+      "published_at": "2026-09-14T15:02:01+08:00",
+      "source_fact_date": "2026-09-14",
+      "subject": "範例官方重大訊息",
+      "clause": "第51款",
+      "description": "範例內容。",
+      "description_truncated": false,
+      "revision_relation": {
+        "status": "unresolved",
+        "relation_type": null,
+        "related_official_reference": null
+      },
+      "citation_id": "cite-material-001"
+    }
+  ],
+  "caveats": [],
+  "citation_ids": [
+    "cite-material-001"
+  ]
+}

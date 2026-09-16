@@ -19,7 +19,7 @@ from scripts.m8r_05a_f3.security_master_loader import load_f3_verified_security_
 
 
 ROOT = Path(__file__).resolve().parents[2]
-FROZEN = Path(r"D:\Codex-Workspace\docs\tw-market-live-data-intelligence\10_Phase_G_Authority\Phase_G_V2_Exact_Schema_Contract_FROZEN")
+TEST_SNAPSHOT = ROOT / "tests/fixtures/phase_g_contract_v2"
 SCHEMAS = (
     "unified_market_evidence_request.v2.schema.json",
     "unified_market_evidence_result.v2.schema.json",
@@ -35,7 +35,7 @@ def load_json(path: Path) -> dict:
 
 
 def v2_request() -> dict:
-    return load_json(FROZEN / "example_unified_market_evidence_request.v2.json")
+    return load_json(TEST_SNAPSHOT / "example_unified_market_evidence_request.v2.json")
 
 
 def v2_catalog() -> dict:
@@ -52,7 +52,7 @@ def fixture_security_master():
 
 
 def test_a1_frozen_assets_are_exact_bytes_and_meta_valid():
-    manifest = load_json(FROZEN / "SCHEMA_FREEZE_MANIFEST.json")
+    manifest = load_json(TEST_SNAPSHOT / "SCHEMA_FREEZE_MANIFEST.json")
     for name in SCHEMAS:
         installed = ROOT / "schemas" / name
         assert hashlib.sha256(installed.read_bytes()).hexdigest() == manifest["files"][name]["sha256"]
@@ -71,7 +71,7 @@ def test_a1_frozen_examples_validate():
         "example_unified_market_evidence_result.v2.json": "unified_market_evidence_result.v2.schema.json",
     }
     for example, schema in examples.items():
-        jsonschema.validate(load_json(FROZEN / example), load_json(ROOT / "schemas" / schema))
+        jsonschema.validate(load_json(TEST_SNAPSHOT / example), load_json(ROOT / "schemas" / schema))
 
 
 def test_a01_a02_a05_version_resolution_is_deterministic_and_v1_remains_valid():
@@ -122,15 +122,15 @@ def test_v2_catalog_validation_accepts_empty_research_parameters_without_runtime
 
 
 def test_frozen_negative_evidence_invariants():
-    material = load_json(FROZEN / "example_material_disclosure_evidence.v1.json")
+    material = load_json(TEST_SNAPSHOT / "example_material_disclosure_evidence.v1.json")
     material["status"] = "no_evidence_in_covered_scope"
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(material, load_json(ROOT / "schemas/material_disclosure_evidence.v1.schema.json"))
-    revenue = load_json(FROZEN / "example_monthly_revenue_evidence.v1.json")
+    revenue = load_json(TEST_SNAPSHOT / "example_monthly_revenue_evidence.v1.json")
     revenue["value"]["currency"] = "USD"
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(revenue, load_json(ROOT / "schemas/monthly_revenue_evidence.v1.schema.json"))
-    result = load_json(FROZEN / "example_unified_market_evidence_result.v2.json")
+    result = load_json(TEST_SNAPSHOT / "example_unified_market_evidence_result.v2.json")
     result["targets"][0]["resolution"]["resolution_status"] = "not_found"
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(result, load_json(ROOT / "schemas/unified_market_evidence_result.v2.schema.json"))

@@ -21,6 +21,7 @@ HANDOFF_VERSION='m8r_05b_orchestration_handoff_contract.v1.draft'
 CATALOG_VERSION='unified_market_evidence_capability_catalog.v1'
 ROUTING_VERSIONS=frozenset((ROUTING_VERSION, 'm8r_05b_capability_to_executor_routing_matrix.v2'))
 CATALOG_VERSIONS=frozenset((CATALOG_VERSION, 'unified_market_evidence_capability_catalog.v2'))
+ALLOWED_CATALOG_ROUTING_VERSION_PAIRS=frozenset(((CATALOG_VERSION, ROUTING_VERSION), ('unified_market_evidence_capability_catalog.v2', 'm8r_05b_capability_to_executor_routing_matrix.v2')))
 
 def _pairs(bindings: Mapping[str,Any]) -> list[tuple[str,str]]:
     refs=bindings.get('security_master_evidence_references'); hashes=bindings.get('security_master_artifact_hashes')
@@ -55,6 +56,7 @@ def _validate_inputs(validation, catalog, routing, handoff, inventory, bindings)
     catalog_version=catalog.get('schema_version')
     routing_version=routing.get('schema_version')
     if catalog_version not in CATALOG_VERSIONS or routing_version not in ROUTING_VERSIONS: raise PlanningError('unsupported_contract_version')
+    if (catalog_version, routing_version) not in ALLOWED_CATALOG_ROUTING_VERSION_PAIRS: raise PlanningError('unsupported_contract_version')
     verify_artifact(catalog,bindings.get('capability_catalog_hash'),code='capability_catalog_hash_mismatch',expected_version=catalog_version)
     verify_artifact(routing,bindings.get('routing_matrix_hash'),code='routing_matrix_hash_mismatch',expected_version=routing_version)
     verify_artifact(handoff,bindings.get('handoff_contract_hash'),code='handoff_contract_hash_mismatch',expected_version=HANDOFF_VERSION)
