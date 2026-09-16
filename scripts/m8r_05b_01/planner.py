@@ -19,6 +19,8 @@ F3_VERSION='unified_market_evidence_request_validation.v1'
 ROUTING_VERSION='m8r_05b_capability_to_executor_routing_matrix.v1.draft'
 HANDOFF_VERSION='m8r_05b_orchestration_handoff_contract.v1.draft'
 CATALOG_VERSION='unified_market_evidence_capability_catalog.v1'
+ROUTING_VERSIONS=frozenset((ROUTING_VERSION, 'm8r_05b_capability_to_executor_routing_matrix.v2'))
+CATALOG_VERSIONS=frozenset((CATALOG_VERSION, 'unified_market_evidence_capability_catalog.v2'))
 
 def _pairs(bindings: Mapping[str,Any]) -> list[tuple[str,str]]:
     refs=bindings.get('security_master_evidence_references'); hashes=bindings.get('security_master_artifact_hashes')
@@ -41,7 +43,7 @@ def _targets(validation: Mapping[str,Any]) -> list[dict[str,Any]]:
         if target.get('resolution_status')!='resolved': continue
         identity=target.get('canonical_identity') or {}; tid=identity.get('canonical_target_id')
         if not isinstance(tid,str) or not tid: raise PlanningError('target_binding_invalid')
-        result.append({'id':tid,'market':identity.get('market'),'security_type':routing_security_type(identity)})
+        result.append({'id':tid,'market':identity.get('market'),'security_type':routing_security_type(identity),'instrument_family':identity.get('instrument_family'),'instrument_type':identity.get('instrument_type')})
     return sorted(result,key=lambda x:x['id'])
 
 def _validate_inputs(validation, catalog, routing, handoff, inventory, bindings):
@@ -50,10 +52,13 @@ def _validate_inputs(validation, catalog, routing, handoff, inventory, bindings)
     if (limits.get('operation_count_computed'),limits.get('operation_count'),limits.get('orchestrator_projection_required')) != (False,0,True): raise PlanningError('f3_invariant_mismatch')
     if list(F3_VALIDATOR.iter_errors(validation)): raise PlanningError('input_schema_invalid')
     if sha256_json(validation)!=bindings.get('f3_validation_output_hash'): raise PlanningError('f3_validation_hash_mismatch')
-    verify_artifact(catalog,bindings.get('capability_catalog_hash'),code='capability_catalog_hash_mismatch',expected_version=CATALOG_VERSION)
-    verify_artifact(routing,bindings.get('routing_matrix_hash'),code='routing_matrix_hash_mismatch',expected_version=ROUTING_VERSION)
+    catalog_version=catalog.get('schema_version')
+    routing_version=routing.get('schema_version')
+    if catalog_version not in CATALOG_VERSIONS or routing_version not in ROUTING_VERSIONS: raise PlanningError('unsupported_contract_version')
+    verify_artifact(catalog,bindings.get('capability_catalog_hash'),code='capability_catalog_hash_mismatch',expected_version=catalog_version)
+    verify_artifact(routing,bindings.get('routing_matrix_hash'),code='routing_matrix_hash_mismatch',expected_version=routing_version)
     verify_artifact(handoff,bindings.get('handoff_contract_hash'),code='handoff_contract_hash_mismatch',expected_version=HANDOFF_VERSION)
-    if bindings.get('planner_version')!=PLANNER_VERSION or bindings.get('routing_matrix_version')!=ROUTING_VERSION or bindings.get('handoff_contract_version')!=HANDOFF_VERSION: raise PlanningError('unsupported_contract_version')
+    if bindings.get('planner_version')!=PLANNER_VERSION or bindings.get('routing_matrix_version')!=routing_version or bindings.get('handoff_contract_version')!=HANDOFF_VERSION: raise PlanningError('unsupported_contract_version')
     return _pairs(bindings),executor_index(inventory)
 
 def _warning(cap, targets, reason): return {'code':'optional_capability_omitted','capability_id':cap,'canonical_target_ids':canonical_target_ids(targets),'severity':'warning','omission_reason':reason}
@@ -117,14 +122,17 @@ def build_plan(validation: Mapping[str,Any], *, capability_catalog: Mapping[str,
             elif cap_status=='provisional' or route_status=='plan_only' or cap_status=='contract_supported':
                 if priority=='required': plan_status='plan_only_not_executable' if plan_status!='blocked' else plan_status
             else: raise PlanningError('executor_route_missing')
-            units=targets if route.get('target_required') else [{'id':None,'market':None,'security_type':None}]
+            units=targets if route.get('target_required') else [{'id':None,'market':None,'security_type':None,'instrument_family':None,'instrument_type':None}]
             for unit in units:
                 market=unit['market']; tids=[unit['id']] if unit['id'] else []
                 catalog_cap=catalog_caps.get(cid, {})
                 provisional_market=market in catalog_cap.get('provisional_markets', [])
-                mismatch=(market is not None and not provisional_market and market not in route.get('supported_markets', [])) or (bool(route.get('supported_security_types')) and unit['security_type'] not in route.get('supported_security_types', []))
+                family_scope=route.get('supported_instrument_families', [])
+                type_scope=route.get('supported_instrument_types', [])
+                scope_mismatch=(bool(family_scope) and unit['instrument_family'] not in family_scope) or (bool(type_scope) and unit['instrument_type'] not in type_scope)
+                mismatch=(market is not None and not provisional_market and market not in route.get('supported_markets', [])) or (bool(route.get('supported_security_types')) and unit['security_type'] not in route.get('supported_security_types', [])) or scope_mismatch
                 if mismatch:
-                    mismatch_reason='unsupported_market' if market not in route.get('supported_markets', []) else 'unsupported_security_type'
+                    mismatch_reason='unsupported_market' if market not in route.get('supported_markets', []) else ('unsupported_instrument_scope' if scope_mismatch else 'unsupported_security_type')
                     if priority=='optional':
                         omissions.append({'capability_id':cid,'canonical_target_ids':canonical_target_ids(tids),'reason_code':mismatch_reason,'severity':'warning','normalized_parameters':params}); warnings.append(_warning(cid,tids,mismatch_reason)); continue
                     blocked.append({'capability_id':cid,'canonical_target_ids':canonical_target_ids(tids),'market':market,'parameters':params,'executor_id':None,'batch_group_id':None,'network_required':False,'expected_evidence_contract':route['output_evidence_contract'],'blocking_reason_codes':[mismatch_reason],'executor_invocation_eligible':False}); plan_status='blocked'; continue
