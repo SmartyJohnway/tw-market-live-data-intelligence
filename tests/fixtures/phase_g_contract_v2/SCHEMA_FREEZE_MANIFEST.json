@@ -1,0 +1,90 @@
+{
+  "package": "phase_g_v2_exact_schema_contract_freeze_candidate",
+  "date": "2026-09-15",
+  "status": "OWNER_APPROVED_FROZEN_WITH_AMENDMENT_A1",
+  "repo_baseline": "6a3cd9f625fd34124dad49243e53fca6efcad149",
+  "validation": {
+    "meta_schema_checks": "PASS",
+    "positive_examples": "PASS",
+    "negative_sanity_checks": {
+      "G1 parameters rejected": "PASS",
+      "Monthly currency non-TWD rejected": "PASS",
+      "No-evidence cannot carry items": "PASS",
+      "Unresolved target cannot carry canonical_identity": "PASS"
+    }
+  },
+  "files": {
+    "Phase_G_V2_Exact_Schema_Contract_FROZEN.md": {
+      "sha256": "c20037e719a74eaeff4608066b1007e6b3fd88479140959768219ec2f8202ef0",
+      "bytes": 12238
+    },
+    "Phase_G_V2_Exact_Schema_Contract_Freeze.md": {
+      "sha256": "26b4418b889a0bb9191a9ca538bf00446dc479ab089bdf710b916ecd00862341",
+      "bytes": 10390
+    },
+    "example_material_disclosure_evidence.v1.json": {
+      "sha256": "e14d299032ca70916bf1546400c6e983d6c1ecddd715f2ab1d0f614dc2843dbf",
+      "bytes": 1204
+    },
+    "example_monthly_revenue_evidence.v1.json": {
+      "sha256": "ae7e9df87a0062038ad023e61a419bb97a900a615f40b7c4faefe55a74239794",
+      "bytes": 1124
+    },
+    "example_unified_market_evidence_request.v2.json": {
+      "sha256": "bd5c9616a6da1f9422651a1f1e8ec904e1cf0cd274a038d3f9f83f84d242a7fb",
+      "bytes": 642
+    },
+    "example_unified_market_evidence_result.v2.json": {
+      "sha256": "6c0c7257e77222a88b9c45ce1cfaa5a9c8319d28976ef50c1177d1e3649e5079",
+      "bytes": 5826
+    },
+    "material_disclosure_evidence.v1.schema.json": {
+      "sha256": "bbf361eda4d7b109e104514908f9ec9add1c0659025538b4dd9bd480d182d6d1",
+      "bytes": 8088
+    },
+    "monthly_revenue_evidence.v1.schema.json": {
+      "sha256": "d4dbd70a9659083a761ecf5d8727bdc718c4d8a3b65a50577d828de64f08aaf9",
+      "bytes": 8197
+    },
+    "unified_market_evidence_audit_package.v2.schema.json": {
+      "sha256": "a798e435168a185c00250f56bb88aa09fc57788fcd47048fdd42ae29c977b14e",
+      "bytes": 17285
+    },
+    "unified_market_evidence_capability_catalog.v2.json": {
+      "sha256": "a4d296b37b65263189c14a847aedffa4b12107d187e9417d359bbe7d196c5a63",
+      "bytes": 11307
+    },
+    "unified_market_evidence_capability_catalog.v2.schema.json": {
+      "sha256": "9c3e4aa85d7c18dc124a619c2b0d82e5ca4c1a69deb63855f2c5a961579561de",
+      "bytes": 9926
+    },
+    "unified_market_evidence_request.v2.schema.json": {
+      "sha256": "757d864c3a00d296f8ebf2eccdbb47a1d39ca8a222e9d939f34ef854f4245e3b",
+      "bytes": 3860
+    },
+    "unified_market_evidence_result.v2.schema.json": {
+      "sha256": "ed9928530be37fc4b2a4d1e386eb2ea8ff5dbe33e4c6598d0a8010c338dea444",
+      "bytes": 38180
+    }
+  },
+  "freeze_date": "2026-09-15",
+  "owner_decisions": {
+    "A_v1_request_accepted_v2_preferred_result_v2": "APPROVED",
+    "B_audit_package_v2_internal_execution_artifacts_stay_v1": "APPROVED",
+    "C_shared_envelope_only_for_v2_native_research_evidence": "APPROVED",
+    "D_separate_research_source_families_transport_independent": "APPROVED"
+  },
+  "controlled_amendments": {
+    "A1_material_disclosure_ai_context_bounds": {
+      "status": "APPROVED",
+      "date": "2026-09-15",
+      "max_items_per_target": 50,
+      "max_description_unicode_codepoints": 8192,
+      "validation": {
+        "existing_positive_example": "PASS",
+        "over_50_items_rejected": "PASS",
+        "over_8192_description_rejected": "PASS"
+      }
+    }
+  }
+}

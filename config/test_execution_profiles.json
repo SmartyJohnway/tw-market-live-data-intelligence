@@ -161,7 +161,9 @@
         "tests/unit/test_build_v1_release_manifest.py",
         "tests/unit/test_validate_release_hygiene.py",
         "tests/unit/test_browser_e2e_requirements.py",
-        "tests/unit/test_m8r_08c_r1_launcher_readiness.py"
+        "tests/unit/test_m8r_08c_r1_launcher_readiness.py",
+        "tests/unit/test_phase_g_request_v2_and_catalog.py",
+        "tests/unit/test_phase_g_routing_and_planner.py"
       ],
       "network_policy": "no network; excludes tests marked network",
       "browser_policy": "does not install or require Playwright/Chromium",

@@ -1,0 +1,361 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:monthly_revenue_evidence:v1",
+  "title": "Monthly Revenue Evidence v1",
+  "description": "Typed AI-facing evidence for the latest available official monthly-revenue reporting period.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "monthly_revenue_evidence.v1"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "partial",
+        "no_evidence_in_covered_scope",
+        "not_yet_available",
+        "not_applicable",
+        "unsupported",
+        "source_failed",
+        "binding_failed"
+      ]
+    },
+    "coverage": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "const": "latest_available_reporting_period"
+        },
+        "reporting_period": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+        },
+        "source_report_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "historical_lookup_supported": {
+          "type": "boolean",
+          "const": false
+        }
+      },
+      "required": [
+        "mode",
+        "reporting_period",
+        "source_report_date",
+        "historical_lookup_supported"
+      ],
+      "additionalProperties": false
+    },
+    "currentness": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "current_within_source_contract",
+            "stale",
+            "lagging",
+            "unknown"
+          ]
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "status",
+        "observed_at"
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "authority": {
+          "type": "string",
+          "const": "official"
+        },
+        "source_family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "market": {
+          "type": "string",
+          "enum": [
+            "TWSE",
+            "TPEX"
+          ]
+        },
+        "source_contract_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transport": {
+          "type": "string",
+          "enum": [
+            "official_csv",
+            "official_json_openapi"
+          ]
+        },
+        "fallback_used": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "authority",
+        "source_family",
+        "market",
+        "source_contract_id",
+        "transport",
+        "fallback_used"
+      ],
+      "additionalProperties": false
+    },
+    "value": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "currency": {
+              "type": "string",
+              "const": "TWD"
+            },
+            "unit": {
+              "type": "string",
+              "const": "thousand"
+            },
+            "current_month_revenue": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "previous_month_revenue": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "previous_year_same_month_revenue": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "mom_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "yoy_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "ytd_revenue": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "previous_year_ytd_revenue": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "ytd_yoy_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "currency",
+            "unit",
+            "current_month_revenue",
+            "previous_month_revenue",
+            "previous_year_same_month_revenue",
+            "mom_pct",
+            "yoy_pct",
+            "ytd_revenue",
+            "previous_year_ytd_revenue",
+            "ytd_yoy_pct",
+            "note"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "caveats": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "citation_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "status",
+    "coverage",
+    "currentness",
+    "source",
+    "value",
+    "caveats",
+    "citation_ids"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "available",
+              "partial"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "type": "object",
+            "properties": {
+              "currency": {
+                "type": "string",
+                "const": "TWD"
+              },
+              "unit": {
+                "type": "string",
+                "const": "thousand"
+              },
+              "current_month_revenue": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "previous_month_revenue": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "previous_year_same_month_revenue": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "mom_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "yoy_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "ytd_revenue": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "previous_year_ytd_revenue": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "ytd_yoy_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "currency",
+              "unit",
+              "current_month_revenue",
+              "previous_month_revenue",
+              "previous_year_same_month_revenue",
+              "mom_pct",
+              "yoy_pct",
+              "ytd_revenue",
+              "previous_year_ytd_revenue",
+              "ytd_yoy_pct",
+              "note"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "no_evidence_in_covered_scope",
+              "not_yet_available",
+              "not_applicable",
+              "unsupported",
+              "source_failed",
+              "binding_failed"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

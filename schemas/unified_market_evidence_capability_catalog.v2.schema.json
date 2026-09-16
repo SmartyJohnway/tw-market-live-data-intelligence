@@ -1,0 +1,398 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_capability_catalog:v2",
+  "title": "Unified Market Evidence Capability Catalog v2",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "unified_market_evidence_capability_catalog.v2"
+    },
+    "catalog_id": {
+      "type": "string"
+    },
+    "contract_versions": {
+      "type": "object",
+      "properties": {
+        "accepted_request_schema_versions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "preferred_request_schema_version": {
+          "type": "string"
+        },
+        "emitted_result_schema_version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "accepted_request_schema_versions",
+        "preferred_request_schema_version",
+        "emitted_result_schema_version"
+      ],
+      "additionalProperties": false
+    },
+    "generated_from": {
+      "type": "object",
+      "properties": {
+        "source_capability_registry_reference": {
+          "type": "string"
+        },
+        "activation_policy_reference": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "supported_markets": {
+      "type": "object",
+      "properties": {
+        "TWSE": {
+          "type": "object",
+          "properties": {
+            "support_level": {
+              "type": "string",
+              "enum": [
+                "supported",
+                "supported_with_caveats",
+                "provisional"
+              ]
+            }
+          },
+          "required": [
+            "support_level"
+          ],
+          "additionalProperties": false
+        },
+        "TPEX": {
+          "type": "object",
+          "properties": {
+            "support_level": {
+              "type": "string",
+              "enum": [
+                "supported",
+                "supported_with_caveats",
+                "provisional"
+              ]
+            }
+          },
+          "required": [
+            "support_level"
+          ],
+          "additionalProperties": false
+        },
+        "TAIFEX": {
+          "type": "object",
+          "properties": {
+            "support_level": {
+              "type": "string",
+              "enum": [
+                "supported",
+                "supported_with_caveats",
+                "provisional"
+              ]
+            }
+          },
+          "required": [
+            "support_level"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "data_need_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "capability_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "support_status": {
+            "type": "string",
+            "enum": [
+              "contract_supported",
+              "runtime_available",
+              "runtime_executable",
+              "provisional",
+              "unsupported",
+              "not_yet_implemented"
+            ]
+          },
+          "supported_markets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "provisional_markets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allowed_parameters": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "integer",
+                    "string",
+                    "number",
+                    "boolean"
+                  ]
+                },
+                "minimum": {
+                  "type": [
+                    "integer",
+                    "number"
+                  ]
+                },
+                "maximum": {
+                  "type": [
+                    "integer",
+                    "number"
+                  ]
+                },
+                "enum": {
+                  "type": "array"
+                },
+                "required": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "requires_target_resolution": {
+            "type": "boolean"
+          },
+          "requires_approval_for_execution": {
+            "type": "boolean"
+          },
+          "possible_timing_classes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "possible_fallbacks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "known_limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "instrument_scope": {
+            "type": "object",
+            "properties": {
+              "instrument_families": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              },
+              "instrument_types": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "instrument_families",
+              "instrument_types"
+            ],
+            "additionalProperties": false
+          },
+          "coverage_modes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "historical_lookup_supported": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "capability_id",
+          "description",
+          "support_status",
+          "supported_markets",
+          "provisional_markets",
+          "allowed_parameters",
+          "requires_target_resolution",
+          "requires_approval_for_execution",
+          "possible_timing_classes",
+          "possible_fallbacks",
+          "known_limitations"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "preview_supported": {
+          "type": "boolean"
+        },
+        "explicit_approval_required": {
+          "type": "boolean"
+        },
+        "one_shot_execution": {
+          "type": "boolean"
+        },
+        "scheduler_enabled": {
+          "type": "boolean"
+        },
+        "polling_enabled": {
+          "type": "boolean"
+        },
+        "persistent_watchlist_mutation": {
+          "type": "boolean"
+        },
+        "trading_enabled": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "bounds": {
+      "type": "object",
+      "properties": {
+        "default_target_limit": {
+          "type": "integer"
+        },
+        "hard_target_limit": {
+          "type": "integer"
+        },
+        "default_operation_limit": {
+          "type": "integer"
+        },
+        "hard_operation_limit": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "available_source_families": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_family": {
+            "type": "string"
+          },
+          "timing_class": {
+            "type": "string"
+          },
+          "market_scope": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "activation_status": {
+            "type": "string"
+          },
+          "runtime_availability": {
+            "type": "boolean"
+          },
+          "primary_transport": {
+            "type": "string"
+          },
+          "fallback_transports": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "known_limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "source_family",
+          "timing_class",
+          "market_scope",
+          "activation_status",
+          "runtime_availability",
+          "known_limitations"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "fallback_semantics": {
+      "type": "object",
+      "properties": {
+        "fallback_must_be_explicit": {
+          "type": "boolean"
+        },
+        "fallback_timing_class_downgrade_allowed": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "timing_classes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "liveish_intraday_snapshot",
+          "official_eod",
+          "official_statistics_eod",
+          "request_session_context",
+          "official_daily_batch",
+          "official_monthly_reporting_period"
+        ]
+      }
+    },
+    "known_limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "catalog_id",
+    "contract_versions",
+    "generated_from",
+    "supported_markets",
+    "data_need_capabilities",
+    "execution",
+    "bounds",
+    "fallback_semantics",
+    "timing_classes",
+    "known_limitations"
+  ],
+  "additionalProperties": false
+}

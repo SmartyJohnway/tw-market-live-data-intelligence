@@ -1,0 +1,39 @@
+{
+  "schema_version": "monthly_revenue_evidence.v1",
+  "status": "available",
+  "coverage": {
+    "mode": "latest_available_reporting_period",
+    "reporting_period": "2026-08",
+    "source_report_date": "2026-09-15",
+    "historical_lookup_supported": false
+  },
+  "currentness": {
+    "status": "current_within_source_contract",
+    "observed_at": "2026-09-15T21:30:00+08:00"
+  },
+  "source": {
+    "authority": "official",
+    "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+    "market": "TWSE",
+    "source_contract_id": "mops-t187ap05-l-csv.v1",
+    "transport": "official_csv",
+    "fallback_used": false
+  },
+  "value": {
+    "currency": "TWD",
+    "unit": "thousand",
+    "current_month_revenue": 514805337,
+    "previous_month_revenue": 467580548,
+    "previous_year_same_month_revenue": 335771691,
+    "mom_pct": 10.099818994181083,
+    "yoy_pct": 53.320053714712955,
+    "ytd_revenue": 3386869575,
+    "previous_year_ytd_revenue": 2431982931,
+    "ytd_yoy_pct": 39.26370665798065,
+    "note": "因先進製程產品需求增加所致。"
+  },
+  "caveats": [],
+  "citation_ids": [
+    "cite-revenue-001"
+  ]
+}

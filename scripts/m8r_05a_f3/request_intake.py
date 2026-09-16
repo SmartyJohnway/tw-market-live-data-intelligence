@@ -6,12 +6,15 @@ from .capability_validator import validate_capability
 
 def _issue(code,path,message=None): return {"code":code,"path":path,"message":message or code.replace("_"," ").lower()}
 def _catalog_valid(catalog):
-    if not isinstance(catalog,dict) or catalog.get("schema_version")!="unified_market_evidence_capability_catalog.v1": return False
+    if not isinstance(catalog,dict) or catalog.get("schema_version") not in {"unified_market_evidence_capability_catalog.v1", "unified_market_evidence_capability_catalog.v2"}: return False
     bounds=catalog.get("bounds"); markets=catalog.get("supported_markets"); caps=catalog.get("data_need_capabilities")
     if not isinstance(bounds,dict) or not isinstance(markets,dict) or not markets or not isinstance(caps,list): return False
     if not all(isinstance(k,str) and k and isinstance(v,dict) and v.get("support_level") in {"supported","supported_with_caveats","provisional"} for k,v in markets.items()): return False
     default=bounds.get("default_target_limit")
     if not isinstance(bounds.get("hard_target_limit"),int) or isinstance(bounds.get("hard_target_limit"),bool) or bounds["hard_target_limit"] < 1 or not isinstance(default,int) or isinstance(default,bool) or default < 1 or default > bounds["hard_target_limit"]: return False
+    if catalog["schema_version"] == "unified_market_evidence_capability_catalog.v2":
+        versions=catalog.get("contract_versions")
+        if not isinstance(versions,dict) or versions.get("accepted_request_schema_versions") != ["unified_market_evidence_request.v1", "unified_market_evidence_request.v2"] or versions.get("preferred_request_schema_version") != "unified_market_evidence_request.v2" or versions.get("emitted_result_schema_version") != "unified_market_evidence_result.v2": return False
     ids=[]
     for cap in caps:
         if not isinstance(cap,dict): return False
@@ -26,6 +29,9 @@ def _catalog_valid(catalog):
             if rule.get("type") in {"integer","number"}:
                 numeric=int if typ=="integer" else (int,float)
                 if any(k in rule and (not isinstance(rule[k],numeric) or isinstance(rule[k],bool)) for k in ("minimum","maximum")) or ("minimum" in rule and "maximum" in rule and rule["minimum"]>rule["maximum"]): return False
+        if cap["capability_id"] in {"material_disclosures", "monthly_revenue"}:
+            scope=cap.get("instrument_scope")
+            if not isinstance(scope,dict) or scope.get("instrument_families") != ["company_share"] or scope.get("instrument_types") != ["common_share"] or not isinstance(cap.get("coverage_modes"),list) or cap.get("historical_lookup_supported") is not False: return False
         ids.append(cap["capability_id"])
     return len(ids)==len(set(ids))
 def validate_unified_market_evidence_request(request, *, security_master, capability_catalog, request_schema, allow_fixture_snapshot=False):

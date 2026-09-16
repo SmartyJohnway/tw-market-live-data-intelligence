@@ -1,0 +1,373 @@
+{
+  "schema_version": "unified_market_evidence_capability_catalog.v2",
+  "catalog_id": "unified-market-evidence-capabilities",
+  "contract_versions": {
+    "accepted_request_schema_versions": [
+      "unified_market_evidence_request.v1",
+      "unified_market_evidence_request.v2"
+    ],
+    "preferred_request_schema_version": "unified_market_evidence_request.v2",
+    "emitted_result_schema_version": "unified_market_evidence_result.v2"
+  },
+  "generated_from": {
+    "source_capability_registry_reference": "m8_source_capability_registry",
+    "activation_policy_reference": "phase_c_conversation_driven_one_shot.v1"
+  },
+  "supported_markets": {
+    "TWSE": {
+      "support_level": "supported"
+    },
+    "TPEX": {
+      "support_level": "supported_with_caveats"
+    },
+    "TAIFEX": {
+      "support_level": "provisional"
+    }
+  },
+  "data_need_capabilities": [
+    {
+      "capability_id": "identity",
+      "description": "Retrieves the canonical security identity.",
+      "support_status": "contract_supported",
+      "supported_markets": [
+        "TWSE",
+        "TPEX",
+        "TAIFEX"
+      ],
+      "provisional_markets": [],
+      "allowed_parameters": {},
+      "requires_target_resolution": true,
+      "requires_approval_for_execution": false,
+      "possible_timing_classes": [],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "identity is resolved by the installation-local Security Master; unsupported or uninitialized identities fail closed"
+      ]
+    },
+    {
+      "capability_id": "current_observation",
+      "description": "Retrieves the latest available market data snapshot. Not guaranteed to be realtime.",
+      "support_status": "runtime_executable",
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "provisional_markets": [],
+      "allowed_parameters": {},
+      "requires_target_resolution": true,
+      "requires_approval_for_execution": true,
+      "possible_timing_classes": [
+        "liveish_intraday_snapshot"
+      ],
+      "possible_fallbacks": [
+        "official_eod"
+      ],
+      "known_limitations": [
+        "not guaranteed realtime",
+        "source availability may produce partial results",
+        "TAIFEX current observation is not yet implemented"
+      ]
+    },
+    {
+      "capability_id": "official_eod_reference",
+      "description": "Retrieves the official End of Day reference data.",
+      "support_status": "runtime_executable",
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "provisional_markets": [
+        "TAIFEX"
+      ],
+      "allowed_parameters": {},
+      "requires_target_resolution": true,
+      "requires_approval_for_execution": true,
+      "possible_timing_classes": [
+        "official_eod"
+      ],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "publication grace remains provisional and configurable"
+      ]
+    },
+    {
+      "capability_id": "session_status",
+      "description": "Retrieves the market session status, local clock and closure states.",
+      "support_status": "runtime_executable",
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "provisional_markets": [
+        "TAIFEX"
+      ],
+      "allowed_parameters": {},
+      "requires_target_resolution": false,
+      "requires_approval_for_execution": true,
+      "possible_timing_classes": [
+        "request_session_context"
+      ],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "TPEX closure authority follows synchronized-market assumption",
+        "TAIFEX day-session policy is provisional",
+        "TAIFEX night-session interpretation is unsupported",
+        "TAIFEX Taipei closure authority is unresolved"
+      ]
+    },
+    {
+      "capability_id": "recent_performance",
+      "description": "Retrieves descriptive performance metrics over a specified lookback period.",
+      "support_status": "contract_supported",
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "provisional_markets": [
+        "TAIFEX"
+      ],
+      "allowed_parameters": {
+        "lookback_trading_days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20,
+          "required": true
+        }
+      },
+      "requires_target_resolution": true,
+      "requires_approval_for_execution": true,
+      "possible_timing_classes": [
+        "official_eod"
+      ],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "not every requested evidence need is runtime-executable yet",
+        "not_yet_implemented"
+      ]
+    },
+    {
+      "capability_id": "source_currentness",
+      "description": "Retrieves metadata concerning retrieval timestamp, effective trade date, and timing class.",
+      "support_status": "contract_supported",
+      "supported_markets": [
+        "TWSE",
+        "TPEX",
+        "TAIFEX"
+      ],
+      "provisional_markets": [],
+      "allowed_parameters": {},
+      "requires_target_resolution": false,
+      "requires_approval_for_execution": false,
+      "possible_timing_classes": [],
+      "possible_fallbacks": [],
+      "known_limitations": []
+    },
+    {
+      "capability_id": "evidence_quality",
+      "description": "Retrieves details on data coverage, partial results, and available fallbacks.",
+      "support_status": "contract_supported",
+      "supported_markets": [
+        "TWSE",
+        "TPEX",
+        "TAIFEX"
+      ],
+      "provisional_markets": [],
+      "allowed_parameters": {},
+      "requires_target_resolution": false,
+      "requires_approval_for_execution": false,
+      "possible_timing_classes": [],
+      "possible_fallbacks": [],
+      "known_limitations": []
+    },
+    {
+      "capability_id": "material_disclosures",
+      "description": "Retrieves official material disclosures from the latest completed official daily batch for eligible Taiwan common shares.",
+      "support_status": "runtime_executable",
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "provisional_markets": [],
+      "allowed_parameters": {},
+      "requires_target_resolution": true,
+      "requires_approval_for_execution": true,
+      "possible_timing_classes": [
+        "official_daily_batch"
+      ],
+      "possible_fallbacks": [
+        "official_json_openapi"
+      ],
+      "known_limitations": [
+        "initial Phase G coverage is the latest completed official daily batch only",
+        "bounded historical lookup is not supported in initial G1",
+        "initial research eligibility is limited to company_share/common_share"
+      ],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "latest_completed_official_daily_batch"
+      ],
+      "historical_lookup_supported": false
+    },
+    {
+      "capability_id": "monthly_revenue",
+      "description": "Retrieves the latest available official monthly-revenue reporting period for eligible Taiwan common shares.",
+      "support_status": "runtime_executable",
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "provisional_markets": [],
+      "allowed_parameters": {},
+      "requires_target_resolution": true,
+      "requires_approval_for_execution": true,
+      "possible_timing_classes": [
+        "official_monthly_reporting_period"
+      ],
+      "possible_fallbacks": [
+        "official_json_openapi"
+      ],
+      "known_limitations": [
+        "initial G2 provides the latest available reporting period only",
+        "arbitrary monthly-revenue history is not supported in initial G2",
+        "initial research eligibility is limited to company_share/common_share"
+      ],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "latest_available_reporting_period"
+      ],
+      "historical_lookup_supported": false
+    }
+  ],
+  "execution": {
+    "preview_supported": true,
+    "explicit_approval_required": true,
+    "one_shot_execution": true,
+    "scheduler_enabled": false,
+    "polling_enabled": false,
+    "persistent_watchlist_mutation": false,
+    "trading_enabled": false
+  },
+  "bounds": {
+    "default_target_limit": 10,
+    "hard_target_limit": 50,
+    "default_operation_limit": 30,
+    "hard_operation_limit": 100
+  },
+  "available_source_families": [
+    {
+      "source_family": "TWSE_MIS",
+      "timing_class": "liveish_intraday_snapshot",
+      "market_scope": [
+        "TWSE",
+        "TPEX"
+      ],
+      "activation_status": "active",
+      "runtime_availability": true,
+      "known_limitations": [
+        "no continuous polling"
+      ]
+    },
+    {
+      "source_family": "TWSE_OPENAPI",
+      "timing_class": "official_eod",
+      "market_scope": [
+        "TWSE"
+      ],
+      "activation_status": "active",
+      "runtime_availability": true,
+      "known_limitations": []
+    },
+    {
+      "source_family": "TPEX_OPENAPI",
+      "timing_class": "official_eod",
+      "market_scope": [
+        "TPEX"
+      ],
+      "activation_status": "active",
+      "runtime_availability": true,
+      "known_limitations": []
+    },
+    {
+      "source_family": "NCDR_DGPA_CLOSURE_CAP",
+      "timing_class": "request_session_context",
+      "market_scope": [
+        "TWSE",
+        "TPEX",
+        "TAIFEX"
+      ],
+      "activation_status": "active",
+      "runtime_availability": true,
+      "known_limitations": []
+    },
+    {
+      "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+      "timing_class": "official_daily_batch",
+      "market_scope": [
+        "TWSE",
+        "TPEX"
+      ],
+      "activation_status": "planned_phase_g",
+      "runtime_availability": false,
+      "primary_transport": "official_csv",
+      "fallback_transports": [
+        "official_json_openapi"
+      ],
+      "known_limitations": [
+        "latest completed official daily batch only in initial G1",
+        "exact daily refresh clock is not contract authority"
+      ]
+    },
+    {
+      "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+      "timing_class": "official_monthly_reporting_period",
+      "market_scope": [
+        "TWSE",
+        "TPEX"
+      ],
+      "activation_status": "planned_phase_g",
+      "runtime_availability": false,
+      "primary_transport": "official_csv",
+      "fallback_transports": [
+        "official_json_openapi"
+      ],
+      "known_limitations": [
+        "latest available reporting period only in initial G2"
+      ]
+    }
+  ],
+  "fallback_semantics": {
+    "fallback_must_be_explicit": true,
+    "fallback_timing_class_downgrade_allowed": true
+  },
+  "timing_classes": [
+    "liveish_intraday_snapshot",
+    "official_eod",
+    "official_statistics_eod",
+    "request_session_context",
+    "official_daily_batch",
+    "official_monthly_reporting_period"
+  ],
+  "known_limitations": [
+    "V1 remains accepted as a stable compatibility request contract",
+    "V2 is the preferred request contract for Phase G",
+    "Phase G research evidence is limited to TWSE/TPEX company common shares in G1/G2",
+    "no scheduler",
+    "no continuous polling",
+    "no auto retry",
+    "no trading or order execution"
+  ]
+}
