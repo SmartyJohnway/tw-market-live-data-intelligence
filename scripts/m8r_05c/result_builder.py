@@ -279,7 +279,7 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
     lineage = build_lineage_map(inputs)
 
     # Build citation index.
-    citation_index = build_citation_index(lineage, bundle)
+    citation_index = build_citation_index(lineage, bundle, output_schema_version)
 
     # Build request parameter lookup for derived metrics.
     request_parameters: dict[str, dict] = {}
