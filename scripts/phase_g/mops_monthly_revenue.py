@@ -3,9 +3,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+from datetime import datetime
 from typing import Any
 
-from .research_executor import ROUTES, SourceFailure, bind_rows, fetch_once, field, normalize_source_rows
+from .research_executor import ROUTES, SourceFailure, bind_rows, failed_provenance, fetch_once, field, normalize_source_rows
 
 SOURCE_FAMILY = "MOPS_MONTHLY_REVENUE_OPEN_DATA"
 
@@ -21,8 +22,8 @@ def _report_date(value: str | None) -> str | None:
     digits=value.replace("/", "").replace("-", "").strip()
     if not digits.isdigit() or len(digits) not in {7, 8}: return None
     year=int(digits[:-4])+1911; month=int(digits[-4:-2]); day=int(digits[-2:])
-    if not (1 <= month <= 12 and 1 <= day <= 31): return None
-    return f"{year:04d}-{month:02d}-{day:02d}"
+    try: return datetime(year,month,day).date().isoformat()
+    except ValueError: return None
 
 def _integer(row: dict[str, Any], *names: str) -> int | None:
     value=field(row,*names)
@@ -51,13 +52,18 @@ def _value(row: dict[str, Any]) -> dict[str, Any]:
 def execute(targets: list[dict[str, Any]], market: str, *, observed_at: str, csv_fetcher, json_fetcher) -> list[dict[str, Any]]:
     route=ROUTES[("monthly_revenue", market)]
     if any(target.get("market") != market for target in targets): return [_result(target,"binding_failed",None,observed_at,route,"official_csv",False,["route_target_market_mismatch"]) for target in targets]
+    transport_result=None
     try:
-        rows, transport, fallback, attempts=fetch_once(route,csv_fetcher,json_fetcher)
-        rows=normalize_source_rows(route,transport,rows)
-    except SourceFailure as exc: return [_result(t,"source_failed",None,observed_at,route,"official_json_openapi" if exc.attempts else "official_csv",bool(exc.attempts),[str(exc)],[],None,None,exc.attempts) for t in targets]
-    periods={_roc_date(field(row,"reporting_period")) for row in rows}; periods.discard(None)
-    report_dates={_report_date(field(row,"source_report_date")) for row in rows}; report_dates.discard(None)
-    period=next(iter(periods)) if len(periods)==1 else None; report_date=next(iter(report_dates)) if len(report_dates)==1 else None
+        transport_result=fetch_once(route,csv_fetcher,json_fetcher)
+        rows=normalize_source_rows(route,transport_result.transport,transport_result.rows)
+        periods={_roc_date(field(row,"reporting_period")) for row in rows}; periods.discard(None)
+        report_dates={_report_date(field(row,"source_report_date")) for row in rows}; report_dates.discard(None)
+        if len(periods)!=1 or len(report_dates)!=1: raise SourceFailure("source_snapshot_period_identity_invalid")
+    except SourceFailure as exc:
+        transport, fallback_used, fallback_attempted, attempts=failed_provenance(transport_result,exc)
+        return [_result(t,"source_failed",None,observed_at,route,transport,fallback_used,[exc.code],[],None,None,attempts,fallback_attempted) for t in targets]
+    transport=transport_result.transport; fallback=transport_result.fallback_attempted; attempts=transport_result.attempt_failures
+    period=next(iter(periods)); report_date=next(iter(report_dates))
     out=[]
     for target in targets:
         status,matches,diagnostics=bind_rows(rows,target)
@@ -73,5 +79,6 @@ def execute(targets: list[dict[str, Any]], market: str, *, observed_at: str, csv
 
 def _binding_diagnostics(rows):
     return [] if not rows else [{"kind":"company_name_mismatch","source_company_codes":sorted({str(x.get("company_code", "")) for x in rows})}]
-def _result(target,status,value,observed_at,route,transport,fallback,caveats,diagnostics=None,period=None,report_date=None,attempts=None):
-    return {"schema_version":"phase_g_monthly_revenue_operation_evidence.v1","executor_id":"phase_g_official_research_executor","capability_id":"monthly_revenue","target":{k:target[k] for k in ("canonical_target_id","market","security_code")},"status":status,"source":{"source_family":SOURCE_FAMILY,"source_contract_id":route["contract"],"transport":transport,"fallback_used":fallback,"fallback_attempted":fallback or bool(attempts),"attempt_failures":attempts or []},"observed_at":observed_at,"coverage":{"mode":"latest_available_reporting_period","reporting_period":period,"source_report_date":report_date},"value":value,"diagnostics":diagnostics or [],"caveats":caveats}
+def _result(target,status,value,observed_at,route,transport,fallback,caveats,diagnostics=None,period=None,report_date=None,attempts=None,fallback_attempted=None):
+    attempted=fallback if fallback_attempted is None else fallback_attempted
+    return {"schema_version":"phase_g_monthly_revenue_operation_evidence.v1","executor_id":"phase_g_official_research_executor","capability_id":"monthly_revenue","target":{k:target[k] for k in ("canonical_target_id","market","security_code")},"status":status,"source":{"source_family":SOURCE_FAMILY,"source_contract_id":route["contract"],"transport":transport,"fallback_used":fallback,"fallback_attempted":attempted,"attempt_failures":attempts or []},"observed_at":observed_at,"coverage":{"mode":"latest_available_reporting_period","reporting_period":period,"source_report_date":report_date},"value":value,"diagnostics":diagnostics or [],"caveats":caveats}

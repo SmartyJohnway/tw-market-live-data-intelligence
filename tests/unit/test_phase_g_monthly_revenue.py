@@ -40,3 +40,9 @@ def test_b3_g2_missing_field_market_mismatch_and_schema_negative():
     schema=json.loads((Path(__file__).resolve().parents[2]/"schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json").read_text())
     valid=run(); bad=json.loads(json.dumps(valid)); bad["value"]["currency"]="USD"
     with __import__('pytest').raises(jsonschema.ValidationError): jsonschema.validate(bad,schema,format_checker=jsonschema.FormatChecker())
+
+def test_b4_g2_snapshot_period_identity_conflict_fails_closed_and_preserves_fallback():
+    conflict=HEAD+ROW+ROW.replace("11508","11507",1)
+    assert run(conflict)["status"]=="source_failed"
+    json_bad=run(csv=lambda _:(_ for _ in ()).throw(OSError()),jsonp=lambda _:[{"公司代號":"2330"}])
+    assert json_bad["source"]["transport"]=="official_json_openapi" and json_bad["source"]["fallback_attempted"] is True and json_bad["source"]["fallback_used"] is False

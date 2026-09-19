@@ -123,7 +123,66 @@
           }
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "fallback_used": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "transport": {
+                "const": "official_json_openapi"
+              },
+              "fallback_attempted": {
+                "const": true
+              },
+              "attempt_failures": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "fallback_attempted": {
+                "const": true
+              },
+              "fallback_used": {
+                "const": false
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "attempt_failures": {
+                "minItems": 2
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "fallback_attempted": {
+                "const": false
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "fallback_used": {
+                "const": false
+              }
+            }
+          }
+        }
+      ]
     }
   },
   "$id": "urn:tw-market-live-data-intelligence:phase-g-monthly-revenue-operation-evidence:v1",
@@ -364,6 +423,43 @@
         "properties": {
           "value": {
             "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "allOf": [
+          {
+            "properties": {
+              "status": {
+                "not": {
+                  "const": "source_failed"
+                }
+              }
+            }
+          },
+          {
+            "properties": {
+              "source": {
+                "properties": {
+                  "fallback_attempted": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "properties": {
+              "attempt_failures": {
+                "maxItems": 0
+              }
+            }
           }
         }
       }

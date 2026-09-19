@@ -4,6 +4,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+from dataclasses import dataclass
 from typing import Any, Callable, Iterable
 
 EXECUTOR_ID = "phase_g_official_research_executor"
@@ -19,7 +20,14 @@ Fetcher = Callable[[str], str | bytes | list[dict[str, Any]]]
 
 class SourceFailure(Exception):
     def __init__(self, code: str, attempts: list[dict[str, str]] | None = None):
-        super().__init__(code); self.attempts=attempts or []
+        super().__init__(code); self.code=code; self.attempts=attempts or []
+
+@dataclass(frozen=True)
+class TransportResult:
+    rows: list[dict[str, Any]]
+    transport: str
+    fallback_attempted: bool
+    attempt_failures: list[dict[str, str]]
 
 def parse_csv(payload: str | bytes) -> list[dict[str, str]]:
     text = payload.decode("utf-8-sig") if isinstance(payload, bytes) else payload
@@ -35,15 +43,25 @@ def parse_json(payload: str | bytes | list[dict[str, Any]]) -> list[dict[str, An
     if not isinstance(rows, list) or not rows or not all(isinstance(x, dict) for x in rows): raise SourceFailure("empty_or_unverifiable_source")
     return rows
 
-def fetch_once(route: dict[str, str], csv_fetcher: Fetcher, json_fetcher: Fetcher) -> tuple[list[dict[str, Any]], str, bool, list[dict[str, str]]]:
+def fetch_once(route: dict[str, str], csv_fetcher: Fetcher, json_fetcher: Fetcher) -> TransportResult:
     try:
-        return parse_csv(csv_fetcher(route["csv_url"])), "official_csv", False, []
+        return TransportResult(parse_csv(csv_fetcher(route["csv_url"])), "official_csv", False, [])
     except Exception as primary:
         attempts=[{"transport":"official_csv","failure":type(primary).__name__}]
         try:
-            return parse_json(json_fetcher(route["json_url"])), "official_json_openapi", True, attempts
+            return TransportResult(parse_json(json_fetcher(route["json_url"])), "official_json_openapi", True, attempts)
         except Exception as fallback:
             raise SourceFailure("all_governed_transports_failed", attempts+[{"transport":"official_json_openapi","failure":type(fallback).__name__}]) from fallback
+
+def failed_provenance(result: TransportResult | None, failure: SourceFailure) -> tuple[str, bool, bool, list[dict[str, str]]]:
+    """Retain transport state when parse/normalization fails after a fetch."""
+    if result is None:
+        attempts=failure.attempts
+        attempted=any(x["transport"] == "official_json_openapi" for x in attempts)
+        transport="official_json_openapi" if attempted else "official_csv"
+        return transport, False, attempted, attempts
+    attempts=result.attempt_failures + [{"transport":result.transport,"failure":failure.code}]
+    return result.transport, False, result.fallback_attempted, attempts
 
 SOURCE_FIELD_MAPPINGS: dict[tuple[str, str], dict[str, tuple[str, ...]]] = {
     # TWSE Open Data keeps its established Chinese column names in both transports.

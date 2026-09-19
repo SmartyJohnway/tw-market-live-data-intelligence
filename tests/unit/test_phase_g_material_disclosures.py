@@ -4,7 +4,7 @@ import jsonschema
 from scripts.phase_g.mops_material_disclosures import execute
 
 TARGET={"canonical_target_id":"TWSE:2330","market":"TWSE","security_code":"2330","security_name_zh":"台積電"}
-CSV="公司代號,公司名稱,發言日期,發言時間,主旨,說明\n2330,台積電,1150915,65728,測試,內容\n"
+CSV="出表日期,公司代號,公司名稱,發言日期,發言時間,主旨,說明\n1150916,2330,台積電,1150915,65728,測試,內容\n"
 
 def test_c01_c07_csv_exact_binding_and_five_digit_time():
     result=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:CSV,json_fetcher=lambda _: (_ for _ in ()).throw(AssertionError()))[0]
@@ -17,7 +17,7 @@ def test_b08_name_match_with_wrong_code_fails_closed():
     assert result["status"]=="binding_failed" and result["items"]==[]
 
 def test_c11_fallback_and_c12_source_failed():
-    ok=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _: (_ for _ in ()).throw(OSError()),json_fetcher=lambda _:[{"公司代號":"2330","發言日期":"1150915","發言時間":"065728","主旨":"測試","說明":"內容"}])[0]
+    ok=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _: (_ for _ in ()).throw(OSError()),json_fetcher=lambda _:[{"出表日期":"1150916","公司代號":"2330","發言日期":"1150915","發言時間":"065728","主旨":"測試","說明":"內容"}])[0]
     assert ok["source"]["fallback_used"] is True and ok["source"]["transport"]=="official_json_openapi"
     failed=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _: "",json_fetcher=lambda _: "[]")[0]
     assert failed["status"]=="source_failed"
@@ -25,10 +25,10 @@ def test_c11_fallback_and_c12_source_failed():
 def test_c03_c04_and_b09_missing_multiple_and_conflict():
     missing=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:CSV.replace("2330","2317",1).replace("台積電","其他",1),json_fetcher=lambda _: "[]")[0]
     assert missing["status"]=="no_evidence_in_covered_scope" and missing["items"]==[]
-    multi=CSV+"2330,台積電,1150914,090000,另一則,內容二\n"
+    multi=CSV+"1150916,2330,台積電,1150914,090000,另一則,內容二\n"
     available=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:multi,json_fetcher=lambda _: "[]")[0]
     assert available["status"]=="available" and len(available["items"])==2
-    conflict=CSV+"2330,台積電,1150915,65728,測試,不同內容\n"
+    conflict=CSV+"1150916,2330,台積電,1150915,65728,測試,不同內容\n"
     failed=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:conflict,json_fetcher=lambda _: "[]")[0]
     assert failed["status"]=="binding_failed" and failed["diagnostics"]
 
@@ -63,13 +63,12 @@ def test_c02_tpex_uses_its_own_official_contract():
     assert result["status"]=="available" and result["source"]["source_contract_id"]=="t187ap04_O"
 
 def test_c08_source_report_date_is_source_faithful():
-    payload=CSV.replace("公司代號,", "出表日期,公司代號,").replace("2330,", "1150916,2330,", 1)
-    result=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:payload,json_fetcher=lambda _: "[]")[0]
+    result=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:CSV,json_fetcher=lambda _: "[]")[0]
     assert result["coverage"]["source_report_date"]=="2026-09-16"
 
 def test_c15_c16_only_target_rows_are_retained_with_full_internal_description():
     long_text="x"*9000
-    payload=CSV.replace("內容",long_text).replace("\n", "\n2317,其他,1150915,080000,無關,不保留\n", 1)
+    payload=CSV.replace("內容",long_text).replace("\n", "\n1150916,2317,其他,1150915,080000,無關,不保留\n", 1)
     result=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:payload,json_fetcher=lambda _: "[]")[0]
     assert len(result["items"])==1 and result["items"][0]["description_raw"]==long_text
 
@@ -85,7 +84,7 @@ def test_b3_real_shape_tpex_json_fallback_binds_date_and_code():
     assert result["coverage"]["source_report_date"]=="2026-09-16" and result["items"][0]["subject"]=="公告"
 
 def test_b3_g1_hash_tie_break_is_ascending():
-    payload=CSV+"2330,台積電,1150915,65728,另一則,內容二\n"
+    payload=CSV+"1150916,2330,台積電,1150915,65728,另一則,內容二\n"
     result=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:payload,json_fetcher=lambda _:"[]")[0]
     assert [x["normalized_record_hash"] for x in result["items"]]==sorted(x["normalized_record_hash"] for x in result["items"])
 
@@ -107,3 +106,19 @@ def test_b3_g1_schema_rejects_extra_target_and_inconsistent_status():
     with __import__('pytest').raises(jsonschema.ValidationError): jsonschema.validate(bad,schema,format_checker=jsonschema.FormatChecker())
     bad=json.loads(json.dumps(result)); bad["status"]="no_evidence_in_covered_scope"
     with __import__('pytest').raises(jsonschema.ValidationError): jsonschema.validate(bad,schema,format_checker=jsonschema.FormatChecker())
+
+def test_b4_g1_fallback_provenance_state_machine():
+    csv_ok=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:CSV,json_fetcher=lambda _:(_ for _ in ()).throw(AssertionError()))[0]
+    assert csv_ok["source"]["transport"]=="official_csv" and csv_ok["source"]["fallback_used"] is False and csv_ok["source"]["fallback_attempted"] is False and csv_ok["source"]["attempt_failures"]==[]
+    json_ok=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:(_ for _ in ()).throw(OSError()),json_fetcher=lambda _:[{"出表日期":"1150916","公司代號":"2330","公司名稱":"台積電","發言日期":"1150915","發言時間":"065728","主旨":"測試","說明":"內容"}])[0]
+    assert json_ok["source"]["transport"]=="official_json_openapi" and json_ok["source"]["fallback_used"] is True and len(json_ok["source"]["attempt_failures"])==1
+    both_fail=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:(_ for _ in ()).throw(OSError()),json_fetcher=lambda _:(_ for _ in ()).throw(ValueError()))[0]
+    assert both_fail["source"]["fallback_used"] is False and both_fail["source"]["fallback_attempted"] is True and len(both_fail["source"]["attempt_failures"])==2
+    json_bad=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:(_ for _ in ()).throw(OSError()),json_fetcher=lambda _:[{"company":"2330"}])[0]
+    assert json_bad["source"]["transport"]=="official_json_openapi" and json_bad["source"]["fallback_used"] is False and json_bad["source"]["fallback_attempted"] is True and len(json_bad["source"]["attempt_failures"])==2
+
+def test_b4_g1_snapshot_report_date_missing_or_conflicting_fails_closed():
+    missing=CSV.replace("出表日期,","").replace("1150916,", "", 1)
+    assert execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:missing,json_fetcher=lambda _:"[]")[0]["status"]=="source_failed"
+    conflict=CSV+"1150917,2317,其他,1150915,080000,另一則,內容\n"
+    assert execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:conflict,json_fetcher=lambda _:"[]")[0]["status"]=="source_failed"
