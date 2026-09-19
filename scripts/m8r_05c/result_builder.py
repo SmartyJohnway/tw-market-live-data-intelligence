@@ -22,6 +22,8 @@ from jsonschema import Draft7Validator
 from .canonical import (
     build_audit_package_id,
     build_result_id,
+    build_audit_package_id_v2,
+    build_result_id_v2,
     hash_body_excluding_key,
 )
 from .citation_builder import CitationIndex, build_citation_index, get_citations_for_target
@@ -41,6 +43,7 @@ from .models import (
 
 ROOT = Path(__file__).resolve().parents[2]
 RESULT_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_result.v1.schema.json"
+RESULT_V2_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_result.v2.schema.json"
 AUDIT_PACKAGE_RELATIVE_PATH = "audit/unified_market_evidence_audit_package.v1.json"
 RESULT_RELATIVE_PATH = "ai_context/unified_market_evidence_result.v1.json"
 
@@ -72,6 +75,7 @@ def _build_request_summary(request: dict) -> RequestSummaryProjection:
         requested_data_needs=requested,
         required_data_needs=required,
         optional_data_needs=optional,
+        request_schema_version=request.get("schema_version"),
     )
 
 
@@ -83,6 +87,7 @@ def _build_resolution(
     status = target_res.resolution_status if target_res else "not_found"
     canonical_target_id = target_res.canonical_target_id if target_res else None
     market = target_res.market if target_res else None
+    identity = target_res.canonical_identity if target_res else None
     
     if not market and target_bindings:
         # Use the first binding to get market info if missing from F3.
@@ -93,6 +98,9 @@ def _build_resolution(
         status=status,
         canonical_target_id=canonical_target_id,
         market=market,
+        security_code=(identity or {}).get("security_code"),
+        security_name=(identity or {}).get("security_name_zh"),
+        canonical_identity=(identity.copy() if identity else None),
     )
 
 
@@ -171,6 +179,8 @@ def _citation_to_dict(c: CitationProjection) -> dict:
         d["source_contract_id"] = c.source_contract_id
     if c.normalized_evidence_hash:
         d["normalized_evidence_hash"] = c.normalized_evidence_hash
+    if c.source_report_date:
+        d["source_report_date"] = c.source_report_date
     return d
 
 
@@ -196,7 +206,38 @@ def _derived_metric_to_dict(m) -> dict:
     return d
 
 
-def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_PROJECTOR_VERSION) -> dict:
+def _research_status(evidence, need: str) -> str | None:
+    value = getattr(evidence, need, None)
+    return value.get("status") if isinstance(value, dict) else None
+
+
+def _not_applicable_research(need: str, observed_at: str, market: str | None) -> dict:
+    if need == "material_disclosures":
+        return {
+            "schema_version": "material_disclosure_evidence.v1", "status": "not_applicable",
+            "coverage": {"mode": "latest_completed_official_daily_batch", "source_report_date": None,
+                         "coverage_through": None, "historical_lookup_supported": False,
+                         "item_count": 0, "truncated": False},
+            "currentness": {"status": "unknown", "observed_at": observed_at},
+            "source": {"authority": "official", "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+                       "market": market or "TWSE", "source_contract_id": "not_applicable",
+                       "transport": "official_csv", "fallback_used": False},
+            "items": [], "caveats": ["target_not_applicable_to_research_capability"], "citation_ids": [],
+        }
+    return {
+        "schema_version": "monthly_revenue_evidence.v1", "status": "not_applicable",
+        "coverage": {"mode": "latest_available_reporting_period", "reporting_period": None,
+                     "source_report_date": None, "historical_lookup_supported": False},
+        "currentness": {"status": "unknown", "observed_at": observed_at},
+        "source": {"authority": "official", "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+                   "market": market or "TWSE", "source_contract_id": "not_applicable",
+                   "transport": "official_csv", "fallback_used": False},
+        "value": None, "caveats": ["target_not_applicable_to_research_capability"], "citation_ids": [],
+    }
+
+
+def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_PROJECTOR_VERSION,
+                 output_schema_version: str = "unified_market_evidence_result.v1") -> dict:
     """Build the complete AI-context result dict.
 
     Pure function: no I/O (inputs already loaded), no network, no datetime.now().
@@ -222,8 +263,14 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
         raise ProjectionError("bundle_id_missing")
 
     # Build result_id and audit_package_id (no circular reference).
-    result_id = build_result_id(request_id, receipt_id, bundle_id)
-    audit_package_id = build_audit_package_id(result_id, bundle_id)
+    if output_schema_version == "unified_market_evidence_result.v1":
+        result_id = build_result_id(request_id, receipt_id, bundle_id)
+        audit_package_id = build_audit_package_id(result_id, bundle_id)
+    elif output_schema_version == "unified_market_evidence_result.v2":
+        result_id = build_result_id_v2(request_id, receipt_id, bundle_id)
+        audit_package_id = build_audit_package_id_v2(result_id, bundle_id)
+    else:
+        raise ProjectionError("unsupported_output_schema_version")
 
     # Build request summary.
     request_summary = _build_request_summary(request)
@@ -232,7 +279,7 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
     lineage = build_lineage_map(inputs)
 
     # Build citation index.
-    citation_index = build_citation_index(lineage, bundle)
+    citation_index = build_citation_index(lineage, bundle, output_schema_version)
 
     # Build request parameter lookup for derived metrics.
     request_parameters: dict[str, dict] = {}
@@ -283,6 +330,18 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
             requested_data_needs=request_summary.requested_data_needs,
             citation_map=citation_map, projector_version=projector_version,
         )
+        if output_schema_version.endswith(".v2"):
+            identity = target_res.canonical_identity or {}
+            applicable = (
+                identity.get("instrument_family") == "company_share"
+                and identity.get("instrument_type") == "common_share"
+            )
+            if not applicable:
+                for research_need in ("material_disclosures", "monthly_revenue"):
+                    if research_need in request_summary.requested_data_needs and not target_bindings.get(research_need):
+                        setattr(evidence_proj, research_need, _not_applicable_research(
+                            research_need, calculated_at, target_res.market,
+                        ))
 
         # Project derived metrics.
         derived = project_derived_metrics(
@@ -307,6 +366,12 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
                     is_provided = True
                 elif not binding.evidence_artifacts:
                     is_provided = True
+            if need in {"material_disclosures", "monthly_revenue"}:
+                research_status = _research_status(evidence_proj, need)
+                is_provided = research_status in {
+                    "available", "partial", "no_evidence_in_covered_scope",
+                    "not_yet_available", "not_applicable",
+                }
             
             if is_provided:
                 provided_needs.append(need)
@@ -337,6 +402,9 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
         ]:
             if ev_field and ev_field.citation_ids:
                 used_cits.update(ev_field.citation_ids)
+        for typed_evidence in (evidence_proj.material_disclosures, evidence_proj.monthly_revenue):
+            if isinstance(typed_evidence, dict):
+                used_cits.update(typed_evidence.get("citation_ids", []))
         for dm in derived:
             used_cits.update(dm.citation_ids)
 
@@ -382,6 +450,8 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
             t_dict["resolution"]["security_name"] = res.security_name
         if res.market is not None:
             t_dict["resolution"]["market"] = res.market
+        if output_schema_version == "unified_market_evidence_result.v2":
+            t_dict["canonical_identity"] = res.canonical_identity
 
         # Evidence fields.
         ev = tp.evidence
@@ -399,6 +469,11 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
 
         if ev.official_eod_reference is not None:
             t_dict["evidence"]["official_eod_reference"] = ev.official_eod_reference
+        if output_schema_version == "unified_market_evidence_result.v2":
+            if ev.material_disclosures is not None:
+                t_dict["evidence"]["material_disclosures"] = ev.material_disclosures
+            if ev.monthly_revenue is not None:
+                t_dict["evidence"]["monthly_revenue"] = ev.monthly_revenue
 
         # Derived metrics.
         if tp.derived_metrics:
@@ -443,10 +518,12 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
     }
     if request_summary.execution_mode is not None:
         rs_dict["execution_mode"] = request_summary.execution_mode
+    if output_schema_version == "unified_market_evidence_result.v2":
+        rs_dict["request_schema_version"] = request_summary.request_schema_version or "unified_market_evidence_request.v1"
 
     # Build body without result_hash.
     body_without_hash: dict = {
-        "schema_version": "unified_market_evidence_result.v1",
+        "schema_version": output_schema_version,
         "result_id": result_id,
         "request_id": request_id,
         "generated_at": calculated_at,
@@ -455,8 +532,8 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
         "targets": targets_dicts,
         "audit_reference": {
             "audit_package_id": audit_package_id,
-            "schema_version": "unified_market_evidence_audit_package.v1",
-            "relative_path": AUDIT_PACKAGE_RELATIVE_PATH,
+            "schema_version": ("unified_market_evidence_audit_package.v2" if output_schema_version.endswith(".v2") else "unified_market_evidence_audit_package.v1"),
+            "relative_path": ("audit/unified_market_evidence_audit_package.v2.json" if output_schema_version.endswith(".v2") else AUDIT_PACKAGE_RELATIVE_PATH),
         },
     }
     if pf_dicts:
@@ -468,7 +545,7 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
     result = {**body_without_hash, "result_hash": result_hash}
 
     # Validate against schema.
-    schema = _load_result_schema()
+    schema = json.loads((RESULT_V2_SCHEMA_PATH if output_schema_version.endswith(".v2") else RESULT_SCHEMA_PATH).read_text(encoding="utf-8"))
     errors = list(Draft7Validator(schema).iter_errors(result))
     if errors:
         error_msgs = [str(e.message) for e in errors[:3]]

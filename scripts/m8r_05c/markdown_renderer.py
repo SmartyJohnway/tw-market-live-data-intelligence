@@ -173,6 +173,63 @@ def _data_need_label(need: str) -> str:
     return labels.get(need, need)
 
 
+def _fmt_typed_research_evidence(evidence: dict, need: str) -> str:
+    """Render the frozen v2 typed research evidence without interpretation."""
+    lines: list[str] = []
+    status = evidence.get("status", "unknown")
+    lines.append(f"- **狀態**: {status}")
+    coverage = evidence.get("coverage") or {}
+    if coverage:
+        lines.append("- **覆蓋範圍**:")
+        for key in ("mode", "source_report_date", "coverage_through", "reporting_period", "truncated"):
+            if key in coverage:
+                lines.append(f"  - `{key}`: {coverage[key]}")
+    currentness = evidence.get("currentness") or {}
+    if currentness:
+        lines.append("- **時效**:")
+        for key, value in currentness.items():
+            lines.append(f"  - `{key}`: {value}")
+    source = evidence.get("source") or {}
+    if source:
+        lines.append("- **來源**:")
+        for key in ("source_family", "source_contract_id", "market", "transport", "fallback_used"):
+            if key in source:
+                lines.append(f"  - `{key}`: {source[key]}")
+    if need == "material_disclosures":
+        for item in evidence.get("items") or []:
+            lines.append("")
+            lines.append(f"- **發言時間**: {item.get('published_at', '未知')}")
+            if item.get("source_fact_date") is not None:
+                lines.append(f"  - **事實發生日**: {item['source_fact_date']}")
+            lines.append(f"  - **主旨**: {item.get('subject', '未知')}")
+            if item.get("clause") is not None:
+                lines.append(f"  - **條款**: {item['clause']}")
+            description = item.get("description") or item.get("description_raw")
+            if description is not None:
+                lines.append(f"  - **說明**: {description}")
+            if item.get("description_truncated"):
+                lines.append("  - **說明已依 AI 合約截斷**: true")
+            if item.get("citation_id"):
+                lines.append(f"  - **引用**: `{item['citation_id']}`")
+    elif need == "monthly_revenue":
+        value = evidence.get("value")
+        if isinstance(value, dict):
+            lines.append("- **數值**:")
+            for key in ("currency", "unit", "current_month_revenue", "previous_month_revenue",
+                        "previous_year_same_month_revenue", "mom_pct", "yoy_pct",
+                        "ytd_revenue", "previous_year_ytd_revenue", "ytd_yoy_pct", "note"):
+                if key in value:
+                    lines.append(f"  - `{key}`: {value[key]}")
+    caveats = evidence.get("caveats") or []
+    if caveats:
+        lines.append("- **限制**:")
+        lines.extend(f"  - {caveat}" for caveat in caveats)
+    citations = evidence.get("citation_ids") or []
+    if citations:
+        lines.append(f"- **引用 IDs**: {', '.join(f'`{item}`' for item in citations)}")
+    return "\n".join(lines)
+
+
 def render_result_markdown(result: dict, *, projector_version: str = CURRENT_PROJECTOR_VERSION) -> str:
     """Render the result dict as AI-ready Markdown.
 
@@ -297,6 +354,15 @@ def render_result_markdown(result: dict, *, projector_version: str = CURRENT_PRO
                     lines.append(_fmt_eod_reference(ev, projector_version=projector_version))
                 else:
                     lines.append(_fmt_evidence_envelope(ev, need_key if projector_version != LEGACY_PROJECTOR_VERSION else "legacy"))
+
+            if result.get("schema_version") == "unified_market_evidence_result.v2":
+                for need_key in ("material_disclosures", "monthly_revenue"):
+                    typed = evidence.get(need_key)
+                    if typed is None:
+                        continue
+                    lines.append("")
+                    lines.append(_section(_data_need_label(need_key), 4))
+                    lines.append(_fmt_typed_research_evidence(typed, need_key))
 
         # Derived metrics.
         derived_metrics = target.get("derived_metrics", [])

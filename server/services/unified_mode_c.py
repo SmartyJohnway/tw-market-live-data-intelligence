@@ -23,9 +23,21 @@ from server.services.watchlist_evidence_composer import (
     validate_selection_provenance,
 )
 
-_RESULT = "ai_context/unified_market_evidence_result.v1.json"
-_MARKDOWN = "ai_context/unified_market_evidence_result.v1.md"
-_AUDIT = "audit/unified_market_evidence_audit_package.v1.json"
+_OUTPUT_PATHS = {
+    "unified_market_evidence_result.v1": (
+        "ai_context/unified_market_evidence_result.v1.json",
+        "ai_context/unified_market_evidence_result.v1.md",
+        "audit/unified_market_evidence_audit_package.v1.json",
+        "unified_market_evidence_audit_package.v1",
+    ),
+    "unified_market_evidence_result.v2": (
+        "ai_context/unified_market_evidence_result.v2.json",
+        "ai_context/unified_market_evidence_result.v2.md",
+        "audit/unified_market_evidence_audit_package.v2.json",
+        "unified_market_evidence_audit_package.v2",
+    ),
+}
+_RESULT, _MARKDOWN, _AUDIT, _AUDIT_SCHEMA = _OUTPUT_PATHS["unified_market_evidence_result.v1"]
 
 
 class ModeCError(Exception):
@@ -122,28 +134,82 @@ def _expected_outputs(
     inputs: Any,
     projector_version: str = CURRENT_PROJECTOR_VERSION,
     selection_provenance: dict[str, Any] | None = None,
+    output_schema_version: str = "unified_market_evidence_result.v1",
 ) -> tuple[dict[str, Any], dict[str, Any], str]:
     """Rebuild the complete 05C projection from verified predecessors only."""
     try:
-        result = build_result(inputs, projector_version=projector_version)
-        citation_index = build_citation_index(build_lineage_map(inputs), inputs.bundle)
+        result_path, _markdown_path, audit_path, audit_schema_version = _OUTPUT_PATHS[output_schema_version]
+        result = build_result(inputs, projector_version=projector_version,
+                              output_schema_version=output_schema_version)
+        citation_index = build_citation_index(
+            build_lineage_map(inputs), inputs.bundle, output_schema_version,
+        )
         audit = build_audit_package(
             result=result,
             inputs=inputs,
             citation_index=citation_index,
-            result_relative_path=_RESULT, projector_version=projector_version,
+            result_relative_path=result_path, projector_version=projector_version,
             selection_provenance=selection_provenance,
+            output_schema_version=audit_schema_version,
         )
         return result, audit, render_result_markdown(result, projector_version=projector_version)
     except ProjectionError as exc:
         raise ModeCError("mode_c_lineage_verification_failed") from exc
 
 
-def build_mode_c_result_package(payload: dict[str, Any]) -> dict[str, Any]:
+def _persisted_output_version(package: Path) -> str | None:
+    complete: list[str] = []
+    partial = False
+    for version, (result_rel, markdown_rel, audit_rel, _audit_schema) in _OUTPUT_PATHS.items():
+        present = [(package / rel).exists() for rel in (result_rel, markdown_rel, audit_rel)]
+        if all(present):
+            complete.append(version)
+        elif any(present):
+            partial = True
+    if partial or len(complete) > 1:
+        raise ModeCError("mode_c_existing_output_inconsistent")
+    return complete[0] if complete else None
+
+
+def _read_verified_outputs(
+    package: Path, output_schema_version: str,
+    expected_result: dict[str, Any], expected_audit: dict[str, Any], expected_markdown: str,
+) -> tuple[dict[str, Any], dict[str, Any], str] | None:
+    result_rel, markdown_rel, audit_rel, _audit_schema = _OUTPUT_PATHS[output_schema_version]
+    result_path, markdown_path, audit_path = package / result_rel, package / markdown_rel, package / audit_rel
+    present = [path.exists() for path in (result_path, markdown_path, audit_path)]
+    if not any(present):
+        return None
+    if not all(path.is_file() for path in (result_path, markdown_path, audit_path)):
+        raise ModeCError("mode_c_existing_output_inconsistent")
+    try:
+        result, audit = _read(result_path), _read(audit_path)
+        markdown = markdown_path.read_text(encoding="utf-8")
+    except OSError as exc:
+        raise ModeCError("mode_c_existing_output_inconsistent") from exc
+    if result != expected_result or audit != expected_audit or markdown != expected_markdown:
+        raise ModeCError("mode_c_existing_output_inconsistent")
+    return result, audit, markdown
+
+
+def build_mode_c_result_package(
+    payload: dict[str, Any], *,
+    output_schema_version: str = "unified_market_evidence_result.v1",
+) -> dict[str, Any]:
     if not isinstance(payload, dict) or set(payload) != {"control_package_id"}:
         raise ModeCError("invalid_api_envelope")
+    if output_schema_version in {"v1", "v2"}:
+        output_schema_version = f"unified_market_evidence_result.{output_schema_version}"
+    if output_schema_version not in _OUTPUT_PATHS:
+        raise ModeCError("unsupported_output_schema_version")
     package, controls, claim, receipt, bundle, f3 = _load_verified(payload["control_package_id"])
-    _f3(package, controls, f3)
+    persisted_version = _persisted_output_version(package)
+    if persisted_version is not None:
+        output_schema_version = persisted_version
+        if not f3.is_file():
+            raise ModeCError("mode_c_existing_output_inconsistent")
+    else:
+        _f3(package, controls, f3)
     inputs = _inputs(package, controls, claim, receipt, bundle, f3)
     selection_provenance = None
     if "selection_provenance" in controls:
@@ -152,44 +218,47 @@ def build_mode_c_result_package(payload: dict[str, Any]) -> dict[str, Any]:
             validate_selection_provenance(selection_provenance, inputs.request)
         except WatchlistEvidenceCompositionError as exc:
             raise ModeCError("mode_c_control_integrity_failed") from exc
-    audit_path = package / _AUDIT
+    result_rel, markdown_rel, audit_rel, _audit_schema = _OUTPUT_PATHS[output_schema_version]
+    audit_path = package / audit_rel
     projector_version = CURRENT_PROJECTOR_VERSION
     if audit_path.is_file():
         projector_version = _read(audit_path).get("projector_metadata", {}).get("projector_version", CURRENT_PROJECTOR_VERSION)
         if projector_version not in SUPPORTED_PROJECTOR_VERSIONS:
             raise ModeCError("mode_c_existing_output_inconsistent")
     expected_result, expected_audit, expected_markdown = _expected_outputs(
-        inputs, projector_version, selection_provenance
+        inputs, projector_version, selection_provenance, output_schema_version
     )
-    result_path, md_path, audit_path = (package / _RESULT, package / _MARKDOWN, package / _AUDIT)
-    if any(p.exists() for p in (result_path, md_path, audit_path)):
-        if not all(p.is_file() for p in (result_path, md_path, audit_path)):
-            raise ModeCError("mode_c_existing_output_inconsistent")
-        result, audit, markdown = _read(result_path), _read(audit_path), md_path.read_text(encoding="utf-8")
-        if result != expected_result or audit != expected_audit or markdown != expected_markdown:
-            raise ModeCError("mode_c_existing_output_inconsistent")
+    existing = _read_verified_outputs(
+        package, output_schema_version, expected_result, expected_audit, expected_markdown,
+    )
+    if existing is not None:
+        result, audit, markdown = existing
         materialization = "existing_verified"
     else:
         try:
-            materialize_outputs(output_root=str(package), result_json=expected_result, audit_package_json=expected_audit, result_markdown=expected_markdown, result_relative_path=_RESULT, audit_relative_path=_AUDIT, result_md_relative_path=_MARKDOWN)
+            materialize_outputs(output_root=str(package), result_json=expected_result, audit_package_json=expected_audit, result_markdown=expected_markdown, result_relative_path=result_rel, audit_relative_path=audit_rel, result_md_relative_path=markdown_rel)
         except ProjectionError as exc:
             raise ModeCError("mode_c_materialization_failed") from exc
         result, audit, markdown = expected_result, expected_audit, expected_markdown
         materialization = "newly_materialized"
-    return {"result_id": result["result_id"], "result_hash": result["result_hash"], "result_status": result["status"], "request_summary": result["request_summary"], "targets": result["targets"], "request_caveats": result.get("request_caveats", []), "citation_references": [c for t in result["targets"] for c in t.get("citations", [])], "ai_ready_markdown": markdown, "canonical_result": result, "canonical_result_reference": _RESULT, "audit_package_id": audit["audit_package_id"], "audit_reference": _AUDIT, "selection_provenance_identity": audit.get("selection_provenance_identity"), "materialization": materialization, "external_market_network_executed": False}
+    return {"result_id": result["result_id"], "result_hash": result["result_hash"], "result_status": result["status"], "request_summary": result["request_summary"], "targets": result["targets"], "request_caveats": result.get("request_caveats", []), "citation_references": [c for t in result["targets"] for c in t.get("citations", [])], "ai_ready_markdown": markdown, "canonical_result": result, "canonical_result_reference": result_rel, "audit_package_id": audit["audit_package_id"], "audit_reference": audit_rel, "selection_provenance_identity": audit.get("selection_provenance_identity"), "materialization": materialization, "external_market_network_executed": False, "output_schema_version": output_schema_version}
 
 
-def read_mode_c_audit(control_package_id: str) -> dict[str, Any]:
+def read_mode_c_audit(control_package_id: str, output_schema_version: str = "unified_market_evidence_result.v1") -> dict[str, Any]:
     """Return a verified persisted audit only after the same post-execution checks."""
-    build_mode_c_result_package({"control_package_id": control_package_id})
+    package_result = build_mode_c_result_package(
+        {"control_package_id": control_package_id}, output_schema_version=output_schema_version,
+    )
     package, *_ = _load_verified(control_package_id)
-    return _read(package / _AUDIT)
+    return _read(package / _OUTPUT_PATHS[package_result["output_schema_version"]][2])
 
 
-def build_mode_c_ai_handoff(control_package_id: str) -> dict[str, Any]:
+def build_mode_c_ai_handoff(control_package_id: str, output_schema_version: str = "unified_market_evidence_result.v1") -> dict[str, Any]:
     """Return only verified, AI-safe Mode C material for a finalized package."""
-    result_package = build_mode_c_result_package({"control_package_id": control_package_id})
-    audit = read_mode_c_audit(control_package_id)
+    result_package = build_mode_c_result_package(
+        {"control_package_id": control_package_id}, output_schema_version=output_schema_version,
+    )
+    audit = read_mode_c_audit(control_package_id, output_schema_version)
     citations = audit.get("citation_to_operation_map")
     if not isinstance(citations, list):
         raise ModeCError("mode_c_existing_output_inconsistent")
