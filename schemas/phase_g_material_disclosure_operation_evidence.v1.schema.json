@@ -1,1 +1,391 @@
-{"$schema":"http://json-schema.org/draft-07/schema#","$id":"urn:tw-market-live-data-intelligence:phase-g-material-disclosure-operation-evidence:v1","type":"object","required":["schema_version","executor_id","capability_id","target","status","source","observed_at","coverage","items","diagnostics","caveats"],"properties":{"schema_version":{"const":"phase_g_material_disclosure_operation_evidence.v1"},"executor_id":{"const":"phase_g_official_research_executor"},"capability_id":{"const":"material_disclosures"},"target":{"type":"object","required":["canonical_target_id","market","security_code"]},"status":{"enum":["available","partial","no_evidence_in_covered_scope","source_failed","binding_failed"]},"source":{"type":"object","required":["source_family","source_contract_id","transport","fallback_used"]},"observed_at":{"type":"string"},"coverage":{"type":"object","required":["mode","source_report_date","coverage_through","truncated"]},"items":{"type":"array","maxItems":50},"diagnostics":{"type":"array"},"caveats":{"type":"array"}},"additionalProperties":false}
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "target": {
+      "type": "object",
+      "required": [
+        "canonical_target_id",
+        "market",
+        "security_code"
+      ],
+      "properties": {
+        "canonical_target_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "market": {
+          "enum": [
+            "TWSE",
+            "TPEX"
+          ]
+        },
+        "security_code": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "attempt": {
+      "type": "object",
+      "required": [
+        "transport",
+        "failure"
+      ],
+      "properties": {
+        "transport": {
+          "enum": [
+            "official_csv",
+            "official_json_openapi"
+          ]
+        },
+        "failure": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "diagnostic": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "source_company_codes"
+          ],
+          "properties": {
+            "kind": {
+              "const": "company_name_mismatch"
+            },
+            "source_company_codes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "normalized_record_hashes"
+          ],
+          "properties": {
+            "kind": {
+              "const": "binding_conflict"
+            },
+            "normalized_record_hashes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "minItems": 2
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "source_family",
+        "source_contract_id",
+        "transport",
+        "fallback_used",
+        "fallback_attempted",
+        "attempt_failures"
+      ],
+      "properties": {
+        "source_family": {},
+        "source_contract_id": {},
+        "transport": {
+          "enum": [
+            "official_csv",
+            "official_json_openapi"
+          ]
+        },
+        "fallback_used": {
+          "type": "boolean"
+        },
+        "fallback_attempted": {
+          "type": "boolean"
+        },
+        "attempt_failures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/attempt"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$id": "urn:tw-market-live-data-intelligence:phase-g-material-disclosure-operation-evidence:v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "executor_id",
+    "capability_id",
+    "target",
+    "status",
+    "source",
+    "observed_at",
+    "coverage",
+    "items",
+    "diagnostics",
+    "caveats"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "phase_g_material_disclosure_operation_evidence.v1"
+    },
+    "executor_id": {
+      "const": "phase_g_official_research_executor"
+    },
+    "capability_id": {
+      "const": "material_disclosures"
+    },
+    "target": {
+      "$ref": "#/definitions/target"
+    },
+    "status": {
+      "enum": [
+        "available",
+        "partial",
+        "no_evidence_in_covered_scope",
+        "source_failed",
+        "binding_failed"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "source_family",
+        "source_contract_id",
+        "transport",
+        "fallback_used",
+        "fallback_attempted",
+        "attempt_failures"
+      ],
+      "properties": {
+        "source_family": {
+          "const": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA"
+        },
+        "source_contract_id": {
+          "enum": [
+            "t187ap04_L",
+            "t187ap04_O"
+          ]
+        },
+        "transport": {
+          "enum": [
+            "official_csv",
+            "official_json_openapi"
+          ]
+        },
+        "fallback_used": {
+          "type": "boolean"
+        },
+        "fallback_attempted": {
+          "type": "boolean"
+        },
+        "attempt_failures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/attempt"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/diagnostic"
+      }
+    },
+    "caveats": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "required": [
+        "mode",
+        "source_report_date",
+        "coverage_through",
+        "truncated"
+      ],
+      "properties": {
+        "mode": {
+          "const": "latest_completed_official_daily_batch"
+        },
+        "source_report_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "coverage_through": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "truncated": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "items": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "required": [
+          "normalized_record_hash",
+          "published_at",
+          "source_fact_date",
+          "raw_speech_time",
+          "subject",
+          "clause",
+          "description_raw",
+          "revision_relation"
+        ],
+        "properties": {
+          "normalized_record_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "source_fact_date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "raw_speech_time": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "subject": {
+            "type": "string"
+          },
+          "clause": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "description_raw": {
+            "type": "string"
+          },
+          "revision_relation": {
+            "type": "object",
+            "required": [
+              "status",
+              "relation_type",
+              "related_official_reference"
+            ],
+            "properties": {
+              "status": {
+                "const": "unresolved"
+              },
+              "relation_type": {
+                "type": "null"
+              },
+              "related_official_reference": {
+                "type": "null"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "available",
+              "partial"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "items": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "no_evidence_in_covered_scope",
+              "source_failed",
+              "binding_failed"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "items": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "coverage": {
+            "properties": {
+              "truncated": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        }
+      }
+    }
+  ]
+}

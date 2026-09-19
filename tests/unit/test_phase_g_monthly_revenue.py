@@ -25,3 +25,18 @@ def test_d08_d09_d10_d11_transport_and_conflict_contracts():
 def test_d12_d13_d14_schema_and_target_bounded_output():
     result=run(HEAD+ROW+ROW.replace("2330","2317",1).replace("台積電","其他",1)); assert result["coverage"]["reporting_period"]=="2026-08" and result["value"]["currency"]=="TWD"
     jsonschema.validate(result,json.loads((Path(__file__).resolve().parents[2]/"schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json").read_text()))
+
+def test_b3_real_shape_tpex_json_fallback_is_source_faithful():
+    target={**TARGET,"canonical_target_id":"TPEX:6488","market":"TPEX","security_code":"6488"}
+    row=dict(zip(HEAD.strip().split(","),ROW.replace("2330","6488",1).strip().split(",")))
+    result=execute([target],"TPEX",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:(_ for _ in ()).throw(OSError()),json_fetcher=lambda _:[row])[0]
+    assert result["status"]=="available" and result["source"]["transport"]=="official_json_openapi"
+    assert result["coverage"]["reporting_period"]=="2026-08" and result["value"]["current_month_revenue"]==100
+
+def test_b3_g2_missing_field_market_mismatch_and_schema_negative():
+    assert run(HEAD.replace("公司代號","代號")+ROW)["status"]=="source_failed"
+    result=execute([{**TARGET,"market":"TPEX"}],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:(_ for _ in ()).throw(AssertionError()),json_fetcher=lambda _:(_ for _ in ()).throw(AssertionError()))[0]
+    assert result["status"]=="binding_failed" and result["caveats"]==["route_target_market_mismatch"]
+    schema=json.loads((Path(__file__).resolve().parents[2]/"schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json").read_text())
+    valid=run(); bad=json.loads(json.dumps(valid)); bad["value"]["currency"]="USD"
+    with __import__('pytest').raises(jsonschema.ValidationError): jsonschema.validate(bad,schema,format_checker=jsonschema.FormatChecker())

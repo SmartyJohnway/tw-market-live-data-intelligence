@@ -5,7 +5,7 @@ import hashlib
 import json
 from typing import Any
 
-from .research_executor import ROUTES, SourceFailure, bind_rows, fetch_once, field
+from .research_executor import ROUTES, SourceFailure, bind_rows, fetch_once, field, normalize_source_rows
 
 SOURCE_FAMILY = "MOPS_MONTHLY_REVENUE_OPEN_DATA"
 
@@ -50,23 +50,28 @@ def _value(row: dict[str, Any]) -> dict[str, Any]:
 
 def execute(targets: list[dict[str, Any]], market: str, *, observed_at: str, csv_fetcher, json_fetcher) -> list[dict[str, Any]]:
     route=ROUTES[("monthly_revenue", market)]
-    try: rows, transport, fallback=fetch_once(route,csv_fetcher,json_fetcher)
-    except SourceFailure as exc: return [_result(t,"source_failed",None,observed_at,route,"official_csv",False,[str(exc)]) for t in targets]
-    periods={_roc_date(field(row,"資料年月","reporting_period")) for row in rows}; periods.discard(None)
-    report_dates={_report_date(field(row,"出表日期","source_report_date")) for row in rows}; report_dates.discard(None)
+    if any(target.get("market") != market for target in targets): return [_result(target,"binding_failed",None,observed_at,route,"official_csv",False,["route_target_market_mismatch"]) for target in targets]
+    try:
+        rows, transport, fallback, attempts=fetch_once(route,csv_fetcher,json_fetcher)
+        rows=normalize_source_rows(route,transport,rows)
+    except SourceFailure as exc: return [_result(t,"source_failed",None,observed_at,route,"official_json_openapi" if exc.attempts else "official_csv",bool(exc.attempts),[str(exc)],[],None,None,exc.attempts) for t in targets]
+    periods={_roc_date(field(row,"reporting_period")) for row in rows}; periods.discard(None)
+    report_dates={_report_date(field(row,"source_report_date")) for row in rows}; report_dates.discard(None)
     period=next(iter(periods)) if len(periods)==1 else None; report_date=next(iter(report_dates)) if len(report_dates)==1 else None
     out=[]
     for target in targets:
         status,matches,diagnostics=bind_rows(rows,target)
-        if status=="binding_failed": out.append(_result(target,"binding_failed",None,observed_at,route,transport,fallback,["exact_company_code_binding_failed"],diagnostics,period,report_date)); continue
-        if not matches: out.append(_result(target,"not_yet_available",None,observed_at,route,transport,fallback,[],[],period,report_date)); continue
+        if status=="binding_failed": out.append(_result(target,"binding_failed",None,observed_at,route,transport,fallback,["exact_company_code_binding_failed"],_binding_diagnostics(diagnostics),period,report_date,attempts)); continue
+        if not matches: out.append(_result(target,"not_yet_available",None,observed_at,route,transport,fallback,[],[],period,report_date,attempts)); continue
         normalized=[]
         try:
             for row in matches: normalized.append((_value(row), hashlib.sha256(json.dumps(row,ensure_ascii=False,sort_keys=True).encode()).hexdigest()))
-        except SourceFailure as exc: out.append(_result(target,"source_failed",None,observed_at,route,transport,fallback,[str(exc)],[],period,report_date)); continue
-        if len({h for _,h in normalized}) != 1: out.append(_result(target,"binding_failed",None,observed_at,route,transport,fallback,["conflicting_duplicate_normalized_source_rows"],[v for v,_ in normalized],period,report_date)); continue
-        out.append(_result(target,"available",normalized[0][0],observed_at,route,transport,fallback,[],[],period,report_date))
+        except SourceFailure as exc: out.append(_result(target,"source_failed",None,observed_at,route,transport,fallback,[str(exc)],[],period,report_date,attempts)); continue
+        if len({h for _,h in normalized}) != 1: out.append(_result(target,"binding_failed",None,observed_at,route,transport,fallback,["conflicting_duplicate_normalized_source_rows"],[{"kind":"binding_conflict","normalized_record_hashes":sorted(h for _,h in normalized)}],period,report_date,attempts)); continue
+        out.append(_result(target,"available",normalized[0][0],observed_at,route,transport,fallback,[],[],period,report_date,attempts))
     return out
 
-def _result(target,status,value,observed_at,route,transport,fallback,caveats,diagnostics=None,period=None,report_date=None):
-    return {"schema_version":"phase_g_monthly_revenue_operation_evidence.v1","executor_id":"phase_g_official_research_executor","capability_id":"monthly_revenue","target":{k:target[k] for k in ("canonical_target_id","market","security_code")},"status":status,"source":{"source_family":SOURCE_FAMILY,"source_contract_id":route["contract"],"transport":transport,"fallback_used":fallback},"observed_at":observed_at,"coverage":{"mode":"latest_available_reporting_period","reporting_period":period,"source_report_date":report_date},"value":value,"diagnostics":diagnostics or [],"caveats":caveats}
+def _binding_diagnostics(rows):
+    return [] if not rows else [{"kind":"company_name_mismatch","source_company_codes":sorted({str(x.get("company_code", "")) for x in rows})}]
+def _result(target,status,value,observed_at,route,transport,fallback,caveats,diagnostics=None,period=None,report_date=None,attempts=None):
+    return {"schema_version":"phase_g_monthly_revenue_operation_evidence.v1","executor_id":"phase_g_official_research_executor","capability_id":"monthly_revenue","target":{k:target[k] for k in ("canonical_target_id","market","security_code")},"status":status,"source":{"source_family":SOURCE_FAMILY,"source_contract_id":route["contract"],"transport":transport,"fallback_used":fallback,"fallback_attempted":fallback or bool(attempts),"attempt_failures":attempts or []},"observed_at":observed_at,"coverage":{"mode":"latest_available_reporting_period","reporting_period":period,"source_report_date":report_date},"value":value,"diagnostics":diagnostics or [],"caveats":caveats}

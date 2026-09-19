@@ -4,7 +4,6 @@ from __future__ import annotations
 import csv
 import io
 import json
-from dataclasses import dataclass
 from typing import Any, Callable, Iterable
 
 EXECUTOR_ID = "phase_g_official_research_executor"
@@ -18,7 +17,9 @@ ROUTES = {
 
 Fetcher = Callable[[str], str | bytes | list[dict[str, Any]]]
 
-class SourceFailure(Exception): pass
+class SourceFailure(Exception):
+    def __init__(self, code: str, attempts: list[dict[str, str]] | None = None):
+        super().__init__(code); self.attempts=attempts or []
 
 def parse_csv(payload: str | bytes) -> list[dict[str, str]]:
     text = payload.decode("utf-8-sig") if isinstance(payload, bytes) else payload
@@ -34,14 +35,62 @@ def parse_json(payload: str | bytes | list[dict[str, Any]]) -> list[dict[str, An
     if not isinstance(rows, list) or not rows or not all(isinstance(x, dict) for x in rows): raise SourceFailure("empty_or_unverifiable_source")
     return rows
 
-def fetch_once(route: dict[str, str], csv_fetcher: Fetcher, json_fetcher: Fetcher) -> tuple[list[dict[str, Any]], str, bool]:
+def fetch_once(route: dict[str, str], csv_fetcher: Fetcher, json_fetcher: Fetcher) -> tuple[list[dict[str, Any]], str, bool, list[dict[str, str]]]:
     try:
-        return parse_csv(csv_fetcher(route["csv_url"])), "official_csv", False
+        return parse_csv(csv_fetcher(route["csv_url"])), "official_csv", False, []
     except Exception as primary:
+        attempts=[{"transport":"official_csv","failure":type(primary).__name__}]
         try:
-            return parse_json(json_fetcher(route["json_url"])), "official_json_openapi", True
+            return parse_json(json_fetcher(route["json_url"])), "official_json_openapi", True, attempts
         except Exception as fallback:
-            raise SourceFailure(f"primary={type(primary).__name__};fallback={type(fallback).__name__}") from fallback
+            raise SourceFailure("all_governed_transports_failed", attempts+[{"transport":"official_json_openapi","failure":type(fallback).__name__}]) from fallback
+
+SOURCE_FIELD_MAPPINGS: dict[tuple[str, str], dict[str, tuple[str, ...]]] = {
+    # TWSE Open Data keeps its established Chinese column names in both transports.
+    **{(contract, transport): {
+        "company_code": ("公司代號",), "company_name": ("公司名稱",),
+        "source_report_date": ("出表日期",), "publication_date": ("發言日期",),
+        "publication_time": ("發言時間",),
+    } for contract in ("t187ap04_L", "t187ap04_O") for transport in ("official_csv", "official_json_openapi")},
+    # TPEx's saved material-disclosure JSON probe has a distinct English envelope.
+    ("t187ap04_O", "official_json_openapi"): {
+        "company_code": ("SecuritiesCompanyCode",), "company_name": ("CompanyName",),
+        "source_report_date": ("Date",), "publication_date": ("發言日期",),
+        "publication_time": ("發言時間",),
+    },
+    **{(contract, transport): {
+        "company_code": ("公司代號",), "company_name": ("公司名稱",),
+        "source_report_date": ("出表日期",), "reporting_period": ("資料年月",),
+        "current_month_revenue": ("營業收入-當月營收",),
+        "previous_month_revenue": ("營業收入-上月營收",),
+        "previous_year_same_month_revenue": ("營業收入-去年當月營收",),
+        "mom_pct": ("營業收入-上月比較增減(%)",), "yoy_pct": ("營業收入-去年同月增減(%)",),
+        "ytd_revenue": ("累計營業收入-當月累計營收",),
+        "previous_year_ytd_revenue": ("累計營業收入-去年累計營收",),
+        "ytd_yoy_pct": ("累計營業收入-前期比較增減(%)",), "note": ("備註",),
+    } for contract in ("t187ap05_L", "t187ap05_O") for transport in ("official_csv", "official_json_openapi")},
+}
+
+def normalize_source_rows(route: dict[str, str], transport: str, rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Map a governed route/transport shape into canonical binding concepts."""
+    contract=route["contract"]
+    aliases=SOURCE_FIELD_MAPPINGS.get((contract, transport))
+    if aliases is None: raise SourceFailure("unsupported_governed_source_contract")
+    required=("company_code","publication_date","publication_time") if contract.startswith("t187ap04") else tuple(aliases)
+    result=[]
+    for row in rows:
+        item=dict(row)
+        for canonical,names in aliases.items():
+            value=field(row,*names)
+            if value is not None: item[canonical]=value
+        # Empty percentages and notes are source-faithful nullable values.  Their
+        # columns must still exist so an upstream renamed field fails closed.
+        if any(not any(name in row for name in aliases[key]) for key in required):
+            raise SourceFailure("source_contract_required_field_missing")
+        if any(key not in item for key in required if key not in {"mom_pct", "yoy_pct", "ytd_yoy_pct", "note"}):
+            raise SourceFailure("source_contract_required_value_missing")
+        result.append(item)
+    return result
 
 def field(row: dict[str, Any], *names: str) -> str | None:
     for name in names:
@@ -54,8 +103,8 @@ def bind_rows(rows: Iterable[dict[str, Any]], target: dict[str, Any]) -> tuple[s
     name = target.get("security_name_zh")
     matches=[]; name_mismatch=[]
     for row in rows:
-        row_code=field(row, "公司代號", "公司代碼", "company_code")
+        row_code=field(row, "company_code")
         if row_code == code: matches.append(row)
-        elif name and field(row, "公司名稱", "公司簡稱", "company_name") == name: name_mismatch.append(row)
+        elif name and field(row, "company_name") == name: name_mismatch.append(row)
     if name_mismatch and not matches: return "binding_failed", [], name_mismatch
     return "matched" if matches else "missing", matches, []

@@ -3,34 +3,38 @@ from __future__ import annotations
 import hashlib, json
 from datetime import datetime
 from typing import Any
-from .research_executor import ROUTES, SourceFailure, bind_rows, fetch_once, field
+from .research_executor import ROUTES, SourceFailure, bind_rows, fetch_once, field, normalize_source_rows
 
 SOURCE_FAMILY="MOPS_MATERIAL_DISCLOSURE_OPEN_DATA"
 
 def _date(value: str | None) -> str | None:
     if not value: return None
-    value=value.replace("/", "").strip()
+    value=value.replace("/", "").replace("-", "").strip()
     if len(value)==7 and value.isdigit(): return f"{int(value[:3])+1911:04d}-{value[3:5]}-{value[5:]}"
+    if len(value)==8 and value.isdigit(): return f"{value[:4]}-{value[4:6]}-{value[6:]}"
     return value if len(value)==10 else None
 
 def _published(row: dict[str, Any]) -> tuple[str | None, str | None]:
-    date=_date(field(row,"發言日期","日期","announcement_date")); raw=field(row,"發言時間","時間","announcement_time")
+    date=_date(field(row,"publication_date","發言日期","日期","announcement_date")); raw=field(row,"publication_time","發言時間","時間","announcement_time")
     if not date or not raw: return None, raw
     digits=raw.zfill(6)
-    if not digits.isdigit() or int(digits[2:4])>59 or int(digits[4:])>59: return None, raw
+    if not digits.isdigit() or int(digits[:2])>23 or int(digits[2:4])>59 or int(digits[4:])>59: return None, raw
     return f"{date}T{digits[:2]}:{digits[2:4]}:{digits[4:]}+08:00", raw
 
 def execute(targets: list[dict[str, Any]], market: str, *, observed_at: str, csv_fetcher, json_fetcher) -> list[dict[str, Any]]:
     route=ROUTES[("material_disclosures",market)]
-    try: rows, transport, fallback=fetch_once(route,csv_fetcher,json_fetcher)
+    if any(target.get("market") != market for target in targets): return [_result(target,"binding_failed",[],observed_at,route,"official_csv",False,["route_target_market_mismatch"]) for target in targets]
+    try:
+        rows, transport, fallback, attempts=fetch_once(route,csv_fetcher,json_fetcher)
+        rows=normalize_source_rows(route,transport,rows)
     except SourceFailure as exc:
-        return [_result(t,"source_failed",[],observed_at,route,"official_csv",False,[str(exc)]) for t in targets]
-    report_dates={_date(field(row,"出表日期","source_report_date")) for row in rows}; report_dates.discard(None)
+        return [_result(t,"source_failed",[],observed_at,route,"official_json_openapi" if exc.attempts else "official_csv",bool(exc.attempts),[str(exc)],[],None,exc.attempts) for t in targets]
+    report_dates={_date(field(row,"source_report_date")) for row in rows}; report_dates.discard(None)
     source_report_date=next(iter(report_dates)) if len(report_dates)==1 else None
     out=[]
     for target in targets:
         status, matches, diagnostics=bind_rows(rows,target)
-        if status=="binding_failed": out.append(_result(target,status,[],observed_at,route,transport,fallback,["exact_company_code_binding_failed"],diagnostics)); continue
+        if status=="binding_failed": out.append(_result(target,status,[],observed_at,route,transport,fallback,["exact_company_code_binding_failed"],_binding_diagnostics(diagnostics),attempts)); continue
         items=[]
         for row in matches:
             published, raw_time=_published(row)
@@ -43,11 +47,16 @@ def execute(targets: list[dict[str, Any]], market: str, *, observed_at: str, csv
                 identity=(item["published_at"], item["subject"], item["clause"])
                 identities.setdefault(identity, set()).add(item["normalized_record_hash"])
             if any(len(hashes)>1 for hashes in identities.values()):
-                out.append(_result(target,"binding_failed",[],observed_at,route,transport,fallback,["conflicting_duplicate_normalized_source_rows"],items)); continue
-            items.sort(key=lambda x:(x["published_at"], x["normalized_record_hash"]),reverse=True)
+                out.append(_result(target,"binding_failed",[],observed_at,route,transport,fallback,["conflicting_duplicate_normalized_source_rows"],[_conflict_diagnostic(items)],attempts)); continue
+            items.sort(key=lambda x: x["normalized_record_hash"])
+            items.sort(key=lambda x: x["published_at"], reverse=True)
             truncated=len(items)>50; items=items[:50]
-            out.append(_result(target,"partial" if truncated else ("available" if items else "no_evidence_in_covered_scope"),items,observed_at,route,transport,fallback,[],diagnostics,source_report_date));
+            out.append(_result(target,"partial" if truncated else ("available" if items else "no_evidence_in_covered_scope"),items,observed_at,route,transport,fallback,[],_binding_diagnostics(diagnostics),source_report_date,attempts));
     return out
 
-def _result(target,status,items,observed_at,route,transport,fallback,caveats,diagnostics=None,source_report_date=None):
-    return {"schema_version":"phase_g_material_disclosure_operation_evidence.v1","executor_id":"phase_g_official_research_executor","capability_id":"material_disclosures","target":{k:target[k] for k in ("canonical_target_id","market","security_code")},"status":status,"source":{"source_family":SOURCE_FAMILY,"source_contract_id":route["contract"],"transport":transport,"fallback_used":fallback},"observed_at":observed_at,"coverage":{"mode":"latest_completed_official_daily_batch","source_report_date":source_report_date,"coverage_through":max((x["published_at"][:10] for x in items),default=None),"truncated":status=="partial"},"items":items,"diagnostics":diagnostics or [],"caveats":caveats}
+def _binding_diagnostics(rows):
+    return [] if not rows else [{"kind":"company_name_mismatch","source_company_codes":sorted({str(x.get("company_code", "")) for x in rows})}]
+def _conflict_diagnostic(items):
+    return {"kind":"binding_conflict","normalized_record_hashes":sorted(x["normalized_record_hash"] for x in items)}
+def _result(target,status,items,observed_at,route,transport,fallback,caveats,diagnostics=None,source_report_date=None,attempts=None):
+    return {"schema_version":"phase_g_material_disclosure_operation_evidence.v1","executor_id":"phase_g_official_research_executor","capability_id":"material_disclosures","target":{k:target[k] for k in ("canonical_target_id","market","security_code")},"status":status,"source":{"source_family":SOURCE_FAMILY,"source_contract_id":route["contract"],"transport":transport,"fallback_used":fallback,"fallback_attempted":fallback or bool(attempts),"attempt_failures":attempts or []},"observed_at":observed_at,"coverage":{"mode":"latest_completed_official_daily_batch","source_report_date":source_report_date,"coverage_through":max((x["published_at"][:10] for x in items),default=None),"truncated":status=="partial"},"items":items,"diagnostics":diagnostics or [],"caveats":caveats}

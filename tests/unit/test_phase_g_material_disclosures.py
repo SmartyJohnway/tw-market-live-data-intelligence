@@ -76,3 +76,34 @@ def test_c15_c16_only_target_rows_are_retained_with_full_internal_description():
 def test_c09_never_fabricates_daily_refresh_clock():
     result=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:CSV,json_fetcher=lambda _: "[]")[0]
     assert "refresh" not in result["coverage"] and result["coverage"]["coverage_through"]=="2026-09-15"
+
+def test_b3_real_shape_tpex_json_fallback_binds_date_and_code():
+    target={**TARGET,"canonical_target_id":"TPEX:6488","market":"TPEX","security_code":"6488"}
+    row={"Date":"1150916","SecuritiesCompanyCode":"6488","CompanyName":"測試公司","發言日期":"1150915","發言時間":"065728","主旨":"公告","符合條款":"1","事實發生日":"1150914","說明":"官方內容"}
+    result=execute([target],"TPEX",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:(_ for _ in ()).throw(OSError()),json_fetcher=lambda _:[row])[0]
+    assert result["status"]=="available" and result["source"]["transport"]=="official_json_openapi"
+    assert result["coverage"]["source_report_date"]=="2026-09-16" and result["items"][0]["subject"]=="公告"
+
+def test_b3_g1_hash_tie_break_is_ascending():
+    payload=CSV+"2330,台積電,1150915,65728,另一則,內容二\n"
+    result=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:payload,json_fetcher=lambda _:"[]")[0]
+    assert [x["normalized_record_hash"] for x in result["items"]]==sorted(x["normalized_record_hash"] for x in result["items"])
+
+def test_b3_g1_missing_contract_field_and_market_mismatch_fail_closed_before_binding():
+    missing=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:CSV.replace("公司代號","代號"),json_fetcher=lambda _:"[]")[0]
+    assert missing["status"]=="source_failed"
+    mismatch=execute([{**TARGET,"market":"TPEX"}],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:(_ for _ in ()).throw(AssertionError()),json_fetcher=lambda _:(_ for _ in ()).throw(AssertionError()))[0]
+    assert mismatch["status"]=="binding_failed" and mismatch["caveats"]==["route_target_market_mismatch"]
+
+def test_b3_total_fallback_failure_retains_attempt_provenance():
+    result=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:(_ for _ in ()).throw(OSError()),json_fetcher=lambda _:(_ for _ in ()).throw(ValueError()))[0]
+    assert result["status"]=="source_failed" and result["source"]["fallback_attempted"] is True
+    assert [x["transport"] for x in result["source"]["attempt_failures"]]==["official_csv","official_json_openapi"]
+
+def test_b3_g1_schema_rejects_extra_target_and_inconsistent_status():
+    result=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:CSV,json_fetcher=lambda _:"[]")[0]
+    schema=json.loads((Path(__file__).resolve().parents[2] / "schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json").read_text())
+    bad=json.loads(json.dumps(result)); bad["target"]["issuer_id"]="forbidden"
+    with __import__('pytest').raises(jsonschema.ValidationError): jsonschema.validate(bad,schema,format_checker=jsonschema.FormatChecker())
+    bad=json.loads(json.dumps(result)); bad["status"]="no_evidence_in_covered_scope"
+    with __import__('pytest').raises(jsonschema.ValidationError): jsonschema.validate(bad,schema,format_checker=jsonschema.FormatChecker())
