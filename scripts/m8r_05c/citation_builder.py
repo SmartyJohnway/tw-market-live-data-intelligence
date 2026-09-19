@@ -94,15 +94,19 @@ def build_citation_index(
                 cit_id = _build_citation_id(binding.operation_id, rel_path)
 
                 if cit_id not in index.all_citations:
-                    # Determine source_family from evidence_contract or executor_id.
-                    source_family = binding.executor_id or "unknown"
+                    source_obj = binding.artifact_objects.get(rel_path, {})
+                    source_meta = source_obj.get("source", {}) if isinstance(source_obj, dict) else {}
+                    coverage_meta = source_obj.get("coverage", {}) if isinstance(source_obj, dict) else {}
+                    source_family = source_meta.get("source_family") or "unknown"
+                    source_contract = source_meta.get("source_contract_id") or evidence_contract or None
 
                     citation = CitationProjection(
                         citation_id=cit_id,
                         source_family=source_family,
                         retrieved_at=bundle_finalized_at,
                         artifact_reference=rel_path,  # always relative
-                        source_contract_id=evidence_contract or None,
+                        source_contract_id=source_contract,
+                        source_report_date=coverage_meta.get("source_report_date"),
                         normalized_evidence_hash=sha256 or None,
                     )
                     index.all_citations[cit_id] = citation

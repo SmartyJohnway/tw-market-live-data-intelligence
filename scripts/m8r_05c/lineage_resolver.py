@@ -28,6 +28,8 @@ _CAPABILITY_TO_DATA_NEED: dict[str, str] = {
     "session_status": "session_status",
     "source_currentness": "source_currentness",
     "evidence_quality": "evidence_quality",
+    "material_disclosures": "material_disclosures",
+    "monthly_revenue": "monthly_revenue",
 }
 
 
@@ -39,6 +41,7 @@ class TargetResolution:
     resolution_status: str
     canonical_target_id: str | None = None
     market: str | None = None
+    canonical_identity: dict | None = None
 
 
 @dataclass
@@ -113,7 +116,8 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
             original_input=t_res.get("original_input", ""),
             resolution_status=t_res.get("resolution_status", "not_found"),
             canonical_target_id=canonical_id,
-            market=market
+            market=market,
+            canonical_identity=identity.copy() if isinstance(identity, dict) else None,
         )
 
     # Index bundle operation evidence entries by operation_id.
