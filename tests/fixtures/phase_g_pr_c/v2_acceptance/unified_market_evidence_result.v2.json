@@ -1,0 +1,162 @@
+{
+  "schema_version": "unified_market_evidence_result.v2",
+  "result_id": "umeresult-v2-086aa982ed49f66a0695",
+  "request_id": "req-v2",
+  "generated_at": "2026-09-15T21:31:00+08:00",
+  "request_summary": {
+    "target_count": 1,
+    "requested_data_needs": [
+      "material_disclosures",
+      "monthly_revenue"
+    ],
+    "required_data_needs": [
+      "material_disclosures"
+    ],
+    "optional_data_needs": [
+      "monthly_revenue"
+    ],
+    "execution_mode": "execute_once",
+    "request_schema_version": "unified_market_evidence_request.v2"
+  },
+  "status": "full_success",
+  "targets": [
+    {
+      "resolution": {
+        "status": "resolved",
+        "canonical_target_id": "TWSE:2330",
+        "security_code": "2330",
+        "security_name": "台積電",
+        "market": "TWSE"
+      },
+      "evidence": {
+        "material_disclosures": {
+          "schema_version": "material_disclosure_evidence.v1",
+          "status": "available",
+          "coverage": {
+            "mode": "latest_completed_official_daily_batch",
+            "source_report_date": "2026-09-15",
+            "coverage_through": "2026-09-14",
+            "historical_lookup_supported": false,
+            "item_count": 1,
+            "truncated": false
+          },
+          "currentness": {
+            "status": "current_within_source_contract",
+            "observed_at": "2026-09-15T21:30:00+08:00"
+          },
+          "source": {
+            "authority": "official",
+            "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+            "market": "TWSE",
+            "source_contract_id": "t187ap04_L",
+            "transport": "official_csv",
+            "fallback_used": false
+          },
+          "items": [
+            {
+              "published_at": "2026-09-14T15:02:01+08:00",
+              "source_fact_date": "2026-09-14",
+              "subject": "重大訊息",
+              "clause": null,
+              "description": "官方說明",
+              "description_truncated": false,
+              "revision_relation": {
+                "status": "unresolved",
+                "relation_type": null,
+                "related_official_reference": null
+              },
+              "citation_id": "cite-abfd342106826487"
+            }
+          ],
+          "caveats": [],
+          "citation_ids": [
+            "cite-abfd342106826487"
+          ]
+        },
+        "monthly_revenue": {
+          "schema_version": "monthly_revenue_evidence.v1",
+          "status": "available",
+          "coverage": {
+            "mode": "latest_available_reporting_period",
+            "reporting_period": "2026-08",
+            "source_report_date": "2026-09-15",
+            "historical_lookup_supported": false
+          },
+          "currentness": {
+            "status": "current_within_source_contract",
+            "observed_at": "2026-09-15T21:30:00+08:00"
+          },
+          "source": {
+            "authority": "official",
+            "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+            "market": "TWSE",
+            "source_contract_id": "t187ap05_L",
+            "transport": "official_csv",
+            "fallback_used": false
+          },
+          "value": {
+            "currency": "TWD",
+            "unit": "thousand",
+            "current_month_revenue": 1,
+            "previous_month_revenue": 2,
+            "previous_year_same_month_revenue": 3,
+            "mom_pct": null,
+            "yoy_pct": null,
+            "ytd_revenue": 4,
+            "previous_year_ytd_revenue": 5,
+            "ytd_yoy_pct": null,
+            "note": "官方備註"
+          },
+          "caveats": [],
+          "citation_ids": [
+            "cite-cb9d79fdfc183231"
+          ]
+        }
+      },
+      "canonical_identity": {
+        "canonical_target_id": "TWSE:2330",
+        "isin": "TW0002330008",
+        "market": "TWSE",
+        "security_code": "2330",
+        "security_name_zh": "台積電",
+        "security_name_en": "TSMC",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share"
+      },
+      "coverage": {
+        "provided_needs": [
+          "material_disclosures",
+          "monthly_revenue"
+        ],
+        "missing_needs": []
+      },
+      "citations": [
+        {
+          "citation_id": "cite-abfd342106826487",
+          "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+          "retrieved_at": "2026-09-20T00:00:00Z",
+          "artifact_reference": "evidence/g1.json",
+          "source_contract_id": "t187ap04_L",
+          "normalized_evidence_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+          "source_report_date": "2026-09-15"
+        },
+        {
+          "citation_id": "cite-cb9d79fdfc183231",
+          "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+          "retrieved_at": "2026-09-20T00:00:00Z",
+          "artifact_reference": "evidence/g2.json",
+          "source_contract_id": "t187ap05_L",
+          "normalized_evidence_hash": "2222222222222222222222222222222222222222222222222222222222222222",
+          "source_report_date": "2026-09-15"
+        }
+      ]
+    }
+  ],
+  "audit_reference": {
+    "audit_package_id": "umeap-v2-33a635aedcec39a4dacf",
+    "schema_version": "unified_market_evidence_audit_package.v2",
+    "relative_path": "audit/unified_market_evidence_audit_package.v2.json"
+  },
+  "request_caveats": [],
+  "result_hash": "691289e15aefd85edfd3d329d73a3899e3b6e354902b1e8f541cb33c7e1f74b3"
+}

@@ -12,7 +12,8 @@ from scripts.m8r_05c.evidence_projector import (
     _project_material_disclosures,
     _project_monthly_revenue,
 )
-from scripts.m8r_05c.lineage_resolver import OperationBinding
+from scripts.m8r_05c.citation_builder import build_citation_index
+from scripts.m8r_05c.lineage_resolver import OperationBinding, build_lineage_map
 from scripts.m8r_05c.models import (
     PartialFailureProjection, ProjectionInputs, ResolutionProjection, TargetProjection,
 )
@@ -183,3 +184,63 @@ def test_e05_multi_target_failure_is_isolated_and_partial():
     assert successful.coverage_provided_needs == ["monthly_revenue"]
     assert failed.coverage_provided_needs == []
     assert _compute_result_status([successful, failed], [failure]) == "partially_failed"
+
+
+def test_same_operation_multi_target_research_artifacts_are_exactly_isolated():
+    inputs = _projection_inputs()
+    second_identity = {
+        "canonical_target_id": "TWSE:2317", "isin": "TW0002317005", "market": "TWSE",
+        "security_code": "2317", "security_name_zh": "鴻海", "security_name_en": "Hon Hai",
+        "instrument_family": "company_share", "instrument_type": "common_share",
+    }
+    inputs.request["targets"].append({"input": "2317"})
+    inputs.f3_validation["target_results"].append({
+        "target_index": 1, "original_input": "2317", "resolution_status": "resolved",
+        "canonical_identity": second_identity,
+    })
+    inputs.request["data_needs"] = [inputs.request["data_needs"][0]]
+    inputs.plan["operations"] = [{
+        "operation_id": "op-shared", "capability_id": "material_disclosures",
+        "executor_id": "phase_g_official_research_executor", "market": "TWSE",
+        "canonical_target_ids": ["TWSE:2330", "TWSE:2317"],
+    }]
+    base = inputs.evidence_artifacts["evidence/g1.json"]
+    first = {**base, "schema_version": "phase_g_material_disclosure_operation_evidence.v1",
+             "target": {"canonical_target_id": "TWSE:2330", "market": "TWSE", "security_code": "2330"}}
+    second = {**base, "schema_version": "phase_g_material_disclosure_operation_evidence.v1",
+              "target": {"canonical_target_id": "TWSE:2317", "market": "TWSE", "security_code": "2317"},
+              "items": [{**base["items"][0], "subject": "2317-only"}]}
+    inputs.evidence_artifacts = {"evidence/2330.json": first, "evidence/2317.json": second}
+    artifacts = [
+        {"relative_path": path, "sha256": digit * 64,
+         "schema_version": "phase_g_material_disclosure_operation_evidence.v1"}
+        for path, digit in (("evidence/2330.json", "1"), ("evidence/2317.json", "2"))
+    ]
+    inputs.bundle["operation_evidence_entries"] = [{
+        "operation_id": "op-shared", "status": "succeeded", "artifacts": artifacts,
+    }]
+    inputs.bundle["artifact_inventory"] = [
+        {**artifact, "evidence_contract": artifact["schema_version"], "byte_size": 1}
+        for artifact in artifacts
+    ]
+
+    lineage = build_lineage_map(inputs)
+    assert list(lineage.bindings["TWSE:2330"]["material_disclosures"].artifact_objects) == ["evidence/2330.json"]
+    assert list(lineage.bindings["TWSE:2317"]["material_disclosures"].artifact_objects) == ["evidence/2317.json"]
+    citations = build_citation_index(lineage, inputs.bundle, "unified_market_evidence_result.v2")
+    first_ids = citations.target_need_citations["TWSE:2330::material_disclosures"]
+    second_ids = citations.target_need_citations["TWSE:2317::material_disclosures"]
+    assert first_ids and second_ids and set(first_ids).isdisjoint(second_ids)
+    audit_targets = {entry.citation_id: entry.canonical_target_id for entry in citations.audit_entries}
+    assert audit_targets[first_ids[0]] == "TWSE:2330"
+    assert audit_targets[second_ids[0]] == "TWSE:2317"
+
+
+def test_v1_citation_source_family_remains_legacy_executor_identity():
+    inputs = _projection_inputs()
+    lineage = build_lineage_map(inputs)
+    citations = build_citation_index(lineage, inputs.bundle)
+    assert {citation.source_family for citation in citations.all_citations.values()} == {
+        "phase_g_official_research_executor"
+    }
+    assert all(citation.source_report_date is None for citation in citations.all_citations.values())

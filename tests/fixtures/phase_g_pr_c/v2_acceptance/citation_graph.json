@@ -1,0 +1,22 @@
+[
+  {
+    "citation_id": "cite-abfd342106826487",
+    "operation_id": "op-1",
+    "capability_id": "material_disclosures",
+    "executor_id": "phase_g_official_research_executor",
+    "artifact_relative_path": "evidence/g1.json",
+    "artifact_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+    "canonical_target_id": "TWSE:2330",
+    "requested_data_need": "material_disclosures"
+  },
+  {
+    "citation_id": "cite-cb9d79fdfc183231",
+    "operation_id": "op-2",
+    "capability_id": "monthly_revenue",
+    "executor_id": "phase_g_official_research_executor",
+    "artifact_relative_path": "evidence/g2.json",
+    "artifact_hash": "2222222222222222222222222222222222222222222222222222222222222222",
+    "canonical_target_id": "TWSE:2330",
+    "requested_data_need": "monthly_revenue"
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "schema_version": "unified_market_evidence_result.v1",
+  "result_id": "umeresult-v1-e998646d4695f756d205",
+  "request_id": "umeq-v2-test",
+  "generated_at": "2026-09-20T00:00:00Z",
+  "request_summary": {
+    "target_count": 0,
+    "requested_data_needs": [],
+    "required_data_needs": [],
+    "optional_data_needs": []
+  },
+  "status": "failed",
+  "targets": [],
+  "audit_reference": {
+    "audit_package_id": "umeap-v1-1fdbdba3340fef2071d9",
+    "schema_version": "unified_market_evidence_audit_package.v1",
+    "relative_path": "audit/unified_market_evidence_audit_package.v1.json"
+  },
+  "request_caveats": [],
+  "result_hash": "ebd90dd37540000fc4443595dab846dc087ad3b4e979dcda7c3a8a72d440ea7e"
+}
