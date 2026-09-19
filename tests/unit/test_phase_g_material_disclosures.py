@@ -122,3 +122,23 @@ def test_b4_g1_snapshot_report_date_missing_or_conflicting_fails_closed():
     assert execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:missing,json_fetcher=lambda _:"[]")[0]["status"]=="source_failed"
     conflict=CSV+"1150917,2317,其他,1150915,080000,另一則,內容\n"
     assert execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:conflict,json_fetcher=lambda _:"[]")[0]["status"]=="source_failed"
+
+def test_b5_g1_optional_outputs_are_schema_valid_and_keep_fallback_attempt():
+    schema=json.loads((Path(__file__).resolve().parents[2] / "schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json").read_text())
+    wrong=CSV.replace("2330","9999",1)
+    conflict=CSV+"1150916,2330,台積電,1150915,65728,測試,不同內容\n"
+    invalid_json=[{"出表日期":"1150916","公司代號":"2330","發言日期":"1150915","發言時間":"246000","主旨":"測試","說明":"內容"}]
+    cases=[
+        execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:wrong,json_fetcher=lambda _:"[]")[0],
+        execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:conflict,json_fetcher=lambda _:"[]")[0],
+        execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:(_ for _ in ()).throw(OSError()),json_fetcher=lambda _:invalid_json)[0],
+        execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:CSV,json_fetcher=lambda _:"[]")[0],
+    ]
+    for result in cases: jsonschema.validate(result,schema,format_checker=jsonschema.FormatChecker())
+    assert isinstance(cases[0]["coverage"]["source_report_date"],str)
+    assert [x["transport"] for x in cases[2]["source"]["attempt_failures"]]==["official_csv","official_json_openapi"]
+
+def test_b5_g1_valid_row_plus_malformed_snapshot_identity_fails_closed():
+    malformed=CSV+"bad-date,2317,其他,1150915,080000,另一則,內容\n"
+    result=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:malformed,json_fetcher=lambda _:"[]")[0]
+    assert result["status"]=="source_failed"

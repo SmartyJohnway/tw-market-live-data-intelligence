@@ -25,26 +25,37 @@ def _published(row: dict[str, Any]) -> tuple[str | None, str | None]:
 
 def execute(targets: list[dict[str, Any]], market: str, *, observed_at: str, csv_fetcher, json_fetcher) -> list[dict[str, Any]]:
     route=ROUTES[("material_disclosures",market)]
-    if any(target.get("market") != market for target in targets): return [_result(target,"binding_failed",[],observed_at,route,"official_csv",False,["route_target_market_mismatch"]) for target in targets]
+    if any(target.get("market") != market for target in targets):
+        return [_result(target,"binding_failed",[],observed_at,route,"official_csv",False,["route_target_market_mismatch"]) for target in targets]
     transport_result=None
     try:
         transport_result=fetch_once(route,csv_fetcher,json_fetcher)
         rows=normalize_source_rows(route,transport_result.transport,transport_result.rows)
-        report_dates={_date(field(row,"source_report_date")) for row in rows}; report_dates.discard(None)
-        if len(report_dates)!=1: raise SourceFailure("source_snapshot_report_date_invalid")
+        row_report_dates=[_date(field(row,"source_report_date")) for row in rows]
+        if any(value is None for value in row_report_dates) or len(set(row_report_dates))!=1:
+            raise SourceFailure("source_snapshot_report_date_invalid")
     except SourceFailure as exc:
         transport, fallback_used, fallback_attempted, attempts=failed_provenance(transport_result,exc)
-        return [_result(t,"source_failed",[],observed_at,route,transport,fallback_used,[exc.code],[],None,attempts,fallback_attempted) for t in targets]
+        return [_result(t,"source_failed",[],observed_at,route,transport,fallback_used,[exc.code],
+                        diagnostics=[], source_report_date=None, attempts=attempts,
+                        fallback_attempted=fallback_attempted) for t in targets]
     transport=transport_result.transport; fallback=transport_result.fallback_attempted; attempts=transport_result.attempt_failures
-    source_report_date=next(iter(report_dates))
+    source_report_date=row_report_dates[0]
     out=[]
     for target in targets:
         status, matches, diagnostics=bind_rows(rows,target)
-        if status=="binding_failed": out.append(_result(target,status,[],observed_at,route,transport,fallback,["exact_company_code_binding_failed"],_binding_diagnostics(diagnostics),attempts)); continue
+        if status=="binding_failed":
+            out.append(_result(target,status,[],observed_at,route,transport,fallback,["exact_company_code_binding_failed"],
+                               diagnostics=_binding_diagnostics(diagnostics), source_report_date=source_report_date,
+                               attempts=attempts)); continue
         items=[]
         for row in matches:
             published, raw_time=_published(row)
-            if not published: out.append(_result(target,"source_failed",[],observed_at,route,transport,fallback,["required_publication_time_invalid"])); break
+            if not published:
+                failure_attempts=attempts + [{"transport":transport,"failure":"required_publication_time_invalid"}]
+                out.append(_result(target,"source_failed",[],observed_at,route,transport,False,["required_publication_time_invalid"],
+                                   diagnostics=[], source_report_date=source_report_date, attempts=failure_attempts,
+                                   fallback_attempted=transport_result.fallback_attempted)); break
             raw=json.dumps(row,ensure_ascii=False,sort_keys=True,separators=(",",":")); h=hashlib.sha256(raw.encode()).hexdigest()
             items.append({"normalized_record_hash":h,"published_at":published,"source_fact_date":_date(field(row,"事實發生日","source_fact_date")),"raw_speech_time":raw_time,"subject":field(row,"主旨","subject") or "","clause":field(row,"符合條款","clause"),"description_raw":field(row,"說明","description") or "","revision_relation":{"status":"unresolved","relation_type":None,"related_official_reference":None}})
         else:
@@ -53,11 +64,15 @@ def execute(targets: list[dict[str, Any]], market: str, *, observed_at: str, csv
                 identity=(item["published_at"], item["subject"], item["clause"])
                 identities.setdefault(identity, set()).add(item["normalized_record_hash"])
             if any(len(hashes)>1 for hashes in identities.values()):
-                out.append(_result(target,"binding_failed",[],observed_at,route,transport,fallback,["conflicting_duplicate_normalized_source_rows"],[_conflict_diagnostic(items)],attempts)); continue
+                out.append(_result(target,"binding_failed",[],observed_at,route,transport,fallback,["conflicting_duplicate_normalized_source_rows"],
+                                   diagnostics=[_conflict_diagnostic(items)], source_report_date=source_report_date,
+                                   attempts=attempts)); continue
             items.sort(key=lambda x: x["normalized_record_hash"])
             items.sort(key=lambda x: x["published_at"], reverse=True)
             truncated=len(items)>50; items=items[:50]
-            out.append(_result(target,"partial" if truncated else ("available" if items else "no_evidence_in_covered_scope"),items,observed_at,route,transport,fallback,[],_binding_diagnostics(diagnostics),source_report_date,attempts));
+            out.append(_result(target,"partial" if truncated else ("available" if items else "no_evidence_in_covered_scope"),items,observed_at,route,transport,fallback,[],
+                               diagnostics=_binding_diagnostics(diagnostics), source_report_date=source_report_date,
+                               attempts=attempts));
     return out
 
 def _binding_diagnostics(rows):

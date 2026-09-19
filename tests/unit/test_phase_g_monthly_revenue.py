@@ -46,3 +46,29 @@ def test_b4_g2_snapshot_period_identity_conflict_fails_closed_and_preserves_fall
     assert run(conflict)["status"]=="source_failed"
     json_bad=run(csv=lambda _:(_ for _ in ()).throw(OSError()),jsonp=lambda _:[{"公司代號":"2330"}])
     assert json_bad["source"]["transport"]=="official_json_openapi" and json_bad["source"]["fallback_attempted"] is True and json_bad["source"]["fallback_used"] is False
+
+def test_b5_g2_valid_row_plus_malformed_snapshot_identity_fails_closed():
+    malformed=HEAD+ROW+ROW.replace("11508","bad",1)
+    assert run(malformed)["status"]=="source_failed"
+
+def test_b5_shared_source_provenance_schema_rules_a_to_g_for_both_contracts():
+    root=Path(__file__).resolve().parents[2]
+    g1=__import__('scripts.phase_g.mops_material_disclosures',fromlist=['execute']).execute
+    g1_csv=g1([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:"出表日期,公司代號,公司名稱,發言日期,發言時間,主旨,說明\n1150916,2330,台積電,1150915,065728,測試,內容\n",json_fetcher=lambda _:"[]")[0]
+    g2_csv=run()
+    for result,path in ((g1_csv,root/"schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json"),(g2_csv,root/"schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json")):
+        schema=json.loads(path.read_text())
+        def invalid(**changes):
+            value=json.loads(json.dumps(result)); value["source"].update(changes); return value
+        # A-D
+        for bad in (invalid(fallback_used=True,fallback_attempted=False), invalid(fallback_used=True,transport="official_csv"), invalid(fallback_attempted=True,fallback_used=False,attempt_failures=[{"transport":"official_csv","failure":"OSError"}]), invalid(fallback_attempted=False,attempt_failures=[{"transport":"official_csv","failure":"OSError"}])):
+            with __import__('pytest').raises(jsonschema.ValidationError): jsonschema.validate(bad,schema,format_checker=jsonschema.FormatChecker())
+        # E CSV success; F JSON success; G all transports failed.
+        json_ok=invalid(transport="official_json_openapi",fallback_used=True,fallback_attempted=True,attempt_failures=[{"transport":"official_csv","failure":"OSError"}])
+        all_failed=invalid(transport="official_json_openapi",fallback_used=False,fallback_attempted=True,attempt_failures=[{"transport":"official_csv","failure":"OSError"},{"transport":"official_json_openapi","failure":"ValueError"}])
+        all_failed["status"]="source_failed"
+        if all_failed["capability_id"]=="material_disclosures": all_failed["items"]=[]
+        else: all_failed["value"]=None
+        jsonschema.validate(result,schema,format_checker=jsonschema.FormatChecker())
+        jsonschema.validate(json_ok,schema,format_checker=jsonschema.FormatChecker())
+        jsonschema.validate(all_failed,schema,format_checker=jsonschema.FormatChecker())

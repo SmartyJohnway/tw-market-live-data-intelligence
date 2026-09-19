@@ -56,14 +56,15 @@ def execute(targets: list[dict[str, Any]], market: str, *, observed_at: str, csv
     try:
         transport_result=fetch_once(route,csv_fetcher,json_fetcher)
         rows=normalize_source_rows(route,transport_result.transport,transport_result.rows)
-        periods={_roc_date(field(row,"reporting_period")) for row in rows}; periods.discard(None)
-        report_dates={_report_date(field(row,"source_report_date")) for row in rows}; report_dates.discard(None)
-        if len(periods)!=1 or len(report_dates)!=1: raise SourceFailure("source_snapshot_period_identity_invalid")
+        row_periods=[_roc_date(field(row,"reporting_period")) for row in rows]
+        row_report_dates=[_report_date(field(row,"source_report_date")) for row in rows]
+        if any(value is None for value in row_periods + row_report_dates) or len(set(row_periods))!=1 or len(set(row_report_dates))!=1:
+            raise SourceFailure("source_snapshot_period_identity_invalid")
     except SourceFailure as exc:
         transport, fallback_used, fallback_attempted, attempts=failed_provenance(transport_result,exc)
         return [_result(t,"source_failed",None,observed_at,route,transport,fallback_used,[exc.code],[],None,None,attempts,fallback_attempted) for t in targets]
     transport=transport_result.transport; fallback=transport_result.fallback_attempted; attempts=transport_result.attempt_failures
-    period=next(iter(periods)); report_date=next(iter(report_dates))
+    period=row_periods[0]; report_date=row_report_dates[0]
     out=[]
     for target in targets:
         status,matches,diagnostics=bind_rows(rows,target)

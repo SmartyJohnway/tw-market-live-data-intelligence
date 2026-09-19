@@ -223,45 +223,25 @@
       ]
     },
     "source": {
-      "type": "object",
-      "required": [
-        "source_family",
-        "source_contract_id",
-        "transport",
-        "fallback_used",
-        "fallback_attempted",
-        "attempt_failures"
-      ],
-      "properties": {
-        "source_family": {
-          "const": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA"
+      "allOf": [
+        {
+          "$ref": "#/definitions/source"
         },
-        "source_contract_id": {
-          "enum": [
-            "t187ap04_L",
-            "t187ap04_O"
-          ]
-        },
-        "transport": {
-          "enum": [
-            "official_csv",
-            "official_json_openapi"
-          ]
-        },
-        "fallback_used": {
-          "type": "boolean"
-        },
-        "fallback_attempted": {
-          "type": "boolean"
-        },
-        "attempt_failures": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/attempt"
+        {
+          "type": "object",
+          "properties": {
+            "source_family": {
+              "const": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA"
+            },
+            "source_contract_id": {
+              "enum": [
+                "t187ap04_L",
+                "t187ap04_O"
+              ]
+            }
           }
         }
-      },
-      "additionalProperties": false
+      ]
     },
     "observed_at": {
       "type": "string",
