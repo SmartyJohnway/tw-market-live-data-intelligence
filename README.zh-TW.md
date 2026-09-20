@@ -6,7 +6,7 @@
 
 ![確定性 Unified Workbench 總覽](docs/assets/workbench-overview.png)
 
-ProductVersion = `1.0.0`。目前 stable release 是 **[`v1.0.0`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0)**；已發布的 prerelease 歷史版本為 [`v1.0.0-rc.1`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)，較早的 stable GitHub Release 是 `v0.1.0`。Phase G 尚未開始。它是本機優先的證據工作台，不是即時交易產品。
+ProductVersion = `1.0.0`。目前 stable release 是 **[`v1.0.0`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0)**；已發布的 prerelease 歷史版本為 [`v1.0.0-rc.1`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)，較早的 stable GitHub Release 是 `v0.1.0`。目前開發線的 Phase G G1/G2 能力已通過受界限 controlled-live 驗收。它是本機優先的證據工作台，不是即時交易產品。
 
 ## 快速開始
 
@@ -47,6 +47,8 @@ MCP 固定提供六個受治理工具：
 `market_describe_capabilities`、`market_validate_request`、
 `market_preview_request`、`market_read_result`、
 `market_export_ai_handoff`、`market_fetch_evidence`。
+
+Request v2 是現行偏好契約，Request v1 仍相容；新執行產生 Result v2 與 Audit Package v2，歷史 V1 套件保持可讀且不重寫。符合資格的 TWSE/TPEX 普通股可取得最新完成的官方重大訊息日批次，以及最新可得的月營收（TWD、千元）；來源先用官方 CSV，必要時明確使用受治理的官方 JSON OpenAPI fallback。初版不提供任意歷史查詢、即時重大訊息、`financial_summary`、投資建議或交易。
 
 ## MCP 發行套件
 

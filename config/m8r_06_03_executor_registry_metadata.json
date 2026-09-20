@@ -48,6 +48,54 @@
       "timeout_seconds": 15,
       "maximum_result_items": 50,
       "output_policy": "contained_artifact_only"
+    },
+    {
+      "executor_id": "phase_g_official_research_executor",
+      "capability_id": "material_disclosures",
+      "market": "TWSE",
+      "supported_security_types": ["equity"],
+      "expected_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 15,
+      "maximum_result_items": 50,
+      "output_policy": "contained_artifact_only"
+    },
+    {
+      "executor_id": "phase_g_official_research_executor",
+      "capability_id": "material_disclosures",
+      "market": "TPEX",
+      "supported_security_types": ["equity"],
+      "expected_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 15,
+      "maximum_result_items": 50,
+      "output_policy": "contained_artifact_only"
+    },
+    {
+      "executor_id": "phase_g_official_research_executor",
+      "capability_id": "monthly_revenue",
+      "market": "TWSE",
+      "supported_security_types": ["equity"],
+      "expected_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 15,
+      "maximum_result_items": 1,
+      "output_policy": "contained_artifact_only"
+    },
+    {
+      "executor_id": "phase_g_official_research_executor",
+      "capability_id": "monthly_revenue",
+      "market": "TPEX",
+      "supported_security_types": ["equity"],
+      "expected_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 15,
+      "maximum_result_items": 1,
+      "output_policy": "contained_artifact_only"
     }
   ]
 }

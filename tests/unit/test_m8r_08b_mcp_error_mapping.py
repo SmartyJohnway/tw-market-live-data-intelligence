@@ -153,7 +153,7 @@ def test_service_version_mismatch_fails_closed_and_invalid_id_never_connects():
 
 def test_action_over_legacy_timeout_uses_separate_finite_bound():
     assert TIMEOUT_SECONDS == 15.0
-    assert ACTION_TIMEOUT_SECONDS == 85.0
+    assert ACTION_TIMEOUT_SECONDS == 145.0
     with _LoopbackService() as url:
         _ServiceHandler.mode = "action_over_legacy_timeout"
         started = time.monotonic()

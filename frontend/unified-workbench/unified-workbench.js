@@ -29,6 +29,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fingerprint = (value) => JSON.stringify(value);
 
+    const researchEvidenceSummary = (targets) => (targets || []).flatMap((target) => {
+        const evidence = target.evidence || {};
+        const label = target.canonical_identity?.canonical_target_id || target.target_id || 'unresolved target';
+        const summaries = [];
+        const disclosures = evidence.material_disclosures;
+        if (disclosures) {
+            const meaning = disclosures.status === 'no_evidence_in_covered_scope'
+                ? 'no matching disclosure in the latest completed official daily batch; this is not a claim of no historical disclosures'
+                : disclosures.status;
+            summaries.push(`${label} material_disclosures: ${meaning}`);
+        }
+        const revenue = evidence.monthly_revenue;
+        if (revenue) {
+            const meaning = revenue.status === 'not_yet_available'
+                ? 'not yet available in the covered latest official reporting period; value is unavailable, not zero'
+                : revenue.status;
+            summaries.push(`${label} monthly_revenue: ${meaning}`);
+        }
+        return summaries;
+    });
+
     const invalidateModeCState = () => {
         currentModeCResult = null;
         buildResultBtn.disabled = true;
@@ -228,8 +249,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await response.json();
         if (!response.ok) { modeCSummary.textContent = `Result package unavailable: ${data.error || 'unknown'}`; return; }
         currentModeCResult = data;
-        modeCSummary.textContent = `RESULT READY — ${data.result_status}; ${data.materialization}; Mode C projection made no additional market request.`;
-        document.getElementById('mode-c-result-view').textContent = JSON.stringify({result_id:data.result_id, result_hash:data.result_hash, result_status:data.result_status, request_summary:data.request_summary, targets:data.targets, request_caveats:data.request_caveats, citations:data.citation_references, selection_provenance:data.selection_provenance_identity}, null, 2);
+        const researchStatus = researchEvidenceSummary(data.targets);
+        modeCSummary.textContent = `RESULT READY — ${data.result_status}; ${data.materialization}; Mode C projection made no additional market request.${researchStatus.length ? ` ${researchStatus.join(' | ')}` : ''}`;
+        document.getElementById('mode-c-result-view').textContent = JSON.stringify({result_id:data.result_id, result_hash:data.result_hash, result_status:data.result_status, request_summary:data.request_summary, targets:data.targets, research_status:researchStatus, request_caveats:data.request_caveats, citations:data.citation_references, selection_provenance:data.selection_provenance_identity}, null, 2);
         modeCActions.hidden = false;
     });
 

@@ -63,7 +63,7 @@ def readme_current_product_truth_failures(
             r"v0\.1\.0",
             r"(?:latest|published)\s+prerelease(?:\s+history)?\s+(?:is|=|:)\s+[`*_]*v1\.0\.0-rc\.1",
             r"(?:current|latest)\s+stable\s+(?:github\s+)?release\s+(?:is|=|:)\s+[`*_]*v1\.0\.0",
-            r"phase\s+g\s+(?:has\s+)?not\s+started",
+            r"phase\s+g\s+(?:(?:has\s+)?not\s+started|g1/g2\s+runtime\s+capabilities\s+have\s+passed\s+bounded\s+controlled-live\s+acceptance)",
         ),
     }
     required_patterns = release_patterns_by_state.get(release_lifecycle_state)

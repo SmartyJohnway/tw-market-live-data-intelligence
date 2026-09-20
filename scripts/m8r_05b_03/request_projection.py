@@ -34,14 +34,17 @@ def build_execution_request_projection(
     if not isinstance(parameters, dict):
         parameters = {}
         warnings.append("operation_parameters_unavailable")
+    research_capability = binding.get("capability_id") in {"material_disclosures", "monthly_revenue"}
     requested_fields = parameters.get("requested_fields")
     if requested_fields is None:
         requested_fields = []
-        warnings.append("requested_fields_unavailable")
+        if not research_capability:
+            warnings.append("requested_fields_unavailable")
     currentness_requirement = parameters.get("currentness_requirement")
     if currentness_requirement is None:
-        currentness_requirement = "eod_reference_only"
-        warnings.append("currentness_requirement_unavailable")
+        currentness_requirement = None if research_capability else "eod_reference_only"
+        if not research_capability:
+            warnings.append("currentness_requirement_unavailable")
 
     identity_body = {
         "operation_id": operation["operation_id"],

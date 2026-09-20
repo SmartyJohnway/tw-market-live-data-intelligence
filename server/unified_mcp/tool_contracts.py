@@ -14,8 +14,16 @@ from mcp.types import Tool, ToolAnnotations
 from . import ADAPTER_VERSION
 
 ROOT = Path(__file__).resolve().parents[2]
-REQUEST_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_request.v1.schema.json"
-REQUEST_SCHEMA_ID = "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v1"
+REQUEST_SCHEMA_PATHS = {
+    "unified_market_evidence_request.v1": ROOT / "schemas" / "unified_market_evidence_request.v1.schema.json",
+    "unified_market_evidence_request.v2": ROOT / "schemas" / "unified_market_evidence_request.v2.schema.json",
+}
+PREFERRED_REQUEST_SCHEMA_VERSION = "unified_market_evidence_request.v2"
+REQUEST_SCHEMA_PATH = REQUEST_SCHEMA_PATHS[PREFERRED_REQUEST_SCHEMA_VERSION]
+REQUEST_SCHEMA_IDS = {
+    "unified_market_evidence_request.v1": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v1",
+    "unified_market_evidence_request.v2": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v2",
+}
 CONTROL_PACKAGE_PATTERN = r"^umea-v1-[0-9a-f]{20}$"
 
 TOOL_DESCRIPTIONS: dict[str, str] = {
@@ -44,14 +52,17 @@ def _load_json(path: Path) -> dict[str, Any]:
     return value
 
 
-def load_canonical_unified_request_schema() -> dict[str, Any]:
-    """Load the committed Request authority without copying its semantics."""
-    schema = _load_json(REQUEST_SCHEMA_PATH)
-    if schema.get("$id") != REQUEST_SCHEMA_ID:
+def load_unified_request_schema(schema_version: str) -> dict[str, Any]:
+    """Load one accepted Request authority by explicit schema version."""
+    path = REQUEST_SCHEMA_PATH if schema_version == PREFERRED_REQUEST_SCHEMA_VERSION else REQUEST_SCHEMA_PATHS.get(schema_version)
+    if path is None:
+        raise ToolContractError("canonical_request_schema_identity_mismatch")
+    schema = _load_json(path)
+    if schema.get("$id") != REQUEST_SCHEMA_IDS[schema_version]:
         raise ToolContractError("canonical_request_schema_identity_mismatch")
     properties = schema.get("properties")
     schema_version = properties.get("schema_version") if isinstance(properties, dict) else None
-    if not isinstance(schema_version, dict) or schema_version.get("const") != "unified_market_evidence_request.v1":
+    if not isinstance(schema_version, dict) or schema_version.get("const") != path.name.removesuffix(".schema.json"):
         raise ToolContractError("canonical_request_schema_identity_mismatch")
     try:
         validator_class = jsonschema.validators.validator_for(schema)
@@ -59,6 +70,11 @@ def load_canonical_unified_request_schema() -> dict[str, Any]:
     except jsonschema.exceptions.SchemaError as exc:
         raise ToolContractError("canonical_request_schema_malformed") from exc
     return schema
+
+
+def load_canonical_unified_request_schema() -> dict[str, Any]:
+    """Load the current preferred Request authority."""
+    return load_unified_request_schema(PREFERRED_REQUEST_SCHEMA_VERSION)
 
 
 def canonical_request_schema_sha256() -> str:
@@ -73,7 +89,14 @@ def build_request_envelope_schema() -> dict[str, Any]:
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "type": "object",
-        "properties": {"request": deepcopy(load_canonical_unified_request_schema())},
+        "properties": {
+            "request": {
+                "oneOf": [
+                    deepcopy(load_unified_request_schema("unified_market_evidence_request.v1")),
+                    deepcopy(load_unified_request_schema("unified_market_evidence_request.v2")),
+                ]
+            }
+        },
         "required": ["request"],
         "additionalProperties": False,
     }
@@ -133,13 +156,7 @@ def build_tool_contract_snapshot() -> ToolContractSnapshot:
     canonical_request = load_canonical_unified_request_schema()
     canonical_hash = canonical_request_schema_sha256()
     empty = {"$schema": "https://json-schema.org/draft/2020-12/schema", "type": "object", "properties": {}, "additionalProperties": False}
-    request = {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "object",
-        "properties": {"request": deepcopy(canonical_request)},
-        "required": ["request"],
-        "additionalProperties": False,
-    }
+    request = build_request_envelope_schema()
     control = build_control_package_schema()
     tools = (
         Tool(name="market_describe_capabilities", description=TOOL_DESCRIPTIONS["market_describe_capabilities"], inputSchema=empty, annotations=_annotations(read_only=True)),

@@ -27,13 +27,13 @@ def fetch_market_evidence(payload: dict[str, Any]) -> dict[str, Any]:
         execution = execute_local_operator_ticket(
             ticket["control_package_id"], network_required=ticket["network_required"]
         )
-        handoff = build_mode_c_ai_handoff(ticket["control_package_id"])
+        handoff = build_mode_c_ai_handoff(ticket["control_package_id"], output_schema_version="v2")
     except ModeB2Error as exc:
         raise LocalOperatorActionError(exc.code) from exc
     except ModeCError as exc:
         raise LocalOperatorActionError(exc.code) from exc
     return {
-        "service_contract_version": "unified_market_evidence_local_service.v1",
+        "service_contract_version": "unified_market_evidence_local_service.v2",
         "action_contract_version": "m8r_08e_local_operator_fetch.v1",
         "control_package_id": ticket["control_package_id"],
         "authorization_id": ticket["authorization_id"],

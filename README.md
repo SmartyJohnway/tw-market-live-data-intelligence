@@ -12,7 +12,8 @@ ProductVersion = `1.0.0`. The current stable release is `v1.0.0`
 ([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0)).
 The published prerelease history is `v1.0.0-rc.1`
 ([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)),
-and the earlier stable GitHub Release was `v0.1.0`. Phase G has not started.
+and the earlier stable GitHub Release was `v0.1.0`. Phase G G1/G2 runtime
+capabilities have passed bounded controlled-live acceptance on the current branch.
 This is a local-first evidence workbench, not a realtime trading product.
 
 ## Why TW-Market
@@ -69,6 +70,10 @@ python scripts/run_unified_market_evidence_mcp.py
   Package, and AI-ready Markdown without dispatching another market source.
 - **Persistent Watchlists are supported:** installation-local Watchlists have immutable
   revisions, optimistic concurrency, and explicit preview/commit mutation.
+- **Official research evidence:** eligible TWSE/TPEX common shares support the
+  latest completed official material-disclosure batch and latest available
+  monthly revenue (TWD, unit thousand), using official CSV with an explicit
+  governed official JSON fallback.
 
 ## Unified MCP
 
@@ -78,7 +83,9 @@ The MCP surface has exactly six governed tools:
 `market_preview_request`, `market_read_result`,
 `market_export_ai_handoff`, and `market_fetch_evidence`.
 
-See the [V1 public contracts](docs/contracts/V1_PUBLIC_CONTRACTS.md) and
+Request v2 is preferred, Request v1 remains accepted, and new executions emit
+Result v2 and Audit Package v2. Historical V1 packages remain readable. See the
+[V1 historical public contracts](docs/contracts/V1_PUBLIC_CONTRACTS.md) and
 [current AI usage guide](docs/agent_usage_guide.md) for request, result, and
 handoff semantics.
 
@@ -99,7 +106,9 @@ scope, integrity, and Security Master boundaries.
 Capability support, currentness, source provenance, and execution eligibility
 are explicit product data. A supported identity does not imply an executable
 source route; a preview is not an authorization; a source observation is not a
-realtime guarantee. Consult the [capability matrix](docs/reference/CAPABILITY_MATRIX.md),
+realtime guarantee. Research support does not provide arbitrary disclosure or
+monthly-revenue history, realtime disclosures, or `financial_summary`.
+Consult the [capability matrix](docs/reference/CAPABILITY_MATRIX.md),
 [source matrix](docs/reference/SOURCE_MATRIX.md), and
 [governance boundaries](docs/reference/GOVERNANCE_BOUNDARIES.md) before relying
 on any result.
@@ -130,9 +139,10 @@ security concerns using the grounded guidance in [SECURITY.md](SECURITY.md).
 
 `VERSION` records `1.0.0`. The current stable release is `v1.0.0`
 ([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0));
-published prerelease history remains `v1.0.0-rc.1`, and Phase G has **not
-started**. Both release tags are immutable authorities; subsequent documentation
-status updates do not move them.
+published prerelease history remains `v1.0.0-rc.1`. Phase G G1/G2 implementation
+is present on the current development line; this does not retag the immutable
+`v1.0.0` release. Both release tags are immutable authorities; subsequent
+documentation status updates do not move them.
 
 ## Project Overview
 

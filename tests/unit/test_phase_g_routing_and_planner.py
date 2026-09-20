@@ -1,4 +1,4 @@
-"""A2 dormant routing and per-target applicability acceptance."""
+"""Phase G routing activation and per-target applicability acceptance."""
 
 from __future__ import annotations
 
@@ -75,20 +75,21 @@ def research_need(priority: str = "required", capability: str = "monthly_revenue
     return {"type": capability, "priority": priority, "parameters": {}}
 
 
-def test_b01_b02_common_shares_are_dormant_research_eligible_by_market():
+def test_b01_b02_common_shares_are_research_executable_by_market():
     for market, code in (("TWSE", "2330"), ("TPEX", "6488")):
         result = plan(validation([target(f"{market}:{code}", market, "company_share", "common_share")], [research_need()]))
-        assert result["plan_status"] == "plan_only_not_executable"
+        assert result["plan_status"] == "plan_ready"
         assert result["operations"][0]["capability_id"] == "monthly_revenue"
-        assert result["operations"][0]["operation_status"] == "plan_only_not_executable"
-        assert result["operations"][0]["network_required"] is False
+        assert result["operations"][0]["operation_status"] == "executable_pending_approval"
+        assert result["operations"][0]["network_required"] is True
+        assert result["operations"][0]["executor_id"] == "phase_g_official_research_executor"
         jsonschema.validate(result, PLAN_SCHEMA)
 
 
 def test_b03_ky_eligibility_uses_security_master_classification_not_name():
     eligible = plan(validation([target("TWSE:KY01", "TWSE", "company_share", "common_share")], [research_need()]))
     ineligible = plan(validation([target("TWSE:KY01", "TWSE", "company_share", "preferred_share")], [research_need()]))
-    assert eligible["plan_status"] == "plan_only_not_executable"
+    assert eligible["plan_status"] == "plan_ready"
     assert ineligible["plan_status"] == "blocked"
     assert ineligible["blocked_operations"][0]["blocking_reason_codes"] == ["unsupported_instrument_scope"]
 
@@ -122,45 +123,45 @@ def test_b10_frozen_result_contract_requires_resolved_identity_and_allows_unreso
     jsonschema.validate(result, json.loads((ROOT / "schemas/unified_market_evidence_result.v2.schema.json").read_text()))
 
 
-def test_mixed_targets_omit_only_noncommon_optional_research_without_network():
+def test_mixed_targets_execute_common_share_and_omit_only_noncommon_optional_research():
     common = target("TWSE:2330", "TWSE", "company_share", "common_share")
     etf = target("TWSE:0050", "TWSE", "fund_product", "etf")
     result = plan(validation([common, etf], [research_need("optional", "material_disclosures")]))
     assert result["plan_status"] == "plan_ready_with_warnings"
     assert [item["canonical_target_ids"] for item in result["operations"]] == [["TWSE:2330"]]
     assert result["omitted_optional_capabilities"][0]["canonical_target_ids"] == ["TWSE:0050"]
-    assert result["accounting"]["network_request_estimate"] == 0
+    assert result["accounting"]["network_request_estimate"] == 1
 
 
-def test_e06_e07_e09_e12_dormant_routes_preserve_compatible_per_market_planning_without_network(monkeypatch):
+def test_e06_e07_e09_e12_active_routes_group_same_market_and_keep_preview_offline(monkeypatch):
     routes = {route["capability_id"]: route for route in ROUTING["routes"]}
     monthly = routes["monthly_revenue"]
     assert monthly["selected_executor_id"] == "phase_g_official_research_executor"
     assert monthly["batching_scope"] == "same_source"
-    assert monthly["runtime_executable"] is False
+    assert monthly["runtime_executable"] is True
     assert monthly["source_compatibility_key"] == "phase_g_official_research_executor:monthly_revenue"
     monkeypatch.setattr(socket, "socket", lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("network forbidden")))
     twse_result = plan(validation([
         target("TWSE:2330", "TWSE", "company_share", "common_share"),
         target("TWSE:2317", "TWSE", "company_share", "common_share"),
     ], [research_need()]))
-    assert twse_result["plan_status"] == "plan_only_not_executable"
-    assert twse_result["batch_groups"] == []
+    assert twse_result["plan_status"] == "plan_ready"
+    assert len(twse_result["batch_groups"]) == 1
     assert twse_result["accounting"]["logical_operation_count"] == 2
     assert {tuple(operation["canonical_target_ids"]) for operation in twse_result["operations"]} == {("TWSE:2330",), ("TWSE:2317",)}
     assert {operation["market"] for operation in twse_result["operations"]} == {"TWSE"}
-    assert all(operation["executor_id"] is None for operation in twse_result["operations"])
+    assert all(operation["executor_id"] == "phase_g_official_research_executor" for operation in twse_result["operations"])
     mixed_market_result = plan(validation([
         target("TWSE:2330", "TWSE", "company_share", "common_share"),
         target("TPEX:6488", "TPEX", "company_share", "common_share"),
     ], [research_need()]))
-    assert mixed_market_result["batch_groups"] == []
+    assert len(mixed_market_result["batch_groups"]) == 2
     assert {operation["market"] for operation in mixed_market_result["operations"]} == {"TWSE", "TPEX"}
     assert len(mixed_market_result["operations"]) == 2
-    assert all(operation["operation_status"] == "plan_only_not_executable" for operation in mixed_market_result["operations"])
+    assert all(operation["operation_status"] == "executable_pending_approval" for operation in mixed_market_result["operations"])
     result = plan(validation([target("TWSE:2330", "TWSE", "company_share", "common_share")], [research_need()]))
-    assert result["accounting"]["network_request_estimate"] == 0
-    assert result["operations"][0]["executor_id"] is None
+    assert result["accounting"]["network_request_estimate"] == 1
+    assert result["operations"][0]["executor_id"] == "phase_g_official_research_executor"
 
 
 @pytest.mark.parametrize(

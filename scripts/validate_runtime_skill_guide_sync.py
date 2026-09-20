@@ -52,7 +52,7 @@ def main() -> int:
     canonical = json.loads(
         (
             ROOT
-            / "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json"
+            / "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json"
         ).read_text(encoding="utf-8")
     )
     portable = json.loads(
@@ -63,6 +63,8 @@ def main() -> int:
     )
     if canonical.get("schema_version") != portable.get("schema_version"):
         return fail("portable_catalog_schema_drift")
+    if canonical.get("schema_version") != "unified_market_evidence_capability_catalog.v2":
+        return fail("current_catalog_not_v2")
 
     current_text = "\n".join(
         path.read_text(encoding="utf-8") for path in CURRENT_TEXT_PATHS
@@ -84,6 +86,15 @@ def main() -> int:
         return fail("execute_once_semantics_missing")
     if "ai-ready handoff" not in current_text.lower():
         return fail("mode_c_handoff_semantics_missing")
+    for required in (
+        "unified_market_evidence_request.v2",
+        "material_disclosures",
+        "monthly_revenue",
+        "latest completed official daily batch",
+        "latest available",
+    ):
+        if required.casefold() not in current_text.casefold():
+            return fail("phase_g_current_surface_missing", required)
 
     sync = subprocess.run(
         [sys.executable, str(ROOT / "scripts/validate_portable_catalog_sync.py")],

@@ -86,8 +86,33 @@ def _validator(request):
 
 def test_selection_schemas_are_formal():
     root = Path("docs/contracts/schemas")
-    for name in ("watchlist_evidence_selection_request.v1.schema.json", "watchlist_evidence_selection.v1.schema.json"):
+    for name in ("watchlist_evidence_selection_request.v1.schema.json", "watchlist_evidence_selection_request.v2.schema.json", "watchlist_evidence_selection.v1.schema.json"):
         Draft202012Validator.check_schema(json.loads((root / name).read_text(encoding="utf-8")))
+
+
+def test_phase_g_current_v2_composition_and_v1_compatibility(store):
+    current = _watchlist(store)
+    selected = [current["entries"][0]["watchlist_entry_id"]]
+    v2 = _payload(current, selected=selected)
+    v2["schema_version"] = "watchlist_evidence_selection_request.v2"
+    v2["data_needs"] = [
+        {"type": "material_disclosures", "priority": "required", "parameters": {}},
+        {"type": "monthly_revenue", "priority": "optional", "parameters": {}},
+    ]
+    v2_result = WatchlistEvidenceComposer(
+        store=store, request_validator=_validator
+    ).compose(v2, watchlist_id=current["watchlist_id"])
+    assert v2_result["request"]["schema_version"] == "unified_market_evidence_request.v2"
+    assert [need["type"] for need in v2_result["request"]["data_needs"]] == [
+        "material_disclosures",
+        "monthly_revenue",
+    ]
+
+    v1 = _payload(current, selected=selected)
+    v1_result = WatchlistEvidenceComposer(
+        store=store, request_validator=_validator
+    ).compose(v1, watchlist_id=current["watchlist_id"])
+    assert v1_result["request"]["schema_version"] == "unified_market_evidence_request.v1"
 
 
 def test_persistent_selection_order_request_and_provenance(store):

@@ -27,9 +27,9 @@ def main():
 
     # 2. Check SKILL.md contents and references
     skill_text = (SKILL / "SKILL.md").read_text(encoding="utf-8")
-    if "unified_market_evidence_request.v1.schema.json" not in skill_text:
+    if "unified_market_evidence_request.v2.schema.json" not in skill_text:
         print(
-            "ERROR: SKILL.md does not reference the canonical Unified Request schema.",
+            "ERROR: SKILL.md does not reference the preferred current Unified Request schema.",
             file=sys.stderr,
         )
         sys.exit(1)

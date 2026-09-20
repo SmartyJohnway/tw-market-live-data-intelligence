@@ -41,3 +41,15 @@ def test_three_confirmations_remain_separate_in_ui_sources():
     assert 'id="btn-authorize"' in html
     assert 'id="confirm-network-execution"' in html
     assert 'id="btn-execute-once"' in html
+
+
+def test_phase_g_builder_and_result_wording_are_truthful():
+    builder = SCRIPT.read_text(encoding="utf-8")
+    result_script = (
+        ROOT / "frontend" / "unified-workbench" / "unified-workbench.js"
+    ).read_text(encoding="utf-8")
+    assert "watchlist_evidence_selection_request.v2" in builder
+    assert "no matching disclosure in the latest completed official daily batch" in result_script
+    assert "this is not a claim of no historical disclosures" in result_script
+    assert "value is unavailable, not zero" in result_script
+    assert "research_status" in result_script

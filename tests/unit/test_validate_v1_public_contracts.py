@@ -182,6 +182,29 @@ def test_readme_validator_accepts_stable_published_status(tmp_path) -> None:
     )
 
 
+def test_readme_validator_accepts_stable_release_with_phase_g_accepted_status(tmp_path) -> None:
+    readme = tmp_path / "README.md"
+    readme.write_text(
+        "\n".join(
+            (
+                "Persistent Watchlists are supported.",
+                "ProductVersion = `1.0.0`.",
+                "The published prerelease history is `v1.0.0-rc.1`.",
+                "The earlier stable GitHub Release was `v0.1.0`.",
+                "The current stable release is `v1.0.0`.",
+                "Phase G G1/G2 runtime capabilities have passed bounded controlled-live acceptance.",
+            )
+        ),
+        encoding="utf-8",
+    )
+    assert (
+        validate_v1_public_contracts.readme_current_product_truth_failures(
+            readme, current_product_version="1.0.0"
+        )
+        == []
+    )
+
+
 def test_readme_validator_rejects_stable_status_with_final_promotion_wording(tmp_path) -> None:
     readme = tmp_path / "README.md"
     readme.write_text(

@@ -184,6 +184,23 @@ def _citation_to_dict(c: CitationProjection) -> dict:
     return d
 
 
+def _canonical_identity_v2(resolution: ResolutionProjection) -> dict | None:
+    """Project only the frozen V2 identity vocabulary from governed F3 data."""
+    identity = resolution.canonical_identity
+    if identity is None:
+        return None
+    return {
+        "canonical_target_id": identity.get("canonical_target_id", resolution.canonical_target_id),
+        "isin": identity.get("isin"),
+        "market": identity.get("market", resolution.market),
+        "security_code": identity.get("security_code", resolution.security_code),
+        "security_name_zh": identity.get("security_name_zh", resolution.security_name),
+        "security_name_en": identity.get("security_name_en"),
+        "instrument_family": identity.get("instrument_family"),
+        "instrument_type": identity.get("instrument_type"),
+    }
+
+
 def _derived_metric_to_dict(m) -> dict:
     d: dict = {
         "metric_id": m.metric_id,
@@ -451,7 +468,7 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
         if res.market is not None:
             t_dict["resolution"]["market"] = res.market
         if output_schema_version == "unified_market_evidence_result.v2":
-            t_dict["canonical_identity"] = res.canonical_identity
+            t_dict["canonical_identity"] = _canonical_identity_v2(res)
 
         # Evidence fields.
         ev = tp.evidence

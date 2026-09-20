@@ -43,7 +43,7 @@ class RecordingClient:
 
     async def describe_capabilities(self):
         self.calls.append(("describe", None))
-        return {"service_contract_version": "unified_market_evidence_local_service.v1"}
+        return {"service_contract_version": "unified_market_evidence_local_service.v2"}
 
     async def validate_request(self, envelope):
         self.calls.append(("validate", envelope))
@@ -72,7 +72,7 @@ def test_exactly_six_tool_contracts_with_one_bounded_action():
     assert tuple(tool.name for tool in first) == EXPECTED_NAMES
     assert [tool.model_dump(by_alias=True) for tool in first] == [tool.model_dump(by_alias=True) for tool in second]
     assert not (set(EXPECTED_NAMES) & FORBIDDEN)
-    assert ADAPTER_VERSION == "unified_market_evidence_mcp_adapter.v1"
+    assert ADAPTER_VERSION == "unified_market_evidence_mcp_adapter.v2"
     for tool in first:
         assert tool.description == TOOL_DESCRIPTIONS[tool.name]
         assert tool.annotations.destructiveHint is False
@@ -98,8 +98,12 @@ def test_request_schemas_embed_committed_authority_without_placeholder():
     assert validate["type"] == "object"
     assert validate["required"] == ["request"]
     assert validate["additionalProperties"] is False
-    assert validate["properties"]["request"] == canonical
-    assert validate["properties"]["request"] != {}
+    request_contract = validate["properties"]["request"]
+    assert request_contract["oneOf"][1] == canonical
+    assert [item["properties"]["schema_version"]["const"] for item in request_contract["oneOf"]] == [
+        "unified_market_evidence_request.v1",
+        "unified_market_evidence_request.v2",
+    ]
     for name in ("market_read_result", "market_export_ai_handoff"):
         schema = tools[name].inputSchema
         assert schema["additionalProperties"] is False
@@ -157,7 +161,7 @@ def test_malformed_control_identifier_is_rejected_before_client_dispatch():
         (None, "canonical_request_schema_unavailable"),
         ("{not json", "canonical_request_schema_malformed"),
         (json.dumps({"$schema": "http://json-schema.org/draft-07/schema#", "$id": "wrong", "type": "object"}), "canonical_request_schema_identity_mismatch"),
-        (json.dumps({"$schema": "http://json-schema.org/draft-07/schema#", "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v1", "type": 7, "properties": {"schema_version": {"const": "unified_market_evidence_request.v1"}}}), "canonical_request_schema_malformed"),
+        (json.dumps({"$schema": "http://json-schema.org/draft-07/schema#", "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v2", "type": 7, "properties": {"schema_version": {"const": "synthetic-request"}}}), "canonical_request_schema_malformed"),
     ),
 )
 def test_startup_snapshot_fails_closed_for_unusable_canonical_authority(monkeypatch, contents, error):

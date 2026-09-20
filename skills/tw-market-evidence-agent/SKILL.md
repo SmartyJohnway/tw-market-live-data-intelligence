@@ -13,14 +13,17 @@ The callable interface is the six-tool Unified MCP surface:
 and `market_fetch_evidence`.
 
 Mode A/B/C describe product workflow concepts; they are not alternate MCP
-tools. The canonical request contract is
-`schemas/unified_market_evidence_request.v1.schema.json`.
+tools. `schemas/unified_market_evidence_request.v2.schema.json` is the preferred
+current request contract; Request v1 remains accepted for compatibility. New
+executions emit Result v2 and Audit Package v2, while historical V1 packages
+remain readable without rewriting.
 
 ## When to use
 
 Use for current Taiwan-market observations, official EOD evidence, currentness,
-session state, execution-relevant identity resolution, or source-grounded
-calculations. Do not use for finance theory, non-Taiwan markets, translation,
+session state, execution-relevant identity resolution, source-grounded
+calculations, latest bounded official material disclosures, or latest available
+official monthly revenue. Do not use for finance theory, non-Taiwan markets, translation,
 or when already-provided governed evidence is sufficient and no refresh is
 needed.
 
@@ -90,6 +93,18 @@ required clarification.
   fallback silently.
 - TAIFEX support is provisional/non-executable where the capability authority
   says so. This boundary is not a source outage.
+- `material_disclosures` covers only the latest completed official daily batch,
+  and `no_evidence_in_covered_scope` does not mean the company has never made a
+  disclosure.
+- `monthly_revenue` covers only the latest available reporting period in TWD,
+  unit thousand. `not_yet_available` means no exact target row was present in a
+  healthy covered snapshot; it is not zero revenue.
+- Both research capabilities are limited to eligible TWSE/TPEX
+  `company_share`/`common_share` targets. There is no arbitrary history,
+  realtime research guarantee, or executable `financial_summary` capability.
+- Research sources use official CSV first and a governed official JSON OpenAPI
+  fallback. Preserve reported fallback, source-report, publication, fact-date,
+  reporting-period, currentness, caveat, and citation fields.
 
 ## Installation-local Security Master
 

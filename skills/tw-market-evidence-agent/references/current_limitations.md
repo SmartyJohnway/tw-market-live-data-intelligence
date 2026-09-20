@@ -11,6 +11,15 @@ remain mandatory.
   be represented as an executable market retrieval.
 - `recent_performance` is plan-only and session-state semantics remain bounded
   by the capability authority.
+- `material_disclosures` is executable only for eligible TWSE/TPEX common
+  shares and covers the latest completed official daily batch; it is not a
+  historical or realtime disclosure search.
+- `monthly_revenue` is executable only for eligible TWSE/TPEX common shares and
+  covers the latest available reporting period; arbitrary history and
+  `financial_summary` are not supported.
+- Research acquisition is execute-once, official CSV first, with an explicit
+  governed official JSON OpenAPI fallback. `no_evidence_in_covered_scope` and
+  `not_yet_available` must not be interpreted as no historical event or zero.
 - Current observation is not realtime guaranteed. EOD is reference data for a
   completed session.
 - A fresh installation may be `NOT_INITIALIZED`; operators explicitly update

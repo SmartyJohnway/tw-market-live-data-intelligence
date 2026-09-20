@@ -13,7 +13,7 @@ from .local_service_client import LocalServiceClientError, UnifiedLocalServiceCl
 from .tool_contracts import ToolContractSnapshot
 
 SERVER_INSTRUCTIONS = (
-    "Local read/preflight adapter for unified_market_evidence_local_service.v1. "
+    "Local read/preflight adapter for unified_market_evidence_local_service.v2. "
     "It can describe capabilities, validate and preview requests, read/export finalized governed results, "
     "and perform bounded conversation-triggered one-shot market-evidence retrieval for the local operator. "
     "It exposes no separate authorization or generic execute tool and performs no persistent, background, recurring, or trading activity. "
