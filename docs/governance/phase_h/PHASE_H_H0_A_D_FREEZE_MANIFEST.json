@@ -1,0 +1,107 @@
+{
+  "schema_version": "phase_h_h0_a_d_freeze_manifest.v1",
+  "status": "FROZEN",
+  "freeze_date": "2026-09-21",
+  "repository_baseline": "aa315918e0b5b431f4e63334c3ff91eac4e4e8f5",
+  "scope": ["H0-A", "H0-B", "H0-C", "H0-D"],
+  "explicitly_deferred": ["H0-E", "H0-F", "H0-G", "H0-H"],
+  "input_research_artifacts": [
+    {
+      "path": "docs/research/phase_h_h0_01a/Phase_H_H0_01A_Official_Source_Transport_Automation_Authority_Matrix.md",
+      "pre_amendment_sha256": "566a91f5c7fa1da18dfb85753a19ba6f446973a5dc8040a3ac7996dde0fe31d3",
+      "post_amendment_sha256": "120cd0278484b429cf618e9041b2bd0eb56edb0e43cee17d00be0af03347b7ef",
+      "post_amendment_bytes": 27775
+    },
+    {
+      "path": "docs/research/phase_h_h0_01a/Phase_H_H0_01A_Source_Authority_Matrix.json",
+      "pre_amendment_sha256": "6a05968b4e2c6bd444bd90942eaffd9f24a55c99b17bd29365211ea3c5cd53f7",
+      "post_amendment_sha256": "6685c236274b662107c0061240f6983e63ce68dee6daa33c1c3e2deef1ef7670",
+      "post_amendment_bytes": 43297
+    }
+  ],
+  "owner_decisions": {
+    "research": "ACCEPTED_WITH_MINOR_AMENDMENT",
+    "source_authority_matrix": "ACCEPTABLE_FOR_FREEZE_INPUT",
+    "product_boundary": "PASS",
+    "anti_scope_creep": "PASS",
+    "h1_contract_direction": "APPROVED_FOR_FREEZE",
+    "h2_contract_direction": "APPROVED_FOR_FREEZE",
+    "production_implementation": "NOT_AUTHORIZED"
+  },
+  "frozen_documents": [
+    {
+      "path": "docs/governance/phase_h/Phase_H_Product_Boundary_and_Anti_Scope_Creep_FROZEN.md",
+      "sha256": "3751cf277060d35e3f87ffd169da585b40345b79dd79ea123541bc5975fbc72f",
+      "bytes": 5502
+    },
+    {
+      "path": "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.md",
+      "sha256": "49157b472837f0611f04698b267059849bdc1615dc7bf3f29999ce1d0adc7826",
+      "bytes": 6648
+    },
+    {
+      "path": "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.json",
+      "sha256": "4131d1e4023b09a14abd9d604adc59e409edb96016784044379c643beaa77e5a",
+      "bytes": 28875
+    },
+    {
+      "path": "docs/governance/phase_h/Phase_H_H1_Trading_Status_Context_Contract_FROZEN.md",
+      "sha256": "0ab08f309b6832d68e8b1e2940e3c44435d2eb8e95e77b2df3cb77899e207ca1",
+      "bytes": 5647
+    },
+    {
+      "path": "docs/governance/phase_h/Phase_H_H2_Price_Basis_Corporate_Action_Contract_FROZEN.md",
+      "sha256": "7c7a553220a007d08cfd7e1676f5bf0c2c82976fe12e80bae41a3066625f2952",
+      "bytes": 7196
+    }
+  ],
+  "issue_summary": {
+    "superseded": ["H0-SRC-01"],
+    "open_current_tranche": [
+      "H0-SRC-01A",
+      "H0-SRC-01B",
+      "H0-SRC-01C",
+      "H0-SRC-01E",
+      "H0-SRC-02",
+      "H0-SRC-03",
+      "H0-SRC-04",
+      "H0-SRC-05",
+      "H0-SRC-06",
+      "H0-SRC-07",
+      "H0-SRC-08"
+    ],
+    "open_deferred_h3": ["H0-SRC-09", "H0-SRC-10", "H0-SRC-11", "H0-SRC-12"],
+    "closed": ["H0-SRC-01D", "H0-SRC-01F", "H0-SRC-01G", "H0-SRC-13"],
+    "remaining_open_count": 15,
+    "contract_freeze_blockers": 0,
+    "normative_register": "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.json"
+  },
+  "closure_evidence": {
+    "H0-SRC-01D": "https://data.gov.tw/dataset/11760",
+    "H0-SRC-01F": "https://data.gov.tw/dataset/48665",
+    "H0-SRC-01G": "https://data.gov.tw/dataset/11736",
+    "H0-SRC-13": "https://data.gov.tw/dataset/11634"
+  },
+  "validation": {
+    "json_parse": "PASS",
+    "required_fields": "PASS",
+    "unique_source_ids": "PASS",
+    "unique_issue_ids": "PASS",
+    "source_role_enum": "PASS",
+    "activation_state_enum": "PASS",
+    "source_role_activation_state_separated": "PASS",
+    "frozen_files_exist": "PASS",
+    "frozen_file_hashes": "PASS",
+    "H0-SRC-13_closed": "PASS",
+    "H0-SRC-01_lineage_preserved": "PASS",
+    "forbidden_scope_not_authorized": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "mutation_authority": {
+    "production_implementation_authorized": false,
+    "runtime_mutation": false,
+    "mcp_mutation": false,
+    "schema_authority_mutation": false,
+    "preferred_contract_version_mutation": false
+  }
+}
