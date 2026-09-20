@@ -1,0 +1,175 @@
+{
+  "schema_version": "phase_h_h0_e_f_freeze_manifest.v1",
+  "status": "FROZEN",
+  "freeze_date": "2026-09-21",
+  "repository_baseline": "85a61cd8dc14c37832f7702c9e0a529b3f27ee0f",
+  "branch": "phase-h/h0-e-f-freeze",
+  "scope": ["H0-E", "H0-F"],
+  "explicitly_deferred": ["H0-G", "H0-H", "H5", "production_implementation"],
+  "owner_decision_status": "H0-02B_FORMAL_CONTRACT_FREEZE_INSTRUCTION_RECEIVED",
+  "upstream_h0_a_d_authority": {
+    "merge_commit": "85a61cd8dc14c37832f7702c9e0a529b3f27ee0f",
+    "governed_commit": "aa3b8d8320cc138a203132922c26ffb39c7a39cb",
+    "byte_integrity_required": true,
+    "artifacts": [
+      {
+        "path": "docs/governance/phase_h/PHASE_H_H0_A_D_FREEZE_MANIFEST.json",
+        "sha256": "2144a286f5160d509fedeec099d1e2ee48f3d1d035485dd385f2e9a0502933a1",
+        "bytes": 4106
+      },
+      {
+        "path": "docs/governance/phase_h/Phase_H_Product_Boundary_and_Anti_Scope_Creep_FROZEN.md",
+        "sha256": "3751cf277060d35e3f87ffd169da585b40345b79dd79ea123541bc5975fbc72f",
+        "bytes": 5502
+      },
+      {
+        "path": "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.md",
+        "sha256": "49157b472837f0611f04698b267059849bdc1615dc7bf3f29999ce1d0adc7826",
+        "bytes": 6648
+      },
+      {
+        "path": "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.json",
+        "sha256": "4131d1e4023b09a14abd9d604adc59e409edb96016784044379c643beaa77e5a",
+        "bytes": 28875
+      },
+      {
+        "path": "docs/governance/phase_h/Phase_H_H1_Trading_Status_Context_Contract_FROZEN.md",
+        "sha256": "0ab08f309b6832d68e8b1e2940e3c44435d2eb8e95e77b2df3cb77899e207ca1",
+        "bytes": 5647
+      },
+      {
+        "path": "docs/governance/phase_h/Phase_H_H2_Price_Basis_Corporate_Action_Contract_FROZEN.md",
+        "sha256": "7c7a553220a007d08cfd7e1676f5bf0c2c82976fe12e80bae41a3066625f2952",
+        "bytes": 7196
+      }
+    ]
+  },
+  "frozen_documents": [
+    {
+      "phase_component": "H0-E",
+      "path": "docs/governance/phase_h/Phase_H_H3_Bounded_Recent_Reference_Contract_FROZEN.md",
+      "sha256": "f4e97038b704420a5b9e44b5bf5fdd4b190e28f9874993432bf1dde6add8bd90",
+      "bytes": 13159
+    },
+    {
+      "phase_component": "H0-F",
+      "path": "docs/governance/phase_h/Phase_H_H4_Discontinuity_Safety_Contract_FROZEN.md",
+      "sha256": "817a3cd265598031a8d573d463a82b443a65a9360140269c0aac9c98d87bc98b",
+      "bytes": 14514
+    }
+  ],
+  "h3_contract_decision": {
+    "semantic_contract": "FROZEN",
+    "capability_reused": "recent_performance",
+    "competing_history_capability_added": false,
+    "lookback_trading_days": {"minimum": 1, "maximum": 20},
+    "lookback_cardinality": {
+      "requested_observations": "N completed-session lookback observations before the end observation",
+      "required_distinct_closes_for_return_Nd": "N+1"
+    },
+    "observation_basis": "completed_official_trading_sessions",
+    "default_fresh_install_bounded_history_route": {
+      "TWSE": "NOT_PROVEN",
+      "TPEX": "NOT_PROVEN"
+    },
+    "optional_provider": {
+      "TWSE": "PROVIDER_CONTRACT_PENDING",
+      "TPEX": "PROVIDER_CONTRACT_PENDING"
+    },
+    "runtime": "INACTIVE"
+  },
+  "h4_contract_decision": {
+    "semantic_contract": "FROZEN",
+    "network_capability": "NONE",
+    "deterministic_safety": "READY",
+    "states": [
+      "no_material_discontinuity_detected",
+      "discontinuity_detected_reference_available",
+      "discontinuity_detected_reference_unavailable",
+      "coverage_incomplete"
+    ],
+    "price_adjustment_engine": "NONE",
+    "semantic_open_issues": []
+  },
+  "remaining_h3_source_issues": [
+    {
+      "issue_id": "H0-SRC-09",
+      "upstream_status": "deferred_out_of_scope",
+      "h0_e_classification": "open_source_activation_gate",
+      "blocks_contract_freeze": false,
+      "blocks_default_route_activation": true
+    },
+    {
+      "issue_id": "H0-SRC-10",
+      "upstream_status": "deferred_out_of_scope",
+      "h0_e_classification": "open_source_activation_gate",
+      "blocks_contract_freeze": false,
+      "blocks_default_route_activation": true
+    },
+    {
+      "issue_id": "H0-SRC-11",
+      "upstream_status": "deferred_out_of_scope",
+      "h0_e_classification": "open_optional_provider_gate",
+      "blocks_contract_freeze": false,
+      "blocks_optional_provider_activation": true
+    },
+    {
+      "issue_id": "H0-SRC-12",
+      "upstream_status": "deferred_out_of_scope",
+      "h0_e_classification": "open_optional_provider_gate",
+      "blocks_contract_freeze": false,
+      "blocks_optional_provider_activation": true
+    }
+  ],
+  "inherited_h4_coverage_gates": [
+    {
+      "issue_id": "H0-SRC-03",
+      "consequence": "unresolved correction/cancellation linkage may require coverage_incomplete",
+      "blocks_contract_freeze": false
+    },
+    {
+      "issue_id": "H0-SRC-04",
+      "consequence": "optional TWT49U provider contract affects official-reference availability, not event existence",
+      "blocks_contract_freeze": false
+    },
+    {
+      "issue_id": "H0-SRC-05",
+      "consequence": "TWSE capital-reduction manual-only route may prevent complete per-window coverage",
+      "blocks_contract_freeze": false
+    },
+    {
+      "issue_id": "H0-SRC-06",
+      "consequence": "TPEx capital-reduction manual-only route may prevent complete per-window coverage",
+      "blocks_contract_freeze": false
+    },
+    {
+      "issue_id": "H0-SRC-07",
+      "consequence": "TWSE par-value/split/consolidation source gap prevents complete coverage when relevant",
+      "blocks_contract_freeze": false
+    },
+    {
+      "issue_id": "H0-SRC-08",
+      "consequence": "TPEx par-value/split/consolidation source gap prevents complete coverage when relevant",
+      "blocks_contract_freeze": false
+    }
+  ],
+  "contract_freeze_blockers": 0,
+  "h0_g_readiness": "READY_FOR_EXACT_SCHEMA_FREEZE",
+  "mutation_authority": {
+    "production_implementation_authorized": false,
+    "v3_schema_implementation_authorized": false,
+    "runtime_mutation": false,
+    "mcp_mutation": false,
+    "source_activation": false,
+    "persistent_history_store": false
+  },
+  "validation": {
+    "status": "PASS",
+    "h0_a_d_byte_integrity": "PASS",
+    "json_parse": "PASS",
+    "h3_semantics": "PASS",
+    "h4_semantics": "PASS",
+    "scope_drift": "PASS",
+    "git_diff_check": "PASS"
+  }
+}
