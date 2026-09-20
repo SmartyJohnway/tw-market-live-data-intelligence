@@ -1,4 +1,4 @@
-"""Validate the small, current-product surfaces used to enter the V1 repository."""
+"""Validate the small current-product surfaces while preserving V1 history."""
 
 from __future__ import annotations
 
@@ -47,7 +47,7 @@ def required_release_patterns() -> tuple[str, ...]:
             r"productversion\s*=\s*`1\.0\.0`",
             r"v1\.0\.0-rc\.1",
             r"current\s+stable\s+release\s+is[\s\S]{0,180}?v1\.0\.0",
-            r"phase\s+g\s+has\s+not\s+started",
+            r"phase\s+g\s+(?:has\s+not\s+started|g1/g2\s+runtime\s+capabilities\s+have\s+passed\s+bounded\s+controlled-live\s+acceptance)",
         )
     return ()
 

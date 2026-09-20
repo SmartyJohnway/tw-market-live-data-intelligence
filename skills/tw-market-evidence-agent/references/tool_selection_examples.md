@@ -22,7 +22,7 @@ confirmed.
 - **Request Snippet**:
   ```json
   {
-    "schema_version": "unified_market_evidence_request.v1",
+    "schema_version": "unified_market_evidence_request.v2",
     "request_id": "req-tsmc-quote",
     "targets": [
       {"input": "2330", "market_hint": "TWSE", "resolution_requirement": "exact"}
@@ -49,7 +49,7 @@ confirmed.
 - **Request Snippet**:
   ```json
   {
-    "schema_version": "unified_market_evidence_request.v1",
+    "schema_version": "unified_market_evidence_request.v2",
     "request_id": "req-gwc-eod",
     "targets": [
       {"input": "6488", "market_hint": "TPEX", "resolution_requirement": "exact"}
@@ -74,7 +74,7 @@ confirmed.
 - **Request Snippet**:
   ```json
   {
-    "schema_version": "unified_market_evidence_request.v1",
+    "schema_version": "unified_market_evidence_request.v2",
     "request_id": "req-tsmc-perf",
     "targets": [
       {"input": "2330", "market_hint": "TWSE", "resolution_requirement": "exact"}

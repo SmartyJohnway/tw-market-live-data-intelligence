@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "watchlist_evidence_selection_request.v2.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "selected_entry_ids", "temporary_targets", "data_needs", "execution_mode", "response_preferences"],
+  "properties": {
+    "schema_version": {"const": "watchlist_evidence_selection_request.v2"},
+    "expected_watchlist_version": {"type": ["integer", "null"], "minimum": 1},
+    "selected_entry_ids": {
+      "type": "array",
+      "maxItems": 500,
+      "uniqueItems": true,
+      "items": {"type": "string", "format": "uuid"}
+    },
+    "temporary_targets": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["input"],
+        "properties": {
+          "input": {"type": "string", "minLength": 1, "maxLength": 120},
+          "market_hint": {"type": ["string", "null"], "enum": ["TWSE", "TPEX", "TAIFEX", null]},
+          "client_target_reference": {"type": "string", "minLength": 1, "maxLength": 120}
+        }
+      }
+    },
+    "data_needs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 9,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "priority", "parameters"],
+        "properties": {
+          "type": {"enum": ["identity", "current_observation", "official_eod_reference", "recent_performance", "session_status", "source_currentness", "evidence_quality", "material_disclosures", "monthly_revenue"]},
+          "priority": {"enum": ["required", "optional"]},
+          "parameters": {"type": "object"},
+          "client_need_reference": {"type": "string", "maxLength": 120}
+        }
+      }
+    },
+    "execution_mode": {"enum": ["preview", "execute"]},
+    "response_preferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "include_citations": {"type": "boolean"},
+        "include_currentness": {"type": "boolean"},
+        "include_caveats": {"type": "boolean"},
+        "include_audit_reference": {"type": "boolean"}
+      }
+    }
+  }
+}

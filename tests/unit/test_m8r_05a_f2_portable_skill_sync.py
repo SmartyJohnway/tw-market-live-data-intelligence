@@ -5,7 +5,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-CANONICAL_CATALOG = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json"
+CANONICAL_CATALOG = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json"
 PORTABLE_CATALOG = ROOT / "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json"
 PORTABLE_MD = ROOT / "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
 REQUEST_SCHEMA_PATH = ROOT / "schemas/unified_market_evidence_request.v1.schema.json"

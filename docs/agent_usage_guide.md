@@ -54,7 +54,9 @@ network execution confirmation. Never treat one confirmation as another.
 
 ## Request and execution workflow
 
-Author a `unified_market_evidence_request.v1` request from the conversation.
+Author a `unified_market_evidence_request.v2` request from the conversation.
+Request v1 remains accepted for compatibility; V2 is preferred and current
+executions emit Result v2 and Audit Package v2.
 Users may identify a target by code, name, or ISIN. Validate it, inspect the
 preview and capability boundary, and call `market_fetch_evidence` only when the
 request is executable, explicitly authorized, and has `execution_mode:
@@ -92,6 +94,15 @@ with its reason. For source failure, preserve reason and coverage impact; do not
 invent values, hide absent citations, retry automatically, or silently use an
 unofficial fallback. TAIFEX remains provisional/non-executable where the
 capability catalog says so; a capability boundary is not a source outage.
+
+For an eligible TWSE/TPEX company common share, `material_disclosures` returns
+at most 50 items from the latest completed official daily batch. A healthy
+`no_evidence_in_covered_scope` result only describes that covered batch.
+`monthly_revenue` returns the latest available official reporting period in
+TWD, unit thousand; `not_yet_available` retains a null value and never means
+zero. Both use official CSV first with an explicit governed official JSON
+OpenAPI fallback. Initial G1/G2 provide no arbitrary history, realtime
+research, or `financial_summary` execution.
 
 ## Installation-local Security Master
 

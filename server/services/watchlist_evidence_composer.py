@@ -23,8 +23,19 @@ from server.services.unified_mode_a import validate_mode_a_request
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_ROOT = REPO_ROOT / "docs" / "contracts" / "schemas"
-REQUEST_SCHEMA_PATH = REPO_ROOT / "schemas" / "unified_market_evidence_request.v1.schema.json"
-CATALOG_PATH = REPO_ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v1.json"
+REQUEST_SCHEMA_PATHS = {
+    "watchlist_evidence_selection_request.v1": REPO_ROOT / "schemas" / "unified_market_evidence_request.v1.schema.json",
+    "watchlist_evidence_selection_request.v2": REPO_ROOT / "schemas" / "unified_market_evidence_request.v2.schema.json",
+}
+SELECTION_SCHEMA_PATHS = {
+    "watchlist_evidence_selection_request.v1": "watchlist_evidence_selection_request.v1.schema.json",
+    "watchlist_evidence_selection_request.v2": "watchlist_evidence_selection_request.v2.schema.json",
+}
+OUTPUT_REQUEST_VERSIONS = {
+    "watchlist_evidence_selection_request.v1": "unified_market_evidence_request.v1",
+    "watchlist_evidence_selection_request.v2": "unified_market_evidence_request.v2",
+}
+CATALOG_PATH = REPO_ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v2.json"
 SELECTION_DIRECTORY = "evidence_selections"
 
 
@@ -153,7 +164,14 @@ class WatchlistEvidenceComposer:
         return selected, temporary
 
     def compose(self, payload: dict[str, Any], *, watchlist_id: str | None = None) -> dict[str, Any]:
-        _validate(payload, "watchlist_evidence_selection_request.v1.schema.json")
+        selection_version = payload.get("schema_version")
+        selection_schema = SELECTION_SCHEMA_PATHS.get(selection_version)
+        if selection_schema is None:
+            raise WatchlistEvidenceCompositionError(
+                "WATCHLIST_SELECTION_SCHEMA_INVALID",
+                {"schema_version": selection_version},
+            )
+        _validate(payload, selection_schema)
         if watchlist_id is None and payload.get("expected_watchlist_version") is not None:
             raise WatchlistEvidenceCompositionError("WATCHLIST_SELECTION_SCHEMA_INVALID")
         service = self.store.identity_service_for_read()
@@ -258,7 +276,7 @@ class WatchlistEvidenceComposer:
             }
 
         request = {
-            "schema_version": "unified_market_evidence_request.v1",
+            "schema_version": OUTPUT_REQUEST_VERSIONS[selection_version],
             "request_id": f"m8r10-workbench-{uuid.uuid4()}",
             "targets": [{
                 "input": item["instrument_id"],
@@ -270,7 +288,7 @@ class WatchlistEvidenceComposer:
             "execution_mode": payload["execution_mode"],
             "response_preferences": copy.deepcopy(payload["response_preferences"]),
         }
-        request_schema = json.loads(REQUEST_SCHEMA_PATH.read_text(encoding="utf-8"))
+        request_schema = json.loads(REQUEST_SCHEMA_PATHS[selection_version].read_text(encoding="utf-8"))
         errors = list(jsonschema.Draft7Validator(request_schema).iter_errors(request))
         if errors:
             raise WatchlistEvidenceCompositionError("UNIFIED_REQUEST_SCHEMA_INVALID", {"message": errors[0].message})

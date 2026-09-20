@@ -6,12 +6,16 @@ This document defines the timing taxonomy, source authority rules, and calculati
 
 ## 1. Timing Taxonomy
 
-Every piece of evidence returned in the `unified_market_evidence_result.v1` envelope carries a specific `timing_class` that governs its freshness and description semantics:
+Current executions return `unified_market_evidence_result.v2`; historical V1
+results retain their V1 semantics. Evidence timing fields govern freshness and
+description semantics:
 
 - **`liveish_intraday_snapshot`**: Current intraday quote or state. AI must describe this in present tense but disclose that it is **not guaranteed to be real-time zero-latency data**.
 - **`official_eod`**: Official End-of-Day cash-market OHLCV completed session metrics. AI must describe this in past tense as a completed session.
 - **`official_statistics_eod`**: Official EOD derivatives reports, large-trader open interest, or statistical aggregates. AI must describe this in past tense.
 - **`request_session_context`**: Structural clock and calendar state used to assert currentness.
+- **`official_daily_batch`**: Latest completed official material-disclosure batch. Publication time, fact date, report date, and retrieval time are distinct.
+- **`official_monthly_reporting_period`**: Latest available official monthly revenue period. Missing evidence is not a zero amount.
 
 ---
 

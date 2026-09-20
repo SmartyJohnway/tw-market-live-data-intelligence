@@ -246,7 +246,7 @@
         });
         if (!needs.length) { setText(byId('composition-summary'), 'Select at least one evidence need.'); return; }
         const payload = {
-            schema_version: 'watchlist_evidence_selection_request.v1',
+            schema_version: 'watchlist_evidence_selection_request.v2',
             expected_watchlist_version: current ? current.current_version : null,
             selected_entry_ids: selectedIds,
             temporary_targets: temporaryTargets,
