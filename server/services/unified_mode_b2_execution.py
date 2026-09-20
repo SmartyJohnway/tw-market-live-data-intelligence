@@ -14,12 +14,13 @@ from server.services.unified_mode_b2 import ModeB2Error
 ROOT = Path(__file__).resolve().parents[2]
 WRAPPER = ROOT / "scripts" / "m8r_06_03_execute_once.py"
 FIXED_OVERHEAD_SECONDS = 10
-MAX_CHILD_TIMEOUT_SECONDS = 70
+MAX_CHILD_TIMEOUT_SECONDS = 130
 
 
 def _timeout_seconds(payload: dict[str, Any]) -> int:
-    # Four committed routes permit at most 15 seconds each; no browser value is used.
-    return min(MAX_CHILD_TIMEOUT_SECONDS, (4 * 15) + FIXED_OVERHEAD_SECONDS)
+    # Eight committed market/research route groups permit at most 15 seconds
+    # each; no browser value is used to extend this bounded parent deadline.
+    return min(MAX_CHILD_TIMEOUT_SECONDS, (8 * 15) + FIXED_OVERHEAD_SECONDS)
 
 
 def execute_mode_b2_once(payload: dict[str, Any]) -> dict[str, Any]:

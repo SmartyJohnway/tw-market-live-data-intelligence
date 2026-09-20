@@ -36,9 +36,9 @@ class _Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         type(self).calls.append(("GET", self.path, None))
         if self.path == "/api/unified/capabilities":
-            self._json(200, {"service_contract_version": "unified_market_evidence_local_service.v1", "capabilities": []})
+            self._json(200, {"service_contract_version": "unified_market_evidence_local_service.v2", "capabilities": []})
         elif self.path == f"/api/unified/result-package/{CONTROL_ID}/handoff":
-            self._json(200, {"service_contract_version": "unified_market_evidence_local_service.v1", "ai_ready_markdown": "# AI-ready\n"})
+            self._json(200, {"service_contract_version": "unified_market_evidence_local_service.v2", "ai_ready_markdown": "# AI-ready\n"})
         else:
             self._json(404, {"error": "not_found", "trace_id": "test"})
 
@@ -115,7 +115,7 @@ def test_real_stdio_to_actual_loopback_http_service():
                         unknown = await session.call_tool("market_execute_request", {"confirm_execution": True})
                         assert unknown.isError is True
                 stderr.seek(0)
-                assert "Starting unified_market_evidence_mcp_adapter.v1 over stdio" in stderr.read()
+                assert "Starting unified_market_evidence_mcp_adapter.v2 over stdio" in stderr.read()
         asyncio.run(run())
     assert _Handler.calls == [
         ("GET", "/api/unified/capabilities", None),

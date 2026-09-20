@@ -1,7 +1,7 @@
 {
   "schema_version": "m8r_05b_capability_to_executor_routing_matrix.v2",
   "authoritative_capability_catalog": "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json",
-  "routing_scope": "dormant Phase G route authority; no runtime execution or production activation is conferred before PR-D/D1",
+  "routing_scope": "current Phase G route authority activated by PR-D/D1",
   "routes": [
     {
       "capability_id": "identity",
@@ -251,7 +251,7 @@
     },
     {
       "capability_id": "material_disclosures",
-      "capability_status_source": "catalog v2 support_status=runtime_executable; source family is planned_phase_g and route remains dormant",
+      "capability_status_source": "catalog v2 support_status=runtime_executable; activated by PR-D/D1",
       "supported_markets": [
         "TWSE",
         "TPEX"
@@ -265,22 +265,22 @@
       ],
       "target_required": true,
       "time_scope_required": false,
-      "runtime_executable": false,
+      "runtime_executable": true,
       "provisional": false,
       "candidate_executor_ids": [
         "phase_g_official_research_executor"
       ],
       "selected_executor_id": "phase_g_official_research_executor",
-      "routing_status": "plan_only",
+      "routing_status": "resolved",
       "batching_scope": "same_source",
       "approval_required": true,
-      "network_required": false,
-      "estimated_operation_rule": "one logical operation per eligible canonical target; same-market source-compatible targets share the dormant source compatibility key after activation",
+      "network_required": true,
+      "estimated_operation_rule": "one logical operation per eligible canonical target; same-market source-compatible targets share one bounded official source acquisition",
       "parameter_mapping": {},
       "output_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
       "known_limitations": [
-        "dormant route only; PR-B owns executor and source normalization",
-        "no production research network execution before PR-D/D1"
+        "latest completed official daily batch only; historical lookup is unsupported",
+        "exact daily refresh clock is not contract authority"
       ],
       "evidence_paths": [
         "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json"
@@ -296,7 +296,7 @@
     },
     {
       "capability_id": "monthly_revenue",
-      "capability_status_source": "catalog v2 support_status=runtime_executable; source family is planned_phase_g and route remains dormant",
+      "capability_status_source": "catalog v2 support_status=runtime_executable; activated by PR-D/D1",
       "supported_markets": [
         "TWSE",
         "TPEX"
@@ -310,22 +310,21 @@
       ],
       "target_required": true,
       "time_scope_required": false,
-      "runtime_executable": false,
+      "runtime_executable": true,
       "provisional": false,
       "candidate_executor_ids": [
         "phase_g_official_research_executor"
       ],
       "selected_executor_id": "phase_g_official_research_executor",
-      "routing_status": "plan_only",
+      "routing_status": "resolved",
       "batching_scope": "same_source",
       "approval_required": true,
-      "network_required": false,
-      "estimated_operation_rule": "one logical operation per eligible canonical target; same-market source-compatible targets share the dormant source compatibility key after activation",
+      "network_required": true,
+      "estimated_operation_rule": "one logical operation per eligible canonical target; same-market source-compatible targets share one bounded official source acquisition",
       "parameter_mapping": {},
       "output_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
       "known_limitations": [
-        "dormant route only; PR-B owns executor and source normalization",
-        "no production research network execution before PR-D/D1"
+        "latest available official reporting period only; arbitrary history is unsupported"
       ],
       "evidence_paths": [
         "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json"
@@ -345,5 +344,5 @@
     "capability_requires_execution_approval": "Mirrors the authoritative catalog per capability. It describes whether execution of that capability requires approval, not whether a final multi-operation orchestration package needs owner approval.",
     "package_approval_policy": "Describes package-level inheritance/composition. A derived non-executing capability may inherit an upstream approved package without itself requiring execution approval."
   },
-  "activation_status": "dormant_until_phase_g_pr_d_d1"
+  "activation_status": "active_phase_g_pr_d_d1"
 }

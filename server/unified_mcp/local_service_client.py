@@ -15,9 +15,9 @@ DEFAULT_SERVICE_URL = "http://127.0.0.1:8000"
 MAX_REQUEST_BYTES = 1 * 1024 * 1024
 MAX_RESPONSE_BYTES = 8 * 1024 * 1024
 TIMEOUT_SECONDS = 15.0
-# Existing execution children are bounded at 70 seconds; this adds only bounded
+# Existing execution children are bounded at 130 seconds; this adds only bounded
 # request/planning/Mode C overhead for the one action route.
-ACTION_TIMEOUT_SECONDS = 85.0
+ACTION_TIMEOUT_SECONDS = 145.0
 
 _LOOPBACK_HOSTS = frozenset({"127.0.0.1", "localhost", "::1"})
 _CONTROL_ID = re.compile(CONTROL_PACKAGE_PATTERN)

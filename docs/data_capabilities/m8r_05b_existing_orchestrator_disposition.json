@@ -388,6 +388,32 @@
         "tests/unit/test_m8r_eod_expected_trade_date.py",
         "docs/acceptance_runs/M8R_03E_EOD_EXPECTED_TRADE_DATE_AND_SESSION_STATUS.json"
       ]
+    },
+    {
+      "surface_id": "phase_g_official_research_executor",
+      "path": "scripts/phase_g/research_executor.py",
+      "surface_type": "controlled_research_executor",
+      "current_status": "production-capable official G1/G2 executor activated by PR-D/D1",
+      "network_behavior": "bounded official CSV primary with governed JSON fallback only after plan-bound authorization",
+      "input_contract": "05B execution request v1 plus approved market and canonical target identifiers",
+      "output_contract": "phase_g_material_disclosure_operation_evidence.v1 or phase_g_monthly_revenue_operation_evidence.v1",
+      "approval_boundary": "05B plan, authorization, single-use claim, and network confirmation",
+      "authorization_binding": "operation, route, market, target, executor, and evidence contract",
+      "single_use_enforced": true,
+      "supported_markets": ["TWSE", "TPEX"],
+      "supported_security_types": ["equity"],
+      "supported_capabilities": ["material_disclosures", "monthly_revenue"],
+      "batching_supported": true,
+      "deterministic": false,
+      "reusable_for_05b": true,
+      "reuse_mode": "adapter_required",
+      "disposition": "adapter_required",
+      "blocking_gaps": [],
+      "evidence_paths": [
+        "scripts/phase_g/research_executor.py",
+        "scripts/phase_g/mops_material_disclosures.py",
+        "scripts/phase_g/mops_monthly_revenue.py"
+      ]
     }
   ]
 }

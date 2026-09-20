@@ -22,11 +22,21 @@ def test_capability_contract_is_deterministic_and_preserves_dispositions():
     assert first.status_code == second.status_code == 200
     assert first.json() == second.json()
     payload = first.json()
-    assert payload["service_contract_version"] == "unified_market_evidence_local_service.v1"
+    assert payload["service_contract_version"] == "unified_market_evidence_local_service.v2"
+    assert payload["accepted_request_schema_versions"] == [
+        "unified_market_evidence_request.v1",
+        "unified_market_evidence_request.v2",
+    ]
+    assert payload["preferred_request_schema_version"] == "unified_market_evidence_request.v2"
+    assert payload["emitted_result_schema_version"] == "unified_market_evidence_result.v2"
     assert _market(_capability(payload, "current_observation"), "TWSE")["disposition"] == "executable"
     assert _market(_capability(payload, "current_observation"), "TPEX")["disposition"] == "executable"
     assert _market(_capability(payload, "official_eod_reference"), "TWSE")["disposition"] == "executable"
     assert _market(_capability(payload, "official_eod_reference"), "TPEX")["disposition"] == "executable"
+    assert _market(_capability(payload, "material_disclosures"), "TWSE")["disposition"] == "executable"
+    assert _market(_capability(payload, "material_disclosures"), "TPEX")["disposition"] == "executable"
+    assert _market(_capability(payload, "monthly_revenue"), "TWSE")["disposition"] == "executable"
+    assert _market(_capability(payload, "monthly_revenue"), "TPEX")["disposition"] == "executable"
     assert _market(_capability(payload, "official_eod_reference"), "TAIFEX")["disposition"] == "provisional"
     assert _capability(payload, "recent_performance")["routing_disposition"] == "plan_only"
     session = _capability(payload, "session_status")
@@ -100,7 +110,7 @@ def test_routing_authority_is_loaded_once_per_capability_response(monkeypatch):
 def test_handoff_route_is_a_thin_bounded_transport(monkeypatch):
     from server import unified_workbench_router
     expected = {
-        "service_contract_version": "unified_market_evidence_local_service.v1",
+        "service_contract_version": "unified_market_evidence_local_service.v2",
         "execution_outcome": "succeeded",
         "additional_market_network_executed": False,
     }

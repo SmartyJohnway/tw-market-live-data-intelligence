@@ -206,10 +206,8 @@ def test_target_limit_is_resource_rejection_and_invalid_request_has_no_preview()
     assert limit_result["preview"]["status"] == "rejected_resource_bound"
 
     invalid_req = {"schema_version": "wrong", "request_id": "bad"}
-    invalid_result = package(invalid_req, fixture_validation(invalid_req))
-    assert invalid_result["validation"]["request_schema_status"] == "invalid"
-    assert invalid_result["preview"] is None
-    assert invalid_result["orchestration_plan"] is None
+    with pytest.raises(ValueError, match="unsupported_request_schema_version"):
+        fixture_validation(invalid_req)
 
 
 def test_actual_f3_duplicate_target_is_non_plannable():

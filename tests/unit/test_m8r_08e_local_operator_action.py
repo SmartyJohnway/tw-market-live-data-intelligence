@@ -29,14 +29,14 @@ def test_execute_composes_existing_ticket_execution_and_mode_c(monkeypatch):
         "aggregation_status": "succeeded", "external_market_network_attempted": True,
         "external_market_network_executed": True,
     })
-    monkeypatch.setattr(action, "build_mode_c_ai_handoff", lambda control: calls.append(("mode_c", control)) or {
+    monkeypatch.setattr(action, "build_mode_c_ai_handoff", lambda control, *, output_schema_version: calls.append(("mode_c", control, output_schema_version)) or {
         "canonical_result": {"result_hash": "r"}, "ai_ready_markdown": "# governed",
         "result_hash": "r", "audit_reference": "audit/x.json", "additional_market_network_executed": False,
     })
     result = action.fetch_market_evidence({"request": _request()})
     assert calls == [
         ("ticket", _request()), ("execute", "umea-v1-0123456789abcdef0123", True),
-        ("mode_c", "umea-v1-0123456789abcdef0123"),
+        ("mode_c", "umea-v1-0123456789abcdef0123", "v2"),
     ]
     assert result["market_network_executed"] is True
     assert result["additional_market_network_executed"] is False

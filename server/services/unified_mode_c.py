@@ -142,7 +142,7 @@ def _expected_outputs(
     inputs: Any,
     projector_version: str = CURRENT_PROJECTOR_VERSION,
     selection_provenance: dict[str, Any] | None = None,
-    output_schema_version: str = "unified_market_evidence_result.v1",
+    output_schema_version: str = "unified_market_evidence_result.v2",
 ) -> tuple[dict[str, Any], dict[str, Any], str]:
     """Rebuild the complete 05C projection from verified predecessors only."""
     try:
@@ -202,7 +202,7 @@ def _read_verified_outputs(
 
 def build_mode_c_result_package(
     payload: dict[str, Any], *,
-    output_schema_version: str = "unified_market_evidence_result.v1",
+    output_schema_version: str = "unified_market_evidence_result.v2",
 ) -> dict[str, Any]:
     if not isinstance(payload, dict) or set(payload) != {"control_package_id"}:
         raise ModeCError("invalid_api_envelope")
@@ -252,7 +252,7 @@ def build_mode_c_result_package(
     return {"result_id": result["result_id"], "result_hash": result["result_hash"], "result_status": result["status"], "request_summary": result["request_summary"], "targets": result["targets"], "request_caveats": result.get("request_caveats", []), "citation_references": [c for t in result["targets"] for c in t.get("citations", [])], "ai_ready_markdown": markdown, "canonical_result": result, "canonical_result_reference": result_rel, "audit_package_id": audit["audit_package_id"], "audit_reference": audit_rel, "selection_provenance_identity": audit.get("selection_provenance_identity"), "materialization": materialization, "external_market_network_executed": False, "output_schema_version": output_schema_version}
 
 
-def read_mode_c_audit(control_package_id: str, output_schema_version: str = "unified_market_evidence_result.v1") -> dict[str, Any]:
+def read_mode_c_audit(control_package_id: str, output_schema_version: str = "unified_market_evidence_result.v2") -> dict[str, Any]:
     """Return a verified persisted audit only after the same post-execution checks."""
     package_result = build_mode_c_result_package(
         {"control_package_id": control_package_id}, output_schema_version=output_schema_version,
@@ -261,7 +261,7 @@ def read_mode_c_audit(control_package_id: str, output_schema_version: str = "uni
     return _read(package / _OUTPUT_PATHS[package_result["output_schema_version"]][2])
 
 
-def build_mode_c_ai_handoff(control_package_id: str, output_schema_version: str = "unified_market_evidence_result.v1") -> dict[str, Any]:
+def build_mode_c_ai_handoff(control_package_id: str, output_schema_version: str = "unified_market_evidence_result.v2") -> dict[str, Any]:
     """Return only verified, AI-safe Mode C material for a finalized package."""
     result_package = build_mode_c_result_package(
         {"control_package_id": control_package_id}, output_schema_version=output_schema_version,
@@ -285,7 +285,7 @@ def build_mode_c_ai_handoff(control_package_id: str, output_schema_version: str 
     canonical_result = result_package["canonical_result"]
     request_summary = canonical_result.get("request_summary", {})
     return {
-        "service_contract_version": "unified_market_evidence_local_service.v1",
+        "service_contract_version": "unified_market_evidence_local_service.v2",
         "control_package_id": control_package_id,
         "result_id": result_package["result_id"],
         "result_hash": result_package["result_hash"],

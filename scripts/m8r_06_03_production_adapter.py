@@ -8,8 +8,12 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.request import Request, urlopen
+
+from jsonschema import Draft7Validator, FormatChecker
 
 from scripts.m5k_common import execute_live_observation
 from scripts.m8a_tpex_official_eod_adapter import execute_tpex_official_eod_adapter
@@ -22,6 +26,8 @@ from scripts.m8r_05b_03.dispatch import (
 from scripts.m8r_05b_03.errors import OrchestrationError
 from scripts.m8r_05b_03.registry import ExecutorMetadataRegistry
 from scripts.m8r_filesystem_safety import atomic_write_bytes
+from scripts.phase_g.mops_material_disclosures import execute as execute_material_disclosures
+from scripts.phase_g.mops_monthly_revenue import execute as execute_monthly_revenue
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,7 +37,11 @@ ARTIFACT_SCHEMA_VERSION = "m8r_06_03_operation_evidence.v1"
 EVIDENCE_CONTRACTS = {
     "current_observation": "bounded normalized source observation with source health/currentness",
     "official_eod_reference": "official EOD reference plus timing/currentness context",
+    "material_disclosures": "phase_g_material_disclosure_operation_evidence.v1",
+    "monthly_revenue": "phase_g_monthly_revenue_operation_evidence.v1",
 }
+RESEARCH_EXECUTOR_ID = "phase_g_official_research_executor"
+RESEARCH_CAPABILITIES = frozenset({"material_disclosures", "monthly_revenue"})
 
 
 def load_production_executor_metadata() -> dict[str, Any]:
@@ -98,6 +108,108 @@ def _write_safe_evidence(
         "byte_size": len(content),
         "item_count": len(records),
     }
+
+
+def _write_research_evidence(
+    request: dict[str, Any], context: DispatchRuntimeContext, evidence: dict[str, Any]
+) -> dict[str, Any]:
+    contract = EVIDENCE_CONTRACTS[request["capability_id"]]
+    schema_path = ROOT / "schemas" / f"{contract}.schema.json"
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    errors = list(Draft7Validator(schema, format_checker=FormatChecker()).iter_errors(evidence))
+    if errors:
+        raise OrchestrationError("research_evidence_schema_invalid")
+    content = (json.dumps(evidence, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+    relative_path = f"evidence/{request['operation_id']}.json"
+    atomic_write_bytes(context.governed_output_root, relative_path, content)
+    item_count = len(evidence.get("items", [])) if request["capability_id"] == "material_disclosures" else 1
+    return {
+        "relative_path": relative_path,
+        "sha256": hashlib.sha256(content).hexdigest(),
+        "schema_version": contract,
+        "byte_size": len(content),
+        "item_count": item_count,
+    }
+
+
+def _fetch_official_payload(url: str, *, timeout: int) -> bytes:
+    request = Request(
+        url,
+        headers={
+            "Accept": "text/csv, application/json",
+            "User-Agent": "tw-market-live-data-intelligence/1.0",
+        },
+    )
+    with urlopen(request, timeout=timeout) as response:
+        return response.read()
+
+
+def _research_targets(requests: tuple[dict[str, Any], ...]) -> list[dict[str, str]]:
+    targets: list[dict[str, str]] = []
+    for request in requests:
+        identifiers = request.get("approved_security_identifiers", [])
+        if len(identifiers) != 1:
+            raise OrchestrationError("approved_target_count_invalid")
+        try:
+            market, security_code = identifiers[0].split(":", 1)
+        except ValueError:
+            raise OrchestrationError("approved_target_invalid") from None
+        if market != request.get("market"):
+            raise OrchestrationError("approved_target_market_mismatch")
+        targets.append({
+            "canonical_target_id": identifiers[0],
+            "market": market,
+            "security_code": security_code,
+        })
+    return targets
+
+
+def _research_batch_operation_adapter(
+    requests: tuple[dict[str, Any], ...], context: DispatchRuntimeContext
+) -> list[dict[str, Any]]:
+    _require_approved_execution(requests, context)
+    first = requests[0]
+    if first.get("executor_id") != RESEARCH_EXECUTOR_ID:
+        raise OrchestrationError("executor_mismatch")
+    binding = tuple(first.get(field) for field in ("batch_group_id", "executor_id", "capability_id", "market"))
+    if any(tuple(item.get(field) for field in ("batch_group_id", "executor_id", "capability_id", "market")) != binding for item in requests):
+        raise OrchestrationError("batch_dispatch_binding_mismatch")
+    capability = first["capability_id"]
+    if capability not in RESEARCH_CAPABILITIES:
+        raise OrchestrationError("unsupported_capability")
+    targets = _research_targets(requests)
+    observed_at = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+    timeout = first["timeout_seconds"]
+    execute = execute_material_disclosures if capability == "material_disclosures" else execute_monthly_revenue
+    evidence_items = execute(
+        targets,
+        first["market"],
+        observed_at=observed_at,
+        csv_fetcher=lambda url: _fetch_official_payload(url, timeout=timeout),
+        json_fetcher=lambda url: _fetch_official_payload(url, timeout=timeout),
+    )
+    if len(evidence_items) != len(requests):
+        raise OrchestrationError("research_evidence_count_mismatch")
+    outcomes: list[dict[str, Any]] = []
+    for request, evidence in zip(requests, evidence_items, strict=True):
+        artifact = _write_research_evidence(request, context, evidence)
+        evidence_status = evidence["status"]
+        succeeded = evidence_status in {
+            "available", "partial", "no_evidence_in_covered_scope", "not_yet_available"
+        }
+        outcome = _result_base(
+            request,
+            status="succeeded" if succeeded else "failed",
+            error_code=None if succeeded else evidence_status,
+        )
+        result_count = len(evidence.get("items", [])) if capability == "material_disclosures" else int(evidence.get("value") is not None)
+        outcome.update(
+            result_item_count=result_count,
+            evidence_artifacts=[artifact],
+            warnings=list(evidence.get("caveats", [])),
+        )
+        outcomes.append(outcome)
+    return outcomes
 
 
 def _current_observation(request: dict[str, Any], context: DispatchRuntimeContext) -> dict[str, Any]:
@@ -175,6 +287,8 @@ def _official_eod(request: dict[str, Any], context: DispatchRuntimeContext) -> d
 
 def production_operation_adapter(request: dict[str, Any], context: DispatchRuntimeContext) -> dict[str, Any]:
     """Fixed adapter dispatch; no browser-controlled module, path, or URL."""
+    if request.get("executor_id") == RESEARCH_EXECUTOR_ID:
+        return _research_batch_operation_adapter((request,), context)[0]
     if request.get("executor_id") != EXECUTOR_ID:
         raise OrchestrationError("executor_mismatch")
     capability = request.get("capability_id")
@@ -191,6 +305,8 @@ def production_batch_operation_adapter(requests: tuple[dict[str, Any], ...], con
         raise OrchestrationError("batch_dispatch_binding_mismatch")
     _require_approved_execution(requests, context)
     first = requests[0]
+    if first.get("executor_id") == RESEARCH_EXECUTOR_ID:
+        return _research_batch_operation_adapter(requests, context)
     if first.get("executor_id") != EXECUTOR_ID:
         raise OrchestrationError("executor_mismatch")
     fields = ("batch_group_id", "executor_id", "capability_id", "market")
@@ -278,8 +394,18 @@ def production_batch_operation_adapter(requests: tuple[dict[str, Any], ...], con
 
 
 def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
-    """Materialize exactly the four committed, route-aware production routes."""
+    """Materialize the four legacy and four Phase G route-aware production routes."""
     metadata = ExecutorMetadataRegistry.from_json(load_production_executor_metadata())
+    routes = (
+        (EXECUTOR_ID, "current_observation", "TWSE"),
+        (EXECUTOR_ID, "current_observation", "TPEX"),
+        (EXECUTOR_ID, "official_eod_reference", "TWSE"),
+        (EXECUTOR_ID, "official_eod_reference", "TPEX"),
+        (RESEARCH_EXECUTOR_ID, "material_disclosures", "TWSE"),
+        (RESEARCH_EXECUTOR_ID, "material_disclosures", "TPEX"),
+        (RESEARCH_EXECUTOR_ID, "monthly_revenue", "TWSE"),
+        (RESEARCH_EXECUTOR_ID, "monthly_revenue", "TPEX"),
+    )
     registrations = [
         RuntimeAdapterRegistration(
             executor_id=entry.executor_id,
@@ -296,11 +422,6 @@ def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
             batch_adapter=production_batch_operation_adapter,
             fake_adapter=False,
         )
-        for entry in (metadata.get_route(EXECUTOR_ID, capability, market) for capability, market in (
-            ("current_observation", "TWSE"),
-            ("current_observation", "TPEX"),
-            ("official_eod_reference", "TWSE"),
-            ("official_eod_reference", "TPEX"),
-        ))
+        for entry in (metadata.get_route(executor, capability, market) for executor, capability, market in routes)
     ]
     return RuntimeAdapterRegistry(registrations)

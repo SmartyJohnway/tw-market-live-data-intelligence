@@ -8,8 +8,14 @@ from scripts.m8r_06_01c2_mode_a_security_master_loader import (
 )
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-CANONICAL_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_request.v1.schema.json"
-CANONICAL_CATALOG_PATH = ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v1.json"
+REQUEST_SCHEMA_PATHS = {
+    "unified_market_evidence_request.v1": ROOT / "schemas" / "unified_market_evidence_request.v1.schema.json",
+    "unified_market_evidence_request.v2": ROOT / "schemas" / "unified_market_evidence_request.v2.schema.json",
+}
+# Backward-compatible preload seam now points at the preferred current
+# Request authority; request validation itself still dispatches explicitly.
+CANONICAL_SCHEMA_PATH = REQUEST_SCHEMA_PATHS["unified_market_evidence_request.v2"]
+CANONICAL_CATALOG_PATH = ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v2.json"
 
 # The default loader interprets this historical path as the active-release
 # selector.  Tests may still inject an explicit path through this seam.
@@ -31,7 +37,11 @@ def validate_mode_a_request(request: dict, allow_fixture_snapshot: bool = False)
     Enforces offline execution and deterministic outputs.
     """
     try:
-        request_schema = _load_json(CANONICAL_SCHEMA_PATH)
+        schema_version = request.get("schema_version") if isinstance(request, dict) else None
+        request_schema_path = REQUEST_SCHEMA_PATHS.get(schema_version)
+        if request_schema_path is None:
+            raise ValueError("unsupported_request_schema_version")
+        request_schema = _load_json(request_schema_path)
         capability_catalog = _load_json(CANONICAL_CATALOG_PATH)
         
         if allow_fixture_snapshot:

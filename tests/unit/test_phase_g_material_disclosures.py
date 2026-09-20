@@ -1,3 +1,4 @@
+import hashlib
 import json
 from pathlib import Path
 import jsonschema
@@ -5,6 +6,19 @@ from scripts.phase_g.mops_material_disclosures import execute
 
 TARGET={"canonical_target_id":"TWSE:2330","market":"TWSE","security_code":"2330","security_name_zh":"台積電"}
 CSV="出表日期,公司代號,公司名稱,發言日期,發言時間,主旨,說明\n1150916,2330,台積電,1150915,65728,測試,內容\n"
+
+def test_e08_identical_normalized_input_has_stable_evidence_hash():
+    def run_once():
+        return execute(
+            [TARGET], "TWSE", observed_at="2026-09-16T00:00:00Z",
+            csv_fetcher=lambda _: CSV, json_fetcher=lambda _: "[]",
+        )[0]
+
+    first, second = run_once(), run_once()
+    first_bytes = json.dumps(first, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    second_bytes = json.dumps(second, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    assert first == second
+    assert hashlib.sha256(first_bytes).hexdigest() == hashlib.sha256(second_bytes).hexdigest()
 
 def test_c01_c07_csv_exact_binding_and_five_digit_time():
     result=execute([TARGET],"TWSE",observed_at="2026-09-16T00:00:00Z",csv_fetcher=lambda _:CSV,json_fetcher=lambda _: (_ for _ in ()).throw(AssertionError()))[0]

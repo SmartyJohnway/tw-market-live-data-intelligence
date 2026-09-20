@@ -10,9 +10,9 @@ from scripts.m8r_05b_03.errors import OrchestrationError
 
 
 ROOT = Path(__file__).resolve().parents[2]
-CATALOG_PATH = ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v1.json"
-ROUTING_PATH = ROOT / "docs" / "data_capabilities" / "m8r_05b_capability_to_executor_routing_matrix.json"
-SERVICE_CONTRACT_VERSION = "unified_market_evidence_local_service.v1"
+CATALOG_PATH = ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v2.json"
+ROUTING_PATH = ROOT / "docs" / "data_capabilities" / "m8r_05b_capability_to_executor_routing_matrix.v2.json"
+SERVICE_CONTRACT_VERSION = "unified_market_evidence_local_service.v2"
 
 
 class LocalServiceError(Exception):
@@ -118,7 +118,11 @@ def describe_capabilities() -> dict[str, Any]:
             "batching_scope": route.get("batching_scope"),
             "supported_security_types": route.get("supported_security_types", []),
             "possible_timing_classes": capability.get("possible_timing_classes", []),
+            "possible_fallbacks": capability.get("possible_fallbacks", []),
             "known_limitations": capability.get("known_limitations", []),
+            "instrument_scope": capability.get("instrument_scope"),
+            "coverage_modes": capability.get("coverage_modes", []),
+            "historical_lookup_supported": capability.get("historical_lookup_supported"),
             "blocking_reasons": route.get("blocking_reasons", []),
             "markets": market_entries,
         })
@@ -126,5 +130,8 @@ def describe_capabilities() -> dict[str, Any]:
         "service_contract_version": SERVICE_CONTRACT_VERSION,
         "capability_catalog_schema_version": catalog.get("schema_version"),
         "routing_matrix_schema_version": routing.get("schema_version"),
+        "accepted_request_schema_versions": catalog.get("contract_versions", {}).get("accepted_request_schema_versions", []),
+        "preferred_request_schema_version": catalog.get("contract_versions", {}).get("preferred_request_schema_version"),
+        "emitted_result_schema_version": catalog.get("contract_versions", {}).get("emitted_result_schema_version"),
         "capabilities": capabilities,
     }

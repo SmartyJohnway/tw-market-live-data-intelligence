@@ -16,8 +16,8 @@ from scripts.m8r_05b_01.models import PLANNER_VERSION, PlanningError
 from scripts.m8r_05b_01.planner import HANDOFF_VERSION, ROUTING_VERSION, build_plan
 
 ROOT = Path(__file__).resolve().parents[1]
-CAPABILITY_CATALOG_PATH = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json"
-ROUTING_MATRIX_PATH = ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.json"
+CAPABILITY_CATALOG_PATH = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json"
+ROUTING_MATRIX_PATH = ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v2.json"
 HANDOFF_CONTRACT_PATH = ROOT / "docs/data_capabilities/m8r_05b_orchestration_handoff_contract.json"
 EXECUTOR_DISPOSITION_PATH = ROOT / "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json"
 PREVIEW_SCHEMA_PATH = ROOT / "schemas/unified_market_evidence_preview_response.v1.schema.json"
@@ -72,7 +72,7 @@ def build_planning_bindings(
             "security_master_artifact_hashes": [pointer["release_index_sha256"], pointer["release_manifest_sha256"]],
             "capability_catalog_hash": sha256_json(capability_catalog),
             "planner_version": PLANNER_VERSION,
-            "routing_matrix_version": ROUTING_VERSION,
+            "routing_matrix_version": routing_matrix["schema_version"],
             "routing_matrix_hash": sha256_json(routing_matrix),
             "handoff_contract_version": HANDOFF_VERSION,
             "handoff_contract_hash": sha256_json(handoff_contract),
@@ -91,7 +91,7 @@ def build_planning_bindings(
         ],
         "capability_catalog_hash": sha256_json(capability_catalog),
         "planner_version": PLANNER_VERSION,
-        "routing_matrix_version": ROUTING_VERSION,
+        "routing_matrix_version": routing_matrix["schema_version"],
         "routing_matrix_hash": sha256_json(routing_matrix),
         "handoff_contract_version": HANDOFF_VERSION,
         "handoff_contract_hash": sha256_json(handoff_contract),

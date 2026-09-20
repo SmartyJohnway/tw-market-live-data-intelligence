@@ -12,15 +12,15 @@ from scripts.m8r_06_03_production_adapter import (
 )
 
 
-def _request(capability_id: str, market: str) -> dict:
+def _request(capability_id: str, market: str, *, executor_id: str = "m8r_03d_watchlist_controlled_executor_adapter", code: str = "2330") -> dict:
     return {
         "operation_id": "umeop-op-v1-00000000000000000000",
         "execution_request_id": "umereq-v1-00000000000000000000",
         "execution_request_hash": "0" * 64,
-        "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+        "executor_id": executor_id,
         "capability_id": capability_id,
         "market": market,
-        "approved_security_identifiers": [f"{market}:2330"],
+        "approved_security_identifiers": [f"{market}:{code}"],
         "approved_security_types": ["equity"],
         "batch_group_id": "umeop-batch-v1-00000000000000000000",
         "network_authorized": True,
@@ -28,11 +28,11 @@ def _request(capability_id: str, market: str) -> dict:
     }
 
 
-def test_production_metadata_materializes_exactly_four_route_aware_adapters():
+def test_production_metadata_materializes_legacy_and_four_research_routes():
     metadata = load_production_executor_metadata()
     registry = build_production_runtime_adapter_registry()
 
-    assert len(metadata["executors"]) == 4
+    assert len(metadata["executors"]) == 8
     assert len(production_executor_metadata_sha256()) == 64
     for capability_id, market in (
         ("current_observation", "TWSE"),
@@ -41,6 +41,15 @@ def test_production_metadata_materializes_exactly_four_route_aware_adapters():
         ("official_eod_reference", "TPEX"),
     ):
         registration = registry.get_route("m8r_03d_watchlist_controlled_executor_adapter", capability_id, market)
+        assert registration is not None
+        assert registration.fake_adapter is False
+    for capability_id, market in (
+        ("material_disclosures", "TWSE"),
+        ("material_disclosures", "TPEX"),
+        ("monthly_revenue", "TWSE"),
+        ("monthly_revenue", "TPEX"),
+    ):
+        registration = registry.get_route("phase_g_official_research_executor", capability_id, market)
         assert registration is not None
         assert registration.fake_adapter is False
 
@@ -147,3 +156,77 @@ def test_production_adapter_requires_execute_approved_and_network_authorization(
     with pytest.raises(OrchestrationError, match="network_required_not_authorized"):
         production_operation_adapter(request, DispatchRuntimeContext(str(tmp_path), "execute-approved"))
     assert calls == []
+
+
+def test_research_material_disclosure_route_fetches_once_and_persists_only_target_evidence(tmp_path, monkeypatch):
+    payload = (
+        "出表日期,公司代號,公司名稱,發言日期,發言時間,主旨,符合條款,事實發生日,說明\n"
+        "1150916,2330,台積電,1150915,065728,測試公告,1,1150914,內容\n"
+        "1150916,2317,鴻海,1150915,065729,其他公告,1,1150914,不應保存\n"
+    ).encode("utf-8")
+    calls = []
+
+    def fake_fetch(url, *, timeout):
+        calls.append((url, timeout))
+        return payload
+
+    monkeypatch.setattr("scripts.m8r_06_03_production_adapter._fetch_official_payload", fake_fetch)
+    request = _request("material_disclosures", "TWSE", executor_id="phase_g_official_research_executor")
+    result = production_batch_operation_adapter(
+        (request,), DispatchRuntimeContext(str(tmp_path), "execute-approved")
+    )[0]
+
+    assert result["status"] == "succeeded"
+    assert len(calls) == 1
+    evidence = json.loads((tmp_path / result["evidence_artifacts"][0]["relative_path"]).read_text(encoding="utf-8"))
+    assert evidence["target"]["security_code"] == "2330"
+    assert len(evidence["items"]) == 1
+    assert "不應保存" not in json.dumps(evidence, ensure_ascii=False)
+
+
+def test_research_monthly_revenue_route_uses_governed_json_fallback(tmp_path, monkeypatch):
+    row = {
+        "出表日期": "1150915", "資料年月": "11508", "公司代號": "6488", "公司名稱": "環球晶",
+        "營業收入-當月營收": "100", "營業收入-上月營收": "90", "營業收入-去年當月營收": "80",
+        "營業收入-上月比較增減(%)": "11.1", "營業收入-去年同月增減(%)": "25",
+        "累計營業收入-當月累計營收": "800", "累計營業收入-去年累計營收": "700",
+        "累計營業收入-前期比較增減(%)": "14.2", "備註": "官方備註",
+    }
+    calls = []
+
+    def fake_fetch(url, *, timeout):
+        calls.append((url, timeout))
+        if url.endswith(".csv"):
+            raise OSError("primary unavailable")
+        return json.dumps([row], ensure_ascii=False).encode("utf-8")
+
+    monkeypatch.setattr("scripts.m8r_06_03_production_adapter._fetch_official_payload", fake_fetch)
+    request = _request(
+        "monthly_revenue", "TPEX", executor_id="phase_g_official_research_executor", code="6488"
+    )
+    result = production_batch_operation_adapter(
+        (request,), DispatchRuntimeContext(str(tmp_path), "execute-approved")
+    )[0]
+
+    assert result["status"] == "succeeded"
+    assert len(calls) == 2
+    evidence = json.loads((tmp_path / result["evidence_artifacts"][0]["relative_path"]).read_text(encoding="utf-8"))
+    assert evidence["source"]["transport"] == "official_json_openapi"
+    assert evidence["source"]["fallback_used"] is True
+    assert evidence["value"]["currency"] == "TWD"
+
+
+def test_research_adapter_fails_closed_before_network_for_route_target_market_mismatch(tmp_path, monkeypatch):
+    monkeypatch.setattr(
+        "scripts.m8r_06_03_production_adapter._fetch_official_payload",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(AssertionError("network forbidden")),
+    )
+    request = _request("monthly_revenue", "TWSE", executor_id="phase_g_official_research_executor")
+    request["approved_security_identifiers"] = ["TPEX:6488"]
+    import pytest
+    from scripts.m8r_05b_03.errors import OrchestrationError
+
+    with pytest.raises(OrchestrationError, match="approved_target_market_mismatch"):
+        production_batch_operation_adapter(
+            (request,), DispatchRuntimeContext(str(tmp_path), "execute-approved")
+        )

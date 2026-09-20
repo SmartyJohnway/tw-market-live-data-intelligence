@@ -191,7 +191,9 @@ def test_historical_v1_outputs_are_byte_immutable_and_override_v2_request(tmp_pa
     monkeypatch.setattr(unified_mode_c, "_inputs", lambda *_args: inputs)
     payload = {"control_package_id": "umea-v1-" + "7" * 20}
 
-    first = unified_mode_c.build_mode_c_result_package(payload)
+    first = unified_mode_c.build_mode_c_result_package(
+        payload, output_schema_version="unified_market_evidence_result.v1"
+    )
     v1_paths = [package / rel for rel in _OUTPUT_PATHS["unified_market_evidence_result.v1"][:3]]
     before = {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in v1_paths}
     second = unified_mode_c.build_mode_c_result_package(payload, output_schema_version="v2")
