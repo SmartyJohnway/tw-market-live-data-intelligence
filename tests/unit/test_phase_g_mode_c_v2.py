@@ -12,7 +12,9 @@ from scripts.m8r_05c.citation_builder import CitationIndex
 from scripts.m8r_05c.models import CitationToOperationEntry
 from scripts.m8r_05c.markdown_renderer import render_result_markdown
 from scripts.m8r_05c.models import ProjectionInputs
-from server.services.unified_mode_c import _OUTPUT_PATHS, ModeCError, build_mode_c_result_package
+from server.services.unified_mode_c import (
+    _OUTPUT_PATHS, _receipt_calculated_at, ModeCError, build_mode_c_result_package,
+)
 from scripts.m8r_05c.result_builder import build_result
 from scripts.m8r_05c.lineage_resolver import build_lineage_map
 from scripts.m8r_05c.citation_builder import build_citation_index
@@ -117,11 +119,14 @@ def test_v2_markdown_renders_typed_evidence_without_advice():
             "material_disclosures": {"status": "available", "coverage": {"source_report_date": "2026-09-19"}, "source": {"source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA"}, "items": [{"published_at": "2026-09-19T09:00:00+08:00", "subject": "公告", "description": "說明", "citation_id": "cite-1"}], "citation_ids": ["cite-1"]},
             "monthly_revenue": {"status": "not_yet_available", "coverage": {"reporting_period": "2026-08"}, "value": None, "citation_ids": []},
         }}],
-        "audit_reference": {"audit_package_id": "umeap-v2-" + "b" * 20, "relative_path": "audit/unified_market_evidence_audit_package.v2.json"},
+        "audit_reference": {"audit_package_id": "umeap-v2-" + "b" * 20,
+                            "schema_version": "unified_market_evidence_audit_package.v2",
+                            "relative_path": "audit/unified_market_evidence_audit_package.v2.json"},
     }
     rendered = render_result_markdown(result)
     assert "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA" in rendered
     assert "not_yet_available" in rendered
+    assert "unified_market_evidence_audit_package.v2" in rendered
     assert "bullish" not in rendered.lower()
     assert "bearish" not in rendered.lower()
 
@@ -142,6 +147,11 @@ def test_mode_c_v2_materializes_in_parallel_without_touching_v1(tmp_path, monkey
     package = tmp_path / "control-package"
     package.mkdir()
     inputs = _inputs()
+    calculated_at, calculated_at_source = _receipt_calculated_at(inputs.receipt)
+    assert calculated_at == inputs.receipt["finalized_at"]
+    assert calculated_at_source == "receipt.finalized_at"
+    inputs.calculated_at = calculated_at
+    inputs.calculated_at_source = calculated_at_source
     controls = {name: package / f"{name}.json" for name in ("request", "plan", "authorization", "consumption_binding")}
     f3_path = package / "f3.json"
     f3_path.write_text("{}\n", encoding="utf-8")
@@ -161,6 +171,7 @@ def test_mode_c_v2_materializes_in_parallel_without_touching_v1(tmp_path, monkey
     assert first["canonical_result"]["audit_reference"]["audit_package_id"] == audit["audit_package_id"]
     assert audit["result_id"] == first["canonical_result"]["result_id"]
     assert audit["result_hash"] == first["canonical_result"]["result_hash"]
+    assert audit["projector_metadata"]["calculated_at_source"] == "receipt.finalized_at"
     assert (package / _OUTPUT_PATHS["unified_market_evidence_result.v2"][0]).is_file()
     assert not (package / _OUTPUT_PATHS["unified_market_evidence_result.v1"][0]).exists()
 
@@ -315,5 +326,18 @@ def test_repository_v2_acceptance_samples_validate_and_have_clean_citation_graph
     assert emitted == resolved
     assert result["audit_reference"]["audit_package_id"] == audit["audit_package_id"]
     handoff = (V2_ACCEPTANCE / "ai_handoff_snapshot.md").read_text(encoding="utf-8")
+    assert handoff == render_result_markdown(result)
+    assert "unified_market_evidence_audit_package.v2" in handoff
+    assert "audit/unified_market_evidence_audit_package.v2.json" in handoff
     assert "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA" in handoff
     assert "MOPS_MONTHLY_REVENUE_OPEN_DATA" in handoff
+    lowered = handoff.lower()
+    for forbidden in ("bullish", "bearish", "price target", "目標價", "買進", "賣出"):
+        assert forbidden not in lowered
+
+
+def test_v1_renderer_keeps_v1_audit_label():
+    result = json.loads((V1_GOLDEN / "ai_context/unified_market_evidence_result.v1.json").read_text(encoding="utf-8"))
+    rendered = render_result_markdown(result)
+    assert "unified_market_evidence_audit_package.v1" in rendered
+    assert rendered == (V1_GOLDEN / "ai_context/unified_market_evidence_result.v1.md").read_text(encoding="utf-8")

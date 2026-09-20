@@ -289,7 +289,11 @@ def build_audit_package(
         "canonicalization_version": _CANONICALIZATION_VERSION,
         "projected_at": calculated_at,
         "timestamp_authority": "receipt.finalized_at_or_cli_calculated_at",
-        "calculated_at_source": "cli_calculated_at",
+        "calculated_at_source": (
+            inputs.calculated_at_source
+            if output_schema_version == "unified_market_evidence_audit_package.v2"
+            else "cli_calculated_at"
+        ),
     }
 
     # Build body without audit_package_hash.

@@ -59,6 +59,21 @@ def test_material_projection_validates_frozen_ai_schema():
     assert result["items"][0]["citation_id"] == "cite-1"
 
 
+def test_available_material_projection_without_governed_citation_fails_closed():
+    artifact = {
+        "status": "available", "source": {"source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+        "source_contract_id": "t187ap04_L", "transport": "official_csv", "fallback_used": False},
+        "observed_at": "2026-09-15T21:30:00+08:00",
+        "coverage": {"source_report_date": "2026-09-15", "coverage_through": "2026-09-14", "truncated": False},
+        "items": [{"published_at": "2026-09-14T15:02:01+08:00", "source_fact_date": None,
+                   "subject": "s", "clause": None, "description_raw": "d",
+                   "revision_relation": {"status": "unresolved", "relation_type": None,
+                                         "related_official_reference": None}}], "caveats": [],
+    }
+    with pytest.raises(ProjectionError, match="research_citation_unresolved"):
+        _project_material_disclosures(_binding("material_disclosures", artifact), [])
+
+
 def test_monthly_projection_preserves_signed_values_and_null_percentages():
     value = {"currency": "TWD", "unit": "thousand", "current_month_revenue": -1, "previous_month_revenue": 2, "previous_year_same_month_revenue": 3, "mom_pct": None, "yoy_pct": None, "ytd_revenue": 4, "previous_year_ytd_revenue": 5, "ytd_yoy_pct": None, "note": "官方備註"}
     artifact = {"status": "available", "source": {"source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA", "source_contract_id": "t187ap05_L", "transport": "official_csv", "fallback_used": False}, "observed_at": "2026-09-15T21:30:00+08:00", "coverage": {"reporting_period": "2026-08", "source_report_date": "2026-09-15"}, "value": value, "caveats": []}
@@ -244,3 +259,30 @@ def test_v1_citation_source_family_remains_legacy_executor_identity():
         "phase_g_official_research_executor"
     }
     assert all(citation.source_report_date is None for citation in citations.all_citations.values())
+
+
+def test_mixed_market_and_research_result_v2_preserves_all_governed_source_families():
+    inputs = _projection_inputs()
+    inputs.request["data_needs"].append({"type": "current_observation", "priority": "optional", "parameters": {}})
+    inputs.plan["operations"].append({
+        "operation_id": "op-market", "capability_id": "current_observation",
+        "executor_id": "legacy_market_executor", "market": "TWSE",
+        "canonical_target_ids": ["TWSE:2330"],
+    })
+    market_path = "evidence/current-observation.json"
+    market_artifact = {"schema_version": "m8r_06_03_operation_evidence.v1",
+                       "source_family": "TWSE_OPENAPI", "records": [{"close": 100}]}
+    inputs.evidence_artifacts[market_path] = market_artifact
+    market_ref = {"relative_path": market_path, "sha256": "3" * 64,
+                  "schema_version": "m8r_06_03_operation_evidence.v1"}
+    inputs.bundle["operation_evidence_entries"].append({
+        "operation_id": "op-market", "status": "succeeded", "artifacts": [market_ref],
+    })
+    inputs.bundle["artifact_inventory"].append({
+        **market_ref, "evidence_contract": "m8r_06_03_operation_evidence.v1", "byte_size": 1,
+    })
+    result = build_result(inputs, output_schema_version="unified_market_evidence_result.v2")
+    families = {citation["source_family"] for citation in result["targets"][0]["citations"]}
+    assert families == {"TWSE_OPENAPI", "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+                        "MOPS_MONTHLY_REVENUE_OPEN_DATA"}
+    assert "unknown" not in families

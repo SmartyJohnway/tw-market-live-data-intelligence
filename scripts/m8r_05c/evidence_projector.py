@@ -63,8 +63,11 @@ def _project_material_disclosures(binding: OperationBinding | None, citation_ids
     source = artifact.get("source", {})
     coverage = artifact.get("coverage", {})
     status = artifact.get("status", "source_failed")
+    raw_items = artifact.get("items", []) if isinstance(artifact.get("items"), list) else []
+    if status in {"available", "partial"} and raw_items and not citation_ids:
+        raise ProjectionError("research_citation_unresolved")
     items = []
-    for item in artifact.get("items", []) if isinstance(artifact.get("items"), list) else []:
+    for item in raw_items:
         raw = str(item.get("description_raw", ""))
         desc = raw[:8192]
         items.append({
@@ -72,7 +75,7 @@ def _project_material_disclosures(binding: OperationBinding | None, citation_ids
             "subject": item.get("subject", ""), "clause": item.get("clause"), "description": desc,
             "description_truncated": len(raw) > len(desc),
             "revision_relation": item.get("revision_relation") or {"status": "unresolved", "relation_type": None, "related_official_reference": None},
-            "citation_id": citation_ids[len(items)] if len(items) < len(citation_ids) else (citation_ids[0] if citation_ids else "unresolved-citation"),
+            "citation_id": citation_ids[len(items)] if len(items) < len(citation_ids) else citation_ids[0],
         })
     return {
         "schema_version": "material_disclosure_evidence.v1", "status": status,

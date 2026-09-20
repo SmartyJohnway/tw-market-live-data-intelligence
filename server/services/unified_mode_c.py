@@ -122,10 +122,18 @@ def _f3(package: Path, controls: dict[str, Path], f3_path: Path) -> None:
         f3_path.write_text(encoded, encoding="utf-8")
 
 
+def _receipt_calculated_at(receipt_obj: dict[str, Any]) -> tuple[str | None, str]:
+    if receipt_obj.get("finalized_at"):
+        return receipt_obj["finalized_at"], "receipt.finalized_at"
+    if receipt_obj.get("execution_completed_at"):
+        return receipt_obj["execution_completed_at"], "receipt.execution_completed_at"
+    return None, "explicit_calculated_at_input"
+
+
 def _inputs(package: Path, c: dict[str, Path], claim: Path, receipt: Path, bundle: Path, f3: Path):
-    calculated_at = _read(receipt).get("finalized_at") or _read(receipt).get("execution_completed_at")
+    calculated_at, calculated_at_source = _receipt_calculated_at(_read(receipt))
     try:
-        return load_projection_inputs(request_path=str(c["request"]), f3_validation_path=str(f3), plan_path=str(c["plan"]), authorization_path=str(c["authorization"]), consumption_binding_path=str(c["consumption_binding"]), claim_path=str(claim), receipt_path=str(receipt), bundle_path=str(bundle), artifact_root=str(package), calculated_at=calculated_at)
+        return load_projection_inputs(request_path=str(c["request"]), f3_validation_path=str(f3), plan_path=str(c["plan"]), authorization_path=str(c["authorization"]), consumption_binding_path=str(c["consumption_binding"]), claim_path=str(claim), receipt_path=str(receipt), bundle_path=str(bundle), artifact_root=str(package), calculated_at=calculated_at, calculated_at_source=calculated_at_source)
     except ProjectionError as exc:
         raise ModeCError("mode_c_lineage_verification_failed") from exc
 

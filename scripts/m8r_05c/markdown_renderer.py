@@ -413,19 +413,28 @@ def render_result_markdown(result: dict, *, projector_version: str = CURRENT_PRO
         lines.append(_section("審計包參考", 2))
         audit_id = audit_ref.get("audit_package_id", "")
         audit_path = audit_ref.get("relative_path", "")
+        audit_schema_version = audit_ref.get(
+            "schema_version", "unified_market_evidence_audit_package.v1"
+        )
         lines.append(f"- **審計包 ID**: `{audit_id}`")
         if audit_path:
             lines.append(f"- **相對路徑**: `{audit_path}`")
         lines.append(
-            "\n> ℹ️ 審計包 (`unified_market_evidence_audit_package.v1`) 包含完整作業系譜、"
+            f"\n> ℹ️ 審計包 (`{audit_schema_version}`) 包含完整作業系譜、"
             "人工製品清單、引用對應表與重播說明。審計包與 AI 對話結果分開保存。"
         )
 
     lines.append("")
     lines.append("---")
-    lines.append(
-        "> ⚠️ 本結果由確定性投影層 (M8R-05C) 生成，不含投資建議、買賣推薦、目標價格或市場展望。"
-        " 所有時效語義由來源 evidence artifact 和執行收據決定。"
-    )
+    if result.get("schema_version") == "unified_market_evidence_result.v2":
+        lines.append(
+            "> ⚠️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現來源事實、覆蓋範圍與限制。"
+            " 所有時效語義由來源 evidence artifact 和執行收據決定。"
+        )
+    else:
+        lines.append(
+            "> ⚠️ 本結果由確定性投影層 (M8R-05C) 生成，不含投資建議、買賣推薦、目標價格或市場展望。"
+            " 所有時效語義由來源 evidence artifact 和執行收據決定。"
+        )
 
     return "\n".join(lines)

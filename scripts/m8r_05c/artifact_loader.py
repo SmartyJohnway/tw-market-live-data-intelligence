@@ -126,6 +126,7 @@ def load_projection_inputs(
     bundle_path: str,
     artifact_root: str,
     calculated_at: str,
+    calculated_at_source: str = "explicit_calculated_at_input",
 ) -> ProjectionInputs:
     """Load and validate all inputs for the 05C projection."""
     request = _load_json(Path(request_path))
@@ -380,5 +381,6 @@ def load_projection_inputs(
         bundle=bundle,
         artifact_root=str(artifact_root_path),
         calculated_at=calculated_at,
+        calculated_at_source=calculated_at_source,
         evidence_artifacts=evidence_artifacts,
     )

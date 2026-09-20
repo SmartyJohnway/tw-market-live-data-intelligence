@@ -99,8 +99,18 @@ def build_citation_index(
                         source_obj = binding.artifact_objects.get(rel_path, {})
                         source_meta = source_obj.get("source", {}) if isinstance(source_obj, dict) else {}
                         coverage_meta = source_obj.get("coverage", {}) if isinstance(source_obj, dict) else {}
-                        source_family = source_meta.get("source_family") or "unknown"
-                        source_contract = source_meta.get("source_contract_id") or evidence_contract or None
+                        source_family = (
+                            source_meta.get("source_family")
+                            or (source_obj.get("source_family") if isinstance(source_obj, dict) else None)
+                            or binding.executor_id
+                            or "unknown"
+                        )
+                        source_contract = (
+                            source_meta.get("source_contract_id")
+                            or (source_obj.get("source_contract_id") if isinstance(source_obj, dict) else None)
+                            or evidence_contract
+                            or None
+                        )
                         source_report_date = coverage_meta.get("source_report_date")
                     else:
                         source_family = binding.executor_id or "unknown"

@@ -121,6 +121,7 @@ class ProjectionInputs:
     bundle: dict
     artifact_root: str  # governed output_root used during 05B-03 execution
     calculated_at: str  # ISO-8601 UTC datetime from CLI or receipt.finalized_at
+    calculated_at_source: str = "explicit_calculated_at_input"
     # Loaded evidence artifact JSON objects keyed by relative_path
     evidence_artifacts: dict[str, dict] = field(default_factory=dict)
 

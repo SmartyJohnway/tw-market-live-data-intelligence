@@ -159,9 +159,9 @@
     "canonicalization_version": "m8r_05b_03_canonical_v1",
     "projected_at": "2026-09-15T21:31:00+08:00",
     "timestamp_authority": "receipt.finalized_at_or_cli_calculated_at",
-    "calculated_at_source": "cli_calculated_at"
+    "calculated_at_source": "receipt.finalized_at"
   },
   "warnings": [],
   "caveats": [],
-  "audit_package_hash": "959bd65338aacebd3a82c2e86c92c222274c60e409454710de9ec317935a0b66"
+  "audit_package_hash": "4136c1862fd653591aa794da739c02d1961307de2a322c13bd35338865e31c69"
 }
