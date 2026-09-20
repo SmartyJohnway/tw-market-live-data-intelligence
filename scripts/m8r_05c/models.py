@@ -47,6 +47,7 @@ class CitationProjection:
     artifact_reference: str  # relative path only — never absolute
     source_contract_id: str | None = None
     effective_trade_date: str | None = None
+    source_report_date: str | None = None
     normalized_evidence_hash: str | None = None
 
 
@@ -57,6 +58,7 @@ class ResolutionProjection:
     security_code: str | None = None
     security_name: str | None = None
     market: str | None = None
+    canonical_identity: dict | None = None
 
 
 @dataclass
@@ -68,6 +70,8 @@ class TargetEvidenceProjection:
     session_status: EvidenceEnvelopeProjection | None = None
     source_currentness: EvidenceEnvelopeProjection | None = None
     evidence_quality: EvidenceEnvelopeProjection | None = None
+    material_disclosures: dict | None = None
+    monthly_revenue: dict | None = None
 
 
 @dataclass
@@ -97,6 +101,7 @@ class RequestSummaryProjection:
     required_data_needs: list[str]
     optional_data_needs: list[str]
     execution_mode: str | None = None
+    request_schema_version: str | None = None
 
 
 @dataclass
@@ -116,6 +121,7 @@ class ProjectionInputs:
     bundle: dict
     artifact_root: str  # governed output_root used during 05B-03 execution
     calculated_at: str  # ISO-8601 UTC datetime from CLI or receipt.finalized_at
+    calculated_at_source: str = "explicit_calculated_at_input"
     # Loaded evidence artifact JSON objects keyed by relative_path
     evidence_artifacts: dict[str, dict] = field(default_factory=dict)
 

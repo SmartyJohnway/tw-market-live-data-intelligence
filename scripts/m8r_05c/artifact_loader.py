@@ -38,6 +38,14 @@ _SCHEMA_NAMES = {
     "receipt": "unified_market_evidence_execution_receipt.v1.schema.json",
     "bundle": "unified_market_evidence_bundle.v1.schema.json",
 }
+_REQUEST_SCHEMA_NAMES = {
+    "unified_market_evidence_request.v1": _SCHEMA_NAMES["request"],
+    "unified_market_evidence_request.v2": "unified_market_evidence_request.v2.schema.json",
+}
+_RESEARCH_EVIDENCE_CONTRACTS = {
+    "phase_g_material_disclosure_operation_evidence.v1": "phase_g_material_disclosure_operation_evidence.v1.schema.json",
+    "phase_g_monthly_revenue_operation_evidence.v1": "phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+}
 
 _DRAFT07_KEYS = {"request", "plan"}
 _M8R_06_03_EVIDENCE_SCHEMA = "m8r_06_03_operation_evidence.v1"
@@ -60,6 +68,16 @@ def _validate_schema(obj: dict, schema_key: str) -> None:
         errors = list(Draft202012Validator(schema).iter_errors(obj))
     if errors:
         raise ProjectionError(f"schema_invalid_{schema_key}")
+
+
+def _validate_request_schema(obj: dict) -> None:
+    version = obj.get("schema_version")
+    schema_name = _REQUEST_SCHEMA_NAMES.get(version)
+    if schema_name is None:
+        raise ProjectionError("unsupported_request_schema_version")
+    schema = _load_schema(schema_name)
+    if list(Draft7Validator(schema).iter_errors(obj)):
+        raise ProjectionError("schema_invalid_request")
 
 
 def _load_json(path: Path) -> dict:
@@ -108,10 +126,11 @@ def load_projection_inputs(
     bundle_path: str,
     artifact_root: str,
     calculated_at: str,
+    calculated_at_source: str = "explicit_calculated_at_input",
 ) -> ProjectionInputs:
     """Load and validate all inputs for the 05C projection."""
     request = _load_json(Path(request_path))
-    _validate_schema(request, "request")
+    _validate_request_schema(request)
 
     f3_validation = _load_json(Path(f3_validation_path))
     _validate_schema(f3_validation, "f3_validation")
@@ -314,7 +333,8 @@ def load_projection_inputs(
             if not schema_file.exists():
                 raise ProjectionError("missing_evidence_contract_schema")
             schema = json.loads(schema_file.read_text(encoding="utf-8"))
-            errors = list(Draft202012Validator(schema).iter_errors(artifact_obj))
+            validator_cls = Draft7Validator if evidence_contract in _RESEARCH_EVIDENCE_CONTRACTS else Draft202012Validator
+            errors = list(validator_cls(schema).iter_errors(artifact_obj))
             if errors:
                 raise ProjectionError("artifact_schema_invalid")
                     
@@ -361,5 +381,6 @@ def load_projection_inputs(
         bundle=bundle,
         artifact_root=str(artifact_root_path),
         calculated_at=calculated_at,
+        calculated_at_source=calculated_at_source,
         evidence_artifacts=evidence_artifacts,
     )

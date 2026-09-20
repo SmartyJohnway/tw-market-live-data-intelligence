@@ -43,6 +43,66 @@ _ENVELOPE_DATA_NEEDS = {
 _OFFICIAL_EOD_NEED = "official_eod_reference"
 
 
+def _research_artifact(binding: OperationBinding | None) -> dict | None:
+    if binding is None or not binding.artifact_objects:
+        return None
+    return next((obj for obj in binding.artifact_objects.values() if isinstance(obj, dict)), None)
+
+
+def _project_material_disclosures(binding: OperationBinding | None, citation_ids: list[str]) -> dict:
+    artifact = _research_artifact(binding)
+    if artifact is None:
+        return {
+            "schema_version": "material_disclosure_evidence.v1", "status": "source_failed",
+            "coverage": {"mode": "latest_completed_official_daily_batch", "source_report_date": None,
+                          "coverage_through": None, "historical_lookup_supported": False, "item_count": 0, "truncated": False},
+            "currentness": {"status": "unknown", "observed_at": "1970-01-01T00:00:00Z"},
+            "source": {"authority": "official", "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA", "market": binding.market if binding else "TWSE", "source_contract_id": "unknown", "transport": "official_csv", "fallback_used": False},
+            "items": [], "caveats": ["research_evidence_unavailable"], "citation_ids": list(citation_ids),
+        }
+    source = artifact.get("source", {})
+    coverage = artifact.get("coverage", {})
+    status = artifact.get("status", "source_failed")
+    raw_items = artifact.get("items", []) if isinstance(artifact.get("items"), list) else []
+    if status in {"available", "partial"} and raw_items and not citation_ids:
+        raise ProjectionError("research_citation_unresolved")
+    items = []
+    for item in raw_items:
+        raw = str(item.get("description_raw", ""))
+        desc = raw[:8192]
+        items.append({
+            "published_at": item.get("published_at"), "source_fact_date": item.get("source_fact_date"),
+            "subject": item.get("subject", ""), "clause": item.get("clause"), "description": desc,
+            "description_truncated": len(raw) > len(desc),
+            "revision_relation": item.get("revision_relation") or {"status": "unresolved", "relation_type": None, "related_official_reference": None},
+            "citation_id": citation_ids[len(items)] if len(items) < len(citation_ids) else citation_ids[0],
+        })
+    return {
+        "schema_version": "material_disclosure_evidence.v1", "status": status,
+        "coverage": {"mode": "latest_completed_official_daily_batch", "source_report_date": coverage.get("source_report_date"),
+                      "coverage_through": coverage.get("coverage_through"), "historical_lookup_supported": False,
+                      "item_count": len(items), "truncated": bool(coverage.get("truncated"))},
+        "currentness": {"status": "current_within_source_contract" if status in {"available", "partial", "no_evidence_in_covered_scope"} else "unknown", "observed_at": artifact.get("observed_at", "1970-01-01T00:00:00Z")},
+        "source": {"authority": "official", "source_family": source.get("source_family", "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA"), "market": source.get("market", binding.market), "source_contract_id": source.get("source_contract_id", "unknown"), "transport": source.get("transport", "official_csv"), "fallback_used": bool(source.get("fallback_used", False))},
+        "items": items if status in {"available", "partial"} else [], "caveats": list(artifact.get("caveats", [])), "citation_ids": list(dict.fromkeys(citation_ids)),
+    }
+
+
+def _project_monthly_revenue(binding: OperationBinding | None, citation_ids: list[str]) -> dict:
+    artifact = _research_artifact(binding)
+    source = artifact.get("source", {}) if artifact else {}
+    coverage = artifact.get("coverage", {}) if artifact else {}
+    status = artifact.get("status", "source_failed") if artifact else "source_failed"
+    return {
+        "schema_version": "monthly_revenue_evidence.v1", "status": status,
+        "coverage": {"mode": "latest_available_reporting_period", "reporting_period": coverage.get("reporting_period"), "source_report_date": coverage.get("source_report_date"), "historical_lookup_supported": False},
+        "currentness": {"status": "current_within_source_contract" if status in {"available", "not_yet_available"} else "unknown", "observed_at": artifact.get("observed_at", "1970-01-01T00:00:00Z") if artifact else "1970-01-01T00:00:00Z"},
+        "source": {"authority": "official", "source_family": source.get("source_family", "MOPS_MONTHLY_REVENUE_OPEN_DATA"), "market": source.get("market", binding.market if binding else "TWSE"), "source_contract_id": source.get("source_contract_id", "unknown"), "transport": source.get("transport", "official_csv"), "fallback_used": bool(source.get("fallback_used", False))},
+        "value": artifact.get("value") if status == "available" and artifact else None,
+        "caveats": list(artifact.get("caveats", [])) if artifact else ["research_evidence_unavailable"], "citation_ids": list(dict.fromkeys(citation_ids)),
+    }
+
+
 def _project_envelope(
     binding: OperationBinding | None,
     citation_ids: list[str],
@@ -367,5 +427,10 @@ def project_target_evidence(
         binding = target_bindings.get("evidence_quality")
         projector = _project_envelope_legacy if projector_version == LEGACY_PROJECTOR_VERSION else (_project_envelope_v1_1 if projector_version == OLDER_PROJECTOR_VERSION else _project_envelope)
         proj.evidence_quality = projector(binding, _cite("evidence_quality"))
+
+    if "material_disclosures" in requested_data_needs:
+        proj.material_disclosures = _project_material_disclosures(target_bindings.get("material_disclosures"), _cite("material_disclosures"))
+    if "monthly_revenue" in requested_data_needs:
+        proj.monthly_revenue = _project_monthly_revenue(target_bindings.get("monthly_revenue"), _cite("monthly_revenue"))
 
     return proj

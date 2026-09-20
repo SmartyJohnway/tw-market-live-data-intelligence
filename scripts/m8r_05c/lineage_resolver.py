@@ -28,6 +28,8 @@ _CAPABILITY_TO_DATA_NEED: dict[str, str] = {
     "session_status": "session_status",
     "source_currentness": "source_currentness",
     "evidence_quality": "evidence_quality",
+    "material_disclosures": "material_disclosures",
+    "monthly_revenue": "monthly_revenue",
 }
 
 
@@ -39,6 +41,7 @@ class TargetResolution:
     resolution_status: str
     canonical_target_id: str | None = None
     market: str | None = None
+    canonical_identity: dict | None = None
 
 
 @dataclass
@@ -113,7 +116,8 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
             original_input=t_res.get("original_input", ""),
             resolution_status=t_res.get("resolution_status", "not_found"),
             canonical_target_id=canonical_id,
-            market=market
+            market=market,
+            canonical_identity=identity.copy() if isinstance(identity, dict) else None,
         )
 
     # Index bundle operation evidence entries by operation_id.
@@ -173,6 +177,24 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
                     artifact_objects[rel_path] = evidence_artifacts[rel_path]
 
         for canonical_target_id in canonical_target_ids:
+            target_artifacts: list[dict] = []
+            target_artifact_objects: dict[str, dict] = {}
+            for art in raw_artifacts:
+                if not isinstance(art, dict):
+                    continue
+                rel_path = art.get("relative_path")
+                artifact_obj = artifact_objects.get(rel_path)
+                schema_version = artifact_obj.get("schema_version") if isinstance(artifact_obj, dict) else None
+                if schema_version in {
+                    "phase_g_material_disclosure_operation_evidence.v1",
+                    "phase_g_monthly_revenue_operation_evidence.v1",
+                }:
+                    artifact_target = artifact_obj.get("target") or {}
+                    if artifact_target.get("canonical_target_id") != canonical_target_id:
+                        continue
+                target_artifacts.append(art)
+                if rel_path in artifact_objects:
+                    target_artifact_objects[rel_path] = artifact_objects[rel_path]
             binding = OperationBinding(
                 operation_id=operation_id,
                 capability_id=capability_id,
@@ -183,8 +205,8 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
                 status=op_status,
                 error_code=error_code,
                 plan_operation_status=plan_operation_status,
-                evidence_artifacts=raw_artifacts,
-                artifact_objects=artifact_objects,
+                evidence_artifacts=target_artifacts,
+                artifact_objects=target_artifact_objects,
             )
 
             if canonical_target_id not in lineage.bindings:

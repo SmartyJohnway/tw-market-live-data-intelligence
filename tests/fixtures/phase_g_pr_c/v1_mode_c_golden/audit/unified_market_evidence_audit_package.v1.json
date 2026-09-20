@@ -1,0 +1,86 @@
+{
+  "schema_version": "unified_market_evidence_audit_package.v1",
+  "audit_package_id": "umeap-v1-1fdbdba3340fef2071d9",
+  "result_id": "umeresult-v1-e998646d4695f756d205",
+  "result_hash": "ebd90dd37540000fc4443595dab846dc087ad3b4e979dcda7c3a8a72d440ea7e",
+  "result_relative_path": "ai_context/unified_market_evidence_result.v1.json",
+  "request_identity": {
+    "request_id": "umeq-v2-test",
+    "request_hash": "1730628e9de6005c60a060ba95329bc5d03629cac2b4f13a3e4447425728d7b7",
+    "schema_version": "unified_market_evidence_request.v1"
+  },
+  "target_validation_identity": {
+    "f3_validation_output_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "plan_identity": {
+    "plan_id": "umeop-v1-11111111111111111111",
+    "plan_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "unified_market_evidence_orchestration_plan.v1",
+    "plan_status": "planned"
+  },
+  "authorization_identity": {
+    "authorization_id": "umea-v1-22222222222222222222",
+    "authorization_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "unified_market_evidence_execution_authorization.v1"
+  },
+  "claim_identity": {
+    "claim_id": "umecl-v1-33333333333333333333",
+    "atomic_claim_hash": "0a32fd279ab8802f6b730d33174fdaff28b0a65d457a26215fb56934c2e06dca",
+    "finalized_record_hash": "3bcff73df961bcfad810608fb4e396f458ec786777884f3bdc0bfb4c7b900aab",
+    "schema_version": "unified_market_evidence_consumption_record.v1"
+  },
+  "receipt_identity": {
+    "execution_receipt_id": "umerec-v1-44444444444444444444",
+    "execution_receipt_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "unified_market_evidence_execution_receipt.v1",
+    "overall_status": "succeeded",
+    "total_operations": 0,
+    "succeeded_operations": 0,
+    "failed_operations": 0,
+    "finalized_at": "2026-09-20T00:00:00Z"
+  },
+  "bundle_identity": {
+    "bundle_id": "umeb-v1-55555555555555555555",
+    "bundle_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "unified_market_evidence_bundle.v1",
+    "overall_status": "succeeded",
+    "total_item_count": 0,
+    "finalized_at": "2026-09-20T00:00:00Z"
+  },
+  "operation_lineage": [],
+  "artifact_inventory": [],
+  "citation_to_operation_map": [],
+  "integrity_verification": {
+    "receipt_hash_verified": false,
+    "bundle_hash_verified": false,
+    "result_hash_verified": true,
+    "all_artifact_hashes_verified": true
+  },
+  "replay_manifest": {
+    "request_id": "umeq-v2-test",
+    "request_hash": "1730628e9de6005c60a060ba95329bc5d03629cac2b4f13a3e4447425728d7b7",
+    "plan_id": "umeop-v1-11111111111111111111",
+    "plan_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "authorization_id": "umea-v1-22222222222222222222",
+    "authorization_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "consumption_binding_id": "umecb-v1-66666666666666666666",
+    "consumption_binding_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "claim_id": "umecl-v1-33333333333333333333",
+    "atomic_claim_hash": "0a32fd279ab8802f6b730d33174fdaff28b0a65d457a26215fb56934c2e06dca",
+    "finalized_record_hash": "3bcff73df961bcfad810608fb4e396f458ec786777884f3bdc0bfb4c7b900aab",
+    "execution_receipt_id": "umerec-v1-44444444444444444444",
+    "execution_receipt_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "bundle_id": "umeb-v1-55555555555555555555",
+    "bundle_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "projector_metadata": {
+    "projector_version": "m8r_05c_v1_3",
+    "canonicalization_version": "m8r_05b_03_canonical_v1",
+    "projected_at": "2026-09-20T00:00:00Z",
+    "timestamp_authority": "receipt.finalized_at_or_cli_calculated_at",
+    "calculated_at_source": "cli_calculated_at"
+  },
+  "warnings": [],
+  "caveats": [],
+  "audit_package_hash": "55f0c4e426321cffd5ba2a5361111fd7f621420eafb0d1e7e53992e484e35777"
+}

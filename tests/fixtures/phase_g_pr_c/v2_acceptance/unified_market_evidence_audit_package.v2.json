@@ -1,0 +1,167 @@
+{
+  "schema_version": "unified_market_evidence_audit_package.v2",
+  "audit_package_id": "umeap-v2-33a635aedcec39a4dacf",
+  "result_id": "umeresult-v2-086aa982ed49f66a0695",
+  "result_hash": "691289e15aefd85edfd3d329d73a3899e3b6e354902b1e8f541cb33c7e1f74b3",
+  "result_relative_path": "ai_context/unified_market_evidence_result.v2.json",
+  "request_identity": {
+    "request_id": "req-v2",
+    "request_hash": "71db2a438f0dae7ddf702afd1f3e20862de6b37a89949be1dfeaf545f14effed",
+    "schema_version": "unified_market_evidence_request.v2"
+  },
+  "target_validation_identity": {
+    "f3_validation_output_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "plan_identity": {
+    "plan_id": "umeop-v1-11111111111111111111",
+    "plan_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "unified_market_evidence_orchestration_plan.v1",
+    "plan_status": "planned"
+  },
+  "authorization_identity": {
+    "authorization_id": "umea-v1-22222222222222222222",
+    "authorization_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "unified_market_evidence_execution_authorization.v1"
+  },
+  "claim_identity": {
+    "claim_id": "umecl-v1-33333333333333333333",
+    "atomic_claim_hash": "0a32fd279ab8802f6b730d33174fdaff28b0a65d457a26215fb56934c2e06dca",
+    "finalized_record_hash": "3bcff73df961bcfad810608fb4e396f458ec786777884f3bdc0bfb4c7b900aab",
+    "schema_version": "unified_market_evidence_consumption_record.v1"
+  },
+  "receipt_identity": {
+    "execution_receipt_id": "umerec-v1-44444444444444444444",
+    "execution_receipt_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "unified_market_evidence_execution_receipt.v1",
+    "overall_status": "succeeded",
+    "total_operations": 0,
+    "succeeded_operations": 0,
+    "failed_operations": 0,
+    "finalized_at": "2026-09-20T00:00:00Z"
+  },
+  "bundle_identity": {
+    "bundle_id": "umeb-v1-55555555555555555555",
+    "bundle_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "unified_market_evidence_bundle.v1",
+    "overall_status": "succeeded",
+    "total_item_count": 0,
+    "finalized_at": "2026-09-20T00:00:00Z"
+  },
+  "operation_lineage": [
+    {
+      "operation_id": "op-1",
+      "capability_id": "material_disclosures",
+      "executor_id": "phase_g_official_research_executor",
+      "status": "succeeded",
+      "error_code": null,
+      "canonical_target_ids": [
+        "TWSE:2330"
+      ],
+      "market": "TWSE",
+      "evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+      "result_item_count": 0,
+      "artifact_references": [
+        {
+          "relative_path": "evidence/g1.json",
+          "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "schema_version": "phase_g_material_disclosure_operation_evidence.v1",
+          "byte_size": 0
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "operation_id": "op-2",
+      "capability_id": "monthly_revenue",
+      "executor_id": "phase_g_official_research_executor",
+      "status": "succeeded",
+      "error_code": null,
+      "canonical_target_ids": [
+        "TWSE:2330"
+      ],
+      "market": "TWSE",
+      "evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+      "result_item_count": 0,
+      "artifact_references": [
+        {
+          "relative_path": "evidence/g2.json",
+          "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "schema_version": "phase_g_monthly_revenue_operation_evidence.v1",
+          "byte_size": 0
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "artifact_inventory": [
+    {
+      "relative_path": "evidence/g1.json",
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "schema_version": "phase_g_material_disclosure_operation_evidence.v1",
+      "byte_size": 1,
+      "evidence_contract": "phase_g_material_disclosure_operation_evidence.v1"
+    },
+    {
+      "relative_path": "evidence/g2.json",
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "schema_version": "phase_g_monthly_revenue_operation_evidence.v1",
+      "byte_size": 1,
+      "evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1"
+    }
+  ],
+  "citation_to_operation_map": [
+    {
+      "citation_id": "cite-abfd342106826487",
+      "operation_id": "op-1",
+      "capability_id": "material_disclosures",
+      "executor_id": "phase_g_official_research_executor",
+      "artifact_relative_path": "evidence/g1.json",
+      "artifact_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+      "canonical_target_id": "TWSE:2330",
+      "requested_data_need": "material_disclosures"
+    },
+    {
+      "citation_id": "cite-cb9d79fdfc183231",
+      "operation_id": "op-2",
+      "capability_id": "monthly_revenue",
+      "executor_id": "phase_g_official_research_executor",
+      "artifact_relative_path": "evidence/g2.json",
+      "artifact_hash": "2222222222222222222222222222222222222222222222222222222222222222",
+      "canonical_target_id": "TWSE:2330",
+      "requested_data_need": "monthly_revenue"
+    }
+  ],
+  "integrity_verification": {
+    "receipt_hash_verified": false,
+    "bundle_hash_verified": false,
+    "result_hash_verified": true,
+    "all_artifact_hashes_verified": true
+  },
+  "replay_manifest": {
+    "request_id": "req-v2",
+    "request_hash": "71db2a438f0dae7ddf702afd1f3e20862de6b37a89949be1dfeaf545f14effed",
+    "plan_id": "umeop-v1-11111111111111111111",
+    "plan_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "authorization_id": "umea-v1-22222222222222222222",
+    "authorization_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "consumption_binding_id": "umecb-v1-66666666666666666666",
+    "consumption_binding_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "claim_id": "umecl-v1-33333333333333333333",
+    "atomic_claim_hash": "0a32fd279ab8802f6b730d33174fdaff28b0a65d457a26215fb56934c2e06dca",
+    "finalized_record_hash": "3bcff73df961bcfad810608fb4e396f458ec786777884f3bdc0bfb4c7b900aab",
+    "execution_receipt_id": "umerec-v1-44444444444444444444",
+    "execution_receipt_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "bundle_id": "umeb-v1-55555555555555555555",
+    "bundle_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "projector_metadata": {
+    "projector_version": "m8r_05c_v1_3",
+    "canonicalization_version": "m8r_05b_03_canonical_v1",
+    "projected_at": "2026-09-15T21:31:00+08:00",
+    "timestamp_authority": "receipt.finalized_at_or_cli_calculated_at",
+    "calculated_at_source": "receipt.finalized_at"
+  },
+  "warnings": [],
+  "caveats": [],
+  "audit_package_hash": "4136c1862fd653591aa794da739c02d1961307de2a322c13bd35338865e31c69"
+}

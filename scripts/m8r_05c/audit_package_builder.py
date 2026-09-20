@@ -17,7 +17,12 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
-from .canonical import build_audit_package_id, hash_body_excluding_key, sha256_json
+from .canonical import (
+    build_audit_package_id,
+    build_audit_package_id_v2,
+    hash_body_excluding_key,
+    sha256_json,
+)
 from .citation_builder import CitationIndex
 from .errors import ProjectionError
 from .models import ProjectionInputs
@@ -25,6 +30,7 @@ from .evidence_projector import CURRENT_PROJECTOR_VERSION
 
 ROOT = Path(__file__).resolve().parents[2]
 AUDIT_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_audit_package.v1.schema.json"
+AUDIT_V2_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_audit_package.v2.schema.json"
 
 _PROJECTOR_VERSION = CURRENT_PROJECTOR_VERSION
 _CANONICALIZATION_VERSION = "m8r_05b_03_canonical_v1"
@@ -44,6 +50,7 @@ def build_audit_package(
     result_relative_path: str,
     projector_version: str = _PROJECTOR_VERSION,
     selection_provenance: dict | None = None,
+    output_schema_version: str = "unified_market_evidence_audit_package.v1",
 ) -> dict:
     """Build the audit package dict.
 
@@ -72,7 +79,12 @@ def build_audit_package(
     result_hash = result["result_hash"]
     bundle_id = bundle.get("bundle_id", "")
 
-    audit_package_id = build_audit_package_id(result_id, bundle_id)
+    if output_schema_version == "unified_market_evidence_audit_package.v1":
+        audit_package_id = build_audit_package_id(result_id, bundle_id)
+    elif output_schema_version == "unified_market_evidence_audit_package.v2":
+        audit_package_id = build_audit_package_id_v2(result_id, bundle_id)
+    else:
+        raise ProjectionError("unsupported_audit_schema_version")
 
     # Request identity.
     request_hash = sha256_json(request)
@@ -277,12 +289,16 @@ def build_audit_package(
         "canonicalization_version": _CANONICALIZATION_VERSION,
         "projected_at": calculated_at,
         "timestamp_authority": "receipt.finalized_at_or_cli_calculated_at",
-        "calculated_at_source": "cli_calculated_at",
+        "calculated_at_source": (
+            inputs.calculated_at_source
+            if output_schema_version == "unified_market_evidence_audit_package.v2"
+            else "cli_calculated_at"
+        ),
     }
 
     # Build body without audit_package_hash.
     body_without_hash: dict = {
-        "schema_version": "unified_market_evidence_audit_package.v1",
+        "schema_version": output_schema_version,
         "audit_package_id": audit_package_id,
         "result_id": result_id,
         "result_hash": result_hash,
@@ -322,7 +338,7 @@ def build_audit_package(
     audit_package = {**body_without_hash, "audit_package_hash": audit_package_hash}
 
     # Validate against schema.
-    schema = _load_audit_schema()
+    schema = json.loads((AUDIT_V2_SCHEMA_PATH if output_schema_version.endswith(".v2") else AUDIT_SCHEMA_PATH).read_text(encoding="utf-8"))
     errors = list(Draft202012Validator(schema).iter_errors(audit_package))
     if errors:
         error_msgs = [str(e.message) for e in errors[:3]]
