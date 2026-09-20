@@ -1,0 +1,83 @@
+{
+  "schema_version": "phase_g_pr_d_closure.v1",
+  "baseline_main": "25b1acda70e914a97adbcc6ad943c0b858e88422",
+  "branch": "phase-g/pr-d-activation-closure",
+  "governed_commits": {
+    "D1": "366cf93be1315b99cf6afac4f4bb4296da529aba",
+    "D2": "baf6b385be7eb686b00121fe4b477e907d3dea5b",
+    "D3": "3813b3b52c74a919577b2dc2464399ea44c65836"
+  },
+  "acceptance": {
+    "p0": {
+      "status": "PASS",
+      "passed": 74,
+      "expected": 74,
+      "ledger": "docs/acceptance_runs/phase_g_pr_d_p0_ledger.json",
+      "ledger_sha256": "35fb2dc3e261db7ca669cbac34950298eade3d369d1491318a4a9ac2bca3a76e"
+    },
+    "p1": {
+      "status": "PASS",
+      "passed": 8,
+      "expected": 8,
+      "ledger": "docs/acceptance_runs/phase_g_pr_d_controlled_live.json",
+      "ledger_sha256": "ac44aca68701e75bd44508986340fe5acac40d64cce1e491a7a80aa0eef89b91",
+      "cases": {
+        "L01": "PASS",
+        "L02": "PASS",
+        "L03": "PASS",
+        "L04": "PASS",
+        "L05": "PASS",
+        "L06": "PASS",
+        "L07": "PASS",
+        "L08": "PASS"
+      },
+      "bounded_network_attempts": 23
+    }
+  },
+  "current_authority": {
+    "capability_catalog": "unified_market_evidence_capability_catalog.v2",
+    "routing_matrix": "m8r_05b_capability_to_executor_routing_matrix.v2",
+    "local_service": "unified_market_evidence_local_service.v2",
+    "mcp_adapter": "unified_market_evidence_mcp_adapter.v2",
+    "preferred_request": "unified_market_evidence_request.v2",
+    "accepted_requests": [
+      "unified_market_evidence_request.v1",
+      "unified_market_evidence_request.v2"
+    ],
+    "emitted_result": "unified_market_evidence_result.v2",
+    "emitted_audit": "unified_market_evidence_audit_package.v2",
+    "mcp_tool_count": 6
+  },
+  "closure_gates": {
+    "result_v2": "VALID",
+    "audit_v2": "VALID",
+    "citation_graph": "CLEAN",
+    "v1_historical_read_verify": "PASS",
+    "v1_request_compatibility": "PASS",
+    "v2_preferred_request": "PASS",
+    "skill_runtime_catalog_sync": "PASS",
+    "workbench_truthfulness": "PASS",
+    "public_docs_truthfulness": "PASS",
+    "phase_g_attributable_regressions": 0,
+    "unauthorized_persistence": "NONE",
+    "scheduler": "NONE",
+    "polling": "NONE",
+    "background_refresh": "NONE",
+    "research_warehouse": "NONE"
+  },
+  "network": {
+    "controlled_live_only": true,
+    "full_market_payload_persisted": false,
+    "deterministic_tests_require_network": false
+  },
+  "portable_catalog": {
+    "path": "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+    "sha256": "997cd622408725870cd27ea6fce4631f65d69a3c29fb8a233160c918b98cf380"
+  },
+  "optional_browser_validation": {
+    "status": "NOT_RUN",
+    "reason": "playwright_unavailable:ModuleNotFoundError",
+    "network_activity": false
+  },
+  "status": "PASS"
+}

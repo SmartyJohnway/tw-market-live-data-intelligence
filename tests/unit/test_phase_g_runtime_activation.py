@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import inspect
 import json
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -18,10 +19,10 @@ from scripts.m8r_06_03_production_adapter import build_production_runtime_adapte
 
 
 ROOT = Path(__file__).resolve().parents[2]
-FROZEN_V1_SCHEMA_HASHES = {
-    "unified_market_evidence_request.v1.schema.json": "6b2062151abdbb22f48b6b5e280636425b782c0e3c4e9c633ff552498607cc0b",
-    "unified_market_evidence_result.v1.schema.json": "58fe88d33bbc5f53639cd3b9896ad0cf6106e00ec6e9f93630a45339c545f05f",
-    "unified_market_evidence_audit_package.v1.schema.json": "5877ad564e488c6d4d4c5ef6b405e3b8dde60f056327cc1babf16a5ec2364198",
+FROZEN_V1_SCHEMA_BLOBS = {
+    "unified_market_evidence_request.v1.schema.json": "b38c8c3adbeaf494bcf8aa489f7e3bd18cb31f91",
+    "unified_market_evidence_result.v1.schema.json": "feaba1cfc9e7913bb262447a7c011e0ff0e33b52",
+    "unified_market_evidence_audit_package.v1.schema.json": "38fc23480307e51fe9215ba55ce57dfba243bb5f",
 }
 EXPECTED_TOOLS = (
     "market_describe_capabilities",
@@ -116,8 +117,11 @@ def test_four_research_routes_are_registered_without_replacing_legacy_routes():
 
 
 def test_frozen_v1_request_result_and_audit_schema_bytes_are_unchanged():
-    for name, expected in FROZEN_V1_SCHEMA_HASHES.items():
-        assert hashlib.sha256((ROOT / "schemas" / name).read_bytes()).hexdigest() == expected
+    for name, expected in FROZEN_V1_SCHEMA_BLOBS.items():
+        actual = subprocess.check_output(
+            ["git", "rev-parse", f"HEAD:schemas/{name}"], cwd=ROOT, text=True
+        ).strip()
+        assert actual == expected
 
 
 def test_e11_f08_f10_no_scheduler_polling_background_research_store_or_issuer_authority():
