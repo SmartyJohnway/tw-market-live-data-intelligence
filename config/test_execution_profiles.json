@@ -169,7 +169,8 @@
         "tests/unit/test_phase_g_result_v2_projection.py",
         "tests/unit/test_phase_g_mode_c_v2.py",
         "tests/unit/test_phase_g_runtime_activation.py",
-        "tests/unit/test_phase_g_p0_acceptance_ledger.py"
+        "tests/unit/test_phase_g_p0_acceptance_ledger.py",
+        "tests/unit/test_phase_g_pr_d_live_acceptance.py"
       ],
       "network_policy": "no network; excludes tests marked network",
       "browser_policy": "does not install or require Playwright/Chromium",

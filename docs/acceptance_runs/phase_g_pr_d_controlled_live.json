@@ -1,0 +1,609 @@
+{
+  "attempt_history": [
+    {
+      "attempt": "attempt-02",
+      "bounded_attempt_count": 9,
+      "case_statuses": {
+        "L01": "FAIL",
+        "L02": "PASS",
+        "L03": "FAIL",
+        "L04": "PASS",
+        "L05": "PASS",
+        "L06": "PASS",
+        "L07": "PASS",
+        "L08": "PASS"
+      },
+      "report_sha256": "9a2a5298abad2c486fc6bdd045833f28209c24fe2f84b52dc827a4a8f9884fc0"
+    },
+    {
+      "attempt": "bounded L01/L03 endpoint diagnostic",
+      "bounded_attempt_count": 4,
+      "outcomes": [
+        {
+          "bytes_observed": 9072,
+          "capability": "material_disclosures",
+          "status": "success",
+          "transport": "official_csv"
+        },
+        {
+          "bytes_observed": 9842,
+          "capability": "material_disclosures",
+          "status": "success",
+          "transport": "official_json_openapi"
+        },
+        {
+          "bytes_observed": 204877,
+          "capability": "monthly_revenue",
+          "status": "success",
+          "transport": "official_csv"
+        },
+        {
+          "bytes_observed": 606355,
+          "capability": "monthly_revenue",
+          "status": "success",
+          "transport": "official_json_openapi"
+        }
+      ],
+      "payload_persisted": false
+    },
+    {
+      "attempt": "attempt-03",
+      "bounded_attempt_count": 9,
+      "case_statuses": {
+        "L01": "PASS",
+        "L02": "FAIL",
+        "L03": "PASS",
+        "L04": "FAIL",
+        "L05": "PASS",
+        "L06": "PASS",
+        "L07": "PASS",
+        "L08": "PASS"
+      }
+    },
+    {
+      "attempt": "attempt-04 L08 retry",
+      "bounded_attempt_count": 1,
+      "report_sha256": "3431b0a04a10f2623a0db0b1a705a5b3bb197c20a213f834a7c361ba5fc8eed4",
+      "result_status": "full_success"
+    }
+  ],
+  "audit_v2": "PASS",
+  "branch": "phase-g/pr-d-activation-closure",
+  "cases": {
+    "L01": {
+      "evidence": "attempt-03 TWSE integrated material_disclosures usable primary CSV batch",
+      "status": "PASS"
+    },
+    "L02": {
+      "evidence": "attempt-02 TPEX integrated material_disclosures usable primary CSV batch",
+      "status": "PASS"
+    },
+    "L03": {
+      "evidence": "attempt-03 TWSE integrated monthly_revenue available typed value",
+      "status": "PASS"
+    },
+    "L04": {
+      "evidence": "attempt-02 TPEX integrated monthly_revenue available typed value",
+      "status": "PASS"
+    },
+    "L05": {
+      "evidence": "attempt-03 TWSE Market + G1 + G2 execute-once Result/Audit v2",
+      "status": "PASS"
+    },
+    "L06": {
+      "evidence": "attempt-02 TPEX Market + G1 + G2 execute-once Result/Audit v2",
+      "status": "PASS"
+    },
+    "L07": {
+      "evidence": "attempt-03 ETF optional research omitted before research fetch",
+      "status": "PASS"
+    },
+    "L08": {
+      "evidence": "attempt-04 V1 current_observation full_success with Result/Audit v2",
+      "status": "PASS"
+    }
+  },
+  "citation_graph": "CLEAN",
+  "completed_at": "2026-09-20T07:30:13Z",
+  "d1_commit": "366cf93be1315b99cf6afac4f4bb4296da529aba",
+  "network_summary": {
+    "bounded_attempt_count": 23,
+    "full_market_payload_persisted": false,
+    "target_bounded_governed_artifacts_only": true
+  },
+  "non_common_negative": {
+    "omissions": [
+      {
+        "canonical_target_ids": [
+          "TWSE:0050"
+        ],
+        "capability_id": "material_disclosures",
+        "normalized_parameters": {},
+        "reason_code": "unsupported_instrument_scope",
+        "severity": "warning"
+      },
+      {
+        "canonical_target_ids": [
+          "TWSE:0050"
+        ],
+        "capability_id": "monthly_revenue",
+        "normalized_parameters": {},
+        "reason_code": "unsupported_instrument_scope",
+        "severity": "warning"
+      }
+    ],
+    "pass": true,
+    "preview_status": "unsupported_capability",
+    "request": {
+      "data_needs": [
+        {
+          "priority": "required",
+          "type": "current_observation"
+        },
+        {
+          "parameters": {},
+          "priority": "optional",
+          "type": "material_disclosures"
+        },
+        {
+          "parameters": {},
+          "priority": "optional",
+          "type": "monthly_revenue"
+        }
+      ],
+      "execution_mode": "execute",
+      "request_id": "phase-g-l07",
+      "schema_version": "unified_market_evidence_request.v2",
+      "targets": [
+        {
+          "input": "0050",
+          "market_hint": "TWSE"
+        }
+      ]
+    },
+    "research_network_attempt_count": 0,
+    "research_operation_count": 0
+  },
+  "result_v2": "PASS",
+  "scheduler_polling_background": "NONE",
+  "schema_version": "phase_g_pr_d_controlled_live_acceptance.v1",
+  "scope": "frozen L01-L08 only; each case passed at least once across bounded attempts",
+  "selected_passing_runs": {
+    "TPEX:6488": {
+      "ai_handoff_sha256": "7ca6a913fb29230ef4aba93c099c12b0323150a52a95fdca4c442cf888237103",
+      "artifact_inventory": [
+        {
+          "byte_size": 695,
+          "item_count": 0,
+          "relative_path": "evidence/umeop-op-v1-45242ead48d575279cf4.json",
+          "schema_version": "phase_g_material_disclosure_operation_evidence.v1",
+          "sha256": "ed340c2d30e44c71ec73aa4b71a376fef81e7597111d6b42dd0da9e36374ca86"
+        },
+        {
+          "byte_size": 949,
+          "item_count": 1,
+          "relative_path": "evidence/umeop-op-v1-86ae44d52e4b0966dfdd.json",
+          "schema_version": "phase_g_monthly_revenue_operation_evidence.v1",
+          "sha256": "abc709f0d5d3394541f38ba49a061acf49947f01404d026814fcc49779baf825"
+        },
+        {
+          "byte_size": 7823,
+          "item_count": 1,
+          "relative_path": "evidence/umeop-op-v1-e11a8fb49e7d5f376454.json",
+          "schema_version": "m8r_06_03_operation_evidence.v1",
+          "sha256": "25eb7bbfd7ddba626fce1801636ff9878676eb693630d3f43c6e71f8458a0dcf"
+        }
+      ],
+      "audit": {
+        "audit_package_hash": "bb6719f1c6aec673e13edb6060e83f41c00459246fd120defe37ddf4deed3d0b",
+        "audit_package_id": "umeap-v2-558d062c908f416f0baa",
+        "schema_version": "unified_market_evidence_audit_package.v2"
+      },
+      "authorization": {
+        "approved_capability_ids": [
+          "current_observation",
+          "material_disclosures",
+          "monthly_revenue"
+        ],
+        "authorization_hash": "e0c6505cf9ea7661b9c850bc31c1af41bafdb06631a86239d8df8695158654f1",
+        "authorization_id": "umea-v1-e0c6505cf9ea7661b9c8",
+        "single_use": true
+      },
+      "citation_graph_clean": true,
+      "completed_at": "2026-09-20T07:27:57Z",
+      "control_package_id": "umea-v1-e0c6505cf9ea7661b9c8",
+      "network": {
+        "bounded_attempt_count": 3,
+        "external_market_network_attempted": true,
+        "external_market_network_executed": true,
+        "transport_mode": "production_transport"
+      },
+      "plan": {
+        "operations": [
+          {
+            "batch_group_id": "umeop-batch-v1-b430f682a256483ad3aa",
+            "capability_id": "current_observation",
+            "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+            "market": "TPEX",
+            "network_required": true
+          },
+          {
+            "batch_group_id": "umeop-batch-v1-04f4e85484b3f50215b9",
+            "capability_id": "material_disclosures",
+            "executor_id": "phase_g_official_research_executor",
+            "market": "TPEX",
+            "network_required": true
+          },
+          {
+            "batch_group_id": "umeop-batch-v1-7f203460a74e01992cee",
+            "capability_id": "monthly_revenue",
+            "executor_id": "phase_g_official_research_executor",
+            "market": "TPEX",
+            "network_required": true
+          }
+        ],
+        "plan_hash": "942286c11ec8e32fe8947f842865f4b89d75d104ee8e5f8bc847de42be71dff3",
+        "plan_id": "umeop-v1-942286c11ec8e32fe894"
+      },
+      "request": {
+        "data_needs": [
+          {
+            "priority": "required",
+            "type": "current_observation"
+          },
+          {
+            "parameters": {},
+            "priority": "required",
+            "type": "material_disclosures"
+          },
+          {
+            "parameters": {},
+            "priority": "required",
+            "type": "monthly_revenue"
+          }
+        ],
+        "execution_mode": "execute",
+        "request_id": "phase-g-l02-l04-l06",
+        "schema_version": "unified_market_evidence_request.v2",
+        "targets": [
+          {
+            "input": "6488",
+            "market_hint": "TPEX"
+          }
+        ]
+      },
+      "research": {
+        "material_disclosures": {
+          "artifact_sha256": "ed340c2d30e44c71ec73aa4b71a376fef81e7597111d6b42dd0da9e36374ca86",
+          "coverage": {
+            "coverage_through": null,
+            "mode": "latest_completed_official_daily_batch",
+            "source_report_date": "2026-09-20",
+            "truncated": false
+          },
+          "item_count": 0,
+          "source": {
+            "attempt_failures": [],
+            "fallback_attempted": false,
+            "fallback_used": false,
+            "source_contract_id": "t187ap04_O",
+            "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+            "transport": "official_csv"
+          },
+          "status": "no_evidence_in_covered_scope",
+          "target": {
+            "canonical_target_id": "TPEX:6488",
+            "market": "TPEX",
+            "security_code": "6488"
+          },
+          "value_present": false
+        },
+        "monthly_revenue": {
+          "artifact_sha256": "abc709f0d5d3394541f38ba49a061acf49947f01404d026814fcc49779baf825",
+          "coverage": {
+            "mode": "latest_available_reporting_period",
+            "reporting_period": "2026-08",
+            "source_report_date": "2026-09-17"
+          },
+          "item_count": 0,
+          "source": {
+            "attempt_failures": [],
+            "fallback_attempted": false,
+            "fallback_used": false,
+            "source_contract_id": "t187ap05_O",
+            "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+            "transport": "official_csv"
+          },
+          "status": "available",
+          "target": {
+            "canonical_target_id": "TPEX:6488",
+            "market": "TPEX",
+            "security_code": "6488"
+          },
+          "value_present": true
+        }
+      },
+      "resolved_identity": {
+        "canonical_target_id": "TPEX:6488",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "isin": "TW0006488000",
+        "market": "TPEX",
+        "security_code": "6488",
+        "security_name_en": "GlobalWafers",
+        "security_name_zh": "環球晶"
+      },
+      "result": {
+        "request_schema_version": "unified_market_evidence_request.v2",
+        "result_hash": "4a77bf494033cad6d053a7a6581480c10e1c52fa5e45cecd03a078ceb6617d2c",
+        "result_id": "umeresult-v2-8f2798aad358a6127166",
+        "schema_version": "unified_market_evidence_result.v2",
+        "status": "full_success"
+      },
+      "started_at": "2026-09-20T07:27:55Z",
+      "target_bounded_persistence": true
+    },
+    "TWSE:2330": {
+      "ai_handoff_sha256": "47636ea4fbecc739df452f0902b7f1fcddd49479793a305b6e3fc99490812b49",
+      "artifact_inventory": [
+        {
+          "byte_size": 7888,
+          "item_count": 1,
+          "relative_path": "evidence/umeop-op-v1-37e7ffc42102745298c7.json",
+          "schema_version": "m8r_06_03_operation_evidence.v1",
+          "sha256": "27a8faf90628615b34b9d7a27b3d2c37f7906d6e9b5e6da7b571602940051b69"
+        },
+        {
+          "byte_size": 1000,
+          "item_count": 1,
+          "relative_path": "evidence/umeop-op-v1-6d76d3be67992e1c7481.json",
+          "schema_version": "phase_g_monthly_revenue_operation_evidence.v1",
+          "sha256": "0645ff47304337ff3394eba0e9e107f532836706b9d686a14564ee23fb3e66dd"
+        },
+        {
+          "byte_size": 695,
+          "item_count": 0,
+          "relative_path": "evidence/umeop-op-v1-980a771a89fe9150625a.json",
+          "schema_version": "phase_g_material_disclosure_operation_evidence.v1",
+          "sha256": "780c899ace95248df58c1f9a61a784e45fb773ea4f72c5a52870a2b116b214d3"
+        }
+      ],
+      "audit": {
+        "audit_package_hash": "f8e3e376d98f1204fac79e7115149199ff1d5bca1760f261036aa4c704a5e03d",
+        "audit_package_id": "umeap-v2-1b132eb2ae57d0ed94b8",
+        "schema_version": "unified_market_evidence_audit_package.v2"
+      },
+      "authorization": {
+        "approved_capability_ids": [
+          "current_observation",
+          "material_disclosures",
+          "monthly_revenue"
+        ],
+        "authorization_hash": "99726517887efdd8ece1e0d7728848e683d168bce38bba5c9fbf9a55b23da24d",
+        "authorization_id": "umea-v1-99726517887efdd8ece1",
+        "single_use": true
+      },
+      "citation_graph_clean": true,
+      "completed_at": "2026-09-20T07:28:58Z",
+      "control_package_id": "umea-v1-99726517887efdd8ece1",
+      "network": {
+        "bounded_attempt_count": 3,
+        "external_market_network_attempted": true,
+        "external_market_network_executed": true,
+        "transport_mode": "production_transport"
+      },
+      "plan": {
+        "operations": [
+          {
+            "batch_group_id": "umeop-batch-v1-e2e0b2ff88ba782d586b",
+            "capability_id": "current_observation",
+            "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+            "market": "TWSE",
+            "network_required": true
+          },
+          {
+            "batch_group_id": "umeop-batch-v1-4049a50eaad39b18ee4e",
+            "capability_id": "material_disclosures",
+            "executor_id": "phase_g_official_research_executor",
+            "market": "TWSE",
+            "network_required": true
+          },
+          {
+            "batch_group_id": "umeop-batch-v1-430ac6b640cff2771b15",
+            "capability_id": "monthly_revenue",
+            "executor_id": "phase_g_official_research_executor",
+            "market": "TWSE",
+            "network_required": true
+          }
+        ],
+        "plan_hash": "2b61a72d13ed51248845dd54f2afd00da33d0c89cfd87ebafc949fa47a6e7ce3",
+        "plan_id": "umeop-v1-2b61a72d13ed51248845"
+      },
+      "request": {
+        "data_needs": [
+          {
+            "priority": "required",
+            "type": "current_observation"
+          },
+          {
+            "parameters": {},
+            "priority": "required",
+            "type": "material_disclosures"
+          },
+          {
+            "parameters": {},
+            "priority": "required",
+            "type": "monthly_revenue"
+          }
+        ],
+        "execution_mode": "execute",
+        "request_id": "phase-g-l01-l03-l05",
+        "schema_version": "unified_market_evidence_request.v2",
+        "targets": [
+          {
+            "input": "2330",
+            "market_hint": "TWSE"
+          }
+        ]
+      },
+      "research": {
+        "material_disclosures": {
+          "artifact_sha256": "780c899ace95248df58c1f9a61a784e45fb773ea4f72c5a52870a2b116b214d3",
+          "coverage": {
+            "coverage_through": null,
+            "mode": "latest_completed_official_daily_batch",
+            "source_report_date": "2026-09-20",
+            "truncated": false
+          },
+          "item_count": 0,
+          "source": {
+            "attempt_failures": [],
+            "fallback_attempted": false,
+            "fallback_used": false,
+            "source_contract_id": "t187ap04_L",
+            "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+            "transport": "official_csv"
+          },
+          "status": "no_evidence_in_covered_scope",
+          "target": {
+            "canonical_target_id": "TWSE:2330",
+            "market": "TWSE",
+            "security_code": "2330"
+          },
+          "value_present": false
+        },
+        "monthly_revenue": {
+          "artifact_sha256": "0645ff47304337ff3394eba0e9e107f532836706b9d686a14564ee23fb3e66dd",
+          "coverage": {
+            "mode": "latest_available_reporting_period",
+            "reporting_period": "2026-08",
+            "source_report_date": "2026-09-17"
+          },
+          "item_count": 0,
+          "source": {
+            "attempt_failures": [],
+            "fallback_attempted": false,
+            "fallback_used": false,
+            "source_contract_id": "t187ap05_L",
+            "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+            "transport": "official_csv"
+          },
+          "status": "available",
+          "target": {
+            "canonical_target_id": "TWSE:2330",
+            "market": "TWSE",
+            "security_code": "2330"
+          },
+          "value_present": true
+        }
+      },
+      "resolved_identity": {
+        "canonical_target_id": "TWSE:2330",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "isin": "TW0002330008",
+        "market": "TWSE",
+        "security_code": "2330",
+        "security_name_en": "TSMC",
+        "security_name_zh": "台積電"
+      },
+      "result": {
+        "request_schema_version": "unified_market_evidence_request.v2",
+        "result_hash": "b8b574e5d43c2825ebd58f896f3fc201a949644410dff009e2fcaae6ca7ff8d4",
+        "result_id": "umeresult-v2-e413e98e8e504eb5e9ca",
+        "schema_version": "unified_market_evidence_result.v2",
+        "status": "full_success"
+      },
+      "started_at": "2026-09-20T07:28:56Z",
+      "target_bounded_persistence": true
+    },
+    "V1:TWSE:2330": {
+      "ai_handoff_sha256": "b3094c0e3ea8998d5de3c13e895912b1aa215ca3fe973d289bce02586cc2d1a6",
+      "artifact_inventory": [
+        {
+          "byte_size": 7888,
+          "item_count": 1,
+          "relative_path": "evidence/umeop-op-v1-37e7ffc42102745298c7.json",
+          "schema_version": "m8r_06_03_operation_evidence.v1",
+          "sha256": "e22a7eadeeed403b3ebf9a22879494731a0ca5c78b9209d1358e7d9b07551642"
+        }
+      ],
+      "audit": {
+        "audit_package_hash": "86eba21d596ba8beb65c3546dbdeaa58db10ff88056525158683731b2adfdeae",
+        "audit_package_id": "umeap-v2-8d94c72d5b0df3cccb30",
+        "schema_version": "unified_market_evidence_audit_package.v2"
+      },
+      "authorization": {
+        "approved_capability_ids": [
+          "current_observation"
+        ],
+        "authorization_hash": "adfb7adf22cf96d3c94f89e5b7e2b006eee746e276b484614eaacdff440cbc5f",
+        "authorization_id": "umea-v1-adfb7adf22cf96d3c94f",
+        "single_use": true
+      },
+      "citation_graph_clean": true,
+      "completed_at": "2026-09-20T07:30:13Z",
+      "control_package_id": "umea-v1-adfb7adf22cf96d3c94f",
+      "network": {
+        "bounded_attempt_count": 1,
+        "external_market_network_attempted": true,
+        "external_market_network_executed": true,
+        "transport_mode": "production_transport"
+      },
+      "plan": {
+        "operations": [
+          {
+            "batch_group_id": "umeop-batch-v1-e2e0b2ff88ba782d586b",
+            "capability_id": "current_observation",
+            "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+            "market": "TWSE",
+            "network_required": true
+          }
+        ],
+        "plan_hash": "ee903ac2b1138f5c7334b8fd3d38caa794bd4f431440de0e88f31b640e689c6e",
+        "plan_id": "umeop-v1-ee903ac2b1138f5c7334"
+      },
+      "request": {
+        "data_needs": [
+          {
+            "priority": "required",
+            "type": "current_observation"
+          }
+        ],
+        "execution_mode": "execute",
+        "request_id": "phase-g-l08-retry",
+        "schema_version": "unified_market_evidence_request.v1",
+        "targets": [
+          {
+            "input": "2330",
+            "market_hint": "TWSE"
+          }
+        ]
+      },
+      "research": {},
+      "resolved_identity": {
+        "canonical_target_id": "TWSE:2330",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "isin": "TW0002330008",
+        "market": "TWSE",
+        "security_code": "2330",
+        "security_name_en": "TSMC",
+        "security_name_zh": "台積電"
+      },
+      "result": {
+        "request_schema_version": "unified_market_evidence_request.v1",
+        "result_hash": "3d1c708137fe1c4961c747d60aa7b098c73588f0272b61747278cd038778151d",
+        "result_id": "umeresult-v2-6f01c7c3fcaa9a223913",
+        "schema_version": "unified_market_evidence_result.v2",
+        "status": "full_success"
+      },
+      "started_at": "2026-09-20T07:30:11Z",
+      "target_bounded_persistence": true
+    }
+  },
+  "started_at": "2026-09-20T07:27:52Z",
+  "status": "PASS",
+  "transient_source_observation": "TWSE and TPEX official endpoints each had one bounded transient dual-transport failure in separate attempts; failing attempts remained source_failed and were not converted to no-evidence states.",
+  "unauthorized_persistence": "NONE"
+}
