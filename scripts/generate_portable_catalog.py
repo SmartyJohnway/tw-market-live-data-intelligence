@@ -23,14 +23,42 @@ def get_file_sha256(path: Path) -> str:
     normalized_text = text.replace("\r\n", "\n").replace("\r", "\n")
     return hashlib.sha256(normalized_text.encode("utf-8")).hexdigest()
 
-def generate_portable_json_obj(catalog: dict, sha256: str) -> dict:
+def get_canonical_source_lineage(canonical_path: Path) -> dict:
+    """Return Git lineage when the canonical input is tracked in this repo."""
+    try:
+        relative_path = canonical_path.resolve().relative_to(ROOT.resolve()).as_posix()
+    except ValueError:
+        return {}
+
+    def git_stdout(*args: str) -> str:
+        completed = subprocess.run(
+            ["git", *args], cwd=ROOT, capture_output=True, text=True, check=False
+        )
+        return completed.stdout.strip() if completed.returncode == 0 else ""
+
+    lineage = {}
+    commit = git_stdout("log", "-1", "--format=%H", "--", relative_path)
+    blob = git_stdout("rev-parse", f"HEAD:{relative_path}")
+    if commit:
+        lineage["generated_from_commit"] = commit
+    if blob:
+        lineage["canonical_git_blob_sha"] = blob
+    return lineage
+
+
+def generate_portable_json_obj(
+    catalog: dict, sha256: str, source_lineage: dict | None = None
+) -> dict:
+    metadata = {
+        "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json",
+        "canonical_sha256": sha256,
+        "generator_version": "PHASE-G-D5-v1",
+    }
+    metadata.update(source_lineage or {})
     return {
         "schema_version": catalog["schema_version"],
-        "portable_metadata": {
-            "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json",
-            "canonical_sha256": sha256,
-            "generator_version": "PHASE-G-D3-v1"
-        },
+        "portable_metadata": metadata,
+        "contract_versions": catalog["contract_versions"],
         "supported_markets": catalog.get("supported_markets", {}),
         "data_need_capabilities": catalog.get("data_need_capabilities", []),
         "execution": catalog.get("execution", {}),
@@ -48,20 +76,27 @@ def generate_portable_markdown_text(portable_data: dict, sha256: str) -> str:
         "",
         "Use this guide to verify the supported capabilities and limits when composing Unified Requests.",
         "",
+        "`Support Status` is authoritative for executability. An approval boundary does not make a `contract_supported` capability a standalone executable route.",
+        "",
         "## 1. Supported Data Needs",
         "",
-        "| Capability ID | Description | Supported Markets | Execution Gate | Coverage | History |",
-        "|---|---|---|---|---|---|",
+        "| Capability ID | Support Status | Supported Markets | Approval Boundary | Coverage | History | Known Runtime Limitation |",
+        "|---|---|---|---|---|---|---|",
     ]
 
     for cap in portable_data["data_need_capabilities"]:
         cid = cap["capability_id"]
-        desc = cap["description"]
         markets = ", ".join(cap["supported_markets"])
         gate = "Approval Required" if cap["requires_approval_for_execution"] else "Direct (No Approval)"
         coverage = ", ".join(cap.get("coverage_modes", [])) or "catalog-defined"
         history = "Yes" if cap.get("historical_lookup_supported") else "No"
-        md_lines.append(f"| `{cid}` | {desc} | {markets} | {gate} | {coverage} | {history} |")
+        status = cap["support_status"]
+        limitations = "; ".join(cap.get("known_limitations", [])) or "catalog-defined"
+        if status != "runtime_executable":
+            limitations = f"Not currently runtime-executable; {limitations}"
+        md_lines.append(
+            f"| `{cid}` | `{status}` | {markets} | {gate} | {coverage} | {history} | {limitations} |"
+        )
 
     md_lines.extend([
         "",
@@ -105,7 +140,9 @@ def generate_portable_catalog(
     with canonical_path.open("r", encoding="utf-8") as f:
         catalog = json.load(f)
 
-    portable_data = generate_portable_json_obj(catalog, sha256)
+    portable_data = generate_portable_json_obj(
+        catalog, sha256, get_canonical_source_lineage(canonical_path)
+    )
 
     portable_json_path.parent.mkdir(parents=True, exist_ok=True)
     portable_guide_path.parent.mkdir(parents=True, exist_ok=True)

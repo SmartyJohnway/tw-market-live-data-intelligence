@@ -3,7 +3,17 @@
   "portable_metadata": {
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json",
     "canonical_sha256": "a4d296b37b65263189c14a847aedffa4b12107d187e9417d359bbe7d196c5a63",
-    "generator_version": "PHASE-G-D3-v1"
+    "generator_version": "PHASE-G-D5-v1",
+    "generated_from_commit": "feee5fa31f7e7b6b7c735410ed476850921a686f",
+    "canonical_git_blob_sha": "8c787623d0cbc69347052692cf89f38484890c47"
+  },
+  "contract_versions": {
+    "accepted_request_schema_versions": [
+      "unified_market_evidence_request.v1",
+      "unified_market_evidence_request.v2"
+    ],
+    "preferred_request_schema_version": "unified_market_evidence_request.v2",
+    "emitted_result_schema_version": "unified_market_evidence_result.v2"
   },
   "supported_markets": {
     "TWSE": {

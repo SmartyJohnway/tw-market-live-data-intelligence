@@ -25,6 +25,17 @@ def test_current_portable_catalog_is_exact_generated_v2_projection():
     canonical = json.loads(CATALOG.read_text(encoding="utf-8"))
     portable = json.loads(PORTABLE.read_text(encoding="utf-8"))
     assert portable["schema_version"] == canonical["schema_version"] == "unified_market_evidence_capability_catalog.v2"
+    assert portable["contract_versions"] == canonical["contract_versions"]
+    assert portable["portable_metadata"]["generated_from_commit"] == subprocess.check_output(
+        ["git", "log", "-1", "--format=%H", "--", CATALOG.relative_to(ROOT).as_posix()],
+        cwd=ROOT,
+        text=True,
+    ).strip()
+    assert portable["portable_metadata"]["canonical_git_blob_sha"] == subprocess.check_output(
+        ["git", "rev-parse", f"HEAD:{CATALOG.relative_to(ROOT).as_posix()}"],
+        cwd=ROOT,
+        text=True,
+    ).strip()
     capabilities = {item["capability_id"]: item for item in portable["data_need_capabilities"]}
     for capability_id in ("material_disclosures", "monthly_revenue"):
         assert capabilities[capability_id]["support_status"] == "runtime_executable"
@@ -33,6 +44,11 @@ def test_current_portable_catalog_is_exact_generated_v2_projection():
             "instrument_families": ["company_share"],
             "instrument_types": ["common_share"],
         }
+    assert capabilities["recent_performance"]["support_status"] == "contract_supported"
+    guide = (ROOT / "skills/tw-market-evidence-agent/references/capability_quick_guide.md").read_text(encoding="utf-8")
+    assert "| Capability ID | Support Status |" in guide
+    assert "`recent_performance` | `contract_supported`" in guide
+    assert "approval boundary does not make a `contract_supported` capability" in guide
 
 
 def test_current_skill_guides_and_public_docs_are_truthful():

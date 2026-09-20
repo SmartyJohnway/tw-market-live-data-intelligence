@@ -5,7 +5,13 @@
   "governed_commits": {
     "D1": "366cf93be1315b99cf6afac4f4bb4296da529aba",
     "D2": "baf6b385be7eb686b00121fe4b477e907d3dea5b",
-    "D3": "3813b3b52c74a919577b2dc2464399ea44c65836"
+    "D3": "3813b3b52c74a919577b2dc2464399ea44c65836",
+    "D4": "28de4ccd6e873f95458be39834e96247d05b53ad",
+    "D5": {
+      "status": "materialized_by_the_commit_containing_this_closure_ledger",
+      "subject": "phase-g: close portable capability truthfulness gap",
+      "sha_omitted": "avoids self-referential closure content"
+    }
   },
   "acceptance": {
     "p0": {
@@ -20,7 +26,7 @@
       "passed": 8,
       "expected": 8,
       "ledger": "docs/acceptance_runs/phase_g_pr_d_controlled_live.json",
-      "ledger_sha256": "ac44aca68701e75bd44508986340fe5acac40d64cce1e491a7a80aa0eef89b91",
+      "ledger_sha256": "48e6e327de39179d9a50919c7d7470f6ed8a69e58ce996df37819b69208283a8",
       "cases": {
         "L01": "PASS",
         "L02": "PASS",
@@ -70,9 +76,19 @@
     "full_market_payload_persisted": false,
     "deterministic_tests_require_network": false
   },
+  "controlled_live_identity_authority": {
+    "type": "acceptance-local qualified Security Master subset",
+    "included_targets": [
+      "TWSE:2330",
+      "TPEX:6488",
+      "TWSE:0050"
+    ],
+    "official_security_master_acquisition_bootstrap_proven": false,
+    "scope_note": "The activated PR-D production runtime used this acceptance-local qualified subset. It did not re-prove official Security Master acquisition/bootstrap and does not replace earlier Security Master lifecycle acceptance. No fixture/source payload was substituted for G1/G2 official network data."
+  },
   "portable_catalog": {
     "path": "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
-    "sha256": "997cd622408725870cd27ea6fce4631f65d69a3c29fb8a233160c918b98cf380"
+    "sha256": "175f4bea014689ff59594df494d3938793668179633319a699158811a4c99e92"
   },
   "optional_browser_validation": {
     "status": "NOT_RUN",

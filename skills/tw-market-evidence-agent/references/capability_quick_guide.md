@@ -6,19 +6,21 @@
 
 Use this guide to verify the supported capabilities and limits when composing Unified Requests.
 
+`Support Status` is authoritative for executability. An approval boundary does not make a `contract_supported` capability a standalone executable route.
+
 ## 1. Supported Data Needs
 
-| Capability ID | Description | Supported Markets | Execution Gate | Coverage | History |
-|---|---|---|---|---|---|
-| `identity` | Retrieves the canonical security identity. | TWSE, TPEX, TAIFEX | Direct (No Approval) | catalog-defined | No |
-| `current_observation` | Retrieves the latest available market data snapshot. Not guaranteed to be realtime. | TWSE, TPEX | Approval Required | catalog-defined | No |
-| `official_eod_reference` | Retrieves the official End of Day reference data. | TWSE, TPEX | Approval Required | catalog-defined | No |
-| `session_status` | Retrieves the market session status, local clock and closure states. | TWSE, TPEX | Approval Required | catalog-defined | No |
-| `recent_performance` | Retrieves descriptive performance metrics over a specified lookback period. | TWSE, TPEX | Approval Required | catalog-defined | No |
-| `source_currentness` | Retrieves metadata concerning retrieval timestamp, effective trade date, and timing class. | TWSE, TPEX, TAIFEX | Direct (No Approval) | catalog-defined | No |
-| `evidence_quality` | Retrieves details on data coverage, partial results, and available fallbacks. | TWSE, TPEX, TAIFEX | Direct (No Approval) | catalog-defined | No |
-| `material_disclosures` | Retrieves official material disclosures from the latest completed official daily batch for eligible Taiwan common shares. | TWSE, TPEX | Approval Required | latest_completed_official_daily_batch | No |
-| `monthly_revenue` | Retrieves the latest available official monthly-revenue reporting period for eligible Taiwan common shares. | TWSE, TPEX | Approval Required | latest_available_reporting_period | No |
+| Capability ID | Support Status | Supported Markets | Approval Boundary | Coverage | History | Known Runtime Limitation |
+|---|---|---|---|---|---|---|
+| `identity` | `contract_supported` | TWSE, TPEX, TAIFEX | Direct (No Approval) | catalog-defined | No | Not currently runtime-executable; identity is resolved by the installation-local Security Master; unsupported or uninitialized identities fail closed |
+| `current_observation` | `runtime_executable` | TWSE, TPEX | Approval Required | catalog-defined | No | not guaranteed realtime; source availability may produce partial results; TAIFEX current observation is not yet implemented |
+| `official_eod_reference` | `runtime_executable` | TWSE, TPEX | Approval Required | catalog-defined | No | publication grace remains provisional and configurable |
+| `session_status` | `runtime_executable` | TWSE, TPEX | Approval Required | catalog-defined | No | TPEX closure authority follows synchronized-market assumption; TAIFEX day-session policy is provisional; TAIFEX night-session interpretation is unsupported; TAIFEX Taipei closure authority is unresolved |
+| `recent_performance` | `contract_supported` | TWSE, TPEX | Approval Required | catalog-defined | No | Not currently runtime-executable; not every requested evidence need is runtime-executable yet; not_yet_implemented |
+| `source_currentness` | `contract_supported` | TWSE, TPEX, TAIFEX | Direct (No Approval) | catalog-defined | No | Not currently runtime-executable; catalog-defined |
+| `evidence_quality` | `contract_supported` | TWSE, TPEX, TAIFEX | Direct (No Approval) | catalog-defined | No | Not currently runtime-executable; catalog-defined |
+| `material_disclosures` | `runtime_executable` | TWSE, TPEX | Approval Required | latest_completed_official_daily_batch | No | initial Phase G coverage is the latest completed official daily batch only; bounded historical lookup is not supported in initial G1; initial research eligibility is limited to company_share/common_share |
+| `monthly_revenue` | `runtime_executable` | TWSE, TPEX | Approval Required | latest_available_reporting_period | No | initial G2 provides the latest available reporting period only; arbitrary monthly-revenue history is not supported in initial G2; initial research eligibility is limited to company_share/common_share |
 
 ## 2. Market Support Status
 

@@ -38,6 +38,10 @@ def test_phase_g_final_acceptance_ledgers_are_complete_and_bound():
     assert {case: value["status"] for case, value in p1["cases"].items()} == {
         f"L{index:02d}": "PASS" for index in range(1, 9)
     }
+    assert closure["governed_commits"]["D4"] == "28de4ccd6e873f95458be39834e96247d05b53ad"
+    assert closure["governed_commits"]["D5"]["status"] == "materialized_by_the_commit_containing_this_closure_ledger"
+    assert closure["controlled_live_identity_authority"]["type"] == "acceptance-local qualified Security Master subset"
+    assert closure["controlled_live_identity_authority"]["official_security_master_acquisition_bootstrap_proven"] is False
 
 
 def test_phase_g_current_authority_and_six_tool_surface_are_closed():

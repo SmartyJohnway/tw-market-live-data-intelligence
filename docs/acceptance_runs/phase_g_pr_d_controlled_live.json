@@ -105,6 +105,16 @@
   },
   "citation_graph": "CLEAN",
   "completed_at": "2026-09-20T07:30:13Z",
+  "controlled_live_identity_authority": {
+    "type": "acceptance-local qualified Security Master subset",
+    "included_targets": [
+      "TWSE:2330",
+      "TPEX:6488",
+      "TWSE:0050"
+    ],
+    "official_security_master_acquisition_bootstrap_proven": false,
+    "scope_note": "This controlled acceptance did not re-prove official Security Master acquisition/bootstrap and does not replace earlier Security Master lifecycle acceptance."
+  },
   "d1_commit": "366cf93be1315b99cf6afac4f4bb4296da529aba",
   "network_summary": {
     "bounded_attempt_count": 23,

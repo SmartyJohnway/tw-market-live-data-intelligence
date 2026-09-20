@@ -25,6 +25,12 @@ def test_l01_l08_each_have_at_least_one_truthful_pass():
         "full_market_payload_persisted": False,
         "target_bounded_governed_artifacts_only": True,
     }
+    assert report["controlled_live_identity_authority"] == {
+        "type": "acceptance-local qualified Security Master subset",
+        "included_targets": ["TWSE:2330", "TPEX:6488", "TWSE:0050"],
+        "official_security_master_acquisition_bootstrap_proven": False,
+        "scope_note": "This controlled acceptance did not re-prove official Security Master acquisition/bootstrap and does not replace earlier Security Master lifecycle acceptance.",
+    }
 
 
 def test_selected_twse_tpex_and_v1_runs_are_full_success_v2_packages():
