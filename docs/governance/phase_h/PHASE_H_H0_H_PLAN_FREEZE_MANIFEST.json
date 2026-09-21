@@ -1,0 +1,67 @@
+{
+  "schema_version": "phase_h_h0_h_plan_freeze_manifest.v1",
+  "status": "OWNER_ACCEPTED_FROZEN",
+  "freeze_date": "2026-09-21",
+  "repository_baseline": "dcafdfd756c6c32f138690d33900c59b0786ff7e",
+  "upstream_authority": {
+    "h0_g_merge_authority": "dcafdfd756c6c32f138690d33900c59b0786ff7e",
+    "h0_a_through_h0_g_integrity_required": true
+  },
+  "owner_acceptance": {
+    "decision": "OWNER_ACCEPTED_FROZEN",
+    "accepted_amendments": ["A1", "A2"],
+    "planning_blockers": 0,
+    "next_implementation_readiness": "H-IMP-0_AFTER_GIT_CHECKPOINT"
+  },
+  "planning_artifacts": [
+    {
+      "path": "docs/governance/phase_h/Phase_H_H0_H_Acceptance_and_Implementation_Plan.md",
+      "sha256": "7224aa4caf50bced219fb0ac2f82a0c7824d06aaa872472a4c0a03e6552c7d2a",
+      "bytes": 21416
+    },
+    {
+      "path": "docs/governance/phase_h/PHASE_H_H0_H_IMPLEMENTATION_GATE_MATRIX.json",
+      "sha256": "645be96ad5290d11f46750509b00af235405559836e2aa1bc45636008d67d667",
+      "bytes": 33774
+    },
+    {
+      "path": "docs/governance/phase_h/PHASE_H_H0_H_ACCEPTANCE_LEDGER.json",
+      "sha256": "a55e2efb0af335c8d686326ab230edf85c77954409359e51daebc8b0cc2f4c46",
+      "bytes": 24732
+    }
+  ],
+  "planning_truth": {
+    "implementation_tranche_count": 13,
+    "acceptance_requirement_count": 53,
+    "source_route_count": 21,
+    "explicit_tranche_dag": "ACYCLIC",
+    "acceptance_evidence_dag": "ACYCLIC"
+  },
+  "runtime_truth": {
+    "preferred_runtime_request_schema_version": "unified_market_evidence_request.v2",
+    "v3_runtime_authority": "inactive",
+    "phase_h_active_source_count": 0,
+    "mcp_tool_count": 6
+  },
+  "authorization_truth": {
+    "production_implementation_authorized": false,
+    "runtime_mutation_authorized": false,
+    "source_activation_authorized": false,
+    "bounded_live_authorized": false,
+    "h3_external_research_authorized": false,
+    "licensed_provider_integration_authorized": false,
+    "preferred_v3_promotion_authorized": false,
+    "production_release_authorized": false
+  },
+  "mutations": {
+    "production_implementation": false,
+    "runtime": false,
+    "source_activation": false,
+    "preferred_request": false,
+    "network": false
+  },
+  "notes": [
+    "Manifest intentionally does not contain its own hash.",
+    "H0-H freezes planning governance only; H-IMP-0 is not started."
+  ]
+}
