@@ -1,0 +1,17 @@
+{
+  "fixture_kind": "NON_AUTHORITATIVE_TEST_ONLY",
+  "target": "TWSE:2330",
+  "comparison_window": {"start": "2026-08-01", "end": "2026-08-28"},
+  "cases": {
+    "F1": "no_material_discontinuity_detected",
+    "F2": "discontinuity_detected_reference_available",
+    "F3": "discontinuity_detected_reference_unavailable",
+    "F4": "coverage_incomplete",
+    "F5": "coverage_incomplete",
+    "F6": "coverage_incomplete",
+    "F7": "no_material_discontinuity_detected",
+    "F8": "discontinuity_detected_reference_available",
+    "F9": "coverage_incomplete",
+    "F10": "discontinuity_detected_reference_unavailable"
+  }
+}

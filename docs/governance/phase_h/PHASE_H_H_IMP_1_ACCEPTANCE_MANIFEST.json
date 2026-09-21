@@ -1,0 +1,101 @@
+{
+  "schema_version": "phase_h_h_imp_1_acceptance_manifest.v1",
+  "status": "OWNER_ACCEPTED_COMPLETED",
+  "acceptance_date": "2026-09-21",
+  "repository_baseline": "64b7b5ffed4759eb8afac8aa5eb449147cfd0a5d",
+  "branch": "phase-h/h-imp-1-h4-deterministic-safety",
+  "tranche": "H-IMP-1",
+  "owner_acceptance": {
+    "accepted_amendments": ["A1", "A2"],
+    "implementation_blockers": 0
+  },
+  "component": {
+    "name": "phase_h_discontinuity_safety",
+    "component_mode": "dormant_pure_zero_network",
+    "deterministic_rule_version": "phase_h_discontinuity_safety.v1",
+    "runtime_wiring": "none",
+    "request_data_need": "none",
+    "planner_route": "none",
+    "executor": "none",
+    "network_capability": "none",
+    "supported_states": [
+      "no_material_discontinuity_detected",
+      "discontinuity_detected_reference_available",
+      "discontinuity_detected_reference_unavailable",
+      "coverage_incomplete"
+    ]
+  },
+  "established_semantics": [
+    "h2_h3_semantic_prevalidation",
+    "exact_target_consistency",
+    "exactly_one_usable_h3_available_baseline",
+    "h3_derived_comparison_window",
+    "start_end_interval_event_timing",
+    "complete_coverage_requirement",
+    "coverage_first_state_precedence",
+    "effective_event_detection",
+    "official_reference_availability_distinction",
+    "future_preannouncement_safety",
+    "multiple_event_traceability",
+    "exact_failed_source_provenance",
+    "source_binding_window_failure_accumulation",
+    "genuine_unresolved_revision_distinction",
+    "officially_linked_revision_non_mislabeling",
+    "raw_metric_interpretation_separation",
+    "deterministic_repeatability",
+    "zero_network_operation",
+    "no_filesystem_persistence"
+  ],
+  "not_established": [
+    "h1_source_adapters",
+    "h2_source_adapters",
+    "h3_acquisition",
+    "h3_external_research",
+    "result_v3_projection",
+    "audit_v3_projection",
+    "ai_handoff_projection",
+    "h4_runtime_execution_wiring",
+    "source_activation",
+    "bounded_live_acceptance",
+    "preferred_v3_promotion",
+    "production_release"
+  ],
+  "acceptance_requirements": {
+    "H0H-H4-001": "PASS",
+    "H0H-H4-002": "PASS",
+    "H0H-H4-003": "PASS",
+    "H0H-H4-004": "PASS",
+    "H0H-H4-005": "PASS"
+  },
+  "runtime_authority": {
+    "preferred_request_schema_version": "unified_market_evidence_request.v2",
+    "v3_execution_authority": "inactive",
+    "result_production_authority": "unified_market_evidence_result.v2",
+    "audit_production_authority": "V2",
+    "local_service_contract_version": "unified_market_evidence_local_service.v2",
+    "mcp_adapter_version": "unified_market_evidence_mcp_adapter.v2",
+    "mcp_tool_count": 6,
+    "phase_h_active_source_count": 0
+  },
+  "implementation_checkpoint_evidence": [
+    {"path": "server/services/phase_h_discontinuity_safety.py", "sha256": "91163c3f1988c75c5f4b413d109e19d646b5ad9bfcb40e96a485a356f9180727", "bytes": 10437},
+    {"path": "tests/unit/test_phase_h_imp_1_h4_deterministic_safety.py", "sha256": "bdb0bdad97cd07c2a72ddacc41036a37f3110e4ad35cebb63a84e9912b06dae0", "bytes": 13234},
+    {"path": "tests/fixtures/phase_h_h4_derivation/truth_table.json", "sha256": "376dcc92d7719a077e64faf13c3b14ed1d0191337b9ef762b144188bca9119fc", "bytes": 620},
+    {"path": "config/test_execution_profiles.json", "sha256": "ce871bd7dc78b38dff0596fb7dac0587279bfa97c6f2a1c75f6175c58c0a44ed", "bytes": 23397}
+  ],
+  "validation": {
+    "h0_g_validator": "PASS",
+    "focused_h_imp_1": "14 passed",
+    "h_imp_0_regression": "17 passed",
+    "phase_g_v3_local_service_regressions": "35 passed",
+    "default_ci": "1112 passed, 2 skipped, 9 deselected",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "network_may_have_occurred": false
+  },
+  "notes": [
+    "This manifest is implementation checkpoint evidence, not an immutable schema or contract freeze.",
+    "The manifest intentionally does not contain its own hash.",
+    "Later separately authorized tranches may modify shared implementation files."
+  ]
+}
