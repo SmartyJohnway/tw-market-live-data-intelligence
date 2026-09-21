@@ -1,0 +1,3810 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_result:v3",
+  "title": "Unified Market Evidence Result v3",
+  "type": "object",
+  "definitions": {
+    "evidence_envelope": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "timing_class": {
+          "type": "string"
+        },
+        "caveats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "observed_fields": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "missing_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "currentness": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "fallback": {
+          "type": "boolean"
+        },
+        "fallback_state": {
+          "type": "string"
+        },
+        "citation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "derived_metric": {
+      "type": "object",
+      "properties": {
+        "metric_id": {
+          "type": "string"
+        },
+        "metric_name": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "available",
+            "unavailable",
+            "invalid",
+            "not_requested"
+          ]
+        },
+        "value": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "method": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "formula_or_definition": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "window": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "input_evidence_references": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "calculation_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "calculated_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "invalid_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "caveats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "citation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "metric_id",
+        "metric_name",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "canonical_identity": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "canonical_target_id": {
+              "type": "string"
+            },
+            "isin": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "market": {
+              "type": "string",
+              "enum": [
+                "TWSE",
+                "TPEX",
+                "TAIFEX"
+              ]
+            },
+            "security_code": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "security_name_zh": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "security_name_en": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "instrument_family": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "instrument_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "canonical_target_id",
+            "isin",
+            "market",
+            "security_code",
+            "security_name_zh",
+            "security_name_en",
+            "instrument_family",
+            "instrument_type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "material_disclosure_evidence": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "material_disclosure_evidence.v1"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "available",
+            "partial",
+            "no_evidence_in_covered_scope",
+            "not_yet_available",
+            "not_applicable",
+            "unsupported",
+            "source_failed",
+            "binding_failed"
+          ]
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "const": "latest_completed_official_daily_batch"
+            },
+            "source_report_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "coverage_through": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "historical_lookup_supported": {
+              "type": "boolean",
+              "const": false
+            },
+            "item_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "truncated": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "mode",
+            "source_report_date",
+            "coverage_through",
+            "historical_lookup_supported",
+            "item_count",
+            "truncated"
+          ],
+          "additionalProperties": false
+        },
+        "currentness": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "current_within_source_contract",
+                "stale",
+                "lagging",
+                "unknown"
+              ]
+            },
+            "observed_at": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "status",
+            "observed_at"
+          ],
+          "additionalProperties": false
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "authority": {
+              "type": "string",
+              "const": "official"
+            },
+            "source_family": {
+              "type": "string",
+              "minLength": 1
+            },
+            "market": {
+              "type": "string",
+              "enum": [
+                "TWSE",
+                "TPEX"
+              ]
+            },
+            "source_contract_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "transport": {
+              "type": "string",
+              "enum": [
+                "official_csv",
+                "official_json_openapi"
+              ]
+            },
+            "fallback_used": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "authority",
+            "source_family",
+            "market",
+            "source_contract_id",
+            "transport",
+            "fallback_used"
+          ],
+          "additionalProperties": false
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "published_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "source_fact_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "subject": {
+                "type": "string"
+              },
+              "clause": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 8192
+              },
+              "description_truncated": {
+                "type": "boolean"
+              },
+              "revision_relation": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "unresolved",
+                      "officially_linked"
+                    ]
+                  },
+                  "relation_type": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "enum": [
+                      "corrects",
+                      "supplements",
+                      "supersedes",
+                      null
+                    ]
+                  },
+                  "related_official_reference": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "status",
+                  "relation_type",
+                  "related_official_reference"
+                ],
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "status": {
+                          "const": "unresolved"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "relation_type": {
+                          "type": "null"
+                        },
+                        "related_official_reference": {
+                          "type": "null"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "status": {
+                          "const": "officially_linked"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "relation_type": {
+                          "type": "string",
+                          "enum": [
+                            "corrects",
+                            "supplements",
+                            "supersedes"
+                          ]
+                        },
+                        "related_official_reference": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      }
+                    }
+                  }
+                ],
+                "additionalProperties": false
+              },
+              "citation_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "published_at",
+              "source_fact_date",
+              "subject",
+              "clause",
+              "description",
+              "description_truncated",
+              "revision_relation",
+              "citation_id"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "caveats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "citation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "schema_version",
+        "status",
+        "coverage",
+        "currentness",
+        "source",
+        "items",
+        "caveats",
+        "citation_ids"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "available",
+                  "partial"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "items": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "no_evidence_in_covered_scope",
+                  "not_yet_available",
+                  "not_applicable",
+                  "unsupported",
+                  "source_failed",
+                  "binding_failed"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "items": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "coverage": {
+                "properties": {
+                  "truncated": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "partial"
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "monthly_revenue_evidence": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "monthly_revenue_evidence.v1"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "available",
+            "partial",
+            "no_evidence_in_covered_scope",
+            "not_yet_available",
+            "not_applicable",
+            "unsupported",
+            "source_failed",
+            "binding_failed"
+          ]
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "const": "latest_available_reporting_period"
+            },
+            "reporting_period": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+            },
+            "source_report_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "historical_lookup_supported": {
+              "type": "boolean",
+              "const": false
+            }
+          },
+          "required": [
+            "mode",
+            "reporting_period",
+            "source_report_date",
+            "historical_lookup_supported"
+          ],
+          "additionalProperties": false
+        },
+        "currentness": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "current_within_source_contract",
+                "stale",
+                "lagging",
+                "unknown"
+              ]
+            },
+            "observed_at": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "status",
+            "observed_at"
+          ],
+          "additionalProperties": false
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "authority": {
+              "type": "string",
+              "const": "official"
+            },
+            "source_family": {
+              "type": "string",
+              "minLength": 1
+            },
+            "market": {
+              "type": "string",
+              "enum": [
+                "TWSE",
+                "TPEX"
+              ]
+            },
+            "source_contract_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "transport": {
+              "type": "string",
+              "enum": [
+                "official_csv",
+                "official_json_openapi"
+              ]
+            },
+            "fallback_used": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "authority",
+            "source_family",
+            "market",
+            "source_contract_id",
+            "transport",
+            "fallback_used"
+          ],
+          "additionalProperties": false
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "currency": {
+                  "type": "string",
+                  "const": "TWD"
+                },
+                "unit": {
+                  "type": "string",
+                  "const": "thousand"
+                },
+                "current_month_revenue": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "previous_month_revenue": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "previous_year_same_month_revenue": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "mom_pct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "yoy_pct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "ytd_revenue": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "previous_year_ytd_revenue": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "ytd_yoy_pct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "note": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "currency",
+                "unit",
+                "current_month_revenue",
+                "previous_month_revenue",
+                "previous_year_same_month_revenue",
+                "mom_pct",
+                "yoy_pct",
+                "ytd_revenue",
+                "previous_year_ytd_revenue",
+                "ytd_yoy_pct",
+                "note"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "caveats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "citation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "schema_version",
+        "status",
+        "coverage",
+        "currentness",
+        "source",
+        "value",
+        "caveats",
+        "citation_ids"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "available",
+                  "partial"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "object",
+                "properties": {
+                  "currency": {
+                    "type": "string",
+                    "const": "TWD"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "const": "thousand"
+                  },
+                  "current_month_revenue": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "previous_month_revenue": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "previous_year_same_month_revenue": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "mom_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "yoy_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ytd_revenue": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "previous_year_ytd_revenue": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "ytd_yoy_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "currency",
+                  "unit",
+                  "current_month_revenue",
+                  "previous_month_revenue",
+                  "previous_year_same_month_revenue",
+                  "mom_pct",
+                  "yoy_pct",
+                  "ytd_revenue",
+                  "previous_year_ytd_revenue",
+                  "ytd_yoy_pct",
+                  "note"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "no_evidence_in_covered_scope",
+                  "not_yet_available",
+                  "not_applicable",
+                  "unsupported",
+                  "source_failed",
+                  "binding_failed"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "trading_status_context": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "trading_status_context_evidence.v1"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "available",
+            "no_evidence_in_covered_scope",
+            "partial",
+            "source_failed",
+            "binding_failed",
+            "not_applicable",
+            "unsupported"
+          ]
+        },
+        "target": {
+          "type": "object",
+          "properties": {
+            "canonical_target_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "market": {
+              "type": "string",
+              "enum": [
+                "TWSE",
+                "TPEX"
+              ]
+            },
+            "security_code": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "canonical_target_id",
+            "market",
+            "security_code"
+          ],
+          "additionalProperties": false
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "complete",
+                "partial",
+                "unknown",
+                "source_failed",
+                "binding_failed",
+                "unsupported",
+                "not_applicable"
+              ]
+            },
+            "declared_scope_complete": {
+              "type": "boolean"
+            },
+            "retrieval_succeeded": {
+              "type": "boolean"
+            },
+            "source_contract_validated": {
+              "type": "boolean"
+            },
+            "exact_target_search_succeeded": {
+              "type": "boolean"
+            },
+            "source_snapshot_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "declared_status_types": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/status_type"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "covered_status_types": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/status_type"
+              },
+              "uniqueItems": true
+            },
+            "uncovered_status_types": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/status_type"
+              },
+              "uniqueItems": true
+            },
+            "failed_source_families": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "status",
+            "declared_scope_complete",
+            "retrieval_succeeded",
+            "source_contract_validated",
+            "exact_target_search_succeeded",
+            "source_snapshot_date",
+            "declared_status_types",
+            "covered_status_types",
+            "uncovered_status_types",
+            "failed_source_families"
+          ],
+          "additionalProperties": false
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "source_family": {
+              "type": "string",
+              "minLength": 1
+            },
+            "source_contract_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "transport": {
+              "type": "string",
+              "minLength": 1
+            },
+            "license_authority": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source_role": {
+              "type": "string",
+              "enum": [
+                "default_candidate",
+                "governed_fallback",
+                "optional_licensed_provider",
+                "manual_verification",
+                "research_only",
+                "source_gap"
+              ]
+            },
+            "activation_state": {
+              "type": "string",
+              "enum": [
+                "inactive",
+                "eligible",
+                "active",
+                "blocked"
+              ]
+            }
+          },
+          "required": [
+            "source_family",
+            "source_contract_id",
+            "transport",
+            "license_authority",
+            "source_role",
+            "activation_state"
+          ],
+          "additionalProperties": false
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "status_type": {
+                "$ref": "#/definitions/status_type"
+              },
+              "status_lifecycle": {
+                "type": "string",
+                "enum": [
+                  "reported",
+                  "effective",
+                  "ended",
+                  "unresolved"
+                ]
+              },
+              "published_at": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "source_record_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "effective_from": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "effective_to": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "official_reason": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "official_conditions": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "official_measures": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "source_native_provenance": {
+                "type": "object",
+                "maxProperties": 32,
+                "additionalProperties": {
+                  "type": [
+                    "string",
+                    "number",
+                    "integer",
+                    "boolean",
+                    "null"
+                  ]
+                }
+              },
+              "citation_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "status_type",
+              "status_lifecycle",
+              "published_at",
+              "source_record_date",
+              "effective_from",
+              "effective_to",
+              "official_reason",
+              "official_conditions",
+              "official_measures",
+              "source_native_provenance",
+              "citation_ids"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "caveats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "citation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "definitions": {
+        "status_type": {
+          "type": "string",
+          "enum": [
+            "attention",
+            "disposition",
+            "changed_trading_method",
+            "suspension",
+            "resumption"
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "status",
+        "target",
+        "coverage",
+        "source",
+        "observed_at",
+        "items",
+        "caveats",
+        "citation_ids"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "available"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "items": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "no_evidence_in_covered_scope"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "items": {
+                "maxItems": 0
+              },
+              "coverage": {
+                "properties": {
+                  "status": {
+                    "const": "complete"
+                  },
+                  "declared_scope_complete": {
+                    "const": true
+                  },
+                  "retrieval_succeeded": {
+                    "const": true
+                  },
+                  "source_contract_validated": {
+                    "const": true
+                  },
+                  "exact_target_search_succeeded": {
+                    "const": true
+                  },
+                  "uncovered_status_types": {
+                    "maxItems": 0
+                  },
+                  "declared_status_types": {
+                    "minItems": 1
+                  },
+                  "failed_source_families": {
+                    "maxItems": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "source_failed",
+                  "binding_failed",
+                  "not_applicable",
+                  "unsupported"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "items": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "corporate_action_context": {
+      "type": "object",
+      "definitions": {
+        "event_type": {
+          "type": "string",
+          "enum": [
+            "ex_dividend",
+            "ex_right",
+            "ex_right_dividend",
+            "capital_reduction_resume",
+            "par_value_change_resume",
+            "split",
+            "reverse_split",
+            "share_consolidation",
+            "cash_capital_increase_effect",
+            "other_official_reference_price_event"
+          ]
+        }
+      },
+      "properties": {
+        "schema_version": {
+          "const": "corporate_action_context_evidence.v1"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "available",
+            "no_evidence_in_covered_scope",
+            "partial",
+            "source_failed",
+            "binding_failed",
+            "not_applicable",
+            "unsupported"
+          ]
+        },
+        "target": {
+          "type": "object",
+          "properties": {
+            "canonical_target_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "market": {
+              "type": "string",
+              "enum": [
+                "TWSE",
+                "TPEX"
+              ]
+            },
+            "security_code": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "canonical_target_id",
+            "market",
+            "security_code"
+          ],
+          "additionalProperties": false
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "complete",
+                "partial",
+                "unsupported_subtypes",
+                "source_failed",
+                "binding_failed",
+                "unknown",
+                "not_applicable"
+              ]
+            },
+            "declared_scope_complete": {
+              "type": "boolean"
+            },
+            "retrieval_succeeded": {
+              "type": "boolean"
+            },
+            "source_contract_validated": {
+              "type": "boolean"
+            },
+            "exact_target_search_succeeded": {
+              "type": "boolean"
+            },
+            "requested_window": {
+              "type": "object",
+              "properties": {
+                "start": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "end": {
+                  "type": "string",
+                  "format": "date"
+                }
+              },
+              "required": [
+                "start",
+                "end"
+              ],
+              "additionalProperties": false
+            },
+            "declared_event_subtypes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/event_type"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "covered_event_subtypes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/event_type"
+              },
+              "uniqueItems": true
+            },
+            "uncovered_event_subtypes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/event_type"
+              },
+              "uniqueItems": true
+            },
+            "failed_source_families": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "status",
+            "declared_scope_complete",
+            "retrieval_succeeded",
+            "source_contract_validated",
+            "exact_target_search_succeeded",
+            "requested_window",
+            "declared_event_subtypes",
+            "covered_event_subtypes",
+            "uncovered_event_subtypes",
+            "failed_source_families"
+          ],
+          "additionalProperties": false
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_family": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_contract_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "transport": {
+                "type": "string",
+                "minLength": 1
+              },
+              "license_authority": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "source_role": {
+                "type": "string",
+                "enum": [
+                  "default_candidate",
+                  "governed_fallback",
+                  "optional_licensed_provider",
+                  "manual_verification",
+                  "research_only",
+                  "source_gap"
+                ]
+              },
+              "activation_state": {
+                "type": "string",
+                "enum": [
+                  "inactive",
+                  "eligible",
+                  "active",
+                  "blocked"
+                ]
+              }
+            },
+            "required": [
+              "source_family",
+              "source_contract_id",
+              "transport",
+              "license_authority",
+              "source_role",
+              "activation_state"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "event_type": {
+                "$ref": "#/definitions/event_type"
+              },
+              "source_evidence_stage": {
+                "type": "string",
+                "enum": [
+                  "preannouncement",
+                  "official_reference_calculated",
+                  "unresolved"
+                ]
+              },
+              "event_lifecycle": {
+                "type": "string",
+                "enum": [
+                  "announced",
+                  "scheduled",
+                  "effective",
+                  "corrected",
+                  "amended",
+                  "cancelled",
+                  "unresolved"
+                ]
+              },
+              "announcement_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "effective_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "pre_event_close": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "value",
+                      "blank",
+                      "not_announced",
+                      "not_applicable",
+                      "unavailable",
+                      "source_failed"
+                    ]
+                  },
+                  "value": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "state",
+                  "value"
+                ],
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "state": {
+                          "const": "value"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "value": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "blank",
+                            "not_announced",
+                            "not_applicable",
+                            "unavailable",
+                            "source_failed"
+                          ]
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "value": {
+                          "type": "null"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "additionalProperties": false
+              },
+              "official_reference_price": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "value",
+                      "blank",
+                      "not_announced",
+                      "not_applicable",
+                      "unavailable",
+                      "source_failed"
+                    ]
+                  },
+                  "value": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "state",
+                  "value"
+                ],
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "state": {
+                          "const": "value"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "value": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "blank",
+                            "not_announced",
+                            "not_applicable",
+                            "unavailable",
+                            "source_failed"
+                          ]
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "value": {
+                          "type": "null"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "additionalProperties": false
+              },
+              "opening_reference_basis": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "cash_dividend": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "value",
+                      "blank",
+                      "not_announced",
+                      "not_applicable",
+                      "unavailable",
+                      "source_failed"
+                    ]
+                  },
+                  "value": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "state",
+                  "value"
+                ],
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "state": {
+                          "const": "value"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "value": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "blank",
+                            "not_announced",
+                            "not_applicable",
+                            "unavailable",
+                            "source_failed"
+                          ]
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "value": {
+                          "type": "null"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "additionalProperties": false
+              },
+              "stock_dividend_ratio": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "value",
+                      "blank",
+                      "not_announced",
+                      "not_applicable",
+                      "unavailable",
+                      "source_failed"
+                    ]
+                  },
+                  "value": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "state",
+                  "value"
+                ],
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "state": {
+                          "const": "value"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "value": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "blank",
+                            "not_announced",
+                            "not_applicable",
+                            "unavailable",
+                            "source_failed"
+                          ]
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "value": {
+                          "type": "null"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "additionalProperties": false
+              },
+              "rights_ratio": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "value",
+                      "blank",
+                      "not_announced",
+                      "not_applicable",
+                      "unavailable",
+                      "source_failed"
+                    ]
+                  },
+                  "value": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "state",
+                  "value"
+                ],
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "state": {
+                          "const": "value"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "value": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "blank",
+                            "not_announced",
+                            "not_applicable",
+                            "unavailable",
+                            "source_failed"
+                          ]
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "value": {
+                          "type": "null"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "additionalProperties": false
+              },
+              "subscription_price": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "value",
+                      "blank",
+                      "not_announced",
+                      "not_applicable",
+                      "unavailable",
+                      "source_failed"
+                    ]
+                  },
+                  "value": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "state",
+                  "value"
+                ],
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "state": {
+                          "const": "value"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "value": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "blank",
+                            "not_announced",
+                            "not_applicable",
+                            "unavailable",
+                            "source_failed"
+                          ]
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "value": {
+                          "type": "null"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "additionalProperties": false
+              },
+              "official_source_proof": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "revision_relation": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "unresolved",
+                      "officially_linked"
+                    ]
+                  },
+                  "relation_type": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "enum": [
+                      "corrects",
+                      "amends",
+                      "cancels",
+                      "supersedes",
+                      null
+                    ]
+                  },
+                  "related_official_reference": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "status",
+                  "relation_type",
+                  "related_official_reference"
+                ],
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "status": {
+                          "const": "unresolved"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "relation_type": {
+                          "type": "null"
+                        },
+                        "related_official_reference": {
+                          "type": "null"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "status": {
+                          "const": "officially_linked"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "relation_type": {
+                          "type": "string",
+                          "enum": [
+                            "corrects",
+                            "amends",
+                            "cancels",
+                            "supersedes"
+                          ]
+                        },
+                        "related_official_reference": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      }
+                    }
+                  }
+                ],
+                "additionalProperties": false
+              },
+              "citation_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "event_type",
+              "source_evidence_stage",
+              "event_lifecycle",
+              "announcement_date",
+              "effective_date",
+              "pre_event_close",
+              "official_reference_price",
+              "opening_reference_basis",
+              "cash_dividend",
+              "stock_dividend_ratio",
+              "rights_ratio",
+              "subscription_price",
+              "official_source_proof",
+              "revision_relation",
+              "citation_ids"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "event_type": {
+                      "const": "other_official_reference_price_event"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "official_source_proof": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "event_lifecycle": {
+                      "const": "corrected"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "revision_relation": {
+                      "properties": {
+                        "status": {
+                          "const": "officially_linked"
+                        },
+                        "relation_type": {
+                          "const": "corrects"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "event_lifecycle": {
+                      "const": "amended"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "revision_relation": {
+                      "properties": {
+                        "status": {
+                          "const": "officially_linked"
+                        },
+                        "relation_type": {
+                          "const": "amends"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "event_lifecycle": {
+                      "const": "cancelled"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "revision_relation": {
+                      "properties": {
+                        "status": {
+                          "const": "officially_linked"
+                        },
+                        "relation_type": {
+                          "const": "cancels"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "additionalProperties": false
+          }
+        },
+        "caveats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "citation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "schema_version",
+        "status",
+        "target",
+        "coverage",
+        "sources",
+        "observed_at",
+        "events",
+        "caveats",
+        "citation_ids"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "available"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "events": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "no_evidence_in_covered_scope"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "events": {
+                "maxItems": 0
+              },
+              "coverage": {
+                "properties": {
+                  "status": {
+                    "const": "complete"
+                  },
+                  "declared_scope_complete": {
+                    "const": true
+                  },
+                  "retrieval_succeeded": {
+                    "const": true
+                  },
+                  "source_contract_validated": {
+                    "const": true
+                  },
+                  "exact_target_search_succeeded": {
+                    "const": true
+                  },
+                  "uncovered_event_subtypes": {
+                    "maxItems": 0
+                  },
+                  "declared_event_subtypes": {
+                    "minItems": 1
+                  },
+                  "failed_source_families": {
+                    "maxItems": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "source_failed",
+                  "binding_failed",
+                  "not_applicable",
+                  "unsupported"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "events": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "recent_performance_v3": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "recent_performance_evidence.v1"
+        },
+        "target": {
+          "type": "object",
+          "properties": {
+            "canonical_target_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "market": {
+              "type": "string",
+              "enum": [
+                "TWSE",
+                "TPEX"
+              ]
+            },
+            "security_code": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "canonical_target_id",
+            "market",
+            "security_code"
+          ],
+          "additionalProperties": false
+        },
+        "coverage_status": {
+          "type": "string",
+          "enum": [
+            "complete",
+            "partial",
+            "insufficient",
+            "unavailable",
+            "source_failed",
+            "binding_failed",
+            "unsupported",
+            "not_applicable"
+          ]
+        },
+        "requested_observations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "valid_observation_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "missing_observation_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "first_observation_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "last_observation_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "governed_end_observation": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "canonical_target_id": {
+                  "type": "string"
+                },
+                "market": {
+                  "type": "string",
+                  "enum": [
+                    "TWSE",
+                    "TPEX"
+                  ]
+                },
+                "security_code": {
+                  "type": "string"
+                },
+                "trade_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "close": {
+                  "type": "number"
+                },
+                "volume": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "source_family": {
+                  "type": "string"
+                },
+                "source_contract_id": {
+                  "type": "string"
+                },
+                "retrieved_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "citation_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "canonical_target_id",
+                "market",
+                "security_code",
+                "trade_date",
+                "close",
+                "volume",
+                "source_family",
+                "source_contract_id",
+                "retrieved_at",
+                "citation_ids"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "canonical_target_id": {
+                "type": "string"
+              },
+              "market": {
+                "type": "string",
+                "enum": [
+                  "TWSE",
+                  "TPEX"
+                ]
+              },
+              "security_code": {
+                "type": "string"
+              },
+              "trade_date": {
+                "type": "string",
+                "format": "date"
+              },
+              "close": {
+                "type": "number"
+              },
+              "volume": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "source_family": {
+                "type": "string"
+              },
+              "source_contract_id": {
+                "type": "string"
+              },
+              "retrieved_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "citation_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "canonical_target_id",
+              "market",
+              "security_code",
+              "trade_date",
+              "close",
+              "volume",
+              "source_family",
+              "source_contract_id",
+              "retrieved_at",
+              "citation_ids"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 20
+        },
+        "baselines": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "lookback_trading_days": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "available",
+                  "insufficient_coverage",
+                  "unavailable",
+                  "unsupported"
+                ]
+              },
+              "start_observation_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "end_observation_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "required_distinct_close_count": {
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 21
+              },
+              "actual_distinct_close_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 21
+              },
+              "recent_return_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "return_basis": {
+                "const": "raw_unadjusted_close_to_close"
+              }
+            },
+            "required": [
+              "lookback_trading_days",
+              "status",
+              "start_observation_date",
+              "end_observation_date",
+              "required_distinct_close_count",
+              "actual_distinct_close_count",
+              "recent_return_pct",
+              "return_basis"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "available_baselines": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20
+          },
+          "uniqueItems": true
+        },
+        "unavailable_baselines": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20
+          },
+          "uniqueItems": true
+        },
+        "recent_close_range": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "range_basis": {
+              "const": "completed_session_closing_price"
+            },
+            "recent_close_high": {
+              "type": "number"
+            },
+            "recent_close_low": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "range_basis",
+            "recent_close_high",
+            "recent_close_low"
+          ],
+          "additionalProperties": false
+        },
+        "volume_context": {
+          "type": "object",
+          "properties": {
+            "current_volume_basis": {
+              "type": "string",
+              "enum": [
+                "intraday_cumulative",
+                "completed_session"
+              ]
+            },
+            "historical_average_basis": {
+              "const": "completed_official_sessions"
+            },
+            "comparison_alignment": {
+              "type": "string",
+              "enum": [
+                "aligned",
+                "partial_session_vs_completed_sessions",
+                "unavailable"
+              ]
+            },
+            "historical_average_volume": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "current_volume_basis",
+            "historical_average_basis",
+            "comparison_alignment",
+            "historical_average_volume"
+          ],
+          "additionalProperties": false
+        },
+        "caveats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "citation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "schema_version",
+        "target",
+        "coverage_status",
+        "requested_observations",
+        "valid_observation_count",
+        "missing_observation_count",
+        "first_observation_date",
+        "last_observation_date",
+        "governed_end_observation",
+        "observations",
+        "baselines",
+        "available_baselines",
+        "unavailable_baselines",
+        "recent_close_range",
+        "volume_context",
+        "caveats",
+        "citation_ids"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "coverage_status": {
+                "const": "complete"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "missing_observation_count": {
+                "const": 0
+              },
+              "governed_end_observation": {
+                "type": "object"
+              },
+              "available_baselines": {
+                "minItems": 1
+              },
+              "unavailable_baselines": {
+                "maxItems": 0
+              },
+              "baselines": {
+                "items": {
+                  "properties": {
+                    "status": {
+                      "const": "available"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "coverage_status": {
+                "const": "partial"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "available_baselines": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "coverage_status": {
+                "const": "insufficient"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "valid_observation_count": {
+                "minimum": 1
+              },
+              "available_baselines": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "coverage_status": {
+                "const": "unavailable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "valid_observation_count": {
+                "const": 0
+              },
+              "available_baselines": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "coverage_status": {
+                "enum": [
+                  "source_failed",
+                  "binding_failed",
+                  "unsupported",
+                  "not_applicable"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "available_baselines": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "volume_context": {
+                "properties": {
+                  "current_volume_basis": {
+                    "const": "intraday_cumulative"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "volume_context": {
+                "properties": {
+                  "comparison_alignment": {
+                    "const": "partial_session_vs_completed_sessions"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "discontinuity_safety": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "discontinuity_safety_evidence.v1"
+        },
+        "target": {
+          "type": "object",
+          "properties": {
+            "canonical_target_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "market": {
+              "type": "string",
+              "enum": [
+                "TWSE",
+                "TPEX"
+              ]
+            },
+            "security_code": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "canonical_target_id",
+            "market",
+            "security_code"
+          ],
+          "additionalProperties": false
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "no_material_discontinuity_detected",
+            "discontinuity_detected_reference_available",
+            "discontinuity_detected_reference_unavailable",
+            "coverage_incomplete"
+          ]
+        },
+        "comparison_window": {
+          "type": "object",
+          "properties": {
+            "start_observation_date": {
+              "type": "string",
+              "format": "date"
+            },
+            "end_observation_date": {
+              "type": "string",
+              "format": "date"
+            },
+            "start_price_basis": {
+              "type": "string"
+            },
+            "end_price_basis": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "start_observation_date",
+            "end_observation_date",
+            "start_price_basis",
+            "end_price_basis"
+          ],
+          "additionalProperties": false
+        },
+        "relevant_event_subtypes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "ex_dividend",
+              "ex_right",
+              "ex_right_dividend",
+              "capital_reduction_resume",
+              "par_value_change_resume",
+              "split",
+              "reverse_split",
+              "share_consolidation",
+              "cash_capital_increase_effect",
+              "other_official_reference_price_event"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "covered_event_subtypes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "ex_dividend",
+              "ex_right",
+              "ex_right_dividend",
+              "capital_reduction_resume",
+              "par_value_change_resume",
+              "split",
+              "reverse_split",
+              "share_consolidation",
+              "cash_capital_increase_effect",
+              "other_official_reference_price_event"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "uncovered_event_subtypes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "ex_dividend",
+              "ex_right",
+              "ex_right_dividend",
+              "capital_reduction_resume",
+              "par_value_change_resume",
+              "split",
+              "reverse_split",
+              "share_consolidation",
+              "cash_capital_increase_effect",
+              "other_official_reference_price_event"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "failed_source_families": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "upstream_failures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "failure_type": {
+                "type": "string",
+                "enum": [
+                  "source_failed",
+                  "binding_failed",
+                  "unresolved_effective_timing",
+                  "unresolved_revision",
+                  "missing_required_evidence"
+                ]
+              },
+              "evidence_reference": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "failure_type",
+              "evidence_reference"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "effective_event_evidence_references": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "official_reference_evidence_references": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "input_evidence_references": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "raw_metric_status": {
+          "type": "string",
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "ordinary_return_interpretation": {
+          "type": "string",
+          "enum": [
+            "allowed",
+            "blocked"
+          ]
+        },
+        "interpretation_guard": {
+          "type": "string",
+          "enum": [
+            "none",
+            "NOT_COMPARABLE_AS_ORDINARY_RETURN",
+            "CORPORATE_ACTION_COVERAGE_INCOMPLETE",
+            "PRICE_BASIS_DISCONTINUITY_REFERENCE_AVAILABLE"
+          ]
+        },
+        "deterministic_rule_version": {
+          "type": "string",
+          "const": "phase_h_discontinuity_safety.v1"
+        },
+        "citation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "caveats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "target",
+        "state",
+        "comparison_window",
+        "relevant_event_subtypes",
+        "covered_event_subtypes",
+        "uncovered_event_subtypes",
+        "failed_source_families",
+        "upstream_failures",
+        "effective_event_evidence_references",
+        "official_reference_evidence_references",
+        "input_evidence_references",
+        "raw_metric_status",
+        "ordinary_return_interpretation",
+        "interpretation_guard",
+        "deterministic_rule_version",
+        "citation_ids",
+        "caveats"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "no_material_discontinuity_detected"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ordinary_return_interpretation": {
+                "const": "allowed"
+              },
+              "raw_metric_status": {
+                "const": "available"
+              },
+              "interpretation_guard": {
+                "const": "none"
+              },
+              "uncovered_event_subtypes": {
+                "maxItems": 0
+              },
+              "failed_source_families": {
+                "maxItems": 0
+              },
+              "upstream_failures": {
+                "maxItems": 0
+              },
+              "effective_event_evidence_references": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "upstream_failures": {
+                "minItems": 1
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "state": {
+                "const": "coverage_incomplete"
+              },
+              "ordinary_return_interpretation": {
+                "const": "blocked"
+              },
+              "interpretation_guard": {
+                "const": "CORPORATE_ACTION_COVERAGE_INCOMPLETE"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "discontinuity_detected_reference_available",
+                  "discontinuity_detected_reference_unavailable",
+                  "coverage_incomplete"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ordinary_return_interpretation": {
+                "const": "blocked"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "discontinuity_detected_reference_available"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "interpretation_guard": {
+                "const": "PRICE_BASIS_DISCONTINUITY_REFERENCE_AVAILABLE"
+              },
+              "effective_event_evidence_references": {
+                "minItems": 1
+              },
+              "official_reference_evidence_references": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "discontinuity_detected_reference_unavailable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "interpretation_guard": {
+                "const": "NOT_COMPARABLE_AS_ORDINARY_RETURN"
+              },
+              "effective_event_evidence_references": {
+                "minItems": 1
+              },
+              "official_reference_evidence_references": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "coverage_incomplete"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "interpretation_guard": {
+                "const": "CORPORATE_ACTION_COVERAGE_INCOMPLETE"
+              }
+            },
+            "anyOf": [
+              {
+                "properties": {
+                  "uncovered_event_subtypes": {
+                    "minItems": 1
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "failed_source_families": {
+                    "minItems": 1
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "upstream_failures": {
+                    "minItems": 1
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "status_type": {
+      "type": "string",
+      "enum": [
+        "attention",
+        "disposition",
+        "changed_trading_method",
+        "suspension",
+        "resumption"
+      ]
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "ex_dividend",
+        "ex_right",
+        "ex_right_dividend",
+        "capital_reduction_resume",
+        "par_value_change_resume",
+        "split",
+        "reverse_split",
+        "share_consolidation",
+        "cash_capital_increase_effect",
+        "other_official_reference_price_event"
+      ]
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "unified_market_evidence_result.v3"
+    },
+    "result_id": {
+      "type": "string",
+      "pattern": "^umeresult-v3-[0-9a-f]{20}$"
+    },
+    "result_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "request_summary": {
+      "type": "object",
+      "properties": {
+        "execution_mode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "request_schema_version": {
+          "type": "string",
+          "enum": [
+            "unified_market_evidence_request.v1",
+            "unified_market_evidence_request.v2",
+            "unified_market_evidence_request.v3"
+          ]
+        },
+        "target_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "requested_data_needs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_data_needs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "optional_data_needs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "request_schema_version",
+        "target_count",
+        "requested_data_needs",
+        "required_data_needs",
+        "optional_data_needs"
+      ],
+      "additionalProperties": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "full_success",
+        "success_with_partial_coverage",
+        "failed",
+        "partially_failed"
+      ]
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "client_target_reference": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "resolution": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "resolved",
+                  "ambiguous",
+                  "not_found",
+                  "market_hint_conflict",
+                  "unsupported_market"
+                ]
+              },
+              "canonical_target_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "security_code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "security_name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "market": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ],
+            "additionalProperties": false
+          },
+          "canonical_identity": {
+            "$ref": "#/definitions/canonical_identity"
+          },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "identity": {
+                "$ref": "#/definitions/evidence_envelope"
+              },
+              "current_observation": {
+                "$ref": "#/definitions/evidence_envelope"
+              },
+              "official_eod_reference": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "missing",
+                      "failed",
+                      "empty"
+                    ]
+                  },
+                  "source_id": {
+                    "type": "string"
+                  },
+                  "source_family": {
+                    "type": "string"
+                  },
+                  "authority_level": {
+                    "type": "string"
+                  },
+                  "timing_class": {
+                    "type": "string"
+                  },
+                  "trade_date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "expected_latest_completed_trade_date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "currentness_status": {
+                    "type": "string",
+                    "enum": [
+                      "official_latest_completed_eod",
+                      "official_previous_session_eod_before_close",
+                      "not_yet_published_after_close",
+                      "market_closed_no_session",
+                      "unexpected_stale_eod",
+                      "calendar_status_unresolved",
+                      "future_trade_date_invalid",
+                      "source_trade_date_missing",
+                      "invalid_trade_date_format"
+                    ]
+                  },
+                  "session_status": {
+                    "type": "string"
+                  },
+                  "publication_grace_applied": {
+                    "type": "boolean"
+                  },
+                  "fallback_policy_used": {
+                    "type": "boolean"
+                  },
+                  "provisional_candidate_status": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "price": {
+                    "type": "object",
+                    "properties": {
+                      "open": {
+                        "type": [
+                          "string",
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "high": {
+                        "type": [
+                          "string",
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "low": {
+                        "type": [
+                          "string",
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "close": {
+                        "type": [
+                          "string",
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "previous_close": {
+                        "type": [
+                          "string",
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "change": {
+                        "type": [
+                          "string",
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "activity": {
+                    "type": "object",
+                    "properties": {
+                      "trade_volume": {
+                        "type": [
+                          "integer",
+                          "number",
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "trade_value": {
+                        "type": [
+                          "integer",
+                          "number",
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "transaction_count": {
+                        "type": [
+                          "integer",
+                          "number",
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "citation_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "caveats": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "anyOf": [
+                  {
+                    "required": [
+                      "currentness_status"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "status"
+                    ]
+                  }
+                ],
+                "additionalProperties": false
+              },
+              "recent_performance": {
+                "$ref": "#/definitions/recent_performance_v3"
+              },
+              "session_status": {
+                "$ref": "#/definitions/evidence_envelope"
+              },
+              "source_currentness": {
+                "$ref": "#/definitions/evidence_envelope"
+              },
+              "evidence_quality": {
+                "$ref": "#/definitions/evidence_envelope"
+              },
+              "material_disclosures": {
+                "$ref": "#/definitions/material_disclosure_evidence"
+              },
+              "monthly_revenue": {
+                "$ref": "#/definitions/monthly_revenue_evidence"
+              },
+              "trading_status_context": {
+                "$ref": "#/definitions/trading_status_context"
+              },
+              "corporate_action_context": {
+                "$ref": "#/definitions/corporate_action_context"
+              },
+              "discontinuity_safety": {
+                "$ref": "#/definitions/discontinuity_safety"
+              }
+            },
+            "additionalProperties": false
+          },
+          "derived_metrics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/derived_metric"
+            }
+          },
+          "coverage": {
+            "type": "object",
+            "properties": {
+              "provided_needs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "missing_needs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "caveats": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "citations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "citation_id": {
+                  "type": "string"
+                },
+                "source_family": {
+                  "type": "string"
+                },
+                "source_contract_id": {
+                  "type": "string"
+                },
+                "retrieved_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "effective_trade_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "source_report_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "artifact_reference": {
+                  "type": "string",
+                  "pattern": "^(?!([a-zA-Z]:\\\\\\\\|file://|/|\\\\\\\\)).+",
+                  "description": "Must be a relative path or URI, not absolute local path"
+                },
+                "normalized_evidence_hash": {
+                  "type": "string",
+                  "pattern": "^[a-fA-F0-9]{64}$"
+                }
+              },
+              "required": [
+                "citation_id",
+                "source_family",
+                "retrieved_at",
+                "artifact_reference"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "resolution",
+          "canonical_identity",
+          "evidence"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "resolution": {
+                  "properties": {
+                    "status": {
+                      "const": "resolved"
+                    }
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "canonical_identity": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "resolution": {
+                  "properties": {
+                    "status": {
+                      "enum": [
+                        "ambiguous",
+                        "not_found",
+                        "market_hint_conflict",
+                        "unsupported_market"
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "canonical_identity": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        ],
+        "additionalProperties": false
+      }
+    },
+    "partial_failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "target_index": {
+            "type": "integer"
+          },
+          "data_need": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "reason_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "request_caveats": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "audit_reference": {
+      "type": "object",
+      "properties": {
+        "audit_package_id": {
+          "type": "string",
+          "pattern": "^umeap-v3-[0-9a-f]{20}$"
+        },
+        "schema_version": {
+          "type": "string",
+          "const": "unified_market_evidence_audit_package.v3"
+        },
+        "relative_path": {
+          "type": "string",
+          "pattern": "^(?!([a-zA-Z]:\\\\\\\\|file://|/|\\\\\\\\)).+"
+        },
+        "audit_id": {
+          "type": "string"
+        },
+        "execution_time_ms": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "audit_package_id",
+        "schema_version",
+        "relative_path"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "result_id",
+    "result_hash",
+    "request_id",
+    "generated_at",
+    "request_summary",
+    "status",
+    "targets",
+    "audit_reference"
+  ],
+  "additionalProperties": false
+}

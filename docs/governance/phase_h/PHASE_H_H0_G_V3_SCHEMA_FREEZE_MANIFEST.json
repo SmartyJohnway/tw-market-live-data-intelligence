@@ -1,0 +1,204 @@
+{
+  "schema_version": "phase_h_h0_g_v3_schema_freeze_manifest.v1",
+  "status": "OWNER_ACCEPTED_FROZEN",
+  "freeze_date": "2026-09-21",
+  "repository_baseline": "59cedf7434afe54fc19a3517f20aa07b7411e455",
+  "branch": "phase-h/h0-g-v3-contract-freeze",
+  "owner_acceptance": {
+    "decision": "OWNER_ACCEPTED_FROZEN",
+    "accepted_amendments": ["A1", "A2"],
+    "acceptance_date": "2026-09-21",
+    "production_implementation_authorized": false,
+    "runtime_activation_authorized": false,
+    "source_activation_authorized": false
+  },
+  "upstream_authority": {
+    "h0_a_d_merge_authority": "85a61cd8dc14c37832f7702c9e0a529b3f27ee0f",
+    "h0_e_f_merge_authority": "59cedf7434afe54fc19a3517f20aa07b7411e455"
+  },
+  "semantic_inputs": [
+    {
+      "path": "docs/governance/phase_h/PHASE_H_H0_A_D_FREEZE_MANIFEST.json",
+      "sha256": "2144a286f5160d509fedeec099d1e2ee48f3d1d035485dd385f2e9a0502933a1",
+      "bytes": 4106
+    },
+    {
+      "path": "docs/governance/phase_h/PHASE_H_H0_E_F_FREEZE_MANIFEST.json",
+      "sha256": "1b966ae8bc30fcd10bce5ac749177309aa9a420c1f5a1741646cd149a9147686",
+      "bytes": 6406
+    },
+    {
+      "path": "docs/governance/phase_h/Phase_H_Product_Boundary_and_Anti_Scope_Creep_FROZEN.md",
+      "sha256": "3751cf277060d35e3f87ffd169da585b40345b79dd79ea123541bc5975fbc72f",
+      "bytes": 5502
+    },
+    {
+      "path": "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.md",
+      "sha256": "49157b472837f0611f04698b267059849bdc1615dc7bf3f29999ce1d0adc7826",
+      "bytes": 6648
+    },
+    {
+      "path": "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.json",
+      "sha256": "4131d1e4023b09a14abd9d604adc59e409edb96016784044379c643beaa77e5a",
+      "bytes": 28875
+    },
+    {
+      "path": "docs/governance/phase_h/Phase_H_H1_Trading_Status_Context_Contract_FROZEN.md",
+      "sha256": "0ab08f309b6832d68e8b1e2940e3c44435d2eb8e95e77b2df3cb77899e207ca1",
+      "bytes": 5647
+    },
+    {
+      "path": "docs/governance/phase_h/Phase_H_H2_Price_Basis_Corporate_Action_Contract_FROZEN.md",
+      "sha256": "7c7a553220a007d08cfd7e1676f5bf0c2c82976fe12e80bae41a3066625f2952",
+      "bytes": 7196
+    },
+    {
+      "path": "docs/governance/phase_h/Phase_H_H3_Bounded_Recent_Reference_Contract_FROZEN.md",
+      "sha256": "f4e97038b704420a5b9e44b5bf5fdd4b190e28f9874993432bf1dde6add8bd90",
+      "bytes": 13159
+    },
+    {
+      "path": "docs/governance/phase_h/Phase_H_H4_Discontinuity_Safety_Contract_FROZEN.md",
+      "sha256": "817a3cd265598031a8d573d463a82b443a65a9360140269c0aac9c98d87bc98b",
+      "bytes": 14514
+    }
+  ],
+  "v3_normative_artifacts": [
+    {
+      "path": "schemas/unified_market_evidence_request.v3.schema.json",
+      "sha256": "0dd37ff844e1644e5dde6ddebe54823ab6d24e4d128abadab77f2c5dae0be4d0",
+      "bytes": 4109
+    },
+    {
+      "path": "schemas/unified_market_evidence_result.v3.schema.json",
+      "sha256": "dae35eaa4f41f574204c2fb275e6a2b22c925462932b60c5c5c092b6ac1d2aab",
+      "bytes": 106255
+    },
+    {
+      "path": "schemas/unified_market_evidence_audit_package.v3.schema.json",
+      "sha256": "15766211f72bf9691bd098d8c582dc8e9ff7b9e10923991cac8e68741e00181d",
+      "bytes": 25882
+    },
+    {
+      "path": "schemas/trading_status_context_evidence.v1.schema.json",
+      "sha256": "638200509cde05613d17bd4158d1676c3c086d2b10aa2f50fb85d52febe30ecf",
+      "bytes": 9467
+    },
+    {
+      "path": "schemas/corporate_action_context_evidence.v1.schema.json",
+      "sha256": "91f6613e595d030dbdc27fecd744f698de5cf5cb6bad68fd661bd5cbbfba93c2",
+      "bytes": 25506
+    },
+    {
+      "path": "schemas/recent_performance_evidence.v1.schema.json",
+      "sha256": "b39708b3f8407f092037b133ecccae0452d80e68fba1221fc9afdd35a6a3390d",
+      "bytes": 12017
+    },
+    {
+      "path": "schemas/discontinuity_safety_evidence.v1.schema.json",
+      "sha256": "98dad43636d977840cbcb1a4e4c4954c95cbefd9b1df09c6de4230c17326b018",
+      "bytes": 9686
+    },
+    {
+      "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "sha256": "6557d512ad69b99e998826a990139fd72591413ab12af023dae74f401f2d1ab4",
+      "bytes": 15593
+    },
+    {
+      "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "sha256": "6de675c0c9e154d1cd5c4dfbac2a547f64980005684c76c8ac2b06329fb96c04",
+      "bytes": 23908
+    },
+    {
+      "path": "docs/governance/phase_h/Phase_H_H0_G_Unified_V3_Exact_Contract_FROZEN.md",
+      "sha256": "d8c70cfed39339034d4e5d6f60d44c5236fbc801b7b5e1d5b4ccc900126964c6",
+      "bytes": 11174
+    },
+    {
+      "path": "scripts/validate_phase_h_v3_contracts.py",
+      "sha256": "eedf352165feabef23f081ebba5d458093feff5360255632288cdcd32c36c745",
+      "bytes": 14372
+    }
+  ],
+  "protected_v1_v2_authority": [
+    {
+      "path": "schemas/unified_market_evidence_request.v1.schema.json",
+      "sha256": "6b2062151abdbb22f48b6b5e280636425b782c0e3c4e9c633ff552498607cc0b",
+      "bytes": 3507
+    },
+    {
+      "path": "schemas/unified_market_evidence_result.v1.schema.json",
+      "sha256": "58fe88d33bbc5f53639cd3b9896ad0cf6106e00ec6e9f93630a45339c545f05f",
+      "bytes": 14372
+    },
+    {
+      "path": "schemas/unified_market_evidence_audit_package.v1.schema.json",
+      "sha256": "5877ad564e488c6d4d4c5ef6b405e3b8dde60f056327cc1babf16a5ec2364198",
+      "bytes": 13531
+    },
+    {
+      "path": "schemas/unified_market_evidence_request.v2.schema.json",
+      "sha256": "757d864c3a00d296f8ebf2eccdbb47a1d39ca8a222e9d939f34ef854f4245e3b",
+      "bytes": 3860
+    },
+    {
+      "path": "schemas/unified_market_evidence_result.v2.schema.json",
+      "sha256": "ed9928530be37fc4b2a4d1e386eb2ea8ff5dbe33e4c6598d0a8010c338dea444",
+      "bytes": 38180
+    },
+    {
+      "path": "schemas/unified_market_evidence_audit_package.v2.schema.json",
+      "sha256": "a798e435168a185c00250f56bb88aa09fc57788fcd47048fdd42ae29c977b14e",
+      "bytes": 17285
+    },
+    {
+      "path": "tests/fixtures/phase_g_contract_v2/SCHEMA_FREEZE_MANIFEST.json",
+      "sha256": "9d464d4dd86277170a82e4426a917ae421d0a1d7c3aed5391288c9cd34b0d6e2",
+      "bytes": 3475
+    }
+  ],
+  "compatibility_decisions": {
+    "v1_readable": true,
+    "v2_readable": true,
+    "v3_future_candidate": true,
+    "preferred_runtime_request_schema_version": "unified_market_evidence_request.v2",
+    "v3_runtime_authority": "inactive",
+    "historical_artifact_rewrite_required": false,
+    "h3_range_design": "basis_qualified_recent_close_high_low",
+    "h3_required_distinct_closes": "lookback_trading_days + 1",
+    "h3_available_baseline_endpoint_identity": "ordered_observations[-lookback_trading_days]_to_governed_end_observation",
+    "h3_return_arithmetic": "raw_close_to_close_absolute_tolerance_1e-9",
+    "h1_h2_declared_scope": "non_vacuous_disjoint_declared_covered_uncovered_sets",
+    "audit_v3_artifact_paths": "nonempty_canonical_relative_no_parent_traversal",
+    "h4_request_capability": false,
+    "h4_network_route": false
+  },
+  "mutations": {
+    "runtime_authority": false,
+    "preferred_request": false,
+    "mcp": false,
+    "source_activation": false,
+    "production_implementation": false,
+    "security_master_identity": false,
+    "shared_internal_contract_versions": false
+  },
+  "phase_h_active_source_count": 0,
+  "mcp_tool_count": 6,
+  "contract_freeze_blockers": 0,
+  "h0_h_readiness": "READY_FOR_ACCEPTANCE_AND_IMPLEMENTATION_PLAN",
+  "validation": {
+    "json_parse": "PASS",
+    "draft7_meta_schema": "PASS",
+    "focused_contract_tests": "PASS",
+    "default_ci": "PASS_1081_PASSED_2_SKIPPED_9_DESELECTED",
+    "network_may_have_occurred": false,
+    "v1_v2_byte_integrity": "PASS",
+    "catalog_route_integrity": "PASS",
+    "scope_drift": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "notes": [
+    "This manifest intentionally does not contain its own hash.",
+    "V3 existence does not activate V3 runtime authority."
+  ]
+}

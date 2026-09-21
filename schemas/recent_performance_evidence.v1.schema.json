@@ -1,0 +1,528 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:recent_performance_evidence:v1",
+  "title": "Recent Performance Evidence v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "recent_performance_evidence.v1"
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "canonical_target_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "market": {
+          "type": "string",
+          "enum": [
+            "TWSE",
+            "TPEX"
+          ]
+        },
+        "security_code": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "canonical_target_id",
+        "market",
+        "security_code"
+      ],
+      "additionalProperties": false
+    },
+    "coverage_status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "partial",
+        "insufficient",
+        "unavailable",
+        "source_failed",
+        "binding_failed",
+        "unsupported",
+        "not_applicable"
+      ]
+    },
+    "requested_observations": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+    },
+    "valid_observation_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 20
+    },
+    "missing_observation_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 20
+    },
+    "first_observation_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "last_observation_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "governed_end_observation": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "canonical_target_id": {
+              "type": "string"
+            },
+            "market": {
+              "type": "string",
+              "enum": [
+                "TWSE",
+                "TPEX"
+              ]
+            },
+            "security_code": {
+              "type": "string"
+            },
+            "trade_date": {
+              "type": "string",
+              "format": "date"
+            },
+            "close": {
+              "type": "number"
+            },
+            "volume": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "source_family": {
+              "type": "string"
+            },
+            "source_contract_id": {
+              "type": "string"
+            },
+            "retrieved_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "citation_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "canonical_target_id",
+            "market",
+            "security_code",
+            "trade_date",
+            "close",
+            "volume",
+            "source_family",
+            "source_contract_id",
+            "retrieved_at",
+            "citation_ids"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "canonical_target_id": {
+            "type": "string"
+          },
+          "market": {
+            "type": "string",
+            "enum": [
+              "TWSE",
+              "TPEX"
+            ]
+          },
+          "security_code": {
+            "type": "string"
+          },
+          "trade_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "close": {
+            "type": "number"
+          },
+          "volume": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "source_family": {
+            "type": "string"
+          },
+          "source_contract_id": {
+            "type": "string"
+          },
+          "retrieved_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "citation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "canonical_target_id",
+          "market",
+          "security_code",
+          "trade_date",
+          "close",
+          "volume",
+          "source_family",
+          "source_contract_id",
+          "retrieved_at",
+          "citation_ids"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 20
+    },
+    "baselines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "lookback_trading_days": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "available",
+              "insufficient_coverage",
+              "unavailable",
+              "unsupported"
+            ]
+          },
+          "start_observation_date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "end_observation_date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "required_distinct_close_count": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 21
+          },
+          "actual_distinct_close_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 21
+          },
+          "recent_return_pct": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "return_basis": {
+            "const": "raw_unadjusted_close_to_close"
+          }
+        },
+        "required": [
+          "lookback_trading_days",
+          "status",
+          "start_observation_date",
+          "end_observation_date",
+          "required_distinct_close_count",
+          "actual_distinct_close_count",
+          "recent_return_pct",
+          "return_basis"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "available_baselines": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 20
+      },
+      "uniqueItems": true
+    },
+    "unavailable_baselines": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 20
+      },
+      "uniqueItems": true
+    },
+    "recent_close_range": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "range_basis": {
+          "const": "completed_session_closing_price"
+        },
+        "recent_close_high": {
+          "type": "number"
+        },
+        "recent_close_low": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "range_basis",
+        "recent_close_high",
+        "recent_close_low"
+      ],
+      "additionalProperties": false
+    },
+    "volume_context": {
+      "type": "object",
+      "properties": {
+        "current_volume_basis": {
+          "type": "string",
+          "enum": [
+            "intraday_cumulative",
+            "completed_session"
+          ]
+        },
+        "historical_average_basis": {
+          "const": "completed_official_sessions"
+        },
+        "comparison_alignment": {
+          "type": "string",
+          "enum": [
+            "aligned",
+            "partial_session_vs_completed_sessions",
+            "unavailable"
+          ]
+        },
+        "historical_average_volume": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "current_volume_basis",
+        "historical_average_basis",
+        "comparison_alignment",
+        "historical_average_volume"
+      ],
+      "additionalProperties": false
+    },
+    "caveats": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "citation_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "target",
+    "coverage_status",
+    "requested_observations",
+    "valid_observation_count",
+    "missing_observation_count",
+    "first_observation_date",
+    "last_observation_date",
+    "governed_end_observation",
+    "observations",
+    "baselines",
+    "available_baselines",
+    "unavailable_baselines",
+    "recent_close_range",
+    "volume_context",
+    "caveats",
+    "citation_ids"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "coverage_status": {
+            "const": "complete"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "missing_observation_count": {
+            "const": 0
+          },
+          "governed_end_observation": {
+            "type": "object"
+          },
+          "available_baselines": {
+            "minItems": 1
+          },
+          "unavailable_baselines": {
+            "maxItems": 0
+          },
+          "baselines": {
+            "items": {
+              "properties": {
+                "status": {
+                  "const": "available"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "coverage_status": {
+            "const": "partial"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "available_baselines": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "coverage_status": {
+            "const": "insufficient"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "valid_observation_count": {
+            "minimum": 1
+          },
+          "available_baselines": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "coverage_status": {
+            "const": "unavailable"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "valid_observation_count": {
+            "const": 0
+          },
+          "available_baselines": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "coverage_status": {
+            "enum": [
+              "source_failed",
+              "binding_failed",
+              "unsupported",
+              "not_applicable"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "available_baselines": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "volume_context": {
+            "properties": {
+              "current_volume_basis": {
+                "const": "intraday_cumulative"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "volume_context": {
+            "properties": {
+              "comparison_alignment": {
+                "const": "partial_session_vs_completed_sessions"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

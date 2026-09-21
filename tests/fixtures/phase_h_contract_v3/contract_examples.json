@@ -1,0 +1,1031 @@
+{
+  "request_v3": {
+    "schema_version": "unified_market_evidence_request.v3",
+    "request_id": "phase-h-v3-fixture",
+    "targets": [
+      {
+        "input": "2330",
+        "market_hint": "TWSE",
+        "resolution_requirement": "exact",
+        "client_target_reference": "fixture"
+      }
+    ],
+    "data_needs": [
+      {
+        "type": "trading_status_context",
+        "priority": "required",
+        "parameters": {}
+      },
+      {
+        "type": "corporate_action_context",
+        "priority": "required",
+        "parameters": {}
+      },
+      {
+        "type": "recent_performance",
+        "priority": "optional",
+        "parameters": {
+          "lookback_trading_days": 5
+        }
+      }
+    ],
+    "execution_mode": "preview"
+  },
+  "h1_attention_available": {
+    "schema_version": "trading_status_context_evidence.v1",
+    "status": "available",
+    "target": {
+      "canonical_target_id": "TWSE:2330",
+      "market": "TWSE",
+      "security_code": "2330"
+    },
+    "coverage": {
+      "status": "complete",
+      "declared_scope_complete": true,
+      "retrieval_succeeded": true,
+      "source_contract_validated": true,
+      "exact_target_search_succeeded": true,
+      "source_snapshot_date": "2026-09-19",
+      "declared_status_types": [
+        "attention",
+        "disposition",
+        "changed_trading_method",
+        "suspension",
+        "resumption"
+      ],
+      "covered_status_types": [
+        "attention",
+        "disposition",
+        "changed_trading_method",
+        "suspension",
+        "resumption"
+      ],
+      "uncovered_status_types": [],
+      "failed_source_families": []
+    },
+    "source": {
+      "source_family": "TWSE_PHASE_H_FIXTURE",
+      "source_contract_id": "fixture-contract",
+      "transport": "official_json_openapi",
+      "license_authority": "ODGL",
+      "source_role": "default_candidate",
+      "activation_state": "eligible"
+    },
+    "observed_at": "2026-09-21T00:00:00Z",
+    "items": [
+      {
+        "status_type": "attention",
+        "status_lifecycle": "unresolved",
+        "published_at": null,
+        "source_record_date": "2026-09-19",
+        "effective_from": null,
+        "effective_to": null,
+        "official_reason": "official fixture reason",
+        "official_conditions": null,
+        "official_measures": null,
+        "source_native_provenance": {
+          "flag": "Y"
+        },
+        "citation_ids": [
+          "cit-h1-attention"
+        ]
+      }
+    ],
+    "caveats": [],
+    "citation_ids": [
+      "cit-h1-attention"
+    ]
+  },
+  "h1_no_evidence_complete": {
+    "schema_version": "trading_status_context_evidence.v1",
+    "status": "no_evidence_in_covered_scope",
+    "target": {
+      "canonical_target_id": "TWSE:2330",
+      "market": "TWSE",
+      "security_code": "2330"
+    },
+    "coverage": {
+      "status": "complete",
+      "declared_scope_complete": true,
+      "retrieval_succeeded": true,
+      "source_contract_validated": true,
+      "exact_target_search_succeeded": true,
+      "source_snapshot_date": "2026-09-19",
+      "declared_status_types": [
+        "attention",
+        "disposition",
+        "changed_trading_method",
+        "suspension",
+        "resumption"
+      ],
+      "covered_status_types": [
+        "attention",
+        "disposition",
+        "changed_trading_method",
+        "suspension",
+        "resumption"
+      ],
+      "uncovered_status_types": [],
+      "failed_source_families": []
+    },
+    "source": {
+      "source_family": "TWSE_PHASE_H_FIXTURE",
+      "source_contract_id": "fixture-contract",
+      "transport": "official_json_openapi",
+      "license_authority": "ODGL",
+      "source_role": "default_candidate",
+      "activation_state": "eligible"
+    },
+    "observed_at": "2026-09-21T00:00:00Z",
+    "items": [],
+    "caveats": [],
+    "citation_ids": []
+  },
+  "h2_preannouncement_and_final": {
+    "schema_version": "corporate_action_context_evidence.v1",
+    "status": "available",
+    "target": {
+      "canonical_target_id": "TWSE:2330",
+      "market": "TWSE",
+      "security_code": "2330"
+    },
+    "coverage": {
+      "status": "partial",
+      "declared_scope_complete": false,
+      "retrieval_succeeded": true,
+      "source_contract_validated": true,
+      "exact_target_search_succeeded": true,
+      "requested_window": {
+        "start": "2026-09-01",
+        "end": "2026-09-21"
+      },
+      "declared_event_subtypes": [
+        "ex_dividend",
+        "capital_reduction_resume",
+        "par_value_change_resume",
+        "split",
+        "reverse_split",
+        "share_consolidation"
+      ],
+      "covered_event_subtypes": [
+        "ex_dividend"
+      ],
+      "uncovered_event_subtypes": [
+        "capital_reduction_resume",
+        "par_value_change_resume",
+        "split",
+        "reverse_split",
+        "share_consolidation"
+      ],
+      "failed_source_families": []
+    },
+    "sources": [
+      {
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-contract",
+        "transport": "official_json_openapi",
+        "license_authority": "ODGL",
+        "source_role": "default_candidate",
+        "activation_state": "eligible"
+      }
+    ],
+    "observed_at": "2026-09-21T00:00:00Z",
+    "events": [
+      {
+        "event_type": "ex_dividend",
+        "source_evidence_stage": "preannouncement",
+        "event_lifecycle": "scheduled",
+        "announcement_date": "2026-09-01",
+        "effective_date": "2026-09-20",
+        "pre_event_close": {
+          "state": "unavailable",
+          "value": null
+        },
+        "official_reference_price": {
+          "state": "not_announced",
+          "value": null
+        },
+        "opening_reference_basis": null,
+        "cash_dividend": {
+          "state": "blank",
+          "value": null
+        },
+        "stock_dividend_ratio": {
+          "state": "value",
+          "value": 0
+        },
+        "rights_ratio": {
+          "state": "blank",
+          "value": null
+        },
+        "subscription_price": {
+          "state": "not_applicable",
+          "value": null
+        },
+        "official_source_proof": "TWT48U_ALL",
+        "revision_relation": {
+          "status": "unresolved",
+          "relation_type": null,
+          "related_official_reference": null
+        },
+        "citation_ids": [
+          "cit-h2-pre"
+        ]
+      },
+      {
+        "event_type": "ex_dividend",
+        "source_evidence_stage": "official_reference_calculated",
+        "event_lifecycle": "effective",
+        "announcement_date": "2026-09-01",
+        "effective_date": "2026-09-20",
+        "pre_event_close": {
+          "state": "value",
+          "value": 100
+        },
+        "official_reference_price": {
+          "state": "value",
+          "value": 95
+        },
+        "opening_reference_basis": null,
+        "cash_dividend": {
+          "state": "blank",
+          "value": null
+        },
+        "stock_dividend_ratio": {
+          "state": "value",
+          "value": 0
+        },
+        "rights_ratio": {
+          "state": "blank",
+          "value": null
+        },
+        "subscription_price": {
+          "state": "not_applicable",
+          "value": null
+        },
+        "official_source_proof": "tpex_exright_daily",
+        "revision_relation": {
+          "status": "officially_linked",
+          "relation_type": "supersedes",
+          "related_official_reference": "pre-001"
+        },
+        "citation_ids": [
+          "cit-h2-final"
+        ]
+      }
+    ],
+    "caveats": [
+      "partial governed subtype coverage"
+    ],
+    "citation_ids": [
+      "cit-h2-pre",
+      "cit-h2-final"
+    ]
+  },
+  "h3_1d": {
+    "schema_version": "recent_performance_evidence.v1",
+    "target": {
+      "canonical_target_id": "TWSE:2330",
+      "market": "TWSE",
+      "security_code": "2330"
+    },
+    "coverage_status": "complete",
+    "requested_observations": 1,
+    "valid_observation_count": 1,
+    "missing_observation_count": 0,
+    "first_observation_date": "2026-08-01",
+    "last_observation_date": "2026-08-01",
+    "governed_end_observation": {
+      "canonical_target_id": "TWSE:2330",
+      "market": "TWSE",
+      "security_code": "2330",
+      "trade_date": "2026-08-28",
+      "close": 120,
+      "volume": 1028,
+      "source_family": "TWSE_PHASE_H_FIXTURE",
+      "source_contract_id": "fixture-history",
+      "retrieved_at": "2026-09-21T00:00:00Z",
+      "citation_ids": [
+        "cit-h3-28"
+      ]
+    },
+    "observations": [
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-01",
+        "close": 100,
+        "volume": 1001,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-1"
+        ]
+      }
+    ],
+    "baselines": [
+      {
+        "lookback_trading_days": 1,
+        "status": "available",
+        "start_observation_date": "2026-08-01",
+        "end_observation_date": "2026-08-28",
+        "required_distinct_close_count": 2,
+        "actual_distinct_close_count": 2,
+        "recent_return_pct": 20.0,
+        "return_basis": "raw_unadjusted_close_to_close"
+      }
+    ],
+    "available_baselines": [
+      1
+    ],
+    "unavailable_baselines": [],
+    "recent_close_range": {
+      "range_basis": "completed_session_closing_price",
+      "recent_close_high": 120,
+      "recent_close_low": 100
+    },
+    "volume_context": {
+      "current_volume_basis": "intraday_cumulative",
+      "historical_average_basis": "completed_official_sessions",
+      "comparison_alignment": "partial_session_vs_completed_sessions",
+      "historical_average_volume": 1010
+    },
+    "caveats": [
+      "raw unadjusted close-to-close evidence"
+    ],
+    "citation_ids": [
+      "cit-h3-1",
+      "cit-h3-28"
+    ]
+  },
+  "h3_5d": {
+    "schema_version": "recent_performance_evidence.v1",
+    "target": {
+      "canonical_target_id": "TWSE:2330",
+      "market": "TWSE",
+      "security_code": "2330"
+    },
+    "coverage_status": "complete",
+    "requested_observations": 5,
+    "valid_observation_count": 5,
+    "missing_observation_count": 0,
+    "first_observation_date": "2026-08-01",
+    "last_observation_date": "2026-08-05",
+    "governed_end_observation": {
+      "canonical_target_id": "TWSE:2330",
+      "market": "TWSE",
+      "security_code": "2330",
+      "trade_date": "2026-08-28",
+      "close": 120,
+      "volume": 1028,
+      "source_family": "TWSE_PHASE_H_FIXTURE",
+      "source_contract_id": "fixture-history",
+      "retrieved_at": "2026-09-21T00:00:00Z",
+      "citation_ids": [
+        "cit-h3-28"
+      ]
+    },
+    "observations": [
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-01",
+        "close": 100,
+        "volume": 1001,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-1"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-02",
+        "close": 101,
+        "volume": 1002,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-2"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-03",
+        "close": 102,
+        "volume": 1003,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-3"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-04",
+        "close": 103,
+        "volume": 1004,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-4"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-05",
+        "close": 104,
+        "volume": 1005,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-5"
+        ]
+      }
+    ],
+    "baselines": [
+      {
+        "lookback_trading_days": 5,
+        "status": "available",
+        "start_observation_date": "2026-08-01",
+        "end_observation_date": "2026-08-28",
+        "required_distinct_close_count": 6,
+        "actual_distinct_close_count": 6,
+        "recent_return_pct": 20.0,
+        "return_basis": "raw_unadjusted_close_to_close"
+      }
+    ],
+    "available_baselines": [
+      5
+    ],
+    "unavailable_baselines": [],
+    "recent_close_range": {
+      "range_basis": "completed_session_closing_price",
+      "recent_close_high": 120,
+      "recent_close_low": 100
+    },
+    "volume_context": {
+      "current_volume_basis": "intraday_cumulative",
+      "historical_average_basis": "completed_official_sessions",
+      "comparison_alignment": "partial_session_vs_completed_sessions",
+      "historical_average_volume": 1010
+    },
+    "caveats": [
+      "raw unadjusted close-to-close evidence"
+    ],
+    "citation_ids": [
+      "cit-h3-1",
+      "cit-h3-2",
+      "cit-h3-3",
+      "cit-h3-4",
+      "cit-h3-5",
+      "cit-h3-28"
+    ]
+  },
+  "h3_20d": {
+    "schema_version": "recent_performance_evidence.v1",
+    "target": {
+      "canonical_target_id": "TWSE:2330",
+      "market": "TWSE",
+      "security_code": "2330"
+    },
+    "coverage_status": "complete",
+    "requested_observations": 20,
+    "valid_observation_count": 20,
+    "missing_observation_count": 0,
+    "first_observation_date": "2026-08-01",
+    "last_observation_date": "2026-08-20",
+    "governed_end_observation": {
+      "canonical_target_id": "TWSE:2330",
+      "market": "TWSE",
+      "security_code": "2330",
+      "trade_date": "2026-08-28",
+      "close": 120,
+      "volume": 1028,
+      "source_family": "TWSE_PHASE_H_FIXTURE",
+      "source_contract_id": "fixture-history",
+      "retrieved_at": "2026-09-21T00:00:00Z",
+      "citation_ids": [
+        "cit-h3-28"
+      ]
+    },
+    "observations": [
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-01",
+        "close": 100,
+        "volume": 1001,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-1"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-02",
+        "close": 101,
+        "volume": 1002,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-2"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-03",
+        "close": 102,
+        "volume": 1003,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-3"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-04",
+        "close": 103,
+        "volume": 1004,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-4"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-05",
+        "close": 104,
+        "volume": 1005,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-5"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-06",
+        "close": 105,
+        "volume": 1006,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-6"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-07",
+        "close": 106,
+        "volume": 1007,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-7"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-08",
+        "close": 107,
+        "volume": 1008,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-8"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-09",
+        "close": 108,
+        "volume": 1009,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-9"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-10",
+        "close": 109,
+        "volume": 1010,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-10"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-11",
+        "close": 110,
+        "volume": 1011,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-11"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-12",
+        "close": 111,
+        "volume": 1012,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-12"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-13",
+        "close": 112,
+        "volume": 1013,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-13"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-14",
+        "close": 113,
+        "volume": 1014,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-14"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-15",
+        "close": 114,
+        "volume": 1015,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-15"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-16",
+        "close": 115,
+        "volume": 1016,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-16"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-17",
+        "close": 116,
+        "volume": 1017,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-17"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-18",
+        "close": 117,
+        "volume": 1018,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-18"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-19",
+        "close": 118,
+        "volume": 1019,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-19"
+        ]
+      },
+      {
+        "canonical_target_id": "TWSE:2330",
+        "market": "TWSE",
+        "security_code": "2330",
+        "trade_date": "2026-08-20",
+        "close": 119,
+        "volume": 1020,
+        "source_family": "TWSE_PHASE_H_FIXTURE",
+        "source_contract_id": "fixture-history",
+        "retrieved_at": "2026-09-21T00:00:00Z",
+        "citation_ids": [
+          "cit-h3-20"
+        ]
+      }
+    ],
+    "baselines": [
+      {
+        "lookback_trading_days": 20,
+        "status": "available",
+        "start_observation_date": "2026-08-01",
+        "end_observation_date": "2026-08-28",
+        "required_distinct_close_count": 21,
+        "actual_distinct_close_count": 21,
+        "recent_return_pct": 20.0,
+        "return_basis": "raw_unadjusted_close_to_close"
+      }
+    ],
+    "available_baselines": [
+      20
+    ],
+    "unavailable_baselines": [],
+    "recent_close_range": {
+      "range_basis": "completed_session_closing_price",
+      "recent_close_high": 120,
+      "recent_close_low": 100
+    },
+    "volume_context": {
+      "current_volume_basis": "intraday_cumulative",
+      "historical_average_basis": "completed_official_sessions",
+      "comparison_alignment": "partial_session_vs_completed_sessions",
+      "historical_average_volume": 1010
+    },
+    "caveats": [
+      "raw unadjusted close-to-close evidence"
+    ],
+    "citation_ids": [
+      "cit-h3-1",
+      "cit-h3-2",
+      "cit-h3-3",
+      "cit-h3-4",
+      "cit-h3-5",
+      "cit-h3-6",
+      "cit-h3-7",
+      "cit-h3-8",
+      "cit-h3-9",
+      "cit-h3-10",
+      "cit-h3-11",
+      "cit-h3-12",
+      "cit-h3-13",
+      "cit-h3-14",
+      "cit-h3-15",
+      "cit-h3-16",
+      "cit-h3-17",
+      "cit-h3-18",
+      "cit-h3-19",
+      "cit-h3-20",
+      "cit-h3-28"
+    ]
+  },
+  "h4_no_material": {
+    "schema_version": "discontinuity_safety_evidence.v1",
+    "target": {
+      "canonical_target_id": "TWSE:2330",
+      "market": "TWSE",
+      "security_code": "2330"
+    },
+    "state": "no_material_discontinuity_detected",
+    "comparison_window": {
+      "start_observation_date": "2026-09-01",
+      "end_observation_date": "2026-09-21",
+      "start_price_basis": "official_close",
+      "end_price_basis": "official_close"
+    },
+    "relevant_event_subtypes": [
+      "ex_dividend",
+      "capital_reduction_resume"
+    ],
+    "covered_event_subtypes": [
+      "ex_dividend",
+      "capital_reduction_resume"
+    ],
+    "uncovered_event_subtypes": [],
+    "failed_source_families": [],
+    "upstream_failures": [],
+    "effective_event_evidence_references": [],
+    "official_reference_evidence_references": [],
+    "input_evidence_references": [
+      "h2-evidence",
+      "h3-evidence"
+    ],
+    "raw_metric_status": "available",
+    "ordinary_return_interpretation": "allowed",
+    "interpretation_guard": "none",
+    "deterministic_rule_version": "phase_h_discontinuity_safety.v1",
+    "citation_ids": [
+      "cit-h2"
+    ],
+    "caveats": []
+  },
+  "h4_reference_available": {
+    "schema_version": "discontinuity_safety_evidence.v1",
+    "target": {
+      "canonical_target_id": "TWSE:2330",
+      "market": "TWSE",
+      "security_code": "2330"
+    },
+    "state": "discontinuity_detected_reference_available",
+    "comparison_window": {
+      "start_observation_date": "2026-09-01",
+      "end_observation_date": "2026-09-21",
+      "start_price_basis": "official_close",
+      "end_price_basis": "official_close"
+    },
+    "relevant_event_subtypes": [
+      "ex_dividend",
+      "capital_reduction_resume"
+    ],
+    "covered_event_subtypes": [
+      "ex_dividend",
+      "capital_reduction_resume"
+    ],
+    "uncovered_event_subtypes": [],
+    "failed_source_families": [],
+    "upstream_failures": [],
+    "effective_event_evidence_references": [
+      "event-1"
+    ],
+    "official_reference_evidence_references": [
+      "reference-1"
+    ],
+    "input_evidence_references": [
+      "h2-evidence",
+      "h3-evidence"
+    ],
+    "raw_metric_status": "available",
+    "ordinary_return_interpretation": "blocked",
+    "interpretation_guard": "PRICE_BASIS_DISCONTINUITY_REFERENCE_AVAILABLE",
+    "deterministic_rule_version": "phase_h_discontinuity_safety.v1",
+    "citation_ids": [
+      "cit-h2"
+    ],
+    "caveats": []
+  },
+  "h4_reference_unavailable": {
+    "schema_version": "discontinuity_safety_evidence.v1",
+    "target": {
+      "canonical_target_id": "TWSE:2330",
+      "market": "TWSE",
+      "security_code": "2330"
+    },
+    "state": "discontinuity_detected_reference_unavailable",
+    "comparison_window": {
+      "start_observation_date": "2026-09-01",
+      "end_observation_date": "2026-09-21",
+      "start_price_basis": "official_close",
+      "end_price_basis": "official_close"
+    },
+    "relevant_event_subtypes": [
+      "ex_dividend",
+      "capital_reduction_resume"
+    ],
+    "covered_event_subtypes": [
+      "ex_dividend",
+      "capital_reduction_resume"
+    ],
+    "uncovered_event_subtypes": [],
+    "failed_source_families": [],
+    "upstream_failures": [],
+    "effective_event_evidence_references": [
+      "event-1"
+    ],
+    "official_reference_evidence_references": [],
+    "input_evidence_references": [
+      "h2-evidence",
+      "h3-evidence"
+    ],
+    "raw_metric_status": "available",
+    "ordinary_return_interpretation": "blocked",
+    "interpretation_guard": "NOT_COMPARABLE_AS_ORDINARY_RETURN",
+    "deterministic_rule_version": "phase_h_discontinuity_safety.v1",
+    "citation_ids": [
+      "cit-h2"
+    ],
+    "caveats": []
+  },
+  "h4_coverage_incomplete": {
+    "schema_version": "discontinuity_safety_evidence.v1",
+    "target": {
+      "canonical_target_id": "TWSE:2330",
+      "market": "TWSE",
+      "security_code": "2330"
+    },
+    "state": "coverage_incomplete",
+    "comparison_window": {
+      "start_observation_date": "2026-09-01",
+      "end_observation_date": "2026-09-21",
+      "start_price_basis": "official_close",
+      "end_price_basis": "official_close"
+    },
+    "relevant_event_subtypes": [
+      "ex_dividend",
+      "capital_reduction_resume"
+    ],
+    "covered_event_subtypes": [
+      "ex_dividend"
+    ],
+    "uncovered_event_subtypes": [
+      "capital_reduction_resume"
+    ],
+    "failed_source_families": [],
+    "upstream_failures": [],
+    "effective_event_evidence_references": [],
+    "official_reference_evidence_references": [],
+    "input_evidence_references": [
+      "h2-evidence",
+      "h3-evidence"
+    ],
+    "raw_metric_status": "available",
+    "ordinary_return_interpretation": "blocked",
+    "interpretation_guard": "CORPORATE_ACTION_COVERAGE_INCOMPLETE",
+    "deterministic_rule_version": "phase_h_discontinuity_safety.v1",
+    "citation_ids": [
+      "cit-h2"
+    ],
+    "caveats": []
+  }
+}
