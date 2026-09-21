@@ -1,0 +1,406 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:trading_status_context_evidence:v1",
+  "title": "Trading Status Context Evidence v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "trading_status_context_evidence.v1"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "no_evidence_in_covered_scope",
+        "partial",
+        "source_failed",
+        "binding_failed",
+        "not_applicable",
+        "unsupported"
+      ]
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "canonical_target_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "market": {
+          "type": "string",
+          "enum": [
+            "TWSE",
+            "TPEX"
+          ]
+        },
+        "security_code": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "canonical_target_id",
+        "market",
+        "security_code"
+      ],
+      "additionalProperties": false
+    },
+    "coverage": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "complete",
+            "partial",
+            "unknown",
+            "source_failed",
+            "binding_failed",
+            "unsupported",
+            "not_applicable"
+          ]
+        },
+        "declared_scope_complete": {
+          "type": "boolean"
+        },
+        "retrieval_succeeded": {
+          "type": "boolean"
+        },
+        "source_contract_validated": {
+          "type": "boolean"
+        },
+        "exact_target_search_succeeded": {
+          "type": "boolean"
+        },
+        "source_snapshot_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "declared_status_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/status_type"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "covered_status_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/status_type"
+          },
+          "uniqueItems": true
+        },
+        "uncovered_status_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/status_type"
+          },
+          "uniqueItems": true
+        },
+        "failed_source_families": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "status",
+        "declared_scope_complete",
+        "retrieval_succeeded",
+        "source_contract_validated",
+        "exact_target_search_succeeded",
+        "source_snapshot_date",
+        "declared_status_types",
+        "covered_status_types",
+        "uncovered_status_types",
+        "failed_source_families"
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "source_family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_contract_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transport": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license_authority": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_role": {
+          "type": "string",
+          "enum": [
+            "default_candidate",
+            "governed_fallback",
+            "optional_licensed_provider",
+            "manual_verification",
+            "research_only",
+            "source_gap"
+          ]
+        },
+        "activation_state": {
+          "type": "string",
+          "enum": [
+            "inactive",
+            "eligible",
+            "active",
+            "blocked"
+          ]
+        }
+      },
+      "required": [
+        "source_family",
+        "source_contract_id",
+        "transport",
+        "license_authority",
+        "source_role",
+        "activation_state"
+      ],
+      "additionalProperties": false
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status_type": {
+            "$ref": "#/definitions/status_type"
+          },
+          "status_lifecycle": {
+            "type": "string",
+            "enum": [
+              "reported",
+              "effective",
+              "ended",
+              "unresolved"
+            ]
+          },
+          "published_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "source_record_date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "effective_from": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "effective_to": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "official_reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "official_conditions": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "official_measures": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_native_provenance": {
+            "type": "object",
+            "maxProperties": 32,
+            "additionalProperties": {
+              "type": [
+                "string",
+                "number",
+                "integer",
+                "boolean",
+                "null"
+              ]
+            }
+          },
+          "citation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "status_type",
+          "status_lifecycle",
+          "published_at",
+          "source_record_date",
+          "effective_from",
+          "effective_to",
+          "official_reason",
+          "official_conditions",
+          "official_measures",
+          "source_native_provenance",
+          "citation_ids"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "caveats": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "citation_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "definitions": {
+    "status_type": {
+      "type": "string",
+      "enum": [
+        "attention",
+        "disposition",
+        "changed_trading_method",
+        "suspension",
+        "resumption"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "status",
+    "target",
+    "coverage",
+    "source",
+    "observed_at",
+    "items",
+    "caveats",
+    "citation_ids"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "available"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "items": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "no_evidence_in_covered_scope"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "items": {
+            "maxItems": 0
+          },
+          "coverage": {
+            "properties": {
+              "status": {
+                "const": "complete"
+              },
+              "declared_scope_complete": {
+                "const": true
+              },
+              "retrieval_succeeded": {
+                "const": true
+              },
+              "source_contract_validated": {
+                "const": true
+              },
+              "exact_target_search_succeeded": {
+                "const": true
+              },
+              "uncovered_status_types": {
+                "maxItems": 0
+              },
+              "declared_status_types": {
+                "minItems": 1
+              },
+              "failed_source_families": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "source_failed",
+              "binding_failed",
+              "not_applicable",
+              "unsupported"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "items": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

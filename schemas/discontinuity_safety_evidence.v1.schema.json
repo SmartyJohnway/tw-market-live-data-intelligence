@@ -1,0 +1,406 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tw-market-live-data-intelligence:discontinuity_safety_evidence:v1",
+  "title": "Discontinuity Safety Evidence v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "discontinuity_safety_evidence.v1"
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "canonical_target_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "market": {
+          "type": "string",
+          "enum": [
+            "TWSE",
+            "TPEX"
+          ]
+        },
+        "security_code": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "canonical_target_id",
+        "market",
+        "security_code"
+      ],
+      "additionalProperties": false
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "no_material_discontinuity_detected",
+        "discontinuity_detected_reference_available",
+        "discontinuity_detected_reference_unavailable",
+        "coverage_incomplete"
+      ]
+    },
+    "comparison_window": {
+      "type": "object",
+      "properties": {
+        "start_observation_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "end_observation_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "start_price_basis": {
+          "type": "string"
+        },
+        "end_price_basis": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "start_observation_date",
+        "end_observation_date",
+        "start_price_basis",
+        "end_price_basis"
+      ],
+      "additionalProperties": false
+    },
+    "relevant_event_subtypes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "ex_dividend",
+          "ex_right",
+          "ex_right_dividend",
+          "capital_reduction_resume",
+          "par_value_change_resume",
+          "split",
+          "reverse_split",
+          "share_consolidation",
+          "cash_capital_increase_effect",
+          "other_official_reference_price_event"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "covered_event_subtypes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "ex_dividend",
+          "ex_right",
+          "ex_right_dividend",
+          "capital_reduction_resume",
+          "par_value_change_resume",
+          "split",
+          "reverse_split",
+          "share_consolidation",
+          "cash_capital_increase_effect",
+          "other_official_reference_price_event"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "uncovered_event_subtypes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "ex_dividend",
+          "ex_right",
+          "ex_right_dividend",
+          "capital_reduction_resume",
+          "par_value_change_resume",
+          "split",
+          "reverse_split",
+          "share_consolidation",
+          "cash_capital_increase_effect",
+          "other_official_reference_price_event"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "failed_source_families": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "upstream_failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "failure_type": {
+            "type": "string",
+            "enum": [
+              "source_failed",
+              "binding_failed",
+              "unresolved_effective_timing",
+              "unresolved_revision",
+              "missing_required_evidence"
+            ]
+          },
+          "evidence_reference": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "failure_type",
+          "evidence_reference"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "effective_event_evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "official_reference_evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "input_evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "raw_metric_status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "unavailable"
+      ]
+    },
+    "ordinary_return_interpretation": {
+      "type": "string",
+      "enum": [
+        "allowed",
+        "blocked"
+      ]
+    },
+    "interpretation_guard": {
+      "type": "string",
+      "enum": [
+        "none",
+        "NOT_COMPARABLE_AS_ORDINARY_RETURN",
+        "CORPORATE_ACTION_COVERAGE_INCOMPLETE",
+        "PRICE_BASIS_DISCONTINUITY_REFERENCE_AVAILABLE"
+      ]
+    },
+    "deterministic_rule_version": {
+      "type": "string",
+      "const": "phase_h_discontinuity_safety.v1"
+    },
+    "citation_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "caveats": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "target",
+    "state",
+    "comparison_window",
+    "relevant_event_subtypes",
+    "covered_event_subtypes",
+    "uncovered_event_subtypes",
+    "failed_source_families",
+    "upstream_failures",
+    "effective_event_evidence_references",
+    "official_reference_evidence_references",
+    "input_evidence_references",
+    "raw_metric_status",
+    "ordinary_return_interpretation",
+    "interpretation_guard",
+    "deterministic_rule_version",
+    "citation_ids",
+    "caveats"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "no_material_discontinuity_detected"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "ordinary_return_interpretation": {
+            "const": "allowed"
+          },
+          "raw_metric_status": {
+            "const": "available"
+          },
+          "interpretation_guard": {
+            "const": "none"
+          },
+          "uncovered_event_subtypes": {
+            "maxItems": 0
+          },
+          "failed_source_families": {
+            "maxItems": 0
+          },
+          "upstream_failures": {
+            "maxItems": 0
+          },
+          "effective_event_evidence_references": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "upstream_failures": {
+            "minItems": 1
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "state": {
+            "const": "coverage_incomplete"
+          },
+          "ordinary_return_interpretation": {
+            "const": "blocked"
+          },
+          "interpretation_guard": {
+            "const": "CORPORATE_ACTION_COVERAGE_INCOMPLETE"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "enum": [
+              "discontinuity_detected_reference_available",
+              "discontinuity_detected_reference_unavailable",
+              "coverage_incomplete"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "ordinary_return_interpretation": {
+            "const": "blocked"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "discontinuity_detected_reference_available"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "interpretation_guard": {
+            "const": "PRICE_BASIS_DISCONTINUITY_REFERENCE_AVAILABLE"
+          },
+          "effective_event_evidence_references": {
+            "minItems": 1
+          },
+          "official_reference_evidence_references": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "discontinuity_detected_reference_unavailable"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "interpretation_guard": {
+            "const": "NOT_COMPARABLE_AS_ORDINARY_RETURN"
+          },
+          "effective_event_evidence_references": {
+            "minItems": 1
+          },
+          "official_reference_evidence_references": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "coverage_incomplete"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "interpretation_guard": {
+            "const": "CORPORATE_ACTION_COVERAGE_INCOMPLETE"
+          }
+        },
+        "anyOf": [
+          {
+            "properties": {
+              "uncovered_event_subtypes": {
+                "minItems": 1
+              }
+            }
+          },
+          {
+            "properties": {
+              "failed_source_families": {
+                "minItems": 1
+              }
+            }
+          },
+          {
+            "properties": {
+              "upstream_failures": {
+                "minItems": 1
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "additionalProperties": false
+}
