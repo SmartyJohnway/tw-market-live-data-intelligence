@@ -19,9 +19,9 @@ F3_VERSION='unified_market_evidence_request_validation.v1'
 ROUTING_VERSION='m8r_05b_capability_to_executor_routing_matrix.v1.draft'
 HANDOFF_VERSION='m8r_05b_orchestration_handoff_contract.v1.draft'
 CATALOG_VERSION='unified_market_evidence_capability_catalog.v1'
-ROUTING_VERSIONS=frozenset((ROUTING_VERSION, 'm8r_05b_capability_to_executor_routing_matrix.v2'))
-CATALOG_VERSIONS=frozenset((CATALOG_VERSION, 'unified_market_evidence_capability_catalog.v2'))
-ALLOWED_CATALOG_ROUTING_VERSION_PAIRS=frozenset(((CATALOG_VERSION, ROUTING_VERSION), ('unified_market_evidence_capability_catalog.v2', 'm8r_05b_capability_to_executor_routing_matrix.v2')))
+ROUTING_VERSIONS=frozenset((ROUTING_VERSION, 'm8r_05b_capability_to_executor_routing_matrix.v2', 'm8r_05b_capability_to_executor_routing_matrix.v3'))
+CATALOG_VERSIONS=frozenset((CATALOG_VERSION, 'unified_market_evidence_capability_catalog.v2', 'unified_market_evidence_capability_catalog.v3'))
+ALLOWED_CATALOG_ROUTING_VERSION_PAIRS=frozenset(((CATALOG_VERSION, ROUTING_VERSION), ('unified_market_evidence_capability_catalog.v2', 'm8r_05b_capability_to_executor_routing_matrix.v2'), ('unified_market_evidence_capability_catalog.v3', 'm8r_05b_capability_to_executor_routing_matrix.v3')))
 
 def _pairs(bindings: Mapping[str,Any]) -> list[tuple[str,str]]:
     refs=bindings.get('security_master_evidence_references'); hashes=bindings.get('security_master_artifact_hashes')

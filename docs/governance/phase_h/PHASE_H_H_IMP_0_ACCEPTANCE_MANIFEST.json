@@ -1,0 +1,87 @@
+{
+  "schema_version": "phase_h_h_imp_0_acceptance_manifest.v1",
+  "status": "OWNER_ACCEPTED_COMPLETED",
+  "acceptance_date": "2026-09-21",
+  "repository_baseline": "ab5ddade2fbf3bf2f65da30ddb4ab3c87234f4f5",
+  "branch": "phase-h/h-imp-0-passive-v3-compatibility",
+  "tranche": "H-IMP-0",
+  "owner_acceptance": {
+    "decision": "OWNER_ACCEPTED_COMPLETED",
+    "accepted_amendments": ["A1"],
+    "implementation_blockers": 0
+  },
+  "authority_state": {
+    "preferred_request_schema_version": "unified_market_evidence_request.v2",
+    "passive_request_schema_versions": [
+      "unified_market_evidence_request.v1",
+      "unified_market_evidence_request.v2",
+      "unified_market_evidence_request.v3"
+    ],
+    "execution_request_schema_versions": [
+      "unified_market_evidence_request.v1",
+      "unified_market_evidence_request.v2"
+    ],
+    "v3_runtime_execution_authority": "inactive",
+    "result_production_authority": "unified_market_evidence_result.v2",
+    "audit_production_authority": "unified_market_evidence_audit_package.v2",
+    "local_service_contract_version": "unified_market_evidence_local_service.v2",
+    "mcp_adapter_version": "unified_market_evidence_mcp_adapter.v2",
+    "mcp_tool_count": 6,
+    "phase_h_active_source_count": 0
+  },
+  "established_semantics": [
+    "explicit_v3_request_schema_dispatch",
+    "v3_catalog_v3_selection",
+    "v3_routing_v3_selection",
+    "v3_passive_validation",
+    "v3_passive_preview",
+    "h1_contract_recognition",
+    "h2_contract_recognition",
+    "h3_recent_performance_contract_recognition",
+    "planner_exact_version_pairing",
+    "mcp_passive_execution_envelope_separation",
+    "b2_v3_execution_barrier",
+    "local_operator_v3_execution_barrier",
+    "zero_network_passive_behavior"
+  ],
+  "not_established": [
+    "result_v3_production_emission",
+    "audit_v3_production_emission",
+    "h4_runtime_derivation",
+    "h1_source_adapter",
+    "h2_source_adapter",
+    "h3_acquisition",
+    "source_activation",
+    "bounded_live_acceptance",
+    "h3_source_research",
+    "preferred_v3_runtime",
+    "production_release"
+  ],
+  "implementation_checkpoint_evidence": [
+    {"path": "config/test_execution_profiles.json", "sha256": "ef878eddd3868ce4c42b1f43b11bf16565d448fb3f71faab378fb257c35dead3", "bytes": 23329},
+    {"path": "scripts/m8r_05a_f3/request_intake.py", "sha256": "644d1bacc20856f6023a967fb755b604f78c862054c2ed216f26ead553dda3d0", "bytes": 10260},
+    {"path": "scripts/m8r_05b_01/planner.py", "sha256": "0b705f12d932af1aa6458525d1d5ba8959dcfdcc2d4a000eb67aac3864a135b1", "bytes": 21811},
+    {"path": "scripts/m8r_06_02_mode_b1_preview.py", "sha256": "4471a46576160966af1dc55962e7da2cdb5013c1523ac3cc765d97c086e20b53", "bytes": 14914},
+    {"path": "server/services/unified_contract_versions.py", "sha256": "3195168dfc950d7d522f0412ca3e2ef81f012eec3ed4f60ed87943d2cb8c7bb3", "bytes": 3232},
+    {"path": "server/services/unified_local_operator_action.py", "sha256": "d1f9874247df54a04499e5247c34e90d926f552751dd78e0222196abd4fe40fc", "bytes": 2355},
+    {"path": "server/services/unified_mode_a.py", "sha256": "8acce6bfc5cd22e50fb23edf13f48b4a39580309523678fe8c3414a0fdb2b678", "bytes": 3206},
+    {"path": "server/services/unified_mode_b1.py", "sha256": "fb9a3a3d6845a000ba8e50d8d1e69621d30575f68c000aa92bd640360ee0974b", "bytes": 2118},
+    {"path": "server/services/unified_mode_b2.py", "sha256": "bc2052d20b14a258085969327750dd0bedd4d1dce6b030d38cbaa5ed9d9d1f16", "bytes": 16318},
+    {"path": "server/unified_mcp/tool_contracts.py", "sha256": "c006552496ab626ed8736333eebcb4337c5b2aef2128ce945ff141f6936401f5", "bytes": 9273},
+    {"path": "tests/unit/test_phase_h_imp_0_passive_v3_compatibility.py", "sha256": "36fa1b9577bd7a7d81b6ddd4b322057ba7c6aa8c274930bd2369fa5fc48185eb", "bytes": 11272}
+  ],
+  "validation": {
+    "h0_g_semantic_validator": "PASS",
+    "focused_h_imp_0": "17 passed",
+    "combined_regression": "35 passed",
+    "default_ci": "1098 passed, 2 skipped, 9 deselected",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "network_may_have_occurred": false
+  },
+  "notes": [
+    "This manifest is implementation checkpoint evidence, not an immutable contract freeze.",
+    "The manifest intentionally does not contain its own hash.",
+    "Later Owner-authorized implementation tranches may modify listed implementation files."
+  ]
+}

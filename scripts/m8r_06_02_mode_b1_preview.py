@@ -14,6 +14,7 @@ from scripts.m8r_05b_01.artifact_loader import load_json
 from scripts.m8r_05b_01.canonical import sha256_json
 from scripts.m8r_05b_01.models import PLANNER_VERSION, PlanningError
 from scripts.m8r_05b_01.planner import HANDOFF_VERSION, ROUTING_VERSION, build_plan
+from server.services.unified_contract_versions import resolve_planning_authority_paths
 
 ROOT = Path(__file__).resolve().parents[1]
 CAPABILITY_CATALOG_PATH = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json"
@@ -40,11 +41,14 @@ NON_PLANNABLE_TARGET_STATUSES = frozenset(
 )
 
 
-def load_planning_authorities() -> dict[str, dict[str, Any]]:
-    """Load current immutable planning inputs on every service request."""
+def load_planning_authorities(
+    request_schema_version: str = "unified_market_evidence_request.v2",
+) -> dict[str, dict[str, Any]]:
+    """Load the frozen planning pair selected by the declared Request version."""
+    catalog_path, routing_path = resolve_planning_authority_paths(request_schema_version)
     return {
-        "capability_catalog": load_json(CAPABILITY_CATALOG_PATH),
-        "routing_matrix": load_json(ROUTING_MATRIX_PATH),
+        "capability_catalog": load_json(catalog_path),
+        "routing_matrix": load_json(routing_path),
         "handoff_contract": load_json(HANDOFF_CONTRACT_PATH),
         "executor_disposition": load_json(EXECUTOR_DISPOSITION_PATH),
         "preview_schema": load_json(PREVIEW_SCHEMA_PATH),
@@ -289,7 +293,8 @@ def build_mode_b1_preview_package(
     authorities: Mapping[str, Mapping[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Build one offline, non-authorizing Mode B1 response envelope."""
-    loaded = copy.deepcopy(authorities) if authorities is not None else load_planning_authorities()
+    request_schema_version = original_request.get("schema_version") if isinstance(original_request, Mapping) else None
+    loaded = copy.deepcopy(authorities) if authorities is not None else load_planning_authorities(request_schema_version)
     if f3_validation.get("request_schema_status") != "valid":
         return {
             "validation": copy.deepcopy(f3_validation),

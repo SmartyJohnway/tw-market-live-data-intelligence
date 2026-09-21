@@ -6,7 +6,7 @@ from .capability_validator import validate_capability
 
 def _issue(code,path,message=None): return {"code":code,"path":path,"message":message or code.replace("_"," ").lower()}
 def _catalog_valid(catalog):
-    if not isinstance(catalog,dict) or catalog.get("schema_version") not in {"unified_market_evidence_capability_catalog.v1", "unified_market_evidence_capability_catalog.v2"}: return False
+    if not isinstance(catalog,dict) or catalog.get("schema_version") not in {"unified_market_evidence_capability_catalog.v1", "unified_market_evidence_capability_catalog.v2", "unified_market_evidence_capability_catalog.v3"}: return False
     bounds=catalog.get("bounds"); markets=catalog.get("supported_markets"); caps=catalog.get("data_need_capabilities")
     if not isinstance(bounds,dict) or not isinstance(markets,dict) or not markets or not isinstance(caps,list): return False
     if not all(isinstance(k,str) and k and isinstance(v,dict) and v.get("support_level") in {"supported","supported_with_caveats","provisional"} for k,v in markets.items()): return False
@@ -15,6 +15,9 @@ def _catalog_valid(catalog):
     if catalog["schema_version"] == "unified_market_evidence_capability_catalog.v2":
         versions=catalog.get("contract_versions")
         if not isinstance(versions,dict) or versions.get("accepted_request_schema_versions") != ["unified_market_evidence_request.v1", "unified_market_evidence_request.v2"] or versions.get("preferred_request_schema_version") != "unified_market_evidence_request.v2" or versions.get("emitted_result_schema_version") != "unified_market_evidence_result.v2": return False
+    if catalog["schema_version"] == "unified_market_evidence_capability_catalog.v3":
+        versions=catalog.get("contract_versions")
+        if not isinstance(versions,dict) or versions.get("accepted_request_schema_versions") != ["unified_market_evidence_request.v1", "unified_market_evidence_request.v2", "unified_market_evidence_request.v3"] or versions.get("preferred_request_schema_version") != "unified_market_evidence_request.v2" or versions.get("emitted_result_schema_version") != "unified_market_evidence_result.v2" or versions.get("future_candidate_request_schema_version") != "unified_market_evidence_request.v3" or versions.get("future_candidate_result_schema_version") != "unified_market_evidence_result.v3" or versions.get("v3_runtime_authority_status") != "inactive": return False
     ids=[]
     for cap in caps:
         if not isinstance(cap,dict): return False

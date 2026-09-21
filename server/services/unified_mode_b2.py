@@ -246,6 +246,8 @@ def build_mode_b2_authorization(payload: dict[str, Any]) -> dict[str, Any]:
         raise ModeB2Error("privileged_field_forbidden")
     if payload.get("confirm_authorization") is not True:
         raise ModeB2Error("authorization_confirmation_required")
+    if payload["request"].get("schema_version") == "unified_market_evidence_request.v3":
+        raise ModeB2Error("phase_h_v3_execution_inactive")
 
     preview, plan = _authorizable_preview(payload["request"])
     expected = {
@@ -302,6 +304,8 @@ def build_local_operator_execution_ticket(request: dict[str, Any]) -> dict[str, 
     # The action path is only defined for the canonical execute request mode.
     if request.get("execution_mode") != "execute":
         raise ModeB2Error("market_fetch_requires_execute_mode")
+    if request.get("schema_version") == "unified_market_evidence_request.v3":
+        raise ModeB2Error("phase_h_v3_execution_inactive")
     _preview, plan = _authorizable_preview(request, preserve_domain_failure=True)
     now = _next_local_action_issuance_time()
     decision = {
