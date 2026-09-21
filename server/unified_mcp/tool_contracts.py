@@ -17,12 +17,14 @@ ROOT = Path(__file__).resolve().parents[2]
 REQUEST_SCHEMA_PATHS = {
     "unified_market_evidence_request.v1": ROOT / "schemas" / "unified_market_evidence_request.v1.schema.json",
     "unified_market_evidence_request.v2": ROOT / "schemas" / "unified_market_evidence_request.v2.schema.json",
+    "unified_market_evidence_request.v3": ROOT / "schemas" / "unified_market_evidence_request.v3.schema.json",
 }
 PREFERRED_REQUEST_SCHEMA_VERSION = "unified_market_evidence_request.v2"
 REQUEST_SCHEMA_PATH = REQUEST_SCHEMA_PATHS[PREFERRED_REQUEST_SCHEMA_VERSION]
 REQUEST_SCHEMA_IDS = {
     "unified_market_evidence_request.v1": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v1",
     "unified_market_evidence_request.v2": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v2",
+    "unified_market_evidence_request.v3": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v3",
 }
 CONTROL_PACKAGE_PATTERN = r"^umea-v1-[0-9a-f]{20}$"
 
@@ -85,15 +87,22 @@ def canonical_request_schema_sha256() -> str:
         raise ToolContractError("canonical_request_schema_unavailable") from exc
 
 
-def build_request_envelope_schema() -> dict[str, Any]:
+def build_request_envelope_schema(*, include_v3: bool = True) -> dict[str, Any]:
+    versions = (
+        "unified_market_evidence_request.v1",
+        "unified_market_evidence_request.v2",
+        "unified_market_evidence_request.v3",
+    ) if include_v3 else (
+        "unified_market_evidence_request.v1",
+        "unified_market_evidence_request.v2",
+    )
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "type": "object",
         "properties": {
             "request": {
                 "oneOf": [
-                    deepcopy(load_unified_request_schema("unified_market_evidence_request.v1")),
-                    deepcopy(load_unified_request_schema("unified_market_evidence_request.v2")),
+                    *(deepcopy(load_unified_request_schema(version)) for version in versions),
                 ]
             }
         },
@@ -156,15 +165,16 @@ def build_tool_contract_snapshot() -> ToolContractSnapshot:
     canonical_request = load_canonical_unified_request_schema()
     canonical_hash = canonical_request_schema_sha256()
     empty = {"$schema": "https://json-schema.org/draft/2020-12/schema", "type": "object", "properties": {}, "additionalProperties": False}
-    request = build_request_envelope_schema()
+    passive_request = build_request_envelope_schema()
+    execution_request = build_request_envelope_schema(include_v3=False)
     control = build_control_package_schema()
     tools = (
         Tool(name="market_describe_capabilities", description=TOOL_DESCRIPTIONS["market_describe_capabilities"], inputSchema=empty, annotations=_annotations(read_only=True)),
-        Tool(name="market_validate_request", description=TOOL_DESCRIPTIONS["market_validate_request"], inputSchema=request, annotations=_annotations(read_only=True)),
-        Tool(name="market_preview_request", description=TOOL_DESCRIPTIONS["market_preview_request"], inputSchema=deepcopy(request), annotations=_annotations(read_only=True)),
+        Tool(name="market_validate_request", description=TOOL_DESCRIPTIONS["market_validate_request"], inputSchema=passive_request, annotations=_annotations(read_only=True)),
+        Tool(name="market_preview_request", description=TOOL_DESCRIPTIONS["market_preview_request"], inputSchema=deepcopy(passive_request), annotations=_annotations(read_only=True)),
         Tool(name="market_read_result", description=TOOL_DESCRIPTIONS["market_read_result"], inputSchema=control, annotations=_annotations(read_only=True)),
         Tool(name="market_export_ai_handoff", description=TOOL_DESCRIPTIONS["market_export_ai_handoff"], inputSchema=deepcopy(control), annotations=_annotations(read_only=True)),
-        Tool(name="market_fetch_evidence", description=TOOL_DESCRIPTIONS["market_fetch_evidence"], inputSchema=deepcopy(request), annotations=_action_annotations()),
+        Tool(name="market_fetch_evidence", description=TOOL_DESCRIPTIONS["market_fetch_evidence"], inputSchema=execution_request, annotations=_action_annotations()),
     )
     validators: dict[str, jsonschema.protocols.Validator] = {}
     try:
