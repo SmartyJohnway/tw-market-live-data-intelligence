@@ -5,7 +5,9 @@
       "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
       "capability_id": "current_observation",
       "market": "TWSE",
-      "supported_security_types": ["equity"],
+      "supported_security_types": [
+        "equity"
+      ],
       "expected_evidence_contract": "bounded normalized source observation with source health/currentness",
       "network_required": true,
       "bounded_execution_supported": true,
@@ -17,7 +19,9 @@
       "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
       "capability_id": "current_observation",
       "market": "TPEX",
-      "supported_security_types": ["equity"],
+      "supported_security_types": [
+        "equity"
+      ],
       "expected_evidence_contract": "bounded normalized source observation with source health/currentness",
       "network_required": true,
       "bounded_execution_supported": true,
@@ -29,7 +33,9 @@
       "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
       "capability_id": "official_eod_reference",
       "market": "TWSE",
-      "supported_security_types": ["equity"],
+      "supported_security_types": [
+        "equity"
+      ],
       "expected_evidence_contract": "official EOD reference plus timing/currentness context",
       "network_required": true,
       "bounded_execution_supported": true,
@@ -41,7 +47,9 @@
       "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
       "capability_id": "official_eod_reference",
       "market": "TPEX",
-      "supported_security_types": ["equity"],
+      "supported_security_types": [
+        "equity"
+      ],
       "expected_evidence_contract": "official EOD reference plus timing/currentness context",
       "network_required": true,
       "bounded_execution_supported": true,
@@ -53,7 +61,9 @@
       "executor_id": "phase_g_official_research_executor",
       "capability_id": "material_disclosures",
       "market": "TWSE",
-      "supported_security_types": ["equity"],
+      "supported_security_types": [
+        "equity"
+      ],
       "expected_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
       "network_required": true,
       "bounded_execution_supported": true,
@@ -65,7 +75,9 @@
       "executor_id": "phase_g_official_research_executor",
       "capability_id": "material_disclosures",
       "market": "TPEX",
-      "supported_security_types": ["equity"],
+      "supported_security_types": [
+        "equity"
+      ],
       "expected_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
       "network_required": true,
       "bounded_execution_supported": true,
@@ -77,7 +89,9 @@
       "executor_id": "phase_g_official_research_executor",
       "capability_id": "monthly_revenue",
       "market": "TWSE",
-      "supported_security_types": ["equity"],
+      "supported_security_types": [
+        "equity"
+      ],
       "expected_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
       "network_required": true,
       "bounded_execution_supported": true,
@@ -89,8 +103,24 @@
       "executor_id": "phase_g_official_research_executor",
       "capability_id": "monthly_revenue",
       "market": "TPEX",
-      "supported_security_types": ["equity"],
+      "supported_security_types": [
+        "equity"
+      ],
       "expected_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 15,
+      "maximum_result_items": 1,
+      "output_policy": "contained_artifact_only"
+    },
+    {
+      "executor_id": "phase_h_h1_tpex_attention_executor",
+      "capability_id": "trading_status_context",
+      "market": "TPEX",
+      "supported_security_types": [
+        "equity"
+      ],
+      "expected_evidence_contract": "trading_status_context_evidence.v1",
       "network_required": true,
       "bounded_execution_supported": true,
       "timeout_seconds": 15,
