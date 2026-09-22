@@ -1,4 +1,4 @@
-# gate-revision: 3
+# gate-revision: 4
 name: Phase H H-ACT-H1 Bounded Live Acceptance
 
 on:
@@ -20,6 +20,8 @@ jobs:
       PYTHONUNBUFFERED: "1"
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
