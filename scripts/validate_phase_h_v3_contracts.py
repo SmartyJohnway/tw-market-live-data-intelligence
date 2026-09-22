@@ -23,6 +23,21 @@ def _fail(code: str) -> None:
     raise PhaseHV3ContractValidationError(code)
 
 
+def _matches_frozen_bytes(content: bytes, item: Mapping[str, Any]) -> bool:
+    """Compare frozen text artifacts without making OS newline conversion authority."""
+    normalized = content.replace(b"\r\n", b"\n")
+    candidates = (
+        content,
+        normalized,
+        normalized.replace(b"\n", b"\r\n"),
+    )
+    return any(
+        len(candidate) == item["bytes"]
+        and hashlib.sha256(candidate).hexdigest() == item["sha256"]
+        for candidate in candidates
+    )
+
+
 RETURN_PCT_ABS_TOLERANCE = 1e-9
 """Absolute tolerance for serialized JSON return percentages; no rounding."""
 
@@ -274,7 +289,7 @@ def main() -> None:
                 continue
             path = root / item["path"]
             content = path.read_bytes()
-            if hashlib.sha256(content).hexdigest() != item["sha256"] or len(content) != item["bytes"]:
+            if not _matches_frozen_bytes(content, item):
                 _fail(f"manifest_integrity_mismatch:{item['path']}")
 
     catalog = json.loads(
