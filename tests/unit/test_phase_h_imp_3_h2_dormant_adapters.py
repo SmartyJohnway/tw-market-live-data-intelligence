@@ -201,6 +201,23 @@ def test_failed_or_binding_source_never_fabricates_event_for_h4() -> None:
         assert h4["state"] == "coverage_incomplete"
 
 
+def test_source_result_citations_survive_no_target_and_failures() -> None:
+    no_target = normalize_tpex_exright_prepost([pre("9999")], TARGET_TPEX, observed_at=OBSERVED, citation_id="source-no-target")
+    failed = failed_source_result("H2-TPEX-EXRIGHT-PRE-OPENAPI", "source drift", citation_id="source-failed")
+    binding = failed_source_result("H2-TPEX-EXRIGHT-PRE-OPENAPI", "wrong market", binding_failed=True, citation_id="source-binding")
+    assembled = assemble_corporate_action_context([no_target, failed, binding], TARGET_TPEX, observed_at=OBSERVED, requested_window=WINDOW)
+    assert assembled["events"] == []
+    assert assembled["citation_ids"] == ["source-binding", "source-failed", "source-no-target"]
+
+
+def test_available_event_citation_is_unioned_once() -> None:
+    result = normalize_tpex_exright_prepost(SOURCE_ROWS["tpex_pre"], TARGET_TPEX, observed_at=OBSERVED, citation_id="cite-pre")
+    result["citation_ids"].append("cite-extra")
+    assembled = assemble_corporate_action_context([result], TARGET_TPEX, observed_at=OBSERVED, requested_window=WINDOW)
+    assert assembled["citation_ids"] == ["cite-extra", "cite-pre"]
+    assert assembled["events"][0]["citation_ids"] == ["cite-pre"]
+
+
 def test_descriptor_states_and_network_guard(monkeypatch: pytest.MonkeyPatch) -> None:
     descriptors = json.loads((ROOT / "config/phase_h_h2_dormant_source_descriptors.json").read_text(encoding="utf-8"))["sources"]
     by_id = {item["source_id"]: item for item in descriptors}
@@ -208,8 +225,34 @@ def test_descriptor_states_and_network_guard(monkeypatch: pytest.MonkeyPatch) ->
     assert by_id["H2-TWSE-CAPITAL-REDUCTION-WEB"]["source_role"] == "manual_verification"
     assert by_id["H2-TPEX-CAPITAL-REDUCTION-WEB"]["runtime_executable"] is False
     assert by_id["H2-TWSE-PAR-SPLIT-CONSOLIDATION-GAP"]["activation_state"] == "blocked"
+    assert by_id["H2-TPEX-PAR-SPLIT-CONSOLIDATION-GAP"]["activation_state"] == "blocked"
+    assert by_id["H2-TWSE-EXRIGHT-FINAL-TWT49U"]["runtime_executable"] is False
+    assert by_id["H2-TWSE-CAPITAL-REDUCTION-WEB"]["runtime_executable"] is False
+    assert by_id["H2-TPEX-CAPITAL-REDUCTION-WEB"]["runtime_executable"] is False
     monkeypatch.setattr(socket, "create_connection", lambda *a, **k: pytest.fail("network attempted"))
     monkeypatch.setattr(urllib.request, "urlopen", lambda *a, **k: pytest.fail("network attempted"))
     first = assemble_corporate_action_context(normalize_pair(), TARGET_TPEX, observed_at=OBSERVED, requested_window=WINDOW)
     second = assemble_corporate_action_context(normalize_pair(), TARGET_TPEX, observed_at=OBSERVED, requested_window=WINDOW)
     assert first == second
+
+
+def test_fresh_install_without_twt49u() -> None:
+    """PRE normalizers and assembly do not initialize optional TWT49U state."""
+    assert "TWT49U" not in __import__("server.services.phase_h_corporate_action_adapters", fromlist=["__name__"]).__dict__
+    result = normalize_twse_twt48u_all(SOURCE_ROWS["twse_pre"], TARGET_TWSE, observed_at=OBSERVED, citation_id="fresh-twse")
+    assembled = assemble_corporate_action_context([result], TARGET_TWSE, observed_at=OBSERVED, requested_window=WINDOW)
+    assert assembled["events"]
+
+
+def test_static_dormant_registry_and_plan_only_boundary() -> None:
+    registry = (ROOT / "config/m8r_06_03_executor_registry_metadata.json").read_text(encoding="utf-8")
+    assert "corporate_action_context" not in registry
+    catalog = json.loads((ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json").read_text(encoding="utf-8"))
+    capability = next(item for item in catalog["data_need_capabilities"] if item["capability_id"] == "corporate_action_context")
+    assert capability["runtime_executable"] is False
+    assert capability["support_status"] == "contract_supported"
+    route = next(item for item in json.loads((ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json").read_text(encoding="utf-8"))["routes"] if item["capability_id"] == "corporate_action_context")
+    assert route["runtime_executable"] is False
+    assert route["selected_executor_id"] is None
+    assert route["routing_status"] == "plan_only"
+    assert route["network_required"] is False

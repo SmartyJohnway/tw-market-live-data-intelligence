@@ -40,14 +40,14 @@ def _source(source_id: str) -> dict:
     return {key: value[key] for key in ("source_family", "source_contract_id", "transport", "license_authority", "source_role", "activation_state")}
 
 
-def failed_source_result(source_id: str, diagnostic: str, *, binding_failed: bool = False) -> dict:
+def failed_source_result(source_id: str, diagnostic: str, *, binding_failed: bool = False, citation_id: str | None = None) -> dict:
     """Turn a caught source-contract/binding failure into deterministic input for assembly.
 
     The normalizers fail closed before an event is created.  A caller that is
     assembling several source results may retain that failure without turning it
     into a healthy no-row result.
     """
-    return {"source": _source(source_id), "status": "binding_failed" if binding_failed else "source_failed", "events": [], "covered": (), "caveats": [diagnostic]}
+    return {"source": _source(source_id), "status": "binding_failed" if binding_failed else "source_failed", "events": [], "covered": (), "caveats": [diagnostic], "citation_ids": [citation_id] if citation_id else []}
 
 
 def _typed(raw: object = _MISSING, *, absent: str = "unavailable") -> dict:
@@ -119,9 +119,9 @@ def normalize_tpex_exright_prepost(rows: object, target: Mapping[str, str], *, o
     row = _binding_row(rows, target, market="TPEX", identifier="SecuritiesCompanyCode", required=required)
     source = _source("H2-TPEX-EXRIGHT-PRE-OPENAPI")
     if row is None:
-        return {"source": source, "status": "no_evidence_in_covered_scope", "events": [], "covered": ("ex_dividend", "ex_right", "ex_right_dividend"), "caveats": []}
+        return {"source": source, "status": "no_evidence_in_covered_scope", "events": [], "covered": ("ex_dividend", "ex_right", "ex_right_dividend"), "caveats": [], "citation_ids": [citation_id]}
     cash, stock, rights, subscription = (_typed(row[key]) for key in ("CashDividend", "StockDividendRatio", "SubscriptionRatioToNewSharesIssued", "SubscriptionPricePerShare"))
-    return {"source": source, "status": "available", "covered": ("ex_dividend", "ex_right", "ex_right_dividend"), "caveats": [], "events": [_event(stage="preannouncement", lifecycle="scheduled", event_type=_event_type(cash, stock, rights), effective_date=row["ExRrightsExDividendDate"], announcement_date=None, pre_close={"state": "not_announced", "value": None}, reference={"state": "not_announced", "value": None}, cash=cash, stock=stock, rights=rights, subscription=subscription, citation_id=citation_id, source_proof="tpex_exright_prepost")]}
+    return {"source": source, "status": "available", "covered": ("ex_dividend", "ex_right", "ex_right_dividend"), "caveats": [], "citation_ids": [citation_id], "events": [_event(stage="preannouncement", lifecycle="scheduled", event_type=_event_type(cash, stock, rights), effective_date=row["ExRrightsExDividendDate"], announcement_date=None, pre_close={"state": "not_announced", "value": None}, reference={"state": "not_announced", "value": None}, cash=cash, stock=stock, rights=rights, subscription=subscription, citation_id=citation_id, source_proof="tpex_exright_prepost")]}
 
 
 def normalize_tpex_exright_daily(rows: object, target: Mapping[str, str], *, observed_at: str, citation_id: str) -> dict:
@@ -129,9 +129,9 @@ def normalize_tpex_exright_daily(rows: object, target: Mapping[str, str], *, obs
     row = _binding_row(rows, target, market="TPEX", identifier="SecuritiesCompanyCode", required=required)
     source = _source("H2-TPEX-EXRIGHT-FINAL-OPENAPI")
     if row is None:
-        return {"source": source, "status": "no_evidence_in_covered_scope", "events": [], "covered": ("ex_dividend", "ex_right", "ex_right_dividend"), "caveats": []}
+        return {"source": source, "status": "no_evidence_in_covered_scope", "events": [], "covered": ("ex_dividend", "ex_right", "ex_right_dividend"), "caveats": [], "citation_ids": [citation_id]}
     pre_close, reference, cash, stock, rights, subscription = (_typed(row[key], absent="unavailable") for key in ("ClosePriceBeforeExRightsDiviend", "ExRightsDiviendQuote", "CashDividend", "StockDividend", "ExRightsDiviend", "SubscriptionPricePerShare"))
-    return {"source": source, "status": "available", "covered": ("ex_dividend", "ex_right", "ex_right_dividend"), "caveats": [], "events": [_event(stage="official_reference_calculated", lifecycle="effective", event_type=_event_type(cash, stock, rights), effective_date=row["Date"], announcement_date=row.get("Date"), pre_close=pre_close, reference=reference, cash=cash, stock=stock, rights=rights, subscription=subscription, citation_id=citation_id, source_proof="tpex_exright_daily")]}
+    return {"source": source, "status": "available", "covered": ("ex_dividend", "ex_right", "ex_right_dividend"), "caveats": [], "citation_ids": [citation_id], "events": [_event(stage="official_reference_calculated", lifecycle="effective", event_type=_event_type(cash, stock, rights), effective_date=row["Date"], announcement_date=row.get("Date"), pre_close=pre_close, reference=reference, cash=cash, stock=stock, rights=rights, subscription=subscription, citation_id=citation_id, source_proof="tpex_exright_daily")]}
 
 
 def normalize_twse_twt48u_all(rows: object, target: Mapping[str, str], *, observed_at: str, citation_id: str) -> dict:
@@ -139,9 +139,9 @@ def normalize_twse_twt48u_all(rows: object, target: Mapping[str, str], *, observ
     row = _binding_row(rows, target, market="TWSE", identifier="Code", required=required)
     source = _source("H2-TWSE-EXRIGHT-PRE-OPENAPI")
     if row is None:
-        return {"source": source, "status": "no_evidence_in_covered_scope", "events": [], "covered": ("ex_dividend", "ex_right", "ex_right_dividend"), "caveats": []}
+        return {"source": source, "status": "no_evidence_in_covered_scope", "events": [], "covered": ("ex_dividend", "ex_right", "ex_right_dividend"), "caveats": [], "citation_ids": [citation_id]}
     cash, stock, rights, subscription = (_typed(row[key]) for key in ("CashDividend", "StockDividendRatio", "SubscriptionRatio", "SubscriptionPricePerShare"))
-    return {"source": source, "status": "available", "covered": ("ex_dividend", "ex_right", "ex_right_dividend"), "caveats": [], "events": [_event(stage="preannouncement", lifecycle="scheduled", event_type=_event_type(cash, stock, rights), effective_date=row["Date"], announcement_date=None, pre_close={"state": "not_announced", "value": None}, reference={"state": "not_announced", "value": None}, cash=cash, stock=stock, rights=rights, subscription=subscription, citation_id=citation_id, source_proof="TWT48U_ALL")]}
+    return {"source": source, "status": "available", "covered": ("ex_dividend", "ex_right", "ex_right_dividend"), "caveats": [], "citation_ids": [citation_id], "events": [_event(stage="preannouncement", lifecycle="scheduled", event_type=_event_type(cash, stock, rights), effective_date=row["Date"], announcement_date=None, pre_close={"state": "not_announced", "value": None}, reference={"state": "not_announced", "value": None}, cash=cash, stock=stock, rights=rights, subscription=subscription, citation_id=citation_id, source_proof="TWT48U_ALL")]}
 
 
 def assemble_corporate_action_context(results: Sequence[Mapping[str, object]], target: Mapping[str, str], *, observed_at: str, requested_window: Mapping[str, str]) -> dict:
@@ -162,7 +162,9 @@ def assemble_corporate_action_context(results: Sequence[Mapping[str, object]], t
         status, coverage_status = "binding_failed", "binding_failed"
     else:
         status, coverage_status = ("partial", "partial")
-    value = {"schema_version": "corporate_action_context_evidence.v1", "status": status, "target": dict(target), "coverage": {"status": coverage_status, "declared_scope_complete": False, "retrieval_succeeded": not source_failed, "source_contract_validated": not source_failed, "exact_target_search_succeeded": not binding_failed, "requested_window": dict(requested_window), "declared_event_subtypes": list(DECLARED_EVENT_SUBTYPES), "covered_event_subtypes": covered, "uncovered_event_subtypes": uncovered, "failed_source_families": failed_sources}, "sources": sources, "observed_at": observed_at, "events": events, "caveats": sorted({caveat for item in results for caveat in item.get("caveats", [])}), "citation_ids": sorted({citation for event in events for citation in event["citation_ids"]})}
+    source_citations = {citation for item in results for citation in item.get("citation_ids", []) if isinstance(citation, str) and citation}
+    event_citations = {citation for event in events for citation in event["citation_ids"]}
+    value = {"schema_version": "corporate_action_context_evidence.v1", "status": status, "target": dict(target), "coverage": {"status": coverage_status, "declared_scope_complete": False, "retrieval_succeeded": not source_failed, "source_contract_validated": not source_failed, "exact_target_search_succeeded": not binding_failed, "requested_window": dict(requested_window), "declared_event_subtypes": list(DECLARED_EVENT_SUBTYPES), "covered_event_subtypes": covered, "uncovered_event_subtypes": uncovered, "failed_source_families": failed_sources}, "sources": sources, "observed_at": observed_at, "events": events, "caveats": sorted({caveat for item in results for caveat in item.get("caveats", [])}), "citation_ids": sorted(source_citations | event_citations)}
     root = Path(__file__).resolve().parents[2]
     schema = json.loads((root / "schemas" / "corporate_action_context_evidence.v1.schema.json").read_text(encoding="utf-8"))
     errors = list(Draft7Validator(schema).iter_errors(value))
