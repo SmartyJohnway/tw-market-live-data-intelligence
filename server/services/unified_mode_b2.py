@@ -246,8 +246,9 @@ def build_mode_b2_authorization(payload: dict[str, Any]) -> dict[str, Any]:
         raise ModeB2Error("privileged_field_forbidden")
     if payload.get("confirm_authorization") is not True:
         raise ModeB2Error("authorization_confirmation_required")
-    if payload["request"].get("schema_version") == "unified_market_evidence_request.v3":
-        raise ModeB2Error("phase_h_v3_execution_inactive")
+    # Incremental Phase H activation is governed by the V3 catalog/routing Preview.
+    # Only currently resolved executable V3 routes can pass _authorizable_preview.
+    # V2 remains preferred; the local-operator/MCP action path stays V1/V2-only.
 
     preview, plan = _authorizable_preview(payload["request"])
     expected = {
