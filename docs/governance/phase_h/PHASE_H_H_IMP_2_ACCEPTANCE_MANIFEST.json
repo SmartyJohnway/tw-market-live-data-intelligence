@@ -1,0 +1,102 @@
+{
+  "schema_version": "phase_h_h_imp_2_acceptance_manifest.v1",
+  "status": "OWNER_ACCEPTED_COMPLETED",
+  "acceptance_date": "2026-09-22",
+  "repository_baseline": "c10f9a98acc1d3c804ab63602e0fac8954083c0d",
+  "reviewed_implementation_head": "2bcba194d7bedafd2da68512b6b4dd0bb1733bc8",
+  "branch": "phase-h/h-imp-2-h1-dormant-adapters",
+  "tranche": "H-IMP-2",
+  "accepted_amendments": ["A1", "A2"],
+  "implementation_blockers": 0,
+  "component_authority": {
+    "component": "phase_h_trading_status_adapters",
+    "component_mode": "dormant_zero_network_source_normalizers",
+    "runtime_wiring": "none",
+    "production_executor_registration": "none",
+    "network_capability": "none",
+    "source_activation": "none",
+    "implemented_normalization_slices": [
+      "H1-TPEX-ATTENTION-OPENAPI",
+      "H1-TPEX-DISPOSITION-OPENAPI",
+      "H1-TWSE-CHANGED-TRADING-OPENAPI"
+    ]
+  },
+  "accepted_semantics": [
+    "full_five_status_type_declared_scope",
+    "truthful_single_route_partial_coverage",
+    "complete_scope_no_evidence_requires_complete_governed_scope",
+    "exact_market_security_code_binding",
+    "name_never_binds",
+    "source_failure_binding_failure_target_absence_distinct",
+    "source_contract_drift_fail_closed",
+    "source_native_provenance_preserved",
+    "deterministic_source_result_citation_provenance",
+    "attention_determination_not_recomputed",
+    "disposition_determination_not_recomputed",
+    "changed_trading_determination_not_recomputed",
+    "attention_source_text_not_promoted_to_official_reason",
+    "disposition_period_remains_source_native",
+    "reported_lifecycle_for_current_source_rows",
+    "unproven_lifecycle_not_inferred",
+    "controlled_lifecycle_vocabulary_validation",
+    "empty_full_table_valid_partial_source_slice",
+    "noncanonical_date_encoding_remains_unresolved",
+    "calendar_invalid_canonical_date_fail_closed",
+    "malformed_date_type_fail_closed",
+    "source_snapshot_date_not_fabricated",
+    "observed_at_caller_supplied",
+    "deterministic_repeatability",
+    "zero_network_operation"
+  ],
+  "source_coverage": {
+    "declared_status_universe": ["attention", "disposition", "changed_trading_method", "suspension", "resumption"],
+    "implemented_normalized_coverage": ["attention", "disposition", "changed_trading_method"],
+    "uncovered_in_current_slices": ["suspension", "resumption"],
+    "complete_runtime_coverage": false
+  },
+  "not_established": [
+    "H1 route activation", "H1 production executor", "H1 production registry registration", "bounded_live_H1",
+    "TWSE attention route implementation", "TWSE disposition route implementation", "TWSE suspension/resumption implementation",
+    "TPEx suspension-today implementation", "TPEx suspension-history implementation", "TPEx changed-trading implementation",
+    "complete H1 runtime coverage", "Result V3 projection", "Audit V3 projection", "preferred V3 promotion",
+    "production release", "H-ACT-H1", "H3-R", "H-IMP-6"
+  ],
+  "acceptance_requirements": {
+    "H0H-H1-001": "PASS", "H0H-H1-002": "PASS", "H0H-H1-003": "PASS", "H0H-H1-004": "PASS",
+    "H0H-H1-005": "PASS", "H0H-H1-006": "PASS", "H0H-H1-007": "PASS", "H0H-ID-001": "PASS", "H0H-DRIFT-H1": "PASS"
+  },
+  "full_table_target_absence_clarification": "A valid retrieved source table with no exact target row does not bind a wrong security and attaches no status item. For a single implemented H1 route, this remains truthful partial capability coverage rather than whole-capability no_evidence_in_covered_scope. Whole-capability no_evidence_in_covered_scope is legal only under complete five-status governed coverage.",
+  "lifecycle_clarification": "Current implemented official-list/snapshot normalizers emit reported lifecycle only. effective / ended / unresolved acceptance was validated using explicit NON_AUTHORITATIVE_TEST_ONLY controlled fixtures and does not imply that the current three source routes establish those lifecycle states.",
+  "date_semantics_clarification": "Raw source Date values are always preserved in source-native provenance. Only calendar-valid canonical YYYY-MM-DD values are projected into normalized date fields. Noncanonical raw date encoding is retained but normalized date remains null. A canonical-shaped but calendar-invalid date fails closed. Malformed structured Date values fail closed. No ROC/Gregorian conversion grammar is invented by H-IMP-2.",
+  "runtime_authority": {
+    "preferred_request_schema_version": "unified_market_evidence_request.v2",
+    "v3_execution_authority": "inactive",
+    "result_production_authority": "unified_market_evidence_result.v2",
+    "audit_production_authority": "V2",
+    "local_service_contract_version": "unified_market_evidence_local_service.v2",
+    "mcp_adapter_version": "unified_market_evidence_mcp_adapter.v2",
+    "mcp_tool_count": 6,
+    "phase_h_active_source_count": 0
+  },
+  "implementation_files": {
+    "config/phase_h_h1_dormant_source_descriptors.json": {"sha256": "560b1223ab3f3badc8a2dc9630c08b5a2219f0a455f31be435a0e7946e97273d", "bytes": 3110},
+    "config/test_execution_profiles.json": {"sha256": "07955ecd9ce451c157621d5656e26f060b65eb8750fc74b10a8cb70ccf93ae04", "bytes": 23525},
+    "server/services/phase_h_trading_status_adapters.py": {"sha256": "0ae52aaa8b5bce7ed85a091e095802b6c568c1a66f4d106fb2a6eba9b0d44cf0", "bytes": 9582},
+    "tests/fixtures/phase_h_h1_adapters/source_rows.json": {"sha256": "045c185ad8f28420807af5229cbcf5dee9287dde49252dfcb94ab60397f0dbfe", "bytes": 631},
+    "tests/unit/test_phase_h_imp_2_h1_dormant_adapters.py": {"sha256": "00b8de90ff97bc361d269cccf936a88e3761f1caf6e8d3e411ca41ae0ed1d13e", "bytes": 13557}
+  },
+  "prior_accepted_component_integrity": {
+    "H-IMP-1": {"path": "server/services/phase_h_discontinuity_safety.py", "sha256": "91163c3f1988c75c5f4b413d109e19d646b5ad9bfcb40e96a485a356f9180727", "status": "PASS"},
+    "H-IMP-3": "PASS"
+  },
+  "validation_evidence": {
+    "H0-G validator": "PASS",
+    "focused H-IMP-2": "22 passed",
+    "regressions": "56 passed",
+    "default-ci": "1159 passed, 2 skipped, 9 deselected",
+    "compileall": "PASS",
+    "git diff --check": "PASS",
+    "network_may_have_occurred": false
+  },
+  "manifest_note": "This manifest is implementation checkpoint evidence, not an immutable schema or contract freeze. The manifest intentionally does not contain its own hash. Later separately authorized tranches may modify shared implementation files."
+}

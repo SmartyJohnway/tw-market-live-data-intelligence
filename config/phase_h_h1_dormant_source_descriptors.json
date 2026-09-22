@@ -1,0 +1,15 @@
+{
+  "schema_version": "phase_h_h1_dormant_source_descriptors.v1",
+  "status": "dormant_fixture_only",
+  "sources": [
+    {"source_id":"H1-TWSE-ATTENTION-OPENAPI","source_family":"TWSE_ATTENTION_OPEN_DATA","source_contract_id":"official_openapi","transport":"official_json_openapi","license_authority":"UNRESOLVED exact ODGL/data.gov mapping","source_role":"default_candidate","activation_state":"inactive","runtime_executable":false},
+    {"source_id":"H1-TWSE-DISPOSITION-OPENAPI","source_family":"TWSE_DISPOSITION_OPEN_DATA","source_contract_id":"official_openapi","transport":"official_json_openapi","license_authority":"UNRESOLVED exact ODGL/data.gov mapping","source_role":"default_candidate","activation_state":"inactive","runtime_executable":false},
+    {"source_id":"H1-TWSE-SUSPEND-RESUME-OPENAPI","source_family":"TWSE_SUSPEND_RESUME_OPEN_DATA","source_contract_id":"official_openapi","transport":"official_json_openapi","license_authority":"UNRESOLVED exact ODGL/data.gov mapping","source_role":"default_candidate","activation_state":"inactive","runtime_executable":false},
+    {"source_id":"H1-TWSE-CHANGED-TRADING-OPENAPI","source_family":"TWSE_CHANGED_TRADING_OPEN_DATA","source_contract_id":"TWT85U","transport":"official_json_openapi","license_authority":"ODGL 1.0; free; https://data.gov.tw/dataset/11760","source_role":"default_candidate","activation_state":"eligible","runtime_executable":false},
+    {"source_id":"H1-TPEX-ATTENTION-OPENAPI","source_family":"TPEX_ATTENTION_OPEN_DATA","source_contract_id":"tpex_trading_warning_information","transport":"official_json_openapi","license_authority":"ODGL 1.0; free; https://data.gov.tw/dataset/11395","source_role":"default_candidate","activation_state":"eligible","runtime_executable":false},
+    {"source_id":"H1-TPEX-DISPOSITION-OPENAPI","source_family":"TPEX_DISPOSITION_OPEN_DATA","source_contract_id":"tpex_disposal_information","transport":"official_json_openapi","license_authority":"ODGL 1.0; free; https://data.gov.tw/dataset/11396","source_role":"default_candidate","activation_state":"eligible","runtime_executable":false},
+    {"source_id":"H1-TPEX-SUSPEND-TODAY-OPENAPI","source_family":"TPEX_SUSPEND_TODAY_OPEN_DATA","source_contract_id":"official_openapi","transport":"official_json_openapi","license_authority":"UNRESOLVED exact ODGL/data.gov mapping","source_role":"default_candidate","activation_state":"inactive","runtime_executable":false},
+    {"source_id":"H1-TPEX-SUSPEND-HISTORY-OPENAPI","source_family":"TPEX_SUSPEND_HISTORY_OPEN_DATA","source_contract_id":"official_openapi","transport":"official_json_openapi","license_authority":"ODGL 1.0; free; https://data.gov.tw/dataset/48665","source_role":"governed_fallback","activation_state":"eligible","runtime_executable":false},
+    {"source_id":"H1-TPEX-CHANGED-TRADING-OPENAPI","source_family":"TPEX_CHANGED_TRADING_OPEN_DATA","source_contract_id":"tpex_cmode","transport":"official_json_openapi","license_authority":"ODGL 1.0; free; https://data.gov.tw/dataset/11736","source_role":"default_candidate","activation_state":"eligible","runtime_executable":false}
+  ]
+}

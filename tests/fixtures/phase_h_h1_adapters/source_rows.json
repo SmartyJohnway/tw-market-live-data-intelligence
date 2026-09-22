@@ -1,0 +1,6 @@
+{
+  "fixture_kind": "NON_AUTHORITATIVE_TEST_ONLY",
+  "tpex_attention": [{"Date":"2026-09-21","SecuritiesCompanyCode":"6488","CompanyName":"Fixture TPEx","TradingInformation":"official attention-list entry","ClosePrice":"42.5","PriceEarningRatio":"18.2"}],
+  "tpex_disposition": [{"Date":"2026-09-21","SecuritiesCompanyCode":"6488","CompanyName":"Fixture TPEx","DispositionPeriod":"official period text","DispositionReasons":"official reason text","DisposalCondition":"official condition text"}],
+  "twse_changed_trading": [{"Code":"2330","Name":"Fixture TWSE","PeriodicCallAuctionTrading":"official periodic call auction text"}]
+}
