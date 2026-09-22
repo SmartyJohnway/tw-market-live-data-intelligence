@@ -286,6 +286,7 @@ def test_h0h_roll_001_single_route_rollback_model_preserves_artifact_bytes() -> 
 
     route = next(item for item in rollback_routing["routes"] if item["capability_id"] == "trading_status_context")
     route.update(
+        supported_markets=["TWSE", "TPEX"],
         runtime_executable=False,
         candidate_executor_ids=[],
         selected_executor_id=None,
@@ -310,4 +311,32 @@ def test_h0h_roll_001_single_route_rollback_model_preserves_artifact_bytes() -> 
     assert rollback_routing["phase_h_source_authority"]["active_source_count"] == 0
     assert not any(item["activation_state"] == "active" for item in rollback_routing["phase_h_source_authority"]["records"])
     assert not any(item["runtime_executable"] for item in rollback_descriptors["sources"])
+    assert rollback_catalog["contract_versions"]["preferred_request_schema_version"] == "unified_market_evidence_request.v2"
+
+    request = _request()
+    validation = validate_mode_a_request(request, allow_fixture_snapshot=True)
+    authorities = {
+        "capability_catalog": rollback_catalog,
+        "routing_matrix": rollback_routing,
+        "handoff_contract": json.loads(
+            (ROOT / "docs/data_capabilities/m8r_05b_orchestration_handoff_contract.json").read_text(encoding="utf-8")
+        ),
+        "executor_disposition": json.loads(
+            (ROOT / "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json").read_text(encoding="utf-8")
+        ),
+        "preview_schema": json.loads(
+            (ROOT / "schemas/unified_market_evidence_preview_response.v1.schema.json").read_text(encoding="utf-8")
+        ),
+    }
+    replay = build_mode_b1_preview_package(
+        request,
+        validation,
+        FakeSecurityMaster(),
+        planning_timestamp=FIXED_TIME,
+        authorities=authorities,
+    )
+    assert replay["preview"]["status"] == "unsupported_capability"
+    assert replay["preview"]["bounds"]["estimated_network_calls"] == 0
+    assert replay["orchestration_plan"]["operations"][0]["operation_status"] == "plan_only_not_executable"
+
     assert before == {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
