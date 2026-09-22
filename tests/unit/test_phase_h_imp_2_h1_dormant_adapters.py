@@ -182,25 +182,42 @@ def test_exact_identity_has_no_name_fallback_or_ambiguous_binding() -> None:
         normalize_tpex_attention(duplicate, TARGET_TPEX, observed_at=OBSERVED, citation_id="ambiguous")
 
 
-def test_dormant_descriptors_planner_registry_and_zero_network(monkeypatch: pytest.MonkeyPatch) -> None:
-    descriptors = json.loads((ROOT / "config/phase_h_h1_dormant_source_descriptors.json").read_text(encoding="utf-8"))["sources"]
+def test_h1_descriptors_exact_selected_activation_and_zero_network_normalizers(monkeypatch: pytest.MonkeyPatch) -> None:
+    descriptor_doc = json.loads((ROOT / "config/phase_h_h1_dormant_source_descriptors.json").read_text(encoding="utf-8"))
+    descriptors = descriptor_doc["sources"]
     by_id = {item["source_id"]: item for item in descriptors}
     assert len(by_id) == 9
-    assert by_id["H1-TPEX-ATTENTION-OPENAPI"]["activation_state"] == "eligible"
+    assert descriptor_doc["status"] == "selected_route_active_v2_preferred"
+    assert by_id["H1-TPEX-ATTENTION-OPENAPI"]["activation_state"] == "active"
+    assert by_id["H1-TPEX-ATTENTION-OPENAPI"]["runtime_executable"] is True
     assert by_id["H1-TPEX-DISPOSITION-OPENAPI"]["activation_state"] == "eligible"
     assert by_id["H1-TWSE-CHANGED-TRADING-OPENAPI"]["activation_state"] == "eligible"
     assert by_id["H1-TWSE-SUSPEND-RESUME-OPENAPI"]["activation_state"] == "inactive"
     assert by_id["H1-TPEX-SUSPEND-TODAY-OPENAPI"]["activation_state"] == "inactive"
     assert by_id["H1-TPEX-SUSPEND-HISTORY-OPENAPI"]["source_role"] == "governed_fallback"
-    assert all(item["runtime_executable"] is False for item in descriptors)
-    registry = (ROOT / "config/m8r_06_03_executor_registry_metadata.json").read_text(encoding="utf-8")
-    assert "trading_status_context" not in registry
+    assert sum(item["runtime_executable"] is True for item in descriptors) == 1
+
+    registry = json.loads((ROOT / "config/m8r_06_03_executor_registry_metadata.json").read_text(encoding="utf-8"))
+    h1_routes = [
+        item for item in registry["executors"]
+        if item["capability_id"] == "trading_status_context"
+    ]
+    assert [(item["executor_id"], item["market"]) for item in h1_routes] == [
+        ("phase_h_h1_tpex_attention_executor", "TPEX")
+    ]
+
     catalog = json.loads((ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json").read_text(encoding="utf-8"))
     capability = next(item for item in catalog["data_need_capabilities"] if item["capability_id"] == "trading_status_context")
-    assert capability["support_status"] == "contract_supported" and capability["runtime_executable"] is False
+    assert capability["support_status"] == "runtime_executable"
+    assert capability["runtime_executable"] is True
+    assert capability["phase_h_activation_state"] == "selected_route_active"
     route = next(item for item in json.loads((ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json").read_text(encoding="utf-8"))["routes"] if item["capability_id"] == "trading_status_context")
-    assert route["runtime_executable"] is False and route["selected_executor_id"] is None
-    assert route["routing_status"] == "plan_only" and route["network_required"] is False
+    assert route["runtime_executable"] is True
+    assert route["selected_executor_id"] == "phase_h_h1_tpex_attention_executor"
+    assert route["routing_status"] == "resolved"
+    assert route["supported_markets"] == ["TPEX"]
+    assert route["network_required"] is True
+
     source = (ROOT / "server/services/phase_h_trading_status_adapters.py").read_text(encoding="utf-8").lower()
     assert all(term not in source for term in ("threshold", "attention_score", "disposition_score", "risk_score", "surveillance algorithm"))
     monkeypatch.setattr(socket, "create_connection", lambda *a, **k: pytest.fail("network attempted"))
