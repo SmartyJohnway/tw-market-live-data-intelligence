@@ -273,6 +273,7 @@
       "runtime_executable": true,
       "phase_h_activation_state": "selected_route_active",
       "supported_markets": [
+        "TWSE",
         "TPEX"
       ],
       "provisional_markets": [],
