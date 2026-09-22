@@ -1,0 +1,119 @@
+{
+  "schema_version": "phase_h_h_act_h1_tpex_attention_acceptance_ledger.v1",
+  "status": "OWNER_ACTIVATION_ACCEPTED",
+  "selected_route": {
+    "source_id": "H1-TPEX-ATTENTION-OPENAPI",
+    "capability_id": "trading_status_context",
+    "market": "TPEX",
+    "executor_id": "phase_h_h1_tpex_attention_executor",
+    "source_family": "TPEX_ATTENTION_OPEN_DATA",
+    "source_contract_id": "tpex_trading_warning_information",
+    "license_authority": "ODGL 1.0; free; https://data.gov.tw/dataset/11395"
+  },
+  "owner_authorization": {
+    "scope": "single H-ACT-H1 route activation, bounded-live proof, rollback proof, and merge closure",
+    "reference": "USER_CHAT_2026-09-23_H_ACT_H1_START_EXECUTION",
+    "live_runner_reference": "OWNER_CHAT_2026-09-22_H_ACT_H1_TPEX_ATTENTION"
+  },
+  "baseline_main": "7c62b940d4d702f8be3b78eabc4499c67e80fd2e",
+  "live_evidence_head": "1d3f620399dcf2c2bd15cfcdb2bf8a7126f8febb",
+  "reviewed_candidate_head_before_ledger": "294c23f7e1090a83db4505d4016a188b56e28bc9",
+  "post_live_semantic_delta": {
+    "production_files_changed": false,
+    "changed_files": [
+      "tests/unit/test_phase_h_act_h1_tpex_attention_activation.py"
+    ],
+    "purpose": "strengthen H0H-ROLL-001 planner rollback proof"
+  },
+  "acceptance_ids": {
+    "H0H-DRIFT-H1": {
+      "status": "PASS",
+      "evidence": [
+        "live TPEx payload validates required Date, SecuritiesCompanyCode, CompanyName, TradingInformation, ClosePrice, PriceEarningRatio fields",
+        "source_contract_validated=true in bounded-live evidence",
+        "ROC YYYMMDD source dates normalize through existing governed parse_roc_yyyymmdd authority",
+        "source-drift unit cases fail closed"
+      ]
+    },
+    "H0H-LIVE-001": {
+      "status": "PASS",
+      "workflow_run_id": 35754927978,
+      "workflow_head": "1d3f620399dcf2c2bd15cfcdb2bf8a7126f8febb",
+      "artifact_id": 10707429305,
+      "artifact_zip_sha256": "2a934b597cf47a4cabf3e98f143abbf6c2df68a71dacce077cd580808c4edad5",
+      "report_sha256": "5e45b332c8d03e42d69fc0cc68f57fc2afabacaa7dab525fdb34224528f39383",
+      "primary_evidence_sha256": "0566b691691ff7959da315305ba04fbe3d0043702073da89428c2e923d3f7d60",
+      "governance_sidecar_sha256": "27dbd1607c801751f822826b232e66f637de310e7df972187f4e2dfecdf49d83",
+      "target": "TPEX:6488",
+      "matched_item_count": 1,
+      "source_snapshot_date": "2026-09-21",
+      "observed_at": "2026-09-22T16:34:41Z",
+      "network": {
+        "authorized": true,
+        "call_bound": 1,
+        "actual_call_count": 1,
+        "retry_count": 0,
+        "polling": false,
+        "scheduler": false,
+        "full_market_payload_persisted": false,
+        "target_bounded_governed_artifacts_only": true
+      },
+      "coverage": {
+        "status": "partial",
+        "covered_status_types": [
+          "attention"
+        ],
+        "uncovered_status_types": [
+          "changed_trading_method",
+          "disposition",
+          "resumption",
+          "suspension"
+        ],
+        "declared_scope_complete": false
+      }
+    },
+    "H0H-ROLL-001": {
+      "status": "PASS",
+      "workflow_run_id": 35755312259,
+      "deterministic_tests": "32 passed",
+      "validator": "PASS",
+      "rollback_target": {
+        "selected_source_activation_state": "eligible",
+        "selected_source_runtime_executable": false,
+        "phase_h_active_source_count": 0,
+        "trading_status_routing_status": "plan_only",
+        "estimated_network_calls": 0,
+        "preferred_request_schema_version": "unified_market_evidence_request.v2"
+      },
+      "artifact_immutability_verified": true
+    }
+  },
+  "runtime_authority_after_activation": {
+    "preferred_request_schema_version": "unified_market_evidence_request.v2",
+    "emitted_result_schema_version": "unified_market_evidence_result.v2",
+    "v3_runtime_authority": "selected_routes_active_v2_preferred",
+    "phase_h_active_source_count": 1,
+    "exact_active_phase_h_sources": [
+      "H1-TPEX-ATTENTION-OPENAPI"
+    ],
+    "workbench_v3_authorization_scope": "trading_status_context + TPEX + phase_h_h1_tpex_attention_executor only",
+    "local_operator_mcp_v3_execution": "blocked",
+    "unified_mcp_tool_count": 6
+  },
+  "unresolved_scope": {
+    "h1_complete_coverage": false,
+    "h0_src_02": "OPEN; blocks complete H1 coverage claims, not selected attention route activation",
+    "h2_activation": "NOT STARTED",
+    "h3_r": "NOT STARTED",
+    "h3_i": "NOT STARTED",
+    "h_acc_7l": "NOT STARTED",
+    "h_act_v3": "NOT STARTED"
+  },
+  "conclusions": [
+    "single selected TPEx attention route is approved active",
+    "V2 remains preferred",
+    "no bulk H1 activation occurred",
+    "no H2/H3 activation occurred",
+    "no scheduler, polling, retry loop, trading, or seventh MCP tool was introduced"
+  ]
+}
