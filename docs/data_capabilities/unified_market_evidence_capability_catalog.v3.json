@@ -11,7 +11,7 @@
     "emitted_result_schema_version": "unified_market_evidence_result.v2",
     "future_candidate_request_schema_version": "unified_market_evidence_request.v3",
     "future_candidate_result_schema_version": "unified_market_evidence_result.v3",
-    "v3_runtime_authority_status": "inactive"
+    "v3_runtime_authority_status": "selected_routes_active_v2_preferred"
   },
   "generated_from": {
     "source_capability_registry_reference": "m8_source_capability_registry",
@@ -269,11 +269,10 @@
     {
       "capability_id": "trading_status_context",
       "description": "Official instrument-specific trading-status determinations with fail-closed governed coverage.",
-      "support_status": "contract_supported",
-      "runtime_executable": false,
-      "phase_h_activation_state": "inactive",
+      "support_status": "runtime_executable",
+      "runtime_executable": true,
+      "phase_h_activation_state": "selected_route_active",
       "supported_markets": [
-        "TWSE",
         "TPEX"
       ],
       "provisional_markets": [],
@@ -285,8 +284,9 @@
       ],
       "possible_fallbacks": [],
       "known_limitations": [
-        "V3 contract candidate only; no H0-G runtime activation",
-        "coverage and provider asymmetry remain explicit"
+        "only H1-TPEX-ATTENTION-OPENAPI is active; all other H1 status subtypes/routes remain inactive or uncovered",
+        "H0-SRC-02 prevents complete H1 coverage claims",
+        "V2 remains the preferred production request/result authority"
       ],
       "instrument_scope": {
         "instrument_families": [
@@ -297,7 +297,7 @@
         ]
       },
       "coverage_modes": [
-        "explicit_target_scoped_time_bounded"
+        "partial_attention_only"
       ],
       "historical_lookup_supported": false
     },
@@ -458,8 +458,8 @@
     "Phase H sources remain inactive during H0-G"
   ],
   "phase_h_contract": {
-    "runtime_authority": "inactive",
-    "active_phase_h_source_count": 0,
+    "runtime_authority": "selected_routes_active_v2_preferred",
+    "active_phase_h_source_count": 1,
     "source_role_vocabulary": [
       "default_candidate",
       "governed_fallback",
