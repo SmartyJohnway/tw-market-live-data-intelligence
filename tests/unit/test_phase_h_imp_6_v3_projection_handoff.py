@@ -38,7 +38,7 @@ def _replace_citations(value: object, citation_id: str) -> object:
     return value
 
 
-def _attempt_metadata(source: dict, *, status: str, citation_ids: list[str], failure_code: str | None = None,
+def _attempt_metadata(source: dict, *, coverage_result: str, outcome: str, citation_ids: list[str], failure_code: str | None = None,
                       authority_marker: str | None = None) -> dict:
     value = {
         "source_family": source["source_family"],
@@ -47,7 +47,8 @@ def _attempt_metadata(source: dict, *, status: str, citation_ids: list[str], fai
         "activation_state": source["activation_state"],
         "license_authority": source["license_authority"],
         "provider_availability": "not_required",
-        "status": status,
+        "coverage_result": coverage_result,
+        "outcome": outcome,
         "failure_code": failure_code,
         "citation_ids": citation_ids,
     }
@@ -96,11 +97,11 @@ def _inputs(*, include_h1: bool = True, include_h2: bool = True, include_h3: boo
     for relative_path, artifact in artifacts.items():
         if artifact["schema_version"] == "trading_status_context_evidence.v1":
             phase_h_source_attempts[relative_path] = [_attempt_metadata(
-                artifact["source"], status=artifact["status"], citation_ids=artifact["citation_ids"],
+                artifact["source"], coverage_result=artifact["status"], outcome="succeeded", citation_ids=artifact["citation_ids"],
             )]
         elif artifact["schema_version"] == "corporate_action_context_evidence.v1":
             phase_h_source_attempts[relative_path] = [_attempt_metadata(
-                source, status=artifact["status"], citation_ids=artifact["citation_ids"],
+                source, coverage_result=artifact["status"], outcome="succeeded", citation_ids=artifact["citation_ids"],
             ) for source in artifact["sources"]]
         elif artifact["schema_version"] == "recent_performance_evidence.v1":
             governed_end = artifact["governed_end_observation"]
@@ -110,7 +111,7 @@ def _inputs(*, include_h1: bool = True, include_h2: bool = True, include_h3: boo
                     "source_contract_id": governed_end["source_contract_id"],
                     "source_role": "research_only", "activation_state": "inactive", "license_authority": None,
                 },
-                status=artifact["coverage_status"], citation_ids=artifact["citation_ids"],
+                coverage_result=artifact["coverage_status"], outcome="succeeded", citation_ids=artifact["citation_ids"],
                 authority_marker=FIXTURE_KIND,
             )]
     return ProjectionInputs(
@@ -204,12 +205,12 @@ def _add_second_target(inputs: ProjectionInputs) -> None:
             inputs.phase_h_source_attempts[new_path] = [_attempt_metadata(
                 {"source_family": governed_end["source_family"], "source_contract_id": governed_end["source_contract_id"],
                  "source_role": "research_only", "activation_state": "inactive", "license_authority": None},
-                status=artifact["coverage_status"], citation_ids=artifact["citation_ids"], authority_marker=FIXTURE_KIND,
+                coverage_result=artifact["coverage_status"], outcome="succeeded", citation_ids=artifact["citation_ids"], authority_marker=FIXTURE_KIND,
             )]
         else:
             sources = artifact["sources"] if "sources" in artifact else [artifact["source"]]
             inputs.phase_h_source_attempts[new_path] = [_attempt_metadata(
-                source, status=artifact["status"], citation_ids=artifact["citation_ids"],
+                source, coverage_result=artifact["status"], outcome="succeeded", citation_ids=artifact["citation_ids"],
             ) for source in sources]
     h4_source_path = next(path for path, artifact in inputs.evidence_artifacts.items()
                           if artifact.get("schema_version") == "discontinuity_safety_evidence.v1")
@@ -398,8 +399,8 @@ def test_h2_audit_uses_each_source_attempt_not_aggregate_status():
     artifact["events"] = []
     first_source = artifact["sources"][0]
     inputs.phase_h_source_attempts[path] = [
-        _attempt_metadata(first_source, status="available", citation_ids=artifact["citation_ids"]),
-        _attempt_metadata(second_source, status="source_failed", citation_ids=artifact["citation_ids"], failure_code="source_failed:test"),
+        _attempt_metadata(first_source, coverage_result="available", outcome="succeeded", citation_ids=artifact["citation_ids"]),
+        _attempt_metadata(second_source, coverage_result="source_failed", outcome="failed", citation_ids=artifact["citation_ids"], failure_code="source_failed:test"),
     ]
     _, audit = _build_package(inputs)
     h2_attempts = [item for item in audit["phase_h_governance"]["source_attempts"] if item["source_contract_id"] in {first_source["source_contract_id"], "h2-test-b"}]
@@ -416,8 +417,8 @@ def test_audit_preserves_supplied_source_role_activation_and_provider_independen
                            source_role="optional_licensed_provider", activation_state="inactive")
     artifact["sources"].append(optional_source)
     inputs.phase_h_source_attempts[path] = [
-        _attempt_metadata(artifact["sources"][0], status="available", citation_ids=artifact["citation_ids"]),
-        {**_attempt_metadata(optional_source, status="available", citation_ids=artifact["citation_ids"]),
+        _attempt_metadata(artifact["sources"][0], coverage_result="available", outcome="succeeded", citation_ids=artifact["citation_ids"]),
+        {**_attempt_metadata(optional_source, coverage_result="available", outcome="succeeded", citation_ids=artifact["citation_ids"]),
          "provider_availability": "available"},
     ]
     _, audit = _build_package(inputs)
@@ -486,7 +487,7 @@ def test_package_bound_sidecars_supply_governance_without_runtime_injection():
             "capability_id": capability,
             "attempts": [{key: value for key, value in attempt.items() if key != "authority_marker"} for attempt in attempts],
         }
-    loaded = _load_phase_h_source_attempts({**inputs.evidence_artifacts, **sidecars})
+    loaded = _load_phase_h_source_attempts({**inputs.evidence_artifacts, **sidecars}, plan=inputs.plan, bundle=inputs.bundle)
     assert loaded == {path: [{key: value for key, value in attempt.items() if key != "authority_marker"}
                              for attempt in attempts] for path, attempts in inputs.phase_h_source_attempts.items()}
 
@@ -546,14 +547,10 @@ def test_real_loader_populates_sidecar_governance_from_verified_package(tmp_path
             receipt_path=str(paths["receipt"]), bundle_path=str(paths["bundle"]), artifact_root=str(root),
             calculated_at="2026-09-22T00:00:00Z")
 
-    loaded = load_verified_package()
-    assert set(loaded.phase_h_source_attempts) == set(inputs.phase_h_source_attempts)
-    result = build_result(loaded, output_schema_version="unified_market_evidence_result.v3")
-    citations = build_citation_index(build_lineage_map(loaded), loaded.bundle, result["schema_version"])
-    audit = build_audit_package(result, loaded, citations, "ai_context/unified_market_evidence_result.v3.json",
-                                output_schema_version="unified_market_evidence_audit_package.v3")
-    assert audit["result_id"] == result["result_id"]
-    assert render_result_markdown(result)
+    # Inventory and a hash alone are insufficient: these historical operations
+    # do not govern the newly added Phase H typed artifacts.
+    with pytest.raises(ProjectionError, match="phase_h_source_governance_operation_unresolved"):
+        load_verified_package()
     sidecar_file = root / "governance/trading_status_context.json"
     sidecar_file.write_bytes(sidecar_file.read_bytes() + b"\n")
     with pytest.raises(ProjectionError, match="artifact_hash_mismatch"):
@@ -570,7 +567,7 @@ def test_package_bound_sidecar_reference_tampering_fails_closed(tamper: str):
         "canonical_target_id": artifact["target"]["canonical_target_id"], "capability_id": "trading_status_context",
         "attempts": inputs.phase_h_source_attempts[path],
     }
-    evidence = {**inputs.evidence_artifacts, "governance/h1.json": sidecar}
+    evidence = {path: artifact, "governance/h1.json": sidecar}
     if tamper == "missing":
         del evidence[path]
     elif tamper == "wrong_target":
@@ -580,4 +577,35 @@ def test_package_bound_sidecar_reference_tampering_fails_closed(tamper: str):
     else:
         evidence["governance/h1-duplicate.json"] = deepcopy(sidecar)
     with pytest.raises(ProjectionError):
-        _load_phase_h_source_attempts(evidence)
+        _load_phase_h_source_attempts(evidence, plan=inputs.plan, bundle=inputs.bundle)
+
+
+def test_execution_lineage_is_required_for_package_bound_governance():
+    inputs = _inputs()
+    path = "evidence/phase_h/h1/TWSE_2330.json"
+    artifact = inputs.evidence_artifacts[path]
+    sidecar = {"schema_version": "phase_h_source_attempt_governance.v1", "evidence_artifact_reference": path,
+               "canonical_target_id": artifact["target"]["canonical_target_id"], "capability_id": "trading_status_context",
+               "attempts": inputs.phase_h_source_attempts[path]}
+    evidence = {path: artifact, "governance/h1.json": sidecar}
+    assert _load_phase_h_source_attempts(evidence, plan=inputs.plan, bundle=inputs.bundle)[path]
+    inputs.bundle["operation_evidence_entries"] = [entry for entry in inputs.bundle["operation_evidence_entries"]
+                                                    if entry["operation_id"] != "op-h1"]
+    with pytest.raises(ProjectionError, match="phase_h_source_governance_operation_unresolved"):
+        _load_phase_h_source_attempts(evidence, plan=inputs.plan, bundle=inputs.bundle)
+
+
+@pytest.mark.parametrize("coverage_result,outcome,failure_code", [
+    ("insufficient", "succeeded", None), ("unavailable", "succeeded", None),
+    ("unavailable", "not_attempted", None), ("source_failed", "failed", "source_failed:test"),
+    ("unsupported", "not_attempted", None), ("not_applicable", "not_attempted", None),
+])
+def test_h3_attempt_coverage_and_outcome_are_explicit(coverage_result, outcome, failure_code):
+    inputs = _inputs()
+    path = "evidence/phase_h/h3/TWSE_2330.json"
+    inputs.phase_h_source_attempts[path][0].update({"coverage_result": coverage_result, "outcome": outcome,
+                                                     "failure_code": failure_code})
+    _, audit = _build_package(inputs)
+    attempt = next(item for item in audit["phase_h_governance"]["source_attempts"]
+                   if item["source_contract_id"] == inputs.phase_h_source_attempts[path][0]["source_contract_id"])
+    assert (attempt["coverage_result"], attempt["outcome"], attempt["failure_code"]) == (coverage_result, outcome, failure_code)

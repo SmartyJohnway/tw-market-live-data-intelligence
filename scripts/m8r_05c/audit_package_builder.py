@@ -56,7 +56,8 @@ _PHASE_H_CAPABILITIES = {
 _GOVERNANCE_SOURCE_FIELDS = (
     "source_family", "source_contract_id", "source_role", "activation_state", "license_authority",
 )
-_ATTEMPT_STATUSES = {"available", "complete", "partial", "no_evidence_in_covered_scope", "source_failed", "binding_failed"}
+_COVERAGE_RESULTS = {"available", "complete", "partial", "no_evidence_in_covered_scope", "insufficient", "unavailable", "source_failed", "binding_failed", "unsupported", "not_applicable"}
+_ATTEMPT_OUTCOMES = {"succeeded", "failed", "not_attempted"}
 
 
 def _phase_h_attempt_metadata(inputs: ProjectionInputs, relative_path: str) -> list[dict]:
@@ -73,17 +74,20 @@ def _audit_attempt(*, source: dict, metadata: dict, artifact: dict, target: dict
         if field not in source or (field in metadata and metadata[field] != source[field]):
             raise ProjectionError("phase_h_source_governance_mismatch")
     provider_availability = metadata.get("provider_availability")
-    status = metadata.get("status")
-    if provider_availability not in {"available", "unavailable", "not_required", "unknown"} or status not in _ATTEMPT_STATUSES:
+    coverage_result = metadata.get("coverage_result")
+    outcome = metadata.get("outcome")
+    if (provider_availability not in {"available", "unavailable", "not_required", "unknown"}
+            or coverage_result not in _COVERAGE_RESULTS or outcome not in _ATTEMPT_OUTCOMES):
         raise ProjectionError("phase_h_source_governance_unresolved")
     citation_ids = metadata.get("citation_ids", [])
     artifact_citations = artifact.get("citation_ids", [])
     if (not isinstance(citation_ids, list) or not all(isinstance(item, str) for item in citation_ids)
             or not set(citation_ids).issubset(set(artifact_citations if isinstance(artifact_citations, list) else []))):
         raise ProjectionError("phase_h_source_governance_unresolved")
-    failed = status in {"source_failed", "binding_failed"}
     failure_code = metadata.get("failure_code")
-    if (failed and not isinstance(failure_code, str)) or (not failed and failure_code is not None):
+    if ((outcome == "failed" and (not isinstance(failure_code, str) or not failure_code))
+            or (outcome == "succeeded" and failure_code is not None)
+            or (outcome == "not_attempted" and failure_code is not None)):
         raise ProjectionError("phase_h_source_governance_unresolved")
     coverage = artifact.get("coverage")
     return {
@@ -96,8 +100,8 @@ def _audit_attempt(*, source: dict, metadata: dict, artifact: dict, target: dict
         "canonical_target_id": target.get("canonical_target_id", ""),
         "market": target.get("market", "TWSE"),
         "requested_window": coverage.get("requested_window") if isinstance(coverage, dict) else None,
-        "coverage_result": status,
-        "outcome": "failed" if failed else "succeeded",
+        "coverage_result": coverage_result,
+        "outcome": outcome,
         "failure_code": failure_code,
     }
 
