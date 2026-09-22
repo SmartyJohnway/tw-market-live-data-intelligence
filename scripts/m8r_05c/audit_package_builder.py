@@ -20,6 +20,7 @@ from jsonschema import Draft202012Validator
 from .canonical import (
     build_audit_package_id,
     build_audit_package_id_v2,
+    build_audit_package_id_v3,
     hash_body_excluding_key,
     sha256_json,
 )
@@ -31,6 +32,7 @@ from .evidence_projector import CURRENT_PROJECTOR_VERSION
 ROOT = Path(__file__).resolve().parents[2]
 AUDIT_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_audit_package.v1.schema.json"
 AUDIT_V2_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_audit_package.v2.schema.json"
+AUDIT_V3_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_audit_package.v3.schema.json"
 
 _PROJECTOR_VERSION = CURRENT_PROJECTOR_VERSION
 _CANONICALIZATION_VERSION = "m8r_05b_03_canonical_v1"
@@ -41,6 +43,98 @@ def _load_audit_schema() -> dict:
         return json.loads(AUDIT_SCHEMA_PATH.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         raise ProjectionError("audit_schema_load_failed") from exc
+
+
+_PHASE_H_CAPABILITIES = {
+    "trading_status_context_evidence.v1": "trading_status_context",
+    "corporate_action_context_evidence.v1": "corporate_action_context",
+    "recent_performance_evidence.v1": "recent_performance",
+    "discontinuity_safety_evidence.v1": "discontinuity_safety",
+}
+
+
+def _phase_h_governance(inputs: ProjectionInputs) -> dict:
+    """Project only verified Phase H artifacts into frozen Audit V3 fields."""
+    inventory = {
+        entry.get("relative_path"): entry for entry in inputs.bundle.get("artifact_inventory", [])
+        if isinstance(entry, dict) and isinstance(entry.get("relative_path"), str)
+    }
+    attempts: list[dict] = []
+    references: list[dict] = []
+    derivations: list[dict] = []
+    for relative_path, artifact in sorted(inputs.evidence_artifacts.items()):
+        if not isinstance(artifact, dict):
+            continue
+        schema_version = artifact.get("schema_version")
+        capability_id = _PHASE_H_CAPABILITIES.get(schema_version)
+        entry = inventory.get(relative_path)
+        if capability_id is None or not isinstance(entry, dict):
+            continue
+        artifact_hash = entry.get("sha256")
+        if not isinstance(artifact_hash, str):
+            raise ProjectionError("phase_h_artifact_hash_unverified")
+        references.append({
+            "capability_id": capability_id,
+            "schema_version": schema_version,
+            "relative_path": relative_path,
+            "sha256": artifact_hash,
+        })
+        target = artifact.get("target") if isinstance(artifact.get("target"), dict) else {}
+        sources = artifact.get("sources") if isinstance(artifact.get("sources"), list) else [artifact.get("source")]
+        if capability_id == "recent_performance" and not any(isinstance(source, dict) for source in sources):
+            governed_end = artifact.get("governed_end_observation")
+            if isinstance(governed_end, dict):
+                sources = [{
+                    "source_family": governed_end.get("source_family", "unknown"),
+                    "source_contract_id": governed_end.get("source_contract_id", "unknown"),
+                    "source_role": "research_only",
+                    "activation_state": "inactive",
+                    "license_authority": None,
+                }]
+        for source in sources:
+            if not isinstance(source, dict) or capability_id not in {"trading_status_context", "corporate_action_context", "recent_performance"}:
+                continue
+            status = artifact.get("status", artifact.get("coverage_status", "source_failed"))
+            failure_code = None
+            caveats = artifact.get("caveats")
+            if status in {"source_failed", "binding_failed"} and isinstance(caveats, list) and caveats:
+                failure_code = str(caveats[0])
+            attempts.append({
+                "source_family": source.get("source_family", "unknown"),
+                "source_contract_id": source.get("source_contract_id", "unknown"),
+                "source_role": source.get("source_role", "research_only"),
+                "activation_state": source.get("activation_state", "inactive"),
+                "provider_availability": "unknown" if source.get("source_role") == "optional_licensed_provider" else "not_required",
+                "license_authority": source.get("license_authority"),
+                "canonical_target_id": target.get("canonical_target_id", ""),
+                "market": target.get("market", "TWSE"),
+                "requested_window": artifact.get("coverage", {}).get("requested_window") if isinstance(artifact.get("coverage"), dict) else None,
+                "coverage_result": str(status),
+                "outcome": "failed" if status in {"source_failed", "binding_failed"} else "succeeded",
+                "failure_code": failure_code,
+            })
+        if capability_id == "discontinuity_safety":
+            comparison_window = artifact.get("comparison_window")
+            if not isinstance(comparison_window, dict):
+                raise ProjectionError("phase_h_h4_derivation_invalid")
+            derivations.append({
+                "canonical_target_id": target.get("canonical_target_id", ""),
+                "market": target.get("market", "TWSE"),
+                "comparison_window": {
+                    "start_observation_date": comparison_window.get("start_observation_date"),
+                    "end_observation_date": comparison_window.get("end_observation_date"),
+                },
+                "input_evidence_references": artifact.get("input_evidence_references", []),
+                "evidence_artifact_reference": {"relative_path": relative_path, "sha256": artifact_hash},
+                "deterministic_rule_version": artifact.get("deterministic_rule_version"),
+                "derived_state": artifact.get("state"),
+                "interpretation_guard": artifact.get("interpretation_guard"),
+            })
+    return {
+        "source_attempts": sorted(attempts, key=lambda item: (item["canonical_target_id"], item["source_contract_id"], item["source_family"])),
+        "evidence_artifact_references": sorted(references, key=lambda item: (item["capability_id"], item["relative_path"])),
+        "h4_derivations": sorted(derivations, key=lambda item: item["canonical_target_id"]),
+    }
 
 
 def build_audit_package(
@@ -83,6 +177,8 @@ def build_audit_package(
         audit_package_id = build_audit_package_id(result_id, bundle_id)
     elif output_schema_version == "unified_market_evidence_audit_package.v2":
         audit_package_id = build_audit_package_id_v2(result_id, bundle_id)
+    elif output_schema_version == "unified_market_evidence_audit_package.v3":
+        audit_package_id = build_audit_package_id_v3(result_id, bundle_id)
     else:
         raise ProjectionError("unsupported_audit_schema_version")
 
@@ -319,6 +415,8 @@ def build_audit_package(
         "warnings": [],
         "caveats": [],
     }
+    if output_schema_version == "unified_market_evidence_audit_package.v3":
+        body_without_hash["phase_h_governance"] = _phase_h_governance(inputs)
     if selection_provenance is not None:
         binding = selection_provenance.get("watchlist")
         body_without_hash["selection_provenance_identity"] = {
@@ -338,7 +436,12 @@ def build_audit_package(
     audit_package = {**body_without_hash, "audit_package_hash": audit_package_hash}
 
     # Validate against schema.
-    schema = json.loads((AUDIT_V2_SCHEMA_PATH if output_schema_version.endswith(".v2") else AUDIT_SCHEMA_PATH).read_text(encoding="utf-8"))
+    schema_path = {
+        "unified_market_evidence_audit_package.v1": AUDIT_SCHEMA_PATH,
+        "unified_market_evidence_audit_package.v2": AUDIT_V2_SCHEMA_PATH,
+        "unified_market_evidence_audit_package.v3": AUDIT_V3_SCHEMA_PATH,
+    }[output_schema_version]
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
     errors = list(Draft202012Validator(schema).iter_errors(audit_package))
     if errors:
         error_msgs = [str(e.message) for e in errors[:3]]

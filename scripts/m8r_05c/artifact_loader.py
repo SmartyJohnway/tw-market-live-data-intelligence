@@ -41,10 +41,15 @@ _SCHEMA_NAMES = {
 _REQUEST_SCHEMA_NAMES = {
     "unified_market_evidence_request.v1": _SCHEMA_NAMES["request"],
     "unified_market_evidence_request.v2": "unified_market_evidence_request.v2.schema.json",
+    "unified_market_evidence_request.v3": "unified_market_evidence_request.v3.schema.json",
 }
 _RESEARCH_EVIDENCE_CONTRACTS = {
     "phase_g_material_disclosure_operation_evidence.v1": "phase_g_material_disclosure_operation_evidence.v1.schema.json",
     "phase_g_monthly_revenue_operation_evidence.v1": "phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+    "trading_status_context_evidence.v1": "trading_status_context_evidence.v1.schema.json",
+    "corporate_action_context_evidence.v1": "corporate_action_context_evidence.v1.schema.json",
+    "recent_performance_evidence.v1": "recent_performance_evidence.v1.schema.json",
+    "discontinuity_safety_evidence.v1": "discontinuity_safety_evidence.v1.schema.json",
 }
 
 _DRAFT07_KEYS = {"request", "plan"}

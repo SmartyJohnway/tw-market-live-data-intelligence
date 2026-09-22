@@ -30,6 +30,8 @@ _CAPABILITY_TO_DATA_NEED: dict[str, str] = {
     "evidence_quality": "evidence_quality",
     "material_disclosures": "material_disclosures",
     "monthly_revenue": "monthly_revenue",
+    "trading_status_context": "trading_status_context",
+    "corporate_action_context": "corporate_action_context",
 }
 
 

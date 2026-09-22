@@ -72,6 +72,10 @@ class TargetEvidenceProjection:
     evidence_quality: EvidenceEnvelopeProjection | None = None
     material_disclosures: dict | None = None
     monthly_revenue: dict | None = None
+    trading_status_context: dict | None = None
+    corporate_action_context: dict | None = None
+    recent_performance_v3: dict | None = None
+    discontinuity_safety: dict | None = None
 
 
 @dataclass
