@@ -95,6 +95,22 @@ def test_verified_tpex_attention_roc_date_is_normalized_without_rewriting_proven
     assert not any("source_snapshot_date_unresolved" in item for item in result["caveats"])
 
 
+def test_tpex_attention_mixed_table_dates_use_exact_target_record_date() -> None:
+    rows = copy.deepcopy(ROWS["tpex_attention"])
+    rows[0]["Date"] = "1150921"
+    rows.append({
+        **rows[0],
+        "SecuritiesCompanyCode": "1569",
+        "CompanyName": "other",
+        "Date": "1150922",
+    })
+    result = normalize_tpex_attention(rows, TARGET_TPEX, observed_at=OBSERVED, citation_id="mixed-live-dates")
+    assert result["status"] == "partial"
+    assert result["coverage"]["source_snapshot_date"] == "2026-09-21"
+    assert result["items"][0]["source_record_date"] == "2026-09-21"
+    assert "source_snapshot_date_unresolved:Date:multiple_values" in result["caveats"]
+
+
 def test_present_noncanonical_date_is_preserved_without_source_failure() -> None:
     rows = copy.deepcopy(ROWS["tpex_attention"])
     rows[0]["Date"] = "09/21/2026"
