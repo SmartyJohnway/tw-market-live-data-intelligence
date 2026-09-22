@@ -348,6 +348,8 @@ def test_v3_multi_target_typed_evidence_and_citations_are_isolated_and_determini
     assert not {item["citation_id"] for item in first["citations"]} & {item["citation_id"] for item in second["citations"]}
     assert {item["canonical_target_id"] for item in audit["phase_h_governance"]["source_attempts"]} == {"TWSE:2330", "TWSE:2317"}
     assert {item["canonical_target_id"] for item in audit["phase_h_governance"]["h4_derivations"]} == {"TWSE:2330", "TWSE:2317"}
+    assert audit["result_id"] == result["result_id"]
+    assert audit["result_hash"] == result["result_hash"]
     reversed_inputs = deepcopy(inputs)
     reversed_inputs.evidence_artifacts = dict(reversed(list(reversed_inputs.evidence_artifacts.items())))
     assert _build_package(reversed_inputs) == (result, audit)
