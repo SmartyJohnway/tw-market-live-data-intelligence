@@ -1,0 +1,82 @@
+{
+  "schema_version": "phase_h_h_imp_7d_deterministic_e2e_ledger.v1",
+  "status": "OWNER_REVIEW_CANDIDATE",
+  "baseline_main": "be68b2187d4a766ec3bddaf5c429250bfd98ae97",
+  "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY",
+  "fixed_clock": "2026-09-22T00:00:00Z",
+  "network_may_have_occurred": false,
+  "canonical_s1_lineage": {
+    "request_id": "h-imp-7d-s1",
+    "request_hash": "0f1c2f71ff25bb9438fc0e94bff555da72d90a394d58fa63c123e2d955f23d37",
+    "f3_hash": "c80aa43feb14e39f20e10f5e602af5e37992cedaca5e0ce69e884828dcc00430",
+    "plan_id": "umeop-v1-9f107a2706ff9af603ad",
+    "plan_hash": "9f107a2706ff9af603ad4afd7152660d862a1136ac27ab27e6aa3b19fc14eb0a",
+    "authorization_id": "umea-v1-4a1368973273a6aa5e85",
+    "authorization_hash": "4a1368973273a6aa5e853af10c17aa9e7b32cc0e5bf382b9ec011e3c4acfdae4",
+    "consumption_binding_id": "umeacb-v1-1fa870297f4cccb8d24b",
+    "consumption_binding_hash": "1fa870297f4cccb8d24b4c1d1c9b4f0aff316e54d9abfce9efbc467ba20b4b8d",
+    "claim_id": "umecl-v1-94e5e67597e9cd6b0021",
+    "operation_result_hash": "4af93990092835380ba3bf5794ac286693df959b4d93cb2b0cf7b6a5e41c2d9a",
+    "receipt_id": "umerec-v1-27a97b81b383302c782a",
+    "receipt_hash": "27a97b81b383302c782a906623b0be3e0dfdf94a368867e01e9276e5f26509d5",
+    "bundle_id": "umeb-v1-c392c5a2815988f55c74",
+    "bundle_hash": "c392c5a2815988f55c74b1248b6a1adf895e98cedcc811b1348264f5cda44568",
+    "result_v3_id": "umeresult-v3-72f96bf32412cc6e288d",
+    "result_v3_hash": "63877c66fef153c293431c08c7e910a5c528e71ce208ecd958f441ad4f864ad9",
+    "audit_v3_id": "umeap-v3-b7d6e4851eb2f0920d8d",
+    "audit_v3_hash": "0a5fa0049d2b8aab6acdb3a9e74c910a377f1c15f6db32775abf161a988eea85",
+    "h5_hash": "2dd7cafb5bf37068c5bf2982ea0d6592eab7d96d0c742805955019dbdc953b4b"
+  },
+  "cross_root_replay_check": {
+    "portable_semantics": "PASS",
+    "root_bound_execution_identity": "EXPECTED_VARIANCE",
+    "first_lineage_valid": "PASS",
+    "second_lineage_valid": "PASS",
+    "absolute_runtime_root_exposed_to_user_output": false
+  },
+  "scenarios": [
+    {"scenario_id": "S1_H1_TPEX_ATTENTION_AVAILABLE", "status": "PASS", "source_authority_class": "official governed source authority", "runtime_activation_state": "inactive"},
+    {"scenario_id": "S2_MULTI_TARGET_MIXED", "status": "PASS", "source_authority_class": "official governed source authority", "runtime_activation_state": "inactive"},
+    {"scenario_id": "S3_H1_SOURCE_CONTRACT_FAILURE", "status": "PASS", "source_authority_class": "official governed source authority", "runtime_activation_state": "inactive"},
+    {"scenario_id": "S4_H2_CORPORATE_ACTION_DISCONTINUITY", "status": "PASS", "source_authority_class": "official governed source authority", "runtime_activation_state": "inactive"},
+    {"scenario_id": "S5_ORDINARY_DAY", "status": "PASS", "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY"},
+    {"scenario_id": "S6A_H3_COMPLETE", "status": "PASS", "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY", "source_authority_class": "UNRESOLVED / NOT ESTABLISHED"},
+    {"scenario_id": "S6B_H3_PARTIAL_OR_INSUFFICIENT", "status": "PASS", "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY", "source_authority_class": "UNRESOLVED / NOT ESTABLISHED"},
+    {"scenario_id": "S7_PRODUCTION_V3_AUTHORIZATION_DENIED", "status": "PASS"},
+    {"scenario_id": "S8_EXECUTE_ONCE_REPLAY", "status": "PASS"},
+    {"scenario_id": "S9_CONCURRENT_CLAIM", "status": "PASS"},
+    {"scenario_id": "S10_V2_UNAFFECTED", "status": "PASS"},
+    {"scenario_id": "S11_FRESH_INSTALL_PORTABILITY", "status": "PASS"},
+    {"scenario_id": "S12_ROLLBACK_MODEL", "status": "PASS"},
+    {"scenario_id": "S13_STARTUP_ZERO_NETWORK", "status": "PASS"}
+  ],
+  "acceptance_ids": {
+    "H0H-NET-001": "PASS",
+    "H0H-E2E-001": "PASS",
+    "H0H-E2E-002": "PASS",
+    "H0H-AUTH-001": "PASS",
+    "H0H-PORT-001": "PASS",
+    "H0H-ROLL-002": "PASS",
+    "H0H-SCOPE-001": "PASS"
+  },
+  "validation": {
+    "focused_h_imp_7d": "15 passed",
+    "bridge_regression": "15 passed",
+    "controlled_execution_regressions": "56 passed",
+    "phase_h_regressions": "137 passed; phase_h_v3_contracts PASS",
+    "v2_mode_c_regressions": "35 passed",
+    "startup_mcp_regressions": "64 passed",
+    "test_profile_validation": "23 passed",
+    "default_ci": "1232 passed, 2 skipped, 9 deselected",
+    "compileall": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "scope": {
+    "production_files_changed": 0,
+    "source_activation": false,
+    "v3_execution": "inactive",
+    "phase_h_active_source_count": 0,
+    "new_mcp_tool": false,
+    "persistent_phase_h_cache": false
+  }
+}
