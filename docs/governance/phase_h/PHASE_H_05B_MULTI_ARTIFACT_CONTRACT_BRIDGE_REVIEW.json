@@ -1,10 +1,10 @@
 {
   "schema_version": "phase_h_05b_multi_artifact_contract_bridge_review.v1",
-  "status": "OWNER_REVIEW_CANDIDATE",
+  "status": "OWNER_ACCEPTED_COMPLETED",
   "baseline": "1b4afd89d6dcf43634cb713d4697892c3e12a943",
   "branch": "phase-h/bridge-05b-multi-artifact-contract",
   "classification": "INTERNAL_STABLE_IMPLEMENTATION_CONTRACT",
-  "h_imp_7d_status": "BLOCKED_PENDING_BRIDGE_ACCEPTANCE",
+  "h_imp_7d_status": "BLOCKED_PENDING_BRIDGE_MERGE",
   "network": false,
   "runtime_authority": {"preferred_request_version": "v2", "v3_execution": "inactive", "phase_h_active_source_count": 0, "mcp_tool_count": 6},
   "schema_hashes": {
