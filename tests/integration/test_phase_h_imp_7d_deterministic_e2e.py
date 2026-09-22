@@ -18,8 +18,10 @@ from scripts.m8r_05b_03.dispatch import OrchestrationError
 from scripts.m8r_05b_03.receipt import finalize_consumption_and_write_receipt
 from scripts.m8r_05b_03.preflight import validate_preflight_hashes
 from server.services import unified_mode_c
+from server.services.unified_local_service import describe_capabilities
 from server.services.unified_mode_a import validate_mode_a_request
 from server.services.unified_mode_b2 import ModeB2Error, build_mode_b2_authorization
+from server.unified_mcp.tool_contracts import PREFERRED_REQUEST_SCHEMA_VERSION, build_tool_specs
 from server.services.phase_h_corporate_action_adapters import assemble_corporate_action_context, normalize_tpex_exright_daily
 from server.services.phase_h_discontinuity_safety import derive_discontinuity_safety
 from server.services.phase_h_trading_status_adapters import normalize_tpex_attention
@@ -211,7 +213,19 @@ def test_s11_fresh_root_is_safe_without_optional_providers_and_manual_routes_sta
     empty_root.mkdir()
     assert not list(empty_root.iterdir())
     # Fixture F3 has no provider, cache, or source-route dependency.
-    assert fixture_f3(fixture_request())["target_results"][0]["resolution_status"] == "resolved"
+    v3_validation = fixture_f3(fixture_request())
+    assert v3_validation["target_results"][0]["resolution_status"] == "resolved"
+    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v2"
+    described = describe_capabilities()
+    assert described["preferred_request_schema_version"] == "unified_market_evidence_request.v2"
+    assert described["emitted_result_schema_version"] == "unified_market_evidence_result.v2"
+    v3_catalog = json.loads((ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json").read_text(encoding="utf-8"))
+    v3_routing = json.loads((ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json").read_text(encoding="utf-8"))
+    assert v3_catalog["phase_h_contract"]["active_phase_h_source_count"] == 0
+    assert v3_routing["phase_h_source_authority"]["active_source_count"] == 0
+    assert all(record["activation_state"] != "active" for record in v3_routing["phase_h_source_authority"]["records"])
+    with pytest.raises(ModeB2Error, match="phase_h_v3_execution_inactive"):
+        build_mode_b2_authorization({"request": fixture_request(), "confirm_authorization": True})
     authority = json.loads((ROOT / "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.json").read_text(encoding="utf-8"))
     by_id = {item["source_id"]: item for item in authority["sources"]}
     assert by_id["H2-TWSE-EXRIGHT-FINAL-TWT49U"]["source_role"] == "optional_licensed_provider"
@@ -245,6 +259,9 @@ def test_s12_rollback_model_keeps_v1_v2_and_materialized_v3_immutable(tmp_path: 
     assert before == {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in historical}
     assert v3_before == {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in v3_paths}
     assert not (execution["package"] / "ai_context/unified_market_evidence_result.v2.json").exists()
+    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v2"
+    with pytest.raises(ModeB2Error, match="phase_h_v3_execution_inactive"):
+        build_mode_b2_authorization({"request": fixture_request(), "confirm_authorization": True})
 
 
 def test_s13_startup_and_fixture_execution_have_zero_external_transport_calls(monkeypatch, tmp_path: Path):
@@ -260,10 +277,13 @@ def test_s13_startup_and_fixture_execution_have_zero_external_transport_calls(mo
     assert fixture_f3(fixture_request())["target_results"][0]["resolution_status"] == "resolved"
     from server import mcp_server
     from server.main import app
-    tools = asyncio.run(mcp_server.list_tools())
-    phase_h_readonly_names = {"read_latest_market_snapshot", "read_watchlist_observations", "read_ai_context_pack", "read_chatgpt_briefing", "read_m3g_caveats_register", "read_source_contract_baseline"}
-    assert len(phase_h_readonly_names) == 6
-    assert phase_h_readonly_names.issubset({tool.name for tool in tools})
+    legacy_tools = asyncio.run(mcp_server.list_tools())
+    assert legacy_tools
+    assert [tool.name for tool in build_tool_specs()] == [
+        "market_describe_capabilities", "market_validate_request", "market_preview_request",
+        "market_read_result", "market_export_ai_handoff", "market_fetch_evidence",
+    ]
+    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v2"
     client = TestClient(app)
     assert client.get("/api/health").status_code == 200
     assert client.get("/workbench/").status_code == 200
