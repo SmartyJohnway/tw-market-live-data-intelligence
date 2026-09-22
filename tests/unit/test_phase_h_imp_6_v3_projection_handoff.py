@@ -34,6 +34,24 @@ def _replace_citations(value: object, citation_id: str) -> object:
     return value
 
 
+def _attempt_metadata(source: dict, *, status: str, citation_ids: list[str], failure_code: str | None = None,
+                      authority_marker: str | None = None) -> dict:
+    value = {
+        "source_family": source["source_family"],
+        "source_contract_id": source["source_contract_id"],
+        "source_role": source["source_role"],
+        "activation_state": source["activation_state"],
+        "license_authority": source["license_authority"],
+        "provider_availability": "not_required",
+        "status": status,
+        "failure_code": failure_code,
+        "citation_ids": citation_ids,
+    }
+    if authority_marker is not None:
+        value["authority_marker"] = authority_marker
+    return value
+
+
 def _inputs(*, include_h1: bool = True, include_h2: bool = True, include_h3: bool = True) -> ProjectionInputs:
     identity = {
         "canonical_target_id": "TWSE:2330", "isin": "TW0002330008", "market": "TWSE",
@@ -70,6 +88,27 @@ def _inputs(*, include_h1: bool = True, include_h2: bool = True, include_h3: boo
                           "evidence_contract": h4["schema_version"]})
     request = deepcopy(EXAMPLES["request_v3"])
     request["execution_mode"] = "preview"
+    phase_h_source_attempts: dict[str, list[dict]] = {}
+    for relative_path, artifact in artifacts.items():
+        if artifact["schema_version"] == "trading_status_context_evidence.v1":
+            phase_h_source_attempts[relative_path] = [_attempt_metadata(
+                artifact["source"], status=artifact["status"], citation_ids=artifact["citation_ids"],
+            )]
+        elif artifact["schema_version"] == "corporate_action_context_evidence.v1":
+            phase_h_source_attempts[relative_path] = [_attempt_metadata(
+                source, status=artifact["status"], citation_ids=artifact["citation_ids"],
+            ) for source in artifact["sources"]]
+        elif artifact["schema_version"] == "recent_performance_evidence.v1":
+            governed_end = artifact["governed_end_observation"]
+            phase_h_source_attempts[relative_path] = [_attempt_metadata(
+                {
+                    "source_family": governed_end["source_family"],
+                    "source_contract_id": governed_end["source_contract_id"],
+                    "source_role": "research_only", "activation_state": "inactive", "license_authority": None,
+                },
+                status=artifact["coverage_status"], citation_ids=artifact["citation_ids"],
+                authority_marker=FIXTURE_KIND,
+            )]
     return ProjectionInputs(
         request=request,
         f3_validation={"target_results": [{"target_index": 0, "original_input": "2330",
@@ -93,6 +132,7 @@ def _inputs(*, include_h1: bool = True, include_h2: bool = True, include_h3: boo
                 "operation_evidence_entries": entries, "artifact_inventory": inventory},
         artifact_root="NON_AUTHORITATIVE_TEST_ONLY", calculated_at="2026-09-22T00:00:00Z",
         calculated_at_source="fixture", evidence_artifacts=artifacts,
+        phase_h_source_attempts=phase_h_source_attempts,
     )
 
 
@@ -103,6 +143,84 @@ def _build_package(inputs: ProjectionInputs) -> tuple[dict, dict]:
         "ai_context/unified_market_evidence_result.v3.json",
         output_schema_version="unified_market_evidence_audit_package.v3")
     return result, audit
+
+
+def _add_legacy_data_need(inputs: ProjectionInputs, data_need: str, priority: str = "required") -> None:
+    inputs.request["data_needs"].append({"type": data_need, "priority": priority, "parameters": {}})
+
+
+def _add_second_target(inputs: ProjectionInputs) -> None:
+    """Add a controlled second target with distinct typed artifacts and citations."""
+    identity = {
+        "canonical_target_id": "TWSE:2317", "isin": "TW0002317008", "market": "TWSE",
+        "security_code": "2317", "security_name_zh": "鴻海", "security_name_en": "Hon Hai",
+        "instrument_family": "company_share", "instrument_type": "common_share",
+    }
+    inputs.request["targets"].append({
+        "input": "2317", "market_hint": "TWSE", "resolution_requirement": "exact",
+        "client_target_reference": "fixture-2317",
+    })
+    inputs.f3_validation["target_results"].append({
+        "target_index": 1, "original_input": "2317", "resolution_status": "resolved",
+        "canonical_identity": identity,
+    })
+    type_paths = (
+        ("trading_status_context", "op-h1-2317", "evidence/phase_h/h1/TWSE_2317.json"),
+        ("corporate_action_context", "op-h2-2317", "evidence/phase_h/h2/TWSE_2317.json"),
+        ("recent_performance", "op-h3-2317", "evidence/phase_h/h3/TWSE_2317.json"),
+    )
+    for need, operation_id, new_path in type_paths:
+        source_path = next(path for path, artifact in inputs.evidence_artifacts.items()
+                           if artifact.get("schema_version") == {
+                               "trading_status_context": "trading_status_context_evidence.v1",
+                               "corporate_action_context": "corporate_action_context_evidence.v1",
+                               "recent_performance": "recent_performance_evidence.v1",
+                           }[need])
+        citation_id = _build_citation_id(operation_id, new_path)
+        artifact = _replace_citations(deepcopy(inputs.evidence_artifacts[source_path]), citation_id)
+        artifact["target"] = {
+            "canonical_target_id": identity["canonical_target_id"], "market": identity["market"],
+            "security_code": identity["security_code"],
+        }
+        inputs.evidence_artifacts[new_path] = artifact
+        reference = {"relative_path": new_path, "sha256": "a" * 64,
+                     "schema_version": artifact["schema_version"], "byte_size": 1}
+        inputs.bundle["artifact_inventory"].append({**reference, "evidence_contract": artifact["schema_version"]})
+        inputs.plan["operations"].append({
+            "operation_id": operation_id, "capability_id": need,
+            "executor_id": "phase_h_fixture_projection_executor", "market": "TWSE",
+            "canonical_target_ids": ["TWSE:2317"], "expected_evidence_contract": artifact["schema_version"],
+        })
+        inputs.bundle["operation_evidence_entries"].append({
+            "operation_id": operation_id, "status": "succeeded", "result_item_count": 1,
+            "artifacts": [reference], "warnings": [],
+        })
+        if need == "recent_performance":
+            governed_end = artifact["governed_end_observation"]
+            inputs.phase_h_source_attempts[new_path] = [_attempt_metadata(
+                {"source_family": governed_end["source_family"], "source_contract_id": governed_end["source_contract_id"],
+                 "source_role": "research_only", "activation_state": "inactive", "license_authority": None},
+                status=artifact["coverage_status"], citation_ids=artifact["citation_ids"], authority_marker=FIXTURE_KIND,
+            )]
+        else:
+            sources = artifact["sources"] if "sources" in artifact else [artifact["source"]]
+            inputs.phase_h_source_attempts[new_path] = [_attempt_metadata(
+                source, status=artifact["status"], citation_ids=artifact["citation_ids"],
+            ) for source in sources]
+    h4_source_path = next(path for path, artifact in inputs.evidence_artifacts.items()
+                          if artifact.get("schema_version") == "discontinuity_safety_evidence.v1")
+    h4_path = "evidence/phase_h/h4/TWSE_2317.json"
+    h4 = _replace_citations(deepcopy(inputs.evidence_artifacts[h4_source_path]), _build_citation_id("op-h2-2317", "evidence/phase_h/h2/TWSE_2317.json"))
+    h4["target"] = {
+        "canonical_target_id": identity["canonical_target_id"], "market": identity["market"],
+        "security_code": identity["security_code"],
+    }
+    inputs.evidence_artifacts[h4_path] = h4
+    inputs.bundle["artifact_inventory"].append({
+        "relative_path": h4_path, "sha256": "b" * 64, "schema_version": h4["schema_version"],
+        "byte_size": 1, "evidence_contract": h4["schema_version"],
+    })
+    inputs.bundle["total_item_count"] = len(inputs.bundle["artifact_inventory"])
 
 
 def test_h0h_out_001_to_004_and_time_001_v3_typed_projection_and_handoff():
@@ -176,3 +294,164 @@ def test_mode_c_v3_output_is_explicit_and_uses_frozen_paths():
     )
     with pytest.raises(ModeCError, match="unsupported_output_schema_version"):
         build_mode_c_result_package({"control_package_id": "unused"}, output_schema_version="v3")
+
+
+@pytest.mark.parametrize("data_need", ["current_observation", "official_eod_reference", "material_disclosures"])
+def test_v3_required_inherited_need_without_binding_is_truthful_missing(data_need: str):
+    inputs = _inputs()
+    _add_legacy_data_need(inputs, data_need)
+    result = build_result(inputs, output_schema_version="unified_market_evidence_result.v3")
+    errors = list(Draft202012Validator(json.loads(
+        (ROOT / "schemas/unified_market_evidence_result.v3.schema.json").read_text(encoding="utf-8")
+    )).iter_errors(result))
+    assert not errors
+    assert data_need in result["targets"][0]["coverage"]["missing_needs"]
+    assert any(item["reason"] == f"required_evidence_missing:{data_need}" for item in result["partial_failures"])
+    assert result["status"] != "full_success"
+
+
+def test_v3_optional_inherited_need_without_binding_is_truthful_missing():
+    inputs = _inputs()
+    _add_legacy_data_need(inputs, "session_status", priority="optional")
+    result = build_result(inputs, output_schema_version="unified_market_evidence_result.v3")
+    assert "session_status" in result["targets"][0]["coverage"]["missing_needs"]
+    assert result["status"] != "full_success"
+
+
+def test_v3_projects_successful_inherited_v2_compatible_evidence():
+    inputs = _inputs()
+    _add_legacy_data_need(inputs, "current_observation")
+    path = "evidence/legacy/current/TWSE_2330.json"
+    citation_id = _build_citation_id("op-current", path)
+    artifact = {"schema_version": "m8r_06_03_operation_evidence.v1", "items": [{"price": 100, "timing_class": "delayed"}]}
+    reference = {"relative_path": path, "sha256": "c" * 64, "schema_version": artifact["schema_version"], "byte_size": 1}
+    inputs.evidence_artifacts[path] = artifact
+    inputs.bundle["artifact_inventory"].append({**reference, "evidence_contract": artifact["schema_version"]})
+    inputs.plan["operations"].append({"operation_id": "op-current", "capability_id": "current_observation",
+        "executor_id": "legacy_fixture", "market": "TWSE", "canonical_target_ids": ["TWSE:2330"]})
+    inputs.bundle["operation_evidence_entries"].append({"operation_id": "op-current", "status": "succeeded",
+        "result_item_count": 1, "artifacts": [reference], "warnings": []})
+    result = build_result(inputs, output_schema_version="unified_market_evidence_result.v3")
+    assert result["targets"][0]["evidence"]["current_observation"]["status"] == "available"
+    assert citation_id in {item["citation_id"] for item in result["targets"][0]["citations"]}
+
+
+def test_v3_multi_target_typed_evidence_and_citations_are_isolated_and_deterministic():
+    inputs = _inputs()
+    _add_second_target(inputs)
+    result, audit = _build_package(inputs)
+    first, second = result["targets"]
+    assert first["resolution"]["canonical_target_id"] == "TWSE:2330"
+    assert second["resolution"]["canonical_target_id"] == "TWSE:2317"
+    assert first["evidence"]["trading_status_context"]["target"]["canonical_target_id"] == "TWSE:2330"
+    assert second["evidence"]["trading_status_context"]["target"]["canonical_target_id"] == "TWSE:2317"
+    assert not {item["citation_id"] for item in first["citations"]} & {item["citation_id"] for item in second["citations"]}
+    assert {item["canonical_target_id"] for item in audit["phase_h_governance"]["source_attempts"]} == {"TWSE:2330", "TWSE:2317"}
+    assert {item["canonical_target_id"] for item in audit["phase_h_governance"]["h4_derivations"]} == {"TWSE:2330", "TWSE:2317"}
+    reversed_inputs = deepcopy(inputs)
+    reversed_inputs.evidence_artifacts = dict(reversed(list(reversed_inputs.evidence_artifacts.items())))
+    assert _build_package(reversed_inputs) == (result, audit)
+
+
+def test_wrong_target_typed_artifact_cannot_project_or_lend_citations():
+    inputs = _inputs()
+    artifact = deepcopy(inputs.evidence_artifacts["evidence/phase_h/h1/TWSE_2330.json"])
+    artifact["target"]["canonical_target_id"] = "TWSE:2317"
+    path = "evidence/phase_h/h1/wrong-target.json"
+    inputs.evidence_artifacts[path] = artifact
+    reference = {"relative_path": path, "sha256": "d" * 64, "schema_version": artifact["schema_version"], "byte_size": 1}
+    inputs.bundle["artifact_inventory"].append({**reference, "evidence_contract": artifact["schema_version"]})
+    inputs.bundle["operation_evidence_entries"][0]["artifacts"].append(reference)
+    result = build_result(inputs, output_schema_version="unified_market_evidence_result.v3")
+    assert result["targets"][0]["evidence"]["trading_status_context"]["target"]["canonical_target_id"] == "TWSE:2330"
+
+
+def test_duplicate_same_target_typed_artifact_fails_closed():
+    inputs = _inputs()
+    path = "evidence/phase_h/h1/duplicate.json"
+    artifact = deepcopy(inputs.evidence_artifacts["evidence/phase_h/h1/TWSE_2330.json"])
+    inputs.evidence_artifacts[path] = artifact
+    reference = {"relative_path": path, "sha256": "e" * 64, "schema_version": artifact["schema_version"], "byte_size": 1}
+    inputs.bundle["artifact_inventory"].append({**reference, "evidence_contract": artifact["schema_version"]})
+    inputs.bundle["operation_evidence_entries"][0]["artifacts"].append(reference)
+    with pytest.raises(ProjectionError, match="duplicate_phase_h_typed_artifact"):
+        build_result(inputs, output_schema_version="unified_market_evidence_result.v3")
+
+
+def test_h2_audit_uses_each_source_attempt_not_aggregate_status():
+    inputs = _inputs()
+    path = "evidence/phase_h/h2/TWSE_2330.json"
+    artifact = inputs.evidence_artifacts[path]
+    second_source = dict(artifact["sources"][0], source_family="H2_TEST_SOURCE_B", source_contract_id="h2-test-b")
+    artifact["sources"].append(second_source)
+    first_source = artifact["sources"][0]
+    inputs.phase_h_source_attempts[path] = [
+        _attempt_metadata(first_source, status="available", citation_ids=artifact["citation_ids"]),
+        _attempt_metadata(second_source, status="source_failed", citation_ids=artifact["citation_ids"], failure_code="source_failed:test"),
+    ]
+    _, audit = _build_package(inputs)
+    h2_attempts = [item for item in audit["phase_h_governance"]["source_attempts"] if item["source_contract_id"] in {first_source["source_contract_id"], "h2-test-b"}]
+    assert {(item["source_contract_id"], item["outcome"], item["failure_code"]) for item in h2_attempts} == {
+        (first_source["source_contract_id"], "succeeded", None), ("h2-test-b", "failed", "source_failed:test"),
+    }
+
+
+def test_audit_preserves_supplied_source_role_activation_and_provider_independently():
+    inputs = _inputs()
+    path = "evidence/phase_h/h2/TWSE_2330.json"
+    artifact = inputs.evidence_artifacts[path]
+    optional_source = dict(artifact["sources"][0], source_family="H2_OPTIONAL", source_contract_id="h2-optional",
+                           source_role="optional_licensed_provider", activation_state="inactive")
+    artifact["sources"].append(optional_source)
+    inputs.phase_h_source_attempts[path] = [
+        _attempt_metadata(artifact["sources"][0], status="available", citation_ids=artifact["citation_ids"]),
+        {**_attempt_metadata(optional_source, status="available", citation_ids=artifact["citation_ids"]),
+         "provider_availability": "available"},
+    ]
+    _, audit = _build_package(inputs)
+    attempts = {item["source_contract_id"]: item for item in audit["phase_h_governance"]["source_attempts"]}
+    assert attempts[artifact["sources"][0]["source_contract_id"]]["source_role"] == "default_candidate"
+    assert attempts[artifact["sources"][0]["source_contract_id"]]["activation_state"] == "eligible"
+    assert attempts["h2-optional"]["source_role"] == "optional_licensed_provider"
+    assert attempts["h2-optional"]["activation_state"] == "inactive"
+    assert attempts["h2-optional"]["provider_availability"] == "available"
+
+
+def test_audit_never_infers_provider_availability_from_source_role():
+    inputs = _inputs()
+    path = "evidence/phase_h/h1/TWSE_2330.json"
+    del inputs.phase_h_source_attempts[path][0]["provider_availability"]
+    result = build_result(inputs, output_schema_version="unified_market_evidence_result.v3")
+    citations = build_citation_index(build_lineage_map(inputs), inputs.bundle, result["schema_version"])
+    with pytest.raises(ProjectionError, match="phase_h_source_governance_unresolved"):
+        build_audit_package(result, inputs, citations, "ai_context/unified_market_evidence_result.v3.json",
+                            output_schema_version="unified_market_evidence_audit_package.v3")
+
+
+def test_h3_audit_requires_explicit_test_only_governance_metadata():
+    inputs = _inputs()
+    path = "evidence/phase_h/h3/TWSE_2330.json"
+    del inputs.phase_h_source_attempts[path]
+    result = build_result(inputs, output_schema_version="unified_market_evidence_result.v3")
+    citations = build_citation_index(build_lineage_map(inputs), inputs.bundle, result["schema_version"])
+    with pytest.raises(ProjectionError, match="phase_h_source_governance_unresolved"):
+        build_audit_package(result, inputs, citations, "ai_context/unified_market_evidence_result.v3.json",
+                            output_schema_version="unified_market_evidence_audit_package.v3")
+
+
+def test_time_lineage_remains_distinct_in_typed_result_and_audit():
+    inputs = _inputs()
+    h1 = inputs.evidence_artifacts["evidence/phase_h/h1/TWSE_2330.json"]
+    h1["items"][0].update({"published_at": "2026-09-20T01:02:03Z", "effective_from": "2026-09-20", "effective_to": "2026-09-25"})
+    h2 = inputs.evidence_artifacts["evidence/phase_h/h2/TWSE_2330.json"]
+    h2["events"][0]["effective_date"] = "2026-09-21"
+    result, audit = _build_package(inputs)
+    evidence = result["targets"][0]["evidence"]
+    assert evidence["trading_status_context"]["items"][0]["published_at"] == "2026-09-20T01:02:03Z"
+    assert evidence["trading_status_context"]["items"][0]["effective_from"] == "2026-09-20"
+    assert evidence["corporate_action_context"]["events"][0]["effective_date"] == "2026-09-21"
+    assert evidence["recent_performance"]["baselines"][0]["start_observation_date"] != evidence["recent_performance"]["baselines"][0]["end_observation_date"]
+    assert audit["phase_h_governance"]["h4_derivations"][0]["comparison_window"] == {
+        "start_observation_date": evidence["discontinuity_safety"]["comparison_window"]["start_observation_date"],
+        "end_observation_date": evidence["discontinuity_safety"]["comparison_window"]["end_observation_date"],
+    }

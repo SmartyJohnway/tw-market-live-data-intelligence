@@ -53,6 +53,55 @@ _PHASE_H_CAPABILITIES = {
 }
 
 
+_GOVERNANCE_SOURCE_FIELDS = (
+    "source_family", "source_contract_id", "source_role", "activation_state", "license_authority",
+)
+_ATTEMPT_STATUSES = {"available", "complete", "partial", "no_evidence_in_covered_scope", "source_failed", "binding_failed"}
+
+
+def _phase_h_attempt_metadata(inputs: ProjectionInputs, relative_path: str) -> list[dict]:
+    """Return only caller-supplied, immutable-package-bound attempt metadata."""
+    attempts = inputs.phase_h_source_attempts.get(relative_path)
+    if not isinstance(attempts, list) or not attempts or any(not isinstance(item, dict) for item in attempts):
+        raise ProjectionError("phase_h_source_governance_unresolved")
+    return attempts
+
+
+def _audit_attempt(*, source: dict, metadata: dict, artifact: dict, target: dict) -> dict:
+    """Make one Audit V3 attempt without deriving governance from role/defaults."""
+    for field in _GOVERNANCE_SOURCE_FIELDS:
+        if field not in source or (field in metadata and metadata[field] != source[field]):
+            raise ProjectionError("phase_h_source_governance_mismatch")
+    provider_availability = metadata.get("provider_availability")
+    status = metadata.get("status")
+    if provider_availability not in {"available", "unavailable", "not_required", "unknown"} or status not in _ATTEMPT_STATUSES:
+        raise ProjectionError("phase_h_source_governance_unresolved")
+    citation_ids = metadata.get("citation_ids", [])
+    artifact_citations = artifact.get("citation_ids", [])
+    if (not isinstance(citation_ids, list) or not all(isinstance(item, str) for item in citation_ids)
+            or not set(citation_ids).issubset(set(artifact_citations if isinstance(artifact_citations, list) else []))):
+        raise ProjectionError("phase_h_source_governance_unresolved")
+    failed = status in {"source_failed", "binding_failed"}
+    failure_code = metadata.get("failure_code")
+    if (failed and not isinstance(failure_code, str)) or (not failed and failure_code is not None):
+        raise ProjectionError("phase_h_source_governance_unresolved")
+    coverage = artifact.get("coverage")
+    return {
+        "source_family": source["source_family"],
+        "source_contract_id": source["source_contract_id"],
+        "source_role": source["source_role"],
+        "activation_state": source["activation_state"],
+        "provider_availability": provider_availability,
+        "license_authority": source["license_authority"],
+        "canonical_target_id": target.get("canonical_target_id", ""),
+        "market": target.get("market", "TWSE"),
+        "requested_window": coverage.get("requested_window") if isinstance(coverage, dict) else None,
+        "coverage_result": status,
+        "outcome": "failed" if failed else "succeeded",
+        "failure_code": failure_code,
+    }
+
+
 def _phase_h_governance(inputs: ProjectionInputs) -> dict:
     """Project only verified Phase H artifacts into frozen Audit V3 fields."""
     inventory = {
@@ -80,39 +129,31 @@ def _phase_h_governance(inputs: ProjectionInputs) -> dict:
             "sha256": artifact_hash,
         })
         target = artifact.get("target") if isinstance(artifact.get("target"), dict) else {}
-        sources = artifact.get("sources") if isinstance(artifact.get("sources"), list) else [artifact.get("source")]
-        if capability_id == "recent_performance" and not any(isinstance(source, dict) for source in sources):
-            governed_end = artifact.get("governed_end_observation")
-            if isinstance(governed_end, dict):
-                sources = [{
-                    "source_family": governed_end.get("source_family", "unknown"),
-                    "source_contract_id": governed_end.get("source_contract_id", "unknown"),
-                    "source_role": "research_only",
-                    "activation_state": "inactive",
-                    "license_authority": None,
-                }]
-        for source in sources:
-            if not isinstance(source, dict) or capability_id not in {"trading_status_context", "corporate_action_context", "recent_performance"}:
-                continue
-            status = artifact.get("status", artifact.get("coverage_status", "source_failed"))
-            failure_code = None
-            caveats = artifact.get("caveats")
-            if status in {"source_failed", "binding_failed"} and isinstance(caveats, list) and caveats:
-                failure_code = str(caveats[0])
-            attempts.append({
-                "source_family": source.get("source_family", "unknown"),
-                "source_contract_id": source.get("source_contract_id", "unknown"),
-                "source_role": source.get("source_role", "research_only"),
-                "activation_state": source.get("activation_state", "inactive"),
-                "provider_availability": "unknown" if source.get("source_role") == "optional_licensed_provider" else "not_required",
-                "license_authority": source.get("license_authority"),
-                "canonical_target_id": target.get("canonical_target_id", ""),
-                "market": target.get("market", "TWSE"),
-                "requested_window": artifact.get("coverage", {}).get("requested_window") if isinstance(artifact.get("coverage"), dict) else None,
-                "coverage_result": str(status),
-                "outcome": "failed" if status in {"source_failed", "binding_failed"} else "succeeded",
-                "failure_code": failure_code,
-            })
+        if capability_id in {"trading_status_context", "corporate_action_context"}:
+            sources = artifact.get("sources") if isinstance(artifact.get("sources"), list) else [artifact.get("source")]
+            sources = [source for source in sources if isinstance(source, dict)]
+            metadata = _phase_h_attempt_metadata(inputs, relative_path)
+            source_keys = {(source.get("source_family"), source.get("source_contract_id")) for source in sources}
+            metadata_by_source = {(item.get("source_family"), item.get("source_contract_id")): item for item in metadata}
+            if not sources or len(metadata_by_source) != len(metadata) or set(metadata_by_source) != source_keys:
+                raise ProjectionError("phase_h_source_governance_unresolved")
+            for source in sources:
+                attempts.append(_audit_attempt(
+                    source=source,
+                    metadata=metadata_by_source[(source["source_family"], source["source_contract_id"])],
+                    artifact=artifact,
+                    target=target,
+                ))
+        elif capability_id == "recent_performance":
+            metadata = _phase_h_attempt_metadata(inputs, relative_path)
+            if len(metadata) != 1 or metadata[0].get("authority_marker") not in {
+                "NON_AUTHORITATIVE_TEST_ONLY", "PACKAGE_BOUND_EXECUTION_LINEAGE",
+            }:
+                raise ProjectionError("phase_h_source_governance_unresolved")
+            source = {field: metadata[0].get(field) for field in _GOVERNANCE_SOURCE_FIELDS}
+            if any(source.get(field) is None for field in ("source_family", "source_contract_id", "source_role", "activation_state")):
+                raise ProjectionError("phase_h_source_governance_unresolved")
+            attempts.append(_audit_attempt(source=source, metadata=metadata[0], artifact=artifact, target=target))
         if capability_id == "discontinuity_safety":
             comparison_window = artifact.get("comparison_window")
             if not isinstance(comparison_window, dict):

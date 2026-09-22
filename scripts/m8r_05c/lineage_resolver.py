@@ -34,6 +34,26 @@ _CAPABILITY_TO_DATA_NEED: dict[str, str] = {
     "corporate_action_context": "corporate_action_context",
 }
 
+_TARGET_SCOPED_EVIDENCE_CONTRACTS = {
+    "phase_g_material_disclosure_operation_evidence.v1",
+    "phase_g_monthly_revenue_operation_evidence.v1",
+    "trading_status_context_evidence.v1",
+    "corporate_action_context_evidence.v1",
+    "recent_performance_evidence.v1",
+}
+
+_PHASE_H_TYPED_EVIDENCE_CONTRACTS = {
+    "trading_status_context_evidence.v1",
+    "corporate_action_context_evidence.v1",
+    "recent_performance_evidence.v1",
+}
+
+_PHASE_H_TYPED_CONTRACT_BY_DATA_NEED = {
+    "trading_status_context": "trading_status_context_evidence.v1",
+    "corporate_action_context": "corporate_action_context_evidence.v1",
+    "recent_performance": "recent_performance_evidence.v1",
+}
+
 
 @dataclass
 class TargetResolution:
@@ -187,16 +207,23 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
                 rel_path = art.get("relative_path")
                 artifact_obj = artifact_objects.get(rel_path)
                 schema_version = artifact_obj.get("schema_version") if isinstance(artifact_obj, dict) else None
-                if schema_version in {
-                    "phase_g_material_disclosure_operation_evidence.v1",
-                    "phase_g_monthly_revenue_operation_evidence.v1",
-                }:
+                expected_typed_contract = _PHASE_H_TYPED_CONTRACT_BY_DATA_NEED.get(data_need)
+                if schema_version in _PHASE_H_TYPED_EVIDENCE_CONTRACTS and schema_version != expected_typed_contract:
+                    continue
+                if schema_version in _TARGET_SCOPED_EVIDENCE_CONTRACTS:
                     artifact_target = artifact_obj.get("target") or {}
                     if artifact_target.get("canonical_target_id") != canonical_target_id:
                         continue
                 target_artifacts.append(art)
                 if rel_path in artifact_objects:
                     target_artifact_objects[rel_path] = artifact_objects[rel_path]
+            typed_artifact_count = sum(
+                artifact.get("schema_version") == _PHASE_H_TYPED_CONTRACT_BY_DATA_NEED.get(data_need)
+                for artifact in target_artifact_objects.values()
+                if isinstance(artifact, dict)
+            )
+            if typed_artifact_count > 1:
+                raise ProjectionError("duplicate_phase_h_typed_artifact")
             binding = OperationBinding(
                 operation_id=operation_id,
                 capability_id=capability_id,
