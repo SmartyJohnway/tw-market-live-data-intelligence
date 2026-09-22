@@ -43,6 +43,7 @@ def test_fixture_only_source_rows_and_three_dormant_normalizers() -> None:
     disposition = normalize_tpex_disposition(ROWS["tpex_disposition"], TARGET_TPEX, observed_at=OBSERVED, citation_id="disposition-source")
     changed = normalize_twse_changed_trading(ROWS["twse_changed_trading"], TARGET_TWSE, observed_at=OBSERVED, citation_id="changed-source")
     assert attention["items"][0]["status_type"] == "attention"
+    assert attention["items"][0]["official_reason"] is None
     assert attention["items"][0]["source_native_provenance"]["TradingInformation"] == "official attention-list entry"
     assert disposition["items"][0]["status_type"] == "disposition"
     assert disposition["items"][0]["official_conditions"] == "official condition text"
@@ -92,6 +93,14 @@ def test_present_noncanonical_date_is_preserved_without_source_failure() -> None
     assert "source_snapshot_date_unresolved:Date:raw_encoding" in result["caveats"]
     assert result["items"][0]["source_record_date"] is None
     assert result["items"][0]["source_native_provenance"]["Date"] == "09/21/2026"
+
+
+@pytest.mark.parametrize("raw, diagnostic", [("2026-99-99", "calendar"), ("2026-02-30", "calendar"), ([], "type"), ({}, "type")])
+def test_malformed_canonical_date_fails_closed(raw: object, diagnostic: str) -> None:
+    rows = copy.deepcopy(ROWS["tpex_attention"])
+    rows[0]["Date"] = raw
+    with pytest.raises(H1NormalizationError, match=f"invalid_source_snapshot_date_{diagnostic}"):
+        normalize_tpex_attention(rows, TARGET_TPEX, observed_at=OBSERVED, citation_id="bad-date")
 
 
 def test_mixed_source_dates_are_not_source_failure() -> None:

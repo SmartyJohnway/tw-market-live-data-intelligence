@@ -11,6 +11,7 @@ from copy import deepcopy
 import json
 from pathlib import Path
 import re
+from datetime import date
 
 from jsonschema import Draft7Validator
 
@@ -51,7 +52,15 @@ def _validated_rows(rows: object, target: Mapping[str, str], *, market: str, req
 
 def _date_value(raw: object) -> str | None:
     """Normalize only an already canonical date; do not assume source grammar."""
-    if isinstance(raw, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", raw):
+    if raw is None or raw == "":
+        return None
+    if not isinstance(raw, str):
+        raise H1NormalizationError("source_failed:invalid_source_snapshot_date_type:Date")
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", raw):
+        try:
+            date.fromisoformat(raw)
+        except ValueError as exc:
+            raise H1NormalizationError("source_failed:invalid_source_snapshot_date_calendar:Date") from exc
         return raw
     return None
 
@@ -59,10 +68,13 @@ def _date_value(raw: object) -> str | None:
 def _snapshot_date(rows: Sequence[Mapping[str, object]], field: str) -> tuple[str | None, list[str]]:
     if not rows:
         return None, []
-    raw_values = {row[field] for row in rows}
-    if len(raw_values) != 1:
+    raw_values = [row[field] for row in rows]
+    for raw in raw_values:
+        if isinstance(raw, (list, dict)):
+            raise H1NormalizationError("source_failed:invalid_source_snapshot_date_type:Date")
+    if any(raw != raw_values[0] for raw in raw_values[1:]):
         return None, [f"source_snapshot_date_unresolved:{field}:multiple_values"]
-    normalized = _date_value(next(iter(raw_values)))
+    normalized = _date_value(raw_values[0])
     if normalized is None:
         return None, [f"source_snapshot_date_unresolved:{field}:raw_encoding"]
     return normalized, []
@@ -142,7 +154,7 @@ def normalize_tpex_attention(rows: object, target: Mapping[str, str], *, observe
     valid_rows = _validated_rows(rows, target, market="TPEX", required=required)
     snapshot_date, date_caveats = _snapshot_date(valid_rows, "Date")
     row = _bound_row(valid_rows, identifier="SecuritiesCompanyCode", target=target)
-    items = [] if row is None else [_item(status_type="attention", source_record_date=_date_value(row["Date"]), reason=row["TradingInformation"], conditions=None, measures=None, provenance={key: row[key] for key in required}, citation_id=citation_id)]
+    items = [] if row is None else [_item(status_type="attention", source_record_date=_date_value(row["Date"]), reason=None, conditions=None, measures=None, provenance={key: row[key] for key in required}, citation_id=citation_id)]
     return _result(source_id="H1-TPEX-ATTENTION-OPENAPI", target=target, observed_at=observed_at, snapshot_date=snapshot_date, covered=("attention",), items=items, citation_ids=[citation_id], caveats=date_caveats)
 
 
