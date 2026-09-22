@@ -119,8 +119,10 @@ def run(output_dir: Path) -> dict[str, Any]:
     evidence = json.loads((evidence_root / primary["relative_path"]).read_text(encoding="utf-8"))
     if evidence["target"]["canonical_target_id"] != TARGET:
         raise RuntimeError("live_target_binding_mismatch")
-    if evidence["source"]["source_id"] != production.PHASE_H_H1_SOURCE_ID:
-        raise RuntimeError("live_source_identity_mismatch")
+    if evidence["source"]["source_family"] != "TPEX_ATTENTION_OPEN_DATA":
+        raise RuntimeError("live_source_family_mismatch")
+    if evidence["source"]["source_contract_id"] != "tpex_trading_warning_information":
+        raise RuntimeError("live_source_contract_mismatch")
     if evidence["source"]["activation_state"] != "active":
         raise RuntimeError("live_source_activation_state_mismatch")
     if evidence["coverage"]["covered_status_types"] != ["attention"]:
@@ -129,6 +131,11 @@ def run(output_dir: Path) -> dict[str, Any]:
         raise RuntimeError("live_false_complete_coverage")
     if evidence["status"] != "partial":
         raise RuntimeError("live_h1_selected_slice_must_remain_partial")
+    snapshot_date = evidence["coverage"].get("source_snapshot_date")
+    if not isinstance(snapshot_date, str) or not snapshot_date:
+        raise RuntimeError("live_source_snapshot_date_unresolved")
+    if any(item.get("source_record_date") != snapshot_date for item in evidence["items"]):
+        raise RuntimeError("live_source_record_date_mismatch")
 
     report = {
         "schema_version": "phase_h_h_act_h1_bounded_live_acceptance.v1",
@@ -159,7 +166,8 @@ def run(output_dir: Path) -> dict[str, Any]:
         "evidence": {
             "schema_version": evidence["schema_version"],
             "status": evidence["status"],
-            "source_id": evidence["source"]["source_id"],
+            "source_id": production.PHASE_H_H1_SOURCE_ID,
+            "source_family": evidence["source"]["source_family"],
             "source_contract_id": evidence["source"]["source_contract_id"],
             "activation_state": evidence["source"]["activation_state"],
             "covered_status_types": evidence["coverage"]["covered_status_types"],
@@ -168,6 +176,7 @@ def run(output_dir: Path) -> dict[str, Any]:
             "source_contract_validated": evidence["coverage"]["source_contract_validated"],
             "exact_target_search_succeeded": evidence["coverage"]["exact_target_search_succeeded"],
             "matched_item_count": len(evidence["items"]),
+            "source_snapshot_date": snapshot_date,
             "observed_at": evidence["observed_at"],
         },
         "artifacts": artifacts,
