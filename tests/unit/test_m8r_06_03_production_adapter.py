@@ -28,11 +28,11 @@ def _request(capability_id: str, market: str, *, executor_id: str = "m8r_03d_wat
     }
 
 
-def test_production_metadata_materializes_legacy_and_four_research_routes():
+def test_production_metadata_materializes_legacy_research_and_selected_h1_routes():
     metadata = load_production_executor_metadata()
     registry = build_production_runtime_adapter_registry()
 
-    assert len(metadata["executors"]) == 8
+    assert len(metadata["executors"]) == 9
     assert len(production_executor_metadata_sha256()) == 64
     for capability_id, market in (
         ("current_observation", "TWSE"),
@@ -52,6 +52,62 @@ def test_production_metadata_materializes_legacy_and_four_research_routes():
         registration = registry.get_route("phase_g_official_research_executor", capability_id, market)
         assert registration is not None
         assert registration.fake_adapter is False
+    h1 = registry.get_route("phase_h_h1_tpex_attention_executor", "trading_status_context", "TPEX")
+    assert h1 is not None
+    assert h1.fake_adapter is False
+    assert h1.network_required is True
+    assert h1.batch_adapter is None
+
+
+def test_selected_h1_tpex_attention_fetches_once_and_persists_only_target_bounded_artifacts(tmp_path, monkeypatch):
+    rows = [
+        {
+            "Date": "2026-09-22",
+            "SecuritiesCompanyCode": "6488",
+            "CompanyName": "環球晶",
+            "TradingInformation": "official attention entry",
+            "ClosePrice": "100",
+            "PriceEarningRatio": "20",
+        },
+        {
+            "Date": "2026-09-22",
+            "SecuritiesCompanyCode": "9999",
+            "CompanyName": "other",
+            "TradingInformation": "must not persist",
+            "ClosePrice": "1",
+            "PriceEarningRatio": "1",
+        },
+    ]
+    calls = []
+    def fake_fetch(url, *, timeout):
+        calls.append((url, timeout))
+        return json.dumps(rows, ensure_ascii=False).encode("utf-8")
+
+    monkeypatch.setattr("scripts.m8r_06_03_production_adapter._fetch_official_payload", fake_fetch)
+    request = _request(
+        "trading_status_context", "TPEX",
+        executor_id="phase_h_h1_tpex_attention_executor", code="6488"
+    )
+    result = production_operation_adapter(
+        request, DispatchRuntimeContext(str(tmp_path), "execute-approved")
+    )
+
+    assert result["schema_version"] == "unified_market_evidence_operation_result.v2"
+    assert result["status"] == "succeeded"
+    assert calls == [("https://www.tpex.org.tw/openapi/v1/tpex_trading_warning_information", 15)]
+    assert {item["artifact_role"] for item in result["evidence_artifacts"]} == {
+        "primary_evidence", "supporting_governance"
+    }
+    primary = next(item for item in result["evidence_artifacts"] if item["artifact_role"] == "primary_evidence")
+    evidence = json.loads((tmp_path / primary["relative_path"]).read_text(encoding="utf-8"))
+    assert evidence["target"]["canonical_target_id"] == "TPEX:6488"
+    assert evidence["source"]["activation_state"] == "active"
+    assert evidence["status"] == "partial"
+    assert evidence["coverage"]["covered_status_types"] == ["attention"]
+    assert set(evidence["coverage"]["uncovered_status_types"]) == {
+        "changed_trading_method", "disposition", "resumption", "suspension"
+    }
+    assert "must not persist" not in json.dumps(evidence, ensure_ascii=False)
 
 
 def test_current_observation_adapter_uses_normalized_stub_and_writes_contained_artifact(tmp_path, monkeypatch):
