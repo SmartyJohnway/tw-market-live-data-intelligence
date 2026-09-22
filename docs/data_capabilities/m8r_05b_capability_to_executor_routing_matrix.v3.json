@@ -369,9 +369,8 @@
     },
     {
       "capability_id": "trading_status_context",
-      "capability_status_source": "catalog v3 support_status=contract_supported; runtime inactive",
+      "capability_status_source": "catalog v3 support_status=runtime_executable; H-ACT-H1 selected TPEx attention route",
       "supported_markets": [
-        "TWSE",
         "TPEX"
       ],
       "supported_security_types": [],
@@ -383,28 +382,30 @@
       ],
       "target_required": true,
       "time_scope_required": false,
-      "runtime_executable": false,
+      "runtime_executable": true,
       "provisional": false,
-      "candidate_executor_ids": [],
-      "selected_executor_id": null,
-      "routing_status": "plan_only",
+      "candidate_executor_ids": [
+        "phase_h_h1_tpex_attention_executor"
+      ],
+      "selected_executor_id": "phase_h_h1_tpex_attention_executor",
+      "routing_status": "resolved",
       "batching_scope": "none",
       "approval_required": true,
-      "network_required": false,
-      "estimated_operation_rule": "contract-only; no executor invocation",
+      "network_required": true,
+      "estimated_operation_rule": "one logical operation and one bounded official TPEx OpenAPI request per exact approved target",
       "parameter_mapping": {},
       "output_evidence_contract": "trading_status_context_evidence.v1",
       "known_limitations": [
-        "Phase H source adapters and executor registration are not authorized by H0-G"
+        "only TPEx attention is active; disposition, suspension/resumption and changed-trading routes remain uncovered",
+        "complete H1 no-status claims are forbidden while uncovered subtypes remain"
       ],
       "evidence_paths": [
         "docs/governance/phase_h/Phase_H_H1_Trading_Status_Context_Contract_FROZEN.md"
       ],
       "capability_requires_execution_approval": true,
       "package_approval_policy": "strictest_operation_controls_package",
-      "blocking_reasons": [
-        "Phase H source adapters and executor registration are not authorized by H0-G"
-      ]
+      "blocking_reasons": [],
+      "source_compatibility_key": "H1-TPEX-ATTENTION-OPENAPI"
     },
     {
       "capability_id": "corporate_action_context",
@@ -455,7 +456,7 @@
   },
   "activation_status": "inactive_phase_h_h0_g_contract_only",
   "phase_h_source_authority": {
-    "active_source_count": 0,
+    "active_source_count": 1,
     "records": [
       {
         "source_id": "H1-TWSE-ATTENTION-OPENAPI",
@@ -492,10 +493,10 @@
       {
         "source_id": "H1-TPEX-ATTENTION-OPENAPI",
         "market": "TPEX",
-        "source_contract": "official_openapi",
+        "source_contract": "tpex_trading_warning_information",
         "source_role": "default_candidate",
-        "activation_state": "eligible",
-        "runtime_executable": false
+        "activation_state": "active",
+        "runtime_executable": true
       },
       {
         "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
