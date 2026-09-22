@@ -1,0 +1,104 @@
+{
+  "schema_version": "phase_h_h_imp_3_acceptance_manifest.v1",
+  "status": "OWNER_ACCEPTED_COMPLETED",
+  "acceptance_date": "2026-09-22",
+  "repository_baseline": "ec7258865acc1d8b3188a90eda4a89082970e2c6",
+  "reviewed_implementation_head": "204d32b268b222fb744e05849ba31f66abb3fa99",
+  "branch": "phase-h/h-imp-3-h2-dormant-adapters",
+  "tranche": "H-IMP-3",
+  "accepted_amendments": ["A1", "A2", "A3"],
+  "implementation_blockers": 0,
+  "component": {
+    "name": "phase_h_corporate_action_adapters",
+    "component_mode": "dormant_zero_network_source_normalizers",
+    "runtime_wiring": "none",
+    "production_executor_registration": "none",
+    "network_capability": "none",
+    "source_activation": "none",
+    "implemented_dormant_normalization_slices": [
+      "H2-TPEX-EXRIGHT-PRE-OPENAPI",
+      "H2-TPEX-EXRIGHT-FINAL-OPENAPI",
+      "H2-TWSE-EXRIGHT-PRE-OPENAPI"
+    ]
+  },
+  "accepted_semantics": [
+    "preannouncement_final_stage_separation",
+    "exact_market_security_code_binding",
+    "name_never_binds",
+    "missing_vs_explicit_null_separation",
+    "blank_zero_not_announced_not_applicable_unavailable_distinction",
+    "deterministic_event_type_classification",
+    "ambiguous_event_type_fail_closed",
+    "full_h2_declared_scope_preserved",
+    "truthful_partial_coverage",
+    "unsupported_subtypes_remain_uncovered",
+    "officially_linked_revision_preserved",
+    "unproven_revision_remains_unresolved",
+    "source_contract_drift_fail_closed",
+    "source_result_citation_provenance",
+    "no_target_source_slice_preserves_citation",
+    "h2_to_h4_deterministic_safety",
+    "future_preannouncement_not_historical_discontinuity",
+    "in_window_scheduled_event_blocks_interpretation",
+    "deterministic_repeatability",
+    "zero_network_operation"
+  ],
+  "not_established": [
+    "H2 route activation",
+    "H2 production executor",
+    "H2 production registry registration",
+    "bounded_live_H2",
+    "TWT49U licensed integration",
+    "capital_reduction automation",
+    "par_value_split_consolidation source resolution",
+    "Result V3 projection",
+    "Audit V3 projection",
+    "preferred V3 promotion",
+    "production release",
+    "H-IMP-2",
+    "H3-R"
+  ],
+  "acceptance_requirements": {
+    "H0H-H2-001": "PASS",
+    "H0H-H2-002": "PASS",
+    "H0H-H2-003": "PASS",
+    "H0H-H2-004": "PASS",
+    "H0H-H2-005": "PASS",
+    "H0H-H2-006": "PASS",
+    "H0H-H2-007": "PASS",
+    "H0H-DRIFT-H2": "PASS"
+  },
+  "acceptance_notes": {
+    "H0H-H2-007": "Exact security-code mismatch never binds and never attaches an event. For full-table official sources, exact-target absence is represented as no_evidence_in_covered_scope for that source slice; wrong-market and ambiguous exact-target binding remain fail-closed binding failures."
+  },
+  "runtime_authority": {
+    "preferred_request_schema_version": "unified_market_evidence_request.v2",
+    "v3_execution_authority": "inactive",
+    "result_production_authority": "unified_market_evidence_result.v2",
+    "audit_production_authority": "V2",
+    "local_service_contract_version": "unified_market_evidence_local_service.v2",
+    "mcp_adapter_version": "unified_market_evidence_mcp_adapter.v2",
+    "mcp_tool_count": 6,
+    "phase_h_active_source_count": 0
+  },
+  "implementation_files": {
+    "config/phase_h_h2_dormant_source_descriptors.json": {"sha256": "7a021364a3c17840683f24314802b58b511348846786dae75f2f9237006b5188", "bytes": 2372},
+    "config/test_execution_profiles.json": {"sha256": "cb4deab6f7fdf3290ecacbb9d6ae625834b5e3ee5462243d2277f3d8a7673d3d", "bytes": 23461},
+    "server/services/phase_h_corporate_action_adapters.py": {"sha256": "11b789c742091e11e3e24ceca0a23d12710fa7b00d513d9bd96599ba695688b9", "bytes": 12829},
+    "tests/fixtures/phase_h_h2_adapters/source_rows.json": {"sha256": "6aa1d006d6c608f118cf29c4fed711e06d50bf2944e9ef5db7cae63e0a22b965", "bytes": 778},
+    "tests/unit/test_phase_h_imp_3_h2_dormant_adapters.py": {"sha256": "bb8c7668c71c1b66f91ff65eca9f8a2546da474262fb5425276a9467fd869a33", "bytes": 18538}
+  },
+  "h_imp_1_integrity": {
+    "server/services/phase_h_discontinuity_safety.py": {"sha256": "91163c3f1988c75c5f4b413d109e19d646b5ad9bfcb40e96a485a356f9180727", "bytes": 10437}
+  },
+  "validation": {
+    "h0_g_validator": "PASS",
+    "focused_h_imp_3": "25 passed",
+    "h_imp_0_h_imp_1_regressions": "31 passed",
+    "default_ci": "1137 passed, 2 skipped, 9 deselected",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "network_may_have_occurred": false
+  },
+  "manifest_note": "This manifest is implementation checkpoint evidence, not an immutable schema or contract freeze. The manifest intentionally does not contain its own hash. Later separately authorized tranches may modify shared implementation files."
+}
