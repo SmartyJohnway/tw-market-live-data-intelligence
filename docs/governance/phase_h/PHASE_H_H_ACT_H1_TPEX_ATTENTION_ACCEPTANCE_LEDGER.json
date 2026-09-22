@@ -23,7 +23,12 @@
     "changed_files": [
       "tests/unit/test_phase_h_act_h1_tpex_attention_activation.py"
     ],
-    "purpose": "strengthen H0H-ROLL-001 planner rollback proof"
+    "purpose": "strengthen H0H-ROLL-001 planner rollback proof",
+    "nonsemantic_formatting_files": [
+      "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
+    ],
+    "note": "After live PASS, only rollback-test strengthening and CRLF restoration occurred; no production semantics changed."
   },
   "acceptance_ids": {
     "H0H-DRIFT-H1": {
@@ -115,5 +120,6 @@
     "no bulk H1 activation occurred",
     "no H2/H3 activation occurred",
     "no scheduler, polling, retry loop, trading, or seventh MCP tool was introduced"
-  ]
+  ],
+  "final_candidate_content_head_before_ledger_refresh": "11bc3b3825786c749c925cf7d2c123222ee7fa21"
 }
