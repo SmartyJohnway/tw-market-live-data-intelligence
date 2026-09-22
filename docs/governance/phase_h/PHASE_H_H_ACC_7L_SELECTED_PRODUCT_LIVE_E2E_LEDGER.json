@@ -1,0 +1,146 @@
+{
+  "schema_version": "phase_h_h_acc_7l_selected_product_live_e2e_ledger.v1",
+  "status": "PASS",
+  "tranche": "H-ACC-7L",
+  "requirement_id": "H0H-E2E-LIVE-001",
+  "owner_authorization": {
+    "status": "AUTHORIZED",
+    "reference": "USER_CHAT_2026-09-23_H_ACC_7L_AUTHORIZED",
+    "scope": "Owner-authorized selected-product bounded-live E2E using only already-active Phase H routes; no route activation or V3 promotion"
+  },
+  "baseline_main": "88eefde20607188554630fe6f80e085fb5d23ad2",
+  "live_candidate_head": "db4a83a883fd3501004ff77e98f09c6603218d05",
+  "prerequisites": {
+    "H_IMP_7D": "PASS / merged on main",
+    "H_ACT_H1": "PASS / merged on main",
+    "active_phase_h_sources": [
+      "H1-TPEX-ATTENTION-OPENAPI"
+    ],
+    "route_level_live": "H0H-LIVE-001 PASS",
+    "route_level_rollback": "H0H-ROLL-001 PASS"
+  },
+  "workflow": {
+    "run_id": 35797640831,
+    "conclusion": "success",
+    "focused_prerequisite_tests": "23 passed",
+    "default_non_network_ci": "1241 passed, 4 skipped, 9 deselected",
+    "phase_h_v3_validator": "PASS",
+    "git_diff_check": "PASS",
+    "artifact": {
+      "id": 10724990692,
+      "name": "phase-h-h-acc-7l-selected-product-live-e2e",
+      "zip_sha256": "484b301f43ab35b60e3c0fd9fab905d502397b515d8feb662abd9ecf46d1d59f",
+      "report_sha256": "6f96f207a449042b114c9f476ad1a079be5242f0f4b894129fc0e7422fac7da0",
+      "report_bytes": 4577,
+      "retention_expires_at": "2026-10-22T23:30:15Z"
+    }
+  },
+  "selected_product_slice": {
+    "request_schema_version": "unified_market_evidence_request.v3",
+    "target": "TPEX:6488",
+    "capability_id": "trading_status_context",
+    "active_route": "H1-TPEX-ATTENTION-OPENAPI",
+    "executor_id": "phase_h_h1_tpex_attention_executor",
+    "result_schema_version": "unified_market_evidence_result.v3",
+    "audit_schema_version": "unified_market_evidence_audit_package.v3"
+  },
+  "identity_boundary": {
+    "installation_local_release": "security-master-20260922T233013Z",
+    "bootstrap": "tracked deterministic identity fixture in acceptance-only ephemeral installation root",
+    "market_evidence_transport": "production live TPEx; not fixture"
+  },
+  "network": {
+    "authorized": true,
+    "transport_mode": "production_transport",
+    "declared_call_bound": 1,
+    "planned_network_requests": 1,
+    "bounded_execution_request_count": 1,
+    "external_market_network_attempted": true,
+    "external_market_network_executed": true,
+    "route_level_actual_call_count_authority": "H0H-LIVE-001",
+    "retry_count": 0,
+    "polling": false,
+    "scheduler": false,
+    "broad_crawl": false,
+    "full_market_payload_persisted": false
+  },
+  "lineage": {
+    "plan_id": "umeop-v1-a30d178126718a660f17",
+    "plan_hash": "a30d178126718a660f17e79e2f1f0c90da5715c99b9bb236065f329a40b68c60",
+    "authorization_id": "umea-v1-4706243db70e85aa19d3",
+    "authorization_hash": "4706243db70e85aa19d35451f54f64a5e40fadf9d4ec6717a6e3d53793bfb591",
+    "execution_receipt_id": "umerec-v1-7b1823b5c0b9fcc1e8d2",
+    "evidence_bundle_id": "umeb-v1-c3dd0c281d3b30acc661",
+    "claim_sha256": "f646da027c2c3bde5726237b240060292d5a7ef67c07425a00ea1e7892cf70f3",
+    "receipt_sha256": "4e4954274ec2498b53087cdb66de71c86404cd2ff9e01e8063ca4522211684bd",
+    "bundle_sha256": "8741b9287b95b982d6571c4467bbef0c18d2847dcf92d8550728def46757d7c3"
+  },
+  "exact_output_hashes": {
+    "request": "14e0c054c2dbb569edfab4896fc1d251409d380c05aec3d2166f291f3563783d",
+    "validation": "7b2cebe32e1a0262097879911028bedb777043a46d0bc44d8eb533fa71eefba3",
+    "preview": "7722f296f12f346e9d1c8af37ad1090012e969428b4bf4ac3a975dd3476d2353",
+    "authorization_summary": "3a9bd48face14d45a453ae599574ba82c20f4a7dfdbb4308a3a268387d3ee884",
+    "execution_summary": "e82912d38a80ea06eab6811ec7899080007eb3f667fc0cc6447c8ab58b646555",
+    "result_v3": "c35ad3af1cd97e7b191229df2383ae6aa36cadac00a692b0b6aa7789fda8ff96",
+    "audit_v3": "01edaeea9f6cfe1cbb14f4b9ac091fef3849620f9425d7d910103269b14167b7",
+    "handoff_v3": "5dbc1cc5a1257f0099b3b6af531686f1e7f16fe4df118c2d63a0177dd18df736"
+  },
+  "result_truth": {
+    "operation_result": "succeeded",
+    "result_status": "full_success",
+    "trading_status_coverage": "partial",
+    "covered_status_types": [
+      "attention"
+    ],
+    "uncovered_status_types": [
+      "changed_trading_method",
+      "disposition",
+      "resumption",
+      "suspension"
+    ],
+    "declared_scope_complete": false,
+    "source_attempt": {
+      "source_family": "TPEX_ATTENTION_OPEN_DATA",
+      "source_contract_id": "tpex_trading_warning_information",
+      "source_role": "default_candidate",
+      "activation_state": "active",
+      "license_authority": "ODGL 1.0; free; https://data.gov.tw/dataset/11395",
+      "canonical_target_id": "TPEX:6488",
+      "market": "TPEX",
+      "coverage_result": "partial",
+      "outcome": "succeeded",
+      "failure_code": null
+    }
+  },
+  "negative_controls": {
+    "authorization_without_confirmation": "authorization_confirmation_required",
+    "mcp_v3_execution": "phase_h_v3_execution_inactive",
+    "second_execution": "mode_b2_execution_unavailable",
+    "replay_evidence_immutable": true,
+    "mode_c_reverification": "existing_verified with unchanged result hash"
+  },
+  "compatibility": {
+    "preferred_request_schema_version": "unified_market_evidence_request.v2",
+    "mcp_tool_count": 6,
+    "v3_promotion_performed": false,
+    "additional_route_activation_performed": false
+  },
+  "rollback": {
+    "route_level_authority": "H0H-ROLL-001",
+    "route_level_ledger": "docs/governance/phase_h/PHASE_H_H_ACT_H1_TPEX_ATTENTION_ACCEPTANCE_LEDGER.json",
+    "rollback_proof_retained": true
+  },
+  "exit_criteria": {
+    "selected_product_live_e2e_evidence_complete": true,
+    "only_already_approved_active_routes_used": true,
+    "exact_request_result_audit_handoff_recorded": true,
+    "network_declaration_and_call_bounds_recorded": true,
+    "no_broad_crawl": true,
+    "rollback_proof_retained": true
+  },
+  "next_gate": {
+    "tranche": "H-ACT-V3",
+    "automatic_promotion": false,
+    "owner_promotion_authorization_required": true
+  }
+}
