@@ -400,9 +400,17 @@
       "approval_boundary": "05B plan, authorization, single-use claim, and network confirmation",
       "authorization_binding": "operation, route, market, target, executor, and evidence contract",
       "single_use_enforced": true,
-      "supported_markets": ["TWSE", "TPEX"],
-      "supported_security_types": ["equity"],
-      "supported_capabilities": ["material_disclosures", "monthly_revenue"],
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "supported_security_types": [
+        "equity"
+      ],
+      "supported_capabilities": [
+        "material_disclosures",
+        "monthly_revenue"
+      ],
       "batching_supported": true,
       "deterministic": false,
       "reusable_for_05b": true,
@@ -413,6 +421,38 @@
         "scripts/phase_g/research_executor.py",
         "scripts/phase_g/mops_material_disclosures.py",
         "scripts/phase_g/mops_monthly_revenue.py"
+      ]
+    },
+    {
+      "surface_id": "phase_h_h1_tpex_attention_executor",
+      "path": "scripts/m8r_06_03_production_adapter.py",
+      "surface_type": "controlled_phase_h_h1_executor",
+      "current_status": "H-ACT-H1 activation candidate for the single TPEx attention route",
+      "network_behavior": "one fixed official TPEx OpenAPI GET per approved exact target after 05B authorization and network confirmation",
+      "input_contract": "05B execution request v1 bound to trading_status_context / TPEX / exact approved target",
+      "output_contract": "trading_status_context_evidence.v1 plus phase_h_source_attempt_governance.v1",
+      "approval_boundary": "05B plan, authorization, single-use claim and network confirmation",
+      "authorization_binding": "operation, route, market, exact target, executor and evidence contract",
+      "single_use_enforced": true,
+      "supported_markets": [
+        "TPEX"
+      ],
+      "supported_security_types": [
+        "equity"
+      ],
+      "supported_capabilities": [
+        "trading_status_context"
+      ],
+      "batching_supported": false,
+      "deterministic": false,
+      "reusable_for_05b": true,
+      "reuse_mode": "adapter_required",
+      "disposition": "adapter_required",
+      "blocking_gaps": [],
+      "evidence_paths": [
+        "server/services/phase_h_trading_status_adapters.py",
+        "docs/governance/phase_h/Phase_H_H1_Trading_Status_Context_Contract_FROZEN.md",
+        "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.json"
       ]
     }
   ]
