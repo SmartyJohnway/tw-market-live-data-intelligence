@@ -27,5 +27,52 @@
     "h2_adapter": "11b789c742091e11e3e24ceca0a23d12710fa7b00d513d9bd96599ba695688b9",
     "h4_kernel": "91163c3f1988c75c5f4b413d109e19d646b5ad9bfcb40e96a485a356f9180727"
   },
+  "validation": {
+    "focused_bridge": {
+      "status": "PASS",
+      "tests": "tests/unit/test_m8r_05b_03_operation_result.py, tests/unit/test_m8r_05b_03_aggregation.py, tests/integration/test_m8r_05b_03_multi_artifact_contract.py",
+      "passed": 15
+    },
+    "controlled_execution_regressions": {
+      "status": "PASS",
+      "passed": 56,
+      "suites": {
+        "execute_once": 12,
+        "consumption_claim": 10,
+        "receipt": 32,
+        "orchestrator": 2
+      }
+    },
+    "phase_g_mode_c_h_imp_6_regressions": {
+      "status": "PASS",
+      "passed": 66,
+      "suites": {
+        "phase_g_result_v2_projection": 14,
+        "phase_g_mode_c_v2": 9,
+        "phase_h_imp_6_v3_projection_handoff": 43
+      }
+    },
+    "default_ci": {
+      "status": "PASS",
+      "passed": 1217,
+      "skipped": 2,
+      "selected": 1219,
+      "deselected": 9,
+      "bridge_tests_included": true,
+      "network_may_have_occurred": false
+    },
+    "test_profile_validation": {
+      "status": "PASS",
+      "run_test_profile_tests_passed": 23,
+      "duplicate_pytest_paths": [],
+      "missing_pytest_paths": [],
+      "automatic_ci_allowed": true,
+      "network_policy": "no network; excludes tests marked network"
+    },
+    "network_may_have_occurred": false,
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "phase_h_v3_contract_validation": "PASS"
+  },
   "evidence": "Generated and verified by tests/integration/test_m8r_05b_03_multi_artifact_contract.py."
 }
