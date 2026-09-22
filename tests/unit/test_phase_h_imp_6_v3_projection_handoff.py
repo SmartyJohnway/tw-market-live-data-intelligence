@@ -20,7 +20,8 @@ from scripts.m8r_05c.lineage_resolver import build_lineage_map
 from scripts.m8r_05c.markdown_renderer import render_result_markdown
 from scripts.m8r_05c.models import ProjectionInputs
 from scripts.m8r_05c.result_builder import build_result
-from server.services.unified_mode_c import ModeCError, _OUTPUT_PATHS, build_mode_c_result_package
+from server.services import unified_mode_c
+from server.services.unified_mode_c import ModeCError, _OUTPUT_PATHS, build_mode_c_ai_handoff, build_mode_c_result_package
 
 ROOT = Path(__file__).resolve().parents[2]
 # These controlled contract examples exercise a dormant projection only; they
@@ -299,6 +300,57 @@ def test_mode_c_v3_output_is_explicit_and_uses_frozen_paths():
     )
     with pytest.raises(ModeCError, match="unsupported_output_schema_version"):
         build_mode_c_result_package({"control_package_id": "unused"}, output_schema_version="v3")
+
+
+def test_real_mode_c_v3_materializes_and_handoff_is_deterministic(tmp_path: Path, monkeypatch):
+    """Exercise the public Mode C path on an isolated finalized control package."""
+    fixture_root = ROOT / "tests/fixtures/m8r_05c"
+    control_id = "umea-v1-2e589eb14b73fadf6b29"
+    package = tmp_path / control_id
+    control = package / "control"
+    control.mkdir(parents=True)
+    copies = {"request": "request_single_target.json", "plan": "plan_single_target.json",
+              "authorization": "authorization.json", "consumption_binding": "consumption_binding.json"}
+    for name, source in copies.items():
+        shutil.copy2(fixture_root / source, control / f"{name}.json")
+    (control / "preflight.json").write_text("{}", encoding="utf-8")
+    (control / "unused_consumption_state.json").write_text("{}", encoding="utf-8")
+    hashes = {name: hashlib.sha256((control / f"{name}.json").read_bytes()).hexdigest()
+              for name in (*copies, "preflight", "unused_consumption_state")}
+    authorization = json.loads((control / "authorization.json").read_text(encoding="utf-8"))
+    plan = json.loads((control / "plan.json").read_text(encoding="utf-8"))
+    (control / "manifest.json").write_text(json.dumps({"schema_version": "m8r_06_03_control_package.v1",
+        "authorization_id": control_id, "authorization_hash": authorization["authorization_hash"],
+        "plan_id": plan["plan_id"], "plan_hash": plan["plan_hash"], "preflight_id": "umeopf-v1-aaaabbbbccccdddd0000",
+        "preflight_hash": "0" * 64, "artifact_hashes": hashes}), encoding="utf-8")
+    for directory, source in (("claims", "claim.json"), ("receipts", "receipt.json"), ("bundles", "bundle.json")):
+        (package / directory).mkdir()
+        shutil.copy2(fixture_root / source, package / directory / source)
+    shutil.copytree(fixture_root / "artifact_root", package, dirs_exist_ok=True)
+    bundle_path = next((package / "bundles").glob("*.json"))
+    bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
+    by_path = {}
+    for entry in bundle["artifact_inventory"]:
+        file_path = package / entry["relative_path"]
+        entry["sha256"] = hashlib.sha256(file_path.read_bytes()).hexdigest()
+        entry["byte_size"] = file_path.stat().st_size
+        by_path[entry["relative_path"]] = entry
+    for operation in bundle["operation_evidence_entries"]:
+        for reference in operation["artifacts"]:
+            reference.update({key: by_path[reference["relative_path"]][key] for key in ("sha256", "byte_size")})
+    bundle["bundle_hash"] = sha256_json({key: value for key, value in bundle.items()
+                                          if key not in {"schema_version", "bundle_id", "bundle_hash"}})
+    bundle_path.write_text(json.dumps(bundle), encoding="utf-8")
+    monkeypatch.setattr(unified_mode_c, "CONTROL_ROOT", package.parent)
+    monkeypatch.setattr(unified_mode_c, "validate_mode_a_request", lambda _request: json.loads((fixture_root / "f3_validation.json").read_text(encoding="utf-8")))
+    first = build_mode_c_result_package({"control_package_id": control_id}, output_schema_version="unified_market_evidence_result.v3")
+    assert first["output_schema_version"] == first["canonical_result"]["schema_version"] == "unified_market_evidence_result.v3"
+    assert first["canonical_result_reference"] == "ai_context/unified_market_evidence_result.v3.json"
+    assert first["audit_reference"] == "audit/unified_market_evidence_audit_package.v3.json"
+    assert first["external_market_network_executed"] is False and first["ai_ready_markdown"]
+    assert build_mode_c_result_package({"control_package_id": control_id}, output_schema_version="unified_market_evidence_result.v3")["materialization"] == "existing_verified"
+    handoff = build_mode_c_ai_handoff(control_id, output_schema_version="unified_market_evidence_result.v3")
+    assert handoff["result_id"] == first["result_id"] and handoff["additional_market_network_executed"] is False
 
 
 @pytest.mark.parametrize("data_need", ["current_observation", "official_eod_reference", "material_disclosures"])
