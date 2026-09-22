@@ -46,7 +46,7 @@ jobs:
 
       - name: Run exactly one Owner-authorized bounded-live TPEx attention acceptance
         run: |
-          python scripts/run_phase_h_h_act_h1_live_acceptance.py \
+          python -m scripts.run_phase_h_h_act_h1_live_acceptance \
             --confirm-bounded-live \
             --output-dir "${RUNNER_TEMP}/h-act-h1"
 
