@@ -21,7 +21,10 @@ from .registry import ExecutorMetadata, ExecutorMetadataRegistry, executor_route
 
 ROOT = Path(__file__).resolve().parents[2]
 REQUEST_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_execution_request.v1.schema.json"
-RESULT_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_operation_result.v1.schema.json"
+RESULT_SCHEMA_PATHS = {
+    "unified_market_evidence_operation_result.v1": ROOT / "schemas" / "unified_market_evidence_operation_result.v1.schema.json",
+    "unified_market_evidence_operation_result.v2": ROOT / "schemas" / "unified_market_evidence_operation_result.v2.schema.json",
+}
 
 
 @dataclass(frozen=True)
@@ -234,8 +237,10 @@ def dispatch_prepared(
 ) -> list[dict]:
     context = DispatchRuntimeContext(governed_output_root=governed_output_root, mode=mode)
     outcomes: list[dict] = []
-    result_schema = json.loads(RESULT_SCHEMA_PATH.read_text(encoding="utf-8"))
-    validator = Draft202012Validator(result_schema, format_checker=FormatChecker())
+    validators = {
+        version: Draft202012Validator(json.loads(path.read_text(encoding="utf-8")), format_checker=FormatChecker())
+        for version, path in RESULT_SCHEMA_PATHS.items()
+    }
 
     by_batch: dict[str, list[PreparedDispatch]] = {}
     for item in prepared:
@@ -248,6 +253,10 @@ def dispatch_prepared(
         )
         expected_req_id, expected_req_hash = request_identity(item.request)
 
+        version = raw_result.get("schema_version") if isinstance(raw_result, dict) else None
+        validator = validators.get(version)
+        if validator is None:
+            raise OrchestrationError("operation_result_schema_version_unsupported")
         if list(validator.iter_errors(raw_result)):
             raise OrchestrationError("operation_result_schema_invalid")
 
@@ -262,10 +271,22 @@ def dispatch_prepared(
             raise OrchestrationError("operation_result_identity_mismatch")
 
         if raw_result["status"] == "succeeded":
-            artifact_total_items = sum(art["item_count"] for art in raw_result["evidence_artifacts"])
+            artifacts = raw_result["evidence_artifacts"]
+            if version == "unified_market_evidence_operation_result.v2":
+                primary = [art for art in artifacts if art["artifact_role"] == "primary_evidence"]
+                if not primary:
+                    raise OrchestrationError("operation_result_primary_artifact_missing")
+                for art in artifacts:
+                    if art["evidence_contract"] != art["schema_version"]:
+                        raise OrchestrationError("operation_result_artifact_contract_mismatch")
+                if any(art["evidence_contract"] != raw_result["evidence_contract"] for art in primary):
+                    raise OrchestrationError("operation_result_artifact_contract_mismatch")
+                artifact_total_items = sum(art["item_count"] for art in primary)
+            else:
+                artifact_total_items = sum(art["item_count"] for art in artifacts)
             if raw_result["result_item_count"] != artifact_total_items:
                 raise OrchestrationError("operation_result_item_count_mismatch")
-            _verify_evidence_artifacts(governed_output_root, raw_result["evidence_artifacts"], mode)
+            _verify_evidence_artifacts(governed_output_root, artifacts, mode)
         return dict(raw_result)
 
     for batch_group_id, items in by_batch.items():

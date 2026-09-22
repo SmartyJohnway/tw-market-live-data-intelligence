@@ -1,0 +1,155 @@
+{
+  "schema_version": "phase_h_05b_multi_artifact_contract_bridge_acceptance_manifest.v1",
+  "status": "OWNER_ACCEPTED_COMPLETED",
+  "acceptance_date": "2026-09-22",
+  "baseline_main": "1b4afd89d6dcf43634cb713d4697892c3e12a943",
+  "reviewed_implementation_head": "abee7ba6f9857f414c803c667d4e9ce472b1ba50",
+  "branch": "phase-h/bridge-05b-multi-artifact-contract",
+  "pr": 242,
+  "accepted_amendments": ["A1"],
+  "implementation_blockers": 0,
+  "purpose": "Enable one governed operation to emit primary typed evidence plus a supporting governance artifact without mislabeling both artifacts with one operation-level contract or counting governance metadata as market evidence result items.",
+  "resolves_blocker": "The control-package multi-artifact contract gap discovered while entering H-IMP-7D.",
+  "operation_result_v2": {
+    "schema_version": "unified_market_evidence_operation_result.v2",
+    "classification": "INTERNAL_STABLE_IMPLEMENTATION_CONTRACT",
+    "additive": true,
+    "v1_immutable": true,
+    "per_artifact_fields": ["evidence_contract", "artifact_role"],
+    "allowed_artifact_roles": ["primary_evidence", "supporting_governance"]
+  },
+  "operation_level_authority": {
+    "evidence_contract": "Plan -> Preflight binding -> Executor metadata -> Operation Result",
+    "per_artifact_contracts_do_not_weaken_binding": true
+  },
+  "primary_evidence_semantics": {
+    "successful_v2_requires_primary_artifact": true,
+    "primary_contract_equals_operation_contract": true,
+    "schema_addressable_artifact_contract_equals_schema_version": true,
+    "contract_mismatch_fails_closed": true
+  },
+  "supporting_governance_semantics": {
+    "different_contract_allowed": true,
+    "accepted_example": {
+      "primary": "trading_status_context_evidence.v1",
+      "support": "phase_h_source_attempt_governance.v1"
+    },
+    "does_not_redefine": ["operation capability", "operation status", "primary evidence contract", "result item count"]
+  },
+  "item_count_semantics": {
+    "operation_result_v1": "sum(all evidence_artifacts[].item_count)",
+    "operation_result_v2": "sum(primary_evidence[].item_count)",
+    "supporting_governance_excluded": true
+  },
+  "bundle_v1_compatibility": {
+    "schema": "unified_market_evidence_bundle.v1",
+    "unchanged": true,
+    "inventory_contract_identity": true,
+    "accepted_inventory_contracts": ["trading_status_context_evidence.v1", "phase_h_source_attempt_governance.v1"],
+    "bundle_v2_introduced": false
+  },
+  "receipt_v1_compatibility": {
+    "schema": "unified_market_evidence_execution_receipt.v1",
+    "unchanged": true,
+    "v2_metadata_in_nested_artifact_refs": false,
+    "frozen_reference_shape": ["relative_path", "sha256", "schema_version", "byte_size", "item_count"]
+  },
+  "bundle_operation_reference_compatibility": {
+    "reference_only": true,
+    "shape": ["relative_path", "sha256", "schema_version", "byte_size", "item_count"],
+    "contract_authority": "artifact_inventory",
+    "nested_reference_schema_changed": false
+  },
+  "dispatch": {
+    "v1_supported_unchanged": true,
+    "v2_supported": true,
+    "unknown_version_fails_closed": true,
+    "v2_validation": ["primary artifact required", "artifact contract/schema consistency", "primary contract equals operation contract", "primary-only result-item counting", "file existence/hash/byte-size verification"]
+  },
+  "aggregation": {
+    "v1_unchanged": true,
+    "v1_contract_source": "operation-level evidence_contract",
+    "v2_contract_source": "each artifact's own evidence_contract declaration",
+    "v2_operation_contract_not_copied_to_every_artifact": true
+  },
+  "real_bridge_proof": {
+    "chain": ["Operation Result V2", "aggregate_dispatch_outcomes()", "finalize_consumption_and_write_receipt()", "Receipt V1", "Bundle V1", "artifact_loader", "Mode C Result V3"],
+    "contracts_carried": ["trading_status_context_evidence.v1", "phase_h_source_attempt_governance.v1"],
+    "manual_bundle_inventory_rewrite": false,
+    "manual_bundle_hash_repair": false,
+    "mode_c_validation_bypass": false
+  },
+  "negative_cases": {
+    "unknown_operation_result_version": "FAIL_CLOSED",
+    "no_primary_artifact": "FAIL_CLOSED",
+    "primary_artifact_contract_mismatch": "FAIL_CLOSED",
+    "supporting_artifact_contract_schema_mismatch": "FAIL_CLOSED",
+    "supporting_artifact_in_result_item_count": "FAIL_CLOSED"
+  },
+  "frozen_v1_integrity": {
+    "unchanged_from_baseline": true,
+    "files": {
+      "schemas/unified_market_evidence_operation_result.v1.schema.json": {"sha256": "bb38d8d4d457de70fe3f3f9b85eefb72d7f5874a12cf1b60701740fa388e4018", "bytes": 2766},
+      "schemas/unified_market_evidence_execution_receipt.v1.schema.json": {"sha256": "6f555b2c0f1c84c4eeb5124a0a1cd6074f57eacbf8193f50462cddaf001f7005", "bytes": 4224},
+      "schemas/unified_market_evidence_bundle.v1.schema.json": {"sha256": "217439625f9ae04983d75d8671eae3fc788364fbbe7e83afcc62336a4cabd90b", "bytes": 4478},
+      "schemas/phase_h_source_attempt_governance.v1.schema.json": {"sha256": "6d97c48181d1d15c5aba54e989e84b6ae6db536204696e494c38883215bafeb5", "bytes": 2054}
+    }
+  },
+  "implementation_checkpoint_hashes": {
+    "schemas/unified_market_evidence_operation_result.v2.schema.json": {"sha256": "d554f5b92ce69f719ded1f3b888942b010cfc6f2f6fce4baa68af2701144c633", "bytes": 2220},
+    "scripts/m8r_05b_03/dispatch.py": {"sha256": "d9fdeff8784f324721a3b9a04678cfbbcadbbf680531ce16a890f9f7b715ed43", "bytes": 16937},
+    "scripts/m8r_05b_03/evidence_aggregation.py": {"sha256": "cf9b50c93a64f3aee384f71d6c768381bad39b8d62ff83bcc09364baefed49f6", "bytes": 6630},
+    "tests/unit/test_m8r_05b_03_operation_result.py": {"sha256": "b58272343e2063bb7832b57108dd4489e8eac932319f943c98c6fb7f9c365e4c", "bytes": 11506},
+    "tests/unit/test_m8r_05b_03_aggregation.py": {"sha256": "2a6716b3c0d782048cb86e43a0ab8915b78bb84a80a5b5592b0fca9a28f0693f", "bytes": 8937},
+    "tests/integration/test_m8r_05b_03_multi_artifact_contract.py": {"sha256": "dbfe9966a8deba64b522797b4b09718dcdabe8943901a917690d7855ebd89311", "bytes": 9915},
+    "config/test_execution_profiles.json": {"sha256": "dc406c927d66a7fd462cce2e01ce9737e5468fe890927ba4ba4fe79ecbb7a852", "bytes": 23774},
+    "docs/governance/phase_h/PHASE_H_05B_MULTI_ARTIFACT_CONTRACT_BRIDGE_REVIEW.json": {"sha256": "5a44968656e8d065a1691f730dcb2f960febb2c1c81c7c69b92c40f9de38b862", "bytes": 3391}
+  },
+  "prior_phase_h_component_integrity": {
+    "h1_adapter": {"sha256": "0ae52aaa8b5bce7ed85a091e095802b6c568c1a66f4d106fb2a6eba9b0d44cf0", "status": "PASS"},
+    "h2_adapter": {"sha256": "11b789c742091e11e3e24ceca0a23d12710fa7b00d513d9bd96599ba695688b9", "status": "PASS"},
+    "h4_kernel": {"sha256": "91163c3f1988c75c5f4b413d109e19d646b5ad9bfcb40e96a485a356f9180727", "status": "PASS"}
+  },
+  "h_imp_6_integrity": {
+    "unchanged_components": ["phase_h_source_attempt_governance.v1", "artifact_loader", "result_builder", "audit_package_builder", "markdown_renderer", "unified_mode_c"],
+    "h_imp_6_remains_accepted": true
+  },
+  "runtime_authority": {
+    "preferred_request_schema_version": "unified_market_evidence_request.v2",
+    "production_result_authority": "unified_market_evidence_result.v2",
+    "production_audit_authority": "unified_market_evidence_audit_package.v2",
+    "v3_execution": "inactive",
+    "phase_h_active_source_count": 0,
+    "mcp_tool_count": 6,
+    "source_or_v3_activation": false
+  },
+  "not_established": ["H-IMP-7D completion", "Phase H deterministic selected-slice E2E", "production V3 authorization", "H1 activation", "H2 activation", "H3 source authority", "H3 implementation", "bounded-live validation", "H-ACC-7L", "H-ACT-V3", "preferred V3 promotion"],
+  "h_imp_7d_handoff": {
+    "blocker_resolved": true,
+    "required_next_step": "After this bridge is merged, H-IMP-7D must restart from the new authoritative main baseline.",
+    "old_pre_bridge_branch_must_not_continue": true,
+    "current_status": "BLOCKED_PENDING_BRIDGE_MERGE"
+  },
+  "ci_acceptance": {
+    "focused_bridge": "15 passed",
+    "test_profile_self_validation": "23 passed",
+    "default_ci": "1217 passed, 2 skipped, 9 deselected",
+    "controlled_execution_regressions": "56 passed",
+    "phase_g_mode_c_h_imp_6": "66 passed",
+    "phase_h_v3_contract_validator": "PASS",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "network_may_have_occurred": false,
+    "bridge_tests_included_in_default_ci": true,
+    "duplicate_pytest_paths": "none",
+    "missing_pytest_paths": "none",
+    "automatic_ci_allowed": true
+  },
+  "review_record": {
+    "path": "docs/governance/phase_h/PHASE_H_05B_MULTI_ARTIFACT_CONTRACT_BRIDGE_REVIEW.json",
+    "status": "OWNER_ACCEPTED_COMPLETED",
+    "sha256": "5a44968656e8d065a1691f730dcb2f960febb2c1c81c7c69b92c40f9de38b862",
+    "bytes": 3391
+  },
+  "note": "This manifest is an implementation checkpoint, not a public schema freeze and not a Phase H route activation. The manifest intentionally does not contain its own hash. Later separately authorized implementation tranches may modify shared execution infrastructure."
+}

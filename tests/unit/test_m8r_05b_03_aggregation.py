@@ -44,6 +44,55 @@ def test_aggregate_all_succeeded(tmp_path):
     assert agg["total_item_count"] == 5
 
 
+def test_aggregate_v2_preserves_per_artifact_contract_and_excludes_supporting_items(tmp_path):
+    preflight = build_valid_preflight(tmp_path)
+    op_id = preflight["approved_operation_order"][0]
+    req = preflight["bounded_execution_requests"][0]
+    binding = preflight["resolved_operation_bindings"][op_id]
+    binding["expected_evidence_contract"] = "trading_status_context_evidence.v1"
+    primary = {"relative_path": "evidence/typed.json", "sha256": "11" * 32,
+               "schema_version": "trading_status_context_evidence.v1", "byte_size": 10, "item_count": 1,
+               "evidence_contract": binding["expected_evidence_contract"], "artifact_role": "primary_evidence"}
+    support = {"relative_path": "evidence/governance.json", "sha256": "22" * 32,
+               "schema_version": "phase_h_source_attempt_governance.v1", "byte_size": 10, "item_count": 1,
+               "evidence_contract": "phase_h_source_attempt_governance.v1", "artifact_role": "supporting_governance"}
+    outcome = {"schema_version": "unified_market_evidence_operation_result.v2", "operation_id": op_id,
+               "execution_request_id": req["execution_request_id"], "execution_request_hash": req["execution_request_hash"],
+               "executor_id": req["executor_id"], "capability_id": req["capability_id"],
+               "evidence_contract": binding["expected_evidence_contract"], "status": "succeeded", "error_code": None,
+               "result_item_count": 1, "evidence_artifacts": [primary, support], "warnings": []}
+    agg = aggregate_dispatch_outcomes(preflight, [outcome])
+    assert agg["total_item_count"] == 1
+    assert {item["evidence_contract"] for item in agg["artifact_inventory"]} == {
+        binding["expected_evidence_contract"], "phase_h_source_attempt_governance.v1"}
+    assert all(set(item) == {"relative_path", "sha256", "schema_version", "byte_size", "item_count"}
+               for item in agg["operation_receipts"][0]["evidence_artifacts"])
+    assert all(set(item) == {"relative_path", "sha256", "schema_version", "byte_size", "item_count"}
+               for item in agg["operation_evidence_entries"][0]["artifacts"])
+
+
+@pytest.mark.parametrize("artifacts, count, code", [
+    ([{"artifact_role": "supporting_governance", "evidence_contract": "x", "schema_version": "x", "item_count": 1}], 0, "operation_result_primary_artifact_missing"),
+    ([{"artifact_role": "primary_evidence", "evidence_contract": "wrong", "schema_version": "wrong", "item_count": 1}], 1, "operation_result_artifact_contract_mismatch"),
+    ([{"artifact_role": "primary_evidence", "evidence_contract": "trading_status_context_evidence.v1", "schema_version": "trading_status_context_evidence.v1", "item_count": 3}, {"artifact_role": "supporting_governance", "evidence_contract": "sidecar.v1", "schema_version": "sidecar.v1", "item_count": 1}], 4, "operation_result_item_count_mismatch"),
+])
+def test_aggregate_v2_rejects_invalid_primary_or_count(tmp_path, artifacts, count, code):
+    preflight = build_valid_preflight(tmp_path)
+    op_id = preflight["approved_operation_order"][0]
+    req = preflight["bounded_execution_requests"][0]
+    binding = preflight["resolved_operation_bindings"][op_id]
+    binding["expected_evidence_contract"] = "trading_status_context_evidence.v1"
+    for index, artifact in enumerate(artifacts):
+        artifact.update({"relative_path": f"evidence/{index}.json", "sha256": f"{index + 1:02x}" * 32, "byte_size": 1})
+    outcome = {"schema_version": "unified_market_evidence_operation_result.v2", "operation_id": op_id,
+               "execution_request_id": req["execution_request_id"], "execution_request_hash": req["execution_request_hash"],
+               "executor_id": req["executor_id"], "capability_id": req["capability_id"],
+               "evidence_contract": binding["expected_evidence_contract"], "status": "succeeded", "error_code": None,
+               "result_item_count": count, "evidence_artifacts": artifacts, "warnings": []}
+    with pytest.raises(OrchestrationError, match=code):
+        aggregate_dispatch_outcomes(preflight, [outcome])
+
+
 def test_aggregate_duplicate_operation_raises(tmp_path):
     preflight = build_valid_preflight(tmp_path)
     op_id = preflight["approved_operation_order"][0]
