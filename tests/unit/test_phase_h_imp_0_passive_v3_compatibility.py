@@ -43,12 +43,12 @@ class FakeSecurityMaster:
     }
 
 
-def request(version="unified_market_evidence_request.v3", needs=None, *, execution_mode="preview"):
+def request(version="unified_market_evidence_request.v3", needs=None, *, execution_mode="preview", input_value="2330", market_hint="TWSE"):
     return {
         "schema_version": version,
         "request_id": "phase-h-imp-0",
         "execution_mode": execution_mode,
-        "targets": [{"input": "2330", "market_hint": "TWSE"}],
+        "targets": [{"input": input_value, "market_hint": market_hint}],
         "data_needs": needs or [{"type": "current_observation", "priority": "required"}],
     }
 
@@ -97,9 +97,10 @@ def test_frozen_catalog_v3_metadata_is_exact_and_mutations_reject():
     preferred_v3 = copy.deepcopy(catalog)
     preferred_v3["contract_versions"]["preferred_request_schema_version"] = "unified_market_evidence_request.v3"
     assert not _catalog_valid(preferred_v3)
-    active = copy.deepcopy(catalog)
-    active["contract_versions"]["v3_runtime_authority_status"] = "active"
-    assert not _catalog_valid(active)
+    assert catalog["contract_versions"]["v3_runtime_authority_status"] == "selected_routes_active_v2_preferred"
+    arbitrary = copy.deepcopy(catalog)
+    arbitrary["contract_versions"]["v3_runtime_authority_status"] = "active"
+    assert not _catalog_valid(arbitrary)
 
 
 def test_mcp_passive_envelopes_accept_v3_but_execution_envelope_does_not():
@@ -146,19 +147,37 @@ def test_mcp_dispatch_v3_validate_preview_and_fetch_barrier():
     assert rejected.isError is True and client.fetch_count == 0
 
 
-@pytest.mark.parametrize("capability", ["trading_status_context", "corporate_action_context"])
-def test_v3_phase_h_capabilities_are_recognized_but_plan_only(capability):
-    req = request(needs=[{"type": capability, "priority": "required", "parameters": {}}])
+def test_v3_selected_tpex_attention_route_is_executable_but_truthfully_partial():
+    req = request(
+        needs=[{"type": "trading_status_context", "priority": "required", "parameters": {}}],
+        input_value="6488", market_hint="TPEX",
+    )
     result = preview(req)
     assert result["validation"]["validation_status"] == "valid"
-    assert result["validation"]["capability_results"][0]["status"] == "contract_supported"
-    assert result["preview"]["status"] == "unsupported_capability"
+    assert result["validation"]["capability_results"][0]["status"] == "runtime_executable"
+    assert result["preview"]["status"] == "ready_for_confirmation"
     operation = result["orchestration_plan"]["operations"][0]
+    assert operation["operation_status"] == "executable_pending_approval"
+    assert operation["executor_id"] == "phase_h_h1_tpex_attention_executor"
+    assert operation["market"] == "TPEX"
+    assert operation["network_required"] is True
+    assert result["authorization_created"] is False
+    assert result["network_executed"] is False
+
+
+def test_v3_h1_twse_stays_non_executable_and_h2_stays_plan_only():
+    h1_twse = preview(request(needs=[{"type": "trading_status_context", "priority": "required", "parameters": {}}]))
+    assert h1_twse["validation"]["capability_results"][0]["status"] == "runtime_executable"
+    assert h1_twse["preview"]["status"] == "unsupported_capability"
+    assert h1_twse["orchestration_plan"]["blocked_operations"][0]["blocking_reason_codes"] == ["unsupported_market"]
+
+    h2 = preview(request(needs=[{"type": "corporate_action_context", "priority": "required", "parameters": {}}]))
+    assert h2["validation"]["capability_results"][0]["status"] == "contract_supported"
+    assert h2["preview"]["status"] == "unsupported_capability"
+    operation = h2["orchestration_plan"]["operations"][0]
     assert operation["operation_status"] == "plan_only_not_executable"
     assert operation["executor_id"] is None
     assert operation["network_required"] is False
-    assert result["authorization_created"] is False
-    assert result["network_executed"] is False
 
 
 @pytest.mark.parametrize("lookback", [1, 5, 20])
@@ -176,7 +195,7 @@ def test_v3_h3_invalid_lookback_remains_rejected(parameters):
     assert validation(req)["validation_status"] == "invalid"
 
 
-def test_v3_mixed_preview_keeps_existing_executable_capability_and_phase_h_plan_only():
+def test_v3_mixed_twse_preview_keeps_existing_capability_and_omits_unavailable_h1_route():
     req = request(needs=[
         {"type": "current_observation", "priority": "required"},
         {"type": "trading_status_context", "priority": "optional", "parameters": {}},
@@ -185,8 +204,9 @@ def test_v3_mixed_preview_keeps_existing_executable_capability_and_phase_h_plan_
     operations = {item["capability_id"]: item for item in result["orchestration_plan"]["operations"]}
     assert result["preview"]["status"] == "partial_possible"
     assert operations["current_observation"]["operation_status"] == "executable_pending_approval"
-    assert operations["trading_status_context"]["operation_status"] == "plan_only_not_executable"
-    assert operations["trading_status_context"]["executor_id"] is None
+    assert "trading_status_context" not in operations
+    assert result["orchestration_plan"]["omitted_optional_capabilities"][0]["capability_id"] == "trading_status_context"
+
 
 
 def test_planner_allows_only_matching_v2_or_v3_catalog_routing_pairs():
@@ -202,14 +222,17 @@ def test_planner_allows_only_matching_v2_or_v3_catalog_routing_pairs():
         build_plan(f3, capability_catalog=mixed["capability_catalog"], routing_matrix=mixed["routing_matrix"], handoff_contract=mixed["handoff_contract"], executor_disposition=mixed["executor_disposition"], input_bindings=bindings, planning_timestamp=FIXED_TIME)
 
 
-def test_v3_execution_is_rejected_at_b2_and_local_operator_boundaries():
-    execute_v3 = request(execution_mode="execute")
+def test_v3_local_operator_and_mcp_action_boundaries_remain_v1_v2_only():
+    execute_v3 = request(
+        execution_mode="execute",
+        needs=[{"type": "trading_status_context", "priority": "required", "parameters": {}}],
+        input_value="6488", market_hint="TPEX",
+    )
     with pytest.raises(ModeB2Error, match="phase_h_v3_execution_inactive"):
         build_local_operator_execution_ticket(execute_v3)
-    with pytest.raises(ModeB2Error, match="phase_h_v3_execution_inactive"):
-        build_mode_b2_authorization({"request": execute_v3, "confirm_authorization": True})
     with pytest.raises(LocalOperatorActionError, match="phase_h_v3_execution_inactive"):
         fetch_market_evidence({"request": execute_v3})
+
 
 
 def test_v3_validation_and_preview_are_network_free(monkeypatch):

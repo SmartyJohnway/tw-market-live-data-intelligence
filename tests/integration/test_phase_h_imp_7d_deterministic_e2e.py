@@ -87,11 +87,13 @@ def test_s3_fixture_source_failure_propagates_truthfully_to_result_audit_and_h5(
     assert handoff["execution_outcome"] == "failed"
 
 
-def test_s7_production_v3_authorization_denied_before_claim_dispatch_or_artifact(tmp_path: Path):
-    request = fixture_request()
-    with pytest.raises(ModeB2Error, match="phase_h_v3_execution_inactive"):
-        build_mode_b2_authorization({"request": request, "confirm_authorization": True})
-    assert not list(tmp_path.iterdir())
+def test_s7_historical_pre_activation_v3_denial_evidence_is_preserved():
+    ledger = json.loads(
+        (ROOT / "docs/governance/phase_h/PHASE_H_H_IMP_7D_DETERMINISTIC_E2E_LEDGER.json").read_text(encoding="utf-8")
+    )
+    scenario = next(item for item in ledger["scenarios"] if item["scenario_id"] == "S7_PRODUCTION_V3_AUTHORIZATION_DENIED")
+    assert scenario["status"] == "PASS"
+    assert scenario["actual_result"] == "EXPECTED_REJECT before claim/dispatch/artifact"
 
 
 def test_s8_replay_claim_rejected_and_s9_second_claim_is_the_only_rejection(tmp_path: Path):
@@ -129,8 +131,6 @@ def test_s10_v2_validation_remains_unaffected_and_s13_fixture_transport_is_netwo
     result = validate_mode_a_request(request, allow_fixture_snapshot=True)
     assert result["schema_version"] == "unified_market_evidence_request_validation.v1"
     assert fixture_registry()["executors"][0]["network_required"] is False
-    with pytest.raises(ModeB2Error, match="phase_h_v3_execution_inactive"):
-        build_mode_b2_authorization({"request": fixture_request(), "confirm_authorization": True})
     v2_root = ROOT / "tests/fixtures/phase_g_pr_c/v2_acceptance"
     v2_result = json.loads((v2_root / "unified_market_evidence_result.v2.json").read_text(encoding="utf-8"))
     v2_audit = json.loads((v2_root / "unified_market_evidence_audit_package.v2.json").read_text(encoding="utf-8"))
@@ -221,11 +221,12 @@ def test_s11_fresh_root_is_safe_without_optional_providers_and_manual_routes_sta
     assert described["emitted_result_schema_version"] == "unified_market_evidence_result.v2"
     v3_catalog = json.loads((ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json").read_text(encoding="utf-8"))
     v3_routing = json.loads((ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json").read_text(encoding="utf-8"))
-    assert v3_catalog["phase_h_contract"]["active_phase_h_source_count"] == 0
-    assert v3_routing["phase_h_source_authority"]["active_source_count"] == 0
-    assert all(record["activation_state"] != "active" for record in v3_routing["phase_h_source_authority"]["records"])
-    with pytest.raises(ModeB2Error, match="phase_h_v3_execution_inactive"):
-        build_mode_b2_authorization({"request": fixture_request(), "confirm_authorization": True})
+    assert v3_catalog["phase_h_contract"]["active_phase_h_source_count"] == 1
+    assert v3_routing["phase_h_source_authority"]["active_source_count"] == 1
+    active = [record for record in v3_routing["phase_h_source_authority"]["records"] if record["activation_state"] == "active"]
+    assert [(record["source_id"], record["runtime_executable"]) for record in active] == [
+        ("H1-TPEX-ATTENTION-OPENAPI", True)
+    ]
     authority = json.loads((ROOT / "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.json").read_text(encoding="utf-8"))
     by_id = {item["source_id"]: item for item in authority["sources"]}
     assert by_id["H2-TWSE-EXRIGHT-FINAL-TWT49U"]["source_role"] == "optional_licensed_provider"
@@ -260,8 +261,6 @@ def test_s12_rollback_model_keeps_v1_v2_and_materialized_v3_immutable(tmp_path: 
     assert v3_before == {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in v3_paths}
     assert not (execution["package"] / "ai_context/unified_market_evidence_result.v2.json").exists()
     assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v2"
-    with pytest.raises(ModeB2Error, match="phase_h_v3_execution_inactive"):
-        build_mode_b2_authorization({"request": fixture_request(), "confirm_authorization": True})
 
 
 def test_s13_startup_and_fixture_execution_have_zero_external_transport_calls(monkeypatch, tmp_path: Path):

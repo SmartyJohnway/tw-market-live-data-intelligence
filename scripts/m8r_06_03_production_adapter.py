@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 from urllib.request import Request, urlopen
 
-from jsonschema import Draft7Validator, FormatChecker
+from jsonschema import Draft7Validator, Draft202012Validator, FormatChecker
 
 from scripts.m5k_common import execute_live_observation
 from scripts.m8a_tpex_official_eod_adapter import execute_tpex_official_eod_adapter
@@ -26,8 +26,14 @@ from scripts.m8r_05b_03.dispatch import (
 from scripts.m8r_05b_03.errors import OrchestrationError
 from scripts.m8r_05b_03.registry import ExecutorMetadataRegistry
 from scripts.m8r_filesystem_safety import atomic_write_bytes
+from scripts.m8r_05c.citation_builder import _build_citation_id
 from scripts.phase_g.mops_material_disclosures import execute as execute_material_disclosures
 from scripts.phase_g.mops_monthly_revenue import execute as execute_monthly_revenue
+from server.services.phase_h_trading_status_adapters import (
+    H1NormalizationError,
+    failed_source_result,
+    normalize_tpex_attention,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,9 +45,14 @@ EVIDENCE_CONTRACTS = {
     "official_eod_reference": "official EOD reference plus timing/currentness context",
     "material_disclosures": "phase_g_material_disclosure_operation_evidence.v1",
     "monthly_revenue": "phase_g_monthly_revenue_operation_evidence.v1",
+    "trading_status_context": "trading_status_context_evidence.v1",
 }
 RESEARCH_EXECUTOR_ID = "phase_g_official_research_executor"
 RESEARCH_CAPABILITIES = frozenset({"material_disclosures", "monthly_revenue"})
+
+PHASE_H_H1_EXECUTOR_ID = "phase_h_h1_tpex_attention_executor"
+PHASE_H_H1_SOURCE_ID = "H1-TPEX-ATTENTION-OPENAPI"
+PHASE_H_H1_TPEX_ATTENTION_URL = "https://www.tpex.org.tw/openapi/v1/tpex_trading_warning_information"
 
 
 def load_production_executor_metadata() -> dict[str, Any]:
@@ -285,10 +296,182 @@ def _official_eod(request: dict[str, Any], context: DispatchRuntimeContext) -> d
     return result
 
 
+
+def _phase_h_artifact_record(
+    request: dict[str, Any],
+    context: DispatchRuntimeContext,
+    *,
+    relative_path: str,
+    payload: dict[str, Any],
+    role: str,
+) -> dict[str, Any]:
+    """Validate and persist one target-bounded Phase H artifact."""
+    schema_version = payload.get("schema_version")
+    schema_path = ROOT / "schemas" / f"{schema_version}.schema.json"
+    try:
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise OrchestrationError("phase_h_evidence_schema_unavailable") from exc
+    validator = Draft202012Validator(schema) if schema.get("$schema", "").endswith("2020-12/schema") else Draft7Validator(schema)
+    if list(validator.iter_errors(payload)):
+        raise OrchestrationError("phase_h_evidence_schema_invalid")
+    content = (json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+    atomic_write_bytes(context.governed_output_root, relative_path, content)
+    item_count = len(payload.get("items", [])) if isinstance(payload.get("items"), list) else 1
+    return {
+        "relative_path": relative_path,
+        "sha256": hashlib.sha256(content).hexdigest(),
+        "schema_version": schema_version,
+        "byte_size": len(content),
+        "item_count": item_count,
+        "evidence_contract": schema_version,
+        "artifact_role": role,
+    }
+
+
+def _phase_h_h1_sidecar(
+    evidence: dict[str, Any],
+    *,
+    evidence_path: str,
+    target: dict[str, str],
+    outcome: str,
+    failure_code: str | None,
+) -> dict[str, Any]:
+    source = evidence["source"]
+    return {
+        "schema_version": "phase_h_source_attempt_governance.v1",
+        "evidence_artifact_reference": evidence_path,
+        "canonical_target_id": target["canonical_target_id"],
+        "capability_id": "trading_status_context",
+        "attempts": [{
+            "source_family": source["source_family"],
+            "source_contract_id": source["source_contract_id"],
+            "source_role": source["source_role"],
+            "activation_state": source["activation_state"],
+            "provider_availability": "not_required",
+            "license_authority": source["license_authority"],
+            "coverage_result": evidence["status"],
+            "outcome": outcome,
+            "failure_code": failure_code,
+            "citation_ids": evidence["citation_ids"],
+        }],
+    }
+
+
+def _phase_h_h1_result_base(
+    request: dict[str, Any], *, status: str, error_code: str | None
+) -> dict[str, Any]:
+    return {
+        "schema_version": "unified_market_evidence_operation_result.v2",
+        "operation_id": request["operation_id"],
+        "execution_request_id": request["execution_request_id"],
+        "execution_request_hash": request["execution_request_hash"],
+        "executor_id": request["executor_id"],
+        "capability_id": request["capability_id"],
+        "evidence_contract": "trading_status_context_evidence.v1",
+        "status": status,
+        "error_code": error_code,
+        "result_item_count": 0,
+        "evidence_artifacts": [],
+        "warnings": [],
+    }
+
+
+def _phase_h_h1_tpex_attention(
+    request: dict[str, Any], context: DispatchRuntimeContext
+) -> dict[str, Any]:
+    """Execute the single H-ACT-H1 route: exact-target TPEx attention."""
+    _require_approved_execution((request,), context)
+    if request.get("executor_id") != PHASE_H_H1_EXECUTOR_ID:
+        raise OrchestrationError("executor_mismatch")
+    if request.get("capability_id") != "trading_status_context" or request.get("market") != "TPEX":
+        raise OrchestrationError("unsupported_production_route")
+    identifiers = request.get("approved_security_identifiers", [])
+    if len(identifiers) != 1:
+        raise OrchestrationError("approved_target_count_invalid")
+    try:
+        market, security_code = identifiers[0].split(":", 1)
+    except ValueError:
+        raise OrchestrationError("approved_target_invalid") from None
+    if market != "TPEX":
+        raise OrchestrationError("approved_target_market_mismatch")
+
+    target = {
+        "canonical_target_id": identifiers[0],
+        "market": "TPEX",
+        "security_code": security_code,
+    }
+    observed_at = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+    evidence_path = f"evidence/phase_h/h1/{request['operation_id']}.json"
+    sidecar_path = f"evidence/phase_h/governance/{request['operation_id']}.json"
+    citation_id = _build_citation_id(request["operation_id"], evidence_path)
+    failure_code: str | None = None
+
+    try:
+        payload = _fetch_official_payload(PHASE_H_H1_TPEX_ATTENTION_URL, timeout=request["timeout_seconds"])
+        rows = json.loads(payload.decode("utf-8-sig"))
+        evidence = normalize_tpex_attention(
+            rows, target, observed_at=observed_at, citation_id=citation_id
+        )
+        outcome = "succeeded"
+    except (OSError, TimeoutError):
+        failure_code = "source_transport_failed"
+        evidence = failed_source_result(
+            PHASE_H_H1_SOURCE_ID,
+            target,
+            observed_at=observed_at,
+            diagnostic=failure_code,
+        )
+        outcome = "failed"
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        failure_code = "source_json_invalid"
+        evidence = failed_source_result(
+            PHASE_H_H1_SOURCE_ID,
+            target,
+            observed_at=observed_at,
+            diagnostic=failure_code,
+        )
+        outcome = "failed"
+    except H1NormalizationError:
+        failure_code = "source_contract_failed"
+        evidence = failed_source_result(
+            PHASE_H_H1_SOURCE_ID,
+            target,
+            observed_at=observed_at,
+            diagnostic=failure_code,
+        )
+        outcome = "failed"
+
+    primary = _phase_h_artifact_record(
+        request, context, relative_path=evidence_path, payload=evidence, role="primary_evidence"
+    )
+    sidecar = _phase_h_h1_sidecar(
+        evidence,
+        evidence_path=evidence_path,
+        target=target,
+        outcome=outcome,
+        failure_code=failure_code,
+    )
+    governance = _phase_h_artifact_record(
+        request, context, relative_path=sidecar_path, payload=sidecar, role="supporting_governance"
+    )
+    result = _phase_h_h1_result_base(
+        request,
+        status="succeeded" if outcome == "succeeded" else "failed",
+        error_code=failure_code,
+    )
+    result["result_item_count"] = primary["item_count"] if outcome == "succeeded" else 0
+    result["evidence_artifacts"] = [primary, governance]
+    if evidence.get("status") == "partial":
+        result["warnings"].append("phase_h_h1_partial_coverage")
+    return result
+
 def production_operation_adapter(request: dict[str, Any], context: DispatchRuntimeContext) -> dict[str, Any]:
     """Fixed adapter dispatch; no browser-controlled module, path, or URL."""
     if request.get("executor_id") == RESEARCH_EXECUTOR_ID:
         return _research_batch_operation_adapter((request,), context)[0]
+    if request.get("executor_id") == PHASE_H_H1_EXECUTOR_ID:
+        return _phase_h_h1_tpex_attention(request, context)
     if request.get("executor_id") != EXECUTOR_ID:
         raise OrchestrationError("executor_mismatch")
     capability = request.get("capability_id")
@@ -405,6 +588,7 @@ def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
         (RESEARCH_EXECUTOR_ID, "material_disclosures", "TPEX"),
         (RESEARCH_EXECUTOR_ID, "monthly_revenue", "TWSE"),
         (RESEARCH_EXECUTOR_ID, "monthly_revenue", "TPEX"),
+        (PHASE_H_H1_EXECUTOR_ID, "trading_status_context", "TPEX"),
     )
     registrations = [
         RuntimeAdapterRegistration(
@@ -419,7 +603,7 @@ def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
             maximum_result_items=entry.maximum_result_items,
             output_policy=entry.output_policy,
             adapter=production_operation_adapter,
-            batch_adapter=production_batch_operation_adapter,
+            batch_adapter=None if entry.executor_id == PHASE_H_H1_EXECUTOR_ID else production_batch_operation_adapter,
             fake_adapter=False,
         )
         for entry in (metadata.get_route(executor, capability, market) for executor, capability, market in routes)

@@ -23,6 +23,21 @@ def _fail(code: str) -> None:
     raise PhaseHV3ContractValidationError(code)
 
 
+def _matches_frozen_bytes(content: bytes, item: Mapping[str, Any]) -> bool:
+    """Compare frozen text artifacts without making OS newline conversion authority."""
+    normalized = content.replace(b"\r\n", b"\n")
+    candidates = (
+        content,
+        normalized,
+        normalized.replace(b"\n", b"\r\n"),
+    )
+    return any(
+        len(candidate) == item["bytes"]
+        and hashlib.sha256(candidate).hexdigest() == item["sha256"]
+        for candidate in candidates
+    )
+
+
 RETURN_PCT_ABS_TOLERANCE = 1e-9
 """Absolute tolerance for serialized JSON return percentages; no rounding."""
 
@@ -260,12 +275,38 @@ def main() -> None:
     manifest = json.loads(
         (root / "docs" / "governance" / "phase_h" / "PHASE_H_H0_G_V3_SCHEMA_FREEZE_MANIFEST.json").read_text(encoding="utf-8")
     )
+    # H0-G remains historical freeze evidence. H-ACT tranches are allowed to
+    # advance current runtime-state projections (catalog/routing) and this current
+    # validator without rewriting the historical freeze manifest.
+    activation_mutable = {
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "scripts/validate_phase_h_v3_contracts.py",
+    }
     for section in ("semantic_inputs", "v3_normative_artifacts", "protected_v1_v2_authority"):
         for item in manifest[section]:
+            if item["path"] in activation_mutable:
+                continue
             path = root / item["path"]
             content = path.read_bytes()
-            if hashlib.sha256(content).hexdigest() != item["sha256"] or len(content) != item["bytes"]:
+            if not _matches_frozen_bytes(content, item):
                 _fail(f"manifest_integrity_mismatch:{item['path']}")
+
+    catalog = json.loads(
+        (root / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json").read_text(encoding="utf-8")
+    )
+    routing = json.loads(
+        (root / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json").read_text(encoding="utf-8")
+    )
+    if catalog["contract_versions"].get("preferred_request_schema_version") != "unified_market_evidence_request.v2":
+        _fail("phase_h_preferred_request_version_drift")
+    if catalog["contract_versions"].get("v3_runtime_authority_status") != "selected_routes_active_v2_preferred":
+        _fail("phase_h_runtime_authority_state_invalid")
+    if catalog["phase_h_contract"].get("active_phase_h_source_count") != 1:
+        _fail("phase_h_active_source_count_invalid")
+    active = [item for item in routing["phase_h_source_authority"]["records"] if item.get("activation_state") == "active"]
+    if [(item.get("source_id"), item.get("runtime_executable")) for item in active] != [("H1-TPEX-ATTENTION-OPENAPI", True)]:
+        _fail("phase_h_active_source_set_invalid")
     validate_trading_status_context_semantics(examples["h1_attention_available"])
     validate_trading_status_context_semantics(examples["h1_no_evidence_complete"])
     validate_corporate_action_context_semantics(examples["h2_preannouncement_and_final"])

@@ -15,6 +15,7 @@ from datetime import date
 
 from jsonschema import Draft7Validator
 
+from scripts.m8a_official_eod_observation import parse_roc_yyyymmdd
 from scripts.validate_phase_h_v3_contracts import validate_trading_status_context_semantics
 
 
@@ -65,7 +66,22 @@ def _date_value(raw: object) -> str | None:
     return None
 
 
-def _snapshot_date(rows: Sequence[Mapping[str, object]], field: str) -> tuple[str | None, list[str]]:
+def _tpex_attention_date_value(raw: object) -> str | None:
+    """Normalize the verified TPEx attention Date grammar without altering raw provenance."""
+    canonical = _date_value(raw)
+    if canonical is not None:
+        return canonical
+    if isinstance(raw, str) and len(raw) == 7 and raw.isdigit():
+        normalized, validation = parse_roc_yyyymmdd(raw)
+        if validation.get("valid") is not True or normalized is None:
+            raise H1NormalizationError("source_failed:invalid_source_snapshot_date_calendar:Date")
+        return normalized
+    return None
+
+
+def _snapshot_date(
+    rows: Sequence[Mapping[str, object]], field: str, *, parser=_date_value
+) -> tuple[str | None, list[str]]:
     if not rows:
         return None, []
     raw_values = [row[field] for row in rows]
@@ -74,7 +90,7 @@ def _snapshot_date(rows: Sequence[Mapping[str, object]], field: str) -> tuple[st
             raise H1NormalizationError("source_failed:invalid_source_snapshot_date_type:Date")
     if any(raw != raw_values[0] for raw in raw_values[1:]):
         return None, [f"source_snapshot_date_unresolved:{field}:multiple_values"]
-    normalized = _date_value(raw_values[0])
+    normalized = parser(raw_values[0])
     if normalized is None:
         return None, [f"source_snapshot_date_unresolved:{field}:raw_encoding"]
     return normalized, []
@@ -152,9 +168,16 @@ def failed_source_result(source_id: str, target: Mapping[str, str], *, observed_
 def normalize_tpex_attention(rows: object, target: Mapping[str, str], *, observed_at: str, citation_id: str) -> dict:
     required = ("Date", "SecuritiesCompanyCode", "CompanyName", "TradingInformation", "ClosePrice", "PriceEarningRatio")
     valid_rows = _validated_rows(rows, target, market="TPEX", required=required)
-    snapshot_date, date_caveats = _snapshot_date(valid_rows, "Date")
+    table_snapshot_date, date_caveats = _snapshot_date(
+        valid_rows, "Date", parser=_tpex_attention_date_value
+    )
     row = _bound_row(valid_rows, identifier="SecuritiesCompanyCode", target=target)
-    items = [] if row is None else [_item(status_type="attention", source_record_date=_date_value(row["Date"]), reason=None, conditions=None, measures=None, provenance={key: row[key] for key in required}, citation_id=citation_id)]
+    row_date = None if row is None else _tpex_attention_date_value(row["Date"])
+    # The live TPEx attention endpoint may contain multiple official record dates.
+    # For an exact target hit, the target-bound source record date is the
+    # truthful coverage date; the table-level multiple-date caveat is retained.
+    snapshot_date = row_date if row is not None else table_snapshot_date
+    items = [] if row is None else [_item(status_type="attention", source_record_date=row_date, reason=None, conditions=None, measures=None, provenance={key: row[key] for key in required}, citation_id=citation_id)]
     return _result(source_id="H1-TPEX-ATTENTION-OPENAPI", target=target, observed_at=observed_at, snapshot_date=snapshot_date, covered=("attention",), items=items, citation_ids=[citation_id], caveats=date_caveats)
 
 
