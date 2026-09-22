@@ -1,0 +1,7 @@
+{
+  "fixture_kind": "NON_AUTHORITATIVE_TEST_ONLY",
+  "observed_at": "2026-09-22T00:00:00Z",
+  "tpex_pre": [{"SecuritiesCompanyCode":"6488","ExRrightsExDividendDate":"2026-08-20","ExRrightsExDividend":"除息","CashDividend":"1","StockDividendRatio":"0","SubscriptionRatioToNewSharesIssued":"0","SubscriptionPricePerShare":""}],
+  "tpex_final": [{"SecuritiesCompanyCode":"6488","Date":"2026-08-20","ClosePriceBeforeExRightsDiviend":"100","ExRightsDiviendQuote":"95","CashDividend":"2.5","StockDividend":"0","ExRightsDiviend":"0","OpeningReferencePrice":"95","SubscriptionPricePerShare":""}],
+  "twse_pre": [{"Code":"2330","Date":"2026-08-20","Exdividend":"除權","CashDividend":"0","StockDividendRatio":"1","SubscriptionRatio":"0","SubscriptionPricePerShare":"尚未公告"}]
+}

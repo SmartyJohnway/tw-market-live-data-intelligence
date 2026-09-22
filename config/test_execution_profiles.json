@@ -175,7 +175,8 @@
         "tests/unit/test_phase_g_pr_d_closure.py",
         "tests/unit/test_phase_h_v3_contract_freeze.py",
         "tests/unit/test_phase_h_imp_0_passive_v3_compatibility.py",
-        "tests/unit/test_phase_h_imp_1_h4_deterministic_safety.py"
+        "tests/unit/test_phase_h_imp_1_h4_deterministic_safety.py",
+        "tests/unit/test_phase_h_imp_3_h2_dormant_adapters.py"
       ],
       "network_policy": "no network; excludes tests marked network",
       "browser_policy": "does not install or require Playwright/Chromium",

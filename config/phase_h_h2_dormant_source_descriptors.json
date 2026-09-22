@@ -1,0 +1,14 @@
+{
+  "schema_version": "phase_h_h2_dormant_source_descriptors.v1",
+  "status": "NON_AUTHORITATIVE_DORMANT_IMPLEMENTATION_METADATA",
+  "sources": [
+    {"source_id":"H2-TWSE-EXRIGHT-PRE-OPENAPI","source_family":"TWSE_EXRIGHT_PRE_OPEN_DATA","source_contract_id":"TWT48U_ALL","transport":"official_json_openapi","license_authority":"ODGL-1.0","source_role":"default_candidate","activation_state":"eligible","runtime_executable":false},
+    {"source_id":"H2-TWSE-EXRIGHT-FINAL-TWT49U","source_family":"TWSE_EXRIGHT_FINAL_LICENSED","source_contract_id":"TWT49U","transport":"licensed_feed","license_authority":null,"source_role":"optional_licensed_provider","activation_state":"inactive","runtime_executable":false},
+    {"source_id":"H2-TPEX-EXRIGHT-PRE-OPENAPI","source_family":"TPEX_EXRIGHT_PRE_OPEN_DATA","source_contract_id":"tpex_exright_prepost","transport":"official_json_openapi","license_authority":"ODGL-1.0","source_role":"default_candidate","activation_state":"eligible","runtime_executable":false},
+    {"source_id":"H2-TPEX-EXRIGHT-FINAL-OPENAPI","source_family":"TPEX_EXRIGHT_FINAL_OPEN_DATA","source_contract_id":"tpex_exright_daily","transport":"official_json_openapi","license_authority":"ODGL-1.0","source_role":"default_candidate","activation_state":"eligible","runtime_executable":false},
+    {"source_id":"H2-TWSE-CAPITAL-REDUCTION-WEB","source_family":"TWSE_CAPITAL_REDUCTION_MANUAL","source_contract_id":"browser_csv","transport":"browser_csv","license_authority":null,"source_role":"manual_verification","activation_state":"inactive","runtime_executable":false},
+    {"source_id":"H2-TPEX-CAPITAL-REDUCTION-WEB","source_family":"TPEX_CAPITAL_REDUCTION_MANUAL","source_contract_id":"browser_csv","transport":"browser_csv","license_authority":null,"source_role":"manual_verification","activation_state":"inactive","runtime_executable":false},
+    {"source_id":"H2-TWSE-PAR-SPLIT-CONSOLIDATION-GAP","source_family":"TWSE_PAR_SPLIT_GAP","source_contract_id":"unproven","transport":"none","license_authority":null,"source_role":"source_gap","activation_state":"blocked","runtime_executable":false},
+    {"source_id":"H2-TPEX-PAR-SPLIT-CONSOLIDATION-GAP","source_family":"TPEX_PAR_SPLIT_GAP","source_contract_id":"unproven","transport":"none","license_authority":null,"source_role":"source_gap","activation_state":"blocked","runtime_executable":false}
+  ]
+}
