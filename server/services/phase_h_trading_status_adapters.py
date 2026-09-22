@@ -8,9 +8,9 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from copy import deepcopy
-from datetime import date
 import json
 from pathlib import Path
+import re
 
 from jsonschema import Draft7Validator
 
@@ -49,20 +49,23 @@ def _validated_rows(rows: object, target: Mapping[str, str], *, market: str, req
     return rows
 
 
-def _snapshot_date(rows: Sequence[Mapping[str, object]], field: str) -> str:
-    values: set[str] = set()
-    for row in rows:
-        value = row[field]
-        if not isinstance(value, str):
-            raise H1NormalizationError(f"source_failed:invalid_source_snapshot_date:{field}")
-        try:
-            date.fromisoformat(value)
-        except ValueError as exc:
-            raise H1NormalizationError(f"source_failed:invalid_source_snapshot_date:{field}") from exc
-        values.add(value)
-    if len(values) != 1:
-        raise H1NormalizationError(f"source_failed:conflicting_source_snapshot_date:{field}")
-    return next(iter(values))
+def _date_value(raw: object) -> str | None:
+    """Normalize only an already canonical date; do not assume source grammar."""
+    if isinstance(raw, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", raw):
+        return raw
+    return None
+
+
+def _snapshot_date(rows: Sequence[Mapping[str, object]], field: str) -> tuple[str | None, list[str]]:
+    if not rows:
+        return None, []
+    raw_values = {row[field] for row in rows}
+    if len(raw_values) != 1:
+        return None, [f"source_snapshot_date_unresolved:{field}:multiple_values"]
+    normalized = _date_value(next(iter(raw_values)))
+    if normalized is None:
+        return None, [f"source_snapshot_date_unresolved:{field}:raw_encoding"]
+    return normalized, []
 
 
 def _bound_row(rows: Sequence[Mapping[str, object]], *, identifier: str, target: Mapping[str, str]) -> Mapping[str, object] | None:
@@ -137,19 +140,19 @@ def failed_source_result(source_id: str, target: Mapping[str, str], *, observed_
 def normalize_tpex_attention(rows: object, target: Mapping[str, str], *, observed_at: str, citation_id: str) -> dict:
     required = ("Date", "SecuritiesCompanyCode", "CompanyName", "TradingInformation", "ClosePrice", "PriceEarningRatio")
     valid_rows = _validated_rows(rows, target, market="TPEX", required=required)
-    snapshot_date = _snapshot_date(valid_rows, "Date")
+    snapshot_date, date_caveats = _snapshot_date(valid_rows, "Date")
     row = _bound_row(valid_rows, identifier="SecuritiesCompanyCode", target=target)
-    items = [] if row is None else [_item(status_type="attention", source_record_date=snapshot_date, reason=row["TradingInformation"], conditions=None, measures=None, provenance={key: row[key] for key in required}, citation_id=citation_id)]
-    return _result(source_id="H1-TPEX-ATTENTION-OPENAPI", target=target, observed_at=observed_at, snapshot_date=snapshot_date, covered=("attention",), items=items, citation_ids=[citation_id])
+    items = [] if row is None else [_item(status_type="attention", source_record_date=_date_value(row["Date"]), reason=row["TradingInformation"], conditions=None, measures=None, provenance={key: row[key] for key in required}, citation_id=citation_id)]
+    return _result(source_id="H1-TPEX-ATTENTION-OPENAPI", target=target, observed_at=observed_at, snapshot_date=snapshot_date, covered=("attention",), items=items, citation_ids=[citation_id], caveats=date_caveats)
 
 
 def normalize_tpex_disposition(rows: object, target: Mapping[str, str], *, observed_at: str, citation_id: str) -> dict:
     required = ("Date", "SecuritiesCompanyCode", "CompanyName", "DispositionPeriod", "DispositionReasons", "DisposalCondition")
     valid_rows = _validated_rows(rows, target, market="TPEX", required=required)
-    snapshot_date = _snapshot_date(valid_rows, "Date")
+    snapshot_date, date_caveats = _snapshot_date(valid_rows, "Date")
     row = _bound_row(valid_rows, identifier="SecuritiesCompanyCode", target=target)
-    items = [] if row is None else [_item(status_type="disposition", source_record_date=snapshot_date, reason=row["DispositionReasons"], conditions=row["DisposalCondition"], measures=row["DispositionPeriod"], provenance={key: row[key] for key in required}, citation_id=citation_id)]
-    return _result(source_id="H1-TPEX-DISPOSITION-OPENAPI", target=target, observed_at=observed_at, snapshot_date=snapshot_date, covered=("disposition",), items=items, citation_ids=[citation_id])
+    items = [] if row is None else [_item(status_type="disposition", source_record_date=_date_value(row["Date"]), reason=row["DispositionReasons"], conditions=row["DisposalCondition"], measures=None, provenance={key: row[key] for key in required}, citation_id=citation_id)]
+    return _result(source_id="H1-TPEX-DISPOSITION-OPENAPI", target=target, observed_at=observed_at, snapshot_date=snapshot_date, covered=("disposition",), items=items, citation_ids=[citation_id], caveats=date_caveats)
 
 
 def normalize_twse_changed_trading(rows: object, target: Mapping[str, str], *, observed_at: str, citation_id: str) -> dict:

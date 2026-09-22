@@ -27,6 +27,14 @@ SCHEMA = json.loads((ROOT / "schemas/trading_status_context_evidence.v1.schema.j
 TARGET_TPEX = {"canonical_target_id": "target-tpex-6488", "market": "TPEX", "security_code": "6488"}
 TARGET_TWSE = {"canonical_target_id": "target-twse-2330", "market": "TWSE", "security_code": "2330"}
 OBSERVED = "2026-09-22T00:00:00Z"
+SYNTHETIC_SOURCE = {
+    "source_family": "NON_AUTHORITATIVE_TEST_ONLY_COMPLETE_H1_SCOPE",
+    "source_contract_id": "controlled_complete_h1_scope_fixture",
+    "transport": "fixture",
+    "license_authority": None,
+    "source_role": "research_only",
+    "activation_state": "inactive",
+}
 
 
 def test_fixture_only_source_rows_and_three_dormant_normalizers() -> None:
@@ -38,6 +46,9 @@ def test_fixture_only_source_rows_and_three_dormant_normalizers() -> None:
     assert attention["items"][0]["source_native_provenance"]["TradingInformation"] == "official attention-list entry"
     assert disposition["items"][0]["status_type"] == "disposition"
     assert disposition["items"][0]["official_conditions"] == "official condition text"
+    assert disposition["items"][0]["official_measures"] is None
+    assert disposition["items"][0]["source_native_provenance"]["DispositionPeriod"] == "official period text"
+    assert disposition["items"][0]["source_native_provenance"]["DispositionReasons"] == "official reason text"
     assert changed["items"][0]["status_type"] == "changed_trading_method"
     assert changed["items"][0]["source_native_provenance"]["PeriodicCallAuctionTrading"] == "official periodic call auction text"
     assert attention["coverage"]["source_snapshot_date"] == "2026-09-21"
@@ -59,8 +70,43 @@ def test_partial_target_absence_keeps_source_citation() -> None:
     assert result["coverage"]["uncovered_status_types"] == ["changed_trading_method", "disposition", "resumption", "suspension"]
 
 
+def test_empty_tpex_tables_are_valid_partial_source_slices() -> None:
+    for normalizer, subtype in ((normalize_tpex_attention, "attention"), (normalize_tpex_disposition, "disposition")):
+        result = normalizer([], TARGET_TPEX, observed_at=OBSERVED, citation_id=f"empty-{subtype}")
+        assert result["status"] == "partial"
+        assert result["items"] == []
+        assert result["coverage"]["covered_status_types"] == [subtype]
+        assert result["coverage"]["retrieval_succeeded"] is True
+        assert result["coverage"]["source_contract_validated"] is True
+        assert result["coverage"]["exact_target_search_succeeded"] is True
+        assert result["coverage"]["source_snapshot_date"] is None
+        assert result["citation_ids"] == [f"empty-{subtype}"]
+
+
+def test_present_noncanonical_date_is_preserved_without_source_failure() -> None:
+    rows = copy.deepcopy(ROWS["tpex_attention"])
+    rows[0]["Date"] = "09/21/2026"
+    result = normalize_tpex_attention(rows, TARGET_TPEX, observed_at=OBSERVED, citation_id="raw-date")
+    assert result["status"] == "partial"
+    assert result["coverage"]["source_snapshot_date"] is None
+    assert "source_snapshot_date_unresolved:Date:raw_encoding" in result["caveats"]
+    assert result["items"][0]["source_record_date"] is None
+    assert result["items"][0]["source_native_provenance"]["Date"] == "09/21/2026"
+
+
+def test_mixed_source_dates_are_not_source_failure() -> None:
+    rows = copy.deepcopy(ROWS["tpex_disposition"])
+    rows.append({**rows[0], "SecuritiesCompanyCode": "9999", "Date": "2026-09-22"})
+    result = normalize_tpex_disposition(rows, TARGET_TPEX, observed_at=OBSERVED, citation_id="mixed-date")
+    assert result["status"] == "partial"
+    assert result["coverage"]["source_snapshot_date"] is None
+    assert result["coverage"]["retrieval_succeeded"] is True
+    assert "source_snapshot_date_unresolved:Date:multiple_values" in result["caveats"]
+
+
 def test_complete_scope_no_evidence_is_controlled_test_only() -> None:
     fixture = normalize_tpex_attention(ROWS["tpex_attention"], TARGET_TPEX, observed_at=OBSERVED, citation_id="complete-source")
+    fixture["source"] = copy.deepcopy(SYNTHETIC_SOURCE)
     fixture["status"] = "no_evidence_in_covered_scope"
     fixture["items"] = []
     fixture["coverage"].update({
@@ -85,6 +131,7 @@ def test_source_and_binding_failures_remain_distinct_with_citations() -> None:
 def test_lifecycle_states_and_simultaneous_statuses_are_distinguishable() -> None:
     base = normalize_tpex_attention(ROWS["tpex_attention"], TARGET_TPEX, observed_at=OBSERVED, citation_id="lifecycle")
     controlled = copy.deepcopy(base)
+    controlled["source"] = copy.deepcopy(SYNTHETIC_SOURCE)
     controlled["coverage"].update({"status": "complete", "declared_scope_complete": True, "covered_status_types": list(DECLARED_STATUS_TYPES), "uncovered_status_types": []})
     controlled["items"] = []
     for lifecycle, status_type in zip(("reported", "effective", "ended", "unresolved"), ("attention", "disposition", "changed_trading_method", "suspension"), strict=True):
