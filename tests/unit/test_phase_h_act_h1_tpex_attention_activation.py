@@ -16,7 +16,7 @@ from scripts.m8r_06_03_production_adapter import (
 )
 from server.services.unified_mode_a import validate_mode_a_request
 from server.services import unified_mode_b2
-from server.services.unified_mode_b2 import build_mode_b2_authorization
+from server.services.unified_mode_b2 import ModeB2Error, build_mode_b2_authorization
 from server.unified_mcp.tool_contracts import PREFERRED_REQUEST_SCHEMA_VERSION, build_tool_specs
 
 
@@ -146,7 +146,18 @@ def test_h_act_h1_workbench_b2_accepts_governed_v3_path_without_enabling_mcp_act
         "status": "ready_for_confirmation",
         "internal_execution_reference": {"preview_id": "preview-h-act-h1"},
     }
-    fake_plan = {"plan_id": "plan-h-act-h1", "plan_hash": "a" * 64}
+    fake_plan = {
+        "plan_id": "plan-h-act-h1",
+        "plan_hash": "a" * 64,
+        "operations": [{
+            "operation_status": "executable_pending_approval",
+            "capability_id": "trading_status_context",
+            "market": "TPEX",
+            "executor_id": PHASE_H_H1_EXECUTOR_ID,
+        }],
+        "blocked_operations": [],
+        "omitted_optional_capabilities": [],
+    }
 
     monkeypatch.setattr(
         unified_mode_b2,
@@ -182,6 +193,72 @@ def test_h_act_h1_workbench_b2_accepts_governed_v3_path_without_enabling_mcp_act
         for branch in snapshot["market_fetch_evidence"].inputSchema["properties"]["request"]["oneOf"]
     }
     assert versions == {"unified_market_evidence_request.v1", "unified_market_evidence_request.v2"}
+
+
+@pytest.mark.parametrize(
+    ("needs", "operation"),
+    [
+        (
+            [{"type": "current_observation", "priority": "required", "parameters": {}}],
+            {
+                "operation_status": "executable_pending_approval",
+                "capability_id": "current_observation",
+                "market": "TPEX",
+                "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+            },
+        ),
+        (
+            [{"type": "material_disclosures", "priority": "required", "parameters": {}}],
+            {
+                "operation_status": "executable_pending_approval",
+                "capability_id": "material_disclosures",
+                "market": "TPEX",
+                "executor_id": "phase_g_official_research_executor",
+            },
+        ),
+        (
+            [
+                {"type": "trading_status_context", "priority": "required", "parameters": {}},
+                {"type": "current_observation", "priority": "optional", "parameters": {}},
+            ],
+            {
+                "operation_status": "executable_pending_approval",
+                "capability_id": "trading_status_context",
+                "market": "TPEX",
+                "executor_id": PHASE_H_H1_EXECUTOR_ID,
+            },
+        ),
+    ],
+)
+def test_h_act_h1_v3_authorization_does_not_promote_other_resolved_v3_routes(
+    monkeypatch: pytest.MonkeyPatch, needs: list[dict], operation: dict
+) -> None:
+    request = _request(execution_mode="execute")
+    request["data_needs"] = copy.deepcopy(needs)
+    fake_preview = {
+        "status": "ready_for_confirmation",
+        "internal_execution_reference": {"preview_id": "preview-not-authorized"},
+    }
+    fake_plan = {
+        "plan_id": "plan-not-authorized",
+        "plan_hash": "b" * 64,
+        "operations": [copy.deepcopy(operation)],
+        "blocked_operations": [],
+        "omitted_optional_capabilities": [],
+    }
+    monkeypatch.setattr(
+        unified_mode_b2,
+        "_authorizable_preview",
+        lambda _request: (copy.deepcopy(fake_preview), copy.deepcopy(fake_plan)),
+    )
+    with pytest.raises(ModeB2Error, match="phase_h_v3_execution_inactive"):
+        build_mode_b2_authorization({
+            "request": request,
+            "confirm_authorization": True,
+            "expected_preview_id": "preview-not-authorized",
+            "expected_plan_id": "plan-not-authorized",
+            "expected_plan_hash": "b" * 64,
+        })
 
 
 def test_h0h_roll_001_single_route_rollback_model_preserves_artifact_bytes() -> None:
