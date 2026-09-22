@@ -181,7 +181,6 @@ def test_v3_h1_twse_stays_non_executable_and_h2_stays_plan_only():
 
 
 @pytest.mark.parametrize("lookback", [1, 5, 20])
-@pytest.mark.parametrize("lookback", [1, 5, 20])
 def test_v3_h3_is_recognized_but_plan_only(lookback):
     req = request(needs=[{"type": "recent_performance", "priority": "required", "parameters": {"lookback_trading_days": lookback}}])
     result = preview(req)
