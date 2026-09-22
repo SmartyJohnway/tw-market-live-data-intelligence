@@ -2,13 +2,17 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import hashlib
 import json
 from pathlib import Path
+import shutil
 
 import pytest
 from jsonschema import Draft202012Validator
 
 from scripts.m8r_05c.audit_package_builder import build_audit_package
+from scripts.m8r_05c.artifact_loader import _load_phase_h_source_attempts, load_projection_inputs
+from scripts.m8r_05b_03.canonical import sha256_json
 from scripts.m8r_05c.canonical import build_audit_package_id_v3, build_result_id_v3
 from scripts.m8r_05c.citation_builder import _build_citation_id, build_citation_index
 from scripts.m8r_05c.errors import ProjectionError
@@ -386,6 +390,12 @@ def test_h2_audit_uses_each_source_attempt_not_aggregate_status():
     artifact = inputs.evidence_artifacts[path]
     second_source = dict(artifact["sources"][0], source_family="H2_TEST_SOURCE_B", source_contract_id="h2-test-b")
     artifact["sources"].append(second_source)
+    artifact["status"] = "source_failed"
+    artifact["coverage"].update({
+        "status": "source_failed", "retrieval_succeeded": False,
+        "source_contract_validated": False, "failed_source_families": ["H2_TEST_SOURCE_B"],
+    })
+    artifact["events"] = []
     first_source = artifact["sources"][0]
     inputs.phase_h_source_attempts[path] = [
         _attempt_metadata(first_source, status="available", citation_ids=artifact["citation_ids"]),
@@ -457,3 +467,117 @@ def test_time_lineage_remains_distinct_in_typed_result_and_audit():
         "start_observation_date": evidence["discontinuity_safety"]["comparison_window"]["start_observation_date"],
         "end_observation_date": evidence["discontinuity_safety"]["comparison_window"]["end_observation_date"],
     }
+
+
+def test_package_bound_sidecars_supply_governance_without_runtime_injection():
+    inputs = _inputs()
+    sidecars = {}
+    for path, attempts in inputs.phase_h_source_attempts.items():
+        artifact = inputs.evidence_artifacts[path]
+        capability = {
+            "trading_status_context_evidence.v1": "trading_status_context",
+            "corporate_action_context_evidence.v1": "corporate_action_context",
+            "recent_performance_evidence.v1": "recent_performance",
+        }[artifact["schema_version"]]
+        sidecars[f"governance/{capability}-{path.rsplit('/', 1)[-1]}.json"] = {
+            "schema_version": "phase_h_source_attempt_governance.v1",
+            "evidence_artifact_reference": path,
+            "canonical_target_id": artifact["target"]["canonical_target_id"],
+            "capability_id": capability,
+            "attempts": [{key: value for key, value in attempt.items() if key != "authority_marker"} for attempt in attempts],
+        }
+    loaded = _load_phase_h_source_attempts({**inputs.evidence_artifacts, **sidecars})
+    assert loaded == {path: [{key: value for key, value in attempt.items() if key != "authority_marker"}
+                             for attempt in attempts] for path, attempts in inputs.phase_h_source_attempts.items()}
+
+
+def test_real_loader_populates_sidecar_governance_from_verified_package(tmp_path: Path):
+    """Filesystem-backed loader proof; no post-load governance injection."""
+    fixture_root = ROOT / "tests/fixtures/m8r_05c"
+    root = tmp_path / "artifact_root"
+    shutil.copytree(fixture_root / "artifact_root", root)
+    names = ("request_single_target", "f3_validation", "plan_single_target", "authorization", "consumption_binding", "claim", "receipt", "bundle")
+    paths = {}
+    for name in names:
+        source = fixture_root / f"{name}.json"
+        destination = tmp_path / source.name
+        shutil.copy2(source, destination)
+        paths[name] = destination
+    bundle = json.loads(paths["bundle"].read_text(encoding="utf-8"))
+    for entry in bundle["artifact_inventory"]:
+        artifact_path = root / entry["relative_path"]
+        entry["sha256"] = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+        entry["byte_size"] = artifact_path.stat().st_size
+    inventory_by_path = {entry["relative_path"]: entry for entry in bundle["artifact_inventory"]}
+    for operation in bundle["operation_evidence_entries"]:
+        for reference in operation["artifacts"]:
+            inventory = inventory_by_path[reference["relative_path"]]
+            reference["sha256"] = inventory["sha256"]
+            reference["byte_size"] = inventory["byte_size"]
+    inputs = _inputs()
+    for path, attempts in inputs.phase_h_source_attempts.items():
+        artifact = inputs.evidence_artifacts[path]
+        full_path = root / path
+        full_path.parent.mkdir(parents=True, exist_ok=True)
+        full_path.write_text(json.dumps(artifact, ensure_ascii=False), encoding="utf-8")
+        capability = {"trading_status_context_evidence.v1": "trading_status_context",
+                      "corporate_action_context_evidence.v1": "corporate_action_context",
+                      "recent_performance_evidence.v1": "recent_performance"}[artifact["schema_version"]]
+        sidecar_path = f"governance/{capability}.json"
+        sidecar = {"schema_version": "phase_h_source_attempt_governance.v1", "evidence_artifact_reference": path,
+                   "canonical_target_id": artifact["target"]["canonical_target_id"], "capability_id": capability,
+                   "attempts": [{key: value for key, value in attempt.items() if key != "authority_marker"} for attempt in attempts]}
+        sidecar_full_path = root / sidecar_path
+        sidecar_full_path.parent.mkdir(parents=True, exist_ok=True)
+        sidecar_full_path.write_text(json.dumps(sidecar, ensure_ascii=False), encoding="utf-8")
+        for rel_path, payload, contract in ((path, artifact, artifact["schema_version"]), (sidecar_path, sidecar, sidecar["schema_version"])):
+            file_path = root / rel_path
+            bundle["artifact_inventory"].append({"relative_path": rel_path,
+                "sha256": hashlib.sha256(file_path.read_bytes()).hexdigest(), "schema_version": payload["schema_version"],
+                "byte_size": file_path.stat().st_size, "item_count": 1, "evidence_contract": contract})
+    bundle["total_item_count"] = len(bundle["artifact_inventory"])
+    body = {key: value for key, value in bundle.items() if key not in {"schema_version", "bundle_id", "bundle_hash"}}
+    bundle["bundle_hash"] = sha256_json(body)
+    paths["bundle"].write_text(json.dumps(bundle), encoding="utf-8")
+    def load_verified_package():
+        return load_projection_inputs(request_path=str(paths["request_single_target"]), f3_validation_path=str(paths["f3_validation"]),
+            plan_path=str(paths["plan_single_target"]), authorization_path=str(paths["authorization"]),
+            consumption_binding_path=str(paths["consumption_binding"]), claim_path=str(paths["claim"]),
+            receipt_path=str(paths["receipt"]), bundle_path=str(paths["bundle"]), artifact_root=str(root),
+            calculated_at="2026-09-22T00:00:00Z")
+
+    loaded = load_verified_package()
+    assert set(loaded.phase_h_source_attempts) == set(inputs.phase_h_source_attempts)
+    result = build_result(loaded, output_schema_version="unified_market_evidence_result.v3")
+    citations = build_citation_index(build_lineage_map(loaded), loaded.bundle, result["schema_version"])
+    audit = build_audit_package(result, loaded, citations, "ai_context/unified_market_evidence_result.v3.json",
+                                output_schema_version="unified_market_evidence_audit_package.v3")
+    assert audit["result_id"] == result["result_id"]
+    assert render_result_markdown(result)
+    sidecar_file = root / "governance/trading_status_context.json"
+    sidecar_file.write_bytes(sidecar_file.read_bytes() + b"\n")
+    with pytest.raises(ProjectionError, match="artifact_hash_mismatch"):
+        load_verified_package()
+
+
+@pytest.mark.parametrize("tamper", ["missing", "wrong_target", "wrong_capability", "duplicate"])
+def test_package_bound_sidecar_reference_tampering_fails_closed(tamper: str):
+    inputs = _inputs()
+    path = "evidence/phase_h/h1/TWSE_2330.json"
+    artifact = inputs.evidence_artifacts[path]
+    sidecar = {
+        "schema_version": "phase_h_source_attempt_governance.v1", "evidence_artifact_reference": path,
+        "canonical_target_id": artifact["target"]["canonical_target_id"], "capability_id": "trading_status_context",
+        "attempts": inputs.phase_h_source_attempts[path],
+    }
+    evidence = {**inputs.evidence_artifacts, "governance/h1.json": sidecar}
+    if tamper == "missing":
+        del evidence[path]
+    elif tamper == "wrong_target":
+        sidecar["canonical_target_id"] = "TWSE:2317"
+    elif tamper == "wrong_capability":
+        sidecar["capability_id"] = "recent_performance"
+    else:
+        evidence["governance/h1-duplicate.json"] = deepcopy(sidecar)
+    with pytest.raises(ProjectionError):
+        _load_phase_h_source_attempts(evidence)

@@ -146,9 +146,7 @@ def _phase_h_governance(inputs: ProjectionInputs) -> dict:
                 ))
         elif capability_id == "recent_performance":
             metadata = _phase_h_attempt_metadata(inputs, relative_path)
-            if len(metadata) != 1 or metadata[0].get("authority_marker") not in {
-                "NON_AUTHORITATIVE_TEST_ONLY", "PACKAGE_BOUND_EXECUTION_LINEAGE",
-            }:
+            if len(metadata) != 1:
                 raise ProjectionError("phase_h_source_governance_unresolved")
             source = {field: metadata[0].get(field) for field in _GOVERNANCE_SOURCE_FIELDS}
             if any(source.get(field) is None for field in ("source_family", "source_contract_id", "source_role", "activation_state")):
