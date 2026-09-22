@@ -35,20 +35,20 @@
     "absolute_runtime_root_exposed_to_user_output": false
   },
   "scenarios": [
-    {"scenario_id": "S1_H1_TPEX_ATTENTION_AVAILABLE", "status": "PASS", "source_authority_class": "official governed source authority", "runtime_activation_state": "inactive"},
-    {"scenario_id": "S2_MULTI_TARGET_MIXED", "status": "PASS", "source_authority_class": "official governed source authority", "runtime_activation_state": "inactive"},
-    {"scenario_id": "S3_H1_SOURCE_CONTRACT_FAILURE", "status": "PASS", "source_authority_class": "official governed source authority", "runtime_activation_state": "inactive"},
-    {"scenario_id": "S4_H2_CORPORATE_ACTION_DISCONTINUITY", "status": "PASS", "source_authority_class": "official governed source authority", "runtime_activation_state": "inactive"},
-    {"scenario_id": "S5_ORDINARY_DAY", "status": "PASS", "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY"},
-    {"scenario_id": "S6A_H3_COMPLETE", "status": "PASS", "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY", "source_authority_class": "UNRESOLVED / NOT ESTABLISHED"},
-    {"scenario_id": "S6B_H3_PARTIAL_OR_INSUFFICIENT", "status": "PASS", "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY", "source_authority_class": "UNRESOLVED / NOT ESTABLISHED"},
-    {"scenario_id": "S7_PRODUCTION_V3_AUTHORIZATION_DENIED", "status": "PASS"},
-    {"scenario_id": "S8_EXECUTE_ONCE_REPLAY", "status": "PASS"},
-    {"scenario_id": "S9_CONCURRENT_CLAIM", "status": "PASS"},
-    {"scenario_id": "S10_V2_UNAFFECTED", "status": "PASS"},
-    {"scenario_id": "S11_FRESH_INSTALL_PORTABILITY", "status": "PASS"},
-    {"scenario_id": "S12_ROLLBACK_MODEL", "status": "PASS"},
-    {"scenario_id": "S13_STARTUP_ZERO_NETWORK", "status": "PASS"}
+    {"scenario_id": "S1_H1_TPEX_ATTENTION_AVAILABLE", "test_layer": "controlled_e2e", "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY", "source_authority_class": "official governed source authority", "runtime_activation_state": "inactive", "expected_result": "succeeded typed evidence plus governance sidecar", "actual_result": "succeeded; Result/Audit/H5 valid", "status": "PASS"},
+    {"scenario_id": "S2_MULTI_TARGET_MIXED", "test_layer": "controlled_e2e", "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY", "source_authority_class": "official governed source authority", "runtime_activation_state": "inactive", "expected_result": "target-scoped mixed success/failure", "actual_result": "TPEX:6488 evidence; TPEX:3333 source_failed; no citation leakage", "status": "PASS"},
+    {"scenario_id": "S3_H1_SOURCE_CONTRACT_FAILURE", "test_layer": "controlled_e2e", "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY", "source_authority_class": "official governed source authority", "runtime_activation_state": "inactive", "expected_result": "fail closed with no fallback", "actual_result": "source_failed through Receipt/Bundle/Result/Audit/H5", "status": "PASS"},
+    {"scenario_id": "S4_H2_CORPORATE_ACTION_DISCONTINUITY", "test_layer": "component_contract", "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY", "source_authority_class": "official governed source authority", "runtime_activation_state": "inactive", "expected_result": "truthful H4 coverage guard", "actual_result": "coverage_incomplete / CORPORATE_ACTION_COVERAGE_INCOMPLETE", "status": "PASS"},
+    {"scenario_id": "S5_ORDINARY_DAY", "test_layer": "frozen_contract_fixture", "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY", "runtime_activation_state": "inactive", "expected_result": "no_material_discontinuity_detected only with complete fixture", "actual_result": "frozen semantic fixture state verified", "status": "PASS"},
+    {"scenario_id": "S6A_H3_COMPLETE", "test_layer": "frozen_contract_fixture", "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY", "source_authority_class": "UNRESOLVED / NOT ESTABLISHED", "runtime_activation_state": "inactive", "expected_result": "complete H3 semantics", "actual_result": "complete 5-day fixture contract verified", "status": "PASS"},
+    {"scenario_id": "S6B_H3_PARTIAL_OR_INSUFFICIENT", "test_layer": "frozen_contract_fixture", "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY", "source_authority_class": "UNRESOLVED / NOT ESTABLISHED", "runtime_activation_state": "inactive", "expected_result": "partial/insufficient without fabricated return", "actual_result": "partial fixture state verified", "status": "PASS"},
+    {"scenario_id": "S7_PRODUCTION_V3_AUTHORIZATION_DENIED", "test_layer": "controlled_negative", "runtime_activation_state": "inactive", "expected_result": "phase_h_v3_execution_inactive", "actual_result": "EXPECTED_REJECT before claim/dispatch/artifact", "status": "PASS"},
+    {"scenario_id": "S8_EXECUTE_ONCE_REPLAY", "test_layer": "controlled_e2e", "expected_result": "second claim rejected", "actual_result": "authorization_already_claimed", "status": "PASS"},
+    {"scenario_id": "S9_CONCURRENT_CLAIM", "test_layer": "controlled_concurrency", "expected_result": "one winner and one replay rejection", "actual_result": "one claim file; exactly one winner", "status": "PASS"},
+    {"scenario_id": "S10_V2_UNAFFECTED", "test_layer": "canonical_v2_regression", "expected_result": "V3 denial does not alter V2", "actual_result": {"v3_phase_h_production_execute": "EXPECTED_REJECT", "v2_validation": "PASS", "v2_authorization": "PASS", "v2_execute_once": "PASS", "v2_mode_c": "PASS", "v2_preferred": true}, "status": "PASS"},
+    {"scenario_id": "S11_FRESH_INSTALL_PORTABILITY", "test_layer": "fresh_root_startup", "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY", "runtime_activation_state": "inactive", "expected_result": "optional providers absent and startup remains safe", "actual_result": "V2/F3 valid; V3 inactive; manual routes/manual; blocked gaps blocked", "status": "PASS"},
+    {"scenario_id": "S12_ROLLBACK_MODEL", "test_layer": "artifact_immutability_simulation", "expected_result": "V3 candidate rolls back to V2 without rewriting artifacts", "actual_result": "historical V1/V2 and materialized V3 hashes unchanged", "status": "PASS"},
+    {"scenario_id": "S13_STARTUP_ZERO_NETWORK", "test_layer": "startup_socket_guard", "expected_result": "zero external market calls", "actual_result": {"validation_phase_h_external_calls": 0, "mcp_startup_phase_h_external_calls": 0, "server_startup_phase_h_external_calls": 0, "workbench_startup_phase_h_external_calls": 0, "deterministic_e2e_external_calls": 0, "mcp_phase_h_tool_surface": 6}, "status": "PASS"}
   ],
   "acceptance_ids": {
     "H0H-NET-001": "PASS",
@@ -58,6 +58,15 @@
     "H0H-PORT-001": "PASS",
     "H0H-ROLL-002": "PASS",
     "H0H-SCOPE-001": "PASS"
+  },
+  "acceptance_evidence_map": {
+    "H0H-NET-001": {"evidence_scenarios": ["S13"]},
+    "H0H-E2E-001": {"evidence_scenarios": ["S2"]},
+    "H0H-E2E-002": {"evidence_scenarios": ["S7", "S10"]},
+    "H0H-AUTH-001": {"evidence_scenarios": ["S1", "S7", "S8", "S9"]},
+    "H0H-PORT-001": {"evidence_scenarios": ["S11", "cross_root_replay_check"]},
+    "H0H-ROLL-002": {"evidence_scenarios": ["S12"]},
+    "H0H-SCOPE-001": {"evidence": {"production_files_changed": 0, "source_activation": false, "new_mcp_tool": false}}
   },
   "validation": {
     "focused_h_imp_7d": "15 passed",

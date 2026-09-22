@@ -127,6 +127,22 @@ def test_s10_v2_validation_remains_unaffected_and_s13_fixture_transport_is_netwo
     result = validate_mode_a_request(request, allow_fixture_snapshot=True)
     assert result["schema_version"] == "unified_market_evidence_request_validation.v1"
     assert fixture_registry()["executors"][0]["network_required"] is False
+    with pytest.raises(ModeB2Error, match="phase_h_v3_execution_inactive"):
+        build_mode_b2_authorization({"request": fixture_request(), "confirm_authorization": True})
+    v2_root = ROOT / "tests/fixtures/phase_g_pr_c/v2_acceptance"
+    v2_result = json.loads((v2_root / "unified_market_evidence_result.v2.json").read_text(encoding="utf-8"))
+    v2_audit = json.loads((v2_root / "unified_market_evidence_audit_package.v2.json").read_text(encoding="utf-8"))
+    assert v2_result["schema_version"] == "unified_market_evidence_result.v2"
+    assert v2_audit["schema_version"] == "unified_market_evidence_audit_package.v2"
+    assert v2_result["request_summary"]["execution_mode"] == "execute_once"
+    assert v2_audit["authorization_identity"]["schema_version"] == "unified_market_evidence_execution_authorization.v1"
+    assert v2_audit["claim_identity"]["schema_version"] == "unified_market_evidence_consumption_record.v1"
+    assert v2_audit["receipt_identity"]["schema_version"] == "unified_market_evidence_execution_receipt.v1"
+    assert v2_audit["bundle_identity"]["schema_version"] == "unified_market_evidence_bundle.v1"
+    checksums = {
+        name: digest for digest, name in (line.split("  ", 1) for line in (v2_root / "SHA256SUMS.txt").read_text(encoding="utf-8").splitlines())
+    }
+    assert all(hashlib.sha256((v2_root / name).read_bytes()).hexdigest() == digest for name, digest in checksums.items())
 
 
 def test_s2_exact_target_binding_has_no_fixture_or_citation_leakage():
@@ -197,25 +213,38 @@ def test_s11_fresh_root_is_safe_without_optional_providers_and_manual_routes_sta
     # Fixture F3 has no provider, cache, or source-route dependency.
     assert fixture_f3(fixture_request())["target_results"][0]["resolution_status"] == "resolved"
     authority = json.loads((ROOT / "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.json").read_text(encoding="utf-8"))
-    serialized = json.dumps(authority, ensure_ascii=False)
-    assert "H2-TWSE-CAPITAL-REDUCTION-WEB" in serialized
-    assert "manual_verification" in serialized
+    by_id = {item["source_id"]: item for item in authority["sources"]}
+    assert by_id["H2-TWSE-EXRIGHT-FINAL-TWT49U"]["source_role"] == "optional_licensed_provider"
+    assert by_id["H2-TWSE-EXRIGHT-FINAL-TWT49U"]["activation_state"] == "inactive"
+    for source_id in ("H2-TWSE-CAPITAL-REDUCTION-WEB", "H2-TPEX-CAPITAL-REDUCTION-WEB"):
+        assert by_id[source_id]["source_role"] == "manual_verification"
+        assert by_id[source_id]["activation_state"] == "inactive"
+    for source_id in ("H2-TWSE-PAR-SPLIT-CONSOLIDATION-GAP", "H2-TPEX-PAR-SPLIT-CONSOLIDATION-GAP"):
+        assert by_id[source_id]["retrieval_contract_status"] == "not_proven"
+        assert by_id[source_id]["activation_state"] == "blocked"
 
 
 def test_s12_rollback_model_keeps_v1_v2_and_materialized_v3_immutable(tmp_path: Path, monkeypatch):
     execution = execute_fixture_package(tmp_path)
     result, audit, _handoff = _project(execution, monkeypatch)
-    before = {path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest() for path in (
-        "schemas/unified_market_evidence_operation_result.v1.schema.json",
-        "schemas/unified_market_evidence_execution_receipt.v1.schema.json",
-        "schemas/unified_market_evidence_bundle.v1.schema.json",
-    )}
+    v1_root = ROOT / "tests/fixtures/phase_g_pr_c/v1_mode_c_golden"
+    v2_root = ROOT / "tests/fixtures/phase_g_pr_c/v2_acceptance"
+    historical = [v1_root / "ai_context/unified_market_evidence_result.v1.json",
+                  v1_root / "audit/unified_market_evidence_audit_package.v1.json",
+                  v2_root / "unified_market_evidence_result.v2.json",
+                  v2_root / "unified_market_evidence_audit_package.v2.json"]
+    before = {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in historical}
+    v3_paths = [execution["package"] / rel for rel in ("ai_context/unified_market_evidence_result.v3.json", "audit/unified_market_evidence_audit_package.v3.json")]
+    v3_before = {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in v3_paths}
     preferred_candidate, rollback_trigger = "unified_market_evidence_result.v3", "fixture_audit_lineage_failure"
     preferred_after = "unified_market_evidence_result.v2" if rollback_trigger else preferred_candidate
     assert preferred_after == "unified_market_evidence_result.v2"
     assert result["canonical_result"]["schema_version"] == "unified_market_evidence_result.v3"
     assert audit["schema_version"] == "unified_market_evidence_audit_package.v3"
-    assert before == {path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest() for path in before}
+    assert all(path.is_file() for path in historical)
+    assert before == {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in historical}
+    assert v3_before == {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in v3_paths}
+    assert not (execution["package"] / "ai_context/unified_market_evidence_result.v2.json").exists()
 
 
 def test_s13_startup_and_fixture_execution_have_zero_external_transport_calls(monkeypatch, tmp_path: Path):
@@ -231,8 +260,13 @@ def test_s13_startup_and_fixture_execution_have_zero_external_transport_calls(mo
     assert fixture_f3(fixture_request())["target_results"][0]["resolution_status"] == "resolved"
     from server import mcp_server
     from server.main import app
-    assert len(asyncio.run(mcp_server.list_tools())) >= 6
-    assert TestClient(app).get("/api/health").status_code == 200
+    tools = asyncio.run(mcp_server.list_tools())
+    phase_h_readonly_names = {"read_latest_market_snapshot", "read_watchlist_observations", "read_ai_context_pack", "read_chatgpt_briefing", "read_m3g_caveats_register", "read_source_contract_baseline"}
+    assert len(phase_h_readonly_names) == 6
+    assert phase_h_readonly_names.issubset({tool.name for tool in tools})
+    client = TestClient(app)
+    assert client.get("/api/health").status_code == 200
+    assert client.get("/workbench/").status_code == 200
     execution = execute_fixture_package(tmp_path)
     assert execution["invocations"]["count"] == 1
     assert calls["count"] == 0
