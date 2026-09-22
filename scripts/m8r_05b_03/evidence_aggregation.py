@@ -67,9 +67,24 @@ def aggregate_dispatch_outcomes(
         else:
             raise OrchestrationError("dispatch_outcome_status_invalid")
 
-        item_count = outcome.get("result_item_count", 0)
-        total_items += item_count
+        version = outcome.get("schema_version")
+        if version not in {"unified_market_evidence_operation_result.v1", "unified_market_evidence_operation_result.v2"}:
+            raise OrchestrationError("operation_result_schema_version_unsupported")
         arts = outcome.get("evidence_artifacts", [])
+        if version == "unified_market_evidence_operation_result.v2":
+            primary = [a for a in arts if a.get("artifact_role") == "primary_evidence"]
+            if outcome.get("status") == "succeeded" and not primary:
+                raise OrchestrationError("operation_result_primary_artifact_missing")
+            if any(a.get("evidence_contract") != a.get("schema_version") for a in arts):
+                raise OrchestrationError("operation_result_artifact_contract_mismatch")
+            if any(a.get("evidence_contract") != outcome.get("evidence_contract") for a in primary):
+                raise OrchestrationError("operation_result_artifact_contract_mismatch")
+            item_count = sum(a["item_count"] for a in primary)
+            if outcome.get("result_item_count") != item_count:
+                raise OrchestrationError("operation_result_item_count_mismatch")
+        else:
+            item_count = outcome.get("result_item_count", 0)
+        total_items += item_count
         op_warnings = list(outcome.get("warnings", []))
         aggregate_warnings.extend(op_warnings)
 
@@ -82,7 +97,16 @@ def aggregate_dispatch_outcomes(
             "execution_request_id": outcome["execution_request_id"],
             "execution_request_hash": outcome["execution_request_hash"],
             "result_item_count": item_count,
-            "evidence_artifacts": arts,
+            "evidence_artifacts": [
+                {
+                    "relative_path": a["relative_path"],
+                    "sha256": a["sha256"],
+                    "schema_version": a["schema_version"],
+                    "byte_size": a["byte_size"],
+                    "item_count": a["item_count"],
+                }
+                for a in arts
+            ],
             "warnings": op_warnings,
         })
 
@@ -105,13 +129,18 @@ def aggregate_dispatch_outcomes(
         })
 
         for a in arts:
+            evidence_contract = (
+                a["evidence_contract"]
+                if outcome.get("schema_version") == "unified_market_evidence_operation_result.v2"
+                else outcome["evidence_contract"]
+            )
             artifact_inventory.append({
                 "relative_path": a["relative_path"],
                 "sha256": a["sha256"],
                 "schema_version": a["schema_version"],
                 "byte_size": a["byte_size"],
                 "item_count": a["item_count"],
-                "evidence_contract": outcome["evidence_contract"],
+                "evidence_contract": evidence_contract,
             })
 
     if set(approved_order) != seen_ops:

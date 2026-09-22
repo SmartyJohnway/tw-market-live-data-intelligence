@@ -1,0 +1,31 @@
+{
+  "schema_version": "phase_h_05b_multi_artifact_contract_bridge_review.v1",
+  "status": "OWNER_REVIEW_CANDIDATE",
+  "baseline": "1b4afd89d6dcf43634cb713d4697892c3e12a943",
+  "branch": "phase-h/bridge-05b-multi-artifact-contract",
+  "classification": "INTERNAL_STABLE_IMPLEMENTATION_CONTRACT",
+  "h_imp_7d_status": "BLOCKED_PENDING_BRIDGE_ACCEPTANCE",
+  "network": false,
+  "runtime_authority": {"preferred_request_version": "v2", "v3_execution": "inactive", "phase_h_active_source_count": 0, "mcp_tool_count": 6},
+  "schema_hashes": {
+    "operation_result_v1": "bb38d8d4d457de70fe3f3f9b85eefb72d7f5874a12cf1b60701740fa388e4018",
+    "operation_result_v2": "d554f5b92ce69f719ded1f3b888942b010cfc6f2f6fce4baa68af2701144c633",
+    "execution_receipt_v1": "6f555b2c0f1c84c4eeb5124a0a1cd6074f57eacbf8193f50462cddaf001f7005",
+    "evidence_bundle_v1": "217439625f9ae04983d75d8671eae3fc788364fbbe7e83afcc62336a4cabd90b",
+    "phase_h_source_attempt_governance_v1": "6d97c48181d1d15c5aba54e989e84b6ae6db536204696e494c38883215bafeb5"
+  },
+  "two_artifact_scenario": {
+    "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY",
+    "typed_evidence_sha256": "be8015e501552bd200055cfc93b4f593cead4cf2114878ba7a1143397456fc91",
+    "supporting_governance_sha256": "98386c66b3b8e85993298de81d34dfd59251b66d85d71aac3d841f679cdb0765",
+    "receipt_hash": "b4d0822897ec3e7dfb7a640d678887aff33e4afb45b7ed60bc10b83190072f3d",
+    "bundle_hash": "98fa020412d7276cd7770c3461b314851fd72604f3c094ac50b8f705133469d2",
+    "validation": "real V2 aggregation, Receipt V1 and Bundle V1 finalization, artifact_loader, and Mode C Result V3"
+  },
+  "component_integrity": {
+    "h1_adapter": "0ae52aaa8b5bce7ed85a091e095802b6c568c1a66f4d106fb2a6eba9b0d44cf0",
+    "h2_adapter": "11b789c742091e11e3e24ceca0a23d12710fa7b00d513d9bd96599ba695688b9",
+    "h4_kernel": "91163c3f1988c75c5f4b413d109e19d646b5ad9bfcb40e96a485a356f9180727"
+  },
+  "evidence": "Generated and verified by tests/integration/test_m8r_05b_03_multi_artifact_contract.py."
+}
