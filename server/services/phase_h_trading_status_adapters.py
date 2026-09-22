@@ -168,11 +168,16 @@ def failed_source_result(source_id: str, target: Mapping[str, str], *, observed_
 def normalize_tpex_attention(rows: object, target: Mapping[str, str], *, observed_at: str, citation_id: str) -> dict:
     required = ("Date", "SecuritiesCompanyCode", "CompanyName", "TradingInformation", "ClosePrice", "PriceEarningRatio")
     valid_rows = _validated_rows(rows, target, market="TPEX", required=required)
-    snapshot_date, date_caveats = _snapshot_date(
+    table_snapshot_date, date_caveats = _snapshot_date(
         valid_rows, "Date", parser=_tpex_attention_date_value
     )
     row = _bound_row(valid_rows, identifier="SecuritiesCompanyCode", target=target)
-    items = [] if row is None else [_item(status_type="attention", source_record_date=_tpex_attention_date_value(row["Date"]), reason=None, conditions=None, measures=None, provenance={key: row[key] for key in required}, citation_id=citation_id)]
+    row_date = None if row is None else _tpex_attention_date_value(row["Date"])
+    # The live TPEx attention endpoint may contain multiple official record dates.
+    # For an exact target hit, the target-bound source record date is the
+    # truthful coverage date; the table-level multiple-date caveat is retained.
+    snapshot_date = row_date if row is not None else table_snapshot_date
+    items = [] if row is None else [_item(status_type="attention", source_record_date=row_date, reason=None, conditions=None, measures=None, provenance={key: row[key] for key in required}, citation_id=citation_id)]
     return _result(source_id="H1-TPEX-ATTENTION-OPENAPI", target=target, observed_at=observed_at, snapshot_date=snapshot_date, covered=("attention",), items=items, citation_ids=[citation_id], caveats=date_caveats)
 
 
