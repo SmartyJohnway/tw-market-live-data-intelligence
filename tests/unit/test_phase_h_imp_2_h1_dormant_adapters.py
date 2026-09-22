@@ -84,6 +84,17 @@ def test_empty_tpex_tables_are_valid_partial_source_slices() -> None:
         assert result["citation_ids"] == [f"empty-{subtype}"]
 
 
+def test_verified_tpex_attention_roc_date_is_normalized_without_rewriting_provenance() -> None:
+    rows = copy.deepcopy(ROWS["tpex_attention"])
+    rows[0]["Date"] = "1150922"
+    result = normalize_tpex_attention(rows, TARGET_TPEX, observed_at=OBSERVED, citation_id="roc-date")
+    assert result["status"] == "partial"
+    assert result["coverage"]["source_snapshot_date"] == "2026-09-22"
+    assert result["items"][0]["source_record_date"] == "2026-09-22"
+    assert result["items"][0]["source_native_provenance"]["Date"] == "1150922"
+    assert not any("source_snapshot_date_unresolved" in item for item in result["caveats"])
+
+
 def test_present_noncanonical_date_is_preserved_without_source_failure() -> None:
     rows = copy.deepcopy(ROWS["tpex_attention"])
     rows[0]["Date"] = "09/21/2026"
