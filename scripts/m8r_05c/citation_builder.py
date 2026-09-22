@@ -95,7 +95,7 @@ def build_citation_index(
                 cit_id = _build_citation_id(binding.operation_id, rel_path)
 
                 if cit_id not in index.all_citations:
-                    if result_schema_version == "unified_market_evidence_result.v2":
+                    if result_schema_version in {"unified_market_evidence_result.v2", "unified_market_evidence_result.v3"}:
                         source_obj = binding.artifact_objects.get(rel_path, {})
                         source_meta = source_obj.get("source", {}) if isinstance(source_obj, dict) else {}
                         coverage_meta = source_obj.get("coverage", {}) if isinstance(source_obj, dict) else {}

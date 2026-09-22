@@ -11,8 +11,10 @@ from scripts.m8r_05b_03.canonical import canonical_json, sha256_json  # noqa: F4
 
 _RESULT_ID_PREFIX = "umeresult-v1-"
 _RESULT_V2_ID_PREFIX = "umeresult-v2-"
+_RESULT_V3_ID_PREFIX = "umeresult-v3-"
 _AUDIT_PACKAGE_ID_PREFIX = "umeap-v1-"
 _AUDIT_V2_ID_PREFIX = "umeap-v2-"
+_AUDIT_V3_ID_PREFIX = "umeap-v3-"
 _HASH_PREFIX_LEN = 20
 
 
@@ -40,6 +42,12 @@ def build_result_id_v2(request_id: str, receipt_id: str, bundle_id: str) -> str:
     return _RESULT_V2_ID_PREFIX + sha256_json(identity_scope)[:_HASH_PREFIX_LEN]
 
 
+def build_result_id_v3(request_id: str, receipt_id: str, bundle_id: str) -> str:
+    """Build the explicit V3 identity from the established result scope."""
+    identity_scope = {"request_id": request_id, "receipt_id": receipt_id, "bundle_id": bundle_id}
+    return _RESULT_V3_ID_PREFIX + sha256_json(identity_scope)[:_HASH_PREFIX_LEN]
+
+
 def build_audit_package_id(result_id: str, bundle_id: str) -> str:
     """Deterministic audit package identity.
 
@@ -61,6 +69,12 @@ def build_audit_package_id_v1(result_id: str, bundle_id: str) -> str:
 def build_audit_package_id_v2(result_id: str, bundle_id: str) -> str:
     identity_scope = {"result_id": result_id, "bundle_id": bundle_id}
     return _AUDIT_V2_ID_PREFIX + sha256_json(identity_scope)[:_HASH_PREFIX_LEN]
+
+
+def build_audit_package_id_v3(result_id: str, bundle_id: str) -> str:
+    """Build the explicit V3 audit identity from the established audit scope."""
+    identity_scope = {"result_id": result_id, "bundle_id": bundle_id}
+    return _AUDIT_V3_ID_PREFIX + sha256_json(identity_scope)[:_HASH_PREFIX_LEN]
 
 
 def hash_body_excluding_key(body: dict, exclude_key: str) -> str:

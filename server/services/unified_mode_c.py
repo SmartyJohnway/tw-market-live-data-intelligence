@@ -36,6 +36,12 @@ _OUTPUT_PATHS = {
         "audit/unified_market_evidence_audit_package.v2.json",
         "unified_market_evidence_audit_package.v2",
     ),
+    "unified_market_evidence_result.v3": (
+        "ai_context/unified_market_evidence_result.v3.json",
+        "ai_context/unified_market_evidence_result.v3.md",
+        "audit/unified_market_evidence_audit_package.v3.json",
+        "unified_market_evidence_audit_package.v3",
+    ),
 }
 _RESULT, _MARKDOWN, _AUDIT, _AUDIT_SCHEMA = _OUTPUT_PATHS["unified_market_evidence_result.v1"]
 

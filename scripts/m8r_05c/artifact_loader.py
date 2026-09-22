@@ -41,14 +41,25 @@ _SCHEMA_NAMES = {
 _REQUEST_SCHEMA_NAMES = {
     "unified_market_evidence_request.v1": _SCHEMA_NAMES["request"],
     "unified_market_evidence_request.v2": "unified_market_evidence_request.v2.schema.json",
+    "unified_market_evidence_request.v3": "unified_market_evidence_request.v3.schema.json",
 }
 _RESEARCH_EVIDENCE_CONTRACTS = {
     "phase_g_material_disclosure_operation_evidence.v1": "phase_g_material_disclosure_operation_evidence.v1.schema.json",
     "phase_g_monthly_revenue_operation_evidence.v1": "phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+    "trading_status_context_evidence.v1": "trading_status_context_evidence.v1.schema.json",
+    "corporate_action_context_evidence.v1": "corporate_action_context_evidence.v1.schema.json",
+    "recent_performance_evidence.v1": "recent_performance_evidence.v1.schema.json",
+    "discontinuity_safety_evidence.v1": "discontinuity_safety_evidence.v1.schema.json",
 }
 
 _DRAFT07_KEYS = {"request", "plan"}
 _M8R_06_03_EVIDENCE_SCHEMA = "m8r_06_03_operation_evidence.v1"
+_PHASE_H_GOVERNANCE_SCHEMA = "phase_h_source_attempt_governance.v1"
+_PHASE_H_TYPED_CONTRACTS = {
+    "trading_status_context": "trading_status_context_evidence.v1",
+    "corporate_action_context": "corporate_action_context_evidence.v1",
+    "recent_performance": "recent_performance_evidence.v1",
+}
 
 
 def _load_schema(name: str) -> dict:
@@ -112,6 +123,68 @@ def _check_containment(path: Path, root: Path) -> None:
     
     if not resolved.is_file():
         raise ProjectionError("artifact_not_found")
+
+
+def _load_phase_h_source_attempts(
+    evidence_artifacts: dict[str, dict], *, plan: dict | None = None, bundle: dict | None = None,
+) -> dict[str, list[dict]]:
+    """Extract governance only from validated, inventory-bound sidecar bytes."""
+    sidecars = [artifact for artifact in evidence_artifacts.values()
+                if artifact.get("schema_version") == _PHASE_H_GOVERNANCE_SCHEMA]
+    attempts_by_evidence: dict[str, list[dict]] = {}
+    for sidecar in sidecars:
+        reference = sidecar["evidence_artifact_reference"]
+        typed = evidence_artifacts.get(reference)
+        capability = sidecar["capability_id"]
+        expected_contract = _PHASE_H_TYPED_CONTRACTS.get(capability)
+        if typed is None or typed.get("schema_version") != expected_contract:
+            raise ProjectionError("phase_h_source_governance_reference_invalid")
+        target = typed.get("target") if isinstance(typed.get("target"), dict) else {}
+        if target.get("canonical_target_id") != sidecar["canonical_target_id"]:
+            raise ProjectionError("phase_h_source_governance_target_mismatch")
+        if plan is not None or bundle is not None:
+            if not isinstance(plan, dict) or not isinstance(bundle, dict):
+                raise ProjectionError("phase_h_source_governance_operation_unresolved")
+            operations = {operation.get("operation_id"): operation for operation in plan.get("operations", [])
+                          if isinstance(operation, dict) and isinstance(operation.get("operation_id"), str)}
+            entries = [entry for entry in bundle.get("operation_evidence_entries", [])
+                       if isinstance(entry, dict) and any(
+                           isinstance(item, dict) and item.get("relative_path") == reference
+                           for item in entry.get("artifacts", [])
+                       )]
+            if not entries:
+                raise ProjectionError("phase_h_source_governance_operation_unresolved")
+            if len(entries) != 1:
+                raise ProjectionError("phase_h_source_governance_operation_ambiguous")
+            operation = operations.get(entries[0].get("operation_id"))
+            if operation is None:
+                raise ProjectionError("phase_h_source_governance_operation_unresolved")
+            if operation.get("capability_id") != capability:
+                raise ProjectionError("phase_h_source_governance_operation_unresolved")
+            if sidecar["canonical_target_id"] not in operation.get("canonical_target_ids", []):
+                raise ProjectionError("phase_h_source_governance_target_mismatch")
+        if reference in attempts_by_evidence:
+            raise ProjectionError("duplicate_phase_h_source_governance")
+        attempts = sidecar["attempts"]
+        sidecar_keys = {(item["source_family"], item["source_contract_id"]) for item in attempts}
+        if len(sidecar_keys) != len(attempts):
+            raise ProjectionError("phase_h_source_governance_duplicate_source")
+        if capability in {"trading_status_context", "corporate_action_context"}:
+            sources = typed.get("sources") if capability == "corporate_action_context" else [typed.get("source")]
+            if not all(isinstance(source, dict) for source in sources):
+                raise ProjectionError("phase_h_source_governance_reference_invalid")
+            source_by_key = {(source["source_family"], source["source_contract_id"]): source for source in sources}
+            if set(source_by_key) != sidecar_keys:
+                raise ProjectionError("phase_h_source_governance_source_mismatch")
+            for attempt in attempts:
+                source = source_by_key[(attempt["source_family"], attempt["source_contract_id"])]
+                if any(attempt[field] != source[field] for field in ("source_role", "activation_state", "license_authority")):
+                    raise ProjectionError("phase_h_source_governance_source_mismatch")
+        attempts_by_evidence[reference] = attempts
+    for relative_path, artifact in evidence_artifacts.items():
+        if artifact.get("schema_version") in _PHASE_H_TYPED_CONTRACTS.values() and relative_path not in attempts_by_evidence:
+            raise ProjectionError("phase_h_source_governance_unresolved")
+    return attempts_by_evidence
 
 
 def load_projection_inputs(
@@ -370,6 +443,8 @@ def load_projection_inputs(
     if not calculated_at:
         raise ProjectionError("calculated_at_missing")
 
+    phase_h_source_attempts = _load_phase_h_source_attempts(evidence_artifacts, plan=plan, bundle=bundle)
+
     return ProjectionInputs(
         request=request,
         f3_validation=f3_validation,
@@ -383,4 +458,5 @@ def load_projection_inputs(
         calculated_at=calculated_at,
         calculated_at_source=calculated_at_source,
         evidence_artifacts=evidence_artifacts,
+        phase_h_source_attempts=phase_h_source_attempts,
     )

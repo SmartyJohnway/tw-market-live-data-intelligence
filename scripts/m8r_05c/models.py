@@ -72,6 +72,10 @@ class TargetEvidenceProjection:
     evidence_quality: EvidenceEnvelopeProjection | None = None
     material_disclosures: dict | None = None
     monthly_revenue: dict | None = None
+    trading_status_context: dict | None = None
+    corporate_action_context: dict | None = None
+    recent_performance_v3: dict | None = None
+    discontinuity_safety: dict | None = None
 
 
 @dataclass
@@ -124,6 +128,10 @@ class ProjectionInputs:
     calculated_at_source: str = "explicit_calculated_at_input"
     # Loaded evidence artifact JSON objects keyed by relative_path
     evidence_artifacts: dict[str, dict] = field(default_factory=dict)
+    # Optional, immutable-package-bound Phase H source-attempt metadata keyed
+    # by typed evidence relative_path.  It is required whenever a typed
+    # artifact cannot itself establish the needed route-governance facts.
+    phase_h_source_attempts: dict[str, list[dict]] = field(default_factory=dict)
 
 
 @dataclass

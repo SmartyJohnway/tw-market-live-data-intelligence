@@ -43,6 +43,32 @@ _ENVELOPE_DATA_NEEDS = {
 _OFFICIAL_EOD_NEED = "official_eod_reference"
 
 
+def project_phase_h_typed_evidence(
+    binding: OperationBinding | None,
+    citation_ids: list[str],
+    expected_schema_version: str,
+) -> dict | None:
+    """Return a governed typed Phase H artifact without semantic rewriting.
+
+    Typed evidence carries its own citation IDs.  They must be resolved by the
+    established operation/artifact citation lineage; an arbitrary caller ID is
+    never promoted into a Result V3 citation.
+    """
+    if binding is None or binding.status != "succeeded":
+        return None
+    artifact = _research_artifact(binding)
+    if artifact is None:
+        return None
+    if artifact.get("schema_version") != expected_schema_version:
+        raise ProjectionError("phase_h_evidence_schema_mismatch")
+    typed_citation_ids = artifact.get("citation_ids", [])
+    if not isinstance(typed_citation_ids, list) or not all(isinstance(item, str) for item in typed_citation_ids):
+        raise ProjectionError("phase_h_citation_lineage_mismatch")
+    if not set(typed_citation_ids).issubset(set(citation_ids)):
+        raise ProjectionError("phase_h_citation_lineage_mismatch")
+    return artifact.copy()
+
+
 def _research_artifact(binding: OperationBinding | None) -> dict | None:
     if binding is None or not binding.artifact_objects:
         return None

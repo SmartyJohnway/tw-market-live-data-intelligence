@@ -230,6 +230,35 @@ def _fmt_typed_research_evidence(evidence: dict, need: str) -> str:
     return "\n".join(lines)
 
 
+def _fmt_phase_h_evidence(evidence: dict, need: str) -> str:
+    """Render factual Phase H typed evidence without interpretation or advice."""
+    lines = [f"- **狀態**: {evidence.get('status', evidence.get('coverage_status', 'unknown'))}"]
+    if need == "trading_status_context":
+        coverage = evidence.get("coverage", {})
+        lines.append(f"- **已覆蓋狀態類型**: {', '.join(coverage.get('covered_status_types', [])) or '（無）'}")
+        lines.append(f"- **未覆蓋狀態類型**: {', '.join(coverage.get('uncovered_status_types', [])) or '（無）'}")
+    elif need == "corporate_action_context":
+        coverage = evidence.get("coverage", {})
+        lines.append(f"- **已覆蓋事件類型**: {', '.join(coverage.get('covered_event_subtypes', [])) or '（無）'}")
+        lines.append(f"- **未覆蓋事件類型**: {', '.join(coverage.get('uncovered_event_subtypes', [])) or '（無）'}")
+    elif need == "recent_performance":
+        for key in ("first_observation_date", "last_observation_date"):
+            if evidence.get(key) is not None:
+                lines.append(f"- **{key}**: {evidence[key]}")
+    elif need == "discontinuity_safety":
+        window = evidence.get("comparison_window", {})
+        lines.append(f"- **比較視窗**: {window.get('start_observation_date', '?')} → {window.get('end_observation_date', '?')}")
+        lines.append(f"- **一般報酬解讀**: {evidence.get('ordinary_return_interpretation', 'unknown')}")
+        lines.append(f"- **解讀護欄**: {evidence.get('interpretation_guard', 'unknown')}")
+    caveats = evidence.get("caveats", [])
+    if caveats:
+        lines.append(f"- **注意事項**: {', '.join(str(item) for item in caveats)}")
+    citations = evidence.get("citation_ids", [])
+    if citations:
+        lines.append(f"- **引用 IDs**: {', '.join(f'`{item}`' for item in citations)}")
+    return "\n".join(lines)
+
+
 def render_result_markdown(result: dict, *, projector_version: str = CURRENT_PROJECTOR_VERSION) -> str:
     """Render the result dict as AI-ready Markdown.
 
@@ -363,6 +392,20 @@ def render_result_markdown(result: dict, *, projector_version: str = CURRENT_PRO
                     lines.append("")
                     lines.append(_section(_data_need_label(need_key), 4))
                     lines.append(_fmt_typed_research_evidence(typed, need_key))
+            if result.get("schema_version") == "unified_market_evidence_result.v3":
+                for need_key in (
+                    "material_disclosures", "monthly_revenue", "trading_status_context",
+                    "corporate_action_context", "recent_performance", "discontinuity_safety",
+                ):
+                    typed = evidence.get(need_key)
+                    if typed is None:
+                        continue
+                    lines.append("")
+                    lines.append(_section(_data_need_label(need_key), 4))
+                    if need_key in {"material_disclosures", "monthly_revenue"}:
+                        lines.append(_fmt_typed_research_evidence(typed, need_key))
+                    else:
+                        lines.append(_fmt_phase_h_evidence(typed, need_key))
 
         # Derived metrics.
         derived_metrics = target.get("derived_metrics", [])
@@ -430,6 +473,11 @@ def render_result_markdown(result: dict, *, projector_version: str = CURRENT_PRO
         lines.append(
             "> ⚠️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現來源事實、覆蓋範圍與限制。"
             " 所有時效語義由來源 evidence artifact 和執行收據決定。"
+        )
+    elif result.get("schema_version") == "unified_market_evidence_result.v3":
+        lines.append(
+            "> ℹ️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現已驗證事實、覆蓋範圍、"
+            "時間基礎與解讀護欄。"
         )
     else:
         lines.append(
