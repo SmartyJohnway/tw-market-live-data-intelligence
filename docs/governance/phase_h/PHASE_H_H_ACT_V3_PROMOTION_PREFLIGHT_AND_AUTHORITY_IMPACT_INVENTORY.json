@@ -1,0 +1,612 @@
+{
+  "schema_version": "phase_h_h_act_v3_promotion_preflight_and_authority_impact_inventory.v1",
+  "status": "PREFLIGHT_PASS_READY_FOR_OWNER_PROMOTION_AUTHORIZATION",
+  "baseline_main_sha": "d2e2da1c42de3f1790dcc50c7bd1fa3093f15cce",
+  "performed_on": "2026-09-23",
+  "tranche": "H-ACT-V3",
+  "mutation_boundary": {
+    "runtime_semantics_changed": false,
+    "preferred_version_changed": false,
+    "source_activation_changed": false,
+    "network_executed": false,
+    "production_release_changed": false
+  },
+  "gate_entry": {
+    "H_IMP_7D": {
+      "status": "PASS",
+      "evidence": "docs/governance/phase_h/PHASE_H_H_IMP_7D_DETERMINISTIC_E2E_LEDGER.json"
+    },
+    "H_ACC_7L": {
+      "status": "PASS",
+      "evidence": "docs/governance/phase_h/PHASE_H_H_ACC_7L_SELECTED_PRODUCT_LIVE_E2E_LEDGER.json"
+    },
+    "active_phase_h_routes": [
+      "H1-TPEX-ATTENTION-OPENAPI"
+    ],
+    "all_active_routes_have_bounded_live": true,
+    "owner_promotion_authorization": "NOT_GRANTED_IN_THIS_PREFLIGHT"
+  },
+  "frozen_v3_contract_hashes": [
+    {
+      "path": "schemas/unified_market_evidence_request.v3.schema.json",
+      "sha256": "0dd37ff844e1644e5dde6ddebe54823ab6d24e4d128abadab77f2c5dae0be4d0",
+      "bytes": 4109
+    },
+    {
+      "path": "schemas/unified_market_evidence_result.v3.schema.json",
+      "sha256": "dae35eaa4f41f574204c2fb275e6a2b22c925462932b60c5c5c092b6ac1d2aab",
+      "bytes": 106255
+    },
+    {
+      "path": "schemas/unified_market_evidence_audit_package.v3.schema.json",
+      "sha256": "15766211f72bf9691bd098d8c582dc8e9ff7b9e10923991cac8e68741e00181d",
+      "bytes": 25882
+    },
+    {
+      "path": "schemas/trading_status_context_evidence.v1.schema.json",
+      "sha256": "638200509cde05613d17bd4158d1676c3c086d2b10aa2f50fb85d52febe30ecf",
+      "bytes": 9467
+    }
+  ],
+  "current_runtime_authority": {
+    "preferred_request_schema_version": "unified_market_evidence_request.v2",
+    "emitted_result_schema_version": "unified_market_evidence_result.v2",
+    "v3_runtime_authority_status": "selected_routes_active_v2_preferred",
+    "phase_h_active_source_count": 1,
+    "exact_active_phase_h_sources": [
+      "H1-TPEX-ATTENTION-OPENAPI"
+    ],
+    "local_service_catalog": "unified_market_evidence_capability_catalog.v2",
+    "local_service_routing": "m8r_05b_capability_to_executor_routing_matrix.v2",
+    "unified_mcp_preferred_request": "unified_market_evidence_request.v2",
+    "unified_mcp_market_fetch_v3": false,
+    "mode_c_default_result": "unified_market_evidence_result.v2",
+    "workbench_watchlist_composer_output": [
+      "unified_market_evidence_request.v1",
+      "unified_market_evidence_request.v2"
+    ],
+    "portable_skill_canonical_catalog": "unified_market_evidence_capability_catalog.v2",
+    "mcp_tool_count": 6
+  },
+  "required_acceptance_evidence": [
+    {
+      "id": "H0H-V3-001",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "H-IMP-0",
+        "H-IMP-7D/S10",
+        "H-ACC-7L default CI"
+      ],
+      "candidate_revalidation": true
+    },
+    {
+      "id": "H0H-V3-003",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "H-IMP-0 passive preview",
+        "H-ACT-H1 inactive-route tests"
+      ],
+      "candidate_revalidation": true
+    },
+    {
+      "id": "H0H-H4-001",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "PHASE_H_H_IMP_1_ACCEPTANCE_MANIFEST"
+      ],
+      "candidate_revalidation": true
+    },
+    {
+      "id": "H0H-H4-004",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "PHASE_H_H_IMP_1_ACCEPTANCE_MANIFEST"
+      ],
+      "candidate_revalidation": true
+    },
+    {
+      "id": "H0H-OUT-001",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "PHASE_H_H_IMP_6_ACCEPTANCE_MANIFEST",
+        "H-ACC-7L Result V3"
+      ],
+      "candidate_revalidation": true
+    },
+    {
+      "id": "H0H-OUT-002",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "PHASE_H_H_IMP_6_ACCEPTANCE_MANIFEST",
+        "H-ACC-7L Audit V3"
+      ],
+      "candidate_revalidation": true
+    },
+    {
+      "id": "H0H-OUT-004",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "PHASE_H_H_IMP_6_ACCEPTANCE_MANIFEST",
+        "H-ACC-7L AI handoff"
+      ],
+      "candidate_revalidation": true
+    },
+    {
+      "id": "H0H-NET-001",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "H-IMP-7D/S13"
+      ],
+      "candidate_revalidation": true
+    },
+    {
+      "id": "H0H-MCP-001",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "H-IMP-7D/S13",
+        "H-ACC-7L six-tool check"
+      ],
+      "candidate_revalidation": true
+    },
+    {
+      "id": "H0H-E2E-001",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "H-IMP-7D/S2"
+      ],
+      "candidate_revalidation": true
+    },
+    {
+      "id": "H0H-E2E-002",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "H-IMP-7D/S7,S10"
+      ],
+      "candidate_revalidation": true
+    },
+    {
+      "id": "H0H-E2E-LIVE-001",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "H-ACC-7L workflow 35797640831"
+      ],
+      "candidate_revalidation": false
+    },
+    {
+      "id": "H0H-AUTH-001",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "H-IMP-7D/S1,S7,S8,S9",
+        "H-ACC-7L negative controls"
+      ],
+      "candidate_revalidation": true
+    },
+    {
+      "id": "H0H-PORT-001",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "H-IMP-7D/S11",
+        "H-ACC-7L ephemeral installation-local identity release"
+      ],
+      "candidate_revalidation": true
+    },
+    {
+      "id": "H0H-ROLL-002",
+      "prepromotion_evidence": "PASS_MODEL_ONLY",
+      "sources": [
+        "H-IMP-7D/S12"
+      ],
+      "candidate_revalidation": true,
+      "note": "actual preferred V3 -> V2 rollback rehearsal is mandatory on the promotion candidate"
+    },
+    {
+      "id": "H0H-SCOPE-001",
+      "prepromotion_evidence": "PASS",
+      "sources": [
+        "H-IMP-7D scope scan",
+        "H-ACC-7L no extra route/tool"
+      ],
+      "candidate_revalidation": true
+    }
+  ],
+  "authority_domains": [
+    {
+      "domain_id": "AUTH-01",
+      "name": "Catalog and validation current-state authority",
+      "risk": "HIGH",
+      "required": true,
+      "items": [
+        {
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbols": [
+            "contract_versions.preferred_request_schema_version",
+            "contract_versions.emitted_result_schema_version",
+            "contract_versions.future_candidate_request_schema_version",
+            "contract_versions.future_candidate_result_schema_version",
+            "contract_versions.v3_runtime_authority_status",
+            "phase_h_contract.runtime_authority",
+            "phase_h_contract.preferred_runtime_request_schema_version",
+            "known_limitations"
+          ],
+          "current": "V2 preferred / V3 selected-routes candidate",
+          "required_change": "represent V3 as current preferred request/result authority while preserving exact active-source truth; future-candidate wording must cease being false",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "scripts/m8r_05a_f3/request_intake.py",
+          "symbols": [
+            "V3 catalog contract_versions validation"
+          ],
+          "current": "rejects any V3 catalog whose preferred/emitted authority is not V2 and only allows inactive or selected_routes_active_v2_preferred",
+          "required_change": "accept exactly the promoted current-state vocabulary while keeping V2 catalog validation unchanged",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "scripts/validate_phase_h_v3_contracts.py",
+          "symbols": [
+            "current Catalog/Route validator"
+          ],
+          "current": "hard-pins V2 preferred and selected_routes_active_v2_preferred",
+          "required_change": "validate promoted current state while continuing to hash-protect frozen H0-G artifacts",
+          "disposition": "MUST_CHANGE"
+        }
+      ]
+    },
+    {
+      "domain_id": "AUTH-02",
+      "name": "Preferred Request and planning authority",
+      "risk": "HIGH",
+      "required": true,
+      "items": [
+        {
+          "path": "server/services/unified_contract_versions.py",
+          "symbols": [
+            "EXECUTION_REQUEST_SCHEMA_VERSIONS",
+            "module authority comments",
+            "preferred-version source of truth"
+          ],
+          "current": "execution set contains V1/V2 only; no centralized preferred request/result constants",
+          "required_change": "make V3 executable and establish one central preferred request/result authority used by downstream surfaces",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "server/services/unified_mode_a.py",
+          "symbols": [
+            "CANONICAL_SCHEMA_PATH",
+            "CANONICAL_CATALOG_PATH"
+          ],
+          "current": "backward-compatible preload seam points to V2",
+          "required_change": "point current canonical preload seam at preferred V3 without removing explicit V1/V2 dispatch",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "scripts/m8r_06_02_mode_b1_preview.py",
+          "symbols": [
+            "load_planning_authorities default"
+          ],
+          "current": "default planning authority is V2",
+          "required_change": "default to the promoted preferred authority; explicit request-version dispatch remains authoritative",
+          "disposition": "MUST_CHANGE"
+        }
+      ]
+    },
+    {
+      "domain_id": "AUTH-03",
+      "name": "Local Service and MCP public authority",
+      "risk": "CRITICAL",
+      "required": true,
+      "items": [
+        {
+          "path": "server/services/unified_local_service.py",
+          "symbols": [
+            "CATALOG_PATH",
+            "ROUTING_PATH",
+            "describe_capabilities"
+          ],
+          "current": "loads V2 Catalog and V2 Routing, so market_describe_capabilities still reports the V2 product surface",
+          "required_change": "project V3 Catalog/Route current authority including exact H1 active subset and inactive H2/H3 gaps",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "server/unified_mcp/tool_contracts.py",
+          "symbols": [
+            "PREFERRED_REQUEST_SCHEMA_VERSION",
+            "REQUEST_SCHEMA_PATH",
+            "execution_request = build_request_envelope_schema(include_v3=False)"
+          ],
+          "current": "canonical preferred schema is V2; market_fetch_evidence rejects V3 at input-schema validation",
+          "required_change": "V3 becomes canonical preferred schema and market_fetch_evidence accepts V3 while tool names remain exactly six",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "server/services/unified_local_operator_action.py",
+          "symbols": [
+            "fetch_market_evidence V3 barrier",
+            "build_mode_c_ai_handoff(... output_schema_version='v2')"
+          ],
+          "current": "blanket-rejects V3 and forces V2 output",
+          "required_change": "allow governed V3 execution through the same execute-once path and emit preferred V3 output; inactive/unsupported V3 routes still fail closed",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "server/services/unified_mode_b2.py",
+          "symbols": [
+            "_enforce_incremental_v3_authorization_scope",
+            "build_local_operator_execution_ticket V3 barrier"
+          ],
+          "current": "Workbench V3 authorization is an H-ACT-H1 single-route exception; local-operator V3 is denied",
+          "required_change": "replace transitional single-route exception with product-wide V3 authorization governed by V3 routing/activation truth; no inactive H2/H3 route may execute",
+          "disposition": "MUST_CHANGE"
+        }
+      ]
+    },
+    {
+      "domain_id": "AUTH-04",
+      "name": "Result/Audit/Handoff preferred output authority",
+      "risk": "CRITICAL",
+      "required": true,
+      "items": [
+        {
+          "path": "server/services/unified_mode_c.py",
+          "symbols": [
+            "build_mode_c_result_package default output_schema_version",
+            "read_mode_c_audit default",
+            "build_mode_c_ai_handoff default"
+          ],
+          "current": "defaults to Result/Audit V2 unless an output version is explicitly supplied; persisted historical version is preserved",
+          "required_change": "default new materialization/readback to preferred V3 while preserving persisted V1/V2/V3 package detection and byte immutability",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "server/unified_workbench_router.py",
+          "symbols": [
+            "/result-package",
+            "/result-package/{id}/audit.json",
+            "/result-package/{id}/handoff"
+          ],
+          "current": "routes expose no caller-controlled output version and therefore inherit Mode C V2 defaults",
+          "required_change": "retain bounded no-version public API; inherit centralized preferred V3 default after Mode C realignment",
+          "disposition": "VERIFY_NO_DIRECT_CHANGE"
+        },
+        {
+          "path": "server/unified_mcp/local_service_client.py",
+          "symbols": [
+            "read_result",
+            "export_ai_handoff"
+          ],
+          "current": "no version selector; relies on Local Service default",
+          "required_change": "prefer no protocol change; verify V3 returned after server-side promotion and historical persisted packages still return their stored version",
+          "disposition": "VERIFY_NO_DIRECT_CHANGE"
+        }
+      ]
+    },
+    {
+      "domain_id": "AUTH-05",
+      "name": "Workbench request composition and portable Agent authority",
+      "risk": "HIGH",
+      "required": true,
+      "items": [
+        {
+          "path": "server/services/watchlist_evidence_composer.py",
+          "symbols": [
+            "REQUEST_SCHEMA_PATHS",
+            "SELECTION_SCHEMA_PATHS",
+            "OUTPUT_REQUEST_VERSIONS",
+            "CATALOG_PATH"
+          ],
+          "current": "selection v1/v2 only; canonical bounds/capabilities from Catalog V2; output request v1/v2 only",
+          "required_change": "add an additive selection-v3 path that emits Unified Request V3 and validates against V3 Catalog without rewriting v2 selection history",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "docs/contracts/schemas/watchlist_evidence_selection_request.v3.schema.json",
+          "current": "absent",
+          "required_change": "additive selection contract supporting V3 request capabilities; H4 remains derived and not a request need",
+          "disposition": "MUST_ADD"
+        },
+        {
+          "path": "frontend/unified-workbench/watchlist-workbench.js",
+          "symbols": [
+            "composeRequest schema_version"
+          ],
+          "current": "hardcodes watchlist_evidence_selection_request.v2",
+          "required_change": "compose preferred V3 selection/request while retaining imported/manual explicit V1/V2 requests",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "skills/tw-market-evidence-agent/SKILL.md",
+          "current": "documents Request V2 as preferred and Result/Audit V2 as new-execution authority",
+          "required_change": "document V3 preferred, exact partial H1 runtime, V1/V2 compatibility and unchanged six tools",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "scripts/generate_portable_catalog.py",
+          "symbols": [
+            "CANONICAL_PATH",
+            "portable_metadata.canonical_source_path"
+          ],
+          "current": "portable catalog is generated from Catalog V2",
+          "required_change": "generate current portable Agent authority from Catalog V3 after promotion",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "scripts/validate_portable_catalog_sync.py",
+          "current": "deep-syncs portable catalog against generator's V2 canonical source",
+          "required_change": "validate V3 canonical/portable equality and promoted contract versions",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "scripts/validate_runtime_skill_guide_sync.py",
+          "current": "loads Catalog V2 and requires Request V2 current text",
+          "required_change": "load current V3 authority and require promoted V3 wording while preserving compatibility facts",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "skills/tw-market-evidence-agent/scripts/validate_skill.py",
+          "current": "requires SKILL.md to name Request V2 as preferred current schema",
+          "required_change": "require Request V3 preferred-current guidance",
+          "disposition": "MUST_CHANGE"
+        },
+        {
+          "path": "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+          "current": "portable projection of Catalog V2",
+          "required_change": "regenerate from promoted Catalog V3",
+          "disposition": "REGENERATE"
+        },
+        {
+          "path": "skills/tw-market-evidence-agent/references/capability_quick_guide.md",
+          "current": "generated from Catalog V2",
+          "required_change": "regenerate from promoted Catalog V3",
+          "disposition": "REGENERATE"
+        }
+      ]
+    }
+  ],
+  "compatibility_and_test_impact": [
+    {
+      "path": "tests/unit/test_phase_h_imp_0_passive_v3_compatibility.py",
+      "action": "REALIGN_CURRENT_STATE_ASSERTIONS",
+      "note": "retain historical H0-G freeze evidence; stop asserting current runtime must reject preferred V3"
+    },
+    {
+      "path": "tests/unit/test_phase_h_v3_contract_freeze.py",
+      "action": "SPLIT_FREEZE_FROM_CURRENT_STATE",
+      "note": "frozen schemas remain immutable; current activation/promotion projections are mutable"
+    },
+    {
+      "path": "tests/unit/test_phase_h_act_h1_tpex_attention_activation.py",
+      "action": "REALIGN_POST_PROMOTION_EXPECTATIONS",
+      "note": "preserve H-ACT-H1 route truth and rollback model; V2-preferred assertions become historical"
+    },
+    {
+      "path": "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py",
+      "action": "PRESERVE_HISTORICAL_LEDGER_AND_ADD_PROMOTED_E2E",
+      "note": "S7/S10/S11/S12 describe pre-promotion state and must not be silently reinterpreted"
+    },
+    {
+      "path": "tests/unit/test_phase_g_runtime_activation.py",
+      "action": "PRESERVE_V1_V2_EXECUTION_COMPATIBILITY_REMOVE_PREFERRED_ASSUMPTION",
+      "note": "Phase G capabilities must remain executable through accepted V1/V2 requests after V3 promotion"
+    },
+    {
+      "path": "tests/unit/test_phase_g_pr_d_closure.py",
+      "action": "TREAT_CLOSURE_AS_HISTORICAL",
+      "note": "do not rewrite accepted Phase G closure evidence; current runtime assertions must be separated"
+    },
+    {
+      "path": "tests/unit/test_m8r_07b_local_service_contract.py",
+      "action": "REALIGN_CURRENT_CATALOG_EXPECTATIONS",
+      "note": "Local Service current capability projection becomes V3"
+    },
+    {
+      "path": "tests/unit/test_m8r_08b_mcp_tool_contracts.py",
+      "action": "EXTEND_MARKET_FETCH_V3_INPUT_COVERAGE",
+      "note": "tool count remains six"
+    },
+    {
+      "path": "tests/integration/test_m8r_08b_mcp_stdio_local_service.py",
+      "action": "VERIFY_NO_TRANSPORT_CONTRACT_REGRESSION",
+      "note": "stdio/loopback topology unchanged"
+    },
+    {
+      "path": "tests/acceptance/test_m8r_10_watchlist_evidence_e2e.py",
+      "action": "ADD_V3_PREFERRED_WATCHLIST_COMPOSITION_CASE",
+      "note": "fresh-install primary builder path must emit and execute V3"
+    },
+    {
+      "path": "NEW tests/acceptance/test_phase_h_act_v3_promotion.py",
+      "action": "ADD",
+      "note": "promotion authority, partial/failure/no-evidence semantics, six tools, V1/V2 compatibility, V3 MCP/workbench execution, fresh install and rollback rehearsal"
+    }
+  ],
+  "immutable_historical_authority": [
+    "docs/governance/phase_h/PHASE_H_H0_G_V3_SCHEMA_FREEZE_MANIFEST.json",
+    "docs/governance/phase_h/PHASE_H_H_IMP_0_ACCEPTANCE_MANIFEST.json",
+    "docs/governance/phase_h/PHASE_H_H_IMP_1_ACCEPTANCE_MANIFEST.json",
+    "docs/governance/phase_h/PHASE_H_H_IMP_6_ACCEPTANCE_MANIFEST.json",
+    "docs/governance/phase_h/PHASE_H_H_IMP_7D_DETERMINISTIC_E2E_LEDGER.json",
+    "docs/governance/phase_h/PHASE_H_H_ACT_H1_TPEX_ATTENTION_ACCEPTANCE_LEDGER.json",
+    "docs/governance/phase_h/PHASE_H_H_ACC_7L_SELECTED_PRODUCT_LIVE_E2E_LEDGER.json",
+    "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json",
+    "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v2.json",
+    "schemas/unified_market_evidence_request.v1.schema.json",
+    "schemas/unified_market_evidence_request.v2.schema.json",
+    "schemas/unified_market_evidence_result.v1.schema.json",
+    "schemas/unified_market_evidence_result.v2.schema.json"
+  ],
+  "promotion_design_decisions": {
+    "D1": {
+      "decision": "V3 promotion is product-wide preferred contract promotion, not another single-route exception.",
+      "consequence": "existing inherited V3 resolved Phase G routes and the one active H1 route may execute when requested and authorized; inactive/blocked/plan-only H2/H3 or other routes remain non-executable."
+    },
+    "D2": {
+      "decision": "Preferred output authority is server-owned and not caller-selectable on public MCP/Workbench read routes.",
+      "consequence": "new unmaterialized packages default to Result/Audit V3 after promotion; already materialized V1/V2/V3 packages retain their persisted version."
+    },
+    "D3": {
+      "decision": "Six MCP tool names remain unchanged.",
+      "consequence": "market_fetch_evidence input authority expands to accepted V3 rather than adding a seventh tool."
+    },
+    "D4": {
+      "decision": "V2 remains rollback and compatibility authority, not current preferred authority.",
+      "consequence": "explicit V1/V2 requests remain accepted/executable where their capabilities are supported; historical V1/V2 artifacts are never rewritten."
+    },
+    "D5": {
+      "decision": "Promotion does not imply additional Phase H source activation or complete H1 coverage.",
+      "consequence": "active source count remains 1 and trading_status_context remains attention-only partial coverage."
+    }
+  },
+  "promotion_candidate_required_revalidation": [
+    "complete default non-network CI",
+    "V1 request validation/planning/execution compatibility",
+    "V2 request validation/planning/execution compatibility",
+    "V3 preferred validation/planning/authorization/execute-once",
+    "V3 MCP market_fetch_evidence for active H1 and inherited resolved Phase G routes",
+    "inactive/blocked/plan-only V3 route fail-closed cases",
+    "Result V3 / Audit V3 / AI handoff",
+    "partial, source_failed, binding_failed and no-evidence legality",
+    "six MCP tools exactly",
+    "zero startup network",
+    "fresh installation without optional providers",
+    "portable Skill/catalog/guide synchronization",
+    "historical V1/V2/V3 artifact hash immutability",
+    "actual preferred V3 -> V2 rollback rehearsal",
+    "rollback restoration of current capability description and MCP preferred request authority",
+    "forbidden-scope scan: no scheduler, polling, background refresh, warehouse, TA, screening, ranking, trading, identity fork or seventh MCP tool"
+  ],
+  "preflight_findings": [
+    {
+      "severity": "BLOCKING_IF_IGNORED",
+      "finding": "Local Service still projects V2 Catalog/Route while explicit V3 Workbench planning uses V3 authority; changing Catalog V3 alone would create split-brain current authority."
+    },
+    {
+      "severity": "BLOCKING_IF_IGNORED",
+      "finding": "market_fetch_evidence rejects V3 twice: static MCP input schema and Local Operator/B2 execution barriers."
+    },
+    {
+      "severity": "BLOCKING_IF_IGNORED",
+      "finding": "Mode C public read/handoff defaults remain V2; H-ACC-7L obtained V3 by explicit internal output_schema_version, so promotion must change the server-owned default."
+    },
+    {
+      "severity": "BLOCKING_IF_IGNORED",
+      "finding": "Persistent Watchlist primary builder can only compose selection v2 -> Unified Request V2; a V3-preferred claim would be false until this path is realigned."
+    },
+    {
+      "severity": "BLOCKING_IF_IGNORED",
+      "finding": "Portable Agent Skill/catalog validators and generator are pinned to Catalog/Request V2 and must move with runtime authority."
+    },
+    {
+      "severity": "SAFE_BOUNDARY",
+      "finding": "Frozen Request/Result/Audit V3 schemas need no change for promotion; current-state Catalog/Route projections and runtime dispatch are the mutable surfaces."
+    }
+  ],
+  "conclusion": {
+    "technical_preflight": "PASS",
+    "promotion_implementation_readiness": "READY",
+    "source_or_live_evidence_blocker": false,
+    "unresolved_architecture_blocker": false,
+    "owner_promotion_authorization_required": true,
+    "promotion_performed": false,
+    "next_action": "Owner reviews this preflight; after explicit H-ACT-V3 promotion authorization, implement one atomic authority realignment and run the full promotion/rollback acceptance."
+  }
+}
