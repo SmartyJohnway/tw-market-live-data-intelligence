@@ -29,14 +29,35 @@ jobs:
       - name: Validate TG-2/TG-3 baseline
         run: python scripts/validate_test_governance_tg2_tg3.py
 
-      - name: Run legacy default authority
-        run: python scripts/run_test_profile.py default-ci --json > /tmp/default-ci.json
+      - name: Run legacy default authority and record outcome
+        shell: bash
+        run: |
+          set +e
+          python scripts/run_test_profile.py default-ci --json > /tmp/default-ci.json
+          rc=$?
+          echo "default_return_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+        id: legacy
 
-      - name: Run TG-2 current shadow
-        run: python scripts/run_test_profile.py tg2-default-ci-current-shadow --json > /tmp/current-shadow.json
+      - name: Run TG-2 current shadow and record outcome
+        shell: bash
+        run: |
+          set +e
+          python scripts/run_test_profile.py tg2-default-ci-current-shadow --json > /tmp/current-shadow.json
+          rc=$?
+          echo "current_return_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+        id: current
 
-      - name: Run TG-2 broad current shadow
-        run: python scripts/run_test_profile.py tg2-full-current-non-network-shadow --json > /tmp/full-current-shadow.json
+      - name: Run TG-2 broad current shadow and record outcome
+        shell: bash
+        run: |
+          set +e
+          python scripts/run_test_profile.py tg2-full-current-non-network-shadow --json > /tmp/full-current-shadow.json
+          rc=$?
+          echo "full_current_return_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+        id: fullcurrent
 
       - name: Run TG-2 historical shadow and record outcome
         shell: bash
@@ -59,7 +80,11 @@ jobs:
         id: release
 
       - name: Summarize shadow results
+        if: always()
         env:
+          DEFAULT_RC: ${{ steps.legacy.outputs.default_return_code }}
+          CURRENT_RC: ${{ steps.current.outputs.current_return_code }}
+          FULL_CURRENT_RC: ${{ steps.fullcurrent.outputs.full_current_return_code }}
           HISTORICAL_RC: ${{ steps.historical.outputs.historical_shadow_return_code }}
           RELEASE_RC: ${{ steps.release.outputs.release_shadow_return_code }}
         run: |
@@ -81,6 +106,9 @@ jobs:
                   for key in ("status","collected","selected","passed","failed","skipped","deselected","duration_seconds","failed_command","failed_return_code")
                   if key in payload
               }
+          out["default_shell_rc"]=int(os.environ["DEFAULT_RC"])
+          out["current_shell_rc"]=int(os.environ["CURRENT_RC"])
+          out["full_current_shell_rc"]=int(os.environ["FULL_CURRENT_RC"])
           out["historical_shell_rc"]=int(os.environ["HISTORICAL_RC"])
           out["release_shell_rc"]=int(os.environ["RELEASE_RC"])
           Path("/tmp/tg4-shadow-summary.json").write_text(json.dumps(out,indent=2,sort_keys=True)+"\n",encoding="utf-8")
@@ -88,6 +116,7 @@ jobs:
           PY
 
       - name: Verify profile path partition has no static gap
+        if: always()
         run: |
           python - <<'PY'
           import json
@@ -107,11 +136,13 @@ jobs:
           PY
 
       - name: Verify runtime and default authority remain unchanged
+        if: always()
         run: |
           git diff --exit-code b438e3b1d06698e2e702284abbdaf0bbc9340b40 --             server             schemas             frontend             config/test_execution_profiles.json             config/test_governance_semantic_profiles.json             docs/governance/test_governance/HISTORICAL_EVIDENCE_INTEGRITY_MANIFEST.v1.json             docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json             docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json             config/phase_h_h1_dormant_source_descriptors.json
           echo "tg4_authority_containment: PASS"
 
       - name: Upload shadow observation
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: tg4-shadow-observation
@@ -124,5 +155,19 @@ jobs:
             /tmp/tg4-shadow-summary.json
           if-no-files-found: error
 
+      - name: Evaluate shadow observation
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path("/tmp/tg4-shadow-summary.json").read_text())
+          assert s["default-ci"]["status"] == "pass", "legacy default authority must remain green"
+          assert s["current-shadow"]["status"] == "pass", "current shadow has an unexplained protection/classification failure"
+          assert s["full-current-shadow"]["status"] == "pass", "broad current shadow must remain green"
+          print("tg4_current_shadow_evaluation: PASS")
+          PY
+
       - name: Verify patch whitespace
+        if: always()
         run: git diff --check
