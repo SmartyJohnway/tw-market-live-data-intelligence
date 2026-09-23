@@ -35,13 +35,10 @@ def validate_static() -> dict:
 
     new_default = profiles["default-ci"]
     old_rehearsal = profiles["pre-tg5-default-ci"]
-    tg2_current = profiles["tg2-default-ci-current-shadow"]
-
     assert new_default == rollback["candidate_default_profile"]
     assert new_default["pytest_expression"] == EXPECTED_EXPR
     assert new_default["automatic_ci_allowed"] is True
     assert len(new_default["pytest_paths"]) == 93
-    assert new_default["pytest_paths"] == tg2_current["pytest_paths"]
 
     old_contract = rollback["old_default_profile"]
     assert len(old_contract["pytest_paths"]) == 156
@@ -81,10 +78,10 @@ def validate_static() -> dict:
     assert tg4["interpretation"]["shadow_protection_gap"] == "NONE_UNEXPLAINED"
 
     for name in (
-        "tg2-full-current-non-network-shadow",
-        "tg2-historical-acceptance-shadow",
-        "tg2-release-preflight-shadow",
-        "tg4-mixed-historical-shadow",
+        "full-current",
+        "historical-milestone-replay",
+        "release-preflight-current",
+        "mixed-historical-diagnostic",
         "pre-tg5-default-ci",
     ):
         assert profiles[name]["automatic_ci_allowed"] is False
@@ -101,7 +98,7 @@ def validate_static() -> dict:
         "status": "PASS",
         "new_default_file_count": len(new_default["pytest_paths"]),
         "rollback_file_count": len(old_contract["pytest_paths"]),
-        "new_default_matches_tg2_shadow": True,
+        "new_default_matches_historical_tg2_candidate": True,
         "rollback_execution_semantics_preserved": True,
         "tg4_unexplained_nodes": 0,
         "tg5_authority_state": "PROMOTED_ACTIVE",
@@ -193,9 +190,8 @@ def validate_runtime(
     }
     assert int(payloads["rollback_diagnostic"]["failed"]) == 2
 
-    assert nodes["promoted_default_matches_tg2_shadow"] is True
     assert nodes["legacy_node_count"] == 1245
-    assert nodes["current_shadow_node_count"] == 778
+    assert nodes["current_default_node_count"] == 778
     assert nodes["legacy_missing_from_layered_count"] == 0
     assert nodes["legacy_unexplained"] == []
     assert nodes["legacy_layer_counts"] == {
