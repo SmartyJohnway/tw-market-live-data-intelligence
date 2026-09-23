@@ -1,6 +1,6 @@
 # Source Health Guide
 
-Check-only validation:
+> **Historical compatibility guide.** This page documents the earlier M5Q source-health workflow. Current product operation starts from [Quick Start](QUICK_START.md); current source/capability truth is in the V3 Catalog/Route authority.\n\nCheck-only validation:
 
 ```bash
 python scripts/run_m5q_source_health_probe.py --check-only
