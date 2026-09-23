@@ -10,6 +10,7 @@ import pytest
 import json
 from pathlib import Path
 
+from server.services import unified_mode_b2
 from server.services.unified_mode_a import validate_mode_a_request
 from server.services.unified_mode_b2 import ModeB2Error, build_local_operator_execution_ticket, build_mode_b2_authorization
 from server.services.unified_local_operator_action import LocalOperatorActionError, fetch_market_evidence
@@ -85,35 +86,41 @@ def test_v3_unknown_data_need_and_schema_identity_mismatch_fail_closed(monkeypat
         tool_contracts.load_unified_request_schema("unified_market_evidence_request.v3")
 
 
-def test_frozen_catalog_v3_metadata_is_exact_and_mutations_reject():
+def test_current_catalog_v3_promoted_metadata_is_exact_and_mutations_reject():
     catalog = json.loads((ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json").read_text(encoding="utf-8"))
     assert _catalog_valid(catalog)
+    versions = catalog["contract_versions"]
+    assert versions["preferred_request_schema_version"] == "unified_market_evidence_request.v3"
+    assert versions["emitted_result_schema_version"] == "unified_market_evidence_result.v3"
+    assert versions["future_candidate_request_schema_version"] is None
+    assert versions["future_candidate_result_schema_version"] is None
+    assert versions["v3_runtime_authority_status"] == "v3_preferred_selected_routes_active"
+
     missing = copy.deepcopy(catalog)
     del missing["contract_versions"]["future_candidate_result_schema_version"]
     assert not _catalog_valid(missing)
     wrong = copy.deepcopy(catalog)
-    wrong["contract_versions"]["future_candidate_result_schema_version"] = "unified_market_evidence_result.v2"
+    wrong["contract_versions"]["future_candidate_result_schema_version"] = "unified_market_evidence_result.v3"
     assert not _catalog_valid(wrong)
-    preferred_v3 = copy.deepcopy(catalog)
-    preferred_v3["contract_versions"]["preferred_request_schema_version"] = "unified_market_evidence_request.v3"
-    assert not _catalog_valid(preferred_v3)
-    assert catalog["contract_versions"]["v3_runtime_authority_status"] == "selected_routes_active_v2_preferred"
+    preferred_v2 = copy.deepcopy(catalog)
+    preferred_v2["contract_versions"]["preferred_request_schema_version"] = "unified_market_evidence_request.v2"
+    assert not _catalog_valid(preferred_v2)
     arbitrary = copy.deepcopy(catalog)
     arbitrary["contract_versions"]["v3_runtime_authority_status"] = "active"
     assert not _catalog_valid(arbitrary)
 
 
-def test_mcp_passive_envelopes_accept_v3_but_execution_envelope_does_not():
+def test_mcp_passive_and_execution_envelopes_accept_promoted_v3():
     snapshot = build_tool_contract_snapshot()
     v3 = request()
     assert tuple(tool.name for tool in snapshot.tools) == EXPECTED_TOOLS
-    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v2"
+    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v3"
     assert snapshot.validate_arguments("market_validate_request", {"request": v3})
     assert snapshot.validate_arguments("market_preview_request", {"request": v3})
-    assert not snapshot.validate_arguments("market_fetch_evidence", {"request": v3})
+    assert snapshot.validate_arguments("market_fetch_evidence", {"request": request(execution_mode="execute")})
 
 
-def test_mcp_dispatch_v3_validate_preview_and_fetch_barrier():
+def test_mcp_dispatch_v3_validate_preview_and_fetch_reaches_existing_action():
     class FakeClient:
         def __init__(self):
             self.validate_count = 0
@@ -130,7 +137,7 @@ def test_mcp_dispatch_v3_validate_preview_and_fetch_barrier():
 
         async def fetch_evidence(self, _args):
             self.fetch_count += 1
-            return {"unexpected": True}
+            return {"execution_outcome": "succeeded"}
 
     async def exercise():
         client = FakeClient()
@@ -138,13 +145,13 @@ def test_mcp_dispatch_v3_validate_preview_and_fetch_barrier():
         v3 = request()
         validated = await dispatch_safe_tool("market_validate_request", {"request": v3}, client=client, tool_contract_snapshot=snapshot)
         previewed = await dispatch_safe_tool("market_preview_request", {"request": v3}, client=client, tool_contract_snapshot=snapshot)
-        rejected = await dispatch_safe_tool("market_fetch_evidence", {"request": request(execution_mode="execute")}, client=client, tool_contract_snapshot=snapshot)
-        return client, validated, previewed, rejected
+        fetched = await dispatch_safe_tool("market_fetch_evidence", {"request": request(execution_mode="execute")}, client=client, tool_contract_snapshot=snapshot)
+        return client, validated, previewed, fetched
 
-    client, validated, previewed, rejected = asyncio.run(exercise())
+    client, validated, previewed, fetched = asyncio.run(exercise())
     assert validated.isError is False and client.validate_count == 1
     assert previewed.isError is False and client.preview_count == 1
-    assert rejected.isError is True and client.fetch_count == 0
+    assert fetched.isError is False and client.fetch_count == 1
 
 
 def test_v3_selected_tpex_attention_route_is_executable_but_truthfully_partial():
@@ -222,16 +229,54 @@ def test_planner_allows_only_matching_v2_or_v3_catalog_routing_pairs():
         build_plan(f3, capability_catalog=mixed["capability_catalog"], routing_matrix=mixed["routing_matrix"], handoff_contract=mixed["handoff_contract"], executor_disposition=mixed["executor_disposition"], input_bindings=bindings, planning_timestamp=FIXED_TIME)
 
 
-def test_v3_local_operator_and_mcp_action_boundaries_remain_v1_v2_only():
+def test_v3_local_operator_builds_normal_execute_once_ticket_after_promotion(monkeypatch):
     execute_v3 = request(
         execution_mode="execute",
         needs=[{"type": "trading_status_context", "priority": "required", "parameters": {}}],
         input_value="6488", market_hint="TPEX",
     )
-    with pytest.raises(ModeB2Error, match="phase_h_v3_execution_inactive"):
-        build_local_operator_execution_ticket(execute_v3)
-    with pytest.raises(LocalOperatorActionError, match="phase_h_v3_execution_inactive"):
-        fetch_market_evidence({"request": execute_v3})
+    preview = {
+        "status": "ready_for_confirmation",
+        "internal_execution_reference": {"preview_id": "promoted-v3-preview"},
+    }
+    plan = {
+        "plan_id": "promoted-v3-plan",
+        "plan_hash": "a" * 64,
+        "operations": [{
+            "operation_id": "op-promoted-v3",
+            "operation_status": "executable_pending_approval",
+            "capability_id": "trading_status_context",
+            "market": "TPEX",
+            "executor_id": "phase_h_h1_tpex_attention_executor",
+        }],
+        "blocked_operations": [],
+        "omitted_optional_capabilities": [],
+    }
+    captured = {}
+
+    monkeypatch.setattr(
+        unified_mode_b2,
+        "_authorizable_preview",
+        lambda _request, **_kwargs: (copy.deepcopy(preview), copy.deepcopy(plan)),
+    )
+    monkeypatch.setattr(
+        unified_mode_b2,
+        "_materialize_execution_ticket",
+        lambda request, plan, decision: captured.update(
+            request=copy.deepcopy(request), plan=copy.deepcopy(plan), decision=copy.deepcopy(decision)
+        ) or {
+            "control_package_id": "umea-v1-" + "a" * 20,
+            "execution_ready": True,
+            "network_required": True,
+        },
+    )
+
+    ticket = build_local_operator_execution_ticket(execute_v3)
+    assert ticket["execution_ready"] is True
+    assert captured["request"]["schema_version"] == "unified_market_evidence_request.v3"
+    assert captured["plan"]["operations"][0]["executor_id"] == "phase_h_h1_tpex_attention_executor"
+    assert captured["decision"]["single_use"] is True
+    assert captured["decision"]["maximum_use_count"] == 1
 
 
 
