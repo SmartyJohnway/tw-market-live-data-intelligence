@@ -128,3 +128,19 @@ TG-5 may merge only after the cutover candidate and rollback profile both pass
 in the same acceptance run.
 
 TG-6 physical cleanup remains a separate later decision.
+
+
+## TG-5 historical time semantics
+
+TG-5 intentionally changes the current `default-ci` topology. Two frozen
+historical final-acceptance tests assert the pre-TG5 topology itself. They must
+not be rewritten to make the current tree green.
+
+Therefore TG-5 uses two proofs:
+
+- authoritative historical reproduction at baseline
+  `2ff9707d901f40c1a108dd1317fce2f03cc79735`: 94/94 historical nodes must pass;
+- current-tree historical diagnostic: exactly the two frozen self-membership
+  assertions may fail, with zero unexpected failures.
+
+This preserves historical evidence while allowing current governance to evolve.
