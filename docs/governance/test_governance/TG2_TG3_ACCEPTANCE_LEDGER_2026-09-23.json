@@ -1,0 +1,73 @@
+{
+  "schema_version": "test_governance_tg2_tg3_acceptance_ledger.v1",
+  "date": "2026-09-23",
+  "status": "TG2_TG3_ADDITIVE_PASS",
+  "baseline_main": "b75bfda283d89adf62b46ee63c4c9c528ce92934",
+  "branch": "governance/test-governance-tg2-tg3",
+  "tested_head": "a0812fe866ce102b76b3f3caf0f2675cde1331f4",
+  "workflow": {
+    "name": "Test Governance TG-2 TG-3 Additive",
+    "run_id": 35821210549,
+    "conclusion": "success",
+    "semantic_integrity_validator": "PASS",
+    "focused_governance_tests": "8 passed",
+    "default_ci": {
+      "collected": 1254,
+      "selected": 1245,
+      "passed": 1241,
+      "skipped": 4,
+      "deselected": 9,
+      "warnings": 20,
+      "duration_seconds": 31.66
+    },
+    "runtime_scope_containment": "PASS",
+    "default_ci_identity_unchanged": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "tg2": {
+    "semantic_manifest": "config/test_governance_semantic_profiles.json",
+    "default_ci_current_candidate_count": 91,
+    "mixed_current_historical_count": 2,
+    "full_current_nondefault_candidate_count": 46,
+    "historical_candidate_count": 15,
+    "release_candidate_count": 2,
+    "shadow_profiles": {
+      "tg2-default-ci-current-shadow": 93,
+      "tg2-full-current-non-network-shadow": 139,
+      "tg2-historical-acceptance-shadow": 15,
+      "tg2-release-preflight-shadow": 2
+    },
+    "automatic_ci_allowed_for_shadow_profiles": false,
+    "existing_default_ci_changed": false,
+    "markers_applied_to_existing_tests": false,
+    "refinement": {
+      "path": "tests/unit/test_m8c_taifex_mis_currentness_preflight.py",
+      "from": "MOVE_HISTORICAL_AFTER_TG3",
+      "to": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "reason": "deterministic compatibility/helper regression rather than immutable acceptance evidence"
+    }
+  },
+  "tg3": {
+    "integrity_manifest": "docs/governance/test_governance/HISTORICAL_EVIDENCE_INTEGRITY_MANIFEST.v1.json",
+    "historical_candidate_count": 15,
+    "primary_evidence_bindings": 35,
+    "hash_kind": "git_blob_sha",
+    "historical_tests_deleted": false,
+    "full_reproduction_retained": true,
+    "default_ci_removal_authorized": false
+  },
+  "scope": {
+    "production_runtime_changed": false,
+    "source_activation_changed": false,
+    "routing_changed": false,
+    "frozen_schema_changed": false,
+    "phase_i_implementation": false,
+    "default_ci_cutover": false
+  },
+  "next_gate": {
+    "id": "TG-4",
+    "name": "Shadow CI comparison",
+    "requirement": "Run old default authority and proposed semantic profiles side by side and prove no unexplained protection gap before TG-5.",
+    "tg5_authorized": false
+  }
+}
