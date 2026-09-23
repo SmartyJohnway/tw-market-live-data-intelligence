@@ -1,0 +1,376 @@
+{
+  "schema_version": "historical_evidence_integrity_manifest.v1",
+  "date": "2026-09-23",
+  "baseline_commit": "b75bfda283d89adf62b46ee63c4c9c528ce92934",
+  "source_semantic_profile_manifest": "config/test_governance_semantic_profiles.json",
+  "classification": "TG-3_ADDITIVE_INTEGRITY_LAYER",
+  "hash_kind": "git_blob_sha",
+  "hash_verification": "git rev-parse HEAD:<path> must equal recorded blob identity",
+  "candidate_count": 15,
+  "default_ci_authority_changed": false,
+  "historical_tests_deleted": false,
+  "full_reproduction_retained": true,
+  "replacement_for_tg4_shadow_ci": false,
+  "entries": [
+    {
+      "candidate_test_path": "tests/unit/test_m7e_market_clock_session_state_final_acceptance.py",
+      "candidate_test_git_blob_sha": "99c20dfab9b1c6e8cab4138e9306d875f1cfa4d4",
+      "candidate_test_size_bytes": 7712,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "docs/protocol/M7E_MARKET_CLOCK_SESSION_STATE_FINAL_ACCEPTANCE.md",
+          "git_blob_sha": "dfb121e08f8d850f5c8be35005e6ac838e1ed557",
+          "size_bytes": 2538,
+          "role": "accepted_historical_evidence"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    },
+    {
+      "candidate_test_path": "tests/unit/test_m7f_rich_fact_browser_final_acceptance.py",
+      "candidate_test_git_blob_sha": "63fbc7fc786a0b26926fffd26924e86c3faaa8b4",
+      "candidate_test_size_bytes": 3662,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "docs/protocol/M7F_RICH_FACT_BROWSER_OPERATOR_WORKBENCH_FINAL_ACCEPTANCE.md",
+          "git_blob_sha": "514c0e4b0de99a217da3037fd94a1eb847420152",
+          "size_bytes": 1691,
+          "role": "accepted_historical_evidence"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    },
+    {
+      "candidate_test_path": "tests/unit/test_m7g_final_acceptance.py",
+      "candidate_test_git_blob_sha": "7041d3b30fc7732d6eeba6cfaa67b6479d541ac0",
+      "candidate_test_size_bytes": 4305,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "docs/protocol/M7G_LOCAL_SAFE_CONTEXT_ARTIFACT_LOAD_FINAL_ACCEPTANCE.md",
+          "git_blob_sha": "0f113e57b18ad40031409cdb11a3a96ef7f8ae8b",
+          "size_bytes": 6297,
+          "role": "accepted_historical_evidence"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    },
+    {
+      "candidate_test_path": "tests/unit/test_m8_00_final_acceptance.py",
+      "candidate_test_git_blob_sha": "da4932c45b7e90a1a3a9e4783831719ff01c512e",
+      "candidate_test_size_bytes": 5952,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "docs/protocol/M8_00_FINAL_ACCEPTANCE_AND_CLOSURE.md",
+          "git_blob_sha": "f181089fd9371e89e85115e62b8e5bcc0fd82fe9",
+          "size_bytes": 7392,
+          "role": "accepted_historical_evidence"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    },
+    {
+      "candidate_test_path": "tests/unit/test_m8a_official_eod_contract_preflight.py",
+      "candidate_test_git_blob_sha": "3f0ef63f5eaf185cccbc09cce5b94209985e50e3",
+      "candidate_test_size_bytes": 13466,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "docs/protocol/M8A_OFFICIAL_EOD_ADAPTER_SCOPE_AND_CONTRACT_PREFLIGHT.md",
+          "git_blob_sha": "211c54dc5742479ba5cc7d6badf89b6a1c075135",
+          "size_bytes": 12105,
+          "role": "accepted_historical_evidence"
+        },
+        {
+          "path": "research/probe_runs/m8a_official_eod_contract_preflight/m8a_official_eod_currentness_reconciliation_20260711T102435Z.json",
+          "git_blob_sha": "d939ff9242f5e0dee7ca3cd67f2f9caba6018371",
+          "size_bytes": 5733,
+          "role": "accepted_historical_evidence"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    },
+    {
+      "candidate_test_path": "tests/unit/test_m8a_final_acceptance.py",
+      "candidate_test_git_blob_sha": "901a735f3c95dfb542a012d2654dc855775a8e9d",
+      "candidate_test_size_bytes": 2282,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "docs/protocol/M8A_OFFICIAL_EOD_CONTEXT_FINAL_ACCEPTANCE.md",
+          "git_blob_sha": "49c30f0db56f1095a6652323c3c9b813855a2fe0",
+          "size_bytes": 6054,
+          "role": "accepted_historical_evidence"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    },
+    {
+      "candidate_test_path": "tests/unit/test_m8b_taifex_openapi_contract_preflight.py",
+      "candidate_test_git_blob_sha": "f05721490b661abb64af31b2998495b67239d118",
+      "candidate_test_size_bytes": 13068,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "docs/protocol/M8B_TAIFEX_OPENAPI_OFFICIAL_DERIVATIVES_EOD_PREFLIGHT_ACCEPTANCE.md",
+          "git_blob_sha": "f98e16628f82012eabb128e3a8b25dfa3ec8d204",
+          "size_bytes": 3846,
+          "role": "accepted_historical_evidence"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    },
+    {
+      "candidate_test_path": "tests/unit/test_m8b_final_acceptance.py",
+      "candidate_test_git_blob_sha": "c60ed41af4c0eac9fbc8714943488f81d75f41df",
+      "candidate_test_size_bytes": 586,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "docs/protocol/M8B_01_TAIFEX_OPENAPI_OFFICIAL_DERIVATIVES_EOD_FINAL_ACCEPTANCE.md",
+          "git_blob_sha": "e6479870f30ce4aad25c20dfcda19a36acc1f504",
+          "size_bytes": 7755,
+          "role": "accepted_historical_evidence"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    },
+    {
+      "candidate_test_path": "tests/unit/test_m8_through_m8b_consolidated_acceptance.py",
+      "candidate_test_git_blob_sha": "996c6b4569273629ed332b2968ffc55e83c1bda3",
+      "candidate_test_size_bytes": 13728,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "docs/protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md",
+          "git_blob_sha": "c355539651228360f6b0d9950a524eb1684f4921",
+          "size_bytes": 7181,
+          "role": "accepted_historical_evidence"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    },
+    {
+      "candidate_test_path": "tests/unit/test_m8c_00_final_acceptance.py",
+      "candidate_test_git_blob_sha": "685bf716b505c908c64aa92bcfccb6deb148d016",
+      "candidate_test_size_bytes": 1179,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "docs/protocol/M8C_00_TAIFEX_MIS_PREFLIGHT_FINAL_ACCEPTANCE.md",
+          "git_blob_sha": "c109f9d5d57febae58352612cb3197fec0c5bfba",
+          "size_bytes": 5019,
+          "role": "accepted_historical_evidence"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    },
+    {
+      "candidate_test_path": "tests/unit/test_m8c_taifex_mis_contract_preflight.py",
+      "candidate_test_git_blob_sha": "a1a8a008ec2b2dc00c5dd27d06e39ffceb99e725",
+      "candidate_test_size_bytes": 4340,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "docs/protocol/M8C_00_TAIFEX_MIS_PREFLIGHT_FINAL_ACCEPTANCE.md",
+          "git_blob_sha": "c109f9d5d57febae58352612cb3197fec0c5bfba",
+          "size_bytes": 5019,
+          "role": "accepted_historical_evidence"
+        },
+        {
+          "path": "research/probe_runs/m8c_taifex_mis_preflight/sockjs_initial_state_summary.json",
+          "git_blob_sha": "67bd17be4cc9e43b865a5c85010873f44c66294c",
+          "size_bytes": 1824,
+          "role": "accepted_historical_evidence"
+        },
+        {
+          "path": "research/probe_runs/m8c_taifex_mis_preflight/identity_resolution_summary.json",
+          "git_blob_sha": "45c46aa27e12cdc3a32538ad5cf64d2a359bfe96",
+          "size_bytes": 680,
+          "role": "accepted_historical_evidence"
+        },
+        {
+          "path": "research/probe_runs/m8c_taifex_mis_preflight/rest_endpoint_probe_summary.json",
+          "git_blob_sha": "cb821e2161ac466dae0fce2889ce86d0a8ad13dd",
+          "size_bytes": 10141,
+          "role": "accepted_historical_evidence"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    },
+    {
+      "candidate_test_path": "tests/unit/m8r_05c/test_m8r_05c_integration.py",
+      "candidate_test_git_blob_sha": "4f5461b9b9709109b92907fbc002b439386f541f",
+      "candidate_test_size_bytes": 5153,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "tests/fixtures/m8r_05c/artifact_root/operations/op_identity/evidence.json",
+          "git_blob_sha": "240e1179e57a02fc056fced413d28f12e8d116a7",
+          "size_bytes": 216,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/authorization.json",
+          "git_blob_sha": "fcb9c35c7922159695ec2b1cc235c0dbe59a9820",
+          "size_bytes": 4147,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/bundle.json",
+          "git_blob_sha": "e8c1386b64b8056e39541efd45f6ae87013cc722",
+          "size_bytes": 1964,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/claim.json",
+          "git_blob_sha": "9e13c86e735293a13f7bb7c72bebd106d955aea9",
+          "size_bytes": 1483,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/consumption_binding.json",
+          "git_blob_sha": "f6c1403b68b50ae0d965a738e3574124d7e24649",
+          "size_bytes": 2821,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/f3_validation.json",
+          "git_blob_sha": "67c124ba59a2c719ce01fa478e51b7243d5d9d44",
+          "size_bytes": 1684,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/plan_single_target.json",
+          "git_blob_sha": "21b2f2f76d1730871c55ee1a46fc619b15422d50",
+          "size_bytes": 3321,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/receipt.json",
+          "git_blob_sha": "189ee5f8d9383f94d329a882472b0bb23be52d8e",
+          "size_bytes": 1634,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/request_single_target.json",
+          "git_blob_sha": "2c6907f4a479a21fdfbef49722ab319d2b92e317",
+          "size_bytes": 628,
+          "role": "historical_fixture"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    },
+    {
+      "candidate_test_path": "tests/unit/test_m8r_05c_determinism.py",
+      "candidate_test_git_blob_sha": "1f6604039c6148ea51403f60822e077492dd2f81",
+      "candidate_test_size_bytes": 3895,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "tests/fixtures/m8r_05c/artifact_root/operations/op_identity/evidence.json",
+          "git_blob_sha": "240e1179e57a02fc056fced413d28f12e8d116a7",
+          "size_bytes": 216,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/authorization.json",
+          "git_blob_sha": "fcb9c35c7922159695ec2b1cc235c0dbe59a9820",
+          "size_bytes": 4147,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/bundle.json",
+          "git_blob_sha": "e8c1386b64b8056e39541efd45f6ae87013cc722",
+          "size_bytes": 1964,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/claim.json",
+          "git_blob_sha": "9e13c86e735293a13f7bb7c72bebd106d955aea9",
+          "size_bytes": 1483,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/consumption_binding.json",
+          "git_blob_sha": "f6c1403b68b50ae0d965a738e3574124d7e24649",
+          "size_bytes": 2821,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/f3_validation.json",
+          "git_blob_sha": "67c124ba59a2c719ce01fa478e51b7243d5d9d44",
+          "size_bytes": 1684,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/plan_single_target.json",
+          "git_blob_sha": "21b2f2f76d1730871c55ee1a46fc619b15422d50",
+          "size_bytes": 3321,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/receipt.json",
+          "git_blob_sha": "189ee5f8d9383f94d329a882472b0bb23be52d8e",
+          "size_bytes": 1634,
+          "role": "historical_fixture"
+        },
+        {
+          "path": "tests/fixtures/m8r_05c/request_single_target.json",
+          "git_blob_sha": "2c6907f4a479a21fdfbef49722ab319d2b92e317",
+          "size_bytes": 628,
+          "role": "historical_fixture"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    },
+    {
+      "candidate_test_path": "tests/unit/test_phase_g_p0_acceptance_ledger.py",
+      "candidate_test_git_blob_sha": "1da1efee5bd9419a205fe66875325f6a049d2ace",
+      "candidate_test_size_bytes": 1123,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "docs/acceptance_runs/phase_g_pr_d_p0_ledger.json",
+          "git_blob_sha": "c33c6d9098cb9c77d3eb7c3aea2f5a6360b49fa1",
+          "size_bytes": 10009,
+          "role": "accepted_historical_evidence"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    },
+    {
+      "candidate_test_path": "tests/unit/test_phase_g_pr_d_live_acceptance.py",
+      "candidate_test_git_blob_sha": "ed4b8ec590f7db2eea03fbdc7f1648eccc94a716",
+      "candidate_test_size_bytes": 3329,
+      "integrity_status": "CONTENT_ADDRESSED_AT_TG3_BASELINE",
+      "primary_evidence": [
+        {
+          "path": "docs/acceptance_runs/phase_g_pr_d_controlled_live.json",
+          "git_blob_sha": "87afaac1a67058f2fb778b23a03c97982798140c",
+          "size_bytes": 21423,
+          "role": "accepted_historical_evidence"
+        }
+      ],
+      "manual_reproduction_profile": "tg2-historical-acceptance-shadow",
+      "default_ci_removal_authorized": false
+    }
+  ]
+}

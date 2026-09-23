@@ -1,62 +1,33 @@
 {
-  "schema_version": "1.0",
-  "profiles": {
-    "fast": {
-      "purpose": "Developer/Codex inner feedback loop for high-signal deterministic safety contracts.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network",
-      "pytest_paths": [
-        "tests/unit/test_m5k_workflow.py",
-        "tests/unit/test_m5n_watchlist_workflow.py",
-        "tests/unit/test_m6d_ssl_policy.py",
-        "tests/unit/test_server.py",
-        "tests/unit/test_mcp_server.py",
-        "tests/unit/test_governance_forbidden_path_guard.py",
-        "tests/unit/test_forbidden_behavior_scanner.py",
-        "tests/unit/test_no_frontend_public_write_guard.py",
-        "tests/unit/test_no_trading_signal_ui_guard.py",
-        "tests/unit/test_m6d_operator_and_local_networking.py",
-        "tests/unit/test_run_test_profile.py"
-      ],
-      "network_policy": "no network; excludes tests marked network",
-      "browser_policy": "not required",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": true
-    },
-    "default-ci": {
-      "purpose": "Every-PR default CI: core regressions, active contracts, security smoke, schema compatibility, and essential component integration; excludes historical/performance/milestone-only suites.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and not browser and not live and not release_preflight and not historical and not performance",
-      "pytest_paths": [
+  "schema_version": "test_governance_semantic_profiles.v1",
+  "date": "2026-09-23",
+  "baseline_main": "b75bfda283d89adf62b46ee63c4c9c528ce92934",
+  "source_tg1_ledger": "docs/governance/test_governance/TG1_TEST_AUTHORITY_DISPOSITION_LEDGER_2026-09-23.json",
+  "mode": "TG-2_ADDITIVE_SHADOW_ONLY",
+  "default_ci_authority_changed": false,
+  "marker_application_changed": false,
+  "test_deletion_performed": false,
+  "refinements": [
+    {
+      "path": "tests/unit/test_m8c_taifex_mis_currentness_preflight.py",
+      "tg1_proposal": "MOVE_HISTORICAL_AFTER_TG3",
+      "tg2_refined_class": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "reason": "The file tests deterministic M8C currentness helper semantics and contains no immutable acceptance artifact assertion; retain as broad regression rather than historical evidence."
+    }
+  ],
+  "partitions": {
+    "default_ci_current_candidate": {
+      "count": 91,
+      "paths": [
         "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
         "tests/unit/test_m8r_filesystem_containment.py",
-        "tests/unit/test_m5k_workflow.py",
-        "tests/unit/test_m5n_watchlist_workflow.py",
-        "tests/unit/test_m6d_ssl_policy.py",
-        "tests/unit/test_server.py",
-        "tests/unit/test_mcp_server.py",
         "tests/unit/test_governance_forbidden_path_guard.py",
         "tests/unit/test_forbidden_behavior_scanner.py",
         "tests/unit/test_no_frontend_public_write_guard.py",
         "tests/unit/test_no_trading_signal_ui_guard.py",
-        "tests/unit/test_m6d_operator_and_local_networking.py",
         "tests/unit/test_run_test_profile.py",
-        "tests/unit/test_m5f_canonical_market_context_package.py",
-        "tests/unit/test_m5fgh_consumer_consistency.py",
-        "tests/unit/test_m5fgh_fastapi_context.py",
-        "tests/unit/test_m5fgh_frontend_static.py",
-        "tests/unit/test_m5i_explicit_bounded_refresh.py",
         "tests/unit/test_m5ij_forbidden_path_policy.py",
-        "tests/unit/test_m5op_frontend_operator_workflow.py",
-        "tests/unit/test_m6a_observation_ux.py",
         "tests/unit/test_m6b_contract_hardening.py",
-        "tests/test_m5q_source_health.py",
-        "tests/test_m6e_operator_acceptance.py",
-        "tests/unit/test_frontend_readonly_static_contracts.py",
-        "tests/unit/test_frontend_readonly_contract_static.py",
-        "tests/unit/test_frontend_readonly_context_package.py",
-        "tests/unit/test_frontend_accessibility_static.py",
-        "tests/unit/test_frontend_observability_static.py",
         "tests/unit/test_twse_mis_normalization_v2.py",
         "tests/unit/test_twse_openapi_normalization_v1.py",
         "tests/unit/test_tpex_openapi_normalization_v1.py",
@@ -71,39 +42,9 @@
         "tests/unit/test_m7e_market_clock_session_state_context_integration.py",
         "tests/unit/test_m7e_market_clock_session_state_markdown.py",
         "tests/unit/test_m7e_market_clock_session_state_inventory.py",
-        "tests/unit/test_m7e_market_clock_session_state_final_acceptance.py",
         "tests/unit/test_m7e_twse_trading_calendar_authority.py",
         "tests/unit/test_m7e_twse_trading_calendar_artifact.py",
         "tests/unit/test_m7e_twse_trading_calendar_mode_contract.py",
-        "tests/unit/test_m7f_rich_fact_browser_policy.py",
-        "tests/unit/test_m7f_rich_fact_display_catalog.py",
-        "tests/unit/test_m7f_ai_handoff_search_filters.py",
-        "tests/unit/test_m7f_field_badges_currentness_calendar.py",
-        "tests/unit/test_m7f_frontend_rich_fact_browser_base_ui.py",
-        "tests/unit/test_m7f_frontend_security_semantic_regression.py",
-        "tests/unit/test_m7f_rich_fact_browser_final_acceptance.py",
-        "tests/unit/test_m7g_safe_context_artifact_schema.py",
-        "tests/unit/test_m7g_safe_artifact_validator.py",
-        "tests/unit/test_m7g_frontend_manual_artifact_load_ui.py",
-        "tests/unit/test_m7g_inventory_policy.py",
-        "tests/unit/test_m7g_real_safe_artifact_rendering.py",
-        "tests/unit/test_m7g_provenance_currentness_source_health_panel.py",
-        "tests/unit/test_m7g_ai_handoff_from_loaded_safe_artifact.py",
-        "tests/unit/test_m7g_refresh_workflow_policy_request_package.py",
-        "tests/unit/test_m7g_refresh_request_package_builder.py",
-        "tests/unit/test_m7g_controlled_refresh_execution_gate.py",
-        "tests/unit/test_m7g_refreshed_safe_artifact_result_contract.py",
-        "tests/unit/test_m7g_controlled_refresh_frontend_execution_ui.py",
-        "tests/unit/test_m7g_refresh_workflow_security_regression.py",
-        "tests/unit/test_m7g_twse_mis_market_route_semantics.py",
-        "tests/unit/test_m7g_final_acceptance.py",
-        "tests/unit/test_m8_source_governance_foundation.py",
-        "tests/unit/test_m8_source_freshness_evaluator.py",
-        "tests/unit/test_m8_multi_source_context_builder.py",
-        "tests/unit/test_m8_controlled_conversation_context_integration.py",
-        "tests/unit/test_m8_compatibility_hardening.py",
-        "tests/unit/test_m8_00_final_acceptance.py",
-        "tests/unit/test_m8a_official_eod_contract_preflight.py",
         "tests/unit/test_m8a_official_eod_observation.py",
         "tests/unit/test_m8a_twse_official_eod_adapter.py",
         "tests/unit/test_m8a_tpex_official_eod_adapter.py",
@@ -114,8 +55,6 @@
         "tests/unit/test_m8a_controlled_official_eod_execution.py",
         "tests/unit/test_m8a_official_eod_context_integration.py",
         "tests/unit/test_m8a_official_eod_conversation_projection.py",
-        "tests/unit/test_m8a_final_acceptance.py",
-        "tests/unit/test_m8b_taifex_openapi_contract_preflight.py",
         "tests/unit/test_m8b_taifex_derivatives_observation.py",
         "tests/unit/test_m8b_taifex_openapi_futures_adapter.py",
         "tests/unit/test_m8b_taifex_openapi_options_adapter.py",
@@ -126,14 +65,9 @@
         "tests/unit/test_m8b_taifex_openapi_execution.py",
         "tests/unit/test_m8b_taifex_openapi_context_integration.py",
         "tests/unit/test_m8b_taifex_openapi_conversation_projection.py",
-        "tests/unit/test_m8b_final_acceptance.py",
         "tests/unit/test_m8b_taifex_openapi_currentness.py",
         "tests/unit/test_m8b_taifex_openapi_schema_and_validation.py",
         "tests/unit/test_m8b_taifex_openapi_projection_families.py",
-        "tests/unit/test_m8_through_m8b_consolidated_acceptance.py",
-        "tests/unit/test_m8c_00_final_acceptance.py",
-        "tests/unit/test_m8c_taifex_mis_contract_preflight.py",
-        "tests/unit/test_m8c_taifex_mis_currentness_preflight.py",
         "tests/unit/test_m8c_taifex_mis_identity_contract.py",
         "tests/unit/test_m8c_taifex_mis_probe_parsers.py",
         "tests/unit/test_m8c_01_taifex_mis_runtime.py",
@@ -152,18 +86,13 @@
         "tests/unit/test_m8r_06_03_mode_b2_authorization.py",
         "tests/unit/test_m8r_06_03_production_adapter.py",
         "tests/unit/test_m8r_06_03_batch_runtime.py",
-        "tests/unit/test_m8r_06_04_mode_c.py",
-        "tests/unit/m8r_05c/test_m8r_05c_integration.py",
-        "tests/unit/test_m8r_05c_determinism.py",
         "tests/unit/test_m8r_05c_lineage.py",
         "tests/unit/test_m8r_05c_containment.py",
         "tests/integration/test_unified_workbench_api.py",
         "tests/unit/test_product_version.py",
         "tests/unit/test_validate_product_version_consistency.py",
         "tests/unit/test_validate_v1_public_contracts.py",
-        "tests/unit/test_build_v1_release_manifest.py",
         "tests/unit/test_validate_release_hygiene.py",
-        "tests/unit/test_browser_e2e_requirements.py",
         "tests/unit/test_m8r_08c_r1_launcher_readiness.py",
         "tests/unit/test_phase_g_request_v2_and_catalog.py",
         "tests/unit/test_phase_g_routing_and_planner.py",
@@ -172,10 +101,7 @@
         "tests/unit/test_phase_g_result_v2_projection.py",
         "tests/unit/test_phase_g_mode_c_v2.py",
         "tests/unit/test_phase_g_runtime_activation.py",
-        "tests/unit/test_phase_g_p0_acceptance_ledger.py",
-        "tests/unit/test_phase_g_pr_d_live_acceptance.py",
         "tests/unit/test_phase_g_pr_d_public_surfaces.py",
-        "tests/unit/test_phase_g_pr_d_closure.py",
         "tests/unit/test_phase_h_v3_contract_freeze.py",
         "tests/unit/test_phase_h_imp_0_passive_v3_compatibility.py",
         "tests/unit/test_phase_h_imp_1_h4_deterministic_safety.py",
@@ -184,307 +110,98 @@
         "tests/unit/test_phase_h_imp_6_v3_projection_handoff.py",
         "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py",
         "tests/unit/test_phase_h_act_h1_tpex_attention_activation.py"
-      ],
-      "network_policy": "no network; excludes tests marked network",
-      "browser_policy": "does not install or require Playwright/Chromium",
-      "live_policy": "never executes bounded live checks",
-      "automatic_ci_allowed": true
+      ]
     },
-    "full-non-network": {
-      "purpose": "Broad current non-network regression for releases and large refactors. Archived M5C/M5D/M5E hash-bound evidence remains fail-closed historical evidence and is not an active release gate.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and not historical and not performance",
-      "pytest_paths": [
-        "tests"
-      ],
-      "network_policy": "no network; equivalent to pytest -m 'not network'",
-      "browser_policy": "browser-marked tests may run only if they are non-network and self-skip when dependencies are absent",
-      "live_policy": "excludes tests marked network; no explicit bounded live execution",
-      "automatic_ci_allowed": false,
-      "authoritative_runner": [
-        [
-          "python",
-          "scripts/run_local_delivery_acceptance.py",
-          "--check-only"
-        ],
-        [
-          "python",
-          "scripts/run_ci_delivery_acceptance.py",
-          "--check-only"
-        ],
-        [
-          "python",
-          "scripts/run_m4_local_validation.py",
-          "--check-only"
-        ],
-        [
-          "python",
-          "scripts/run_m5ij_end_to_end_acceptance.py",
-          "--check-only"
-        ],
-        [
-          "python",
-          "scripts/validate_m5f_canonical_market_context_package.py",
-          "--package-dir",
-          "research/staging/m5f/m5f_canonical_market_context_01"
-        ]
-      ],
-      "historical_exclusions": {
-        "classification": "D_HISTORICAL_FIXTURE_PROVENANCE_DEBT",
-        "reason": "M4 evidence-ledger and M5C/M5D/M5E archived artifacts retain immutable historical path and hash bindings that correctly fail under the current repository materialization. They remain available for manual historical diagnosis but are not current V1 release contracts.",
-        "runners": [
-          "scripts/run_m4_readiness_check.py --check-only",
-          "scripts/run_m5c_staging_promotion_preflight.py --check-only",
-          "scripts/validate_m5c_supplemental_audit.py",
-          "scripts/run_m5d_frontend_publication_preflight.py --check-only",
-          "scripts/validate_m5d_publication_candidate.py --candidate-dir research/staging/m5d/m5d_frontend_publication_candidate_01",
-          "scripts/simulate_m5d_frontend_publication_transaction.py --check-only",
-          "scripts/simulate_m5d_frontend_publication_rollback.py --check-only",
-          "scripts/run_m5e_controlled_frontend_publication.py --check-only"
-        ]
-      }
+    "mixed_current_historical_requires_split": {
+      "count": 2,
+      "paths": [
+        "tests/unit/test_m8r_06_04_mode_c.py",
+        "tests/unit/test_phase_g_pr_d_closure.py"
+      ]
     },
-    "operator-preflight": {
-      "purpose": "Operator/release readiness through authoritative existing runners.",
-      "execution_type": "authoritative_runner",
-      "authoritative_runner": [
-        [
-          "python",
-          "scripts/run_m6e_operator_acceptance.py",
-          "--check-only"
-        ],
-        [
-          "python",
-          "scripts/run_operator_preflight.py",
-          "--json",
-          "--timeout-seconds",
-          "300"
-        ],
-        [
-          "python",
-          "server/mcp_server.py",
-          "--startup-check"
-        ],
-        [
-          "python",
-          "scripts/governance_forbidden_path_guard.py"
-        ],
-        [
-          "python",
-          "scripts/forbidden_behavior_scanner.py"
-        ]
-      ],
-      "network_policy": "no intentional live network execution",
-      "browser_policy": "not required",
-      "live_policy": "never executes bounded live checks",
-      "automatic_ci_allowed": false
-    },
-    "browser-e2e": {
-      "purpose": "Actual V1 persistent Watchlist workbench validation via deterministic local execution.",
-      "execution_type": "authoritative_runner",
-      "authoritative_runner": [
-        [
-          "python",
-          "scripts/run_v1_workbench_browser_e2e.py"
-        ]
-      ],
-      "network_policy": "local FastAPI/browser and deterministic source transport only; no external market network",
-      "browser_policy": "requires Playwright Python package and Chromium for full execution",
-      "live_policy": "one explicit deterministic Execute Once only; no external live execution",
-      "automatic_ci_allowed": false
-    },
-    "bounded-live": {
-      "purpose": "Explicit operator-approved bounded live observation acceptance.",
-      "execution_type": "authoritative_runner",
-      "authoritative_runner": [
-        [
-          "python",
-          "scripts/run_m6g_browser_operator_e2e.py",
-          "--execute-bounded-live-check",
-          "--ssl-policy",
-          "{ssl_policy}"
-        ]
-      ],
-      "network_policy": "explicit bounded live network may occur after confirmation only",
-      "browser_policy": "requires browser E2E dependencies for full browser path",
-      "live_policy": "requires --confirm-bounded-live; bounded watchlist; no polling, scheduler, startup network, or full-market scan",
-      "automatic_ci_allowed": false
-    },
-    "changed-fast": {
-      "purpose": "Local development quick feedback: profile runner, containment smoke, governance scanners, and directly affected unit tests.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and not browser and not live and not historical and not performance",
-      "pytest_paths": [
-        "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
-        "tests/unit/test_run_test_profile.py",
-        "tests/unit/test_m8r_filesystem_containment.py",
-        "tests/unit/test_governance_forbidden_path_guard.py",
-        "tests/unit/test_forbidden_behavior_scanner.py"
-      ],
-      "network_policy": "no network; excludes tests marked network",
-      "browser_policy": "not required",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": true
-    },
-    "component-security": {
-      "purpose": "Security-master and filesystem containment component profile.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and (component_security or core)",
-      "pytest_paths": [
-        "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
-        "tests/unit/test_m8r_filesystem_containment.py",
-        "tests/unit/test_authorization_token_schema.py",
-        "tests/unit/test_governance_forbidden_path_guard.py",
-        "tests/unit/test_forbidden_behavior_scanner.py",
-        "tests/unit/test_m7g_refresh_workflow_security_regression.py",
-        "tests/unit/test_m5ij_forbidden_path_policy.py"
-      ],
-      "network_policy": "no network; excludes tests marked network",
-      "browser_policy": "not required",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": true
-    },
-    "component-market-source": {
-      "purpose": "Market-source contracts and normalization smoke.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and not historical and not performance",
-      "pytest_paths": [
-        "tests/unit/test_source_contract_schema.py",
-        "tests/unit/test_source_authority_registry.py",
-        "tests/unit/test_source_family_coverage_matrix.py",
-        "tests/unit/test_twse_mis_normalization_v2.py",
-        "tests/unit/test_twse_openapi_normalization_v1.py",
-        "tests/unit/test_tpex_openapi_normalization_v1.py",
-        "tests/unit/test_yahoo_normalized_chart_v1.py"
-      ],
-      "network_policy": "no network; excludes tests marked network",
-      "browser_policy": "not required",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": true
-    },
-    "component-watchlist-evidence": {
-      "purpose": "Watchlist, evidence lineage, context package, and conversation handoff checks.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and not historical and not performance",
-      "pytest_paths": [
-        "tests/unit/test_m7d_bounded_watchlist_cross_context_builder.py",
-        "tests/unit/test_m8r_03c_watchlist_bundles.py",
-        "tests/unit/test_m8r_03d_watchlist_controlled_execution.py",
-        "tests/unit/test_m8r_03e_watchlist_ai_context.py"
-      ],
-      "network_policy": "no network; excludes tests marked network",
-      "browser_policy": "not required",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": true
-    },
-    "component-agent-skill": {
-      "purpose": "Agent Skill embedded contract and validation checks.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and not historical and not performance",
-      "pytest_paths": [
-        "tests/unit/test_m8r_03e_f1_ai_capability_guide.py"
-      ],
-      "network_policy": "no network; excludes tests marked network",
-      "browser_policy": "not required",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": false
-    },
-    "component-governance": {
-      "purpose": "Governance, registry, roadmap, and profile-policy checks.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and not historical and not performance",
-      "pytest_paths": [
-        "tests/unit/test_run_test_profile.py",
-        "tests/unit/test_pytest_marker_governance.py",
-        "tests/unit/test_governance_policy_manifest.py",
-        "tests/unit/test_m8r_03e_r1_repository_health_audit.py"
-      ],
-      "network_policy": "no network; excludes tests marked network",
-      "browser_policy": "not required",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": true
-    },
-    "component-frontend-publication": {
-      "purpose": "Frontend publication component checks; known M5D/M5E baseline drift may be handled outside default-ci.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and not historical and not performance",
-      "pytest_paths": [
+    "full_current_nondefault_candidate": {
+      "count": 46,
+      "paths": [
+        "tests/unit/test_m5k_workflow.py",
+        "tests/unit/test_m5n_watchlist_workflow.py",
+        "tests/unit/test_m6d_ssl_policy.py",
+        "tests/unit/test_server.py",
+        "tests/unit/test_mcp_server.py",
+        "tests/unit/test_m6d_operator_and_local_networking.py",
+        "tests/unit/test_m5f_canonical_market_context_package.py",
+        "tests/unit/test_m5fgh_consumer_consistency.py",
+        "tests/unit/test_m5fgh_fastapi_context.py",
+        "tests/unit/test_m5fgh_frontend_static.py",
+        "tests/unit/test_m5i_explicit_bounded_refresh.py",
+        "tests/unit/test_m5op_frontend_operator_workflow.py",
+        "tests/unit/test_m6a_observation_ux.py",
+        "tests/test_m5q_source_health.py",
+        "tests/test_m6e_operator_acceptance.py",
         "tests/unit/test_frontend_readonly_static_contracts.py",
-        "tests/unit/test_frontend_static_security.py",
-        "tests/unit/test_m5d_frontend_publication_preflight.py",
-        "tests/unit/test_m5e_controlled_frontend_publication.py"
-      ],
-      "network_policy": "no network; excludes tests marked network",
-      "browser_policy": "not required",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": false
+        "tests/unit/test_frontend_readonly_contract_static.py",
+        "tests/unit/test_frontend_readonly_context_package.py",
+        "tests/unit/test_frontend_accessibility_static.py",
+        "tests/unit/test_frontend_observability_static.py",
+        "tests/unit/test_m7f_rich_fact_browser_policy.py",
+        "tests/unit/test_m7f_rich_fact_display_catalog.py",
+        "tests/unit/test_m7f_ai_handoff_search_filters.py",
+        "tests/unit/test_m7f_field_badges_currentness_calendar.py",
+        "tests/unit/test_m7f_frontend_rich_fact_browser_base_ui.py",
+        "tests/unit/test_m7f_frontend_security_semantic_regression.py",
+        "tests/unit/test_m7g_safe_context_artifact_schema.py",
+        "tests/unit/test_m7g_safe_artifact_validator.py",
+        "tests/unit/test_m7g_frontend_manual_artifact_load_ui.py",
+        "tests/unit/test_m7g_inventory_policy.py",
+        "tests/unit/test_m7g_real_safe_artifact_rendering.py",
+        "tests/unit/test_m7g_provenance_currentness_source_health_panel.py",
+        "tests/unit/test_m7g_ai_handoff_from_loaded_safe_artifact.py",
+        "tests/unit/test_m7g_refresh_workflow_policy_request_package.py",
+        "tests/unit/test_m7g_refresh_request_package_builder.py",
+        "tests/unit/test_m7g_controlled_refresh_execution_gate.py",
+        "tests/unit/test_m7g_refreshed_safe_artifact_result_contract.py",
+        "tests/unit/test_m7g_controlled_refresh_frontend_execution_ui.py",
+        "tests/unit/test_m7g_refresh_workflow_security_regression.py",
+        "tests/unit/test_m7g_twse_mis_market_route_semantics.py",
+        "tests/unit/test_m8_source_governance_foundation.py",
+        "tests/unit/test_m8_source_freshness_evaluator.py",
+        "tests/unit/test_m8_multi_source_context_builder.py",
+        "tests/unit/test_m8_controlled_conversation_context_integration.py",
+        "tests/unit/test_m8_compatibility_hardening.py",
+        "tests/unit/test_m8c_taifex_mis_currentness_preflight.py"
+      ]
     },
-    "milestone-acceptance": {
-      "purpose": "Active milestone acceptance for M8R-03E-R2-F0 and R2 only.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and milestone",
-      "pytest_paths": [
-        "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
-        "tests/unit/test_run_test_profile.py",
-        "tests/unit/test_m8r_filesystem_containment.py"
-      ],
-      "network_policy": "no network; excludes tests marked network",
-      "browser_policy": "not required",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": true
+    "historical_acceptance_candidate": {
+      "count": 15,
+      "paths": [
+        "tests/unit/test_m7e_market_clock_session_state_final_acceptance.py",
+        "tests/unit/test_m7f_rich_fact_browser_final_acceptance.py",
+        "tests/unit/test_m7g_final_acceptance.py",
+        "tests/unit/test_m8_00_final_acceptance.py",
+        "tests/unit/test_m8a_official_eod_contract_preflight.py",
+        "tests/unit/test_m8a_final_acceptance.py",
+        "tests/unit/test_m8b_taifex_openapi_contract_preflight.py",
+        "tests/unit/test_m8b_final_acceptance.py",
+        "tests/unit/test_m8_through_m8b_consolidated_acceptance.py",
+        "tests/unit/test_m8c_00_final_acceptance.py",
+        "tests/unit/test_m8c_taifex_mis_contract_preflight.py",
+        "tests/unit/m8r_05c/test_m8r_05c_integration.py",
+        "tests/unit/test_m8r_05c_determinism.py",
+        "tests/unit/test_phase_g_p0_acceptance_ledger.py",
+        "tests/unit/test_phase_g_pr_d_live_acceptance.py"
+      ]
     },
-    "historical-acceptance": {
-      "purpose": "Archived historical milestone reproduction checks; manual only.",
-      "execution_type": "pytest",
-      "pytest_expression": "historical",
-      "pytest_paths": [
-        "tests/acceptance_archive/historical_acceptance_checks.py"
-      ],
-      "network_policy": "no network; excludes tests marked network",
-      "browser_policy": "not required",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": false
-    },
-    "performance": {
-      "purpose": "R4 reproducible performance/scalability measurement; manual only under NO_GITHUB_CI.",
-      "execution_type": "authoritative_runner",
-      "authoritative_runner": [
-        [
-          "python",
-          "scripts/run_m8r_03e_performance_baseline.py",
-          "--verify-existing",
-          "docs/quality/m8_performance_baseline.json"
-        ],
-        [
-          "python",
-          "scripts/run_m8r_03e_r4_performance.py",
-          "--verify-existing"
-        ]
-      ],
-      "network_policy": "no network",
-      "browser_policy": "not required",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": false
-    },
-    "component-architecture": {
-      "purpose": "R3 architecture boundaries, policy/evidence decoupling, contract mirror, and execution-state isolation.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and not browser and not live",
-      "pytest_paths": [
-        "tests/unit/test_m8r_03e_r3_architecture_boundaries.py",
-        "tests/unit/test_m8r_03e_r3_policy_evidence_decoupling.py",
-        "tests/unit/test_m8r_03e_r3_contract_source_of_truth.py"
-      ],
-      "network_policy": "no network",
-      "browser_policy": "not required",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": false
-    },
+    "release_preflight_candidate": {
+      "count": 2,
+      "paths": [
+        "tests/unit/test_build_v1_release_manifest.py",
+        "tests/unit/test_browser_e2e_requirements.py"
+      ]
+    }
+  },
+  "shadow_execution_sets": {
     "tg2-default-ci-current-shadow": {
-      "purpose": "TG-2 shadow candidate for future every-PR current authority; includes mixed files fail-safe. Not merge authority.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and not browser and not live and not performance",
-      "pytest_paths": [
+      "count": 93,
+      "paths": [
         "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
         "tests/unit/test_m8r_filesystem_containment.py",
         "tests/unit/test_governance_forbidden_path_guard.py",
@@ -579,16 +296,11 @@
         "tests/unit/test_m8r_06_04_mode_c.py",
         "tests/unit/test_phase_g_pr_d_closure.py"
       ],
-      "network_policy": "no network",
-      "browser_policy": "not required for shadow governance",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": false
+      "note": "Includes mixed files fail-safe until split."
     },
     "tg2-full-current-non-network-shadow": {
-      "purpose": "TG-2 broad current non-network shadow; excludes historical/release-only candidates. Not merge authority.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and not browser and not live and not performance",
-      "pytest_paths": [
+      "count": 139,
+      "paths": [
         "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
         "tests/unit/test_m8r_filesystem_containment.py",
         "tests/unit/test_governance_forbidden_path_guard.py",
@@ -729,16 +441,11 @@
         "tests/unit/test_m8_compatibility_hardening.py",
         "tests/unit/test_m8c_taifex_mis_currentness_preflight.py"
       ],
-      "network_policy": "no network",
-      "browser_policy": "not required for shadow governance",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": false
+      "note": "Broad current regression; excludes historical and release-only candidates."
     },
     "tg2-historical-acceptance-shadow": {
-      "purpose": "TG-2 explicit historical-candidate reproduction shadow. Manual only; no default-CI authority.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and not browser and not live and not performance",
-      "pytest_paths": [
+      "count": 15,
+      "paths": [
         "tests/unit/test_m7e_market_clock_session_state_final_acceptance.py",
         "tests/unit/test_m7f_rich_fact_browser_final_acceptance.py",
         "tests/unit/test_m7g_final_acceptance.py",
@@ -754,24 +461,20 @@
         "tests/unit/test_m8r_05c_determinism.py",
         "tests/unit/test_phase_g_p0_acceptance_ledger.py",
         "tests/unit/test_phase_g_pr_d_live_acceptance.py"
-      ],
-      "network_policy": "no network",
-      "browser_policy": "not required for shadow governance",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": false
+      ]
     },
     "tg2-release-preflight-shadow": {
-      "purpose": "TG-2 release-specific candidate shadow. Manual only; no default-CI authority.",
-      "execution_type": "pytest",
-      "pytest_expression": "not network and not browser and not live and not performance",
-      "pytest_paths": [
+      "count": 2,
+      "paths": [
         "tests/unit/test_build_v1_release_manifest.py",
         "tests/unit/test_browser_e2e_requirements.py"
-      ],
-      "network_policy": "no network",
-      "browser_policy": "not required for shadow governance",
-      "live_policy": "never executes live checks",
-      "automatic_ci_allowed": false
+      ]
     }
+  },
+  "invariants": {
+    "source_default_ci_file_count": 156,
+    "partition_union_must_equal_source_default_ci": true,
+    "partitions_must_be_disjoint": true,
+    "shadow_profiles_are_not_merge_authority": true
   }
 }
