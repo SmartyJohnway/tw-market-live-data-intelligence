@@ -13,7 +13,7 @@ def test_tg4_profile_config_preserves_shadow_evidence_after_tg5() -> None:
     result = validate_profile_config()
     assert result == {
         "tg4_baseline_preserved": True,
-        "tg5_default_promoted_from_shadow": True,
+        "tg5_default_matches_historical_candidate": True,
         "pre_tg5_rollback_profile_available": True,
     }
 
