@@ -305,7 +305,7 @@ def test_malformed_preview_schema_authority_is_409_at_real_service_boundary(
         lambda _pointer: FakeSecurityMaster(),
     )
     monkeypatch.setattr(
-        unified_mode_b1, "load_planning_authorities", lambda: authorities
+        unified_mode_b1, "load_planning_authorities", lambda *_args: authorities
     )
 
     request = {
@@ -355,7 +355,7 @@ def test_invalid_preview_output_is_500_not_dependency_unavailable(monkeypatch):
         lambda _pointer: FakeSecurityMaster(),
     )
     monkeypatch.setattr(
-        unified_mode_b1, "load_planning_authorities", lambda: authorities
+        unified_mode_b1, "load_planning_authorities", lambda *_args: authorities
     )
     response = client.post(
         "/api/unified/preview-request",
