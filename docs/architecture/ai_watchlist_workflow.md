@@ -1,6 +1,6 @@
 # AI Watchlist Workflow, Watchlist Workspace, and Conversation Context
 
-M5N makes the watchlist the shared workspace for AI conversation, frontend display, FastAPI reads, and MCP reads. It does not add market sources and does not change the M5F canonical package.
+> **Historical M5N watchlist/AI workflow.** Current Persistent Watchlist and AI handoff behavior is governed by the Unified Workbench and V3 contracts. See [PRODUCT_ARCHITECTURE.md](PRODUCT_ARCHITECTURE.md).\n\nM5N makes the watchlist the shared workspace for AI conversation, frontend display, FastAPI reads, and MCP reads. It does not add market sources and does not change the M5F canonical package.
 
 ## Workflow
 
