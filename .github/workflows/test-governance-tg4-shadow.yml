@@ -79,6 +79,16 @@ jobs:
           exit 0
         id: release
 
+      - name: Run TG-4 mixed historical nodes and record outcome
+        shell: bash
+        run: |
+          set +e
+          python scripts/run_test_profile.py tg4-mixed-historical-shadow --json > /tmp/mixed-historical-shadow.json
+          rc=$?
+          echo "mixed_historical_return_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+        id: mixedhistorical
+
       - name: Summarize shadow results
         if: always()
         env:
@@ -87,6 +97,7 @@ jobs:
           FULL_CURRENT_RC: ${{ steps.fullcurrent.outputs.full_current_return_code }}
           HISTORICAL_RC: ${{ steps.historical.outputs.historical_shadow_return_code }}
           RELEASE_RC: ${{ steps.release.outputs.release_shadow_return_code }}
+          MIXED_HISTORICAL_RC: ${{ steps.mixedhistorical.outputs.mixed_historical_return_code }}
         run: |
           python - <<'PY'
           import json, os
@@ -97,6 +108,7 @@ jobs:
               "full-current-shadow": "/tmp/full-current-shadow.json",
               "historical-shadow": "/tmp/historical-shadow.json",
               "release-shadow": "/tmp/release-shadow.json",
+              "mixed-historical-shadow": "/tmp/mixed-historical-shadow.json",
           }
           out={}
           for name,path in names.items():
@@ -111,9 +123,16 @@ jobs:
           out["full_current_shell_rc"]=int(os.environ["FULL_CURRENT_RC"])
           out["historical_shell_rc"]=int(os.environ["HISTORICAL_RC"])
           out["release_shell_rc"]=int(os.environ["RELEASE_RC"])
+          out["mixed_historical_shell_rc"]=int(os.environ["MIXED_HISTORICAL_RC"])
           Path("/tmp/tg4-shadow-summary.json").write_text(json.dumps(out,indent=2,sort_keys=True)+"\n",encoding="utf-8")
           print(json.dumps(out,indent=2,sort_keys=True))
           PY
+
+      - name: Analyze effective pytest node coverage
+        if: always()
+        run: |
+          python scripts/analyze_test_governance_tg4_nodes.py --output /tmp/tg4-node-analysis.json
+          cat /tmp/tg4-node-analysis.json
 
       - name: Verify profile path partition has no static gap
         if: always()
@@ -152,7 +171,9 @@ jobs:
             /tmp/full-current-shadow.json
             /tmp/historical-shadow.json
             /tmp/release-shadow.json
+            /tmp/mixed-historical-shadow.json
             /tmp/tg4-shadow-summary.json
+            /tmp/tg4-node-analysis.json
           if-no-files-found: error
 
       - name: Evaluate shadow observation
@@ -165,7 +186,9 @@ jobs:
           assert s["default-ci"]["status"] == "pass", "legacy default authority must remain green"
           assert s["current-shadow"]["status"] == "pass", "current shadow has an unexplained protection/classification failure"
           assert s["full-current-shadow"]["status"] == "pass", "broad current shadow must remain green"
-          print("tg4_current_shadow_evaluation: PASS")
+          assert s["historical-shadow"]["status"] == "pass", "historical candidate shadow has an unexplained failure"
+          assert s["release-shadow"]["status"] == "pass", "release shadow has an unexplained failure"
+          print("tg4_layered_shadow_evaluation: PASS")
           PY
 
       - name: Verify patch whitespace
