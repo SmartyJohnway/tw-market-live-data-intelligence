@@ -1,0 +1,113 @@
+{
+  "schema_version": "test_governance_tg6_d_acceptance.v1",
+  "date": "2026-09-23",
+  "status": "TG6_D_BOUNDED_DUPLICATE_CLEANUP_PASS",
+  "authorization": {
+    "authorized_scope": [
+      "TG6-D bounded exact duplicate test cleanup"
+    ],
+    "explicitly_excluded": [
+      "generalized deduplication",
+      "test rewrite",
+      "TG6-E marker mutation",
+      "TG6-F",
+      "TG6-G",
+      "Roadmap Phase I"
+    ]
+  },
+  "implementation": {
+    "pr": 261,
+    "tested_head": "42d88f8af3f6c12544751405069d2ada039933cb",
+    "branch": "governance/test-governance-tg6-d-implementation",
+    "deleted_file": "tests/unit/test_m8r_05b_02_schema.py",
+    "retained_file": "tests/unit/test_m8r_05b_02_consumption_binding_schema.py",
+    "retained_blob_sha": "4bc114b64098c80ed5e28f5ac25e9e347c2b73c9"
+  },
+  "containment": {
+    "implementation_changed_files": 1,
+    "implementation_additions": 0,
+    "implementation_deletions": 3,
+    "test_execution_profiles_changed": false,
+    "test_governance_authority_changed": false,
+    "workflow_changed": false,
+    "production_runtime_changed": false,
+    "source_activation_changed": false,
+    "routing_changed": false,
+    "frozen_schema_changed": false,
+    "tg6_e_marker_mutation": false,
+    "tg6_f_started": false,
+    "tg6_g_started": false,
+    "phase_i_started": false
+  },
+  "acceptance_runs": {
+    "default_ci": {
+      "run_id": 35872048291,
+      "conclusion": "success",
+      "collected": 783,
+      "selected": 778,
+      "passed": 774,
+      "skipped": 4,
+      "deselected": 5,
+      "status": "pass"
+    },
+    "full_non_network": {
+      "run_id": 35872021703,
+      "conclusion": "failure",
+      "collected": 2800,
+      "selected": 2744,
+      "passed": 2729,
+      "failed": 2,
+      "skipped": 13,
+      "deselected": 56,
+      "remaining_failures": [
+        "tests/unit/test_m7f_rich_fact_browser_final_acceptance.py::test_default_ci_includes_final_acceptance_tests",
+        "tests/unit/test_m8_00_final_acceptance.py::test_default_ci_includes_m8_final_acceptance_test"
+      ],
+      "remaining_failures_classification": "FROZEN_HISTORICAL_ASSERTIONS",
+      "new_unexplained_failures": 0,
+      "tg6_c_lifecycle_equivalence_regression": "PASS within Full Non-Network"
+    }
+  },
+  "expected_vs_actual": {
+    "default_ci_selected": {
+      "expected": 778,
+      "actual": 778,
+      "match": true
+    },
+    "full_non_network_collected": {
+      "expected": 2800,
+      "actual": 2800,
+      "match": true
+    },
+    "full_non_network_selected": {
+      "expected": 2744,
+      "actual": 2744,
+      "match": true
+    },
+    "full_non_network_passed": {
+      "expected": 2729,
+      "actual": 2729,
+      "match": true
+    },
+    "full_non_network_failed": {
+      "expected": 2,
+      "actual": 2,
+      "match": true
+    },
+    "full_non_network_skipped": {
+      "expected": 13,
+      "actual": 13,
+      "match": true
+    },
+    "full_non_network_deselected": {
+      "expected": 56,
+      "actual": 56,
+      "match": true
+    }
+  },
+  "merge_gate": {
+    "accepted": true,
+    "reason": "Exact duplicate deletion produced the predicted one-node reduction in Full Non-Network, preserved the 778-node default authority, and introduced zero new unexplained failures."
+  },
+  "evidence_note": "This acceptance ledger is an additive evidence-only commit after the tested implementation head."
+}
