@@ -7,6 +7,7 @@ from scripts.m8r_06_01c2_mode_a_security_master_loader import (
     get_production_mode_a_security_master,
 )
 from server.services.unified_contract_versions import (
+    PREFERRED_REQUEST_SCHEMA_VERSION,
     REQUEST_CAPABILITY_CATALOG_PATHS,
     REQUEST_SCHEMA_PATHS,
 )
@@ -14,8 +15,8 @@ from server.services.unified_contract_versions import (
 ROOT = Path(__file__).resolve().parent.parent.parent
 # Backward-compatible preload seam now points at the preferred current
 # Request authority; request validation itself still dispatches explicitly.
-CANONICAL_SCHEMA_PATH = REQUEST_SCHEMA_PATHS["unified_market_evidence_request.v2"]
-CANONICAL_CATALOG_PATH = REQUEST_CAPABILITY_CATALOG_PATHS["unified_market_evidence_request.v2"]
+CANONICAL_SCHEMA_PATH = REQUEST_SCHEMA_PATHS[PREFERRED_REQUEST_SCHEMA_VERSION]
+CANONICAL_CATALOG_PATH = REQUEST_CAPABILITY_CATALOG_PATHS[PREFERRED_REQUEST_SCHEMA_VERSION]
 
 # The default loader interprets this historical path as the active-release
 # selector.  Tests may still inject an explicit path through this seam.
