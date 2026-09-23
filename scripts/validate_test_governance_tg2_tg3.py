@@ -14,6 +14,13 @@ ROLLBACK = ROOT / "docs/governance/test_governance/TG5_ROLLBACK_CONTRACT_2026-09
 
 EXPECTED_DEFAULT_EXPR = "not network and not browser and not live and not release_preflight and not historical and not performance"
 
+HISTORICAL_TO_CURRENT_PROFILE = {
+    "tg2-default-ci-current-shadow": "default-ci",
+    "tg2-full-current-non-network-shadow": "full-current",
+    "tg2-historical-acceptance-shadow": "historical-milestone-replay",
+    "tg2-release-preflight-shadow": "release-preflight-current",
+}
+
 
 def _load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -60,11 +67,15 @@ def validate() -> dict:
     assert refined in partitions["full_current_nondefault_candidate"]["paths"]
     assert refined not in partitions["historical_acceptance_candidate"]["paths"]
 
-    for profile_name, shadow in semantic["shadow_execution_sets"].items():
-        actual = profiles[profile_name]
+    for historical_name, shadow in semantic["shadow_execution_sets"].items():
+        current_name = HISTORICAL_TO_CURRENT_PROFILE[historical_name]
+        actual = profiles[current_name]
         assert actual["pytest_paths"] == shadow["paths"]
-        assert actual["automatic_ci_allowed"] is False
         assert "not network" in actual["pytest_expression"]
+        if current_name == "default-ci":
+            assert actual["automatic_ci_allowed"] is True
+        else:
+            assert actual["automatic_ci_allowed"] is False
 
     historical_paths = partitions["historical_acceptance_candidate"]["paths"]
     assert hist["candidate_count"] == 15
@@ -92,7 +103,7 @@ def validate() -> dict:
         "historical_primary_evidence_count": evidence_count,
         "default_ci_authority_changed": True,
         "tg5_cutover_candidate": True,
-        "tg2_shadow_profiles_automatic_ci_allowed": False,
+        "historical_tg2_sets_reproduced_by_current_profiles": True,
         "tg3_full_reproduction_retained": True,
     }
 
