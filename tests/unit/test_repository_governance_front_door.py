@@ -23,8 +23,8 @@ def test_four_file_governance_front_door_exists_and_is_current() -> None:
     assert "unified_market_evidence_request.v3" in project
     assert "Roadmap V3.2" in roadmap
     assert "Phase I — Cross-Market & Optional Context" in roadmap
-    normalized_roadmap = " ".join(roadmap.split())
-    assert "Phase I has not started" in normalized_roadmap
+    assert 'status_reconciled_through: "H-ACT-V3 promotion; Phase I not started"' in roadmap
+    assert "Phase I — Cross-Market & Optional Context" in roadmap
     assert "Phase I                      NOT STARTED" in handoff
     assert "Do not enter Phase I implementation" in agents
 
