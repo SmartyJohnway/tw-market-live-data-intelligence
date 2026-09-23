@@ -102,6 +102,7 @@ def validate_runtime(
     current_shadow_path: Path,
     baseline_default_path: Path,
     baseline_historical_path: Path,
+    baseline_full_non_network_path: Path,
     rollback_diagnostic_path: Path,
     full_current_path: Path,
     historical_path: Path,
@@ -115,6 +116,7 @@ def validate_runtime(
         "current_shadow": _load(current_shadow_path),
         "baseline_default": _load(baseline_default_path),
         "baseline_historical": _load(baseline_historical_path),
+        "baseline_full_non_network": _load(baseline_full_non_network_path),
         "rollback_diagnostic": _load(rollback_diagnostic_path),
         "full_current": _load(full_current_path),
         "historical": _load(historical_path),
@@ -186,6 +188,20 @@ def validate_runtime(
         "unexplained": 0,
     }
 
+    # Broad full-non-network was not a clean TG-4 baseline gate. TG-5 must not
+    # introduce any new broad-regression failures beyond the two frozen
+    # topology assertions caused by intentionally changing default-ci.
+    baseline_full_failed = _failed_nodes(payloads["baseline_full_non_network"])
+    current_full_failed = _failed_nodes(payloads["full_non_network"])
+    topology_allowed = {
+        item["node_id"] for item in rollback_gaps["allowed_failed_nodes"]
+    }
+    assert current_full_failed == (baseline_full_failed | topology_allowed), {
+        "baseline": sorted(baseline_full_failed),
+        "current": sorted(current_full_failed),
+        "expected_current": sorted(baseline_full_failed | topology_allowed),
+    }
+
     return {
         "status": "PASS",
         "new_default_selected": 778,
@@ -199,9 +215,13 @@ def validate_runtime(
         "known_mixed_historical_failures": 2,
         "unexplained_legacy_nodes": 0,
         "full_non_network_observation": {
-            "status": payloads["full_non_network"]["status"],
-            "selected": payloads["full_non_network"].get("selected"),
-            "failed": payloads["full_non_network"].get("failed"),
+            "baseline_status": payloads["baseline_full_non_network"]["status"],
+            "baseline_selected": payloads["baseline_full_non_network"].get("selected"),
+            "baseline_failed": payloads["baseline_full_non_network"].get("failed"),
+            "current_status": payloads["full_non_network"]["status"],
+            "current_selected": payloads["full_non_network"].get("selected"),
+            "current_failed": payloads["full_non_network"].get("failed"),
+            "new_unexplained_failures": 0,
         },
     }
 
@@ -212,6 +232,7 @@ def main() -> int:
     ap.add_argument("--current-shadow", type=Path)
     ap.add_argument("--baseline-default", type=Path)
     ap.add_argument("--baseline-historical", type=Path)
+    ap.add_argument("--baseline-full-non-network", type=Path)
     ap.add_argument("--rollback-diagnostic", type=Path)
     ap.add_argument("--full-current", type=Path)
     ap.add_argument("--historical", type=Path)
@@ -227,6 +248,7 @@ def main() -> int:
         args.current_shadow,
         args.baseline_default,
         args.baseline_historical,
+        args.baseline_full_non_network,
         args.rollback_diagnostic,
         args.full_current,
         args.historical,
@@ -241,6 +263,7 @@ def main() -> int:
             current_shadow_path=args.current_shadow,
             baseline_default_path=args.baseline_default,
             baseline_historical_path=args.baseline_historical,
+            baseline_full_non_network_path=args.baseline_full_non_network,
             rollback_diagnostic_path=args.rollback_diagnostic,
             full_current_path=args.full_current,
             historical_path=args.historical,
