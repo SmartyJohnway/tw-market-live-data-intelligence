@@ -1,0 +1,53 @@
+{
+  "schema_version": "test_governance_tg0_findings.v1",
+  "date": "2026-09-23",
+  "baseline_main": "b42c73057a16ea39d73ed7efd8c96096ee49e131",
+  "workflow_run_id": 35818190281,
+  "workflow_conclusion": "success",
+  "artifact": {
+    "id": 10732391431,
+    "name": "test-governance-tg0-inventory"
+  },
+  "scope_containment": "PASS",
+  "selection_change_performed": false,
+  "metrics": {
+    "default_ci_file_count": 156,
+    "existing_file_count": 156,
+    "missing_file_count": 0,
+    "static_test_function_count": 1088,
+    "files_with_any_marker": 32,
+    "files_reading_docs": 57,
+    "files_reading_readme": 6,
+    "files_with_exact_path_assertion_signal": 61,
+    "files_with_exact_prose_assertion_signal": 33,
+    "files_with_next_task_literal_signal": 19,
+    "files_with_historical_name_signal": 17,
+    "manual_review_required": 153
+  },
+  "suggested_class_counts": {
+    "CURRENT_CONTRACT": 13,
+    "CURRENT_CORE": 68,
+    "CURRENT_INTEGRATION": 6,
+    "DOCUMENTATION_GOVERNANCE": 31,
+    "HISTORICAL_ACCEPTANCE": 10,
+    "RELEASE_PRECHECK": 4,
+    "REVIEW_REQUIRED": 24
+  },
+  "family_counts": {
+    "cross_cutting": 26,
+    "m5": 10,
+    "m6": 5,
+    "m7": 33,
+    "m8": 41,
+    "m8r": 22,
+    "phase_g": 11,
+    "phase_h": 8
+  },
+  "interpretation": [
+    "raw test count is not itself the governance defect",
+    "default-ci is primarily a 156-file explicit path allowlist rather than marker-driven semantic policy",
+    "historical/current/documentation/release concerns are materially mixed",
+    "heuristic classification is advisory and must not be used for automatic removal"
+  ],
+  "next_gate": "TG-1 human/governance review ledger before any profile mutation"
+}
