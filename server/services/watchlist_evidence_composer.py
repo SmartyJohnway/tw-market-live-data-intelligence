@@ -26,16 +26,23 @@ SCHEMA_ROOT = REPO_ROOT / "docs" / "contracts" / "schemas"
 REQUEST_SCHEMA_PATHS = {
     "watchlist_evidence_selection_request.v1": REPO_ROOT / "schemas" / "unified_market_evidence_request.v1.schema.json",
     "watchlist_evidence_selection_request.v2": REPO_ROOT / "schemas" / "unified_market_evidence_request.v2.schema.json",
+    "watchlist_evidence_selection_request.v3": REPO_ROOT / "schemas" / "unified_market_evidence_request.v3.schema.json",
 }
 SELECTION_SCHEMA_PATHS = {
     "watchlist_evidence_selection_request.v1": "watchlist_evidence_selection_request.v1.schema.json",
     "watchlist_evidence_selection_request.v2": "watchlist_evidence_selection_request.v2.schema.json",
+    "watchlist_evidence_selection_request.v3": "watchlist_evidence_selection_request.v3.schema.json",
 }
 OUTPUT_REQUEST_VERSIONS = {
     "watchlist_evidence_selection_request.v1": "unified_market_evidence_request.v1",
     "watchlist_evidence_selection_request.v2": "unified_market_evidence_request.v2",
+    "watchlist_evidence_selection_request.v3": "unified_market_evidence_request.v3",
 }
-CATALOG_PATH = REPO_ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v2.json"
+CATALOG_PATHS = {
+    "watchlist_evidence_selection_request.v1": REPO_ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v2.json",
+    "watchlist_evidence_selection_request.v2": REPO_ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v2.json",
+    "watchlist_evidence_selection_request.v3": REPO_ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v3.json",
+}
 SELECTION_DIRECTORY = "evidence_selections"
 
 
@@ -79,8 +86,14 @@ def _selection_hash(selection: dict[str, Any]) -> str:
     return hashlib.sha256(canonical_json(value).encode("utf-8")).hexdigest()
 
 
-def _catalog_bounds() -> dict[str, int]:
-    catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
+def _catalog_bounds(selection_version: str) -> dict[str, int]:
+    catalog_path = CATALOG_PATHS.get(selection_version)
+    if catalog_path is None:
+        raise WatchlistEvidenceCompositionError(
+            "WATCHLIST_SELECTION_SCHEMA_INVALID",
+            {"schema_version": selection_version},
+        )
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
     bounds = catalog.get("bounds", {})
     return {
         "default_target_limit": int(bounds["default_target_limit"]),
@@ -248,7 +261,7 @@ class WatchlistEvidenceComposer:
             seen[target["instrument_id"]] = target
             selected.append(target)
 
-        bounds = _catalog_bounds()
+        bounds = _catalog_bounds(selection_version)
         operation_count = len(selected) * len(payload["data_needs"])
         if not selected:
             blockers.append({"code": "WATCHLIST_SELECTION_EMPTY"})

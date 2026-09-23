@@ -48,7 +48,7 @@ def test_phase_g_builder_and_result_wording_are_truthful():
     result_script = (
         ROOT / "frontend" / "unified-workbench" / "unified-workbench.js"
     ).read_text(encoding="utf-8")
-    assert "watchlist_evidence_selection_request.v2" in builder
+    assert "watchlist_evidence_selection_request.v3" in builder
     assert "no matching disclosure in the latest completed official daily batch" in result_script
     assert "this is not a claim of no historical disclosures" in result_script
     assert "value is unavailable, not zero" in result_script

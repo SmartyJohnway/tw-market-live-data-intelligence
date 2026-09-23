@@ -1,8 +1,9 @@
 """Deterministic Unified Request contract-version resolution.
 
-V2 remains the preferred production Request authority. V3 is available only
-for passive validation and preview. Execution remains limited to V1/V2 until
-a later Owner-authorized activation gate.
+V3 is the preferred production Request/Result authority after H-ACT-V3.
+V1 and V2 remain accepted compatibility contracts. Runtime executability is
+still governed by the version-specific Catalog/Route pair and normal
+authorization/execute-once controls; promotion does not activate new routes.
 """
 
 from __future__ import annotations
@@ -25,8 +26,8 @@ REQUEST_SCHEMA_PATHS = {
     ),
 }
 
-# Passive V3 compatibility is explicit: V3 uses its frozen planning pair while
-# current execution remains limited to V1/V2 until a later activation gate.
+# Each declared Request version keeps its frozen planning pair. V3 is the
+# current preferred authority; V1/V2 remain compatibility authorities.
 REQUEST_CAPABILITY_CATALOG_PATHS = {
     "unified_market_evidence_request.v1": ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v2.json",
     "unified_market_evidence_request.v2": ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v2.json",
@@ -37,10 +38,15 @@ REQUEST_ROUTING_MATRIX_PATHS = {
     "unified_market_evidence_request.v2": ROOT / "docs" / "data_capabilities" / "m8r_05b_capability_to_executor_routing_matrix.v2.json",
     "unified_market_evidence_request.v3": ROOT / "docs" / "data_capabilities" / "m8r_05b_capability_to_executor_routing_matrix.v3.json",
 }
+PREFERRED_REQUEST_SCHEMA_VERSION = "unified_market_evidence_request.v3"
+PREFERRED_RESULT_SCHEMA_VERSION = "unified_market_evidence_result.v3"
+PREFERRED_AUDIT_SCHEMA_VERSION = "unified_market_evidence_audit_package.v3"
+
 PASSIVE_REQUEST_SCHEMA_VERSIONS = frozenset(REQUEST_SCHEMA_PATHS)
 EXECUTION_REQUEST_SCHEMA_VERSIONS = frozenset((
     "unified_market_evidence_request.v1",
     "unified_market_evidence_request.v2",
+    "unified_market_evidence_request.v3",
 ))
 
 

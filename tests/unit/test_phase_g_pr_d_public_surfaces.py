@@ -9,11 +9,11 @@ from server.unified_mcp.tool_contracts import build_tool_specs
 
 
 ROOT = Path(__file__).resolve().parents[2]
-CATALOG = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json"
+CATALOG = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
 PORTABLE = ROOT / "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json"
 
 
-def test_current_portable_catalog_is_exact_generated_v2_projection():
+def test_current_portable_catalog_is_exact_generated_v3_projection():
     result = subprocess.run(
         [sys.executable, "scripts/validate_portable_catalog_sync.py"],
         cwd=ROOT,
@@ -24,7 +24,7 @@ def test_current_portable_catalog_is_exact_generated_v2_projection():
     assert result.returncode == 0, result.stdout + result.stderr
     canonical = json.loads(CATALOG.read_text(encoding="utf-8"))
     portable = json.loads(PORTABLE.read_text(encoding="utf-8"))
-    assert portable["schema_version"] == canonical["schema_version"] == "unified_market_evidence_capability_catalog.v2"
+    assert portable["schema_version"] == canonical["schema_version"] == "unified_market_evidence_capability_catalog.v3"
     assert portable["contract_versions"] == canonical["contract_versions"]
     assert portable["portable_metadata"]["generated_from_commit"] == subprocess.check_output(
         ["git", "log", "-1", "--format=%H", "--", CATALOG.relative_to(ROOT).as_posix()],
@@ -62,8 +62,9 @@ def test_current_skill_guides_and_public_docs_are_truthful():
     ]
     text = "\n".join(path.read_text(encoding="utf-8") for path in paths)
     for required in (
-        "unified_market_evidence_request.v2",
+        "unified_market_evidence_request.v3",
         "Request v1",
+        "v2",
         "material_disclosures",
         "monthly_revenue",
         "latest completed official daily batch",

@@ -19,8 +19,6 @@ def fetch_market_evidence(payload: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(payload, dict) or set(payload) != {"request"} or not isinstance(payload.get("request"), dict):
         raise LocalOperatorActionError("invalid_api_envelope")
     request = payload["request"]
-    if request.get("schema_version") == "unified_market_evidence_request.v3":
-        raise LocalOperatorActionError("phase_h_v3_execution_inactive")
     # This is an action-precondition, not a mutation or alternate Request schema.
     if request.get("execution_mode") != "execute":
         raise LocalOperatorActionError("market_fetch_requires_execute_mode")
@@ -29,7 +27,7 @@ def fetch_market_evidence(payload: dict[str, Any]) -> dict[str, Any]:
         execution = execute_local_operator_ticket(
             ticket["control_package_id"], network_required=ticket["network_required"]
         )
-        handoff = build_mode_c_ai_handoff(ticket["control_package_id"], output_schema_version="v2")
+        handoff = build_mode_c_ai_handoff(ticket["control_package_id"])
     except ModeB2Error as exc:
         raise LocalOperatorActionError(exc.code) from exc
     except ModeCError as exc:

@@ -215,10 +215,10 @@ def test_s11_fresh_root_is_safe_without_optional_providers_and_manual_routes_sta
     # Fixture F3 has no provider, cache, or source-route dependency.
     v3_validation = fixture_f3(fixture_request())
     assert v3_validation["target_results"][0]["resolution_status"] == "resolved"
-    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v2"
+    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v3"
     described = describe_capabilities()
-    assert described["preferred_request_schema_version"] == "unified_market_evidence_request.v2"
-    assert described["emitted_result_schema_version"] == "unified_market_evidence_result.v2"
+    assert described["preferred_request_schema_version"] == "unified_market_evidence_request.v3"
+    assert described["emitted_result_schema_version"] == "unified_market_evidence_result.v3"
     v3_catalog = json.loads((ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json").read_text(encoding="utf-8"))
     v3_routing = json.loads((ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json").read_text(encoding="utf-8"))
     assert v3_catalog["phase_h_contract"]["active_phase_h_source_count"] == 1
@@ -260,7 +260,7 @@ def test_s12_rollback_model_keeps_v1_v2_and_materialized_v3_immutable(tmp_path: 
     assert before == {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in historical}
     assert v3_before == {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in v3_paths}
     assert not (execution["package"] / "ai_context/unified_market_evidence_result.v2.json").exists()
-    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v2"
+    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v3"
 
 
 def test_s13_startup_and_fixture_execution_have_zero_external_transport_calls(monkeypatch, tmp_path: Path):
@@ -282,7 +282,7 @@ def test_s13_startup_and_fixture_execution_have_zero_external_transport_calls(mo
         "market_describe_capabilities", "market_validate_request", "market_preview_request",
         "market_read_result", "market_export_ai_handoff", "market_fetch_evidence",
     ]
-    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v2"
+    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v3"
     client = TestClient(app)
     assert client.get("/api/health").status_code == 200
     assert client.get("/workbench/").status_code == 200

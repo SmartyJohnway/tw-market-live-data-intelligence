@@ -10,8 +10,8 @@ from scripts.m8r_05b_03.errors import OrchestrationError
 
 
 ROOT = Path(__file__).resolve().parents[2]
-CATALOG_PATH = ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v2.json"
-ROUTING_PATH = ROOT / "docs" / "data_capabilities" / "m8r_05b_capability_to_executor_routing_matrix.v2.json"
+CATALOG_PATH = ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v3.json"
+ROUTING_PATH = ROOT / "docs" / "data_capabilities" / "m8r_05b_capability_to_executor_routing_matrix.v3.json"
 SERVICE_CONTRACT_VERSION = "unified_market_evidence_local_service.v2"
 
 
@@ -89,9 +89,17 @@ def describe_capabilities() -> dict[str, Any]:
         market_entries: list[dict[str, Any]] = []
         if any(not isinstance(market, str) for market in supported_markets + provisional_markets):
             raise LocalServiceError("capability_authority_malformed")
+        route_markets = route.get("supported_markets", [])
+        if not isinstance(route_markets, list) or any(not isinstance(market, str) for market in route_markets):
+            raise LocalServiceError("capability_authority_malformed")
         for market in sorted(set(supported_markets + provisional_markets)):
             if market in provisional_markets:
                 disposition = "provisional"
+                available = False
+            elif routing_status == "resolved" and market not in route_markets:
+                # Catalog market support is semantic scope; executable market
+                # scope is the exact currently resolved Route subset.
+                disposition = "blocked"
                 available = False
             elif routing_status == "resolved":
                 available = _availability(executors, capability_id, market, selected_executor)

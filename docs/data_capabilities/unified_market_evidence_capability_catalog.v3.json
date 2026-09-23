@@ -7,11 +7,11 @@
       "unified_market_evidence_request.v2",
       "unified_market_evidence_request.v3"
     ],
-    "preferred_request_schema_version": "unified_market_evidence_request.v2",
-    "emitted_result_schema_version": "unified_market_evidence_result.v2",
-    "future_candidate_request_schema_version": "unified_market_evidence_request.v3",
-    "future_candidate_result_schema_version": "unified_market_evidence_result.v3",
-    "v3_runtime_authority_status": "selected_routes_active_v2_preferred"
+    "preferred_request_schema_version": "unified_market_evidence_request.v3",
+    "emitted_result_schema_version": "unified_market_evidence_result.v3",
+    "future_candidate_request_schema_version": null,
+    "future_candidate_result_schema_version": null,
+    "v3_runtime_authority_status": "v3_preferred_selected_routes_active"
   },
   "generated_from": {
     "source_capability_registry_reference": "m8_source_capability_registry",
@@ -448,18 +448,19 @@
     "official_monthly_reporting_period"
   ],
   "known_limitations": [
-    "V1 remains accepted as a stable compatibility request contract",
-    "V2 is the preferred request contract for Phase G",
+    "V1 and V2 remain accepted compatibility request contracts",
+    "V3 is the preferred current request contract and new governed outputs default to Result/Audit V3",
     "Phase G research evidence is limited to TWSE/TPEX company common shares in G1/G2",
+    "Phase H active source coverage is incremental; only explicitly activated routes are executable",
+    "H1 trading-status coverage remains partial with only H1-TPEX-ATTENTION-OPENAPI active",
+    "H2 and H3 inactive, blocked, plan-only, manual-only, optional-provider, and source-gap states remain non-executable until their separate gates pass",
     "no scheduler",
     "no continuous polling",
     "no auto retry",
-    "no trading or order execution",
-    "V3 is a frozen future contract candidate and is not current runtime authority",
-    "Phase H sources remain inactive during H0-G"
+    "no trading or order execution"
   ],
   "phase_h_contract": {
-    "runtime_authority": "selected_routes_active_v2_preferred",
+    "runtime_authority": "v3_preferred_selected_routes_active",
     "active_phase_h_source_count": 1,
     "source_role_vocabulary": [
       "default_candidate",
@@ -486,6 +487,6 @@
         ]
       }
     ],
-    "preferred_runtime_request_schema_version": "unified_market_evidence_request.v2"
+    "preferred_runtime_request_schema_version": "unified_market_evidence_request.v3"
   }
 }

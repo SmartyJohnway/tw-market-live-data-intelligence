@@ -52,7 +52,7 @@ def main() -> int:
     canonical = json.loads(
         (
             ROOT
-            / "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json"
+            / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
         ).read_text(encoding="utf-8")
     )
     portable = json.loads(
@@ -63,8 +63,13 @@ def main() -> int:
     )
     if canonical.get("schema_version") != portable.get("schema_version"):
         return fail("portable_catalog_schema_drift")
-    if canonical.get("schema_version") != "unified_market_evidence_capability_catalog.v2":
-        return fail("current_catalog_not_v2")
+    if canonical.get("schema_version") != "unified_market_evidence_capability_catalog.v3":
+        return fail("current_catalog_not_v3")
+    versions = canonical.get("contract_versions", {})
+    if versions.get("preferred_request_schema_version") != "unified_market_evidence_request.v3":
+        return fail("current_preferred_request_not_v3")
+    if versions.get("emitted_result_schema_version") != "unified_market_evidence_result.v3":
+        return fail("current_preferred_result_not_v3")
 
     current_text = "\n".join(
         path.read_text(encoding="utf-8") for path in CURRENT_TEXT_PATHS
@@ -87,7 +92,9 @@ def main() -> int:
     if "ai-ready handoff" not in current_text.lower():
         return fail("mode_c_handoff_semantics_missing")
     for required in (
-        "unified_market_evidence_request.v2",
+        "unified_market_evidence_request.v3",
+        "trading_status_context",
+        "partial",
         "material_disclosures",
         "monthly_revenue",
         "latest completed official daily batch",

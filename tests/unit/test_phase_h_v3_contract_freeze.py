@@ -436,7 +436,7 @@ def test_catalog_routing_truth_exposes_only_selected_h1_route_while_v2_remains_p
         assert routes[capability_id]["runtime_executable"] is False
         assert routes[capability_id]["selected_executor_id"] is None
 
-    assert catalog["contract_versions"]["v3_runtime_authority_status"] == "selected_routes_active_v2_preferred"
+    assert catalog["contract_versions"]["v3_runtime_authority_status"] == "v3_preferred_selected_routes_active"
     assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 1
     assert routing["phase_h_source_authority"]["active_source_count"] == 1
     active = [item for item in routing["phase_h_source_authority"]["records"] if item["activation_state"] == "active"]
@@ -446,7 +446,9 @@ def test_catalog_routing_truth_exposes_only_selected_h1_route_while_v2_remains_p
     assert "discontinuity_safety" not in request_needs
     assert routing["derived_contracts"][0]["network_required"] is False
     assert routing["derived_contracts"][0]["request_capability"] is False
-    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v2"
+    assert catalog["contract_versions"]["preferred_request_schema_version"] == "unified_market_evidence_request.v3"
+    assert catalog["contract_versions"]["emitted_result_schema_version"] == "unified_market_evidence_result.v3"
+    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v3"
     assert [tool.name for tool in build_tool_specs()] == [
         "market_describe_capabilities", "market_validate_request", "market_preview_request",
         "market_read_result", "market_export_ai_handoff", "market_fetch_evidence",

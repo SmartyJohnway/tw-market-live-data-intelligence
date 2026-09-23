@@ -53,7 +53,7 @@ def _preview(request: dict) -> dict:
     )
 
 
-def test_h_act_h1_exact_current_runtime_scope_and_v2_preference() -> None:
+def test_h_act_h1_exact_route_scope_is_preserved_after_v3_promotion() -> None:
     catalog = json.loads(
         (ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json").read_text(encoding="utf-8")
     )
@@ -74,9 +74,9 @@ def test_h_act_h1_exact_current_runtime_scope_and_v2_preference() -> None:
         if item["activation_state"] == "active"
     ]
 
-    assert catalog["contract_versions"]["preferred_request_schema_version"] == "unified_market_evidence_request.v2"
-    assert catalog["contract_versions"]["emitted_result_schema_version"] == "unified_market_evidence_result.v2"
-    assert catalog["contract_versions"]["v3_runtime_authority_status"] == "selected_routes_active_v2_preferred"
+    assert catalog["contract_versions"]["preferred_request_schema_version"] == "unified_market_evidence_request.v3"
+    assert catalog["contract_versions"]["emitted_result_schema_version"] == "unified_market_evidence_result.v3"
+    assert catalog["contract_versions"]["v3_runtime_authority_status"] == "v3_preferred_selected_routes_active"
     assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 1
     assert capability["support_status"] == "runtime_executable"
     assert capability["phase_h_activation_state"] == "selected_route_active"
@@ -94,7 +94,7 @@ def test_h_act_h1_exact_current_runtime_scope_and_v2_preference() -> None:
     assert [(item["source_id"], item["runtime_executable"]) for item in active_descriptors] == [
         ("H1-TPEX-ATTENTION-OPENAPI", True)
     ]
-    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v2"
+    assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v3"
     assert [tool.name for tool in build_tool_specs()] == [
         "market_describe_capabilities",
         "market_validate_request",
@@ -192,7 +192,11 @@ def test_h_act_h1_workbench_b2_accepts_governed_v3_path_without_enabling_mcp_act
         branch["properties"]["schema_version"]["const"]
         for branch in snapshot["market_fetch_evidence"].inputSchema["properties"]["request"]["oneOf"]
     }
-    assert versions == {"unified_market_evidence_request.v1", "unified_market_evidence_request.v2"}
+    assert versions == {
+        "unified_market_evidence_request.v1",
+        "unified_market_evidence_request.v2",
+        "unified_market_evidence_request.v3",
+    }
 
 
 @pytest.mark.parametrize(
@@ -230,35 +234,52 @@ def test_h_act_h1_workbench_b2_accepts_governed_v3_path_without_enabling_mcp_act
         ),
     ],
 )
-def test_h_act_h1_v3_authorization_does_not_promote_other_resolved_v3_routes(
+def test_h_act_v3_authorization_reuses_governed_resolved_routes(
     monkeypatch: pytest.MonkeyPatch, needs: list[dict], operation: dict
 ) -> None:
     request = _request(execution_mode="execute")
     request["data_needs"] = copy.deepcopy(needs)
+    promoted_operation = {"operation_id": "op-promoted-v3", **copy.deepcopy(operation)}
     fake_preview = {
         "status": "ready_for_confirmation",
-        "internal_execution_reference": {"preview_id": "preview-not-authorized"},
+        "internal_execution_reference": {"preview_id": "preview-promoted-v3"},
     }
     fake_plan = {
-        "plan_id": "plan-not-authorized",
+        "plan_id": "plan-promoted-v3",
         "plan_hash": "b" * 64,
-        "operations": [copy.deepcopy(operation)],
+        "operations": [promoted_operation],
         "blocked_operations": [],
         "omitted_optional_capabilities": [],
     }
+    captured = {}
     monkeypatch.setattr(
         unified_mode_b2,
         "_authorizable_preview",
         lambda _request: (copy.deepcopy(fake_preview), copy.deepcopy(fake_plan)),
     )
-    with pytest.raises(ModeB2Error, match="phase_h_v3_execution_inactive"):
-        build_mode_b2_authorization({
-            "request": request,
-            "confirm_authorization": True,
-            "expected_preview_id": "preview-not-authorized",
-            "expected_plan_id": "plan-not-authorized",
-            "expected_plan_hash": "b" * 64,
-        })
+    monkeypatch.setattr(
+        unified_mode_b2,
+        "_materialize_execution_ticket",
+        lambda request, plan, decision: captured.update(
+            request=copy.deepcopy(request), plan=copy.deepcopy(plan), decision=copy.deepcopy(decision)
+        ) or {
+            "control_package_id": "umea-v1-" + "b" * 20,
+            "execution_ready": True,
+            "network_required": True,
+        },
+    )
+    result = build_mode_b2_authorization({
+        "request": request,
+        "confirm_authorization": True,
+        "expected_preview_id": "preview-promoted-v3",
+        "expected_plan_id": "plan-promoted-v3",
+        "expected_plan_hash": "b" * 64,
+    })
+    assert result["execution_ready"] is True
+    assert captured["request"]["schema_version"] == "unified_market_evidence_request.v3"
+    assert captured["plan"]["operations"][0]["executor_id"] == operation["executor_id"]
+    assert captured["decision"]["single_use"] is True
+    assert captured["decision"]["maximum_use_count"] == 1
 
 
 def test_h0h_roll_001_single_route_rollback_model_preserves_artifact_bytes() -> None:
@@ -280,8 +301,8 @@ def test_h0h_roll_001_single_route_rollback_model_preserves_artifact_bytes() -> 
         runtime_executable=False,
         phase_h_activation_state="inactive",
     )
-    rollback_catalog["contract_versions"]["v3_runtime_authority_status"] = "inactive"
-    rollback_catalog["phase_h_contract"]["runtime_authority"] = "inactive"
+    # Source-route rollback is independent from preferred-version rollback.
+    # V3 stays preferred while the selected H1 route alone returns to inactive.
     rollback_catalog["phase_h_contract"]["active_phase_h_source_count"] = 0
 
     route = next(item for item in rollback_routing["routes"] if item["capability_id"] == "trading_status_context")
@@ -311,7 +332,9 @@ def test_h0h_roll_001_single_route_rollback_model_preserves_artifact_bytes() -> 
     assert rollback_routing["phase_h_source_authority"]["active_source_count"] == 0
     assert not any(item["activation_state"] == "active" for item in rollback_routing["phase_h_source_authority"]["records"])
     assert not any(item["runtime_executable"] for item in rollback_descriptors["sources"])
-    assert rollback_catalog["contract_versions"]["preferred_request_schema_version"] == "unified_market_evidence_request.v2"
+    assert rollback_catalog["contract_versions"]["preferred_request_schema_version"] == "unified_market_evidence_request.v3"
+    assert rollback_catalog["contract_versions"]["emitted_result_schema_version"] == "unified_market_evidence_result.v3"
+    assert rollback_catalog["contract_versions"]["v3_runtime_authority_status"] == "v3_preferred_selected_routes_active"
 
     request = _request()
     validation = validate_mode_a_request(request, allow_fixture_snapshot=True)

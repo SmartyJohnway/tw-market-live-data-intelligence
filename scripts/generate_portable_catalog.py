@@ -5,7 +5,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CANONICAL_PATH = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json"
+CANONICAL_PATH = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
 PORTABLE_JSON_PATH = ROOT / "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json"
 PORTABLE_GUIDE_PATH = ROOT / "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
 # The checked-in portable projections are a CRLF byte contract.  Make that
@@ -50,9 +50,9 @@ def generate_portable_json_obj(
     catalog: dict, sha256: str, source_lineage: dict | None = None
 ) -> dict:
     metadata = {
-        "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json",
+        "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
         "canonical_sha256": sha256,
-        "generator_version": "PHASE-G-D5-v1",
+        "generator_version": "PHASE-H-ACT-V3-v1",
     }
     metadata.update(source_lineage or {})
     return {
@@ -118,12 +118,14 @@ def generate_portable_markdown_text(portable_data: dict, sha256: str) -> str:
         f"- **Preview Supported**: `{portable_data['execution'].get('preview_supported')}`",
         f"- **One-Shot Execution**: `{portable_data['execution'].get('one_shot_execution')}`",
         "",
-        "## 4. Phase G Research Boundaries",
+        "## 4. Current Evidence Boundaries",
         "",
         "- Material disclosures cover the latest completed official daily batch for eligible TWSE/TPEX company common shares.",
         "- Monthly revenue covers the latest available official reporting period for eligible TWSE/TPEX company common shares; currency is TWD and unit is thousand.",
         "- Research acquisition uses official CSV first and governed official JSON OpenAPI fallback. Fallback use is explicit in evidence.",
-        "- Initial G1/G2 provide no arbitrary history, polling, scheduler, background refresh, financial summary, investment advice, or trading.",
+        "- Phase H trading-status context is executable only through explicitly activated routes; current H1 coverage is partial and does not imply complete surveillance-status coverage.",
+        "- Corporate-action context and recent-performance routes remain inactive/plan-only until their independent activation gates pass; derived discontinuity safety never fabricates complete coverage.",
+        "- There is no arbitrary history, polling, scheduler, background refresh, financial summary, investment advice, or trading.",
         ""
     ])
 

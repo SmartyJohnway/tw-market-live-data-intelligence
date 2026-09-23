@@ -44,15 +44,30 @@ def test_phase_g_final_acceptance_ledgers_are_complete_and_bound():
     assert closure["controlled_live_identity_authority"]["official_security_master_acquisition_bootstrap_proven"] is False
 
 
-def test_phase_g_current_authority_and_six_tool_surface_are_closed():
+def test_phase_g_closure_remains_historical_while_current_authority_is_v3():
     closure = _load(CLOSURE)
-    current = closure["current_authority"]
+    historical = closure["current_authority"]
     described = describe_capabilities()
-    assert current["local_service"] == LOCAL_SERVICE_CONTRACT_VERSION == "unified_market_evidence_local_service.v2"
-    assert current["mcp_adapter"] == ADAPTER_VERSION == "unified_market_evidence_mcp_adapter.v2"
-    assert described["preferred_request_schema_version"] == current["preferred_request"]
-    assert described["accepted_request_schema_versions"] == current["accepted_requests"]
-    assert described["emitted_result_schema_version"] == current["emitted_result"]
+
+    # Phase G closure is immutable evidence of the authority that existed when
+    # that gate closed. H-ACT-V3 must not rewrite it.
+    assert historical["local_service"] == LOCAL_SERVICE_CONTRACT_VERSION == "unified_market_evidence_local_service.v2"
+    assert historical["mcp_adapter"] == ADAPTER_VERSION == "unified_market_evidence_mcp_adapter.v2"
+    assert historical["preferred_request"] == "unified_market_evidence_request.v2"
+    assert historical["accepted_requests"] == [
+        "unified_market_evidence_request.v1",
+        "unified_market_evidence_request.v2",
+    ]
+    assert historical["emitted_result"] == "unified_market_evidence_result.v2"
+
+    # Current product authority advances independently through H-ACT-V3.
+    assert described["preferred_request_schema_version"] == "unified_market_evidence_request.v3"
+    assert described["accepted_request_schema_versions"] == [
+        "unified_market_evidence_request.v1",
+        "unified_market_evidence_request.v2",
+        "unified_market_evidence_request.v3",
+    ]
+    assert described["emitted_result_schema_version"] == "unified_market_evidence_result.v3"
     assert [tool.name for tool in build_tool_specs()] == [
         "market_describe_capabilities",
         "market_validate_request",

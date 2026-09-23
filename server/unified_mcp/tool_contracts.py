@@ -12,6 +12,7 @@ import jsonschema
 from mcp.types import Tool, ToolAnnotations
 
 from . import ADAPTER_VERSION
+from server.services.unified_contract_versions import PREFERRED_REQUEST_SCHEMA_VERSION
 
 ROOT = Path(__file__).resolve().parents[2]
 REQUEST_SCHEMA_PATHS = {
@@ -19,7 +20,6 @@ REQUEST_SCHEMA_PATHS = {
     "unified_market_evidence_request.v2": ROOT / "schemas" / "unified_market_evidence_request.v2.schema.json",
     "unified_market_evidence_request.v3": ROOT / "schemas" / "unified_market_evidence_request.v3.schema.json",
 }
-PREFERRED_REQUEST_SCHEMA_VERSION = "unified_market_evidence_request.v2"
 REQUEST_SCHEMA_PATH = REQUEST_SCHEMA_PATHS[PREFERRED_REQUEST_SCHEMA_VERSION]
 REQUEST_SCHEMA_IDS = {
     "unified_market_evidence_request.v1": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v1",
@@ -166,7 +166,7 @@ def build_tool_contract_snapshot() -> ToolContractSnapshot:
     canonical_hash = canonical_request_schema_sha256()
     empty = {"$schema": "https://json-schema.org/draft/2020-12/schema", "type": "object", "properties": {}, "additionalProperties": False}
     passive_request = build_request_envelope_schema()
-    execution_request = build_request_envelope_schema(include_v3=False)
+    execution_request = build_request_envelope_schema()
     control = build_control_package_schema()
     tools = (
         Tool(name="market_describe_capabilities", description=TOOL_DESCRIPTIONS["market_describe_capabilities"], inputSchema=empty, annotations=_annotations(read_only=True)),

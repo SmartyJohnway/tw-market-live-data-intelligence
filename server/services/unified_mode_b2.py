@@ -237,35 +237,6 @@ def _non_actionable_preview_code(rebuilt: dict[str, Any]) -> str:
     return "preview_not_authorizable"
 
 
-def _enforce_incremental_v3_authorization_scope(
-    request: dict[str, Any], plan: dict[str, Any]
-) -> None:
-    """Keep H-ACT-H1 authorization limited to the one Owner-approved Phase H route."""
-    if request.get("schema_version") != "unified_market_evidence_request.v3":
-        return
-    needs = request.get("data_needs")
-    if (
-        not isinstance(needs, list)
-        or not needs
-        or any(not isinstance(need, dict) or need.get("type") != "trading_status_context" for need in needs)
-    ):
-        raise ModeB2Error("phase_h_v3_execution_inactive")
-    operations = plan.get("operations")
-    if not isinstance(operations, list) or not operations:
-        raise ModeB2Error("phase_h_v3_execution_inactive")
-    if plan.get("blocked_operations") or plan.get("omitted_optional_capabilities"):
-        raise ModeB2Error("phase_h_v3_execution_inactive")
-    for operation in operations:
-        if (
-            not isinstance(operation, dict)
-            or operation.get("operation_status") != "executable_pending_approval"
-            or operation.get("capability_id") != "trading_status_context"
-            or operation.get("market") != "TPEX"
-            or operation.get("executor_id") != PHASE_H_H1_EXECUTOR_ID
-        ):
-            raise ModeB2Error("phase_h_v3_execution_inactive")
-
-
 def build_mode_b2_authorization(payload: dict[str, Any]) -> dict[str, Any]:
     """Rebuild B1 authority and persist a bounded, non-executing package."""
     if not isinstance(payload, dict) or not isinstance(payload.get("request"), dict):
@@ -275,13 +246,11 @@ def build_mode_b2_authorization(payload: dict[str, Any]) -> dict[str, Any]:
         raise ModeB2Error("privileged_field_forbidden")
     if payload.get("confirm_authorization") is not True:
         raise ModeB2Error("authorization_confirmation_required")
-    # Incremental Phase H activation remains narrower than general V3 planning.
-    # H-ACT-H1 authorizes only the exact selected TPEx attention route; resolved
-    # Phase G/V1-compatible routes in the V3 planning pair do not gain V3
-    # execution authority as a side effect. V2 remains preferred and the
-    # local-operator/MCP action path stays V1/V2-only.
+    # H-ACT-V3 promotes the V3 contract family, not inactive routes. The
+    # version-specific V3 Catalog/Route pair remains the execution authority:
+    # resolved routes may proceed through normal authorization; blocked,
+    # plan-only and unsupported routes remain non-executable.
     preview, plan = _authorizable_preview(payload["request"])
-    _enforce_incremental_v3_authorization_scope(payload["request"], plan)
     expected = {
         "expected_preview_id": preview.get("internal_execution_reference", {}).get("preview_id"),
         "expected_plan_id": plan.get("plan_id"),
@@ -336,8 +305,6 @@ def build_local_operator_execution_ticket(request: dict[str, Any]) -> dict[str, 
     # The action path is only defined for the canonical execute request mode.
     if request.get("execution_mode") != "execute":
         raise ModeB2Error("market_fetch_requires_execute_mode")
-    if request.get("schema_version") == "unified_market_evidence_request.v3":
-        raise ModeB2Error("phase_h_v3_execution_inactive")
     _preview, plan = _authorizable_preview(request, preserve_domain_failure=True)
     now = _next_local_action_issuance_time()
     decision = {

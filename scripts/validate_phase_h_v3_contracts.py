@@ -298,10 +298,19 @@ def main() -> None:
     routing = json.loads(
         (root / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json").read_text(encoding="utf-8")
     )
-    if catalog["contract_versions"].get("preferred_request_schema_version") != "unified_market_evidence_request.v2":
+    versions = catalog["contract_versions"]
+    if versions.get("preferred_request_schema_version") != "unified_market_evidence_request.v3":
         _fail("phase_h_preferred_request_version_drift")
-    if catalog["contract_versions"].get("v3_runtime_authority_status") != "selected_routes_active_v2_preferred":
+    if versions.get("emitted_result_schema_version") != "unified_market_evidence_result.v3":
+        _fail("phase_h_preferred_result_version_drift")
+    if versions.get("future_candidate_request_schema_version") is not None or versions.get("future_candidate_result_schema_version") is not None:
+        _fail("phase_h_future_candidate_state_stale")
+    if versions.get("v3_runtime_authority_status") != "v3_preferred_selected_routes_active":
         _fail("phase_h_runtime_authority_state_invalid")
+    if catalog["phase_h_contract"].get("runtime_authority") != "v3_preferred_selected_routes_active":
+        _fail("phase_h_contract_runtime_authority_invalid")
+    if catalog["phase_h_contract"].get("preferred_runtime_request_schema_version") != "unified_market_evidence_request.v3":
+        _fail("phase_h_contract_preferred_request_invalid")
     if catalog["phase_h_contract"].get("active_phase_h_source_count") != 1:
         _fail("phase_h_active_source_count_invalid")
     active = [item for item in routing["phase_h_source_authority"]["records"] if item.get("activation_state") == "active"]
