@@ -1,0 +1,99 @@
+{
+  "schema_version": "test_governance_tg4_acceptance_ledger.v1",
+  "date": "2026-09-23",
+  "status": "TG4_SHADOW_CI_PASS",
+  "baseline_main": "b438e3b1d06698e2e702284abbdaf0bbc9340b40",
+  "branch": "governance/test-governance-tg4-shadow-ci",
+  "tested_head": "170f663d01dcae2a17c4d6c2747eec91cdb6ce50",
+  "workflow": {
+    "name": "Test Governance TG-4 Shadow Observation",
+    "run_id": 35824957803,
+    "conclusion": "success",
+    "artifact_id": 10734658184,
+    "artifact_name": "tg4-shadow-observation"
+  },
+  "runtime_results": {
+    "legacy_default": {
+      "selected": 1245,
+      "passed": 1241,
+      "skipped": 4,
+      "deselected": 9,
+      "status": "pass"
+    },
+    "current_shadow": {
+      "selected": 778,
+      "passed": 774,
+      "skipped": 4,
+      "deselected": 5,
+      "status": "pass"
+    },
+    "full_current_shadow": {
+      "selected": 1150,
+      "passed": 1146,
+      "skipped": 4,
+      "deselected": 5,
+      "status": "pass"
+    },
+    "historical_shadow": {
+      "selected": 94,
+      "passed": 94,
+      "skipped": 0,
+      "deselected": 0,
+      "status": "pass"
+    },
+    "release_shadow": {
+      "selected": 5,
+      "passed": 5,
+      "skipped": 0,
+      "deselected": 0,
+      "status": "pass"
+    },
+    "mixed_historical_shadow": {
+      "selected": 4,
+      "passed": 2,
+      "failed": 2,
+      "deselected": 15,
+      "status": "known_historical_replay_gap_only"
+    }
+  },
+  "node_analysis": {
+    "legacy_node_count": 1245,
+    "legacy_layer_counts": {
+      "current_every_pr": 778,
+      "broad_current_nondefault": 372,
+      "historical_acceptance": 90,
+      "release_preflight": 5,
+      "unexplained": 0
+    },
+    "legacy_missing_from_layered_count": 0,
+    "layered_extra_vs_legacy_count": 8,
+    "additional_historical_only_nodes": 8,
+    "current_missing_vs_legacy_count": 467
+  },
+  "known_historical_replay_gaps": {
+    "contract": "docs/governance/test_governance/TG4_KNOWN_HISTORICAL_REPLAY_GAPS.v1.json",
+    "allowed_failed_node_count": 2,
+    "unexpected_failed_node_count": 0,
+    "current_default_ci_affected": false
+  },
+  "profile_authority": {
+    "default_ci_changed": false,
+    "tg2_current_shadow_expression_refined": true,
+    "tg2_full_current_shadow_expression_refined": true,
+    "mixed_historical_shadow_added": true,
+    "automatic_ci_cutover": false
+  },
+  "containment": {
+    "production_runtime_changed": false,
+    "source_activation_changed": false,
+    "routing_changed": false,
+    "frozen_schema_changed": false,
+    "phase_i_implementation": false
+  },
+  "interpretation": {
+    "shadow_protection_gap": "NONE_UNEXPLAINED",
+    "tg4_passed": true,
+    "tg5_authorized": false,
+    "next_required_decision": "Owner authorization for TG-5 default-CI cutover design and acceptance"
+  }
+}
