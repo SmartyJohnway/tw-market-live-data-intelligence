@@ -724,7 +724,7 @@
       "automatic_ci_allowed": false
     },
     "pre-tg5-default-ci": {
-      "purpose": "Exact pre-TG5 default-ci rollback profile. Manual only; preserves the 156-path/1245-node legacy merge authority definition.",
+      "purpose": "Pre-TG5 156-path execution-semantics diagnostic on the current tree. Manual only; authoritative rollback proof uses the frozen pre-TG5 repository baseline because frozen historical self-membership assertions intentionally retain old topology.",
       "execution_type": "pytest",
       "pytest_expression": "not network and not browser and not live and not release_preflight and not historical and not performance",
       "pytest_paths": [
