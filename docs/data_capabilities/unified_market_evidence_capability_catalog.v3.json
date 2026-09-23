@@ -287,7 +287,7 @@
       "known_limitations": [
         "only H1-TPEX-ATTENTION-OPENAPI is active; all other H1 status subtypes/routes remain inactive or uncovered",
         "H0-SRC-02 prevents complete H1 coverage claims",
-        "V2 remains the preferred production request/result authority"
+        "V3 is the preferred production request/result authority; V1/V2 remain compatibility contracts"
       ],
       "instrument_scope": {
         "instrument_families": [
@@ -321,7 +321,7 @@
       ],
       "possible_fallbacks": [],
       "known_limitations": [
-        "V3 contract candidate only; no H0-G runtime activation",
+        "V3 contract is current, but no H2 corporate-action route has been activated",
         "coverage and provider asymmetry remain explicit"
       ],
       "instrument_scope": {

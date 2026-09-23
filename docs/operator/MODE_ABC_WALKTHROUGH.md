@@ -1,39 +1,68 @@
 # Mode A/B/C Walkthrough
 
-## Mode A: validate and inspect canonical context
+The current Mode A/B/C model is the Unified Market Evidence flow.
 
-```bash
-python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01
-python -m json.tool research/staging/m5f/m5f_canonical_market_context_01/canonical_market_context.json | head -80
+## Mode A — Validate / resolve identity
+
+Input: a Unified Market Evidence Request.
+
+Mode A:
+
+- validates the request schema;
+- resolves canonical target identity through the installation-local Security
+  Master;
+- validates capability/target scope;
+- performs no market execution.
+
+A fresh installation may fail closed with
+`SECURITY_MASTER_NOT_INITIALIZED`.
+
+## Mode B1 — Preview
+
+Preview computes the deterministic orchestration plan:
+
+- exact targets;
+- requested capabilities;
+- selected governed route/executor;
+- operation/network bounds;
+- blocked/omitted operations;
+- plan identity/hash.
+
+Preview performs no authorization and no market network request.
+
+## Mode B2 — Authorize / execute once
+
+Authorization binds the approved plan. Execution then consumes that
+authorization through the fixed execute-once boundary.
+
+```text
+Preview != Authorization != Execution
 ```
 
-Interpretation: M5F is Level 1, canonical, reviewed, and historical. It is not current observation data.
+A second use of a consumed authorization must fail closed.
 
-## Mode B: inspect watchlist/routes/source health and run bounded observation
+## Mode C — Result / Audit / AI Handoff
 
-Plan without network:
+After final execution:
 
-```bash
-python scripts/run_m5k_postmerge_validation.py --check-only
-python scripts/run_m5q_source_health_probe.py --check-only
-```
+- canonical Result is built/verified;
+- separate Audit Package preserves execution/provenance detail;
+- AI Handoff exports verified AI-safe evidence and citation references;
+- Mode C does not perform another market fetch.
 
-Optional explicit bounded observation:
+V3 is the preferred current Request/Result/Audit authority. Persisted historical
+V1/V2/V3 packages retain their stored version.
 
-```bash
-python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation
-```
-
-Interpretation terms: `current observation candidate` means a bounded Level 2 value candidate that still needs caveats; `not_realtime_guaranteed` means do not call it realtime; `not canonical` means it must not overwrite M5F.
-
-## Mode C: build Conversation Package and discuss with AI
+## Workbench
 
 ```bash
-python scripts/build_m5n_conversation_context.py
+python scripts/run_unified_workbench.py
 ```
 
-Paste the generated JSON/Markdown into an AI chat and keep the safety text intact: no trading advice, no ranking, no target price, and no buy/sell/hold.
+Open `http://127.0.0.1:8000/workbench/`.
 
-## M6A observation UX additions
+## Current Phase H note
 
-Mode B/C operators can use the readonly workbench to inspect the latest local observation, observation history summaries, one-point or multi-run timelines, and latest/previous field comparisons. These displays are observation comparison only, not trading signals, and not current-price guarantees. Source-health history and Conversation Package previews are also local-read surfaces and do not execute probes.
+V3 promotion does not imply complete interpretation coverage. The only active
+Phase H route is currently TPEx attention; broader H1/H2/H3 routes remain
+uncovered, blocked, plan-only or inactive according to current route authority.

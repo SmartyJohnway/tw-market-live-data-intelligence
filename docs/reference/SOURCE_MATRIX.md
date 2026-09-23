@@ -1,13 +1,28 @@
-# Source Matrix
+# Current Source / Evidence Role Matrix
 
-| Source | Role | Level | Mode | Used for | Authority status | Realtime status | Known caveats | Default product usage |
-|---|---|---:|---|---|---|---|---|---|
-| TWSE_OpenAPI | Official reference source | 1/2 | A/B | Reviewed package evidence, reference checks | Official public API | Not realtime guaranteed | Often EOD/reference semantics; verify source timestamp | Canonical evidence and safe checks |
-| TWSE_MIS | Browser JSON observation candidate | 2 | B | Bounded listed-equity observation | Unofficial/browser endpoint | Not realtime guaranteed | Fragile fields/session behavior; can be stale or closed-session | Manual bounded observation only |
-| TAIFEX_MIS | Browser JSON observation candidate | 2 | B | Bounded futures observation | Unofficial/browser endpoint | Not realtime guaranteed | Session/freshness semantics need caveats | Manual bounded observation only |
-| TPEx / OTC through TWSE_MIS if applicable | OTC route candidate | 2 | B | Bounded OTC observation where route resolves | Route-dependent | Not realtime guaranteed | Coverage and field semantics must be verified per target | Observation candidate, not canonical |
-| M5F Canonical Package | Reviewed local context package | 1 | A/C | Baseline context, FastAPI, MCP, frontend, AI handoff | Internal reviewed artifact | Historical/stale, not current | Must not be silently refreshed or mutated | Default baseline |
-| M5K latest observation | Temporary bounded observation | 2 | B/C | Latest local observation state | Internal derived artifact | Observation-time only, not guaranteed realtime | Non-canonical; depends on manual execution | Optional temporary context |
-| M5Q source health | Manual source-health regression report | 2 | B/C | Source usability health | Internal derived artifact | Status at retrieval only | Not a scanner; no raw payload leakage | Operator diagnostics |
-| M5N conversation package | AI handoff package | 1/2 | C | AI discussion context | Internal derived artifact | Derived; inherits caveats | Must not be interpreted as trading advice | AI handoff |
-| Licensed vendor future candidate | Future source candidate | TBD | TBD | Potential production-grade data | Commercial/licensed | Unknown until contracted | Requires credentials, terms, governance, and tests | Not default |
+This page is a concise navigation aid. Exact runtime route selection is governed
+by the current V3 routing matrix and executor registry.
+
+| Source / family | Role | Current use | Authority / caveat |
+|---|---|---|---|
+| Installation-local Security Master | Taiwan Market Identity Service | target identity, eligibility, routing projection | local qualified release; `NOT_INITIALIZED` is legal |
+| TWSE / TPEx current-observation routes | bounded market observation | `current_observation` | route-specific; not a realtime guarantee |
+| TWSE / TPEx official EOD sources | official reference | `official_eod_reference` | official source; publication/timing semantics apply |
+| MOPS material disclosure open data | official research evidence | Phase G `material_disclosures` | latest completed official daily batch; bounded target evidence |
+| MOPS monthly revenue open data | official periodic evidence | Phase G `monthly_revenue` | latest available reporting period; TWD/thousand semantics |
+| TPEx trading warning information OpenAPI | official trading-status evidence | active H1 TPEx attention route | exact-code binding; current H1 coverage is partial |
+| V1/V2/V3 governed Result/Audit artifacts | local derived evidence | read/replay/audit/handoff | persisted version is preserved |
+| Persistent Watchlists | local durable user state | target selection/composition | not an external market source |
+
+## Not current production authority
+
+Earlier M5F/M5K/M5N/M5Q packages remain engineering history and may still be
+used by compatibility tests, but they are not the current product source model.
+
+Third-party or credential-gated providers remain optional until separately
+governed. They must not silently override official/current route authority.
+
+For exact capability/source status use:
+
+- `docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json`
+- `docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json`

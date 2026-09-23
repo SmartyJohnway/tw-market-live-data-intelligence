@@ -1,204 +1,87 @@
 # Documentation Index
 
-Master map for the stable V1 product. Links below point to current product
-docs unless explicitly marked archive or historical review.
+This page is the documentation front door for the **current development line**.
+Historical milestone documents remain available for audit, but they are not a
+second current-product authority.
 
-## Start here
+## Repository governance — start here
 
-- [Repository README](../README.md)
-- [V1 Public Contracts](contracts/V1_PUBLIC_CONTRACTS.md)
-- [Local Workbench](operator/LOCAL_WORKBENCH.md)
+1. [PROJECT.md](../PROJECT.md) — current product/project truth
+2. [ROADMAP.md](../ROADMAP.md) — canonical Roadmap V3.2
+3. [HANDOFF.md](../HANDOFF.md) — current operational stopping point
+4. [AGENTS.md](../AGENTS.md) — repository and AI collaboration rules
+
+## Current product docs
+
+### Operator
+
 - [Operator Quick Start](operator/QUICK_START.md)
+- [Local Unified Workbench](operator/LOCAL_WORKBENCH.md)
 - [Mode A/B/C Walkthrough](operator/MODE_ABC_WALKTHROUGH.md)
-- [V1 Release](release/V1_RELEASE.md)
-- [Unified MCP Distribution](distribution/MCP_DISTRIBUTION.md)
-- [Project History](PROJECT_HISTORY.md)
+- [Troubleshooting](operator/TROUBLESHOOTING.md)
 
-## Architecture
+### Architecture
 
 - [Architecture README](architecture/README.md)
 - [Product Architecture](architecture/PRODUCT_ARCHITECTURE.md)
-- [Mode A/B/C and Level 1/2](architecture/MODE_ABC_LEVEL12.md)
 - [Data Flow](architecture/DATA_FLOW.md)
 - [Source and Capability Model](architecture/SOURCE_AND_CAPABILITY_MODEL.md)
 
-## Operator guides
+### Reference
 
-- [Operator README](operator/README.md)
-- [Local Workbench](operator/LOCAL_WORKBENCH.md)
-- [Quick Start](operator/QUICK_START.md)
-- [Mode A/B/C Walkthrough](operator/MODE_ABC_WALKTHROUGH.md)
-- [Conversation Package Guide](operator/CONVERSATION_PACKAGE_GUIDE.md)
-- [Source Health Guide](operator/SOURCE_HEALTH_GUIDE.md)
-- [Troubleshooting](operator/TROUBLESHOOTING.md)
-
-## Reference
-
-- [Reference README](reference/README.md)
-- [Source Matrix](reference/SOURCE_MATRIX.md)
 - [Capability Matrix](reference/CAPABILITY_MATRIX.md)
-- [API Reference](reference/API_REFERENCE.md)
+- [Source Matrix](reference/SOURCE_MATRIX.md)
 - [MCP Reference](reference/MCP_REFERENCE.md)
 - [Output Artifacts](reference/OUTPUT_ARTIFACTS.md)
 - [Governance Boundaries](reference/GOVERNANCE_BOUNDARIES.md)
 
-## Contributor docs
+### AI / Agent
 
-- [Contributor README](contributor/README.md)
-- [Contributing](contributor/CONTRIBUTING.md)
-- [Development Guide](contributor/DEVELOPMENT_GUIDE.md)
-- [Testing Guide](contributor/TESTING_GUIDE.md)
-- [Documentation Guide](contributor/DOCUMENTATION_GUIDE.md)
+- [Current AI usage guide](agent_usage_guide.md)
+- [Portable TW-Market Agent Skill](../skills/tw-market-evidence-agent/SKILL.md)
+- [Current V3 capability catalog](data_capabilities/unified_market_evidence_capability_catalog.v3.json)
+- [Current V3 routing matrix](data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json)
 
-## Release docs
+### Governance / acceptance
 
-- [Release README](release/README.md)
-- [V1 Release](release/V1_RELEASE.md)
-- [V1 Final Promotion Candidate (historical pointer)](release/V1_RELEASE_CANDIDATE.md)
-- [V1 Migration](release/V1_MIGRATION.md)
-- [Release Checklist](release/RELEASE_CHECKLIST.md)
-- [M5 Local Release Candidate](release/M5_LOCAL_RELEASE_CANDIDATE.md)
-- [M5R Documentation Audit](release/M5R_DOCUMENTATION_AUDIT.md)
+- [Governance Index](governance/INDEX.md)
+- [Phase H governance](governance/phase_h/)
+- [Acceptance runs](acceptance_runs/)
+- [Acceptance records](acceptance/)
 
+### Release / distribution
 
-## Engineering history / protocol archive
+- [Release docs](release/README.md)
+- [V1.0.0 stable release snapshot](release/V1_RELEASE.md)
+- [MCP distribution](distribution/MCP_DISTRIBUTION.md)
 
-The following links preserve milestone protocol, governance, and acceptance
-evidence. They are useful for audit and compatibility research, but are not a
-second current-product entry point. Start with the sections above for the V1
-operator contract; use [Project History](PROJECT_HISTORY.md) and the
-[Archive](archive/README.md) for chronological context.
+## Historical engineering material
 
-### M8 through M8C governance and acceptance
+The following directories are evidence/history-heavy. Statements such as
+"next task", "V2 preferred", "Phase G not started", or an older release status
+may be correct **for the milestone when the document was created** and must not
+be interpreted as current state without checking the root governance files.
 
-- [M8R-05A-F3 AI-authored request intake and canonical target validation](protocol/M8R_05A_F3_AI_AUTHORED_REQUEST_INTAKE_AND_CANONICAL_TARGET_VALIDATION.md)
+- [Project History](PROJECT_HISTORY.md)
+- [M8 through M8B consolidated final acceptance](protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md) — historical milestone evidence, not current runtime authority
+- [Reviews](reviews/)
+- [Protocols](protocol/)
+- [Historical acceptance runs](acceptance_runs/)
+- [Roadmap history](roadmap/)
+- [Archive](archive/README.md)
 
-- [M8R-02B-F1 TPEx/TAIFEX Runtime Defect Correction and Exact Contract Revalidation](protocol/M8R_02B_F1_TPEX_TAIFEX_RUNTIME_DEFECT_CORRECTION_AND_EXACT_CONTRACT_REVALIDATION.md)
-- [M8R-02B-F2 conversational derivatives intent resolution and current contract execution](protocol/M8R_02B_F2_CONVERSATIONAL_DERIVATIVES_INTENT_RESOLUTION_AND_CURRENT_CONTRACT_EXECUTION.md)
-- [M8 consolidated final acceptance](protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md)
-- [M8 full non-network base/head validation](reviews/M8_THROUGH_M8B_FULL_NON_NETWORK_BASE_HEAD_VALIDATION.md)
-- [M8 source capability registry](data_capabilities/m8_source_capability_registry.json)
-- [M8-00 final acceptance](protocol/M8_00_FINAL_ACCEPTANCE_AND_CLOSURE.md)
-- [M8A official EOD final acceptance](protocol/M8A_OFFICIAL_EOD_CONTEXT_FINAL_ACCEPTANCE.md)
-- [M8B TAIFEX OpenAPI final acceptance](protocol/M8B_01_TAIFEX_OPENAPI_OFFICIAL_DERIVATIVES_EOD_FINAL_ACCEPTANCE.md)
-- [M8C-01 TAIFEX MIS bounded runtime final acceptance](protocol/M8C_01_TAIFEX_MIS_BOUNDED_RUNTIME_FINAL_ACCEPTANCE.md)
-- [M8C-02 TAIFEX MIS M8 context integration final acceptance](protocol/M8C_02_TAIFEX_MIS_M8_CONTEXT_INTEGRATION_FINAL_ACCEPTANCE.md)
-- [M8 through M8C consolidated acceptance](protocol/M8_THROUGH_M8C_CONSOLIDATED_ACCEPTANCE.md)
-- [M8R-00 productization boundary and scope closure](protocol/M8R_00_PRODUCTIZATION_BOUNDARY_AND_SCOPE_CLOSURE.md)
-- [M8R-01 bounded market context request contract](protocol/M8R_01_BOUNDED_MARKET_CONTEXT_REQUEST_CONTRACT.md)
-- [M8R-01F canonical request hash and semantic duplicate correction](protocol/M8R_01F_CANONICAL_REQUEST_HASH_AND_SEMANTIC_DUPLICATE_CORRECTION.md)
-- [M8R-02 one-shot market context execution orchestrator](protocol/M8R_02_ONE_SHOT_MARKET_CONTEXT_EXECUTION_ORCHESTRATOR.md)
-- [M8R-02A production source executor adapter integration](protocol/M8R_02A_PRODUCTION_SOURCE_EXECUTOR_ADAPTER_INTEGRATION.md)
-- [M8R-02B controlled live execution validation and final runtime acceptance](protocol/M8R_02B_CONTROLLED_LIVE_EXECUTION_VALIDATION_AND_FINAL_RUNTIME_ACCEPTANCE.md)
-- [M8R-03 AI market context package v1](protocol/M8R_03_AI_MARKET_CONTEXT_PACKAGE_V1.md)
-- [M8R-03B AI conversation input/output design review](protocol/M8R_03B_AI_CONVERSATION_INPUT_OUTPUT_DESIGN_REVIEW.md)
-- [M8R-03C conversation contract validators and watchlist bundle skeletons](protocol/M8R_03C_CONVERSATION_CONTRACT_VALIDATORS_AND_WATCHLIST_BUNDLE_SKELETONS.md)
-- [M8C TAIFEX MIS runtime selector/execution contract](protocol/M8C_TAIFEX_MIS_RUNTIME_SELECTOR_AND_EXECUTION_CONTRACT.md)
-- [M8C TAIFEX MIS runtime observation schema](protocol/M8C_TAIFEX_MIS_RUNTIME_OBSERVATION_SCHEMA.md)
-- [M8C TAIFEX MIS runtime currentness contract](protocol/M8C_TAIFEX_MIS_RUNTIME_CURRENTNESS_CONTRACT.md)
-- [M8A live validator](../scripts/validate_m8a_official_eod_live.py)
-- [M8B live validator](../scripts/validate_m8b_taifex_openapi_live.py)
-- M8R-01F status = `m8r_01f_canonical_request_hash_and_semantic_duplicate_correction_go`; next_task = `null`; next_task_status = `awaiting_operator_acceptance`; recommended_next_task = `M8R-02-ONE-SHOT-MARKET-CONTEXT-EXECUTION-ORCHESTRATOR`
+Do not mass-edit historical ledgers or closure reports to match later runtime
+state. Current contradictions should be fixed in current entry-point docs.
 
-### Reviews / acceptance
-
-- [M8R-08D Local Operator Action Contract](protocol/M8R_08D_LOCAL_OPERATOR_ACTION_CONTRACT.md)
-- [M8R-08E one-shot market evidence MCP implementation](reviews/M8R_08E_ONE_SHOT_MARKET_EVIDENCE_MCP_IMPLEMENTATION.md)
-- [M8R-08D Local Operator Action Contract Realignment](reviews/M8R_08D_LOCAL_OPERATOR_ACTION_CONTRACT_REALIGNMENT.md)
-- [M8R-08C-R1 same-process Local Service readiness repair](reviews/M8R_08C_R1_LOCAL_SERVICE_READINESS_REPAIR.md)
-- [M8R-08B minimal Unified MCP protocol](protocol/M8R_08B_MINIMAL_UNIFIED_MCP_CONTRACT.md)
-- [M8R-08B minimal Unified MCP implementation review](reviews/M8R_08B_MINIMAL_UNIFIED_MCP_IMPLEMENTATION.md)
-- [M8R-08B local MCP client guide](operator/M8R_08B_MCP_LOCAL_CLIENT.md)
-- [M8R-08A deep MCP architecture / security preflight](reviews/M8R_08A_DEEP_MCP_ARCHITECTURE_PREFLIGHT.md)
-- [M8R-08A MCP host compatibility matrix](reviews/M8R_08A_MCP_HOST_COMPATIBILITY_MATRIX.md)
-- [M8R-08A MCP implementation blueprint](reviews/M8R_08A_MCP_IMPLEMENTATION_BLUEPRINT.md)
-- [M8R-07C Local Service post-merge acceptance](reviews/M8R_07C_LOCAL_SERVICE_POST_MERGE_ACCEPTANCE.md)
-- [M8R-07A Local-First Unified Market Evidence Service boundary preflight](reviews/M8R_07A_LOCAL_SERVICE_BOUNDARY_PREFLIGHT.md)
-- [M8R-07B Local-First Unified Market Evidence Service contract](protocol/M8R_07B_LOCAL_SERVICE_CONTRACT.md)
-- [M8R-07B Local-First Unified Market Evidence Service implementation review](reviews/M8R_07B_LOCAL_SERVICE_IMPLEMENTATION.md)
-- [Reviews README](reviews/README.md)
-- [M5XR Final Mode ABC Level 1/2 Release Acceptance](reviews/M5XR_FINAL_MODE_ABC_LEVEL12_RELEASE_ACCEPTANCE.md)
-- [M6A Observation UX and Local Frontend Compatibility](reviews/M6A_OBSERVATION_UX_AND_LOCAL_FRONTEND_COMPATIBILITY.md)
-- [M6B Test Strategy and Source Contract Hardening](reviews/M6B_TEST_STRATEGY_AND_SOURCE_CONTRACT_HARDENING.md)
-- [M6D Compatibility Hardening Windows Python 3.13 TLS and Local Networking](reviews/M6D_COMPATIBILITY_HARDENING_WINDOWS_PYTHON313_TLS_AND_LOCAL_NETWORKING.md)
-- [M6H Test Portfolio Rationalization and E2E Prioritization](reviews/M6H_TEST_PORTFOLIO_RATIONALIZATION_AND_E2E_PRIORITIZATION.md)
-
-## Archive
-
-- [Archive README](archive/README.md)
-- [Archived pre-M5R README](archive/readme/README_PRE_M5R_20260630_PRODUCT_RELEASE_HARDENING.md)
-- [Archived pre-M5LRM README](archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md)
-
-## Core validation commands
+## Current deterministic validation
 
 ```bash
-python -m compileall scripts server tests
-pytest -m "not network" -v
-python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01
-python scripts/run_m5ij_end_to_end_acceptance.py --check-only
-python scripts/run_m5k_postmerge_validation.py --check-only
-python scripts/run_m5q_source_health_probe.py --check-only
-python scripts/build_m5n_conversation_context.py
-python scripts/governance_forbidden_path_guard.py
-python scripts/forbidden_behavior_scanner.py
+python -m compileall -q scripts server tests
+python scripts/validate_phase_h_v3_contracts.py
+python scripts/validate_portable_catalog_sync.py
+python scripts/validate_runtime_skill_guide_sync.py
+python scripts/run_test_profile.py default-ci
 git diff --check
 ```
 
-- [M6E Operator Acceptance Test and Release Preflight](reviews/M6E_OPERATOR_ACCEPTANCE_TEST_AND_RELEASE_PREFLIGHT.md)
-- [M6G Browser Operator E2E Acceptance](reviews/M6G_BROWSER_OPERATOR_E2E_ACCEPTANCE.md)
-
-- M8R-02 status = `CONDITIONAL_GO`; next_task = `null`; next_task_status = `awaiting_operator_acceptance`; recommended_next_task = `M8R-02A-PRODUCTION-SOURCE-EXECUTOR-ADAPTER-INTEGRATION`
-
-- [M8R-02A production source executor adapter integration](protocol/M8R_02A_PRODUCTION_SOURCE_EXECUTOR_ADAPTER_INTEGRATION.md) — GO production adapter integration; M8R-02B controlled live validation remains required.
-- [M8R-03 AI Market Context Package v1](protocol/M8R_03_AI_MARKET_CONTEXT_PACKAGE_V1.md) — GO offline AI-consumable package over accepted M8R-02 orchestration results; production live execution remains gated by M8R-02B.
-
-- [M8R-03D Watchlist Evidence Source Integration and Controlled Execution](protocol/M8R_03D_WATCHLIST_EVIDENCE_SOURCE_INTEGRATION_AND_CONTROLLED_EXECUTION.md)
-
-## M8R-03D-F1
-
-- [M8R-03D-F1 Verified Security-Master Classifier Snapshot Adapter](protocol/M8R_03D_F1_VERIFIED_SECURITY_MASTER_CLASSIFIER_SNAPSHOT_ADAPTER.md)
-
-- [M8R-03E Watchlist AI Context Package and Conversation Handoff](protocol/M8R_03E_WATCHLIST_AI_CONTEXT_PACKAGE_AND_CONVERSATION_HANDOFF.md)
-### Post-M8C R1 realignment and health audit
-
-- [M8 Post-M8C Revised Roadmap](roadmap/M8_POST_M8C_REVISED_ROADMAP.md)
-- [M8 Repository Health Audit](quality/M8_REPOSITORY_HEALTH_AUDIT.md)
-- [M8R-03E-R1 Protocol](protocol/M8R_03E_R1_M8_POST_M8C_REPOSITORY_REALIGNMENT_AND_HEALTH_AUDIT.md)
-
-## M8R-05C Unified Market Evidence Result and Audit (Current Authority)
-
-- [M8R-05C Final Acceptance](acceptance/M8R_05C_FINAL_ACCEPTANCE.md)
-- [M8R-05C Post-Merge Handoff](acceptance/M8R_05C_POST_MERGE_HANDOFF.md)
-- [M8R-05C Stale Statement Audit](acceptance/M8R_05C_STALE_STATEMENT_AUDIT.md)
-- M8R-05C status = `PASS_WITH_CAVEATS`; next_task = `M8R-06-00-UNIFIED-MARKET-EVIDENCE-OPERATOR-WORKBENCH-PREFLIGHT`
-
-## M8R-05A Unified Market Evidence (Previous Authority)
-
-- [Unified Request Schema](../schemas/unified_market_evidence_request.v1.schema.json)
-- [Unified Result Schema](../schemas/unified_market_evidence_result.v1.schema.json)
-- [Unified Capability Catalog](../docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json)
-- [AI Agent Usage Guide](agent_usage_guide.md)
-- [AI Safety Policy](ai_safety_policy.md)
-- [Portable market-evidence Agent Skill](../skills/tw-market-evidence-agent/SKILL.md)
-
-## M8R-06 Unified Operator Workbench
-
-- [M8R-06-00 Unified Operator Workbench Preflight](reviews/M8R_06_00_UNIFIED_OPERATOR_WORKBENCH_PREFLIGHT.md)
-- [M8R-06-01 Mode A Implementation](architecture/M8R_06_01_MODE_A_IMPLEMENTATION.md)
-- [M8R-06-01 Implementation Acceptance](acceptance/M8R_06_01_IMPLEMENTATION_ACCEPTANCE.md)
-- [M8R-06-01A Canonical Security Master Activation Preflight](reviews/M8R_06_01A_CANONICAL_SECURITY_MASTER_ACTIVATION_PREFLIGHT.md)
-- [M8R-06-01B Production Input Materialization Review](reviews/M8R_06_01B_PRODUCTION_INPUT_MATERIALIZATION.md)
-- [M8R-06-01C Post-Activation Acceptance](reviews/M8R_06_01C_POST_ACTIVATION_ACCEPTANCE.md)
-- [M8R-06-02 Mode B1 Deterministic Preview](reviews/M8R_06_02_MODE_B1_DETERMINISTIC_PREVIEW.md)
-- [M8R-06-03 Bounded Live Acceptance](reviews/M8R_06_03_BOUNDED_LIVE_ACCEPTANCE.md)
-- [M8R-06-04 Mode C Result Explorer and AI Handoff](reviews/M8R_06_04_MODE_C_RESULT_AI_HANDOFF.md)
-- [M8R-06-05 End-to-End Operator Acceptance](acceptance/M8R_06_05_END_TO_END_OPERATOR_ACCEPTANCE.md)
-- [M8R-06 Human Browser Acceptance Repair 01](reviews/M8R_06_HUMAN_BROWSER_ACCEPTANCE_REPAIR_01.md)
-- [M8R-06 Human Browser AI Handoff Repair 02](reviews/M8R_06_HUMAN_BROWSER_AI_HANDOFF_REPAIR_02.md)
-- Mode A is active through the governed local compact candidate. M8R-06-02 adds offline deterministic Mode B1 Preview; M8R-06-03 records accepted bounded live execution with current-observation caveats.
-
-## Historical / Compatibility References
-
-- [Legacy M8 AI capability quick guide](ai/M8_AI_CAPABILITY_QUICK_GUIDE.md) (Superseded redirect)
-- [Legacy M8 AI capability contract](ai/M8_AI_CAPABILITY_CONTRACT.md) (Archived)
-- [M8R-03E-F1 AI capability guide and Agent Skill protocol](protocol/M8R_03E_F1_AI_CAPABILITY_GUIDE_AND_AGENT_SKILL_CONTRACT.md)
+Live network acceptance is separately authorized and bounded.

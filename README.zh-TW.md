@@ -6,7 +6,7 @@
 
 ![確定性 Unified Workbench 總覽](docs/assets/workbench-overview.png)
 
-ProductVersion = `1.0.0`。目前 stable release 是 **[`v1.0.0`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0)**；已發布的 prerelease 歷史版本為 [`v1.0.0-rc.1`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)，較早的 stable GitHub Release 是 `v0.1.0`。目前開發線的 Phase G G1/G2 能力已通過受界限 controlled-live 驗收。它是本機優先的證據工作台，不是即時交易產品。
+ProductVersion = `1.0.0`。目前 stable release 是 **[`v1.0.0`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0)**；已發布的 prerelease 歷史版本為 [`v1.0.0-rc.1`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)，較早的 stable GitHub Release 是 `v0.1.0`。目前開發線已將 Unified Request / Result / Audit V3 升為偏好 authority，V1/V2 仍保留相容性；Phase G G1/G2 已有受界限 live 驗收，Phase H 目前只有 TPEx 注意股票路由正式 active，較廣的 Roadmap Phase G/H scope 仍明確未完整完成。它是本機優先的證據工作台，不是即時交易產品。
 
 ## 快速開始
 
@@ -48,7 +48,7 @@ MCP 固定提供六個受治理工具：
 `market_preview_request`、`market_read_result`、
 `market_export_ai_handoff`、`market_fetch_evidence`。
 
-Request v2 是現行偏好契約，Request v1 仍相容；新執行產生 Result v2 與 Audit Package v2，歷史 V1 套件保持可讀且不重寫。符合資格的 TWSE/TPEX 普通股可取得最新完成的官方重大訊息日批次，以及最新可得的月營收（TWD、千元）；來源先用官方 CSV，必要時明確使用受治理的官方 JSON OpenAPI fallback。初版不提供任意歷史查詢、即時重大訊息、`financial_summary`、投資建議或交易。
+Request v3 是現行偏好契約，Request v1/v2 仍為相容契約；新的 governed materialization 預設產生 Result v3 與 Audit Package v3，歷史 V1/V2/V3 套件保持可讀且不重寫。符合資格的 TWSE/TPEX 普通股可取得最新完成的官方重大訊息日批次，以及最新可得的月營收（TWD、千元）；來源先用官方 CSV，必要時明確使用受治理的官方 JSON OpenAPI fallback。初版不提供任意歷史查詢、即時重大訊息、`financial_summary`、投資建議或交易。
 
 ## MCP 發行套件
 
@@ -56,6 +56,15 @@ Windows MCPB 套件隨
 [`v1.0.0`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0)發行：可[下載 MCPB](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/tw-market-unified-mcp-v1.0.0-win-x64.mcpb)，並以其 [SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/tw-market-unified-mcp-v1.0.0-win-x64.mcpb.sha256)驗證。它採用本機 stdio，並提供相同六個工具。官方 [MCP Registry entry](https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.SmartyJohnway/tw-market-live-data-intelligence) 是 `io.github.SmartyJohnway/tw-market-live-data-intelligence`；安裝範圍、完整性與 Security Master 邊界請見 [MCP 發行說明](docs/distribution/MCP_DISTRIBUTION.md)。
 
 Persistent Watchlists 已支援，但僅在本機保存，且只可經由明確 preview/commit 變更。系統不提供自動輪詢、排程器、啟動時市場取得、Watchlist 驅動的自動執行、交易或即時性保證。
+
+## Repository Governance
+
+目前 repo 的四個治理入口為：
+
+- [PROJECT.md](PROJECT.md)：現行專案／產品狀態
+- [ROADMAP.md](ROADMAP.md)：Canonical Roadmap V3.2
+- [HANDOFF.md](HANDOFF.md)：目前操作交接點
+- [AGENTS.md](AGENTS.md)：AI／Agent 工作規則
 
 ## 現行產品與歷史資料
 

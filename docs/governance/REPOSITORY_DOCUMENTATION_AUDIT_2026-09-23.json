@@ -1,0 +1,199 @@
+{
+  "schema_version": "repository_documentation_governance_audit.v1",
+  "date": "2026-09-23",
+  "baseline_main": "f70c5d8dcd580bbd6c9c66d15dbf76d56ca84c96",
+  "scope": "repository-wide documentation/governance consolidation; no Phase I implementation",
+  "inventory": {
+    "total_blobs": 2165,
+    "document_like_files": 1429,
+    "docs_document_like_files": 744,
+    "largest_document_areas": {
+      "docs/reviews": 255,
+      "docs/protocol": 153,
+      "docs/contracts": 43,
+      "docs/data_capabilities": 38,
+      "docs/governance": 31,
+      "docs/authorization": 28,
+      "docs/acceptance_runs": 27,
+      "docs/acceptance": 18,
+      "docs/release": 17,
+      "docs/operator": 16,
+      "docs/architecture": 14,
+      "docs/quality": 12,
+      "docs/archive": 10
+    }
+  },
+  "lifecycle_classes": {
+    "CURRENT": "describes current product/runtime/navigation and must track current authority",
+    "FROZEN_CONTRACT": "accepted protected contract/gate authority; do not rewrite after later promotion",
+    "HISTORICAL_EVIDENCE": "accurate earlier milestone state; old current-state prose is not a defect when clearly historical",
+    "ARCHIVE": "superseded planning/navigation material retained for history"
+  },
+  "root_governance": {
+    "PROJECT.md": "current project/product truth",
+    "ROADMAP.md": "canonical durable Roadmap V3.2",
+    "HANDOFF.md": "current operational stopping point and evidence pointers",
+    "AGENTS.md": "repository/AI collaboration contract"
+  },
+  "principal_findings": [
+    {
+      "id": "DOC-001",
+      "severity": "HIGH",
+      "finding": "Roadmap V3.2 existed in project materials but not in the GitHub repository; old Post-M8C roadmap remained the apparent roadmap authority.",
+      "disposition": "CLOSED",
+      "action": "Created root ROADMAP.md from the complete Roadmap V3.2 source and made docs/roadmap/README.md point to it."
+    },
+    {
+      "id": "DOC-002",
+      "severity": "HIGH",
+      "finding": "Root AGENTS.md described a high-freedom source-discovery project rather than the governed Unified product.",
+      "disposition": "CLOSED",
+      "action": "Replaced AGENTS.md with current governance/authority/execution rules."
+    },
+    {
+      "id": "DOC-003",
+      "severity": "HIGH",
+      "finding": "Root README and Chinese README still described Request/Result/Audit V2 as current preferred authority after H-ACT-V3.",
+      "disposition": "CLOSED",
+      "action": "Realigned both front-door READMEs to V3 preferred with V1/V2 compatibility."
+    },
+    {
+      "id": "DOC-004",
+      "severity": "HIGH",
+      "finding": "Current operator/reference/architecture entry points still described the M5/M6 M5F/M5K/M5N product model.",
+      "disposition": "CLOSED_FOR_CURRENT_NAVIGATION",
+      "action": "Rebuilt the directly navigated current Quick Start, Workbench, Mode A/B/C, troubleshooting, MCP, API, capability, source, output, governance, architecture and data-flow pages. Older milestone-specific pages remain historical."
+    },
+    {
+      "id": "DOC-005",
+      "severity": "HIGH",
+      "finding": "Capability Catalog V3 retained stale capability-level wording that V2 was preferred and corporate-action V3 was only a candidate.",
+      "disposition": "CLOSED",
+      "action": "Corrected current Catalog metadata without changing route activation/executor truth, then regenerated portable catalog/guide."
+    },
+    {
+      "id": "DOC-006",
+      "severity": "MEDIUM",
+      "finding": "docs/INDEX.md mixed current product navigation with a large engineering-history list, encouraging agents to reconstruct current state from historical material.",
+      "disposition": "CLOSED",
+      "action": "Rebuilt index around root governance and current product docs; historical-heavy directories are explicitly classified."
+    },
+    {
+      "id": "DOC-007",
+      "severity": "MEDIUM",
+      "finding": "Several Post-M8C/M4 roadmap and remediation documents were obsolete as current planning surfaces.",
+      "disposition": "CLOSED",
+      "action": "Moved safe-to-relocate planning files to docs/archive/roadmap/."
+    },
+    {
+      "id": "DOC-008",
+      "severity": "MEDIUM",
+      "finding": "Two old roadmap/migration files cannot be safely relocated because tests or accepted historical evidence reference exact paths.",
+      "disposition": "RETAINED_AS_COMPATIBILITY_HISTORICAL",
+      "action": "Kept exact paths but removed them from current navigation and classified them explicitly in docs/roadmap/README.md."
+    },
+    {
+      "id": "DOC-009",
+      "severity": "LOW",
+      "finding": "V1_RELEASE.md contained 'Phase G has not started', which is stale as current state but correct release-time provenance.",
+      "disposition": "CLOSED_BY_LIFECYCLE_LABEL",
+      "action": "Reframed the page as a historical immutable v1.0.0 release snapshot rather than rewriting release-time facts."
+    }
+  ],
+  "archived_moves": [
+    [
+      "docs/roadmap/M8_POST_M8C_REPOSITORY_STATE_INVENTORY.md",
+      "docs/archive/roadmap/M8_POST_M8C_REPOSITORY_STATE_INVENTORY.md"
+    ],
+    [
+      "docs/roadmap/M8_POST_M8C_ROADMAP_CONFLICT_MATRIX.md",
+      "docs/archive/roadmap/M8_POST_M8C_ROADMAP_CONFLICT_MATRIX.md"
+    ],
+    [
+      "docs/roadmap/M8_REMEDIATION_AND_CLEANUP_PLAN.md",
+      "docs/archive/roadmap/M8_REMEDIATION_AND_CLEANUP_PLAN.md"
+    ],
+    [
+      "docs/roadmap/NEXT_BUNDLE_ROADMAP_AFTER_M4_OMEGA.md",
+      "docs/archive/roadmap/NEXT_BUNDLE_ROADMAP_AFTER_M4_OMEGA.md"
+    ]
+  ],
+  "compatibility_preserved_historical_paths": [
+    {
+      "path": "docs/roadmap/M8_POST_M8C_REVISED_ROADMAP.md",
+      "reason": "unit test and accepted historical closure artifacts reference the exact path; current navigation now classifies it as historical"
+    },
+    {
+      "path": "docs/roadmap/M8R_05A_F1_AI_GUIDE_SKILL_AND_CONTRACT_REALIGNMENT_MIGRATION_PLAN.md",
+      "reason": "unit test reads the exact path; retained as historical migration evidence"
+    }
+  ],
+  "historical_areas_policy": {
+    "preserve_original_content": [
+      "docs/reviews/",
+      "docs/protocol/",
+      "docs/acceptance/",
+      "docs/acceptance_runs/",
+      "accepted freeze manifests and ledgers under docs/governance/"
+    ],
+    "rationale": "These areas contain time-specific acceptance and audit evidence. Later current-state changes do not invalidate historically accurate statements."
+  },
+  "current_front_door_realigned": [
+    "README.md",
+    "README.zh-TW.md",
+    "PROJECT.md",
+    "ROADMAP.md",
+    "HANDOFF.md",
+    "AGENTS.md",
+    "docs/INDEX.md",
+    "docs/governance/INDEX.md",
+    "docs/roadmap/README.md",
+    "docs/operator/README.md",
+    "docs/operator/QUICK_START.md",
+    "docs/operator/LOCAL_WORKBENCH.md",
+    "docs/operator/MODE_ABC_WALKTHROUGH.md",
+    "docs/operator/TROUBLESHOOTING.md",
+    "docs/reference/README.md",
+    "docs/reference/API_REFERENCE.md",
+    "docs/reference/MCP_REFERENCE.md",
+    "docs/reference/CAPABILITY_MATRIX.md",
+    "docs/reference/SOURCE_MATRIX.md",
+    "docs/reference/OUTPUT_ARTIFACTS.md",
+    "docs/reference/GOVERNANCE_BOUNDARIES.md",
+    "docs/architecture/README.md",
+    "docs/architecture/PRODUCT_ARCHITECTURE.md",
+    "docs/architecture/DATA_FLOW.md",
+    "docs/architecture/SOURCE_AND_CAPABILITY_MODEL.md",
+    "docs/architecture/MODE_ABC_LEVEL12.md",
+    "docs/PROJECT_HISTORY.md",
+    "docs/release/V1_RELEASE.md"
+  ],
+  "current_runtime_reconciliation": {
+    "accepted_requests": [
+      "V1",
+      "V2",
+      "V3"
+    ],
+    "preferred_request": "V3",
+    "preferred_new_result": "V3",
+    "preferred_new_audit": "V3",
+    "mcp_tool_count": 6,
+    "phase_h_active_source_count": 1,
+    "phase_h_active_source": "H1-TPEX-ATTENTION-OPENAPI",
+    "h1_complete": false,
+    "h2_started": false,
+    "h3_started": false
+  },
+  "roadmap_reconciliation": {
+    "phase_g": "accepted G1/G2 implementation exists, but whole Roadmap V3.2 Phase G is not declared complete",
+    "phase_h": "H-ACT-V3 and one H1 route are accepted, but whole Roadmap V3.2 Phase H is not declared complete",
+    "phase_i": "NOT_STARTED_AND_NOT_AUTHORIZED"
+  },
+  "prohibited_cleanup_patterns": [
+    "global replacement of V2-preferred historical statements",
+    "rewriting accepted acceptance ledgers to current V3 wording",
+    "deleting reviews/protocols merely because they are old",
+    "moving files whose exact paths are protected by tests/accepted evidence without a compatibility plan"
+  ],
+  "next_gate": "documentation/governance validation and merge closure; Phase I remains out of scope"
+}

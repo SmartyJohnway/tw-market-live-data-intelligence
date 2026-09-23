@@ -12,9 +12,12 @@ ProductVersion = `1.0.0`. The current stable release is `v1.0.0`
 ([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0)).
 The published prerelease history is `v1.0.0-rc.1`
 ([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)),
-and the earlier stable GitHub Release was `v0.1.0`. Phase G G1/G2 runtime
-capabilities have passed bounded controlled-live acceptance on the current branch.
-This is a local-first evidence workbench, not a realtime trading product.
+and the earlier stable GitHub Release was `v0.1.0`. The current development
+line now uses Unified Request/Result/Audit V3 as the preferred authority while
+retaining V1/V2 compatibility. Phase G G1/G2 runtime capabilities have passed
+bounded controlled-live acceptance; Phase H has one active TPEx attention route; broader
+Roadmap Phase G/H scope remains explicitly incomplete. This is a local-first
+evidence workbench, not a realtime trading product.
 
 ## Why TW-Market
 
@@ -83,8 +86,9 @@ The MCP surface has exactly six governed tools:
 `market_preview_request`, `market_read_result`,
 `market_export_ai_handoff`, and `market_fetch_evidence`.
 
-Request v2 is preferred, Request v1 remains accepted, and new executions emit
-Result v2 and Audit Package v2. Historical V1 packages remain readable. See the
+Request v3 is preferred; Request v1 and v2 remain accepted compatibility
+contracts. New governed materializations default to Result v3 and Audit Package
+v3, while historical V1/V2/V3 packages remain readable without rewriting. See the
 [V1 historical public contracts](docs/contracts/V1_PUBLIC_CONTRACTS.md) and
 [current AI usage guide](docs/agent_usage_guide.md) for request, result, and
 handoff semantics.
@@ -123,6 +127,15 @@ market payloads.
 
 ## Documentation
 
+Repository governance front door:
+
+- [PROJECT.md](PROJECT.md) — current project/product authority
+- [ROADMAP.md](ROADMAP.md) — canonical Roadmap V3.2
+- [HANDOFF.md](HANDOFF.md) — current operational handoff
+- [AGENTS.md](AGENTS.md) — AI/repository collaboration rules
+
+Product documentation:
+
 - [Operator quick start](docs/operator/QUICK_START.md)
 - [Local Workbench guide](docs/operator/LOCAL_WORKBENCH.md)
 - [Troubleshooting](docs/operator/TROUBLESHOOTING.md)
@@ -139,9 +152,11 @@ security concerns using the grounded guidance in [SECURITY.md](SECURITY.md).
 
 `VERSION` records `1.0.0`. The current stable release is `v1.0.0`
 ([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0));
-published prerelease history remains `v1.0.0-rc.1`. Phase G G1/G2 implementation
-is present on the current development line; this does not retag the immutable
-`v1.0.0` release. Both release tags are immutable authorities; subsequent
+published prerelease history remains `v1.0.0-rc.1`. The current development
+line has progressed through accepted Phase G G1/G2 runtime work and H-ACT-V3
+preferred-authority promotion; this does not retag or rewrite the immutable
+`v1.0.0` release. Roadmap Phase G/H completion remains a broader scope question
+tracked separately in [ROADMAP.md](ROADMAP.md). Both release tags are immutable authorities; subsequent
 documentation status updates do not move them.
 
 ## Project Overview

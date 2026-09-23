@@ -1,23 +1,60 @@
-# MCP Reference
+# Unified MCP Reference
 
-Startup check:
+## Start
 
-```bash
-python server/mcp_server.py --startup-check
-```
-
-Run for an MCP client:
+From a source checkout:
 
 ```bash
-python server/mcp_server.py
+python scripts/run_unified_market_evidence_mcp.py
 ```
 
-## Current tools
+Transport is local stdio. Starting MCP does not fetch market data.
 
-Readonly canonical/context tools include `get_canonical_market_context`, `get_source_health`, `get_capability_matrix`, `get_source_catalog`, `get_latest_market_snapshot`, `get_watchlist_observations`, `get_ai_context_pack`, and `get_chatgpt_briefing` plus backward-compatible `read_*` aliases.
+## Current tool surface
 
-Watchlist/source tools include `get_watchlist`, `get_watchlist_summary`, `validate_watchlist`, `get_conversation_context`, `create_m5k_conversation_handoff`, `plan_m5k_bounded_live_observation`, `read_m5k_latest_live_observation`, `get_m5l_source_adapter_matrix`, `get_m5l_source_capabilities`, `get_source_health_latest`, and `get_source_health_schema`.
+Exactly six governed tools are exposed:
 
-`run_m5k_bounded_live_observation` is explicit/manual only and requires `confirm_live_observation=true`; it never promotes to M5F.
+1. `market_describe_capabilities`
+2. `market_validate_request`
+3. `market_preview_request`
+4. `market_read_result`
+5. `market_export_ai_handoff`
+6. `market_fetch_evidence`
 
-Legacy controlled probe tools are fail-closed or compatibility surfaces and must not be treated as normal product operation.
+Do not treat earlier M5/M6 MCP tool lists as the current product surface.
+
+## Current request authority
+
+Accepted:
+
+- `unified_market_evidence_request.v1`
+- `unified_market_evidence_request.v2`
+- `unified_market_evidence_request.v3`
+
+Preferred: `unified_market_evidence_request.v3`.
+
+`market_fetch_evidence` accepts V3, but route execution still depends on
+current Catalog/Route/Executor truth and the normal authorization/execute-once
+boundary.
+
+## Semantics
+
+- describe/validate/preview are not market execution;
+- preview is not authorization;
+- fetch is a bounded action, not a polling primitive;
+- read/export operate on governed materialized artifacts and do not imply
+  another source call;
+- V1/V2 remain compatibility contracts;
+- historical persisted artifacts retain their stored version.
+
+## Current Phase H boundary
+
+V3 being preferred does not make all Phase H routes executable. The current
+active H1 product slice is TPEx attention only. H2/H3 remain non-executable
+where routing authority says blocked/plan-only/inactive.
+
+## Safety
+
+No seventh tool, scheduler, trading, order routing, broker credentials, startup
+market fetch, background polling, or realtime guarantee is part of the current
+MCP contract.

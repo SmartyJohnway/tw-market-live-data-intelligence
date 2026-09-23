@@ -1,16 +1,24 @@
 # Project History
 
-| Milestone | One-line purpose | Outcome | Current relevance |
-|---|---|---|---|
-| Early M5 source governance | Establish safe source evaluation and local-first evidence rules | Source taxonomy, authorization, and caveat discipline matured | Explains why explicit/manual evidence matters |
-| M5F Canonical Package | Create reviewed canonical market context package | Level 1 canonical package under `research/staging/m5f/` | Baseline for Mode A and AI context |
-| M5I/J Explicit Refresh + Local Product Release | Validate explicit bounded refresh and local release checks | Check-only acceptance and local release framing | Release validation gate |
-| M5K Live Observation | Add manual bounded observation layer | Level 2 observation artifacts and route planning | Mode B temporary context |
-| M5L Live Source Adapter Matrix | Document source adapter capability and risks | Adapter matrix and capabilities | Source/capability references |
-| M5LRM Architecture / Contract Convergence | Align architecture and contracts | Consolidated Mode/Level model | Foundation for M5R docs |
-| M5N AI Watchlist + Conversation Context | Create watchlist workspace and AI handoff | M5N Conversation Package | Mode C handoff |
-| M5OP Operator Workflow | Define operator flow | Operator workflow docs and UI expectations | Daily local operation guide |
-| M5Q Source Health Regression Probe | Add bounded source-health regression | Health statuses and source diagnostics | Mode B source usability |
-| M5NR Conversation Context Repair | Repair context consistency | Single repaired conversation context model | Safer AI handoff |
-| M5XR Final Mode ABC Level 1/2 Release Acceptance | Final acceptance review | Status: Local Release Candidate | Live release evidence |
-| M5R Product Release Hardening | Make repo understandable and maintainable | Final README and documentation IA | Closing M5 PR |
+This is a high-level chronology, not current runtime authority.
+
+| Era / milestone | Purpose | Outcome / current relevance |
+|---|---|---|
+| Early M5 source governance | Establish safe source evaluation and local-first evidence rules | Source taxonomy, bounded/manual acquisition and caveat discipline |
+| M5F/M5K/M5N/M5Q | Separate reviewed baseline, bounded observation, AI handoff and source health | Historical architecture that informed later Mode A/B/C |
+| M6 operator / compatibility work | Strengthen local UX, testing, browser acceptance and Windows compatibility | Historical product-hardening evidence |
+| M7/M8 evidence governance | Formalize timing, source contracts, normalized evidence and AI-safe context | Foundation for Unified contracts |
+| M8R-05A/05B/05C | Establish Unified Request, capability/routing authority and Result/Audit family | Direct ancestor of current Unified contract |
+| M8R-06 | Mode A/B/C Unified Workbench and execute-once operator flow | Current execution model |
+| M8R-07/08 | Local Service and exact six-tool MCP closed loop | Current Local Service/MCP model |
+| M8R-08G | Portability and Taiwan Market Identity Service realignment | Installation-local Security Master, ISIN durable identity, fresh-install `NOT_INITIALIZED` |
+| Phase F / M8R-09/10 | Persistent Watchlists and Workbench productization | Durable local user state and primary Workbench |
+| V1 Release Gate | Publish stable product | Immutable `v1.0.0` release |
+| Phase G PR-D | Initial official research evidence runtime | Material disclosures + monthly revenue accepted for eligible TWSE/TPEX company common shares |
+| Phase H H0-H / H-ACT-H1 | Interpretation contracts and incremental source activation | V3 contracts plus one active TPEx attention route; broader H1/H2/H3 incomplete |
+| H-ACC-7L | Selected-product bounded-live product E2E | Full governed V3 product chain demonstrated on active route |
+| H-ACT-V3 | Preferred-authority promotion | V3 preferred; V1/V2 compatible; actual V3->V2 rollback proven |
+| 2026-09-23 governance consolidation | Re-establish one current documentation front door | Root `PROJECT/ROADMAP/HANDOFF/AGENTS` authority; no Phase I implementation |
+
+For detailed historical evidence use `docs/reviews/`, `docs/protocol/`,
+`docs/acceptance_runs/`, and `docs/archive/`.

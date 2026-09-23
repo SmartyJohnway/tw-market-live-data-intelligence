@@ -1,6 +1,6 @@
 # Architecture Overview
 
-This repository is a local-first Taiwan market context workbench with two intentionally separated layers.
+> **Historical architecture snapshot.** This document describes the earlier Level-1/Level-2 M5 architecture. Current architecture authority is [PRODUCT_ARCHITECTURE.md](PRODUCT_ARCHITECTURE.md).\n\nThis repository is a local-first Taiwan market context workbench with two intentionally separated layers.
 
 ## Layer separation
 
