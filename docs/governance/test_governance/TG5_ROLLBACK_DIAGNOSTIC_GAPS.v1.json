@@ -15,5 +15,14 @@
       "reason": "TG-3 frozen historical final-acceptance file records the then-current default-CI topology and must not be rewritten for TG-5."
     }
   ],
-  "unexpected_failure_count_must_be_zero": true
+  "unexpected_failure_count_must_be_zero": true,
+  "applies_to_current_tree_profiles": [
+    "pre-tg5-default-ci",
+    "tg2-historical-acceptance-shadow"
+  ],
+  "authoritative_proof": {
+    "baseline_commit": "2ff9707d901f40c1a108dd1317fce2f03cc79735",
+    "default_profile_expected_status": "pass",
+    "historical_profile_expected_status": "pass"
+  }
 }
