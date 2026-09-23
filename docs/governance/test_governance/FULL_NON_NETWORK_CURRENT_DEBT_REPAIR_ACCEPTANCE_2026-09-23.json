@@ -1,0 +1,86 @@
+{
+  "schema_version": "full_non_network_current_debt_repair_acceptance.v1",
+  "date": "2026-09-23",
+  "status": "FULL_NON_NETWORK_CURRENT_DEBT_REPAIR_PASS",
+  "authorization": {
+    "authorized_scope": [
+      "FNN-01",
+      "FNN-04",
+      "FNN-05",
+      "FNN-06",
+      "FNN-07"
+    ],
+    "explicitly_excluded": [
+      "FNN-02",
+      "FNN-03",
+      "TG6-C",
+      "TG6-D",
+      "TG6-E",
+      "TG6-F",
+      "TG6-G",
+      "Roadmap Phase I"
+    ]
+  },
+  "implementation": {
+    "pr": 256,
+    "tested_head": "aa741c902510645484df3eb07ed45c2f0307d861",
+    "branch": "repair/full-non-network-current-debt"
+  },
+  "acceptance_runs": {
+    "default_ci": {
+      "run_id": 35861003669,
+      "conclusion": "success",
+      "selected": 778,
+      "passed": 774,
+      "skipped": 4,
+      "status": "pass"
+    },
+    "full_non_network": {
+      "run_id": 35861036553,
+      "conclusion": "failure",
+      "selected": 2737,
+      "passed": 2722,
+      "failed": 2,
+      "skipped": 13,
+      "status": "fail",
+      "remaining_failures": [
+        "tests/unit/test_m7f_rich_fact_browser_final_acceptance.py::test_default_ci_includes_final_acceptance_tests",
+        "tests/unit/test_m8_00_final_acceptance.py::test_default_ci_includes_m8_final_acceptance_test"
+      ],
+      "remaining_failures_classification": "FROZEN_HISTORICAL_ASSERTIONS",
+      "new_unexplained_failures": 0,
+      "acceptance_interpretation": "PASS_WITH_ONLY_GOVERNED_HISTORICAL_GAPS"
+    },
+    "windows_compatibility_smoke": {
+      "run_id": 35861071628,
+      "conclusion": "success",
+      "all_required_steps_passed": true
+    }
+  },
+  "repaired": {
+    "FNN-01": "PASS — V3 failed binding no longer counts as provided artifact-free evidence",
+    "FNN-04": "PASS — MCP Request schema test aligned to V1/V2/V3 with V3 preferred",
+    "FNN-05": "PASS — malformed-schema fixture aligned to preferred V3 identity",
+    "FNN-06": "PASS — Local Operator test now preserves server-owned preferred Result authority",
+    "FNN-07": "PASS — documentation history boundary heading aligned"
+  },
+  "preserved": {
+    "FNN-02": "unchanged frozen historical assertion",
+    "FNN-03": "unchanged frozen historical assertion",
+    "default_ci_authority": "93 paths / 778 selected nodes",
+    "test_deletion": false,
+    "test_profile_change": false,
+    "workflow_change": false,
+    "marker_migration": false,
+    "source_activation_change": false,
+    "routing_change": false,
+    "frozen_schema_change": false,
+    "tg6_c_started": false,
+    "phase_i_started": false
+  },
+  "merge_gate": {
+    "accepted": true,
+    "reason": "Default CI and Windows smoke passed; Full Non-Network reduced from seven failures to exactly the two governed frozen historical assertions with zero new unexplained failures."
+  },
+  "evidence_note": "The acceptance ledger is an additive evidence-only commit after the tested implementation head."
+}
