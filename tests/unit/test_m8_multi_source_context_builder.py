@@ -153,9 +153,9 @@ def test_inventory_m8_00_05_metadata():
     assert entry["next_task"] == "M8A-00-OFFICIAL-EOD-ADAPTER-SCOPE-AND-CONTRACT-PREFLIGHT"
 
 
-def test_default_ci_includes_builder_test():
-    config = json.loads((ROOT / "config/test_execution_profiles.json").read_text())
-    assert "tests/unit/test_m8_multi_source_context_builder.py" in config["profiles"]["default-ci"]["pytest_paths"]
+def test_broad_current_profile_includes_builder_test():
+    from scripts.test_governance_authority import profile_paths_for_role
+    assert "tests/unit/test_m8_multi_source_context_builder.py" in profile_paths_for_role("broad_current")
 
 
 def test_stale_liveish_source_family_flag_is_preserved():
