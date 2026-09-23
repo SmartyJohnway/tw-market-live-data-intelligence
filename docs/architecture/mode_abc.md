@@ -1,6 +1,6 @@
 # Mode A / Mode B / Mode C
 
-## Mode A — Canonical readonly context
+> **Historical Mode A/B/C snapshot.** Current Mode A/B/C semantics are documented in [MODE_ABC_LEVEL12.md](MODE_ABC_LEVEL12.md).\n\n## Mode A — Canonical readonly context
 
 Reads the M5F package from disk and exposes it through local surfaces. No network calls and no writes.
 
