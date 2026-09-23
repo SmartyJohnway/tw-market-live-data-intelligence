@@ -55,7 +55,7 @@ second current-product authority.
 - [V1.0.0 stable release snapshot](release/V1_RELEASE.md)
 - [MCP distribution](distribution/MCP_DISTRIBUTION.md)
 
-## Historical engineering material
+## Engineering history / protocol archive
 
 The following directories are evidence/history-heavy. Statements such as
 "next task", "V2 preferred", "Phase G not started", or an older release status

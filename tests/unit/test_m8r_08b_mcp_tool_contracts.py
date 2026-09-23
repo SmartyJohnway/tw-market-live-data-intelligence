@@ -99,10 +99,11 @@ def test_request_schemas_embed_committed_authority_without_placeholder():
     assert validate["required"] == ["request"]
     assert validate["additionalProperties"] is False
     request_contract = validate["properties"]["request"]
-    assert request_contract["oneOf"][1] == canonical
+    assert request_contract["oneOf"][-1] == canonical
     assert [item["properties"]["schema_version"]["const"] for item in request_contract["oneOf"]] == [
         "unified_market_evidence_request.v1",
         "unified_market_evidence_request.v2",
+        "unified_market_evidence_request.v3",
     ]
     for name in ("market_read_result", "market_export_ai_handoff"):
         schema = tools[name].inputSchema
@@ -161,7 +162,7 @@ def test_malformed_control_identifier_is_rejected_before_client_dispatch():
         (None, "canonical_request_schema_unavailable"),
         ("{not json", "canonical_request_schema_malformed"),
         (json.dumps({"$schema": "http://json-schema.org/draft-07/schema#", "$id": "wrong", "type": "object"}), "canonical_request_schema_identity_mismatch"),
-        (json.dumps({"$schema": "http://json-schema.org/draft-07/schema#", "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v2", "type": 7, "properties": {"schema_version": {"const": "synthetic-request"}}}), "canonical_request_schema_malformed"),
+        (json.dumps({"$schema": "http://json-schema.org/draft-07/schema#", "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v3", "type": 7, "properties": {"schema_version": {"const": "synthetic-request"}}}), "canonical_request_schema_malformed"),
     ),
 )
 def test_startup_snapshot_fails_closed_for_unusable_canonical_authority(monkeypatch, contents, error):
