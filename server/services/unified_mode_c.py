@@ -213,7 +213,7 @@ def build_mode_c_result_package(
 ) -> dict[str, Any]:
     if not isinstance(payload, dict) or set(payload) != {"control_package_id"}:
         raise ModeCError("invalid_api_envelope")
-    if output_schema_version in {"v1", "v2", "v3"}:
+    if output_schema_version in {"v1", "v2"}:
         output_schema_version = f"unified_market_evidence_result.{output_schema_version}"
     if output_schema_version not in _OUTPUT_PATHS:
         raise ModeCError("unsupported_output_schema_version")
