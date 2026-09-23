@@ -2,10 +2,10 @@
   "schema_version": "unified_market_evidence_capability_catalog.v3",
   "portable_metadata": {
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-    "canonical_sha256": "e1d0ac61a7d9eea77dca3e32189e6df53d2d7071fd53f6b39b8a0120f1653463",
+    "canonical_sha256": "e70d71d0d17b9e01732da16065da83b2c7f6479763edbbebb2b67828ff6f2d14",
     "generator_version": "PHASE-H-ACT-V3-v1",
-    "generated_from_commit": "18f40f5cc304b6c3fc0b19163905edeeed1d21f2",
-    "canonical_git_blob_sha": "87f0c6005aa092d494aa03df9c144e9b9695530c"
+    "generated_from_commit": "54e7f407472f70ea097688467b8dde350516ceb7",
+    "canonical_git_blob_sha": "e3e72d6880d309fe6c8be66e1fbb90ef3acada96"
   },
   "contract_versions": {
     "accepted_request_schema_versions": [
@@ -289,7 +289,7 @@
       "known_limitations": [
         "only H1-TPEX-ATTENTION-OPENAPI is active; all other H1 status subtypes/routes remain inactive or uncovered",
         "H0-SRC-02 prevents complete H1 coverage claims",
-        "V2 remains the preferred production request/result authority"
+        "V3 is the preferred production request/result authority; V1/V2 remain compatibility contracts"
       ],
       "instrument_scope": {
         "instrument_families": [
@@ -323,7 +323,7 @@
       ],
       "possible_fallbacks": [],
       "known_limitations": [
-        "V3 contract candidate only; no H0-G runtime activation",
+        "V3 contract is current, but no H2 corporate-action route has been activated",
         "coverage and provider asymmetry remain explicit"
       ],
       "instrument_scope": {
