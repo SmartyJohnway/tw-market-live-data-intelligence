@@ -69,10 +69,21 @@ def analyze() -> dict:
     layered_extra_vs_legacy = sorted(layered_union - legacy)
     current_missing_vs_legacy = sorted(legacy - current)
 
+    legacy_current = legacy & current
+    legacy_broad_only = legacy & (full_current - current)
+    legacy_historical = legacy & historical
+    legacy_release = legacy & release
+    explained_legacy = legacy_current | legacy_broad_only | legacy_historical | legacy_release
+    legacy_unexplained = sorted(legacy - explained_legacy)
+
     assert not legacy_missing_from_layered
+    assert not legacy_unexplained
     assert current <= full_current
     assert not (mixed_hist & current)
     assert not (mixed_hist & full_current)
+    assert not (legacy_historical & full_current)
+    assert not (legacy_release & full_current)
+    assert not (legacy_historical & legacy_release)
 
     return {
         "schema_version": "tg4_test_node_shadow_analysis.v1",
@@ -89,6 +100,14 @@ def analyze() -> dict:
         "layered_extra_vs_legacy": layered_extra_vs_legacy,
         "current_missing_vs_legacy_count": len(current_missing_vs_legacy),
         "current_missing_vs_legacy": current_missing_vs_legacy,
+        "legacy_layer_counts": {
+            "current_every_pr": len(legacy_current),
+            "broad_current_nondefault": len(legacy_broad_only),
+            "historical_acceptance": len(legacy_historical),
+            "release_preflight": len(legacy_release),
+            "unexplained": len(legacy_unexplained),
+        },
+        "legacy_unexplained": legacy_unexplained,
         "tg5_authorized": False,
     }
 
