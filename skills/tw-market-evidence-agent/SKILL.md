@@ -13,17 +13,20 @@ The callable interface is the six-tool Unified MCP surface:
 and `market_fetch_evidence`.
 
 Mode A/B/C describe product workflow concepts; they are not alternate MCP
-tools. `schemas/unified_market_evidence_request.v2.schema.json` is the preferred
-current request contract; Request v1 remains accepted for compatibility. New
-executions emit Result v2 and Audit Package v2, while historical V1 packages
-remain readable without rewriting.
+tools. `schemas/unified_market_evidence_request.v3.schema.json` is the preferred
+current request contract; Request v1 and v2 remain accepted compatibility
+contracts. New governed materializations default to Result v3 and Audit Package
+v3, while historical V1/V2/V3 packages remain readable without rewriting. V3
+promotion does not activate every Phase H route: only explicitly activated
+routes execute, and current H1 trading-status coverage remains partial.
 
 ## When to use
 
 Use for current Taiwan-market observations, official EOD evidence, currentness,
 session state, execution-relevant identity resolution, source-grounded
-calculations, latest bounded official material disclosures, or latest available
-official monthly revenue. Do not use for finance theory, non-Taiwan markets, translation,
+calculations, latest bounded official material disclosures, latest available official
+monthly revenue, or governed trading-status context on explicitly active Phase
+H routes. Do not use for finance theory, non-Taiwan markets, translation,
 or when already-provided governed evidence is sufficient and no refresh is
 needed.
 
@@ -99,6 +102,13 @@ required clarification.
 - `monthly_revenue` covers only the latest available reporting period in TWD,
   unit thousand. `not_yet_available` means no exact target row was present in a
   healthy covered snapshot; it is not zero revenue.
+- `trading_status_context` is V3-native but currently only the explicitly
+  activated TPEx attention route executes; disposition, suspension, resumption,
+  and changed-trading coverage remain uncovered until their separate route gates
+  pass. Do not convert partial H1 coverage into a complete market-status claim.
+- `corporate_action_context` and `recent_performance` remain non-executable
+  where current Catalog/Route authority says plan-only or blocked; V3 preferred
+  does not override those states.
 - Both research capabilities are limited to eligible TWSE/TPEX
   `company_share`/`common_share` targets. There is no arbitrary history,
   realtime research guarantee, or executable `financial_summary` capability.
