@@ -13,11 +13,10 @@ CONFIG = ROOT / "config/test_execution_profiles.json"
 PROFILE_NAMES = (
     "pre-tg5-default-ci",
     "default-ci",
-    "tg2-default-ci-current-shadow",
-    "tg2-full-current-non-network-shadow",
-    "tg2-historical-acceptance-shadow",
-    "tg2-release-preflight-shadow",
-    "tg4-mixed-historical-shadow",
+    "full-current",
+    "historical-milestone-replay",
+    "release-preflight-current",
+    "mixed-historical-diagnostic",
 )
 
 
@@ -60,11 +59,10 @@ def analyze() -> dict:
 
     legacy = sets["pre-tg5-default-ci"]
     current = sets["default-ci"]
-    current_shadow = sets["tg2-default-ci-current-shadow"]
-    full_current = sets["tg2-full-current-non-network-shadow"]
-    historical = sets["tg2-historical-acceptance-shadow"]
-    release = sets["tg2-release-preflight-shadow"]
-    mixed_hist = sets["tg4-mixed-historical-shadow"]
+    full_current = sets["full-current"]
+    historical = sets["historical-milestone-replay"]
+    release = sets["release-preflight-current"]
+    mixed_hist = sets["mixed-historical-diagnostic"]
 
     layered_union = full_current | historical | release | mixed_hist
     legacy_missing_from_layered = sorted(legacy - layered_union)
@@ -80,7 +78,6 @@ def analyze() -> dict:
 
     assert not legacy_missing_from_layered
     assert not legacy_unexplained
-    assert current == current_shadow
     assert current <= full_current
     assert not (mixed_hist & current)
     assert not (mixed_hist & full_current)
@@ -92,12 +89,11 @@ def analyze() -> dict:
         "schema_version": "tg4_test_node_shadow_analysis.v1",
         "profiles": {name: {"node_count": len(items)} for name, items in nodes.items()},
         "legacy_node_count": len(legacy),
-        "current_shadow_node_count": len(current),
-        "promoted_default_matches_tg2_shadow": current == current_shadow,
-        "full_current_shadow_node_count": len(full_current),
-        "historical_shadow_node_count": len(historical),
-        "release_shadow_node_count": len(release),
-        "mixed_historical_node_count": len(mixed_hist),
+        "current_default_node_count": len(current),
+        "full_current_node_count": len(full_current),
+        "historical_milestone_replay_node_count": len(historical),
+        "release_preflight_current_node_count": len(release),
+        "mixed_historical_diagnostic_node_count": len(mixed_hist),
         "legacy_missing_from_layered_count": len(legacy_missing_from_layered),
         "legacy_missing_from_layered": legacy_missing_from_layered,
         "layered_extra_vs_legacy_count": len(layered_extra_vs_legacy),
