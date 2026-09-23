@@ -1,6 +1,6 @@
 # Operator Guide
 
-## Fresh clone trial path
+> **Historical / superseded operator guide.** This document preserves the M5/M6 operator model. For current operation use [Quick Start](QUICK_START.md) and [Local Unified Workbench](LOCAL_WORKBENCH.md).\n\n## Fresh clone trial path
 
 1. Clone the repository and install normal dependencies:
    ```bash
