@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "config/test_execution_profiles.json"
 
 PROFILE_NAMES = (
+    "pre-tg5-default-ci",
     "default-ci",
     "tg2-default-ci-current-shadow",
     "tg2-full-current-non-network-shadow",
@@ -57,8 +58,9 @@ def analyze() -> dict:
     nodes = {name: collect_nodes(name) for name in PROFILE_NAMES}
     sets = {name: set(items) for name, items in nodes.items()}
 
-    legacy = sets["default-ci"]
-    current = sets["tg2-default-ci-current-shadow"]
+    legacy = sets["pre-tg5-default-ci"]
+    current = sets["default-ci"]
+    current_shadow = sets["tg2-default-ci-current-shadow"]
     full_current = sets["tg2-full-current-non-network-shadow"]
     historical = sets["tg2-historical-acceptance-shadow"]
     release = sets["tg2-release-preflight-shadow"]
@@ -78,6 +80,7 @@ def analyze() -> dict:
 
     assert not legacy_missing_from_layered
     assert not legacy_unexplained
+    assert current == current_shadow
     assert current <= full_current
     assert not (mixed_hist & current)
     assert not (mixed_hist & full_current)
@@ -90,6 +93,7 @@ def analyze() -> dict:
         "profiles": {name: {"node_count": len(items)} for name, items in nodes.items()},
         "legacy_node_count": len(legacy),
         "current_shadow_node_count": len(current),
+        "promoted_default_matches_tg2_shadow": current == current_shadow,
         "full_current_shadow_node_count": len(full_current),
         "historical_shadow_node_count": len(historical),
         "release_shadow_node_count": len(release),
