@@ -1,0 +1,44 @@
+name: Test Governance TG-1 Disposition
+
+on:
+  push:
+    branches:
+      - governance/test-historical-evidence-preflight
+
+permissions:
+  contents: read
+
+jobs:
+  tg1-disposition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-lock.txt
+
+      - name: Install locked dependencies
+        run: python -m pip install -r requirements-lock.txt
+
+      - name: Validate TG-0 and TG-1 governance tests
+        run: |
+          python -m pytest -q             tests/unit/test_audit_test_governance.py             tests/unit/test_test_governance_tg1_ledger.py
+
+      - name: Verify default CI authority remains unchanged
+        run: |
+          git diff --exit-code b42c73057a16ea39d73ed7efd8c96096ee49e131 --             config/test_execution_profiles.json             pytest.ini
+          echo "tg1_default_ci_authority_unchanged: PASS"
+
+      - name: Verify production and Phase H authority remain unchanged
+        run: |
+          git diff --exit-code b42c73057a16ea39d73ed7efd8c96096ee49e131 --             server             schemas             config/phase_h_h1_dormant_source_descriptors.json             docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json             docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json
+          echo "tg1_runtime_authority_containment: PASS"
+
+      - name: Verify patch whitespace
+        run: git diff --check
