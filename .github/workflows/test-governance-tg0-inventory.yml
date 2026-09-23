@@ -1,0 +1,59 @@
+name: Test Governance TG-0 Inventory
+
+on:
+  push:
+    branches:
+      - governance/test-historical-evidence-preflight
+
+permissions:
+  contents: read
+
+jobs:
+  tg0-inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-lock.txt
+
+      - name: Install locked dependencies
+        run: python -m pip install -r requirements-lock.txt
+
+      - name: Compile TG-0 inventory tooling
+        run: python -m compileall -q scripts/audit_test_governance.py tests/unit/test_audit_test_governance.py
+
+      - name: Run focused TG-0 tests
+        run: python -m pytest -q tests/unit/test_audit_test_governance.py
+
+      - name: Generate TG-0 inventory
+        run: |
+          python scripts/audit_test_governance.py --pretty --output /tmp/test-governance-inventory.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path("/tmp/test-governance-inventory.json").read_text(encoding="utf-8"))
+          print(json.dumps({
+              "metrics": payload["metrics"],
+              "suggested_class_counts": payload["suggested_class_counts"],
+              "family_counts": payload["family_counts"],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Verify TG-0 did not change test selection or product runtime
+        run: |
+          git diff --exit-code b42c73057a16ea39d73ed7efd8c96096ee49e131 --             config/test_execution_profiles.json             server             schemas             config/phase_h_h1_dormant_source_descriptors.json             docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json
+          echo "tg0_selection_and_runtime_containment: PASS"
+
+      - name: Upload TG-0 inventory
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-governance-tg0-inventory
+          path: /tmp/test-governance-inventory.json
+          if-no-files-found: error

@@ -1,0 +1,1519 @@
+{
+  "schema_version": "test_governance_tg1_disposition_ledger.v1",
+  "date": "2026-09-23",
+  "baseline_main": "b42c73057a16ea39d73ed7efd8c96096ee49e131",
+  "source_profile": "default-ci",
+  "source_default_ci_file_count": 156,
+  "source_tg0_workflow_run_id": 35818190281,
+  "source_tg0_artifact_id": 10732391431,
+  "proposal_only": true,
+  "profile_change_performed": false,
+  "test_deletion_performed": false,
+  "phase_i_implementation": false,
+  "source_activation_mutation": false,
+  "classification_method": {
+    "tg0_static_inventory": true,
+    "targeted_high_risk_source_review": true,
+    "fail_safe_rule": "insufficient evidence remains in default CI",
+    "automatic_removal_allowed": false
+  },
+  "summary": {
+    "default_ci_files_reviewed": 156,
+    "proposed_disposition_counts": {
+      "KEEP_DEFAULT_COMPATIBILITY": 38,
+      "KEEP_DEFAULT_CONTRACT": 4,
+      "KEEP_DEFAULT_CURRENT": 45,
+      "KEEP_DEFAULT_REWRITE_BRITTLE": 4,
+      "MOVE_FULL_CURRENT_NONDEFAULT": 45,
+      "MOVE_HISTORICAL_AFTER_TG3": 16,
+      "MOVE_RELEASE_PRECHECK": 2,
+      "SPLIT_MIXED_CURRENT_HISTORICAL": 2
+    },
+    "proposed_target_profile_counts": {
+      "default-ci-current + historical-acceptance": 2,
+      "default-ci-current": 91,
+      "full-current-non-network": 45,
+      "historical-acceptance": 16,
+      "release-preflight": 2
+    },
+    "pending_manual_review_count": 0
+  },
+  "high_risk_review_notes": [
+    {
+      "path": "tests/unit/test_m8_through_m8b_consolidated_acceptance.py",
+      "finding": "historical acceptance asserts old next_task values plus README/docs-index content",
+      "decision": "MOVE_HISTORICAL_AFTER_TG3"
+    },
+    {
+      "path": "tests/unit/test_validate_v1_public_contracts.py",
+      "finding": "current release truth is partly encoded as README prose regex",
+      "decision": "KEEP_DEFAULT_REWRITE_BRITTLE"
+    },
+    {
+      "path": "tests/unit/test_phase_g_pr_d_closure.py",
+      "finding": "immutable Phase G closure evidence and current V3 authority checks coexist",
+      "decision": "SPLIT_MIXED_CURRENT_HISTORICAL"
+    },
+    {
+      "path": "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py",
+      "finding": "milestone-named but still protects current V3 product chain",
+      "decision": "KEEP_DEFAULT_REWRITE_BRITTLE"
+    },
+    {
+      "path": "tests/unit/test_m8r_06_04_mode_c.py",
+      "finding": "file contains historical-marked cases alongside current Mode C behavior",
+      "decision": "SPLIT_MIXED_CURRENT_HISTORICAL"
+    }
+  ],
+  "records": [
+    {
+      "path": "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_filesystem_containment.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m5k_workflow.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m5n_watchlist_workflow.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m6d_ssl_policy.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_server.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_mcp_server.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_governance_forbidden_path_guard.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_forbidden_behavior_scanner.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_no_frontend_public_write_guard.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_no_trading_signal_ui_guard.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m6d_operator_and_local_networking.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_run_test_profile.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m5f_canonical_market_context_package.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m5fgh_consumer_consistency.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m5fgh_fastapi_context.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m5fgh_frontend_static.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m5i_explicit_bounded_refresh.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m5ij_forbidden_path_policy.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m5op_frontend_operator_workflow.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m6a_observation_ux.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m6b_contract_hardening.py",
+      "proposed_disposition": "KEEP_DEFAULT_CONTRACT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "machine contract/schema invariant; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/test_m5q_source_health.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/test_m6e_operator_acceptance.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_frontend_readonly_static_contracts.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_frontend_readonly_contract_static.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_frontend_readonly_context_package.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_frontend_accessibility_static.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_frontend_observability_static.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_twse_mis_normalization_v2.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_twse_openapi_normalization_v1.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_tpex_openapi_normalization_v1.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_yahoo_normalized_chart_v1.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_source_contract_schema.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_source_authority_registry.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_source_family_coverage_matrix.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7e_market_clock_session_state_schema.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7e_market_clock_session_state_builder.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7e_twse_holiday_schedule_classifier.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7e_market_clock_session_state_controlled_promotion.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7e_market_clock_session_state_context_integration.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7e_market_clock_session_state_markdown.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7e_market_clock_session_state_inventory.py",
+      "proposed_disposition": "KEEP_DEFAULT_REWRITE_BRITTLE",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current invariant belongs in default CI, but prose/path/old milestone coupling should move to structured authority",
+      "prerequisites_before_profile_change": [
+        "replacement assertion before brittle assertion removal"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7e_market_clock_session_state_final_acceptance.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7e_twse_trading_calendar_authority.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7e_twse_trading_calendar_artifact.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7e_twse_trading_calendar_mode_contract.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7f_rich_fact_browser_policy.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7f_rich_fact_display_catalog.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7f_ai_handoff_search_filters.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7f_field_badges_currentness_calendar.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7f_frontend_rich_fact_browser_base_ui.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7f_frontend_security_semantic_regression.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7f_rich_fact_browser_final_acceptance.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_safe_context_artifact_schema.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_safe_artifact_validator.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_frontend_manual_artifact_load_ui.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_inventory_policy.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_real_safe_artifact_rendering.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_provenance_currentness_source_health_panel.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_ai_handoff_from_loaded_safe_artifact.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_refresh_workflow_policy_request_package.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_refresh_request_package_builder.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_controlled_refresh_execution_gate.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_refreshed_safe_artifact_result_contract.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_controlled_refresh_frontend_execution_ui.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_refresh_workflow_security_regression.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_twse_mis_market_route_semantics.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m7g_final_acceptance.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8_source_governance_foundation.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8_source_freshness_evaluator.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8_multi_source_context_builder.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8_controlled_conversation_context_integration.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8_compatibility_hardening.py",
+      "proposed_disposition": "MOVE_FULL_CURRENT_NONDEFAULT",
+      "proposed_target_profile": "full-current-non-network",
+      "tg1_reason": "superseded/legacy operator or evidence surface remains useful broad regression but is not current front-door authority",
+      "prerequisites_before_profile_change": [
+        "confirm no unique current safety gap",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8_00_final_acceptance.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8a_official_eod_contract_preflight.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8a_official_eod_observation.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8a_twse_official_eod_adapter.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8a_tpex_official_eod_adapter.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8a_official_eod_instrument_classification.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8a_official_eod_failure_contract.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8a_ncdr_dgpa_closure_cap.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8a_market_day_currentness_resolver.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8a_controlled_official_eod_execution.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8a_official_eod_context_integration.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8a_official_eod_conversation_projection.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8a_final_acceptance.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_taifex_openapi_contract_preflight.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_taifex_derivatives_observation.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_taifex_openapi_futures_adapter.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_taifex_openapi_options_adapter.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_taifex_openapi_final_settlement_adapter.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_taifex_openapi_large_trader_oi_adapter.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_taifex_openapi_put_call_ratio_adapter.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_taifex_openapi_block_trade_adapter.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_taifex_openapi_execution.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_taifex_openapi_context_integration.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_taifex_openapi_conversation_projection.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_final_acceptance.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_taifex_openapi_currentness.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_taifex_openapi_schema_and_validation.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8b_taifex_openapi_projection_families.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8_through_m8b_consolidated_acceptance.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8c_00_final_acceptance.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8c_taifex_mis_contract_preflight.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8c_taifex_mis_currentness_preflight.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8c_taifex_mis_identity_contract.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8c_taifex_mis_probe_parsers.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8c_01_taifex_mis_runtime.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8c_02_taifex_mis_context_integration.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_06_01c1b_compact_runtime_identity_index.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_08f_r0_rotation_candidate_contract.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_06_02_mode_b1_preview.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_06_human_browser_authorize_state.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_06_ai_handoff_repair_02.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_05b_03_operation_result.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_05b_03_aggregation.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/integration/test_m8r_05b_03_multi_artifact_contract.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_06_03_execute_once.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_06_03_localhost_vertical.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_06_03_mode_b2_authorization.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_06_03_production_adapter.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_06_03_batch_runtime.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_06_04_mode_c.py",
+      "proposed_disposition": "SPLIT_MIXED_CURRENT_HISTORICAL",
+      "proposed_target_profile": "default-ci-current + historical-acceptance",
+      "tg1_reason": "current runtime and historical acceptance assertions share one file; split before cutover",
+      "prerequisites_before_profile_change": [
+        "split current/historical cases",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/m8r_05c/test_m8r_05c_integration.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_05c_determinism.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_05c_lineage.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_05c_containment.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/integration/test_unified_workbench_api.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "insufficient basis to remove from ordinary PR protection; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_product_version.py",
+      "proposed_disposition": "KEEP_DEFAULT_CONTRACT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "lightweight current product-version/repository-hygiene invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_validate_product_version_consistency.py",
+      "proposed_disposition": "KEEP_DEFAULT_CONTRACT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "lightweight current product-version/repository-hygiene invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_validate_v1_public_contracts.py",
+      "proposed_disposition": "KEEP_DEFAULT_REWRITE_BRITTLE",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current invariant belongs in default CI, but prose/path/old milestone coupling should move to structured authority",
+      "prerequisites_before_profile_change": [
+        "replacement assertion before brittle assertion removal"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_build_v1_release_manifest.py",
+      "proposed_disposition": "MOVE_RELEASE_PRECHECK",
+      "proposed_target_profile": "release-preflight",
+      "tg1_reason": "release/browser packaging readiness remains runnable but need not gate every ordinary PR",
+      "prerequisites_before_profile_change": [
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_validate_release_hygiene.py",
+      "proposed_disposition": "KEEP_DEFAULT_CONTRACT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "lightweight current product-version/repository-hygiene invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_browser_e2e_requirements.py",
+      "proposed_disposition": "MOVE_RELEASE_PRECHECK",
+      "proposed_target_profile": "release-preflight",
+      "tg1_reason": "release/browser packaging readiness remains runnable but need not gate every ordinary PR",
+      "prerequisites_before_profile_change": [
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_m8r_08c_r1_launcher_readiness.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current safety/governance/session/authorization/launcher invariant",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_g_request_v2_and_catalog.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_g_routing_and_planner.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_g_material_disclosures.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_g_monthly_revenue.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_g_result_v2_projection.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_g_mode_c_v2.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_g_runtime_activation.py",
+      "proposed_disposition": "KEEP_DEFAULT_COMPATIBILITY",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "protects compatibility/source behavior still relied on by accepted V1/V2 or current source execution",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_g_p0_acceptance_ledger.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_g_pr_d_live_acceptance.py",
+      "proposed_disposition": "MOVE_HISTORICAL_AFTER_TG3",
+      "proposed_target_profile": "historical-acceptance",
+      "tg1_reason": "completed milestone/preflight/acceptance evidence; move only after TG-3 integrity protection",
+      "prerequisites_before_profile_change": [
+        "TG-3 historical integrity",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_g_pr_d_public_surfaces.py",
+      "proposed_disposition": "KEEP_DEFAULT_REWRITE_BRITTLE",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current invariant belongs in default CI, but prose/path/old milestone coupling should move to structured authority",
+      "prerequisites_before_profile_change": [
+        "replacement assertion before brittle assertion removal"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_g_pr_d_closure.py",
+      "proposed_disposition": "SPLIT_MIXED_CURRENT_HISTORICAL",
+      "proposed_target_profile": "default-ci-current + historical-acceptance",
+      "tg1_reason": "current runtime and historical acceptance assertions share one file; split before cutover",
+      "prerequisites_before_profile_change": [
+        "split current/historical cases",
+        "TG-4 shadow CI"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_h_v3_contract_freeze.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_h_imp_0_passive_v3_compatibility.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_h_imp_1_h4_deterministic_safety.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_h_imp_2_h1_dormant_adapters.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_h_imp_3_h2_dormant_adapters.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_h_imp_6_v3_projection_handoff.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py",
+      "proposed_disposition": "KEEP_DEFAULT_REWRITE_BRITTLE",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current invariant belongs in default CI, but prose/path/old milestone coupling should move to structured authority",
+      "prerequisites_before_profile_change": [
+        "replacement assertion before brittle assertion removal"
+      ],
+      "profile_change_performed": false
+    },
+    {
+      "path": "tests/unit/test_phase_h_act_h1_tpex_attention_activation.py",
+      "proposed_disposition": "KEEP_DEFAULT_CURRENT",
+      "proposed_target_profile": "default-ci-current",
+      "tg1_reason": "current Unified/Phase-H regression; fail-safe keep",
+      "prerequisites_before_profile_change": [],
+      "profile_change_performed": false
+    }
+  ]
+}
