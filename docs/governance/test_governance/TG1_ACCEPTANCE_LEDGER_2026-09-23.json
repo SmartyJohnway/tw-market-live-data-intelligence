@@ -1,0 +1,58 @@
+{
+  "schema_version": "test_governance_tg1_acceptance_ledger.v1",
+  "date": "2026-09-23",
+  "status": "TG1_DISPOSITION_AUDIT_PASS",
+  "baseline_main": "b42c73057a16ea39d73ed7efd8c96096ee49e131",
+  "branch": "governance/test-historical-evidence-preflight",
+  "tested_head": "b3d8c7e2bcbfd40bb7b20b6269f3d5d8ad3c40e6",
+  "workflow": {
+    "name": "Test Governance TG-1 Disposition",
+    "run_id": 35819067119,
+    "conclusion": "success",
+    "focused_tests": "5 passed",
+    "default_ci_authority_unchanged": "PASS",
+    "runtime_authority_containment": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "scope": {
+    "default_ci_selection_changed": false,
+    "pytest_marker_authority_changed": false,
+    "tests_deleted": false,
+    "production_runtime_changed": false,
+    "source_activation_changed": false,
+    "frozen_schemas_changed": false,
+    "phase_i_implementation": false
+  },
+  "disposition_summary": {
+    "default_ci_files_reviewed": 156,
+    "proposed_target_profiles": {
+      "default-ci-current": 91,
+      "default-ci-current + historical-acceptance": 2,
+      "full-current-non-network": 45,
+      "historical-acceptance": 16,
+      "release-preflight": 2
+    },
+    "proposed_dispositions": {
+      "KEEP_DEFAULT_COMPATIBILITY": 38,
+      "KEEP_DEFAULT_CONTRACT": 4,
+      "KEEP_DEFAULT_CURRENT": 45,
+      "KEEP_DEFAULT_REWRITE_BRITTLE": 4,
+      "MOVE_FULL_CURRENT_NONDEFAULT": 45,
+      "MOVE_HISTORICAL_AFTER_TG3": 16,
+      "MOVE_RELEASE_PRECHECK": 2,
+      "SPLIT_MIXED_CURRENT_HISTORICAL": 2
+    }
+  },
+  "interpretation": {
+    "raw_test_count_is_not_the_primary_defect": true,
+    "primary_debt": "current, compatibility, historical acceptance, release provenance, and human-document assertions are mixed in one default merge authority",
+    "no_test_deletion_authorized": true,
+    "no_profile_cutover_authorized": true
+  },
+  "next_gate": {
+    "id": "TG-2/TG-3",
+    "allowed": "additive semantic marker/profile model and historical integrity protection",
+    "forbidden": "default-ci cutover",
+    "cutover_requires": "TG-4 shadow CI and separate acceptance"
+  }
+}
