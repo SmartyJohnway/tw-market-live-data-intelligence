@@ -63,6 +63,7 @@ may be correct **for the milestone when the document was created** and must not
 be interpreted as current state without checking the root governance files.
 
 - [Project History](PROJECT_HISTORY.md)
+- [M8 through M8B consolidated final acceptance](protocol/M8_THROUGH_M8B_CONSOLIDATED_FINAL_ACCEPTANCE.md) — historical milestone evidence, not current runtime authority
 - [Reviews](reviews/)
 - [Protocols](protocol/)
 - [Historical acceptance runs](acceptance_runs/)
