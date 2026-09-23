@@ -13,8 +13,8 @@ def _load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def test_tg1_ledger_covers_exact_default_ci_file_set_without_cutover() -> None:
-    profile = _load(PROFILE)["profiles"]["default-ci"]
+def test_tg1_ledger_covers_exact_pre_tg5_default_ci_file_set() -> None:
+    profile = _load(PROFILE)["profiles"]["pre-tg5-default-ci"]
     ledger = _load(LEDGER)
 
     source_paths = profile["pytest_paths"]
