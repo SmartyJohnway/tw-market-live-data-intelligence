@@ -16,7 +16,7 @@ def test_tg5_static_cutover_contract_passes() -> None:
         "status": "PASS",
         "new_default_file_count": 93,
         "rollback_file_count": 156,
-        "new_default_matches_tg2_shadow": True,
+        "new_default_matches_historical_tg2_candidate": True,
         "rollback_execution_semantics_preserved": True,
         "tg4_unexplained_nodes": 0,
         "tg5_authority_state": "PROMOTED_ACTIVE",
@@ -45,9 +45,10 @@ def test_tg5_authority_manifest_separates_every_pr_and_lifecycle_profiles() -> N
     assert authority["lifecycle_regression"]["historical_expected_nodes"] == 94
     assert authority["lifecycle_regression"]["release_expected_nodes"] == 5
     assert authority["lifecycle_regression"]["mixed_historical_expected_nodes"] == 4
-    assert authority["lifecycle_regression"]["broad_current_profile"] == "tg2-full-current-non-network-shadow"
-    assert authority["lifecycle_regression"]["historical_profile"] == "tg2-historical-acceptance-shadow"
-    assert authority["lifecycle_regression"]["release_profile"] == "tg2-release-preflight-shadow"
+    assert authority["lifecycle_regression"]["broad_current_profile"] == "full-current"
+    assert authority["lifecycle_regression"]["historical_profile"] == "historical-milestone-replay"
+    assert authority["lifecycle_regression"]["release_profile"] == "release-preflight-current"
+    assert authority["lifecycle_regression"]["mixed_historical_profile"] == "mixed-historical-diagnostic"
     assert authority["rollback"]["diagnostic_profile"] == "pre-tg5-default-ci"
     assert authority["rollback"]["authoritative_baseline_commit"] == "2ff9707d901f40c1a108dd1317fce2f03cc79735"
     history = authority["historical_migration_evidence"]["tg2_semantic_manifest"]
