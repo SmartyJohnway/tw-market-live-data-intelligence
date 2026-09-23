@@ -8,7 +8,7 @@ import pytest
 import scripts.run_test_profile as rtp
 
 
-@pytest.mark.parametrize('profile', ['fast','default-ci','full-non-network','operator-preflight','browser-e2e'])
+@pytest.mark.parametrize('profile', ['fast','default-ci','full-current','historical-milestone-replay','release-preflight-current','mixed-historical-diagnostic','full-non-network','operator-preflight','browser-e2e'])
 def test_known_profile_resolution(profile):
     commands = rtp.resolve_profile(profile)
     assert commands
@@ -18,6 +18,51 @@ def test_known_profile_resolution(profile):
 def test_unknown_profile_fails_closed():
     with pytest.raises(ValueError, match='Unknown test profile'):
         rtp.resolve_profile('surprise-live')
+
+
+@pytest.mark.parametrize(
+    ('legacy', 'stable'),
+    [
+        ('tg2-default-ci-current-shadow', 'default-ci'),
+        ('tg2-full-current-non-network-shadow', 'full-current'),
+        ('tg2-historical-acceptance-shadow', 'historical-milestone-replay'),
+        ('tg2-release-preflight-shadow', 'release-preflight-current'),
+        ('tg4-mixed-historical-shadow', 'mixed-historical-diagnostic'),
+    ],
+)
+def test_tg6_c_deprecated_aliases_resolve_exactly_to_stable_profiles(legacy, stable):
+    assert rtp.resolve_profile_name(legacy) == stable
+    assert rtp.resolve_profile(legacy) == rtp.resolve_profile(stable)
+
+
+def test_tg6_c_current_config_contains_only_stable_lifecycle_names():
+    profiles = rtp.load_config()['profiles']
+    assert {
+        'default-ci',
+        'full-current',
+        'historical-milestone-replay',
+        'release-preflight-current',
+        'mixed-historical-diagnostic',
+        'pre-tg5-default-ci',
+    } <= set(profiles)
+    assert set(rtp.DEPRECATED_PROFILE_ALIASES).isdisjoint(profiles)
+
+
+def test_tg6_c_alias_json_reports_requested_and_resolved_profile(monkeypatch, capsys):
+    def fake_run(cmd, cwd, text, stdout, stderr):
+        return subprocess.CompletedProcess(
+            cmd,
+            0,
+            '============================= test session starts ==============================\n'
+            'collected 1 item\n\n'
+            'tests/unit/test_x.py .\n'
+            '============================== 1 passed in 0.01s ===============================\n',
+        )
+    monkeypatch.setattr(rtp.subprocess, 'run', fake_run)
+    assert rtp.main(['tg2-full-current-non-network-shadow', '--json']) == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert payload['profile'] == 'tg2-full-current-non-network-shadow'
+    assert payload['resolved_profile'] == 'full-current'
 
 
 def test_bounded_live_requires_explicit_confirmation():
@@ -113,6 +158,7 @@ def test_json_output_contract(monkeypatch, capsys):
     assert rtp.main(['fast', '--json']) == 0
     payload = json.loads(capsys.readouterr().out)
     assert payload['profile'] == 'fast'
+    assert payload['resolved_profile'] == 'fast'
     assert payload['status'] == 'pass'
     assert payload['commands']
     assert payload['network_may_have_occurred'] is False
