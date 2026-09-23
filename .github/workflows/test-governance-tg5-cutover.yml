@@ -60,15 +60,18 @@ jobs:
           exit 0
         id: currentshadow
 
-      - name: Run authoritative pre-TG5 baseline rollback proof
+      - name: Run authoritative pre-TG5 baseline proofs
         shell: bash
         run: |
           set +e
           git worktree add --detach /tmp/tg5-pre-baseline 2ff9707d901f40c1a108dd1317fce2f03cc79735
           python /tmp/tg5-pre-baseline/scripts/run_test_profile.py default-ci --json > /tmp/baseline-default.json
-          rc=$?
+          default_rc=$?
+          python /tmp/tg5-pre-baseline/scripts/run_test_profile.py tg2-historical-acceptance-shadow --json > /tmp/baseline-historical.json
+          historical_rc=$?
           git worktree remove --force /tmp/tg5-pre-baseline
-          echo "return_code=$rc" >> "$GITHUB_OUTPUT"
+          echo "default_return_code=$default_rc" >> "$GITHUB_OUTPUT"
+          echo "historical_return_code=$historical_rc" >> "$GITHUB_OUTPUT"
           exit 0
         id: baseline
 
@@ -138,7 +141,7 @@ jobs:
       - name: Validate TG-5 runtime and rollback evidence
         if: always()
         run: |
-          python scripts/validate_test_governance_tg5.py             --new-default /tmp/new-default.json             --current-shadow /tmp/current-shadow.json             --baseline-default /tmp/baseline-default.json             --rollback-diagnostic /tmp/rollback-diagnostic.json             --full-current /tmp/full-current.json             --historical /tmp/historical.json             --release /tmp/release.json             --mixed /tmp/mixed.json             --node-analysis /tmp/node-analysis.json             --full-non-network /tmp/full-non-network.json
+          python scripts/validate_test_governance_tg5.py             --new-default /tmp/new-default.json             --current-shadow /tmp/current-shadow.json             --baseline-default /tmp/baseline-default.json             --baseline-historical /tmp/baseline-historical.json             --rollback-diagnostic /tmp/rollback-diagnostic.json             --full-current /tmp/full-current.json             --historical /tmp/historical.json             --release /tmp/release.json             --mixed /tmp/mixed.json             --node-analysis /tmp/node-analysis.json             --full-non-network /tmp/full-non-network.json
 
       - name: Verify runtime and market authority containment
         if: always()
@@ -169,6 +172,7 @@ jobs:
             /tmp/new-default.json
             /tmp/current-shadow.json
             /tmp/baseline-default.json
+            /tmp/baseline-historical.json
             /tmp/rollback-diagnostic.json
             /tmp/full-current.json
             /tmp/historical.json
