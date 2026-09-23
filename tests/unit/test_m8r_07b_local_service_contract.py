@@ -26,9 +26,10 @@ def test_capability_contract_is_deterministic_and_preserves_dispositions():
     assert payload["accepted_request_schema_versions"] == [
         "unified_market_evidence_request.v1",
         "unified_market_evidence_request.v2",
+        "unified_market_evidence_request.v3",
     ]
-    assert payload["preferred_request_schema_version"] == "unified_market_evidence_request.v2"
-    assert payload["emitted_result_schema_version"] == "unified_market_evidence_result.v2"
+    assert payload["preferred_request_schema_version"] == "unified_market_evidence_request.v3"
+    assert payload["emitted_result_schema_version"] == "unified_market_evidence_result.v3"
     assert _market(_capability(payload, "current_observation"), "TWSE")["disposition"] == "executable"
     assert _market(_capability(payload, "current_observation"), "TPEX")["disposition"] == "executable"
     assert _market(_capability(payload, "official_eod_reference"), "TWSE")["disposition"] == "executable"
@@ -38,7 +39,12 @@ def test_capability_contract_is_deterministic_and_preserves_dispositions():
     assert _market(_capability(payload, "monthly_revenue"), "TWSE")["disposition"] == "executable"
     assert _market(_capability(payload, "monthly_revenue"), "TPEX")["disposition"] == "executable"
     assert _market(_capability(payload, "official_eod_reference"), "TAIFEX")["disposition"] == "provisional"
-    assert _capability(payload, "recent_performance")["routing_disposition"] == "plan_only"
+    assert _capability(payload, "recent_performance")["routing_disposition"] == "blocked"
+    h1 = _capability(payload, "trading_status_context")
+    assert h1["routing_disposition"] == "resolved"
+    assert _market(h1, "TPEX")["disposition"] == "executable"
+    assert _market(h1, "TWSE")["disposition"] == "blocked"
+    assert _capability(payload, "corporate_action_context")["routing_disposition"] == "plan_only"
     session = _capability(payload, "session_status")
     assert session["routing_disposition"] == "blocked"
     assert all(item["disposition"] != "executable" for item in session["markets"])
