@@ -54,9 +54,11 @@ network execution confirmation. Never treat one confirmation as another.
 
 ## Request and execution workflow
 
-Author a `unified_market_evidence_request.v2` request from the conversation.
-Request v1 remains accepted for compatibility; V2 is preferred and current
-executions emit Result v2 and Audit Package v2.
+Author a `unified_market_evidence_request.v3` request from the conversation.
+Request v1 and v2 remain accepted compatibility contracts; V3 is preferred and
+new governed materializations default to Result v3 and Audit Package v3.
+Preferred V3 does not make every Phase H capability executable: current Catalog
+and Routing authority still control exact route availability.
 Users may identify a target by code, name, or ISIN. Validate it, inspect the
 preview and capability boundary, and call `market_fetch_evidence` only when the
 request is executable, explicitly authorized, and has `execution_mode:
@@ -94,6 +96,12 @@ with its reason. For source failure, preserve reason and coverage impact; do not
 invent values, hide absent citations, retry automatically, or silently use an
 unofficial fallback. TAIFEX remains provisional/non-executable where the
 capability catalog says so; a capability boundary is not a source outage.
+
+For V3 trading-status context, only explicitly activated source routes execute.
+The current H1 product slice is intentionally partial: TPEx attention is active,
+while other declared trading-status types remain uncovered until their separate
+route gates pass. Corporate-action context and recent-performance execution
+remain blocked or plan-only where current routing says so.
 
 For an eligible TWSE/TPEX company common share, `material_disclosures` returns
 at most 50 items from the latest completed official daily batch. A healthy
