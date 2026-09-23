@@ -1,19 +1,23 @@
 {
-  "schema_version": "unified_market_evidence_capability_catalog.v2",
+  "schema_version": "unified_market_evidence_capability_catalog.v3",
   "portable_metadata": {
-    "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json",
-    "canonical_sha256": "a4d296b37b65263189c14a847aedffa4b12107d187e9417d359bbe7d196c5a63",
-    "generator_version": "PHASE-G-D5-v1",
-    "generated_from_commit": "feee5fa31f7e7b6b7c735410ed476850921a686f",
-    "canonical_git_blob_sha": "8c787623d0cbc69347052692cf89f38484890c47"
+    "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+    "canonical_sha256": "e1d0ac61a7d9eea77dca3e32189e6df53d2d7071fd53f6b39b8a0120f1653463",
+    "generator_version": "PHASE-H-ACT-V3-v1",
+    "generated_from_commit": "18f40f5cc304b6c3fc0b19163905edeeed1d21f2",
+    "canonical_git_blob_sha": "87f0c6005aa092d494aa03df9c144e9b9695530c"
   },
   "contract_versions": {
     "accepted_request_schema_versions": [
       "unified_market_evidence_request.v1",
-      "unified_market_evidence_request.v2"
+      "unified_market_evidence_request.v2",
+      "unified_market_evidence_request.v3"
     ],
-    "preferred_request_schema_version": "unified_market_evidence_request.v2",
-    "emitted_result_schema_version": "unified_market_evidence_result.v2"
+    "preferred_request_schema_version": "unified_market_evidence_request.v3",
+    "emitted_result_schema_version": "unified_market_evidence_result.v3",
+    "future_candidate_request_schema_version": null,
+    "future_candidate_result_schema_version": null,
+    "v3_runtime_authority_status": "v3_preferred_selected_routes_active"
   },
   "supported_markets": {
     "TWSE": {
@@ -119,7 +123,7 @@
     },
     {
       "capability_id": "recent_performance",
-      "description": "Retrieves descriptive performance metrics over a specified lookback period.",
+      "description": "Bounded descriptive recent-market reference evidence using 1..20 completed-session lookback observations plus one governed end observation.",
       "support_status": "contract_supported",
       "supported_markets": [
         "TWSE",
@@ -143,9 +147,20 @@
       ],
       "possible_fallbacks": [],
       "known_limitations": [
-        "not every requested evidence need is runtime-executable yet",
-        "not_yet_implemented"
-      ]
+        "default free TWSE/TPEx one-shot 5D/20D machine routes are not proven",
+        "optional provider contracts remain pending",
+        "no persistent history accumulation"
+      ],
+      "runtime_executable": false,
+      "phase_h_activation_state": "inactive",
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      }
     },
     {
       "capability_id": "source_currentness",
@@ -252,6 +267,77 @@
         "latest_available_reporting_period"
       ],
       "historical_lookup_supported": false
+    },
+    {
+      "capability_id": "trading_status_context",
+      "description": "Official instrument-specific trading-status determinations with fail-closed governed coverage.",
+      "support_status": "runtime_executable",
+      "runtime_executable": true,
+      "phase_h_activation_state": "selected_route_active",
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "provisional_markets": [],
+      "allowed_parameters": {},
+      "requires_target_resolution": true,
+      "requires_approval_for_execution": true,
+      "possible_timing_classes": [
+        "official_bounded_context"
+      ],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "only H1-TPEX-ATTENTION-OPENAPI is active; all other H1 status subtypes/routes remain inactive or uncovered",
+        "H0-SRC-02 prevents complete H1 coverage claims",
+        "V2 remains the preferred production request/result authority"
+      ],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "partial_attention_only"
+      ],
+      "historical_lookup_supported": false
+    },
+    {
+      "capability_id": "corporate_action_context",
+      "description": "Quote-relevant price-basis corporate-action evidence with explicit subtype coverage and lifecycle stage.",
+      "support_status": "contract_supported",
+      "runtime_executable": false,
+      "phase_h_activation_state": "inactive",
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "provisional_markets": [],
+      "allowed_parameters": {},
+      "requires_target_resolution": true,
+      "requires_approval_for_execution": true,
+      "possible_timing_classes": [
+        "official_bounded_context"
+      ],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "V3 contract candidate only; no H0-G runtime activation",
+        "coverage and provider asymmetry remain explicit"
+      ],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "explicit_target_scoped_time_bounded"
+      ],
+      "historical_lookup_supported": false
     }
   ],
   "execution": {
@@ -270,9 +356,12 @@
     "hard_operation_limit": 100
   },
   "known_limitations": [
-    "V1 remains accepted as a stable compatibility request contract",
-    "V2 is the preferred request contract for Phase G",
+    "V1 and V2 remain accepted compatibility request contracts",
+    "V3 is the preferred current request contract and new governed outputs default to Result/Audit V3",
     "Phase G research evidence is limited to TWSE/TPEX company common shares in G1/G2",
+    "Phase H active source coverage is incremental; only explicitly activated routes are executable",
+    "H1 trading-status coverage remains partial with only H1-TPEX-ATTENTION-OPENAPI active",
+    "H2 and H3 inactive, blocked, plan-only, manual-only, optional-provider, and source-gap states remain non-executable until their separate gates pass",
     "no scheduler",
     "no continuous polling",
     "no auto retry",
