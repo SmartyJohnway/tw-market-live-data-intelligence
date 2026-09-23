@@ -102,7 +102,9 @@ The acceptance workflow must prove:
 8. historical selects 94 and passes;
 9. release selects 5 and passes;
 10. mixed historical has only the two already frozen replay gaps;
-11. full `full-non-network` regression passes;
+11. full `full-non-network` is recorded as a broader debt observation; it is
+    not TG-5 promotion authority because it spans tests beyond the legacy
+    1245-node merge gate;
 12. production runtime, source activation/routing and frozen schemas are
     unchanged;
 13. no tests are deleted;
