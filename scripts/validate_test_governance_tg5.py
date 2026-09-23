@@ -13,7 +13,7 @@ ROLLBACK = ROOT / "docs/governance/test_governance/TG5_ROLLBACK_CONTRACT_2026-09
 TG4 = ROOT / "docs/governance/test_governance/TG4_ACCEPTANCE_LEDGER_2026-09-23.json"
 GAPS = ROOT / "docs/governance/test_governance/TG4_KNOWN_HISTORICAL_REPLAY_GAPS.v1.json"
 ROLLBACK_GAPS = ROOT / "docs/governance/test_governance/TG5_ROLLBACK_DIAGNOSTIC_GAPS.v1.json"
-FAILED_RE = re.compile(r"^FAILED\\s+(\\S+)\\s+-", re.MULTILINE)
+FAILED_RE = re.compile(r"^FAILED\s+(\S+)\s+-", re.MULTILINE)
 
 EXPECTED_EXPR = (
     "not network and not browser and not live and not release_preflight "
