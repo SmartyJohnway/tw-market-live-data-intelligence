@@ -441,7 +441,14 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
                 }.get(need)
                 if typed_field is not None:
                     is_provided = getattr(evidence_proj, typed_field) is not None
-                elif binding is not None and not binding.evidence_artifacts:
+                elif (
+                    binding is not None
+                    and binding.status == "succeeded"
+                    and not binding.evidence_artifacts
+                ):
+                    # Artifact-free V3 contracts count as provided only after
+                    # the governed operation itself succeeded. A failed binding
+                    # with no artifacts must remain missing/failing evidence.
                     is_provided = True
             if need in {"material_disclosures", "monthly_revenue"}:
                 research_status = _research_status(evidence_proj, need)
