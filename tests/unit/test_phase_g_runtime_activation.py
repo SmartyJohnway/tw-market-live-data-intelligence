@@ -55,7 +55,7 @@ def test_a09_a10_exact_six_mcp_tools_accept_v1_v2_and_reject_unknown():
     assert ADAPTER_VERSION == "unified_market_evidence_mcp_adapter.v2"
     assert LOCAL_SERVICE_CONTRACT_VERSION == "unified_market_evidence_local_service.v2"
     assert tuple(tool.name for tool in snapshot.tools) == EXPECTED_TOOLS
-    for version in ("unified_market_evidence_request.v1", "unified_market_evidence_request.v2"):
+    for version in ("unified_market_evidence_request.v1", "unified_market_evidence_request.v2", "unified_market_evidence_request.v3"):
         assert snapshot.validate_arguments("market_validate_request", {"request": _request(version)})
     assert not snapshot.validate_arguments(
         "market_validate_request",
@@ -63,17 +63,18 @@ def test_a09_a10_exact_six_mcp_tools_accept_v1_v2_and_reject_unknown():
     )
 
 
-def test_a11_current_catalog_route_and_local_service_are_v2_and_truthful():
+def test_a11_current_catalog_route_and_local_service_are_v3_and_truthful():
     payload = describe_capabilities()
     assert payload["service_contract_version"] == "unified_market_evidence_local_service.v2"
-    assert payload["capability_catalog_schema_version"] == "unified_market_evidence_capability_catalog.v2"
-    assert payload["routing_matrix_schema_version"] == "m8r_05b_capability_to_executor_routing_matrix.v2"
+    assert payload["capability_catalog_schema_version"] == "unified_market_evidence_capability_catalog.v3"
+    assert payload["routing_matrix_schema_version"] == "m8r_05b_capability_to_executor_routing_matrix.v3"
     assert payload["accepted_request_schema_versions"] == [
         "unified_market_evidence_request.v1",
         "unified_market_evidence_request.v2",
+        "unified_market_evidence_request.v3",
     ]
-    assert payload["preferred_request_schema_version"] == "unified_market_evidence_request.v2"
-    assert payload["emitted_result_schema_version"] == "unified_market_evidence_result.v2"
+    assert payload["preferred_request_schema_version"] == "unified_market_evidence_request.v3"
+    assert payload["emitted_result_schema_version"] == "unified_market_evidence_result.v3"
     by_id = {item["capability_id"]: item for item in payload["capabilities"]}
     for capability_id, coverage in (
         ("material_disclosures", "latest_completed_official_daily_batch"),
@@ -92,17 +93,17 @@ def test_a11_current_catalog_route_and_local_service_are_v2_and_truthful():
         assert {entry["market"] for entry in item["markets"] if entry["disposition"] == "executable"} == {"TWSE", "TPEX"}
 
 
-def test_mode_a_explicitly_accepts_v1_and_v2_and_fails_closed_on_unknown():
-    for version in ("unified_market_evidence_request.v1", "unified_market_evidence_request.v2"):
+def test_mode_a_explicitly_accepts_v1_v2_v3_and_fails_closed_on_unknown():
+    for version in ("unified_market_evidence_request.v1", "unified_market_evidence_request.v2", "unified_market_evidence_request.v3"):
         result = validate_mode_a_request(_request(version), allow_fixture_snapshot=True)
         assert result["validation_status"] == "valid"
     with pytest.raises(ValueError, match="unsupported_request_schema_version"):
         validate_mode_a_request(_request("unified_market_evidence_request.v999"), allow_fixture_snapshot=True)
 
 
-def test_current_mode_c_defaults_to_v2_without_changing_internal_control_package_identity():
-    assert inspect.signature(build_mode_c_result_package).parameters["output_schema_version"].default == "unified_market_evidence_result.v2"
-    assert inspect.signature(build_mode_c_ai_handoff).parameters["output_schema_version"].default == "unified_market_evidence_result.v2"
+def test_current_mode_c_defaults_to_v3_without_changing_internal_control_package_identity():
+    assert inspect.signature(build_mode_c_result_package).parameters["output_schema_version"].default == "unified_market_evidence_result.v3"
+    assert inspect.signature(build_mode_c_ai_handoff).parameters["output_schema_version"].default == "unified_market_evidence_result.v3"
 
 
 def test_four_research_routes_are_registered_without_replacing_legacy_routes():
