@@ -180,6 +180,6 @@ def test_inventory_status_for_m7f0304():
     assert entry["next_task"] in {"M7F-07-08-FRONTEND-SECURITY-SEMANTIC-REGRESSION-AND-FINAL-ACCEPTANCE", "M7G-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-AND-OPERATOR-REFRESH-WORKFLOW"}
 
 
-def test_default_ci_includes_m7f0304_test():
-    profile = json.loads(PROFILE.read_text(encoding="utf-8"))
-    assert "tests/unit/test_m7f_field_badges_currentness_calendar.py" in profile["profiles"]["default-ci"]["pytest_paths"]
+def test_broad_current_profile_includes_m7f0304_test():
+    from scripts.test_governance_authority import profile_paths_for_role
+    assert "tests/unit/test_m7f_field_badges_currentness_calendar.py" in profile_paths_for_role("broad_current")
