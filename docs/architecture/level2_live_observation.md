@@ -1,6 +1,6 @@
 # Level 2 Live Observation
 
-Level 2 provides explicit, bounded, non-canonical market observations for a watchlist.
+> **Historical M5 Level-2 model.** Retained for engineering provenance; current bounded execution is governed by the Unified V3 flow. See [PRODUCT_ARCHITECTURE.md](PRODUCT_ARCHITECTURE.md).\n\nLevel 2 provides explicit, bounded, non-canonical market observations for a watchlist.
 
 ## Unified observation model
 
