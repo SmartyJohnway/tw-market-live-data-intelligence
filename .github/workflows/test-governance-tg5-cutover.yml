@@ -1,0 +1,116 @@
+name: Test Governance TG-5 Default CI Cutover
+
+on:
+  push:
+    branches:
+      - governance/test-governance-tg5-cutover
+
+permissions:
+  contents: read
+
+jobs:
+  tg5-cutover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-lock.txt
+
+      - name: Install locked dependencies
+        run: python -m pip install -r requirements-lock.txt
+
+      - name: Compile governance tooling
+        run: |
+          python -m compileall -q             scripts/audit_test_governance.py             scripts/analyze_test_governance_tg4_nodes.py             scripts/validate_test_governance_tg2_tg3.py             scripts/validate_test_governance_tg4_shadow.py             scripts/validate_test_governance_tg5.py             tests/unit/test_audit_test_governance.py             tests/unit/test_test_governance_tg1_ledger.py             tests/unit/test_test_governance_tg2_tg3.py             tests/unit/test_test_governance_tg4_shadow.py             tests/unit/test_test_governance_tg5.py
+
+      - name: Validate TG-5 static cutover contract
+        run: |
+          python scripts/validate_test_governance_tg2_tg3.py
+          python scripts/validate_test_governance_tg4_shadow.py
+          python scripts/validate_test_governance_tg5.py
+
+      - name: Run focused governance compatibility tests
+        run: |
+          python -m pytest -q             tests/unit/test_run_test_profile.py             tests/unit/test_audit_test_governance.py             tests/unit/test_test_governance_tg1_ledger.py             tests/unit/test_test_governance_tg2_tg3.py             tests/unit/test_test_governance_tg4_shadow.py             tests/unit/test_test_governance_tg5.py
+
+      - name: Run promoted default CI
+        run: python scripts/run_test_profile.py default-ci --json > /tmp/new-default.json
+
+      - name: Run TG-2 current shadow equivalence
+        run: python scripts/run_test_profile.py tg2-default-ci-current-shadow --json > /tmp/current-shadow.json
+
+      - name: Run pre-TG5 rollback rehearsal
+        run: python scripts/run_test_profile.py pre-tg5-default-ci --json > /tmp/rollback-default.json
+
+      - name: Run broad current lifecycle regression
+        run: python scripts/run_test_profile.py tg2-full-current-non-network-shadow --json > /tmp/full-current.json
+
+      - name: Run historical lifecycle regression
+        run: python scripts/run_test_profile.py tg2-historical-acceptance-shadow --json > /tmp/historical.json
+
+      - name: Run release lifecycle regression
+        run: python scripts/run_test_profile.py tg2-release-preflight-shadow --json > /tmp/release.json
+
+      - name: Run mixed historical replay and record outcome
+        shell: bash
+        run: |
+          set +e
+          python scripts/run_test_profile.py tg4-mixed-historical-shadow --json > /tmp/mixed.json
+          rc=$?
+          echo "mixed_return_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+        id: mixed
+
+      - name: Analyze node-level coverage after promotion
+        run: python scripts/analyze_test_governance_tg4_nodes.py --output /tmp/node-analysis.json
+
+      - name: Run full non-network regression
+        run: python scripts/run_test_profile.py full-non-network --json > /tmp/full-non-network.json
+
+      - name: Validate TG-5 runtime and rollback evidence
+        run: |
+          python scripts/validate_test_governance_tg5.py             --new-default /tmp/new-default.json             --current-shadow /tmp/current-shadow.json             --rollback /tmp/rollback-default.json             --full-current /tmp/full-current.json             --historical /tmp/historical.json             --release /tmp/release.json             --mixed /tmp/mixed.json             --node-analysis /tmp/node-analysis.json             --full-non-network /tmp/full-non-network.json
+
+      - name: Verify runtime and market authority containment
+        run: |
+          git diff --exit-code 2ff9707d901f40c1a108dd1317fce2f03cc79735 --             server             schemas             frontend             docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json             docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json             config/phase_h_h1_dormant_source_descriptors.json
+          echo "tg5_runtime_market_authority_containment: PASS"
+
+      - name: Verify no test files were deleted
+        run: |
+          python - <<'PY'
+          import subprocess
+          out=subprocess.check_output(
+              ["git","diff","--name-status","2ff9707d901f40c1a108dd1317fce2f03cc79735","HEAD","--","tests"],
+              text=True,
+          ).splitlines()
+          deleted=[line for line in out if line.startswith("D\t")]
+          assert not deleted, deleted
+          print("tg5_test_deletion_count: 0")
+          PY
+
+      - name: Upload TG-5 acceptance evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: tg5-cutover-acceptance
+          path: |
+            /tmp/new-default.json
+            /tmp/current-shadow.json
+            /tmp/rollback-default.json
+            /tmp/full-current.json
+            /tmp/historical.json
+            /tmp/release.json
+            /tmp/mixed.json
+            /tmp/node-analysis.json
+            /tmp/full-non-network.json
+          if-no-files-found: error
+
+      - name: Verify patch whitespace
+        run: git diff --check
