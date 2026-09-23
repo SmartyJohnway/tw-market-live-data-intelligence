@@ -1,94 +1,107 @@
 # Troubleshooting
 
-- Dependency errors: run `python -m pip install -r requirements.txt`.
-- Syntax/import errors: run `python -m compileall scripts server tests` and inspect the first failure.
-- Non-network test failure: run `pytest -m "not network" -v` and inspect failing test names before editing behavior.
-- M5F validation failure: run the M5F validator and do not mutate M5F unless a separate approved task says so.
-- Missing latest observation: normal before explicit Mode B execution; use check-only planning first.
-- Source health degraded/failed: treat as source usability evidence, not an operator instruction to retry aggressively.
-- MCP startup failure: run `python server/mcp_server.py --startup-check`.
-- FastAPI confusion: check [API Reference](../reference/API_REFERENCE.md) for current endpoints; `/api/probe/*` is disabled/fail-closed.
+## Environment / dependencies
 
-## M6A local frontend cannot reach FastAPI
-
-If the readonly workbench shows that the API is unavailable, start the local API with:
+Use the locked development environment:
 
 ```bash
-uvicorn server.main:app --host 127.0.0.1 --port 8000
+python -m pip install -r requirements-lock.txt
+python scripts/verify_environment.py
+python scripts/run_environment_diagnostics.py
 ```
 
-For `file://` and localhost static-server usage, the frontend intentionally targets `http://127.0.0.1:8000`. FastAPI CORS is local-only, allows `GET` and `POST`, and does not enable credentials. Do not replace this with credentialed wildcard CORS.
+## Security Master is NOT_INITIALIZED
 
-## Windows / Python 3.13 TWSE MIS TLS compatibility
+This is a valid fresh-install state, not corruption.
 
-M6D introduces explicit `strict`, `compatibility`, and `unsafe-explicit` SSL policy modes for bounded live commands. Strict remains default; compatibility is explicit and diagnostic; unsafe-explicit must not be used unless you understand TLS verification is disabled. The repository still must not silently disable verification or install a global unverified SSL context.
-
-## M6B source-contract preflight troubleshooting
-
-Use check-only first when diagnosing source-contract readiness:
+Check:
 
 ```bash
-python scripts/run_m6b_source_contract_preflight.py --check-only
+python scripts/manage_security_master.py status
 ```
 
-`--check-only` does not perform network calls and does not write artifacts. If an operator explicitly runs live checks, the bounded command is:
+Only initialize/update when explicitly intended:
 
 ```bash
-python scripts/run_m6b_source_contract_preflight.py --execute-live-contract-check
+python scripts/manage_security_master.py update --live
 ```
 
-Live output is written only under `research/live_observation_runs/m6b_source_contract/` and excludes raw endpoint payloads. TLS remains strict by default; M6B does not silently disable certificate verification or install a global unverified SSL context. TLS/certificate failures should be treated as governed diagnostics, not bypassed.
+Do not substitute fixtures or historical Candidate B payloads.
 
+## Workbench does not start
 
-## Windows + Python 3.13 TWSE MIS TLS failures
-
-Symptom: an explicit bounded live observation or M6B source-contract execute run fails with an SSL/certificate verification diagnostic when calling TWSE MIS.
-
-Policy: strict TLS verification is the default and there is no silent fallback. First confirm you are running an explicit bounded live command, not a check-only command. Then retry with compatibility mode only for that bounded command:
+Use the canonical launcher:
 
 ```bash
-python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation --ssl-policy compatibility
+python scripts/run_unified_workbench.py
 ```
 
-or:
+Then open `http://127.0.0.1:8000/workbench/`.
+
+## MCP startup failure
+
+Use:
 
 ```bash
-python scripts/run_m6b_source_contract_preflight.py --execute-live-contract-check --ssl-policy compatibility
+python scripts/run_unified_market_evidence_mcp.py
 ```
 
-Do not use `unsafe-explicit` unless you understand TLS verification is disabled. `unsafe-explicit` is never default, must be explicitly requested by CLI or `TW_MARKET_SSL_POLICY`, and is reported in output diagnostics.
+The current MCP has exactly six tools. If a host reports an older M5/M6 tool
+surface, verify it is launching the current Unified MCP command rather than a
+legacy compatibility server.
 
-## M6E acceptance troubleshooting
+## Request validates but cannot execute
 
-If `python scripts/run_m6e_operator_acceptance.py --check-only` fails, inspect `research/live_observation_runs/m6e_operator_acceptance/latest_operator_acceptance_report.md` first, then rerun the failing child command shown in the JSON report.
+Check current capability/route truth. Common legitimate causes include:
 
-## M6G browser/operator E2E troubleshooting
+- identity known but capability execution unsupported;
+- route blocked or plan-only;
+- target market not covered by the active route;
+- required approval missing;
+- Security Master not initialized;
+- source failure;
+- network confirmation missing.
 
-If `python scripts/run_m6g_browser_operator_e2e.py --check-only` reports `skipped_with_caveats`, install browser tooling and rerun:
+V3 schema support alone does not activate a route.
+
+## Phase H trading-status surprise
+
+Current H1 execution is partial: only the TPEx attention route is active.
+TWSE trading-status requests or disposition/suspension/resumption/
+changed-trading requests may correctly fail closed or remain non-executable.
+
+## Deterministic regression failure
+
+Run:
 
 ```bash
-python -m pip install playwright
-python -m playwright install chromium
-python scripts/run_m6g_browser_operator_e2e.py --check-only
+python -m compileall -q scripts server tests
+python scripts/validate_phase_h_v3_contracts.py
+python scripts/validate_portable_catalog_sync.py
+python scripts/validate_runtime_skill_guide_sync.py
+python scripts/run_test_profile.py default-ci
+git diff --check
 ```
 
-A skip is acceptable for environments without browser binaries. A failure after browser startup should be investigated as an operator-path regression: frontend payload generation, local FastAPI availability, check-only no-execute guarantees, or SSL policy propagation.
+Do not add live network access to make deterministic CI pass.
 
-## Browser/operator E2E initially reports missing Playwright or Chromium
+## TLS / source failures
 
-Do not treat initial missing browser dependencies as proof that M6G is unsupported. Browser E2E readiness has three layers: Python Playwright package, Chromium browser binary, and OS/system browser dependencies.
+Treat TLS, HTTP, schema drift, empty source and source-unavailable outcomes as
+governed source failures. Do not silently disable TLS verification or retry in
+an unbounded loop.
 
-Try the explicit browser bootstrap:
+Historical M5/M6 TLS diagnostic tools may still exist for compatibility; they
+are not the current product workflow.
+
+## Browser tooling
+
+Browser E2E remains optional tooling. If a specific acceptance requires it:
 
 ```bash
 python -m pip install -r requirements-browser-e2e.txt
-python -m playwright install --with-deps chromium
+python -m playwright install chromium
 ```
 
-If Chromium exists but Linux system dependencies are missing:
-
-```bash
-python -m playwright install-deps chromium
-```
-
-Only keep `skipped_with_caveats` after recording the dependency command attempted, exact blocking error, environment limitation, and recommended next action. The M6G runner does not install dependencies automatically.
+Do not confuse missing optional browser dependencies with failure of the core
+local Unified runtime.
