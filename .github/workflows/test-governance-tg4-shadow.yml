@@ -29,6 +29,11 @@ jobs:
       - name: Validate TG-2/TG-3 baseline
         run: python scripts/validate_test_governance_tg2_tg3.py
 
+      - name: Validate TG-4 static shadow contract
+        run: |
+          python scripts/validate_test_governance_tg4_shadow.py
+          python -m pytest -q tests/unit/test_test_governance_tg4_shadow.py
+
       - name: Run legacy default authority and record outcome
         shell: bash
         run: |
@@ -154,10 +159,11 @@ jobs:
           print("tg4_static_partition_no_gap: PASS")
           PY
 
-      - name: Verify runtime and default authority remain unchanged
+      - name: Verify runtime and baseline governance authority remain unchanged
         if: always()
         run: |
-          git diff --exit-code b438e3b1d06698e2e702284abbdaf0bbc9340b40 --             server             schemas             frontend             config/test_execution_profiles.json             config/test_governance_semantic_profiles.json             docs/governance/test_governance/HISTORICAL_EVIDENCE_INTEGRITY_MANIFEST.v1.json             docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json             docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json             config/phase_h_h1_dormant_source_descriptors.json
+          git diff --exit-code b438e3b1d06698e2e702284abbdaf0bbc9340b40 --             server             schemas             frontend             config/test_governance_semantic_profiles.json             docs/governance/test_governance/HISTORICAL_EVIDENCE_INTEGRITY_MANIFEST.v1.json             docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json             docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json             config/phase_h_h1_dormant_source_descriptors.json
+          python scripts/validate_test_governance_tg4_shadow.py
           echo "tg4_authority_containment: PASS"
 
       - name: Upload shadow observation
@@ -179,17 +185,8 @@ jobs:
       - name: Evaluate shadow observation
         if: always()
         run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          s=json.loads(Path("/tmp/tg4-shadow-summary.json").read_text())
-          assert s["default-ci"]["status"] == "pass", "legacy default authority must remain green"
-          assert s["current-shadow"]["status"] == "pass", "current shadow has an unexplained protection/classification failure"
-          assert s["full-current-shadow"]["status"] == "pass", "broad current shadow must remain green"
-          assert s["historical-shadow"]["status"] == "pass", "historical candidate shadow has an unexplained failure"
-          assert s["release-shadow"]["status"] == "pass", "release shadow has an unexplained failure"
-          print("tg4_layered_shadow_evaluation: PASS")
-          PY
+          python scripts/validate_test_governance_tg4_shadow.py             --summary /tmp/tg4-shadow-summary.json             --node-analysis /tmp/tg4-node-analysis.json             --mixed-result /tmp/mixed-historical-shadow.json
+          echo "tg4_layered_shadow_evaluation: PASS"
 
       - name: Verify patch whitespace
         if: always()
