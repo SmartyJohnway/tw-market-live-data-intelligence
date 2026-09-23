@@ -14,8 +14,8 @@ The published prerelease history is `v1.0.0-rc.1`
 ([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)),
 and the earlier stable GitHub Release was `v0.1.0`. The current development
 line now uses Unified Request/Result/Audit V3 as the preferred authority while
-retaining V1/V2 compatibility. Phase G G1/G2 runtime capabilities have accepted
-bounded-live evidence, and Phase H has one active TPEx attention route; broader
+retaining V1/V2 compatibility. Phase G G1/G2 runtime capabilities have passed
+bounded controlled-live acceptance; Phase H has one active TPEx attention route; broader
 Roadmap Phase G/H scope remains explicitly incomplete. This is a local-first
 evidence workbench, not a realtime trading product.
 
