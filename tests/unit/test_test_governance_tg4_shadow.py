@@ -9,11 +9,12 @@ from scripts.validate_test_governance_tg4_shadow import validate_profile_config
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def test_tg4_profile_config_changes_only_shadow_authority() -> None:
+def test_tg4_profile_config_preserves_shadow_evidence_after_tg5() -> None:
     result = validate_profile_config()
     assert result == {
-        "default_ci_unchanged": True,
-        "only_expected_shadow_profile_delta": True,
+        "tg4_baseline_preserved": True,
+        "tg5_default_promoted_from_shadow": True,
+        "pre_tg5_rollback_profile_available": True,
     }
 
 
