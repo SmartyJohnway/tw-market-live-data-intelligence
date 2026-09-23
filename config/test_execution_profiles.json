@@ -483,7 +483,7 @@
     "tg2-default-ci-current-shadow": {
       "purpose": "TG-2 shadow candidate for future every-PR current authority; includes mixed files fail-safe. Not merge authority.",
       "execution_type": "pytest",
-      "pytest_expression": "not network and not browser and not live and not performance",
+      "pytest_expression": "not network and not browser and not live and not release_preflight and not historical and not performance",
       "pytest_paths": [
         "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
         "tests/unit/test_m8r_filesystem_containment.py",
@@ -587,7 +587,7 @@
     "tg2-full-current-non-network-shadow": {
       "purpose": "TG-2 broad current non-network shadow; excludes historical/release-only candidates. Not merge authority.",
       "execution_type": "pytest",
-      "pytest_expression": "not network and not browser and not live and not performance",
+      "pytest_expression": "not network and not browser and not live and not release_preflight and not historical and not performance",
       "pytest_paths": [
         "tests/unit/test_m8r_03e_r2_filesystem_containment.py",
         "tests/unit/test_m8r_filesystem_containment.py",
@@ -770,6 +770,19 @@
       ],
       "network_policy": "no network",
       "browser_policy": "not required for shadow governance",
+      "live_policy": "never executes live checks",
+      "automatic_ci_allowed": false
+    },
+    "tg4-mixed-historical-shadow": {
+      "purpose": "TG-4 node-level shadow for historical-marked cases inside files that also contain current tests. Manual only.",
+      "execution_type": "pytest",
+      "pytest_expression": "historical and not network and not browser and not live and not performance",
+      "pytest_paths": [
+        "tests/unit/test_m8r_06_04_mode_c.py",
+        "tests/unit/test_phase_g_pr_d_closure.py"
+      ],
+      "network_policy": "no network",
+      "browser_policy": "not required",
       "live_policy": "never executes live checks",
       "automatic_ci_allowed": false
     }
