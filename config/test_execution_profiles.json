@@ -24,7 +24,7 @@
       "automatic_ci_allowed": true
     },
     "default-ci": {
-      "purpose": "Every-PR/default CI authority after TG-5: current product, supported compatibility, current contracts, security/governance, and essential deterministic integration.",
+      "purpose": "TG-5 promoted ordinary PR/default CI authority: current product, supported compatibility, current contracts, security/governance, and essential deterministic integration.",
       "execution_type": "pytest",
       "pytest_expression": "not network and not browser and not live and not release_preflight and not historical and not performance",
       "pytest_paths": [
