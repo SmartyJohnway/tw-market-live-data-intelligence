@@ -9,7 +9,12 @@ remain mandatory.
   `common_share`/`etf` instruments.
 - TAIFEX capability support is provisional; no provisional or blocked route may
   be represented as an executable market retrieval.
-- `recent_performance` is plan-only and session-state semantics remain bounded
+- V3 is the preferred request/result authority, but promotion does not activate
+  every Phase H route. `trading_status_context` currently executes only through
+  the explicitly active TPEx attention route; the broader H1 declared scope
+  remains partial.
+- `corporate_action_context` and `recent_performance` remain plan-only or
+  blocked where current routing says so; session-state semantics remain bounded
   by the capability authority.
 - `material_disclosures` is executable only for eligible TWSE/TPEX common
   shares and covers the latest completed official daily batch; it is not a
