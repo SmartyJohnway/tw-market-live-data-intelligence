@@ -36,7 +36,8 @@ def test_m7g_inventory_status_and_boundaries():
     }
 
 
-def test_default_ci_includes_m7g_tests():
-    paths = json.loads(Path('config/test_execution_profiles.json').read_text(encoding='utf-8'))['profiles']['default-ci']['pytest_paths']
+def test_broad_current_profile_includes_m7g_tests():
+    from scripts.test_governance_authority import profile_paths_for_role
+    paths = profile_paths_for_role('broad_current')
     for test_path in ['tests/unit/test_m7g_safe_context_artifact_schema.py','tests/unit/test_m7g_safe_artifact_validator.py','tests/unit/test_m7g_frontend_manual_artifact_load_ui.py','tests/unit/test_m7g_inventory_policy.py','tests/unit/test_m7g_real_safe_artifact_rendering.py','tests/unit/test_m7g_provenance_currentness_source_health_panel.py','tests/unit/test_m7g_ai_handoff_from_loaded_safe_artifact.py','tests/unit/test_m7g_refresh_workflow_policy_request_package.py','tests/unit/test_m7g_refresh_request_package_builder.py','tests/unit/test_m7g_controlled_refresh_execution_gate.py','tests/unit/test_m7g_refreshed_safe_artifact_result_contract.py','tests/unit/test_m7g_controlled_refresh_frontend_execution_ui.py','tests/unit/test_m7g_refresh_workflow_security_regression.py','tests/unit/test_m7g_twse_mis_market_route_semantics.py']:
         assert test_path in paths
