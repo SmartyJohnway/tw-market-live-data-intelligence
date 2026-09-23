@@ -1,6 +1,6 @@
 # AI Watchlist Operator Guide
 
-## Normal offline flow
+> **Historical compatibility guide.** This page predates the current Persistent Watchlist + Unified Request V3 product flow. Use [Local Unified Workbench](LOCAL_WORKBENCH.md) for current operation.\n\n## Normal offline flow
 
 1. Inspect or edit `config/m5k_default_watchlist.json` as JSON.
 2. Validate the watchlist with `pytest -q tests/unit/test_m5n_watchlist_workflow.py` or through MCP `validate_watchlist()`.
