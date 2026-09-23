@@ -1,11 +1,16 @@
 # V1.0.0 stable release
 
-The current stable ProductVersion and GitHub Release are
+> **Historical release snapshot.** This page describes the immutable
+> `v1.0.0` product boundary as published on 2026-09-14. The development line
+> has since added Phase G/H work and V3 preferred authority. See
+> [PROJECT.md](../../PROJECT.md) for current state.
+
+The stable ProductVersion and GitHub Release are
 [`v1.0.0`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0),
 published on 2026-09-14. Its immutable annotated tag peels to
 `e02bcb125999f542308a75f349c212f0ff3fee83`.
 
-## Product boundary
+## Product boundary at release time
 
 V1 provides the local Unified Workbench at `/workbench/`, installation-local
 Persistent Watchlists, Taiwan identity resolution, request validation,
@@ -31,4 +36,6 @@ The published RC history is
 which remains immutable. The stable release was promoted without runtime
 feature expansion from the accepted final-promotion candidate.
 
-Phase F is closed. Phase G has not started.
+At the moment this release snapshot was created, Phase F was closed and Phase G
+had not started. That sentence is historical release provenance, not the current
+development-line status.
