@@ -1,0 +1,55 @@
+{
+  "schema_version": "test_governance_tg6_e_marker_decision_preflight.v1",
+  "date": "2026-09-23",
+  "status": "PREFLIGHT_PASS_CURRENT_TREE_NO_MUTATION_RECOMMENDED",
+  "baseline_main": "959b26e2a0a338449f9feef0ab0458f88677a0fa",
+  "observed_current_marker_use": {
+    "historical_mode_c_nodes": 4,
+    "release_preflight_network_integration_nodes_at_least": 1,
+    "default_ci_normal_use": 0,
+    "core_normal_use": 0,
+    "compatibility_normal_use": 0,
+    "documentation_governance_normal_use": 0,
+    "full_current_normal_use": 0
+  },
+  "blocked_retroactive_candidates": [
+    {
+      "target": "tests/unit/test_phase_g_pr_d_closure.py::test_phase_g_closure_remains_historical_while_current_authority_is_v3",
+      "proposed_marker": "historical",
+      "reason": "Would be excluded by default-ci, full-current, and pre-tg5-default-ci.",
+      "projected_counts": {
+        "default-ci": 777,
+        "full-current": 1149,
+        "pre-tg5-default-ci": 1244
+      }
+    },
+    {
+      "targets": [
+        "tests/unit/test_build_v1_release_manifest.py",
+        "tests/unit/test_browser_e2e_requirements.py"
+      ],
+      "proposed_marker": "release_preflight",
+      "affected_nodes": 5,
+      "reason": "Both files remain in pre-tg5-default-ci, whose expression excludes release_preflight.",
+      "projected_counts": {
+        "pre-tg5-default-ci": 1240
+      }
+    }
+  ],
+  "current_tree_decision": {
+    "apply_new_markers": false,
+    "mass_migration": false,
+    "path_based_profiles_remain_canonical": true,
+    "existing_mode_c_historical_markers_remain": true
+  },
+  "forward_policy": {
+    "new_tests_use_semantically_material_markers": true,
+    "marker_routing_does_not_replace_path_authority": true,
+    "any_authority_changing_marker_work_requires_separate_gate": true
+  },
+  "relationship_to_tg6_d": {
+    "bundle_marker_mutation_with_tg6_d": false,
+    "tg6_d_should_proceed_alone": true
+  },
+  "closure_recommendation": "TG6-E may close as CURRENT_TREE_NO_MUTATION_REQUIRED with forward marker policy retained."
+}
