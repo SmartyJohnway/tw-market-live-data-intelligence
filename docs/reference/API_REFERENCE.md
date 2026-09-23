@@ -1,43 +1,66 @@
-# API Reference
+# Current Local API Reference
 
-Run locally with:
+Start the current Unified Workbench / Local Service with:
 
 ```bash
-uvicorn server.main:app --host 127.0.0.1 --port 8000
+python scripts/run_unified_workbench.py
 ```
 
-## Current readonly/safe endpoints
+Canonical browser entry:
 
-- `GET /api/health` — local service health.
-- `GET /api/governance` — governance flags.
-- `GET /api/matrix` — capability/source matrix summary.
-- `GET /api/context/canonical` — M5F canonical context.
-- `GET /api/context/snapshot` — M5F latest reviewed snapshot.
-- `GET /api/context/source-health` — M5F source health.
-- `GET /api/context/capability-summary` — M5F capability summary.
-- `GET /api/context/briefing` — M5F briefing Markdown.
-- `GET /api/watchlist`, `/api/watchlist/summary`, `/api/watchlist/schema` — local watchlist workspace.
-- `GET /api/conversation/context` — M5N conversation context.
-- `GET /api/m5l/source-adapter-matrix`, `/api/m5l/source-capabilities` — adapter metadata.
-- `GET /api/m5k/watchlist/default` — default watchlist.
-- `POST /api/m5k/watchlist/validate` — validate supplied watchlist, no network.
-- `POST /api/m5k/conversation/handoff` — create AI handoff payload.
-- `GET /api/m5k/live-observation/latest` — read latest local Level 2 artifact.
-- `POST /api/m5k/live-observation/plan` — plan routes, no network.
-- `POST /api/m5k/live-observation/execute?confirm_live_observation=true` — explicit bounded execution only.
-- `GET /api/source-health/latest`, `/api/source-health/schema` — source-health report/schema.
-- `POST /api/unified/validate-request` — production F3 validation using the governed local compact Security Master; no network.
-- `POST /api/unified/preview-request` — Mode B1 deterministic Preview plus internal 05B-01 orchestration plan; reruns F3, creates no authorization, and performs no execution or network call.
+```text
+GET /workbench/
+```
 
-## Disabled / deprecated
+`/workbench/mode-a/` is a compatibility redirect to the canonical Workbench.
 
-`/api/probe/*` routes are excluded from the public schema and fail closed. Do not document or use them as current product endpoints.
+## Unified evidence API
 
-## M6A local UX summary endpoints
+The current Unified router is mounted under `/api/unified`.
 
-- `GET /api/m5k/live-observation/history` — readonly summary of local M5K observation artifacts under `research/live_observation_runs/m5k/`; no network calls, no raw endpoint payload exposure.
-- `GET /api/source-health/history` — readonly summary of local M5Q source-health artifacts under `research/live_observation_runs/source_health/`; no network calls, no raw endpoint payload exposure.
+| Method | Endpoint | Purpose | Market network |
+|---|---|---|---|
+| GET | `/api/unified/capabilities` | current Catalog/Route/Executor projection | no |
+| POST | `/api/unified/validate-request` | Mode A request + identity validation | no |
+| POST | `/api/unified/preview-request` | deterministic Mode B1 preview/plan | no |
+| POST | `/api/unified/authorizations` | create server-owned authorization | no |
+| POST | `/api/unified/executions` | consume an authorization exactly once | only when explicitly confirmed and route requires it |
+| POST | `/api/unified/fetch-evidence` | bounded local-operator action used by MCP | only through governed execution |
+| POST | `/api/unified/result-package` | build/verify Mode C Result/Audit output | no additional market fetch |
+| GET | `/api/unified/result-package/{id}/audit.json` | verified Audit read | no |
+| GET | `/api/unified/result-package/{id}/handoff` | verified AI handoff | no |
 
-## M6A local CORS policy
+Accepted Request contracts are V1/V2/V3; V3 is preferred.
 
-FastAPI permits local browser origins matching `http://localhost:<port>` or `http://127.0.0.1:<port>` for `GET` and `POST` only. Credentials are disabled. The `file://` double-click workflow is handled by frontend API-base detection, which targets `http://127.0.0.1:8000` rather than trusting remote origins.
+## Persistent Watchlist API
+
+Current durable Watchlist endpoints include:
+
+- `GET /api/watchlists`
+- `GET /api/watchlists/{watchlist_id}`
+- `GET /api/watchlists/{watchlist_id}/versions`
+- `GET /api/watchlists/{watchlist_id}/versions/{version}`
+- `GET /api/watchlists/{watchlist_id}/export`
+- `POST /api/watchlists/{watchlist_id}/evidence-request-preview`
+- `POST /api/evidence-request-previews`
+- `POST /api/watchlist-mutations/preview`
+- `POST /api/watchlist-mutations/commit`
+
+Persistent mutation and market evidence execution are separate confirmation
+domains.
+
+## Local service health / governance
+
+- `GET /api/health`
+- `GET /api/governance`
+
+## Compatibility / historical endpoints
+
+The server still contains earlier M5/M6 context, observation, source-health and
+compatibility endpoints. They are preserved for historical workflows and tests;
+they are **not** the preferred current product API.
+
+`/api/probe/*` routes are excluded from the public schema and fail closed.
+
+Do not infer current product architecture from legacy endpoint names merely
+because compatibility code remains in `server/main.py`.
