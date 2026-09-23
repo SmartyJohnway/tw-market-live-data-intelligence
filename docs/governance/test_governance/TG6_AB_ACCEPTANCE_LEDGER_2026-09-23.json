@@ -1,0 +1,97 @@
+{
+  "schema_version": "test_governance_tg6_ab_acceptance_ledger.v1",
+  "date": "2026-09-23",
+  "status": "TG6_AB_ACCEPTANCE_PASS",
+  "authorization": {
+    "owner_authorization": "OWNER_CHAT_2026-09-23_TG6_AB",
+    "authorized_scope": [
+      "TG6-A",
+      "TG6-B"
+    ],
+    "unauthorized_scope": [
+      "TG6-C",
+      "TG6-D",
+      "TG6-E",
+      "TG6-F",
+      "TG6-G",
+      "Roadmap Phase I"
+    ]
+  },
+  "preflight": {
+    "pr": 253,
+    "merge_commit": "8fc694424d47e0121ca4ad66b45e9acc555a5e0a",
+    "evidence_only": true
+  },
+  "implementation": {
+    "pr": 254,
+    "tested_head": "39ce2cc500553dab6c3dc5bf524c88841a17ccf7",
+    "branch": "governance/test-governance-tg6-ab-cleanup"
+  },
+  "tg6_a": {
+    "authority_state": "TG5_PROMOTED_ACTIVE",
+    "current_machine_authority": "config/test_governance_authority.json",
+    "default_profile": "default-ci",
+    "expected_file_paths": 93,
+    "expected_selected_nodes": 778,
+    "tg2_semantic_manifest_classification": "HISTORICAL_MIGRATION_EVIDENCE",
+    "tg2_semantic_manifest_modified": false
+  },
+  "tg6_b": {
+    "retired_one_time_workflows": 10,
+    "retained_ci_policy_v1_workflows": [
+      "ci.yml",
+      "non-network-ci.yml",
+      "windows-compatibility-smoke.yml",
+      "browser-operator-e2e.yml",
+      "release-validation.yml"
+    ],
+    "retained_workflow_count": 5
+  },
+  "acceptance_runs": {
+    "default_ci": {
+      "run_id": 35849410611,
+      "conclusion": "success",
+      "collected": 783,
+      "selected": 778,
+      "passed": 774,
+      "skipped": 4,
+      "deselected": 5,
+      "status": "pass"
+    },
+    "full_non_network": {
+      "run_id": 35849449665,
+      "conclusion": "failure",
+      "selected": 2737,
+      "passed": 2717,
+      "failed": 7,
+      "skipped": 13,
+      "tg5_previous_current_failures": 8,
+      "new_unexplained_failures": 0,
+      "resolved_failures": [
+        "tests/unit/test_github_actions_execution_policy.py::test_ci_policy_validator_accepts_repository_workflows"
+      ],
+      "remaining_failures_are_preexisting": true,
+      "acceptance_interpretation": "PASS_WITH_KNOWN_PREEXISTING_REGRESSION_DEBT"
+    },
+    "windows_compatibility_smoke": {
+      "run_id": 35849495707,
+      "conclusion": "success",
+      "all_required_steps_passed": true
+    }
+  },
+  "containment": {
+    "test_execution_profiles_changed": false,
+    "tg2_semantic_manifest_changed": false,
+    "default_authority_changed_from_93_paths_778_nodes": false,
+    "production_runtime_changed": false,
+    "source_activation_changed": false,
+    "routing_changed": false,
+    "frozen_schema_changed": false,
+    "phase_i_implementation": false
+  },
+  "merge_gate": {
+    "accepted": true,
+    "reason": "Default CI preserved the 778-node authority; Windows compatibility passed; full non-network had no new unexplained failures and one TG6-B governance failure was removed."
+  },
+  "evidence_note": "This ledger is additive post-run acceptance evidence. The tested execution head is recorded above; this ledger itself does not alter runtime, profiles, workflows, routing, source activation, or frozen schemas."
+}
