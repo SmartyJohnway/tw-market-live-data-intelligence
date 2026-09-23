@@ -12,10 +12,13 @@
   },
   "lifecycle_regression": {
     "broad_current_profile": "tg2-full-current-non-network-shadow",
-    "expected_selected_nodes": 5,
+    "broad_current_expected_nodes": 1150,
     "historical_profile": "tg2-historical-acceptance-shadow",
+    "historical_expected_nodes": 94,
     "release_profile": "tg2-release-preflight-shadow",
-    "mixed_historical_profile": "tg4-mixed-historical-shadow"
+    "release_expected_nodes": 5,
+    "mixed_historical_profile": "tg4-mixed-historical-shadow",
+    "mixed_historical_expected_nodes": 4
   },
   "rollback": {
     "profile": "pre-tg5-default-ci",
