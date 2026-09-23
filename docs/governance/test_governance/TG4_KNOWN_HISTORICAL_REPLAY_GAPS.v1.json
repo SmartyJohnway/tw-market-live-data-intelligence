@@ -1,0 +1,26 @@
+{
+  "schema_version": "tg4_known_historical_replay_gaps.v1",
+  "date": "2026-09-23",
+  "baseline_main": "b438e3b1d06698e2e702284abbdaf0bbc9340b40",
+  "classification": "KNOWN_HISTORICAL_REPLAY_GAP_NOT_CURRENT_PROTECTION",
+  "current_default_ci_affected": false,
+  "tg5_authorized": false,
+  "allowed_failed_nodes": [
+    {
+      "node_id": "tests/unit/test_m8r_06_04_mode_c.py::test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected",
+      "reason": "historical-marked Mode C V1 replay depends on preserved lineage bytes that no longer materialize under current runtime; legacy default already excludes this historical node"
+    },
+    {
+      "node_id": "tests/unit/test_m8r_06_04_mode_c.py::test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected",
+      "reason": "historical-marked Mode C V1 audit replay depends on preserved lineage bytes that no longer materialize under current runtime; legacy default already excludes this historical node"
+    }
+  ],
+  "constraints": {
+    "only_profile": "tg4-mixed-historical-shadow",
+    "unexpected_failure_count_must_be_zero": true,
+    "current_shadow_must_pass": true,
+    "full_current_shadow_must_pass": true,
+    "regular_historical_shadow_must_pass": true,
+    "release_shadow_must_pass": true
+  }
+}
