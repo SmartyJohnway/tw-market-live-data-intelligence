@@ -47,9 +47,9 @@ CLASS_ORDER = (
 )
 
 
-def _load_default_paths() -> list[str]:
+def _load_profile_paths(profile_name: str = "default-ci") -> list[str]:
     payload = json.loads(PROFILE_PATH.read_text(encoding="utf-8"))
-    return list(payload["profiles"]["default-ci"]["pytest_paths"])
+    return list(payload["profiles"][profile_name]["pytest_paths"])
 
 
 def _decorator_name(node: ast.expr) -> str | None:
@@ -267,8 +267,8 @@ def analyze(path: str) -> dict[str, Any]:
     }
 
 
-def build_report() -> dict[str, Any]:
-    paths = _load_default_paths()
+def build_report(profile_name: str = "default-ci") -> dict[str, Any]:
+    paths = _load_profile_paths(profile_name)
     records = [analyze(path) for path in paths]
 
     class_counts = Counter(record["suggested_class"] for record in records)
@@ -300,7 +300,7 @@ def build_report() -> dict[str, Any]:
 
     return {
         "schema_version": "test_governance_inventory.v1",
-        "baseline_profile": "default-ci",
+        "baseline_profile": profile_name,
         "source_profile_path": "config/test_execution_profiles.json",
         "classification_is_advisory": True,
         "selection_change_performed": False,
