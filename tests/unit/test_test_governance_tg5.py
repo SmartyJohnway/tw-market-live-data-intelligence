@@ -42,6 +42,7 @@ def test_tg5_authority_manifest_separates_every_pr_and_lifecycle_profiles() -> N
     assert authority["lifecycle_regression"]["broad_current_profile"] == "tg2-full-current-non-network-shadow"
     assert authority["lifecycle_regression"]["historical_profile"] == "tg2-historical-acceptance-shadow"
     assert authority["lifecycle_regression"]["release_profile"] == "tg2-release-preflight-shadow"
-    assert authority["rollback"]["profile"] == "pre-tg5-default-ci"
+    assert authority["rollback"]["diagnostic_profile"] == "pre-tg5-default-ci"
+    assert authority["rollback"]["authoritative_baseline_commit"] == "2ff9707d901f40c1a108dd1317fce2f03cc79735"
     assert authority["invariants"]["tests_deleted"] is False
     assert authority["invariants"]["phase_i_implementation"] is False
