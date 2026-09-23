@@ -1,0 +1,124 @@
+{
+  "schema_version": "test_historical_evidence_governance_preflight.v1",
+  "date": "2026-09-23",
+  "baseline_main": "b42c73057a16ea39d73ed7efd8c96096ee49e131",
+  "status": "PREFLIGHT_READY_TG0_NOT_YET_EXECUTED",
+  "scope": {
+    "phase_i_implementation": false,
+    "production_runtime_mutation": false,
+    "source_activation_mutation": false,
+    "frozen_schema_mutation": false,
+    "test_deletion": false,
+    "default_ci_cutover": false
+  },
+  "baseline": {
+    "test_python_files": 388,
+    "unit_test_files": 358,
+    "integration_test_files": 7,
+    "acceptance_archive_python_files": 1,
+    "default_ci_explicit_test_paths": 156,
+    "last_accepted_default_ci": {
+      "workflow_run_id": 35817203131,
+      "selected": 1245,
+      "passed": 1241,
+      "skipped": 4,
+      "deselected": 9,
+      "duration_seconds": 29.65
+    },
+    "marker_governance": {
+      "markers_defined": [
+        "core",
+        "contract",
+        "default_ci",
+        "historical",
+        "milestone",
+        "component_governance",
+        "component_agent_skill",
+        "component_watchlist",
+        "component_market_source",
+        "component_security",
+        "network",
+        "browser",
+        "live",
+        "release_preflight",
+        "performance"
+      ],
+      "observed_default_ci_decorator_search_results": 0,
+      "observed_core_decorator_search_results": 0,
+      "historical_marker_usage": "sparse"
+    },
+    "default_ci_path_family_counts": {
+      "m5_m6_prefixed": 15,
+      "m7_prefixed": 33,
+      "m8_pre_m8r_prefixed": 41,
+      "m8r_prefixed": 22,
+      "phase_g_prefixed": 11,
+      "phase_h_prefixed": 8,
+      "acceptance_closure_preflight_named": 18,
+      "frontend_static_or_ux_named": 13
+    }
+  },
+  "observed_brittle_examples": [
+    {
+      "file": "tests/unit/test_m8_through_m8b_consolidated_acceptance.py",
+      "type": "historical_filename_navigation_coupling",
+      "example": "requires docs/INDEX.md to include exact M8 historical acceptance filename",
+      "proposed_direction": "preserve artifact/integrity/discoverability without making exact current index prose a historical acceptance invariant"
+    },
+    {
+      "file": "scripts/validate_v1_public_contracts.py",
+      "type": "natural_language_release_prose_contract",
+      "example": "stable-release truth relies partly on exact README regex phrasing",
+      "proposed_direction": "prefer structured release/current-state authority while keeping essential public release truth validation"
+    }
+  ],
+  "proposed_classes": [
+    "CURRENT_CORE",
+    "CURRENT_CONTRACT",
+    "COMPATIBILITY",
+    "CURRENT_INTEGRATION",
+    "RELEASE_PRECHECK",
+    "HISTORICAL_ACCEPTANCE",
+    "DOCUMENTATION_GOVERNANCE",
+    "LIVE_BROWSER_PERFORMANCE"
+  ],
+  "tranches": [
+    {
+      "id": "TG-0",
+      "name": "Inventory and classification",
+      "mutation": "inventory only"
+    },
+    {
+      "id": "TG-1",
+      "name": "Authority and brittle-coupling audit",
+      "mutation": "audit only"
+    },
+    {
+      "id": "TG-2",
+      "name": "Marker/profile normalization",
+      "mutation": "additive; no cutover"
+    },
+    {
+      "id": "TG-3",
+      "name": "Historical evidence integrity layer",
+      "mutation": "additive manifest/integrity checks"
+    },
+    {
+      "id": "TG-4",
+      "name": "Shadow CI",
+      "mutation": "parallel validation"
+    },
+    {
+      "id": "TG-5",
+      "name": "Default-CI cutover",
+      "mutation": "profile authority change after review"
+    },
+    {
+      "id": "TG-6",
+      "name": "Optional physical cleanup",
+      "mutation": "last-stage file movement/dedup only"
+    }
+  ],
+  "immediate_authorized_scope": "TG-0 inventory and classification only",
+  "next_review_gate": "Review TG-0 classification and protection-gap inventory before changing default-ci selection"
+}
