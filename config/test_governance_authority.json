@@ -1,0 +1,39 @@
+{
+  "schema_version": "test_governance_authority.v1",
+  "date": "2026-09-23",
+  "state": "TG5_CUTOVER_CANDIDATE",
+  "baseline_main": "2ff9707d901f40c1a108dd1317fce2f03cc79735",
+  "current_merge_authority": {
+    "profile": "default-ci",
+    "expected_file_paths": 93,
+    "expected_selected_nodes": 778,
+    "automatic_ci_allowed": true,
+    "expression": "not network and not browser and not live and not release_preflight and not historical and not performance"
+  },
+  "lifecycle_regression": {
+    "broad_current_profile": "tg2-full-current-non-network-shadow",
+    "expected_selected_nodes": 5,
+    "historical_profile": "tg2-historical-acceptance-shadow",
+    "release_profile": "tg2-release-preflight-shadow",
+    "mixed_historical_profile": "tg4-mixed-historical-shadow"
+  },
+  "rollback": {
+    "profile": "pre-tg5-default-ci",
+    "exact_contract": "docs/governance/test_governance/TG5_ROLLBACK_CONTRACT_2026-09-23.json",
+    "expected_file_paths": 156,
+    "expected_selected_nodes": 1245
+  },
+  "source_evidence": {
+    "tg4_acceptance": "docs/governance/test_governance/TG4_ACCEPTANCE_LEDGER_2026-09-23.json",
+    "tg4_workflow_run_id": 35824957803,
+    "legacy_unexplained_nodes": 0
+  },
+  "invariants": {
+    "tests_deleted": false,
+    "production_runtime_changed": false,
+    "source_activation_changed": false,
+    "routing_changed": false,
+    "frozen_schema_changed": false,
+    "phase_i_implementation": false
+  }
+}
