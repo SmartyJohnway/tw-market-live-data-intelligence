@@ -1,0 +1,128 @@
+name: Test Governance TG-4 Shadow Observation
+
+on:
+  push:
+    branches:
+      - governance/test-governance-tg4-shadow-ci
+
+permissions:
+  contents: read
+
+jobs:
+  shadow-observation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-lock.txt
+
+      - name: Install locked dependencies
+        run: python -m pip install -r requirements-lock.txt
+
+      - name: Validate TG-2/TG-3 baseline
+        run: python scripts/validate_test_governance_tg2_tg3.py
+
+      - name: Run legacy default authority
+        run: python scripts/run_test_profile.py default-ci --json > /tmp/default-ci.json
+
+      - name: Run TG-2 current shadow
+        run: python scripts/run_test_profile.py tg2-default-ci-current-shadow --json > /tmp/current-shadow.json
+
+      - name: Run TG-2 broad current shadow
+        run: python scripts/run_test_profile.py tg2-full-current-non-network-shadow --json > /tmp/full-current-shadow.json
+
+      - name: Run TG-2 historical shadow and record outcome
+        shell: bash
+        run: |
+          set +e
+          python scripts/run_test_profile.py tg2-historical-acceptance-shadow --json > /tmp/historical-shadow.json
+          rc=$?
+          echo "historical_shadow_return_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+        id: historical
+
+      - name: Run TG-2 release shadow and record outcome
+        shell: bash
+        run: |
+          set +e
+          python scripts/run_test_profile.py tg2-release-preflight-shadow --json > /tmp/release-shadow.json
+          rc=$?
+          echo "release_shadow_return_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+        id: release
+
+      - name: Summarize shadow results
+        env:
+          HISTORICAL_RC: ${{ steps.historical.outputs.historical_shadow_return_code }}
+          RELEASE_RC: ${{ steps.release.outputs.release_shadow_return_code }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          names = {
+              "default-ci": "/tmp/default-ci.json",
+              "current-shadow": "/tmp/current-shadow.json",
+              "full-current-shadow": "/tmp/full-current-shadow.json",
+              "historical-shadow": "/tmp/historical-shadow.json",
+              "release-shadow": "/tmp/release-shadow.json",
+          }
+          out={}
+          for name,path in names.items():
+              payload=json.loads(Path(path).read_text(encoding="utf-8"))
+              out[name]={
+                  key:payload.get(key)
+                  for key in ("status","collected","selected","passed","failed","skipped","deselected","duration_seconds","failed_command","failed_return_code")
+                  if key in payload
+              }
+          out["historical_shell_rc"]=int(os.environ["HISTORICAL_RC"])
+          out["release_shell_rc"]=int(os.environ["RELEASE_RC"])
+          Path("/tmp/tg4-shadow-summary.json").write_text(json.dumps(out,indent=2,sort_keys=True)+"\n",encoding="utf-8")
+          print(json.dumps(out,indent=2,sort_keys=True))
+          PY
+
+      - name: Verify profile path partition has no static gap
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          cfg=json.loads(Path("config/test_execution_profiles.json").read_text())["profiles"]
+          legacy=cfg["default-ci"]["pytest_paths"]
+          full=cfg["tg2-full-current-non-network-shadow"]["pytest_paths"]
+          hist=cfg["tg2-historical-acceptance-shadow"]["pytest_paths"]
+          release=cfg["tg2-release-preflight-shadow"]["pytest_paths"]
+          assert len(legacy)==156
+          assert len(set(full)|set(hist)|set(release))==156
+          assert (set(full)|set(hist)|set(release))==set(legacy)
+          assert not (set(full)&set(hist))
+          assert not (set(full)&set(release))
+          assert not (set(hist)&set(release))
+          print("tg4_static_partition_no_gap: PASS")
+          PY
+
+      - name: Verify runtime and default authority remain unchanged
+        run: |
+          git diff --exit-code b438e3b1d06698e2e702284abbdaf0bbc9340b40 --             server             schemas             frontend             config/test_execution_profiles.json             config/test_governance_semantic_profiles.json             docs/governance/test_governance/HISTORICAL_EVIDENCE_INTEGRITY_MANIFEST.v1.json             docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json             docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json             config/phase_h_h1_dormant_source_descriptors.json
+          echo "tg4_authority_containment: PASS"
+
+      - name: Upload shadow observation
+        uses: actions/upload-artifact@v4
+        with:
+          name: tg4-shadow-observation
+          path: |
+            /tmp/default-ci.json
+            /tmp/current-shadow.json
+            /tmp/full-current-shadow.json
+            /tmp/historical-shadow.json
+            /tmp/release-shadow.json
+            /tmp/tg4-shadow-summary.json
+          if-no-files-found: error
+
+      - name: Verify patch whitespace
+        run: git diff --check
