@@ -138,7 +138,7 @@ jobs:
       - name: Validate TG-5 runtime and rollback evidence
         if: always()
         run: |
-          python scripts/validate_test_governance_tg5.py             --new-default /tmp/new-default.json             --current-shadow /tmp/current-shadow.json             --rollback /tmp/rollback-diagnostic.json             --full-current /tmp/full-current.json             --historical /tmp/historical.json             --release /tmp/release.json             --mixed /tmp/mixed.json             --node-analysis /tmp/node-analysis.json             --full-non-network /tmp/full-non-network.json
+          python scripts/validate_test_governance_tg5.py             --new-default /tmp/new-default.json             --current-shadow /tmp/current-shadow.json             --baseline-default /tmp/baseline-default.json             --rollback-diagnostic /tmp/rollback-diagnostic.json             --full-current /tmp/full-current.json             --historical /tmp/historical.json             --release /tmp/release.json             --mixed /tmp/mixed.json             --node-analysis /tmp/node-analysis.json             --full-non-network /tmp/full-non-network.json
 
       - name: Verify runtime and market authority containment
         if: always()
