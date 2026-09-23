@@ -137,9 +137,6 @@ def test_inventory_m8_entry():
     assert entry["next_task"] in {"M8-00-05-MULTI-SOURCE-CONTEXT-BUILDER", "M8-00-06-CONTROLLED-CONVERSATION-CONTEXT-INTEGRATION", "M8-00-08-FINAL-ACCEPTANCE-AND-CLOSURE", "M8A-00-OFFICIAL-EOD-ADAPTER-SCOPE-AND-CONTRACT-PREFLIGHT"}
 
 
-def test_default_ci_includes_m8_governance_test():
-    profile = load_json(PROFILE_PATH)
-    assert (
-        "tests/unit/test_m8_source_governance_foundation.py"
-        in profile["profiles"]["default-ci"]["pytest_paths"]
-    )
+def test_broad_current_profile_includes_m8_governance_test():
+    from scripts.test_governance_authority import profile_paths_for_role
+    assert "tests/unit/test_m8_source_governance_foundation.py" in profile_paths_for_role("broad_current")
