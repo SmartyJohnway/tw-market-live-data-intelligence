@@ -21,24 +21,35 @@ def test_tg2_tg3_validator_passes_and_preserves_default_authority() -> None:
     assert result["release_candidate_count"] == 2
     assert result["default_ci_authority_changed"] is True
     assert result["tg5_cutover_candidate"] is True
-    assert result["tg2_shadow_profiles_automatic_ci_allowed"] is False
+    assert result["historical_tg2_sets_reproduced_by_current_profiles"] is True
     assert result["tg3_full_reproduction_retained"] is True
 
 
-def test_tg2_shadow_profiles_are_additive_and_manual_only() -> None:
+def test_tg2_historical_shadow_sets_map_to_stable_current_profiles() -> None:
     profiles = json.loads(
         (ROOT / "config/test_execution_profiles.json").read_text(encoding="utf-8")
     )["profiles"]
 
-    expected = {
-        "tg2-default-ci-current-shadow": 93,
-        "tg2-full-current-non-network-shadow": 139,
-        "tg2-historical-acceptance-shadow": 15,
-        "tg2-release-preflight-shadow": 2,
+    stable = {
+        "default-ci": 93,
+        "full-current": 139,
+        "historical-milestone-replay": 15,
+        "release-preflight-current": 2,
+        "mixed-historical-diagnostic": 2,
     }
-    for name, count in expected.items():
+    migration_names = {
+        "tg2-default-ci-current-shadow",
+        "tg2-full-current-non-network-shadow",
+        "tg2-historical-acceptance-shadow",
+        "tg2-release-preflight-shadow",
+        "tg4-mixed-historical-shadow",
+    }
+    assert migration_names.isdisjoint(profiles)
+    for name, count in stable.items():
         assert name in profiles
         assert len(profiles[name]["pytest_paths"]) == count
+    assert profiles["default-ci"]["automatic_ci_allowed"] is True
+    for name in stable.keys() - {"default-ci"}:
         assert profiles[name]["automatic_ci_allowed"] is False
 
 

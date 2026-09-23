@@ -113,6 +113,7 @@ def test_json_output_contract(monkeypatch, capsys):
     assert rtp.main(['fast', '--json']) == 0
     payload = json.loads(capsys.readouterr().out)
     assert payload['profile'] == 'fast'
+    assert payload['resolved_profile'] == 'fast'
     assert payload['status'] == 'pass'
     assert payload['commands']
     assert payload['network_may_have_occurred'] is False

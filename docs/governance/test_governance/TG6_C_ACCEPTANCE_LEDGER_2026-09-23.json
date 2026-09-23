@@ -1,0 +1,143 @@
+{
+  "schema_version": "test_governance_tg6_c_acceptance.v1",
+  "date": "2026-09-23",
+  "status": "TG6_C_STABLE_LIFECYCLE_PROFILE_NAMING_PASS",
+  "authorization": {
+    "authorized_scope": [
+      "TG6-C stable lifecycle profile naming"
+    ],
+    "explicitly_excluded": [
+      "milestone-acceptance cleanup",
+      "TG6-D",
+      "TG6-E",
+      "TG6-F",
+      "TG6-G",
+      "Roadmap Phase I"
+    ]
+  },
+  "implementation": {
+    "pr": 258,
+    "tested_head": "1052ed074c8f1407bc2ed1678b9bbbe680d02ca6",
+    "branch": "governance/test-governance-tg6-c-implementation"
+  },
+  "stable_profiles": {
+    "default-ci": {
+      "expected_nodes": 778,
+      "role": "ordinary merge/default CI authority"
+    },
+    "full-current": {
+      "expected_nodes": 1150,
+      "role": "broad deterministic current regression"
+    },
+    "historical-milestone-replay": {
+      "expected_nodes": 94,
+      "role": "manual historical milestone replay"
+    },
+    "release-preflight-current": {
+      "expected_nodes": 5,
+      "role": "manual current release-specific lifecycle"
+    },
+    "mixed-historical-diagnostic": {
+      "expected_nodes": 4,
+      "role": "node-level mixed historical diagnostic"
+    },
+    "pre-tg5-default-ci": {
+      "expected_nodes": 1245,
+      "role": "rollback/current-tree diagnostic"
+    }
+  },
+  "deprecated_aliases": {
+    "tg2-default-ci-current-shadow": "default-ci",
+    "tg2-full-current-non-network-shadow": "full-current",
+    "tg2-historical-acceptance-shadow": "historical-milestone-replay",
+    "tg2-release-preflight-shadow": "release-preflight-current",
+    "tg4-mixed-historical-shadow": "mixed-historical-diagnostic"
+  },
+  "static_equivalence": {
+    "default_ci_execution_body_unchanged": true,
+    "pre_tg5_default_ci_execution_body_unchanged": true,
+    "stable_profile_execution_bodies_equivalent_to_migration_predecessors": true,
+    "migration_keys_absent_from_current_profile_config": true,
+    "current_authority_uses_only_stable_lifecycle_names": true
+  },
+  "historical_evidence_integrity": {
+    "config/test_governance_semantic_profiles.json": "unchanged",
+    "docs/governance/test_governance/TG2_TG3_ACCEPTANCE_LEDGER_2026-09-23.json": "unchanged",
+    "docs/governance/test_governance/HISTORICAL_EVIDENCE_INTEGRITY_MANIFEST.v1.json": "unchanged",
+    "docs/governance/test_governance/TG4_ACCEPTANCE_LEDGER_2026-09-23.json": "unchanged",
+    "docs/governance/test_governance/TG5_ACCEPTANCE_LEDGER_2026-09-23.json": "unchanged",
+    "docs/governance/test_governance/TG5_ROLLBACK_DIAGNOSTIC_GAPS.v1.json": "unchanged"
+  },
+  "acceptance_runs": {
+    "default_ci": {
+      "run_id": 35863540621,
+      "conclusion": "success",
+      "collected": 783,
+      "selected": 778,
+      "passed": 774,
+      "skipped": 4,
+      "deselected": 5,
+      "status": "pass"
+    },
+    "full_non_network": {
+      "run_id": 35863494074,
+      "conclusion": "failure",
+      "collected": 2801,
+      "selected": 2745,
+      "passed": 2730,
+      "failed": 2,
+      "skipped": 13,
+      "deselected": 56,
+      "remaining_failures": [
+        "tests/unit/test_m7f_rich_fact_browser_final_acceptance.py::test_default_ci_includes_final_acceptance_tests",
+        "tests/unit/test_m8_00_final_acceptance.py::test_default_ci_includes_m8_final_acceptance_test"
+      ],
+      "remaining_failures_classification": "FROZEN_HISTORICAL_ASSERTIONS",
+      "new_unexplained_failures": 0,
+      "focused_tg6_c_tests_passed": 8,
+      "selected_count_change_note": "Selected count increased by 8 versus the pre-TG6-C 2737 baseline because eight new TG6-C governance tests are intentionally part of full-non-network but outside all governed lifecycle profile path lists."
+    },
+    "windows_compatibility_smoke": {
+      "run_id": 35863516664,
+      "conclusion": "success",
+      "all_required_steps_passed": true
+    }
+  },
+  "focused_equivalence_proof": {
+    "test_file": "tests/unit/test_test_governance_tg6_c.py",
+    "result": "8 passed within Full Non-Network run",
+    "asserted_node_counts": {
+      "default-ci": 778,
+      "full-current": 1150,
+      "historical-milestone-replay": 94,
+      "release-preflight-current": 5,
+      "mixed-historical-diagnostic": 4,
+      "pre-tg5-default-ci": 1245
+    },
+    "deprecated_alias_command_equivalence": true,
+    "requested_and_resolved_profile_json_contract": true
+  },
+  "containment": {
+    "default_ci_authority_changed": false,
+    "test_execution_semantics_changed": false,
+    "tests_deleted": false,
+    "tests_moved": false,
+    "marker_migration": false,
+    "workflow_changed": false,
+    "production_runtime_changed": false,
+    "source_activation_changed": false,
+    "routing_changed": false,
+    "frozen_schema_changed": false,
+    "milestone_acceptance_cleanup": false,
+    "tg6_d_started": false,
+    "tg6_e_started": false,
+    "tg6_f_started": false,
+    "tg6_g_started": false,
+    "phase_i_started": false
+  },
+  "merge_gate": {
+    "accepted": true,
+    "reason": "Default CI and Windows smoke passed; Full Non-Network retained exactly the two governed frozen historical failures; focused TG6-C tests passed exact lifecycle node-count and deprecated-alias equivalence assertions; historical evidence remained unchanged."
+  },
+  "evidence_note": "This ledger is an additive evidence-only commit after the tested implementation head and does not alter execution semantics."
+}

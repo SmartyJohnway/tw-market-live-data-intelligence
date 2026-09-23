@@ -52,16 +52,15 @@ def validate_profile_config() -> dict[str, Any]:
         "and not historical and not performance"
     )
     assert current["default-ci"]["pytest_expression"] == expected_expr
-    assert current["tg2-default-ci-current-shadow"]["pytest_expression"] == expected_expr
-    assert current["tg2-full-current-non-network-shadow"]["pytest_expression"] == expected_expr
+    assert current["full-current"]["pytest_expression"] == expected_expr
 
-    mixed = current["tg4-mixed-historical-shadow"]
+    mixed = current["mixed-historical-diagnostic"]
     assert mixed["automatic_ci_allowed"] is False
     assert mixed["pytest_expression"].startswith("historical and ")
 
     return {
         "tg4_baseline_preserved": True,
-        "tg5_default_promoted_from_shadow": True,
+        "tg5_default_matches_historical_candidate": True,
         "pre_tg5_rollback_profile_available": True,
     }
 
@@ -83,14 +82,13 @@ def validate_runtime_results(
 
     for name in (
         "default-ci",
-        "current-shadow",
-        "full-current-shadow",
-        "historical-shadow",
-        "release-shadow",
+        "full-current",
+        "release-preflight-current",
     ):
         assert summary[name]["status"] == "pass", (name, summary[name])
 
-    assert summary["mixed-historical-shadow"]["status"] == "fail"
+    assert summary["historical-milestone-replay"]["status"] == "fail"
+    assert summary["mixed-historical-diagnostic"]["status"] == "fail"
     allowed = {item["node_id"] for item in gaps["allowed_failed_nodes"]}
     actual = _failed_nodes(mixed)
     assert actual == allowed, {"actual": sorted(actual), "allowed": sorted(allowed)}
@@ -110,11 +108,11 @@ def validate_runtime_results(
         gaps["expected_additional_historical_nodes"]
     )
     assert nodes["layered_extra_vs_legacy_count"] == 8
-    assert nodes["current_shadow_node_count"] == 778
-    assert nodes["full_current_shadow_node_count"] == 1150
-    assert nodes["historical_shadow_node_count"] == 94
-    assert nodes["release_shadow_node_count"] == 5
-    assert nodes["mixed_historical_node_count"] == 4
+    assert nodes["current_default_node_count"] == 778
+    assert nodes["full_current_node_count"] == 1150
+    assert nodes["historical_milestone_replay_node_count"] == 94
+    assert nodes["release_preflight_current_node_count"] == 5
+    assert nodes["mixed_historical_diagnostic_node_count"] == 4
 
     return {
         "status": "PASS",

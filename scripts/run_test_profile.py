@@ -6,6 +6,13 @@ from pathlib import Path
 from typing import Any
 ROOT=Path(__file__).resolve().parents[1]
 CONFIG=ROOT/'config/test_execution_profiles.json'
+DEPRECATED_PROFILE_ALIASES={
+    'tg2-default-ci-current-shadow':'default-ci',
+    'tg2-full-current-non-network-shadow':'full-current',
+    'tg2-historical-acceptance-shadow':'historical-milestone-replay',
+    'tg2-release-preflight-shadow':'release-preflight-current',
+    'tg4-mixed-historical-shadow':'mixed-historical-diagnostic',
+}
 VALID_SSL={'strict','compatibility','unsafe-explicit'}
 FAILURE_OUTPUT_TAIL_CHARS=12000
 
@@ -14,6 +21,7 @@ CommandResult = dict[str, Any]
 
 def utc(): return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
 def load_config(): return json.loads(CONFIG.read_text())
+def resolve_profile_name(profile:str)->str: return DEPRECATED_PROFILE_ALIASES.get(profile, profile)
 def command_to_display(cmd:list[str])->str: return ' '.join(cmd)
 
 def _materialize_runner_command(cmd: list[str], ssl_policy: str, output_root: Path | None = None) -> list[str]:
@@ -29,10 +37,11 @@ def _materialize_runner_command(cmd: list[str], ssl_policy: str, output_root: Pa
 
 def resolve_profile_plan(profile:str, *, confirm_bounded_live=False, ssl_policy='strict', output_root: Path | None = None)->list[CommandPlan]:
     cfg=load_config()['profiles']
-    if profile not in cfg: raise ValueError(f"Unknown test profile: {profile}")
+    resolved_profile=resolve_profile_name(profile)
+    if resolved_profile not in cfg: raise ValueError(f"Unknown test profile: {profile}")
     if ssl_policy not in VALID_SSL: raise ValueError(f"Invalid ssl_policy: {ssl_policy}")
-    p=cfg[profile]
-    if profile=='bounded-live' and not confirm_bounded_live:
+    p=cfg[resolved_profile]
+    if resolved_profile=='bounded-live' and not confirm_bounded_live:
         raise ValueError('bounded-live requires --confirm-bounded-live')
     if p['execution_type']=='pytest':
         out: list[CommandPlan] = [{
@@ -94,17 +103,17 @@ def _pytest_output(results:list[CommandResult])->str:
             return str(result.get('_output') or '')
     return ''
 
-def build_payload(profile, command_plan, results, started, finished, args):
-    cfg=load_config()['profiles'][profile]
+def build_payload(profile, resolved_profile, command_plan, results, started, finished, args):
+    cfg=load_config()['profiles'][resolved_profile]
     codes=[r['return_code'] for r in results]
     payload={
-      'profile':profile,'status':'pass' if codes and all(c==0 for c in codes) else 'fail',
+      'profile':profile,'resolved_profile':resolved_profile,'status':'pass' if codes and all(c==0 for c in codes) else 'fail',
       'commands':[command_to_display(item['command']) for item in command_plan],
       'started_at':started,'finished_at':finished,'duration_seconds':round(time.monotonic()-args._start,3),
       'return_codes':codes,
       'command_results': _public_command_results(results),
-      'network_may_have_occurred': profile=='bounded-live',
-      'browser_required': profile in {'browser-e2e','bounded-live'},
+      'network_may_have_occurred': resolved_profile=='bounded-live',
+      'browser_required': resolved_profile in {'browser-e2e','bounded-live'},
       'explicit_live_confirmation': bool(args.confirm_bounded_live),
       'ssl_policy': args.ssl_policy,
     }
@@ -120,7 +129,7 @@ def build_payload(profile, command_plan, results, started, finished, args):
 
 def main(argv=None):
     ap=argparse.ArgumentParser(description='Route explicit test execution profiles.')
-    ap.add_argument('profile', choices=sorted(load_config()['profiles'].keys()))
+    ap.add_argument('profile', choices=sorted(set(load_config()['profiles']) | set(DEPRECATED_PROFILE_ALIASES)))
     ap.add_argument('--json', action='store_true')
     ap.add_argument('--confirm-bounded-live', action='store_true')
     ap.add_argument('--ssl-policy', default='strict')
@@ -132,8 +141,9 @@ def main(argv=None):
             print(json.dumps({'profile':args.profile,'status':'fail','error':str(e),'commands':[]}, indent=2, sort_keys=True))
         else: print(f'ERROR: {e}', file=sys.stderr)
         return 2
+    resolved_profile=resolve_profile_name(args.profile)
     started=utc(); results=run_commands(command_plan, capture=args.json); finished=utc()
-    payload=build_payload(args.profile, command_plan, results, started, finished, args)
+    payload=build_payload(args.profile, resolved_profile, command_plan, results, started, finished, args)
     if args.json: print(json.dumps(payload, indent=2, sort_keys=True))
     return 0 if payload['status']=='pass' else 1
 if __name__=='__main__': raise SystemExit(main())
