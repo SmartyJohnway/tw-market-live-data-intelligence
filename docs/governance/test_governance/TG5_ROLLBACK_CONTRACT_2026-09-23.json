@@ -285,11 +285,12 @@
     "release_selected": 5
   },
   "rollback_requirements": {
-    "pre_tg5_profile_must_equal_old_default": true,
-    "old_default_must_remain_runnable": true,
-    "rollback_requires_no_runtime_code_change": true,
-    "rollback_action": "replace default-ci profile with pre-tg5-default-ci profile body",
-    "tg5_merge_does_not_delete_tests": true
+    "pre_tg5_profile_preserves_old_path_and_expression_semantics": true,
+    "authoritative_rollback_proof": "detached worktree at baseline_main runs its native default-ci and must pass 1245 selected nodes",
+    "repository_rollback_action": "revert TG-5 merge or restore repository to baseline_main; do not rewrite frozen historical evidence to emulate old topology on the current tree",
+    "current_tree_diagnostic_gap_contract": "docs/governance/test_governance/TG5_ROLLBACK_DIAGNOSTIC_GAPS.v1.json",
+    "tg5_merge_does_not_delete_tests": true,
+    "production_runtime_rollback_not_required": true
   },
   "phase_i_implementation": false
 }
