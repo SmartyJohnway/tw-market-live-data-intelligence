@@ -47,4 +47,3 @@ Use this guide to verify the supported capabilities and limits when composing Un
 - Phase H trading-status context is executable only through explicitly activated routes; current H1 coverage is partial and does not imply complete surveillance-status coverage.
 - Corporate-action context and recent-performance routes remain inactive/plan-only until their independent activation gates pass; derived discontinuity safety never fabricates complete coverage.
 - There is no arbitrary history, polling, scheduler, background refresh, financial summary, investment advice, or trading.
-
