@@ -82,6 +82,7 @@ def test_inventory_status_and_default_ci_inclusion():
         'M7G-11-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-FINAL-ACCEPTANCE',
         'M7H-SOURCE-FAMILY-ROUTE-GOVERNANCE-AND-CONTROLLED-EXPANSION'
     }
-    paths = json.loads(PROFILE.read_text(encoding='utf-8'))['profiles']['default-ci']['pytest_paths']
+    from scripts.test_governance_authority import profile_paths_for_role
+    paths = profile_paths_for_role('broad_current')
     assert 'tests/unit/test_m7g_refresh_workflow_policy_request_package.py' in paths
     assert 'tests/unit/test_m7g_refresh_request_package_builder.py' in paths
