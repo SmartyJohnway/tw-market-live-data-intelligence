@@ -1,0 +1,86 @@
+{
+  "schema_version": "test_governance_tg6_c_exact_migration_preflight.v1",
+  "date": "2026-09-23",
+  "status": "PREFLIGHT_PASS_IMPLEMENTATION_NOT_AUTHORIZED",
+  "baseline_main": "c0d7590ce176989243876267ff4bd353091267c4",
+  "exact_profile_migration": {
+    "tg2-default-ci-current-shadow": "default-ci",
+    "tg2-full-current-non-network-shadow": "full-current",
+    "tg2-historical-acceptance-shadow": "historical-milestone-replay",
+    "tg2-release-preflight-shadow": "release-preflight-current",
+    "tg4-mixed-historical-shadow": "mixed-historical-diagnostic",
+    "pre-tg5-default-ci": "pre-tg5-default-ci"
+  },
+  "expected_nodes": {
+    "default-ci": 778,
+    "full-current": 1150,
+    "historical-milestone-replay": 94,
+    "release-preflight-current": 5,
+    "mixed-historical-diagnostic": 4,
+    "pre-tg5-default-ci": 1245
+  },
+  "migration_rules": {
+    "remove_migration_keys_from_current_profile_config": true,
+    "keep_deprecated_runner_aliases": true,
+    "preserve_historical_manifests_and_ledgers": true,
+    "profile_paths_may_change": false,
+    "profile_expressions_may_change": false,
+    "default_ci_authority_may_change": false,
+    "tests_may_be_deleted": false,
+    "tests_may_be_moved": false
+  },
+  "current_files_expected_to_change": [
+    "config/test_execution_profiles.json",
+    "config/test_governance_authority.json",
+    "scripts/run_test_profile.py",
+    "scripts/analyze_test_governance_tg4_nodes.py",
+    "scripts/validate_test_governance_tg4_shadow.py",
+    "scripts/validate_test_governance_tg5.py",
+    "scripts/validate_test_governance_tg2_tg3.py",
+    "current unit tests for profile-name and alias behavior"
+  ],
+  "immutable_historical_surfaces": [
+    "config/test_governance_semantic_profiles.json",
+    "docs/governance/test_governance/TG2_TG3_ACCEPTANCE_LEDGER_2026-09-23.json",
+    "docs/governance/test_governance/HISTORICAL_EVIDENCE_INTEGRITY_MANIFEST.v1.json",
+    "docs/governance/test_governance/TG4_ACCEPTANCE_LEDGER_2026-09-23.json",
+    "docs/governance/test_governance/TG5_ACCEPTANCE_LEDGER_2026-09-23.json",
+    "docs/governance/test_governance/TG5_ROLLBACK_DIAGNOSTIC_GAPS.v1.json"
+  ],
+  "required_acceptance": {
+    "default_ci": {
+      "selected": 778,
+      "status": "pass"
+    },
+    "full_current": {
+      "selected": 1150,
+      "status": "pass"
+    },
+    "historical_milestone_replay": {
+      "selected": 94,
+      "expected_governed_failures": 2
+    },
+    "release_preflight_current": {
+      "selected": 5,
+      "status": "pass"
+    },
+    "mixed_historical_diagnostic": {
+      "selected": 4,
+      "expected_governed_failures": 2
+    },
+    "full_non_network": {
+      "expected_governed_failures": 2,
+      "new_unexplained_failures": 0
+    },
+    "windows_compatibility": "pass",
+    "deprecated_alias_equivalence": true
+  },
+  "excluded": [
+    "milestone-acceptance cleanup",
+    "TG6-D",
+    "TG6-E",
+    "TG6-F",
+    "TG6-G",
+    "Roadmap Phase I"
+  ]
+}
