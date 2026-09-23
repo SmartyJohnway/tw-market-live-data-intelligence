@@ -10,8 +10,8 @@ from scripts.m8r_05b_03.errors import OrchestrationError
 
 
 ROOT = Path(__file__).resolve().parents[2]
-CATALOG_PATH = ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v2.json"
-ROUTING_PATH = ROOT / "docs" / "data_capabilities" / "m8r_05b_capability_to_executor_routing_matrix.v2.json"
+CATALOG_PATH = ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v3.json"
+ROUTING_PATH = ROOT / "docs" / "data_capabilities" / "m8r_05b_capability_to_executor_routing_matrix.v3.json"
 SERVICE_CONTRACT_VERSION = "unified_market_evidence_local_service.v2"
 
 
