@@ -16,7 +16,7 @@ def profile_name_for_role(role: str) -> str:
         "historical": authority["lifecycle_regression"]["historical_profile"],
         "release": authority["lifecycle_regression"]["release_profile"],
         "mixed_historical": authority["lifecycle_regression"]["mixed_historical_profile"],
-        "rollback": authority["rollback"]["profile"],
+        "rollback": authority["rollback"]["diagnostic_profile"],
     }
     try:
         return mapping[role]
