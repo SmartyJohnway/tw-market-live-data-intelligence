@@ -1,0 +1,255 @@
+{
+  "schema_version": "phase_h_h_act_v3_promotion_acceptance_ledger.v1",
+  "status": "OWNER_PROMOTION_ACCEPTED",
+  "tranche": "H-ACT-V3",
+  "accepted_on": "2026-09-23",
+  "owner_authorization": {
+    "status": "AUTHORIZED",
+    "reference": "USER_CHAT_2026-09-23_H_ACT_V3_PROMOTION",
+    "scope": "Promote Unified Request/Result/Audit V3 to preferred runtime authority under the accepted H-ACT-V3 preflight; preserve V1/V2 compatibility, exact route activation truth, six MCP tools, rollback and separate release gating."
+  },
+  "baseline": {
+    "pre_promotion_main": "5085caebb2f6528ae27563185113df8cbda9ce8f",
+    "preflight": "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_PREFLIGHT_AND_AUTHORITY_IMPACT_INVENTORY.json"
+  },
+  "promotion_candidate": {
+    "tested_head": "ed9fd272d89706f10f57480447cf63343b1a4508",
+    "branch": "phase-h/h-act-v3-promotion",
+    "preferred_request_schema_version": "unified_market_evidence_request.v3",
+    "emitted_result_schema_version": "unified_market_evidence_result.v3",
+    "preferred_audit_schema_version": "unified_market_evidence_audit_package.v3",
+    "v3_runtime_authority_status": "v3_preferred_selected_routes_active",
+    "accepted_request_schema_versions": [
+      "unified_market_evidence_request.v1",
+      "unified_market_evidence_request.v2",
+      "unified_market_evidence_request.v3"
+    ],
+    "local_service_contract_version": "unified_market_evidence_local_service.v2",
+    "mcp_adapter_version": "unified_market_evidence_mcp_adapter.v2",
+    "mcp_tool_count": 6
+  },
+  "route_authority": {
+    "phase_h_active_source_count": 1,
+    "exact_active_phase_h_sources": [
+      "H1-TPEX-ATTENTION-OPENAPI"
+    ],
+    "trading_status_context": {
+      "TPEX": "executable",
+      "TWSE": "blocked_no_active_route"
+    },
+    "h1_coverage": {
+      "status": "partial",
+      "covered_status_types": [
+        "attention"
+      ],
+      "uncovered_status_types": [
+        "changed_trading_method",
+        "disposition",
+        "resumption",
+        "suspension"
+      ],
+      "declared_scope_complete": false
+    },
+    "h2_activation": "NOT_STARTED",
+    "h3_activation": "NOT_STARTED",
+    "new_source_activation_performed": false
+  },
+  "workflow_acceptance": {
+    "workflow": "Phase H H-ACT-V3 Promotion Acceptance",
+    "run_id": 35807933991,
+    "conclusion": "success",
+    "network_may_have_occurred": false,
+    "phase_h_v3_validator": "PASS",
+    "portable_projection_byte_exact": "PASS",
+    "portable_catalog_deep_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS",
+    "portable_skill_validation": "PASS",
+    "focused_h_act_v3": "5 passed",
+    "default_non_network_ci": "1241 passed, 4 skipped, 9 deselected",
+    "source_activation_and_frozen_schema_containment": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "rollback_rehearsal": {
+    "requirement_id": "H0H-ROLL-002",
+    "target_commit": "5085caebb2f6528ae27563185113df8cbda9ce8f",
+    "method": "detached Git worktree using the accepted pre-promotion main",
+    "validator": "PASS",
+    "default_non_network_ci": "1241 passed, 4 skipped, 9 deselected",
+    "preferred_request_after_rollback": "unified_market_evidence_request.v2",
+    "emitted_result_after_rollback": "unified_market_evidence_result.v2",
+    "phase_h_active_source_count_after_rollback": 1,
+    "exact_active_phase_h_sources_after_rollback": [
+      "H1-TPEX-ATTENTION-OPENAPI"
+    ],
+    "mcp_tool_count_after_rollback": 6,
+    "immutable_artifact_hash_comparison": "PASS",
+    "explicit_markers": [
+      "h_act_v3_preferred_version_rollback: PASS",
+      "h_act_v3_rollback_immutable_artifacts: PASS"
+    ]
+  },
+  "live_evidence_reuse": {
+    "requirement_id": "H0H-E2E-LIVE-001",
+    "status": "PASS",
+    "source_ledger": "docs/governance/phase_h/PHASE_H_H_ACC_7L_SELECTED_PRODUCT_LIVE_E2E_LEDGER.json",
+    "workflow_run_id": 35797640831,
+    "exact_target": "TPEX:6488",
+    "rationale": "H-ACT-V3 changes preferred contract/runtime authority only. It does not change the already-active H1 source route, transport, normalizer, source binding or live source semantics; therefore the accepted selected-product live E2E remains the governing bounded-live evidence.",
+    "new_live_call_performed_for_promotion": false
+  },
+  "frozen_contract_integrity": {
+    "request_v3_sha256": "0dd37ff844e1644e5dde6ddebe54823ab6d24e4d128abadab77f2c5dae0be4d0",
+    "result_v3_sha256": "dae35eaa4f41f574204c2fb275e6a2b22c925462932b60c5c5c092b6ac1d2aab",
+    "audit_v3_sha256": "15766211f72bf9691bd098d8c582dc8e9ff7b9e10923991cac8e68741e00181d",
+    "trading_status_context_v1_sha256": "638200509cde05613d17bd4158d1676c3c086d2b10aa2f50fb85d52febe30ecf",
+    "mutated_by_promotion": false
+  },
+  "acceptance_ids": {
+    "H0H-V3-001": {
+      "status": "PASS",
+      "evidence": [
+        "promoted default CI V1/V2 compatibility",
+        "pre-promotion rollback CI"
+      ]
+    },
+    "H0H-V3-003": {
+      "status": "PASS",
+      "evidence": [
+        "V3 exact routing tests",
+        "H2/H3 blocked/plan-only current authority tests"
+      ]
+    },
+    "H0H-H4-001": {
+      "status": "PASS",
+      "evidence": [
+        "PHASE_H_H_IMP_1_ACCEPTANCE_MANIFEST",
+        "promoted default CI"
+      ]
+    },
+    "H0H-H4-004": {
+      "status": "PASS",
+      "evidence": [
+        "PHASE_H_H_IMP_1_ACCEPTANCE_MANIFEST",
+        "promoted default CI fail-closed regressions"
+      ]
+    },
+    "H0H-OUT-001": {
+      "status": "PASS",
+      "evidence": [
+        "PHASE_H_H_IMP_6_ACCEPTANCE_MANIFEST",
+        "H-ACC-7L Result V3",
+        "Mode C V3 default acceptance"
+      ]
+    },
+    "H0H-OUT-002": {
+      "status": "PASS",
+      "evidence": [
+        "PHASE_H_H_IMP_6_ACCEPTANCE_MANIFEST",
+        "H-ACC-7L Audit V3",
+        "Mode C V3 default acceptance"
+      ]
+    },
+    "H0H-OUT-004": {
+      "status": "PASS",
+      "evidence": [
+        "PHASE_H_H_IMP_6_ACCEPTANCE_MANIFEST",
+        "H-ACC-7L AI handoff",
+        "portable Skill/guide sync"
+      ]
+    },
+    "H0H-NET-001": {
+      "status": "PASS",
+      "evidence": [
+        "H-IMP-7D S13",
+        "promotion workflow is zero-network"
+      ]
+    },
+    "H0H-MCP-001": {
+      "status": "PASS",
+      "evidence": [
+        "focused promotion acceptance: exactly six tools",
+        "runtime Skill sync: tool_count=6"
+      ]
+    },
+    "H0H-E2E-001": {
+      "status": "PASS",
+      "evidence": [
+        "H-IMP-7D S2",
+        "promoted default CI"
+      ]
+    },
+    "H0H-E2E-002": {
+      "status": "PASS",
+      "evidence": [
+        "H-IMP-7D S7/S10",
+        "promoted blocked/compatibility regressions"
+      ]
+    },
+    "H0H-E2E-LIVE-001": {
+      "status": "PASS",
+      "evidence": [
+        "H-ACC-7L workflow 35797640831"
+      ],
+      "new_live_call": false
+    },
+    "H0H-AUTH-001": {
+      "status": "PASS",
+      "evidence": [
+        "H-IMP-7D authorization/execute-once evidence",
+        "H-ACC-7L negative controls",
+        "promoted V3 authorization regressions"
+      ]
+    },
+    "H0H-PORT-001": {
+      "status": "PASS",
+      "evidence": [
+        "H-IMP-7D fresh-install evidence",
+        "promoted portable catalog/Skill deep sync",
+        "promoted default CI"
+      ]
+    },
+    "H0H-ROLL-002": {
+      "status": "PASS",
+      "evidence": [
+        "actual detached-worktree V3 preferred -> accepted V2 preferred rollback rehearsal",
+        "immutable artifact comparison"
+      ]
+    },
+    "H0H-SCOPE-001": {
+      "status": "PASS",
+      "evidence": [
+        "source activation and frozen schema containment",
+        "six tools",
+        "no new live call",
+        "no scheduler/polling/background/trading expansion"
+      ]
+    }
+  },
+  "forbidden_change_checks": {
+    "v1_v2_historical_rewrite": false,
+    "frozen_v3_schema_mutation": false,
+    "seventh_mcp_tool": false,
+    "unreviewed_source_activation": false,
+    "scheduler_or_polling": false,
+    "background_refresh": false,
+    "history_warehouse_or_backfill": false,
+    "technical_analysis_screening_ranking": false,
+    "trading_or_order_routing": false,
+    "identity_authority_fork": false
+  },
+  "exit_criteria": {
+    "v3_preferred_truthfully": true,
+    "v2_rollback_proven": true,
+    "release_remains_separately_gated": true
+  },
+  "release_boundary": {
+    "production_release_authorized": false,
+    "publication_or_release_version_selected": false,
+    "note": "H-ACT-V3 promotion is a runtime authority gate, not a public production-release approval."
+  },
+  "conclusion": {
+    "h_act_v3": "PASS",
+    "p6_state": "ACHIEVED_PENDING_MERGE_CLOSURE",
+    "promotion_ready_to_merge": true
+  }
+}
