@@ -36,8 +36,8 @@ Use this guide to verify the supported capabilities and limits when composing Un
 - **Hard Target Limit**: `50` securities
 - **Default Operation Limit**: `30` operations
 - **Hard Operation Limit**: `100` operations
-- **Preview Supported**: `true`
-- **One-Shot Execution**: `true`
+- **Preview Supported**: `True`
+- **One-Shot Execution**: `True`
 
 ## 4. Current Evidence Boundaries
 
