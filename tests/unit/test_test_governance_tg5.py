@@ -35,9 +35,10 @@ def test_tg5_authority_manifest_separates_every_pr_and_lifecycle_profiles() -> N
         (ROOT / "config/test_governance_authority.json").read_text(encoding="utf-8")
     )
     assert authority["current_merge_authority"]["expected_selected_nodes"] == 778
-    assert authority["lifecycle_regression"]["expected_selected_nodes"] if False else True
-    assert authority["lifecycle_regression"]["expected_selected_nodes"] if False else True
-    assert authority["lifecycle_regression"]["expected_selected_nodes"] if False else True
+    assert authority["lifecycle_regression"]["broad_current_expected_nodes"] == 1150
+    assert authority["lifecycle_regression"]["historical_expected_nodes"] == 94
+    assert authority["lifecycle_regression"]["release_expected_nodes"] == 5
+    assert authority["lifecycle_regression"]["mixed_historical_expected_nodes"] == 4
     assert authority["lifecycle_regression"]["broad_current_profile"] == "tg2-full-current-non-network-shadow"
     assert authority["lifecycle_regression"]["historical_profile"] == "tg2-historical-acceptance-shadow"
     assert authority["lifecycle_regression"]["release_profile"] == "tg2-release-preflight-shadow"
