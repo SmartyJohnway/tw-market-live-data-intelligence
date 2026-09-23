@@ -22,5 +22,15 @@
     "full_current_shadow_must_pass": true,
     "regular_historical_shadow_must_pass": true,
     "release_shadow_must_pass": true
-  }
+  },
+  "expected_additional_historical_nodes": [
+    "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_check_only_mode",
+    "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_end_to_end_single_target",
+    "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_check_only",
+    "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_determinism",
+    "tests/unit/test_m8r_06_04_mode_c.py::test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected",
+    "tests/unit/test_m8r_06_04_mode_c.py::test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected",
+    "tests/unit/test_m8r_06_04_mode_c.py::test_mode_c_materializes_and_reuses_sanitized_finalized_lineage",
+    "tests/unit/test_m8r_06_04_mode_c.py::test_verified_handoff_reuses_mode_c_outputs_and_audit_citations"
+  ]
 }
