@@ -57,11 +57,11 @@ def _decode_rows(payload: bytes, source_id: str) -> list[dict[str, Any]]:
     return value
 
 
-def _summary(fragment: dict[str, Any]) -> dict[str, Any]:
+def _summary(source_id: str, fragment: dict[str, Any]) -> dict[str, Any]:
     source = fragment["source"]
     events = fragment.get("events", [])
     return {
-        "source_id": source["source_id"],
+        "source_id": source_id,
         "source_family": source["source_family"],
         "source_contract_id": source["source_contract_id"],
         "source_role": source["source_role"],
@@ -120,7 +120,10 @@ def run(output_dir: Path) -> dict[str, Any]:
     if pre["status"] not in accepted_statuses or final["status"] not in accepted_statuses:
         raise RuntimeError("live_source_normalization_not_accepted")
 
-    summaries = [_summary(pre), _summary(final)]
+    summaries = [
+        _summary(PRE_SOURCE_ID, pre),
+        _summary(FINAL_SOURCE_ID, final),
+    ]
     for item in summaries:
         if item["activation_state"] != "eligible":
             raise RuntimeError("source_must_remain_eligible_not_active")
