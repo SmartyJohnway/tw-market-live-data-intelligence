@@ -101,6 +101,7 @@ def validate_runtime(
     new_default_path: Path,
     current_shadow_path: Path,
     baseline_default_path: Path,
+    baseline_historical_path: Path,
     rollback_diagnostic_path: Path,
     full_current_path: Path,
     historical_path: Path,
@@ -113,6 +114,7 @@ def validate_runtime(
         "new_default": _load(new_default_path),
         "current_shadow": _load(current_shadow_path),
         "baseline_default": _load(baseline_default_path),
+        "baseline_historical": _load(baseline_historical_path),
         "rollback_diagnostic": _load(rollback_diagnostic_path),
         "full_current": _load(full_current_path),
         "historical": _load(historical_path),
@@ -128,8 +130,8 @@ def validate_runtime(
         "new_default",
         "current_shadow",
         "baseline_default",
+        "baseline_historical",
         "full_current",
-        "historical",
         "release",
     ):
         assert payloads[name]["status"] == "pass", (name, payloads[name])
@@ -137,6 +139,7 @@ def validate_runtime(
     assert int(payloads["new_default"]["selected"]) == 778
     assert int(payloads["current_shadow"]["selected"]) == 778
     assert int(payloads["baseline_default"]["selected"]) == 1245
+    assert int(payloads["baseline_historical"]["selected"]) == 94
     assert int(payloads["full_current"]["selected"]) == 1150
     assert int(payloads["historical"]["selected"]) == 94
     assert int(payloads["release"]["selected"]) == 5
@@ -151,6 +154,15 @@ def validate_runtime(
         "allowed": sorted(mixed_allowed),
     }
     assert int(payloads["mixed"]["failed"]) == 2
+
+    assert payloads["historical"]["status"] == "fail"
+    historical_allowed = {item["node_id"] for item in rollback_gaps["allowed_failed_nodes"]}
+    historical_actual = _failed_nodes(payloads["historical"])
+    assert historical_actual == historical_allowed, {
+        "actual": sorted(historical_actual),
+        "allowed": sorted(historical_allowed),
+    }
+    assert int(payloads["historical"]["failed"]) == 2
 
     assert payloads["rollback_diagnostic"]["status"] == "fail"
     rollback_allowed = {item["node_id"] for item in rollback_gaps["allowed_failed_nodes"]}
@@ -178,7 +190,9 @@ def validate_runtime(
         "status": "PASS",
         "new_default_selected": 778,
         "baseline_rollback_selected": 1245,
+        "baseline_historical_selected": 94,
         "current_tree_rollback_diagnostic_failures": 2,
+        "current_tree_historical_diagnostic_failures": 2,
         "full_current_selected": 1150,
         "historical_selected": 94,
         "release_selected": 5,
@@ -197,6 +211,7 @@ def main() -> int:
     ap.add_argument("--new-default", type=Path)
     ap.add_argument("--current-shadow", type=Path)
     ap.add_argument("--baseline-default", type=Path)
+    ap.add_argument("--baseline-historical", type=Path)
     ap.add_argument("--rollback-diagnostic", type=Path)
     ap.add_argument("--full-current", type=Path)
     ap.add_argument("--historical", type=Path)
@@ -211,6 +226,7 @@ def main() -> int:
         args.new_default,
         args.current_shadow,
         args.baseline_default,
+        args.baseline_historical,
         args.rollback_diagnostic,
         args.full_current,
         args.historical,
@@ -224,6 +240,7 @@ def main() -> int:
             new_default_path=args.new_default,
             current_shadow_path=args.current_shadow,
             baseline_default_path=args.baseline_default,
+            baseline_historical_path=args.baseline_historical,
             rollback_diagnostic_path=args.rollback_diagnostic,
             full_current_path=args.full_current,
             historical_path=args.historical,
