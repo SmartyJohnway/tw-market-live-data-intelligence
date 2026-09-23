@@ -1,20 +1,52 @@
-# Mode A/B/C and Level 1/2
+# Mode A/B/C — Current Unified Model
 
-## Mode diagram
+The names Mode A/B/C remain, but the current meaning is the Unified evidence
+execution chain rather than the historical M5 Level-1/Level-2 package model.
 
 ```mermaid
 flowchart LR
-  A[Mode A\nCanonical only\nvalidate and inspect M5F] --> B[Mode B\nPlanning + bounded observation\nwatchlist/routes/source health]
-  B --> C[Mode C\nAI Conversation Package\nbuild and discuss]
+    A[Mode A
+Validate + Identity] --> B1[Mode B1
+Preview + Plan]
+    B1 --> B2[Mode B2
+Authorize + Execute Once]
+    B2 --> C[Mode C
+Result + Audit + AI Handoff]
 ```
 
-## Level diagram
+## Mode A
 
-```mermaid
-flowchart TB
-  L1[Level 1\nvalidated canonical context\nM5F package] --> DISCUSS[Operator / AI discussion]
-  L2[Level 2\nbounded observation / temporary context\nM5K latest observation + M5Q source health] --> DISCUSS
-  L2 -. never mutates .-> L1
-```
+- validate Request;
+- resolve canonical identity;
+- fail closed on ambiguous/unsupported identity;
+- no market execution.
 
-Mode A uses Level 1 only. Mode B plans or explicitly creates Level 2 temporary context. Mode C combines Level 1 and Level 2 summaries into the M5N Conversation Package.
+## Mode B1
+
+- select current Catalog/Route/Executor authority;
+- build deterministic bounded plan;
+- expose blocked/omitted operations;
+- no authorization or network.
+
+## Mode B2
+
+- bind explicit authorization to plan identity/hash;
+- enforce approved operation/network scope;
+- consume once;
+- execute only current executable routes.
+
+## Mode C
+
+- materialize or verify canonical Result;
+- materialize or verify Audit;
+- export AI-safe handoff;
+- no second market fetch.
+
+## Compatibility
+
+V3 is preferred. Explicit V1/V2 requests remain supported where their frozen
+capability/routing contracts permit execution. Existing persisted packages keep
+their stored version.
+
+Historical "Level 1 / Level 2" documents remain useful provenance, but they no
+longer define the current Mode A/B/C product contract.
