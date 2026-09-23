@@ -32,6 +32,11 @@ jobs:
       - name: Validate promoted Phase H V3 contracts
         run: python scripts/validate_phase_h_v3_contracts.py
 
+      - name: Regenerate portable V3 projections and show drift
+        run: |
+          python scripts/generate_portable_catalog.py
+          git diff -- skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json skills/tw-market-evidence-agent/references/capability_quick_guide.md || true
+
       - name: Validate portable V3 catalog
         run: python scripts/validate_portable_catalog_sync.py
 
