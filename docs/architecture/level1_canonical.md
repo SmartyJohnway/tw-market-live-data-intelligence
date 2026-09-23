@@ -1,6 +1,6 @@
 # Level 1 Canonical Context
 
-Level 1 is the M5F canonical market context package at `research/staging/m5f/m5f_canonical_market_context_01/`.
+> **Historical M5 Level-1 model.** Retained for engineering provenance; it is not current product architecture authority. See [PRODUCT_ARCHITECTURE.md](PRODUCT_ARCHITECTURE.md).\n\nLevel 1 is the M5F canonical market context package at `research/staging/m5f/m5f_canonical_market_context_01/`.
 
 ## Contract
 
