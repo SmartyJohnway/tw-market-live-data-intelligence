@@ -14,7 +14,10 @@ from scripts.m8r_05b_01.artifact_loader import load_json
 from scripts.m8r_05b_01.canonical import sha256_json
 from scripts.m8r_05b_01.models import PLANNER_VERSION, PlanningError
 from scripts.m8r_05b_01.planner import HANDOFF_VERSION, ROUTING_VERSION, build_plan
-from server.services.unified_contract_versions import resolve_planning_authority_paths
+from server.services.unified_contract_versions import (
+    PREFERRED_REQUEST_SCHEMA_VERSION,
+    resolve_planning_authority_paths,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 CAPABILITY_CATALOG_PATH = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json"
@@ -42,7 +45,7 @@ NON_PLANNABLE_TARGET_STATUSES = frozenset(
 
 
 def load_planning_authorities(
-    request_schema_version: str = "unified_market_evidence_request.v2",
+    request_schema_version: str = PREFERRED_REQUEST_SCHEMA_VERSION,
 ) -> dict[str, dict[str, Any]]:
     """Load the frozen planning pair selected by the declared Request version."""
     catalog_path, routing_path = resolve_planning_authority_paths(request_schema_version)
