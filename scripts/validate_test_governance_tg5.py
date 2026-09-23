@@ -11,6 +11,7 @@ PROFILES = ROOT / "config/test_execution_profiles.json"
 AUTHORITY = ROOT / "config/test_governance_authority.json"
 ROLLBACK = ROOT / "docs/governance/test_governance/TG5_ROLLBACK_CONTRACT_2026-09-23.json"
 TG4 = ROOT / "docs/governance/test_governance/TG4_ACCEPTANCE_LEDGER_2026-09-23.json"
+TG5 = ROOT / "docs/governance/test_governance/TG5_ACCEPTANCE_LEDGER_2026-09-23.json"
 GAPS = ROOT / "docs/governance/test_governance/TG4_KNOWN_HISTORICAL_REPLAY_GAPS.v1.json"
 ROLLBACK_GAPS = ROOT / "docs/governance/test_governance/TG5_ROLLBACK_DIAGNOSTIC_GAPS.v1.json"
 FAILED_RE = re.compile(r"^FAILED\s+(\S+)\s+-", re.MULTILINE)
@@ -30,6 +31,7 @@ def validate_static() -> dict:
     authority = _load(AUTHORITY)
     rollback = _load(ROLLBACK)
     tg4 = _load(TG4)
+    tg5 = _load(TG5)
 
     new_default = profiles["default-ci"]
     old_rehearsal = profiles["pre-tg5-default-ci"]
@@ -53,12 +55,26 @@ def validate_static() -> dict:
     restored["default-ci"] = old_contract
     assert restored["default-ci"] == old_contract
 
-    assert authority["state"] == "TG5_CUTOVER_CANDIDATE"
+    assert authority["authority_role"] == "CURRENT_ACTIVE_MACHINE_AUTHORITY"
+    assert authority["state"] == "TG5_PROMOTED_ACTIVE"
+    assert authority["current_authority_commit"] == "db3340da61ea6e1f3391cfc1728d42b5376157c7"
     assert authority["current_merge_authority"]["profile"] == "default-ci"
     assert authority["current_merge_authority"]["expected_file_paths"] == 93
     assert authority["current_merge_authority"]["expected_selected_nodes"] == 778
     assert authority["rollback"]["expected_file_paths"] == 156
     assert authority["rollback"]["expected_selected_nodes"] == 1245
+    tg2_history = authority["historical_migration_evidence"]["tg2_semantic_manifest"]
+    assert tg2_history["path"] == "config/test_governance_semantic_profiles.json"
+    assert tg2_history["classification"] == "HISTORICAL_MIGRATION_EVIDENCE"
+    assert tg2_history["current_authority"] is False
+    assert tg2_history["preserve_historical_facts"] is True
+    assert (ROOT / tg2_history["path"]).exists()
+    assert authority["source_evidence"]["tg5_acceptance"] == "docs/governance/test_governance/TG5_ACCEPTANCE_LEDGER_2026-09-23.json"
+    assert authority["source_evidence"]["tg5_workflow_run_id"] == 35839936603
+    assert authority["source_evidence"]["tg5_merge_commit"] == "db3340da61ea6e1f3391cfc1728d42b5376157c7"
+    assert tg5["status"] == "TG5_DEFAULT_CI_CUTOVER_PASS"
+    assert tg5["promoted_default"]["file_paths"] == 93
+    assert tg5["promoted_default"]["selected_nodes"] == 778
 
     assert tg4["status"] == "TG4_SHADOW_CI_PASS"
     assert tg4["node_analysis"]["legacy_layer_counts"]["unexplained"] == 0
@@ -88,6 +104,8 @@ def validate_static() -> dict:
         "new_default_matches_tg2_shadow": True,
         "rollback_execution_semantics_preserved": True,
         "tg4_unexplained_nodes": 0,
+        "tg5_authority_state": "PROMOTED_ACTIVE",
+        "tg2_semantic_manifest_current_authority": False,
         "phase_i_implementation": False,
     }
 

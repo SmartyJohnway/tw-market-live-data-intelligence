@@ -1,7 +1,7 @@
 {
   "schema_version": "test_governance_authority.v1",
   "date": "2026-09-23",
-  "state": "TG5_CUTOVER_CANDIDATE",
+  "state": "TG5_PROMOTED_ACTIVE",
   "baseline_main": "2ff9707d901f40c1a108dd1317fce2f03cc79735",
   "current_merge_authority": {
     "profile": "default-ci",
@@ -32,7 +32,10 @@
   "source_evidence": {
     "tg4_acceptance": "docs/governance/test_governance/TG4_ACCEPTANCE_LEDGER_2026-09-23.json",
     "tg4_workflow_run_id": 35824957803,
-    "legacy_unexplained_nodes": 0
+    "legacy_unexplained_nodes": 0,
+    "tg5_acceptance": "docs/governance/test_governance/TG5_ACCEPTANCE_LEDGER_2026-09-23.json",
+    "tg5_workflow_run_id": 35839936603,
+    "tg5_merge_commit": "db3340da61ea6e1f3391cfc1728d42b5376157c7"
   },
   "invariants": {
     "tests_deleted": false,
@@ -41,5 +44,15 @@
     "routing_changed": false,
     "frozen_schema_changed": false,
     "phase_i_implementation": false
+  },
+  "authority_role": "CURRENT_ACTIVE_MACHINE_AUTHORITY",
+  "current_authority_commit": "db3340da61ea6e1f3391cfc1728d42b5376157c7",
+  "historical_migration_evidence": {
+    "tg2_semantic_manifest": {
+      "path": "config/test_governance_semantic_profiles.json",
+      "classification": "HISTORICAL_MIGRATION_EVIDENCE",
+      "current_authority": false,
+      "preserve_historical_facts": true
+    }
   }
 }
