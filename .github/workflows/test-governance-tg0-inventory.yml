@@ -20,6 +20,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-lock.txt
+
+      - name: Install locked dependencies
+        run: python -m pip install -r requirements-lock.txt
 
       - name: Compile TG-0 inventory tooling
         run: python -m compileall -q scripts/audit_test_governance.py tests/unit/test_audit_test_governance.py
