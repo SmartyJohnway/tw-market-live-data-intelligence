@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BASELINE = "b438e3b1d06698e2e702284abbdaf0bbc9340b40"
 CONFIG = ROOT / "config/test_execution_profiles.json"
 GAPS = ROOT / "docs/governance/test_governance/TG4_KNOWN_HISTORICAL_REPLAY_GAPS.v1.json"
+ROLLBACK = ROOT / "docs/governance/test_governance/TG5_ROLLBACK_CONTRACT_2026-09-23.json"
 
 FAILED_RE = re.compile(r"^FAILED\s+(\S+)\s+-", re.MULTILINE)
 
@@ -32,38 +33,36 @@ def _baseline_profiles() -> dict[str, Any]:
 def validate_profile_config() -> dict[str, Any]:
     baseline = _baseline_profiles()
     current = _load(CONFIG)["profiles"]
+    rollback = _load(ROLLBACK)
 
-    assert current["default-ci"] == baseline["default-ci"]
+    # TG4 baseline remains immutable evidence.
+    assert rollback["old_default_profile"] == baseline["default-ci"]
 
-    allowed_changed = {
-        "tg2-default-ci-current-shadow",
-        "tg2-full-current-non-network-shadow",
-    }
-    added = set(current) - set(baseline)
-    assert added == {"tg4-mixed-historical-shadow"}
+    # TG5 promotes the previously-shadowed current profile.
+    candidate = dict(rollback["candidate_default_profile"])
+    assert current["default-ci"] == candidate
 
-    for name in set(baseline) - allowed_changed:
-        assert current[name] == baseline[name], name
+    rehearsal = current["pre-tg5-default-ci"]
+    assert rehearsal["pytest_paths"] == rollback["old_default_profile"]["pytest_paths"]
+    assert rehearsal["pytest_expression"] == rollback["old_default_profile"]["pytest_expression"]
+    assert rehearsal["automatic_ci_allowed"] is False
 
     expected_expr = (
         "not network and not browser and not live and not release_preflight "
         "and not historical and not performance"
     )
-    for name in allowed_changed:
-        before = dict(baseline[name])
-        after = dict(current[name])
-        assert after["pytest_expression"] == expected_expr
-        before.pop("pytest_expression")
-        after.pop("pytest_expression")
-        assert after == before
+    assert current["default-ci"]["pytest_expression"] == expected_expr
+    assert current["tg2-default-ci-current-shadow"]["pytest_expression"] == expected_expr
+    assert current["tg2-full-current-non-network-shadow"]["pytest_expression"] == expected_expr
 
     mixed = current["tg4-mixed-historical-shadow"]
     assert mixed["automatic_ci_allowed"] is False
     assert mixed["pytest_expression"].startswith("historical and ")
 
     return {
-        "default_ci_unchanged": True,
-        "only_expected_shadow_profile_delta": True,
+        "tg4_baseline_preserved": True,
+        "tg5_default_promoted_from_shadow": True,
+        "pre_tg5_rollback_profile_available": True,
     }
 
 

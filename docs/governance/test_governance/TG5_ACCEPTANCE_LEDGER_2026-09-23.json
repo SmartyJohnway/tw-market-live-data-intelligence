@@ -1,0 +1,74 @@
+{
+  "schema_version": "test_governance_tg5_acceptance_ledger.v1",
+  "date": "2026-09-23",
+  "status": "TG5_DEFAULT_CI_CUTOVER_PASS",
+  "baseline_main": "2ff9707d901f40c1a108dd1317fce2f03cc79735",
+  "branch": "governance/test-governance-tg5-cutover",
+  "tested_head": "2fe88a3aa3b23dafb07d573f4477be552ec65aa2",
+  "workflow": {
+    "name": "Test Governance TG-5 Default CI Cutover",
+    "run_id": 35839936603,
+    "conclusion": "success",
+    "final_runtime_validator": "PASS",
+    "runtime_market_authority_containment": "PASS",
+    "test_deletion_count": 0,
+    "git_diff_check": "PASS"
+  },
+  "promoted_default": {
+    "profile": "default-ci",
+    "file_paths": 93,
+    "selected_nodes": 778,
+    "passed": 774,
+    "skipped": 4,
+    "status": "PASS"
+  },
+  "equivalence": {
+    "tg2_current_shadow_selected_nodes": 778,
+    "promoted_default_matches_shadow": true
+  },
+  "rollback": {
+    "authoritative_baseline_commit": "2ff9707d901f40c1a108dd1317fce2f03cc79735",
+    "baseline_default_selected_nodes": 1245,
+    "baseline_default_status": "PASS",
+    "baseline_historical_selected_nodes": 94,
+    "baseline_historical_status": "PASS",
+    "current_tree_rollback_diagnostic_failures": 2,
+    "current_tree_historical_diagnostic_failures": 2,
+    "unexpected_diagnostic_failures": 0
+  },
+  "lifecycle": {
+    "full_current_selected_nodes": 1150,
+    "historical_selected_nodes": 94,
+    "release_selected_nodes": 5,
+    "known_mixed_historical_failures": 2,
+    "unexplained_legacy_nodes": 0
+  },
+  "full_non_network": {
+    "baseline_failed": 6,
+    "current_failed": 8,
+    "tg5_explained_topology_failures": 2,
+    "new_unexplained_failures": 0
+  },
+  "containment": {
+    "production_runtime_changed": false,
+    "source_activation_changed": false,
+    "routing_changed": false,
+    "frozen_schema_changed": false,
+    "tests_deleted": false,
+    "phase_i_implementation": false
+  },
+  "interpretation": {
+    "ordinary_default_authority_reduced_from_nodes": 1245,
+    "ordinary_default_authority_reduced_to_nodes": 778,
+    "removed_from_every_pr_not_deleted": 467,
+    "broad_current_nodes": 372,
+    "historical_nodes": 90,
+    "release_nodes": 5,
+    "protection_gap": "NONE_UNEXPLAINED"
+  },
+  "next_stage": {
+    "id": "TG-6",
+    "name": "Optional physical cleanup / marker migration / naming cleanup",
+    "authorized": false
+  }
+}

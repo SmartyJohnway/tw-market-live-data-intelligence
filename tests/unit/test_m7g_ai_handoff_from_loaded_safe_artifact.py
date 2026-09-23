@@ -152,5 +152,5 @@ def test_inventory_status_and_default_ci():
     assert entry['refresh_execution_added'] is True
     assert entry['runtime_network_fetch_added'] is True
     assert entry['backend_api_changed'] is True
-    paths = json.loads(PROFILE.read_text(encoding='utf-8'))['profiles']['default-ci']['pytest_paths']
-    assert 'tests/unit/test_m7g_ai_handoff_from_loaded_safe_artifact.py' in paths
+    from scripts.test_governance_authority import profile_paths_for_role
+    assert 'tests/unit/test_m7g_ai_handoff_from_loaded_safe_artifact.py' in profile_paths_for_role('broad_current')

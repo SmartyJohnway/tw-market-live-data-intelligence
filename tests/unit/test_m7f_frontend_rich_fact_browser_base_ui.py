@@ -153,6 +153,6 @@ def test_m7f02_inventory_status():
     assert entry["next_task"] in {"M7F-03-04-FIELD-BADGES-CURRENTNESS-AND-CALENDAR-INTEGRATION", "M7F-07-08-FRONTEND-SECURITY-SEMANTIC-REGRESSION-AND-FINAL-ACCEPTANCE", "M7G-LOCAL-SAFE-CONTEXT-ARTIFACT-LOAD-AND-OPERATOR-REFRESH-WORKFLOW"}
 
 
-def test_m7f02_default_ci_inclusion():
-    profile = json.loads(PROFILE.read_text(encoding="utf-8"))
-    assert "tests/unit/test_m7f_frontend_rich_fact_browser_base_ui.py" in profile["profiles"]["default-ci"]["pytest_paths"]
+def test_m7f02_broad_current_profile_inclusion():
+    from scripts.test_governance_authority import profile_paths_for_role
+    assert "tests/unit/test_m7f_frontend_rich_fact_browser_base_ui.py" in profile_paths_for_role("broad_current")

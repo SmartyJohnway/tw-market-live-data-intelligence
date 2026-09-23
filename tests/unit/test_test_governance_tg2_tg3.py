@@ -12,13 +12,15 @@ ROOT = Path(__file__).resolve().parents[2]
 def test_tg2_tg3_validator_passes_and_preserves_default_authority() -> None:
     result = validate()
     assert result["status"] == "PASS"
-    assert result["default_ci_file_count"] == 156
+    assert result["source_pre_tg5_default_file_count"] == 156
+    assert result["current_default_ci_file_count"] == 93
     assert result["current_candidate_count"] == 91
     assert result["mixed_count"] == 2
     assert result["full_current_nondefault_count"] == 46
     assert result["historical_candidate_count"] == 15
     assert result["release_candidate_count"] == 2
-    assert result["default_ci_authority_changed"] is False
+    assert result["default_ci_authority_changed"] is True
+    assert result["tg5_cutover_candidate"] is True
     assert result["tg2_shadow_profiles_automatic_ci_allowed"] is False
     assert result["tg3_full_reproduction_retained"] is True
 

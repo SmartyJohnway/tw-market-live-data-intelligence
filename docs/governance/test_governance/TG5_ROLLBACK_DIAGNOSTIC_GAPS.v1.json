@@ -1,0 +1,28 @@
+{
+  "schema_version": "tg5_rollback_diagnostic_gaps.v1",
+  "date": "2026-09-23",
+  "classification": "FROZEN_HISTORICAL_SELF_MEMBERSHIP_ASSERTION_AFTER_CUTOVER",
+  "baseline_main": "2ff9707d901f40c1a108dd1317fce2f03cc79735",
+  "actual_rollback_mechanism": "checkout_or_revert_to_pre_tg5_repository_baseline",
+  "current_tree_diagnostic_profile": "pre-tg5-default-ci",
+  "allowed_failed_nodes": [
+    {
+      "node_id": "tests/unit/test_m7f_rich_fact_browser_final_acceptance.py::test_default_ci_includes_final_acceptance_tests",
+      "reason": "TG-3 frozen historical final-acceptance file records the then-current default-CI topology and must not be rewritten for TG-5."
+    },
+    {
+      "node_id": "tests/unit/test_m8_00_final_acceptance.py::test_default_ci_includes_m8_final_acceptance_test",
+      "reason": "TG-3 frozen historical final-acceptance file records the then-current default-CI topology and must not be rewritten for TG-5."
+    }
+  ],
+  "unexpected_failure_count_must_be_zero": true,
+  "applies_to_current_tree_profiles": [
+    "pre-tg5-default-ci",
+    "tg2-historical-acceptance-shadow"
+  ],
+  "authoritative_proof": {
+    "baseline_commit": "2ff9707d901f40c1a108dd1317fce2f03cc79735",
+    "default_profile_expected_status": "pass",
+    "historical_profile_expected_status": "pass"
+  }
+}

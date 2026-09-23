@@ -112,9 +112,9 @@ def test_inventory_m8_00_06_07_metadata():
     assert entry["next_task"] == "M8A-00-OFFICIAL-EOD-ADAPTER-SCOPE-AND-CONTRACT-PREFLIGHT"
 
 
-def test_default_ci_includes_hardening_test():
-    config = json.loads((ROOT / "config/test_execution_profiles.json").read_text())
-    assert "tests/unit/test_m8_compatibility_hardening.py" in config["profiles"]["default-ci"]["pytest_paths"]
+def test_broad_current_profile_includes_hardening_test():
+    from scripts.test_governance_authority import profile_paths_for_role
+    assert "tests/unit/test_m8_compatibility_hardening.py" in profile_paths_for_role("broad_current")
 
 
 def test_safe_field_text_cannot_inject_trading_advice_terms():

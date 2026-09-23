@@ -4,9 +4,10 @@ from scripts.audit_test_governance import build_report
 
 
 def test_tg0_inventory_covers_every_default_ci_path_without_mutating_selection() -> None:
-    report = build_report()
+    report = build_report("pre-tg5-default-ci")
     assert report["schema_version"] == "test_governance_inventory.v1"
     assert report["classification_is_advisory"] is True
+    assert report["baseline_profile"] == "pre-tg5-default-ci"
     assert report["selection_change_performed"] is False
 
     metrics = report["metrics"]
@@ -17,7 +18,7 @@ def test_tg0_inventory_covers_every_default_ci_path_without_mutating_selection()
 
 
 def test_tg0_inventory_exposes_governance_debt_signals() -> None:
-    report = build_report()
+    report = build_report("pre-tg5-default-ci")
     metrics = report["metrics"]
 
     assert metrics["files_reading_docs"] > 0
