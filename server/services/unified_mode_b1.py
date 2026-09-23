@@ -31,13 +31,10 @@ def build_mode_b1_preview(
     try:
         validation = validate_mode_a_request(request)
         security_master = get_production_mode_a_security_master(POINTER_PATH)
-        # Preserve the V1/V2 authority-loader seam exactly; only an explicit
-        # V3 request selects the dormant V3 planning pair.
-        authorities = (
-            load_planning_authorities("unified_market_evidence_request.v3")
-            if request.get("schema_version") == "unified_market_evidence_request.v3"
-            else load_planning_authorities()
-        )
+        # Explicit Request version remains authoritative even though V3 is the
+        # preferred default. Compatibility V1/V2 requests continue to use the
+        # frozen V2 Catalog/Route pair.
+        authorities = load_planning_authorities(request.get("schema_version"))
         return build_mode_b1_preview_package(
             request,
             validation,
