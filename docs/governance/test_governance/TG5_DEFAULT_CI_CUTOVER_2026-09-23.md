@@ -49,21 +49,20 @@ The exact pre-TG5 default profile is frozen in:
 
 `docs/governance/test_governance/TG5_ROLLBACK_CONTRACT_2026-09-23.json`
 
-A runnable manual rehearsal profile is also retained:
+A runnable current-tree diagnostic profile is also retained:
 
 `pre-tg5-default-ci`
 
-Expected rollback execution:
+It preserves the 156-path/expression topology, but it is **not** the authoritative
+rollback proof because two TG-3-frozen historical acceptance files intentionally
+assert the old default topology.
 
-```text
-156 paths
-1245 selected nodes
-PASS
-```
+Authoritative rollback proof is a detached worktree at the frozen pre-TG5
+baseline commit. Its native `default-ci` must select 1245 nodes and pass.
 
-Rollback of authority requires replacing only the `default-ci` profile body
-with the frozen `old_default_profile` from the rollback contract. It requires
-no production-runtime change.
+Operational rollback is repository-level: revert the TG-5 merge or restore the
+repository to the frozen pre-TG5 baseline. Frozen historical evidence is never
+rewritten merely to make current-tree rollback rehearsal appear green.
 
 ## Lifecycle profiles retained
 
@@ -97,16 +96,17 @@ The acceptance workflow must prove:
 2. new default selects exactly 778 nodes and passes;
 3. TG-2 current shadow also selects exactly 778 and passes;
 4. promoted default and current shadow have identical pytest node sets;
-5. `pre-tg5-default-ci` selects 1245 and passes;
-6. broad current selects 1150 and passes;
-7. historical selects 94 and passes;
-8. release selects 5 and passes;
-9. mixed historical has only the two already frozen replay gaps;
-10. full `full-non-network` regression passes;
-11. production runtime, source activation/routing and frozen schemas are
+5. detached pre-TG5 baseline `default-ci` selects 1245 and passes;
+6. current-tree `pre-tg5-default-ci` has only the two frozen historical self-membership diagnostic gaps;
+7. broad current selects 1150 and passes;
+8. historical selects 94 and passes;
+9. release selects 5 and passes;
+10. mixed historical has only the two already frozen replay gaps;
+11. full `full-non-network` regression passes;
+12. production runtime, source activation/routing and frozen schemas are
     unchanged;
-12. no tests are deleted;
-13. Phase I remains untouched.
+13. no tests are deleted;
+14. Phase I remains untouched.
 
 ## Out of scope
 
