@@ -100,9 +100,9 @@ def test_wrong_schema_is_blocked():
     assert "wrong schema" in " ".join(proj["sections"][0]["caveats"])
 
 
-def test_default_ci_includes_new_test():
-    config = json.loads((ROOT / "config/test_execution_profiles.json").read_text(encoding="utf-8"))
-    assert "tests/unit/test_m8_controlled_conversation_context_integration.py" in config["profiles"]["default-ci"]["pytest_paths"]
+def test_broad_current_profile_includes_new_test():
+    from scripts.test_governance_authority import profile_paths_for_role
+    assert "tests/unit/test_m8_controlled_conversation_context_integration.py" in profile_paths_for_role("broad_current")
 
 
 def test_forbidden_trading_terms_in_safe_fields_are_withheld():
