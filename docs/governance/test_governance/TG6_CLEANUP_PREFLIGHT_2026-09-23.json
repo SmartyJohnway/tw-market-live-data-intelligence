@@ -1,0 +1,217 @@
+{
+  "schema_version": "test_governance_tg6_cleanup_preflight.v1",
+  "date": "2026-09-23",
+  "baseline_main": "db3340da61ea6e1f3391cfc1728d42b5376157c7",
+  "status": "PREFLIGHT_ONLY_NO_CLEANUP_MUTATION",
+  "scope": {
+    "production_runtime_change": false,
+    "source_activation_change": false,
+    "routing_change": false,
+    "frozen_schema_change": false,
+    "phase_i_implementation": false,
+    "default_ci_authority_change": false,
+    "test_deletion": false,
+    "test_move": false,
+    "marker_mass_migration": false
+  },
+  "baseline": {
+    "test_python_files": 393,
+    "unit_test_files": 363,
+    "integration_test_files": 7,
+    "acceptance_archive_python_files": 1,
+    "current_default_ci": {
+      "file_paths": 93,
+      "selected_nodes": 778
+    },
+    "actual_workflow_files": 15,
+    "ci_policy_expected_workflow_files": 5,
+    "surplus_milestone_workflows": 10,
+    "governance_docs": 17,
+    "governance_scripts": 6,
+    "governance_tests": 8
+  },
+  "findings": [
+    {
+      "id": "TG6-F01",
+      "severity": "HIGH",
+      "category": "current_authority_metadata_drift",
+      "evidence": [
+        "config/test_governance_authority.json state is TG5_CUTOVER_CANDIDATE although TG-5 is merged",
+        "config/test_governance_semantic_profiles.json still says TG-2_ADDITIVE_SHADOW_ONLY and default_ci_authority_changed=false"
+      ],
+      "recommendation": "Establish one current authority document and explicitly demote TG-2 semantic manifest to historical migration evidence."
+    },
+    {
+      "id": "TG6-F02",
+      "severity": "HIGH",
+      "category": "one_time_workflow_accumulation",
+      "evidence": [
+        "15 workflow YAML files exist under .github/workflows",
+        "CI_POLICY_V1 validator expects exactly 5 current workflows",
+        "10 surplus workflows are one-time Phase H / repository-governance / TG0-TG5 branch-specific harnesses",
+        "this accumulation contributes to the known full-non-network GitHub Actions policy failure"
+      ],
+      "recommendation": "Retire the 10 one-time workflows from .github/workflows after recording their accepted run IDs in ledgers; keep only the five CI_POLICY_V1 workflows."
+    },
+    {
+      "id": "TG6-F03",
+      "severity": "MEDIUM",
+      "category": "temporary_profile_names_after_promotion",
+      "evidence": [
+        "default-ci and tg2-default-ci-current-shadow have identical 93-path ordered lists and identical expressions",
+        "test_governance_authority.json still points lifecycle roles at tg2/tg4 shadow names"
+      ],
+      "recommendation": "Promote stable lifecycle names and retire/deprecate shadow aliases only after equivalence tests."
+    },
+    {
+      "id": "TG6-F04",
+      "severity": "MEDIUM",
+      "category": "stale_milestone_profile",
+      "evidence": [
+        "milestone-acceptance still describes M8R-03E-R2 as active",
+        "milestone-acceptance remains automatic_ci_allowed=true",
+        "repository current authority is now TG-5 / Phase H"
+      ],
+      "recommendation": "Deprecate or reclassify milestone-acceptance as historical/manual; do not keep an old milestone labeled active."
+    },
+    {
+      "id": "TG6-F05",
+      "severity": "MEDIUM",
+      "category": "marker_taxonomy_not_adopted",
+      "evidence": [
+        "@pytest.mark.default_ci search count 0",
+        "@pytest.mark.core search count 0",
+        "@pytest.mark.compatibility search count 0",
+        "@pytest.mark.documentation_governance search count 0",
+        "@pytest.mark.full_current search count 0",
+        "historical markers exist only sparsely"
+      ],
+      "recommendation": "Do not mass-annotate 393 test files. Keep path-based profiles canonical and apply markers only where node-level split semantics are required or on new tests."
+    },
+    {
+      "id": "TG6-F06",
+      "severity": "LOW",
+      "category": "exact_duplicate_test",
+      "evidence": [
+        "tests/unit/test_m8r_05b_02_consumption_binding_schema.py and tests/unit/test_m8r_05b_02_schema.py have identical git blob SHA 4bc114b64098c80ed5e28f5ac25e9e347c2b73c9",
+        "neither filename has repository references"
+      ],
+      "recommendation": "Keep the more descriptive consumption_binding_schema filename and remove the generic duplicate in a bounded cleanup tranche."
+    },
+    {
+      "id": "TG6-F07",
+      "severity": "HIGH",
+      "category": "historical_test_path_coupling",
+      "evidence": [
+        "15 historical candidate tests are referenced by profiles, semantic manifests, TG-3 integrity manifest, rollback contracts, quality inventories and multiple accepted review/acceptance documents",
+        "individual historical filenames have approximately 6-17 repository references"
+      ],
+      "recommendation": "Do not physically move historical tests during initial TG-6 cleanup. Path churn has high evidence cost and little operational benefit."
+    },
+    {
+      "id": "TG6-F08",
+      "severity": "MEDIUM",
+      "category": "milestone_validator_accumulation",
+      "evidence": [
+        "six TG governance scripts and several TG-specific tests remain active repository surfaces after acceptance",
+        "most are referenced primarily by one-time workflows and historical acceptance documents"
+      ],
+      "recommendation": "Retire workflows first. Re-evaluate scripts/tests only after current authority/profile names are stable; do not remove all milestone validators in the first cleanup tranche."
+    }
+  ],
+  "proposed_tranches": [
+    {
+      "id": "TG6-A",
+      "name": "Current authority normalization",
+      "risk": "LOW",
+      "actions": [
+        "change test_governance_authority state from candidate to promoted/active",
+        "make current authority manifest the single machine-readable source for active lifecycle profile names",
+        "classify TG-2 semantic profile manifest as historical migration evidence without rewriting its historical facts"
+      ]
+    },
+    {
+      "id": "TG6-B",
+      "name": "Retire completed one-time workflows",
+      "risk": "LOW_TO_MEDIUM",
+      "actions": [
+        "remove 10 completed milestone-specific workflow YAML files from .github/workflows",
+        "retain five CI_POLICY_V1 workflows",
+        "verify validate_github_actions_execution_policy returns passed and workflow_count=5",
+        "do not delete acceptance ledgers or run IDs"
+      ]
+    },
+    {
+      "id": "TG6-C",
+      "name": "Stable lifecycle profile naming",
+      "risk": "MEDIUM",
+      "actions": [
+        "remove redundant tg2-default-ci-current-shadow alias after all current references migrate to default-ci",
+        "introduce stable name full-current for the 1150-node broad-current profile",
+        "introduce stable historical milestone replay name for the 94-node historical lifecycle",
+        "introduce stable release lifecycle name for the 5-node release profile",
+        "retain pre-tg5-default-ci rollback diagnostic until a later explicit rollback-retirement decision",
+        "retain mixed-historical diagnostic until mixed files are intentionally split"
+      ]
+    },
+    {
+      "id": "TG6-D",
+      "name": "Bounded duplicate cleanup",
+      "risk": "LOW",
+      "actions": [
+        "remove tests/unit/test_m8r_05b_02_schema.py only after equivalence verification",
+        "keep tests/unit/test_m8r_05b_02_consumption_binding_schema.py"
+      ]
+    },
+    {
+      "id": "TG6-E",
+      "name": "Selective marker adoption",
+      "risk": "MEDIUM",
+      "actions": [
+        "apply lifecycle markers only where node-level distinction is required",
+        "use markers for future tests from creation time",
+        "do not attempt repository-wide marker migration"
+      ]
+    },
+    {
+      "id": "TG6-F",
+      "name": "Optional historical physical cleanup",
+      "risk": "HIGH",
+      "disposition": "DEFER",
+      "actions": [
+        "do not move the 15 historical tests initially",
+        "do not rewrite accepted ledgers to new paths",
+        "revisit only if path clutter becomes operationally material"
+      ]
+    },
+    {
+      "id": "TG6-G",
+      "name": "Optional milestone validator retirement",
+      "risk": "MEDIUM_TO_HIGH",
+      "disposition": "DEFER_UNTIL_AFTER_TG6_C",
+      "actions": [
+        "re-audit TG0-TG5 scripts/tests after workflow retirement and stable profile naming",
+        "keep ledgers immutable",
+        "remove only validators with no current authority role and no unique reproducibility value"
+      ]
+    }
+  ],
+  "recommended_execution_order": [
+    "TG6-A",
+    "TG6-B",
+    "TG6-C",
+    "TG6-D",
+    "TG6-E"
+  ],
+  "deferred": [
+    "TG6-F",
+    "TG6-G"
+  ],
+  "stop_rules": [
+    "No change may alter default-ci 778-node authority without a separate authority-change gate.",
+    "Do not edit historical acceptance ledgers to make current paths look cleaner.",
+    "Do not remove the only test protecting a current security, identity, fail-closed, compatibility or contract invariant.",
+    "Do not use TG-6 to repair unrelated runtime/full-non-network failures.",
+    "Do not enter Roadmap Phase I."
+  ]
+}
