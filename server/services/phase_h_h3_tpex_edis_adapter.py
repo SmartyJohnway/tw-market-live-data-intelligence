@@ -14,13 +14,14 @@ from decimal import Decimal
 from typing import Literal, Mapping, Sequence
 
 
-EDIS_HEADER_BYTES = 182
+EDIS_HEADER_BYTES = 186
 EDIS_DATA_RECORD_BYTES = 219
 _HEADER_DATE = slice(0, 8)
 _HEADER_TIME = slice(8, 12)
 _HEADER_RECORD_LENGTH = slice(12, 15)
 _HEADER_RECORD_COUNT = slice(15, 20)
-_HEADER_RESERVED = slice(20, 180)
+_HEADER_RESERVED = slice(20, 184)
+_HEADER_TERMINATOR = slice(184, 186)
 
 # Official V1.33 S37/S38 data row byte positions; terminal CRLF is [217:219].
 _CODE = slice(0, 6)
@@ -105,7 +106,7 @@ def _parse_file(payload: bytes) -> tuple[str, str, list[bytes]]:
     if not isinstance(payload, bytes) or len(payload) < EDIS_HEADER_BYTES:
         raise TPExEDISFormatError("source_failed:truncated_header")
     header = payload[:EDIS_HEADER_BYTES]
-    if header[180:182] != b"\r\n" or any(byte != 32 for byte in header[_HEADER_RESERVED]):
+    if header[_HEADER_TERMINATOR] != b"\r\n" or any(byte != 32 for byte in header[_HEADER_RESERVED]):
         raise TPExEDISFormatError("source_failed:invalid_header_framing")
     trade_date = _date_from_header(header[_HEADER_DATE])
     production_time_bytes = header[_HEADER_TIME]
@@ -132,14 +133,14 @@ def _parse_file(payload: bytes) -> tuple[str, str, list[bytes]]:
 
 
 def _decode_security_code(field: bytes) -> str:
-    # X(6) text codes are left-aligned; only the field's trailing space padding
-    # is removed. Leading spaces, embedded spaces, and non-ASCII codes fail.
+    # X(6) text identifiers are left-aligned; only trailing space padding is
+    # permitted. Full-market files can contain alphanumeric non-target rows.
     try:
         value = field.decode("ascii")
     except UnicodeDecodeError as exc:
         raise TPExEDISFormatError("source_failed:invalid_security_code_field") from exc
     code = value.rstrip(" ")
-    if not code or not code.isdigit() or not code.isascii() or " " in value[: len(code)]:
+    if not code or any(not ("!" <= char <= "~") for char in code):
         raise TPExEDISFormatError("source_failed:invalid_security_code_field")
     if value != code.ljust(6):
         raise TPExEDISFormatError("source_failed:invalid_security_code_field")
@@ -160,7 +161,9 @@ def _validate_data_record(record: bytes) -> tuple[str, float, int]:
         (_MARKET_VALUE, "market_value"), (_COMMON_STOCK_CAP, "common_stock_cap"),
     ):
         _digits(record[field], label, code=f"source_failed:invalid_numeric_{label}")
-    if record[58:59] not in {b"+", b"^", b"-", b"V", b" ", b"X"}:
+    # H3 does not consume the change marker. Validate only that the X(1)
+    # source field is a printable ASCII byte; do not infer marker semantics.
+    if not 0x20 <= record[58] <= 0x7E:
         raise TPExEDISFormatError("source_failed:invalid_change_marker")
     try:
         record[_INDUSTRY_CODE].decode("ascii")

@@ -27,14 +27,15 @@ def _price(raw: str = "000012345") -> bytes:
     return raw.encode("ascii")
 
 
-def data_record(*, code: str = "6488", close: str = "000012345", volume: str = "000000001234") -> bytes:
+def data_record(*, code: str = "6488", close: str = "000012345", volume: str = "000000001234", marker: bytes = b"+") -> bytes:
+    assert len(marker) == 1
     code_field = code.ljust(6).encode("ascii")
     # Multibyte CP950 text is deliberately opaque to the parser; it occupies
     # exactly 16 source bytes and is not used as target identity.
     name = "測試股票".encode("cp950").ljust(16, b" ")
     prices = [_price(), _price(), _price(), _price(close)] + [_price() for _ in range(9)]
     body = (
-        code_field + name + b"".join(prices[:4]) + b"+"
+        code_field + name + b"".join(prices[:4]) + marker
         + b"".join(prices[4:]) + volume.encode("ascii")
         + b"00000001" + b"000000000001" + b"0000000000001"
         + b"00000000000001" + b"01" + b"Y" + b"000000000000001"
@@ -43,12 +44,21 @@ def data_record(*, code: str = "6488", close: str = "000012345", volume: str = "
     return body + b"\r\n"
 
 
+def _header(*, trading_date: str = "20260923", production_time: str = "1745", declared_length: str = "219", declared_count: str = "00000", reserved_bytes: int = 164, terminal: bytes = b"\r\n") -> bytes:
+    return (
+        trading_date.encode("ascii") + production_time.encode("ascii")
+        + declared_length.encode("ascii") + declared_count.encode("ascii")
+        + b" " * reserved_bytes + terminal
+    )
+
+
 def payload(*records: bytes, trading_date: str = "20260923", production_time: str = "1745", declared_length: str = "219", declared_count: str | None = None, trailing: bytes = b"") -> bytes:
     count = len(records) if declared_count is None else declared_count
-    header = (
-        trading_date.encode("ascii") + production_time.encode("ascii")
-        + declared_length.encode("ascii") + f"{count:0>5}".encode("ascii")
-        + b" " * 160 + b"\r\n"
+    header = _header(
+        trading_date=trading_date,
+        production_time=production_time,
+        declared_length=declared_length,
+        declared_count=f"{count:0>5}",
     )
     assert len(header) == EDIS_HEADER_BYTES
     return header + b"".join(records) + trailing
@@ -89,6 +99,30 @@ def test_name_is_not_used_for_binding_and_target_absence_is_scoped_no_evidence()
     assert other.observation is None
 
 
+def test_official_186_byte_header_is_accepted_and_182_byte_header_is_rejected() -> None:
+    valid = payload(data_record())
+    assert EDIS_HEADER_BYTES == 186
+    assert len(valid[:EDIS_HEADER_BYTES]) == 186
+    assert parse(valid).status == "available"
+
+    old_header = _header(declared_count="00001", reserved_bytes=160)
+    assert len(old_header) == 182
+    assert parse(old_header + data_record()).status == "source_failed"
+
+
+@pytest.mark.parametrize(
+    "bad_header",
+    [
+        _header(declared_count="00001", reserved_bytes=163),
+        _header(declared_count="00001", reserved_bytes=162, terminal=b"\r\n  "),
+    ],
+    ids=["wrong-reserved-field-length", "wrong-terminal-position"],
+)
+def test_wrong_header_reserved_width_or_terminal_position_is_rejected(bad_header: bytes) -> None:
+    result = parse(bad_header + data_record())
+    assert result.status == "source_failed"
+
+
 def test_wrong_market_target_is_binding_failure() -> None:
     wrong = {"canonical_target_id": "TWSE:6488", "market": "TWSE", "security_code": "6488"}
     result = parse(payload(data_record()), target=wrong)
@@ -100,6 +134,33 @@ def test_duplicate_exact_target_rows_fail_closed() -> None:
     result = parse(payload(data_record(), data_record(close="000012346")))
     assert result.status == "binding_failed"
     assert result.error_code == "duplicate_exact_target_rows"
+
+
+def test_alphanumeric_non_target_rows_are_valid_in_a_full_market_file() -> None:
+    result = parse(payload(
+        data_record(code="73000P"),
+        data_record(code="70000C"),
+        data_record(code="6488"),
+    ))
+    assert result.status == "available"
+    assert result.observation["security_code"] == "6488"
+
+
+def test_file_with_only_alphanumeric_non_target_rows_is_valid_scoped_absence() -> None:
+    result = parse(payload(data_record(code="73000P"), data_record(code="70000C")))
+    assert result.status == "no_evidence_in_covered_scope"
+
+
+def test_lowercase_documented_change_marker_is_structurally_accepted() -> None:
+    result = parse(payload(data_record(marker=b"v")))
+    assert result.status == "available"
+
+
+@pytest.mark.parametrize("code", ["70 0C", "70\x00C", "      "])
+def test_malformed_source_code_text_fails_closed(code: str) -> None:
+    result = parse(payload(data_record(code=code)))
+    assert result.status == "source_failed"
+    assert result.error_code == "source_failed:invalid_security_code_field"
 
 
 @pytest.mark.parametrize(

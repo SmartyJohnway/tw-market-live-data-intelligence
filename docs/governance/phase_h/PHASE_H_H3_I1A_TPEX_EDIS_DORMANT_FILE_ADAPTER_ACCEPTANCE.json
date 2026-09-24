@@ -6,8 +6,8 @@
   "branch": "phase-h/h3-i1a-tpex-edis-dormant-file-adapter",
   "implementation": {
     "path": "server/services/phase_h_h3_tpex_edis_adapter.py",
-    "tested_file_sha256": "711bc1b432db15c8a0ab3c06eef1886d83ecbf7b2ddff16ed761c16541e1e728",
-    "tested_file_bytes": 10621,
+    "tested_file_sha256": "8e09daa2f81c3cbf38eb9bf757d13758229f02dce99dd55f7e81392601fddbc6",
+    "tested_file_bytes": 10766,
     "api": "normalize_tpex_edis_daily_quote",
     "file_variants": {
       "S37": "TPEX_EDIS_S37",
@@ -22,7 +22,7 @@
   "source_authority": {
     "automatic_subscribed_file_transport": "officially supported in principle",
     "authenticated_url_transport_implementation": "not implemented",
-    "file_contract": "TPEx EDIS V1.33 S37/S38, 219-byte data records; first record is 182 bytes with date, production time, record length, count, reserved spaces and CRLF",
+    "file_contract": "TPEx EDIS V1.33 S37/S38, 219-byte data records; first/header record is 186 bytes with date, production time, record length, count, 164-byte reserved field and CRLF",
     "official_format_reference": "https://www.tpex.org.tw/storage/regular_system/%E6%96%B0%E7%89%88%E6%94%B6%E5%B8%82%E5%BE%8C%E4%BA%A4%E6%98%93%E8%B3%87%E8%A8%8A%E6%A0%BC%E5%BC%8F%E8%AA%AA%E6%98%8E%28V1.33%E7%89%88%29.pdf?t=20251127",
     "official_product_reference": "https://www.tpex.org.tw/zh-tw/service/data/product/post.html",
     "fresh_install_arbitrary_last_20_session_continuity": "NOT_PROVEN",
@@ -36,7 +36,7 @@
   "validation": {
     "focused_h3_i1a": {
       "result": "PASS",
-      "summary": "19 passed",
+      "summary": "28 passed",
       "synthetic_fixture_only": true,
       "h3_i0_builder_integration": true,
       "network_may_have_occurred": false
