@@ -1,0 +1,98 @@
+{
+  "schema_version": "phase_h_h3_i0_deterministic_recent_performance_core_acceptance.v1",
+  "status": "OWNER_ACCEPTED_COMPLETED",
+  "tranche": "Phase H H3-I0 Dormant Deterministic recent_performance Core",
+  "baseline_main": "5870754c595776dacc1553098b806bce31f573ad",
+  "branch": "phase-h/h3-i0-deterministic-recent-performance-core",
+  "implementation": {
+    "path": "server/services/phase_h_recent_performance.py",
+    "tested_file_sha256": "10ee430b1b881cd4600abf05d4bb36e97bcba398a0832baf9235eb15c2305e05",
+    "tested_file_bytes": 13753,
+    "api": "build_recent_performance_evidence",
+    "network_access": false,
+    "filesystem_io": false,
+    "automatic_history_acquisition": false,
+    "volume_window_selection": "Not performed by H3-I0; historical average is accepted only as an explicitly supplied governed aggregate with provenance."
+  },
+  "changed_files": [
+    "server/services/phase_h_recent_performance.py",
+    "tests/unit/test_phase_h_h3_i0_recent_performance.py",
+    "docs/governance/phase_h/PHASE_H_H3_I0_DETERMINISTIC_RECENT_PERFORMANCE_CORE_ACCEPTANCE.json"
+  ],
+  "frozen_authorities_modified": false,
+  "validation": {
+    "focused_h3_i0": {
+      "result": "PASS",
+      "summary": "23 passed",
+      "includes_schema_and_semantic_validation": true,
+      "includes_h4_integration_from_generated_h3": true
+    },
+    "default_ci": {
+      "result": "PASS",
+      "passed": 776,
+      "skipped": 2,
+      "deselected": 5,
+      "network_may_have_occurred": false,
+      "h3_i0_test_added_to_profile": false
+    },
+    "full_current": {
+      "result": "PASS",
+      "passed": 1148,
+      "skipped": 2,
+      "deselected": 5,
+      "network_may_have_occurred": false
+    },
+    "phase_h_v3_contract_validator": "PASS",
+    "portable_catalog_sync_validator": "PASS",
+    "runtime_skill_guide_sync_validator": "PASS",
+    "compileall_scripts_server_tests": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "failures": {
+    "known_frozen_historical_failures_remaining": [
+      {
+        "id": "FNN-02",
+        "test": "tests/unit/test_m7f_rich_fact_browser_final_acceptance.py::test_default_ci_includes_final_acceptance_tests"
+      },
+      {
+        "id": "FNN-03",
+        "test": "tests/unit/test_m8_00_final_acceptance.py::test_default_ci_includes_m8_final_acceptance_test"
+      }
+    ],
+    "observed_by_default_ci_or_full_current_runs": {
+      "FNN-02": "not_exercised_as_failure_by_these_profiles",
+      "FNN-03": "not_exercised_as_failure_by_these_profiles"
+    },
+    "new_unexplained_failures": 0
+  },
+  "runtime_and_scope": {
+    "preferred_request_schema_version": "unified_market_evidence_request.v3",
+    "h3_route_runtime_executable": false,
+    "h3_route_status": "blocked",
+    "h3_selected_executor_id": null,
+    "h3_network_source_authority": "unresolved; TWSE and TPEx default bounded history routes are not proven and optional-provider contracts remain pending",
+    "h2_runtime": "INACTIVE",
+    "h2_comparison_window_plumbing": "H-SB1-A1 remains deferred",
+    "source_activation_by_h3_i0": false,
+    "catalog_mutation": false,
+    "routing_mutation": false,
+    "mcp_tool_count": 6,
+    "mcp_tool_count_changed": false,
+    "roadmap_phase_h_checkbox_changed": false,
+    "phase_i": "NOT_STARTED"
+  },
+  "interpretation": "This record accepts the deterministic H3 evidence derivation core only. It does not establish source authority, H3 runtime activation, H2 activation, complete Phase H, or Phase I implementation.",
+  "independent_review": {
+    "reviewer_role": "ChatGPT independent architecture/repository review",
+    "review_date": "2026-09-24",
+    "reviewed_implementation_head": "8c0d35ef3cf9345734af198d041b6429eb845302",
+    "disposition": "PASS",
+    "findings_closed": [
+      "requested baseline cannot be omitted from baseline_lookbacks",
+      "historical average evidence is exact-target-bound and basis-bound to completed_official_sessions",
+      "FNN-02 and FNN-03 remain explicitly recorded as frozen historical failures"
+    ],
+    "new_unexplained_failures": 0,
+    "production_runtime_mutation_by_review": false
+  }
+}
