@@ -1,0 +1,92 @@
+{
+  "schema_version": "phase_h_h3_i2a1_twse_bounded_multi_month_collector_acceptance.v1",
+  "status": "OWNER_REVIEW_CANDIDATE",
+  "tranche": "Phase H H3-I2A1 TWSE Bounded Multi-Month Observation Collector",
+  "baseline_main_sha": "c8a64eb1ca0474c405cc8bf25ecaab72e2da51bf",
+  "branch": "phase-h/h3-i2a1-twse-bounded-multi-month-collector",
+  "implementation": {
+    "path": "server/services/phase_h_h3_twse_stock_day_walker.py",
+    "tested_file_sha256": "152c4e32ee27dc83b7c805814aebaca2ba82fb144e9b38f189b44cf0feefb103",
+    "tested_file_bytes": 16953,
+    "function": "collect_twse_stock_day_lookback",
+    "lookback_trading_days_min": 1,
+    "lookback_trading_days_max": 20,
+    "month_request_budget_min": 1,
+    "month_request_budget_max": 3,
+    "governed_end_selected_by_collector": false,
+    "minimum_necessary_month_requests": true,
+    "same_month_end_and_later_rows_excluded": true,
+    "close_unavailable_rows_count_toward_lookback": false,
+    "raw_html_persisted": false,
+    "history_cache": false,
+    "single_month_adapter_authority_reused": true
+  },
+  "source_authority": {
+    "single_month_live_acceptance_record": "docs/governance/phase_h/PHASE_H_H3_I2A_A0_TWSE_SOURCE_LIVE_CONTRACT_ACCEPTANCE_2026-09-24.json",
+    "single_month_live_acceptance_status": "OWNER_ACCEPTED_SINGLE_MONTH_BOUNDED_LIVE",
+    "single_month_primitive": "one exact TWSE target + one explicit month -> one bounded STOCK_DAY GET -> normalized official observations",
+    "collector_introduces_new_source_transport": false
+  },
+  "changed_files": [
+    "server/services/phase_h_h3_twse_stock_day_walker.py",
+    "tests/unit/test_phase_h_h3_i2a1_twse_stock_day_walker.py",
+    "docs/governance/phase_h/PHASE_H_H3_I2A1_TWSE_BOUNDED_MULTI_MONTH_COLLECTOR_ACCEPTANCE.json"
+  ],
+  "validation": {
+    "h3_i2a1_focused": {
+      "result": "PASS",
+      "summary": "15 passed",
+      "fixture_only": true,
+      "network_may_have_occurred": false,
+      "added_to_default_ci": false
+    },
+    "h3_i2a_adapter_regression": {
+      "result": "PASS",
+      "summary": "32 passed",
+      "network_may_have_occurred": false
+    },
+    "h3_i0_regression": {
+      "result": "PASS",
+      "summary": "23 passed",
+      "h3_projection_integration": true
+    },
+    "default_ci": {
+      "result": "PASS",
+      "passed": 776,
+      "skipped": 2,
+      "deselected": 5,
+      "network_may_have_occurred": false
+    },
+    "full_current": {
+      "result": "PASS",
+      "passed": 1148,
+      "skipped": 2,
+      "deselected": 5,
+      "network_may_have_occurred": false
+    },
+    "phase_h_v3_contract_validator": "PASS",
+    "portable_catalog_sync_validator": "PASS",
+    "runtime_skill_guide_sync_validator": "PASS",
+    "mcp_tool_count_from_skill_guide_validator": 6,
+    "compileall_scripts_server_tests": "PASS",
+    "git_diff_check": "PASS",
+    "external_twse_network_in_tests": false
+  },
+  "failures": {
+    "known_frozen_historical_failures_remaining": ["FNN-02", "FNN-03"],
+    "observed_as_failures_by_default_ci_or_full_current": "No; both profiles passed and reported network_may_have_occurred=false.",
+    "new_unexplained_failures": 0
+  },
+  "runtime_and_scope": {
+    "catalog_mutation": false,
+    "routing_mutation": false,
+    "executor_registry_mutation": false,
+    "h3_activation": false,
+    "h2_activation": false,
+    "mcp_tool_count": 6,
+    "phase_i": "NOT_STARTED",
+    "scheduler_polling_background_fetch": false,
+    "persistent_history_or_cache": false
+  },
+  "interpretation": "This is dormant bounded multi-month orchestration over the accepted one-month adapter. It retrieves prior valid observations only relative to the caller-supplied governed end observation; it does not establish a current/end observation authority, production route activation, historical database, automatic collection, H3/H2 activation, or Phase I implementation."
+}
