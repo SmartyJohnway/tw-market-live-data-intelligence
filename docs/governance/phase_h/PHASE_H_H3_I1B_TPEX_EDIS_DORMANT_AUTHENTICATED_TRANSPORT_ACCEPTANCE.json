@@ -6,9 +6,9 @@
   "branch": "phase-h/h3-i1b-tpex-edis-dormant-authenticated-transport",
   "implementation": {
     "path": "server/services/phase_h_h3_tpex_edis_transport.py",
-    "implementation_sha": "sha256:9d4e9f767234e894bf8594c2040d9302d6c5a7848e32b5fa5b06691bdd56ac35",
-    "implementation_file_sha256": "9d4e9f767234e894bf8594c2040d9302d6c5a7848e32b5fa5b06691bdd56ac35",
-    "implementation_file_bytes": 18042,
+    "implementation_sha": "sha256:d4d9d300134f9fd575370603e88e89d31bfe1429ef7ca2a38fe138cc0353bc7f",
+    "implementation_file_sha256": "d4d9d300134f9fd575370603e88e89d31bfe1429ef7ca2a38fe138cc0353bc7f",
+    "implementation_file_bytes": 19434,
     "operations": {
       "step_0": "GET /download/getApi?step=0",
       "step_1": "GET /download/getApi?step=1",
@@ -29,7 +29,7 @@
       "timeout_required": true,
       "max_response_bytes_required": true,
       "read_limit": "max_response_bytes + 1",
-      "step_1_body": "opaque in-memory bytes"
+      "step_1_body": "opaque in-memory bytes; explicitly textual 2xx must decode using declared charset before success"
     },
     "payload_processing": {
       "archive_extraction": false,
@@ -51,11 +51,16 @@
     "public_official_host_candidate": "https://intd.tpex.org.tw",
     "production_host_binding": "NOT LIVE VERIFIED",
     "fresh_install_last_20_session_continuity": "NOT PROVEN",
-    "manual_retrieval": "Read-only static document retrieved in memory and SHA verified; no authenticated EDIS API request was made.",
+    "manual_provenance": "The official TPEx API manual was Owner-supplied from the official TPEx download surface and fixed by SHA-256 for this review. No copy is committed as a runtime/source artifact by this tranche. H3-I1B code/tests did not persist the manual and did not perform an authenticated EDIS API or market-data request; no claim is made that the Owner source file never existed on disk.",
     "manual_download_url": "https://eshop.tpex.org.tw/uploadFile/upload/product/2c92e01394fcf4c7019518bc880f000b.docx"
   },
   "provider_errors": {
-    "documented_system_messages_classified": true,
+    "mapped_documented_messages_classified": true,
+    "complete_official_provider_error_coverage_claimed": false,
+    "step_0_api_file_absence_message": "尚無期限內的 API 檔案",
+    "step_0_api_file_absence_error_code": "no_valid_api_subscription",
+    "undecodable_textual_step_1_2xx": "transport_failed / provider_response_unclassified; no charset guessing",
+    "binary_opaque_step_1": "remains opaque and successful when other safety checks pass",
     "unknown_non_success_message": "provider_response_unclassified",
     "http_status_semantics_invented": false,
     "market_no_evidence_state_used": false
@@ -69,7 +74,7 @@
   "validation": {
     "focused_h3_i1b": {
       "result": "PASS",
-      "summary": "33 passed",
+      "summary": "37 passed",
       "injected_transport_only": true,
       "external_market_calls": 0
     },

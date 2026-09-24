@@ -90,6 +90,7 @@ _ZH_PROVIDER_ERRORS: tuple[tuple[str, str], ...] = (
     ("密碼錯誤", "password_invalid"),
     ("會員並未開啟API下載功能", "api_download_not_enabled"),
     ("此會員查無期限內的訂閱紀錄", "no_valid_api_subscription"),
+    ("尚無期限內的 API 檔案", "no_valid_api_subscription"),
 )
 _EN_PROVIDER_ERRORS: tuple[tuple[str, str], ...] = (
     ("please enter your account", "account_missing"),
@@ -269,6 +270,24 @@ def _decode_declared_text(body: bytes, content_type: str | None) -> str | None:
         return None
 
 
+def _is_declared_textual_content_type(content_type: str | None) -> bool:
+    """Recognize bounded textual media types without guessing payload format."""
+    if not content_type:
+        return False
+    try:
+        header = Message()
+        header["Content-Type"] = content_type
+        media_type = header.get_content_type().casefold()
+    except (TypeError, ValueError):
+        return False
+    return (
+        media_type.startswith("text/")
+        or media_type in {"application/json", "application/xml", "application/xhtml+xml"}
+        or media_type.endswith("+json")
+        or media_type.endswith("+xml")
+    )
+
+
 def _provider_error(body: bytes, operation: Operation, content_type: str | None) -> str | None:
     text = _decode_declared_text(body, content_type)
     if text is None:
@@ -423,6 +442,23 @@ def _request(
         return _failure(operation, "redirect_not_followed", http_status=status, content_type=content_type, response_byte_count=len(body))
     if status is None or not 200 <= status < 300:
         return _failure(operation, "provider_response_unclassified", http_status=status, content_type=content_type, response_byte_count=len(body))
+
+    # Step 1 stays opaque, but a declared textual response must be decodable
+    # before it can be trusted as a successful payload: otherwise a provider
+    # error in an unknown charset could be mistaken for file bytes. Never guess
+    # Big5/CP950 or infer an undocumented response format.
+    if (
+        operation == "subscribed_file_download"
+        and _is_declared_textual_content_type(content_type)
+        and _decode_declared_text(body, content_type) is None
+    ):
+        return _failure(
+            operation,
+            "provider_response_unclassified",
+            http_status=status,
+            content_type=content_type,
+            response_byte_count=len(body),
+        )
 
     digest = sha256(body).hexdigest()
     if operation == "subscribed_file_download":

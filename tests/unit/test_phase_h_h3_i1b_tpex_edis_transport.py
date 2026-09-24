@@ -244,6 +244,7 @@ def test_oversized_body_reads_only_limit_plus_one_and_fails_closed() -> None:
         ("step0", "Password is wrong", "password_invalid"),
         ("step0", "會員並未開啟API下載功能", "api_download_not_enabled"),
         ("step0", "此會員查無期限內的訂閱紀錄", "no_valid_api_subscription"),
+        ("step0", "尚無期限內的 API 檔案", "no_valid_api_subscription"),
         ("step1", "請輸入檔案名稱", "file_name_missing"),
         ("step1", "No such file name found", "file_name_not_found"),
         ("step1", "此商品目前並無販售", "product_not_for_sale"),
@@ -270,6 +271,32 @@ def test_documented_error_is_checked_even_when_charset_is_not_declared() -> None
     result = _step1(fake)
     assert result.status == "provider_error"
     assert result.error_code == "password_invalid"
+    assert result.raw_bytes is None
+
+
+def test_undecodable_declared_textual_step1_response_fails_closed() -> None:
+    fake = FakeGet(FakeResponse(b"\x81\x40\x81\x41", headers={"Content-Type": "text/plain"}))
+    result = _step1(fake)
+    assert result.status == "transport_failed"
+    assert result.error_code == "provider_response_unclassified"
+    assert result.raw_bytes is None
+
+
+def test_decoded_unknown_textual_step1_response_remains_opaque_success() -> None:
+    body = b"new provider text not covered by documented error messages"
+    result = _step1(FakeGet(FakeResponse(body, headers={"Content-Type": "text/plain; charset=utf-8"})))
+    assert result.status == "success"
+    assert result.raw_bytes == body
+    assert result.raw_text is None
+
+
+def test_step1_binary_body_containing_credentials_is_rejected() -> None:
+    body = b"\x00\xff" + ACCOUNT.encode("ascii") + b"\x00"
+    result = _step1(
+        FakeGet(FakeResponse(body, headers={"Content-Type": "application/octet-stream"}))
+    )
+    assert result.status == "transport_failed"
+    assert result.error_code == "response_contains_credentials"
     assert result.raw_bytes is None
 
 

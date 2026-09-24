@@ -6,16 +6,20 @@ Baseline: `7ae13fcdcbe49154814feb31233403d368c63638`
 
 ## 1. Source examined
 
-The official TPEx E-Data Shop API Manual is dated **2024-09-02**. The DOCX at
-[the official manual download URL](https://eshop.tpex.org.tw/uploadFile/upload/product/2c92e01394fcf4c7019518bc880f000b.docx)
-was retrieved for read-only contract inspection and its SHA-256 was verified as:
+The official TPEx E-Data Shop API Manual is dated **2024-09-02**. The manual
+used for this decision was Owner-supplied after being downloaded from the
+official TPEx surface at
+[the official manual download URL](https://eshop.tpex.org.tw/uploadFile/upload/product/2c92e01394fcf4c7019518bc880f000b.docx).
+Its SHA-256 was verified for this review as:
 
 ```text
 7d9eb39daea22c324b58d6cbb17032bd4200ee430c44ee136ce92018087f30d4
 ```
 
-The document was held in memory only. No API operation, account authentication,
-or market-data request was made.
+No copy of the manual is committed as a runtime/source artifact by this
+tranche. H3-I1B code and tests did not persist the manual and did not perform
+an authenticated EDIS API or market-data request. This record makes no claim
+that the Owner-supplied source file never existed on disk.
 
 ## 2. Documented operations
 
@@ -92,17 +96,23 @@ the body, and excludes the request URL from public results and errors.
 
 ## 6. Documented provider error handling
 
-The implementation matches only the documented Chinese and English system
-messages for missing credentials/step, inactive or unconfirmed account,
-incorrect password, API access disabled, absent subscription, and Step-1
-filename/product/subscription/download-limit/link-expiry conditions. These
-become deterministic access/provider error codes, never H3 market-coverage
-states.
+The implementation matches the documented Chinese and English system
+messages covered by its mapping and tests for missing credentials/step,
+inactive or unconfirmed account, incorrect password, API access disabled,
+absent subscription, and Step-1 filename/product/subscription/download-limit/
+link-expiry conditions. These become deterministic access/provider error
+codes, never H3 market-coverage states. Step 0 additionally maps
+`尚無期限內的 API 檔案` to `no_valid_api_subscription`. This is coverage of the
+mapped documented messages, not a claim that every possible provider error is
+classified.
 
 An unrecognized non-success response remains `provider_response_unclassified`.
 HTTP status alone is not mapped to password, filename, or subscription
 semantics; in particular, HTTP 200 is still checked for documented provider
-messages first.
+messages first. A 2xx Step-1 response explicitly declared textual must decode
+under its declared charset before it can be returned as opaque bytes; an
+undecodable textual response fails closed as `provider_response_unclassified`.
+No fallback charset is guessed.
 
 ## 7. Explicitly unresolved
 
