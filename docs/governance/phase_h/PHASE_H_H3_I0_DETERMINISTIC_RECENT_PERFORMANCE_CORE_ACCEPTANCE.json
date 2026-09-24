@@ -1,6 +1,6 @@
 {
   "schema_version": "phase_h_h3_i0_deterministic_recent_performance_core_acceptance.v1",
-  "status": "OWNER_REVIEW_CANDIDATE",
+  "status": "OWNER_ACCEPTED_COMPLETED",
   "tranche": "Phase H H3-I0 Dormant Deterministic recent_performance Core",
   "baseline_main": "5870754c595776dacc1553098b806bce31f573ad",
   "branch": "phase-h/h3-i0-deterministic-recent-performance-core",
@@ -81,5 +81,18 @@
     "roadmap_phase_h_checkbox_changed": false,
     "phase_i": "NOT_STARTED"
   },
-  "interpretation": "This record accepts only the deterministic H3 evidence derivation core. It does not establish source authority, H3 runtime activation, H2 activation, complete Phase H, or Phase I implementation."
+  "interpretation": "This record accepts the deterministic H3 evidence derivation core only. It does not establish source authority, H3 runtime activation, H2 activation, complete Phase H, or Phase I implementation.",
+  "independent_review": {
+    "reviewer_role": "ChatGPT independent architecture/repository review",
+    "review_date": "2026-09-24",
+    "reviewed_implementation_head": "8c0d35ef3cf9345734af198d041b6429eb845302",
+    "disposition": "PASS",
+    "findings_closed": [
+      "requested baseline cannot be omitted from baseline_lookbacks",
+      "historical average evidence is exact-target-bound and basis-bound to completed_official_sessions",
+      "FNN-02 and FNN-03 remain explicitly recorded as frozen historical failures"
+    ],
+    "new_unexplained_failures": 0,
+    "production_runtime_mutation_by_review": false
+  }
 }
