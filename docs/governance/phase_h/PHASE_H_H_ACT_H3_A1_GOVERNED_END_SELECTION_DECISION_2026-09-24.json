@@ -61,7 +61,8 @@
       "close must be a valid numeric official close"
     ],
     "selected_end_rule": "maximum trade_date among valid candidates in the first reverse-scanned month that contains any valid candidate",
-    "no_end_within_budget": "return truthful unavailable/insufficient H3 evidence; do not expand the budget"
+    "no_end_within_budget": "coverage_status=unavailable when all attempted source/binding operations succeeded but no governed end observation exists within the bounded three-month budget; source_failed or binding_failed retain precedence when present",
+    "insufficient_semantics": "insufficient is reserved for a case where a governed end observation exists but the bounded prior observations cannot satisfy any requested baseline/cardinality"
   },
   "shared_budget_and_reuse": {
     "raw_html_persistence": false,
@@ -139,5 +140,25 @@
     "H0H-ROLL-004",
     "Owner activation approval",
     "Catalog/Route/registry/portable truth synchronization"
-  ]
+  ],
+  "independent_review": {
+    "reviewer_role": "ChatGPT independent H3 governed-end / bounded-budget semantic review",
+    "review_date": "2026-09-24",
+    "reviewed_head_before_closure": "65198615e1bb381761a4db169724142c7b67c072",
+    "disposition": "PASS_WITH_SEMANTIC_TIGHTENING",
+    "findings_closed": [
+      "the frozen H3 contract permits a self-contained governed end observation and does not require a second current/EOD source",
+      "the accepted walker intentionally does not choose an end, so a production caller rule is required before activation",
+      "one clock read plus Asia/Taipei date derivation is deterministic enough for month selection without inventing trading sessions",
+      "only normalized official STOCK_DAY closing rows at or before the as-of Taipei date may become the end",
+      "the same monthly response is reused in process memory and must not be fetched twice",
+      "end resolution and walker share one hard maximum of three unique monthly network GETs",
+      "source/binding failures fail closed immediately and are never skipped to older months",
+      "no governed end after successful bounded acquisition is unavailable, not insufficient",
+      "insufficient is reserved for an established end with inadequate prior observations/baseline cardinality",
+      "A1 performs no runtime activation or executor registration"
+    ],
+    "implementation_authorized_next": true,
+    "runtime_activation_authorized_by_a1": false
+  }
 }
