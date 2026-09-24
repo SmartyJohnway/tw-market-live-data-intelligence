@@ -1,6 +1,6 @@
 {
   "schema_version": "phase_h_h3_i2a_a1_twse_py313_tls_compatibility_rework_acceptance.v1",
-  "status": "OWNER_REVIEW_CANDIDATE",
+  "status": "OWNER_ACCEPTED_COMPLETED",
   "baseline_main_sha": "3c06110f3aed17822463dd185c6a818b929d2075",
   "branch": "phase-h/h3-i2a-twse-py313-tls-compatibility",
   "implementation_path": "server/services/phase_h_h3_twse_stock_day_adapter.py",
@@ -94,5 +94,34 @@
     "h2_activation": false,
     "phase_i": "NOT_STARTED",
     "multi_month_acceptance_completed": false
+  },
+  "independent_review": {
+    "reviewer_role": "ChatGPT independent TLS-compatibility / bounded-live / governance review",
+    "review_date": "2026-09-24",
+    "reviewed_implementation_head": "b283e41da5543ea2c11cac5d16d632fa44a34dc7",
+    "disposition": "PASS",
+    "findings_closed": [
+      "Python 3.13 urllib failure is isolated to verified-TLS X.509 strict compatibility rather than DNS, TCP, provider availability, or walker logic",
+      "adapter reuses the repository ssl_policy authority instead of introducing a second TLS policy implementation",
+      "strict remains the default and there is no automatic compatibility fallback or retry",
+      "compatibility remains certificate-verified and hostname-verified while clearing only VERIFY_X509_STRICT where supported",
+      "unsafe-explicit and unknown TLS policies fail before network dispatch",
+      "single bounded TWSE STOCK_DAY live confirmation succeeded with one GET and no raw response persistence",
+      "accepted H3-I2A1 walker artifact remains byte-for-byte unchanged",
+      "Catalog, Routing, executor registry, H3/H2 activation, MCP surface, and Phase I remain unchanged"
+    ],
+    "implementation_artifact": {
+      "path": "server/services/phase_h_h3_twse_stock_day_adapter.py",
+      "sha256": "71a975d5a2b718c12334ea5a5d0fb401ef918fbd685989f76c060380d998aaeb",
+      "bytes": 22369
+    },
+    "preserved_walker_artifact": {
+      "path": "server/services/phase_h_h3_twse_stock_day_walker.py",
+      "sha256": "d3161541546b3b83762107f21abede86f94e182c7bd36f6250368688a7366bb4",
+      "bytes": 17398
+    },
+    "new_unexplained_failures": 0,
+    "production_runtime_mutation_by_review": false,
+    "multi_month_live_acceptance_established": false
   }
 }
