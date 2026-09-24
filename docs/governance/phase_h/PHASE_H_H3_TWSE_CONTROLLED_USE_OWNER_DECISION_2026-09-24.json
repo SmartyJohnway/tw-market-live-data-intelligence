@@ -60,6 +60,7 @@
     "docs/governance/phase_h/PHASE_H_H3_I2A2_TWSE_20D_MULTI_MONTH_BOUNDED_LIVE_ACCEPTANCE_2026-09-24.json"
   ],
   "historical_authority_preserved": [
+    "docs/governance/phase_h/Phase_H_H3_Owner_Official_Web_Automation_Product_Inclusion_2026-09-24.md",
     "docs/governance/phase_h/Phase_H_H3_R_Owner_Bounded_Automation_Authorization_2026-09-23.md",
     "docs/research/phase_h_h3_r/Phase_H_H3_R_Bounded_Recent_History_Source_Authority_Preflight_2026-09-23.md",
     "docs/research/phase_h_h3_r/Phase_H_H3_R4_Portable_Production_Source_Closure_2026-09-24.md",
@@ -90,5 +91,10 @@
     "runtime_executable_after_this_decision": false,
     "selected_executor_id_after_this_decision": null,
     "phase_i": "NOT_STARTED"
+  },
+  "upstream_owner_authority": {
+    "path": "docs/governance/phase_h/Phase_H_H3_Owner_Official_Web_Automation_Product_Inclusion_2026-09-24.md",
+    "status": "OWNER DECISION / SUPERSEDING PRODUCT BOUNDARY",
+    "effect": "Official TWSE/TPEx historical web automation was already formally included in product development; this record operationalizes that existing decision after accepted TWSE adapter, TLS, walker and 20D bounded-live evidence."
   }
 }
