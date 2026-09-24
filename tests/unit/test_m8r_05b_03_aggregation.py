@@ -44,6 +44,36 @@ def test_aggregate_all_succeeded(tmp_path):
     assert agg["total_item_count"] == 5
 
 
+def test_aggregate_preserves_execution_request_v2_identity_verbatim(tmp_path):
+    preflight = build_valid_preflight(tmp_path)
+    op_id = preflight["approved_operation_order"][0]
+    req = preflight["bounded_execution_requests"][0]
+    req.update({
+        "schema_version": "unified_market_evidence_execution_request.v2",
+        "execution_request_id": "umereq-v2-" + "b" * 20,
+        "execution_request_hash": "c" * 64,
+        "capability_id": "recent_performance",
+        "parameters": {"lookback_trading_days": 20},
+    })
+    binding = preflight["resolved_operation_bindings"][op_id]
+    binding["capability_id"] = "recent_performance"
+    outcome = {
+        "schema_version": "unified_market_evidence_operation_result.v2",
+        "operation_id": op_id,
+        "execution_request_id": req["execution_request_id"],
+        "execution_request_hash": req["execution_request_hash"],
+        "executor_id": req["executor_id"],
+        "capability_id": req["capability_id"],
+        "evidence_contract": binding["expected_evidence_contract"],
+        "status": "failed", "error_code": "fixture_failure", "result_item_count": 0,
+        "evidence_artifacts": [], "warnings": [],
+    }
+    aggregation = aggregate_dispatch_outcomes(preflight, [outcome])
+    operation_receipt = aggregation["operation_receipts"][0]
+    assert operation_receipt["execution_request_id"] == req["execution_request_id"]
+    assert operation_receipt["execution_request_hash"] == req["execution_request_hash"]
+
+
 def test_aggregate_v2_preserves_per_artifact_contract_and_excludes_supporting_items(tmp_path):
     preflight = build_valid_preflight(tmp_path)
     op_id = preflight["approved_operation_order"][0]

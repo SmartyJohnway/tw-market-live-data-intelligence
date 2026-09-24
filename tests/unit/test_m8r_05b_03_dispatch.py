@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 
 import pytest
 
@@ -156,6 +157,33 @@ def test_metadata_runtime_mismatch_rejected(tmp_path):
 
     with pytest.raises(OrchestrationError, match="market_mismatch"):
         prepare_dispatch(preflight, meta_reg, bad_reg, mode="dry-run")
+
+
+def test_dispatch_validates_each_execution_request_version_and_rejects_unknown(tmp_path):
+    plan, _auth, _binding, _state = artifacts()
+    preflight = build_valid_preflight(tmp_path)
+    request = preflight["bounded_execution_requests"][0]
+    request.update({
+        "schema_version": "unified_market_evidence_execution_request.v2",
+        "execution_request_id": "umereq-v2-" + "a" * 20,
+        "capability_id": "recent_performance",
+        "parameters": {"lookback_trading_days": 5},
+    })
+    op_id = request["operation_id"]
+    preflight["resolved_operation_bindings"][op_id]["capability_id"] = "recent_performance"
+    metadata_json = registry_metadata(plan)
+    metadata_json["executors"][0]["capability_id"] = "recent_performance"
+    metadata = ExecutorMetadataRegistry.from_json(metadata_json)
+    runtime = RuntimeAdapterRegistry([runtime_registration(plan, capability_id="recent_performance")])
+
+    prepared = prepare_dispatch(preflight, metadata, runtime, mode="dry-run")
+    assert prepared[0].request["schema_version"] == "unified_market_evidence_execution_request.v2"
+    assert prepared[0].request["parameters"] == {"lookback_trading_days": 5}
+
+    unknown_preflight = deepcopy(preflight)
+    unknown_preflight["bounded_execution_requests"][0]["schema_version"] = "unified_market_evidence_execution_request.v3"
+    with pytest.raises(OrchestrationError, match="execution_request_schema_version_unsupported"):
+        prepare_dispatch(unknown_preflight, metadata, runtime, mode="dry-run")
 
 
 def test_adapter_timeout_and_exception_normalized(tmp_path):

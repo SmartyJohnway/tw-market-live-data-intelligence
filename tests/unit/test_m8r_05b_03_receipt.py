@@ -6,6 +6,7 @@ import threading
 from pathlib import Path
 
 import pytest
+from jsonschema import Draft202012Validator
 
 from scripts.m8r_05b_03.canonical import sha256_json
 from scripts.m8r_05b_03.controlled_dispatch import claim_and_dispatch_approved
@@ -36,6 +37,7 @@ from tests.unit.m8r_05b_03_test_helpers import (
     CLAIM_TIMESTAMP,
     EVALUATION_TIMESTAMP,
     PLAN,
+    ROOT,
     artifacts,
     build_valid_preflight,
     default_mock_adapter,
@@ -91,6 +93,60 @@ FINALIZED_AT = "2026-07-23T00:35:00Z"
 # Basic tests
 # ===========================================================================
 class TestBasicFinalization:
+    def test_receipt_v1_preserves_execution_request_v2_lineage(self, tmp_path):
+        preflight = build_valid_preflight(tmp_path)
+        request = preflight["bounded_execution_requests"][0]
+        request.update({
+            "schema_version": "unified_market_evidence_execution_request.v2",
+            "execution_request_id": "umereq-v2-" + "d" * 20,
+            "execution_request_hash": "e" * 64,
+            "capability_id": "recent_performance",
+            "parameters": {"lookback_trading_days": 5},
+        })
+        operation_id = request["operation_id"]
+        preflight["resolved_operation_bindings"][operation_id]["capability_id"] = "recent_performance"
+        aggregation = aggregate_dispatch_outcomes(preflight, [{
+            "schema_version": "unified_market_evidence_operation_result.v2",
+            "operation_id": operation_id,
+            "execution_request_id": request["execution_request_id"],
+            "execution_request_hash": request["execution_request_hash"],
+            "executor_id": request["executor_id"],
+            "capability_id": request["capability_id"],
+            "evidence_contract": preflight["resolved_operation_bindings"][operation_id]["expected_evidence_contract"],
+            "status": "failed",
+            "error_code": "fixture_failure",
+            "result_item_count": 0,
+            "evidence_artifacts": [],
+            "warnings": [],
+        }])
+        claim = {
+            "state": "claimed",
+            "claim_id": "umecl-v1-" + "f" * 20,
+            "claim_created_at": CLAIM_TIMESTAMP,
+            "execution_receipt_id": None,
+            "execution_receipt_hash": None,
+            "finalized_at": None,
+            "last_error_code": None,
+        }
+        receipt = build_execution_receipt(
+            preflight, claim, aggregation, finalized_at=FINALIZED_AT,
+        )
+        nested = receipt["operation_receipts"][0]
+        assert receipt["schema_version"] == "unified_market_evidence_execution_receipt.v1"
+        assert nested["execution_request_id"] == request["execution_request_id"]
+        assert nested["execution_request_hash"] == request["execution_request_hash"]
+        receipt_schema = json.loads((ROOT / "schemas/unified_market_evidence_execution_receipt.v1.schema.json").read_text())
+        validator = Draft202012Validator(receipt_schema)
+        assert not list(validator.iter_errors(receipt))
+        for version in (1, 2):
+            candidate = json.loads(json.dumps(receipt))
+            candidate["operation_receipts"][0]["execution_request_id"] = f"umereq-v{version}-" + "a" * 20
+            assert not list(validator.iter_errors(candidate))
+        for invalid_id in ("umereq-v3-" + "a" * 20, "bad-request-id"):
+            candidate = json.loads(json.dumps(receipt))
+            candidate["operation_receipts"][0]["execution_request_id"] = invalid_id
+            assert list(validator.iter_errors(candidate))
+
     def test_validate_finalization_timestamps_rejects_inversion(self):
         with pytest.raises(OrchestrationError, match="temporal_inversion_detected"):
             validate_finalization_timestamps("2026-07-23T00:30:00Z", "2026-07-23T00:29:59Z")

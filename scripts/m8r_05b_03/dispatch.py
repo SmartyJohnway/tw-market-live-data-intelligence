@@ -20,7 +20,10 @@ from .registry import ExecutorMetadata, ExecutorMetadataRegistry, executor_route
 
 
 ROOT = Path(__file__).resolve().parents[2]
-REQUEST_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_execution_request.v1.schema.json"
+REQUEST_SCHEMA_PATHS = {
+    "unified_market_evidence_execution_request.v1": ROOT / "schemas" / "unified_market_evidence_execution_request.v1.schema.json",
+    "unified_market_evidence_execution_request.v2": ROOT / "schemas" / "unified_market_evidence_execution_request.v2.schema.json",
+}
 RESULT_SCHEMA_PATHS = {
     "unified_market_evidence_operation_result.v1": ROOT / "schemas" / "unified_market_evidence_operation_result.v1.schema.json",
     "unified_market_evidence_operation_result.v2": ROOT / "schemas" / "unified_market_evidence_operation_result.v2.schema.json",
@@ -169,7 +172,6 @@ def prepare_dispatch(
 ) -> tuple[PreparedDispatch, ...]:
     if mode not in {"dry-run", "execute-approved"}:
         raise OrchestrationError("execution_mode_invalid")
-    schema = json.loads(REQUEST_SCHEMA_PATH.read_text(encoding="utf-8"))
     requests = preflight.get("bounded_execution_requests")
     if not isinstance(requests, list):
         raise OrchestrationError("execution_request_schema_invalid")
@@ -179,6 +181,10 @@ def prepare_dispatch(
     prepared: list[PreparedDispatch] = []
     for operation_id in preflight["approved_operation_order"]:
         request = by_operation[operation_id]
+        schema_path = REQUEST_SCHEMA_PATHS.get(request.get("schema_version"))
+        if schema_path is None:
+            raise OrchestrationError("execution_request_schema_version_unsupported")
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
         if list(Draft202012Validator(schema).iter_errors(request)):
             raise OrchestrationError("execution_request_schema_invalid")
         binding = preflight["resolved_operation_bindings"].get(operation_id)
