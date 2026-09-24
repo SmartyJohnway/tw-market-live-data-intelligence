@@ -1,6 +1,6 @@
 {
   "schema_version": "phase_h_h3_i2a_twse_stock_day_html_adapter_acceptance.v1",
-  "status": "OWNER_REVIEW_CANDIDATE",
+  "status": "OWNER_ACCEPTED_COMPLETED",
   "tranche": "Phase H H3-I2A TWSE STOCK_DAY Bounded Official-Web Adapter",
   "baseline_main_sha": "8586875484822534bfe198b33ae9d95e4928270e",
   "branch": "phase-h/h3-i2a-twse-live-dom-parser-rework",
@@ -146,27 +146,26 @@
     "mcp_tool_count_changed": false,
     "phase_i": "NOT_STARTED"
   },
-  "interpretation": "This record accepts the dormant single-target, single-month TWSE STOCK_DAY HTML source adapter only. It does not establish multi-month 1..20-session orchestration, production route registration, H3 activation, bounded-live runtime acceptance through the product executor, H2 activation, complete Phase H, or Phase I implementation.",
+  "interpretation": "This record accepts the dormant single-target, single-month TWSE STOCK_DAY HTML adapter including the live-DOM parser rework. It does not establish live normalization success until the repository adapter is re-probed, nor multi-month walking, 1..20-session orchestration, production route registration, H3 activation, complete Phase H, or Phase I.",
   "independent_review": {
-    "reviewer_role": "ChatGPT independent architecture/source-contract/live-source/repository review",
+    "reviewer_role": "ChatGPT independent architecture/live-DOM/source-contract/repository review",
     "review_date": "2026-09-24",
-    "reviewed_implementation_head": "c06510c6b69e14c5357fca0299251ae0c17ab78b",
-    "disposition": "PASS for previously reviewed implementation head; current DOM parser rework awaits independent review",
-    "superseded_by_live_dom_parser_rework": true,
+    "reviewed_implementation_head": "807cab96a548bc5d1c77c34bbf5f6f4ba9a044a1",
+    "disposition": "PASS",
     "findings_closed": [
-      "verified TWSE STOCK_DAY '--' close rows are excluded from H3 observations without becoming zero or failing an otherwise valid month",
-      "unusable close rows retain bounded trade-date/reason provenance while malformed non-'--' close values remain fail-closed",
-      "single-target single-month HTML contract, H3-I0 integration, and inactive runtime authority remain intact"
+      "live report title is bound from the same report table as the governed header rather than table-external text",
+      "header-only Unicode display whitespace normalization accepts the observed '成 交股數' presentation without fuzzy field substitution",
+      "title/header split across different tables and multiple complete report tables fail closed",
+      "previously accepted '--' close-unavailable and malformed-close semantics remain unchanged"
     ],
-    "live_source_confirmation": {
-      "source": "TWSE STOCK_DAY official HTML",
-      "checked_target": "TWSE:1423",
-      "checked_month": "2025-02",
-      "observed_unavailable_close_dates": [
+    "live_source_cross_check": {
+      "target": "TWSE:1423",
+      "month": "2025-02",
+      "official_page_contract": "title and 10-column daily table remain observable",
+      "close_unavailable_dates": [
         "2025-02-06",
         "2025-02-21"
-      ],
-      "observation": "official rows contain volume/transaction data while OHLC including close is '--'"
+      ]
     },
     "new_unexplained_failures": 0,
     "production_runtime_mutation_by_review": false
