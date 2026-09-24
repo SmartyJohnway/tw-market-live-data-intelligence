@@ -6,8 +6,8 @@
   "branch": "phase-h/h3-i0-deterministic-recent-performance-core",
   "implementation": {
     "path": "server/services/phase_h_recent_performance.py",
-    "tested_file_sha256": "42ebb3dbb7d82c13008e612acb0f6e6e8523e085922c6da4b7de3f62b3abd0e7",
-    "tested_file_bytes": 13140,
+    "tested_file_sha256": "10ee430b1b881cd4600abf05d4bb36e97bcba398a0832baf9235eb15c2305e05",
+    "tested_file_bytes": 13753,
     "api": "build_recent_performance_evidence",
     "network_access": false,
     "filesystem_io": false,
@@ -23,7 +23,7 @@
   "validation": {
     "focused_h3_i0": {
       "result": "PASS",
-      "summary": "20 passed",
+      "summary": "23 passed",
       "includes_schema_and_semantic_validation": true,
       "includes_h4_integration_from_generated_h3": true
     },
@@ -49,8 +49,21 @@
     "git_diff_check": "PASS"
   },
   "failures": {
-    "known_historical_failures_remaining": [],
-    "new_unexplained_failures": []
+    "known_frozen_historical_failures_remaining": [
+      {
+        "id": "FNN-02",
+        "test": "tests/unit/test_m7f_rich_fact_browser_final_acceptance.py::test_default_ci_includes_final_acceptance_tests"
+      },
+      {
+        "id": "FNN-03",
+        "test": "tests/unit/test_m8_00_final_acceptance.py::test_default_ci_includes_m8_final_acceptance_test"
+      }
+    ],
+    "observed_by_default_ci_or_full_current_runs": {
+      "FNN-02": "not_exercised_as_failure_by_these_profiles",
+      "FNN-03": "not_exercised_as_failure_by_these_profiles"
+    },
+    "new_unexplained_failures": 0
   },
   "runtime_and_scope": {
     "preferred_request_schema_version": "unified_market_evidence_request.v3",

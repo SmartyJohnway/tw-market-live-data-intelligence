@@ -157,6 +157,8 @@ def test_intraday_volume_alignment_and_caller_governed_eod_average() -> None:
     assert intraday["volume_context"]["historical_average_volume"] is None
 
     average = {
+        "target": dict(TARGET),
+        "historical_average_basis": "completed_official_sessions",
         "value": 1010,
         "source_family": "OFFICIAL_FIXTURE_ONLY",
         "source_contract_id": "fixture-volume-average-contract",
@@ -177,6 +179,36 @@ def test_unavailable_volume_context_is_not_fabricated() -> None:
     assert result["volume_context"]["historical_average_volume"] is None
 
 
+def test_historical_average_requires_exact_target_and_completed_session_basis() -> None:
+    evidence = {
+        "target": dict(TARGET),
+        "historical_average_basis": "completed_official_sessions",
+        "value": 1010,
+        "source_family": "OFFICIAL_FIXTURE_ONLY",
+        "source_contract_id": "fixture-volume-average-contract",
+        "retrieved_at": "2026-09-24T00:00:00Z",
+        "citation_ids": ["cit-volume-average"],
+    }
+    accepted = build(1, historical_average_evidence=evidence)
+    assert_valid(accepted)
+    assert accepted["volume_context"]["historical_average_volume"] == 1010
+
+    wrong_target = deepcopy(evidence)
+    wrong_target["target"]["security_code"] = "0050"
+    with pytest.raises(H3DerivationError, match="historical_average_target_mismatch"):
+        build(1, historical_average_evidence=wrong_target)
+
+    wrong_basis = deepcopy(evidence)
+    wrong_basis["historical_average_basis"] = "intraday_cumulative"
+    with pytest.raises(H3DerivationError, match="invalid_historical_average_basis"):
+        build(1, historical_average_evidence=wrong_basis)
+
+    missing_basis = deepcopy(evidence)
+    del missing_basis["historical_average_basis"]
+    with pytest.raises(H3DerivationError, match="invalid_historical_average_evidence"):
+        build(1, historical_average_evidence=missing_basis)
+
+
 def test_partial_twenty_observations_keeps_valid_shorter_baseline() -> None:
     result = build(8, requested=20, lookbacks=(5, 20))
     assert_valid(result)
@@ -186,6 +218,18 @@ def test_partial_twenty_observations_keeps_valid_shorter_baseline() -> None:
     assert result["missing_observation_count"] == 12
     assert result["available_baselines"] == [5]
     assert result["baselines"][1]["status"] == "insufficient_coverage"
+
+
+def test_requested_baseline_cannot_be_omitted() -> None:
+    with pytest.raises(H3DerivationError, match="requested_baseline_missing"):
+        build(20, requested=20, lookbacks=(5,))
+
+
+def test_requested_twenty_day_baseline_alone_is_available() -> None:
+    result = build(20, requested=20, lookbacks=(20,))
+    assert_valid(result)
+    assert result["coverage_status"] == "complete"
+    assert result["available_baselines"] == [20]
 
 
 def test_insufficient_coverage_with_no_available_baseline() -> None:

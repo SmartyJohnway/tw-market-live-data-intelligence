@@ -103,14 +103,25 @@ def _same_semantic_record(left: Mapping[str, Any], right: Mapping[str, Any]) -> 
     return all(left[field] == right[field] for field in _OBSERVATION_FIELDS)
 
 
-def _normalize_average(value: Any) -> tuple[float | int | None, list[str]]:
+def _normalize_average(
+    value: Any,
+    identity: tuple[str, str, str],
+) -> tuple[float | int | None, list[str]]:
     """Accept an already-governed aggregate; this core does not choose its window."""
     if value is None:
         return None, []
     if not isinstance(value, Mapping) or set(value) != {
-        "value", "source_family", "source_contract_id", "retrieved_at", "citation_ids",
+        "target", "historical_average_basis", "value", "source_family",
+        "source_contract_id", "retrieved_at", "citation_ids",
     }:
         _fail("invalid_historical_average_evidence")
+    target = value["target"]
+    if not isinstance(target, Mapping) or set(target) != set(_IDENTITY_FIELDS):
+        _fail("historical_average_target_mismatch")
+    if tuple(target.get(field) for field in _IDENTITY_FIELDS) != identity:
+        _fail("historical_average_target_mismatch")
+    if value["historical_average_basis"] != "completed_official_sessions":
+        _fail("invalid_historical_average_basis")
     amount = value["value"]
     if not _finite_number(amount) or amount < 0:
         _fail("invalid_historical_average_volume")
@@ -154,6 +165,8 @@ def build_recent_performance_evidence(
         _fail("invalid_baseline_lookback")
     if len(set(baseline_lookbacks)) != len(baseline_lookbacks):
         _fail("duplicate_baseline_lookback")
+    if requested_observations not in baseline_lookbacks:
+        _fail("requested_baseline_missing")
     if not isinstance(current_volume_basis, str) or current_volume_basis not in {"intraday_cumulative", "completed_session"}:
         _fail("invalid_current_volume_basis")
     if governed_outcome is not None and (not isinstance(governed_outcome, str) or governed_outcome not in _PRESERVED_FAILURE_STATES):
@@ -185,7 +198,7 @@ def build_recent_performance_evidence(
     if end is not None and retained and end["trade_date"] <= retained[-1]["trade_date"]:
         _fail("governed_end_chronology_invalid")
 
-    historical_average, average_citations = _normalize_average(historical_average_evidence)
+    historical_average, average_citations = _normalize_average(historical_average_evidence, identity)
     if current_volume_basis == "intraday_cumulative":
         comparison_alignment = "partial_session_vs_completed_sessions"
     elif historical_average is not None:
