@@ -1,0 +1,73 @@
+{
+  "schema_version": "phase_h_h_sb1_a0_runner_acceptance_ledger.v1",
+  "status": "H_SB1_A0_RUNNER_INFRASTRUCTURE_PASS",
+  "date": "2026-09-24",
+  "scope": {
+    "tranche": "H-SB1-A0",
+    "purpose": "bounded TPEx H2 source-live acceptance runner infrastructure only",
+    "production_h2_executor_registered": false,
+    "h2_requested_window_bound": false,
+    "h2_route_activation_effective": false,
+    "h3_implementation_started": false
+  },
+  "tested_implementation_sha": "b0abbcb0977dc2862e5e6c55076cd5193847542a",
+  "pull_request": 266,
+  "diff_containment": {
+    "files": [
+      "scripts/run_phase_h_h_sb1_h2_source_live_acceptance.py",
+      "tests/unit/test_phase_h_h_sb1_h2_source_live_acceptance.py"
+    ],
+    "workflow_files_changed": false,
+    "catalog_changed": false,
+    "routing_changed": false,
+    "source_descriptor_activation_changed": false
+  },
+  "acceptance": {
+    "default_ci": {
+      "run_id": 35942166116,
+      "head_sha": "b0abbcb0977dc2862e5e6c55076cd5193847542a",
+      "conclusion": "success",
+      "selected": 778,
+      "passed": 774,
+      "skipped": 4,
+      "deselected": 5
+    },
+    "full_non_network": {
+      "run_id": 35942150510,
+      "head_sha": "b0abbcb0977dc2862e5e6c55076cd5193847542a",
+      "github_conclusion": "failure",
+      "collected": 2803,
+      "selected": 2747,
+      "passed": 2732,
+      "failed": 2,
+      "skipped": 13,
+      "deselected": 56,
+      "new_h_sb1_a0_tests_passed": 3,
+      "remaining_failures": [
+        "tests/unit/test_m7f_rich_fact_browser_final_acceptance.py::test_default_ci_includes_final_acceptance_tests",
+        "tests/unit/test_m8_00_final_acceptance.py::test_default_ci_includes_m8_final_acceptance_test"
+      ],
+      "failure_governance": [
+        "FNN-02 FROZEN_HISTORICAL_ASSERTION",
+        "FNN-03 FROZEN_HISTORICAL_ASSERTION"
+      ],
+      "new_unexplained_failures": 0
+    }
+  },
+  "live_source_proof": {
+    "executed": false,
+    "reason": "This ledger accepts runner infrastructure only. H-SB1-A0 bounded-live network execution is a separate evidence step.",
+    "call_bound": 2,
+    "target": "TPEX:6488",
+    "source_ids": [
+      "H2-TPEX-EXRIGHT-PRE-OPENAPI",
+      "H2-TPEX-EXRIGHT-FINAL-OPENAPI"
+    ]
+  },
+  "conclusions": [
+    "Default CI authority remains exactly 778 selected nodes.",
+    "Full Non-Network remains GitHub FAILURE with exactly the two governed frozen historical failures.",
+    "The three new H-SB1-A0 tests pass.",
+    "No production H2/H3 authority or source activation changes in this tranche."
+  ]
+}
