@@ -1,6 +1,6 @@
 {
   "schema_version": "phase_h_h3_i2a_twse_stock_day_html_adapter_acceptance.v1",
-  "status": "OWNER_REVIEW_CANDIDATE",
+  "status": "OWNER_ACCEPTED_COMPLETED",
   "tranche": "Phase H H3-I2A TWSE STOCK_DAY Bounded Official-Web Adapter",
   "baseline_main_sha": "8586875484822534bfe198b33ae9d95e4928270e",
   "branch": "phase-h/h3-i2a-twse-stock-day-bounded-web-adapter",
@@ -35,10 +35,23 @@
       "transport_form": "response=html",
       "report_title_binds_roc_year_month_and_exact_security_code": true,
       "table_header": [
-        "日期", "成交股數", "成交金額", "開盤價", "最高價", "最低價", "收盤價", "漲跌價差", "成交筆數", "註記"
+        "日期",
+        "成交股數",
+        "成交金額",
+        "開盤價",
+        "最高價",
+        "最低價",
+        "收盤價",
+        "漲跌價差",
+        "成交筆數",
+        "註記"
       ],
       "row_date_authority": "official ROC YYY/MM/DD date converted to ISO date",
-      "used_columns": ["日期", "成交股數", "收盤價"],
+      "used_columns": [
+        "日期",
+        "成交股數",
+        "收盤價"
+      ],
       "notes_column_used_for_adjustment_or_investment_semantics": false
     },
     "reviewed_real_source_finding": {
@@ -48,7 +61,10 @@
       "becomes_h3_observation": false,
       "fails_otherwise_valid_month": false,
       "retained_as_explicit_unusable_row_provenance": true,
-      "provenance_fields": ["trade_date", "reason=close_unavailable"]
+      "provenance_fields": [
+        "trade_date",
+        "reason=close_unavailable"
+      ]
     },
     "fresh_install_5d_20d_orchestration": "NOT IMPLEMENTED",
     "production_route": "BLOCKED / INACTIVE"
@@ -93,7 +109,10 @@
     "external_twse_network_in_tests": false
   },
   "failures": {
-    "known_frozen_historical_failures_remaining": ["FNN-02", "FNN-03"],
+    "known_frozen_historical_failures_remaining": [
+      "FNN-02",
+      "FNN-03"
+    ],
     "observed_as_failures_by_default_ci_or_full_current": "No; both profiles passed and report network_may_have_occurred=false.",
     "new_unexplained_failures": 0
   },
@@ -111,5 +130,28 @@
     "mcp_tool_count_changed": false,
     "phase_i": "NOT_STARTED"
   },
-  "interpretation": "This is a dormant single-target, single-month HTML adapter candidate. Owner product authorization is not TWSE permission for automated retrieval. No live request, route activation, multi-month orchestration, historical persistence, Catalog/Routing/executor mutation, H2 activation, or Phase I implementation is established by this record."
+  "interpretation": "This record accepts the dormant single-target, single-month TWSE STOCK_DAY HTML source adapter only. It does not establish multi-month 1..20-session orchestration, production route registration, H3 activation, bounded-live runtime acceptance through the product executor, H2 activation, complete Phase H, or Phase I implementation.",
+  "independent_review": {
+    "reviewer_role": "ChatGPT independent architecture/source-contract/live-source/repository review",
+    "review_date": "2026-09-24",
+    "reviewed_implementation_head": "c06510c6b69e14c5357fca0299251ae0c17ab78b",
+    "disposition": "PASS",
+    "findings_closed": [
+      "verified TWSE STOCK_DAY '--' close rows are excluded from H3 observations without becoming zero or failing an otherwise valid month",
+      "unusable close rows retain bounded trade-date/reason provenance while malformed non-'--' close values remain fail-closed",
+      "single-target single-month HTML contract, H3-I0 integration, and inactive runtime authority remain intact"
+    ],
+    "live_source_confirmation": {
+      "source": "TWSE STOCK_DAY official HTML",
+      "checked_target": "TWSE:1423",
+      "checked_month": "2025-02",
+      "observed_unavailable_close_dates": [
+        "2025-02-06",
+        "2025-02-21"
+      ],
+      "observation": "official rows contain volume/transaction data while OHLC including close is '--'"
+    },
+    "new_unexplained_failures": 0,
+    "production_runtime_mutation_by_review": false
+  }
 }
