@@ -1,6 +1,6 @@
 {
   "schema_version": "phase_h_h3_i2a1_twse_bounded_multi_month_collector_acceptance.v1",
-  "status": "OWNER_REVIEW_CANDIDATE",
+  "status": "OWNER_ACCEPTED_COMPLETED",
   "tranche": "Phase H H3-I2A1 TWSE Bounded Multi-Month Observation Collector",
   "baseline_main_sha": "c8a64eb1ca0474c405cc8bf25ecaab72e2da51bf",
   "branch": "phase-h/h3-i2a1-twse-bounded-multi-month-collector",
@@ -76,7 +76,10 @@
     "external_twse_network_in_tests": false
   },
   "failures": {
-    "known_frozen_historical_failures_remaining": ["FNN-02", "FNN-03"],
+    "known_frozen_historical_failures_remaining": [
+      "FNN-02",
+      "FNN-03"
+    ],
     "observed_as_failures_by_default_ci_or_full_current": "No; both profiles passed and reported network_may_have_occurred=false.",
     "new_unexplained_failures": 0
   },
@@ -91,5 +94,26 @@
     "scheduler_polling_background_fetch": false,
     "persistent_history_or_cache": false
   },
-  "interpretation": "This is dormant bounded multi-month orchestration over the accepted one-month adapter. It retrieves prior valid observations only relative to the caller-supplied governed end observation; it does not establish a current/end observation authority, production route activation, historical database, automatic collection, H3/H2 activation, or Phase I implementation."
+  "interpretation": "This is dormant bounded multi-month orchestration over the accepted one-month adapter. It retrieves prior valid observations only relative to the caller-supplied governed end observation; it does not establish a current/end observation authority, production route activation, historical database, automatic collection, H3/H2 activation, or Phase I implementation.",
+  "independent_review": {
+    "reviewer_role": "ChatGPT independent bounded-collector / governed-end / governance review",
+    "review_date": "2026-09-24",
+    "reviewed_implementation_head": "98ed33b0db0a75ef076790c3db654040d44ec332",
+    "disposition": "PASS",
+    "findings_closed": [
+      "numeric observations at or after the caller-supplied governed end are excluded",
+      "close_unavailable metadata at or after the caller-supplied governed end is excluded from retained unusable evidence",
+      "excluded post-end numeric and close-unavailable rows are accounted by post_end_rows_excluded",
+      "lookback remains bounded to 1..20 completed-session observations with a hard 1..3 month request budget",
+      "source and binding failures remain fail-closed and do not continue to later months",
+      "collector remains dormant with no Catalog, Routing, executor-registry, H3/H2 activation, scheduler, polling, cache, or persistent-history mutation"
+    ],
+    "implementation_artifact": {
+      "path": "server/services/phase_h_h3_twse_stock_day_walker.py",
+      "sha256": "d3161541546b3b83762107f21abede86f94e182c7bd36f6250368688a7366bb4",
+      "bytes": 17398
+    },
+    "new_unexplained_failures": 0,
+    "production_runtime_mutation_by_review": false
+  }
 }
