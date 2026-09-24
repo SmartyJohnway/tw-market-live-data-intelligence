@@ -106,5 +106,30 @@
     "frozen_historical_source_matrix_rewritten": false,
     "selected_route_current_gate_overlay": true,
     "note": "The upstream Owner Official-Web Automation Product Inclusion Decision already authorized product inclusion. This record binds that decision to accepted TWSE technical evidence and current H-ACT-H3 gate truth."
+  },
+  "independent_review": {
+    "reviewer_role": "ChatGPT independent governance / source-authority / activation-boundary review",
+    "review_date": "2026-09-24",
+    "reviewed_head": "8e87c37aec259e0ba5b738fc4ddd0b312dc48839",
+    "disposition": "PASS",
+    "findings_closed": [
+      "the pre-existing Owner Official-Web Automation Product Inclusion Decision is preserved as the authorization authority rather than rewritten",
+      "provider automation permission remains explicitly NOT_ESTABLISHED_TERMS_CONFLICTED and is not misrepresented as exchange approval",
+      "H0-SRC-09 is cleared only as the selected TWSE route activation blocker through the post-freeze Owner overlay",
+      "H3-TWSE-DEFAULT-BOUNDED is eligible for H-ACT-H3 preflight but is not runtime active",
+      "Catalog V3 and Routing V3 remain contract-supported / runtime-inactive with no selected executor",
+      "portable catalog and generated quick guide are generator-equivalent to Catalog V3",
+      "TPEx H0-SRC-10 and optional-provider H0-SRC-11/H0-SRC-12 remain unresolved and unchanged",
+      "historical frozen research and historical blocked-state acceptance records are not rewritten",
+      "no Python runtime implementation, MCP surface, scheduler, polling, history database or Phase I state is changed"
+    ],
+    "generator_equivalence": {
+      "canonical_catalog_sha256": "c29e20d52c11a3f1ce4a3cb36f522fb7f789ae9b149c9692519b2ee255690280",
+      "portable_deep_equal": true,
+      "quick_guide_exact_equal": true
+    },
+    "runtime_mutation_by_review": false,
+    "h3_activation_authorized_by_this_pr": false,
+    "next_gate": "H-ACT-H3"
   }
 }
