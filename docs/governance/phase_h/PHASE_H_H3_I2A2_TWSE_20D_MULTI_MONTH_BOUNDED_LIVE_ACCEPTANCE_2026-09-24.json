@@ -1,0 +1,277 @@
+{
+  "schema_version": "phase_h_h3_i2a2_twse_20d_multi_month_bounded_live_acceptance.v1",
+  "status": "OWNER_ACCEPTED_COMPLETED",
+  "baseline_main_sha": "144e294882a6520d21931fe18fd4469bec1df065",
+  "acceptance_date": "2026-09-24",
+  "source": "TWSE STOCK_DAY official historical web report",
+  "target": {
+    "canonical_target_id": "TWSE:1423",
+    "market": "TWSE",
+    "security_code": "1423",
+    "instrument_family": "company_share",
+    "instrument_type": "common_share"
+  },
+  "governed_end_observation": {
+    "canonical_target_id": "TWSE:1423",
+    "market": "TWSE",
+    "security_code": "1423",
+    "trade_date": "2025-03-10",
+    "close": 36.65,
+    "volume": 5491,
+    "source_family": "TWSE_STOCK_DAY_OFFICIAL_WEB",
+    "source_contract_id": "TWSE_STOCK_DAY_HTML_MONTHLY_V1",
+    "retrieved_at": "2026-09-24T22:46:51+08:00",
+    "citation_ids": [
+      "TWSE_STOCK_DAY_OFFICIAL_WEB|url=https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&date=20250301&stockNo=1423|month=2025-03|retrieved_at=2026-09-24T22:46:51+08:00|sha256=39665d3d443fe4c4e8a6d9c31b38c03912c20988e5c561e2aa8420e137022069"
+    ],
+    "selected_by_caller_from_exact_trade_date": true,
+    "selected_by_walker": false
+  },
+  "bounds": {
+    "requested_lookback_trading_days": 20,
+    "month_request_budget": 3,
+    "month_request_budget_hard_maximum": 3,
+    "timeout_seconds": 15,
+    "max_response_bytes": 2000000,
+    "ssl_policy": "compatibility",
+    "tls_verification_mode": "verified_tls_compatibility_context",
+    "certificate_verification": "CERT_REQUIRED",
+    "hostname_verification": true,
+    "retry_count": 0,
+    "unsafe_explicit_used": false
+  },
+  "request_accounting": {
+    "logical_requested_months": [
+      "2025-03",
+      "2025-02"
+    ],
+    "logical_month_count": 2,
+    "logical_month_attempts": [
+      "2025-03",
+      "2025-02"
+    ],
+    "march_result_reused_in_process_memory": true,
+    "persistent_cache": false,
+    "actual_network_get_count": 2,
+    "network_gets_by_month": {
+      "2025-03": 1,
+      "2025-02": 1
+    },
+    "january_requested": false,
+    "stopped_when_lookback_satisfied": true
+  },
+  "per_month_evidence": [
+    {
+      "month": "2025-03",
+      "ssl_policy": "compatibility",
+      "tls_verification_mode": "verified_tls_compatibility_context",
+      "http_status": 200,
+      "requested_url": "https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&date=20250301&stockNo=1423",
+      "effective_url": "https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&date=20250301&stockNo=1423",
+      "content_type": "text/html;charset=utf-8",
+      "response_byte_count": 18087,
+      "response_sha256": "39665d3d443fe4c4e8a6d9c31b38c03912c20988e5c561e2aa8420e137022069",
+      "status": "available",
+      "normalized_numeric_close_observation_count": 21,
+      "close_unavailable_count": 0,
+      "unusable_observations": []
+    },
+    {
+      "month": "2025-02",
+      "ssl_policy": "compatibility",
+      "tls_verification_mode": "verified_tls_compatibility_context",
+      "http_status": 200,
+      "requested_url": "https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&date=20250201&stockNo=1423",
+      "effective_url": "https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&date=20250201&stockNo=1423",
+      "content_type": "text/html;charset=utf-8",
+      "response_byte_count": 16624,
+      "response_sha256": "af2f29c6ba1ca7042f394fa52fe8b448f4d544dca826086c4a901e1b6fdf584a",
+      "status": "available",
+      "normalized_numeric_close_observation_count": 17,
+      "close_unavailable_count": 2,
+      "unusable_observations": [
+        {
+          "trade_date": "2025-02-06",
+          "reason": "close_unavailable"
+        },
+        {
+          "trade_date": "2025-02-21",
+          "reason": "close_unavailable"
+        }
+      ]
+    }
+  ],
+  "walker_result": {
+    "status": "available",
+    "requested_lookback": 20,
+    "valid_lookback_count": 20,
+    "missing_lookback_count": 0,
+    "stop_reason": "lookback_satisfied",
+    "selected_observation_count": 20,
+    "selected_observation_dates": [
+      "2025-02-05",
+      "2025-02-07",
+      "2025-02-10",
+      "2025-02-11",
+      "2025-02-12",
+      "2025-02-13",
+      "2025-02-14",
+      "2025-02-17",
+      "2025-02-18",
+      "2025-02-19",
+      "2025-02-20",
+      "2025-02-24",
+      "2025-02-25",
+      "2025-02-26",
+      "2025-02-27",
+      "2025-03-03",
+      "2025-03-04",
+      "2025-03-05",
+      "2025-03-06",
+      "2025-03-07"
+    ],
+    "all_selected_dates_strictly_before_governed_end": true,
+    "unusable_observation_count": 2,
+    "unusable_observations": [
+      {
+        "trade_date": "2025-02-06",
+        "reason": "close_unavailable",
+        "source_month": "2025-02"
+      },
+      {
+        "trade_date": "2025-02-21",
+        "reason": "close_unavailable",
+        "source_month": "2025-02"
+      }
+    ],
+    "post_end_rows_excluded": 16,
+    "march_end_date_and_later_rows_excluded_from_lookback": true
+  },
+  "projection": {
+    "builder": "build_recent_performance_evidence",
+    "coverage_status": "complete",
+    "requested_observations": 20,
+    "valid_observation_count": 20,
+    "missing_observation_count": 0,
+    "baseline_lookbacks": [
+      20
+    ],
+    "baseline_20d": {
+      "status": "available",
+      "lookback_trading_days": 20,
+      "start_observation_date": "2025-02-05",
+      "end_observation_date": "2025-03-10",
+      "required_distinct_close_count": 21,
+      "actual_distinct_close_count": 21,
+      "recent_return_pct": -1.7426273458445003,
+      "return_basis": "raw_unadjusted_close_to_close"
+    },
+    "recent_close_range": {
+      "range_basis": "completed_session_closing_price",
+      "recent_close_high": 37.45,
+      "recent_close_low": 36.65
+    },
+    "volume_context": {
+      "current_volume_basis": "completed_session",
+      "historical_average_basis": "completed_official_sessions",
+      "historical_average_volume": null,
+      "comparison_alignment": "unavailable"
+    },
+    "source_citations": [
+      "TWSE_STOCK_DAY_OFFICIAL_WEB|url=https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&date=20250201&stockNo=1423|month=2025-02|retrieved_at=2026-09-24T22:46:51+08:00|sha256=af2f29c6ba1ca7042f394fa52fe8b448f4d544dca826086c4a901e1b6fdf584a",
+      "TWSE_STOCK_DAY_OFFICIAL_WEB|url=https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&date=20250301&stockNo=1423|month=2025-03|retrieved_at=2026-09-24T22:46:51+08:00|sha256=39665d3d443fe4c4e8a6d9c31b38c03912c20988e5c561e2aa8420e137022069"
+    ],
+    "investment_recommendation_or_adjusted_return_inference": false
+  },
+  "implementation_integrity": {
+    "adapter_path": "server/services/phase_h_h3_twse_stock_day_adapter.py",
+    "adapter_sha256": "71a975d5a2b718c12334ea5a5d0fb401ef918fbd685989f76c060380d998aaeb",
+    "adapter_bytes": 22369,
+    "walker_path": "server/services/phase_h_h3_twse_stock_day_walker.py",
+    "walker_sha256": "d3161541546b3b83762107f21abede86f94e182c7bd36f6250368688a7366bb4",
+    "walker_bytes": 17398,
+    "walker_matches_accepted_artifact": true
+  },
+  "persistence_policy": {
+    "raw_payload_persistence": false,
+    "persistent_cache": false,
+    "history_database": false,
+    "raw_html_persisted": false
+  },
+  "post_live_deterministic_validation": {
+    "h3_i2a_adapter": "37 passed",
+    "h3_i2a1_walker": "16 passed",
+    "h3_i0_recent_performance": "23 passed",
+    "ssl_policy": "8 passed",
+    "phase_h_v3_contract_validator": "PASS",
+    "portable_catalog_sync_validator": "PASS",
+    "runtime_skill_guide_sync_validator": "PASS",
+    "default_ci": {
+      "status": "PASS",
+      "passed": 776,
+      "skipped": 2,
+      "network_may_have_occurred": false
+    },
+    "compileall": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "runtime_authority_unchanged": {
+    "catalog_mutation": false,
+    "routing_mutation": false,
+    "executor_registry_mutation": false,
+    "recent_performance_runtime_executable": false,
+    "h3_activation": false,
+    "h2_activation": false,
+    "mcp_tool_count": 6,
+    "phase_i": "NOT_STARTED"
+  },
+  "independent_review": {
+    "reviewer_role": "ChatGPT independent bounded-live / H3 contract / governance review",
+    "review_date": "2026-09-24",
+    "reviewed_evidence_head": "b4e252e916b2b15d3320ab5b000d61536b2d3ff4",
+    "disposition": "BOUNDED_LIVE_ACCEPTANCE_PASS",
+    "findings_closed": [
+      "governed end observation is caller-selected from the exact official March source row and is separate from the 20 prior lookback observations",
+      "20D cardinality is preserved as 20 prior completed-session observations plus one governed end observation, for 21 distinct closes",
+      "logical traversal stops after March and February once lookback is satisfied; January is not requested",
+      "actual network activity is bounded to two verified-TLS GETs with zero retry and in-process-only March result reuse",
+      "February close-unavailable rows are retained as unusable provenance and do not count toward valid lookback observations",
+      "March end-date and later rows are excluded from the lookback and accounted by post_end_rows_excluded",
+      "projection uses raw_unadjusted_close_to_close and completed-session closing-price range semantics",
+      "historical average volume remains unavailable because no governed aggregate was supplied, avoiding fabricated comparison evidence",
+      "adapter and walker artifacts match their previously accepted hashes and bytes",
+      "Catalog, Routing, executor registry, recent_performance runtime execution, H3/H2 activation, MCP surface, and Phase I remain unchanged"
+    ],
+    "accepted_scope": {
+      "market": "TWSE",
+      "target": "TWSE:1423",
+      "governed_end_trade_date": "2025-03-10",
+      "requested_lookback_trading_days": 20,
+      "logical_months": [
+        "2025-03",
+        "2025-02"
+      ],
+      "actual_network_get_count": 2,
+      "retry_count": 0,
+      "coverage_status": "complete",
+      "baseline_20d_status": "available",
+      "required_distinct_close_count": 21,
+      "actual_distinct_close_count": 21
+    },
+    "implementation_artifacts": {
+      "adapter": {
+        "path": "server/services/phase_h_h3_twse_stock_day_adapter.py",
+        "sha256": "71a975d5a2b718c12334ea5a5d0fb401ef918fbd685989f76c060380d998aaeb",
+        "bytes": 22369
+      },
+      "walker": {
+        "path": "server/services/phase_h_h3_twse_stock_day_walker.py",
+        "sha256": "d3161541546b3b83762107f21abede86f94e182c7bd36f6250368688a7366bb4",
+        "bytes": 17398
+      }
+    },
+    "new_unexplained_failures": 0,
+    "production_runtime_mutation_by_review": false,
+    "h3_activation_authorized": false
+  }
+}
