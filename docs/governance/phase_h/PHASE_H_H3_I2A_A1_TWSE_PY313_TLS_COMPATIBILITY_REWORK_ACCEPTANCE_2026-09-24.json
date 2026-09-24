@@ -1,0 +1,127 @@
+{
+  "schema_version": "phase_h_h3_i2a_a1_twse_py313_tls_compatibility_rework_acceptance.v1",
+  "status": "OWNER_ACCEPTED_COMPLETED",
+  "baseline_main_sha": "3c06110f3aed17822463dd185c6a818b929d2075",
+  "branch": "phase-h/h3-i2a-twse-py313-tls-compatibility",
+  "implementation_path": "server/services/phase_h_h3_twse_stock_day_adapter.py",
+  "implementation_sha256": "71a975d5a2b718c12334ea5a5d0fb401ef918fbd685989f76c060380d998aaeb",
+  "implementation_bytes": 22369,
+  "python_version": "3.13.7",
+  "openssl_version": "OpenSSL 3.0.16 11 Feb 2025",
+  "observed_pre_rework_defect": {
+    "exception": "urllib.error.URLError",
+    "reason": "ssl.SSLCertVerificationError",
+    "message": "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Missing Subject Key Identifier",
+    "dns": "PASS",
+    "tcp_443": "PASS",
+    "os_http_client": {
+      "status": 200,
+      "content_type": "text/html;charset=utf-8",
+      "response_bytes": 18087
+    },
+    "strict_python_urllib": "FAIL"
+  },
+  "root_cause_class": "PYTHON_3_13_VERIFY_X509_STRICT_COMPATIBILITY",
+  "reused_ssl_authority": "scripts/ssl_policy.py",
+  "policy_behavior": {
+    "strict_default_preserved": true,
+    "silent_compatibility_fallback": false,
+    "compatibility_requires_explicit_caller_selection": true,
+    "unsafe_tls_allowed": false,
+    "unknown_policy_fails_before_network": true,
+    "certificate_verification_disabled": false,
+    "hostname_verification_disabled": false,
+    "compatibility_context_verify_mode": "CERT_REQUIRED",
+    "compatibility_context_check_hostname": true,
+    "compatibility_context_clears_only_VERIFY_X509_STRICT": true,
+    "redirects": "disabled",
+    "retry": 0
+  },
+  "single_month_live_confirmation": {
+    "authorized": true,
+    "target": "TWSE:1423",
+    "requested_month": "2025-03",
+    "lookback_walker_used": false,
+    "ssl_policy": "compatibility",
+    "tls_verification_mode": "verified_tls_compatibility_context",
+    "http_status": 200,
+    "requested_url": "https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&date=20250301&stockNo=1423",
+    "effective_url": "https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&date=20250301&stockNo=1423",
+    "content_type": "text/html;charset=utf-8",
+    "response_byte_count": 18087,
+    "response_sha256": "39665d3d443fe4c4e8a6d9c31b38c03912c20988e5c561e2aa8420e137022069",
+    "normalized_observation_count": 21,
+    "close_unavailable_count": 0,
+    "2025-03-10_close": 36.65,
+    "network_call_count": 1,
+    "retry_count": 0,
+    "raw_response_persisted": false
+  },
+  "deterministic_validation": {
+    "h3_i2a_focused": "37 passed",
+    "h3_i2a1_walker_regression": "16 passed",
+    "h3_i0_regression": "23 passed",
+    "ssl_policy_regression": "8 passed",
+    "default_ci": {
+      "status": "PASS",
+      "passed": 776,
+      "skipped": 2,
+      "network_may_have_occurred": false
+    },
+    "phase_h_v3_contract_validator": "PASS",
+    "portable_catalog_sync_validator": "PASS",
+    "runtime_skill_guide_sync_validator": "PASS",
+    "compileall": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "walker_integrity": {
+    "path": "server/services/phase_h_h3_twse_stock_day_walker.py",
+    "sha256": "d3161541546b3b83762107f21abede86f94e182c7bd36f6250368688a7366bb4",
+    "bytes": 17398,
+    "unchanged": true
+  },
+  "changed_files": [
+    "server/services/phase_h_h3_twse_stock_day_adapter.py",
+    "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+    "tests/unit/test_m6d_ssl_policy.py",
+    "docs/governance/phase_h/PHASE_H_H3_I2A_A1_TWSE_PY313_TLS_COMPATIBILITY_REWORK_ACCEPTANCE_2026-09-24.json"
+  ],
+  "runtime_authority": {
+    "catalog_mutation": false,
+    "routing_mutation": false,
+    "executor_registry_mutation": false,
+    "h3_activation": false,
+    "h2_activation": false,
+    "phase_i": "NOT_STARTED",
+    "multi_month_acceptance_completed": false
+  },
+  "independent_review": {
+    "reviewer_role": "ChatGPT independent TLS-compatibility / bounded-live / governance review",
+    "review_date": "2026-09-24",
+    "reviewed_implementation_head": "b283e41da5543ea2c11cac5d16d632fa44a34dc7",
+    "disposition": "PASS",
+    "findings_closed": [
+      "Python 3.13 urllib failure is isolated to verified-TLS X.509 strict compatibility rather than DNS, TCP, provider availability, or walker logic",
+      "adapter reuses the repository ssl_policy authority instead of introducing a second TLS policy implementation",
+      "strict remains the default and there is no automatic compatibility fallback or retry",
+      "compatibility remains certificate-verified and hostname-verified while clearing only VERIFY_X509_STRICT where supported",
+      "unsafe-explicit and unknown TLS policies fail before network dispatch",
+      "single bounded TWSE STOCK_DAY live confirmation succeeded with one GET and no raw response persistence",
+      "accepted H3-I2A1 walker artifact remains byte-for-byte unchanged",
+      "Catalog, Routing, executor registry, H3/H2 activation, MCP surface, and Phase I remain unchanged"
+    ],
+    "implementation_artifact": {
+      "path": "server/services/phase_h_h3_twse_stock_day_adapter.py",
+      "sha256": "71a975d5a2b718c12334ea5a5d0fb401ef918fbd685989f76c060380d998aaeb",
+      "bytes": 22369
+    },
+    "preserved_walker_artifact": {
+      "path": "server/services/phase_h_h3_twse_stock_day_walker.py",
+      "sha256": "d3161541546b3b83762107f21abede86f94e182c7bd36f6250368688a7366bb4",
+      "bytes": 17398
+    },
+    "new_unexplained_failures": 0,
+    "production_runtime_mutation_by_review": false,
+    "multi_month_live_acceptance_established": false
+  }
+}

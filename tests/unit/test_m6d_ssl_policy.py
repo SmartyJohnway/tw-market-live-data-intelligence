@@ -36,6 +36,10 @@ def test_compatibility_is_explicit_and_reported():
     ctx = sp.build_ssl_context("compatibility")
     diag = sp.ssl_policy_diagnostics("compatibility", network_calls_may_have_occurred=True)
     assert isinstance(ctx, ssl.SSLContext)
+    assert ctx.verify_mode == ssl.CERT_REQUIRED
+    assert ctx.check_hostname is True
+    if hasattr(ssl, "VERIFY_X509_STRICT"):
+        assert ctx.verify_flags & ssl.VERIFY_X509_STRICT == 0
     assert diag["compatibility_mode_used"] is True
     assert diag["tls_verification_mode"] == "verified_tls_compatibility_context"
     assert diag["silent_tls_fallback"] is False

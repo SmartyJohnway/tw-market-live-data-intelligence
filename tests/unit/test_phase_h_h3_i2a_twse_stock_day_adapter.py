@@ -5,10 +5,13 @@ from __future__ import annotations
 from hashlib import sha256
 import json
 from pathlib import Path
+import ssl
 from urllib.parse import parse_qs, urlsplit
+from urllib.request import HTTPSHandler
 
 import pytest
 
+from server.services import phase_h_h3_twse_stock_day_adapter as adapter
 from server.services.phase_h_h3_twse_stock_day_adapter import (
     SOURCE_CONTRACT_ID,
     SOURCE_FAMILY,
@@ -123,6 +126,8 @@ def test_exact_one_get_for_exact_target_and_month_with_timeout_and_byte_bound() 
     assert result.status == "available"
     assert result.requested_month == "2021-02"
     assert result.source_contract_id == SOURCE_CONTRACT_ID
+    assert result.content_type == "text/html; charset=utf-8"
+    assert result.effective_url == result.requested_url
     assert result.response_sha256 == sha256(response.body).hexdigest()
     assert result.response_byte_count == len(response.body)
     assert len(fake.calls) == 1
@@ -345,6 +350,84 @@ def test_invalid_timeout_and_response_limit_are_rejected_before_dispatch() -> No
         assert result.status == "source_failed"
         assert result.error_code == error_code
     assert fake.calls == []
+
+
+def test_ssl_policy_defaults_to_strict_without_compatibility_fallback(monkeypatch) -> None:
+    response = FakeResponse(_html(_row("110/02/01")))
+    calls = []
+
+    def default_get(request, timeout_seconds, *, ssl_context=None):
+        calls.append((request, timeout_seconds, ssl_context))
+        return response
+
+    monkeypatch.setattr(adapter, "_default_http_get", default_get)
+    result = _fetch(None)
+
+    assert result.status == "available"
+    assert len(calls) == 1
+    assert calls[0][2] is None
+
+
+def test_compatibility_policy_uses_repository_verified_context(monkeypatch) -> None:
+    response = FakeResponse(_html(_row("110/02/01")))
+    built_handlers = []
+    open_calls = []
+
+    class FakeOpener:
+        def open(self, request, timeout):
+            open_calls.append((request, timeout))
+            return response
+
+    def capture_opener(*handlers):
+        built_handlers.append(handlers)
+        return FakeOpener()
+
+    monkeypatch.setattr(adapter, "build_opener", capture_opener)
+    result = _fetch(None, ssl_policy="compatibility")
+
+    assert result.status == "available"
+    handlers = built_handlers[0]
+    assert any(isinstance(handler, adapter._NoRedirectHandler) for handler in handlers)
+    https_handlers = [handler for handler in handlers if isinstance(handler, HTTPSHandler)]
+    assert len(https_handlers) == 1
+    context = https_handlers[0]._context
+    assert context.verify_mode == ssl.CERT_REQUIRED
+    assert context.check_hostname is True
+    if hasattr(ssl, "VERIFY_X509_STRICT"):
+        assert context.verify_flags & ssl.VERIFY_X509_STRICT == 0
+    assert len(open_calls) == 1
+
+
+@pytest.mark.parametrize(
+    ("policy", "error_code"),
+    [
+        ("unsafe-explicit", "source_failed:unsafe_ssl_policy_not_allowed"),
+        ("future-policy", "source_failed:invalid_ssl_policy"),
+    ],
+)
+def test_unsafe_or_unknown_ssl_policy_fails_before_network(policy, error_code) -> None:
+    fake = FakeHTTPGet(FakeResponse(_html(_row("110/02/01"))))
+    result = _fetch(fake, ssl_policy=policy)
+
+    assert result.status == "source_failed"
+    assert result.error_code == error_code
+    assert fake.calls == []
+
+
+def test_strict_certificate_failure_dispatches_once_without_retry(monkeypatch) -> None:
+    calls = []
+
+    def failing_default_get(request, timeout_seconds, *, ssl_context=None):
+        calls.append((request, timeout_seconds, ssl_context))
+        raise ssl.SSLCertVerificationError("fixture certificate failure")
+
+    monkeypatch.setattr(adapter, "_default_http_get", failing_default_get)
+    result = _fetch(None)
+
+    assert result.status == "source_failed"
+    assert result.error_code == "source_failed:transport_failure"
+    assert len(calls) == 1
+    assert calls[0][2] is None
 
 
 def test_response_without_report_heading_fails_closed() -> None:

@@ -15,11 +15,19 @@ from hashlib import sha256
 from html.parser import HTMLParser
 import math
 import re
+import ssl
 from typing import Callable, Literal, Mapping, Protocol
 from urllib.error import HTTPError
 from urllib.parse import urlencode
-from urllib.request import HTTPRedirectHandler, Request, build_opener
+from urllib.request import HTTPSHandler, HTTPRedirectHandler, Request, build_opener
 
+from scripts.ssl_policy import (
+    SSL_POLICY_COMPATIBILITY,
+    SSL_POLICY_STRICT,
+    SSL_POLICY_UNSAFE,
+    build_ssl_context,
+    validate_ssl_policy,
+)
 from scripts.twse_trading_calendar import parse_twse_roc_date
 
 
@@ -49,7 +57,9 @@ class TWSEStockDayResult:
     source_contract_id: str = SOURCE_CONTRACT_ID
     requested_month: str | None = None
     requested_url: str | None = None
+    effective_url: str | None = None
     http_status: int | None = None
+    content_type: str | None = None
     retrieved_at: str | None = None
     response_byte_count: int = 0
     response_sha256: str | None = None
@@ -77,8 +87,16 @@ class _NoRedirectHandler(HTTPRedirectHandler):
         return None
 
 
-def _default_http_get(request: Request, timeout_seconds: float) -> _Response:
-    opener = build_opener(_NoRedirectHandler())
+def _default_http_get(
+    request: Request,
+    timeout_seconds: float,
+    *,
+    ssl_context: ssl.SSLContext | None = None,
+) -> _Response:
+    handlers = [_NoRedirectHandler()]
+    if ssl_context is not None:
+        handlers.append(HTTPSHandler(context=ssl_context))
+    opener = build_opener(*handlers)
     try:
         return opener.open(request, timeout=timeout_seconds)  # type: ignore[return-value]
     except HTTPError as response:
@@ -288,12 +306,15 @@ def _normalize_html(
     requested_month: str,
     retrieved_at: str,
     requested_url: str,
+    effective_url: str,
     http_status: int,
 ) -> TWSEStockDayResult:
     metadata = {
         "requested_month": requested_month,
         "requested_url": requested_url,
+        "effective_url": effective_url,
         "http_status": http_status,
+        "content_type": content_type,
         "retrieved_at": retrieved_at,
         "response_byte_count": len(payload),
         "response_sha256": sha256(payload).hexdigest(),
@@ -433,8 +454,27 @@ def fetch_twse_stock_day_month(
     timeout_seconds: float,
     max_response_bytes: int,
     http_get: HTTPGet | None = None,
+    ssl_policy: str = SSL_POLICY_STRICT,
 ) -> TWSEStockDayResult:
     """Fetch and normalize one bounded HTML month for one exact TWSE target."""
+    try:
+        selected_ssl_policy = validate_ssl_policy(ssl_policy)
+    except (AttributeError, ValueError):
+        return _fail(
+            "source_failed", "source_failed:invalid_ssl_policy",
+            requested_month=requested_month if isinstance(requested_month, str) else None,
+        )
+    if selected_ssl_policy == SSL_POLICY_UNSAFE:
+        return _fail(
+            "source_failed", "source_failed:unsafe_ssl_policy_not_allowed",
+            requested_month=requested_month if isinstance(requested_month, str) else None,
+        )
+    if selected_ssl_policy not in {SSL_POLICY_STRICT, SSL_POLICY_COMPATIBILITY}:
+        return _fail(
+            "source_failed", "source_failed:invalid_ssl_policy",
+            requested_month=requested_month if isinstance(requested_month, str) else None,
+        )
+
     try:
         canonical, market, code = _target_identity(target, instrument_family, instrument_type)
         month, date_parameter = _normalize_month(requested_month)
@@ -452,7 +492,24 @@ def fetch_twse_stock_day_month(
     requested_url = f"{ENDPOINT}?{query}"
     request = Request(requested_url, headers={"User-Agent": "TW-Market official evidence client"}, method="GET")
     try:
-        response = (http_get or _default_http_get)(request, float(timeout_seconds))
+        if http_get is None:
+            ssl_context = build_ssl_context(selected_ssl_policy)
+            if selected_ssl_policy == SSL_POLICY_COMPATIBILITY:
+                if (
+                    not isinstance(ssl_context, ssl.SSLContext)
+                    or ssl_context.verify_mode != ssl.CERT_REQUIRED
+                    or not ssl_context.check_hostname
+                ):
+                    return _fail(
+                        "source_failed", "source_failed:verified_ssl_context_unavailable",
+                        requested_month=month, requested_url=requested_url,
+                        retrieved_at=retrieved_at,
+                    )
+            response = _default_http_get(
+                request, float(timeout_seconds), ssl_context=ssl_context
+            )
+        else:
+            response = http_get(request, float(timeout_seconds))
     except Exception:
         return _fail(
             "source_failed", "source_failed:transport_failure", requested_month=month,
@@ -462,6 +519,8 @@ def fetch_twse_stock_day_month(
     try:
         status = getattr(response, "status", getattr(response, "code", None))
         content_type = _content_type(response)
+        geturl = getattr(response, "geturl", None)
+        effective_url = geturl() if callable(geturl) else requested_url
         body = response.read(max_response_bytes + 1)
     except Exception:
         return _fail(
@@ -501,5 +560,6 @@ def fetch_twse_stock_day_month(
         requested_month=month,
         retrieved_at=retrieved_at,
         requested_url=requested_url,
+        effective_url=effective_url,
         http_status=status,
     )
