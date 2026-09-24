@@ -6,8 +6,8 @@
   "branch": "phase-h/h3-i2a1-twse-bounded-multi-month-collector",
   "implementation": {
     "path": "server/services/phase_h_h3_twse_stock_day_walker.py",
-    "tested_file_sha256": "152c4e32ee27dc83b7c805814aebaca2ba82fb144e9b38f189b44cf0feefb103",
-    "tested_file_bytes": 16953,
+    "tested_file_sha256": "d3161541546b3b83762107f21abede86f94e182c7bd36f6250368688a7366bb4",
+    "tested_file_bytes": 17398,
     "function": "collect_twse_stock_day_lookback",
     "lookback_trading_days_min": 1,
     "lookback_trading_days_max": 20,
@@ -16,6 +16,9 @@
     "governed_end_selected_by_collector": false,
     "minimum_necessary_month_requests": true,
     "same_month_end_and_later_rows_excluded": true,
+    "post_end_numeric_rows_excluded": true,
+    "post_end_close_unavailable_rows_excluded": true,
+    "unusable_metadata_bounded_strictly_before_governed_end": true,
     "close_unavailable_rows_count_toward_lookback": false,
     "raw_html_persisted": false,
     "history_cache": false,
@@ -35,7 +38,7 @@
   "validation": {
     "h3_i2a1_focused": {
       "result": "PASS",
-      "summary": "15 passed",
+      "summary": "16 passed",
       "fixture_only": true,
       "network_may_have_occurred": false,
       "added_to_default_ci": false

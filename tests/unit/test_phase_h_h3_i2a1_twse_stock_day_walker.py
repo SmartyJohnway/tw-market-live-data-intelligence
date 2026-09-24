@@ -135,6 +135,30 @@ def test_one_day_uses_one_end_month_and_excludes_end_and_post_end_rows() -> None
     assert projected["baselines"][0]["required_distinct_close_count"] == 2
 
 
+def test_unusable_close_metadata_is_bounded_strictly_before_governed_end() -> None:
+    end = _end("2025-03-10")
+    month = _month_result(
+        "2025-03",
+        [_observation("2025-03-07", 21.0)],
+        unusable=[
+            _unusable("2025-03-06"),
+            _unusable("2025-03-10"),
+            _unusable("2025-03-12"),
+        ],
+    )
+
+    result, calls = _run({"2025-03": month}, end=end, lookback=1)
+
+    assert result.status == "available"
+    assert calls == ["2025-03"]
+    assert [row["trade_date"] for row in result.observations] == ["2025-03-07"]
+    assert result.unusable_observation_count == 1
+    assert result.unusable_observations == (
+        {"trade_date": "2025-03-06", "reason": "close_unavailable", "source_month": "2025-03"},
+    )
+    assert result.post_end_rows_excluded == 2
+
+
 def test_five_day_same_month_satisfaction_is_minimal_and_h3_complete() -> None:
     end = _end("2025-03-10")
     days = ["2025-03-03", "2025-03-04", "2025-03-05", "2025-03-06", "2025-03-07"]

@@ -348,11 +348,18 @@ def collect_twse_stock_day_lookback(
             if unusable_date.isoformat() != unusable["trade_date"] or unusable["trade_date"][:7] != month:
                 attempts[-1] = {**attempts[-1], "status": "source_failed", "error_code": "invalid_unusable_observation_date"}
                 return finish("source_failed", "month_source_failed", error_code="invalid_unusable_observation_date")
+            unusable_key = (unusable["trade_date"], unusable["reason"])
+            if unusable_key in month_unusable_seen:
+                attempts[-1] = {**attempts[-1], "status": "source_failed", "error_code": "duplicate_unusable_observation"}
+                return finish("source_failed", "month_source_failed", error_code="duplicate_unusable_observation")
+            month_unusable_seen.add(unusable_key)
+            if unusable["trade_date"] >= end_date:
+                post_end_excluded += 1
+                continue
             if unusable["trade_date"] in by_date:
                 attempts[-1] = {**attempts[-1], "status": "source_failed", "error_code": "conflicting_duplicate_trade_date"}
                 return finish("source_failed", "duplicate_observation_conflict", error_code="conflicting_duplicate_trade_date")
             metadata_key = (unusable["trade_date"], unusable["reason"], month)
-            month_unusable_seen.add((unusable["trade_date"], unusable["reason"]))
             unusable_by_key.setdefault(metadata_key, {
                 "trade_date": unusable["trade_date"],
                 "reason": unusable["reason"],
