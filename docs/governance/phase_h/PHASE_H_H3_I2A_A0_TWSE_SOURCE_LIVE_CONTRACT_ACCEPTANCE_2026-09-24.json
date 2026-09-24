@@ -1,6 +1,6 @@
 {
   "schema_version": "phase_h_h3_i2a_a0_twse_source_live_contract_acceptance.v1",
-  "status": "SOURCE_CONTRACT_AND_ADAPTER_TRANSPORT_PASS_PARSER_REWORK",
+  "status": "OWNER_ACCEPTED_SINGLE_MONTH_BOUNDED_LIVE",
   "tranche": "Phase H H3-I2A-A0 TWSE STOCK_DAY Source-Live Contract Acceptance",
   "date": "2026-09-24",
   "baseline_main_sha": "2f92ea9c7f9eb51f0d93229c6e44cf162ff1017c",
@@ -53,14 +53,16 @@
     "source_live_contract": "PASS",
     "adapter_live_transport": "PASS",
     "adapter_live_decode": "PASS",
-    "adapter_live_normalization": "REWORK",
-    "reason": "Owner-executed repository adapter received HTTP 200, declared UTF-8 HTML, 16,624 bytes, and a stable response hash. Failure occurred only after decode at report-heading extraction. A bounded DOM-shape probe showed the title is inside the first report-table row and display whitespace appears inside at least one header label.",
+    "adapter_live_normalization": "PASS",
+    "single_target_single_month_bounded_live": "PASS",
+    "reason": "After the accepted live-DOM parser rework, the Owner re-executed the repository adapter against TWSE:1423 / 2025-02. The adapter returned available with the same stable 16,624-byte response hash, 17 governed numeric-close observations, and two explicit close_unavailable rows on 2025-02-06 and 2025-02-21.",
     "does_not_establish": [
-      "live parser normalization success",
       "multi-month walking",
       "1..20-session orchestration",
-      "production route registration",
+      "production executor registration",
+      "Catalog or Routing activation",
       "H3 activation",
+      "TPEx H3 route",
       "Phase H closure"
     ]
   },
@@ -81,7 +83,7 @@
     "mcp_tool_count": 6,
     "phase_i": "NOT_STARTED"
   },
-  "next_gate": "Rework only the TWSE HTML parser: bind title from the table title row and compare the fixed 10 semantic headers after display-whitespace normalization; then repeat the same one-target/one-month adapter probe.",
+  "next_gate": "Implement a minimal bounded TWSE multi-month walker that requests only the month slices necessary to satisfy an explicit H3 lookback up to 20 trading sessions plus the governed end observation, then feed the collected valid observations to H3-I0. Keep the route dormant until separately reviewed and bounded-live accepted.",
   "local_adapter_probe": {
     "owner_executed": true,
     "observed_at": "2026-09-24",
@@ -103,5 +105,41 @@
     "observed_title_text": "114年02月 1423 利華             各日成交資訊",
     "observed_header_spacing_example": "成 交股數",
     "implication": "The accepted parser incorrectly searches only table-external text for the report title and exact-matches unnormalized header display whitespace."
+  },
+  "local_adapter_reprobe": {
+    "owner_executed": true,
+    "observed_at": "2026-09-24",
+    "repository_main_sha": "ba48ccd768ccba79221ee53cdca8a8332520472b",
+    "target": "TWSE:1423",
+    "requested_month": "2025-02",
+    "dns_status": "PASS",
+    "proxy_schemes": [],
+    "transport_open": "PASS",
+    "http_status": 200,
+    "content_type": "text/html;charset=utf-8",
+    "declared_charset": "utf-8",
+    "response_byte_count": 16624,
+    "response_sha256": "af2f29c6ba1ca7042f394fa52fe8b448f4d544dca826086c4a901e1b6fdf584a",
+    "adapter_status": "available",
+    "adapter_error_code": null,
+    "observation_count": 17,
+    "unusable_observation_count": 2,
+    "unusable_observations": [
+      {
+        "trade_date": "2025-02-06",
+        "reason": "close_unavailable"
+      },
+      {
+        "trade_date": "2025-02-21",
+        "reason": "close_unavailable"
+      }
+    ],
+    "first_trade_date": "2025-02-03",
+    "last_trade_date": "2025-02-27",
+    "retry_count": 0,
+    "raw_html_persisted": false,
+    "tls_verification_disabled": false,
+    "alternate_mirror_used": false,
+    "anti_bot_evasion_used": false
   }
 }
