@@ -1,0 +1,164 @@
+{
+  "schema_version": "phase_h_h_act_h3_a1_governed_end_selection_decision.v1",
+  "status": "OWNER_ACCEPTED_FROZEN",
+  "decision_id": "H-ACT-H3-A1",
+  "decision_date": "2026-09-24",
+  "owner_authorization_reference": "USER_CHAT_2026-09-24_H_ACT_H3_H3_TWSE_DEFAULT_BOUNDED",
+  "baseline_main_sha": "546fd3e1bdaad6b2b4e54a9b98cf701cb7a2c811",
+  "selected_route": {
+    "source_id": "H3-TWSE-DEFAULT-BOUNDED",
+    "capability_id": "recent_performance",
+    "market": "TWSE",
+    "source_family": "TWSE_STOCK_DAY_OFFICIAL_WEB",
+    "source_contract_id": "TWSE_STOCK_DAY_HTML_MONTHLY_V1",
+    "runtime_activation_state_after_a1": "inactive"
+  },
+  "discovered_gap": {
+    "code": "H3_GOVERNED_END_SELECTION_NOT_OPERATIONALIZED",
+    "description": "The frozen H3 contract requires a separately identified governed end observation and explicitly permits a self-contained H3 artifact, while the accepted bounded walker intentionally requires the caller to supply that end and does not select a current/end price.",
+    "why_blocking": [
+      "production runtime must not hard-code or guess an end date",
+      "the selected end must be an official completed-session closing observation from the governed source",
+      "end acquisition and lookback acquisition must share one bounded request budget",
+      "the runtime must not introduce a second hidden EOD dependency merely to select the end"
+    ]
+  },
+  "decision": {
+    "selected_option": "SELF_CONTAINED_STOCK_DAY_LATEST_AVAILABLE_OFFICIAL_CLOSE",
+    "summary": "For one explicit H3 execution, read the clock once, derive the Asia/Taipei as-of calendar date/month, query the official TWSE STOCK_DAY monthly route in bounded reverse-month order, and select the latest valid official closing observation whose trade_date is not later than the as-of Taipei date. Reuse fetched month results in process memory when the walker collects prior observations.",
+    "separate_current_or_eod_source_required": false,
+    "public_request_contract_change": false,
+    "runtime_activation_effect": "NONE_BY_A1"
+  },
+  "clock_and_as_of_binding": {
+    "clock_reads_per_execution": 1,
+    "clock_source": "runtime system clock",
+    "canonical_timestamp_basis": "UTC timezone-aware timestamp captured once",
+    "selection_calendar_timezone": "Asia/Taipei",
+    "as_of_date_rule": "date derived from the single captured timestamp converted to Asia/Taipei",
+    "current_month_rule": "YYYY-MM derived from as_of_date",
+    "no_session_calendar_guessing": true
+  },
+  "end_selection_algorithm": {
+    "target_scope": "exact single approved TWSE company_share/common_share target",
+    "start_month": "as_of Taipei YYYY-MM",
+    "direction": "reverse chronological by calendar month",
+    "maximum_unique_month_network_gets_for_entire_execution": 3,
+    "per_month_transport": {
+      "ssl_policy": "compatibility",
+      "certificate_verification": true,
+      "hostname_verification": true,
+      "retry_count": 0,
+      "timeout_from_execution_request": true,
+      "max_response_bytes": 2097152
+    },
+    "source_failure_rule": "fail closed immediately; do not skip a failed month to older months",
+    "binding_failure_rule": "fail closed immediately",
+    "successful_month_without_valid_close_rule": "move to previous month only while total unique-month network budget remains",
+    "candidate_filter": [
+      "normalized observation must satisfy accepted TWSE STOCK_DAY binding",
+      "trade_date <= as_of Taipei date",
+      "close must be a valid numeric official close"
+    ],
+    "selected_end_rule": "maximum trade_date among valid candidates in the first reverse-scanned month that contains any valid candidate",
+    "no_end_within_budget": "coverage_status=unavailable when all attempted source/binding operations succeeded but no governed end observation exists within the bounded three-month budget; source_failed or binding_failed retain precedence when present",
+    "insufficient_semantics": "insufficient is reserved for a case where a governed end observation exists but the bounded prior observations cannot satisfy any requested baseline/cardinality"
+  },
+  "shared_budget_and_reuse": {
+    "raw_html_persistence": false,
+    "persistent_cache": false,
+    "in_process_month_result_reuse": true,
+    "unique_month_result_cache_lifetime": "single execution only",
+    "total_actual_network_get_hard_maximum": 3,
+    "walker_budget_formula": "4 - number_of_unique_months_fetched_during_end_resolution",
+    "examples": [
+      {
+        "end_resolution_network_months": 1,
+        "walker_month_request_budget": 3,
+        "maximum_total_network_gets": 3
+      },
+      {
+        "end_resolution_network_months": 2,
+        "walker_month_request_budget": 2,
+        "maximum_total_network_gets": 3
+      },
+      {
+        "end_resolution_network_months": 3,
+        "walker_month_request_budget": 1,
+        "maximum_total_network_gets": 3
+      }
+    ],
+    "same_month_refetch_prohibited": true
+  },
+  "evidence_binding": {
+    "governed_end_observation_source": "selected normalized TWSE STOCK_DAY row",
+    "governed_end_counted_separately_from_requested_observations": true,
+    "walker_observations_must_be_strictly_before_end": true,
+    "required_distinct_close_count_formula": "lookback_trading_days + 1",
+    "retrieved_at_rule": "single execution timestamp propagated consistently to bounded source calls/evidence where contract permits",
+    "source_citation_and_contract_must_be_preserved": true
+  },
+  "prohibited": [
+    "intraday quote as historical governed end",
+    "hard-coded end date",
+    "today-is-a-trading-day assumption",
+    "session-calendar fabrication",
+    "automatic retry",
+    "background refresh",
+    "scheduler",
+    "polling",
+    "persistent month cache",
+    "history database",
+    "full-market crawl",
+    "second unofficial source",
+    "anti-bot or rate-limit bypass",
+    "H3 runtime activation in A1"
+  ],
+  "implementation_scope_next": {
+    "suggested_helper": "server/services/phase_h_h3_twse_governed_end.py",
+    "production_integration_target": "scripts/m8r_06_03_production_adapter.py",
+    "accepted_existing_components_to_reuse": [
+      "server/services/phase_h_h3_twse_stock_day_adapter.py",
+      "server/services/phase_h_h3_twse_stock_day_walker.py",
+      "server/services/phase_h_recent_performance.py"
+    ],
+    "required_deterministic_tests": [
+      "current month contains end",
+      "current month empty and previous month supplies end",
+      "source failure stops without older-month skip",
+      "future-dated rows excluded",
+      "same-month fetch reused by walker",
+      "total actual network month GET count never exceeds 3",
+      "no end within budget remains truthful and bounded"
+    ]
+  },
+  "next_gate": [
+    "A1 deterministic implementation/acceptance",
+    "selected H3 production executor wiring",
+    "H0H-DRIFT-H3",
+    "H0H-LIVE-003",
+    "H0H-ROLL-004",
+    "Owner activation approval",
+    "Catalog/Route/registry/portable truth synchronization"
+  ],
+  "independent_review": {
+    "reviewer_role": "ChatGPT independent H3 governed-end / bounded-budget semantic review",
+    "review_date": "2026-09-24",
+    "reviewed_head_before_closure": "65198615e1bb381761a4db169724142c7b67c072",
+    "disposition": "PASS_WITH_SEMANTIC_TIGHTENING",
+    "findings_closed": [
+      "the frozen H3 contract permits a self-contained governed end observation and does not require a second current/EOD source",
+      "the accepted walker intentionally does not choose an end, so a production caller rule is required before activation",
+      "one clock read plus Asia/Taipei date derivation is deterministic enough for month selection without inventing trading sessions",
+      "only normalized official STOCK_DAY closing rows at or before the as-of Taipei date may become the end",
+      "the same monthly response is reused in process memory and must not be fetched twice",
+      "end resolution and walker share one hard maximum of three unique monthly network GETs",
+      "source/binding failures fail closed immediately and are never skipped to older months",
+      "no governed end after successful bounded acquisition is unavailable, not insufficient",
+      "insufficient is reserved for an established end with inadequate prior observations/baseline cardinality",
+      "A1 performs no runtime activation or executor registration"
+    ],
+    "implementation_authorized_next": true,
+    "runtime_activation_authorized_by_a1": false
+  }
+}
