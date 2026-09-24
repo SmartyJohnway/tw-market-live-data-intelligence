@@ -1,0 +1,84 @@
+{
+  "schema_version": "phase_h_h3_i2a_a0_twse_source_live_contract_acceptance.v1",
+  "status": "SOURCE_CONTRACT_PASS_ADAPTER_TRANSPORT_PENDING",
+  "tranche": "Phase H H3-I2A-A0 TWSE STOCK_DAY Source-Live Contract Acceptance",
+  "date": "2026-09-24",
+  "baseline_main_sha": "2f92ea9c7f9eb51f0d93229c6e44cf162ff1017c",
+  "source": {
+    "family": "TWSE_STOCK_DAY_OFFICIAL_WEB",
+    "endpoint": "https://www.twse.com.tw/exchangeReport/STOCK_DAY",
+    "target": "TWSE:1423",
+    "requested_month": "2025-02",
+    "request_parameters": {
+      "response": "html",
+      "date": "20250201",
+      "stockNo": "1423"
+    },
+    "effective_url": "https://www.twse.com.tw/exchangeReport/STOCK_DAY?date=20250201&response=html&stockNo=1423",
+    "valid_market_fetch_count": 1,
+    "retry_count": 0,
+    "polling": false,
+    "scheduler": false,
+    "background": false,
+    "raw_full_month_payload_persisted": false,
+    "response_sha256": "NOT_AVAILABLE_FROM_PLATFORM_WEB_FETCH",
+    "response_header_charset": "NOT_EXPOSED_BY_PLATFORM_WEB_FETCH"
+  },
+  "observed_contract": {
+    "report_title": "114年02月 1423 利華 各日成交資訊",
+    "table_headers": [
+      "日期",
+      "成交股數",
+      "成交金額",
+      "開盤價",
+      "最高價",
+      "最低價",
+      "收盤價",
+      "漲跌價差",
+      "成交筆數",
+      "註記"
+    ],
+    "source_row_count": 19,
+    "numeric_close_row_count": 17,
+    "close_unavailable_row_count": 2,
+    "close_unavailable_dates": [
+      "2025-02-06",
+      "2025-02-21"
+    ],
+    "close_unavailable_token": "--",
+    "source_contract_match": true,
+    "parser_semantics_supported": true
+  },
+  "interpretation": {
+    "source_live_contract": "PASS",
+    "adapter_live_transport": "PENDING",
+    "reason": "The official live HTML content matches the accepted adapter title/header/row semantics, including verified '--' close-unavailable rows. The platform web fetch does not expose the raw HTTP Content-Type charset header and did not execute the repository urllib adapter itself, so the adapter transport path is not yet independently proven live.",
+    "does_not_establish": [
+      "raw HTTP response-header charset compatibility with the repository adapter",
+      "repository urllib transport success from the target runtime environment",
+      "multi-month walking",
+      "1..20-session orchestration",
+      "production route registration",
+      "H3 activation",
+      "Phase H closure"
+    ]
+  },
+  "environment_note": {
+    "sandbox_direct_curl": "DNS resolution failed before an HTTP request could be issued",
+    "sandbox_failure_classification": "EXECUTION_ENVIRONMENT_LIMITATION_NOT_SOURCE_FAILURE",
+    "tls_verification_disabled": false,
+    "alternate_mirror_used": false,
+    "anti_bot_evasion_used": false
+  },
+  "runtime_and_scope": {
+    "catalog_mutation": false,
+    "routing_mutation": false,
+    "executor_registry_mutation": false,
+    "source_activation": false,
+    "h3_activation": false,
+    "h2_activation": false,
+    "mcp_tool_count": 6,
+    "phase_i": "NOT_STARTED"
+  },
+  "next_gate": "Execute the accepted repository adapter once against TWSE:1423 / 2025-02 in an environment with normal public TLS/DNS and record only a compact sanitized result. Do not persist the raw monthly HTML."
+}
