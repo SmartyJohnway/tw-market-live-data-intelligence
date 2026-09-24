@@ -1,6 +1,6 @@
 {
   "schema_version": "phase_h_h3_i2a2_twse_20d_multi_month_bounded_live_acceptance.v1",
-  "status": "OWNER_REVIEW_CANDIDATE",
+  "status": "OWNER_ACCEPTED_COMPLETED",
   "baseline_main_sha": "144e294882a6520d21931fe18fd4469bec1df065",
   "acceptance_date": "2026-09-24",
   "source": "TWSE STOCK_DAY official historical web report",
@@ -41,9 +41,15 @@
     "unsafe_explicit_used": false
   },
   "request_accounting": {
-    "logical_requested_months": ["2025-03", "2025-02"],
+    "logical_requested_months": [
+      "2025-03",
+      "2025-02"
+    ],
     "logical_month_count": 2,
-    "logical_month_attempts": ["2025-03", "2025-02"],
+    "logical_month_attempts": [
+      "2025-03",
+      "2025-02"
+    ],
     "march_result_reused_in_process_memory": true,
     "persistent_cache": false,
     "actual_network_get_count": 2,
@@ -84,8 +90,14 @@
       "normalized_numeric_close_observation_count": 17,
       "close_unavailable_count": 2,
       "unusable_observations": [
-        {"trade_date": "2025-02-06", "reason": "close_unavailable"},
-        {"trade_date": "2025-02-21", "reason": "close_unavailable"}
+        {
+          "trade_date": "2025-02-06",
+          "reason": "close_unavailable"
+        },
+        {
+          "trade_date": "2025-02-21",
+          "reason": "close_unavailable"
+        }
       ]
     }
   ],
@@ -97,16 +109,40 @@
     "stop_reason": "lookback_satisfied",
     "selected_observation_count": 20,
     "selected_observation_dates": [
-      "2025-02-05", "2025-02-07", "2025-02-10", "2025-02-11", "2025-02-12",
-      "2025-02-13", "2025-02-14", "2025-02-17", "2025-02-18", "2025-02-19",
-      "2025-02-20", "2025-02-24", "2025-02-25", "2025-02-26", "2025-02-27",
-      "2025-03-03", "2025-03-04", "2025-03-05", "2025-03-06", "2025-03-07"
+      "2025-02-05",
+      "2025-02-07",
+      "2025-02-10",
+      "2025-02-11",
+      "2025-02-12",
+      "2025-02-13",
+      "2025-02-14",
+      "2025-02-17",
+      "2025-02-18",
+      "2025-02-19",
+      "2025-02-20",
+      "2025-02-24",
+      "2025-02-25",
+      "2025-02-26",
+      "2025-02-27",
+      "2025-03-03",
+      "2025-03-04",
+      "2025-03-05",
+      "2025-03-06",
+      "2025-03-07"
     ],
     "all_selected_dates_strictly_before_governed_end": true,
     "unusable_observation_count": 2,
     "unusable_observations": [
-      {"trade_date": "2025-02-06", "reason": "close_unavailable", "source_month": "2025-02"},
-      {"trade_date": "2025-02-21", "reason": "close_unavailable", "source_month": "2025-02"}
+      {
+        "trade_date": "2025-02-06",
+        "reason": "close_unavailable",
+        "source_month": "2025-02"
+      },
+      {
+        "trade_date": "2025-02-21",
+        "reason": "close_unavailable",
+        "source_month": "2025-02"
+      }
     ],
     "post_end_rows_excluded": 16,
     "march_end_date_and_later_rows_excluded_from_lookback": true
@@ -117,7 +153,9 @@
     "requested_observations": 20,
     "valid_observation_count": 20,
     "missing_observation_count": 0,
-    "baseline_lookbacks": [20],
+    "baseline_lookbacks": [
+      20
+    ],
     "baseline_20d": {
       "status": "available",
       "lookback_trading_days": 20,
@@ -186,5 +224,54 @@
     "h2_activation": false,
     "mcp_tool_count": 6,
     "phase_i": "NOT_STARTED"
+  },
+  "independent_review": {
+    "reviewer_role": "ChatGPT independent bounded-live / H3 contract / governance review",
+    "review_date": "2026-09-24",
+    "reviewed_evidence_head": "b4e252e916b2b15d3320ab5b000d61536b2d3ff4",
+    "disposition": "BOUNDED_LIVE_ACCEPTANCE_PASS",
+    "findings_closed": [
+      "governed end observation is caller-selected from the exact official March source row and is separate from the 20 prior lookback observations",
+      "20D cardinality is preserved as 20 prior completed-session observations plus one governed end observation, for 21 distinct closes",
+      "logical traversal stops after March and February once lookback is satisfied; January is not requested",
+      "actual network activity is bounded to two verified-TLS GETs with zero retry and in-process-only March result reuse",
+      "February close-unavailable rows are retained as unusable provenance and do not count toward valid lookback observations",
+      "March end-date and later rows are excluded from the lookback and accounted by post_end_rows_excluded",
+      "projection uses raw_unadjusted_close_to_close and completed-session closing-price range semantics",
+      "historical average volume remains unavailable because no governed aggregate was supplied, avoiding fabricated comparison evidence",
+      "adapter and walker artifacts match their previously accepted hashes and bytes",
+      "Catalog, Routing, executor registry, recent_performance runtime execution, H3/H2 activation, MCP surface, and Phase I remain unchanged"
+    ],
+    "accepted_scope": {
+      "market": "TWSE",
+      "target": "TWSE:1423",
+      "governed_end_trade_date": "2025-03-10",
+      "requested_lookback_trading_days": 20,
+      "logical_months": [
+        "2025-03",
+        "2025-02"
+      ],
+      "actual_network_get_count": 2,
+      "retry_count": 0,
+      "coverage_status": "complete",
+      "baseline_20d_status": "available",
+      "required_distinct_close_count": 21,
+      "actual_distinct_close_count": 21
+    },
+    "implementation_artifacts": {
+      "adapter": {
+        "path": "server/services/phase_h_h3_twse_stock_day_adapter.py",
+        "sha256": "71a975d5a2b718c12334ea5a5d0fb401ef918fbd685989f76c060380d998aaeb",
+        "bytes": 22369
+      },
+      "walker": {
+        "path": "server/services/phase_h_h3_twse_stock_day_walker.py",
+        "sha256": "d3161541546b3b83762107f21abede86f94e182c7bd36f6250368688a7366bb4",
+        "bytes": 17398
+      }
+    },
+    "new_unexplained_failures": 0,
+    "production_runtime_mutation_by_review": false,
+    "h3_activation_authorized": false
   }
 }
