@@ -1,0 +1,155 @@
+{
+  "schema_version": "phase_h_h_act_h3_a0_execution_parameter_binding_acceptance.v1",
+  "status": "OWNER_REVIEW_CANDIDATE",
+  "decision_id": "H-ACT-H3-A0",
+  "acceptance_date": "2026-09-24",
+  "baseline_main_sha": "e7754a1c7860b40d4d5d719fca0add09b33e941a",
+  "branch": "phase-h/h-act-h3-a0-execution-parameter-binding-impl",
+  "implementation_head_sha": "3798ecbc937bd66731b83f470d98e927cfb81cb3",
+  "decision_authority_path": "docs/governance/phase_h/PHASE_H_H_ACT_H3_A0_EXECUTION_PARAMETER_BINDING_DECISION_2026-09-24.json",
+  "execution_request_v1": {
+    "path": "schemas/unified_market_evidence_execution_request.v1.schema.json",
+    "git_blob_sha_before": "5b974f125055a5564cd0ba9db62f26e5ca4c1eb2",
+    "git_blob_sha_after": "5b974f125055a5564cd0ba9db62f26e5ca4c1eb2",
+    "unchanged": true,
+    "non_h3_projection_v1_identity_regression": "PASS",
+    "non_h3_projection_field_set_unchanged": true
+  },
+  "execution_request_v2": {
+    "path": "schemas/unified_market_evidence_execution_request.v2.schema.json",
+    "sha256": "ab98139b1426f5dd357cf5faacc6925f8b9eaa5adc2b44393fc60bbe12651d7b",
+    "bytes": 2825,
+    "capability_id": "recent_performance",
+    "parameters_schema": {
+      "additionalProperties": false,
+      "required": ["lookback_trading_days"],
+      "lookback_trading_days": {"type": "integer", "minimum": 1, "maximum": 20}
+    },
+    "identity_hash_includes_parameters_before_hashing": true,
+    "id_format": "umereq-v2-<first-20-hex-of-execution_request_hash>",
+    "contained_output_path_format_preserved": true
+  },
+  "compatibility_schemas": {
+    "orchestrator_preflight_v1": {
+      "path": "schemas/unified_market_evidence_orchestrator_preflight.v1.schema.json",
+      "sha256": "11f95327392427090573734e342ff46988c6b0011323946634c614d1b3ce0ef7",
+      "bytes": 8773,
+      "bounded_execution_request_items": "closed oneOf execution_request.v1 or execution_request.v2",
+      "unknown_version_rejected": true
+    },
+    "execution_receipt_v1": {
+      "path": "schemas/unified_market_evidence_execution_receipt.v1.schema.json",
+      "sha256": "3197e933b2f08362a031fa178a3300978235178c97c26022018485f9b6992db5",
+      "bytes": 4065,
+      "amended_field": "operation_receipts[].execution_request_id",
+      "accepted_ids": "umereq-v1-* or umereq-v2-* only"
+    },
+    "operation_result_v2": {
+      "path": "schemas/unified_market_evidence_operation_result.v2.schema.json",
+      "sha256": "2b4502f909ae799879bf0c76ff9cc66dc02f69d7344d586dff82695cce2002ba",
+      "bytes": 2223,
+      "amended_field": "execution_request_id",
+      "accepted_ids": "umereq-v1-* or umereq-v2-* only"
+    },
+    "operation_result_v1": {
+      "path": "schemas/unified_market_evidence_operation_result.v1.schema.json",
+      "modified": false,
+      "v2_request_id_rejected": true
+    }
+  },
+  "lineage_compatibility_amendment": {
+    "owner_authorized": true,
+    "reason": "execution-request v2 identity must survive Operation Result V2 and Receipt V1 unchanged",
+    "semantic_version_change": false,
+    "public_contract_change": false,
+    "receipt_version_remains": "unified_market_evidence_execution_receipt.v1",
+    "operation_result_version_remains": "unified_market_evidence_operation_result.v2"
+  },
+  "implementation": {
+    "request_projection": {
+      "path": "scripts/m8r_05b_03/request_projection.py",
+      "sha256": "367fe56f22ac9cdce9f79337d46c027ab50b073985de23430cf1040d48fab2c4",
+      "bytes": 5647
+    },
+    "dispatch": {
+      "path": "scripts/m8r_05b_03/dispatch.py",
+      "sha256": "a5cf689a19f2548b96e282a986b25db769d77a673808132d1ee7f1d113314d68",
+      "bytes": 17317
+    },
+    "projection_rules": {
+      "recent_performance_uses_v2": true,
+      "non_h3_uses_v1": true,
+      "bool_rejected_as_integer": true,
+      "coercion": false,
+      "missing_or_extra_h3_parameters_fail_closed": true
+    }
+  },
+  "identity_and_lineage_tests": {
+    "valid_lookbacks": [1, 5, 20],
+    "invalid_parameter_cases": ["missing", "empty", "0", "21", "string", "float", "true", "false", "extra_property"],
+    "five_day_vs_twenty_day_hash_and_id_differ": true,
+    "non_h3_v1_id_hash_and_field_set_preserved": true,
+    "mixed_v1_v2_preflight_valid": true,
+    "unknown_preflight_execution_request_version_rejected": true,
+    "dispatch_v1_valid": true,
+    "dispatch_v2_schema_valid": true,
+    "dispatch_unknown_version_fail_closed": true,
+    "operation_result_v1_v1_request_id_pass": true,
+    "operation_result_v1_v2_request_id_fail": true,
+    "operation_result_v2_v1_and_v2_request_ids_pass": true,
+    "operation_result_v2_v3_and_malformed_request_ids_fail": true,
+    "receipt_v1_v1_and_v2_request_ids_pass": true,
+    "receipt_v1_v3_and_malformed_request_ids_fail": true,
+    "v2_request_to_result_v2_aggregation_receipt_v1_exact_id_hash_passthrough": true,
+    "lineage_id_hash_rewritten_or_recomputed": false
+  },
+  "test_results": {
+    "focused_a0_and_regressions": {"status": "PASS", "passed": 115},
+    "default_ci": {
+      "status": "FAIL_UNRELATED_PORTABLE_GUIDE_SYNC",
+      "passed": 776,
+      "skipped": 2,
+      "deselected": 5,
+      "failed": 1,
+      "failure": "test_current_portable_catalog_is_exact_generated_v3_projection: Portable Quick Guide markdown content mismatch",
+      "network_may_have_occurred": false
+    },
+    "full_current": {
+      "status": "FAIL_UNRELATED_PORTABLE_GUIDE_SYNC",
+      "passed": 1148,
+      "skipped": 2,
+      "deselected": 5,
+      "failed": 1,
+      "failure": "test_current_portable_catalog_is_exact_generated_v3_projection: Portable Quick Guide markdown content mismatch",
+      "network_may_have_occurred": false
+    },
+    "phase_h_v3_contract_validator": "PASS",
+    "portable_catalog_sync_validator": "FAIL: Portable Quick Guide markdown content mismatch",
+    "runtime_skill_guide_sync_validator": "FAIL: portable_catalog_deep_sync_failed due to Portable Quick Guide markdown content mismatch",
+    "phase_h_activation_promotion_regression": "PASS",
+    "phase_h_v3_contract_freeze_regression": "PASS",
+    "phase_h_h3_plan_only_regression": "PASS",
+    "compileall_scripts_server": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "runtime_authority_unchanged": {
+    "recent_performance_support_status": "contract_supported",
+    "recent_performance_runtime_executable": false,
+    "recent_performance_routing_status": "plan_only",
+    "recent_performance_selected_executor_id": null,
+    "h3_twse_default_bounded_eligible": true,
+    "h3_twse_default_bounded_active": false,
+    "active_phase_h_source_count_changed": false,
+    "h3_executor_registered": false,
+    "catalog_activation_mutation": false,
+    "routing_activation_mutation": false,
+    "mcp_tool_count": 6,
+    "phase_i": "NOT_STARTED"
+  },
+  "network_may_have_occurred": false,
+  "notes": [
+    "A0 carries Request V3 recent_performance lookback through an authorization-bound execution-request v2 into dispatcher validation without activating H3.",
+    "The owner-authorized Receipt V1 and Operation Result V2 lineage amendment is limited to closed v1/v2 execution-request ID patterns.",
+    "The unrelated portable Quick Guide synchronization failure was not repaired or modified in this tranche."
+  ]
+}
