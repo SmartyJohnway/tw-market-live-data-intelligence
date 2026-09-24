@@ -1,0 +1,95 @@
+{
+  "schema_version": "phase_h_h_sb1_a0_source_live_acceptance_ledger.v1",
+  "status": "H_SB1_A0_SOURCE_LIVE_PASS",
+  "acceptance_date": "2026-09-24",
+  "baseline_main": "e919f2b7a1a06812cc014adcc89efeca95de19b7",
+  "source_report": {
+    "filename": "H_SB1_A0_H2_SOURCE_LIVE_REPORT.json",
+    "sha256": "48a7d1a66afaea447ce5ffb7ddc880d29f5b6760aac2d65745dd81e05eda3e86",
+    "observed_at": "2026-09-24T01:29:56Z",
+    "owner_authorization_reference": "OWNER_CHAT_2026-09-23_H_SB1_H2_SOURCE_LIVE"
+  },
+  "target": {
+    "canonical_target_id": "TPEX:6488",
+    "market": "TPEX",
+    "security_code": "6488"
+  },
+  "network": {
+    "authorized": true,
+    "call_bound": 2,
+    "actual_call_count": 2,
+    "retry_count": 0,
+    "polling": false,
+    "scheduler": false,
+    "background_collection": false,
+    "raw_full_market_payload_persisted": false,
+    "endpoints": [
+      "https://www.tpex.org.tw/openapi/v1/tpex_exright_prepost",
+      "https://www.tpex.org.tw/openapi/v1/tpex_exright_daily"
+    ]
+  },
+  "source_results": [
+    {
+      "source_id": "H2-TPEX-EXRIGHT-PRE-OPENAPI",
+      "source_contract_id": "tpex_exright_prepost",
+      "source_family": "TPEX_EXRIGHT_PRE_OPEN_DATA",
+      "license_authority": "ODGL-1.0",
+      "activation_state": "eligible",
+      "status": "no_evidence_in_covered_scope",
+      "matched_event_count": 0,
+      "covered_event_subtypes": [
+        "ex_dividend",
+        "ex_right",
+        "ex_right_dividend"
+      ]
+    },
+    {
+      "source_id": "H2-TPEX-EXRIGHT-FINAL-OPENAPI",
+      "source_contract_id": "tpex_exright_daily",
+      "source_family": "TPEX_EXRIGHT_FINAL_OPEN_DATA",
+      "license_authority": "ODGL-1.0",
+      "activation_state": "eligible",
+      "status": "no_evidence_in_covered_scope",
+      "matched_event_count": 0,
+      "covered_event_subtypes": [
+        "ex_dividend",
+        "ex_right",
+        "ex_right_dividend"
+      ]
+    }
+  ],
+  "semantic_interpretation": {
+    "exact_statement": "No matching H2 event evidence was present for TPEX:6488 in the two selected current TPEx source slices at the observed execution time.",
+    "forbidden_inference": "This result does not prove that no relevant corporate action occurred anywhere in an arbitrary H3 comparison window.",
+    "h4_effect": "Historical-window no-discontinuity proof remains unavailable; H4 must stay coverage_incomplete until governed comparison-window coverage is resolved."
+  },
+  "production_claims": {
+    "corporate_action_context_materialized": false,
+    "requested_window_bound": false,
+    "production_executor_registered": false,
+    "route_activation_effective": false,
+    "catalog_or_routing_changed": false,
+    "h3_implementation_started": false
+  },
+  "acceptance": {
+    "source_transport": "PASS",
+    "exact_call_bound": "PASS",
+    "target_binding_normalization": "PASS",
+    "no_row_semantics": "PASS",
+    "source_activation_containment": "PASS",
+    "raw_payload_persistence_containment": "PASS",
+    "h2_production_activation": "NOT_AUTHORIZED",
+    "h2_h4_window_binding": "OPEN_H_SB1_A1"
+  },
+  "next_gate": {
+    "tranche": "H-SB1-A1",
+    "purpose": "Resolve governed operational comparison-window binding before production H2→H4 wiring.",
+    "source_routes_may_activate_before_a1": false
+  },
+  "conclusions": [
+    "H-SB1-A0 bounded-live source proof is accepted.",
+    "The two selected official TPEx H2 source surfaces are live and normalize truthfully under the bounded probe.",
+    "No matching event for the exact target in the current source slices is a valid no-row result, not a historical no-event conclusion.",
+    "H2 remains non-executable and inactive until H-SB1-A1 resolves the comparison-window binding contract."
+  ]
+}
