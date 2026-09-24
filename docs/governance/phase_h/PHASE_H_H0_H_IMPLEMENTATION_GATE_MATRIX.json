@@ -4,7 +4,7 @@
   "owner_acceptance": {
     "decision": "OWNER_ACCEPTED_FROZEN",
     "acceptance_date": "2026-09-21",
-    "accepted_amendments": ["A1", "A2", "H3-TWSE-CONTROLLED-USE-2026-09-24", "H-ACT-H3-A0-EXECUTION-PARAMETER-BINDING-2026-09-24"],
+    "accepted_amendments": ["A1", "A2", "H3-TWSE-CONTROLLED-USE-2026-09-24", "H-ACT-H3-A0-EXECUTION-PARAMETER-BINDING-2026-09-24", "H-ACT-H3-A1-GOVERNED-END-SELECTION-2026-09-24"],
     "planning_blockers": 0
   },
   "post_freeze_owner_decisions": [
@@ -23,6 +23,14 @@
       "selected_route": "H3-TWSE-DEFAULT-BOUNDED",
       "effect": "H3 activation cannot proceed until lookback_trading_days is preserved in an authorization-bound additive execution-request contract and accepted by deterministic regression.",
       "runtime_activation_effect": "NONE_BY_A0"
+    },
+    {
+      "decision_id": "H-ACT-H3-A1-GOVERNED-END-SELECTION-2026-09-24",
+      "decision_date": "2026-09-24",
+      "decision_path": "docs/governance/phase_h/PHASE_H_H_ACT_H3_A1_GOVERNED_END_SELECTION_DECISION_2026-09-24.json",
+      "selected_route": "H3-TWSE-DEFAULT-BOUNDED",
+      "effect": "Production activation must use one clock-bound, self-contained TWSE STOCK_DAY governed-end selection with a shared three-month network budget before runtime wiring is accepted.",
+      "runtime_activation_effect": "NONE_BY_A1"
     }
   ],
   "baseline_main_sha": "dcafdfd756c6c32f138690d33900c59b0786ff7e",
@@ -177,7 +185,7 @@
       "required_tests": ["route-level source and normalization acceptance", "N+1 and temporal alignment", "Result/Audit lineage", "V2 regression", "route-level bounded-live proof", "route rollback rehearsal"],
       "required_live_evidence": ["one bounded exact-target acceptance for each route proposed active"],
       "required_acceptance_ids": ["H0H-DRIFT-H3", "H0H-LIVE-003", "H0H-ROLL-004"],
-      "entry_criteria": ["H-ACT-H3-A0 execution parameter binding implementation/acceptance passes", "H-IMP-7D fixture slice includes the same selected H3 route", "selected route_activation_blocker_issue_ids are closed or absent", "H3-R and H3-I pass for the selected route", "Owner live authorization"],
+      "entry_criteria": ["H-ACT-H3-A0 execution parameter binding implementation/acceptance passes", "H-ACT-H3-A1 governed-end selection implementation/acceptance passes", "H-IMP-7D fixture slice includes the same selected H3 route", "selected route_activation_blocker_issue_ids are closed or absent", "H3-R and H3-I pass for the selected route", "Owner live authorization"],
       "exit_criteria": ["route-level bounded-live and rollback acceptance pass", "Owner activation approval", "exact active H3 route exposed", "V2 remains preferred"],
       "rollback_target": "selected H3 route inactive; recent_performance plan-only or partially executable",
       "owner_authorization_required": true,
