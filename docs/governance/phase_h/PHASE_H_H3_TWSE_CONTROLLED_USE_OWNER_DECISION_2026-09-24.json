@@ -1,0 +1,94 @@
+{
+  "schema_version": "phase_h_h3_twse_controlled_use_owner_decision.v1",
+  "status": "OWNER_ACCEPTED_CONTROLLED_USE",
+  "decision_date": "2026-09-24",
+  "repository_baseline": "66a6eb361c8ea6d0d1ed3e6204f307cc4fc40d7f",
+  "selected_route": {
+    "source_id": "H3-TWSE-DEFAULT-BOUNDED",
+    "capability_id": "recent_performance",
+    "market": "TWSE",
+    "source_family": "TWSE_STOCK_DAY_OFFICIAL_WEB",
+    "source_contract_id": "TWSE_STOCK_DAY_HTML_MONTHLY_V1",
+    "provider_automation_permission": "NOT_ESTABLISHED_TERMS_CONFLICTED",
+    "owner_product_authorization": "APPROVED_CONTROLLED_LOCAL_FIRST_USE",
+    "provider_approval_claimed": false
+  },
+  "owner_decision": {
+    "decision": "Use the official TWSE STOCK_DAY public web source as the default bounded TWSE recent-performance source for the owner's controlled local-first installation despite the known provider-terms conflict.",
+    "risk_acceptance": "The Owner knowingly accepts the provider-terms conflict for this narrowly bounded personal/local operational profile. This repository MUST NOT represent the use as TWSE-approved automation.",
+    "source_authority_effect": "H0-SRC-09 no longer blocks the selected TWSE route from entering H-ACT-H3 activation preflight.",
+    "runtime_activation_effect": "NONE_BY_THIS_DECISION",
+    "h_act_h3_still_required": true
+  },
+  "controlled_operating_profile": {
+    "local_first": true,
+    "exact_target_only": true,
+    "request_time_only": true,
+    "explicit_authorization_required": true,
+    "execute_once": true,
+    "low_frequency": true,
+    "lookback_trading_days_minimum": 1,
+    "lookback_trading_days_maximum": 20,
+    "month_request_hard_maximum": 3,
+    "retry_storm": false,
+    "background_refresh": false,
+    "scheduler": false,
+    "polling": false,
+    "full_market_scan": false,
+    "broad_crawl": false,
+    "persistent_history_database": false,
+    "automatic_backfill": false,
+    "raw_html_persistence": false,
+    "anti_bot_bypass": false,
+    "captcha_bypass": false,
+    "rate_limit_evasion": false,
+    "tls_verification_disable": false
+  },
+  "fail_closed_policy": {
+    "http_403": "SOURCE_FAILED_NO_EVASION",
+    "http_429": "SOURCE_FAILED_NO_EVASION",
+    "captcha_or_challenge": "SOURCE_FAILED_NO_EVASION",
+    "transport_failure": "SOURCE_FAILED_NO_RETRY_STORM",
+    "binding_failure": "BINDING_FAILED",
+    "provider_policy_change": "ROUTE_REVIEW_REQUIRED"
+  },
+  "accepted_technical_evidence": [
+    "docs/governance/phase_h/PHASE_H_H3_I2A_TWSE_STOCK_DAY_HTML_ADAPTER_ACCEPTANCE.json",
+    "docs/governance/phase_h/PHASE_H_H3_I2A_A0_TWSE_SOURCE_LIVE_CONTRACT_ACCEPTANCE_2026-09-24.json",
+    "docs/governance/phase_h/PHASE_H_H3_I2A1_TWSE_BOUNDED_MULTI_MONTH_COLLECTOR_ACCEPTANCE.json",
+    "docs/governance/phase_h/PHASE_H_H3_I2A_A1_TWSE_PY313_TLS_COMPATIBILITY_REWORK_ACCEPTANCE_2026-09-24.json",
+    "docs/governance/phase_h/PHASE_H_H3_I2A2_TWSE_20D_MULTI_MONTH_BOUNDED_LIVE_ACCEPTANCE_2026-09-24.json"
+  ],
+  "historical_authority_preserved": [
+    "docs/governance/phase_h/Phase_H_H3_R_Owner_Bounded_Automation_Authorization_2026-09-23.md",
+    "docs/research/phase_h_h3_r/Phase_H_H3_R_Bounded_Recent_History_Source_Authority_Preflight_2026-09-23.md",
+    "docs/research/phase_h_h3_r/Phase_H_H3_R4_Portable_Production_Source_Closure_2026-09-24.md",
+    "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.json"
+  ],
+  "supersession_semantics": {
+    "historical_terms_conflict_finding_preserved": true,
+    "historical_manual_research_only_disposition_superseded_for_owner_controlled_product_use": true,
+    "provider_automation_permission_changed": false,
+    "owner_product_authorization_changed": true,
+    "h0_src_09_route_activation_blocker_closed_for_selected_twse_route": true,
+    "h0_src_10_unchanged": true,
+    "h0_src_11_unchanged": true,
+    "h0_src_12_unchanged": true
+  },
+  "next_gate": {
+    "tranche": "H-ACT-H3",
+    "route": "H3-TWSE-DEFAULT-BOUNDED",
+    "required_before_runtime_activation": [
+      "selected-route deterministic integration fixture",
+      "runtime executor wiring under existing controlled-execution architecture",
+      "route-level source-drift acceptance",
+      "route-level bounded-live evidence binding",
+      "rollback rehearsal",
+      "Catalog/Route/registry truth synchronization",
+      "Owner activation approval"
+    ],
+    "runtime_executable_after_this_decision": false,
+    "selected_executor_id_after_this_decision": null,
+    "phase_i": "NOT_STARTED"
+  }
+}
