@@ -2,10 +2,10 @@
   "schema_version": "unified_market_evidence_capability_catalog.v3",
   "portable_metadata": {
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-    "canonical_sha256": "e70d71d0d17b9e01732da16065da83b2c7f6479763edbbebb2b67828ff6f2d14",
+    "canonical_sha256": "c29e20d52c11a3f1ce4a3cb36f522fb7f789ae9b149c9692519b2ee255690280",
     "generator_version": "PHASE-H-ACT-V3-v1",
-    "generated_from_commit": "54e7f407472f70ea097688467b8dde350516ceb7",
-    "canonical_git_blob_sha": "e3e72d6880d309fe6c8be66e1fbb90ef3acada96"
+    "generated_from_commit": "0ec0fd96702e3470e9d6fe79e962f9dfb493d5f1",
+    "canonical_git_blob_sha": "1698f4ac3c872c597eaedc1def683a716a33c616"
   },
   "contract_versions": {
     "accepted_request_schema_versions": [
