@@ -181,12 +181,11 @@ def _cell_text(value: str) -> str:
 
 
 class _ReportHTMLParser(HTMLParser):
-    """Collect tables structurally and text outside tables for report binding."""
+    """Collect table rows structurally for same-table report binding."""
 
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
         self.tables: list[list[list[str]]] = []
-        self.outside_text: list[str] = []
         self._table_depth = 0
         self._current_table: list[list[str]] | None = None
         self._current_row: list[str] | None = None
@@ -206,15 +205,13 @@ class _ReportHTMLParser(HTMLParser):
                 self._current_cell = []
             elif tag == "br" and self._current_cell is not None:
                 self._current_cell.append(" ")
-        elif self._table_depth == 0 and tag in {"br", "p", "div", "h1", "h2", "h3", "h4", "h5", "h6"}:
-            self.outside_text.append(" ")
 
     def handle_endtag(self, tag: str) -> None:
         tag = tag.casefold()
         if self._table_depth == 1:
             if tag in {"td", "th"} and self._current_cell is not None:
                 assert self._current_row is not None
-                self._current_row.append(_cell_text("".join(self._current_cell)))
+                self._current_row.append("".join(self._current_cell))
                 self._current_cell = None
             elif tag == "tr" and self._current_row is not None:
                 assert self._current_table is not None
@@ -230,8 +227,21 @@ class _ReportHTMLParser(HTMLParser):
     def handle_data(self, data: str) -> None:
         if self._table_depth == 1 and self._current_cell is not None:
             self._current_cell.append(data)
-        elif self._table_depth == 0:
-            self.outside_text.append(data)
+
+
+def _normalize_header_label(value: str) -> str:
+    """Remove display whitespace only when comparing semantic header labels."""
+    return "".join(value.split())
+
+
+def _normalize_title_text(value: str) -> str:
+    """Collapse Unicode presentation whitespace without fuzzy title matching."""
+    return _cell_text(value)
+
+
+def _row_data_cells(row: list[str]) -> tuple[str, ...]:
+    """Trim cell-edge layout whitespace while preserving internal data text."""
+    return tuple(value.strip() for value in row)
 
 
 def _parse_roc_date(value: str) -> str:
@@ -307,13 +317,40 @@ def _normalize_html(
     except Exception:
         return _fail("source_failed", "source_failed:malformed_html", **metadata)
 
-    outside_text = _cell_text(" ".join(parser.outside_text))
-    titles = list(_REPORT_TITLE.finditer(outside_text))
-    if not titles:
-        return _fail("source_failed", "source_failed:report_heading_missing", **metadata)
-    if len(titles) != 1:
+    report_tables: list[tuple[list[list[str]], int, re.Match[str]]] = []
+    header_without_title = False
+    ambiguous_title = False
+    for candidate_table in parser.tables:
+        header_indices = [
+            index for index, row in enumerate(candidate_table)
+            if len(row) == len(EXPECTED_HEADERS)
+            and tuple(_normalize_header_label(cell) for cell in row) == EXPECTED_HEADERS
+        ]
+        for header_index in header_indices:
+            title_matches = [
+                match
+                for row in candidate_table[:header_index]
+                if len(row) == 1
+                for match in [_REPORT_TITLE.fullmatch(_normalize_title_text(row[0]))]
+                if match is not None
+            ]
+            if len(title_matches) == 1:
+                report_tables.append((candidate_table, header_index, title_matches[0]))
+            elif len(title_matches) > 1:
+                ambiguous_title = True
+            else:
+                header_without_title = True
+
+    if ambiguous_title:
         return _fail("source_failed", "source_failed:ambiguous_report_heading", **metadata)
-    title = titles[0]
+    if not report_tables:
+        if header_without_title:
+            return _fail("source_failed", "source_failed:report_heading_missing", **metadata)
+        return _fail("source_failed", "source_failed:report_table_contract_missing", **metadata)
+    if len(report_tables) != 1:
+        return _fail("source_failed", "source_failed:ambiguous_report_table_contract", **metadata)
+
+    table, header_index, title = report_tables[0]
     roc_year = int(title.group("roc_year"))
     title_month = int(title.group("month"))
     title_code = title.group("code")
@@ -325,20 +362,10 @@ def _normalize_html(
     ):
         return _fail("binding_failed", "binding_failed:report_heading_target_or_month_mismatch", **metadata)
 
-    recognized: list[tuple[list[list[str]], int]] = []
-    for table in parser.tables:
-        for index, row in enumerate(table):
-            if tuple(row) == EXPECTED_HEADERS:
-                recognized.append((table, index))
-    if not recognized:
-        return _fail("source_failed", "source_failed:report_table_contract_missing", **metadata)
-    if len(recognized) != 1:
-        return _fail("source_failed", "source_failed:ambiguous_report_table_contract", **metadata)
-
-    table, header_index = recognized[0]
     by_date: dict[str, tuple[tuple[str, ...], dict | None, dict[str, str] | None]] = {}
     try:
-        for row in table[header_index + 1 :]:
+        for source_row in table[header_index + 1 :]:
+            row = _row_data_cells(source_row)
             if len(row) != len(EXPECTED_HEADERS):
                 raise TWSEStockDayFormatError("source_failed:invalid_data_row_width")
             trade_date = _parse_roc_date(row[0])

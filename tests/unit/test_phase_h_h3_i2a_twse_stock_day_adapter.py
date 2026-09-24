@@ -22,9 +22,9 @@ TARGET = {"canonical_target_id": "TWSE:1423", "market": "TWSE", "security_code":
 RETRIEVED = "2026-09-24T10:15:00+08:00"
 TIMEOUT = 4.0
 MAX_BYTES = 16_384
-HEADERS = "<tr>" + "".join(f"<th>{value}</th>" for value in (
+HEADER_LABELS = (
     "日期", "成交股數", "成交金額", "開盤價", "最高價", "最低價", "收盤價", "漲跌價差", "成交筆數", "註記"
-)) + "</tr>"
+)
 
 
 def _row(date: str, volume: str = "240,011", close: str = "15.80", *, note: str = "") -> str:
@@ -33,13 +33,45 @@ def _row(date: str, volume: str = "240,011", close: str = "15.80", *, note: str 
     )) + "</tr>"
 
 
-def _html(*rows: str, title: str = "110年02月 1423 利華 各日成交資訊", include_table: bool = True) -> bytes:
-    table = f"<table><thead>{HEADERS}</thead><tbody>{''.join(rows)}</tbody></table>" if include_table else ""
-    # A non-report table precedes the report to prove semantic table selection.
+def _report_table(
+    *rows: str,
+    title: str | None,
+    headers: tuple[str, ...] | None = HEADER_LABELS,
+) -> str:
+    title_row = (
+        f"<tr><th colspan='10'><div>{title}</div></th></tr>" if title is not None else ""
+    )
+    header_row = (
+        "<tr>" + "".join(
+            f"<th>{'成 交股數' if value == '成交股數' else value}</th>" for value in headers
+        ) + "</tr>"
+        if headers is not None else ""
+    )
+    return f"<table><thead>{title_row}{header_row}</thead><tbody>{''.join(rows)}</tbody></table>"
+
+
+def _document(*tables: str) -> bytes:
+    # A non-report table precedes candidate report tables to prove semantic selection.
     return (
         "<!doctype html><html><head><meta charset='utf-8'></head><body>"
-        f"<table><tr><td>navigation</td></tr></table><h2>{title}</h2>{table}</body></html>"
+        "<table><tr><td>navigation</td></tr></table>"
+        f"{''.join(tables)}</body></html>"
     ).encode("utf-8")
+
+
+def _html(
+    *rows: str,
+    title: str = "110年02月 1423 利華             各日成交資訊",
+    include_table: bool = True,
+    include_title: bool = True,
+    headers: tuple[str, ...] | None = HEADER_LABELS,
+) -> bytes:
+    table = _report_table(
+        *rows,
+        title=title if include_title else None,
+        headers=headers,
+    ) if include_table else ""
+    return _document(table)
 
 
 class FakeResponse:
@@ -152,12 +184,46 @@ def test_heading_must_bind_exact_code_and_requested_month(title: str, expected: 
     assert result.observations == ()
 
 
-def test_report_table_is_selected_by_complete_semantic_header() -> None:
-    html = _html(_row("110/02/01")).decode("utf-8")
-    html = html.replace("<th>收盤價</th>", "<th>收盤</th>")
-    result = _fetch(FakeHTTPGet(FakeResponse(html.encode("utf-8"))))
+def test_live_title_location_and_display_whitespace_header_are_accepted() -> None:
+    # _html mirrors the live report: a colspan title cell containing a div is
+    # inside the report table, and the second header has presentation spacing.
+    result = _fetch(FakeHTTPGet(FakeResponse(_html(_row("110/02/01")))))
+    assert result.status == "available"
+    assert result.observations[0]["trade_date"] == "2021-02-01"
+
+
+@pytest.mark.parametrize("wrong_header", ["收盤", "成交量", "成交張數", "日期時間"])
+def test_header_contract_does_not_accept_fuzzy_or_substitute_labels(wrong_header: str) -> None:
+    headers = list(HEADER_LABELS)
+    headers[0 if wrong_header == "日期時間" else 6 if wrong_header == "收盤" else 1] = wrong_header
+    result = _fetch(FakeHTTPGet(FakeResponse(_html(
+        _row("110/02/01"), headers=tuple(headers)
+    ))))
     assert result.status == "source_failed"
     assert result.error_code == "source_failed:report_table_contract_missing"
+
+
+def test_title_and_header_must_belong_to_the_same_table() -> None:
+    title_only = _report_table(
+        title="110年02月 1423 利華 各日成交資訊", headers=None
+    )
+    header_only = _report_table(
+        _row("110/02/01"), title=None, headers=HEADER_LABELS
+    )
+    result = _fetch(FakeHTTPGet(FakeResponse(_document(title_only, header_only))))
+    assert result.status == "source_failed"
+    assert result.error_code == "source_failed:report_heading_missing"
+
+
+def test_two_complete_report_tables_are_rejected_as_ambiguous() -> None:
+    title = "110年02月 1423 利華 各日成交資訊"
+    html = _document(
+        _report_table(_row("110/02/01"), title=title),
+        _report_table(_row("110/02/02"), title=title),
+    )
+    result = _fetch(FakeHTTPGet(FakeResponse(html)))
+    assert result.status == "source_failed"
+    assert result.error_code == "source_failed:ambiguous_report_table_contract"
 
 
 @pytest.mark.parametrize(
@@ -239,7 +305,7 @@ def test_valid_bound_empty_table_is_no_evidence_but_missing_table_is_source_fail
     ("status", "content_type", "body", "code"),
     [
         (403, "text/html; charset=utf-8", b"blocked", "source_failed:http_status_unaccepted"),
-        (200, "text/html; charset=utf-8", b"<html><body>captcha challenge</body></html>", "source_failed:report_heading_missing"),
+        (200, "text/html; charset=utf-8", b"<html><body>captcha challenge</body></html>", "source_failed:report_table_contract_missing"),
         (200, "application/json", b"{}", "source_failed:invalid_html_content_type_or_charset"),
         (200, "text/html; charset=utf-8", b"\xff", "source_failed:html_decode_failed"),
     ],
@@ -281,16 +347,11 @@ def test_invalid_timeout_and_response_limit_are_rejected_before_dispatch() -> No
     assert fake.calls == []
 
 
-def test_response_without_report_heading_or_ambiguous_contract_fails_closed() -> None:
-    no_heading = _html(_row("110/02/01"), title="個股日成交資訊")
+def test_response_without_report_heading_fails_closed() -> None:
+    no_heading = _html(_row("110/02/01"), include_title=False)
     result = _fetch(FakeHTTPGet(FakeResponse(no_heading)))
     assert result.status == "source_failed"
     assert result.error_code == "source_failed:report_heading_missing"
-
-    repeated_heading = _html(_row("110/02/01"), title="110年02月 1423 利華 各日成交資訊 110年02月 1423 利華 各日成交資訊")
-    result = _fetch(FakeHTTPGet(FakeResponse(repeated_heading)))
-    assert result.status == "source_failed"
-    assert result.error_code == "source_failed:ambiguous_report_heading"
 
 
 def test_no_raw_monthly_payload_is_persisted_and_h3_i0_consumes_observations(tmp_path: Path) -> None:
