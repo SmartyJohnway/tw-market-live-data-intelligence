@@ -1,6 +1,6 @@
 {
   "schema_version": "phase_h_h_act_h3_a0_execution_parameter_binding_acceptance.v1",
-  "status": "OWNER_REVIEW_CANDIDATE",
+  "status": "OWNER_ACCEPTED_COMPLETED",
   "decision_id": "H-ACT-H3-A0",
   "acceptance_date": "2026-09-24",
   "baseline_main_sha": "e7754a1c7860b40d4d5d719fca0add09b33e941a",
@@ -22,8 +22,14 @@
     "capability_id": "recent_performance",
     "parameters_schema": {
       "additionalProperties": false,
-      "required": ["lookback_trading_days"],
-      "lookback_trading_days": {"type": "integer", "minimum": 1, "maximum": 20}
+      "required": [
+        "lookback_trading_days"
+      ],
+      "lookback_trading_days": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 20
+      }
     },
     "identity_hash_includes_parameters_before_hashing": true,
     "id_format": "umereq-v2-<first-20-hex-of-execution_request_hash>",
@@ -85,8 +91,22 @@
     }
   },
   "identity_and_lineage_tests": {
-    "valid_lookbacks": [1, 5, 20],
-    "invalid_parameter_cases": ["missing", "empty", "0", "21", "string", "float", "true", "false", "extra_property"],
+    "valid_lookbacks": [
+      1,
+      5,
+      20
+    ],
+    "invalid_parameter_cases": [
+      "missing",
+      "empty",
+      "0",
+      "21",
+      "string",
+      "float",
+      "true",
+      "false",
+      "extra_property"
+    ],
     "five_day_vs_twenty_day_hash_and_id_differ": true,
     "non_h3_v1_id_hash_and_field_set_preserved": true,
     "mixed_v1_v2_preflight_valid": true,
@@ -104,7 +124,10 @@
     "lineage_id_hash_rewritten_or_recomputed": false
   },
   "test_results": {
-    "focused_a0_and_regressions": {"status": "PASS", "passed": 115},
+    "focused_a0_and_regressions": {
+      "status": "PASS",
+      "passed": 115
+    },
     "default_ci": {
       "status": "FAIL_UNRELATED_PORTABLE_GUIDE_SYNC",
       "passed": 776,
@@ -150,6 +173,43 @@
   "notes": [
     "A0 carries Request V3 recent_performance lookback through an authorization-bound execution-request v2 into dispatcher validation without activating H3.",
     "The owner-authorized Receipt V1 and Operation Result V2 lineage amendment is limited to closed v1/v2 execution-request ID patterns.",
-    "The unrelated portable Quick Guide synchronization failure was not repaired or modified in this tranche."
-  ]
+    "The pre-existing Portable Quick Guide drift present on the A0 baseline was repaired during independent review; generator-equivalence is PASS. Full pytest suites were not rerun in the ChatGPT sandbox after that docs-only repair because the sandbox could not resolve github.com."
+  ],
+  "reviewer_generated_projection_repair": {
+    "issue": "Portable Quick Guide markdown content mismatch",
+    "classification": "PRE_EXISTING_BASELINE_GENERATED_PROJECTION_DRIFT",
+    "baseline_main_sha": "e7754a1c7860b40d4d5d719fca0add09b33e941a",
+    "baseline_quick_guide_git_blob_sha": "ec47ffeb600574fc8f7242ce4688ef56006d7871",
+    "repaired_quick_guide_git_blob_sha": "c65a3f929b7b7821352c9ead7fbebdbcd67e01c1",
+    "repaired_quick_guide_sha256": "b35a91bb3ac6c8f423fc7d5a0518a84c34c48c27aa804702b36d8044e8d78900",
+    "repaired_quick_guide_bytes": 5254,
+    "generator_equivalent": true,
+    "semantic_runtime_change": false,
+    "post_repair_default_ci_rerun": false,
+    "post_repair_full_current_rerun": false,
+    "rerun_limitation": "ChatGPT sandbox could not resolve github.com, so post-repair pytest suites were not rerun there. The only previously reported failing assertion was the repaired generated-guide mismatch."
+  },
+  "independent_review": {
+    "reviewer_role": "ChatGPT independent A0 execution-contract / lineage / scope review",
+    "review_date": "2026-09-24",
+    "reviewed_head_before_closure": "c474a367f417c94357852980fbc15c191e3b9399",
+    "disposition": "PASS",
+    "findings_closed": [
+      "execution-request v1 remains byte-for-byte unchanged at Git blob 5b974f125055a5564cd0ba9db62f26e5ca4c1eb2",
+      "execution-request v2 is restricted to recent_performance and binds exact integer lookback_trading_days 1..20 before identity hashing",
+      "bool, float, string, missing, out-of-range and extra H3 parameters fail closed without coercion",
+      "5D and 20D produce distinct authorization-bound execution request hashes and IDs",
+      "non-H3 projection remains execution-request v1 with preserved field set and known identity",
+      "orchestrator preflight accepts only closed v1/v2 internal execution-request contracts",
+      "dispatch validates the declared internal execution-request version and rejects unknown versions",
+      "Operation Result V2 and Receipt V1 accept only v1/v2 request IDs for exact lineage passthrough while Operation Result V1 remains v1-only",
+      "recorded SHA-256 and byte counts for v2 schema, preflight schema, receipt schema, result-v2 schema, request projection and dispatch match branch artifacts exactly",
+      "the sole default-ci/full-current failure was a pre-existing generated Quick Guide drift present on the baseline; reviewer regenerated the guide and proved generator-equivalence",
+      "Catalog, Routing, executor registry and runtime activation authority remain unchanged; H3 remains plan_only and inactive",
+      "MCP remains six tools, no TWSE network was used by A0, and Phase I remains not started"
+    ],
+    "new_unexplained_failures": 0,
+    "runtime_activation_authorized_by_a0": false,
+    "next_gate": "H-ACT-H3 selected-route runtime integration / drift-live-rollback acceptance"
+  }
 }
