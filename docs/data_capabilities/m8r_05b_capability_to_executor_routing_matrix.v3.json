@@ -166,7 +166,7 @@
       "provisional": false,
       "candidate_executor_ids": [],
       "selected_executor_id": null,
-      "routing_status": "blocked",
+      "routing_status": "plan_only",
       "batching_scope": "none",
       "approval_required": true,
       "network_required": false,
@@ -176,15 +176,21 @@
       },
       "output_evidence_contract": "recent_performance_evidence.v1",
       "known_limitations": [
-        "not_yet_implemented"
+        "TWSE bounded adapter/walker implementation and 20D bounded-live evidence are accepted; runtime executor wiring and activation are not yet approved",
+        "TWSE provider automation permission remains not established / terms-conflicted; the Owner-controlled local-first decision does not claim provider approval",
+        "TPEx default bounded route remains unresolved",
+        "optional provider contracts remain pending"
       ],
       "evidence_paths": [
-        "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json"
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "docs/governance/phase_h/PHASE_H_H3_TWSE_CONTROLLED_USE_OWNER_DECISION_2026-09-24.json",
+        "docs/governance/phase_h/PHASE_H_H3_I2A2_TWSE_20D_MULTI_MONTH_BOUNDED_LIVE_ACCEPTANCE_2026-09-24.json"
       ],
       "capability_requires_execution_approval": true,
       "package_approval_policy": "strictest_operation_controls_package",
       "blocking_reasons": [
-        "H0-SRC-09 and H0-SRC-10 default bounded machine routes are not proven",
+        "TWSE selected route is eligible but H-ACT-H3 runtime wiring, rollback acceptance and Owner activation are still pending",
+        "H0-SRC-10 TPEx default bounded route remains unresolved",
         "H0-SRC-11 and H0-SRC-12 optional provider contracts are pending"
       ],
       "supported_instrument_families": [
@@ -196,12 +202,9 @@
       "source_authority_states": [
         {
           "market": "TWSE",
-          "source_role": "source_gap",
-          "activation_state": "blocked",
-          "governance_issue_ids": [
-            "H0-SRC-09",
-            "H0-SRC-11"
-          ]
+          "source_role": "default_candidate",
+          "activation_state": "eligible",
+          "governance_issue_ids": []
         },
         {
           "market": "TPEX",

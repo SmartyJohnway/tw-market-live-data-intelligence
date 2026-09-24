@@ -4,9 +4,19 @@
   "owner_acceptance": {
     "decision": "OWNER_ACCEPTED_FROZEN",
     "acceptance_date": "2026-09-21",
-    "accepted_amendments": ["A1", "A2"],
+    "accepted_amendments": ["A1", "A2", "H3-TWSE-CONTROLLED-USE-2026-09-24"],
     "planning_blockers": 0
   },
+  "post_freeze_owner_decisions": [
+    {
+      "decision_id": "H3-TWSE-CONTROLLED-USE-2026-09-24",
+      "decision_date": "2026-09-24",
+      "decision_path": "docs/governance/phase_h/PHASE_H_H3_TWSE_CONTROLLED_USE_OWNER_DECISION_2026-09-24.json",
+      "selected_route": "H3-TWSE-DEFAULT-BOUNDED",
+      "effect": "H0-SRC-09 no longer blocks the selected TWSE route from H-ACT-H3 activation preflight; runtime remains inactive until separate H-ACT-H3 Owner activation approval.",
+      "provider_automation_permission": "NOT_ESTABLISHED_TERMS_CONFLICTED"
+    }
+  ],
   "baseline_main_sha": "dcafdfd756c6c32f138690d33900c59b0786ff7e",
   "preferred_runtime_request_schema_version": "unified_market_evidence_request.v2",
   "v3_runtime_authority": "inactive",
@@ -251,7 +261,7 @@
     "H0-SRC-06": {"blocks_route_activation": true, "blocks_complete_coverage_claim": true, "blocks_optional_provider_activation": false, "research_only": false},
     "H0-SRC-07": {"blocks_route_activation": true, "blocks_complete_coverage_claim": true, "blocks_optional_provider_activation": false, "research_only": false},
     "H0-SRC-08": {"blocks_route_activation": true, "blocks_complete_coverage_claim": true, "blocks_optional_provider_activation": false, "research_only": false},
-    "H0-SRC-09": {"blocks_route_activation": true, "blocks_complete_coverage_claim": false, "blocks_optional_provider_activation": false, "research_only": true},
+    "H0-SRC-09": {"blocks_route_activation": false, "blocks_complete_coverage_claim": false, "blocks_optional_provider_activation": false, "research_only": false},
     "H0-SRC-10": {"blocks_route_activation": true, "blocks_complete_coverage_claim": false, "blocks_optional_provider_activation": false, "research_only": true},
     "H0-SRC-11": {"blocks_route_activation": false, "blocks_complete_coverage_claim": false, "blocks_optional_provider_activation": true, "research_only": true},
     "H0-SRC-12": {"blocks_route_activation": false, "blocks_complete_coverage_claim": false, "blocks_optional_provider_activation": true, "research_only": true}
@@ -274,7 +284,7 @@
     "H2-TPEX-CAPITAL-REDUCTION-WEB": ["H0-SRC-06"],
     "H2-TWSE-PAR-SPLIT-CONSOLIDATION-GAP": ["H0-SRC-07"],
     "H2-TPEX-PAR-SPLIT-CONSOLIDATION-GAP": ["H0-SRC-08"],
-    "H3-TWSE-DEFAULT-BOUNDED": ["H0-SRC-09"],
+    "H3-TWSE-DEFAULT-BOUNDED": [],
     "H3-TPEX-DEFAULT-BOUNDED": ["H0-SRC-10"],
     "H3-TWSE-OPTIONAL-PROVIDER": ["H0-SRC-11"],
     "H3-TPEX-OPTIONAL-PROVIDER": ["H0-SRC-12"]
@@ -297,7 +307,7 @@
     {"source_id":"H2-TPEX-CAPITAL-REDUCTION-WEB","capability":"corporate_action_context","market":"TPEX","source_role":"manual_verification","current_activation_state":"inactive","future_gate":"H-ACT-H2","implementation_class":"MANUAL_ONLY","governance_issue_ids":["H0-SRC-06"],"prerequisites":["new Owner-approved official automation authority"],"portability":{"required":false,"licensed":false,"credentialed":false,"manual":true,"default_behavior":"manual only; no runtime route"}},
     {"source_id":"H2-TWSE-PAR-SPLIT-CONSOLIDATION-GAP","capability":"corporate_action_context","market":"TWSE","source_role":"source_gap","current_activation_state":"blocked","future_gate":"H-ACT-H2","implementation_class":"BLOCKED","governance_issue_ids":["H0-SRC-07"],"prerequisites":["Owner-accepted official or licensed source authority"],"portability":{"required":false,"licensed":false,"credentialed":false,"manual":false,"default_behavior":"blocked and uncovered"}},
     {"source_id":"H2-TPEX-PAR-SPLIT-CONSOLIDATION-GAP","capability":"corporate_action_context","market":"TPEX","source_role":"source_gap","current_activation_state":"blocked","future_gate":"H-ACT-H2","implementation_class":"BLOCKED","governance_issue_ids":["H0-SRC-08"],"prerequisites":["Owner-accepted official or licensed source authority"],"portability":{"required":false,"licensed":false,"credentialed":false,"manual":false,"default_behavior":"blocked and uncovered"}},
-    {"source_id":"H3-TWSE-DEFAULT-BOUNDED","capability":"recent_performance","market":"TWSE","source_role":"source_gap","current_activation_state":"blocked","future_gate":"H-ACT-H3","implementation_class":"REQUIRES_AUTOMATION_RESEARCH","governance_issue_ids":["H0-SRC-09"],"prerequisites":["H3-R decision","transport","license","session and volume semantics","fixture","bounded-live","Owner authorization"],"portability":{"required":false,"licensed":false,"credentialed":false,"manual":false,"default_behavior":"blocked; no accumulation"}},
+    {"source_id":"H3-TWSE-DEFAULT-BOUNDED","capability":"recent_performance","market":"TWSE","source_role":"default_candidate","current_activation_state":"eligible","future_gate":"H-ACT-H3","implementation_class":"READY_FOR_ACTIVATION_PREFLIGHT","governance_issue_ids":[],"prerequisites":["Owner controlled-use decision","transport","binding","session and volume semantics","fixture","bounded-live","route rollback","Owner activation approval"],"portability":{"required":false,"licensed":false,"credentialed":false,"manual":false,"default_behavior":"inactive until H-ACT-H3 approval; controlled local-first bounded use only; no accumulation"}},
     {"source_id":"H3-TPEX-DEFAULT-BOUNDED","capability":"recent_performance","market":"TPEX","source_role":"source_gap","current_activation_state":"blocked","future_gate":"H-ACT-H3","implementation_class":"REQUIRES_AUTOMATION_RESEARCH","governance_issue_ids":["H0-SRC-10"],"prerequisites":["H3-R decision","transport","license","session and volume semantics","fixture","bounded-live","Owner authorization"],"portability":{"required":false,"licensed":false,"credentialed":false,"manual":false,"default_behavior":"blocked; no accumulation"}},
     {"source_id":"H3-TWSE-OPTIONAL-PROVIDER","capability":"recent_performance","market":"TWSE","source_role":"optional_licensed_provider","current_activation_state":"inactive","future_gate":"H-ACT-H3","implementation_class":"REQUIRES_AUTOMATION_RESEARCH","governance_issue_ids":["H0-SRC-11"],"prerequisites":["H3-R product selection","provider contract","schema","credentials/config","portable absence","bounded-live","Owner authorization"],"portability":{"required":false,"licensed":true,"credentialed":true,"manual":false,"default_behavior":"provider_unavailable"}},
     {"source_id":"H3-TPEX-OPTIONAL-PROVIDER","capability":"recent_performance","market":"TPEX","source_role":"optional_licensed_provider","current_activation_state":"inactive","future_gate":"H-ACT-H3","implementation_class":"REQUIRES_AUTOMATION_RESEARCH","governance_issue_ids":["H0-SRC-12"],"prerequisites":["H3-R product selection","provider contract","schema","credentials/config","portable absence","bounded-live","Owner authorization"],"portability":{"required":false,"licensed":true,"credentialed":true,"manual":false,"default_behavior":"provider_unavailable"}}
