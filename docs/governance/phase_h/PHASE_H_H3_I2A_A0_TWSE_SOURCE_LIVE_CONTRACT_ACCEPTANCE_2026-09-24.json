@@ -1,6 +1,6 @@
 {
   "schema_version": "phase_h_h3_i2a_a0_twse_source_live_contract_acceptance.v1",
-  "status": "SOURCE_CONTRACT_PASS_ADAPTER_TRANSPORT_PENDING",
+  "status": "SOURCE_CONTRACT_AND_ADAPTER_TRANSPORT_PASS_PARSER_REWORK",
   "tranche": "Phase H H3-I2A-A0 TWSE STOCK_DAY Source-Live Contract Acceptance",
   "date": "2026-09-24",
   "baseline_main_sha": "2f92ea9c7f9eb51f0d93229c6e44cf162ff1017c",
@@ -51,11 +51,12 @@
   },
   "interpretation": {
     "source_live_contract": "PASS",
-    "adapter_live_transport": "PENDING",
-    "reason": "The official live HTML content matches the accepted adapter title/header/row semantics, including verified '--' close-unavailable rows. The platform web fetch does not expose the raw HTTP Content-Type charset header and did not execute the repository urllib adapter itself, so the adapter transport path is not yet independently proven live.",
+    "adapter_live_transport": "PASS",
+    "adapter_live_decode": "PASS",
+    "adapter_live_normalization": "REWORK",
+    "reason": "Owner-executed repository adapter received HTTP 200, declared UTF-8 HTML, 16,624 bytes, and a stable response hash. Failure occurred only after decode at report-heading extraction. A bounded DOM-shape probe showed the title is inside the first report-table row and display whitespace appears inside at least one header label.",
     "does_not_establish": [
-      "raw HTTP response-header charset compatibility with the repository adapter",
-      "repository urllib transport success from the target runtime environment",
+      "live parser normalization success",
       "multi-month walking",
       "1..20-session orchestration",
       "production route registration",
@@ -80,5 +81,27 @@
     "mcp_tool_count": 6,
     "phase_i": "NOT_STARTED"
   },
-  "next_gate": "Execute the accepted repository adapter once against TWSE:1423 / 2025-02 in an environment with normal public TLS/DNS and record only a compact sanitized result. Do not persist the raw monthly HTML."
+  "next_gate": "Rework only the TWSE HTML parser: bind title from the table title row and compare the fixed 10 semantic headers after display-whitespace normalization; then repeat the same one-target/one-month adapter probe.",
+  "local_adapter_probe": {
+    "owner_executed": true,
+    "observed_at": "2026-09-24",
+    "target": "TWSE:1423",
+    "requested_month": "2025-02",
+    "http_status": 200,
+    "content_type": "text/html;charset=utf-8",
+    "declared_charset": "utf-8",
+    "response_byte_count": 16624,
+    "response_sha256": "af2f29c6ba1ca7042f394fa52fe8b448f4d544dca826086c4a901e1b6fdf584a",
+    "adapter_status": "source_failed",
+    "adapter_error_code": "source_failed:report_heading_missing",
+    "transport_result": "PASS",
+    "decode_result": "PASS",
+    "normalization_result": "REWORK"
+  },
+  "live_dom_finding": {
+    "title_location": "inside the report table first row: <th colspan='10'><div>...</div></th>",
+    "observed_title_text": "114年02月 1423 利華             各日成交資訊",
+    "observed_header_spacing_example": "成 交股數",
+    "implication": "The accepted parser incorrectly searches only table-external text for the report title and exact-matches unnormalized header display whitespace."
+  }
 }
