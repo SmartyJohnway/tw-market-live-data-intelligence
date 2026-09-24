@@ -1,0 +1,127 @@
+{
+  "schema_version": "phase_h_h3_i1b_tpex_edis_dormant_authenticated_transport_acceptance.v1",
+  "status": "OWNER_REVIEW_CANDIDATE",
+  "tranche": "Phase H H3-I1B TPEx EDIS Dormant Bounded Authenticated Transport",
+  "baseline_main_sha": "7ae13fcdcbe49154814feb31233403d368c63638",
+  "branch": "phase-h/h3-i1b-tpex-edis-dormant-authenticated-transport",
+  "implementation": {
+    "path": "server/services/phase_h_h3_tpex_edis_transport.py",
+    "implementation_sha": "sha256:9d4e9f767234e894bf8594c2040d9302d6c5a7848e32b5fa5b06691bdd56ac35",
+    "implementation_file_sha256": "9d4e9f767234e894bf8594c2040d9302d6c5a7848e32b5fa5b06691bdd56ac35",
+    "implementation_file_bytes": 18042,
+    "operations": {
+      "step_0": "GET /download/getApi?step=0",
+      "step_1": "GET /download/getApi?step=1",
+      "post_implemented": false,
+      "base_url_explicit_required": true,
+      "redirects_followed": false,
+      "request_bound": "one request per invocation; no retry"
+    },
+    "credentials": {
+      "separate_api_data_download_account_password": true,
+      "transient_query_parameters_required_by_official_sample": true,
+      "persisted": false,
+      "emitted_in_public_results_errors_or_metadata": false,
+      "hashed_into_audit_identity": false,
+      "full_url_exposed": false
+    },
+    "response_bounds": {
+      "timeout_required": true,
+      "max_response_bytes_required": true,
+      "read_limit": "max_response_bytes + 1",
+      "step_1_body": "opaque in-memory bytes"
+    },
+    "payload_processing": {
+      "archive_extraction": false,
+      "text_decode_step_1": false,
+      "h3_i1a_integration": false,
+      "filesystem_persistence": false
+    }
+  },
+  "official_api_manual": {
+    "title": "TPEx E-Data Shop API Manual",
+    "date": "2024-09-02",
+    "sha256": "7d9eb39daea22c324b58d6cbb17032bd4200ee430c44ee136ce92018087f30d4",
+    "step_0_relative_endpoint": "/download/getApi?step=0",
+    "step_1_relative_endpoint": "/download/getApi?step=1",
+    "credentials": "API data-download account/password distinct from website login credentials",
+    "step_0_success_type": "Text",
+    "step_1_success_body": "NOT FULLY SPECIFIED",
+    "documentation_inconsistency": "Parameter sections say POST Parameters; executable cURL samples use GET query parameters. This tranche implements GET only.",
+    "public_official_host_candidate": "https://intd.tpex.org.tw",
+    "production_host_binding": "NOT LIVE VERIFIED",
+    "fresh_install_last_20_session_continuity": "NOT PROVEN",
+    "manual_retrieval": "Read-only static document retrieved in memory and SHA verified; no authenticated EDIS API request was made.",
+    "manual_download_url": "https://eshop.tpex.org.tw/uploadFile/upload/product/2c92e01394fcf4c7019518bc880f000b.docx"
+  },
+  "provider_errors": {
+    "documented_system_messages_classified": true,
+    "unknown_non_success_message": "provider_response_unclassified",
+    "http_status_semantics_invented": false,
+    "market_no_evidence_state_used": false
+  },
+  "changed_files": [
+    "server/services/phase_h_h3_tpex_edis_transport.py",
+    "tests/unit/test_phase_h_h3_i1b_tpex_edis_transport.py",
+    "docs/research/phase_h_h3_r/Phase_H_H3_R3_TPEx_EDIS_Authenticated_Transport_Contract_2026-09-24.md",
+    "docs/governance/phase_h/PHASE_H_H3_I1B_TPEX_EDIS_DORMANT_AUTHENTICATED_TRANSPORT_ACCEPTANCE.json"
+  ],
+  "validation": {
+    "focused_h3_i1b": {
+      "result": "PASS",
+      "summary": "33 passed",
+      "injected_transport_only": true,
+      "external_market_calls": 0
+    },
+    "h3_i1a_regression": {
+      "result": "PASS",
+      "summary": "28 passed"
+    },
+    "h3_i0_regression": {
+      "result": "PASS",
+      "summary": "23 passed"
+    },
+    "default_ci": {
+      "result": "PASS",
+      "passed": 776,
+      "skipped": 2,
+      "deselected": 5,
+      "network_may_have_occurred": false,
+      "h3_i1b_test_added_to_profile": false
+    },
+    "full_current": {
+      "result": "PASS",
+      "passed": 1148,
+      "skipped": 2,
+      "deselected": 5,
+      "network_may_have_occurred": false
+    },
+    "phase_h_v3_contract_validator": "PASS",
+    "portable_catalog_sync_validator": "PASS",
+    "runtime_skill_guide_sync_validator": "PASS",
+    "compileall_scripts_server_tests": "PASS",
+    "git_diff_check": "PASS",
+    "network_may_have_occurred": false
+  },
+  "failures": {
+    "known_frozen_historical_failures_remaining": [
+      "FNN-02",
+      "FNN-03"
+    ],
+    "observed_by_default_ci_or_full_current_runs": "No; these profiles did not exercise them as failures.",
+    "new_unexplained_failures": 0
+  },
+  "runtime_and_scope": {
+    "catalog_mutation": false,
+    "routing_mutation": false,
+    "executor_registry_mutation": false,
+    "source_activation": false,
+    "h3_activation": false,
+    "h3_route_runtime_executable": false,
+    "h2_activation": false,
+    "mcp_tool_count": 6,
+    "mcp_tool_count_changed": false,
+    "phase_i": "NOT_STARTED"
+  },
+  "interpretation": "This tranche adds only a dormant bounded authenticated transport contract. It does not prove authenticated provider behavior, production hostname binding, Step-1 payload format, archive/file mapping, fresh-install last-20-session continuity, H3 source authority or activation, H2 activation, or Phase I implementation."
+}
