@@ -1,0 +1,126 @@
+{
+  "schema_version": "phase_h_h_act_h3_a0_execution_parameter_binding_decision.v1",
+  "status": "OWNER_ACCEPTED_FROZEN",
+  "decision_id": "H-ACT-H3-A0",
+  "decision_date": "2026-09-24",
+  "owner_authorization_reference": "USER_CHAT_2026-09-24_H_ACT_H3_H3_TWSE_DEFAULT_BOUNDED",
+  "baseline_main_sha": "f12e97ecfa571337a40451b8ff700aecddc0be4c",
+  "selected_route": {
+    "source_id": "H3-TWSE-DEFAULT-BOUNDED",
+    "capability_id": "recent_performance",
+    "market": "TWSE",
+    "executor_activation_state_after_a0": "inactive"
+  },
+  "discovered_blocker": {
+    "code": "H3_LOOKBACK_NOT_BOUND_TO_EXECUTION_REQUEST",
+    "description": "Request V3 and the orchestration plan carry recent_performance.parameters.lookback_trading_days, but unified_market_evidence_execution_request.v1 does not preserve operation parameters. A production H3 executor therefore cannot prove which 1..20D lookback was authorized.",
+    "why_blocking": [
+      "H3 frozen semantics require exact requested lookback_trading_days",
+      "the executor must not guess 5D, 20D or any other lookback",
+      "the lookback must participate in the authorization-bound execution request identity/hash",
+      "runtime activation before this binding exists would be semantically unauditable"
+    ]
+  },
+  "decision": {
+    "selected_option": "ADDITIVE_EXECUTION_REQUEST_V2",
+    "summary": "Introduce a new internal unified_market_evidence_execution_request.v2 for recent_performance operations. Preserve execution-request v1 bytes and behavior for existing routes. V2 adds an authorization-bound parameters object containing lookback_trading_days and includes those parameters in the execution request identity hash.",
+    "public_contract_effect": "NONE",
+    "runtime_activation_effect": "NONE_BY_A0",
+    "phase_h_route_activation_after_a0": "still inactive pending H-ACT-H3 implementation and acceptance"
+  },
+  "execution_request_v1_preservation": {
+    "path": "schemas/unified_market_evidence_execution_request.v1.schema.json",
+    "git_blob_sha_at_decision": "5b974f125055a5564cd0ba9db62f26e5ca4c1eb2",
+    "bytes_must_remain_unchanged": true,
+    "existing_phase_g_and_h1_projection_behavior_must_remain_unchanged": true
+  },
+  "execution_request_v2_contract": {
+    "path": "schemas/unified_market_evidence_execution_request.v2.schema.json",
+    "schema_version_const": "unified_market_evidence_execution_request.v2",
+    "id_prefix": "umereq-v2-",
+    "retains_v1_fields": true,
+    "new_required_field": "parameters",
+    "parameters_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lookback_trading_days"
+      ],
+      "properties": {
+        "lookback_trading_days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        }
+      }
+    },
+    "capability_binding_rule": "v2 is emitted only for capability_id=recent_performance in this tranche",
+    "identity_hash_rule": "execution_request_hash MUST be computed over the same identity body as v1 plus the exact parameters object; lookback_trading_days therefore changes both hash and umereq-v2 id",
+    "relative_contained_output_path_rule": "retain the existing operation-id-bound contained path format; filename does not encode execution-request version"
+  },
+  "projection_rules": {
+    "source_of_parameter": "operation.parameters.lookback_trading_days",
+    "h3_missing_parameter": "FAIL_CLOSED execution_request_schema_invalid or a narrower deterministic projection error",
+    "h3_extra_parameter": "FAIL_CLOSED",
+    "h3_parameter_coercion": "PROHIBITED",
+    "non_h3_operations": "continue to emit execution_request.v1 exactly as before",
+    "no_public_parameter_invention": true
+  },
+  "preflight_and_dispatch_compatibility": {
+    "orchestrator_preflight_v1": "may be additively broadened to accept a closed oneOf of execution_request.v1 and execution_request.v2 items; this post-freeze compatibility amendment MUST NOT change preflight identity/authorization/containment semantics",
+    "dispatch": "must validate each bounded execution request against the schema declared by request.schema_version; v1 and v2 are both accepted, unknown versions fail closed",
+    "evidence_aggregation": "must remain version-agnostic and bind request id/hash exactly as emitted",
+    "receipt_and_consumption_lineage": "must preserve exact execution_request_id/hash without lossy normalization"
+  },
+  "h3_runtime_preconditions_after_a0": [
+    "selected-route deterministic integration fixture for H3",
+    "phase_h_h3_twse recent-performance production executor wiring",
+    "H0H-DRIFT-H3 PASS",
+    "H0H-LIVE-003 bound to accepted TWSE bounded-live evidence or a route-level activation live proof",
+    "H0H-ROLL-004 PASS",
+    "Catalog V3 / Routing V3 / executor registry / portable projection synchronization",
+    "Owner activation approval"
+  ],
+  "prohibited_in_a0": [
+    "activating recent_performance",
+    "registering an H3 production executor",
+    "changing H3 source adapter or walker behavior",
+    "changing public Request V3 schema",
+    "changing Result V3 or Audit V3 schema",
+    "changing MCP tool count",
+    "adding scheduler or polling",
+    "adding persistent historical accumulation",
+    "changing TPEx H3 route state",
+    "starting Phase I"
+  ],
+  "implementation_scope_for_next_tranche": {
+    "expected_code_surfaces": [
+      "schemas/unified_market_evidence_execution_request.v2.schema.json",
+      "schemas/unified_market_evidence_orchestrator_preflight.v1.schema.json",
+      "scripts/m8r_05b_03/request_projection.py",
+      "scripts/m8r_05b_03/dispatch.py",
+      "focused 05B-03 schema/projection/dispatch tests"
+    ],
+    "v1_regression_required": true,
+    "network_required": false
+  },
+  "independent_review": {
+    "reviewer_role": "ChatGPT independent execution-contract / authorization-lineage review",
+    "review_date": "2026-09-24",
+    "reviewed_head": "4dae9b82377cae007f95e423d695bc0b09d209a2",
+    "disposition": "PASS",
+    "findings_closed": [
+      "current Request V3 already carries recent_performance.parameters.lookback_trading_days while execution-request v1 drops operation parameters",
+      "activation without parameter binding would force the executor to guess the authorized lookback and is therefore blocked",
+      "the selected remedy is additive execution-request v2 rather than mutation of execution-request v1",
+      "v2 binds exact lookback_trading_days into execution_request_hash and umereq-v2 identity",
+      "non-H3 routes retain execution-request v1 behavior",
+      "public Request/Result/Audit V3 contracts remain unchanged",
+      "A0 itself performs no executor registration, route activation, MCP expansion, polling, scheduling or history persistence",
+      "H-ACT-H3 remains blocked until A0 implementation/acceptance passes"
+    ],
+    "implementation_authorized_next": true,
+    "runtime_activation_authorized_by_a0": false,
+    "network_required_for_a0_implementation": false
+  }
+}
