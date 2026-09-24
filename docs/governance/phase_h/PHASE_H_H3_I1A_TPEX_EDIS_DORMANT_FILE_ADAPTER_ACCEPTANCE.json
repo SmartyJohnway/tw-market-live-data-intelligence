@@ -1,0 +1,91 @@
+{
+  "schema_version": "phase_h_h3_i1a_tpex_edis_dormant_file_adapter_acceptance.v1",
+  "status": "OWNER_REVIEW_CANDIDATE",
+  "tranche": "Phase H H3-I1A TPEx EDIS Dormant Daily-Quote File Adapter",
+  "baseline_main_sha": "b8ae38897fdb4e3390bc0b96e2cfdfb914979cd8",
+  "branch": "phase-h/h3-i1a-tpex-edis-dormant-file-adapter",
+  "implementation": {
+    "path": "server/services/phase_h_h3_tpex_edis_adapter.py",
+    "tested_file_sha256": "711bc1b432db15c8a0ab3c06eef1886d83ecbf7b2ddff16ed761c16541e1e728",
+    "tested_file_bytes": 10621,
+    "api": "normalize_tpex_edis_daily_quote",
+    "file_variants": {
+      "S37": "TPEX_EDIS_S37",
+      "S38": "TPEX_EDIS_S38"
+    },
+    "network_access": false,
+    "filesystem_io": false,
+    "history_discovery_or_persistence": false,
+    "price_conversion": "Decimal implied 4 places, explicitly converted to schema numeric at output",
+    "date_authority": "EDIS first/header record YYYYMMDD only"
+  },
+  "source_authority": {
+    "automatic_subscribed_file_transport": "officially supported in principle",
+    "authenticated_url_transport_implementation": "not implemented",
+    "file_contract": "TPEx EDIS V1.33 S37/S38, 219-byte data records; first record is 182 bytes with date, production time, record length, count, reserved spaces and CRLF",
+    "official_format_reference": "https://www.tpex.org.tw/storage/regular_system/%E6%96%B0%E7%89%88%E6%94%B6%E5%B8%82%E5%BE%8C%E4%BA%A4%E6%98%93%E8%B3%87%E8%A8%8A%E6%A0%BC%E5%BC%8F%E8%AA%AA%E6%98%8E%28V1.33%E7%89%88%29.pdf?t=20251127",
+    "official_product_reference": "https://www.tpex.org.tw/zh-tw/service/data/product/post.html",
+    "fresh_install_arbitrary_last_20_session_continuity": "NOT_PROVEN",
+    "h3_production_route": "BLOCKED / INACTIVE"
+  },
+  "changed_files": [
+    "server/services/phase_h_h3_tpex_edis_adapter.py",
+    "tests/unit/test_phase_h_h3_i1a_tpex_edis_adapter.py",
+    "docs/governance/phase_h/PHASE_H_H3_I1A_TPEX_EDIS_DORMANT_FILE_ADAPTER_ACCEPTANCE.json"
+  ],
+  "validation": {
+    "focused_h3_i1a": {
+      "result": "PASS",
+      "summary": "19 passed",
+      "synthetic_fixture_only": true,
+      "h3_i0_builder_integration": true,
+      "network_may_have_occurred": false
+    },
+    "h3_i0_regression": {
+      "result": "PASS",
+      "summary": "23 passed"
+    },
+    "default_ci": {
+      "result": "PASS",
+      "passed": 776,
+      "skipped": 2,
+      "deselected": 5,
+      "network_may_have_occurred": false,
+      "h3_i1a_test_added_to_profile": false
+    },
+    "full_current": {
+      "result": "PASS",
+      "passed": 1148,
+      "skipped": 2,
+      "deselected": 5,
+      "network_may_have_occurred": false
+    },
+    "phase_h_v3_contract_validator": "PASS",
+    "portable_catalog_sync_validator": "PASS",
+    "runtime_skill_guide_sync_validator": "PASS",
+    "compileall_scripts_server_tests": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "failures": {
+    "known_frozen_historical_failures_remaining": [
+      "FNN-02",
+      "FNN-03"
+    ],
+    "observed_by_default_ci_or_full_current_runs": "No; these profiles did not exercise them as failures.",
+    "new_unexplained_failures": 0
+  },
+  "runtime_and_scope": {
+    "catalog_mutation": false,
+    "routing_mutation": false,
+    "executor_registry_mutation": false,
+    "source_activation": false,
+    "h3_activation": false,
+    "h3_route_runtime_executable": false,
+    "h2_activation": false,
+    "h_sb1_a1_plumbing": "deferred",
+    "mcp_tool_count": 6,
+    "mcp_tool_count_changed": false,
+    "phase_i": "NOT_STARTED"
+  },
+  "interpretation": "This implementation is a dormant, pure normalizer for explicitly supplied S37/S38 bytes. It proves neither fresh-install historical continuity nor authenticated transport, provider subscription authority, production source selection, H3 route activation, H2 activation, or Phase I implementation."
+}
