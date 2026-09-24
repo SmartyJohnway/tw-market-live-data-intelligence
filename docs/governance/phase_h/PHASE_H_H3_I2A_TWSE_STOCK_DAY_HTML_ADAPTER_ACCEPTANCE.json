@@ -10,8 +10,8 @@
   },
   "implementation": {
     "path": "server/services/phase_h_h3_twse_stock_day_adapter.py",
-    "tested_file_sha256": "a9b547568927d4500a5de1096b2806086177b3165ab8ad70f46cc3fea9c0f0e6",
-    "tested_file_bytes": 18346,
+    "tested_file_sha256": "7c37659bcedc671fd969d5236a2bd414d04576841989d874b953698ebe437eb2",
+    "tested_file_bytes": 19077,
     "endpoint": "https://www.twse.com.tw/exchangeReport/STOCK_DAY",
     "transport": "one bounded GET with response=html, date=YYYYMM01, stockNo=exact TWSE security code",
     "source_family": "TWSE_STOCK_DAY_OFFICIAL_WEB",
@@ -41,6 +41,15 @@
       "used_columns": ["日期", "成交股數", "收盤價"],
       "notes_column_used_for_adjustment_or_investment_semantics": false
     },
+    "reviewed_real_source_finding": {
+      "observed_close_unavailable_representation": "--",
+      "meaning": "close unavailable for H3 observation only; no financial cause inferred",
+      "becomes_zero": false,
+      "becomes_h3_observation": false,
+      "fails_otherwise_valid_month": false,
+      "retained_as_explicit_unusable_row_provenance": true,
+      "provenance_fields": ["trade_date", "reason=close_unavailable"]
+    },
     "fresh_install_5d_20d_orchestration": "NOT IMPLEMENTED",
     "production_route": "BLOCKED / INACTIVE"
   },
@@ -52,7 +61,7 @@
   "validation": {
     "focused_h3_i2a": {
       "result": "PASS",
-      "summary": "24 passed",
+      "summary": "26 passed",
       "synthetic_fixture_only": true,
       "network_may_have_occurred": false,
       "added_to_default_ci": false

@@ -166,7 +166,7 @@ def test_report_table_is_selected_by_complete_semantic_header() -> None:
         (_row("110/03/01"), "source_failed:row_outside_requested_month"),
         (_row("110/02/xx"), "source_failed:invalid_row_date"),
         (_row("110/02/01", "24x,011"), "source_failed:invalid_volume"),
-        (_row("110/02/01", "240,011", "--"), "source_failed:invalid_close"),
+        (_row("110/02/01", "240,011", "ABC"), "source_failed:invalid_close"),
         (_row("110/02/01", "240,011", "9" * 400), "source_failed:invalid_close"),
         ("<tr><td>110/02/01</td><td>1</td></tr>", "source_failed:invalid_data_row_width"),
     ],
@@ -186,6 +186,43 @@ def test_identical_duplicate_row_is_deduplicated_but_conflict_fails_closed() -> 
     conflicting = _fetch(FakeHTTPGet(FakeResponse(_html(row, _row("110/02/01", close="15.81")))))
     assert conflicting.status == "source_failed"
     assert conflicting.error_code == "source_failed:conflicting_duplicate_trade_date"
+
+
+def test_verified_unavailable_close_is_excluded_with_source_provenance_in_mixed_month() -> None:
+    result = _fetch(FakeHTTPGet(FakeResponse(_html(
+        _row("114/02/03", "120", "36.80"),
+        _row("114/02/04", "90", "36.40"),
+        _row("114/02/05", "75", "37.30"),
+        _row("114/02/06", "49", "--"),
+        _row("114/02/07", "63", "36.95"),
+        title="114年02月 1423 利華 各日成交資訊",
+    ))), requested_month="2025-02")
+
+    assert result.status == "available"
+    assert [row["trade_date"] for row in result.observations] == [
+        "2025-02-03", "2025-02-04", "2025-02-05", "2025-02-07"
+    ]
+    assert [row["close"] for row in result.observations] == [36.8, 36.4, 37.3, 36.95]
+    assert result.unusable_observation_count == 1
+    assert result.unusable_observations == ({
+        "trade_date": "2025-02-06", "reason": "close_unavailable"
+    },)
+
+
+def test_month_with_only_verified_unavailable_closes_is_no_usable_h3_evidence() -> None:
+    result = _fetch(FakeHTTPGet(FakeResponse(_html(
+        _row("114/02/06", "49", "--"),
+        _row("114/02/07", "63", "--"),
+        title="114年02月 1423 利華 各日成交資訊",
+    ))), requested_month="2025-02")
+
+    assert result.status == "no_evidence_in_covered_scope"
+    assert result.observations == ()
+    assert result.unusable_observation_count == 2
+    assert result.unusable_observations == (
+        {"trade_date": "2025-02-06", "reason": "close_unavailable"},
+        {"trade_date": "2025-02-07", "reason": "close_unavailable"},
+    )
 
 
 def test_valid_bound_empty_table_is_no_evidence_but_missing_table_is_source_failure() -> None:

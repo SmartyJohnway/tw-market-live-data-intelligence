@@ -54,6 +54,8 @@ class TWSEStockDayResult:
     response_byte_count: int = 0
     response_sha256: str | None = None
     observations: tuple[dict, ...] = ()
+    unusable_observation_count: int = 0
+    unusable_observations: tuple[dict[str, str], ...] = ()
     error_code: str | None = None
 
 
@@ -334,7 +336,7 @@ def _normalize_html(
         return _fail("source_failed", "source_failed:ambiguous_report_table_contract", **metadata)
 
     table, header_index = recognized[0]
-    by_date: dict[str, tuple[tuple[str, ...], dict]] = {}
+    by_date: dict[str, tuple[tuple[str, ...], dict | None, dict[str, str] | None]] = {}
     try:
         for row in table[header_index + 1 :]:
             if len(row) != len(EXPECTED_HEADERS):
@@ -343,24 +345,29 @@ def _normalize_html(
             if trade_date[:7] != requested_month:
                 raise TWSEStockDayFormatError("source_failed:row_outside_requested_month")
             volume = _parse_volume(row[1])
-            close = _parse_close(row[6])
             signature = tuple(row)
-            observation = {
-                "canonical_target_id": canonical,
-                "market": market,
-                "security_code": code,
-                "trade_date": trade_date,
-                "close": close,
-                "volume": volume,
-                "source_family": SOURCE_FAMILY,
-                "source_contract_id": SOURCE_CONTRACT_ID,
-                "retrieved_at": retrieved_at,
-                "citation_ids": [],
-            }
+            if row[6] == "--":
+                observation = None
+                unusable = {"trade_date": trade_date, "reason": "close_unavailable"}
+            else:
+                close = _parse_close(row[6])
+                observation = {
+                    "canonical_target_id": canonical,
+                    "market": market,
+                    "security_code": code,
+                    "trade_date": trade_date,
+                    "close": close,
+                    "volume": volume,
+                    "source_family": SOURCE_FAMILY,
+                    "source_contract_id": SOURCE_CONTRACT_ID,
+                    "retrieved_at": retrieved_at,
+                    "citation_ids": [],
+                }
+                unusable = None
             previous = by_date.get(trade_date)
             if previous is not None and previous[0] != signature:
                 raise TWSEStockDayFormatError("source_failed:conflicting_duplicate_trade_date")
-            by_date.setdefault(trade_date, (signature, observation))
+            by_date.setdefault(trade_date, (signature, observation, unusable))
     except TWSEStockDayFormatError as exc:
         status = "binding_failed" if str(exc).startswith("binding_failed:") else "source_failed"
         return _fail(status, str(exc), **metadata)
@@ -370,12 +377,23 @@ def _normalize_html(
         f"retrieved_at={retrieved_at}|sha256={metadata['response_sha256']}"
     )
     observations = []
+    unusable_observations = []
     for trade_date in sorted(by_date):
-        observation = by_date[trade_date][1]
+        _, observation, unusable = by_date[trade_date]
+        if unusable is not None:
+            unusable_observations.append(unusable)
+            continue
+        assert observation is not None
         observation["citation_ids"] = [citation]
         observations.append(observation)
     status = "available" if observations else "no_evidence_in_covered_scope"
-    return TWSEStockDayResult(status=status, observations=tuple(observations), **metadata)
+    return TWSEStockDayResult(
+        status=status,
+        observations=tuple(observations),
+        unusable_observation_count=len(unusable_observations),
+        unusable_observations=tuple(unusable_observations),
+        **metadata,
+    )
 
 
 def fetch_twse_stock_day_month(
