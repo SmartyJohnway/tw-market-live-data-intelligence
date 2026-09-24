@@ -74,7 +74,10 @@
     "h0_src_09_route_activation_blocker_closed_for_selected_twse_route": true,
     "h0_src_10_unchanged": true,
     "h0_src_11_unchanged": true,
-    "h0_src_12_unchanged": true
+    "h0_src_12_unchanged": true,
+    "owner_product_authorization_change_authority": "docs/governance/phase_h/Phase_H_H3_Owner_Official_Web_Automation_Product_Inclusion_2026-09-24.md",
+    "frozen_h0_src_09_historical_entry_preserved": true,
+    "current_selected_route_blocker_overlay": "CLOSED_FOR_H3_TWSE_DEFAULT_BOUNDED"
   },
   "next_gate": {
     "tranche": "H-ACT-H3",
@@ -96,5 +99,12 @@
     "path": "docs/governance/phase_h/Phase_H_H3_Owner_Official_Web_Automation_Product_Inclusion_2026-09-24.md",
     "status": "OWNER DECISION / SUPERSEDING PRODUCT BOUNDARY",
     "effect": "Official TWSE/TPEx historical web automation was already formally included in product development; this record operationalizes that existing decision after accepted TWSE adapter, TLS, walker and 20D bounded-live evidence."
+  },
+  "record_semantics": {
+    "creates_new_owner_authorization": false,
+    "operationalizes_existing_owner_authorization": true,
+    "frozen_historical_source_matrix_rewritten": false,
+    "selected_route_current_gate_overlay": true,
+    "note": "The upstream Owner Official-Web Automation Product Inclusion Decision already authorized product inclusion. This record binds that decision to accepted TWSE technical evidence and current H-ACT-H3 gate truth."
   }
 }
