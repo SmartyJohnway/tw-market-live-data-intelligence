@@ -12,7 +12,10 @@ from .registry import ExecutorMetadata
 
 
 ROOT = Path(__file__).resolve().parents[2]
-REQUEST_SCHEMA_PATH = ROOT / "schemas" / "unified_market_evidence_execution_request.v1.schema.json"
+REQUEST_SCHEMA_PATHS = {
+    "unified_market_evidence_execution_request.v1": ROOT / "schemas" / "unified_market_evidence_execution_request.v1.schema.json",
+    "unified_market_evidence_execution_request.v2": ROOT / "schemas" / "unified_market_evidence_execution_request.v2.schema.json",
+}
 
 
 def relative_operation_request_path(operation_id: str) -> str:
@@ -30,6 +33,14 @@ def build_execution_request_projection(
     network_authorized: bool,
 ) -> tuple[dict, list[str]]:
     parameters = operation.get("parameters")
+    is_recent_performance = binding.get("capability_id") == "recent_performance"
+    lookback_trading_days = None
+    if is_recent_performance:
+        if not isinstance(parameters, dict) or set(parameters) != {"lookback_trading_days"}:
+            raise OrchestrationError("execution_request_parameters_invalid")
+        lookback_trading_days = parameters["lookback_trading_days"]
+        if type(lookback_trading_days) is not int or not 1 <= lookback_trading_days <= 20:
+            raise OrchestrationError("execution_request_parameters_invalid")
     warnings: list[str] = []
     if not isinstance(parameters, dict):
         parameters = {}
@@ -46,6 +57,11 @@ def build_execution_request_projection(
         if not research_capability:
             warnings.append("currentness_requirement_unavailable")
 
+    request_version = (
+        "unified_market_evidence_execution_request.v2"
+        if is_recent_performance
+        else "unified_market_evidence_execution_request.v1"
+    )
     identity_body = {
         "operation_id": operation["operation_id"],
         "batch_group_id": operation["batch_group_id"],
@@ -66,11 +82,14 @@ def build_execution_request_projection(
         "timeout_seconds": executor.timeout_seconds,
         "network_authorized": network_authorized,
     }
+    if is_recent_performance:
+        identity_body["parameters"] = {"lookback_trading_days": lookback_trading_days}
     req_hash = sha256_json(identity_body)
-    req_id = "umereq-v1-" + req_hash[:20]
+    req_id_prefix = "umereq-v2-" if is_recent_performance else "umereq-v1-"
+    req_id = req_id_prefix + req_hash[:20]
 
     request = {
-        "schema_version": "unified_market_evidence_execution_request.v1",
+        "schema_version": request_version,
         "execution_request_id": req_id,
         "execution_request_hash": req_hash,
         "operation_id": operation["operation_id"],
@@ -93,7 +112,10 @@ def build_execution_request_projection(
         "network_authorized": network_authorized,
         "relative_contained_output_path": relative_operation_request_path(operation["operation_id"]),
     }
-    schema = json.loads(REQUEST_SCHEMA_PATH.read_text(encoding="utf-8"))
+    if is_recent_performance:
+        request["parameters"] = {"lookback_trading_days": lookback_trading_days}
+    schema_path = REQUEST_SCHEMA_PATHS[request_version]
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
     if list(Draft202012Validator(schema).iter_errors(request)):
         raise OrchestrationError("execution_request_schema_invalid")
     return request, warnings

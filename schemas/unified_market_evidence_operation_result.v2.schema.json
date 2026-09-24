@@ -7,7 +7,7 @@
   "properties": {
     "schema_version": {"const": "unified_market_evidence_operation_result.v2"},
     "operation_id": {"type": "string"},
-    "execution_request_id": {"type": "string", "pattern": "^umereq-v1-[0-9a-f]{20}$"},
+    "execution_request_id": {"type": "string", "pattern": "^umereq-v[12]-[0-9a-f]{20}$"},
     "execution_request_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "executor_id": {"type": "string"},
     "capability_id": {"type": "string"},

@@ -108,7 +108,7 @@
           },
           "execution_request_id": {
             "type": "string",
-            "pattern": "^umereq-v1-[0-9a-f]{20}$"
+            "pattern": "^umereq-v[12]-[0-9a-f]{20}$"
           },
           "execution_request_hash": {
             "type": "string",

@@ -119,7 +119,7 @@ def test_h_act_v3_local_service_exposes_exact_route_truth_not_catalog_market_ove
     assert all(item["disposition"] != "executable" for item in h2["markets"])
 
     h3 = _capability(described, "recent_performance")
-    assert h3["routing_disposition"] == "blocked"
+    assert h3["routing_disposition"] == "plan_only"
     assert all(item["disposition"] != "executable" for item in h3["markets"])
 
 

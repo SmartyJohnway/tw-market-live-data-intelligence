@@ -193,7 +193,11 @@ def test_v3_h3_is_recognized_but_plan_only(lookback):
     result = preview(req)
     assert result["validation"]["capability_results"][0]["status"] == "contract_supported"
     assert result["orchestration_plan"]["plan_status"] in {"blocked", "plan_only_not_executable"}
-    assert result["orchestration_plan"]["blocked_operations"][0]["capability_id"] == "recent_performance"
+    operation = result["orchestration_plan"]["operations"][0]
+    assert operation["capability_id"] == "recent_performance"
+    assert operation["operation_status"] == "plan_only_not_executable"
+    assert operation["executor_id"] is None
+    assert operation["executor_invocation_eligible"] is False
 
 
 @pytest.mark.parametrize("parameters", [{"lookback_trading_days": 0}, {"lookback_trading_days": 21}, {}])
