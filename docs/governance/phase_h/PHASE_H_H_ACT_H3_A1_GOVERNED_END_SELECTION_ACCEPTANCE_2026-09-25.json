@@ -1,6 +1,6 @@
 {
   "schema_version": "phase_h_h_act_h3_a1_governed_end_selection_acceptance.v1",
-  "status": "OWNER_REVIEW_CANDIDATE",
+  "status": "OWNER_ACCEPTED_COMPLETED",
   "decision_id": "H-ACT-H3-A1",
   "baseline_main_sha": "778698da4d09a9cbc8fbdc64b9133d35621967c2",
   "branch": "phase-h/h-act-h3-a1-governed-end-selection-impl",
@@ -78,27 +78,114 @@
   },
   "deterministic_evidence": {
     "network_may_have_occurred": false,
-    "a1_focused": {"command": "python -m pytest tests/unit/test_phase_h_h_act_h3_a1_governed_end.py -q", "result": "15 passed"},
-    "adapter_walker_h3_i0_a0_regression": {"result": "94 passed", "network": false},
-    "a0_promotion_phase_h_contract_regression": {"result": "39 passed", "network": false},
+    "a1_focused": {
+      "command": "python -m pytest tests/unit/test_phase_h_h_act_h3_a1_governed_end.py -q",
+      "result": "15 passed"
+    },
+    "adapter_walker_h3_i0_a0_regression": {
+      "result": "94 passed",
+      "network": false
+    },
+    "a0_promotion_phase_h_contract_regression": {
+      "result": "39 passed",
+      "network": false
+    },
     "profile_self_validation": "23 passed",
-    "default_ci": {"status": "PASS", "passed": 777, "skipped": 2, "deselected": 5, "selected": 779, "network_may_have_occurred": false},
-    "full_current": {"status": "PASS", "passed": 1149, "skipped": 2, "deselected": 5, "selected": 1151, "network_may_have_occurred": false},
+    "default_ci": {
+      "status": "PASS",
+      "passed": 777,
+      "skipped": 2,
+      "deselected": 5,
+      "selected": 779,
+      "network_may_have_occurred": false
+    },
+    "full_current": {
+      "status": "PASS",
+      "passed": 1149,
+      "skipped": 2,
+      "deselected": 5,
+      "selected": 1151,
+      "network_may_have_occurred": false
+    },
     "phase_h_v3_contract_validator": "PASS",
     "portable_catalog_sync_validator": "PASS",
-    "runtime_skill_guide_sync_validator": {"status": "PASS", "tool_count": 6},
+    "runtime_skill_guide_sync_validator": {
+      "status": "PASS",
+      "tool_count": 6
+    },
     "compileall_scripts_server_tests": "PASS",
     "git_diff_check": "PASS"
   },
   "scenario_evidence": [
-    {"scenario": "current-month end selection and later-row exclusion", "result": "PASS", "months": ["2025-03"], "requests": 1},
-    {"scenario": "current month empty then previous-month end", "result": "PASS", "months": ["2025-03", "2025-02"], "requests": 2},
-    {"scenario": "source failure stops immediately", "result": "PASS", "tested_at_month_positions": [1, 2]},
-    {"scenario": "binding failure stops immediately", "result": "PASS", "tested_at_month_positions": [1, 2]},
-    {"scenario": "three successful empty months", "result": "PASS", "status": "unavailable", "requests": 3},
-    {"scenario": "UTC to Asia/Taipei date boundary", "result": "PASS", "input": "2026-09-24T16:30:00Z", "as_of_taipei_date": "2026-09-25"},
-    {"scenario": "year-boundary month traversal", "result": "PASS", "months": ["2025-01", "2024-12"]},
-    {"scenario": "resolver and walker month-result reuse", "result": "PASS", "resolver_month_counts": [1, 2, 3], "walker_budgets": [3, 2, 1], "duplicate_month_gets": 0, "maximum_unique_gets": 3}
+    {
+      "scenario": "current-month end selection and later-row exclusion",
+      "result": "PASS",
+      "months": [
+        "2025-03"
+      ],
+      "requests": 1
+    },
+    {
+      "scenario": "current month empty then previous-month end",
+      "result": "PASS",
+      "months": [
+        "2025-03",
+        "2025-02"
+      ],
+      "requests": 2
+    },
+    {
+      "scenario": "source failure stops immediately",
+      "result": "PASS",
+      "tested_at_month_positions": [
+        1,
+        2
+      ]
+    },
+    {
+      "scenario": "binding failure stops immediately",
+      "result": "PASS",
+      "tested_at_month_positions": [
+        1,
+        2
+      ]
+    },
+    {
+      "scenario": "three successful empty months",
+      "result": "PASS",
+      "status": "unavailable",
+      "requests": 3
+    },
+    {
+      "scenario": "UTC to Asia/Taipei date boundary",
+      "result": "PASS",
+      "input": "2026-09-24T16:30:00Z",
+      "as_of_taipei_date": "2026-09-25"
+    },
+    {
+      "scenario": "year-boundary month traversal",
+      "result": "PASS",
+      "months": [
+        "2025-01",
+        "2024-12"
+      ]
+    },
+    {
+      "scenario": "resolver and walker month-result reuse",
+      "result": "PASS",
+      "resolver_month_counts": [
+        1,
+        2,
+        3
+      ],
+      "walker_budgets": [
+        3,
+        2,
+        1
+      ],
+      "duplicate_month_gets": 0,
+      "maximum_unique_gets": 3
+    }
   ],
   "runtime_state_unchanged": {
     "recent_performance_support_status": "contract_supported",
@@ -124,5 +211,28 @@
     "polling": false,
     "background_refresh": false,
     "full_market_crawl": false
+  },
+  "independent_review": {
+    "reviewer_role": "ChatGPT independent H-ACT-H3 A1 governed-end / bounded-budget / scope review",
+    "review_date": "2026-09-26",
+    "reviewed_head_before_closure": "739d811e62d61a879998fe66149073654292761b",
+    "disposition": "PASS",
+    "findings_closed": [
+      "PR scope is exactly resolver implementation, deterministic fixture tests, and A1 acceptance record; no Catalog, Routing, registry, adapter, walker, or runtime activation files changed",
+      "resolver requires one caller-supplied timezone-aware execution timestamp and derives both UTC retrieved_at and Asia/Taipei as-of date from that single input",
+      "target binding is exact TWSE company_share/common_share canonical identity with no company-name fallback",
+      "resolver reuses the accepted TWSE STOCK_DAY adapter with compatibility TLS, verified certificate/hostname policy, explicit timeout, 2 MiB response cap, and zero retry behavior",
+      "reverse-month end selection is bounded to at most three month requests and stops immediately on source_failed or binding_failed",
+      "future-dated rows are excluded from end selection while valid normalized rows retain accepted source/citation/retrieval binding",
+      "three successful months without a governed end resolve to unavailable; insufficient remains reserved for a later established-end / inadequate-lookback condition",
+      "resolver retains only normalized month results for single-execution reuse and does not persist raw HTML or create a persistent cache",
+      "A1 fixture explicitly wraps resolver month_results as an in-process cache for the accepted walker and verifies no duplicate underlying month acquisition with total unique source calls <= 3 for K=1,2,3",
+      "accepted adapter and walker artifacts remain unchanged; resolver and focused-test SHA-256 / byte counts exactly match the acceptance record",
+      "reported deterministic suites and full-current/default-ci evidence are internally consistent and network_may_have_occurred=false",
+      "GitHub has no attached workflow/check contexts for this head; no claim of GitHub CI success is made",
+      "recent_performance remains contract_supported, plan_only, runtime_executable=false, selected_executor_id=null; H3 remains inactive, MCP remains six tools, Phase I remains NOT_STARTED"
+    ],
+    "runtime_activation_authorized_by_a1": false,
+    "next_gate": "H-ACT-H3 selected-route production executor wiring + H0H-DRIFT-H3 + H0H-LIVE-003 + H0H-ROLL-004"
   }
 }
