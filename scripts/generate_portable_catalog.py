@@ -121,7 +121,7 @@ def generate_portable_markdown_text(portable_data: dict, sha256: str) -> str:
         "## 4. Current Evidence Boundaries",
         "",
         "- Material disclosures cover the latest completed official daily batch for eligible TWSE/TPEX company common shares.",
-        "- Monthly revenue covers the latest available official reporting period for eligible TWSE/TPEX company common shares; currency is TWD and unit is thousand.",
+        "- Monthly revenue covers the latest available official monthly-revenue reporting period for eligible TWSE/TPEX company common shares; currency is TWD and unit is thousand.",
         "- Research acquisition uses official CSV first and governed official JSON OpenAPI fallback. Fallback use is explicit in evidence.",
         "- Phase H trading-status context is executable only through explicitly activated routes; current H1 coverage is partial and does not imply complete surveillance-status coverage.",
         "- Corporate-action context and recent-performance routes remain inactive/plan-only until their independent activation gates pass; derived discontinuity safety never fabricates complete coverage.",
