@@ -1,0 +1,128 @@
+{
+  "schema_version": "phase_h_h_act_h3_a1_governed_end_selection_acceptance.v1",
+  "status": "OWNER_REVIEW_CANDIDATE",
+  "decision_id": "H-ACT-H3-A1",
+  "baseline_main_sha": "778698da4d09a9cbc8fbdc64b9133d35621967c2",
+  "branch": "phase-h/h-act-h3-a1-governed-end-selection-impl",
+  "implementation_head": "c25e5c6addcce957b1471f9f133042f25da09354",
+  "decision_authority_path": "docs/governance/phase_h/PHASE_H_H_ACT_H3_A1_GOVERNED_END_SELECTION_DECISION_2026-09-24.json",
+  "selected_route": "H3-TWSE-DEFAULT-BOUNDED",
+  "implementation": {
+    "helper_path": "server/services/phase_h_h3_twse_governed_end.py",
+    "helper_sha256": "e5fefd45d5c09c4c484566c94623c1b5d23a123d18eaf304aec2c59c1dd5f167",
+    "helper_bytes": 9003,
+    "entrypoint": "resolve_twse_governed_end",
+    "clock_binding": {
+      "clock_reads_by_resolver": 0,
+      "caller_supplied_timestamp_reads": 1,
+      "timezone_aware_timestamp_required": true,
+      "retrieved_at_from_same_timestamp_utc": true,
+      "as_of_date_timezone": "Asia/Taipei",
+      "as_of_taipei_date_and_start_month_from_same_timestamp": true
+    },
+    "target_binding": {
+      "market": "TWSE",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "canonical_identity": "TWSE:<security_code>",
+      "company_name_fallback": false
+    },
+    "source": {
+      "source_family": "TWSE_STOCK_DAY_OFFICIAL_WEB",
+      "source_contract_id": "TWSE_STOCK_DAY_HTML_MONTHLY_V1",
+      "adapter_reused": "server/services/phase_h_h3_twse_stock_day_adapter.py",
+      "ssl_policy": "compatibility",
+      "certificate_verification": true,
+      "hostname_verification": true,
+      "retry_count": 0,
+      "timeout_explicit_input": true,
+      "max_response_bytes": 2097152
+    },
+    "month_traversal": {
+      "start_month": "Asia/Taipei as-of YYYY-MM",
+      "direction": "reverse_calendar_month",
+      "maximum_unique_month_requests": 3,
+      "end_selection": "latest valid normalized official close on or before Taipei as-of date in first reverse-scanned month with a candidate",
+      "stop_on_source_failed_or_binding_failed": true,
+      "no_valid_end_after_three_successful_months": "unavailable",
+      "insufficient_reserved_for_prior_lookback_after_end_exists": true
+    },
+    "walker_reuse": {
+      "normalized_month_results_retained_in_resolution": true,
+      "raw_html_retained": false,
+      "persistent_cache": false,
+      "walker_month_request_budget_formula": "4 - number_of_months_fetched_by_end_resolution",
+      "same_month_refetch": false,
+      "whole_execution_unique_month_get_maximum": 3
+    },
+    "accepted_existing_artifacts_unchanged": {
+      "adapter": {
+        "path": "server/services/phase_h_h3_twse_stock_day_adapter.py",
+        "sha256": "71a975d5a2b718c12334ea5a5d0fb401ef918fbd685989f76c060380d998aaeb",
+        "bytes": 22369
+      },
+      "walker": {
+        "path": "server/services/phase_h_h3_twse_stock_day_walker.py",
+        "sha256": "d3161541546b3b83762107f21abede86f94e182c7bd36f6250368688a7366bb4",
+        "bytes": 17398
+      },
+      "recent_performance_core": {
+        "path": "server/services/phase_h_recent_performance.py",
+        "sha256": "10ee430b1b881cd4600abf05d4bb36e97bcba398a0832baf9235eb15c2305e05",
+        "bytes": 13753
+      }
+    },
+    "focused_test_path": "tests/unit/test_phase_h_h_act_h3_a1_governed_end.py",
+    "focused_test_sha256": "027a712892ed955f81719cf9b09641633138d791c520d6eaa27e1ba9013949a0",
+    "focused_test_bytes": 9355
+  },
+  "deterministic_evidence": {
+    "network_may_have_occurred": false,
+    "a1_focused": {"command": "python -m pytest tests/unit/test_phase_h_h_act_h3_a1_governed_end.py -q", "result": "15 passed"},
+    "adapter_walker_h3_i0_a0_regression": {"result": "94 passed", "network": false},
+    "a0_promotion_phase_h_contract_regression": {"result": "39 passed", "network": false},
+    "profile_self_validation": "23 passed",
+    "default_ci": {"status": "PASS", "passed": 777, "skipped": 2, "deselected": 5, "selected": 779, "network_may_have_occurred": false},
+    "full_current": {"status": "PASS", "passed": 1149, "skipped": 2, "deselected": 5, "selected": 1151, "network_may_have_occurred": false},
+    "phase_h_v3_contract_validator": "PASS",
+    "portable_catalog_sync_validator": "PASS",
+    "runtime_skill_guide_sync_validator": {"status": "PASS", "tool_count": 6},
+    "compileall_scripts_server_tests": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "scenario_evidence": [
+    {"scenario": "current-month end selection and later-row exclusion", "result": "PASS", "months": ["2025-03"], "requests": 1},
+    {"scenario": "current month empty then previous-month end", "result": "PASS", "months": ["2025-03", "2025-02"], "requests": 2},
+    {"scenario": "source failure stops immediately", "result": "PASS", "tested_at_month_positions": [1, 2]},
+    {"scenario": "binding failure stops immediately", "result": "PASS", "tested_at_month_positions": [1, 2]},
+    {"scenario": "three successful empty months", "result": "PASS", "status": "unavailable", "requests": 3},
+    {"scenario": "UTC to Asia/Taipei date boundary", "result": "PASS", "input": "2026-09-24T16:30:00Z", "as_of_taipei_date": "2026-09-25"},
+    {"scenario": "year-boundary month traversal", "result": "PASS", "months": ["2025-01", "2024-12"]},
+    {"scenario": "resolver and walker month-result reuse", "result": "PASS", "resolver_month_counts": [1, 2, 3], "walker_budgets": [3, 2, 1], "duplicate_month_gets": 0, "maximum_unique_gets": 3}
+  ],
+  "runtime_state_unchanged": {
+    "recent_performance_support_status": "contract_supported",
+    "recent_performance_runtime_executable": false,
+    "recent_performance_routing_status": "plan_only",
+    "selected_executor_id": null,
+    "H3_TWSE_DEFAULT_BOUNDED": "eligible_not_active",
+    "executor_registered": false,
+    "catalog_mutation": false,
+    "routing_mutation": false,
+    "phase_h_active_source_count": 1,
+    "mcp_tool_count": 6,
+    "H3_activation": false,
+    "H2_activation": false,
+    "Phase_I": "NOT_STARTED"
+  },
+  "scope": {
+    "raw_payload_persistence": false,
+    "persistent_cache": false,
+    "history_database": false,
+    "live_network": false,
+    "scheduler": false,
+    "polling": false,
+    "background_refresh": false,
+    "full_market_crawl": false
+  }
+}
