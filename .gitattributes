@@ -8,3 +8,6 @@ research/staging/m5c/**/*.json text eol=lf
 # Disable Git text normalization so checked-in CRLF bytes remain byte-stable.
 skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json -text
 skills/tw-market-evidence-agent/references/capability_quick_guide.md -text
+# Security Master release schemas are hash-bound governance artifacts.
+# Force LF worktree bytes so schema SHA-256 is stable across platforms/worktrees.
+docs/contracts/schemas/taiwan_market_identity_*.schema.json text eol=lf
