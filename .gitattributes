@@ -4,6 +4,7 @@ research/staging/m5f/**/*.md text eol=lf
 research/staging/m5d/**/*.json text eol=lf
 research/staging/m5c/**/*.json text eol=lf
 
-# Portable catalog projections intentionally have a CRLF byte contract.
-skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json text eol=crlf
-skills/tw-market-evidence-agent/references/capability_quick_guide.md text eol=crlf
+# Portable catalog projections intentionally have a repository-level CRLF byte contract.
+# Disable Git text normalization so checked-in CRLF bytes remain byte-stable.
+skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json -text
+skills/tw-market-evidence-agent/references/capability_quick_guide.md -text
