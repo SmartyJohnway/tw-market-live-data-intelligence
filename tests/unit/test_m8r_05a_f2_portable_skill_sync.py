@@ -53,6 +53,10 @@ def test_portable_catalog_generator_is_strictly_deterministic(tmp_path):
 
     assert first_json == second_json, "Generator JSON output is not deterministic between runs"
     assert first_md == second_md, "Generator Markdown output is not deterministic between runs"
+    assert b"- **Preview Supported**: `true`" in first_md
+    assert b"- **One-Shot Execution**: `true`" in first_md
+    assert b"- **Preview Supported**: `True`" not in first_md
+    assert b"- **One-Shot Execution**: `True`" not in first_md
 
 
 def test_portable_catalog_hash_and_projections_are_newline_stable(tmp_path):
