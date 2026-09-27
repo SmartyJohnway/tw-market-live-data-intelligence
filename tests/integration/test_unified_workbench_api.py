@@ -376,7 +376,11 @@ def test_invalid_preview_output_is_500_not_dependency_unavailable(monkeypatch):
     assert "dependency" not in json.dumps(result).lower()
 
 
-def test_real_sealed_candidate_is_not_a_production_fallback():
+def test_real_sealed_candidate_is_not_a_production_fallback(monkeypatch, tmp_path):
+    from scripts.m8r_06_01c2_mode_a_security_master_loader import (
+        reset_production_mode_a_security_master_for_tests,
+    )
+
     root = Path(__file__).resolve().parents[2]
     pointer = json.loads(
         (root / "config/m8r_06_mode_a_security_master_pointer.json").read_text(
@@ -386,6 +390,16 @@ def test_real_sealed_candidate_is_not_a_production_fallback():
     candidate = root / pointer["index_path"]
     if not candidate.exists():
         pytest.skip("governed local candidate is Git-ignored")
+
+    # This test proves that the historical sealed Candidate B is not a
+    # production fallback. Isolate installation-local Active authority so the
+    # assertion is independent of whether the developer machine is initialized.
+    empty_security_master = tmp_path / "empty-security-master"
+    monkeypatch.setenv(
+        "TW_MARKET_SECURITY_MASTER_ROOT", str(empty_security_master)
+    )
+    reset_production_mode_a_security_master_for_tests()
+
     req = {
         "schema_version": "unified_market_evidence_request.v1",
         "request_id": "sealed-mode-b1-preview",
@@ -393,9 +407,12 @@ def test_real_sealed_candidate_is_not_a_production_fallback():
         "targets": [{"input": "2330", "market_hint": "TWSE"}],
         "data_needs": [{"type": "current_observation", "priority": "required"}],
     }
-    response = client.post("/api/unified/preview-request", json={"request": req})
-    assert response.status_code == 409
-    assert response.json()["error"] == "canonical_security_master_unavailable"
+    try:
+        response = client.post("/api/unified/preview-request", json={"request": req})
+        assert response.status_code == 409
+        assert response.json()["error"] == "canonical_security_master_unavailable"
+    finally:
+        reset_production_mode_a_security_master_for_tests()
 
 
 def test_authorization_api_uses_real_service_boundary_and_sanitizes_dependency(
