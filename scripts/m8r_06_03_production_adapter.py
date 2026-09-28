@@ -7,10 +7,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 from urllib.request import Request, urlopen
 
 from jsonschema import Draft7Validator, Draft202012Validator, FormatChecker
@@ -34,6 +35,15 @@ from server.services.phase_h_trading_status_adapters import (
     failed_source_result,
     normalize_tpex_attention,
 )
+from server.services.phase_h_h3_twse_governed_end import resolve_twse_governed_end
+from server.services.phase_h_h3_twse_stock_day_adapter import (
+    SOURCE_CONTRACT_ID as H3_SOURCE_CONTRACT_ID,
+    SOURCE_FAMILY as H3_SOURCE_FAMILY,
+    TWSEStockDayResult,
+    fetch_twse_stock_day_month,
+)
+from server.services.phase_h_h3_twse_stock_day_walker import collect_twse_stock_day_lookback
+from server.services.phase_h_recent_performance import H3DerivationError, build_recent_performance_evidence
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,6 +56,7 @@ EVIDENCE_CONTRACTS = {
     "material_disclosures": "phase_g_material_disclosure_operation_evidence.v1",
     "monthly_revenue": "phase_g_monthly_revenue_operation_evidence.v1",
     "trading_status_context": "trading_status_context_evidence.v1",
+    "recent_performance": "recent_performance_evidence.v1",
 }
 RESEARCH_EXECUTOR_ID = "phase_g_official_research_executor"
 RESEARCH_CAPABILITIES = frozenset({"material_disclosures", "monthly_revenue"})
@@ -53,6 +64,110 @@ RESEARCH_CAPABILITIES = frozenset({"material_disclosures", "monthly_revenue"})
 PHASE_H_H1_EXECUTOR_ID = "phase_h_h1_tpex_attention_executor"
 PHASE_H_H1_SOURCE_ID = "H1-TPEX-ATTENTION-OPENAPI"
 PHASE_H_H1_TPEX_ATTENTION_URL = "https://www.tpex.org.tw/openapi/v1/tpex_trading_warning_information"
+PHASE_H_H3_EXECUTOR_ID = "phase_h_h3_twse_recent_performance_executor"
+PHASE_H_H3_SOURCE_ID = "H3-TWSE-DEFAULT-BOUNDED"
+PHASE_H_H3_MAX_RESPONSE_BYTES = 2 * 1024 * 1024
+PHASE_H_H3_MAX_UNIQUE_MONTH_REQUESTS = 3
+_H3_OBSERVATION_FIELDS = {
+    "canonical_target_id", "market", "security_code", "trade_date", "close", "volume",
+    "source_family", "source_contract_id", "retrieved_at", "citation_ids",
+}
+
+
+def _h3_failed_month(result: TWSEStockDayResult, *, status: str, code: str) -> TWSEStockDayResult:
+    return TWSEStockDayResult(
+        status=status,
+        source_contract_id=result.source_contract_id,
+        requested_month=result.requested_month,
+        requested_url=result.requested_url,
+        effective_url=result.effective_url,
+        http_status=result.http_status,
+        content_type=result.content_type,
+        retrieved_at=result.retrieved_at,
+        response_byte_count=result.response_byte_count,
+        response_sha256=result.response_sha256,
+        error_code=code,
+    )
+
+
+def _validate_h3_month_result(
+    result: TWSEStockDayResult,
+    *,
+    target: dict[str, str],
+    requested_month: str,
+    retrieved_at: str,
+) -> TWSEStockDayResult:
+    """Keep source drift, binding errors and empty coverage distinct."""
+    if not isinstance(result, TWSEStockDayResult):
+        return TWSEStockDayResult(
+            status="source_failed", requested_month=requested_month,
+            error_code="source_failed:invalid_month_result_type",
+        )
+    if result.requested_month != requested_month:
+        return _h3_failed_month(result, status="source_failed", code="source_failed:requested_month_mismatch")
+    if result.status in {"source_failed", "binding_failed"}:
+        return result
+    if result.status not in {"available", "no_evidence_in_covered_scope"}:
+        return _h3_failed_month(result, status="source_failed", code="source_failed:invalid_month_status")
+    if result.source_contract_id != H3_SOURCE_CONTRACT_ID:
+        return _h3_failed_month(result, status="source_failed", code="source_failed:source_contract_mismatch")
+    if result.retrieved_at != retrieved_at:
+        return _h3_failed_month(result, status="source_failed", code="source_failed:retrieved_at_mismatch")
+    if not isinstance(result.observations, tuple) or not isinstance(result.unusable_observations, tuple):
+        return _h3_failed_month(result, status="source_failed", code="source_failed:invalid_normalized_rows")
+    if result.unusable_observation_count != len(result.unusable_observations):
+        return _h3_failed_month(result, status="source_failed", code="source_failed:invalid_unusable_row_count")
+    if (result.status == "available") != bool(result.observations):
+        return _h3_failed_month(result, status="source_failed", code="source_failed:inconsistent_month_coverage")
+    seen: dict[str, Mapping[str, Any]] = {}
+    for row in result.observations:
+        if not isinstance(row, Mapping) or set(row) != _H3_OBSERVATION_FIELDS:
+            return _h3_failed_month(result, status="source_failed", code="source_failed:invalid_normalized_row")
+        if any(row.get(key) != target[key] for key in ("canonical_target_id", "market", "security_code")):
+            return _h3_failed_month(result, status="binding_failed", code="binding_failed:target_identity_mismatch")
+        trade_date = row.get("trade_date")
+        try:
+            parsed_date = date.fromisoformat(trade_date) if isinstance(trade_date, str) else None
+        except ValueError:
+            parsed_date = None
+        close = row.get("close")
+        volume = row.get("volume")
+        citations = row.get("citation_ids")
+        try:
+            close_is_finite = not isinstance(close, bool) and isinstance(close, (int, float)) and math.isfinite(close)
+        except (OverflowError, TypeError):
+            close_is_finite = False
+        if (
+            parsed_date is None or parsed_date.isoformat() != trade_date or trade_date[:7] != requested_month
+            or not close_is_finite or close < 0
+            or isinstance(volume, bool) or not isinstance(volume, int) or volume < 0
+            or row.get("source_family") != H3_SOURCE_FAMILY
+            or row.get("source_contract_id") != H3_SOURCE_CONTRACT_ID
+            or row.get("retrieved_at") != retrieved_at
+            or not isinstance(citations, list) or not citations
+            or any(not isinstance(item, str) or not item.strip() for item in citations)
+            or len(set(citations)) != len(citations)
+        ):
+            return _h3_failed_month(result, status="source_failed", code="source_failed:invalid_normalized_row")
+        existing = seen.get(trade_date)
+        if existing is not None and dict(existing) != dict(row):
+            return _h3_failed_month(result, status="source_failed", code="source_failed:conflicting_duplicate_trade_date")
+        seen.setdefault(trade_date, row)
+    for row in result.unusable_observations:
+        if (
+            not isinstance(row, Mapping)
+            or set(row) != {"trade_date", "reason"}
+            or row.get("reason") != "close_unavailable"
+            or not isinstance(row.get("trade_date"), str)
+        ):
+            return _h3_failed_month(result, status="source_failed", code="source_failed:invalid_unusable_row")
+        try:
+            parsed_date = date.fromisoformat(row["trade_date"])
+        except ValueError:
+            parsed_date = None
+        if parsed_date is None or parsed_date.isoformat() != row["trade_date"] or row["trade_date"][:7] != requested_month:
+            return _h3_failed_month(result, status="source_failed", code="source_failed:invalid_unusable_row")
+    return result
 
 
 def load_production_executor_metadata() -> dict[str, Any]:
@@ -466,12 +581,297 @@ def _phase_h_h1_tpex_attention(
         result["warnings"].append("phase_h_h1_partial_coverage")
     return result
 
+
+def _phase_h_h3_result_base(
+    request: dict[str, Any], *, status: str, error_code: str | None
+) -> dict[str, Any]:
+    return {
+        "schema_version": "unified_market_evidence_operation_result.v2",
+        "operation_id": request["operation_id"],
+        "execution_request_id": request["execution_request_id"],
+        "execution_request_hash": request["execution_request_hash"],
+        "executor_id": request["executor_id"],
+        "capability_id": request["capability_id"],
+        "evidence_contract": "recent_performance_evidence.v1",
+        "status": status,
+        "error_code": error_code,
+        "result_item_count": 0,
+        "evidence_artifacts": [],
+        "warnings": [],
+    }
+
+
+def _phase_h_h3_twse_recent_performance(
+    request: dict[str, Any], context: DispatchRuntimeContext
+) -> dict[str, Any]:
+    """Execute the exact, single-target selected H3 TWSE route once."""
+    _require_approved_execution((request,), context)
+    if (
+        request.get("executor_id") != PHASE_H_H3_EXECUTOR_ID
+        or request.get("capability_id") != "recent_performance"
+        or request.get("market") != "TWSE"
+        or request.get("schema_version") != "unified_market_evidence_execution_request.v2"
+    ):
+        raise OrchestrationError("unsupported_production_route")
+    parameters = request.get("parameters")
+    if (
+        not isinstance(parameters, dict)
+        or set(parameters) != {"lookback_trading_days"}
+        or type(parameters.get("lookback_trading_days")) is not int
+        or not 1 <= parameters["lookback_trading_days"] <= 20
+    ):
+        raise OrchestrationError("execution_request_parameters_invalid")
+    identifiers = request.get("approved_security_identifiers")
+    security_types = request.get("approved_security_types")
+    if not isinstance(identifiers, list) or len(identifiers) != 1:
+        raise OrchestrationError("approved_target_count_invalid")
+    if not isinstance(security_types, list) or security_types != ["equity"]:
+        raise OrchestrationError("unsupported_security_type")
+    try:
+        market, security_code = identifiers[0].split(":", 1)
+    except (AttributeError, ValueError):
+        raise OrchestrationError("approved_target_invalid") from None
+    if market != "TWSE" or not (security_code.isascii() and security_code.isdigit() and 1 <= len(security_code) <= 6):
+        raise OrchestrationError("approved_target_market_mismatch")
+
+    target = {
+        "canonical_target_id": f"TWSE:{security_code}",
+        "market": "TWSE",
+        "security_code": security_code,
+    }
+    lookback = parameters["lookback_trading_days"]
+    # This is the sole production clock read for end-selection and H3 evidence.
+    execution_timestamp = datetime.now(timezone.utc)
+    month_results: dict[str, TWSEStockDayResult] = {}
+    actual_month_order: list[str] = []
+    walked = None
+
+    def bounded_month_fetch(**kwargs: Any) -> TWSEStockDayResult:
+        month = kwargs.get("requested_month")
+        if not isinstance(month, str):
+            return TWSEStockDayResult(status="source_failed", error_code="source_failed:invalid_requested_month")
+        cached = month_results.get(month)
+        if cached is not None:
+            return cached
+        if len(month_results) >= PHASE_H_H3_MAX_UNIQUE_MONTH_REQUESTS:
+            return TWSEStockDayResult(
+                status="source_failed", requested_month=month,
+                retrieved_at=kwargs.get("retrieved_at"),
+                error_code="source_failed:unique_month_request_budget_exhausted",
+            )
+        # Caller-supplied timeout is retained; TLS policy and response cap are
+        # fixed by the selected route. No retry or redirect behavior is added.
+        result = fetch_twse_stock_day_month(
+            target=target,
+            instrument_family="company_share",
+            instrument_type="common_share",
+            requested_month=month,
+            retrieved_at=kwargs["retrieved_at"],
+            timeout_seconds=request["timeout_seconds"],
+            max_response_bytes=PHASE_H_H3_MAX_RESPONSE_BYTES,
+            ssl_policy="compatibility",
+        )
+        result = _validate_h3_month_result(
+            result,
+            target=target,
+            requested_month=month,
+            retrieved_at=kwargs["retrieved_at"],
+        )
+        month_results[month] = result
+        actual_month_order.append(month)
+        return result
+
+    resolution = resolve_twse_governed_end(
+        target=target,
+        instrument_family="company_share",
+        instrument_type="common_share",
+        execution_timestamp=execution_timestamp,
+        timeout_seconds=request["timeout_seconds"],
+        fetch_month=bounded_month_fetch,
+    )
+    governed_outcome: str | None = None
+    caveats: list[str] = []
+    observations: tuple[dict[str, Any], ...] = ()
+    end_observation = resolution.governed_end_observation
+    if resolution.status in {"source_failed", "binding_failed"}:
+        governed_outcome = resolution.status
+        caveats = [resolution.error_code or resolution.stop_reason]
+        end_observation = None
+    elif resolution.status == "unavailable":
+        end_observation = None
+        caveats = [resolution.stop_reason]
+    elif resolution.status == "available" and end_observation is not None:
+        month_cache = {item.requested_month: item for item in resolution.month_results}
+
+        def walker_month_fetch(**kwargs: Any) -> TWSEStockDayResult:
+            month = kwargs.get("requested_month")
+            if isinstance(month, str) and month in month_cache:
+                return month_cache[month]
+            result = bounded_month_fetch(**kwargs)
+            if isinstance(month, str) and month in month_results:
+                month_cache[month] = result
+            return result
+
+        walked = collect_twse_stock_day_lookback(
+            target=target,
+            instrument_family="company_share",
+            instrument_type="common_share",
+            governed_end_observation=end_observation,
+            lookback_trading_days=lookback,
+            retrieved_at=resolution.retrieved_at,
+            timeout_seconds=request["timeout_seconds"],
+            max_response_bytes=PHASE_H_H3_MAX_RESPONSE_BYTES,
+            month_request_budget=resolution.walker_month_request_budget,
+            fetch_month=walker_month_fetch,
+        )
+        observations = walked.observations
+        if walked.status in {"source_failed", "binding_failed"}:
+            governed_outcome = walked.status
+            caveats = [walked.error_code or walked.stop_reason]
+        elif walked.status not in {"available", "insufficient", "unavailable"}:
+            governed_outcome = "source_failed"
+            caveats = [walked.error_code or "invalid_walker_status"]
+        else:
+            caveats = [] if walked.status == "available" else [walked.stop_reason]
+    else:
+        governed_outcome = "source_failed"
+        end_observation = None
+        caveats = [resolution.error_code or "invalid_governed_end_resolution"]
+
+    if os.environ.get("H3_LIVE_ACCEPTANCE_TELEMETRY") == "YES":
+        # Explicit live-acceptance-only, bounded transport summary.  This is
+        # metadata only (never source HTML) and stays inside the server-owned
+        # execution package so the route-level acceptance runner can bind the
+        # actual HTTP outcomes without replacing the production adapter.
+        telemetry = {
+            "schema_version": "phase_h_h3_live_transport_observation.v1",
+            "canonical_target_id": target["canonical_target_id"],
+            "source_family": H3_SOURCE_FAMILY,
+            "source_contract_id": H3_SOURCE_CONTRACT_ID,
+            "execution_timestamp": execution_timestamp.isoformat().replace("+00:00", "Z"),
+            "lookback_trading_days": lookback,
+            "governed_end_resolution_status": resolution.status,
+            "governed_end_observation": resolution.governed_end_observation,
+            "requested_months": list(actual_month_order),
+            "network_request_count": len(actual_month_order),
+            "retry_count": 0,
+            "month_attempts": [
+                {
+                    "month": month,
+                    "status": item.status,
+                    "http_status": item.http_status,
+                    "requested_url": item.requested_url,
+                    "effective_url": item.effective_url,
+                    "content_type": item.content_type,
+                    "ssl_policy": "compatibility",
+                    "certificate_verification": True,
+                    "hostname_verification": True,
+                    "response_byte_count": item.response_byte_count,
+                    "response_sha256": item.response_sha256,
+                    "numeric_close_observation_count": len(item.observations),
+                    "close_unavailable_count": item.unusable_observation_count,
+                }
+                for month in actual_month_order
+                for item in [month_results[month]]
+            ],
+            "walker": None if walked is None else {
+                "status": walked.status,
+                "requested_lookback": walked.requested_lookback,
+                "valid_lookback_count": walked.valid_lookback_count,
+                "missing_lookback_count": walked.missing_lookback_count,
+                "post_end_rows_excluded": walked.post_end_rows_excluded,
+                "stop_reason": walked.stop_reason,
+                "selected_trade_dates": [row["trade_date"] for row in walked.observations],
+                "unusable_observations": list(walked.unusable_observations),
+            },
+        }
+        telemetry_path = Path(context.governed_output_root).resolve() / "h3-live-transport-summary.json"
+        output_root = Path(context.governed_output_root).resolve()
+        if telemetry_path.parent != output_root:
+            raise OrchestrationError("h3_live_telemetry_path_invalid")
+        atomic_write_bytes(
+            str(output_root),
+            telemetry_path.name,
+            (json.dumps(telemetry, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8"),
+        )
+
+    schema = json.loads((ROOT / "schemas" / "recent_performance_evidence.v1.schema.json").read_text(encoding="utf-8"))
+    try:
+        evidence = build_recent_performance_evidence(
+            target=target,
+            observations=observations,
+            governed_end_observation=end_observation,
+            requested_observations=lookback,
+            baseline_lookbacks=[lookback],
+            current_volume_basis="completed_session",
+            schema=schema,
+            historical_average_evidence=None,
+            governed_outcome=governed_outcome,
+            caveats=caveats,
+        )
+    except H3DerivationError as exc:
+        evidence = build_recent_performance_evidence(
+            target=target,
+            observations=(),
+            governed_end_observation=None,
+            requested_observations=lookback,
+            baseline_lookbacks=[lookback],
+            current_volume_basis="completed_session",
+            schema=schema,
+            historical_average_evidence=None,
+            governed_outcome="source_failed",
+            caveats=[str(exc) or "h3_derivation_failed"],
+        )
+
+    evidence_path = f"evidence/phase_h/h3/{request['operation_id']}.json"
+    sidecar_path = f"evidence/phase_h/governance/{request['operation_id']}.json"
+    primary = _phase_h_artifact_record(
+        request, context, relative_path=evidence_path, payload=evidence, role="primary_evidence"
+    )
+    coverage = evidence["coverage_status"]
+    failed = coverage in {"source_failed", "binding_failed"}
+    citations = evidence["citation_ids"]
+    sidecar = {
+        "schema_version": "phase_h_source_attempt_governance.v1",
+        "evidence_artifact_reference": evidence_path,
+        "canonical_target_id": target["canonical_target_id"],
+        "capability_id": "recent_performance",
+        "attempts": [{
+            "source_family": H3_SOURCE_FAMILY,
+            "source_contract_id": H3_SOURCE_CONTRACT_ID,
+            "source_role": "default_candidate",
+            "activation_state": "active",
+            "provider_availability": "unknown",
+            "license_authority": None,
+            "coverage_result": coverage,
+            "outcome": "failed" if failed else "succeeded",
+            "failure_code": coverage if failed else None,
+            "citation_ids": citations,
+        }],
+    }
+    governance = _phase_h_artifact_record(
+        request, context, relative_path=sidecar_path, payload=sidecar, role="supporting_governance"
+    )
+    outcome = _phase_h_h3_result_base(
+        request,
+        status="failed" if failed else "succeeded",
+        error_code=coverage if failed else None,
+    )
+    # Operation Result V2 and the existing aggregator count the primary typed
+    # evidence artifact even when it truthfully records a source failure.
+    outcome["result_item_count"] = primary["item_count"]
+    outcome["evidence_artifacts"] = [primary, governance]
+    outcome["warnings"] = list(evidence["caveats"])
+    return outcome
+
 def production_operation_adapter(request: dict[str, Any], context: DispatchRuntimeContext) -> dict[str, Any]:
     """Fixed adapter dispatch; no browser-controlled module, path, or URL."""
     if request.get("executor_id") == RESEARCH_EXECUTOR_ID:
         return _research_batch_operation_adapter((request,), context)[0]
     if request.get("executor_id") == PHASE_H_H1_EXECUTOR_ID:
         return _phase_h_h1_tpex_attention(request, context)
+    if request.get("executor_id") == PHASE_H_H3_EXECUTOR_ID:
+        return _phase_h_h3_twse_recent_performance(request, context)
     if request.get("executor_id") != EXECUTOR_ID:
         raise OrchestrationError("executor_mismatch")
     capability = request.get("capability_id")
@@ -589,6 +989,7 @@ def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
         (RESEARCH_EXECUTOR_ID, "monthly_revenue", "TWSE"),
         (RESEARCH_EXECUTOR_ID, "monthly_revenue", "TPEX"),
         (PHASE_H_H1_EXECUTOR_ID, "trading_status_context", "TPEX"),
+        (PHASE_H_H3_EXECUTOR_ID, "recent_performance", "TWSE"),
     )
     registrations = [
         RuntimeAdapterRegistration(
@@ -603,7 +1004,7 @@ def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
             maximum_result_items=entry.maximum_result_items,
             output_policy=entry.output_policy,
             adapter=production_operation_adapter,
-            batch_adapter=None if entry.executor_id == PHASE_H_H1_EXECUTOR_ID else production_batch_operation_adapter,
+            batch_adapter=None if entry.executor_id in {PHASE_H_H1_EXECUTOR_ID, PHASE_H_H3_EXECUTOR_ID} else production_batch_operation_adapter,
             fake_adapter=False,
         )
         for entry in (metadata.get_route(executor, capability, market) for executor, capability, market in routes)

@@ -208,3 +208,79 @@ def test_adapter_timeout_and_exception_normalized(tmp_path):
     outcomes = dispatch_prepared(prepared, governed_output_root=str(tmp_path), mode="dry-run")
     assert outcomes[0]["status"] == "failed"
     assert outcomes[0]["error_code"] == "adapter_exception"
+
+
+@pytest.mark.parametrize(
+    ("request_version", "failure_kind", "expected_result_version"),
+    [
+        ("v1", "exception", "unified_market_evidence_operation_result.v1"),
+        ("v2", "exception", "unified_market_evidence_operation_result.v2"),
+        ("v1", "timeout", "unified_market_evidence_operation_result.v1"),
+        ("v2", "timeout", "unified_market_evidence_operation_result.v2"),
+    ],
+)
+def test_generic_adapter_failures_preserve_execution_request_result_version(
+    tmp_path, request_version, failure_kind, expected_result_version
+):
+    from jsonschema import Draft202012Validator
+
+    def failing_adapter(_request, _context):
+        if failure_kind == "timeout":
+            raise TimeoutError("bounded timeout")
+        raise RuntimeError("adapter failure")
+
+    plan, _authorization, _binding, _state = artifacts()
+    preflight = build_valid_preflight(tmp_path)
+    request = preflight["bounded_execution_requests"][0]
+    metadata_json = registry_metadata(plan)
+    if request_version == "v2":
+        request.update({
+            "schema_version": "unified_market_evidence_execution_request.v2",
+            "execution_request_id": "umereq-v2-" + "a" * 20,
+            "execution_request_hash": "b" * 64,
+            "capability_id": "recent_performance",
+            "parameters": {"lookback_trading_days": 5},
+        })
+        preflight["resolved_operation_bindings"][request["operation_id"]].update({
+            "capability_id": "recent_performance",
+            "expected_evidence_contract": "recent_performance_evidence.v1",
+        })
+        metadata_json["executors"][0].update({
+            "capability_id": "recent_performance",
+            "expected_evidence_contract": "recent_performance_evidence.v1",
+        })
+
+    metadata = ExecutorMetadataRegistry.from_json(metadata_json)
+    runtime = RuntimeAdapterRegistry([
+        runtime_registration(
+            plan,
+            capability_id=metadata_json["executors"][0]["capability_id"],
+            expected_evidence_contract=metadata_json["executors"][0]["expected_evidence_contract"],
+            adapter=failing_adapter,
+            fake_adapter=True,
+        )
+    ])
+    prepared = prepare_dispatch(preflight, metadata, runtime, mode="dry-run")
+    outcome = dispatch_prepared(
+        prepared,
+        governed_output_root=str(tmp_path),
+        mode="dry-run",
+    )[0]
+
+    schema_path = ROOT / "schemas" / f"{expected_result_version}.schema.json"
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    assert not list(Draft202012Validator(schema).iter_errors(outcome))
+    assert outcome == {
+        "schema_version": expected_result_version,
+        "operation_id": request["operation_id"],
+        "execution_request_id": request["execution_request_id"],
+        "execution_request_hash": request["execution_request_hash"],
+        "executor_id": request["executor_id"],
+        "capability_id": request["capability_id"],
+        "evidence_contract": metadata_json["executors"][0]["expected_evidence_contract"],
+        "status": "failed",
+        "error_code": "adapter_timeout" if failure_kind == "timeout" else "adapter_exception",
+        "result_item_count": 0,
+        "evidence_artifacts": [],
+        "warnings": [],
+    }

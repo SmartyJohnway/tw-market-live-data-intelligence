@@ -412,7 +412,7 @@ def test_v1_v2_frozen_bytes_unchanged_and_remain_readable():
         jsonschema.validators.validator_for(load(SCHEMAS / name)).check_schema(load(SCHEMAS / name))
 
 
-def test_catalog_routing_truth_exposes_only_selected_h1_route_while_v2_remains_preferred():
+def test_catalog_routing_truth_exposes_only_selected_h1_route_while_v3_remains_preferred():
     catalog = load(DATA / "unified_market_evidence_capability_catalog.v3.json")
     routing = load(DATA / "m8r_05b_capability_to_executor_routing_matrix.v3.json")
     capabilities = {item["capability_id"]: item for item in catalog["data_need_capabilities"]}
