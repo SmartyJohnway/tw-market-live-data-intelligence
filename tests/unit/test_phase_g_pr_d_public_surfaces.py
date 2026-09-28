@@ -44,11 +44,12 @@ def test_current_portable_catalog_is_exact_generated_v3_projection():
             "instrument_families": ["company_share"],
             "instrument_types": ["common_share"],
         }
-    assert capabilities["recent_performance"]["support_status"] == "contract_supported"
+    assert capabilities["recent_performance"]["support_status"] == "runtime_executable"
     guide = (ROOT / "skills/tw-market-evidence-agent/references/capability_quick_guide.md").read_text(encoding="utf-8")
     assert "| Capability ID | Support Status |" in guide
-    assert "`recent_performance` | `contract_supported`" in guide
-    assert "approval boundary does not make a `contract_supported` capability" in guide
+    assert "`recent_performance` | `runtime_executable`" in guide
+    assert "explicitly selected routes" in guide
+    assert "TPEx H3 remains blocked" in guide
 
 
 def test_current_skill_guides_and_public_docs_are_truthful():

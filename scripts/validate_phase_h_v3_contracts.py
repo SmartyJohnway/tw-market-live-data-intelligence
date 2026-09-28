@@ -311,11 +311,38 @@ def main() -> None:
         _fail("phase_h_contract_runtime_authority_invalid")
     if catalog["phase_h_contract"].get("preferred_runtime_request_schema_version") != "unified_market_evidence_request.v3":
         _fail("phase_h_contract_preferred_request_invalid")
-    if catalog["phase_h_contract"].get("active_phase_h_source_count") != 1:
+    if catalog["phase_h_contract"].get("active_phase_h_source_count") != 2:
         _fail("phase_h_active_source_count_invalid")
     active = [item for item in routing["phase_h_source_authority"]["records"] if item.get("activation_state") == "active"]
-    if [(item.get("source_id"), item.get("runtime_executable")) for item in active] != [("H1-TPEX-ATTENTION-OPENAPI", True)]:
+    if routing["phase_h_source_authority"].get("active_source_count") != 2:
+        _fail("phase_h_routing_active_source_count_invalid")
+    if {(item.get("source_id"), item.get("runtime_executable")) for item in active} != {
+        ("H1-TPEX-ATTENTION-OPENAPI", True),
+        ("H3-TWSE-DEFAULT-BOUNDED", True),
+    } or len(active) != 2:
         _fail("phase_h_active_source_set_invalid")
+    recent = next((item for item in catalog["data_need_capabilities"] if item.get("capability_id") == "recent_performance"), None)
+    recent_route = next((item for item in routing["routes"] if item.get("capability_id") == "recent_performance"), None)
+    if recent is None or recent.get("support_status") != "runtime_executable" or recent.get("runtime_executable") is not True or recent.get("phase_h_activation_state") != "selected_route_active":
+        _fail("h3_catalog_candidate_authority_invalid")
+    if recent_route is None:
+        _fail("h3_routing_candidate_authority_missing")
+    if recent_route.get("runtime_executable") is not True or recent_route.get("provisional") is not False or recent_route.get("routing_status") != "resolved":
+        _fail("h3_routing_candidate_state_invalid")
+    if recent_route.get("supported_markets") != ["TWSE"] or recent_route.get("selected_executor_id") != "phase_h_h3_twse_recent_performance_executor" or recent_route.get("candidate_executor_ids") != ["phase_h_h3_twse_recent_performance_executor"]:
+        _fail("h3_routing_selected_executor_invalid")
+    if recent_route.get("network_required") is not True or recent_route.get("batching_scope") != "none" or recent_route.get("approval_required") is not True or recent_route.get("capability_requires_execution_approval") is not True:
+        _fail("h3_routing_execution_bounds_invalid")
+    if recent_route.get("supported_instrument_families") != ["company_share"] or recent_route.get("supported_instrument_types") != ["common_share"]:
+        _fail("h3_routing_instrument_scope_invalid")
+    if recent_route.get("parameter_mapping", {}).get("lookback_trading_days") != "data_need.parameters.lookback_trading_days" or recent_route.get("output_evidence_contract") != "recent_performance_evidence.v1" or recent_route.get("source_compatibility_key") != "H3-TWSE-DEFAULT-BOUNDED":
+        _fail("h3_routing_contract_binding_invalid")
+    source_states = {item.get("market"): item for item in recent_route.get("source_authority_states", [])}
+    if source_states.get("TWSE", {}).get("activation_state") != "active" or source_states.get("TPEX", {}).get("activation_state") != "blocked" or source_states.get("TPEX", {}).get("governance_issue_ids") != ["H0-SRC-10", "H0-SRC-12"]:
+        _fail("h3_market_source_authority_invalid")
+    h2_sources = [item for item in routing["phase_h_source_authority"]["records"] if str(item.get("source_id", "")).startswith("H2-")]
+    if any(item.get("activation_state") == "active" or item.get("runtime_executable") is True for item in h2_sources):
+        _fail("h2_must_remain_inactive")
     validate_trading_status_context_semantics(examples["h1_attention_available"])
     validate_trading_status_context_semantics(examples["h1_no_evidence_complete"])
     validate_corporate_action_context_semantics(examples["h2_preannouncement_and_final"])
