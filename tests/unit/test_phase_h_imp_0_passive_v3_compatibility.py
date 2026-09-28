@@ -188,16 +188,23 @@ def test_v3_h1_twse_stays_non_executable_and_h2_stays_plan_only():
 
 
 @pytest.mark.parametrize("lookback", [1, 5, 20])
-def test_v3_h3_is_recognized_but_plan_only(lookback):
+def test_v3_h3_twse_selected_route_is_executable_pending_approval(lookback):
     req = request(needs=[{"type": "recent_performance", "priority": "required", "parameters": {"lookback_trading_days": lookback}}])
     result = preview(req)
-    assert result["validation"]["capability_results"][0]["status"] == "contract_supported"
-    assert result["orchestration_plan"]["plan_status"] in {"blocked", "plan_only_not_executable"}
+    assert result["validation"]["validation_status"] == "valid"
+    assert result["validation"]["capability_results"][0]["status"] == "runtime_executable"
+    assert result["preview"]["status"] == "ready_for_confirmation"
+    assert result["preview"]["bounds"]["operation_count"] == 1
     operation = result["orchestration_plan"]["operations"][0]
     assert operation["capability_id"] == "recent_performance"
-    assert operation["operation_status"] == "plan_only_not_executable"
-    assert operation["executor_id"] is None
-    assert operation["executor_invocation_eligible"] is False
+    assert operation["operation_status"] == "executable_pending_approval"
+    assert operation["executor_id"] == "phase_h_h3_twse_recent_performance_executor"
+    assert operation["executor_invocation_eligible"] is True
+    assert operation["market"] == "TWSE"
+    assert operation["parameters"] == {"lookback_trading_days": lookback}
+    assert operation["network_required"] is True
+    assert result["authorization_created"] is False
+    assert result["network_executed"] is False
 
 
 @pytest.mark.parametrize("parameters", [{"lookback_trading_days": 0}, {"lookback_trading_days": 21}, {}])

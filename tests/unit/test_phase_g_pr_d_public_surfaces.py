@@ -49,7 +49,7 @@ def test_current_portable_catalog_is_exact_generated_v3_projection():
     assert "| Capability ID | Support Status |" in guide
     assert "`recent_performance` | `runtime_executable`" in guide
     assert "explicitly selected routes" in guide
-    assert "TPEx H3 remains blocked" in guide
+    assert "TPEx default bounded route remains unresolved and blocked" in guide
 
 
 def test_current_skill_guides_and_public_docs_are_truthful():
