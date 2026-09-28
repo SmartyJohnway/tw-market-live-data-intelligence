@@ -23,7 +23,6 @@ if str(ROOT) not in sys.path:
 TARGET = "TWSE:1423"
 EXECUTOR_ID = "phase_h_h3_twse_recent_performance_executor"
 SOURCE_ID = "H3-TWSE-DEFAULT-BOUNDED"
-OWNER_AUTHORIZATION_REFERENCE = "H_ACT_H3_OWNER_AUTHORIZED_H0H_LIVE_003"
 RESULT_V3 = "unified_market_evidence_result.v3"
 AUDIT_V3 = "unified_market_evidence_audit_package.v3"
 LOOKBACK = 20
@@ -56,7 +55,39 @@ def _unique_json(root: Path, predicate, code: str) -> tuple[Path, dict[str, Any]
     return matches[0]
 
 
-def run() -> dict[str, Any]:
+def _require_owner_authorization_reference(value: str | None) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise RuntimeError("OWNER_AUTHORIZATION_REFERENCE_REQUIRED")
+    if value != value.strip() or len(value) > 240:
+        # Mode B2 currently bounds this persisted reference to 240 characters.
+        # Reject instead of allowing that downstream layer to normalize it.
+        raise RuntimeError("OWNER_AUTHORIZATION_REFERENCE_INVALID")
+    return value
+
+
+def _authorization_payload(
+    request: dict[str, Any],
+    preview: dict[str, Any],
+    plan: dict[str, Any],
+    owner_authorization_reference: str,
+) -> dict[str, Any]:
+    reference = _require_owner_authorization_reference(owner_authorization_reference)
+    return {
+        "request": request,
+        "expected_preview_id": preview["internal_execution_reference"]["preview_id"],
+        "expected_plan_id": plan["plan_id"],
+        "expected_plan_hash": plan["plan_hash"],
+        "confirm_authorization": True,
+        "approval_scope_mode": "whole_plan_executable_scope",
+        "decision_reason": "Owner-authorized H0H-LIVE-003 bounded H3 acceptance",
+        "owner_review_reference": reference,
+    }
+
+
+def run(owner_authorization_reference: str) -> dict[str, Any]:
+    owner_authorization_reference = _require_owner_authorization_reference(
+        owner_authorization_reference
+    )
     if os.environ.get("H_ACT_H3_OWNER_AUTHORIZED") != "YES":
         raise RuntimeError("owner_authorization_environment_missing")
     test_seams = sorted(key for key in os.environ if key.startswith("M8R_06_03_TEST_"))
@@ -151,16 +182,14 @@ def run() -> dict[str, Any]:
     ):
         raise RuntimeError("h3_live_selected_route_mismatch")
 
-    authorization = mode_b2.build_mode_b2_authorization({
-        "request": request,
-        "expected_preview_id": preview["internal_execution_reference"]["preview_id"],
-        "expected_plan_id": plan["plan_id"],
-        "expected_plan_hash": plan["plan_hash"],
-        "confirm_authorization": True,
-        "approval_scope_mode": "whole_plan_executable_scope",
-        "decision_reason": "Owner-authorized H0H-LIVE-003 bounded H3 acceptance",
-        "owner_review_reference": OWNER_AUTHORIZATION_REFERENCE,
-    })
+    authorization = mode_b2.build_mode_b2_authorization(
+        _authorization_payload(
+            request,
+            preview,
+            plan,
+            owner_authorization_reference,
+        )
+    )
     package = control_root / authorization["control_package_id"]
     preflight = json.loads((package / "control" / "preflight.json").read_text(encoding="utf-8"))
     bounded = preflight.get("bounded_execution_requests") or []
@@ -303,7 +332,7 @@ def run() -> dict[str, Any]:
         "schema_version": "phase_h_h_act_h3_live_acceptance_run.v1",
         "status": "PASS",
         "requirement_id": "H0H-LIVE-003",
-        "owner_authorization_reference": OWNER_AUTHORIZATION_REFERENCE,
+        "owner_authorization_reference": owner_authorization_reference,
         "target": TARGET,
         "source_id": SOURCE_ID,
         "source_family": "TWSE_STOCK_DAY_OFFICIAL_WEB",
@@ -363,10 +392,16 @@ def run() -> dict[str, Any]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--confirm-bounded-live", action="store_true")
+    parser.add_argument("--owner-authorization-reference", required=True)
     args = parser.parse_args()
     if not args.confirm_bounded_live:
         raise SystemExit("H0H-LIVE-003 requires --confirm-bounded-live")
-    print(json.dumps(run(), ensure_ascii=False, indent=2, sort_keys=True))
+    print(json.dumps(
+        run(args.owner_authorization_reference),
+        ensure_ascii=False,
+        indent=2,
+        sort_keys=True,
+    ))
 
 
 if __name__ == "__main__":
