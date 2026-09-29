@@ -1,6 +1,6 @@
 {
   "schema_version": "phase_i_i1_market_state_implementation_candidate.v1",
-  "status": "I1_IMPLEMENTATION_CANDIDATE_READY_FOR_REVIEW",
+  "status": "I1_DORMANT_IMPLEMENTATION_READY_FOR_FINAL_ACCEPTANCE",
   "recorded_date": "2026-09-29",
   "baseline_main": "a7b7f17df424229510fa6950f4cb5cb1b6b15f77",
   "branch": "phase-i/i1-market-state-context-implementation",
@@ -48,6 +48,19 @@
       "commit": "910948d26863a99d8fb58c9f9f57b522ecf5f54f",
       "tree": "14b8ca56543f18147d533b3f35b24bcc1e3241c5"
     },
+    "conditional_acceptance_repair": {
+      "status": "COMPLETED",
+      "commit": "64c41e4efc872df3a87c99deb6176f91b931b3b5",
+      "tree": "e3219115ddabf4d87361f936b408aac3acfc9a7a",
+      "parent_candidate": "53ecd5a2a08c8433b491b98f64b98262a944ac22",
+      "closed_findings": [
+        "typed_failure_semantics",
+        "audit_phase_h_phase_i_separation",
+        "manifest_remote_state_accuracy"
+      ]
+    },
+    "reviewed_technical_candidate_head": "64c41e4efc872df3a87c99deb6176f91b931b3b5",
+    "reviewed_technical_candidate_tree": "e3219115ddabf4d87361f936b408aac3acfc9a7a",
     "implementation_candidate_head_before_this_record": "910948d26863a99d8fb58c9f9f57b522ecf5f54f",
     "implementation_candidate_tree_before_this_record": "14b8ca56543f18147d533b3f35b24bcc1e3241c5"
   },
@@ -115,6 +128,47 @@
     "diff_check": {"command": "git diff --check", "result": "PASS; frozen source-contract hard-break bytes preserved"},
     "market_network_used": false
   },
+  "validation_after_conditional_repair": {
+    "tested_candidate_commit": "64c41e4efc872df3a87c99deb6176f91b931b3b5",
+    "focused": "15 passed",
+    "phase_i_validator": "PASS",
+    "phase_h_validator": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS; MCP tools=6",
+    "compileall": "PASS",
+    "default_ci": {
+      "passed": 793,
+      "skipped": 1,
+      "deselected": 5,
+      "result": "PASS"
+    },
+    "full_current": {
+      "passed": 1166,
+      "skipped": 1,
+      "deselected": 5,
+      "result": "PASS"
+    },
+    "git_diff_check": "PASS",
+    "crlf_aware_diff_check": "PASS",
+    "market_network_used": false
+  },
+  "conditional_repair_closure": {
+    "typed_failure_semantics": "PASS",
+    "failure_statuses_without_fabricated_observations": [
+      "unavailable",
+      "source_failed",
+      "binding_failed"
+    ],
+    "partial_may_omit_unavailable_breadth": true,
+    "complete_requires_governed_observation_fields": true,
+    "dummy_or_sentinel_market_values_required": false,
+    "audit_separation": {
+      "market_state_context_allowed_under_phase_h_governance": false,
+      "market_state_context_allowed_under_phase_i_evidence": true
+    },
+    "catalog_changed_by_repair": false,
+    "portable_lineage_changed_by_repair": false
+  },
   "activation_boundary": {
     "live_acceptance": false,
     "production_route_activation": false,
@@ -123,6 +177,7 @@
     "push_performed": true,
     "remote_branch_exists": true,
     "remote_branch_head_at_candidate_review": "53ecd5a2a08c8433b491b98f64b98262a944ac22",
+    "remote_branch_head_after_conditional_repair": "64c41e4efc872df3a87c99deb6176f91b931b3b5",
     "i2_started": false,
     "i3_started": false
   }
