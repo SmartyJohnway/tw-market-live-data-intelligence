@@ -2,10 +2,10 @@
   "schema_version": "unified_market_evidence_capability_catalog.v3",
   "portable_metadata": {
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-    "canonical_sha256": "aa904aae788eb1d0211a198f22875d2ba9dd85f19e0a6954cf98791f9c3ded3f",
+    "canonical_sha256": "3c9a011a372b4832bba5de4d5b209fea1db4c1b8508c55de6c9a218324125ef1",
     "generator_version": "PHASE-H-ACT-V3-v1",
-    "generated_from_commit": "5d101fa853041721aeb3f70259c796603344e3eb",
-    "canonical_git_blob_sha": "55da91959f67334cb45dda1bda20a0a546e30530"
+    "generated_from_commit": "9c07694f7f9c64475017eaac52a1bdeee972b382",
+    "canonical_git_blob_sha": "0db03e6c2393e7e7b8f36a4ee3c5add5354c4c1d"
   },
   "contract_versions": {
     "accepted_request_schema_versions": [
@@ -147,9 +147,9 @@
       ],
       "possible_fallbacks": [],
       "known_limitations": [
-        "only H3-TWSE-DEFAULT-BOUNDED is selected for runtime execution on this branch; TPEx default bounded route remains unresolved and blocked",
+        "only H3-TWSE-DEFAULT-BOUNDED is selected for runtime execution; TPEX H3 remains blocked and non-executable",
         "TWSE provider automation permission remains NOT_ESTABLISHED_TERMS_CONFLICTED; Owner controlled local-first use is not provider-approved automation",
-        "H0H-LIVE-003 and H0H-ROLL-004 are accepted for this selected TWSE route; repository merge remains subject to review",
+        "H0H-LIVE-003 and H0H-ROLL-004 are accepted for the selected TWSE route",
         "optional provider contracts remain pending",
         "no persistent history accumulation, scheduler, polling, or backfill"
       ],
@@ -363,7 +363,7 @@
     "Phase G research evidence is limited to TWSE/TPEX company common shares in G1/G2",
     "Phase H active source coverage is incremental; only explicitly activated routes are executable",
     "H1 trading-status coverage remains partial; H1-TPEX-ATTENTION-OPENAPI is the only active H1 route",
-    "H2 remains inactive; H3 runtime execution is limited to the Owner-accepted H3-TWSE-DEFAULT-BOUNDED route on this activation branch; merge remains subject to review",
+    "H2 remains inactive; H3 runtime execution is limited to the Owner-accepted H3-TWSE-DEFAULT-BOUNDED route; TPEX H3 remains blocked and non-executable",
     "no scheduler",
     "no continuous polling",
     "no auto retry",
