@@ -825,6 +825,9 @@ def _phase_h_h3_twse_recent_performance(
 
     evidence_path = f"evidence/phase_h/h3/{request['operation_id']}.json"
     sidecar_path = f"evidence/phase_h/governance/{request['operation_id']}.json"
+    # Result V3 citations identify governed operation artifacts. The official
+    # STOCK_DAY month citations remain on the normalized observations and end.
+    evidence["citation_ids"] = [_build_citation_id(request["operation_id"], evidence_path)]
     primary = _phase_h_artifact_record(
         request, context, relative_path=evidence_path, payload=evidence, role="primary_evidence"
     )

@@ -8,6 +8,17 @@ import pytest
 from jsonschema import Draft202012Validator
 
 import scripts.m8r_06_03_production_adapter as production
+from scripts.m8r_05c.citation_builder import _build_citation_id, build_citation_index
+from scripts.m8r_05c.evidence_projector import project_phase_h_typed_evidence
+from scripts.m8r_05c.lineage_resolver import LineageMap, OperationBinding
+from scripts.m8r_05c.artifact_loader import load_projection_inputs
+from scripts.m8r_05c.lineage_resolver import build_lineage_map
+from scripts.m8r_05c.result_builder import build_result
+from scripts.m8r_05c.audit_package_builder import build_audit_package
+from scripts.m8r_05b_03.orchestrator import execute_controlled_plan
+from scripts.m8r_05b_03.receipt import bundle_relative_path, receipt_relative_path
+from server.services import unified_mode_b2
+from tests.unit.test_phase_h_h3_activation_candidate_preview import _production_preview, _request as _v3_request
 from scripts.m8r_05b_03.dispatch import (
     DispatchRuntimeContext,
     dispatch_prepared,
@@ -241,6 +252,123 @@ def test_h3_request_v2_dispatch_reuses_governed_end_month_and_preserves_evidence
     assert governance["attempts"][0]["coverage_result"] == "complete"
     assert governance["attempts"][0]["citation_ids"] == evidence["citation_ids"]
     assert "36.65" not in json.dumps(evidence)
+
+
+def test_h3_primary_citation_matches_v3_artifact_lineage(tmp_path, fake_month_source):
+    """The typed citation must name the governed artifact, not a source month."""
+    request = _request(lookback=1)
+    outcome = _dispatch(request, tmp_path)
+    primary, sidecar = outcome["evidence_artifacts"]
+    primary_obj = json.loads((tmp_path / primary["relative_path"]).read_text(encoding="utf-8"))
+    sidecar_obj = json.loads((tmp_path / sidecar["relative_path"]).read_text(encoding="utf-8"))
+    binding = OperationBinding(
+        operation_id=request["operation_id"],
+        capability_id="recent_performance",
+        executor_id=EXECUTOR,
+        canonical_target_id=TARGET,
+        requested_data_need="recent_performance",
+        market="TWSE",
+        status="succeeded",
+        error_code=None,
+        evidence_artifacts=[primary, sidecar],
+        artifact_objects={primary["relative_path"]: primary_obj, sidecar["relative_path"]: sidecar_obj},
+    )
+    lineage = LineageMap(bindings={TARGET: {"recent_performance": binding}})
+    inventory = [
+        {key: artifact[key] for key in ("relative_path", "sha256", "schema_version", "byte_size", "item_count", "evidence_contract")}
+        for artifact in (primary, sidecar)
+    ]
+    citations = build_citation_index(
+        lineage, {"artifact_inventory": inventory, "finalized_at": "2025-03-10T08:00:00Z"},
+        "unified_market_evidence_result.v3",
+    )
+    primary_citation = _build_citation_id(request["operation_id"], primary["relative_path"])
+    target_citations = citations.target_need_citations[f"{TARGET}::recent_performance"]
+    assert primary_obj["citation_ids"] == [primary_citation]
+    assert set(primary_obj["citation_ids"]).issubset(target_citations)
+    assert citations.all_citations[primary_citation].artifact_reference == primary["relative_path"]
+    assert citations.all_citations[primary_citation].normalized_evidence_hash == primary["sha256"]
+    assert project_phase_h_typed_evidence(
+        binding, target_citations, "recent_performance_evidence.v1"
+    ) == primary_obj
+    assert sidecar_obj["attempts"][0]["citation_ids"] == [primary_citation]
+    assert all(row["citation_ids"] == ["synthetic:2025-03-07"] for row in primary_obj["observations"])
+
+
+def test_h3_producer_artifacts_project_through_real_receipt_bundle_and_v3(tmp_path, monkeypatch, fake_month_source):
+    """Offline producer -> governed execution -> verified loader -> V3 Result/Audit."""
+    request = _v3_request("TWSE", "1423") | {"execution_mode": "execute"}
+    package = _production_preview(request, "TWSE", "1423")
+    preview, plan = package["preview"], package["orchestration_plan"]
+    assert preview["status"] == "ready_for_confirmation"
+    monkeypatch.setattr(unified_mode_b2, "CONTROL_ROOT", tmp_path)
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: package)
+    monkeypatch.setattr(unified_mode_b2, "_utc_now", lambda: FIXED_TIMESTAMP)
+    ticket = unified_mode_b2.build_mode_b2_authorization({
+        "request": request,
+        "expected_preview_id": preview["internal_execution_reference"]["preview_id"],
+        "expected_plan_id": plan["plan_id"],
+        "expected_plan_hash": plan["plan_hash"],
+        "confirm_authorization": True,
+        "owner_review_reference": "offline-h3-citation-regression",
+    })
+    root = tmp_path / ticket["authorization_id"]
+    control = root / "control"
+    artifacts = {name: json.loads((control / f"{name}.json").read_text(encoding="utf-8"))
+                 for name in ("plan", "authorization", "consumption_binding", "unused_consumption_state", "preflight")}
+    timestamp = "2025-03-10T08:00:00Z"
+    execution = execute_controlled_plan(
+        artifacts["plan"], artifacts["authorization"], artifacts["consumption_binding"],
+        supplied_consumption_state=artifacts["unused_consumption_state"],
+        accepted_preflight=artifacts["preflight"], evaluation_timestamp=timestamp,
+        claim_created_at=timestamp, finalized_at=timestamp,
+        executor_registry_metadata=production.load_production_executor_metadata(),
+        runtime_adapter_registry=production.build_production_runtime_adapter_registry(),
+        output_root=str(root), mode="execute-approved", confirm_execution=True,
+        operator_confirmation_reference="offline-h3-citation-regression", confirm_network_execution=True,
+    )
+    assert fake_month_source
+    outcome = execution["dispatch_outcomes"][0]
+    assert outcome["schema_version"] == "unified_market_evidence_operation_result.v2"
+    assert outcome["status"] == "succeeded"
+    primary = next(item for item in outcome["evidence_artifacts"] if item["artifact_role"] == "primary_evidence")
+    evidence = json.loads((root / primary["relative_path"]).read_text(encoding="utf-8"))
+    canonical = _build_citation_id(outcome["operation_id"], primary["relative_path"])
+    assert evidence["citation_ids"] == [canonical]
+    assert evidence["governed_end_observation"]["citation_ids"] == ["synthetic:2025-03-10"]
+    assert any(row["citation_ids"] == ["synthetic:2025-02-28"] for row in evidence["observations"])
+    f3_path = tmp_path / "f3-validation.json"
+    f3_path.write_text(json.dumps(package["validation"]), encoding="utf-8")
+    auth_id = ticket["authorization_id"]
+    inputs = load_projection_inputs(
+        request_path=str(control / "request.json"), f3_validation_path=str(f3_path),
+        plan_path=str(control / "plan.json"), authorization_path=str(control / "authorization.json"),
+        consumption_binding_path=str(control / "consumption_binding.json"),
+        claim_path=str(root / execution["claim_relative_path"]),
+        receipt_path=str(root / receipt_relative_path(auth_id)),
+        bundle_path=str(root / bundle_relative_path(auth_id)), artifact_root=str(root),
+        calculated_at=timestamp,
+    )
+    lineage = build_lineage_map(inputs)
+    citations = build_citation_index(lineage, inputs.bundle, "unified_market_evidence_result.v3")
+    assert canonical in citations.target_need_citations[f"{TARGET}::recent_performance"]
+    assert citations.all_citations[canonical].artifact_reference == primary["relative_path"]
+    assert citations.all_citations[canonical].normalized_evidence_hash == primary["sha256"]
+    citation_lineage = next(item for item in citations.audit_entries if item.citation_id == canonical)
+    assert citation_lineage.operation_id == outcome["operation_id"]
+    assert citation_lineage.artifact_relative_path == primary["relative_path"]
+    assert citation_lineage.artifact_hash == primary["sha256"]
+    assert citation_lineage.canonical_target_id == TARGET
+    assert citation_lineage.requested_data_need == "recent_performance"
+    result = build_result(inputs, output_schema_version="unified_market_evidence_result.v3")
+    audit = build_audit_package(
+        result, inputs, citations, "ai_context/unified_market_evidence_result.v3.json",
+        output_schema_version="unified_market_evidence_audit_package.v3",
+    )
+    assert result["schema_version"] == "unified_market_evidence_result.v3"
+    assert audit["schema_version"] == "unified_market_evidence_audit_package.v3"
+    assert result["targets"][0]["evidence"]["recent_performance"] == evidence
+    assert set(evidence["citation_ids"]).issubset(citations.all_citations)
 
 
 def test_h3_twenty_day_dispatch_uses_minimal_months_and_n_plus_one(tmp_path, fake_month_source):
