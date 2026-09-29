@@ -2,10 +2,10 @@
   "schema_version": "unified_market_evidence_capability_catalog.v3",
   "portable_metadata": {
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-    "canonical_sha256": "695c3be032996d9f8dea3750091b8c0cac48d29d3e92794259cde1a1778c33b5",
+    "canonical_sha256": "c9210c96fb01877d81a8de970fb3bb38051d94178ec498df5ea9766ef6179ed3",
     "generator_version": "PHASE-H-ACT-V3-v1",
-    "generated_from_commit": "7f0bd71647933f38b79133def5350e5b9a049f9f",
-    "canonical_git_blob_sha": "6661cc61778b59a832f527bcc10d9743015077ea"
+    "generated_from_commit": "ca70c5f9a048ee420ba797632cc78b9c8fd76eab",
+    "canonical_git_blob_sha": "54c2ffddba4842adf1d65bfa303edffb9545301e"
   },
   "contract_versions": {
     "accepted_request_schema_versions": [
@@ -289,11 +289,11 @@
       ],
       "possible_fallbacks": [],
       "known_limitations": [
-        "I1 is fixture-only and dormant; no runtime executor or route is active",
+        "I1 production transport and executor are implementation candidates, but no production executor is registered and the route remains plan-only pending separate bounded live acceptance and Owner activation",
         "TWSE requires aligned FMTQIK and exact 股票 breadth dates; TPEx and TWSE units are intentionally not converted",
         "currentness remains unknown without a separately governed market-session calendar input",
         "market-level context does not establish target-specific causation",
-        "I1 source contract USER_CHAT_2026-09-29_PHASE_I_I1_SOURCE_CONTRACT_ACCEPTANCE is frozen; live activation and production route activation are not authorized"
+        "I1 source contract USER_CHAT_2026-09-29_PHASE_I_I1_SOURCE_CONTRACT_ACCEPTANCE is frozen; bounded live acceptance and production route activation remain separate unauthorized gates"
       ],
       "instrument_scope": {
         "instrument_families": [
