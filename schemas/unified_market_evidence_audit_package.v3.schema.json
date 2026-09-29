@@ -842,8 +842,7 @@
                   "trading_status_context",
                   "corporate_action_context",
                   "recent_performance",
-                  "discontinuity_safety",
-                  "market_state_context"
+                  "discontinuity_safety"
                 ]
               },
               "schema_version": {

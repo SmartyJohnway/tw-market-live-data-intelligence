@@ -331,8 +331,8 @@ def main() -> None:
         _fail("phase_i_v3_request_extension_not_additive")
     additive_v3_schema_hashes = {
         "schemas/unified_market_evidence_request.v3.schema.json": "f11db316c281b3d07c2c877e810bec3220e982b48b1b237c4395b6d4f5c7be5e",
-        "schemas/unified_market_evidence_result.v3.schema.json": "050c144c0894f68993407c324c71221391677a8cafaf66e3c4a0db020f0c421c",
-        "schemas/unified_market_evidence_audit_package.v3.schema.json": "e5dd6cc0a78128b3a58b913b963c3ccbcfbd836eb71fcf77e65e03125435be9d",
+        "schemas/unified_market_evidence_result.v3.schema.json": "f9d83d5dfb39f78c38866cb5aff9d87ccdc1001fa0649cf1d94d045d8e9b840c",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json": "1a267ae5a174b0bff20c294a09d208618ef02efc8a7339d167b61a818bf8ef20",
     }
     for relative_path, expected_hash in additive_v3_schema_hashes.items():
         if hashlib.sha256((root / relative_path).read_bytes()).hexdigest() != expected_hash:

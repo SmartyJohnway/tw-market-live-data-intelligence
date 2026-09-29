@@ -3,7 +3,7 @@
   "$id": "urn:tw-market-live-data-intelligence:market_state_context_evidence:v1",
   "title": "Dormant Phase I1 Market State Context Evidence v1",
   "type": "object",
-  "required": ["schema_version", "status", "market", "trade_date", "currentness_status", "retrieved_at", "benchmark", "turnover", "breadth", "source_unit_metadata", "components", "citation_ids", "caveats"],
+  "required": ["schema_version", "status", "market", "currentness_status", "retrieved_at", "components", "citation_ids", "caveats"],
   "properties": {
     "schema_version": {"const": "market_state_context_evidence.v1"},
     "status": {"enum": ["complete", "partial", "unavailable", "source_failed", "binding_failed"]},
@@ -40,6 +40,7 @@
     "caveats":{"type":"array","items":{"type":"string"}}
   },
   "allOf":[
+    {"if":{"properties":{"status":{"const":"complete"}},"required":["status"]},"then":{"required":["trade_date","benchmark","turnover","breadth","breadth_unit","source_unit_metadata"]}},
     {"if":{"properties":{"market":{"const":"TWSE"}}},"then":{"properties":{"turnover":{"properties":{"value_unit":{"const":"TWD"},"volume_unit":{"const":"share"}}},"breadth_unit":{"const":"security_count"}}}},
     {"if":{"properties":{"market":{"const":"TPEX"}}},"then":{"properties":{"turnover":{"properties":{"value_unit":{"const":"TWD_million"},"volume_unit":{"const":"thousand_share"}}},"breadth_unit":{"const":"company_count"}}}}
   ],

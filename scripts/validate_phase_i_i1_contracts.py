@@ -7,6 +7,8 @@ from pathlib import Path
 import sys
 from typing import Any
 
+import jsonschema
+
 ROOT = Path(__file__).resolve().parents[1]
 FROZEN = {
     "docs/governance/phase_i/Phase_I_I0_Evidence_Value_Source_Identity_Timing_Decision_Record_2026-09-29_FROZEN.md": (28251, "02e031e8c39eee96664457735432b7bf08ac9e8b03c07252921f425d05c8f7c5"),
@@ -33,6 +35,68 @@ def _json(path: str) -> Any:
         return json.loads((ROOT / path).read_text(encoding="utf-8"), object_pairs_hook=_pairs)
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         raise I1ValidationError(f"current_authority_json_invalid:{path}") from exc
+
+
+def _validate_typed_failure_semantics(evidence_schema: dict[str, Any], result_v3: dict[str, Any]) -> None:
+    """Prove I1 failures are representable without weakening complete evidence."""
+    evidence_validator = jsonschema.Draft202012Validator(
+        evidence_schema, format_checker=jsonschema.FormatChecker()
+    )
+    result_validator = jsonschema.Draft7Validator(
+        result_v3, format_checker=jsonschema.FormatChecker()
+    )
+    component = {
+        "status": "source_failed",
+        "official_date": None,
+        "source": {
+            "source_id": "I1-TWSE-FMTQIK-OPENAPI",
+            "source_family": "TWSE_FMTQIK_OFFICIAL_OPENAPI",
+            "source_contract_id": "TWSE_FMTQIK_V1",
+            "url": "https://example.invalid/fixture",
+            "authority": "official",
+            "retrieved_at": "2026-09-29T06:00:00Z",
+        },
+        "observed_fields": {},
+        "unit_metadata": {},
+    }
+    base: dict[str, Any] = {
+        "schema_version": "market_state_context_evidence.v1",
+        "status": "source_failed",
+        "market": "TWSE",
+        "currentness_status": "unknown",
+        "retrieved_at": "2026-09-29T06:00:00Z",
+        "components": {"fmtqik": component},
+        "citation_ids": [],
+        "caveats": ["fixture failure state; no market values observed"],
+    }
+    for status in ("unavailable", "source_failed", "binding_failed"):
+        item = {**base, "status": status}
+        try:
+            evidence_validator.validate(item)
+        except jsonschema.ValidationError as exc:
+            raise I1ValidationError(f"i1_failure_not_representable:{status}") from exc
+        projected = {**item, "target": {"canonical_target_id": "TWSE:2330", "market": "TWSE"}}
+        try:
+            jsonschema.Draft7Validator(result_v3["definitions"]["market_state_context"], format_checker=jsonschema.FormatChecker()).validate(projected)
+        except jsonschema.ValidationError as exc:
+            raise I1ValidationError(f"i1_result_failure_not_representable:{status}") from exc
+
+    required_success = {"trade_date", "benchmark", "turnover", "breadth", "breadth_unit", "source_unit_metadata"}
+    evidence_complete_required = set(evidence_schema.get("allOf", [{}])[0].get("then", {}).get("required", []))
+    result_complete_required = set(result_v3["definitions"]["market_state_context"].get("allOf", [{}])[0].get("then", {}).get("required", []))
+    if not required_success <= evidence_complete_required or not required_success <= result_complete_required:
+        raise I1ValidationError("i1_complete_observation_fields_not_required")
+    complete = {**base, "status": "complete"}
+    if evidence_validator.is_valid(complete):
+        raise I1ValidationError("i1_complete_without_observations_accepted")
+    complete_result = {**complete, "target": {"canonical_target_id": "TWSE:2330", "market": "TWSE"}}
+    if jsonschema.Draft7Validator(result_v3["definitions"]["market_state_context"], format_checker=jsonschema.FormatChecker()).is_valid(complete_result):
+        raise I1ValidationError("i1_result_complete_without_observations_accepted")
+    partial = {**base, "status": "partial"}
+    for key in ("trade_date", "benchmark", "turnover", "breadth", "breadth_unit", "source_unit_metadata"):
+        partial.pop(key, None)
+    if not evidence_validator.is_valid(partial):
+        raise I1ValidationError("i1_partial_without_observation_component_rejected")
 
 
 def validate_phase_i_i1_contracts() -> None:
@@ -98,6 +162,13 @@ def validate_phase_i_i1_contracts() -> None:
         raise I1ValidationError("i1_result_v3_projection_missing")
     if "phase_i_evidence" not in audit_v3.get("properties", {}):
         raise I1ValidationError("i1_audit_lineage_missing")
+    phase_h_capability_enum = audit_v3["properties"]["phase_h_governance"]["properties"]["evidence_artifact_references"]["items"]["properties"]["capability_id"]["enum"]
+    phase_i_reference = audit_v3["properties"]["phase_i_evidence"]["properties"]["evidence_artifact_references"]["items"]["properties"]
+    if "market_state_context" in phase_h_capability_enum:
+        raise I1ValidationError("i1_capability_allowed_in_phase_h_audit")
+    if phase_i_reference.get("capability_id", {}).get("const") != "market_state_context" or phase_i_reference.get("schema_version", {}).get("const") != "market_state_context_evidence.v1":
+        raise I1ValidationError("i1_phase_i_audit_reference_not_exclusive")
+    _validate_typed_failure_semantics(evidence_schema, result_v3)
     sys.path.insert(0, str(ROOT))
     from server.unified_mcp.tool_contracts import build_tool_contract_snapshot
     if len(build_tool_contract_snapshot().tools) != 6:

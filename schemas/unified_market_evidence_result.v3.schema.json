@@ -923,7 +923,7 @@
     },
     "market_state_context": {
       "type": "object",
-      "required": ["schema_version", "status", "market", "trade_date", "currentness_status", "retrieved_at", "target", "benchmark", "turnover", "breadth", "source_unit_metadata", "components", "citation_ids", "caveats"],
+      "required": ["schema_version", "status", "market", "currentness_status", "retrieved_at", "target", "components", "citation_ids", "caveats"],
       "properties": {
         "schema_version":{"const":"market_state_context_evidence.v1"},
         "status":{"enum":["complete","partial","unavailable","source_failed","binding_failed"]},
@@ -941,6 +941,7 @@
         "citation_ids":{"type":"array","items":{"type":"string"}},
         "caveats":{"type":"array","items":{"type":"string"}}
       },
+      "allOf":[{"if":{"properties":{"status":{"const":"complete"}},"required":["status"]},"then":{"required":["trade_date","benchmark","turnover","breadth","breadth_unit","source_unit_metadata"]}}],
       "additionalProperties":false
     },
     "trading_status_context": {

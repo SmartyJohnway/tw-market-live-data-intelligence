@@ -167,6 +167,54 @@ def test_i1_schema_catalog_routing_and_request_are_dormant_and_v3_only():
         json.loads('{"root":{"field":1,"field":2}}', object_pairs_hook=_pairs)
 
 
+def test_i1_failure_evidence_is_representable_without_market_values_and_complete_stays_strict():
+    evidence_schema = _json("schemas/market_state_context_evidence.v1.schema.json")
+    result_schema = _json("schemas/unified_market_evidence_result.v3.schema.json")
+    evidence_validator = jsonschema.Draft202012Validator(evidence_schema, format_checker=jsonschema.FormatChecker())
+    typed_result_validator = jsonschema.Draft7Validator(result_schema["definitions"]["market_state_context"], format_checker=jsonschema.FormatChecker())
+    common = {
+        "schema_version": "market_state_context_evidence.v1",
+        "market": "TWSE",
+        "currentness_status": "unknown",
+        "retrieved_at": NOW,
+        "components": {"fmtqik": {
+            "status": "source_failed",
+            "official_date": None,
+            "source": {
+                "source_id": "I1-TWSE-FMTQIK-OPENAPI",
+                "source_family": "TWSE_FMTQIK_OFFICIAL_OPENAPI",
+                "source_contract_id": "TWSE_FMTQIK_V1",
+                "url": "https://example.invalid/fixture",
+                "authority": "official",
+                "retrieved_at": NOW,
+            },
+            "observed_fields": {},
+            "unit_metadata": {},
+        }},
+        "citation_ids": [],
+        "caveats": ["No market observation was available in this deterministic fixture."],
+    }
+    for status in ("unavailable", "source_failed", "binding_failed"):
+        item = {**common, "status": status}
+        evidence_validator.validate(item)
+        typed_result_validator.validate({**item, "target": {"canonical_target_id": "TWSE:2330", "market": "TWSE"}})
+        assert "trade_date" not in item
+    invalid_complete = {**common, "status": "complete"}
+    assert not evidence_validator.is_valid(invalid_complete)
+    assert not typed_result_validator.is_valid({**invalid_complete, "target": {"canonical_target_id": "TWSE:2330", "market": "TWSE"}})
+
+
+def test_i1_partial_can_omit_unavailable_breadth_without_fabrication():
+    schema = _json("schemas/market_state_context_evidence.v1.schema.json")
+    validator = jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker())
+    partial = normalize_twse_market_state(_fixture("twse_fmtqik.json"), [], retrieved_at=NOW)
+    partial.pop("breadth", None)
+    partial.pop("breadth_unit", None)
+    validator.validate(partial)
+    assert partial["status"] == "partial"
+    assert "breadth" not in partial
+
+
 def test_market_state_context_v3_preview_is_plan_only_without_authorization_or_network():
     req = {
         "schema_version":"unified_market_evidence_request.v3",
@@ -234,3 +282,27 @@ def test_i1_fixture_artifact_projects_through_lineage_result_v3_and_audit_v3():
     audit_schema = _json("schemas/unified_market_evidence_audit_package.v3.schema.json")
     jsonschema.Draft7Validator(audit_schema, format_checker=jsonschema.FormatChecker()).validate(audit)
     assert audit["phase_i_evidence"]["evidence_artifact_references"] == [{"capability_id":"market_state_context","schema_version":"market_state_context_evidence.v1","relative_path":relative_path,"sha256":"c"*64}]
+    phase_h_enum = audit_schema["properties"]["phase_h_governance"]["properties"]["evidence_artifact_references"]["items"]["properties"]["capability_id"]["enum"]
+    assert "market_state_context" not in phase_h_enum
+    for phase_h_capability in ("trading_status_context", "corporate_action_context", "recent_performance", "discontinuity_safety"):
+        assert phase_h_capability in phase_h_enum
+        valid_phase_h_audit = copy.deepcopy(audit)
+        valid_phase_h_audit["phase_h_governance"]["evidence_artifact_references"].append({
+            "capability_id":phase_h_capability,
+            "schema_version":f"{phase_h_capability}_evidence.v1",
+            "relative_path":f"evidence/phase_h/{phase_h_capability}.json",
+            "sha256":"f"*64,
+        })
+        jsonschema.Draft7Validator(audit_schema, format_checker=jsonschema.FormatChecker()).validate(valid_phase_h_audit)
+    assert not audit["phase_h_governance"]["evidence_artifact_references"] or all(
+        ref["capability_id"] != "market_state_context"
+        for ref in audit["phase_h_governance"]["evidence_artifact_references"]
+    )
+    invalid_phase_h_audit = copy.deepcopy(audit)
+    invalid_phase_h_audit["phase_h_governance"]["evidence_artifact_references"].append({
+        "capability_id":"market_state_context",
+        "schema_version":"market_state_context_evidence.v1",
+        "relative_path":relative_path,
+        "sha256":"c"*64,
+    })
+    assert not jsonschema.Draft7Validator(audit_schema, format_checker=jsonschema.FormatChecker()).is_valid(invalid_phase_h_audit)

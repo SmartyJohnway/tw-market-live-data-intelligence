@@ -120,7 +120,9 @@
     "production_route_activation": false,
     "merge_performed": false,
     "pr_created": false,
-    "push_performed": false,
+    "push_performed": true,
+    "remote_branch_exists": true,
+    "remote_branch_head_at_candidate_review": "53ecd5a2a08c8433b491b98f64b98262a944ac22",
     "i2_started": false,
     "i3_started": false
   }
