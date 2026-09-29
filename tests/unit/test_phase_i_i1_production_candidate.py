@@ -21,6 +21,7 @@ from server.services.phase_i_i1_production_candidate import (
     CAPABILITY_ID,
     EVIDENCE_CONTRACT,
     EXECUTOR_ID,
+    MAX_BATCH_TARGETS,
     MAX_RESPONSE_BYTES,
     SOURCE_DESCRIPTORS,
     TIMEOUT_SECONDS,
@@ -189,12 +190,53 @@ def test_twse_unordered_source_rows_and_breadth_mismatch_are_preserved():
     assert len(attempts) == 2
 
 
-def test_twse_empty_breadth_is_partial_and_empty_fmtqik_is_unavailable():
+def test_twse_empty_breadth_is_partial_with_preserved_values_and_no_stock_is_unavailable():
     urls = [SOURCE_DESCRIPTORS[x]["url"] for x in ("I1-TWSE-FMTQIK-OPENAPI", "I1-TWSE-BREADTH-TWTAZU-OPENAPI")]
-    partial, _ = _observe_market("TWSE", retrieved_at=NOW, transport=lambda url, _timeout: _ok(_json_bytes([_fmt()]) if url == urls[0] else _json_bytes([_breadth(kind="整體市場")])))
+    partial, _ = _observe_market("TWSE", retrieved_at=NOW, transport=lambda url, _timeout: _ok(_json_bytes([]) if url == urls[0] else _json_bytes([_breadth()])))
     assert partial["status"] == "partial"
-    unavailable, _ = _observe_market("TWSE", retrieved_at=NOW, transport=lambda url, _timeout: _ok(_json_bytes([]) if url == urls[0] else _json_bytes([_breadth()])))
-    assert unavailable["status"] == "partial"
+    assert partial["breadth"] == {"up": 4, "limit_up": 1, "down": 3, "limit_down": 0, "flat": 2, "unmatched": 1, "no_comparison": 0}
+    assert partial["breadth_unit"] == "security_count"
+    assert partial["source_unit_metadata"]["I1-TWSE-BREADTH-TWTAZU-OPENAPI"]["up"] == "security_count"
+    assert partial["components"]["fmtqik"]["status"] == "unavailable"
+    breadth_component = partial["components"]["breadth"]
+    assert breadth_component["status"] == "available"
+    assert breadth_component["official_date"] == "2026-09-24"
+    assert breadth_component["observed_fields"] == partial["breadth"]
+    assert breadth_component["unit_metadata"]["up"] == "security_count"
+    evidence_schema = json.loads((ROOT / "schemas/market_state_context_evidence.v1.schema.json").read_text(encoding="utf-8"))
+    jsonschema.Draft202012Validator(evidence_schema, format_checker=jsonschema.FormatChecker()).validate(partial)
+
+    unavailable, _ = _observe_market(
+        "TWSE", retrieved_at=NOW,
+        transport=lambda url, _timeout: _ok(
+            _json_bytes([]) if url == urls[0] else _json_bytes([_breadth(kind="整體市場")])
+        ),
+    )
+    assert unavailable["status"] == "unavailable"
+    assert unavailable["components"]["breadth"]["status"] == "missing"
+
+
+@pytest.mark.parametrize("mutation", ["invalid_date", "missing_field", "non_integer", "negative"])
+def test_twse_empty_fmtqik_rejects_malformed_stock_breadth(mutation):
+    fmt_url = SOURCE_DESCRIPTORS["I1-TWSE-FMTQIK-OPENAPI"]["url"]
+    row = _breadth()
+    if mutation == "invalid_date":
+        row["出表日期"] = "not-a-date"
+    elif mutation == "missing_field":
+        row.pop("上漲")
+    elif mutation == "non_integer":
+        row["上漲"] = "4.5"
+    elif mutation == "negative":
+        row["上漲"] = "-1"
+    evidence, attempts = _observe_market(
+        "TWSE", retrieved_at=NOW,
+        transport=lambda url, _timeout: _ok(b"[]") if url == fmt_url else _ok(_json_bytes([row])),
+    )
+    assert evidence["status"] == "source_failed"
+    assert evidence["components"]["fmtqik"]["status"] == "unavailable"
+    assert evidence["components"]["breadth"]["status"] == "source_failed"
+    assert evidence["components"]["breadth"]["transport"]["status"] == "available"
+    assert len(attempts) == 2
 
 
 def test_fmtqik_selected_latest_semantic_field_missing_is_source_failed():
@@ -227,6 +269,14 @@ def test_tpex_row_count_and_units_are_governed():
     assert empty["status"] == "unavailable"
     multiple, _ = _observe_market("TPEX", retrieved_at=NOW, transport=lambda *_: _ok(_json_bytes([_tpex(), _tpex()])))
     assert multiple["status"] == "source_failed"
+    assert multiple["components"]["tpex_mainborad_highlight"]["status"] == "source_failed"
+    assert multiple["components"]["tpex_mainborad_highlight"]["transport"]["status"] == "available"
+    malformed_row = _tpex()
+    malformed_row.pop("CloseIndex")
+    malformed, _ = _observe_market("TPEX", retrieved_at=NOW, transport=lambda *_: _ok(_json_bytes([malformed_row])))
+    assert malformed["status"] == "source_failed"
+    assert malformed["components"]["tpex_mainborad_highlight"]["status"] == "source_failed"
+    assert malformed["components"]["tpex_mainborad_highlight"]["transport"]["status"] == "available"
 
 
 def _request(index, market, security_code):
@@ -284,6 +334,30 @@ def test_mixed_market_execution_groups_stay_within_three_source_gets(tmp_path):
     production_batch_operation_adapter_candidate(twse, context, transport=_transport_for(responses, calls), retrieved_at=NOW)
     production_batch_operation_adapter_candidate(tpex, context, transport=_transport_for(responses, calls), retrieved_at=NOW)
     assert len(calls) == 3
+
+
+def test_candidate_batch_limit_matches_unified_hard_target_limit(tmp_path):
+    assert MAX_BATCH_TARGETS == 50
+    responses = {
+        SOURCE_DESCRIPTORS["I1-TWSE-FMTQIK-OPENAPI"]["url"]: _ok(_json_bytes([_fmt()])),
+        SOURCE_DESCRIPTORS["I1-TWSE-BREADTH-TWTAZU-OPENAPI"]["url"]: _ok(_json_bytes([_breadth()])),
+    }
+    calls = []
+    context = DispatchRuntimeContext(str(tmp_path), "execute-approved")
+    fifty = tuple(_request(i + 1000, "TWSE", str(2000 + i)) for i in range(50))
+    result = production_batch_operation_adapter_candidate(
+        fifty, context, transport=_transport_for(responses, calls), retrieved_at=NOW
+    )
+    assert len(result) == 50
+    assert len(calls) == 2
+
+    calls.clear()
+    fifty_one = tuple(_request(i + 2000, "TWSE", str(3000 + i)) for i in range(51))
+    with pytest.raises(Exception, match="i1_batch_target_count_invalid"):
+        production_batch_operation_adapter_candidate(
+            fifty_one, context, transport=_transport_for(responses, calls), retrieved_at=NOW
+        )
+    assert calls == []
 
 
 def test_candidate_registry_is_separate_from_normal_runtime():

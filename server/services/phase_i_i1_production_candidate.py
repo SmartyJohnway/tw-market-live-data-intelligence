@@ -33,6 +33,7 @@ from scripts.twse_trading_calendar import parse_twse_roc_date
 from server.services.phase_i_market_state_adapters import (
     MarketStateNormalizationError,
     normalize_tpex_market_state,
+    normalize_twse_breadth_observation,
     normalize_twse_market_state,
 )
 
@@ -44,7 +45,7 @@ EVIDENCE_CONTRACT = "market_state_context_evidence.v1"
 RESULT_SCHEMA = "unified_market_evidence_operation_result.v1"
 TIMEOUT_SECONDS = 15
 MAX_RESPONSE_BYTES = 65536
-MAX_BATCH_TARGETS = 500
+MAX_BATCH_TARGETS = 50
 OUTPUT_POLICY = "contained_artifact_only"
 CANDIDATE_METADATA_PATH = ROOT / "config" / "phase_i_i1_production_executor_candidate.json"
 
@@ -271,26 +272,40 @@ def _observe_market(
         if fmt.status == "unavailable":
             try:
                 selected_breadth = _selected_twse_breadth(breadth.rows) if breadth.status == "available" else []
+                breadth_observation = (
+                    normalize_twse_breadth_observation(selected_breadth[0])
+                    if selected_breadth else None
+                )
             except I1ProductionSourceError as exc:
                 components = {"fmtqik": _component_from_transport(fmt, status="unavailable"),
                               "breadth": _component_from_transport(breadth, status="source_failed")}
                 return _failed_evidence("TWSE", retrieved_at, components, "source_failed", str(exc)), transports
-            partial = bool(selected_breadth)
-            breadth_date = None
-            if len(selected_breadth) == 1:
-                try:
-                    breadth_date = parse_twse_roc_date(selected_breadth[0].get("出表日期")).isoformat()
-                except (TypeError, ValueError):
-                    breadth_date = None
+            except MarketStateNormalizationError as exc:
+                components = {"fmtqik": _component_from_transport(fmt, status="unavailable"),
+                              "breadth": _component_from_transport(breadth, status="source_failed")}
+                return _failed_evidence("TWSE", retrieved_at, components, "source_failed", str(exc)), transports
+            partial = breadth_observation is not None
+            breadth_date, breadth_values, breadth_units = breadth_observation or (None, {}, {})
             components = {"fmtqik": _component_from_transport(fmt, status="unavailable"),
-                          "breadth": _component_from_transport(
+                          "breadth": {
+                              **_component_from_transport(
                               breadth,
                               status="available" if partial else "missing" if breadth.status == "available" else "unavailable",
                               official_date=breadth_date,
-                          )}
-            return _failed_evidence("TWSE", retrieved_at, components,
-                                    "partial" if partial else "unavailable",
-                                    "twse_fmtqik_has_no_rows; benchmark_and_turnover_unavailable"), transports
+                              ),
+                              "observed_fields": dict(breadth_values),
+                              "unit_metadata": dict(breadth_units),
+                          }}
+            evidence = _failed_evidence("TWSE", retrieved_at, components,
+                                        "partial" if partial else "unavailable",
+                                        "twse_fmtqik_has_no_rows; benchmark_and_turnover_unavailable")
+            if partial:
+                evidence["breadth"] = breadth_values
+                evidence["breadth_unit"] = "security_count"
+                evidence["source_unit_metadata"] = {
+                    "I1-TWSE-BREADTH-TWTAZU-OPENAPI": dict(breadth_units)
+                }
+            return evidence, transports
         try:
             fmt_row = _selected_fmtqik(fmt.rows)
             breadth_rows = _selected_twse_breadth(breadth.rows)
@@ -319,13 +334,13 @@ def _observe_market(
                                     "unavailable", "tpex_highlight_has_no_rows"), (item,)
         if len(item.rows) != 1:
             return _failed_evidence("TPEX", retrieved_at,
-                                    {"tpex_mainborad_highlight": _component_from_transport(item)},
+                                    {"tpex_mainborad_highlight": _component_from_transport(item, status="source_failed")},
                                     "source_failed", "source_failed:tpex_expected_exactly_one_row"), (item,)
         try:
             evidence = normalize_tpex_market_state(item.rows, retrieved_at=retrieved_at)
         except MarketStateNormalizationError as exc:
             return _failed_evidence("TPEX", retrieved_at,
-                                    {"tpex_mainborad_highlight": _component_from_transport(item)},
+                                    {"tpex_mainborad_highlight": _component_from_transport(item, status="source_failed")},
                                     "source_failed", str(exc)), (item,)
         evidence["components"]["tpex_mainborad_highlight"]["transport"] = _transport_json(item)
         return evidence, (item,)

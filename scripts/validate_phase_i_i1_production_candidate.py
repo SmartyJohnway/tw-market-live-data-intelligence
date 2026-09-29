@@ -12,6 +12,7 @@ from server.services.phase_i_i1_production_candidate import (
     CAPABILITY_ID,
     EVIDENCE_CONTRACT,
     EXECUTOR_ID,
+    MAX_BATCH_TARGETS,
     MAX_RESPONSE_BYTES,
     SOURCE_DESCRIPTORS,
     TIMEOUT_SECONDS,
@@ -24,6 +25,8 @@ def validate() -> None:
     routing = json.loads((ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json").read_text(encoding="utf-8"))
     authority = json.loads((ROOT / "docs/data_capabilities/phase_i_i1_source_authority.v1.json").read_text(encoding="utf-8"))
     candidate = json.loads((ROOT / "config/phase_i_i1_production_executor_candidate.json").read_text(encoding="utf-8"))
+    if MAX_BATCH_TARGETS != catalog.get("bounds", {}).get("hard_target_limit"):
+        raise ValueError("i1_candidate_batch_limit_mismatch")
     frozen_contract = json.loads((ROOT / "docs/governance/phase_i/PHASE_I_I1_MARKET_STATE_SOURCE_CONTRACT_2026-09-29_FROZEN.json").read_text(encoding="utf-8"))
     cap = next(item for item in catalog["data_need_capabilities"] if item["capability_id"] == CAPABILITY_ID)
     route = next(item for item in routing["routes"] if item["capability_id"] == CAPABILITY_ID)
