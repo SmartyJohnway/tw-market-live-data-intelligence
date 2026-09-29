@@ -1,7 +1,7 @@
 {
   "schema_version": "m8r_05b_capability_to_executor_routing_matrix.v3",
   "authoritative_capability_catalog": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-  "routing_scope": "current V3 runtime authority with explicitly selected routes; H3 is a branch-local TWSE activation candidate pending live acceptance, rollback rehearsal, and Owner final review",
+  "routing_scope": "current V3 runtime authority with explicitly selected routes; H1-TPEX-ATTENTION-OPENAPI and Owner-accepted H3-TWSE-DEFAULT-BOUNDED are active; H2 remains inactive and TPEX H3 remains blocked/non-executable",
   "routes": [
     {
       "capability_id": "identity",
@@ -187,7 +187,7 @@
       "known_limitations": [
         "only H3-TWSE-DEFAULT-BOUNDED is selected for TWSE; TPEx H3 remains blocked and non-executable",
         "TWSE provider automation permission remains NOT_ESTABLISHED_TERMS_CONFLICTED; no provider-approved automation is claimed",
-        "H0H-LIVE-003 and H0H-ROLL-004 are accepted for this selected TWSE route; repository merge remains subject to review",
+        "H0H-LIVE-003 and H0H-ROLL-004 are accepted for this selected TWSE route",
         "no persistent history accumulation, scheduler, polling, or backfill"
       ],
       "evidence_paths": [
@@ -201,12 +201,6 @@
       "blocking_reasons": [
         "H0-SRC-10 TPEx default bounded route remains unresolved",
         "H0-SRC-11 and H0-SRC-12 optional provider contracts are pending"
-      ],
-      "supported_instrument_families": [
-        "company_share"
-      ],
-      "supported_instrument_types": [
-        "common_share"
       ],
       "source_compatibility_key": "H3-TWSE-DEFAULT-BOUNDED",
       "source_authority_states": [
@@ -467,7 +461,7 @@
     "capability_requires_execution_approval": "Mirrors the authoritative catalog per capability. It describes whether execution of that capability requires approval, not whether a final multi-operation orchestration package needs owner approval.",
     "package_approval_policy": "Describes package-level inheritance/composition. A derived non-executing capability may inherit an upstream approved package without itself requiring execution approval."
   },
-  "activation_status": "branch_local_h3_twse_candidate_active_pending_live_rollback_owner_review",
+  "activation_status": "selected_phase_h_routes_active",
   "phase_h_source_authority": {
     "active_source_count": 2,
     "records": [

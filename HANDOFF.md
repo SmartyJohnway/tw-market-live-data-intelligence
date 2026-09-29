@@ -10,8 +10,8 @@ Baseline main before this documentation-governance consolidation:
 
 Current workstream:
 
-> **H-ACT-H3 final activation closure is Owner-accepted; closure PR is pending
-> review. Phase I is explicitly not started.**
+> **H-ACT-H3 final activation closure is Owner-accepted for the selected TWSE
+> route. Phase I is explicitly not started.**
 
 The purpose of this handoff is to let a new human or agent resume without
 reconstructing the repository from hundreds of historical milestone documents.
@@ -117,11 +117,11 @@ false negative. No new live execution is required for this closure.
 
 ## Current closure and next boundary
 
-The H-ACT-H3 final closure is bound to technical candidate commit
-`3371fa1b4c3f51a332466ecba62b0767fc741d87` (tree
-`942667c8a22cc1b3cb7f4793ef37434eba6eceef`). After the closure Draft PR is
-opened, wait for Owner/ChatGPT review. Do not merge, rerun live/rollback, or
-begin Phase I.
+The H-ACT-H3 final activation is Owner-accepted for the selected bounded TWSE
+`recent_performance` route. The route-specific acceptance ledger records the
+technical candidate and its live/rollback evidence. This activation does not
+authorize Phase I; Phase I remains `NOT_STARTED` and requires separate Owner
+authorization.
 
 ## Historical documentation problem already closed
 
@@ -163,8 +163,8 @@ files unless the task requires historical evidence.
 
 ## Current allowed next work
 
-Review the H-ACT-H3 closure PR. Merge requires subsequent review; this handoff
-does not authorize merge or Phase I implementation.
+Continue only within separately authorized work. H-ACT-H3 does not authorize
+Phase I implementation.
 
 ## Explicit stop boundary
 

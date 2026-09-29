@@ -198,6 +198,8 @@
     "market_network_during_closure_validation": false
   },
   "closure": {
+    "state_is_record_time_snapshot": true,
+    "record_time_note": "The following fields preserve closure facts as recorded in this acceptance ledger; they are historical provenance, not current runtime activation authority or current PR lifecycle state.",
     "owner_final_activation_accepted": true,
     "pull_request_review_required_before_merge": true,
     "merge_performed": false,

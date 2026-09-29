@@ -14,6 +14,7 @@ import pytest
 from server.unified_mcp.tool_contracts import PREFERRED_REQUEST_SCHEMA_VERSION, build_tool_specs
 from scripts.validate_phase_h_v3_contracts import (
     PhaseHV3ContractValidationError,
+    _load_current_authority_json,
     validate_corporate_action_context_semantics,
     validate_discontinuity_safety_semantics,
     validate_h2_h3_h4_cross_evidence,
@@ -58,6 +59,25 @@ def test_all_v3_schemas_are_draft7_meta_valid_and_json_assets_parse():
         jsonschema.Draft7Validator.check_schema(value)
     load(DATA / "unified_market_evidence_capability_catalog.v3.json")
     load(DATA / "m8r_05b_capability_to_executor_routing_matrix.v3.json")
+
+
+def test_current_phase_h_authority_json_rejects_duplicate_keys(tmp_path):
+    current_authorities = (
+        DATA / "unified_market_evidence_capability_catalog.v3.json",
+        DATA / "m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        DATA / "m8r_05b_existing_orchestrator_disposition.json",
+        ROOT / "config/m8r_06_03_executor_registry_metadata.json",
+    )
+    for path in current_authorities:
+        assert isinstance(_load_current_authority_json(path), dict)
+
+    duplicate_authority = tmp_path / "routing-authority.json"
+    duplicate_authority.write_text(
+        '{"phase_h_source_authority":{"active_source_count":2,"active_source_count":1}}',
+        encoding="utf-8",
+    )
+    with pytest.raises(PhaseHV3ContractValidationError, match="duplicate_json_key:active_source_count"):
+        _load_current_authority_json(duplicate_authority)
 
 
 def test_request_v3_data_need_universe_and_bounds():
@@ -448,6 +468,20 @@ def test_catalog_routing_truth_exposes_selected_h1_and_h3_twse_routes_while_v3_r
     assert h3_route["batching_scope"] == "none"
     assert h3_route["source_compatibility_key"] == "H3-TWSE-DEFAULT-BOUNDED"
     assert next(item for item in h3_route["source_authority_states"] if item["market"] == "TPEX")["activation_state"] == "blocked"
+    assert h3_route["provisional"] is False
+    assert h3_route["candidate_executor_ids"] == ["phase_h_h3_twse_recent_performance_executor"]
+    assert h3_route["routing_status"] == "resolved"
+    assert h3_route["supported_instrument_families"] == ["company_share"]
+    assert h3_route["supported_instrument_types"] == ["common_share"]
+    assert sum(route["capability_id"] == "recent_performance" for route in routing["routes"]) == 1
+
+    assert routing["activation_status"] == "selected_phase_h_routes_active"
+    assert "branch-local candidate" not in routing["routing_scope"].lower()
+    assert "pending" not in routing["routing_scope"].lower()
+    assert not any("branch" in item.lower() or "merge" in item.lower() for item in h3["known_limitations"])
+    disposition = _load_current_authority_json(DATA / "m8r_05b_existing_orchestrator_disposition.json")
+    h3_surface = next(item for item in disposition["surfaces"] if item["surface_id"] == "phase_h_h3_twse_recent_performance_executor")
+    assert h3_surface["current_status"] == "H-ACT-H3 selected TWSE route is Owner-accepted and active"
 
     assert catalog["contract_versions"]["v3_runtime_authority_status"] == "v3_preferred_selected_routes_active"
     assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 2

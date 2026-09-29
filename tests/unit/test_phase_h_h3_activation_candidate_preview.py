@@ -1,4 +1,4 @@
-"""Offline production-planner proof for the branch-local H3 TWSE candidate."""
+"""Offline production-planner proof for the Owner-accepted H3 TWSE route."""
 from __future__ import annotations
 
 import json

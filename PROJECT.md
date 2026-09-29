@@ -157,10 +157,10 @@ Current Phase H source truth:
 
 H-ACT-H3 final activation closure is recorded in
 `docs/governance/phase_h/PHASE_H_H_ACT_H3_TWSE_RECENT_PERFORMANCE_ACCEPTANCE_LEDGER.json`.
-The route-level `H0H-LIVE-003` and `H0H-ROLL-004` gates are accepted; PR
-review/merge remains pending. Attempt #2E is the accepted bounded-live evidence;
-its original runner nonzero exit is retained as a historical harness false
-negative and no new live run is required.
+The route-level `H0H-LIVE-003` and `H0H-ROLL-004` gates are accepted. Attempt
+#2E is the accepted bounded-live evidence; its original runner nonzero
+exit is retained as a historical acceptance-harness false negative and no new
+live run is required. H-ACT-H3 does not authorize Phase I implementation.
 
 Accepted promotion ledger:
 `docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json`.
