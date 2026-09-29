@@ -28,6 +28,10 @@ RESULT_SCHEMA_PATHS = {
     "unified_market_evidence_operation_result.v1": ROOT / "schemas" / "unified_market_evidence_operation_result.v1.schema.json",
     "unified_market_evidence_operation_result.v2": ROOT / "schemas" / "unified_market_evidence_operation_result.v2.schema.json",
 }
+REQUEST_TO_RESULT_SCHEMA_VERSIONS = {
+    "unified_market_evidence_execution_request.v1": "unified_market_evidence_operation_result.v1",
+    "unified_market_evidence_execution_request.v2": "unified_market_evidence_operation_result.v2",
+}
 
 
 @dataclass(frozen=True)
@@ -295,6 +299,28 @@ def dispatch_prepared(
             _verify_evidence_artifacts(governed_output_root, artifacts, mode)
         return dict(raw_result)
 
+    def normalized_failure(item: PreparedDispatch, error_code: str) -> dict:
+        request = item.request
+        result_version = REQUEST_TO_RESULT_SCHEMA_VERSIONS.get(request.get("schema_version"))
+        if result_version is None:
+            raise OrchestrationError("execution_request_schema_version_unsupported")
+        expected_req_id, expected_req_hash = request_identity(request)
+        result = {
+            "schema_version": result_version,
+            "operation_id": request["operation_id"],
+            "execution_request_id": expected_req_id,
+            "execution_request_hash": expected_req_hash,
+            "executor_id": request["executor_id"],
+            "capability_id": request["capability_id"],
+            "evidence_contract": item.metadata.expected_evidence_contract,
+            "status": "failed",
+            "error_code": error_code,
+            "result_item_count": 0,
+            "evidence_artifacts": [],
+            "warnings": [],
+        }
+        return validate_result(item, result)
+
     for batch_group_id, items in by_batch.items():
         first = items[0]
         route = (first.request["executor_id"], first.request["capability_id"], first.request["market"])
@@ -323,39 +349,9 @@ def dispatch_prepared(
             raise
         except TimeoutError:
             for item in items:
-                expected_req_id, expected_req_hash = request_identity(item.request)
-                outcome = {
-                "schema_version": "unified_market_evidence_operation_result.v1",
-                "operation_id": item.request["operation_id"],
-                "execution_request_id": expected_req_id,
-                "execution_request_hash": expected_req_hash,
-                "executor_id": item.request["executor_id"],
-                "capability_id": item.request["capability_id"],
-                "evidence_contract": item.metadata.expected_evidence_contract,
-                "status": "failed",
-                "error_code": "adapter_timeout",
-                "result_item_count": 0,
-                "evidence_artifacts": [],
-                "warnings": [],
-                }
-                outcomes.append(outcome)
+                outcomes.append(normalized_failure(item, "adapter_timeout"))
         except Exception:
             for item in items:
-                expected_req_id, expected_req_hash = request_identity(item.request)
-                outcome = {
-                "schema_version": "unified_market_evidence_operation_result.v1",
-                "operation_id": item.request["operation_id"],
-                "execution_request_id": expected_req_id,
-                "execution_request_hash": expected_req_hash,
-                "executor_id": item.request["executor_id"],
-                "capability_id": item.request["capability_id"],
-                "evidence_contract": item.metadata.expected_evidence_contract,
-                "status": "failed",
-                "error_code": "adapter_exception",
-                "result_item_count": 0,
-                "evidence_artifacts": [],
-                "warnings": [],
-                }
-                outcomes.append(outcome)
+                outcomes.append(normalized_failure(item, "adapter_exception"))
     order = {item.request["operation_id"]: index for index, item in enumerate(prepared)}
     return sorted(outcomes, key=lambda outcome: order[outcome["operation_id"]])

@@ -1,0 +1,208 @@
+{
+  "schema_version": "phase_h_h_act_h3_twse_recent_performance_acceptance_ledger.v1",
+  "status": "OWNER_ACTIVATION_ACCEPTED",
+  "acceptance_date": "2026-09-29",
+  "owner_authorization": {
+    "decision": "OWNER_ACCEPTED_FINAL_ACTIVATION_CLOSURE",
+    "reference": "Explicit Owner authorization in the current conversation dated 2026-09-29",
+    "scope": "Final H-ACT-H3 activation closure for the selected bounded TWSE recent_performance route; no new live run, no merge, and no Phase I",
+    "technical_candidate_commit": "3371fa1b4c3f51a332466ecba62b0767fc741d87",
+    "technical_candidate_tree": "942667c8a22cc1b3cb7f4793ef37434eba6eceef"
+  },
+  "selected_route": {
+    "source_id": "H3-TWSE-DEFAULT-BOUNDED",
+    "executor_id": "phase_h_h3_twse_recent_performance_executor",
+    "capability_id": "recent_performance",
+    "market": "TWSE",
+    "source_family": "TWSE_STOCK_DAY_OFFICIAL_WEB",
+    "source_contract_id": "TWSE_STOCK_DAY_HTML_MONTHLY_V1",
+    "evidence_contract": "recent_performance_evidence.v1",
+    "target_scope": ["company_share", "common_share"],
+    "execution_scope": "single exact approved target; lookback 1..20; at most three unique STOCK_DAY monthly GETs per execution; retry zero"
+  },
+  "authority_references": {
+    "controlled_use_decision": "PHASE_H_H3_TWSE_CONTROLLED_USE_OWNER_DECISION_2026-09-24.json",
+    "a0_decision": "PHASE_H_H_ACT_H3_A0_EXECUTION_PARAMETER_BINDING_DECISION_2026-09-24.json",
+    "a0_acceptance": "PHASE_H_H_ACT_H3_A0_EXECUTION_PARAMETER_BINDING_ACCEPTANCE_2026-09-24.json",
+    "a1_decision": "PHASE_H_H_ACT_H3_A1_GOVERNED_END_SELECTION_DECISION_2026-09-24.json",
+    "a1_acceptance": "PHASE_H_H_ACT_H3_A1_GOVERNED_END_SELECTION_ACCEPTANCE_2026-09-25.json",
+    "technical_candidate_commit": "3371fa1b4c3f51a332466ecba62b0767fc741d87",
+    "technical_candidate_tree": "942667c8a22cc1b3cb7f4793ef37434eba6eceef"
+  },
+  "acceptance_ids": {
+    "H0H-DRIFT-H3": {
+      "status": "PASS",
+      "evidence": "Deterministic source-contract drift fixtures verify changed/missing STOCK_DAY fields fail closed as source_failed rather than healthy unavailable; covered by the H3 activation focused suite."
+    },
+    "H0H-LIVE-003": {
+      "status": "PASS",
+      "accepted_attempt": "2E",
+      "target": "TWSE:1423",
+      "lookback_trading_days": 20,
+      "execution_timestamp": "2026-09-29T02:17:04.470221Z",
+      "governed_end": {
+        "trade_date": "2026-09-24",
+        "close": 34.55,
+        "volume": 16383,
+        "resolver": "SELF_CONTAINED_STOCK_DAY_LATEST_AVAILABLE_OFFICIAL_CLOSE"
+      },
+      "transport": {
+        "network_authorization_confirmed": true,
+        "actual_http_request_proven": true,
+        "actual_unique_network_get_count": 2,
+        "requested_months": ["2026-09", "2026-08"],
+        "retry_count": 0,
+        "maximum_unique_month_gets": 3,
+        "month_results": [
+          {
+            "requested_month": "2026-09",
+            "http_status": 200,
+            "response_bytes": 15895,
+            "response_sha256": "bc8c3fa4408b5fb41df3165ac9ecbd247fd7fae864ba15a6918538c5152ca84c"
+          },
+          {
+            "requested_month": "2026-08",
+            "http_status": 200,
+            "response_bytes": 18081,
+            "response_sha256": "1949cf26048743685b3e5ba4e02b7035a26c27f3c4ecaf603af902cb94bb3a45"
+          }
+        ],
+        "raw_html_persisted": false,
+        "polling": false,
+        "scheduler": false,
+        "background_refresh": false,
+        "persistent_month_cache": false,
+        "history_database": false,
+        "bypass_or_evasion": false
+      },
+      "evidence": {
+        "coverage_status": "complete",
+        "requested_prior_observations": 20,
+        "actual_prior_observations": 20,
+        "distinct_close_count_including_end": 21,
+        "recent_return_pct": -1.8465909090909252,
+        "return_basis": "raw_unadjusted_close_to_close"
+      },
+      "identities": {
+        "authorization_id": "umea-v1-3821b18dce3d1915813c",
+        "claim_id": "umecl-v1-2b88001ef7b71e378f4a",
+        "operation_id": "umeop-op-v1-c62377892aaac73a9431",
+        "execution_request_id": "umereq-v2-6d44bd2d24db0f8960ff",
+        "receipt_id": "umerec-v1-44eb9809d567c3b80696",
+        "bundle_id": "umeb-v1-0769711c01adacebd669",
+        "result_id": "umeresult-v3-722d4b230487bf78f8c8",
+        "audit_package_id": "umeap-v3-476d8f822df10bee3bc8"
+      },
+      "lineage": {
+        "request_schema": "unified_market_evidence_request.v3",
+        "execution_request_schema": "unified_market_evidence_execution_request.v2",
+        "operation_result_schema": "unified_market_evidence_operation_result.v2 (durable V2 bridge proven through receipt/bundle per-artifact contracts; standalone result file is not required)",
+        "result_schema": "unified_market_evidence_result.v3",
+        "audit_schema": "unified_market_evidence_audit_package.v3",
+        "canonical_primary_citation_lineage": "PASS",
+        "result_v3": "PASS",
+        "audit_v3": "PASS",
+        "receipt_and_bundle": "PASS"
+      },
+      "artifacts": {
+        "package_root": "data/phase_h_h3_live_acceptance/20260929T021651Z-bb11ec10/control/umea-v1-3821b18dce3d1915813c",
+        "primary_path": "evidence/phase_h/h3/umeop-op-v1-c62377892aaac73a9431.json",
+        "primary_sha256": "e2e92c86d02a38fd1bafec249484e5142df464af2daae938c38125dd52e2a8eb",
+        "governance_sidecar_path": "evidence/phase_h/governance/umeop-op-v1-c62377892aaac73a9431.json",
+        "governance_sidecar_sha256": "5b5c69ad5d65233d4f72ce5071183b274c0b5367802dbeb1eecb81a19671d143",
+        "transport_telemetry_path": "h3-live-transport-summary.json",
+        "transport_telemetry_sha256": "2de9ccca53c76dc49d5c341220eb156f3c6b9d64d22f1fa19f9a22bc560243d7",
+        "receipt_path": "receipts/umea-v1-3821b18dce3d1915813c.execution-receipt.json",
+        "receipt_sha256": "86375dd7214874ff7119b480d87a3a3580a54c2b7ae7b47fdafdf1f102f9f7d8",
+        "bundle_path": "bundles/umea-v1-3821b18dce3d1915813c.evidence-bundle.json",
+        "bundle_sha256": "cc34ddde3cc1b48b92c2b0052c169aef46f31e5317fe366ed0c7cbdcf7d0bd77",
+        "result_v3_path": "ai_context/unified_market_evidence_result.v3.json",
+        "result_v3_sha256": "7cd8ee5241ab775391f42e2094b6954cfffe9644e6e2b1ee77fe72d41ba94722",
+        "audit_v3_path": "audit/unified_market_evidence_audit_package.v3.json",
+        "audit_v3_sha256": "1cc487380befa76c4aad63165a1493628df923359af430e30ec708170fd5e8e1"
+      },
+      "claim": {
+        "state": "consumed_success",
+        "attempt_count": 1,
+        "sha256": "07b23a7a8d20cfd97ff6d72921feaefc5915d60e4f990939c68c5ea97b94f75e"
+      },
+      "historical_harness_fact": {
+        "original_runner_exit": "NONZERO",
+        "original_runner_error": "h3_live_operation_result_lineage_missing",
+        "classification": "acceptance-harness false negative; corrected offline contract evaluation passes",
+        "new_live_execution_required": false
+      }
+    },
+    "H0H-ROLL-004": {
+      "status": "PASS",
+      "method": "deterministic in-memory rollback simulation; no canonical authority mutation",
+      "before": {
+        "h3_catalog": "runtime_executable=true; phase_h_activation_state=selected_route_active",
+        "h3_routing": "TWSE resolved; selected executor phase_h_h3_twse_recent_performance_executor; network_required=true; batching_scope=none",
+        "active_source_count": 2,
+        "active_sources": ["H1-TPEX-ATTENTION-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"]
+      },
+      "after_simulation": {
+        "h3_catalog": "contract_supported; runtime_executable=false; phase_h_activation_state=inactive",
+        "h3_routing": "plan_only; runtime_executable=false; selected_executor_id=null",
+        "active_source_count": 1,
+        "active_sources": ["H1-TPEX-ATTENTION-OPENAPI"],
+        "h1_unchanged": true,
+        "h2_unchanged_inactive": true,
+        "tpex_h3_unchanged_blocked": true,
+        "twse_h3_planner_network_calls": 0,
+        "mcp_tool_count": 6
+      },
+      "governed_evidence_preserved": true,
+      "actual_canonical_rollback_performed": false,
+      "test_evidence": "tests/unit/test_phase_h_act_h3_twse_activation.py::test_h0h_roll_004_simulates_h3_deactivation_without_mutating_authority_or_evidence"
+    }
+  },
+  "runtime_truth_after_owner_acceptance": {
+    "selected_route_active": true,
+    "active_phase_h_source_count": 2,
+    "exact_active_phase_h_sources": ["H1-TPEX-ATTENTION-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"],
+    "h2": "inactive",
+    "h3_tpex": "blocked/non-executable",
+    "provider_automation_permission": "NOT_ESTABLISHED_TERMS_CONFLICTED",
+    "provider_approved_automation_claim": false,
+    "persistent_history_accumulation": false,
+    "backfill": false,
+    "scheduler": false,
+    "polling": false,
+    "retry_loop": false,
+    "mcp_tool_count": 6,
+    "phase_i": "NOT_STARTED"
+  },
+  "historical_attempts": {
+    "attempt_1": "FAILED / immutable / consumed_failed",
+    "attempt_2b": "PRE_DISPATCH_ABORTED / not consumed",
+    "attempt_2c": "PRE_DISPATCH_ABORTED / not consumed",
+    "attempt_2d": "EXECUTION_SUCCEEDED_POST_PROJECTION_FAILED",
+    "attempt_2e": "LIVE_EXECUTION_SUCCEEDED / ORIGINAL_HARNESS_FALSE_NEGATIVE; accepted after corrected offline contract evaluation"
+  },
+  "technical_candidate": {
+    "commit": "3371fa1b4c3f51a332466ecba62b0767fc741d87",
+    "tree": "942667c8a22cc1b3cb7f4793ef37434eba6eceef",
+    "branch": "phase-h/h-act-h3-twse-runtime-activation"
+  },
+  "final_deterministic_validation": {
+    "focused_h3_rollback_phase_h_h1_tests": "53 passed",
+    "default_ci": "778 passed, 1 skipped, 5 deselected",
+    "full_current": "1150 passed, 1 skipped, 5 deselected",
+    "phase_h_v3_contract_validator": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS; MCP tool count=6",
+    "compileall_scripts_server_tests": "PASS",
+    "crlf_aware_diff_check": "PASS",
+    "market_network_during_closure_validation": false
+  },
+  "closure": {
+    "state_is_record_time_snapshot": true,
+    "record_time_note": "The following fields preserve closure facts as recorded in this acceptance ledger; they are historical provenance, not current runtime activation authority or current PR lifecycle state.",
+    "owner_final_activation_accepted": true,
+    "pull_request_review_required_before_merge": true,
+    "merge_performed": false,
+    "phase_i_started": false
+  }
+}

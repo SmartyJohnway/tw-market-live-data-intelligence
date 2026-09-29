@@ -77,7 +77,7 @@ def test_h_act_h1_exact_route_scope_is_preserved_after_v3_promotion() -> None:
     assert catalog["contract_versions"]["preferred_request_schema_version"] == "unified_market_evidence_request.v3"
     assert catalog["contract_versions"]["emitted_result_schema_version"] == "unified_market_evidence_result.v3"
     assert catalog["contract_versions"]["v3_runtime_authority_status"] == "v3_preferred_selected_routes_active"
-    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 1
+    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 2
     assert capability["support_status"] == "runtime_executable"
     assert capability["phase_h_activation_state"] == "selected_route_active"
 
@@ -88,9 +88,11 @@ def test_h_act_h1_exact_route_scope_is_preserved_after_v3_promotion() -> None:
     assert route["batching_scope"] == "none"
     assert route["output_evidence_contract"] == "trading_status_context_evidence.v1"
 
-    assert [(item["source_id"], item["runtime_executable"]) for item in active_records] == [
-        ("H1-TPEX-ATTENTION-OPENAPI", True)
-    ]
+    assert {(item["source_id"], item["runtime_executable"]) for item in active_records} == {
+        ("H1-TPEX-ATTENTION-OPENAPI", True),
+        ("H3-TWSE-DEFAULT-BOUNDED", True),
+    }
+    assert len(active_records) == 2
     assert [(item["source_id"], item["runtime_executable"]) for item in active_descriptors] == [
         ("H1-TPEX-ATTENTION-OPENAPI", True)
     ]
@@ -303,7 +305,8 @@ def test_h0h_roll_001_single_route_rollback_model_preserves_artifact_bytes() -> 
     )
     # Source-route rollback is independent from preferred-version rollback.
     # V3 stays preferred while the selected H1 route alone returns to inactive.
-    rollback_catalog["phase_h_contract"]["active_phase_h_source_count"] = 0
+    # H1 rollback leaves the independently selected H3 TWSE candidate intact.
+    rollback_catalog["phase_h_contract"]["active_phase_h_source_count"] = 1
 
     route = next(item for item in rollback_routing["routes"] if item["capability_id"] == "trading_status_context")
     route.update(
@@ -316,7 +319,7 @@ def test_h0h_roll_001_single_route_rollback_model_preserves_artifact_bytes() -> 
         estimated_operation_rule="contract-only; no executor invocation",
     )
     route.pop("source_compatibility_key", None)
-    rollback_routing["phase_h_source_authority"]["active_source_count"] = 0
+    rollback_routing["phase_h_source_authority"]["active_source_count"] = 1
     for item in rollback_routing["phase_h_source_authority"]["records"]:
         if item["source_id"] == "H1-TPEX-ATTENTION-OPENAPI":
             item["activation_state"] = "eligible"
@@ -328,9 +331,15 @@ def test_h0h_roll_001_single_route_rollback_model_preserves_artifact_bytes() -> 
             item["activation_state"] = "eligible"
             item["runtime_executable"] = False
 
-    assert rollback_catalog["phase_h_contract"]["active_phase_h_source_count"] == 0
-    assert rollback_routing["phase_h_source_authority"]["active_source_count"] == 0
-    assert not any(item["activation_state"] == "active" for item in rollback_routing["phase_h_source_authority"]["records"])
+    assert rollback_catalog["phase_h_contract"]["active_phase_h_source_count"] == 1
+    assert rollback_routing["phase_h_source_authority"]["active_source_count"] == 1
+    active_after_h1_rollback = [
+        item for item in rollback_routing["phase_h_source_authority"]["records"]
+        if item["activation_state"] == "active"
+    ]
+    assert [(item["source_id"], item["runtime_executable"]) for item in active_after_h1_rollback] == [
+        ("H3-TWSE-DEFAULT-BOUNDED", True)
+    ]
     assert not any(item["runtime_executable"] for item in rollback_descriptors["sources"])
     assert rollback_catalog["contract_versions"]["preferred_request_schema_version"] == "unified_market_evidence_request.v3"
     assert rollback_catalog["contract_versions"]["emitted_result_schema_version"] == "unified_market_evidence_result.v3"

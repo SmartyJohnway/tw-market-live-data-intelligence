@@ -25,6 +25,7 @@ Current executable truth is governed by:
 Key current/historical Phase H evidence:
 
 - [H-ACT-H1 TPEx attention acceptance](phase_h/PHASE_H_H_ACT_H1_TPEX_ATTENTION_ACCEPTANCE_LEDGER.json)
+- [H-ACT-H3 TWSE recent-performance final acceptance](phase_h/PHASE_H_H_ACT_H3_TWSE_RECENT_PERFORMANCE_ACCEPTANCE_LEDGER.json)
 - [H-ACC-7L selected-product live E2E](phase_h/PHASE_H_H_ACC_7L_SELECTED_PRODUCT_LIVE_E2E_LEDGER.json)
 - [H-ACT-V3 promotion preflight](phase_h/PHASE_H_H_ACT_V3_PROMOTION_PREFLIGHT_AND_AUTHORITY_IMPACT_INVENTORY.json)
 - [H-ACT-V3 promotion acceptance](phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json)

@@ -454,6 +454,39 @@
         "docs/governance/phase_h/Phase_H_H1_Trading_Status_Context_Contract_FROZEN.md",
         "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.json"
       ]
+    },
+    {
+      "surface_id": "phase_h_h3_twse_recent_performance_executor",
+      "path": "scripts/m8r_06_03_production_adapter.py",
+      "surface_type": "controlled_phase_h_h3_executor",
+      "current_status": "H-ACT-H3 selected TWSE route is Owner-accepted and active",
+      "network_behavior": "at most three unique official TWSE STOCK_DAY monthly GETs after 05B authorization; no retry, polling, scheduler, persistent cache or raw HTML persistence",
+      "input_contract": "execution-request v2 bound to recent_performance / TWSE / exact approved target / explicit 1..20 lookback",
+      "output_contract": "recent_performance_evidence.v1 plus phase_h_source_attempt_governance.v1",
+      "approval_boundary": "05B plan, authorization, single-use claim and network confirmation",
+      "authorization_binding": "operation, route, market, exact target, lookback parameter, executor and evidence contract",
+      "single_use_enforced": true,
+      "supported_markets": [
+        "TWSE"
+      ],
+      "supported_security_types": [
+        "equity"
+      ],
+      "supported_capabilities": [
+        "recent_performance"
+      ],
+      "batching_supported": false,
+      "deterministic": false,
+      "reusable_for_05b": true,
+      "reuse_mode": "adapter_required",
+      "disposition": "adapter_required",
+      "blocking_gaps": [],
+      "evidence_paths": [
+        "server/services/phase_h_h3_twse_governed_end.py",
+        "server/services/phase_h_h3_twse_stock_day_adapter.py",
+        "server/services/phase_h_h3_twse_stock_day_walker.py",
+        "docs/governance/phase_h/PHASE_H_H3_TWSE_CONTROLLED_USE_OWNER_DECISION_2026-09-24.json"
+      ]
     }
   ]
 }

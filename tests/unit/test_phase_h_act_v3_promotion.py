@@ -43,7 +43,7 @@ def _market(capability: dict, market: str) -> dict:
     return next(item for item in capability["markets"] if item["market"] == market)
 
 
-def test_h_act_v3_current_authority_is_promoted_without_expanding_active_source_set():
+def test_h_act_v3_current_authority_keeps_v3_preferred_and_explicit_selected_route_set():
     catalog = json.loads(
         (ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json").read_text(
             encoding="utf-8"
@@ -78,14 +78,18 @@ def test_h_act_v3_current_authority_is_promoted_without_expanding_active_source_
         "future_candidate_result_schema_version": None,
         "v3_runtime_authority_status": "v3_preferred_selected_routes_active",
     }
-    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 1
-    assert routing["phase_h_source_authority"]["active_source_count"] == 1
+    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 2
+    assert routing["phase_h_source_authority"]["active_source_count"] == 2
     active = [
         (item["source_id"], item["runtime_executable"])
         for item in routing["phase_h_source_authority"]["records"]
         if item["activation_state"] == "active"
     ]
-    assert active == [("H1-TPEX-ATTENTION-OPENAPI", True)]
+    assert set(active) == {
+        ("H1-TPEX-ATTENTION-OPENAPI", True),
+        ("H3-TWSE-DEFAULT-BOUNDED", True),
+    }
+    assert len(active) == 2
 
 
 def test_h_act_v3_local_service_exposes_exact_route_truth_not_catalog_market_overclaim():
@@ -119,8 +123,18 @@ def test_h_act_v3_local_service_exposes_exact_route_truth_not_catalog_market_ove
     assert all(item["disposition"] != "executable" for item in h2["markets"])
 
     h3 = _capability(described, "recent_performance")
-    assert h3["routing_disposition"] == "plan_only"
-    assert all(item["disposition"] != "executable" for item in h3["markets"])
+    assert h3["routing_disposition"] == "resolved"
+    assert _market(h3, "TWSE") == {
+        "market": "TWSE",
+        "disposition": "executable",
+        "production_executor_available": True,
+    }
+    assert _market(h3, "TPEX") == {
+        "market": "TPEX",
+        "disposition": "blocked",
+        "production_executor_available": False,
+    }
+    assert h3["selected_executor_id"] == "phase_h_h3_twse_recent_performance_executor"
 
 
 def test_h_act_v3_mcp_keeps_six_tools_and_expands_existing_fetch_contract():

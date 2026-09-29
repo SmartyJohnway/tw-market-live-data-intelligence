@@ -122,7 +122,7 @@
     {
       "capability_id": "recent_performance",
       "description": "Bounded descriptive recent-market reference evidence using 1..20 completed-session lookback observations plus one governed end observation.",
-      "support_status": "contract_supported",
+      "support_status": "runtime_executable",
       "supported_markets": [
         "TWSE",
         "TPEX"
@@ -145,14 +145,14 @@
       ],
       "possible_fallbacks": [],
       "known_limitations": [
-        "TWSE public STOCK_DAY bounded route is Owner-approved for controlled local-first use but remains runtime-inactive pending H-ACT-H3",
-        "TWSE provider automation permission remains not established / terms-conflicted and is not represented as provider-approved automation",
-        "TPEx default bounded route remains unresolved",
+        "only H3-TWSE-DEFAULT-BOUNDED is selected for runtime execution; TPEX H3 remains blocked and non-executable",
+        "TWSE provider automation permission remains NOT_ESTABLISHED_TERMS_CONFLICTED; Owner controlled local-first use is not provider-approved automation",
+        "H0H-LIVE-003 and H0H-ROLL-004 are accepted for the selected TWSE route",
         "optional provider contracts remain pending",
-        "no persistent history accumulation"
+        "no persistent history accumulation, scheduler, polling, or backfill"
       ],
-      "runtime_executable": false,
-      "phase_h_activation_state": "inactive",
+      "runtime_executable": true,
+      "phase_h_activation_state": "selected_route_active",
       "instrument_scope": {
         "instrument_families": [
           "company_share"
@@ -454,8 +454,8 @@
     "V3 is the preferred current request contract and new governed outputs default to Result/Audit V3",
     "Phase G research evidence is limited to TWSE/TPEX company common shares in G1/G2",
     "Phase H active source coverage is incremental; only explicitly activated routes are executable",
-    "H1 trading-status coverage remains partial with only H1-TPEX-ATTENTION-OPENAPI active",
-    "H2 and H3 inactive, blocked, plan-only, manual-only, optional-provider, and source-gap states remain non-executable until their separate gates pass",
+    "H1 trading-status coverage remains partial; H1-TPEX-ATTENTION-OPENAPI is the only active H1 route",
+    "H2 remains inactive; H3 runtime execution is limited to the Owner-accepted H3-TWSE-DEFAULT-BOUNDED route; TPEX H3 remains blocked and non-executable",
     "no scheduler",
     "no continuous polling",
     "no auto retry",
@@ -463,7 +463,7 @@
   ],
   "phase_h_contract": {
     "runtime_authority": "v3_preferred_selected_routes_active",
-    "active_phase_h_source_count": 1,
+    "active_phase_h_source_count": 2,
     "source_role_vocabulary": [
       "default_candidate",
       "governed_fallback",

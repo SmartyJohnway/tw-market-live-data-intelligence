@@ -32,7 +32,7 @@ def test_production_metadata_materializes_legacy_research_and_selected_h1_routes
     metadata = load_production_executor_metadata()
     registry = build_production_runtime_adapter_registry()
 
-    assert len(metadata["executors"]) == 9
+    assert len(metadata["executors"]) == 10
     assert len(production_executor_metadata_sha256()) == 64
     for capability_id, market in (
         ("current_observation", "TWSE"),
@@ -57,6 +57,13 @@ def test_production_metadata_materializes_legacy_research_and_selected_h1_routes
     assert h1.fake_adapter is False
     assert h1.network_required is True
     assert h1.batch_adapter is None
+    h3 = registry.get_route(
+        "phase_h_h3_twse_recent_performance_executor", "recent_performance", "TWSE"
+    )
+    assert h3 is not None
+    assert h3.fake_adapter is False
+    assert h3.network_required is True
+    assert h3.batch_adapter is None
 
 
 def test_selected_h1_tpex_attention_fetches_once_and_persists_only_target_bounded_artifacts(tmp_path, monkeypatch):

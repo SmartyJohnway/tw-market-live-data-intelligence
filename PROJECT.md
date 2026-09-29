@@ -135,18 +135,32 @@ Completed governance/runtime milestones include:
 - H4 deterministic discontinuity-safety contract and projection;
 - one activated bounded-live H1 route:
   `H1-TPEX-ATTENTION-OPENAPI`;
+- one Owner-accepted bounded TWSE H3 route:
+  `H3-TWSE-DEFAULT-BOUNDED` for `recent_performance`;
 - selected-product H-ACC-7L live E2E;
 - H-ACT-V3 promotion to preferred V3 runtime authority;
 - actual V3-preferred -> V2-preferred rollback rehearsal.
 
 Current Phase H source truth:
 
-- active Phase H sources: exactly 1;
+- active Phase H sources: exactly 2 — `H1-TPEX-ATTENTION-OPENAPI` and
+  `H3-TWSE-DEFAULT-BOUNDED`;
 - TPEx attention route: executable;
 - broader H1 types remain uncovered/inactive;
-- H2 corporate-action activation: not started;
-- H3 recent-reference activation: not started;
+- H2 corporate-action activation: not started/inactive;
+- H3 TWSE `recent_performance` route: active for the selected bounded route;
+  TPEx H3 remains blocked/non-executable;
+- provider automation permission remains
+  `NOT_ESTABLISHED_TERMS_CONFLICTED`; Owner-controlled use is not provider
+  approval;
 - complete H1 coverage must not be claimed.
+
+H-ACT-H3 final activation closure is recorded in
+`docs/governance/phase_h/PHASE_H_H_ACT_H3_TWSE_RECENT_PERFORMANCE_ACCEPTANCE_LEDGER.json`.
+The route-level `H0H-LIVE-003` and `H0H-ROLL-004` gates are accepted. Attempt
+#2E is the accepted bounded-live evidence; its original runner nonzero
+exit is retained as a historical acceptance-harness false negative and no new
+live run is required. H-ACT-H3 does not authorize Phase I implementation.
 
 Accepted promotion ledger:
 `docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json`.
