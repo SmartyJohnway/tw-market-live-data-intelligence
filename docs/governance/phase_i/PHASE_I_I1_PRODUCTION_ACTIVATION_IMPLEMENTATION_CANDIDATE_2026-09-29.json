@@ -1,0 +1,49 @@
+{
+  "schema_version": "phase_i_i1_production_activation_implementation_candidate.v1",
+  "candidate_id": "PHASE_I_I1_PRODUCTION_ACTIVATION_IMPLEMENTATION",
+  "owner_authorization_ref": "USER_CHAT_2026-09-29_PHASE_I_I1_PRODUCTION_ACTIVATION_IMPLEMENTATION",
+  "status": "IMPLEMENTATION_CANDIDATE",
+  "source_contract": "FROZEN_PASS",
+  "production_transport": "IMPLEMENTED_CANDIDATE",
+  "executor_id": "phase_i_i1_market_state_executor",
+  "executor_candidate_metadata": "config/phase_i_i1_production_executor_candidate.json",
+  "runtime_registry_registered": false,
+  "current_route": {
+    "capability_id": "market_state_context",
+    "support_status": "contract_supported",
+    "runtime_executable": false,
+    "routing_status": "plan_only",
+    "selected_executor_id": null,
+    "network_required": false,
+    "approval_required": true,
+    "batching_scope": "same_market"
+  },
+  "source_transport": {
+    "timeout_seconds": 15,
+    "automatic_retry": 0,
+    "maximum_response_bytes_per_get": 65536,
+    "http_success_status": 200,
+    "accepted_content_type": "application/json with optional parameters",
+    "redirects": "rejected",
+    "encoding": ["utf-8", "utf-8-sig"],
+    "raw_payload_persistence": "forbidden",
+    "max_unique_gets": {"TWSE": 2, "TPEX": 1, "mixed_execution": 3}
+  },
+  "source_row_selection": {
+    "FMTQIK": "select unique maximum parsed ROC Date; never depend on source ordering",
+    "TWSE_breadth": "類型 == 股票 only; no 整體市場 fallback; duplicate selected rows fail closed",
+    "TPEx": "exactly one row required; empty unavailable; multiple rows fail closed"
+  },
+  "phase_i_active_source_count": 0,
+  "live_acceptance": "NOT_RUN",
+  "production_route_activation": false,
+  "merge_authorized": false,
+  "i2": "NOT_STARTED",
+  "i3": "NOT_STARTED",
+  "rollback_target": {
+    "remove_or_disable": ["isolated I1 candidate registry builder", "candidate executor metadata", "candidate source adapter"],
+    "preserve": ["frozen I0/I1 authorities", "offline I1 normalizers", "PR #294 dormant semantics"],
+    "runtime_authority_changes_required": false
+  },
+  "network_used": false
+}

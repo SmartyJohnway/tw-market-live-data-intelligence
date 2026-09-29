@@ -57,12 +57,12 @@ As of this governance consolidation:
 - H-ACT-V3 promotion is accepted;
 - H1 coverage remains partial;
 - H2/H3 activation remains incomplete;
-- **Phase I I1 offline implementation is Owner-authorized as a dormant,
-  fixture-only candidate under the frozen source contract.**
+- **Phase I I1 production-capable implementation candidate is Owner-authorized
+  under the frozen source contract; the current runtime route remains dormant.**
 
 Do not activate I1 or begin I2/I3 without separate explicit Owner
-authorization. I1 implementation does not authorize market network use,
-production route activation, or merge.
+authorization. This I1 implementation tranche does not authorize market
+network use, production route activation, or merge.
 
 ## 5. Authority hierarchy
 
@@ -305,11 +305,13 @@ important audit evidence.
 
 ## 16. Current stop rule
 
-For the present repository state:
+For the present authorized I1 implementation tranche:
 
-> **Do not activate I1 or enter I2/I3 implementation.**
+> **Do not run I1 live acceptance, activate I1, or enter I2/I3 implementation.**
 
-The offline I1 implementation candidate is authorized by the frozen Owner
-source contract. Documentation cleanup, governance reconciliation, archive
+Production-capable I1 candidate implementation and deterministic offline
+validation are authorized by the current Owner instruction and frozen source
+contract. Documentation cleanup, governance reconciliation, archive
 organization, and current-state validation remain allowed. Separate Owner
-authorization is required before I1 activation or I2/I3 implementation.
+authorization is required before I1 live acceptance/activation or I2/I3
+implementation.

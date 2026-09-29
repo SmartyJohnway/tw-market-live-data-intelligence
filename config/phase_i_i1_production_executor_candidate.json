@@ -1,0 +1,46 @@
+{
+  "candidate_id": "PHASE_I_I1_PRODUCTION_ACTIVATION_IMPLEMENTATION",
+  "candidate_status": "IMPLEMENTED_NOT_REGISTERED",
+  "live_acceptance": "NOT_RUN",
+  "production_route_active": false,
+  "active_source_count": 0,
+  "transport": {
+    "timeout_seconds": 15,
+    "automatic_retry": 0,
+    "maximum_response_bytes_per_get": 65536,
+    "http_success_status": 200,
+    "accepted_media_type": "application/json",
+    "redirects": "rejected",
+    "raw_payload_persistence": "forbidden",
+    "encoding": ["utf-8", "utf-8-sig"]
+  },
+  "executor_metadata": {
+    "schema_version": "m8r_05b_03_executor_registry_metadata.v1",
+    "executors": [
+    {
+      "executor_id": "phase_i_i1_market_state_executor",
+      "capability_id": "market_state_context",
+      "market": "TWSE",
+      "supported_security_types": ["equity"],
+      "expected_evidence_contract": "market_state_context_evidence.v1",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 15,
+      "maximum_result_items": 1,
+      "output_policy": "contained_artifact_only"
+    },
+    {
+      "executor_id": "phase_i_i1_market_state_executor",
+      "capability_id": "market_state_context",
+      "market": "TPEX",
+      "supported_security_types": ["equity"],
+      "expected_evidence_contract": "market_state_context_evidence.v1",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 15,
+      "maximum_result_items": 1,
+      "output_policy": "contained_artifact_only"
+    }
+    ]
+  }
+}

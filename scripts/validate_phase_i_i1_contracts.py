@@ -139,7 +139,7 @@ def validate_phase_i_i1_contracts() -> None:
     if len(descriptors.get("sources", [])) != 3 or any(
         source.get("activation_state") != "inactive"
         or source.get("runtime_executable") is not False
-        or source.get("usage_authority_status") != "NOT_YET_CLOSED_FOR_PRODUCTION_ACTIVATION"
+        or source.get("usage_authority_status") != "FROZEN_SOURCE_CONTRACT_PASS_LIVE_ACCEPTANCE_PENDING"
         or source.get("raw_payload_retention_policy") != "forbidden"
         or not source.get("source_owner")
         or not source.get("source_role")

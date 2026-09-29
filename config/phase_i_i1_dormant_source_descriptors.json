@@ -14,7 +14,7 @@
       "source_role": "benchmark_and_turnover",
       "activation_state": "inactive",
       "runtime_executable": false,
-      "usage_authority_status": "NOT_YET_CLOSED_FOR_PRODUCTION_ACTIVATION",
+      "usage_authority_status": "FROZEN_SOURCE_CONTRACT_PASS_LIVE_ACCEPTANCE_PENDING",
       "raw_payload_retention_policy": "forbidden"
     },
     {
@@ -27,7 +27,7 @@
       "source_role": "market_breadth",
       "activation_state": "inactive",
       "runtime_executable": false,
-      "usage_authority_status": "NOT_YET_CLOSED_FOR_PRODUCTION_ACTIVATION",
+      "usage_authority_status": "FROZEN_SOURCE_CONTRACT_PASS_LIVE_ACCEPTANCE_PENDING",
       "raw_payload_retention_policy": "forbidden",
       "required_selector": {"類型": "股票"}
     },
@@ -41,7 +41,7 @@
       "source_role": "benchmark_breadth_and_turnover",
       "activation_state": "inactive",
       "runtime_executable": false,
-      "usage_authority_status": "NOT_YET_CLOSED_FOR_PRODUCTION_ACTIVATION",
+      "usage_authority_status": "FROZEN_SOURCE_CONTRACT_PASS_LIVE_ACCEPTANCE_PENDING",
       "raw_payload_retention_policy": "forbidden"
     }
   ]

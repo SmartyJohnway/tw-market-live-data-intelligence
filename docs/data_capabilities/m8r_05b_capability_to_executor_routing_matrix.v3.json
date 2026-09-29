@@ -416,7 +416,7 @@
     },
     {
       "capability_id": "market_state_context",
-      "capability_status_source": "catalog v3 support_status=contract_supported; Phase I1 implementation candidate only",
+      "capability_status_source": "catalog v3 support_status=contract_supported; production transport/executor candidate implemented but intentionally not registered or selected",
       "supported_markets": ["TWSE", "TPEX"],
       "supported_security_types": [],
       "supported_instrument_families": ["company_share"],
@@ -434,7 +434,7 @@
       "estimated_operation_rule": "dormant contract-only capability; no source acquisition or executor invocation",
       "parameter_mapping": {},
       "output_evidence_contract": "market_state_context_evidence.v1",
-      "known_limitations": ["I1 normalizers are fixture-only; route activation and production execution are not authorized"],
+      "known_limitations": ["Production-capable I1 candidate exists; this current route remains plan_only with no selected executor, no network authorization, and no runtime registration pending a separate bounded live acceptance and Owner activation gate"],
       "evidence_paths": [
         "docs/governance/phase_i/PHASE_I_I1_MARKET_STATE_SOURCE_CONTRACT_2026-09-29_FROZEN.json",
         "docs/governance/phase_i/Phase_I_I1_Market_State_Source_Contract_2026-09-29_FROZEN.md"

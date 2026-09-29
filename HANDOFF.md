@@ -10,8 +10,9 @@ Baseline main before this documentation-governance consolidation:
 
 Current workstream:
 
-> **H-ACT-H3 is Owner-accepted. Phase I I1 has an Owner-authorized offline,
-> dormant implementation candidate; activation, I2, and I3 are not authorized.**
+> **H-ACT-H3 is Owner-accepted. Phase I I1 has an Owner-authorized
+> production-capable implementation candidate; its current route remains
+> dormant, and live acceptance, route activation, I2, and I3 are separate gates.**
 
 The purpose of this handoff is to let a new human or agent resume without
 reconstructing the repository from hundreds of historical milestone documents.
@@ -68,9 +69,10 @@ H2 activation                NOT STARTED / INACTIVE
 H3 TWSE recent_performance   ACTIVE; H0H-LIVE-003 PASS; H0H-ROLL-004 PASS
 H3 TPEX                      BLOCKED / NON-EXECUTABLE
 Provider automation         NOT_ESTABLISHED_TERMS_CONFLICTED
-Phase I I1 offline candidate IMPLEMENTED / DORMANT
+Phase I I1 production-capable candidate IN IMPLEMENTATION / DORMANT
 Phase I active sources       0
-I1 runtime/route activation  NOT AUTHORIZED
+I1 live acceptance           NOT RUN
+I1 runtime/route activation  INACTIVE / NOT AUTHORIZED IN THIS TRANCHE
 I2 / I3                      NOT STARTED / NOT AUTHORIZED
 ```
 
@@ -123,10 +125,11 @@ false negative. No new live execution is required for this closure.
 The H-ACT-H3 final activation is Owner-accepted for the selected bounded TWSE
 `recent_performance` route. The route-specific acceptance ledger records the
 technical candidate and its live/rollback evidence. Separately, Owner accepted
-the frozen Phase I I1 source contract and authorized an offline, fixture-only,
-dormant implementation candidate for `market_state_context`. I1 does not
-authorize market network access, production executor/route activation, I2, or
-I3. The broader Roadmap Phase I remains incomplete.
+the frozen Phase I I1 source contract and authorized a bounded,
+production-capable executor candidate for `market_state_context`. The current
+route remains dormant, unregistered, and non-executable. This tranche does not
+authorize market network access or route activation. I2 and I3 remain not
+started. The broader Roadmap Phase I remains incomplete.
 
 ## Historical documentation problem already closed
 
@@ -168,18 +171,19 @@ files unless the task requires historical evidence.
 
 ## Current allowed next work
 
-Continue only within separately authorized work. Offline I1 implementation is
-authorized under its frozen source contract; do not activate it or start I2 or
-I3 without new Owner authorization.
+Continue only within separately authorized work. The current authorized I1
+tranche is production-capable candidate implementation and deterministic
+offline validation only. Do not run bounded live acceptance, activate the
+route, or start I2/I3 without a separate Owner gate.
 
 ## Explicit stop boundary
 
-**Do not activate I1 or begin I2/I3.**
+**Do not run I1 live acceptance, activate I1, or begin I2/I3 in this tranche.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0 and the I1 source
-contract are frozen; only dormant offline I1 implementation is authorized.
-Live activation, production route activation, I2, I3, and merge require separate
-Owner authorization.
+contract are frozen; production-capable candidate implementation is authorized.
+Bounded live acceptance, production route activation, I2, I3, and merge require
+separate Owner authorization.
 
 ## Before any future Phase I work
 

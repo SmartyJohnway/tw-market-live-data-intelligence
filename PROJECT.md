@@ -161,8 +161,8 @@ The route-level `H0H-LIVE-003` and `H0H-ROLL-004` gates are accepted. Attempt
 #2E is the accepted bounded-live evidence; its original runner nonzero
 exit is retained as a historical acceptance-harness false negative and no new
 live run is required. H-ACT-H3 itself does not authorize Phase I work; the
-separate frozen I0/I1 Owner authority permits only dormant, offline I1
-implementation, not live activation or route activation.
+separate Owner authority permits a production-capable I1 implementation
+candidate, but not bounded live acceptance or route activation in this tranche.
 
 Accepted promotion ledger:
 `docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json`.
@@ -181,14 +181,15 @@ Current interpretation:
   completion is not declared by this file.
 - Phase H: substantial contract/runtime work exists and V3 promotion is
   complete; broader H1/H2/H3 Roadmap coverage remains incomplete.
-- **Phase I I1 offline implementation candidate:** Owner accepted the frozen
-  I1 source contract (`USER_CHAT_2026-09-29_PHASE_I_I1_SOURCE_CONTRACT_ACCEPTANCE`)
-  and authorized dormant, fixture-only implementation. `market_state_context`
-  remains `contract_supported`, non-executable, and has zero active Phase I
-  sources. No market network was used.
-- Phase I live activation and production route activation are not authorized;
-  I2 and I3 are not authorized and remain not started. The broader Roadmap
-  Phase I remains incomplete.
+- **Phase I I1 production activation implementation candidate:** the frozen I1
+  source contract is accepted and a bounded official-source executor candidate
+  is being implemented under separate Owner authority. The current Catalog and
+  Routing remain dormant: `market_state_context` is `contract_supported`,
+  `runtime_executable=false`, `plan_only`, with no selected executor and zero
+  active Phase I sources. This implementation tranche uses no market network.
+- I1 bounded live acceptance and production route activation remain separate
+  gates and are not performed here. I2 and I3 remain not started; the broader
+  Roadmap Phase I remains incomplete.
 
 ## Current authority hierarchy
 
