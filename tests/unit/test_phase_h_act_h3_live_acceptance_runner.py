@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import inspect
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -9,6 +10,8 @@ import pytest
 
 from scripts import run_phase_h_h_act_h3_live_acceptance as runner
 from server.services import unified_mode_b2
+from scripts.m8r_05b_03.evidence_aggregation import aggregate_dispatch_outcomes
+from tests.unit.m8r_05b_03_test_helpers import build_valid_preflight
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -120,3 +123,118 @@ def test_reference_with_whitespace_or_over_b2_bound_is_rejected_not_normalized()
         runner._require_owner_authorization_reference(" padded ")
     with pytest.raises(RuntimeError, match="OWNER_AUTHORIZATION_REFERENCE_INVALID"):
         runner._require_owner_authorization_reference("x" * 241)
+
+
+def _durable_bridge_fixture(tmp_path: Path):
+    operation_id = "umeop-op-v1-" + "a" * 20
+    execution_request = {
+        "schema_version": "unified_market_evidence_execution_request.v2",
+        "operation_id": operation_id,
+        "execution_request_id": "umereq-v2-" + "b" * 20,
+        "execution_request_hash": "c" * 64,
+    }
+    values = {
+        f"evidence/phase_h/h3/{operation_id}.json": {
+            "schema_version": "recent_performance_evidence.v1",
+            "target": {"canonical_target_id": "TWSE:1423"},
+        },
+        f"evidence/phase_h/governance/{operation_id}.json": {
+            "schema_version": "phase_h_source_attempt_governance.v1",
+            "canonical_target_id": "TWSE:1423",
+        },
+    }
+    inventory = []
+    refs = []
+    for path, value in values.items():
+        raw = (json.dumps(value, sort_keys=True) + "\n").encode()
+        target = tmp_path / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(raw)
+        schema = value["schema_version"]
+        entry = {
+            "relative_path": path,
+            "sha256": hashlib.sha256(raw).hexdigest(),
+            "schema_version": schema,
+            "evidence_contract": schema,
+            "byte_size": len(raw),
+            "item_count": 1,
+        }
+        inventory.append(entry)
+        refs.append({key: entry[key] for key in ("relative_path", "sha256", "schema_version", "byte_size", "item_count")})
+    receipt = {
+        "schema_version": "unified_market_evidence_execution_receipt.v1",
+        "overall_status": "succeeded",
+        "operation_receipts": [{
+            "operation_id": operation_id,
+            "execution_request_id": execution_request["execution_request_id"],
+            "execution_request_hash": execution_request["execution_request_hash"],
+            "status": "succeeded",
+            "evidence_artifacts": refs,
+        }],
+    }
+    bundle = {
+        "schema_version": "unified_market_evidence_bundle.v1",
+        "overall_status": "succeeded",
+        "operation_evidence_entries": [{
+            "operation_id": operation_id, "status": "succeeded", "artifacts": refs,
+        }],
+        "artifact_inventory": inventory,
+    }
+    return execution_request, receipt, bundle
+
+
+def test_durable_v2_bridge_passes_without_standalone_operation_result(tmp_path):
+    request, receipt, bundle = _durable_bridge_fixture(tmp_path)
+    assert not list(tmp_path.rglob("*operation-result*.json"))
+
+    verified = runner._verify_h3_durable_v2_bridge(tmp_path, request, receipt, bundle)
+
+    assert {item["evidence_contract"] for item in verified.values()} == {
+        "recent_performance_evidence.v1",
+        "phase_h_source_attempt_governance.v1",
+    }
+
+
+def test_durable_v2_bridge_rejects_wrong_supporting_artifact_contract(tmp_path):
+    request, receipt, bundle = _durable_bridge_fixture(tmp_path)
+    bundle["artifact_inventory"][1]["evidence_contract"] = "recent_performance_evidence.v1"
+
+    with pytest.raises(RuntimeError, match="h3_live_artifact_contract_mismatch"):
+        runner._verify_h3_durable_v2_bridge(tmp_path, request, receipt, bundle)
+
+
+def test_v1_aggregation_cannot_masquerade_as_distinct_contract_v2_bridge(tmp_path):
+    preflight = build_valid_preflight(tmp_path)
+    operation_id = preflight["approved_operation_order"][0]
+    request = preflight["bounded_execution_requests"][0]
+    binding = preflight["resolved_operation_bindings"][operation_id]
+    binding["expected_evidence_contract"] = "recent_performance_evidence.v1"
+    artifacts = [
+        {
+            "relative_path": "evidence/phase_h/h3/op.json", "sha256": "1" * 64,
+            "schema_version": "recent_performance_evidence.v1", "evidence_contract": "recent_performance_evidence.v1",
+            "byte_size": 1, "item_count": 1, "artifact_role": "primary_evidence",
+        },
+        {
+            "relative_path": "evidence/phase_h/governance/op.json", "sha256": "2" * 64,
+            "schema_version": "phase_h_source_attempt_governance.v1", "evidence_contract": "phase_h_source_attempt_governance.v1",
+            "byte_size": 1, "item_count": 1, "artifact_role": "supporting_governance",
+        },
+    ]
+    outcome = {
+        "schema_version": "unified_market_evidence_operation_result.v1",
+        "operation_id": operation_id,
+        "execution_request_id": request["execution_request_id"],
+        "execution_request_hash": request["execution_request_hash"],
+        "executor_id": request["executor_id"],
+        "capability_id": request["capability_id"],
+        "evidence_contract": "recent_performance_evidence.v1",
+        "status": "succeeded", "error_code": None, "result_item_count": 1,
+        "evidence_artifacts": artifacts, "warnings": [],
+    }
+
+    aggregated = aggregate_dispatch_outcomes(preflight, [outcome])
+
+    contracts = {item["evidence_contract"] for item in aggregated["artifact_inventory"]}
+    assert contracts == {"recent_performance_evidence.v1"}
+    assert "phase_h_source_attempt_governance.v1" not in contracts
