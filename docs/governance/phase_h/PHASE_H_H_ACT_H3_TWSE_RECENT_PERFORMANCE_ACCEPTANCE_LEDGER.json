@@ -155,7 +155,7 @@
       },
       "governed_evidence_preserved": true,
       "actual_canonical_rollback_performed": false,
-      "test_evidence": "tests/unit/test_phase_h_act_h3_twse_activation.py::test_h0h_roll_004_simulates_h3_rollback_without_mutating_authority_or_evidence"
+      "test_evidence": "tests/unit/test_phase_h_act_h3_twse_activation.py::test_h0h_roll_004_simulates_h3_deactivation_without_mutating_authority_or_evidence"
     }
   },
   "runtime_truth_after_owner_acceptance": {
@@ -185,6 +185,17 @@
     "commit": "3371fa1b4c3f51a332466ecba62b0767fc741d87",
     "tree": "942667c8a22cc1b3cb7f4793ef37434eba6eceef",
     "branch": "phase-h/h-act-h3-twse-runtime-activation"
+  },
+  "final_deterministic_validation": {
+    "focused_h3_rollback_phase_h_h1_tests": "53 passed",
+    "default_ci": "778 passed, 1 skipped, 5 deselected",
+    "full_current": "1150 passed, 1 skipped, 5 deselected",
+    "phase_h_v3_contract_validator": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS; MCP tool count=6",
+    "compileall_scripts_server_tests": "PASS",
+    "crlf_aware_diff_check": "PASS",
+    "market_network_during_closure_validation": false
   },
   "closure": {
     "owner_final_activation_accepted": true,
