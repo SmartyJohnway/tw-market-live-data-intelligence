@@ -1,0 +1,127 @@
+{
+  "schema_version": "phase_i_i1_market_state_implementation_candidate.v1",
+  "status": "I1_IMPLEMENTATION_CANDIDATE_READY_FOR_REVIEW",
+  "recorded_date": "2026-09-29",
+  "baseline_main": "a7b7f17df424229510fa6950f4cb5cb1b6b15f77",
+  "branch": "phase-i/i1-market-state-context-implementation",
+  "owner_authority": {
+    "decision": "OWNER_ACCEPTED_I1_SOURCE_CONTRACT",
+    "reference": "USER_CHAT_2026-09-29_PHASE_I_I1_SOURCE_CONTRACT_ACCEPTANCE",
+    "i1_offline_implementation_authorized": true,
+    "phase_i_live_activation_authorized": false,
+    "phase_i_production_route_activation_authorized": false,
+    "i2_implementation_authorized": false,
+    "i3_implementation_authorized": false,
+    "merge_authorized": false
+  },
+  "frozen_authority": {
+    "i0_record": {
+      "path": "docs/governance/phase_i/Phase_I_I0_Evidence_Value_Source_Identity_Timing_Decision_Record_2026-09-29_FROZEN.md",
+      "sha256": "02e031e8c39eee96664457735432b7bf08ac9e8b03c07252921f425d05c8f7c5",
+      "bytes": 28251
+    },
+    "i1_source_contract_json": {
+      "path": "docs/governance/phase_i/PHASE_I_I1_MARKET_STATE_SOURCE_CONTRACT_2026-09-29_FROZEN.json",
+      "sha256": "0073c606f8319fdcb7a97b0330db2afd996b09038497a64c8d26cb613b0d2cf7",
+      "bytes": 13438
+    },
+    "i1_source_contract_markdown": {
+      "path": "docs/governance/phase_i/Phase_I_I1_Market_State_Source_Contract_2026-09-29_FROZEN.md",
+      "sha256": "5c6a75072981e289ff344d64b81cb657b3a8ddc577d4d091196125291269f506",
+      "bytes": 5355
+    }
+  },
+  "commits": {
+    "commit_a": {
+      "purpose": "canonical dormant I1 implementation candidate",
+      "commit": "7f0bd71647933f38b79133def5350e5b9a049f9f",
+      "tree": "61985592b87cfa95e44ca300d4261a1704649ec8",
+      "catalog_blob": "6661cc61778b59a832f527bcc10d9743015077ea"
+    },
+    "commit_b": {
+      "purpose": "portable catalog and guide projection",
+      "commit": "44e581386337def8d504b62098100c23a057399b",
+      "tree": "3872cdef6f61c5e53e1bd118b91c8430d9abc0a5"
+    },
+    "test_profile_followup": {
+      "purpose": "include I1 unit and integration tests in full-current",
+      "commit": "910948d26863a99d8fb58c9f9f57b522ecf5f54f",
+      "tree": "14b8ca56543f18147d533b3f35b24bcc1e3241c5"
+    },
+    "implementation_candidate_head_before_this_record": "910948d26863a99d8fb58c9f9f57b522ecf5f54f",
+    "implementation_candidate_tree_before_this_record": "14b8ca56543f18147d533b3f35b24bcc1e3241c5"
+  },
+  "portable_projection": {
+    "generated_from_commit": "7f0bd71647933f38b79133def5350e5b9a049f9f",
+    "canonical_git_blob_sha": "6661cc61778b59a832f527bcc10d9743015077ea",
+    "canonical_sha256": "695c3be032996d9f8dea3750091b8c0cac48d29d3e92794259cde1a1778c33b5",
+    "commit": "44e581386337def8d504b62098100c23a057399b"
+  },
+  "capability": {
+    "id": "market_state_context",
+    "request_version": "unified_market_evidence_request.v3",
+    "result_version": "unified_market_evidence_result.v3",
+    "audit_version": "unified_market_evidence_audit_package.v3",
+    "evidence_schema": "market_state_context_evidence.v1",
+    "support_status": "contract_supported",
+    "supported_markets": ["TWSE", "TPEX"],
+    "instrument_families": ["company_share"],
+    "instrument_types": ["common_share"],
+    "runtime_executable": false,
+    "selected_executor": null,
+    "network_required": false,
+    "routing_status": "plan_only",
+    "batching_scope": "same_market",
+    "phase_i_activation_state": "implementation_candidate_inactive"
+  },
+  "source_authority": {
+    "active_source_count": 0,
+    "records": [
+      {"source_id": "I1-TWSE-FMTQIK-OPENAPI", "activation_state": "inactive", "runtime_executable": false},
+      {"source_id": "I1-TWSE-BREADTH-TWTAZU-OPENAPI", "activation_state": "inactive", "runtime_executable": false},
+      {"source_id": "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI", "activation_state": "inactive", "runtime_executable": false}
+    ],
+    "usage_authority": "NOT_YET_CLOSED_FOR_PRODUCTION_ACTIVATION"
+  },
+  "preserved_current_truth": {
+    "phase_h_active_source_count": 2,
+    "phase_h_active_sources": ["H1-TPEX-ATTENTION-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"],
+    "h2_active": false,
+    "tpex_h3_executable": false,
+    "provider_automation_permission": "NOT_ESTABLISHED_TERMS_CONFLICTED",
+    "mcp_tool_count": 6,
+    "i2_started": false,
+    "i3_started": false
+  },
+  "implementation_scope": {
+    "production_executor_registry_delta": "NONE",
+    "active_production_adapter_delta": "NONE",
+    "normalizers": "fixture-only pure functions; no network clients or system clock reads",
+    "unit_policy": "source units preserved explicitly; no scale conversion",
+    "twse_breadth_selector": "類型 == 股票; no 整體市場 fallback",
+    "twse_date_mismatch": "partial; both official component dates retained with caveat",
+    "raw_payload_persistence": false,
+    "history_scheduler_polling_backfill": false
+  },
+  "validation": {
+    "focused": {"command": "pytest I1 unit/integration + Phase H projection regressions", "result": "48 passed"},
+    "phase_i_validator": {"command": "python scripts/validate_phase_i_i1_contracts.py", "result": "PASS"},
+    "phase_h_validator": {"command": "python scripts/validate_phase_h_v3_contracts.py", "result": "PASS"},
+    "portable_catalog_sync": {"command": "python scripts/validate_portable_catalog_sync.py", "result": "PASS"},
+    "runtime_skill_guide_sync": {"command": "python scripts/validate_runtime_skill_guide_sync.py", "result": "PASS; MCP tools=6"},
+    "compileall": {"command": "python -m compileall -q scripts server tests", "result": "PASS"},
+    "default_ci": {"command": "python scripts/run_test_profile.py default-ci", "collected": 797, "selected": 792, "passed": 791, "skipped": 1, "deselected": 5, "result": "PASS"},
+    "full_current": {"command": "python scripts/run_test_profile.py full-current", "collected": 1170, "selected": 1165, "passed": 1164, "skipped": 1, "deselected": 5, "result": "PASS"},
+    "diff_check": {"command": "git diff --check", "result": "PASS; frozen source-contract hard-break bytes preserved"},
+    "market_network_used": false
+  },
+  "activation_boundary": {
+    "live_acceptance": false,
+    "production_route_activation": false,
+    "merge_performed": false,
+    "pr_created": false,
+    "push_performed": false,
+    "i2_started": false,
+    "i3_started": false
+  }
+}
