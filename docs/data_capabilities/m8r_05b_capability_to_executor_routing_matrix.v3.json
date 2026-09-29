@@ -187,13 +187,14 @@
       "known_limitations": [
         "only H3-TWSE-DEFAULT-BOUNDED is selected for TWSE; TPEx H3 remains blocked and non-executable",
         "TWSE provider automation permission remains NOT_ESTABLISHED_TERMS_CONFLICTED; no provider-approved automation is claimed",
-        "branch-local candidate still requires H0H-LIVE-003, H0H-ROLL-004, and Owner final review before merge",
+        "H0H-LIVE-003 and H0H-ROLL-004 are accepted for this selected TWSE route; repository merge remains subject to review",
         "no persistent history accumulation, scheduler, polling, or backfill"
       ],
       "evidence_paths": [
         "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
         "docs/governance/phase_h/PHASE_H_H3_TWSE_CONTROLLED_USE_OWNER_DECISION_2026-09-24.json",
-        "docs/governance/phase_h/PHASE_H_H3_I2A2_TWSE_20D_MULTI_MONTH_BOUNDED_LIVE_ACCEPTANCE_2026-09-24.json"
+        "docs/governance/phase_h/PHASE_H_H3_I2A2_TWSE_20D_MULTI_MONTH_BOUNDED_LIVE_ACCEPTANCE_2026-09-24.json",
+        "docs/governance/phase_h/PHASE_H_H_ACT_H3_TWSE_RECENT_PERFORMANCE_ACCEPTANCE_LEDGER.json"
       ],
       "capability_requires_execution_approval": true,
       "package_approval_policy": "strictest_operation_controls_package",

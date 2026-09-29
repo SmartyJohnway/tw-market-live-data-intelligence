@@ -2,7 +2,7 @@
 
 ## Status
 
-Date: **2026-09-23**
+Date: **2026-09-29**
 
 Baseline main before this documentation-governance consolidation:
 
@@ -10,8 +10,8 @@ Baseline main before this documentation-governance consolidation:
 
 Current workstream:
 
-> **Repository documentation/governance consolidation. Phase I is explicitly
-> not started.**
+> **H-ACT-H3 final activation closure is Owner-accepted; closure PR is pending
+> review. Phase I is explicitly not started.**
 
 The purpose of this handoff is to let a new human or agent resume without
 reconstructing the repository from hundreds of historical milestone documents.
@@ -60,11 +60,14 @@ Preferred Request     V3
 Preferred new Result  V3
 Preferred new Audit   V3
 MCP tools             exactly 6
-Phase H active source count  1
-Active Phase H route         H1-TPEX-ATTENTION-OPENAPI
+Phase H active source count  2
+Active Phase H routes        H1-TPEX-ATTENTION-OPENAPI
+                             H3-TWSE-DEFAULT-BOUNDED
 H1 complete coverage         NO
-H2 activation                NOT STARTED
-H3 activation                NOT STARTED
+H2 activation                NOT STARTED / INACTIVE
+H3 TWSE recent_performance   ACTIVE; H0H-LIVE-003 PASS; H0H-ROLL-004 PASS
+H3 TPEX                      BLOCKED / NON-EXECUTABLE
+Provider automation         NOT_ESTABLISHED_TERMS_CONFLICTED
 Phase I                      NOT STARTED
 ```
 
@@ -97,6 +100,7 @@ Primary current evidence:
 - `docs/governance/phase_h/PHASE_H_H_ACT_H1_TPEX_ATTENTION_ACCEPTANCE_LEDGER.json`
 - `docs/governance/phase_h/PHASE_H_H_ACC_7L_SELECTED_PRODUCT_LIVE_E2E_LEDGER.json`
 - `docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json`
+- `docs/governance/phase_h/PHASE_H_H_ACT_H3_TWSE_RECENT_PERFORMANCE_ACCEPTANCE_LEDGER.json`
 - `docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json`
 - `docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json`
 
@@ -104,10 +108,22 @@ Important distinction:
 
 > H-ACT-V3 is closed; the full Roadmap Phase H capability scope is not.
 
-The active H1 product slice is TPEx attention only. H2 and H3 remain
-non-executable unless a later independently governed activation changes that.
+The active H1 product slice is TPEx attention only. H3 is limited to the
+Owner-accepted bounded TWSE `recent_performance` route; TPEx H3 remains blocked,
+H2 remains inactive, and provider automation permission is not established.
+Attempt #2E is valid bounded-live evidence after offline corrected acceptance
+verification; its original runner nonzero exit remains recorded as a harness
+false negative. No new live execution is required for this closure.
 
-## Current documentation problem being closed
+## Current closure and next boundary
+
+The H-ACT-H3 final closure is bound to technical candidate commit
+`3371fa1b4c3f51a332466ecba62b0767fc741d87` (tree
+`942667c8a22cc1b3cb7f4793ef37434eba6eceef`). After the closure Draft PR is
+opened, wait for Owner/ChatGPT review. Do not merge, rerun live/rollback, or
+begin Phase I.
+
+## Historical documentation problem already closed
 
 Before this consolidation, repository documentation had multiple competing
 eras:
@@ -147,13 +163,8 @@ files unless the task requires historical evidence.
 
 ## Current allowed next work
 
-Complete the documentation/governance consolidation:
-
-- current front-door docs;
-- archive/superseded roadmap organization;
-- current operator/reference/architecture entry points;
-- documentation audit and lifecycle labels;
-- regression validation.
+Review the H-ACT-H3 closure PR. Merge requires subsequent review; this handoff
+does not authorize merge or Phase I implementation.
 
 ## Explicit stop boundary
 
@@ -161,7 +172,7 @@ Complete the documentation/governance consolidation:
 
 Roadmap Phase I is Cross-Market & Optional Context. It requires a separate
 Owner decision and its own evidence-value/source/identity/timing preflight.
-This documentation task is not that authorization.
+This H-ACT-H3 closure does not authorize Phase I implementation.
 
 ## Before any future Phase I work
 

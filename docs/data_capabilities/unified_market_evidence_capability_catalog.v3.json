@@ -147,7 +147,7 @@
       "known_limitations": [
         "only H3-TWSE-DEFAULT-BOUNDED is selected for runtime execution on this branch; TPEx default bounded route remains unresolved and blocked",
         "TWSE provider automation permission remains NOT_ESTABLISHED_TERMS_CONFLICTED; Owner controlled local-first use is not provider-approved automation",
-        "this branch activation candidate still requires H0H-LIVE-003, H0H-ROLL-004, and Owner final review before merge",
+        "H0H-LIVE-003 and H0H-ROLL-004 are accepted for this selected TWSE route; repository merge remains subject to review",
         "optional provider contracts remain pending",
         "no persistent history accumulation, scheduler, polling, or backfill"
       ],
@@ -454,8 +454,8 @@
     "V3 is the preferred current request contract and new governed outputs default to Result/Audit V3",
     "Phase G research evidence is limited to TWSE/TPEX company common shares in G1/G2",
     "Phase H active source coverage is incremental; only explicitly activated routes are executable",
-    "H1 trading-status coverage remains partial with only H1-TPEX-ATTENTION-OPENAPI active",
-    "H2 remains inactive; H3 runtime execution is limited to the explicitly selected TWSE branch candidate route and does not imply H0H-LIVE-003, H0H-ROLL-004, or Owner final activation acceptance",
+    "H1 trading-status coverage remains partial; H1-TPEX-ATTENTION-OPENAPI is the only active H1 route",
+    "H2 remains inactive; H3 runtime execution is limited to the Owner-accepted H3-TWSE-DEFAULT-BOUNDED route on this activation branch; merge remains subject to review",
     "no scheduler",
     "no continuous polling",
     "no auto retry",
