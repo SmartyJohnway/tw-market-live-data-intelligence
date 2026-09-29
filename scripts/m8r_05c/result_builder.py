@@ -399,6 +399,17 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
                 "recent_performance_evidence.v1",
             )
             evidence_proj.discontinuity_safety = _derived_h4_artifact(inputs, canonical_target_id)
+            evidence_proj.market_state_context = project_phase_h_typed_evidence(
+                target_bindings.get("market_state_context"),
+                citation_map.get(f"{canonical_target_id}::market_state_context", []),
+                "market_state_context_evidence.v1",
+            )
+            if evidence_proj.market_state_context is not None:
+                evidence_proj.market_state_context = dict(evidence_proj.market_state_context)
+                evidence_proj.market_state_context["target"] = {
+                    "canonical_target_id": canonical_target_id,
+                    "market": target_res.market,
+                }
         if output_schema_version.endswith(".v2"):
             identity = target_res.canonical_identity or {}
             applicable = (
@@ -438,6 +449,7 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
                     "trading_status_context": "trading_status_context",
                     "corporate_action_context": "corporate_action_context",
                     "recent_performance": "recent_performance_v3",
+                    "market_state_context": "market_state_context",
                 }.get(need)
                 if typed_field is not None:
                     is_provided = getattr(evidence_proj, typed_field) is not None
@@ -494,6 +506,7 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
             evidence_proj.corporate_action_context,
             evidence_proj.recent_performance_v3,
             evidence_proj.discontinuity_safety,
+            evidence_proj.market_state_context,
         ):
             if isinstance(typed_evidence, dict):
                 typed_ids = typed_evidence.get("citation_ids", [])
@@ -575,6 +588,7 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
                 ("corporate_action_context", ev.corporate_action_context),
                 ("recent_performance", ev.recent_performance_v3),
                 ("discontinuity_safety", ev.discontinuity_safety),
+                ("market_state_context", ev.market_state_context),
             ):
                 if typed_evidence is not None:
                     t_dict["evidence"][field_name] = typed_evidence

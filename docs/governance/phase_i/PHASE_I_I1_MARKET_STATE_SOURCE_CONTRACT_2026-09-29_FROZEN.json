@@ -1,0 +1,402 @@
+{
+  "schema_version": "phase_i_i1_market_state_source_contract.v1",
+  "status": "FROZEN_PASS",
+  "date": "2026-09-29",
+  "scope": {
+    "capability_id": "market_state_context",
+    "phase": "I1",
+    "implementation_authorized": true,
+    "live_activation_authorized": false,
+    "production_route_activation_authorized": false,
+    "market_network_use_authorized": false,
+    "supported_markets": [
+      "TWSE",
+      "TPEX"
+    ],
+    "supported_target_scope": {
+      "instrument_family": [
+        "company_share"
+      ],
+      "instrument_type": [
+        "common_share"
+      ]
+    }
+  },
+  "global_rules": {
+    "source_rows_are_strings_unless_source_contract_states_otherwise": true,
+    "date_calendar": "ROC/Minguo compact YYYYMMDD converted deterministically to Gregorian YYYY-MM-DD by Gregorian year = ROC year + 1911",
+    "no_calendar_today_equals_currentness_rule": true,
+    "no_unit_guessing": true,
+    "no_hidden_scale_conversion": true,
+    "unparseable_required_field": "fail_closed_or_partial_according_to_component_coverage",
+    "no_cross_source_date_rewrite": true,
+    "raw_payload_persistence": false,
+    "citation_and_source_lineage_required": true
+  },
+  "sources": [
+    {
+      "source_id": "I1-TWSE-FMTQIK-OPENAPI",
+      "market": "TWSE",
+      "authority": "official",
+      "surface": "https://openapi.twse.com.tw/v1/exchangeReport/FMTQIK",
+      "source_family": "TWSE_EXCHANGE_REPORT_FMTQIK",
+      "source_contract_id": "TWSE_FMTQIK_OPENAPI_V1",
+      "transport_shape": "JSON array of daily rows",
+      "row_grain": "one TWSE market trading date",
+      "date_field": "Date",
+      "date_format": "ROC compact YYYYMMDD, example 1150803",
+      "field_contract": {
+        "Date": {
+          "type": "string",
+          "meaning": "official report/trading date",
+          "unit": null,
+          "normalizes_to": "official_trade_date"
+        },
+        "TradeVolume": {
+          "type": "string integer",
+          "meaning": "成交股數",
+          "unit": "share",
+          "normalizes_to": "turnover.volume"
+        },
+        "TradeValue": {
+          "type": "string integer",
+          "meaning": "成交金額",
+          "unit": "TWD",
+          "normalizes_to": "turnover.value"
+        },
+        "Transaction": {
+          "type": "string integer",
+          "meaning": "成交筆數",
+          "unit": "transaction",
+          "normalizes_to": "turnover.transactions",
+          "optional_in_i1_projection": true
+        },
+        "TAIEX": {
+          "type": "string decimal",
+          "meaning": "發行量加權股價指數",
+          "unit": "index_point",
+          "normalizes_to": "benchmark.close_index"
+        },
+        "Change": {
+          "type": "string signed decimal",
+          "meaning": "漲跌點數",
+          "unit": "index_point",
+          "normalizes_to": "benchmark.change_points",
+          "explicitly_not": "percentage_return"
+        }
+      },
+      "official_evidence": [
+        {
+          "kind": "official_live_openapi_shape",
+          "url": "https://openapi.twse.com.tw/v1/exchangeReport/FMTQIK",
+          "verified_fields": [
+            "Date",
+            "TradeVolume",
+            "TradeValue",
+            "Transaction",
+            "TAIEX",
+            "Change"
+          ]
+        },
+        {
+          "kind": "official_report_label_and_unit_semantics",
+          "url": "https://www.twse.com.tw/exchangeReport/FMTQIK?date=&response=html",
+          "verified_labels": [
+            "日期",
+            "成交股數",
+            "成交金額",
+            "成交筆數",
+            "發行量加權股價指數",
+            "漲跌點數"
+          ]
+        }
+      ]
+    },
+    {
+      "source_id": "I1-TWSE-BREADTH-TWTAZU-OPENAPI",
+      "market": "TWSE",
+      "authority": "official",
+      "surface": "https://openapi.twse.com.tw/v1/opendata/twtazu_od",
+      "source_family": "TWSE_OPENDATA_TWTAZU",
+      "source_contract_id": "TWSE_TWTAZU_OD_OPENAPI_V1",
+      "transport_shape": "JSON array containing multiple universe/type rows",
+      "row_grain": "one report date + one universe/type",
+      "required_row_selector": {
+        "field": "類型",
+        "exact_value": "股票",
+        "fallback_allowed": false,
+        "forbidden_fallback_value": "整體市場"
+      },
+      "date_field": "出表日期",
+      "date_format": "ROC compact YYYYMMDD, example 1150605",
+      "field_contract": {
+        "出表日期": {
+          "type": "string",
+          "meaning": "official report date",
+          "unit": null,
+          "normalizes_to": "breadth.official_date"
+        },
+        "類型": {
+          "type": "string",
+          "meaning": "breadth universe/type",
+          "unit": null,
+          "required_exact_value": "股票"
+        },
+        "上漲": {
+          "type": "string integer",
+          "meaning": "上漲",
+          "unit": "security_count",
+          "normalizes_to": "breadth.up"
+        },
+        "漲停": {
+          "type": "string integer",
+          "meaning": "漲停",
+          "unit": "security_count",
+          "normalizes_to": "breadth.limit_up"
+        },
+        "下跌": {
+          "type": "string integer",
+          "meaning": "下跌",
+          "unit": "security_count",
+          "normalizes_to": "breadth.down"
+        },
+        "跌停": {
+          "type": "string integer",
+          "meaning": "跌停",
+          "unit": "security_count",
+          "normalizes_to": "breadth.limit_down"
+        },
+        "持平": {
+          "type": "string integer",
+          "meaning": "持平",
+          "unit": "security_count",
+          "normalizes_to": "breadth.flat"
+        },
+        "未成交": {
+          "type": "string integer",
+          "meaning": "未成交",
+          "unit": "security_count",
+          "normalizes_to": "breadth.unmatched"
+        },
+        "無比價": {
+          "type": "string integer",
+          "meaning": "無比價",
+          "unit": "security_count",
+          "normalizes_to": "breadth.no_comparison"
+        }
+      },
+      "official_evidence": [
+        {
+          "kind": "official_live_openapi_shape",
+          "url": "https://openapi.twse.com.tw/v1/opendata/twtazu_od",
+          "verified_fields": [
+            "出表日期",
+            "類型",
+            "上漲",
+            "漲停",
+            "下跌",
+            "跌停",
+            "持平",
+            "未成交",
+            "無比價"
+          ],
+          "verified_universe_rows": [
+            "整體市場",
+            "股票"
+          ]
+        }
+      ]
+    },
+    {
+      "source_id": "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI",
+      "market": "TPEX",
+      "authority": "official",
+      "surface": "https://www.tpex.org.tw/openapi/v1/tpex_mainborad_highlight",
+      "source_family": "TPEX_MAINBOARD_MARKET_HIGHLIGHT",
+      "source_contract_id": "TPEX_MAINBORAD_HIGHLIGHT_OPENAPI_V1",
+      "transport_shape": "JSON array; observed current contract returns one row",
+      "row_grain": "one TPEx mainboard market date",
+      "date_field": "Date",
+      "date_format": "ROC compact YYYYMMDD, example 1150924",
+      "field_contract": {
+        "Date": {
+          "type": "string",
+          "meaning": "資料日期",
+          "unit": null,
+          "normalizes_to": "official_trade_date"
+        },
+        "ListedCompanyNumbers": {
+          "type": "string integer",
+          "meaning": "上櫃家數",
+          "unit": "company_count",
+          "i1_required": false
+        },
+        "AuthorizedCapital": {
+          "type": "string numeric",
+          "meaning": "總資本額",
+          "unit": "TWD_million",
+          "i1_required": false
+        },
+        "MarketCapitalization": {
+          "type": "string numeric",
+          "meaning": "總市值",
+          "unit": "TWD_million",
+          "i1_required": false
+        },
+        "DailyTradingValue": {
+          "type": "string numeric",
+          "meaning": "本日總成交值",
+          "unit": "TWD_million",
+          "normalizes_to": "turnover.value"
+        },
+        "DailyTradingVolume": {
+          "type": "string numeric",
+          "meaning": "本日總成交股數",
+          "unit": "thousand_share",
+          "normalizes_to": "turnover.volume"
+        },
+        "CloseIndex": {
+          "type": "string decimal",
+          "meaning": "收市指數",
+          "unit": "index_point",
+          "normalizes_to": "benchmark.close_index"
+        },
+        "IndexChange": {
+          "type": "string signed decimal",
+          "meaning": "指數漲跌",
+          "unit": "index_point",
+          "normalizes_to": "benchmark.change_points",
+          "explicitly_not": "percentage_return"
+        },
+        "PriceRiseCompanyNumbers": {
+          "type": "string integer",
+          "meaning": "上漲家數",
+          "unit": "company_count",
+          "normalizes_to": "breadth.up"
+        },
+        "LimitUpCompanyNumbers": {
+          "type": "string integer",
+          "meaning": "漲停家數",
+          "unit": "company_count",
+          "normalizes_to": "breadth.limit_up"
+        },
+        "PriceDeclineCompanyNumbers": {
+          "type": "string integer",
+          "meaning": "下跌家數",
+          "unit": "company_count",
+          "normalizes_to": "breadth.down"
+        },
+        "LimitDownCompanyNumbers": {
+          "type": "string integer",
+          "meaning": "跌停家數",
+          "unit": "company_count",
+          "normalizes_to": "breadth.limit_down"
+        },
+        "PriceFlatCompanyNumbers": {
+          "type": "string integer",
+          "meaning": "平盤家數",
+          "unit": "company_count",
+          "normalizes_to": "breadth.flat"
+        },
+        "UnmatchedCompanyNumbersSuspensionStocksIncluded": {
+          "type": "string integer",
+          "meaning": "未成交含暫停交易家數",
+          "unit": "company_count",
+          "normalizes_to": "breadth.unmatched_including_suspended"
+        }
+      },
+      "official_evidence": [
+        {
+          "kind": "official_tpex_openapi_swagger",
+          "artifact": "tpex-swagger.json",
+          "artifact_size_bytes": 476923,
+          "verified_schema": "tpex_mainborad_highlight",
+          "verified_fields": [
+            "Date",
+            "ListedCompanyNumbers",
+            "AuthorizedCapital",
+            "MarketCapitalization",
+            "DailyTradingValue",
+            "DailyTradingVolume",
+            "CloseIndex",
+            "IndexChange",
+            "PriceRiseCompanyNumbers",
+            "LimitUpCompanyNumbers",
+            "PriceDeclineCompanyNumbers",
+            "LimitDownCompanyNumbers",
+            "PriceFlatCompanyNumbers",
+            "UnmatchedCompanyNumbersSuspensionStocksIncluded"
+          ]
+        },
+        {
+          "kind": "official_tpex_report_unit_semantics",
+          "url": "https://www.tpex.org.tw/web/stock/aftertrading/market_highlight/highlight_result.php",
+          "verified_units": {
+            "AuthorizedCapital": "佰萬元",
+            "MarketCapitalization": "佰萬元",
+            "DailyTradingValue": "佰萬元",
+            "DailyTradingVolume": "仟股"
+          }
+        },
+        {
+          "kind": "owner_executed_live_shape_probe",
+          "observed_at": "2026-09-29T14:24:36+08:00",
+          "http_status": 200,
+          "bytes": 430,
+          "rows": 1,
+          "observed_date": "1150924",
+          "purpose": "shape/size confirmation only; not production live acceptance"
+        }
+      ]
+    }
+  ],
+  "cross_source_semantics": {
+    "TWSE_complete_requires": [
+      "valid FMTQIK selected row",
+      "valid twtazu_od row with 類型 exactly 股票",
+      "normalized official dates equal"
+    ],
+    "TWSE_date_mismatch": {
+      "status": "partial",
+      "must_preserve_component_dates": true,
+      "must_add_caveat": true
+    },
+    "TPEX_complete_requires": [
+      "valid tpex_mainborad_highlight row with required I1 fields"
+    ],
+    "benchmark_change_is_points_not_percent": true,
+    "market_state_context_is_market_level_evidence_associated_with_target_market": true,
+    "no_target_specific_causation_claim": true,
+    "no_industry_context_in_i1": true
+  },
+  "fixture_authority": {
+    "fixtures_may_be_synthetic_but_must_use_exact_source_keys": true,
+    "fixtures_must_not_be_full_live_downloads": true,
+    "required_cases": [
+      "TWSE complete",
+      "TWSE 股票 selected while 整體市場 also present",
+      "TWSE 股票 row absent",
+      "TWSE FMTQIK/breadth date mismatch",
+      "TWSE malformed numeric",
+      "TPEX complete",
+      "TPEX missing required field",
+      "TPEX malformed date",
+      "TPEX malformed numeric"
+    ]
+  },
+  "authorization_boundary": {
+    "this_contract_authorizes_offline_implementation_against_exact_source_shape": true,
+    "this_contract_does_not_authorize_network_probe": true,
+    "this_contract_does_not_authorize_live_acceptance": true,
+    "this_contract_does_not_authorize_production_executor_registration": true,
+    "this_contract_does_not_authorize_route_activation": true,
+    "this_contract_does_not_authorize_merge": true,
+    "source_contract_frozen": true,
+    "i1_offline_implementation_may_resume": true
+  },
+  "owner_decision": {
+    "decision": "OWNER_ACCEPTED_I1_SOURCE_CONTRACT",
+    "decision_ref": "USER_CHAT_2026-09-29_PHASE_I_I1_SOURCE_CONTRACT_ACCEPTANCE",
+    "accepted_date": "2026-09-29"
+  }
+}

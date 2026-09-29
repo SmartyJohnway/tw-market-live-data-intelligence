@@ -10,8 +10,8 @@ Baseline main before this documentation-governance consolidation:
 
 Current workstream:
 
-> **H-ACT-H3 final activation closure is Owner-accepted for the selected TWSE
-> route. Phase I is explicitly not started.**
+> **H-ACT-H3 is Owner-accepted. Phase I I1 has an Owner-authorized offline,
+> dormant implementation candidate; activation, I2, and I3 are not authorized.**
 
 The purpose of this handoff is to let a new human or agent resume without
 reconstructing the repository from hundreds of historical milestone documents.
@@ -68,7 +68,10 @@ H2 activation                NOT STARTED / INACTIVE
 H3 TWSE recent_performance   ACTIVE; H0H-LIVE-003 PASS; H0H-ROLL-004 PASS
 H3 TPEX                      BLOCKED / NON-EXECUTABLE
 Provider automation         NOT_ESTABLISHED_TERMS_CONFLICTED
-Phase I                      NOT STARTED
+Phase I I1 offline candidate IMPLEMENTED / DORMANT
+Phase I active sources       0
+I1 runtime/route activation  NOT AUTHORIZED
+I2 / I3                      NOT STARTED / NOT AUTHORIZED
 ```
 
 V1/V2 remain compatibility contracts. Existing persisted artifacts retain their
@@ -119,9 +122,11 @@ false negative. No new live execution is required for this closure.
 
 The H-ACT-H3 final activation is Owner-accepted for the selected bounded TWSE
 `recent_performance` route. The route-specific acceptance ledger records the
-technical candidate and its live/rollback evidence. This activation does not
-authorize Phase I; Phase I remains `NOT_STARTED` and requires separate Owner
-authorization.
+technical candidate and its live/rollback evidence. Separately, Owner accepted
+the frozen Phase I I1 source contract and authorized an offline, fixture-only,
+dormant implementation candidate for `market_state_context`. I1 does not
+authorize market network access, production executor/route activation, I2, or
+I3. The broader Roadmap Phase I remains incomplete.
 
 ## Historical documentation problem already closed
 
@@ -163,16 +168,18 @@ files unless the task requires historical evidence.
 
 ## Current allowed next work
 
-Continue only within separately authorized work. H-ACT-H3 does not authorize
-Phase I implementation.
+Continue only within separately authorized work. Offline I1 implementation is
+authorized under its frozen source contract; do not activate it or start I2 or
+I3 without new Owner authorization.
 
 ## Explicit stop boundary
 
-**Do not implement Phase I.**
+**Do not activate I1 or begin I2/I3.**
 
-Roadmap Phase I is Cross-Market & Optional Context. It requires a separate
-Owner decision and its own evidence-value/source/identity/timing preflight.
-This H-ACT-H3 closure does not authorize Phase I implementation.
+Roadmap Phase I is Cross-Market & Optional Context. I0 and the I1 source
+contract are frozen; only dormant offline I1 implementation is authorized.
+Live activation, production route activation, I2, I3, and merge require separate
+Owner authorization.
 
 ## Before any future Phase I work
 
@@ -183,7 +190,7 @@ At minimum:
 3. apply the Evidence Value Gate to each candidate evidence family;
 4. keep derivatives identity separate from cash-security ISIN identity;
 5. preserve explicit/optional bounded loading;
-6. obtain explicit Owner authorization for implementation.
+6. retain dormant/non-executable authority until separate activation approval.
 
 ## Historical-document rule
 

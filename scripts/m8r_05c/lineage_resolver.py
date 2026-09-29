@@ -32,6 +32,7 @@ _CAPABILITY_TO_DATA_NEED: dict[str, str] = {
     "monthly_revenue": "monthly_revenue",
     "trading_status_context": "trading_status_context",
     "corporate_action_context": "corporate_action_context",
+    "market_state_context": "market_state_context",
 }
 
 _TARGET_SCOPED_EVIDENCE_CONTRACTS = {
@@ -40,6 +41,7 @@ _TARGET_SCOPED_EVIDENCE_CONTRACTS = {
     "trading_status_context_evidence.v1",
     "corporate_action_context_evidence.v1",
     "recent_performance_evidence.v1",
+    "market_state_context_evidence.v1",
 }
 
 _PHASE_H_TYPED_EVIDENCE_CONTRACTS = {
@@ -52,7 +54,10 @@ _PHASE_H_TYPED_CONTRACT_BY_DATA_NEED = {
     "trading_status_context": "trading_status_context_evidence.v1",
     "corporate_action_context": "corporate_action_context_evidence.v1",
     "recent_performance": "recent_performance_evidence.v1",
+    "market_state_context": "market_state_context_evidence.v1",
 }
+
+_PHASE_I_TYPED_EVIDENCE_CONTRACTS = {"market_state_context_evidence.v1"}
 
 
 @dataclass
@@ -208,9 +213,10 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
                 artifact_obj = artifact_objects.get(rel_path)
                 schema_version = artifact_obj.get("schema_version") if isinstance(artifact_obj, dict) else None
                 expected_typed_contract = _PHASE_H_TYPED_CONTRACT_BY_DATA_NEED.get(data_need)
-                if schema_version in _PHASE_H_TYPED_EVIDENCE_CONTRACTS and schema_version != expected_typed_contract:
+                if (schema_version in _PHASE_H_TYPED_EVIDENCE_CONTRACTS | _PHASE_I_TYPED_EVIDENCE_CONTRACTS
+                        and schema_version != expected_typed_contract):
                     continue
-                if schema_version in _TARGET_SCOPED_EVIDENCE_CONTRACTS:
+                if schema_version in _TARGET_SCOPED_EVIDENCE_CONTRACTS and schema_version not in _PHASE_I_TYPED_EVIDENCE_CONTRACTS:
                     artifact_target = artifact_obj.get("target") or {}
                     if artifact_target.get("canonical_target_id") != canonical_target_id:
                         continue

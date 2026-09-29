@@ -1,0 +1,48 @@
+{
+  "schema_version": "phase_i_i1_dormant_source_descriptors.v1",
+  "capability_id": "market_state_context",
+  "runtime_executable": false,
+  "network_enabled": false,
+  "sources": [
+    {
+      "source_id": "I1-TWSE-FMTQIK-OPENAPI",
+      "source_owner": "TWSE",
+      "market": "TWSE",
+      "source_family": "TWSE_EXCHANGE_REPORT_FMTQIK",
+      "source_contract_id": "TWSE_FMTQIK_OPENAPI_V1",
+      "official_endpoint_surface": "https://openapi.twse.com.tw/v1/exchangeReport/FMTQIK",
+      "source_role": "benchmark_and_turnover",
+      "activation_state": "inactive",
+      "runtime_executable": false,
+      "usage_authority_status": "NOT_YET_CLOSED_FOR_PRODUCTION_ACTIVATION",
+      "raw_payload_retention_policy": "forbidden"
+    },
+    {
+      "source_id": "I1-TWSE-BREADTH-TWTAZU-OPENAPI",
+      "source_owner": "TWSE",
+      "market": "TWSE",
+      "source_family": "TWSE_OPENDATA_TWTAZU",
+      "source_contract_id": "TWSE_TWTAZU_OD_OPENAPI_V1",
+      "official_endpoint_surface": "https://openapi.twse.com.tw/v1/opendata/twtazu_od",
+      "source_role": "market_breadth",
+      "activation_state": "inactive",
+      "runtime_executable": false,
+      "usage_authority_status": "NOT_YET_CLOSED_FOR_PRODUCTION_ACTIVATION",
+      "raw_payload_retention_policy": "forbidden",
+      "required_selector": {"類型": "股票"}
+    },
+    {
+      "source_id": "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI",
+      "source_owner": "TPEx",
+      "market": "TPEX",
+      "source_family": "TPEX_MAINBOARD_MARKET_HIGHLIGHT",
+      "source_contract_id": "TPEX_MAINBORAD_HIGHLIGHT_OPENAPI_V1",
+      "official_endpoint_surface": "https://www.tpex.org.tw/openapi/v1/tpex_mainborad_highlight",
+      "source_role": "benchmark_breadth_and_turnover",
+      "activation_state": "inactive",
+      "runtime_executable": false,
+      "usage_authority_status": "NOT_YET_CLOSED_FOR_PRODUCTION_ACTIVATION",
+      "raw_payload_retention_policy": "forbidden"
+    }
+  ]
+}

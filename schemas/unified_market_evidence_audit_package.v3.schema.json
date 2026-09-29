@@ -842,7 +842,8 @@
                   "trading_status_context",
                   "corporate_action_context",
                   "recent_performance",
-                  "discontinuity_safety"
+                  "discontinuity_safety",
+                  "market_state_context"
                 ]
               },
               "schema_version": {
@@ -952,6 +953,12 @@
           }
         }
       }
+    },
+    "phase_i_evidence": {
+      "type":"object",
+      "additionalProperties":false,
+      "required":["evidence_artifact_references"],
+      "properties":{"evidence_artifact_references":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["capability_id","schema_version","relative_path","sha256"],"properties":{"capability_id":{"const":"market_state_context"},"schema_version":{"const":"market_state_context_evidence.v1"},"relative_path":{"type":"string","pattern":"^(?!.*(?:^|/)\\.{1,2}(?:/|$))[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*$"},"sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"}}}}}
     }
   }
 }

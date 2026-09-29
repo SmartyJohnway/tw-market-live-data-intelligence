@@ -68,7 +68,8 @@
               "material_disclosures",
               "monthly_revenue",
               "trading_status_context",
-              "corporate_action_context"
+              "corporate_action_context",
+              "market_state_context"
             ]
           },
           "priority": {
