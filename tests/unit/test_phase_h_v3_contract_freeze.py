@@ -87,7 +87,7 @@ def test_request_v3_data_need_universe_and_bounds():
     assert universe == [
         "identity", "current_observation", "official_eod_reference", "recent_performance",
         "session_status", "source_currentness", "evidence_quality", "material_disclosures",
-        "monthly_revenue", "trading_status_context", "corporate_action_context",
+        "monthly_revenue", "trading_status_context", "corporate_action_context", "market_state_context",
     ]
     for need in ("trading_status_context", "corporate_action_context"):
         candidate = copy.deepcopy(request)

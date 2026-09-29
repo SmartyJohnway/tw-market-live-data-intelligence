@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "H-ACT-V3 promotion; Phase I not started"
+status_reconciled_through: "H-ACT-H3 accepted; Phase I I1 offline candidate authorized; broader Phase I incomplete"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -39,8 +39,10 @@ tags:
 > Roadmap G research scope is not declared complete here. Phase H has completed
 > V3 contract/promotion governance and one bounded-live H1 TPEx attention route,
 > while broader H1, H2 corporate-action, and H3 recent-reference coverage remain
-> incomplete; therefore Roadmap Phase H also remains unchecked. **Phase I has
-> not started and is not authorized by this consolidation.**
+> incomplete; therefore Roadmap Phase H also remains unchecked. Owner separately
+> authorized the first offline/dormant Phase I I1 implementation candidate
+> under frozen I0/I1 authority; runtime activation and I2/I3 remain
+> unauthorized, so Roadmap Phase I remains incomplete.
 
 ---
 

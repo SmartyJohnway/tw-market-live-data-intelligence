@@ -180,6 +180,23 @@ def _phase_h_governance(inputs: ProjectionInputs) -> dict:
     }
 
 
+def _phase_i_evidence(inputs: ProjectionInputs) -> dict:
+    """Expose I1 artifact lineage without implying source activation authority."""
+    references = []
+    inventory = {
+        item.get("relative_path"): item for item in inputs.bundle.get("artifact_inventory", [])
+        if isinstance(item, dict) and item.get("schema_version") == "market_state_context_evidence.v1"
+    }
+    for relative_path, item in sorted(inventory.items()):
+        references.append({
+            "capability_id": "market_state_context",
+            "schema_version": "market_state_context_evidence.v1",
+            "relative_path": relative_path,
+            "sha256": item.get("sha256", ""),
+        })
+    return {"evidence_artifact_references": references}
+
+
 def build_audit_package(
     result: dict,
     inputs: ProjectionInputs,
@@ -460,6 +477,7 @@ def build_audit_package(
     }
     if output_schema_version == "unified_market_evidence_audit_package.v3":
         body_without_hash["phase_h_governance"] = _phase_h_governance(inputs)
+        body_without_hash["phase_i_evidence"] = _phase_i_evidence(inputs)
     if selection_provenance is not None:
         binding = selection_provenance.get("watchlist")
         body_without_hash["selection_provenance_identity"] = {

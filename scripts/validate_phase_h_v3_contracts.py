@@ -306,6 +306,9 @@ def main() -> None:
     activation_mutable = {
         "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
         "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "schemas/unified_market_evidence_result.v3.schema.json",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json",
         "scripts/validate_phase_h_v3_contracts.py",
     }
     for section in ("semantic_inputs", "v3_normative_artifacts", "protected_v1_v2_authority"):
@@ -316,6 +319,24 @@ def main() -> None:
             content = path.read_bytes()
             if not _matches_frozen_bytes(content, item):
                 _fail(f"manifest_integrity_mismatch:{item['path']}")
+
+    request_v3 = _load_current_authority_json(root / "schemas/unified_market_evidence_request.v3.schema.json")
+    v3_need_types = request_v3["properties"]["data_needs"]["items"]["properties"]["type"]["enum"]
+    expected_h0_g_need_types = [
+        "identity", "current_observation", "official_eod_reference", "recent_performance",
+        "session_status", "source_currentness", "evidence_quality", "material_disclosures",
+        "monthly_revenue", "trading_status_context", "corporate_action_context",
+    ]
+    if v3_need_types != [*expected_h0_g_need_types, "market_state_context"]:
+        _fail("phase_i_v3_request_extension_not_additive")
+    additive_v3_schema_hashes = {
+        "schemas/unified_market_evidence_request.v3.schema.json": "f11db316c281b3d07c2c877e810bec3220e982b48b1b237c4395b6d4f5c7be5e",
+        "schemas/unified_market_evidence_result.v3.schema.json": "f9d83d5dfb39f78c38866cb5aff9d87ccdc1001fa0649cf1d94d045d8e9b840c",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json": "1a267ae5a174b0bff20c294a09d208618ef02efc8a7339d167b61a818bf8ef20",
+    }
+    for relative_path, expected_hash in additive_v3_schema_hashes.items():
+        if hashlib.sha256((root / relative_path).read_bytes()).hexdigest() != expected_hash:
+            _fail(f"phase_i_v3_additive_schema_drift:{relative_path}")
 
     catalog = _load_current_authority_json(
         root / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"

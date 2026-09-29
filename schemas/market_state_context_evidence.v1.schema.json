@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tw-market-live-data-intelligence:market_state_context_evidence:v1",
+  "title": "Dormant Phase I1 Market State Context Evidence v1",
+  "type": "object",
+  "required": ["schema_version", "status", "market", "currentness_status", "retrieved_at", "components", "citation_ids", "caveats"],
+  "properties": {
+    "schema_version": {"const": "market_state_context_evidence.v1"},
+    "status": {"enum": ["complete", "partial", "unavailable", "source_failed", "binding_failed"]},
+    "market": {"enum": ["TWSE", "TPEX"]},
+    "trade_date": {"type": "string", "format": "date"},
+    "currentness_status": {"const": "unknown"},
+    "retrieved_at": {"type": "string", "format": "date-time"},
+    "benchmark": {
+      "type": "object", "required": ["identifier", "close_index", "change_points", "change_unit"],
+      "properties": {"identifier":{"type":"string"},"close_index":{"type":"number"},"change_points":{"type":"number"},"change_unit":{"const":"index_point"}},
+      "additionalProperties": false
+    },
+    "turnover": {
+      "type":"object", "required":["value","volume","value_unit","volume_unit"],
+      "properties":{"value":{"type":"number"},"volume":{"type":"number"},"transactions":{"type":["integer","null"]},"value_unit":{"enum":["TWD","TWD_million"]},"volume_unit":{"enum":["share","thousand_share"]},"transactions_unit":{"const":"transaction"}},
+      "additionalProperties":false
+    },
+    "breadth": {"type":"object","additionalProperties":{"type":"integer","minimum":0}},
+    "breadth_unit": {"enum":["security_count","company_count"]},
+    "source_unit_metadata":{"type":"object","minProperties":1,"additionalProperties":{"type":"object","additionalProperties":{"type":"string"}}},
+    "components": {
+      "type":"object","minProperties":1,"additionalProperties":{
+        "type":"object","required":["status","official_date","source","observed_fields","unit_metadata"],
+        "properties":{
+          "status":{"enum":["available","missing","unavailable","source_failed"]},
+          "official_date":{"type":["string","null"],"format":"date"},
+          "source":{"type":"object","required":["source_id","source_family","source_contract_id","url","authority","retrieved_at"],"properties":{"source_id":{"type":"string"},"source_family":{"type":"string"},"source_contract_id":{"type":"string"},"url":{"type":"string","format":"uri"},"authority":{"const":"official"},"retrieved_at":{"type":"string","format":"date-time"}},"additionalProperties":false},
+          "observed_fields":{"type":"object"},
+          "unit_metadata":{"type":"object","additionalProperties":{"type":"string"}}
+        },"additionalProperties":false
+      }
+    },
+    "citation_ids":{"type":"array","items":{"type":"string"}},
+    "caveats":{"type":"array","items":{"type":"string"}}
+  },
+  "allOf":[
+    {"if":{"properties":{"status":{"const":"complete"}},"required":["status"]},"then":{"required":["trade_date","benchmark","turnover","breadth","breadth_unit","source_unit_metadata"]}},
+    {"if":{"properties":{"market":{"const":"TWSE"}}},"then":{"properties":{"turnover":{"properties":{"value_unit":{"const":"TWD"},"volume_unit":{"const":"share"}}},"breadth_unit":{"const":"security_count"}}}},
+    {"if":{"properties":{"market":{"const":"TPEX"}}},"then":{"properties":{"turnover":{"properties":{"value_unit":{"const":"TWD_million"},"volume_unit":{"const":"thousand_share"}}},"breadth_unit":{"const":"company_count"}}}}
+  ],
+  "additionalProperties": false
+}
