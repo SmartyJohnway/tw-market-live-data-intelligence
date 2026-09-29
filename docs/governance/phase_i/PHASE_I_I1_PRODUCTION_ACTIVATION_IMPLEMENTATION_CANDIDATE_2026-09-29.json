@@ -4,6 +4,8 @@
   "owner_authorization_ref": "USER_CHAT_2026-09-29_PHASE_I_I1_PRODUCTION_ACTIVATION_IMPLEMENTATION",
   "status": "IMPLEMENTATION_CANDIDATE",
   "source_contract": "FROZEN_PASS",
+  "dormant_semantic_implementation": "ACCEPTED_PASS",
+  "historical_dormant_implementation_pr": "#294_MERGED",
   "production_transport": "IMPLEMENTED_CANDIDATE",
   "executor_id": "phase_i_i1_market_state_executor",
   "executor_candidate_metadata": "config/phase_i_i1_production_executor_candidate.json",
@@ -45,5 +47,20 @@
     "preserve": ["frozen I0/I1 authorities", "offline I1 normalizers", "PR #294 dormant semantics"],
     "runtime_authority_changes_required": false
   },
-  "network_used": false
+  "validation": {
+    "validated_candidate_commit": "92d8f9cd3e93e19fc1d491c77790e5511a26c87e",
+    "focused_i1_tests": "45 passed",
+    "phase_i_contract_validator": "PASS",
+    "phase_i_candidate_validator": "PASS",
+    "phase_h_v3_validator": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS; MCP tools=6",
+    "compileall": "PASS",
+    "default_ci": "823 passed; 1 skipped; 5 deselected",
+    "full_current": "1196 passed; 1 skipped; 5 deselected",
+    "diff_check": "PASS",
+    "crlf_aware_diff_check": "PASS"
+  },
+  "network_used": false,
+  "live_market_source_calls": 0
 }
