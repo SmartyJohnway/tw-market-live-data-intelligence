@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import copy
 from datetime import date, datetime, timedelta, timezone
+import hashlib
 import json
 from pathlib import Path
 
@@ -25,6 +27,12 @@ from scripts.m8r_05b_03.dispatch import (
     prepare_dispatch,
 )
 from scripts.m8r_05b_03.registry import ExecutorMetadataRegistry
+from scripts.m8r_06_02_mode_b1_preview import build_mode_b1_preview_package
+from scripts.m8r_05a_f3.request_intake import validate_unified_market_evidence_request
+from server.unified_mcp.tool_contracts import build_tool_specs
+from tests.unit.test_phase_h_h3_activation_candidate_preview import OfflineSecurityMaster
+from server.services.unified_contract_versions import PREFERRED_REQUEST_SCHEMA_VERSION, REQUEST_SCHEMA_PATHS
+from server.services.unified_mode_a import validate_mode_a_request
 from server.services.phase_h_h3_twse_stock_day_adapter import (
     SOURCE_CONTRACT_ID,
     SOURCE_FAMILY,
@@ -612,3 +620,211 @@ def test_h3_source_and_binding_failures_are_not_relabelled_as_coverage(
     primary = next(item for item in outcome["evidence_artifacts"] if item["artifact_role"] == "primary_evidence")
     evidence = json.loads((tmp_path / primary["relative_path"]).read_text(encoding="utf-8"))
     assert evidence["coverage_status"] == expected
+
+
+def _h3_roll_004_local_evidence_hashes() -> dict[str, str]:
+    package = ROOT / "data/phase_h_h3_live_acceptance/20260929T021651Z-bb11ec10/control/umea-v1-3821b18dce3d1915813c"
+    paths = {
+        "primary": package / "evidence/phase_h/h3/umeop-op-v1-c62377892aaac73a9431.json",
+        "governance": package / "evidence/phase_h/governance/umeop-op-v1-c62377892aaac73a9431.json",
+        "telemetry": package / "h3-live-transport-summary.json",
+        "receipt": package / "receipts/umea-v1-3821b18dce3d1915813c.execution-receipt.json",
+        "bundle": package / "bundles/umea-v1-3821b18dce3d1915813c.evidence-bundle.json",
+        "result_v3": package / "ai_context/unified_market_evidence_result.v3.json",
+        "audit_v3": package / "audit/unified_market_evidence_audit_package.v3.json",
+        "claim": package / "claims/umea-v1-3821b18dce3d1915813c.consumption-record.json",
+    }
+    if not all(path.is_file() for path in paths.values()):
+        return {}
+    return {name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in paths.items()}
+
+
+def test_h0h_roll_004_simulates_h3_deactivation_without_mutating_authority_or_evidence():
+    catalog_path = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
+    routing_path = ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
+    authority_files_before = {
+        path: hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in (catalog_path, routing_path)
+    }
+    evidence_before = _h3_roll_004_local_evidence_hashes()
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+    routing = json.loads(routing_path.read_text(encoding="utf-8"))
+
+    cap_before = next(item for item in catalog["data_need_capabilities"] if item["capability_id"] == "recent_performance")
+    route_before = next(item for item in routing["routes"] if item["capability_id"] == "recent_performance")
+    records_before = routing["phase_h_source_authority"]["records"]
+    active_before = {
+        item["source_id"]
+        for item in records_before
+        if item["activation_state"] == "active" and item["runtime_executable"] is True
+    }
+    assert cap_before["support_status"] == "runtime_executable"
+    assert cap_before["runtime_executable"] is True
+    assert cap_before["phase_h_activation_state"] == "selected_route_active"
+    assert route_before["supported_markets"] == ["TWSE"]
+    assert route_before["routing_status"] == "resolved"
+    assert route_before["runtime_executable"] is True
+    assert route_before["selected_executor_id"] == EXECUTOR
+    assert route_before["network_required"] is True
+    assert route_before["batching_scope"] == "none"
+    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 2
+    assert routing["phase_h_source_authority"]["active_source_count"] == 2
+    assert active_before == {"H1-TPEX-ATTENTION-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"}
+    assert len(build_tool_specs()) == 6
+    live_candidate_preview = _production_preview(_v3_request("TWSE", "1423"), "TWSE", "1423")
+    candidate_operation = live_candidate_preview["orchestration_plan"]["operations"][0]
+    assert live_candidate_preview["validation"]["validation_status"] == "valid"
+    assert live_candidate_preview["validation"]["capability_results"][0]["status"] == "runtime_executable"
+    assert live_candidate_preview["preview"]["status"] == "ready_for_confirmation"
+    assert candidate_operation["operation_status"] == "executable_pending_approval"
+    assert candidate_operation["executor_id"] == EXECUTOR
+    assert candidate_operation["network_required"] is True
+
+    h1_route_before = copy.deepcopy(next(item for item in routing["routes"] if item["capability_id"] == "trading_status_context"))
+    h1_source_before = copy.deepcopy(next(item for item in records_before if item["source_id"] == "H1-TPEX-ATTENTION-OPENAPI"))
+    h2_routes_before = copy.deepcopy([item for item in routing["routes"] if item["capability_id"] == "corporate_action_context"])
+    h2_records_before = copy.deepcopy([item for item in records_before if item["source_id"].startswith("H2-")])
+    h2_caps_before = copy.deepcopy([item for item in catalog["data_need_capabilities"] if item["capability_id"] == "corporate_action_context"])
+    tpex_h3_before = copy.deepcopy(next(item for item in route_before["source_authority_states"] if item["market"] == "TPEX"))
+    assert h2_records_before and not any(item["activation_state"] == "active" or item["runtime_executable"] for item in h2_records_before)
+    assert tpex_h3_before["activation_state"] == "blocked"
+
+    # Simulate rollback exclusively on independent in-memory copies.
+    rollback_catalog = copy.deepcopy(catalog)
+    rollback_routing = copy.deepcopy(routing)
+    rollback_cap = next(item for item in rollback_catalog["data_need_capabilities"] if item["capability_id"] == "recent_performance")
+    rollback_cap.update(
+        support_status="contract_supported",
+        runtime_executable=False,
+        phase_h_activation_state="inactive",
+    )
+    rollback_catalog["phase_h_contract"]["active_phase_h_source_count"] = 1
+    rollback_route = next(item for item in rollback_routing["routes"] if item["capability_id"] == "recent_performance")
+    rollback_route.update(
+        runtime_executable=False,
+        selected_executor_id=None,
+        routing_status="plan_only",
+        network_required=False,
+    )
+    rollback_routing["phase_h_source_authority"]["active_source_count"] = 1
+    h3_source = next(item for item in rollback_routing["phase_h_source_authority"]["records"] if item["source_id"] == "H3-TWSE-DEFAULT-BOUNDED")
+    h3_source.update(activation_state="eligible", runtime_executable=False)
+    # Candidate executor inventory and source metadata remain available.
+    assert rollback_route["candidate_executor_ids"] == route_before["candidate_executor_ids"] == [EXECUTOR]
+    assert rollback_route["source_compatibility_key"] == route_before["source_compatibility_key"]
+    assert tpex_h3_before == next(item for item in rollback_route["source_authority_states"] if item["market"] == "TPEX")
+
+    active_after = {
+        item["source_id"]
+        for item in rollback_routing["phase_h_source_authority"]["records"]
+        if item["activation_state"] == "active" and item["runtime_executable"] is True
+    }
+    assert rollback_cap["support_status"] == "contract_supported"
+    assert rollback_cap["runtime_executable"] is False
+    assert rollback_cap["phase_h_activation_state"] == "inactive"
+    assert rollback_route["runtime_executable"] is False
+    assert rollback_route["selected_executor_id"] is None
+    assert rollback_route["routing_status"] == "plan_only"
+    assert rollback_catalog["phase_h_contract"]["active_phase_h_source_count"] == 1
+    assert rollback_routing["phase_h_source_authority"]["active_source_count"] == 1
+    assert active_after == {"H1-TPEX-ATTENTION-OPENAPI"}
+    assert h1_route_before == next(item for item in rollback_routing["routes"] if item["capability_id"] == "trading_status_context")
+    assert h1_source_before == next(item for item in rollback_routing["phase_h_source_authority"]["records"] if item["source_id"] == "H1-TPEX-ATTENTION-OPENAPI")
+    assert h2_routes_before == [item for item in rollback_routing["routes"] if item["capability_id"] == "corporate_action_context"]
+    assert h2_records_before == [item for item in rollback_routing["phase_h_source_authority"]["records"] if item["source_id"].startswith("H2-")]
+    assert h2_caps_before == [item for item in rollback_catalog["data_need_capabilities"] if item["capability_id"] == "corporate_action_context"]
+    assert len(build_tool_specs()) == 6
+
+    authorities = {
+        "capability_catalog": rollback_catalog,
+        "routing_matrix": rollback_routing,
+        "handoff_contract": json.loads((ROOT / "docs/data_capabilities/m8r_05b_orchestration_handoff_contract.json").read_text(encoding="utf-8")),
+        "executor_disposition": json.loads((ROOT / "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json").read_text(encoding="utf-8")),
+        "preview_schema": json.loads((ROOT / "schemas/unified_market_evidence_preview_response.v1.schema.json").read_text(encoding="utf-8")),
+    }
+    twse_request = _v3_request("TWSE", "1423")
+    twse_security_master = OfflineSecurityMaster("TWSE", "1423")
+    twse_validation = validate_unified_market_evidence_request(
+        twse_request,
+        security_master=twse_security_master,
+        capability_catalog=rollback_catalog,
+        request_schema=json.loads(REQUEST_SCHEMA_PATHS[PREFERRED_REQUEST_SCHEMA_VERSION].read_text(encoding="utf-8")),
+    )
+    twse_rollback_preview = build_mode_b1_preview_package(
+        twse_request, twse_validation, twse_security_master,
+        planning_timestamp="2026-09-29T00:00:00Z", authorities=authorities,
+    )
+    twse_plan = twse_rollback_preview["orchestration_plan"]
+    assert twse_validation["validation_status"] == "valid"
+    assert twse_validation["capability_results"][0]["status"] == "contract_supported"
+    assert twse_rollback_preview["preview"]["status"] == "unsupported_capability"
+    assert twse_rollback_preview["preview"]["bounds"]["estimated_network_calls"] == 0
+    assert len(twse_plan["operations"]) == 1
+    assert twse_plan["operations"][0]["operation_status"] == "plan_only_not_executable"
+    assert twse_plan["operations"][0]["executor_id"] is None
+    assert twse_plan["operations"][0]["network_required"] is False
+    assert twse_rollback_preview["authorization_created"] is False
+    assert twse_rollback_preview["network_executed"] is False
+
+    tpex_request = _v3_request("TPEX", "6488")
+    tpex_security_master = OfflineSecurityMaster("TPEX", "6488")
+    tpex_validation = validate_unified_market_evidence_request(
+        tpex_request,
+        security_master=tpex_security_master,
+        capability_catalog=rollback_catalog,
+        request_schema=json.loads(REQUEST_SCHEMA_PATHS[PREFERRED_REQUEST_SCHEMA_VERSION].read_text(encoding="utf-8")),
+    )
+    tpex_preview = build_mode_b1_preview_package(
+        tpex_request, tpex_validation, tpex_security_master,
+        planning_timestamp="2026-09-29T00:00:00Z", authorities=authorities,
+    )
+    assert tpex_validation["validation_status"] == "valid"
+    assert tpex_preview["preview"]["status"] != "ready_for_confirmation"
+    assert tpex_preview["preview"]["bounds"]["estimated_network_calls"] == 0
+    blocked = tpex_preview["orchestration_plan"]["blocked_operations"]
+    assert len(blocked) == 1
+    assert blocked[0]["capability_id"] == "recent_performance"
+    assert blocked[0]["executor_id"] is None
+    assert blocked[0]["executor_invocation_eligible"] is False
+    assert "unsupported_market" in blocked[0]["blocking_reason_codes"]
+
+    # H1 stays selected/executable under the same simulated rollback authority.
+    h1_request = {
+        "schema_version": PREFERRED_REQUEST_SCHEMA_VERSION,
+        "request_id": "h0h-roll-004-h1-isolation",
+        "execution_mode": "preview",
+        "targets": [{"input": "6488", "market_hint": "TPEX", "resolution_requirement": "exact"}],
+        "data_needs": [{"type": "trading_status_context", "priority": "required", "parameters": {}}],
+    }
+    h1_security_master = OfflineSecurityMaster("TPEX", "6488")
+    h1_validation = validate_mode_a_request(h1_request, allow_fixture_snapshot=True)
+    h1_preview = build_mode_b1_preview_package(
+        h1_request, h1_validation, h1_security_master,
+        planning_timestamp="2026-09-29T00:00:00Z", authorities=authorities,
+    )
+    h1_operation = h1_preview["orchestration_plan"]["operations"][0]
+    assert h1_preview["preview"]["status"] == "ready_for_confirmation"
+    assert h1_operation["operation_status"] == "executable_pending_approval"
+    assert h1_operation["market"] == "TPEX"
+    assert h1_operation["executor_id"] == "phase_h_h1_tpex_attention_executor"
+    assert h1_operation["network_required"] is True
+    assert h1_preview["authorization_created"] is False
+    assert h1_preview["network_executed"] is False
+
+    assert len(build_tool_specs()) == 6
+    assert authority_files_before == {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in authority_files_before}
+    assert evidence_before == _h3_roll_004_local_evidence_hashes()
+    if evidence_before:
+        assert evidence_before == {
+            "primary": "e2e92c86d02a38fd1bafec249484e5142df464af2daae938c38125dd52e2a8eb",
+            "governance": "5b5c69ad5d65233d4f72ce5071183b274c0b5367802dbeb1eecb81a19671d143",
+            "telemetry": "2de9ccca53c76dc49d5c341220eb156f3c6b9d64d22f1fa19f9a22bc560243d7",
+            "receipt": "86375dd7214874ff7119b480d87a3a3580a54c2b7ae7b47fdafdf1f102f9f7d8",
+            "bundle": "cc34ddde3cc1b48b92c2b0052c169aef46f31e5317fe366ed0c7cbdcf7d0bd77",
+            "result_v3": "7cd8ee5241ab775391f42e2094b6954cfffe9644e6e2b1ee77fe72d41ba94722",
+            "audit_v3": "1cc487380befa76c4aad63165a1493628df923359af430e30ec708170fd5e8e1",
+            "claim": evidence_before["claim"],
+        }
+        claim = json.loads((ROOT / "data/phase_h_h3_live_acceptance/20260929T021651Z-bb11ec10/control/umea-v1-3821b18dce3d1915813c/claims/umea-v1-3821b18dce3d1915813c.consumption-record.json").read_text(encoding="utf-8"))
+        assert claim["state"] == "consumed_success"
+        assert claim["attempt_count"] == 1
