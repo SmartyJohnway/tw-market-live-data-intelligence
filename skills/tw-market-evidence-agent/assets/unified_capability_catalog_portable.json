@@ -2,10 +2,10 @@
   "schema_version": "unified_market_evidence_capability_catalog.v3",
   "portable_metadata": {
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-    "canonical_sha256": "3dbcb74aaa5ae89ebd67044d535599bb561e05f5cfa41de3c2e29bdf8ac3a5fe",
+    "canonical_sha256": "aa904aae788eb1d0211a198f22875d2ba9dd85f19e0a6954cf98791f9c3ded3f",
     "generator_version": "PHASE-H-ACT-V3-v1",
-    "generated_from_commit": "f688e3bb49d104f5af559c66b141bef8b04026e2",
-    "canonical_git_blob_sha": "0481cd74eb71a2af043f5c4672eee2133d6f75c4"
+    "generated_from_commit": "5d101fa853041721aeb3f70259c796603344e3eb",
+    "canonical_git_blob_sha": "55da91959f67334cb45dda1bda20a0a546e30530"
   },
   "contract_versions": {
     "accepted_request_schema_versions": [
@@ -149,7 +149,7 @@
       "known_limitations": [
         "only H3-TWSE-DEFAULT-BOUNDED is selected for runtime execution on this branch; TPEx default bounded route remains unresolved and blocked",
         "TWSE provider automation permission remains NOT_ESTABLISHED_TERMS_CONFLICTED; Owner controlled local-first use is not provider-approved automation",
-        "this branch activation candidate still requires H0H-LIVE-003, H0H-ROLL-004, and Owner final review before merge",
+        "H0H-LIVE-003 and H0H-ROLL-004 are accepted for this selected TWSE route; repository merge remains subject to review",
         "optional provider contracts remain pending",
         "no persistent history accumulation, scheduler, polling, or backfill"
       ],
@@ -362,8 +362,8 @@
     "V3 is the preferred current request contract and new governed outputs default to Result/Audit V3",
     "Phase G research evidence is limited to TWSE/TPEX company common shares in G1/G2",
     "Phase H active source coverage is incremental; only explicitly activated routes are executable",
-    "H1 trading-status coverage remains partial with only H1-TPEX-ATTENTION-OPENAPI active",
-    "H2 remains inactive; H3 runtime execution is limited to the explicitly selected TWSE branch candidate route and does not imply H0H-LIVE-003, H0H-ROLL-004, or Owner final activation acceptance",
+    "H1 trading-status coverage remains partial; H1-TPEX-ATTENTION-OPENAPI is the only active H1 route",
+    "H2 remains inactive; H3 runtime execution is limited to the Owner-accepted H3-TWSE-DEFAULT-BOUNDED route on this activation branch; merge remains subject to review",
     "no scheduler",
     "no continuous polling",
     "no auto retry",
