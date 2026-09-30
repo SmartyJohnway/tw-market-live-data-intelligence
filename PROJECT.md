@@ -194,8 +194,9 @@ Current interpretation:
   routes. The route preserves TWSE partial/date-mismatch semantics, exact
   `股票` breadth selection, source-native units, explicit approval, and no
   polling/history/background behavior. Evidence is loaded only when explicitly
-  requested and authorized. I2 and I3 remain not started; the broader Roadmap
-  Phase I remains incomplete.
+  requested and authorized. I2-A2 dormant offline implementation is
+  Owner-accepted but remains non-production; I3 remains not started and the
+  broader Roadmap Phase I remains incomplete.
 
 I1 bounded-live timing semantics are recorded without changing the accepted
 evidence: the execution/acquisition reference timestamp is
@@ -211,13 +212,14 @@ probe recorded in
 I2-A1 `index_futures_context` source/evidence contract is frozen `FROZEN_PASS`
 in
 `docs/governance/phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json`.
-Owner has separately authorized I2-A2 as a dormant offline implementation
-candidate. I2 runtime is not active: it has zero active sources, zero normal
-production routes, no selected executor, and no default-registry executor.
-I1 remains accepted and active with three sources. A2 uses synthetic fixtures
-only; it makes no market-source requests and does not authorize A3/live
-acceptance or production activation. I3 is not started, Phase I remains
-incomplete, and MCP remains exactly six tools.
+Phase I I2-A2 dormant offline implementation is Owner-accepted under
+`docs/governance/phase_i/PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION_ACCEPTANCE_LEDGER_2026-10-01.json`.
+I2 runtime remains inactive: it has zero active sources, zero normal production
+routes, no selected executor, and no default-registry executor. I1 remains
+accepted and active with three sources. A2 used synthetic fixtures only and made
+no market-source requests. A3 bounded live acceptance and production activation
+remain separate Owner gates. I3 is not started, Phase I remains incomplete, and
+MCP remains exactly six tools.
 
 ## Current authority hierarchy
 
