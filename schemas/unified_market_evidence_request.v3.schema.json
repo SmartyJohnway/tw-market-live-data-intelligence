@@ -69,7 +69,8 @@
               "monthly_revenue",
               "trading_status_context",
               "corporate_action_context",
-              "market_state_context"
+              "market_state_context",
+              "index_futures_context"
             ]
           },
           "priority": {

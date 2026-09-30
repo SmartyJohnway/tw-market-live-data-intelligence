@@ -220,10 +220,12 @@ def validate_a1_contract() -> None:
     routing = _json("docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json")
     source_authority = _json("docs/data_capabilities/phase_i_i1_source_authority.v1.json")
     registry = _json("config/m8r_06_03_executor_registry_metadata.json")
-    if any(item.get("capability_id") == "index_futures_context" for item in catalog.get("data_need_capabilities", [])):
-        raise I2A1ContractError("i2_capability_placeholder_unexpected")
-    if any(item.get("capability_id") == "index_futures_context" for item in routing.get("routes", [])):
-        raise I2A1ContractError("i2_route_must_remain_absent")
+    i2_capability = next((item for item in catalog.get("data_need_capabilities", []) if item.get("capability_id") == "index_futures_context"), None)
+    i2_route = next((item for item in routing.get("routes", []) if item.get("capability_id") == "index_futures_context"), None)
+    if i2_capability and (i2_capability.get("support_status") != "contract_supported" or i2_capability.get("runtime_executable") is not False):
+        raise I2A1ContractError("i2_must_remain_dormant_after_a2")
+    if i2_route and (i2_route.get("routing_status") != "plan_only" or i2_route.get("selected_executor_id") is not None):
+        raise I2A1ContractError("i2_route_must_remain_plan_only_after_a2")
     if any(item.get("capability_id") == "index_futures_context" for item in registry.get("executors", [])):
         raise I2A1ContractError("i2_executor_must_remain_absent")
     expected_i1 = {"I1-TWSE-FMTQIK-OPENAPI", "I1-TWSE-BREADTH-TWTAZU-OPENAPI", "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI"}

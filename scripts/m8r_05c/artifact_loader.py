@@ -51,6 +51,7 @@ _RESEARCH_EVIDENCE_CONTRACTS = {
     "recent_performance_evidence.v1": "recent_performance_evidence.v1.schema.json",
     "discontinuity_safety_evidence.v1": "discontinuity_safety_evidence.v1.schema.json",
     "market_state_context_evidence.v1": "market_state_context_evidence.v1.schema.json",
+    "index_futures_context_evidence.v1": "index_futures_context_evidence.v1.schema.json",
 }
 
 _DRAFT07_KEYS = {"request", "plan"}

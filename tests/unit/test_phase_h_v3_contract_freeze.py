@@ -87,12 +87,15 @@ def test_request_v3_data_need_universe_and_bounds():
     assert universe == [
         "identity", "current_observation", "official_eod_reference", "recent_performance",
         "session_status", "source_currentness", "evidence_quality", "material_disclosures",
-        "monthly_revenue", "trading_status_context", "corporate_action_context", "market_state_context",
+        "monthly_revenue", "trading_status_context", "corporate_action_context", "market_state_context", "index_futures_context",
     ]
     for need in ("trading_status_context", "corporate_action_context"):
         candidate = copy.deepcopy(request)
         candidate["data_needs"] = [{"type": need, "priority": "required", "parameters": {}}]
         validate(candidate, "request")
+    i2 = copy.deepcopy(request)
+    i2["data_needs"] = [{"type": "index_futures_context", "priority": "optional", "parameters": {}}]
+    validate(i2, "request")
     for bad_need in ("discontinuity_safety", "historical_baseline", "price_history"):
         candidate = copy.deepcopy(request)
         candidate["data_needs"] = [{"type": bad_need, "priority": "required", "parameters": {}}]

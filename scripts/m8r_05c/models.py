@@ -75,6 +75,7 @@ class TargetEvidenceProjection:
     trading_status_context: dict | None = None
     corporate_action_context: dict | None = None
     market_state_context: dict | None = None
+    index_futures_context: dict | None = None
     recent_performance_v3: dict | None = None
     discontinuity_safety: dict | None = None
 

@@ -1,0 +1,19 @@
+{
+  "schema_version": "phase_i_source_authority.v1",
+  "phase": "I2",
+  "capability_id": "index_futures_context",
+  "source_contract_owner_ref": "USER_CHAT_2026-09-30_PHASE_I_I2_A1_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_FREEZE",
+  "source_contract_status": "FROZEN_PASS",
+  "active_source_count": 0,
+  "runtime_executable": false,
+  "records": [
+    {
+      "source_id": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI",
+      "market": "TAIFEX",
+      "source_family": "TAIFEX_DAILY_MARKET_REPORT_FUT",
+      "source_contract_id": "TAIFEX_DAILY_MARKET_REPORT_FUT_OPENAPI_V1",
+      "activation_state": "inactive",
+      "runtime_executable": false
+    }
+  ]
+}

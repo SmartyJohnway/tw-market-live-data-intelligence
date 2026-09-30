@@ -33,6 +33,7 @@ _CAPABILITY_TO_DATA_NEED: dict[str, str] = {
     "trading_status_context": "trading_status_context",
     "corporate_action_context": "corporate_action_context",
     "market_state_context": "market_state_context",
+    "index_futures_context": "index_futures_context",
 }
 
 _TARGET_SCOPED_EVIDENCE_CONTRACTS = {
@@ -42,6 +43,7 @@ _TARGET_SCOPED_EVIDENCE_CONTRACTS = {
     "corporate_action_context_evidence.v1",
     "recent_performance_evidence.v1",
     "market_state_context_evidence.v1",
+    "index_futures_context_evidence.v1",
 }
 
 _PHASE_H_TYPED_EVIDENCE_CONTRACTS = {
@@ -54,10 +56,18 @@ _PHASE_H_TYPED_CONTRACT_BY_DATA_NEED = {
     "trading_status_context": "trading_status_context_evidence.v1",
     "corporate_action_context": "corporate_action_context_evidence.v1",
     "recent_performance": "recent_performance_evidence.v1",
-    "market_state_context": "market_state_context_evidence.v1",
 }
 
-_PHASE_I_TYPED_EVIDENCE_CONTRACTS = {"market_state_context_evidence.v1"}
+_PHASE_I_TYPED_CONTRACT_BY_DATA_NEED = {
+    "market_state_context": "market_state_context_evidence.v1",
+    "index_futures_context": "index_futures_context_evidence.v1",
+}
+_PHASE_I_TYPED_EVIDENCE_CONTRACTS = set(_PHASE_I_TYPED_CONTRACT_BY_DATA_NEED.values())
+
+
+def _expected_typed_contract(data_need: str) -> str | None:
+    return (_PHASE_H_TYPED_CONTRACT_BY_DATA_NEED.get(data_need)
+            or _PHASE_I_TYPED_CONTRACT_BY_DATA_NEED.get(data_need))
 
 
 @dataclass
@@ -212,7 +222,7 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
                 rel_path = art.get("relative_path")
                 artifact_obj = artifact_objects.get(rel_path)
                 schema_version = artifact_obj.get("schema_version") if isinstance(artifact_obj, dict) else None
-                expected_typed_contract = _PHASE_H_TYPED_CONTRACT_BY_DATA_NEED.get(data_need)
+                expected_typed_contract = _expected_typed_contract(data_need)
                 if (schema_version in _PHASE_H_TYPED_EVIDENCE_CONTRACTS | _PHASE_I_TYPED_EVIDENCE_CONTRACTS
                         and schema_version != expected_typed_contract):
                     continue
@@ -224,7 +234,7 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
                 if rel_path in artifact_objects:
                     target_artifact_objects[rel_path] = artifact_objects[rel_path]
             typed_artifact_count = sum(
-                artifact.get("schema_version") == _PHASE_H_TYPED_CONTRACT_BY_DATA_NEED.get(data_need)
+                artifact.get("schema_version") == _expected_typed_contract(data_need)
                 for artifact in target_artifact_objects.values()
                 if isinstance(artifact, dict)
             )

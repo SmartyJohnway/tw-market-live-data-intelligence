@@ -1,0 +1,81 @@
+{
+  "schema_version": "phase_i_i2_a2_dormant_offline_implementation_candidate.v1",
+  "gate_id": "PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION",
+  "status": "DORMANT_IMPLEMENTATION_CANDIDATE_READY_FOR_REVIEW",
+  "owner_authority_reference": "USER_CHAT_2026-09-30_PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION_AUTHORIZATION",
+  "starting_main": "3d5a43f93c9aba84a3cab26fddac13dfc6b61200",
+  "implementation_candidate": {
+    "technical_commit": "8930a2be7d3432a29f99ff64f60999f52c072276",
+    "technical_tree": "6bae17f19898fb4b6c797a65eaab2752327e21e3",
+    "portable_sync_commit": "b7c7bb76d444432b67d7e0c0d255767af6a4f578",
+    "portable_sync_tree": "34fbbd3a0b6491cec3050d682e724c6ab3cef4e6",
+    "review_repair_commit": "379d0a504900952931ca642f74992205310facb5",
+    "review_repair_tree": "bc48ccde64b379729e7ec92567120fb6058d0296"
+  },
+  "capability": {
+    "capability_id": "index_futures_context",
+    "candidate_executor_id": "phase_i_i2_index_futures_context_executor",
+    "evidence_schema": "index_futures_context_evidence.v1",
+    "catalog_support_status": "contract_supported",
+    "runtime_executable": false,
+    "phase_i_activation_state": "implementation_candidate_inactive",
+    "routing_status": "plan_only",
+    "selected_executor_id": null,
+    "batching_scope": "same_source"
+  },
+  "source_and_runtime_state": {
+    "i2_source_id": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI",
+    "i2_source_activation_state": "inactive",
+    "i2_active_sources": 0,
+    "i2_normal_production_routes": 0,
+    "i2_default_registry_executor_present": false,
+    "i1_active_sources": 3,
+    "mcp_tool_count": 6
+  },
+  "validation_evidence": {
+    "focused_i2_a2": "22 passed",
+    "focused_cross_boundary_suite": "106 passed (A2, A1, I1, Phase H V3, IMP-6)",
+    "default_ci": "832 passed, 1 skipped, 5 deselected",
+    "full_current": "1205 passed, 1 skipped, 5 deselected",
+    "compileall": "PASS",
+    "i2_a1_validator": "PASS",
+    "i2_a2_validator": "PASS",
+    "i1_contract_validator": "PASS",
+    "i1_production_candidate_validator": "PASS",
+    "i1_activation_validator": "PASS",
+    "phase_h_v3_validator": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS; MCP tools=6",
+    "git_diff_check": "PASS",
+    "crlf_aware_diff_check": "PASS",
+    "profile_network_may_have_occurred": false
+  },
+  "validation_after_review_repair": {
+    "focused_i2_a2": "29 passed",
+    "cross_boundary_a2_a1_i1_phase_h_v3": "113 passed",
+    "default_ci": "832 passed, 1 skipped, 5 deselected",
+    "full_current": "1205 passed, 1 skipped, 5 deselected",
+    "i2_a1_validator": "PASS",
+    "i2_a2_validator": "PASS",
+    "i1_contract_validator": "PASS",
+    "i1_production_candidate_validator": "PASS",
+    "i1_activation_validator": "PASS",
+    "phase_h_v3_validator": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS; MCP tools=6",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "crlf_aware_diff_check": "PASS",
+    "market_network_calls": 0
+  },
+  "governance_boundary": {
+    "market_network_calls": 0,
+    "live_acceptance": "NOT_AUTHORIZED",
+    "production_activation": "NOT_AUTHORIZED",
+    "a3_authorized": false,
+    "merge_authorized": false,
+    "i3_started": false,
+    "phase_j_started": false,
+    "phase_i_complete": false
+  }
+}

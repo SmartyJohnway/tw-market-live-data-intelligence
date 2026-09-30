@@ -327,12 +327,12 @@ def main() -> None:
         "session_status", "source_currentness", "evidence_quality", "material_disclosures",
         "monthly_revenue", "trading_status_context", "corporate_action_context",
     ]
-    if v3_need_types != [*expected_h0_g_need_types, "market_state_context"]:
+    if v3_need_types != [*expected_h0_g_need_types, "market_state_context", "index_futures_context"]:
         _fail("phase_i_v3_request_extension_not_additive")
     additive_v3_schema_hashes = {
-        "schemas/unified_market_evidence_request.v3.schema.json": "f11db316c281b3d07c2c877e810bec3220e982b48b1b237c4395b6d4f5c7be5e",
-        "schemas/unified_market_evidence_result.v3.schema.json": "f9d83d5dfb39f78c38866cb5aff9d87ccdc1001fa0649cf1d94d045d8e9b840c",
-        "schemas/unified_market_evidence_audit_package.v3.schema.json": "1a267ae5a174b0bff20c294a09d208618ef02efc8a7339d167b61a818bf8ef20",
+        "schemas/unified_market_evidence_request.v3.schema.json": "e11807c2d43dfa91cae90e4b266cc450724301dea7152313fe0ef0afc883e348",
+        "schemas/unified_market_evidence_result.v3.schema.json": "2c2092db493d183922b434e99922b2ed4409185ba67985f9b7fbb2639f21eb9b",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json": "08d90c8756503715a0174deda3eecc484ac21e97f542a23e1e7530a0939abadb",
     }
     for relative_path, expected_hash in additive_v3_schema_hashes.items():
         if hashlib.sha256((root / relative_path).read_bytes()).hexdigest() != expected_hash:

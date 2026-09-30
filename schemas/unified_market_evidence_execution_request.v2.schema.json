@@ -43,7 +43,7 @@
     "market": { "type": ["string", "null"] },
     "approved_security_identifiers": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
     "approved_security_types": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
-    "capability_id": { "const": "recent_performance" },
+    "capability_id": { "enum": ["recent_performance", "index_futures_context"] },
     "executor_id": { "type": "string", "minLength": 1 },
     "requested_fields": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
     "currentness_requirement": { "type": ["string", "null"] },
@@ -57,7 +57,6 @@
     "parameters": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["lookback_trading_days"],
       "properties": {
         "lookback_trading_days": {
           "type": "integer",
@@ -66,5 +65,12 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"capability_id": {"const": "index_futures_context"}}, "required": ["capability_id"]},
+      "then": {"properties": {"parameters": {"type": "object", "maxProperties": 0}}},
+      "else": {"properties": {"parameters": {"required": ["lookback_trading_days"]}}}
+    }
+  ]
 }

@@ -167,10 +167,14 @@ def validate_phase_i_i1_contracts() -> None:
     if "phase_i_evidence" not in audit_v3.get("properties", {}):
         raise I1ValidationError("i1_audit_lineage_missing")
     phase_h_capability_enum = audit_v3["properties"]["phase_h_governance"]["properties"]["evidence_artifact_references"]["items"]["properties"]["capability_id"]["enum"]
-    phase_i_reference = audit_v3["properties"]["phase_i_evidence"]["properties"]["evidence_artifact_references"]["items"]["properties"]
     if "market_state_context" in phase_h_capability_enum:
         raise I1ValidationError("i1_capability_allowed_in_phase_h_audit")
-    if phase_i_reference.get("capability_id", {}).get("const") != "market_state_context" or phase_i_reference.get("schema_version", {}).get("const") != "market_state_context_evidence.v1":
+    phase_i_refs = audit_v3["properties"]["phase_i_evidence"]["properties"]["evidence_artifact_references"]["items"].get("oneOf", [])
+    phase_i_pairs = {
+        (alt.get("properties", {}).get("capability_id", {}).get("const"), alt.get("properties", {}).get("schema_version", {}).get("const"))
+        for alt in phase_i_refs
+    }
+    if ("market_state_context", "market_state_context_evidence.v1") not in phase_i_pairs:
         raise I1ValidationError("i1_phase_i_audit_reference_not_exclusive")
     _validate_typed_failure_semantics(evidence_schema, result_v3)
     sys.path.insert(0, str(ROOT))
@@ -179,14 +183,19 @@ def validate_phase_i_i1_contracts() -> None:
         raise I1ValidationError("mcp_surface_changed")
     capability_ids = {item.get("capability_id") for item in catalog.get("data_need_capabilities", [])}
     if capability_ids & {
-        "index_futures_context",
         "taifex_market_state",
         "institutional_positioning",
         "institutional_positioning_context",
         "market_positioning_context",
     }:
         raise I1ValidationError("i2_i3_scope_added")
-    print("Phase I I1 contracts: PASS (Owner-accepted activation, V3-only; live evidence unchanged)")
+    i2_capability = next((x for x in catalog.get("data_need_capabilities", []) if x.get("capability_id") == "index_futures_context"), None)
+    i2_route = next((x for x in routing.get("routes", []) if x.get("capability_id") == "index_futures_context"), None)
+    if i2_capability and (i2_capability.get("runtime_executable") is not False or i2_capability.get("support_status") != "contract_supported"):
+        raise I1ValidationError("i2_dormant_catalog_state_invalid")
+    if i2_route and (i2_route.get("routing_status") != "plan_only" or i2_route.get("selected_executor_id") is not None):
+        raise I1ValidationError("i2_dormant_routing_state_invalid")
+    print("Phase I I1 contracts: PASS (Owner-accepted activation preserved; I2 remains dormant)")
 
 
 if __name__ == "__main__":
