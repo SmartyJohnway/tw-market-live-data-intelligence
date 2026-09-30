@@ -211,11 +211,13 @@ probe recorded in
 I2-A1 `index_futures_context` source/evidence contract is frozen `FROZEN_PASS`
 in
 `docs/governance/phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json`.
-This authorizes no A2 work: I2 runtime implementation is not started and is
-not authorized; I2 has zero active sources and zero normal production routes.
-I1 remains the only active Phase I runtime tranche (three active sources).
-I3 is not started, Phase I remains incomplete, and MCP remains exactly six
-tools. No additional source call was made for A1.
+Owner has separately authorized I2-A2 as a dormant offline implementation
+candidate. I2 runtime is not active: it has zero active sources, zero normal
+production routes, no selected executor, and no default-registry executor.
+I1 remains accepted and active with three sources. A2 uses synthetic fixtures
+only; it makes no market-source requests and does not authorize A3/live
+acceptance or production activation. I3 is not started, Phase I remains
+incomplete, and MCP remains exactly six tools.
 
 ## Current authority hierarchy
 

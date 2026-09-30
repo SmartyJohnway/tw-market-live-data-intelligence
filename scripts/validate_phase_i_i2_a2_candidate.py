@@ -87,6 +87,31 @@ def validate() -> None:
         raise ValueError("i2_production_registry_route_exists")
     if len(build_tool_contract_snapshot().tools) != 6:
         raise ValueError("mcp_tool_count_changed")
+
+    candidate = _read("docs/governance/phase_i/PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION_CANDIDATE_2026-09-30.json")
+    if (candidate.get("status"), candidate.get("owner_authority_reference"), candidate.get("starting_main")) != (
+        "DORMANT_IMPLEMENTATION_CANDIDATE_READY_FOR_REVIEW",
+        "USER_CHAT_2026-09-30_PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION_AUTHORIZATION",
+        "3d5a43f93c9aba84a3cab26fddac13dfc6b61200",
+    ):
+        raise ValueError("i2_candidate_governance_identity_invalid")
+    candidate_capability = candidate.get("capability", {})
+    if (candidate_capability.get("capability_id"), candidate_capability.get("runtime_executable"),
+            candidate_capability.get("routing_status"), candidate_capability.get("selected_executor_id")) != (
+        "index_futures_context", False, "plan_only", None
+    ):
+        raise ValueError("i2_candidate_governance_not_dormant")
+    runtime_state = candidate.get("source_and_runtime_state", {})
+    if (runtime_state.get("i2_active_sources"), runtime_state.get("i2_normal_production_routes"),
+            runtime_state.get("i2_default_registry_executor_present"), runtime_state.get("i1_active_sources"),
+            runtime_state.get("mcp_tool_count")) != (0, 0, False, 3, 6):
+        raise ValueError("i2_candidate_governance_runtime_state_invalid")
+    boundary = candidate.get("governance_boundary", {})
+    if (boundary.get("market_network_calls"), boundary.get("live_acceptance"),
+            boundary.get("production_activation"), boundary.get("a3_authorized"),
+            boundary.get("merge_authorized"), boundary.get("i3_started"),
+            boundary.get("phase_j_started")) != (0, "NOT_AUTHORIZED", "NOT_AUTHORIZED", False, False, False, False):
+        raise ValueError("i2_candidate_governance_boundary_invalid")
     schema = _read("schemas/index_futures_context_evidence.v1.schema.json")
     import jsonschema
     jsonschema.Draft202012Validator.check_schema(schema)
