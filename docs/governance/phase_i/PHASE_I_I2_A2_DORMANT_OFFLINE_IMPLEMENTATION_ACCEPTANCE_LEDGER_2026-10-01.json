@@ -1,0 +1,71 @@
+{
+  "schema_version": "phase_i_i2_a2_dormant_offline_implementation_acceptance_ledger.v1",
+  "gate_id": "PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION",
+  "status": "OWNER_ACCEPTED_PASS",
+  "owner_authority_reference": "USER_CHAT_2026-10-01_PHASE_I_I2_A2_OWNER_ACCEPTANCE_AND_MERGE_CLOSURE",
+  "reviewed_candidate": {
+    "baseline_main": "3d5a43f93c9aba84a3cab26fddac13dfc6b61200",
+    "reviewed_head": "56fc669d28600ff62fc86979179ac7b6c82eeb13",
+    "reviewed_tree": "30ea8d6ccb18077e4ec5fa79cacfff605dca4bd7",
+    "review_repair_commit": "379d0a504900952931ca642f74992205310facb5",
+    "pull_request": 297
+  },
+  "accepted_authority_chain": {
+    "phase_i_i0": "FROZEN_PASS",
+    "phase_i_i1": "OWNER_ACCEPTED_MERGED_RUNTIME_EXECUTABLE",
+    "phase_i_i2_a0": "ACCEPTED_PASS_GO",
+    "phase_i_i2_a1": "OWNER_ACCEPTED_FROZEN_PASS_MERGED",
+    "phase_i_i2_a2_candidate": "DORMANT_IMPLEMENTATION_CANDIDATE_READY_FOR_REVIEW",
+    "independent_review": "PASS",
+    "review_repairs": "PASS",
+    "a1_contract": "docs/governance/phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json",
+    "a1_contract_sha256": "6d535e34defb1e82947f64ceec6df5e1859888fb3550e36e6ded1b6a7573d4fb",
+    "a2_candidate": "docs/governance/phase_i/PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION_CANDIDATE_2026-09-30.json",
+    "a2_candidate_reported_sha256": "6061c0292052630e253d898fff89762313fb55e5add66d41dc4479a84d6f0d4d"
+  },
+  "accepted_implementation": {
+    "capability_id": "index_futures_context",
+    "candidate_executor_id": "phase_i_i2_index_futures_context_executor",
+    "evidence_schema": "index_futures_context_evidence.v1",
+    "catalog_support_status": "contract_supported",
+    "runtime_executable": false,
+    "phase_i_activation_state": "implementation_candidate_inactive",
+    "routing_status": "plan_only",
+    "selected_executor_id": null,
+    "batching_scope": "same_source",
+    "eligible_target_market": "TWSE",
+    "source_market": "TAIFEX",
+    "source_id": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI"
+  },
+  "runtime_preservation": {
+    "i2_active_sources": 0,
+    "i2_normal_production_routes": 0,
+    "i2_default_registry_executor_present": false,
+    "i1_active_sources": 3,
+    "mcp_tool_count": 6,
+    "i3_started": false,
+    "phase_j_started": false,
+    "market_network_calls_during_owner_merge_closure": 0
+  },
+  "validation_evidence": {
+    "focused_i2_a2": "29 passed",
+    "cross_boundary_a2_a1_i1_phase_h_v3": "113 passed",
+    "default_ci": "832 passed, 1 skipped, 5 deselected",
+    "full_current": "1205 passed, 1 skipped, 5 deselected",
+    "github_reported_statuses": 0,
+    "github_reported_workflow_runs": 0,
+    "github_ci_claim": "NOT_CLAIMED"
+  },
+  "final_decision": {
+    "owner_acceptance": "ACCEPTED",
+    "implementation_candidate_accepted": true,
+    "merge_authorized": true,
+    "merge_performed": false,
+    "merge_performed_scope": "historical pre-merge acceptance snapshot",
+    "i2_runtime_activated": false,
+    "i2_live_acceptance_authorized": false,
+    "i2_production_activation_authorized": false,
+    "a3_authorized": false,
+    "a3_authorization_scope": "separate post-merge Owner gate"
+  }
+}
